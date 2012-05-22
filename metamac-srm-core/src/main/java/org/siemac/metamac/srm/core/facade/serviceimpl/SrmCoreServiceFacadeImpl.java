@@ -67,7 +67,7 @@ import org.springframework.stereotype.Service;
 /**
  * Implementation of SDMXStructureServiceFacade.
  */
-@Service("sDMXStructureServiceFacade")
+@Service("srmCoreServiceFacade")
 public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     public SrmCoreServiceFacadeImpl() {
