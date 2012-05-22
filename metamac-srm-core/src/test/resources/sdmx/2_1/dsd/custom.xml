@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<message:Structure xmlns:message="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message"
+	xmlns:p="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure"
+	xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+	<message:Header>
+		<message:ID>Sample_DSD1_With_No_Group</message:ID>
+		<message:Test>false</message:Test>
+		<message:Prepared>2010-11-13T08:00:33+08:00</message:Prepared>
+		<message:Sender id="SDMX" />
+	</message:Header>
+	<message:Structures>
+		<p:DataStructures>
+			<p:DataStructure agencyID="Metamac" id="MTM_DSD1"
+				isExternalReference="false" isFinal="false" serviceURL="http://tempuri.org"
+				structureURL="http://tempuri.org" uri="http://tempuri.org" urn="http://tempuri.org"
+				validFrom="2001-12-31T12:00:00" validTo="2001-12-31T12:00:00"
+				version="1.0">
+				<common:Annotations>
+					<common:Annotation id="ANO_01">
+						<common:AnnotationTitle>common:AnnotationTitle</common:AnnotationTitle>
+						<common:AnnotationType>common:AnnotationType</common:AnnotationType>
+						<common:AnnotationURL>http://tempuri.org</common:AnnotationURL>
+						<common:AnnotationText xml:lang="en">common:AnnotationText</common:AnnotationText>
+					</common:Annotation>
+				</common:Annotations>
+				<common:Name xml:lang="en">common:Name</common:Name>
+				<common:Description xml:lang="en">common:Description</common:Description>
+				<p:DataStructureComponents>
+					<p:DimensionList id="DimensionDescriptor" uri="http://tempuri.org"
+						urn="http://tempuri.org">
+						<common:Annotations>
+							<common:Annotation id="ANO_02">
+								<common:AnnotationTitle>common:AnnotationTitle</common:AnnotationTitle>
+								<common:AnnotationType>common:AnnotationType</common:AnnotationType>
+								<common:AnnotationURL>http://tempuri.org</common:AnnotationURL>
+								<common:AnnotationText xml:lang="en">common:AnnotationText</common:AnnotationText>
+							</common:Annotation>
+						</common:Annotations>
+						<p:Dimension id="DIM_01" position="0" type="Dimension"
+							uri="http://tempuri.org" urn="http://tempuri.org">
+							<common:Annotations>
+								<common:Annotation id="ANO_03">
+									<common:AnnotationTitle>common:AnnotationTitle</common:AnnotationTitle>
+									<common:AnnotationType>common:AnnotationType</common:AnnotationType>
+									<common:AnnotationURL>http://tempuri.org</common:AnnotationURL>
+									<common:AnnotationText xml:lang="en">common:AnnotationText</common:AnnotationText>
+								</common:Annotation>
+							</common:Annotations>
+							<p:ConceptIdentity>
+								<Ref agencyID="Metamac" maintainableParentID="MetamacConceptScheme"
+									id="CONCEPT_01" />
+							</p:ConceptIdentity>
+							<p:LocalRepresentation xsi:type="p:SimpleDataStructureRepresentationType">
+								<p:TextFormat decimals="1" endValue="0.0" interval="0.0"
+									isSequence="true" maxLength="1" maxValue="0.0" minLength="1"
+									minValue="0.0" startValue="0.0" textType="String" 
+									xsi:type="p:SimpleComponentTextFormatType" />
+							</p:LocalRepresentation>
+							<p:ConceptRole>
+								<Ref agencyID="Metamac" maintainableParentID="MetamacConceptScheme"
+									id="CONCEPT_01" />
+							</p:ConceptRole>
+						</p:Dimension>
+					</p:DimensionList>
+					<p:Group id="GROUP_01" uri="http://tempuri.org" urn="http://tempuri.org">
+						<common:Annotations>
+							<common:Annotation id="ANO_04">
+								<common:AnnotationTitle>common:AnnotationTitle</common:AnnotationTitle>
+								<common:AnnotationType>common:AnnotationType</common:AnnotationType>
+								<common:AnnotationURL>http://tempuri.org</common:AnnotationURL>
+								<common:AnnotationText xml:lang="en">common:AnnotationText</common:AnnotationText>
+							</common:Annotation>
+						</common:Annotations>
+						<p:GroupDimension>
+							<p:DimensionReference>
+								<Ref class="Dimension" id="DIM_01" local="true" package="datastructure" />
+							</p:DimensionReference>
+						</p:GroupDimension>
+					</p:Group>
+					<p:AttributeList id="AttributeDescriptor" uri="http://tempuri.org"
+						urn="http://tempuri.org">
+						<common:Annotations>
+							<common:Annotation id="ANO_05">
+								<common:AnnotationTitle>common:AnnotationTitle</common:AnnotationTitle>
+								<common:AnnotationType>common:AnnotationType</common:AnnotationType>
+								<common:AnnotationURL>http://tempuri.org</common:AnnotationURL>
+								<common:AnnotationText xml:lang="en">common:AnnotationText</common:AnnotationText>
+							</common:Annotation>
+						</common:Annotations>
+						<p:Attribute assignmentStatus="Mandatory" id="ATTR_DATASET_01"
+							uri="http://tempuri.org" urn="http://tempuri.org" xsi:type="p:AttributeType">
+							<common:Annotations>
+								<common:Annotation id="ANO_06">
+									<common:AnnotationTitle>common:AnnotationTitle</common:AnnotationTitle>
+									<common:AnnotationType>common:AnnotationType</common:AnnotationType>
+									<common:AnnotationURL>http://tempuri.org</common:AnnotationURL>
+									<common:AnnotationText xml:lang="en">common:AnnotationText</common:AnnotationText>
+								</common:Annotation>
+							</common:Annotations>
+							<p:ConceptIdentity>
+								<Ref agencyID="Metamac" maintainableParentID="MetamacConceptScheme"
+									id="CONCEPT_01" />
+							</p:ConceptIdentity>
+							<p:LocalRepresentation xsi:type="p:SimpleDataStructureRepresentationType">
+								<p:TextFormat decimals="1" endValue="0.0" interval="0.0"
+									isSequence="true" maxLength="1" maxValue="0.0" minLength="1"
+									minValue="0.0" startValue="0.0" textType="String" 
+									xsi:type="p:SimpleComponentTextFormatType" />
+							</p:LocalRepresentation>
+							<p:ConceptRole>
+								<Ref agencyID="Metamac" maintainableParentID="MetamacConceptScheme"
+									id="CONCEPT_01" />
+							</p:ConceptRole>
+							<p:AttributeRelationship>
+								<p:None />
+							</p:AttributeRelationship>
+						</p:Attribute>
+					</p:AttributeList>
+					<p:MeasureList id="MeasureDescriptor" uri="http://tempuri.org"
+						urn="http://tempuri.org">
+						<common:Annotations>
+							<common:Annotation id="ANO_07">
+								<common:AnnotationTitle>common:AnnotationTitle</common:AnnotationTitle>
+								<common:AnnotationType>common:AnnotationType</common:AnnotationType>
+								<common:AnnotationURL>http://tempuri.org</common:AnnotationURL>
+								<common:AnnotationText xml:lang="en">common:AnnotationText</common:AnnotationText>
+							</common:Annotation>
+						</common:Annotations>
+						<p:PrimaryMeasure id="OBS_VALUE" uri="http://tempuri.org"
+							urn="http://tempuri.org">
+							<common:Annotations>
+								<common:Annotation id="ANO_08">
+									<common:AnnotationTitle>common:AnnotationTitle</common:AnnotationTitle>
+									<common:AnnotationType>common:AnnotationType</common:AnnotationType>
+									<common:AnnotationURL>http://tempuri.org</common:AnnotationURL>
+									<common:AnnotationText xml:lang="en">common:AnnotationText</common:AnnotationText>
+								</common:Annotation>
+							</common:Annotations>
+							<p:ConceptIdentity>
+								<Ref agencyID="Metamac" maintainableParentID="MetamacConceptScheme"
+									id="CONCEPT_01" />
+							</p:ConceptIdentity>
+							<p:LocalRepresentation xsi:type="p:SimpleDataStructureRepresentationType">
+								<p:TextFormat decimals="1" endValue="0.0" interval="0.0"
+									isSequence="true" maxLength="1" maxValue="0.0" minLength="1"
+									minValue="0.0" startValue="0.0" textType="String"
+									xsi:type="p:SimpleComponentTextFormatType" />
+							</p:LocalRepresentation>
+						</p:PrimaryMeasure>
+					</p:MeasureList>
+				</p:DataStructureComponents>
+			</p:DataStructure>
+		</p:DataStructures>
+
+	</message:Structures>
+</message:Structure>

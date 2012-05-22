@@ -1,0 +1,282 @@
+import "classpath:/btdesign/metamac-api-domain-dtos-trans.btdesign"
+import "classpath:/btdesign/metamac-api-domain-dtos-core.btdesign"
+import "classpath:/btdesign/metamac-api-domain-dtos-util.btdesign"
+import "classpath:/btdesign/metamac-api-domain-enums.btdesign"
+
+import "classpath:/btdesign/metamac-api-domain-dtos-concepts.btdesign"
+import "classpath:/btdesign/metamac-api-domain-enums-concept.btdesign"
+
+import "classpath:/btdesign/metamac-core-common-dtos.btdesign"
+import "classpath:/btdesign/model-metamac-transformation.btdesign"
+
+import "classpath:/btdesign/metamac-srm-core-base.btdesign"
+import "classpath:/btdesign/metamac-srm-core-structure.btdesign"
+
+import "classpath:/btdesign/metamac-srm-core-concepts.btdesign"
+
+Application SrmCore {
+    basePackage=unused
+    
+    Module core_facades {
+    	basePackage=org.siemac.metamac.srm.core.facade
+    	
+		Service SrmCoreServiceFacade {
+       		> @SdmxBaseService
+       		> @DataStructureDefinitionService
+       		> @TransformationServiceFacade
+
+			"          
+			 @param ctx  
+			 @param dataStructureDefinitionDto                                                  
+			 @return                                                                            
+			 @throws org.siemac.metamac.core.common.exception.MetamacException
+			"
+       		@DataStructureDefinitionDto saveDsd(@DataStructureDefinitionDto dataStructureDefinitionDto) throws MetamacException;
+       		
+			"       		                                                                                    
+			 @param ctx                                                                          
+			 @param dataStructureDefinitionDto                                                   
+			 @throws org.siemac.metamac.core.common.exception.MetamacException
+			" 
+       		deleteDsd(@DataStructureDefinitionDto dataStructureDefinitionDto) throws MetamacException;
+			
+			"                           
+			 @param ctx                 
+			 @param condition           
+			 @param pagingParameter     
+			 @return                    
+			"
+			PagedResult<@DataStructureDefinitionDto> findDsdByCondition(List<org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria> condition, org.fornax.cartridges.sculptor.framework.domain.PagingParameter pagingParameter) throws MetamacException;
+          	
+          	"          
+			@param ctx
+			@return   
+          	"
+          	List<@DataStructureDefinitionDto> findAllDsds;
+          	
+          	"
+          	 Retrieve a DSD with Grouping relationships.
+		     @param ctx
+		     @param idDsd
+		     @param typeDozerCopyMode, in TypeDozerCopyMode.CREATE the object graph not contains id fields, always is a new DSD graph instance. Use TypeDozerCopyMode.UPDATE for normal use.
+		     @return
+		     @throws org.siemac.metamac.core.common.exception.MetamacException
+		    "
+          	@DataStructureDefinitionExtendDto retrieveExtendedDsd(Long idDsd, @TypeDozerCopyMode typeDozerCopyMode) throws MetamacException;
+			
+			"
+          	 Retrieve a DSD without Grouping relationships.
+		     @param ctx
+		     @param idDsd
+		     @param typeDozerCopyMode, in TypeDozerCopyMode.CREATE the object graph not contains id fields, always is a new DSD graph instance. Use TypeDozerCopyMode.UPDATE for normal use.
+		     @return
+		     @throws org.siemac.metamac.core.common.exception.MetamacException
+		    "
+			@DataStructureDefinitionDto retrieveDsd(Long idDsd, @TypeDozerCopyMode typeDozerCopyMode) throws MetamacException;			    	
+	    	
+	    	"
+			 @param ctx                                                                         
+			 @param dataStructureDefinitionDto
+			 @return                                            
+			 @throws org.siemac.metamac.core.common.exception.MetamacException
+			"
+	    	@DataStructureDefinitionDto saveDsdGraph(@DataStructureDefinitionExtendDto dataStructureDefinitionExtendDto) throws MetamacException;
+	    	
+			"
+			 @param ctx                                                                          
+			 @param idDsd                                                   
+			 @param minorVersion
+			 @return The new DSD                                                                 
+			 @throws org.siemac.metamac.core.common.exception.MetamacException
+			"  
+			@DataStructureDefinitionDto createDsdVersion(Long idDsd, boolean minorVersion) throws MetamacException;
+			
+			"
+			 @param ctx                                                                         
+			 @param idDsd                                                                       
+			 @param typeComponentList                                                           
+			 @return                                                                            
+			 @throws org.siemac.metamac.core.common.exception.MetamacException
+			"
+          	List<@DescriptorDto> findDescriptorForDsd(Long idDsd, @TypeComponentList typeComponentList) throws MetamacException;
+          	
+          	"
+          	 @param ctx                                                                         
+			 @param idDsd                                                                       
+			 @return                                                                            
+			 @throws org.siemac.metamac.core.common.exception.MetamacException
+          	"
+          	List<@DescriptorDto> findDescriptorsForDsd(Long idDsd) throws MetamacException;
+	   		
+	   		"                                                                                    
+			 @param ctx                                                                          
+			 @param idDsd                                                                        
+			 @param descriptorDto                                                                
+			 @return                                                                             
+			 @throws org.siemac.metamac.core.common.exception.MetamacException
+			" 
+	   		@DescriptorDto saveDescriptorForDsd(Long idDsd, @DescriptorDto descriptorDto) throws MetamacException;
+	   		
+	   		"
+	   		 @param ctx                                                                          
+			 @param idDsd                                                                        
+			 @param descriptorDto                                                                
+			 @throws org.siemac.metamac.core.common.exception.MetamacException 
+	   		"
+	   		deleteDescriptorForDsd(Long idDsd, @DescriptorDto descriptorDto)throws MetamacException;
+	   
+	   		"
+			 @param ctx                                                                         
+			 @param idDsd                                                                       
+			 @param componentDto                                                                
+			 @param typeComponentList                                                           
+			 @return                                                                            
+			 @throws org.siemac.metamac.core.common.exception.MetamacException
+	   		"
+	   		@ComponentDto saveComponentForDsd(Long idDsd, @ComponentDto componentDto, @TypeComponentList typeComponentList) throws MetamacException;
+	   		
+	   		"                                                                                    
+			 @param ctx                                                                          
+			 @param idDsd                                                                        
+			 @param componentDto                                                                 
+			 @param typeComponentList                                                            
+			 @throws org.siemac.metamac.core.common.exception.MetamacException
+			" 
+	   		deleteComponentForDsd(Long idDsd, @ComponentDto componentDto, @TypeComponentList typeComponentList) throws MetamacException;
+	   		
+	   		"
+	    	 @param ctx                                                                          
+			 @param contentDto                                                                           
+			 @throws org.siemac.metamac.core.common.exception.MetamacException
+	    	"
+	    	importSDMXStructureMsg(@ContentInputDto contentDto) throws MetamacException;
+	   		
+	    	"
+	    	 @param ctx                                                                         
+			 @param structureMsgDto                                                             
+			 @return                                                                            
+			 @throws org.siemac.metamac.core.common.exception.MetamacException
+			"
+	    	String exportSDMXStructureMsg(@StructureMsgDto structureMsgDto) throws MetamacException;
+	    	
+	    	
+	    	/**************************************************************************
+		     * ORGANISATION
+		     **************************************************************************/
+			"          
+			 @param ctx  
+			 @return     
+       		"
+       		@ExternalItemBtDto findOrganisation(String uriOrganistaion) throws MetamacException;
+       		
+       		/**************************************************************************
+		     * CODELIST
+		     **************************************************************************/
+     
+            "
+       		 @param ctx             
+			 @param uriConcept
+			 @return 
+			"        		
+       		List<@ExternalItemBtDto> findCodelists(String uriConcept) throws MetamacException;
+       		
+       		/**************************************************************************
+		     * CONCEPTS
+		     *************************************************************************/
+			"          
+			 @param ctx  
+			 @return     
+       		"       		
+       		List<@ExternalItemBtDto> findConceptSchemeRefs;
+       		
+       		"
+       		 @param ctx             
+			 @param uriConceptScheme
+			 @return 
+			"                
+       		List<@ExternalItemBtDto> findConcepts(String uriConceptScheme);
+       		
+	   		
+	   		@ConceptSchemeDto createConceptScheme(@ConceptSchemeDto conceptSchemeDto) throws MetamacException;
+            @ConceptSchemeDto updateConceptScheme(@ConceptSchemeDto conceptSchemeDto) throws MetamacException;
+            deleteConceptScheme(Long conceptSchemeId) throws MetamacException;
+            List<@ConceptSchemeDto> findAllConceptSchemes  throws MetamacException;
+            @ConceptSchemeDto retrieveConceptScheme(Long id) throws MetamacException;
+            @ConceptSchemeDto sendConceptSchemeToPendingPublication throws MetamacException;
+            @ConceptSchemeDto publishConceptSchemeInternally(Long conceptSchemeId) throws MetamacException;
+            @ConceptSchemeDto publishConceptSchemeExternally(Long conceptSchemeId) throws MetamacException;
+   		
+            @ConceptDto createConcept(@ConceptDto conceptDto, Long conceptSchemeId) throws MetamacException;
+            @ConceptDto updateConcept(@ConceptDto conceptDto) throws MetamacException;
+            deleteConcept(Long conceptId) throws MetamacException;
+            List<@ConceptDto> findConceptsForConceptScheme(Long conceptSchemeId)  throws MetamacException;
+            @ConceptDto retrieveConcept(Long id) throws MetamacException;
+            @ConceptDto sendConceptToPendingPublication throws MetamacException;
+            @ConceptDto publishConceptInternally(Long conceptId) throws MetamacException;
+            @ConceptDto publishConceptExternally(Long conceptId) throws MetamacException;
+   		
+    	}
+/*    	
+    	Service ImportServiceFacade {
+	    	> @SDMXStructureServiceFacade
+	    	> @TransformationServiceFacade
+	    	> @SdmxBaseService
+	    	
+	    	"
+	    	 @param ctx                                                                          
+			 @param contentDto                                                                           
+			 @throws org.siemac.metamac.core.common.exception.MetamacException
+	    	"
+	    	importSDMXStructureMsg(@ContentInputDto contentDto) throws MetamacException;
+	    	
+	    	"
+	    	 @param ctx                                                                         
+			 @param contentDto                                                                          
+			 @param dsdId                                                  
+			 @throws org.siemac.metamac.core.common.exception.MetamacException
+			" 
+	    	importSDMXData(@ContentInputDto contentDto, Long dsdId) throws MetamacException;
+	    	
+	    	"
+	    	 Retrieve a list of import data jobs that are currently running or have failed                                       
+			 @throws org.siemac.metamac.core.common.exception.MetamacException
+			" 
+	    	List<@JobDetailsDto> retrieveImportDataCurrentJobs throws MetamacException;
+	    	
+	    	"
+	    	 Deleting a Job that has failed and unscheduling all of its triggers                           
+			 @throws org.siemac.metamac.core.common.exception.MetamacException
+	    	"
+	    	deleteFailedImportDataJob(String jobName) throws MetamacException;
+	    	
+    	}
+    	
+    	Service ExportServiceFacade {
+	    	> @SDMXStructureServiceFacade
+	    	> @TransformationServiceFacade
+	    	> @SdmxBaseService
+	    	> @DataServiceFacade
+	    	
+	    	"
+	    	 @param ctx                                                                         
+			 @param structureMsgDto                                                             
+			 @return                                                                            
+			 @throws org.siemac.metamac.core.common.exception.MetamacException
+			"
+	    	String exportSDMXStructureMsg(@StructureMsgDto structureMsgDto) throws MetamacException;
+	    	
+	    	"
+	    	 @param ctx                                                                         
+			 @param dataStructureDefinitionDto                                                  
+			 @param datasetId                                                                   
+			 @param typeSDMXMessage                                                             
+			 @return                                                                            
+			 @throws org.siemac.metamac.core.common.exception.MetamacException
+	    	"
+	    	String exportSDMXDataMsg(@DataStructureDefinitionDto dataStructureDefinitionDto, String datasetId, @TypeSDMXMessage typeSDMXMessage) throws MetamacException;
+	    	
+    	}
+*/    	
+    }
+
+}

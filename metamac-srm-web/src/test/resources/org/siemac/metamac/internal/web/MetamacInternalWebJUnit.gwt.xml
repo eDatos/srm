@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+  <!-- Inherit our applications main module.                      -->
+  <inherits name='org.siemac.metamac.internal.web.metamac-internal-web'/>
+
+  <!-- Specify the path to any remote services.                   -->
+  <servlet path="/MetamacInternalWeb/greet" class="org.siemac.metamac.internal.web.server.GeneralWebServiceImpl" />
+
+</module>

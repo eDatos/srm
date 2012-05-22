@@ -1,0 +1,1827 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mes:Structure xmlns:mes="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common" xmlns:str="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure">
+  <mes:Header>
+    <mes:ID>ID_DSD_DIV_23</mes:ID>
+    <mes:Test>false</mes:Test>
+    <mes:Prepared>2011-10-21T12:54:01.000+01:00</mes:Prepared>
+    <mes:Sender id="INE">
+      <com:Name xml:lang="es">Instituto Nacional de Estadística</com:Name>
+    </mes:Sender>
+  </mes:Header>
+  <mes:Structures>
+    <str:Codelists>
+      <str:Codelist id="CL_COLLECTION" urn="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=INE:CL_COLLECTION(1.0)" agencyID="INE" version="1.0" isFinal="true">
+        <com:Name xml:lang="es">Tipo de dato</com:Name>
+        <str:Code id="ABS" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_COLLECTION(1.0).ABS">
+          <com:Name xml:lang="es">Valor absoluto</com:Name>
+        </str:Code>
+        <str:Code id="C" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_COLLECTION(1.0).C">
+          <com:Name xml:lang="es">Ciclotendencia</com:Name>
+        </str:Code>
+        <str:Code id="CV" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_COLLECTION(1.0).CV">
+          <com:Name xml:lang="es">Coeficiente de variación</com:Name>
+        </str:Code>
+        <str:Code id="CVp" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_COLLECTION(1.0).CVp">
+          <com:Name xml:lang="es">Coeficiente de variación (porcentaje)</com:Name>
+        </str:Code>
+        <str:Code id="DB" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_COLLECTION(1.0).DB">
+          <com:Name xml:lang="es">Dato base</com:Name>
+        </str:Code>
+        <str:Code id="DBR" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_COLLECTION(1.0).DBR">
+          <com:Name xml:lang="es">Datos brutos</com:Name>
+        </str:Code>
+        <str:Code id="DCEEYC" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_COLLECTION(1.0).DCEEYC">
+          <com:Name xml:lang="es">Datos corregidos de efectos estacionales y de calendario</com:Name>
+        </str:Code>
+        <str:Code id="DEMEA" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_COLLECTION(1.0).DEMEA">
+          <com:Name xml:lang="es">Demografía de empresas (altas)</com:Name>
+        </str:Code>
+        <str:Code id="DEMEB" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_COLLECTION(1.0).DEMEB">
+          <com:Name xml:lang="es">Demografía de empresas (bajas)</com:Name>
+        </str:Code>
+        <str:Code id="DEMEP" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_COLLECTION(1.0).DEMEP">
+          <com:Name xml:lang="es">Demografía de empresas (permanencias)</com:Name>
+        </str:Code>
+        <str:Code id="E" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_COLLECTION(1.0).E">
+          <com:Name xml:lang="es">Euros</com:Name>
+        </str:Code>
+        <str:Code id="EM" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_COLLECTION(1.0).EM">
+          <com:Name xml:lang="es">Empresas</com:Name>
+        </str:Code>
+        <str:Code id="IND" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_COLLECTION(1.0).IND">
+          <com:Name xml:lang="es">Índice</com:Name>
+        </str:Code>
+        <str:Code id="LOC" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_COLLECTION(1.0).LOC">
+          <com:Name xml:lang="es">Locales</com:Name>
+        </str:Code>
+        <str:Code id="MA" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_COLLECTION(1.0).MA">
+          <com:Name xml:lang="es">Media anual</com:Name>
+        </str:Code>
+        <str:Code id="MUN" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_COLLECTION(1.0).MUN">
+          <com:Name xml:lang="es">Municipios</com:Name>
+        </str:Code>
+        <str:Code id="MVA" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_COLLECTION(1.0).MVA">
+          <com:Name xml:lang="es">Media en lo que va de año</com:Name>
+        </str:Code>
+        <str:Code id="N" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_COLLECTION(1.0).N">
+          <com:Name xml:lang="es">N</com:Name>
+        </str:Code>
+        <str:Code id="NUM" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_COLLECTION(1.0).NUM">
+          <com:Name xml:lang="es">Número</com:Name>
+        </str:Code>
+        <str:Code id="NUMH" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_COLLECTION(1.0).NUMH">
+          <com:Name xml:lang="es">Número de Horas</com:Name>
+        </str:Code>
+        <str:Code id="P" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_COLLECTION(1.0).P">
+          <com:Name xml:lang="es">P</com:Name>
+        </str:Code>
+        <str:Code id="PER" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_COLLECTION(1.0).PER">
+          <com:Name xml:lang="es">Personas</com:Name>
+        </str:Code>
+        <str:Code id="POB" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_COLLECTION(1.0).POB">
+          <com:Name xml:lang="es">Población</com:Name>
+        </str:Code>
+        <str:Code id="POBVF" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_COLLECTION(1.0).POBVF">
+          <com:Name xml:lang="es">Población en viviendas familiares</com:Name>
+        </str:Code>
+        <str:Code id="POND" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_COLLECTION(1.0).POND">
+          <com:Name xml:lang="es">Ponderación</com:Name>
+        </str:Code>
+        <str:Code id="POR" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_COLLECTION(1.0).POR">
+          <com:Name xml:lang="es">Porcentaje</com:Name>
+        </str:Code>
+        <str:Code id="SERD" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_COLLECTION(1.0).SERD">
+          <com:Name xml:lang="es">Serie derivada</com:Name>
+        </str:Code>
+        <str:Code id="TEST" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_COLLECTION(1.0).TEST">
+          <com:Name xml:lang="es">Tasa estandarizada (tanto por mil)</com:Name>
+        </str:Code>
+        <str:Code id="TVA" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_COLLECTION(1.0).TVA">
+          <com:Name xml:lang="es">Tasa de variación anual</com:Name>
+        </str:Code>
+        <str:Code id="TVI" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_COLLECTION(1.0).TVI">
+          <com:Name xml:lang="es">Tasa de variación interanual</com:Name>
+        </str:Code>
+        <str:Code id="TVMA" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_COLLECTION(1.0).TVMA">
+          <com:Name xml:lang="es">Tasa de variación sobre el mes anterior</com:Name>
+        </str:Code>
+        <str:Code id="VABS" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_COLLECTION(1.0).VABS">
+          <com:Name xml:lang="es">Variación absoluta</com:Name>
+        </str:Code>
+        <str:Code id="VACVA" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_COLLECTION(1.0).VACVA">
+          <com:Name xml:lang="es">Variación acumulada en lo que va de año</com:Name>
+        </str:Code>
+        <str:Code id="VASM" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_COLLECTION(1.0).VASM">
+          <com:Name xml:lang="es">Variación anual (para series mensuales)</com:Name>
+        </str:Code>
+        <str:Code id="VAST" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_COLLECTION(1.0).VAST">
+          <com:Name xml:lang="es">Variación anual (para series trimestrales)</com:Name>
+        </str:Code>
+        <str:Code id="VIA" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_COLLECTION(1.0).VIA">
+          <com:Name xml:lang="es">Variación interanual acumulada</com:Name>
+        </str:Code>
+        <str:Code id="VM" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_COLLECTION(1.0).VM">
+          <com:Name xml:lang="es">Variación mensual</com:Name>
+        </str:Code>
+        <str:Code id="VMMAA" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_COLLECTION(1.0).VMMAA">
+          <com:Name xml:lang="es">Variación de las medias anuales</com:Name>
+        </str:Code>
+        <str:Code id="VMVA" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_COLLECTION(1.0).VMVA">
+          <com:Name xml:lang="es">Variación de la media en lo que va de año</com:Name>
+        </str:Code>
+        <str:Code id="VRAA" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_COLLECTION(1.0).VRAA">
+          <com:Name xml:lang="es">Variación respecto al año anterior</com:Name>
+        </str:Code>
+        <str:Code id="VRAB" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_COLLECTION(1.0).VRAB">
+          <com:Name xml:lang="es">Variación respecto al año base</com:Name>
+        </str:Code>
+        <str:Code id="VREL" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_COLLECTION(1.0).VREL">
+          <com:Name xml:lang="es">Variación relativa</com:Name>
+        </str:Code>
+        <str:Code id="VT" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_COLLECTION(1.0).VT">
+          <com:Name xml:lang="es">Variación trimestral</com:Name>
+        </str:Code>
+        <str:Code id="VTR" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_COLLECTION(1.0).VTR">
+          <com:Name xml:lang="es">Viajeros transportados</com:Name>
+        </str:Code>
+        <str:Code id="VVA" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_COLLECTION(1.0).VVA">
+          <com:Name xml:lang="es">Variación en lo que va de año</com:Name>
+        </str:Code>
+        <str:Code id="ZZ" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_COLLECTION(1.0).ZZ">
+          <com:Name xml:lang="es">No considerado</com:Name>
+        </str:Code>
+      </str:Codelist>
+      <str:Codelist id="CL_CONF_STATUS" urn="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=INE:CL_CONF_STATUS(1.0)" agencyID="INE" version="1.0" isFinal="true">
+        <com:Name xml:lang="es">Confidencialidad de la observación</com:Name>
+        <str:Code id="R" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_CONF_STATUS(1.0).R">
+          <com:Name xml:lang="es">Confidencial porque identifica al informante</com:Name>
+        </str:Code>
+        <str:Code id="N" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_CONF_STATUS(1.0).N">
+          <com:Name xml:lang="es">No público, pero no confidencial</com:Name>
+        </str:Code>
+        <str:Code id="C" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_CONF_STATUS(1.0).C">
+          <com:Name xml:lang="es">No público, confidencial</com:Name>
+        </str:Code>
+        <str:Code id="F" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_CONF_STATUS(1.0).F">
+          <com:Name xml:lang="es">Público</com:Name>
+        </str:Code>
+      </str:Codelist>
+      <str:Codelist id="CL_DECIMALS" urn="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=INE:CL_DECIMALS(1.0)" agencyID="INE" version="1.0" isFinal="true">
+        <com:Name xml:lang="es">Decimales</com:Name>
+        <str:Code id="5" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_DECIMALS(1.0).5">
+          <com:Name xml:lang="es">Cinco</com:Name>
+        </str:Code>
+        <str:Code id="3" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_DECIMALS(1.0).3">
+          <com:Name xml:lang="es">Tres</com:Name>
+        </str:Code>
+        <str:Code id="2" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_DECIMALS(1.0).2">
+          <com:Name xml:lang="es">Dos</com:Name>
+        </str:Code>
+        <str:Code id="0" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_DECIMALS(1.0).0">
+          <com:Name xml:lang="es">Cero</com:Name>
+        </str:Code>
+        <str:Code id="6" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_DECIMALS(1.0).6">
+          <com:Name xml:lang="es">Seis</com:Name>
+        </str:Code>
+        <str:Code id="9" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_DECIMALS(1.0).9">
+          <com:Name xml:lang="es">Nueve</com:Name>
+        </str:Code>
+        <str:Code id="10" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_DECIMALS(1.0).10">
+          <com:Name xml:lang="es">Diez</com:Name>
+        </str:Code>
+        <str:Code id="7" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_DECIMALS(1.0).7">
+          <com:Name xml:lang="es">Siete</com:Name>
+        </str:Code>
+        <str:Code id="4" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_DECIMALS(1.0).4">
+          <com:Name xml:lang="es">Cuatro</com:Name>
+        </str:Code>
+        <str:Code id="1" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_DECIMALS(1.0).1">
+          <com:Name xml:lang="es">Uno</com:Name>
+        </str:Code>
+        <str:Code id="8" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_DECIMALS(1.0).8">
+          <com:Name xml:lang="es">Ocho</com:Name>
+        </str:Code>
+      </str:Codelist>
+      <str:Codelist id="CL_FREQ" urn="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=INE:CL_FREQ(1.0)" agencyID="INE" version="1.0" isFinal="true">
+        <com:Name xml:lang="es">Frecuencia</com:Name>
+        <str:Code id="A" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_FREQ(1.0).A">
+          <com:Name xml:lang="es">Anual</com:Name>
+        </str:Code>
+        <str:Code id="ABI" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_FREQ(1.0).ABI">
+          <com:Name xml:lang="es">BiAnual Impar</com:Name>
+        </str:Code>
+        <str:Code id="ABP" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_FREQ(1.0).ABP">
+          <com:Name xml:lang="es">BiAnual Par</com:Name>
+        </str:Code>
+        <str:Code id="B" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_FREQ(1.0).B">
+          <com:Name xml:lang="es">Bimestral</com:Name>
+        </str:Code>
+        <str:Code id="D" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_FREQ(1.0).D">
+          <com:Name xml:lang="es">Diario</com:Name>
+        </str:Code>
+        <str:Code id="DB" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_FREQ(1.0).DB">
+          <com:Name xml:lang="es">Diario-business week</com:Name>
+        </str:Code>
+        <str:Code id="F" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_FREQ(1.0).F">
+          <com:Name xml:lang="es">Cuatrimestral</com:Name>
+        </str:Code>
+        <str:Code id="M" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_FREQ(1.0).M">
+          <com:Name xml:lang="es">Mensual</com:Name>
+        </str:Code>
+        <str:Code id="N" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_FREQ(1.0).N">
+          <com:Name xml:lang="es">Al Detalle</com:Name>
+        </str:Code>
+        <str:Code id="Q" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_FREQ(1.0).Q">
+          <com:Name xml:lang="es">Trimestral</com:Name>
+        </str:Code>
+        <str:Code id="S" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_FREQ(1.0).S">
+          <com:Name xml:lang="es">Semestral</com:Name>
+        </str:Code>
+        <str:Code id="SP" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_FREQ(1.0).SP">
+          <com:Name xml:lang="es">SIN PERIODICIDAD</com:Name>
+        </str:Code>
+        <str:Code id="W" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_FREQ(1.0).W">
+          <com:Name xml:lang="es">Semanal</com:Name>
+        </str:Code>
+      </str:Codelist>
+      <str:Codelist id="CL_IPCA_COICOP" urn="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=INE:CL_IPCA_COICOP(1.0)" agencyID="INE" version="1.0" isFinal="true">
+        <com:Name xml:lang="es">Subíndice COICOP</com:Name>
+        <str:Code id="00" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).00">
+          <com:Name xml:lang="es">General</com:Name>
+        </str:Code>
+        <str:Code id="01" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).01">
+          <com:Name xml:lang="es">Alimentos y bebidas no alcohólicas</com:Name>
+        </str:Code>
+        <str:Code id="011" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).011">
+          <com:Name xml:lang="es">Alimentos</com:Name>
+          <str:Parent>
+            <Ref id="01"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0111" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0111">
+          <com:Name xml:lang="es">Pan y cereales</com:Name>
+          <str:Parent>
+            <Ref id="011"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0112" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0112">
+          <com:Name xml:lang="es">Carne</com:Name>
+          <str:Parent>
+            <Ref id="011"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0113" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0113">
+          <com:Name xml:lang="es">Pescado</com:Name>
+          <str:Parent>
+            <Ref id="011"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0114" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0114">
+          <com:Name xml:lang="es">Leche, queso y huevos</com:Name>
+          <str:Parent>
+            <Ref id="011"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0115" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0115">
+          <com:Name xml:lang="es">Aceites y grasas</com:Name>
+          <str:Parent>
+            <Ref id="011"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0116" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0116">
+          <com:Name xml:lang="es">Frutas</com:Name>
+          <str:Parent>
+            <Ref id="011"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0117" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0117">
+          <com:Name xml:lang="es">Legumbres y hortalizas</com:Name>
+          <str:Parent>
+            <Ref id="011"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0118" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0118">
+          <com:Name xml:lang="es">Azúcar, mermelada, miel, chocolate y confitería</com:Name>
+          <str:Parent>
+            <Ref id="011"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0119" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0119">
+          <com:Name xml:lang="es">Productos alimenticios n.c.o.p.</com:Name>
+          <str:Parent>
+            <Ref id="011"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="012" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).012">
+          <com:Name xml:lang="es">Bebidas no alcohólicas</com:Name>
+          <str:Parent>
+            <Ref id="01"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0121" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0121">
+          <com:Name xml:lang="es">Café, té y cacao</com:Name>
+          <str:Parent>
+            <Ref id="012"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0122" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0122">
+          <com:Name xml:lang="es">Aguas minerales, refrescos, zumos de frutas y de legumbres y hortalizas</com:Name>
+          <str:Parent>
+            <Ref id="012"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="02" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).02">
+          <com:Name xml:lang="es">Bebidas alcohólicas, tabaco</com:Name>
+        </str:Code>
+        <str:Code id="021" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).021">
+          <com:Name xml:lang="es">Bebidas alcohólicas</com:Name>
+          <str:Parent>
+            <Ref id="02"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0211" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0211">
+          <com:Name xml:lang="es">Bebidas destiladas</com:Name>
+          <str:Parent>
+            <Ref id="021"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0212" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0212">
+          <com:Name xml:lang="es">Vino</com:Name>
+          <str:Parent>
+            <Ref id="021"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0213" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0213">
+          <com:Name xml:lang="es">Cerveza</com:Name>
+          <str:Parent>
+            <Ref id="021"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="022" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).022">
+          <com:Name xml:lang="es">Tabaco</com:Name>
+          <str:Parent>
+            <Ref id="02"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="03" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).03">
+          <com:Name xml:lang="es">Artículos de vestir y calzado</com:Name>
+        </str:Code>
+        <str:Code id="031" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).031">
+          <com:Name xml:lang="es">Artículos de vestir</com:Name>
+          <str:Parent>
+            <Ref id="03"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0311" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0311">
+          <com:Name xml:lang="es">Materiales de artículos de vestir</com:Name>
+          <str:Parent>
+            <Ref id="031"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0312" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0312">
+          <com:Name xml:lang="es">Prendas de vestir</com:Name>
+          <str:Parent>
+            <Ref id="031"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0313" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0313">
+          <com:Name xml:lang="es">Otros artículos y accesorios de vestir</com:Name>
+          <str:Parent>
+            <Ref id="031"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0314" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0314">
+          <com:Name xml:lang="es">Limpieza, reparación y alquiler de artículos de vestir</com:Name>
+          <str:Parent>
+            <Ref id="031"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="032" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).032">
+          <com:Name xml:lang="es">Calzado</com:Name>
+          <str:Parent>
+            <Ref id="03"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0321-2" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0321-2">
+          <com:Name xml:lang="es">Zapatos y otro calzado, incluso reparación y alquiler de calzado</com:Name>
+          <str:Parent>
+            <Ref id="032"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="04" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).04">
+          <com:Name xml:lang="es">Vivienda, agua, electricidad, gas y otros combustibles</com:Name>
+        </str:Code>
+        <str:Code id="041" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).041">
+          <com:Name xml:lang="es">Alquileres efectivos del alojamiento</com:Name>
+          <str:Parent>
+            <Ref id="04"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0411-2" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0411-2">
+          <com:Name xml:lang="es">Alquileres efectivos pagados por los inquilinos, incluso otros alquileres efectivos</com:Name>
+          <str:Parent>
+            <Ref id="041"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="043" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).043">
+          <com:Name xml:lang="es">Conservación y reparación de la vivienda</com:Name>
+          <str:Parent>
+            <Ref id="04"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0431" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0431">
+          <com:Name xml:lang="es">Materiales para la conservación y reparación de la vivienda</com:Name>
+          <str:Parent>
+            <Ref id="043"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0432" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0432">
+          <com:Name xml:lang="es">Servicios para la conservación y reparación de la vivienda</com:Name>
+          <str:Parent>
+            <Ref id="043"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="044" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).044">
+          <com:Name xml:lang="es">Agua corriente y servicios diversos relacionados con la vivienda</com:Name>
+          <str:Parent>
+            <Ref id="04"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0441" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0441">
+          <com:Name xml:lang="es">Agua corriente</com:Name>
+          <str:Parent>
+            <Ref id="044"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0442" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0442">
+          <com:Name xml:lang="es">Recogida de basuras</com:Name>
+          <str:Parent>
+            <Ref id="044"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0443" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0443">
+          <com:Name xml:lang="es">Alcantarillado</com:Name>
+          <str:Parent>
+            <Ref id="044"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0444" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0444">
+          <com:Name xml:lang="es">Otros servicios relacionados con la vivienda n.c.o.p.</com:Name>
+          <str:Parent>
+            <Ref id="044"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="045" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).045">
+          <com:Name xml:lang="es">Electricidad, gas y otros combustibles</com:Name>
+          <str:Parent>
+            <Ref id="04"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0451" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0451">
+          <com:Name xml:lang="es">Electricidad</com:Name>
+          <str:Parent>
+            <Ref id="045"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0452" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0452">
+          <com:Name xml:lang="es">Gas</com:Name>
+          <str:Parent>
+            <Ref id="045"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0453" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0453">
+          <com:Name xml:lang="es">Combustibles líquidos</com:Name>
+          <str:Parent>
+            <Ref id="045"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0454" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0454">
+          <com:Name xml:lang="es">Combustibles sólidos</com:Name>
+          <str:Parent>
+            <Ref id="045"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0455" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0455">
+          <com:Name xml:lang="es">Energía calórica</com:Name>
+          <str:Parent>
+            <Ref id="045"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="05" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).05">
+          <com:Name xml:lang="es">Mobiliario, enseres domésticos y gastos corrientes de conservación de la vivienda</com:Name>
+        </str:Code>
+        <str:Code id="051" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).051">
+          <com:Name xml:lang="es">Muebles y accesorios, alfombras y otros recubrimientos para suelos</com:Name>
+          <str:Parent>
+            <Ref id="05"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0511" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0511">
+          <com:Name xml:lang="es">Muebles y accesorios</com:Name>
+          <str:Parent>
+            <Ref id="051"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0512" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0512">
+          <com:Name xml:lang="es">Alfombras y otros recubrimientos para suelos</com:Name>
+          <str:Parent>
+            <Ref id="051"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0513" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0513">
+          <com:Name xml:lang="es">Reparación de muebles, accesorios y recubrimientos para suelos</com:Name>
+          <str:Parent>
+            <Ref id="051"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="052" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).052">
+          <com:Name xml:lang="es">Artículos textiles para el hogar</com:Name>
+          <str:Parent>
+            <Ref id="05"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="053" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).053">
+          <com:Name xml:lang="es">Aparatos domésticos</com:Name>
+          <str:Parent>
+            <Ref id="05"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0531-2" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0531-2">
+          <com:Name xml:lang="es">Aparatos domésticos grandes, eléctricos o no y electrodomésticos pequeños</com:Name>
+          <str:Parent>
+            <Ref id="053"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0533" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0533">
+          <com:Name xml:lang="es">Reparación de aparatos domésticos</com:Name>
+          <str:Parent>
+            <Ref id="053"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="054" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).054">
+          <com:Name xml:lang="es">Artículos de vidrio y cristal, vajilla y utensilios para el hogar</com:Name>
+          <str:Parent>
+            <Ref id="05"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="055" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).055">
+          <com:Name xml:lang="es">Herramientas y equipos para la casa y el jardín</com:Name>
+          <str:Parent>
+            <Ref id="053"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0551-2" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0551-2">
+          <com:Name xml:lang="es">Herramientas y equipos grandes y herramientas pequeñas y accesorios diversos</com:Name>
+          <str:Parent>
+            <Ref id="055"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="056" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).056">
+          <com:Name xml:lang="es">Bienes y servicios de conservación corriente de la vivienda</com:Name>
+          <str:Parent>
+            <Ref id="05"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0561" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0561">
+          <com:Name xml:lang="es">Bienes de uso doméstico perecederos</com:Name>
+          <str:Parent>
+            <Ref id="056"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0562" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0562">
+          <com:Name xml:lang="es">Servicios domésticos y para el hogar</com:Name>
+          <str:Parent>
+            <Ref id="056"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="06" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).06">
+          <com:Name xml:lang="es">Sanidad</com:Name>
+        </str:Code>
+        <str:Code id="061" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).061">
+          <com:Name xml:lang="es">Productos, aparatos y equipos médicos</com:Name>
+          <str:Parent>
+            <Ref id="06"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0611" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0611">
+          <com:Name xml:lang="es">Productos farmacéuticos</com:Name>
+          <str:Parent>
+            <Ref id="061"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0612-3" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0612-3">
+          <com:Name xml:lang="es">Otros productos médicos, aparatos y equipos terapéuticos</com:Name>
+          <str:Parent>
+            <Ref id="061"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="062" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).062">
+          <com:Name xml:lang="es">Servicios ambulatorios</com:Name>
+          <str:Parent>
+            <Ref id="06"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0621-3" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0621-3">
+          <com:Name xml:lang="es">Servicios médicos y paramédicos</com:Name>
+          <str:Parent>
+            <Ref id="062"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0622" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0622">
+          <com:Name xml:lang="es">Servicios dentales</com:Name>
+          <str:Parent>
+            <Ref id="062"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="063" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).063">
+          <com:Name xml:lang="es">Servicios de hospital</com:Name>
+          <str:Parent>
+            <Ref id="06"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="07" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).07">
+          <com:Name xml:lang="es">Transportes</com:Name>
+        </str:Code>
+        <str:Code id="071" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).071">
+          <com:Name xml:lang="es">Adquisición de vehículos</com:Name>
+          <str:Parent>
+            <Ref id="07"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0711" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0711">
+          <com:Name xml:lang="es">Vehículos a motor</com:Name>
+          <str:Parent>
+            <Ref id="071"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0712-3-4" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0712-3-4">
+          <com:Name xml:lang="es">Motocicletas, bicicletas y vehículos de tracción animal</com:Name>
+          <str:Parent>
+            <Ref id="071"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="072" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).072">
+          <com:Name xml:lang="es">Gastos de utilización de vehículos privados</com:Name>
+          <str:Parent>
+            <Ref id="07"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0721" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0721">
+          <com:Name xml:lang="es">Piezas de repuesto y accesorios para vehículos privados</com:Name>
+          <str:Parent>
+            <Ref id="072"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0722" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0722">
+          <com:Name xml:lang="es">Combustibles y lubricantes para vehículos privados</com:Name>
+          <str:Parent>
+            <Ref id="072"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0723" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0723">
+          <com:Name xml:lang="es">Conservación y reparación de vehículos privados</com:Name>
+          <str:Parent>
+            <Ref id="072"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0724" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0724">
+          <com:Name xml:lang="es">Otros servicios relacionados con los vehículos privados</com:Name>
+          <str:Parent>
+            <Ref id="072"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="073" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).073">
+          <com:Name xml:lang="es">Servicios de transporte</com:Name>
+          <str:Parent>
+            <Ref id="07"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0731" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0731">
+          <com:Name xml:lang="es">Transporte de pasajeros por ferrocarril</com:Name>
+          <str:Parent>
+            <Ref id="073"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0732" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0732">
+          <com:Name xml:lang="es">Transporte de pasajeros por carretera</com:Name>
+          <str:Parent>
+            <Ref id="073"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0733" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0733">
+          <com:Name xml:lang="es">Transporte de pasajeros por aire</com:Name>
+          <str:Parent>
+            <Ref id="073"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0734" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0734">
+          <com:Name xml:lang="es">Transporte de pasajeros por mar y por vías navegables interiores</com:Name>
+          <str:Parent>
+            <Ref id="073"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0735" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0735">
+          <com:Name xml:lang="es">Transporte combinado de pasajeros</com:Name>
+          <str:Parent>
+            <Ref id="073"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0736" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0736">
+          <com:Name xml:lang="es">Otros servicios de transporte adquiridos</com:Name>
+          <str:Parent>
+            <Ref id="073"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="08" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).08">
+          <com:Name xml:lang="es">Comunicaciones</com:Name>
+        </str:Code>
+        <str:Code id="08x" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).08x">
+          <com:Name xml:lang="es">Equipos de telefonía y fax y servicios de teléfono y fax</com:Name>
+          <str:Parent>
+            <Ref id="08"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="081" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).081">
+          <com:Name xml:lang="es">Servicios postales</com:Name>
+          <str:Parent>
+            <Ref id="08"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="082" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).082">
+          <com:Name xml:lang="es">Equipos de telefonía y fax</com:Name>
+          <str:Parent>
+            <Ref id="08x"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="083" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).083">
+          <com:Name xml:lang="es">Servicios de telefonía y fax</com:Name>
+          <str:Parent>
+            <Ref id="08x"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="09" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).09">
+          <com:Name xml:lang="es">Ocio y cultura</com:Name>
+        </str:Code>
+        <str:Code id="091" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).091">
+          <com:Name xml:lang="es">Equipos audiovisuales, fotográficos y de proceso de datos</com:Name>
+          <str:Parent>
+            <Ref id="09"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0911" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0911">
+          <com:Name xml:lang="es">Equipos de recepción, grabación y reproducción de sonidos e imágenes</com:Name>
+          <str:Parent>
+            <Ref id="091"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0912" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0912">
+          <com:Name xml:lang="es">Equipos fotográficos y cinematográficos e instrumentos ópticos</com:Name>
+          <str:Parent>
+            <Ref id="091"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0913" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0913">
+          <com:Name xml:lang="es">Equipos de proceso de datos</com:Name>
+          <str:Parent>
+            <Ref id="091"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0914" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0914">
+          <com:Name xml:lang="es">Sistemas de grabación</com:Name>
+          <str:Parent>
+            <Ref id="091"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0915" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0915">
+          <com:Name xml:lang="es">Reparación de equipos audiovisuales, fotográficos y de proceso de datos</com:Name>
+          <str:Parent>
+            <Ref id="091"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="092" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).092">
+          <com:Name xml:lang="es">Otros productos duraderos grandes para ocio y cultura</com:Name>
+          <str:Parent>
+            <Ref id="09"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0921-2" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0921-2">
+          <com:Name xml:lang="es">Productos duraderos grandes para ocio en exteriores e interiores, incluso instrumentos musicales</com:Name>
+          <str:Parent>
+            <Ref id="092"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0923" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0923">
+          <com:Name xml:lang="es">Conservación y reparación de otros productos duraderos grandes para ocio y cultura</com:Name>
+          <str:Parent>
+            <Ref id="092"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="093" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).093">
+          <com:Name xml:lang="es">Otros artículos y equipos para ocio, jardines y animales domésticos</com:Name>
+          <str:Parent>
+            <Ref id="09"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0931" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0931">
+          <com:Name xml:lang="es">Juegos, juguetes y pasatiempos</com:Name>
+          <str:Parent>
+            <Ref id="093"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0932" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0932">
+          <com:Name xml:lang="es">Equipos de deportes, de acampada y de ocio al aire libre</com:Name>
+          <str:Parent>
+            <Ref id="093"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0933" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0933">
+          <com:Name xml:lang="es">Jardines, plantas y flores</com:Name>
+          <str:Parent>
+            <Ref id="093"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0934-5" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0934-5">
+          <com:Name xml:lang="es">Animales domésticos y productos relacionados, incluso los servicios de veterinaria y de otro tipo para animales domésticos</com:Name>
+          <str:Parent>
+            <Ref id="093"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="094" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).094">
+          <com:Name xml:lang="es">Servicios recreativos y culturales</com:Name>
+          <str:Parent>
+            <Ref id="09"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0941" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0941">
+          <com:Name xml:lang="es">Servicios recreativos y deportivos</com:Name>
+          <str:Parent>
+            <Ref id="094"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0942" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0942">
+          <com:Name xml:lang="es">Servicios culturales</com:Name>
+          <str:Parent>
+            <Ref id="094"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="095" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).095">
+          <com:Name xml:lang="es">Periódicos, libros y artículos de papelería</com:Name>
+          <str:Parent>
+            <Ref id="09"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0951" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0951">
+          <com:Name xml:lang="es">Libros</com:Name>
+          <str:Parent>
+            <Ref id="095"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0952" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0952">
+          <com:Name xml:lang="es">Diarios y periódicos</com:Name>
+          <str:Parent>
+            <Ref id="095"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="0953-4" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).0953-4">
+          <com:Name xml:lang="es">Material impreso diverso y artículos de papelería y material de dibujo</com:Name>
+          <str:Parent>
+            <Ref id="095"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="096" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).096">
+          <com:Name xml:lang="es">Paquetes turísticos</com:Name>
+          <str:Parent>
+            <Ref id="09"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="10" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).10">
+          <com:Name xml:lang="es">Educación</com:Name>
+        </str:Code>
+        <str:Code id="11" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).11">
+          <com:Name xml:lang="es">Restaurantes y hoteles</com:Name>
+        </str:Code>
+        <str:Code id="111" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).111">
+          <com:Name xml:lang="es">Restauración colectiva</com:Name>
+          <str:Parent>
+            <Ref id="11"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="1111" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).1111">
+          <com:Name xml:lang="es">Restaurantes, cafés y establecimientos similares</com:Name>
+          <str:Parent>
+            <Ref id="111"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="1112" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).1112">
+          <com:Name xml:lang="es">Comedores</com:Name>
+          <str:Parent>
+            <Ref id="111"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="112" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).112">
+          <com:Name xml:lang="es">Servicios de alojamiento</com:Name>
+          <str:Parent>
+            <Ref id="11"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="12" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).12">
+          <com:Name xml:lang="es">Bienes y servicios diversos</com:Name>
+        </str:Code>
+        <str:Code id="121" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).121">
+          <com:Name xml:lang="es">Cuidados personales</com:Name>
+          <str:Parent>
+            <Ref id="12"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="1211" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).1211">
+          <com:Name xml:lang="es">Salones de peluquería y establecimientos de cuidados personales</com:Name>
+          <str:Parent>
+            <Ref id="121"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="1212" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).1212">
+          <com:Name xml:lang="es">Aparatos eléctricos de cuidados personales y otros aparatos, artículos y productos de cuidados personales</com:Name>
+          <str:Parent>
+            <Ref id="121"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="123" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).123">
+          <com:Name xml:lang="es">Efectos personales n.c.o.p.</com:Name>
+          <str:Parent>
+            <Ref id="12"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="1231" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).1231">
+          <com:Name xml:lang="es">Joyería, relojes de pared y relojes de pulsera</com:Name>
+          <str:Parent>
+            <Ref id="123"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="1232" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).1232">
+          <com:Name xml:lang="es">Otros efectos personales</com:Name>
+          <str:Parent>
+            <Ref id="123"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="124" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).124">
+          <com:Name xml:lang="es">Protección social</com:Name>
+          <str:Parent>
+            <Ref id="12"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="125" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).125">
+          <com:Name xml:lang="es">Seguros</com:Name>
+          <str:Parent>
+            <Ref id="12"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="1252" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).1252">
+          <com:Name xml:lang="es">Seguros relacionados con la vivienda</com:Name>
+          <str:Parent>
+            <Ref id="125"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="1253" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).1253">
+          <com:Name xml:lang="es">Seguros relacionados con la salud</com:Name>
+          <str:Parent>
+            <Ref id="125"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="1254" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).1254">
+          <com:Name xml:lang="es">Seguros relacionados con el transporte</com:Name>
+          <str:Parent>
+            <Ref id="125"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="1255" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).1255">
+          <com:Name xml:lang="es">Otros seguros</com:Name>
+          <str:Parent>
+            <Ref id="125"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="126" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).126">
+          <com:Name xml:lang="es">Servicios financieros n.c.o.p.</com:Name>
+          <str:Parent>
+            <Ref id="12"/>
+          </str:Parent>
+        </str:Code>
+        <str:Code id="127" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_IPCA_COICOP(1.0).127">
+          <com:Name xml:lang="es">Otros servicios n.c.o.p.</com:Name>
+          <str:Parent>
+            <Ref id="12"/>
+          </str:Parent>
+        </str:Code>
+      </str:Codelist>
+      <str:Codelist id="CL_OBS_STATUS" urn="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=INE:CL_OBS_STATUS(1.0)" agencyID="INE" version="1.0" isFinal="true">
+        <com:Name xml:lang="es">Estado de la observación</com:Name>
+        <str:Code id="S" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_OBS_STATUS(1.0).S">
+          <com:Name xml:lang="es">Huelga</com:Name>
+        </str:Code>
+        <str:Code id="P" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_OBS_STATUS(1.0).P">
+          <com:Name xml:lang="es">Dato provisional</com:Name>
+        </str:Code>
+        <str:Code id="I" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_OBS_STATUS(1.0).I">
+          <com:Name xml:lang="es">Imputación</com:Name>
+        </str:Code>
+        <str:Code id="F" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_OBS_STATUS(1.0).F">
+          <com:Name xml:lang="es">Predicción</com:Name>
+        </str:Code>
+        <str:Code id="M" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_OBS_STATUS(1.0).M">
+          <com:Name xml:lang="es">Sin dato</com:Name>
+        </str:Code>
+        <str:Code id="A" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_OBS_STATUS(1.0).A">
+          <com:Name xml:lang="es">Normal</com:Name>
+        </str:Code>
+        <str:Code id="B" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_OBS_STATUS(1.0).B">
+          <com:Name xml:lang="es">Salto/Rotura de serie</com:Name>
+        </str:Code>
+        <str:Code id="E" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_OBS_STATUS(1.0).E">
+          <com:Name xml:lang="es">Estimación</com:Name>
+        </str:Code>
+      </str:Codelist>
+      <str:Codelist id="CL_TIME_FORMAT" urn="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=INE:CL_TIME_FORMAT(1.0)" agencyID="INE" version="1.0" isFinal="true">
+        <com:Name xml:lang="es">Formato temporal ISO 8601</com:Name>
+        <str:Code id="PT1M" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_TIME_FORMAT(1.0).PT1M">
+          <com:Name xml:lang="es">Al detalle</com:Name>
+        </str:Code>
+        <str:Code id="P1D" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_TIME_FORMAT(1.0).P1D">
+          <com:Name xml:lang="es">Diaria</com:Name>
+        </str:Code>
+        <str:Code id="P1M" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_TIME_FORMAT(1.0).P1M">
+          <com:Name xml:lang="es">Mensual</com:Name>
+        </str:Code>
+        <str:Code id="P3M" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_TIME_FORMAT(1.0).P3M">
+          <com:Name xml:lang="es">Trimestral</com:Name>
+        </str:Code>
+        <str:Code id="P6M" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_TIME_FORMAT(1.0).P6M">
+          <com:Name xml:lang="es">Semestral</com:Name>
+        </str:Code>
+        <str:Code id="P7D" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_TIME_FORMAT(1.0).P7D">
+          <com:Name xml:lang="es">Semanal</com:Name>
+        </str:Code>
+        <str:Code id="P1Y" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_TIME_FORMAT(1.0).P1Y">
+          <com:Name xml:lang="es">Anual</com:Name>
+        </str:Code>
+      </str:Codelist>
+      <str:Codelist id="CL_UNIT" urn="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=INE:CL_UNIT(1.0)" agencyID="INE" version="1.0" isFinal="true">
+        <com:Name xml:lang="es">Unidad</com:Name>
+        <str:Code id="U1" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U1">
+          <com:Name xml:lang="es">Unidades genéricas</com:Name>
+        </str:Code>
+        <str:Code id="U10" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U10">
+          <com:Name xml:lang="es">Minutos</com:Name>
+        </str:Code>
+        <str:Code id="U100" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U100">
+          <com:Name xml:lang="es">Miles de euros</com:Name>
+        </str:Code>
+        <str:Code id="U101" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U101">
+          <com:Name xml:lang="es">Personas/Horas</com:Name>
+        </str:Code>
+        <str:Code id="U102" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U102">
+          <com:Name xml:lang="es">Personas/Miles de horas</com:Name>
+        </str:Code>
+        <str:Code id="U103" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U103">
+          <com:Name xml:lang="es">Miles de horas/Personas</com:Name>
+        </str:Code>
+        <str:Code id="U104" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U104">
+          <com:Name xml:lang="es">Número de empresas</com:Name>
+        </str:Code>
+        <str:Code id="U105" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U105">
+          <com:Name xml:lang="es">Millones de euros y tasas</com:Name>
+        </str:Code>
+        <str:Code id="U106" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U106">
+          <com:Name xml:lang="es">Personas y tasas</com:Name>
+        </str:Code>
+        <str:Code id="U107" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U107">
+          <com:Name xml:lang="es">Miles de personas</com:Name>
+        </str:Code>
+        <str:Code id="U108" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U108">
+          <com:Name xml:lang="es">Porcentaje</com:Name>
+        </str:Code>
+        <str:Code id="U109" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U109">
+          <com:Name xml:lang="es">Miles de personas y porcentaje</com:Name>
+        </str:Code>
+        <str:Code id="U11" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U11">
+          <com:Name xml:lang="es">Horas</com:Name>
+        </str:Code>
+        <str:Code id="U110" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U110">
+          <com:Name xml:lang="es">Personas, pernoctaciones</com:Name>
+        </str:Code>
+        <str:Code id="U111" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U111">
+          <com:Name xml:lang="es">Establecimientos, plazas, porcentajes, personas</com:Name>
+        </str:Code>
+        <str:Code id="U112" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U112">
+          <com:Name xml:lang="es">Miles</com:Name>
+        </str:Code>
+        <str:Code id="U113" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U113">
+          <com:Name xml:lang="es">Euros, indices y tasas</com:Name>
+        </str:Code>
+        <str:Code id="U114" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U114">
+          <com:Name xml:lang="es">Nº/Importe (miles de euros)</com:Name>
+        </str:Code>
+        <str:Code id="U115" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U115">
+          <com:Name xml:lang="es">Años</com:Name>
+        </str:Code>
+        <str:Code id="U116" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U116">
+          <com:Name xml:lang="es">Nacidos por 1000 habitantes</com:Name>
+        </str:Code>
+        <str:Code id="U117" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U117">
+          <com:Name xml:lang="es">Hijos por mujer</com:Name>
+        </str:Code>
+        <str:Code id="U118" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U118">
+          <com:Name xml:lang="es">Nacidos de madre no casada por 100 nacidos</com:Name>
+        </str:Code>
+        <str:Code id="U119" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U119">
+          <com:Name xml:lang="es">Nacidos por 1000 mujeres de 15 a 49 años</com:Name>
+        </str:Code>
+        <str:Code id="U12" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U12">
+          <com:Name xml:lang="es">Dias</com:Name>
+        </str:Code>
+        <str:Code id="U120" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U120">
+          <com:Name xml:lang="es">Nacidos por 1000 mujeres</com:Name>
+        </str:Code>
+        <str:Code id="U121" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U121">
+          <com:Name xml:lang="es">Matrimonios por 1000 habitantes</com:Name>
+        </str:Code>
+        <str:Code id="U122" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U122">
+          <com:Name xml:lang="es">Nacimientos menos defunciones (por mil habitantes)</com:Name>
+        </str:Code>
+        <str:Code id="U123" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U123">
+          <com:Name xml:lang="es">Defunciones por mil habitantes</com:Name>
+        </str:Code>
+        <str:Code id="U124" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U124">
+          <com:Name xml:lang="es">Defunciones de menores de 1 año por 1000 nacidos</com:Name>
+        </str:Code>
+        <str:Code id="U125" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U125">
+          <com:Name xml:lang="es">Defunciones durante las 24 primeras horas de vida</com:Name>
+        </str:Code>
+        <str:Code id="U126" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U126">
+          <com:Name xml:lang="es">Miles de horas</com:Name>
+        </str:Code>
+        <str:Code id="U127" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U127">
+          <com:Name xml:lang="es">Nacimientos</com:Name>
+        </str:Code>
+        <str:Code id="U128" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U128">
+          <com:Name xml:lang="es">Matrimonios</com:Name>
+        </str:Code>
+        <str:Code id="U129" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U129">
+          <com:Name xml:lang="es">Defunciones</com:Name>
+        </str:Code>
+        <str:Code id="U13" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U13">
+          <com:Name xml:lang="es">Calorias</com:Name>
+        </str:Code>
+        <str:Code id="U130" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U130">
+          <com:Name xml:lang="es">Número</com:Name>
+        </str:Code>
+        <str:Code id="U131" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U131">
+          <com:Name xml:lang="es">Gasto total: miles de euros. Gastos medios: euros</com:Name>
+        </str:Code>
+        <str:Code id="U132" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U132">
+          <com:Name xml:lang="es">Gasto total: miles de euros. Valor unitario: euros/unidad</com:Name>
+        </str:Code>
+        <str:Code id="U133" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U133">
+          <com:Name xml:lang="es">Nota a pie</com:Name>
+        </str:Code>
+        <str:Code id="U134" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U134">
+          <com:Name xml:lang="es">Viajeros transportados (miles) y Tasas</com:Name>
+        </str:Code>
+        <str:Code id="U135" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U135">
+          <com:Name xml:lang="es">Locales</com:Name>
+        </str:Code>
+        <str:Code id="U136" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U136">
+          <com:Name xml:lang="es">Cantidad total: miles de unidades. Cantidad media: unidades</com:Name>
+        </str:Code>
+        <str:Code id="U137" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U137">
+          <com:Name xml:lang="es">Número y porcentajes</com:Name>
+        </str:Code>
+        <str:Code id="U138" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U138">
+          <com:Name xml:lang="es">Personas y porcentajes</com:Name>
+        </str:Code>
+        <str:Code id="U139" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U139">
+          <com:Name xml:lang="es">Indice y personas</com:Name>
+        </str:Code>
+        <str:Code id="U14" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U14">
+          <com:Name xml:lang="es">Termias</com:Name>
+        </str:Code>
+        <str:Code id="U140" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U140">
+          <com:Name xml:lang="es">Indice</com:Name>
+        </str:Code>
+        <str:Code id="U141" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U141">
+          <com:Name xml:lang="es">Municipios</com:Name>
+        </str:Code>
+        <str:Code id="U142" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U142">
+          <com:Name xml:lang="es">Tasas</com:Name>
+        </str:Code>
+        <str:Code id="U143" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U143">
+          <com:Name xml:lang="es">Miles y tasas</com:Name>
+        </str:Code>
+        <str:Code id="U144" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U144">
+          <com:Name xml:lang="es">Euros y tasas</com:Name>
+        </str:Code>
+        <str:Code id="U145" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U145">
+          <com:Name xml:lang="es">Personas/Miles de Euros/Miles de horas</com:Name>
+        </str:Code>
+        <str:Code id="U147" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U147">
+          <com:Name xml:lang="es">Personas que se casan por primera vez por cada mil habitantes.</com:Name>
+        </str:Code>
+        <str:Code id="U15" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U15">
+          <com:Name xml:lang="es">T. E. C.</com:Name>
+        </str:Code>
+        <str:Code id="U16" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U16">
+          <com:Name xml:lang="es">Kilowatios</com:Name>
+        </str:Code>
+        <str:Code id="U164" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U164">
+          <com:Name xml:lang="es">Primeros matrimonios por persona</com:Name>
+        </str:Code>
+        <str:Code id="U165" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U165">
+          <com:Name xml:lang="es">Matrimonios por mil habitantes</com:Name>
+        </str:Code>
+        <str:Code id="U166" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U166">
+          <com:Name xml:lang="es">Defunciones de menores de una semana por mil nacidos.</com:Name>
+        </str:Code>
+        <str:Code id="U167" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U167">
+          <com:Name xml:lang="es">Defunciones de menores de un mes por mil nacidos.</com:Name>
+        </str:Code>
+        <str:Code id="U168" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U168">
+          <com:Name xml:lang="es">Defunciones de mayores de una semana y menores de un mes por mil nacidos.</com:Name>
+        </str:Code>
+        <str:Code id="U169" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U169">
+          <com:Name xml:lang="es">Defunciones de mayores de un mes y menores de un año por mil nacidos</com:Name>
+        </str:Code>
+        <str:Code id="U17" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U17">
+          <com:Name xml:lang="es">Kilowatios/hora</com:Name>
+        </str:Code>
+        <str:Code id="U170" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U170">
+          <com:Name xml:lang="es">MFT más las defunciones de menores de una semana por mil nacidos</com:Name>
+        </str:Code>
+        <str:Code id="U171" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U171">
+          <com:Name xml:lang="es">MFT por mil nacidos</com:Name>
+        </str:Code>
+        <str:Code id="U172" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U172">
+          <com:Name xml:lang="es">Nacidos por cada mil defunciones</com:Name>
+        </str:Code>
+        <str:Code id="U18" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U18">
+          <com:Name xml:lang="es">Grados centígrados</com:Name>
+        </str:Code>
+        <str:Code id="U19" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U19">
+          <com:Name xml:lang="es">Saldo de respuesta</com:Name>
+        </str:Code>
+        <str:Code id="U2" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U2">
+          <com:Name xml:lang="es">Unidades de cuenta</com:Name>
+        </str:Code>
+        <str:Code id="U20" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U20">
+          <com:Name xml:lang="es">Monedas de la nación</com:Name>
+        </str:Code>
+        <str:Code id="U21" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U21">
+          <com:Name xml:lang="es">Pesetas</com:Name>
+        </str:Code>
+        <str:Code id="U22" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U22">
+          <com:Name xml:lang="es">Dolares</com:Name>
+        </str:Code>
+        <str:Code id="U23" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U23">
+          <com:Name xml:lang="es">Pesetas 1980</com:Name>
+        </str:Code>
+        <str:Code id="U24" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U24">
+          <com:Name xml:lang="es">T.e.p.</com:Name>
+        </str:Code>
+        <str:Code id="U25" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U25">
+          <com:Name xml:lang="es">Pesetas 1978</com:Name>
+        </str:Code>
+        <str:Code id="U26" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U26">
+          <com:Name xml:lang="es">Pesetas 1974</com:Name>
+        </str:Code>
+        <str:Code id="U27" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U27">
+          <com:Name xml:lang="es">Pesetas 1970</com:Name>
+        </str:Code>
+        <str:Code id="U28" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U28">
+          <com:Name xml:lang="es">Pesetas 1963</com:Name>
+        </str:Code>
+        <str:Code id="U29" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U29">
+          <com:Name xml:lang="es">Pesetas 1958</com:Name>
+        </str:Code>
+        <str:Code id="U3" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U3">
+          <com:Name xml:lang="es">personas</com:Name>
+        </str:Code>
+        <str:Code id="U30" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U30">
+          <com:Name xml:lang="es">Metros</com:Name>
+        </str:Code>
+        <str:Code id="U31" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U31">
+          <com:Name xml:lang="es">Kilómetros</com:Name>
+        </str:Code>
+        <str:Code id="U32" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U32">
+          <com:Name xml:lang="es">Pesetas 1983</com:Name>
+        </str:Code>
+        <str:Code id="U33" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U33">
+          <com:Name xml:lang="es">Metros cuadrados</com:Name>
+        </str:Code>
+        <str:Code id="U34" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U34">
+          <com:Name xml:lang="es">Kilómetros cuadrados</com:Name>
+        </str:Code>
+        <str:Code id="U35" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U35">
+          <com:Name xml:lang="es">Kilómetros cuadrados</com:Name>
+        </str:Code>
+        <str:Code id="U36" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U36">
+          <com:Name xml:lang="es">Areas</com:Name>
+        </str:Code>
+        <str:Code id="U37" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U37">
+          <com:Name xml:lang="es">Hectáreas</com:Name>
+        </str:Code>
+        <str:Code id="U38" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U38">
+          <com:Name xml:lang="es">Pesetas 1985</com:Name>
+        </str:Code>
+        <str:Code id="U39" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U39">
+          <com:Name xml:lang="es">Gramos</com:Name>
+        </str:Code>
+        <str:Code id="U4" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U4">
+          <com:Name xml:lang="es">Pasajeros</com:Name>
+        </str:Code>
+        <str:Code id="U40" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U40">
+          <com:Name xml:lang="es">Kilogramos</com:Name>
+        </str:Code>
+        <str:Code id="U41" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U41">
+          <com:Name xml:lang="es">Quintales</com:Name>
+        </str:Code>
+        <str:Code id="U42" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U42">
+          <com:Name xml:lang="es">Toneladas</com:Name>
+        </str:Code>
+        <str:Code id="U43" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U43">
+          <com:Name xml:lang="es">Watios</com:Name>
+        </str:Code>
+        <str:Code id="U44" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U44">
+          <com:Name xml:lang="es">Gigawatios</com:Name>
+        </str:Code>
+        <str:Code id="U45" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U45">
+          <com:Name xml:lang="es">Litros</com:Name>
+        </str:Code>
+        <str:Code id="U46" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U46">
+          <com:Name xml:lang="es">Hectolitros</com:Name>
+        </str:Code>
+        <str:Code id="U47" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U47">
+          <com:Name xml:lang="es">Metros Cúbicos</com:Name>
+        </str:Code>
+        <str:Code id="U48" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U48">
+          <com:Name xml:lang="es">Horas/trabajador(mes)</com:Name>
+        </str:Code>
+        <str:Code id="U49" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U49">
+          <com:Name xml:lang="es">Dólar/barril</com:Name>
+        </str:Code>
+        <str:Code id="U5" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U5">
+          <com:Name xml:lang="es">Piezas</com:Name>
+        </str:Code>
+        <str:Code id="U50" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U50">
+          <com:Name xml:lang="es">Tanto por cien</com:Name>
+        </str:Code>
+        <str:Code id="U51" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U51">
+          <com:Name xml:lang="es">Tanto por mil</com:Name>
+        </str:Code>
+        <str:Code id="U52" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U52">
+          <com:Name xml:lang="es">Qm Por Ha.</com:Name>
+        </str:Code>
+        <str:Code id="U53" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U53">
+          <com:Name xml:lang="es">Pesetas/habitante</com:Name>
+        </str:Code>
+        <str:Code id="U54" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U54">
+          <com:Name xml:lang="es">Monedas nación/habitante</com:Name>
+        </str:Code>
+        <str:Code id="U55" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U55">
+          <com:Name xml:lang="es">Dolares/habitante</com:Name>
+        </str:Code>
+        <str:Code id="U56" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U56">
+          <com:Name xml:lang="es">Kilowatios-hora/habitante</com:Name>
+        </str:Code>
+        <str:Code id="U57" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U57">
+          <com:Name xml:lang="es">Kilogramos/habitante</com:Name>
+        </str:Code>
+        <str:Code id="U58" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U58">
+          <com:Name xml:lang="es">Litros/habitante</com:Name>
+        </str:Code>
+        <str:Code id="U59" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U59">
+          <com:Name xml:lang="es">Toneladas/kilómetro</com:Name>
+        </str:Code>
+        <str:Code id="U6" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U6">
+          <com:Name xml:lang="es">Cabezas</com:Name>
+        </str:Code>
+        <str:Code id="U60" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U60">
+          <com:Name xml:lang="es">Pasajeros/kilómetro</com:Name>
+        </str:Code>
+        <str:Code id="U61" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U61">
+          <com:Name xml:lang="es">Base 1936=100</com:Name>
+        </str:Code>
+        <str:Code id="U62" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U62">
+          <com:Name xml:lang="es">Base 1955=100</com:Name>
+        </str:Code>
+        <str:Code id="U63" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U63">
+          <com:Name xml:lang="es">Base 1958=100</com:Name>
+        </str:Code>
+        <str:Code id="U64" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U64">
+          <com:Name xml:lang="es">Base 1960=100</com:Name>
+        </str:Code>
+        <str:Code id="U65" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U65">
+          <com:Name xml:lang="es">Base 1960=100</com:Name>
+        </str:Code>
+        <str:Code id="U66" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U66">
+          <com:Name xml:lang="es">Base 1963=100</com:Name>
+        </str:Code>
+        <str:Code id="U67" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U67">
+          <com:Name xml:lang="es">Base 1964=100</com:Name>
+        </str:Code>
+        <str:Code id="U68" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U68">
+          <com:Name xml:lang="es">Base 1967=100</com:Name>
+        </str:Code>
+        <str:Code id="U69" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U69">
+          <com:Name xml:lang="es">Base 12/89 = 3000</com:Name>
+        </str:Code>
+        <str:Code id="U7" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U7">
+          <com:Name xml:lang="es">Euros</com:Name>
+        </str:Code>
+        <str:Code id="U70" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U70">
+          <com:Name xml:lang="es">Base 1970=100</com:Name>
+        </str:Code>
+        <str:Code id="U71" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U71">
+          <com:Name xml:lang="es">Base 1971=100</com:Name>
+        </str:Code>
+        <str:Code id="U72" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U72">
+          <com:Name xml:lang="es">Base 1972=100</com:Name>
+        </str:Code>
+        <str:Code id="U74" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U74">
+          <com:Name xml:lang="es">Base 1974=100</com:Name>
+        </str:Code>
+        <str:Code id="U75" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U75">
+          <com:Name xml:lang="es">Base 1974=100</com:Name>
+        </str:Code>
+        <str:Code id="U76" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U76">
+          <com:Name xml:lang="es">Base 1976=100</com:Name>
+        </str:Code>
+        <str:Code id="U77" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U77">
+          <com:Name xml:lang="es">Base 1977=100</com:Name>
+        </str:Code>
+        <str:Code id="U78" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U78">
+          <com:Name xml:lang="es">Base 1978=100</com:Name>
+        </str:Code>
+        <str:Code id="U8" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U8">
+          <com:Name xml:lang="es">Docenas</com:Name>
+        </str:Code>
+        <str:Code id="U80" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U80">
+          <com:Name xml:lang="es">Base 1980=100</com:Name>
+        </str:Code>
+        <str:Code id="U81" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U81">
+          <com:Name xml:lang="es">Base 1981=100</com:Name>
+        </str:Code>
+        <str:Code id="U83" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U83">
+          <com:Name xml:lang="es">Base 1983=100</com:Name>
+        </str:Code>
+        <str:Code id="U84" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U84">
+          <com:Name xml:lang="es">Base 1984=100</com:Name>
+        </str:Code>
+        <str:Code id="U85" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U85">
+          <com:Name xml:lang="es">Base 1985=100</com:Name>
+        </str:Code>
+        <str:Code id="U86" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U86">
+          <com:Name xml:lang="es">Base 1986=100</com:Name>
+        </str:Code>
+        <str:Code id="U9" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U9">
+          <com:Name xml:lang="es">Pares</com:Name>
+        </str:Code>
+        <str:Code id="U90" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U90">
+          <com:Name xml:lang="es">Base 1990=100</com:Name>
+        </str:Code>
+        <str:Code id="U92" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U92">
+          <com:Name xml:lang="es">Base 1992=100</com:Name>
+        </str:Code>
+        <str:Code id="U93" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U93">
+          <com:Name xml:lang="es">Base 2006=100</com:Name>
+        </str:Code>
+        <str:Code id="U94" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U94">
+          <com:Name xml:lang="es">Base 1994=100</com:Name>
+        </str:Code>
+        <str:Code id="U95" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U95">
+          <com:Name xml:lang="es">Indices y tasas</com:Name>
+        </str:Code>
+        <str:Code id="U96" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U96">
+          <com:Name xml:lang="es">Base 2001=100</com:Name>
+        </str:Code>
+        <str:Code id="U97" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U97">
+          <com:Name xml:lang="es">Cifras de negocio y tasas</com:Name>
+        </str:Code>
+        <str:Code id="U98" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U98">
+          <com:Name xml:lang="es">Personal ocupado y tasas</com:Name>
+        </str:Code>
+        <str:Code id="U99" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT(1.0).U99">
+          <com:Name xml:lang="es">Base 2000=100</com:Name>
+        </str:Code>
+      </str:Codelist>
+      <str:Codelist id="CL_UNIT_MULT" urn="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=INE:CL_UNIT_MULT(1.0)" agencyID="INE" version="1.0" isFinal="true">
+        <com:Name xml:lang="es">Escala</com:Name>
+        <str:Code id="0" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT_MULT(1.0).0">
+          <com:Name xml:lang="es">Unidades</com:Name>
+        </str:Code>
+        <str:Code id="1" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT_MULT(1.0).1">
+          <com:Name xml:lang="es">Decenas</com:Name>
+        </str:Code>
+        <str:Code id="10" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT_MULT(1.0).10">
+          <com:Name xml:lang="es">Decenas de miles de millones</com:Name>
+        </str:Code>
+        <str:Code id="11" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT_MULT(1.0).11">
+          <com:Name xml:lang="es">Centenas de miles de millones</com:Name>
+        </str:Code>
+        <str:Code id="12" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT_MULT(1.0).12">
+          <com:Name xml:lang="es">Billones</com:Name>
+        </str:Code>
+        <str:Code id="13" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT_MULT(1.0).13">
+          <com:Name xml:lang="es">Decenas de billones</com:Name>
+        </str:Code>
+        <str:Code id="14" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT_MULT(1.0).14">
+          <com:Name xml:lang="es">Centenas de billones</com:Name>
+        </str:Code>
+        <str:Code id="15" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT_MULT(1.0).15">
+          <com:Name xml:lang="es">Miles de billones</com:Name>
+        </str:Code>
+        <str:Code id="2" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT_MULT(1.0).2">
+          <com:Name xml:lang="es">Centenas</com:Name>
+        </str:Code>
+        <str:Code id="3" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT_MULT(1.0).3">
+          <com:Name xml:lang="es">Miles</com:Name>
+        </str:Code>
+        <str:Code id="4" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT_MULT(1.0).4">
+          <com:Name xml:lang="es">Decenas de miles</com:Name>
+        </str:Code>
+        <str:Code id="5" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT_MULT(1.0).5">
+          <com:Name xml:lang="es">Centenas de miles</com:Name>
+        </str:Code>
+        <str:Code id="6" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT_MULT(1.0).6">
+          <com:Name xml:lang="es">Millones</com:Name>
+        </str:Code>
+        <str:Code id="7" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT_MULT(1.0).7">
+          <com:Name xml:lang="es">Decenas de millones</com:Name>
+        </str:Code>
+        <str:Code id="8" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT_MULT(1.0).8">
+          <com:Name xml:lang="es">Centenas de millones</com:Name>
+        </str:Code>
+        <str:Code id="9" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT_MULT(1.0).9">
+          <com:Name xml:lang="es">Miles de millones</com:Name>
+        </str:Code>
+        <str:Code id="M1" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT_MULT(1.0).M1">
+          <com:Name xml:lang="es">Décimas</com:Name>
+        </str:Code>
+        <str:Code id="M2" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT_MULT(1.0).M2">
+          <com:Name xml:lang="es">Centésimas</com:Name>
+        </str:Code>
+        <str:Code id="M3" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT_MULT(1.0).M3">
+          <com:Name xml:lang="es">Milésimas</com:Name>
+        </str:Code>
+        <str:Code id="M4" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT_MULT(1.0).M4">
+          <com:Name xml:lang="es">Décimas de milésimas</com:Name>
+        </str:Code>
+        <str:Code id="M5" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT_MULT(1.0).M5">
+          <com:Name xml:lang="es">Centésimas de milésimas</com:Name>
+        </str:Code>
+        <str:Code id="M6" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=INE:CL_UNIT_MULT(1.0).M6">
+          <com:Name xml:lang="es">Millonésimas</com:Name>
+        </str:Code>
+      </str:Codelist>
+    </str:Codelists>
+    <str:Concepts>
+      <str:ConceptScheme id="STANDALONE_CONCEPT_SCHEME" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=INE:STANDALONE_CONCEPT_SCHEME(1.0)" agencyID="INE" version="1.0" isExternalReference="false" isFinal="false">
+        <com:Name xml:lang="en">Default Scheme</com:Name>
+        <str:Concept id="COD_SERIE" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=INE:STANDALONE_CONCEPT_SCHEME(1.0).COD_SERIE">
+          <com:Name xml:lang="es">Código de la serie</com:Name>
+        </str:Concept>
+        <str:Concept id="COLLECTION" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=INE:STANDALONE_CONCEPT_SCHEME(1.0).COLLECTION">
+          <com:Name xml:lang="es">Tipo de dato</com:Name>
+        </str:Concept>
+        <str:Concept id="DECIMALS" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=INE:STANDALONE_CONCEPT_SCHEME(1.0).DECIMALS">
+          <com:Name xml:lang="es">Decimales</com:Name>
+        </str:Concept>
+        <str:Concept id="FREQ" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=INE:STANDALONE_CONCEPT_SCHEME(1.0).FREQ">
+          <com:Name xml:lang="es">Frecuencia</com:Name>
+        </str:Concept>
+        <str:Concept id="IPCA_SUB" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=INE:STANDALONE_CONCEPT_SCHEME(1.0).IPCA_SUB">
+          <com:Name xml:lang="es">Subíndice IPCA</com:Name>
+        </str:Concept>
+        <str:Concept id="OBS_CONF" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=INE:STANDALONE_CONCEPT_SCHEME(1.0).OBS_CONF">
+          <com:Name xml:lang="es">Sensibilidad y confidencialidad de la observación</com:Name>
+        </str:Concept>
+        <str:Concept id="OBS_STATUS" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=INE:STANDALONE_CONCEPT_SCHEME(1.0).OBS_STATUS">
+          <com:Name xml:lang="es">Estado de la observación</com:Name>
+        </str:Concept>
+        <str:Concept id="OBS_VALUE" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=INE:STANDALONE_CONCEPT_SCHEME(1.0).OBS_VALUE">
+          <com:Name xml:lang="es">Valor de la observación</com:Name>
+        </str:Concept>
+        <str:Concept id="TIME_FORMAT" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=INE:STANDALONE_CONCEPT_SCHEME(1.0).TIME_FORMAT">
+          <com:Name xml:lang="es">Formato temporal ISO 8601</com:Name>
+        </str:Concept>
+        <str:Concept id="TIME_PERIOD" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=INE:STANDALONE_CONCEPT_SCHEME(1.0).TIME_PERIOD">
+          <com:Name xml:lang="es">Periodo</com:Name>
+        </str:Concept>
+        <str:Concept id="TITLE" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=INE:STANDALONE_CONCEPT_SCHEME(1.0).TITLE">
+          <com:Name xml:lang="es">Título de la serie</com:Name>
+        </str:Concept>
+        <str:Concept id="UNIT" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=INE:STANDALONE_CONCEPT_SCHEME(1.0).UNIT">
+          <com:Name xml:lang="es">Unidad</com:Name>
+        </str:Concept>
+        <str:Concept id="UNIT_MULT" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=INE:STANDALONE_CONCEPT_SCHEME(1.0).UNIT_MULT">
+          <com:Name xml:lang="es">Escala</com:Name>
+        </str:Concept>
+      </str:ConceptScheme>
+    </str:Concepts>
+    <str:DataStructures>
+      <str:DataStructure id="KF_DIV_23" urn="urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=INE:KF_DIV_23(1.0)" agencyID="INE" version="1.0">
+        <com:Name xml:lang="es">Key Family de la Operación Estadística IPCA</com:Name>
+        <str:DataStructureComponents>
+          <str:DimensionList id="DimensionDescriptor" urn="urn:sdmx:org.sdmx.infomodel.datastructure.DimensionDescriptor=INE:KF_DIV_23(1.0).DimensionDescriptor">
+            <str:Dimension id="COLLECTION" urn="urn:sdmx:org.sdmx.infomodel.datastructure.Dimension=INE:KF_DIV_23(1.0).COLLECTION" position="1">
+              <str:ConceptIdentity>
+                <Ref id="COLLECTION" maintainableParentID="STANDALONE_CONCEPT_SCHEME" maintainableParentVersion="1.0" agencyID="INE" package="conceptscheme" class="Concept"/>
+              </str:ConceptIdentity>
+              <str:LocalRepresentation>
+                <str:Enumeration>
+                  <Ref id="CL_COLLECTION" version="1.0" agencyID="INE" package="codelist" class="Codelist"/>
+                </str:Enumeration>
+              </str:LocalRepresentation>
+            </str:Dimension>
+            <str:Dimension id="FREQ" urn="urn:sdmx:org.sdmx.infomodel.datastructure.Dimension=INE:KF_DIV_23(1.0).FREQ" position="2">
+              <str:ConceptIdentity>
+                <Ref id="FREQ" maintainableParentID="STANDALONE_CONCEPT_SCHEME" maintainableParentVersion="1.0" agencyID="INE" package="conceptscheme" class="Concept"/>
+              </str:ConceptIdentity>
+              <str:LocalRepresentation>
+                <str:Enumeration>
+                  <Ref id="CL_FREQ" version="1.0" agencyID="INE" package="codelist" class="Codelist"/>
+                </str:Enumeration>
+              </str:LocalRepresentation>
+            </str:Dimension>
+            <str:Dimension id="IPCA_SUB" urn="urn:sdmx:org.sdmx.infomodel.datastructure.Dimension=INE:KF_DIV_23(1.0).IPCA_SUB" position="3">
+              <str:ConceptIdentity>
+                <Ref id="IPCA_SUB" maintainableParentID="STANDALONE_CONCEPT_SCHEME" maintainableParentVersion="1.0" agencyID="INE" package="conceptscheme" class="Concept"/>
+              </str:ConceptIdentity>
+              <str:LocalRepresentation>
+                <str:Enumeration>
+                  <Ref id="CL_IPCA_COICOP" version="1.0" agencyID="INE" package="codelist" class="Codelist"/>
+                </str:Enumeration>
+              </str:LocalRepresentation>
+            </str:Dimension>
+            <str:TimeDimension id="TIME_PERIOD" urn="urn:sdmx:org.sdmx.infomodel.datastructure.TimeDimension=INE:KF_DIV_23(1.0).TIME_PERIOD" position="4">
+              <str:ConceptIdentity>
+                <Ref id="TIME_PERIOD" maintainableParentID="STANDALONE_CONCEPT_SCHEME" maintainableParentVersion="1.0" agencyID="INE" package="conceptscheme" class="Concept"/>
+              </str:ConceptIdentity>
+              <str:LocalRepresentation>
+                <str:TextFormat/>
+              </str:LocalRepresentation>
+            </str:TimeDimension>
+          </str:DimensionList>
+          <str:Group id="Group23_1" urn="urn:sdmx:org.sdmx.infomodel.datastructure.GroupDimensionDescriptor=INE:KF_DIV_23(1.0).Group23_1">
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="COLLECTION"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="IPCA_SUB"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+          </str:Group>
+          <str:AttributeList id="AttributeDescriptor" urn="urn:sdmx:org.sdmx.infomodel.datastructure.AttributeDescriptor=INE:KF_DIV_23(1.0).AttributeDescriptor">
+            <str:Attribute id="TITLE" urn="urn:sdmx:org.sdmx.infomodel.datastructure.DataAttribute=INE:KF_DIV_23(1.0).TITLE" assignmentStatus="Conditional">
+              <str:ConceptIdentity>
+                <Ref id="TITLE" maintainableParentID="STANDALONE_CONCEPT_SCHEME" maintainableParentVersion="1.0" agencyID="INE" package="conceptscheme" class="Concept"/>
+              </str:ConceptIdentity>
+              <str:LocalRepresentation>
+                <str:TextFormat textType="String" maxLength="100"/>
+              </str:LocalRepresentation>
+              <str:AttributeRelationship>
+                <str:Group>
+                  <Ref id="Group23_1"/>
+                </str:Group>
+              </str:AttributeRelationship>
+            </str:Attribute>
+            <str:Attribute id="COD_SERIE" urn="urn:sdmx:org.sdmx.infomodel.datastructure.DataAttribute=INE:KF_DIV_23(1.0).COD_SERIE" assignmentStatus="Conditional">
+              <str:ConceptIdentity>
+                <Ref id="COD_SERIE" maintainableParentID="STANDALONE_CONCEPT_SCHEME" maintainableParentVersion="1.0" agencyID="INE" package="conceptscheme" class="Concept"/>
+              </str:ConceptIdentity>
+              <str:LocalRepresentation>
+                <str:TextFormat textType="String" maxLength="25"/>
+              </str:LocalRepresentation>
+              <str:AttributeRelationship>
+                <str:Dimension>
+                  <Ref id="COLLECTION"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="FREQ"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="IPCA_SUB"/>
+                </str:Dimension>
+              </str:AttributeRelationship>
+            </str:Attribute>
+            <str:Attribute id="DECIMALS" urn="urn:sdmx:org.sdmx.infomodel.datastructure.DataAttribute=INE:KF_DIV_23(1.0).DECIMALS" assignmentStatus="Mandatory">
+              <str:ConceptIdentity>
+                <Ref id="DECIMALS" maintainableParentID="STANDALONE_CONCEPT_SCHEME" maintainableParentVersion="1.0" agencyID="INE" package="conceptscheme" class="Concept"/>
+              </str:ConceptIdentity>
+              <str:LocalRepresentation>
+                <str:Enumeration>
+                  <Ref id="CL_DECIMALS" version="1.0" agencyID="INE" package="codelist" class="Codelist"/>
+                </str:Enumeration>
+              </str:LocalRepresentation>
+              <str:AttributeRelationship>
+                <str:Group>
+                  <Ref id="Group23_1"/>
+                </str:Group>
+              </str:AttributeRelationship>
+            </str:Attribute>
+            <str:Attribute id="OBS_CONF" urn="urn:sdmx:org.sdmx.infomodel.datastructure.DataAttribute=INE:KF_DIV_23(1.0).OBS_CONF" assignmentStatus="Mandatory">
+              <str:ConceptIdentity>
+                <Ref id="OBS_CONF" maintainableParentID="STANDALONE_CONCEPT_SCHEME" maintainableParentVersion="1.0" agencyID="INE" package="conceptscheme" class="Concept"/>
+              </str:ConceptIdentity>
+              <str:LocalRepresentation>
+                <str:Enumeration>
+                  <Ref id="CL_CONF_STATUS" version="1.0" agencyID="INE" package="codelist" class="Codelist"/>
+                </str:Enumeration>
+              </str:LocalRepresentation>
+              <str:AttributeRelationship>
+                <str:PrimaryMeasure>
+                  <Ref id="OBS_VALUE"/>
+                </str:PrimaryMeasure>
+              </str:AttributeRelationship>
+            </str:Attribute>
+            <str:Attribute id="OBS_STATUS" urn="urn:sdmx:org.sdmx.infomodel.datastructure.DataAttribute=INE:KF_DIV_23(1.0).OBS_STATUS" assignmentStatus="Mandatory">
+              <str:ConceptIdentity>
+                <Ref id="OBS_STATUS" maintainableParentID="STANDALONE_CONCEPT_SCHEME" maintainableParentVersion="1.0" agencyID="INE" package="conceptscheme" class="Concept"/>
+              </str:ConceptIdentity>
+              <str:LocalRepresentation>
+                <str:Enumeration>
+                  <Ref id="CL_OBS_STATUS" version="1.0" agencyID="INE" package="codelist" class="Codelist"/>
+                </str:Enumeration>
+              </str:LocalRepresentation>
+              <str:AttributeRelationship>
+                <str:PrimaryMeasure>
+                  <Ref id="OBS_VALUE"/>
+                </str:PrimaryMeasure>
+              </str:AttributeRelationship>
+            </str:Attribute>
+            <str:Attribute id="TIME_FORMAT" urn="urn:sdmx:org.sdmx.infomodel.datastructure.DataAttribute=INE:KF_DIV_23(1.0).TIME_FORMAT" assignmentStatus="Mandatory">
+              <str:ConceptIdentity>
+                <Ref id="TIME_FORMAT" maintainableParentID="STANDALONE_CONCEPT_SCHEME" maintainableParentVersion="1.0" agencyID="INE" package="conceptscheme" class="Concept"/>
+              </str:ConceptIdentity>
+              <str:LocalRepresentation>
+                <str:Enumeration>
+                  <Ref id="CL_TIME_FORMAT" version="1.0" agencyID="INE" package="codelist" class="Codelist"/>
+                </str:Enumeration>
+              </str:LocalRepresentation>
+              <str:AttributeRelationship>
+                <str:Dimension>
+                  <Ref id="COLLECTION"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="FREQ"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="IPCA_SUB"/>
+                </str:Dimension>
+              </str:AttributeRelationship>
+            </str:Attribute>
+            <str:Attribute id="UNIT" urn="urn:sdmx:org.sdmx.infomodel.datastructure.DataAttribute=INE:KF_DIV_23(1.0).UNIT" assignmentStatus="Mandatory">
+              <str:ConceptIdentity>
+                <Ref id="UNIT" maintainableParentID="STANDALONE_CONCEPT_SCHEME" maintainableParentVersion="1.0" agencyID="INE" package="conceptscheme" class="Concept"/>
+              </str:ConceptIdentity>
+              <str:LocalRepresentation>
+                <str:Enumeration>
+                  <Ref id="CL_UNIT" version="1.0" agencyID="INE" package="codelist" class="Codelist"/>
+                </str:Enumeration>
+              </str:LocalRepresentation>
+              <str:AttributeRelationship>
+                <str:Group>
+                  <Ref id="Group23_1"/>
+                </str:Group>
+              </str:AttributeRelationship>
+            </str:Attribute>
+            <str:Attribute id="UNIT_MULT" urn="urn:sdmx:org.sdmx.infomodel.datastructure.DataAttribute=INE:KF_DIV_23(1.0).UNIT_MULT" assignmentStatus="Mandatory">
+              <str:ConceptIdentity>
+                <Ref id="UNIT_MULT" maintainableParentID="STANDALONE_CONCEPT_SCHEME" maintainableParentVersion="1.0" agencyID="INE" package="conceptscheme" class="Concept"/>
+              </str:ConceptIdentity>
+              <str:LocalRepresentation>
+                <str:Enumeration>
+                  <Ref id="CL_UNIT_MULT" version="1.0" agencyID="INE" package="codelist" class="Codelist"/>
+                </str:Enumeration>
+              </str:LocalRepresentation>
+              <str:AttributeRelationship>
+                <str:Group>
+                  <Ref id="Group23_1"/>
+                </str:Group>
+              </str:AttributeRelationship>
+            </str:Attribute>
+          </str:AttributeList>
+          <str:MeasureList id="MeasureDescriptor" urn="urn:sdmx:org.sdmx.infomodel.datastructure.MeasureDescriptor=INE:KF_DIV_23(1.0).MeasureDescriptor">
+            <str:PrimaryMeasure id="OBS_VALUE" urn="urn:sdmx:org.sdmx.infomodel.datastructure.PrimaryMeasure=INE:KF_DIV_23(1.0).OBS_VALUE">
+              <str:ConceptIdentity>
+                <Ref id="OBS_VALUE" maintainableParentID="STANDALONE_CONCEPT_SCHEME" maintainableParentVersion="1.0" agencyID="INE" package="conceptscheme" class="Concept"/>
+              </str:ConceptIdentity>
+              <str:LocalRepresentation>
+                <str:TextFormat textType="Double"/>
+              </str:LocalRepresentation>
+            </str:PrimaryMeasure>
+          </str:MeasureList>
+        </str:DataStructureComponents>
+      </str:DataStructure>
+    </str:DataStructures>
+  </mes:Structures>
+</mes:Structure>

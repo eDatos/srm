@@ -1,0 +1,1586 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mes:Structure xmlns:mes="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common" xmlns:str="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure">
+  <mes:Header>
+    <mes:ID>ID_DSD_DIV_18</mes:ID>
+    <mes:Test>false</mes:Test>
+    <mes:Prepared>2011-09-27T11:46:01.000+01:00</mes:Prepared>
+    <mes:Sender id="INE">
+      <com:Name xml:lang="es">National Statistics Institute</com:Name>
+    </mes:Sender>
+  </mes:Header>
+  <mes:Structures>
+    <str:Concepts>
+      <str:ConceptScheme id="STANDALONE_CONCEPT_SCHEME" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=INE:STANDALONE_CONCEPT_SCHEME(1.0)" agencyID="INE" version="1.0" isExternalReference="false" isFinal="false">
+        <com:Name xml:lang="es">Default Scheme</com:Name>
+        <str:Concept id="AREA_1" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=INE:STANDALONE_CONCEPT_SCHEME(1.0).AREA_1">
+          <com:Name xml:lang="es">Regional totals</com:Name>
+        </str:Concept>
+        <str:Concept id="AREA_2" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=INE:STANDALONE_CONCEPT_SCHEME(1.0).AREA_2">
+          <com:Name xml:lang="es">Autonomous Communities and Cities</com:Name>
+        </str:Concept>
+        <str:Concept id="AREA_3" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=INE:STANDALONE_CONCEPT_SCHEME(1.0).AREA_3">
+          <com:Name xml:lang="es">Provinces</com:Name>
+        </str:Concept>
+        <str:Concept id="AREA_8" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=INE:STANDALONE_CONCEPT_SCHEME(1.0).AREA_8">
+          <com:Name xml:lang="es">Capitales de provincia</com:Name>
+        </str:Concept>
+        <str:Concept id="BASE" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=INE:STANDALONE_CONCEPT_SCHEME(1.0).BASE">
+          <com:Name xml:lang="es">Base Year</com:Name>
+        </str:Concept>
+        <str:Concept id="CLS01" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=INE:STANDALONE_CONCEPT_SCHEME(1.0).CLS01">
+          <com:Name xml:lang="es">Classes 2001</com:Name>
+        </str:Concept>
+        <str:Concept id="CLS06" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=INE:STANDALONE_CONCEPT_SCHEME(1.0).CLS06">
+          <com:Name xml:lang="es">Clases 2006</com:Name>
+        </str:Concept>
+        <str:Concept id="CLS92" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=INE:STANDALONE_CONCEPT_SCHEME(1.0).CLS92">
+          <com:Name xml:lang="es">Classes 1992</com:Name>
+        </str:Concept>
+        <str:Concept id="COD_SERIE" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=INE:STANDALONE_CONCEPT_SCHEME(1.0).COD_SERIE">
+          <com:Name xml:lang="es">Series code</com:Name>
+        </str:Concept>
+        <str:Concept id="COLLECTION" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=INE:STANDALONE_CONCEPT_SCHEME(1.0).COLLECTION">
+          <com:Name xml:lang="es">Data type</com:Name>
+        </str:Concept>
+        <str:Concept id="DECIMALS" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=INE:STANDALONE_CONCEPT_SCHEME(1.0).DECIMALS">
+          <com:Name xml:lang="es">Decimals</com:Name>
+        </str:Concept>
+        <str:Concept id="FREQ" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=INE:STANDALONE_CONCEPT_SCHEME(1.0).FREQ">
+          <com:Name xml:lang="es">Frequency</com:Name>
+        </str:Concept>
+        <str:Concept id="GRPCOICOP" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=INE:STANDALONE_CONCEPT_SCHEME(1.0).GRPCOICOP">
+          <com:Name xml:lang="es">Grupos COICOP 2001</com:Name>
+        </str:Concept>
+        <str:Concept id="GRPE01" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=INE:STANDALONE_CONCEPT_SCHEME(1.0).GRPE01">
+          <com:Name xml:lang="es">Special groups 2001</com:Name>
+        </str:Concept>
+        <str:Concept id="GRPE83" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=INE:STANDALONE_CONCEPT_SCHEME(1.0).GRPE83">
+          <com:Name xml:lang="es">Special groups 1983</com:Name>
+        </str:Concept>
+        <str:Concept id="GRPE92" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=INE:STANDALONE_CONCEPT_SCHEME(1.0).GRPE92">
+          <com:Name xml:lang="es">Special groups 1992</com:Name>
+        </str:Concept>
+        <str:Concept id="GRP76" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=INE:STANDALONE_CONCEPT_SCHEME(1.0).GRP76">
+          <com:Name xml:lang="es">Groups 1976</com:Name>
+        </str:Concept>
+        <str:Concept id="GRP83" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=INE:STANDALONE_CONCEPT_SCHEME(1.0).GRP83">
+          <com:Name xml:lang="es">Groups 1983</com:Name>
+        </str:Concept>
+        <str:Concept id="GRP92" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=INE:STANDALONE_CONCEPT_SCHEME(1.0).GRP92">
+          <com:Name xml:lang="es">Groups 1992</com:Name>
+        </str:Concept>
+        <str:Concept id="OBS_CONF" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=INE:STANDALONE_CONCEPT_SCHEME(1.0).OBS_CONF">
+          <com:Name xml:lang="es">Sensitivity and confidenciality status of the data</com:Name>
+        </str:Concept>
+        <str:Concept id="OBS_STATUS" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=INE:STANDALONE_CONCEPT_SCHEME(1.0).OBS_STATUS">
+          <com:Name xml:lang="es">Observation status</com:Name>
+        </str:Concept>
+        <str:Concept id="OBS_VALUE" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=INE:STANDALONE_CONCEPT_SCHEME(1.0).OBS_VALUE">
+          <com:Name xml:lang="es">Observation value</com:Name>
+        </str:Concept>
+        <str:Concept id="RUB01" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=INE:STANDALONE_CONCEPT_SCHEME(1.0).RUB01">
+          <com:Name xml:lang="es">Headings 2001</com:Name>
+        </str:Concept>
+        <str:Concept id="RUB76" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=INE:STANDALONE_CONCEPT_SCHEME(1.0).RUB76">
+          <com:Name xml:lang="es">Headings 1976</com:Name>
+        </str:Concept>
+        <str:Concept id="RUB83" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=INE:STANDALONE_CONCEPT_SCHEME(1.0).RUB83">
+          <com:Name xml:lang="es">Headings 1983</com:Name>
+        </str:Concept>
+        <str:Concept id="RUB92" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=INE:STANDALONE_CONCEPT_SCHEME(1.0).RUB92">
+          <com:Name xml:lang="es">Headings 1992</com:Name>
+        </str:Concept>
+        <str:Concept id="SCLS01" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=INE:STANDALONE_CONCEPT_SCHEME(1.0).SCLS01">
+          <com:Name xml:lang="es">Subclasses 2001</com:Name>
+        </str:Concept>
+        <str:Concept id="SCLS06" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=INE:STANDALONE_CONCEPT_SCHEME(1.0).SCLS06">
+          <com:Name xml:lang="es">Subclasses 2006</com:Name>
+        </str:Concept>
+        <str:Concept id="SCLS76" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=INE:STANDALONE_CONCEPT_SCHEME(1.0).SCLS76">
+          <com:Name xml:lang="es">Subclasses 1976</com:Name>
+        </str:Concept>
+        <str:Concept id="SCLS83" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=INE:STANDALONE_CONCEPT_SCHEME(1.0).SCLS83">
+          <com:Name xml:lang="es">Subclasses 1983</com:Name>
+        </str:Concept>
+        <str:Concept id="SCLS92" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=INE:STANDALONE_CONCEPT_SCHEME(1.0).SCLS92">
+          <com:Name xml:lang="es">Subclasses 1992</com:Name>
+        </str:Concept>
+        <str:Concept id="SGRP01" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=INE:STANDALONE_CONCEPT_SCHEME(1.0).SGRP01">
+          <com:Name xml:lang="es">Subgroups 2001</com:Name>
+        </str:Concept>
+        <str:Concept id="SGRP06" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=INE:STANDALONE_CONCEPT_SCHEME(1.0).SGRP06">
+          <com:Name xml:lang="es">Subgroups 2006</com:Name>
+        </str:Concept>
+        <str:Concept id="SGRP92" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=INE:STANDALONE_CONCEPT_SCHEME(1.0).SGRP92">
+          <com:Name xml:lang="es">Subgroups 1992</com:Name>
+        </str:Concept>
+        <str:Concept id="TASA" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=INE:STANDALONE_CONCEPT_SCHEME(1.0).TASA">
+          <com:Name xml:lang="es">Tasas</com:Name>
+        </str:Concept>
+        <str:Concept id="TCONJ" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=INE:STANDALONE_CONCEPT_SCHEME(1.0).TCONJ">
+          <com:Name xml:lang="es">Urban or Non-urban whole</com:Name>
+        </str:Concept>
+        <str:Concept id="TIME_FORMAT" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=INE:STANDALONE_CONCEPT_SCHEME(1.0).TIME_FORMAT">
+          <com:Name xml:lang="es">Formato temporal ISO 8601</com:Name>
+        </str:Concept>
+        <str:Concept id="TIME_PERIOD" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=INE:STANDALONE_CONCEPT_SCHEME(1.0).TIME_PERIOD">
+          <com:Name xml:lang="es">Time period</com:Name>
+        </str:Concept>
+        <str:Concept id="TITLE" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=INE:STANDALONE_CONCEPT_SCHEME(1.0).TITLE">
+          <com:Name xml:lang="es">Series title</com:Name>
+        </str:Concept>
+        <str:Concept id="UNIT" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=INE:STANDALONE_CONCEPT_SCHEME(1.0).UNIT">
+          <com:Name xml:lang="es">Unit</com:Name>
+        </str:Concept>
+        <str:Concept id="UNIT_MULT" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=INE:STANDALONE_CONCEPT_SCHEME(1.0).UNIT_MULT">
+          <com:Name xml:lang="es">Unit multiplier</com:Name>
+        </str:Concept>
+      </str:ConceptScheme>
+    </str:Concepts>
+    <str:DataStructures>
+      <str:DataStructure id="KF_DIV_18" urn="urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=INE:KF_DIV_18(1.0)" agencyID="INE" version="1.0">
+        <com:Name xml:lang="es">Key Family of the Statistical Operation IPC</com:Name>
+        <str:DataStructureComponents>
+          <str:DimensionList id="DimensionDescriptor" urn="urn:sdmx:org.sdmx.infomodel.datastructure.DimensionDescriptor=INE:KF_DIV_18(1.0).DimensionDescriptor">
+            <str:Dimension id="AREA_1" urn="urn:sdmx:org.sdmx.infomodel.datastructure.Dimension=INE:KF_DIV_18(1.0).AREA_1" position="1">
+              <str:ConceptIdentity>
+                <Ref id="AREA_1" maintainableParentID="STANDALONE_CONCEPT_SCHEME" maintainableParentVersion="1.0" agencyID="INE" package="conceptscheme" class="Concept"/>
+              </str:ConceptIdentity>
+              <str:LocalRepresentation>
+                <str:Enumeration>
+                  <Ref id="CL_AREA" version="1.0" agencyID="INE" package="codelist" class="Codelist"/>
+                </str:Enumeration>
+              </str:LocalRepresentation>
+            </str:Dimension>
+            <str:Dimension id="AREA_2" urn="urn:sdmx:org.sdmx.infomodel.datastructure.Dimension=INE:KF_DIV_18(1.0).AREA_2" position="2">
+              <str:ConceptIdentity>
+                <Ref id="AREA_2" maintainableParentID="STANDALONE_CONCEPT_SCHEME" maintainableParentVersion="1.0" agencyID="INE" package="conceptscheme" class="Concept"/>
+              </str:ConceptIdentity>
+              <str:LocalRepresentation>
+                <str:Enumeration>
+                  <Ref id="CL_AREA" version="1.0" agencyID="INE" package="codelist" class="Codelist"/>
+                </str:Enumeration>
+              </str:LocalRepresentation>
+            </str:Dimension>
+            <str:Dimension id="AREA_3" urn="urn:sdmx:org.sdmx.infomodel.datastructure.Dimension=INE:KF_DIV_18(1.0).AREA_3" position="3">
+              <str:ConceptIdentity>
+                <Ref id="AREA_3" maintainableParentID="STANDALONE_CONCEPT_SCHEME" maintainableParentVersion="1.0" agencyID="INE" package="conceptscheme" class="Concept"/>
+              </str:ConceptIdentity>
+              <str:LocalRepresentation>
+                <str:Enumeration>
+                  <Ref id="CL_AREA" version="1.0" agencyID="INE" package="codelist" class="Codelist"/>
+                </str:Enumeration>
+              </str:LocalRepresentation>
+            </str:Dimension>
+            <str:Dimension id="AREA_8" urn="urn:sdmx:org.sdmx.infomodel.datastructure.Dimension=INE:KF_DIV_18(1.0).AREA_8" position="4">
+              <str:ConceptIdentity>
+                <Ref id="AREA_8" maintainableParentID="STANDALONE_CONCEPT_SCHEME" maintainableParentVersion="1.0" agencyID="INE" package="conceptscheme" class="Concept"/>
+              </str:ConceptIdentity>
+              <str:LocalRepresentation>
+                <str:Enumeration>
+                  <Ref id="CL_AREA" version="1.0" agencyID="INE" package="codelist" class="Codelist"/>
+                </str:Enumeration>
+              </str:LocalRepresentation>
+            </str:Dimension>
+            <str:Dimension id="BASE" urn="urn:sdmx:org.sdmx.infomodel.datastructure.Dimension=INE:KF_DIV_18(1.0).BASE" position="5">
+              <str:ConceptIdentity>
+                <Ref id="BASE" maintainableParentID="STANDALONE_CONCEPT_SCHEME" maintainableParentVersion="1.0" agencyID="INE" package="conceptscheme" class="Concept"/>
+              </str:ConceptIdentity>
+              <str:LocalRepresentation>
+                <str:Enumeration>
+                  <Ref id="CL_BASE" version="1.0" agencyID="INE" package="codelist" class="Codelist"/>
+                </str:Enumeration>
+              </str:LocalRepresentation>
+            </str:Dimension>
+            <str:Dimension id="CLS01" urn="urn:sdmx:org.sdmx.infomodel.datastructure.Dimension=INE:KF_DIV_18(1.0).CLS01" position="6">
+              <str:ConceptIdentity>
+                <Ref id="CLS01" maintainableParentID="STANDALONE_CONCEPT_SCHEME" maintainableParentVersion="1.0" agencyID="INE" package="conceptscheme" class="Concept"/>
+              </str:ConceptIdentity>
+              <str:LocalRepresentation>
+                <str:Enumeration>
+                  <Ref id="CL_SIST_IPC2001" version="1.0" agencyID="INE" package="codelist" class="Codelist"/>
+                </str:Enumeration>
+              </str:LocalRepresentation>
+            </str:Dimension>
+            <str:Dimension id="CLS06" urn="urn:sdmx:org.sdmx.infomodel.datastructure.Dimension=INE:KF_DIV_18(1.0).CLS06" position="7">
+              <str:ConceptIdentity>
+                <Ref id="CLS06" maintainableParentID="STANDALONE_CONCEPT_SCHEME" maintainableParentVersion="1.0" agencyID="INE" package="conceptscheme" class="Concept"/>
+              </str:ConceptIdentity>
+              <str:LocalRepresentation>
+                <str:Enumeration>
+                  <Ref id="CL_SIST_IPC2006" version="1.0" agencyID="INE" package="codelist" class="Codelist"/>
+                </str:Enumeration>
+              </str:LocalRepresentation>
+            </str:Dimension>
+            <str:Dimension id="CLS92" urn="urn:sdmx:org.sdmx.infomodel.datastructure.Dimension=INE:KF_DIV_18(1.0).CLS92" position="8">
+              <str:ConceptIdentity>
+                <Ref id="CLS92" maintainableParentID="STANDALONE_CONCEPT_SCHEME" maintainableParentVersion="1.0" agencyID="INE" package="conceptscheme" class="Concept"/>
+              </str:ConceptIdentity>
+              <str:LocalRepresentation>
+                <str:Enumeration>
+                  <Ref id="CL_SIST_IPC1992" version="1.0" agencyID="INE" package="codelist" class="Codelist"/>
+                </str:Enumeration>
+              </str:LocalRepresentation>
+            </str:Dimension>
+            <str:Dimension id="COLLECTION" urn="urn:sdmx:org.sdmx.infomodel.datastructure.Dimension=INE:KF_DIV_18(1.0).COLLECTION" position="9">
+              <str:ConceptIdentity>
+                <Ref id="COLLECTION" maintainableParentID="STANDALONE_CONCEPT_SCHEME" maintainableParentVersion="1.0" agencyID="INE" package="conceptscheme" class="Concept"/>
+              </str:ConceptIdentity>
+              <str:LocalRepresentation>
+                <str:Enumeration>
+                  <Ref id="CL_COLLECTION" version="1.0" agencyID="INE" package="codelist" class="Codelist"/>
+                </str:Enumeration>
+              </str:LocalRepresentation>
+            </str:Dimension>
+            <str:Dimension id="FREQ" urn="urn:sdmx:org.sdmx.infomodel.datastructure.Dimension=INE:KF_DIV_18(1.0).FREQ" position="10">
+              <str:ConceptIdentity>
+                <Ref id="FREQ" maintainableParentID="STANDALONE_CONCEPT_SCHEME" maintainableParentVersion="1.0" agencyID="INE" package="conceptscheme" class="Concept"/>
+              </str:ConceptIdentity>
+              <str:LocalRepresentation>
+                <str:Enumeration>
+                  <Ref id="CL_FREQ" version="1.0" agencyID="INE" package="codelist" class="Codelist"/>
+                </str:Enumeration>
+              </str:LocalRepresentation>
+            </str:Dimension>
+            <str:Dimension id="GRP76" urn="urn:sdmx:org.sdmx.infomodel.datastructure.Dimension=INE:KF_DIV_18(1.0).GRP76" position="11">
+              <str:ConceptIdentity>
+                <Ref id="GRP76" maintainableParentID="STANDALONE_CONCEPT_SCHEME" maintainableParentVersion="1.0" agencyID="INE" package="conceptscheme" class="Concept"/>
+              </str:ConceptIdentity>
+              <str:LocalRepresentation>
+                <str:Enumeration>
+                  <Ref id="CL_SIST_IPC1976" version="1.0" agencyID="INE" package="codelist" class="Codelist"/>
+                </str:Enumeration>
+              </str:LocalRepresentation>
+            </str:Dimension>
+            <str:Dimension id="GRP83" urn="urn:sdmx:org.sdmx.infomodel.datastructure.Dimension=INE:KF_DIV_18(1.0).GRP83" position="12">
+              <str:ConceptIdentity>
+                <Ref id="GRP83" maintainableParentID="STANDALONE_CONCEPT_SCHEME" maintainableParentVersion="1.0" agencyID="INE" package="conceptscheme" class="Concept"/>
+              </str:ConceptIdentity>
+              <str:LocalRepresentation>
+                <str:Enumeration>
+                  <Ref id="CL_SIST_IPC1983" version="1.0" agencyID="INE" package="codelist" class="Codelist"/>
+                </str:Enumeration>
+              </str:LocalRepresentation>
+            </str:Dimension>
+            <str:Dimension id="GRP92" urn="urn:sdmx:org.sdmx.infomodel.datastructure.Dimension=INE:KF_DIV_18(1.0).GRP92" position="13">
+              <str:ConceptIdentity>
+                <Ref id="GRP92" maintainableParentID="STANDALONE_CONCEPT_SCHEME" maintainableParentVersion="1.0" agencyID="INE" package="conceptscheme" class="Concept"/>
+              </str:ConceptIdentity>
+              <str:LocalRepresentation>
+                <str:Enumeration>
+                  <Ref id="CL_SIST_IPC1992" version="1.0" agencyID="INE" package="codelist" class="Codelist"/>
+                </str:Enumeration>
+              </str:LocalRepresentation>
+            </str:Dimension>
+            <str:Dimension id="GRPCOICOP" urn="urn:sdmx:org.sdmx.infomodel.datastructure.Dimension=INE:KF_DIV_18(1.0).GRPCOICOP" position="14">
+              <str:ConceptIdentity>
+                <Ref id="GRPCOICOP" maintainableParentID="STANDALONE_CONCEPT_SCHEME" maintainableParentVersion="1.0" agencyID="INE" package="conceptscheme" class="Concept"/>
+              </str:ConceptIdentity>
+              <str:LocalRepresentation>
+                <str:Enumeration>
+                  <Ref id="CL_COICOP01" version="1.0" agencyID="INE" package="codelist" class="Codelist"/>
+                </str:Enumeration>
+              </str:LocalRepresentation>
+            </str:Dimension>
+            <str:Dimension id="GRPE01" urn="urn:sdmx:org.sdmx.infomodel.datastructure.Dimension=INE:KF_DIV_18(1.0).GRPE01" position="15">
+              <str:ConceptIdentity>
+                <Ref id="GRPE01" maintainableParentID="STANDALONE_CONCEPT_SCHEME" maintainableParentVersion="1.0" agencyID="INE" package="conceptscheme" class="Concept"/>
+              </str:ConceptIdentity>
+              <str:LocalRepresentation>
+                <str:Enumeration>
+                  <Ref id="CL_SIST_IPC2001" version="1.0" agencyID="INE" package="codelist" class="Codelist"/>
+                </str:Enumeration>
+              </str:LocalRepresentation>
+            </str:Dimension>
+            <str:Dimension id="GRPE83" urn="urn:sdmx:org.sdmx.infomodel.datastructure.Dimension=INE:KF_DIV_18(1.0).GRPE83" position="16">
+              <str:ConceptIdentity>
+                <Ref id="GRPE83" maintainableParentID="STANDALONE_CONCEPT_SCHEME" maintainableParentVersion="1.0" agencyID="INE" package="conceptscheme" class="Concept"/>
+              </str:ConceptIdentity>
+              <str:LocalRepresentation>
+                <str:Enumeration>
+                  <Ref id="CL_SIST_IPC1983" version="1.0" agencyID="INE" package="codelist" class="Codelist"/>
+                </str:Enumeration>
+              </str:LocalRepresentation>
+            </str:Dimension>
+            <str:Dimension id="GRPE92" urn="urn:sdmx:org.sdmx.infomodel.datastructure.Dimension=INE:KF_DIV_18(1.0).GRPE92" position="17">
+              <str:ConceptIdentity>
+                <Ref id="GRPE92" maintainableParentID="STANDALONE_CONCEPT_SCHEME" maintainableParentVersion="1.0" agencyID="INE" package="conceptscheme" class="Concept"/>
+              </str:ConceptIdentity>
+              <str:LocalRepresentation>
+                <str:Enumeration>
+                  <Ref id="CL_SIST_IPC1992" version="1.0" agencyID="INE" package="codelist" class="Codelist"/>
+                </str:Enumeration>
+              </str:LocalRepresentation>
+            </str:Dimension>
+            <str:Dimension id="RUB01" urn="urn:sdmx:org.sdmx.infomodel.datastructure.Dimension=INE:KF_DIV_18(1.0).RUB01" position="18">
+              <str:ConceptIdentity>
+                <Ref id="RUB01" maintainableParentID="STANDALONE_CONCEPT_SCHEME" maintainableParentVersion="1.0" agencyID="INE" package="conceptscheme" class="Concept"/>
+              </str:ConceptIdentity>
+              <str:LocalRepresentation>
+                <str:Enumeration>
+                  <Ref id="CL_SIST_IPC2001" version="1.0" agencyID="INE" package="codelist" class="Codelist"/>
+                </str:Enumeration>
+              </str:LocalRepresentation>
+            </str:Dimension>
+            <str:Dimension id="RUB76" urn="urn:sdmx:org.sdmx.infomodel.datastructure.Dimension=INE:KF_DIV_18(1.0).RUB76" position="19">
+              <str:ConceptIdentity>
+                <Ref id="RUB76" maintainableParentID="STANDALONE_CONCEPT_SCHEME" maintainableParentVersion="1.0" agencyID="INE" package="conceptscheme" class="Concept"/>
+              </str:ConceptIdentity>
+              <str:LocalRepresentation>
+                <str:Enumeration>
+                  <Ref id="CL_SIST_IPC1976" version="1.0" agencyID="INE" package="codelist" class="Codelist"/>
+                </str:Enumeration>
+              </str:LocalRepresentation>
+            </str:Dimension>
+            <str:Dimension id="RUB83" urn="urn:sdmx:org.sdmx.infomodel.datastructure.Dimension=INE:KF_DIV_18(1.0).RUB83" position="20">
+              <str:ConceptIdentity>
+                <Ref id="RUB83" maintainableParentID="STANDALONE_CONCEPT_SCHEME" maintainableParentVersion="1.0" agencyID="INE" package="conceptscheme" class="Concept"/>
+              </str:ConceptIdentity>
+              <str:LocalRepresentation>
+                <str:Enumeration>
+                  <Ref id="CL_SIST_IPC1983" version="1.0" agencyID="INE" package="codelist" class="Codelist"/>
+                </str:Enumeration>
+              </str:LocalRepresentation>
+            </str:Dimension>
+            <str:Dimension id="RUB92" urn="urn:sdmx:org.sdmx.infomodel.datastructure.Dimension=INE:KF_DIV_18(1.0).RUB92" position="21">
+              <str:ConceptIdentity>
+                <Ref id="RUB92" maintainableParentID="STANDALONE_CONCEPT_SCHEME" maintainableParentVersion="1.0" agencyID="INE" package="conceptscheme" class="Concept"/>
+              </str:ConceptIdentity>
+              <str:LocalRepresentation>
+                <str:Enumeration>
+                  <Ref id="CL_SIST_IPC1992" version="1.0" agencyID="INE" package="codelist" class="Codelist"/>
+                </str:Enumeration>
+              </str:LocalRepresentation>
+            </str:Dimension>
+            <str:Dimension id="SCLS01" urn="urn:sdmx:org.sdmx.infomodel.datastructure.Dimension=INE:KF_DIV_18(1.0).SCLS01" position="22">
+              <str:ConceptIdentity>
+                <Ref id="SCLS01" maintainableParentID="STANDALONE_CONCEPT_SCHEME" maintainableParentVersion="1.0" agencyID="INE" package="conceptscheme" class="Concept"/>
+              </str:ConceptIdentity>
+              <str:LocalRepresentation>
+                <str:Enumeration>
+                  <Ref id="CL_SIST_IPC2001" version="1.0" agencyID="INE" package="codelist" class="Codelist"/>
+                </str:Enumeration>
+              </str:LocalRepresentation>
+            </str:Dimension>
+            <str:Dimension id="SCLS06" urn="urn:sdmx:org.sdmx.infomodel.datastructure.Dimension=INE:KF_DIV_18(1.0).SCLS06" position="23">
+              <str:ConceptIdentity>
+                <Ref id="SCLS06" maintainableParentID="STANDALONE_CONCEPT_SCHEME" maintainableParentVersion="1.0" agencyID="INE" package="conceptscheme" class="Concept"/>
+              </str:ConceptIdentity>
+              <str:LocalRepresentation>
+                <str:Enumeration>
+                  <Ref id="CL_SIST_IPC2006" version="1.0" agencyID="INE" package="codelist" class="Codelist"/>
+                </str:Enumeration>
+              </str:LocalRepresentation>
+            </str:Dimension>
+            <str:Dimension id="SCLS76" urn="urn:sdmx:org.sdmx.infomodel.datastructure.Dimension=INE:KF_DIV_18(1.0).SCLS76" position="24">
+              <str:ConceptIdentity>
+                <Ref id="SCLS76" maintainableParentID="STANDALONE_CONCEPT_SCHEME" maintainableParentVersion="1.0" agencyID="INE" package="conceptscheme" class="Concept"/>
+              </str:ConceptIdentity>
+              <str:LocalRepresentation>
+                <str:Enumeration>
+                  <Ref id="CL_SIST_IPC1976" version="1.0" agencyID="INE" package="codelist" class="Codelist"/>
+                </str:Enumeration>
+              </str:LocalRepresentation>
+            </str:Dimension>
+            <str:Dimension id="SCLS83" urn="urn:sdmx:org.sdmx.infomodel.datastructure.Dimension=INE:KF_DIV_18(1.0).SCLS83" position="25">
+              <str:ConceptIdentity>
+                <Ref id="SCLS83" maintainableParentID="STANDALONE_CONCEPT_SCHEME" maintainableParentVersion="1.0" agencyID="INE" package="conceptscheme" class="Concept"/>
+              </str:ConceptIdentity>
+              <str:LocalRepresentation>
+                <str:Enumeration>
+                  <Ref id="CL_SIST_IPC1983" version="1.0" agencyID="INE" package="codelist" class="Codelist"/>
+                </str:Enumeration>
+              </str:LocalRepresentation>
+            </str:Dimension>
+            <str:Dimension id="SCLS92" urn="urn:sdmx:org.sdmx.infomodel.datastructure.Dimension=INE:KF_DIV_18(1.0).SCLS92" position="26">
+              <str:ConceptIdentity>
+                <Ref id="SCLS92" maintainableParentID="STANDALONE_CONCEPT_SCHEME" maintainableParentVersion="1.0" agencyID="INE" package="conceptscheme" class="Concept"/>
+              </str:ConceptIdentity>
+              <str:LocalRepresentation>
+                <str:Enumeration>
+                  <Ref id="CL_SIST_IPC1992" version="1.0" agencyID="INE" package="codelist" class="Codelist"/>
+                </str:Enumeration>
+              </str:LocalRepresentation>
+            </str:Dimension>
+            <str:Dimension id="SGRP01" urn="urn:sdmx:org.sdmx.infomodel.datastructure.Dimension=INE:KF_DIV_18(1.0).SGRP01" position="27">
+              <str:ConceptIdentity>
+                <Ref id="SGRP01" maintainableParentID="STANDALONE_CONCEPT_SCHEME" maintainableParentVersion="1.0" agencyID="INE" package="conceptscheme" class="Concept"/>
+              </str:ConceptIdentity>
+              <str:LocalRepresentation>
+                <str:Enumeration>
+                  <Ref id="CL_SIST_IPC2001" version="1.0" agencyID="INE" package="codelist" class="Codelist"/>
+                </str:Enumeration>
+              </str:LocalRepresentation>
+            </str:Dimension>
+            <str:Dimension id="SGRP06" urn="urn:sdmx:org.sdmx.infomodel.datastructure.Dimension=INE:KF_DIV_18(1.0).SGRP06" position="28">
+              <str:ConceptIdentity>
+                <Ref id="SGRP06" maintainableParentID="STANDALONE_CONCEPT_SCHEME" maintainableParentVersion="1.0" agencyID="INE" package="conceptscheme" class="Concept"/>
+              </str:ConceptIdentity>
+              <str:LocalRepresentation>
+                <str:Enumeration>
+                  <Ref id="CL_SIST_IPC2006" version="1.0" agencyID="INE" package="codelist" class="Codelist"/>
+                </str:Enumeration>
+              </str:LocalRepresentation>
+            </str:Dimension>
+            <str:Dimension id="SGRP92" urn="urn:sdmx:org.sdmx.infomodel.datastructure.Dimension=INE:KF_DIV_18(1.0).SGRP92" position="29">
+              <str:ConceptIdentity>
+                <Ref id="SGRP92" maintainableParentID="STANDALONE_CONCEPT_SCHEME" maintainableParentVersion="1.0" agencyID="INE" package="conceptscheme" class="Concept"/>
+              </str:ConceptIdentity>
+              <str:LocalRepresentation>
+                <str:Enumeration>
+                  <Ref id="CL_SIST_IPC1992" version="1.0" agencyID="INE" package="codelist" class="Codelist"/>
+                </str:Enumeration>
+              </str:LocalRepresentation>
+            </str:Dimension>
+            <str:Dimension id="TASA" urn="urn:sdmx:org.sdmx.infomodel.datastructure.Dimension=INE:KF_DIV_18(1.0).TASA" position="30">
+              <str:ConceptIdentity>
+                <Ref id="TASA" maintainableParentID="STANDALONE_CONCEPT_SCHEME" maintainableParentVersion="1.0" agencyID="INE" package="conceptscheme" class="Concept"/>
+              </str:ConceptIdentity>
+              <str:LocalRepresentation>
+                <str:Enumeration>
+                  <Ref id="CL_COLLECTION" version="1.0" agencyID="INE" package="codelist" class="Codelist"/>
+                </str:Enumeration>
+              </str:LocalRepresentation>
+            </str:Dimension>
+            <str:Dimension id="TCONJ" urn="urn:sdmx:org.sdmx.infomodel.datastructure.Dimension=INE:KF_DIV_18(1.0).TCONJ" position="31">
+              <str:ConceptIdentity>
+                <Ref id="TCONJ" maintainableParentID="STANDALONE_CONCEPT_SCHEME" maintainableParentVersion="1.0" agencyID="INE" package="conceptscheme" class="Concept"/>
+              </str:ConceptIdentity>
+              <str:LocalRepresentation>
+                <str:Enumeration>
+                  <Ref id="CL_TCONJ" version="1.0" agencyID="INE" package="codelist" class="Codelist"/>
+                </str:Enumeration>
+              </str:LocalRepresentation>
+            </str:Dimension>
+            <str:TimeDimension id="TIME_PERIOD" urn="urn:sdmx:org.sdmx.infomodel.datastructure.TimeDimension=INE:KF_DIV_18(1.0).TIME_PERIOD" position="32">
+              <str:ConceptIdentity>
+                <Ref id="TIME_PERIOD" maintainableParentID="STANDALONE_CONCEPT_SCHEME" maintainableParentVersion="1.0" agencyID="INE" package="conceptscheme" class="Concept"/>
+              </str:ConceptIdentity>
+              <str:LocalRepresentation>
+                <str:TextFormat/>
+              </str:LocalRepresentation>
+            </str:TimeDimension>
+          </str:DimensionList>
+          <str:Group id="Group18_1" urn="urn:sdmx:org.sdmx.infomodel.datastructure.GroupDimensionDescriptor=INE:KF_DIV_18(1.0).Group18_1">
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="AREA_2"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="BASE"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="COLLECTION"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="GRPCOICOP"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="TCONJ"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+          </str:Group>
+          <str:Group id="Group18_10" urn="urn:sdmx:org.sdmx.infomodel.datastructure.GroupDimensionDescriptor=INE:KF_DIV_18(1.0).Group18_10">
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="AREA_2"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="BASE"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="COLLECTION"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="SCLS92"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="TCONJ"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+          </str:Group>
+          <str:Group id="Group18_11" urn="urn:sdmx:org.sdmx.infomodel.datastructure.GroupDimensionDescriptor=INE:KF_DIV_18(1.0).Group18_11">
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="AREA_2"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="BASE"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="COLLECTION"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="RUB92"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="TCONJ"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+          </str:Group>
+          <str:Group id="Group18_12" urn="urn:sdmx:org.sdmx.infomodel.datastructure.GroupDimensionDescriptor=INE:KF_DIV_18(1.0).Group18_12">
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="AREA_2"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="BASE"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="COLLECTION"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="GRPE92"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="TCONJ"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+          </str:Group>
+          <str:Group id="Group18_13" urn="urn:sdmx:org.sdmx.infomodel.datastructure.GroupDimensionDescriptor=INE:KF_DIV_18(1.0).Group18_13">
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="AREA_2"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="BASE"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="COLLECTION"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="GRP92"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="TCONJ"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+          </str:Group>
+          <str:Group id="Group18_14" urn="urn:sdmx:org.sdmx.infomodel.datastructure.GroupDimensionDescriptor=INE:KF_DIV_18(1.0).Group18_14">
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="AREA_2"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="BASE"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="COLLECTION"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="GRP83"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="TCONJ"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+          </str:Group>
+          <str:Group id="Group18_15" urn="urn:sdmx:org.sdmx.infomodel.datastructure.GroupDimensionDescriptor=INE:KF_DIV_18(1.0).Group18_15">
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="AREA_2"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="BASE"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="COLLECTION"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="RUB83"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="TCONJ"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+          </str:Group>
+          <str:Group id="Group18_16" urn="urn:sdmx:org.sdmx.infomodel.datastructure.GroupDimensionDescriptor=INE:KF_DIV_18(1.0).Group18_16">
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="AREA_2"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="BASE"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="COLLECTION"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="SCLS83"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="TCONJ"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+          </str:Group>
+          <str:Group id="Group18_17" urn="urn:sdmx:org.sdmx.infomodel.datastructure.GroupDimensionDescriptor=INE:KF_DIV_18(1.0).Group18_17">
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="AREA_2"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="BASE"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="COLLECTION"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="GRPE83"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="TCONJ"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+          </str:Group>
+          <str:Group id="Group18_18" urn="urn:sdmx:org.sdmx.infomodel.datastructure.GroupDimensionDescriptor=INE:KF_DIV_18(1.0).Group18_18">
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="AREA_2"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="BASE"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="COLLECTION"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="RUB76"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="TCONJ"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+          </str:Group>
+          <str:Group id="Group18_19" urn="urn:sdmx:org.sdmx.infomodel.datastructure.GroupDimensionDescriptor=INE:KF_DIV_18(1.0).Group18_19">
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="AREA_2"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="BASE"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="COLLECTION"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="SCLS76"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="TCONJ"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+          </str:Group>
+          <str:Group id="Group18_2" urn="urn:sdmx:org.sdmx.infomodel.datastructure.GroupDimensionDescriptor=INE:KF_DIV_18(1.0).Group18_2">
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="AREA_2"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="BASE"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="COLLECTION"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="SGRP01"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="TCONJ"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+          </str:Group>
+          <str:Group id="Group18_20" urn="urn:sdmx:org.sdmx.infomodel.datastructure.GroupDimensionDescriptor=INE:KF_DIV_18(1.0).Group18_20">
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="AREA_2"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="BASE"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="CLS06"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="COLLECTION"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="TCONJ"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+          </str:Group>
+          <str:Group id="Group18_21" urn="urn:sdmx:org.sdmx.infomodel.datastructure.GroupDimensionDescriptor=INE:KF_DIV_18(1.0).Group18_21">
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="AREA_2"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="BASE"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="COLLECTION"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="SCLS06"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="TCONJ"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+          </str:Group>
+          <str:Group id="Group18_22" urn="urn:sdmx:org.sdmx.infomodel.datastructure.GroupDimensionDescriptor=INE:KF_DIV_18(1.0).Group18_22">
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="AREA_2"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="BASE"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="COLLECTION"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="SGRP06"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="TCONJ"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+          </str:Group>
+          <str:Group id="Group18_23" urn="urn:sdmx:org.sdmx.infomodel.datastructure.GroupDimensionDescriptor=INE:KF_DIV_18(1.0).Group18_23">
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="AREA_3"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="BASE"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="COLLECTION"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="GRPCOICOP"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="TCONJ"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+          </str:Group>
+          <str:Group id="Group18_24" urn="urn:sdmx:org.sdmx.infomodel.datastructure.GroupDimensionDescriptor=INE:KF_DIV_18(1.0).Group18_24">
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="AREA_3"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="BASE"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="COLLECTION"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="SGRP01"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="TCONJ"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+          </str:Group>
+          <str:Group id="Group18_25" urn="urn:sdmx:org.sdmx.infomodel.datastructure.GroupDimensionDescriptor=INE:KF_DIV_18(1.0).Group18_25">
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="AREA_3"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="BASE"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="COLLECTION"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="GRPCOICOP"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="TCONJ"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+          </str:Group>
+          <str:Group id="Group18_26" urn="urn:sdmx:org.sdmx.infomodel.datastructure.GroupDimensionDescriptor=INE:KF_DIV_18(1.0).Group18_26">
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="AREA_3"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="BASE"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="COLLECTION"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="SGRP92"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="TCONJ"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+          </str:Group>
+          <str:Group id="Group18_27" urn="urn:sdmx:org.sdmx.infomodel.datastructure.GroupDimensionDescriptor=INE:KF_DIV_18(1.0).Group18_27">
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="AREA_3"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="BASE"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="COLLECTION"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="GRP92"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="TCONJ"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+          </str:Group>
+          <str:Group id="Group18_28" urn="urn:sdmx:org.sdmx.infomodel.datastructure.GroupDimensionDescriptor=INE:KF_DIV_18(1.0).Group18_28">
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="AREA_3"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="BASE"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="COLLECTION"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="SGRP06"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="TCONJ"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+          </str:Group>
+          <str:Group id="Group18_29" urn="urn:sdmx:org.sdmx.infomodel.datastructure.GroupDimensionDescriptor=INE:KF_DIV_18(1.0).Group18_29">
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="AREA_8"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="BASE"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="COLLECTION"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="GRP83"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="TCONJ"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+          </str:Group>
+          <str:Group id="Group18_3" urn="urn:sdmx:org.sdmx.infomodel.datastructure.GroupDimensionDescriptor=INE:KF_DIV_18(1.0).Group18_3">
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="AREA_2"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="BASE"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="CLS01"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="COLLECTION"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="TCONJ"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+          </str:Group>
+          <str:Group id="Group18_30" urn="urn:sdmx:org.sdmx.infomodel.datastructure.GroupDimensionDescriptor=INE:KF_DIV_18(1.0).Group18_30">
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="AREA_8"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="BASE"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="COLLECTION"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="GRP76"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="TCONJ"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+          </str:Group>
+          <str:Group id="Group18_4" urn="urn:sdmx:org.sdmx.infomodel.datastructure.GroupDimensionDescriptor=INE:KF_DIV_18(1.0).Group18_4">
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="AREA_2"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="BASE"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="COLLECTION"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="SCLS01"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="TCONJ"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+          </str:Group>
+          <str:Group id="Group18_5" urn="urn:sdmx:org.sdmx.infomodel.datastructure.GroupDimensionDescriptor=INE:KF_DIV_18(1.0).Group18_5">
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="AREA_2"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="BASE"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="COLLECTION"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="GRPE01"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="TCONJ"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+          </str:Group>
+          <str:Group id="Group18_6" urn="urn:sdmx:org.sdmx.infomodel.datastructure.GroupDimensionDescriptor=INE:KF_DIV_18(1.0).Group18_6">
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="AREA_2"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="BASE"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="COLLECTION"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="RUB01"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="TCONJ"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+          </str:Group>
+          <str:Group id="Group18_7" urn="urn:sdmx:org.sdmx.infomodel.datastructure.GroupDimensionDescriptor=INE:KF_DIV_18(1.0).Group18_7">
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="AREA_2"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="BASE"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="COLLECTION"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="GRPCOICOP"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="TCONJ"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+          </str:Group>
+          <str:Group id="Group18_8" urn="urn:sdmx:org.sdmx.infomodel.datastructure.GroupDimensionDescriptor=INE:KF_DIV_18(1.0).Group18_8">
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="AREA_2"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="BASE"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="COLLECTION"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="SGRP92"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="TCONJ"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+          </str:Group>
+          <str:Group id="Group18_9" urn="urn:sdmx:org.sdmx.infomodel.datastructure.GroupDimensionDescriptor=INE:KF_DIV_18(1.0).Group18_9">
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="AREA_2"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="BASE"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="CLS92"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="COLLECTION"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+            <str:GroupDimension>
+              <str:DimensionReference>
+                <Ref id="TCONJ"/>
+              </str:DimensionReference>
+            </str:GroupDimension>
+          </str:Group>
+          <str:AttributeList id="AttributeDescriptor" urn="urn:sdmx:org.sdmx.infomodel.datastructure.AttributeDescriptor=INE:KF_DIV_18(1.0).AttributeDescriptor">
+            <str:Attribute id="TITLE" urn="urn:sdmx:org.sdmx.infomodel.datastructure.DataAttribute=INE:KF_DIV_18(1.0).TITLE" assignmentStatus="Conditional">
+              <str:ConceptIdentity>
+                <Ref id="TITLE" maintainableParentID="STANDALONE_CONCEPT_SCHEME" maintainableParentVersion="1.0" agencyID="INE" package="conceptscheme" class="Concept"/>
+              </str:ConceptIdentity>
+              <str:LocalRepresentation>
+                <str:TextFormat textType="String" maxLength="100"/>
+              </str:LocalRepresentation>
+              <str:AttributeRelationship>
+                <str:Group>
+                  <Ref id="Group18_1"/>
+                </str:Group>
+              </str:AttributeRelationship>
+            </str:Attribute>
+            <str:Attribute id="COD_SERIE" urn="urn:sdmx:org.sdmx.infomodel.datastructure.DataAttribute=INE:KF_DIV_18(1.0).COD_SERIE" assignmentStatus="Conditional">
+              <str:ConceptIdentity>
+                <Ref id="COD_SERIE" maintainableParentID="STANDALONE_CONCEPT_SCHEME" maintainableParentVersion="1.0" agencyID="INE" package="conceptscheme" class="Concept"/>
+              </str:ConceptIdentity>
+              <str:LocalRepresentation>
+                <str:TextFormat textType="String" maxLength="25"/>
+              </str:LocalRepresentation>
+              <str:AttributeRelationship>
+                <str:Dimension>
+                  <Ref id="AREA_1"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="AREA_2"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="AREA_3"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="AREA_8"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="BASE"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="CLS01"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="CLS06"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="CLS92"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="COLLECTION"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="FREQ"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="GRP76"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="GRP83"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="GRP92"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="GRPCOICOP"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="GRPE01"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="GRPE83"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="GRPE92"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="RUB01"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="RUB76"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="RUB83"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="RUB92"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="SCLS01"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="SCLS06"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="SCLS76"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="SCLS83"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="SCLS92"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="SGRP01"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="SGRP06"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="SGRP92"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="TASA"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="TCONJ"/>
+                </str:Dimension>
+              </str:AttributeRelationship>
+            </str:Attribute>
+            <str:Attribute id="DECIMALS" urn="urn:sdmx:org.sdmx.infomodel.datastructure.DataAttribute=INE:KF_DIV_18(1.0).DECIMALS" assignmentStatus="Mandatory">
+              <str:ConceptIdentity>
+                <Ref id="DECIMALS" maintainableParentID="STANDALONE_CONCEPT_SCHEME" maintainableParentVersion="1.0" agencyID="INE" package="conceptscheme" class="Concept"/>
+              </str:ConceptIdentity>
+              <str:LocalRepresentation>
+                <str:Enumeration>
+                  <Ref id="CL_DECIMALS" version="1.0" agencyID="INE" package="codelist" class="Codelist"/>
+                </str:Enumeration>
+              </str:LocalRepresentation>
+              <str:AttributeRelationship>
+                <str:Group>
+                  <Ref id="Group18_1"/>
+                </str:Group>
+              </str:AttributeRelationship>
+            </str:Attribute>
+            <str:Attribute id="OBS_CONF" urn="urn:sdmx:org.sdmx.infomodel.datastructure.DataAttribute=INE:KF_DIV_18(1.0).OBS_CONF" assignmentStatus="Mandatory">
+              <str:ConceptIdentity>
+                <Ref id="OBS_CONF" maintainableParentID="STANDALONE_CONCEPT_SCHEME" maintainableParentVersion="1.0" agencyID="INE" package="conceptscheme" class="Concept"/>
+              </str:ConceptIdentity>
+              <str:LocalRepresentation>
+                <str:Enumeration>
+                  <Ref id="CL_CONF_STATUS" version="1.0" agencyID="INE" package="codelist" class="Codelist"/>
+                </str:Enumeration>
+              </str:LocalRepresentation>
+              <str:AttributeRelationship>
+                <str:PrimaryMeasure>
+                  <Ref id="OBS_VALUE"/>
+                </str:PrimaryMeasure>
+              </str:AttributeRelationship>
+            </str:Attribute>
+            <str:Attribute id="OBS_STATUS" urn="urn:sdmx:org.sdmx.infomodel.datastructure.DataAttribute=INE:KF_DIV_18(1.0).OBS_STATUS" assignmentStatus="Mandatory">
+              <str:ConceptIdentity>
+                <Ref id="OBS_STATUS" maintainableParentID="STANDALONE_CONCEPT_SCHEME" maintainableParentVersion="1.0" agencyID="INE" package="conceptscheme" class="Concept"/>
+              </str:ConceptIdentity>
+              <str:LocalRepresentation>
+                <str:Enumeration>
+                  <Ref id="CL_OBS_STATUS" version="1.0" agencyID="INE" package="codelist" class="Codelist"/>
+                </str:Enumeration>
+              </str:LocalRepresentation>
+              <str:AttributeRelationship>
+                <str:PrimaryMeasure>
+                  <Ref id="OBS_VALUE"/>
+                </str:PrimaryMeasure>
+              </str:AttributeRelationship>
+            </str:Attribute>
+            <str:Attribute id="TIME_FORMAT" urn="urn:sdmx:org.sdmx.infomodel.datastructure.DataAttribute=INE:KF_DIV_18(1.0).TIME_FORMAT" assignmentStatus="Mandatory">
+              <str:ConceptIdentity>
+                <Ref id="TIME_FORMAT" maintainableParentID="STANDALONE_CONCEPT_SCHEME" maintainableParentVersion="1.0" agencyID="INE" package="conceptscheme" class="Concept"/>
+              </str:ConceptIdentity>
+              <str:LocalRepresentation>
+                <str:Enumeration>
+                  <Ref id="CL_TIME_FORMAT" version="1.0" agencyID="INE" package="codelist" class="Codelist"/>
+                </str:Enumeration>
+              </str:LocalRepresentation>
+              <str:AttributeRelationship>
+                <str:Dimension>
+                  <Ref id="AREA_1"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="AREA_2"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="AREA_3"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="AREA_8"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="BASE"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="CLS01"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="CLS06"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="CLS92"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="COLLECTION"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="FREQ"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="GRP76"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="GRP83"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="GRP92"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="GRPCOICOP"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="GRPE01"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="GRPE83"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="GRPE92"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="RUB01"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="RUB76"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="RUB83"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="RUB92"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="SCLS01"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="SCLS06"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="SCLS76"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="SCLS83"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="SCLS92"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="SGRP01"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="SGRP06"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="SGRP92"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="TASA"/>
+                </str:Dimension>
+                <str:Dimension>
+                  <Ref id="TCONJ"/>
+                </str:Dimension>
+              </str:AttributeRelationship>
+            </str:Attribute>
+            <str:Attribute id="UNIT" urn="urn:sdmx:org.sdmx.infomodel.datastructure.DataAttribute=INE:KF_DIV_18(1.0).UNIT" assignmentStatus="Mandatory">
+              <str:ConceptIdentity>
+                <Ref id="UNIT" maintainableParentID="STANDALONE_CONCEPT_SCHEME" maintainableParentVersion="1.0" agencyID="INE" package="conceptscheme" class="Concept"/>
+              </str:ConceptIdentity>
+              <str:LocalRepresentation>
+                <str:Enumeration>
+                  <Ref id="CL_UNIT" version="1.0" agencyID="INE" package="codelist" class="Codelist"/>
+                </str:Enumeration>
+              </str:LocalRepresentation>
+              <str:AttributeRelationship>
+                <str:Group>
+                  <Ref id="Group18_1"/>
+                </str:Group>
+              </str:AttributeRelationship>
+            </str:Attribute>
+            <str:Attribute id="UNIT_MULT" urn="urn:sdmx:org.sdmx.infomodel.datastructure.DataAttribute=INE:KF_DIV_18(1.0).UNIT_MULT" assignmentStatus="Mandatory">
+              <str:ConceptIdentity>
+                <Ref id="UNIT_MULT" maintainableParentID="STANDALONE_CONCEPT_SCHEME" maintainableParentVersion="1.0" agencyID="INE" package="conceptscheme" class="Concept"/>
+              </str:ConceptIdentity>
+              <str:LocalRepresentation>
+                <str:Enumeration>
+                  <Ref id="CL_UNIT_MULT" version="1.0" agencyID="INE" package="codelist" class="Codelist"/>
+                </str:Enumeration>
+              </str:LocalRepresentation>
+              <str:AttributeRelationship>
+                <str:Group>
+                  <Ref id="Group18_1"/>
+                </str:Group>
+              </str:AttributeRelationship>
+            </str:Attribute>
+          </str:AttributeList>
+          <str:MeasureList id="MeasureDescriptor" urn="urn:sdmx:org.sdmx.infomodel.datastructure.MeasureDescriptor=INE:KF_DIV_18(1.0).MeasureDescriptor">
+            <str:PrimaryMeasure id="OBS_VALUE" urn="urn:sdmx:org.sdmx.infomodel.datastructure.PrimaryMeasure=INE:KF_DIV_18(1.0).OBS_VALUE">
+              <str:ConceptIdentity>
+                <Ref id="OBS_VALUE" maintainableParentID="STANDALONE_CONCEPT_SCHEME" maintainableParentVersion="1.0" agencyID="INE" package="conceptscheme" class="Concept"/>
+              </str:ConceptIdentity>
+              <str:LocalRepresentation>
+                <str:TextFormat textType="Double"/>
+              </str:LocalRepresentation>
+            </str:PrimaryMeasure>
+          </str:MeasureList>
+        </str:DataStructureComponents>
+      </str:DataStructure>
+    </str:DataStructures>
+  </mes:Structures>
+</mes:Structure>

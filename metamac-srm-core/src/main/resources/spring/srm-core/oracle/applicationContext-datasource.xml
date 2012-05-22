@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:jee="http://www.springframework.org/schema/jee" xmlns:util="http://www.springframework.org/schema/util"
+    xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd 
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+    http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
+    http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd"
+    default-autowire="byName">
+
+    <bean id="jpaPropertiesForStructureResource" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+        <property name="locations">
+            <list>
+                <value>classpath:${environment.metamac.data}/conf/static/jpaPropertiesForStructureResource.properties</value>
+                <value>file:///${environment.metamac.data}/conf/static/jpaPropertiesForStructureResource.properties</value>
+            </list>
+        </property>
+        <property name="ignoreResourceNotFound" value="true" />
+    </bean>
+
+    <bean id="entityManagerFactoryCore" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="persistenceUnitName" value="SrmCoreEntityManagerFactory" />
+        <property name="persistenceXmlLocation" value="classpath:META-INF/persistence-core.xml" />
+        <property name="jpaProperties">
+            <ref local="jpaPropertiesForStructureResource" />
+        </property>
+        <property name="dataSource" ref="dataSourceCore" />
+    </bean>
+
+    <bean id="txManagerCore" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactoryCore" />
+        <property name="dataSource" ref="dataSourceCore" />
+    </bean>
+
+    <bean id="dataSourceCore" class="org.springframework.jndi.JndiObjectFactoryBean">
+        <property name="jndiName">
+            <value>java:comp/env/jdbc/SDMXDS</value>
+        </property>
+    </bean>
+
+</beans>

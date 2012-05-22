@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+	   xmlns:cxf="http://cxf.apache.org/core"
+	   xmlns:util="http://www.springframework.org/schema/util" 
+	   xsi:schemaLocation="
+			http://www.springframework.org/schema/beans		http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://cxf.apache.org/jaxrs		http://cxf.apache.org/schemas/jaxrs.xsd
+			http://cxf.apache.org/core 		http://cxf.apache.org/schemas/core.xsd
+			http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+  <import resource="classpath:META-INF/cxf/cxf.xml" />
+  <import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+  
+  <jaxrs:server id="srmserver" address="/rest">
+	<jaxrs:features>
+	     <cxf:logging/>
+	</jaxrs:features>
+    
+    <jaxrs:serviceBeans>
+    	<ref bean="datastructureRestServiceFacade"/>	
+    </jaxrs:serviceBeans>
+    
+    <jaxrs:providers>
+    	<ref bean="jaxbProvider"/>
+    </jaxrs:providers>
+    		   
+  </jaxrs:server>
+  
+  <bean id="datastructureRestServiceFacade" class="org.siemac.metamac.srm.core.facade.rest.api.serviceimpl.DatastructureRestServiceFacadeImpl"/>
+  
+  <bean id="jaxbProvider" class="org.apache.cxf.jaxrs.provider.JAXBElementProvider">
+  	<property name="schemaHandler" ref="schemaHolder"/>
+		<property name="marshallerProperties" ref="propertiesMap"/>
+  </bean>
+  
+  <bean id="schemaHolder" class="org.apache.cxf.jaxrs.utils.schemas.SchemaHandler">
+	<property name="schemas" ref="theSchemas"/>
+  </bean>
+
+  <util:list id="theSchemas">
+	<value>classpath:/schema/sdmx21/SDMXMessage.xsd</value>
+	<value>classpath:/schema/sdmx21/rest/SDMXMessage.xsd</value>
+  </util:list>
+
+	<util:map id="propertiesMap">
+		<entry key="jaxb.formatted.output">
+		   <value type="java.lang.Boolean">true</value>
+		</entry>
+	</util:map>
+
+</beans>
+

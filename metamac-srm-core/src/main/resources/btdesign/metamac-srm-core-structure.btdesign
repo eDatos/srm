@@ -1,0 +1,204 @@
+import "classpath:/btdesign/metamac-api-domain-enums.btdesign"
+
+import "classpath:/btdesign/export/metamac-core-common-basictype.btdesign"
+import "classpath:/btdesign/export/metamac-core-common-vo.btdesign"
+import "classpath:/btdesign/export/metamac-core-common-entity.btdesign"
+
+import "classpath:/btdesign/metamac-srm-core-base.btdesign"
+import "classpath:/btdesign/metamac-srm-core-constraints.btdesign"
+
+Application Structure {
+    basePackage=unused
+
+    Module core_structure {
+    	basePackage=org.siemac.metamac.srm.core.structure
+    	
+       "Abstract concept (i.e. the structure without any data) of a flow of data that providers will provide for different reference periods.
+       Inherits from StructureUsage"	
+       Entity DataflowDefinition extends @StructureUsage {
+       		databaseTable = "TB_DATAFLOW_DEFINITIONS"
+       		
+       }
+       
+       Service DataStructureDefinitionService {
+       		> @DataStructureDefinitionRepository
+       		> @SdmxBaseService
+			
+          	@DataStructureDefinition saveDsd(@DataStructureDefinition dataStructureDefinition) throws MetamacException;
+          	deleteDsd(@DataStructureDefinition dataStructureDefinition) throws MetamacException;
+
+	   		findDsdById => DataStructureDefinitionRepository.findById;
+       		findDsdByCondition => DataStructureDefinitionRepository.findByCondition;
+       		findAllDsds => DataStructureDefinitionRepository.findAll;
+	   	   		
+	   		@ComponentList saveDescriptorForDsd(@DataStructureDefinition dataStructureDefinition, @ComponentList componentList) throws MetamacException;
+	   		deleteDescriptorForDsd(@DataStructureDefinition dataStructureDefinition, @ComponentList componentList) throws MetamacException;
+	   
+	   		@Component saveComponentForDsd(@DataStructureDefinition dataStructureDefinition, @Component component, @TypeComponentList typeComponentList) throws MetamacException;	   
+	    	deleteComponentForDsd(@DataStructureDefinition dataStructureDefinition, @Component component, @TypeComponentList typeComponentList) throws MetamacException;
+	   }		
+		
+       "A collection of metadata concepts, their structure and usage when used to collect or disseminate data."	
+       Entity DataStructureDefinition extends @Structure {
+       		databaseTable = "TB_DATASTRUCTURE_DEFINITIONS"
+       		      	
+       		Repository DataStructureDefinitionRepository {
+       			findById;
+       			findAll;
+       			save;
+       			delete;
+				findByCondition(PagingParameter pagingParameter);
+			}
+       }
+	
+	
+	   "A set metadata concepts that define a partial key derived from the Dimension Descriptor in a Data Structure Definition.
+	   Inherits from ComponentList"
+	   Entity GroupDimensionDescriptor extends @ComponentList {
+	   	    databaseTable = "TB_GROUPDIMENSION_DESCRIPTORS"
+	   	       		
+	   		"Identifies an Attachment Constraint that specifies the sub set of Dimension, Measure, or Attribute values to which
+			an Attribute can be attached."
+//			- Set<@AttachmentConstraint> constraint inverse;
+			Boolean isAttachmentConstraint nullable;
+	   }
+		
+	   "An ordered set of metadata concepts that, combined, classify a statistical series, and whose values, when combined (the key) in an
+	   instance such as a data set, uniquely identify a specific observation.
+	   Inherits from ComponentList"
+       Entity DimensionDescriptor extends @ComponentList {
+       		databaseTable = "TB_DIMENSION_DESCRIPTORS"
+       		
+       }
+       
+       "A set metadata concepts that define the attributes of a Data Structure Definition.
+       Inherits from ComponentList"
+       Entity AttributeDescriptor extends @ComponentList {
+       		databaseTable = "TB_ATTRIBUTE_DESCRIPTORS"
+       		       		
+       }
+       
+       "A set metadata concepts that define the measures of a Data Structure Definition.
+       Inherits from ComponentList"
+       Entity MeasureDescriptor extends @ComponentList {
+        	databaseTable = "TB_MEASURE_DESCRIPTORS"
+        	      		
+       }
+       
+       
+       " Abstract Class
+       Sub class: Dimension, MeasureDimension, TimeDimension."
+       abstract Entity DimensionComponent extends @Component {
+       	    databaseTable = "TB_DIMENSION_COMPONENTS"
+       	        	
+       		Integer orderLogic nullable;
+       }
+       
+       
+       "A metadata concept used (most probably together with other metadata concepts) to classify a statistical series, e.g. a
+	   statistical concept indicating a certain economic activity or a geographical reference area.
+	   Inherits from Component"
+       Entity Dimension extends @DimensionComponent {
+        	databaseTable = "TB_DIMENSIONS"
+        	
+       		"Association to the Concept that specifies the role that the Dimension plays in the Data Structure Definition."
+       		- Set<@ExternalItem> role databaseJoinTable="TB_DIMC_EXTITEM" databaseColumn="EXTERNALITEM_FK" cascade="all-delete-orphan";
+       }
+	   
+	   "A statistical concept that identifies the component in the key structure that has the role of measure. This dimension has, as its representation the Concept Scheme that defines the measure concepts.
+	   Inherits from Dimension"
+       Entity MeasureDimension extends @DimensionComponent {
+        	databaseTable = "TB_MEASURE_DIMENSIONS"
+        	       	
+       		"Association to the Concept that specifies the role that the Measure Dimension plays in the Data Structure Definition."
+       		- Set<@ExternalItem> role databaseJoinTable="TB_MEAD_EXTITEM" databaseColumn="EXTERNALITEM_FK" cascade="all-delete-orphan";
+       }
+       
+       "A metadata concept that identifies the component in the key structure that has the role of time.
+       Inherits from Dimension"
+       Entity TimeDimension extends @DimensionComponent {
+        	databaseTable = "TB_TIME_DIMENSIONS"
+       }
+       
+       
+       "A characteristic of an object or entity.
+       Inherits from Component
+       Sub class: ReportingYear, StartDay"
+       Entity DataAttribute extends @Component {
+        	databaseTable = "TB_DATA_ATTRIBUTES"
+        	       	
+       		"Defines the usage status which is constrained by the data type Usage Status."
+       		- @UsageStatus usageStatus nullable
+       		"Association to a Attribute Relationship."
+       		- @AttributeRelationship relateTo nullable cascade="all-delete-orphan"
+       		"Association to the Concept that specifies the role that the Measure Dimension plays in the Data Structure Definition."
+       		- Set<@ExternalItem> role databaseJoinTable="TB_DATTR_EXTITEM" databaseColumn="EXTERNALITEM_FK" cascade="all-delete-orphan";
+       }
+       
+       "A specialised Data Attribute whose value is used in conjunction with the predefined reporting periods in the Time
+	   Dimension. If this is not present, then by default all reporting period values for the TimeDimension will be
+	   assumed to be based on a reporting year start day of January 1.
+       Inherits from DataAttribute"
+       Entity ReportingYearStartDay extends @DataAttribute {
+        	databaseTable = "TB_REPORTING_YEARSTARTDAYS"
+        	
+       }
+       
+       "The metadata concept that is the phenomenon to be measured in a data set. In a data set the instance of the measure
+	   is often called the observation."
+       Entity PrimaryMeasure extends @Component {
+        	databaseTable = "TB_PRIMARY_MEASURSE"
+        	
+       }
+       
+       "Specifies the type of artefact to which a Data Attribute can be attached in a Data Set.
+       Sub classes are: NoSpecifiedRelationship, PrimaryMeasureRelationship, GroupRelationship, DimensionRelationship"
+       abstract Entity AttributeRelationship {
+       		inheritanceType=SINGLE_TABLE
+       	    databaseTable = "TB_ATTR_RELATIONSHIPS"
+			hint="idSequence=ATTR_RELAT"
+			not auditable
+			
+			Repository AttributeRelationshipRepository {
+				findById;
+				delete;
+			}
+       }
+       
+       "The Data Attribute is not related to any specific construct."
+       Entity NoSpecifiedRelationship extends @AttributeRelationship {
+       		not auditable
+       	    // databaseTable = "TB_NOSPECIFIEDRELATIONSHIPS"
+       	    
+       }
+       
+       "The Data Attribute is related to the Primary Measure construct."
+       Entity PrimaryMeasureRelationship extends @AttributeRelationship {
+       		not auditable
+       	    // databaseTable = "TB_PRIMEASURERELATIONSHIPS"
+       	    
+       }
+       
+       "The Data Attribute is related to a Group Dimension Descriptor construct."
+       Entity GroupRelationship extends @AttributeRelationship {
+       		not auditable
+       	    // databaseTable = "TB_GROUPRELATIONSHIPS"
+       	    
+       		"An association to the Group Dimension Descriptor. UML AGGREGATION"
+       		- @GroupDimensionDescriptor groupKey nullable cascade="refresh";
+       }
+       
+       "The Data Attribute is related to a set of Dimensions."
+       Entity DimensionRelationship extends @AttributeRelationship {
+       		not auditable
+       	    // databaseTable = "TB_DIMENSIONRELATIONSHIPS"
+       	           	
+       	    "An association to the Group Dimension Descriptor. UML AGGREGATION"
+       		- Set<@GroupDimensionDescriptor> groupKey databaseJoinTable="TB_DIMREL_GROUPDIM" cascade="refresh" databaseColumn="GROUPDIMENSION_DESCRIPTOR_FK" databaseJoinColumn="DIMENSION_RELATIONSHIP_FK";
+       		"Association to the set of Dimensions to which the Data Attribute is related."
+       		- Set<@DimensionComponent> dimension databaseJoinTable="TB_DIMREL_DIMCOM" cascade="refresh" databaseColumn="DIMENSION_COMPONENT_FK" databaseJoinColumn="DIMENSION_RELATIONSHIP_FK";
+       }
+
+    }
+
+}

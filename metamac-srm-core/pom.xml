@@ -1,0 +1,595 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.siemac.metamac</groupId>
+		<artifactId>metamac-srm-parent</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+		<relativePath>../metamac-srm-parent/pom.xml</relativePath>
+	</parent>
+
+	<groupId>org.siemac.metamac</groupId>
+	<artifactId>metamac-srm-core</artifactId>
+	<packaging>jar</packaging>
+	<name>SIEMAC :: METAMAC :: SRM :: CORE</name>
+
+	<properties>
+
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.siemac.metamac</groupId>
+			<artifactId>metamac-common-test</artifactId>
+			<version>${metamac-common-test.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.siemac.metamac</groupId>
+			<artifactId>metamac-api-domain</artifactId>
+			<version>${metamac-api-domain.version}</version>
+			<classifier>client</classifier>
+		</dependency>
+		<dependency>
+			<groupId>org.siemac.metamac</groupId>
+			<artifactId>metamac-transformation</artifactId>
+			<version>${metamac-transformation.version}</version>
+			<classifier>client</classifier>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.annotation</groupId>
+			<artifactId>jsr250-api</artifactId>
+			<version>${jsr250-api.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.persistence</groupId>
+			<artifactId>persistence-api</artifactId>
+			<version>${jpa.version}</version>
+			<!-- Add scope provided when deployed in jboss -->
+			<!-- <scope>provided</scope> -->
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>${hibernate.version}</version>
+			<!-- Add scope provided when deployed in jboss -->
+			<!-- <scope>provided</scope> -->
+			<exclusions>
+				<exclusion>
+					<groupId>javax.transaction</groupId>
+					<artifactId>jta</artifactId>
+				</exclusion>
+				<!-- TODO Probando esta exclusion, quitar si hay fallos -->
+				<!-- <exclusion> -->
+				<!-- <groupId>xml-apis</groupId> -->
+				<!-- <artifactId>xml-apis</artifactId> -->
+<!-- </exclusion> -->
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-annotations</artifactId>
+			<version>${hibernate.annotations.version}</version>
+			<!-- Add scope provided when deployed in jboss -->
+			<!-- <scope>provided</scope> -->
+			<exclusions>
+				<exclusion>
+					<groupId>org.hibernate</groupId>
+					<artifactId>hibernate-core</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>${hibernate.entitymanager.version}</version>
+			<!-- Add scope provided when deployed in jboss -->
+			<!-- <scope>provided</scope> -->
+			<exclusions>
+				<exclusion>
+					<artifactId>jboss-common-core</artifactId>
+					<groupId>jboss</groupId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.hibernate</groupId>
+					<artifactId>hibernate-core</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>${hibernate.validator.version}</version>
+			<!-- Add scope provided when deployed in jboss -->
+			<!-- <scope>provided</scope> -->
+			<exclusions>
+				<exclusion>
+					<groupId>org.hibernate</groupId>
+					<artifactId>hibernate-core</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.ehcache</groupId>
+			<artifactId>ehcache-core</artifactId>
+			<version>${ehcache.version}</version>
+			<!-- Add scope provided when deployed in jboss -->
+			<!-- <scope>provided</scope> -->
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>log4j-over-slf4j</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>${logback.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>xerces</groupId>
+			<artifactId>xmlParserAPIs</artifactId>
+			<version>${xerces.version}</version>
+			<!-- Add scope provided when deployed in jboss -->
+			<!-- <scope>provided</scope> -->
+		</dependency>
+		<dependency>
+			<groupId>xerces</groupId>
+			<artifactId>xercesImpl</artifactId>
+			<version>${xerces.version}</version>
+			<!-- Add scope provided when deployed in jboss -->
+			<!-- <scope>provided</scope> -->
+		</dependency>
+		<!-- Remove dependency to javax.transaction when running in a transaction supporting container (jboss etc) -->
+		<dependency>
+			<groupId>javax.transaction</groupId>
+			<artifactId>jta</artifactId>
+			<version>${jta.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${spring.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aop</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>${spring.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>javax.transaction</groupId>
+					<artifactId>jta</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jms</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>${aspectj.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<version>${aspectj.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>aopalliance</groupId>
+			<artifactId>aopalliance</artifactId>
+			<version>${aopalliance.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>${commons-lang.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-collections</groupId>
+			<artifactId>commons-collections</artifactId>
+			<version>${commons-collections.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>${commons-beanutils.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<!-- Need to define version 1.3 due to conflicting versions -->
+			<groupId>commons-pool</groupId>
+			<artifactId>commons-pool</artifactId>
+			<version>${commons-pool.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.dbunit</groupId>
+			<artifactId>dbunit</artifactId>
+			<version>${dbunit.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${spring.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>commons-dbcp</groupId>
+			<artifactId>commons-dbcp</artifactId>
+			<version>${commons-dbcp.version}</version>
+			<!-- Add scope test when running with a persistent database (mysql etc) -->
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
+			<version>${hsqldb.version}</version>
+			<!-- Add scope test when running with a persistent database (mysql etc) -->
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.fornax.cartridges</groupId>
+			<artifactId>fornax-cartridges-sculptor-generator</artifactId>
+			<version>${sculptor.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.fornax.cartridges</groupId>
+			<artifactId>fornax-cartridges-sculptor-framework</artifactId>
+			<version>${sculptor.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.fornax.cartridges</groupId>
+			<artifactId>fornax-cartridges-sculptor-framework-test</artifactId>
+			<version>${sculptor.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>${joda-time.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time-hibernate</artifactId>
+			<version>${joda-time-hibernate.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.hibernate</groupId>
+					<artifactId>hibernate</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>hsqldb</groupId>
+					<artifactId>hsqldb</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>ehcache</groupId>
+					<artifactId>ehcache</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>dom4j</groupId>
+					<artifactId>dom4j</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>antlr</groupId>
+					<artifactId>antlr</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>cglib</groupId>
+					<artifactId>cglib-full</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>cglib</groupId>
+			<artifactId>cglib-nodep</artifactId>
+			<version>${cglib-nodep.version}</version>
+			<!-- Add scope provided when deployed in jboss -->
+			<!--scope>provided</scope -->
+		</dependency>
+		<dependency>
+			<groupId>com.oracle</groupId>
+			<artifactId>oracle</artifactId>
+			<version>${oracle.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>${servlet-api.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.dozer</groupId>
+			<artifactId>dozer</artifactId>
+			<version>${dozer.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>xmlunit</groupId>
+			<artifactId>xmlunit</artifactId>
+			<version>${xmlunit.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.googlecode</groupId>
+			<artifactId>kryo</artifactId>
+			<version>${kryo.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>net.java.dev.stax-utils</groupId>
+			<artifactId>stax-utils</artifactId>
+			<version>20070216</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>${mockito-version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<finalName>${project.artifactId}</finalName>
+
+		<plugins>
+			<plugin>
+				<artifactId>maven-clean-plugin</artifactId>
+				<version>2.4.1</version>
+				<configuration>
+					<filesets>
+						<fileset>
+							<directory>src/generated</directory>
+							<includes>
+								<include>**/*.java</include>
+								<include>**/*.xml</include>
+								<include>**/*.properties</include>
+								<include>**/*.dot</include>
+							</includes>
+							<excludes>
+								<exclude>**/.svn/*</exclude>
+							</excludes>
+							<followSymlinks>false</followSymlinks>
+						</fileset>
+						<fileset>
+							<directory>src/test/generated</directory>
+							<includes>
+								<include>**/*.java</include>
+								<include>**/*.xml</include>
+								<include>**/*.properties</include>
+							</includes>
+							<excludes>
+								<exclude>**/.svn/*</exclude>
+							</excludes>
+							<followSymlinks>false</followSymlinks>
+						</fileset>
+					</filesets>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.3.1</version>
+				<executions>
+					<execution>
+						<id>${project.artifactId}-client</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<phase>package</phase>
+						<configuration>
+							<classifier>client</classifier>
+							<excludes>
+								<exclude>**/*.dot</exclude>
+								<exclude>**/generator/</exclude>
+							</excludes>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.fornax.toolsupport</groupId>
+				<artifactId>fornax-oaw-m2-plugin</artifactId>
+				<version>${fornax-oaw-m2.version}</version>
+				<configuration>
+					<workflowEngine>mwe2</workflowEngine>
+					<workflowDescriptor>file://${basedir}/src/main/resources/generator/Workflow.mwe2</workflowDescriptor>
+					<checkFilesets>
+						<checkFileset>
+							<directory>${basedir}</directory>
+							<includes>
+								<include>src/main/resources/*.btdesign</include>
+							</includes>
+						</checkFileset>
+					</checkFilesets>
+					<properties>
+						<modelFile>src/main/resources/model.btdesign</modelFile>
+						<appProject>${project.artifactId}</appProject>
+					</properties>
+
+					<jvmSettings>
+						<copySysProperties>true</copySysProperties>
+						<jvmArgs>
+							<jvmArg>-client</jvmArg>
+							<jvmArg>-Xms256m</jvmArg>
+							<jvmArg>-Xmx512m</jvmArg>
+							<jvmArg>-Dlogback.configurationFile=generator/logback-sculptor.xml</jvmArg>
+						</jvmArgs>
+					</jvmSettings>
+
+				</configuration>
+				<executions>
+					<execution>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>run-workflow</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.6</version><!--$NO-MVN-MAN-VER$ -->
+				<executions>
+					<execution>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target>
+								<!-- Delete wrong configuration files -->
+
+								<!-- Runtime: Configuration files are manually configured -->
+								<delete file="${basedir}/src/main/resources/spring/applicationContext-datasource.xml" />
+								<delete file="${basedir}/src/main/resources/spring.properties" />
+								<delete file="${basedir}/src/main/resources/more.xml" />
+
+								<delete file="${basedir}/src/generated/resources/applicationContext.xml" />
+								<delete file="${basedir}/src/generated/resources/META-INF/persistence.xml" />
+								<delete file="${basedir}/src/generated/resources/beanRefContext.xml" />
+								<delete file="${basedir}/src/generated/resources/EntityManagerFactory.xml" />
+								<!-- Test: Need these files that were excluded to runtime -->
+								<move todir="${basedir}/src/test/resources" overwrite="true" verbose="true" includeEmptyDirs="false" failonerror="true">
+									<fileset dir="${basedir}/src/generated/resources">
+										<include name="Interceptor.xml" />
+										<include name="pub-sub.xml" />
+										<include name="generated-spring.properties" />
+									</fileset>
+								</move>
+								<delete file="${basedir}/src/test/resources/spring-test.properties" />
+                                <delete file="${basedir}/src/test/resources/generated-spring.properties.xml" />
+                                <delete file="${basedir}/src/test/resources/Interceptor.xml" />
+                                <delete file="${basedir}/src/test/resources/more-test.xml" />
+                                <delete file="${basedir}/src/test/resources/pub-sub.xml" />
+								<delete file="${basedir}/src/test/generated/resources/applicationContext-test.xml" />
+								<delete file="${basedir}/src/test/generated/resources/EntityManagerFactory-test.xml" />
+								<delete file="${basedir}/src/test/generated/resources/META-INF/persistence-test.xml" />
+                                <delete file="${basedir}/src/test/generated/resources/Interceptor-test.xml" />
+							</target>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- <plugin> -->
+			<!-- <groupId>org.codehaus.mojo</groupId> -->
+			<!-- <artifactId>hibernate3-maven-plugin</artifactId> -->
+			<!-- <version>2.2</version> -->
+			<!-- <executions> -->
+			<!-- <execution> -->
+			<!-- <phase>process-classes</phase> -->
+			<!-- <goals> -->
+			<!-- <goal>hbm2ddl</goal> -->
+			<!-- </goals> -->
+			<!-- </execution> -->
+			<!-- </executions> -->
+			<!-- <configuration> -->
+			<!-- <components> -->
+			<!-- <component> -->
+			<!-- <name>hbm2ddl</name> -->
+			<!-- <implementation>jpaconfiguration</implementation> -->
+			<!-- <outputDirectory>/</outputDirectory> -->
+			<!-- </component> -->
+			<!-- </components> -->
+			<!-- <componentProperties> -->
+			<!-- <outputfilename>/src/generated/resources/dbschema/ddl.sql</outputfilename> -->
+			<!-- <drop>true</drop> -->
+			<!-- <create>true</create> -->
+			<!-- <update>false</update> -->
+			<!-- <export>false</export> -->
+			<!-- <format>true</format> -->
+			<!-- </componentProperties> -->
+			<!-- </configuration> -->
+			<!-- <dependencies> -->
+			<!-- <dependency> -->
+			<!-- <groupId>org.hibernate</groupId> -->
+			<!-- <artifactId>hibernate-core</artifactId> -->
+			<!-- <version>${hibernate.version}</version> -->
+			<!-- </dependency> -->
+			<!-- <dependency> -->
+			<!-- <groupId>org.hibernate</groupId> -->
+			<!-- <artifactId>hibernate-entitymanager</artifactId> -->
+			<!-- <version>${hibernate.version}</version> -->
+			<!-- </dependency> -->
+			<!-- <dependency> -->
+			<!-- <groupId>org.hibernate</groupId> -->
+			<!-- <artifactId>hibernate-validator</artifactId> -->
+			<!-- <version>${hibernate.validator.version}</version> -->
+			<!-- </dependency> -->
+			<!-- </dependencies> -->
+			<!-- </plugin> -->
+
+		</plugins>
+	</build>
+
+</project>

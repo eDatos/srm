@@ -1,0 +1,92 @@
+import "classpath:/btdesign/metamac-srm-core-base.btdesign"
+
+import "classpath:/btdesign/metamac-core-common-dtos.btdesign"
+
+import "classpath:/btdesign/export/metamac-core-common-basictype.btdesign"
+import "classpath:/btdesign/export/metamac-core-common-vo.btdesign"
+import "classpath:/btdesign/export/metamac-core-common-entity.btdesign"
+
+
+Application ConceptSchemes {
+    basePackage=unused
+
+    Module core {
+		basePackage=org.siemac.metamac.srm.core.concept
+		
+		// ----------------------------------------------------------------
+		// 							SERVICES
+		// ----------------------------------------------------------------  
+
+		"Provides access to Scheme Concepts Artefacts"
+ 		Service ConceptsService {
+ 			> @ConceptSchemeRepository
+			> @ConceptRepository
+			
+			"Concept Scheme"
+    		@ConceptScheme createConceptScheme(@ConceptScheme entity) throws MetamacException;
+    		@ConceptScheme updateConceptScheme(@ConceptScheme entity) throws MetamacException;
+    		deleteConceptScheme(Long id) throws MetamacException;
+    		@ConceptScheme findConceptSchemeById(Long id) throws MetamacException;
+    		List<@ConceptScheme> findAllConceptSchemes throws MetamacException;
+    		MetamacCriteriaResult<@ConceptScheme> findConceptSchemeByCondition(MetamacCriteria criteria)  throws MetamacException;
+    		
+    		"Concept"
+    		@Concept createConcept(Long conceptSchemeId, @ConceptScheme entity) throws MetamacException;
+    		@Concept updateConcept(@ConceptScheme entity) throws MetamacException;
+    		deleteConcept(Long id) throws MetamacException;
+    		@Concept findConceptById(Long id) throws MetamacException;
+    		List<@Concept> findConceptSchemeConcepts(Long conceptSchemeId) throws MetamacException;
+	   }
+		
+		// ----------------------------------------------------------------
+		// 							ENTITIES
+		// ----------------------------------------------------------------  
+		
+		
+		"The descriptive information for an arrangement or division of concepts into groups based on characteristics, 
+		which the objects have in common. 
+		Inherits from ItemScheme"
+		Entity ConceptScheme {			
+			databaseTable="TB_CONCEPT_SCHEMES"
+			hint="idSequence=CONCEPT_SCHEMES"
+			
+			- @ItemScheme itemScheme databaseColumn="ITEM_SCHEME_FK" not nullable;
+			
+			Repository ConceptSchemeRepository {
+				findById;
+		   		findAll;
+		   		save;
+		   		delete;
+		   		findByCondition;
+				findByCondition(PagingParameter pagingParameter);
+			}
+		}  
+		
+		
+		Entity Concept {
+			databaseTable="TB_CONCEPTS"
+			hint="idSequence=CONCEPTS"
+			
+			- @Item item databaseColumn="ITEM_FK" not nullable;
+			
+       		"Associates a Representation."
+			- @Representation coreRepresentation nullable;
+       		"The maintenance agency of the concept scheme containing the concept."
+			String isoConceptReferenceAgency nullable;
+			"The identifier of the concept scheme."
+			String isoConceptReferenceSchemeID nullable;
+			"The identifier of the concept. (ISOConceptReference)"
+			String isoConceptReferenceID nullable;
+       		
+			Repository ConceptRepository {
+				findById;
+		   		findAll;
+		   		save;
+		   		delete;
+				findByCondition;
+				findByCondition(PagingParameter pagingParameter);
+			}
+		}  
+		
+	}
+}

@@ -1,0 +1,510 @@
+import "classpath:/btdesign/metamac-api-domain-enums.btdesign"
+import "classpath:/btdesign/export/metamac-core-common-basictype.btdesign"
+import "classpath:/btdesign/export/metamac-core-common-entity.btdesign"
+
+Application Base {
+	basePackage=unused
+
+	Module core_base {
+	   basePackage=org.siemac.metamac.srm.core.base
+
+	   "Objects of classes derived from this can have attached annotations.
+       Base inheritance sub classes are: IdentifiableArtefact"
+		abstract Entity AnnotableArtefact {
+			inheritanceType=SINGLE_TABLE
+			databaseTable = "TB_ANNOTABLE_ARTEFACTS"
+			hint="idSequence=ANNOTABLE"
+
+			- Set<@Annotation> annotations inverse cascade="all-delete-orphan" databaseColumn="ANNOTATION_FK";
+		}
+
+		"Provides identity to all derived classes.
+       Superclass is AnnotableArtefact. Base inheritance sub classes are: NameableArtefact"
+		abstract Entity IdentifiableArtefact extends @AnnotableArtefact {
+			databaseTable = "TB_IDENTIFIABLE_ARTEFACTS"
+			
+			"The unique identifier of the object."
+			String idLogic nullable;
+			"Universal resource identifier that may or may not be resolvable."
+			String uri nullable;
+			"Universal resource name, this is for use in registries: all registered objects have a urn."
+			String urn nullable;
+			
+			"Version that replaces the current one."
+			String replacedBy nullable;
+		}
+
+		"Provides a Name and Description to all derived classes.
+       Superclass is IdentifiableArtefact. Base inheritance sub classes are: VersionableArtefact"
+		abstract Entity NameableArtefact extends @IdentifiableArtefact {
+			databaseTable = "TB_NAMEABLE_ARTEFACTS"
+			
+			"A multi-lingual name is provided by this role via the International String class"
+			- @InternationalString name nullable cascade="all" databaseColumn="NAME_FK";
+			"A multi-lingual description is provided by this role via the International String class."
+			- @InternationalString description nullable cascade="all" databaseColumn="DESCRIPTION_FK";
+		}
+
+		"An abstract class to group together primary structural metadata artefacts that are maintained by an Agency
+       and Provides versioning information for all derived objects.
+       This implementation merges VersionableArtefact and MaintainableAretefact in one artefact (MaintainableArtefact). 
+       Superclass is NameableArtefact."
+		abstract Entity MaintainableArtefact extends @NameableArtefact {
+			databaseTable = "TB_MAINTAINABLE_ARTEFACTS"
+			
+			"A version string following an agreed convention"
+			String versionLogic nullable;
+			"Date from which the version is valid"
+			DateTimeTZ validFrom nullable;
+			"Date from which version is superceded"
+			DateTimeTZ validTo nullable;
+			"Defines whether a maintained artefact is draft or final."
+			Boolean finalLogic nullable;
+			"If set to 'true' it indicates that the content of the object is held externally."
+			Boolean isExternalReference nullable;
+			"The URL of an SDMX-ML document containing the external object."
+			String structureURL nullable;
+			"The URL of an SDMXcompliant web service from which the external object can be retrieved."
+			String serviceURL nullable;
+			"Association to the Maintenance Agency responsible for maintaining the artefact."
+			- @ExternalItemBt maintainer nullable;
+		}
+		
+		"Additional descriptive information attached to an object."
+		Entity Annotation {
+			databaseTable = "TB_ANNOTATIONS"
+			hint="idSequence=ANNOTATION"
+			not auditable
+			
+			"Identifier for the Annotation. It can be used to disambiguate one Annotation from another where there are several
+			Annotations for the same annotated object. Is optional"
+			String idLogic nullable;
+			"A title used to identify an annotation."
+			String title nullable;
+			"I used to distinguish between annotations designed to support various uses. The types are not enumerated, as these can 
+			be specified by the user or creator of the annotations. The definitions and use of annotation types should be documented by their creator."
+			String type nullable;
+			"AnnotationURL is a URI - typically a URL - which points to an external resource which may contain or supplement the annotation. 
+			If a specific behavior is desired, an annotation type should be defined which specifies the use of this field more exactly."
+			String url nullable;
+			"An International String provides the multilingual text content of the annotation via this role."
+			- @InternationalString text nullable cascade="all" databaseColumn="INTERNATIONALSTRING_FK";
+			
+			Repository AnnotationRepository {
+				findById;
+				findAll;
+				save;
+				delete;
+				findByCondition;
+				findByCondition(PagingParameter pagingParameter);
+			}
+		}
+		
+		
+		"The descriptive information for an arrangement or division of objects into groups based on
+		characteristics, which the objects have in common.
+		Inherits from: MaintainableArtefact
+        Direct sub classes are: CategoryScheme, ConceptScheme, CodeList, ReportingTaxonomy, OrganisationScheme"
+		Entity ItemScheme extends @MaintainableArtefact {
+			
+			"Denotes whether the Item Scheme contains a sub set of the full set of Items in the maintained scheme."
+			Boolean isPartial nullable;
+			"Association to the Items in the scheme"
+			- Bag<@Item> items inverse cascade="all-delete-orphan" orderby="idLogic" databaseColumn="ITEM_SCHEME_FK";
+			
+			Repository ItemSchemeRepository {
+				findById;
+				findAll;
+				save;
+				delete;
+			}
+		}
+
+
+		"The Item is an item of content in an Item Scheme. This may be a node in a taxonomy or ontology, a code in a code list etc. Node that at the conceptual
+	    level the Organisation is not hierarchic
+	    Inherits from: NamableArtefact, Direct sub classes are Category, Concept, Code, ReportingCategory, Organisation"
+		Entity Item extends @NameableArtefact {
+			
+			"This allows an Item optionally to have one or more child Items."
+			- Bag<@Item> hierarchy inverse cascade="all-delete-orphan" orderby="idLogic" databaseColumn="PARENT_FK";
+		}
+
+
+//		"A list from which some statistical concepts (coded concepts) take their values.
+//        Inherits from ItemScheme"
+//		Entity CodeList extends @ItemScheme {
+//			databaseTable = "TB_CODELISTS"
+//			
+//			Repository CodeListRepository {
+//				findById;
+//				findAll;
+//				save;
+//				delete;
+//			}
+//
+//		}
+
+//		"A language independent set of letters, numbers or symbols that represent a concept whose meaning is described in a natural language.
+//        Inherits from Item"
+//		Entity Code extends @Item {
+//			databaseTable = "TB_CODES"
+//		}
+
+//		"The descriptive information for an arrangement or division of concepts into groups based on characteristics, which the objects have in common."
+//		Entity CategoryScheme extends @ItemScheme {
+//			databaseTable = "TB_CATEGORYSCHEMES"
+//		}
+
+//		"An item at any level within a classification, typically tabulation categories, sections, subsections, divisions, subdivisions, groups, subgroups,
+//	   classes and subclasses."
+//		Entity Category extends @Item {
+//			databaseTable = "TB_CATEGORIES"
+//		}
+
+//		"Associates an IdentifableArtefact with a Category."
+//		Entity Categorisation extends @MaintainableArtefact {
+//			databaseTable = "TB_CATEGORISATIONS"
+//			
+//			- @IdentifiableArtefact categorisedArtefact required;
+//			- @Category categorisedBy required;
+//		}
+
+
+//	   "A maintained collection of Organisations.
+//       Abstract Class Inherits from ItemScheme. 
+//       Sub classes are: AgencyScheme, DataProviderScheme, DataConsumerScheme, OrganisationUnitScheme"
+//		abstract Entity OrganisationScheme extends @ItemScheme {
+//			databaseTable = "TB_ORGANISATIONSCHEMES"
+//			
+//		}
+
+//	   "An organisation is a unique framework of authority within which a person or persons act,
+//	   or are designated to act, towards some purpose.
+//	   Inherits from Item
+//	   Sub classes are: Agency, DataProvider, DataConsumer, OrganisationUnit"
+//		abstract Entity Organisation extends @Item {
+//			databaseTable = "TB_ORGANISATIONS"
+//						
+//			"Association to the Contact information."
+//			- Set<@Contact> contact inverse
+//
+//			Repository OrganizationRepository {
+//				findById;
+//				findAll;
+//				save;
+//				delete;
+//				populateAssociations;
+//				findByCondition;
+//			}
+//
+//		}
+
+//	   "An instance of a role of an individual or an organization (or organization part or organization person) to whom an information
+//	   item(s), a material object(s) and/or person(s) can be sent to or from in a specified context."
+//		Entity Contact {
+//			databaseTable = "TB_CONTACTS"					
+//			hint="idSequence=CONTACT"
+//			
+//			"The designation of the Contact person by a linguistic expression."
+//			String name;
+//			"The designation of the organisational structure by a linguistic expression, within which Contact person works."
+//			String organisationUnit;
+//			"The function of the contact person with respect to the organisation role for which this person is the Contact."
+//			- @InternationalString responsibility cascade="all" databaseColumn="INTERNATIONALSTRING_FK";
+//			"The telephone number of the Contact."
+//			String telephone;
+//			"The fax number of the Contact."
+//			String fax;
+//			"The Internet e-mail address of the Contact."
+//			String eMail email;
+//			"The X400 address of the Contact."
+//			String x400;
+//			"The URL address of the Contact."
+//			String uri;
+//		}
+
+//		"A maintained collection of Maintenace Agencies."
+//		Entity AgencyScheme extends @OrganisationScheme {
+//			databaseTable = "TB_AGENCYSCHEMES"
+//			
+//		}
+//
+//		"A maintained collection of Data Providers."
+//		Entity DataProviderScheme extends @OrganisationScheme {
+//			databaseTable = "TB_DATAPROVIDERSCHEMES"
+//			
+//		}
+//
+//		"A maintained collection of Data Consumers."
+//		Entity DataConsumerScheme extends @OrganisationScheme {
+//			databaseTable = "TB_DATACONSUMERSCHEMES"
+//			
+//		}
+//
+//		"A maintained collection of Organisation Units."
+//		Entity OrganisationUnitScheme extends @OrganisationScheme {
+//			databaseTable = "TB_ORGANISATIONUNITSCHEMES"
+//			
+//		}
+
+//		"Responsible agency for maintaining artefacts such as statistical classifications, glossaries, structural metadata such as Data
+//	   and Metadata Structure Definitions, Concepts and Code lists.
+//	   Inherits from Organisation"
+//		Entity Agency extends @Organisation {
+//			databaseTable = "TB_AGENCIES"
+//			
+//		}
+//
+//		"An organisation that produces data or reference metadata.
+//       Inherits from Organisation"
+//		Entity DataProvider extends @Organisation {
+//			databaseTable = "TB_DATAPROVIDERS"
+//			
+//		}
+//
+//		"An organisation using data as input for further processing.
+//       Inherits from Organisation"
+//		Entity DataConsumer extends @Organisation {
+//			databaseTable = "TB_DATACONSUMERS"
+//			
+//		}
+//
+//		"A designation in the organisational structure.
+//       Inherits from Organisation"
+//		Entity OrganisationUnit extends @Organisation {
+//			databaseTable = "TB_ORGANISATIONUNITS"
+//			
+//		}
+
+//		"A scheme which defines the composition structure of a data report where each component can be described by an independent Dataflow
+//	   Definition or Metdataflow Definition."
+//		Entity ReportingTaxonomy extends @ItemScheme {
+//			databaseTable = "TB_REPORTINGTAXONOMIES"
+//			
+//		}
+
+//		"A component that gives structure to the report and links to data and metadata."
+//		Entity ReportingCategory extends @Item {
+//			databaseTable = "TB_REPORTINGCATEGORIES"
+//						
+//			"Association to the data and metadata flows that link to metadata about the provisioning and related data and metadata sets,
+//			and the structures that define them."
+//			- Set<@StructureUsage> flow inverse;
+//			"Association to the Data Structure Definition and Metadata Structure Definitions which define the structural metadata describing the data and
+//			metadata that are contained at this part of the report."
+//			- Set<@Structure> structure inverse;
+//		}
+
+
+		"An artefact whose components are described by a Structure. In concrete terms (sub-classes) an example would be a Dataflow Definition which is
+	   linked to a given structure, in this case the Data Structure Definition.	
+	   Inherits from: MaintainableArtefact   
+	   Sub classes are: DataflowDefinition, MetadataflowDefinition"
+		abstract Entity StructureUsage extends @MaintainableArtefact {
+			databaseTable = "TB_STRUCTURE_USAGES"
+						
+			"An association to a Structure specifying the structure of the artefact."
+			- @Structure structure nullable databaseColumn="STRUCTURE_FK";
+		}
+
+		"Abstract specification of a list of lists to define a complex tabular structure. A concrete example of this would be statistical concepts, code lists, and
+	   their organisation in a data or metadata structure definition, defined by a centre institution, usually for the exchange of statistical information with its
+	   partners.
+	   Inherits from: MaintainableArtefact
+	   Sub classes are: DataStructureDefinition, MetadataStructureDefinition"
+		abstract Entity Structure extends @MaintainableArtefact {
+			databaseTable = "TB_STRUCTURES"
+						
+			"A composite association to one or more component lists."
+			- Set<@ComponentList> grouping inverse cascade="refresh,merge" databaseColumn="COMPONENTLIST_FK";
+		}
+
+		"An abstract definition of a list of components. A concrete example is a Dimension Descriptor which defines the list of Dimensions in a Data Structure Definition.
+	   Inherits from: IdentifiableArtefact
+	   Sub classes are:  DimensionDescriptor, GroupDimensionDescriptor, MeasureDescriptor, AttributeDescriptor, MetadataTarget, ReportStructure"
+		abstract Entity ComponentList extends @IdentifiableArtefact {
+			databaseTable = "TB_COMPONENT_LISTS"
+						
+			"An aggregate association to one or more components which make up the list.
+       	    The type of Component in a ComponentList is dependent on the concrete class of the ComponentList as follows:
+			 	DimensionDescriptor: Dimension, Measure Dimension, Time Dimension
+			 	GroupDimensionDescriptor: Dimension, Measure Dimension, Time Dimension
+			 	MeasureDescriptor: PrimaryMeasure
+			 	AttributeDescriptor: Data Attribute
+			 	MetadataTarget: TargetObject and its sub classes
+			 	ReportStructure: MetadataAttribute"
+			- Set<@Component> components databaseJoinTable="TB_COMPLIST_COMP" cascade="refresh, remove" databaseColumn="COMPONENT_FK" databaseJoinColumn="COMPONENTLIST_FK";
+
+			Repository ComponentListRepository {
+				findById;
+				findAll;
+				save;
+				delete;
+				populateAssociations;
+			}
+
+		}
+
+		"A component is an abstract super class used to define qualitative and quantitative data and metadata items that belong to a Component List and hence a Structure.
+		Component is refined through its sub-classes.
+		Sub classes are: PrimaryMeasure, DataAttribute, DimensionComponent, TargetObject, MetadataAttribute"
+		abstract Entity Component extends @IdentifiableArtefact {
+			databaseTable = "TB_COMPONENTS"
+						
+			"Association to a Concept in a Concept Scheme that identifies and defines the semantic of the Component."
+			- @ExternalItemBt cptIdRef nullable
+			//- @Concept conceptIdentity nullable cascade="refresh"
+			"Association to the Representation of the Component if this is different from the coreRepresentation of the Concept which the Component uses (ConceptUsage)"
+			- @Representation localRepresentation nullable databaseColumn="REPRESENTATION_FK";
+
+			Repository ComponentRepository {
+				findById;
+				findAll;
+				save;
+				delete;
+				findByCondition;
+			}
+
+		}
+
+		"The allowable value or format for Component or Concept"
+		abstract Entity Representation {
+			inheritanceType=SINGLE_TABLE
+			databaseTable = "TB_REPRESENTATIONS"
+			hint="idSequence=REPREN"
+			not auditable
+
+			Repository RepresentationRepository {
+				findById;
+				delete;
+			}
+		}
+		
+	   "The Data Attribute is not related to any specific construct."
+       Entity TextFormatRepresentation extends @Representation {
+       		not auditable
+       		
+       		"Association to a set of Facets that define the allowable format for the content of the Component when reported in a data or metadata set."
+			- @Facet nonEnumerated databaseColumn="FACET_FK" nullable;
+       	    
+       }
+       
+       "The Data Attribute is related to the Primary Measure construct."
+       Entity EnumeratedRepresentation extends @Representation {
+       		not auditable
+       	    
+       	    "Association to an enumerated list that contains the allowable content for the Component when reported in a data or metadata set. The type of enumerated list that is
+			allowed for any concrete Component is shown in the constraints on the association. (e.g. IdentifierComponent can have any of the sub classes of ItemScheme, whereas Measure
+			Dimension must have a Concept Scheme."
+			- @ExternalItemBt enumerated nullable;
+       }
+
+		"Defines the format for the content of the Component when reported in a data or metadata set.
+       -----
+       The FacetType and FacetValueType is used to specify the valid format of the content of a non enumerated Concept or the usage of a Concept
+       when specified for use on a Component on a Structure (such as a Dimension in a DataStructureDefinition)."
+		Entity Facet {
+			databaseTable = "TB_FACETS"
+			hint="idSequence=FACET"			
+			not auditable
+			
+			"The format of the value of a Component when reported in a data or metadata set. This is contrained by the FacetValueType enumeration."
+			- @FacetValueTypeEnum facetValue required
+
+			"The isSequence facet indicates whether the values are intended to be ordered, and it may work in combination with the interval, startValue, and
+			endValue facet or the timeInterval, startTime, and endTime, facets. If this attribute holds a value of true, a start value or time and a numeric or time
+			interval must supplied. If an end value is not given, then the sequence
+			continues indefinitely."
+			Boolean isSequenceFT nullable;
+			"The interval attribute specifies the permitted interval (increment) in a sequence. In order for this to be used, the isSequence attribute must
+			have a value of true."
+			Double intervalFT nullable;
+			"The startValue facet is used in conjunction with the isSequence and interval facets (which must be set in order to use this facet). This facet is
+			used for a numeric sequence, and indicates the starting point of the sequence. This value is mandatory for a numeric sequence to be expressed."
+			Double startValueFT nullable;
+			"The endValue facet is used in conjunction with the isSequence and interval facets (which must be set in order to use this facet). This facet is
+			used for a numeric sequence, and indicates that ending point (if any) of the sequence."
+			Double endValueFT nullable;
+			"The timeInterval facet indicates the permitted duration in a time sequence. In order for this to be used, the isSequence facet must have a
+			value of true. Format: 'PnYnMnDTnHnMnS'"
+			String timeIntervalFT nullable length="14";
+			"The startTime facet is used in conjunction with the isSequence and timeInterval facets (which must be set in order to use this facet). This
+			attribute is used for a time sequence, and indicates the start time of the sequence. This value is mandatory for a time sequence to be expressed."
+			String startTimeFT nullable;
+			"The endTime facet is used in conjunction with the isSequence and timeInterval facets (which must be set in order to use this facet). This
+			facet is used for a time sequence, and indicates that ending point (if any) of the sequence."
+			String endTimeFT nullable;
+			"The minLength facet specifies the minimum and length of the value in characters."
+			Integer minLengthFT nullable;
+			"The maxLength facet specifies the maximum length of the value in characters."
+			Integer maxLengthFT nullable;
+			"The minValue facet is used for inclusive and exclusive ranges, indicating what the lower bound of the range is. If this is used with an inclusive
+			range, a valid value will be greater than or equal to the value specified here. If the inclusive and exclusive data type is not specified (e.g. this
+			facet is used with an integer data type), the value is assumed to be inclusive."
+			Double minValueFT nullable;
+			"The maxValue facet is used for inclusive and exclusive ranges, indicating what the upper bound of the range is. If this is used with an inclusive
+			range, a valid value will be less than or equal to the value specified here. If the inclusive and exclusive data type is not specified (e.g. this facet is
+			used with an integer data type), the value is assumed to be inclusive."
+			Double maxValueFT nullable;
+			"The decimals facet indicates the number of characters allowed after the decimal separator."
+			Integer decimalsFT nullable;
+			"The pattern attribute holds any regular expression permitted in the implementation syntax (e.g. W3C XML Schema)."
+			String patternFT nullable;
+			"Only valid for a MetadataAttribute. PAY ATTENTION (See SDMX INFORMATIONMODEL, ExtendedFacetType)"
+			String xhtmlEFT nullable;
+			"The isMultiLingual attribute indicates for a text format of type 'string', whether the value should allow for multiple values in different languages."
+			Boolean isMultiLingual nullable;
+
+		}
+
+		"Provides access to SDMX Base Artefacts"
+		Service SdmxBaseService {
+//			> @ConceptRepository
+//			> @CodeListRepository
+			> @ComponentRepository
+			> @ComponentListRepository
+//			> @InternationalStringRepository
+//			> @ItemRepository
+
+// 
+
+			saveComponent => ComponentRepository.save;
+			deleteComponent => ComponentRepository.delete;
+			findAllComponent => ComponentRepository.findAll;
+			
+//			saveOrganization => OrganizationRepository.save;
+//			deleteOrganization => OrganizationRepository.delete;
+//			findAllOrganizations => OrganizationRepository.findAll;
+//			@Organisation findOrganization(String idLogic) throws org.siemac.metamac.core_base.exception.OrganisationNotFoundException;
+
+//			saveConcept => ConceptRepository.save;
+//			deleteConcept => ConceptRepository.delete;
+//			findAllConcepts => ConceptRepository.findAll;
+
+//			"Manage (save) CodeList"
+//			saveCodeList => CodeListRepository.save;
+//			"Manage (delete) CodeList"
+//			deleteCodeList => CodeListRepository.delete;
+//			"Manage (find) CodeList"
+//			findAllCodeLists => CodeListRepository.findAll;
+
+
+			findComponentListById => ComponentListRepository.findById;
+			saveComponentList => ComponentListRepository.save;
+			deleteComponentList => ComponentListRepository.delete;
+			findAllComponentList => ComponentListRepository.findAll;
+			populateAssociationsComponentList => ComponentListRepository.populateAssociations;
+
+//			deleteInternationalString => InternationalStringRepository.delete;
+
+//			findItemById => ItemRepository.findById;
+//			saveItemList => ItemRepository.save;
+//			deleteItemList => ItemRepository.delete;
+//			findItemList => ItemRepository.findAll;
+		}
+
+	}
+
+
+}

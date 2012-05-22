@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE web-app
+    PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+    "http://java.sun.com/dtd/web-app_2_3.dtd">
+
+<web-app>
+
+
+	<!-- ********************* SPRING INTEGRATION ******************** -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>/WEB-INF/config/spring/applicationContext.xml </param-value>
+	</context-param>
+
+	 <!-- Creates the Spring Container shared by all Servlets and Filters -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	
+	<!-- Spring dispatcher for GWT-RPC services. 
+		See: http://code.google.com/p/gwt-platform/source/browse/gwtp-samples/gwtp-sample-basic-spring/src/main/webapp/WEB-INF/web.xml?r=7efb6ee3ef7b9458693830e713d679f1c78e98dd -->
+	<servlet>
+		<servlet-name>dispatch</servlet-name>
+		<servlet-class>org.springframework.web.context.support.HttpRequestHandlerServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>dispatch</servlet-name>
+		<url-pattern>/dispatch/*</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>upload</servlet-name>
+		<servlet-class>org.siemac.metamac.internal.web.server.servlet.FileUploadServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>upload</servlet-name>
+		<url-pattern>/files/upload/*</url-pattern>
+	</servlet-mapping>
+ 
+    <servlet>
+        <servlet-name>download</servlet-name>
+        <servlet-class>org.siemac.metamac.internal.web.server.servlet.FileDownloadServlet</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>download</servlet-name>
+        <url-pattern>/files/download/*</url-pattern>
+    </servlet-mapping>
+    
+    <!-- Remote logging -->
+    <servlet>
+        <servlet-name>remoteLogging</servlet-name>
+        <servlet-class>com.google.gwt.logging.server.RemoteLoggingServiceImpl</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>remoteLogging</servlet-name>
+        <url-pattern>/MetamacInternalWeb/remote_logging</url-pattern>
+    </servlet-mapping>
+
+	<!-- ******************* Default page to serve ******************** -->
+	<welcome-file-list>
+		<welcome-file>MetamacInternalWeb.html</welcome-file>
+	</welcome-file-list>
+
+
+	
+</web-app>

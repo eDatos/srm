@@ -1,0 +1,18 @@
+package org.siemac.metamac.internal.web.shared;
+
+import java.util.List;
+
+import org.siemac.metamac.domain_dto.DescriptorDto;
+
+import com.gwtplatform.dispatch.annotation.GenDispatch;
+import com.gwtplatform.dispatch.annotation.In;
+
+@GenDispatch(isSecure = false)
+public class DeleteDescriptorListForDsd {
+
+    @In(1)
+    Long                idDsd;
+
+    @In(2)
+    List<DescriptorDto> descriptorDtos;
+}

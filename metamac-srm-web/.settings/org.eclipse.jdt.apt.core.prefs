@@ -1,0 +1,5 @@
+#Thu Sep 01 09:43:04 BST 2011
+eclipse.preferences.version=1
+org.eclipse.jdt.apt.aptEnabled=true
+org.eclipse.jdt.apt.genSrcDir=target/generated-sources/gwt
+org.eclipse.jdt.apt.reconcileEnabled=true

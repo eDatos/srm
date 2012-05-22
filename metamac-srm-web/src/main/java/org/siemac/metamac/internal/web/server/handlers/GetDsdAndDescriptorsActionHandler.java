@@ -1,0 +1,119 @@
+package org.siemac.metamac.internal.web.server.handlers;
+
+import static org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder.criteriaFor;
+import static org.siemac.metamac.core_structure.domain.DataStructureDefinitionProperties.id;
+
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
+import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
+import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.core_facades.serviceapi.SDMXStructureServiceFacade;
+import org.siemac.metamac.core_structure.domain.DataStructureDefinition;
+import org.siemac.metamac.domain_dto.DataStructureDefinitionDto;
+import org.siemac.metamac.domain_dto.DescriptorDto;
+import org.siemac.metamac.domain_enum.domain.TypeComponentList;
+import org.siemac.metamac.internal.web.server.ServiceContextHelper;
+import org.siemac.metamac.internal.web.shared.GetDsdAndDescriptorsAction;
+import org.siemac.metamac.internal.web.shared.GetDsdAndDescriptorsResult;
+import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.gwtplatform.dispatch.server.ExecutionContext;
+import com.gwtplatform.dispatch.server.actionhandler.AbstractActionHandler;
+import com.gwtplatform.dispatch.shared.ActionException;
+
+public class GetDsdAndDescriptorsActionHandler extends AbstractActionHandler<GetDsdAndDescriptorsAction, GetDsdAndDescriptorsResult> {
+
+    private static Logger              logger = Logger.getLogger(GetDsdAndDescriptorsActionHandler.class.getName());
+
+    @Autowired
+    private SDMXStructureServiceFacade sDMXStructureServiceFacade;
+
+    public GetDsdAndDescriptorsActionHandler() {
+        super(GetDsdAndDescriptorsAction.class);
+    }
+
+    @Override
+    public GetDsdAndDescriptorsResult execute(GetDsdAndDescriptorsAction action, ExecutionContext context) throws ActionException {
+        DataStructureDefinitionDto dsd = null;
+        DescriptorDto primaryMeasure = null;
+        DescriptorDto dimensions = null;
+        DescriptorDto attributes = null;
+        List<DescriptorDto> groupKeys = null;
+
+        // DSD
+        dsd = new DataStructureDefinitionDto();
+        List<ConditionalCriteria> conditions = criteriaFor(DataStructureDefinition.class).withProperty(id()).eq(action.getIdDsd()).build();
+        try {
+            List<DataStructureDefinitionDto> dsdList = sDMXStructureServiceFacade.findDsdByCondition(ServiceContextHelper.getServiceContext(), conditions, PagingParameter.pageAccess(10)).getValues();
+            if (!dsdList.isEmpty()) {
+                dsd = dsdList.get(0);
+            }
+        } catch (MetamacException e) {
+            logger.log(Level.SEVERE, "Error in findDsdByCondition with idDsd =  " + action.getIdDsd() + ". " + e.getMessage());
+            throw WebExceptionUtils.createMetamacWebException(e);
+        }
+
+        // Primary Measure
+        primaryMeasure = new DescriptorDto();
+        primaryMeasure.setTypeComponentList(TypeComponentList.MEASURE_DESCRIPTOR);
+        try {
+            List<DescriptorDto> measureDescriptorDtos = sDMXStructureServiceFacade.findDescriptorForDsd(ServiceContextHelper.getServiceContext(), action.getIdDsd(),
+                    TypeComponentList.MEASURE_DESCRIPTOR);
+            if (!measureDescriptorDtos.isEmpty()) {
+                primaryMeasure = measureDescriptorDtos.get(0);
+            }
+        } catch (MetamacException e) {
+            logger.log(Level.SEVERE, "Error in findDescriptorForDsd with idDsd =  " + action.getIdDsd() + " and typeComponentList = " + TypeComponentList.MEASURE_DESCRIPTOR + ". " + e.getMessage());
+            throw WebExceptionUtils.createMetamacWebException(e);
+        }
+
+        // Dimensions
+        dimensions = new DescriptorDto();
+        dimensions.setTypeComponentList(TypeComponentList.DIMENSION_DESCRIPTOR);
+        try {
+            List<DescriptorDto> dimensionDescriptorDtos = sDMXStructureServiceFacade.findDescriptorForDsd(ServiceContextHelper.getServiceContext(), action.getIdDsd(),
+                    TypeComponentList.DIMENSION_DESCRIPTOR);
+            if (!dimensionDescriptorDtos.isEmpty()) {
+                dimensions = dimensionDescriptorDtos.get(0);
+            }
+        } catch (MetamacException e) {
+            logger.log(Level.SEVERE, "Error in findDescriptorForDsd with idDsd =  " + action.getIdDsd() + " and typeComponentList = " + TypeComponentList.DIMENSION_DESCRIPTOR + ". " + e.getMessage());
+            throw WebExceptionUtils.createMetamacWebException(e);
+        }
+
+        // Attributes
+        attributes = new DescriptorDto();
+        attributes.setTypeComponentList(TypeComponentList.ATTRIBUTE_DESCRIPTOR);
+        try {
+            List<DescriptorDto> attributeDescriptorDtos = sDMXStructureServiceFacade.findDescriptorForDsd(ServiceContextHelper.getServiceContext(), action.getIdDsd(),
+                    TypeComponentList.ATTRIBUTE_DESCRIPTOR);
+            if (!attributeDescriptorDtos.isEmpty()) {
+                attributes = attributeDescriptorDtos.get(0);
+            }
+        } catch (MetamacException e) {
+            logger.log(Level.SEVERE, "Error in findDescriptorForDsd with idDsd =  " + action.getIdDsd() + " and typeComponentList = " + TypeComponentList.ATTRIBUTE_DESCRIPTOR + ". " + e.getMessage());
+            throw WebExceptionUtils.createMetamacWebException(e);
+        }
+
+        // Group keys
+        try {
+            groupKeys = sDMXStructureServiceFacade.findDescriptorForDsd(ServiceContextHelper.getServiceContext(), action.getIdDsd(), TypeComponentList.GROUP_DIMENSION_DESCRIPTOR);
+        } catch (MetamacException e) {
+            logger.log(Level.SEVERE,
+                    "Error in findDescriptorForDsd with idDsd =  " + action.getIdDsd() + " and typeComponentList = " + TypeComponentList.GROUP_DIMENSION_DESCRIPTOR + ". " + e.getMessage());
+            throw WebExceptionUtils.createMetamacWebException(e);
+        }
+
+        return new GetDsdAndDescriptorsResult(dsd, primaryMeasure, dimensions, attributes, groupKeys);
+    }
+
+    @Override
+    public void undo(GetDsdAndDescriptorsAction action, GetDsdAndDescriptorsResult result, ExecutionContext context) throws ActionException {
+
+    }
+
+}

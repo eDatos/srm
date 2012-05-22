@@ -1,0 +1,133 @@
+package org.siemac.metamac.internal.web.client.view;
+
+import java.util.List;
+
+import org.siemac.metamac.domain_dto.DataStructureDefinitionDto;
+import org.siemac.metamac.internal.web.client.MetamacInternalWeb;
+import org.siemac.metamac.internal.web.client.presenter.StructuralResourcesPresenter;
+import org.siemac.metamac.internal.web.client.view.handlers.StructuralResourcesUiHandlers;
+import org.siemac.metamac.internal.web.client.widgets.DsdsItemsContextAreaListGrid;
+
+import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
+import com.gwtplatform.mvp.client.ViewWithUiHandlers;
+import com.smartgwt.client.types.Overflow;
+import com.smartgwt.client.types.VisibilityMode;
+import com.smartgwt.client.widgets.Canvas;
+import com.smartgwt.client.widgets.grid.events.HasRecordClickHandlers;
+import com.smartgwt.client.widgets.layout.SectionStack;
+import com.smartgwt.client.widgets.layout.SectionStackSection;
+import com.smartgwt.client.widgets.layout.VLayout;
+import com.smartgwt.client.widgets.toolbar.ToolStrip;
+import com.smartgwt.client.widgets.toolbar.ToolStripButton;
+
+public class StructuralResourcesViewImpl extends ViewWithUiHandlers<StructuralResourcesUiHandlers> implements StructuralResourcesPresenter.StructuralResourcesView {
+
+    private static final String                CONTEXT_AREA_WIDTH = "*";
+
+    private final DsdsItemsContextAreaListGrid dsdsItemsContextAreaListGrid;
+    private final SectionStack                 lastModifiedArtifactsSectionStack;
+
+    private VLayout                            panel;
+
+    @Inject
+    public StructuralResourcesViewImpl(DsdsItemsContextAreaListGrid dsdsItemsContextAreaListGrid) {
+        super();
+
+        this.dsdsItemsContextAreaListGrid = dsdsItemsContextAreaListGrid;
+
+        panel = new VLayout();
+
+        // Initialize the OperationsList View layout container
+        panel.setStyleName("metamac-ContextArea");
+        panel.setWidth(CONTEXT_AREA_WIDTH);
+
+        // Section Stack
+        lastModifiedArtifactsSectionStack = new SectionStack();
+        lastModifiedArtifactsSectionStack.setWidth100();
+        lastModifiedArtifactsSectionStack.setVisibilityMode(VisibilityMode.MULTIPLE);
+        lastModifiedArtifactsSectionStack.setAnimateSections(true);
+        lastModifiedArtifactsSectionStack.setOverflow(Overflow.HIDDEN);
+
+        SectionStackSection lastDsdModifiedSection = new SectionStackSection();
+        lastDsdModifiedSection.setTitle(MetamacInternalWeb.getConstants().dsdLastModified());
+        lastDsdModifiedSection.setExpanded(false);
+        lastDsdModifiedSection.setItems(this.dsdsItemsContextAreaListGrid);
+
+        SectionStackSection lastConceptSchemesModifiedSection = new SectionStackSection();
+        lastConceptSchemesModifiedSection.setTitle(MetamacInternalWeb.getConstants().conceptSchemeLastModified());
+        lastConceptSchemesModifiedSection.setExpanded(false);
+        // lastConceptSchemesModifiedSection.setItems();
+
+        SectionStackSection lastOrgSchemesModifiedSection = new SectionStackSection();
+        lastOrgSchemesModifiedSection.setTitle(MetamacInternalWeb.getConstants().organisationSchemeLastModified());
+        lastOrgSchemesModifiedSection.setExpanded(false);
+        // lastOrgSchemesModifiedSection.setItems();
+
+        SectionStackSection lastCatSchemesModifiedSection = new SectionStackSection();
+        lastCatSchemesModifiedSection.setTitle(MetamacInternalWeb.getConstants().categorySchemeLastModified());
+        lastCatSchemesModifiedSection.setExpanded(false);
+        // lastCatSchemesModifiedSection.setItems();
+
+        SectionStackSection lastClassifModifiedSection = new SectionStackSection();
+        lastClassifModifiedSection.setTitle(MetamacInternalWeb.getConstants().classificationLastModified());
+        lastClassifModifiedSection.setExpanded(false);
+        // lastClassifModifiedSection.setItems();
+
+        lastModifiedArtifactsSectionStack.setSections(lastDsdModifiedSection, lastConceptSchemesModifiedSection, lastOrgSchemesModifiedSection, lastCatSchemesModifiedSection,
+                lastClassifModifiedSection);
+
+        // Add the ToolStrip to the Operation View layout container
+        panel.addMember(this.lastModifiedArtifactsSectionStack);
+
+    }
+
+    @Override
+    public Widget asWidget() {
+        return panel;
+    }
+
+    /*
+     * GWTP will call setInSlot when a child presenter asks to be added under this view
+     */
+    @Override
+    public void setInSlot(Object slot, Widget content) {
+        if (slot == StructuralResourcesPresenter.TYPE_SetContextAreaContentToolBar) {
+            if (content != null) {
+                Canvas[] canvas = ((ToolStrip) content).getMembers();
+                for (int i = 0; i < canvas.length; i++) {
+                    if (canvas[i] instanceof ToolStripButton) {
+                        ((ToolStripButton) canvas[i]).deselect();
+                    }
+                }
+                panel.addMember(content, 0);
+            }
+        } else {
+            // To support inheritance in your views it is good practice to call super.setInSlot when you can't handle the call.
+            // Who knows, maybe the parent class knows what to do with this slot.
+            super.setInSlot(slot, content);
+        }
+    }
+
+    @Override
+    public void resetView() {
+        // Collapse all sections
+        for (int i = 0; i < lastModifiedArtifactsSectionStack.getSections().length; i++) {
+            lastModifiedArtifactsSectionStack.collapseSection(i);
+        }
+    }
+
+    @Override
+    public void setResultSetDsd(List<DataStructureDefinitionDto> resultSet) {
+        // resultSet == null when there are no items in table
+        if (resultSet != null) {
+            dsdsItemsContextAreaListGrid.setDsds(resultSet);
+        }
+    }
+
+    @Override
+    public HasRecordClickHandlers getSelectedDsd() {
+        return dsdsItemsContextAreaListGrid;
+    }
+
+}

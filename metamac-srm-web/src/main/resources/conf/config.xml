@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!-- NOTE: System properties must be configured in: SetupApplicationListener -->
+<!-- <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="commons-configuration.xsd">  -->
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <override>
+	<system />
+	
+	<!-- STATIC configurations ************************************************ -->
+	<!-- 	Examples: -->
+		<!-- 	<properties fileName="${url.url}/conf/static/name1.xml" config-name="name1" /> -->
+		<!-- 	<properties fileName="${url.url}/conf/static/name2.xml" config-optional="false" /> -->
+		<!-- 	<properties fileName="${url.url}/conf/static/name3.properties" config-name="name3" /> -->
+		<!-- 	<properties fileName="${url.url}/conf/static/name4.properties" config-name="name4"  /> -->
+
+  	<properties fileName="${environment.metamac.data}/conf/static/resources.xml" config-optional="false" />
+
+
+	<!-- Dynamic configurations *********************************************** -->
+	<!-- 	Examples: -->	
+		<!--    <properties fileName="${url.url.url}/conf/dynamic/xform.xml" config-optional="false" >-->
+		<!--        <reloadingStrategy config-class="org.apache.commons.configuration.reloading.FileChangedReloadingStrategy" refreshDelay="10000"/>        -->
+		<!--    </properties>-->
+  	
+  </override>
+  
+</configuration>
