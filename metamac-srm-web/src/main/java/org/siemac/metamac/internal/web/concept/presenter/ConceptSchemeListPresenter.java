@@ -16,7 +16,6 @@ import org.siemac.metamac.internal.web.client.utils.ErrorUtils;
 import org.siemac.metamac.internal.web.client.widgets.StatusBar;
 import org.siemac.metamac.internal.web.client.widgets.presenter.ToolStripPresenterWidget;
 import org.siemac.metamac.internal.web.concept.view.handlers.ConceptSchemeListUiHandlers;
-import org.siemac.metamac.internal.web.dsd.presenter.DsdListPresenter;
 import org.siemac.metamac.internal.web.shared.DeleteConceptSchemeListAction;
 import org.siemac.metamac.internal.web.shared.DeleteConceptSchemeListResult;
 import org.siemac.metamac.internal.web.shared.GetConceptSchemePaginatedListAction;
@@ -45,9 +44,11 @@ import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 
-public class ConceptSchemeListPresenter extends PaginationPresenter<ConceptSchemeListPresenter.ConceptSchemeListView, ConceptSchemeListPresenter.ConceptSchemeListProxy> implements ConceptSchemeListUiHandlers {
-    
-    public static final int DEFAULT_MAX_RESULTS = 30;
+public class ConceptSchemeListPresenter extends PaginationPresenter<ConceptSchemeListPresenter.ConceptSchemeListView, ConceptSchemeListPresenter.ConceptSchemeListProxy>
+        implements
+            ConceptSchemeListUiHandlers {
+
+    public static final int                           DEFAULT_MAX_RESULTS                                = 30;
 
     private final DispatchAsync                       dispatcher;
     private final PlaceManager                        placeManager;
@@ -55,8 +56,8 @@ public class ConceptSchemeListPresenter extends PaginationPresenter<ConceptSchem
     private ToolStripPresenterWidget                  toolStripPresenterWidget;
 
     @ContentSlot
-    public static final Type<RevealContentHandler<?>> TYPE_SetStructuralResourcesToolBar = new Type<RevealContentHandler<?>>();
-    
+    public static final Type<RevealContentHandler<?>> TYPE_SetStructuralResourcesToolBar                 = new Type<RevealContentHandler<?>>();
+
     public static final Object                        TYPE_SetContextAreaContentConceptSchemeListToolBar = new Object();
 
     @ProxyCodeSplit
@@ -70,8 +71,9 @@ public class ConceptSchemeListPresenter extends PaginationPresenter<ConceptSchem
     }
 
     public interface ConceptSchemeListView extends View, HasUiHandlers<ConceptSchemeListUiHandlers> {
+
         void setConceptSchemeList(List<ConceptSchemeDto> conceptSchemesDtos);
-        
+
         StatusBar getStatusBar();
         void refreshStatusBar();
         void setNumberOfElements(int numberOfElements);
@@ -79,7 +81,8 @@ public class ConceptSchemeListPresenter extends PaginationPresenter<ConceptSchem
     }
 
     @Inject
-    public ConceptSchemeListPresenter(EventBus eventBus, ConceptSchemeListView conceptSchemeListView, ConceptSchemeListProxy conceptSchemeListProxy, DispatchAsync dispatcher, PlaceManager placeManager, ToolStripPresenterWidget toolStripPresenterWidget) {
+    public ConceptSchemeListPresenter(EventBus eventBus, ConceptSchemeListView conceptSchemeListView, ConceptSchemeListProxy conceptSchemeListProxy, DispatchAsync dispatcher,
+            PlaceManager placeManager, ToolStripPresenterWidget toolStripPresenterWidget) {
         super(eventBus, conceptSchemeListView, conceptSchemeListProxy, dispatcher, DEFAULT_MAX_RESULTS);
         this.placeManager = placeManager;
         this.toolStripPresenterWidget = toolStripPresenterWidget;
@@ -91,23 +94,23 @@ public class ConceptSchemeListPresenter extends PaginationPresenter<ConceptSchem
     protected void revealInParent() {
         RevealContentEvent.fire(this, MainPagePresenter.TYPE_SetContextAreaContent, this);
     }
-    
+
     @Override
     protected void onReset() {
         super.onReset();
         SetTitleEvent.fire(this, getConstants().conceptSchemes());
-        
+
         initializePaginationSettings();
-        
+
         retrieveResultSet();
     }
-    
+
     @Override
     protected void onReveal() {
         super.onReveal();
         setInSlot(TYPE_SetContextAreaContentConceptSchemeListToolBar, toolStripPresenterWidget);
     }
-    
+
     @Override
     protected void retrieveResultSet() {
         dispatcher.execute(new GetConceptSchemePaginatedListAction(getMaxResults(), getFirstResult()), new WaitingAsyncCallback<GetConceptSchemePaginatedListResult>() {
@@ -155,40 +158,42 @@ public class ConceptSchemeListPresenter extends PaginationPresenter<ConceptSchem
             }
         });
     }
-    
-    //Handlers
+
+    // Handlers
     @Override
     public void createConceptScheme(ConceptSchemeDto conceptSchemeDto) {
         dispatcher.execute(new SaveConceptSchemeAction(conceptSchemeDto), new WaitingAsyncCallback<SaveConceptSchemeResult>() {
+
             @Override
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(ConceptSchemeListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorSave()), MessageTypeEnum.ERROR);
             }
-            
+
             @Override
             public void onWaitSuccess(SaveConceptSchemeResult result) {
                 ShowMessageEvent.fire(ConceptSchemeListPresenter.this, ErrorUtils.getMessageList(getMessages().conceptSchemeSaved()), MessageTypeEnum.SUCCESS);
-                retrieveResultSet(); //Reload list
+                retrieveResultSet(); // Reload list
             }
         });
     }
-    
+
     @Override
     public void deleteConceptSchemes(List<String> uuidsFromSelected) {
         dispatcher.execute(new DeleteConceptSchemeListAction(uuidsFromSelected), new WaitingAsyncCallback<DeleteConceptSchemeListResult>() {
+
             @Override
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(ConceptSchemeListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorDelete()), MessageTypeEnum.ERROR);
             }
-            
+
             @Override
             public void onWaitSuccess(DeleteConceptSchemeListResult result) {
                 ShowMessageEvent.fire(ConceptSchemeListPresenter.this, ErrorUtils.getMessageList(getMessages().conceptSchemeDeleted()), MessageTypeEnum.SUCCESS);
-                retrieveResultSet(); //reload list
+                retrieveResultSet(); // reload list
             }
         });
     }
-    
+
     @Override
     public void goToConceptScheme(String idLogic) {
         PlaceRequest resourcesRequest = new PlaceRequest(NameTokens.structuralResourcesPage);
@@ -198,6 +203,5 @@ public class ConceptSchemeListPresenter extends PaginationPresenter<ConceptSchem
         placeRequestHierarchy.add(conceptSchemeListRequest);
         placeManager.revealPlaceHierarchy(placeRequestHierarchy);
     }
-    
-    
+
 }

@@ -5,9 +5,8 @@ import org.siemac.metamac.internal.web.concept.model.ds.ConceptSchemeDS;
 
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 
-
 public class ConceptSchemeRecord extends ListGridRecord {
-    
+
     public ConceptSchemeRecord(String uuid, String idLogic, String name, String status, ConceptSchemeDto conceptSchemeDto) {
         setUuid(uuid);
         setName(name);
@@ -15,7 +14,7 @@ public class ConceptSchemeRecord extends ListGridRecord {
         setProcStatus(status);
         setConceptSchemeDto(conceptSchemeDto);
     }
-    
+
     public void setUuid(String uuid) {
         setAttribute(ConceptSchemeDS.UUID, uuid);
     }
@@ -35,7 +34,7 @@ public class ConceptSchemeRecord extends ListGridRecord {
     public void setProcStatus(String value) {
         setAttribute(ConceptSchemeDS.PROC_STATUS, value);
     }
-    
+
     public void setConceptSchemeDto(ConceptSchemeDto conceptSchemeDto) {
         setAttribute(ConceptSchemeDS.DTO, conceptSchemeDto);
     }

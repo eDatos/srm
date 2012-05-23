@@ -14,6 +14,7 @@ import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
 import com.google.gwt.event.shared.EventBus;
+import com.google.inject.Inject;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.Presenter;
@@ -36,11 +37,13 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
     }
 
     public interface ConceptSchemeView extends View, HasUiHandlers<ConceptSchemeUiHandlers> {
+
         void setConceptScheme(ConceptSchemeDto conceptScheme);
     }
 
-    public ConceptSchemePresenter(boolean autoBind, EventBus eventBus, ConceptSchemeView view, ConceptSchemeProxy proxy, DispatchAsync dispatcher, PlaceManager placeManager) {
-        super(autoBind, eventBus, view, proxy);
+    @Inject
+    public ConceptSchemePresenter(EventBus eventBus, ConceptSchemeView view, ConceptSchemeProxy proxy, DispatchAsync dispatcher, PlaceManager placeManager) {
+        super(eventBus, view, proxy);
         this.dispatcher = dispatcher;
         this.placeManager = placeManager;
     }
@@ -54,11 +57,12 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
     @Override
     public void saveConceptScheme(ConceptSchemeDto conceptScheme) {
         dispatcher.execute(new SaveConceptSchemeAction(conceptScheme), new WaitingAsyncCallback<SaveConceptSchemeResult>() {
+
             @Override
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorSave()), MessageTypeEnum.ERROR);
             }
-           
+
             @Override
             public void onWaitSuccess(SaveConceptSchemeResult result) {
                 ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getMessageList(getMessages().conceptSchemeSaved()), MessageTypeEnum.SUCCESS);
@@ -66,38 +70,35 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
             }
         });
     }
-    
+
     /* UiHandlers */
     @Override
     public void sendToPendingPublication(String conceptSchemeUuid) {
 
     }
-    
+
     @Override
     public void publishExternally(String conceptSchemeUuid) {
         // TODO Auto-generated method stub
-        
+
     }
-    
+
     @Override
     public void publishInternally(String conceptSchemeUuid) {
         // TODO Auto-generated method stub
-        
+
     }
-    
+
     @Override
     public void rejectValidation(String conceptSchemeUuid) {
         // TODO Auto-generated method stub
-        
+
     }
-    
+
     @Override
     public void versioning(String conceptSchemeUuid) {
         // TODO Auto-generated method stub
-        
+
     }
-    
-    
-    
-    
+
 }
