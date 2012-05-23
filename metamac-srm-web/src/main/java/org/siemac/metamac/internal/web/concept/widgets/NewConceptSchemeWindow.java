@@ -21,7 +21,6 @@ public class NewConceptSchemeWindow extends CustomWindow {
 
     private CustomDynamicForm   form;
 
-
     public NewConceptSchemeWindow(String title) {
         super(title);
         setHeight(150);
@@ -46,7 +45,7 @@ public class NewConceptSchemeWindow extends CustomWindow {
 
     public ConceptSchemeDto getNewConceptSchemeDto() {
         ConceptSchemeDto conceptSchemeDto = new ConceptSchemeDto();
-        
+
         conceptSchemeDto.setIdLogic(form.getValueAsString(ConceptSchemeDS.ID_LOGIC));
         conceptSchemeDto.setName(InternationalStringUtils.updateInternationalString(new InternationalStringDto(), form.getValueAsString(ConceptSchemeDS.NAME)));
         return conceptSchemeDto;

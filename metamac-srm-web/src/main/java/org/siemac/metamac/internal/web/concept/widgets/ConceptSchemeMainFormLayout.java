@@ -11,12 +11,12 @@ import com.smartgwt.client.widgets.events.HasClickHandlers;
 
 public class ConceptSchemeMainFormLayout extends InternationalMainFormLayout {
 
-    private PublishToolStripButton  pendingPublication;
-    private PublishToolStripButton  rejectValidation;
-    private PublishToolStripButton  publishInternally;
-    private PublishToolStripButton  publishExternally;
-    private PublishToolStripButton  versioning;
-    
+    private PublishToolStripButton      pendingPublication;
+    private PublishToolStripButton      rejectValidation;
+    private PublishToolStripButton      publishInternally;
+    private PublishToolStripButton      publishExternally;
+    private PublishToolStripButton      versioning;
+
     private ConceptSchemeProcStatusEnum status;
 
     public ConceptSchemeMainFormLayout() {
@@ -46,8 +46,8 @@ public class ConceptSchemeMainFormLayout extends InternationalMainFormLayout {
         toolStrip.addButton(versioning);
     }
 
-    //TODO: WAITING FOR PROCSTATUS
-    
+    // TODO: WAITING FOR PROCSTATUS
+
     public void updatePublishSection(ConceptSchemeProcStatusEnum status) {
         this.status = status;
     }
@@ -98,7 +98,7 @@ public class ConceptSchemeMainFormLayout extends InternationalMainFormLayout {
     public HasClickHandlers getPublishInternally() {
         return publishInternally;
     }
-    
+
     public HasClickHandlers getPublishExternally() {
         return publishInternally;
     }
@@ -134,7 +134,7 @@ public class ConceptSchemeMainFormLayout extends InternationalMainFormLayout {
             publishInternally.show();
         }
     }
-    
+
     private void showPublishExternallyButton() {
         if (ClientSecurityUtils.canPublishExternallyConceptScheme()) {
             publishExternally.show();
