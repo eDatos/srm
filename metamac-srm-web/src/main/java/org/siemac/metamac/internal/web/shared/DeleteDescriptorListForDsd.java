@@ -2,7 +2,7 @@ package org.siemac.metamac.internal.web.shared;
 
 import java.util.List;
 
-import org.siemac.metamac.domain_dto.DescriptorDto;
+import org.siemac.metamac.domain.srm.dto.DescriptorDto;
 
 import com.gwtplatform.dispatch.annotation.GenDispatch;
 import com.gwtplatform.dispatch.annotation.In;

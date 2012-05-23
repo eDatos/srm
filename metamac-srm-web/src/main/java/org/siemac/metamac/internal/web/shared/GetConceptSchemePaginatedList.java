@@ -12,15 +12,14 @@ import com.gwtplatform.dispatch.annotation.Out;
 public class GetConceptSchemePaginatedList {
 
     @In(1)
-    int                maxResults;
+    int                    maxResults;
     @In(2)
-    int                firstResult;
+    int                    firstResult;
 
     @Out(1)
     List<ConceptSchemeDto> conceptSchemeList;
 
     @Out(2)
-    Integer            totalResults;
-    
-    
+    Integer                totalResults;
+
 }
