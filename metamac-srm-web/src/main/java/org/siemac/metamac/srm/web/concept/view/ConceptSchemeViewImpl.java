@@ -1,16 +1,16 @@
-package org.siemac.metamac.internal.web.concept.view;
+package org.siemac.metamac.srm.web.concept.view;
 
-import static org.siemac.metamac.internal.web.client.MetamacInternalWeb.getConstants;
-import static org.siemac.metamac.internal.web.client.MetamacInternalWeb.getMessages;
+import static org.siemac.metamac.srm.web.client.MetamacInternalWeb.getConstants;
+import static org.siemac.metamac.srm.web.client.MetamacInternalWeb.getMessages;
 
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.domain.concept.dto.ConceptSchemeDto;
-import org.siemac.metamac.internal.web.client.utils.ClientSecurityUtils;
-import org.siemac.metamac.internal.web.concept.model.ds.ConceptSchemeDS;
-import org.siemac.metamac.internal.web.concept.model.ds.ConceptSchemeProcStatusEnum;
-import org.siemac.metamac.internal.web.concept.presenter.ConceptSchemePresenter;
-import org.siemac.metamac.internal.web.concept.view.handlers.ConceptSchemeUiHandlers;
-import org.siemac.metamac.internal.web.concept.widgets.ConceptSchemeMainFormLayout;
+import org.siemac.metamac.srm.web.client.utils.ClientSecurityUtils;
+import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
+import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeProcStatusEnum;
+import org.siemac.metamac.srm.web.concept.presenter.ConceptSchemePresenter;
+import org.siemac.metamac.srm.web.concept.view.handlers.ConceptSchemeUiHandlers;
+import org.siemac.metamac.srm.web.concept.widgets.ConceptSchemeMainFormLayout;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.widgets.InformationWindow;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;

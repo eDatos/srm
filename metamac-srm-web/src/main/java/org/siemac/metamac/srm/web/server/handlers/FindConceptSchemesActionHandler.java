@@ -1,11 +1,11 @@
-package org.siemac.metamac.internal.web.server.handlers;
+package org.siemac.metamac.srm.web.server.handlers;
 
 import java.util.List;
 
 import org.siemac.metamac.core.common.dto.ExternalItemBtDto;
-import org.siemac.metamac.internal.web.server.ServiceContextHelper;
-import org.siemac.metamac.internal.web.shared.FindConceptSchemesAction;
-import org.siemac.metamac.internal.web.shared.FindConceptSchemesResult;
+import org.siemac.metamac.srm.web.server.ServiceContextHelper;
+import org.siemac.metamac.srm.web.shared.FindConceptSchemesAction;
+import org.siemac.metamac.srm.web.shared.FindConceptSchemesResult;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 

@@ -1,4 +1,4 @@
-package org.siemac.metamac.internal.web.client.gin;
+package org.siemac.metamac.srm.web.client.gin;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;

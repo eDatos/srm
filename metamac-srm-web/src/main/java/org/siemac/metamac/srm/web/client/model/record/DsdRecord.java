@@ -1,4 +1,4 @@
-package org.siemac.metamac.internal.web.client.model.record;
+package org.siemac.metamac.srm.web.client.model.record;
 
 import java.util.Date;
 

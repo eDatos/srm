@@ -1,10 +1,10 @@
-package org.siemac.metamac.internal.web.server.handlers;
+package org.siemac.metamac.srm.web.server.handlers;
 
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.internal.web.server.mock.ConceptSchemeService;
-import org.siemac.metamac.internal.web.server.mock.ConceptSchemeService.ConceptSchemePage;
-import org.siemac.metamac.internal.web.shared.GetConceptSchemePaginatedListAction;
-import org.siemac.metamac.internal.web.shared.GetConceptSchemePaginatedListResult;
+import org.siemac.metamac.srm.web.server.mock.ConceptSchemeService;
+import org.siemac.metamac.srm.web.server.mock.ConceptSchemeService.ConceptSchemePage;
+import org.siemac.metamac.srm.web.shared.GetConceptSchemePaginatedListAction;
+import org.siemac.metamac.srm.web.shared.GetConceptSchemePaginatedListResult;
 import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
 
 import com.gwtplatform.dispatch.server.ExecutionContext;

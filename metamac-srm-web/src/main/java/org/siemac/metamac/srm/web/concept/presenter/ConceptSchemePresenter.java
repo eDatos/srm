@@ -1,14 +1,14 @@
-package org.siemac.metamac.internal.web.concept.presenter;
+package org.siemac.metamac.srm.web.concept.presenter;
 
-import static org.siemac.metamac.internal.web.client.MetamacInternalWeb.getMessages;
+import static org.siemac.metamac.srm.web.client.MetamacInternalWeb.getMessages;
 
 import org.siemac.metamac.domain.concept.dto.ConceptSchemeDto;
-import org.siemac.metamac.internal.web.client.NameTokens;
-import org.siemac.metamac.internal.web.client.presenter.MainPagePresenter;
-import org.siemac.metamac.internal.web.client.utils.ErrorUtils;
-import org.siemac.metamac.internal.web.concept.view.handlers.ConceptSchemeUiHandlers;
-import org.siemac.metamac.internal.web.shared.SaveConceptSchemeAction;
-import org.siemac.metamac.internal.web.shared.SaveConceptSchemeResult;
+import org.siemac.metamac.srm.web.client.NameTokens;
+import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
+import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
+import org.siemac.metamac.srm.web.concept.view.handlers.ConceptSchemeUiHandlers;
+import org.siemac.metamac.srm.web.shared.SaveConceptSchemeAction;
+import org.siemac.metamac.srm.web.shared.SaveConceptSchemeResult;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;

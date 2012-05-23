@@ -1,4 +1,4 @@
-package org.siemac.metamac.internal.web.client.utils;
+package org.siemac.metamac.srm.web.client.utils;
 
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.domain.concept.dto.ConceptSchemeDto;

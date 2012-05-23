@@ -1,4 +1,4 @@
-package org.siemac.metamac.internal.web.shared;
+package org.siemac.metamac.srm.web.shared;
 
 import org.siemac.metamac.domain.srm.dto.ComponentDto;
 import org.siemac.metamac.domain.srm.enume.domain.TypeComponentList;

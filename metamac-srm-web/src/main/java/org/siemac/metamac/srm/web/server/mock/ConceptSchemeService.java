@@ -1,4 +1,4 @@
-package org.siemac.metamac.internal.web.server.mock;
+package org.siemac.metamac.srm.web.server.mock;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

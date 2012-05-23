@@ -1,11 +1,11 @@
-package org.siemac.metamac.internal.web.client.utils;
+package org.siemac.metamac.srm.web.client.utils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.siemac.metamac.internal.web.client.MetamacInternalWeb;
+import org.siemac.metamac.srm.web.client.MetamacInternalWeb;
 import org.siemac.metamac.web.common.client.utils.CommonErrorUtils;
 import org.siemac.metamac.web.common.shared.exception.MetamacWebException;
 import org.siemac.metamac.web.common.shared.exception.MetamacWebExceptionItem;

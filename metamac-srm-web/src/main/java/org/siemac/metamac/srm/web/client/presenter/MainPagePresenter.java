@@ -1,10 +1,10 @@
-package org.siemac.metamac.internal.web.client.presenter;
+package org.siemac.metamac.srm.web.client.presenter;
 
 import java.util.List;
 
-import org.siemac.metamac.internal.web.client.NameTokens;
-import org.siemac.metamac.internal.web.client.view.handlers.MainPageUiHandlers;
-import org.siemac.metamac.internal.web.client.widgets.BreadCrumbsPanel;
+import org.siemac.metamac.srm.web.client.NameTokens;
+import org.siemac.metamac.srm.web.client.view.handlers.MainPageUiHandlers;
+import org.siemac.metamac.srm.web.client.widgets.BreadCrumbsPanel;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.HideMessageEvent;
 import org.siemac.metamac.web.common.client.events.HideMessageEvent.HideMessageHandler;

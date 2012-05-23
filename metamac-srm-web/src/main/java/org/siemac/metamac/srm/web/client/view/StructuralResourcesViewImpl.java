@@ -1,12 +1,12 @@
-package org.siemac.metamac.internal.web.client.view;
+package org.siemac.metamac.srm.web.client.view;
 
 import java.util.List;
 
 import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
-import org.siemac.metamac.internal.web.client.MetamacInternalWeb;
-import org.siemac.metamac.internal.web.client.presenter.StructuralResourcesPresenter;
-import org.siemac.metamac.internal.web.client.view.handlers.StructuralResourcesUiHandlers;
-import org.siemac.metamac.internal.web.client.widgets.DsdsItemsContextAreaListGrid;
+import org.siemac.metamac.srm.web.client.MetamacInternalWeb;
+import org.siemac.metamac.srm.web.client.presenter.StructuralResourcesPresenter;
+import org.siemac.metamac.srm.web.client.view.handlers.StructuralResourcesUiHandlers;
+import org.siemac.metamac.srm.web.client.widgets.DsdsItemsContextAreaListGrid;
 
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;

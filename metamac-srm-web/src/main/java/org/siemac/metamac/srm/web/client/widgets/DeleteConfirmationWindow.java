@@ -1,4 +1,4 @@
-package org.siemac.metamac.internal.web.client.widgets;
+package org.siemac.metamac.srm.web.client.widgets;
 
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.resources.GlobalResources;

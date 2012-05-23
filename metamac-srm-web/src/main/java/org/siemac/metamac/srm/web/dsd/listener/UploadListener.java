@@ -1,4 +1,4 @@
-package org.siemac.metamac.internal.web.dsd.listener;
+package org.siemac.metamac.srm.web.dsd.listener;
 
 public interface UploadListener {
 

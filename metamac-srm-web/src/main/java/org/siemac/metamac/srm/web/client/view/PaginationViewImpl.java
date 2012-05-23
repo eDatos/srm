@@ -1,7 +1,7 @@
-package org.siemac.metamac.internal.web.client.view;
+package org.siemac.metamac.srm.web.client.view;
 
-import org.siemac.metamac.internal.web.client.MetamacInternalWeb;
-import org.siemac.metamac.internal.web.client.widgets.StatusBar;
+import org.siemac.metamac.srm.web.client.MetamacInternalWeb;
+import org.siemac.metamac.srm.web.client.widgets.StatusBar;
 
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.HasUiHandlers;

@@ -1,9 +1,9 @@
-package org.siemac.metamac.internal.web.client.widgets.presenter;
+package org.siemac.metamac.srm.web.client.widgets.presenter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.siemac.metamac.internal.web.client.NameTokens;
+import org.siemac.metamac.srm.web.client.NameTokens;
 
 import com.google.gwt.event.shared.EventBus;
 import com.google.inject.Inject;

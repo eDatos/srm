@@ -1,4 +1,4 @@
-package org.siemac.metamac.internal.web.dsd.utils;
+package org.siemac.metamac.srm.web.dsd.utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,7 @@ import org.siemac.metamac.domain.srm.dto.ComponentDto;
 import org.siemac.metamac.domain.srm.dto.DataAttributeDto;
 import org.siemac.metamac.domain.srm.dto.DescriptorDto;
 import org.siemac.metamac.domain.srm.dto.DimensionComponentDto;
-import org.siemac.metamac.internal.web.dsd.enums.RepresentationTypeEnum;
+import org.siemac.metamac.srm.web.dsd.enums.RepresentationTypeEnum;
 import org.siemac.metamac.web.common.client.utils.ExternalItemUtils;
 
 public class CommonUtils {

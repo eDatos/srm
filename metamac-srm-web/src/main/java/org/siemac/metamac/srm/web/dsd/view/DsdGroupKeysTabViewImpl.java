@@ -1,4 +1,4 @@
-package org.siemac.metamac.internal.web.dsd.view;
+package org.siemac.metamac.srm.web.dsd.view;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -9,12 +9,12 @@ import org.siemac.metamac.domain.srm.dto.ComponentDto;
 import org.siemac.metamac.domain.srm.dto.DescriptorDto;
 import org.siemac.metamac.domain.srm.dto.DimensionComponentDto;
 import org.siemac.metamac.domain.srm.enume.domain.TypeComponentList;
-import org.siemac.metamac.internal.web.client.MetamacInternalWeb;
-import org.siemac.metamac.internal.web.dsd.model.record.GroupKeysRecord;
-import org.siemac.metamac.internal.web.dsd.presenter.DsdGroupKeysTabPresenter;
-import org.siemac.metamac.internal.web.dsd.utils.RecordUtils;
-import org.siemac.metamac.internal.web.dsd.view.handlers.DsdGroupKeysTabUiHandlers;
-import org.siemac.metamac.internal.web.dsd.widgets.AnnotationsPanel;
+import org.siemac.metamac.srm.web.client.MetamacInternalWeb;
+import org.siemac.metamac.srm.web.dsd.model.record.GroupKeysRecord;
+import org.siemac.metamac.srm.web.dsd.presenter.DsdGroupKeysTabPresenter;
+import org.siemac.metamac.srm.web.dsd.utils.RecordUtils;
+import org.siemac.metamac.srm.web.dsd.view.handlers.DsdGroupKeysTabUiHandlers;
+import org.siemac.metamac.srm.web.dsd.widgets.AnnotationsPanel;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;

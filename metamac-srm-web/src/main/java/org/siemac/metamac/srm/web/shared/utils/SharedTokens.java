@@ -1,4 +1,4 @@
-package org.siemac.metamac.internal.web.shared.utils;
+package org.siemac.metamac.srm.web.shared.utils;
 
 import com.gwtplatform.dispatch.shared.SecurityCookie;
 

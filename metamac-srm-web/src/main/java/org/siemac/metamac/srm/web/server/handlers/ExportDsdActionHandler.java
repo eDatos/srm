@@ -1,12 +1,12 @@
-package org.siemac.metamac.internal.web.server.handlers;
+package org.siemac.metamac.srm.web.server.handlers;
 
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionExtendDto;
 import org.siemac.metamac.domain.srm.enume.domain.TypeDozerCopyMode;
 import org.siemac.metamac.domain.trans.dto.StructureMsgDto;
-import org.siemac.metamac.internal.web.server.ServiceContextHelper;
-import org.siemac.metamac.internal.web.shared.ExportDsdAction;
-import org.siemac.metamac.internal.web.shared.ExportDsdResult;
+import org.siemac.metamac.srm.web.server.ServiceContextHelper;
+import org.siemac.metamac.srm.web.shared.ExportDsdAction;
+import org.siemac.metamac.srm.web.shared.ExportDsdResult;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;

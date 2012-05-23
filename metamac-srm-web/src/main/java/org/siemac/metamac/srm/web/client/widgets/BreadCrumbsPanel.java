@@ -1,4 +1,4 @@
-package org.siemac.metamac.internal.web.client.widgets;
+package org.siemac.metamac.srm.web.client.widgets;
 
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.InlineHyperlink;

@@ -1,9 +1,9 @@
-package org.siemac.metamac.internal.web.concept.utils;
+package org.siemac.metamac.srm.web.concept.utils;
 
 import static org.siemac.metamac.web.common.client.utils.InternationalStringUtils.getLocalisedString;
 
 import org.siemac.metamac.domain.concept.dto.ConceptSchemeDto;
-import org.siemac.metamac.internal.web.concept.model.record.ConceptSchemeRecord;
+import org.siemac.metamac.srm.web.concept.model.record.ConceptSchemeRecord;
 
 public class RecordUtils {
 

@@ -1,4 +1,4 @@
-package org.siemac.metamac.internal.web.concept.widgets;
+package org.siemac.metamac.srm.web.concept.widgets;
 
 import com.smartgwt.client.types.Visibility;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;

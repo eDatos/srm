@@ -1,9 +1,9 @@
-package org.siemac.metamac.internal.web.client.widgets.view;
+package org.siemac.metamac.srm.web.client.widgets.view;
 
-import org.siemac.metamac.internal.web.client.MetamacInternalWeb;
-import org.siemac.metamac.internal.web.client.enums.ToolStripButtonEnum;
-import org.siemac.metamac.internal.web.client.widgets.CustomToolStripButton;
-import org.siemac.metamac.internal.web.client.widgets.presenter.ToolStripPresenterWidget;
+import org.siemac.metamac.srm.web.client.MetamacInternalWeb;
+import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
+import org.siemac.metamac.srm.web.client.widgets.CustomToolStripButton;
+import org.siemac.metamac.srm.web.client.widgets.presenter.ToolStripPresenterWidget;
 
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;

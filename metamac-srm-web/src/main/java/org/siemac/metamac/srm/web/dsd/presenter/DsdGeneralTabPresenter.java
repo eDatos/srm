@@ -1,20 +1,20 @@
-package org.siemac.metamac.internal.web.dsd.presenter;
+package org.siemac.metamac.srm.web.dsd.presenter;
 
 import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
-import org.siemac.metamac.internal.web.client.MetamacInternalWeb;
-import org.siemac.metamac.internal.web.client.NameTokens;
-import org.siemac.metamac.internal.web.client.utils.ErrorUtils;
-import org.siemac.metamac.internal.web.client.utils.PlaceRequestUtils;
-import org.siemac.metamac.internal.web.dsd.events.SelectDsdAndDescriptorsEvent;
-import org.siemac.metamac.internal.web.dsd.events.SelectDsdAndDescriptorsEvent.SelectDsdAndDescriptorsHandler;
-import org.siemac.metamac.internal.web.dsd.events.SelectViewDsdDescriptorEvent;
-import org.siemac.metamac.internal.web.dsd.events.UpdateDsdEvent;
-import org.siemac.metamac.internal.web.dsd.events.UpdateDsdEvent.UpdateDsdHandler;
-import org.siemac.metamac.internal.web.dsd.view.handlers.DsdGeneralTabUiHandlers;
-import org.siemac.metamac.internal.web.shared.GetDsdAndDescriptorsAction;
-import org.siemac.metamac.internal.web.shared.GetDsdAndDescriptorsResult;
-import org.siemac.metamac.internal.web.shared.SaveDsdAction;
-import org.siemac.metamac.internal.web.shared.SaveDsdResult;
+import org.siemac.metamac.srm.web.client.MetamacInternalWeb;
+import org.siemac.metamac.srm.web.client.NameTokens;
+import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
+import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
+import org.siemac.metamac.srm.web.dsd.events.SelectDsdAndDescriptorsEvent;
+import org.siemac.metamac.srm.web.dsd.events.SelectDsdAndDescriptorsEvent.SelectDsdAndDescriptorsHandler;
+import org.siemac.metamac.srm.web.dsd.events.SelectViewDsdDescriptorEvent;
+import org.siemac.metamac.srm.web.dsd.events.UpdateDsdEvent;
+import org.siemac.metamac.srm.web.dsd.events.UpdateDsdEvent.UpdateDsdHandler;
+import org.siemac.metamac.srm.web.dsd.view.handlers.DsdGeneralTabUiHandlers;
+import org.siemac.metamac.srm.web.shared.GetDsdAndDescriptorsAction;
+import org.siemac.metamac.srm.web.shared.GetDsdAndDescriptorsResult;
+import org.siemac.metamac.srm.web.shared.SaveDsdAction;
+import org.siemac.metamac.srm.web.shared.SaveDsdResult;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 

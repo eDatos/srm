@@ -1,15 +1,15 @@
-package org.siemac.metamac.internal.web.dsd.widgets;
+package org.siemac.metamac.srm.web.dsd.widgets;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.domain.srm.dto.AnnotationDto;
-import org.siemac.metamac.internal.web.client.MetamacInternalWeb;
-import org.siemac.metamac.internal.web.client.resources.GlobalResources;
-import org.siemac.metamac.internal.web.dsd.model.ds.AnnotationDS;
-import org.siemac.metamac.internal.web.dsd.model.record.InternationalAnnotationRecord;
-import org.siemac.metamac.internal.web.dsd.utils.RecordUtils;
+import org.siemac.metamac.srm.web.client.MetamacInternalWeb;
+import org.siemac.metamac.srm.web.client.resources.GlobalResources;
+import org.siemac.metamac.srm.web.dsd.model.ds.AnnotationDS;
+import org.siemac.metamac.srm.web.dsd.model.record.InternationalAnnotationRecord;
+import org.siemac.metamac.srm.web.dsd.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.utils.LocaleMock;
 

@@ -1,7 +1,7 @@
-package org.siemac.metamac.internal.web.client.widgets;
+package org.siemac.metamac.srm.web.client.widgets;
 
-import org.siemac.metamac.internal.web.client.MetamacInternalWeb;
-import org.siemac.metamac.internal.web.client.resources.GlobalResources;
+import org.siemac.metamac.srm.web.client.MetamacInternalWeb;
+import org.siemac.metamac.srm.web.client.resources.GlobalResources;
 
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.Overflow;

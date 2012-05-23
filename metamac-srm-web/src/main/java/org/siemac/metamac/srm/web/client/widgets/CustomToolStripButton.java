@@ -1,4 +1,4 @@
-package org.siemac.metamac.internal.web.client.widgets;
+package org.siemac.metamac.srm.web.client.widgets;
 
 import com.smartgwt.client.types.SelectionType;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;

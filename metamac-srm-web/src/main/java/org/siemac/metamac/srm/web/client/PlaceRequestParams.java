@@ -1,4 +1,4 @@
-package org.siemac.metamac.internal.web.client;
+package org.siemac.metamac.srm.web.client;
 
 public class PlaceRequestParams {
 

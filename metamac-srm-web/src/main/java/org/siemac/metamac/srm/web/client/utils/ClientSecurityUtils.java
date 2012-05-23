@@ -1,4 +1,4 @@
-package org.siemac.metamac.internal.web.client.utils;
+package org.siemac.metamac.srm.web.client.utils;
 
 public class ClientSecurityUtils {
 

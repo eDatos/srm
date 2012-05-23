@@ -1,10 +1,10 @@
-package org.siemac.metamac.internal.web.concept.widgets;
+package org.siemac.metamac.srm.web.concept.widgets;
 
-import static org.siemac.metamac.internal.web.client.MetamacInternalWeb.getConstants;
+import static org.siemac.metamac.srm.web.client.MetamacInternalWeb.getConstants;
 
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.domain.concept.dto.ConceptSchemeDto;
-import org.siemac.metamac.internal.web.concept.model.ds.ConceptSchemeDS;
+import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.widgets.CustomWindow;

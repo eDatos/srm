@@ -1,4 +1,4 @@
-package org.siemac.metamac.internal.web.server;
+package org.siemac.metamac.srm.web.server;
 
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 

@@ -1,4 +1,4 @@
-package org.siemac.metamac.internal.web.server.handlers;
+package org.siemac.metamac.srm.web.server.handlers;
 
 import static org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder.criteriaFor;
 
@@ -11,9 +11,9 @@ import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
-import org.siemac.metamac.internal.web.server.ServiceContextHelper;
-import org.siemac.metamac.internal.web.shared.GetDsdListAction;
-import org.siemac.metamac.internal.web.shared.GetDsdListResult;
+import org.siemac.metamac.srm.web.server.ServiceContextHelper;
+import org.siemac.metamac.srm.web.shared.GetDsdListAction;
+import org.siemac.metamac.srm.web.shared.GetDsdListResult;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.core.structure.domain.DataStructureDefinition;
 import org.siemac.metamac.srm.core.structure.domain.DataStructureDefinitionProperties;

@@ -1,4 +1,4 @@
-package org.siemac.metamac.internal.web.concept.model.record;
+package org.siemac.metamac.srm.web.concept.model.record;
 
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 

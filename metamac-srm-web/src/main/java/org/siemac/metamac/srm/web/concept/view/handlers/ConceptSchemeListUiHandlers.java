@@ -1,4 +1,4 @@
-package org.siemac.metamac.internal.web.concept.view.handlers;
+package org.siemac.metamac.srm.web.concept.view.handlers;
 
 import java.util.List;
 

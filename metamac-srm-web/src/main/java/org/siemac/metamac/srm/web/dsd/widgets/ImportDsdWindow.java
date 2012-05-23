@@ -1,8 +1,8 @@
-package org.siemac.metamac.internal.web.dsd.widgets;
+package org.siemac.metamac.srm.web.dsd.widgets;
 
-import org.siemac.metamac.internal.web.client.MetamacInternalWeb;
-import org.siemac.metamac.internal.web.dsd.listener.UploadListener;
-import org.siemac.metamac.internal.web.shared.utils.SharedTokens;
+import org.siemac.metamac.srm.web.client.MetamacInternalWeb;
+import org.siemac.metamac.srm.web.dsd.listener.UploadListener;
+import org.siemac.metamac.srm.web.shared.utils.SharedTokens;
 
 import com.google.gwt.user.client.ui.NamedFrame;
 import com.smartgwt.client.types.Alignment;

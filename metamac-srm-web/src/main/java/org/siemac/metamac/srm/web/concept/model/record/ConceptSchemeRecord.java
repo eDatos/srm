@@ -1,7 +1,7 @@
-package org.siemac.metamac.internal.web.concept.model.record;
+package org.siemac.metamac.srm.web.concept.model.record;
 
 import org.siemac.metamac.domain.concept.dto.ConceptSchemeDto;
-import org.siemac.metamac.internal.web.concept.model.ds.ConceptSchemeDS;
+import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 

@@ -1,4 +1,4 @@
-package org.siemac.metamac.internal.web.concept.utils;
+package org.siemac.metamac.srm.web.concept.utils;
 
 import org.siemac.metamac.domain.concept.dto.ConceptSchemeDto;
 

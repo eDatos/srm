@@ -1,4 +1,4 @@
-package org.siemac.metamac.internal.web.dsd.view.handlers;
+package org.siemac.metamac.srm.web.dsd.view.handlers;
 
 import org.siemac.metamac.domain.srm.dto.ComponentDto;
 

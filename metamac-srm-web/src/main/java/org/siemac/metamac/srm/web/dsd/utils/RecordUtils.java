@@ -1,17 +1,17 @@
-package org.siemac.metamac.internal.web.dsd.utils;
+package org.siemac.metamac.srm.web.dsd.utils;
 
 import org.siemac.metamac.core.common.dto.ExternalItemBtDto;
 import org.siemac.metamac.domain.srm.dto.AnnotationDto;
 import org.siemac.metamac.domain.srm.dto.DataAttributeDto;
 import org.siemac.metamac.domain.srm.dto.DescriptorDto;
 import org.siemac.metamac.domain.srm.dto.DimensionComponentDto;
-import org.siemac.metamac.internal.web.client.MetamacInternalWeb;
-import org.siemac.metamac.internal.web.dsd.model.record.AnnotationRecord;
-import org.siemac.metamac.internal.web.dsd.model.record.AttributeRecord;
-import org.siemac.metamac.internal.web.dsd.model.record.ConceptRecord;
-import org.siemac.metamac.internal.web.dsd.model.record.DimensionRecord;
-import org.siemac.metamac.internal.web.dsd.model.record.GroupKeysRecord;
-import org.siemac.metamac.internal.web.dsd.model.record.InternationalAnnotationRecord;
+import org.siemac.metamac.srm.web.client.MetamacInternalWeb;
+import org.siemac.metamac.srm.web.dsd.model.record.AnnotationRecord;
+import org.siemac.metamac.srm.web.dsd.model.record.AttributeRecord;
+import org.siemac.metamac.srm.web.dsd.model.record.ConceptRecord;
+import org.siemac.metamac.srm.web.dsd.model.record.DimensionRecord;
+import org.siemac.metamac.srm.web.dsd.model.record.GroupKeysRecord;
+import org.siemac.metamac.srm.web.dsd.model.record.InternationalAnnotationRecord;
 import org.siemac.metamac.web.common.client.resources.GlobalResources;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 

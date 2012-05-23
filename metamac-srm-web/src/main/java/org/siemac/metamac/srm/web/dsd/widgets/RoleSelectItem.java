@@ -1,4 +1,4 @@
-package org.siemac.metamac.internal.web.dsd.widgets;
+package org.siemac.metamac.srm.web.dsd.widgets;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.Set;
 
 import org.siemac.metamac.core.common.dto.ExternalItemBtDto;
-import org.siemac.metamac.internal.web.client.MetamacInternalWeb;
-import org.siemac.metamac.internal.web.client.resources.GlobalResources;
-import org.siemac.metamac.internal.web.dsd.model.record.ConceptRecord;
-import org.siemac.metamac.internal.web.dsd.utils.RecordUtils;
+import org.siemac.metamac.srm.web.client.MetamacInternalWeb;
+import org.siemac.metamac.srm.web.client.resources.GlobalResources;
+import org.siemac.metamac.srm.web.dsd.model.record.ConceptRecord;
+import org.siemac.metamac.srm.web.dsd.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomCanvasItem;
 
 import com.smartgwt.client.types.Alignment;

@@ -191,9 +191,9 @@
                     <execution>
                         <configuration>
                             <servicePattern>**/client/service/**/*Service.java</servicePattern>
-                            <i18nConstantsBundle>org.siemac.metamac.internal.web.client.MetamacInternalWebConstants</i18nConstantsBundle>
-                            <i18nConstantsWithLookupBundle>org.siemac.metamac.internal.web.client.MetamacInternalWebCoreMessages</i18nConstantsWithLookupBundle>
-                            <i18nMessagesBundle>org.siemac.metamac.internal.web.client.MetamacInternalWebMessages</i18nMessagesBundle>
+                            <i18nConstantsBundle>org.siemac.metamac.srm.web.client.MetamacInternalWebConstants</i18nConstantsBundle>
+                            <i18nConstantsWithLookupBundle>org.siemac.metamac.srm.web.client.MetamacInternalWebCoreMessages</i18nConstantsWithLookupBundle>
+                            <i18nMessagesBundle>org.siemac.metamac.srm.web.client.MetamacInternalWebMessages</i18nMessagesBundle>
                         </configuration>
                         <goals>
                             <goal>resources</goal>
@@ -219,7 +219,7 @@
                 <!-- Plugin configuration. There are many available options, see gwt-maven-plugin
                     documentation at codehaus.org -->
                 <configuration>
-                    <runTarget>http://localhost:8090/metamac-internal-web/MetamacInternalWeb.html</runTarget>
+                    <runTarget>http://localhost:8090/metamac-srm-web/MetamacInternalWeb.html</runTarget>
                     <hostedWebapp>${webappDirectory}</hostedWebapp>
                     <noServer>true</noServer>
                     <debugPort>9997</debugPort>

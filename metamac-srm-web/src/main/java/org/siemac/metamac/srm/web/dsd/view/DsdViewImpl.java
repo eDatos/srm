@@ -1,15 +1,15 @@
-package org.siemac.metamac.internal.web.dsd.view;
+package org.siemac.metamac.srm.web.dsd.view;
 
 import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
-import org.siemac.metamac.internal.web.client.MetamacInternalWeb;
-import org.siemac.metamac.internal.web.client.enums.ToolStripButtonEnum;
-import org.siemac.metamac.internal.web.dsd.presenter.DsdAttributesTabPresenter.DsdAttributesTabView;
-import org.siemac.metamac.internal.web.dsd.presenter.DsdDimensionsTabPresenter.DsdDimensionsTabView;
-import org.siemac.metamac.internal.web.dsd.presenter.DsdGeneralTabPresenter.DsdGeneralTabView;
-import org.siemac.metamac.internal.web.dsd.presenter.DsdGroupKeysTabPresenter.DsdGroupKeysTabView;
-import org.siemac.metamac.internal.web.dsd.presenter.DsdPresenter;
-import org.siemac.metamac.internal.web.dsd.presenter.DsdPrimaryMeasureTabPresenter.DsdPrimaryMeasureTabView;
-import org.siemac.metamac.internal.web.dsd.view.handlers.DsdUiHandlers;
+import org.siemac.metamac.srm.web.client.MetamacInternalWeb;
+import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
+import org.siemac.metamac.srm.web.dsd.presenter.DsdAttributesTabPresenter.DsdAttributesTabView;
+import org.siemac.metamac.srm.web.dsd.presenter.DsdDimensionsTabPresenter.DsdDimensionsTabView;
+import org.siemac.metamac.srm.web.dsd.presenter.DsdGeneralTabPresenter.DsdGeneralTabView;
+import org.siemac.metamac.srm.web.dsd.presenter.DsdGroupKeysTabPresenter.DsdGroupKeysTabView;
+import org.siemac.metamac.srm.web.dsd.presenter.DsdPresenter;
+import org.siemac.metamac.srm.web.dsd.presenter.DsdPrimaryMeasureTabPresenter.DsdPrimaryMeasureTabView;
+import org.siemac.metamac.srm.web.dsd.view.handlers.DsdUiHandlers;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.widgets.TitleLabel;
 

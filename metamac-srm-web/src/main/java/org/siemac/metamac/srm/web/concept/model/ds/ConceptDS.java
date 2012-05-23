@@ -1,6 +1,6 @@
-package org.siemac.metamac.internal.web.concept.model.ds;
+package org.siemac.metamac.srm.web.concept.model.ds;
 
-import org.siemac.metamac.internal.web.client.MetamacInternalWeb;
+import org.siemac.metamac.srm.web.client.MetamacInternalWeb;
 
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.data.fields.DataSourceIntegerField;

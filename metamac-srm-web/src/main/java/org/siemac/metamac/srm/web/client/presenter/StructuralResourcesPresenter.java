@@ -1,16 +1,16 @@
-package org.siemac.metamac.internal.web.client.presenter;
+package org.siemac.metamac.srm.web.client.presenter;
 
 import java.util.List;
 
 import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
-import org.siemac.metamac.internal.web.client.MetamacInternalWeb;
-import org.siemac.metamac.internal.web.client.NameTokens;
-import org.siemac.metamac.internal.web.client.PlaceRequestParams;
-import org.siemac.metamac.internal.web.client.model.record.DsdRecord;
-import org.siemac.metamac.internal.web.client.view.handlers.StructuralResourcesUiHandlers;
-import org.siemac.metamac.internal.web.client.widgets.presenter.ToolStripPresenterWidget;
-import org.siemac.metamac.internal.web.shared.GetDsdListAction;
-import org.siemac.metamac.internal.web.shared.GetDsdListResult;
+import org.siemac.metamac.srm.web.client.MetamacInternalWeb;
+import org.siemac.metamac.srm.web.client.NameTokens;
+import org.siemac.metamac.srm.web.client.PlaceRequestParams;
+import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
+import org.siemac.metamac.srm.web.client.view.handlers.StructuralResourcesUiHandlers;
+import org.siemac.metamac.srm.web.client.widgets.presenter.ToolStripPresenterWidget;
+import org.siemac.metamac.srm.web.shared.GetDsdListAction;
+import org.siemac.metamac.srm.web.shared.GetDsdListResult;
 
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;

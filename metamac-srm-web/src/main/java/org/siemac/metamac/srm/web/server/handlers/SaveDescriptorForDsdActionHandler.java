@@ -1,13 +1,13 @@
-package org.siemac.metamac.internal.web.server.handlers;
+package org.siemac.metamac.srm.web.server.handlers;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.domain.srm.dto.DescriptorDto;
-import org.siemac.metamac.internal.web.server.ServiceContextHelper;
-import org.siemac.metamac.internal.web.shared.SaveDescriptorForDsdAction;
-import org.siemac.metamac.internal.web.shared.SaveDescriptorForDsdResult;
+import org.siemac.metamac.srm.web.server.ServiceContextHelper;
+import org.siemac.metamac.srm.web.shared.SaveDescriptorForDsdAction;
+import org.siemac.metamac.srm.web.shared.SaveDescriptorForDsdResult;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;

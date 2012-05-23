@@ -1,6 +1,6 @@
-package org.siemac.metamac.internal.web.dsd.model.ds;
+package org.siemac.metamac.srm.web.dsd.model.ds;
 
-import org.siemac.metamac.internal.web.dsd.model.record.InternationalAnnotationRecord;
+import org.siemac.metamac.srm.web.dsd.model.record.InternationalAnnotationRecord;
 
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.data.fields.DataSourceIntegerField;

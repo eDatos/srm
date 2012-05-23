@@ -1,4 +1,4 @@
-package org.siemac.metamac.internal.web.server.aspects;
+package org.siemac.metamac.srm.web.server.aspects;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;

@@ -1,6 +1,6 @@
-package org.siemac.metamac.internal.web.client;
+package org.siemac.metamac.srm.web.client;
 
-import org.siemac.metamac.internal.web.client.gin.MetamacInternalWebGinjector;
+import org.siemac.metamac.srm.web.client.gin.MetamacInternalWebGinjector;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;

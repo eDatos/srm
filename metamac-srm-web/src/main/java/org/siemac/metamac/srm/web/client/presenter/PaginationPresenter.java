@@ -1,4 +1,4 @@
-package org.siemac.metamac.internal.web.client.presenter;
+package org.siemac.metamac.srm.web.client.presenter;
 
 import com.google.gwt.event.shared.EventBus;
 import com.google.inject.Inject;

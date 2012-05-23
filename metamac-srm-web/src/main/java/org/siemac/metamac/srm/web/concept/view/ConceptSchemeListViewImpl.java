@@ -1,23 +1,23 @@
-package org.siemac.metamac.internal.web.concept.view;
+package org.siemac.metamac.srm.web.concept.view;
 
-import static org.siemac.metamac.internal.web.client.MetamacInternalWeb.getConstants;
-import static org.siemac.metamac.internal.web.client.MetamacInternalWeb.getMessages;
+import static org.siemac.metamac.srm.web.client.MetamacInternalWeb.getConstants;
+import static org.siemac.metamac.srm.web.client.MetamacInternalWeb.getMessages;
 import static org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.siemac.metamac.domain.concept.dto.ConceptSchemeDto;
-import org.siemac.metamac.internal.web.client.enums.ToolStripButtonEnum;
-import org.siemac.metamac.internal.web.client.utils.ClientSecurityUtils;
-import org.siemac.metamac.internal.web.client.view.PaginationViewImpl;
-import org.siemac.metamac.internal.web.client.widgets.StatusBar;
-import org.siemac.metamac.internal.web.concept.model.ds.ConceptSchemeDS;
-import org.siemac.metamac.internal.web.concept.model.record.ConceptSchemeRecord;
-import org.siemac.metamac.internal.web.concept.presenter.ConceptSchemeListPresenter;
-import org.siemac.metamac.internal.web.concept.utils.RecordUtils;
-import org.siemac.metamac.internal.web.concept.view.handlers.ConceptSchemeListUiHandlers;
-import org.siemac.metamac.internal.web.concept.widgets.NewConceptSchemeWindow;
+import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
+import org.siemac.metamac.srm.web.client.utils.ClientSecurityUtils;
+import org.siemac.metamac.srm.web.client.view.PaginationViewImpl;
+import org.siemac.metamac.srm.web.client.widgets.StatusBar;
+import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
+import org.siemac.metamac.srm.web.concept.model.record.ConceptSchemeRecord;
+import org.siemac.metamac.srm.web.concept.presenter.ConceptSchemeListPresenter;
+import org.siemac.metamac.srm.web.concept.utils.RecordUtils;
+import org.siemac.metamac.srm.web.concept.view.handlers.ConceptSchemeListUiHandlers;
+import org.siemac.metamac.srm.web.concept.widgets.NewConceptSchemeWindow;
 import org.siemac.metamac.web.common.client.widgets.BaseCustomListGrid;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 

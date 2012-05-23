@@ -1,4 +1,4 @@
-package org.siemac.metamac.internal.web.dsd.enums;
+package org.siemac.metamac.srm.web.dsd.enums;
 
 import com.smartgwt.client.types.ValueEnum;
 

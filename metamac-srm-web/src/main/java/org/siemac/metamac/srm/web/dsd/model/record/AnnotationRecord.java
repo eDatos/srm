@@ -1,4 +1,4 @@
-package org.siemac.metamac.internal.web.dsd.model.record;
+package org.siemac.metamac.srm.web.dsd.model.record;
 
 import org.siemac.metamac.domain.srm.dto.AnnotationDto;
 

@@ -1,10 +1,10 @@
-package org.siemac.metamac.internal.web.dsd.view;
+package org.siemac.metamac.srm.web.dsd.view;
 
 import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
-import org.siemac.metamac.internal.web.client.MetamacInternalWeb;
-import org.siemac.metamac.internal.web.dsd.presenter.DsdGeneralTabPresenter;
-import org.siemac.metamac.internal.web.dsd.view.handlers.DsdGeneralTabUiHandlers;
-import org.siemac.metamac.internal.web.dsd.widgets.AnnotationsPanel;
+import org.siemac.metamac.srm.web.client.MetamacInternalWeb;
+import org.siemac.metamac.srm.web.dsd.presenter.DsdGeneralTabPresenter;
+import org.siemac.metamac.srm.web.dsd.view.handlers.DsdGeneralTabUiHandlers;
+import org.siemac.metamac.srm.web.dsd.widgets.AnnotationsPanel;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.InternationalMainFormLayout;

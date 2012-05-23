@@ -1,4 +1,4 @@
-package org.siemac.metamac.internal.web.dsd.events;
+package org.siemac.metamac.srm.web.dsd.events;
 
 import java.util.List;
 

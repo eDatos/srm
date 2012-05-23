@@ -1,6 +1,6 @@
-package org.siemac.metamac.internal.web.client;
+package org.siemac.metamac.srm.web.client;
 
-import org.siemac.metamac.internal.web.client.gin.DefaultPlace;
+import org.siemac.metamac.srm.web.client.gin.DefaultPlace;
 
 import com.google.gwt.event.shared.EventBus;
 import com.google.inject.Inject;

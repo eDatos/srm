@@ -1,4 +1,4 @@
-package org.siemac.metamac.internal.web.server.servlet;
+package org.siemac.metamac.srm.web.server.servlet;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,8 +19,8 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.siemac.metamac.core.common.util.ApplicationContextProvider;
 import org.siemac.metamac.domain.util.dto.ContentInputDto;
-import org.siemac.metamac.internal.web.server.ServiceContextHelper;
-import org.siemac.metamac.internal.web.shared.utils.SharedTokens;
+import org.siemac.metamac.srm.web.server.ServiceContextHelper;
+import org.siemac.metamac.srm.web.shared.utils.SharedTokens;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 
 import com.google.inject.Singleton;

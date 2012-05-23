@@ -1,4 +1,4 @@
-package org.siemac.metamac.internal.web.server.servlet;
+package org.siemac.metamac.srm.web.server.servlet;
 
 import java.io.DataInputStream;
 import java.io.File;
@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.siemac.metamac.internal.web.shared.utils.SharedTokens;
+import org.siemac.metamac.srm.web.shared.utils.SharedTokens;
 
 import com.google.inject.Singleton;
 

@@ -1,10 +1,10 @@
-package org.siemac.metamac.internal.web.client.widgets;
+package org.siemac.metamac.srm.web.client.widgets;
 
 import java.util.List;
 
 import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
-import org.siemac.metamac.internal.web.client.MetamacInternalWeb;
-import org.siemac.metamac.internal.web.client.model.record.DsdRecord;
+import org.siemac.metamac.srm.web.client.MetamacInternalWeb;
+import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 
 import com.smartgwt.client.types.ListGridFieldType;

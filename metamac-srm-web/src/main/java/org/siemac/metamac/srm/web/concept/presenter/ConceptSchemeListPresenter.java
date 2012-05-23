@@ -1,27 +1,27 @@
-package org.siemac.metamac.internal.web.concept.presenter;
+package org.siemac.metamac.srm.web.concept.presenter;
 
-import static org.siemac.metamac.internal.web.client.MetamacInternalWeb.getConstants;
-import static org.siemac.metamac.internal.web.client.MetamacInternalWeb.getMessages;
+import static org.siemac.metamac.srm.web.client.MetamacInternalWeb.getConstants;
+import static org.siemac.metamac.srm.web.client.MetamacInternalWeb.getMessages;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.siemac.metamac.domain.concept.dto.ConceptSchemeDto;
-import org.siemac.metamac.internal.web.client.MetamacInternalWeb;
-import org.siemac.metamac.internal.web.client.NameTokens;
-import org.siemac.metamac.internal.web.client.PlaceRequestParams;
-import org.siemac.metamac.internal.web.client.presenter.MainPagePresenter;
-import org.siemac.metamac.internal.web.client.presenter.PaginationPresenter;
-import org.siemac.metamac.internal.web.client.utils.ErrorUtils;
-import org.siemac.metamac.internal.web.client.widgets.StatusBar;
-import org.siemac.metamac.internal.web.client.widgets.presenter.ToolStripPresenterWidget;
-import org.siemac.metamac.internal.web.concept.view.handlers.ConceptSchemeListUiHandlers;
-import org.siemac.metamac.internal.web.shared.DeleteConceptSchemeListAction;
-import org.siemac.metamac.internal.web.shared.DeleteConceptSchemeListResult;
-import org.siemac.metamac.internal.web.shared.GetConceptSchemePaginatedListAction;
-import org.siemac.metamac.internal.web.shared.GetConceptSchemePaginatedListResult;
-import org.siemac.metamac.internal.web.shared.SaveConceptSchemeAction;
-import org.siemac.metamac.internal.web.shared.SaveConceptSchemeResult;
+import org.siemac.metamac.srm.web.client.MetamacInternalWeb;
+import org.siemac.metamac.srm.web.client.NameTokens;
+import org.siemac.metamac.srm.web.client.PlaceRequestParams;
+import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
+import org.siemac.metamac.srm.web.client.presenter.PaginationPresenter;
+import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
+import org.siemac.metamac.srm.web.client.widgets.StatusBar;
+import org.siemac.metamac.srm.web.client.widgets.presenter.ToolStripPresenterWidget;
+import org.siemac.metamac.srm.web.concept.view.handlers.ConceptSchemeListUiHandlers;
+import org.siemac.metamac.srm.web.shared.DeleteConceptSchemeListAction;
+import org.siemac.metamac.srm.web.shared.DeleteConceptSchemeListResult;
+import org.siemac.metamac.srm.web.shared.GetConceptSchemePaginatedListAction;
+import org.siemac.metamac.srm.web.shared.GetConceptSchemePaginatedListResult;
+import org.siemac.metamac.srm.web.shared.SaveConceptSchemeAction;
+import org.siemac.metamac.srm.web.shared.SaveConceptSchemeResult;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;

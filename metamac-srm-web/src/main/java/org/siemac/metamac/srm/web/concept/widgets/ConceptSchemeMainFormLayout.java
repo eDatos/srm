@@ -1,10 +1,10 @@
-package org.siemac.metamac.internal.web.concept.widgets;
+package org.siemac.metamac.srm.web.concept.widgets;
 
-import static org.siemac.metamac.internal.web.client.MetamacInternalWeb.getConstants;
+import static org.siemac.metamac.srm.web.client.MetamacInternalWeb.getConstants;
 
-import org.siemac.metamac.internal.web.client.resources.GlobalResources;
-import org.siemac.metamac.internal.web.client.utils.ClientSecurityUtils;
-import org.siemac.metamac.internal.web.concept.model.ds.ConceptSchemeProcStatusEnum;
+import org.siemac.metamac.srm.web.client.resources.GlobalResources;
+import org.siemac.metamac.srm.web.client.utils.ClientSecurityUtils;
+import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeProcStatusEnum;
 import org.siemac.metamac.web.common.client.widgets.form.InternationalMainFormLayout;
 
 import com.smartgwt.client.widgets.events.HasClickHandlers;

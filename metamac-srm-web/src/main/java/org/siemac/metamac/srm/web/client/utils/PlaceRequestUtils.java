@@ -1,7 +1,7 @@
-package org.siemac.metamac.internal.web.client.utils;
+package org.siemac.metamac.srm.web.client.utils;
 
-import org.siemac.metamac.internal.web.client.NameTokens;
-import org.siemac.metamac.internal.web.client.PlaceRequestParams;
+import org.siemac.metamac.srm.web.client.NameTokens;
+import org.siemac.metamac.srm.web.client.PlaceRequestParams;
 
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.PlaceRequest;

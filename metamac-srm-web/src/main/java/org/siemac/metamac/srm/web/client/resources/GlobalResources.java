@@ -1,4 +1,4 @@
-package org.siemac.metamac.internal.web.client.resources;
+package org.siemac.metamac.srm.web.client.resources;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.resources.client.ClientBundleWithLookup;

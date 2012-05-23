@@ -1,4 +1,4 @@
-package org.siemac.metamac.internal.web.client.view.handlers;
+package org.siemac.metamac.srm.web.client.view.handlers;
 
 import com.gwtplatform.mvp.client.UiHandlers;
 
