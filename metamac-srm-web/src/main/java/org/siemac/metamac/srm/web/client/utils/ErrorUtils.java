@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.siemac.metamac.srm.web.client.MetamacInternalWeb;
+import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.web.common.client.utils.CommonErrorUtils;
 import org.siemac.metamac.web.common.shared.exception.MetamacWebException;
 import org.siemac.metamac.web.common.shared.exception.MetamacWebExceptionItem;
@@ -46,7 +46,7 @@ public class ErrorUtils extends CommonErrorUtils {
             // GWT generate a "_" separated method when the key is separated by "."
             String code = item.getCode().replace(".", "_");
             try {
-                String message = MetamacInternalWeb.getCoreMessages().getString(code);
+                String message = MetamacSrmWeb.getCoreMessages().getString(code);
                 return getMessageWithParameters(message, item.getMessageParameters());
             } catch (Exception e) {
                 String errorMessage = "Message with code = " + code + " not found";

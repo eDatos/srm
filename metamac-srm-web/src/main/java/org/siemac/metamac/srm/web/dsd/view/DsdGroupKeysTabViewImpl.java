@@ -9,7 +9,7 @@ import org.siemac.metamac.domain.srm.dto.ComponentDto;
 import org.siemac.metamac.domain.srm.dto.DescriptorDto;
 import org.siemac.metamac.domain.srm.dto.DimensionComponentDto;
 import org.siemac.metamac.domain.srm.enume.domain.TypeComponentList;
-import org.siemac.metamac.srm.web.client.MetamacInternalWeb;
+import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.dsd.model.record.GroupKeysRecord;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdGroupKeysTabPresenter;
 import org.siemac.metamac.srm.web.dsd.utils.RecordUtils;
@@ -83,7 +83,7 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
 
         // ToolStrip
 
-        newToolStripButton = new ToolStripButton(MetamacInternalWeb.getConstants().actionNew(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.newListGrid().getURL());
+        newToolStripButton = new ToolStripButton(MetamacSrmWeb.getConstants().actionNew(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.newListGrid().getURL());
         newToolStripButton.addClickHandler(new ClickHandler() {
 
             @Override
@@ -92,10 +92,10 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
             }
         });
 
-        deleteConfirmationWindow = new DeleteConfirmationWindow(MetamacInternalWeb.getConstants().dsdDeleteConfirmationTitle(), MetamacInternalWeb.getConstants().dsdGroupKeysDeleteConfirmation());
+        deleteConfirmationWindow = new DeleteConfirmationWindow(MetamacSrmWeb.getConstants().dsdDeleteConfirmationTitle(), MetamacSrmWeb.getConstants().dsdGroupKeysDeleteConfirmation());
         deleteConfirmationWindow.setVisibility(Visibility.HIDDEN);
 
-        deleteToolStripButton = new ToolStripButton(MetamacInternalWeb.getConstants().actionDelete(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.deleteListGrid().getURL());
+        deleteToolStripButton = new ToolStripButton(MetamacSrmWeb.getConstants().actionDelete(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.deleteListGrid().getURL());
         deleteToolStripButton.setVisibility(Visibility.HIDDEN);
         deleteToolStripButton.addClickHandler(new ClickHandler() {
 
@@ -118,7 +118,7 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
         groupKeysGrid.setHeight(150);
         groupKeysGrid.setSelectionType(SelectionStyle.SIMPLE);
         groupKeysGrid.setSelectionAppearance(SelectionAppearance.CHECKBOX);
-        ListGridField idLogicField = new ListGridField(GroupKeysRecord.ID_LOGIC, MetamacInternalWeb.getConstants().dsdGroupKeysIdLogic());
+        ListGridField idLogicField = new ListGridField(GroupKeysRecord.ID_LOGIC, MetamacSrmWeb.getConstants().dsdGroupKeysIdLogic());
         groupKeysGrid.setFields(idLogicField);
         // ToolTip
         idLogicField.setShowHover(true);
@@ -206,10 +206,10 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
      * @return
      */
     private void createViewForm() {
-        staticIdLogic = new ViewTextItem("id-groupkeys-view", MetamacInternalWeb.getConstants().dsdGroupKeysId());
-        staticDimensionsItem = new ViewTextItem("dim-groupkeys-view", MetamacInternalWeb.getConstants().dsdDimensions());
+        staticIdLogic = new ViewTextItem("id-groupkeys-view", MetamacSrmWeb.getConstants().dsdGroupKeysId());
+        staticDimensionsItem = new ViewTextItem("dim-groupkeys-view", MetamacSrmWeb.getConstants().dsdDimensions());
 
-        GroupDynamicForm staticForm = new GroupDynamicForm(MetamacInternalWeb.getConstants().dsdGroupKeysDetails());
+        GroupDynamicForm staticForm = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdGroupKeysDetails());
         staticForm.setFields(staticIdLogic, staticDimensionsItem);
 
         // Annotations
@@ -226,15 +226,15 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
      */
     private void createEditionForm() {
         // Id
-        idLogic = new RequiredTextItem("id-groupkeys", MetamacInternalWeb.getConstants().dsdGroupKeysId());
+        idLogic = new RequiredTextItem("id-groupkeys", MetamacSrmWeb.getConstants().dsdGroupKeysId());
         idLogic.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());
 
         // Dimensions
-        dimensionsItem = new SelectItem("dim-groupkeys", MetamacInternalWeb.getConstants().dsdDimensions());
+        dimensionsItem = new SelectItem("dim-groupkeys", MetamacSrmWeb.getConstants().dsdDimensions());
         dimensionsItem.setMultiple(true);
         dimensionsItem.setPickListWidth(350);
 
-        form = new GroupDynamicForm(MetamacInternalWeb.getConstants().dsdDimensionDetails());
+        form = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdDimensionDetails());
         form.setFields(idLogic, dimensionsItem);
 
         // Annotations

@@ -9,7 +9,7 @@ import org.siemac.metamac.domain.srm.dto.DataAttributeDto;
 import org.siemac.metamac.domain.srm.dto.DescriptorDto;
 import org.siemac.metamac.domain.srm.dto.DimensionComponentDto;
 import org.siemac.metamac.domain.srm.enume.domain.TypeComponentList;
-import org.siemac.metamac.srm.web.client.MetamacInternalWeb;
+import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
@@ -97,7 +97,7 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
 
     @TitleFunction
     public static String getTranslatedTitle() {
-        return MetamacInternalWeb.getConstants().breadcrumbAttributes();
+        return MetamacSrmWeb.getConstants().breadcrumbAttributes();
     }
 
     public interface DsdAttributesTabView extends View, HasUiHandlers<DsdAttributesTabUiHandlers> {
@@ -172,7 +172,7 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
 
             @Override
             public void onFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacInternalWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
             }
             @Override
             public void onSuccess(FindDescriptorForDsdResult result) {
@@ -204,7 +204,7 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
 
             @Override
             public void onFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacInternalWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
             }
             @Override
             public void onSuccess(FindDescriptorForDsdResult result) {
@@ -334,12 +334,12 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
 
             @Override
             public void onFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacInternalWeb.getMessages().dsdAttributeErrorSave()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdAttributeErrorSave()), MessageTypeEnum.ERROR);
             }
 
             @Override
             public void onSuccess(SaveComponentForDsdResult result) {
-                ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getMessageList(MetamacInternalWeb.getMessages().dsdAttributeSaved()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdAttributeSaved()), MessageTypeEnum.SUCCESS);
                 updateAttributeList(false);
                 getView().onAttributeSaved((DataAttributeDto) result.getComponentDtoSaved());
                 if (isNewDescriptor) {
@@ -358,12 +358,12 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
             @Override
             public void onFailure(Throwable caught) {
                 updateAttributeList(true);
-                ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getMessageList(MetamacInternalWeb.getMessages().dsdAttributeErrorDelete()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdAttributeErrorDelete()), MessageTypeEnum.ERROR);
             }
             @Override
             public void onSuccess(DeleteAttributeListForDsdResult result) {
                 updateAttributeList(true);
-                ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getMessageList(MetamacInternalWeb.getMessages().dsdAttributeDeleted()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdAttributeDeleted()), MessageTypeEnum.SUCCESS);
             }
         });
     }
@@ -374,7 +374,7 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
 
             @Override
             public void onFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacInternalWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
             }
             @Override
             public void onSuccess(GetDsdAndDescriptorsResult result) {
@@ -389,7 +389,7 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
 
             @Override
             public void onFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacInternalWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
             }
             @Override
             public void onSuccess(FindDescriptorForDsdResult result) {
@@ -417,7 +417,7 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
 
             @Override
             public void onFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacInternalWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
             }
             @Override
             public void onSuccess(GetDsdResult result) {
@@ -431,7 +431,7 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
 
             @Override
             public void onFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacInternalWeb.getMessages().conceptErrorRetrievingData()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().conceptErrorRetrievingData()), MessageTypeEnum.ERROR);
             }
             @Override
             public void onSuccess(FindConceptsResult result) {
@@ -445,7 +445,7 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
 
             @Override
             public void onFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacInternalWeb.getMessages().conceptErrorRetrievingData()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().conceptErrorRetrievingData()), MessageTypeEnum.ERROR);
             }
             @Override
             public void onSuccess(FindConceptsResult result) {
@@ -459,7 +459,7 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
 
             @Override
             public void onFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacInternalWeb.getMessages().codeListsErrorRetrievingData()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().codeListsErrorRetrievingData()), MessageTypeEnum.ERROR);
             }
             @Override
             public void onSuccess(FindCodeListsResult result) {

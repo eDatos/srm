@@ -1,6 +1,6 @@
 package org.siemac.metamac.srm.web.concept.widgets;
 
-import static org.siemac.metamac.srm.web.client.MetamacInternalWeb.getConstants;
+import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
 import org.siemac.metamac.srm.web.client.resources.GlobalResources;
 import org.siemac.metamac.srm.web.client.utils.ClientSecurityUtils;

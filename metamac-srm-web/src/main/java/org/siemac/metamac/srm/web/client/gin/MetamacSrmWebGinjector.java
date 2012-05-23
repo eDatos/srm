@@ -1,7 +1,7 @@
 package org.siemac.metamac.srm.web.client.gin;
 
-import org.siemac.metamac.srm.web.client.MetamacInternalWebConstants;
-import org.siemac.metamac.srm.web.client.MetamacInternalWebMessages;
+import org.siemac.metamac.srm.web.client.MetamacSrmWebConstants;
+import org.siemac.metamac.srm.web.client.MetamacSrmWebMessages;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.presenter.StructuralResourcesPresenter;
 import org.siemac.metamac.srm.web.concept.presenter.ConceptSchemeListPresenter;
@@ -23,20 +23,19 @@ import com.gwtplatform.dispatch.client.gin.DispatchAsyncModule;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 
 @GinModules({DispatchAsyncModule.class, ClientModule.class})
-public interface MetamacInternalWebGinjector extends Ginjector {
+public interface MetamacSrmWebGinjector extends Ginjector {
 
     EventBus getEventBus();
     PlaceManager getPlaceManager();
 
     // Constants and messages interfaces
-    public MetamacInternalWebConstants getMetamacInternalWebConstants();
-    public MetamacInternalWebMessages getMetamacInternalWebMessages();
+    public MetamacSrmWebConstants getMetamacSrmWebConstants();
+    public MetamacSrmWebMessages getMetamacSrmWebMessages();
 
     Provider<MainPagePresenter> getMainPagePresenter();
     AsyncProvider<StructuralResourcesPresenter> getStructuralResourcesPresenter();
 
     // DSD
-    // TODO: dev
     AsyncProvider<DsdListPresenter> getDsdListPresenter();
     AsyncProvider<DsdPresenter> getDsdPresenter();
     AsyncProvider<DsdGeneralTabPresenter> getDsdGeneralTabPresenter();

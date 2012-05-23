@@ -3,7 +3,7 @@ package org.siemac.metamac.srm.web.client.view;
 import java.util.List;
 
 import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
-import org.siemac.metamac.srm.web.client.MetamacInternalWeb;
+import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.presenter.StructuralResourcesPresenter;
 import org.siemac.metamac.srm.web.client.view.handlers.StructuralResourcesUiHandlers;
 import org.siemac.metamac.srm.web.client.widgets.DsdsItemsContextAreaListGrid;
@@ -50,27 +50,27 @@ public class StructuralResourcesViewImpl extends ViewWithUiHandlers<StructuralRe
         lastModifiedArtifactsSectionStack.setOverflow(Overflow.HIDDEN);
 
         SectionStackSection lastDsdModifiedSection = new SectionStackSection();
-        lastDsdModifiedSection.setTitle(MetamacInternalWeb.getConstants().dsdLastModified());
+        lastDsdModifiedSection.setTitle(MetamacSrmWeb.getConstants().dsdLastModified());
         lastDsdModifiedSection.setExpanded(false);
         lastDsdModifiedSection.setItems(this.dsdsItemsContextAreaListGrid);
 
         SectionStackSection lastConceptSchemesModifiedSection = new SectionStackSection();
-        lastConceptSchemesModifiedSection.setTitle(MetamacInternalWeb.getConstants().conceptSchemeLastModified());
+        lastConceptSchemesModifiedSection.setTitle(MetamacSrmWeb.getConstants().conceptSchemeLastModified());
         lastConceptSchemesModifiedSection.setExpanded(false);
         // lastConceptSchemesModifiedSection.setItems();
 
         SectionStackSection lastOrgSchemesModifiedSection = new SectionStackSection();
-        lastOrgSchemesModifiedSection.setTitle(MetamacInternalWeb.getConstants().organisationSchemeLastModified());
+        lastOrgSchemesModifiedSection.setTitle(MetamacSrmWeb.getConstants().organisationSchemeLastModified());
         lastOrgSchemesModifiedSection.setExpanded(false);
         // lastOrgSchemesModifiedSection.setItems();
 
         SectionStackSection lastCatSchemesModifiedSection = new SectionStackSection();
-        lastCatSchemesModifiedSection.setTitle(MetamacInternalWeb.getConstants().categorySchemeLastModified());
+        lastCatSchemesModifiedSection.setTitle(MetamacSrmWeb.getConstants().categorySchemeLastModified());
         lastCatSchemesModifiedSection.setExpanded(false);
         // lastCatSchemesModifiedSection.setItems();
 
         SectionStackSection lastClassifModifiedSection = new SectionStackSection();
-        lastClassifModifiedSection.setTitle(MetamacInternalWeb.getConstants().classificationLastModified());
+        lastClassifModifiedSection.setTitle(MetamacSrmWeb.getConstants().classificationLastModified());
         lastClassifModifiedSection.setExpanded(false);
         // lastClassifModifiedSection.setItems();
 

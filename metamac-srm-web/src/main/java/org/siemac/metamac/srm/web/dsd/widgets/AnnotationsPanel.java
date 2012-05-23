@@ -5,7 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.Set;
 
 import org.siemac.metamac.domain.srm.dto.AnnotationDto;
-import org.siemac.metamac.srm.web.client.MetamacInternalWeb;
+import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.resources.GlobalResources;
 import org.siemac.metamac.srm.web.dsd.model.record.AnnotationRecord;
 import org.siemac.metamac.srm.web.dsd.utils.RecordUtils;
@@ -60,13 +60,13 @@ public class AnnotationsPanel extends VLayout {
 
         if (viewOnly) {
             Img annotationImg = new Img(GlobalResources.RESOURCE.annotations().getURL());
-            annotationImg.setTooltip(MetamacInternalWeb.getConstants().annotations());
+            annotationImg.setTooltip(MetamacSrmWeb.getConstants().annotations());
             annotationImg.setSize(32);
             annotationImg.setAlign(Alignment.LEFT);
             imgLayout.addMember(annotationImg);
         } else {
             Img addAnnotationImg = new Img(GlobalResources.RESOURCE.addAnnotation().getURL());
-            addAnnotationImg.setTooltip(MetamacInternalWeb.getConstants().addAnnotation());
+            addAnnotationImg.setTooltip(MetamacSrmWeb.getConstants().addAnnotation());
             addAnnotationImg.setCursor(Cursor.POINTER);
             addAnnotationImg.setName("note-img");
             addAnnotationImg.setSize(32);
@@ -134,7 +134,7 @@ public class AnnotationsPanel extends VLayout {
         grid.setEditEvent(ListGridEditEvent.DOUBLECLICK);
         grid.setCanEdit(!viewOnly);
         grid.setCanRemoveRecords(!viewOnly);
-        grid.setRemoveFieldTitle(MetamacInternalWeb.getConstants().actionDelete());
+        grid.setRemoveFieldTitle(MetamacSrmWeb.getConstants().actionDelete());
         grid.setRemoveIcon(org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.deleteListGrid().getURL());
         grid.setRemoveIconSize(14);
         grid.addEditCompleteHandler(new EditCompleteHandler() {

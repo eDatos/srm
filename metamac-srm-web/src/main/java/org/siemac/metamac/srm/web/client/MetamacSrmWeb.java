@@ -1,6 +1,6 @@
 package org.siemac.metamac.srm.web.client;
 
-import org.siemac.metamac.srm.web.client.gin.MetamacInternalWebGinjector;
+import org.siemac.metamac.srm.web.client.gin.MetamacSrmWebGinjector;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -12,18 +12,18 @@ import com.gwtplatform.mvp.client.DelayedBindRegistry;
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
-public class MetamacInternalWeb implements EntryPoint {
+public class MetamacSrmWeb implements EntryPoint {
 
-    private static MetamacInternalWebConstants    constants;
-    private static MetamacInternalWebCoreMessages coreMessages;
-    private static MetamacInternalWebMessages     messages;
+    private static MetamacSrmWebConstants    constants;
+    private static MetamacSrmWebCoreMessages coreMessages;
+    private static MetamacSrmWebMessages     messages;
 
-    public final MetamacInternalWebGinjector      ginjector = GWT.create(MetamacInternalWebGinjector.class);
+    public final MetamacSrmWebGinjector ginjector = GWT.create(MetamacSrmWebGinjector.class);
 
     interface GlobalResources extends ClientBundle {
 
         @NotStrict
-        @Source("resources/MetamacInternalWebStyles.css")
+        @Source("resources/MetamacSrmWebStyles.css")
         CssResource css();
     }
 
@@ -36,23 +36,23 @@ public class MetamacInternalWeb implements EntryPoint {
         GWT.<GlobalResources> create(GlobalResources.class).css().ensureInjected();
     }
 
-    public static MetamacInternalWebConstants getConstants() {
+    public static MetamacSrmWebConstants getConstants() {
         if (constants == null) {
-            constants = (MetamacInternalWebConstants) GWT.create(MetamacInternalWebConstants.class);
+            constants = (MetamacSrmWebConstants) GWT.create(MetamacSrmWebConstants.class);
         }
         return constants;
     }
 
-    public static MetamacInternalWebCoreMessages getCoreMessages() {
+    public static MetamacSrmWebCoreMessages getCoreMessages() {
         if (coreMessages == null) {
-            coreMessages = (MetamacInternalWebCoreMessages) GWT.create(MetamacInternalWebCoreMessages.class);
+            coreMessages = (MetamacSrmWebCoreMessages) GWT.create(MetamacSrmWebCoreMessages.class);
         }
         return coreMessages;
     }
 
-    public static MetamacInternalWebMessages getMessages() {
+    public static MetamacSrmWebMessages getMessages() {
         if (messages == null) {
-            messages = (MetamacInternalWebMessages) GWT.create(MetamacInternalWebMessages.class);
+            messages = (MetamacSrmWebMessages) GWT.create(MetamacSrmWebMessages.class);
         }
         return messages;
     }

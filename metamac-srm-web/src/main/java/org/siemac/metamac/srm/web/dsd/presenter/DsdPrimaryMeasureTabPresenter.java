@@ -7,7 +7,7 @@ import org.siemac.metamac.domain.srm.dto.ComponentDto;
 import org.siemac.metamac.domain.srm.dto.DescriptorDto;
 import org.siemac.metamac.domain.srm.enume.domain.TypeComponent;
 import org.siemac.metamac.domain.srm.enume.domain.TypeComponentList;
-import org.siemac.metamac.srm.web.client.MetamacInternalWeb;
+import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
@@ -81,7 +81,7 @@ public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTa
 
     @TitleFunction
     public static String getTranslatedTitle() {
-        return MetamacInternalWeb.getConstants().breadcrumbPrimaryMeasure();
+        return MetamacSrmWeb.getConstants().breadcrumbPrimaryMeasure();
     }
 
     public interface DsdPrimaryMeasureTabView extends View, HasUiHandlers<DsdPrimaryMeasureTabUiHandlers> {
@@ -213,11 +213,11 @@ public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTa
 
             @Override
             public void onFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdPrimaryMeasureTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacInternalWeb.getMessages().dsdPrimaryMeasureErrorSave()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fire(DsdPrimaryMeasureTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdPrimaryMeasureErrorSave()), MessageTypeEnum.ERROR);
             }
             @Override
             public void onSuccess(SaveComponentForDsdResult result) {
-                ShowMessageEvent.fire(DsdPrimaryMeasureTabPresenter.this, ErrorUtils.getMessageList(MetamacInternalWeb.getMessages().dsdPrimaryMeasureSaved()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fire(DsdPrimaryMeasureTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdPrimaryMeasureSaved()), MessageTypeEnum.SUCCESS);
                 primaryMeasure = result.getComponentDtoSaved();
                 getView().onPrimaryMeasureSaved(primaryMeasure);
                 if (isNewDescriptor) {
@@ -234,7 +234,7 @@ public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTa
 
             @Override
             public void onFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdPrimaryMeasureTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacInternalWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fire(DsdPrimaryMeasureTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
             }
             @Override
             public void onSuccess(GetDsdResult result) {
@@ -249,7 +249,7 @@ public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTa
 
             @Override
             public void onFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdPrimaryMeasureTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacInternalWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fire(DsdPrimaryMeasureTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
             }
             @Override
             public void onSuccess(GetDsdAndDescriptorsResult result) {
@@ -264,7 +264,7 @@ public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTa
 
             @Override
             public void onFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdPrimaryMeasureTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacInternalWeb.getMessages().conceptErrorRetrievingData()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fire(DsdPrimaryMeasureTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().conceptErrorRetrievingData()), MessageTypeEnum.ERROR);
             }
             @Override
             public void onSuccess(FindConceptsResult result) {
@@ -278,7 +278,7 @@ public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTa
 
             @Override
             public void onFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdPrimaryMeasureTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacInternalWeb.getMessages().codeListsErrorRetrievingData()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fire(DsdPrimaryMeasureTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().codeListsErrorRetrievingData()), MessageTypeEnum.ERROR);
             }
             @Override
             public void onSuccess(FindCodeListsResult result) {

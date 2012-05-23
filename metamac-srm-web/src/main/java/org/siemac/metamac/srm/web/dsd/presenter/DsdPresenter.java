@@ -2,7 +2,7 @@ package org.siemac.metamac.srm.web.dsd.presenter;
 
 import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
 import org.siemac.metamac.domain.srm.enume.domain.TypeComponentList;
-import org.siemac.metamac.srm.web.client.MetamacInternalWeb;
+import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
@@ -69,7 +69,7 @@ public class DsdPresenter extends Presenter<DsdPresenter.DsdView, DsdPresenter.D
 
     @TitleFunction
     public static String getTranslatedTitle() {
-        return MetamacInternalWeb.getConstants().breadcrumbDSD();
+        return MetamacSrmWeb.getConstants().breadcrumbDSD();
     }
 
     public interface DsdView extends View, HasUiHandlers<DsdUiHandlers> {
@@ -178,7 +178,7 @@ public class DsdPresenter extends Presenter<DsdPresenter.DsdView, DsdPresenter.D
     protected void onReveal() {
         super.onReveal();
         setInSlot(TYPE_SetContextAreaContentDsdToolBar, toolStripPresenterWidget);
-        MainPagePresenter.getMasterHead().setTitleLabel(MetamacInternalWeb.getConstants().dsd());
+        MainPagePresenter.getMasterHead().setTitleLabel(MetamacSrmWeb.getConstants().dsd());
     }
 
     @Override
@@ -231,7 +231,7 @@ public class DsdPresenter extends Presenter<DsdPresenter.DsdView, DsdPresenter.D
 
             @Override
             public void onFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacInternalWeb.getMessages().schemeConceptsErrorRetrievingData()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fire(DsdPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().schemeConceptsErrorRetrievingData()), MessageTypeEnum.ERROR);
             }
             @Override
             public void onSuccess(FindConceptSchemesResult result) {

@@ -29,7 +29,7 @@
     <aop:aspectj-autoproxy proxy-target-class="true"/>
     
     <!-- Logger aspect for logging exceptions thrown by actionHandlers -->
-    <bean id="logAspect" class="org.siemac.metamac.internal.web.server.aspects.ActionHandlerLoggerAspect"/>
+    <bean id="logAspect" class="org.siemac.metamac.srm.web.server.aspects.ActionHandlerLoggerAspect"/>
  
 	<!-- Metamac environment configuration -->
 	<bean id="configurationService" class="org.siemac.metamac.core.common.conf.ConfigurationServiceImpl">
@@ -43,7 +43,7 @@
 	</bean>
 	
 	<!-- Spring Beans for side server of GWT -->
-	<bean class="org.siemac.metamac.internal.web.server.ServerModule" />
+	<bean class="org.siemac.metamac.srm.web.server.ServerModule" />
 	
 	
 	<!-- Logger for GWT -->

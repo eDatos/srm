@@ -6,7 +6,7 @@ import java.util.List;
 import org.siemac.metamac.domain.srm.dto.DescriptorDto;
 import org.siemac.metamac.domain.srm.dto.DimensionComponentDto;
 import org.siemac.metamac.domain.srm.enume.domain.TypeComponentList;
-import org.siemac.metamac.srm.web.client.MetamacInternalWeb;
+import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
@@ -73,7 +73,7 @@ public class DsdGroupKeysTabPresenter extends Presenter<DsdGroupKeysTabPresenter
 
     @TitleFunction
     public static String getTranslatedTitle() {
-        return MetamacInternalWeb.getConstants().breadcrumbGroupKeys();
+        return MetamacSrmWeb.getConstants().breadcrumbGroupKeys();
     }
 
     public interface DsdGroupKeysTabView extends View, HasUiHandlers<DsdGroupKeysTabUiHandlers> {
@@ -167,7 +167,7 @@ public class DsdGroupKeysTabPresenter extends Presenter<DsdGroupKeysTabPresenter
 
             @Override
             public void onFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdGroupKeysTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacInternalWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fire(DsdGroupKeysTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
             }
             @Override
             public void onSuccess(FindDescriptorForDsdResult result) {
@@ -189,11 +189,11 @@ public class DsdGroupKeysTabPresenter extends Presenter<DsdGroupKeysTabPresenter
 
             @Override
             public void onFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdGroupKeysTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacInternalWeb.getMessages().dsdGrouKeysErrorSave()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fire(DsdGroupKeysTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdGrouKeysErrorSave()), MessageTypeEnum.ERROR);
             }
             @Override
             public void onSuccess(SaveDescriptorForDsdResult result) {
-                ShowMessageEvent.fire(DsdGroupKeysTabPresenter.this, ErrorUtils.getMessageList(MetamacInternalWeb.getMessages().dsdGroupKeysSaved()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fire(DsdGroupKeysTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdGroupKeysSaved()), MessageTypeEnum.SUCCESS);
                 updateGroupKeysList(false); // Do no update the view!! The method onDimensionSaved updates the dimension list in the view
                 getView().onGroupKeysSaved(result.getDescriptorDtoSaved());
                 if (updateDsd) {
@@ -211,13 +211,13 @@ public class DsdGroupKeysTabPresenter extends Presenter<DsdGroupKeysTabPresenter
             public void onFailure(Throwable caught) {
                 updateGroupKeysList(true);
                 updateDsd(); // Update DSD every time the DSD descriptors are modified
-                ShowMessageEvent.fire(DsdGroupKeysTabPresenter.this, ErrorUtils.getMessageList(MetamacInternalWeb.getMessages().dsdGroupKeysErrorDelete()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fire(DsdGroupKeysTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdGroupKeysErrorDelete()), MessageTypeEnum.ERROR);
             }
             @Override
             public void onSuccess(DeleteDescriptorListForDsdResult result) {
                 updateGroupKeysList(true);
                 updateDsd(); // Update DSD every time the DSD descriptors are modified
-                ShowMessageEvent.fire(DsdGroupKeysTabPresenter.this, ErrorUtils.getMessageList(MetamacInternalWeb.getMessages().dsdGroupKeysDeleted()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fire(DsdGroupKeysTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdGroupKeysDeleted()), MessageTypeEnum.SUCCESS);
             }
         });
     }
@@ -228,7 +228,7 @@ public class DsdGroupKeysTabPresenter extends Presenter<DsdGroupKeysTabPresenter
 
             @Override
             public void onFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdGroupKeysTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacInternalWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fire(DsdGroupKeysTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
             }
             @Override
             public void onSuccess(GetDsdAndDescriptorsResult result) {
@@ -243,7 +243,7 @@ public class DsdGroupKeysTabPresenter extends Presenter<DsdGroupKeysTabPresenter
 
             @Override
             public void onFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdGroupKeysTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacInternalWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fire(DsdGroupKeysTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
             }
             @Override
             public void onSuccess(FindDescriptorForDsdResult result) {
@@ -261,7 +261,7 @@ public class DsdGroupKeysTabPresenter extends Presenter<DsdGroupKeysTabPresenter
 
             @Override
             public void onFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdGroupKeysTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacInternalWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fire(DsdGroupKeysTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
             }
             @Override
             public void onSuccess(GetDsdResult result) {

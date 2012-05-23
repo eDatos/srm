@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.siemac.metamac.core.common.dto.ExternalItemBtDto;
-import org.siemac.metamac.srm.web.client.MetamacInternalWeb;
+import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.resources.GlobalResources;
 import org.siemac.metamac.srm.web.dsd.model.record.ConceptRecord;
 import org.siemac.metamac.srm.web.dsd.utils.RecordUtils;
@@ -36,7 +36,7 @@ public class RoleSelectItem extends CustomCanvasItem {
     public RoleSelectItem(String name, String title) {
         super(name, title);
         setTitleVAlign(VerticalAlignment.TOP);
-        conceptSchemeItem = new SelectItem("scheme-items", MetamacInternalWeb.getConstants().conceptScheme());
+        conceptSchemeItem = new SelectItem("scheme-items", MetamacSrmWeb.getConstants().conceptScheme());
         conceptSchemeItem.setShowTitle(false);
 
         conceptsList = new ListGrid();
@@ -54,7 +54,7 @@ public class RoleSelectItem extends CustomCanvasItem {
         roleList.setShowHeader(false);
         roleList.setLeaveScrollbarGap(false);
         roleList.setCanRemoveRecords(true);
-        roleList.setRemoveFieldTitle(MetamacInternalWeb.getConstants().actionDelete());
+        roleList.setRemoveFieldTitle(MetamacSrmWeb.getConstants().actionDelete());
         roleList.setRemoveIcon(GlobalResources.RESOURCE.remove().getURL());
 
         ListGridField id = new ListGridField(ConceptRecord.IDENTIFIER, "nameId");

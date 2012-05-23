@@ -191,9 +191,9 @@
                     <execution>
                         <configuration>
                             <servicePattern>**/client/service/**/*Service.java</servicePattern>
-                            <i18nConstantsBundle>org.siemac.metamac.srm.web.client.MetamacInternalWebConstants</i18nConstantsBundle>
-                            <i18nConstantsWithLookupBundle>org.siemac.metamac.srm.web.client.MetamacInternalWebCoreMessages</i18nConstantsWithLookupBundle>
-                            <i18nMessagesBundle>org.siemac.metamac.srm.web.client.MetamacInternalWebMessages</i18nMessagesBundle>
+                            <i18nConstantsBundle>org.siemac.metamac.srm.web.client.MetamacSrmWebConstants</i18nConstantsBundle>
+                            <i18nConstantsWithLookupBundle>org.siemac.metamac.srm.web.client.MetamacSrmWebCoreMessages</i18nConstantsWithLookupBundle>
+                            <i18nMessagesBundle>org.siemac.metamac.srm.web.client.MetamacSrmWebMessages</i18nMessagesBundle>
                         </configuration>
                         <goals>
                             <goal>resources</goal>
@@ -203,23 +203,11 @@
                             <goal>i18n</goal>
                         </goals>
                     </execution>
-                    <!-- <execution> -->
-                    <!-- <configuration> -->
-                    <!-- <cssFiles> -->
-                    <!-- <cssFile>org/siemac/metamac/internal/web/client/resources/MetamacInternalWebStyles.css</cssFile> -->
-                    <!-- </cssFiles> -->
-                    <!-- </configuration> -->
-                    <!-- <id>css-generation</id> -->
-                    <!-- <phase>generate-sources</phase> -->
-                    <!-- <goals> -->
-                    <!-- <goal>css</goal> -->
-                    <!-- </goals> -->
-                    <!-- </execution> -->
                 </executions>
                 <!-- Plugin configuration. There are many available options, see gwt-maven-plugin
                     documentation at codehaus.org -->
                 <configuration>
-                    <runTarget>http://localhost:8090/metamac-srm-web/MetamacInternalWeb.html</runTarget>
+                    <runTarget>http://localhost:8090/metamac-srm-web/MetamacSrmWeb.html</runTarget>
                     <hostedWebapp>${webappDirectory}</hostedWebapp>
                     <noServer>true</noServer>
                     <debugPort>9997</debugPort>
@@ -239,7 +227,7 @@
                 <configuration>
                     <filesets>
                         <fileset>
-                            <directory>${basedir}/src/main/webapp/MetamacInternalWeb</directory>
+                            <directory>${basedir}/src/main/webapp/MetamacSrmWeb</directory>
                         </fileset>
                     </filesets>
                 </configuration>

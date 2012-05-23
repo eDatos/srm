@@ -1,7 +1,7 @@
 package org.siemac.metamac.srm.web.dsd.view;
 
 import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
-import org.siemac.metamac.srm.web.client.MetamacInternalWeb;
+import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdGeneralTabPresenter;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdGeneralTabUiHandlers;
 import org.siemac.metamac.srm.web.dsd.widgets.AnnotationsPanel;
@@ -92,29 +92,29 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
      * @return
      */
     private void createViewForm() {
-        staticIdLogic = new ViewTextItem("id-logic-dsd-view", MetamacInternalWeb.getConstants().dsdIdentifier());
+        staticIdLogic = new ViewTextItem("id-logic-dsd-view", MetamacSrmWeb.getConstants().dsdIdentifier());
 
         // Name
-        staticNameItem = new ViewMultiLanguageTextItem("name-dsd-view", MetamacInternalWeb.getConstants().dsdName());
-        staticDescriptionItem = new ViewMultiLanguageTextItem("desc-dsd-view", MetamacInternalWeb.getConstants().dsdDescription());
-        staticVersion = new ViewTextItem("version-dsd-view", MetamacInternalWeb.getConstants().dsdVersion());
-        staticAgency = new ViewTextItem("agency-dsd-view", MetamacInternalWeb.getConstants().dsdAgency());
-        staticUriItem = new ViewTextItem("uri-dsd-view", MetamacInternalWeb.getConstants().dsdUri());
-        staticUrnItem = new ViewTextItem("urn-dsd-view", MetamacInternalWeb.getConstants().dsdUrn());
-        staticFinalItem = new ViewTextItem("final-dsd-view", MetamacInternalWeb.getConstants().dsdFinalStructure());
-        staticStartDateItem = new ViewTextItem("start-date-dsd-view", MetamacInternalWeb.getConstants().dsdStartDate());
-        staticEndDateItem = new ViewTextItem("end-date-dsd-view", MetamacInternalWeb.getConstants().dsdEndDate());
+        staticNameItem = new ViewMultiLanguageTextItem("name-dsd-view", MetamacSrmWeb.getConstants().dsdName());
+        staticDescriptionItem = new ViewMultiLanguageTextItem("desc-dsd-view", MetamacSrmWeb.getConstants().dsdDescription());
+        staticVersion = new ViewTextItem("version-dsd-view", MetamacSrmWeb.getConstants().dsdVersion());
+        staticAgency = new ViewTextItem("agency-dsd-view", MetamacSrmWeb.getConstants().dsdAgency());
+        staticUriItem = new ViewTextItem("uri-dsd-view", MetamacSrmWeb.getConstants().dsdUri());
+        staticUrnItem = new ViewTextItem("urn-dsd-view", MetamacSrmWeb.getConstants().dsdUrn());
+        staticFinalItem = new ViewTextItem("final-dsd-view", MetamacSrmWeb.getConstants().dsdFinalStructure());
+        staticStartDateItem = new ViewTextItem("start-date-dsd-view", MetamacSrmWeb.getConstants().dsdStartDate());
+        staticEndDateItem = new ViewTextItem("end-date-dsd-view", MetamacSrmWeb.getConstants().dsdEndDate());
 
         // Identifiers Form
-        GroupDynamicForm identifiersForm = new GroupDynamicForm(MetamacInternalWeb.getConstants().dsdIdentifiers());
+        GroupDynamicForm identifiersForm = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdIdentifiers());
         identifiersForm.setFields(staticIdLogic, staticUriItem, staticUrnItem, staticVersion);
 
         // General Form
-        generalForm = new GroupDynamicForm(MetamacInternalWeb.getConstants().dsdDetails());
+        generalForm = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdDetails());
         generalForm.setFields(staticNameItem, staticDescriptionItem, staticAgency);
 
         // Status Form
-        GroupDynamicForm statusForm = new GroupDynamicForm(MetamacInternalWeb.getConstants().dsdStatus());
+        GroupDynamicForm statusForm = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdStatus());
         statusForm.setFields(staticFinalItem, staticStartDateItem, staticEndDateItem);
 
         // Annotations
@@ -132,34 +132,34 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
      * @return
      */
     private void createEditionForm() {
-        idLogicItem = new RequiredTextItem("idLogicDsd", MetamacInternalWeb.getConstants().dsdIdLogic());
+        idLogicItem = new RequiredTextItem("idLogicDsd", MetamacSrmWeb.getConstants().dsdIdLogic());
         idLogicItem.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());
 
         // Name
-        nameItem = new MultiLanguageTextItem("nameDsd", MetamacInternalWeb.getConstants().dsdName());
+        nameItem = new MultiLanguageTextItem("nameDsd", MetamacSrmWeb.getConstants().dsdName());
         nameItem.setRequired(true);
 
         // Description
-        descriptionItem = new MultiLanguageTextItem("descDsd", MetamacInternalWeb.getConstants().dsdDescription());
+        descriptionItem = new MultiLanguageTextItem("descDsd", MetamacSrmWeb.getConstants().dsdDescription());
 
-        staticVersionEdit = new ViewTextItem("version-dsd-edit", MetamacInternalWeb.getConstants().dsdVersion());
-        staticAgencyEdit = new ViewTextItem("agency-dsd-edit", MetamacInternalWeb.getConstants().dsdAgency());
-        staticUriItemEdit = new ViewTextItem("uri-dsd-edit", MetamacInternalWeb.getConstants().dsdUri());
-        staticUrnItemEdit = new ViewTextItem("urn-dsd-edit", MetamacInternalWeb.getConstants().dsdUrn());
-        staticFinalItemEdit = new ViewTextItem("final-dsd-edit", MetamacInternalWeb.getConstants().dsdFinalStructure());
-        staticStartDateItemEdit = new ViewTextItem("start-date-dsd-edit", MetamacInternalWeb.getConstants().dsdStartDate());
-        staticEndDateItemEdit = new ViewTextItem("end-date-dsd-edit", MetamacInternalWeb.getConstants().dsdEndDate());
+        staticVersionEdit = new ViewTextItem("version-dsd-edit", MetamacSrmWeb.getConstants().dsdVersion());
+        staticAgencyEdit = new ViewTextItem("agency-dsd-edit", MetamacSrmWeb.getConstants().dsdAgency());
+        staticUriItemEdit = new ViewTextItem("uri-dsd-edit", MetamacSrmWeb.getConstants().dsdUri());
+        staticUrnItemEdit = new ViewTextItem("urn-dsd-edit", MetamacSrmWeb.getConstants().dsdUrn());
+        staticFinalItemEdit = new ViewTextItem("final-dsd-edit", MetamacSrmWeb.getConstants().dsdFinalStructure());
+        staticStartDateItemEdit = new ViewTextItem("start-date-dsd-edit", MetamacSrmWeb.getConstants().dsdStartDate());
+        staticEndDateItemEdit = new ViewTextItem("end-date-dsd-edit", MetamacSrmWeb.getConstants().dsdEndDate());
 
         // Identifiers Form
-        identifiersEditionForm = new GroupDynamicForm(MetamacInternalWeb.getConstants().dsdIdentifiers());
+        identifiersEditionForm = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdIdentifiers());
         identifiersEditionForm.setFields(idLogicItem, staticUriItemEdit, staticUrnItemEdit, staticVersionEdit);
 
         // General Form
-        generalEditionForm = new GroupDynamicForm(MetamacInternalWeb.getConstants().dsdDetails());
+        generalEditionForm = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdDetails());
         generalEditionForm.setFields(nameItem, descriptionItem, staticAgencyEdit);
 
         // Status Form
-        GroupDynamicForm statusForm = new GroupDynamicForm(MetamacInternalWeb.getConstants().dsdStatus());
+        GroupDynamicForm statusForm = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdStatus());
         statusForm.setFields(staticFinalItemEdit, staticStartDateItemEdit, staticEndDateItemEdit);
 
         // Annotations
@@ -199,7 +199,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         staticNameItem.setValue(dsd.getName());
         staticDescriptionItem.setValue(dsd.getDescription());
         staticAgency.setValue(dsd.getMaintainer() != null ? dsd.getMaintainer().getCodeId() : "");
-        staticFinalItem.setValue((dsd.getFinalLogic() != null && dsd.getFinalLogic()) ? MetamacInternalWeb.getConstants().yes() : MetamacInternalWeb.getConstants().no());
+        staticFinalItem.setValue((dsd.getFinalLogic() != null && dsd.getFinalLogic()) ? MetamacSrmWeb.getConstants().yes() : MetamacSrmWeb.getConstants().no());
         staticStartDateItem.setValue(dsd.getValidFrom());
         staticEndDateItem.setValue(dsd.getValidTo());
         // Annotations
@@ -214,7 +214,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         nameItem.setValue(dsd.getName());
         descriptionItem.setValue(dsd.getDescription());
         staticAgencyEdit.setValue(dsd.getMaintainer() != null ? dsd.getMaintainer().getCodeId() : "");
-        staticFinalItemEdit.setValue((dsd.getFinalLogic() != null && dsd.getFinalLogic()) ? MetamacInternalWeb.getConstants().yes() : MetamacInternalWeb.getConstants().no());
+        staticFinalItemEdit.setValue((dsd.getFinalLogic() != null && dsd.getFinalLogic()) ? MetamacSrmWeb.getConstants().yes() : MetamacSrmWeb.getConstants().no());
         staticStartDateItemEdit.setValue(dsd.getValidFrom());
         staticEndDateItemEdit.setValue(dsd.getValidTo());
         // Annotations

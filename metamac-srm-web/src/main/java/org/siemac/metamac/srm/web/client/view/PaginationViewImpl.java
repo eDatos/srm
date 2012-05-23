@@ -1,6 +1,6 @@
 package org.siemac.metamac.srm.web.client.view;
 
-import org.siemac.metamac.srm.web.client.MetamacInternalWeb;
+import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.widgets.StatusBar;
 
 import com.google.inject.Inject;
@@ -65,11 +65,11 @@ public abstract class PaginationViewImpl<C extends UiHandlers> extends ViewImpl 
 
     public void refreshStatusBar() {
         // update Selected label e.g "0 of 50 selected"
-        String selectedLabel = MetamacInternalWeb.getMessages().selected(String.valueOf(getNumberSelected()), String.valueOf(getNumberOfElements()));
+        String selectedLabel = MetamacSrmWeb.getMessages().selected(String.valueOf(getNumberSelected()), String.valueOf(getNumberOfElements()));
         getStatusBar().getSelectedLabel().setContents(selectedLabel);
 
         // update Page number label e.g "Page 1"
-        String pageNumberLabel = MetamacInternalWeb.getMessages().page(String.valueOf(getPageNumber()));
+        String pageNumberLabel = MetamacSrmWeb.getMessages().page(String.valueOf(getPageNumber()));
         getStatusBar().getPageNumberLabel().setContents(pageNumberLabel);
         getStatusBar().getPageNumberLabel().markForRedraw();
     }

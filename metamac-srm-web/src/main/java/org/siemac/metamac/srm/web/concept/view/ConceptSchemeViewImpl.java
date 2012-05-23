@@ -1,7 +1,7 @@
 package org.siemac.metamac.srm.web.concept.view;
 
-import static org.siemac.metamac.srm.web.client.MetamacInternalWeb.getConstants;
-import static org.siemac.metamac.srm.web.client.MetamacInternalWeb.getMessages;
+import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
+import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.domain.concept.dto.ConceptSchemeDto;

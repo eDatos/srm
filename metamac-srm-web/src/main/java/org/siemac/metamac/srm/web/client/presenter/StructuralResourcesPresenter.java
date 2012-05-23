@@ -3,7 +3,7 @@ package org.siemac.metamac.srm.web.client.presenter;
 import java.util.List;
 
 import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
-import org.siemac.metamac.srm.web.client.MetamacInternalWeb;
+import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
 import org.siemac.metamac.srm.web.client.PlaceRequestParams;
 import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
@@ -54,7 +54,7 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
 
     @TitleFunction
     public static String getTranslatedTitle() {
-        return MetamacInternalWeb.getConstants().breadcrumbStrucResourcesDashboard();
+        return MetamacSrmWeb.getConstants().breadcrumbStrucResourcesDashboard();
     }
 
     public interface StructuralResourcesView extends View, HasUiHandlers<StructuralResourcesUiHandlers> {
@@ -108,7 +108,7 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
     protected void onReveal() {
         super.onReveal();
         setInSlot(TYPE_SetContextAreaContentToolBar, toolStripPresenterWidget);
-        MainPagePresenter.getMasterHead().setTitleLabel(MetamacInternalWeb.getConstants().structuralResourcesDahsboard());
+        MainPagePresenter.getMasterHead().setTitleLabel(MetamacSrmWeb.getConstants().structuralResourcesDahsboard());
     }
 
     @Override

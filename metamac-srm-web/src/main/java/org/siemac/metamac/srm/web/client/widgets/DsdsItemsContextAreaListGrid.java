@@ -3,7 +3,7 @@ package org.siemac.metamac.srm.web.client.widgets;
 import java.util.List;
 
 import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
-import org.siemac.metamac.srm.web.client.MetamacInternalWeb;
+import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 
@@ -20,10 +20,10 @@ public class DsdsItemsContextAreaListGrid extends ListGrid {
 
         this.setShowAllRecords(true);
 
-        ListGridField idLogicDsdField = new ListGridField(DsdRecord.ID_LOGIC, MetamacInternalWeb.getConstants().dsdIdLogic());
-        ListGridField nameDsdField = new ListGridField(DsdRecord.NAME, MetamacInternalWeb.getConstants().dsdName());
-        ListGridField descriptionDsdField = new ListGridField(DsdRecord.DESCRIPTION, MetamacInternalWeb.getConstants().dsdDescription());
-        ListGridField finalStructureDsdField = new ListGridField(DsdRecord.FINAL_STRUCTURE, MetamacInternalWeb.getConstants().dsdFinalStructure());
+        ListGridField idLogicDsdField = new ListGridField(DsdRecord.ID_LOGIC, MetamacSrmWeb.getConstants().dsdIdLogic());
+        ListGridField nameDsdField = new ListGridField(DsdRecord.NAME, MetamacSrmWeb.getConstants().dsdName());
+        ListGridField descriptionDsdField = new ListGridField(DsdRecord.DESCRIPTION, MetamacSrmWeb.getConstants().dsdDescription());
+        ListGridField finalStructureDsdField = new ListGridField(DsdRecord.FINAL_STRUCTURE, MetamacSrmWeb.getConstants().dsdFinalStructure());
         finalStructureDsdField.setType(ListGridFieldType.BOOLEAN);
 
         // ToolTip

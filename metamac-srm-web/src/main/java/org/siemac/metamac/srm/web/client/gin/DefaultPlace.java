@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
 import com.google.inject.BindingAnnotation;
 
 /**
- * This annotation is used in {@link MetamacInternalWebPlaceManager} and is bind
+ * This annotation is used in {@link MetamacSrmWebPlaceManager} and is bind
  * in {@link ClientModule}. It's purpose is to bind the default place to a
  * default presenter.
  */

@@ -1,7 +1,7 @@
 package org.siemac.metamac.srm.web.dsd.presenter;
 
 import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
-import org.siemac.metamac.srm.web.client.MetamacInternalWeb;
+import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
@@ -56,7 +56,7 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
 
     @TitleFunction
     public static String getTranslatedTitle() {
-        return MetamacInternalWeb.getConstants().breadcrumbGeneral();
+        return MetamacSrmWeb.getConstants().breadcrumbGeneral();
     }
 
     public interface DsdGeneralTabView extends View, HasUiHandlers<DsdGeneralTabUiHandlers> {
@@ -141,11 +141,11 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
 
             @Override
             public void onFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdGeneralTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacInternalWeb.getMessages().dsdErrorSave()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fire(DsdGeneralTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorSave()), MessageTypeEnum.ERROR);
             }
             @Override
             public void onSuccess(SaveDsdResult result) {
-                ShowMessageEvent.fire(DsdGeneralTabPresenter.this, ErrorUtils.getMessageList(MetamacInternalWeb.getMessages().dsdSaved()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fire(DsdGeneralTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdSaved()), MessageTypeEnum.SUCCESS);
                 dsd = result.getDsdSaved();
                 getView().onDsdSaved(dsd);
                 UpdateDsdEvent.fire(DsdGeneralTabPresenter.this, dsd);
@@ -159,7 +159,7 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
 
             @Override
             public void onFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdGeneralTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacInternalWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fire(DsdGeneralTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
             }
             @Override
             public void onSuccess(GetDsdAndDescriptorsResult result) {

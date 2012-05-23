@@ -3,7 +3,7 @@ package org.siemac.metamac.srm.web.dsd.presenter;
 import java.util.List;
 
 import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
-import org.siemac.metamac.srm.web.client.MetamacInternalWeb;
+import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
 import org.siemac.metamac.srm.web.client.PlaceRequestParams;
 import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
@@ -79,7 +79,7 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
 
     @TitleFunction
     public static String getTranslatedTitle() {
-        return MetamacInternalWeb.getConstants().breadcrumbDsdList();
+        return MetamacSrmWeb.getConstants().breadcrumbDsdList();
     }
 
     public interface DsdListView extends View, HasUiHandlers<DsdListUiHandlers> {
@@ -184,7 +184,7 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
 
                 @Override
                 public void onFailure(Throwable caught) {
-                    ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacInternalWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
+                    ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
                 }
                 @Override
                 public void onSuccess(GetDsdAndDescriptorsResult result) {
@@ -201,7 +201,7 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
             @Override
             public void onFailure(Throwable caught) {
                 getView().closeDsdWindow();
-                ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacInternalWeb.getMessages().dsdErrorSave()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorSave()), MessageTypeEnum.ERROR);
             }
             @Override
             public void onSuccess(SaveDsdResult result) {
@@ -218,11 +218,11 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
 
             @Override
             public void onFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacInternalWeb.getMessages().dsdErrorDelete()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorDelete()), MessageTypeEnum.ERROR);
             }
             @Override
             public void onSuccess(DeleteDsdResult result) {
-                ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getMessageList(MetamacInternalWeb.getMessages().dsdDeleted()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdDeleted()), MessageTypeEnum.SUCCESS);
                 retrieveDsds();
             }
         });
@@ -235,12 +235,12 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
             @Override
             public void onFailure(Throwable caught) {
                 retrieveDsds();
-                ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacInternalWeb.getMessages().dsdErrorDelete()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorDelete()), MessageTypeEnum.ERROR);
             }
             @Override
             public void onSuccess(DeleteDsdListResult result) {
                 retrieveDsds();
-                ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getMessageList(MetamacInternalWeb.getMessages().dsdDeleted()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdDeleted()), MessageTypeEnum.SUCCESS);
             }
         });
     }
@@ -254,7 +254,7 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
 
             @Override
             public void onFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacInternalWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
             }
             @Override
             public void onSuccess(GetDsdListResult result) {
@@ -266,14 +266,14 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
 
     @Override
     public void dsdSuccessfullyImported(String fileName) {
-        ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getMessageList(MetamacInternalWeb.getMessages().dsdImported()), MessageTypeEnum.SUCCESS);
+        ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdImported()), MessageTypeEnum.SUCCESS);
         // Reload DSD list
         retrieveDsds();
     }
 
     @Override
     public void dsdImportFailed(String fileName) {
-        ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getMessageList(MetamacInternalWeb.getMessages().dsdErrorImport()), MessageTypeEnum.ERROR);
+        ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdErrorImport()), MessageTypeEnum.ERROR);
     }
 
     @Override
@@ -282,13 +282,13 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
 
             @Override
             public void onFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacInternalWeb.getMessages().dsdErrorExport()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorExport()), MessageTypeEnum.ERROR);
             }
             @Override
             public void onSuccess(ExportDsdResult result) {
                 // TODO Is it better to use com.google.gwt.http.client.RequestBuilder to send the request?
                 StringBuffer url = new StringBuffer();
-                url.append(URL.encode(MetamacInternalWeb.getRelativeURL(SharedTokens.FILE_DOWNLOAD_DIR_PATH)));
+                url.append(URL.encode(MetamacSrmWeb.getRelativeURL(SharedTokens.FILE_DOWNLOAD_DIR_PATH)));
                 url.append("?").append(URL.encode(SharedTokens.PARAM_FILE_NAME)).append("=").append(URL.encode(result.getFileName()));
                 Window.open(url.toString(), "_blank", "");
             }

@@ -8,7 +8,7 @@ import org.siemac.metamac.domain.srm.dto.ComponentDto;
 import org.siemac.metamac.domain.srm.dto.DescriptorDto;
 import org.siemac.metamac.domain.srm.dto.DimensionComponentDto;
 import org.siemac.metamac.domain.srm.enume.domain.TypeComponentList;
-import org.siemac.metamac.srm.web.client.MetamacInternalWeb;
+import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
@@ -91,7 +91,7 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
 
     @TitleFunction
     public static String getTranslatedTitle() {
-        return MetamacInternalWeb.getConstants().breadcrumbDimensions();
+        return MetamacSrmWeb.getConstants().breadcrumbDimensions();
     }
 
     public interface DsdDimensionsTabView extends View, HasUiHandlers<DsdDimensionsTabUiHandlers> {
@@ -264,12 +264,12 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
 
             @Override
             public void onFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacInternalWeb.getMessages().dsdDimensionErrorSave()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdDimensionErrorSave()), MessageTypeEnum.ERROR);
             }
 
             @Override
             public void onSuccess(SaveComponentForDsdResult result) {
-                ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getMessageList(MetamacInternalWeb.getMessages().dsdDimensionSaved()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdDimensionSaved()), MessageTypeEnum.SUCCESS);
                 updateDimensionList(false); // Do no update the view!! The method onDimensionSaved updates the dimension list in the view
                 getView().onDimensionSaved((DimensionComponentDto) result.getComponentDtoSaved());
                 if (isNewDescriptor) {
@@ -288,12 +288,12 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
             @Override
             public void onFailure(Throwable caught) {
                 updateDimensionList(true);
-                ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacInternalWeb.getMessages().dsdDimensionErrorDeleteDetails()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdDimensionErrorDeleteDetails()), MessageTypeEnum.ERROR);
             }
             @Override
             public void onSuccess(DeleteDimensionListForDsdResult result) {
                 updateDimensionList(true);
-                ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getMessageList(MetamacInternalWeb.getMessages().dsdDimensionDeleted()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdDimensionDeleted()), MessageTypeEnum.SUCCESS);
             }
         });
     }
@@ -304,7 +304,7 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
 
             @Override
             public void onFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacInternalWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
             }
             @Override
             public void onSuccess(GetDsdAndDescriptorsResult result) {
@@ -319,7 +319,7 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
 
             @Override
             public void onFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacInternalWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
             }
             @Override
             public void onSuccess(FindDescriptorForDsdResult result) {
@@ -358,7 +358,7 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
 
             @Override
             public void onFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacInternalWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
             }
             @Override
             public void onSuccess(GetDsdResult result) {
@@ -372,7 +372,7 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
 
             @Override
             public void onFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacInternalWeb.getMessages().conceptErrorRetrievingData()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().conceptErrorRetrievingData()), MessageTypeEnum.ERROR);
             }
             @Override
             public void onSuccess(FindConceptsResult result) {
@@ -386,7 +386,7 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
 
             @Override
             public void onFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacInternalWeb.getMessages().conceptErrorRetrievingData()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().conceptErrorRetrievingData()), MessageTypeEnum.ERROR);
             }
             @Override
             public void onSuccess(FindConceptsResult result) {
@@ -400,7 +400,7 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
 
             @Override
             public void onFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacInternalWeb.getMessages().codeListsErrorRetrievingData()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().codeListsErrorRetrievingData()), MessageTypeEnum.ERROR);
             }
             @Override
             public void onSuccess(FindCodeListsResult result) {

@@ -1,6 +1,6 @@
 package org.siemac.metamac.srm.web.dsd.widgets;
 
-import org.siemac.metamac.srm.web.client.MetamacInternalWeb;
+import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.dsd.listener.UploadListener;
 import org.siemac.metamac.srm.web.shared.utils.SharedTokens;
 
@@ -38,7 +38,7 @@ public class ImportDsdWindow extends Window {
         initUploadFailed(this);
         setWidth(360);
         setHeight(130);
-        setTitle(MetamacInternalWeb.getMessages().dsdImport());
+        setTitle(MetamacSrmWeb.getMessages().dsdImport());
         setShowMinimizeButton(false);
         setIsModal(true);
         setShowModalMask(true);
@@ -90,10 +90,10 @@ public class ImportDsdWindow extends Window {
 
         StringBuilder url = new StringBuilder();
         url.append(SharedTokens.FILE_UPLOAD_DIR_PATH);
-        form.setAction(MetamacInternalWeb.getRelativeURL(url.toString()));
+        form.setAction(MetamacSrmWeb.getRelativeURL(url.toString()));
 
         uploadItem = new UploadItem("filename");
-        uploadItem.setTitle(MetamacInternalWeb.getConstants().dsdFileName());
+        uploadItem.setTitle(MetamacSrmWeb.getConstants().dsdFileName());
         uploadItem.setWidth(300);
         uploadItem.setRequired(true);
 
@@ -107,7 +107,7 @@ public class ImportDsdWindow extends Window {
         HLayout buttonsLayout = new HLayout(2);
         buttonsLayout.setAlign(Alignment.CENTER);
 
-        uploadButton = new IButton(MetamacInternalWeb.getConstants().actionImport());
+        uploadButton = new IButton(MetamacSrmWeb.getConstants().actionImport());
         uploadButton.addClickHandler(new ClickHandler() {
 
             @Override

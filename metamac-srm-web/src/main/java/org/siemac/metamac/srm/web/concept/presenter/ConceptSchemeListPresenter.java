@@ -1,13 +1,13 @@
 package org.siemac.metamac.srm.web.concept.presenter;
 
-import static org.siemac.metamac.srm.web.client.MetamacInternalWeb.getConstants;
-import static org.siemac.metamac.srm.web.client.MetamacInternalWeb.getMessages;
+import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
+import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.siemac.metamac.domain.concept.dto.ConceptSchemeDto;
-import org.siemac.metamac.srm.web.client.MetamacInternalWeb;
+import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
 import org.siemac.metamac.srm.web.client.PlaceRequestParams;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
@@ -67,7 +67,7 @@ public class ConceptSchemeListPresenter extends PaginationPresenter<ConceptSchem
 
     @TitleFunction
     public static String getTranslatedTitle() {
-        return MetamacInternalWeb.getConstants().breadcrumbConceptSchemeList();
+        return MetamacSrmWeb.getConstants().breadcrumbConceptSchemeList();
     }
 
     public interface ConceptSchemeListView extends View, HasUiHandlers<ConceptSchemeListUiHandlers> {

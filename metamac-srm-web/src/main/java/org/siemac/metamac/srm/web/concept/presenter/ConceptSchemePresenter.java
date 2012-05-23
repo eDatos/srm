@@ -1,6 +1,6 @@
 package org.siemac.metamac.srm.web.concept.presenter;
 
-import static org.siemac.metamac.srm.web.client.MetamacInternalWeb.getMessages;
+import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
 import org.siemac.metamac.domain.concept.dto.ConceptSchemeDto;
 import org.siemac.metamac.srm.web.client.NameTokens;

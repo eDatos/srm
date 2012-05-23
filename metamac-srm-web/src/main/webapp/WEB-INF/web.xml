@@ -31,7 +31,7 @@
 	
 	<servlet>
 		<servlet-name>upload</servlet-name>
-		<servlet-class>org.siemac.metamac.internal.web.server.servlet.FileUploadServlet</servlet-class>
+		<servlet-class>org.siemac.metamac.srm.web.server.servlet.FileUploadServlet</servlet-class>
 	</servlet>
 	
 	<servlet-mapping>
@@ -41,7 +41,7 @@
  
     <servlet>
         <servlet-name>download</servlet-name>
-        <servlet-class>org.siemac.metamac.internal.web.server.servlet.FileDownloadServlet</servlet-class>
+        <servlet-class>org.siemac.metamac.srm.web.server.servlet.FileDownloadServlet</servlet-class>
     </servlet>
     
     <servlet-mapping>
@@ -56,12 +56,12 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>remoteLogging</servlet-name>
-        <url-pattern>/MetamacInternalWeb/remote_logging</url-pattern>
+        <url-pattern>/MetamacSrmWeb/remote_logging</url-pattern>
     </servlet-mapping>
 
 	<!-- ******************* Default page to serve ******************** -->
 	<welcome-file-list>
-		<welcome-file>MetamacInternalWeb.html</welcome-file>
+		<welcome-file>MetamacSrmWeb.html</welcome-file>
 	</welcome-file-list>
 
 

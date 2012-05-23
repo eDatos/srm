@@ -1,6 +1,6 @@
 package org.siemac.metamac.srm.web.client.widgets.view;
 
-import org.siemac.metamac.srm.web.client.MetamacInternalWeb;
+import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.widgets.CustomToolStripButton;
 import org.siemac.metamac.srm.web.client.widgets.presenter.ToolStripPresenterWidget;
@@ -29,19 +29,19 @@ public class ToolStripViewImpl implements ToolStripPresenterWidget.ToolStripView
         toolStrip.setAlign(Alignment.LEFT);
 
         // ToolStripButton
-        dsdListButton = new CustomToolStripButton(MetamacInternalWeb.getConstants().dsds());
+        dsdListButton = new CustomToolStripButton(MetamacSrmWeb.getConstants().dsds());
         dsdListButton.setID(ToolStripButtonEnum.DSD_LIST.getValue());
 
-        conceptsButton = new CustomToolStripButton(MetamacInternalWeb.getConstants().conceptSchemes());
+        conceptsButton = new CustomToolStripButton(MetamacSrmWeb.getConstants().conceptSchemes());
         conceptsButton.setID(ToolStripButtonEnum.CONCEPTS.getValue());
 
-        organisationsButton = new CustomToolStripButton(MetamacInternalWeb.getConstants().organisationSchemes());
+        organisationsButton = new CustomToolStripButton(MetamacSrmWeb.getConstants().organisationSchemes());
         organisationsButton.setID(ToolStripButtonEnum.ORGANISATIONS.getValue());
 
-        classificationsButton = new CustomToolStripButton(MetamacInternalWeb.getConstants().classifications());
+        classificationsButton = new CustomToolStripButton(MetamacSrmWeb.getConstants().classifications());
         classificationsButton.setID(ToolStripButtonEnum.CLASSIFICATIONS.getValue());
 
-        categoriesButton = new CustomToolStripButton(MetamacInternalWeb.getConstants().categorySchemes());
+        categoriesButton = new CustomToolStripButton(MetamacSrmWeb.getConstants().categorySchemes());
         categoriesButton.setID(ToolStripButtonEnum.CATEGORIES.getValue());
 
         // Add buttons to toolStrip

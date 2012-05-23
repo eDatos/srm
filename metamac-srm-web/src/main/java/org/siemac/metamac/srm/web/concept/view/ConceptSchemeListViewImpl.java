@@ -1,7 +1,7 @@
 package org.siemac.metamac.srm.web.concept.view;
 
-import static org.siemac.metamac.srm.web.client.MetamacInternalWeb.getConstants;
-import static org.siemac.metamac.srm.web.client.MetamacInternalWeb.getMessages;
+import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
+import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 import static org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE;
 
 import java.util.ArrayList;

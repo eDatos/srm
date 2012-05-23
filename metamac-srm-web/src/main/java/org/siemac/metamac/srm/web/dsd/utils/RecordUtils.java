@@ -5,7 +5,7 @@ import org.siemac.metamac.domain.srm.dto.AnnotationDto;
 import org.siemac.metamac.domain.srm.dto.DataAttributeDto;
 import org.siemac.metamac.domain.srm.dto.DescriptorDto;
 import org.siemac.metamac.domain.srm.dto.DimensionComponentDto;
-import org.siemac.metamac.srm.web.client.MetamacInternalWeb;
+import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.dsd.model.record.AnnotationRecord;
 import org.siemac.metamac.srm.web.dsd.model.record.AttributeRecord;
 import org.siemac.metamac.srm.web.dsd.model.record.ConceptRecord;
@@ -28,8 +28,8 @@ public class RecordUtils {
     public static DimensionRecord getDimensionRecord(DimensionComponentDto dimensionComponentDto) {
         DimensionRecord dimensionRecord = new DimensionRecord(dimensionComponentDto.getId(), dimensionComponentDto.getIdLogic(), dimensionComponentDto.getCptIdRef() == null
                 ? null
-                : dimensionComponentDto.getCptIdRef().getCodeId(), MetamacInternalWeb.getCoreMessages().getString(
-                MetamacInternalWeb.getCoreMessages().typeDimensionComponent() + dimensionComponentDto.getTypeDimensionComponent().getName()), dimensionComponentDto);
+                : dimensionComponentDto.getCptIdRef().getCodeId(), MetamacSrmWeb.getCoreMessages().getString(
+                MetamacSrmWeb.getCoreMessages().typeDimensionComponent() + dimensionComponentDto.getTypeDimensionComponent().getName()), dimensionComponentDto);
         return dimensionRecord;
     }
 
@@ -40,8 +40,8 @@ public class RecordUtils {
      * @return
      */
     public static AttributeRecord getAttributeRecord(DataAttributeDto dataAttributeDto) {
-        AttributeRecord record = new AttributeRecord(dataAttributeDto.getId(), dataAttributeDto.getIdLogic(), MetamacInternalWeb.getCoreMessages().getString(
-                MetamacInternalWeb.getCoreMessages().usageStatus() + dataAttributeDto.getUsageStatus().getName()), dataAttributeDto.getCptIdRef() == null ? null : dataAttributeDto.getCptIdRef()
+        AttributeRecord record = new AttributeRecord(dataAttributeDto.getId(), dataAttributeDto.getIdLogic(), MetamacSrmWeb.getCoreMessages().getString(
+                MetamacSrmWeb.getCoreMessages().usageStatus() + dataAttributeDto.getUsageStatus().getName()), dataAttributeDto.getCptIdRef() == null ? null : dataAttributeDto.getCptIdRef()
                 .getCodeId(), dataAttributeDto);
         return record;
     }

@@ -8,7 +8,7 @@ import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
-import org.siemac.metamac.srm.web.client.MetamacInternalWeb;
+import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
 import org.siemac.metamac.srm.web.client.resources.GlobalResources;
@@ -83,12 +83,12 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
 
         // Modal Form
 
-        nameItem = new RequiredTextItem("name-new-dsd", MetamacInternalWeb.getConstants().dsdName());
+        nameItem = new RequiredTextItem("name-new-dsd", MetamacSrmWeb.getConstants().dsdName());
         nameItem.setWidth(200);
-        idLogicItem = new RequiredTextItem("id-logic-new-dsd", MetamacInternalWeb.getConstants().dsdIdLogic());
+        idLogicItem = new RequiredTextItem("id-logic-new-dsd", MetamacSrmWeb.getConstants().dsdIdLogic());
         idLogicItem.setWidth(200);
         idLogicItem.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());
-        createDsdButton = new ButtonItem("create-new-dsd", MetamacInternalWeb.getConstants().dsdCreate());
+        createDsdButton = new ButtonItem("create-new-dsd", MetamacSrmWeb.getConstants().dsdCreate());
         createDsdButton.setWidth(100);
 
         newDsdForm = new CustomDynamicForm();
@@ -101,7 +101,7 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
 
         // ToolStrip
 
-        newToolStripButton = new ToolStripButton(MetamacInternalWeb.getConstants().actionNew(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.newListGrid().getURL());
+        newToolStripButton = new ToolStripButton(MetamacSrmWeb.getConstants().actionNew(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.newListGrid().getURL());
         newToolStripButton.addClickHandler(new ClickHandler() {
 
             @Override
@@ -109,7 +109,7 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
                 winModal = new Window();
                 winModal.setWidth(380);
                 winModal.setHeight(130);
-                winModal.setTitle(MetamacInternalWeb.getConstants().dsdNew());
+                winModal.setTitle(MetamacSrmWeb.getConstants().dsdNew());
                 winModal.setShowMinimizeButton(false);
                 winModal.setIsModal(true);
                 winModal.setShowModalMask(true);
@@ -127,7 +127,7 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
             }
         });
 
-        importToolStripButton = new ToolStripButton(MetamacInternalWeb.getConstants().actionImport(), GlobalResources.RESOURCE.importDsd().getURL());
+        importToolStripButton = new ToolStripButton(MetamacSrmWeb.getConstants().actionImport(), GlobalResources.RESOURCE.importDsd().getURL());
         importToolStripButton.addClickHandler(new ClickHandler() {
 
             @Override
@@ -150,7 +150,7 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
             }
         });
 
-        exportToolStripButton = new ToolStripButton(MetamacInternalWeb.getConstants().actionExport(), GlobalResources.RESOURCE.exportDsd().getURL());
+        exportToolStripButton = new ToolStripButton(MetamacSrmWeb.getConstants().actionExport(), GlobalResources.RESOURCE.exportDsd().getURL());
         exportToolStripButton.setVisibility(Visibility.HIDDEN);
         exportToolStripButton.addClickHandler(new ClickHandler() {
 
@@ -163,10 +163,10 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
             }
         });
 
-        deleteConfirmationWindow = new DeleteConfirmationWindow(MetamacInternalWeb.getConstants().dsdDeleteConfirmationTitle(), MetamacInternalWeb.getConstants().dsdDeleteConfirmation());
+        deleteConfirmationWindow = new DeleteConfirmationWindow(MetamacSrmWeb.getConstants().dsdDeleteConfirmationTitle(), MetamacSrmWeb.getConstants().dsdDeleteConfirmation());
         deleteConfirmationWindow.setVisibility(Visibility.HIDDEN);
 
-        deleteToolStripButton = new ToolStripButton(MetamacInternalWeb.getConstants().actionDelete(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.deleteListGrid().getURL());
+        deleteToolStripButton = new ToolStripButton(MetamacSrmWeb.getConstants().actionDelete(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.deleteListGrid().getURL());
         deleteToolStripButton.setVisibility(Visibility.HIDDEN);
         deleteToolStripButton.addClickHandler(new ClickHandler() {
 

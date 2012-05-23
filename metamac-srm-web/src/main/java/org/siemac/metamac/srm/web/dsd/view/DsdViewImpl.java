@@ -1,7 +1,7 @@
 package org.siemac.metamac.srm.web.dsd.view;
 
 import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
-import org.siemac.metamac.srm.web.client.MetamacInternalWeb;
+import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdAttributesTabPresenter.DsdAttributesTabView;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdDimensionsTabPresenter.DsdDimensionsTabView;
@@ -49,19 +49,19 @@ public class DsdViewImpl extends ViewWithUiHandlers<DsdUiHandlers> implements Ds
 
         tabSet = new TabSet();
 
-        generalTab = new Tab(MetamacInternalWeb.getConstants().dsdGeneral());
+        generalTab = new Tab(MetamacSrmWeb.getConstants().dsdGeneral());
         generalTab.setPane((Canvas) dsdGeneralTabView.asWidget());
 
-        primaryMeasureTab = new Tab(MetamacInternalWeb.getConstants().dsdPrimaryMeasure());
+        primaryMeasureTab = new Tab(MetamacSrmWeb.getConstants().dsdPrimaryMeasure());
         primaryMeasureTab.setPane((Canvas) dsdPrimaryMeasureTabView.asWidget());
 
-        dimensionsTab = new Tab(MetamacInternalWeb.getConstants().dsdDimensions());
+        dimensionsTab = new Tab(MetamacSrmWeb.getConstants().dsdDimensions());
         dimensionsTab.setPane((Canvas) dsdDimensionsTabView.asWidget());
 
-        attributesTab = new Tab(MetamacInternalWeb.getConstants().dsdAttributes());
+        attributesTab = new Tab(MetamacSrmWeb.getConstants().dsdAttributes());
         attributesTab.setPane((Canvas) dsdAttributesTabView.asWidget());
 
-        groupKeysTab = new Tab(MetamacInternalWeb.getConstants().dsdGroupKeys());
+        groupKeysTab = new Tab(MetamacSrmWeb.getConstants().dsdGroupKeys());
         groupKeysTab.setPane((Canvas) dsdGroupKeysTabView.asWidget());
 
         tabSet.addTab(generalTab);

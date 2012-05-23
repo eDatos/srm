@@ -5,7 +5,7 @@ import java.util.Set;
 
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.domain.srm.dto.AnnotationDto;
-import org.siemac.metamac.srm.web.client.MetamacInternalWeb;
+import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.resources.GlobalResources;
 import org.siemac.metamac.srm.web.dsd.model.ds.AnnotationDS;
 import org.siemac.metamac.srm.web.dsd.model.record.InternationalAnnotationRecord;
@@ -91,14 +91,14 @@ public class InternationalAnnotationsPanel extends VLayout {
         annotationImg.setSize(32);
         annotationImg.setAlign(Alignment.LEFT);
         annotationImg.setSrc(GlobalResources.RESOURCE.annotations().getURL());
-        annotationImg.setTooltip(MetamacInternalWeb.getConstants().annotations());
+        annotationImg.setTooltip(MetamacSrmWeb.getConstants().annotations());
 
         addAnnotationImg = new Img();
         addAnnotationImg.setVisibility(Visibility.HIDDEN);
         addAnnotationImg.setSize(32);
         addAnnotationImg.setAlign(Alignment.LEFT);
         addAnnotationImg.setSrc(GlobalResources.RESOURCE.addAnnotation().getURL());
-        addAnnotationImg.setTooltip(MetamacInternalWeb.getConstants().addAnnotation());
+        addAnnotationImg.setTooltip(MetamacSrmWeb.getConstants().addAnnotation());
         addAnnotationImg.setCursor(Cursor.POINTER);
         addAnnotationImg.setName("note-img");
         addAnnotationImg.addClickHandler(new ClickHandler() {
@@ -173,7 +173,7 @@ public class InternationalAnnotationsPanel extends VLayout {
         grid.setEditEvent(ListGridEditEvent.DOUBLECLICK);
         grid.setCanEdit(true);
         grid.setCanRemoveRecords(true);
-        grid.setRemoveFieldTitle(MetamacInternalWeb.getConstants().actionDelete());
+        grid.setRemoveFieldTitle(MetamacSrmWeb.getConstants().actionDelete());
         grid.setRemoveIcon(org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.deleteListGrid().getURL());
         grid.setRemoveIconSize(14);
 

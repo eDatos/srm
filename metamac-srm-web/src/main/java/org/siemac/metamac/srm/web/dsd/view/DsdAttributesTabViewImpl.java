@@ -16,7 +16,7 @@ import org.siemac.metamac.domain.srm.enume.domain.TypeDataAttribute;
 import org.siemac.metamac.domain.srm.enume.domain.TypeRelathionship;
 import org.siemac.metamac.domain.srm.enume.domain.TypeRepresentationEnum;
 import org.siemac.metamac.domain.srm.enume.domain.UsageStatus;
-import org.siemac.metamac.srm.web.client.MetamacInternalWeb;
+import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.dsd.enums.RepresentationTypeEnum;
 import org.siemac.metamac.srm.web.dsd.model.record.AttributeRecord;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdAttributesTabPresenter;
@@ -140,7 +140,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
         // ToolStrip
 
-        newToolStripButton = new ToolStripButton(MetamacInternalWeb.getConstants().actionNew(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.newListGrid().getURL());
+        newToolStripButton = new ToolStripButton(MetamacSrmWeb.getConstants().actionNew(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.newListGrid().getURL());
         newToolStripButton.addClickHandler(new ClickHandler() {
 
             @Override
@@ -151,10 +151,10 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
             }
         });
 
-        importDsdWindow = new DeleteConfirmationWindow(MetamacInternalWeb.getConstants().dsdDeleteConfirmationTitle(), MetamacInternalWeb.getConstants().dsdAttributeDeleteConfirmation());
+        importDsdWindow = new DeleteConfirmationWindow(MetamacSrmWeb.getConstants().dsdDeleteConfirmationTitle(), MetamacSrmWeb.getConstants().dsdAttributeDeleteConfirmation());
         importDsdWindow.setVisibility(Visibility.HIDDEN);
 
-        deleteToolStripButton = new ToolStripButton(MetamacInternalWeb.getConstants().actionDelete(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.deleteListGrid().getURL());
+        deleteToolStripButton = new ToolStripButton(MetamacSrmWeb.getConstants().actionDelete(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.deleteListGrid().getURL());
         deleteToolStripButton.setVisibility(Visibility.HIDDEN);
         deleteToolStripButton.addClickHandler(new ClickHandler() {
 
@@ -178,9 +178,9 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         attributesGrid.setHeight(150);
         attributesGrid.setSelectionType(SelectionStyle.SIMPLE);
         attributesGrid.setSelectionAppearance(SelectionAppearance.CHECKBOX);
-        ListGridField idLogicField = new ListGridField(AttributeRecord.ID_LOGIC, MetamacInternalWeb.getConstants().dsdAttributeId());
-        ListGridField assigmentField = new ListGridField(AttributeRecord.ASSIGNMENT, MetamacInternalWeb.getConstants().dsdAttributeAssignmentStatus());
-        ListGridField attributeConceptField = new ListGridField(AttributeRecord.CONCEPT, MetamacInternalWeb.getConstants().dsdAttributeConcept());
+        ListGridField idLogicField = new ListGridField(AttributeRecord.ID_LOGIC, MetamacSrmWeb.getConstants().dsdAttributeId());
+        ListGridField assigmentField = new ListGridField(AttributeRecord.ASSIGNMENT, MetamacSrmWeb.getConstants().dsdAttributeAssignmentStatus());
+        ListGridField attributeConceptField = new ListGridField(AttributeRecord.CONCEPT, MetamacSrmWeb.getConstants().dsdAttributeConcept());
         attributesGrid.setFields(idLogicField, assigmentField, attributeConceptField);
         // ToolTip
         idLogicField.setShowHover(true);
@@ -286,18 +286,18 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
      * @return
      */
     private void createViewForm() {
-        staticIdLogic = new ViewTextItem("id-attr-view", MetamacInternalWeb.getConstants().dsdAttributeId());
-        staticConceptItem = new ViewTextItem("concept-attr-view", MetamacInternalWeb.getConstants().dsdAttributeConcept());
-        staticRoleItem = new ViewTextItem("role-attribute-view", MetamacInternalWeb.getConstants().dsdAttributeRole());
-        staticAssignmentStatusItem = new ViewTextItem("status-attr-view", MetamacInternalWeb.getConstants().dsdAttributeAssignmentStatus());
-        staticRelationType = new ViewTextItem("relate-type-attr-view", MetamacInternalWeb.getConstants().dsdAttributeRelatedWith());
-        staticGroupKeysForDimensionRelationshipItem = new ViewTextItem("groups-dim-attr-view", MetamacInternalWeb.getConstants().dsdAttributeGroupKeysForDimensionRelationship());
-        staticDimensionsForDimensionRelationshipItem = new ViewTextItem("dims-dim-attr-view", MetamacInternalWeb.getConstants().dsdAttributeDimensionsForDimensionRelationship());
-        staticGroupKeyFormForGroupRelationship = new ViewTextItem("relate-group-group-attr-view", MetamacInternalWeb.getConstants().dsdAttributeGroupKeyFormGroupRelationship());
-        staticRepresentationTypeItem = new ViewTextItem("repr-dim-view", MetamacInternalWeb.getConstants().dsdRepresentation());
-        staticCodeListItem = new ViewTextItem("repr-enum-code-list-view", MetamacInternalWeb.getConstants().dsdCodeList());
+        staticIdLogic = new ViewTextItem("id-attr-view", MetamacSrmWeb.getConstants().dsdAttributeId());
+        staticConceptItem = new ViewTextItem("concept-attr-view", MetamacSrmWeb.getConstants().dsdAttributeConcept());
+        staticRoleItem = new ViewTextItem("role-attribute-view", MetamacSrmWeb.getConstants().dsdAttributeRole());
+        staticAssignmentStatusItem = new ViewTextItem("status-attr-view", MetamacSrmWeb.getConstants().dsdAttributeAssignmentStatus());
+        staticRelationType = new ViewTextItem("relate-type-attr-view", MetamacSrmWeb.getConstants().dsdAttributeRelatedWith());
+        staticGroupKeysForDimensionRelationshipItem = new ViewTextItem("groups-dim-attr-view", MetamacSrmWeb.getConstants().dsdAttributeGroupKeysForDimensionRelationship());
+        staticDimensionsForDimensionRelationshipItem = new ViewTextItem("dims-dim-attr-view", MetamacSrmWeb.getConstants().dsdAttributeDimensionsForDimensionRelationship());
+        staticGroupKeyFormForGroupRelationship = new ViewTextItem("relate-group-group-attr-view", MetamacSrmWeb.getConstants().dsdAttributeGroupKeyFormGroupRelationship());
+        staticRepresentationTypeItem = new ViewTextItem("repr-dim-view", MetamacSrmWeb.getConstants().dsdRepresentation());
+        staticCodeListItem = new ViewTextItem("repr-enum-code-list-view", MetamacSrmWeb.getConstants().dsdCodeList());
 
-        GroupDynamicForm staticForm = new GroupDynamicForm(MetamacInternalWeb.getConstants().dsdAttributeDetails());
+        GroupDynamicForm staticForm = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdAttributeDetails());
         staticForm.setFields(staticIdLogic, staticAssignmentStatusItem, staticConceptItem, staticRoleItem, staticRelationType, staticGroupKeysForDimensionRelationshipItem,
                 staticDimensionsForDimensionRelationshipItem, staticGroupKeyFormForGroupRelationship, staticRepresentationTypeItem, staticCodeListItem);
 
@@ -332,34 +332,34 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
         // Role
 
-        roleItem = new RoleSelectItem("role-attribute", MetamacInternalWeb.getConstants().dsdAttributeRole());
+        roleItem = new RoleSelectItem("role-attribute", MetamacSrmWeb.getConstants().dsdAttributeRole());
 
         // Id
 
-        idLogic = new RequiredTextItem("id-attr", MetamacInternalWeb.getConstants().dsdAttributeId());
+        idLogic = new RequiredTextItem("id-attr", MetamacSrmWeb.getConstants().dsdAttributeId());
         idLogic.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());
 
         // Concept
 
-        conceptItem = new ExternalSelectItem("concept-attr", MetamacInternalWeb.getConstants().dsdAttributeConcept());
+        conceptItem = new ExternalSelectItem("concept-attr", MetamacSrmWeb.getConstants().dsdAttributeConcept());
         conceptItem.setRequired(true);
 
         // Assignment Status
 
-        assignmentStatusItem = new RequiredSelectItem("status-attr", MetamacInternalWeb.getConstants().dsdAttributeAssignmentStatus());
+        assignmentStatusItem = new RequiredSelectItem("status-attr", MetamacSrmWeb.getConstants().dsdAttributeAssignmentStatus());
         LinkedHashMap<String, String> statusValueMap = new LinkedHashMap<String, String>();
         for (UsageStatus u : UsageStatus.values()) {
-            String value = MetamacInternalWeb.getCoreMessages().getString(MetamacInternalWeb.getCoreMessages().usageStatus() + u.getName());
+            String value = MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().usageStatus() + u.getName());
             statusValueMap.put(u.toString(), value);
         }
         assignmentStatusItem.setValueMap(statusValueMap);
 
         // Relation
 
-        relationType = new RequiredSelectItem("relate-type-attr", MetamacInternalWeb.getConstants().dsdAttributeRelatedWith());
+        relationType = new RequiredSelectItem("relate-type-attr", MetamacSrmWeb.getConstants().dsdAttributeRelatedWith());
         LinkedHashMap<String, String> valueMapRelationType = new LinkedHashMap<String, String>();
         for (TypeRelathionship t : TypeRelathionship.values()) {
-            String value = MetamacInternalWeb.getCoreMessages().getString(MetamacInternalWeb.getCoreMessages().typeRelationship() + t.getName());
+            String value = MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().typeRelationship() + t.getName());
             valueMapRelationType.put(t.toString(), value);
         }
         relationType.setValueMap(valueMapRelationType);
@@ -367,7 +367,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
         // Relation: Group keys for dimension relationship
 
-        groupKeysForDimensionRelationshipItem = new SelectItem("groups-dim-attr", MetamacInternalWeb.getConstants().dsdAttributeGroupKeysForDimensionRelationship());
+        groupKeysForDimensionRelationshipItem = new SelectItem("groups-dim-attr", MetamacSrmWeb.getConstants().dsdAttributeGroupKeysForDimensionRelationship());
         groupKeysForDimensionRelationshipItem.setMultiple(true);
         groupKeysForDimensionRelationshipItem.setPickListWidth(350);
         // Show GroupKeyForDimensionRelationship if TypeRelathionship = DIMENSION_RELATIONSHIP
@@ -387,7 +387,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
         // Relation: Dimensions for dimension relationship
 
-        dimensionsForDimensionRelationshipItem = new RequiredSelectItem("dims-dim-attr", MetamacInternalWeb.getConstants().dsdAttributeDimensionsForDimensionRelationship());
+        dimensionsForDimensionRelationshipItem = new RequiredSelectItem("dims-dim-attr", MetamacSrmWeb.getConstants().dsdAttributeDimensionsForDimensionRelationship());
         dimensionsForDimensionRelationshipItem.setMultiple(true);
         dimensionsForDimensionRelationshipItem.setPickListWidth(350);
         // Show DimensionsForDimensionRelationship if TypeRelathionship = DIMENSION_RELATIONSHIP
@@ -407,7 +407,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
         // Relation: Group Keys for group relationship
 
-        groupKeyFormForGroupRelationship = new RequiredSelectItem("relate-group-group-attr", MetamacInternalWeb.getConstants().dsdAttributeGroupKeyFormGroupRelationship());
+        groupKeyFormForGroupRelationship = new RequiredSelectItem("relate-group-group-attr", MetamacSrmWeb.getConstants().dsdAttributeGroupKeyFormGroupRelationship());
         groupKeyFormForGroupRelationship.setType("comboBox");
         groupKeyFormForGroupRelationship.setPickListWidth(350);
         // Show GroupKeyForGroupRelationship if TypeRelathionship = GROUP_RELATIONSHIP
@@ -436,12 +436,12 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
         // Representation
 
-        representationTypeItem = new SelectItem("repr-dim", MetamacInternalWeb.getConstants().dsdRepresentation());
+        representationTypeItem = new SelectItem("repr-dim", MetamacSrmWeb.getConstants().dsdRepresentation());
         representationTypeItem.setType("comboBox");
         LinkedHashMap<String, String> valueMap = new LinkedHashMap<String, String>();
         valueMap.put(new String(), new String());
         for (RepresentationTypeEnum r : RepresentationTypeEnum.values()) {
-            String value = MetamacInternalWeb.getCoreMessages().getString(MetamacInternalWeb.getCoreMessages().representationTypeEnum() + r.getName());
+            String value = MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().representationTypeEnum() + r.getName());
             valueMap.put(r.toString(), value);
         }
         representationTypeItem.setValueMap(valueMap);
@@ -455,7 +455,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
             }
         });
 
-        codeListItem = new SelectItem("repr-enum-code-list", MetamacInternalWeb.getConstants().dsdCodeList());
+        codeListItem = new SelectItem("repr-enum-code-list", MetamacSrmWeb.getConstants().dsdCodeList());
         codeListItem.setType("comboBox");
         // Show CodeList if RepresentationTypeEnum = ENUMERATED
         codeListItem.setShowIfCondition(new FormItemIfFunction() {
@@ -466,7 +466,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
             }
         });
 
-        form = new GroupDynamicForm(MetamacInternalWeb.getConstants().dsdAttributeDetails());
+        form = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdAttributeDetails());
         form.setFields(idLogic, assignmentStatusItem, conceptItem, roleItem, relationType, groupKeysForDimensionRelationshipItem, dimensionsForDimensionRelationshipItem,
                 groupKeyFormForGroupRelationship, representationTypeItem, codeListItem);
 
@@ -590,8 +590,8 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         staticRoleItem.setValue(CommonUtils.getRoleListToString(roleConcepts));
 
         // Assignment Status
-        String value = (dataAttributeDto.getUsageStatus() == null) ? null : MetamacInternalWeb.getCoreMessages().getString(
-                MetamacInternalWeb.getCoreMessages().usageStatus() + dataAttributeDto.getUsageStatus().getName());
+        String value = (dataAttributeDto.getUsageStatus() == null) ? null : MetamacSrmWeb.getCoreMessages().getString(
+                MetamacSrmWeb.getCoreMessages().usageStatus() + dataAttributeDto.getUsageStatus().getName());
         staticAssignmentStatusItem.setValue(value);
 
         // RelateTo
@@ -604,8 +604,8 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         staticDimensionsForDimensionRelationshipItem.hide();
 
         if (dataAttributeDto.getRelateTo() != null && dataAttributeDto.getRelateTo().getId() != null) {
-            String typeValue = MetamacInternalWeb.getCoreMessages().getString(
-                    MetamacInternalWeb.getCoreMessages().typeRelationship() + dataAttributeDto.getRelateTo().getTypeRelathionship().toString());
+            String typeValue = MetamacSrmWeb.getCoreMessages().getString(
+                    MetamacSrmWeb.getCoreMessages().typeRelationship() + dataAttributeDto.getRelateTo().getTypeRelathionship().toString());
             staticRelationType.setValue(typeValue);
 
             // Group keys for group relationship
@@ -650,11 +650,11 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
             // Code List
             if (RepresentationTypeEnum.ENUMERATED.equals(dataAttributeDto.getLocalRepresentation().getTypeRepresentationEnum())) {
                 staticCodeListItem.setValue(dataAttributeDto.getLocalRepresentation().getEnumerated().getCodeId());
-                staticRepresentationTypeItem.setValue(MetamacInternalWeb.getCoreMessages().representationTypeEnumENUMERATED());
+                staticRepresentationTypeItem.setValue(MetamacSrmWeb.getCoreMessages().representationTypeEnumENUMERATED());
                 staticCodeListItem.show();
                 // Facet
             } else if (RepresentationTypeEnum.NON_NUMERATED.equals(dataAttributeDto.getLocalRepresentation().getTypeRepresentationEnum())) {
-                staticRepresentationTypeItem.setValue(MetamacInternalWeb.getCoreMessages().representationTypeEnumNON_NUMERATED());
+                staticRepresentationTypeItem.setValue(MetamacSrmWeb.getCoreMessages().representationTypeEnumNON_NUMERATED());
                 // Only one facet in a Representation
                 FacetDto facetDto = dataAttributeDto.getLocalRepresentation().getNonEnumerated();
                 staticFacetForm.setFacet(facetDto);

@@ -11,10 +11,10 @@ public interface GlobalResources extends ClientBundleWithLookup {
     public static final GlobalResources RESOURCE = GWT.create(GlobalResources.class);
 
     // CSS
-    // @Source("MetamacInternalWebStyles.css")
+    // @Source("MetamacSrmWebStyles.css")
     // CssStyles css();
     //
-    // interface CssStyles extends MetamacInternalWebStyles { }
+    // interface CssStyles extends MetamacSrmWebStyles { }
 
     @Source("images/info.png")
     ImageResource info();

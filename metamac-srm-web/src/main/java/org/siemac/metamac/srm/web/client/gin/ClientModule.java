@@ -1,8 +1,8 @@
 package org.siemac.metamac.srm.web.client.gin;
 
-import org.siemac.metamac.srm.web.client.MetamacInternalWebConstants;
-import org.siemac.metamac.srm.web.client.MetamacInternalWebMessages;
 import org.siemac.metamac.srm.web.client.MetamacPlaceManager;
+import org.siemac.metamac.srm.web.client.MetamacSrmWebConstants;
+import org.siemac.metamac.srm.web.client.MetamacSrmWebMessages;
 import org.siemac.metamac.srm.web.client.NameTokens;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.presenter.StructuralResourcesPresenter;
@@ -55,8 +55,8 @@ public class ClientModule extends AbstractPresenterModule {
         bindConstant().annotatedWith(SecurityCookie.class).to(SharedTokens.securityCookieName);
 
         // Constants and messages interface
-        bind(MetamacInternalWebConstants.class).in(Singleton.class);
-        bind(MetamacInternalWebMessages.class).in(Singleton.class);
+        bind(MetamacSrmWebConstants.class).in(Singleton.class);
+        bind(MetamacSrmWebMessages.class).in(Singleton.class);
 
         // PresenterWidgets
         bindSingletonPresenterWidget(ToolStripPresenterWidget.class, ToolStripPresenterWidget.ToolStripView.class, ToolStripViewImpl.class);

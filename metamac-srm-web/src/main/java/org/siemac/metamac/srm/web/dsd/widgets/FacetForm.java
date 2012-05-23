@@ -4,7 +4,7 @@ import java.util.LinkedHashMap;
 
 import org.siemac.metamac.domain.srm.dto.FacetDto;
 import org.siemac.metamac.domain.srm.enume.domain.FacetValueTypeEnum;
-import org.siemac.metamac.srm.web.client.MetamacInternalWeb;
+import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.dsd.utils.FacetFormUtils;
 import org.siemac.metamac.web.common.client.utils.FormItemUtils;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
@@ -35,57 +35,57 @@ public class FacetForm extends GroupDynamicForm {
     private TextItem           pattern;
 
     public FacetForm() {
-        super(MetamacInternalWeb.getConstants().dsdDimensionNonNumeratedRepresentation());
+        super(MetamacSrmWeb.getConstants().dsdDimensionNonNumeratedRepresentation());
         setVisibility(Visibility.HIDDEN);
 
-        textType = new RequiredSelectItem(FacetFormUtils.TEXT_TYPE_FIELD_NAME, MetamacInternalWeb.getConstants().dsdRepresentationTextType());
+        textType = new RequiredSelectItem(FacetFormUtils.TEXT_TYPE_FIELD_NAME, MetamacSrmWeb.getConstants().dsdRepresentationTextType());
         LinkedHashMap<String, String> valueMapFacetValueType = new LinkedHashMap<String, String>();
         for (FacetValueTypeEnum f : FacetFormUtils.getDsdFacetValueTypeEnums()) {
-            String value = MetamacInternalWeb.getCoreMessages().getString(MetamacInternalWeb.getCoreMessages().facetValueTypeEnum() + f.getName());
+            String value = MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().facetValueTypeEnum() + f.getName());
             valueMapFacetValueType.put(f.toString(), value);
         }
         textType.setValueMap(valueMapFacetValueType);
         textType.setRedrawOnChange(true);
         textType.setWidth(205);
 
-        isSequence = new CheckboxItem("sequence-attr", MetamacInternalWeb.getConstants().dsdRepresentationIsSequence());
+        isSequence = new CheckboxItem("sequence-attr", MetamacSrmWeb.getConstants().dsdRepresentationIsSequence());
         isSequence.setLabelAsTitle(true);
         isSequence.setShowIfCondition(FacetFormUtils.getIsSequenceIfFunction());
 
-        interval = new FloatItem("interval-attr", MetamacInternalWeb.getConstants().dsdRepresentationInterval());
+        interval = new FloatItem("interval-attr", MetamacSrmWeb.getConstants().dsdRepresentationInterval());
         interval.setShowIfCondition(FacetFormUtils.getIntervalIfFunction());
 
-        startValue = new FloatItem("start-value-attr", MetamacInternalWeb.getConstants().dsdRepresentationStartValue());
+        startValue = new FloatItem("start-value-attr", MetamacSrmWeb.getConstants().dsdRepresentationStartValue());
         startValue.setShowIfCondition(FacetFormUtils.getStartValueIfFunction());
 
-        endValue = new FloatItem("end-value-attr", MetamacInternalWeb.getConstants().dsdRepresentationEndValue());
+        endValue = new FloatItem("end-value-attr", MetamacSrmWeb.getConstants().dsdRepresentationEndValue());
         endValue.setShowIfCondition(FacetFormUtils.getEndValueIfFunction());
 
-        timeInterval = new TextItem("time-interval-attr", MetamacInternalWeb.getConstants().dsdRepresentationTimeInterval());
+        timeInterval = new TextItem("time-interval-attr", MetamacSrmWeb.getConstants().dsdRepresentationTimeInterval());
         timeInterval.setShowIfCondition(FacetFormUtils.getTimeIntervalIfFunction());
 
-        startTime = new TextItem("start-time-attr", MetamacInternalWeb.getConstants().dsdRepresentationStartTime());
+        startTime = new TextItem("start-time-attr", MetamacSrmWeb.getConstants().dsdRepresentationStartTime());
         startTime.setShowIfCondition(FacetFormUtils.getStartTimeIfFunction());
 
-        endTime = new TextItem("end-time-attr", MetamacInternalWeb.getConstants().dsdRepresentationEndTime());
+        endTime = new TextItem("end-time-attr", MetamacSrmWeb.getConstants().dsdRepresentationEndTime());
         endTime.setShowIfCondition(FacetFormUtils.getEndTimeIfFunction());
 
-        minLength = new IntegerItem("min-length-attr", MetamacInternalWeb.getConstants().dsdRepresentationMinLength());
+        minLength = new IntegerItem("min-length-attr", MetamacSrmWeb.getConstants().dsdRepresentationMinLength());
         minLength.setShowIfCondition(FacetFormUtils.getMinLengthIfFunction());
 
-        maxLength = new IntegerItem("max-length", MetamacInternalWeb.getConstants().dsdRepresentationMaxLength());
+        maxLength = new IntegerItem("max-length", MetamacSrmWeb.getConstants().dsdRepresentationMaxLength());
         maxLength.setShowIfCondition(FacetFormUtils.getMaxLengthIfFunction());
 
-        minValue = new FloatItem("min-value-attr", MetamacInternalWeb.getConstants().dsdRepresentationMinValue());
+        minValue = new FloatItem("min-value-attr", MetamacSrmWeb.getConstants().dsdRepresentationMinValue());
         minValue.setShowIfCondition(FacetFormUtils.getMinValueIfFunction());
 
-        maxValue = new FloatItem("max-value-attr", MetamacInternalWeb.getConstants().dsdRepresentationMaxValue());
+        maxValue = new FloatItem("max-value-attr", MetamacSrmWeb.getConstants().dsdRepresentationMaxValue());
         maxValue.setShowIfCondition(FacetFormUtils.getMaxValueIfFunction());
 
-        decimals = new IntegerItem("decimals-attr", MetamacInternalWeb.getConstants().dsdRepresentationDecimals());
+        decimals = new IntegerItem("decimals-attr", MetamacSrmWeb.getConstants().dsdRepresentationDecimals());
         decimals.setShowIfCondition(FacetFormUtils.getDecimalsIfFunction());
 
-        pattern = new TextItem("pattern-attr", MetamacInternalWeb.getConstants().dsdRepresentationPattern());
+        pattern = new TextItem("pattern-attr", MetamacSrmWeb.getConstants().dsdRepresentationPattern());
         pattern.setShowIfCondition(FacetFormUtils.getPatternIfFunction());
 
         setFields(textType, isSequence, interval, startValue, endValue, timeInterval, startTime, endTime, minLength, maxLength, minValue, maxValue, decimals, pattern);

@@ -1,6 +1,6 @@
 package org.siemac.metamac.srm.web.client.widgets;
 
-import org.siemac.metamac.srm.web.client.MetamacInternalWeb;
+import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.resources.GlobalResources;
 
 import com.smartgwt.client.types.Alignment;
@@ -35,7 +35,7 @@ public class StatusBar extends HLayout {
         // initialize the Selected label
         selectedLabel = new Label();
         selectedLabel.setStyleName("statusBar-Label");
-        selectedLabel.setContents(MetamacInternalWeb.getMessages().selected(String.valueOf(0), String.valueOf(50)));
+        selectedLabel.setContents(MetamacSrmWeb.getMessages().selected(String.valueOf(0), String.valueOf(50)));
         selectedLabel.setAlign(Alignment.LEFT);
         selectedLabel.setOverflow(Overflow.HIDDEN);
 
@@ -78,7 +78,7 @@ public class StatusBar extends HLayout {
         // initialize the Page Number label
         pageNumberLabel = new Label();
         pageNumberLabel.setStyleName("statusBar-Label");
-        pageNumberLabel.setContents(MetamacInternalWeb.getMessages().page(String.valueOf(1)));
+        pageNumberLabel.setContents(MetamacSrmWeb.getMessages().page(String.valueOf(1)));
 
         // TO DO: fix this
         pageNumberLabel.setWidth(LABEL_WIDTH);
