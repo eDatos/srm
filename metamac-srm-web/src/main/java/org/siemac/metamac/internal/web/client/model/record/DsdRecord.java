@@ -2,7 +2,7 @@ package org.siemac.metamac.internal.web.client.model.record;
 
 import java.util.Date;
 
-import org.siemac.metamac.domain_dto.DataStructureDefinitionDto;
+import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
 
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 

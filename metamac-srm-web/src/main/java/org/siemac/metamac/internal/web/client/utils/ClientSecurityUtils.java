@@ -1,12 +1,11 @@
 package org.siemac.metamac.internal.web.client.utils;
 
-
 public class ClientSecurityUtils {
 
     public static boolean canCreateConceptScheme() {
         return true;
     }
-    
+
     public static boolean canEditConceptScheme() {
         return true;
     }

@@ -4,10 +4,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.siemac.metamac.core.common.dto.ExternalItemBtDto;
-import org.siemac.metamac.domain_dto.ComponentDto;
-import org.siemac.metamac.domain_dto.FacetDto;
-import org.siemac.metamac.domain_dto.RepresentationDto;
-import org.siemac.metamac.domain_enum.domain.TypeRepresentationEnum;
+import org.siemac.metamac.domain.srm.dto.ComponentDto;
+import org.siemac.metamac.domain.srm.dto.FacetDto;
+import org.siemac.metamac.domain.srm.dto.RepresentationDto;
+import org.siemac.metamac.domain.srm.enume.domain.TypeRepresentationEnum;
 import org.siemac.metamac.internal.web.client.MetamacInternalWeb;
 import org.siemac.metamac.internal.web.dsd.enums.RepresentationTypeEnum;
 import org.siemac.metamac.internal.web.dsd.presenter.DsdPrimaryMeasureTabPresenter;

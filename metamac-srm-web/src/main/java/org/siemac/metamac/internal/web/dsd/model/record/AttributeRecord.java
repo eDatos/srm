@@ -1,6 +1,6 @@
 package org.siemac.metamac.internal.web.dsd.model.record;
 
-import org.siemac.metamac.domain_dto.DataAttributeDto;
+import org.siemac.metamac.domain.srm.dto.DataAttributeDto;
 
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 

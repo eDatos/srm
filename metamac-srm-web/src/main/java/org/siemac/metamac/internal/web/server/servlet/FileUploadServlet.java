@@ -18,10 +18,10 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.siemac.metamac.core.common.util.ApplicationContextProvider;
-import org.siemac.metamac.core_facades.serviceapi.SDMXStructureServiceFacade;
-import org.siemac.metamac.domain_dtoutil.ContentInputDto;
+import org.siemac.metamac.domain.util.dto.ContentInputDto;
 import org.siemac.metamac.internal.web.server.ServiceContextHelper;
 import org.siemac.metamac.internal.web.shared.utils.SharedTokens;
+import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 
 import com.google.inject.Singleton;
 
@@ -73,7 +73,7 @@ public class FileUploadServlet extends HttpServlet {
     private void processFiles(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String fileName = new String();
         try {
-            SDMXStructureServiceFacade sdmxStructureServiceFacade = (SDMXStructureServiceFacade) ApplicationContextProvider.getApplicationContext().getBean("sDMXStructureServiceFacade");
+            SrmCoreServiceFacade sdmxStructureServiceFacade = (SrmCoreServiceFacade) ApplicationContextProvider.getApplicationContext().getBean("srmCoreServiceFacade");
 
             DiskFileItemFactory factory = new DiskFileItemFactory();
             // Get the temporary directory (this is where files that exceed the threshold will be stored)

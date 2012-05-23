@@ -2,7 +2,7 @@ package org.siemac.metamac.internal.web.client.view;
 
 import java.util.List;
 
-import org.siemac.metamac.domain_dto.DataStructureDefinitionDto;
+import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
 import org.siemac.metamac.internal.web.client.MetamacInternalWeb;
 import org.siemac.metamac.internal.web.client.presenter.StructuralResourcesPresenter;
 import org.siemac.metamac.internal.web.client.view.handlers.StructuralResourcesUiHandlers;

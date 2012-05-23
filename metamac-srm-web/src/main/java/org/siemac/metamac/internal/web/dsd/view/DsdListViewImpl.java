@@ -7,7 +7,7 @@ import org.siemac.metamac.core.common.dto.ExternalItemBtDto;
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.core.common.util.shared.VersionUtil;
-import org.siemac.metamac.domain_dto.DataStructureDefinitionDto;
+import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
 import org.siemac.metamac.internal.web.client.MetamacInternalWeb;
 import org.siemac.metamac.internal.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.internal.web.client.model.record.DsdRecord;

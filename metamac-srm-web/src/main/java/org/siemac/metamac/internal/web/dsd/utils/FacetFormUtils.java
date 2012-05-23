@@ -3,7 +3,7 @@ package org.siemac.metamac.internal.web.dsd.utils;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.siemac.metamac.domain_enum.domain.FacetValueTypeEnum;
+import org.siemac.metamac.domain.srm.enume.domain.FacetValueTypeEnum;
 import org.siemac.metamac.internal.web.dsd.widgets.FacetForm;
 
 import com.smartgwt.client.widgets.form.DynamicForm;

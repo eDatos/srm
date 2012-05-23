@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Set;
 
-import org.siemac.metamac.domain_dto.AnnotationDto;
+import org.siemac.metamac.domain.srm.dto.AnnotationDto;
 import org.siemac.metamac.internal.web.client.MetamacInternalWeb;
 import org.siemac.metamac.internal.web.client.resources.GlobalResources;
 import org.siemac.metamac.internal.web.dsd.model.record.AnnotationRecord;

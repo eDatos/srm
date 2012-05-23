@@ -5,6 +5,7 @@ import org.siemac.metamac.internal.web.client.MetamacInternalWebMessages;
 import org.siemac.metamac.internal.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.internal.web.client.presenter.StructuralResourcesPresenter;
 import org.siemac.metamac.internal.web.concept.presenter.ConceptSchemeListPresenter;
+import org.siemac.metamac.internal.web.concept.presenter.ConceptSchemePresenter;
 import org.siemac.metamac.internal.web.dsd.presenter.DsdAttributesTabPresenter;
 import org.siemac.metamac.internal.web.dsd.presenter.DsdDimensionsTabPresenter;
 import org.siemac.metamac.internal.web.dsd.presenter.DsdGeneralTabPresenter;
@@ -35,16 +36,17 @@ public interface MetamacInternalWebGinjector extends Ginjector {
     AsyncProvider<StructuralResourcesPresenter> getStructuralResourcesPresenter();
 
     // DSD
-    //TODO: dev
-     AsyncProvider<DsdListPresenter> getDsdListPresenter();
-     AsyncProvider<DsdPresenter> getDsdPresenter();
-     AsyncProvider<DsdGeneralTabPresenter> getDsdGeneralTabPresenter();
-     AsyncProvider<DsdPrimaryMeasureTabPresenter> getDsdPrimaryMeasureTabPresenter();
-     AsyncProvider<DsdDimensionsTabPresenter> getDsdDimensionsTabPresenter();
-     AsyncProvider<DsdAttributesTabPresenter> getDsdAttributesTabPresenter();
-     AsyncProvider<DsdGroupKeysTabPresenter> getDsdGroupKeysTabPresenter();
+    // TODO: dev
+    AsyncProvider<DsdListPresenter> getDsdListPresenter();
+    AsyncProvider<DsdPresenter> getDsdPresenter();
+    AsyncProvider<DsdGeneralTabPresenter> getDsdGeneralTabPresenter();
+    AsyncProvider<DsdPrimaryMeasureTabPresenter> getDsdPrimaryMeasureTabPresenter();
+    AsyncProvider<DsdDimensionsTabPresenter> getDsdDimensionsTabPresenter();
+    AsyncProvider<DsdAttributesTabPresenter> getDsdAttributesTabPresenter();
+    AsyncProvider<DsdGroupKeysTabPresenter> getDsdGroupKeysTabPresenter();
 
     // Concept
     AsyncProvider<ConceptSchemeListPresenter> getConceptSchemeListPresenter();
+    AsyncProvider<ConceptSchemePresenter> getConceptSchemePresenter();
 
 }

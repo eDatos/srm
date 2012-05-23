@@ -2,8 +2,8 @@ package org.siemac.metamac.internal.web.dsd.widgets;
 
 import java.util.LinkedHashMap;
 
-import org.siemac.metamac.domain_dto.FacetDto;
-import org.siemac.metamac.domain_enum.domain.FacetValueTypeEnum;
+import org.siemac.metamac.domain.srm.dto.FacetDto;
+import org.siemac.metamac.domain.srm.enume.domain.FacetValueTypeEnum;
 import org.siemac.metamac.internal.web.client.MetamacInternalWeb;
 import org.siemac.metamac.internal.web.dsd.utils.FacetFormUtils;
 import org.siemac.metamac.web.common.client.utils.FormItemUtils;

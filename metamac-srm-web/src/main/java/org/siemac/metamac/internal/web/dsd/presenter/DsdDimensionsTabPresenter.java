@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.siemac.metamac.core.common.dto.ExternalItemBtDto;
-import org.siemac.metamac.domain_dto.ComponentDto;
-import org.siemac.metamac.domain_dto.DescriptorDto;
-import org.siemac.metamac.domain_dto.DimensionComponentDto;
-import org.siemac.metamac.domain_enum.domain.TypeComponentList;
+import org.siemac.metamac.domain.srm.dto.ComponentDto;
+import org.siemac.metamac.domain.srm.dto.DescriptorDto;
+import org.siemac.metamac.domain.srm.dto.DimensionComponentDto;
+import org.siemac.metamac.domain.srm.enume.domain.TypeComponentList;
 import org.siemac.metamac.internal.web.client.MetamacInternalWeb;
 import org.siemac.metamac.internal.web.client.NameTokens;
 import org.siemac.metamac.internal.web.client.utils.ErrorUtils;

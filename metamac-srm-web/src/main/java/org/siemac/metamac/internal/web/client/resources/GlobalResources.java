@@ -3,7 +3,6 @@ package org.siemac.metamac.internal.web.client.resources;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.resources.client.ClientBundleWithLookup;
 import com.google.gwt.resources.client.ImageResource;
-import com.google.gwt.resources.client.ClientBundle.Source;
 import com.google.gwt.resources.client.ImageResource.ImageOptions;
 import com.google.gwt.resources.client.ImageResource.RepeatStyle;
 
@@ -66,23 +65,23 @@ public interface GlobalResources extends ClientBundleWithLookup {
     @ImageOptions(repeatStyle = RepeatStyle.Both)
     @Source("images/resultsetprevious_Disabled.png")
     ImageResource resultSetPreviousDisabled();
-    
+
     @ImageOptions(repeatStyle = RepeatStyle.Both)
     @Source("images/pending_publication.png")
     ImageResource pendingPublication();
-    
+
     @ImageOptions(repeatStyle = RepeatStyle.Both)
     @Source("images/internal_publish.png")
     ImageResource internalPublish();
-    
+
     @ImageOptions(repeatStyle = RepeatStyle.Both)
     @Source("images/external_publish.png")
     ImageResource externalPublish();
-    
+
     @ImageOptions(repeatStyle = RepeatStyle.Both)
     @Source("images/reject.png")
     ImageResource reject();
-    
+
     @ImageOptions(repeatStyle = RepeatStyle.Both)
     @Source("images/version.png")
     ImageResource version();

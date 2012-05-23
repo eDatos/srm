@@ -5,10 +5,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
 
-import org.siemac.metamac.domain_dto.ComponentDto;
-import org.siemac.metamac.domain_dto.DescriptorDto;
-import org.siemac.metamac.domain_dto.DimensionComponentDto;
-import org.siemac.metamac.domain_enum.domain.TypeComponentList;
+import org.siemac.metamac.domain.srm.dto.ComponentDto;
+import org.siemac.metamac.domain.srm.dto.DescriptorDto;
+import org.siemac.metamac.domain.srm.dto.DimensionComponentDto;
+import org.siemac.metamac.domain.srm.enume.domain.TypeComponentList;
 import org.siemac.metamac.internal.web.client.MetamacInternalWeb;
 import org.siemac.metamac.internal.web.dsd.model.record.GroupKeysRecord;
 import org.siemac.metamac.internal.web.dsd.presenter.DsdGroupKeysTabPresenter;

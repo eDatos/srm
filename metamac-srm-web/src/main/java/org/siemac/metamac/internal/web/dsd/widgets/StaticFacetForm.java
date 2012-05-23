@@ -1,6 +1,6 @@
 package org.siemac.metamac.internal.web.dsd.widgets;
 
-import org.siemac.metamac.domain_dto.FacetDto;
+import org.siemac.metamac.domain.srm.dto.FacetDto;
 import org.siemac.metamac.internal.web.client.MetamacInternalWeb;
 import org.siemac.metamac.internal.web.dsd.utils.FacetFormUtils;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;

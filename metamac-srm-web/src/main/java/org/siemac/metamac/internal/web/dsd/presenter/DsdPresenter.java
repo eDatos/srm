@@ -1,7 +1,7 @@
 package org.siemac.metamac.internal.web.dsd.presenter;
 
-import org.siemac.metamac.domain_dto.DataStructureDefinitionDto;
-import org.siemac.metamac.domain_enum.domain.TypeComponentList;
+import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
+import org.siemac.metamac.domain.srm.enume.domain.TypeComponentList;
 import org.siemac.metamac.internal.web.client.MetamacInternalWeb;
 import org.siemac.metamac.internal.web.client.NameTokens;
 import org.siemac.metamac.internal.web.client.presenter.MainPagePresenter;

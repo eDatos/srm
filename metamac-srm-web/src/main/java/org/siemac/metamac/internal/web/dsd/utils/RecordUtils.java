@@ -1,10 +1,10 @@
 package org.siemac.metamac.internal.web.dsd.utils;
 
 import org.siemac.metamac.core.common.dto.ExternalItemBtDto;
-import org.siemac.metamac.domain_dto.AnnotationDto;
-import org.siemac.metamac.domain_dto.DataAttributeDto;
-import org.siemac.metamac.domain_dto.DescriptorDto;
-import org.siemac.metamac.domain_dto.DimensionComponentDto;
+import org.siemac.metamac.domain.srm.dto.AnnotationDto;
+import org.siemac.metamac.domain.srm.dto.DataAttributeDto;
+import org.siemac.metamac.domain.srm.dto.DescriptorDto;
+import org.siemac.metamac.domain.srm.dto.DimensionComponentDto;
 import org.siemac.metamac.internal.web.client.MetamacInternalWeb;
 import org.siemac.metamac.internal.web.dsd.model.record.AnnotationRecord;
 import org.siemac.metamac.internal.web.dsd.model.record.AttributeRecord;

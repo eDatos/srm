@@ -1,6 +1,6 @@
 package org.siemac.metamac.internal.web.dsd.model.record;
 
-import org.siemac.metamac.domain_dto.AnnotationDto;
+import org.siemac.metamac.domain.srm.dto.AnnotationDto;
 
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 

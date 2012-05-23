@@ -1,6 +1,6 @@
 package org.siemac.metamac.internal.web.dsd.view.handlers;
 
-import org.siemac.metamac.domain_dto.ComponentDto;
+import org.siemac.metamac.domain.srm.dto.ComponentDto;
 
 import com.gwtplatform.mvp.client.UiHandlers;
 

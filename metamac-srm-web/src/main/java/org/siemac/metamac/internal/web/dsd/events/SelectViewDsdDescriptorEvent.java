@@ -1,6 +1,6 @@
 package org.siemac.metamac.internal.web.dsd.events;
 
-import org.siemac.metamac.domain_enum.domain.TypeComponentList;
+import org.siemac.metamac.domain.srm.enume.domain.TypeComponentList;
 
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;

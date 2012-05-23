@@ -2,11 +2,11 @@ package org.siemac.metamac.internal.web.dsd.events;
 
 import java.util.List;
 
-import org.siemac.metamac.domain_dto.ComponentDto;
-import org.siemac.metamac.domain_dto.DataAttributeDto;
-import org.siemac.metamac.domain_dto.DataStructureDefinitionDto;
-import org.siemac.metamac.domain_dto.DescriptorDto;
-import org.siemac.metamac.domain_dto.DimensionComponentDto;
+import org.siemac.metamac.domain.srm.dto.ComponentDto;
+import org.siemac.metamac.domain.srm.dto.DataAttributeDto;
+import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
+import org.siemac.metamac.domain.srm.dto.DescriptorDto;
+import org.siemac.metamac.domain.srm.dto.DimensionComponentDto;
 
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;

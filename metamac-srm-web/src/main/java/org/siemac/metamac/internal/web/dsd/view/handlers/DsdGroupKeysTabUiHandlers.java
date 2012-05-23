@@ -2,7 +2,7 @@ package org.siemac.metamac.internal.web.dsd.view.handlers;
 
 import java.util.List;
 
-import org.siemac.metamac.domain_dto.DescriptorDto;
+import org.siemac.metamac.domain.srm.dto.DescriptorDto;
 
 import com.gwtplatform.mvp.client.UiHandlers;
 
