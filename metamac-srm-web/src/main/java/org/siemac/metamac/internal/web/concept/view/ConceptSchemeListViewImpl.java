@@ -39,7 +39,6 @@ import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
-
 public class ConceptSchemeListViewImpl extends PaginationViewImpl<ConceptSchemeListUiHandlers> implements ConceptSchemeListPresenter.ConceptSchemeListView {
 
     private VLayout                  panel;
@@ -173,7 +172,7 @@ public class ConceptSchemeListViewImpl extends PaginationViewImpl<ConceptSchemeL
         }
         return codes;
     }
-    
+
     public void refreshStatusBar() {
         // update Selected label e.g "0 of 50 selected"
         String selectedLabel = getMessages().selected(String.valueOf(getNumberSelected()), String.valueOf(getNumberOfElements()));
@@ -184,7 +183,7 @@ public class ConceptSchemeListViewImpl extends PaginationViewImpl<ConceptSchemeL
         getStatusBar().getPageNumberLabel().setContents(pageNumberLabel);
         getStatusBar().getPageNumberLabel().markForRedraw();
     }
-    
+
     protected void initStatusBar() {
 
         // "0 of 50 selected"

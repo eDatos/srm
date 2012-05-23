@@ -1,7 +1,7 @@
 package org.siemac.metamac.internal.web.concept.view;
 
-import static org.siemac.metamac.internal.web.client.MetamacInternalWeb.getMessages;
 import static org.siemac.metamac.internal.web.client.MetamacInternalWeb.getConstants;
+import static org.siemac.metamac.internal.web.client.MetamacInternalWeb.getMessages;
 
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.domain.concept.dto.ConceptSchemeDto;
@@ -28,36 +28,36 @@ import com.smartgwt.client.widgets.layout.VLayout;
 
 public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePresenter.ConceptSchemeView, HasUiHandlers<ConceptSchemeUiHandlers> {
 
-    private ConceptSchemeUiHandlers uiHandlers;
-    private VLayout panel;
+    private ConceptSchemeUiHandlers     uiHandlers;
+    private VLayout                     panel;
     private ConceptSchemeMainFormLayout mainFormLayout;
-    
+
     /* View form */
-    private GroupDynamicForm        identifiersForm;
-    
+    private GroupDynamicForm            identifiersForm;
+
     /* Edit form */
-    private GroupDynamicForm        identifiersEditionForm;
-    
+    private GroupDynamicForm            identifiersEditionForm;
+
     /* Data */
-    private ConceptSchemeDto conceptScheme;
-    
-    
+    private ConceptSchemeDto            conceptScheme;
+
     @Inject
     public ConceptSchemeViewImpl() {
         super();
-        
+
         mainFormLayout = new ConceptSchemeMainFormLayout(ClientSecurityUtils.canEditConceptScheme());
-        
+
         createViewForm();
         createEditionForm();
-        
+
         panel = new VLayout();
         panel.addMember(mainFormLayout);
         bindEvents();
     }
-    
+
     public void bindEvents() {
         mainFormLayout.getTranslateToolStripButton().addClickHandler(new ClickHandler() {
+
             @Override
             public void onClick(ClickEvent event) {
                 boolean translationShowed = mainFormLayout.getTranslateToolStripButton().isSelected();
@@ -65,13 +65,13 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
                 identifiersEditionForm.setTranslationsShowed(translationShowed);
             }
         });
-        
+
         // Edit: Add a custom handler to check scheme status before start editing
         mainFormLayout.getEditToolStripButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                //TODO: get scheme proc status
+                // TODO: get scheme proc status
                 ConceptSchemeProcStatusEnum status = ConceptSchemeProcStatusEnum.DRAFT;
                 if (ConceptSchemeProcStatusEnum.INTERNALLY_PUBLISHED.equals(status) || ConceptSchemeProcStatusEnum.EXTERNALLY_PUBLISHED.equals(status)) {
                     // Create a new version
@@ -83,7 +83,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
                 }
             }
         });
-        
+
         // Save
         mainFormLayout.getSave().addClickHandler(new ClickHandler() {
 
@@ -92,118 +92,119 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
                 saveConceptScheme();
             }
         });
-        
-        //Life cycle
+
+        // Life cycle
         mainFormLayout.getSendToPendingPublication().addClickHandler(new ClickHandler() {
-            
+
             @Override
             public void onClick(ClickEvent event) {
                 uiHandlers.sendToPendingPublication(conceptScheme.getUuid());
             }
         });
-        
+
         mainFormLayout.getRejectValidation().addClickHandler(new ClickHandler() {
-            
+
             @Override
             public void onClick(ClickEvent event) {
                 uiHandlers.rejectValidation(conceptScheme.getUuid());
-                
+
             }
         });
-        
+
         mainFormLayout.getPublishInternally().addClickHandler(new ClickHandler() {
-            
+
             @Override
             public void onClick(ClickEvent event) {
                 uiHandlers.publishInternally(conceptScheme.getUuid());
-                
+
             }
         });
-        
+
         mainFormLayout.getPublishExternally().addClickHandler(new ClickHandler() {
-            
+
             @Override
             public void onClick(ClickEvent event) {
                 uiHandlers.publishExternally(conceptScheme.getUuid());
-                
+
             }
         });
-        
+
         mainFormLayout.getVersioning().addClickHandler(new ClickHandler() {
-            
+
             @Override
             public void onClick(ClickEvent event) {
                 uiHandlers.versioning(conceptScheme.getUuid());
-                
+
             }
         });
-        
+
     }
-    
-    
-    //TODO: PROCSTATUS
+
+    // TODO: PROCSTATUS
     public void createViewForm() {
         // Identifiers Form
         identifiersForm = new GroupDynamicForm(getConstants().conceptSchemeDetailIdentifiers());
         ViewTextItem idLogic = new ViewTextItem(ConceptSchemeDS.ID_LOGIC, getConstants().conceptSchemeDetailIdentifier());
         ViewTextItem uuid = new ViewTextItem(ConceptSchemeDS.UUID, getConstants().conceptSchemeDetailUuid());
-        //ViewTextItem version = new ViewTextItem(ConceptSchemeDS., getConstants().indicDetailVersion());
-        //ViewTextItem procStatus = new ViewTextItem(IndicatorDS.PROC_STATUS, getConstants().indicDetailProcStatus());
+        // ViewTextItem version = new ViewTextItem(ConceptSchemeDS., getConstants().indicDetailVersion());
+        // ViewTextItem procStatus = new ViewTextItem(IndicatorDS.PROC_STATUS, getConstants().indicDetailProcStatus());
         ViewMultiLanguageTextItem title = new ViewMultiLanguageTextItem(ConceptSchemeDS.NAME, getConstants().conceptSchemeDetailTitle());
-        identifiersForm.setFields(idLogic, uuid, /*version, procStatus,*/ title);
-        
+        identifiersForm.setFields(idLogic, uuid, /* version, procStatus, */title);
+
         mainFormLayout.addViewCanvas(identifiersEditionForm);
     }
-    
-    //TODO: PROCSTATUS
+
+    // TODO: PROCSTATUS
     public void createEditionForm() {
-     // Identifiers Form
+        // Identifiers Form
         identifiersEditionForm = new GroupDynamicForm(getConstants().conceptSchemeDetailIdentifiers());
         ViewTextItem idLogic = new ViewTextItem(ConceptSchemeDS.ID_LOGIC, getConstants().conceptSchemeDetailIdentifier());
         ViewTextItem uuid = new ViewTextItem(ConceptSchemeDS.UUID, getConstants().conceptSchemeDetailUuid());
-        /*ViewTextItem version = new ViewTextItem(IndicatorDS.VERSION_NUMBER, getConstants().indicDetailVersion());
-        ViewTextItem procStatus = new ViewTextItem(IndicatorDS.PROC_STATUS, getConstants().indicDetailProcStatus());*/
+        /*
+         * ViewTextItem version = new ViewTextItem(IndicatorDS.VERSION_NUMBER, getConstants().indicDetailVersion());
+         * ViewTextItem procStatus = new ViewTextItem(IndicatorDS.PROC_STATUS, getConstants().indicDetailProcStatus());
+         */
         MultiLanguageTextItem title = new MultiLanguageTextItem(ConceptSchemeDS.NAME, getConstants().conceptSchemeDetailTitle());
         title.setRequired(true);
-        identifiersEditionForm.setFields(idLogic, uuid, /*version, procStatus,*/ title);
-        
+        identifiersEditionForm.setFields(idLogic, uuid, /* version, procStatus, */title);
+
         mainFormLayout.addEditionCanvas(identifiersEditionForm);
     }
-    
+
     @Override
     public void setConceptScheme(ConceptSchemeDto conceptScheme) {
         this.conceptScheme = conceptScheme;
-        
-        //TODO: PROCSTATUS mainFormLayout.updatePublishSection(conceptScheme.getProcStatus());
+
+        // TODO: PROCSTATUS mainFormLayout.updatePublishSection(conceptScheme.getProcStatus());
         mainFormLayout.setViewMode();
-        
+
         setConceptSchemeViewMode(conceptScheme);
         setConceptSchemeEditionMode(conceptScheme);
     }
-    
+
     public void setEditionMode() {
         mainFormLayout.setEditionMode();
     }
-    
+
     public void setConceptSchemeViewMode(ConceptSchemeDto conceptSchemeDto) {
         identifiersForm.setValue(ConceptSchemeDS.ID_LOGIC, conceptSchemeDto.getIdLogic());
         identifiersForm.setValue(ConceptSchemeDS.UUID, conceptSchemeDto.getUuid());
         identifiersForm.setValue(ConceptSchemeDS.NAME, RecordUtils.getInternationalStringRecord(conceptSchemeDto.getName()));
     }
-    
+
     public void setConceptSchemeEditionMode(ConceptSchemeDto conceptSchemeDto) {
         identifiersEditionForm.setValue(ConceptSchemeDS.ID_LOGIC, conceptSchemeDto.getIdLogic());
         identifiersEditionForm.setValue(ConceptSchemeDS.UUID, conceptSchemeDto.getUuid());
         identifiersEditionForm.setValue(ConceptSchemeDS.NAME, RecordUtils.getInternationalStringRecord(conceptSchemeDto.getName()));
     }
-    
+
     public void saveConceptScheme() {
         if (identifiersEditionForm.validate(false)) {
-            conceptScheme.setName((InternationalStringDto)identifiersEditionForm.getValue(ConceptSchemeDS.NAME));
+            conceptScheme.setName((InternationalStringDto) identifiersEditionForm.getValue(ConceptSchemeDS.NAME));
             uiHandlers.saveConceptScheme(conceptScheme);
         }
     }
-    
+
     @Override
     public Widget asWidget() {
         return panel;
@@ -215,4 +216,3 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
     }
 
 }
-
