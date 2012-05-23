@@ -15,16 +15,16 @@
 
     <modules>
         <module>metamac-srm-parent</module>
-        <module>metamac-internal-web</module>
+        <module>metamac-srm-web</module>
         <module>metamac-srm-core</module>
         <module>metamac-srm-core-facade-rest-api</module>
         <module>metamac-srm-core-facade-rest-impl</module>
     </modules>
 
     <scm>
-        <connection>scm:svn:http://svn.arte-consultores.com/svn/arte/istac/metamac/metamac-internal/trunk/</connection>
-        <developerConnection>scm:svn:http://svn.arte-consultores.com/svn/arte/istac/metamac/metamac-internal/trunk/</developerConnection>
-        <url>http://svn.arte-consultores.com/viewvc/arte/istac/metamac/metamac-internal/trunk/</url>
+        <connection>scm:svn:http://svn.arte-consultores.com/svn/arte/istac/metamac/metamac-srm/trunk/</connection>
+        <developerConnection>scm:svn:http://svn.arte-consultores.com/svn/arte/istac/metamac/metamac-srm/trunk/</developerConnection>
+        <url>http://svn.arte-consultores.com/viewvc/arte/istac/metamac/metamac-srm/trunk/</url>
     </scm>
 
     <build>

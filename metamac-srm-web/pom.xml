@@ -12,10 +12,10 @@
 	</parent>
 
     <groupId>org.siemac.metamac</groupId>
-    <artifactId>metamac-internal-web</artifactId>
+    <artifactId>metamac-srm-web</artifactId>
     <packaging>war</packaging>
-    <name>METAMAC ::> INTERNAL ::> WEB</name>
-    <description>METAMAC ::> INTERNAL ::> WEB</description>
+    <name>SIEMAC :: METAMAC :: SRM :: WEB</name>
+    <description>SIEMAC :: METAMAC :: SRM :: WEB</description>
 
     <properties>
         <!-- Convenience property to set the GWT version -->

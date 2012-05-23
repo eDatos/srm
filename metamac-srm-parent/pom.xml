@@ -12,8 +12,8 @@
 	<artifactId>metamac-srm-parent</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>METAMAC :: SRM :: PARENT</name>
-    <description>METAMAC :: SRM :: PARENT</description>
+	<name>SIEMAC :: METAMAC :: SRM :: PARENT</name>
+    <description>SIEMAC :: METAMAC :: SRM :: PARENT</description>
     
     <properties>
     	<metamac-web-common.version>1.0.1-SNAPSHOT</metamac-web-common.version>
