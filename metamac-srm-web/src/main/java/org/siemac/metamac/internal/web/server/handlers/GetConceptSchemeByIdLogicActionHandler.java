@@ -11,28 +11,24 @@ import com.gwtplatform.dispatch.server.ExecutionContext;
 import com.gwtplatform.dispatch.server.actionhandler.AbstractActionHandler;
 import com.gwtplatform.dispatch.shared.ActionException;
 
-
 public class GetConceptSchemeByIdLogicActionHandler extends AbstractActionHandler<GetConceptSchemeByIdLogicAction, GetConceptSchemeByIdLogicResult> {
-    
-    
+
     public GetConceptSchemeByIdLogicActionHandler() {
         super(GetConceptSchemeByIdLogicAction.class);
     }
-    
+
     @Override
     public GetConceptSchemeByIdLogicResult execute(GetConceptSchemeByIdLogicAction action, ExecutionContext context) throws ActionException {
-        try  {
+        try {
             ConceptSchemeDto scheme = ConceptSchemeService.retriveConceptSchemeByIdLogic(action.getIdLogic());
             return new GetConceptSchemeByIdLogicResult(scheme);
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);
         }
     }
-    
+
     public void undo(GetConceptSchemeByIdLogicAction action, GetConceptSchemeByIdLogicResult result, ExecutionContext context) throws ActionException {
-        //NOTHING
+        // NOTHING
     };
-    
-    
 
 }

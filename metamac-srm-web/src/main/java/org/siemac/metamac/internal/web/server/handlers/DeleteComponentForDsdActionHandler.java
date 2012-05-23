@@ -4,10 +4,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.core_facades.serviceapi.SDMXStructureServiceFacade;
 import org.siemac.metamac.internal.web.server.ServiceContextHelper;
 import org.siemac.metamac.internal.web.shared.DeleteComponentForDsdAction;
 import org.siemac.metamac.internal.web.shared.DeleteComponentForDsdResult;
+import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -17,10 +17,10 @@ import com.gwtplatform.dispatch.shared.ActionException;
 
 public class DeleteComponentForDsdActionHandler extends AbstractActionHandler<DeleteComponentForDsdAction, DeleteComponentForDsdResult> {
 
-    private static Logger              logger = Logger.getLogger(DeleteComponentForDsdActionHandler.class.getName());
+    private static Logger        logger = Logger.getLogger(DeleteComponentForDsdActionHandler.class.getName());
 
     @Autowired
-    private SDMXStructureServiceFacade sDMXStructureServiceFacade;
+    private SrmCoreServiceFacade srmCoreServiceFacade;
 
     public DeleteComponentForDsdActionHandler() {
         super(DeleteComponentForDsdAction.class);
@@ -29,7 +29,7 @@ public class DeleteComponentForDsdActionHandler extends AbstractActionHandler<De
     @Override
     public DeleteComponentForDsdResult execute(DeleteComponentForDsdAction action, ExecutionContext context) throws ActionException {
         try {
-            sDMXStructureServiceFacade.deleteComponentForDsd(ServiceContextHelper.getServiceContext(), action.getIdDsd(), action.getComponentDto(), action.getTypeComponentList());
+            srmCoreServiceFacade.deleteComponentForDsd(ServiceContextHelper.getServiceContext(), action.getIdDsd(), action.getComponentDto(), action.getTypeComponentList());
             return new DeleteComponentForDsdResult();
         } catch (MetamacException e) {
             logger.log(Level.SEVERE, " Error deleting component " + action.getTypeComponentList() + " for DSD with id = " + action.getIdDsd() + ". " + e.getMessage());

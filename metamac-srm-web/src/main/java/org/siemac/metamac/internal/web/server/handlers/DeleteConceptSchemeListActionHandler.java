@@ -10,13 +10,12 @@ import com.gwtplatform.dispatch.server.ExecutionContext;
 import com.gwtplatform.dispatch.server.actionhandler.AbstractActionHandler;
 import com.gwtplatform.dispatch.shared.ActionException;
 
+public class DeleteConceptSchemeListActionHandler extends AbstractActionHandler<DeleteConceptSchemeListAction, DeleteConceptSchemeListResult> {
 
-public class DeleteConceptSchemeListActionHandler extends AbstractActionHandler<DeleteConceptSchemeListAction, DeleteConceptSchemeListResult>{
-    
     public DeleteConceptSchemeListActionHandler() {
         super(DeleteConceptSchemeListAction.class);
     }
-    
+
     @Override
     public DeleteConceptSchemeListResult execute(DeleteConceptSchemeListAction action, ExecutionContext context) throws ActionException {
         try {
@@ -28,10 +27,10 @@ public class DeleteConceptSchemeListActionHandler extends AbstractActionHandler<
             throw WebExceptionUtils.createMetamacWebException(e);
         }
     }
-    
+
     @Override
     public void undo(DeleteConceptSchemeListAction action, DeleteConceptSchemeListResult result, ExecutionContext context) throws ActionException {
-        //NOTHING
+        // NOTHING
     }
 
 }

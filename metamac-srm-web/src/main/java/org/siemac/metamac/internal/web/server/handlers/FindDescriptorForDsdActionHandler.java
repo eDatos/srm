@@ -5,11 +5,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.core_facades.serviceapi.SDMXStructureServiceFacade;
-import org.siemac.metamac.domain_dto.DescriptorDto;
+import org.siemac.metamac.domain.srm.dto.DescriptorDto;
 import org.siemac.metamac.internal.web.server.ServiceContextHelper;
 import org.siemac.metamac.internal.web.shared.FindDescriptorForDsdAction;
 import org.siemac.metamac.internal.web.shared.FindDescriptorForDsdResult;
+import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -19,10 +19,10 @@ import com.gwtplatform.dispatch.shared.ActionException;
 
 public class FindDescriptorForDsdActionHandler extends AbstractActionHandler<FindDescriptorForDsdAction, FindDescriptorForDsdResult> {
 
-    private static Logger              logger = Logger.getLogger(FindDescriptorForDsdActionHandler.class.getName());
+    private static Logger        logger = Logger.getLogger(FindDescriptorForDsdActionHandler.class.getName());
 
     @Autowired
-    private SDMXStructureServiceFacade sDMXStructureServiceFacade;
+    private SrmCoreServiceFacade srmCoreServiceFacade;
 
     public FindDescriptorForDsdActionHandler() {
         super(FindDescriptorForDsdAction.class);
@@ -31,7 +31,7 @@ public class FindDescriptorForDsdActionHandler extends AbstractActionHandler<Fin
     @Override
     public FindDescriptorForDsdResult execute(FindDescriptorForDsdAction action, ExecutionContext context) throws ActionException {
         try {
-            List<DescriptorDto> descriptorDtos = sDMXStructureServiceFacade.findDescriptorForDsd(ServiceContextHelper.getServiceContext(), action.getIdDsd(), action.getTypeComponentList());
+            List<DescriptorDto> descriptorDtos = srmCoreServiceFacade.findDescriptorForDsd(ServiceContextHelper.getServiceContext(), action.getIdDsd(), action.getTypeComponentList());
             logger.log(Level.INFO, "ACTION SUCCESSFULLY: findDescriptorForDsd");
             return new FindDescriptorForDsdResult(descriptorDtos);
         } catch (MetamacException e) {

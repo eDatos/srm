@@ -11,14 +11,12 @@ import com.gwtplatform.dispatch.server.ExecutionContext;
 import com.gwtplatform.dispatch.server.actionhandler.AbstractActionHandler;
 import com.gwtplatform.dispatch.shared.ActionException;
 
-
 public class RejectConceptSchemeActionHandler extends AbstractActionHandler<RejectConceptSchemeAction, RejectConceptSchemeResult> {
-    
-    
+
     public RejectConceptSchemeActionHandler() {
         super(RejectConceptSchemeAction.class);
     }
-    
+
     @Override
     public RejectConceptSchemeResult execute(RejectConceptSchemeAction action, ExecutionContext context) throws ActionException {
         try {
@@ -28,10 +26,10 @@ public class RejectConceptSchemeActionHandler extends AbstractActionHandler<Reje
             throw WebExceptionUtils.createMetamacWebException(e);
         }
     }
-    
+
     @Override
     public void undo(RejectConceptSchemeAction action, RejectConceptSchemeResult result, ExecutionContext context) throws ActionException {
-        //NOTHING
+        // NOTHING
     }
 
 }

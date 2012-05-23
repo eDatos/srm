@@ -4,11 +4,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.core_facades.serviceapi.SDMXStructureServiceFacade;
-import org.siemac.metamac.domain_dto.DataStructureDefinitionDto;
+import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
 import org.siemac.metamac.internal.web.server.ServiceContextHelper;
 import org.siemac.metamac.internal.web.shared.SaveDsdAction;
 import org.siemac.metamac.internal.web.shared.SaveDsdResult;
+import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -18,10 +18,10 @@ import com.gwtplatform.dispatch.shared.ActionException;
 
 public class SaveDsdActionHandler extends AbstractActionHandler<SaveDsdAction, SaveDsdResult> {
 
-    private static Logger              logger = Logger.getLogger(SaveDsdActionHandler.class.getName());
+    private static Logger        logger = Logger.getLogger(SaveDsdActionHandler.class.getName());
 
     @Autowired
-    private SDMXStructureServiceFacade sDMXStructureServiceFacade;
+    private SrmCoreServiceFacade srmCoreServiceFacade;
 
     public SaveDsdActionHandler() {
         super(SaveDsdAction.class);
@@ -30,7 +30,7 @@ public class SaveDsdActionHandler extends AbstractActionHandler<SaveDsdAction, S
     @Override
     public SaveDsdResult execute(SaveDsdAction action, ExecutionContext context) throws ActionException {
         try {
-            DataStructureDefinitionDto dsd = sDMXStructureServiceFacade.saveDsd(ServiceContextHelper.getServiceContext(), action.getDsd());
+            DataStructureDefinitionDto dsd = srmCoreServiceFacade.saveDsd(ServiceContextHelper.getServiceContext(), action.getDsd());
             return new SaveDsdResult(dsd);
         } catch (MetamacException e) {
             logger.log(Level.SEVERE, "Error saving DSD with id = " + action.getDsd().getId() + ". " + e.getMessage());

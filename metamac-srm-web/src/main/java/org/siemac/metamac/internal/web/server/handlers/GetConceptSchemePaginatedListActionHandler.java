@@ -11,8 +11,7 @@ import com.gwtplatform.dispatch.server.ExecutionContext;
 import com.gwtplatform.dispatch.server.actionhandler.AbstractActionHandler;
 import com.gwtplatform.dispatch.shared.ActionException;
 
-
-public class GetConceptSchemePaginatedListActionHandler extends AbstractActionHandler<GetConceptSchemePaginatedListAction, GetConceptSchemePaginatedListResult>{
+public class GetConceptSchemePaginatedListActionHandler extends AbstractActionHandler<GetConceptSchemePaginatedListAction, GetConceptSchemePaginatedListResult> {
 
     public GetConceptSchemePaginatedListActionHandler() {
         super(GetConceptSchemePaginatedListAction.class);
@@ -20,7 +19,7 @@ public class GetConceptSchemePaginatedListActionHandler extends AbstractActionHa
 
     @Override
     public GetConceptSchemePaginatedListResult execute(GetConceptSchemePaginatedListAction action, ExecutionContext context) throws ActionException {
-        //TODO: replace mock
+        // TODO: replace mock
         try {
             ConceptSchemePage page = ConceptSchemeService.findAllConceptSchemes(action.getFirstResult(), action.getMaxResults());
             return new GetConceptSchemePaginatedListResult(page.resultList, page.totalResults);
@@ -28,7 +27,7 @@ public class GetConceptSchemePaginatedListActionHandler extends AbstractActionHa
             throw WebExceptionUtils.createMetamacWebException(e);
         }
     }
-    
+
     @Override
     public void undo(GetConceptSchemePaginatedListAction action, GetConceptSchemePaginatedListResult result, ExecutionContext context) throws ActionException {
         // NOTHING
