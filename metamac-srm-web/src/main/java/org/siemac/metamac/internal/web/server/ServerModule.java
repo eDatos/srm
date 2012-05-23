@@ -147,22 +147,22 @@ public class ServerModule extends HandlerModule {
     public FindCodeListsActionHandler getFindCodeListsActionHandler() {
         return new FindCodeListsActionHandler();
     }
-    
+
     @Bean
     public GetConceptSchemePaginatedListActionHandler getConceptSchemePaginatedListActionHandler() {
         return new GetConceptSchemePaginatedListActionHandler();
     }
-    
+
     @Bean
     public GetConceptSchemeByIdLogicActionHandler getConceptSchemeByIdLogicActionHandler() {
         return new GetConceptSchemeByIdLogicActionHandler();
     }
-    
+
     @Bean
-    public SaveConceptSchemeActionHandler getConceptSchemeActionHandler(){
+    public SaveConceptSchemeActionHandler getConceptSchemeActionHandler() {
         return new SaveConceptSchemeActionHandler();
     }
-    
+
     @Bean
     public DeleteConceptSchemeListActionHandler getDeleteConceptSchemeListActionHandler() {
         return new DeleteConceptSchemeListActionHandler();
@@ -201,7 +201,7 @@ public class ServerModule extends HandlerModule {
         bindHandler(GetConceptSchemeByIdLogicAction.class, GetConceptSchemeByIdLogicActionHandler.class);
         bindHandler(SaveConceptSchemeAction.class, SaveConceptSchemeActionHandler.class);
         bindHandler(DeleteConceptSchemeListAction.class, DeleteConceptSchemeListActionHandler.class);
-        
+
     }
 
 }
