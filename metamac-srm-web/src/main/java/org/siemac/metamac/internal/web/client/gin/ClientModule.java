@@ -49,7 +49,7 @@ public class ClientModule extends AbstractPresenterModule {
 
         // Default place
         bindConstant().annotatedWith(DefaultPlace.class).to(NameTokens.structuralResourcesPage);
-        //TODO: DEV bindConstant().annotatedWith(DefaultPlace.class).to(NameTokens.conceptSchemeListPage);
+        // TODO: DEV bindConstant().annotatedWith(DefaultPlace.class).to(NameTokens.conceptSchemeListPage);
 
         // Security cookie to protect against XSRF attacks
         bindConstant().annotatedWith(SecurityCookie.class).to(SharedTokens.securityCookieName);
@@ -67,21 +67,20 @@ public class ClientModule extends AbstractPresenterModule {
                 StructuralResourcesPresenter.StructuralResourcesProxy.class);
 
         // DSD
-        //TODO: DEV
-         bindPresenter(DsdListPresenter.class, DsdListPresenter.DsdListView.class, DsdListViewImpl.class, DsdListPresenter.DsdListProxy.class);
-         bindPresenter(DsdPresenter.class, DsdPresenter.DsdView.class, DsdViewImpl.class, DsdPresenter.DsdProxy.class);
-         bindPresenter(DsdGeneralTabPresenter.class, DsdGeneralTabPresenter.DsdGeneralTabView.class, DsdGeneralTabViewImpl.class, DsdGeneralTabPresenter.DsdGeneralTabProxy.class);
-         bindPresenter(DsdPrimaryMeasureTabPresenter.class, DsdPrimaryMeasureTabPresenter.DsdPrimaryMeasureTabView.class, DsdPrimaryMeasureTabViewImpl.class,
-         DsdPrimaryMeasureTabPresenter.DsdPrimaryMeasureTabProxy.class);
-         bindPresenter(DsdDimensionsTabPresenter.class, DsdDimensionsTabPresenter.DsdDimensionsTabView.class, DsdDimensionsTabViewImpl.class, DsdDimensionsTabPresenter.DsdDimensionsTabProxy.class);
-         bindPresenter(DsdAttributesTabPresenter.class, DsdAttributesTabPresenter.DsdAttributesTabView.class, DsdAttributesTabViewImpl.class, DsdAttributesTabPresenter.DsdAttributesTabProxy.class);
-         bindPresenter(DsdGroupKeysTabPresenter.class, DsdGroupKeysTabPresenter.DsdGroupKeysTabView.class, DsdGroupKeysTabViewImpl.class, DsdGroupKeysTabPresenter.DsdGroupKeysTabProxy.class);
+        // TODO: DEV
+        bindPresenter(DsdListPresenter.class, DsdListPresenter.DsdListView.class, DsdListViewImpl.class, DsdListPresenter.DsdListProxy.class);
+        bindPresenter(DsdPresenter.class, DsdPresenter.DsdView.class, DsdViewImpl.class, DsdPresenter.DsdProxy.class);
+        bindPresenter(DsdGeneralTabPresenter.class, DsdGeneralTabPresenter.DsdGeneralTabView.class, DsdGeneralTabViewImpl.class, DsdGeneralTabPresenter.DsdGeneralTabProxy.class);
+        bindPresenter(DsdPrimaryMeasureTabPresenter.class, DsdPrimaryMeasureTabPresenter.DsdPrimaryMeasureTabView.class, DsdPrimaryMeasureTabViewImpl.class,
+                DsdPrimaryMeasureTabPresenter.DsdPrimaryMeasureTabProxy.class);
+        bindPresenter(DsdDimensionsTabPresenter.class, DsdDimensionsTabPresenter.DsdDimensionsTabView.class, DsdDimensionsTabViewImpl.class, DsdDimensionsTabPresenter.DsdDimensionsTabProxy.class);
+        bindPresenter(DsdAttributesTabPresenter.class, DsdAttributesTabPresenter.DsdAttributesTabView.class, DsdAttributesTabViewImpl.class, DsdAttributesTabPresenter.DsdAttributesTabProxy.class);
+        bindPresenter(DsdGroupKeysTabPresenter.class, DsdGroupKeysTabPresenter.DsdGroupKeysTabView.class, DsdGroupKeysTabViewImpl.class, DsdGroupKeysTabPresenter.DsdGroupKeysTabProxy.class);
 
         // Concept
         bindPresenter(ConceptSchemeListPresenter.class, ConceptSchemeListPresenter.ConceptSchemeListView.class, ConceptSchemeListViewImpl.class,
                 ConceptSchemeListPresenter.ConceptSchemeListProxy.class);
-        bindPresenter(ConceptSchemePresenter.class, ConceptSchemePresenter.ConceptSchemeView.class, ConceptSchemeViewImpl.class,
-                ConceptSchemePresenter.ConceptSchemeProxy.class);
+        bindPresenter(ConceptSchemePresenter.class, ConceptSchemePresenter.ConceptSchemeView.class, ConceptSchemeViewImpl.class, ConceptSchemePresenter.ConceptSchemeProxy.class);
 
     }
 }
