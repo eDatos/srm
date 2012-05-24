@@ -61,7 +61,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:spring/srm-core/oracle/applicationContext-test.xml",
+@ContextConfiguration(locations = {"classpath:spring/srm-core/oracle/applicationContext-test.xml"
 // "classpath:spring/data/oracle/applicationContext-oracle.xml",
 })
 // https://jira.springsource.org/browse/SPR-8385
