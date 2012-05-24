@@ -18,7 +18,7 @@ public class MetamacSrmWeb implements EntryPoint {
     private static MetamacSrmWebCoreMessages coreMessages;
     private static MetamacSrmWebMessages     messages;
 
-    public final MetamacSrmWebGinjector ginjector = GWT.create(MetamacSrmWebGinjector.class);
+    public final MetamacSrmWebGinjector      ginjector = GWT.create(MetamacSrmWebGinjector.class);
 
     interface GlobalResources extends ClientBundle {
 

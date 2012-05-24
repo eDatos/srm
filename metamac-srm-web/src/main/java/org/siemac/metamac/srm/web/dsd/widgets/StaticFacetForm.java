@@ -79,8 +79,7 @@ public class StaticFacetForm extends GroupDynamicForm {
     public void setFacet(FacetDto facetDto) {
         // - FacetValueType
         textTypeHidden.setValue(facetDto.getFacetValue() == null ? null : facetDto.getFacetValue().toString());
-        String value = facetDto.getFacetValue() == null ? null : MetamacSrmWeb.getCoreMessages().getString(
-                MetamacSrmWeb.getCoreMessages().facetValueTypeEnum() + facetDto.getFacetValue().getName());
+        String value = facetDto.getFacetValue() == null ? null : MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().facetValueTypeEnum() + facetDto.getFacetValue().getName());
         textType.setValue(value);
         // - FacetType
         isSequence.setValue(facetDto.getIsSequenceFT() == null ? null : (facetDto.getIsSequenceFT() ? MetamacSrmWeb.getConstants().yes() : MetamacSrmWeb.getConstants().no()));

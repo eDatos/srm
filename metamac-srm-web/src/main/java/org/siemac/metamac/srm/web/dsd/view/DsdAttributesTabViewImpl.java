@@ -604,8 +604,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         staticDimensionsForDimensionRelationshipItem.hide();
 
         if (dataAttributeDto.getRelateTo() != null && dataAttributeDto.getRelateTo().getId() != null) {
-            String typeValue = MetamacSrmWeb.getCoreMessages().getString(
-                    MetamacSrmWeb.getCoreMessages().typeRelationship() + dataAttributeDto.getRelateTo().getTypeRelathionship().toString());
+            String typeValue = MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().typeRelationship() + dataAttributeDto.getRelateTo().getTypeRelathionship().toString());
             staticRelationType.setValue(typeValue);
 
             // Group keys for group relationship
