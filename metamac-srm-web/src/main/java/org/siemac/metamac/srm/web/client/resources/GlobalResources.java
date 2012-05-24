@@ -16,21 +16,27 @@ public interface GlobalResources extends ClientBundleWithLookup {
     //
     // interface CssStyles extends MetamacSrmWebStyles { }
 
+    @ImageOptions(repeatStyle = RepeatStyle.Both)
     @Source("images/info.png")
     ImageResource info();
 
+    @ImageOptions(repeatStyle = RepeatStyle.Both)
     @Source("images/remove.png")
     ImageResource remove();
 
+    @ImageOptions(repeatStyle = RepeatStyle.Both)
     @Source("images/annotations.png")
     ImageResource annotations();
 
+    @ImageOptions(repeatStyle = RepeatStyle.Both)
     @Source("images/add_annotation.png")
     ImageResource addAnnotation();
 
+    @ImageOptions(repeatStyle = RepeatStyle.Both)
     @Source("images/import.png")
     ImageResource importDsd();
 
+    @ImageOptions(repeatStyle = RepeatStyle.Both)
     @Source("images/export.png")
     ImageResource exportDsd();
 
