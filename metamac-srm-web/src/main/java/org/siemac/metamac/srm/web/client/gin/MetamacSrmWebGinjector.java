@@ -1,7 +1,5 @@
 package org.siemac.metamac.srm.web.client.gin;
 
-import org.siemac.metamac.srm.web.client.MetamacSrmWebConstants;
-import org.siemac.metamac.srm.web.client.MetamacSrmWebMessages;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.presenter.StructuralResourcesPresenter;
 import org.siemac.metamac.srm.web.concept.presenter.ConceptSchemeListPresenter;
@@ -27,10 +25,6 @@ public interface MetamacSrmWebGinjector extends Ginjector {
 
     EventBus getEventBus();
     PlaceManager getPlaceManager();
-
-    // Constants and messages interfaces
-    public MetamacSrmWebConstants getMetamacSrmWebConstants();
-    public MetamacSrmWebMessages getMetamacSrmWebMessages();
 
     Provider<MainPagePresenter> getMainPagePresenter();
     AsyncProvider<StructuralResourcesPresenter> getStructuralResourcesPresenter();

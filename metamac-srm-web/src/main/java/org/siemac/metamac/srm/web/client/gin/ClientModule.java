@@ -1,8 +1,6 @@
 package org.siemac.metamac.srm.web.client.gin;
 
 import org.siemac.metamac.srm.web.client.MetamacPlaceManager;
-import org.siemac.metamac.srm.web.client.MetamacSrmWebConstants;
-import org.siemac.metamac.srm.web.client.MetamacSrmWebMessages;
 import org.siemac.metamac.srm.web.client.NameTokens;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.presenter.StructuralResourcesPresenter;
@@ -30,7 +28,6 @@ import org.siemac.metamac.srm.web.dsd.view.DsdPrimaryMeasureTabViewImpl;
 import org.siemac.metamac.srm.web.dsd.view.DsdViewImpl;
 import org.siemac.metamac.srm.web.shared.utils.SharedTokens;
 
-import com.google.inject.Singleton;
 import com.gwtplatform.dispatch.shared.SecurityCookie;
 import com.gwtplatform.mvp.client.gin.AbstractPresenterModule;
 import com.gwtplatform.mvp.client.gin.DefaultModule;
@@ -53,10 +50,6 @@ public class ClientModule extends AbstractPresenterModule {
 
         // Security cookie to protect against XSRF attacks
         bindConstant().annotatedWith(SecurityCookie.class).to(SharedTokens.securityCookieName);
-
-        // Constants and messages interface
-        bind(MetamacSrmWebConstants.class).in(Singleton.class);
-        bind(MetamacSrmWebMessages.class).in(Singleton.class);
 
         // PresenterWidgets
         bindSingletonPresenterWidget(ToolStripPresenterWidget.class, ToolStripPresenterWidget.ToolStripView.class, ToolStripViewImpl.class);
