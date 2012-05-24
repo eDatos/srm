@@ -1,56 +1,60 @@
-package org.siemac.metamac.srm.core.concepts.serviceapi;
+package org.siemac.metamac.srm.core.concept.serviceapi;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.siemac.metamac.srm.core.base.domain.ItemScheme;
+import org.siemac.metamac.common.test.utils.MetamacAsserts;
+import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.srm.core.concept.domain.ConceptScheme;
-import org.siemac.metamac.srm.core.concept.serviceapi.ConceptsService;
-import org.siemac.metamac.srm.core.concept.serviceapi.ConceptsServiceTestBase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-/**
- * Spring based transactional test with DbUnit support.
- */
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:oracle/core/applicationContext-oracle-test.xml"})
-public class ConceptsServiceTest extends ConceptsBaseTest implements ConceptsServiceTestBase {
-
+@ContextConfiguration(locations = {"classpath:spring/srm/applicationContext-test.xml"})
+public class ConceptsServiceTest extends ConceptsBaseTest  implements ConceptsServiceTestBase {
+    
     @Autowired
     protected ConceptsService conceptsService;
     
-
-    /**************************************************************************
-     * CONCEPT SCHEMES
-     **************************************************************************/
-    
     @Test
     public void testFindConceptSchemeById() throws Exception {
-        // TODO Auto-generated method stub
-        fail("testFindConceptSchemeById not implemented");
+        Long id = CONCEPT_SCHEME_1;
+        
+        ConceptScheme conceptScheme = conceptsService.findConceptSchemeById(getServiceContextWithoutPrincipal(), id);
+        
+        assertEquals(Long.valueOf(1), conceptScheme.getId());
+        assertEquals("conceptScheme-1", conceptScheme.getUuid());
+        assertEquals(Long.valueOf(1), conceptScheme.getVersion());
+        
+        assertEquals("user1", conceptScheme.getCreatedBy());
+        MetamacAsserts.assertEqualsDate("2011-01-01 01:02:03", conceptScheme.getCreatedDate());
+        assertEquals("user2", conceptScheme.getLastUpdatedBy());
+        MetamacAsserts.assertEqualsDate("2011-01-22 01:02:03", conceptScheme.getLastUpdated());
+        
+        assertEquals("annotableArtefact-1", conceptScheme.getItemScheme().getUuid());
+        assertEquals("conceptScheme-1", conceptScheme.getItemScheme().getIdLogic());
+        assertEquals("conceptScheme-1", conceptScheme.getItemScheme().getIdLogic());
+        assertEquals("uri:urn:22f5f72e-4275-4f4a-ae05-ca4da0131fbc", conceptScheme.getItemScheme().getUri());
+        assertEquals("http://sdmx/v2.1/conceptScheme/conceptScheme-1/v1", conceptScheme.getItemScheme().getUrn());
+        assertNull(conceptScheme.getItemScheme().getReplacedBy());
+        
+        assertEquals("http://sdmx/v2.1/agency/standAloneAgencies/ISTAC", conceptScheme.getItemScheme().getMaintainer().getUriInt());
+        assertEquals("ISTAC", conceptScheme.getItemScheme().getMaintainer().getCodeId());
+        assertEquals(TypeExternalArtefactsEnum.AGENCY, conceptScheme.getItemScheme().getMaintainer().getType());
+        
+        SrmAsserts.assertEqualsInternationalStringDto(conceptScheme.getItemScheme().getna, locale1, label1, locale2, label2)
+        
     }
 
     @Test
     public void testCreateConceptScheme() throws Exception {
-        
-        ItemScheme itemScheme = new ItemScheme();
-        itemScheme.setFinalLogic(Boolean.FALSE);
-        itemScheme.setIsPartial(Boolean.FALSE);
-        itemScheme.setIdLogic("PRUEBA-CONCEPT-SCHEME");
-        
-        ConceptScheme conceptScheme = new ConceptScheme();
-        conceptScheme.setItemScheme(itemScheme);
-
-        // Create
-        ConceptScheme conceptSchemeCreated = conceptsService.createConceptScheme(getServiceContextAdministrador(), conceptScheme);
-
-        // Validate properties are not in Dto
-        String uuid = conceptSchemeCreated.getUuid();
-        Long version = conceptSchemeCreated.getVersion();
+        // TODO Auto-generated method stub
+        fail("testCreateConceptScheme not implemented");
     }
 
     @Test
@@ -77,17 +81,6 @@ public class ConceptsServiceTest extends ConceptsBaseTest implements ConceptsSer
         fail("testFindConceptSchemeByCondition not implemented");
     }
 
-    
-    /**************************************************************************
-     * CONCEPTS
-     **************************************************************************/
-    
-    @Test
-    public void testFindConceptById() throws Exception {
-        // TODO Auto-generated method stub
-        fail("testFindConceptById not implemented");
-    }
-
     @Test
     public void testCreateConcept() throws Exception {
         // TODO Auto-generated method stub
@@ -107,15 +100,14 @@ public class ConceptsServiceTest extends ConceptsBaseTest implements ConceptsSer
     }
 
     @Test
+    public void testFindConceptById() throws Exception {
+        // TODO Auto-generated method stub
+        fail("testFindConceptById not implemented");
+    }
+
+    @Test
     public void testFindConceptSchemeConcepts() throws Exception {
         // TODO Auto-generated method stub
         fail("testFindConceptSchemeConcepts not implemented");
     }
-
-    @Test
-    public void testFindConceptByCondition() throws Exception {
-        // TODO Auto-generated method stub
-        fail("testFindConceptByCondition not implemented");
-    }
-    
 }

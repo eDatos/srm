@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx.xsd"
+	default-autowire="byName">
+
+
+	<!-- Creates a EntityManagerFactory for use with the Hibernate JPA provider -->
+	<bean id="entityManagerFactoryCore" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+				<property name="databasePlatform" value="${jpaVendorAdapter.databasePlatform}" />
+			</bean>
+		</property>
+		<property name="dataSource" ref="dataSource" />
+		<property name="persistenceXmlLocation" value="META-INF/persistence-test.xml" />
+		<property name="jpaProperties">
+			<props>
+				<!-- These properties override persistence-test.xml -->
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.hbm2ddl.auto">validate</prop>
+				<prop key="hibernate.ejb.cfgfile">hibernate.cfg.xml</prop>
+				<prop key="query.substitutions">true 1, false 0</prop>
+				<prop key="hibernate.cache.use_query_cache">true</prop>
+				<prop key="hibernate.cache.provider_class">net.sf.ehcache.hibernate.EhCacheProvider</prop>
+				<prop key="hibernate.default_schema">${datasource.username}</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="oracle.jdbc.OracleDriver" />
+		<property name="url" value="${datasource.url}" />
+		<property name="username" value="${datasource.username}" />
+		<property name="password" value="${datasource.password}" />
+	</bean>
+
+	<bean id="txManagerCore" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactoryCore" />
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+    
+	<!-- BeanPostProcessor that processes PersistenceUnit and PersistenceContext annotations, for injection of the corresponding JPA resources EntityManagerFactory and EntityManager. -->
+	<bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
+
+</beans>

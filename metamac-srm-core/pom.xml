@@ -19,6 +19,12 @@
 	</properties>
 
 	<dependencies>
+		<!-- METAMAC -->
+		<dependency>
+            <groupId>org.siemac.metamac</groupId>
+            <artifactId>metamac-sso-client</artifactId>
+            <version>${metamac-sso.version}</version>
+        </dependency>
 		<dependency>
 			<groupId>org.siemac.metamac</groupId>
 			<artifactId>metamac-common-test</artifactId>

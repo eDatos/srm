@@ -65,7 +65,7 @@ import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.stereotype.Service;
 
 /**
- * Implementation of SDMXStructureServiceFacade.
+ * Implementation of srmCoreServiceFacade.
  */
 @Service("srmCoreServiceFacade")
 public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
