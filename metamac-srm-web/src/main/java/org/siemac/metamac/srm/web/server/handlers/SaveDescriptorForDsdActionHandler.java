@@ -5,7 +5,7 @@ import java.util.logging.Logger;
 
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.domain.srm.dto.DescriptorDto;
-import org.siemac.metamac.srm.web.server.ServiceContextHelper;
+import org.siemac.metamac.srm.web.server.ServiceContextHolder;
 import org.siemac.metamac.srm.web.shared.SaveDescriptorForDsdAction;
 import org.siemac.metamac.srm.web.shared.SaveDescriptorForDsdResult;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
@@ -30,7 +30,7 @@ public class SaveDescriptorForDsdActionHandler extends AbstractActionHandler<Sav
     @Override
     public SaveDescriptorForDsdResult execute(SaveDescriptorForDsdAction action, ExecutionContext context) throws ActionException {
         try {
-            DescriptorDto descriptorDto = srmCoreServiceFacade.saveDescriptorForDsd(ServiceContextHelper.getServiceContext(), action.getIdDsd(), action.getDescriptorDto());
+            DescriptorDto descriptorDto = srmCoreServiceFacade.saveDescriptorForDsd(ServiceContextHolder.getCurrentServiceContext(), action.getIdDsd(), action.getDescriptorDto());
             return new SaveDescriptorForDsdResult(descriptorDto);
         } catch (MetamacException e) {
             logger.log(Level.SEVERE, " Error saving descriptor for DSD with id = " + action.getIdDsd() + ". " + e.getMessage());

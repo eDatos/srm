@@ -12,7 +12,7 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
 import org.siemac.metamac.domain.srm.dto.DescriptorDto;
 import org.siemac.metamac.domain.srm.enume.domain.TypeComponentList;
-import org.siemac.metamac.srm.web.server.ServiceContextHelper;
+import org.siemac.metamac.srm.web.server.ServiceContextHolder;
 import org.siemac.metamac.srm.web.shared.GetDsdAndDescriptorsAction;
 import org.siemac.metamac.srm.web.shared.GetDsdAndDescriptorsResult;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
@@ -48,7 +48,7 @@ public class GetDsdAndDescriptorsActionHandler extends AbstractActionHandler<Get
         dsd = new DataStructureDefinitionDto();
         List<ConditionalCriteria> conditions = criteriaFor(DataStructureDefinition.class).withProperty(DataStructureDefinitionProperties.id()).eq(action.getIdDsd()).build();
         try {
-            List<DataStructureDefinitionDto> dsdList = srmCoreServiceFacade.findDsdByCondition(ServiceContextHelper.getServiceContext(), conditions, PagingParameter.pageAccess(10)).getValues();
+            List<DataStructureDefinitionDto> dsdList = srmCoreServiceFacade.findDsdByCondition(ServiceContextHolder.getCurrentServiceContext(), conditions, PagingParameter.pageAccess(10)).getValues();
             if (!dsdList.isEmpty()) {
                 dsd = dsdList.get(0);
             }
@@ -61,7 +61,7 @@ public class GetDsdAndDescriptorsActionHandler extends AbstractActionHandler<Get
         primaryMeasure = new DescriptorDto();
         primaryMeasure.setTypeComponentList(TypeComponentList.MEASURE_DESCRIPTOR);
         try {
-            List<DescriptorDto> measureDescriptorDtos = srmCoreServiceFacade.findDescriptorForDsd(ServiceContextHelper.getServiceContext(), action.getIdDsd(),
+            List<DescriptorDto> measureDescriptorDtos = srmCoreServiceFacade.findDescriptorForDsd(ServiceContextHolder.getCurrentServiceContext(), action.getIdDsd(),
                     TypeComponentList.MEASURE_DESCRIPTOR);
             if (!measureDescriptorDtos.isEmpty()) {
                 primaryMeasure = measureDescriptorDtos.get(0);
@@ -75,7 +75,7 @@ public class GetDsdAndDescriptorsActionHandler extends AbstractActionHandler<Get
         dimensions = new DescriptorDto();
         dimensions.setTypeComponentList(TypeComponentList.DIMENSION_DESCRIPTOR);
         try {
-            List<DescriptorDto> dimensionDescriptorDtos = srmCoreServiceFacade.findDescriptorForDsd(ServiceContextHelper.getServiceContext(), action.getIdDsd(),
+            List<DescriptorDto> dimensionDescriptorDtos = srmCoreServiceFacade.findDescriptorForDsd(ServiceContextHolder.getCurrentServiceContext(), action.getIdDsd(),
                     TypeComponentList.DIMENSION_DESCRIPTOR);
             if (!dimensionDescriptorDtos.isEmpty()) {
                 dimensions = dimensionDescriptorDtos.get(0);
@@ -89,7 +89,7 @@ public class GetDsdAndDescriptorsActionHandler extends AbstractActionHandler<Get
         attributes = new DescriptorDto();
         attributes.setTypeComponentList(TypeComponentList.ATTRIBUTE_DESCRIPTOR);
         try {
-            List<DescriptorDto> attributeDescriptorDtos = srmCoreServiceFacade.findDescriptorForDsd(ServiceContextHelper.getServiceContext(), action.getIdDsd(),
+            List<DescriptorDto> attributeDescriptorDtos = srmCoreServiceFacade.findDescriptorForDsd(ServiceContextHolder.getCurrentServiceContext(), action.getIdDsd(),
                     TypeComponentList.ATTRIBUTE_DESCRIPTOR);
             if (!attributeDescriptorDtos.isEmpty()) {
                 attributes = attributeDescriptorDtos.get(0);
@@ -101,7 +101,7 @@ public class GetDsdAndDescriptorsActionHandler extends AbstractActionHandler<Get
 
         // Group keys
         try {
-            groupKeys = srmCoreServiceFacade.findDescriptorForDsd(ServiceContextHelper.getServiceContext(), action.getIdDsd(), TypeComponentList.GROUP_DIMENSION_DESCRIPTOR);
+            groupKeys = srmCoreServiceFacade.findDescriptorForDsd(ServiceContextHolder.getCurrentServiceContext(), action.getIdDsd(), TypeComponentList.GROUP_DIMENSION_DESCRIPTOR);
         } catch (MetamacException e) {
             logger.log(Level.SEVERE,
                     "Error in findDescriptorForDsd with idDsd =  " + action.getIdDsd() + " and typeComponentList = " + TypeComponentList.GROUP_DIMENSION_DESCRIPTOR + ". " + e.getMessage());

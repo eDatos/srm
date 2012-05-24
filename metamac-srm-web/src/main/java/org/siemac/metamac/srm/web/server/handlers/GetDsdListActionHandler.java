@@ -11,7 +11,7 @@ import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
-import org.siemac.metamac.srm.web.server.ServiceContextHelper;
+import org.siemac.metamac.srm.web.server.ServiceContextHolder;
 import org.siemac.metamac.srm.web.shared.GetDsdListAction;
 import org.siemac.metamac.srm.web.shared.GetDsdListResult;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
@@ -39,7 +39,7 @@ public class GetDsdListActionHandler extends AbstractActionHandler<GetDsdListAct
     public GetDsdListResult execute(GetDsdListAction action, ExecutionContext context) throws ActionException {
         List<ConditionalCriteria> conditions = criteriaFor(DataStructureDefinition.class).orderBy(DataStructureDefinitionProperties.lastUpdated()).descending().build();
         try {
-            List<DataStructureDefinitionDto> dsdList = srmCoreServiceFacade.findDsdByCondition(ServiceContextHelper.getServiceContext(), conditions, PagingParameter.pageAccess(10)).getValues();
+            List<DataStructureDefinitionDto> dsdList = srmCoreServiceFacade.findDsdByCondition(ServiceContextHolder.getCurrentServiceContext(), conditions, PagingParameter.pageAccess(10)).getValues();
             logger.log(Level.INFO, "ACTION SUCCESSFULLY: getStatisticalOperationLastModifiedDsdList");
             return new GetDsdListResult((ArrayList<DataStructureDefinitionDto>) dsdList);
         } catch (MetamacException e) {

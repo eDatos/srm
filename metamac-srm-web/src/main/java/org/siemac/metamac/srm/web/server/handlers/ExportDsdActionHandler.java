@@ -4,7 +4,7 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionExtendDto;
 import org.siemac.metamac.domain.srm.enume.domain.TypeDozerCopyMode;
 import org.siemac.metamac.domain.trans.dto.StructureMsgDto;
-import org.siemac.metamac.srm.web.server.ServiceContextHelper;
+import org.siemac.metamac.srm.web.server.ServiceContextHolder;
 import org.siemac.metamac.srm.web.shared.ExportDsdAction;
 import org.siemac.metamac.srm.web.shared.ExportDsdResult;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
@@ -29,10 +29,10 @@ public class ExportDsdActionHandler extends AbstractActionHandler<ExportDsdActio
         StructureMsgDto structureMsgDto = new StructureMsgDto();
 
         try {
-            DataStructureDefinitionExtendDto dataStructureDefinitionExtendDto = srmCoreServiceFacade.retrieveExtendedDsd(ServiceContextHelper.getServiceContext(), action.getDsd().getId(),
+            DataStructureDefinitionExtendDto dataStructureDefinitionExtendDto = srmCoreServiceFacade.retrieveExtendedDsd(ServiceContextHolder.getCurrentServiceContext(), action.getDsd().getId(),
                     TypeDozerCopyMode.UPDATE);
             structureMsgDto.getDataStructureDefinitionDtos().add(dataStructureDefinitionExtendDto);
-            String fileName = srmCoreServiceFacade.exportSDMXStructureMsg(ServiceContextHelper.getServiceContext(), structureMsgDto);
+            String fileName = srmCoreServiceFacade.exportSDMXStructureMsg(ServiceContextHolder.getCurrentServiceContext(), structureMsgDto);
             return new ExportDsdResult(fileName);
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);

@@ -5,7 +5,7 @@ import java.util.logging.Logger;
 
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.domain.srm.dto.ComponentDto;
-import org.siemac.metamac.srm.web.server.ServiceContextHelper;
+import org.siemac.metamac.srm.web.server.ServiceContextHolder;
 import org.siemac.metamac.srm.web.shared.SaveComponentForDsdAction;
 import org.siemac.metamac.srm.web.shared.SaveComponentForDsdResult;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
@@ -30,7 +30,7 @@ public class SaveComponentForDsdActionHandler extends AbstractActionHandler<Save
     @Override
     public SaveComponentForDsdResult execute(SaveComponentForDsdAction action, ExecutionContext context) throws ActionException {
         try {
-            ComponentDto componentDto = srmCoreServiceFacade.saveComponentForDsd(ServiceContextHelper.getServiceContext(), action.getIdDsd(), action.getComponentDto(),
+            ComponentDto componentDto = srmCoreServiceFacade.saveComponentForDsd(ServiceContextHolder.getCurrentServiceContext(), action.getIdDsd(), action.getComponentDto(),
                     action.getTypeComponentList());
             return new SaveComponentForDsdResult(componentDto);
         } catch (MetamacException e) {

@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.domain.srm.dto.DimensionComponentDto;
-import org.siemac.metamac.srm.web.server.ServiceContextHelper;
+import org.siemac.metamac.srm.web.server.ServiceContextHolder;
 import org.siemac.metamac.srm.web.shared.DeleteDimensionListForDsdAction;
 import org.siemac.metamac.srm.web.shared.DeleteDimensionListForDsdResult;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
@@ -33,7 +33,7 @@ public class DeleteDimensionListForDsdActionHandler extends AbstractActionHandle
         List<DimensionComponentDto> dimensionComponentDtos = action.getDimensionComponentDtos();
         for (DimensionComponentDto d : dimensionComponentDtos) {
             try {
-                srmCoreServiceFacade.deleteComponentForDsd(ServiceContextHelper.getServiceContext(), action.getIdDsd(), d, action.getTypeComponentList());
+                srmCoreServiceFacade.deleteComponentForDsd(ServiceContextHolder.getCurrentServiceContext(), action.getIdDsd(), d, action.getTypeComponentList());
             } catch (MetamacException e) {
                 logger.log(Level.SEVERE, " Error deleting dimension " + action.getTypeComponentList() + " for DSD with id = " + action.getIdDsd() + ". " + e.getMessage());
                 throw WebExceptionUtils.createMetamacWebException(e);

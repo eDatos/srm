@@ -3,7 +3,7 @@ package org.siemac.metamac.srm.web.server.handlers;
 import java.util.List;
 
 import org.siemac.metamac.core.common.dto.ExternalItemBtDto;
-import org.siemac.metamac.srm.web.server.ServiceContextHelper;
+import org.siemac.metamac.srm.web.server.ServiceContextHolder;
 import org.siemac.metamac.srm.web.shared.FindConceptsAction;
 import org.siemac.metamac.srm.web.shared.FindConceptsResult;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
@@ -24,7 +24,7 @@ public class FindConceptsActionHandler extends AbstractActionHandler<FindConcept
 
     @Override
     public FindConceptsResult execute(FindConceptsAction action, ExecutionContext context) throws ActionException {
-        List<ExternalItemBtDto> concepts = srmCoreServiceFacade.findConcepts(ServiceContextHelper.getServiceContext(), action.getUriConceptScheme());
+        List<ExternalItemBtDto> concepts = srmCoreServiceFacade.findConcepts(ServiceContextHolder.getCurrentServiceContext(), action.getUriConceptScheme());
         return new FindConceptsResult(concepts);
     }
 

@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.siemac.metamac.core.common.dto.ExternalItemBtDto;
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.srm.web.server.ServiceContextHelper;
+import org.siemac.metamac.srm.web.server.ServiceContextHolder;
 import org.siemac.metamac.srm.web.shared.FindCodeListsAction;
 import org.siemac.metamac.srm.web.shared.FindCodeListsResult;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
@@ -27,7 +27,7 @@ public class FindCodeListsActionHandler extends AbstractActionHandler<FindCodeLi
     @Override
     public FindCodeListsResult execute(FindCodeListsAction action, ExecutionContext context) throws ActionException {
         try {
-            List<ExternalItemBtDto> codeLists = srmCoreServiceFacade.findCodelists(ServiceContextHelper.getServiceContext(), action.getUriConcept());
+            List<ExternalItemBtDto> codeLists = srmCoreServiceFacade.findCodelists(ServiceContextHolder.getCurrentServiceContext(), action.getUriConcept());
             return new FindCodeListsResult(codeLists);
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);

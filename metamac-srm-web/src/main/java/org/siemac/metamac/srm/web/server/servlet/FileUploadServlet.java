@@ -19,7 +19,7 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.siemac.metamac.core.common.util.ApplicationContextProvider;
 import org.siemac.metamac.domain.util.dto.ContentInputDto;
-import org.siemac.metamac.srm.web.server.ServiceContextHelper;
+import org.siemac.metamac.srm.web.server.ServiceContextHolder;
 import org.siemac.metamac.srm.web.shared.utils.SharedTokens;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 
@@ -96,7 +96,7 @@ public class FileUploadServlet extends HttpServlet {
                 contentInputDto.setName(item.getName());
                 contentInputDto.setInput(item.getInputStream());
 
-                sdmxStructureServiceFacade.importSDMXStructureMsg(ServiceContextHelper.getServiceContext(), contentInputDto);
+                sdmxStructureServiceFacade.importSDMXStructureMsg(ServiceContextHolder.getCurrentServiceContext(), contentInputDto);
             }
 
             response.setContentType("text/html");

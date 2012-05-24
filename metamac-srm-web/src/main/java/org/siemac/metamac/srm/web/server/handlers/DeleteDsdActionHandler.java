@@ -4,7 +4,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.srm.web.server.ServiceContextHelper;
+import org.siemac.metamac.srm.web.server.ServiceContextHolder;
 import org.siemac.metamac.srm.web.shared.DeleteDsdAction;
 import org.siemac.metamac.srm.web.shared.DeleteDsdResult;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
@@ -29,7 +29,7 @@ public class DeleteDsdActionHandler extends AbstractActionHandler<DeleteDsdActio
     @Override
     public DeleteDsdResult execute(DeleteDsdAction action, ExecutionContext context) throws ActionException {
         try {
-            srmCoreServiceFacade.deleteDsd(ServiceContextHelper.getServiceContext(), action.getDataStructureDefinitionDto());
+            srmCoreServiceFacade.deleteDsd(ServiceContextHolder.getCurrentServiceContext(), action.getDataStructureDefinitionDto());
         } catch (MetamacException e) {
             logger.log(Level.SEVERE, " Error deleting dsd. " + e.getMessage());
             throw WebExceptionUtils.createMetamacWebException(e);

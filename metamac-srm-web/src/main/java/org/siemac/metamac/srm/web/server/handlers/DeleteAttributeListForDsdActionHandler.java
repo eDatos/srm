@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.domain.srm.dto.DataAttributeDto;
-import org.siemac.metamac.srm.web.server.ServiceContextHelper;
+import org.siemac.metamac.srm.web.server.ServiceContextHolder;
 import org.siemac.metamac.srm.web.shared.DeleteAttributeListForDsdAction;
 import org.siemac.metamac.srm.web.shared.DeleteAttributeListForDsdResult;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
@@ -33,7 +33,7 @@ public class DeleteAttributeListForDsdActionHandler extends AbstractActionHandle
         List<DataAttributeDto> dataAttributeDtos = action.getDataAttributeDtos();
         for (DataAttributeDto a : dataAttributeDtos) {
             try {
-                srmCoreServiceFacade.deleteComponentForDsd(ServiceContextHelper.getServiceContext(), action.getIdDsd(), a, action.getTypeComponentList());
+                srmCoreServiceFacade.deleteComponentForDsd(ServiceContextHolder.getCurrentServiceContext(), action.getIdDsd(), a, action.getTypeComponentList());
             } catch (MetamacException e) {
                 logger.log(Level.SEVERE, " Error deleting attribute " + action.getTypeComponentList() + " for DSD with id = " + action.getIdDsd() + ". " + e.getMessage());
                 throw WebExceptionUtils.createMetamacWebException(e);

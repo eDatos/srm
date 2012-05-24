@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
-import org.siemac.metamac.srm.web.server.ServiceContextHelper;
+import org.siemac.metamac.srm.web.server.ServiceContextHolder;
 import org.siemac.metamac.srm.web.shared.DeleteDsdListAction;
 import org.siemac.metamac.srm.web.shared.DeleteDsdListResult;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
@@ -33,7 +33,7 @@ public class DeleteDsdListActionHandler extends AbstractActionHandler<DeleteDsdL
         List<DataStructureDefinitionDto> dataStructureDefinitionDtos = action.getDataStructureDefinitionDtos();
         for (DataStructureDefinitionDto dsd : dataStructureDefinitionDtos) {
             try {
-                srmCoreServiceFacade.deleteDsd(ServiceContextHelper.getServiceContext(), dsd);
+                srmCoreServiceFacade.deleteDsd(ServiceContextHolder.getCurrentServiceContext(), dsd);
             } catch (MetamacException e) {
                 logger.log(Level.SEVERE, " Error deleting dsd. " + e.getMessage());
                 throw WebExceptionUtils.createMetamacWebException(e);

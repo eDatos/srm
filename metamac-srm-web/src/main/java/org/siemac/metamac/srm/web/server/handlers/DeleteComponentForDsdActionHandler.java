@@ -4,7 +4,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.srm.web.server.ServiceContextHelper;
+import org.siemac.metamac.srm.web.server.ServiceContextHolder;
 import org.siemac.metamac.srm.web.shared.DeleteComponentForDsdAction;
 import org.siemac.metamac.srm.web.shared.DeleteComponentForDsdResult;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
@@ -29,7 +29,7 @@ public class DeleteComponentForDsdActionHandler extends AbstractActionHandler<De
     @Override
     public DeleteComponentForDsdResult execute(DeleteComponentForDsdAction action, ExecutionContext context) throws ActionException {
         try {
-            srmCoreServiceFacade.deleteComponentForDsd(ServiceContextHelper.getServiceContext(), action.getIdDsd(), action.getComponentDto(), action.getTypeComponentList());
+            srmCoreServiceFacade.deleteComponentForDsd(ServiceContextHolder.getCurrentServiceContext(), action.getIdDsd(), action.getComponentDto(), action.getTypeComponentList());
             return new DeleteComponentForDsdResult();
         } catch (MetamacException e) {
             logger.log(Level.SEVERE, " Error deleting component " + action.getTypeComponentList() + " for DSD with id = " + action.getIdDsd() + ". " + e.getMessage());

@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.domain.srm.dto.DescriptorDto;
-import org.siemac.metamac.srm.web.server.ServiceContextHelper;
+import org.siemac.metamac.srm.web.server.ServiceContextHolder;
 import org.siemac.metamac.srm.web.shared.FindDescriptorForDsdAction;
 import org.siemac.metamac.srm.web.shared.FindDescriptorForDsdResult;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
@@ -31,7 +31,7 @@ public class FindDescriptorForDsdActionHandler extends AbstractActionHandler<Fin
     @Override
     public FindDescriptorForDsdResult execute(FindDescriptorForDsdAction action, ExecutionContext context) throws ActionException {
         try {
-            List<DescriptorDto> descriptorDtos = srmCoreServiceFacade.findDescriptorForDsd(ServiceContextHelper.getServiceContext(), action.getIdDsd(), action.getTypeComponentList());
+            List<DescriptorDto> descriptorDtos = srmCoreServiceFacade.findDescriptorForDsd(ServiceContextHolder.getCurrentServiceContext(), action.getIdDsd(), action.getTypeComponentList());
             logger.log(Level.INFO, "ACTION SUCCESSFULLY: findDescriptorForDsd");
             return new FindDescriptorForDsdResult(descriptorDtos);
         } catch (MetamacException e) {

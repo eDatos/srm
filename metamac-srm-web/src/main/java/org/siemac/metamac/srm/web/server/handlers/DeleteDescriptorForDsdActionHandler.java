@@ -4,7 +4,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.srm.web.server.ServiceContextHelper;
+import org.siemac.metamac.srm.web.server.ServiceContextHolder;
 import org.siemac.metamac.srm.web.shared.DeleteDescriptorForDsdAction;
 import org.siemac.metamac.srm.web.shared.DeleteDescriptorForDsdResult;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
@@ -29,7 +29,7 @@ public class DeleteDescriptorForDsdActionHandler extends AbstractActionHandler<D
     @Override
     public DeleteDescriptorForDsdResult execute(DeleteDescriptorForDsdAction action, ExecutionContext context) throws ActionException {
         try {
-            srmCoreServiceFacade.deleteDescriptorForDsd(ServiceContextHelper.getServiceContext(), action.getIdDsd(), action.getDescriptorDto());
+            srmCoreServiceFacade.deleteDescriptorForDsd(ServiceContextHolder.getCurrentServiceContext(), action.getIdDsd(), action.getDescriptorDto());
             return new DeleteDescriptorForDsdResult();
         } catch (MetamacException e) {
             logger.log(Level.SEVERE, " Error deleting descriptor for DSD with id = " + action.getIdDsd() + ". " + e.getMessage());

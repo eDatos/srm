@@ -5,7 +5,7 @@ import java.util.logging.Logger;
 
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
-import org.siemac.metamac.srm.web.server.ServiceContextHelper;
+import org.siemac.metamac.srm.web.server.ServiceContextHolder;
 import org.siemac.metamac.srm.web.shared.SaveDsdAction;
 import org.siemac.metamac.srm.web.shared.SaveDsdResult;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
@@ -30,7 +30,7 @@ public class SaveDsdActionHandler extends AbstractActionHandler<SaveDsdAction, S
     @Override
     public SaveDsdResult execute(SaveDsdAction action, ExecutionContext context) throws ActionException {
         try {
-            DataStructureDefinitionDto dsd = srmCoreServiceFacade.saveDsd(ServiceContextHelper.getServiceContext(), action.getDsd());
+            DataStructureDefinitionDto dsd = srmCoreServiceFacade.saveDsd(ServiceContextHolder.getCurrentServiceContext(), action.getDsd());
             return new SaveDsdResult(dsd);
         } catch (MetamacException e) {
             logger.log(Level.SEVERE, "Error saving DSD with id = " + action.getDsd().getId() + ". " + e.getMessage());
