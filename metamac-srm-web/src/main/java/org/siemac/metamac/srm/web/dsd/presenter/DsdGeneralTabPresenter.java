@@ -17,9 +17,9 @@ import org.siemac.metamac.srm.web.shared.SaveDsdAction;
 import org.siemac.metamac.srm.web.shared.SaveDsdResult;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
+import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
 import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.HasUiHandlers;
@@ -137,14 +137,14 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
 
     @Override
     public void saveDsd(DataStructureDefinitionDto dataStructureDefinitionDto) {
-        dispatcher.execute(new SaveDsdAction(dataStructureDefinitionDto), new AsyncCallback<SaveDsdResult>() {
+        dispatcher.execute(new SaveDsdAction(dataStructureDefinitionDto), new WaitingAsyncCallback<SaveDsdResult>() {
 
             @Override
-            public void onFailure(Throwable caught) {
+            public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(DsdGeneralTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorSave()), MessageTypeEnum.ERROR);
             }
             @Override
-            public void onSuccess(SaveDsdResult result) {
+            public void onWaitSuccess(SaveDsdResult result) {
                 ShowMessageEvent.fire(DsdGeneralTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdSaved()), MessageTypeEnum.SUCCESS);
                 dsd = result.getDsdSaved();
                 getView().onDsdSaved(dsd);
@@ -155,14 +155,14 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
 
     @Override
     public void retrieveDsd(Long id) {
-        dispatcher.execute(new GetDsdAndDescriptorsAction(id), new AsyncCallback<GetDsdAndDescriptorsResult>() {
+        dispatcher.execute(new GetDsdAndDescriptorsAction(id), new WaitingAsyncCallback<GetDsdAndDescriptorsResult>() {
 
             @Override
-            public void onFailure(Throwable caught) {
+            public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(DsdGeneralTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
             }
             @Override
-            public void onSuccess(GetDsdAndDescriptorsResult result) {
+            public void onWaitSuccess(GetDsdAndDescriptorsResult result) {
                 dsd = result.getDsd();
                 SelectDsdAndDescriptorsEvent.fire(DsdGeneralTabPresenter.this, dsd, result.getPrimaryMeasure(), result.getDimensions(), result.getAttributes(), result.getGroupKeys());
             }

@@ -19,10 +19,10 @@ import org.siemac.metamac.srm.web.shared.FindConceptSchemesResult;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.events.UpdateConceptSchemesEvent;
+import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.HasUiHandlers;
@@ -227,14 +227,14 @@ public class DsdPresenter extends Presenter<DsdPresenter.DsdView, DsdPresenter.D
     }
 
     private void populateConceptSchemes() {
-        dispatcher.execute(new FindConceptSchemesAction(), new AsyncCallback<FindConceptSchemesResult>() {
+        dispatcher.execute(new FindConceptSchemesAction(), new WaitingAsyncCallback<FindConceptSchemesResult>() {
 
             @Override
-            public void onFailure(Throwable caught) {
+            public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(DsdPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().schemeConceptsErrorRetrievingData()), MessageTypeEnum.ERROR);
             }
             @Override
-            public void onSuccess(FindConceptSchemesResult result) {
+            public void onWaitSuccess(FindConceptSchemesResult result) {
                 UpdateConceptSchemesEvent.fire(DsdPresenter.this, result.getConceptSchemes());
             }
         });

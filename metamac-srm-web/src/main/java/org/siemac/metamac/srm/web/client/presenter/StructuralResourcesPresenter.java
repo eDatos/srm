@@ -11,11 +11,11 @@ import org.siemac.metamac.srm.web.client.view.handlers.StructuralResourcesUiHand
 import org.siemac.metamac.srm.web.client.widgets.presenter.ToolStripPresenterWidget;
 import org.siemac.metamac.srm.web.shared.GetDsdListAction;
 import org.siemac.metamac.srm.web.shared.GetDsdListResult;
+import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.HasUiHandlers;
@@ -130,14 +130,14 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
      * AsyncCallback to fetch DSDs
      */
     protected void retrieveDsds() {
-        dispatcher.execute(new GetDsdListAction(), new AsyncCallback<GetDsdListResult>() {
+        dispatcher.execute(new GetDsdListAction(), new WaitingAsyncCallback<GetDsdListResult>() {
 
             @Override
-            public void onFailure(Throwable caught) {
+            public void onWaitFailure(Throwable caught) {
                 Window.alert("Error fetching DSDs" + caught.toString());
             }
             @Override
-            public void onSuccess(GetDsdListResult result) {
+            public void onWaitSuccess(GetDsdListResult result) {
                 dsdList = result.getDsdDtos();
                 getView().setResultSetDsd(dsdList);
             }

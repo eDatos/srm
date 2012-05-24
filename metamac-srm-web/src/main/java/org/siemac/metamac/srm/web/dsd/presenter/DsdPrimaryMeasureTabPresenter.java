@@ -32,9 +32,9 @@ import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.events.UpdateConceptSchemesEvent;
 import org.siemac.metamac.web.common.client.events.UpdateConceptSchemesEvent.UpdateConceptSchemesHandler;
+import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
 import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.HasUiHandlers;
@@ -209,14 +209,14 @@ public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTa
 
     @Override
     public void savePrimaryMeasure(ComponentDto component) {
-        dispatcher.execute(new SaveComponentForDsdAction(idDsd, component, TypeComponentList.MEASURE_DESCRIPTOR), new AsyncCallback<SaveComponentForDsdResult>() {
+        dispatcher.execute(new SaveComponentForDsdAction(idDsd, component, TypeComponentList.MEASURE_DESCRIPTOR), new WaitingAsyncCallback<SaveComponentForDsdResult>() {
 
             @Override
-            public void onFailure(Throwable caught) {
+            public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(DsdPrimaryMeasureTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdPrimaryMeasureErrorSave()), MessageTypeEnum.ERROR);
             }
             @Override
-            public void onSuccess(SaveComponentForDsdResult result) {
+            public void onWaitSuccess(SaveComponentForDsdResult result) {
                 ShowMessageEvent.fire(DsdPrimaryMeasureTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdPrimaryMeasureSaved()), MessageTypeEnum.SUCCESS);
                 primaryMeasure = result.getComponentDtoSaved();
                 getView().onPrimaryMeasureSaved(primaryMeasure);
@@ -230,14 +230,14 @@ public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTa
     }
 
     private void updateDsd() {
-        dispatcher.execute(new GetDsdAction(idDsd), new AsyncCallback<GetDsdResult>() {
+        dispatcher.execute(new GetDsdAction(idDsd), new WaitingAsyncCallback<GetDsdResult>() {
 
             @Override
-            public void onFailure(Throwable caught) {
+            public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(DsdPrimaryMeasureTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
             }
             @Override
-            public void onSuccess(GetDsdResult result) {
+            public void onWaitSuccess(GetDsdResult result) {
                 UpdateDsdEvent.fire(DsdPrimaryMeasureTabPresenter.this, result.getDsd());
             }
         });
@@ -245,14 +245,14 @@ public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTa
 
     @Override
     public void retrieveDsd(Long id) {
-        dispatcher.execute(new GetDsdAndDescriptorsAction(id), new AsyncCallback<GetDsdAndDescriptorsResult>() {
+        dispatcher.execute(new GetDsdAndDescriptorsAction(id), new WaitingAsyncCallback<GetDsdAndDescriptorsResult>() {
 
             @Override
-            public void onFailure(Throwable caught) {
+            public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(DsdPrimaryMeasureTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
             }
             @Override
-            public void onSuccess(GetDsdAndDescriptorsResult result) {
+            public void onWaitSuccess(GetDsdAndDescriptorsResult result) {
                 SelectDsdAndDescriptorsEvent.fire(DsdPrimaryMeasureTabPresenter.this, result.getDsd(), result.getPrimaryMeasure(), result.getDimensions(), result.getAttributes(),
                         result.getGroupKeys());
             }
@@ -260,28 +260,28 @@ public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTa
     }
 
     private void populateConcepts(String uriConceptScheme) {
-        dispatcher.execute(new FindConceptsAction(uriConceptScheme), new AsyncCallback<FindConceptsResult>() {
+        dispatcher.execute(new FindConceptsAction(uriConceptScheme), new WaitingAsyncCallback<FindConceptsResult>() {
 
             @Override
-            public void onFailure(Throwable caught) {
+            public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(DsdPrimaryMeasureTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().conceptErrorRetrievingData()), MessageTypeEnum.ERROR);
             }
             @Override
-            public void onSuccess(FindConceptsResult result) {
+            public void onWaitSuccess(FindConceptsResult result) {
                 getView().setConcepts(result.getConcepts());
             }
         });
     }
 
     private void populateCodeLists(String uriConcept) {
-        dispatcher.execute(new FindCodeListsAction(uriConcept), new AsyncCallback<FindCodeListsResult>() {
+        dispatcher.execute(new FindCodeListsAction(uriConcept), new WaitingAsyncCallback<FindCodeListsResult>() {
 
             @Override
-            public void onFailure(Throwable caught) {
+            public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(DsdPrimaryMeasureTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().codeListsErrorRetrievingData()), MessageTypeEnum.ERROR);
             }
             @Override
-            public void onSuccess(FindCodeListsResult result) {
+            public void onWaitSuccess(FindCodeListsResult result) {
                 getView().setCodeLists(result.getCodeLists());
             }
         });

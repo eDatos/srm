@@ -39,9 +39,9 @@ import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.events.UpdateConceptSchemesEvent;
 import org.siemac.metamac.web.common.client.events.UpdateConceptSchemesEvent.UpdateConceptSchemesHandler;
+import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
 import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.HasUiHandlers;
@@ -260,15 +260,15 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
         // }
         // }
 
-        dispatcher.execute(new SaveComponentForDsdAction(idDsd, dimensionToSave, TypeComponentList.DIMENSION_DESCRIPTOR), new AsyncCallback<SaveComponentForDsdResult>() {
+        dispatcher.execute(new SaveComponentForDsdAction(idDsd, dimensionToSave, TypeComponentList.DIMENSION_DESCRIPTOR), new WaitingAsyncCallback<SaveComponentForDsdResult>() {
 
             @Override
-            public void onFailure(Throwable caught) {
+            public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdDimensionErrorSave()), MessageTypeEnum.ERROR);
             }
 
             @Override
-            public void onSuccess(SaveComponentForDsdResult result) {
+            public void onWaitSuccess(SaveComponentForDsdResult result) {
                 ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdDimensionSaved()), MessageTypeEnum.SUCCESS);
                 updateDimensionList(false); // Do no update the view!! The method onDimensionSaved updates the dimension list in the view
                 getView().onDimensionSaved((DimensionComponentDto) result.getComponentDtoSaved());
@@ -283,15 +283,15 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
 
     @Override
     public void deleteDimensions(List<DimensionComponentDto> dimensionsToDelete) {
-        dispatcher.execute(new DeleteDimensionListForDsdAction(idDsd, dimensionsToDelete, TypeComponentList.DIMENSION_DESCRIPTOR), new AsyncCallback<DeleteDimensionListForDsdResult>() {
+        dispatcher.execute(new DeleteDimensionListForDsdAction(idDsd, dimensionsToDelete, TypeComponentList.DIMENSION_DESCRIPTOR), new WaitingAsyncCallback<DeleteDimensionListForDsdResult>() {
 
             @Override
-            public void onFailure(Throwable caught) {
+            public void onWaitFailure(Throwable caught) {
                 updateDimensionList(true);
                 ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdDimensionErrorDeleteDetails()), MessageTypeEnum.ERROR);
             }
             @Override
-            public void onSuccess(DeleteDimensionListForDsdResult result) {
+            public void onWaitSuccess(DeleteDimensionListForDsdResult result) {
                 updateDimensionList(true);
                 ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdDimensionDeleted()), MessageTypeEnum.SUCCESS);
             }
@@ -300,14 +300,14 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
 
     @Override
     public void retrieveDsd(Long id) {
-        dispatcher.execute(new GetDsdAndDescriptorsAction(id), new AsyncCallback<GetDsdAndDescriptorsResult>() {
+        dispatcher.execute(new GetDsdAndDescriptorsAction(id), new WaitingAsyncCallback<GetDsdAndDescriptorsResult>() {
 
             @Override
-            public void onFailure(Throwable caught) {
+            public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
             }
             @Override
-            public void onSuccess(GetDsdAndDescriptorsResult result) {
+            public void onWaitSuccess(GetDsdAndDescriptorsResult result) {
                 SelectDsdAndDescriptorsEvent.fire(DsdDimensionsTabPresenter.this, result.getDsd(), result.getPrimaryMeasure(), result.getDimensions(), result.getAttributes(), result.getGroupKeys());
             }
         });
@@ -315,14 +315,14 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
 
     private void updateDimensionList(final boolean updateView) {
         dimensionComponentDtos = new ArrayList<DimensionComponentDto>();
-        dispatcher.execute(new FindDescriptorForDsdAction(idDsd, TypeComponentList.DIMENSION_DESCRIPTOR), new AsyncCallback<FindDescriptorForDsdResult>() {
+        dispatcher.execute(new FindDescriptorForDsdAction(idDsd, TypeComponentList.DIMENSION_DESCRIPTOR), new WaitingAsyncCallback<FindDescriptorForDsdResult>() {
 
             @Override
-            public void onFailure(Throwable caught) {
+            public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
             }
             @Override
-            public void onSuccess(FindDescriptorForDsdResult result) {
+            public void onWaitSuccess(FindDescriptorForDsdResult result) {
                 List<DescriptorDto> descriptorDtos = result.getDescriptorDtos();
                 if (!descriptorDtos.isEmpty()) {
                     DescriptorDto descriptorDto = descriptorDtos.get(0);
@@ -354,56 +354,56 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
     // }
 
     private void updateDsd() {
-        dispatcher.execute(new GetDsdAction(idDsd), new AsyncCallback<GetDsdResult>() {
+        dispatcher.execute(new GetDsdAction(idDsd), new WaitingAsyncCallback<GetDsdResult>() {
 
             @Override
-            public void onFailure(Throwable caught) {
+            public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
             }
             @Override
-            public void onSuccess(GetDsdResult result) {
+            public void onWaitSuccess(GetDsdResult result) {
                 UpdateDsdEvent.fire(DsdDimensionsTabPresenter.this, result.getDsd());
             }
         });
     }
 
     private void populateConcepts(String uriConceptScheme) {
-        dispatcher.execute(new FindConceptsAction(uriConceptScheme), new AsyncCallback<FindConceptsResult>() {
+        dispatcher.execute(new FindConceptsAction(uriConceptScheme), new WaitingAsyncCallback<FindConceptsResult>() {
 
             @Override
-            public void onFailure(Throwable caught) {
+            public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().conceptErrorRetrievingData()), MessageTypeEnum.ERROR);
             }
             @Override
-            public void onSuccess(FindConceptsResult result) {
+            public void onWaitSuccess(FindConceptsResult result) {
                 getView().setConcepts(result.getConcepts());
             }
         });
     }
 
     private void populateRoleConcepts(String uriConceptScheme) {
-        dispatcher.execute(new FindConceptsAction(uriConceptScheme), new AsyncCallback<FindConceptsResult>() {
+        dispatcher.execute(new FindConceptsAction(uriConceptScheme), new WaitingAsyncCallback<FindConceptsResult>() {
 
             @Override
-            public void onFailure(Throwable caught) {
+            public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().conceptErrorRetrievingData()), MessageTypeEnum.ERROR);
             }
             @Override
-            public void onSuccess(FindConceptsResult result) {
+            public void onWaitSuccess(FindConceptsResult result) {
                 getView().setRoleConcepts(result.getConcepts());
             }
         });
     }
 
     private void populateCodeLists(String uriConcept) {
-        dispatcher.execute(new FindCodeListsAction(uriConcept), new AsyncCallback<FindCodeListsResult>() {
+        dispatcher.execute(new FindCodeListsAction(uriConcept), new WaitingAsyncCallback<FindCodeListsResult>() {
 
             @Override
-            public void onFailure(Throwable caught) {
+            public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().codeListsErrorRetrievingData()), MessageTypeEnum.ERROR);
             }
             @Override
-            public void onSuccess(FindCodeListsResult result) {
+            public void onWaitSuccess(FindCodeListsResult result) {
                 getView().setCodeLists(result.getCodeLists());
             }
         });
