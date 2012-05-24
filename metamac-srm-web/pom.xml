@@ -191,9 +191,9 @@
                     <execution>
                         <configuration>
                             <servicePattern>**/client/service/**/*Service.java</servicePattern>
-                            <i18nConstantsBundle>org.siemac.metamac.srm.web.client.MetamacSrmWebConstants</i18nConstantsBundle>
-                            <i18nConstantsWithLookupBundle>org.siemac.metamac.srm.web.client.MetamacSrmWebCoreMessages</i18nConstantsWithLookupBundle>
-                            <i18nMessagesBundle>org.siemac.metamac.srm.web.client.MetamacSrmWebMessages</i18nMessagesBundle>
+                            <i18nConstantsBundle>org.siemac.metamac.srm.web.client.SrmWebConstants</i18nConstantsBundle>
+                            <i18nConstantsWithLookupBundle>org.siemac.metamac.srm.web.client.SrmWebCoreMessages</i18nConstantsWithLookupBundle>
+                            <i18nMessagesBundle>org.siemac.metamac.srm.web.client.SrmWebMessages</i18nMessagesBundle>
                         </configuration>
                         <goals>
                             <goal>resources</goal>
