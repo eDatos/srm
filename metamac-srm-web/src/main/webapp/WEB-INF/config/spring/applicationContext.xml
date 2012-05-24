@@ -58,7 +58,7 @@
 	</bean>
   
 	<!-- Metamac Business Spring Configuration -->
-	<import resource="classpath:/spring/core/oracle/applicationContext.xml" />
+	<import resource="classpath:/spring/srm-core/oracle/applicationContext.xml" />
 	
 </beans>
 
