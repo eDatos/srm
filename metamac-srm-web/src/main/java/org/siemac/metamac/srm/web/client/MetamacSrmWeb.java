@@ -14,9 +14,9 @@ import com.gwtplatform.mvp.client.DelayedBindRegistry;
  */
 public class MetamacSrmWeb implements EntryPoint {
 
-    private static MetamacSrmWebConstants    constants;
-    private static MetamacSrmWebCoreMessages coreMessages;
-    private static MetamacSrmWebMessages     messages;
+    private static SrmWebConstants    constants;
+    private static SrmWebCoreMessages coreMessages;
+    private static SrmWebMessages     messages;
 
     public final MetamacSrmWebGinjector      ginjector = GWT.create(MetamacSrmWebGinjector.class);
 
@@ -36,23 +36,23 @@ public class MetamacSrmWeb implements EntryPoint {
         GWT.<GlobalResources> create(GlobalResources.class).css().ensureInjected();
     }
 
-    public static MetamacSrmWebConstants getConstants() {
+    public static SrmWebConstants getConstants() {
         if (constants == null) {
-            constants = (MetamacSrmWebConstants) GWT.create(MetamacSrmWebConstants.class);
+            constants = (SrmWebConstants) GWT.create(SrmWebConstants.class);
         }
         return constants;
     }
 
-    public static MetamacSrmWebCoreMessages getCoreMessages() {
+    public static SrmWebCoreMessages getCoreMessages() {
         if (coreMessages == null) {
-            coreMessages = (MetamacSrmWebCoreMessages) GWT.create(MetamacSrmWebCoreMessages.class);
+            coreMessages = (SrmWebCoreMessages) GWT.create(SrmWebCoreMessages.class);
         }
         return coreMessages;
     }
 
-    public static MetamacSrmWebMessages getMessages() {
+    public static SrmWebMessages getMessages() {
         if (messages == null) {
-            messages = (MetamacSrmWebMessages) GWT.create(MetamacSrmWebMessages.class);
+            messages = (SrmWebMessages) GWT.create(SrmWebMessages.class);
         }
         return messages;
     }
