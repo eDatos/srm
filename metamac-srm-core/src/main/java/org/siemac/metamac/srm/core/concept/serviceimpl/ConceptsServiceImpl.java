@@ -10,7 +10,7 @@ import org.siemac.metamac.srm.core.concept.domain.Concept;
 import org.siemac.metamac.srm.core.concept.domain.ConceptScheme;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeRepository;
 import org.siemac.metamac.srm.core.concept.exception.ConceptSchemeNotFoundException;
-import org.siemac.metamac.srm.core.concepts.serviceimpl.utils.InvocationValidator;
+import org.siemac.metamac.srm.core.concept.serviceimpl.utils.InvocationValidator;
 import org.siemac.metamac.srm.core.error.MetamacCoreExceptionType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

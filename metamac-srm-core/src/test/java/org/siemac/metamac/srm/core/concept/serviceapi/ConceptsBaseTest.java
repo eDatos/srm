@@ -24,13 +24,13 @@ public abstract class ConceptsBaseTest extends MetamacBaseTests {
     protected ServiceContext getServiceContextAdministrador() {
         ServiceContext serviceContext = super.getServiceContextWithoutPrincipal();
         
-        // TODO: Descomentar cuando estén los roles
+        // TODO: Descomentar cuando estï¿½n los roles
         // putMetamacPrincipalInServiceContext(serviceContext, AccessControlRoleEnum.ADMINISTRADOR);
         return serviceContext;
     }
 
 
-    // TODO: Descomentar cuando ya estén definidos los roles
+    // TODO: Descomentar cuando ya estï¿½n definidos los roles
 //    private void putMetamacPrincipalInServiceContext(ServiceContext serviceContext, AccessControlRoleEnum role) {
 //        MetamacPrincipal metamacPrincipal = new MetamacPrincipal();
 //        metamacPrincipal.setUserId(serviceContext.getUserId());
