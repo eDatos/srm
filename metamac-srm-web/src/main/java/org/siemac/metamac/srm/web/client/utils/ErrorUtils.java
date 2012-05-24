@@ -2,8 +2,6 @@ package org.siemac.metamac.srm.web.client.utils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.web.common.client.utils.CommonErrorUtils;
@@ -12,11 +10,9 @@ import org.siemac.metamac.web.common.shared.exception.MetamacWebExceptionItem;
 
 public class ErrorUtils extends CommonErrorUtils {
 
-    private static Logger logger = Logger.getLogger(ErrorUtils.class.getName());
-
     public static List<String> getErrorMessages(Throwable caught, String alternativeMessage) {
         List<String> list = new ArrayList<String>();
-        if (caught instanceof MetamacWebException) {
+        if (caught != null && caught instanceof MetamacWebException) {
             List<MetamacWebExceptionItem> metamacExceptionItems = ((MetamacWebException) caught).getWebExceptionItems();
             if (metamacExceptionItems.isEmpty()) {
                 list.add(alternativeMessage);
@@ -29,7 +25,7 @@ public class ErrorUtils extends CommonErrorUtils {
                         // If there is any problem getting message from code, show alternative message
                         try {
                             list.add(getMessage(item));
-                        } catch (Exception e) {
+                        } catch (MetamacWebException e) {
                             list.add(alternativeMessage);
                         }
                     }
@@ -41,22 +37,36 @@ public class ErrorUtils extends CommonErrorUtils {
         return list;
     }
 
-    private static String getMessage(MetamacWebExceptionItem item) throws Exception {
+    private static String getMessage(MetamacWebExceptionItem item) throws MetamacWebException {
         if (item != null && item.getCode() != null) {
             // GWT generate a "_" separated method when the key is separated by "."
-            String code = item.getCode().replace(".", "_");
+            String code = transformMessageCode(item.getCode());
             try {
                 String message = MetamacSrmWeb.getCoreMessages().getString(code);
-                return getMessageWithParameters(message, item.getMessageParameters());
+                return getMessageWithParameters(message, getTranslatedParameters(item.getMessageParameters()));
             } catch (Exception e) {
-                String errorMessage = "Message with code = " + code + " not found";
-                logger.log(Level.SEVERE, errorMessage);
-                throw new Exception(errorMessage);
+                throw new MetamacWebException("MESSAGE_NOT_FOUND", "Message with code = " + code + " not found");
             }
         }
-        String errorMessage = "Message with null code";
-        logger.log(Level.SEVERE, errorMessage);
-        throw new Exception(errorMessage);
+        throw new MetamacWebException("NULL_MESSAGE", "Message with null code");
+    }
+
+    private static String[] getTranslatedParameters(String[] messageParameters) {
+        if (messageParameters != null) {
+            String[] translatedParameters = new String[messageParameters.length];
+            for (int i = 0; i < messageParameters.length; i++) {
+                // if (messageParameters[i] instanceof String) {
+                String code = transformMessageCode(String.valueOf(messageParameters[i]));
+                try {
+                    // If parameter is translated, return the translation
+                    translatedParameters[i] = MetamacSrmWeb.getCoreMessages().getString(code) + " (" + String.valueOf(messageParameters[i]) + ")";
+                } catch (Exception e) {
+                    translatedParameters[i] = String.valueOf(messageParameters[i]);
+                }
+            }
+            return translatedParameters;
+        }
+        return null;
     }
 
 }
