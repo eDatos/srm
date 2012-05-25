@@ -12,12 +12,13 @@ public class ServiceContextHolder {
     private static String SESSION_ATTRIBUTE = "_serviceContext_";
 
     public static ServiceContext getCurrentServiceContext() {
-        ServiceContext serviceContext = (ServiceContext) getCurrentRequest().getSession().getAttribute(ServiceContextHolder.SESSION_ATTRIBUTE);
-        if (serviceContext == null) {
-            serviceContext = new ServiceContext("ANNONIMOUS", "NO_SESSION", SrmConstants.SECURITY_APPLICATION_ID); // TODO
-            putCurrentServiceContext(serviceContext);
-        }
-        return serviceContext;
+        // TODO
+        // ServiceContext serviceContext = (ServiceContext) getCurrentRequest().getSession().getAttribute(ServiceContextHolder.SESSION_ATTRIBUTE);
+        // if (serviceContext == null) {
+        // serviceContext = new ServiceContext("ANNONIMOUS", "NO_SESSION", SrmConstants.SECURITY_APPLICATION_ID);
+        // putCurrentServiceContext(serviceContext);
+        // }
+        return new ServiceContext("ANNONIMOUS", "NO_SESSION", SrmConstants.SECURITY_APPLICATION_ID);
     }
 
     public static void putCurrentServiceContext(ServiceContext serviceContext) {
