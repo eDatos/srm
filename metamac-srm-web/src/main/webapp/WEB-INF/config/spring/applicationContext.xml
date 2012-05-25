@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xmlns:p="http://www.springframework.org/schema/p"
-	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:oxm="http://www.springframework.org/schema/oxm" 
-	xmlns:aop="http://www.springframework.org/schema/aop"
-	xmlns:tx="http://www.springframework.org/schema/tx"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:oxm="http://www.springframework.org/schema/oxm" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans 
 						http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 						http://www.springframework.org/schema/context 
 						http://www.springframework.org/schema/context/spring-context-2.5.xsd
@@ -19,46 +14,52 @@
      					http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
 
 
-	<!-- SpringBeanProvider GWTP -->
-	<context:component-scan base-package="com.gwtplatform.dispatch.server.spring" />
+    <!-- SpringBeanProvider GWTP -->
+    <context:component-scan base-package="com.gwtplatform.dispatch.server.spring" />
 
     <!-- Activates annotation-based bean configuration -->
-	<context:annotation-config/>
-	
+    <context:annotation-config />
+
     <!-- if proxy-target-class is false, error in actionHandlers beans (spring cannot find them) -->
-    <aop:aspectj-autoproxy proxy-target-class="true"/>
-    
+    <aop:aspectj-autoproxy proxy-target-class="true" />
+
     <!-- Logger aspect for logging exceptions thrown by actionHandlers -->
-    <bean id="logAspect" class="org.siemac.metamac.srm.web.server.aspects.ActionHandlerLoggerAspect"/>
- 
-	<!-- Metamac environment configuration -->
-	<bean id="configurationService" class="org.siemac.metamac.core.common.conf.ConfigurationServiceImpl">
-		<property name="systemConfigurationFile"><value>classpath:conf/environment.xml</value></property>
-	</bean>
-	
-	<bean id="propertyPlaceholderConfigurer" class="org.siemac.metamac.core.common.conf.ConfigurationServicePropertyPlaceholderConfigurer">
-		<property name="configurationService">
-			<ref bean="configurationService" />
-		</property>
-	</bean>
-	
-	<!-- Spring Beans for side server of GWT -->
-	<bean class="org.siemac.metamac.srm.web.server.ServerModule" />
-	
-	
-	<!-- Logger for GWT -->
-	<bean id="logger" class="com.gwtplatform.dispatch.server.spring.LoggerFactoryBean">
-		<constructor-arg>
-			<bean class="java.util.logging.Logger" factory-method="getAnonymousLogger">
-				<property name="level">
-					<value>FINEST</value>
-				</property>
-			</bean>
-		</constructor-arg>
-	</bean>
-  
-	<!-- Metamac Business Spring Configuration -->
-	<import resource="classpath:/spring/srm-core/oracle/applicationContext.xml" />
-	
+    <bean id="logAspect" class="org.siemac.metamac.srm.web.server.aspects.ActionHandlerLoggerAspect" />
+
+    <!-- Metamac environment configuration -->
+    <bean id="configurationService" class="org.siemac.metamac.core.common.conf.ConfigurationServiceImpl">
+        <property name="systemConfigurationFile">
+            <value>classpath:conf/environment.xml</value>
+        </property>
+    </bean>
+
+    <bean id="propertyPlaceholderConfigurer" class="org.siemac.metamac.core.common.conf.ConfigurationServicePropertyPlaceholderConfigurer">
+        <property name="configurationService">
+            <ref bean="configurationService" />
+        </property>
+    </bean>
+
+    <!-- Spring Beans for side server of GWT -->
+    <bean class="org.siemac.metamac.srm.web.server.ServerModule" />
+
+    <!-- Logger for GWT -->
+    <bean id="logger" class="com.gwtplatform.dispatch.server.spring.LoggerFactoryBean">
+        <constructor-arg>
+            <bean class="java.util.logging.Logger" factory-method="getAnonymousLogger">
+                <property name="level">
+                    <value>FINEST</value>
+                </property>
+            </bean>
+        </constructor-arg>
+    </bean>
+
+    <!-- Configure externalized logging configuration file -->
+    <bean id="loggingSetup" class="org.siemac.metamac.web.common.server.logging.LoggingSetup">
+        <property name="logConfigurationFile" value="${environment.metamac.data}/srm/conf/dynamic/logback-srm-web.xml" />
+    </bean>
+
+    <!-- Metamac Business Spring Configuration -->
+    <import resource="classpath:/spring/srm-core/oracle/applicationContext.xml" />
+
 </beans>
 
