@@ -110,7 +110,7 @@ Application Base {
 			"Denotes whether the Item Scheme contains a sub set of the full set of Items in the maintained scheme."
 			Boolean isPartial nullable;
 			"Association to the Items in the scheme"
-			- Bag<@Item> items inverse cascade="all-delete-orphan" orderby="idLogic" databaseColumn="ITEM_SCHEME_FK";
+			- Bag<@Item> items inverse cascade="all-delete-orphan" orderby="idLogic" databaseColumn="ITEMS_FK";
 			
 			Repository ItemSchemeRepository {
 				findById;

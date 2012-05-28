@@ -46,6 +46,7 @@ public class ConceptsServiceImpl extends ConceptsServiceImplBase {
     public ConceptScheme createConceptScheme(ServiceContext ctx, ConceptScheme entity) throws MetamacException {
 
         InvocationValidator.checkCreateConceptScheme(entity, null);
+        // validateConceptSchemeUnique(ctx, entity.getItemScheme().getIdLogic(), null);
         // TODO: Validate code unique
         // validateRoleCodeUnique(ctx, entity.getCode(), null);
 
