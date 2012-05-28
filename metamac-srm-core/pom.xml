@@ -508,89 +508,28 @@
 						</goals>
 						<configuration>
 							<target>
-								<!-- Delete wrong configuration files -->
-
-								<!-- Runtime: Configuration files are manually configured -->
-								<delete file="${basedir}/src/main/resources/spring/applicationContext-datasource.xml" />
+								<!-- Delete spring configuration files -->
 								<delete file="${basedir}/src/main/resources/spring.properties" />
-								<delete file="${basedir}/src/main/resources/more.xml" />
+                                <delete file="${basedir}/src/main/resources/more.xml" />
 
 								<delete file="${basedir}/src/generated/resources/applicationContext.xml" />
-								<delete file="${basedir}/src/generated/resources/META-INF/persistence.xml" />
-								<delete file="${basedir}/src/generated/resources/beanRefContext.xml" />
-								<delete file="${basedir}/src/generated/resources/EntityManagerFactory.xml" />
-								<!-- Test: Need these files that were excluded to runtime -->
-								<move todir="${basedir}/src/test/resources" overwrite="true" verbose="true" includeEmptyDirs="false" failonerror="true">
-									<fileset dir="${basedir}/src/generated/resources">
-										<include name="Interceptor.xml" />
-										<include name="pub-sub.xml" />
-										<include name="generated-spring.properties" />
-									</fileset>
-								</move>
-								<delete file="${basedir}/src/test/resources/spring-test.properties" />
-                                <delete file="${basedir}/src/test/resources/generated-spring.properties.xml" />
-                                <delete file="${basedir}/src/test/resources/Interceptor.xml" />
+                                <delete file="${basedir}/src/generated/resources/pub-sub.xml" />
+                                <delete file="${basedir}/src/generated/resources/EntityManagerFactory.xml" />
+                                <delete file="${basedir}/src/generated/resources/Interceptor.xml" />
+                                <delete file="${basedir}/src/generated/resources/beanRefContext.xml" />
+                                <delete file="${basedir}/src/generated/resources/generated-spring.properties" />
+								
                                 <delete file="${basedir}/src/test/resources/more-test.xml" />
                                 <delete file="${basedir}/src/test/resources/pub-sub.xml" />
+
+                                <delete file="${basedir}/src/test/generated/resources/Interceptor-test.xml" />                                
 								<delete file="${basedir}/src/test/generated/resources/applicationContext-test.xml" />
 								<delete file="${basedir}/src/test/generated/resources/EntityManagerFactory-test.xml" />
-								<delete file="${basedir}/src/test/generated/resources/META-INF/persistence-test.xml" />
-                                <delete file="${basedir}/src/test/generated/resources/Interceptor-test.xml" />
 							</target>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
-
-			<!-- <plugin> -->
-			<!-- <groupId>org.codehaus.mojo</groupId> -->
-			<!-- <artifactId>hibernate3-maven-plugin</artifactId> -->
-			<!-- <version>2.2</version> -->
-			<!-- <executions> -->
-			<!-- <execution> -->
-			<!-- <phase>process-classes</phase> -->
-			<!-- <goals> -->
-			<!-- <goal>hbm2ddl</goal> -->
-			<!-- </goals> -->
-			<!-- </execution> -->
-			<!-- </executions> -->
-			<!-- <configuration> -->
-			<!-- <components> -->
-			<!-- <component> -->
-			<!-- <name>hbm2ddl</name> -->
-			<!-- <implementation>jpaconfiguration</implementation> -->
-			<!-- <outputDirectory>/</outputDirectory> -->
-			<!-- </component> -->
-			<!-- </components> -->
-			<!-- <componentProperties> -->
-			<!-- <outputfilename>/src/generated/resources/dbschema/ddl.sql</outputfilename> -->
-			<!-- <drop>true</drop> -->
-			<!-- <create>true</create> -->
-			<!-- <update>false</update> -->
-			<!-- <export>false</export> -->
-			<!-- <format>true</format> -->
-			<!-- </componentProperties> -->
-			<!-- </configuration> -->
-			<!-- <dependencies> -->
-			<!-- <dependency> -->
-			<!-- <groupId>org.hibernate</groupId> -->
-			<!-- <artifactId>hibernate-core</artifactId> -->
-			<!-- <version>${hibernate.version}</version> -->
-			<!-- </dependency> -->
-			<!-- <dependency> -->
-			<!-- <groupId>org.hibernate</groupId> -->
-			<!-- <artifactId>hibernate-entitymanager</artifactId> -->
-			<!-- <version>${hibernate.version}</version> -->
-			<!-- </dependency> -->
-			<!-- <dependency> -->
-			<!-- <groupId>org.hibernate</groupId> -->
-			<!-- <artifactId>hibernate-validator</artifactId> -->
-			<!-- <version>${hibernate.validator.version}</version> -->
-			<!-- </dependency> -->
-			<!-- </dependencies> -->
-			<!-- </plugin> -->
-
 		</plugins>
 	</build>
-
 </project>
