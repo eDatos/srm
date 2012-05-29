@@ -32,17 +32,12 @@ import org.siemac.metamac.srm.core.service.dto.Dto2DoMapper;
 import org.siemac.metamac.srm.core.structure.domain.DataStructureDefinition;
 import org.siemac.metamac.srm.core.structure.serviceapi.DataStructureDefinitionService;
 import org.siemac.metamac.trans.facade.serviceapi.TransformationServiceFacade;
-import org.siemac.metamac.trans.v2_1.domain.common.CodedStatusMessageType;
 import org.siemac.metamac.trans.v2_1.message.Error;
-import org.siemac.metamac.trans.v2_1.message.Structure;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
 public class DatastructureRestServiceFacadeImpl implements DatastructureRestServiceFacade {
 
-//    @Autowired
-//    private Do2DtoMapper do2DtoMapper;
-//
     @Autowired
     private Dto2DoMapper dto2DoMapper;
     
@@ -73,11 +68,7 @@ public class DatastructureRestServiceFacadeImpl implements DatastructureRestServ
     protected SdmxBaseService getSdmxBaseService() {
         return sdmxBaseService;
     }
-    
-//    protected Do2DtoMapper getDo2DtoMapper() {
-//        return do2DtoMapper;
-//    }
-//
+
     protected Dto2DoMapper getDto2DoMapper() {
         return dto2DoMapper;
     }
@@ -115,7 +106,7 @@ public class DatastructureRestServiceFacadeImpl implements DatastructureRestServ
 //            // Serialization in response
 //              return Response.ok(structure).build(); NO CXF Marshallers.
             
-            // Serialization & REsponse
+            // Serialization & Response
             return Response.ok(new FileInputStream(getSrmCoreServiceFacade().exportSDMXStructureMsg(RestUtils.SERVICECONTEXT, structureMsgDto))).build();
         }
         catch (Exception e) {
