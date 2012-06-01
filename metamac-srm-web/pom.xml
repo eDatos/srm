@@ -215,6 +215,7 @@
                     <compileSourcesArtifacts>
                         <artifact>org.siemac.metamac:metamac-api-domain:jar:client</artifact>
                         <artifact>org.siemac.metamac:metamac-core-common:jar:client</artifact>
+                        <artifact>org.siemac.metamac.metamac-sso:metamac-sso-client:jar</artifact>
                     </compileSourcesArtifacts>
                     <!-- In inplace mode, the warSourceDirectory is used to match the same use case of the war:inplace http://maven.apache.org/plugins/maven-war-plugin/inplace-mojo.html goal. -->
                     <inplace>true</inplace>

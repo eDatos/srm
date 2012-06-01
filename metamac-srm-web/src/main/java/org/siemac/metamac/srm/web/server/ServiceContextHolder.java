@@ -3,7 +3,7 @@ package org.siemac.metamac.srm.web.server;
 import javax.servlet.http.HttpServletRequest;
 
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
-import org.siemac.metamac.srm.core.constants.SrmConstants;
+import org.siemac.metamac.srm.core.common.constants.SrmConstants;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
