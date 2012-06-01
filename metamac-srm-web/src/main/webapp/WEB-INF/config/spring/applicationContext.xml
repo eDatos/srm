@@ -62,6 +62,7 @@
     <!-- ActionHandler beans -->
     <bean class="org.siemac.metamac.web.common.server.handlers.CloseSessionActionHandler" />
     <bean class="org.siemac.metamac.web.common.server.handlers.GetLoginPageUrlActionHandler" />
+    <bean class="org.siemac.metamac.web.common.server.handlers.MockCASUserActionHandler" /> <!-- This method should be removed to use CAS authentication -->
 
     <!-- Metamac Business Spring Configuration -->
     <import resource="classpath:/spring/srm-core/oracle/applicationContext.xml" />

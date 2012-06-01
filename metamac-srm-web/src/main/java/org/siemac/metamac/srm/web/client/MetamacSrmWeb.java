@@ -9,11 +9,10 @@ import org.siemac.metamac.web.common.client.MetamacEntryPoint;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 import org.siemac.metamac.web.common.shared.GetLoginPageUrlAction;
 import org.siemac.metamac.web.common.shared.GetLoginPageUrlResult;
-import org.siemac.metamac.web.common.shared.ValidateTicketAction;
-import org.siemac.metamac.web.common.shared.ValidateTicketResult;
+import org.siemac.metamac.web.common.shared.MockCASUserAction;
+import org.siemac.metamac.web.common.shared.MockCASUserResult;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.http.client.UrlBuilder;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.CssResource.NotStrict;
@@ -41,51 +40,75 @@ public class MetamacSrmWeb extends MetamacEntryPoint {
         CssResource css();
     }
 
+    // TODO This method should be removed to use CAS authentication
+    // Application id should be the same than the one defined in org.siemac.metamac.srm.core.common.constants.SrmConstants.SECURITY_APPLICATION_ID
     public void onModuleLoad() {
-        String ticketParam = Window.Location.getParameter(TICKET);
-        if (ticketParam != null) {
-            UrlBuilder urlBuilder = Window.Location.createUrlBuilder();
-            urlBuilder.removeParameter(TICKET);
-            urlBuilder.setHash(Window.Location.getHash() + TICKET_HASH + ticketParam);
-            String url = urlBuilder.buildString();
-            Window.Location.replace(url);
-            return;
-        }
+        ginjector.getDispatcher().execute(new MockCASUserAction("GESTOR_RECURSOS_ESTRUCTURALES"), new WaitingAsyncCallback<MockCASUserResult>() {
 
-        String hash = Window.Location.getHash();
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                logger.log(Level.SEVERE, "Error mocking CAS user");
+            }
+            @Override
+            public void onWaitSuccess(MockCASUserResult result) {
+                MetamacSrmWeb.principal = result.getMetamacPrincipal();
 
-        String ticketHash = null;
-        if (hash.contains(TICKET_HASH)) {
-            ticketHash = hash.substring(hash.indexOf(TICKET_HASH) + TICKET_HASH.length(), hash.length());
-        }
+                // This is required for GWT-Platform proxy's generator.
+                DelayedBindRegistry.bind(ginjector);
+                ginjector.getPlaceManager().revealCurrentPlace();
 
-        if (ticketHash == null || ticketHash.length() == 0) {
-            displayLoginView();
-        } else {
-            String serviceUrl = Window.Location.createUrlBuilder().buildString();
-            ginjector.getDispatcher().execute(new ValidateTicketAction(ticketHash, serviceUrl), new WaitingAsyncCallback<ValidateTicketResult>() {
-
-                @Override
-                public void onWaitFailure(Throwable arg0) {
-                    logger.log(Level.SEVERE, "Error validating ticket");
-                }
-                @Override
-                public void onWaitSuccess(ValidateTicketResult result) {
-                    MetamacSrmWeb.principal = result.getMetamacPrincipal();
-
-                    String url = Window.Location.createUrlBuilder().setHash("").buildString();
-                    Window.Location.assign(url);
-
-                    // This is required for GWT-Platform proxy's generator.
-                    DelayedBindRegistry.bind(ginjector);
-                    ginjector.getPlaceManager().revealCurrentPlace();
-
-                    // Inject global styles
-                    GWT.<GlobalResources> create(GlobalResources.class).css().ensureInjected();
-                }
-            });
-        }
+                // Inject global styles
+                GWT.<GlobalResources> create(GlobalResources.class).css().ensureInjected();
+            }
+        });
     }
+
+    // TODO Restore this method to use CAS authentication
+    // public void onModuleLoad() {
+    // String ticketParam = Window.Location.getParameter(TICKET);
+    // if (ticketParam != null) {
+    // UrlBuilder urlBuilder = Window.Location.createUrlBuilder();
+    // urlBuilder.removeParameter(TICKET);
+    // urlBuilder.setHash(Window.Location.getHash() + TICKET_HASH + ticketParam);
+    // String url = urlBuilder.buildString();
+    // Window.Location.replace(url);
+    // return;
+    // }
+    //
+    // String hash = Window.Location.getHash();
+    //
+    // String ticketHash = null;
+    // if (hash.contains(TICKET_HASH)) {
+    // ticketHash = hash.substring(hash.indexOf(TICKET_HASH) + TICKET_HASH.length(), hash.length());
+    // }
+    //
+    // if (ticketHash == null || ticketHash.length() == 0) {
+    // displayLoginView();
+    // } else {
+    // String serviceUrl = Window.Location.createUrlBuilder().buildString();
+    // ginjector.getDispatcher().execute(new ValidateTicketAction(ticketHash, serviceUrl), new WaitingAsyncCallback<ValidateTicketResult>() {
+    //
+    // @Override
+    // public void onWaitFailure(Throwable arg0) {
+    // logger.log(Level.SEVERE, "Error validating ticket");
+    // }
+    // @Override
+    // public void onWaitSuccess(ValidateTicketResult result) {
+    // MetamacSrmWeb.principal = result.getMetamacPrincipal();
+    //
+    // String url = Window.Location.createUrlBuilder().setHash("").buildString();
+    // Window.Location.assign(url);
+    //
+    // // This is required for GWT-Platform proxy's generator.
+    // DelayedBindRegistry.bind(ginjector);
+    // ginjector.getPlaceManager().revealCurrentPlace();
+    //
+    // // Inject global styles
+    // GWT.<GlobalResources> create(GlobalResources.class).css().ensureInjected();
+    // }
+    // });
+    // }
+    // }
 
     public void displayLoginView() {
         String serviceUrl = Window.Location.createUrlBuilder().buildString();
