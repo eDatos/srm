@@ -44,7 +44,7 @@ import org.siemac.metamac.domain.trans.dto.StructureMsgDto;
 import org.siemac.metamac.domain.util.dto.ContentInputDto;
 import org.siemac.metamac.srm.core.base.domain.Component;
 import org.siemac.metamac.srm.core.base.domain.ComponentList;
-import org.siemac.metamac.srm.core.error.MetamacCoreExceptionType;
+import org.siemac.metamac.srm.core.common.error.MetamacCoreExceptionType;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.core.service.dto.Do2DtoMapper;
 import org.siemac.metamac.srm.core.service.dto.Dto2DoMapper;

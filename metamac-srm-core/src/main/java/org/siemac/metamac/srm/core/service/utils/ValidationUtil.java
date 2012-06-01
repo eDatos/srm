@@ -7,7 +7,7 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.domain.srm.dto.RepresentationDto;
 import org.siemac.metamac.domain.srm.enume.domain.FacetValueTypeEnum;
 import org.siemac.metamac.domain.srm.enume.domain.TypeRepresentationEnum;
-import org.siemac.metamac.srm.core.error.MetamacCoreExceptionType;
+import org.siemac.metamac.srm.core.common.error.MetamacCoreExceptionType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

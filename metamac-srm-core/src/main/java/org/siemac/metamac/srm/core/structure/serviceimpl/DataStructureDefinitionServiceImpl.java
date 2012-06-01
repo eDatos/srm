@@ -12,7 +12,7 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.domain.srm.enume.domain.TypeComponentList;
 import org.siemac.metamac.srm.core.base.domain.Component;
 import org.siemac.metamac.srm.core.base.domain.ComponentList;
-import org.siemac.metamac.srm.core.error.MetamacCoreExceptionType;
+import org.siemac.metamac.srm.core.common.error.MetamacCoreExceptionType;
 import org.siemac.metamac.srm.core.structure.domain.AttributeDescriptor;
 import org.siemac.metamac.srm.core.structure.domain.DataStructureDefinition;
 import org.siemac.metamac.srm.core.structure.domain.DimensionDescriptor;

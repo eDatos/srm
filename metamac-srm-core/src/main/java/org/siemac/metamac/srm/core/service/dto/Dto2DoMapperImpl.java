@@ -48,7 +48,7 @@ import org.siemac.metamac.srm.core.base.domain.TextFormatRepresentation;
 import org.siemac.metamac.srm.core.base.exception.AnnotationNotFoundException;
 import org.siemac.metamac.srm.core.base.exception.ComponentNotFoundException;
 import org.siemac.metamac.srm.core.base.serviceapi.SdmxBaseService;
-import org.siemac.metamac.srm.core.error.MetamacCoreExceptionType;
+import org.siemac.metamac.srm.core.common.error.MetamacCoreExceptionType;
 import org.siemac.metamac.srm.core.service.utils.SdmxToolsServer;
 import org.siemac.metamac.srm.core.service.utils.ValidationUtil;
 import org.siemac.metamac.srm.core.structure.domain.AttributeDescriptor;
