@@ -24,7 +24,7 @@ import org.siemac.metamac.core.common.util.GeneratorUriUtil;
 import org.siemac.metamac.domain.srm.enume.domain.TypeDozerCopyMode;
 import org.siemac.metamac.domain.trans.dto.StructureMsgDto;
 import org.siemac.metamac.srm.core.base.serviceapi.SdmxBaseService;
-import org.siemac.metamac.srm.core.error.MetamacCoreExceptionType;
+import org.siemac.metamac.srm.core.common.error.MetamacCoreExceptionType;
 import org.siemac.metamac.srm.core.facade.rest.api.service.DatastructureRestServiceFacade;
 import org.siemac.metamac.srm.core.facade.rest.api.util.RestUtils;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
