@@ -3,16 +3,18 @@ package org.siemac.metamac.srm.web.server.handlers;
 import java.util.List;
 
 import org.siemac.metamac.core.common.dto.ExternalItemBtDto;
-import org.siemac.metamac.srm.web.server.ServiceContextHolder;
+import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.web.shared.FindConceptsAction;
 import org.siemac.metamac.srm.web.shared.FindConceptsResult;
-import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
+import org.siemac.metamac.web.common.server.ServiceContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.gwtplatform.dispatch.server.ExecutionContext;
 import com.gwtplatform.dispatch.server.actionhandler.AbstractActionHandler;
 import com.gwtplatform.dispatch.shared.ActionException;
 
+@Component
 public class FindConceptsActionHandler extends AbstractActionHandler<FindConceptsAction, FindConceptsResult> {
 
     @Autowired

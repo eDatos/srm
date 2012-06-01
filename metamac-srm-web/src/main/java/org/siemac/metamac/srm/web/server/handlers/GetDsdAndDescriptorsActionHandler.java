@@ -12,19 +12,21 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
 import org.siemac.metamac.domain.srm.dto.DescriptorDto;
 import org.siemac.metamac.domain.srm.enume.domain.TypeComponentList;
-import org.siemac.metamac.srm.web.server.ServiceContextHolder;
-import org.siemac.metamac.srm.web.shared.GetDsdAndDescriptorsAction;
-import org.siemac.metamac.srm.web.shared.GetDsdAndDescriptorsResult;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.core.structure.domain.DataStructureDefinition;
 import org.siemac.metamac.srm.core.structure.domain.DataStructureDefinitionProperties;
+import org.siemac.metamac.srm.web.shared.GetDsdAndDescriptorsAction;
+import org.siemac.metamac.srm.web.shared.GetDsdAndDescriptorsResult;
+import org.siemac.metamac.web.common.server.ServiceContextHolder;
 import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.gwtplatform.dispatch.server.ExecutionContext;
 import com.gwtplatform.dispatch.server.actionhandler.AbstractActionHandler;
 import com.gwtplatform.dispatch.shared.ActionException;
 
+@Component
 public class GetDsdAndDescriptorsActionHandler extends AbstractActionHandler<GetDsdAndDescriptorsAction, GetDsdAndDescriptorsResult> {
 
     private static Logger        logger = Logger.getLogger(GetDsdAndDescriptorsActionHandler.class.getName());

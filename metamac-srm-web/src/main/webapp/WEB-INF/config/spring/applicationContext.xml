@@ -15,32 +15,20 @@
 
 
     <!-- SpringBeanProvider GWTP -->
-    <context:component-scan base-package="com.gwtplatform.dispatch.server.spring" />
+    <context:component-scan base-package="com.gwtplatform.dispatch.server.spring,org.siemac.metamac.srm.web" />
 
     <!-- Activates annotation-based bean configuration -->
     <context:annotation-config />
+
+    <!-- Spring Beans for side server of GWT -->
+    <bean class="com.gwtplatform.dispatch.server.spring.configuration.DefaultModule" />
+    <bean class="com.gwtplatform.dispatch.server.spring.actionvalidator.DefaultActionValidator" />
 
     <!-- if proxy-target-class is false, error in actionHandlers beans (spring cannot find them) -->
     <aop:aspectj-autoproxy proxy-target-class="true" />
 
     <!-- Logger aspect for logging exceptions thrown by actionHandlers -->
     <bean id="logAspect" class="org.siemac.metamac.srm.web.server.aspects.ActionHandlerLoggerAspect" />
-
-    <!-- Metamac environment configuration -->
-    <bean id="configurationService" class="org.siemac.metamac.core.common.conf.ConfigurationServiceImpl">
-        <property name="systemConfigurationFile">
-            <value>classpath:conf/environment.xml</value>
-        </property>
-    </bean>
-
-    <bean id="propertyPlaceholderConfigurer" class="org.siemac.metamac.core.common.conf.ConfigurationServicePropertyPlaceholderConfigurer">
-        <property name="configurationService">
-            <ref bean="configurationService" />
-        </property>
-    </bean>
-
-    <!-- Spring Beans for side server of GWT -->
-    <bean class="org.siemac.metamac.srm.web.server.ServerModule" />
 
     <!-- Logger for GWT -->
     <bean id="logger" class="com.gwtplatform.dispatch.server.spring.LoggerFactoryBean">
@@ -57,6 +45,23 @@
     <bean id="loggingSetup" class="org.siemac.metamac.web.common.server.logging.LoggingSetup">
         <property name="logConfigurationFile" value="${environment.metamac.data}/srm/conf/dynamic/logback-srm-web.xml" />
     </bean>
+
+    <!-- Metamac environment configuration -->
+    <bean id="configurationService" class="org.siemac.metamac.core.common.conf.ConfigurationServiceImpl">
+        <property name="systemConfigurationFile">
+            <value>classpath:metamac/environment.xml</value>
+        </property>
+    </bean>
+
+    <bean id="propertyPlaceholderConfigurer" class="org.siemac.metamac.core.common.conf.ConfigurationServicePropertyPlaceholderConfigurer">
+        <property name="configurationService">
+            <ref bean="configurationService" />
+        </property>
+    </bean>
+
+    <!-- ActionHandler beans -->
+    <bean class="org.siemac.metamac.web.common.server.handlers.CloseSessionActionHandler" />
+    <bean class="org.siemac.metamac.web.common.server.handlers.GetLoginPageUrlActionHandler" />
 
     <!-- Metamac Business Spring Configuration -->
     <import resource="classpath:/spring/srm-core/oracle/applicationContext.xml" />

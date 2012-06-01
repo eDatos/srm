@@ -6,11 +6,13 @@ import org.siemac.metamac.srm.web.server.mock.ConceptSchemeService;
 import org.siemac.metamac.srm.web.shared.PublishConceptSchemeInternallyAction;
 import org.siemac.metamac.srm.web.shared.PublishConceptSchemeInternallyResult;
 import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
+import org.springframework.stereotype.Component;
 
 import com.gwtplatform.dispatch.server.ExecutionContext;
 import com.gwtplatform.dispatch.server.actionhandler.AbstractActionHandler;
 import com.gwtplatform.dispatch.shared.ActionException;
 
+@Component
 public class PublishConceptSchemeInternallyActionHandler extends AbstractActionHandler<PublishConceptSchemeInternallyAction, PublishConceptSchemeInternallyResult> {
 
     public PublishConceptSchemeInternallyActionHandler() {

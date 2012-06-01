@@ -5,11 +5,13 @@ import org.siemac.metamac.srm.web.server.mock.ConceptSchemeService;
 import org.siemac.metamac.srm.web.shared.DeleteConceptSchemeListAction;
 import org.siemac.metamac.srm.web.shared.DeleteConceptSchemeListResult;
 import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
+import org.springframework.stereotype.Component;
 
 import com.gwtplatform.dispatch.server.ExecutionContext;
 import com.gwtplatform.dispatch.server.actionhandler.AbstractActionHandler;
 import com.gwtplatform.dispatch.shared.ActionException;
 
+@Component
 public class DeleteConceptSchemeListActionHandler extends AbstractActionHandler<DeleteConceptSchemeListAction, DeleteConceptSchemeListResult> {
 
     public DeleteConceptSchemeListActionHandler() {

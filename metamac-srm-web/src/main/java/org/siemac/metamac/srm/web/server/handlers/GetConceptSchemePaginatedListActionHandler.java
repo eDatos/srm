@@ -6,11 +6,13 @@ import org.siemac.metamac.srm.web.server.mock.ConceptSchemeService.ConceptScheme
 import org.siemac.metamac.srm.web.shared.GetConceptSchemePaginatedListAction;
 import org.siemac.metamac.srm.web.shared.GetConceptSchemePaginatedListResult;
 import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
+import org.springframework.stereotype.Component;
 
 import com.gwtplatform.dispatch.server.ExecutionContext;
 import com.gwtplatform.dispatch.server.actionhandler.AbstractActionHandler;
 import com.gwtplatform.dispatch.shared.ActionException;
 
+@Component
 public class GetConceptSchemePaginatedListActionHandler extends AbstractActionHandler<GetConceptSchemePaginatedListAction, GetConceptSchemePaginatedListResult> {
 
     public GetConceptSchemePaginatedListActionHandler() {

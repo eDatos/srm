@@ -22,6 +22,7 @@ import org.siemac.metamac.srm.web.server.handlers.SaveComponentForDsdActionHandl
 import org.siemac.metamac.srm.web.server.handlers.SaveConceptSchemeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.SaveDescriptorForDsdActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.SaveDsdActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.ValidateTicketActionHandler;
 import org.siemac.metamac.srm.web.shared.DeleteAttributeListForDsdAction;
 import org.siemac.metamac.srm.web.shared.DeleteComponentForDsdAction;
 import org.siemac.metamac.srm.web.shared.DeleteConceptSchemeListAction;
@@ -44,138 +45,22 @@ import org.siemac.metamac.srm.web.shared.SaveComponentForDsdAction;
 import org.siemac.metamac.srm.web.shared.SaveConceptSchemeAction;
 import org.siemac.metamac.srm.web.shared.SaveDescriptorForDsdAction;
 import org.siemac.metamac.srm.web.shared.SaveDsdAction;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
+import org.siemac.metamac.web.common.server.handlers.CloseSessionActionHandler;
+import org.siemac.metamac.web.common.server.handlers.GetLoginPageUrlActionHandler;
+import org.siemac.metamac.web.common.shared.CloseSessionAction;
+import org.siemac.metamac.web.common.shared.GetLoginPageUrlAction;
+import org.siemac.metamac.web.common.shared.ValidateTicketAction;
+import org.springframework.stereotype.Component;
 
-import com.gwtplatform.dispatch.server.actionvalidator.ActionValidator;
 import com.gwtplatform.dispatch.server.spring.HandlerModule;
-import com.gwtplatform.dispatch.server.spring.actionvalidator.DefaultActionValidator;
-import com.gwtplatform.dispatch.server.spring.configuration.DefaultModule;
 
 /**
  * Module which binds the handlers and configurations.
  */
-@Configuration
-@Import(DefaultModule.class)
+@Component
 public class ServerModule extends HandlerModule {
 
     public ServerModule() {
-    }
-
-    @Bean
-    public GetDsdListActionHandler getDsdListHandler() {
-        return new GetDsdListActionHandler();
-    }
-
-    @Bean
-    public GetDsdActionHandler getDsdHandler() {
-        return new GetDsdActionHandler();
-    }
-
-    @Bean
-    public GetDsdAndDescriptorsActionHandler getDsdAndDescriptorsActionHandler() {
-        return new GetDsdAndDescriptorsActionHandler();
-    }
-
-    @Bean
-    public FindDescriptorForDsdActionHandler getFindDescriptorForDsdActionHandler() {
-        return new FindDescriptorForDsdActionHandler();
-    }
-
-    @Bean
-    public FindConceptSchemesActionHandler getFindConceptSchemesActionHandler() {
-        return new FindConceptSchemesActionHandler();
-    }
-
-    @Bean
-    public FindConceptsActionHandler getFindConceptsActionHandler() {
-        return new FindConceptsActionHandler();
-    }
-
-    @Bean
-    public SaveDsdActionHandler getsSaveDsdActionHandler() {
-        return new SaveDsdActionHandler();
-    }
-
-    @Bean
-    public SaveComponentForDsdActionHandler getSaveComponentForDsdActionHandler() {
-        return new SaveComponentForDsdActionHandler();
-    }
-
-    @Bean
-    public SaveDescriptorForDsdActionHandler getSaveDescriptorForDsdActionHandler() {
-        return new SaveDescriptorForDsdActionHandler();
-    }
-
-    @Bean
-    public DeleteDsdActionHandler getDeleteDsdActionHandler() {
-        return new DeleteDsdActionHandler();
-    }
-
-    @Bean
-    public DeleteDsdListActionHandler getDeleteDsdListActionHandler() {
-        return new DeleteDsdListActionHandler();
-    }
-
-    @Bean
-    public DeleteComponentForDsdActionHandler getDeleteComponentForDsdActionHandler() {
-        return new DeleteComponentForDsdActionHandler();
-    }
-
-    @Bean
-    public DeleteDimensionListForDsdActionHandler getDeleteDimensionForDsdActionHandler() {
-        return new DeleteDimensionListForDsdActionHandler();
-    }
-
-    @Bean
-    public DeleteAttributeListForDsdActionHandler getDeleteAttributeListForDsdActionHandler() {
-        return new DeleteAttributeListForDsdActionHandler();
-    }
-
-    @Bean
-    public DeleteDescriptorForDsdActionHandler getDeleteDescriptorForDsdActionHandler() {
-        return new DeleteDescriptorForDsdActionHandler();
-    }
-
-    @Bean
-    public DeleteDescriptorListForDsdActionHandler getDeleteDescriptorListForDsdActionHandler() {
-        return new DeleteDescriptorListForDsdActionHandler();
-    }
-
-    @Bean
-    public FindCodeListsActionHandler getFindCodeListsActionHandler() {
-        return new FindCodeListsActionHandler();
-    }
-
-    @Bean
-    public GetConceptSchemePaginatedListActionHandler getConceptSchemePaginatedListActionHandler() {
-        return new GetConceptSchemePaginatedListActionHandler();
-    }
-
-    @Bean
-    public GetConceptSchemeByIdLogicActionHandler getConceptSchemeByIdLogicActionHandler() {
-        return new GetConceptSchemeByIdLogicActionHandler();
-    }
-
-    @Bean
-    public SaveConceptSchemeActionHandler getConceptSchemeActionHandler() {
-        return new SaveConceptSchemeActionHandler();
-    }
-
-    @Bean
-    public DeleteConceptSchemeListActionHandler getDeleteConceptSchemeListActionHandler() {
-        return new DeleteConceptSchemeListActionHandler();
-    }
-
-    @Bean
-    public ActionValidator getDefaultActionValidator() {
-        return new DefaultActionValidator();
-    }
-
-    @Bean
-    public ExportDsdActionHandler getExportDsdActionHandler() {
-        return new ExportDsdActionHandler();
     }
 
     protected void configureHandlers() {
@@ -202,6 +87,9 @@ public class ServerModule extends HandlerModule {
         bindHandler(SaveConceptSchemeAction.class, SaveConceptSchemeActionHandler.class);
         bindHandler(DeleteConceptSchemeListAction.class, DeleteConceptSchemeListActionHandler.class);
 
+        bindHandler(ValidateTicketAction.class, ValidateTicketActionHandler.class);
+        bindHandler(GetLoginPageUrlAction.class, GetLoginPageUrlActionHandler.class);
+        bindHandler(CloseSessionAction.class, CloseSessionActionHandler.class);
     }
 
 }
