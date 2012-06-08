@@ -19,6 +19,7 @@ import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.InternationalMainFormLayout;
+import org.siemac.metamac.web.common.client.widgets.form.fields.CustomSelectItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 
@@ -30,7 +31,6 @@ import com.smartgwt.client.types.Visibility;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.events.HasClickHandlers;
-import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.grid.HoverCustomizer;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
@@ -66,7 +66,7 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
 
     private GroupDynamicForm            form;
     private RequiredTextItem            idLogic;
-    private SelectItem                  dimensionsItem;
+    private CustomSelectItem            dimensionsItem;
 
     private ToolStripButton             newToolStripButton;
     private ToolStripButton             deleteToolStripButton;
@@ -230,7 +230,7 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
         idLogic.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());
 
         // Dimensions
-        dimensionsItem = new SelectItem("dim-groupkeys", MetamacSrmWeb.getConstants().dsdDimensions());
+        dimensionsItem = new CustomSelectItem("dim-groupkeys", MetamacSrmWeb.getConstants().dsdDimensions());
         dimensionsItem.setMultiple(true);
         dimensionsItem.setPickListWidth(350);
 

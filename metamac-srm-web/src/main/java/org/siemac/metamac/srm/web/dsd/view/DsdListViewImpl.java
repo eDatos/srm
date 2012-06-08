@@ -84,9 +84,9 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
         // Modal Form
 
         nameItem = new RequiredTextItem("name-new-dsd", MetamacSrmWeb.getConstants().dsdName());
-        nameItem.setWidth(200);
+        nameItem.setWidth(230);
         idLogicItem = new RequiredTextItem("id-logic-new-dsd", MetamacSrmWeb.getConstants().dsdIdLogic());
-        idLogicItem.setWidth(200);
+        idLogicItem.setWidth(230);
         idLogicItem.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());
         createDsdButton = new ButtonItem("create-new-dsd", MetamacSrmWeb.getConstants().dsdCreate());
         createDsdButton.setWidth(100);

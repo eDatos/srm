@@ -33,6 +33,7 @@ import org.siemac.metamac.web.common.client.utils.ExternalItemUtils;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.InternationalMainFormLayout;
+import org.siemac.metamac.web.common.client.widgets.form.fields.CustomSelectItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ExternalSelectItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredSelectItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
@@ -50,7 +51,6 @@ import com.smartgwt.client.widgets.events.HasClickHandlers;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.FormItemIfFunction;
 import com.smartgwt.client.widgets.form.fields.FormItem;
-import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.form.fields.events.HasChangeHandlers;
@@ -113,12 +113,12 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
     private RequiredSelectItem          assignmentStatusItem;
     // Relation
     private RequiredSelectItem          relationType;
-    private SelectItem                  groupKeysForDimensionRelationshipItem;
+    private CustomSelectItem            groupKeysForDimensionRelationshipItem;
     private RequiredSelectItem          dimensionsForDimensionRelationshipItem;      // Required if relationType == DIMENSION_RELATIONSHIP
     private RequiredSelectItem          groupKeyFormForGroupRelationship;            // Required if relationType == GROUP_RELATIONSHIP
     // Representation
-    private SelectItem                  representationTypeItem;
-    private SelectItem                  codeListItem;
+    private CustomSelectItem            representationTypeItem;
+    private CustomSelectItem            codeListItem;
     private FacetForm                   facetForm = null;
 
     private ToolStripButton             newToolStripButton;
@@ -367,7 +367,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
         // Relation: Group keys for dimension relationship
 
-        groupKeysForDimensionRelationshipItem = new SelectItem("groups-dim-attr", MetamacSrmWeb.getConstants().dsdAttributeGroupKeysForDimensionRelationship());
+        groupKeysForDimensionRelationshipItem = new CustomSelectItem("groups-dim-attr", MetamacSrmWeb.getConstants().dsdAttributeGroupKeysForDimensionRelationship());
         groupKeysForDimensionRelationshipItem.setMultiple(true);
         groupKeysForDimensionRelationshipItem.setPickListWidth(350);
         // Show GroupKeyForDimensionRelationship if TypeRelathionship = DIMENSION_RELATIONSHIP
@@ -436,7 +436,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
         // Representation
 
-        representationTypeItem = new SelectItem("repr-dim", MetamacSrmWeb.getConstants().dsdRepresentation());
+        representationTypeItem = new CustomSelectItem("repr-dim", MetamacSrmWeb.getConstants().dsdRepresentation());
         representationTypeItem.setType("comboBox");
         LinkedHashMap<String, String> valueMap = new LinkedHashMap<String, String>();
         valueMap.put(new String(), new String());
@@ -455,7 +455,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
             }
         });
 
-        codeListItem = new SelectItem("repr-enum-code-list", MetamacSrmWeb.getConstants().dsdCodeList());
+        codeListItem = new CustomSelectItem("repr-enum-code-list", MetamacSrmWeb.getConstants().dsdCodeList());
         codeListItem.setType("comboBox");
         // Show CodeList if RepresentationTypeEnum = ENUMERATED
         codeListItem.setShowIfCondition(new FormItemIfFunction() {

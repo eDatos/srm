@@ -31,6 +31,7 @@ import org.siemac.metamac.web.common.client.utils.ExternalItemUtils;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.InternationalMainFormLayout;
+import org.siemac.metamac.web.common.client.widgets.form.fields.CustomSelectItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ExternalSelectItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredSelectItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
@@ -50,7 +51,6 @@ import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.FormItemIfFunction;
 import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.form.fields.FormItemIcon;
-import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.form.fields.events.HasChangeHandlers;
@@ -106,9 +106,9 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
     private ExternalSelectItem          conceptItem;
     private RoleSelectItem              roleItem;
     // Representation
-    private SelectItem                  representationTypeItem;
-    private SelectItem                  codeListItem;
-    private SelectItem                  conceptSchemeItem;
+    private CustomSelectItem            representationTypeItem;
+    private CustomSelectItem            codeListItem;
+    private CustomSelectItem            conceptSchemeItem;
     private FacetForm                   facetForm;
 
     private ToolStripButton             newToolStripButton;
@@ -389,7 +389,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
         // Representation
 
-        representationTypeItem = new SelectItem("repr-dim", MetamacSrmWeb.getConstants().dsdRepresentation());
+        representationTypeItem = new CustomSelectItem("repr-dim", MetamacSrmWeb.getConstants().dsdRepresentation());
         representationTypeItem.setType("comboBox");
         LinkedHashMap<String, String> valueMap = new LinkedHashMap<String, String>();
         valueMap.put(new String(), new String());
@@ -435,7 +435,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
         // Code List
 
-        codeListItem = new SelectItem("repr-enum-code-list", MetamacSrmWeb.getConstants().dsdCodeList());
+        codeListItem = new CustomSelectItem("repr-enum-code-list", MetamacSrmWeb.getConstants().dsdCodeList());
         codeListItem.setType("comboBox");
         // Show CodeList if RepresentationTypeEnum = ENUMERATED (except in MeasureDimension)
         codeListItem.setShowIfCondition(new FormItemIfFunction() {
@@ -446,7 +446,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
             }
         });
 
-        conceptSchemeItem = new SelectItem("repr-enum-concept-scheme", MetamacSrmWeb.getConstants().conceptScheme());
+        conceptSchemeItem = new CustomSelectItem("repr-enum-concept-scheme", MetamacSrmWeb.getConstants().conceptScheme());
         conceptSchemeItem.setType("comboBox");
         // Show CodeList if RepresentationTypeEnum = ENUMERATED and TypeDimensionComponent == MEASUREDIMENSION
         conceptSchemeItem.setShowIfCondition(new FormItemIfFunction() {

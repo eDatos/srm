@@ -36,8 +36,7 @@ public class ImportDsdWindow extends Window {
         super();
         initComplete(this);
         initUploadFailed(this);
-        setWidth(360);
-        setHeight(130);
+        setAutoSize(true);
         setTitle(MetamacSrmWeb.getMessages().dsdImport());
         setShowMinimizeButton(false);
         setIsModal(true);

@@ -10,7 +10,9 @@ import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.resources.GlobalResources;
 import org.siemac.metamac.srm.web.dsd.model.record.ConceptRecord;
 import org.siemac.metamac.srm.web.dsd.utils.RecordUtils;
+import org.siemac.metamac.web.common.client.utils.FormItemUtils;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomCanvasItem;
+import org.siemac.metamac.web.common.client.widgets.form.fields.CustomSelectItem;
 
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.VerticalAlignment;
@@ -29,18 +31,19 @@ import com.smartgwt.client.widgets.layout.VStack;
 
 public class RoleSelectItem extends CustomCanvasItem {
 
-    private SelectItem conceptSchemeItem;
-    private ListGrid   conceptsList;
-    private ListGrid   roleList;
+    private CustomSelectItem conceptSchemeItem;
+    private ListGrid         conceptsList;
+    private ListGrid         roleList;
 
     public RoleSelectItem(String name, String title) {
         super(name, title);
         setTitleVAlign(VerticalAlignment.TOP);
-        conceptSchemeItem = new SelectItem("scheme-items", MetamacSrmWeb.getConstants().conceptScheme());
+        conceptSchemeItem = new CustomSelectItem("scheme-items", MetamacSrmWeb.getConstants().conceptScheme());
+        conceptSchemeItem.setWidth(FormItemUtils.FORM_ITEM_WIDTH);
         conceptSchemeItem.setShowTitle(false);
 
         conceptsList = new ListGrid();
-        conceptsList.setWidth(300);
+        conceptsList.setWidth(FormItemUtils.FORM_ITEM_WIDTH);
         conceptsList.setCellHeight(24);
         conceptsList.setBorder("1px solid #aaacb2");
         conceptsList.setShowHeader(false);
@@ -48,7 +51,7 @@ public class RoleSelectItem extends CustomCanvasItem {
         conceptsList.setStyleName("conceptsListStyle");
 
         roleList = new ListGrid();
-        roleList.setWidth(300);
+        roleList.setWidth(FormItemUtils.FORM_ITEM_WIDTH);
         roleList.setCellHeight(24);
         roleList.setBorder("1px solid #aaacb2");
         roleList.setShowHeader(false);
