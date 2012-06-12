@@ -32,7 +32,7 @@ import org.springframework.test.context.junit4.AbstractTransactionalJUnit4Spring
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-@ContextConfiguration(locations = {"classpath:spring/srm/applicationContext-test.xml"})
+@ContextConfiguration(locations = {"classpath:spring/srm-core/oracle/applicationContext-test.xml"})
 @TransactionConfiguration(transactionManager = "txManagerCore", defaultRollback = true)
 @Transactional
 public class DataStructureDefinitionServiceTest extends AbstractTransactionalJUnit4SpringContextTests implements DataStructureDefinitionServiceTestBase {
@@ -52,10 +52,10 @@ public class DataStructureDefinitionServiceTest extends AbstractTransactionalJUn
     @BeforeClass
     public static void setUp() {
         // JNDI SDMXDS
-        SimpleNamingContextBuilder simpleNamingContextBuilder = OracleJNDIMock.setUp("SDMXDS", "metamac", "metamac", "jdbc:oracle:thin:@localhost:1521:XE", null);
+        SimpleNamingContextBuilder simpleNamingContextBuilder = OracleJNDIMock.setUp("SDMXDS", "srm_test", "srm_test", "jdbc:oracle:thin:@localhost:1521:XE", null);
 
         // JNDI tatisticDatasetDS
-        simpleNamingContextBuilder = OracleJNDIMock.setUp("StatisticDatasetDS", "sdmx_data", "sdmx_data", "jdbc:oracle:thin:@localhost:1521:XE", simpleNamingContextBuilder);
+//        simpleNamingContextBuilder = OracleJNDIMock.setUp("StatisticDatasetDS", "sdmx_data", "sdmx_data", "jdbc:oracle:thin:@localhost:1521:XE", simpleNamingContextBuilder);
     }
 
     protected ServiceContext getServiceContext() {
