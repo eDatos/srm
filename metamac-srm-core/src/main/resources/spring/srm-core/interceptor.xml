@@ -1,27 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
-    xmlns:jee="http://www.springframework.org/schema/jee" xmlns:util="http://www.springframework.org/schema/util"
-    xsi:schemaLocation="
-	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd 
-    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
-    http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
-    http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd"
-    default-autowire="byName">
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jee="http://www.springframework.org/schema/jee"
+    xmlns:context="http://www.springframework.org/schema/context" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="   http://www.springframework.org/schema/beans   http://www.springframework.org/schema/beans/spring-beans-3.0.xsd   http://www.springframework.org/schema/context   http://www.springframework.org/schema/context/spring-context-3.0.xsd   http://www.springframework.org/schema/aop   http://www.springframework.org/schema/aop/spring-aop-3.0.xsd   http://www.springframework.org/schema/jee   http://www.springframework.org/schema/jee/spring-jee-3.0.xsd   http://www.springframework.org/schema/tx   http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 
-
-    <!-- Interceptors -->
+    <!-- Flush Eager -->
     <bean id="jpaInterceptorFlushEagerCore" class="org.springframework.orm.jpa.JpaInterceptor">
         <property name="entityManagerFactory" ref="entityManagerFactoryCore" />
         <!-- Need to flush to detect OptimisticLockingException and do proper rollback. -->
         <property name="flushEager" value="true" />
     </bean>
 
-    <!-- Logging interceptor -->
-    <bean id="loggingHandlingAdvice" class="org.siemac.metamac.core.common.aop.LoggingInterceptor" />
+    <!-- Flush interceptor -->
+    <bean id="flushingHandlingAdvice" class="org.siemac.metamac.srm.core.common.aop.FlushingInterceptor" />
 
-    <!-- |_ General Advices -->
-    <import resource="classpath:/spring/general-beans-advice.xml" />
+    <!-- Disable flush interceptor -->
+    <bean id="disableFlushHandlingAdvice" class="org.siemac.metamac.srm.core.common.aop.DisableFlushInterceptor" />
 
     <tx:advice id="txAdviceCore" transaction-manager="txManagerCore">
         <tx:attributes>
@@ -34,19 +27,29 @@
     </tx:advice>
 
     <aop:config>
-        <aop:pointcut id="businessServiceFacadeCore" expression="execution(public * org.siemac.metamac..core*..*ServiceFacade.*(..))" />
+        <aop:pointcut id="updateServicePointCut" expression="execution(public * org.siemac.metamac.srm..serviceapi.*Service.*update*(..))" />
+        <aop:pointcut id="serviceFacadePointCut" expression="execution(public * org.siemac.metamac.srm..serviceapi.*ServiceFacade.*(..))" />
+        <aop:pointcut id="doMapperPointCut" expression="execution(public * org.siemac.metamac.srm..service.dto.*2DoMapper.*(..))" />
+
         <!-- Repeating the expression, since I can't find a way to refer to the other pointcuts. -->
-        <aop:pointcut id="updatingBusinessServiceFacadeCore"
+        <aop:pointcut id="updatingServiceFacade"
             expression="execution(public * org.siemac.metamac..core*..*ServiceFacade.*(..)) and not (execution(public * org.siemac.metamac..core*..*.retrieve*(..)) or execution(public * org.siemac.metamac..core*..*.find*(..)))" />
 
-        <aop:advisor pointcut-ref="businessServiceFacadeCore" advice-ref="txAdviceCore" order="1" />
-        <aop:advisor pointcut-ref="businessServiceFacadeCore" advice-ref="serviceContextStoreAdvice" order="2" />
-        <aop:advisor pointcut-ref="businessServiceFacadeCore" advice-ref="errorHandlingAdvice" order="3" />
-        <aop:advisor pointcut-ref="businessServiceFacadeCore" advice-ref="hibernateErrorHandlingAdvice" order="4" />
-        <aop:advisor pointcut-ref="updatingBusinessServiceFacadeCore" advice-ref="jpaInterceptorFlushEagerCore" order="5" />
+        <aop:advisor pointcut-ref="serviceFacadePointCut" advice-ref="txAdviceCore" order="1" />
+        <aop:advisor pointcut-ref="serviceFacadePointCut" advice-ref="serviceContextStoreAdvice" order="2" />
+        <aop:advisor pointcut-ref="serviceFacadePointCut" advice-ref="errorHandlingAdvice" order="3" />
+        <aop:advisor pointcut-ref="serviceFacadePointCut" advice-ref="hibernateErrorHandlingAdvice" order="4" />
+        <aop:advisor pointcut-ref="updatingServiceFacade" advice-ref="jpaInterceptorFlushEagerCore" order="5" />
 
-        <aop:aspect id="afterThrowing" ref="loggingHandlingAdvice">
-            <aop:after-throwing pointcut-ref="businessServiceFacadeCore" throwing="ex" method="afterThrowing" />
+
+        <!-- Flushing interceptor -->
+        <aop:aspect id="flushing" ref="flushingHandlingAdvice">
+            <aop:after-returning pointcut-ref="updateServicePointCut" method="forceFlushToOptimisticLocking" />
+        </aop:aspect>
+
+        <!-- Flush mode interceptor -->
+        <aop:aspect id="flushingMode" ref="disableFlushHandlingAdvice">
+            <aop:around method="manageFlushMode" pointcut-ref="doMapperPointCut" />
         </aop:aspect>
     </aop:config>
 

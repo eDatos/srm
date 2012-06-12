@@ -32,7 +32,7 @@ import org.springframework.test.context.junit4.AbstractTransactionalJUnit4Spring
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-@ContextConfiguration(locations = {"classpath:oracle/srm-core/applicationContext-test.xml",})
+@ContextConfiguration(locations = {"classpath:spring/srm/applicationContext-test.xml"})
 @TransactionConfiguration(transactionManager = "txManagerCore", defaultRollback = true)
 @Transactional
 public class DataStructureDefinitionServiceTest extends AbstractTransactionalJUnit4SpringContextTests implements DataStructureDefinitionServiceTestBase {

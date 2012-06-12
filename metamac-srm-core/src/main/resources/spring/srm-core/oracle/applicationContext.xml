@@ -17,13 +17,18 @@
         <context:exclude-filter type="regex" expression=".*web.*" />
     </context:component-scan>
 
-    <!-- CORE Entity Manager -->
+    <!-- metamac-core-common -->
+    <import resource="classpath:/spring/logging-beans-advice.xml" />
+    <import resource="classpath:/spring/general-beans-advice.xml" />
+
+    <!-- import additional spring configuration files -->
+    
+    <!-- metamac-srm -->
     <import resource="classpath:/spring/srm-core/oracle/applicationContext-datasource.xml" />
     <import resource="classpath:/spring/srm-core/interceptor.xml" />
-    <import resource="classpath:/spring/pub-sub.xml" />
     <import resource="classpath:/spring/srm-core/more.xml" />
-
-    <!-- Transformation -->
+    
+    <!-- metamac-transformation -->
     <import resource="classpath:/spring/transformation/applicationContext.xml" />
 
 </beans>
