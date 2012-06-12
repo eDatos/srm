@@ -3,7 +3,6 @@ package org.siemac.metamac.srm.web.concept.presenter;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.siemac.metamac.domain.concept.dto.ConceptSchemeDto;
@@ -11,9 +10,7 @@ import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
 import org.siemac.metamac.srm.web.client.PlaceRequestParams;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
-import org.siemac.metamac.srm.web.client.presenter.PaginationPresenter;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
-import org.siemac.metamac.srm.web.client.widgets.StatusBar;
 import org.siemac.metamac.srm.web.client.widgets.presenter.ToolStripPresenterWidget;
 import org.siemac.metamac.srm.web.concept.view.handlers.ConceptSchemeListUiHandlers;
 import org.siemac.metamac.srm.web.shared.DeleteConceptSchemeListAction;
@@ -32,6 +29,7 @@ import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.HasUiHandlers;
+import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.ContentSlot;
 import com.gwtplatform.mvp.client.annotations.NameToken;
@@ -44,7 +42,7 @@ import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 
-public class ConceptSchemeListPresenter extends PaginationPresenter<ConceptSchemeListPresenter.ConceptSchemeListView, ConceptSchemeListPresenter.ConceptSchemeListProxy>
+public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPresenter.ConceptSchemeListView, ConceptSchemeListPresenter.ConceptSchemeListProxy>
         implements
             ConceptSchemeListUiHandlers {
 
@@ -72,18 +70,14 @@ public class ConceptSchemeListPresenter extends PaginationPresenter<ConceptSchem
 
     public interface ConceptSchemeListView extends View, HasUiHandlers<ConceptSchemeListUiHandlers> {
 
-        void setConceptSchemeList(List<ConceptSchemeDto> conceptSchemesDtos);
-
-        StatusBar getStatusBar();
-        void refreshStatusBar();
-        void setNumberOfElements(int numberOfElements);
-        void setPageNumber(int pageNumber);
+        void setConceptSchemePaginatedList(GetConceptSchemePaginatedListResult conceptSchemesPaginatedList);
+        void goToConceptSchemeListLastPageAfterCreate();
     }
 
     @Inject
     public ConceptSchemeListPresenter(EventBus eventBus, ConceptSchemeListView conceptSchemeListView, ConceptSchemeListProxy conceptSchemeListProxy, DispatchAsync dispatcher,
             PlaceManager placeManager, ToolStripPresenterWidget toolStripPresenterWidget) {
-        super(eventBus, conceptSchemeListView, conceptSchemeListProxy, dispatcher, DEFAULT_MAX_RESULTS);
+        super(eventBus, conceptSchemeListView, conceptSchemeListProxy);
         this.placeManager = placeManager;
         this.toolStripPresenterWidget = toolStripPresenterWidget;
         this.dispatcher = dispatcher;
@@ -99,10 +93,8 @@ public class ConceptSchemeListPresenter extends PaginationPresenter<ConceptSchem
     protected void onReset() {
         super.onReset();
         SetTitleEvent.fire(this, getConstants().conceptSchemes());
-
-        initializePaginationSettings();
-
-        retrieveResultSet();
+        
+        retrieveConceptSchemes(0,DEFAULT_MAX_RESULTS);
     }
 
     @Override
@@ -110,11 +102,10 @@ public class ConceptSchemeListPresenter extends PaginationPresenter<ConceptSchem
         super.onReveal();
         setInSlot(TYPE_SetContextAreaContentConceptSchemeListToolBar, toolStripPresenterWidget);
     }
-
+    
     @Override
-    protected void retrieveResultSet() {
-        dispatcher.execute(new GetConceptSchemePaginatedListAction(getMaxResults(), getFirstResult()), new WaitingAsyncCallback<GetConceptSchemePaginatedListResult>() {
-
+    public void retrieveConceptSchemes(int firstResult, int maxResults) {
+        dispatcher.execute(new GetConceptSchemePaginatedListAction(maxResults, firstResult), new WaitingAsyncCallback<GetConceptSchemePaginatedListResult>() {
             @Override
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(ConceptSchemeListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorRetrieveList()), MessageTypeEnum.ERROR);
@@ -122,43 +113,11 @@ public class ConceptSchemeListPresenter extends PaginationPresenter<ConceptSchem
 
             @Override
             public void onWaitSuccess(GetConceptSchemePaginatedListResult result) {
-                ConceptSchemeListPresenter.this.totalResults = result.getTotalResults();
-
-                setNumberOfElements(result.getConceptSchemeList().size());
-
-                // update Selected label e.g "0 of 50 selected"
-                getView().setNumberOfElements(getNumberOfElements());
-                getView().setPageNumber(getPageNumber());
-                getView().refreshStatusBar();
-
-                // Log.debug("onSuccess() - firstResult: " + firstResult +
-                // " pageNumber: " + pageNumber + " numberOfElements: " +
-                // numberOfElements);
-
-                // enable/disable the pagination widgets
-                if (getPageNumber() == 1) {
-                    getView().getStatusBar().getResultSetFirstButton().disable();
-                    getView().getStatusBar().getResultSetPreviousButton().disable();
-                } else {
-                    getView().getStatusBar().getResultSetFirstButton().enable();
-                    getView().getStatusBar().getResultSetPreviousButton().enable();
-                }
-
-                // enable/disable the pagination widgets
-                if ((result.getTotalResults() - (getPageNumber() - 1) * DEFAULT_MAX_RESULTS) > getNumberOfElements()) {
-                    getView().getStatusBar().getResultSetNextButton().enable();
-                    getView().getStatusBar().getResultSetLastButton().enable();
-                } else {
-                    getView().getStatusBar().getResultSetNextButton().disable();
-                    getView().getStatusBar().getResultSetLastButton().disable();
-                }
-
-                // pass the result set to the View
-                getView().setConceptSchemeList(result.getConceptSchemeList());
+                getView().setConceptSchemePaginatedList(result);
             }
         });
     }
-
+    
     // Handlers
     @Override
     public void createConceptScheme(ConceptSchemeDto conceptSchemeDto) {
@@ -172,14 +131,15 @@ public class ConceptSchemeListPresenter extends PaginationPresenter<ConceptSchem
             @Override
             public void onWaitSuccess(SaveConceptSchemeResult result) {
                 ShowMessageEvent.fire(ConceptSchemeListPresenter.this, ErrorUtils.getMessageList(getMessages().conceptSchemeSaved()), MessageTypeEnum.SUCCESS);
-                retrieveResultSet(); // Reload list
+                retrieveConceptSchemes(0, DEFAULT_MAX_RESULTS);
+                getView().goToConceptSchemeListLastPageAfterCreate();
             }
         });
     }
 
     @Override
-    public void deleteConceptSchemes(List<String> uuidsFromSelected) {
-        dispatcher.execute(new DeleteConceptSchemeListAction(uuidsFromSelected), new WaitingAsyncCallback<DeleteConceptSchemeListResult>() {
+    public void deleteConceptSchemes(List<Long> idsFromSelected) {
+        dispatcher.execute(new DeleteConceptSchemeListAction(idsFromSelected), new WaitingAsyncCallback<DeleteConceptSchemeListResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -189,19 +149,16 @@ public class ConceptSchemeListPresenter extends PaginationPresenter<ConceptSchem
             @Override
             public void onWaitSuccess(DeleteConceptSchemeListResult result) {
                 ShowMessageEvent.fire(ConceptSchemeListPresenter.this, ErrorUtils.getMessageList(getMessages().conceptSchemeDeleted()), MessageTypeEnum.SUCCESS);
-                retrieveResultSet(); // reload list
+                retrieveConceptSchemes(0, DEFAULT_MAX_RESULTS); // reload list
             }
         });
     }
 
     @Override
     public void goToConceptScheme(String idLogic) {
-        PlaceRequest resourcesRequest = new PlaceRequest(NameTokens.structuralResourcesPage);
-        PlaceRequest conceptSchemeListRequest = new PlaceRequest(NameTokens.conceptSchemePage).with(PlaceRequestParams.conceptSchemeParam, idLogic);
-        List<PlaceRequest> placeRequestHierarchy = new ArrayList<PlaceRequest>();
-        placeRequestHierarchy.add(resourcesRequest);
-        placeRequestHierarchy.add(conceptSchemeListRequest);
-        placeManager.revealPlaceHierarchy(placeRequestHierarchy);
+        if (idLogic != null) {
+            placeManager.revealRelativePlace(new PlaceRequest(NameTokens.conceptSchemePage).with(PlaceRequestParams.conceptSchemeParam, idLogic));
+        }
     }
 
 }

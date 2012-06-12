@@ -279,7 +279,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         // staticPositionItem = new StaticTextItem("position-dim-view", MetamacSrmWeb.getConstants().dsdDimensionsPosition());
         staticRepresentationTypeItem = new ViewTextItem("repr-dim-view", MetamacSrmWeb.getConstants().dsdRepresentation());
         staticCodeListItem = new ViewTextItem("repr-enum-code-list-view", MetamacSrmWeb.getConstants().dsdCodeList());
-        staticConceptSchemeItem = new ViewTextItem("repr-enum-concept-scheme-view", MetamacSrmWeb.getConstants().conceptScheme());
+        staticConceptSchemeItem = new ViewTextItem("repr-enum-concept-scheme-view", MetamacSrmWeb.getConstants().dsdConceptScheme());
 
         GroupDynamicForm staticForm = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdDimensionDetails());
         staticForm.setFields(staticIdLogic, staticTypeItem, staticConceptItem, staticRoleItem, staticRepresentationTypeItem, staticCodeListItem, staticConceptSchemeItem);
@@ -446,7 +446,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
             }
         });
 
-        conceptSchemeItem = new CustomSelectItem("repr-enum-concept-scheme", MetamacSrmWeb.getConstants().conceptScheme());
+        conceptSchemeItem = new CustomSelectItem("repr-enum-concept-scheme", MetamacSrmWeb.getConstants().dsdConceptScheme());
         conceptSchemeItem.setType("comboBox");
         // Show CodeList if RepresentationTypeEnum = ENUMERATED and TypeDimensionComponent == MEASUREDIMENSION
         conceptSchemeItem.setShowIfCondition(new FormItemIfFunction() {

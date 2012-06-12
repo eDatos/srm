@@ -2,9 +2,9 @@ package org.siemac.metamac.srm.web.concept.widgets;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
+import org.siemac.metamac.domain.concept.enums.domain.ConceptSchemeProcStatusEnum;
 import org.siemac.metamac.srm.web.client.resources.GlobalResources;
 import org.siemac.metamac.srm.web.client.utils.ClientSecurityUtils;
-import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeProcStatusEnum;
 import org.siemac.metamac.web.common.client.widgets.form.InternationalMainFormLayout;
 
 import com.smartgwt.client.widgets.events.HasClickHandlers;
@@ -45,8 +45,6 @@ public class ConceptSchemeMainFormLayout extends InternationalMainFormLayout {
         toolStrip.addButton(rejectValidation);
         toolStrip.addButton(versioning);
     }
-
-    // TODO: WAITING FOR PROCSTATUS
 
     public void updatePublishSection(ConceptSchemeProcStatusEnum status) {
         this.status = status;
@@ -100,7 +98,7 @@ public class ConceptSchemeMainFormLayout extends InternationalMainFormLayout {
     }
 
     public HasClickHandlers getPublishExternally() {
-        return publishInternally;
+        return publishExternally;
     }
 
     public HasClickHandlers getVersioning() {

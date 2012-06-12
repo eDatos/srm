@@ -10,7 +10,7 @@ import com.gwtplatform.dispatch.annotation.Out;
 public class PublishConceptSchemeExternally {
 
     @In(1)
-    String           conceptSchemeUuid;
+    Long             id;
 
     @Out(1)
     ConceptSchemeDto conceptSchemeDto;

@@ -13,9 +13,9 @@ public class ConceptDS extends DataSource {
     public static final String DESCRIPTION = "con-desc";
 
     public ConceptDS() {
-        DataSourceIntegerField id = new DataSourceIntegerField(ID, MetamacSrmWeb.getConstants().conceptSchemeId());
-        id.setPrimaryKey(true);
-        addField(id);
+        DataSourceIntegerField idLogic = new DataSourceIntegerField(ID_LOGIC, MetamacSrmWeb.getConstants().conceptSchemeId());
+        idLogic.setPrimaryKey(true);
+        addField(idLogic);
     }
 
 }

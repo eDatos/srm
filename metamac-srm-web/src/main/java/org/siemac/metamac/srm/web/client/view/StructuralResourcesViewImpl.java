@@ -6,6 +6,7 @@ import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.presenter.StructuralResourcesPresenter;
 import org.siemac.metamac.srm.web.client.view.handlers.StructuralResourcesUiHandlers;
+import org.siemac.metamac.srm.web.client.widgets.ConceptSchemesItemsContextAreaListGrid;
 import org.siemac.metamac.srm.web.client.widgets.DsdsItemsContextAreaListGrid;
 
 import com.google.gwt.user.client.ui.Widget;
@@ -26,15 +27,18 @@ public class StructuralResourcesViewImpl extends ViewWithUiHandlers<StructuralRe
     private static final String                CONTEXT_AREA_WIDTH = "*";
 
     private final DsdsItemsContextAreaListGrid dsdsItemsContextAreaListGrid;
+    private final ConceptSchemesItemsContextAreaListGrid conceptSchemesItemsContextAreaListGrid;
+    
     private final SectionStack                 lastModifiedArtifactsSectionStack;
 
     private VLayout                            panel;
 
     @Inject
-    public StructuralResourcesViewImpl(DsdsItemsContextAreaListGrid dsdsItemsContextAreaListGrid) {
+    public StructuralResourcesViewImpl(DsdsItemsContextAreaListGrid dsdsItemsContextAreaListGrid, ConceptSchemesItemsContextAreaListGrid conceptSchemesItemsContextAreaListGrid) {
         super();
 
         this.dsdsItemsContextAreaListGrid = dsdsItemsContextAreaListGrid;
+        this.conceptSchemesItemsContextAreaListGrid = conceptSchemesItemsContextAreaListGrid;
 
         panel = new VLayout();
 
@@ -57,7 +61,7 @@ public class StructuralResourcesViewImpl extends ViewWithUiHandlers<StructuralRe
         SectionStackSection lastConceptSchemesModifiedSection = new SectionStackSection();
         lastConceptSchemesModifiedSection.setTitle(MetamacSrmWeb.getConstants().conceptSchemeLastModified());
         lastConceptSchemesModifiedSection.setExpanded(false);
-        // lastConceptSchemesModifiedSection.setItems();
+        lastConceptSchemesModifiedSection.setItems(this.conceptSchemesItemsContextAreaListGrid);
 
         SectionStackSection lastOrgSchemesModifiedSection = new SectionStackSection();
         lastOrgSchemesModifiedSection.setTitle(MetamacSrmWeb.getConstants().organisationSchemeLastModified());

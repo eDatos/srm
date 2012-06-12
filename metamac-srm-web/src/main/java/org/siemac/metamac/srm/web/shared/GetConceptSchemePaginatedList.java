@@ -20,6 +20,9 @@ public class GetConceptSchemePaginatedList {
     List<ConceptSchemeDto> conceptSchemeList;
 
     @Out(2)
+    Integer                pageNumber;
+
+    @Out(3)
     Integer                totalResults;
 
 }

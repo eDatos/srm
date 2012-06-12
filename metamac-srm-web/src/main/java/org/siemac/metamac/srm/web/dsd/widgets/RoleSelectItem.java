@@ -38,7 +38,7 @@ public class RoleSelectItem extends CustomCanvasItem {
     public RoleSelectItem(String name, String title) {
         super(name, title);
         setTitleVAlign(VerticalAlignment.TOP);
-        conceptSchemeItem = new CustomSelectItem("scheme-items", MetamacSrmWeb.getConstants().conceptScheme());
+        conceptSchemeItem = new CustomSelectItem("scheme-items", MetamacSrmWeb.getConstants().dsdConceptScheme());
         conceptSchemeItem.setWidth(FormItemUtils.FORM_ITEM_WIDTH);
         conceptSchemeItem.setShowTitle(false);
 

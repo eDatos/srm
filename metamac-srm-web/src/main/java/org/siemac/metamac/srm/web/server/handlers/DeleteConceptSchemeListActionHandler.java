@@ -21,8 +21,8 @@ public class DeleteConceptSchemeListActionHandler extends AbstractActionHandler<
     @Override
     public DeleteConceptSchemeListResult execute(DeleteConceptSchemeListAction action, ExecutionContext context) throws ActionException {
         try {
-            for (String uuid : action.getUuids()) {
-                ConceptSchemeService.deleteConceptScheme(uuid);
+            for (Long id : action.getIds()) {
+                ConceptSchemeService.deleteConceptScheme(id);
             }
             return new DeleteConceptSchemeListResult();
         } catch (MetamacException e) {

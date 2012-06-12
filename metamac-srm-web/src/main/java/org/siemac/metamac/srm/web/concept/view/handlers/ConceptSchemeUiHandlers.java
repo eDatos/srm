@@ -4,20 +4,22 @@ import org.siemac.metamac.domain.concept.dto.ConceptSchemeDto;
 
 import com.gwtplatform.mvp.client.UiHandlers;
 
-public interface ConceptSchemeUiHandlers extends UiHandlers {
 
+public interface ConceptSchemeUiHandlers extends UiHandlers {
+    
+    void retrieveConceptScheme(String conceptSchemeCode);
+    
     void saveConceptScheme(ConceptSchemeDto conceptScheme);
 
     /* Life cycle */
 
-    void sendToPendingPublication(String conceptSchemeUuid);
+    void sendToPendingPublication(Long id);
 
-    void rejectValidation(String conceptSchemeUuid);
+    void rejectValidation(Long id);
 
-    void publishInternally(String conceptSchemeUuid);
+    void publishInternally(Long id);
 
-    void publishExternally(String conceptSchemeUuid);
+    void publishExternally(Long id);
 
-    void versioning(String conceptSchemeUuid);
-
+    void versioning(Long id);
 }

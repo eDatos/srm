@@ -22,7 +22,7 @@ public class PublishConceptSchemeInternallyActionHandler extends AbstractActionH
     @Override
     public PublishConceptSchemeInternallyResult execute(PublishConceptSchemeInternallyAction action, ExecutionContext context) throws ActionException {
         try {
-            ConceptSchemeDto scheme = ConceptSchemeService.publishInternally(action.getConceptSchemeUuid());
+            ConceptSchemeDto scheme = ConceptSchemeService.publishInternally(action.getId());
             return new PublishConceptSchemeInternallyResult(scheme);
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);

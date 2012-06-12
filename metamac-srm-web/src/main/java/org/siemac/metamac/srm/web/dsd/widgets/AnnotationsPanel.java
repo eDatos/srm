@@ -56,7 +56,7 @@ public class AnnotationsPanel extends VLayout {
         imgLayout.setAutoHeight();
         imgLayout.setBackgroundColor("#eaf1fb");
         imgLayout.setLayoutMargin(5);
-        imgLayout.addStyleName("annotationPanel");
+        imgLayout.setStyleName("annotationPanel");
 
         if (viewOnly) {
             Img annotationImg = new Img(GlobalResources.RESOURCE.annotations().getURL());
@@ -116,7 +116,7 @@ public class AnnotationsPanel extends VLayout {
         imgLayout.addMember(form);
 
         grid = new ListGrid();
-        grid.addStyleName("annotationGrid");
+        grid.setStyleName("annotationGrid");
         grid.setLeaveScrollbarGap(false);
         grid.setCellPadding(4);
         grid.setCellHeight(40);

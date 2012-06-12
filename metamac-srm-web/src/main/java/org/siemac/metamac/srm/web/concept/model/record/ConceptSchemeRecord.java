@@ -7,28 +7,29 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
 
 public class ConceptSchemeRecord extends ListGridRecord {
 
-    public ConceptSchemeRecord(String uuid, String idLogic, String name, String status, ConceptSchemeDto conceptSchemeDto) {
-        setUuid(uuid);
+    public ConceptSchemeRecord(Long id, String idLogic, String name, String description, String status, ConceptSchemeDto conceptSchemeDto) {
+        setId(id);
         setName(name);
+        setDescription(description);
         setIdLogic(idLogic);
         setProcStatus(status);
         setConceptSchemeDto(conceptSchemeDto);
     }
 
-    public void setUuid(String uuid) {
-        setAttribute(ConceptSchemeDS.UUID, uuid);
+    public void setId(Long id) {
+        setAttribute(ConceptSchemeDS.ID, id);
     }
-
+    
     public void setName(String name) {
         setAttribute(ConceptSchemeDS.NAME, name);
+    }
+    
+    public void setDescription(String desc) {
+        setAttribute(ConceptSchemeDS.DESCRIPTION, desc);
     }
 
     public void setIdLogic(String idLogic) {
         setAttribute(ConceptSchemeDS.ID_LOGIC, idLogic);
-    }
-
-    public String getUuid() {
-        return getAttribute(ConceptSchemeDS.UUID);
     }
 
     public void setProcStatus(String value) {
@@ -38,4 +39,22 @@ public class ConceptSchemeRecord extends ListGridRecord {
     public void setConceptSchemeDto(ConceptSchemeDto conceptSchemeDto) {
         setAttribute(ConceptSchemeDS.DTO, conceptSchemeDto);
     }
+    
+    public Long getId() {
+        return getAttributeAsLong(ConceptSchemeDS.ID);
+    }
+    
+    public String getIdLogic() {
+        return getAttribute(ConceptSchemeDS.ID_LOGIC);
+    }
+    
+    public String getName() {
+        return getAttribute(ConceptSchemeDS.NAME);
+    }
+    
+    public String getDescription() {
+        return getAttribute(ConceptSchemeDS.DESCRIPTION);
+    }
+    
+    
 }

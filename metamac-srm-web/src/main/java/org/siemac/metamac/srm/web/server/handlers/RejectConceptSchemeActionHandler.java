@@ -22,7 +22,7 @@ public class RejectConceptSchemeActionHandler extends AbstractActionHandler<Reje
     @Override
     public RejectConceptSchemeResult execute(RejectConceptSchemeAction action, ExecutionContext context) throws ActionException {
         try {
-            ConceptSchemeDto scheme = ConceptSchemeService.reject(action.getConceptSchemeUuid());
+            ConceptSchemeDto scheme = ConceptSchemeService.reject(action.getId());
             return new RejectConceptSchemeResult(scheme);
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);

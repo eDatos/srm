@@ -24,7 +24,8 @@ public class GetConceptSchemePaginatedListActionHandler extends AbstractActionHa
         // TODO: replace mock
         try {
             ConceptSchemePage page = ConceptSchemeService.findAllConceptSchemes(action.getFirstResult(), action.getMaxResults());
-            return new GetConceptSchemePaginatedListResult(page.resultList, page.totalResults);
+            int pageNumber = (action.getFirstResult() / action.getMaxResults()) + 1;
+            return new GetConceptSchemePaginatedListResult(page.resultList, pageNumber, page.totalResults);
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);
         }

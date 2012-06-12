@@ -22,7 +22,7 @@ public class SendConceptSchemeToPendingPublicationActionHandler extends Abstract
     @Override
     public SendConceptSchemeToPendingPublicationResult execute(SendConceptSchemeToPendingPublicationAction action, ExecutionContext context) throws ActionException {
         try {
-            ConceptSchemeDto scheme = ConceptSchemeService.sendToPendingPublication(action.getConceptSchemeUuid());
+            ConceptSchemeDto scheme = ConceptSchemeService.sendToPendingPublication(action.getId());
             return new SendConceptSchemeToPendingPublicationResult(scheme);
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);

@@ -1,7 +1,6 @@
 package org.siemac.metamac.srm.web.concept.view;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
-import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 import static org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE;
 
 import java.util.ArrayList;
@@ -10,21 +9,23 @@ import java.util.List;
 import org.siemac.metamac.domain.concept.dto.ConceptSchemeDto;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.utils.ClientSecurityUtils;
-import org.siemac.metamac.srm.web.client.view.PaginationViewImpl;
-import org.siemac.metamac.srm.web.client.widgets.StatusBar;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptSchemeRecord;
 import org.siemac.metamac.srm.web.concept.presenter.ConceptSchemeListPresenter;
 import org.siemac.metamac.srm.web.concept.utils.RecordUtils;
 import org.siemac.metamac.srm.web.concept.view.handlers.ConceptSchemeListUiHandlers;
 import org.siemac.metamac.srm.web.concept.widgets.NewConceptSchemeWindow;
-import org.siemac.metamac.web.common.client.widgets.BaseCustomListGrid;
+import org.siemac.metamac.srm.web.shared.GetConceptSchemePaginatedListResult;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
+import org.siemac.metamac.web.common.client.widgets.PaginatedAction;
+import org.siemac.metamac.web.common.client.widgets.PaginatedBaseCustomListGrid;
 
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import com.gwtplatform.mvp.client.ViewImpl;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.SelectionAppearance;
+import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.types.Visibility;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -39,22 +40,23 @@ import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
-public class ConceptSchemeListViewImpl extends PaginationViewImpl<ConceptSchemeListUiHandlers> implements ConceptSchemeListPresenter.ConceptSchemeListView {
+public class ConceptSchemeListViewImpl extends ViewImpl implements ConceptSchemeListPresenter.ConceptSchemeListView {
 
-    private VLayout                  panel;
+    private ConceptSchemeListUiHandlers uiHandlers;
+    private VLayout                     panel;
 
-    private ToolStripButton          newConceptSchemeActor;
-    private ToolStripButton          deleteConceptSchemeActor;
+    private ToolStripButton             newConceptSchemeActor;
+    private ToolStripButton             deleteConceptSchemeActor;
 
-    private BaseCustomListGrid       conceptSchemesList;
+    private PaginatedBaseCustomListGrid conceptSchemesList;
 
-    private DeleteConfirmationWindow deleteConfirmationWindow;
+    private DeleteConfirmationWindow    deleteConfirmationWindow;
 
-    private NewConceptSchemeWindow   window;
+    private NewConceptSchemeWindow      window;
 
     @Inject
-    public ConceptSchemeListViewImpl(StatusBar statusBar) {
-        super(statusBar);
+    public ConceptSchemeListViewImpl() {
+        super();
 
         // ToolStrip
         ToolStrip toolStrip = new ToolStrip();
@@ -71,7 +73,7 @@ public class ConceptSchemeListViewImpl extends PaginationViewImpl<ConceptSchemeL
                     @Override
                     public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
                         if (window.validateForm()) {
-                            getUiHandlers().createConceptScheme(window.getNewConceptSchemeDto());
+                            uiHandlers.createConceptScheme(window.getNewConceptSchemeDto());
                             window.destroy();
                         }
                     }
@@ -94,38 +96,36 @@ public class ConceptSchemeListViewImpl extends PaginationViewImpl<ConceptSchemeL
         toolStrip.addButton(newConceptSchemeActor);
         toolStrip.addButton(deleteConceptSchemeActor);
 
-        conceptSchemesList = new BaseCustomListGrid();
+        conceptSchemesList = new PaginatedBaseCustomListGrid(ConceptSchemeListPresenter.DEFAULT_MAX_RESULTS, new PaginatedAction() {
+            @Override
+            public void retrieveResultSet(int firstResult, int maxResults) {
+                uiHandlers.retrieveConceptSchemes(firstResult, maxResults);
+            }
+        });
         conceptSchemesList.setHeight(680);
-        conceptSchemesList.setDataSource(new ConceptSchemeDS());
-        conceptSchemesList.setUseAllDataSourceFields(false);
-        conceptSchemesList.setSelectionAppearance(SelectionAppearance.CHECKBOX);
-        conceptSchemesList.addSelectionChangedHandler(new SelectionChangedHandler() {
+        conceptSchemesList.getListGrid().setDataSource(new ConceptSchemeDS());
+        conceptSchemesList.getListGrid().setUseAllDataSourceFields(false);
+        conceptSchemesList.getListGrid().setSelectionAppearance(SelectionAppearance.CHECKBOX);
+        conceptSchemesList.getListGrid().setSelectionType(SelectionStyle.SIMPLE);
+        conceptSchemesList.getListGrid().addSelectionChangedHandler(new SelectionChangedHandler() {
 
             @Override
             public void onSelectionChanged(SelectionEvent event) {
-                if (conceptSchemesList.getSelectedRecords().length > 0) {
+                if (conceptSchemesList.getListGrid().getSelectedRecords().length > 0) {
                     deleteConceptSchemeActor.show();
                 } else {
                     deleteConceptSchemeActor.hide();
                 }
-
-                ListGridRecord[] records = event.getSelection();
-
-                setNumberSelected(records.length);
-
-                String selectedLabel = getMessages().selected(String.valueOf(getNumberSelected()), String.valueOf(getNumberOfElements()));
-                ConceptSchemeListViewImpl.this.statusBar.getSelectedLabel().setContents(selectedLabel);
-
             }
         });
 
-        conceptSchemesList.addRecordClickHandler(new RecordClickHandler() {
+        conceptSchemesList.getListGrid().addRecordClickHandler(new RecordClickHandler() {
 
             @Override
             public void onRecordClick(RecordClickEvent event) {
                 if (event.getFieldNum() != 0) { // Clicking checkBox will be ignored
                     String idLogic = event.getRecord().getAttribute(ConceptSchemeDS.ID_LOGIC);
-                    getUiHandlers().goToConceptScheme(idLogic);
+                    uiHandlers.goToConceptScheme(idLogic);
                 }
             }
         });
@@ -134,12 +134,11 @@ public class ConceptSchemeListViewImpl extends PaginationViewImpl<ConceptSchemeL
         fieldCode.setAlign(Alignment.LEFT);
         ListGridField fieldName = new ListGridField(ConceptSchemeDS.NAME, getConstants().conceptSchemeName());
         ListGridField status = new ListGridField(ConceptSchemeDS.PROC_STATUS, getConstants().conceptSchemeProcStatus());
-        conceptSchemesList.setFields(fieldCode, fieldName, status);
+        conceptSchemesList.getListGrid().setFields(fieldCode, fieldName, status);
 
         panel = new VLayout();
         panel.addMember(toolStrip);
         panel.addMember(conceptSchemesList);
-        panel.addMember(statusBar);
 
         deleteConfirmationWindow = new DeleteConfirmationWindow(getConstants().conceptSchemeDeleteConfirmationTitle(), getConstants().conceptSchemeDeleteConfirmation());
         deleteConfirmationWindow.setVisibility(Visibility.HIDDEN);
@@ -147,85 +146,39 @@ public class ConceptSchemeListViewImpl extends PaginationViewImpl<ConceptSchemeL
 
             @Override
             public void onClick(ClickEvent event) {
-                getUiHandlers().deleteConceptSchemes(getUuidsFromSelected());
+                uiHandlers.deleteConceptSchemes(getIdsFromSelected());
                 deleteConfirmationWindow.hide();
             }
         });
-
-        initStatusBar();
     }
 
     @Override
-    public void setConceptSchemeList(List<ConceptSchemeDto> conceptSchemesDtos) {
+    public void setConceptSchemePaginatedList(GetConceptSchemePaginatedListResult conceptSchemesPaginatedList) {
+        setConceptSchemeList(conceptSchemesPaginatedList.getConceptSchemeList());
+        conceptSchemesList.refreshPaginationInfo(conceptSchemesPaginatedList.getPageNumber(), conceptSchemesPaginatedList.getConceptSchemeList().size(), conceptSchemesPaginatedList.getTotalResults());
+    }
+    
+    @Override
+    public void goToConceptSchemeListLastPageAfterCreate() {
+        conceptSchemesList.goToLastPageAfterCreate();
+    }
+
+    private void setConceptSchemeList(List<ConceptSchemeDto> conceptSchemesDtos) {
         ConceptSchemeRecord[] records = new ConceptSchemeRecord[conceptSchemesDtos.size()];
         int index = 0;
         for (ConceptSchemeDto scheme : conceptSchemesDtos) {
             records[index++] = RecordUtils.getConceptSchemeRecord(scheme);
         }
-        conceptSchemesList.setData(records);
+        conceptSchemesList.getListGrid().setData(records);
     }
 
-    public List<String> getUuidsFromSelected() {
-        List<String> codes = new ArrayList<String>();
-        for (ListGridRecord record : conceptSchemesList.getSelectedRecords()) {
-            codes.add(record.getAttribute(ConceptSchemeDS.UUID));
+    public List<Long> getIdsFromSelected() {
+        List<Long> codes = new ArrayList<Long>();
+        for (ListGridRecord record : conceptSchemesList.getListGrid().getSelectedRecords()) {
+            ConceptSchemeRecord schemeRecord = (ConceptSchemeRecord) record;
+            codes.add(schemeRecord.getId());
         }
         return codes;
-    }
-
-    public void refreshStatusBar() {
-        // update Selected label e.g "0 of 50 selected"
-        String selectedLabel = getMessages().selected(String.valueOf(getNumberSelected()), String.valueOf(getNumberOfElements()));
-        getStatusBar().getSelectedLabel().setContents(selectedLabel);
-
-        // update Page number label e.g "Page 1"
-        String pageNumberLabel = getMessages().page(String.valueOf(getPageNumber()));
-        getStatusBar().getPageNumberLabel().setContents(pageNumberLabel);
-        getStatusBar().getPageNumberLabel().markForRedraw();
-    }
-
-    protected void initStatusBar() {
-
-        // "0 of 50 selected"
-
-        getStatusBar().getResultSetFirstButton().addClickHandler(new ClickHandler() {
-
-            public void onClick(ClickEvent event) {
-                if (getUiHandlers() != null) {
-                    getUiHandlers().onResultSetFirstButtonClicked();
-                }
-            }
-        });
-
-        getStatusBar().getResultSetPreviousButton().addClickHandler(new ClickHandler() {
-
-            public void onClick(ClickEvent event) {
-                if (getUiHandlers() != null) {
-                    getUiHandlers().onResultSetPreviousButtonClicked();
-                }
-            }
-        });
-
-        // "Page 1"
-
-        getStatusBar().getResultSetNextButton().addClickHandler(new ClickHandler() {
-
-            public void onClick(ClickEvent event) {
-                if (getUiHandlers() != null) {
-                    getUiHandlers().onResultSetNextButtonClicked();
-                }
-            }
-        });
-
-        getStatusBar().getResultSetLastButton().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                if (getUiHandlers() != null) {
-                    getUiHandlers().onResultSetLastButtonClicked();
-                }
-            }
-        });
     }
 
     @Override
@@ -252,6 +205,11 @@ public class ConceptSchemeListViewImpl extends PaginationViewImpl<ConceptSchemeL
             // Who knows, maybe the parent class knows what to do with this slot.
             super.setInSlot(slot, content);
         }
+    }
+
+    @Override
+    public void setUiHandlers(ConceptSchemeListUiHandlers uiHandlers) {
+        this.uiHandlers = uiHandlers;
     }
 
 }
