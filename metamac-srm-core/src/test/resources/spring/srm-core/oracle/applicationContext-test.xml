@@ -34,11 +34,12 @@
   
   <!-- Common -->
   <import resource="classpath:/spring/logging-beans-advice.xml"/>
+  <import resource="classpath:/spring/general-beans-advice.xml" />
 	
   <!-- CORE Entity Manager -->
   <import resource="classpath:/spring/srm-core/oracle/applicationContext-datasource.xml"/>
   <import resource="classpath:/spring/srm-core/interceptor.xml" />
-  <import resource="classpath:/spring/pub-sub.xml"/>
+<!--   <import resource="classpath:/spring/pub-sub.xml"/> -->
   <import resource="classpath:/spring/srm-core/more.xml"/>
   
   <!-- Transformation -->
