@@ -8,9 +8,6 @@ import com.gwtplatform.mvp.client.proxy.PlaceManagerImpl;
 import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.gwtplatform.mvp.client.proxy.TokenFormatter;
 
-// see ClientModule
-// bindConstant().annotatedWith(DefaultPlace.class).to(NameTokens.signInPage);
-
 public class MetamacPlaceManager extends PlaceManagerImpl {
 
     private final PlaceRequest defaultPlaceRequest;
@@ -26,15 +23,12 @@ public class MetamacPlaceManager extends PlaceManagerImpl {
         revealPlace(defaultPlaceRequest);
     }
 
-    /*
-     * TODO Implement this method when authentication needed
-     * @Override
-     * public void revealUnauthorizedPlace(String unauthorizedHistoryToken) {
-     * PlaceRequest placeRequest = new PlaceRequest(NameTokens.signInPage);
-     * placeRequest = placeRequest.with("redirect", unauthorizedHistoryToken);
-     * revealPlace(placeRequest);
-     * }
-     */
+    @Override
+    public void revealUnauthorizedPlace(String unauthorizedHistoryToken) {
+        PlaceRequest placeRequest = new PlaceRequest(NameTokens.unauthorizedAccessPage);
+        placeRequest = placeRequest.with("redirect", unauthorizedHistoryToken);
+        revealPlace(placeRequest);
+    }
 
     @Override
     public void revealErrorPlace(String invalidHistoryToken) {
