@@ -10,16 +10,16 @@ import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.web.shared.DeleteDsdListAction;
 import org.siemac.metamac.srm.web.shared.DeleteDsdListResult;
 import org.siemac.metamac.web.common.server.ServiceContextHolder;
+import org.siemac.metamac.web.common.server.handlers.SecurityActionHandler;
 import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.gwtplatform.dispatch.server.ExecutionContext;
-import com.gwtplatform.dispatch.server.actionhandler.AbstractActionHandler;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 @Component
-public class DeleteDsdListActionHandler extends AbstractActionHandler<DeleteDsdListAction, DeleteDsdListResult> {
+public class DeleteDsdListActionHandler extends SecurityActionHandler<DeleteDsdListAction, DeleteDsdListResult> {
 
     private static Logger        logger = Logger.getLogger(DeleteDsdListActionHandler.class.getName());
 
@@ -31,7 +31,7 @@ public class DeleteDsdListActionHandler extends AbstractActionHandler<DeleteDsdL
     }
 
     @Override
-    public DeleteDsdListResult execute(DeleteDsdListAction action, ExecutionContext context) throws ActionException {
+    public DeleteDsdListResult executeSecurityAction(DeleteDsdListAction action) throws ActionException {
         List<DataStructureDefinitionDto> dataStructureDefinitionDtos = action.getDataStructureDefinitionDtos();
         for (DataStructureDefinitionDto dsd : dataStructureDefinitionDtos) {
             try {

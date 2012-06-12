@@ -8,16 +8,16 @@ import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.web.shared.FindCodeListsAction;
 import org.siemac.metamac.srm.web.shared.FindCodeListsResult;
 import org.siemac.metamac.web.common.server.ServiceContextHolder;
+import org.siemac.metamac.web.common.server.handlers.SecurityActionHandler;
 import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.gwtplatform.dispatch.server.ExecutionContext;
-import com.gwtplatform.dispatch.server.actionhandler.AbstractActionHandler;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 @Component
-public class FindCodeListsActionHandler extends AbstractActionHandler<FindCodeListsAction, FindCodeListsResult> {
+public class FindCodeListsActionHandler extends SecurityActionHandler<FindCodeListsAction, FindCodeListsResult> {
 
     @Autowired
     private SrmCoreServiceFacade srmCoreServiceFacade;
@@ -27,7 +27,7 @@ public class FindCodeListsActionHandler extends AbstractActionHandler<FindCodeLi
     }
 
     @Override
-    public FindCodeListsResult execute(FindCodeListsAction action, ExecutionContext context) throws ActionException {
+    public FindCodeListsResult executeSecurityAction(FindCodeListsAction action) throws ActionException {
         try {
             List<ExternalItemBtDto> codeLists = srmCoreServiceFacade.findCodelists(ServiceContextHolder.getCurrentServiceContext(), action.getUriConcept());
             return new FindCodeListsResult(codeLists);

@@ -10,16 +10,16 @@ import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.web.shared.FindDescriptorForDsdAction;
 import org.siemac.metamac.srm.web.shared.FindDescriptorForDsdResult;
 import org.siemac.metamac.web.common.server.ServiceContextHolder;
+import org.siemac.metamac.web.common.server.handlers.SecurityActionHandler;
 import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.gwtplatform.dispatch.server.ExecutionContext;
-import com.gwtplatform.dispatch.server.actionhandler.AbstractActionHandler;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 @Component
-public class FindDescriptorForDsdActionHandler extends AbstractActionHandler<FindDescriptorForDsdAction, FindDescriptorForDsdResult> {
+public class FindDescriptorForDsdActionHandler extends SecurityActionHandler<FindDescriptorForDsdAction, FindDescriptorForDsdResult> {
 
     private static Logger        logger = Logger.getLogger(FindDescriptorForDsdActionHandler.class.getName());
 
@@ -31,7 +31,7 @@ public class FindDescriptorForDsdActionHandler extends AbstractActionHandler<Fin
     }
 
     @Override
-    public FindDescriptorForDsdResult execute(FindDescriptorForDsdAction action, ExecutionContext context) throws ActionException {
+    public FindDescriptorForDsdResult executeSecurityAction(FindDescriptorForDsdAction action) throws ActionException {
         try {
             List<DescriptorDto> descriptorDtos = srmCoreServiceFacade.findDescriptorForDsd(ServiceContextHolder.getCurrentServiceContext(), action.getIdDsd(), action.getTypeComponentList());
             logger.log(Level.INFO, "ACTION SUCCESSFULLY: findDescriptorForDsd");

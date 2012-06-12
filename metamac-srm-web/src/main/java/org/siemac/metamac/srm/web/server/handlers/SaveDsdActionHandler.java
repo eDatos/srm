@@ -9,16 +9,16 @@ import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.web.shared.SaveDsdAction;
 import org.siemac.metamac.srm.web.shared.SaveDsdResult;
 import org.siemac.metamac.web.common.server.ServiceContextHolder;
+import org.siemac.metamac.web.common.server.handlers.SecurityActionHandler;
 import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.gwtplatform.dispatch.server.ExecutionContext;
-import com.gwtplatform.dispatch.server.actionhandler.AbstractActionHandler;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 @Component
-public class SaveDsdActionHandler extends AbstractActionHandler<SaveDsdAction, SaveDsdResult> {
+public class SaveDsdActionHandler extends SecurityActionHandler<SaveDsdAction, SaveDsdResult> {
 
     private static Logger        logger = Logger.getLogger(SaveDsdActionHandler.class.getName());
 
@@ -30,7 +30,7 @@ public class SaveDsdActionHandler extends AbstractActionHandler<SaveDsdAction, S
     }
 
     @Override
-    public SaveDsdResult execute(SaveDsdAction action, ExecutionContext context) throws ActionException {
+    public SaveDsdResult executeSecurityAction(SaveDsdAction action) throws ActionException {
         try {
             DataStructureDefinitionDto dsd = srmCoreServiceFacade.saveDsd(ServiceContextHolder.getCurrentServiceContext(), action.getDsd());
             return new SaveDsdResult(dsd);

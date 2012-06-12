@@ -17,16 +17,16 @@ import org.siemac.metamac.srm.core.structure.domain.DataStructureDefinitionPrope
 import org.siemac.metamac.srm.web.shared.GetDsdListAction;
 import org.siemac.metamac.srm.web.shared.GetDsdListResult;
 import org.siemac.metamac.web.common.server.ServiceContextHolder;
+import org.siemac.metamac.web.common.server.handlers.SecurityActionHandler;
 import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.gwtplatform.dispatch.server.ExecutionContext;
-import com.gwtplatform.dispatch.server.actionhandler.AbstractActionHandler;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 @Component
-public class GetDsdListActionHandler extends AbstractActionHandler<GetDsdListAction, GetDsdListResult> {
+public class GetDsdListActionHandler extends SecurityActionHandler<GetDsdListAction, GetDsdListResult> {
 
     private static Logger        logger = Logger.getLogger(GetDsdListActionHandler.class.getName());
 
@@ -38,7 +38,7 @@ public class GetDsdListActionHandler extends AbstractActionHandler<GetDsdListAct
     }
 
     @Override
-    public GetDsdListResult execute(GetDsdListAction action, ExecutionContext context) throws ActionException {
+    public GetDsdListResult executeSecurityAction(GetDsdListAction action) throws ActionException {
         List<ConditionalCriteria> conditions = criteriaFor(DataStructureDefinition.class).orderBy(DataStructureDefinitionProperties.lastUpdated()).descending().build();
         try {
             List<DataStructureDefinitionDto> dsdList = srmCoreServiceFacade.findDsdByCondition(ServiceContextHolder.getCurrentServiceContext(), conditions, PagingParameter.pageAccess(10)).getValues();

@@ -7,15 +7,15 @@ import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.web.shared.FindConceptSchemesAction;
 import org.siemac.metamac.srm.web.shared.FindConceptSchemesResult;
 import org.siemac.metamac.web.common.server.ServiceContextHolder;
+import org.siemac.metamac.web.common.server.handlers.SecurityActionHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.gwtplatform.dispatch.server.ExecutionContext;
-import com.gwtplatform.dispatch.server.actionhandler.AbstractActionHandler;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 @Component
-public class FindConceptSchemesActionHandler extends AbstractActionHandler<FindConceptSchemesAction, FindConceptSchemesResult> {
+public class FindConceptSchemesActionHandler extends SecurityActionHandler<FindConceptSchemesAction, FindConceptSchemesResult> {
 
     @Autowired
     private SrmCoreServiceFacade srmCoreServiceFacade;
@@ -25,7 +25,7 @@ public class FindConceptSchemesActionHandler extends AbstractActionHandler<FindC
     }
 
     @Override
-    public FindConceptSchemesResult execute(FindConceptSchemesAction action, ExecutionContext context) throws ActionException {
+    public FindConceptSchemesResult executeSecurityAction(FindConceptSchemesAction action) throws ActionException {
         List<ExternalItemBtDto> conceptSchemes = srmCoreServiceFacade.findConceptSchemeRefs(ServiceContextHolder.getCurrentServiceContext());
         return new FindConceptSchemesResult(conceptSchemes);
     }

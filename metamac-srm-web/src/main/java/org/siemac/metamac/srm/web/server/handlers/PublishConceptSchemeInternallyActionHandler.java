@@ -5,22 +5,22 @@ import org.siemac.metamac.domain.concept.dto.ConceptSchemeDto;
 import org.siemac.metamac.srm.web.server.mock.ConceptSchemeService;
 import org.siemac.metamac.srm.web.shared.PublishConceptSchemeInternallyAction;
 import org.siemac.metamac.srm.web.shared.PublishConceptSchemeInternallyResult;
+import org.siemac.metamac.web.common.server.handlers.SecurityActionHandler;
 import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
 import org.springframework.stereotype.Component;
 
 import com.gwtplatform.dispatch.server.ExecutionContext;
-import com.gwtplatform.dispatch.server.actionhandler.AbstractActionHandler;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 @Component
-public class PublishConceptSchemeInternallyActionHandler extends AbstractActionHandler<PublishConceptSchemeInternallyAction, PublishConceptSchemeInternallyResult> {
+public class PublishConceptSchemeInternallyActionHandler extends SecurityActionHandler<PublishConceptSchemeInternallyAction, PublishConceptSchemeInternallyResult> {
 
     public PublishConceptSchemeInternallyActionHandler() {
         super(PublishConceptSchemeInternallyAction.class);
     }
 
     @Override
-    public PublishConceptSchemeInternallyResult execute(PublishConceptSchemeInternallyAction action, ExecutionContext context) throws ActionException {
+    public PublishConceptSchemeInternallyResult executeSecurityAction(PublishConceptSchemeInternallyAction action) throws ActionException {
         try {
             ConceptSchemeDto scheme = ConceptSchemeService.publishInternally(action.getId());
             return new PublishConceptSchemeInternallyResult(scheme);

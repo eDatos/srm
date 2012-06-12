@@ -8,16 +8,16 @@ import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.web.shared.ExportDsdAction;
 import org.siemac.metamac.srm.web.shared.ExportDsdResult;
 import org.siemac.metamac.web.common.server.ServiceContextHolder;
+import org.siemac.metamac.web.common.server.handlers.SecurityActionHandler;
 import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.gwtplatform.dispatch.server.ExecutionContext;
-import com.gwtplatform.dispatch.server.actionhandler.AbstractActionHandler;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 @Component
-public class ExportDsdActionHandler extends AbstractActionHandler<ExportDsdAction, ExportDsdResult> {
+public class ExportDsdActionHandler extends SecurityActionHandler<ExportDsdAction, ExportDsdResult> {
 
     @Autowired
     private SrmCoreServiceFacade srmCoreServiceFacade;
@@ -27,7 +27,7 @@ public class ExportDsdActionHandler extends AbstractActionHandler<ExportDsdActio
     }
 
     @Override
-    public ExportDsdResult execute(ExportDsdAction action, ExecutionContext context) throws ActionException {
+    public ExportDsdResult executeSecurityAction(ExportDsdAction action) throws ActionException {
         StructureMsgDto structureMsgDto = new StructureMsgDto();
 
         try {

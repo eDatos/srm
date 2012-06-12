@@ -10,16 +10,16 @@ import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.web.shared.DeleteDimensionListForDsdAction;
 import org.siemac.metamac.srm.web.shared.DeleteDimensionListForDsdResult;
 import org.siemac.metamac.web.common.server.ServiceContextHolder;
+import org.siemac.metamac.web.common.server.handlers.SecurityActionHandler;
 import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.gwtplatform.dispatch.server.ExecutionContext;
-import com.gwtplatform.dispatch.server.actionhandler.AbstractActionHandler;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 @Component
-public class DeleteDimensionListForDsdActionHandler extends AbstractActionHandler<DeleteDimensionListForDsdAction, DeleteDimensionListForDsdResult> {
+public class DeleteDimensionListForDsdActionHandler extends SecurityActionHandler<DeleteDimensionListForDsdAction, DeleteDimensionListForDsdResult> {
 
     private static Logger        logger = Logger.getLogger(DeleteDimensionListForDsdActionHandler.class.getName());
 
@@ -31,7 +31,7 @@ public class DeleteDimensionListForDsdActionHandler extends AbstractActionHandle
     }
 
     @Override
-    public DeleteDimensionListForDsdResult execute(DeleteDimensionListForDsdAction action, ExecutionContext context) throws ActionException {
+    public DeleteDimensionListForDsdResult executeSecurityAction(DeleteDimensionListForDsdAction action) throws ActionException {
         List<DimensionComponentDto> dimensionComponentDtos = action.getDimensionComponentDtos();
         for (DimensionComponentDto d : dimensionComponentDtos) {
             try {

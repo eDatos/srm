@@ -8,16 +8,16 @@ import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.web.shared.DeleteDescriptorForDsdAction;
 import org.siemac.metamac.srm.web.shared.DeleteDescriptorForDsdResult;
 import org.siemac.metamac.web.common.server.ServiceContextHolder;
+import org.siemac.metamac.web.common.server.handlers.SecurityActionHandler;
 import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.gwtplatform.dispatch.server.ExecutionContext;
-import com.gwtplatform.dispatch.server.actionhandler.AbstractActionHandler;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 @Component
-public class DeleteDescriptorForDsdActionHandler extends AbstractActionHandler<DeleteDescriptorForDsdAction, DeleteDescriptorForDsdResult> {
+public class DeleteDescriptorForDsdActionHandler extends SecurityActionHandler<DeleteDescriptorForDsdAction, DeleteDescriptorForDsdResult> {
 
     private static Logger        logger = Logger.getLogger(DeleteDescriptorForDsdActionHandler.class.getName());
 
@@ -29,7 +29,7 @@ public class DeleteDescriptorForDsdActionHandler extends AbstractActionHandler<D
     }
 
     @Override
-    public DeleteDescriptorForDsdResult execute(DeleteDescriptorForDsdAction action, ExecutionContext context) throws ActionException {
+    public DeleteDescriptorForDsdResult executeSecurityAction(DeleteDescriptorForDsdAction action) throws ActionException {
         try {
             srmCoreServiceFacade.deleteDescriptorForDsd(ServiceContextHolder.getCurrentServiceContext(), action.getIdDsd(), action.getDescriptorDto());
             return new DeleteDescriptorForDsdResult();

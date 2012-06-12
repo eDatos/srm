@@ -18,16 +18,16 @@ import org.siemac.metamac.srm.core.structure.domain.DataStructureDefinitionPrope
 import org.siemac.metamac.srm.web.shared.GetDsdAndDescriptorsAction;
 import org.siemac.metamac.srm.web.shared.GetDsdAndDescriptorsResult;
 import org.siemac.metamac.web.common.server.ServiceContextHolder;
+import org.siemac.metamac.web.common.server.handlers.SecurityActionHandler;
 import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.gwtplatform.dispatch.server.ExecutionContext;
-import com.gwtplatform.dispatch.server.actionhandler.AbstractActionHandler;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 @Component
-public class GetDsdAndDescriptorsActionHandler extends AbstractActionHandler<GetDsdAndDescriptorsAction, GetDsdAndDescriptorsResult> {
+public class GetDsdAndDescriptorsActionHandler extends SecurityActionHandler<GetDsdAndDescriptorsAction, GetDsdAndDescriptorsResult> {
 
     private static Logger        logger = Logger.getLogger(GetDsdAndDescriptorsActionHandler.class.getName());
 
@@ -39,7 +39,7 @@ public class GetDsdAndDescriptorsActionHandler extends AbstractActionHandler<Get
     }
 
     @Override
-    public GetDsdAndDescriptorsResult execute(GetDsdAndDescriptorsAction action, ExecutionContext context) throws ActionException {
+    public GetDsdAndDescriptorsResult executeSecurityAction(GetDsdAndDescriptorsAction action) throws ActionException {
         DataStructureDefinitionDto dsd = null;
         DescriptorDto primaryMeasure = null;
         DescriptorDto dimensions = null;

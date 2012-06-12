@@ -7,15 +7,15 @@ import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.web.shared.FindConceptsAction;
 import org.siemac.metamac.srm.web.shared.FindConceptsResult;
 import org.siemac.metamac.web.common.server.ServiceContextHolder;
+import org.siemac.metamac.web.common.server.handlers.SecurityActionHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.gwtplatform.dispatch.server.ExecutionContext;
-import com.gwtplatform.dispatch.server.actionhandler.AbstractActionHandler;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 @Component
-public class FindConceptsActionHandler extends AbstractActionHandler<FindConceptsAction, FindConceptsResult> {
+public class FindConceptsActionHandler extends SecurityActionHandler<FindConceptsAction, FindConceptsResult> {
 
     @Autowired
     private SrmCoreServiceFacade srmCoreServiceFacade;
@@ -25,7 +25,7 @@ public class FindConceptsActionHandler extends AbstractActionHandler<FindConcept
     }
 
     @Override
-    public FindConceptsResult execute(FindConceptsAction action, ExecutionContext context) throws ActionException {
+    public FindConceptsResult executeSecurityAction(FindConceptsAction action) throws ActionException {
         List<ExternalItemBtDto> concepts = srmCoreServiceFacade.findConcepts(ServiceContextHolder.getCurrentServiceContext(), action.getUriConceptScheme());
         return new FindConceptsResult(concepts);
     }

@@ -4,22 +4,22 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.web.server.mock.ConceptSchemeService;
 import org.siemac.metamac.srm.web.shared.DeleteConceptSchemeListAction;
 import org.siemac.metamac.srm.web.shared.DeleteConceptSchemeListResult;
+import org.siemac.metamac.web.common.server.handlers.SecurityActionHandler;
 import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
 import org.springframework.stereotype.Component;
 
 import com.gwtplatform.dispatch.server.ExecutionContext;
-import com.gwtplatform.dispatch.server.actionhandler.AbstractActionHandler;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 @Component
-public class DeleteConceptSchemeListActionHandler extends AbstractActionHandler<DeleteConceptSchemeListAction, DeleteConceptSchemeListResult> {
+public class DeleteConceptSchemeListActionHandler extends SecurityActionHandler<DeleteConceptSchemeListAction, DeleteConceptSchemeListResult> {
 
     public DeleteConceptSchemeListActionHandler() {
         super(DeleteConceptSchemeListAction.class);
     }
 
     @Override
-    public DeleteConceptSchemeListResult execute(DeleteConceptSchemeListAction action, ExecutionContext context) throws ActionException {
+    public DeleteConceptSchemeListResult executeSecurityAction(DeleteConceptSchemeListAction action) throws ActionException {
         try {
             for (Long id : action.getIds()) {
                 ConceptSchemeService.deleteConceptScheme(id);
