@@ -76,7 +76,7 @@ public class ServerModule extends HandlerModule {
     }
 
     protected void configureHandlers() {
-        //DSDs
+        // DSDs
         bindHandler(GetDsdListAction.class, GetDsdListActionHandler.class);
         bindHandler(GetDsdAction.class, GetDsdActionHandler.class);
         bindHandler(GetDsdAndDescriptorsAction.class, GetDsdAndDescriptorsActionHandler.class);
@@ -95,8 +95,8 @@ public class ServerModule extends HandlerModule {
         bindHandler(DeleteDescriptorListForDsdAction.class, DeleteDescriptorListForDsdActionHandler.class);
         bindHandler(FindCodeListsAction.class, FindCodeListsActionHandler.class);
         bindHandler(ExportDsdAction.class, ExportDsdActionHandler.class);
-        
-        //Concept Schemes
+
+        // Concept Schemes
         bindHandler(GetConceptSchemeAction.class, GetConceptSchemeActionHandler.class);
         bindHandler(GetConceptSchemePaginatedListAction.class, GetConceptSchemePaginatedListActionHandler.class);
         bindHandler(GetConceptSchemeAction.class, GetConceptSchemeActionHandler.class);
@@ -107,7 +107,6 @@ public class ServerModule extends HandlerModule {
         bindHandler(PublishConceptSchemeInternallyAction.class, PublishConceptSchemeInternallyActionHandler.class);
         bindHandler(PublishConceptSchemeExternallyAction.class, PublishConceptSchemeExternallyActionHandler.class);
         bindHandler(VersionConceptSchemeAction.class, VersionConceptSchemeActionHandler.class);
-        
 
         bindHandler(ValidateTicketAction.class, ValidateTicketActionHandler.class);
         bindHandler(GetLoginPageUrlAction.class, GetLoginPageUrlActionHandler.class);

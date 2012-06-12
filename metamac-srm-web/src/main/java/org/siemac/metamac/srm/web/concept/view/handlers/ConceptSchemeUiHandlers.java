@@ -4,11 +4,10 @@ import org.siemac.metamac.domain.concept.dto.ConceptSchemeDto;
 
 import com.gwtplatform.mvp.client.UiHandlers;
 
-
 public interface ConceptSchemeUiHandlers extends UiHandlers {
-    
+
     void retrieveConceptScheme(String conceptSchemeCode);
-    
+
     void saveConceptScheme(ConceptSchemeDto conceptScheme);
 
     /* Life cycle */

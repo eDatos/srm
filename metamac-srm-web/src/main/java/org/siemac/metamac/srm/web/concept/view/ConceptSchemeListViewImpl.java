@@ -97,6 +97,7 @@ public class ConceptSchemeListViewImpl extends ViewImpl implements ConceptScheme
         toolStrip.addButton(deleteConceptSchemeActor);
 
         conceptSchemesList = new PaginatedBaseCustomListGrid(ConceptSchemeListPresenter.DEFAULT_MAX_RESULTS, new PaginatedAction() {
+
             @Override
             public void retrieveResultSet(int firstResult, int maxResults) {
                 uiHandlers.retrieveConceptSchemes(firstResult, maxResults);
@@ -157,7 +158,7 @@ public class ConceptSchemeListViewImpl extends ViewImpl implements ConceptScheme
         setConceptSchemeList(conceptSchemesPaginatedList.getConceptSchemeList());
         conceptSchemesList.refreshPaginationInfo(conceptSchemesPaginatedList.getPageNumber(), conceptSchemesPaginatedList.getConceptSchemeList().size(), conceptSchemesPaginatedList.getTotalResults());
     }
-    
+
     @Override
     public void goToConceptSchemeListLastPageAfterCreate() {
         conceptSchemesList.goToLastPageAfterCreate();

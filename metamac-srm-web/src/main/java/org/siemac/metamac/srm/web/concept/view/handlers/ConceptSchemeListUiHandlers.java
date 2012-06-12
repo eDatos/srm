@@ -13,14 +13,13 @@ public interface ConceptSchemeListUiHandlers extends UiHandlers {
     void createConceptScheme(ConceptSchemeDto conceptSchemeDto);
 
     void deleteConceptSchemes(List<Long> idsFromSelected);
-    
+
     void retrieveConceptSchemes(int firstResult, int maxResults);
 
-    /*void onResultSetFirstButtonClicked();
-
-    void onResultSetPreviousButtonClicked();
-
-    void onResultSetNextButtonClicked();
-
-    void onResultSetLastButtonClicked();*/
+    /*
+     * void onResultSetFirstButtonClicked();
+     * void onResultSetPreviousButtonClicked();
+     * void onResultSetNextButtonClicked();
+     * void onResultSetLastButtonClicked();
+     */
 }

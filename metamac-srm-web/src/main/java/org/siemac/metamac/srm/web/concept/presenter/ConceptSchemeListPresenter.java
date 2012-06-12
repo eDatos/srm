@@ -42,9 +42,7 @@ import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 
-public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPresenter.ConceptSchemeListView, ConceptSchemeListPresenter.ConceptSchemeListProxy>
-        implements
-            ConceptSchemeListUiHandlers {
+public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPresenter.ConceptSchemeListView, ConceptSchemeListPresenter.ConceptSchemeListProxy> implements ConceptSchemeListUiHandlers {
 
     public static final int                           DEFAULT_MAX_RESULTS                                = 30;
 
@@ -93,8 +91,8 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
     protected void onReset() {
         super.onReset();
         SetTitleEvent.fire(this, getConstants().conceptSchemes());
-        
-        retrieveConceptSchemes(0,DEFAULT_MAX_RESULTS);
+
+        retrieveConceptSchemes(0, DEFAULT_MAX_RESULTS);
     }
 
     @Override
@@ -102,10 +100,11 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
         super.onReveal();
         setInSlot(TYPE_SetContextAreaContentConceptSchemeListToolBar, toolStripPresenterWidget);
     }
-    
+
     @Override
     public void retrieveConceptSchemes(int firstResult, int maxResults) {
         dispatcher.execute(new GetConceptSchemePaginatedListAction(maxResults, firstResult), new WaitingAsyncCallback<GetConceptSchemePaginatedListResult>() {
+
             @Override
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(ConceptSchemeListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorRetrieveList()), MessageTypeEnum.ERROR);
@@ -117,7 +116,7 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
             }
         });
     }
-    
+
     // Handlers
     @Override
     public void createConceptScheme(ConceptSchemeDto conceptSchemeDto) {

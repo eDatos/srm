@@ -45,7 +45,7 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
     private ToolStripPresenterWidget         toolStripPresenterWidget;
 
     private List<DataStructureDefinitionDto> dsdList;
-    
+
     @ProxyCodeSplit
     @NameToken(NameTokens.structuralResourcesPage)
     public interface StructuralResourcesProxy extends Proxy<StructuralResourcesPresenter>, Place {
@@ -102,7 +102,7 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
         super.onReset();
         getView().resetView();
         retrieveDsds(); // Fetch DSDs
-        //retrieveConceptSchemes(); // Fetch ConceptSchemes
+        // retrieveConceptSchemes(); // Fetch ConceptSchemes
     }
 
     @Override
@@ -155,7 +155,7 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
             placeManager.revealRelativePlace(new PlaceRequest(NameTokens.dsdPage).with(PlaceRequestParams.dsdParam, id.toString()));
         }
     }
-    
+
     @Override
     public void goToConceptScheme(String idLogic) {
         if (idLogic != null) {

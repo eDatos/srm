@@ -19,11 +19,11 @@ public class ConceptSchemeRecord extends ListGridRecord {
     public void setId(Long id) {
         setAttribute(ConceptSchemeDS.ID, id);
     }
-    
+
     public void setName(String name) {
         setAttribute(ConceptSchemeDS.NAME, name);
     }
-    
+
     public void setDescription(String desc) {
         setAttribute(ConceptSchemeDS.DESCRIPTION, desc);
     }
@@ -39,22 +39,21 @@ public class ConceptSchemeRecord extends ListGridRecord {
     public void setConceptSchemeDto(ConceptSchemeDto conceptSchemeDto) {
         setAttribute(ConceptSchemeDS.DTO, conceptSchemeDto);
     }
-    
+
     public Long getId() {
         return getAttributeAsLong(ConceptSchemeDS.ID);
     }
-    
+
     public String getIdLogic() {
         return getAttribute(ConceptSchemeDS.ID_LOGIC);
     }
-    
+
     public String getName() {
         return getAttribute(ConceptSchemeDS.NAME);
     }
-    
+
     public String getDescription() {
         return getAttribute(ConceptSchemeDS.DESCRIPTION);
     }
-    
-    
+
 }

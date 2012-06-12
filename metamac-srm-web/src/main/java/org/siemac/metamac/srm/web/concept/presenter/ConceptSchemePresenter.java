@@ -51,9 +51,9 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
     private final DispatchAsync      dispatcher;
     private final PlaceManager       placeManager;
     private ToolStripPresenterWidget toolStripPresenterWidget;
-    
-    public static final int MAX_RESULTS = 10;
-    private String conceptSchemeIdLogic;
+
+    public static final int          MAX_RESULTS = 10;
+    private String                   conceptSchemeIdLogic;
 
     @ProxyCodeSplit
     @NameToken(NameTokens.conceptSchemePage)
@@ -61,6 +61,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
     }
 
     public interface ConceptSchemeView extends View, HasUiHandlers<ConceptSchemeUiHandlers> {
+
         void setConceptScheme(ConceptSchemeDto conceptScheme);
     }
 
@@ -70,7 +71,8 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
     public static final Object                        TYPE_SetContextAreaContentConceptSchemeToolBar = new Object();
 
     @Inject
-    public ConceptSchemePresenter(EventBus eventBus, ConceptSchemeView view, ConceptSchemeProxy proxy, DispatchAsync dispatcher, PlaceManager placeManager, ToolStripPresenterWidget toolStripPresenterWidget) {
+    public ConceptSchemePresenter(EventBus eventBus, ConceptSchemeView view, ConceptSchemeProxy proxy, DispatchAsync dispatcher, PlaceManager placeManager,
+            ToolStripPresenterWidget toolStripPresenterWidget) {
         super(eventBus, view, proxy);
         this.placeManager = placeManager;
         this.dispatcher = dispatcher;
@@ -101,14 +103,14 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
             }
         }
     }
-    
+
     /* private methods */
     private void setConceptScheme(ConceptSchemeDto conceptScheme) {
         getView().setConceptScheme(conceptScheme);
     }
-    
-    /* Events related*/
-    
+
+    /* Events related */
+
     @TitleFunction
     public static String getTranslatedTitle() {
         return MetamacSrmWeb.getConstants().breadcrumbConceptScheme();
@@ -148,7 +150,6 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
         });
     }
 
-    
     @Override
     public void sendToPendingPublication(Long id) {
         dispatcher.execute(new SendConceptSchemeToPendingPublicationAction(id), new WaitingAsyncCallback<SendConceptSchemeToPendingPublicationResult>() {

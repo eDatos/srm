@@ -51,7 +51,7 @@ public class ConceptSchemeService {
     public static ConceptSchemeDto saveConceptScheme(ConceptSchemeDto schemeDto) throws MetamacException {
         if (schemeDto.getUuid() == null) {
             schemeDto.setUuid(UUID.randomUUID().toString());
-            schemeDto.setId(new Random().nextInt(Integer.MAX_VALUE)+1L);
+            schemeDto.setId(new Random().nextInt(Integer.MAX_VALUE) + 1L);
             schemeDto.setUrn(UUID.randomUUID().toString());
             schemeDto.setUri(UUID.randomUUID().toString());
             schemeDto.setVersionLogic("01.000");
@@ -100,7 +100,7 @@ public class ConceptSchemeService {
         scheme.setProcStatus(ConceptSchemeProcStatusEnum.DRAFT);
         return scheme;
     }
-    
+
     private static int getConceptSchemeIndexById(Long id) {
         int foundIndex = -1;
         for (int i = 0; i < conceptSchemeList.size() && foundIndex < 0; i++) {
@@ -115,7 +115,7 @@ public class ConceptSchemeService {
         conceptSchemeList = new LinkedList<ConceptSchemeDto>();
         for (int i = 0; i < 100; i++) {
             ConceptSchemeDto conceptScheme = new ConceptSchemeDto();
-            conceptScheme.setId(Long.valueOf(i*1));
+            conceptScheme.setId(Long.valueOf(i * 1));
             conceptScheme.setUuid(UUID.randomUUID().toString());
             conceptScheme.setUrn(UUID.randomUUID().toString());
             conceptScheme.setUri(UUID.randomUUID().toString());

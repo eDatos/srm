@@ -24,14 +24,14 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 public class StructuralResourcesViewImpl extends ViewWithUiHandlers<StructuralResourcesUiHandlers> implements StructuralResourcesPresenter.StructuralResourcesView {
 
-    private static final String                CONTEXT_AREA_WIDTH = "*";
+    private static final String                          CONTEXT_AREA_WIDTH = "*";
 
-    private final DsdsItemsContextAreaListGrid dsdsItemsContextAreaListGrid;
+    private final DsdsItemsContextAreaListGrid           dsdsItemsContextAreaListGrid;
     private final ConceptSchemesItemsContextAreaListGrid conceptSchemesItemsContextAreaListGrid;
-    
-    private final SectionStack                 lastModifiedArtifactsSectionStack;
 
-    private VLayout                            panel;
+    private final SectionStack                           lastModifiedArtifactsSectionStack;
+
+    private VLayout                                      panel;
 
     @Inject
     public StructuralResourcesViewImpl(DsdsItemsContextAreaListGrid dsdsItemsContextAreaListGrid, ConceptSchemesItemsContextAreaListGrid conceptSchemesItemsContextAreaListGrid) {

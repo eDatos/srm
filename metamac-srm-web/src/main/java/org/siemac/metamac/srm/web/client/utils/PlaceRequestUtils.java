@@ -16,7 +16,7 @@ public class PlaceRequestUtils {
         }
         return null;
     }
-    
+
     public static String getConceptSchemeParamFromUrl(PlaceManager placeManager) {
         for (PlaceRequest request : placeManager.getCurrentPlaceHierarchy()) {
             if (NameTokens.conceptSchemePage.equals(request.getNameToken())) {

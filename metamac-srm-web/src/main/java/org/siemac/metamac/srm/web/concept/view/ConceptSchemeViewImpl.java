@@ -39,29 +39,28 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePresenter.ConceptSchemeView {
 
-    private ConceptSchemeUiHandlers uiHandlers;
-    
-    private VLayout                           panel;
-    private TitleLabel                        conceptSchemeTitle;
-    private ConceptSchemeMainFormLayout       mainFormLayout;
+    private ConceptSchemeUiHandlers     uiHandlers;
+
+    private VLayout                     panel;
+    private TitleLabel                  conceptSchemeTitle;
+    private ConceptSchemeMainFormLayout mainFormLayout;
 
     /* View form */
-    private GroupDynamicForm                  identifiersForm;
-    private GroupDynamicForm                  contentDescriptorsForm;
-    private GroupDynamicForm                  classDescriptorsForm;
-    private GroupDynamicForm                  productionDescriptorsForm;
-    private GroupDynamicForm                  diffusionDescriptorsForm;
+    private GroupDynamicForm            identifiersForm;
+    private GroupDynamicForm            contentDescriptorsForm;
+    private GroupDynamicForm            classDescriptorsForm;
+    private GroupDynamicForm            productionDescriptorsForm;
+    private GroupDynamicForm            diffusionDescriptorsForm;
 
     /* Edit form */
-    private GroupDynamicForm                  identifiersEditionForm;
-    private GroupDynamicForm                  contentDescriptorsEditionForm;
-    private GroupDynamicForm                  classDescriptorsEditionForm;
-    private GroupDynamicForm                  productionDescriptorsEditionForm;
-    private GroupDynamicForm                  diffusionDescriptorsEditionForm;
+    private GroupDynamicForm            identifiersEditionForm;
+    private GroupDynamicForm            contentDescriptorsEditionForm;
+    private GroupDynamicForm            classDescriptorsEditionForm;
+    private GroupDynamicForm            productionDescriptorsEditionForm;
+    private GroupDynamicForm            diffusionDescriptorsEditionForm;
 
     /* Data */
-    private ConceptSchemeDto                  conceptScheme;
-
+    private ConceptSchemeDto            conceptScheme;
 
     @Inject
     public ConceptSchemeViewImpl() {
@@ -113,7 +112,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
     }
 
     /* logic related functions */
-    
+
     @Override
     public void setUiHandlers(ConceptSchemeUiHandlers uiHandlers) {
         this.uiHandlers = uiHandlers;
@@ -122,18 +121,18 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
     @Override
     public void setConceptScheme(ConceptSchemeDto conceptScheme) {
         this.conceptScheme = conceptScheme;
-        
+
         String defaultLocalized = InternationalStringUtils.getLocalisedString(conceptScheme.getName());
         String title = defaultLocalized != null ? defaultLocalized : StringUtils.EMPTY;
         conceptSchemeTitle.setContents(title);
-        
+
         mainFormLayout.updatePublishSection(conceptScheme.getProcStatus());
         mainFormLayout.setViewMode();
 
         setConceptSchemeViewMode(conceptScheme);
         setConceptSchemeEditionMode(conceptScheme);
     }
-    
+
     private void bindEvents() {
         mainFormLayout.getTranslateToolStripButton().addClickHandler(new ClickHandler() {
 
@@ -236,7 +235,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         ViewMultiLanguageTextItem description = new ViewMultiLanguageTextItem(ConceptSchemeDS.DESCRIPTION, getConstants().conceptSchemeDetailDescription());
         ViewTextItem partial = new ViewTextItem(ConceptSchemeDS.IS_PARTIAL, getConstants().conceptSchemeDetailPartial());
         contentDescriptorsForm.setFields(description, partial);
-        
+
         classDescriptorsForm = new GroupDynamicForm(getConstants().conceptSchemeClassDescriptors());
         ViewTextItem agency = new ViewTextItem(ConceptSchemeDS.AGENCY, getConstants().conceptSchemeDetailAgency());
         ViewTextItem type = new ViewTextItem(ConceptSchemeDS.TYPE, getConstants().conceptSchemeDetailType());
@@ -246,12 +245,12 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         productionDescriptorsForm = new GroupDynamicForm(getConstants().conceptSchemeProductionDescriptors());
         ViewTextItem procStatus = new ViewTextItem(ConceptSchemeDS.PROC_STATUS, getConstants().conceptSchemeDetailProcStatus());
         productionDescriptorsForm.setFields(procStatus);
-        
+
         diffusionDescriptorsForm = new GroupDynamicForm(getConstants().conceptSchemeDiffusionDescriptors());
         ViewTextItem startDate = new ViewTextItem(ConceptSchemeDS.VALID_FROM, getConstants().conceptSchemeStartDate());
         ViewTextItem endDate = new ViewTextItem(ConceptSchemeDS.VALID_TO, getConstants().conceptSchemeEndDate());
         diffusionDescriptorsForm.setFields(startDate, endDate);
-        
+
         mainFormLayout.addViewCanvas(identifiersForm);
         mainFormLayout.addViewCanvas(contentDescriptorsForm);
         mainFormLayout.addViewCanvas(classDescriptorsForm);
@@ -274,20 +273,17 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         MultiLanguageTextItem description = new MultiLanguageTextItem(ConceptSchemeDS.DESCRIPTION, getConstants().conceptSchemeDetailDescription());
         BooleanItem partial = new BooleanItem(ConceptSchemeDS.IS_PARTIAL, getConstants().conceptSchemeDetailPartial());
         contentDescriptorsEditionForm.setFields(description, partial);
-        
-        
+
         classDescriptorsEditionForm = new GroupDynamicForm(getConstants().conceptSchemeClassDescriptors());
         SelectItem type = new SelectItem(ConceptSchemeDS.TYPE, getConstants().conceptSchemeDetailType());
         SelectItem operation = new SelectItem(ConceptSchemeDS.RELATED_OPERATION, getConstants().conceptSchemeDetailOperation());
         ViewTextItem agency = new ViewTextItem(ConceptSchemeDS.AGENCY, getConstants().conceptSchemeDetailAgency());
-        classDescriptorsEditionForm.setFields(type,operation,agency);
-        
-        
+        classDescriptorsEditionForm.setFields(type, operation, agency);
+
         productionDescriptorsEditionForm = new GroupDynamicForm(getConstants().conceptSchemeProductionDescriptors());
         ViewTextItem procStatus = new ViewTextItem(ConceptSchemeDS.PROC_STATUS, getConstants().conceptSchemeDetailProcStatus());
         productionDescriptorsEditionForm.setFields(procStatus);
-        
-        
+
         diffusionDescriptorsEditionForm = new GroupDynamicForm(getConstants().conceptSchemeDiffusionDescriptors());
         ViewTextItem startDate = new ViewTextItem(ConceptSchemeDS.VALID_FROM, getConstants().conceptSchemeStartDate());
         ViewTextItem endDate = new ViewTextItem(ConceptSchemeDS.VALID_TO, getConstants().conceptSchemeEndDate());
@@ -299,7 +295,6 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         mainFormLayout.addEditionCanvas(productionDescriptorsEditionForm);
         mainFormLayout.addEditionCanvas(diffusionDescriptorsEditionForm);
     }
-
 
     public void setEditionMode() {
         mainFormLayout.setEditionMode();
@@ -313,19 +308,22 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         identifiersForm.setValue(ConceptSchemeDS.NAME, RecordUtils.getInternationalStringRecord(conceptSchemeDto.getName()));
 
         contentDescriptorsForm.setValue(ConceptSchemeDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(conceptSchemeDto.getDescription()));
-        contentDescriptorsForm.setValue(ConceptSchemeDS.IS_PARTIAL,(conceptSchemeDto.getIsPartial() != null && conceptSchemeDto.getIsPartial()) ? MetamacSrmWeb.getConstants().yes() : MetamacSrmWeb.getConstants().no()); 
-        
+        contentDescriptorsForm.setValue(ConceptSchemeDS.IS_PARTIAL, (conceptSchemeDto.getIsPartial() != null && conceptSchemeDto.getIsPartial()) ? MetamacSrmWeb.getConstants().yes() : MetamacSrmWeb
+                .getConstants().no());
+
         classDescriptorsForm.setValue(ConceptSchemeDS.AGENCY, conceptSchemeDto.getMaintainer() != null ? conceptSchemeDto.getMaintainer().getCodeId() : StringUtils.EMPTY);
-        
+
         productionDescriptorsForm.setValue(ConceptSchemeDS.PROC_STATUS, CommonUtils.getConceptSchemeProcStatus(conceptSchemeDto));
-        
+
         diffusionDescriptorsForm.setValue(ConceptSchemeDS.VALID_FROM, DateUtils.getFormattedDate(conceptSchemeDto.getValidFrom()));
         diffusionDescriptorsForm.setValue(ConceptSchemeDS.VALID_TO, DateUtils.getFormattedDate(conceptSchemeDto.getValidTo()));
 
-        /*statusForm.setValue(ConceptSchemeDS.FINAL, (conceptSchemeDto.getFinalLogic() != null && conceptSchemeDto.getFinalLogic()) ? MetamacSrmWeb.getConstants().yes() : MetamacSrmWeb.getConstants()
-                .no());
-        statusForm.setValue(ConceptSchemeDS.VALID_FROM, DateUtils.getFormattedDate(conceptSchemeDto.getValidFrom()));
-        statusForm.setValue(ConceptSchemeDS.VALID_TO, DateUtils.getFormattedDate(conceptSchemeDto.getValidTo()));*/
+        /*
+         * statusForm.setValue(ConceptSchemeDS.FINAL, (conceptSchemeDto.getFinalLogic() != null && conceptSchemeDto.getFinalLogic()) ? MetamacSrmWeb.getConstants().yes() : MetamacSrmWeb.getConstants()
+         * .no());
+         * statusForm.setValue(ConceptSchemeDS.VALID_FROM, DateUtils.getFormattedDate(conceptSchemeDto.getValidFrom()));
+         * statusForm.setValue(ConceptSchemeDS.VALID_TO, DateUtils.getFormattedDate(conceptSchemeDto.getValidTo()));
+         */
     }
 
     public void setConceptSchemeEditionMode(ConceptSchemeDto conceptSchemeDto) {
@@ -336,27 +334,28 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         identifiersEditionForm.setValue(ConceptSchemeDS.NAME, RecordUtils.getInternationalStringRecord(conceptSchemeDto.getName()));
 
         contentDescriptorsEditionForm.setValue(ConceptSchemeDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(conceptSchemeDto.getDescription()));
-        contentDescriptorsEditionForm.setValue(ConceptSchemeDS.IS_PARTIAL, conceptSchemeDto.getIsPartial() != null ? conceptSchemeDto.getIsPartial() : false); 
-        
+        contentDescriptorsEditionForm.setValue(ConceptSchemeDS.IS_PARTIAL, conceptSchemeDto.getIsPartial() != null ? conceptSchemeDto.getIsPartial() : false);
+
         classDescriptorsEditionForm.setValue(ConceptSchemeDS.AGENCY, conceptSchemeDto.getMaintainer() != null ? conceptSchemeDto.getMaintainer().getCodeId() : StringUtils.EMPTY);
-        
+
         productionDescriptorsEditionForm.setValue(ConceptSchemeDS.PROC_STATUS, CommonUtils.getConceptSchemeProcStatus(conceptSchemeDto));
-        
+
         diffusionDescriptorsEditionForm.setValue(ConceptSchemeDS.VALID_FROM, DateUtils.getFormattedDate(conceptSchemeDto.getValidFrom()));
         diffusionDescriptorsEditionForm.setValue(ConceptSchemeDS.VALID_TO, DateUtils.getFormattedDate(conceptSchemeDto.getValidTo()));
 
-       /* statusEditionForm.setValue(ConceptSchemeDS.FINAL, (conceptSchemeDto.getFinalLogic() != null && conceptSchemeDto.getFinalLogic()) ? MetamacSrmWeb.getConstants().yes() : MetamacSrmWeb
-                .getConstants().no());*/
+        /*
+         * statusEditionForm.setValue(ConceptSchemeDS.FINAL, (conceptSchemeDto.getFinalLogic() != null && conceptSchemeDto.getFinalLogic()) ? MetamacSrmWeb.getConstants().yes() : MetamacSrmWeb
+         * .getConstants().no());
+         */
     }
 
     public void saveConceptScheme() {
         if (identifiersEditionForm.validate(false)) {
             conceptScheme.setName((InternationalStringDto) identifiersEditionForm.getValue(ConceptSchemeDS.NAME));
             conceptScheme.setDescription((InternationalStringDto) contentDescriptorsEditionForm.getValue(ConceptSchemeDS.DESCRIPTION));
-            conceptScheme.setIsPartial((Boolean)contentDescriptorsEditionForm.getValue(ConceptSchemeDS.IS_PARTIAL));
+            conceptScheme.setIsPartial((Boolean) contentDescriptorsEditionForm.getValue(ConceptSchemeDS.IS_PARTIAL));
             uiHandlers.saveConceptScheme(conceptScheme);
         }
     }
-
 
 }
