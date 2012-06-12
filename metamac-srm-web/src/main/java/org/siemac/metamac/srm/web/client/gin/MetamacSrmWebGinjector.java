@@ -1,7 +1,9 @@
 package org.siemac.metamac.srm.web.client.gin;
 
+import org.siemac.metamac.srm.web.client.presenter.ErrorPagePresenter;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.presenter.StructuralResourcesPresenter;
+import org.siemac.metamac.srm.web.client.presenter.UnauthorizedPagePresenter;
 import org.siemac.metamac.srm.web.concept.presenter.ConceptSchemeListPresenter;
 import org.siemac.metamac.srm.web.concept.presenter.ConceptSchemePresenter;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdAttributesTabPresenter;
@@ -30,6 +32,9 @@ public interface MetamacSrmWebGinjector extends Ginjector {
 
     Provider<MainPagePresenter> getMainPagePresenter();
     AsyncProvider<StructuralResourcesPresenter> getStructuralResourcesPresenter();
+
+    AsyncProvider<ErrorPagePresenter> getErrorPagePresenter();
+    AsyncProvider<UnauthorizedPagePresenter> getUnauthorizedPagePresenter();
 
     // DSD
     AsyncProvider<DsdListPresenter> getDsdListPresenter();

@@ -2,10 +2,14 @@ package org.siemac.metamac.srm.web.client.gin;
 
 import org.siemac.metamac.srm.web.client.MetamacPlaceManager;
 import org.siemac.metamac.srm.web.client.NameTokens;
+import org.siemac.metamac.srm.web.client.presenter.ErrorPagePresenter;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.presenter.StructuralResourcesPresenter;
+import org.siemac.metamac.srm.web.client.presenter.UnauthorizedPagePresenter;
+import org.siemac.metamac.srm.web.client.view.ErrorPageViewImpl;
 import org.siemac.metamac.srm.web.client.view.MainPageViewImpl;
 import org.siemac.metamac.srm.web.client.view.StructuralResourcesViewImpl;
+import org.siemac.metamac.srm.web.client.view.UnauthorizedPageViewImpl;
 import org.siemac.metamac.srm.web.client.widgets.presenter.ToolStripPresenterWidget;
 import org.siemac.metamac.srm.web.client.widgets.view.ToolStripViewImpl;
 import org.siemac.metamac.srm.web.concept.presenter.ConceptSchemeListPresenter;
@@ -58,6 +62,10 @@ public class ClientModule extends AbstractPresenterModule {
         bindPresenter(MainPagePresenter.class, MainPagePresenter.MainPageView.class, MainPageViewImpl.class, MainPagePresenter.MainPageProxy.class);
         bindPresenter(StructuralResourcesPresenter.class, StructuralResourcesPresenter.StructuralResourcesView.class, StructuralResourcesViewImpl.class,
                 StructuralResourcesPresenter.StructuralResourcesProxy.class);
+
+        // Error pages
+        bindPresenter(ErrorPagePresenter.class, ErrorPagePresenter.ErrorPageView.class, ErrorPageViewImpl.class, ErrorPagePresenter.ErrorPageProxy.class);
+        bindPresenter(UnauthorizedPagePresenter.class, UnauthorizedPagePresenter.UnauthorizedPageView.class, UnauthorizedPageViewImpl.class, UnauthorizedPagePresenter.UnauthorizedPageProxy.class);
 
         // DSD
         // TODO: DEV
