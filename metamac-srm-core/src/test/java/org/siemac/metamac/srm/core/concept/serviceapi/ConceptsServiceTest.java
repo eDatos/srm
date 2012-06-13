@@ -10,13 +10,13 @@ import org.junit.runner.RunWith;
 import org.siemac.metamac.common.test.utils.MetamacAsserts;
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.srm.core.base.serviceapi.utils.BaseAsserts;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.common.error.MetamacCoreExceptionType;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.concept.domain.ConceptScheme;
 import org.siemac.metamac.srm.core.concept.serviceapi.utils.ConceptsAsserts;
 import org.siemac.metamac.srm.core.concept.serviceapi.utils.ConceptsDoMocks;
-import org.siemac.metamac.srm.core.utils.SrmAsserts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -56,7 +56,7 @@ public class ConceptsServiceTest extends SrmBaseTest  implements ConceptsService
         assertEquals("ISTAC", conceptScheme.getItemScheme().getMaintainer().getCodeId());
         assertEquals(TypeExternalArtefactsEnum.AGENCY, conceptScheme.getItemScheme().getMaintainer().getType());
         
-        SrmAsserts.assertEqualsInternationalString(conceptScheme.getItemScheme().getName(), "es", "Nombre conceptScheme-1-v1", "en", "Name conceptScheme-1-v1");
+        BaseAsserts.assertEqualsInternationalString(conceptScheme.getItemScheme().getName(), "es", "Nombre conceptScheme-1-v1", "en", "Name conceptScheme-1-v1");
         
     }
     
