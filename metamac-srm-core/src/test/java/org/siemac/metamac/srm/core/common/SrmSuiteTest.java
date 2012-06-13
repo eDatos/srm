@@ -2,8 +2,9 @@ package org.siemac.metamac.srm.core.common;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
-import org.siemac.metamac.srm.core.base.serviceapi.SdmxBaseServiceTest;
-import org.siemac.metamac.srm.core.common.test.SDMXResources;
+import org.siemac.metamac.srm.core.base.serviceapi.BaseServiceTest;
+import org.siemac.metamac.srm.core.common.tests.JavaSerializationTest;
+import org.siemac.metamac.srm.core.common.tests.KryoTest;
 import org.siemac.metamac.srm.core.concept.serviceapi.ConceptsServiceTest;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacadeTest;
 import org.siemac.metamac.srm.core.structure.serviceapi.DataStructureDefinitionServiceTest;
@@ -13,7 +14,6 @@ import org.siemac.metamac.srm.core.structure.serviceapi.DataStructureDefinitionS
  */
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({SdmxBaseServiceTest.class, SDMXResources.class, ConceptsServiceTest.class,
-    SrmCoreServiceFacadeTest.class, DataStructureDefinitionServiceTest.class})
+@Suite.SuiteClasses({BaseServiceTest.class, ConceptsServiceTest.class, SrmCoreServiceFacadeTest.class, DataStructureDefinitionServiceTest.class, JavaSerializationTest.class, KryoTest.class})
 public class SrmSuiteTest {
 }
