@@ -62,28 +62,19 @@ public class DataStructureDefinitionServiceTest extends AbstractTransactionalJUn
         return serviceContext;
     }
 
-    public void initializeData() {
-        // Check for existence Data
-        // if (sdmxBaseService.findAllConcepts(getServiceContext()).isEmpty()) {
-        // executeSqlScript("classpath:oracle/core/script_insert.sql", false);
-        // }
-    }
 
     /**************************************************************************
      * DSD Tests
      **************************************************************************/
     @Test
     public void testSaveDsd() throws Exception {
-        initializeData();
-
+        
         DataStructureDefinition dataStructureDefinition = dataStructureDefinitionService.saveDsd(getServiceContext(), createDsd());
         assertNotNull(dataStructureDefinition);
     }
 
     @Test
     public void testDeleteDsd() throws Exception {
-
-        initializeData();
 
         testSaveDsd();
 
@@ -101,7 +92,6 @@ public class DataStructureDefinitionServiceTest extends AbstractTransactionalJUn
 
     @Test
     public void testFindDsdByCondition() throws Exception {
-        initializeData();
 
         testSaveDsd();
 
@@ -114,7 +104,6 @@ public class DataStructureDefinitionServiceTest extends AbstractTransactionalJUn
 
     @Test
     public void testFindAllDsds() throws Exception {
-        initializeData();
 
         testSaveDsd();
         List<DataStructureDefinition> dsds = dataStructureDefinitionService.findAllDsds(getServiceContext());
@@ -123,7 +112,6 @@ public class DataStructureDefinitionServiceTest extends AbstractTransactionalJUn
 
     @Test
     public void testFindDsdById() throws Exception {
-        initializeData();
 
         testSaveDsd();
 
