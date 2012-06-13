@@ -7,6 +7,18 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/test/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/test/resources"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/target/generated-sources/gwt"/>
+        <dependent-module archiveName="metamac-srm-core-1.0.0-SNAPSHOT-client.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/metamac-srm-core/metamac-srm-core">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="metamac-api-domain-1.0.1-SNAPSHOT-client.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/metamac-api-domain/metamac-api-domain">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="metamac-core-common-1.0.1-SNAPSHOT-client.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/metamac-core-common/metamac-core-common">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="metamac-transformation-1.0.0-SNAPSHOT-client.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/metamac-transformation/metamac-transformation">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <property name="java-output-path" value="/metamac-srm-web/target/metamac-srm-web-1.0.0-SNAPSHOT/WEB-INF/classes"/>
         <property name="context-root" value="metamac-srm-web"/>
   </wb-module>
