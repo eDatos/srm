@@ -1,4 +1,4 @@
-package org.siemac.metamac.srm.core.common.tests;
+package org.siemac.metamac.srm.core.common.utilities;
 
 import static org.junit.Assert.assertTrue;
 
