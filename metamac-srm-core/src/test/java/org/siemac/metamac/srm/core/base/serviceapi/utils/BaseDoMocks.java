@@ -2,12 +2,14 @@ package org.siemac.metamac.srm.core.base.serviceapi.utils;
 
 import org.joda.time.DateTime;
 import org.siemac.metamac.common.test.utils.MetamacMocks;
+import org.siemac.metamac.core.common.bt.domain.ExternalItemBt;
+import org.siemac.metamac.core.common.ent.domain.InternationalString;
+import org.siemac.metamac.core.common.ent.domain.LocalisedString;
+import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.srm.core.base.domain.ItemScheme;
-import org.siemac.metamac.srm.core.utils.SrmDoMocks;
 
 public class BaseDoMocks {
 
-    
     // -----------------------------------------------------------------
     // ITEM SCHEME
     // -----------------------------------------------------------------
@@ -23,8 +25,8 @@ public class BaseDoMocks {
         itemScheme.setReplacedBy(null);
 
         // NameableArtefact
-        itemScheme.setName(SrmDoMocks.mockInternationalString());
-        itemScheme.setDescription(SrmDoMocks.mockInternationalString());
+        itemScheme.setName(mockInternationalString());
+        itemScheme.setDescription(mockInternationalString());
 
         // MaintainableArtefact
         itemScheme.setVersionLogic("v1.0");
@@ -35,7 +37,7 @@ public class BaseDoMocks {
         itemScheme.setStructureURL(null);
         itemScheme.setServiceURL(null);
 
-        itemScheme.setMaintainer(SrmDoMocks.mockAgencyExternalItemBt());
+        itemScheme.setMaintainer(mockAgencyExternalItemBt());
 
         return itemScheme;
     }
@@ -78,6 +80,38 @@ public class BaseDoMocks {
         itemScheme.setMaintainer(null);
         
         return itemScheme;
+    }
+    
+ // -----------------------------------------------------------------
+    // INTERNATIONAL STRING
+    // -----------------------------------------------------------------
+
+    public static InternationalString mockInternationalString() {
+        InternationalString internationalString = new InternationalString();
+        LocalisedString es = new LocalisedString();
+        es.setLabel(MetamacMocks.mockString(10) + " en Español");
+        es.setLocale("es");
+        LocalisedString en = new LocalisedString();
+        en.setLabel(MetamacMocks.mockString(10) + " in English");
+        en.setLocale("en");
+        internationalString.addText(es);
+        internationalString.addText(en);
+        return internationalString;
+    }
+
+    // -----------------------------------------------------------------
+    // EXTERNAL ITEM
+    // -----------------------------------------------------------------
+
+    public static ExternalItemBt mockAgencyExternalItemBt() {
+        String code = MetamacMocks.mockString(10);
+        return new ExternalItemBt("http://sdmx/v2.1/agency/" + code, code, TypeExternalArtefactsEnum.AGENCY);
+    }
+
+    public static ExternalItemBt mockConceptExternalItemBt() {
+        String conceptScheme = MetamacMocks.mockString(10);
+        String code = MetamacMocks.mockString(10);
+        return new ExternalItemBt("http://sdmx/v2.1/concept/" + conceptScheme + "/" + code, code, TypeExternalArtefactsEnum.CONCEPT);
     }
 
 }
