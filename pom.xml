@@ -17,8 +17,8 @@
         <module>metamac-srm-parent</module>
         <module>metamac-srm-web</module>
         <module>metamac-srm-core</module>
-        <module>metamac-srm-core-facade-rest-api</module>
-        <module>metamac-srm-core-facade-rest-impl</module>
+        <module>metamac-srm-rest-api</module>
+        <module>metamac-srm-rest-impl</module>
     </modules>
 
     <scm>
