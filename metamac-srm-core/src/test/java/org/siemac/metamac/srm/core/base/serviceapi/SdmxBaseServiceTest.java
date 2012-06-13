@@ -9,19 +9,22 @@ import java.util.List;
 import org.apache.commons.lang.RandomStringUtils;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.joda.time.DateTime;
+import org.junit.BeforeClass;
 import org.junit.Test;
+import org.siemac.metamac.common.test.mock.OracleJNDIMock;
 import org.siemac.metamac.srm.core.base.domain.Component;
 import org.siemac.metamac.srm.core.base.domain.ComponentList;
 import org.siemac.metamac.srm.core.mock.Mocks;
 import org.siemac.metamac.srm.core.structure.domain.Dimension;
 import org.siemac.metamac.srm.core.structure.domain.DimensionDescriptor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.jndi.SimpleNamingContextBuilder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-@ContextConfiguration(locations = {"classpath:spring/srm/applicationContext-test.xml"})
+@ContextConfiguration(locations = {"classpath:spring/srm-core/oracle/applicationContext-test.xml"})
 @TransactionConfiguration(transactionManager = "txManagerCore", defaultRollback = true)
 @Transactional
 public class SdmxBaseServiceTest extends AbstractTransactionalJUnit4SpringContextTests implements SdmxBaseServiceTestBase {
@@ -42,6 +45,15 @@ public class SdmxBaseServiceTest extends AbstractTransactionalJUnit4SpringContex
         // if (sdmxBaseService.findAllConcepts(getServiceContext()).isEmpty()) {
         // executeSqlScript("classpath:oracle/core/script_insert.sql", false);
         // }
+    }
+    
+    @BeforeClass
+    public static void setUp() {
+        // JNDI SDMXDS
+        SimpleNamingContextBuilder simpleNamingContextBuilder = OracleJNDIMock.setUp("SDMXDS", "srm_test", "srm_test", "jdbc:oracle:thin:@localhost:1521:XE", null);
+
+        // JNDI tatisticDatasetDS
+//        simpleNamingContextBuilder = OracleJNDIMock.setUp("StatisticDatasetDS", "sdmx_data", "sdmx_data", "jdbc:oracle:thin:@localhost:1521:XE", simpleNamingContextBuilder);
     }
 
     /**************************************************************************

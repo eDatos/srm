@@ -61,7 +61,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:spring/srm/applicationContext-test.xml"})
+@ContextConfiguration(locations = {"classpath:spring/srm-core/oracle/applicationContext-test.xml"})
 public class SrmCoreServiceFacadeTest implements SrmCoreServiceFacadeTestBase {
 
     @Autowired
@@ -91,7 +91,7 @@ public class SrmCoreServiceFacadeTest implements SrmCoreServiceFacadeTestBase {
     @BeforeClass
     public static void setUp() {
         // JNDI SDMXDS
-        SimpleNamingContextBuilder simpleNamingContextBuilder = OracleJNDIMock.setUp("SDMXDS", "metamac", "metamac", "jdbc:oracle:thin:@localhost:1521:XE", null);
+        SimpleNamingContextBuilder simpleNamingContextBuilder = OracleJNDIMock.setUp("SDMXDS", "srm_test", "srm_test", "jdbc:oracle:thin:@localhost:1521:XE", null);
     }
 
     protected ServiceContext getServiceContext() {
