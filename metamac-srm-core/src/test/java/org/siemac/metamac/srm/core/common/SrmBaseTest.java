@@ -1,4 +1,4 @@
-package org.siemac.metamac.srm.core.concept.serviceapi;
+package org.siemac.metamac.srm.core.common;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,7 +6,7 @@ import java.util.List;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.common.test.MetamacBaseTests;
 
-public abstract class ConceptsBaseTest extends MetamacBaseTests {
+public abstract class SrmBaseTest extends MetamacBaseTests {
 
     protected static Long NOT_EXISTS                 = Long.valueOf(-1);
 
@@ -24,13 +24,13 @@ public abstract class ConceptsBaseTest extends MetamacBaseTests {
     protected ServiceContext getServiceContextAdministrador() {
         ServiceContext serviceContext = super.getServiceContextWithoutPrincipal();
         
-        // TODO: Descomentar cuando est�n los roles
+        // TODO: Descomentar cuando esten los roles
         // putMetamacPrincipalInServiceContext(serviceContext, AccessControlRoleEnum.ADMINISTRADOR);
         return serviceContext;
     }
 
 
-    // TODO: Descomentar cuando ya est�n definidos los roles
+    // TODO: Descomentar cuando ya esten definidos los roles
 //    private void putMetamacPrincipalInServiceContext(ServiceContext serviceContext, AccessControlRoleEnum role) {
 //        MetamacPrincipal metamacPrincipal = new MetamacPrincipal();
 //        metamacPrincipal.setUserId(serviceContext.getUserId());
@@ -53,13 +53,19 @@ public abstract class ConceptsBaseTest extends MetamacBaseTests {
         
         tables.add("TB_LOCALISED_STRINGS");
         tables.add("TB_ANNOTATIONS");
+        tables.add("TB_DIMREL_GROUPDIM");
+        tables.add("TB_DIMREL_DIMCOM");
         tables.add("TB_ATTR_RELATIONSHIPS");
+        tables.add("TB_DIMC_EXTITEM");
+        tables.add("TB_MEAD_EXTITEM");
+        tables.add("TB_DATTR_EXTITEM");
         tables.add("TB_EXTERNAL_ITEMS");
         tables.add("TB_CONCEPTS");
         tables.add("TB_CONCEPT_SCHEMES");
         tables.add("TB_INTERNATIONAL_STRINGS");
         tables.add("TB_FACETS");
         tables.add("TB_REPRESENTATIONS");
+        tables.add("TB_COMPLIST_COMP");
         tables.add("TB_ANNOTABLE_ARTEFACTS");
         
         return tables;

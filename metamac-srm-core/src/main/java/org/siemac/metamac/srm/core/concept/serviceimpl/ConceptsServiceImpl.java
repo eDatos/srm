@@ -2,18 +2,20 @@ package org.siemac.metamac.srm.core.concept.serviceimpl;
 
 import java.util.List;
 
+import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
+import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
+import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
-import org.siemac.metamac.core.common.criteria.MetamacCriteria;
-import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.common.error.MetamacCoreExceptionType;
 import org.siemac.metamac.srm.core.concept.domain.Concept;
 import org.siemac.metamac.srm.core.concept.domain.ConceptScheme;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeRepository;
 import org.siemac.metamac.srm.core.concept.exception.ConceptSchemeNotFoundException;
-import org.siemac.metamac.srm.core.concept.serviceimpl.utils.InvocationValidator;
+import org.siemac.metamac.srm.core.concept.serviceimpl.utils.ConceptsInvocationValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.siemac.metamac.core.common.criteria.utils.CriteriaUtils;
 
 /**
  * Implementation of ConceptsService.
@@ -33,7 +35,7 @@ public class ConceptsServiceImpl extends ConceptsServiceImplBase {
 
     public ConceptScheme findConceptSchemeById(ServiceContext ctx, Long id) throws MetamacException {
 
-        InvocationValidator.checkFindConceptSchemeById(id, null);
+        ConceptsInvocationValidator.checkFindConceptSchemeById(id, null);
 
         try {
             return conceptSchemeRepository.findById(id);
@@ -45,10 +47,9 @@ public class ConceptsServiceImpl extends ConceptsServiceImplBase {
 
     public ConceptScheme createConceptScheme(ServiceContext ctx, ConceptScheme entity) throws MetamacException {
 
-        InvocationValidator.checkCreateConceptScheme(entity, null);
+        ConceptsInvocationValidator.checkCreateConceptScheme(entity, null);
+        // TODO: Validate code unique: organization, id_logic, version?
         // validateConceptSchemeUnique(ctx, entity.getItemScheme().getIdLogic(), null);
-        // TODO: Validate code unique
-        // validateRoleCodeUnique(ctx, entity.getCode(), null);
 
         return conceptSchemeRepository.save(entity);
 
@@ -56,9 +57,10 @@ public class ConceptsServiceImpl extends ConceptsServiceImplBase {
 
     public ConceptScheme updateConceptScheme(ServiceContext ctx, ConceptScheme entity) throws MetamacException {
 
-        InvocationValidator.checkUpdateConceptScheme(entity, null);
-        // TODO: Validate code unique
-        // validateRoleCodeUnique(ctx, entity.getCode(), entity.getId());
+        ConceptsInvocationValidator.checkUpdateConceptScheme(entity, null);
+        
+        // TODO: Validate code unique: organization, id_logic, version?
+        // validateConceptSchemeUnique(ctx, entity.getItemScheme().getIdLogic(), null);
 
         return conceptSchemeRepository.save(entity);
 
@@ -66,26 +68,35 @@ public class ConceptsServiceImpl extends ConceptsServiceImplBase {
 
     public void deleteConceptScheme(ServiceContext ctx, Long id) throws MetamacException {
 
-        InvocationValidator.checkDeleteConceptScheme(id, null);
+        ConceptsInvocationValidator.checkDeleteConceptScheme(id, null);
 
         ConceptScheme conceptScheme = findConceptSchemeById(ctx, id);
+        
+        // TODO: Check if the conceptScheme can be deleted.
+        // We have to check if delete whole conceptScheme or only the last version
         conceptSchemeRepository.delete(conceptScheme);
 
     }
 
     public List<ConceptScheme> findAllConceptSchemes(ServiceContext ctx) throws MetamacException {
 
-        InvocationValidator.checkFindAllConceptSchemes(null);
+        ConceptsInvocationValidator.checkFindAllConceptSchemes(null);
 
         return conceptSchemeRepository.findAll();
 
     }
 
     @Override
-    public MetamacCriteriaResult<ConceptScheme> findConceptSchemeByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
-        // TODO Auto-generated method stub
-        return null;
+    public PagedResult<ConceptScheme> findConceptSchemeByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
+       
+        ConceptsInvocationValidator.checkFindConceptSchemeByCondition(conditions, pagingParameter, null);
+        
+        CriteriaUtils.initCriteriaConditions(conditions, ConceptScheme.class);
+        
+        return conceptSchemeRepository.findByCondition(conditions, pagingParameter);
     }
+    
+
 
     // ------------------------------------------------------------------------------------
     // CONCEPTS

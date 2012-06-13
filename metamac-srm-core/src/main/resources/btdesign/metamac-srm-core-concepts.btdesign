@@ -27,8 +27,9 @@ Application ConceptSchemes {
     		@ConceptScheme updateConceptScheme(@ConceptScheme entity) throws MetamacException;
     		deleteConceptScheme(Long id) throws MetamacException;
     		@ConceptScheme findConceptSchemeById(Long id) throws MetamacException;
+    		// TODO by code
     		List<@ConceptScheme> findAllConceptSchemes throws MetamacException;
-    		MetamacCriteriaResult<@ConceptScheme> findConceptSchemeByCondition(MetamacCriteria criteria)  throws MetamacException;
+    		PagedResult<@ConceptScheme> findConceptSchemeByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
     		
     		"Concept"
     		@Concept createConcept(Long conceptSchemeId, @ConceptScheme entity) throws MetamacException;
@@ -50,7 +51,7 @@ Application ConceptSchemes {
 			databaseTable="TB_CONCEPT_SCHEMES"
 			hint="idSequence=CONCEPT_SCHEMES"
 			
-			- @ItemScheme itemScheme databaseColumn="ITEM_SCHEME_FK" not nullable;
+			- @ItemScheme itemScheme databaseColumn="ITEM_SCHEME_FK" not nullable cascade="all" ;
 			
 			Repository ConceptSchemeRepository {
 				findById;

@@ -1,6 +1,7 @@
 package org.siemac.metamac.srm.core.concept.serviceapi;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
@@ -8,16 +9,23 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.common.test.utils.MetamacAsserts;
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
+import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.srm.core.common.SrmBaseTest;
+import org.siemac.metamac.srm.core.common.error.MetamacCoreExceptionType;
+import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.concept.domain.ConceptScheme;
+import org.siemac.metamac.srm.core.concept.serviceapi.utils.ConceptsAsserts;
+import org.siemac.metamac.srm.core.concept.serviceapi.utils.ConceptsDoMocks;
 import org.siemac.metamac.srm.core.utils.SrmAsserts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/srm/applicationContext-test.xml"})
-public class ConceptsServiceTest extends ConceptsBaseTest  implements ConceptsServiceTestBase {
+public class ConceptsServiceTest extends SrmBaseTest  implements ConceptsServiceTestBase {
     
     @Autowired
     protected ConceptsService conceptsService;
@@ -51,12 +59,70 @@ public class ConceptsServiceTest extends ConceptsBaseTest  implements ConceptsSe
         SrmAsserts.assertEqualsInternationalString(conceptScheme.getItemScheme().getName(), "es", "Nombre conceptScheme-1-v1", "en", "Name conceptScheme-1-v1");
         
     }
+    
+    @Test
+    public void testFindConceptSchemeByIdParameterRequired() throws Exception {
+        Long id = null;
+        
+        try {
+            conceptsService.findConceptSchemeById(getServiceContextWithoutPrincipal(), id);
+            fail("parameter required"); 
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(MetamacCoreExceptionType.PARAMETER_REQUIRED.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(ServiceExceptionParameters.ID, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+    
+    @Test
+    public void testFindConceptSchemeByIdNotFound() throws Exception {
+        Long id = NOT_EXISTS;
+        
+        try {
+            conceptsService.findConceptSchemeById(getServiceContextWithoutPrincipal(), id);
+            fail("not found"); 
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(MetamacCoreExceptionType.CONCEPT_SCHEME_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(id, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
 
     @Test
     public void testCreateConceptScheme() throws Exception {
-        // TODO Auto-generated method stub
-        fail("testCreateConceptScheme not implemented");
+        ConceptScheme conceptScheme = ConceptsDoMocks.createConceptScheme();
+        
+        ConceptScheme createdConceptScheme = conceptsService.createConceptScheme(getServiceContextWithoutPrincipal(), conceptScheme);
+        
+        // Validate
+        assertNotNull(createdConceptScheme);
+        assertNotNull(createdConceptScheme.getCreatedBy());
+        assertNotNull(createdConceptScheme.getCreatedDate());
+        assertNotNull(createdConceptScheme.getLastUpdatedBy());
+        assertNotNull(createdConceptScheme.getLastUpdated());
+        
+        assertNotNull(createdConceptScheme.getVersion());
+        assertNotNull(createdConceptScheme.getId());
+        assertNotNull(createdConceptScheme.getUuid());
+        
+        ConceptsAsserts.assertEqualsConceptScheme(conceptScheme, createdConceptScheme);
     }
+    
+    @Test
+    public void testCreateConceptSchemeRequiredParameter() throws Exception {
+        try {
+            conceptsService.createConceptScheme(getServiceContextWithoutPrincipal(), null);
+            fail("parameter required");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(MetamacCoreExceptionType.PARAMETER_REQUIRED.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(ServiceExceptionParameters.CONCEPT_SCHEME, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
 
     @Test
     public void testUpdateConceptScheme() throws Exception {
@@ -111,4 +177,5 @@ public class ConceptsServiceTest extends ConceptsBaseTest  implements ConceptsSe
         // TODO Auto-generated method stub
         fail("testFindConceptSchemeConcepts not implemented");
     }
+    
 }

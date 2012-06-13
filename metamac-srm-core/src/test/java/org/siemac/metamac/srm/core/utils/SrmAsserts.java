@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.core.utils;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
+import org.siemac.metamac.core.common.bt.domain.ExternalItemBt;
 import org.siemac.metamac.core.common.ent.domain.InternationalString;
 import org.siemac.metamac.core.common.ent.domain.LocalisedString;
 
@@ -32,6 +33,12 @@ public class SrmAsserts {
             count++;
         }
         assertEquals(count, internationalString.getTexts().size());
+    }
+
+    public static void assertExternalItemBt(ExternalItemBt expected, ExternalItemBt actual) {
+        assertEquals(expected.getCodeId(), actual.getCodeId());
+        assertEquals(expected.getUriInt(), actual.getUriInt());
+        assertEquals(expected.getType(), actual.getType());
     }
 
 }
