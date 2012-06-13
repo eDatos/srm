@@ -14,7 +14,7 @@ import org.junit.Test;
 import org.siemac.metamac.common.test.mock.OracleJNDIMock;
 import org.siemac.metamac.srm.core.base.domain.Component;
 import org.siemac.metamac.srm.core.base.domain.ComponentList;
-import org.siemac.metamac.srm.core.mock.Mocks;
+import org.siemac.metamac.srm.core.base.serviceapi.utils.BaseDoMocks;
 import org.siemac.metamac.srm.core.structure.domain.Dimension;
 import org.siemac.metamac.srm.core.structure.domain.DimensionDescriptor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 @ContextConfiguration(locations = {"classpath:spring/srm-core/oracle/applicationContext-test.xml"})
 @TransactionConfiguration(transactionManager = "txManagerCore", defaultRollback = true)
 @Transactional
-public class SdmxBaseServiceTest extends AbstractTransactionalJUnit4SpringContextTests implements SdmxBaseServiceTestBase {
+public class BaseServiceTest extends AbstractTransactionalJUnit4SpringContextTests implements SdmxBaseServiceTestBase {
 
     @Autowired
     protected SdmxBaseService    sdmxBaseService;
@@ -40,12 +40,6 @@ public class SdmxBaseServiceTest extends AbstractTransactionalJUnit4SpringContex
         return serviceContext;
     }
 
-    public void initializeData() {
-        // Check for existence Data
-        // if (sdmxBaseService.findAllConcepts(getServiceContext()).isEmpty()) {
-        // executeSqlScript("classpath:oracle/core/script_insert.sql", false);
-        // }
-    }
     
     @BeforeClass
     public static void setUp() {
@@ -63,8 +57,6 @@ public class SdmxBaseServiceTest extends AbstractTransactionalJUnit4SpringContex
     @Test
     public void testSaveComponent() throws Exception {
 
-        initializeData();
-
         Component component = sdmxBaseService.saveComponent(getServiceContext(), createDimension().get(0));
         assertNotNull(component);
 
@@ -72,8 +64,6 @@ public class SdmxBaseServiceTest extends AbstractTransactionalJUnit4SpringContex
 
     @Test
     public void testDeleteComponent() throws Exception {
-
-        initializeData();
 
         testSaveComponent();
 
@@ -89,7 +79,6 @@ public class SdmxBaseServiceTest extends AbstractTransactionalJUnit4SpringContex
     @Override
     @Test
     public void testFindAllComponent() throws Exception {
-        initializeData();
 
         testSaveComponent();
 
@@ -103,8 +92,6 @@ public class SdmxBaseServiceTest extends AbstractTransactionalJUnit4SpringContex
     @Test
     public void testSaveComponentList() throws Exception {
 
-        initializeData();
-
         ComponentList componentList = sdmxBaseService.saveComponentList(getServiceContext(), createDimensionDescriptor());
 
         assertNotNull(componentList);
@@ -114,7 +101,6 @@ public class SdmxBaseServiceTest extends AbstractTransactionalJUnit4SpringContex
     @Override
     @Test
     public void testDeleteComponentList() throws Exception {
-        initializeData();
 
         testSaveComponentList();
 
@@ -130,8 +116,6 @@ public class SdmxBaseServiceTest extends AbstractTransactionalJUnit4SpringContex
     @Override
     @Test
     public void testFindAllComponentList() throws Exception {
-        initializeData();
-
         testSaveComponentList();
 
         List<ComponentList> componentLists = sdmxBaseService.findAllComponentList(getServiceContext());
@@ -147,7 +131,7 @@ public class SdmxBaseServiceTest extends AbstractTransactionalJUnit4SpringContex
 
         // Required
         dimension1.setUri(RandomStringUtils.random(50, true, true));
-        dimension1.setCptIdRef(Mocks.createConceptExternalItemBt());
+        dimension1.setCptIdRef(BaseDoMocks.mockConceptExternalItemBt());
         dimension1.setOrderLogic(1);
 
         // Some Auditory
@@ -159,7 +143,7 @@ public class SdmxBaseServiceTest extends AbstractTransactionalJUnit4SpringContex
 
         // Required
         dimension2.setUri(RandomStringUtils.random(50, true, true));
-        dimension2.setCptIdRef(Mocks.createConceptExternalItemBt());
+        dimension2.setCptIdRef(BaseDoMocks.mockConceptExternalItemBt());
         dimension2.setOrderLogic(1);
 
         // Some Auditory
