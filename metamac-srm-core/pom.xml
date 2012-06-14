@@ -25,12 +25,12 @@
 			<artifactId>metamac-common-test</artifactId>
 			<version>${metamac-common-test.version}</version>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.siemac.metamac</groupId>
-			<artifactId>metamac-api-domain</artifactId>
-			<version>${metamac-api-domain.version}</version>
-			<classifier>client</classifier>
+			<exclusions>
+				<exclusion>
+					<artifactId>metamac-core-common</artifactId>
+					<groupId>org.siemac.metamac</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.siemac.metamac</groupId>
