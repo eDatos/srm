@@ -12,10 +12,10 @@
 	</parent>
 
 	<groupId>org.siemac.metamac.metamac-srm</groupId>
-	<artifactId>metamac-srm-rest-impl</artifactId>
+	<artifactId>metamac-srm-rest-internal-impl</artifactId>
 	<packaging>jar</packaging>
-	<name>SIEMAC :: METAMAC :: SRM :: REST :: IMPL</name>
-	<description>SIEMAC :: METAMAC :: SRM :: REST :: IMPL</description>
+	<name>SIEMAC :: METAMAC :: SRM :: REST :: INTERNAL :: IMPL</name>
+	<description>SIEMAC :: METAMAC :: SRM :: REST :: INTERNAL :: IMPL</description>
 
 	<dependencies>
 		<dependency>
