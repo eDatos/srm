@@ -20,7 +20,7 @@ public class JAXRSResourceDatasourceTest extends AbstractBusClientServerTestBase
     @BeforeClass
     public static void startServers() throws Exception {
         // JNDI SDMXDS
-        SimpleNamingContextBuilder simpleNamingContextBuilder = OracleJNDIMock.setUp("SDMXDS", "metamac", "metamac", "jdbc:oracle:thin:@localhost:1521:XE", null);
+        SimpleNamingContextBuilder simpleNamingContextBuilder = OracleJNDIMock.setUp("SDMXDS", "srm_test", "srm_test", "jdbc:oracle:thin:@localhost:1521:XE", null);
 
         assertTrue("server did not launch correctly", launchServer(ServerResource.class, true));
     }
