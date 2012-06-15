@@ -36,10 +36,10 @@
 <!-- 			</method> -->
 <!-- 		</resource> -->
 
-    	<resource id="datastructureRestServiceFacade" path="datastructure/{agencyID}/{resourceID}/{version}" type="#MaintainableArtefact"> 
+    	<resource id="datastructureRestFacade" path="datastructure/{agencyID}/{resourceID}/{version}" type="#MaintainableArtefact"> 
 
     	</resource>
-    	<resource id="metadatastructureRestServiceFacade" path="metadatastructure/{agencyID}/{resourceID}/{version}" type="#MaintainableArtefact"> 
+    	<resource id="metadatastructureRestFacade" path="metadatastructure/{agencyID}/{resourceID}/{version}" type="#MaintainableArtefact"> 
 
     	</resource>
     	
