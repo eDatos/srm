@@ -28,7 +28,7 @@
     		   
   </jaxrs:server>
   
-  <bean id="datastructureRestServiceFacade" class="org.siemac.metamac.srm.core.facade.rest.api.serviceimpl.DatastructureRestServiceFacadeImpl"/>
+  <bean id="datastructureRestServiceFacade" class="org.siemac.metamac.srm.rest.internal.v1_0.service.DatastructureRestFacadeImpl"/>
   
   <bean id="jaxbProvider" class="org.apache.cxf.jaxrs.provider.JAXBElementProvider">
   	<property name="schemaHandler" ref="schemaHolder"/>
