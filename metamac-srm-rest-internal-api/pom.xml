@@ -91,13 +91,13 @@
 							<sourceRoot>${basedir}/src/generated/java</sourceRoot>
 							<wadlOptions>
 								<wadlOption>
-									<wadl>${basedir}/../etc/wadl/srm-core-rest.wadl</wadl>
+									<wadl>${basedir}/../etc/wadl/metamac-srm-rest-internal-v1.0.wadl</wadl>
 									<extraargs>
 										<extraarg>-verbose</extraarg>
 									</extraargs>
 									<interface>true</interface>
 <!-- 									<impl>true</impl> -->
-									<packagename>org.siemac.metamac.srm.core.facade.rest.api.service</packagename>
+									<packagename>org.siemac.metamac.srm.rest.internal.v1_0.service</packagename>
 <!-- 									<schemaPackagenames> -->
 <!-- 										<schemaPackagename>http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common=org.siemac.metamac.trans.v2_1.domain.common</schemaPackagename> -->
 <!-- 										<schemaPackagename>http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/generic=org.siemac.metamac.trans.v2_1.data.generic</schemaPackagename> -->
