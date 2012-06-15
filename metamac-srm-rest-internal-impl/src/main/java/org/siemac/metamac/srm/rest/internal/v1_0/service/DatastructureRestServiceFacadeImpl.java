@@ -1,4 +1,4 @@
-package org.siemac.metamac.srm.core.facade.rest.api.serviceimpl;
+package org.siemac.metamac.srm.rest.internal.v1_0.service;
 
 import static org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder.criteriaFor;
 import static org.siemac.metamac.srm.core.structure.domain.DataStructureDefinitionProperties.idLogic;
@@ -25,12 +25,11 @@ import org.siemac.metamac.domain.srm.enume.domain.TypeDozerCopyMode;
 import org.siemac.metamac.domain.trans.dto.StructureMsgDto;
 import org.siemac.metamac.srm.core.base.serviceapi.SdmxBaseService;
 import org.siemac.metamac.srm.core.common.error.MetamacCoreExceptionType;
-import org.siemac.metamac.srm.core.facade.rest.api.service.DatastructureRestServiceFacade;
-import org.siemac.metamac.srm.core.facade.rest.api.util.RestUtils;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.core.service.dto.Dto2DoMapper;
 import org.siemac.metamac.srm.core.structure.domain.DataStructureDefinition;
 import org.siemac.metamac.srm.core.structure.serviceapi.DataStructureDefinitionService;
+import org.siemac.metamac.srm.rest.internal.v1_0.util.RestUtils;
 import org.siemac.metamac.trans.facade.serviceapi.TransformationServiceFacade;
 import org.siemac.metamac.trans.v2_1.message.Error;
 import org.springframework.beans.factory.annotation.Autowired;
