@@ -1,4 +1,4 @@
-package org.siemac.metamac.srm.core.facade.rest.api.serviceimpl;
+package org.siemac.metamac.srm.rest.internal.v1_0.service;
 
 import static org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder.criteriaFor;
 import static org.mockito.Mockito.mock;
