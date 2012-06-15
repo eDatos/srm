@@ -20,7 +20,6 @@ import org.siemac.metamac.data.mock.Mocks;
 import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.core.structure.domain.DataStructureDefinition;
-import org.siemac.metamac.srm.rest.internal.v1_0.service.DatastructureRestServiceFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.jndi.SimpleNamingContextBuilder;
 import org.springframework.test.context.ContextConfiguration;
@@ -28,22 +27,22 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/srm-core-facade-rest/applicationContext-test.xml"})
-public class DataStructureRestServiceFacadeTest {
+public class DataStructureRestFacadeTest {
 
     @Autowired
-    private DatastructureRestServiceFacade datastructureRestServiceFacade;
+    private DatastructureRestFacade datastructureRestServiceFacade;
     
     @Autowired
     private SrmCoreServiceFacade srmCoreServiceFacade;
     
     private final ServiceContext serviceContext = new ServiceContext("system", "123456", "junit");
 
-    static Logger                logger         = Logger.getLogger(DataStructureRestServiceFacadeTest.class.getName());
+    static Logger                logger         = Logger.getLogger(DataStructureRestFacadeTest.class.getName());
 
     @BeforeClass
     public static void setUp() {
         // JNDI SDMXDS
-        SimpleNamingContextBuilder simpleNamingContextBuilder = OracleJNDIMock.setUp("SDMXDS", "metamac", "metamac", "jdbc:oracle:thin:@localhost:1521:XE", null);
+        SimpleNamingContextBuilder simpleNamingContextBuilder = OracleJNDIMock.setUp("SDMXDS", "srm_test", "srm_test", "jdbc:oracle:thin:@localhost:1521:XE", null);
 
     }
 
@@ -69,8 +68,6 @@ public class DataStructureRestServiceFacadeTest {
         // Mock
         DataStructureDefinition dsdMock = mock(DataStructureDefinition.class);
 //        Page
-        
-        
         
 //        when(dataStructureDefinitionServiceMock.findDsdByCondition((ServiceContext) Matchers.anyObject(),  (List<ConditionalCriteria>) Matchers.anyObject(), (PagingParameter) Matchers.anyObject())).thenReturn(value)
         
