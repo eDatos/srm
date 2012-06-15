@@ -35,7 +35,7 @@ import org.siemac.metamac.trans.v2_1.message.Error;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
-public class DatastructureRestServiceFacadeImpl implements DatastructureRestServiceFacade {
+public class DatastructureRestFacadeImpl implements DatastructureRestFacade {
 
     @Autowired
     private Dto2DoMapper dto2DoMapper;
