@@ -15,7 +15,7 @@
 
 
     <!-- SpringBeanProvider GWTP -->
-    <context:component-scan base-package="com.gwtplatform.dispatch.server.spring,org.siemac.metamac.srm.web" />
+    <context:component-scan base-package="com.gwtplatform.dispatch.server.spring,org.siemac.metamac.srm.web,org.siemac.metamac.web.common.server.handlers" />
 
     <!-- Activates annotation-based bean configuration -->
     <context:annotation-config />
@@ -42,7 +42,7 @@
     </bean>
 
     <!-- Configure externalized logging configuration file -->
-    <bean id="loggingSetup" class="org.siemac.metamac.web.common.server.logging.LoggingSetup">
+    <bean id="loggingSetup" class="org.siemac.metamac.core.common.logging.LoggingSetup">
         <property name="logConfigurationFile" value="${environment.metamac.data}/srm/conf/dynamic/logback-srm-web.xml" />
     </bean>
 
@@ -60,9 +60,10 @@
     </bean>
 
     <!-- ActionHandler beans -->
-    <bean class="org.siemac.metamac.web.common.server.handlers.CloseSessionActionHandler" />
-    <bean class="org.siemac.metamac.web.common.server.handlers.GetLoginPageUrlActionHandler" />
-    <bean class="org.siemac.metamac.web.common.server.handlers.MockCASUserActionHandler" /> <!-- This method should be removed to use CAS authentication -->
+<!--     <bean class="org.siemac.metamac.web.common.server.handlers.CloseSessionActionHandler" /> -->
+<!--     <bean class="org.siemac.metamac.web.common.server.handlers.GetLoginPageUrlActionHandler" /> -->
+<!--     <bean class="org.siemac.metamac.web.common.server.handlers.GetNavigationBarUrlActionHandler" /> -->
+<!--     <bean class="org.siemac.metamac.web.common.server.handlers.MockCASUserActionHandler" /> This method should be removed to use CAS authentication -->
 
     <!-- Metamac Business Spring Configuration -->
     <import resource="classpath:/spring/srm-core/oracle/applicationContext.xml" />

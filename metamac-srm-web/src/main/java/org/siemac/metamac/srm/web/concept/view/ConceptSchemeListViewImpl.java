@@ -17,15 +17,13 @@ import org.siemac.metamac.srm.web.concept.view.handlers.ConceptSchemeListUiHandl
 import org.siemac.metamac.srm.web.concept.widgets.NewConceptSchemeWindow;
 import org.siemac.metamac.srm.web.shared.GetConceptSchemePaginatedListResult;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
-import org.siemac.metamac.web.common.client.widgets.PaginatedAction;
-import org.siemac.metamac.web.common.client.widgets.PaginatedBaseCustomListGrid;
+import org.siemac.metamac.web.common.client.widgets.PaginatedCheckListGrid;
+import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 import com.smartgwt.client.types.Alignment;
-import com.smartgwt.client.types.SelectionAppearance;
-import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.types.Visibility;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -48,7 +46,7 @@ public class ConceptSchemeListViewImpl extends ViewImpl implements ConceptScheme
     private ToolStripButton             newConceptSchemeActor;
     private ToolStripButton             deleteConceptSchemeActor;
 
-    private PaginatedBaseCustomListGrid conceptSchemesList;
+    private PaginatedCheckListGrid conceptSchemesList;
 
     private DeleteConfirmationWindow    deleteConfirmationWindow;
 
@@ -96,7 +94,7 @@ public class ConceptSchemeListViewImpl extends ViewImpl implements ConceptScheme
         toolStrip.addButton(newConceptSchemeActor);
         toolStrip.addButton(deleteConceptSchemeActor);
 
-        conceptSchemesList = new PaginatedBaseCustomListGrid(ConceptSchemeListPresenter.DEFAULT_MAX_RESULTS, new PaginatedAction() {
+        conceptSchemesList = new PaginatedCheckListGrid(ConceptSchemeListPresenter.DEFAULT_MAX_RESULTS, new PaginatedAction() {
 
             @Override
             public void retrieveResultSet(int firstResult, int maxResults) {
@@ -106,8 +104,6 @@ public class ConceptSchemeListViewImpl extends ViewImpl implements ConceptScheme
         conceptSchemesList.setHeight(680);
         conceptSchemesList.getListGrid().setDataSource(new ConceptSchemeDS());
         conceptSchemesList.getListGrid().setUseAllDataSourceFields(false);
-        conceptSchemesList.getListGrid().setSelectionAppearance(SelectionAppearance.CHECKBOX);
-        conceptSchemesList.getListGrid().setSelectionType(SelectionStyle.SIMPLE);
         conceptSchemesList.getListGrid().addSelectionChangedHandler(new SelectionChangedHandler() {
 
             @Override

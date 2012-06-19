@@ -3,4 +3,5 @@
 <properties>
   <comment>Metamac environment definition</comment>
   <entry key="environment.metamac.data">/data/istac/metamac</entry>
+  <entry key="environment.istac.data">/data/istac</entry>
 </properties>
