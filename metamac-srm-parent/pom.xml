@@ -20,7 +20,6 @@
         <metamac-common-test.version>1.1.1-SNAPSHOT</metamac-common-test.version>
         <metamac-transformation.version>1.0.0-SNAPSHOT</metamac-transformation.version>
         <metamac-sso.version>1.1.0</metamac-sso.version>
-        <metamac-navbar.version>1.0.0-SNAPSHOT</metamac-navbar.version>
     </properties>
 
     <repositories>
