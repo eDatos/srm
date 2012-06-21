@@ -43,7 +43,7 @@ public class MainPageViewImpl extends ViewWithUiHandlers<MainPageUiHandlers> imp
     private VLayout                   panel;                 // MAIN
     private HLayout                   northLayout;
     private HLayout                   southLayout;
-    private HLayout                   footerLayout;
+    private VLayout                   footerLayout;
 
     @Inject
     public MainPageViewImpl(MasterHead masterHead, BreadCrumbsPanel breadCrumbsPanel, SuccessMessagePanel successMessagePanel, ErrorMessagePanel errorMessagePanel) {
@@ -80,7 +80,7 @@ public class MainPageViewImpl extends ViewWithUiHandlers<MainPageUiHandlers> imp
         southLayout = new HLayout();
         southLayout.setHeight100();
 
-        footerLayout = new HLayout();
+        footerLayout = new VLayout();
         footerLayout.addMember(this.successMessagePanel);
         footerLayout.addMember(this.errorMessagePanel);
         footerLayout.addMember(new VersionFooter(MetamacSrmWeb.getConstants().appVersion()));
