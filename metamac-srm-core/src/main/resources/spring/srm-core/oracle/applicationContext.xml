@@ -17,9 +17,10 @@
         <context:exclude-filter type="regex" expression=".*web.*" />
     </context:component-scan>
 
-    <!-- metamac-core-common -->
+    <!-- METAMAC-CORE-COMMON -->
     <import resource="classpath:/spring/logging-beans-advice.xml" />
     <import resource="classpath:/spring/general-beans-advice.xml" />
+    <import resource="classpath:/spring/pub-sub.xml"/> 
 
     <!-- import additional spring configuration files -->
     
