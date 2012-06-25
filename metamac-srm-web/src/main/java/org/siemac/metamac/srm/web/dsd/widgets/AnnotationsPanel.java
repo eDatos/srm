@@ -10,8 +10,8 @@ import org.siemac.metamac.srm.web.client.resources.GlobalResources;
 import org.siemac.metamac.srm.web.dsd.model.record.AnnotationRecord;
 import org.siemac.metamac.srm.web.dsd.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
+import org.siemac.metamac.web.common.client.utils.ApplicationEditionLanguages;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
-import org.siemac.metamac.web.common.client.utils.LocaleMock;
 
 import com.google.gwt.resources.client.ImageResource;
 import com.smartgwt.client.data.Record;
@@ -87,7 +87,7 @@ public class AnnotationsPanel extends VLayout {
         selectItem.setShowTitle(false);
         LinkedHashMap<String, String> valueMap = new LinkedHashMap<String, String>();
         LinkedHashMap<String, String> valueIcons = new LinkedHashMap<String, String>();
-        for (final String locale : LocaleMock.getLocales()) {
+        for (final String locale : ApplicationEditionLanguages.getLocales()) {
             String iconSrc = ((ImageResource) org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.getResource(locale)).getURL();
             valueMap.put(locale, MetamacWebCommon.getEnumConstants().getString(MetamacWebCommon.getEnumConstants().locale() + locale)); // Set locale name (English, Spanish...)
             valueIcons.put(locale, iconSrc);

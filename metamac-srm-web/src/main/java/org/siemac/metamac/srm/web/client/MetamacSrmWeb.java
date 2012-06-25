@@ -6,8 +6,12 @@ import java.util.logging.Logger;
 import org.siemac.metamac.srm.web.client.gin.MetamacSrmWebGinjector;
 import org.siemac.metamac.sso.client.MetamacPrincipal;
 import org.siemac.metamac.web.common.client.MetamacEntryPoint;
+import org.siemac.metamac.web.common.client.events.LoginAuthenticatedEvent;
+import org.siemac.metamac.web.common.client.utils.ApplicationEditionLanguages;
 import org.siemac.metamac.web.common.client.widgets.IstacNavBar;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
+import org.siemac.metamac.web.common.shared.GetEditionLanguagesAction;
+import org.siemac.metamac.web.common.shared.GetEditionLanguagesResult;
 import org.siemac.metamac.web.common.shared.GetLoginPageUrlAction;
 import org.siemac.metamac.web.common.shared.GetLoginPageUrlResult;
 import org.siemac.metamac.web.common.shared.GetNavigationBarUrlAction;
@@ -47,25 +51,21 @@ public class MetamacSrmWeb extends MetamacEntryPoint {
     // Application id should be the same than the one defined in org.siemac.metamac.srm.core.common.constants.SrmConstants.SECURITY_APPLICATION_ID
     public void onModuleLoad() {
         ginjector.getDispatcher().execute(new GetNavigationBarUrlAction(), new WaitingAsyncCallback<GetNavigationBarUrlResult>() {
-            
+
             @Override
             public void onWaitFailure(Throwable caught) {
                 logger.log(Level.SEVERE, "Error loading toolbar");
-                
-                checkAuthentication();
+                loadNonSecuredApplication();
             }
-            
             public void onWaitSuccess(GetNavigationBarUrlResult result) {
-                //Load scripts for navigation bar
+                // Load scripts for navigation bar
                 IstacNavBar.loadScripts(result.getNavigationBarUrl());
-                
-                checkAuthentication();
+                loadNonSecuredApplication();
             };
         });
-       
     }
-    
-    private void checkAuthentication() {
+
+    private void loadNonSecuredApplication() {
         ginjector.getDispatcher().execute(new MockCASUserAction("GESTOR_RECURSOS_ESTRUCTURALES"), new WaitingAsyncCallback<MockCASUserResult>() {
 
             @Override
@@ -76,18 +76,28 @@ public class MetamacSrmWeb extends MetamacEntryPoint {
             public void onWaitSuccess(MockCASUserResult result) {
                 MetamacSrmWeb.principal = result.getMetamacPrincipal();
 
-                // This is required for GWT-Platform proxy's generator.
-                DelayedBindRegistry.bind(ginjector);
-                ginjector.getPlaceManager().revealCurrentPlace();
+                // Load edition languages
+                ginjector.getDispatcher().execute(new GetEditionLanguagesAction(), new WaitingAsyncCallback<GetEditionLanguagesResult>() {
 
-                // Inject global styles
-                GWT.<GlobalResources> create(GlobalResources.class).css().ensureInjected();
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        logger.log(Level.SEVERE, "Error loading edition languages");
+                        // If an error occurs while loading edition languages, enable SPANISH, ENGLISH and PORTUGUESE by default
+                        ApplicationEditionLanguages.setEditionLanguages(new String[]{ApplicationEditionLanguages.SPANISH, ApplicationEditionLanguages.ENGLISH, ApplicationEditionLanguages.PORTUGUESE});
+                        loadApplication();
+                    }
+                    @Override
+                    public void onWaitSuccess(GetEditionLanguagesResult result) {
+                        ApplicationEditionLanguages.setEditionLanguages(result.getLanguages());
+                        loadApplication();
+                    }
+                });
             }
         });
     }
 
     // TODO Restore this method to use CAS authentication
-    // public void onModuleLoad() {
+    // private void loadSecuredApplication() {
     // String ticketParam = Window.Location.getParameter(TICKET);
     // if (ticketParam != null) {
     // UrlBuilder urlBuilder = Window.Location.createUrlBuilder();
@@ -122,16 +132,36 @@ public class MetamacSrmWeb extends MetamacEntryPoint {
     // String url = Window.Location.createUrlBuilder().setHash("").buildString();
     // Window.Location.assign(url);
     //
-    // // This is required for GWT-Platform proxy's generator.
-    // DelayedBindRegistry.bind(ginjector);
-    // ginjector.getPlaceManager().revealCurrentPlace();
+    // // Load edition languages
+    // ginjector.getDispatcher().execute(new GetEditionLanguagesAction(), new WaitingAsyncCallback<GetEditionLanguagesResult>() {
     //
-    // // Inject global styles
-    // GWT.<GlobalResources> create(GlobalResources.class).css().ensureInjected();
+    // @Override
+    // public void onWaitFailure(Throwable caught) {
+    // logger.log(Level.SEVERE, "Error loading edition languages");
+    // // If an error occurs while loading edition languages, enable SPANISH, ENGLISH and PORTUGUESE by default
+    // ApplicationEditionLanguages.setEditionLanguages(new String[]{ApplicationEditionLanguages.SPANISH, ApplicationEditionLanguages.ENGLISH,
+    // ApplicationEditionLanguages.PORTUGUESE});
+    // loadApplication();
+    // }
+    // @Override
+    // public void onWaitSuccess(GetEditionLanguagesResult result) {
+    // ApplicationEditionLanguages.setEditionLanguages(result.getLanguages());
+    // loadApplication();
+    // }
+    // });
     // }
     // });
     // }
     // }
+
+    private void loadApplication() {
+        LoginAuthenticatedEvent.fire(ginjector.getEventBus(), MetamacSrmWeb.principal);
+        // This is required for GWT-Platform proxy's generator.
+        DelayedBindRegistry.bind(ginjector);
+        ginjector.getPlaceManager().revealCurrentPlace();
+        // Inject global styles
+        GWT.<GlobalResources> create(GlobalResources.class).css().ensureInjected();
+    }
 
     public void displayLoginView() {
         String serviceUrl = Window.Location.createUrlBuilder().buildString();
@@ -197,5 +227,5 @@ public class MetamacSrmWeb extends MetamacEntryPoint {
 
         return realModuleBase + url;
     }
-    
+
 }
