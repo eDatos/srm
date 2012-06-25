@@ -10,8 +10,8 @@ import org.siemac.metamac.srm.web.client.resources.GlobalResources;
 import org.siemac.metamac.srm.web.dsd.model.ds.AnnotationDS;
 import org.siemac.metamac.srm.web.dsd.model.record.InternationalAnnotationRecord;
 import org.siemac.metamac.srm.web.dsd.utils.RecordUtils;
+import org.siemac.metamac.web.common.client.utils.ApplicationEditionLanguages;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
-import org.siemac.metamac.web.common.client.utils.LocaleMock;
 
 import com.google.gwt.resources.client.ImageResource;
 import com.smartgwt.client.data.Criteria;
@@ -132,7 +132,7 @@ public class InternationalAnnotationsPanel extends VLayout {
                         }
                         // If title is not empty or null, save record
                     } else {
-                        for (String locale : LocaleMock.getLocales()) {
+                        for (String locale : ApplicationEditionLanguages.getLocales()) {
                             if (!InternationalStringUtils.getCurrentLocale().equals(locale)) {
                                 if (event.getNewValues().containsKey(InternationalAnnotationRecord.ID)) {
                                     String id = (String) event.getNewValues().get(InternationalAnnotationRecord.ID);
@@ -268,12 +268,12 @@ public class InternationalAnnotationsPanel extends VLayout {
 
         annotationRecords = new HashSet<Record>();
 
-        int numRows = annotations.size() * LocaleMock.getLocales().size();
+        int numRows = annotations.size() * ApplicationEditionLanguages.getLocales().size();
         ListGridRecord listGridRecords[] = new ListGridRecord[numRows];
 
         int indice = 0;
         for (AnnotationDto annotationDto : annotations) {
-            for (String locale : LocaleMock.getLocales()) {
+            for (String locale : ApplicationEditionLanguages.getLocales()) {
 
                 InternationalAnnotationRecord record = RecordUtils.getInternationalAnnotationRecord(annotationDto, locale);
 
