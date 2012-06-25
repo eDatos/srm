@@ -113,7 +113,7 @@ public class DatastructureRestFacadeImpl implements DatastructureRestFacade {
             try {
                 sdmx21ErrorResponse = getTransformationServiceFacade().transformErrorMessage(RestUtils.SERVICECONTEXT, e);
             } catch (MetamacException e1) {
-                sdmx21ErrorResponse = new Error();
+                sdmx21ErrorResponse = new Error(); //TODO empty error???
             }
         }
         return Response.status(errorStatus).entity(sdmx21ErrorResponse).build();
