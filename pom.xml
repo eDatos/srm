@@ -8,7 +8,7 @@
         <version>1.0.0-SNAPSHOT</version>
         <relativePath>metamac-srm-parent/pom.xml</relativePath>
     </parent>
-    
+
     <artifactId>metamac-srm</artifactId>
     <packaging>pom</packaging>
     <name>SIEMAC :: METAMAC :: SRM</name>
@@ -18,7 +18,7 @@
         <module>metamac-srm-core</module>
         <module>metamac-srm-rest-internal-api</module>
         <module>metamac-srm-rest-internal-impl</module>
-        <!--         <module>metamac-srm-web</module> -->
+        <module>metamac-srm-web</module>
     </modules>
 
     <scm>
