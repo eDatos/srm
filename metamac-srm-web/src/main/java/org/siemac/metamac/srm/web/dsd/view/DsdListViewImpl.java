@@ -26,6 +26,7 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
+import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.SelectionAppearance;
 import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.types.VerticalAlignment;
@@ -89,6 +90,8 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
         idLogicItem.setWidth(230);
         idLogicItem.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());
         createDsdButton = new ButtonItem("create-new-dsd", MetamacSrmWeb.getConstants().dsdCreate());
+        createDsdButton.setColSpan(2);
+        createDsdButton.setAlign(Alignment.CENTER);
         createDsdButton.setWidth(100);
 
         newDsdForm = new CustomDynamicForm();
@@ -107,8 +110,8 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
             @Override
             public void onClick(ClickEvent event) {
                 winModal = new Window();
-                winModal.setWidth(380);
-                winModal.setHeight(130);
+                winModal.setWidth(370);
+                winModal.setHeight(120);
                 winModal.setTitle(MetamacSrmWeb.getConstants().dsdNew());
                 winModal.setShowMinimizeButton(false);
                 winModal.setIsModal(true);
