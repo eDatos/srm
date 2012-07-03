@@ -1,38 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jee="http://www.springframework.org/schema/jee"
-	xmlns:context="http://www.springframework.org/schema/context" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans   http://www.springframework.org/schema/beans/spring-beans-3.0.xsd   http://www.springframework.org/schema/context   http://www.springframework.org/schema/context/spring-context-3.0.xsd   http://www.springframework.org/schema/aop   http://www.springframework.org/schema/aop/spring-aop-3.0.xsd   http://www.springframework.org/schema/jee   http://www.springframework.org/schema/jee/spring-jee-3.0.xsd   http://www.springframework.org/schema/tx   http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+    xmlns:context="http://www.springframework.org/schema/context" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans   http://www.springframework.org/schema/beans/spring-beans-3.0.xsd   http://www.springframework.org/schema/context   http://www.springframework.org/schema/context/spring-context-3.0.xsd   http://www.springframework.org/schema/aop   http://www.springframework.org/schema/aop/spring-aop-3.0.xsd   http://www.springframework.org/schema/jee   http://www.springframework.org/schema/jee/spring-jee-3.0.xsd   http://www.springframework.org/schema/tx   http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 
-	<!-- activates annotation-based bean configuration -->
-	<context:annotation-config />
+    <!-- activates annotation-based bean configuration -->
+    <context:annotation-config />
 
-	<!-- scans for @Components, @Repositories, @Services, ... -->
-	<context:component-scan base-package="org.siemac.metamac.srm.core, org.siemac.metamac.core.common">
-		<context:exclude-filter type="regex" expression=".*web.*" />
-	</context:component-scan>
+    <!-- scans for @Components, @Repositories, @Services, ... -->
+    <context:component-scan base-package="org.siemac.metamac.srm.core, org.siemac.metamac.core.common">
+        <context:exclude-filter type="regex" expression=".*web.*" />
+    </context:component-scan>
 
-	<bean id="springPropertyConfig" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    <bean id="springPropertyConfig" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="ignoreResourceNotFound" value="true" />
-		<property name="locations">
-			<list>
-				<value>classpath:/spring/srm/spring-test-default.properties</value>
+        <property name="locations">
+            <list>
+                <value>classpath:/spring/srm/spring-test-default.properties</value>
                 <value>classpath:/spring/srm/spring-test-local.properties</value>
-			</list>
-		</property>
-	</bean>
+            </list>
+        </property>
+    </bean>
 
-	<!-- metamac-core-common -->
-	<import resource="classpath:/spring/logging-beans-advice.xml" />
-	<import resource="classpath:/spring/general-beans-advice.xml" />
+    <!-- metamac-core-common -->
+    <import resource="classpath:/spring/logging-beans-advice.xml" />
+    <import resource="classpath:/spring/general-beans-advice.xml" />
 
-	<!-- srm-core > src/main/resources -->
-	<import resource="classpath:/spring/srm-core/interceptor.xml" />
+    <!-- srm-core > src/main/resources -->
+    <import resource="classpath:/spring/srm-core/interceptor.xml" />
 
-	<!-- srm-core > src/test/resources -->
-	<import resource="classpath:/spring/srm/include/datasource-test.xml" />
-	<import resource="classpath:/spring/srm/include/more-test.xml" />
-    
+    <!-- srm-core > src/test/resources -->
+    <import resource="classpath:/spring/srm/include/datasource-test.xml" />
+    <import resource="classpath:/spring/srm/include/more-test.xml" />
+
     <!-- metamac-transformation -->
-  <import resource="classpath:/spring/transformation/applicationContext.xml"/> 
+    <import resource="classpath:/spring/transformation/applicationContext.xml" />
 </beans>
