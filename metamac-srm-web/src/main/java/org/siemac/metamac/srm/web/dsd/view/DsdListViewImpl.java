@@ -116,7 +116,7 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
                 winModal.setShowMinimizeButton(false);
                 winModal.setIsModal(true);
                 winModal.setShowModalMask(true);
-                winModal.centerInPage();
+                winModal.setAutoCenter(true);
                 winModal.addCloseClickHandler(new CloseClickHandler() {
 
                     @Override

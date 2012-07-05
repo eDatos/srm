@@ -3,30 +3,27 @@ package org.siemac.metamac.srm.web.dsd.widgets;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.dsd.listener.UploadListener;
 import org.siemac.metamac.srm.web.shared.utils.SharedTokens;
+import org.siemac.metamac.web.common.client.widgets.form.fields.CustomButtonItem;
 
 import com.google.gwt.user.client.ui.NamedFrame;
-import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.Encoding;
 import com.smartgwt.client.types.FormErrorOrientation;
 import com.smartgwt.client.types.FormMethod;
-import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Window;
-import com.smartgwt.client.widgets.events.ClickEvent;
-import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.events.CloseClickEvent;
 import com.smartgwt.client.widgets.events.CloseClickHandler;
 import com.smartgwt.client.widgets.events.VisibilityChangedEvent;
 import com.smartgwt.client.widgets.events.VisibilityChangedHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
+import com.smartgwt.client.widgets.form.fields.ButtonItem;
 import com.smartgwt.client.widgets.form.fields.UploadItem;
-import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 public class ImportDsdWindow extends Window {
 
     private static final String TARGET = "uploadTarget";
 
-    private IButton             uploadButton;
+    private CustomButtonItem    uploadButton;
     private DynamicForm         form;
     private UploadItem          uploadItem;
 
@@ -41,7 +38,7 @@ public class ImportDsdWindow extends Window {
         setShowMinimizeButton(false);
         setIsModal(true);
         setShowModalMask(true);
-        centerInPage();
+        setAutoCenter(true);
         addCloseClickHandler(new CloseClickHandler() {
 
             @Override
@@ -96,21 +93,11 @@ public class ImportDsdWindow extends Window {
         uploadItem.setWidth(300);
         uploadItem.setRequired(true);
 
-        // Set the fields into the form
-        form.setFields(uploadItem);
-
-        // Add the Upload Form and the (hidden) Frame to the main layout container
-        body.addMember(form);
-        body.addMember(frame);
-
-        HLayout buttonsLayout = new HLayout(2);
-        buttonsLayout.setAlign(Alignment.CENTER);
-
-        uploadButton = new IButton(MetamacSrmWeb.getConstants().actionImport());
-        uploadButton.addClickHandler(new ClickHandler() {
+        uploadButton = new CustomButtonItem("button-import", MetamacSrmWeb.getConstants().actionImport());
+        uploadButton.addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
 
             @Override
-            public void onClick(ClickEvent event) {
+            public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
                 Object obj = uploadItem.getDisplayValue();
                 if (ImportDsdWindow.this.form.validate() && obj != null) {
                     form.submitForm();
@@ -119,19 +106,21 @@ public class ImportDsdWindow extends Window {
             }
         });
 
-        buttonsLayout.addMember(uploadButton);
+        form.setFields(uploadItem, uploadButton);
+
+        // Add the Upload Form and the (hidden) Frame to the main layout container
+        body.addMember(form);
+        body.addMember(frame);
 
         VLayout layout = new VLayout();
         layout.setMembersMargin(20);
         layout.setMargin(10);
         layout.addMember(body);
-        layout.addMember(buttonsLayout);
 
         addItem(layout);
-
     }
 
-    public IButton getUploadButton() {
+    public ButtonItem getUploadButton() {
         return uploadButton;
     }
 
@@ -155,15 +144,15 @@ public class ImportDsdWindow extends Window {
     }
 
     private native void initComplete(ImportDsdWindow upload) /*-{
-                                                             $wnd.uploadComplete = function(fileName) {
-                                                             upload.@org.siemac.metamac.srm.web.dsd.widgets.ImportDsdWindow::uploadComplete(Ljava/lang/String;)(fileName);
-                                                             };
-                                                             }-*/;
+        $wnd.uploadComplete = function(fileName) {
+            upload.@org.siemac.metamac.srm.web.dsd.widgets.ImportDsdWindow::uploadComplete(Ljava/lang/String;)(fileName);
+        };
+    }-*/;
 
     private native void initUploadFailed(ImportDsdWindow upload) /*-{
-                                                                 $wnd.uploadFailed = function(fileName) {
-                                                                 upload.@org.siemac.metamac.srm.web.dsd.widgets.ImportDsdWindow::uploadFailed(Ljava/lang/String;)(fileName);
-                                                                 }
-                                                                 }-*/;
+        $wnd.uploadFailed = function(fileName) {
+            upload.@org.siemac.metamac.srm.web.dsd.widgets.ImportDsdWindow::uploadFailed(Ljava/lang/String;)(fileName);
+        }
+    }-*/;
 
 }
