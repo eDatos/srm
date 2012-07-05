@@ -7,10 +7,8 @@ import java.util.Set;
 
 import org.siemac.metamac.core.common.dto.ExternalItemBtDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
-import org.siemac.metamac.srm.web.client.resources.GlobalResources;
 import org.siemac.metamac.srm.web.dsd.model.record.ConceptRecord;
 import org.siemac.metamac.srm.web.dsd.utils.RecordUtils;
-import org.siemac.metamac.web.common.client.utils.FormItemUtils;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomCanvasItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomSelectItem;
 
@@ -31,6 +29,8 @@ import com.smartgwt.client.widgets.layout.VStack;
 
 public class RoleSelectItem extends CustomCanvasItem {
 
+    private static final int FORM_ITEM_CUSTOM_WIDTH = 250;
+
     private CustomSelectItem conceptSchemeItem;
     private ListGrid         conceptsList;
     private ListGrid         roleList;
@@ -39,11 +39,11 @@ public class RoleSelectItem extends CustomCanvasItem {
         super(name, title);
         setTitleVAlign(VerticalAlignment.TOP);
         conceptSchemeItem = new CustomSelectItem("scheme-items", MetamacSrmWeb.getConstants().dsdConceptScheme());
-        conceptSchemeItem.setWidth(FormItemUtils.FORM_ITEM_WIDTH);
+        conceptSchemeItem.setWidth(FORM_ITEM_CUSTOM_WIDTH);
         conceptSchemeItem.setShowTitle(false);
 
         conceptsList = new ListGrid();
-        conceptsList.setWidth(FormItemUtils.FORM_ITEM_WIDTH);
+        conceptsList.setWidth(FORM_ITEM_CUSTOM_WIDTH);
         conceptsList.setCellHeight(24);
         conceptsList.setBorder("1px solid #aaacb2");
         conceptsList.setShowHeader(false);
@@ -51,14 +51,14 @@ public class RoleSelectItem extends CustomCanvasItem {
         conceptsList.setStyleName("conceptsListStyle");
 
         roleList = new ListGrid();
-        roleList.setWidth(FormItemUtils.FORM_ITEM_WIDTH);
+        roleList.setWidth(FORM_ITEM_CUSTOM_WIDTH);
         roleList.setCellHeight(24);
         roleList.setBorder("1px solid #aaacb2");
         roleList.setShowHeader(false);
         roleList.setLeaveScrollbarGap(false);
         roleList.setCanRemoveRecords(true);
         roleList.setRemoveFieldTitle(MetamacSrmWeb.getConstants().actionDelete());
-        roleList.setRemoveIcon(GlobalResources.RESOURCE.remove().getURL());
+        roleList.setRemoveIcon(org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.deleteListGrid().getURL());
 
         ListGridField id = new ListGridField(ConceptRecord.IDENTIFIER, "nameId");
         id.setShowHover(true);
