@@ -8,7 +8,7 @@ import org.siemac.metamac.domain.srm.dto.ComponentDto;
 import org.siemac.metamac.domain.srm.dto.DataAttributeDto;
 import org.siemac.metamac.domain.srm.dto.DescriptorDto;
 import org.siemac.metamac.domain.srm.dto.DimensionComponentDto;
-import org.siemac.metamac.srm.web.dsd.enums.RepresentationTypeEnum;
+import org.siemac.metamac.domain.srm.enume.domain.TypeRepresentationEnum;
 import org.siemac.metamac.web.common.client.utils.ExternalItemUtils;
 
 public class CommonUtils {
@@ -21,7 +21,7 @@ public class CommonUtils {
      */
     public static boolean isRepresentationTypeEnumerated(String representationType) {
         if (representationType != null && !representationType.isEmpty()) {
-            return RepresentationTypeEnum.ENUMERATED.equals(RepresentationTypeEnum.valueOf(representationType)) ? true : false;
+            return TypeRepresentationEnum.ENUMERATED.equals(TypeRepresentationEnum.valueOf(representationType)) ? true : false;
         }
         return false;
     }

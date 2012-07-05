@@ -7,11 +7,11 @@ import org.siemac.metamac.domain.srm.dto.ComponentDto;
 import org.siemac.metamac.domain.srm.dto.DescriptorDto;
 import org.siemac.metamac.domain.srm.enume.domain.TypeComponent;
 import org.siemac.metamac.domain.srm.enume.domain.TypeComponentList;
+import org.siemac.metamac.domain.srm.enume.domain.TypeRepresentationEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
-import org.siemac.metamac.srm.web.dsd.enums.RepresentationTypeEnum;
 import org.siemac.metamac.srm.web.dsd.events.SelectDsdAndDescriptorsEvent;
 import org.siemac.metamac.srm.web.dsd.events.SelectDsdAndDescriptorsEvent.SelectDsdAndDescriptorsHandler;
 import org.siemac.metamac.srm.web.dsd.events.SelectViewDsdDescriptorEvent;
@@ -195,7 +195,7 @@ public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTa
         DescriptorDto primaryMeasureDescriptor = event.getPrimaryMeasure();
         isNewDescriptor = primaryMeasureDescriptor.getId() == null;
         primaryMeasure = primaryMeasureDescriptor.getComponents().isEmpty() ? new ComponentDto(TypeComponent.PRIMARY_MEASURE, null) : primaryMeasureDescriptor.getComponents().iterator().next();
-        enumeratedRepresentation = RepresentationTypeEnum.ENUMERATED.equals(primaryMeasure.getLocalRepresentation() != null
+        enumeratedRepresentation = TypeRepresentationEnum.ENUMERATED.equals(primaryMeasure.getLocalRepresentation() != null
                 ? primaryMeasure.getLocalRepresentation().getTypeRepresentationEnum()
                 : false);
         getView().setDsdPrimaryMeasure(primaryMeasure);

@@ -9,7 +9,6 @@ import org.siemac.metamac.domain.srm.dto.FacetDto;
 import org.siemac.metamac.domain.srm.dto.RepresentationDto;
 import org.siemac.metamac.domain.srm.enume.domain.TypeRepresentationEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
-import org.siemac.metamac.srm.web.dsd.enums.RepresentationTypeEnum;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdPrimaryMeasureTabPresenter;
 import org.siemac.metamac.srm.web.dsd.utils.CommonUtils;
 import org.siemac.metamac.srm.web.dsd.utils.FacetFormUtils;
@@ -122,8 +121,8 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
         representationTypeItem.setType("comboBox");
         LinkedHashMap<String, String> valueMap = new LinkedHashMap<String, String>();
         valueMap.put(new String(), new String());
-        for (RepresentationTypeEnum r : RepresentationTypeEnum.values()) {
-            String value = MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().representationTypeEnum() + r.getName());
+        for (TypeRepresentationEnum r : TypeRepresentationEnum.values()) {
+            String value = MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().typeRepresentationEnum() + r.getName());
             valueMap.put(r.toString(), value);
         }
         representationTypeItem.setValueMap(valueMap);
@@ -214,13 +213,13 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
         staticRepresentationTypeItem.clearValue();
         staticFacetForm.clearValues();
         if (componentDto.getLocalRepresentation() != null) {
-            if (RepresentationTypeEnum.ENUMERATED.equals(componentDto.getLocalRepresentation().getTypeRepresentationEnum())) {
+            if (TypeRepresentationEnum.ENUMERATED.equals(componentDto.getLocalRepresentation().getTypeRepresentationEnum())) {
                 staticCodeListItem.setValue(componentDto.getLocalRepresentation().getEnumerated().getCodeId());
-                staticRepresentationTypeItem.setValue(MetamacSrmWeb.getCoreMessages().representationTypeEnumENUMERATED());
+                staticRepresentationTypeItem.setValue(MetamacSrmWeb.getCoreMessages().typeRepresentationEnumENUMERATED());
                 staticCodeListItem.show();
                 // Facet
-            } else if (RepresentationTypeEnum.NON_NUMERATED.equals(componentDto.getLocalRepresentation().getTypeRepresentationEnum())) {
-                staticRepresentationTypeItem.setValue(MetamacSrmWeb.getCoreMessages().representationTypeEnumNON_NUMERATED());
+            } else if (TypeRepresentationEnum.TEXT_FORMAT.equals(componentDto.getLocalRepresentation().getTypeRepresentationEnum())) {
+                staticRepresentationTypeItem.setValue(MetamacSrmWeb.getCoreMessages().typeRepresentationEnumTEXT_FORMAT());
                 FacetDto facetDto = componentDto.getLocalRepresentation().getNonEnumerated();
                 staticFacetForm.setFacet(facetDto);
                 staticFacetForm.show();
@@ -242,13 +241,13 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
         facetForm.clearValues();
         if (componentDto.getLocalRepresentation() != null) {
             // Code List
-            if (RepresentationTypeEnum.ENUMERATED.equals(componentDto.getLocalRepresentation().getTypeRepresentationEnum())) {
+            if (TypeRepresentationEnum.ENUMERATED.equals(componentDto.getLocalRepresentation().getTypeRepresentationEnum())) {
                 // codeListItem.setValue(componentDto.getLocalRepresentation().getEnumCodeList().getCodeId());
                 codeListItem.clearValue(); // don´t know the concept (which is the scheme?), so code list neither
-                representationTypeItem.setValue(RepresentationTypeEnum.ENUMERATED.toString());
+                representationTypeItem.setValue(TypeRepresentationEnum.ENUMERATED.toString());
                 // Facet
-            } else if (RepresentationTypeEnum.NON_NUMERATED.equals(componentDto.getLocalRepresentation().getTypeRepresentationEnum())) {
-                representationTypeItem.setValue(RepresentationTypeEnum.NON_NUMERATED.toString());
+            } else if (TypeRepresentationEnum.TEXT_FORMAT.equals(componentDto.getLocalRepresentation().getTypeRepresentationEnum())) {
+                representationTypeItem.setValue(TypeRepresentationEnum.TEXT_FORMAT.toString());
                 FacetDto facetDto = componentDto.getLocalRepresentation().getNonEnumerated();
                 facetForm.setFacet(facetDto);
             }
@@ -271,19 +270,19 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
 
         // Representation
         if (representationTypeItem.getValue() != null && !representationTypeItem.getValue().toString().isEmpty()) {
-            RepresentationTypeEnum representationType = RepresentationTypeEnum.valueOf(representationTypeItem.getValue().toString());
+            TypeRepresentationEnum representationType = TypeRepresentationEnum.valueOf(representationTypeItem.getValue().toString());
 
             if (componentDto.getLocalRepresentation() == null) {
                 componentDto.setLocalRepresentation(new RepresentationDto());
             }
 
             // Code List
-            if (RepresentationTypeEnum.ENUMERATED.equals(representationType)) {
+            if (TypeRepresentationEnum.ENUMERATED.equals(representationType)) {
                 componentDto.getLocalRepresentation().setTypeRepresentationEnum(TypeRepresentationEnum.ENUMERATED);
                 componentDto.getLocalRepresentation().setEnumerated(ExternalItemUtils.getExternalItemBtDtoFromCodeId(codeLists, codeListItem.getValueAsString()));
                 componentDto.getLocalRepresentation().setNonEnumerated(null);
                 // Facet
-            } else if (RepresentationTypeEnum.NON_NUMERATED.equals(representationType)) {
+            } else if (TypeRepresentationEnum.TEXT_FORMAT.equals(representationType)) {
                 componentDto.getLocalRepresentation().setTypeRepresentationEnum(TypeRepresentationEnum.TEXT_FORMAT);
                 FacetDto facetDto = facetForm.getFacet(componentDto.getLocalRepresentation().getNonEnumerated() == null ? new FacetDto() : componentDto.getLocalRepresentation().getNonEnumerated());
                 componentDto.getLocalRepresentation().setNonEnumerated(facetDto);

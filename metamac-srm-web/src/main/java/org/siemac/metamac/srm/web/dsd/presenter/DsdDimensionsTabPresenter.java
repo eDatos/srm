@@ -8,11 +8,11 @@ import org.siemac.metamac.domain.srm.dto.ComponentDto;
 import org.siemac.metamac.domain.srm.dto.DescriptorDto;
 import org.siemac.metamac.domain.srm.dto.DimensionComponentDto;
 import org.siemac.metamac.domain.srm.enume.domain.TypeComponentList;
+import org.siemac.metamac.domain.srm.enume.domain.TypeRepresentationEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
-import org.siemac.metamac.srm.web.dsd.enums.RepresentationTypeEnum;
 import org.siemac.metamac.srm.web.dsd.events.SelectDsdAndDescriptorsEvent;
 import org.siemac.metamac.srm.web.dsd.events.SelectDsdAndDescriptorsEvent.SelectDsdAndDescriptorsHandler;
 import org.siemac.metamac.srm.web.dsd.events.SelectViewDsdDescriptorEvent;
@@ -217,7 +217,7 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
                     DimensionRecord record = (DimensionRecord) event.getSelectedRecord();
                     if (record != null && record.getDimensionComponentDto() != null) {
                         selectedConceptUri = record.getDimensionComponentDto().getCptIdRef() != null ? record.getDimensionComponentDto().getCptIdRef().getCodeId() : null;
-                        enumeratedRepresentation = RepresentationTypeEnum.ENUMERATED.equals(record.getDimensionComponentDto().getLocalRepresentation() != null ? record.getDimensionComponentDto()
+                        enumeratedRepresentation = TypeRepresentationEnum.ENUMERATED.equals(record.getDimensionComponentDto().getLocalRepresentation() != null ? record.getDimensionComponentDto()
                                 .getLocalRepresentation().getTypeRepresentationEnum() : "");
                     }
                 }

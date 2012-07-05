@@ -15,7 +15,6 @@ import org.siemac.metamac.domain.srm.enume.domain.TypeDimensionComponent;
 import org.siemac.metamac.domain.srm.enume.domain.TypeRepresentationEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.resources.GlobalResources;
-import org.siemac.metamac.srm.web.dsd.enums.RepresentationTypeEnum;
 import org.siemac.metamac.srm.web.dsd.model.record.DimensionRecord;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdDimensionsTabPresenter;
 import org.siemac.metamac.srm.web.dsd.utils.CommonUtils;
@@ -393,8 +392,8 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         representationTypeItem.setType("comboBox");
         LinkedHashMap<String, String> valueMap = new LinkedHashMap<String, String>();
         valueMap.put(new String(), new String());
-        for (RepresentationTypeEnum r : RepresentationTypeEnum.values()) {
-            String value = MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().representationTypeEnum() + r.getName());
+        for (TypeRepresentationEnum r : TypeRepresentationEnum.values()) {
+            String value = MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().typeRepresentationEnum() + r.getName());
             valueMap.put(r.toString(), value);
         }
         representationTypeItem.setValueMap(valueMap);
@@ -413,7 +412,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
             @Override
             protected boolean condition(Object value) {
                 if (TypeDimensionComponent.MEASUREDIMENSION.toString().equals(typeItem.getValueAsString())) {
-                    return RepresentationTypeEnum.ENUMERATED.toString().equals(value) ? true : false;
+                    return TypeRepresentationEnum.ENUMERATED.toString().equals(value) ? true : false;
                 }
                 return true;
             }
@@ -425,7 +424,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
             @Override
             protected boolean condition(Object value) {
                 if (TypeDimensionComponent.TIMEDIMENSION.toString().equals(typeItem.getValueAsString())) {
-                    return RepresentationTypeEnum.NON_NUMERATED.toString().equals(value) ? true : false;
+                    return TypeRepresentationEnum.TEXT_FORMAT.toString().equals(value) ? true : false;
                 }
                 return true;
             }
@@ -564,14 +563,14 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
         // Representation
         if (representationTypeItem.getValue() != null && !representationTypeItem.getValue().toString().isEmpty()) {
-            RepresentationTypeEnum representationType = RepresentationTypeEnum.valueOf(representationTypeItem.getValue().toString());
+            TypeRepresentationEnum representationType = TypeRepresentationEnum.valueOf(representationTypeItem.getValue().toString());
 
             if (dimensionComponentDto.getLocalRepresentation() == null) {
                 dimensionComponentDto.setLocalRepresentation(new RepresentationDto());
             }
 
             // Code List
-            if (RepresentationTypeEnum.ENUMERATED.equals(representationType)) {
+            if (TypeRepresentationEnum.ENUMERATED.equals(representationType)) {
                 dimensionComponentDto.getLocalRepresentation().setTypeRepresentationEnum(TypeRepresentationEnum.ENUMERATED);
                 if (TypeDimensionComponent.MEASUREDIMENSION.equals(dimensionComponentDto.getTypeDimensionComponent())) {
                     dimensionComponentDto.getLocalRepresentation().setEnumerated(ExternalItemUtils.getExternalItemBtDtoFromCodeId(conceptSchemes, conceptSchemeItem.getValueAsString()));
@@ -580,7 +579,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
                 }
                 dimensionComponentDto.getLocalRepresentation().setNonEnumerated(null);
                 // Facet
-            } else if (RepresentationTypeEnum.NON_NUMERATED.equals(representationType)) {
+            } else if (TypeRepresentationEnum.TEXT_FORMAT.equals(representationType)) {
                 dimensionComponentDto.getLocalRepresentation().setTypeRepresentationEnum(TypeRepresentationEnum.TEXT_FORMAT);
                 FacetDto facetDto = facetForm.getFacet(dimensionComponentDto.getLocalRepresentation().getNonEnumerated() == null ? new FacetDto() : dimensionComponentDto.getLocalRepresentation()
                         .getNonEnumerated());
@@ -657,25 +656,25 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         staticRepresentationTypeItem.clearValue();
         staticFacetForm.clearValues();
         if (dimensionComponentDto.getLocalRepresentation() != null) {
-            if (RepresentationTypeEnum.ENUMERATED.equals(dimensionComponentDto.getLocalRepresentation().getTypeRepresentationEnum())) {
+            if (TypeRepresentationEnum.ENUMERATED.equals(dimensionComponentDto.getLocalRepresentation().getTypeRepresentationEnum())) {
                 // Code List
                 if (TypeExternalArtefactsEnum.CODELIST.equals(dimensionComponentDto.getLocalRepresentation().getEnumerated().getType())) {
-                    staticRepresentationTypeItem.setValue(MetamacSrmWeb.getCoreMessages().representationTypeEnumENUMERATED());
+                    staticRepresentationTypeItem.setValue(MetamacSrmWeb.getCoreMessages().typeRepresentationEnumENUMERATED());
                     if (!TypeDimensionComponent.MEASUREDIMENSION.equals(dimensionComponentDto.getTypeDimensionComponent())) {
                         staticCodeListItem.setValue(dimensionComponentDto.getLocalRepresentation().getEnumerated().getCodeId());
                         staticCodeListItem.show();
                     }
                     // ConceptScheme
                 } else if (TypeExternalArtefactsEnum.CONCEPT_SCHEME.equals(dimensionComponentDto.getLocalRepresentation().getEnumerated().getType())) {
-                    staticRepresentationTypeItem.setValue(MetamacSrmWeb.getCoreMessages().representationTypeEnumENUMERATED());
+                    staticRepresentationTypeItem.setValue(MetamacSrmWeb.getCoreMessages().typeRepresentationEnumENUMERATED());
                     if (TypeDimensionComponent.MEASUREDIMENSION.equals(dimensionComponentDto.getTypeDimensionComponent())) {
                         staticConceptSchemeItem.setValue(dimensionComponentDto.getLocalRepresentation().getEnumerated().getCodeId());
                         staticConceptSchemeItem.show();
                     }
                 }
                 // Facet
-            } else if (RepresentationTypeEnum.NON_NUMERATED.equals(dimensionComponentDto.getLocalRepresentation().getTypeRepresentationEnum())) {
-                staticRepresentationTypeItem.setValue(MetamacSrmWeb.getCoreMessages().representationTypeEnumNON_NUMERATED());
+            } else if (TypeRepresentationEnum.TEXT_FORMAT.equals(dimensionComponentDto.getLocalRepresentation().getTypeRepresentationEnum())) {
+                staticRepresentationTypeItem.setValue(MetamacSrmWeb.getCoreMessages().typeRepresentationEnumTEXT_FORMAT());
                 FacetDto facetDto = dimensionComponentDto.getLocalRepresentation().getNonEnumerated();
                 staticFacetForm.setFacet(facetDto);
                 staticFacetForm.show();
@@ -717,8 +716,8 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         representationTypeItem.clearValue();
         facetForm.clearValues();
         if (dimensionComponentDto.getLocalRepresentation() != null) {
-            if (RepresentationTypeEnum.ENUMERATED.equals(dimensionComponentDto.getLocalRepresentation().getTypeRepresentationEnum())) {
-                representationTypeItem.setValue(RepresentationTypeEnum.ENUMERATED.toString());
+            if (TypeRepresentationEnum.ENUMERATED.equals(dimensionComponentDto.getLocalRepresentation().getTypeRepresentationEnum())) {
+                representationTypeItem.setValue(TypeRepresentationEnum.ENUMERATED.toString());
                 // Code List
                 if (TypeExternalArtefactsEnum.CODELIST.equals(dimensionComponentDto.getLocalRepresentation().getEnumerated().getType())) {
                     if (!TypeDimensionComponent.MEASUREDIMENSION.equals(dimensionComponentDto.getTypeDimensionComponent())) {
@@ -732,8 +731,8 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
                     }
                 }
                 // Facet
-            } else if (RepresentationTypeEnum.NON_NUMERATED.equals(dimensionComponentDto.getLocalRepresentation().getTypeRepresentationEnum())) {
-                representationTypeItem.setValue(RepresentationTypeEnum.NON_NUMERATED.toString());
+            } else if (TypeRepresentationEnum.TEXT_FORMAT.equals(dimensionComponentDto.getLocalRepresentation().getTypeRepresentationEnum())) {
+                representationTypeItem.setValue(TypeRepresentationEnum.TEXT_FORMAT.toString());
                 FacetDto facetDto = dimensionComponentDto.getLocalRepresentation().getNonEnumerated();
                 facetForm.setFacet(facetDto);
             }
