@@ -2,7 +2,7 @@ package org.siemac.metamac.srm.core.base.serviceimpl.utils;
 
 import java.util.List;
 
-import org.siemac.metamac.core.common.bt.domain.ExternalItemBt;
+import org.siemac.metamac.core.common.ent.domain.ExternalItem;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.core.common.serviceimpl.utils.ValidationUtils;
 import org.siemac.metamac.srm.core.base.domain.ItemScheme;
@@ -28,10 +28,10 @@ public class BaseInvocationValidator {
     // MANTAINER
     // ------------------------------------------------------------------------------------
 
-    private static void checkMantainer(ExternalItemBt maintainer, List<MetamacExceptionItem> exceptions) {
-        ValidationUtils.checkMetadataRequired(maintainer.getCodeId(), ServiceExceptionParameters.MANTAINER_CODE_ID, exceptions);
+    public static void checkMantainer(ExternalItem maintainer, List<MetamacExceptionItem> exceptions) {
+        ValidationUtils.checkMetadataRequired(maintainer.getUrn(), ServiceExceptionParameters.MANTAINER_URN, exceptions);
         ValidationUtils.checkMetadataRequired(maintainer.getType(), ServiceExceptionParameters.MANTAINER_TYPE, exceptions);
-        ValidationUtils.checkMetadataRequired(maintainer.getUriInt(), ServiceExceptionParameters.MANTAINER_URI_INT, exceptions);
+        ValidationUtils.checkMetadataRequired(maintainer.getUri(), ServiceExceptionParameters.MANTAINER_URI, exceptions);
     }
 
 }

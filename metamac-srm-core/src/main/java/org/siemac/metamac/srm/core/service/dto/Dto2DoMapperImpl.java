@@ -1,20 +1,27 @@
 package org.siemac.metamac.srm.core.service.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.dozer.DozerBeanMapper;
 import org.dozer.MappingException;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.bt.domain.ExternalItemBt;
-import org.siemac.metamac.core.common.dto.ExternalItemBtDto;
+import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.dto.LocalisedStringDto;
+import org.siemac.metamac.core.common.ent.domain.ExternalItem;
+import org.siemac.metamac.core.common.ent.domain.ExternalItemRepository;
 import org.siemac.metamac.core.common.ent.domain.InternationalString;
 import org.siemac.metamac.core.common.ent.domain.InternationalStringRepository;
 import org.siemac.metamac.core.common.ent.domain.LocalisedString;
+import org.siemac.metamac.core.common.ent.exception.ExternalItemNotFoundException;
 import org.siemac.metamac.core.common.exception.ExceptionLevelEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.core.common.vo.domain.ExternalItem;
+import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
+import org.siemac.metamac.core.common.exception.utils.ExceptionUtils;
 import org.siemac.metamac.domain.srm.dto.AnnotableArtefactDto;
 import org.siemac.metamac.domain.srm.dto.AnnotationDto;
 import org.siemac.metamac.domain.srm.dto.ComponentDto;
@@ -48,6 +55,7 @@ import org.siemac.metamac.srm.core.base.domain.TextFormatRepresentation;
 import org.siemac.metamac.srm.core.base.exception.AnnotationNotFoundException;
 import org.siemac.metamac.srm.core.base.exception.ComponentNotFoundException;
 import org.siemac.metamac.srm.core.base.serviceapi.SdmxBaseService;
+import org.siemac.metamac.srm.core.base.serviceimpl.utils.BaseInvocationValidator;
 import org.siemac.metamac.srm.core.common.error.MetamacCoreExceptionType;
 import org.siemac.metamac.srm.core.service.utils.SdmxToolsServer;
 import org.siemac.metamac.srm.core.service.utils.ValidationUtil;
@@ -76,7 +84,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 public class Dto2DoMapperImpl implements Dto2DoMapper {
 
-
     @Autowired
     @Qualifier("mapperCoreUpdateMode")
     private DozerBeanMapper                   mapperCoreUpdateMode;
@@ -101,6 +108,9 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
 
     @Autowired
     private RepresentationRepository          representationRepository;
+
+    @Autowired
+    private ExternalItemRepository            externalItemRepository;
 
     /**************************************************************************
      * GETTERS
@@ -133,6 +143,9 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         return representationRepository;
     }
 
+    public ExternalItemRepository getExternalItemRepository() {
+        return externalItemRepository;
+    }
     /**************************************************************************
      * PRIVATE
      **************************************************************************/
@@ -321,9 +334,9 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         // result.setMaintainer(mapToEntity(source, ExternalItemBt.class));
 
         // Basic types check
-        Validate.notEmpty(result.getMaintainer().getUriInt(), "MaintainableArtefact.maintainer.uriInt must not be null");
-        Validate.notEmpty(result.getMaintainer().getCodeId(), "MaintainableArtefact.maintainer.codeId must not be empty");
-        Validate.notNull(result.getMaintainer().getType(), "MaintainableArtefact.maintainer.type must not be null");
+        List<MetamacExceptionItem> exceptions = new ArrayList<MetamacExceptionItem>();
+        BaseInvocationValidator.checkMantainer(result.getMaintainer(), exceptions);
+        ExceptionUtils.throwIfException(exceptions);
 
         Validate.notEmpty(result.getVersionLogic(), "MaintainableArtefact.versionLogic must not be empty"); // By Hibernate strategy inheritance, this is defined here and not in the relational model
 
@@ -515,15 +528,15 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
                 }
 
                 // Relate To
-                ((DataAttribute) result).setRelateTo(attributeRelationshipDtoToAttributeRelationship(((DataAttributeDto) componentDto).getRelateTo(), ctx, sdmxBaseService, (dataAttributeOlder != null)
-                        ? dataAttributeOlder.getRelateTo()
-                        : null));
-                Validate.notNull(((DataAttribute) result).getRelateTo(), "DataAttribute.relateTo must not be null"); // By Hibernate strategy inheritance, this is defined here and not in the relational
+                ((DataAttribute) result).setRelateTo(attributeRelationshipDtoToAttributeRelationship(((DataAttributeDto) componentDto).getRelateTo(), ctx, sdmxBaseService,
+                        (dataAttributeOlder != null) ? dataAttributeOlder.getRelateTo() : null));
+                Validate.notNull(((DataAttribute) result).getRelateTo(), "DataAttribute.relateTo must not be null"); // By Hibernate strategy inheritance, this is defined here and not in the
+                                                                                                                     // relational
                                                                                                                      // model
 
                 // Role
                 if (componentDto.getId() != null) { // Exist
-                    for (ExternalItemBtDto listExternalItemDto : ((DataAttributeDto) componentDto).getRole()) {
+                    for (ExternalItemDto listExternalItemDto : ((DataAttributeDto) componentDto).getRole()) {
                         ExternalItem externalItem = externalItemBtDtoToExternalItem(listExternalItemDto, ctx, sdmxBaseService);
                         boolean found = false;
                         for (ExternalItem extItemPersisted : dataAttributeOlder.getRole()) {
@@ -539,7 +552,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
 
                     }
                 } else { // New
-                    for (ExternalItemBtDto listExternalItemDto : ((DataAttributeDto) componentDto).getRole()) {
+                    for (ExternalItemDto listExternalItemDto : ((DataAttributeDto) componentDto).getRole()) {
                         ((DataAttribute) result).addRole(externalItemBtDtoToExternalItem(listExternalItemDto, ctx, sdmxBaseService));
                     }
                 }
@@ -553,9 +566,8 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
 
                 // LocalRepresentation
                 ValidationUtil.validateRepresentationForDataAttribute(ctx, componentDto.getLocalRepresentation());
-                representation = representationDtoToRepresentation(componentDto.getLocalRepresentation(), ctx, sdmxBaseService, (dataAttributeOlder != null)
-                        ? dataAttributeOlder.getLocalRepresentation()
-                        : null);
+                representation = representationDtoToRepresentation(componentDto.getLocalRepresentation(), ctx, sdmxBaseService,
+                        (dataAttributeOlder != null) ? dataAttributeOlder.getLocalRepresentation() : null);
             }
             // DimensionComponent ***************************************************
             else if (componentDto.getTypeComponent().equals(TypeComponent.DIMENSION_COMPONENT)) {
@@ -582,7 +594,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
 
                         // ROLE
                         if (componentDto.getId() != null) { // Exist
-                            for (ExternalItemBtDto listExternalItemDto : ((DimensionComponentDto) componentDto).getRole()) {
+                            for (ExternalItemDto listExternalItemDto : ((DimensionComponentDto) componentDto).getRole()) {
                                 ExternalItem externalItem = externalItemBtDtoToExternalItem(listExternalItemDto, ctx, sdmxBaseService);
                                 boolean found = false;
                                 for (ExternalItem extItemPersisted : dimensionOlder.getRole()) {
@@ -598,16 +610,15 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
 
                             }
                         } else { // New
-                            for (ExternalItemBtDto listExternalItemDto : ((DimensionComponentDto) componentDto).getRole()) {
+                            for (ExternalItemDto listExternalItemDto : ((DimensionComponentDto) componentDto).getRole()) {
                                 ((Dimension) result).addRole(externalItemBtDtoToExternalItem(listExternalItemDto, ctx, sdmxBaseService));
                             }
                         }
 
                         // LocalRepresentation
                         ValidationUtil.validateRepresentationForDimension(ctx, componentDto.getLocalRepresentation());
-                        representation = representationDtoToRepresentation(componentDto.getLocalRepresentation(), ctx, sdmxBaseService, (dimensionOlder != null)
-                                ? dimensionOlder.getLocalRepresentation()
-                                : null);
+                        representation = representationDtoToRepresentation(componentDto.getLocalRepresentation(), ctx, sdmxBaseService,
+                                (dimensionOlder != null) ? dimensionOlder.getLocalRepresentation() : null);
                         break;
                     case MEASUREDIMENSION:
                         result = (T) mapToEntity(componentDto, MeasureDimension.class);
@@ -618,7 +629,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
 
                         // ROLE
                         if (componentDto.getId() != null) { // Exist
-                            for (ExternalItemBtDto listExternalItemDto : ((DimensionComponentDto) componentDto).getRole()) {
+                            for (ExternalItemDto listExternalItemDto : ((DimensionComponentDto) componentDto).getRole()) {
                                 ExternalItem externalItem = externalItemBtDtoToExternalItem(listExternalItemDto, ctx, sdmxBaseService);
                                 boolean found = false;
                                 for (ExternalItem extItemPersisted : measureDimensionOlder.getRole()) {
@@ -634,7 +645,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
 
                             }
                         } else { // New
-                            for (ExternalItemBtDto listExternalItemDto : ((DimensionComponentDto) componentDto).getRole()) {
+                            for (ExternalItemDto listExternalItemDto : ((DimensionComponentDto) componentDto).getRole()) {
                                 ((MeasureDimension) result).addRole(externalItemBtDtoToExternalItem(listExternalItemDto, ctx, sdmxBaseService));
                             }
                         }
@@ -879,7 +890,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
 
     @Override
     public DataStructureDefinition dataStructureDefinitionDtoToDataStructureDefinition(DataStructureDefinitionDto dataStructureDefinitionDto, ServiceContext ctx, SdmxBaseService sdmxBaseService)
-            throws MappingException, MetamacException {
+            throws MetamacException {
         if (dataStructureDefinitionDto == null) {
             return null;
         }
@@ -915,7 +926,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
 
     @Override
     public Representation representationDtoToRepresentation(RepresentationDto representationDto, ServiceContext ctx, SdmxBaseService sdmxBaseService, Representation representationOlder)
-            throws MappingException {
+            throws MetamacException {
         if (representationDto == null) {
             // Delete old entity
             if (representationOlder != null) {
@@ -946,7 +957,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
                 }
 
                 // EnumeratedRepresentation: enumerated
-                ((EnumeratedRepresentation) representation).setEnumerated(mapToEntity(representationDto.getEnumerated(), ExternalItemBt.class));
+                ((EnumeratedRepresentation) representation).setEnumerated(mapToEntity(representationDto.getEnumerated(), ExternalItem.class));
 
                 break;
             case TEXT_FORMAT:
@@ -973,7 +984,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
     }
 
     @Override
-    public Facet facetDtoToFacet(FacetDto facetDto, ServiceContext ctx, SdmxBaseService sdmxBaseService) throws MappingException {
+    public Facet facetDtoToFacet(FacetDto facetDto, ServiceContext ctx, SdmxBaseService sdmxBaseService) throws MetamacException {
         if (facetDto == null) {
             return null;
         }
@@ -984,26 +995,30 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
     }
 
     @Override
-    public ExternalItem externalItemBtDtoToExternalItem(ExternalItemBtDto externalItemBtDto, ServiceContext ctx, SdmxBaseService sdmxBaseService) throws MappingException {
+    public ExternalItem externalItemBtDtoToExternalItem(ExternalItemDto externalItemBtDto, ServiceContext ctx, SdmxBaseService sdmxBaseService) throws MetamacException {
         if (externalItemBtDto == null) {
             return null;
         }
 
-//        ExternalItem result = new ExternalItem(new ExternalItemBt(externalItemBtDto.getUriInt(), externalItemBtDto.getCodeId(), externalItemBtDto.getType()));
+        // ExternalItem result = new ExternalItem(new ExternalItemBt(externalItemBtDto.getUriInt(), externalItemBtDto.getCodeId(), externalItemBtDto.getType()));
+        ExternalItem result = mapToEntity(externalItemBtDto, ExternalItem.class);;
 
-        ExternalItem result = new ExternalItem(externalItemBtDtoToExternalItemBt(externalItemBtDto, ctx, sdmxBaseService));
+        ExternalItem older = null;
+        
+        if (externalItemBtDto.getId() != null) {
+            try {
+                older = getExternalItemRepository().findById(externalItemBtDto.getId());
+            }
+            catch (ExternalItemNotFoundException e) {
+                MetamacException metamacException = new MetamacException(e, MetamacCoreExceptionType.MTM_CORE_SEARCH_NOT_FOUND, ExternalItem.class.getSimpleName());
+                metamacException.setLoggedLevel(ExceptionLevelEnum.ERROR);
+                throw metamacException;
+            }
+        }
+        
+        result.setTitle(internationalStringToEntity(externalItemBtDto.getTitle(), (older != null) ? older.getTitle() : null));
 
         return result;
-
-    }
-    
-    @Override
-    public ExternalItemBt externalItemBtDtoToExternalItemBt(ExternalItemBtDto externalItemBtDto, ServiceContext ctx, SdmxBaseService sdmxBaseService) throws MappingException {
-        if (externalItemBtDto == null) {
-            return null;
-        }
-
-        return new ExternalItemBt(externalItemBtDto.getUriInt(), externalItemBtDto.getCodeId(), externalItemBtDto.getType());
     }
 
 }

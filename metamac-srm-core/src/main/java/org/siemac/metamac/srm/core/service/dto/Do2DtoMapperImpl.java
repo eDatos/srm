@@ -2,12 +2,12 @@ package org.siemac.metamac.srm.core.service.dto;
 
 import org.dozer.DozerBeanMapper;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
-import org.siemac.metamac.core.common.dto.ExternalItemBtDto;
+import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.dto.LocalisedStringDto;
+import org.siemac.metamac.core.common.ent.domain.ExternalItem;
 import org.siemac.metamac.core.common.ent.domain.InternationalString;
 import org.siemac.metamac.core.common.ent.domain.LocalisedString;
-import org.siemac.metamac.core.common.vo.domain.ExternalItem;
 import org.siemac.metamac.domain.srm.dto.AnnotableArtefactDto;
 import org.siemac.metamac.domain.srm.dto.AnnotationDto;
 import org.siemac.metamac.domain.srm.dto.ComponentDto;
@@ -187,7 +187,7 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
         }
 
         // Load MaintenanceAgency for associated it to DSD DTO
-        result.setMaintainer(getMapperCore(typeDozerCopyMode).map(source.getMaintainer(), ExternalItemBtDto.class));
+        result.setMaintainer(getMapperCore(typeDozerCopyMode).map(source.getMaintainer(), ExternalItemDto.class));
 
         // Parent
         return nameableToDto(typeDozerCopyMode, source, result);
@@ -365,7 +365,7 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
             // Role
             for (ExternalItem conceptExtItem : ((DataAttribute) component).getRole()) {
                 // ((DataAttributeDto)result).addRole((ConceptDto) itemToItemDto(concept, ctx, sdmxBaseService));
-                ((DataAttributeDto) result).addRole(externalItemToExternalItemBtDto(conceptExtItem, ctx, sdmxBaseService));
+                ((DataAttributeDto) result).addRole(externalItemToExternalItemDto(ctx, typeDozerCopyMode, conceptExtItem, sdmxBaseService));
             }
         }
         // DimensionComponent *************************************************
@@ -380,7 +380,7 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
                 // Role
                 for (ExternalItem conceptExtItem : ((Dimension) component).getRole()) {
                     // ((DimensionComponentDto)result).addRole((ConceptDto) itemToItemDto(concept, ctx, sdmxBaseService));
-                    ((DimensionComponentDto) result).addRole(externalItemToExternalItemBtDto(conceptExtItem, ctx, sdmxBaseService));
+                    ((DimensionComponentDto) result).addRole(externalItemToExternalItemDto(ctx, typeDozerCopyMode, conceptExtItem, sdmxBaseService));
                 }
             }
             // TYPE of MeasureDimension ***************************************
@@ -390,7 +390,7 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
                 // Role
                 for (ExternalItem conceptExtItem : ((MeasureDimension) component).getRole()) {
                     // ((DimensionComponentDto)result).addRole((ConceptDto) itemToItemDto(concept, ctx, sdmxBaseService));
-                    ((DimensionComponentDto) result).addRole(externalItemToExternalItemBtDto(conceptExtItem, ctx, sdmxBaseService));
+                    ((DimensionComponentDto) result).addRole(externalItemToExternalItemDto(ctx, typeDozerCopyMode, conceptExtItem, sdmxBaseService));
                 }
             }
             // TYPE of TimeDimension ******************************************
@@ -416,7 +416,7 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
          ***********************/
         // ConceptIdentity
         if (component.getCptIdRef() != null) {
-            result.setCptIdRef(getMapperCore(typeDozerCopyMode).map(component.getCptIdRef(), ExternalItemBtDto.class));
+            result.setCptIdRef(getMapperCore(typeDozerCopyMode).map(component.getCptIdRef(), ExternalItemDto.class));
         }
         // result.setConceptIdentity((ConceptDto) itemToItemDto(component.getConceptIdentity(), ctx, sdmxBaseService));
 
@@ -556,7 +556,7 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
         // DataStructureDefinition > Structure > MaintainableArtefact > NameableArtefact > IdentifiableArtefact > AnnotableArtefact
 
         // TO EXTENDS
-        DataStructureDefinitionExtendDto result = getMapperCore(typeDozerCopyMode).map(dataStructureDefinition, DataStructureDefinitionExtendDto.class);;
+        DataStructureDefinitionExtendDto result = getMapperCore(typeDozerCopyMode).map(dataStructureDefinition, DataStructureDefinitionExtendDto.class);
         
         for (ComponentList componentList : dataStructureDefinition.getGrouping()) {
             result.addGrouping((DescriptorDto) componentListToComponentListDto(ctx, typeDozerCopyMode, componentList, sdmxBaseService));
@@ -611,12 +611,13 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
     }
 
     @Override
-    public ExternalItemBtDto externalItemToExternalItemBtDto(ExternalItem externalItem, ServiceContext ctx, SdmxBaseService sdmxBaseService) {
+    public ExternalItemDto externalItemToExternalItemDto(ServiceContext ctx, TypeDozerCopyMode typeDozerCopyMode, ExternalItem externalItem, SdmxBaseService sdmxBaseService) {
         if (externalItem == null) {
             return null;
         }
 
-        ExternalItemBtDto result = new ExternalItemBtDto(externalItem.getExt().getUriInt(), externalItem.getExt().getCodeId(), externalItem.getExt().getType());
+        ExternalItemDto result = getMapperCore(typeDozerCopyMode).map(externalItem, ExternalItemDto.class);
+        result.setTitle(internationalStringToDto(typeDozerCopyMode, externalItem.getTitle()));
 
         return result;
     }

@@ -3,9 +3,9 @@ package org.siemac.metamac.srm.core.service.dto;
 import org.dozer.MappingException;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.bt.domain.ExternalItemBt;
-import org.siemac.metamac.core.common.dto.ExternalItemBtDto;
+import org.siemac.metamac.core.common.dto.ExternalItemDto;
+import org.siemac.metamac.core.common.ent.domain.ExternalItem;
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.core.common.vo.domain.ExternalItem;
 import org.siemac.metamac.domain.srm.dto.ComponentDto;
 import org.siemac.metamac.domain.srm.dto.ComponentListDto;
 import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
@@ -33,15 +33,13 @@ public interface Dto2DoMapper {
     public <T extends ComponentList> T componentListDtoToComponentList(ComponentListDto componentListDto, ServiceContext ctx, SdmxBaseService sdmxBaseService) throws MetamacException;
 
     public DataStructureDefinition dataStructureDefinitionDtoToDataStructureDefinition(DataStructureDefinitionDto dataStructureDefinitionDto, ServiceContext ctx, SdmxBaseService sdmxBaseService)
-            throws MappingException, MetamacException;
+            throws MetamacException;
 
     public Representation representationDtoToRepresentation(RepresentationDto representationDto, ServiceContext ctx, SdmxBaseService sdmxBaseService, Representation representationOlder)
-            throws MappingException;
+            throws MetamacException;
 
-    public Facet facetDtoToFacet(FacetDto facetDto, ServiceContext ctx, SdmxBaseService sdmxBaseService) throws MappingException;
+    public Facet facetDtoToFacet(FacetDto facetDto, ServiceContext ctx, SdmxBaseService sdmxBaseService) throws MetamacException;
 
-    public ExternalItem externalItemBtDtoToExternalItem(ExternalItemBtDto externalItemBtDto, ServiceContext ctx, SdmxBaseService sdmxBaseService) throws MappingException;
-
-    public ExternalItemBt externalItemBtDtoToExternalItemBt(ExternalItemBtDto externalItemBtDto, ServiceContext ctx, SdmxBaseService sdmxBaseService) throws MappingException;
+    public ExternalItem externalItemBtDtoToExternalItem(ExternalItemDto externalItemBtDto, ServiceContext ctx, SdmxBaseService sdmxBaseService) throws MetamacException;
 
 }

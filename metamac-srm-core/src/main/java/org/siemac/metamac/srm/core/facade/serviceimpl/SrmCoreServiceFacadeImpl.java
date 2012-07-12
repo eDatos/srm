@@ -22,7 +22,7 @@ import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
-import org.siemac.metamac.core.common.dto.ExternalItemBtDto;
+import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.exception.ExceptionLevelEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
@@ -407,7 +407,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
      * CODELIST
      **************************************************************************/
     @Override
-    public List<ExternalItemBtDto> findCodelists(ServiceContext ctx, String uriConcept) throws MetamacException {
+    public List<ExternalItemDto> findCodelists(ServiceContext ctx, String uriConcept) throws MetamacException {
         // TODO devolver los codelist posibles para un concepto
         return ServicesResolver.findAllCodelists();
     }
@@ -417,7 +417,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
      **************************************************************************/
 
     @Override
-    public ExternalItemBtDto findOrganisation(ServiceContext ctx, String uriOrganistaion) throws MetamacException {
+    public ExternalItemDto findOrganisation(ServiceContext ctx, String uriOrganistaion) throws MetamacException {
         // TODO find organistaion
         return ServicesResolver.resolveOrganisation(uriOrganistaion);
     }
@@ -492,12 +492,12 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
      *************************************************************************/
 
     @Override
-    public List<ExternalItemBtDto> findConceptSchemeRefs(ServiceContext ctx) {
+    public List<ExternalItemDto> findConceptSchemeRefs(ServiceContext ctx) {
         return ServicesResolver.findAllConceptSchemes();
     }
 
     @Override
-    public List<ExternalItemBtDto> findConcepts(ServiceContext ctx, String uriConceptScheme) {
+    public List<ExternalItemDto> findConcepts(ServiceContext ctx, String uriConceptScheme) {
         return ServicesResolver.retrieveConceptScheme(uriConceptScheme);
     }
 

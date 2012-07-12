@@ -2,8 +2,8 @@ package org.siemac.metamac.srm.core.service.dto;
 
 import org.dozer.DozerBeanMapper;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
-import org.siemac.metamac.core.common.dto.ExternalItemBtDto;
-import org.siemac.metamac.core.common.vo.domain.ExternalItem;
+import org.siemac.metamac.core.common.dto.ExternalItemDto;
+import org.siemac.metamac.core.common.ent.domain.ExternalItem;
 import org.siemac.metamac.domain.srm.dto.ComponentDto;
 import org.siemac.metamac.domain.srm.dto.ComponentListDto;
 import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
@@ -45,6 +45,6 @@ public interface Do2DtoMapper {
 
     public FacetDto facetToFacetDto(ServiceContext ctx, TypeDozerCopyMode typeDozerCopyMode, Facet facet, SdmxBaseService sdmxBaseService);
 
-    public ExternalItemBtDto externalItemToExternalItemBtDto(ExternalItem externalItem, ServiceContext ctx, SdmxBaseService sdmxBaseService);
+    public ExternalItemDto externalItemToExternalItemDto(ServiceContext ctx, TypeDozerCopyMode typeDozerCopyMode, ExternalItem externalItem, SdmxBaseService sdmxBaseService);
 
 }
