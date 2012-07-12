@@ -400,12 +400,6 @@
                     <filesets>
                         <fileset>
                             <directory>src/generated</directory>
-                            <includes>
-                                <include>**/*.java</include>
-                                <include>**/*.xml</include>
-                                <include>**/*.properties</include>
-                                <include>**/*.dot</include>
-                            </includes>
                             <excludes>
                                 <exclude>**/.svn/*</exclude>
                             </excludes>
@@ -413,11 +407,6 @@
                         </fileset>
                         <fileset>
                             <directory>src/test/generated</directory>
-                            <includes>
-                                <include>**/*.java</include>
-                                <include>**/*.xml</include>
-                                <include>**/*.properties</include>
-                            </includes>
                             <excludes>
                                 <exclude>**/.svn/*</exclude>
                             </excludes>
