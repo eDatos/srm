@@ -112,11 +112,11 @@ public class BaseDoMocks {
     // -----------------------------------------------------------------
 
     public static ExternalItem mockAgencyExternalItemBt() {
-        return new ExternalItem(StringUtils.EMPTY, mockAgencyUrn(), TypeExternalArtefactsEnum.AGENCY);
+        return new ExternalItem(AGENCY_MOCK, StringUtils.EMPTY, mockAgencyUrn(), TypeExternalArtefactsEnum.AGENCY);
     }
 
     public static ExternalItem mockConceptExternalItem() {
-        return new ExternalItem(StringUtils.EMPTY, mockConceptUrn(), TypeExternalArtefactsEnum.CONCEPT);
+        return new ExternalItem(CONCEPT_MOCK, StringUtils.EMPTY, mockConceptUrn(), TypeExternalArtefactsEnum.CONCEPT);
     }
     
     public static String mockAgencyUrn() {
