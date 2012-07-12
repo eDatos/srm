@@ -167,7 +167,7 @@ Application SrmCore {
 			 @param ctx  
 			 @return     
        		"
-       		@ExternalItemBtDto findOrganisation(String uriOrganistaion) throws MetamacException;
+       		@ExternalItemDto findOrganisation(String uriOrganistaion) throws MetamacException;
        		
        		/**************************************************************************
 		     * CODELIST
@@ -178,7 +178,7 @@ Application SrmCore {
 			 @param uriConcept
 			 @return 
 			"        		
-       		List<@ExternalItemBtDto> findCodelists(String uriConcept) throws MetamacException;
+       		List<@ExternalItemDto> findCodelists(String uriConcept) throws MetamacException;
        		
        		/**************************************************************************
 		     * CONCEPTS
@@ -187,14 +187,14 @@ Application SrmCore {
 			 @param ctx  
 			 @return     
        		"       		
-       		List<@ExternalItemBtDto> findConceptSchemeRefs;
+       		List<@ExternalItemDto> findConceptSchemeRefs;
        		
        		"
        		 @param ctx             
 			 @param uriConceptScheme
 			 @return 
 			"                
-       		List<@ExternalItemBtDto> findConcepts(String uriConceptScheme);
+       		List<@ExternalItemDto> findConcepts(String uriConceptScheme);
        		
 	   		
 	   		@ConceptSchemeDto createConceptScheme(@ConceptSchemeDto conceptSchemeDto) throws MetamacException;

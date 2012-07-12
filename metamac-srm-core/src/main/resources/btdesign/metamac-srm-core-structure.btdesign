@@ -1,7 +1,5 @@
 import "classpath:/btdesign/metamac-api-domain-enums.btdesign"
 
-import "classpath:/btdesign/export/metamac-core-common-basictype.btdesign"
-import "classpath:/btdesign/export/metamac-core-common-vo.btdesign"
 import "classpath:/btdesign/export/metamac-core-common-entity.btdesign"
 
 import "classpath:/btdesign/metamac-srm-core-base.btdesign"
