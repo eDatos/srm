@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import org.siemac.metamac.core.common.bt.domain.ExternalItemBt;
+import org.siemac.metamac.core.common.ent.domain.ExternalItem;
 import org.siemac.metamac.core.common.ent.domain.InternationalString;
 import org.siemac.metamac.core.common.ent.domain.LocalisedString;
 import org.siemac.metamac.srm.core.base.domain.ItemScheme;
@@ -34,7 +35,7 @@ public class BaseAsserts {
         assertEquals(expected.getStructureURL(), actual.getStructureURL());
         assertEquals(expected.getServiceURL(), actual.getServiceURL());
 
-        assertExternalItemBt(expected.getMaintainer(), actual.getMaintainer());
+        assertEqualsExternalItem(expected.getMaintainer(), actual.getMaintainer());
     }
 
     // -----------------------------------------------------------------
@@ -70,10 +71,8 @@ public class BaseAsserts {
     // EXTERNAL ITEMS
     // -----------------------------------------------------------------
 
-    public static void assertExternalItemBt(ExternalItemBt expected, ExternalItemBt actual) {
-        assertEquals(expected.getCodeId(), actual.getCodeId());
-        assertEquals(expected.getUriInt(), actual.getUriInt());
-        assertEquals(expected.getType(), actual.getType());
+    public static void assertEqualsExternalItem(ExternalItem expected, ExternalItem actual) {
+        //TODO assertEqualsExternalItem
     }
 
 }

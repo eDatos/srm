@@ -131,7 +131,7 @@ public class BaseServiceTest extends AbstractTransactionalJUnit4SpringContextTes
 
         // Required
         dimension1.setUri(RandomStringUtils.random(50, true, true));
-        dimension1.setCptIdRef(BaseDoMocks.mockConceptExternalItemBt());
+        dimension1.setCptIdRef(BaseDoMocks.mockConceptExternalItem());
         dimension1.setOrderLogic(1);
 
         // Some Auditory
@@ -143,7 +143,7 @@ public class BaseServiceTest extends AbstractTransactionalJUnit4SpringContextTes
 
         // Required
         dimension2.setUri(RandomStringUtils.random(50, true, true));
-        dimension2.setCptIdRef(BaseDoMocks.mockConceptExternalItemBt());
+        dimension2.setCptIdRef(BaseDoMocks.mockConceptExternalItem());
         dimension2.setOrderLogic(1);
 
         // Some Auditory

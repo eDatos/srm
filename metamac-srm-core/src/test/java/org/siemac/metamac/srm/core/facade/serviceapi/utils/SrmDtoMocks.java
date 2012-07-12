@@ -11,8 +11,8 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.eclipse.xtext.util.StringInputStream;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ApplicationException;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
-import org.siemac.metamac.core.common.bt.domain.ExternalItemBt;
-import org.siemac.metamac.core.common.dto.ExternalItemBtDto;
+import org.siemac.metamac.common.test.utils.MetamacMocks;
+import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.dto.LocalisedStringDto;
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
@@ -32,6 +32,7 @@ import org.siemac.metamac.domain.srm.enume.domain.TypeDimensionComponent;
 import org.siemac.metamac.domain.srm.enume.domain.TypeRelathionship;
 import org.siemac.metamac.domain.srm.enume.domain.UsageStatus;
 import org.siemac.metamac.domain.util.dto.ContentInputDto;
+import org.siemac.metamac.srm.core.base.serviceapi.utils.BaseDoMocks;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 
 public class SrmDtoMocks {
@@ -71,7 +72,8 @@ public class SrmDtoMocks {
 
         // Required: Maintainer
         // dataStructureDefinitionDto.setMaintainerIdLogic(organizationByDefaultLogicId);
-        dataStructureDefinitionDto.setMaintainer(new ExternalItemBtDto("urn:sdmx:org.sdmx.infomodel.organisationcheme.Agency=METAMAC", "METAMAC", TypeExternalArtefactsEnum.AGENCY));
+        
+        dataStructureDefinitionDto.setMaintainer(MetamacMocks.mockExternalItemDto(BaseDoMocks.mockAgencyUrn(), TypeExternalArtefactsEnum.AGENCY));
 
         // Required: Name
         InternationalStringDto name = new InternationalStringDto();
@@ -123,7 +125,7 @@ public class SrmDtoMocks {
      */
     public static List<DimensionComponentDto> createDimensionDtos(SrmCoreServiceFacade srmCoreServiceFacade) {
 
-        List<ExternalItemBtDto> conceptDtos = srmCoreServiceFacade.findConcepts(getServiceContext(), null);
+        List<ExternalItemDto> conceptDtos = srmCoreServiceFacade.findConcepts(getServiceContext(), null);
 
         DimensionComponentDto dimensionComponentDto1 = new DimensionComponentDto();
         // Required
@@ -186,7 +188,7 @@ public class SrmDtoMocks {
      */
     public static List<DataAttributeDto> createDataAttribute(SrmCoreServiceFacade srmCoreServiceFacade, Long dataStructureDefinitionId) throws MetamacException {
 
-        List<ExternalItemBtDto> conceptDtos = srmCoreServiceFacade.findConcepts(getServiceContext(), null);
+        List<ExternalItemDto> conceptDtos = srmCoreServiceFacade.findConcepts(getServiceContext(), null);
 
         DataAttributeDto dataAttributeDto1 = new DataAttributeDto();
         // Required
@@ -231,7 +233,7 @@ public class SrmDtoMocks {
 
     public static ComponentDto createPrimaryMeasureDto(SrmCoreServiceFacade srmCoreServiceFacade) {
 
-        List<ExternalItemBtDto> conceptDtos = srmCoreServiceFacade.findConcepts(getServiceContext(), null);
+        List<ExternalItemDto> conceptDtos = srmCoreServiceFacade.findConcepts(getServiceContext(), null);
 
         ComponentDto primaryMeasure = new ComponentDto();
 
@@ -369,7 +371,7 @@ public class SrmDtoMocks {
         describedBy.setName(name);
 
         // maintainerIdLogic
-        describedBy.setMaintainer(new ExternalItemBtDto("urn:sdmx:org.sdmx.infomodel.organisationcheme.Agency=METAMAC", "METAMAC", TypeExternalArtefactsEnum.AGENCY));
+        describedBy.setMaintainer(MetamacMocks.mockExternalItemDto(BaseDoMocks.mockAgencyUrn(), TypeExternalArtefactsEnum.AGENCY));
 
         // structure
 

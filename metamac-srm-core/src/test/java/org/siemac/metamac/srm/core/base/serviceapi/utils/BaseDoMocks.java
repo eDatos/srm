@@ -1,14 +1,22 @@
 package org.siemac.metamac.srm.core.base.serviceapi.utils;
 
+import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.siemac.metamac.common.test.utils.MetamacMocks;
-import org.siemac.metamac.core.common.bt.domain.ExternalItemBt;
+import org.siemac.metamac.core.common.ent.domain.ExternalItem;
 import org.siemac.metamac.core.common.ent.domain.InternationalString;
 import org.siemac.metamac.core.common.ent.domain.LocalisedString;
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
+import org.siemac.metamac.core.common.util.GeneratorUrnUtils;
+import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.base.domain.ItemScheme;
 
 public class BaseDoMocks {
+    
+    private static final String AGENCY_MOCK = "AgencyMock";
+    private static final String AGENCY_SCHEME_MOCK = "AgencySchemeMock";
+    private static final String CONCEPT_SCHEME_MOCK = "ConceptSchemeMock";
+    private static final String CONCEPT_MOCK = "ConceptMock";
 
     // -----------------------------------------------------------------
     // ITEM SCHEME
@@ -82,7 +90,7 @@ public class BaseDoMocks {
         return itemScheme;
     }
     
- // -----------------------------------------------------------------
+    // -----------------------------------------------------------------
     // INTERNATIONAL STRING
     // -----------------------------------------------------------------
 
@@ -103,15 +111,20 @@ public class BaseDoMocks {
     // EXTERNAL ITEM
     // -----------------------------------------------------------------
 
-    public static ExternalItemBt mockAgencyExternalItemBt() {
-        String code = MetamacMocks.mockString(10);
-        return new ExternalItemBt("http://sdmx/v2.1/agency/" + code, code, TypeExternalArtefactsEnum.AGENCY);
+    public static ExternalItem mockAgencyExternalItemBt() {
+        return new ExternalItem(StringUtils.EMPTY, mockAgencyUrn(), TypeExternalArtefactsEnum.AGENCY);
     }
 
-    public static ExternalItemBt mockConceptExternalItemBt() {
-        String conceptScheme = MetamacMocks.mockString(10);
-        String code = MetamacMocks.mockString(10);
-        return new ExternalItemBt("http://sdmx/v2.1/concept/" + conceptScheme + "/" + code, code, TypeExternalArtefactsEnum.CONCEPT);
+    public static ExternalItem mockConceptExternalItem() {
+        return new ExternalItem(StringUtils.EMPTY, mockConceptUrn(), TypeExternalArtefactsEnum.CONCEPT);
     }
+    
+    public static String mockAgencyUrn() {
+        return GeneratorUrnUtils.generateSdmxAgencyUrn(AGENCY_MOCK, AGENCY_SCHEME_MOCK, VersionUtil.VERSION_LOGIC, AGENCY_MOCK);
+    }
+    
+    public static String mockConceptUrn() {
+        return GeneratorUrnUtils.generateSdmxConceptUrn(AGENCY_MOCK, CONCEPT_SCHEME_MOCK, VersionUtil.VERSION_LOGIC, CONCEPT_MOCK);
+    }    
 
 }

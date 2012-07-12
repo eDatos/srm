@@ -9,6 +9,7 @@ import static org.siemac.metamac.srm.core.structure.domain.DataStructureDefiniti
 import java.util.List;
 
 import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
@@ -18,12 +19,16 @@ import org.joda.time.DateTime;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.siemac.metamac.common.test.mock.OracleJNDIMock;
+import org.siemac.metamac.common.test.utils.MetamacMocks;
 import org.siemac.metamac.core.common.bt.domain.ExternalItemBt;
+import org.siemac.metamac.core.common.ent.domain.ExternalItem;
 import org.siemac.metamac.core.common.ent.domain.InternationalString;
 import org.siemac.metamac.core.common.ent.domain.LocalisedString;
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
+import org.siemac.metamac.core.common.util.GeneratorUrnUtils;
 import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.base.serviceapi.SdmxBaseService;
+import org.siemac.metamac.srm.core.base.serviceapi.utils.BaseDoMocks;
 import org.siemac.metamac.srm.core.structure.domain.DataStructureDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.jndi.SimpleNamingContextBuilder;
@@ -153,7 +158,7 @@ public class DataStructureDefinitionServiceTest extends AbstractTransactionalJUn
         // DataStructureDefinition dataStructureDefinition = new DataStructureDefinition(name, new ExternalItemBt("METAMAC_ORGANISTION", "METAMAC_ORGANISTION", TypeExternalArtefactsEnum.AGENCY));
         DataStructureDefinition dataStructureDefinition = new DataStructureDefinition();
         dataStructureDefinition.setName(name);
-        dataStructureDefinition.setMaintainer(new ExternalItemBt("METAMAC_ORGANISTION", "METAMAC_ORGANISTION", TypeExternalArtefactsEnum.AGENCY));
+        dataStructureDefinition.setMaintainer(BaseDoMocks.mockAgencyExternalItemBt());
 
         dataStructureDefinition.setIdLogic(RandomStringUtils.random(50, true, true));
 

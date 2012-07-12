@@ -17,7 +17,7 @@ import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.siemac.metamac.core.common.dto.ExternalItemBtDto;
+import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.dto.LocalisedStringDto;
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
@@ -93,7 +93,7 @@ public class KryoTest {
         kryo.register(Date.class, new DateSerializer());
         kryo.register(TypeExternalArtefactsEnum.class, new EnumSerializer(TypeExternalArtefactsEnum.class));
 
-        kryo.register(ExternalItemBtDto.class, new BeanSerializer(kryo, ExternalItemBtDto.class));
+        kryo.register(ExternalItemDto.class, new BeanSerializer(kryo, ExternalItemDto.class));
         kryo.register(InternationalStringDto.class, new BeanSerializer(kryo, InternationalStringDto.class));
         kryo.register(LocalisedStringDto.class, new BeanSerializer(kryo, LocalisedStringDto.class));
 
