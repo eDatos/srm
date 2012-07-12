@@ -17,6 +17,7 @@ import org.apache.commons.lang.SerializationUtils;
 import org.apache.log4j.Logger;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
@@ -74,6 +75,7 @@ public class JavaSerializationTest {
     }
 
     @Test
+    @Ignore
     // @Rollback(false)
     public void testSerializeDSD() throws Exception {
 
