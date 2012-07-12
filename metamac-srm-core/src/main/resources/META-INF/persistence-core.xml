@@ -22,7 +22,7 @@
     <class>org.siemac.metamac.srm.core.structure.domain.DimensionDescriptor</class>  
     <class>org.siemac.metamac.srm.core.structure.domain.DimensionRelationship</class>  
     <class>org.siemac.metamac.srm.core.base.domain.EnumeratedRepresentation</class>  
-    <class>org.siemac.metamac.core.common.vo.domain.ExternalItem</class>  
+    <class>org.siemac.metamac.core.common.ent.domain.ExternalItem</class>  
     <class>org.siemac.metamac.srm.core.base.domain.Facet</class>  
     <class>org.siemac.metamac.srm.core.structure.domain.GroupDimensionDescriptor</class>  
     <class>org.siemac.metamac.srm.core.structure.domain.GroupRelationship</class>  
