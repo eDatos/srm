@@ -17,6 +17,8 @@ public class BaseDoMocks {
     private static final String AGENCY_SCHEME_MOCK = "AgencySchemeMock";
     private static final String CONCEPT_SCHEME_MOCK = "ConceptSchemeMock";
     private static final String CONCEPT_MOCK = "ConceptMock";
+    
+    private static final String URI_MOCK = "lorem/ipsum/dolor/sit/amet";
 
     // -----------------------------------------------------------------
     // ITEM SCHEME
@@ -112,11 +114,11 @@ public class BaseDoMocks {
     // -----------------------------------------------------------------
 
     public static ExternalItem mockAgencyExternalItemBt() {
-        return new ExternalItem(AGENCY_MOCK, StringUtils.EMPTY, mockAgencyUrn(), TypeExternalArtefactsEnum.AGENCY);
+        return new ExternalItem(AGENCY_MOCK, URI_MOCK, mockAgencyUrn(), TypeExternalArtefactsEnum.AGENCY);
     }
 
     public static ExternalItem mockConceptExternalItem() {
-        return new ExternalItem(CONCEPT_MOCK, StringUtils.EMPTY, mockConceptUrn(), TypeExternalArtefactsEnum.CONCEPT);
+        return new ExternalItem(CONCEPT_MOCK, URI_MOCK, mockConceptUrn(), TypeExternalArtefactsEnum.CONCEPT);
     }
     
     public static String mockAgencyUrn() {
