@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<dataset>
+    
+    <!-- ************************************************************************************** -->
+    <!-- CONCEPT SCHEME                                                                         -->
+    <!-- *************************************************************************************  -->
+    <TB_CONCEPT_SCHEMES 
+        ID="1" 
+        UUID="conceptScheme-1"
+         
+        ITEM_SCHEME_FK="1"
+
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user2"
+        LAST_UPDATED="2011-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"
+    />
+    
+    <TB_ANNOTABLE_ARTEFACTS 
+        ID="1"
+        UUID="annotableArtefact-1"
+        
+        DTYPE="ITEM_SCHEME"
+        ID_LOGIC="conceptScheme-1"
+        URI="uri:urn:22f5f72e-4275-4f4a-ae05-ca4da0131fbc"
+        URN="http://sdmx/v2.1/conceptScheme/conceptScheme-1/v1"
+        REPLACED_BY="[null]"
+        
+        MAINTAINER_URI_INT="http://sdmx/v2.1/agency/standAloneAgencies/ISTAC"
+        MAINTAINER_CODE_ID="ISTAC"
+        MAINTAINER_TYPE="AGENCY"
+
+        NAME_FK="1"
+        DESCRIPTION_FK="1"
+        
+        VERSION_LOGIC="1.0"
+        FINAL_LOGIC="0"
+        
+        VALID_FROM_TZ="Europe/London"
+        VALID_FROM="2011-01-02 02:02:04" 
+        VALID_TO_TZ="[null]"
+        VALID_TO="[null]"
+        
+        ITEMS_FK="[null]"
+        
+        IS_EXTERNAL_REFERENCE="0"
+        STRUCTURE_URL="[null]"
+        SERVICE_URL="[null]"
+        IS_PARTIAL="1"
+        
+        REPRESENTATION_FK="[null]"
+        
+        CPT_ID_REF_URI_INT="[null]"
+        CPT_ID_REF_CODE_ID="[null]"
+        CPT_ID_REF_TYPE="[null]"
+        COMPONENTLIST_FK="[null]"
+
+        ORDER_LOGIC="[null]"
+        PARENT_FK="[null]"
+        RELATE_TO="[null]"
+        USAGE_STATUS="[null]"
+        IS_ATTACHMENT_CONSTRAINT="[null]"
+        STRUCTURE_FK="[null]"
+        
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user2"
+        LAST_UPDATED="2011-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"
+    />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="1"
+        VERSION="1"
+    />  
+    
+    <TB_LOCALISED_STRINGS
+        ID="1"
+        LABEL="Nombre conceptScheme-1-v1"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="1"
+    />  
+    <TB_LOCALISED_STRINGS
+        ID="2"
+        LABEL="Name conceptScheme-1-v1"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="1"
+    />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="2"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="3"
+        LABEL="Descripción conceptScheme-1-v1"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="2"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="4"
+        LABEL="Description conceptScheme-1-v1"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="2"
+    />
+
+    <TB_ANNOTATIONS />
+    <TB_FACETS />
+    <TB_EXTERNAL_ITEMS />
+    <TB_ATTR_RELATIONSHIPS />
+    <TB_REPRESENTATIONS />
+    <TB_CONCEPTS />
+    
+</dataset>
