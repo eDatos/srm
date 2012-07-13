@@ -71,7 +71,19 @@ public class BaseAsserts {
     // -----------------------------------------------------------------
 
     public static void assertEqualsExternalItem(ExternalItem expected, ExternalItem actual) {
-        //TODO assertEqualsExternalItem
+        
+        if (actual == null && expected == null) {
+            return;
+        } else if ((actual != null && expected == null) || (actual == null && expected != null)) {
+            fail();
+        }
+        
+        assertEquals(expected.getCode(), actual.getCode());
+        assertEquals(expected.getUri(), actual.getUri());
+        assertEquals(expected.getUrn(), actual.getUrn());
+        assertEquals(expected.getType(), actual.getType());
+        assertEqualsInternationalString(expected.getTitle(), actual.getTitle());
+        assertEquals(expected.getManagementAppUrl(), actual.getManagementAppUrl());
     }
 
 }
