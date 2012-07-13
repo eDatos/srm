@@ -50,15 +50,18 @@ public class ConceptsServiceTest extends SrmBaseTest  implements ConceptsService
         MetamacAsserts.assertEqualsDate("2011-01-22 01:02:03", conceptScheme.getLastUpdated());
         
         assertEquals("annotableArtefact-1", conceptScheme.getItemScheme().getUuid());
-        assertEquals("conceptScheme-1", conceptScheme.getItemScheme().getIdLogic());
-        assertEquals("conceptScheme-1", conceptScheme.getItemScheme().getIdLogic());
-        assertEquals("uri:urn:22f5f72e-4275-4f4a-ae05-ca4da0131fbc", conceptScheme.getItemScheme().getUri());
-        assertEquals("http://sdmx/v2.1/conceptScheme/conceptScheme-1/v1", conceptScheme.getItemScheme().getUrn());
+        assertEquals("CONCEPTSCHEME01", conceptScheme.getItemScheme().getIdLogic());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.concepscheme.ConceptScheme=ISTAC:CONCEPTSCHEME01(1.0)", conceptScheme.getItemScheme().getUrn());
+        assertEquals("http://data.siemac.org/srm/v1/conceptSchemes/conceptScheme-1/v", conceptScheme.getItemScheme().getUri());
         assertNull(conceptScheme.getItemScheme().getReplacedBy());
         
-        assertEquals("http://sdmx/v2.1/agency/standAloneAgencies/ISTAC", conceptScheme.getItemScheme().getMaintainer().getUri());
-        // TODO este assert -> assertEquals("ISTAC", conceptScheme.getItemScheme().getMaintainer().g);
+        assertEquals("ISTAC", conceptScheme.getItemScheme().getMaintainer().getCode());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.base.Agency=ISTAC:STANDALONE(1.0).ISTAC", conceptScheme.getItemScheme().getMaintainer().getUrn());
+        assertEquals("http://data.siemac.org/srm/v1/agenciesSchemes/standalone/agencies/ISTAC", conceptScheme.getItemScheme().getMaintainer().getUri());
         assertEquals(TypeExternalArtefactsEnum.AGENCY, conceptScheme.getItemScheme().getMaintainer().getType());
+        assertEquals(null, conceptScheme.getItemScheme().getMaintainer().getTitle());
+        assertEquals(null, conceptScheme.getItemScheme().getMaintainer().getManagementAppUrl());
+        assertEquals(Long.valueOf(1), conceptScheme.getItemScheme().getMaintainer().getVersion());
         
         BaseAsserts.assertEqualsInternationalString(conceptScheme.getItemScheme().getName(), "es", "Nombre conceptScheme-1-v1", "en", "Name conceptScheme-1-v1");
         

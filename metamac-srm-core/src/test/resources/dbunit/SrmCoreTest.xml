@@ -25,14 +25,12 @@
         UUID="annotableArtefact-1"
         
         DTYPE="ITEM_SCHEME"
-        ID_LOGIC="conceptScheme-1"
-        URI="uri:urn:22f5f72e-4275-4f4a-ae05-ca4da0131fbc"
-        URN="http://sdmx/v2.1/conceptScheme/conceptScheme-1/v1"
+        ID_LOGIC="CONCEPTSCHEME01"
+        URI="http://data.siemac.org/srm/v1/conceptSchemes/conceptScheme01/v1"
+        URN="urn:sdmx:org.sdmx.infomodel.concepscheme.ConceptScheme=ISTAC:CONCEPTSCHEME01(1.0)"
         REPLACED_BY="[null]"
         
-        MAINTAINER_URI_INT="http://sdmx/v2.1/agency/standAloneAgencies/ISTAC"
-        MAINTAINER_CODE_ID="ISTAC"
-        MAINTAINER_TYPE="AGENCY"
+        MAINTAINER_FK="1"
 
         NAME_FK="1"
         DESCRIPTION_FK="1"
@@ -53,11 +51,7 @@
         IS_PARTIAL="1"
         
         REPRESENTATION_FK="[null]"
-        
-        CPT_ID_REF_URI_INT="[null]"
-        CPT_ID_REF_CODE_ID="[null]"
-        CPT_ID_REF_TYPE="[null]"
-        COMPONENTLIST_FK="[null]"
+        CONCEPT_IDENTITY_FK="[null]"
 
         ORDER_LOGIC="[null]"
         PARENT_FK="[null]"
@@ -116,9 +110,19 @@
         INTERNATIONAL_STRING_FK="2"
     />
 
+    <TB_EXTERNAL_ITEMS 
+        ID="1"
+        CODE="ISTAC"
+        URI="http://data.siemac.org/srm/v1/agenciesSchemes/standalone/agencies/ISTAC"
+        URN="urn:sdmx:org.sdmx.infomodel.base.Agency=ISTAC:STANDALONE(1.0).ISTAC"
+        MANAGEMENT_APP_URL="[null]"
+        VERSION="1"
+        TITLE="[null]"
+        TYPE="AGENCY"
+    />
+    
     <TB_ANNOTATIONS />
     <TB_FACETS />
-    <TB_EXTERNAL_ITEMS />
     <TB_ATTR_RELATIONSHIPS />
     <TB_REPRESENTATIONS />
     <TB_CONCEPTS />
