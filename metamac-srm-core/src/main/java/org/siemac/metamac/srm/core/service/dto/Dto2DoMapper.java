@@ -13,31 +13,31 @@ import org.siemac.metamac.srm.core.base.domain.Component;
 import org.siemac.metamac.srm.core.base.domain.ComponentList;
 import org.siemac.metamac.srm.core.base.domain.Facet;
 import org.siemac.metamac.srm.core.base.domain.Representation;
-import org.siemac.metamac.srm.core.base.serviceapi.SdmxBaseService;
+import org.siemac.metamac.srm.core.base.serviceapi.BaseService;
 import org.siemac.metamac.srm.core.structure.domain.DataStructureDefinition;
 
 public interface Dto2DoMapper {
 
     // public <T extends Item> T itemDtoToItem(ItemDto itemDto,
-    // ServiceContext ctx, SdmxBaseService sdmxBaseService);
+    // ServiceContext ctx, BaseService baseService);
 
     // public <T extends ItemScheme> T itemschemeDtoToItemScheme(
     // ItemSchemeDto itemSchemeDto, ServiceContext ctx,
-    // SdmxBaseService sdmxBaseService) throws MappingException,
+    // BaseService baseService) throws MappingException,
     // OrganisationNotFoundException;
 
-    public <T extends Component> T componentDtoToComponent(ComponentDto componentDto, ServiceContext ctx, SdmxBaseService sdmxBaseService) throws MetamacException;
+    public <T extends Component> T componentDtoToComponent(ComponentDto componentDto, ServiceContext ctx, BaseService baseService) throws MetamacException;
 
-    public <T extends ComponentList> T componentListDtoToComponentList(ComponentListDto componentListDto, ServiceContext ctx, SdmxBaseService sdmxBaseService) throws MetamacException;
+    public <T extends ComponentList> T componentListDtoToComponentList(ComponentListDto componentListDto, ServiceContext ctx, BaseService baseService) throws MetamacException;
 
-    public DataStructureDefinition dataStructureDefinitionDtoToDataStructureDefinition(DataStructureDefinitionDto dataStructureDefinitionDto, ServiceContext ctx, SdmxBaseService sdmxBaseService)
+    public DataStructureDefinition dataStructureDefinitionDtoToDataStructureDefinition(DataStructureDefinitionDto dataStructureDefinitionDto, ServiceContext ctx, BaseService baseService)
             throws MetamacException;
 
-    public Representation representationDtoToRepresentation(RepresentationDto representationDto, ServiceContext ctx, SdmxBaseService sdmxBaseService, Representation representationOlder)
+    public Representation representationDtoToRepresentation(RepresentationDto representationDto, ServiceContext ctx, BaseService baseService, Representation representationOlder)
             throws MetamacException;
 
-    public Facet facetDtoToFacet(FacetDto facetDto, ServiceContext ctx, SdmxBaseService sdmxBaseService) throws MetamacException;
+    public Facet facetDtoToFacet(FacetDto facetDto, ServiceContext ctx, BaseService baseService) throws MetamacException;
 
-    public ExternalItem externalItemBtDtoToExternalItem(ExternalItemDto externalItemBtDto, ServiceContext ctx, SdmxBaseService sdmxBaseService) throws MetamacException;
+    public ExternalItem externalItemBtDtoToExternalItem(ExternalItemDto externalItemBtDto, ServiceContext ctx, BaseService baseService) throws MetamacException;
 
 }

@@ -53,7 +53,7 @@ import org.siemac.metamac.srm.core.base.domain.RepresentationRepository;
 import org.siemac.metamac.srm.core.base.domain.TextFormatRepresentation;
 import org.siemac.metamac.srm.core.base.exception.AnnotationNotFoundException;
 import org.siemac.metamac.srm.core.base.exception.ComponentNotFoundException;
-import org.siemac.metamac.srm.core.base.serviceapi.SdmxBaseService;
+import org.siemac.metamac.srm.core.base.serviceapi.BaseService;
 import org.siemac.metamac.srm.core.base.serviceimpl.utils.BaseInvocationValidator;
 import org.siemac.metamac.srm.core.common.error.MetamacCoreExceptionType;
 import org.siemac.metamac.srm.core.service.utils.SdmxToolsServer;
@@ -320,7 +320,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         return annotableToEntity(ctx, source, result);
     }
 
-    private <T extends MaintainableArtefactDto, U extends MaintainableArtefact> U maintainableArtefactToEntity(ServiceContext ctx, T source, U result, U older, SdmxBaseService sdmxBaseService)
+    private <T extends MaintainableArtefactDto, U extends MaintainableArtefact> U maintainableArtefactToEntity(ServiceContext ctx, T source, U result, U older, BaseService baseService)
             throws MappingException, MetamacException {
         // Dozer bypass, Name is required
         if (source == null || source.getName() == null) {
@@ -328,7 +328,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         }
 
         // // Load Agency for associated it to DSD
-        // Organisation organisation = (Organisation) sdmxBaseService.findOrganization(ctx, source.getMaintainerIdLogic());
+        // Organisation organisation = (Organisation) baseService.findOrganization(ctx, source.getMaintainerIdLogic());
         // result.setMaintainer((Agency) organisation);
         // result.setMaintainer(mapToEntity(source, ExternalItemBt.class));
 
@@ -349,7 +349,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
      * @SuppressWarnings("unchecked")
      * @Override
      * public <T extends Item> T itemDtoToItem(ItemDto itemDto,
-     * ServiceContext ctx, SdmxBaseService sdmxBaseService) {
+     * ServiceContext ctx, BaseService baseService) {
      * if (itemDto == null) {
      * return null;
      * }
@@ -395,7 +395,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
      * // ***************
      * // Set<@ItemDto> hierarchy
      * for (ItemDto hierarchyItemDto : itemDto.getHierarchy()) {
-     * result.addHierarchy(itemDtoToItem(hierarchyItemDto, ctx, sdmxBaseService));
+     * result.addHierarchy(itemDtoToItem(hierarchyItemDto, ctx, baseService));
      * }
      * // Parent
      * return nameableToEntity(itemDto, result);
@@ -407,7 +407,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
      * @Override
      * public <T extends ItemScheme> T itemschemeDtoToItemScheme(
      * ItemSchemeDto itemSchemeDto, ServiceContext ctx,
-     * SdmxBaseService sdmxBaseService) throws MappingException, OrganisationNotFoundException {
+     * BaseService baseService) throws MappingException, OrganisationNotFoundException {
      * if (itemSchemeDto == null) {
      * return null;
      * }
@@ -455,16 +455,16 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
      * //***************
      * // ItemScheme: Set<@Item> items
      * for (ItemDto itemDto : itemSchemeDto.getItems()) {
-     * result.addItem(itemDtoToItem(itemDto, ctx, sdmxBaseService));
+     * result.addItem(itemDtoToItem(itemDto, ctx, baseService));
      * }
      * // Parent
-     * return maintainableArtefactToEntity(itemSchemeDto, result, ctx, sdmxBaseService);
+     * return maintainableArtefactToEntity(itemSchemeDto, result, ctx, baseService);
      * }
      */
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T extends Component> T componentDtoToComponent(ComponentDto componentDto, ServiceContext ctx, SdmxBaseService sdmxBaseService) throws MetamacException {
+    public <T extends Component> T componentDtoToComponent(ComponentDto componentDto, ServiceContext ctx, BaseService baseService) throws MetamacException {
         if (componentDto == null) {
             return null;
         }
@@ -527,7 +527,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
                 }
 
                 // Relate To
-                ((DataAttribute) result).setRelateTo(attributeRelationshipDtoToAttributeRelationship(((DataAttributeDto) componentDto).getRelateTo(), ctx, sdmxBaseService,
+                ((DataAttribute) result).setRelateTo(attributeRelationshipDtoToAttributeRelationship(((DataAttributeDto) componentDto).getRelateTo(), ctx, baseService,
                         (dataAttributeOlder != null) ? dataAttributeOlder.getRelateTo() : null));
                 Validate.notNull(((DataAttribute) result).getRelateTo(), "DataAttribute.relateTo must not be null"); // By Hibernate strategy inheritance, this is defined here and not in the
                                                                                                                      // relational
@@ -536,7 +536,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
                 // Role
                 if (componentDto.getId() != null) { // Exist
                     for (ExternalItemDto listExternalItemDto : ((DataAttributeDto) componentDto).getRole()) {
-                        ExternalItem externalItem = externalItemBtDtoToExternalItem(listExternalItemDto, ctx, sdmxBaseService);
+                        ExternalItem externalItem = externalItemBtDtoToExternalItem(listExternalItemDto, ctx, baseService);
                         boolean found = false;
                         for (ExternalItem extItemPersisted : dataAttributeOlder.getRole()) {
                             if (extItemPersisted.equals(externalItem)) {
@@ -552,7 +552,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
                     }
                 } else { // New
                     for (ExternalItemDto listExternalItemDto : ((DataAttributeDto) componentDto).getRole()) {
-                        ((DataAttribute) result).addRole(externalItemBtDtoToExternalItem(listExternalItemDto, ctx, sdmxBaseService));
+                        ((DataAttribute) result).addRole(externalItemBtDtoToExternalItem(listExternalItemDto, ctx, baseService));
                     }
                 }
 
@@ -565,7 +565,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
 
                 // LocalRepresentation
                 ValidationUtil.validateRepresentationForDataAttribute(ctx, componentDto.getLocalRepresentation());
-                representation = representationDtoToRepresentation(componentDto.getLocalRepresentation(), ctx, sdmxBaseService,
+                representation = representationDtoToRepresentation(componentDto.getLocalRepresentation(), ctx, baseService,
                         (dataAttributeOlder != null) ? dataAttributeOlder.getLocalRepresentation() : null);
             }
             // DimensionComponent ***************************************************
@@ -594,7 +594,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
                         // ROLE
                         if (componentDto.getId() != null) { // Exist
                             for (ExternalItemDto listExternalItemDto : ((DimensionComponentDto) componentDto).getRole()) {
-                                ExternalItem externalItem = externalItemBtDtoToExternalItem(listExternalItemDto, ctx, sdmxBaseService);
+                                ExternalItem externalItem = externalItemBtDtoToExternalItem(listExternalItemDto, ctx, baseService);
                                 boolean found = false;
                                 for (ExternalItem extItemPersisted : dimensionOlder.getRole()) {
                                     if (extItemPersisted.equals(externalItem)) {
@@ -610,13 +610,13 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
                             }
                         } else { // New
                             for (ExternalItemDto listExternalItemDto : ((DimensionComponentDto) componentDto).getRole()) {
-                                ((Dimension) result).addRole(externalItemBtDtoToExternalItem(listExternalItemDto, ctx, sdmxBaseService));
+                                ((Dimension) result).addRole(externalItemBtDtoToExternalItem(listExternalItemDto, ctx, baseService));
                             }
                         }
 
                         // LocalRepresentation
                         ValidationUtil.validateRepresentationForDimension(ctx, componentDto.getLocalRepresentation());
-                        representation = representationDtoToRepresentation(componentDto.getLocalRepresentation(), ctx, sdmxBaseService,
+                        representation = representationDtoToRepresentation(componentDto.getLocalRepresentation(), ctx, baseService,
                                 (dimensionOlder != null) ? dimensionOlder.getLocalRepresentation() : null);
                         break;
                     case MEASUREDIMENSION:
@@ -629,7 +629,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
                         // ROLE
                         if (componentDto.getId() != null) { // Exist
                             for (ExternalItemDto listExternalItemDto : ((DimensionComponentDto) componentDto).getRole()) {
-                                ExternalItem externalItem = externalItemBtDtoToExternalItem(listExternalItemDto, ctx, sdmxBaseService);
+                                ExternalItem externalItem = externalItemBtDtoToExternalItem(listExternalItemDto, ctx, baseService);
                                 boolean found = false;
                                 for (ExternalItem extItemPersisted : measureDimensionOlder.getRole()) {
                                     if (extItemPersisted.equals(externalItem)) {
@@ -645,12 +645,12 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
                             }
                         } else { // New
                             for (ExternalItemDto listExternalItemDto : ((DimensionComponentDto) componentDto).getRole()) {
-                                ((MeasureDimension) result).addRole(externalItemBtDtoToExternalItem(listExternalItemDto, ctx, sdmxBaseService));
+                                ((MeasureDimension) result).addRole(externalItemBtDtoToExternalItem(listExternalItemDto, ctx, baseService));
                             }
                         }
                         // LocalRepresentation
                         ValidationUtil.validateRepresentationForMeasureDimension(ctx, componentDto.getLocalRepresentation());
-                        representation = representationDtoToRepresentation(componentDto.getLocalRepresentation(), ctx, sdmxBaseService,
+                        representation = representationDtoToRepresentation(componentDto.getLocalRepresentation(), ctx, baseService,
                                 (measureDimensionOlder != null) ? measureDimensionOlder.getLocalRepresentation() : null);
                         break;
                     case TIMEDIMENSION:
@@ -667,7 +667,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
                         }
                         // LocalRepresentation
                         ValidationUtil.validateRepresentationForTimeDimension(ctx, componentDto.getLocalRepresentation());
-                        representation = representationDtoToRepresentation(componentDto.getLocalRepresentation(), ctx, sdmxBaseService,
+                        representation = representationDtoToRepresentation(componentDto.getLocalRepresentation(), ctx, baseService,
                                 (timeDimensionOlder != null) ? timeDimensionOlder.getLocalRepresentation() : null);
                         break;
                     default:
@@ -692,7 +692,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
 
                 // LocalRepresentation
                 ValidationUtil.validateRepresentationForPrimaryMeasure(ctx, componentDto.getLocalRepresentation());
-                representation = representationDtoToRepresentation(componentDto.getLocalRepresentation(), ctx, sdmxBaseService,
+                representation = representationDtoToRepresentation(componentDto.getLocalRepresentation(), ctx, baseService,
                         (primaryMeasureOlder != null) ? primaryMeasureOlder.getLocalRepresentation() : null);
             } else {
                 // The TargetObject may be enumerated and, if so, can use any ItemScheme
@@ -710,7 +710,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
              ***********************/
 
             // ConceptIdentity
-            // result.setConceptIdentity((Concept) itemDtoToItem(componentDto.getConceptIdentity(), ctx, sdmxBaseService));
+            // result.setConceptIdentity((Concept) itemDtoToItem(componentDto.getConceptIdentity(), ctx, baseService));
             // result.setCptIdRef(mapToEntity(componentDto.getCptIdRef(), ExternalItemBt.class));
 
             // LocalRepresentation
@@ -727,7 +727,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T extends ComponentList> T componentListDtoToComponentList(ComponentListDto componentListDto, ServiceContext ctx, SdmxBaseService sdmxBaseService) throws MetamacException {
+    public <T extends ComponentList> T componentListDtoToComponentList(ComponentListDto componentListDto, ServiceContext ctx, BaseService baseService) throws MetamacException {
         if (componentListDto == null) {
             return null;
         }
@@ -776,13 +776,13 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
          ****************/
         // Components
         for (ComponentDto componentDto : componentListDto.getComponents()) {
-            result.addComponent(componentDtoToComponent(componentDto, ctx, sdmxBaseService));
+            result.addComponent(componentDtoToComponent(componentDto, ctx, baseService));
         }
 
         return annotableToEntity(ctx, componentListDto, result);
     }
 
-    private AttributeRelationship attributeRelationshipDtoToAttributeRelationship(RelationshipDto relationshipDto, ServiceContext ctx, SdmxBaseService sdmxBaseService,
+    private AttributeRelationship attributeRelationshipDtoToAttributeRelationship(RelationshipDto relationshipDto, ServiceContext ctx, BaseService baseService,
             AttributeRelationship attributeRelationshipOlder) throws MetamacException {
         if (relationshipDto == null) {
             // Delete old entity
@@ -819,7 +819,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
                 // DimensionRelationship: GroupKey
                 for (DescriptorDto descriptorDto : relationshipDto.getGroupKeyForDimensionRelationship()) {
                     if (descriptorDto.getTypeComponentList().equals(TypeComponentList.GROUP_DIMENSION_DESCRIPTOR)) {
-                        ((DimensionRelationship) attributeRelationship).addGroupKey((GroupDimensionDescriptor) componentListDtoToComponentList(descriptorDto, ctx, sdmxBaseService));
+                        ((DimensionRelationship) attributeRelationship).addGroupKey((GroupDimensionDescriptor) componentListDtoToComponentList(descriptorDto, ctx, baseService));
                     } else {
                         MetamacException metamacException = new MetamacException(MetamacCoreExceptionType.PARAMETER_INCORRECT, "TypeComponentList");
                         metamacException.setLoggedLevel(ExceptionLevelEnum.DEBUG);
@@ -834,7 +834,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
                     throw metamacException;
                 }
                 for (DimensionComponentDto dimensionComponentDto : relationshipDto.getDimensionForDimensionRelationship()) {
-                    ((DimensionRelationship) attributeRelationship).addDimension((DimensionComponent) componentDtoToComponent(dimensionComponentDto, ctx, sdmxBaseService));
+                    ((DimensionRelationship) attributeRelationship).addDimension((DimensionComponent) componentDtoToComponent(dimensionComponentDto, ctx, baseService));
                 }
                 break;
             case GROUP_RELATIONSHIP:
@@ -851,7 +851,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
 
                 // Group
                 ((GroupRelationship) attributeRelationship).setGroupKey((GroupDimensionDescriptor) componentListDtoToComponentList(relationshipDto.getGroupKeyForGroupRelationship(), ctx,
-                        sdmxBaseService));
+                        baseService));
 
                 Validate.notNull(((GroupRelationship) attributeRelationship).getGroupKey(), "GroupRelationship.groupKey must not be null"); // By Hibernate strategy inheritance, this is defined here
                                                                                                                                             // and not in the relational model
@@ -888,7 +888,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
     }
 
     @Override
-    public DataStructureDefinition dataStructureDefinitionDtoToDataStructureDefinition(DataStructureDefinitionDto dataStructureDefinitionDto, ServiceContext ctx, SdmxBaseService sdmxBaseService)
+    public DataStructureDefinition dataStructureDefinitionDtoToDataStructureDefinition(DataStructureDefinitionDto dataStructureDefinitionDto, ServiceContext ctx, BaseService baseService)
             throws MetamacException {
         if (dataStructureDefinitionDto == null) {
             return null;
@@ -920,11 +920,11 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         }
 
         // Parent
-        return maintainableArtefactToEntity(ctx, dataStructureDefinitionDto, result, dataStructureDefinition, sdmxBaseService);
+        return maintainableArtefactToEntity(ctx, dataStructureDefinitionDto, result, dataStructureDefinition, baseService);
     }
 
     @Override
-    public Representation representationDtoToRepresentation(RepresentationDto representationDto, ServiceContext ctx, SdmxBaseService sdmxBaseService, Representation representationOlder)
+    public Representation representationDtoToRepresentation(RepresentationDto representationDto, ServiceContext ctx, BaseService baseService, Representation representationOlder)
             throws MetamacException {
         if (representationDto == null) {
             // Delete old entity
@@ -972,7 +972,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
                 }
 
                 // Facet
-                ((TextFormatRepresentation) representation).setNonEnumerated(facetDtoToFacet(representationDto.getNonEnumerated(), ctx, sdmxBaseService));
+                ((TextFormatRepresentation) representation).setNonEnumerated(facetDtoToFacet(representationDto.getNonEnumerated(), ctx, baseService));
 
                 break;
             default:
@@ -983,7 +983,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
     }
 
     @Override
-    public Facet facetDtoToFacet(FacetDto facetDto, ServiceContext ctx, SdmxBaseService sdmxBaseService) throws MetamacException {
+    public Facet facetDtoToFacet(FacetDto facetDto, ServiceContext ctx, BaseService baseService) throws MetamacException {
         if (facetDto == null) {
             return null;
         }
@@ -994,7 +994,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
     }
 
     @Override
-    public ExternalItem externalItemBtDtoToExternalItem(ExternalItemDto externalItemBtDto, ServiceContext ctx, SdmxBaseService sdmxBaseService) throws MetamacException {
+    public ExternalItem externalItemBtDtoToExternalItem(ExternalItemDto externalItemBtDto, ServiceContext ctx, BaseService baseService) throws MetamacException {
         if (externalItemBtDto == null) {
             return null;
         }

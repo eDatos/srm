@@ -39,7 +39,7 @@ import org.siemac.metamac.srm.core.base.domain.MaintainableArtefact;
 import org.siemac.metamac.srm.core.base.domain.NameableArtefact;
 import org.siemac.metamac.srm.core.base.domain.Representation;
 import org.siemac.metamac.srm.core.base.domain.TextFormatRepresentation;
-import org.siemac.metamac.srm.core.base.serviceapi.SdmxBaseService;
+import org.siemac.metamac.srm.core.base.serviceapi.BaseService;
 import org.siemac.metamac.srm.core.structure.domain.AttributeDescriptor;
 import org.siemac.metamac.srm.core.structure.domain.AttributeRelationship;
 import org.siemac.metamac.srm.core.structure.domain.DataAttribute;
@@ -200,7 +200,7 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
      * @SuppressWarnings("unchecked")
      * @Override
      * public <T extends ItemDto> T itemToItemDto(Item item, ServiceContext ctx,
-     * SdmxBaseService sdmxBaseService) {
+     * BaseService sdmxBaseService) {
      * if (item == null) {
      * return null;
      * }
@@ -266,7 +266,7 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
      * @SuppressWarnings("unchecked")
      * @Override
      * public <T extends ItemSchemeDto> T itemschemeToItemSchemeDto(ItemScheme itemScheme, ServiceContext ctx,
-     * SdmxBaseService sdmxBaseService) {
+     * BaseService sdmxBaseService) {
      * if (itemScheme == null) {
      * return null;
      * }
@@ -328,7 +328,7 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T extends ComponentDto> T componentToComponentDto(ServiceContext ctx, TypeDozerCopyMode typeDozerCopyMode, Component component, SdmxBaseService sdmxBaseService) {
+    public <T extends ComponentDto> T componentToComponentDto(ServiceContext ctx, TypeDozerCopyMode typeDozerCopyMode, Component component, BaseService sdmxBaseService) {
         if (component == null) {
             return null;
         }
@@ -428,7 +428,7 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T extends ComponentListDto> T componentListToComponentListDto(ServiceContext ctx, TypeDozerCopyMode typeDozerCopyMode, ComponentList componentList, SdmxBaseService sdmxBaseService) {
+    public <T extends ComponentListDto> T componentListToComponentListDto(ServiceContext ctx, TypeDozerCopyMode typeDozerCopyMode, ComponentList componentList, BaseService sdmxBaseService) {
         if (componentList == null) {
             return null;
         }
@@ -478,7 +478,7 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
 
     @Override
     public RelationshipDto attributeRelationshipToattributeRelationshipDto(ServiceContext ctx, TypeDozerCopyMode typeDozerCopyMode, AttributeRelationship attributeRelationship,
-            SdmxBaseService sdmxBaseService) {
+            BaseService sdmxBaseService) {
         if (attributeRelationship == null) {
             return null;
         }
@@ -532,7 +532,7 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
 
     @Override
     public DataStructureDefinitionDto dataStructureDefinitionToDataStructureDefinitionDto(ServiceContext ctx, TypeDozerCopyMode typeDozerCopyMode, DataStructureDefinition dataStructureDefinition,
-            SdmxBaseService sdmxBaseService) {
+            BaseService sdmxBaseService) {
         if (dataStructureDefinition == null) {
             return null;
         }
@@ -547,7 +547,7 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
     }
     
     @Override
-    public DataStructureDefinitionExtendDto dataStructureDefinitionToDataStructureDefinitionExtendDto(ServiceContext ctx, TypeDozerCopyMode typeDozerCopyMode, DataStructureDefinition dataStructureDefinition, SdmxBaseService sdmxBaseService) {
+    public DataStructureDefinitionExtendDto dataStructureDefinitionToDataStructureDefinitionExtendDto(ServiceContext ctx, TypeDozerCopyMode typeDozerCopyMode, DataStructureDefinition dataStructureDefinition, BaseService sdmxBaseService) {
         if (dataStructureDefinition == null) {
             return null;
         }
@@ -567,7 +567,7 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
     }
 
     @Override
-    public RepresentationDto representationToRepresentationDto(ServiceContext ctx, TypeDozerCopyMode typeDozerCopyMode, Representation representation, SdmxBaseService sdmxBaseService) {
+    public RepresentationDto representationToRepresentationDto(ServiceContext ctx, TypeDozerCopyMode typeDozerCopyMode, Representation representation, BaseService sdmxBaseService) {
         if (representation == null) {
             return null;
         }
@@ -600,7 +600,7 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
     }
 
     @Override
-    public FacetDto facetToFacetDto(ServiceContext ctx, TypeDozerCopyMode typeDozerCopyMode, Facet facet, SdmxBaseService sdmxBaseService) {
+    public FacetDto facetToFacetDto(ServiceContext ctx, TypeDozerCopyMode typeDozerCopyMode, Facet facet, BaseService sdmxBaseService) {
         if (facet == null) {
             return null;
         }
@@ -611,7 +611,7 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
     }
 
     @Override
-    public ExternalItemDto externalItemToExternalItemDto(ServiceContext ctx, TypeDozerCopyMode typeDozerCopyMode, ExternalItem externalItem, SdmxBaseService sdmxBaseService) {
+    public ExternalItemDto externalItemToExternalItemDto(ServiceContext ctx, TypeDozerCopyMode typeDozerCopyMode, ExternalItem externalItem, BaseService sdmxBaseService) {
         if (externalItem == null) {
             return null;
         }

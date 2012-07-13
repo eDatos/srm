@@ -104,20 +104,20 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     public DataStructureDefinitionDto saveDsd(ServiceContext ctx, DataStructureDefinitionDto dataStructureDefinitionDto) throws MetamacException {
 
         // DTOs to Entities
-        DataStructureDefinition dataStructureDefinition = getDto2DoMapper().dataStructureDefinitionDtoToDataStructureDefinition(dataStructureDefinitionDto, ctx, getSdmxBaseService());
+        DataStructureDefinition dataStructureDefinition = getDto2DoMapper().dataStructureDefinitionDtoToDataStructureDefinition(dataStructureDefinitionDto, ctx, getBaseService());
 
         // Save
         dataStructureDefinition = getDataStructureDefinitionService().saveDsd(ctx, dataStructureDefinition);
 
         // Entities to DTOs
-        return getDo2DtoMapper().dataStructureDefinitionToDataStructureDefinitionDto(ctx, TypeDozerCopyMode.UPDATE, dataStructureDefinition, getSdmxBaseService());
+        return getDo2DtoMapper().dataStructureDefinitionToDataStructureDefinitionDto(ctx, TypeDozerCopyMode.UPDATE, dataStructureDefinition, getBaseService());
     }
 
     @Override
     public void deleteDsd(ServiceContext ctx, DataStructureDefinitionDto dataStructureDefinitionDto) throws MetamacException {
 
         // DTOs to Entitys
-        DataStructureDefinition dataStructureDefinition = getDto2DoMapper().dataStructureDefinitionDtoToDataStructureDefinition(dataStructureDefinitionDto, ctx, getSdmxBaseService());
+        DataStructureDefinition dataStructureDefinition = getDto2DoMapper().dataStructureDefinitionDtoToDataStructureDefinition(dataStructureDefinitionDto, ctx, getBaseService());
 
         // Remove DSD
         getDataStructureDefinitionService().deleteDsd(ctx, dataStructureDefinition);
@@ -144,7 +144,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         // To DTO
         List<DataStructureDefinitionDto> dataStructureDefinitionDtoList = new ArrayList<DataStructureDefinitionDto>();
         for (DataStructureDefinition dsd : dataStructureDefinitionPagedList.getValues()) {
-            dataStructureDefinitionDtoList.add(getDo2DtoMapper().dataStructureDefinitionToDataStructureDefinitionDto(ctx, TypeDozerCopyMode.UPDATE, dsd, getSdmxBaseService()));
+            dataStructureDefinitionDtoList.add(getDo2DtoMapper().dataStructureDefinitionToDataStructureDefinitionDto(ctx, TypeDozerCopyMode.UPDATE, dsd, getBaseService()));
         }
 
         // Return preparation
@@ -164,7 +164,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         // To DTO
         List<DataStructureDefinitionDto> dataStructureDefinitionDtoList = new ArrayList<DataStructureDefinitionDto>();
         for (DataStructureDefinition dsd : dataStructureDefinitionList) {
-            dataStructureDefinitionDtoList.add(getDo2DtoMapper().dataStructureDefinitionToDataStructureDefinitionDto(ctx, TypeDozerCopyMode.UPDATE, dsd, getSdmxBaseService()));
+            dataStructureDefinitionDtoList.add(getDo2DtoMapper().dataStructureDefinitionToDataStructureDefinitionDto(ctx, TypeDozerCopyMode.UPDATE, dsd, getBaseService()));
         }
 
         return dataStructureDefinitionDtoList;
@@ -177,7 +177,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         DataStructureDefinition dataStructureDefinition = loadDsdById(ctx, idDsd);
 
         // TO DTO
-        return getDo2DtoMapper().dataStructureDefinitionToDataStructureDefinitionExtendDto(ctx, typeDozerCopyMode, dataStructureDefinition, getSdmxBaseService());
+        return getDo2DtoMapper().dataStructureDefinitionToDataStructureDefinitionExtendDto(ctx, typeDozerCopyMode, dataStructureDefinition, getBaseService());
     }
 
     @Override
@@ -187,7 +187,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         DataStructureDefinition dataStructureDefinition = loadDsdById(ctx, idDsd);
 
         // TO DTO
-        return getDo2DtoMapper().dataStructureDefinitionToDataStructureDefinitionDto(ctx, typeDozerCopyMode, dataStructureDefinition, getSdmxBaseService());
+        return getDo2DtoMapper().dataStructureDefinitionToDataStructureDefinitionDto(ctx, typeDozerCopyMode, dataStructureDefinition, getBaseService());
     }
 
     @Override
@@ -324,13 +324,13 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         List<DescriptorDto> descriptorDtos = new ArrayList<DescriptorDto>();
         for (ComponentList componentList : dataStructureDefinition.getGrouping()) {
             if ((componentList instanceof AttributeDescriptor) && typeComponentList.equals(TypeComponentList.ATTRIBUTE_DESCRIPTOR)) {
-                descriptorDtos.add((DescriptorDto) getDo2DtoMapper().componentListToComponentListDto(ctx, TypeDozerCopyMode.UPDATE, componentList, getSdmxBaseService()));
+                descriptorDtos.add((DescriptorDto) getDo2DtoMapper().componentListToComponentListDto(ctx, TypeDozerCopyMode.UPDATE, componentList, getBaseService()));
             } else if ((componentList instanceof DimensionDescriptor) && typeComponentList.equals(TypeComponentList.DIMENSION_DESCRIPTOR)) {
-                descriptorDtos.add((DescriptorDto) getDo2DtoMapper().componentListToComponentListDto(ctx, TypeDozerCopyMode.UPDATE, componentList, getSdmxBaseService()));
+                descriptorDtos.add((DescriptorDto) getDo2DtoMapper().componentListToComponentListDto(ctx, TypeDozerCopyMode.UPDATE, componentList, getBaseService()));
             } else if ((componentList instanceof GroupDimensionDescriptor) && typeComponentList.equals(TypeComponentList.GROUP_DIMENSION_DESCRIPTOR)) {
-                descriptorDtos.add((DescriptorDto) getDo2DtoMapper().componentListToComponentListDto(ctx, TypeDozerCopyMode.UPDATE, componentList, getSdmxBaseService()));
+                descriptorDtos.add((DescriptorDto) getDo2DtoMapper().componentListToComponentListDto(ctx, TypeDozerCopyMode.UPDATE, componentList, getBaseService()));
             } else if ((componentList instanceof MeasureDescriptor) && typeComponentList.equals(TypeComponentList.MEASURE_DESCRIPTOR)) {
-                descriptorDtos.add((DescriptorDto) getDo2DtoMapper().componentListToComponentListDto(ctx, TypeDozerCopyMode.UPDATE, componentList, getSdmxBaseService()));
+                descriptorDtos.add((DescriptorDto) getDo2DtoMapper().componentListToComponentListDto(ctx, TypeDozerCopyMode.UPDATE, componentList, getBaseService()));
             }
         }
 
@@ -346,7 +346,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     public DescriptorDto saveDescriptorForDsd(ServiceContext ctx, Long idDsd, DescriptorDto descriptorDto) throws MetamacException {
 
         // DTOs to Entities
-        ComponentList componentListDescriptor = getDto2DoMapper().componentListDtoToComponentList(descriptorDto, ctx, getSdmxBaseService());
+        ComponentList componentListDescriptor = getDto2DoMapper().componentListDtoToComponentList(descriptorDto, ctx, getBaseService());
 
         // Load DSD
         DataStructureDefinition dataStructureDefinition = loadDsdById(ctx, idDsd);
@@ -355,13 +355,13 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         componentListDescriptor = getDataStructureDefinitionService().saveDescriptorForDsd(ctx, dataStructureDefinition, componentListDescriptor);
 
         // Entities to DTOs
-        return getDo2DtoMapper().componentListToComponentListDto(ctx, TypeDozerCopyMode.UPDATE, componentListDescriptor, getSdmxBaseService());
+        return getDo2DtoMapper().componentListToComponentListDto(ctx, TypeDozerCopyMode.UPDATE, componentListDescriptor, getBaseService());
     }
 
     @Override
     public void deleteDescriptorForDsd(ServiceContext ctx, Long idDsd, DescriptorDto descriptorDto) throws MetamacException {
         // DTOs to Entities
-        ComponentList componentListDescriptor = getDto2DoMapper().componentListDtoToComponentList(descriptorDto, ctx, getSdmxBaseService());
+        ComponentList componentListDescriptor = getDto2DoMapper().componentListDtoToComponentList(descriptorDto, ctx, getBaseService());
 
         // Load DSD
         DataStructureDefinition dataStructureDefinition = loadDsdById(ctx, idDsd);
@@ -378,7 +378,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     public ComponentDto saveComponentForDsd(ServiceContext ctx, Long idDsd, ComponentDto componentDto, TypeComponentList typeComponentList) throws MetamacException {
 
         // Dto to entity
-        Component component = getDto2DoMapper().componentDtoToComponent(componentDto, ctx, getSdmxBaseService());
+        Component component = getDto2DoMapper().componentDtoToComponent(componentDto, ctx, getBaseService());
 
         // Load DSD
         DataStructureDefinition dataStructureDefinition = loadDsdById(ctx, idDsd);
@@ -387,14 +387,14 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         component = getDataStructureDefinitionService().saveComponentForDsd(ctx, dataStructureDefinition, component, typeComponentList);
 
         // Entitys to DTOs
-        return getDo2DtoMapper().componentToComponentDto(ctx, TypeDozerCopyMode.UPDATE, component, getSdmxBaseService());
+        return getDo2DtoMapper().componentToComponentDto(ctx, TypeDozerCopyMode.UPDATE, component, getBaseService());
     }
 
     @Override
     public void deleteComponentForDsd(ServiceContext ctx, Long idDsd, ComponentDto componentDto, TypeComponentList typeComponentList) throws MetamacException {
 
         // Dto to entity
-        Component component = getDto2DoMapper().componentDtoToComponent(componentDto, ctx, getSdmxBaseService());
+        Component component = getDto2DoMapper().componentDtoToComponent(componentDto, ctx, getBaseService());
 
         // Load DSD
         DataStructureDefinition dataStructureDefinition = loadDsdById(ctx, idDsd);
@@ -622,7 +622,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
             descriptorDtos = new ArrayList<DescriptorDto>();
             for (ComponentList componentList : dataStructureDefinition.getGrouping()) {
-                descriptorDtos.add((DescriptorDto) getDo2DtoMapper().componentListToComponentListDto(ctx, typeDozerCopyMode, componentList, getSdmxBaseService()));
+                descriptorDtos.add((DescriptorDto) getDo2DtoMapper().componentListToComponentListDto(ctx, typeDozerCopyMode, componentList, getBaseService()));
             }
         } catch (DataStructureDefinitionNotFoundException e) {
             // TODO poner la exp adecuada y quitar el unknow

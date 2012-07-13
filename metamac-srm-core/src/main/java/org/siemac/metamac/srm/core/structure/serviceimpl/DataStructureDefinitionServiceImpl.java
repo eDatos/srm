@@ -64,25 +64,25 @@ public class DataStructureDefinitionServiceImpl extends DataStructureDefinitionS
 
         // 1 - Remove MeasureDescriptor
         if (measureDescriptor != null) {
-            getSdmxBaseService().deleteComponentList(ctx, measureDescriptor);
+            getBaseService().deleteComponentList(ctx, measureDescriptor);
         }
 
         // 2 - Remove AttributeDescriptor
         if (attributeDescriptor != null) {
-            getSdmxBaseService().deleteComponentList(ctx, attributeDescriptor);
+            getBaseService().deleteComponentList(ctx, attributeDescriptor);
         }
 
         // 3 - Remove GroupDimensionDescriptor
         for (ComponentList componentList : groupDimensionDescriptor) {
             // First remove association with components for evict cascade
             componentList.removeAllComponents();
-            // getSdmxBaseService().saveComponentList(ctx, componentList);
-            getSdmxBaseService().deleteComponentList(ctx, componentList);
+            // getBaseService().saveComponentList(ctx, componentList);
+            getBaseService().deleteComponentList(ctx, componentList);
         }
 
         // 4 - Remove DimensionDescriptor
         if (dimensionDescriptor != null) {
-            getSdmxBaseService().deleteComponentList(ctx, dimensionDescriptor);
+            getBaseService().deleteComponentList(ctx, dimensionDescriptor);
         }
 
         // Remove DSD
@@ -156,7 +156,7 @@ public class DataStructureDefinitionServiceImpl extends DataStructureDefinitionS
         }
 
         // Save Descriptors
-        ComponentList componentListDescriptor = getSdmxBaseService().saveComponentList(ctx, componentList);
+        ComponentList componentListDescriptor = getBaseService().saveComponentList(ctx, componentList);
 
         // Association with DSD
         dataStructureDefinition.getGrouping().add(componentListDescriptor);
@@ -189,12 +189,12 @@ public class DataStructureDefinitionServiceImpl extends DataStructureDefinitionS
         if (componentList instanceof GroupDimensionDescriptor) {
             componentList.removeAllComponents(); // Don't remove Components (cascade evict)
         }
-        getSdmxBaseService().deleteComponentList(ctx, componentList);
+        getBaseService().deleteComponentList(ctx, componentList);
 
         // Delete Components
         if ((componentList instanceof AttributeDescriptor) || (componentList instanceof DimensionDescriptor) || (componentList instanceof MeasureDescriptor)) {
             for (Component component : componentList.getComponents()) {
-                getSdmxBaseService().deleteComponent(ctx, component);
+                getBaseService().deleteComponent(ctx, component);
             }
         } else if (componentList instanceof GroupDimensionDescriptor) {
             ; // Nothing to remove
@@ -267,7 +267,7 @@ public class DataStructureDefinitionServiceImpl extends DataStructureDefinitionS
 
         // Save component
         boolean isNew = (component.getId() == null);
-        component = getSdmxBaseService().saveComponent(ctx, component);
+        component = getBaseService().saveComponent(ctx, component);
 
         // New descriptor is needed
         ComponentList newComponentList = null;
@@ -302,7 +302,7 @@ public class DataStructureDefinitionServiceImpl extends DataStructureDefinitionS
                 // Add Component
                 componentList.addComponent(component);
                 // Save Descriptors (association with component)
-                componentList = getSdmxBaseService().saveComponentList(ctx, componentList);
+                componentList = getBaseService().saveComponentList(ctx, componentList);
             }
         }
 
@@ -363,9 +363,9 @@ public class DataStructureDefinitionServiceImpl extends DataStructureDefinitionS
             // Delete from descriptor
             componentListFound.removeComponent(componentFound);
             // Save Dsd (descriptor) changes.
-            // getSdmxBaseService().saveComponentList(ctx, componentListFound);
+            // getBaseService().saveComponentList(ctx, componentListFound);
             // Delete Component
-            getSdmxBaseService().deleteComponent(ctx, componentFound);
+            getBaseService().deleteComponent(ctx, componentFound);
         } else {
             // Not Found, throw exception
             MetamacException metamacException = new MetamacException(MetamacCoreExceptionType.MTM_CORE_SEARCH_NOT_FOUND, component.getIdLogic());
