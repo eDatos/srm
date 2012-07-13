@@ -98,7 +98,7 @@ public class SrmDtoMocks {
     /**
      * @return
      */
-    public static DataStructureDefinitionDto createDdsDTOwhitDescription() {
+    public static DataStructureDefinitionDto createDdsDTOwhithDescription() {
         DataStructureDefinitionDto dataStructureDefinitionDto = createDdsDTO();
 
         InternationalStringDto desc = new InternationalStringDto();

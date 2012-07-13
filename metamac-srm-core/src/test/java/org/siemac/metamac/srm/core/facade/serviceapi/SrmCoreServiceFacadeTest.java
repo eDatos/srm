@@ -109,7 +109,7 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServ
      **************************************************************************/
     @Test
     public void testReSaveDsd() throws Exception {
-        DataStructureDefinitionDto dataStructureDefinitionDto = srmCoreServiceFacade.saveDsd(getServiceContext(), SrmDtoMocks.createDdsDTOwhitDescription());
+        DataStructureDefinitionDto dataStructureDefinitionDto = srmCoreServiceFacade.saveDsd(getServiceContext(), SrmDtoMocks.createDdsDTOwhithDescription());
 
         InternationalStringDto name = new InternationalStringDto();
 
@@ -135,7 +135,7 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServ
     @Test
     public void testDeleteOneLocalisedSaveDsd() throws Exception {
 
-        DataStructureDefinitionDto dataStructureDefinitionDto = srmCoreServiceFacade.saveDsd(getServiceContext(), SrmDtoMocks.createDdsDTOwhitDescription());
+        DataStructureDefinitionDto dataStructureDefinitionDto = srmCoreServiceFacade.saveDsd(getServiceContext(), SrmDtoMocks.createDdsDTOwhithDescription());
 
         InternationalStringDto name = dataStructureDefinitionDto.getName();
 
