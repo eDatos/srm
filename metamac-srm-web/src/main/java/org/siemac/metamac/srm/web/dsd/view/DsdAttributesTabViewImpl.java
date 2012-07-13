@@ -503,10 +503,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
     @Override
     public void setConceptSchemes(List<ExternalItemDto> conceptSchemes) {
-        LinkedHashMap<String, String> map = new LinkedHashMap<String, String>();
-        for (ExternalItemDto scheme : conceptSchemes) {
-            map.put(scheme.getCode(), scheme.getCode());
-        }
+        LinkedHashMap<String, String> map = ExternalItemUtils.getExternalItemsHashMap(conceptSchemes);
         conceptItem.setSchemesValueMap(map);
         roleItem.setConceptSchemesValueMap(map);
     }
@@ -514,11 +511,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
     @Override
     public void setConcepts(List<ExternalItemDto> concepts) {
         this.concepts = concepts;
-        LinkedHashMap<String, String> conceptsMap = new LinkedHashMap<String, String>();
-        for (ExternalItemDto concept : concepts) {
-            conceptsMap.put(concept.getCode(), concept.getCode());
-        }
-        conceptItem.setItemsValueMap(conceptsMap);
+        conceptItem.setItemsValueMap(ExternalItemUtils.getExternalItemsHashMap(concepts));
     }
 
     @Override
@@ -529,11 +522,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
     @Override
     public void setCodeLists(List<ExternalItemDto> codeLists) {
         this.codeLists = codeLists;
-        LinkedHashMap<String, String> codeListsMap = new LinkedHashMap<String, String>();
-        for (ExternalItemDto codeList : codeLists) {
-            codeListsMap.put(codeList.getCode(), codeList.getCode());
-        }
-        codeListItem.setValueMap(codeListsMap);
+        codeListItem.setValueMap(ExternalItemUtils.getExternalItemsHashMap(codeLists));
 
     }
 
