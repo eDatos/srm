@@ -6,6 +6,7 @@ public class ServiceExceptionParameters {
 
     // MANTAINER
     public static final String MANTAINER                  = "mantainer";
+    public static final String MANTAINER_CODE              = "mantainer.code";
     public static final String MANTAINER_URN              = "mantainer.urn";
     public static final String MANTAINER_TYPE             = "mantainer.type";
     public static final String MANTAINER_URI              = "mantainer.uri";
