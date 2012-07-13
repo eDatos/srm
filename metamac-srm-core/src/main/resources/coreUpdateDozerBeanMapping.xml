@@ -47,8 +47,8 @@
 	</mapping>
 	
 	<mapping>
-		<class-a>org.siemac.metamac.core.common.dto.ExternalItemBtDto</class-a>
-  		<class-b>org.siemac.metamac.core.common.bt.domain.ExternalItemBt</class-b>
+		<class-a>org.siemac.metamac.core.common.dto.ExternalItemDto</class-a>
+  		<class-b>org.siemac.metamac.core.common.ent.domain.ExternalItem</class-b>
 		<field>
 			<a>type</a>
 			<b is-accessible="true">type</b>
