@@ -66,7 +66,7 @@ Application Base {
 			"The URL of an SDMXcompliant web service from which the external object can be retrieved."
 			String serviceURL nullable;
 			"Association to the Maintenance Agency responsible for maintaining the artefact."
-			- @ExternalItem maintainer nullable cascade="all";
+			- @ExternalItem maintainer nullable cascade="all" databaseColumn="MAINTAINER_FK";
 		}
 		
 		"Additional descriptive information attached to an object."
@@ -352,7 +352,7 @@ Application Base {
 			databaseTable = "TB_COMPONENTS"
 						
 			"Association to a Concept in a Concept Scheme that identifies and defines the semantic of the Component."
-			- @ExternalItem cptIdRef nullable cascade="all";
+			- @ExternalItem cptIdRef nullable cascade="all"  databaseColumn="CONCEPT_IDENTITY_FK";
 			//- @Concept conceptIdentity nullable cascade="refresh"
 			"Association to the Representation of the Component if this is different from the coreRepresentation of the Concept which the Component uses (ConceptUsage)"
 			- @Representation localRepresentation nullable databaseColumn="REPRESENTATION_FK";
@@ -396,7 +396,7 @@ Application Base {
        	    "Association to an enumerated list that contains the allowable content for the Component when reported in a data or metadata set. The type of enumerated list that is
 			allowed for any concrete Component is shown in the constraints on the association. (e.g. IdentifierComponent can have any of the sub classes of ItemScheme, whereas Measure
 			Dimension must have a Concept Scheme."
-			- @ExternalItem enumerated nullable cascade="all";
+			- @ExternalItem enumerated nullable cascade="all" databaseColumn="ENUMERATED_FK";
        }
 
 		"Defines the format for the content of the Component when reported in a data or metadata set.

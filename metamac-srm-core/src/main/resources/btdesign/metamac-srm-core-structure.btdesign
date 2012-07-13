@@ -18,6 +18,9 @@ Application Structure {
        		
        }
        
+       /***********************************************************************
+        *	 DATASTRUCTUREDEFINITIONSERVICE
+        ***********************************************************************/
        Service DataStructureDefinitionService {
        		> @DataStructureDefinitionRepository
        		> @SdmxBaseService
