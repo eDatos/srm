@@ -339,12 +339,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
         typeItem = new RequiredSelectItem("type-dim", MetamacSrmWeb.getConstants().dsdDimensionsType());
         typeItem.setType("comboBox");
-        LinkedHashMap<String, String> typeValueMap = new LinkedHashMap<String, String>();
-        for (TypeDimensionComponent t : TypeDimensionComponent.values()) {
-            String value = MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().typeDimensionComponent() + t.getName());
-            typeValueMap.put(t.toString(), value);
-        }
-        typeItem.setValueMap(typeValueMap);
+        typeItem.setValueMap(CommonUtils.getTypeDimensionComponentHashMap());
         typeItem.setRedrawOnChange(true);
         FormItemIcon infoIcon = new FormItemIcon();
         infoIcon.setHeight(14);
@@ -390,13 +385,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
         representationTypeItem = new CustomSelectItem("repr-dim", MetamacSrmWeb.getConstants().dsdRepresentation());
         representationTypeItem.setType("comboBox");
-        LinkedHashMap<String, String> valueMap = new LinkedHashMap<String, String>();
-        valueMap.put(new String(), new String());
-        for (TypeRepresentationEnum r : TypeRepresentationEnum.values()) {
-            String value = MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().typeRepresentationEnum() + r.getName());
-            valueMap.put(r.toString(), value);
-        }
-        representationTypeItem.setValueMap(valueMap);
+        representationTypeItem.setValueMap(CommonUtils.getTypeRepresentationEnumHashMap());
         representationTypeItem.setRedrawOnChange(true);
         // Show FacetForm if RepresentationTypeEnum = NON_NUMERATED
         representationTypeItem.addChangedHandler(new ChangedHandler() {
@@ -562,9 +551,9 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
             if (TypeRepresentationEnum.ENUMERATED.equals(representationType)) {
                 dimensionComponentDto.getLocalRepresentation().setTypeRepresentationEnum(TypeRepresentationEnum.ENUMERATED);
                 if (TypeDimensionComponent.MEASUREDIMENSION.equals(dimensionComponentDto.getTypeDimensionComponent())) {
-                    dimensionComponentDto.getLocalRepresentation().setEnumerated(ExternalItemUtils.getExternalItemDtoFromCodeId(conceptSchemes, conceptSchemeItem.getValueAsString()));
+                    dimensionComponentDto.getLocalRepresentation().setEnumerated(ExternalItemUtils.getExternalItemDtoFromUrn(conceptSchemes, conceptSchemeItem.getValueAsString()));
                 } else {
-                    dimensionComponentDto.getLocalRepresentation().setEnumerated(ExternalItemUtils.getExternalItemDtoFromCodeId(codeLists, codeListItem.getValueAsString()));
+                    dimensionComponentDto.getLocalRepresentation().setEnumerated(ExternalItemUtils.getExternalItemDtoFromUrn(codeLists, codeListItem.getValueAsString()));
                 }
                 dimensionComponentDto.getLocalRepresentation().setNonEnumerated(null);
                 // Facet

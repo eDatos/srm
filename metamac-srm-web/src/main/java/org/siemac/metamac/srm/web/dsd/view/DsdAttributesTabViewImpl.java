@@ -346,22 +346,12 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         // Assignment Status
 
         assignmentStatusItem = new RequiredSelectItem("status-attr", MetamacSrmWeb.getConstants().dsdAttributeAssignmentStatus());
-        LinkedHashMap<String, String> statusValueMap = new LinkedHashMap<String, String>();
-        for (UsageStatus u : UsageStatus.values()) {
-            String value = MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().usageStatus() + u.getName());
-            statusValueMap.put(u.toString(), value);
-        }
-        assignmentStatusItem.setValueMap(statusValueMap);
+        assignmentStatusItem.setValueMap(CommonUtils.getUsageStatusHashMap());
 
         // Relation
 
         relationType = new RequiredSelectItem("relate-type-attr", MetamacSrmWeb.getConstants().dsdAttributeRelatedWith());
-        LinkedHashMap<String, String> valueMapRelationType = new LinkedHashMap<String, String>();
-        for (TypeRelathionship t : TypeRelathionship.values()) {
-            String value = MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().typeRelationship() + t.getName());
-            valueMapRelationType.put(t.toString(), value);
-        }
-        relationType.setValueMap(valueMapRelationType);
+        relationType.setValueMap(CommonUtils.getTypeRelathionshipHashMap());
         relationType.setRedrawOnChange(true);
 
         // Relation: Group keys for dimension relationship
@@ -437,13 +427,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
         representationTypeItem = new CustomSelectItem("repr-dim", MetamacSrmWeb.getConstants().dsdRepresentation());
         representationTypeItem.setType("comboBox");
-        LinkedHashMap<String, String> valueMap = new LinkedHashMap<String, String>();
-        valueMap.put(new String(), new String());
-        for (TypeRepresentationEnum r : TypeRepresentationEnum.values()) {
-            String value = MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().typeRepresentationEnum() + r.getName());
-            valueMap.put(r.toString(), value);
-        }
-        representationTypeItem.setValueMap(valueMap);
+        representationTypeItem.setValueMap(CommonUtils.getTypeRepresentationEnumHashMap());
         representationTypeItem.setRedrawOnChange(true);
         // Show FacetForm if RepresentationTypeEnum = NON_NUMERATED
         representationTypeItem.addChangedHandler(new ChangedHandler() {
@@ -529,20 +513,13 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
     @Override
     public void setDimensions(List<DimensionComponentDto> dimensionComponentDtos) {
         this.dimensionComponentDtos = dimensionComponentDtos;
-        LinkedHashMap<String, String> dimensionsMap = new LinkedHashMap<String, String>();
-        for (DimensionComponentDto d : dimensionComponentDtos) {
-            dimensionsMap.put(d.getId().toString(), d.getIdLogic());
-        }
-        dimensionsForDimensionRelationshipItem.setValueMap(dimensionsMap);
+        dimensionsForDimensionRelationshipItem.setValueMap(CommonUtils.getDimensionComponentDtoHashMap(dimensionComponentDtos));
     }
 
     @Override
     public void setGroupKeys(List<DescriptorDto> descriptorDtos) {
         this.descriptorDtos = descriptorDtos;
-        LinkedHashMap<String, String> groupKeysMap = new LinkedHashMap<String, String>();
-        for (DescriptorDto descriptorDto : descriptorDtos) {
-            groupKeysMap.put(descriptorDto.getId().toString(), descriptorDto.getIdLogic());
-        }
+        LinkedHashMap<String, String> groupKeysMap = CommonUtils.getDescriptorDtoHashMap(descriptorDtos);
         groupKeyFormForGroupRelationship.setValueMap(groupKeysMap);
         groupKeysForDimensionRelationshipItem.setValueMap(groupKeysMap);
     }
@@ -792,7 +769,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
             // Code List
             if (TypeRepresentationEnum.ENUMERATED.equals(representationType)) {
                 dataAttributeDto.getLocalRepresentation().setTypeRepresentationEnum(TypeRepresentationEnum.ENUMERATED);
-                dataAttributeDto.getLocalRepresentation().setEnumerated(ExternalItemUtils.getExternalItemDtoFromCodeId(codeLists, codeListItem.getValueAsString()));
+                dataAttributeDto.getLocalRepresentation().setEnumerated(ExternalItemUtils.getExternalItemDtoFromUrn(codeLists, codeListItem.getValueAsString()));
                 dataAttributeDto.getLocalRepresentation().setNonEnumerated(null);
                 // Facet
             } else if (TypeRepresentationEnum.TEXT_FORMAT.equals(representationType)) {

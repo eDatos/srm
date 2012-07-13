@@ -1,10 +1,9 @@
 package org.siemac.metamac.srm.web.dsd.widgets;
 
-import java.util.LinkedHashMap;
-
 import org.siemac.metamac.domain.srm.dto.FacetDto;
 import org.siemac.metamac.domain.srm.enume.domain.FacetValueTypeEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
+import org.siemac.metamac.srm.web.dsd.utils.CommonUtils;
 import org.siemac.metamac.srm.web.dsd.utils.FacetFormUtils;
 import org.siemac.metamac.web.common.client.utils.FormItemUtils;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
@@ -42,12 +41,7 @@ public class FacetForm extends GroupDynamicForm {
         setVisibility(Visibility.HIDDEN);
 
         textType = new RequiredSelectItem(FacetFormUtils.TEXT_TYPE_FIELD_NAME, MetamacSrmWeb.getConstants().dsdRepresentationTextType());
-        LinkedHashMap<String, String> valueMapFacetValueType = new LinkedHashMap<String, String>();
-        for (FacetValueTypeEnum f : FacetFormUtils.getDsdFacetValueTypeEnums()) {
-            String value = MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().facetValueTypeEnum() + f.getName());
-            valueMapFacetValueType.put(f.toString(), value);
-        }
-        textType.setValueMap(valueMapFacetValueType);
+        textType.setValueMap(CommonUtils.getFacetValueTypeHashMap());
         textType.setRedrawOnChange(true);
         textType.setWidth(205);
 

@@ -1,7 +1,6 @@
 package org.siemac.metamac.srm.web.dsd.view;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -12,6 +11,7 @@ import org.siemac.metamac.domain.srm.enume.domain.TypeComponentList;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.dsd.model.record.GroupKeysRecord;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdGroupKeysTabPresenter;
+import org.siemac.metamac.srm.web.dsd.utils.CommonUtils;
 import org.siemac.metamac.srm.web.dsd.utils.RecordUtils;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdGroupKeysTabUiHandlers;
 import org.siemac.metamac.srm.web.dsd.widgets.AnnotationsPanel;
@@ -253,11 +253,7 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
     public void setDsdGroupKeys(List<DimensionComponentDto> dimensionComponentDtos, List<DescriptorDto> descriptorDtos) {
         deselectGroupKeys();
         this.dimensionComponentDtos = dimensionComponentDtos;
-        LinkedHashMap<String, String> dimensionsMap = new LinkedHashMap<String, String>();
-        for (DimensionComponentDto d : dimensionComponentDtos) {
-            dimensionsMap.put(d.getId().toString(), d.getIdLogic());
-        }
-        dimensionsItem.setValueMap(dimensionsMap);
+        dimensionsItem.setValueMap(CommonUtils.getDimensionComponentDtoHashMap(dimensionComponentDtos));
 
         groupKeysGrid.selectAllRecords();
         groupKeysGrid.removeSelectedData();

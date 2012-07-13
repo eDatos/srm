@@ -1,6 +1,5 @@
 package org.siemac.metamac.srm.web.dsd.view;
 
-import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
@@ -119,13 +118,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
 
         representationTypeItem = new CustomSelectItem("repr-pmeas", MetamacSrmWeb.getConstants().dsdRepresentation());
         representationTypeItem.setType("comboBox");
-        LinkedHashMap<String, String> valueMap = new LinkedHashMap<String, String>();
-        valueMap.put(new String(), new String());
-        for (TypeRepresentationEnum r : TypeRepresentationEnum.values()) {
-            String value = MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().typeRepresentationEnum() + r.getName());
-            valueMap.put(r.toString(), value);
-        }
-        representationTypeItem.setValueMap(valueMap);
+        representationTypeItem.setValueMap(CommonUtils.getTypeRepresentationEnumHashMap());
         representationTypeItem.setRedrawOnChange(true);
         // Show FacetForm if RepresentationTypeEnum = NON_NUMERATED
         representationTypeItem.addChangedHandler(new ChangedHandler() {
@@ -267,7 +260,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
             // Code List
             if (TypeRepresentationEnum.ENUMERATED.equals(representationType)) {
                 componentDto.getLocalRepresentation().setTypeRepresentationEnum(TypeRepresentationEnum.ENUMERATED);
-                componentDto.getLocalRepresentation().setEnumerated(ExternalItemUtils.getExternalItemDtoFromCodeId(codeLists, codeListItem.getValueAsString()));
+                componentDto.getLocalRepresentation().setEnumerated(ExternalItemUtils.getExternalItemDtoFromUrn(codeLists, codeListItem.getValueAsString()));
                 componentDto.getLocalRepresentation().setNonEnumerated(null);
                 // Facet
             } else if (TypeRepresentationEnum.TEXT_FORMAT.equals(representationType)) {
