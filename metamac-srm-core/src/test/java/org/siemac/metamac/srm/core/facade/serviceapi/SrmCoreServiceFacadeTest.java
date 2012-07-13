@@ -48,7 +48,7 @@ import org.siemac.metamac.domain.srm.enume.domain.TypeComponentList;
 import org.siemac.metamac.domain.srm.enume.domain.TypeDozerCopyMode;
 import org.siemac.metamac.domain.srm.enume.domain.TypeRepresentationEnum;
 import org.siemac.metamac.domain.trans.dto.StructureMsgDto;
-import org.siemac.metamac.srm.core.base.serviceapi.SdmxBaseService;
+import org.siemac.metamac.srm.core.base.serviceapi.BaseService;
 import org.siemac.metamac.srm.core.facade.serviceapi.utils.SDMXResources;
 import org.siemac.metamac.srm.core.facade.serviceapi.utils.SrmDtoMocks;
 import org.siemac.metamac.srm.core.structure.domain.DataStructureDefinition;
@@ -68,7 +68,7 @@ public class SrmCoreServiceFacadeTest implements SrmCoreServiceFacadeTestBase {
     protected SrmCoreServiceFacade srmCoreServiceFacade;
 
     @Autowired
-    protected SdmxBaseService            sdmxBaseService;
+    protected BaseService            baseService;
     
     @Autowired
     @Qualifier("jaxb2MarshallerWithValidation")

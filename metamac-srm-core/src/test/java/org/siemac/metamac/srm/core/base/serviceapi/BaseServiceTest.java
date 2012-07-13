@@ -22,10 +22,10 @@ import org.springframework.transaction.annotation.Transactional;
 @ContextConfiguration(locations = {"classpath:spring/srm/applicationContext-test.xml"})
 @TransactionConfiguration(transactionManager="txManagerCore", defaultRollback=true)
 @Transactional
-public class BaseServiceTest extends SrmBaseTest implements SdmxBaseServiceTestBase {
+public class BaseServiceTest extends SrmBaseTest implements BaseServiceTestBase {
 
     @Autowired
-    protected SdmxBaseService    sdmxBaseService;
+    protected BaseService    baseService;
 
     private final ServiceContext serviceContext               = new ServiceContext("system", "123456", "junit");
 
@@ -39,7 +39,7 @@ public class BaseServiceTest extends SrmBaseTest implements SdmxBaseServiceTestB
 
     @Test
     public void testSaveComponent() throws Exception {
-        Component component = sdmxBaseService.saveComponent(getServiceContext(), BaseDoMocks.createDimension().get(0));
+        Component component = baseService.saveComponent(getServiceContext(), BaseDoMocks.createDimension().get(0));
         assertNotNull(component);
     }
 
@@ -47,12 +47,12 @@ public class BaseServiceTest extends SrmBaseTest implements SdmxBaseServiceTestB
     public void testDeleteComponent() throws Exception {
         testSaveComponent();
 
-        List<Component> components = sdmxBaseService.findAllComponent(getServiceContext());
+        List<Component> components = baseService.findAllComponent(getServiceContext());
         Component component = components.get(components.size() - 1);
 
-        sdmxBaseService.deleteComponent(getServiceContext(), component);
+        baseService.deleteComponent(getServiceContext(), component);
 
-        assertTrue(sdmxBaseService.findAllComponent(getServiceContext()).size() < components.size());
+        assertTrue(baseService.findAllComponent(getServiceContext()).size() < components.size());
     }
 
     @Override
@@ -60,7 +60,7 @@ public class BaseServiceTest extends SrmBaseTest implements SdmxBaseServiceTestB
     public void testFindAllComponent() throws Exception {
         testSaveComponent();
 
-        List<Component> components = sdmxBaseService.findAllComponent(getServiceContext());
+        List<Component> components = baseService.findAllComponent(getServiceContext());
         assertTrue(!components.isEmpty());
     }
 
@@ -69,7 +69,7 @@ public class BaseServiceTest extends SrmBaseTest implements SdmxBaseServiceTestB
      **************************************************************************/
     @Test
     public void testSaveComponentList() throws Exception {
-        ComponentList componentList = sdmxBaseService.saveComponentList(getServiceContext(), BaseDoMocks.createDimensionDescriptor());
+        ComponentList componentList = baseService.saveComponentList(getServiceContext(), BaseDoMocks.createDimensionDescriptor());
 
         assertNotNull(componentList);
     }
@@ -79,12 +79,12 @@ public class BaseServiceTest extends SrmBaseTest implements SdmxBaseServiceTestB
     public void testDeleteComponentList() throws Exception {
         testSaveComponentList();
 
-        List<ComponentList> componentLists = sdmxBaseService.findAllComponentList(getServiceContext());
+        List<ComponentList> componentLists = baseService.findAllComponentList(getServiceContext());
         ComponentList componentList = componentLists.get(componentLists.size() - 1);
 
-        sdmxBaseService.deleteComponentList(getServiceContext(), componentList);
+        baseService.deleteComponentList(getServiceContext(), componentList);
 
-        assertTrue(sdmxBaseService.findAllComponentList(getServiceContext()).size() < componentLists.size());
+        assertTrue(baseService.findAllComponentList(getServiceContext()).size() < componentLists.size());
     }
 
     @Override
@@ -92,7 +92,7 @@ public class BaseServiceTest extends SrmBaseTest implements SdmxBaseServiceTestB
     public void testFindAllComponentList() throws Exception {
         testSaveComponentList();
 
-        List<ComponentList> componentLists = sdmxBaseService.findAllComponentList(getServiceContext());
+        List<ComponentList> componentLists = baseService.findAllComponentList(getServiceContext());
         assertTrue(!componentLists.isEmpty());
     }
 

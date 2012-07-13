@@ -24,7 +24,7 @@ import org.siemac.metamac.core.common.ent.domain.LocalisedString;
 import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.domain.srm.enume.domain.TypeComponentList;
 import org.siemac.metamac.srm.core.base.domain.ComponentList;
-import org.siemac.metamac.srm.core.base.serviceapi.SdmxBaseService;
+import org.siemac.metamac.srm.core.base.serviceapi.BaseService;
 import org.siemac.metamac.srm.core.base.serviceapi.utils.BaseDoMocks;
 import org.siemac.metamac.srm.core.structure.domain.DataStructureDefinition;
 import org.siemac.metamac.srm.core.structure.domain.Dimension;
@@ -46,7 +46,7 @@ public class DataStructureDefinitionServiceTest extends AbstractTransactionalJUn
     protected DataStructureDefinitionService dataStructureDefinitionService;
 
     @Autowired
-    protected SdmxBaseService                sdmxBaseService;
+    protected BaseService                baseService;
 
     private final ServiceContext             serviceContext               = new ServiceContext("system", "123456", "junit");
 
