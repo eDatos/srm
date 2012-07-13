@@ -23,7 +23,7 @@ Application Structure {
         ***********************************************************************/
        Service DataStructureDefinitionService {
        		> @DataStructureDefinitionRepository
-       		> @SdmxBaseService
+       		> @BaseService
 			
           	@DataStructureDefinition saveDsd(@DataStructureDefinition dataStructureDefinition) throws MetamacException;
           	deleteDsd(@DataStructureDefinition dataStructureDefinition) throws MetamacException;

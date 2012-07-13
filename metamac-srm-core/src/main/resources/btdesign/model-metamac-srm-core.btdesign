@@ -21,7 +21,7 @@ Application SrmCore {
     	basePackage=org.siemac.metamac.srm.core.facade
     	
 		Service SrmCoreServiceFacade {
-       		> @SdmxBaseService
+       		> @BaseService
        		> @DataStructureDefinitionService
        		> @TransformationServiceFacade
 
@@ -220,7 +220,7 @@ Application SrmCore {
     	Service ImportServiceFacade {
 	    	> @SDMXStructureServiceFacade
 	    	> @TransformationServiceFacade
-	    	> @SdmxBaseService
+	    	> @BaseService
 	    	
 	    	"
 	    	 @param ctx                                                                          
@@ -254,7 +254,7 @@ Application SrmCore {
     	Service ExportServiceFacade {
 	    	> @SDMXStructureServiceFacade
 	    	> @TransformationServiceFacade
-	    	> @SdmxBaseService
+	    	> @BaseService
 	    	> @DataServiceFacade
 	    	
 	    	"

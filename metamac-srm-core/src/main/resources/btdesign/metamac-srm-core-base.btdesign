@@ -458,7 +458,7 @@ Application Base {
 		}
 
 		"Provides access to SDMX Base Artefacts"
-		Service SdmxBaseService {
+		Service BaseService {
 //			> @ConceptRepository
 //			> @CodeListRepository
 			> @ComponentRepository
