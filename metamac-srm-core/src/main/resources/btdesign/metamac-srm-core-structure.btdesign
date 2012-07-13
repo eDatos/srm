@@ -112,7 +112,7 @@ Application Structure {
         	databaseTable = "TB_MEASURE_DIMENSIONS"
         	       	
        		"Association to the Concept that specifies the role that the Measure Dimension plays in the Data Structure Definition."
-       		- Set<@ExternalItem> role databaseJoinTable="TB_MEASURE_DIMENSIONS_EI_ROLES" databaseColumn="ROLE_FK" cascade="all-delete-orphan";
+       		- Set<@ExternalItem> role databaseJoinTable="TB_MEASURE_DIMEN_EI_ROLES" databaseColumn="ROLE_FK" cascade="all-delete-orphan";
        }
        
        "A metadata concept that identifies the component in the key structure that has the role of time.
