@@ -103,7 +103,7 @@ Application Structure {
         	databaseTable = "TB_DIMENSIONS"
         	
        		"Association to the Concept that specifies the role that the Dimension plays in the Data Structure Definition."
-       		- Set<@ExternalItem> role databaseJoinTable="TB_DIMC_EXTITEM" databaseColumn="EXTERNALITEM_FK" cascade="all-delete-orphan";
+       		- Set<@ExternalItem> role databaseJoinTable="TB_DIMENSIONS_EI_ROLES" databaseColumn="ROLE_FK" cascade="all-delete-orphan";
        }
 	   
 	   "A statistical concept that identifies the component in the key structure that has the role of measure. This dimension has, as its representation the Concept Scheme that defines the measure concepts.
@@ -112,7 +112,7 @@ Application Structure {
         	databaseTable = "TB_MEASURE_DIMENSIONS"
         	       	
        		"Association to the Concept that specifies the role that the Measure Dimension plays in the Data Structure Definition."
-       		- Set<@ExternalItem> role databaseJoinTable="TB_MEAD_EXTITEM" databaseColumn="EXTERNALITEM_FK" cascade="all-delete-orphan";
+       		- Set<@ExternalItem> role databaseJoinTable="TB_MEASURE_DIMENSIONS_EI_ROLES" databaseColumn="ROLE_FK" cascade="all-delete-orphan";
        }
        
        "A metadata concept that identifies the component in the key structure that has the role of time.
@@ -133,7 +133,7 @@ Application Structure {
        		"Association to a Attribute Relationship."
        		- @AttributeRelationship relateTo nullable cascade="all-delete-orphan"
        		"Association to the Concept that specifies the role that the Measure Dimension plays in the Data Structure Definition."
-       		- Set<@ExternalItem> role databaseJoinTable="TB_DATTR_EXTITEM" databaseColumn="EXTERNALITEM_FK" cascade="all-delete-orphan";
+       		- Set<@ExternalItem> role databaseJoinTable="TB_DATA_ATTRIBUTES_EI_ROLES" databaseColumn="ROLE_FK" cascade="all-delete-orphan";
        }
        
        "A specialised Data Attribute whose value is used in conjunction with the predefined reporting periods in the Time

@@ -1,7 +1,5 @@
 import "classpath:/btdesign/metamac-srm-core-base.btdesign"
-
 import "classpath:/btdesign/metamac-core-common-dtos.btdesign"
-
 import "classpath:/btdesign/export/metamac-core-common-entity.btdesign"
 
 
