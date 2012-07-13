@@ -46,7 +46,7 @@ public class ConceptSchemeListViewImpl extends ViewImpl implements ConceptScheme
     private ToolStripButton             newConceptSchemeActor;
     private ToolStripButton             deleteConceptSchemeActor;
 
-    private PaginatedCheckListGrid conceptSchemesList;
+    private PaginatedCheckListGrid      conceptSchemesList;
 
     private DeleteConfirmationWindow    deleteConfirmationWindow;
 

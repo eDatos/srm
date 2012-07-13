@@ -102,7 +102,7 @@ public class MainPageViewImpl extends ViewWithUiHandlers<MainPageUiHandlers> imp
         northLayout.setZIndex(0);
         southLayout.setZIndex(0);
         footerLayout.setZIndex(0);
-        
+
         // Add the North and South layout containers to the main layout
         // container
         panel.addMember(navBar);

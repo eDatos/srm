@@ -36,7 +36,7 @@ public class ErrorPageViewImpl extends ViewWithUiHandlers<ErrorPageUiHandlers> i
 
         panel.addMember(hLayout);
     }
-    
+
     @Override
     public Widget asWidget() {
         return panel;
