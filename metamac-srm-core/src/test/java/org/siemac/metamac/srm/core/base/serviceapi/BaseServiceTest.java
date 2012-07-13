@@ -57,7 +57,7 @@ public class BaseServiceTest extends AbstractTransactionalJUnit4SpringContextTes
     @Test
     public void testSaveComponent() throws Exception {
 
-        Component component = sdmxBaseService.saveComponent(getServiceContext(), createDimension().get(0));
+        Component component = sdmxBaseService.saveComponent(getServiceContext(), BaseDoMocks.createDimension().get(0));
         assertNotNull(component);
 
     }
@@ -92,7 +92,7 @@ public class BaseServiceTest extends AbstractTransactionalJUnit4SpringContextTes
     @Test
     public void testSaveComponentList() throws Exception {
 
-        ComponentList componentList = sdmxBaseService.saveComponentList(getServiceContext(), createDimensionDescriptor());
+        ComponentList componentList = sdmxBaseService.saveComponentList(getServiceContext(), BaseDoMocks.createDimensionDescriptor());
 
         assertNotNull(componentList);
 
@@ -122,50 +122,7 @@ public class BaseServiceTest extends AbstractTransactionalJUnit4SpringContextTes
         assertTrue(!componentLists.isEmpty());
     }
 
-    private List<Dimension> createDimension() {
 
-        // List<Concept> concepts = sdmxBaseService.findAllConcepts(getServiceContext());
-
-        Dimension dimension1 = new Dimension();
-        dimension1.setIdLogic(RandomStringUtils.random(50, true, true));
-
-        // Required
-        dimension1.setUri(RandomStringUtils.random(50, true, true));
-        dimension1.setCptIdRef(BaseDoMocks.mockConceptExternalItem());
-        dimension1.setOrderLogic(1);
-
-        // Some Auditory
-        dimension1.setCreatedBy("Junit");
-        dimension1.setCreatedDate(new DateTime());
-
-        Dimension dimension2 = new Dimension();
-        dimension2.setIdLogic(RandomStringUtils.random(50, true, true));
-
-        // Required
-        dimension2.setUri(RandomStringUtils.random(50, true, true));
-        dimension2.setCptIdRef(BaseDoMocks.mockConceptExternalItem());
-        dimension2.setOrderLogic(1);
-
-        // Some Auditory
-        dimension2.setCreatedBy("Junit");
-        dimension2.setCreatedDate(new DateTime());
-
-        List<Dimension> dimensions = new ArrayList<Dimension>();
-        dimensions.add(dimension2);
-        dimensions.add(dimension2);
-
-        return dimensions;
-    }
-
-    private ComponentList createDimensionDescriptor() {
-        DimensionDescriptor dimensionDescriptor = new DimensionDescriptor();
-        dimensionDescriptor.setIdLogic(RandomStringUtils.random(50, true, true));
-        // dimensionDescriptor.getComponents().addAll(createDimension()); No CASCADE !!!!
-        // Required
-        dimensionDescriptor.setUri(RandomStringUtils.random(50, true, true));
-
-        return dimensionDescriptor;
-    }
 
     @Override
     public void testFindComponentListById() throws Exception {
