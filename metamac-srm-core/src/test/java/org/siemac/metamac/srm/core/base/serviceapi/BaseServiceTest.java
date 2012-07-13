@@ -3,52 +3,56 @@ package org.siemac.metamac.srm.core.base.serviceapi;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.RandomStringUtils;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
-import org.joda.time.DateTime;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.siemac.metamac.common.test.mock.OracleJNDIMock;
+import org.siemac.metamac.domain.srm.dto.DataSetDto;
 import org.siemac.metamac.srm.core.base.domain.Component;
 import org.siemac.metamac.srm.core.base.domain.ComponentList;
 import org.siemac.metamac.srm.core.base.serviceapi.utils.BaseDoMocks;
-import org.siemac.metamac.srm.core.structure.domain.Dimension;
-import org.siemac.metamac.srm.core.structure.domain.DimensionDescriptor;
+import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.jndi.SimpleNamingContextBuilder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-@ContextConfiguration(locations = {"classpath:spring/srm-core/oracle/applicationContext-test.xml"})
-@TransactionConfiguration(transactionManager = "txManagerCore", defaultRollback = true)
+//@ContextConfiguration(locations = {"classpath:spring/srm-core/oracle/applicationContext-test.xml"})
+//@TransactionConfiguration(transactionManager = "txManagerCore", defaultRollback = true)
+//@Transactional
+//public class BaseServiceTest extends AbstractTransactionalJUnit4SpringContextTests implements SdmxBaseServiceTestBase {
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"classpath:spring/srm/applicationContext-test.xml"})
+@TransactionConfiguration(transactionManager="txManagerCore", defaultRollback=true)
 @Transactional
-public class BaseServiceTest extends AbstractTransactionalJUnit4SpringContextTests implements SdmxBaseServiceTestBase {
+public class BaseServiceTest extends SrmBaseTest implements SdmxBaseServiceTestBase {
 
     @Autowired
     protected SdmxBaseService    sdmxBaseService;
 
     private final ServiceContext serviceContext               = new ServiceContext("system", "123456", "junit");
 
-    private final String         organizationByDefaultLogicId = "METAMAC_ORGANISATION";
+//    private final String         organizationByDefaultLogicId = "METAMAC_ORGANISATION";
 
     protected ServiceContext getServiceContext() {
         return serviceContext;
     }
-
     
-    @BeforeClass
-    public static void setUp() {
-        // JNDI SDMXDS
-        SimpleNamingContextBuilder simpleNamingContextBuilder = OracleJNDIMock.setUp("SDMXDS", "srm_test", "srm_test", "jdbc:oracle:thin:@localhost:1521:XE", null);
-
-        // JNDI tatisticDatasetDS
-//        simpleNamingContextBuilder = OracleJNDIMock.setUp("StatisticDatasetDS", "sdmx_data", "sdmx_data", "jdbc:oracle:thin:@localhost:1521:XE", simpleNamingContextBuilder);
-    }
+//    @BeforeClass
+//    public static void setUp() {
+//        // JNDI SDMXDS
+//        SimpleNamingContextBuilder simpleNamingContextBuilder = OracleJNDIMock.setUp("SDMXDS", "srm_test", "srm_test", "jdbc:oracle:thin:@localhost:1521:XE", null);
+//
+//        // JNDI tatisticDatasetDS
+////        simpleNamingContextBuilder = OracleJNDIMock.setUp("StatisticDatasetDS", "sdmx_data", "sdmx_data", "jdbc:oracle:thin:@localhost:1521:XE", simpleNamingContextBuilder);
+//    }
 
     /**************************************************************************
      * Component Tests

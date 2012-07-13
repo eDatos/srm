@@ -44,7 +44,7 @@ public abstract class SrmBaseTest extends MetamacBaseTests {
 
     @Override
     protected String getDataSetFile() {
-        return "dbunit/ConceptsServiceTest.xml";
+        return "dbunit/SrmCoreTest.xml";
     }
 
     @Override

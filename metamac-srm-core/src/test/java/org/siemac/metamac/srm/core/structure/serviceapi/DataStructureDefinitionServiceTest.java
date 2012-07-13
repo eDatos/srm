@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.core.structure.serviceapi;
 import static org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder.criteriaFor;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.siemac.metamac.srm.core.structure.domain.DataStructureDefinitionProperties.id;
 import static org.siemac.metamac.srm.core.structure.domain.DataStructureDefinitionProperties.serviceURL;
 
@@ -21,9 +22,14 @@ import org.siemac.metamac.common.test.mock.OracleJNDIMock;
 import org.siemac.metamac.core.common.ent.domain.InternationalString;
 import org.siemac.metamac.core.common.ent.domain.LocalisedString;
 import org.siemac.metamac.core.common.util.shared.VersionUtil;
+import org.siemac.metamac.domain.srm.enume.domain.TypeComponentList;
+import org.siemac.metamac.srm.core.base.domain.ComponentList;
 import org.siemac.metamac.srm.core.base.serviceapi.SdmxBaseService;
 import org.siemac.metamac.srm.core.base.serviceapi.utils.BaseDoMocks;
 import org.siemac.metamac.srm.core.structure.domain.DataStructureDefinition;
+import org.siemac.metamac.srm.core.structure.domain.Dimension;
+import org.siemac.metamac.srm.core.structure.domain.DimensionDescriptor;
+import org.siemac.metamac.srm.core.structure.domain.MeasureDimension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.jndi.SimpleNamingContextBuilder;
 import org.springframework.test.context.ContextConfiguration;
@@ -120,6 +126,49 @@ public class DataStructureDefinitionServiceTest extends AbstractTransactionalJUn
 
         assertNotNull(dataStructureDefinition);
     }
+    
+    @Test
+    public void testSaveDescriptorForDsd() throws Exception {
+        
+        testSaveDsd();
+        List<DataStructureDefinition> dsds = dataStructureDefinitionService.findAllDsds(getServiceContext());
+        assertTrue(dsds.size() > 0);
+        
+        
+        ComponentList componentList = BaseDoMocks.createDimensionDescriptor();
+        dataStructureDefinitionService.saveDescriptorForDsd(getServiceContext(), dsds.get(0), componentList);
+    }
+
+    @Override
+    public void testDeleteDescriptorForDsd() throws Exception {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Test
+    public void testSaveComponentForDsd() throws Exception {
+        testSaveDescriptorForDsd();
+        List<DataStructureDefinition> dsds = dataStructureDefinitionService.findAllDsds(getServiceContext());
+        
+        MeasureDimension measureDim = BaseDoMocks.createMeasureDimension();
+        dataStructureDefinitionService.saveComponentForDsd(getServiceContext(), dsds.get(0), measureDim, TypeComponentList.DIMENSION_DESCRIPTOR);
+        
+        MeasureDimension measureDimFail = BaseDoMocks.createMeasureDimension();
+        measureDimFail.setUri(null); // This is an error
+        
+        try {
+            dataStructureDefinitionService.saveComponentForDsd(getServiceContext(), dsds.get(0), measureDimFail, TypeComponentList.DIMENSION_DESCRIPTOR);
+            fail("");
+        }
+        catch (Exception e) {
+            // TODO: handle exception
+        }
+    }
+
+    @Override
+    public void testDeleteComponentForDsd() throws Exception {
+        // TODO Auto-generated method stub
+    }
 
     /*********************************************************************
      * MOCKS
@@ -174,28 +223,5 @@ public class DataStructureDefinitionServiceTest extends AbstractTransactionalJUn
         return dataStructureDefinition;
     }
 
-    @Override
-    public void testSaveDescriptorForDsd() throws Exception {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void testDeleteDescriptorForDsd() throws Exception {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void testSaveComponentForDsd() throws Exception {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void testDeleteComponentForDsd() throws Exception {
-        // TODO Auto-generated method stub
-        
-    }
 
 }

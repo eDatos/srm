@@ -1,6 +1,9 @@
 package org.siemac.metamac.srm.core.base.serviceapi.utils;
 
-import org.apache.commons.lang.StringUtils;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.lang.RandomStringUtils;
 import org.joda.time.DateTime;
 import org.siemac.metamac.common.test.utils.MetamacMocks;
 import org.siemac.metamac.core.common.ent.domain.ExternalItem;
@@ -9,7 +12,14 @@ import org.siemac.metamac.core.common.ent.domain.LocalisedString;
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.core.common.util.GeneratorUrnUtils;
 import org.siemac.metamac.core.common.util.shared.VersionUtil;
+import org.siemac.metamac.srm.core.base.domain.ComponentList;
 import org.siemac.metamac.srm.core.base.domain.ItemScheme;
+import org.siemac.metamac.srm.core.structure.domain.Dimension;
+import org.siemac.metamac.srm.core.structure.domain.DimensionDescriptor;
+import org.siemac.metamac.srm.core.structure.domain.MeasureDescriptor;
+import org.siemac.metamac.srm.core.structure.domain.MeasureDimension;
+
+import com.ibm.icu.util.Measure;
 
 public class BaseDoMocks {
     
@@ -128,5 +138,84 @@ public class BaseDoMocks {
     public static String mockConceptUrn() {
         return GeneratorUrnUtils.generateSdmxConceptUrn(AGENCY_MOCK, CONCEPT_SCHEME_MOCK, VersionUtil.VERSION_LOGIC, CONCEPT_MOCK);
     }    
+    
+    // -----------------------------------------------------------------
+    // COMPONENT
+    // -----------------------------------------------------------------
+    
+    public static List<Dimension> createDimension() {
+
+        // List<Concept> concepts = sdmxBaseService.findAllConcepts(getServiceContext());
+
+        Dimension dimension1 = new Dimension();
+        dimension1.setIdLogic(RandomStringUtils.random(50, true, true));
+
+        // Required
+        dimension1.setUri(RandomStringUtils.random(50, true, true));
+        dimension1.setCptIdRef(BaseDoMocks.mockConceptExternalItem());
+        dimension1.setOrderLogic(1);
+
+        // Some Auditory
+        dimension1.setCreatedBy("Junit");
+        dimension1.setCreatedDate(new DateTime());
+
+        Dimension dimension2 = new Dimension();
+        dimension2.setIdLogic(RandomStringUtils.random(50, true, true));
+
+        // Required
+        dimension2.setUri(RandomStringUtils.random(50, true, true));
+        dimension2.setCptIdRef(BaseDoMocks.mockConceptExternalItem());
+        dimension2.setOrderLogic(1);
+
+        // Some Auditory
+        dimension2.setCreatedBy("Junit");
+        dimension2.setCreatedDate(new DateTime());
+
+        List<Dimension> dimensions = new ArrayList<Dimension>();
+        dimensions.add(dimension2);
+        dimensions.add(dimension2);
+
+        return dimensions;
+    }
+    
+    public static MeasureDimension createMeasureDimension() {
+        MeasureDimension measureDimension = new MeasureDimension();
+        measureDimension.setIdLogic(RandomStringUtils.random(50, true, true));
+        
+        // Required
+        measureDimension.setUri(RandomStringUtils.random(50, true, true));
+        measureDimension.setCptIdRef(BaseDoMocks.mockConceptExternalItem());
+        measureDimension.setOrderLogic(1);
+        
+        // Some Auditory
+        measureDimension.setCreatedBy("Junit");
+        measureDimension.setCreatedDate(new DateTime());
+
+        return measureDimension;
+    }
+
+    // -----------------------------------------------------------------
+    // COMPONENTLIST
+    // -----------------------------------------------------------------
+    
+    public static ComponentList createDimensionDescriptor() {
+        DimensionDescriptor dimensionDescriptor = new DimensionDescriptor();
+        dimensionDescriptor.setIdLogic(RandomStringUtils.random(50, true, true));
+        // dimensionDescriptor.getComponents().addAll(createDimension()); No CASCADE !!!!
+        // Required
+        dimensionDescriptor.setUri(RandomStringUtils.random(50, true, true));
+
+        return dimensionDescriptor;
+    }
+    
+    public static ComponentList createMeasureDimensionDescriptor() {
+        MeasureDescriptor measureDescriptor = new MeasureDescriptor();
+        measureDescriptor.setIdLogic(RandomStringUtils.random(50, true, true));
+        // dimensionDescriptor.getComponents().addAll(createDimension()); No CASCADE !!!!
+        // Required
+        measureDescriptor.setUri(RandomStringUtils.random(50, true, true));
+
+        return measureDescriptor;
+    }
 
 }
