@@ -24,7 +24,7 @@ public class NewConceptSchemeWindow extends CustomWindow {
     public NewConceptSchemeWindow(String title) {
         super(title);
         setAutoSize(true);
-        
+
         RequiredTextItem codeItem = new RequiredTextItem(ConceptSchemeDS.ID_LOGIC, getConstants().conceptSchemeIdLogic());
         codeItem.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());
         RequiredTextItem nameItem = new RequiredTextItem(ConceptSchemeDS.NAME, getConstants().conceptSchemeName());

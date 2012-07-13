@@ -144,15 +144,15 @@ public class ImportDsdWindow extends Window {
     }
 
     private native void initComplete(ImportDsdWindow upload) /*-{
-        $wnd.uploadComplete = function(fileName) {
-            upload.@org.siemac.metamac.srm.web.dsd.widgets.ImportDsdWindow::uploadComplete(Ljava/lang/String;)(fileName);
-        };
-    }-*/;
+                                                             $wnd.uploadComplete = function(fileName) {
+                                                             upload.@org.siemac.metamac.srm.web.dsd.widgets.ImportDsdWindow::uploadComplete(Ljava/lang/String;)(fileName);
+                                                             };
+                                                             }-*/;
 
     private native void initUploadFailed(ImportDsdWindow upload) /*-{
-        $wnd.uploadFailed = function(fileName) {
-            upload.@org.siemac.metamac.srm.web.dsd.widgets.ImportDsdWindow::uploadFailed(Ljava/lang/String;)(fileName);
-        }
-    }-*/;
+                                                                 $wnd.uploadFailed = function(fileName) {
+                                                                 upload.@org.siemac.metamac.srm.web.dsd.widgets.ImportDsdWindow::uploadFailed(Ljava/lang/String;)(fileName);
+                                                                 }
+                                                                 }-*/;
 
 }
