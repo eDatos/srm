@@ -49,6 +49,7 @@ import org.siemac.metamac.domain.srm.enume.domain.TypeDozerCopyMode;
 import org.siemac.metamac.domain.srm.enume.domain.TypeRepresentationEnum;
 import org.siemac.metamac.domain.trans.dto.StructureMsgDto;
 import org.siemac.metamac.srm.core.base.serviceapi.BaseService;
+import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.facade.serviceapi.utils.SDMXResources;
 import org.siemac.metamac.srm.core.facade.serviceapi.utils.SrmDtoMocks;
 import org.siemac.metamac.srm.core.structure.domain.DataStructureDefinition;
@@ -59,10 +60,18 @@ import org.springframework.mock.jndi.SimpleNamingContextBuilder;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.transaction.TransactionConfiguration;
+import org.springframework.transaction.annotation.Transactional;
+
+//@RunWith(SpringJUnit4ClassRunner.class)
+//@ContextConfiguration(locations = {"classpath:spring/srm-core/oracle/applicationContext-test.xml"})
+//public class SrmCoreServiceFacadeTest implements SrmCoreServiceFacadeTestBase {
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:spring/srm-core/oracle/applicationContext-test.xml"})
-public class SrmCoreServiceFacadeTest implements SrmCoreServiceFacadeTestBase {
+@ContextConfiguration(locations = {"classpath:spring/srm/applicationContext-test.xml"})
+@TransactionConfiguration(transactionManager="txManagerCore", defaultRollback=true)
+@Transactional
+public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServiceFacadeTestBase {
 
     @Autowired
     protected SrmCoreServiceFacade srmCoreServiceFacade;
@@ -84,15 +93,11 @@ public class SrmCoreServiceFacadeTest implements SrmCoreServiceFacadeTestBase {
 
     private final ServiceContext         serviceContext               = new ServiceContext("system", "123456", "junit");
 
-    private final String                 organizationByDefaultLogicId = "METAMAC_ORGANISATION";
-
-    static Logger                        logger                       = Logger.getLogger(SrmCoreServiceFacadeTest.class.getName());
-
-    @BeforeClass
-    public static void setUp() {
-        // JNDI SDMXDS
-        SimpleNamingContextBuilder simpleNamingContextBuilder = OracleJNDIMock.setUp("SDMXDS", "srm_test", "srm_test", "jdbc:oracle:thin:@localhost:1521:XE", null);
-    }
+//    @BeforeClass
+//    public static void setUp() {
+//        // JNDI SDMXDS
+//        SimpleNamingContextBuilder simpleNamingContextBuilder = OracleJNDIMock.setUp("SDMXDS", "srm_test", "srm_test", "jdbc:oracle:thin:@localhost:1521:XE", null);
+//    }
 
     protected ServiceContext getServiceContext() {
         return serviceContext;

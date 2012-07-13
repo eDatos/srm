@@ -10,15 +10,13 @@ import static org.siemac.metamac.srm.core.structure.domain.DataStructureDefiniti
 import java.util.List;
 
 import org.apache.commons.lang.RandomStringUtils;
-import org.apache.log4j.Logger;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.joda.time.DateTime;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.siemac.metamac.common.test.mock.OracleJNDIMock;
+import org.junit.runner.RunWith;
 import org.siemac.metamac.core.common.ent.domain.InternationalString;
 import org.siemac.metamac.core.common.ent.domain.LocalisedString;
 import org.siemac.metamac.core.common.util.shared.VersionUtil;
@@ -26,21 +24,20 @@ import org.siemac.metamac.domain.srm.enume.domain.TypeComponentList;
 import org.siemac.metamac.srm.core.base.domain.ComponentList;
 import org.siemac.metamac.srm.core.base.serviceapi.BaseService;
 import org.siemac.metamac.srm.core.base.serviceapi.utils.BaseDoMocks;
+import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.structure.domain.DataStructureDefinition;
-import org.siemac.metamac.srm.core.structure.domain.Dimension;
-import org.siemac.metamac.srm.core.structure.domain.DimensionDescriptor;
 import org.siemac.metamac.srm.core.structure.domain.MeasureDimension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mock.jndi.SimpleNamingContextBuilder;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-@ContextConfiguration(locations = {"classpath:spring/srm-core/oracle/applicationContext-test.xml"})
-@TransactionConfiguration(transactionManager = "txManagerCore", defaultRollback = true)
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"classpath:spring/srm/applicationContext-test.xml"})
+@TransactionConfiguration(transactionManager="txManagerCore", defaultRollback=true)
 @Transactional
-public class DataStructureDefinitionServiceTest extends AbstractTransactionalJUnit4SpringContextTests implements DataStructureDefinitionServiceTestBase {
+public class DataStructureDefinitionServiceTest extends SrmBaseTest implements DataStructureDefinitionServiceTestBase {
 
     @Autowired
     protected DataStructureDefinitionService dataStructureDefinitionService;
@@ -49,19 +46,6 @@ public class DataStructureDefinitionServiceTest extends AbstractTransactionalJUn
     protected BaseService                baseService;
 
     private final ServiceContext             serviceContext               = new ServiceContext("system", "123456", "junit");
-
-    private final String                     organizationByDefaultLogicId = "METAMAC_ORGANISATION";
-
-    static Logger                            logger                       = Logger.getLogger(DataStructureDefinitionServiceTest.class.getName());
-
-    @BeforeClass
-    public static void setUp() {
-        // JNDI SDMXDS
-        SimpleNamingContextBuilder simpleNamingContextBuilder = OracleJNDIMock.setUp("SDMXDS", "srm_test", "srm_test", "jdbc:oracle:thin:@localhost:1521:XE", null);
-
-        // JNDI tatisticDatasetDS
-//        simpleNamingContextBuilder = OracleJNDIMock.setUp("StatisticDatasetDS", "sdmx_data", "sdmx_data", "jdbc:oracle:thin:@localhost:1521:XE", simpleNamingContextBuilder);
-    }
 
     protected ServiceContext getServiceContext() {
         return serviceContext;
@@ -198,10 +182,10 @@ public class DataStructureDefinitionServiceTest extends AbstractTransactionalJUn
         name.addText(name_es);
 
         // DataStructureDefinition dataStructureDefinition = new DataStructureDefinition(name, (Agency)organisation);
-        // DataStructureDefinition dataStructureDefinition = new DataStructureDefinition(name, new ExternalItemBt("METAMAC_ORGANISTION", "METAMAC_ORGANISTION", TypeExternalArtefactsEnum.AGENCY));
+        // DataStructureDefinition dataStructureDefinition = new DataStructureDefinition(name, new ExternalItem("METAMAC_ORGANISTION", "METAMAC_ORGANISTION", TypeExternalArtefactsEnum.AGENCY));
         DataStructureDefinition dataStructureDefinition = new DataStructureDefinition();
         dataStructureDefinition.setName(name);
-        dataStructureDefinition.setMaintainer(BaseDoMocks.mockAgencyExternalItemBt());
+        dataStructureDefinition.setMaintainer(BaseDoMocks.mockAgencyExternalItem());
 
         dataStructureDefinition.setIdLogic(RandomStringUtils.random(50, true, true));
 

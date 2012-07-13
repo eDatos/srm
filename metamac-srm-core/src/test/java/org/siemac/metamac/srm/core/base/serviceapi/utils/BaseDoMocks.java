@@ -57,7 +57,7 @@ public class BaseDoMocks {
         itemScheme.setStructureURL(null);
         itemScheme.setServiceURL(null);
 
-        itemScheme.setMaintainer(mockAgencyExternalItemBt());
+        itemScheme.setMaintainer(mockAgencyExternalItem());
 
         return itemScheme;
     }
@@ -123,7 +123,7 @@ public class BaseDoMocks {
     // EXTERNAL ITEM
     // -----------------------------------------------------------------
 
-    public static ExternalItem mockAgencyExternalItemBt() {
+    public static ExternalItem mockAgencyExternalItem() {
         return new ExternalItem(AGENCY_MOCK, URI_MOCK, mockAgencyUrn(), TypeExternalArtefactsEnum.AGENCY);
     }
 
