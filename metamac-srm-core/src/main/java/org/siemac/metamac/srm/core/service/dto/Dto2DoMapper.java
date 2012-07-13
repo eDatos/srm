@@ -38,6 +38,6 @@ public interface Dto2DoMapper {
 
     public Facet facetDtoToFacet(FacetDto facetDto, ServiceContext ctx, BaseService baseService) throws MetamacException;
 
-    public ExternalItem externalItemBtDtoToExternalItem(ExternalItemDto externalItemBtDto, ServiceContext ctx, BaseService baseService) throws MetamacException;
+    public ExternalItem externalItemDtoToExternalItem(ExternalItemDto externalItemDto, ServiceContext ctx, BaseService baseService) throws MetamacException;
 
 }

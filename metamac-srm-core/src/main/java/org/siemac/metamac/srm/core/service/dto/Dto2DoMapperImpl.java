@@ -330,7 +330,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         // // Load Agency for associated it to DSD
         // Organisation organisation = (Organisation) baseService.findOrganization(ctx, source.getMaintainerIdLogic());
         // result.setMaintainer((Agency) organisation);
-        // result.setMaintainer(mapToEntity(source, ExternalItemBt.class));
+        // result.setMaintainer(mapToEntity(source, ExternalItem.class));
 
         // Basic types check
         List<MetamacExceptionItem> exceptions = new ArrayList<MetamacExceptionItem>();
@@ -536,7 +536,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
                 // Role
                 if (componentDto.getId() != null) { // Exist
                     for (ExternalItemDto listExternalItemDto : ((DataAttributeDto) componentDto).getRole()) {
-                        ExternalItem externalItem = externalItemBtDtoToExternalItem(listExternalItemDto, ctx, baseService);
+                        ExternalItem externalItem = externalItemDtoToExternalItem(listExternalItemDto, ctx, baseService);
                         boolean found = false;
                         for (ExternalItem extItemPersisted : dataAttributeOlder.getRole()) {
                             if (extItemPersisted.equals(externalItem)) {
@@ -552,7 +552,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
                     }
                 } else { // New
                     for (ExternalItemDto listExternalItemDto : ((DataAttributeDto) componentDto).getRole()) {
-                        ((DataAttribute) result).addRole(externalItemBtDtoToExternalItem(listExternalItemDto, ctx, baseService));
+                        ((DataAttribute) result).addRole(externalItemDtoToExternalItem(listExternalItemDto, ctx, baseService));
                     }
                 }
 
@@ -594,7 +594,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
                         // ROLE
                         if (componentDto.getId() != null) { // Exist
                             for (ExternalItemDto listExternalItemDto : ((DimensionComponentDto) componentDto).getRole()) {
-                                ExternalItem externalItem = externalItemBtDtoToExternalItem(listExternalItemDto, ctx, baseService);
+                                ExternalItem externalItem = externalItemDtoToExternalItem(listExternalItemDto, ctx, baseService);
                                 boolean found = false;
                                 for (ExternalItem extItemPersisted : dimensionOlder.getRole()) {
                                     if (extItemPersisted.equals(externalItem)) {
@@ -610,7 +610,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
                             }
                         } else { // New
                             for (ExternalItemDto listExternalItemDto : ((DimensionComponentDto) componentDto).getRole()) {
-                                ((Dimension) result).addRole(externalItemBtDtoToExternalItem(listExternalItemDto, ctx, baseService));
+                                ((Dimension) result).addRole(externalItemDtoToExternalItem(listExternalItemDto, ctx, baseService));
                             }
                         }
 
@@ -629,7 +629,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
                         // ROLE
                         if (componentDto.getId() != null) { // Exist
                             for (ExternalItemDto listExternalItemDto : ((DimensionComponentDto) componentDto).getRole()) {
-                                ExternalItem externalItem = externalItemBtDtoToExternalItem(listExternalItemDto, ctx, baseService);
+                                ExternalItem externalItem = externalItemDtoToExternalItem(listExternalItemDto, ctx, baseService);
                                 boolean found = false;
                                 for (ExternalItem extItemPersisted : measureDimensionOlder.getRole()) {
                                     if (extItemPersisted.equals(externalItem)) {
@@ -645,7 +645,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
                             }
                         } else { // New
                             for (ExternalItemDto listExternalItemDto : ((DimensionComponentDto) componentDto).getRole()) {
-                                ((MeasureDimension) result).addRole(externalItemBtDtoToExternalItem(listExternalItemDto, ctx, baseService));
+                                ((MeasureDimension) result).addRole(externalItemDtoToExternalItem(listExternalItemDto, ctx, baseService));
                             }
                         }
                         // LocalRepresentation
@@ -711,7 +711,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
 
             // ConceptIdentity
             // result.setConceptIdentity((Concept) itemDtoToItem(componentDto.getConceptIdentity(), ctx, baseService));
-            // result.setCptIdRef(mapToEntity(componentDto.getCptIdRef(), ExternalItemBt.class));
+            // result.setCptIdRef(mapToEntity(componentDto.getCptIdRef(), ExternalItem.class));
 
             // LocalRepresentation
             result.setLocalRepresentation(representation);
@@ -994,19 +994,18 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
     }
 
     @Override
-    public ExternalItem externalItemBtDtoToExternalItem(ExternalItemDto externalItemBtDto, ServiceContext ctx, BaseService baseService) throws MetamacException {
-        if (externalItemBtDto == null) {
+    public ExternalItem externalItemDtoToExternalItem(ExternalItemDto externalItemDto, ServiceContext ctx, BaseService baseService) throws MetamacException {
+        if (externalItemDto == null) {
             return null;
         }
 
-        // ExternalItem result = new ExternalItem(new ExternalItemBt(externalItemBtDto.getUriInt(), externalItemBtDto.getCodeId(), externalItemBtDto.getType()));
-        ExternalItem result = mapToEntity(externalItemBtDto, ExternalItem.class);;
+        ExternalItem result = mapToEntity(externalItemDto, ExternalItem.class);;
 
         ExternalItem older = null;
         
-        if (externalItemBtDto.getId() != null) {
+        if (externalItemDto.getId() != null) {
             try {
-                older = getExternalItemRepository().findById(externalItemBtDto.getId());
+                older = getExternalItemRepository().findById(externalItemDto.getId());
             }
             catch (ExternalItemNotFoundException e) {
                 MetamacException metamacException = new MetamacException(e, MetamacCoreExceptionType.MTM_CORE_SEARCH_NOT_FOUND, ExternalItem.class.getSimpleName());
@@ -1015,7 +1014,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
             }
         }
         
-        result.setTitle(internationalStringToEntity(externalItemBtDto.getTitle(), (older != null) ? older.getTitle() : null));
+        result.setTitle(internationalStringToEntity(externalItemDto.getTitle(), (older != null) ? older.getTitle() : null));
 
         return result;
     }
