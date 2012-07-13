@@ -3,7 +3,7 @@ package org.siemac.metamac.srm.web.dsd.view;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import org.siemac.metamac.core.common.dto.ExternalItemBtDto;
+import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.domain.srm.dto.ComponentDto;
 import org.siemac.metamac.domain.srm.dto.FacetDto;
 import org.siemac.metamac.domain.srm.dto.RepresentationDto;
@@ -40,8 +40,8 @@ import com.smartgwt.client.widgets.layout.VLayout;
 
 public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryMeasureTabUiHandlers> implements DsdPrimaryMeasureTabPresenter.DsdPrimaryMeasureTabView {
 
-    private List<ExternalItemBtDto>     concepts;
-    private List<ExternalItemBtDto>     codeLists;
+    private List<ExternalItemDto>       concepts;
+    private List<ExternalItemDto>       codeLists;
 
     private VLayout                     panel;
 
@@ -166,30 +166,30 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
     }
 
     @Override
-    public void setConceptSchemes(List<ExternalItemBtDto> conceptSchemes) {
+    public void setConceptSchemes(List<ExternalItemDto> conceptSchemes) {
         LinkedHashMap<String, String> map = new LinkedHashMap<String, String>();
-        for (ExternalItemBtDto scheme : conceptSchemes) {
-            map.put(scheme.getCodeId(), scheme.getCodeId());
+        for (ExternalItemDto scheme : conceptSchemes) {
+            map.put(scheme.getCode(), scheme.getCode());
         }
         conceptItem.setSchemesValueMap(map);
     }
 
     @Override
-    public void setConcepts(List<ExternalItemBtDto> concepts) {
+    public void setConcepts(List<ExternalItemDto> concepts) {
         this.concepts = concepts;
         LinkedHashMap<String, String> conceptsMap = new LinkedHashMap<String, String>();
-        for (ExternalItemBtDto concept : concepts) {
-            conceptsMap.put(concept.getCodeId(), concept.getCodeId());
+        for (ExternalItemDto concept : concepts) {
+            conceptsMap.put(concept.getCode(), concept.getCode());
         }
         conceptItem.setItemsValueMap(conceptsMap);
     }
 
     @Override
-    public void setCodeLists(List<ExternalItemBtDto> codeLists) {
+    public void setCodeLists(List<ExternalItemDto> codeLists) {
         this.codeLists = codeLists;
         LinkedHashMap<String, String> codeListsMap = new LinkedHashMap<String, String>();
-        for (ExternalItemBtDto codeList : codeLists) {
-            codeListsMap.put(codeList.getCodeId(), codeList.getCodeId());
+        for (ExternalItemDto codeList : codeLists) {
+            codeListsMap.put(codeList.getCode(), codeList.getCode());
         }
         codeListItem.setValueMap(codeListsMap);
     }
@@ -204,7 +204,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
 
     private void setPrimaryMeasureViewMode(ComponentDto componentDto) {
         // Concept
-        staticConceptItem.setValue(componentDto.getCptIdRef() == null ? null : componentDto.getCptIdRef().getCodeId());
+        staticConceptItem.setValue(componentDto.getCptIdRef() == null ? null : componentDto.getCptIdRef().getCode());
 
         // Representation
         staticFacetForm.hide();
@@ -214,7 +214,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
         staticFacetForm.clearValues();
         if (componentDto.getLocalRepresentation() != null) {
             if (TypeRepresentationEnum.ENUMERATED.equals(componentDto.getLocalRepresentation().getTypeRepresentationEnum())) {
-                staticCodeListItem.setValue(componentDto.getLocalRepresentation().getEnumerated().getCodeId());
+                staticCodeListItem.setValue(componentDto.getLocalRepresentation().getEnumerated().getCode());
                 staticRepresentationTypeItem.setValue(MetamacSrmWeb.getCoreMessages().typeRepresentationEnumENUMERATED());
                 staticCodeListItem.show();
                 // Facet
@@ -279,7 +279,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
             // Code List
             if (TypeRepresentationEnum.ENUMERATED.equals(representationType)) {
                 componentDto.getLocalRepresentation().setTypeRepresentationEnum(TypeRepresentationEnum.ENUMERATED);
-                componentDto.getLocalRepresentation().setEnumerated(ExternalItemUtils.getExternalItemBtDtoFromCodeId(codeLists, codeListItem.getValueAsString()));
+                componentDto.getLocalRepresentation().setEnumerated(ExternalItemUtils.getExternalItemDtoFromCodeId(codeLists, codeListItem.getValueAsString()));
                 componentDto.getLocalRepresentation().setNonEnumerated(null);
                 // Facet
             } else if (TypeRepresentationEnum.TEXT_FORMAT.equals(representationType)) {

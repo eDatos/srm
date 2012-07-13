@@ -3,7 +3,7 @@ package org.siemac.metamac.srm.web.dsd.presenter;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.siemac.metamac.core.common.dto.ExternalItemBtDto;
+import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.domain.srm.dto.ComponentDto;
 import org.siemac.metamac.domain.srm.dto.DataAttributeDto;
 import org.siemac.metamac.domain.srm.dto.DescriptorDto;
@@ -102,14 +102,14 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
 
     public interface DsdAttributesTabView extends View, HasUiHandlers<DsdAttributesTabUiHandlers> {
 
-        void setConcepts(List<ExternalItemBtDto> concepts);
-        void setConceptSchemes(List<ExternalItemBtDto> conceptSchemes);
-        void setRoleConcepts(List<ExternalItemBtDto> roleConcepts);
+        void setConcepts(List<ExternalItemDto> concepts);
+        void setConceptSchemes(List<ExternalItemDto> conceptSchemes);
+        void setRoleConcepts(List<ExternalItemDto> roleConcepts);
         HasChangeHandlers onConceptSchemeChange();
         HasChangeHandlers onConceptChange();
         HasChangeHandlers onRoleConceptSchemeChange();
 
-        void setCodeLists(List<ExternalItemBtDto> codeLists);
+        void setCodeLists(List<ExternalItemDto> codeLists);
         HasSelectionChangedHandlers onAttributeSelected();
         HasChangeHandlers onRepresentationTypeChange();
 
@@ -301,7 +301,7 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
                 if (event.getSelection() != null && event.getSelection().length == 1) {
                     AttributeRecord record = (AttributeRecord) event.getSelectedRecord();
                     if (record != null && record.getDataAttributeDto() != null) {
-                        selectedConceptUri = record.getDataAttributeDto().getCptIdRef() != null ? record.getDataAttributeDto().getCptIdRef().getCodeId() : null;
+                        selectedConceptUri = record.getDataAttributeDto().getCptIdRef() != null ? record.getDataAttributeDto().getCptIdRef().getCode() : null;
                         enumeratedRepresentation = TypeRepresentationEnum.ENUMERATED.equals(record.getDataAttributeDto().getLocalRepresentation() != null ? record.getDataAttributeDto()
                                 .getLocalRepresentation().getTypeRepresentationEnum() : "");
                     }

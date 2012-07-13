@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import org.siemac.metamac.core.common.dto.ExternalItemBtDto;
+import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.domain.srm.dto.DimensionComponentDto;
 import org.siemac.metamac.domain.srm.dto.FacetDto;
@@ -70,9 +70,9 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTabUiHandlers> implements DsdDimensionsTabPresenter.DsdDimensionsTabView {
 
     private DimensionComponentDto       dimensionComponentDto;
-    private List<ExternalItemBtDto>     codeLists;
-    private List<ExternalItemBtDto>     conceptSchemes;
-    private List<ExternalItemBtDto>     concepts;
+    private List<ExternalItemDto>       codeLists;
+    private List<ExternalItemDto>       conceptSchemes;
+    private List<ExternalItemDto>       concepts;
 
     private VLayout                     panel;
     private VLayout                     selectedComponentLayout;
@@ -507,11 +507,11 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
     }
 
     @Override
-    public void setConceptSchemes(List<ExternalItemBtDto> conceptSchemes) {
+    public void setConceptSchemes(List<ExternalItemDto> conceptSchemes) {
         this.conceptSchemes = conceptSchemes;
         LinkedHashMap<String, String> map = new LinkedHashMap<String, String>();
-        for (ExternalItemBtDto scheme : conceptSchemes) {
-            map.put(scheme.getCodeId(), scheme.getCodeId());
+        for (ExternalItemDto scheme : conceptSchemes) {
+            map.put(scheme.getCode(), scheme.getCode());
         }
         conceptItem.setSchemesValueMap(map);
         roleItem.setConceptSchemesValueMap(map);
@@ -519,26 +519,26 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
     }
 
     @Override
-    public void setConcepts(List<ExternalItemBtDto> concepts) {
+    public void setConcepts(List<ExternalItemDto> concepts) {
         this.concepts = concepts;
         LinkedHashMap<String, String> conceptsMap = new LinkedHashMap<String, String>();
-        for (ExternalItemBtDto concept : concepts) {
-            conceptsMap.put(concept.getCodeId(), concept.getCodeId());
+        for (ExternalItemDto concept : concepts) {
+            conceptsMap.put(concept.getCode(), concept.getCode());
         }
         conceptItem.setItemsValueMap(conceptsMap);
     }
 
     @Override
-    public void setRoleConcepts(List<ExternalItemBtDto> roleConcepts) {
+    public void setRoleConcepts(List<ExternalItemDto> roleConcepts) {
         roleItem.setConcepts(roleConcepts);
     }
 
     @Override
-    public void setCodeLists(List<ExternalItemBtDto> codeLists) {
+    public void setCodeLists(List<ExternalItemDto> codeLists) {
         this.codeLists = codeLists;
         LinkedHashMap<String, String> codeListsMap = new LinkedHashMap<String, String>();
-        for (ExternalItemBtDto codeList : codeLists) {
-            codeListsMap.put(codeList.getCodeId(), codeList.getCodeId());
+        for (ExternalItemDto codeList : codeLists) {
+            codeListsMap.put(codeList.getCode(), codeList.getCode());
         }
         codeListItem.setValueMap(codeListsMap);
     }
@@ -554,7 +554,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         // Role
         dimensionComponentDto.getRole().clear();
         if (!TypeDimensionComponent.TIMEDIMENSION.equals(dimensionComponentDto.getTypeDimensionComponent())) {
-            List<ExternalItemBtDto> roleConcepts = roleItem.getSelectedConcepts();
+            List<ExternalItemDto> roleConcepts = roleItem.getSelectedConcepts();
             dimensionComponentDto.getRole().addAll(roleConcepts);
         }
 
@@ -573,9 +573,9 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
             if (TypeRepresentationEnum.ENUMERATED.equals(representationType)) {
                 dimensionComponentDto.getLocalRepresentation().setTypeRepresentationEnum(TypeRepresentationEnum.ENUMERATED);
                 if (TypeDimensionComponent.MEASUREDIMENSION.equals(dimensionComponentDto.getTypeDimensionComponent())) {
-                    dimensionComponentDto.getLocalRepresentation().setEnumerated(ExternalItemUtils.getExternalItemBtDtoFromCodeId(conceptSchemes, conceptSchemeItem.getValueAsString()));
+                    dimensionComponentDto.getLocalRepresentation().setEnumerated(ExternalItemUtils.getExternalItemDtoFromCodeId(conceptSchemes, conceptSchemeItem.getValueAsString()));
                 } else {
-                    dimensionComponentDto.getLocalRepresentation().setEnumerated(ExternalItemUtils.getExternalItemBtDtoFromCodeId(codeLists, codeListItem.getValueAsString()));
+                    dimensionComponentDto.getLocalRepresentation().setEnumerated(ExternalItemUtils.getExternalItemDtoFromCodeId(codeLists, codeListItem.getValueAsString()));
                 }
                 dimensionComponentDto.getLocalRepresentation().setNonEnumerated(null);
                 // Facet
@@ -636,12 +636,12 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
                 MetamacSrmWeb.getCoreMessages().typeDimensionComponent() + dimensionComponentDto.getTypeDimensionComponent().toString());
         staticTypeItem.setValue(value);
         // Concept
-        staticConceptItem.setValue(dimensionComponentDto.getCptIdRef() == null ? null : dimensionComponentDto.getCptIdRef().getCodeId());
+        staticConceptItem.setValue(dimensionComponentDto.getCptIdRef() == null ? null : dimensionComponentDto.getCptIdRef().getCode());
         // Role
         staticRoleItem.hide();
         staticRoleItem.clearValue();
         if (!TypeDimensionComponent.TIMEDIMENSION.equals(dimensionComponentDto.getTypeDimensionComponent())) {
-            List<ExternalItemBtDto> roleConcepts = new ArrayList<ExternalItemBtDto>(dimensionComponentDto.getRole());
+            List<ExternalItemDto> roleConcepts = new ArrayList<ExternalItemDto>(dimensionComponentDto.getRole());
             staticRoleItem.setValue(CommonUtils.getRoleListToString(roleConcepts));
             staticRoleItem.show();
         }
@@ -661,14 +661,14 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
                 if (TypeExternalArtefactsEnum.CODELIST.equals(dimensionComponentDto.getLocalRepresentation().getEnumerated().getType())) {
                     staticRepresentationTypeItem.setValue(MetamacSrmWeb.getCoreMessages().typeRepresentationEnumENUMERATED());
                     if (!TypeDimensionComponent.MEASUREDIMENSION.equals(dimensionComponentDto.getTypeDimensionComponent())) {
-                        staticCodeListItem.setValue(dimensionComponentDto.getLocalRepresentation().getEnumerated().getCodeId());
+                        staticCodeListItem.setValue(dimensionComponentDto.getLocalRepresentation().getEnumerated().getCode());
                         staticCodeListItem.show();
                     }
                     // ConceptScheme
                 } else if (TypeExternalArtefactsEnum.CONCEPT_SCHEME.equals(dimensionComponentDto.getLocalRepresentation().getEnumerated().getType())) {
                     staticRepresentationTypeItem.setValue(MetamacSrmWeb.getCoreMessages().typeRepresentationEnumENUMERATED());
                     if (TypeDimensionComponent.MEASUREDIMENSION.equals(dimensionComponentDto.getTypeDimensionComponent())) {
-                        staticConceptSchemeItem.setValue(dimensionComponentDto.getLocalRepresentation().getEnumerated().getCodeId());
+                        staticConceptSchemeItem.setValue(dimensionComponentDto.getLocalRepresentation().getEnumerated().getCode());
                         staticConceptSchemeItem.show();
                     }
                 }
@@ -727,7 +727,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
                     // ConceptScheme
                 } else if (TypeExternalArtefactsEnum.CONCEPT_SCHEME.equals(dimensionComponentDto.getLocalRepresentation().getEnumerated().getType())) {
                     if (TypeDimensionComponent.MEASUREDIMENSION.equals(dimensionComponentDto.getTypeDimensionComponent())) {
-                        conceptSchemeItem.setValue(dimensionComponentDto.getLocalRepresentation().getEnumerated().getCodeId());
+                        conceptSchemeItem.setValue(dimensionComponentDto.getLocalRepresentation().getEnumerated().getCode());
                     }
                 }
                 // Facet

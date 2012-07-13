@@ -3,7 +3,7 @@ package org.siemac.metamac.srm.web.dsd.presenter;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.siemac.metamac.core.common.dto.ExternalItemBtDto;
+import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.domain.srm.dto.ComponentDto;
 import org.siemac.metamac.domain.srm.dto.DescriptorDto;
 import org.siemac.metamac.domain.srm.dto.DimensionComponentDto;
@@ -96,14 +96,14 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
 
     public interface DsdDimensionsTabView extends View, HasUiHandlers<DsdDimensionsTabUiHandlers> {
 
-        void setConceptSchemes(List<ExternalItemBtDto> conceptSchemes);
-        void setConcepts(List<ExternalItemBtDto> concepts);
-        void setRoleConcepts(List<ExternalItemBtDto> roleConcepts);
+        void setConceptSchemes(List<ExternalItemDto> conceptSchemes);
+        void setConcepts(List<ExternalItemDto> concepts);
+        void setRoleConcepts(List<ExternalItemDto> roleConcepts);
         HasChangeHandlers onConceptSchemeChange();
         HasChangeHandlers onConceptChange();
         HasChangeHandlers onRoleConceptSchemeChange();
 
-        void setCodeLists(List<ExternalItemBtDto> codeLists);
+        void setCodeLists(List<ExternalItemDto> codeLists);
         HasSelectionChangedHandlers onDimensionSelected();
         HasChangeHandlers onRepresentationTypeChange();
 
@@ -216,7 +216,7 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
                 if (event.getSelection() != null && event.getSelection().length == 1) {
                     DimensionRecord record = (DimensionRecord) event.getSelectedRecord();
                     if (record != null && record.getDimensionComponentDto() != null) {
-                        selectedConceptUri = record.getDimensionComponentDto().getCptIdRef() != null ? record.getDimensionComponentDto().getCptIdRef().getCodeId() : null;
+                        selectedConceptUri = record.getDimensionComponentDto().getCptIdRef() != null ? record.getDimensionComponentDto().getCptIdRef().getCode() : null;
                         enumeratedRepresentation = TypeRepresentationEnum.ENUMERATED.equals(record.getDimensionComponentDto().getLocalRepresentation() != null ? record.getDimensionComponentDto()
                                 .getLocalRepresentation().getTypeRepresentationEnum() : "");
                     }

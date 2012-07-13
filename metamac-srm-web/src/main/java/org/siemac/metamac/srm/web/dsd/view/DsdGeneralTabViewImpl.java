@@ -198,7 +198,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         staticVersion.setValue(dsd.getVersionLogic());
         staticNameItem.setValue(dsd.getName());
         staticDescriptionItem.setValue(dsd.getDescription());
-        staticAgency.setValue(dsd.getMaintainer() != null ? dsd.getMaintainer().getCodeId() : "");
+        staticAgency.setValue(dsd.getMaintainer() != null ? dsd.getMaintainer().getCode() : "");
         staticFinalItem.setValue((dsd.getFinalLogic() != null && dsd.getFinalLogic()) ? MetamacSrmWeb.getConstants().yes() : MetamacSrmWeb.getConstants().no());
         staticStartDateItem.setValue(dsd.getValidFrom());
         staticEndDateItem.setValue(dsd.getValidTo());
@@ -213,7 +213,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         staticVersionEdit.setValue(dsd.getVersionLogic());
         nameItem.setValue(dsd.getName());
         descriptionItem.setValue(dsd.getDescription());
-        staticAgencyEdit.setValue(dsd.getMaintainer() != null ? dsd.getMaintainer().getCodeId() : "");
+        staticAgencyEdit.setValue(dsd.getMaintainer() != null ? dsd.getMaintainer().getCode() : "");
         staticFinalItemEdit.setValue((dsd.getFinalLogic() != null && dsd.getFinalLogic()) ? MetamacSrmWeb.getConstants().yes() : MetamacSrmWeb.getConstants().no());
         staticStartDateItemEdit.setValue(dsd.getValidFrom());
         staticEndDateItemEdit.setValue(dsd.getValidTo());

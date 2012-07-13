@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import org.siemac.metamac.core.common.dto.ExternalItemBtDto;
+import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.domain.srm.dto.DataAttributeDto;
 import org.siemac.metamac.domain.srm.dto.DescriptorDto;
 import org.siemac.metamac.domain.srm.dto.DimensionComponentDto;
@@ -71,8 +71,8 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTabUiHandlers> implements DsdAttributesTabPresenter.DsdAttributesTabView {
 
     private DataAttributeDto            dataAttributeDto;
-    private List<ExternalItemBtDto>     concepts;
-    private List<ExternalItemBtDto>     codeLists;
+    private List<ExternalItemDto>       concepts;
+    private List<ExternalItemDto>       codeLists;
     private List<DimensionComponentDto> dimensionComponentDtos;
     private List<DescriptorDto>         descriptorDtos;                              // Group Keys
 
@@ -502,36 +502,36 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
     }
 
     @Override
-    public void setConceptSchemes(List<ExternalItemBtDto> conceptSchemes) {
+    public void setConceptSchemes(List<ExternalItemDto> conceptSchemes) {
         LinkedHashMap<String, String> map = new LinkedHashMap<String, String>();
-        for (ExternalItemBtDto scheme : conceptSchemes) {
-            map.put(scheme.getCodeId(), scheme.getCodeId());
+        for (ExternalItemDto scheme : conceptSchemes) {
+            map.put(scheme.getCode(), scheme.getCode());
         }
         conceptItem.setSchemesValueMap(map);
         roleItem.setConceptSchemesValueMap(map);
     }
 
     @Override
-    public void setConcepts(List<ExternalItemBtDto> concepts) {
+    public void setConcepts(List<ExternalItemDto> concepts) {
         this.concepts = concepts;
         LinkedHashMap<String, String> conceptsMap = new LinkedHashMap<String, String>();
-        for (ExternalItemBtDto concept : concepts) {
-            conceptsMap.put(concept.getCodeId(), concept.getCodeId());
+        for (ExternalItemDto concept : concepts) {
+            conceptsMap.put(concept.getCode(), concept.getCode());
         }
         conceptItem.setItemsValueMap(conceptsMap);
     }
 
     @Override
-    public void setRoleConcepts(List<ExternalItemBtDto> roleConcepts) {
+    public void setRoleConcepts(List<ExternalItemDto> roleConcepts) {
         roleItem.setConcepts(roleConcepts);
     }
 
     @Override
-    public void setCodeLists(List<ExternalItemBtDto> codeLists) {
+    public void setCodeLists(List<ExternalItemDto> codeLists) {
         this.codeLists = codeLists;
         LinkedHashMap<String, String> codeListsMap = new LinkedHashMap<String, String>();
-        for (ExternalItemBtDto codeList : codeLists) {
-            codeListsMap.put(codeList.getCodeId(), codeList.getCodeId());
+        for (ExternalItemDto codeList : codeLists) {
+            codeListsMap.put(codeList.getCode(), codeList.getCode());
         }
         codeListItem.setValueMap(codeListsMap);
 
@@ -582,10 +582,10 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         staticIdLogic.setValue(dataAttributeDto.getIdLogic());
 
         // Concept
-        staticConceptItem.setValue(dataAttributeDto.getCptIdRef() == null ? null : dataAttributeDto.getCptIdRef().getCodeId());
+        staticConceptItem.setValue(dataAttributeDto.getCptIdRef() == null ? null : dataAttributeDto.getCptIdRef().getCode());
 
         // Role
-        List<ExternalItemBtDto> roleConcepts = new ArrayList<ExternalItemBtDto>(dataAttributeDto.getRole());
+        List<ExternalItemDto> roleConcepts = new ArrayList<ExternalItemDto>(dataAttributeDto.getRole());
         staticRoleItem.setValue(CommonUtils.getRoleListToString(roleConcepts));
 
         // Assignment Status
@@ -647,7 +647,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         if (dataAttributeDto.getLocalRepresentation() != null) {
             // Code List
             if (TypeRepresentationEnum.ENUMERATED.equals(dataAttributeDto.getLocalRepresentation().getTypeRepresentationEnum())) {
-                staticCodeListItem.setValue(dataAttributeDto.getLocalRepresentation().getEnumerated().getCodeId());
+                staticCodeListItem.setValue(dataAttributeDto.getLocalRepresentation().getEnumerated().getCode());
                 staticRepresentationTypeItem.setValue(MetamacSrmWeb.getCoreMessages().typeRepresentationEnumENUMERATED());
                 staticCodeListItem.show();
                 // Facet
@@ -757,7 +757,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
         // Role
         dataAttributeDto.getRole().clear();
-        List<ExternalItemBtDto> roleConcepts = roleItem.getSelectedConcepts();
+        List<ExternalItemDto> roleConcepts = roleItem.getSelectedConcepts();
         dataAttributeDto.getRole().addAll(roleConcepts);
 
         // Concept
@@ -803,7 +803,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
             // Code List
             if (TypeRepresentationEnum.ENUMERATED.equals(representationType)) {
                 dataAttributeDto.getLocalRepresentation().setTypeRepresentationEnum(TypeRepresentationEnum.ENUMERATED);
-                dataAttributeDto.getLocalRepresentation().setEnumerated(ExternalItemUtils.getExternalItemBtDtoFromCodeId(codeLists, codeListItem.getValueAsString()));
+                dataAttributeDto.getLocalRepresentation().setEnumerated(ExternalItemUtils.getExternalItemDtoFromCodeId(codeLists, codeListItem.getValueAsString()));
                 dataAttributeDto.getLocalRepresentation().setNonEnumerated(null);
                 // Facet
             } else if (TypeRepresentationEnum.TEXT_FORMAT.equals(representationType)) {

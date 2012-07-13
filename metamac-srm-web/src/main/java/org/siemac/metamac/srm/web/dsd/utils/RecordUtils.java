@@ -1,6 +1,6 @@
 package org.siemac.metamac.srm.web.dsd.utils;
 
-import org.siemac.metamac.core.common.dto.ExternalItemBtDto;
+import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.domain.srm.dto.AnnotationDto;
 import org.siemac.metamac.domain.srm.dto.DataAttributeDto;
 import org.siemac.metamac.domain.srm.dto.DescriptorDto;
@@ -28,7 +28,7 @@ public class RecordUtils {
     public static DimensionRecord getDimensionRecord(DimensionComponentDto dimensionComponentDto) {
         DimensionRecord dimensionRecord = new DimensionRecord(dimensionComponentDto.getId(), dimensionComponentDto.getIdLogic(), dimensionComponentDto.getCptIdRef() == null
                 ? null
-                : dimensionComponentDto.getCptIdRef().getCodeId(), MetamacSrmWeb.getCoreMessages().getString(
+                : dimensionComponentDto.getCptIdRef().getCode(), MetamacSrmWeb.getCoreMessages().getString(
                 MetamacSrmWeb.getCoreMessages().typeDimensionComponent() + dimensionComponentDto.getTypeDimensionComponent().getName()), dimensionComponentDto);
         return dimensionRecord;
     }
@@ -41,8 +41,8 @@ public class RecordUtils {
      */
     public static AttributeRecord getAttributeRecord(DataAttributeDto dataAttributeDto) {
         AttributeRecord record = new AttributeRecord(dataAttributeDto.getId(), dataAttributeDto.getIdLogic(), MetamacSrmWeb.getCoreMessages().getString(
-                MetamacSrmWeb.getCoreMessages().usageStatus() + dataAttributeDto.getUsageStatus().getName()), dataAttributeDto.getCptIdRef() == null ? null : dataAttributeDto.getCptIdRef()
-                .getCodeId(), dataAttributeDto);
+                MetamacSrmWeb.getCoreMessages().usageStatus() + dataAttributeDto.getUsageStatus().getName()), dataAttributeDto.getCptIdRef() == null ? null : dataAttributeDto.getCptIdRef().getCode(),
+                dataAttributeDto);
         return record;
     }
 
@@ -63,8 +63,8 @@ public class RecordUtils {
      * @param concept
      * @return
      */
-    public static ConceptRecord getConceptRecord(ExternalItemBtDto concept) {
-        ConceptRecord record = new ConceptRecord(concept.getCodeId(), null, concept.getCodeId(), concept);
+    public static ConceptRecord getConceptRecord(ExternalItemDto concept) {
+        ConceptRecord record = new ConceptRecord(concept.getCode(), null, concept.getCode(), concept);
         return record;
     }
 

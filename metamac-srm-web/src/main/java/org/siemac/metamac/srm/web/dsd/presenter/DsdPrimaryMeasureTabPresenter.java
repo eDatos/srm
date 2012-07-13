@@ -2,7 +2,7 @@ package org.siemac.metamac.srm.web.dsd.presenter;
 
 import java.util.List;
 
-import org.siemac.metamac.core.common.dto.ExternalItemBtDto;
+import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.domain.srm.dto.ComponentDto;
 import org.siemac.metamac.domain.srm.dto.DescriptorDto;
 import org.siemac.metamac.domain.srm.enume.domain.TypeComponent;
@@ -86,12 +86,12 @@ public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTa
 
     public interface DsdPrimaryMeasureTabView extends View, HasUiHandlers<DsdPrimaryMeasureTabUiHandlers> {
 
-        void setConceptSchemes(List<ExternalItemBtDto> concepts);
-        void setConcepts(List<ExternalItemBtDto> concepts);
+        void setConceptSchemes(List<ExternalItemDto> concepts);
+        void setConcepts(List<ExternalItemDto> concepts);
         HasChangeHandlers onConceptSchemeChange();
         HasChangeHandlers onConceptChange();
 
-        void setCodeLists(List<ExternalItemBtDto> codeLists);
+        void setCodeLists(List<ExternalItemDto> codeLists);
         HasChangeHandlers onRepresentationTypeChange();
 
         void setDsdPrimaryMeasure(ComponentDto componentDto);

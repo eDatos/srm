@@ -3,7 +3,7 @@ package org.siemac.metamac.srm.web.dsd.view;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.siemac.metamac.core.common.dto.ExternalItemBtDto;
+import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.core.common.util.shared.VersionUtil;
@@ -279,7 +279,7 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
         InternationalStringDto internationalName = InternationalStringUtils.updateInternationalString(new InternationalStringDto(), nameItem.getValueAsString());
         dsd.setName(internationalName);
         // TODO Organization (MaintainerIdLogic)
-        ExternalItemBtDto agency = new ExternalItemBtDto("uri:3421", "METAMAC_ORGANISATION", TypeExternalArtefactsEnum.AGENCY);
+        ExternalItemDto agency = new ExternalItemDto("agency_CODE", "uri:3421", "METAMAC_ORGANISATION", TypeExternalArtefactsEnum.AGENCY);
         dsd.setMaintainer(agency);
         // TODO Are this values correctly settled?
         dsd.setVersionLogic(VersionUtil.createNextVersionTag(null, false));

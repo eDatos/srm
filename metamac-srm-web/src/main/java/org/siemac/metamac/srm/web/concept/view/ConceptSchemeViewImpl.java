@@ -311,7 +311,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         contentDescriptorsForm.setValue(ConceptSchemeDS.IS_PARTIAL, (conceptSchemeDto.getIsPartial() != null && conceptSchemeDto.getIsPartial()) ? MetamacSrmWeb.getConstants().yes() : MetamacSrmWeb
                 .getConstants().no());
 
-        classDescriptorsForm.setValue(ConceptSchemeDS.AGENCY, conceptSchemeDto.getMaintainer() != null ? conceptSchemeDto.getMaintainer().getCodeId() : StringUtils.EMPTY);
+        classDescriptorsForm.setValue(ConceptSchemeDS.AGENCY, conceptSchemeDto.getMaintainer() != null ? conceptSchemeDto.getMaintainer().getCode() : StringUtils.EMPTY);
 
         productionDescriptorsForm.setValue(ConceptSchemeDS.PROC_STATUS, CommonUtils.getConceptSchemeProcStatus(conceptSchemeDto));
 
@@ -336,7 +336,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         contentDescriptorsEditionForm.setValue(ConceptSchemeDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(conceptSchemeDto.getDescription()));
         contentDescriptorsEditionForm.setValue(ConceptSchemeDS.IS_PARTIAL, conceptSchemeDto.getIsPartial() != null ? conceptSchemeDto.getIsPartial() : false);
 
-        classDescriptorsEditionForm.setValue(ConceptSchemeDS.AGENCY, conceptSchemeDto.getMaintainer() != null ? conceptSchemeDto.getMaintainer().getCodeId() : StringUtils.EMPTY);
+        classDescriptorsEditionForm.setValue(ConceptSchemeDS.AGENCY, conceptSchemeDto.getMaintainer() != null ? conceptSchemeDto.getMaintainer().getCode() : StringUtils.EMPTY);
 
         productionDescriptorsEditionForm.setValue(ConceptSchemeDS.PROC_STATUS, CommonUtils.getConceptSchemeProcStatus(conceptSchemeDto));
 

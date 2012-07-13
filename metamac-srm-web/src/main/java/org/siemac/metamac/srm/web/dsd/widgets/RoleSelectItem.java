@@ -5,7 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
 
-import org.siemac.metamac.core.common.dto.ExternalItemBtDto;
+import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.dsd.model.record.ConceptRecord;
 import org.siemac.metamac.srm.web.dsd.utils.RecordUtils;
@@ -125,10 +125,10 @@ public class RoleSelectItem extends CustomCanvasItem {
         conceptSchemeItem.setValueMap(map);
     }
 
-    public void setConcepts(List<ExternalItemBtDto> concepts) {
+    public void setConcepts(List<ExternalItemDto> concepts) {
         conceptsList.selectAllRecords();
         conceptsList.removeSelectedData();
-        for (ExternalItemBtDto concept : concepts) {
+        for (ExternalItemDto concept : concepts) {
             ConceptRecord record = RecordUtils.getConceptRecord(concept);
             conceptsList.addData(record);
         }
@@ -138,8 +138,8 @@ public class RoleSelectItem extends CustomCanvasItem {
         return conceptSchemeItem;
     }
 
-    public List<ExternalItemBtDto> getSelectedConcepts() {
-        List<ExternalItemBtDto> selectedConcepts = new ArrayList<ExternalItemBtDto>();
+    public List<ExternalItemDto> getSelectedConcepts() {
+        List<ExternalItemDto> selectedConcepts = new ArrayList<ExternalItemDto>();
         ListGridRecord[] records = roleList.getRecords();
         for (int i = 0; i < records.length; i++) {
             ConceptRecord record = (ConceptRecord) records[i];
@@ -148,8 +148,8 @@ public class RoleSelectItem extends CustomCanvasItem {
         return selectedConcepts;
     }
 
-    public void setRoleConcepts(Set<ExternalItemBtDto> roleConcepts) {
-        for (ExternalItemBtDto concept : roleConcepts) {
+    public void setRoleConcepts(Set<ExternalItemDto> roleConcepts) {
+        for (ExternalItemDto concept : roleConcepts) {
             ConceptRecord record = RecordUtils.getConceptRecord(concept);
             roleList.addData(record);
         }
