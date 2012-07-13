@@ -33,6 +33,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.common.test.mock.OracleJNDIMock;
+import org.siemac.metamac.common.test.utils.DirtyDatabase;
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.dto.LocalisedStringDto;
 import org.siemac.metamac.core.common.exception.MetamacException;
@@ -69,7 +70,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/srm/applicationContext-test.xml"})
-@TransactionConfiguration(transactionManager="txManagerCore", defaultRollback=true)
+@TransactionConfiguration(transactionManager="txManagerCore", defaultRollback=false)
 @Transactional
 public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServiceFacadeTestBase {
 

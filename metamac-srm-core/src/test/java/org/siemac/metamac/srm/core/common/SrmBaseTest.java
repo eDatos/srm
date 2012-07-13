@@ -55,10 +55,10 @@ public abstract class SrmBaseTest extends MetamacBaseTests {
         tables.add("TB_ANNOTATIONS");
         tables.add("TB_DIMREL_GROUPDIM");
         tables.add("TB_DIMREL_DIMCOM");
+        tables.add("TB_DIMENSIONS_EI_ROLES");
+        tables.add("TB_DATA_ATTRIBUTES_EI_ROLES");
+        tables.add("TB_MEASURE_DIMEN_EI_ROLES");
         tables.add("TB_ATTR_RELATIONSHIPS");
-        tables.add("TB_DIMC_EXTITEM");
-        tables.add("TB_MEAD_EXTITEM");
-        tables.add("TB_DATTR_EXTITEM");
         tables.add("TB_EXTERNAL_ITEMS");
         tables.add("TB_CONCEPTS");
         tables.add("TB_CONCEPT_SCHEMES");
