@@ -21,6 +21,7 @@ import org.siemac.metamac.core.common.exception.ExceptionLevelEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.core.common.exception.utils.ExceptionUtils;
+import org.siemac.metamac.core.common.util.GeneratorUrnUtils;
 import org.siemac.metamac.domain.srm.dto.AnnotableArtefactDto;
 import org.siemac.metamac.domain.srm.dto.AnnotationDto;
 import org.siemac.metamac.domain.srm.dto.ComponentDto;
@@ -207,14 +208,10 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
                 ((IdentifiableArtefact) result).setIdLogic(fixedID);
             }
 
-            // URI
-            if (StringUtils.isEmpty(((IdentifiableArtefact) result).getUri())) {
-                ((IdentifiableArtefact) result).setUri(SdmxToolsServer.generateUri());
-            }
-
             // URN
             if (StringUtils.isEmpty(((IdentifiableArtefact) result).getUrn())) {
-                ((IdentifiableArtefact) result).setUrn(SdmxToolsServer.generateInternalUrn(result));
+                // TODO: lanzar excepcion, en este punto ya se ha tenido que crear la URN (responsabilidad de los métodos que llaman a este)
+//                ((IdentifiableArtefact) result).setUrn(SdmxToolsServer.generateInternalUrn(result));
             }
         } else if (result instanceof Annotation) {
             // IdLogic
@@ -227,11 +224,6 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
                 }
             } else {
                 ((Annotation) result).setIdLogic(fixedID);
-            }
-
-            // URI
-            if (StringUtils.isEmpty(((Annotation) result).getUrl())) {
-                ((Annotation) result).setUrl(SdmxToolsServer.generateUri());
             }
         }
 

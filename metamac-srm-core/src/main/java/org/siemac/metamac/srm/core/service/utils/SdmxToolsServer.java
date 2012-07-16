@@ -90,46 +90,6 @@ public class SdmxToolsServer {
         return aux.toString();
     }
 
-    public static String generateUri() {
-        // StringBuilder aux = new StringBuilder("http://www.gobiernodecanarias.org/istac");
-        // aux.append("/").append(RandomStringUtils.randomAlphanumeric(5));
-        // aux.append("/").append(RandomStringUtils.randomAlphanumeric(5));
-        // aux.append("/").append(RandomStringUtils.randomAlphanumeric(5));
-        // aux.append("/").append(RandomStringUtils.randomAlphanumeric(5));
-        //
-        // return aux.toString();
-
-        return null;
-    }
-
-    public static String generateInternalUrn(Object element) {
-
-        // if (element instanceof DimensionListType) {
-        // return null;
-        // }
-        // else if (element instanceof DimensionType) {
-        // return null;
-        // }
-        // else if (element instanceof TimeDimensionType) {
-        // return null;
-        // }
-        // else if (element instanceof AttributeListType) {
-        // return null;
-        // }
-        //
-        // // Example: urn:istac:sdmx:0000-0000-9E59-0000-O-0000-0000-2
-        // StringBuilder aux = new StringBuilder("urn:istac:sdmx");
-        // aux.append(":").append(element.getClass().getSimpleName());
-        // aux.append(":").append(RandomStringUtils.randomAlphanumeric(5));
-        // aux.append(":").append(RandomStringUtils.randomAlphanumeric(5));
-        // aux.append(":").append(RandomStringUtils.randomAlphanumeric(5));
-        // aux.append(":").append(RandomStringUtils.randomAlphanumeric(5));
-        //
-        // return aux.toString();
-
-        return null;
-    }
-
     /**
      * Used to check whether to delete orphan entities manually.
      * 
