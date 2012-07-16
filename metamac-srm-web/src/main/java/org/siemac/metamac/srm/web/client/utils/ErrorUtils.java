@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.web.common.client.utils.CommonErrorUtils;
+import org.siemac.metamac.web.common.shared.constants.CommonSharedConstants;
 import org.siemac.metamac.web.common.shared.exception.MetamacWebException;
 import org.siemac.metamac.web.common.shared.exception.MetamacWebExceptionItem;
 
@@ -18,7 +19,7 @@ public class ErrorUtils extends CommonErrorUtils {
                 list.add(alternativeMessage);
             } else {
                 for (MetamacWebExceptionItem item : metamacExceptionItems) {
-                    if (EXCEPTION_UNKNOWN.equals(item.getCode())) {
+                    if (CommonSharedConstants.EXCEPTION_UNKNOWN.equals(item.getCode())) {
                         // If exception code is EXCEPTION_UNKNOWN, show alternative message
                         list.add(alternativeMessage);
                     } else {
