@@ -6,6 +6,7 @@ import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.dsd.utils.CommonUtils;
 import org.siemac.metamac.srm.web.dsd.utils.FacetFormUtils;
 import org.siemac.metamac.web.common.client.utils.FormItemUtils;
+import org.siemac.metamac.web.common.client.utils.SDMXCommonWebValidatorsV2_1;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomFloatItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomIntegerItem;
@@ -14,23 +15,19 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredSelectIt
 
 import com.smartgwt.client.types.Visibility;
 import com.smartgwt.client.widgets.form.fields.CheckboxItem;
-import com.smartgwt.client.widgets.form.fields.FloatItem;
-import com.smartgwt.client.widgets.form.fields.IntegerItem;
-import com.smartgwt.client.widgets.form.fields.SelectItem;
-import com.smartgwt.client.widgets.form.fields.TextItem;
 
 public class FacetForm extends GroupDynamicForm {
 
     private RequiredSelectItem textType;
     private CheckboxItem       isSequence;
-    private CustomFloatItem    interval;
+    private CustomTextItem     minLength;
+    private CustomTextItem     maxLength;
     private CustomFloatItem    startValue;
     private CustomFloatItem    endValue;
+    private CustomFloatItem    interval;
     private CustomTextItem     timeInterval;
     private CustomTextItem     startTime;
     private CustomTextItem     endTime;
-    private CustomIntegerItem  minLength;
-    private CustomIntegerItem  maxLength;
     private CustomFloatItem    minValue;
     private CustomFloatItem    maxValue;
     private CustomIntegerItem  decimals;
@@ -49,8 +46,13 @@ public class FacetForm extends GroupDynamicForm {
         isSequence.setLabelAsTitle(true);
         isSequence.setShowIfCondition(FacetFormUtils.getIsSequenceIfFunction());
 
-        interval = new CustomFloatItem("interval-attr", MetamacSrmWeb.getConstants().dsdRepresentationInterval());
-        interval.setShowIfCondition(FacetFormUtils.getIntervalIfFunction());
+        minLength = new CustomTextItem("min-length-attr", MetamacSrmWeb.getConstants().dsdRepresentationMinLength());
+        minLength.setShowIfCondition(FacetFormUtils.getMinLengthIfFunction());
+        minLength.setValidators(FormItemUtils.getPositiveIntegerValidator());
+
+        maxLength = new CustomTextItem("max-length", MetamacSrmWeb.getConstants().dsdRepresentationMaxLength());
+        maxLength.setShowIfCondition(FacetFormUtils.getMaxLengthIfFunction());
+        maxLength.setValidators(FormItemUtils.getPositiveIntegerValidator());
 
         startValue = new CustomFloatItem("start-value-attr", MetamacSrmWeb.getConstants().dsdRepresentationStartValue());
         startValue.setShowIfCondition(FacetFormUtils.getStartValueIfFunction());
@@ -58,20 +60,18 @@ public class FacetForm extends GroupDynamicForm {
         endValue = new CustomFloatItem("end-value-attr", MetamacSrmWeb.getConstants().dsdRepresentationEndValue());
         endValue.setShowIfCondition(FacetFormUtils.getEndValueIfFunction());
 
+        interval = new CustomFloatItem("interval-attr", MetamacSrmWeb.getConstants().dsdRepresentationInterval());
+        interval.setShowIfCondition(FacetFormUtils.getIntervalIfFunction());
+
         timeInterval = new CustomTextItem("time-interval-attr", MetamacSrmWeb.getConstants().dsdRepresentationTimeInterval());
         timeInterval.setShowIfCondition(FacetFormUtils.getTimeIntervalIfFunction());
 
         startTime = new CustomTextItem("start-time-attr", MetamacSrmWeb.getConstants().dsdRepresentationStartTime());
         startTime.setShowIfCondition(FacetFormUtils.getStartTimeIfFunction());
+        startTime.setValidators(SDMXCommonWebValidatorsV2_1.getBasicTimePeriodValidator());
 
         endTime = new CustomTextItem("end-time-attr", MetamacSrmWeb.getConstants().dsdRepresentationEndTime());
         endTime.setShowIfCondition(FacetFormUtils.getEndTimeIfFunction());
-
-        minLength = new CustomIntegerItem("min-length-attr", MetamacSrmWeb.getConstants().dsdRepresentationMinLength());
-        minLength.setShowIfCondition(FacetFormUtils.getMinLengthIfFunction());
-
-        maxLength = new CustomIntegerItem("max-length", MetamacSrmWeb.getConstants().dsdRepresentationMaxLength());
-        maxLength.setShowIfCondition(FacetFormUtils.getMaxLengthIfFunction());
 
         minValue = new CustomFloatItem("min-value-attr", MetamacSrmWeb.getConstants().dsdRepresentationMinValue());
         minValue.setShowIfCondition(FacetFormUtils.getMinValueIfFunction());
@@ -85,7 +85,7 @@ public class FacetForm extends GroupDynamicForm {
         pattern = new CustomTextItem("pattern-attr", MetamacSrmWeb.getConstants().dsdRepresentationPattern());
         pattern.setShowIfCondition(FacetFormUtils.getPatternIfFunction());
 
-        setFields(textType, isSequence, interval, startValue, endValue, timeInterval, startTime, endTime, minLength, maxLength, minValue, maxValue, decimals, pattern);
+        setFields(textType, minLength, maxLength, isSequence, startValue, endValue, interval, timeInterval, startTime, endTime, minValue, maxValue, decimals, pattern);
     }
 
     public void setFacet(FacetDto facetDto) {
@@ -127,7 +127,7 @@ public class FacetForm extends GroupDynamicForm {
         return facetDto;
     }
 
-    public SelectItem getTextType() {
+    public RequiredSelectItem getTextType() {
         return textType;
     }
 
@@ -135,51 +135,51 @@ public class FacetForm extends GroupDynamicForm {
         return isSequence;
     }
 
-    public FloatItem getInterval() {
+    public CustomFloatItem getInterval() {
         return interval;
     }
 
-    public FloatItem getStartValue() {
+    public CustomFloatItem getStartValue() {
         return startValue;
     }
 
-    public FloatItem getEndValue() {
+    public CustomFloatItem getEndValue() {
         return endValue;
     }
 
-    public TextItem getTimeInterval() {
+    public CustomTextItem getTimeInterval() {
         return timeInterval;
     }
 
-    public TextItem getStartTime() {
+    public CustomTextItem getStartTime() {
         return startTime;
     }
 
-    public TextItem getEndTime() {
+    public CustomTextItem getEndTime() {
         return endTime;
     }
 
-    public IntegerItem getMinLength() {
+    public CustomTextItem getMinLength() {
         return minLength;
     }
 
-    public IntegerItem getMaxLength() {
+    public CustomTextItem getMaxLength() {
         return maxLength;
     }
 
-    public FloatItem getMinValue() {
+    public CustomFloatItem getMinValue() {
         return minValue;
     }
 
-    public FloatItem getMaxValue() {
+    public CustomFloatItem getMaxValue() {
         return maxValue;
     }
 
-    public IntegerItem getDecimals() {
+    public CustomIntegerItem getDecimals() {
         return decimals;
     }
 
-    public TextItem getPattern() {
+    public CustomTextItem getPattern() {
         return pattern;
     }
 
