@@ -1,13 +1,22 @@
 package org.siemac.metamac.srm.core.service.dto;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.dozer.DozerBeanMapper;
 import org.dozer.MappingException;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
+import org.joda.time.DateTime;
+import org.siemac.metamac.access.control.error.ServiceExceptionType;
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.dto.LocalisedStringDto;
@@ -17,11 +26,15 @@ import org.siemac.metamac.core.common.ent.domain.InternationalString;
 import org.siemac.metamac.core.common.ent.domain.InternationalStringRepository;
 import org.siemac.metamac.core.common.ent.domain.LocalisedString;
 import org.siemac.metamac.core.common.ent.exception.ExternalItemNotFoundException;
+import org.siemac.metamac.core.common.exception.CommonServiceExceptionType;
 import org.siemac.metamac.core.common.exception.ExceptionLevelEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.core.common.exception.utils.ExceptionUtils;
-import org.siemac.metamac.core.common.util.GeneratorUrnUtils;
+import org.siemac.metamac.core.common.serviceimpl.utils.ValidationUtils;
+import org.siemac.metamac.core.common.util.CoreCommonUtil;
+import org.siemac.metamac.core.common.util.OptimisticLockingUtils;
 import org.siemac.metamac.domain.srm.dto.AnnotableArtefactDto;
 import org.siemac.metamac.domain.srm.dto.AnnotationDto;
 import org.siemac.metamac.domain.srm.dto.ComponentDto;
@@ -46,6 +59,7 @@ import org.siemac.metamac.srm.core.base.domain.ComponentListRepository;
 import org.siemac.metamac.srm.core.base.domain.ComponentRepository;
 import org.siemac.metamac.srm.core.base.domain.EnumeratedRepresentation;
 import org.siemac.metamac.srm.core.base.domain.Facet;
+import org.siemac.metamac.srm.core.base.domain.FacetRepository;
 import org.siemac.metamac.srm.core.base.domain.IdentifiableArtefact;
 import org.siemac.metamac.srm.core.base.domain.MaintainableArtefact;
 import org.siemac.metamac.srm.core.base.domain.NameableArtefact;
@@ -57,6 +71,7 @@ import org.siemac.metamac.srm.core.base.exception.ComponentNotFoundException;
 import org.siemac.metamac.srm.core.base.serviceapi.BaseService;
 import org.siemac.metamac.srm.core.base.serviceimpl.utils.BaseInvocationValidator;
 import org.siemac.metamac.srm.core.common.error.MetamacCoreExceptionType;
+import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.service.utils.SdmxToolsServer;
 import org.siemac.metamac.srm.core.service.utils.ValidationUtil;
 import org.siemac.metamac.srm.core.structure.domain.AttributeDescriptor;
@@ -91,8 +106,8 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
     @Autowired
     private ComponentRepository               componentRepository;
 
-    @Autowired
-    private ComponentListRepository           componentListRepository;
+//    @Autowired
+//    private ComponentListRepository           componentListRepository;
 
     @Autowired
     private DataStructureDefinitionRepository dataStructureDefinitionRepository;
@@ -111,6 +126,9 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
 
     @Autowired
     private ExternalItemRepository            externalItemRepository;
+    
+    @Autowired
+    private FacetRepository                   facetRepository;
 
     /**************************************************************************
      * GETTERS
@@ -119,9 +137,9 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         return componentRepository;
     }
 
-    protected ComponentListRepository getComponentListRepository() {
-        return componentListRepository;
-    }
+//    protected ComponentListRepository getComponentListRepository() {
+//        return componentListRepository;
+//    }
 
     protected DataStructureDefinitionRepository getDataStructureDefinitionRepository() {
         return dataStructureDefinitionRepository;
@@ -146,13 +164,19 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
     public ExternalItemRepository getExternalItemRepository() {
         return externalItemRepository;
     }
+    
+    public FacetRepository getFacetRepository() {
+        return facetRepository;
+    }
+    
     /**************************************************************************
      * PRIVATE
      **************************************************************************/
-    private <T> T mapToEntity(Object source, Class<T> destinationClass) {
+/*    private <T> T mapToEntity(Object source, Class<T> destinationClass) {
         if (source == null) {
             return null;
         }
+*/        
         // TODO obtener el objeto de bbdd en vez de que dozer haga un new de la instancia, con esto se consigue que...
         // si tenemos un dto parcial (no con todas los campos de la entidad) sino solo con algunos la actualización sobre bbdd no machaque los campos que pudiera haber.
         // Con esto perderíamos el optimistick loocking, porque el objeto recibido de hibernate tiene la version de la bbdd y aunque se setee a la del dto se lo pasa
@@ -192,7 +216,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
          * result = mapperCoreUpdateMode.map(source, destinationClass);
          * }
          */
-
+/*
         T result = mapperCoreUpdateMode.map(source, destinationClass);
 
         if (result instanceof IdentifiableArtefact) {
@@ -229,114 +253,852 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
 
         return result;
     }
-
-    private InternationalString internationalStringToEntity(InternationalStringDto internationalStringDto, InternationalString internationalStringOlder) {
-        if (internationalStringDto == null) {
+*/
+    /**
+     * @param source Dto to transform
+     * @param older Current Entity for this Dto, null if is new
+     * @param metadataName Parameter name's on the internationalString relationship
+     * @return
+     */
+    private InternationalString internationalStringToEntity(ServiceContext ctx, InternationalStringDto source, InternationalString older, String metadataName) {
+        if (source == null) {
             // Delete old entity
-            if (internationalStringOlder != null) {
-                getInternationalStringRepository().delete(internationalStringOlder);
+            if (older != null) {
+                getInternationalStringRepository().delete(older);
             }
-
             return null;
         }
-        // NAME
-        // InternationalStringDTO to InternationalString
-
-        // Avoid the appearance of trash.
-        if (internationalStringOlder != null) {
-            internationalStringDto.setId(internationalStringOlder.getId());
-            internationalStringDto.setVersion(internationalStringOlder.getVersion());
+        
+        if (older == null) {
+            older = new InternationalString();
+        }
+        
+        // Validate InternationalString and Localiseds
+        if (ValidationUtils.isEmpty(source)) {
+            throw new MetamacException(MetamacCoreExceptionType.METADATA_REQUIRED, metadataName);
         }
 
-        InternationalString internationalString = mapToEntity(internationalStringDto, InternationalString.class);
-
-        // LocalisedStringDto to LocalisedString
-        for (LocalisedStringDto item : internationalStringDto.getTexts()) {
-            if (StringUtils.isNotBlank(item.getLabel())) {
-                internationalString.addText(mapToEntity(item, LocalisedString.class));
+        // Create a MAP with all soruce locales
+        Map<String, LocalisedStringDto> sourceTextMap = new HashMap<String, LocalisedStringDto>();
+        for (LocalisedStringDto sourceLocalisedDto: source.getTexts()) {
+            sourceTextMap.put(sourceLocalisedDto.getLocale(), sourceLocalisedDto);
+        }
+        
+        for (LocalisedString targetLocalised: older.getTexts()) {
+            // If a locale update?
+            if (sourceTextMap.containsKey(targetLocalised.getLocale())) {
+                targetLocalised.setLabel(sourceTextMap.get(targetLocalised.getLocale()).getLabel()); // update label
+                sourceTextMap.remove(targetLocalised.getLocale());
+            }
+            else {
+                // Remove this locale
+                older.removeText(targetLocalised);
             }
         }
+        
+        // New locales
+        Iterator<Entry<String, LocalisedStringDto>> it = sourceTextMap.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry<String, LocalisedStringDto> newEntry = it.next();
+            
+            LocalisedString newLocale = new LocalisedString();
+            newLocale.setLabel(newEntry.getValue().getLabel());
+            newLocale.setLocale(newEntry.getKey());
+            
+            older.addText(newLocale);
+        }
 
-        return internationalString;
+        return older;
     }
 
-    private Annotation annotationDtoToAnnotation(ServiceContext ctx, AnnotationDto source) throws MetamacException {
+    /**
+     * @param ctx
+     * @param source
+     * @return
+     * @throws MetamacException
+     */
+    private Annotation annotationDtoToEntity(ServiceContext ctx, AnnotationDto source) throws MetamacException {
         if (source == null) {
             return null;
         }
 
-        Annotation annotation = mapToEntity(source, Annotation.class);
-
-        Annotation older = null;
-        if (source.getId() != null) {
-
+        // TODO pasarle el target desde los métodos que llaman a este y no, buscar la anotación desde el repositorio.
+        
+        Annotation target = null;
+        if (source.getId() == null) {
+            // Create
+            target = new Annotation();
+        }
+        else {
+            // Update
             try {
-                older = getAnnotationRepository().findById(source.getId());
+                target = getAnnotationRepository().findById(source.getId());
+                OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersion());
             } catch (AnnotationNotFoundException e) {
-                MetamacException metamacException = new MetamacException(e, MetamacCoreExceptionType.MTM_CORE_SEARCH_NOT_FOUND, Annotation.class.getSimpleName());
-                metamacException.setLoggedLevel(ExceptionLevelEnum.ERROR);
-                throw metamacException;
+                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(MetamacCoreExceptionType.MTM_CORE_SEARCH_NOT_FOUND).withMessageParameters(Annotation.class.getSimpleName())
+                .withLoggedLevel(ExceptionLevelEnum.ERROR).build();
             }
         }
 
-        annotation.setText(internationalStringToEntity(source.getText(), (older != null) ? older.getText() : null));
+        // Metadata modifiable
+        target.setIdLogic(source.getIdLogic());
+        target.setTitle(source.getTitle());
+        target.setType(source.getType());
+        target.setUrl(source.getUrl());
 
-        return annotation;
+        // Related entities
+        target.setText(internationalStringToEntity(ctx, source.getText(), (target != null) ? target.getText() : null, ServiceExceptionParameters.ANNOTATION_TEXT));
+
+        return target;
     }
 
-    private <T extends AnnotableArtefactDto, U extends AnnotableArtefact> U annotableToEntity(ServiceContext ctx, T source, U result) throws MappingException, MetamacException {
+    
+    /**
+     * @param <T>
+     * @param <U>
+     * @param ctx
+     * @param source
+     * @param target
+     * @return
+     * @throws MetamacException
+     */
+    private <T extends AnnotableArtefactDto, U extends AnnotableArtefact> U annotableToEntity(ServiceContext ctx, T source, U target) throws MetamacException {
+        if (source == null) {
+            return null;
+        }
+        
+        // Required target entity because this class is abstract
+        if (target == null) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(MetamacCoreExceptionType.PARAMETER_REQUIRED).withMessageParameters(ServiceExceptionParameters.ANNOTABLEARTEFACT).build();
+        }
+
+        // Related entities
+        for (AnnotationDto annotationDto : source.getAnnotations()) {
+            target.getAnnotations().add(annotationDtoToEntity(ctx, annotationDto));
+        }
+
+        return target;
+    }
+
+    /**
+     * @param <T>
+     * @param <U>
+     * @param ctx
+     * @param source
+     * @param target
+     * @param older
+     * @return
+     * @throws MappingException
+     * @throws MetamacException
+     */
+    private <T extends NameableArtefactDto, U extends NameableArtefact> U nameableToEntity(ServiceContext ctx, T source, U target, U older) throws MetamacException {
+        if (source == null) {
+            return null;
+        }
+        
+        // Required target entity because this class is abstract
+        if (target == null) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(MetamacCoreExceptionType.PARAMETER_REQUIRED).withMessageParameters(ServiceExceptionParameters.NAMEABLEARTEFACT).build();
+        }
+
+        // Related entities
+        // Name
+        target.setName(internationalStringToEntity(ctx, source.getName(), (older != null) ? older.getName() : null, ServiceExceptionParameters.NAMEABLEARTEFACT_NAME));
+  
+        // Description
+        target.setDescription(internationalStringToEntity(ctx, source.getDescription(), (older != null) ? older.getDescription() : null, ServiceExceptionParameters.NAMEABLEARTEFACT_DESCRIPTION));
+
+        return annotableToEntity(ctx, source, target);
+    }
+
+    /**
+     * @param <T>
+     * @param <U>
+     * @param ctx
+     * @param source
+     * @param target
+     * @param older
+     * @return
+     * @throws MetamacException
+     */
+    private <T extends MaintainableArtefactDto, U extends MaintainableArtefact> U maintainableArtefactToEntity(ServiceContext ctx, T source, U target, U older)
+            throws MetamacException {
         if (source == null) {
             return null;
         }
 
-        for (AnnotationDto annotationDto : source.getAnnotations()) {
-            result.getAnnotations().add(annotationDtoToAnnotation(ctx, annotationDto));
+        // Required target entity because this class is abstract
+        if (target == null) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(MetamacCoreExceptionType.PARAMETER_REQUIRED).withMessageParameters(ServiceExceptionParameters.MANTAINER).build();
         }
+        
+        // Metadata modifiable
+        target.setVersionLogic(source.getVersionLogic());
+        target.setValidFrom(CoreCommonUtil.transformDateToDateTime(source.getValidFrom()));
+        target.setValidTo(CoreCommonUtil.transformDateToDateTime(source.getValidTo()));
+        target.setFinalLogic(source.getFinalLogic());
+        target.setIsExternalReference(source.getIsExternalReference());
+        target.setStructureURL(source.getStructureURL());
+        target.setServiceURL(source.getServiceURL());
+        
+        // Related entities
+        target.setMaintainer(externalItemDtoToExternalItem(ctx, source.getMaintainer(), ServiceExceptionParameters.MANTAINER_TITLE));
 
-        return result;
-    }
-
-    private <T extends NameableArtefactDto, U extends NameableArtefact> U nameableToEntity(ServiceContext ctx, T source, U result, U older) throws MappingException, MetamacException {
-        // Dozer bypass, Name is required
-        if (source == null || source.getName() == null) {
-            return null;
-        }
-
-        // Name
-        result.setName(internationalStringToEntity(source.getName(), (older != null) ? older.getName() : null));
-        Validate.notNull(result.getName(), "NameableArtefact.name must not be null"); // By Hibernate strategy inheritance, this is defined here and not in the relational model
-
-        // Description
-        result.setDescription(internationalStringToEntity(source.getDescription(), (older != null) ? older.getDescription() : null));
-
-        return annotableToEntity(ctx, source, result);
-    }
-
-    private <T extends MaintainableArtefactDto, U extends MaintainableArtefact> U maintainableArtefactToEntity(ServiceContext ctx, T source, U result, U older, BaseService baseService)
-            throws MappingException, MetamacException {
-        // Dozer bypass, Name is required
-        if (source == null || source.getName() == null) {
-            return null;
-        }
-
-        // // Load Agency for associated it to DSD
-        // Organisation organisation = (Organisation) baseService.findOrganization(ctx, source.getMaintainerIdLogic());
-        // result.setMaintainer((Agency) organisation);
-        // result.setMaintainer(mapToEntity(source, ExternalItem.class));
-
-        // Basic types check
-        List<MetamacExceptionItem> exceptions = new ArrayList<MetamacExceptionItem>();
-        BaseInvocationValidator.checkMantainer(result.getMaintainer(), exceptions);
-        ExceptionUtils.throwIfException(exceptions);
-
-        Validate.notEmpty(result.getVersionLogic(), "MaintainableArtefact.versionLogic must not be empty"); // By Hibernate strategy inheritance, this is defined here and not in the relational model
-
-        return nameableToEntity(ctx, source, result, older);
+        return nameableToEntity(ctx, source, target, older);
     }
 
     /**************************************************************************
      * PUBLIC (INTERFACE)
      **************************************************************************/
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T extends Component> T componentDtoToComponent(ServiceContext ctx, ComponentDto source) throws MetamacException {
+        if (source == null) {
+            return null;
+        }
+        if (source.getTypeComponent() == null) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(CommonServiceExceptionType.PARAMETER_REQUIRED)
+            .withMessageParameters(ServiceExceptionParameters.COMPONENT_TYPE).withLoggedLevel(ExceptionLevelEnum.DEBUG).build();
+        }
+        
+        // Hierachy:
+        //
+        // AnnotableArtefact > IdentifiableArtefact > Component
+        // -|_ DataAttribute
+        // --|_ ReportingYearStartDay
+        // |_ DimensionComponent
+        // --|_ Dimension
+        // --|_ MeasureDimension
+        // --|_ TimeDimension
+        // |_ PrimaryMeasure
+        //
+        // IdentityDto > AuditableDto > AnnotableArtefactDto > IdentifiableArtefactDto > ComponentDto
+        // |_ DataAttributeDto
+        // |_ DimensionComponentDto
+
+        T result = null;
+        try {
+            // DataAttribute ******************************************************
+            if (source.getTypeComponent().equals(TypeComponent.DATA_ATTRIBUTE)) {
+                result = dataAttributeDtoToDataAttribute(ctx, (DataAttributeDto)source);
+            }
+            // DimensionComponent ***************************************************
+            else if (source.getTypeComponent().equals(TypeComponent.DIMENSION_COMPONENT)) {
+                result = dimensionComponentDtoToDimensionComponent(ctx, (DimensionComponentDto)source);
+            }
+            // Primary Measure ***************************************************
+            else if (source.getTypeComponent().equals(TypeComponent.PRIMARY_MEASURE)) {
+                result = componentDtoToPrimaryMeasure(ctx, source);
+            } else {
+                // The TargetObject may be enumerated and, if so, can use any ItemScheme
+                // 785 (Codelist, ConceptScheme, OrganisationScheme, CategoryScheme,
+                // 786 ReportingTaxonomy)
+                // The MetadataAttribute may be non-enumerated and, if so, uses one or more
+                // 792 ExtendedFacet
+                // The MetadataAttribute may be enumerated and, if so, use a
+                // 783 Codelist
+                throw new UnsupportedOperationException("componentDtoToComponent for Unknown Entity not implemented");
+            }
+        } catch (ComponentNotFoundException e) {
+            // TODO poner la excepcion adecuada y no la unknows
+            MetamacException metamacException = new MetamacException(e, MetamacCoreExceptionType.UNKNOWN);
+            metamacException.setLoggedLevel(ExceptionLevelEnum.DEBUG);
+            throw metamacException;
+        }
+
+        return annotableToEntity(ctx, source, result);
+    }
+
+    private <T extends Component> T dataAttributeDtoToDataAttribute(ServiceContext ctx, DataAttributeDto source) throws MetamacException {
+        if (source == null) {
+            return null;
+        }
+        
+        // REPORTING_YEAR_START_DAY or DATA_ATTRIBUTE?
+        if (source.getTypeDataAttribute() == null) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(MetamacCoreExceptionType.PARAMETER_REQUIRED).withMessageParameters(ServiceExceptionParameters.COMPONENT_TYPE_DATA_ATTRIBUTE)
+            .withLoggedLevel(ExceptionLevelEnum.DEBUG).build();
+        }
+    
+        T result = null;
+        if (source.getId() == null) {
+            switch (source.getTypeDataAttribute()) {
+                case REPORTING_YEAR_START_DAY:
+                    // DTO validation: ReportingYearStarDay not contains role relationship
+                    if (!((DataAttributeDto) source).getRole().isEmpty()) {
+                        throw MetamacExceptionBuilder.builder().withExceptionItems(MetamacCoreExceptionType.PARAMETER_REQUIRED).withMessageParameters(ServiceExceptionParameters.DATAATTRIBUTE_ROLE)
+                        .withLoggedLevel(ExceptionLevelEnum.DEBUG).build();
+                    }
+                    
+                    if (source.getId() == null) {
+                        result = (T) new ReportingYearStartDay();
+                    }
+                    break;
+                case DATA_ATTRIBUTE:
+                    DataAttribute dataAttribute = null;
+                    if (source.getId() == null) {
+                        result = (T) new DataAttribute();
+                    }
+                    break;
+                default:
+            }
+        }
+        else {
+            // Update: Find previous entity
+            result = (T) getComponentRepository().findById(source.getId());
+            OptimisticLockingUtils.checkVersion(result.getVersion(), source.getVersion());
+        }
+        
+        // Metadata modifiable
+        ((DataAttribute) result).setUsageStatus(((DataAttributeDto) source).getUsageStatus());
+        
+        // Related entities
+        // Relate To
+        ((DataAttribute) result).setRelateTo(attributeRelationshipDtoToAttributeRelationship(ctx, source.getRelateTo(), ((DataAttribute) result).getRelateTo()));
+
+        // Role
+        if (source.getId() != null) { // Update
+            // Merge results
+            for (ExternalItemDto listExternalItemDto : ((DataAttributeDto) source).getRole()) {
+                ExternalItem externalItem = externalItemDtoToExternalItem(ctx, listExternalItemDto, ServiceExceptionParameters.DATAATTRIBUTE_ROLE_TITLE);
+                boolean found = false;
+                for (ExternalItem extItemPersisted : ((DataAttribute) result).getRole()) {
+                    if (extItemPersisted.equals(externalItem)) {
+                        ((DataAttribute) result).addRole(extItemPersisted);
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    ((DataAttribute) result).addRole(externalItem);
+                }
+    
+            }
+        } else { // New
+            for (ExternalItemDto listExternalItemDto : ((DataAttributeDto) source).getRole()) {
+                ((DataAttribute) result).addRole(externalItemDtoToExternalItem(ctx, listExternalItemDto, ServiceExceptionParameters.DATAATTRIBUTE_ROLE_TITLE));
+            }
+        }
+    
+        // LocalRepresentation
+        result.setLocalRepresentation(representationDtoToRepresentation(ctx, source.getLocalRepresentation(), ((DataAttribute) result).getLocalRepresentation(), ServiceExceptionParameters.DATAATTRIBUTE_REPRESENTATION_ENUMERATE_TITLE));
+    
+        return result;
+    }
+    
+    private <T extends Component> T dimensionComponentDtoToDimensionComponent(ServiceContext ctx, DimensionComponentDto source) throws MetamacException {
+        if (source == null) {
+            return null;
+        }
+        
+        T result = null;
+        
+        if (((DimensionComponentDto) source).getTypeDimensionComponent() == null) {
+            MetamacException metamacException = new MetamacException(MetamacCoreExceptionType.PARAMETER_REQUIRED, "TypeDimensionComponent");
+            metamacException.setLoggedLevel(ExceptionLevelEnum.DEBUG);
+            throw metamacException;
+        }
+    
+        switch (((DimensionComponentDto) source).getTypeDimensionComponent()) {
+            case DIMENSION:
+                result = (T) dimensionComponentDtoToDimension(ctx, source);
+                break;
+            case MEASUREDIMENSION:
+                result = (T) dimensionComponentDtoToMeasureDimension(ctx, source);
+                break;
+            case TIMEDIMENSION:
+                result = (T) dimensionComponentDtoToTimeDimension(ctx, source);
+                break;
+            default:
+                // DimensionComponent is a abstract class, cannot be instantiated
+                throw new UnsupportedOperationException("componentDtoToComponent::dimensionComponentDtoToDimensionComponent for Unknown Entity not implemented");
+        }
+    
+        return result;
+    }
+    
+    private <T extends Dimension> T dimensionComponentDtoToDimension(ServiceContext ctx, DimensionComponentDto source) throws MetamacException {
+        
+        if (source == null) {
+            return null;
+        }
+        
+        T result = null;
+        if (source.getId() == null) {
+            // New
+            result = (T) new Dimension();
+        }
+        else {
+            // Update
+            result = (T) getComponentRepository().findById(source.getId());
+            OptimisticLockingUtils.checkVersion(result.getVersion(), source.getVersion());
+        }
+   
+        // Related entities
+        // ROLE
+        if (source.getId() != null) { // Update
+            for (ExternalItemDto listExternalItemDto : ((DimensionComponentDto) source).getRole()) {
+                ExternalItem externalItem = externalItemDtoToExternalItem(ctx, listExternalItemDto, ServiceExceptionParameters.DIMENSION_ROLE_TITLE);
+                boolean found = false;
+                for (ExternalItem extItemPersisted : result.getRole()) {
+                    if (extItemPersisted.equals(externalItem)) {
+                        ((Dimension) result).addRole(extItemPersisted);
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    ((Dimension) result).addRole(externalItem);
+                }
+   
+            }
+        } else { // New
+            for (ExternalItemDto listExternalItemDto : ((DimensionComponentDto) source).getRole()) {
+                ((Dimension) result).addRole(externalItemDtoToExternalItem(ctx, listExternalItemDto, ServiceExceptionParameters.DIMENSION_ROLE_TITLE));
+            }
+        }
+        
+        // LocalRepresentation
+        result.setLocalRepresentation(representationDtoToRepresentation(ctx, source.getLocalRepresentation(), result.getLocalRepresentation(), ServiceExceptionParameters.DIMENSION_REPRESENTATION_ENUMERATE_TITLE));
+        
+        return result;
+    }
+    
+    private <T extends MeasureDimension> T dimensionComponentDtoToMeasureDimension(ServiceContext ctx, DimensionComponentDto source) throws MetamacException {
+        if (source == null) {
+            return null;
+        }
+        
+        T result = null;
+        if (source.getId() == null) {
+            // New
+            result = (T) new MeasureDimension();
+        }
+        else {
+            // Update
+            result = (T) getComponentRepository().findById(source.getId());
+            OptimisticLockingUtils.checkVersion(result.getVersion(), source.getVersion());
+        }
+
+        // ROLE
+        if (source.getId() != null) { // Exist
+            for (ExternalItemDto listExternalItemDto : ((DimensionComponentDto) source).getRole()) {
+                ExternalItem externalItem = externalItemDtoToExternalItem(ctx, listExternalItemDto, ServiceExceptionParameters.MEASUREDIMENSION_ROLE_TITLE);
+                boolean found = false;
+                for (ExternalItem extItemPersisted : result.getRole()) {
+                    if (extItemPersisted.equals(externalItem)) {
+                        ((MeasureDimension) result).addRole(extItemPersisted);
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    ((MeasureDimension) result).addRole(externalItem);
+                }
+
+            }
+        } else { // New
+            for (ExternalItemDto listExternalItemDto : ((DimensionComponentDto) source).getRole()) {
+                ((MeasureDimension) result).addRole(externalItemDtoToExternalItem(ctx, listExternalItemDto, ServiceExceptionParameters.MEASUREDIMENSION_ROLE_TITLE));
+            }
+        }
+        
+        // LocalRepresentation
+        result.setLocalRepresentation(representationDtoToRepresentation(ctx, source.getLocalRepresentation(), result.getLocalRepresentation(), ServiceExceptionParameters.MEASUREDIMENSION_REPRESENTATION_ENUMERATE_TITLE));
+        
+        return result;
+    }
+    
+    private <T extends TimeDimension> T dimensionComponentDtoToTimeDimension(ServiceContext ctx, DimensionComponentDto source) throws MetamacException {
+        if (source == null) {
+            return null;
+        }
+        
+        T result = null;
+        if (source.getId() == null) {
+            // New
+            result = (T) new TimeDimension();
+        }
+        else {
+            // Update
+            result = (T) getComponentRepository().findById(source.getId());
+            OptimisticLockingUtils.checkVersion(result.getVersion(), source.getVersion());
+        }
+        
+        // LocalRepresentation
+        result.setLocalRepresentation(representationDtoToRepresentation(ctx, source.getLocalRepresentation(), result.getLocalRepresentation(), ServiceExceptionParameters.TIMEDIMENSION_REPRESENTATION_ENUMERATE_TITLE));
+        
+        return result;
+    }
+    
+    private <T extends Component> T componentDtoToPrimaryMeasure(ServiceContext ctx, ComponentDto source) throws MetamacException {
+        if (source == null) {
+            return null;
+        }
+        
+        T result = null;
+        if (source.getId() == null) {
+            // New
+            result = (T) new PrimaryMeasure();
+        }
+        else {
+            // Update
+            result = (T) getComponentRepository().findById(source.getId());
+            OptimisticLockingUtils.checkVersion(result.getVersion(), source.getVersion());
+        }
+    
+        // LocalRepresentation
+        result.setLocalRepresentation(representationDtoToRepresentation(ctx, source.getLocalRepresentation(), result.getLocalRepresentation(), ServiceExceptionParameters.COMPONENT_REPRESENTATION_ENUMERATE_TITLE));
+        
+        return result;
+    }
+    
+    
+    
+    
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T extends ComponentList> T componentListDtoToComponentList(ServiceContext ctx, ComponentListDto componentListDto) throws MetamacException {
+        if (componentListDto == null) {
+            return null;
+        }
+        // Hierachy:
+        // AnnotableArtefact < IdentifiableArtefact < ComponentList
+        // |_ AttributeDescriptor
+        // |_ DimensionDescriptor
+        // |_ GroupDimensionDescriptor
+        // |_ MeasureDescriptor
+        // |_ MetadataTarget
+        // |_ ReportStructure
+        // DimensionDescriptorDto > ComponentListDto > IdentifiableArtefactDto > AnnotableArtefactDto > AuditablteDto > IdentityDto
+
+        T result = null;
+
+        switch (componentListDto.getTypeComponentList()) {
+            case ATTRIBUTE_DESCRIPTOR:
+                result = (T) new AttributeDescriptor();
+                break;
+            case GROUP_DIMENSION_DESCRIPTOR:
+                result = (T) new GroupDimensionDescriptor();
+                break;
+            case DIMENSION_DESCRIPTOR:
+                result = (T) new DimensionDescriptor();
+                break;
+            case MEASURE_DESCRIPTOR:
+                result = (T) new MeasureDescriptor();
+                break;
+            default:
+                // ComponentList is a abstract class, cannot be instantiated
+                throw new UnsupportedOperationException("componentListDtoToComponentList for Unknown Entity not implemented");
+        }
+
+        // Related entities
+        // Components
+        for (ComponentDto componentDto : componentListDto.getComponents()) {
+            result.addComponent(componentDtoToComponent(ctx, componentDto));
+        }
+
+        return annotableToEntity(ctx, componentListDto, result);
+    }
+
+    private AttributeRelationship attributeRelationshipDtoToAttributeRelationship(ServiceContext ctx, RelationshipDto source, AttributeRelationship attributeRelationshipOlder) throws MetamacException {
+        if (source == null) {
+            // Delete old entity
+            if (attributeRelationshipOlder != null) {
+                getAttributeRelationshipRepository().delete(attributeRelationshipOlder);
+            }
+            return null;
+        }
+
+        // Hierachy:
+        // AttributeRelationship
+        // |_ NoSpecifiedRelationship
+        // |_ PrimaryMeasureRelationship
+        // |_ GroupRelationship
+        // |_ DimensionRelationship
+        // RelationshipDto > IdentityDto
+        AttributeRelationship result = null;
+        switch (source.getTypeRelathionship()) {
+            case DIMENSION_RELATIONSHIP:
+                result = attributeRelationshipDtoToDimensionRelationship(ctx, source, attributeRelationshipOlder);
+                break;
+            case GROUP_RELATIONSHIP:
+                result = attributeRelationshipDtoToGroupRelationship(ctx, source, attributeRelationshipOlder);
+                break;
+            case NO_SPECIFIED_RELATIONSHIP:
+                result = attributeRelationshipDtoToNoSpecifiedRelationship(ctx, source, attributeRelationshipOlder);
+                break;
+            case PRIMARY_MEASURE_RELATIONSHIP:
+                result = attributeRelationshipDtoToPrimaryMeasureRelationship(ctx, source, attributeRelationshipOlder);
+                break;
+        }
+
+        return result;
+    }
+
+    private DimensionRelationship attributeRelationshipDtoToDimensionRelationship(ServiceContext ctx, RelationshipDto source, AttributeRelationship attributeRelationshipOlder) throws MetamacException {
+        
+        if (source == null) {
+            return null;
+        }
+        
+        DimensionRelationship result = null;
+        
+        // Remove old data
+        if (attributeRelationshipOlder != null) {
+            if (!(attributeRelationshipOlder instanceof DimensionRelationship) || (source.getId().compareTo(attributeRelationshipOlder.getId()) != 0)) {
+                getAttributeRelationshipRepository().delete(attributeRelationshipOlder);
+                result = new DimensionRelationship();
+                result.setVersion(source.getVersion());
+            }
+        }
+
+        // DimensionRelationship: GroupKey
+        for (DescriptorDto descriptorDto : source.getGroupKeyForDimensionRelationship()) {
+            if (descriptorDto.getTypeComponentList().equals(TypeComponentList.GROUP_DIMENSION_DESCRIPTOR)) {
+                result.addGroupKey((GroupDimensionDescriptor) componentListDtoToComponentList(ctx, descriptorDto));
+            } else {
+                MetamacException metamacException = new MetamacException(MetamacCoreExceptionType.PARAMETER_INCORRECT, "TypeComponentList");
+                metamacException.setLoggedLevel(ExceptionLevelEnum.DEBUG);
+                throw metamacException;
+            }
+        }
+
+        // DimensionRelationship: Dimension
+        if (source.getDimensionForDimensionRelationship().isEmpty()) {
+            MetamacException metamacException = new MetamacException(MetamacCoreExceptionType.MTM_CORE_VALIDATION_CONSTRAINT_CARDINALITY_MIN, "dimensionForDimensionRelationship");
+            metamacException.setLoggedLevel(ExceptionLevelEnum.DEBUG);
+            throw metamacException;
+        }
+        for (DimensionComponentDto dimensionComponentDto : source.getDimensionForDimensionRelationship()) {
+            result.addDimension((DimensionComponent) componentDtoToComponent(ctx, dimensionComponentDto));
+        }
+        
+        return result;
+    }
+    
+    private GroupRelationship attributeRelationshipDtoToGroupRelationship(ServiceContext ctx, RelationshipDto source, AttributeRelationship attributeRelationshipOlder) throws MetamacException {
+        
+        if (source == null) {
+            return null;
+        }
+        
+        GroupRelationship result = null;
+        // Remove old data
+        if (attributeRelationshipOlder != null) {
+            if (!(attributeRelationshipOlder instanceof GroupRelationship) || (source.getId().compareTo(attributeRelationshipOlder.getId()) != 0)) {
+                getAttributeRelationshipRepository().delete(attributeRelationshipOlder);
+                result = new GroupRelationship();
+                result.setVersion(source.getVersion());
+            }
+        }
+    
+        // Group
+        result.setGroupKey((GroupDimensionDescriptor) componentListDtoToComponentList(ctx, source.getGroupKeyForGroupRelationship()));
+
+        return result;
+    }
+    
+    private NoSpecifiedRelationship attributeRelationshipDtoToNoSpecifiedRelationship(ServiceContext ctx, RelationshipDto source, AttributeRelationship attributeRelationshipOlder) throws MetamacException {
+        
+        if (source == null) {
+            return null;
+        }
+        
+        NoSpecifiedRelationship result = null;
+        // Remove old data
+        if (attributeRelationshipOlder != null) {
+            if (!(attributeRelationshipOlder instanceof NoSpecifiedRelationship) || (source.getId().compareTo(attributeRelationshipOlder.getId()) != 0)) {
+                getAttributeRelationshipRepository().delete(attributeRelationshipOlder);
+                result = new NoSpecifiedRelationship();
+                result.setVersion(source.getVersion());
+            }
+        }
+        
+        return result;
+    }
+
+    private PrimaryMeasureRelationship attributeRelationshipDtoToPrimaryMeasureRelationship(ServiceContext ctx, RelationshipDto source, AttributeRelationship attributeRelationshipOlder) throws MetamacException {
+        
+        if (source == null) {
+            return null;
+        }
+        
+        PrimaryMeasureRelationship result = null;
+        // Remove old data
+        if (attributeRelationshipOlder != null) {
+            if (!(attributeRelationshipOlder instanceof PrimaryMeasureRelationship) || (source.getId().compareTo(attributeRelationshipOlder.getId()) != 0)) {
+                getAttributeRelationshipRepository().delete(attributeRelationshipOlder);
+                result = new PrimaryMeasureRelationship();
+                result.setVersion(source.getVersion());
+            }
+        }
+        
+        return result;
+    }
+
+    @Override
+    public DataStructureDefinition dataStructureDefinitionDtoToDataStructureDefinition(DataStructureDefinitionDto dataStructureDefinitionDto, ServiceContext ctx) throws MetamacException {
+        if (dataStructureDefinitionDto == null) {
+            return null;
+        }
+        // Hierachy:
+        // DataStructureDefinitionDto > MaintainableArtefactDto > NameableArtefactDto > IdentifiableArtefactDto > AnnotableArtefacDto > AuditableDto > IdentityDto
+        // DataStructureDefinition > Structure > MaintainableArtefact > NameableArtefact > IdentifiableArtefact > AnnotableArtefact
+
+//        DataStructureDefinition result = mapToEntity(dataStructureDefinitionDto, DataStructureDefinition.class);
+        DataStructureDefinition result = null;
+        if (dataStructureDefinitionDto.getId() == null) {
+            // New
+            result = new DataStructureDefinition();
+        }
+        else {
+            // Update
+            result = getDataStructureDefinitionRepository().findById(dataStructureDefinitionDto.getId());
+            OptimisticLockingUtils.checkVersion(result.getVersion(), dataStructureDefinitionDto.getVersion());
+            
+            // Withouts DTO fields: NO MERGE NEEDED!!!
+            // |_ Grouping
+            result.getGrouping().addAll(result.getGrouping());
+            // |_ Annotations
+        }
+        
+        //TODO resto de campos
+        
+
+        // Parent
+        return maintainableArtefactToEntity(ctx, dataStructureDefinitionDto, result, result);
+    }
+
+//    @Override
+    private Representation representationDtoToRepresentation(ServiceContext ctx, RepresentationDto representationDto, Representation representationOlder, String metadataEnumTitle) throws MetamacException {
+        if (representationDto == null) {
+            // Delete old entity
+            if (representationOlder != null) {
+                getRepresentationRepository().delete(representationOlder);
+            }
+            return null;
+        }
+
+        // Hierachy:
+        // RepresentationDto --> AuditableDto -> IdentityDTo
+        // Representation
+        // | EnumeratedRepresentation
+        // | TextFormatRepresentation
+
+        Representation representation = null;
+
+        switch (representationDto.getTypeRepresentationEnum()) {
+            case ENUMERATED:
+                representation = representationDtoToEnumeratedRepresentation(ctx, representationDto, representationOlder, metadataEnumTitle);
+                break;
+            case TEXT_FORMAT:
+                representation = representationDtoToTextFormatRepresentation(ctx, representationDto, representationOlder);
+                break;
+            default:
+                break;
+        }
+
+        return representation;
+    }
+
+    private EnumeratedRepresentation representationDtoToEnumeratedRepresentation(ServiceContext ctx, RepresentationDto representationDto, Representation representationOlder, String metadataEnumTitle) {
+        
+        EnumeratedRepresentation result = null;
+        
+        // Remove old data if type changed
+        if (representationOlder != null) {
+            if (!(representationOlder instanceof EnumeratedRepresentation) || (representationOlder.getId().compareTo(representationDto.getId()) != 0)) {
+                getRepresentationRepository().delete(representationOlder);
+                result = new EnumeratedRepresentation();
+                result.setVersion(representationDto.getVersion());
+            }
+        }
+
+        // EnumeratedRepresentation: enumerated
+        result.setEnumerated(externalItemDtoToExternalItem(ctx, representationDto.getEnumerated(), metadataEnumTitle));
+        
+        return result;
+    }
+
+    private TextFormatRepresentation representationDtoToTextFormatRepresentation(ServiceContext ctx, RepresentationDto source, Representation representationOlder) {
+        
+        TextFormatRepresentation result = null;
+        
+        // Remove old data if type changed
+        if (representationOlder != null) {
+            if (!(representationOlder instanceof TextFormatRepresentation) || (representationOlder.getId().compareTo(source.getId()) != 0)) {
+                getRepresentationRepository().delete(representationOlder);
+                result = new TextFormatRepresentation();
+                result.setVersion(source.getVersion());
+            }
+        }
+        
+        // Facet
+        result.setNonEnumerated(facetDtoToFacet(ctx, source.getNonEnumerated()));
+    
+        return result;
+    }
+
+    private Facet facetDtoToFacet(ServiceContext ctx, FacetDto source) throws MetamacException {
+        if (source == null) {
+            return null;
+        }
+
+        Facet result = null;
+        if (source.getId() == null) {
+            // New
+            result = new Facet(source.getFacetValue());
+        }
+        else {
+            // Update
+            result = getFacetRepository().findById(source.getId());
+            OptimisticLockingUtils.checkVersion(result.getVersion(), source.getVersion());
+        }
+        
+        result.setFacetValue(source.getFacetValue());
+        result.setIsSequenceFT(source.getIsSequenceFT());
+        result.setIntervalFT(source.getInterval());
+        result.setStartValueFT(source.getStartValueFT());
+        result.setEndValueFT(source.getEndValueFT());
+        result.setTimeIntervalFT(source.getTimeIntervalFT());
+        result.setStartTimeFT(source.getStartTimeFT());
+        result.setEndTimeFT(source.getEndTimeFT());
+        result.setMinLengthFT(source.getMinLengthFT());
+        result.setMaxLengthFT(source.getMaxLengthFT());
+        result.setMinValueFT(source.getMinValueFT());
+        result.setMaxValueFT(source.getMaxValueFT());
+        result.setDecimalsFT(source.getDecimalsFT());
+        result.setPatternFT(source.getPatternFT());
+        result.setXhtmlEFT(source.getXhtmlEFT());
+        result.setIsMultiLingual(source.getIsMultiLingual());
+        
+        return result;
+    }
+
+    private ExternalItem externalItemDtoToExternalItem(ServiceContext ctx, ExternalItemDto source, String metadataTitleName) throws MetamacException {
+        if (source == null) {
+            return null;
+        }
+        
+        ExternalItem result = null;
+        
+        if (source == null) {
+            // New
+            result = new ExternalItem(source.getCode(), source.getUri(), source.getUrn(), source.getType());
+        }
+        else {
+            // Update
+            result = getExternalItemRepository().findById(source.getId());
+        }
+            
+        // Relate Entities
+        result.setTitle(internationalStringToEntity(ctx, source.getTitle(), result.getTitle(), metadataTitleName));
+
+        return result;
+    }
+
     /*
      * @SuppressWarnings("unchecked")
      * @Override
@@ -453,562 +1215,4 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
      * return maintainableArtefactToEntity(itemSchemeDto, result, ctx, baseService);
      * }
      */
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T extends Component> T componentDtoToComponent(ComponentDto componentDto, ServiceContext ctx, BaseService baseService) throws MetamacException {
-        if (componentDto == null) {
-            return null;
-        }
-        if (componentDto.getTypeComponent() == null) {
-            MetamacException metamacException = new MetamacException(MetamacCoreExceptionType.PARAMETER_REQUIRED, TypeComponent.class.getSimpleName());
-            metamacException.setLoggedLevel(ExceptionLevelEnum.DEBUG);
-            throw metamacException;
-        }
-        // Hierachy:
-        // AnnotableArtefact > IdentifiableArtefact > Component
-        // |_ DataAttribute
-        // |_ ReportingYearStartDay
-        // |_ DimensionComponent
-        // |_ Dimension
-        // |_ MeasureDimension
-        // |_ TimeDimension
-        // |_ PrimaryMeasure
-        // IdentityDto > AuditableDto > AnnotableArtefactDto > IdentifiableArtefactDto > ComponentDto
-        // |_ DataAttributeDto
-        // |_ DimensionComponentDto
-
-        T result = null;
-
-        Representation representation = null;
-
-        try {
-            // DataAttribute ******************************************************
-            if (componentDto.getTypeComponent().equals(TypeComponent.DATA_ATTRIBUTE)) {
-                if (((DataAttributeDto) componentDto).getTypeDataAttribute() == null) {
-                    MetamacException metamacException = new MetamacException(MetamacCoreExceptionType.PARAMETER_REQUIRED, ComponentDto.class.getName());
-                    metamacException.setLoggedLevel(ExceptionLevelEnum.DEBUG);
-                    throw metamacException;
-                }
-
-                switch (((DataAttributeDto) componentDto).getTypeDataAttribute()) {
-                    case REPORTING_YEAR_START_DAY:
-                        // Restriction on the DSD
-                        if (!((DataAttributeDto) componentDto).getRole().isEmpty()) {
-                            MetamacException metamacException = new MetamacException(MetamacCoreExceptionType.PARAMETER_INCORRECT, "role");
-                            metamacException.setLoggedLevel(ExceptionLevelEnum.DEBUG);
-                            throw metamacException;
-                        }
-                        result = (T) mapToEntity(componentDto, ReportingYearStartDay.class);
-
-                        // LocalRepresentation
-                        ValidationUtil.validateRepresentationForReportingYearStartDayType(ctx, componentDto.getLocalRepresentation());
-                        break;
-                    case DATA_ATTRIBUTE:
-                        result = (T) mapToEntity(componentDto, DataAttribute.class);
-                        break;
-                    default:
-                }
-
-                Validate.notNull(((DataAttribute) result).getUsageStatus(), "DataAttribute.usageStatus must not be null"); // By Hibernate strategy inheritance, this is defined here and not in the
-                                                                                                                           // relational model
-
-                DataAttribute dataAttributeOlder = null;
-                if (componentDto.getId() != null) {
-                    dataAttributeOlder = (DataAttribute) getComponentRepository().findById(componentDto.getId());
-                }
-
-                // Relate To
-                ((DataAttribute) result).setRelateTo(attributeRelationshipDtoToAttributeRelationship(((DataAttributeDto) componentDto).getRelateTo(), ctx, baseService,
-                        (dataAttributeOlder != null) ? dataAttributeOlder.getRelateTo() : null));
-                Validate.notNull(((DataAttribute) result).getRelateTo(), "DataAttribute.relateTo must not be null"); // By Hibernate strategy inheritance, this is defined here and not in the
-                                                                                                                     // relational
-                                                                                                                     // model
-
-                // Role
-                if (componentDto.getId() != null) { // Exist
-                    for (ExternalItemDto listExternalItemDto : ((DataAttributeDto) componentDto).getRole()) {
-                        ExternalItem externalItem = externalItemDtoToExternalItem(listExternalItemDto, ctx, baseService);
-                        boolean found = false;
-                        for (ExternalItem extItemPersisted : dataAttributeOlder.getRole()) {
-                            if (extItemPersisted.equals(externalItem)) {
-                                ((DataAttribute) result).addRole(extItemPersisted);
-                                found = true;
-                                break;
-                            }
-                        }
-                        if (!found) {
-                            ((DataAttribute) result).addRole(externalItem);
-                        }
-
-                    }
-                } else { // New
-                    for (ExternalItemDto listExternalItemDto : ((DataAttributeDto) componentDto).getRole()) {
-                        ((DataAttribute) result).addRole(externalItemDtoToExternalItem(listExternalItemDto, ctx, baseService));
-                    }
-                }
-
-                // ConceptIdentity
-                if (((DataAttributeDto) componentDto).getCptIdRef() == null) {
-                    MetamacException metamacException = new MetamacException(MetamacCoreExceptionType.PARAMETER_INCORRECT, "conceptIdentity");
-                    metamacException.setLoggedLevel(ExceptionLevelEnum.INFO);
-                    throw metamacException;
-                }
-
-                // LocalRepresentation
-                ValidationUtil.validateRepresentationForDataAttribute(ctx, componentDto.getLocalRepresentation());
-                representation = representationDtoToRepresentation(componentDto.getLocalRepresentation(), ctx, baseService,
-                        (dataAttributeOlder != null) ? dataAttributeOlder.getLocalRepresentation() : null);
-            }
-            // DimensionComponent ***************************************************
-            else if (componentDto.getTypeComponent().equals(TypeComponent.DIMENSION_COMPONENT)) {
-                if (((DimensionComponentDto) componentDto).getTypeDimensionComponent() == null) {
-                    MetamacException metamacException = new MetamacException(MetamacCoreExceptionType.PARAMETER_REQUIRED, "TypeDimensionComponent");
-                    metamacException.setLoggedLevel(ExceptionLevelEnum.DEBUG);
-                    throw metamacException;
-                }
-
-                // ConceptIdentity
-                if (((DimensionComponentDto) componentDto).getCptIdRef() == null) {
-                    MetamacException metamacException = new MetamacException(MetamacCoreExceptionType.PARAMETER_INCORRECT, "conceptIdentity");
-                    metamacException.setLoggedLevel(ExceptionLevelEnum.DEBUG);
-                    throw metamacException;
-                }
-
-                switch (((DimensionComponentDto) componentDto).getTypeDimensionComponent()) {
-                    case DIMENSION:
-                        result = (T) mapToEntity(componentDto, Dimension.class);
-                        Dimension dimensionOlder = null;
-                        if (componentDto.getId() != null) {
-                            dimensionOlder = (Dimension) getComponentRepository().findById(componentDto.getId());
-                        }
-
-                        // ROLE
-                        if (componentDto.getId() != null) { // Exist
-                            for (ExternalItemDto listExternalItemDto : ((DimensionComponentDto) componentDto).getRole()) {
-                                ExternalItem externalItem = externalItemDtoToExternalItem(listExternalItemDto, ctx, baseService);
-                                boolean found = false;
-                                for (ExternalItem extItemPersisted : dimensionOlder.getRole()) {
-                                    if (extItemPersisted.equals(externalItem)) {
-                                        ((Dimension) result).addRole(extItemPersisted);
-                                        found = true;
-                                        break;
-                                    }
-                                }
-                                if (!found) {
-                                    ((Dimension) result).addRole(externalItem);
-                                }
-
-                            }
-                        } else { // New
-                            for (ExternalItemDto listExternalItemDto : ((DimensionComponentDto) componentDto).getRole()) {
-                                ((Dimension) result).addRole(externalItemDtoToExternalItem(listExternalItemDto, ctx, baseService));
-                            }
-                        }
-
-                        // LocalRepresentation
-                        ValidationUtil.validateRepresentationForDimension(ctx, componentDto.getLocalRepresentation());
-                        representation = representationDtoToRepresentation(componentDto.getLocalRepresentation(), ctx, baseService,
-                                (dimensionOlder != null) ? dimensionOlder.getLocalRepresentation() : null);
-                        break;
-                    case MEASUREDIMENSION:
-                        result = (T) mapToEntity(componentDto, MeasureDimension.class);
-                        MeasureDimension measureDimensionOlder = null;
-                        if (componentDto.getId() != null) {
-                            measureDimensionOlder = (MeasureDimension) getComponentRepository().findById(componentDto.getId());
-                        }
-
-                        // ROLE
-                        if (componentDto.getId() != null) { // Exist
-                            for (ExternalItemDto listExternalItemDto : ((DimensionComponentDto) componentDto).getRole()) {
-                                ExternalItem externalItem = externalItemDtoToExternalItem(listExternalItemDto, ctx, baseService);
-                                boolean found = false;
-                                for (ExternalItem extItemPersisted : measureDimensionOlder.getRole()) {
-                                    if (extItemPersisted.equals(externalItem)) {
-                                        ((MeasureDimension) result).addRole(extItemPersisted);
-                                        found = true;
-                                        break;
-                                    }
-                                }
-                                if (!found) {
-                                    ((MeasureDimension) result).addRole(externalItem);
-                                }
-
-                            }
-                        } else { // New
-                            for (ExternalItemDto listExternalItemDto : ((DimensionComponentDto) componentDto).getRole()) {
-                                ((MeasureDimension) result).addRole(externalItemDtoToExternalItem(listExternalItemDto, ctx, baseService));
-                            }
-                        }
-                        // LocalRepresentation
-                        ValidationUtil.validateRepresentationForMeasureDimension(ctx, componentDto.getLocalRepresentation());
-                        representation = representationDtoToRepresentation(componentDto.getLocalRepresentation(), ctx, baseService,
-                                (measureDimensionOlder != null) ? measureDimensionOlder.getLocalRepresentation() : null);
-                        break;
-                    case TIMEDIMENSION:
-                        result = (T) mapToEntity(componentDto, TimeDimension.class);
-                        TimeDimension timeDimensionOlder = null;
-                        if (componentDto.getId() != null) {
-                            timeDimensionOlder = (TimeDimension) getComponentRepository().findById(componentDto.getId());
-                        }
-
-                        if (!((DimensionComponentDto) componentDto).getRole().isEmpty()) {
-                            MetamacException metamacException = new MetamacException(MetamacCoreExceptionType.PARAMETER_INCORRECT, "role");
-                            metamacException.setLoggedLevel(ExceptionLevelEnum.DEBUG);
-                            throw metamacException;
-                        }
-                        // LocalRepresentation
-                        ValidationUtil.validateRepresentationForTimeDimension(ctx, componentDto.getLocalRepresentation());
-                        representation = representationDtoToRepresentation(componentDto.getLocalRepresentation(), ctx, baseService,
-                                (timeDimensionOlder != null) ? timeDimensionOlder.getLocalRepresentation() : null);
-                        break;
-                    default:
-                        // DimensionComponent is a abstract class, cannot be instantiated
-                        throw new UnsupportedOperationException("componentDtoToComponent::dimensionComponentDtoToDimensionComponent for Unknown Entity not implemented");
-                }
-            }
-            // Primary Measure ***************************************************
-            else if (componentDto.getTypeComponent().equals(TypeComponent.PRIMARY_MEASURE)) {
-                result = (T) mapToEntity(componentDto, PrimaryMeasure.class);
-                PrimaryMeasure primaryMeasureOlder = null;
-                if (componentDto.getId() != null) {
-                    primaryMeasureOlder = (PrimaryMeasure) getComponentRepository().findById(componentDto.getId());
-                }
-
-                // ConceptIdentity
-                if (componentDto.getCptIdRef() == null) {
-                    MetamacException metamacException = new MetamacException(MetamacCoreExceptionType.PARAMETER_INCORRECT, "conceptIdentity");
-                    metamacException.setLoggedLevel(ExceptionLevelEnum.DEBUG);
-                    throw metamacException;
-                }
-
-                // LocalRepresentation
-                ValidationUtil.validateRepresentationForPrimaryMeasure(ctx, componentDto.getLocalRepresentation());
-                representation = representationDtoToRepresentation(componentDto.getLocalRepresentation(), ctx, baseService,
-                        (primaryMeasureOlder != null) ? primaryMeasureOlder.getLocalRepresentation() : null);
-            } else {
-                // The TargetObject may be enumerated and, if so, can use any ItemScheme
-                // 785 (Codelist, ConceptScheme, OrganisationScheme, CategoryScheme,
-                // 786 ReportingTaxonomy)
-                // The MetadataAttribute may be non-enumerated and, if so, uses one or more
-                // 792 ExtendedFacet
-                // The MetadataAttribute may be enumerated and, if so, use a
-                // 783 Codelist
-                throw new UnsupportedOperationException("componentDtoToComponent for Unknown Entity not implemented");
-            }
-
-            /************************
-             * FIELDS for component
-             ***********************/
-
-            // ConceptIdentity
-            // result.setConceptIdentity((Concept) itemDtoToItem(componentDto.getConceptIdentity(), ctx, baseService));
-            // result.setCptIdRef(mapToEntity(componentDto.getCptIdRef(), ExternalItem.class));
-
-            // LocalRepresentation
-            result.setLocalRepresentation(representation);
-        } catch (ComponentNotFoundException e) {
-            // TODO poner la excepcion adecuada y no la unknows
-            MetamacException metamacException = new MetamacException(e, MetamacCoreExceptionType.UNKNOWN);
-            metamacException.setLoggedLevel(ExceptionLevelEnum.DEBUG);
-            throw metamacException;
-        }
-
-        return annotableToEntity(ctx, componentDto, result);
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T extends ComponentList> T componentListDtoToComponentList(ComponentListDto componentListDto, ServiceContext ctx, BaseService baseService) throws MetamacException {
-        if (componentListDto == null) {
-            return null;
-        }
-        // Hierachy:
-        // AnnotableArtefact < IdentifiableArtefact < ComponentList
-        // |_ AttributeDescriptor
-        // |_ DimensionDescriptor
-        // |_ GroupDimensionDescriptor
-        // |_ MeasureDescriptor
-        // |_ MetadataTarget
-        // |_ ReportStructure
-        // DimensionDescriptorDto > ComponentListDto > IdentifiableArtefactDto > AnnotableArtefactDto > AuditablteDto > IdentityDto
-
-        T result = null;
-
-        switch (componentListDto.getTypeComponentList()) {
-            case ATTRIBUTE_DESCRIPTOR:
-                result = (T) mapToEntity(componentListDto, AttributeDescriptor.class);
-                break;
-            case GROUP_DIMENSION_DESCRIPTOR:
-                result = (T) mapToEntity(componentListDto, GroupDimensionDescriptor.class);
-                // Validate.notNull(((GroupDimensionDescriptor)result).getIsAttachmentConstraint(), "GroupDimensionDescriptor.isAttachmentConstraint must not be null"); // By Hibernate strategy
-                // inheritance, this is defined here and not in the relational model
-                break;
-            case DIMENSION_DESCRIPTOR:
-                result = (T) mapToEntity(componentListDto, DimensionDescriptor.class);
-                break;
-            case MEASURE_DESCRIPTOR:
-                result = (T) mapToEntity(componentListDto, MeasureDescriptor.class);
-                break;
-            default:
-                // ComponentList is a abstract class, cannot be instantiated
-                throw new UnsupportedOperationException("componentListDtoToComponentList for Unknown Entity not implemented");
-        }
-
-        // Update
-        // if (componentListDto.getId() != null) {
-        // ComponentList componentListOld = getComponentListRepository().findById(componentListDto.getId());
-        //
-        // // Without DTO fields: NO MERGE NEEDED!!!
-        // result.getAnnotations().addAll(componentListOld.getAnnotations());
-        // }
-
-        /****************
-         * FIELDS
-         ****************/
-        // Components
-        for (ComponentDto componentDto : componentListDto.getComponents()) {
-            result.addComponent(componentDtoToComponent(componentDto, ctx, baseService));
-        }
-
-        return annotableToEntity(ctx, componentListDto, result);
-    }
-
-    private AttributeRelationship attributeRelationshipDtoToAttributeRelationship(RelationshipDto relationshipDto, ServiceContext ctx, BaseService baseService,
-            AttributeRelationship attributeRelationshipOlder) throws MetamacException {
-        if (relationshipDto == null) {
-            // Delete old entity
-            if (attributeRelationshipOlder != null) {
-                getAttributeRelationshipRepository().delete(attributeRelationshipOlder);
-            }
-
-            return null;
-        }
-
-        // Hierachy:
-        // AttributeRelationship
-        // |_ NoSpecifiedRelationship
-        // |_ PrimaryMeasureRelationship
-        // |_ GroupRelationship
-        // |_ DimensionRelationship
-        // RelationshipDto > IdentityDto
-
-        AttributeRelationship attributeRelationship = null;
-
-        switch (relationshipDto.getTypeRelathionship()) {
-            case DIMENSION_RELATIONSHIP:
-                attributeRelationship = mapToEntity(relationshipDto, DimensionRelationship.class);
-
-                // Remove old data
-                if (attributeRelationshipOlder != null) {
-                    if (!(attributeRelationshipOlder instanceof DimensionRelationship) || (relationshipDto.getId().compareTo(attributeRelationshipOlder.getId()) != 0)) {
-                        getAttributeRelationshipRepository().delete(attributeRelationshipOlder);
-                        attributeRelationship = new DimensionRelationship();
-                        attributeRelationship.setVersion(relationshipDto.getVersion());
-                    }
-                }
-
-                // DimensionRelationship: GroupKey
-                for (DescriptorDto descriptorDto : relationshipDto.getGroupKeyForDimensionRelationship()) {
-                    if (descriptorDto.getTypeComponentList().equals(TypeComponentList.GROUP_DIMENSION_DESCRIPTOR)) {
-                        ((DimensionRelationship) attributeRelationship).addGroupKey((GroupDimensionDescriptor) componentListDtoToComponentList(descriptorDto, ctx, baseService));
-                    } else {
-                        MetamacException metamacException = new MetamacException(MetamacCoreExceptionType.PARAMETER_INCORRECT, "TypeComponentList");
-                        metamacException.setLoggedLevel(ExceptionLevelEnum.DEBUG);
-                        throw metamacException;
-                    }
-                }
-
-                // DimensionRelationship: Dimension
-                if (relationshipDto.getDimensionForDimensionRelationship().isEmpty()) {
-                    MetamacException metamacException = new MetamacException(MetamacCoreExceptionType.MTM_CORE_VALIDATION_CONSTRAINT_CARDINALITY_MIN, "dimensionForDimensionRelationship");
-                    metamacException.setLoggedLevel(ExceptionLevelEnum.DEBUG);
-                    throw metamacException;
-                }
-                for (DimensionComponentDto dimensionComponentDto : relationshipDto.getDimensionForDimensionRelationship()) {
-                    ((DimensionRelationship) attributeRelationship).addDimension((DimensionComponent) componentDtoToComponent(dimensionComponentDto, ctx, baseService));
-                }
-                break;
-            case GROUP_RELATIONSHIP:
-                attributeRelationship = mapToEntity(relationshipDto, GroupRelationship.class);
-
-                // Remove old data
-                if (attributeRelationshipOlder != null) {
-                    if (!(attributeRelationshipOlder instanceof GroupRelationship) || (relationshipDto.getId().compareTo(attributeRelationshipOlder.getId()) != 0)) {
-                        getAttributeRelationshipRepository().delete(attributeRelationshipOlder);
-                        attributeRelationship = new GroupRelationship();
-                        attributeRelationship.setVersion(relationshipDto.getVersion());
-                    }
-                }
-
-                // Group
-                ((GroupRelationship) attributeRelationship).setGroupKey((GroupDimensionDescriptor) componentListDtoToComponentList(relationshipDto.getGroupKeyForGroupRelationship(), ctx,
-                        baseService));
-
-                Validate.notNull(((GroupRelationship) attributeRelationship).getGroupKey(), "GroupRelationship.groupKey must not be null"); // By Hibernate strategy inheritance, this is defined here
-                                                                                                                                            // and not in the relational model
-                break;
-            case NO_SPECIFIED_RELATIONSHIP:
-                attributeRelationship = mapToEntity(relationshipDto, NoSpecifiedRelationship.class);
-
-                // Remove old data
-                if (attributeRelationshipOlder != null) {
-                    if (!(attributeRelationshipOlder instanceof NoSpecifiedRelationship) || (relationshipDto.getId().compareTo(attributeRelationshipOlder.getId()) != 0)) {
-                        getAttributeRelationshipRepository().delete(attributeRelationshipOlder);
-                        attributeRelationship = new NoSpecifiedRelationship();
-                        attributeRelationship.setVersion(relationshipDto.getVersion());
-                    }
-                }
-
-                break;
-            case PRIMARY_MEASURE_RELATIONSHIP:
-                attributeRelationship = mapToEntity(relationshipDto, PrimaryMeasureRelationship.class);
-
-                // Remove old data
-                if (attributeRelationshipOlder != null) {
-                    if (!(attributeRelationshipOlder instanceof PrimaryMeasureRelationship) || (relationshipDto.getId().compareTo(attributeRelationshipOlder.getId()) != 0)) {
-                        getAttributeRelationshipRepository().delete(attributeRelationshipOlder);
-                        attributeRelationship = new PrimaryMeasureRelationship();
-                        attributeRelationship.setVersion(relationshipDto.getVersion());
-                    }
-                }
-
-                break;
-        }
-
-        return attributeRelationship;
-    }
-
-    @Override
-    public DataStructureDefinition dataStructureDefinitionDtoToDataStructureDefinition(DataStructureDefinitionDto dataStructureDefinitionDto, ServiceContext ctx, BaseService baseService)
-            throws MetamacException {
-        if (dataStructureDefinitionDto == null) {
-            return null;
-        }
-        // Hierachy:
-        // DataStructureDefinitionDto > MaintainableArtefactDto > NameableArtefactDto > IdentifiableArtefactDto > AnnotableArtefacDto > AuditableDto > IdentityDto
-        // DataStructureDefinition > Structure > MaintainableArtefact > NameableArtefact > IdentifiableArtefact > AnnotableArtefact
-
-        DataStructureDefinition result = mapToEntity(dataStructureDefinitionDto, DataStructureDefinition.class);
-
-        // If update
-        DataStructureDefinition dataStructureDefinition;
-        try {
-            dataStructureDefinition = null;
-            if (dataStructureDefinitionDto.getId() != null) {
-                dataStructureDefinition = getDataStructureDefinitionRepository().findById(dataStructureDefinitionDto.getId());
-
-                // Withouts DTO fields: NO MERGE NEEDED!!!
-                // |_ Grouping
-                result.getGrouping().addAll(dataStructureDefinition.getGrouping());
-                // |_ Annotations
-
-            }
-        } catch (DataStructureDefinitionNotFoundException e) {
-            // TODO poner la excepcion adecuada y no la unknows
-            MetamacException metamacException = new MetamacException(e, MetamacCoreExceptionType.UNKNOWN);
-            metamacException.setLoggedLevel(ExceptionLevelEnum.ERROR);
-            throw metamacException;
-        }
-
-        // Parent
-        return maintainableArtefactToEntity(ctx, dataStructureDefinitionDto, result, dataStructureDefinition, baseService);
-    }
-
-    @Override
-    public Representation representationDtoToRepresentation(RepresentationDto representationDto, ServiceContext ctx, BaseService baseService, Representation representationOlder)
-            throws MetamacException {
-        if (representationDto == null) {
-            // Delete old entity
-            if (representationOlder != null) {
-                getRepresentationRepository().delete(representationOlder);
-            }
-            return null;
-        }
-
-        // Hierachy:
-        // RepresentationDto --> AuditableDto -> IdentityDTo
-        // Representation
-        // | EnumeratedRepresentation
-        // | TextFormatRepresentation
-
-        Representation representation = null;
-
-        switch (representationDto.getTypeRepresentationEnum()) {
-            case ENUMERATED:
-                representation = mapToEntity(representationDto, EnumeratedRepresentation.class);
-
-                // Remove old data if type changed
-                if (representationOlder != null) {
-                    if (!(representationOlder instanceof EnumeratedRepresentation) || (representationOlder.getId().compareTo(representationDto.getId()) != 0)) {
-                        getRepresentationRepository().delete(representationOlder);
-                        representation = new EnumeratedRepresentation();
-                        representation.setVersion(representationDto.getVersion());
-                    }
-                }
-
-                // EnumeratedRepresentation: enumerated
-                ((EnumeratedRepresentation) representation).setEnumerated(mapToEntity(representationDto.getEnumerated(), ExternalItem.class));
-
-                break;
-            case TEXT_FORMAT:
-                representation = mapToEntity(representationDto, TextFormatRepresentation.class);
-
-                // Remove old data if type changed
-                if (representationOlder != null) {
-                    if (!(representationOlder instanceof TextFormatRepresentation) || (representationOlder.getId().compareTo(representationDto.getId()) != 0)) {
-                        getRepresentationRepository().delete(representationOlder);
-                        representation = new TextFormatRepresentation();
-                        representation.setVersion(representationDto.getVersion());
-                    }
-                }
-
-                // Facet
-                ((TextFormatRepresentation) representation).setNonEnumerated(facetDtoToFacet(representationDto.getNonEnumerated(), ctx, baseService));
-
-                break;
-            default:
-                break;
-        }
-
-        return representation;
-    }
-
-    @Override
-    public Facet facetDtoToFacet(FacetDto facetDto, ServiceContext ctx, BaseService baseService) throws MetamacException {
-        if (facetDto == null) {
-            return null;
-        }
-
-        Facet facet = mapToEntity(facetDto, Facet.class);
-
-        return facet;
-    }
-
-    @Override
-    public ExternalItem externalItemDtoToExternalItem(ExternalItemDto externalItemDto, ServiceContext ctx, BaseService baseService) throws MetamacException {
-        if (externalItemDto == null) {
-            return null;
-        }
-
-        ExternalItem result = mapToEntity(externalItemDto, ExternalItem.class);;
-
-        ExternalItem older = null;
-        
-        if (externalItemDto.getId() != null) {
-            try {
-                older = getExternalItemRepository().findById(externalItemDto.getId());
-            }
-            catch (ExternalItemNotFoundException e) {
-                MetamacException metamacException = new MetamacException(e, MetamacCoreExceptionType.MTM_CORE_SEARCH_NOT_FOUND, ExternalItem.class.getSimpleName());
-                metamacException.setLoggedLevel(ExceptionLevelEnum.ERROR);
-                throw metamacException;
-            }
-        }
-        
-        result.setTitle(internationalStringToEntity(externalItemDto.getTitle(), (older != null) ? older.getTitle() : null));
-
-        return result;
-    }
-
 }
