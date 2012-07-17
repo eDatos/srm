@@ -20,6 +20,7 @@ import org.siemac.metamac.srm.core.structure.domain.GroupDimensionDescriptor;
 import org.siemac.metamac.srm.core.structure.domain.MeasureDescriptor;
 import org.siemac.metamac.srm.core.structure.domain.MeasureDimension;
 import org.siemac.metamac.srm.core.structure.domain.TimeDimension;
+import org.siemac.metamac.srm.core.structure.serviceimpl.utils.DataStructureInvocationValidator;
 import org.springframework.stereotype.Service;
 
 /**
@@ -33,8 +34,8 @@ public class DataStructureDefinitionServiceImpl extends DataStructureDefinitionS
 
     @Override
     public DataStructureDefinition saveDsd(ServiceContext ctx, DataStructureDefinition dataStructureDefinition) throws MetamacException {
-
-        // Validation of parameters
+        // Validation
+        DataStructureInvocationValidator.checkSaveDataStructureDefinition(dataStructureDefinition, null); // Parameters and metadata check
 
         // Save DataStructureDefinition
         return getDataStructureDefinitionRepository().save(dataStructureDefinition);
@@ -42,7 +43,8 @@ public class DataStructureDefinitionServiceImpl extends DataStructureDefinitionS
 
     @Override
     public void deleteDsd(ServiceContext ctx, DataStructureDefinition dataStructureDefinition) throws MetamacException {
-        // Validation of parameters
+        // Validation
+        DataStructureInvocationValidator.checkDeleteDataStructureDefinition(dataStructureDefinition, null); // Parameters and metadata check
 
         // Remove associations: Grouping (no cascade)
         MeasureDescriptor measureDescriptor = null;
@@ -85,12 +87,14 @@ public class DataStructureDefinitionServiceImpl extends DataStructureDefinitionS
             getBaseService().deleteComponentList(ctx, dimensionDescriptor);
         }
 
-        // Remove DSD
+        // 5 - Remove DSD
         getDataStructureDefinitionRepository().delete(dataStructureDefinition);
     }
 
     @Override
     public ComponentList saveDescriptorForDsd(ServiceContext ctx, DataStructureDefinition dataStructureDefinition, ComponentList componentList) throws MetamacException {
+        // Validation
+        DataStructureInvocationValidator.checkSaveDescriptorForDataStructureDefinition(dataStructureDefinition, null); // Parameters and metadata check
 
         // Check type componentlist
         if (!(componentList instanceof AttributeDescriptor) && !(componentList instanceof DimensionDescriptor) && !(componentList instanceof GroupDimensionDescriptor)
@@ -170,6 +174,9 @@ public class DataStructureDefinitionServiceImpl extends DataStructureDefinitionS
 
     @Override
     public void deleteDescriptorForDsd(ServiceContext ctx, DataStructureDefinition dataStructureDefinition, ComponentList componentList) throws MetamacException {
+        // Validation
+        DataStructureInvocationValidator.checkDeleteDescriptorForDataStructureDefinition(dataStructureDefinition, null); // Parameters and metadata check
+        
         // Right cardinality not checked in this moment. The DSD can't be completed.
 
         // Check cardinals constraints
@@ -208,6 +215,8 @@ public class DataStructureDefinitionServiceImpl extends DataStructureDefinitionS
 
     @Override
     public Component saveComponentForDsd(ServiceContext ctx, DataStructureDefinition dataStructureDefinition, Component component, TypeComponentList typeComponentList) throws MetamacException {
+        // Validation
+        DataStructureInvocationValidator.checkSaveComponentForDataStructureDefinition(dataStructureDefinition, null); // Parameters and metadata check
 
         // Check type component
         if (typeComponentList == null) {
@@ -311,6 +320,9 @@ public class DataStructureDefinitionServiceImpl extends DataStructureDefinitionS
 
     @Override
     public void deleteComponentForDsd(ServiceContext ctx, DataStructureDefinition dataStructureDefinition, Component component, TypeComponentList typeComponentList) throws MetamacException {
+        // Validation
+        DataStructureInvocationValidator.checkDeleteComponentForDataStructureDefinition(dataStructureDefinition, null); // Parameters and metadata check
+        
         // Check type component
         if (typeComponentList == null) {
             MetamacException metamacException = new MetamacException(MetamacCoreExceptionType.PARAMETER_REQUIRED, "TypeComponentList");
