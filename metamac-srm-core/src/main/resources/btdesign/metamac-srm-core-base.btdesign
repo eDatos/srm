@@ -455,6 +455,11 @@ Application Base {
 			"The isMultiLingual attribute indicates for a text format of type 'string', whether the value should allow for multiple values in different languages."
 			Boolean isMultiLingual nullable;
 
+    		Repository FacetRepository {
+				findById;
+				delete;
+				findAll;
+			}
 		}
 
 		"Provides access to SDMX Base Artefacts"
