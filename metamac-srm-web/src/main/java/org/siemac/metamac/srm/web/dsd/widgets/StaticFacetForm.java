@@ -73,7 +73,7 @@ public class StaticFacetForm extends GroupDynamicForm {
         pattern = new ViewTextItem("pattern-attr-view", MetamacSrmWeb.getConstants().dsdRepresentationPattern());
         pattern.setShowIfCondition(FacetFormUtils.getPatternIfFunction());
 
-        setFields(textTypeHidden, textType, isSequence, interval, startValue, endValue, timeInterval, startTime, endTime, minLength, maxLength, minValue, maxValue, decimals, pattern);
+        setFields(textTypeHidden, textType, minLength, maxLength, isSequence, startValue, endValue, interval, timeInterval, startTime, endTime, minValue, maxValue, decimals, pattern);
     }
 
     public void setFacet(FacetDto facetDto) {

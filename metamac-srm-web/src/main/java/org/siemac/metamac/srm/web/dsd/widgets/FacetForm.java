@@ -9,7 +9,6 @@ import org.siemac.metamac.web.common.client.utils.FormItemUtils;
 import org.siemac.metamac.web.common.client.utils.SDMXCommonWebValidatorsV2_1;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomFloatItem;
-import org.siemac.metamac.web.common.client.widgets.form.fields.CustomIntegerItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredSelectItem;
 
@@ -30,7 +29,7 @@ public class FacetForm extends GroupDynamicForm {
     private CustomTextItem     endTime;
     private CustomFloatItem    minValue;
     private CustomFloatItem    maxValue;
-    private CustomIntegerItem  decimals;
+    private CustomTextItem     decimals;
     private CustomTextItem     pattern;
 
     public FacetForm() {
@@ -65,6 +64,7 @@ public class FacetForm extends GroupDynamicForm {
 
         timeInterval = new CustomTextItem("time-interval-attr", MetamacSrmWeb.getConstants().dsdRepresentationTimeInterval());
         timeInterval.setShowIfCondition(FacetFormUtils.getTimeIntervalIfFunction());
+        timeInterval.setValidators(SDMXCommonWebValidatorsV2_1.getDurationValidator());
 
         startTime = new CustomTextItem("start-time-attr", MetamacSrmWeb.getConstants().dsdRepresentationStartTime());
         startTime.setShowIfCondition(FacetFormUtils.getStartTimeIfFunction());
@@ -72,6 +72,7 @@ public class FacetForm extends GroupDynamicForm {
 
         endTime = new CustomTextItem("end-time-attr", MetamacSrmWeb.getConstants().dsdRepresentationEndTime());
         endTime.setShowIfCondition(FacetFormUtils.getEndTimeIfFunction());
+        endTime.setValidators(SDMXCommonWebValidatorsV2_1.getBasicTimePeriodValidator());
 
         minValue = new CustomFloatItem("min-value-attr", MetamacSrmWeb.getConstants().dsdRepresentationMinValue());
         minValue.setShowIfCondition(FacetFormUtils.getMinValueIfFunction());
@@ -79,8 +80,9 @@ public class FacetForm extends GroupDynamicForm {
         maxValue = new CustomFloatItem("max-value-attr", MetamacSrmWeb.getConstants().dsdRepresentationMaxValue());
         maxValue.setShowIfCondition(FacetFormUtils.getMaxValueIfFunction());
 
-        decimals = new CustomIntegerItem("decimals-attr", MetamacSrmWeb.getConstants().dsdRepresentationDecimals());
+        decimals = new CustomTextItem("decimals-attr", MetamacSrmWeb.getConstants().dsdRepresentationDecimals());
         decimals.setShowIfCondition(FacetFormUtils.getDecimalsIfFunction());
+        decimals.setValidators(FormItemUtils.getPositiveIntegerValidator());
 
         pattern = new CustomTextItem("pattern-attr", MetamacSrmWeb.getConstants().dsdRepresentationPattern());
         pattern.setShowIfCondition(FacetFormUtils.getPatternIfFunction());
@@ -175,7 +177,7 @@ public class FacetForm extends GroupDynamicForm {
         return maxValue;
     }
 
-    public CustomIntegerItem getDecimals() {
+    public CustomTextItem getDecimals() {
         return decimals;
     }
 
