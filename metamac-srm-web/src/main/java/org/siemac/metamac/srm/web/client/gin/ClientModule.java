@@ -12,10 +12,12 @@ import org.siemac.metamac.srm.web.client.view.StructuralResourcesViewImpl;
 import org.siemac.metamac.srm.web.client.view.UnauthorizedPageViewImpl;
 import org.siemac.metamac.srm.web.client.widgets.presenter.ToolStripPresenterWidget;
 import org.siemac.metamac.srm.web.client.widgets.view.ToolStripViewImpl;
+import org.siemac.metamac.srm.web.concept.presenter.ConceptPresenter;
 import org.siemac.metamac.srm.web.concept.presenter.ConceptSchemeListPresenter;
 import org.siemac.metamac.srm.web.concept.presenter.ConceptSchemePresenter;
 import org.siemac.metamac.srm.web.concept.view.ConceptSchemeListViewImpl;
 import org.siemac.metamac.srm.web.concept.view.ConceptSchemeViewImpl;
+import org.siemac.metamac.srm.web.concept.view.ConceptViewImpl;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdAttributesTabPresenter;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdDimensionsTabPresenter;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdGeneralTabPresenter;
@@ -82,6 +84,7 @@ public class ClientModule extends AbstractPresenterModule {
         bindPresenter(ConceptSchemeListPresenter.class, ConceptSchemeListPresenter.ConceptSchemeListView.class, ConceptSchemeListViewImpl.class,
                 ConceptSchemeListPresenter.ConceptSchemeListProxy.class);
         bindPresenter(ConceptSchemePresenter.class, ConceptSchemePresenter.ConceptSchemeView.class, ConceptSchemeViewImpl.class, ConceptSchemePresenter.ConceptSchemeProxy.class);
+        bindPresenter(ConceptPresenter.class, ConceptPresenter.ConceptView.class, ConceptViewImpl.class, ConceptPresenter.ConceptProxy.class);
 
     }
 }

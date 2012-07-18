@@ -61,7 +61,6 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
     }
 
     public interface ConceptSchemeView extends View, HasUiHandlers<ConceptSchemeUiHandlers> {
-
         void setConceptScheme(ConceptSchemeDto conceptScheme);
     }
 
