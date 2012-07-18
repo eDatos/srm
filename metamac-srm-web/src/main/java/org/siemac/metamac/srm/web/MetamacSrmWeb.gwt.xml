@@ -48,6 +48,8 @@
     <source path='concept' />
     <source path='shared' />
 
+    <stylesheet src="MetamacSrmWeb.css" />
+
     <!-- Languages -->
     <extend-property name="locale" values="es" />
     <extend-property name="locale" values="en" />
