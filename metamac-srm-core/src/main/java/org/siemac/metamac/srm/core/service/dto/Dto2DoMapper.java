@@ -1,17 +1,12 @@
 package org.siemac.metamac.srm.core.service.dto;
 
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
-import org.siemac.metamac.core.common.dto.ExternalItemDto;
-import org.siemac.metamac.core.common.ent.domain.ExternalItem;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.domain.srm.dto.ComponentDto;
 import org.siemac.metamac.domain.srm.dto.ComponentListDto;
 import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
-import org.siemac.metamac.domain.srm.dto.RepresentationDto;
 import org.siemac.metamac.srm.core.base.domain.Component;
 import org.siemac.metamac.srm.core.base.domain.ComponentList;
-import org.siemac.metamac.srm.core.base.domain.Representation;
-import org.siemac.metamac.srm.core.base.serviceapi.BaseService;
 import org.siemac.metamac.srm.core.structure.domain.DataStructureDefinition;
 
 public interface Dto2DoMapper {
@@ -28,7 +23,7 @@ public interface Dto2DoMapper {
 
     public <T extends ComponentList> T componentListDtoToComponentList(ServiceContext ctx, ComponentListDto componentListDto) throws MetamacException;
 
-    public DataStructureDefinition dataStructureDefinitionDtoToDataStructureDefinition(DataStructureDefinitionDto dataStructureDefinitionDto, ServiceContext ctx) throws MetamacException;
+    public DataStructureDefinition dataStructureDefinitionDtoToDataStructureDefinition(ServiceContext ctx, DataStructureDefinitionDto dataStructureDefinitionDto) throws MetamacException;
 
 //    public Representation representationDtoToRepresentation(RepresentationDto representationDto, ServiceContext ctx, BaseService baseService, Representation representationOlder) throws MetamacException;
 //

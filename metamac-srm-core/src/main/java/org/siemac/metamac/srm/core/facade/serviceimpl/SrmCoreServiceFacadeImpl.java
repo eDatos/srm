@@ -104,7 +104,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     public DataStructureDefinitionDto saveDsd(ServiceContext ctx, DataStructureDefinitionDto dataStructureDefinitionDto) throws MetamacException {
 
         // DTOs to Entities
-        DataStructureDefinition dataStructureDefinition = getDto2DoMapper().dataStructureDefinitionDtoToDataStructureDefinition(dataStructureDefinitionDto, ctx, getBaseService());
+        DataStructureDefinition dataStructureDefinition = getDto2DoMapper().dataStructureDefinitionDtoToDataStructureDefinition(ctx, dataStructureDefinitionDto);
 
         // Save
         dataStructureDefinition = getDataStructureDefinitionService().saveDsd(ctx, dataStructureDefinition);
@@ -117,7 +117,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     public void deleteDsd(ServiceContext ctx, DataStructureDefinitionDto dataStructureDefinitionDto) throws MetamacException {
 
         // DTOs to Entitys
-        DataStructureDefinition dataStructureDefinition = getDto2DoMapper().dataStructureDefinitionDtoToDataStructureDefinition(dataStructureDefinitionDto, ctx, getBaseService());
+        DataStructureDefinition dataStructureDefinition = getDto2DoMapper().dataStructureDefinitionDtoToDataStructureDefinition(ctx, dataStructureDefinitionDto);
 
         // Remove DSD
         getDataStructureDefinitionService().deleteDsd(ctx, dataStructureDefinition);
@@ -346,7 +346,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     public DescriptorDto saveDescriptorForDsd(ServiceContext ctx, Long idDsd, DescriptorDto descriptorDto) throws MetamacException {
 
         // DTOs to Entities
-        ComponentList componentListDescriptor = getDto2DoMapper().componentListDtoToComponentList(descriptorDto, ctx, getBaseService());
+        ComponentList componentListDescriptor = getDto2DoMapper().componentListDtoToComponentList(ctx, descriptorDto);
 
         // Load DSD
         DataStructureDefinition dataStructureDefinition = loadDsdById(ctx, idDsd);
@@ -361,7 +361,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public void deleteDescriptorForDsd(ServiceContext ctx, Long idDsd, DescriptorDto descriptorDto) throws MetamacException {
         // DTOs to Entities
-        ComponentList componentListDescriptor = getDto2DoMapper().componentListDtoToComponentList(descriptorDto, ctx, getBaseService());
+        ComponentList componentListDescriptor = getDto2DoMapper().componentListDtoToComponentList(ctx, descriptorDto);
 
         // Load DSD
         DataStructureDefinition dataStructureDefinition = loadDsdById(ctx, idDsd);
@@ -378,7 +378,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     public ComponentDto saveComponentForDsd(ServiceContext ctx, Long idDsd, ComponentDto componentDto, TypeComponentList typeComponentList) throws MetamacException {
 
         // Dto to entity
-        Component component = getDto2DoMapper().componentDtoToComponent(componentDto, ctx, getBaseService());
+        Component component = getDto2DoMapper().componentDtoToComponent(ctx, componentDto);
 
         // Load DSD
         DataStructureDefinition dataStructureDefinition = loadDsdById(ctx, idDsd);
@@ -394,7 +394,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     public void deleteComponentForDsd(ServiceContext ctx, Long idDsd, ComponentDto componentDto, TypeComponentList typeComponentList) throws MetamacException {
 
         // Dto to entity
-        Component component = getDto2DoMapper().componentDtoToComponent(componentDto, ctx, getBaseService());
+        Component component = getDto2DoMapper().componentDtoToComponent(ctx, componentDto);
 
         // Load DSD
         DataStructureDefinition dataStructureDefinition = loadDsdById(ctx, idDsd);

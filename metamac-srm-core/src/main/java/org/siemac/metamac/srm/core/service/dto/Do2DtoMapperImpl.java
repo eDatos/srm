@@ -196,135 +196,7 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
     /**************************************************************************
      * PUBLIC (INTERFACE)
      **************************************************************************/
-    /*
-     * @SuppressWarnings("unchecked")
-     * @Override
-     * public <T extends ItemDto> T itemToItemDto(Item item, ServiceContext ctx,
-     * BaseService sdmxBaseService) {
-     * if (item == null) {
-     * return null;
-     * }
-     * // Hierachy:
-     * // AnnotableArtefact < IdentifiableArtefact < NameableArtefact < Item
-     * // |_ Category
-     * // |_ Code
-     * // |_ Concept
-     * // |_ Organisation
-     * // |_ Agency
-     * // |_ DataConsumer
-     * // |_ DataProvider
-     * // |_ OrganisationUnit
-     * // |_ ReportingCategory
-     * // IdentityDto < AuditableDto < AnnotableArtefactDto < NameableArtefactDto < ItemDto
-     * // |_ ConceptDto
-     * // |_ CategoryDto
-     * // |_ CodeDto
-     * T result = null;
-     * if (item instanceof Category) {
-     * result = (T) getMapper().map(item, CategoryDto.class);
-     * //****************
-     * //* FIELDS
-     * // ***************
-     * }
-     * else if (item instanceof Code) {
-     * result = (T) getMapper().map(item, CodeDto.class);
-     * //****************
-     * //* FIELDS
-     * //****************
-     * ;
-     * }
-     * else if (item instanceof Concept) {
-     * result = (T) getMapper().map(item, ConceptDto.class);
-     * //****************
-     * //* FIELDS
-     * //****************
-     * ;
-     * }
-     * else if (item instanceof Organisation) {
-     * throw new UnsupportedOperationException("itemToItemDto for Organisation not implemented");
-     * }
-     * else if (item instanceof ReportingCategory) {
-     * throw new UnsupportedOperationException("itemToItemDto for ReportingCategory not implemented");
-     * }
-     * else {
-     * // Item is a abstract class, cannot be instantiated
-     * throw new UnsupportedOperationException("itemToItemDto for Unknown Entity not implemented");
-     * }
-     * //****************
-     * //* FIELDS
-     * //****************
-     * // Set<@ItemDto> hierarchy
-     * for (Item hierarchyitem : item.getHierarchy()) {
-     * result.addHierarchy(itemToItemDto(hierarchyitem, ctx, sdmxBaseService));
-     * }
-     * // Parent
-     * return nameableToDto(item, result);
-     * }
-     */
 
-    /*
-     * @SuppressWarnings("unchecked")
-     * @Override
-     * public <T extends ItemSchemeDto> T itemschemeToItemSchemeDto(ItemScheme itemScheme, ServiceContext ctx,
-     * BaseService sdmxBaseService) {
-     * if (itemScheme == null) {
-     * return null;
-     * }
-     * // Hierachy:
-     * // AnnotableArtefact < IdentifiableArtefact < NameableArtefact < MaintainableArtefact < ItemScheme
-     * // |_ CategoryScheme
-     * // |_ CodeList
-     * // |_ ConceptScheme
-     * // |_ OrganisationScheme
-     * // |_ AgencyScheme
-     * // |_ DataConsumerScheme
-     * // |_ DataProviderScheme
-     * // |_ OrganisationUnitScheme
-     * // |_ ReportingTaxonomy
-     * // IdentityDTo < AuditableDto < AnnotableArtefacDto < IdentifiableArtefactDTO < NameableArtefactDto < MaintainableArtefactDto < ItemSchemeDto
-     * // |_ CodeListDto
-     * // |_ ConceptSchemeDto
-     * T result = null;
-     * if (itemScheme instanceof CategoryScheme) {
-     * throw new UnsupportedOperationException("itemschemeToItemSchemeDto for CategoryScheme not implemented");
-     * }
-     * else if (itemScheme instanceof CodeList) {
-     * result = (T) getMapper().map(itemScheme, CodeListDto.class);
-     * //****************
-     * //* FIELDS
-     * // ***************
-     * ;
-     * }
-     * else if (itemScheme instanceof ConceptScheme) {
-     * result = (T) getMapper().map(itemScheme, ConceptSchemeDto.class);
-     * //****************
-     * //* FIELDS
-     * // ***************
-     * ;
-     * }
-     * else if (itemScheme instanceof OrganisationScheme) {
-     * throw new UnsupportedOperationException("itemschemeToItemSchemeDto for OrganisationScheme not implemented");
-     * }
-     * else if (itemScheme instanceof ReportingTaxonomy) {
-     * throw new UnsupportedOperationException("itemschemeToItemSchemeDto for ReportingTaxonomy not implemented");
-     * }
-     * else {
-     * // ItemScheme is a abstract class, cannot be instantiated
-     * throw new UnsupportedOperationException("itemschemeToItemSchemeDto for Unknown Entity not implemented");
-     * }
-     * //****************
-     * //* FIELDS
-     * //****************
-     * // ItemSchemeDto: Set<@ItemDto> items
-     * for (Item item : itemScheme.getItems()) {
-     * result.addItem(itemToItemDto(item, ctx, sdmxBaseService));
-     * }
-     * // IsPartial
-     * result.setIsPartial(itemScheme.getIsPartial());
-     * // Parent
-     * return maintainableArtefactToDto(itemScheme, result);
-     * }
-     */
 
     @SuppressWarnings("unchecked")
     @Override
@@ -622,4 +494,134 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
         return result;
     }
 
+    
+    /*
+     * @SuppressWarnings("unchecked")
+     * @Override
+     * public <T extends ItemDto> T itemToItemDto(Item item, ServiceContext ctx,
+     * BaseService sdmxBaseService) {
+     * if (item == null) {
+     * return null;
+     * }
+     * // Hierachy:
+     * // AnnotableArtefact < IdentifiableArtefact < NameableArtefact < Item
+     * // |_ Category
+     * // |_ Code
+     * // |_ Concept
+     * // |_ Organisation
+     * // |_ Agency
+     * // |_ DataConsumer
+     * // |_ DataProvider
+     * // |_ OrganisationUnit
+     * // |_ ReportingCategory
+     * // IdentityDto < AuditableDto < AnnotableArtefactDto < NameableArtefactDto < ItemDto
+     * // |_ ConceptDto
+     * // |_ CategoryDto
+     * // |_ CodeDto
+     * T result = null;
+     * if (item instanceof Category) {
+     * result = (T) getMapper().map(item, CategoryDto.class);
+     * //****************
+     * //* FIELDS
+     * // ***************
+     * }
+     * else if (item instanceof Code) {
+     * result = (T) getMapper().map(item, CodeDto.class);
+     * //****************
+     * //* FIELDS
+     * //****************
+     * ;
+     * }
+     * else if (item instanceof Concept) {
+     * result = (T) getMapper().map(item, ConceptDto.class);
+     * //****************
+     * //* FIELDS
+     * //****************
+     * ;
+     * }
+     * else if (item instanceof Organisation) {
+     * throw new UnsupportedOperationException("itemToItemDto for Organisation not implemented");
+     * }
+     * else if (item instanceof ReportingCategory) {
+     * throw new UnsupportedOperationException("itemToItemDto for ReportingCategory not implemented");
+     * }
+     * else {
+     * // Item is a abstract class, cannot be instantiated
+     * throw new UnsupportedOperationException("itemToItemDto for Unknown Entity not implemented");
+     * }
+     * //****************
+     * //* FIELDS
+     * //****************
+     * // Set<@ItemDto> hierarchy
+     * for (Item hierarchyitem : item.getHierarchy()) {
+     * result.addHierarchy(itemToItemDto(hierarchyitem, ctx, sdmxBaseService));
+     * }
+     * // Parent
+     * return nameableToDto(item, result);
+     * }
+     */
+
+    /*
+     * @SuppressWarnings("unchecked")
+     * @Override
+     * public <T extends ItemSchemeDto> T itemschemeToItemSchemeDto(ItemScheme itemScheme, ServiceContext ctx,
+     * BaseService sdmxBaseService) {
+     * if (itemScheme == null) {
+     * return null;
+     * }
+     * // Hierachy:
+     * // AnnotableArtefact < IdentifiableArtefact < NameableArtefact < MaintainableArtefact < ItemScheme
+     * // |_ CategoryScheme
+     * // |_ CodeList
+     * // |_ ConceptScheme
+     * // |_ OrganisationScheme
+     * // |_ AgencyScheme
+     * // |_ DataConsumerScheme
+     * // |_ DataProviderScheme
+     * // |_ OrganisationUnitScheme
+     * // |_ ReportingTaxonomy
+     * // IdentityDTo < AuditableDto < AnnotableArtefacDto < IdentifiableArtefactDTO < NameableArtefactDto < MaintainableArtefactDto < ItemSchemeDto
+     * // |_ CodeListDto
+     * // |_ ConceptSchemeDto
+     * T result = null;
+     * if (itemScheme instanceof CategoryScheme) {
+     * throw new UnsupportedOperationException("itemschemeToItemSchemeDto for CategoryScheme not implemented");
+     * }
+     * else if (itemScheme instanceof CodeList) {
+     * result = (T) getMapper().map(itemScheme, CodeListDto.class);
+     * //****************
+     * //* FIELDS
+     * // ***************
+     * ;
+     * }
+     * else if (itemScheme instanceof ConceptScheme) {
+     * result = (T) getMapper().map(itemScheme, ConceptSchemeDto.class);
+     * //****************
+     * //* FIELDS
+     * // ***************
+     * ;
+     * }
+     * else if (itemScheme instanceof OrganisationScheme) {
+     * throw new UnsupportedOperationException("itemschemeToItemSchemeDto for OrganisationScheme not implemented");
+     * }
+     * else if (itemScheme instanceof ReportingTaxonomy) {
+     * throw new UnsupportedOperationException("itemschemeToItemSchemeDto for ReportingTaxonomy not implemented");
+     * }
+     * else {
+     * // ItemScheme is a abstract class, cannot be instantiated
+     * throw new UnsupportedOperationException("itemschemeToItemSchemeDto for Unknown Entity not implemented");
+     * }
+     * //****************
+     * //* FIELDS
+     * //****************
+     * // ItemSchemeDto: Set<@ItemDto> items
+     * for (Item item : itemScheme.getItems()) {
+     * result.addItem(itemToItemDto(item, ctx, sdmxBaseService));
+     * }
+     * // IsPartial
+     * result.setIsPartial(itemScheme.getIsPartial());
+     * // Parent
+     * return maintainableArtefactToDto(itemScheme, result);
+     * }
+     */
 }

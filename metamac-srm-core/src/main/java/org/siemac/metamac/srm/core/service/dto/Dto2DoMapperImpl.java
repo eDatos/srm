@@ -1,22 +1,13 @@
 package org.siemac.metamac.srm.core.service.dto;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.Validate;
-import org.dozer.DozerBeanMapper;
 import org.dozer.MappingException;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
-import org.joda.time.DateTime;
-import org.siemac.metamac.access.control.error.ServiceExceptionType;
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.dto.LocalisedStringDto;
@@ -30,8 +21,6 @@ import org.siemac.metamac.core.common.exception.CommonServiceExceptionType;
 import org.siemac.metamac.core.common.exception.ExceptionLevelEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
-import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
-import org.siemac.metamac.core.common.exception.utils.ExceptionUtils;
 import org.siemac.metamac.core.common.serviceimpl.utils.ValidationUtils;
 import org.siemac.metamac.core.common.util.CoreCommonUtil;
 import org.siemac.metamac.core.common.util.OptimisticLockingUtils;
@@ -44,6 +33,7 @@ import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
 import org.siemac.metamac.domain.srm.dto.DescriptorDto;
 import org.siemac.metamac.domain.srm.dto.DimensionComponentDto;
 import org.siemac.metamac.domain.srm.dto.FacetDto;
+import org.siemac.metamac.domain.srm.dto.IdentifiableArtefactDto;
 import org.siemac.metamac.domain.srm.dto.MaintainableArtefactDto;
 import org.siemac.metamac.domain.srm.dto.NameableArtefactDto;
 import org.siemac.metamac.domain.srm.dto.RelationshipDto;
@@ -55,7 +45,6 @@ import org.siemac.metamac.srm.core.base.domain.Annotation;
 import org.siemac.metamac.srm.core.base.domain.AnnotationRepository;
 import org.siemac.metamac.srm.core.base.domain.Component;
 import org.siemac.metamac.srm.core.base.domain.ComponentList;
-import org.siemac.metamac.srm.core.base.domain.ComponentListRepository;
 import org.siemac.metamac.srm.core.base.domain.ComponentRepository;
 import org.siemac.metamac.srm.core.base.domain.EnumeratedRepresentation;
 import org.siemac.metamac.srm.core.base.domain.Facet;
@@ -68,12 +57,10 @@ import org.siemac.metamac.srm.core.base.domain.RepresentationRepository;
 import org.siemac.metamac.srm.core.base.domain.TextFormatRepresentation;
 import org.siemac.metamac.srm.core.base.exception.AnnotationNotFoundException;
 import org.siemac.metamac.srm.core.base.exception.ComponentNotFoundException;
-import org.siemac.metamac.srm.core.base.serviceapi.BaseService;
-import org.siemac.metamac.srm.core.base.serviceimpl.utils.BaseInvocationValidator;
+import org.siemac.metamac.srm.core.base.exception.FacetNotFoundException;
 import org.siemac.metamac.srm.core.common.error.MetamacCoreExceptionType;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.service.utils.SdmxToolsServer;
-import org.siemac.metamac.srm.core.service.utils.ValidationUtil;
 import org.siemac.metamac.srm.core.structure.domain.AttributeDescriptor;
 import org.siemac.metamac.srm.core.structure.domain.AttributeRelationship;
 import org.siemac.metamac.srm.core.structure.domain.AttributeRelationshipRepository;
@@ -95,19 +82,11 @@ import org.siemac.metamac.srm.core.structure.domain.ReportingYearStartDay;
 import org.siemac.metamac.srm.core.structure.domain.TimeDimension;
 import org.siemac.metamac.srm.core.structure.exception.DataStructureDefinitionNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 
 public class Dto2DoMapperImpl implements Dto2DoMapper {
 
     @Autowired
-    @Qualifier("mapperCoreUpdateMode")
-    private DozerBeanMapper                   mapperCoreUpdateMode;
-
-    @Autowired
     private ComponentRepository               componentRepository;
-
-//    @Autowired
-//    private ComponentListRepository           componentListRepository;
 
     @Autowired
     private DataStructureDefinitionRepository dataStructureDefinitionRepository;
@@ -136,10 +115,6 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
     protected ComponentRepository getComponentRepository() {
         return componentRepository;
     }
-
-//    protected ComponentListRepository getComponentListRepository() {
-//        return componentListRepository;
-//    }
 
     protected DataStructureDefinitionRepository getDataStructureDefinitionRepository() {
         return dataStructureDefinitionRepository;
@@ -170,97 +145,16 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
     }
     
     /**************************************************************************
-     * PRIVATE
+     * METHODS
      **************************************************************************/
-/*    private <T> T mapToEntity(Object source, Class<T> destinationClass) {
-        if (source == null) {
-            return null;
-        }
-*/        
-        // TODO obtener el objeto de bbdd en vez de que dozer haga un new de la instancia, con esto se consigue que...
-        // si tenemos un dto parcial (no con todas los campos de la entidad) sino solo con algunos la actualización sobre bbdd no machaque los campos que pudiera haber.
-        // Con esto perderíamos el optimistick loocking, porque el objeto recibido de hibernate tiene la version de la bbdd y aunque se setee a la del dto se lo pasa
-        // por los mismmísimos. Entonces ante este problema lo que habría que hacer es un IF que compruebe si la version del dto es != de la version de la entity que
-        // se carga de bbdd.
-        /*
-         * T result = null;
-         * if (source instanceof DataStructureDefinitionDto) {
-         * DataStructureDefinition def;
-         * try {
-         * def = getDataStructureDefinitionRepository().findById(Long.valueOf("159"));
-         * mapperCoreUpdateMode.map(source, def);
-         * result = (T) def;
-         * } catch (NumberFormatException e) {
-         * // TODO Auto-generated catch block
-         * e.printStackTrace();
-         * } catch (DataStructureDefinitionNotFoundException e) {
-         * // TODO Auto-generated catch block
-         * e.printStackTrace();
-         * }
-         * }
-         * else if (source instanceof InternationalStringDto) {
-         * InternationalString def;
-         * try {
-         * def = getInternationalStringRepository().findById(((InternationalStringDto)source).getId());
-         * mapperCoreUpdateMode.map(source, def);
-         * result = (T) def;
-         * } catch (NumberFormatException e) {
-         * // TODO Auto-generated catch block
-         * e.printStackTrace();
-         * } catch (InternationalStringNotFoundException e) {
-         * // TODO Auto-generated catch block
-         * e.printStackTrace();
-         * }
-         * }
-         * else {
-         * result = mapperCoreUpdateMode.map(source, destinationClass);
-         * }
-         */
-/*
-        T result = mapperCoreUpdateMode.map(source, destinationClass);
 
-        if (result instanceof IdentifiableArtefact) {
-            // IdLogic
-            // Some artifacts has a fixed ID -> Overwrite with fixed ID if is possible
-            String fixedID = null;
-            if ((fixedID = SdmxToolsServer.checkIfFixedId(result)) == null) {
-                // Generate a ID if is empty
-                if (StringUtils.isEmpty(((IdentifiableArtefact) result).getIdLogic())) {
-                    ((IdentifiableArtefact) result).setIdLogic(SdmxToolsServer.generateIdForSDMXArtefact(result));
-                }
-            } else {
-                ((IdentifiableArtefact) result).setIdLogic(fixedID);
-            }
-
-            // URN
-            if (StringUtils.isEmpty(((IdentifiableArtefact) result).getUrn())) {
-                // TODO: lanzar excepcion, en este punto ya se ha tenido que crear la URN (responsabilidad de los métodos que llaman a este)
-//                ((IdentifiableArtefact) result).setUrn(SdmxToolsServer.generateInternalUrn(result));
-            }
-        } else if (result instanceof Annotation) {
-            // IdLogic
-            // Some artifacts has a fixed ID -> Overwrite with fixed ID if is possible
-            String fixedID = null;
-            if ((fixedID = SdmxToolsServer.checkIfFixedId(result)) == null) {
-                // Generate a ID if is empty
-                if (StringUtils.isEmpty(((Annotation) result).getIdLogic())) {
-                    ((Annotation) result).setIdLogic(SdmxToolsServer.generateIdForSDMXArtefact(result));
-                }
-            } else {
-                ((Annotation) result).setIdLogic(fixedID);
-            }
-        }
-
-        return result;
-    }
-*/
     /**
      * @param source Dto to transform
      * @param older Current Entity for this Dto, null if is new
      * @param metadataName Parameter name's on the internationalString relationship
      * @return
      */
-    private InternationalString internationalStringToEntity(ServiceContext ctx, InternationalStringDto source, InternationalString older, String metadataName) {
+    private InternationalString internationalStringToEntity(ServiceContext ctx, InternationalStringDto source, InternationalString older, String metadataName) throws MetamacException {
         if (source == null) {
             // Delete old entity
             if (older != null) {
@@ -278,7 +172,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
             throw new MetamacException(MetamacCoreExceptionType.METADATA_REQUIRED, metadataName);
         }
 
-        // Create a MAP with all soruce locales
+        // Create a MAP with all source locales
         Map<String, LocalisedStringDto> sourceTextMap = new HashMap<String, LocalisedStringDto>();
         for (LocalisedStringDto sourceLocalisedDto: source.getTexts()) {
             sourceTextMap.put(sourceLocalisedDto.getLocale(), sourceLocalisedDto);
@@ -323,7 +217,6 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         }
 
         // TODO pasarle el target desde los métodos que llaman a este y no, buscar la anotación desde el repositorio.
-        
         Annotation target = null;
         if (source.getId() == null) {
             // Create
@@ -335,7 +228,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
                 target = getAnnotationRepository().findById(source.getId());
                 OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersion());
             } catch (AnnotationNotFoundException e) {
-                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(MetamacCoreExceptionType.MTM_CORE_SEARCH_NOT_FOUND).withMessageParameters(Annotation.class.getSimpleName())
+                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(MetamacCoreExceptionType.MTM_CORE_SEARCH_NOT_FOUND).withMessageParameters(ServiceExceptionParameters.ANNOTATION)
                 .withLoggedLevel(ExceptionLevelEnum.ERROR).build();
             }
         }
@@ -380,6 +273,36 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         return target;
     }
 
+    private <T extends IdentifiableArtefactDto, U extends IdentifiableArtefact> U identifiableArtefactDtoToEntity(ServiceContext ctx, T source, U target) throws MetamacException {
+        if (source == null) {
+            return null;
+        }
+        
+        // Required target entity because this class is abstract
+        if (target == null) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(MetamacCoreExceptionType.PARAMETER_REQUIRED).withMessageParameters(ServiceExceptionParameters.IDENTIFIABLEARTEFACT).build();
+        }
+        
+        // Metadata modifiable
+        // IdLogic: Some artifacts has a fixed ID -> Overwrite with fixed ID if is possible
+        String fixedID = null;
+        if ((fixedID = SdmxToolsServer.checkIfFixedId(target)) == null) {
+            // Generate a ID if is empty
+            if (StringUtils.isEmpty(((IdentifiableArtefact) target).getIdLogic())) {
+                ((IdentifiableArtefact) target).setIdLogic(SdmxToolsServer.generateIdForSDMXArtefact(target));
+            }
+        } else {
+            ((IdentifiableArtefact) target).setIdLogic(fixedID);
+        }
+        
+        // TODO URI, URN and ReplaceBy filled in service
+        //target.setUri(source.getUri());
+        //target.setUrn(urn);
+        // TODO Sustituir por version a la que reemplaza. En este momento??? --> target.setReplacedBy(target.getReplacedBy());
+
+        return annotableToEntity(ctx, source, target);
+    }
+    
     /**
      * @param <T>
      * @param <U>
@@ -408,7 +331,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         // Description
         target.setDescription(internationalStringToEntity(ctx, source.getDescription(), (older != null) ? older.getDescription() : null, ServiceExceptionParameters.NAMEABLEARTEFACT_DESCRIPTION));
 
-        return annotableToEntity(ctx, source, target);
+        return identifiableArtefactDtoToEntity(ctx, source, target);
     }
 
     /**
@@ -448,7 +371,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
     }
 
     /**************************************************************************
-     * PUBLIC (INTERFACE)
+     * COMPONENTS
      **************************************************************************/
 
     @SuppressWarnings("unchecked")
@@ -478,36 +401,29 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         // |_ DimensionComponentDto
 
         T result = null;
-        try {
-            // DataAttribute ******************************************************
-            if (source.getTypeComponent().equals(TypeComponent.DATA_ATTRIBUTE)) {
-                result = dataAttributeDtoToDataAttribute(ctx, (DataAttributeDto)source);
-            }
-            // DimensionComponent ***************************************************
-            else if (source.getTypeComponent().equals(TypeComponent.DIMENSION_COMPONENT)) {
-                result = dimensionComponentDtoToDimensionComponent(ctx, (DimensionComponentDto)source);
-            }
-            // Primary Measure ***************************************************
-            else if (source.getTypeComponent().equals(TypeComponent.PRIMARY_MEASURE)) {
-                result = componentDtoToPrimaryMeasure(ctx, source);
-            } else {
-                // The TargetObject may be enumerated and, if so, can use any ItemScheme
-                // 785 (Codelist, ConceptScheme, OrganisationScheme, CategoryScheme,
-                // 786 ReportingTaxonomy)
-                // The MetadataAttribute may be non-enumerated and, if so, uses one or more
-                // 792 ExtendedFacet
-                // The MetadataAttribute may be enumerated and, if so, use a
-                // 783 Codelist
-                throw new UnsupportedOperationException("componentDtoToComponent for Unknown Entity not implemented");
-            }
-        } catch (ComponentNotFoundException e) {
-            // TODO poner la excepcion adecuada y no la unknows
-            MetamacException metamacException = new MetamacException(e, MetamacCoreExceptionType.UNKNOWN);
-            metamacException.setLoggedLevel(ExceptionLevelEnum.DEBUG);
-            throw metamacException;
+        // DataAttribute ******************************************************
+        if (source.getTypeComponent().equals(TypeComponent.DATA_ATTRIBUTE)) {
+            result = dataAttributeDtoToDataAttribute(ctx, (DataAttributeDto)source);
+        }
+        // DimensionComponent ***************************************************
+        else if (source.getTypeComponent().equals(TypeComponent.DIMENSION_COMPONENT)) {
+            result = dimensionComponentDtoToDimensionComponent(ctx, (DimensionComponentDto)source);
+        }
+        // Primary Measure ***************************************************
+        else if (source.getTypeComponent().equals(TypeComponent.PRIMARY_MEASURE)) {
+            result = componentDtoToPrimaryMeasure(ctx, source);
+        } else {
+            // The TargetObject may be enumerated and, if so, can use any ItemScheme
+            // 785 (Codelist, ConceptScheme, OrganisationScheme, CategoryScheme,
+            // 786 ReportingTaxonomy)
+            // The MetadataAttribute may be non-enumerated and, if so, uses one or more
+            // 792 ExtendedFacet
+            // The MetadataAttribute may be enumerated and, if so, use a
+            // 783 Codelist
+            throw new UnsupportedOperationException("componentDtoToComponent for Unknown Entity not implemented");
         }
 
-        return annotableToEntity(ctx, source, result);
+        return identifiableArtefactDtoToEntity(ctx, source, result);
     }
 
     private <T extends Component> T dataAttributeDtoToDataAttribute(ServiceContext ctx, DataAttributeDto source) throws MetamacException {
@@ -546,8 +462,13 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         }
         else {
             // Update: Find previous entity
-            result = (T) getComponentRepository().findById(source.getId());
-            OptimisticLockingUtils.checkVersion(result.getVersion(), source.getVersion());
+            try {
+                result = (T) getComponentRepository().findById(source.getId());
+                OptimisticLockingUtils.checkVersion(result.getVersion(), source.getVersion());
+            } catch (ComponentNotFoundException e) {
+                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(MetamacCoreExceptionType.MTM_CORE_SEARCH_NOT_FOUND).withMessageParameters(ServiceExceptionParameters.DATAATTRIBUTE)
+                .withLoggedLevel(ExceptionLevelEnum.ERROR).build();
+            }
         }
         
         // Metadata modifiable
@@ -631,8 +552,14 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         }
         else {
             // Update
-            result = (T) getComponentRepository().findById(source.getId());
-            OptimisticLockingUtils.checkVersion(result.getVersion(), source.getVersion());
+            try {
+                result = (T) getComponentRepository().findById(source.getId());
+                OptimisticLockingUtils.checkVersion(result.getVersion(), source.getVersion());
+            } catch (ComponentNotFoundException e) {
+                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(MetamacCoreExceptionType.MTM_CORE_SEARCH_NOT_FOUND).withMessageParameters(ServiceExceptionParameters.DIMENSION)
+                .withLoggedLevel(ExceptionLevelEnum.ERROR).build();
+            }
+            
         }
    
         // Related entities
@@ -677,8 +604,13 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         }
         else {
             // Update
-            result = (T) getComponentRepository().findById(source.getId());
-            OptimisticLockingUtils.checkVersion(result.getVersion(), source.getVersion());
+            try {
+                result = (T) getComponentRepository().findById(source.getId());
+                OptimisticLockingUtils.checkVersion(result.getVersion(), source.getVersion());
+            } catch (ComponentNotFoundException e) {
+                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(MetamacCoreExceptionType.MTM_CORE_SEARCH_NOT_FOUND).withMessageParameters(ServiceExceptionParameters.MEASUREDIMENSION)
+                .withLoggedLevel(ExceptionLevelEnum.ERROR).build();
+            }
         }
 
         // ROLE
@@ -722,8 +654,13 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         }
         else {
             // Update
-            result = (T) getComponentRepository().findById(source.getId());
-            OptimisticLockingUtils.checkVersion(result.getVersion(), source.getVersion());
+            try {
+                result = (T) getComponentRepository().findById(source.getId());
+                OptimisticLockingUtils.checkVersion(result.getVersion(), source.getVersion());
+            } catch (ComponentNotFoundException e) {
+                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(MetamacCoreExceptionType.MTM_CORE_SEARCH_NOT_FOUND).withMessageParameters(ServiceExceptionParameters.TIMEDIMENSION)
+                .withLoggedLevel(ExceptionLevelEnum.ERROR).build();
+            }
         }
         
         // LocalRepresentation
@@ -744,8 +681,13 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         }
         else {
             // Update
-            result = (T) getComponentRepository().findById(source.getId());
-            OptimisticLockingUtils.checkVersion(result.getVersion(), source.getVersion());
+            try {
+                result = (T) getComponentRepository().findById(source.getId());
+                OptimisticLockingUtils.checkVersion(result.getVersion(), source.getVersion());
+            } catch (ComponentNotFoundException e) {
+                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(MetamacCoreExceptionType.MTM_CORE_SEARCH_NOT_FOUND).withMessageParameters(ServiceExceptionParameters.PRIMARYMEASURE)
+                .withLoggedLevel(ExceptionLevelEnum.ERROR).build();
+            }
         }
     
         // LocalRepresentation
@@ -754,10 +696,9 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         return result;
     }
     
-    
-    
-    
-    @SuppressWarnings("unchecked")
+    /**************************************************************************
+     * COMPONENT_LISTS
+     **************************************************************************/
     @Override
     public <T extends ComponentList> T componentListDtoToComponentList(ServiceContext ctx, ComponentListDto componentListDto) throws MetamacException {
         if (componentListDto == null) {
@@ -799,7 +740,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
             result.addComponent(componentDtoToComponent(ctx, componentDto));
         }
 
-        return annotableToEntity(ctx, componentListDto, result);
+        return identifiableArtefactDtoToEntity(ctx, componentListDto, result);
     }
 
     private AttributeRelationship attributeRelationshipDtoToAttributeRelationship(ServiceContext ctx, RelationshipDto source, AttributeRelationship attributeRelationshipOlder) throws MetamacException {
@@ -938,8 +879,11 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         return result;
     }
 
+    /**************************************************************************
+     * DATASTRUCTUREDEFINITION
+     **************************************************************************/
     @Override
-    public DataStructureDefinition dataStructureDefinitionDtoToDataStructureDefinition(DataStructureDefinitionDto dataStructureDefinitionDto, ServiceContext ctx) throws MetamacException {
+    public DataStructureDefinition dataStructureDefinitionDtoToDataStructureDefinition(ServiceContext ctx, DataStructureDefinitionDto dataStructureDefinitionDto) throws MetamacException {
         if (dataStructureDefinitionDto == null) {
             return null;
         }
@@ -947,7 +891,6 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         // DataStructureDefinitionDto > MaintainableArtefactDto > NameableArtefactDto > IdentifiableArtefactDto > AnnotableArtefacDto > AuditableDto > IdentityDto
         // DataStructureDefinition > Structure > MaintainableArtefact > NameableArtefact > IdentifiableArtefact > AnnotableArtefact
 
-//        DataStructureDefinition result = mapToEntity(dataStructureDefinitionDto, DataStructureDefinition.class);
         DataStructureDefinition result = null;
         if (dataStructureDefinitionDto.getId() == null) {
             // New
@@ -955,23 +898,24 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         }
         else {
             // Update
-            result = getDataStructureDefinitionRepository().findById(dataStructureDefinitionDto.getId());
-            OptimisticLockingUtils.checkVersion(result.getVersion(), dataStructureDefinitionDto.getVersion());
+            try {
+                result = getDataStructureDefinitionRepository().findById(dataStructureDefinitionDto.getId());
+                OptimisticLockingUtils.checkVersion(result.getVersion(), dataStructureDefinitionDto.getVersion());
+            } catch (DataStructureDefinitionNotFoundException e) {
+                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(MetamacCoreExceptionType.MTM_CORE_SEARCH_NOT_FOUND).withMessageParameters(ServiceExceptionParameters.DATASTRUCTUREDEFINITION)
+                .withLoggedLevel(ExceptionLevelEnum.ERROR).build();
+            }
             
             // Withouts DTO fields: NO MERGE NEEDED!!!
             // |_ Grouping
             result.getGrouping().addAll(result.getGrouping());
             // |_ Annotations
         }
-        
-        //TODO resto de campos
-        
 
         // Parent
         return maintainableArtefactToEntity(ctx, dataStructureDefinitionDto, result, result);
     }
 
-//    @Override
     private Representation representationDtoToRepresentation(ServiceContext ctx, RepresentationDto representationDto, Representation representationOlder, String metadataEnumTitle) throws MetamacException {
         if (representationDto == null) {
             // Delete old entity
@@ -1003,7 +947,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         return representation;
     }
 
-    private EnumeratedRepresentation representationDtoToEnumeratedRepresentation(ServiceContext ctx, RepresentationDto representationDto, Representation representationOlder, String metadataEnumTitle) {
+    private EnumeratedRepresentation representationDtoToEnumeratedRepresentation(ServiceContext ctx, RepresentationDto representationDto, Representation representationOlder, String metadataEnumTitle) throws MetamacException {
         
         EnumeratedRepresentation result = null;
         
@@ -1022,7 +966,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         return result;
     }
 
-    private TextFormatRepresentation representationDtoToTextFormatRepresentation(ServiceContext ctx, RepresentationDto source, Representation representationOlder) {
+    private TextFormatRepresentation representationDtoToTextFormatRepresentation(ServiceContext ctx, RepresentationDto source, Representation representationOlder) throws MetamacException {
         
         TextFormatRepresentation result = null;
         
@@ -1053,8 +997,14 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         }
         else {
             // Update
-            result = getFacetRepository().findById(source.getId());
-            OptimisticLockingUtils.checkVersion(result.getVersion(), source.getVersion());
+            try {
+                result = getFacetRepository().findById(source.getId());
+                OptimisticLockingUtils.checkVersion(result.getVersion(), source.getVersion());
+            } catch (FacetNotFoundException e) {
+                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(MetamacCoreExceptionType.MTM_CORE_SEARCH_NOT_FOUND).withMessageParameters(ServiceExceptionParameters.FACET)
+                .withLoggedLevel(ExceptionLevelEnum.ERROR).build();
+            }
+            
         }
         
         result.setFacetValue(source.getFacetValue());
@@ -1084,13 +1034,18 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         
         ExternalItem result = null;
         
-        if (source == null) {
+        if (source.getId() == null) {
             // New
             result = new ExternalItem(source.getCode(), source.getUri(), source.getUrn(), source.getType());
         }
         else {
             // Update
-            result = getExternalItemRepository().findById(source.getId());
+            try {
+                result = getExternalItemRepository().findById(source.getId());
+            } catch (ExternalItemNotFoundException e) {
+                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(MetamacCoreExceptionType.MTM_CORE_SEARCH_NOT_FOUND).withMessageParameters(metadataTitleName)
+                .withLoggedLevel(ExceptionLevelEnum.ERROR).build();
+            }
         }
             
         // Relate Entities

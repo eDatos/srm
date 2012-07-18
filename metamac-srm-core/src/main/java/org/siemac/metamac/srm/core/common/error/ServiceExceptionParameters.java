@@ -35,8 +35,11 @@ public class ServiceExceptionParameters {
     public static final String ANNOTATION_URL                                  = "annotation.url";
     public static final String ANNOTATION_TEXT                                 = "annotation.text";
 
-    // ANNOTABLEARTEFACT
+    // ANNOTABLE_ARTEFACT
     public static final String ANNOTABLEARTEFACT                               = "annotableartefact";
+
+    // IDENTIFIABLE_ARTEFACT
+    public static final String IDENTIFIABLEARTEFACT                            = "identifiableartefact";
 
     // NAMEABLE
     public static final String NAMEABLEARTEFACT                                = "nameableartefact";
@@ -68,13 +71,22 @@ public class ServiceExceptionParameters {
     public static final String DATAATTRIBUTE_ROLE_TITLE                        = "dataattribute.role.title";
     public static final String DATAATTRIBUTE_REPRESENTATION_ENUMERATE_TITLE    = "dataattribute.representation.enumerate.title";
 
-    // MEASUREDIMENSION
+    // MEASURE_DIMENSION
     public static final String MEASUREDIMENSION                                = "measuredimension";
     public static final String MEASUREDIMENSION_ROLE_TITLE                     = "measuredimension.role.title";
     public static final String MEASUREDIMENSION_REPRESENTATION_ENUMERATE_TITLE = "measuredimension.representation.enumerate.title";
 
-    // TIMEDIMENSION
+    // TIME_DIMENSION
     public static final String TIMEDIMENSION                                   = "timedimension";
     public static final String TIMEDIMENSION_REPRESENTATION_ENUMERATE_TITLE    = "timedimension.representation.enumerate.title";
+
+    // PRIMARY_MEASURE
+    public static final String PRIMARYMEASURE                                  = "primarymeasure";
+
+    // DATASTRUCTUREDEFINITION
+    public static final String DATASTRUCTUREDEFINITION                         = "datastructuredefinition";
+
+    // FACET
+    public static final String FACET                                           = "facet";
 
 }
