@@ -13,7 +13,7 @@ public class ConceptDS extends DataSource {
     public static final String DESCRIPTION = "con-desc";
 
     public ConceptDS() {
-        DataSourceIntegerField idLogic = new DataSourceIntegerField(ID_LOGIC, MetamacSrmWeb.getConstants().conceptSchemeId());
+        DataSourceIntegerField idLogic = new DataSourceIntegerField(ID_LOGIC, MetamacSrmWeb.getConstants().conceptSchemeIdLogic());
         idLogic.setPrimaryKey(true);
         addField(idLogic);
     }

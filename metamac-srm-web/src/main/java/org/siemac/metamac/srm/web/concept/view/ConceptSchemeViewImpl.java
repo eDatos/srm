@@ -19,7 +19,6 @@ import org.siemac.metamac.web.common.client.utils.DateUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.widgets.InformationWindow;
-import org.siemac.metamac.web.common.client.widgets.TitleLabel;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
@@ -42,32 +41,27 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
     private ConceptSchemeUiHandlers     uiHandlers;
 
     private VLayout                     panel;
-    private TitleLabel                  conceptSchemeTitle;
     private ConceptSchemeMainFormLayout mainFormLayout;
 
-    /* View form */
+    // View forms
     private GroupDynamicForm            identifiersForm;
     private GroupDynamicForm            contentDescriptorsForm;
     private GroupDynamicForm            classDescriptorsForm;
     private GroupDynamicForm            productionDescriptorsForm;
     private GroupDynamicForm            diffusionDescriptorsForm;
 
-    /* Edit form */
+    // Edition forms
     private GroupDynamicForm            identifiersEditionForm;
     private GroupDynamicForm            contentDescriptorsEditionForm;
     private GroupDynamicForm            classDescriptorsEditionForm;
     private GroupDynamicForm            productionDescriptorsEditionForm;
     private GroupDynamicForm            diffusionDescriptorsEditionForm;
 
-    /* Data */
     private ConceptSchemeDto            conceptScheme;
 
     @Inject
     public ConceptSchemeViewImpl() {
         super();
-
-        conceptSchemeTitle = new TitleLabel();
-        conceptSchemeTitle.setStyleName("sectionTitleLeftMargin");
 
         mainFormLayout = new ConceptSchemeMainFormLayout(ClientSecurityUtils.canEditConceptScheme());
 
@@ -75,7 +69,6 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         createEditionForm();
 
         panel = new VLayout();
-        panel.addMember(conceptSchemeTitle);
         panel.addMember(mainFormLayout);
         bindEvents();
     }
@@ -124,7 +117,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
 
         String defaultLocalized = InternationalStringUtils.getLocalisedString(conceptScheme.getName());
         String title = defaultLocalized != null ? defaultLocalized : StringUtils.EMPTY;
-        conceptSchemeTitle.setContents(title);
+        mainFormLayout.setTitleLabelContents(title);
 
         mainFormLayout.updatePublishSection(conceptScheme.getProcStatus());
         mainFormLayout.setViewMode();
@@ -223,27 +216,27 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
 
     private void createViewForm() {
         // Identifiers Form
-        identifiersForm = new GroupDynamicForm(getConstants().conceptSchemeDetailIdentifiers());
-        ViewTextItem idLogic = new ViewTextItem(ConceptSchemeDS.ID_LOGIC, getConstants().conceptSchemeDetailIdentifier());
-        ViewMultiLanguageTextItem title = new ViewMultiLanguageTextItem(ConceptSchemeDS.NAME, getConstants().conceptSchemeDetailTitle());
-        ViewTextItem uri = new ViewTextItem(ConceptSchemeDS.URI, getConstants().conceptSchemeDetailUri());
-        ViewTextItem urn = new ViewTextItem(ConceptSchemeDS.URN, getConstants().conceptSchemeDetailUrn());
-        ViewTextItem version = new ViewTextItem(ConceptSchemeDS.VERSION, getConstants().conceptSchemeDetailVersion());
+        identifiersForm = new GroupDynamicForm(getConstants().conceptSchemeIdentifiers());
+        ViewTextItem idLogic = new ViewTextItem(ConceptSchemeDS.ID_LOGIC, getConstants().conceptSchemeIdLogic());
+        ViewMultiLanguageTextItem title = new ViewMultiLanguageTextItem(ConceptSchemeDS.NAME, getConstants().conceptSchemeTitle());
+        ViewTextItem uri = new ViewTextItem(ConceptSchemeDS.URI, getConstants().conceptSchemeUri());
+        ViewTextItem urn = new ViewTextItem(ConceptSchemeDS.URN, getConstants().conceptSchemeUrn());
+        ViewTextItem version = new ViewTextItem(ConceptSchemeDS.VERSION, getConstants().conceptSchemeVersion());
         identifiersForm.setFields(idLogic, title, uri, urn, version);
 
         contentDescriptorsForm = new GroupDynamicForm(getConstants().conceptSchemeContentDescriptors());
-        ViewMultiLanguageTextItem description = new ViewMultiLanguageTextItem(ConceptSchemeDS.DESCRIPTION, getConstants().conceptSchemeDetailDescription());
-        ViewTextItem partial = new ViewTextItem(ConceptSchemeDS.IS_PARTIAL, getConstants().conceptSchemeDetailPartial());
+        ViewMultiLanguageTextItem description = new ViewMultiLanguageTextItem(ConceptSchemeDS.DESCRIPTION, getConstants().conceptSchemeDescription());
+        ViewTextItem partial = new ViewTextItem(ConceptSchemeDS.IS_PARTIAL, getConstants().conceptSchemePartial());
         contentDescriptorsForm.setFields(description, partial);
 
         classDescriptorsForm = new GroupDynamicForm(getConstants().conceptSchemeClassDescriptors());
-        ViewTextItem agency = new ViewTextItem(ConceptSchemeDS.AGENCY, getConstants().conceptSchemeDetailAgency());
-        ViewTextItem type = new ViewTextItem(ConceptSchemeDS.TYPE, getConstants().conceptSchemeDetailType());
-        ViewTextItem operation = new ViewTextItem(ConceptSchemeDS.RELATED_OPERATION, getConstants().conceptSchemeDetailOperation());
+        ViewTextItem agency = new ViewTextItem(ConceptSchemeDS.AGENCY, getConstants().conceptSchemeAgency());
+        ViewTextItem type = new ViewTextItem(ConceptSchemeDS.TYPE, getConstants().conceptSchemeType());
+        ViewTextItem operation = new ViewTextItem(ConceptSchemeDS.RELATED_OPERATION, getConstants().conceptSchemeOperation());
         classDescriptorsForm.setFields(type, operation, agency);
 
         productionDescriptorsForm = new GroupDynamicForm(getConstants().conceptSchemeProductionDescriptors());
-        ViewTextItem procStatus = new ViewTextItem(ConceptSchemeDS.PROC_STATUS, getConstants().conceptSchemeDetailProcStatus());
+        ViewTextItem procStatus = new ViewTextItem(ConceptSchemeDS.PROC_STATUS, getConstants().conceptSchemeProcStatus());
         productionDescriptorsForm.setFields(procStatus);
 
         diffusionDescriptorsForm = new GroupDynamicForm(getConstants().conceptSchemeDiffusionDescriptors());
@@ -260,28 +253,28 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
 
     private void createEditionForm() {
         // Identifiers Form
-        identifiersEditionForm = new GroupDynamicForm(getConstants().conceptSchemeDetailIdentifiers());
-        ViewTextItem idLogic = new ViewTextItem(ConceptSchemeDS.ID_LOGIC, getConstants().conceptSchemeDetailIdentifier());
-        MultiLanguageTextItem title = new MultiLanguageTextItem(ConceptSchemeDS.NAME, getConstants().conceptSchemeDetailTitle());
+        identifiersEditionForm = new GroupDynamicForm(getConstants().conceptSchemeIdentifiers());
+        ViewTextItem idLogic = new ViewTextItem(ConceptSchemeDS.ID_LOGIC, getConstants().conceptSchemeIdLogic());
+        MultiLanguageTextItem title = new MultiLanguageTextItem(ConceptSchemeDS.NAME, getConstants().conceptSchemeTitle());
         title.setRequired(true);
-        ViewTextItem uri = new ViewTextItem(ConceptSchemeDS.URI, getConstants().conceptSchemeDetailUri());
-        ViewTextItem urn = new ViewTextItem(ConceptSchemeDS.URN, getConstants().conceptSchemeDetailUrn());
-        ViewTextItem version = new ViewTextItem(ConceptSchemeDS.VERSION, getConstants().conceptSchemeDetailVersion());
+        ViewTextItem uri = new ViewTextItem(ConceptSchemeDS.URI, getConstants().conceptSchemeUri());
+        ViewTextItem urn = new ViewTextItem(ConceptSchemeDS.URN, getConstants().conceptSchemeUrn());
+        ViewTextItem version = new ViewTextItem(ConceptSchemeDS.VERSION, getConstants().conceptSchemeVersion());
         identifiersEditionForm.setFields(idLogic, title, uri, urn, version);
 
         contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().conceptSchemeContentDescriptors());
-        MultiLanguageTextItem description = new MultiLanguageTextItem(ConceptSchemeDS.DESCRIPTION, getConstants().conceptSchemeDetailDescription());
-        BooleanItem partial = new BooleanItem(ConceptSchemeDS.IS_PARTIAL, getConstants().conceptSchemeDetailPartial());
+        MultiLanguageTextItem description = new MultiLanguageTextItem(ConceptSchemeDS.DESCRIPTION, getConstants().conceptSchemeDescription());
+        BooleanItem partial = new BooleanItem(ConceptSchemeDS.IS_PARTIAL, getConstants().conceptSchemePartial());
         contentDescriptorsEditionForm.setFields(description, partial);
 
         classDescriptorsEditionForm = new GroupDynamicForm(getConstants().conceptSchemeClassDescriptors());
-        SelectItem type = new SelectItem(ConceptSchemeDS.TYPE, getConstants().conceptSchemeDetailType());
-        SelectItem operation = new SelectItem(ConceptSchemeDS.RELATED_OPERATION, getConstants().conceptSchemeDetailOperation());
-        ViewTextItem agency = new ViewTextItem(ConceptSchemeDS.AGENCY, getConstants().conceptSchemeDetailAgency());
+        SelectItem type = new SelectItem(ConceptSchemeDS.TYPE, getConstants().conceptSchemeType());
+        SelectItem operation = new SelectItem(ConceptSchemeDS.RELATED_OPERATION, getConstants().conceptSchemeOperation());
+        ViewTextItem agency = new ViewTextItem(ConceptSchemeDS.AGENCY, getConstants().conceptSchemeAgency());
         classDescriptorsEditionForm.setFields(type, operation, agency);
 
         productionDescriptorsEditionForm = new GroupDynamicForm(getConstants().conceptSchemeProductionDescriptors());
-        ViewTextItem procStatus = new ViewTextItem(ConceptSchemeDS.PROC_STATUS, getConstants().conceptSchemeDetailProcStatus());
+        ViewTextItem procStatus = new ViewTextItem(ConceptSchemeDS.PROC_STATUS, getConstants().conceptSchemeProcStatus());
         productionDescriptorsEditionForm.setFields(procStatus);
 
         diffusionDescriptorsEditionForm = new GroupDynamicForm(getConstants().conceptSchemeDiffusionDescriptors());

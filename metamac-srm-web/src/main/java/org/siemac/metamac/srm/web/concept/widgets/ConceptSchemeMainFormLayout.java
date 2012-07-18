@@ -34,8 +34,8 @@ public class ConceptSchemeMainFormLayout extends InternationalMainFormLayout {
         editHandlerRegistration.removeHandler();
 
         pendingPublication = new PublishToolStripButton(getConstants().conceptSchemeSendToPendingPublication(), GlobalResources.RESOURCE.pendingPublication().getURL());
-        publishInternally = new PublishToolStripButton(getConstants().conceptSchemeInternalPublish(), GlobalResources.RESOURCE.internalPublish().getURL());
-        publishExternally = new PublishToolStripButton(getConstants().conceptSchemeExternalPublish(), GlobalResources.RESOURCE.externalPublish().getURL());
+        publishInternally = new PublishToolStripButton(getConstants().conceptSchemePublishInternally(), GlobalResources.RESOURCE.internalPublish().getURL());
+        publishExternally = new PublishToolStripButton(getConstants().conceptSchemePublishExternally(), GlobalResources.RESOURCE.externalPublish().getURL());
         rejectValidation = new PublishToolStripButton(getConstants().conceptSchemeRejectValidation(), GlobalResources.RESOURCE.reject().getURL());
         versioning = new PublishToolStripButton(getConstants().conceptSchemeVersioning(), GlobalResources.RESOURCE.version().getURL());
 
