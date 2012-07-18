@@ -1,5 +1,6 @@
 package org.siemac.metamac.srm.web.client.presenter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
@@ -152,14 +153,28 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
     @Override
     public void goToDsd(Long id) {
         if (id != null) {
-            placeManager.revealRelativePlace(new PlaceRequest(NameTokens.dsdPage).with(PlaceRequestParams.dsdParam, id.toString()));
+            PlaceRequest structuralResourcesPlace = new PlaceRequest(NameTokens.structuralResourcesPage);
+            PlaceRequest dsdListPlace = new PlaceRequest(NameTokens.dsdListPage);
+            PlaceRequest dsdPlace = new PlaceRequest(NameTokens.dsdPage).with(PlaceRequestParams.dsdParam, id.toString());
+            List<PlaceRequest> placeRequests = new ArrayList<PlaceRequest>();
+            placeRequests.add(structuralResourcesPlace);
+            placeRequests.add(dsdListPlace);
+            placeRequests.add(dsdPlace);
+            placeManager.revealPlaceHierarchy(placeRequests);
         }
     }
 
     @Override
     public void goToConceptScheme(String idLogic) {
         if (idLogic != null) {
-            placeManager.revealRelativePlace(new PlaceRequest(NameTokens.conceptSchemePage).with(PlaceRequestParams.conceptSchemeParam, idLogic));
+            PlaceRequest structuralResourcesPlace = new PlaceRequest(NameTokens.structuralResourcesPage);
+            PlaceRequest schemesListPlace = new PlaceRequest(NameTokens.conceptSchemeListPage);
+            PlaceRequest conceptPlace = new PlaceRequest(NameTokens.conceptSchemePage).with(PlaceRequestParams.conceptSchemeParam, idLogic);
+            List<PlaceRequest> placeRequests = new ArrayList<PlaceRequest>();
+            placeRequests.add(structuralResourcesPlace);
+            placeRequests.add(schemesListPlace);
+            placeRequests.add(conceptPlace);
+            placeManager.revealPlaceHierarchy(placeRequests);
         }
     }
 
