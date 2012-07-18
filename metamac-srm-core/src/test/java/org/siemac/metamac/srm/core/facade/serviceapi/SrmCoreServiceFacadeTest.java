@@ -108,6 +108,17 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServ
     /**************************************************************************
      * DSDs
      **************************************************************************/
+
+    @Test
+    @Override
+    public void testSaveDsd() throws Exception {
+        DataStructureDefinitionDto dataStructureDefinitionDto = SrmDtoMocks.createDdsDTO();
+
+        dataStructureDefinitionDto = srmCoreServiceFacade.saveDsd(getServiceContext(), dataStructureDefinitionDto);
+
+        assertNotNull(dataStructureDefinitionDto);
+    }
+    
     @Test
     public void testReSaveDsd() throws Exception {
         DataStructureDefinitionDto dataStructureDefinitionDto = srmCoreServiceFacade.saveDsd(getServiceContext(), SrmDtoMocks.createDdsDTOwhithDescription());
@@ -150,15 +161,6 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServ
         assertNotNull(dataStructureDefinitionDto);
     }
 
-    @Test
-    @Override
-    public void testSaveDsd() throws Exception {
-        DataStructureDefinitionDto dataStructureDefinitionDto = SrmDtoMocks.createDdsDTO();
-
-        dataStructureDefinitionDto = srmCoreServiceFacade.saveDsd(getServiceContext(), dataStructureDefinitionDto);
-
-        assertNotNull(dataStructureDefinitionDto);
-    }
     
 
     @Test
