@@ -10,12 +10,6 @@ public interface GlobalResources extends ClientBundleWithLookup {
 
     public static final GlobalResources RESOURCE = GWT.create(GlobalResources.class);
 
-    // CSS
-    // @Source("MetamacSrmWebStyles.css")
-    // CssStyles css();
-    //
-    // interface CssStyles extends MetamacSrmWebStyles { }
-
     @ImageOptions(repeatStyle = RepeatStyle.Both)
     @Source("images/info.png")
     ImageResource info();
@@ -77,11 +71,11 @@ public interface GlobalResources extends ClientBundleWithLookup {
     ImageResource pendingPublication();
 
     @ImageOptions(repeatStyle = RepeatStyle.Both)
-    @Source("images/internal_publish.png")
+    @Source("images/publish_internally.png")
     ImageResource internalPublish();
 
     @ImageOptions(repeatStyle = RepeatStyle.Both)
-    @Source("images/external_publish.png")
+    @Source("images/publish_externally.png")
     ImageResource externalPublish();
 
     @ImageOptions(repeatStyle = RepeatStyle.Both)
