@@ -30,20 +30,19 @@ public class ConceptsInvocationValidator {
         if (exceptions == null) {
             exceptions = new ArrayList<MetamacExceptionItem>();
         }
-        
+
         checkConceptScheme(conceptScheme, exceptions);
-        
+
         ExceptionUtils.throwIfException(exceptions);
     }
-
 
     public static void checkUpdateConceptScheme(ConceptScheme conceptScheme, List<MetamacExceptionItem> exceptions) throws MetamacException {
         if (exceptions == null) {
             exceptions = new ArrayList<MetamacExceptionItem>();
         }
-        
+
         checkConceptScheme(conceptScheme, exceptions);
-        
+
         ExceptionUtils.throwIfException(exceptions);
     }
 
@@ -66,14 +65,13 @@ public class ConceptsInvocationValidator {
         ExceptionUtils.throwIfException(exceptions);
     }
 
-    
     public static void checkFindConceptSchemeByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, List<MetamacExceptionItem> exceptions) throws MetamacException {
         if (exceptions == null) {
             exceptions = new ArrayList<MetamacExceptionItem>();
         }
 
         ExceptionUtils.throwIfException(exceptions);
-    }  
+    }
 
     // ------------------------------------------------------------------------------------
     // CONCEPTS
@@ -91,11 +89,11 @@ public class ConceptsInvocationValidator {
     }
 
     public static void checkCreateConcept(Long conceptSchemeId, ConceptScheme entity, List<MetamacExceptionItem> exceptions) throws MetamacException {
-     // TODO
+        // TODO
     }
 
-    public static void  checkUpdateConcept(ConceptScheme entity, List<MetamacExceptionItem> exceptions) throws MetamacException {
-     // TODO
+    public static void checkUpdateConcept(ConceptScheme entity, List<MetamacExceptionItem> exceptions) throws MetamacException {
+        // TODO
     }
 
     public void checkDeleteConcept(Long id, List<MetamacExceptionItem> exceptions) throws MetamacException {
@@ -119,11 +117,13 @@ public class ConceptsInvocationValidator {
         ExceptionUtils.throwIfException(exceptions);
 
     }
-    
+
     private static void checkConceptScheme(ConceptScheme conceptScheme, List<MetamacExceptionItem> exceptions) {
         ValidationUtils.checkParameterRequired(conceptScheme, ServiceExceptionParameters.CONCEPT_SCHEME, exceptions);
+        if (conceptScheme == null) {
+            return;
+        }
         BaseInvocationValidator.checkItemScheme(conceptScheme.getItemScheme(), exceptions);
     }
-
 
 }

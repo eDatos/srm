@@ -51,6 +51,8 @@ public class ConceptsServiceImpl extends ConceptsServiceImplBase {
         // TODO: Validate code unique: organization, id_logic, version?
         // validateConceptSchemeUnique(ctx, entity.getItemScheme().getIdLogic(), null);
 
+        // TODO setear urn
+        
         return conceptSchemeRepository.save(entity);
 
     }
@@ -62,6 +64,7 @@ public class ConceptsServiceImpl extends ConceptsServiceImplBase {
         // TODO: Validate code unique: organization, id_logic, version?
         // validateConceptSchemeUnique(ctx, entity.getItemScheme().getIdLogic(), null);
 
+        // TODO actualizar urn y de los hijos, si cambia el code
         return conceptSchemeRepository.save(entity);
 
     }

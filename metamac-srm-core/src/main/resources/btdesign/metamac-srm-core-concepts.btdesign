@@ -23,7 +23,7 @@ Application ConceptSchemes {
     		@ConceptScheme updateConceptScheme(@ConceptScheme entity) throws MetamacException;
     		deleteConceptScheme(Long id) throws MetamacException;
     		@ConceptScheme findConceptSchemeById(Long id) throws MetamacException;
-    		// TODO by code
+    		// TODO by urn
     		List<@ConceptScheme> findAllConceptSchemes throws MetamacException;
     		PagedResult<@ConceptScheme> findConceptSchemeByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
     		
@@ -48,7 +48,9 @@ Application ConceptSchemes {
 			hint="idSequence=CONCEPT_SCHEMES"
 			
 			- @ItemScheme itemScheme databaseColumn="ITEM_SCHEME_FK" not nullable cascade="all" ;
-			
+			// TODO type (es un enum)
+			// TODO related_operation (sólo cuando el type = Operation. Será un ExternalItem)
+			// TODO procStatus (poner en el ItemSchema para hacer ciclo de vida genérico). Crear enumerado ItemSchemeProcStatus
 			Repository ConceptSchemeRepository {
 				findById;
 		   		findAll;

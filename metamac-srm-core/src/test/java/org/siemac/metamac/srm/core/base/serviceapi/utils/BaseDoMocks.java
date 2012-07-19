@@ -40,6 +40,7 @@ public class BaseDoMocks {
         // IdentifiableArtefact
         String code = MetamacMocks.mockString(10);
         itemScheme.setIdLogic("conceptScheme-" + code);
+        // TODO cambiar formato uri y urn
         itemScheme.setUri("uri:urn:" + code);
         itemScheme.setUrn("http://sdmx/v2.1/conceptScheme/" + code);
         itemScheme.setReplacedBy(null);

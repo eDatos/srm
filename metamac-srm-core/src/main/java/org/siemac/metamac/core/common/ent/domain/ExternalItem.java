@@ -11,13 +11,13 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "TB_EXTERNAL_ITEMS")
 public class ExternalItem extends ExternalItemBase {
+
     private static final long serialVersionUID = 1L;
 
     protected ExternalItem() {
     }
 
-    public ExternalItem(String code, String uri, String urn,
-        TypeExternalArtefactsEnum type) {
+    public ExternalItem(String code, String uri, String urn, TypeExternalArtefactsEnum type) {
         super(code, uri, urn, type);
     }
 }
