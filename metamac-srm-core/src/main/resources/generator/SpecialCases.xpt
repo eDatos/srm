@@ -5,30 +5,23 @@
 
 
 
-«AROUND
-templates::domain::DomainObjectAttributeAnnotation::columnAnnotations FOR
-Attribute»
-«IF type == "DateTimeTZ"»
-@org.hibernate.annotations.Columns(columns={@javax.persistence.Column(name="«getDatabaseName()»"),@javax.persistence.Column(name="«getDatabaseName()»_TZ")})
-@org.hibernate.annotations.Type(type="«getHibernateType()»")
-«ELSE»
-     «targetDef.proceed()»
+«AROUND templates::domain::DomainObjectAttributeAnnotation::columnAnnotations FOR Attribute»
+	«IF type == "DateTimeTZ"»
+		@org.hibernate.annotations.Columns(columns={@javax.persistence.Column(name="«getDatabaseName()»"),@javax.persistence.Column(name="«getDatabaseName()»_TZ")})
+		@org.hibernate.annotations.Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTimeWithZone")
+	«ELSE»
+    	«targetDef.proceed()»
     «ENDIF»
 «ENDAROUND»
 
-
-
-«AROUND
-templates::domain::DomainObjectAttributeAnnotation::auditAnnotations FOR
-Attribute»
-«IF type == "DateTime"»
-@org.hibernate.annotations.Columns(columns={@javax.persistence.Column(name="«getDatabaseName()»"),@javax.persistence.Column(name="«getDatabaseName()»_TZ")})
-@org.hibernate.annotations.Type(type="org.joda.time.contrib.hibernate.PersistentDateTimeTZ")
-«ELSE»
-     «targetDef.proceed()»
+«AROUND templates::domain::DomainObjectAttributeAnnotation::auditAnnotations FOR Attribute»
+	«IF type == "DateTime"»
+		@org.hibernate.annotations.Columns(columns={@javax.persistence.Column(name="«getDatabaseName()»"),@javax.persistence.Column(name="«getDatabaseName()»_TZ")})
+		@org.hibernate.annotations.Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTimeWithZone")
+	«ELSE»
+	     «targetDef.proceed()»
     «ENDIF»
 «ENDAROUND»
-
 
 
 «AROUND templates::db::OracleDDL::column(String prefix) FOR Attribute-»
