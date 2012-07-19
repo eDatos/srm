@@ -117,7 +117,7 @@
         URN="urn:sdmx:org.sdmx.infomodel.base.Agency=ISTAC:STANDALONE(1.0).ISTAC"
         MANAGEMENT_APP_URL="[null]"
         VERSION="1"
-        TITLE="[null]"
+        TITLE_FK="[null]"
         TYPE="AGENCY"
     />
     
