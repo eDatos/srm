@@ -56,26 +56,9 @@ public class SrmDtoMocks {
     public static DataStructureDefinitionDto createDdsDTO() {
         DataStructureDefinitionDto dataStructureDefinitionDto = new DataStructureDefinitionDto();
 
-        // Required
-        // Boolean sdmxFinal,
-        // Boolean isExternalReference, String sdmxVersion, String sdmxId,
-        // String uri, MaintenanceAgency maintainer, InternationalString name,
-        // Set<ComponentList> grouping)
-        dataStructureDefinitionDto.setVersionLogic(VersionUtil.VERSION_LOGIC);
-        dataStructureDefinitionDto.setFinalLogic(false);
-        dataStructureDefinitionDto.setIsExternalReference(false);
-        dataStructureDefinitionDto.setUri("urn%3Auuid%3A23289b5d-c846-49f6-bce7-ea09390fe7e1");
-
-        // relativo a auditoria
-        dataStructureDefinitionDto.setCreatedBy("Junit");
-        dataStructureDefinitionDto.setCreatedDate(new Date());
-
-        // Required: Maintainer
-        // dataStructureDefinitionDto.setMaintainerIdLogic(organizationByDefaultLogicId);
+        // Required --------
         
-        dataStructureDefinitionDto.setMaintainer(MetamacMocks.mockExternalItemDto(BaseDoMocks.mockAgencyUrn(), TypeExternalArtefactsEnum.AGENCY));
-
-        // Required: Name
+        // Name
         InternationalStringDto name = new InternationalStringDto();
 
         LocalisedStringDto name_es = new LocalisedStringDto();
@@ -88,9 +71,19 @@ public class SrmDtoMocks {
         name.addText(name_en);
         name.addText(name_es);
         dataStructureDefinitionDto.setName(name);
+        
+        // Maintainer
+        dataStructureDefinitionDto.setMaintainer(MetamacMocks.mockExternalItemDto(BaseDoMocks.mockAgencyUrn(), TypeExternalArtefactsEnum.AGENCY));
+        
+        // Other --------
+        dataStructureDefinitionDto.setServiceURL("test");
+        
+        // Version Logic
+        dataStructureDefinitionDto.setVersionLogic(VersionUtil.VERSION_LOGIC);
 
-        // Otros
-        dataStructureDefinitionDto.setServiceURL("www.prueba.url");
+        // Audit
+        dataStructureDefinitionDto.setCreatedBy(serviceContext.getApplicationId());
+        dataStructureDefinitionDto.setCreatedDate(new Date());
 
         return dataStructureDefinitionDto;
     }
@@ -259,9 +252,6 @@ public class SrmDtoMocks {
         descriptorDto.setUri(RandomStringUtils.random(50, true, true));
         descriptorDto.setTypeComponentList(TypeComponentList.DIMENSION_DESCRIPTOR);
 
-        // Otros
-        // descriptorDto.getComponents().addAll(ONLY DIMENSION THAT EXIST!!!);
-
         return descriptorDto;
     }
 
@@ -277,9 +267,6 @@ public class SrmDtoMocks {
         // Required
         descriptorDto.setUri(RandomStringUtils.random(50, true, true));
         descriptorDto.setTypeComponentList(TypeComponentList.ATTRIBUTE_DESCRIPTOR);
-
-        // Otros
-        // descriptorDto.getComponents().addAll(ONLY ATTRIBUTE THAT EXIST!!!);
 
         return descriptorDto;
     }
@@ -297,9 +284,6 @@ public class SrmDtoMocks {
         descriptorDto.setUri(RandomStringUtils.random(50, true, true));
         descriptorDto.setTypeComponentList(TypeComponentList.MEASURE_DESCRIPTOR);
 
-        // Otros
-        // descriptorDto.getComponents().add(ONLY MEASURE THAT EXIST!!!);
-
         return descriptorDto;
     }
 
@@ -315,9 +299,6 @@ public class SrmDtoMocks {
         // Required
         descriptorDto.setUri(RandomStringUtils.random(50, true, true));
         descriptorDto.setTypeComponentList(TypeComponentList.GROUP_DIMENSION_DESCRIPTOR);
-
-        // Otros
-        // descriptorDto.getComponents().addAll(ONLY GROUP THAT EXIST!!!);
 
         return descriptorDto;
     }
