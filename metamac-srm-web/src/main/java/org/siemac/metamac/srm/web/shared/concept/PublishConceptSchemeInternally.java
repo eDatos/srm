@@ -1,4 +1,4 @@
-package org.siemac.metamac.srm.web.shared;
+package org.siemac.metamac.srm.web.shared.concept;
 
 import org.siemac.metamac.domain.concept.dto.ConceptSchemeDto;
 
@@ -7,7 +7,7 @@ import com.gwtplatform.dispatch.annotation.In;
 import com.gwtplatform.dispatch.annotation.Out;
 
 @GenDispatch(isSecure = false)
-public class SendConceptSchemeToPendingPublication {
+public class PublishConceptSchemeInternally {
 
     @In(1)
     Long             id;
