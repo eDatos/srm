@@ -390,7 +390,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
                     .withLoggedLevel(ExceptionLevelEnum.DEBUG).build();
         }
 
-        // Hierachy:
+        // Hierarchy:
         //
         // AnnotableArtefact > IdentifiableArtefact > Component
         // -|_ DataAttribute
@@ -408,15 +408,15 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         T result = null;
         // DataAttribute ******************************************************
         if (source.getTypeComponent().equals(TypeComponent.DATA_ATTRIBUTE)) {
-            result = dataAttributeDtoToDataAttribute(ctx, (DataAttributeDto) source);
+            result = (T)dataAttributeDtoToDataAttribute(ctx, (DataAttributeDto) source);
         }
         // DimensionComponent ***************************************************
         else if (source.getTypeComponent().equals(TypeComponent.DIMENSION_COMPONENT)) {
-            result = dimensionComponentDtoToDimensionComponent(ctx, (DimensionComponentDto) source);
+            result = (T)dimensionComponentDtoToDimensionComponent(ctx, (DimensionComponentDto) source);
         }
         // Primary Measure ***************************************************
         else if (source.getTypeComponent().equals(TypeComponent.PRIMARY_MEASURE)) {
-            result = componentDtoToPrimaryMeasure(ctx, source);
+            result = (T)componentDtoToPrimaryMeasure(ctx, source);
         } else {
             // The TargetObject may be enumerated and, if so, can use any ItemScheme
             // 785 (Codelist, ConceptScheme, OrganisationScheme, CategoryScheme,
@@ -431,7 +431,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         return identifiableArtefactDtoToEntity(ctx, source, result);
     }
 
-    private <T extends Component> T dataAttributeDtoToDataAttribute(ServiceContext ctx, DataAttributeDto source) throws MetamacException {
+    private <T extends DataAttribute> T dataAttributeDtoToDataAttribute(ServiceContext ctx, DataAttributeDto source) throws MetamacException {
         if (source == null) {
             return null;
         }
