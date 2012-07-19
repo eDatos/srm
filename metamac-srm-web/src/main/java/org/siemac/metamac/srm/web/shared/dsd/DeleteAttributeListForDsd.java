@@ -1,4 +1,4 @@
-package org.siemac.metamac.srm.web.shared;
+package org.siemac.metamac.srm.web.shared.dsd;
 
 import java.util.List;
 
