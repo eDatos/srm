@@ -52,12 +52,4 @@
             <aop:around method="manageFlushMode" pointcut-ref="doMapperPointCut" />
         </aop:aspect>
     </aop:config>
-
-    <aop:config>
-        <aop:pointcut id="repositoryCore" expression="execution(public * org.siemac.metamac..core*..*Repository*.*(..))" />
-        <!-- Need this when JUnit directly to Repository -->
-        <aop:advisor pointcut-ref="repositoryCore" advice-ref="errorHandlingAdvice" order="3" />
-        <aop:advisor pointcut-ref="repositoryCore" advice-ref="hibernateErrorHandlingAdvice" order="4" />
-    </aop:config>
-
 </beans>

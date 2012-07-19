@@ -6,7 +6,6 @@
     http://www.springframework.org/schema/tx/spring-tx.xsd"
     default-autowire="byName">
 
-
     <!-- Creates a EntityManagerFactory for use with the Hibernate JPA provider -->
     <bean id="entityManagerFactoryCore" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="jpaVendorAdapter">

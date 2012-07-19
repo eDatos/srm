@@ -36,14 +36,12 @@
     <import resource="classpath:/spring/general-beans-advice.xml" />
     <import resource="classpath:/spring/pub-sub.xml"/>
 
-    <!-- srm-core > src/main/resources -->
-    <import resource="classpath:/spring/srm-core/interceptor.xml" />
+    <!-- srm > src/main/resources -->
+    <import resource="classpath:/spring/srm/include/interceptor.xml" />
+    <import resource="classpath:/spring/srm/include/more.xml" />
 
-    <!-- srm-core > src/test/resources -->
+    <!-- srm > src/test/resources -->
     <import resource="classpath:/spring/srm/include/datasource-test.xml" />
-    
-    <!-- srm-core > src/main/resources -->
-    <import resource="classpath:/spring/srm-core/more.xml" />
 
     <!-- metamac-transformation -->
     <import resource="classpath:/spring/transformation/applicationContext.xml" />

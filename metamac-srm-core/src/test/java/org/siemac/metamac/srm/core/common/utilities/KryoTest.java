@@ -36,7 +36,7 @@ import com.esotericsoftware.kryo.serialize.DateSerializer;
 import com.esotericsoftware.kryo.serialize.EnumSerializer;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:spring/srm-core/oracle/applicationContext-test.xml"})
+@ContextConfiguration(locations = {"classpath:spring/srm/applicationContext-test.xml"})
 public class KryoTest {
 
     @Autowired

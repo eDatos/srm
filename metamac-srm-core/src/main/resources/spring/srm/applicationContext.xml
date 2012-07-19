@@ -24,10 +24,10 @@
 
     <!-- import additional spring configuration files -->
     
-    <!-- metamac-srm -->
-    <import resource="classpath:/spring/srm-core/oracle/applicationContext-datasource.xml" />
-    <import resource="classpath:/spring/srm-core/interceptor.xml" />
-    <import resource="classpath:/spring/srm-core/more.xml" />
+    <!-- metamac-srm -->    
+    <import resource="classpath:/spring/srm/include/datasource.xml" />
+    <import resource="classpath:/spring/srm/include/interceptor.xml" />
+    <import resource="classpath:/spring/srm/include/more.xml" /> 
     
     <!-- metamac-transformation -->
     <import resource="classpath:/spring/transformation/applicationContext.xml" />
