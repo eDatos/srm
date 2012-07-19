@@ -1,4 +1,4 @@
-package org.siemac.metamac.srm.web.server.handlers;
+package org.siemac.metamac.srm.web.server.handlers.concept;
 
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.domain.concept.dto.ConceptSchemeDto;

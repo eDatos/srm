@@ -1,4 +1,4 @@
-package org.siemac.metamac.srm.web.server.handlers;
+package org.siemac.metamac.srm.web.server.handlers.dsd;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;

@@ -1,8 +1,7 @@
-package org.siemac.metamac.srm.web.server.handlers;
+package org.siemac.metamac.srm.web.server.handlers.dsd;
 
 import static org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder.criteriaFor;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,8 +13,8 @@ import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.core.structure.domain.DataStructureDefinition;
 import org.siemac.metamac.srm.core.structure.domain.DataStructureDefinitionProperties;
-import org.siemac.metamac.srm.web.shared.GetDsdListAction;
-import org.siemac.metamac.srm.web.shared.GetDsdListResult;
+import org.siemac.metamac.srm.web.shared.GetDsdAction;
+import org.siemac.metamac.srm.web.shared.GetDsdResult;
 import org.siemac.metamac.web.common.server.ServiceContextHolder;
 import org.siemac.metamac.web.common.server.handlers.SecurityActionHandler;
 import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
@@ -26,33 +25,35 @@ import com.gwtplatform.dispatch.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 @Component
-public class GetDsdListActionHandler extends SecurityActionHandler<GetDsdListAction, GetDsdListResult> {
+public class GetDsdActionHandler extends SecurityActionHandler<GetDsdAction, GetDsdResult> {
 
-    private static Logger        logger = Logger.getLogger(GetDsdListActionHandler.class.getName());
+    private static Logger        logger = Logger.getLogger(GetDsdActionHandler.class.getName());
 
     @Autowired
     private SrmCoreServiceFacade srmCoreServiceFacade;
 
-    public GetDsdListActionHandler() {
-        super(GetDsdListAction.class);
+    public GetDsdActionHandler() {
+        super(GetDsdAction.class);
     }
 
     @Override
-    public GetDsdListResult executeSecurityAction(GetDsdListAction action) throws ActionException {
-        List<ConditionalCriteria> conditions = criteriaFor(DataStructureDefinition.class).orderBy(DataStructureDefinitionProperties.lastUpdated()).descending().build();
+    public GetDsdResult executeSecurityAction(GetDsdAction action) throws ActionException {
         try {
+            List<ConditionalCriteria> conditions = criteriaFor(DataStructureDefinition.class).withProperty(DataStructureDefinitionProperties.id()).eq(action.getIdDsd()).build();
             List<DataStructureDefinitionDto> dsdList = srmCoreServiceFacade.findDsdByCondition(ServiceContextHolder.getCurrentServiceContext(), conditions, PagingParameter.pageAccess(10)).getValues();
-            logger.log(Level.INFO, "ACTION SUCCESSFULLY: getStatisticalOperationLastModifiedDsdList");
-            return new GetDsdListResult((ArrayList<DataStructureDefinitionDto>) dsdList);
+            logger.log(Level.INFO, "ACTION SUCCESSFULLY: findDsdById");
+            if (!dsdList.isEmpty()) {
+                return new GetDsdResult(dsdList.get(0));
+            }
         } catch (MetamacException e) {
-            logger.log(Level.SEVERE, "Error in findDsdByCondition =  " + conditions.toString() + ". " + e.getMessage());
             throw WebExceptionUtils.createMetamacWebException(e);
         }
+        return null;
     }
 
     @Override
-    public void undo(GetDsdListAction action, GetDsdListResult result, ExecutionContext context) throws ActionException {
-        // No undoable
+    public void undo(GetDsdAction action, GetDsdResult result, ExecutionContext context) throws ActionException {
+
     }
 
 }
