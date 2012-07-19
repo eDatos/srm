@@ -480,15 +480,25 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServ
     public void testSaveDsdGraph() throws Exception {
 
         DataStructureDefinitionDto dataStructureDefinitionDto = SrmCoreServiceFacadeTest.saveDescriptorForDsd(getServiceContext(), srmCoreServiceFacade);
+        
+        List<DataStructureDefinitionDto> dataStructureDefinitionDtoList = srmCoreServiceFacade.findAllDsds(getServiceContext());
+        assertTrue(dataStructureDefinitionDtoList.size() == 1);
+        
+        // In UPDATE MODE (no create)
+        DataStructureDefinitionExtendDto dataStructureDefinitionExtendDto = srmCoreServiceFacade.retrieveExtendedDsd(getServiceContext(), dataStructureDefinitionDto.getId(), TypeDozerCopyMode.UPDATE);
 
-        dataStructureDefinitionDto = srmCoreServiceFacade.createDsdVersion(getServiceContext(), dataStructureDefinitionDto.getId(), Boolean.TRUE);
+        srmCoreServiceFacade.saveDsdGraph(getServiceContext(), dataStructureDefinitionExtendDto);
+        
+        dataStructureDefinitionDtoList = srmCoreServiceFacade.findAllDsds(getServiceContext());
+        assertTrue(dataStructureDefinitionDtoList.size() == 1);
 
-        List<ConditionalCriteria> conditions = criteriaFor(DataStructureDefinition.class).withProperty(idLogic()).eq(dataStructureDefinitionDto.getIdLogic()).build();
-
-        PagedResult<DataStructureDefinitionDto> dataStructureDefinitionDtoPagedList = srmCoreServiceFacade.findDsdByCondition(getServiceContext(), conditions, PagingParameter.pageAccess(10));
-
-        assertTrue(dataStructureDefinitionDtoPagedList.getTotalRows() == 2);
-
+        // In UPDATE MODE (no create)
+        dataStructureDefinitionExtendDto = srmCoreServiceFacade.retrieveExtendedDsd(getServiceContext(), dataStructureDefinitionDto.getId(), TypeDozerCopyMode.CREATE);
+        
+        srmCoreServiceFacade.saveDsdGraph(getServiceContext(), dataStructureDefinitionExtendDto);
+        
+        dataStructureDefinitionDtoList = srmCoreServiceFacade.findAllDsds(getServiceContext());
+        assertTrue(dataStructureDefinitionDtoList.size() == 2);
     }
 
     @Test
