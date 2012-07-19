@@ -4,6 +4,9 @@ import org.siemac.metamac.core.common.dto.ExternalItemDto;
 
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 
+/**
+ * This class should be removed!!
+ */
 public class ConceptRecord extends ListGridRecord {
 
     public static final String IDENTIFIER      = "identifier";

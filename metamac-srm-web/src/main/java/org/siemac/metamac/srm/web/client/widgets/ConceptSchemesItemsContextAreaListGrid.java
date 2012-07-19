@@ -9,7 +9,6 @@ import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptSchemeRecord;
 import org.siemac.metamac.srm.web.concept.utils.RecordUtils;
 
-import com.smartgwt.client.types.ListGridFieldType;
 import com.smartgwt.client.widgets.grid.HoverCustomizer;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
@@ -25,8 +24,6 @@ public class ConceptSchemesItemsContextAreaListGrid extends ListGrid {
         ListGridField idLogicField = new ListGridField(ConceptSchemeDS.ID_LOGIC, getConstants().conceptSchemeIdLogic());
         ListGridField nameField = new ListGridField(ConceptSchemeDS.NAME, getConstants().conceptSchemeName());
         ListGridField descriptionField = new ListGridField(ConceptSchemeDS.DESCRIPTION, getConstants().conceptSchemeDescription());
-        ListGridField finalStructureField = new ListGridField(ConceptSchemeDS.FINAL, getConstants().conceptSchemeFinalStructure());
-        finalStructureField.setType(ListGridFieldType.BOOLEAN);
 
         // ToolTip
         idLogicField.setShowHover(true);
@@ -56,7 +53,7 @@ public class ConceptSchemesItemsContextAreaListGrid extends ListGrid {
                 return schemeRecord.getDescription();
             }
         });
-        this.setFields(idLogicField, nameField, descriptionField, finalStructureField);
+        this.setFields(idLogicField, nameField, descriptionField);
     }
 
     public void setConceptSchemes(List<ConceptSchemeDto> conceptSchemeDtos) {

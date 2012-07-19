@@ -9,9 +9,9 @@ public class ConceptSchemeRecord extends ListGridRecord {
 
     public ConceptSchemeRecord(Long id, String idLogic, String name, String description, String status, ConceptSchemeDto conceptSchemeDto) {
         setId(id);
+        setIdLogic(idLogic);
         setName(name);
         setDescription(description);
-        setIdLogic(idLogic);
         setProcStatus(status);
         setConceptSchemeDto(conceptSchemeDto);
     }

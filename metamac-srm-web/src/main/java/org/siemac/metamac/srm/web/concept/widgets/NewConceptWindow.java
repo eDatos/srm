@@ -3,8 +3,8 @@ package org.siemac.metamac.srm.web.concept.widgets;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
-import org.siemac.metamac.domain.concept.dto.ConceptSchemeDto;
-import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
+import org.siemac.metamac.domain.concept.dto.ConceptDto;
+import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.widgets.CustomWindow;
@@ -14,26 +14,26 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem
 
 import com.smartgwt.client.widgets.form.fields.events.HasClickHandlers;
 
-public class NewConceptSchemeWindow extends CustomWindow {
+public class NewConceptWindow extends CustomWindow {
 
     private static final int    FORM_ITEM_CUSTOM_WIDTH = 300;
 
-    private static final String FIELD_SAVE             = "save-sch";
+    private static final String FIELD_SAVE             = "save-con";
 
     private CustomDynamicForm   form;
 
-    public NewConceptSchemeWindow(String title) {
+    public NewConceptWindow(String title) {
         super(title);
         setAutoSize(true);
 
-        RequiredTextItem codeItem = new RequiredTextItem(ConceptSchemeDS.ID_LOGIC, getConstants().conceptSchemeIdLogic());
+        RequiredTextItem codeItem = new RequiredTextItem(ConceptDS.ID_LOGIC, getConstants().conceptIdLogic());
         codeItem.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());
         codeItem.setWidth(FORM_ITEM_CUSTOM_WIDTH);
 
-        RequiredTextItem nameItem = new RequiredTextItem(ConceptSchemeDS.NAME, getConstants().conceptSchemeName());
+        RequiredTextItem nameItem = new RequiredTextItem(ConceptDS.NAME, getConstants().conceptName());
         nameItem.setWidth(FORM_ITEM_CUSTOM_WIDTH);
 
-        CustomButtonItem saveItem = new CustomButtonItem(FIELD_SAVE, getConstants().conceptSchemeCreate());
+        CustomButtonItem saveItem = new CustomButtonItem(FIELD_SAVE, getConstants().conceptCreate());
 
         form = new CustomDynamicForm();
         form.setMargin(5);
@@ -47,12 +47,11 @@ public class NewConceptSchemeWindow extends CustomWindow {
         return form.getItem(FIELD_SAVE);
     }
 
-    public ConceptSchemeDto getNewConceptSchemeDto() {
-        ConceptSchemeDto conceptSchemeDto = new ConceptSchemeDto();
-
-        conceptSchemeDto.setIdLogic(form.getValueAsString(ConceptSchemeDS.ID_LOGIC));
-        conceptSchemeDto.setName(InternationalStringUtils.updateInternationalString(new InternationalStringDto(), form.getValueAsString(ConceptSchemeDS.NAME)));
-        return conceptSchemeDto;
+    public ConceptDto getNewConceptDto() {
+        ConceptDto conceptDto = new ConceptDto();
+        conceptDto.setIdLogic(form.getValueAsString(ConceptDS.ID_LOGIC));
+        conceptDto.setName(InternationalStringUtils.updateInternationalString(new InternationalStringDto(), form.getValueAsString(ConceptDS.NAME)));
+        return conceptDto;
     }
 
     public boolean validateForm() {

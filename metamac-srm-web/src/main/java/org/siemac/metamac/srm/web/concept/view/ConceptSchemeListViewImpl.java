@@ -50,8 +50,6 @@ public class ConceptSchemeListViewImpl extends ViewImpl implements ConceptScheme
 
     private DeleteConfirmationWindow    deleteConfirmationWindow;
 
-    private NewConceptSchemeWindow      window;
-
     @Inject
     public ConceptSchemeListViewImpl() {
         super();
@@ -65,7 +63,7 @@ public class ConceptSchemeListViewImpl extends ViewImpl implements ConceptScheme
 
             @Override
             public void onClick(ClickEvent event) {
-                window = new NewConceptSchemeWindow(getConstants().conceptSchemeCreate());
+                final NewConceptSchemeWindow window = new NewConceptSchemeWindow(getConstants().conceptSchemeCreate());
                 window.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
 
                     @Override

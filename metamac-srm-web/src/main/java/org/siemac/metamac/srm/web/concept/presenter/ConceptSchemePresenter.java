@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.web.concept.presenter;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
+import org.siemac.metamac.domain.concept.dto.ConceptDto;
 import org.siemac.metamac.domain.concept.dto.ConceptSchemeDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
@@ -55,12 +56,18 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
     public static final int          MAX_RESULTS = 10;
     private String                   conceptSchemeIdLogic;
 
+    @TitleFunction
+    public static String getTranslatedTitle() {
+        return MetamacSrmWeb.getConstants().breadcrumbConceptScheme();
+    }
+
     @ProxyCodeSplit
     @NameToken(NameTokens.conceptSchemePage)
     public interface ConceptSchemeProxy extends Proxy<ConceptSchemePresenter>, Place {
     }
 
     public interface ConceptSchemeView extends View, HasUiHandlers<ConceptSchemeUiHandlers> {
+
         void setConceptScheme(ConceptSchemeDto conceptScheme);
     }
 
@@ -103,19 +110,10 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
         }
     }
 
-    /* private methods */
     private void setConceptScheme(ConceptSchemeDto conceptScheme) {
         getView().setConceptScheme(conceptScheme);
     }
 
-    /* Events related */
-
-    @TitleFunction
-    public static String getTranslatedTitle() {
-        return MetamacSrmWeb.getConstants().breadcrumbConceptScheme();
-    }
-
-    /* UiHandlers */
     @Override
     public void saveConceptScheme(ConceptSchemeDto conceptScheme) {
         dispatcher.execute(new SaveConceptSchemeAction(conceptScheme), new WaitingAsyncCallback<SaveConceptSchemeResult>() {
@@ -232,5 +230,10 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
                 setConceptScheme(result.getConceptSchemeDto());
             }
         });
+    }
+
+    @Override
+    public void createConcept(ConceptDto conceptDto) {
+        // TODO
     }
 }

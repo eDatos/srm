@@ -7,13 +7,7 @@ import org.siemac.metamac.domain.concept.dto.ConceptSchemeDto;
 public class CommonUtils {
 
     public static String getConceptSchemeProcStatus(ConceptSchemeDto conceptSchemeDto) {
-        String procStatus = getCoreMessages().getString(getCoreMessages().conceptSchemeProcStatusEnum() + conceptSchemeDto.getProcStatus().getName());
-        /*
-         * if (!StringUtils.isBlank(conceptSchemeDto.getPublishedVersion())) {
-         * procStatus += getMessages().conceptSchemePreviousVersion(conceptSchemeDto.getPublishedVersion());
-         * }
-         */
-        return procStatus;
+        return getCoreMessages().getString(getCoreMessages().conceptSchemeProcStatusEnum() + conceptSchemeDto.getProcStatus().getName());
     }
 
 }
