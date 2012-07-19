@@ -13,6 +13,7 @@ public class GetConceptSchemePaginatedList {
 
     @In(1)
     int                    maxResults;
+
     @In(2)
     int                    firstResult;
 

@@ -1,18 +1,20 @@
 package org.siemac.metamac.srm.web.shared.concept;
 
-import org.siemac.metamac.domain.concept.dto.ConceptSchemeDto;
+import java.util.List;
+
+import org.siemac.metamac.domain.concept.dto.ConceptDto;
 
 import com.gwtplatform.dispatch.annotation.GenDispatch;
 import com.gwtplatform.dispatch.annotation.In;
 import com.gwtplatform.dispatch.annotation.Out;
 
 @GenDispatch(isSecure = false)
-public class GetConceptScheme {
+public class GetConceptListByScheme {
 
     @In(1)
-    String           urn;
+    String           conceptSchemeUrn;
 
     @Out(1)
-    ConceptSchemeDto conceptSchemeDto;
+    List<ConceptDto> conceptDto;
 
 }

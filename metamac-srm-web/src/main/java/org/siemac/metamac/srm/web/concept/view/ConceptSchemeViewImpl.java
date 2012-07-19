@@ -3,8 +3,11 @@ package org.siemac.metamac.srm.web.concept.view;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
+import java.util.List;
+
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
+import org.siemac.metamac.domain.concept.dto.ConceptDto;
 import org.siemac.metamac.domain.concept.dto.ConceptSchemeDto;
 import org.siemac.metamac.domain.concept.enums.domain.ConceptSchemeProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
@@ -248,6 +251,16 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         setConceptSchemeEditionMode(conceptScheme);
     }
 
+    @Override
+    public void setConceptList(List<ConceptDto> conceptDtos) {
+        conceptsListGrid.removeAllData();
+        if (conceptDtos != null) {
+            for (ConceptDto conceptDto : conceptDtos) {
+                // TODO conceptsListGrid.addData(org.siemac.metamac.srm.web.concept.utils.RecordUtils.getConceptSchemeRecord(conceptDto))
+            }
+        }
+
+    }
     private void createViewForm() {
         // Identifiers Form
         identifiersForm = new GroupDynamicForm(getConstants().conceptSchemeIdentifiers());

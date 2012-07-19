@@ -2,6 +2,8 @@ package org.siemac.metamac.srm.web.concept.presenter;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
+import java.util.List;
+
 import org.siemac.metamac.domain.concept.dto.ConceptDto;
 import org.siemac.metamac.domain.concept.dto.ConceptSchemeDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
@@ -11,6 +13,8 @@ import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.client.widgets.presenter.ToolStripPresenterWidget;
 import org.siemac.metamac.srm.web.concept.view.handlers.ConceptSchemeUiHandlers;
+import org.siemac.metamac.srm.web.shared.concept.GetConceptListBySchemeAction;
+import org.siemac.metamac.srm.web.shared.concept.GetConceptListBySchemeResult;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeResult;
 import org.siemac.metamac.srm.web.shared.concept.PublishConceptSchemeExternallyAction;
@@ -19,6 +23,8 @@ import org.siemac.metamac.srm.web.shared.concept.PublishConceptSchemeInternallyA
 import org.siemac.metamac.srm.web.shared.concept.PublishConceptSchemeInternallyResult;
 import org.siemac.metamac.srm.web.shared.concept.RejectConceptSchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.RejectConceptSchemeResult;
+import org.siemac.metamac.srm.web.shared.concept.SaveConceptAction;
+import org.siemac.metamac.srm.web.shared.concept.SaveConceptResult;
 import org.siemac.metamac.srm.web.shared.concept.SaveConceptSchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.SaveConceptSchemeResult;
 import org.siemac.metamac.srm.web.shared.concept.SendConceptSchemeToPendingPublicationAction;
@@ -54,7 +60,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
     private ToolStripPresenterWidget toolStripPresenterWidget;
 
     public static final int          MAX_RESULTS = 10;
-    private String                   conceptSchemeIdLogic;
+    private String                   conceptSchemeUrn;
 
     @TitleFunction
     public static String getTranslatedTitle() {
@@ -68,7 +74,8 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
 
     public interface ConceptSchemeView extends View, HasUiHandlers<ConceptSchemeUiHandlers> {
 
-        void setConceptScheme(ConceptSchemeDto conceptScheme);
+        void setConceptScheme(ConceptSchemeDto conceptSchemeDto);
+        void setConceptList(List<ConceptDto> conceptDtos);
     }
 
     @ContentSlot
@@ -101,12 +108,9 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
     @Override
     public void prepareFromRequest(PlaceRequest request) {
         super.prepareFromRequest(request);
-        String id = PlaceRequestUtils.getConceptSchemeParamFromUrl(placeManager);
-        if (id != null) {
-            if (conceptSchemeIdLogic == null || (conceptSchemeIdLogic != null && !conceptSchemeIdLogic.equals(id))) {
-                conceptSchemeIdLogic = id;
-                retrieveConceptScheme(conceptSchemeIdLogic);
-            }
+        String urn = PlaceRequestUtils.getConceptSchemeParamFromUrl(placeManager);
+        if (urn != null) {
+            retrieveConceptScheme(conceptSchemeUrn);
         }
     }
 
@@ -132,8 +136,8 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
     }
 
     @Override
-    public void retrieveConceptScheme(String conceptSchemeIdLogic) {
-        dispatcher.execute(new GetConceptSchemeAction(conceptSchemeIdLogic), new WaitingAsyncCallback<GetConceptSchemeResult>() {
+    public void retrieveConceptScheme(String urn) {
+        dispatcher.execute(new GetConceptSchemeAction(urn), new WaitingAsyncCallback<GetConceptSchemeResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -143,6 +147,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
             @Override
             public void onWaitSuccess(GetConceptSchemeResult result) {
                 setConceptScheme(result.getConceptSchemeDto());
+                retrieveConceptListByScheme(result.getConceptSchemeDto().getUrn());
             }
         });
     }
@@ -234,6 +239,34 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
 
     @Override
     public void createConcept(ConceptDto conceptDto) {
-        // TODO
+        dispatcher.execute(new SaveConceptAction(conceptDto), new WaitingAsyncCallback<SaveConceptResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptErrorCreate()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(SaveConceptResult result) {
+                ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getMessageList(getMessages().conceptCreated()), MessageTypeEnum.SUCCESS);
+                // TODO Add new concept or reload concept list?
+            }
+        });
     }
+
+    @Override
+    public void retrieveConceptListByScheme(String conceptSchemeUrn) {
+        dispatcher.execute(new GetConceptListBySchemeAction(conceptSchemeUrn), new WaitingAsyncCallback<GetConceptListBySchemeResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorRetrievingConceptList()), MessageTypeEnum.ERROR);
+            }
+
+            @Override
+            public void onWaitSuccess(GetConceptListBySchemeResult result) {
+                getView().setConceptList(result.getConceptDto());
+            }
+        });
+    }
+
 }
