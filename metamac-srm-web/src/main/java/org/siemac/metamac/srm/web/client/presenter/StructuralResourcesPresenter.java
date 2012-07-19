@@ -10,8 +10,8 @@ import org.siemac.metamac.srm.web.client.PlaceRequestParams;
 import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
 import org.siemac.metamac.srm.web.client.view.handlers.StructuralResourcesUiHandlers;
 import org.siemac.metamac.srm.web.client.widgets.presenter.ToolStripPresenterWidget;
-import org.siemac.metamac.srm.web.shared.GetDsdListAction;
-import org.siemac.metamac.srm.web.shared.GetDsdListResult;
+import org.siemac.metamac.srm.web.shared.dsd.GetDsdListAction;
+import org.siemac.metamac.srm.web.shared.dsd.GetDsdListResult;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
 import com.google.gwt.event.shared.EventBus;

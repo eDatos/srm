@@ -5,8 +5,8 @@ import java.util.logging.Logger;
 
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
-import org.siemac.metamac.srm.web.shared.DeleteDsdAction;
-import org.siemac.metamac.srm.web.shared.DeleteDsdResult;
+import org.siemac.metamac.srm.web.shared.dsd.DeleteDsdAction;
+import org.siemac.metamac.srm.web.shared.dsd.DeleteDsdResult;
 import org.siemac.metamac.web.common.server.ServiceContextHolder;
 import org.siemac.metamac.web.common.server.handlers.SecurityActionHandler;
 import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;

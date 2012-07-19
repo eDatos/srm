@@ -15,7 +15,7 @@ import org.siemac.metamac.srm.web.concept.presenter.ConceptSchemeListPresenter;
 import org.siemac.metamac.srm.web.concept.utils.RecordUtils;
 import org.siemac.metamac.srm.web.concept.view.handlers.ConceptSchemeListUiHandlers;
 import org.siemac.metamac.srm.web.concept.widgets.NewConceptSchemeWindow;
-import org.siemac.metamac.srm.web.shared.GetConceptSchemePaginatedListResult;
+import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemePaginatedListResult;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 import org.siemac.metamac.web.common.client.widgets.PaginatedCheckListGrid;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;

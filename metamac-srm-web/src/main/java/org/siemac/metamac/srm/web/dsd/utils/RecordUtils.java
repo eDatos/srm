@@ -58,7 +58,7 @@ public class RecordUtils {
     }
 
     /**
-     * Returns {@link ConceptRecord} from {@link ExternalItemBtDto}
+     * Returns {@link ConceptRecord} from {@link ExternalItemDto}
      * 
      * @param concept
      * @return
