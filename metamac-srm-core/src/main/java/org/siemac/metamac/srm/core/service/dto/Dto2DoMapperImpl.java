@@ -805,13 +805,21 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
 
         DimensionRelationship result = null;
 
-        // Remove old data
+        // Previous version?
         if (attributeRelationshipOlder != null) {
+            // if source is different than previous
             if (!(attributeRelationshipOlder instanceof DimensionRelationship) || (source.getId().compareTo(attributeRelationshipOlder.getId()) != 0)) {
                 getAttributeRelationshipRepository().delete(attributeRelationshipOlder);
-                result = new DimensionRelationship();
-                result.setVersion(source.getVersion());
             }
+            else {
+                // Update
+                result = (DimensionRelationship)attributeRelationshipOlder;
+            }
+        }
+        
+        // New
+        if (result == null) {
+            result = new DimensionRelationship();
         }
 
         // DimensionRelationship: GroupKey
@@ -845,13 +853,22 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         }
 
         GroupRelationship result = null;
-        // Remove old data
+        
+        // Previous version?
         if (attributeRelationshipOlder != null) {
+            // if source is different than previous
             if (!(attributeRelationshipOlder instanceof GroupRelationship) || (source.getId().compareTo(attributeRelationshipOlder.getId()) != 0)) {
                 getAttributeRelationshipRepository().delete(attributeRelationshipOlder);
-                result = new GroupRelationship();
-                result.setVersion(source.getVersion());
             }
+            else {
+                // Update
+                result = (GroupRelationship)attributeRelationshipOlder;
+            }
+        }
+        
+        // New
+        if (result == null) {
+            result = new GroupRelationship();
         }
 
         // Group
@@ -868,13 +885,22 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         }
 
         NoSpecifiedRelationship result = null;
-        // Remove old data
+        
+        // Previous version?
         if (attributeRelationshipOlder != null) {
+            // if source is different than previous
             if (!(attributeRelationshipOlder instanceof NoSpecifiedRelationship) || (source.getId().compareTo(attributeRelationshipOlder.getId()) != 0)) {
                 getAttributeRelationshipRepository().delete(attributeRelationshipOlder);
-                result = new NoSpecifiedRelationship();
-                result.setVersion(source.getVersion());
             }
+            else {
+                // Update
+                result = (NoSpecifiedRelationship)attributeRelationshipOlder;
+            }
+        }
+        
+        // New
+        if (result == null) {
+            result = new NoSpecifiedRelationship();
         }
 
         return result;
@@ -888,13 +914,22 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         }
 
         PrimaryMeasureRelationship result = null;
+        
         // Remove old data
         if (attributeRelationshipOlder != null) {
+            // if source is different than previous
             if (!(attributeRelationshipOlder instanceof PrimaryMeasureRelationship) || (source.getId().compareTo(attributeRelationshipOlder.getId()) != 0)) {
                 getAttributeRelationshipRepository().delete(attributeRelationshipOlder);
-                result = new PrimaryMeasureRelationship();
-                result.setVersion(source.getVersion());
             }
+            else {
+                // Update
+                result = (PrimaryMeasureRelationship)attributeRelationshipOlder;
+            }
+        }
+        
+        // New
+        if (result == null) {
+            result = new PrimaryMeasureRelationship();
         }
 
         return result;
@@ -977,13 +1012,21 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         
         EnumeratedRepresentation result = null;
 
-        // Remove old data if type changed
+        // Previous version?
         if (representationOlder != null) {
+            // if source is different than previous
             if (!(representationOlder instanceof EnumeratedRepresentation) || (representationOlder.getId().compareTo(source.getId()) != 0)) {
-                getRepresentationRepository().delete(representationOlder);
-                result = new EnumeratedRepresentation();
-                result.setVersion(source.getVersion());
+                getRepresentationRepository().delete(representationOlder); // Remove old data
             }
+            else {
+                // Update
+                result = (EnumeratedRepresentation)representationOlder;
+            }
+        }
+        
+        // New
+        if (result == null) {
+            result = new EnumeratedRepresentation();
         }
 
         // EnumeratedRepresentation: enumerated
@@ -998,14 +1041,22 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         }
         
         TextFormatRepresentation result = null;
-
-        // Remove old data if type changed
+        
+        // Previous version?
         if (representationOlder != null) {
+            // if source is different than previous
             if (!(representationOlder instanceof TextFormatRepresentation) || (representationOlder.getId().compareTo(source.getId()) != 0)) {
                 getRepresentationRepository().delete(representationOlder);
-                result = new TextFormatRepresentation();
-                result.setVersion(source.getVersion());
             }
+            else {
+                // Update
+                result = (TextFormatRepresentation)representationOlder;
+            }
+        }
+        
+        // New
+        if (result == null) {
+            result = new TextFormatRepresentation();
         }
 
         // Facet
