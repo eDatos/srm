@@ -3,24 +3,23 @@ package org.siemac.metamac.srm.core.structure.serviceimpl.utils;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.Validate;
-import org.siemac.metamac.core.common.exception.CommonServiceExceptionType;
 import org.siemac.metamac.core.common.exception.ExceptionLevelEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.core.common.exception.utils.ExceptionUtils;
 import org.siemac.metamac.core.common.serviceimpl.utils.ValidationUtils;
-import org.siemac.metamac.domain.srm.dto.DataAttributeDto;
-import org.siemac.metamac.domain.srm.dto.DimensionComponentDto;
 import org.siemac.metamac.srm.core.base.domain.Component;
+import org.siemac.metamac.srm.core.base.domain.ComponentList;
 import org.siemac.metamac.srm.core.common.error.MetamacCoreExceptionType;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
-import org.siemac.metamac.srm.core.service.utils.ValidationUtil;
+import org.siemac.metamac.srm.core.structure.domain.AttributeDescriptor;
 import org.siemac.metamac.srm.core.structure.domain.DataAttribute;
+import org.siemac.metamac.srm.core.structure.domain.DataStructureDefinition;
 import org.siemac.metamac.srm.core.structure.domain.Dimension;
+import org.siemac.metamac.srm.core.structure.domain.DimensionDescriptor;
 import org.siemac.metamac.srm.core.structure.domain.GroupDimensionDescriptor;
 import org.siemac.metamac.srm.core.structure.domain.GroupRelationship;
-import org.siemac.metamac.srm.core.structure.domain.MeasureDimension;
+import org.siemac.metamac.srm.core.structure.domain.MeasureDescriptor;
 import org.siemac.metamac.srm.core.structure.domain.PrimaryMeasure;
 import org.siemac.metamac.srm.core.structure.domain.ReportingYearStartDay;
 import org.siemac.metamac.srm.core.structure.domain.TimeDimension;
@@ -28,6 +27,64 @@ import org.siemac.metamac.srm.core.structure.domain.TimeDimension;
 
 public class DataStructureConstraintValidator {
 
+    public static void checkConstraintDsdGrouping(DataStructureDefinition dataStructureDefinition, ComponentList componentList) throws MetamacException {
+        // Check cardinals constraints in the relationship "grouping"
+        List<ComponentList> groupDimDescFound = new ArrayList<ComponentList>();
+        ComponentList dimensionDescFound = null;
+        ComponentList measureDescFound = null;
+        ComponentList attributeDescFound = null;
+
+        for (ComponentList currentComponentList : dataStructureDefinition.getGrouping()) {
+            if ((currentComponentList instanceof AttributeDescriptor) && (componentList instanceof AttributeDescriptor)) {
+                attributeDescFound = currentComponentList;
+            } else if ((currentComponentList instanceof DimensionDescriptor) && (componentList instanceof DimensionDescriptor)) {
+                dimensionDescFound = currentComponentList;
+            } else if ((currentComponentList instanceof GroupDimensionDescriptor) && (componentList instanceof GroupDimensionDescriptor)) {
+                groupDimDescFound.add(currentComponentList);
+            } else if ((currentComponentList instanceof MeasureDescriptor) && (componentList instanceof MeasureDescriptor)) {
+                measureDescFound = currentComponentList;
+            }
+        }
+
+        // Minimum cardinality not checked in this moment. Only MAX is checked.
+        if (componentList instanceof AttributeDescriptor) {
+            // Cardinality 0..1
+            if (attributeDescFound != null) {
+                // If is new or different
+                if (componentList.getId() == null || componentList.getId().compareTo(attributeDescFound.getId()) != 0) {
+                    // Exception
+                    MetamacException metamacException = new MetamacException(MetamacCoreExceptionType.MTM_CORE_VALIDATION_CONSTRAINT_CARDINALITY_MAX, "Max attribute descriptor is 1");
+                    metamacException.setLoggedLevel(ExceptionLevelEnum.DEBUG);
+                    throw metamacException;
+                }
+            }
+        } else if (componentList instanceof DimensionDescriptor) {
+            // Cardinality 1
+            if (dimensionDescFound != null) {
+                // If is new or different
+                if (componentList.getId() == null || componentList.getId().compareTo(dimensionDescFound.getId()) != 0) {
+                    // Exception
+                    MetamacException metamacException = new MetamacException(MetamacCoreExceptionType.MTM_CORE_VALIDATION_CONSTRAINT_CARDINALITY_MAX, "Max dimension descriptor is 1");
+                    metamacException.setLoggedLevel(ExceptionLevelEnum.DEBUG);
+                    throw metamacException;
+                }
+            }
+        } else if (componentList instanceof MeasureDescriptor) {
+            // Cardinality 1
+            if (measureDescFound != null) {
+                // If is new or different
+                if (componentList.getId() == null || componentList.getId().compareTo(measureDescFound.getId()) != 0) {
+                    // Exception
+                    MetamacException metamacException = new MetamacException(MetamacCoreExceptionType.MTM_CORE_VALIDATION_CONSTRAINT_CARDINALITY_MAX, "Max measure descriptor is 1");
+                    metamacException.setLoggedLevel(ExceptionLevelEnum.DEBUG);
+                    throw metamacException;
+                }
+            }
+        } else if (componentList instanceof GroupDimensionDescriptor) {
+            // Cardinality 0..*
+        }
+    }
+    
     public static void checkDataAttribute(DataAttribute dataAttribute, List<MetamacExceptionItem> exceptions) throws MetamacException {
         if (exceptions == null) {
             exceptions = new ArrayList<MetamacExceptionItem>();

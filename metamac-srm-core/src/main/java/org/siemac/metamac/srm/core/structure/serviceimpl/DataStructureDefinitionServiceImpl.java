@@ -20,6 +20,7 @@ import org.siemac.metamac.srm.core.structure.domain.GroupDimensionDescriptor;
 import org.siemac.metamac.srm.core.structure.domain.MeasureDescriptor;
 import org.siemac.metamac.srm.core.structure.domain.MeasureDimension;
 import org.siemac.metamac.srm.core.structure.domain.TimeDimension;
+import org.siemac.metamac.srm.core.structure.serviceimpl.utils.DataStructureConstraintValidator;
 import org.siemac.metamac.srm.core.structure.serviceimpl.utils.DataStructureInvocationValidator;
 import org.springframework.stereotype.Service;
 
@@ -94,70 +95,7 @@ public class DataStructureDefinitionServiceImpl extends DataStructureDefinitionS
     @Override
     public ComponentList saveDescriptorForDsd(ServiceContext ctx, DataStructureDefinition dataStructureDefinition, ComponentList componentList) throws MetamacException {
         // Validation
-        DataStructureInvocationValidator.checkSaveDescriptorForDataStructureDefinition(dataStructureDefinition, null); // Parameters and metadata check
-
-        // Check type componentlist
-        if (!(componentList instanceof AttributeDescriptor) && !(componentList instanceof DimensionDescriptor) && !(componentList instanceof GroupDimensionDescriptor)
-                && !(componentList instanceof MeasureDescriptor)) {
-            MetamacException metamacException = new MetamacException(MetamacCoreExceptionType.PARAMETER_INCORRECT, "typeComponentList");
-            throw metamacException;
-        }
-
-        // Check cardinals constraints in the relationship "grouping"
-        List<ComponentList> groupDimDescFound = new ArrayList<ComponentList>();
-        ComponentList dimensionDescFound = null;
-        ComponentList measureDescFound = null;
-        ComponentList attributeDescFound = null;
-
-        for (ComponentList currentComponentList : dataStructureDefinition.getGrouping()) {
-            if ((currentComponentList instanceof AttributeDescriptor) && (componentList instanceof AttributeDescriptor)) {
-                attributeDescFound = currentComponentList;
-            } else if ((currentComponentList instanceof DimensionDescriptor) && (componentList instanceof DimensionDescriptor)) {
-                dimensionDescFound = currentComponentList;
-            } else if ((currentComponentList instanceof GroupDimensionDescriptor) && (componentList instanceof GroupDimensionDescriptor)) {
-                groupDimDescFound.add(currentComponentList);
-            } else if ((currentComponentList instanceof MeasureDescriptor) && (componentList instanceof MeasureDescriptor)) {
-                measureDescFound = currentComponentList;
-            }
-        }
-
-        // Minimum cardinality not checked in this moment. Only MAX is checked.
-        if (componentList instanceof AttributeDescriptor) {
-            // Cardinality 0..1
-            if (attributeDescFound != null) {
-                // If is new or different
-                if (componentList.getId() == null || componentList.getId().compareTo(attributeDescFound.getId()) != 0) {
-                    // Exception
-                    MetamacException metamacException = new MetamacException(MetamacCoreExceptionType.MTM_CORE_VALIDATION_CONSTRAINT_CARDINALITY_MAX, "Max attribute descriptor is 1");
-                    metamacException.setLoggedLevel(ExceptionLevelEnum.DEBUG);
-                    throw metamacException;
-                }
-            }
-        } else if (componentList instanceof DimensionDescriptor) {
-            // Cardinality 1
-            if (dimensionDescFound != null) {
-                // If is new or different
-                if (componentList.getId() == null || componentList.getId().compareTo(dimensionDescFound.getId()) != 0) {
-                    // Exception
-                    MetamacException metamacException = new MetamacException(MetamacCoreExceptionType.MTM_CORE_VALIDATION_CONSTRAINT_CARDINALITY_MAX, "Max dimension descriptor is 1");
-                    metamacException.setLoggedLevel(ExceptionLevelEnum.DEBUG);
-                    throw metamacException;
-                }
-            }
-        } else if (componentList instanceof MeasureDescriptor) {
-            // Cardinality 1
-            if (measureDescFound != null) {
-                // If is new or different
-                if (componentList.getId() == null || componentList.getId().compareTo(measureDescFound.getId()) != 0) {
-                    // Exception
-                    MetamacException metamacException = new MetamacException(MetamacCoreExceptionType.MTM_CORE_VALIDATION_CONSTRAINT_CARDINALITY_MAX, "Max measure descriptor is 1");
-                    metamacException.setLoggedLevel(ExceptionLevelEnum.DEBUG);
-                    throw metamacException;
-                }
-            }
-        } else if (componentList instanceof GroupDimensionDescriptor) {
-            // Cardinality 0..*
-        }
+        DataStructureInvocationValidator.checkSaveDescriptorForDataStructureDefinition(dataStructureDefinition, componentList, null); // Parameters and metadata check
 
         // Save Descriptors
         ComponentList componentListDescriptor = getBaseService().saveComponentList(ctx, componentList);
@@ -169,17 +107,16 @@ public class DataStructureDefinitionServiceImpl extends DataStructureDefinitionS
         dataStructureDefinition = saveDsd(ctx, dataStructureDefinition);
 
         return componentListDescriptor;
-
     }
+
+
 
     @Override
     public void deleteDescriptorForDsd(ServiceContext ctx, DataStructureDefinition dataStructureDefinition, ComponentList componentList) throws MetamacException {
         // Validation
         DataStructureInvocationValidator.checkDeleteDescriptorForDataStructureDefinition(dataStructureDefinition, null); // Parameters and metadata check
         
-        // Right cardinality not checked in this moment. The DSD can't be completed.
-
-        // Check cardinals constraints
+        // Remove Association with DSD
         Iterator<ComponentList> iterCmpList = dataStructureDefinition.getGrouping().iterator();
         while (iterCmpList.hasNext()) {
             ComponentList cmpList = iterCmpList.next();

@@ -85,8 +85,13 @@ public class ServiceExceptionParameters {
 
     // DATASTRUCTUREDEFINITION
     public static final String DATASTRUCTUREDEFINITION                         = "datastructuredefinition";
+    public static final String DATASTRUCTUREDEFINITION_NAME                    = "datastructuredefinition.name";
+    public static final String DATASTRUCTUREDEFINITION_MAINTAINER              = "datastructuredefinition.maintainer";
 
     // FACET
     public static final String FACET                                           = "facet";
+
+    // COMPONENT
+    public static final String COMPONENT_LIST                                  = "componentlist";
 
 }

@@ -3,11 +3,21 @@ package org.siemac.metamac.srm.core.structure.serviceimpl.utils;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.siemac.metamac.core.common.ent.domain.ExternalItem;
+import org.siemac.metamac.core.common.exception.ExceptionLevelEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.core.common.exception.utils.ExceptionUtils;
+import org.siemac.metamac.core.common.serviceimpl.utils.ValidationUtils;
+import org.siemac.metamac.srm.core.base.domain.ComponentList;
+import org.siemac.metamac.srm.core.common.error.MetamacCoreExceptionType;
+import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
+import org.siemac.metamac.srm.core.common.error.ServiceExceptionParametersInternal;
+import org.siemac.metamac.srm.core.structure.domain.AttributeDescriptor;
 import org.siemac.metamac.srm.core.structure.domain.DataStructureDefinition;
+import org.siemac.metamac.srm.core.structure.domain.DimensionDescriptor;
 import org.siemac.metamac.srm.core.structure.domain.GroupDimensionDescriptor;
+import org.siemac.metamac.srm.core.structure.domain.MeasureDescriptor;
 
 
 public class DataStructureInvocationValidator {
@@ -16,21 +26,12 @@ public class DataStructureInvocationValidator {
         if (exceptions == null) {
             exceptions = new ArrayList<MetamacExceptionItem>();
         }
-
-        // Parameter Required
-//        ValidationUtils.checkParameterRequired(publication, ServiceExceptionParameters.PUBLICATION, exceptions);
-        
-        // Metadata Empty
-//        ValidationUtils.checkMetadataEmpty(publication.getId(), ServiceExceptionParameters.PUBLICATION_ID, exceptions);
-//        ValidationUtils.checkMetadataEmpty(publication.getVersion(), ServiceExceptionParameters.PUBLICATION_VERSION, exceptions);
         
         // Metadata Required
-//        ValidationUtils.checkMetadataRequired(publication.getUrn(), ServiceExceptionParameters.PUBLICATION_URI, exceptions);
-//        ValidationUtils.checkMetadataRequired(publication.getRestpath(), ServiceExceptionParameters.PUBLICATION_REST_PATH, exceptions);
-//        ValidationUtils.checkMetadataRequired(publication.getVersionLogic(), ServiceExceptionParameters.PUBLICATION_VERSION_LOGIC, exceptions);
-//        ValidationUtils.checkMetadataRequired(publication.getPublishDate(), ServiceExceptionParameters.PUBLICATION_PUBLISH_DATE, exceptions);
-//        ValidationUtils.checkMetadataRequired(publication.getTypePublishResource(), ServiceExceptionParameters.PUBLICATION_TYPE_PUBLISH_RESOURCE, exceptions);
-//        ValidationUtils.checkMetadataRequired(publication.getTypePublishState(), ServiceExceptionParameters.PUBLICATION_TYPE_PUBLISH_STATE, exceptions);
+        ValidationUtils.checkMetadataRequired(dataStructureDefinition.getName(), ServiceExceptionParameters.DATASTRUCTUREDEFINITION_NAME, exceptions);
+        checkExternalItem(dataStructureDefinition.getMaintainer(), exceptions, ServiceExceptionParameters.DATASTRUCTUREDEFINITION_MAINTAINER);
+        
+        dataStructureDefinition.getMaintainer();
 
         ExceptionUtils.throwIfException(exceptions);
     }
@@ -43,11 +44,21 @@ public class DataStructureInvocationValidator {
         ExceptionUtils.throwIfException(exceptions);
     }
 
-    public static void checkSaveDescriptorForDataStructureDefinition(DataStructureDefinition dataStructureDefinition, List<MetamacExceptionItem> exceptions) throws MetamacException {
+    public static void checkSaveDescriptorForDataStructureDefinition(DataStructureDefinition dataStructureDefinition, ComponentList componentList, List<MetamacExceptionItem> exceptions) throws MetamacException {
         if (exceptions == null) {
             exceptions = new ArrayList<MetamacExceptionItem>();
         }
 
+        // Check type Componentlist
+        if (!(componentList instanceof AttributeDescriptor) && !(componentList instanceof DimensionDescriptor) && !(componentList instanceof GroupDimensionDescriptor)
+                && !(componentList instanceof MeasureDescriptor)) {
+            MetamacException metamacException = new MetamacException(MetamacCoreExceptionType.PARAMETER_INCORRECT, ServiceExceptionParameters.COMPONENT_LIST);
+            throw metamacException;
+        }
+
+        // Other Constraints
+        DataStructureConstraintValidator.checkConstraintDsdGrouping(dataStructureDefinition, componentList);
+        
         ExceptionUtils.throwIfException(exceptions);
     }
     
@@ -75,5 +86,25 @@ public class DataStructureInvocationValidator {
         ExceptionUtils.throwIfException(exceptions);
     }
 
+    /**************************************************************************
+     *  PRIVATES
+     *************************************************************************/
+    private static List<MetamacExceptionItem> checkExternalItem(ExternalItem externalItem, List<MetamacExceptionItem> exceptions, String metadataName) throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+        
+        // Parameter Required
+        
+        // Metadata Empty
+        
+        // Metadata Required
+        ValidationUtils.checkMetadataRequired(externalItem.getUri(), metadataName + ServiceExceptionParametersInternal.EXTERNALITEM_URI, exceptions);
+        ValidationUtils.checkMetadataRequired(externalItem.getCode(), metadataName + ServiceExceptionParametersInternal.EXTERNALITEM_CODE, exceptions);
+        ValidationUtils.checkMetadataRequired(externalItem.getUrn(), metadataName + ServiceExceptionParametersInternal.EXTERNALITEM_URN, exceptions);
+        ValidationUtils.checkMetadataRequired(externalItem.getType(), metadataName + ServiceExceptionParametersInternal.EXTERNALITEM_TYPE, exceptions);
+        
+        return exceptions;
+    }
     
 }
