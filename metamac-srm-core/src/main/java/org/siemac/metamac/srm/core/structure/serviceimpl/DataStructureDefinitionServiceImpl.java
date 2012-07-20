@@ -1,9 +1,7 @@
 package org.siemac.metamac.srm.core.structure.serviceimpl;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
@@ -20,7 +18,6 @@ import org.siemac.metamac.srm.core.structure.domain.GroupDimensionDescriptor;
 import org.siemac.metamac.srm.core.structure.domain.MeasureDescriptor;
 import org.siemac.metamac.srm.core.structure.domain.MeasureDimension;
 import org.siemac.metamac.srm.core.structure.domain.TimeDimension;
-import org.siemac.metamac.srm.core.structure.serviceimpl.utils.DataStructureConstraintValidator;
 import org.siemac.metamac.srm.core.structure.serviceimpl.utils.DataStructureInvocationValidator;
 import org.springframework.stereotype.Service;
 
@@ -114,7 +111,7 @@ public class DataStructureDefinitionServiceImpl extends DataStructureDefinitionS
     @Override
     public void deleteDescriptorForDsd(ServiceContext ctx, DataStructureDefinition dataStructureDefinition, ComponentList componentList) throws MetamacException {
         // Validation
-        DataStructureInvocationValidator.checkDeleteDescriptorForDataStructureDefinition(dataStructureDefinition, null); // Parameters and metadata check
+        DataStructureInvocationValidator.checkDeleteDescriptorForDataStructureDefinition(dataStructureDefinition, componentList, null); // Parameters and metadata check
         
         // Remove Association with DSD
         Iterator<ComponentList> iterCmpList = dataStructureDefinition.getGrouping().iterator();
@@ -153,7 +150,7 @@ public class DataStructureDefinitionServiceImpl extends DataStructureDefinitionS
     @Override
     public Component saveComponentForDsd(ServiceContext ctx, DataStructureDefinition dataStructureDefinition, Component component, TypeComponentList typeComponentList) throws MetamacException {
         // Validation
-        DataStructureInvocationValidator.checkSaveComponentForDataStructureDefinition(dataStructureDefinition, null); // Parameters and metadata check
+        DataStructureInvocationValidator.checkSaveComponentForDataStructureDefinition(dataStructureDefinition, component, null); // Parameters and metadata check
 
         // Check type component
         if (typeComponentList == null) {
@@ -258,7 +255,7 @@ public class DataStructureDefinitionServiceImpl extends DataStructureDefinitionS
     @Override
     public void deleteComponentForDsd(ServiceContext ctx, DataStructureDefinition dataStructureDefinition, Component component, TypeComponentList typeComponentList) throws MetamacException {
         // Validation
-        DataStructureInvocationValidator.checkDeleteComponentForDataStructureDefinition(dataStructureDefinition, null); // Parameters and metadata check
+        DataStructureInvocationValidator.checkDeleteComponentForDataStructureDefinition(dataStructureDefinition, component, null); // Parameters and metadata check
         
         // Check type component
         if (typeComponentList == null) {

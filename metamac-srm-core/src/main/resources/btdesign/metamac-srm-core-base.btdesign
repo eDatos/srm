@@ -415,16 +415,16 @@ Application Base {
 			endValue facet or the timeInterval, startTime, and endTime, facets. If this attribute holds a value of true, a start value or time and a numeric or time
 			interval must supplied. If an end value is not given, then the sequence
 			continues indefinitely."
-			Boolean isSequenceFT nullable;
+			String isSequenceFT nullable;
 			"The interval attribute specifies the permitted interval (increment) in a sequence. In order for this to be used, the isSequence attribute must
 			have a value of true."
-			Double intervalFT nullable;
+			String intervalFT nullable;
 			"The startValue facet is used in conjunction with the isSequence and interval facets (which must be set in order to use this facet). This facet is
 			used for a numeric sequence, and indicates the starting point of the sequence. This value is mandatory for a numeric sequence to be expressed."
-			Double startValueFT nullable;
+			String startValueFT nullable;
 			"The endValue facet is used in conjunction with the isSequence and interval facets (which must be set in order to use this facet). This facet is
 			used for a numeric sequence, and indicates that ending point (if any) of the sequence."
-			Double endValueFT nullable;
+			String endValueFT nullable;
 			"The timeInterval facet indicates the permitted duration in a time sequence. In order for this to be used, the isSequence facet must have a
 			value of true. Format: 'PnYnMnDTnHnMnS'"
 			String timeIntervalFT nullable length="14";
@@ -435,25 +435,25 @@ Application Base {
 			facet is used for a time sequence, and indicates that ending point (if any) of the sequence."
 			String endTimeFT nullable;
 			"The minLength facet specifies the minimum and length of the value in characters."
-			Integer minLengthFT nullable;
+			String minLengthFT nullable;
 			"The maxLength facet specifies the maximum length of the value in characters."
-			Integer maxLengthFT nullable;
+			String maxLengthFT nullable;
 			"The minValue facet is used for inclusive and exclusive ranges, indicating what the lower bound of the range is. If this is used with an inclusive
 			range, a valid value will be greater than or equal to the value specified here. If the inclusive and exclusive data type is not specified (e.g. this
 			facet is used with an integer data type), the value is assumed to be inclusive."
-			Double minValueFT nullable;
+			String minValueFT nullable;
 			"The maxValue facet is used for inclusive and exclusive ranges, indicating what the upper bound of the range is. If this is used with an inclusive
 			range, a valid value will be less than or equal to the value specified here. If the inclusive and exclusive data type is not specified (e.g. this facet is
 			used with an integer data type), the value is assumed to be inclusive."
-			Double maxValueFT nullable;
+			String maxValueFT nullable;
 			"The decimals facet indicates the number of characters allowed after the decimal separator."
-			Integer decimalsFT nullable;
+			String decimalsFT nullable;
 			"The pattern attribute holds any regular expression permitted in the implementation syntax (e.g. W3C XML Schema)."
 			String patternFT nullable;
 			"Only valid for a MetadataAttribute. PAY ATTENTION (See SDMX INFORMATIONMODEL, ExtendedFacetType)"
 			String xhtmlEFT nullable;
 			"The isMultiLingual attribute indicates for a text format of type 'string', whether the value should allow for multiple values in different languages."
-			Boolean isMultiLingual nullable;
+			String isMultiLingual nullable;
 
     		Repository FacetRepository {
 				findById;

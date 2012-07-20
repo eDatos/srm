@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.siemac.metamac.core.common.ent.domain.ExternalItem;
-import org.siemac.metamac.core.common.exception.ExceptionLevelEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.core.common.exception.utils.ExceptionUtils;
 import org.siemac.metamac.core.common.serviceimpl.utils.ValidationUtils;
+import org.siemac.metamac.srm.core.base.domain.Component;
 import org.siemac.metamac.srm.core.base.domain.ComponentList;
 import org.siemac.metamac.srm.core.common.error.MetamacCoreExceptionType;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
@@ -30,8 +30,6 @@ public class DataStructureInvocationValidator {
         // Metadata Required
         ValidationUtils.checkMetadataRequired(dataStructureDefinition.getName(), ServiceExceptionParameters.DATASTRUCTUREDEFINITION_NAME, exceptions);
         checkExternalItem(dataStructureDefinition.getMaintainer(), exceptions, ServiceExceptionParameters.DATASTRUCTUREDEFINITION_MAINTAINER);
-        
-        dataStructureDefinition.getMaintainer();
 
         ExceptionUtils.throwIfException(exceptions);
     }
@@ -49,7 +47,7 @@ public class DataStructureInvocationValidator {
             exceptions = new ArrayList<MetamacExceptionItem>();
         }
 
-        // Check type Componentlist
+        // Check type Component list
         if (!(componentList instanceof AttributeDescriptor) && !(componentList instanceof DimensionDescriptor) && !(componentList instanceof GroupDimensionDescriptor)
                 && !(componentList instanceof MeasureDescriptor)) {
             MetamacException metamacException = new MetamacException(MetamacCoreExceptionType.PARAMETER_INCORRECT, ServiceExceptionParameters.COMPONENT_LIST);
@@ -57,12 +55,12 @@ public class DataStructureInvocationValidator {
         }
 
         // Other Constraints
-        DataStructureConstraintValidator.checkConstraintDsdGrouping(dataStructureDefinition, componentList);
+        DataStructureConstraintValidator.checkConstraintDsdGrouping(dataStructureDefinition, componentList, exceptions);
         
         ExceptionUtils.throwIfException(exceptions);
     }
     
-    public static void checkDeleteDescriptorForDataStructureDefinition(DataStructureDefinition dataStructureDefinition, List<MetamacExceptionItem> exceptions) throws MetamacException {
+    public static void checkDeleteDescriptorForDataStructureDefinition(DataStructureDefinition dataStructureDefinition, ComponentList componentList, List<MetamacExceptionItem> exceptions) throws MetamacException {
         if (exceptions == null) {
             exceptions = new ArrayList<MetamacExceptionItem>();
         }
@@ -70,15 +68,20 @@ public class DataStructureInvocationValidator {
         ExceptionUtils.throwIfException(exceptions);
     }
     
-    public static void checkSaveComponentForDataStructureDefinition(DataStructureDefinition dataStructureDefinition, List<MetamacExceptionItem> exceptions) throws MetamacException {
+    public static void checkSaveComponentForDataStructureDefinition(DataStructureDefinition dataStructureDefinition, Component component, List<MetamacExceptionItem> exceptions) throws MetamacException {
         if (exceptions == null) {
             exceptions = new ArrayList<MetamacExceptionItem>();
         }
+        
+        //TODO component id y demás
+        
+        // Other Constraints
+        DataStructureConstraintValidator.checkComponent(component, exceptions);
 
         ExceptionUtils.throwIfException(exceptions);
     }
     
-    public static void checkDeleteComponentForDataStructureDefinition(DataStructureDefinition dataStructureDefinition, List<MetamacExceptionItem> exceptions) throws MetamacException {
+    public static void checkDeleteComponentForDataStructureDefinition(DataStructureDefinition dataStructureDefinition, Component component, List<MetamacExceptionItem> exceptions) throws MetamacException {
         if (exceptions == null) {
             exceptions = new ArrayList<MetamacExceptionItem>();
         }
