@@ -60,7 +60,7 @@ public class ServiceExceptionParameters {
 
     // DIMENSION
     public static final String DIMENSION                                       = "dimension";
-    public static final String DIMENSION_ROLE_TITLE                            = "dimension.role.title";
+    public static final String DIMENSION_ROLE                                  = "dimension.role";
     public static final String DIMENSION_REPRESENTATION_ENUMERATE_TITLE        = "dimension.representation.enumerate.title";
 
     // DATA_ATTRIBUTE
@@ -68,12 +68,14 @@ public class ServiceExceptionParameters {
     public static final String DATAATTRIBUTE_USAGE_STATES                      = "dataattribute.usage_states";
     public static final String DATAATTRIBUTE_RELATETO                          = "dataattribute.relateto";
     public static final String DATAATTRIBUTE_ROLE                              = "dataattribute.role";
-    public static final String DATAATTRIBUTE_ROLE_TITLE                        = "dataattribute.role.title";
     public static final String DATAATTRIBUTE_REPRESENTATION_ENUMERATE_TITLE    = "dataattribute.representation.enumerate.title";
+
+    // REPORTINGYEARSTARTDAY
+    public static final String REPORTINGYEARSTARDAY                            = "reportingyearstarday";
 
     // MEASURE_DIMENSION
     public static final String MEASUREDIMENSION                                = "measuredimension";
-    public static final String MEASUREDIMENSION_ROLE_TITLE                     = "measuredimension.role.title";
+    public static final String MEASUREDIMENSION_ROLE                           = "measuredimension.rolee";
     public static final String MEASUREDIMENSION_REPRESENTATION_ENUMERATE_TITLE = "measuredimension.representation.enumerate.title";
 
     // TIME_DIMENSION
@@ -87,11 +89,15 @@ public class ServiceExceptionParameters {
     public static final String DATASTRUCTUREDEFINITION                         = "datastructuredefinition";
     public static final String DATASTRUCTUREDEFINITION_NAME                    = "datastructuredefinition.name";
     public static final String DATASTRUCTUREDEFINITION_MAINTAINER              = "datastructuredefinition.maintainer";
+    public static final String DATASTRUCTUREDEFINITION_GROUPING                = "datastructuredefinition.grouping";
 
     // FACET
     public static final String FACET                                           = "facet";
 
     // COMPONENT
     public static final String COMPONENT_LIST                                  = "componentlist";
-
+    public static final String COMPONENT_LIST_ATTRIBUTE_DESCRIPTOR             = "componentlist.attribute_descriptor";
+    public static final String COMPONENT_LIST_DIMENSION_DESCRIPTOR             = "componentlist.dimension_descriptor";
+    public static final String COMPONENT_LIST_GROUP_DIMENSION_DESCRIPTOR       = "componentlist.group_dimension_descriptor";
+    public static final String COMPONENT_LIST_MEASURE_DESCRIPTOR               = "componentlist.measure_descriptor";
 }

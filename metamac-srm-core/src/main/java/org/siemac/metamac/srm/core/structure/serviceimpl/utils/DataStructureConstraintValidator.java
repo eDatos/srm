@@ -71,7 +71,7 @@ public class DataStructureConstraintValidator {
                 // If is new or different
                 if (componentList.getId() == null || componentList.getId().compareTo(attributeDescFound.getId()) != 0) {
                     // Exception
-                    MetamacException metamacException = new MetamacException(MetamacCoreExceptionType.MTM_CORE_VALIDATION_CONSTRAINT_CARDINALITY_MAX, "Max attribute descriptor is 1");
+                    MetamacException metamacException = new MetamacException(MetamacCoreExceptionType.MTM_CORE_VALIDATION_CONSTRAINT_CARDINALITY_MAX, ServiceExceptionParameters.COMPONENT_LIST_ATTRIBUTE_DESCRIPTOR); // "Max attribute descriptor is 1"
                     metamacException.setLoggedLevel(ExceptionLevelEnum.DEBUG);
                     throw metamacException;
                 }
@@ -82,7 +82,7 @@ public class DataStructureConstraintValidator {
                 // If is new or different
                 if (componentList.getId() == null || componentList.getId().compareTo(dimensionDescFound.getId()) != 0) {
                     // Exception
-                    MetamacException metamacException = new MetamacException(MetamacCoreExceptionType.MTM_CORE_VALIDATION_CONSTRAINT_CARDINALITY_MAX, "Max dimension descriptor is 1");
+                    MetamacException metamacException = new MetamacException(MetamacCoreExceptionType.MTM_CORE_VALIDATION_CONSTRAINT_CARDINALITY_MAX, ServiceExceptionParameters.COMPONENT_LIST_DIMENSION_DESCRIPTOR); // "Max dimension descriptor is 1"
                     metamacException.setLoggedLevel(ExceptionLevelEnum.DEBUG);
                     throw metamacException;
                 }
@@ -93,7 +93,7 @@ public class DataStructureConstraintValidator {
                 // If is new or different
                 if (componentList.getId() == null || componentList.getId().compareTo(measureDescFound.getId()) != 0) {
                     // Exception
-                    MetamacException metamacException = new MetamacException(MetamacCoreExceptionType.MTM_CORE_VALIDATION_CONSTRAINT_CARDINALITY_MAX, "Max measure descriptor is 1");
+                    MetamacException metamacException = new MetamacException(MetamacCoreExceptionType.MTM_CORE_VALIDATION_CONSTRAINT_CARDINALITY_MAX, ServiceExceptionParameters.COMPONENT_LIST_MEASURE_DESCRIPTOR ); // "Max measure descriptor is 1"
                     metamacException.setLoggedLevel(ExceptionLevelEnum.DEBUG);
                     throw metamacException;
                 }
@@ -102,7 +102,7 @@ public class DataStructureConstraintValidator {
             // Cardinality 0..*
         }
     }
-    
+
     public static void checkComponent(Component component, List<MetamacExceptionItem> exceptions) throws MetamacException {
         if (exceptions == null) {
             exceptions = new ArrayList<MetamacExceptionItem>();
@@ -110,11 +110,11 @@ public class DataStructureConstraintValidator {
         
         // "ConceptIdentity" type="common:ConceptReferenceType"
         if (component.getCptIdRef() == null) {
-            exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_REQUIRED, "COMPONENT_COCNEPTID")); //TODO CONCATENAR MSG
+            exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_REQUIRED, ServiceExceptionParameters.COMPONENT_CONCEPTID));
         }
         else {
             if (!TypeExternalArtefactsEnum.CONCEPT.equals(component.getCptIdRef().getType())) {
-                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, "CONCEPT_REFEREFENCE")); //TODO CONCATENAR MSG
+                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.COMPONENT_CONCEPTID));
             }
         }
         
@@ -137,8 +137,31 @@ public class DataStructureConstraintValidator {
         else if (component instanceof PrimaryMeasure) {
             checkPrimaryMeasure((PrimaryMeasure)component, exceptions);
         }
-        
     }
+    
+    public static void checkDsdConstraintsToPublish(DataStructureDefinition dataStructureDefinition, List<MetamacExceptionItem> exceptions) throws MetamacException {
+        // Check Minimum cardinals constraints in the relationship "grouping", Maximum cardinals was checked in creation time
+        boolean minimunDimension = false;
+        boolean minimunMeasure = false;
+        for (ComponentList currentComponentList : dataStructureDefinition.getGrouping()) {
+            if (currentComponentList instanceof DimensionDescriptor) {
+                minimunDimension = true;
+            } else if (currentComponentList instanceof MeasureDescriptor) {
+                minimunMeasure = true;
+            }
+        }
+        
+        if (!minimunDimension) {
+            exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.MTM_CORE_VALIDATION_CONSTRAINT_CARDINALITY_MIN, ServiceExceptionParameters.COMPONENT_LIST_DIMENSION_DESCRIPTOR));
+        }
+        
+        if (!minimunMeasure) {
+            exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.MTM_CORE_VALIDATION_CONSTRAINT_CARDINALITY_MIN, ServiceExceptionParameters.COMPONENT_LIST_MEASURE_DESCRIPTOR));
+        }
+            
+        // The rest of constraints was checked in creation time.    
+    }
+    
     
     /**************************************************************************
      *                      PRIVATE
@@ -159,7 +182,7 @@ public class DataStructureConstraintValidator {
         // <xs:element name="ConceptRole" type="common:ConceptReferenceType" minOccurs="0" maxOccurs="unbounded">
         for (ExternalItem externalItem: dataAttribute.getRole()) {
             if (!TypeExternalArtefactsEnum.CONCEPT.equals(externalItem.getType())) {
-                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, "DATAATTR_ROLE_CONCEPT_REFEREFENCE")); //TODO CONCATENAR MSG
+                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.DATAATTRIBUTE_ROLE));
             }
         }
         
@@ -167,7 +190,7 @@ public class DataStructureConstraintValidator {
         validateAttributeRelationshipType(dataAttribute.getRelateTo(), exceptions);
         
         // LocalRepresentation
-        validateSimpleDataStructureRepresentationType(dataAttribute.getLocalRepresentation(), exceptions);
+        validateSimpleDataStructureRepresentationType(dataAttribute.getLocalRepresentation(), ServiceExceptionParameters.DATAATTRIBUTE, exceptions);
     }
     
     private static void checkReportingYearStartDay(ReportingYearStartDay reportingYearStartDay, List<MetamacExceptionItem> exceptions) throws MetamacException {
@@ -193,12 +216,12 @@ public class DataStructureConstraintValidator {
         // <xs:element name="ConceptRole" type="common:ConceptReferenceType" minOccurs="0" maxOccurs="unbounded">
         for (ExternalItem externalItem: dimension.getRole()) {
             if (!TypeExternalArtefactsEnum.CONCEPT.equals(externalItem.getType())) {
-                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, "DIMENSION_ROLE_CONCEPT_REFEREFENCE")); //TODO CONCATENAR MSG
+                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.DIMENSION_ROLE));
             }
         }
         
         // LocalRepresentation
-        validateSimpleDataStructureRepresentationType(dimension.getLocalRepresentation(), exceptions);
+        validateSimpleDataStructureRepresentationType(dimension.getLocalRepresentation(), ServiceExceptionParameters.DIMENSION, exceptions);
     }
 
     private static void checkMeasureDimension(MeasureDimension measureDimension, List<MetamacExceptionItem> exceptions) throws MetamacException {
@@ -210,7 +233,7 @@ public class DataStructureConstraintValidator {
         // <xs:element name="ConceptRole" type="common:ConceptReferenceType" minOccurs="0" maxOccurs="unbounded">
         for (ExternalItem externalItem: measureDimension.getRole()) {
             if (!TypeExternalArtefactsEnum.CONCEPT.equals(externalItem.getType())) {
-                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, "MEASUREDIMENSION_ROLE_CONCEPT_REFEREFENCE")); //TODO CONCATENAR MSG
+                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.MEASUREDIMENSION_ROLE));
             }
         }
         
@@ -233,12 +256,12 @@ public class DataStructureConstraintValidator {
         }
         
         // LocalRepresentation
-        validateSimpleDataStructureRepresentationType(primaryMeasure.getLocalRepresentation(), exceptions);
+        validateSimpleDataStructureRepresentationType(primaryMeasure.getLocalRepresentation(), ServiceExceptionParameters.PRIMARYMEASURE, exceptions);
     }
 
     private static void validateAttributeRelationshipType(AttributeRelationship attributeRelationship, List<MetamacExceptionItem> exceptions) throws MetamacException {
         if (attributeRelationship == null) {
-            exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_REQUIRED, "attributeRelationship"));
+            exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_REQUIRED, ServiceExceptionParameters.DATAATTRIBUTE_RELATETO));
             return;
         }
         
@@ -248,11 +271,11 @@ public class DataStructureConstraintValidator {
         
         if (attributeRelationship instanceof DimensionRelationship) {
             if (((DimensionRelationship) attributeRelationship).getDimension().isEmpty() &&((DimensionRelationship) attributeRelationship).getGroupKey().isEmpty()) {
-                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_REQUIRED, "Dimensionrelationship")); // TODOD arg
+                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_REQUIRED, ServiceExceptionParameters.DATAATTRIBUTE_RELATETO + ServiceExceptionParametersInternal.ATTRIBUTERELATIONSHIP_DIMENSIONRELATIONSHIP));
             }
         }
         else if (attributeRelationship instanceof GroupRelationship) {
-            ValidationUtils.checkMetadataRequired(((GroupRelationship) attributeRelationship).getGroupKey(), "GroupRelationship", exceptions); // TODOD arg
+            ValidationUtils.checkMetadataRequired(((GroupRelationship) attributeRelationship).getGroupKey(), ServiceExceptionParameters.DATAATTRIBUTE_RELATETO + ServiceExceptionParametersInternal.ATTRIBUTERELATIONSHIP_GROUPRELATIONSHIP, exceptions);
         }
         else if (attributeRelationship instanceof NoSpecifiedRelationship) {
             ; // Nothing
@@ -263,7 +286,7 @@ public class DataStructureConstraintValidator {
     
     }
     
-    private static void validateSimpleDataStructureRepresentationType(Representation representation, List<MetamacExceptionItem> exceptions) throws MetamacException {
+    private static void validateSimpleDataStructureRepresentationType(Representation representation, String metadataName, List<MetamacExceptionItem> exceptions) throws MetamacException {
         if (representation == null) {
             return;
         }
@@ -275,17 +298,17 @@ public class DataStructureConstraintValidator {
         // Representation: Choice between Enumerated(Enumeration + EnumerationFormat) and NonEnumerated (TextFormat)
         if (representation instanceof TextFormatRepresentation) {
             // minOccurs="1"
-            checkSimpleComponentTextFormatType((TextFormatRepresentation) representation, exceptions);
+            checkSimpleComponentTextFormatType((TextFormatRepresentation) representation, metadataName, exceptions);
         }
         else if (representation instanceof EnumeratedRepresentation) {
             // minOccurs="1"
             // Enumeration:: common:CodelistReferenceType
             if (((EnumeratedRepresentation) representation).getEnumerated() == null) {
-                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_REQUIRED, "ENUMERATED")); //TODO CONCATENAR MSG
+                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_REQUIRED, metadataName + ServiceExceptionParametersInternal.REPRESENTATION_ENUMERATED));
             }
             else {
                 if (!TypeExternalArtefactsEnum.CODELIST.equals(((EnumeratedRepresentation) representation).getEnumerated().getType())) {
-                    exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, "ENUMERATED")); //TODO CONCATENAR MSG
+                    exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, ServiceExceptionParametersInternal.REPRESENTATION_ENUMERATED));
                 }
             }
 
@@ -307,15 +330,15 @@ public class DataStructureConstraintValidator {
         // Representation: Choice between Enumerated(Enumeration + EnumerationFormat) and NonEnumerated (TextFormat)
         if (representation instanceof TextFormatRepresentation) {
             // minOccurs="1"
-            checkNonFacetedTextFormatType((TextFormatRepresentation) representation, exceptions);
+            checkNonFacetedTextFormatType((TextFormatRepresentation) representation, ServiceExceptionParameters.REPORTINGYEARSTARDAY, exceptions);
             
             // FacetValueType must be fixed to "MonthDay"
             if (!FacetValueTypeEnum.MONTH_DAY_FVT.equals(((TextFormatRepresentation) representation).getNonEnumerated().getFacetValue())) {
-                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_UNEXPECTED, ServiceExceptionParametersInternal.FACET_FACETVALUETYPEENUM)); //TODO CONCATENAR MSG
+                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_UNEXPECTED, ServiceExceptionParameters.REPORTINGYEARSTARDAY + ServiceExceptionParametersInternal.FACET_FACETVALUETYPEENUM));
             }
         }
         else if (representation instanceof EnumeratedRepresentation) {
-           exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.PARAMETER_INCORRECT, "ENUMERATED")); //TODO CONCATENAR MSG
+           exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.PARAMETER_INCORRECT, ServiceExceptionParameters.REPORTINGYEARSTARDAY + ServiceExceptionParametersInternal.REPRESENTATION_ENUMERATED));
         }
     }
 
@@ -330,17 +353,17 @@ public class DataStructureConstraintValidator {
         
         // Representation: Choice between Enumerated(Enumeration + EnumerationFormat) and NonEnumerated (TextFormat)
         if (representation instanceof TextFormatRepresentation) {
-            exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.PARAMETER_INCORRECT, "NONENUMERATED")); //TODO CONCATENAR MSG
+            exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.PARAMETER_INCORRECT, ServiceExceptionParameters.MEASUREDIMENSION + ServiceExceptionParametersInternal.REPRESENTATION_NONENUMERATED));
         }
         else if (representation instanceof EnumeratedRepresentation) {
             // minOccurs="1"
             // Enumeration:: common:ConceptSchemeReferenceType
             if (((EnumeratedRepresentation) representation).getEnumerated() == null) {
-                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_REQUIRED, "ENUMERATED")); //TODO CONCATENAR MSG
+                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_REQUIRED, ServiceExceptionParameters.MEASUREDIMENSION + ServiceExceptionParametersInternal.REPRESENTATION_ENUMERATED));
             }
             else {
                 if (!TypeExternalArtefactsEnum.CONCEPT_SCHEME.equals(((EnumeratedRepresentation) representation).getEnumerated().getType())) {
-                    exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, "ENUMERATED")); //TODO CONCATENAR MSG
+                    exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.MEASUREDIMENSION + ServiceExceptionParametersInternal.REPRESENTATION_ENUMERATED));
                 }
             }
         }
@@ -358,19 +381,14 @@ public class DataStructureConstraintValidator {
         // Representation: Choice between Enumerated(Enumeration + EnumerationFormat) and NonEnumerated (TextFormat)
         if (representation instanceof TextFormatRepresentation) {
             // minOccurs="1"
-            checkNonFacetedTextFormatType((TextFormatRepresentation) representation, exceptions);
-            
-            // FacetValueType must be fixed to "MonthDay"
-            if (!FacetValueTypeEnum.MONTH_DAY_FVT.equals(((TextFormatRepresentation) representation).getNonEnumerated().getFacetValue())) {
-                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_UNEXPECTED, ServiceExceptionParametersInternal.FACET_FACETVALUETYPEENUM)); //TODO CONCATENAR MSG
-            }
+            checkTimeTextFormatType((TextFormatRepresentation) representation, ServiceExceptionParameters.TIMEDIMENSION, exceptions);
         }
         else if (representation instanceof EnumeratedRepresentation) {
-           exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.PARAMETER_INCORRECT, "ENUMERATED")); //TODO CONCATENAR MSG
+           exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.PARAMETER_INCORRECT, ServiceExceptionParameters.TIMEDIMENSION + ServiceExceptionParametersInternal.REPRESENTATION_ENUMERATED));
         }
     }
     
-    private static void checkSimpleComponentTextFormatType(TextFormatRepresentation textFormatRepresentation, List<MetamacExceptionItem> exceptions) throws MetamacException {
+    private static void checkSimpleComponentTextFormatType(TextFormatRepresentation textFormatRepresentation, String metadataName, List<MetamacExceptionItem> exceptions) throws MetamacException {
         if (exceptions == null) {
             exceptions = new ArrayList<MetamacExceptionItem>();
         }
@@ -378,68 +396,68 @@ public class DataStructureConstraintValidator {
         // Check for restrictions
         if (textFormatRepresentation.getNonEnumerated() != null) {
             // FacetValueType
-            checkSimpleDataType(textFormatRepresentation.getNonEnumerated().getFacetValue());
+            checkSimpleDataType(textFormatRepresentation.getNonEnumerated().getFacetValue(), metadataName);
             
             // FacetType --
             
             // IsSequenceFT
             if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getIsSequenceFT()) && !CoreCommonUtil.matchStringToPattern(textFormatRepresentation.getNonEnumerated().getIsSequenceFT(), CoreCommonUtil.PATTERN_XSD_BOOLEAN)) {
-                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, ServiceExceptionParametersInternal.FACET_ISSEQUENCEFT)); //TODO CONCATENAR MSG
+                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_ISSEQUENCEFT));
             }
             
             // IntervalFT
             if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getIntervalFT()) && !CoreCommonUtil.matchStringToPattern(textFormatRepresentation.getNonEnumerated().getIntervalFT(), CoreCommonUtil.PATTERN_XSD_INTEGER)) {
-                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, ServiceExceptionParametersInternal.FACET_INTERVALFT)); //TODO CONCATENAR MSG
+                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_INTERVALFT));
             }
             
             // StartValueFT
             if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getStartValueFT()) && !CoreCommonUtil.matchStringToPattern(textFormatRepresentation.getNonEnumerated().getStartValueFT(), CoreCommonUtil.PATTERN_XSD_INTEGER)) {
-                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, ServiceExceptionParametersInternal.FACET_STARTVALUEFT)); //TODO CONCATENAR MSG
+                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_STARTVALUEFT));
             }
             
             // EndValueFT
             if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getEndValueFT()) && !CoreCommonUtil.matchStringToPattern(textFormatRepresentation.getNonEnumerated().getEndValueFT(), CoreCommonUtil.PATTERN_XSD_INTEGER)) {
-                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, ServiceExceptionParametersInternal.FACET_ENDVALUEFT)); //TODO CONCATENAR MSG
+                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_ENDVALUEFT));
             }
             
             // TimeInterval
             if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getTimeIntervalFT()) && !CoreCommonUtil.matchStringToPattern(textFormatRepresentation.getNonEnumerated().getTimeIntervalFT(), CoreCommonUtil.PATTERN_XSD_DURATION)) {
-                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, ServiceExceptionParametersInternal.FACET_TIMEINTERVALFT)); //TODO CONCATENAR MSG
+                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_TIMEINTERVALFT));
             }
             
             // startTime
             if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getStartTimeFT()) && !CoreCommonUtil.matchStringToPattern(textFormatRepresentation.getNonEnumerated().getStartTimeFT(), CoreCommonUtil.PATTERN_SDMXL21_STANDARD_TIME_PERIOD)) {
-                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, ServiceExceptionParametersInternal.FACET_STARTTIMEFT)); //TODO CONCATENAR MSG
+                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_STARTTIMEFT));
             }
             
             // endTime
             if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getEndTimeFT()) && !CoreCommonUtil.matchStringToPattern(textFormatRepresentation.getNonEnumerated().getEndTimeFT(), CoreCommonUtil.PATTERN_SDMXL21_STANDARD_TIME_PERIOD)) {
-                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, ServiceExceptionParametersInternal.FACET_ENDTIMEFT)); //TODO CONCATENAR MSG
+                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_ENDTIMEFT));
             }
 
             // minLength
             if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getMinLengthFT()) && !CoreCommonUtil.matchStringToPattern(textFormatRepresentation.getNonEnumerated().getMinLengthFT(), CoreCommonUtil.PATTERN_XSD_POSITIVEINTEGER)) {
-                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, ServiceExceptionParametersInternal.FACET_MINLENGTHFT)); //TODO CONCATENAR MSG
+                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_MINLENGTHFT));
             }
             
             // maxLength
             if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getMaxLengthFT()) && !CoreCommonUtil.matchStringToPattern(textFormatRepresentation.getNonEnumerated().getMaxLengthFT(), CoreCommonUtil.PATTERN_XSD_POSITIVEINTEGER)) {
-                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, ServiceExceptionParametersInternal.FACET_MAXLENGTHFT)); //TODO CONCATENAR MSG
+                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_MAXLENGTHFT));
             }
             
             // minValue
             if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getMinValueFT()) && !CoreCommonUtil.matchStringToPattern(textFormatRepresentation.getNonEnumerated().getMinValueFT(), CoreCommonUtil.PATTERN_XSD_INTEGER)) {
-                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, ServiceExceptionParametersInternal.FACET_MINVALUEFT)); //TODO CONCATENAR MSG
+                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_MINVALUEFT));
             }
             
             // maxValue
             if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getMaxValueFT()) && !CoreCommonUtil.matchStringToPattern(textFormatRepresentation.getNonEnumerated().getMaxValueFT(), CoreCommonUtil.PATTERN_XSD_INTEGER)) {
-                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, ServiceExceptionParametersInternal.FACET_MAXVALUEFT)); //TODO CONCATENAR MSG
+                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_MAXVALUEFT));
             }
             
             // decimals
             if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getDecimalsFT()) && !CoreCommonUtil.matchStringToPattern(textFormatRepresentation.getNonEnumerated().getDecimalsFT(), CoreCommonUtil.PATTERN_XSD_POSITIVEINTEGER)) {
-                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, ServiceExceptionParametersInternal.FACET_DECIMALSFT)); //TODO CONCATENAR MSG
+                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_DECIMALSFT));
             }
             
             // pattern
@@ -447,16 +465,16 @@ public class DataStructureConstraintValidator {
             
             // Prohibited
             if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getIsMultiLingual()) && StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getIsMultiLingual())) {
-                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_UNEXPECTED, ServiceExceptionParametersInternal.FACET_ISMULTILINGUAL)); //TODO CONCATENAR MSG
+                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_UNEXPECTED, metadataName + ServiceExceptionParametersInternal.FACET_ISMULTILINGUAL));
             }
             if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getXhtmlEFT()) && StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getXhtmlEFT())) {
-                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_UNEXPECTED, ServiceExceptionParametersInternal.FACET_XHTMLEFT)); //TODO CONCATENAR MSG
+                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_UNEXPECTED, metadataName + ServiceExceptionParametersInternal.FACET_XHTMLEFT));
             }
             
         }
     }
     
-    private static void checkNonFacetedTextFormatType(TextFormatRepresentation textFormatRepresentation, List<MetamacExceptionItem> exceptions) throws MetamacException {
+    private static void checkNonFacetedTextFormatType(TextFormatRepresentation textFormatRepresentation, String metadataName, List<MetamacExceptionItem> exceptions) throws MetamacException {
         if (exceptions == null) {
             exceptions = new ArrayList<MetamacExceptionItem>();
         }
@@ -464,88 +482,88 @@ public class DataStructureConstraintValidator {
         // Check for restrictions
         if (textFormatRepresentation.getNonEnumerated() != null) {
             // FacetValueType
-            checkSimpleDataType(textFormatRepresentation.getNonEnumerated().getFacetValue());
+            checkSimpleDataType(textFormatRepresentation.getNonEnumerated().getFacetValue(), metadataName);
             
             // FacetType --
             // NonFacetedTextFormatType is a restricted version of the SimpleComponentTextFormatType that does not allow for any facets.
             
             // IsSequenceFT
             if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getIsSequenceFT())) {
-                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_UNEXPECTED, ServiceExceptionParametersInternal.FACET_ISSEQUENCEFT)); //TODO CONCATENAR MSG
+                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_UNEXPECTED, metadataName + ServiceExceptionParametersInternal.FACET_ISSEQUENCEFT));
             }
             
             // IntervalFT
             if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getIntervalFT())) {
-                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, ServiceExceptionParametersInternal.FACET_INTERVALFT)); //TODO CONCATENAR MSG
+                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_INTERVALFT));
             }
             
             // StartValueFT
             if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getStartValueFT())) {
-                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, ServiceExceptionParametersInternal.FACET_STARTVALUEFT)); //TODO CONCATENAR MSG
+                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_STARTVALUEFT));
             }
             
             // EndValueFT
             if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getEndValueFT())) {
-                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, ServiceExceptionParametersInternal.FACET_ENDVALUEFT)); //TODO CONCATENAR MSG
+                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_ENDVALUEFT));
             }
             
             // TimeInterval
             if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getTimeIntervalFT())) {
-                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, ServiceExceptionParametersInternal.FACET_TIMEINTERVALFT)); //TODO CONCATENAR MSG
+                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_TIMEINTERVALFT));
             }
             
             // startTime
             if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getStartTimeFT())) {
-                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, ServiceExceptionParametersInternal.FACET_STARTTIMEFT)); //TODO CONCATENAR MSG
+                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_STARTTIMEFT));
             }
             
             // endTime
             if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getEndTimeFT())) {
-                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, ServiceExceptionParametersInternal.FACET_ENDTIMEFT)); //TODO CONCATENAR MSG
+                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_ENDTIMEFT));
             }
 
             // minLength
             if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getMinLengthFT())) {
-                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, ServiceExceptionParametersInternal.FACET_MINLENGTHFT)); //TODO CONCATENAR MSG
+                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_MINLENGTHFT));
             }
             
             // maxLength
             if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getMaxLengthFT())) {
-                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, ServiceExceptionParametersInternal.FACET_MAXLENGTHFT)); //TODO CONCATENAR MSG
+                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_MAXLENGTHFT));
             }
             
             // minValue
             if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getMinValueFT())) {
-                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, ServiceExceptionParametersInternal.FACET_MINVALUEFT)); //TODO CONCATENAR MSG
+                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_MINVALUEFT));
             }
             
             // maxValue
             if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getMaxValueFT())) {
-                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, ServiceExceptionParametersInternal.FACET_MAXVALUEFT)); //TODO CONCATENAR MSG
+                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_MAXVALUEFT));
             }
             
             // decimals
             if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getDecimalsFT())) {
-                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, ServiceExceptionParametersInternal.FACET_DECIMALSFT)); //TODO CONCATENAR MSG
+                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_DECIMALSFT));
             }
             
             // pattern
             if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getPatternFT())) {
-                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, ServiceExceptionParametersInternal.FACET_PATTERNFT)); //TODO CONCATENAR MSG
+                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_PATTERNFT));
             }
             
             // Prohibited
             if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getIsMultiLingual())) {
-                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_UNEXPECTED, ServiceExceptionParametersInternal.FACET_ISMULTILINGUAL)); //TODO CONCATENAR MSG
+                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_UNEXPECTED, metadataName + ServiceExceptionParametersInternal.FACET_ISMULTILINGUAL));
             }
             if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getXhtmlEFT())) {
-                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_UNEXPECTED, ServiceExceptionParametersInternal.FACET_XHTMLEFT)); //TODO CONCATENAR MSG
+                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_UNEXPECTED, metadataName + ServiceExceptionParametersInternal.FACET_XHTMLEFT));
             }
             
         }
     }
     
-    private static void checkTimeTextFormatType(TextFormatRepresentation textFormatRepresentation, List<MetamacExceptionItem> exceptions) throws MetamacException {
+    private static void checkTimeTextFormatType(TextFormatRepresentation textFormatRepresentation, String metadataName, List<MetamacExceptionItem> exceptions) throws MetamacException {
         if (exceptions == null) {
             exceptions = new ArrayList<MetamacExceptionItem>();
         }
@@ -553,88 +571,88 @@ public class DataStructureConstraintValidator {
         // Check for restrictions
         if (textFormatRepresentation.getNonEnumerated() != null) {
             // FacetValueType
-            checkTimeDataType(textFormatRepresentation.getNonEnumerated().getFacetValue());
+            checkTimeDataType(textFormatRepresentation.getNonEnumerated().getFacetValue(), metadataName);
             
             // FacetType --
             // NonFacetedTextFormatType is a restricted version of the SimpleComponentTextFormatType that does not allow for any facets.
             
             // IsSequenceFT
             if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getIsSequenceFT())) {
-                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_UNEXPECTED, ServiceExceptionParametersInternal.FACET_ISSEQUENCEFT)); //TODO CONCATENAR MSG
+                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_UNEXPECTED, metadataName + ServiceExceptionParametersInternal.FACET_ISSEQUENCEFT));
             }
             
             // IntervalFT
             if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getIntervalFT())) {
-                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, ServiceExceptionParametersInternal.FACET_INTERVALFT)); //TODO CONCATENAR MSG
+                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_INTERVALFT));
             }
             
             // StartValueFT
             if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getStartValueFT())) {
-                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, ServiceExceptionParametersInternal.FACET_STARTVALUEFT)); //TODO CONCATENAR MSG
+                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_STARTVALUEFT));
             }
             
             // EndValueFT
             if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getEndValueFT())) {
-                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, ServiceExceptionParametersInternal.FACET_ENDVALUEFT)); //TODO CONCATENAR MSG
+                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_ENDVALUEFT));
             }
             
             // TimeInterval
             if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getTimeIntervalFT())) {
-                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, ServiceExceptionParametersInternal.FACET_TIMEINTERVALFT)); //TODO CONCATENAR MSG
+                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_TIMEINTERVALFT));
             }
             
             // startTime
             if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getStartTimeFT()) && !CoreCommonUtil.matchStringToPattern(textFormatRepresentation.getNonEnumerated().getStartTimeFT(), CoreCommonUtil.PATTERN_SDMXL21_STANDARD_TIME_PERIOD)) {
-                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, ServiceExceptionParametersInternal.FACET_STARTTIMEFT)); //TODO CONCATENAR MSG
+                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_STARTTIMEFT));
             }
             
             // endTime
             if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getEndTimeFT()) && !CoreCommonUtil.matchStringToPattern(textFormatRepresentation.getNonEnumerated().getEndTimeFT(), CoreCommonUtil.PATTERN_SDMXL21_STANDARD_TIME_PERIOD)) {
-                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, ServiceExceptionParametersInternal.FACET_ENDTIMEFT)); //TODO CONCATENAR MSG
+                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_ENDTIMEFT));
             }
 
             // minLength
             if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getMinLengthFT())) {
-                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, ServiceExceptionParametersInternal.FACET_MINLENGTHFT)); //TODO CONCATENAR MSG
+                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_MINLENGTHFT));
             }
             
             // maxLength
             if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getMaxLengthFT())) {
-                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, ServiceExceptionParametersInternal.FACET_MAXLENGTHFT)); //TODO CONCATENAR MSG
+                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_MAXLENGTHFT));
             }
             
             // minValue
             if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getMinValueFT())) {
-                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, ServiceExceptionParametersInternal.FACET_MINVALUEFT)); //TODO CONCATENAR MSG
+                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_MINVALUEFT));
             }
             
             // maxValue
             if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getMaxValueFT())) {
-                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, ServiceExceptionParametersInternal.FACET_MAXVALUEFT)); //TODO CONCATENAR MSG
+                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_MAXVALUEFT));
             }
             
             // decimals
             if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getDecimalsFT())) {
-                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, ServiceExceptionParametersInternal.FACET_DECIMALSFT)); //TODO CONCATENAR MSG
+                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_DECIMALSFT));
             }
             
             // pattern
             if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getPatternFT())) {
-                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, ServiceExceptionParametersInternal.FACET_PATTERNFT)); //TODO CONCATENAR MSG
+                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_PATTERNFT));
             }
             
             // Prohibited
             if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getIsMultiLingual())) {
-                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_UNEXPECTED, ServiceExceptionParametersInternal.FACET_ISMULTILINGUAL)); //TODO CONCATENAR MSG
+                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_UNEXPECTED, metadataName + ServiceExceptionParametersInternal.FACET_ISMULTILINGUAL));
             }
             if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getXhtmlEFT())) {
-                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_UNEXPECTED, ServiceExceptionParametersInternal.FACET_XHTMLEFT)); //TODO CONCATENAR MSG
+                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_UNEXPECTED, metadataName + ServiceExceptionParametersInternal.FACET_XHTMLEFT));
             }
             
         }
     }
     
-    private static void checkSimpleDataType(FacetValueTypeEnum facetValueTypeEnum) throws MetamacException {
+    private static void checkSimpleDataType(FacetValueTypeEnum facetValueTypeEnum, String metadataName) throws MetamacException {
         // Check for restrictions
         switch (facetValueTypeEnum) {
             case STRING_FVT:
@@ -716,12 +734,12 @@ public class DataStructureConstraintValidator {
             case DURATION_FVT:
                 break;
             default:
-                // TODO localizar el parametro del mensaje.
-                throw MetamacExceptionBuilder.builder().withExceptionItems(MetamacCoreExceptionType.METADATA_INCORRECT).withLoggedLevel(ExceptionLevelEnum.DEBUG).withMessageParameters("FacetValueTypeEnum").build();
+                throw MetamacExceptionBuilder.builder().withExceptionItems(MetamacCoreExceptionType.METADATA_INCORRECT).withLoggedLevel(ExceptionLevelEnum.DEBUG)
+                .withMessageParameters(metadataName + ServiceExceptionParametersInternal.FACET_FACETVALUETYPEENUM).build();
         }
     }
     
-    private static void checkTimeDataType(FacetValueTypeEnum facetValueTypeEnum) throws MetamacException {
+    private static void checkTimeDataType(FacetValueTypeEnum facetValueTypeEnum, String metadataName) throws MetamacException {
         // Check for restrictions
         switch (facetValueTypeEnum) {
             case OBSERVATIONAL_TIME_PERIOD_FVT:
@@ -759,8 +777,8 @@ public class DataStructureConstraintValidator {
             case TIMES_RANGE_FVT:
                 break;
             default:
-                // TODO localizar el parametro del mensaje.
-                throw MetamacExceptionBuilder.builder().withExceptionItems(MetamacCoreExceptionType.METADATA_INCORRECT).withLoggedLevel(ExceptionLevelEnum.DEBUG).withMessageParameters("FacetValueTypeEnum").build();
+                throw MetamacExceptionBuilder.builder().withExceptionItems(MetamacCoreExceptionType.METADATA_INCORRECT).withLoggedLevel(ExceptionLevelEnum.DEBUG)
+                .withMessageParameters(metadataName + ServiceExceptionParametersInternal.FACET_FACETVALUETYPEENUM).build();
         }
     }
 

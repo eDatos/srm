@@ -63,6 +63,7 @@ import org.siemac.metamac.srm.core.base.exception.ComponentNotFoundException;
 import org.siemac.metamac.srm.core.base.exception.FacetNotFoundException;
 import org.siemac.metamac.srm.core.common.error.MetamacCoreExceptionType;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
+import org.siemac.metamac.srm.core.common.error.ServiceExceptionParametersInternal;
 import org.siemac.metamac.srm.core.service.utils.SdmxToolsServer;
 import org.siemac.metamac.srm.core.structure.domain.AttributeDescriptor;
 import org.siemac.metamac.srm.core.structure.domain.AttributeRelationship;
@@ -492,7 +493,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         if (source.getId() != null) { // Update
             // Merge results
             for (ExternalItemDto listExternalItemDto : ((DataAttributeDto) source).getRole()) {
-                ExternalItem externalItem = externalItemDtoToExternalItem(ctx, listExternalItemDto, ServiceExceptionParameters.DATAATTRIBUTE_ROLE_TITLE);
+                ExternalItem externalItem = externalItemDtoToExternalItem(ctx, listExternalItemDto, ServiceExceptionParameters.DATAATTRIBUTE_ROLE);
                 boolean found = false;
                 for (ExternalItem extItemPersisted : ((DataAttribute) result).getRole()) {
                     if (extItemPersisted.equals(externalItem)) {
@@ -508,7 +509,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
             }
         } else { // New
             for (ExternalItemDto listExternalItemDto : ((DataAttributeDto) source).getRole()) {
-                ((DataAttribute) result).addRole(externalItemDtoToExternalItem(ctx, listExternalItemDto, ServiceExceptionParameters.DATAATTRIBUTE_ROLE_TITLE));
+                ((DataAttribute) result).addRole(externalItemDtoToExternalItem(ctx, listExternalItemDto, ServiceExceptionParameters.DATAATTRIBUTE_ROLE));
             }
         }
 
@@ -576,7 +577,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         // ROLE
         if (source.getId() != null) { // Update
             for (ExternalItemDto listExternalItemDto : ((DimensionComponentDto) source).getRole()) {
-                ExternalItem externalItem = externalItemDtoToExternalItem(ctx, listExternalItemDto, ServiceExceptionParameters.DIMENSION_ROLE_TITLE);
+                ExternalItem externalItem = externalItemDtoToExternalItem(ctx, listExternalItemDto, ServiceExceptionParameters.DIMENSION_ROLE);
                 boolean found = false;
                 for (ExternalItem extItemPersisted : result.getRole()) {
                     if (extItemPersisted.equals(externalItem)) {
@@ -592,7 +593,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
             }
         } else { // New
             for (ExternalItemDto listExternalItemDto : ((DimensionComponentDto) source).getRole()) {
-                ((Dimension) result).addRole(externalItemDtoToExternalItem(ctx, listExternalItemDto, ServiceExceptionParameters.DIMENSION_ROLE_TITLE));
+                ((Dimension) result).addRole(externalItemDtoToExternalItem(ctx, listExternalItemDto, ServiceExceptionParameters.DIMENSION_ROLE));
             }
         }
 
@@ -629,7 +630,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         // ROLE
         if (source.getId() != null) { // Exist
             for (ExternalItemDto listExternalItemDto : ((DimensionComponentDto) source).getRole()) {
-                ExternalItem externalItem = externalItemDtoToExternalItem(ctx, listExternalItemDto, ServiceExceptionParameters.MEASUREDIMENSION_ROLE_TITLE);
+                ExternalItem externalItem = externalItemDtoToExternalItem(ctx, listExternalItemDto, ServiceExceptionParameters.MEASUREDIMENSION_ROLE);
                 boolean found = false;
                 for (ExternalItem extItemPersisted : result.getRole()) {
                     if (extItemPersisted.equals(externalItem)) {
@@ -645,7 +646,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
             }
         } else { // New
             for (ExternalItemDto listExternalItemDto : ((DimensionComponentDto) source).getRole()) {
-                ((MeasureDimension) result).addRole(externalItemDtoToExternalItem(ctx, listExternalItemDto, ServiceExceptionParameters.MEASUREDIMENSION_ROLE_TITLE));
+                ((MeasureDimension) result).addRole(externalItemDtoToExternalItem(ctx, listExternalItemDto, ServiceExceptionParameters.MEASUREDIMENSION_ROLE));
             }
         }
 
@@ -1120,7 +1121,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         return result;
     }
 
-    private ExternalItem externalItemDtoToExternalItem(ServiceContext ctx, ExternalItemDto source, String metadataTitleName) throws MetamacException {
+    private ExternalItem externalItemDtoToExternalItem(ServiceContext ctx, ExternalItemDto source, String metadataName) throws MetamacException {
         if (source == null) {
             return null;
         }
@@ -1135,13 +1136,13 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
             try {
                 result = getExternalItemRepository().findById(source.getId());
             } catch (ExternalItemNotFoundException e) {
-                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(MetamacCoreExceptionType.MTM_CORE_SEARCH_NOT_FOUND).withMessageParameters(metadataTitleName)
+                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(MetamacCoreExceptionType.MTM_CORE_SEARCH_NOT_FOUND).withMessageParameters(metadataName)
                         .withLoggedLevel(ExceptionLevelEnum.ERROR).build();
             }
         }
 
         // Relate Entities
-        result.setTitle(internationalStringToEntity(ctx, source.getTitle(), result.getTitle(), metadataTitleName));
+        result.setTitle(internationalStringToEntity(ctx, source.getTitle(), result.getTitle(), metadataName + ServiceExceptionParametersInternal.EXTERNALITEM_TITLE));
 
         return result;
     }

@@ -73,8 +73,6 @@ public class DataStructureInvocationValidator {
             exceptions = new ArrayList<MetamacExceptionItem>();
         }
         
-        //TODO component id y demás
-        
         // Other Constraints
         DataStructureConstraintValidator.checkComponent(component, exceptions);
 
@@ -89,6 +87,18 @@ public class DataStructureInvocationValidator {
         ExceptionUtils.throwIfException(exceptions);
     }
 
+    //TODO invoke this when publish DSD
+    public static void checkPublishDataStructureDefinition(DataStructureDefinition dataStructureDefinition, List<MetamacExceptionItem> exceptions) throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+        
+        // Other Constraints
+        DataStructureConstraintValidator.checkDsdConstraintsToPublish(dataStructureDefinition, exceptions);
+        
+        ExceptionUtils.throwIfException(exceptions);
+    }
+    
     /**************************************************************************
      *  PRIVATES
      *************************************************************************/
