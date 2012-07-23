@@ -3,7 +3,7 @@ import "classpath:/btdesign/metamac-core-common-dtos.btdesign"
 import "classpath:/btdesign/export/metamac-core-common-entity.btdesign"
 
 
-Application ConceptSchemes {
+Application ConceptSchemeVersions {
     basePackage=unused
 
     Module core {
@@ -15,24 +15,28 @@ Application ConceptSchemes {
 
 		"Provides access to Scheme Concepts Artefacts"
  		Service ConceptsService {
- 			> @ConceptSchemeRepository
-			> @ConceptRepository
+ 			// > @ItemSchemeRepository // injected by autowired, because this repository is in another Module
+ 			// > @ItemSchemeVersionRepository // injected by autowired, because this repository is in another Module
+ 			> @ConceptSchemeVersionRepository
 			
-			"Concept Scheme"
-    		@ConceptScheme createConceptScheme(@ConceptScheme entity) throws MetamacException;
-    		@ConceptScheme updateConceptScheme(@ConceptScheme entity) throws MetamacException;
-    		deleteConceptScheme(Long id) throws MetamacException;
-    		@ConceptScheme findConceptSchemeById(Long id) throws MetamacException;
-    		// TODO by urn
-    		List<@ConceptScheme> findAllConceptSchemes throws MetamacException;
-    		PagedResult<@ConceptScheme> findConceptSchemeByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
+			"Create concept scheme"
+			@ConceptSchemeVersion createConceptScheme(@ConceptSchemeVersion conceptSchemeVersion) throws MetamacException;
+			"Retrieve concept scheme by urn"
+    		@ConceptSchemeVersion findConceptSchemeByUrn(String urn) throws MetamacException;
+    		"Retrieve all versions of concept scheme"
+    		List<@ConceptSchemeVersion> retrieveConceptSchemeHistoric(String urn) throws MetamacException;
+    		"Finds concept schemes by criteria in any state, returning last versions"
+    		PagedResult<@ConceptSchemeVersion> findConceptSchemeByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
+
+    		// @ConceptSchemeVersion updateConceptSchemeVersion(@ConceptSchemeVersion entity) throws MetamacException;
+    		// deleteConceptSchemeVersion(Long id) throws MetamacException;
     		
-    		"Concept"
-    		@Concept createConcept(Long conceptSchemeId, @ConceptScheme entity) throws MetamacException;
-    		@Concept updateConcept(@ConceptScheme entity) throws MetamacException;
-    		deleteConcept(Long id) throws MetamacException;
-    		@Concept findConceptById(Long id) throws MetamacException;
-    		List<@Concept> findConceptSchemeConcepts(Long conceptSchemeId) throws MetamacException;
+    		// "Concept"
+    		//@Concept createConcept(Long conceptSchemeVersionId, @ConceptSchemeVersion entity) throws MetamacException;
+    		//@Concept updateConcept(@ConceptSchemeVersion entity) throws MetamacException;
+    		//deleteConcept(Long id) throws MetamacException;
+    		//@Concept findConceptById(Long id) throws MetamacException;
+    		//List<@Concept> findConceptSchemeVersionConcepts(Long conceptSchemeVersionId) throws MetamacException;
 	   }
 		
 		// ----------------------------------------------------------------
@@ -43,30 +47,24 @@ Application ConceptSchemes {
 		"The descriptive information for an arrangement or division of concepts into groups based on characteristics, 
 		which the objects have in common. 
 		Inherits from ItemScheme"
-		Entity ConceptScheme {			
-			databaseTable="TB_CONCEPT_SCHEMES"
-			hint="idSequence=CONCEPT_SCHEMES"
+		Entity ConceptSchemeVersion extends @ItemSchemeVersion {			
+			databaseTable="TB_CONCEPT_SCHEMES_VERSIONS"
+			hint="idSequence=CONCEPT_SCHEMES_VERSIONS"
+			!auditable
 			
-			- @ItemScheme itemScheme databaseColumn="ITEM_SCHEME_FK" not nullable cascade="all" ;
 			// TODO type (es un enum)
 			// TODO related_operation (sólo cuando el type = Operation. Será un ExternalItem)
-			// TODO procStatus (poner en el ItemSchema para hacer ciclo de vida genérico). Crear enumerado ItemSchemeProcStatus
-			Repository ConceptSchemeRepository {
-				findById;
-		   		findAll;
-		   		save;
-		   		delete;
-		   		findByCondition;
+			
+			Repository ConceptSchemeVersionRepository {
 				findByCondition(PagingParameter pagingParameter);
 			}
 		}  
 		
 		
-		Entity Concept {
+		Entity Concept extends @Item {
 			databaseTable="TB_CONCEPTS"
 			hint="idSequence=CONCEPTS"
-			
-			- @Item item databaseColumn="ITEM_FK" not nullable;
+			!auditable
 			
        		"Associates a Representation."
 			- @Representation coreRepresentation nullable;

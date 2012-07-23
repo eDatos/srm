@@ -1,21 +1,31 @@
 package org.siemac.metamac.srm.core.concept.serviceimpl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
+import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
+import org.siemac.metamac.core.common.criteria.utils.CriteriaUtils;
+import org.siemac.metamac.core.common.ent.domain.ExternalItem;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.core.common.util.GeneratorUrnUtils;
+import org.siemac.metamac.domain.srm.enume.domain.MaintainableProcStatusEnum;
+import org.siemac.metamac.domain.srm.enume.domain.VersionTypeEnum;
+import org.siemac.metamac.srm.core.base.domain.ItemScheme;
+import org.siemac.metamac.srm.core.base.domain.ItemSchemeRepository;
+import org.siemac.metamac.srm.core.base.domain.ItemSchemeVersion;
+import org.siemac.metamac.srm.core.base.domain.ItemSchemeVersionRepository;
+import org.siemac.metamac.srm.core.base.domain.MaintainableArtefact;
 import org.siemac.metamac.srm.core.common.error.MetamacCoreExceptionType;
-import org.siemac.metamac.srm.core.concept.domain.Concept;
-import org.siemac.metamac.srm.core.concept.domain.ConceptScheme;
-import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeRepository;
-import org.siemac.metamac.srm.core.concept.exception.ConceptSchemeNotFoundException;
+import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersion;
+import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionProperties;
 import org.siemac.metamac.srm.core.concept.serviceimpl.utils.ConceptsInvocationValidator;
+import org.siemac.metamac.srm.core.service.utils.ServiceUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.siemac.metamac.core.common.criteria.utils.CriteriaUtils;
 
 /**
  * Implementation of ConceptsService.
@@ -24,7 +34,10 @@ import org.siemac.metamac.core.common.criteria.utils.CriteriaUtils;
 public class ConceptsServiceImpl extends ConceptsServiceImplBase {
 
     @Autowired
-    private ConceptSchemeRepository conceptSchemeRepository;
+    private ItemSchemeRepository        itemSchemeRepository;
+
+    @Autowired
+    private ItemSchemeVersionRepository itemSchemeVersionRepository;
 
     public ConceptsServiceImpl() {
     }
@@ -33,110 +46,190 @@ public class ConceptsServiceImpl extends ConceptsServiceImplBase {
     // CONCEPT SCHEMES
     // ------------------------------------------------------------------------------------
 
-    public ConceptScheme findConceptSchemeById(ServiceContext ctx, Long id) throws MetamacException {
+    // TODO metadatos propios de conceptos
+    // TODO validación metadatos
+    // TODO ciclo de vida
+    // TODO revisar todos los metadatos de MaintainableArtefact
+    @Override
+    public ConceptSchemeVersion createConceptScheme(ServiceContext ctx, ConceptSchemeVersion conceptSchemeVersion) throws MetamacException {
 
-        ConceptsInvocationValidator.checkFindConceptSchemeById(id, null);
+        ItemScheme conceptScheme = conceptSchemeVersion.getItemScheme();
+        MaintainableArtefact maintainableArtefact = conceptSchemeVersion.getMaintainableArtefact();
 
-        try {
-            return conceptSchemeRepository.findById(id);
-        } catch (ConceptSchemeNotFoundException e) {
-            throw new MetamacException(MetamacCoreExceptionType.CONCEPT_SCHEME_NOT_FOUND, id);
-        }
+        // Validation
+        ConceptsInvocationValidator.checkCreateConceptScheme(conceptSchemeVersion, null);
+        validateConceptSchemeUnique(ctx, maintainableArtefact.getMaintainer(), maintainableArtefact.getIdLogic(), null);
 
-    }
+        // Fill metadata
+        // Save conceptScheme
+        conceptScheme = getItemSchemeRepository().save(conceptScheme);
 
-    public ConceptScheme createConceptScheme(ServiceContext ctx, ConceptScheme entity) throws MetamacException {
+        // Save draft version
+        maintainableArtefact.setProcStatus(MaintainableProcStatusEnum.DRAFT);
+        maintainableArtefact.setIsLastVersion(Boolean.TRUE);
+        maintainableArtefact.setVersionLogic(ServiceUtil.generateVersionNumber(null, VersionTypeEnum.MAJOR)); // TODO formato de la versión?
+        maintainableArtefact.setUrn(GeneratorUrnUtils.generateSdmxConceptSchemeUrn(maintainableArtefact.getMaintainer().getCode(), maintainableArtefact.getIdLogic(),
+                maintainableArtefact.getVersionLogic()));
+        maintainableArtefact.setValidFrom(null);
+        maintainableArtefact.setValidTo(null);
+        conceptSchemeVersion.setItemScheme(conceptScheme);
+        conceptSchemeVersion = (ConceptSchemeVersion) getItemSchemeVersionRepository().save(conceptSchemeVersion);
 
-        ConceptsInvocationValidator.checkCreateConceptScheme(entity, null);
-        // TODO: Validate code unique: organization, id_logic, version?
-        // validateConceptSchemeUnique(ctx, entity.getItemScheme().getIdLogic(), null);
+        conceptScheme.getVersions().add(conceptSchemeVersion);
+        getItemSchemeRepository().save(conceptScheme);
 
-        // TODO setear urn
-        
-        return conceptSchemeRepository.save(entity);
-
-    }
-
-    public ConceptScheme updateConceptScheme(ServiceContext ctx, ConceptScheme entity) throws MetamacException {
-
-        ConceptsInvocationValidator.checkUpdateConceptScheme(entity, null);
-        
-        // TODO: Validate code unique: organization, id_logic, version?
-        // validateConceptSchemeUnique(ctx, entity.getItemScheme().getIdLogic(), null);
-
-        // TODO actualizar urn y de los hijos, si cambia el code
-        return conceptSchemeRepository.save(entity);
-
-    }
-
-    public void deleteConceptScheme(ServiceContext ctx, Long id) throws MetamacException {
-
-        ConceptsInvocationValidator.checkDeleteConceptScheme(id, null);
-
-        ConceptScheme conceptScheme = findConceptSchemeById(ctx, id);
-        
-        // TODO: Check if the conceptScheme can be deleted.
-        // We have to check if delete whole conceptScheme or only the last version
-        conceptSchemeRepository.delete(conceptScheme);
-
-    }
-
-    public List<ConceptScheme> findAllConceptSchemes(ServiceContext ctx) throws MetamacException {
-
-        ConceptsInvocationValidator.checkFindAllConceptSchemes(null);
-
-        return conceptSchemeRepository.findAll();
-
+        return conceptSchemeVersion;
     }
 
     @Override
-    public PagedResult<ConceptScheme> findConceptSchemeByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
-       
+    public ConceptSchemeVersion findConceptSchemeByUrn(ServiceContext ctx, String urn) throws MetamacException {
+
+        // Validation
+        ConceptsInvocationValidator.checkFindConceptSchemeByUrn(urn, null);
+
+        // Retrieve
+        ConceptSchemeVersion conceptSchemeVersion = findConceptSchemeVersionByUrn(urn);
+        return conceptSchemeVersion;
+    }
+
+    @Override
+    public List<ConceptSchemeVersion> retrieveConceptSchemeHistoric(ServiceContext ctx, String urn) throws MetamacException {
+
+        // Validation
+        // ConceptsInvocationValidator.retrieveConceptSchemeVersions(urn, null); // TODO
+
+        // Retrieve all versions
+        ConceptSchemeVersion conceptSchemeVersion = findConceptSchemeVersionByUrn(urn);
+        List<ItemSchemeVersion> itemSchemeVersions = conceptSchemeVersion.getItemScheme().getVersions();
+
+        // Type cast
+        List<ConceptSchemeVersion> conceptSchemeVersions = new ArrayList<ConceptSchemeVersion>();
+        for (ItemSchemeVersion itemSchemeVersion : itemSchemeVersions) {
+            conceptSchemeVersions.add((ConceptSchemeVersion) itemSchemeVersion);
+        }
+        return conceptSchemeVersions;
+    }
+
+    @Override
+    public PagedResult<ConceptSchemeVersion> findConceptSchemeByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
+
+        // Validation
         ConceptsInvocationValidator.checkFindConceptSchemeByCondition(conditions, pagingParameter, null);
-        
-        CriteriaUtils.initCriteriaConditions(conditions, ConceptScheme.class);
-        
-        return conceptSchemeRepository.findByCondition(conditions, pagingParameter);
-    }
-    
 
+        // Retrieve last versions
+        if (conditions == null) {
+            conditions = new ArrayList<ConditionalCriteria>();
+        }
+        conditions.add(ConditionalCriteria.equal(ConceptSchemeVersionProperties.maintainableArtefact().isLastVersion(), Boolean.TRUE));
 
-    // ------------------------------------------------------------------------------------
-    // CONCEPTS
-    // ------------------------------------------------------------------------------------
-
-    public Concept findConceptById(ServiceContext ctx, Long id) throws MetamacException {
-
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("findConceptById not implemented");
-
+        // Find
+        CriteriaUtils.initCriteriaConditions(conditions, ConceptSchemeVersion.class);
+        PagedResult<ConceptSchemeVersion> conceptSchemeVersionPagedResult = getConceptSchemeVersionRepository().findByCondition(conditions, pagingParameter);
+        return conceptSchemeVersionPagedResult;
     }
 
-    public Concept createConcept(ServiceContext ctx, Long conceptSchemeId, ConceptScheme entity) throws MetamacException {
+    // }
+    // public ConceptScheme updateConceptScheme(ServiceContext ctx, ConceptScheme entity) throws MetamacException {
+    //
+    // ConceptsInvocationValidator.checkUpdateConceptScheme(entity, null);
+    //
+    // // TODO: Validate code unique: organization, id_logic, version?
+    // // validateConceptSchemeUnique(ctx, entity.getItemScheme().getIdLogic(), null);
+    //
+    // // TODO actualizar urn y de los hijos, si cambia el code
+    // return conceptSchemeRepository.save(entity);
+    //
+    // }
+    //
+    // public void deleteConceptScheme(ServiceContext ctx, Long id) throws MetamacException {
+    //
+    // ConceptsInvocationValidator.checkDeleteConceptScheme(id, null);
+    //
+    // ConceptScheme conceptScheme = findConceptSchemeById(ctx, id);
+    //
+    // // TODO: Check if the conceptScheme can be deleted.
+    // // We have to check if delete whole conceptScheme or only the last version
+    // conceptSchemeRepository.delete(conceptScheme);
+    //
+    // }
+    //
+    // // ------------------------------------------------------------------------------------
+    // // CONCEPTS
+    // // ------------------------------------------------------------------------------------
+    //
+    // public Concept findConceptById(ServiceContext ctx, Long id) throws MetamacException {
+    //
+    // // TODO Auto-generated method stub
+    // throw new UnsupportedOperationException("findConceptById not implemented");
+    //
+    // }
+    //
+    // public Concept createConcept(ServiceContext ctx, Long conceptSchemeId, ConceptScheme entity) throws MetamacException {
+    //
+    // // TODO Auto-generated method stub
+    // throw new UnsupportedOperationException("createConcept not implemented");
+    //
+    // }
+    //
+    // public Concept updateConcept(ServiceContext ctx, ConceptScheme entity) throws MetamacException {
+    //
+    // // TODO Auto-generated method stub
+    // throw new UnsupportedOperationException("updateConcept not implemented");
+    //
+    // }
+    //
+    // public void deleteConcept(ServiceContext ctx, Long id) throws MetamacException {
+    //
+    // // TODO Auto-generated method stub
+    // throw new UnsupportedOperationException("deleteConcept not implemented");
+    //
+    // }
+    //
+    // public List<Concept> findConceptSchemeConcepts(ServiceContext ctx, Long conceptSchemeId) throws MetamacException {
+    //
+    // // TODO Auto-generated method stub
+    // throw new UnsupportedOperationException("findConceptSchemeConcepts not implemented");
+    //
+    // }
+    //
 
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("createConcept not implemented");
-
+    // TODO
+    private void validateConceptSchemeUnique(ServiceContext ctx, ExternalItem maintainer, String idLogic, Long conceptSchemeId) throws MetamacException {
+        // List<ConditionalCriteria> conditions =
+        // ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersion.class).withProperty(ConceptSchemeVersionProperties.maintainableArtefact().maintainer().code())
+        // .eq(maintainer.getCode()).not().withProperty(ConceptSchemeVersionProperties.itemScheme().id()).eq(conceptSchemeId).withProperty(ConceptSchemeVersionProperties.maintainableArtefact().idLogic()).ignoreCaseEq(idLogic)
+        // .distinctRoot().build();
+        //
+        // List<ConceptScheme> conceptSchemes = findConceptSchemeByCondition(ctx, conditions);
+        //
+        // if (conceptSchemes != null && conceptSchemes.size() != 0) {
+        // throw new MetamacException(MetamacCoreExceptionType.CONCPET_SCHEME_ALREADY_EXIST_ID_LOGIC_DUPLICATED, idLogic, maintainer.getCode());
+        // }
     }
 
-    public Concept updateConcept(ServiceContext ctx, ConceptScheme entity) throws MetamacException {
-
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("updateConcept not implemented");
-
+    public ItemSchemeRepository getItemSchemeRepository() {
+        return itemSchemeRepository;
     }
 
-    public void deleteConcept(ServiceContext ctx, Long id) throws MetamacException {
-
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("deleteConcept not implemented");
-
+    public ItemSchemeVersionRepository getItemSchemeVersionRepository() {
+        return itemSchemeVersionRepository;
     }
 
-    public List<Concept> findConceptSchemeConcepts(ServiceContext ctx, Long conceptSchemeId) throws MetamacException {
+    private ConceptSchemeVersion findConceptSchemeVersionByUrn(String urn) throws MetamacException {
 
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("findConceptSchemeConcepts not implemented");
+        // Prepare criteria
+        List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersion.class).withProperty(ConceptSchemeVersionProperties.maintainableArtefact().urn()).eq(urn)
+                .distinctRoot().build();
+        PagingParameter pagingParameter = PagingParameter.pageAccess(1, 1);
 
+        // Find
+        PagedResult<ItemSchemeVersion> result = getItemSchemeVersionRepository().findByCondition(conditions, pagingParameter);
+
+        if (result.getValues().size() == 0) {
+            throw new MetamacException(MetamacCoreExceptionType.CONCEPT_SCHEME_NOT_FOUND, urn);
+        }
+
+        // Return unique result
+        return (ConceptSchemeVersion) result.getValues().get(0);
     }
 }

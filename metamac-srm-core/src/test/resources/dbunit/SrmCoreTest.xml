@@ -5,12 +5,58 @@
     <!-- ************************************************************************************** -->
     <!-- CONCEPT SCHEME                                                                         -->
     <!-- *************************************************************************************  -->
-    <TB_CONCEPT_SCHEMES 
-        ID="1" 
-        UUID="conceptScheme-1"
-         
-        ITEM_SCHEME_FK="1"
 
+    <TB_ITEM_SCHEMES
+        ID="1"
+        UUID="itemScheme-1"
+        VERSION="1"
+    />
+    
+    <TB_CONCEPT_SCHEMES_VERSIONS
+        TB_ITEM_SCHEMES_VERSIONS="1"
+    />
+    
+    <TB_ITEM_SCHEMES_VERSIONS
+        ID="1"
+        ITEM_SCHEME_FK="1"
+        MAINTANABLE_ARTIFACT_FK="1"
+  
+        UUID="conceptScheme-1-v1"
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user2"
+        LAST_UPDATED="2011-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"  
+    />
+    
+    <TB_ANNOTABLE_ARTEFACTS 
+        ID="1"
+        DTYPE="MAINTAINABLE_ARTEFACT"
+        
+        ID_LOGIC="CONCEPTSCHEME01"
+        URI="http://data.siemac.org/srm/v1/conceptSchemes/conceptScheme01/v1"
+        URN="urn:sdmx:org.sdmx.infomodel.concepscheme.ConceptScheme=ISTAC:CONCEPTSCHEME01(1.0)"
+        REPLACED_BY="[null]"
+        
+        NAME_FK="1"
+        DESCRIPTION_FK="2"
+        
+        VERSION_LOGIC="1.0"
+        FINAL_LOGIC="1"
+        VALID_FROM_TZ="Europe/London"
+        VALID_FROM="2011-01-02 02:02:04" 
+        VALID_TO_TZ="[null]"
+        VALID_TO="[null]"
+        IS_EXTERNAL_REFERENCE="0"
+        STRUCTURE_URL="[null]"
+        SERVICE_URL="[null]"
+        PROC_STATUS="EXTERNALLY_PUBLISHED"
+        IS_LAST_VERSION="0"
+        MAINTAINER_FK="1"
+        
+        UUID="annotableArtifact-1"
         VERSION="1"
         CREATED_BY="user1"
         CREATED_DATE="2011-01-01 01:02:03"
@@ -20,46 +66,51 @@
         LAST_UPDATED_TZ="Europe/London"
     />
     
+    <TB_CONCEPT_SCHEMES_VERSIONS
+        TB_ITEM_SCHEMES_VERSIONS="2"
+    />
+    
+    <TB_ITEM_SCHEMES_VERSIONS
+        ID="2"
+        ITEM_SCHEME_FK="1"
+        MAINTANABLE_ARTIFACT_FK="2"
+  
+        UUID="conceptScheme-2-v2"
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user2"
+        LAST_UPDATED="2011-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"  
+    />
+    
     <TB_ANNOTABLE_ARTEFACTS 
-        ID="1"
-        UUID="annotableArtefact-1"
+        ID="2"
+        DTYPE="MAINTAINABLE_ARTEFACT"
         
-        DTYPE="ITEM_SCHEME"
         ID_LOGIC="CONCEPTSCHEME01"
-        URI="http://data.siemac.org/srm/v1/conceptSchemes/conceptScheme01/v1"
-        URN="urn:sdmx:org.sdmx.infomodel.concepscheme.ConceptScheme=ISTAC:CONCEPTSCHEME01(1.0)"
+        URI="http://data.siemac.org/srm/v1/conceptSchemes/conceptScheme01/v2"
+        URN="urn:sdmx:org.sdmx.infomodel.concepscheme.ConceptScheme=ISTAC:CONCEPTSCHEME01(2.0)"
         REPLACED_BY="[null]"
         
-        MAINTAINER_FK="1"
-
-        NAME_FK="1"
-        DESCRIPTION_FK="1"
+        NAME_FK="3"
+        DESCRIPTION_FK="4"
         
-        VERSION_LOGIC="1.0"
-        FINAL_LOGIC="0"
-        
-        VALID_FROM_TZ="Europe/London"
-        VALID_FROM="2011-01-02 02:02:04" 
+        VERSION_LOGIC="2.0"
+        FINAL_LOGIC="1"
+        VALID_FROM_TZ="[null]"
+        VALID_FROM="[null]" 
         VALID_TO_TZ="[null]"
         VALID_TO="[null]"
-        
-        ITEMS_FK="[null]"
-        
         IS_EXTERNAL_REFERENCE="0"
         STRUCTURE_URL="[null]"
         SERVICE_URL="[null]"
-        IS_PARTIAL="1"
+        PROC_STATUS="DRAFT"
+        IS_LAST_VERSION="1"
+        MAINTAINER_FK="2"
         
-        REPRESENTATION_FK="[null]"
-        CONCEPT_IDENTITY_FK="[null]"
-
-        ORDER_LOGIC="[null]"
-        PARENT_FK="[null]"
-        RELATE_TO="[null]"
-        USAGE_STATUS="[null]"
-        IS_ATTACHMENT_CONSTRAINT="[null]"
-        STRUCTURE_FK="[null]"
-        
+        UUID="annotableArtifact-2"
         VERSION="1"
         CREATED_BY="user1"
         CREATED_DATE="2011-01-01 01:02:03"
@@ -67,7 +118,36 @@
         LAST_UPDATED_BY="user2"
         LAST_UPDATED="2011-01-22 01:02:03"
         LAST_UPDATED_TZ="Europe/London"
-    />
+    />    
+    
+    <!-- ************************************************************************************** -->
+    <!-- EXTERNAL ITEMS                                                                         -->
+    <!-- *************************************************************************************  -->    
+    <TB_EXTERNAL_ITEMS 
+        ID="1"
+        CODE="ISTAC"
+        URI="http://data.siemac.org/srm/v1/agenciesSchemes/standalone/agencies/ISTAC"
+        URN="urn:sdmx:org.sdmx.infomodel.base.Agency=ISTAC:STANDALONE(1.0).ISTAC"
+        MANAGEMENT_APP_URL="[null]"
+        VERSION="1"
+        TITLE_FK="[null]"
+        TYPE="AGENCY"
+    />    
+    
+    <TB_EXTERNAL_ITEMS 
+        ID="2"
+        CODE="ISTAC"
+        URI="http://data.siemac.org/srm/v1/agenciesSchemes/standalone/agencies/ISTAC"
+        URN="urn:sdmx:org.sdmx.infomodel.base.Agency=ISTAC:STANDALONE(1.0).ISTAC"
+        MANAGEMENT_APP_URL="[null]"
+        VERSION="1"
+        TITLE_FK="[null]"
+        TYPE="AGENCY"
+    /> 
+           
+    <!-- ************************************************************************************** -->
+    <!-- INTERNATIONAL STRINGS                                                                  -->
+    <!-- *************************************************************************************  -->
     
     <TB_INTERNATIONAL_STRINGS
         ID="1"
@@ -109,22 +189,45 @@
         VERSION="1"
         INTERNATIONAL_STRING_FK="2"
     />
-
-    <TB_EXTERNAL_ITEMS 
-        ID="1"
-        CODE="ISTAC"
-        URI="http://data.siemac.org/srm/v1/agenciesSchemes/standalone/agencies/ISTAC"
-        URN="urn:sdmx:org.sdmx.infomodel.base.Agency=ISTAC:STANDALONE(1.0).ISTAC"
-        MANAGEMENT_APP_URL="[null]"
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="3"
         VERSION="1"
-        TITLE_FK="[null]"
-        TYPE="AGENCY"
+    />  
+    
+    <TB_LOCALISED_STRINGS
+        ID="5"
+        LABEL="Nombre conceptScheme-1-v2"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="3"
+    />  
+    <TB_LOCALISED_STRINGS
+        ID="6"
+        LABEL="Name conceptScheme-1-v1"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="3"
     />
     
-    <TB_ANNOTATIONS />
-    <TB_FACETS />
-    <TB_ATTR_RELATIONSHIPS />
-    <TB_REPRESENTATIONS />
-    <TB_CONCEPTS />
+    <TB_INTERNATIONAL_STRINGS
+        ID="4"
+        VERSION="1"
+    />
     
+    <TB_LOCALISED_STRINGS
+        ID="7"
+        LABEL="Descripción conceptScheme-1-v2"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="4"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="8"
+        LABEL="Description conceptScheme-1-v2"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="4"
+    />    
 </dataset>

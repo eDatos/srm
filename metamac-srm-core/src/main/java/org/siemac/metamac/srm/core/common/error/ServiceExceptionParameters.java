@@ -2,7 +2,7 @@ package org.siemac.metamac.srm.core.common.error;
 
 public class ServiceExceptionParameters {
 
-    public static final String ID                                              = "id";
+    public static final String URN                                             = "urn";
 
     // MANTAINER
     public static final String MANTAINER                                       = "mantainer";

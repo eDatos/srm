@@ -12,8 +12,11 @@ Application Base {
 		abstract Entity AnnotableArtefact {
 			inheritanceType=SINGLE_TABLE
 			databaseTable = "TB_ANNOTABLE_ARTEFACTS"
-			hint="idSequence=ANNOTABLE"
-
+			hint="idSequence=ANNOTABLE_ARTEFACTS"
+			discriminatorType=STRING
+			discriminatorColumn="DTYPE"
+			
+			"Annotations"
 			- Set<@Annotation> annotations inverse cascade="all-delete-orphan" databaseColumn="ANNOTATION_FK";
 		}
 
@@ -35,7 +38,7 @@ Application Base {
 
 		"Provides a Name and Description to all derived classes.
        Superclass is IdentifiableArtefact. Base inheritance sub classes are: VersionableArtefact"
-		abstract Entity NameableArtefact extends @IdentifiableArtefact {
+		/*abstract*/ Entity NameableArtefact extends @IdentifiableArtefact {
 			databaseTable = "TB_NAMEABLE_ARTEFACTS"
 			
 			"A multi-lingual name is provided by this role via the International String class"
@@ -44,12 +47,13 @@ Application Base {
 			- @InternationalString description nullable cascade="all" databaseColumn="DESCRIPTION_FK";
 		}
 
-		"An abstract class to group together primary structural metadata artefacts that are maintained by an Agency
+		"An class to group together primary structural metadata artefacts that are maintained by an Agency
        and Provides versioning information for all derived objects.
        This implementation merges VersionableArtefact and MaintainableAretefact in one artefact (MaintainableArtefact). 
        Superclass is NameableArtefact."
-		abstract Entity MaintainableArtefact extends @NameableArtefact {
+		Entity MaintainableArtefact extends @NameableArtefact {
 			databaseTable = "TB_MAINTAINABLE_ARTEFACTS"
+			discriminatorValue="MAINTAINABLE_ARTEFACT"
 			
 			"A version string following an agreed convention"
 			String versionLogic nullable;
@@ -65,6 +69,11 @@ Application Base {
 			String structureURL nullable;
 			"The URL of an SDMXcompliant web service from which the external object can be retrieved."
 			String serviceURL nullable;
+			"Status"
+			- @MaintainableProcStatusEnum procStatus nullable;
+			"True if this version is the last"
+			Boolean isLastVersion nullable;
+			
 			"Association to the Maintenance Agency responsible for maintaining the artefact."
 			- @ExternalItem maintainer nullable cascade="all" databaseColumn="MAINTAINER_FK";
 		}
@@ -72,7 +81,7 @@ Application Base {
 		"Additional descriptive information attached to an object."
 		Entity Annotation {
 			databaseTable = "TB_ANNOTATIONS"
-			hint="idSequence=ANNOTATION"
+			hint="idSequence=ANNOTATIONS"
 			not auditable
 			
 			"Identifier for the Annotation. It can be used to disambiguate one Annotation from another where there are several
@@ -104,29 +113,52 @@ Application Base {
 		characteristics, which the objects have in common.
 		Inherits from: MaintainableArtefact
         Direct sub classes are: CategoryScheme, ConceptScheme, CodeList, ReportingTaxonomy, OrganisationScheme"
-		Entity ItemScheme extends @MaintainableArtefact {
+		/*abstract*/ Entity ItemScheme {
+			databaseTable="TB_ITEM_SCHEMES"
+			hint="idSequence=ITEM_SCHEMES"
+			inheritanceType=JOINED
+			!auditable
 			
-			"Denotes whether the Item Scheme contains a sub set of the full set of Items in the maintained scheme."
-			Boolean isPartial nullable;
-			"Association to the Items in the scheme"
-			- Bag<@Item> items inverse cascade="all-delete-orphan" orderby="idLogic" databaseColumn="ITEMS_FK";
+			"All versions"
+			- Bag<@ItemSchemeVersion> versions cascade="all-delete-orphan" fetch="lazy" inverse <-> itemScheme orderby="id asc";
 			
 			Repository ItemSchemeRepository {
-				findById;
-				findAll;
 				save;
-				delete;
 			}
 		}
-
+		
+		abstract Entity ItemSchemeVersion {
+			databaseTable="TB_ITEM_SCHEMES_VERSIONS"
+			hint="idSequence=ITEM_SCHEMES_VERSIONS"
+			inheritanceType=JOINED
+			
+			- @MaintainableArtefact maintainableArtefact databaseColumn="MAINTANABLE_ARTIFACT_FK" not nullable cascade="all" ;
+			
+			// Relations
+			"Parent"
+			- @ItemScheme itemScheme not nullable cascade="none" databaseColumn="ITEM_SCHEME_FK" <-> versions;
+			"Association to the Items in the scheme"
+			- Bag<@Item> items inverse cascade="all-delete-orphan" <-> itemSchemeVersion;
+			
+			Repository ItemSchemeVersionRepository {
+				save;
+				findByCondition(PagingParameter pagingParameter);
+			}
+		}
 
 		"The Item is an item of content in an Item Scheme. This may be a node in a taxonomy or ontology, a code in a code list etc. Node that at the conceptual
 	    level the Organisation is not hierarchic
 	    Inherits from: NamableArtefact, Direct sub classes are Category, Concept, Code, ReportingCategory, Organisation"
-		Entity Item extends @NameableArtefact {
+		abstract Entity Item {
+			inheritanceType=JOINED
+			databaseTable="TB_ITEMS"
+			hint="idSequence=ITEMS"
 			
+			- @NameableArtefact nameableArtefact databaseColumn="NAMEABLE_ARTIFACT_FK" not nullable cascade="all" ;
 			"This allows an Item optionally to have one or more child Items."
-			- Bag<@Item> hierarchy inverse cascade="all-delete-orphan" orderby="idLogic" databaseColumn="PARENT_FK";
+			- Bag<@Item> hierarchy inverse cascade="all-delete-orphan" databaseColumn="PARENT_FK";
+			
+			- @ItemSchemeVersion itemSchemeVersion nullable cascade="none" databaseColumn="ITEM_SCHEME_VERSION_FK" <-> items;
 		}
 
 
@@ -203,7 +235,7 @@ Application Base {
 //	   item(s), a material object(s) and/or person(s) can be sent to or from in a specified context."
 //		Entity Contact {
 //			databaseTable = "TB_CONTACTS"					
-//			hint="idSequence=CONTACT"
+//			hint="idSequence=CONTACTS"
 //			
 //			"The designation of the Contact person by a linguistic expression."
 //			String name;
@@ -371,7 +403,7 @@ Application Base {
 		abstract Entity Representation {
 			inheritanceType=SINGLE_TABLE
 			databaseTable = "TB_REPRESENTATIONS"
-			hint="idSequence=REPREN"
+			hint="idSequence=REPRESENTATIONS"
 			not auditable
 
 			Repository RepresentationRepository {
@@ -405,7 +437,7 @@ Application Base {
        when specified for use on a Component on a Structure (such as a Dimension in a DataStructureDefinition)."
 		Entity Facet {
 			databaseTable = "TB_FACETS"
-			hint="idSequence=FACET"			
+			hint="idSequence=FACETS"			
 			not auditable
 			
 			"The format of the value of a Component when reported in a data or metadata set. This is contrained by the FacetValueType enumeration."

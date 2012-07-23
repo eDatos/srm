@@ -157,7 +157,7 @@ Application Structure {
        abstract Entity AttributeRelationship {
        		inheritanceType=SINGLE_TABLE
        	    databaseTable = "TB_ATTR_RELATIONSHIPS"
-			hint="idSequence=ATTR_RELAT"
+			hint="idSequence=ATTR_RELATIONSHIPS"
 			not auditable
 			
 			Repository AttributeRelationshipRepository {
