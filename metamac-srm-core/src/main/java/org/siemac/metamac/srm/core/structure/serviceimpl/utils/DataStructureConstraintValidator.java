@@ -451,7 +451,7 @@ public class DataStructureConstraintValidator {
         // Check for restrictions
         // FacetValueType:
         if (facet.getFacetValue() == null) {
-            exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_REQUIRED, metadataName + ServiceExceptionParametersInternal.FACET_FACETVALUETYPEENUM));
+            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, metadataName + ServiceExceptionParametersInternal.FACET_FACETVALUETYPEENUM));
         } else {
             checkSimpleDataType(facet.getFacetValue(), metadataName);
         }
@@ -543,7 +543,7 @@ public class DataStructureConstraintValidator {
         if (facet != null) {
             // FacetValueType
             if (facet.getFacetValue() == null) {
-                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_REQUIRED, metadataName + ServiceExceptionParametersInternal.FACET_FACETVALUETYPEENUM));
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, metadataName + ServiceExceptionParametersInternal.FACET_FACETVALUETYPEENUM));
             } else {
                 checkSimpleDataType(facet.getFacetValue(), metadataName);
             }
@@ -640,7 +640,7 @@ public class DataStructureConstraintValidator {
         if (facet != null) {
             // FacetValueType
             if (facet.getFacetValue() == null) {
-                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_REQUIRED, metadataName + ServiceExceptionParametersInternal.FACET_FACETVALUETYPEENUM));
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, metadataName + ServiceExceptionParametersInternal.FACET_FACETVALUETYPEENUM));
             } else {
                 checkTimeDataType(facet.getFacetValue(), metadataName);
             }
