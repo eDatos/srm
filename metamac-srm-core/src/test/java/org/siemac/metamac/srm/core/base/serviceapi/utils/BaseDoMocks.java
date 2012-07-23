@@ -112,6 +112,10 @@ public class BaseDoMocks {
         return GeneratorUrnUtils.generateSdmxConceptUrn(AGENCY_MOCK, CONCEPT_SCHEME_MOCK, VersionUtil.VERSION_LOGIC_INITIAL_VERSION, CONCEPT_MOCK);
     }    
     
+    public static String mockConceptSchemeUrn() {
+        return GeneratorUrnUtils.generateSdmxConceptSchemeUrn(AGENCY_MOCK, CONCEPT_SCHEME_MOCK, VersionUtil.VERSION_LOGIC_INITIAL_VERSION);
+    } 
+    
     // -----------------------------------------------------------------
     // COMPONENT
     // -----------------------------------------------------------------
