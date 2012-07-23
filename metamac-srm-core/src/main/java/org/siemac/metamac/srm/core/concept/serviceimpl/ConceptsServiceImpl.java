@@ -20,7 +20,7 @@ import org.siemac.metamac.srm.core.base.domain.ItemSchemeRepository;
 import org.siemac.metamac.srm.core.base.domain.ItemSchemeVersion;
 import org.siemac.metamac.srm.core.base.domain.ItemSchemeVersionRepository;
 import org.siemac.metamac.srm.core.base.domain.MaintainableArtefact;
-import org.siemac.metamac.srm.core.common.error.MetamacCoreExceptionType;
+import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersion;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionProperties;
@@ -123,7 +123,7 @@ public class ConceptsServiceImpl extends ConceptsServiceImplBase {
         // Retrieve concept scheme and check it is in draft
         ConceptSchemeVersion conceptSchemeVersion = findConceptSchemeVersionByUrn(urn);
         if (!MaintainableProcStatusEnum.DRAFT.equals(conceptSchemeVersion.getMaintainableArtefact().getProcStatus())) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(MetamacCoreExceptionType.CONCEPT_SCHEME_WRONG_PROC_STATUS)
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CONCEPT_SCHEME_WRONG_PROC_STATUS)
                     .withMessageParameters(urn, new String[]{ServiceExceptionParameters.PROC_STATUS_DRAFT}).build();
         }
         // Delete whole concept scheme or only last version
@@ -261,7 +261,7 @@ public class ConceptsServiceImpl extends ConceptsServiceImplBase {
         PagedResult<ItemSchemeVersion> result = getItemSchemeVersionRepository().findByCondition(conditions, pagingParameter);
 
         if (result.getValues().size() == 0) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(MetamacCoreExceptionType.CONCEPT_SCHEME_NOT_FOUND).withMessageParameters(urn).build();
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CONCEPT_SCHEME_NOT_FOUND).withMessageParameters(urn).build();
         }
 
         // Return unique result

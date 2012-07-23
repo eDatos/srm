@@ -61,7 +61,7 @@ import org.siemac.metamac.srm.core.base.exception.AnnotationNotFoundException;
 import org.siemac.metamac.srm.core.base.exception.ComponentListNotFoundException;
 import org.siemac.metamac.srm.core.base.exception.ComponentNotFoundException;
 import org.siemac.metamac.srm.core.base.exception.FacetNotFoundException;
-import org.siemac.metamac.srm.core.common.error.MetamacCoreExceptionType;
+import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParametersInternal;
 import org.siemac.metamac.srm.core.service.utils.SdmxToolsServer;
@@ -180,7 +180,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
 
         // Validate InternationalString and Localiseds
         if (ValidationUtils.isEmpty(source)) {
-            throw new MetamacException(MetamacCoreExceptionType.METADATA_REQUIRED, metadataName);
+            throw new MetamacException(ServiceExceptionType.METADATA_REQUIRED, metadataName);
         }
 
         // Create a MAP with all source locales
@@ -237,7 +237,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
                 target = getAnnotationRepository().findById(source.getId());
                 OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersion());
             } catch (AnnotationNotFoundException e) {
-                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(MetamacCoreExceptionType.MTM_CORE_SEARCH_NOT_FOUND)
+                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SRM_SEARCH_NOT_FOUND)
                         .withMessageParameters(ServiceExceptionParameters.ANNOTATION).withLoggedLevel(ExceptionLevelEnum.ERROR).build();
             }
         }
@@ -270,7 +270,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
 
         // Required target entity because this class is abstract
         if (target == null) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(MetamacCoreExceptionType.PARAMETER_REQUIRED).withMessageParameters(ServiceExceptionParameters.ANNOTABLEARTEFACT).build();
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.PARAMETER_REQUIRED).withMessageParameters(ServiceExceptionParameters.ANNOTABLEARTEFACT).build();
         }
 
         // Related entities
@@ -288,7 +288,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
 
         // Required target entity because this class is abstract
         if (target == null) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(MetamacCoreExceptionType.PARAMETER_REQUIRED).withMessageParameters(ServiceExceptionParameters.IDENTIFIABLEARTEFACT).build();
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.PARAMETER_REQUIRED).withMessageParameters(ServiceExceptionParameters.IDENTIFIABLEARTEFACT).build();
         }
 
         // Metadata modifiable
@@ -329,7 +329,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
 
         // Required target entity because this class is abstract
         if (target == null) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(MetamacCoreExceptionType.PARAMETER_REQUIRED).withMessageParameters(ServiceExceptionParameters.NAMEABLEARTEFACT).build();
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.PARAMETER_REQUIRED).withMessageParameters(ServiceExceptionParameters.NAMEABLEARTEFACT).build();
         }
 
         // Related entities
@@ -359,7 +359,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
 
         // Required target entity because this class is abstract
         if (target == null) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(MetamacCoreExceptionType.PARAMETER_REQUIRED).withMessageParameters(ServiceExceptionParameters.MANTAINER).build();
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.PARAMETER_REQUIRED).withMessageParameters(ServiceExceptionParameters.MANTAINER).build();
         }
 
         // Metadata modifiable
@@ -440,7 +440,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
 
         // REPORTING_YEAR_START_DAY or DATA_ATTRIBUTE?
         if (source.getTypeDataAttribute() == null) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(MetamacCoreExceptionType.PARAMETER_REQUIRED).withMessageParameters(ServiceExceptionParameters.COMPONENT_TYPE_DATA_ATTRIBUTE)
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.PARAMETER_REQUIRED).withMessageParameters(ServiceExceptionParameters.COMPONENT_TYPE_DATA_ATTRIBUTE)
                     .withLoggedLevel(ExceptionLevelEnum.DEBUG).build();
         }
 
@@ -450,7 +450,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
                 case REPORTING_YEAR_START_DAY:
                     // DTO validation: ReportingYearStarDay not contains role relationship
                     if (!((DataAttributeDto) source).getRole().isEmpty()) {
-                        throw MetamacExceptionBuilder.builder().withExceptionItems(MetamacCoreExceptionType.PARAMETER_REQUIRED).withMessageParameters(ServiceExceptionParameters.DATAATTRIBUTE_ROLE)
+                        throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.PARAMETER_REQUIRED).withMessageParameters(ServiceExceptionParameters.DATAATTRIBUTE_ROLE)
                                 .withLoggedLevel(ExceptionLevelEnum.DEBUG).build();
                     }
 
@@ -472,7 +472,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
                 result = (T) getComponentRepository().findById(source.getId());
                 OptimisticLockingUtils.checkVersion(result.getVersion(), source.getVersion());
             } catch (ComponentNotFoundException e) {
-                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(MetamacCoreExceptionType.MTM_CORE_SEARCH_NOT_FOUND)
+                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SRM_SEARCH_NOT_FOUND)
                         .withMessageParameters(ServiceExceptionParameters.DATAATTRIBUTE).withLoggedLevel(ExceptionLevelEnum.ERROR).build();
             }
         }
@@ -528,7 +528,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         T result = null;
 
         if (((DimensionComponentDto) source).getTypeDimensionComponent() == null) {
-            MetamacException metamacException = new MetamacException(MetamacCoreExceptionType.PARAMETER_REQUIRED, "TypeDimensionComponent");
+            MetamacException metamacException = new MetamacException(ServiceExceptionType.PARAMETER_REQUIRED, "TypeDimensionComponent");
             metamacException.setLoggedLevel(ExceptionLevelEnum.DEBUG);
             throw metamacException;
         }
@@ -567,7 +567,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
                 result = (T) getComponentRepository().findById(source.getId());
                 OptimisticLockingUtils.checkVersion(result.getVersion(), source.getVersion());
             } catch (ComponentNotFoundException e) {
-                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(MetamacCoreExceptionType.MTM_CORE_SEARCH_NOT_FOUND).withMessageParameters(ServiceExceptionParameters.DIMENSION)
+                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SRM_SEARCH_NOT_FOUND).withMessageParameters(ServiceExceptionParameters.DIMENSION)
                         .withLoggedLevel(ExceptionLevelEnum.ERROR).build();
             }
 
@@ -622,7 +622,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
                 result = (T) getComponentRepository().findById(source.getId());
                 OptimisticLockingUtils.checkVersion(result.getVersion(), source.getVersion());
             } catch (ComponentNotFoundException e) {
-                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(MetamacCoreExceptionType.MTM_CORE_SEARCH_NOT_FOUND)
+                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SRM_SEARCH_NOT_FOUND)
                         .withMessageParameters(ServiceExceptionParameters.MEASUREDIMENSION).withLoggedLevel(ExceptionLevelEnum.ERROR).build();
             }
         }
@@ -675,7 +675,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
                 result = (T) getComponentRepository().findById(source.getId());
                 OptimisticLockingUtils.checkVersion(result.getVersion(), source.getVersion());
             } catch (ComponentNotFoundException e) {
-                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(MetamacCoreExceptionType.MTM_CORE_SEARCH_NOT_FOUND)
+                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SRM_SEARCH_NOT_FOUND)
                         .withMessageParameters(ServiceExceptionParameters.TIMEDIMENSION).withLoggedLevel(ExceptionLevelEnum.ERROR).build();
             }
         }
@@ -702,7 +702,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
                 result = (T) getComponentRepository().findById(source.getId());
                 OptimisticLockingUtils.checkVersion(result.getVersion(), source.getVersion());
             } catch (ComponentNotFoundException e) {
-                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(MetamacCoreExceptionType.MTM_CORE_SEARCH_NOT_FOUND)
+                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SRM_SEARCH_NOT_FOUND)
                         .withMessageParameters(ServiceExceptionParameters.PRIMARYMEASURE).withLoggedLevel(ExceptionLevelEnum.ERROR).build();
             }
         }
@@ -764,7 +764,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
                 result = (T) getComponentListRepository().findById(source.getId());
                 OptimisticLockingUtils.checkVersion(result.getVersion(), source.getVersion());
             } catch (ComponentListNotFoundException e) {
-                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(MetamacCoreExceptionType.MTM_CORE_SEARCH_NOT_FOUND).withMessageParameters(ServiceExceptionParameters.COMPONENT_LIST)
+                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SRM_SEARCH_NOT_FOUND).withMessageParameters(ServiceExceptionParameters.COMPONENT_LIST)
                 .withLoggedLevel(ExceptionLevelEnum.ERROR).build();
             }
         }
@@ -843,7 +843,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
             if (descriptorDto.getTypeComponentList().equals(TypeComponentList.GROUP_DIMENSION_DESCRIPTOR)) {
                 result.addGroupKey((GroupDimensionDescriptor) componentListDtoToComponentList(ctx, descriptorDto));
             } else {
-                MetamacException metamacException = new MetamacException(MetamacCoreExceptionType.PARAMETER_INCORRECT, "TypeComponentList");
+                MetamacException metamacException = new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, "TypeComponentList");
                 metamacException.setLoggedLevel(ExceptionLevelEnum.DEBUG);
                 throw metamacException;
             }
@@ -851,7 +851,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
 
         // DimensionRelationship: Dimension
         if (source.getDimensionForDimensionRelationship().isEmpty()) {
-            MetamacException metamacException = new MetamacException(MetamacCoreExceptionType.MTM_CORE_VALIDATION_CONSTRAINT_CARDINALITY_MIN, "dimensionForDimensionRelationship");
+            MetamacException metamacException = new MetamacException(ServiceExceptionType.SRM_VALIDATION_CONSTRAINT_CARDINALITY_MIN, "dimensionForDimensionRelationship");
             metamacException.setLoggedLevel(ExceptionLevelEnum.DEBUG);
             throw metamacException;
         }
@@ -974,7 +974,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
                 result = getDataStructureDefinitionRepository().findById(source.getId());
                 OptimisticLockingUtils.checkVersion(result.getVersion(), source.getVersion());
             } catch (DataStructureDefinitionNotFoundException e) {
-                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(MetamacCoreExceptionType.MTM_CORE_SEARCH_NOT_FOUND)
+                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SRM_SEARCH_NOT_FOUND)
                         .withMessageParameters(ServiceExceptionParameters.DATASTRUCTUREDEFINITION).withLoggedLevel(ExceptionLevelEnum.ERROR).build();
             }
 
@@ -1095,7 +1095,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
                 result = getFacetRepository().findById(source.getId());
                 OptimisticLockingUtils.checkVersion(result.getVersion(), source.getVersion());
             } catch (FacetNotFoundException e) {
-                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(MetamacCoreExceptionType.MTM_CORE_SEARCH_NOT_FOUND).withMessageParameters(ServiceExceptionParameters.FACET)
+                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SRM_SEARCH_NOT_FOUND).withMessageParameters(ServiceExceptionParameters.FACET)
                         .withLoggedLevel(ExceptionLevelEnum.ERROR).build();
             }
 
@@ -1136,7 +1136,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
             try {
                 result = getExternalItemRepository().findById(source.getId());
             } catch (ExternalItemNotFoundException e) {
-                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(MetamacCoreExceptionType.MTM_CORE_SEARCH_NOT_FOUND).withMessageParameters(metadataName)
+                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SRM_SEARCH_NOT_FOUND).withMessageParameters(metadataName)
                         .withLoggedLevel(ExceptionLevelEnum.ERROR).build();
             }
         }

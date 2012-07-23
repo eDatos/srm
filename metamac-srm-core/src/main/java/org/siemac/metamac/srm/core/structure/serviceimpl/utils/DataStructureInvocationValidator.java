@@ -10,7 +10,7 @@ import org.siemac.metamac.core.common.exception.utils.ExceptionUtils;
 import org.siemac.metamac.core.common.serviceimpl.utils.ValidationUtils;
 import org.siemac.metamac.srm.core.base.domain.Component;
 import org.siemac.metamac.srm.core.base.domain.ComponentList;
-import org.siemac.metamac.srm.core.common.error.MetamacCoreExceptionType;
+import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParametersInternal;
 import org.siemac.metamac.srm.core.structure.domain.AttributeDescriptor;
@@ -50,7 +50,7 @@ public class DataStructureInvocationValidator {
         // Check type Component list
         if (!(componentList instanceof AttributeDescriptor) && !(componentList instanceof DimensionDescriptor) && !(componentList instanceof GroupDimensionDescriptor)
                 && !(componentList instanceof MeasureDescriptor)) {
-            MetamacException metamacException = new MetamacException(MetamacCoreExceptionType.PARAMETER_INCORRECT, ServiceExceptionParameters.COMPONENT_LIST);
+            MetamacException metamacException = new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, ServiceExceptionParameters.COMPONENT_LIST);
             throw metamacException;
         }
 

@@ -24,7 +24,7 @@ import org.siemac.metamac.domain.srm.enume.domain.MaintainableProcStatusEnum;
 import org.siemac.metamac.srm.core.base.domain.MaintainableArtefact;
 import org.siemac.metamac.srm.core.base.serviceapi.utils.BaseAsserts;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
-import org.siemac.metamac.srm.core.common.error.MetamacCoreExceptionType;
+import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersion;
 import org.siemac.metamac.srm.core.concept.serviceapi.utils.ConceptsAsserts;
@@ -138,7 +138,7 @@ public class ConceptsServiceTest extends SrmBaseTest implements ConceptsServiceT
             fail("parameter required");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEquals(MetamacCoreExceptionType.PARAMETER_REQUIRED.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(ServiceExceptionType.PARAMETER_REQUIRED.getCode(), e.getExceptionItems().get(0).getCode());
             assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
             assertEquals(ServiceExceptionParameters.URN, e.getExceptionItems().get(0).getMessageParameters()[0]);
         }
@@ -152,7 +152,7 @@ public class ConceptsServiceTest extends SrmBaseTest implements ConceptsServiceT
             fail("not found");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEquals(MetamacCoreExceptionType.CONCEPT_SCHEME_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(ServiceExceptionType.CONCEPT_SCHEME_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
             assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
             assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
         }
@@ -206,7 +206,7 @@ public class ConceptsServiceTest extends SrmBaseTest implements ConceptsServiceT
             fail("ConceptScheme deleted");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEquals(MetamacCoreExceptionType.CONCEPT_SCHEME_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(ServiceExceptionType.CONCEPT_SCHEME_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
             assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
             assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
         }
@@ -232,7 +232,7 @@ public class ConceptsServiceTest extends SrmBaseTest implements ConceptsServiceT
             fail("ConceptScheme deleted");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEquals(MetamacCoreExceptionType.CONCEPT_SCHEME_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(ServiceExceptionType.CONCEPT_SCHEME_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
             assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
             assertEquals(urnV2, e.getExceptionItems().get(0).getMessageParameters()[0]);
         }
@@ -253,7 +253,7 @@ public class ConceptsServiceTest extends SrmBaseTest implements ConceptsServiceT
             fail("ConceptScheme is not in draft");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEquals(MetamacCoreExceptionType.CONCEPT_SCHEME_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(ServiceExceptionType.CONCEPT_SCHEME_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
             assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
             assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
             assertEquals(ServiceExceptionParameters.PROC_STATUS_DRAFT, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
@@ -271,7 +271,7 @@ public class ConceptsServiceTest extends SrmBaseTest implements ConceptsServiceT
             fail("ConceptScheme published");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEquals(MetamacCoreExceptionType.CONCEPT_SCHEME_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(ServiceExceptionType.CONCEPT_SCHEME_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
             assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
             assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
             assertEquals(ServiceExceptionParameters.PROC_STATUS_DRAFT, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
@@ -289,7 +289,7 @@ public class ConceptsServiceTest extends SrmBaseTest implements ConceptsServiceT
             fail("ConceptScheme not exists");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEquals(MetamacCoreExceptionType.CONCEPT_SCHEME_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(ServiceExceptionType.CONCEPT_SCHEME_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
             assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
             assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
         }

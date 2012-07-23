@@ -60,11 +60,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+// TODO esta clase debería tender a sustituirse por mockear los servicios con Mockito (SrmCoreServiceFacadeCoreMockedTest)
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/srm/applicationContext-test.xml"})
 @TransactionConfiguration(transactionManager = "txManagerCore", defaultRollback = true)
 @Transactional
-public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServiceFacadeTestBase {
+public class SrmCoreServiceFacadeTest extends SrmBaseTest /* implements SrmCoreServiceFacadeTestBase */{
 
     @Autowired
     protected SrmCoreServiceFacade srmCoreServiceFacade;
@@ -95,7 +96,6 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServ
      **************************************************************************/
 
     @Test
-    @Override
     public void testSaveDsd() throws Exception {
 
         // Save
@@ -141,7 +141,6 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServ
     }
 
     @Test
-    @Override
     public void testCreateDsdVersion() throws Exception {
         // Save
         DataStructureDefinitionDto dataStructureDefinitionDto = srmCoreServiceFacade.saveDsd(getServiceContext(), SrmDtoMocks.createDdsDTO());
@@ -157,7 +156,6 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServ
     }
 
     @Test
-    @Override
     public void testDeleteDsd() throws Exception {
         DataStructureDefinitionDto dataStructureDefinitionDto = srmCoreServiceFacade.saveDsd(getServiceContext(), SrmDtoMocks.createDdsDTO());
 
@@ -174,7 +172,6 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServ
     }
 
     @Test
-    @Override
     public void testFindDsdByCondition() throws Exception {
         srmCoreServiceFacade.saveDsd(getServiceContext(), SrmDtoMocks.createDdsDTO());
 
@@ -186,7 +183,6 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServ
     }
 
     @Test
-    @Override
     public void testFindAllDsds() throws Exception {
         List<DataStructureDefinitionDto> dsds = srmCoreServiceFacade.findAllDsds(getServiceContext());
         int previousSize = dsds.size();
@@ -204,7 +200,6 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServ
      **************************************************************************/
 
     @Test
-    @Override
     public void testFindDescriptorsForDsd() throws Exception {
         DataStructureDefinitionDto dataStructureDefinitionDto = srmCoreServiceFacade.saveDsd(getServiceContext(), SrmDtoMocks.createDdsDTO());
 
@@ -218,7 +213,6 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServ
     }
 
     @Test
-    @Override
     public void testFindDescriptorForDsd() throws Exception {
         DataStructureDefinitionDto dataStructureDefinitionDto = srmCoreServiceFacade.saveDsd(getServiceContext(), SrmDtoMocks.createDdsDTO());
 
@@ -275,7 +269,6 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServ
     }
 
     @Test
-    @Override
     public void testSaveDescriptorForDsd() throws Exception {
         saveDescriptorForDsd(getServiceContext(), srmCoreServiceFacade);
     }
@@ -338,7 +331,6 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServ
     }
 
     @Test
-    @Override
     public void testDeleteDescriptorForDsd() throws Exception {
         DataStructureDefinitionDto dataStructureDefinitionDto = srmCoreServiceFacade.saveDsd(getServiceContext(), SrmDtoMocks.createDdsDTO());
 
@@ -353,7 +345,6 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServ
     }
 
     @Test
-    @Override
     public void testSaveComponentForDsd() throws Exception {
         DataStructureDefinitionDto dataStructureDefinitionDto = srmCoreServiceFacade.saveDsd(getServiceContext(), SrmDtoMocks.createDdsDTO());
 
@@ -408,7 +399,6 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServ
     }
 
     @Test
-    @Override
     public void testDeleteComponentForDsd() throws Exception {
         DataStructureDefinitionDto dataStructureDefinitionDto = srmCoreServiceFacade.saveDsd(getServiceContext(), SrmDtoMocks.createDdsDTO());
 
@@ -431,27 +421,23 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServ
     }
 
     @Test
-    @Override
     public void testFindConceptSchemeRefs() throws Exception {
         // TODO make test
         srmCoreServiceFacade.findConceptSchemeRefs(getServiceContext());
     }
 
     @Test
-    @Override
     public void testFindConcepts() throws Exception {
         // TODO make test
         srmCoreServiceFacade.findConcepts(getServiceContext(), StringUtils.EMPTY);
     }
 
     @Test
-    @Override
     public void testFindCodelists() throws Exception {
         // TODO make test
         srmCoreServiceFacade.findCodelists(getServiceContext(), StringUtils.EMPTY);
     }
 
-    @Override
     @Test
     public void testRetrieveExtendedDsd() throws Exception {
 
@@ -462,7 +448,6 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServ
         assertNotNull(dataStructureDefinitionExtendDto);
     }
 
-    @Override
     @Test
     public void testSaveDsdGraph() throws Exception {
 
@@ -489,7 +474,6 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServ
     }
 
     @Test
-    @Override
     public void testRetrieveDsd() throws Exception {
         DataStructureDefinitionDto dataStructureDefinitionDto = SrmCoreServiceFacadeTest.saveDescriptorForDsd(getServiceContext(), srmCoreServiceFacade);
 
@@ -501,7 +485,6 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServ
     @Ignore
     // TODO está fallando
     @Test
-    @Override
     public void testImportSDMXStructureMsg() throws Exception {
         File file = null;
 
@@ -539,7 +522,6 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServ
     @Ignore
     // TODO está fallando
     @Test
-    @Override
     public void testExportSDMXStructureMsg() throws Exception {
 
         // DSD: ECB_EXR_RG
@@ -635,18 +617,8 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServ
         return srmCoreServiceFacade.findDsdByCondition(serviceContext, dsdConditions, PagingParameter.pageAccess(10));
     }
 
-    @Override
-    public void testFindOrganisation() throws Exception {
-        // TODO Auto-generated method stub
-
-    }
-
-    // *************************************************************************
-    // CONCEPTS
-    // *************************************************************************
     @Test
-    @Override
-    public void testDeleteConceptScheme() throws Exception {
+    public void testFindOrganisation() throws Exception {
         // TODO Auto-generated method stub
 
     }

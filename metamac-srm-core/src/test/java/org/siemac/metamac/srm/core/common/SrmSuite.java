@@ -6,6 +6,7 @@ import org.siemac.metamac.srm.core.base.serviceapi.BaseServiceTest;
 import org.siemac.metamac.srm.core.common.utilities.JavaSerializationTest;
 import org.siemac.metamac.srm.core.common.utilities.KryoTest;
 import org.siemac.metamac.srm.core.concept.serviceapi.ConceptsServiceTest;
+import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacadeCoreMockedTest;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacadeTest;
 import org.siemac.metamac.srm.core.structure.serviceapi.DataStructureDefinitionServiceTest;
 
@@ -14,6 +15,6 @@ import org.siemac.metamac.srm.core.structure.serviceapi.DataStructureDefinitionS
  */
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({BaseServiceTest.class, ConceptsServiceTest.class, SrmCoreServiceFacadeTest.class, DataStructureDefinitionServiceTest.class, JavaSerializationTest.class, KryoTest.class})
+@Suite.SuiteClasses({BaseServiceTest.class, ConceptsServiceTest.class, SrmCoreServiceFacadeTest.class, SrmCoreServiceFacadeCoreMockedTest.class,DataStructureDefinitionServiceTest.class, JavaSerializationTest.class, KryoTest.class})
 public class SrmSuite {
 }

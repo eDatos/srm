@@ -10,7 +10,7 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.domain.srm.enume.domain.TypeComponentList;
 import org.siemac.metamac.srm.core.base.domain.Component;
 import org.siemac.metamac.srm.core.base.domain.ComponentList;
-import org.siemac.metamac.srm.core.common.error.MetamacCoreExceptionType;
+import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.structure.domain.AttributeDescriptor;
 import org.siemac.metamac.srm.core.structure.domain.DataStructureDefinition;
 import org.siemac.metamac.srm.core.structure.domain.DimensionDescriptor;
@@ -140,7 +140,7 @@ public class DataStructureDefinitionServiceImpl extends DataStructureDefinitionS
         } else if (componentList instanceof GroupDimensionDescriptor) {
             ; // Nothing to remove
         } else {
-            MetamacException metamacException = new MetamacException(MetamacCoreExceptionType.PARAMETER_INCORRECT, "typeComponentList");
+            MetamacException metamacException = new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, "typeComponentList");
             metamacException.setLoggedLevel(ExceptionLevelEnum.DEBUG);
             throw metamacException;
         }
@@ -154,7 +154,7 @@ public class DataStructureDefinitionServiceImpl extends DataStructureDefinitionS
 
         // Check type component
         if (typeComponentList == null) {
-            MetamacException metamacException = new MetamacException(MetamacCoreExceptionType.PARAMETER_REQUIRED, "TypeComponentList");
+            MetamacException metamacException = new MetamacException(ServiceExceptionType.PARAMETER_REQUIRED, "TypeComponentList");
             metamacException.setLoggedLevel(ExceptionLevelEnum.DEBUG);
             throw metamacException;
         }
@@ -184,7 +184,7 @@ public class DataStructureDefinitionServiceImpl extends DataStructureDefinitionS
                     break;
                 }
             } else {
-                MetamacException metamacException = new MetamacException(MetamacCoreExceptionType.PARAMETER_INCORRECT, "TypeComponentList");
+                MetamacException metamacException = new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, "TypeComponentList");
                 metamacException.setLoggedLevel(ExceptionLevelEnum.DEBUG);
                 throw metamacException;
             }
@@ -194,13 +194,13 @@ public class DataStructureDefinitionServiceImpl extends DataStructureDefinitionS
         if (component.getId() == null && componentList != null && componentList instanceof DimensionDescriptor) {
             for (Component itemComponent : componentList.getComponents()) {
                 if (itemComponent instanceof MeasureDimension && component instanceof MeasureDimension) {
-                    MetamacException metamacException = new MetamacException(MetamacCoreExceptionType.MTM_CORE_VALIDATION_CONSTRAINT_CARDINALITY_MAX,
+                    MetamacException metamacException = new MetamacException(ServiceExceptionType.SRM_VALIDATION_CONSTRAINT_CARDINALITY_MAX,
                             "Check constraint: DimensionDescriptor have: 0..1 MeasureDimension");
                     metamacException.setLoggedLevel(ExceptionLevelEnum.DEBUG);
                     throw metamacException;
                 }
                 if (itemComponent instanceof TimeDimension && component instanceof TimeDimension) {
-                    MetamacException metamacException = new MetamacException(MetamacCoreExceptionType.MTM_CORE_VALIDATION_CONSTRAINT_CARDINALITY_MAX,
+                    MetamacException metamacException = new MetamacException(ServiceExceptionType.SRM_VALIDATION_CONSTRAINT_CARDINALITY_MAX,
                             "Check constraint: DimensionDescriptor have: 0..1 TimeDimension");
                     metamacException.setLoggedLevel(ExceptionLevelEnum.DEBUG);
                     throw metamacException;
@@ -232,7 +232,7 @@ public class DataStructureDefinitionServiceImpl extends DataStructureDefinitionS
                         newComponentList = new MeasureDescriptor();
                         break;
                     default:
-                        MetamacException metamacException = new MetamacException(MetamacCoreExceptionType.PARAMETER_INCORRECT, "type of ComponentList");
+                        MetamacException metamacException = new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, "type of ComponentList");
                         metamacException.setLoggedLevel(ExceptionLevelEnum.DEBUG);
                         throw metamacException;
                 }
@@ -259,7 +259,7 @@ public class DataStructureDefinitionServiceImpl extends DataStructureDefinitionS
         
         // Check type component
         if (typeComponentList == null) {
-            MetamacException metamacException = new MetamacException(MetamacCoreExceptionType.PARAMETER_REQUIRED, "TypeComponentList");
+            MetamacException metamacException = new MetamacException(ServiceExceptionType.PARAMETER_REQUIRED, "TypeComponentList");
             metamacException.setLoggedLevel(ExceptionLevelEnum.DEBUG);
             throw metamacException;
         }
@@ -288,7 +288,7 @@ public class DataStructureDefinitionServiceImpl extends DataStructureDefinitionS
                     break;
                 }
             } else {
-                MetamacException metamacException = new MetamacException(MetamacCoreExceptionType.PARAMETER_INCORRECT, "TypeComponentList");
+                MetamacException metamacException = new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, "TypeComponentList");
                 metamacException.setLoggedLevel(ExceptionLevelEnum.DEBUG);
                 throw metamacException;
             }
@@ -314,7 +314,7 @@ public class DataStructureDefinitionServiceImpl extends DataStructureDefinitionS
             getBaseService().deleteComponent(ctx, componentFound);
         } else {
             // Not Found, throw exception
-            MetamacException metamacException = new MetamacException(MetamacCoreExceptionType.MTM_CORE_SEARCH_NOT_FOUND, component.getIdLogic());
+            MetamacException metamacException = new MetamacException(ServiceExceptionType.SRM_SEARCH_NOT_FOUND, component.getIdLogic());
             metamacException.setLoggedLevel(ExceptionLevelEnum.DEBUG);
             throw metamacException;
         }
