@@ -11,7 +11,7 @@ import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.dto.LocalisedStringDto;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.domain.concept.dto.ConceptSchemeDto;
-import org.siemac.metamac.domain.concept.enums.domain.ConceptSchemeProcStatusEnum;
+import org.siemac.metamac.domain.srm.enume.domain.MaintainableArtefactProcStatusEnum;
 
 import com.ibm.icu.text.DecimalFormat;
 
@@ -55,7 +55,7 @@ public class ConceptSchemeService {
             schemeDto.setUrn(UUID.randomUUID().toString());
             schemeDto.setUri(UUID.randomUUID().toString());
             schemeDto.setVersionLogic("01.000");
-            schemeDto.setProcStatus(ConceptSchemeProcStatusEnum.DRAFT);
+            schemeDto.setProcStatus(MaintainableArtefactProcStatusEnum.DRAFT);
             conceptSchemeList.add(schemeDto);
         } else {
             int index = getConceptSchemeIndexById(schemeDto.getId());
@@ -68,21 +68,21 @@ public class ConceptSchemeService {
     public static ConceptSchemeDto sendToPendingPublication(Long id) throws MetamacException {
         int index = getConceptSchemeIndexById(id);
         ConceptSchemeDto scheme = conceptSchemeList.get(index);
-        scheme.setProcStatus(ConceptSchemeProcStatusEnum.PENDING_PUBLICATION);
+        scheme.setProcStatus(MaintainableArtefactProcStatusEnum.PENDING_PUBLICATION);
         return scheme;
     }
 
     public static ConceptSchemeDto reject(Long id) throws MetamacException {
         int index = getConceptSchemeIndexById(id);
         ConceptSchemeDto scheme = conceptSchemeList.get(index);
-        scheme.setProcStatus(ConceptSchemeProcStatusEnum.VALIDATION_REJECTED);
+        scheme.setProcStatus(MaintainableArtefactProcStatusEnum.VALIDATION_REJECTED);
         return scheme;
     }
 
     public static ConceptSchemeDto publishInternally(Long id) throws MetamacException {
         int index = getConceptSchemeIndexById(id);
         ConceptSchemeDto scheme = conceptSchemeList.get(index);
-        scheme.setProcStatus(ConceptSchemeProcStatusEnum.INTERNALLY_PUBLISHED);
+        scheme.setProcStatus(MaintainableArtefactProcStatusEnum.INTERNALLY_PUBLISHED);
         return scheme;
     }
 
@@ -90,14 +90,14 @@ public class ConceptSchemeService {
         int index = getConceptSchemeIndexById(id);
         ConceptSchemeDto scheme = conceptSchemeList.get(index);
         scheme.setValidFrom(new Date());
-        scheme.setProcStatus(ConceptSchemeProcStatusEnum.EXTERNALLY_PUBLISHED);
+        scheme.setProcStatus(MaintainableArtefactProcStatusEnum.EXTERNALLY_PUBLISHED);
         return scheme;
     }
 
     public static ConceptSchemeDto versioning(Long id) throws MetamacException {
         int index = getConceptSchemeIndexById(id);
         ConceptSchemeDto scheme = conceptSchemeList.get(index);
-        scheme.setProcStatus(ConceptSchemeProcStatusEnum.DRAFT);
+        scheme.setProcStatus(MaintainableArtefactProcStatusEnum.DRAFT);
         return scheme;
     }
 
@@ -120,7 +120,7 @@ public class ConceptSchemeService {
             conceptScheme.setUrn(UUID.randomUUID().toString());
             conceptScheme.setUri(UUID.randomUUID().toString());
             conceptScheme.setVersionLogic("01.000");
-            conceptScheme.setProcStatus(ConceptSchemeProcStatusEnum.DRAFT);
+            conceptScheme.setProcStatus(MaintainableArtefactProcStatusEnum.DRAFT);
             DecimalFormat nformat = new DecimalFormat("0000");
             conceptScheme.setIdLogic("SCH" + nformat.format(i));
 

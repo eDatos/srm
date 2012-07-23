@@ -2,7 +2,7 @@ package org.siemac.metamac.srm.web.concept.widgets;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
-import org.siemac.metamac.domain.concept.enums.domain.ConceptSchemeProcStatusEnum;
+import org.siemac.metamac.domain.srm.enume.domain.MaintainableArtefactProcStatusEnum;
 import org.siemac.metamac.srm.web.client.resources.GlobalResources;
 import org.siemac.metamac.srm.web.client.utils.ClientSecurityUtils;
 import org.siemac.metamac.web.common.client.widgets.form.InternationalMainFormLayout;
@@ -11,13 +11,13 @@ import com.smartgwt.client.widgets.events.HasClickHandlers;
 
 public class ConceptSchemeMainFormLayout extends InternationalMainFormLayout {
 
-    private PublishToolStripButton      pendingPublication;
-    private PublishToolStripButton      rejectValidation;
-    private PublishToolStripButton      publishInternally;
-    private PublishToolStripButton      publishExternally;
-    private PublishToolStripButton      versioning;
+    private PublishToolStripButton             pendingPublication;
+    private PublishToolStripButton             rejectValidation;
+    private PublishToolStripButton             publishInternally;
+    private PublishToolStripButton             publishExternally;
+    private PublishToolStripButton             versioning;
 
-    private ConceptSchemeProcStatusEnum status;
+    private MaintainableArtefactProcStatusEnum status;
 
     public ConceptSchemeMainFormLayout() {
         super();
@@ -46,7 +46,7 @@ public class ConceptSchemeMainFormLayout extends InternationalMainFormLayout {
         toolStrip.addButton(versioning);
     }
 
-    public void updatePublishSection(ConceptSchemeProcStatusEnum status) {
+    public void updatePublishSection(MaintainableArtefactProcStatusEnum status) {
         this.status = status;
     }
 
@@ -54,21 +54,21 @@ public class ConceptSchemeMainFormLayout extends InternationalMainFormLayout {
         // Hide all buttons
         hideAllPublishButtons();
         // Show buttons depending on the status
-        if (ConceptSchemeProcStatusEnum.DRAFT.equals(status)) {
+        if (MaintainableArtefactProcStatusEnum.DRAFT.equals(status)) {
             showSendToPendingPublication();
-        } else if (ConceptSchemeProcStatusEnum.PENDING_PUBLICATION.equals(status)) {
+        } else if (MaintainableArtefactProcStatusEnum.PENDING_PUBLICATION.equals(status)) {
             showPublishInternallyButton();
             showRejectValidationButton();
-        } else if (ConceptSchemeProcStatusEnum.VALIDATION_REJECTED.equals(status)) {
+        } else if (MaintainableArtefactProcStatusEnum.VALIDATION_REJECTED.equals(status)) {
             showSendToPendingPublication();
-        } else if (ConceptSchemeProcStatusEnum.INTERNAL_PUBLICATION_FAILED.equals(status)) {
+        } else if (MaintainableArtefactProcStatusEnum.INTERNAL_PUBLICATION_FAILED.equals(status)) {
             showPublishInternallyButton();
-        } else if (ConceptSchemeProcStatusEnum.EXTERNAL_PUBLICATION_FAILED.equals(status)) {
+        } else if (MaintainableArtefactProcStatusEnum.EXTERNAL_PUBLICATION_FAILED.equals(status)) {
             showPublishExternallyButton();
-        } else if (ConceptSchemeProcStatusEnum.INTERNALLY_PUBLISHED.equals(status)) {
+        } else if (MaintainableArtefactProcStatusEnum.INTERNALLY_PUBLISHED.equals(status)) {
             showPublishExternallyButton();
             showVersioningButton();
-        } else if (ConceptSchemeProcStatusEnum.EXTERNALLY_PUBLISHED.equals(status)) {
+        } else if (MaintainableArtefactProcStatusEnum.EXTERNALLY_PUBLISHED.equals(status)) {
             showVersioningButton();
         }
     }
@@ -120,7 +120,7 @@ public class ConceptSchemeMainFormLayout extends InternationalMainFormLayout {
     }
 
     private void showRejectValidationButton() {
-        if (ConceptSchemeProcStatusEnum.PENDING_PUBLICATION.equals(status)) {
+        if (MaintainableArtefactProcStatusEnum.PENDING_PUBLICATION.equals(status)) {
             if (ClientSecurityUtils.canRejectConceptSchemeValidation()) {
                 rejectValidation.show();
             }

@@ -9,7 +9,7 @@ import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.domain.concept.dto.ConceptDto;
 import org.siemac.metamac.domain.concept.dto.ConceptSchemeDto;
-import org.siemac.metamac.domain.concept.enums.domain.ConceptSchemeProcStatusEnum;
+import org.siemac.metamac.domain.srm.enume.domain.MaintainableArtefactProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.utils.ClientSecurityUtils;
@@ -140,8 +140,8 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
 
             @Override
             public void onClick(ClickEvent event) {
-                ConceptSchemeProcStatusEnum status = conceptSchemeDto.getProcStatus();
-                if (ConceptSchemeProcStatusEnum.INTERNALLY_PUBLISHED.equals(status) || ConceptSchemeProcStatusEnum.EXTERNALLY_PUBLISHED.equals(status)) {
+                MaintainableArtefactProcStatusEnum status = conceptSchemeDto.getProcStatus();
+                if (MaintainableArtefactProcStatusEnum.INTERNALLY_PUBLISHED.equals(status) || MaintainableArtefactProcStatusEnum.EXTERNALLY_PUBLISHED.equals(status)) {
                     // Create a new version
                     final InformationWindow window = new InformationWindow(getMessages().conceptSchemeEditionInfo(), getMessages().conceptSchemeEditionInfoDetailedMessage());
                     window.show();
