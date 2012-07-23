@@ -1,90 +1,64 @@
 package org.siemac.metamac.srm.core.structure.serviceimpl.utils.shared;
 
+import static org.siemac.metamac.domain.srm.enume.domain.FacetValueTypeEnum.ALPHA_FVT;
+import static org.siemac.metamac.domain.srm.enume.domain.FacetValueTypeEnum.ALPHA_NUMERIC_FVT;
+import static org.siemac.metamac.domain.srm.enume.domain.FacetValueTypeEnum.BASIC_TIME_PERIOD_FVT;
+import static org.siemac.metamac.domain.srm.enume.domain.FacetValueTypeEnum.BIG_INTEGER_FVT;
+import static org.siemac.metamac.domain.srm.enume.domain.FacetValueTypeEnum.BOOLEAN_FVT;
+import static org.siemac.metamac.domain.srm.enume.domain.FacetValueTypeEnum.COUNT_FVT;
+import static org.siemac.metamac.domain.srm.enume.domain.FacetValueTypeEnum.DATE_TIME_FVT;
+import static org.siemac.metamac.domain.srm.enume.domain.FacetValueTypeEnum.DAY_FVT;
+import static org.siemac.metamac.domain.srm.enume.domain.FacetValueTypeEnum.DECIMAL_FVT;
+import static org.siemac.metamac.domain.srm.enume.domain.FacetValueTypeEnum.DOUBLE_FVT;
+import static org.siemac.metamac.domain.srm.enume.domain.FacetValueTypeEnum.DURATION_FVT;
+import static org.siemac.metamac.domain.srm.enume.domain.FacetValueTypeEnum.EXCLUSIVE_VALUE_RANGE_FVT;
+import static org.siemac.metamac.domain.srm.enume.domain.FacetValueTypeEnum.FLOAT_FVT;
+import static org.siemac.metamac.domain.srm.enume.domain.FacetValueTypeEnum.GREGORIAN_DAY_FVT;
+import static org.siemac.metamac.domain.srm.enume.domain.FacetValueTypeEnum.GREGORIAN_TIME_PERIOD_FVT;
+import static org.siemac.metamac.domain.srm.enume.domain.FacetValueTypeEnum.GREGORIAN_YEAR_FVT;
+import static org.siemac.metamac.domain.srm.enume.domain.FacetValueTypeEnum.GREGORIAN_YEAR_MONTH_FVT;
+import static org.siemac.metamac.domain.srm.enume.domain.FacetValueTypeEnum.INCLUSIVE_VALUE_RANGE_FVT;
+import static org.siemac.metamac.domain.srm.enume.domain.FacetValueTypeEnum.INCREMENTAL_FVT;
+import static org.siemac.metamac.domain.srm.enume.domain.FacetValueTypeEnum.INTEGER_FVT;
+import static org.siemac.metamac.domain.srm.enume.domain.FacetValueTypeEnum.LONG_FVT;
+import static org.siemac.metamac.domain.srm.enume.domain.FacetValueTypeEnum.MONTH_DAY_FVT;
+import static org.siemac.metamac.domain.srm.enume.domain.FacetValueTypeEnum.MONTH_FVT;
+import static org.siemac.metamac.domain.srm.enume.domain.FacetValueTypeEnum.NUMERIC_FVT;
+import static org.siemac.metamac.domain.srm.enume.domain.FacetValueTypeEnum.OBSERVATIONAL_TIME_PERIOD_FVT;
+import static org.siemac.metamac.domain.srm.enume.domain.FacetValueTypeEnum.REPORTING_DAY_FVT;
+import static org.siemac.metamac.domain.srm.enume.domain.FacetValueTypeEnum.REPORTING_MONTH_FVT;
+import static org.siemac.metamac.domain.srm.enume.domain.FacetValueTypeEnum.REPORTING_QUARTER_FVT;
+import static org.siemac.metamac.domain.srm.enume.domain.FacetValueTypeEnum.REPORTING_SEMESTER_FVT;
+import static org.siemac.metamac.domain.srm.enume.domain.FacetValueTypeEnum.REPORTING_TIME_PERIOD_FVT;
+import static org.siemac.metamac.domain.srm.enume.domain.FacetValueTypeEnum.REPORTING_TRIMESTER_FVT;
+import static org.siemac.metamac.domain.srm.enume.domain.FacetValueTypeEnum.REPORTING_WEEK_FVT;
+import static org.siemac.metamac.domain.srm.enume.domain.FacetValueTypeEnum.REPORTING_YEAR_FVT;
+import static org.siemac.metamac.domain.srm.enume.domain.FacetValueTypeEnum.SHORT_FVT;
+import static org.siemac.metamac.domain.srm.enume.domain.FacetValueTypeEnum.STANDARD_TIME_PERIOD_FVT;
+import static org.siemac.metamac.domain.srm.enume.domain.FacetValueTypeEnum.STRING_FVT;
+import static org.siemac.metamac.domain.srm.enume.domain.FacetValueTypeEnum.TIMES_RANGE_FVT;
+import static org.siemac.metamac.domain.srm.enume.domain.FacetValueTypeEnum.TIME_FVT;
+import static org.siemac.metamac.domain.srm.enume.domain.FacetValueTypeEnum.URI_FVT;
+
+import org.apache.commons.lang.ArrayUtils;
 import org.siemac.metamac.domain.srm.enume.domain.FacetValueTypeEnum;
 
 public class DataStructureConstraintSharedValidator {
 
+    public static final FacetValueTypeEnum[] simpleDataTypeValues = new FacetValueTypeEnum[]{STRING_FVT, ALPHA_FVT, ALPHA_NUMERIC_FVT, NUMERIC_FVT, BIG_INTEGER_FVT, INTEGER_FVT, LONG_FVT, SHORT_FVT,
+            DECIMAL_FVT, FLOAT_FVT, DOUBLE_FVT, BOOLEAN_FVT, URI_FVT, COUNT_FVT, INCLUSIVE_VALUE_RANGE_FVT, EXCLUSIVE_VALUE_RANGE_FVT, INCREMENTAL_FVT, OBSERVATIONAL_TIME_PERIOD_FVT,
+            STANDARD_TIME_PERIOD_FVT, BASIC_TIME_PERIOD_FVT, GREGORIAN_TIME_PERIOD_FVT, GREGORIAN_YEAR_FVT, GREGORIAN_YEAR_MONTH_FVT, GREGORIAN_DAY_FVT, REPORTING_TIME_PERIOD_FVT, REPORTING_YEAR_FVT,
+            REPORTING_SEMESTER_FVT, REPORTING_TRIMESTER_FVT, REPORTING_QUARTER_FVT, REPORTING_MONTH_FVT, REPORTING_WEEK_FVT, REPORTING_DAY_FVT, DATE_TIME_FVT, TIMES_RANGE_FVT, MONTH_FVT,
+            MONTH_DAY_FVT, DAY_FVT, TIME_FVT, DURATION_FVT        };
+
+    public static final FacetValueTypeEnum[] timeDataTypeValues   = new FacetValueTypeEnum[]{OBSERVATIONAL_TIME_PERIOD_FVT, STANDARD_TIME_PERIOD_FVT, BASIC_TIME_PERIOD_FVT, GREGORIAN_TIME_PERIOD_FVT,
+            GREGORIAN_YEAR_FVT, GREGORIAN_YEAR_MONTH_FVT, GREGORIAN_DAY_FVT, REPORTING_TIME_PERIOD_FVT, REPORTING_YEAR_FVT, REPORTING_SEMESTER_FVT, REPORTING_TRIMESTER_FVT, REPORTING_QUARTER_FVT,
+            REPORTING_MONTH_FVT, REPORTING_WEEK_FVT, REPORTING_DAY_FVT, DATE_TIME_FVT, TIMES_RANGE_FVT};
+
     public static boolean isSimpleDataType(FacetValueTypeEnum facetValueTypeEnum) {
         if (facetValueTypeEnum != null) {
-            switch (facetValueTypeEnum) {
-                case STRING_FVT:
-                    return true;
-                case ALPHA_FVT:
-                    return true;
-                case ALPHA_NUMERIC_FVT:
-                    return true;
-                case NUMERIC_FVT:
-                    return true;
-                case BIG_INTEGER_FVT:
-                    return true;
-                case INTEGER_FVT:
-                    return true;
-                case LONG_FVT:
-                    return true;
-                case SHORT_FVT:
-                    return true;
-                case DECIMAL_FVT:
-                    return true;
-                case FLOAT_FVT:
-                    return true;
-                case DOUBLE_FVT:
-                    return true;
-                case BOOLEAN_FVT:
-                    return true;
-                case URI_FVT:
-                    return true;
-                case COUNT_FVT:
-                    return true;
-                case INCLUSIVE_VALUE_RANGE_FVT:
-                    return true;
-                case EXCLUSIVE_VALUE_RANGE_FVT:
-                    return true;
-                case INCREMENTAL_FVT:
-                    return true;
-                case OBSERVATIONAL_TIME_PERIOD_FVT:
-                    return true;
-                case STANDARD_TIME_PERIOD_FVT:
-                    return true;
-                case BASIC_TIME_PERIOD_FVT:
-                    return true;
-                case GREGORIAN_TIME_PERIOD_FVT:
-                    return true;
-                case GREGORIAN_YEAR_FVT:
-                    return true;
-                case GREGORIAN_YEAR_MONTH_FVT:
-                    return true;
-                case GREGORIAN_DAY_FVT:
-                    return true;
-                case REPORTING_TIME_PERIOD_FVT:
-                    return true;
-                case REPORTING_YEAR_FVT:
-                    return true;
-                case REPORTING_SEMESTER_FVT:
-                    return true;
-                case REPORTING_TRIMESTER_FVT:
-                    return true;
-                case REPORTING_QUARTER_FVT:
-                    return true;
-                case REPORTING_MONTH_FVT:
-                    return true;
-                case REPORTING_WEEK_FVT:
-                    return true;
-                case REPORTING_DAY_FVT:
-                    return true;
-                case DATE_TIME_FVT:
-                    return true;
-                case TIMES_RANGE_FVT:
-                    return true;
-                case MONTH_FVT:
-                    return true;
-                case MONTH_DAY_FVT:
-                    return true;
-                case DAY_FVT:
-                    return true;
-                case TIME_FVT:
-                    return true;
-                case DURATION_FVT:
-                    return true;
+            if (ArrayUtils.contains(simpleDataTypeValues, facetValueTypeEnum)) {
+                return true;
             }
         }
         return false;
@@ -92,41 +66,8 @@ public class DataStructureConstraintSharedValidator {
 
     public static boolean isTimeDataType(FacetValueTypeEnum facetValueTypeEnum) {
         if (facetValueTypeEnum != null) {
-            switch (facetValueTypeEnum) {
-                case OBSERVATIONAL_TIME_PERIOD_FVT:
-                    return true;
-                case STANDARD_TIME_PERIOD_FVT:
-                    return true;
-                case BASIC_TIME_PERIOD_FVT:
-                    return true;
-                case GREGORIAN_TIME_PERIOD_FVT:
-                    return true;
-                case GREGORIAN_YEAR_FVT:
-                    return true;
-                case GREGORIAN_YEAR_MONTH_FVT:
-                    return true;
-                case GREGORIAN_DAY_FVT:
-                    return true;
-                case REPORTING_TIME_PERIOD_FVT:
-                    return true;
-                case REPORTING_YEAR_FVT:
-                    return true;
-                case REPORTING_SEMESTER_FVT:
-                    return true;
-                case REPORTING_TRIMESTER_FVT:
-                    return true;
-                case REPORTING_QUARTER_FVT:
-                    return true;
-                case REPORTING_MONTH_FVT:
-                    return true;
-                case REPORTING_WEEK_FVT:
-                    return true;
-                case REPORTING_DAY_FVT:
-                    return true;
-                case DATE_TIME_FVT:
-                    return true;
-                case TIMES_RANGE_FVT:
-                    return true;
+            if (ArrayUtils.contains(timeDataTypeValues, facetValueTypeEnum)) {
+                return true;
             }
         }
         return false;
