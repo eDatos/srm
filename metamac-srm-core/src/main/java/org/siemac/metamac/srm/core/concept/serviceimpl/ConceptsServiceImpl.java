@@ -14,14 +14,14 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.util.GeneratorUrnUtils;
 import org.siemac.metamac.core.common.util.shared.VersionUtil;
-import org.siemac.metamac.domain.srm.enume.domain.MaintainableProcStatusEnum;
+import org.siemac.metamac.domain.srm.enume.domain.MaintainableArtefactProcStatusEnum;
 import org.siemac.metamac.srm.core.base.domain.ItemScheme;
 import org.siemac.metamac.srm.core.base.domain.ItemSchemeRepository;
 import org.siemac.metamac.srm.core.base.domain.ItemSchemeVersion;
 import org.siemac.metamac.srm.core.base.domain.ItemSchemeVersionRepository;
 import org.siemac.metamac.srm.core.base.domain.MaintainableArtefact;
-import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
+import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersion;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionProperties;
 import org.siemac.metamac.srm.core.concept.serviceimpl.utils.ConceptsInvocationValidator;
@@ -66,7 +66,7 @@ public class ConceptsServiceImpl extends ConceptsServiceImplBase {
         conceptScheme = getItemSchemeRepository().save(conceptScheme);
 
         // Save draft version
-        maintainableArtefact.setProcStatus(MaintainableProcStatusEnum.DRAFT);
+        maintainableArtefact.setProcStatus(MaintainableArtefactProcStatusEnum.DRAFT);
         maintainableArtefact.setIsLastVersion(Boolean.TRUE);
         maintainableArtefact.setFinalLogic(Boolean.FALSE);
         maintainableArtefact.setVersionLogic(VersionUtil.createNextVersionTag(null, true));
@@ -122,7 +122,7 @@ public class ConceptsServiceImpl extends ConceptsServiceImplBase {
 
         // Retrieve concept scheme and check it is in draft
         ConceptSchemeVersion conceptSchemeVersion = findConceptSchemeVersionByUrn(urn);
-        if (!MaintainableProcStatusEnum.DRAFT.equals(conceptSchemeVersion.getMaintainableArtefact().getProcStatus())) {
+        if (!MaintainableArtefactProcStatusEnum.DRAFT.equals(conceptSchemeVersion.getMaintainableArtefact().getProcStatus())) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CONCEPT_SCHEME_WRONG_PROC_STATUS)
                     .withMessageParameters(urn, new String[]{ServiceExceptionParameters.PROC_STATUS_DRAFT}).build();
         }

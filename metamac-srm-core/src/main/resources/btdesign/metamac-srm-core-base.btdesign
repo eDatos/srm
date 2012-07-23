@@ -72,7 +72,7 @@ Application Base {
 			"The URL of an SDMXcompliant web service from which the external object can be retrieved."
 			String serviceURL nullable;
 			"Status"
-			- @MaintainableProcStatusEnum procStatus nullable;
+			- @MaintainableArtefactProcStatusEnum procStatus nullable;
 			"True if this version is the last"
 			Boolean isLastVersion nullable;
 			
