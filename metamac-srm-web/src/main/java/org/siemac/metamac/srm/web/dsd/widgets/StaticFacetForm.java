@@ -82,7 +82,7 @@ public class StaticFacetForm extends GroupDynamicForm {
         String value = facetDto.getFacetValue() == null ? null : MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().facetValueTypeEnum() + facetDto.getFacetValue().getName());
         textType.setValue(value);
         // - FacetType
-        isSequence.setValue(facetDto.getIsSequenceFT() == null ? null : (facetDto.getIsSequenceFT() ? MetamacSrmWeb.getConstants().yes() : MetamacSrmWeb.getConstants().no()));
+        isSequence.setValue(facetDto.getIsSequenceFT() == null ? null : getBooleanTextValue(facetDto.getIsSequenceFT()));
         minLength.setValue(facetDto.getMinLengthFT());
         maxLength.setValue(facetDto.getMaxLengthFT());
         minValue.setValue(facetDto.getMinValueFT());
@@ -95,6 +95,14 @@ public class StaticFacetForm extends GroupDynamicForm {
         pattern.setValue(facetDto.getPatternFT());
         startTime.setValue(facetDto.getStartTimeFT());
         endTime.setValue(facetDto.getEndTimeFT());
+    }
+
+    private String getBooleanTextValue(String value) {
+        if ("true".equals(value) || "1".equals(value)) {
+            return MetamacSrmWeb.getConstants().yes();
+        } else {
+            return MetamacSrmWeb.getConstants().no();
+        }
     }
 
 }

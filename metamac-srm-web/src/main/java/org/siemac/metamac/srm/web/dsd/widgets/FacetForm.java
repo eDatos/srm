@@ -5,10 +5,9 @@ import org.siemac.metamac.domain.srm.enume.domain.FacetValueTypeEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.dsd.utils.CommonUtils;
 import org.siemac.metamac.srm.web.dsd.utils.FacetFormUtils;
-import org.siemac.metamac.web.common.client.utils.FormItemUtils;
 import org.siemac.metamac.web.common.client.utils.SDMXCommonWebValidatorsV2_1;
+import org.siemac.metamac.web.common.client.utils.XsdDataTypesValidators;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
-import org.siemac.metamac.web.common.client.widgets.form.fields.CustomFloatItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredSelectItem;
 
@@ -21,14 +20,14 @@ public class FacetForm extends GroupDynamicForm {
     private CheckboxItem       isSequence;
     private CustomTextItem     minLength;
     private CustomTextItem     maxLength;
-    private CustomFloatItem    startValue;
-    private CustomFloatItem    endValue;
-    private CustomFloatItem    interval;
+    private CustomTextItem     startValue;
+    private CustomTextItem     endValue;
+    private CustomTextItem     interval;
     private CustomTextItem     timeInterval;
     private CustomTextItem     startTime;
     private CustomTextItem     endTime;
-    private CustomFloatItem    minValue;
-    private CustomFloatItem    maxValue;
+    private CustomTextItem     minValue;
+    private CustomTextItem     maxValue;
     private CustomTextItem     decimals;
     private CustomTextItem     pattern;
 
@@ -47,24 +46,27 @@ public class FacetForm extends GroupDynamicForm {
 
         minLength = new CustomTextItem("min-length-attr", MetamacSrmWeb.getConstants().dsdRepresentationMinLength());
         minLength.setShowIfCondition(FacetFormUtils.getMinLengthIfFunction());
-        minLength.setValidators(FormItemUtils.getPositiveIntegerValidator());
+        minLength.setValidators(XsdDataTypesValidators.getPositiveIntegerValidator());
 
         maxLength = new CustomTextItem("max-length", MetamacSrmWeb.getConstants().dsdRepresentationMaxLength());
         maxLength.setShowIfCondition(FacetFormUtils.getMaxLengthIfFunction());
-        maxLength.setValidators(FormItemUtils.getPositiveIntegerValidator());
+        maxLength.setValidators(XsdDataTypesValidators.getPositiveIntegerValidator());
 
-        startValue = new CustomFloatItem("start-value-attr", MetamacSrmWeb.getConstants().dsdRepresentationStartValue());
+        startValue = new CustomTextItem("start-value-attr", MetamacSrmWeb.getConstants().dsdRepresentationStartValue());
         startValue.setShowIfCondition(FacetFormUtils.getStartValueIfFunction());
+        startValue.setValidators(XsdDataTypesValidators.getDecimalValidator());
 
-        endValue = new CustomFloatItem("end-value-attr", MetamacSrmWeb.getConstants().dsdRepresentationEndValue());
+        endValue = new CustomTextItem("end-value-attr", MetamacSrmWeb.getConstants().dsdRepresentationEndValue());
         endValue.setShowIfCondition(FacetFormUtils.getEndValueIfFunction());
+        endValue.setValidators(XsdDataTypesValidators.getDecimalValidator());
 
-        interval = new CustomFloatItem("interval-attr", MetamacSrmWeb.getConstants().dsdRepresentationInterval());
+        interval = new CustomTextItem("interval-attr", MetamacSrmWeb.getConstants().dsdRepresentationInterval());
         interval.setShowIfCondition(FacetFormUtils.getIntervalIfFunction());
+        interval.setValidators(XsdDataTypesValidators.getDecimalValidator());
 
         timeInterval = new CustomTextItem("time-interval-attr", MetamacSrmWeb.getConstants().dsdRepresentationTimeInterval());
         timeInterval.setShowIfCondition(FacetFormUtils.getTimeIntervalIfFunction());
-        timeInterval.setValidators(SDMXCommonWebValidatorsV2_1.getDurationValidator());
+        timeInterval.setValidators(XsdDataTypesValidators.getDurationValidator());
 
         startTime = new CustomTextItem("start-time-attr", MetamacSrmWeb.getConstants().dsdRepresentationStartTime());
         startTime.setShowIfCondition(FacetFormUtils.getStartTimeIfFunction());
@@ -74,15 +76,17 @@ public class FacetForm extends GroupDynamicForm {
         endTime.setShowIfCondition(FacetFormUtils.getEndTimeIfFunction());
         endTime.setValidators(SDMXCommonWebValidatorsV2_1.getBasicTimePeriodValidator());
 
-        minValue = new CustomFloatItem("min-value-attr", MetamacSrmWeb.getConstants().dsdRepresentationMinValue());
+        minValue = new CustomTextItem("min-value-attr", MetamacSrmWeb.getConstants().dsdRepresentationMinValue());
         minValue.setShowIfCondition(FacetFormUtils.getMinValueIfFunction());
+        minValue.setValidators(XsdDataTypesValidators.getDecimalValidator());
 
-        maxValue = new CustomFloatItem("max-value-attr", MetamacSrmWeb.getConstants().dsdRepresentationMaxValue());
+        maxValue = new CustomTextItem("max-value-attr", MetamacSrmWeb.getConstants().dsdRepresentationMaxValue());
         maxValue.setShowIfCondition(FacetFormUtils.getMaxValueIfFunction());
+        maxValue.setValidators(XsdDataTypesValidators.getDecimalValidator());
 
         decimals = new CustomTextItem("decimals-attr", MetamacSrmWeb.getConstants().dsdRepresentationDecimals());
         decimals.setShowIfCondition(FacetFormUtils.getDecimalsIfFunction());
-        decimals.setValidators(FormItemUtils.getPositiveIntegerValidator());
+        decimals.setValidators(XsdDataTypesValidators.getPositiveIntegerValidator());
 
         pattern = new CustomTextItem("pattern-attr", MetamacSrmWeb.getConstants().dsdRepresentationPattern());
         pattern.setShowIfCondition(FacetFormUtils.getPatternIfFunction());
@@ -94,7 +98,7 @@ public class FacetForm extends GroupDynamicForm {
         // - FacetValueType
         textType.setValue(facetDto.getFacetValue() == null ? null : facetDto.getFacetValue().toString());
         // - FacetType
-        isSequence.setValue(facetDto.getIsSequenceFT());
+        isSequence.setValue(getBooleanValue(facetDto.getIsSequenceFT()));
         minLength.setValue(facetDto.getMinLengthFT());
         maxLength.setValue(facetDto.getMaxLengthFT());
         minValue.setValue(facetDto.getMinValueFT());
@@ -113,20 +117,27 @@ public class FacetForm extends GroupDynamicForm {
         // - FacetValueType
         facetDto.setFacetValue(textType.getValueAsString() != null ? FacetValueTypeEnum.valueOf(textType.getValueAsString()) : null);
         // - FacetType
-        facetDto.setIsSequenceFT(isSequence.getVisible() ? isSequence.getValueAsBoolean() : null);
-        facetDto.setMinLengthFT(minLength.getVisible() ? FormItemUtils.getValueAsInteger(minLength) : null);
-        facetDto.setMaxLengthFT(maxLength.getVisible() ? FormItemUtils.getValueAsInteger(maxLength) : null);
-        facetDto.setMinValueFT(minValue.getVisible() ? FormItemUtils.getValueAsDouble(minValue) : null);
-        facetDto.setMaxValueFT(maxValue.getVisible() ? FormItemUtils.getValueAsDouble(maxValue) : null);
-        facetDto.setStartValueFT(startValue.getVisible() ? FormItemUtils.getValueAsDouble(startValue) : null);
-        facetDto.setEndValueFT(endValue.getVisible() ? FormItemUtils.getValueAsDouble(endValue) : null);
-        facetDto.setInterval(interval.getVisible() ? FormItemUtils.getValueAsDouble(interval) : null);
+        facetDto.setIsSequenceFT(isSequence.getVisible() && isSequence.getValue() != null ? isSequence.getValue().toString() : null);
+        facetDto.setMinLengthFT(minLength.getVisible() ? minLength.getValueAsString() : null);
+        facetDto.setMaxLengthFT(maxLength.getVisible() ? maxLength.getValueAsString() : null);
+        facetDto.setMinValueFT(minValue.getVisible() ? minValue.getValueAsString() : null);
+        facetDto.setMaxValueFT(maxValue.getVisible() ? maxValue.getValueAsString() : null);
+        facetDto.setStartValueFT(startValue.getVisible() ? startValue.getValueAsString() : null);
+        facetDto.setEndValueFT(endValue.getVisible() ? endValue.getValueAsString() : null);
+        facetDto.setInterval(interval.getVisible() ? interval.getValueAsString() : null);
         facetDto.setTimeIntervalFT(timeInterval.getVisible() ? timeInterval.getValueAsString() : null);
-        facetDto.setDecimalsFT(decimals.getVisible() ? FormItemUtils.getValueAsInteger(decimals) : null);
+        facetDto.setDecimalsFT(decimals.getVisible() ? decimals.getValueAsString() : null);
         facetDto.setPatternFT(pattern.getVisible() ? pattern.getValueAsString() : null);
         facetDto.setStartTimeFT(startTime.getVisible() ? startTime.getValueAsString() : null);
         facetDto.setEndTimeFT(endTime.getVisible() ? endTime.getValueAsString() : null);
         return facetDto;
+    }
+
+    private boolean getBooleanValue(String value) {
+        if (value != null && ("true".equals(value) || "1".equals(value))) {
+            return true;
+        }
+        return false;
     }
 
     public RequiredSelectItem getTextType() {
@@ -137,15 +148,15 @@ public class FacetForm extends GroupDynamicForm {
         return isSequence;
     }
 
-    public CustomFloatItem getInterval() {
+    public CustomTextItem getInterval() {
         return interval;
     }
 
-    public CustomFloatItem getStartValue() {
+    public CustomTextItem getStartValue() {
         return startValue;
     }
 
-    public CustomFloatItem getEndValue() {
+    public CustomTextItem getEndValue() {
         return endValue;
     }
 
@@ -169,11 +180,11 @@ public class FacetForm extends GroupDynamicForm {
         return maxLength;
     }
 
-    public CustomFloatItem getMinValue() {
+    public CustomTextItem getMinValue() {
         return minValue;
     }
 
-    public CustomFloatItem getMaxValue() {
+    public CustomTextItem getMaxValue() {
         return maxValue;
     }
 
