@@ -1,6 +1,6 @@
 package org.siemac.metamac.srm.core.facade.serviceapi;
 
-import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,16 +8,16 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:spring/srm/applicationContext-test.xml"})
+@ContextConfiguration(locations = {"classpath:spring/srm/include/core-mockito.xml", "classpath:spring/srm/applicationContext-test.xml"})
 public class SrmCoreServiceFacadeCoreMockedTest extends SrmBaseTest {
 
     @Autowired
     protected SrmCoreServiceFacade srmCoreServiceFacade;
 
-    private final ServiceContext   serviceContext = new ServiceContext("system", "123456", "junit");
+    private String                 CONCEPT_SCHEME_1_V1 = "urn:sdmx:org.sdmx.infomodel.concepscheme.ConceptScheme=ISTAC:CONCEPTSCHEME01(01.000)";
 
-    protected ServiceContext getServiceContext() {
-        return serviceContext;
+    @Test
+    public void testDeleteConceptScheme() throws Exception {
+        srmCoreServiceFacade.deleteConceptScheme(getServiceContextAdministrador(), CONCEPT_SCHEME_1_V1);
     }
-
 }

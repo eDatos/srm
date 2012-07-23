@@ -24,6 +24,7 @@ Application SrmCore {
        		> @BaseService
        		> @DataStructureDefinitionService
        		> @TransformationServiceFacade
+       		> @ConceptsService
 
 			"          
 			 @param ctx  

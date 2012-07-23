@@ -503,8 +503,10 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     
     @Override
     public void deleteConceptScheme(ServiceContext ctx, String urn) throws MetamacException {
-        // TODO Auto-generated method stub
-
+        // TODO security
+        
+        // Delete
+        getConceptsService().deleteConceptScheme(ctx, urn);
     }
     
     /**************************************************************************
