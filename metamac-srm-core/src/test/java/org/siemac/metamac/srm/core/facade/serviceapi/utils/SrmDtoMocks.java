@@ -25,11 +25,13 @@ import org.siemac.metamac.domain.srm.dto.DataflowDefinitionDto;
 import org.siemac.metamac.domain.srm.dto.DescriptorDto;
 import org.siemac.metamac.domain.srm.dto.DimensionComponentDto;
 import org.siemac.metamac.domain.srm.dto.RelationshipDto;
+import org.siemac.metamac.domain.srm.dto.RepresentationDto;
 import org.siemac.metamac.domain.srm.enume.domain.TypeComponent;
 import org.siemac.metamac.domain.srm.enume.domain.TypeComponentList;
 import org.siemac.metamac.domain.srm.enume.domain.TypeDataAttribute;
 import org.siemac.metamac.domain.srm.enume.domain.TypeDimensionComponent;
 import org.siemac.metamac.domain.srm.enume.domain.TypeRelathionship;
+import org.siemac.metamac.domain.srm.enume.domain.TypeRepresentationEnum;
 import org.siemac.metamac.domain.srm.enume.domain.UsageStatus;
 import org.siemac.metamac.domain.util.dto.ContentInputDto;
 import org.siemac.metamac.srm.core.base.serviceapi.utils.BaseDoMocks;
@@ -141,6 +143,10 @@ public class SrmDtoMocks {
         dimensionComponentDto2.setTypeComponent(TypeComponent.DIMENSION_COMPONENT);
         dimensionComponentDto2.setOrderLogic(2);
         dimensionComponentDto2.setCptIdRef(conceptDtos.get(0));
+        RepresentationDto repeRepresentationDto = new RepresentationDto();
+        repeRepresentationDto.setTypeRepresentationEnum(TypeRepresentationEnum.ENUMERATED);
+        repeRepresentationDto.setEnumerated(MetamacMocks.mockExternalItemDto(BaseDoMocks.mockConceptSchemeUrn(), TypeExternalArtefactsEnum.CONCEPT_SCHEME));
+        dimensionComponentDto2.setLocalRepresentation(repeRepresentationDto);
 
         // Some Auditory
         dimensionComponentDto2.setCreatedBy("Junit");
