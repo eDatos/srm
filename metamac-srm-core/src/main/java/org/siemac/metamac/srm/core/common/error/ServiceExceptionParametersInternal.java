@@ -35,6 +35,7 @@ public class ServiceExceptionParametersInternal {
     public static final String ATTRIBUTERELATIONSHIP_PRIMARYMEASURERELATIONSHIP = ".primarymeasurerelationship";
 
     // Representation
+    public static final String REPRESENTATION                                   = ".representation";
     public static final String REPRESENTATION_ENUMERATED                        = ".representation.enumerated";
     public static final String REPRESENTATION_NONENUMERATED                     = ".representation.nonenumerated";
 
