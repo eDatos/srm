@@ -105,11 +105,11 @@ public class BaseDoMocks {
     }
     
     public static String mockAgencyUrn() {
-        return GeneratorUrnUtils.generateSdmxAgencyUrn(AGENCY_MOCK, AGENCY_SCHEME_MOCK, VersionUtil.VERSION_LOGIC, AGENCY_MOCK);
+        return GeneratorUrnUtils.generateSdmxAgencyUrn(AGENCY_MOCK, AGENCY_SCHEME_MOCK, VersionUtil.VERSION_LOGIC_INITIAL_VERSION, AGENCY_MOCK);
     }
     
     public static String mockConceptUrn() {
-        return GeneratorUrnUtils.generateSdmxConceptUrn(AGENCY_MOCK, CONCEPT_SCHEME_MOCK, VersionUtil.VERSION_LOGIC, CONCEPT_MOCK);
+        return GeneratorUrnUtils.generateSdmxConceptUrn(AGENCY_MOCK, CONCEPT_SCHEME_MOCK, VersionUtil.VERSION_LOGIC_INITIAL_VERSION, CONCEPT_MOCK);
     }    
     
     // -----------------------------------------------------------------

@@ -28,8 +28,6 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.core.common.ws.ServicesResolver;
-import org.siemac.metamac.domain.concept.dto.ConceptDto;
-import org.siemac.metamac.domain.concept.dto.ConceptSchemeDto;
 import org.siemac.metamac.domain.srm.dto.ComponentDto;
 import org.siemac.metamac.domain.srm.dto.ComponentListDto;
 import org.siemac.metamac.domain.srm.dto.DataAttributeDto;
@@ -491,112 +489,24 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
      * CONCEPTS
      *************************************************************************/
 
+    // TODO para qué?
     @Override
     public List<ExternalItemDto> findConceptSchemeRefs(ServiceContext ctx) {
         return ServicesResolver.findAllConceptSchemes();
     }
 
+    // TODO para qué?
     @Override
     public List<ExternalItemDto> findConcepts(ServiceContext ctx, String uriConceptScheme) {
         return ServicesResolver.retrieveConceptScheme(uriConceptScheme);
     }
-
+    
     @Override
-    public ConceptSchemeDto createConceptScheme(ServiceContext ctx, ConceptSchemeDto conceptSchemeDto) throws MetamacException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public ConceptSchemeDto updateConceptScheme(ServiceContext ctx, ConceptSchemeDto conceptSchemeDto) throws MetamacException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public void deleteConceptScheme(ServiceContext ctx, Long conceptSchemeId) throws MetamacException {
+    public void deleteConceptScheme(ServiceContext ctx, String urn) throws MetamacException {
         // TODO Auto-generated method stub
 
     }
-
-    @Override
-    public List<ConceptSchemeDto> findAllConceptSchemes(ServiceContext ctx) throws MetamacException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public ConceptSchemeDto retrieveConceptScheme(ServiceContext ctx, Long id) throws MetamacException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public ConceptSchemeDto sendConceptSchemeToPendingPublication(ServiceContext ctx) throws MetamacException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public ConceptSchemeDto publishConceptSchemeInternally(ServiceContext ctx, Long conceptSchemeId) throws MetamacException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public ConceptSchemeDto publishConceptSchemeExternally(ServiceContext ctx, Long conceptSchemeId) throws MetamacException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public ConceptDto createConcept(ServiceContext ctx, ConceptDto conceptDto, Long conceptSchemeId) throws MetamacException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public ConceptDto updateConcept(ServiceContext ctx, ConceptDto conceptDto) throws MetamacException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public void deleteConcept(ServiceContext ctx, Long conceptId) throws MetamacException {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public List<ConceptDto> findConceptsForConceptScheme(ServiceContext ctx, Long conceptSchemeId) throws MetamacException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public ConceptDto retrieveConcept(ServiceContext ctx, Long id) throws MetamacException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public ConceptDto sendConceptToPendingPublication(ServiceContext ctx) throws MetamacException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public ConceptDto publishConceptInternally(ServiceContext ctx, Long conceptId) throws MetamacException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public ConceptDto publishConceptExternally(ServiceContext ctx, Long conceptId) throws MetamacException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
+    
     /**************************************************************************
      * PRIVATE
      *************************************************************************/

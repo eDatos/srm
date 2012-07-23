@@ -71,6 +71,8 @@ public abstract class SrmBaseTest extends MetamacBaseTests {
     @Override
     protected List<String> getSequencesToRestart() {
         List<String> sequences = new ArrayList<String>();
+        sequences.add("SEQ_I18NSTRS");
+        sequences.add("SEQ_L10NSTRS");
         sequences.add("SEQ_DIMREL_GROUPDIM");
         sequences.add("SEQ_DIMREL_DIMCOM");
         sequences.add("SEQ_DIMENSIONS_EI_ROLES");

@@ -47,17 +47,26 @@ public class ConceptsInvocationValidator {
     // ExceptionUtils.throwIfException(exceptions);
     // }
     //
-    // public static void checkDeleteConceptScheme(Long id, List<MetamacExceptionItem> exceptions) throws MetamacException {
-    // if (exceptions == null) {
-    // exceptions = new ArrayList<MetamacExceptionItem>();
-    // }
-    //
-    // ValidationUtils.checkParameterRequired(id, ServiceExceptionParameters.ID, exceptions);
-    //
-    // ExceptionUtils.throwIfException(exceptions);
-    //
-    // }
-    //
+
+    public static void checkDeleteConceptScheme(String urn, List<MetamacExceptionItem> exceptions) throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+
+        ValidationUtils.checkParameterRequired(urn, ServiceExceptionParameters.URN, exceptions);
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
+
+    public static void retrieveConceptSchemeVersions(String urn, List<MetamacExceptionItem> exceptions) throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+
+        ValidationUtils.checkParameterRequired(urn, ServiceExceptionParameters.URN, exceptions);
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
 
     public static void checkFindConceptSchemeByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, List<MetamacExceptionItem> exceptions) throws MetamacException {
         if (exceptions == null) {

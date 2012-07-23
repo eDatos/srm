@@ -14,7 +14,7 @@ Application Base {
 			databaseTable = "TB_ANNOTABLE_ARTEFACTS"
 			hint="idSequence=ANNOTABLE_ARTEFACTS"
 			discriminatorType=STRING
-			discriminatorColumn="DTYPE"
+			discriminatorColumn="ANNOTABLE_ARTEFACT_TYPE"
 			
 			"Annotations"
 			- Set<@Annotation> annotations inverse cascade="all-delete-orphan" databaseColumn="ANNOTATION_FK";
@@ -32,8 +32,10 @@ Application Base {
 			"Universal resource name, this is for use in registries: all registered objects have a urn."
 			String urn nullable;
 			
-			"Version that replaces the current one."
+			"Version number that replaces the current one."
 			String replacedBy nullable;
+			"Version number who replaces the current one."
+			String replaceTo nullable;
 		}
 
 		"Provides a Name and Description to all derived classes.
@@ -124,6 +126,7 @@ Application Base {
 			
 			Repository ItemSchemeRepository {
 				save;
+				delete;
 			}
 		}
 		
@@ -142,6 +145,7 @@ Application Base {
 			
 			Repository ItemSchemeVersionRepository {
 				save;
+				delete;
 				findByCondition(PagingParameter pagingParameter);
 			}
 		}

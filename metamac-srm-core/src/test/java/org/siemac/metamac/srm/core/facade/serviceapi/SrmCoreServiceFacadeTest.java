@@ -62,7 +62,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/srm/applicationContext-test.xml"})
-@TransactionConfiguration(transactionManager="txManagerCore", defaultRollback=true)
+@TransactionConfiguration(transactionManager = "txManagerCore", defaultRollback = true)
 @Transactional
 public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServiceFacadeTestBase {
 
@@ -70,32 +70,25 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServ
     protected SrmCoreServiceFacade srmCoreServiceFacade;
 
     @Autowired
-    protected BaseService            baseService;
-    
+    protected BaseService          baseService;
+
     @Autowired
     @Qualifier("jaxb2MarshallerWithValidation")
-    private Jaxb2Marshaller              marshallerWithValidation;
-    
+    private Jaxb2Marshaller        marshallerWithValidation;
+
     @Autowired
     @Qualifier("jaxb2MarshallerWithoutValidation")
-    private CustomJaxb2Marshaller        marshallerWithoutValidation;
-    
+    private CustomJaxb2Marshaller  marshallerWithoutValidation;
+
     @Autowired
     @Qualifier("mapperCoreUpdateMode")
-    private DozerBeanMapper              mapper;
+    private DozerBeanMapper        mapper;
 
-    private final ServiceContext         serviceContext               = new ServiceContext("system", "123456", "junit");
-
-//    @BeforeClass
-//    public static void setUp() {
-//        // JNDI SDMXDS
-//        SimpleNamingContextBuilder simpleNamingContextBuilder = OracleJNDIMock.setUp("SDMXDS", "srm_test", "srm_test", "jdbc:oracle:thin:@localhost:1521:XE", null);
-//    }
+    private final ServiceContext   serviceContext = new ServiceContext("system", "123456", "junit");
 
     protected ServiceContext getServiceContext() {
         return serviceContext;
     }
-
 
     /**************************************************************************
      * DSDs
@@ -104,12 +97,12 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServ
     @Test
     @Override
     public void testSaveDsd() throws Exception {
-        
+
         // Save
         DataStructureDefinitionDto dataStructureDefinitionDto = srmCoreServiceFacade.saveDsd(getServiceContext(), SrmDtoMocks.createDdsDTO());
 
         assertNotNull(dataStructureDefinitionDto.getId());
-        
+
         // Update Name & Description
         InternationalStringDto name = new InternationalStringDto();
 
@@ -122,16 +115,16 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServ
 
         name.addText(name_en);
         name.addText(name_es);
-        
+
         dataStructureDefinitionDto.setName(name);
 
         dataStructureDefinitionDto.setDescription(null);
-        
+
         srmCoreServiceFacade.saveDsd(getServiceContext(), dataStructureDefinitionDto);
-        
+
         assertTrue(dataStructureDefinitionDto.getName().getTexts().iterator().next().getLabel().contains("CHANGED"));
         assertNull(dataStructureDefinitionDto.getDescription());
-        
+
         // Remove Label --> Dont' save
         name = dataStructureDefinitionDto.getName();
 
@@ -153,16 +146,16 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServ
         // Save
         DataStructureDefinitionDto dataStructureDefinitionDto = srmCoreServiceFacade.saveDsd(getServiceContext(), SrmDtoMocks.createDdsDTO());
         assertNotNull(dataStructureDefinitionDto);
-        
+
         // Create DSD Version
         Long previousVersion = dataStructureDefinitionDto.getId();
         dataStructureDefinitionDto = srmCoreServiceFacade.createDsdVersion(getServiceContext(), dataStructureDefinitionDto.getId(), Boolean.TRUE);
-        
+
         assertNotNull(dataStructureDefinitionDto.getId());
         assertTrue(previousVersion != dataStructureDefinitionDto.getId());
         assertTrue(dataStructureDefinitionDto.getVersionLogic().equals("01.001"));
     }
-    
+
     @Test
     @Override
     public void testDeleteDsd() throws Exception {
@@ -184,7 +177,7 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServ
     @Override
     public void testFindDsdByCondition() throws Exception {
         srmCoreServiceFacade.saveDsd(getServiceContext(), SrmDtoMocks.createDdsDTO());
-        
+
         List<ConditionalCriteria> conditions = criteriaFor(DataStructureDefinition.class).withProperty(serviceURL()).eq("test").build();
 
         PagedResult<DataStructureDefinitionDto> dataStructureDefinitionDtoPagedList = srmCoreServiceFacade.findDsdByCondition(getServiceContext(), conditions, PagingParameter.pageAccess(10));
@@ -197,13 +190,13 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServ
     public void testFindAllDsds() throws Exception {
         List<DataStructureDefinitionDto> dsds = srmCoreServiceFacade.findAllDsds(getServiceContext());
         int previousSize = dsds.size();
-        
+
         srmCoreServiceFacade.saveDsd(getServiceContext(), SrmDtoMocks.createDdsDTO());
 
         dsds = srmCoreServiceFacade.findAllDsds(getServiceContext());
         assertTrue(!dsds.isEmpty());
         assertTrue(previousSize + 1 == dsds.size());
-        
+
     }
 
     /**************************************************************************
@@ -223,7 +216,7 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServ
 
         assertTrue(!descriptorDtos.isEmpty());
     }
-    
+
     @Test
     @Override
     public void testFindDescriptorForDsd() throws Exception {
@@ -364,8 +357,8 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServ
     public void testSaveComponentForDsd() throws Exception {
         DataStructureDefinitionDto dataStructureDefinitionDto = srmCoreServiceFacade.saveDsd(getServiceContext(), SrmDtoMocks.createDdsDTO());
 
-        ComponentDto componentDto = srmCoreServiceFacade.saveComponentForDsd(getServiceContext(), dataStructureDefinitionDto.getId(), SrmDtoMocks.createDimensionDtos(srmCoreServiceFacade)
-                .get(0), TypeComponentList.DIMENSION_DESCRIPTOR);
+        ComponentDto componentDto = srmCoreServiceFacade.saveComponentForDsd(getServiceContext(), dataStructureDefinitionDto.getId(), SrmDtoMocks.createDimensionDtos(srmCoreServiceFacade).get(0),
+                TypeComponentList.DIMENSION_DESCRIPTOR);
 
         assertNotNull(componentDto);
 
@@ -379,8 +372,8 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServ
     public void testSaveComponentForDsdWithDescriptorExist() throws Exception {
         DataStructureDefinitionDto dataStructureDefinitionDto = srmCoreServiceFacade.saveDsd(getServiceContext(), SrmDtoMocks.createDdsDTO());
 
-        ComponentDto componentDto = srmCoreServiceFacade.saveComponentForDsd(getServiceContext(), dataStructureDefinitionDto.getId(), SrmDtoMocks.createDimensionDtos(srmCoreServiceFacade)
-                .get(0), TypeComponentList.DIMENSION_DESCRIPTOR);
+        ComponentDto componentDto = srmCoreServiceFacade.saveComponentForDsd(getServiceContext(), dataStructureDefinitionDto.getId(), SrmDtoMocks.createDimensionDtos(srmCoreServiceFacade).get(0),
+                TypeComponentList.DIMENSION_DESCRIPTOR);
 
         assertNotNull(componentDto);
 
@@ -399,8 +392,8 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServ
     public void testSaveComponentForDsdWithDescriptorAndComponentExist() throws Exception {
         DataStructureDefinitionDto dataStructureDefinitionDto = srmCoreServiceFacade.saveDsd(getServiceContext(), SrmDtoMocks.createDdsDTO());
 
-        ComponentDto componentDto = srmCoreServiceFacade.saveComponentForDsd(getServiceContext(), dataStructureDefinitionDto.getId(), SrmDtoMocks.createDimensionDtos(srmCoreServiceFacade)
-                .get(0), TypeComponentList.DIMENSION_DESCRIPTOR);
+        ComponentDto componentDto = srmCoreServiceFacade.saveComponentForDsd(getServiceContext(), dataStructureDefinitionDto.getId(), SrmDtoMocks.createDimensionDtos(srmCoreServiceFacade).get(0),
+                TypeComponentList.DIMENSION_DESCRIPTOR);
 
         assertNotNull(componentDto);
 
@@ -420,8 +413,8 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServ
         DataStructureDefinitionDto dataStructureDefinitionDto = srmCoreServiceFacade.saveDsd(getServiceContext(), SrmDtoMocks.createDdsDTO());
 
         // SAVE COMPONENT
-        ComponentDto componentDto = srmCoreServiceFacade.saveComponentForDsd(getServiceContext(), dataStructureDefinitionDto.getId(), SrmDtoMocks.createDimensionDtos(srmCoreServiceFacade)
-                .get(0), TypeComponentList.DIMENSION_DESCRIPTOR);
+        ComponentDto componentDto = srmCoreServiceFacade.saveComponentForDsd(getServiceContext(), dataStructureDefinitionDto.getId(), SrmDtoMocks.createDimensionDtos(srmCoreServiceFacade).get(0),
+                TypeComponentList.DIMENSION_DESCRIPTOR);
 
         assertNotNull(componentDto);
 
@@ -451,7 +444,6 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServ
         srmCoreServiceFacade.findConcepts(getServiceContext(), StringUtils.EMPTY);
     }
 
-
     @Test
     @Override
     public void testFindCodelists() throws Exception {
@@ -459,15 +451,13 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServ
         srmCoreServiceFacade.findCodelists(getServiceContext(), StringUtils.EMPTY);
     }
 
-
     @Override
     @Test
     public void testRetrieveExtendedDsd() throws Exception {
 
         DataStructureDefinitionDto dataStructureDefinitionDto = SrmCoreServiceFacadeTest.saveDescriptorForDsd(getServiceContext(), srmCoreServiceFacade);
 
-        DataStructureDefinitionExtendDto dataStructureDefinitionExtendDto = srmCoreServiceFacade.retrieveExtendedDsd(getServiceContext(), dataStructureDefinitionDto.getId(),
-                TypeDozerCopyMode.CREATE);
+        DataStructureDefinitionExtendDto dataStructureDefinitionExtendDto = srmCoreServiceFacade.retrieveExtendedDsd(getServiceContext(), dataStructureDefinitionDto.getId(), TypeDozerCopyMode.CREATE);
 
         assertNotNull(dataStructureDefinitionExtendDto);
     }
@@ -477,23 +467,23 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServ
     public void testSaveDsdGraph() throws Exception {
 
         DataStructureDefinitionDto dataStructureDefinitionDto = SrmCoreServiceFacadeTest.saveDescriptorForDsd(getServiceContext(), srmCoreServiceFacade);
-        
+
         List<DataStructureDefinitionDto> dataStructureDefinitionDtoList = srmCoreServiceFacade.findAllDsds(getServiceContext());
         assertTrue(dataStructureDefinitionDtoList.size() == 1);
-        
+
         // In UPDATE MODE (no create)
         DataStructureDefinitionExtendDto dataStructureDefinitionExtendDto = srmCoreServiceFacade.retrieveExtendedDsd(getServiceContext(), dataStructureDefinitionDto.getId(), TypeDozerCopyMode.UPDATE);
 
         srmCoreServiceFacade.saveDsdGraph(getServiceContext(), dataStructureDefinitionExtendDto);
-        
+
         dataStructureDefinitionDtoList = srmCoreServiceFacade.findAllDsds(getServiceContext());
         assertTrue(dataStructureDefinitionDtoList.size() == 1);
 
         // In UPDATE MODE (no create)
         dataStructureDefinitionExtendDto = srmCoreServiceFacade.retrieveExtendedDsd(getServiceContext(), dataStructureDefinitionDto.getId(), TypeDozerCopyMode.CREATE);
-        
+
         srmCoreServiceFacade.saveDsdGraph(getServiceContext(), dataStructureDefinitionExtendDto);
-        
+
         dataStructureDefinitionDtoList = srmCoreServiceFacade.findAllDsds(getServiceContext());
         assertTrue(dataStructureDefinitionDtoList.size() == 2);
     }
@@ -508,126 +498,8 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServ
         assertNotNull(dataStructureDefinitionDto2);
     }
 
-    @Test
-    @Override
-    public void testFindOrganisation() throws Exception {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Test
-    @Override
-    public void testCreateConceptScheme() throws Exception {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Test
-    @Override
-    public void testUpdateConceptScheme() throws Exception {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Test
-    @Override
-    public void testDeleteConceptScheme() throws Exception {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Test
-    @Override
-    public void testFindAllConceptSchemes() throws Exception {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Test
-    @Override
-    public void testRetrieveConceptScheme() throws Exception {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Test
-    @Override
-    public void testSendConceptSchemeToPendingPublication() throws Exception {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Test
-    @Override
-    public void testPublishConceptSchemeInternally() throws Exception {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Test
-    @Override
-    public void testPublishConceptSchemeExternally() throws Exception {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Test
-    @Override
-    public void testCreateConcept() throws Exception {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Test
-    @Override
-    public void testUpdateConcept() throws Exception {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Test
-    @Override
-    public void testDeleteConcept() throws Exception {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Test
-    @Override
-    public void testFindConceptsForConceptScheme() throws Exception {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Test
-    @Override
-    public void testRetrieveConcept() throws Exception {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Test
-    @Override
-    public void testSendConceptToPendingPublication() throws Exception {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Test
-    @Override
-    public void testPublishConceptInternally() throws Exception {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Test
-    @Override
-    public void testPublishConceptExternally() throws Exception {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Ignore // TODO está fallando
+    @Ignore
+    // TODO está fallando
     @Test
     @Override
     public void testImportSDMXStructureMsg() throws Exception {
@@ -664,7 +536,8 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServ
 
     }
 
-    @Ignore // TODO está fallando
+    @Ignore
+    // TODO está fallando
     @Test
     @Override
     public void testExportSDMXStructureMsg() throws Exception {
@@ -676,9 +549,9 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServ
         exportStructureMessage("ECB_EXR_RG");
 
         // DSD: ECB_EXR_RG
-        exportStructureMessage("ECB_EXR_SG"); 
+        exportStructureMessage("ECB_EXR_SG");
     }
-    
+
     private void exportStructureMessage(String dsdId) throws MetamacException, FileNotFoundException {
         StructureMsgDto structureMsgDto = new StructureMsgDto();
 
@@ -732,7 +605,6 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServ
         fileInputStreams.add(new FileInputStream(new File(SDMXResources.DSD_INE_IPCA)));
         fileInputStreams.add(new FileInputStream(new File(SDMXResources.DSD_INE_MNP)));
 
-
         for (FileInputStream fis : fileInputStreams) {
 
             // 1. Extract Structure
@@ -752,8 +624,7 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServ
         }
 
     }
-    
-    
+
     // *************************************************************************
     // COMMON
     // *************************************************************************
@@ -764,4 +635,19 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServ
         return srmCoreServiceFacade.findDsdByCondition(serviceContext, dsdConditions, PagingParameter.pageAccess(10));
     }
 
+    @Override
+    public void testFindOrganisation() throws Exception {
+        // TODO Auto-generated method stub
+
+    }
+
+    // *************************************************************************
+    // CONCEPTS
+    // *************************************************************************
+    @Test
+    @Override
+    public void testDeleteConceptScheme() throws Exception {
+        // TODO Auto-generated method stub
+
+    }
 }

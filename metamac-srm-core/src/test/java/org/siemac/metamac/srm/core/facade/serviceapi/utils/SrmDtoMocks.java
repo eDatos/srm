@@ -79,7 +79,7 @@ public class SrmDtoMocks {
         dataStructureDefinitionDto.setServiceURL("test");
         
         // Version Logic
-        dataStructureDefinitionDto.setVersionLogic(VersionUtil.VERSION_LOGIC);
+        dataStructureDefinitionDto.setVersionLogic(VersionUtil.VERSION_LOGIC_INITIAL_VERSION);
 
         // Audit
         dataStructureDefinitionDto.setCreatedBy(serviceContext.getApplicationId());

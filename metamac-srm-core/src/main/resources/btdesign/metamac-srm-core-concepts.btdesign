@@ -15,8 +15,6 @@ Application ConceptSchemeVersions {
 
 		"Provides access to Scheme Concepts Artefacts"
  		Service ConceptsService {
- 			// > @ItemSchemeRepository // injected by autowired, because this repository is in another Module
- 			// > @ItemSchemeVersionRepository // injected by autowired, because this repository is in another Module
  			> @ConceptSchemeVersionRepository
 			
 			"Create concept scheme"
@@ -25,24 +23,15 @@ Application ConceptSchemeVersions {
     		@ConceptSchemeVersion findConceptSchemeByUrn(String urn) throws MetamacException;
     		"Retrieve all versions of concept scheme"
     		List<@ConceptSchemeVersion> retrieveConceptSchemeHistoric(String urn) throws MetamacException;
+			"Delete concept scheme in draft"
+    		deleteConceptScheme(String urn) throws MetamacException;
     		"Finds concept schemes by criteria in any state, returning last versions"
     		PagedResult<@ConceptSchemeVersion> findConceptSchemeByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
-
-    		// @ConceptSchemeVersion updateConceptSchemeVersion(@ConceptSchemeVersion entity) throws MetamacException;
-    		// deleteConceptSchemeVersion(Long id) throws MetamacException;
-    		
-    		// "Concept"
-    		//@Concept createConcept(Long conceptSchemeVersionId, @ConceptSchemeVersion entity) throws MetamacException;
-    		//@Concept updateConcept(@ConceptSchemeVersion entity) throws MetamacException;
-    		//deleteConcept(Long id) throws MetamacException;
-    		//@Concept findConceptById(Long id) throws MetamacException;
-    		//List<@Concept> findConceptSchemeVersionConcepts(Long conceptSchemeVersionId) throws MetamacException;
 	   }
 		
 		// ----------------------------------------------------------------
 		// 							ENTITIES
 		// ----------------------------------------------------------------  
-		
 		
 		"The descriptive information for an arrangement or division of concepts into groups based on characteristics, 
 		which the objects have in common. 
@@ -60,7 +49,6 @@ Application ConceptSchemeVersions {
 			}
 		}  
 		
-		
 		Entity Concept extends @Item {
 			databaseTable="TB_CONCEPTS"
 			hint="idSequence=CONCEPTS"
@@ -74,16 +62,6 @@ Application ConceptSchemeVersions {
 			String isoConceptReferenceSchemeID nullable;
 			"The identifier of the concept. (ISOConceptReference)"
 			String isoConceptReferenceID nullable;
-       		
-			Repository ConceptRepository {
-				findById;
-		   		findAll;
-		   		save;
-		   		delete;
-				findByCondition;
-				findByCondition(PagingParameter pagingParameter);
-			}
 		}  
-		
 	}
 }

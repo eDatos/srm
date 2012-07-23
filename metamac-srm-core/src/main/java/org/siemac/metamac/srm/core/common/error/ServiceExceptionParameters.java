@@ -3,7 +3,6 @@ package org.siemac.metamac.srm.core.common.error;
 public class ServiceExceptionParameters {
 
     public static final String URN                                             = "urn";
-    public static final String ID                                              = "id";
 
     // MANTAINER
     public static final String MANTAINER                                       = "mantainer";
@@ -41,6 +40,9 @@ public class ServiceExceptionParameters {
 
     // IDENTIFIABLE_ARTEFACT
     public static final String IDENTIFIABLEARTEFACT                            = "identifiableartefact";
+
+    // MAINTAINABLE_ARTEFACT
+    public static final String PROC_STATUS_DRAFT                               = "draft";
 
     // NAMEABLE
     public static final String NAMEABLEARTEFACT                                = "nameableartefact";

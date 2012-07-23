@@ -11,19 +11,20 @@ import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.criteria.utils.CriteriaUtils;
 import org.siemac.metamac.core.common.ent.domain.ExternalItem;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.util.GeneratorUrnUtils;
+import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.domain.srm.enume.domain.MaintainableProcStatusEnum;
-import org.siemac.metamac.domain.srm.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.srm.core.base.domain.ItemScheme;
 import org.siemac.metamac.srm.core.base.domain.ItemSchemeRepository;
 import org.siemac.metamac.srm.core.base.domain.ItemSchemeVersion;
 import org.siemac.metamac.srm.core.base.domain.ItemSchemeVersionRepository;
 import org.siemac.metamac.srm.core.base.domain.MaintainableArtefact;
 import org.siemac.metamac.srm.core.common.error.MetamacCoreExceptionType;
+import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersion;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionProperties;
 import org.siemac.metamac.srm.core.concept.serviceimpl.utils.ConceptsInvocationValidator;
-import org.siemac.metamac.srm.core.service.utils.ServiceUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -67,11 +68,14 @@ public class ConceptsServiceImpl extends ConceptsServiceImplBase {
         // Save draft version
         maintainableArtefact.setProcStatus(MaintainableProcStatusEnum.DRAFT);
         maintainableArtefact.setIsLastVersion(Boolean.TRUE);
-        maintainableArtefact.setVersionLogic(ServiceUtil.generateVersionNumber(null, VersionTypeEnum.MAJOR)); // TODO formato de la versión?
+        maintainableArtefact.setFinalLogic(Boolean.FALSE);
+        maintainableArtefact.setVersionLogic(VersionUtil.createNextVersionTag(null, true));
         maintainableArtefact.setUrn(GeneratorUrnUtils.generateSdmxConceptSchemeUrn(maintainableArtefact.getMaintainer().getCode(), maintainableArtefact.getIdLogic(),
                 maintainableArtefact.getVersionLogic()));
         maintainableArtefact.setValidFrom(null);
         maintainableArtefact.setValidTo(null);
+        maintainableArtefact.setReplacedBy(null);
+        maintainableArtefact.setReplaceTo(null);
         conceptSchemeVersion.setItemScheme(conceptScheme);
         conceptSchemeVersion = (ConceptSchemeVersion) getItemSchemeVersionRepository().save(conceptSchemeVersion);
 
@@ -96,7 +100,7 @@ public class ConceptsServiceImpl extends ConceptsServiceImplBase {
     public List<ConceptSchemeVersion> retrieveConceptSchemeHistoric(ServiceContext ctx, String urn) throws MetamacException {
 
         // Validation
-        // ConceptsInvocationValidator.retrieveConceptSchemeVersions(urn, null); // TODO
+        ConceptsInvocationValidator.retrieveConceptSchemeVersions(urn, null);
 
         // Retrieve all versions
         ConceptSchemeVersion conceptSchemeVersion = findConceptSchemeVersionByUrn(urn);
@@ -108,6 +112,37 @@ public class ConceptsServiceImpl extends ConceptsServiceImplBase {
             conceptSchemeVersions.add((ConceptSchemeVersion) itemSchemeVersion);
         }
         return conceptSchemeVersions;
+    }
+
+    @Override
+    public void deleteConceptScheme(ServiceContext ctx, String urn) throws MetamacException {
+
+        // Validation of parameters
+        ConceptsInvocationValidator.checkDeleteConceptScheme(urn, null);
+
+        // Retrieve concept scheme and check it is in draft
+        ConceptSchemeVersion conceptSchemeVersion = findConceptSchemeVersionByUrn(urn);
+        if (!MaintainableProcStatusEnum.DRAFT.equals(conceptSchemeVersion.getMaintainableArtefact().getProcStatus())) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(MetamacCoreExceptionType.CONCEPT_SCHEME_WRONG_PROC_STATUS)
+                    .withMessageParameters(urn, new String[]{ServiceExceptionParameters.PROC_STATUS_DRAFT}).build();
+        }
+        // Delete whole concept scheme or only last version
+        if (VersionUtil.VERSION_LOGIC_INITIAL_VERSION.equals(conceptSchemeVersion.getMaintainableArtefact().getVersionLogic())) {
+            // Delete whole concept scheme
+            ItemScheme conceptScheme = conceptSchemeVersion.getItemScheme();
+            getItemSchemeRepository().delete(conceptScheme);
+        } else {
+            // Delete draft version
+            ItemScheme conceptScheme = conceptSchemeVersion.getItemScheme();
+            conceptScheme.getVersions().remove(conceptSchemeVersion);
+            getItemSchemeVersionRepository().delete(conceptSchemeVersion);
+
+            // Update previous version
+            ItemSchemeVersion conceptSchemePreviousVersion = findConceptSchemeVersionByItemSchemeAndVersion(conceptScheme.getId(), conceptSchemeVersion.getMaintainableArtefact().getReplaceTo());
+            conceptSchemePreviousVersion.getMaintainableArtefact().setIsLastVersion(Boolean.TRUE); // previous version is now last version
+            conceptSchemePreviousVersion.getMaintainableArtefact().setReplacedBy(null);
+            getItemSchemeVersionRepository().save(conceptSchemePreviousVersion);
+        }
     }
 
     @Override
@@ -226,10 +261,23 @@ public class ConceptsServiceImpl extends ConceptsServiceImplBase {
         PagedResult<ItemSchemeVersion> result = getItemSchemeVersionRepository().findByCondition(conditions, pagingParameter);
 
         if (result.getValues().size() == 0) {
-            throw new MetamacException(MetamacCoreExceptionType.CONCEPT_SCHEME_NOT_FOUND, urn);
+            throw MetamacExceptionBuilder.builder().withExceptionItems(MetamacCoreExceptionType.CONCEPT_SCHEME_NOT_FOUND).withMessageParameters(urn).build();
         }
 
         // Return unique result
         return (ConceptSchemeVersion) result.getValues().get(0);
     }
+
+    private ConceptSchemeVersion findConceptSchemeVersionByItemSchemeAndVersion(Long itemSchemeId, String versionNumber) throws MetamacException {
+
+        // Prepare criteria
+        List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersion.class).withProperty(ConceptSchemeVersionProperties.itemScheme().id()).eq(itemSchemeId)
+                .withProperty(ConceptSchemeVersionProperties.maintainableArtefact().versionLogic()).eq(versionNumber).distinctRoot().build();
+        PagingParameter pagingParameter = PagingParameter.pageAccess(1, 1);
+
+        // Find
+        PagedResult<ItemSchemeVersion> result = getItemSchemeVersionRepository().findByCondition(conditions, pagingParameter);
+        return (ConceptSchemeVersion) result.getValues().get(0);
+    }
+
 }

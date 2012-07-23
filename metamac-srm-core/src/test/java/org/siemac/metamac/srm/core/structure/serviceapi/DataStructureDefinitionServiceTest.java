@@ -194,7 +194,7 @@ public class DataStructureDefinitionServiceTest extends SrmBaseTest implements D
         // Boolean isExternalReference, String sdmxVersion, String sdmxId,
         // String uri, MaintenanceAgency maintainer, InternationalString name,
         // Set<ComponentList> grouping)
-        dataStructureDefinition.setVersionLogic(VersionUtil.VERSION_LOGIC);
+        dataStructureDefinition.setVersionLogic(VersionUtil.VERSION_LOGIC_INITIAL_VERSION);
         dataStructureDefinition.setFinalLogic(false);
         dataStructureDefinition.setIsExternalReference(false);
         dataStructureDefinition.setUri(RandomStringUtils.random(50, true, true));

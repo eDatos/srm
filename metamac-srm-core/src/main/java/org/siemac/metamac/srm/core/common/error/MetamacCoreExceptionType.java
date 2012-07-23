@@ -17,5 +17,6 @@ public class MetamacCoreExceptionType extends CommonServiceExceptionType {
     // TODO id logic??
     public static final CommonServiceExceptionType CONCEPT_SCHEME_NOT_FOUND                         = create("exception.core.concepts.concept_scheme.not_found");
     public static final CommonServiceExceptionType CONCPET_SCHEME_ALREADY_EXIST_ID_LOGIC_DUPLICATED = create("exception.core.concepts.concept_scheme.already_exist.code_duplicated");
+    public static final CommonServiceExceptionType CONCEPT_SCHEME_WRONG_PROC_STATUS                 = create("exception.core.concepts.concept_scheme.wrong_proc_status");
 
 }
