@@ -449,8 +449,12 @@ public class DataStructureConstraintValidator {
         }
 
         // Check for restrictions
-        // FacetValueType: use="optional"
-        checkSimpleDataType(facet.getFacetValue(), metadataName);
+        // FacetValueType:
+        if (facet.getFacetValue() == null) {
+            exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_REQUIRED, metadataName + ServiceExceptionParametersInternal.FACET_FACETVALUETYPEENUM));
+        } else {
+            checkSimpleDataType(facet.getFacetValue(), metadataName);
+        }
 
         // FacetType --
 
@@ -537,8 +541,12 @@ public class DataStructureConstraintValidator {
 
         // Check for restrictions
         if (facet != null) {
-            // FacetValueType: use="optional"
-            checkSimpleDataType(facet.getFacetValue(), metadataName);
+            // FacetValueType
+            if (facet.getFacetValue() == null) {
+                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_REQUIRED, metadataName + ServiceExceptionParametersInternal.FACET_FACETVALUETYPEENUM));
+            } else {
+                checkSimpleDataType(facet.getFacetValue(), metadataName);
+            }
 
             // FacetType --
             // NonFacetedTextFormatType is a restricted version of the SimpleComponentTextFormatType that does not allow for any facets.
@@ -630,8 +638,12 @@ public class DataStructureConstraintValidator {
 
         // Check for restrictions
         if (facet != null) {
-            // FacetValueType: use="optional"
-            checkTimeDataType(facet.getFacetValue(), metadataName);
+            // FacetValueType
+            if (facet.getFacetValue() == null) {
+                exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_REQUIRED, metadataName + ServiceExceptionParametersInternal.FACET_FACETVALUETYPEENUM));
+            } else {
+                checkTimeDataType(facet.getFacetValue(), metadataName);
+            }
 
             // FacetType --
             // NonFacetedTextFormatType is a restricted version of the SimpleComponentTextFormatType that does not allow for any facets.
