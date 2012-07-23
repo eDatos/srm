@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.core.common.error;
 public class ServiceExceptionParameters {
 
     public static final String URN                                             = "urn";
+    public static final String ID                                              = "id";
 
     // MANTAINER
     public static final String MANTAINER                                       = "mantainer";
@@ -56,19 +57,16 @@ public class ServiceExceptionParameters {
     public static final String COMPONENT_TYPE_PRIMARY_MEASURE                  = "component.type.primary_measure";
     public static final String COMPONENT_TYPE_TARGET_OBJECT                    = "component.type.target_object";
     public static final String COMPONENT_TYPE_METADATA_ATTRIBUTE               = "component.type.metadata_attribute";
-    public static final String COMPONENT_REPRESENTATION_ENUMERATE_TITLE        = "component.representation.enumerate.title";
 
     // DIMENSION
     public static final String DIMENSION                                       = "dimension";
     public static final String DIMENSION_ROLE                                  = "dimension.role";
-    public static final String DIMENSION_REPRESENTATION_ENUMERATE_TITLE        = "dimension.representation.enumerate.title";
 
-    // DATA_ATTRIBUTE
+
     public static final String DATAATTRIBUTE                                   = "dataattribute";
     public static final String DATAATTRIBUTE_USAGE_STATES                      = "dataattribute.usage_states";
     public static final String DATAATTRIBUTE_RELATETO                          = "dataattribute.relateto";
     public static final String DATAATTRIBUTE_ROLE                              = "dataattribute.role";
-    public static final String DATAATTRIBUTE_REPRESENTATION_ENUMERATE_TITLE    = "dataattribute.representation.enumerate.title";
 
     // REPORTINGYEARSTARTDAY
     public static final String REPORTINGYEARSTARDAY                            = "reportingyearstarday";
@@ -76,11 +74,9 @@ public class ServiceExceptionParameters {
     // MEASURE_DIMENSION
     public static final String MEASUREDIMENSION                                = "measuredimension";
     public static final String MEASUREDIMENSION_ROLE                           = "measuredimension.rolee";
-    public static final String MEASUREDIMENSION_REPRESENTATION_ENUMERATE_TITLE = "measuredimension.representation.enumerate.title";
 
     // TIME_DIMENSION
     public static final String TIMEDIMENSION                                   = "timedimension";
-    public static final String TIMEDIMENSION_REPRESENTATION_ENUMERATE_TITLE    = "timedimension.representation.enumerate.title";
 
     // PRIMARY_MEASURE
     public static final String PRIMARYMEASURE                                  = "primarymeasure";
