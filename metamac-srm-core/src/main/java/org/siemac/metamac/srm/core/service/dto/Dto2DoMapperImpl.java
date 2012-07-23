@@ -515,7 +515,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
 
         // LocalRepresentation
         result.setLocalRepresentation(representationDtoToRepresentation(ctx, source.getLocalRepresentation(), ((DataAttribute) result).getLocalRepresentation(),
-                ServiceExceptionParameters.DATAATTRIBUTE_REPRESENTATION_ENUMERATE_TITLE));
+                ServiceExceptionParameters.DATAATTRIBUTE + ServiceExceptionParametersInternal.REPRESENTATION));
 
         return result;
     }
@@ -599,7 +599,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
 
         // LocalRepresentation
         result.setLocalRepresentation(representationDtoToRepresentation(ctx, source.getLocalRepresentation(), result.getLocalRepresentation(),
-                ServiceExceptionParameters.DIMENSION_REPRESENTATION_ENUMERATE_TITLE));
+                ServiceExceptionParameters.DIMENSION + ServiceExceptionParametersInternal.REPRESENTATION));
         
         // Concept identity
         result.setCptIdRef(externalItemDtoToExternalItem(ctx, source.getCptIdRef(), "DimensionConceptIdentity")); // TODO args exp
@@ -652,7 +652,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
 
         // LocalRepresentation
         result.setLocalRepresentation(representationDtoToRepresentation(ctx, source.getLocalRepresentation(), result.getLocalRepresentation(),
-                ServiceExceptionParameters.MEASUREDIMENSION_REPRESENTATION_ENUMERATE_TITLE));
+                ServiceExceptionParameters.MEASUREDIMENSION + ServiceExceptionParametersInternal.REPRESENTATION));
 
         // Concept identity
         result.setCptIdRef(externalItemDtoToExternalItem(ctx, source.getCptIdRef(), "MeasureDimensionConceptIdentity")); // TODO args exp
@@ -682,7 +682,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
 
         // LocalRepresentation
         result.setLocalRepresentation(representationDtoToRepresentation(ctx, source.getLocalRepresentation(), result.getLocalRepresentation(),
-                ServiceExceptionParameters.TIMEDIMENSION_REPRESENTATION_ENUMERATE_TITLE));
+                ServiceExceptionParameters.TIMEDIMENSION + ServiceExceptionParametersInternal.REPRESENTATION));
 
         return result;
     }
@@ -709,7 +709,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
 
         // LocalRepresentation
         result.setLocalRepresentation(representationDtoToRepresentation(ctx, source.getLocalRepresentation(), result.getLocalRepresentation(),
-                ServiceExceptionParameters.COMPONENT_REPRESENTATION_ENUMERATE_TITLE));
+                ServiceExceptionParameters.COMPONENT + ServiceExceptionParametersInternal.REPRESENTATION));
         
         // Concept identity
         result.setCptIdRef(externalItemDtoToExternalItem(ctx, source.getCptIdRef(), "PrimaryMeasureConceptIdentity")); // TODO args exp
