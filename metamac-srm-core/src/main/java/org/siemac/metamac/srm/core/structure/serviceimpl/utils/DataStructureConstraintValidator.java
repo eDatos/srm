@@ -383,62 +383,62 @@ public class DataStructureConstraintValidator {
             // FacetType --
             
             // IsSequenceFT
-            if (!CoreCommonUtil.matchStringToPattern(textFormatRepresentation.getNonEnumerated().getIsSequenceFT(), CoreCommonUtil.PATTERN_XSD_BOOLEAN)) {
+            if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getIsSequenceFT()) && !CoreCommonUtil.matchStringToPattern(textFormatRepresentation.getNonEnumerated().getIsSequenceFT(), CoreCommonUtil.PATTERN_XSD_BOOLEAN)) {
                 exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, ServiceExceptionParametersInternal.FACET_ISSEQUENCEFT)); //TODO CONCATENAR MSG
             }
             
             // IntervalFT
-            if (!CoreCommonUtil.matchStringToPattern(textFormatRepresentation.getNonEnumerated().getIntervalFT(), CoreCommonUtil.PATTERN_XSD_INTEGER)) {
+            if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getIntervalFT()) && !CoreCommonUtil.matchStringToPattern(textFormatRepresentation.getNonEnumerated().getIntervalFT(), CoreCommonUtil.PATTERN_XSD_INTEGER)) {
                 exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, ServiceExceptionParametersInternal.FACET_INTERVALFT)); //TODO CONCATENAR MSG
             }
             
             // StartValueFT
-            if (!CoreCommonUtil.matchStringToPattern(textFormatRepresentation.getNonEnumerated().getStartValueFT(), CoreCommonUtil.PATTERN_XSD_INTEGER)) {
+            if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getStartValueFT()) && !CoreCommonUtil.matchStringToPattern(textFormatRepresentation.getNonEnumerated().getStartValueFT(), CoreCommonUtil.PATTERN_XSD_INTEGER)) {
                 exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, ServiceExceptionParametersInternal.FACET_STARTVALUEFT)); //TODO CONCATENAR MSG
             }
             
             // EndValueFT
-            if (!CoreCommonUtil.matchStringToPattern(textFormatRepresentation.getNonEnumerated().getEndValueFT(), CoreCommonUtil.PATTERN_XSD_INTEGER)) {
+            if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getEndValueFT()) && !CoreCommonUtil.matchStringToPattern(textFormatRepresentation.getNonEnumerated().getEndValueFT(), CoreCommonUtil.PATTERN_XSD_INTEGER)) {
                 exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, ServiceExceptionParametersInternal.FACET_ENDVALUEFT)); //TODO CONCATENAR MSG
             }
             
             // TimeInterval
-            if (!CoreCommonUtil.matchStringToPattern(textFormatRepresentation.getNonEnumerated().getTimeIntervalFT(), CoreCommonUtil.PATTERN_XSD_DURATION)) {
+            if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getTimeIntervalFT()) && !CoreCommonUtil.matchStringToPattern(textFormatRepresentation.getNonEnumerated().getTimeIntervalFT(), CoreCommonUtil.PATTERN_XSD_DURATION)) {
                 exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, ServiceExceptionParametersInternal.FACET_TIMEINTERVALFT)); //TODO CONCATENAR MSG
             }
             
             // startTime
-            if (!CoreCommonUtil.matchStringToPattern(textFormatRepresentation.getNonEnumerated().getStartTimeFT(), CoreCommonUtil.PATTERN_SDMXL21_STANDARD_TIME_PERIOD)) {
+            if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getStartTimeFT()) && !CoreCommonUtil.matchStringToPattern(textFormatRepresentation.getNonEnumerated().getStartTimeFT(), CoreCommonUtil.PATTERN_SDMXL21_STANDARD_TIME_PERIOD)) {
                 exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, ServiceExceptionParametersInternal.FACET_STARTTIMEFT)); //TODO CONCATENAR MSG
             }
             
             // endTime
-            if (!CoreCommonUtil.matchStringToPattern(textFormatRepresentation.getNonEnumerated().getEndTimeFT(), CoreCommonUtil.PATTERN_SDMXL21_STANDARD_TIME_PERIOD)) {
+            if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getEndTimeFT()) && !CoreCommonUtil.matchStringToPattern(textFormatRepresentation.getNonEnumerated().getEndTimeFT(), CoreCommonUtil.PATTERN_SDMXL21_STANDARD_TIME_PERIOD)) {
                 exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, ServiceExceptionParametersInternal.FACET_ENDTIMEFT)); //TODO CONCATENAR MSG
             }
 
             // minLength
-            if (!CoreCommonUtil.matchStringToPattern(textFormatRepresentation.getNonEnumerated().getMinLengthFT(), CoreCommonUtil.PATTERN_XSD_POSITIVEINTEGER)) {
+            if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getMinLengthFT()) && !CoreCommonUtil.matchStringToPattern(textFormatRepresentation.getNonEnumerated().getMinLengthFT(), CoreCommonUtil.PATTERN_XSD_POSITIVEINTEGER)) {
                 exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, ServiceExceptionParametersInternal.FACET_MINLENGTHFT)); //TODO CONCATENAR MSG
             }
             
             // maxLength
-            if (!CoreCommonUtil.matchStringToPattern(textFormatRepresentation.getNonEnumerated().getMaxLengthFT(), CoreCommonUtil.PATTERN_XSD_POSITIVEINTEGER)) {
+            if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getMaxLengthFT()) && !CoreCommonUtil.matchStringToPattern(textFormatRepresentation.getNonEnumerated().getMaxLengthFT(), CoreCommonUtil.PATTERN_XSD_POSITIVEINTEGER)) {
                 exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, ServiceExceptionParametersInternal.FACET_MAXLENGTHFT)); //TODO CONCATENAR MSG
             }
             
             // minValue
-            if (!CoreCommonUtil.matchStringToPattern(textFormatRepresentation.getNonEnumerated().getMinValueFT(), CoreCommonUtil.PATTERN_XSD_INTEGER)) {
+            if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getMinValueFT()) && !CoreCommonUtil.matchStringToPattern(textFormatRepresentation.getNonEnumerated().getMinValueFT(), CoreCommonUtil.PATTERN_XSD_INTEGER)) {
                 exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, ServiceExceptionParametersInternal.FACET_MINVALUEFT)); //TODO CONCATENAR MSG
             }
             
             // maxValue
-            if (!CoreCommonUtil.matchStringToPattern(textFormatRepresentation.getNonEnumerated().getMaxValueFT(), CoreCommonUtil.PATTERN_XSD_INTEGER)) {
+            if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getMaxValueFT()) && !CoreCommonUtil.matchStringToPattern(textFormatRepresentation.getNonEnumerated().getMaxValueFT(), CoreCommonUtil.PATTERN_XSD_INTEGER)) {
                 exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, ServiceExceptionParametersInternal.FACET_MAXVALUEFT)); //TODO CONCATENAR MSG
             }
             
             // decimals
-            if (!CoreCommonUtil.matchStringToPattern(textFormatRepresentation.getNonEnumerated().getDecimalsFT(), CoreCommonUtil.PATTERN_XSD_POSITIVEINTEGER)) {
+            if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getDecimalsFT()) && !CoreCommonUtil.matchStringToPattern(textFormatRepresentation.getNonEnumerated().getDecimalsFT(), CoreCommonUtil.PATTERN_XSD_POSITIVEINTEGER)) {
                 exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, ServiceExceptionParametersInternal.FACET_DECIMALSFT)); //TODO CONCATENAR MSG
             }
             
@@ -446,10 +446,10 @@ public class DataStructureConstraintValidator {
             // ... nothing ...
             
             // Prohibited
-            if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getIsMultiLingual())) {
+            if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getIsMultiLingual()) && StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getIsMultiLingual())) {
                 exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_UNEXPECTED, ServiceExceptionParametersInternal.FACET_ISMULTILINGUAL)); //TODO CONCATENAR MSG
             }
-            if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getXhtmlEFT())) {
+            if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getXhtmlEFT()) && StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getXhtmlEFT())) {
                 exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_UNEXPECTED, ServiceExceptionParametersInternal.FACET_XHTMLEFT)); //TODO CONCATENAR MSG
             }
             
@@ -584,12 +584,12 @@ public class DataStructureConstraintValidator {
             }
             
             // startTime
-            if (!CoreCommonUtil.matchStringToPattern(textFormatRepresentation.getNonEnumerated().getStartTimeFT(), CoreCommonUtil.PATTERN_SDMXL21_STANDARD_TIME_PERIOD)) {
+            if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getStartTimeFT()) && !CoreCommonUtil.matchStringToPattern(textFormatRepresentation.getNonEnumerated().getStartTimeFT(), CoreCommonUtil.PATTERN_SDMXL21_STANDARD_TIME_PERIOD)) {
                 exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, ServiceExceptionParametersInternal.FACET_STARTTIMEFT)); //TODO CONCATENAR MSG
             }
             
             // endTime
-            if (!CoreCommonUtil.matchStringToPattern(textFormatRepresentation.getNonEnumerated().getEndTimeFT(), CoreCommonUtil.PATTERN_SDMXL21_STANDARD_TIME_PERIOD)) {
+            if (StringUtils.isNotEmpty(textFormatRepresentation.getNonEnumerated().getEndTimeFT()) && !CoreCommonUtil.matchStringToPattern(textFormatRepresentation.getNonEnumerated().getEndTimeFT(), CoreCommonUtil.PATTERN_SDMXL21_STANDARD_TIME_PERIOD)) {
                 exceptions.add(new MetamacExceptionItem(MetamacCoreExceptionType.METADATA_INCORRECT, ServiceExceptionParametersInternal.FACET_ENDTIMEFT)); //TODO CONCATENAR MSG
             }
 

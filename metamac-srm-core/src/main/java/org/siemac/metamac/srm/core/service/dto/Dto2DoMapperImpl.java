@@ -40,6 +40,7 @@ import org.siemac.metamac.domain.srm.dto.RelationshipDto;
 import org.siemac.metamac.domain.srm.dto.RepresentationDto;
 import org.siemac.metamac.domain.srm.enume.domain.TypeComponent;
 import org.siemac.metamac.domain.srm.enume.domain.TypeComponentList;
+import org.siemac.metamac.domain.srm.enume.domain.TypeDataAttribute;
 import org.siemac.metamac.srm.core.base.domain.AnnotableArtefact;
 import org.siemac.metamac.srm.core.base.domain.Annotation;
 import org.siemac.metamac.srm.core.base.domain.AnnotationRepository;
@@ -481,6 +482,11 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         // Related entities
         // Relate To
         ((DataAttribute) result).setRelateTo(attributeRelationshipDtoToAttributeRelationship(ctx, source.getRelateTo(), ((DataAttribute) result).getRelateTo()));
+        
+        if (TypeDataAttribute.DATA_ATTRIBUTE.equals(source.getTypeDataAttribute())) {
+            // Concept identity
+            result.setCptIdRef(externalItemDtoToExternalItem(ctx, source.getCptIdRef(), "DataAttributeConceptIdentity")); // TODO args exp
+        }
 
         // Role
         if (source.getId() != null) { // Update
@@ -593,6 +599,9 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         // LocalRepresentation
         result.setLocalRepresentation(representationDtoToRepresentation(ctx, source.getLocalRepresentation(), result.getLocalRepresentation(),
                 ServiceExceptionParameters.DIMENSION_REPRESENTATION_ENUMERATE_TITLE));
+        
+        // Concept identity
+        result.setCptIdRef(externalItemDtoToExternalItem(ctx, source.getCptIdRef(), "DimensionConceptIdentity")); // TODO args exp
 
         return result;
     }
@@ -644,6 +653,9 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         result.setLocalRepresentation(representationDtoToRepresentation(ctx, source.getLocalRepresentation(), result.getLocalRepresentation(),
                 ServiceExceptionParameters.MEASUREDIMENSION_REPRESENTATION_ENUMERATE_TITLE));
 
+        // Concept identity
+        result.setCptIdRef(externalItemDtoToExternalItem(ctx, source.getCptIdRef(), "MeasureDimensionConceptIdentity")); // TODO args exp
+        
         return result;
     }
 
@@ -697,6 +709,9 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         // LocalRepresentation
         result.setLocalRepresentation(representationDtoToRepresentation(ctx, source.getLocalRepresentation(), result.getLocalRepresentation(),
                 ServiceExceptionParameters.COMPONENT_REPRESENTATION_ENUMERATE_TITLE));
+        
+        // Concept identity
+        result.setCptIdRef(externalItemDtoToExternalItem(ctx, source.getCptIdRef(), "PrimaryMeasureConceptIdentity")); // TODO args exp
 
         return result;
     }

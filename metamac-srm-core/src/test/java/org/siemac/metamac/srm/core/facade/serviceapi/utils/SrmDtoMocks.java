@@ -233,9 +233,11 @@ public class SrmDtoMocks {
         // Required
         primaryMeasure.setCptIdRef(conceptDtos.get(0));
         primaryMeasure.setTypeComponent(TypeComponent.PRIMARY_MEASURE);
-
+        primaryMeasure.setCptIdRef(MetamacMocks.mockExternalItemDto(BaseDoMocks.mockConceptUrn(), TypeExternalArtefactsEnum.CONCEPT));
+        
         // Other
         primaryMeasure.setUri(RandomStringUtils.random(50, true, true));
+
 
         return primaryMeasure;
     }
