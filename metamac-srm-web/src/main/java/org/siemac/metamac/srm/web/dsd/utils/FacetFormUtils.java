@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.siemac.metamac.domain.srm.enume.domain.FacetValueTypeEnum;
+import org.siemac.metamac.srm.core.structure.serviceimpl.utils.shared.DataStructureConstraintSharedValidator;
 import org.siemac.metamac.srm.web.dsd.widgets.FacetForm;
 
 import com.smartgwt.client.widgets.form.DynamicForm;
@@ -39,47 +40,14 @@ public class FacetFormUtils {
      * @return
      */
     public static Set<FacetValueTypeEnum> getDsdFacetValueTypeEnums() {
-        // XHTML_FVT, KEY_VALUES_FVT, IDENTIFIABLE_REFERENCE_FVT, DATASET_REFERENCE_FVT
-        // and ATTACHMENT_CONSTRAINT_REFERENCE_FVT are no valid FacetValutType for DSDs
+        // SimpleDataType values
         if (dsdFacetValueTypeEnums == null) {
             dsdFacetValueTypeEnums = new HashSet<FacetValueTypeEnum>();
-            for (FacetValueTypeEnum f : FacetValueTypeEnum.values()) {
-                if (!FacetValueTypeEnum.XHTML_FVT.equals(f) && !FacetValueTypeEnum.KEY_VALUES_FVT.equals(f) && !FacetValueTypeEnum.IDENTIFIABLE_REFERENCE_FVT.equals(f)
-                        && !FacetValueTypeEnum.DATASET_REFERENCE_FVT.equals(f) && !FacetValueTypeEnum.ATTACHMENT_CONSTRAINT_REFERENCE_FVT.equals(f)) {
-                    dsdFacetValueTypeEnums.add(f);
-                }
+            for (FacetValueTypeEnum f : DataStructureConstraintSharedValidator.simpleDataTypeValues) {
+                dsdFacetValueTypeEnums.add(f);
             }
         }
         return dsdFacetValueTypeEnums;
-    }
-
-    /**
-     * Return FacetValueTypeEnums that represents time
-     * 
-     * @return
-     */
-    public static Set<FacetValueTypeEnum> getTimeFacetValueTypeEnums() {
-        if (timeFacetValueTypeEnums == null) {
-            timeFacetValueTypeEnums = new HashSet<FacetValueTypeEnum>();
-            timeFacetValueTypeEnums.add(FacetValueTypeEnum.OBSERVATIONAL_TIME_PERIOD_FVT);
-            timeFacetValueTypeEnums.add(FacetValueTypeEnum.STANDARD_TIME_PERIOD_FVT);
-            timeFacetValueTypeEnums.add(FacetValueTypeEnum.BASIC_TIME_PERIOD_FVT);
-            timeFacetValueTypeEnums.add(FacetValueTypeEnum.GREGORIAN_TIME_PERIOD_FVT);
-            timeFacetValueTypeEnums.add(FacetValueTypeEnum.GREGORIAN_YEAR_FVT);
-            timeFacetValueTypeEnums.add(FacetValueTypeEnum.GREGORIAN_YEAR_MONTH_FVT);
-            timeFacetValueTypeEnums.add(FacetValueTypeEnum.GREGORIAN_DAY_FVT);
-            timeFacetValueTypeEnums.add(FacetValueTypeEnum.REPORTING_TIME_PERIOD_FVT);
-            timeFacetValueTypeEnums.add(FacetValueTypeEnum.REPORTING_YEAR_FVT);
-            timeFacetValueTypeEnums.add(FacetValueTypeEnum.REPORTING_SEMESTER_FVT);
-            timeFacetValueTypeEnums.add(FacetValueTypeEnum.REPORTING_TRIMESTER_FVT);
-            timeFacetValueTypeEnums.add(FacetValueTypeEnum.REPORTING_QUARTER_FVT);
-            timeFacetValueTypeEnums.add(FacetValueTypeEnum.REPORTING_MONTH_FVT);
-            timeFacetValueTypeEnums.add(FacetValueTypeEnum.REPORTING_WEEK_FVT);
-            timeFacetValueTypeEnums.add(FacetValueTypeEnum.REPORTING_DAY_FVT);
-            timeFacetValueTypeEnums.add(FacetValueTypeEnum.DATE_TIME_FVT);
-            timeFacetValueTypeEnums.add(FacetValueTypeEnum.TIMES_RANGE_FVT);
-        }
-        return timeFacetValueTypeEnums;
     }
 
     /**
@@ -89,7 +57,7 @@ public class FacetFormUtils {
      * @return
      */
     public static boolean representsTime(FacetValueTypeEnum f) {
-        return getTimeFacetValueTypeEnums().contains(f) ? true : false;
+        return DataStructureConstraintSharedValidator.isTimeDataType(f);
     }
 
     // /////////////////////////////////////
@@ -110,22 +78,6 @@ public class FacetFormUtils {
             public boolean execute(FormItem item, Object value, DynamicForm form) {
                 if (form.getValueAsString(TEXT_TYPE_FIELD_NAME) != null) {
                     FacetValueTypeEnum type = FacetValueTypeEnum.valueOf(form.getValueAsString(TEXT_TYPE_FIELD_NAME));
-                    // if (FacetValueTypeEnum.BIG_INTEGER_FVT.equals(type) ||
-                    // FacetValueTypeEnum.INTEGER_FVT.equals(type) ||
-                    // FacetValueTypeEnum.LONG_FVT.equals(type) ||
-                    // FacetValueTypeEnum.SHORT_FVT.equals(type) ||
-                    // FacetValueTypeEnum.DECIMAL_FVT.equals(type) ||
-                    // FacetValueTypeEnum.FLOAT_FVT.equals(type) ||
-                    // FacetValueTypeEnum.DOUBLE_FVT.equals(type) ||
-                    // FacetValueTypeEnum.DATE_TIME_FVT.equals(type) ||
-                    // FacetValueTypeEnum.TIME_FVT.equals(type) ||
-                    // FacetValueTypeEnum.MONTH_FVT.equals(type) ||
-                    // FacetValueTypeEnum.DAY_FVT.equals(type) ||
-                    // FacetValueTypeEnum.MONTH_DAY_FVT.equals(type) ||
-                    // FacetValueTypeEnum.COUNT_FVT.equals(type) ||
-                    // FacetValueTypeEnum.INCREMENTAL_FVT.equals(type)) {
-                    // return true;
-                    // }
                     return representsTime(type) ? false : true;
                 }
                 return false;
@@ -145,10 +97,6 @@ public class FacetFormUtils {
             public boolean execute(FormItem item, Object value, DynamicForm form) {
                 if (form.getValueAsString(TEXT_TYPE_FIELD_NAME) != null) {
                     FacetValueTypeEnum type = FacetValueTypeEnum.valueOf(form.getValueAsString(TEXT_TYPE_FIELD_NAME));
-                    // if (FacetValueTypeEnum.COUNT_FVT.equals(type) ||
-                    // FacetValueTypeEnum.INCREMENTAL_FVT.equals(type)) {
-                    // return true;
-                    // }
                     return representsTime(type) ? false : true;
                 }
                 return false;
@@ -168,20 +116,6 @@ public class FacetFormUtils {
             public boolean execute(FormItem item, Object value, DynamicForm form) {
                 if (form.getValueAsString(TEXT_TYPE_FIELD_NAME) != null) {
                     FacetValueTypeEnum type = FacetValueTypeEnum.valueOf(form.getValueAsString(TEXT_TYPE_FIELD_NAME));
-                    // if (FacetValueTypeEnum.BIG_INTEGER_FVT.equals(type) ||
-                    // FacetValueTypeEnum.INTEGER_FVT.equals(type) ||
-                    // FacetValueTypeEnum.LONG_FVT.equals(type) ||
-                    // FacetValueTypeEnum.SHORT_FVT.equals(type) ||
-                    // FacetValueTypeEnum.DECIMAL_FVT.equals(type) ||
-                    // FacetValueTypeEnum.FLOAT_FVT.equals(type) ||
-                    // FacetValueTypeEnum.DOUBLE_FVT.equals(type) ||
-                    // FacetValueTypeEnum.TIMES_RANGE_FVT.equals(type) ||
-                    // FacetValueTypeEnum.COUNT_FVT.equals(type) ||
-                    // FacetValueTypeEnum.INCLUSIVE_VALUE_RANGE_FVT.equals(type) ||
-                    // FacetValueTypeEnum.EXCLUSIVE_VALUE_RANGE_FVT.equals(type) ||
-                    // FacetValueTypeEnum.INCREMENTAL_FVT.equals(type)) {
-                    // return true;
-                    // }
                     return representsTime(type) ? false : true;
                 }
                 return false;
@@ -201,19 +135,6 @@ public class FacetFormUtils {
             public boolean execute(FormItem item, Object value, DynamicForm form) {
                 if (form.getValueAsString(TEXT_TYPE_FIELD_NAME) != null) {
                     FacetValueTypeEnum type = FacetValueTypeEnum.valueOf(form.getValueAsString(TEXT_TYPE_FIELD_NAME));
-                    // if (FacetValueTypeEnum.BIG_INTEGER_FVT.equals(type) ||
-                    // FacetValueTypeEnum.INTEGER_FVT.equals(type) ||
-                    // FacetValueTypeEnum.LONG_FVT.equals(type) ||
-                    // FacetValueTypeEnum.SHORT_FVT.equals(type) ||
-                    // FacetValueTypeEnum.DECIMAL_FVT.equals(type) ||
-                    // FacetValueTypeEnum.FLOAT_FVT.equals(type) ||
-                    // FacetValueTypeEnum.DOUBLE_FVT.equals(type) ||
-                    // FacetValueTypeEnum.COUNT_FVT.equals(type) ||
-                    // FacetValueTypeEnum.INCLUSIVE_VALUE_RANGE_FVT.equals(type) ||
-                    // FacetValueTypeEnum.EXCLUSIVE_VALUE_RANGE_FVT.equals(type) ||
-                    // FacetValueTypeEnum.INCREMENTAL_FVT.equals(type)) {
-                    // return true;
-                    // }
                     return representsTime(type) ? false : true;
                 }
                 return false;
@@ -233,10 +154,6 @@ public class FacetFormUtils {
             public boolean execute(FormItem item, Object value, DynamicForm form) {
                 if (form.getValueAsString(TEXT_TYPE_FIELD_NAME) != null) {
                     FacetValueTypeEnum type = FacetValueTypeEnum.valueOf(form.getValueAsString(TEXT_TYPE_FIELD_NAME));
-                    // if (FacetValueTypeEnum.DURATION_FVT.equals(type) ||
-                    // FacetValueTypeEnum.TIMES_RANGE_FVT.equals(type)) {
-                    // return true;
-                    // }
                     return representsTime(type) ? false : true;
                 }
                 return false;
@@ -255,10 +172,6 @@ public class FacetFormUtils {
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
                 if (form.getValueAsString(TEXT_TYPE_FIELD_NAME) != null) {
-                    // FacetValueTypeEnum type = FacetValueTypeEnum.valueOf(form.getValueAsString(TEXT_TYPE_FIELD_NAME));
-                    // if (FacetValueTypeEnum.DATE_TIME_FVT.equals(type)) {
-                    // return true;
-                    // }
                     return true;
                 }
                 return false;
@@ -277,10 +190,6 @@ public class FacetFormUtils {
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
                 if (form.getValueAsString(TEXT_TYPE_FIELD_NAME) != null) {
-                    // FacetValueTypeEnum type = FacetValueTypeEnum.valueOf(form.getValueAsString(TEXT_TYPE_FIELD_NAME));
-                    // if (FacetValueTypeEnum.DATE_TIME_FVT.equals(type)) {
-                    // return true;
-                    // }
                     return true;
                 }
                 return false;
@@ -300,19 +209,6 @@ public class FacetFormUtils {
             public boolean execute(FormItem item, Object value, DynamicForm form) {
                 if (form.getValueAsString(TEXT_TYPE_FIELD_NAME) != null) {
                     FacetValueTypeEnum type = FacetValueTypeEnum.valueOf(form.getValueAsString(TEXT_TYPE_FIELD_NAME));
-                    // if (FacetValueTypeEnum.STRING_FVT.equals(type) ||
-                    // FacetValueTypeEnum.BIG_INTEGER_FVT.equals(type) ||
-                    // FacetValueTypeEnum.INTEGER_FVT.equals(type) ||
-                    // FacetValueTypeEnum.LONG_FVT.equals(type) ||
-                    // FacetValueTypeEnum.SHORT_FVT.equals(type) ||
-                    // FacetValueTypeEnum.DECIMAL_FVT.equals(type) ||
-                    // FacetValueTypeEnum.FLOAT_FVT.equals(type) ||
-                    // FacetValueTypeEnum.DOUBLE_FVT.equals(type) ||
-                    // FacetValueTypeEnum.URI_FVT.equals(type) ||
-                    // FacetValueTypeEnum.COUNT_FVT.equals(type) ||
-                    // FacetValueTypeEnum.INCREMENTAL_FVT.equals(type)) {
-                    // return true;
-                    // }
                     return representsTime(type) ? false : true;
                 }
                 return false;
@@ -332,19 +228,6 @@ public class FacetFormUtils {
             public boolean execute(FormItem item, Object value, DynamicForm form) {
                 if (form.getValueAsString(TEXT_TYPE_FIELD_NAME) != null) {
                     FacetValueTypeEnum type = FacetValueTypeEnum.valueOf(form.getValueAsString(TEXT_TYPE_FIELD_NAME));
-                    // if (FacetValueTypeEnum.STRING_FVT.equals(type) ||
-                    // FacetValueTypeEnum.BIG_INTEGER_FVT.equals(type) ||
-                    // FacetValueTypeEnum.INTEGER_FVT.equals(type) ||
-                    // FacetValueTypeEnum.LONG_FVT.equals(type) ||
-                    // FacetValueTypeEnum.SHORT_FVT.equals(type) ||
-                    // FacetValueTypeEnum.DECIMAL_FVT.equals(type) ||
-                    // FacetValueTypeEnum.FLOAT_FVT.equals(type) ||
-                    // FacetValueTypeEnum.DOUBLE_FVT.equals(type) ||
-                    // FacetValueTypeEnum.URI_FVT.equals(type) ||
-                    // FacetValueTypeEnum.COUNT_FVT.equals(type) ||
-                    // FacetValueTypeEnum.INCREMENTAL_FVT.equals(type)) {
-                    // return true;
-                    // }
                     return representsTime(type) ? false : true;
                 }
                 return false;
@@ -364,9 +247,6 @@ public class FacetFormUtils {
             public boolean execute(FormItem item, Object value, DynamicForm form) {
                 if (form.getValueAsString(TEXT_TYPE_FIELD_NAME) != null) {
                     FacetValueTypeEnum type = FacetValueTypeEnum.valueOf(form.getValueAsString(TEXT_TYPE_FIELD_NAME));
-                    // if (FacetValueTypeEnum.DOUBLE_FVT.equals(type)) {
-                    // return true;
-                    // }
                     return representsTime(type) ? false : true;
                 }
                 return false;
@@ -386,9 +266,6 @@ public class FacetFormUtils {
             public boolean execute(FormItem item, Object value, DynamicForm form) {
                 if (form.getValueAsString(TEXT_TYPE_FIELD_NAME) != null) {
                     FacetValueTypeEnum type = FacetValueTypeEnum.valueOf(form.getValueAsString(TEXT_TYPE_FIELD_NAME));
-                    // if (FacetValueTypeEnum.DOUBLE_FVT.equals(type)) {
-                    // return true;
-                    // }
                     return representsTime(type) ? false : true;
                 }
                 return false;
@@ -408,11 +285,6 @@ public class FacetFormUtils {
             public boolean execute(FormItem item, Object value, DynamicForm form) {
                 if (form.getValueAsString(TEXT_TYPE_FIELD_NAME) != null) {
                     FacetValueTypeEnum type = FacetValueTypeEnum.valueOf(form.getValueAsString(TEXT_TYPE_FIELD_NAME));
-                    // if (FacetValueTypeEnum.DECIMAL_FVT.equals(type) ||
-                    // FacetValueTypeEnum.FLOAT_FVT.equals(type) ||
-                    // FacetValueTypeEnum.DOUBLE_FVT.equals(type)) {
-                    // return true;
-                    // }
                     return representsTime(type) ? false : true;
                 }
                 return false;
@@ -432,30 +304,6 @@ public class FacetFormUtils {
             public boolean execute(FormItem item, Object value, DynamicForm form) {
                 if (form.getValueAsString(TEXT_TYPE_FIELD_NAME) != null) {
                     FacetValueTypeEnum type = FacetValueTypeEnum.valueOf(form.getValueAsString(TEXT_TYPE_FIELD_NAME));
-                    // if (FacetValueTypeEnum.STRING_FVT.equals(type) ||
-                    // FacetValueTypeEnum.BIG_INTEGER_FVT.equals(type) ||
-                    // FacetValueTypeEnum.INTEGER_FVT.equals(type) ||
-                    // FacetValueTypeEnum.LONG_FVT.equals(type) ||
-                    // FacetValueTypeEnum.SHORT_FVT.equals(type) ||
-                    // FacetValueTypeEnum.DECIMAL_FVT.equals(type) ||
-                    // FacetValueTypeEnum.FLOAT_FVT.equals(type) ||
-                    // FacetValueTypeEnum.DOUBLE_FVT.equals(type) ||
-                    // FacetValueTypeEnum.BOOLEAN_FVT.equals(type) ||
-                    // FacetValueTypeEnum.DATE_TIME_FVT.equals(type) ||
-                    // FacetValueTypeEnum.TIME_FVT.equals(type) ||
-                    // FacetValueTypeEnum.MONTH_FVT.equals(type) ||
-                    // FacetValueTypeEnum.DAY_FVT.equals(type) ||
-                    // FacetValueTypeEnum.MONTH_DAY_FVT.equals(type) ||
-                    // FacetValueTypeEnum.DURATION_FVT.equals(type) ||
-                    // FacetValueTypeEnum.URI_FVT.equals(type) ||
-                    // FacetValueTypeEnum.TIMES_RANGE_FVT.equals(type) ||
-                    // FacetValueTypeEnum.COUNT_FVT.equals(type) ||
-                    // FacetValueTypeEnum.INCLUSIVE_VALUE_RANGE_FVT.equals(type) ||
-                    // FacetValueTypeEnum.EXCLUSIVE_VALUE_RANGE_FVT.equals(type) ||
-                    // FacetValueTypeEnum.INCREMENTAL_FVT.equals(type) ||
-                    // FacetValueTypeEnum.OBSERVATIONAL_TIME_PERIOD_FVT.equals(type)) {
-                    // return true;
-                    // }
                     return representsTime(type) ? false : true;
                 }
                 return false;
