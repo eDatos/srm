@@ -1,15 +1,25 @@
 package org.siemac.metamac.srm.core.structure.serviceimpl;
 
+import static org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder.criteriaFor;
+import static org.siemac.metamac.srm.core.structure.domain.DataStructureDefinitionProperties.urn;
+
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
+import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
+import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
+import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.ExceptionLevelEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
 import org.siemac.metamac.domain.srm.enume.domain.TypeComponentList;
 import org.siemac.metamac.srm.core.base.domain.Component;
 import org.siemac.metamac.srm.core.base.domain.ComponentList;
+import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.structure.domain.AttributeDescriptor;
 import org.siemac.metamac.srm.core.structure.domain.DataStructureDefinition;
@@ -88,6 +98,27 @@ public class DataStructureDefinitionServiceImpl extends DataStructureDefinitionS
         // 5 - Remove DSD
         getDataStructureDefinitionRepository().delete(dataStructureDefinition);
     }
+    
+    @Override
+    public DataStructureDefinition retrieveDataStructureDefinitionByUrn(ServiceContext ctx, String urn) throws MetamacException {
+        // Validation
+        DataStructureInvocationValidator.checkRetrieveDataStructureDefinitionByUrn(urn, null); // Parameters and metadata check
+
+        // Prepare conditions
+        List<ConditionalCriteria> conditions = criteriaFor(DataStructureDefinition.class).withProperty(urn()).eq(urn).build();
+        
+        // Search
+        PagedResult<DataStructureDefinition> pagedResult = findDsdByCondition(ctx, conditions, PagingParameter.pageAccess(1));
+        
+        if (pagedResult.getValues().isEmpty()) {
+            MetamacException metamacException = new MetamacException(ServiceExceptionType.SRM_SEARCH_NOT_FOUND, ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION);
+            metamacException.setLoggedLevel(ExceptionLevelEnum.DEBUG);
+            throw metamacException;
+        }
+        else {
+            return pagedResult.getValues().iterator().next();
+        }
+    }
 
     @Override
     public ComponentList saveDescriptorForDsd(ServiceContext ctx, DataStructureDefinition dataStructureDefinition, ComponentList componentList) throws MetamacException {
@@ -105,8 +136,6 @@ public class DataStructureDefinitionServiceImpl extends DataStructureDefinitionS
 
         return componentListDescriptor;
     }
-
-
 
     @Override
     public void deleteDescriptorForDsd(ServiceContext ctx, DataStructureDefinition dataStructureDefinition, ComponentList componentList) throws MetamacException {

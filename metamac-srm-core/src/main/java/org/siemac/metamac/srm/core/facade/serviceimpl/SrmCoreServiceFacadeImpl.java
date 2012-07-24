@@ -1,5 +1,8 @@
 package org.siemac.metamac.srm.core.facade.serviceimpl;
 
+import static org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder.criteriaFor;
+import static org.siemac.metamac.srm.core.structure.domain.DataStructureDefinitionProperties.urn;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -186,6 +189,15 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
         // TO DTO
         return getDo2DtoMapper().dataStructureDefinitionToDataStructureDefinitionDto(ctx, typeDozerCopyMode, dataStructureDefinition, getBaseService());
+    }
+
+    @Override
+    public DataStructureDefinitionDto retrieveDsdByUrn(ServiceContext ctx, String urn) throws MetamacException {
+        // Search
+        DataStructureDefinition dataStructureDefinition = getDataStructureDefinitionService().retrieveDataStructureDefinitionByUrn(ctx, urn);
+        
+        // TO DTO
+        return getDo2DtoMapper().dataStructureDefinitionToDataStructureDefinitionDto(ctx, TypeDozerCopyMode.UPDATE, dataStructureDefinition, getBaseService());
     }
 
     @Override
@@ -567,4 +579,5 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
         return componentListDto;
     }
+
 }

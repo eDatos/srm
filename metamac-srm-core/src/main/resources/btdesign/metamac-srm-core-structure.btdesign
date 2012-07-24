@@ -27,6 +27,7 @@ Application Structure {
 			
           	@DataStructureDefinition saveDsd(@DataStructureDefinition dataStructureDefinition) throws MetamacException;
           	deleteDsd(@DataStructureDefinition dataStructureDefinition) throws MetamacException;
+          	@DataStructureDefinition retrieveDataStructureDefinitionByUrn(String urn) throws MetamacException;
 
 	   		findDsdById => DataStructureDefinitionRepository.findById;
        		findDsdByCondition => DataStructureDefinitionRepository.findByCondition;

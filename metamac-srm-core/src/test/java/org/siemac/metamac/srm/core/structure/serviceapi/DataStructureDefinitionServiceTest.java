@@ -78,6 +78,12 @@ public class DataStructureDefinitionServiceTest extends SrmBaseTest implements D
 
         assertTrue(dataStructureDefinitionPagedList.getValues().isEmpty());
     }
+    
+    @Override
+    public void testRetrieveDataStructureDefinitionByUrn() throws Exception {
+        // TODO Auto-generated method stub
+        
+    }
 
     @Test
     public void testFindDsdByCondition() throws Exception {
@@ -206,6 +212,5 @@ public class DataStructureDefinitionServiceTest extends SrmBaseTest implements D
 
         return dataStructureDefinition;
     }
-
 
 }

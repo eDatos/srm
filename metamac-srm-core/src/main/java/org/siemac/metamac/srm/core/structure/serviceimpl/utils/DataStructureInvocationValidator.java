@@ -50,6 +50,17 @@ public class DataStructureInvocationValidator {
         ExceptionUtils.throwIfException(exceptions);
     }
 
+    public static void checkRetrieveDataStructureDefinitionByUrn(String urn, List<MetamacExceptionItem> exceptions) throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+        
+        // Parameters required
+        ValidationUtils.checkParameterRequired(urn, ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION_URN, exceptions);
+        
+        ExceptionUtils.throwIfException(exceptions);
+    }
+    
     public static void checkSaveDescriptorForDataStructureDefinition(DataStructureDefinition dataStructureDefinition, ComponentList componentList, List<MetamacExceptionItem> exceptions) throws MetamacException {
         if (exceptions == null) {
             exceptions = new ArrayList<MetamacExceptionItem>();

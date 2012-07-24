@@ -23,6 +23,7 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.serviceimpl.utils.ValidationUtils;
 import org.siemac.metamac.core.common.util.CoreCommonUtil;
+import org.siemac.metamac.core.common.util.GeneratorUrnUtils;
 import org.siemac.metamac.core.common.util.OptimisticLockingUtils;
 import org.siemac.metamac.domain.srm.dto.AnnotableArtefactDto;
 import org.siemac.metamac.domain.srm.dto.AnnotationDto;
@@ -61,9 +62,9 @@ import org.siemac.metamac.srm.core.base.exception.AnnotationNotFoundException;
 import org.siemac.metamac.srm.core.base.exception.ComponentListNotFoundException;
 import org.siemac.metamac.srm.core.base.exception.ComponentNotFoundException;
 import org.siemac.metamac.srm.core.base.exception.FacetNotFoundException;
-import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParametersInternal;
+import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.service.utils.SdmxToolsServer;
 import org.siemac.metamac.srm.core.structure.domain.AttributeDescriptor;
 import org.siemac.metamac.srm.core.structure.domain.AttributeRelationship;
@@ -299,9 +300,11 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
             ((IdentifiableArtefact) target).setCode(fixedID);
         }
 
-        // TODO URI, URN and ReplaceBy filled in service
-        // target.setUri(source.getUri());
-        // target.setUrn(urn);
+        // URI
+        target.setUri(source.getUri());
+        // URN
+        target.setUrn(source.getUrn());
+        // ReplaceBy
         // TODO Sustituir por version a la que reemplaza. En este momento??? --> target.setReplacedBy(target.getReplacedBy());
 
         return annotableToEntity(ctx, source, target);
@@ -959,7 +962,6 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         // Hierachy:
         // DataStructureDefinitionDto > MaintainableArtefactDto > NameableArtefactDto > IdentifiableArtefactDto > AnnotableArtefacDto > AuditableDto > IdentityDto
         // DataStructureDefinition > Structure > MaintainableArtefact > NameableArtefact > IdentifiableArtefact > AnnotableArtefact
-
         DataStructureDefinition result = null;
         if (source.getId() == null) {
             // New
@@ -981,7 +983,15 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         }
 
         // Parent
-        return maintainableArtefactToEntity(ctx, source, result, result);
+        result = maintainableArtefactToEntity(ctx, source, result, result);
+        
+        // PosProcessed
+        // Populate URN
+        if (StringUtils.isNotEmpty(source.getCode()) && source.getCode().equals(result.getCode())) {
+            result.setUrn(GeneratorUrnUtils.generateSdmxDatastructureUrn(result.getMaintainer().getCode(), result.getCode(), result.getVersionLogic()));
+        }
+        
+        return result;
     }
 
     private Representation representationDtoToRepresentation(ServiceContext ctx, RepresentationDto source, Representation representationOlder, String metadataEnumTitle)
