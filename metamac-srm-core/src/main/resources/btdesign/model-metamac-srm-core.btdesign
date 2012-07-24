@@ -75,6 +75,12 @@ Application SrmCore {
 		    "
 			@DataStructureDefinitionDto retrieveDsd(Long idDsd, @TypeDozerCopyMode typeDozerCopyMode) throws MetamacException;
 			
+			" Retrieve a DSD by URN.
+			 @param ctx
+			 @param urn Parameter to find DSD
+			 @return
+			 @throws org.siemac.metamac.core.common.exception.MetamacException
+			"
 			@DataStructureDefinitionDto retrieveDsdByUrn(String urn) throws MetamacException;				    	
 	    	
 	    	"
