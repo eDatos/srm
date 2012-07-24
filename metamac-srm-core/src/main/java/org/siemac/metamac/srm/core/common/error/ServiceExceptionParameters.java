@@ -181,6 +181,7 @@ public class ServiceExceptionParameters {
     public static final String DATA_STRUCTURE_DEFINITION_NAME                  = DATA_STRUCTURE_DEFINITION + ".name";
     public static final String DATA_STRUCTURE_DEFINITION_MAINTAINER            = DATA_STRUCTURE_DEFINITION + ".maintainer";
     public static final String DATA_STRUCTURE_DEFINITION_GROUPING              = DATA_STRUCTURE_DEFINITION + ".grouping";
+    public static final String DATA_STRUCTURE_DEFINITION_ID_LOGIC              = DATA_STRUCTURE_DEFINITION + ".id_logic";
 
     public static final String DATA_STRUCTURE_DEFINITION_MAINTAINER_CODE       = DATA_STRUCTURE_DEFINITION_MAINTAINER + ServiceExceptionParametersInternal.EXTERNAL_ITEM_CODE;
     public static final String DATA_STRUCTURE_DEFINITION_MAINTAINER_TITLE      = DATA_STRUCTURE_DEFINITION_MAINTAINER + ServiceExceptionParametersInternal.EXTERNAL_ITEM_TITLE;

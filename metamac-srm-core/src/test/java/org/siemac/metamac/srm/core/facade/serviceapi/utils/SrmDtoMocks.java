@@ -59,6 +59,7 @@ public class SrmDtoMocks {
         DataStructureDefinitionDto dataStructureDefinitionDto = new DataStructureDefinitionDto();
 
         // Required --------
+        dataStructureDefinitionDto.setIdLogic("DSD_" + RandomStringUtils.randomAlphabetic(10));
         
         // Name
         InternationalStringDto name = new InternationalStringDto();

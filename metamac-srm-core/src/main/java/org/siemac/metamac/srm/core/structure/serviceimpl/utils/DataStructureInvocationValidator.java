@@ -4,15 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.siemac.metamac.core.common.ent.domain.ExternalItem;
+import org.siemac.metamac.core.common.exception.CommonServiceExceptionType;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.core.common.exception.utils.ExceptionUtils;
 import org.siemac.metamac.core.common.serviceimpl.utils.ValidationUtils;
 import org.siemac.metamac.srm.core.base.domain.Component;
 import org.siemac.metamac.srm.core.base.domain.ComponentList;
-import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParametersInternal;
+import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
+import org.siemac.metamac.srm.core.common.service.utils.SrmValidationUtils;
 import org.siemac.metamac.srm.core.structure.domain.AttributeDescriptor;
 import org.siemac.metamac.srm.core.structure.domain.DataStructureDefinition;
 import org.siemac.metamac.srm.core.structure.domain.DimensionDescriptor;
@@ -28,7 +30,13 @@ public class DataStructureInvocationValidator {
         }
         
         // Metadata Required
-        ValidationUtils.checkMetadataRequired(dataStructureDefinition.getName(), ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION_NAME, exceptions);
+        // IdLogic
+        ValidationUtils.checkMetadataRequired(dataStructureDefinition.getIdLogic(), ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION_ID_LOGIC, exceptions);
+        // Name
+        if (SrmValidationUtils.isInternationalStringEmpty(dataStructureDefinition.getName())) {
+            exceptions.add(new MetamacExceptionItem(CommonServiceExceptionType.METADATA_REQUIRED, ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION_NAME));
+        }
+        // Maintainer
         checkExternalItem(dataStructureDefinition.getMaintainer(), exceptions, ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION_MAINTAINER);
 
         ExceptionUtils.throwIfException(exceptions);

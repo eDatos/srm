@@ -294,12 +294,8 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         // Metadata modifiable
         // IdLogic: Some artifacts has a fixed ID -> Overwrite with fixed ID if is possible
         String fixedID = null;
-        if ((fixedID = SdmxToolsServer.checkIfFixedId(target)) == null) {
-            // Generate a ID if is empty
-            if (StringUtils.isEmpty(((IdentifiableArtefact) target).getIdLogic())) {
-                ((IdentifiableArtefact) target).setIdLogic(SdmxToolsServer.generateIdForSDMXArtefact(target));
-            }
-        } else {
+        target.setIdLogic(source.getIdLogic());
+        if ((fixedID = SdmxToolsServer.checkIfFixedId(target)) != null) {
             ((IdentifiableArtefact) target).setIdLogic(fixedID);
         }
 
