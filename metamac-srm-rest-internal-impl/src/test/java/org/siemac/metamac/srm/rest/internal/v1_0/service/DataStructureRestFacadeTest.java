@@ -2,7 +2,7 @@ package org.siemac.metamac.srm.rest.internal.v1_0.service;
 
 import static org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder.criteriaFor;
 import static org.mockito.Mockito.mock;
-import static org.siemac.metamac.srm.core.structure.domain.DataStructureDefinitionProperties.idLogic;
+import static org.siemac.metamac.srm.core.structure.domain.DataStructureDefinitionProperties.code;
 
 import java.io.File;
 import java.util.List;
@@ -49,7 +49,7 @@ public class DataStructureRestFacadeTest {
     @Test
     public void testMaintainableStructure() throws Exception {
         
-        List<ConditionalCriteria> conditions = criteriaFor(DataStructureDefinition.class).withProperty(idLogic()).eq("ECB_EXR_NG").build();
+        List<ConditionalCriteria> conditions = criteriaFor(DataStructureDefinition.class).withProperty(code()).eq("ECB_EXR_NG").build();
 
         PagedResult<DataStructureDefinitionDto> dataStructureDefinitionDtoPagedList = srmCoreServiceFacade.findDsdByCondition(serviceContext, conditions, PagingParameter.pageAccess(10));
 

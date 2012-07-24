@@ -1,7 +1,7 @@
 package org.siemac.metamac.srm.rest.internal.v1_0.service;
 
 import static org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder.criteriaFor;
-import static org.siemac.metamac.srm.core.structure.domain.DataStructureDefinitionProperties.idLogic;
+import static org.siemac.metamac.srm.core.structure.domain.DataStructureDefinitionProperties.code;
 import static org.siemac.metamac.srm.core.structure.domain.DataStructureDefinitionProperties.maintainer;
 import static org.siemac.metamac.srm.core.structure.domain.DataStructureDefinitionProperties.versionLogic;
 
@@ -87,7 +87,7 @@ public class DatastructureRestFacadeImpl implements DatastructureRestFacade {
             // 1. To DO
             ExternalItemBt agencyExItemBt = getDto2DoMapper().externalItemBtDtoToExternalItemBt(agencyExItemBtDto, RestUtils.SERVICECONTEXT, getSdmxBaseService());
             
-            List<ConditionalCriteria> conditions = criteriaFor(DataStructureDefinition.class).withProperty(idLogic()).eq(resourceID).and().withProperty(versionLogic()).eq(version).withProperty(maintainer()).eq(agencyExItemBt).build();
+            List<ConditionalCriteria> conditions = criteriaFor(DataStructureDefinition.class).withProperty(code()).eq(resourceID).and().withProperty(versionLogic()).eq(version).withProperty(maintainer()).eq(agencyExItemBt).build();
             
             // Find
             PagedResult<DataStructureDefinition> dataStructureDefinitionPagedList = getDataStructureDefinitionService().findDsdByCondition(RestUtils.SERVICECONTEXT, conditions, PagingParameter.pageAccess(1));
