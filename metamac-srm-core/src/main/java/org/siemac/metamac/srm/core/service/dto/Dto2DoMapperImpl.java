@@ -270,7 +270,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
 
         // Required target entity because this class is abstract
         if (target == null) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.PARAMETER_REQUIRED).withMessageParameters(ServiceExceptionParameters.ANNOTABLEARTEFACT).build();
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.PARAMETER_REQUIRED).withMessageParameters(ServiceExceptionParameters.ANNOTABLE_ARTEFACT).build();
         }
 
         // Related entities
@@ -288,7 +288,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
 
         // Required target entity because this class is abstract
         if (target == null) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.PARAMETER_REQUIRED).withMessageParameters(ServiceExceptionParameters.IDENTIFIABLEARTEFACT).build();
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.PARAMETER_REQUIRED).withMessageParameters(ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT).build();
         }
 
         // Metadata modifiable
@@ -329,15 +329,15 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
 
         // Required target entity because this class is abstract
         if (target == null) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.PARAMETER_REQUIRED).withMessageParameters(ServiceExceptionParameters.NAMEABLEARTEFACT).build();
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.PARAMETER_REQUIRED).withMessageParameters(ServiceExceptionParameters.NAMEABLE_ARTEFACT).build();
         }
 
         // Related entities
         // Name
-        target.setName(internationalStringToEntity(ctx, source.getName(), (older != null) ? older.getName() : null, ServiceExceptionParameters.NAMEABLEARTEFACT_NAME));
+        target.setName(internationalStringToEntity(ctx, source.getName(), (older != null) ? older.getName() : null, ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME));
 
         // Description
-        target.setDescription(internationalStringToEntity(ctx, source.getDescription(), (older != null) ? older.getDescription() : null, ServiceExceptionParameters.NAMEABLEARTEFACT_DESCRIPTION));
+        target.setDescription(internationalStringToEntity(ctx, source.getDescription(), (older != null) ? older.getDescription() : null, ServiceExceptionParameters.NAMEABLE_ARTEFACT_DESCRIPTION));
 
         return identifiableArtefactDtoToEntity(ctx, source, target);
     }
@@ -450,7 +450,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
                 case REPORTING_YEAR_START_DAY:
                     // DTO validation: ReportingYearStarDay not contains role relationship
                     if (!((DataAttributeDto) source).getRole().isEmpty()) {
-                        throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.PARAMETER_REQUIRED).withMessageParameters(ServiceExceptionParameters.DATAATTRIBUTE_ROLE)
+                        throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.PARAMETER_REQUIRED).withMessageParameters(ServiceExceptionParameters.DATA_ATTRIBUTE_ROLE)
                                 .withLoggedLevel(ExceptionLevelEnum.DEBUG).build();
                     }
 
@@ -473,7 +473,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
                 OptimisticLockingUtils.checkVersion(result.getVersion(), source.getVersion());
             } catch (ComponentNotFoundException e) {
                 throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SRM_SEARCH_NOT_FOUND)
-                        .withMessageParameters(ServiceExceptionParameters.DATAATTRIBUTE).withLoggedLevel(ExceptionLevelEnum.ERROR).build();
+                        .withMessageParameters(ServiceExceptionParameters.DATA_ATTRIBUTE).withLoggedLevel(ExceptionLevelEnum.ERROR).build();
             }
         }
 
@@ -493,7 +493,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         if (source.getId() != null) { // Update
             // Merge results
             for (ExternalItemDto listExternalItemDto : ((DataAttributeDto) source).getRole()) {
-                ExternalItem externalItem = externalItemDtoToExternalItem(ctx, listExternalItemDto, ServiceExceptionParameters.DATAATTRIBUTE_ROLE);
+                ExternalItem externalItem = externalItemDtoToExternalItem(ctx, listExternalItemDto, ServiceExceptionParameters.DATA_ATTRIBUTE_ROLE);
                 boolean found = false;
                 for (ExternalItem extItemPersisted : ((DataAttribute) result).getRole()) {
                     if (extItemPersisted.equals(externalItem)) {
@@ -509,13 +509,13 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
             }
         } else { // New
             for (ExternalItemDto listExternalItemDto : ((DataAttributeDto) source).getRole()) {
-                ((DataAttribute) result).addRole(externalItemDtoToExternalItem(ctx, listExternalItemDto, ServiceExceptionParameters.DATAATTRIBUTE_ROLE));
+                ((DataAttribute) result).addRole(externalItemDtoToExternalItem(ctx, listExternalItemDto, ServiceExceptionParameters.DATA_ATTRIBUTE_ROLE));
             }
         }
 
         // LocalRepresentation
         result.setLocalRepresentation(representationDtoToRepresentation(ctx, source.getLocalRepresentation(), ((DataAttribute) result).getLocalRepresentation(),
-                ServiceExceptionParameters.DATAATTRIBUTE + ServiceExceptionParametersInternal.REPRESENTATION));
+                ServiceExceptionParameters.DATA_ATTRIBUTE + ServiceExceptionParametersInternal.REPRESENTATION));
 
         return result;
     }
@@ -623,14 +623,14 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
                 OptimisticLockingUtils.checkVersion(result.getVersion(), source.getVersion());
             } catch (ComponentNotFoundException e) {
                 throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SRM_SEARCH_NOT_FOUND)
-                        .withMessageParameters(ServiceExceptionParameters.MEASUREDIMENSION).withLoggedLevel(ExceptionLevelEnum.ERROR).build();
+                        .withMessageParameters(ServiceExceptionParameters.MEASURE_DIMENSION).withLoggedLevel(ExceptionLevelEnum.ERROR).build();
             }
         }
 
         // ROLE
         if (source.getId() != null) { // Exist
             for (ExternalItemDto listExternalItemDto : ((DimensionComponentDto) source).getRole()) {
-                ExternalItem externalItem = externalItemDtoToExternalItem(ctx, listExternalItemDto, ServiceExceptionParameters.MEASUREDIMENSION_ROLE);
+                ExternalItem externalItem = externalItemDtoToExternalItem(ctx, listExternalItemDto, ServiceExceptionParameters.MEASURE_DIMENSION_ROLE);
                 boolean found = false;
                 for (ExternalItem extItemPersisted : result.getRole()) {
                     if (extItemPersisted.equals(externalItem)) {
@@ -646,13 +646,13 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
             }
         } else { // New
             for (ExternalItemDto listExternalItemDto : ((DimensionComponentDto) source).getRole()) {
-                ((MeasureDimension) result).addRole(externalItemDtoToExternalItem(ctx, listExternalItemDto, ServiceExceptionParameters.MEASUREDIMENSION_ROLE));
+                ((MeasureDimension) result).addRole(externalItemDtoToExternalItem(ctx, listExternalItemDto, ServiceExceptionParameters.MEASURE_DIMENSION_ROLE));
             }
         }
 
         // LocalRepresentation
         result.setLocalRepresentation(representationDtoToRepresentation(ctx, source.getLocalRepresentation(), result.getLocalRepresentation(),
-                ServiceExceptionParameters.MEASUREDIMENSION + ServiceExceptionParametersInternal.REPRESENTATION));
+                ServiceExceptionParameters.MEASURE_DIMENSION + ServiceExceptionParametersInternal.REPRESENTATION));
 
         // Concept identity
         result.setCptIdRef(externalItemDtoToExternalItem(ctx, source.getCptIdRef(), "MeasureDimensionConceptIdentity")); // TODO args exp
@@ -676,13 +676,13 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
                 OptimisticLockingUtils.checkVersion(result.getVersion(), source.getVersion());
             } catch (ComponentNotFoundException e) {
                 throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SRM_SEARCH_NOT_FOUND)
-                        .withMessageParameters(ServiceExceptionParameters.TIMEDIMENSION).withLoggedLevel(ExceptionLevelEnum.ERROR).build();
+                        .withMessageParameters(ServiceExceptionParameters.TIME_DIMENSION).withLoggedLevel(ExceptionLevelEnum.ERROR).build();
             }
         }
 
         // LocalRepresentation
         result.setLocalRepresentation(representationDtoToRepresentation(ctx, source.getLocalRepresentation(), result.getLocalRepresentation(),
-                ServiceExceptionParameters.TIMEDIMENSION + ServiceExceptionParametersInternal.REPRESENTATION));
+                ServiceExceptionParameters.TIME_DIMENSION + ServiceExceptionParametersInternal.REPRESENTATION));
 
         return result;
     }
@@ -703,7 +703,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
                 OptimisticLockingUtils.checkVersion(result.getVersion(), source.getVersion());
             } catch (ComponentNotFoundException e) {
                 throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SRM_SEARCH_NOT_FOUND)
-                        .withMessageParameters(ServiceExceptionParameters.PRIMARYMEASURE).withLoggedLevel(ExceptionLevelEnum.ERROR).build();
+                        .withMessageParameters(ServiceExceptionParameters.PRIMARY_MEASURE).withLoggedLevel(ExceptionLevelEnum.ERROR).build();
             }
         }
 
@@ -975,7 +975,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
                 OptimisticLockingUtils.checkVersion(result.getVersion(), source.getVersion());
             } catch (DataStructureDefinitionNotFoundException e) {
                 throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SRM_SEARCH_NOT_FOUND)
-                        .withMessageParameters(ServiceExceptionParameters.DATASTRUCTUREDEFINITION).withLoggedLevel(ExceptionLevelEnum.ERROR).build();
+                        .withMessageParameters(ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION).withLoggedLevel(ExceptionLevelEnum.ERROR).build();
             }
 
             // Withouts DTO fields: NO MERGE NEEDED!!!
@@ -1142,7 +1142,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         }
 
         // Relate Entities
-        result.setTitle(internationalStringToEntity(ctx, source.getTitle(), result.getTitle(), metadataName + ServiceExceptionParametersInternal.EXTERNALITEM_TITLE));
+        result.setTitle(internationalStringToEntity(ctx, source.getTitle(), result.getTitle(), metadataName + ServiceExceptionParametersInternal.EXTERNAL_ITEM_TITLE));
 
         return result;
     }

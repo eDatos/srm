@@ -114,10 +114,10 @@ public class DataStructureConstraintValidator {
 
         // "ConceptIdentity" type="common:ConceptReferenceType"
         if (component.getCptIdRef() == null) {
-            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, ServiceExceptionParameters.COMPONENT_CONCEPTID));
+            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, ServiceExceptionParameters.COMPONENT_CONCEPT_ID_REF));
         } else {
             if (!TypeExternalArtefactsEnum.CONCEPT.equals(component.getCptIdRef().getType())) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.COMPONENT_CONCEPTID));
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.COMPONENT_CONCEPT_ID_REF));
             }
         }
 
@@ -174,25 +174,25 @@ public class DataStructureConstraintValidator {
         }
 
         // AssignmentStatus
-        ValidationUtils.checkMetadataRequired(dataAttribute.getUsageStatus(), ServiceExceptionParameters.DATAATTRIBUTE_USAGE_STATES, exceptions);
+        ValidationUtils.checkMetadataRequired(dataAttribute.getUsageStatus(), ServiceExceptionParameters.DATA_ATTRIBUTE_USAGE_STATES, exceptions);
 
         // ConceptRole
         // <xs:element name="ConceptRole" type="common:ConceptReferenceType" minOccurs="0" maxOccurs="unbounded">
         for (ExternalItem externalItem : dataAttribute.getRole()) {
             if (!TypeExternalArtefactsEnum.CONCEPT.equals(externalItem.getType())) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.DATAATTRIBUTE_ROLE));
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.DATA_ATTRIBUTE_ROLE));
             }
         }
 
         // AttributeRelationshipType: minOccurs="1"
         if (dataAttribute.getRelateTo() == null) {
-            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, ServiceExceptionParameters.DATAATTRIBUTE_RELATETO));
+            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, ServiceExceptionParameters.DATA_ATTRIBUTE_RELATE_TO));
         } else {
             validateAttributeRelationshipType(dataAttribute.getRelateTo(), exceptions);
         }
 
         // LocalRepresentation: minOccurs="0"
-        validateSimpleDataStructureRepresentationType(dataAttribute.getLocalRepresentation(), ServiceExceptionParameters.DATAATTRIBUTE, exceptions);
+        validateSimpleDataStructureRepresentationType(dataAttribute.getLocalRepresentation(), ServiceExceptionParameters.DATA_ATTRIBUTE, exceptions);
     }
 
     private static void checkReportingYearStartDay(ReportingYearStartDay reportingYearStartDay, List<MetamacExceptionItem> exceptions) throws MetamacException {
@@ -204,18 +204,18 @@ public class DataStructureConstraintValidator {
             exceptions = new ArrayList<MetamacExceptionItem>();
         }
         // AssignmentStatus
-        ValidationUtils.checkMetadataRequired(reportingYearStartDay.getUsageStatus(), ServiceExceptionParameters.DATAATTRIBUTE_USAGE_STATES, exceptions);
+        ValidationUtils.checkMetadataRequired(reportingYearStartDay.getUsageStatus(), ServiceExceptionParameters.DATA_ATTRIBUTE_USAGE_STATES, exceptions);
 
         // AttributeRelationshipType: minOccurs="1"
         if (reportingYearStartDay.getRelateTo() == null) {
-            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, ServiceExceptionParameters.DATAATTRIBUTE_RELATETO));
+            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, ServiceExceptionParameters.DATA_ATTRIBUTE_RELATE_TO));
         } else {
             validateAttributeRelationshipType(reportingYearStartDay.getRelateTo(), exceptions);
         }
 
         // LocalRepresentation: minOccurs="1"
         if (reportingYearStartDay.getLocalRepresentation() == null) {
-            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, ServiceExceptionParameters.DATAATTRIBUTE_RELATETO));
+            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, ServiceExceptionParameters.DATA_ATTRIBUTE_RELATE_TO));
         } else {
             validateReportingYearStartDayRepresentationType(reportingYearStartDay.getLocalRepresentation(), exceptions);
         }
@@ -255,13 +255,13 @@ public class DataStructureConstraintValidator {
         // <xs:element name="ConceptRole" type="common:ConceptReferenceType" minOccurs="0" maxOccurs="unbounded">
         for (ExternalItem externalItem : measureDimension.getRole()) {
             if (!TypeExternalArtefactsEnum.CONCEPT.equals(externalItem.getType())) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.MEASUREDIMENSION_ROLE));
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.MEASURE_DIMENSION_ROLE));
             }
         }
 
         // LocalRepresentation: minOccurs="1"
         if (measureDimension.getLocalRepresentation() == null) {
-            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, ServiceExceptionParameters.MEASUREDIMENSION + ServiceExceptionParametersInternal.REPRESENTATION));
+            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, ServiceExceptionParameters.MEASURE_DIMENSION + ServiceExceptionParametersInternal.REPRESENTATION));
         } else {
             validateMeasureDimensionRepresentationType(measureDimension.getLocalRepresentation(), exceptions);
         }
@@ -278,7 +278,7 @@ public class DataStructureConstraintValidator {
 
         // LocalRepresentation: minOccurs="1"
         if (timeDimension.getLocalRepresentation() == null) {
-            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, ServiceExceptionParameters.TIMEDIMENSION + ServiceExceptionParametersInternal.REPRESENTATION));
+            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, ServiceExceptionParameters.TIME_DIMENSION + ServiceExceptionParametersInternal.REPRESENTATION));
         } else {
             validateTimeDimensionRepresentationType(timeDimension.getLocalRepresentation(), exceptions);
         }
@@ -294,7 +294,7 @@ public class DataStructureConstraintValidator {
         }
 
         // LocalRepresentation: minOccurs="0"
-        validateSimpleDataStructureRepresentationType(primaryMeasure.getLocalRepresentation(), ServiceExceptionParameters.PRIMARYMEASURE, exceptions);
+        validateSimpleDataStructureRepresentationType(primaryMeasure.getLocalRepresentation(), ServiceExceptionParameters.PRIMARY_MEASURE, exceptions);
     }
 
     private static void validateAttributeRelationshipType(AttributeRelationship attributeRelationship, List<MetamacExceptionItem> exceptions) throws MetamacException {
@@ -308,12 +308,12 @@ public class DataStructureConstraintValidator {
 
         if (attributeRelationship instanceof DimensionRelationship) {
             if (((DimensionRelationship) attributeRelationship).getDimension().isEmpty() && ((DimensionRelationship) attributeRelationship).getGroupKey().isEmpty()) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, ServiceExceptionParameters.DATAATTRIBUTE_RELATETO
-                        + ServiceExceptionParametersInternal.ATTRIBUTERELATIONSHIP_DIMENSIONRELATIONSHIP));
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, ServiceExceptionParameters.DATA_ATTRIBUTE_RELATE_TO
+                        + ServiceExceptionParametersInternal.ATTRIBUTE_RELATIONSHIP_TYPE_DIMENSION));
             }
         } else if (attributeRelationship instanceof GroupRelationship) {
-            ValidationUtils.checkMetadataRequired(((GroupRelationship) attributeRelationship).getGroupKey(), ServiceExceptionParameters.DATAATTRIBUTE_RELATETO
-                    + ServiceExceptionParametersInternal.ATTRIBUTERELATIONSHIP_GROUPRELATIONSHIP, exceptions);
+            ValidationUtils.checkMetadataRequired(((GroupRelationship) attributeRelationship).getGroupKey(), ServiceExceptionParameters.DATA_ATTRIBUTE_RELATE_TO
+                    + ServiceExceptionParametersInternal.ATTRIBUTE_RELATIONSHIP_TYPE_GROUP, exceptions);
         } else if (attributeRelationship instanceof NoSpecifiedRelationship) {
             ; // Nothing
         } else if (attributeRelationship instanceof PrimaryMeasureRelationship) {
@@ -335,7 +335,7 @@ public class DataStructureConstraintValidator {
         if (representation instanceof TextFormatRepresentation) {
             // minOccurs="1"
             if (((TextFormatRepresentation) representation).getNonEnumerated() == null) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, metadataName + ServiceExceptionParametersInternal.REPRESENTATION_NONENUMERATED));
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, metadataName + ServiceExceptionParametersInternal.REPRESENTATION_NON_ENUMERATED));
             } else {
                 checkSimpleComponentTextFormatType(((TextFormatRepresentation) representation).getNonEnumerated(), metadataName, exceptions);
             }
@@ -369,20 +369,20 @@ public class DataStructureConstraintValidator {
         if (representation instanceof TextFormatRepresentation) {
             // minOccurs="1"
             if (((TextFormatRepresentation) representation).getNonEnumerated() == null) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, ServiceExceptionParameters.TIMEDIMENSION
-                        + ServiceExceptionParametersInternal.REPRESENTATION_NONENUMERATED));
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, ServiceExceptionParameters.TIME_DIMENSION
+                        + ServiceExceptionParametersInternal.REPRESENTATION_NON_ENUMERATED));
             } else {
-                checkNonFacetedTextFormatType(((TextFormatRepresentation) representation).getNonEnumerated(), ServiceExceptionParameters.TIMEDIMENSION
-                        + ServiceExceptionParametersInternal.REPRESENTATION_NONENUMERATED, exceptions);
+                checkNonFacetedTextFormatType(((TextFormatRepresentation) representation).getNonEnumerated(), ServiceExceptionParameters.TIME_DIMENSION
+                        + ServiceExceptionParametersInternal.REPRESENTATION_NON_ENUMERATED, exceptions);
             }
 
             // FacetValueType must be fixed to "MonthDay"
             if (!FacetValueTypeEnum.MONTH_DAY_FVT.equals(((TextFormatRepresentation) representation).getNonEnumerated().getFacetValue())) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_UNEXPECTED, ServiceExceptionParameters.REPORTINGYEARSTARDAY
-                        + ServiceExceptionParametersInternal.FACET_FACETVALUETYPEENUM));
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_UNEXPECTED, ServiceExceptionParameters.REPORTING_YEAR_START_DAY
+                        + ServiceExceptionParametersInternal.FACET_VALUE_TYPE_ENUM));
             }
         } else if (representation instanceof EnumeratedRepresentation) {
-            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.PARAMETER_INCORRECT, ServiceExceptionParameters.REPORTINGYEARSTARDAY
+            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.PARAMETER_INCORRECT, ServiceExceptionParameters.REPORTING_YEAR_START_DAY
                     + ServiceExceptionParametersInternal.REPRESENTATION_ENUMERATED));
         }
     }
@@ -398,17 +398,17 @@ public class DataStructureConstraintValidator {
 
         // Representation: Choice between Enumerated(Enumeration + EnumerationFormat) and NonEnumerated (TextFormat)
         if (representation instanceof TextFormatRepresentation) {
-            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.PARAMETER_INCORRECT, ServiceExceptionParameters.MEASUREDIMENSION
-                    + ServiceExceptionParametersInternal.REPRESENTATION_NONENUMERATED));
+            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.PARAMETER_INCORRECT, ServiceExceptionParameters.MEASURE_DIMENSION
+                    + ServiceExceptionParametersInternal.REPRESENTATION_NON_ENUMERATED));
         } else if (representation instanceof EnumeratedRepresentation) {
             // minOccurs="1"
             // Enumeration:: common:ConceptSchemeReferenceType
             if (((EnumeratedRepresentation) representation).getEnumerated() == null) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, ServiceExceptionParameters.MEASUREDIMENSION
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, ServiceExceptionParameters.MEASURE_DIMENSION
                         + ServiceExceptionParametersInternal.REPRESENTATION_ENUMERATED));
             } else {
                 if (!TypeExternalArtefactsEnum.CONCEPT_SCHEME.equals(((EnumeratedRepresentation) representation).getEnumerated().getType())) {
-                    exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.MEASUREDIMENSION
+                    exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.MEASURE_DIMENSION
                             + ServiceExceptionParametersInternal.REPRESENTATION_ENUMERATED));
                 }
             }
@@ -428,13 +428,13 @@ public class DataStructureConstraintValidator {
         if (representation instanceof TextFormatRepresentation) {
             // minOccurs="1"
             if (((TextFormatRepresentation) representation).getNonEnumerated() == null) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, ServiceExceptionParameters.TIMEDIMENSION
-                        + ServiceExceptionParametersInternal.REPRESENTATION_NONENUMERATED));
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, ServiceExceptionParameters.TIME_DIMENSION
+                        + ServiceExceptionParametersInternal.REPRESENTATION_NON_ENUMERATED));
             } else {
-                checkTimeTextFormatType(((TextFormatRepresentation) representation).getNonEnumerated(), ServiceExceptionParameters.TIMEDIMENSION, exceptions);
+                checkTimeTextFormatType(((TextFormatRepresentation) representation).getNonEnumerated(), ServiceExceptionParameters.TIME_DIMENSION, exceptions);
             }
         } else if (representation instanceof EnumeratedRepresentation) {
-            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.PARAMETER_INCORRECT, ServiceExceptionParameters.TIMEDIMENSION
+            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.PARAMETER_INCORRECT, ServiceExceptionParameters.TIME_DIMENSION
                     + ServiceExceptionParametersInternal.REPRESENTATION_ENUMERATED));
         }
     }
@@ -451,7 +451,7 @@ public class DataStructureConstraintValidator {
         // Check for restrictions
         // FacetValueType:
         if (facet.getFacetValue() == null) {
-            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, metadataName + ServiceExceptionParametersInternal.FACET_FACETVALUETYPEENUM));
+            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, metadataName + ServiceExceptionParametersInternal.FACET_VALUE_TYPE_ENUM));
         } else {
             checkSimpleDataType(facet.getFacetValue(), metadataName);
         }
@@ -460,62 +460,62 @@ public class DataStructureConstraintValidator {
 
         // IsSequenceFT
         if (StringUtils.isNotEmpty(facet.getIsSequenceFT()) && !CoreCommonUtil.matchStringToPattern(facet.getIsSequenceFT(), CoreCommonUtil.PATTERN_XSD_BOOLEAN)) {
-            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_ISSEQUENCEFT));
+            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_IS_SEQUENCE_FT));
         }
 
         // IntervalFT
         if (StringUtils.isNotEmpty(facet.getIntervalFT()) && !CoreCommonUtil.matchStringToPattern(facet.getIntervalFT(), CoreCommonUtil.PATTERN_XSD_INTEGER)) {
-            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_INTERVALFT));
+            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_INTERVAL_FT));
         }
 
         // StartValueFT
         if (StringUtils.isNotEmpty(facet.getStartValueFT()) && !CoreCommonUtil.matchStringToPattern(facet.getStartValueFT(), CoreCommonUtil.PATTERN_XSD_INTEGER)) {
-            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_STARTVALUEFT));
+            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_START_VALUE_FT));
         }
 
         // EndValueFT
         if (StringUtils.isNotEmpty(facet.getEndValueFT()) && !CoreCommonUtil.matchStringToPattern(facet.getEndValueFT(), CoreCommonUtil.PATTERN_XSD_INTEGER)) {
-            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_ENDVALUEFT));
+            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_END_VALUE_FT));
         }
 
         // TimeInterval
         if (StringUtils.isNotEmpty(facet.getTimeIntervalFT()) && !CoreCommonUtil.matchStringToPattern(facet.getTimeIntervalFT(), CoreCommonUtil.PATTERN_XSD_DURATION)) {
-            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_TIMEINTERVALFT));
+            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_TIME_INTERVAL_FT));
         }
 
         // startTime
         if (StringUtils.isNotEmpty(facet.getStartTimeFT()) && !CoreCommonUtil.matchStringToPattern(facet.getStartTimeFT(), CoreCommonUtil.PATTERN_SDMXL21_STANDARD_TIME_PERIOD)) {
-            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_STARTTIMEFT));
+            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_START_TIME_FT));
         }
 
         // endTime
         if (StringUtils.isNotEmpty(facet.getEndTimeFT()) && !CoreCommonUtil.matchStringToPattern(facet.getEndTimeFT(), CoreCommonUtil.PATTERN_SDMXL21_STANDARD_TIME_PERIOD)) {
-            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_ENDTIMEFT));
+            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_END_TIME_FT));
         }
 
         // minLength
         if (StringUtils.isNotEmpty(facet.getMinLengthFT()) && !CoreCommonUtil.matchStringToPattern(facet.getMinLengthFT(), CoreCommonUtil.PATTERN_XSD_POSITIVEINTEGER)) {
-            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_MINLENGTHFT));
+            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_MIN_LENGTH_FT));
         }
 
         // maxLength
         if (StringUtils.isNotEmpty(facet.getMaxLengthFT()) && !CoreCommonUtil.matchStringToPattern(facet.getMaxLengthFT(), CoreCommonUtil.PATTERN_XSD_POSITIVEINTEGER)) {
-            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_MAXLENGTHFT));
+            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_MAX_LENGTH_FT));
         }
 
         // minValue
         if (StringUtils.isNotEmpty(facet.getMinValueFT()) && !CoreCommonUtil.matchStringToPattern(facet.getMinValueFT(), CoreCommonUtil.PATTERN_XSD_INTEGER)) {
-            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_MINVALUEFT));
+            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_MIN_VALUE_FT));
         }
 
         // maxValue
         if (StringUtils.isNotEmpty(facet.getMaxValueFT()) && !CoreCommonUtil.matchStringToPattern(facet.getMaxValueFT(), CoreCommonUtil.PATTERN_XSD_INTEGER)) {
-            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_MAXVALUEFT));
+            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_MAX_VALUE_FT));
         }
 
         // decimals
         if (StringUtils.isNotEmpty(facet.getDecimalsFT()) && !CoreCommonUtil.matchStringToPattern(facet.getDecimalsFT(), CoreCommonUtil.PATTERN_XSD_POSITIVEINTEGER)) {
-            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_DECIMALSFT));
+            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_DECIMALS_FT));
         }
 
         // pattern
@@ -523,10 +523,10 @@ public class DataStructureConstraintValidator {
 
         // Prohibited
         if (StringUtils.isNotEmpty(facet.getIsMultiLingual()) && StringUtils.isNotEmpty(facet.getIsMultiLingual())) {
-            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_UNEXPECTED, metadataName + ServiceExceptionParametersInternal.FACET_ISMULTILINGUAL));
+            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_UNEXPECTED, metadataName + ServiceExceptionParametersInternal.FACET_IS_MULTI_LINGUAL));
         }
         if (StringUtils.isNotEmpty(facet.getXhtmlEFT()) && StringUtils.isNotEmpty(facet.getXhtmlEFT())) {
-            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_UNEXPECTED, metadataName + ServiceExceptionParametersInternal.FACET_XHTMLEFT));
+            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_UNEXPECTED, metadataName + ServiceExceptionParametersInternal.FACET_XHTML_EFT));
         }
     }
 
@@ -543,7 +543,7 @@ public class DataStructureConstraintValidator {
         if (facet != null) {
             // FacetValueType
             if (facet.getFacetValue() == null) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, metadataName + ServiceExceptionParametersInternal.FACET_FACETVALUETYPEENUM));
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, metadataName + ServiceExceptionParametersInternal.FACET_VALUE_TYPE_ENUM));
             } else {
                 checkSimpleDataType(facet.getFacetValue(), metadataName);
             }
@@ -553,75 +553,75 @@ public class DataStructureConstraintValidator {
 
             // IsSequenceFT
             if (StringUtils.isNotEmpty(facet.getIsSequenceFT())) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_UNEXPECTED, metadataName + ServiceExceptionParametersInternal.FACET_ISSEQUENCEFT));
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_UNEXPECTED, metadataName + ServiceExceptionParametersInternal.FACET_IS_SEQUENCE_FT));
             }
 
             // IntervalFT
             if (StringUtils.isNotEmpty(facet.getIntervalFT())) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_INTERVALFT));
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_INTERVAL_FT));
             }
 
             // StartValueFT
             if (StringUtils.isNotEmpty(facet.getStartValueFT())) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_STARTVALUEFT));
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_START_VALUE_FT));
             }
 
             // EndValueFT
             if (StringUtils.isNotEmpty(facet.getEndValueFT())) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_ENDVALUEFT));
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_END_VALUE_FT));
             }
 
             // TimeInterval
             if (StringUtils.isNotEmpty(facet.getTimeIntervalFT())) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_TIMEINTERVALFT));
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_TIME_INTERVAL_FT));
             }
 
             // startTime
             if (StringUtils.isNotEmpty(facet.getStartTimeFT())) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_STARTTIMEFT));
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_START_TIME_FT));
             }
 
             // endTime
             if (StringUtils.isNotEmpty(facet.getEndTimeFT())) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_ENDTIMEFT));
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_END_TIME_FT));
             }
 
             // minLength
             if (StringUtils.isNotEmpty(facet.getMinLengthFT())) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_MINLENGTHFT));
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_MIN_LENGTH_FT));
             }
 
             // maxLength
             if (StringUtils.isNotEmpty(facet.getMaxLengthFT())) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_MAXLENGTHFT));
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_MAX_LENGTH_FT));
             }
 
             // minValue
             if (StringUtils.isNotEmpty(facet.getMinValueFT())) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_MINVALUEFT));
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_MIN_VALUE_FT));
             }
 
             // maxValue
             if (StringUtils.isNotEmpty(facet.getMaxValueFT())) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_MAXVALUEFT));
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_MAX_VALUE_FT));
             }
 
             // decimals
             if (StringUtils.isNotEmpty(facet.getDecimalsFT())) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_DECIMALSFT));
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_DECIMALS_FT));
             }
 
             // pattern
             if (StringUtils.isNotEmpty(facet.getPatternFT())) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_PATTERNFT));
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_PATTERN_FT));
             }
 
             // Prohibited
             if (StringUtils.isNotEmpty(facet.getIsMultiLingual())) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_UNEXPECTED, metadataName + ServiceExceptionParametersInternal.FACET_ISMULTILINGUAL));
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_UNEXPECTED, metadataName + ServiceExceptionParametersInternal.FACET_IS_MULTI_LINGUAL));
             }
             if (StringUtils.isNotEmpty(facet.getXhtmlEFT())) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_UNEXPECTED, metadataName + ServiceExceptionParametersInternal.FACET_XHTMLEFT));
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_UNEXPECTED, metadataName + ServiceExceptionParametersInternal.FACET_XHTML_EFT));
             }
 
         }
@@ -640,7 +640,7 @@ public class DataStructureConstraintValidator {
         if (facet != null) {
             // FacetValueType
             if (facet.getFacetValue() == null) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, metadataName + ServiceExceptionParametersInternal.FACET_FACETVALUETYPEENUM));
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, metadataName + ServiceExceptionParametersInternal.FACET_VALUE_TYPE_ENUM));
             } else {
                 checkTimeDataType(facet.getFacetValue(), metadataName);
             }
@@ -650,75 +650,75 @@ public class DataStructureConstraintValidator {
 
             // IsSequenceFT
             if (StringUtils.isNotEmpty(facet.getIsSequenceFT())) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_UNEXPECTED, metadataName + ServiceExceptionParametersInternal.FACET_ISSEQUENCEFT));
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_UNEXPECTED, metadataName + ServiceExceptionParametersInternal.FACET_IS_SEQUENCE_FT));
             }
 
             // IntervalFT
             if (StringUtils.isNotEmpty(facet.getIntervalFT())) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_INTERVALFT));
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_INTERVAL_FT));
             }
 
             // StartValueFT
             if (StringUtils.isNotEmpty(facet.getStartValueFT())) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_STARTVALUEFT));
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_START_VALUE_FT));
             }
 
             // EndValueFT
             if (StringUtils.isNotEmpty(facet.getEndValueFT())) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_ENDVALUEFT));
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_END_VALUE_FT));
             }
 
             // TimeInterval
             if (StringUtils.isNotEmpty(facet.getTimeIntervalFT())) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_TIMEINTERVALFT));
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_TIME_INTERVAL_FT));
             }
 
             // startTime
             if (StringUtils.isNotEmpty(facet.getStartTimeFT()) && !CoreCommonUtil.matchStringToPattern(facet.getStartTimeFT(), CoreCommonUtil.PATTERN_SDMXL21_STANDARD_TIME_PERIOD)) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_STARTTIMEFT));
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_START_TIME_FT));
             }
 
             // endTime
             if (StringUtils.isNotEmpty(facet.getEndTimeFT()) && !CoreCommonUtil.matchStringToPattern(facet.getEndTimeFT(), CoreCommonUtil.PATTERN_SDMXL21_STANDARD_TIME_PERIOD)) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_ENDTIMEFT));
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_END_TIME_FT));
             }
 
             // minLength
             if (StringUtils.isNotEmpty(facet.getMinLengthFT())) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_MINLENGTHFT));
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_MIN_LENGTH_FT));
             }
 
             // maxLength
             if (StringUtils.isNotEmpty(facet.getMaxLengthFT())) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_MAXLENGTHFT));
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_MAX_LENGTH_FT));
             }
 
             // minValue
             if (StringUtils.isNotEmpty(facet.getMinValueFT())) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_MINVALUEFT));
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_MIN_VALUE_FT));
             }
 
             // maxValue
             if (StringUtils.isNotEmpty(facet.getMaxValueFT())) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_MAXVALUEFT));
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_MAX_VALUE_FT));
             }
 
             // decimals
             if (StringUtils.isNotEmpty(facet.getDecimalsFT())) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_DECIMALSFT));
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_DECIMALS_FT));
             }
 
             // pattern
             if (StringUtils.isNotEmpty(facet.getPatternFT())) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_PATTERNFT));
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, metadataName + ServiceExceptionParametersInternal.FACET_PATTERN_FT));
             }
 
             // Prohibited
             if (StringUtils.isNotEmpty(facet.getIsMultiLingual())) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_UNEXPECTED, metadataName + ServiceExceptionParametersInternal.FACET_ISMULTILINGUAL));
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_UNEXPECTED, metadataName + ServiceExceptionParametersInternal.FACET_IS_MULTI_LINGUAL));
             }
             if (StringUtils.isNotEmpty(facet.getXhtmlEFT())) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_UNEXPECTED, metadataName + ServiceExceptionParametersInternal.FACET_XHTMLEFT));
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_UNEXPECTED, metadataName + ServiceExceptionParametersInternal.FACET_XHTML_EFT));
             }
 
         }
@@ -730,7 +730,7 @@ public class DataStructureConstraintValidator {
         }
         if (!DataStructureConstraintSharedValidator.isSimpleDataType(facetValueTypeEnum)) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_INCORRECT).withLoggedLevel(ExceptionLevelEnum.DEBUG)
-                    .withMessageParameters(metadataName + ServiceExceptionParametersInternal.FACET_FACETVALUETYPEENUM).build();
+                    .withMessageParameters(metadataName + ServiceExceptionParametersInternal.FACET_VALUE_TYPE_ENUM).build();
         }
     }
 
@@ -740,7 +740,7 @@ public class DataStructureConstraintValidator {
         }
         if (!DataStructureConstraintSharedValidator.isTimeDataType(facetValueTypeEnum)) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_INCORRECT).withLoggedLevel(ExceptionLevelEnum.DEBUG)
-                    .withMessageParameters(metadataName + ServiceExceptionParametersInternal.FACET_FACETVALUETYPEENUM).build();
+                    .withMessageParameters(metadataName + ServiceExceptionParametersInternal.FACET_VALUE_TYPE_ENUM).build();
         }
     }
 

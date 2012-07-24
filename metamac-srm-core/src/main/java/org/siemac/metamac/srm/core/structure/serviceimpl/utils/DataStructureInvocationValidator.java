@@ -28,8 +28,8 @@ public class DataStructureInvocationValidator {
         }
         
         // Metadata Required
-        ValidationUtils.checkMetadataRequired(dataStructureDefinition.getName(), ServiceExceptionParameters.DATASTRUCTUREDEFINITION_NAME, exceptions);
-        checkExternalItem(dataStructureDefinition.getMaintainer(), exceptions, ServiceExceptionParameters.DATASTRUCTUREDEFINITION_MAINTAINER);
+        ValidationUtils.checkMetadataRequired(dataStructureDefinition.getName(), ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION_NAME, exceptions);
+        checkExternalItem(dataStructureDefinition.getMaintainer(), exceptions, ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION_MAINTAINER);
 
         ExceptionUtils.throwIfException(exceptions);
     }
@@ -112,10 +112,10 @@ public class DataStructureInvocationValidator {
         // Metadata Empty
         
         // Metadata Required
-        ValidationUtils.checkMetadataRequired(externalItem.getUri(), metadataName + ServiceExceptionParametersInternal.EXTERNALITEM_URI, exceptions);
-        ValidationUtils.checkMetadataRequired(externalItem.getCode(), metadataName + ServiceExceptionParametersInternal.EXTERNALITEM_CODE, exceptions);
-        ValidationUtils.checkMetadataRequired(externalItem.getUrn(), metadataName + ServiceExceptionParametersInternal.EXTERNALITEM_URN, exceptions);
-        ValidationUtils.checkMetadataRequired(externalItem.getType(), metadataName + ServiceExceptionParametersInternal.EXTERNALITEM_TYPE, exceptions);
+        ValidationUtils.checkMetadataRequired(externalItem.getUri(), metadataName + ServiceExceptionParametersInternal.EXTERNAL_ITEM_URI, exceptions);
+        ValidationUtils.checkMetadataRequired(externalItem.getCode(), metadataName + ServiceExceptionParametersInternal.EXTERNAL_ITEM_CODE, exceptions);
+        ValidationUtils.checkMetadataRequired(externalItem.getUrn(), metadataName + ServiceExceptionParametersInternal.EXTERNAL_ITEM_URN, exceptions);
+        ValidationUtils.checkMetadataRequired(externalItem.getType(), metadataName + ServiceExceptionParametersInternal.EXTERNAL_ITEM_TYPE, exceptions);
         
         return exceptions;
     }
