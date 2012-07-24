@@ -27,8 +27,8 @@ Application Base {
 			
 			"The unique identifier of the object."
 			String idLogic nullable;
-			"Universal resource identifier that may or may not be resolvable."
-			String uri nullable;
+			"Universal resource identifier that may or may not be resolvable. Only filled for external resources of Metamac. For internal resources this metadata is filled by Rest Api"
+			String uri nullable;			
 			"Universal resource name, this is for use in registries: all registered objects have a urn."
 			String urn nullable;
 			
@@ -135,6 +135,9 @@ Application Base {
 			hint="idSequence=ITEM_SCHEMES_VERSIONS"
 			inheritanceType=JOINED
 			
+			"Denotes whether the Item Scheme contains a sub set of the full set of Items in the maintained scheme."
+			Boolean isPartial nullable;
+			"Maintainable artefact"			
 			- @MaintainableArtefact maintainableArtefact databaseColumn="MAINTANABLE_ARTIFACT_FK" not nullable cascade="all" ;
 			
 			// Relations

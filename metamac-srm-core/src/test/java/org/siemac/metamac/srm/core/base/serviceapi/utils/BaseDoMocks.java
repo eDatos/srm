@@ -21,60 +21,46 @@ import org.siemac.metamac.srm.core.structure.domain.DimensionDescriptor;
 import org.siemac.metamac.srm.core.structure.domain.MeasureDescriptor;
 import org.siemac.metamac.srm.core.structure.domain.MeasureDimension;
 
-
 public class BaseDoMocks {
-    
-    private static final String AGENCY_MOCK = "AgencyMock";
-    private static final String AGENCY_SCHEME_MOCK = "AgencySchemeMock";
-    private static final String CONCEPT_SCHEME_MOCK = "ConceptSchemeMock";
-    private static final String CONCEPT_MOCK = "ConceptMock";
-    
-    private static final String URI_MOCK = "lorem/ipsum/dolor/sit/amet";
 
-    // TODO completar los comentados 
-    
+    private static final String AGENCY_MOCK         = "AgencyMock";
+    private static final String AGENCY_SCHEME_MOCK  = "AgencySchemeMock";
+    private static final String CONCEPT_SCHEME_MOCK = "ConceptSchemeMock";
+    private static final String CONCEPT_MOCK        = "ConceptMock";
+
+    public static final String  URI_MOCK            = "lorem/ipsum/dolor/sit/amet";
+
     // -----------------------------------------------------------------
     // ITEM SCHEME
     // -----------------------------------------------------------------
 
     public static void fillItemSchemeToCreate(ItemSchemeVersion itemSchemeVersion) {
         itemSchemeVersion.setItemScheme(new ItemScheme());
-        String idLogic = "conceptScheme-" + MetamacMocks.mockString(10);
-        itemSchemeVersion.setMaintainableArtefact(mockMaintainableArtefact(idLogic, "sdmx/v2.1/conceptScheme/" + idLogic));
+        itemSchemeVersion.setIsPartial(Boolean.FALSE);
+        String idLogic = "itemScheme-" + MetamacMocks.mockString(10);
+        itemSchemeVersion.setMaintainableArtefact(mockMaintainableArtefact(idLogic, "sdmx/v2.1/itemScheme/" + idLogic));
     }
-    
+
     public static MaintainableArtefact mockMaintainableArtefact(String idLogic, String uri) {
 
         MaintainableArtefact maintainableArtefact = new MaintainableArtefact();
-        
+
         // IdentifiableArtefact
         maintainableArtefact.setIdLogic(idLogic);
-        maintainableArtefact.setUri(uri);
-        maintainableArtefact.setReplacedBy(null);
 
         // NameableArtefact
         maintainableArtefact.setName(mockInternationalString());
         maintainableArtefact.setDescription(mockInternationalString());
 
         // MaintainableArtefact
-        maintainableArtefact.setFinalLogic(Boolean.FALSE);
         maintainableArtefact.setIsExternalReference(Boolean.FALSE);
         maintainableArtefact.setStructureURL(null);
         maintainableArtefact.setServiceURL(null);
-
         maintainableArtefact.setMaintainer(mockAgencyExternalItem());
-        
+
         return maintainableArtefact;
     }
-//    
-//    public static ItemScheme createItemSchemeFinal() {
-//        ItemScheme itemScheme = createItemScheme();
-//
-//        itemScheme.setFinalLogic(Boolean.TRUE);
-//        
-//        return itemScheme;
-//    }
-    
+
     // -----------------------------------------------------------------
     // INTERNATIONAL STRING
     // -----------------------------------------------------------------
@@ -103,23 +89,23 @@ public class BaseDoMocks {
     public static ExternalItem mockConceptExternalItem() {
         return new ExternalItem(CONCEPT_MOCK, URI_MOCK, mockConceptUrn(), TypeExternalArtefactsEnum.CONCEPT);
     }
-    
+
     public static String mockAgencyUrn() {
         return GeneratorUrnUtils.generateSdmxAgencyUrn(AGENCY_MOCK, AGENCY_SCHEME_MOCK, VersionUtil.VERSION_LOGIC_INITIAL_VERSION, AGENCY_MOCK);
     }
-    
+
     public static String mockConceptUrn() {
         return GeneratorUrnUtils.generateSdmxConceptUrn(AGENCY_MOCK, CONCEPT_SCHEME_MOCK, VersionUtil.VERSION_LOGIC_INITIAL_VERSION, CONCEPT_MOCK);
-    }    
-    
+    }
+
     public static String mockConceptSchemeUrn() {
         return GeneratorUrnUtils.generateSdmxConceptSchemeUrn(AGENCY_MOCK, CONCEPT_SCHEME_MOCK, VersionUtil.VERSION_LOGIC_INITIAL_VERSION);
-    } 
-    
+    }
+
     // -----------------------------------------------------------------
     // COMPONENT
     // -----------------------------------------------------------------
-    
+
     public static List<Dimension> createDimension() {
 
         // List<Concept> concepts = sdmxBaseService.findAllConcepts(getServiceContext());
@@ -154,16 +140,16 @@ public class BaseDoMocks {
 
         return dimensions;
     }
-    
+
     public static MeasureDimension createMeasureDimension() {
         MeasureDimension measureDimension = new MeasureDimension();
         measureDimension.setIdLogic(RandomStringUtils.random(50, true, true));
-        
+
         // Required
         measureDimension.setUri(RandomStringUtils.random(50, true, true));
         measureDimension.setCptIdRef(BaseDoMocks.mockConceptExternalItem());
         measureDimension.setOrderLogic(1);
-        
+
         // Some Auditory
         measureDimension.setCreatedBy("Junit");
         measureDimension.setCreatedDate(new DateTime());
@@ -174,7 +160,7 @@ public class BaseDoMocks {
     // -----------------------------------------------------------------
     // COMPONENTLIST
     // -----------------------------------------------------------------
-    
+
     public static ComponentList createDimensionDescriptor() {
         DimensionDescriptor dimensionDescriptor = new DimensionDescriptor();
         dimensionDescriptor.setIdLogic(RandomStringUtils.random(50, true, true));
@@ -184,7 +170,7 @@ public class BaseDoMocks {
 
         return dimensionDescriptor;
     }
-    
+
     public static ComponentList createMeasureDimensionDescriptor() {
         MeasureDescriptor measureDescriptor = new MeasureDescriptor();
         measureDescriptor.setIdLogic(RandomStringUtils.random(50, true, true));

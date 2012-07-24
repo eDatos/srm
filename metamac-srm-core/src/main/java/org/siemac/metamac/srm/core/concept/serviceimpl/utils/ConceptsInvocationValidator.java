@@ -9,20 +9,19 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.core.common.exception.utils.ExceptionUtils;
 import org.siemac.metamac.core.common.serviceimpl.utils.ValidationUtils;
+import org.siemac.metamac.domain.concept.enums.domain.ConceptSchemeTypeEnum;
+import org.siemac.metamac.srm.core.base.serviceimpl.utils.BaseInvocationValidator;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersion;
 
 public class ConceptsInvocationValidator {
-
-    // TODO
 
     public static void checkCreateConceptScheme(ConceptSchemeVersion conceptSchemeVersion, List<MetamacExceptionItem> exceptions) throws MetamacException {
         if (exceptions == null) {
             exceptions = new ArrayList<MetamacExceptionItem>();
         }
 
-        // TODO
-        // checkConceptScheme(conceptScheme, exceptions);
+        checkConceptScheme(conceptSchemeVersion, exceptions);
 
         ExceptionUtils.throwIfException(exceptions);
     }
@@ -36,17 +35,6 @@ public class ConceptsInvocationValidator {
 
         ExceptionUtils.throwIfException(exceptions);
     }
-
-    // public static void checkUpdateConceptScheme(ConceptScheme conceptScheme, List<MetamacExceptionItem> exceptions) throws MetamacException {
-    // if (exceptions == null) {
-    // exceptions = new ArrayList<MetamacExceptionItem>();
-    // }
-    //
-    // checkConceptScheme(conceptScheme, exceptions);
-    //
-    // ExceptionUtils.throwIfException(exceptions);
-    // }
-    //
 
     public static void checkDeleteConceptScheme(String urn, List<MetamacExceptionItem> exceptions) throws MetamacException {
         if (exceptions == null) {
@@ -76,57 +64,20 @@ public class ConceptsInvocationValidator {
         ExceptionUtils.throwIfException(exceptions);
     }
 
-    // // ------------------------------------------------------------------------------------
-    // // CONCEPTS
-    // // ------------------------------------------------------------------------------------
-    //
-    // public static void checkFindConceptById(Long id, List<MetamacExceptionItem> exceptions) throws MetamacException {
-    // if (exceptions == null) {
-    // exceptions = new ArrayList<MetamacExceptionItem>();
-    // }
-    //
-    // ValidationUtils.checkParameterRequired(id, ServiceExceptionParameters.ID, exceptions);
-    //
-    // ExceptionUtils.throwIfException(exceptions);
-    //
-    // }
-    //
-    // public static void checkCreateConcept(Long conceptSchemeId, ConceptScheme entity, List<MetamacExceptionItem> exceptions) throws MetamacException {
-    // // TODO
-    // }
-    //
-    // public static void checkUpdateConcept(ConceptScheme entity, List<MetamacExceptionItem> exceptions) throws MetamacException {
-    // // TODO
-    // }
-    //
-    // public void checkDeleteConcept(Long id, List<MetamacExceptionItem> exceptions) throws MetamacException {
-    // if (exceptions == null) {
-    // exceptions = new ArrayList<MetamacExceptionItem>();
-    // }
-    //
-    // ValidationUtils.checkParameterRequired(id, ServiceExceptionParameters.ID, exceptions);
-    //
-    // ExceptionUtils.throwIfException(exceptions);
-    //
-    // }
-    //
-    // public static void checkFindConceptSchemeConcepts(Long conceptSchemeId, List<MetamacExceptionItem> exceptions) throws MetamacException {
-    // if (exceptions == null) {
-    // exceptions = new ArrayList<MetamacExceptionItem>();
-    // }
-    //
-    // ValidationUtils.checkParameterRequired(conceptSchemeId, ServiceExceptionParameters.CONCEPT_SCHEME_ID, exceptions);
-    //
-    // ExceptionUtils.throwIfException(exceptions);
-    //
-    // }
-    //
-    // private static void checkConceptScheme(ConceptScheme conceptScheme, List<MetamacExceptionItem> exceptions) {
-    // ValidationUtils.checkParameterRequired(conceptScheme, ServiceExceptionParameters.CONCEPT_SCHEME, exceptions);
-    // if (conceptScheme == null) {
-    // return;
-    // }
-    // BaseInvocationValidator.checkItemScheme(conceptScheme.getItemScheme(), exceptions);
-    // }
+    // TODO nombre de los parámetros de las excepciones? ¿poner conceptScheme en lugar del genérico itemScheme?
+    private static void checkConceptScheme(ConceptSchemeVersion conceptSchemeVersion, List<MetamacExceptionItem> exceptions) {
+        
+        // Common metadata of item scheme
+        BaseInvocationValidator.checkItemScheme(conceptSchemeVersion, exceptions);
 
+        // Metadata of concept scheme
+        if (conceptSchemeVersion == null) {
+            return;
+        }
+        if (ConceptSchemeTypeEnum.OPERATION.equals(conceptSchemeVersion.getType())) {
+            ValidationUtils.checkMetadataRequired(conceptSchemeVersion.getRelatedOperation(), ServiceExceptionParameters.CONCEPT_SCHEME_RELATED_OPERATION, exceptions);
+        } else {
+            ValidationUtils.checkMetadataEmpty(conceptSchemeVersion.getRelatedOperation(), ServiceExceptionParameters.CONCEPT_SCHEME_RELATED_OPERATION, exceptions);
+        }
+    }
 }

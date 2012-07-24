@@ -16,13 +16,16 @@
     
     <TB_CONCEPT_SCHEMES_VERSIONS
         TB_ITEM_SCHEMES_VERSIONS="11"
+        CONCEPT_SCHEME_TYPE="GLOSSARY"
+        RELATED_OPERATION_FK="[null]"
     />
     
     <TB_ITEM_SCHEMES_VERSIONS
         ID="11"
         ITEM_SCHEME_FK="1"
+        IS_PARTIAL="0"
         MAINTANABLE_ARTIFACT_FK="11"
-  
+        
         UUID="conceptScheme-1-v1"
         VERSION="1"
         CREATED_BY="user1"
@@ -38,10 +41,10 @@
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
         ID_LOGIC="CONCEPTSCHEME01"
-        URI="http://data.siemac.org/srm/v1/conceptSchemes/conceptScheme01/v1"
+        URI="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.concepscheme.ConceptScheme=ISTAC:CONCEPTSCHEME01(01.000)"
         REPLACED_BY="02.000"
-        REPLACE_TO="[NULL]"
+        REPLACE_TO="[null]"
         
         NAME_FK="1"
         DESCRIPTION_FK="2"
@@ -71,13 +74,16 @@
     
     <TB_CONCEPT_SCHEMES_VERSIONS
         TB_ITEM_SCHEMES_VERSIONS="12"
+        CONCEPT_SCHEME_TYPE="GLOSSARY"
+        RELATED_OPERATION_FK="[null]"
     />
     
     <TB_ITEM_SCHEMES_VERSIONS
         ID="12"
         ITEM_SCHEME_FK="1"
+        IS_PARTIAL="0"
         MAINTANABLE_ARTIFACT_FK="12"
-  
+        
         UUID="conceptScheme-2-v2"
         VERSION="1"
         CREATED_BY="user1"
@@ -93,9 +99,9 @@
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
         ID_LOGIC="CONCEPTSCHEME01"
-        URI="http://data.siemac.org/srm/v1/conceptSchemes/conceptScheme01/v2"
+        URI="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.concepscheme.ConceptScheme=ISTAC:CONCEPTSCHEME01(02.000)"
-        REPLACED_BY="[NULL]"
+        REPLACED_BY="[null]"
         REPLACE_TO="01.000"
         
         NAME_FK="3"
@@ -137,13 +143,16 @@
     
     <TB_CONCEPT_SCHEMES_VERSIONS
         TB_ITEM_SCHEMES_VERSIONS="21"
+        CONCEPT_SCHEME_TYPE="GLOSSARY"
+        RELATED_OPERATION_FK="[null]"
     />
     
     <TB_ITEM_SCHEMES_VERSIONS
         ID="21"
         ITEM_SCHEME_FK="2"
+        IS_PARTIAL="0"
         MAINTANABLE_ARTIFACT_FK="21"
-  
+        
         UUID="conceptScheme-2-v1"
         VERSION="1"
         CREATED_BY="user1"
@@ -159,7 +168,7 @@
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
         ID_LOGIC="CONCEPTSCHEME02"
-        URI="http://data.siemac.org/srm/v1/conceptSchemes/conceptScheme02/v1"
+        URI="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.concepscheme.ConceptScheme=ISTAC:CONCEPTSCHEME02(01.000)"
         REPLACED_BY="[null]"
         REPLACE_TO="[null]"
@@ -202,13 +211,16 @@
     
     <TB_CONCEPT_SCHEMES_VERSIONS
         TB_ITEM_SCHEMES_VERSIONS="31"
+        CONCEPT_SCHEME_TYPE="GLOSSARY"
+        RELATED_OPERATION_FK="[null]"
     />
     
     <TB_ITEM_SCHEMES_VERSIONS
         ID="31"
         ITEM_SCHEME_FK="3"
+        IS_PARTIAL="0"
         MAINTANABLE_ARTIFACT_FK="31"
-  
+        
         UUID="conceptScheme-3-v1"
         VERSION="1"
         CREATED_BY="user1"
@@ -224,7 +236,7 @@
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
         ID_LOGIC="CONCEPTSCHEME03"
-        URI="http://data.siemac.org/srm/v1/conceptSchemes/conceptScheme03/v1"
+        URI="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.concepscheme.ConceptScheme=ISTAC:CONCEPTSCHEME03(01.000)"
         REPLACED_BY="[null]"
         REPLACE_TO="[null]"

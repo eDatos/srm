@@ -1,4 +1,5 @@
 import "classpath:/btdesign/metamac-srm-core-base.btdesign"
+import "classpath:/btdesign/metamac-api-domain-enums-concept.btdesign"
 import "classpath:/btdesign/metamac-core-common-dtos.btdesign"
 import "classpath:/btdesign/export/metamac-core-common-entity.btdesign"
 
@@ -41,8 +42,10 @@ Application ConceptSchemeVersions {
 			hint="idSequence=CONCEPT_SCHEMES_VERSIONS"
 			!auditable
 			
-			// TODO type (es un enum)
-			// TODO related_operation (sólo cuando el type = Operation. Será un ExternalItem)
+			"Type"
+			- @ConceptSchemeTypeEnum type nullable databaseColumn="CONCEPT_SCHEME_TYPE";
+			"Related operation, only when type is Operation"
+			- @ExternalItem relatedOperation nullable cascade="all" databaseColumn="RELATED_OPERATION_FK";
 			
 			Repository ConceptSchemeVersionRepository {
 				findByCondition(PagingParameter pagingParameter);

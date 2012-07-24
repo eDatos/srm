@@ -20,6 +20,8 @@ import org.junit.runner.RunWith;
 import org.siemac.metamac.common.test.utils.MetamacAsserts;
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.core.common.util.GeneratorUrnUtils;
+import org.siemac.metamac.domain.concept.enums.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.domain.srm.enume.domain.MaintainableArtefactProcStatusEnum;
 import org.siemac.metamac.srm.core.base.domain.MaintainableArtefact;
 import org.siemac.metamac.srm.core.base.serviceapi.utils.BaseAsserts;
@@ -63,16 +65,19 @@ public class ConceptsServiceTest extends SrmBaseTest implements ConceptsServiceT
         assertNotNull(conceptSchemeVersionCreated);
         assertNotNull(conceptSchemeVersionCreated.getUuid());
         assertNotNull(conceptSchemeVersionCreated.getId());
-        assertNotNull(conceptSchemeVersionCreated.getMaintainableArtefact().getUrn());
 
-        // TODO revisar todos metadatos, generados y no generados
         ConceptSchemeVersion conceptSchemeVersionRetrieved = conceptsService.findConceptSchemeByUrn(getServiceContextAdministrador(), conceptSchemeVersionCreated.getMaintainableArtefact().getUrn());
         assertEquals(MaintainableArtefactProcStatusEnum.DRAFT, conceptSchemeVersionRetrieved.getMaintainableArtefact().getProcStatus());
         assertEquals("01.000", conceptSchemeVersionRetrieved.getMaintainableArtefact().getVersionLogic());
+        assertEquals(GeneratorUrnUtils.generateSdmxConceptSchemeUrn(conceptSchemeVersion.getMaintainableArtefact().getMaintainer().getCode(), conceptSchemeVersion.getMaintainableArtefact()
+                .getIdLogic(), "01.000"), conceptSchemeVersionRetrieved.getMaintainableArtefact().getUrn());
         assertNull(conceptSchemeVersionRetrieved.getMaintainableArtefact().getValidFrom());
         assertNull(conceptSchemeVersionRetrieved.getMaintainableArtefact().getValidTo());
         assertTrue(conceptSchemeVersionRetrieved.getMaintainableArtefact().getIsLastVersion());
-
+        assertFalse(conceptSchemeVersionRetrieved.getMaintainableArtefact().getFinalLogic());
+        assertNull(conceptSchemeVersionRetrieved.getMaintainableArtefact().getReplacedBy());
+        assertNull(conceptSchemeVersionRetrieved.getMaintainableArtefact().getReplaceTo());
+        // TODO uri?
         ConceptsAsserts.assertEqualsConceptScheme(conceptSchemeVersion, conceptSchemeVersionRetrieved);
 
         // Validate audit TODO
@@ -83,17 +88,115 @@ public class ConceptsServiceTest extends SrmBaseTest implements ConceptsServiceT
     }
 
     @Test
-    public void testCreateConceptSchemeRequiredParameter() throws Exception {
-        // TODO
-        // try {
-        // conceptsService.createConceptScheme(getServiceContextAdministrador(), null);
-        // fail("parameter required");
-        // } catch (MetamacException e) {
-        // assertEquals(1, e.getExceptionItems().size());
-        // assertEquals(MetamacCoreExceptionType.PARAMETER_REQUIRED.getCode(), e.getExceptionItems().get(0).getCode());
-        // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-        // assertEquals(ServiceExceptionParameters.CONCEPT_SCHEME, e.getExceptionItems().get(0).getMessageParameters()[0]);
-        // }
+    public void testCreateConceptSchemeSameIdLogicAnotherMantainer() throws Exception {
+
+        ConceptSchemeVersion conceptSchemeVersion = ConceptsDoMocks.createConceptScheme();
+        conceptSchemeVersion.getMaintainableArtefact().setIdLogic("CONCEPTSCHEME01");
+
+        // Create
+        ConceptSchemeVersion conceptSchemeVersionCreated = conceptsService.createConceptScheme(getServiceContextAdministrador(), conceptSchemeVersion);
+
+        // Validate
+        ConceptSchemeVersion conceptSchemeVersionRetrieved = conceptsService.findConceptSchemeByUrn(getServiceContextAdministrador(), conceptSchemeVersionCreated.getMaintainableArtefact().getUrn());
+        ConceptsAsserts.assertEqualsConceptScheme(conceptSchemeVersion, conceptSchemeVersionRetrieved);
+    }
+
+    @Test
+    public void testCreateConceptSchemeErrorMetadatasRequired() throws Exception {
+        ConceptSchemeVersion conceptSchemeVersion = ConceptsDoMocks.createConceptScheme();
+        conceptSchemeVersion.setType(null);
+        conceptSchemeVersion.setRelatedOperation(null); // avoid unexpected
+        conceptSchemeVersion.getMaintainableArtefact().setIdLogic(null);
+        conceptSchemeVersion.getMaintainableArtefact().setName(null);
+
+        try {
+            conceptsService.createConceptScheme(getServiceContextAdministrador(), conceptSchemeVersion);
+            fail("metadatas required");
+        } catch (MetamacException e) {
+            assertEquals(2, e.getExceptionItems().size());
+
+            assertEquals(ServiceExceptionType.METADATA_REQUIRED.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME, e.getExceptionItems().get(0).getMessageParameters()[0]);
+
+            assertEquals(ServiceExceptionType.METADATA_REQUIRED.getCode(), e.getExceptionItems().get(1).getCode());
+            assertEquals(1, e.getExceptionItems().get(1).getMessageParameters().length);
+            assertEquals(ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_ID_LOGIC, e.getExceptionItems().get(1).getMessageParameters()[0]);
+        }
+    }
+
+    @Test
+    public void testCreateConceptSchemeErrorMetadataUnexpected() throws Exception {
+
+        ConceptSchemeVersion conceptSchemeVersion = ConceptsDoMocks.createConceptScheme();
+        conceptSchemeVersion.setType(ConceptSchemeTypeEnum.GLOSSARY);
+        assertNotNull(conceptSchemeVersion.getRelatedOperation());
+
+        try {
+            conceptsService.createConceptScheme(getServiceContextAdministrador(), conceptSchemeVersion);
+            fail("metadatas unexpected");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+
+            assertEquals(ServiceExceptionType.METADATA_UNEXPECTED.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(ServiceExceptionParameters.CONCEPT_SCHEME_RELATED_OPERATION, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
+    @Test
+    public void testCreateConceptSchemeErrorIdLogicDuplicated() throws Exception {
+
+        ConceptSchemeVersion conceptSchemeVersion = ConceptsDoMocks.createConceptScheme();
+        conceptSchemeVersion.getMaintainableArtefact().setIdLogic("CONCEPTSCHEME01");
+        conceptSchemeVersion.getMaintainableArtefact().getMaintainer().setUrn("urn:sdmx:org.sdmx.infomodel.base.Agency=ISTAC:STANDALONE(01.000).ISTAC");
+
+        try {
+            conceptsService.createConceptScheme(getServiceContextAdministrador(), conceptSchemeVersion);
+            fail("code duplicated");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.CONCEPT_SCHEME_ALREADY_EXIST_ID_LOGIC_DUPLICATED.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(conceptSchemeVersion.getMaintainableArtefact().getIdLogic(), e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals(conceptSchemeVersion.getMaintainableArtefact().getMaintainer().getUrn(), e.getExceptionItems().get(0).getMessageParameters()[1]);
+        }
+    }
+
+    @Test
+    public void testCreateConceptSchemeErrorIdLogicDuplicatedInsensitive() throws Exception {
+
+        ConceptSchemeVersion conceptSchemeVersion = ConceptsDoMocks.createConceptScheme();
+        conceptSchemeVersion.getMaintainableArtefact().setIdLogic("conceptscheme01");
+        conceptSchemeVersion.getMaintainableArtefact().getMaintainer().setUrn("urn:sdmx:org.sdmx.infomodel.base.Agency=ISTAC:STANDALONE(01.000).ISTAC");
+
+        try {
+            conceptsService.createConceptScheme(getServiceContextAdministrador(), conceptSchemeVersion);
+            fail("code duplicated");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.CONCEPT_SCHEME_ALREADY_EXIST_ID_LOGIC_DUPLICATED.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(conceptSchemeVersion.getMaintainableArtefact().getIdLogic(), e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals(conceptSchemeVersion.getMaintainableArtefact().getMaintainer().getUrn(), e.getExceptionItems().get(0).getMessageParameters()[1]);
+        }
+    }
+    @Test
+    public void testCreateConceptSchemeErrorIdLogicIncorrect() throws Exception {
+
+        ConceptSchemeVersion conceptSchemeVersion = ConceptsDoMocks.createConceptScheme();
+        conceptSchemeVersion.getMaintainableArtefact().setIdLogic("A*b-?");
+
+        // Create
+        try {
+            conceptsService.createConceptScheme(getServiceContextAdministrador(), conceptSchemeVersion);
+            fail("idlogic incorrect");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.METADATA_INCORRECT.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_ID_LOGIC, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
     }
 
     // TODO revisar
@@ -110,7 +213,6 @@ public class ConceptsServiceTest extends SrmBaseTest implements ConceptsServiceT
         MaintainableArtefact maintainableArtefact = conceptSchemeVersion.getMaintainableArtefact();
         assertEquals("CONCEPTSCHEME01", maintainableArtefact.getIdLogic());
         assertEquals(urn, maintainableArtefact.getUrn());
-        assertEquals("http://data.siemac.org/srm/v1/conceptSchemes/conceptScheme01/v1", maintainableArtefact.getUri());
         assertEquals("02.000", maintainableArtefact.getReplacedBy());
 
         assertEquals("ISTAC", maintainableArtefact.getMaintainer().getCode());
@@ -256,7 +358,7 @@ public class ConceptsServiceTest extends SrmBaseTest implements ConceptsServiceT
             assertEquals(ServiceExceptionType.CONCEPT_SCHEME_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
             assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
             assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-            assertEquals(ServiceExceptionParameters.PROC_STATUS_DRAFT, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
+            assertEquals(ServiceExceptionParameters.MAINTAINABLE_ARTEFACT_PROC_STATUS_DRAFT, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
         }
     }
 
@@ -274,7 +376,7 @@ public class ConceptsServiceTest extends SrmBaseTest implements ConceptsServiceT
             assertEquals(ServiceExceptionType.CONCEPT_SCHEME_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
             assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
             assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-            assertEquals(ServiceExceptionParameters.PROC_STATUS_DRAFT, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
+            assertEquals(ServiceExceptionParameters.MAINTAINABLE_ARTEFACT_PROC_STATUS_DRAFT, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
         }
     }
 

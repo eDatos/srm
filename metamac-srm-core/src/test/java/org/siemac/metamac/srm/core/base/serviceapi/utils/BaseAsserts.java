@@ -6,7 +6,8 @@ import static org.junit.Assert.fail;
 import org.siemac.metamac.core.common.ent.domain.ExternalItem;
 import org.siemac.metamac.core.common.ent.domain.InternationalString;
 import org.siemac.metamac.core.common.ent.domain.LocalisedString;
-import org.siemac.metamac.srm.core.base.domain.ItemScheme;
+import org.siemac.metamac.srm.core.base.domain.ItemSchemeVersion;
+import org.siemac.metamac.srm.core.base.domain.MaintainableArtefact;
 
 public class BaseAsserts {
 
@@ -14,29 +15,26 @@ public class BaseAsserts {
     // ITEM SCHEME
     // -----------------------------------------------------------------
 
-    public static void assetEqualsItemScheme(ItemScheme expected, ItemScheme actual) {
-
-        // TODO
-//        // IdentifiableArtefact
-//        assertEquals(expected.getIdLogic(), actual.getIdLogic());
-//        assertEquals(expected.getUri(), actual.getUri());
-//        assertEquals(expected.getUrn(), actual.getUrn());
-//
-//        // NameableArtefact
-//        assertEqualsInternationalString(expected.getName(), actual.getName());
-//        assertEqualsInternationalString(expected.getDescription(), actual.getDescription());
-//
-//        // MaintainableArtefact
-//        assertEquals(expected.getVersionLogic(), actual.getVersionLogic());
-//        assertEquals(expected.getValidFrom(), actual.getValidFrom());
-//        assertEquals(expected.getValidTo(), actual.getValidTo());
-//        assertEquals(expected.getFinalLogic(), actual.getFinalLogic());
-//        assertEquals(expected.getIsExternalReference(), actual.getIsExternalReference());
-//        assertEquals(expected.getStructureURL(), actual.getStructureURL());
-//        assertEquals(expected.getServiceURL(), actual.getServiceURL());
-//
-//        assertEqualsExternalItem(expected.getMaintainer(), actual.getMaintainer());
+    public static void assertEqualsItemScheme(ItemSchemeVersion expected, ItemSchemeVersion actual) {
+        assertEqualsMaintainableArtefact(expected.getMaintainableArtefact(), actual.getMaintainableArtefact());
     }
+    
+    public static void assertEqualsMaintainableArtefact(MaintainableArtefact expected, MaintainableArtefact actual) {
+        
+         // IdentifiableArtefact
+         assertEquals(expected.getIdLogic(), actual.getIdLogic());
+        
+         // NameableArtefact
+         assertEqualsInternationalString(expected.getName(), actual.getName());
+         assertEqualsInternationalString(expected.getDescription(), actual.getDescription());
+        
+         // MaintainableArtefact
+         assertEquals(expected.getIsExternalReference(), actual.getIsExternalReference());
+         assertEquals(expected.getStructureURL(), actual.getStructureURL());
+         assertEquals(expected.getServiceURL(), actual.getServiceURL());
+         assertEqualsExternalItem(expected.getMaintainer(), actual.getMaintainer());
+    }
+
 
     // -----------------------------------------------------------------
     // INTERNATIONAL STRING
@@ -72,13 +70,13 @@ public class BaseAsserts {
     // -----------------------------------------------------------------
 
     public static void assertEqualsExternalItem(ExternalItem expected, ExternalItem actual) {
-        
+
         if (actual == null && expected == null) {
             return;
         } else if ((actual != null && expected == null) || (actual == null && expected != null)) {
             fail();
         }
-        
+
         assertEquals(expected.getCode(), actual.getCode());
         assertEquals(expected.getUri(), actual.getUri());
         assertEquals(expected.getUrn(), actual.getUrn());
@@ -86,5 +84,4 @@ public class BaseAsserts {
         assertEqualsInternationalString(expected.getTitle(), actual.getTitle());
         assertEquals(expected.getManagementAppUrl(), actual.getManagementAppUrl());
     }
-
 }

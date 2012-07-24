@@ -15,14 +15,12 @@ public class ServiceExceptionParameters {
 
     // ITEM_SCHEME
     public static final String ITEM_SCHEME                                     = "item_scheme";
-    public static final String ITEM_SCHEME_ID_LOGIC                            = ITEM_SCHEME + ".id";
-    public static final String ITEM_SCHEME_VERSION_LOGIC                       = ITEM_SCHEME + ".version";
-    public static final String ITEM_SCHEME_NAME                                = ITEM_SCHEME + ".name";
-    public static final String ITEM_SCHEM_FINAL_LOGIC                          = ITEM_SCHEME + ".name";
+    public static final String ITEM_SCHEME_ITEMS                               = "item_scheme.items";
 
     // CONCEPT_SCHEME
     public static final String CONCEPT_SCHEME                                  = "concept_scheme";
-    public static final String CONCEPT_SCHEME_ID                               = CONCEPT_SCHEME + ".id";
+    public static final String CONCEPT_SCHEME_TYPE                             = "concept_scheme.type";
+    public static final String CONCEPT_SCHEME_RELATED_OPERATION                = "concept_scheme.related_operation";
 
     // CONCEPT
     public static final String CONCEPT                                         = "concept";
@@ -40,9 +38,15 @@ public class ServiceExceptionParameters {
 
     // IDENTIFIABLE_ARTEFACT
     public static final String IDENTIFIABLE_ARTEFACT                           = "identifiable_artefact";
+    public static final String IDENTIFIABLE_ARTEFACT_ID_LOGIC                  = IDENTIFIABLE_ARTEFACT + ".id";
 
     // MAINTAINABLE_ARTEFACT
-    public static final String PROC_STATUS_DRAFT                               = "draft";
+    public static final String MAINTAINABLE_ARTEFACT                           = "maintainable_artefact";
+    public static final String MAINTAINABLE_ARTEFACT_VERSION_LOGIC             = MAINTAINABLE_ARTEFACT + ".version";
+    public static final String MAINTAINABLE_ARTEFACT_VALID_FROM                = MAINTAINABLE_ARTEFACT + ".validFrom";
+    public static final String MAINTAINABLE_ARTEFACT_VALID_TO                  = MAINTAINABLE_ARTEFACT + ".validTo";
+    public static final String MAINTAINABLE_ARTEFACT_FINAL_LOGIC               = MAINTAINABLE_ARTEFACT + ".final";
+    public static final String MAINTAINABLE_ARTEFACT_PROC_STATUS_DRAFT         = MAINTAINABLE_ARTEFACT + ".proc_status.draft";
 
     // NAMEABLE
     public static final String NAMEABLE_ARTEFACT                               = "nameable_artefact";
