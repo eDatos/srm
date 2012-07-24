@@ -114,7 +114,7 @@ public class KryoTest {
         buffer.flip();
         DataStructureDefinitionDto backup = kryo.readObject(buffer, DataStructureDefinitionDto.class);
 
-        assertTrue(backup.getIdLogic() != null);
+        assertTrue(backup.getCode() != null);
 
     }
 

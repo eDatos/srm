@@ -27,7 +27,7 @@ public class ServiceExceptionParameters {
 
     // ANNOTATION
     public static final String ANNOTATION                                      = "annotation";
-    public static final String ANNOTATION_IDLOGIC                              = ANNOTATION + ".idlogic";
+    public static final String ANNOTATION_CODE                                 = ANNOTATION + ".code";
     public static final String ANNOTATION_TITLE                                = ANNOTATION + ".title";
     public static final String ANNOTATION_TYPE                                 = ANNOTATION + ".type";
     public static final String ANNOTATION_URL                                  = ANNOTATION + ".url";
@@ -38,7 +38,8 @@ public class ServiceExceptionParameters {
 
     // IDENTIFIABLE_ARTEFACT
     public static final String IDENTIFIABLE_ARTEFACT                           = "identifiable_artefact";
-    public static final String IDENTIFIABLE_ARTEFACT_ID_LOGIC                  = IDENTIFIABLE_ARTEFACT + ".id";
+    public static final String IDENTIFIABLE_ARTEFACT_CODE                      = IDENTIFIABLE_ARTEFACT + ".code";
+    public static final String IDENTIFIABLE_ARTEFACT_URI                       = IDENTIFIABLE_ARTEFACT + ".uri";
 
     // MAINTAINABLE_ARTEFACT
     public static final String MAINTAINABLE_ARTEFACT                           = "maintainable_artefact";
@@ -185,7 +186,7 @@ public class ServiceExceptionParameters {
     public static final String DATA_STRUCTURE_DEFINITION_NAME                  = DATA_STRUCTURE_DEFINITION + ".name";
     public static final String DATA_STRUCTURE_DEFINITION_MAINTAINER            = DATA_STRUCTURE_DEFINITION + ".maintainer";
     public static final String DATA_STRUCTURE_DEFINITION_GROUPING              = DATA_STRUCTURE_DEFINITION + ".grouping";
-    public static final String DATA_STRUCTURE_DEFINITION_ID_LOGIC              = DATA_STRUCTURE_DEFINITION + ".id_logic";
+    public static final String DATA_STRUCTURE_DEFINITION_CODE                  = DATA_STRUCTURE_DEFINITION + ".code";
 
     public static final String DATA_STRUCTURE_DEFINITION_MAINTAINER_CODE       = DATA_STRUCTURE_DEFINITION_MAINTAINER + ServiceExceptionParametersInternal.EXTERNAL_ITEM_CODE;
     public static final String DATA_STRUCTURE_DEFINITION_MAINTAINER_TITLE      = DATA_STRUCTURE_DEFINITION_MAINTAINER + ServiceExceptionParametersInternal.EXTERNAL_ITEM_TITLE;

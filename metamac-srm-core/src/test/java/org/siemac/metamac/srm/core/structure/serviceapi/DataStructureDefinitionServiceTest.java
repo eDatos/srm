@@ -164,7 +164,7 @@ public class DataStructureDefinitionServiceTest extends SrmBaseTest implements D
 
     private DataStructureDefinition createDsd() throws NumberFormatException {
         // Load Agency for associated it to DSD
-        // Organisation organisation = sdmxBaseService.findOrganization(getServiceContext() ,organizationByDefaultLogicId);
+        // Organisation organisation = sdmxBaseService.findOrganization(getServiceContext() ,organizationByDefaultCode);
 
         // Required: Name
         InternationalString name = new InternationalString();
@@ -187,14 +187,14 @@ public class DataStructureDefinitionServiceTest extends SrmBaseTest implements D
         dataStructureDefinition.setName(name);
         dataStructureDefinition.setMaintainer(BaseDoMocks.mockAgencyExternalItem());
 
-        dataStructureDefinition.setIdLogic(RandomStringUtils.random(50, true, true));
+        dataStructureDefinition.setCode(RandomStringUtils.random(50, true, true));
 
         // Required
         // Boolean sdmxFinal,
         // Boolean isExternalReference, String sdmxVersion, String sdmxId,
         // String uri, MaintenanceAgency maintainer, InternationalString name,
         // Set<ComponentList> grouping)
-        dataStructureDefinition.setVersionLogic(VersionUtil.VERSION_LOGIC_INITIAL_VERSION);
+        dataStructureDefinition.setVersionLogic(VersionUtil.VERSION_INITIAL_VERSION);
         dataStructureDefinition.setFinalLogic(false);
         dataStructureDefinition.setIsExternalReference(false);
         dataStructureDefinition.setUri(RandomStringUtils.random(50, true, true));

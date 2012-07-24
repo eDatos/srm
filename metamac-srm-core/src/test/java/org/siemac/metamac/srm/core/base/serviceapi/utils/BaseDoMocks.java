@@ -37,16 +37,16 @@ public class BaseDoMocks {
     public static void fillItemSchemeToCreate(ItemSchemeVersion itemSchemeVersion) {
         itemSchemeVersion.setItemScheme(new ItemScheme());
         itemSchemeVersion.setIsPartial(Boolean.FALSE);
-        String idLogic = "itemScheme-" + MetamacMocks.mockString(10);
-        itemSchemeVersion.setMaintainableArtefact(mockMaintainableArtefact(idLogic, "sdmx/v2.1/itemScheme/" + idLogic));
+        String code = "itemScheme-" + MetamacMocks.mockString(10);
+        itemSchemeVersion.setMaintainableArtefact(mockMaintainableArtefact(code, "sdmx/v2.1/itemScheme/" + code));
     }
 
-    public static MaintainableArtefact mockMaintainableArtefact(String idLogic, String uri) {
+    public static MaintainableArtefact mockMaintainableArtefact(String code, String uri) {
 
         MaintainableArtefact maintainableArtefact = new MaintainableArtefact();
 
         // IdentifiableArtefact
-        maintainableArtefact.setIdLogic(idLogic);
+        maintainableArtefact.setCode(code);
 
         // NameableArtefact
         maintainableArtefact.setName(mockInternationalString());
@@ -91,15 +91,15 @@ public class BaseDoMocks {
     }
 
     public static String mockAgencyUrn() {
-        return GeneratorUrnUtils.generateSdmxAgencyUrn(AGENCY_MOCK, AGENCY_SCHEME_MOCK, VersionUtil.VERSION_LOGIC_INITIAL_VERSION, AGENCY_MOCK);
+        return GeneratorUrnUtils.generateSdmxAgencyUrn(AGENCY_MOCK, AGENCY_SCHEME_MOCK, VersionUtil.VERSION_INITIAL_VERSION, AGENCY_MOCK);
     }
 
     public static String mockConceptUrn() {
-        return GeneratorUrnUtils.generateSdmxConceptUrn(AGENCY_MOCK, CONCEPT_SCHEME_MOCK, VersionUtil.VERSION_LOGIC_INITIAL_VERSION, CONCEPT_MOCK);
+        return GeneratorUrnUtils.generateSdmxConceptUrn(AGENCY_MOCK, CONCEPT_SCHEME_MOCK, VersionUtil.VERSION_INITIAL_VERSION, CONCEPT_MOCK);
     }
 
     public static String mockConceptSchemeUrn() {
-        return GeneratorUrnUtils.generateSdmxConceptSchemeUrn(AGENCY_MOCK, CONCEPT_SCHEME_MOCK, VersionUtil.VERSION_LOGIC_INITIAL_VERSION);
+        return GeneratorUrnUtils.generateSdmxConceptSchemeUrn(AGENCY_MOCK, CONCEPT_SCHEME_MOCK, VersionUtil.VERSION_INITIAL_VERSION);
     }
 
     // -----------------------------------------------------------------
@@ -111,7 +111,7 @@ public class BaseDoMocks {
         // List<Concept> concepts = sdmxBaseService.findAllConcepts(getServiceContext());
 
         Dimension dimension1 = new Dimension();
-        dimension1.setIdLogic(RandomStringUtils.random(50, true, true));
+        dimension1.setCode(RandomStringUtils.random(50, true, true));
 
         // Required
         dimension1.setUri(RandomStringUtils.random(50, true, true));
@@ -123,7 +123,7 @@ public class BaseDoMocks {
         dimension1.setCreatedDate(new DateTime());
 
         Dimension dimension2 = new Dimension();
-        dimension2.setIdLogic(RandomStringUtils.random(50, true, true));
+        dimension2.setCode(RandomStringUtils.random(50, true, true));
 
         // Required
         dimension2.setUri(RandomStringUtils.random(50, true, true));
@@ -143,7 +143,7 @@ public class BaseDoMocks {
 
     public static MeasureDimension createMeasureDimension() {
         MeasureDimension measureDimension = new MeasureDimension();
-        measureDimension.setIdLogic(RandomStringUtils.random(50, true, true));
+        measureDimension.setCode(RandomStringUtils.random(50, true, true));
 
         // Required
         measureDimension.setUri(RandomStringUtils.random(50, true, true));
@@ -163,7 +163,7 @@ public class BaseDoMocks {
 
     public static ComponentList createDimensionDescriptor() {
         DimensionDescriptor dimensionDescriptor = new DimensionDescriptor();
-        dimensionDescriptor.setIdLogic(RandomStringUtils.random(50, true, true));
+        dimensionDescriptor.setCode(RandomStringUtils.random(50, true, true));
         // dimensionDescriptor.getComponents().addAll(createDimension()); No CASCADE !!!!
         // Required
         dimensionDescriptor.setUri(RandomStringUtils.random(50, true, true));
@@ -173,7 +173,7 @@ public class BaseDoMocks {
 
     public static ComponentList createMeasureDimensionDescriptor() {
         MeasureDescriptor measureDescriptor = new MeasureDescriptor();
-        measureDescriptor.setIdLogic(RandomStringUtils.random(50, true, true));
+        measureDescriptor.setCode(RandomStringUtils.random(50, true, true));
         // dimensionDescriptor.getComponents().addAll(createDimension()); No CASCADE !!!!
         // Required
         measureDescriptor.setUri(RandomStringUtils.random(50, true, true));

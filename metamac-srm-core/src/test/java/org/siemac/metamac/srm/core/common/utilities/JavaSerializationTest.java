@@ -98,7 +98,7 @@ public class JavaSerializationTest {
         System.out.println(ser);
         fis.close();
 
-        assertTrue(ser.getIdLogic() != null);
+        assertTrue(ser.getCode() != null);
 
     }
 

@@ -56,16 +56,16 @@ public class ConceptsServiceImpl extends ConceptsServiceImplBase {
 
         // Fill metadata
         MaintainableArtefact maintainableArtefact = conceptSchemeVersion.getMaintainableArtefact();
-        maintainableArtefact.setVersionLogic(VersionUtil.VERSION_LOGIC_INITIAL_VERSION);
+        maintainableArtefact.setVersionLogic(VersionUtil.VERSION_INITIAL_VERSION);
         maintainableArtefact.setValidFrom(null);
         maintainableArtefact.setValidTo(null);
         maintainableArtefact.setFinalLogic(Boolean.FALSE);
         maintainableArtefact.setProcStatus(MaintainableArtefactProcStatusEnum.DRAFT);
         maintainableArtefact.setIsLastVersion(Boolean.TRUE);
-        // TODO uri?
         maintainableArtefact.setUrn(generateConceptSchemeUrn(conceptSchemeVersion));
         maintainableArtefact.setReplacedBy(null);
         maintainableArtefact.setReplaceTo(null);
+        maintainableArtefact.setUri(null); // does not filled to ConceptScheme
 
         // Save conceptScheme
         ItemScheme conceptScheme = conceptSchemeVersion.getItemScheme();
@@ -122,7 +122,7 @@ public class ConceptsServiceImpl extends ConceptsServiceImplBase {
                     .withMessageParameters(urn, new String[]{ServiceExceptionParameters.MAINTAINABLE_ARTEFACT_PROC_STATUS_DRAFT}).build();
         }
         // Delete whole concept scheme or only last version
-        if (VersionUtil.VERSION_LOGIC_INITIAL_VERSION.equals(conceptSchemeVersion.getMaintainableArtefact().getVersionLogic())) {
+        if (VersionUtil.VERSION_INITIAL_VERSION.equals(conceptSchemeVersion.getMaintainableArtefact().getVersionLogic())) {
             // Delete whole concept scheme
             ItemScheme conceptScheme = conceptSchemeVersion.getItemScheme();
             getItemSchemeRepository().delete(conceptScheme);
@@ -163,8 +163,8 @@ public class ConceptsServiceImpl extends ConceptsServiceImplBase {
     //
     // ConceptsInvocationValidator.checkUpdateConceptScheme(entity, null);
     //
-    // // TODO: Validate code unique: organization, id_logic, version?
-    // // validateConceptSchemeUnique(ctx, entity.getItemScheme().getIdLogic(), null);
+    // // TODO: Validate code unique: organization, code, version?
+    // // validateConceptSchemeUnique(ctx, entity.getItemScheme().getCode(), null);
     //
     // // TODO actualizar urn y de los hijos, si cambia el code
     // return conceptSchemeRepository.save(entity);
@@ -173,15 +173,16 @@ public class ConceptsServiceImpl extends ConceptsServiceImplBase {
 
     /**
      * Check code of concept scheme is unique in mantainer
+     * TODO se cambiará el externalItem de mantainer por una entidad propia para Organizaciones. Revisar entonces esta validación
      */
     private void validateConceptSchemeUnique(ServiceContext ctx, ConceptSchemeVersion conceptSchemeVersion) throws MetamacException {
 
-        String conceptSchemeIdLogic = conceptSchemeVersion.getMaintainableArtefact().getIdLogic();
-        String maintainerUrn = conceptSchemeVersion.getMaintainableArtefact().getMaintainer().getUrn(); // TODO por code o por urn?
+        String conceptSchemeCode = conceptSchemeVersion.getMaintainableArtefact().getCode();
+        String maintainerUrn = conceptSchemeVersion.getMaintainableArtefact().getMaintainer().getUrn();
         Long conceptSchemeId = conceptSchemeVersion.getItemScheme().getId();
 
-        List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersion.class).withProperty(ConceptSchemeVersionProperties.maintainableArtefact().idLogic())
-                .ignoreCaseEq(conceptSchemeIdLogic).withProperty(ConceptSchemeVersionProperties.maintainableArtefact().maintainer().urn()).eq(maintainerUrn).distinctRoot().build();
+        List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersion.class).withProperty(ConceptSchemeVersionProperties.maintainableArtefact().code())
+                .ignoreCaseEq(conceptSchemeCode).withProperty(ConceptSchemeVersionProperties.maintainableArtefact().maintainer().urn()).eq(maintainerUrn).distinctRoot().build();
 
         if (conceptSchemeId != null) {
             ConditionalCriteria conditionNotAnotherVersionSameScheme = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersion.class).not()
@@ -191,7 +192,7 @@ public class ConceptsServiceImpl extends ConceptsServiceImplBase {
 
         PagedResult<ConceptSchemeVersion> conceptSchemesVersions = getConceptSchemeVersionRepository().findByCondition(conditions, PagingParameter.noLimits());
         if (conceptSchemesVersions != null && conceptSchemesVersions.getValues().size() != 0) {
-            throw new MetamacException(ServiceExceptionType.CONCEPT_SCHEME_ALREADY_EXIST_ID_LOGIC_DUPLICATED, conceptSchemeIdLogic, maintainerUrn);
+            throw new MetamacException(ServiceExceptionType.CONCEPT_SCHEME_ALREADY_EXIST_CODE_DUPLICATED, conceptSchemeCode, maintainerUrn);
         }
     }
 
@@ -237,7 +238,7 @@ public class ConceptsServiceImpl extends ConceptsServiceImplBase {
      * Generate urn to concept scheme
      */
     private String generateConceptSchemeUrn(ConceptSchemeVersion conceptSchemeVersion) {
-        return GeneratorUrnUtils.generateSdmxConceptSchemeUrn(conceptSchemeVersion.getMaintainableArtefact().getMaintainer().getCode(), conceptSchemeVersion.getMaintainableArtefact().getIdLogic(),
+        return GeneratorUrnUtils.generateSdmxConceptSchemeUrn(conceptSchemeVersion.getMaintainableArtefact().getMaintainer().getCode(), conceptSchemeVersion.getMaintainableArtefact().getCode(),
                 conceptSchemeVersion.getMaintainableArtefact().getVersionLogic());
     }
 

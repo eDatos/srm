@@ -79,5 +79,8 @@ public class ConceptsInvocationValidator {
         } else {
             ValidationUtils.checkMetadataEmpty(conceptSchemeVersion.getRelatedOperation(), ServiceExceptionParameters.CONCEPT_SCHEME_RELATED_OPERATION, exceptions);
         }
+        if (conceptSchemeVersion.getMaintainableArtefact() != null) {
+            ValidationUtils.checkMetadataEmpty(conceptSchemeVersion.getMaintainableArtefact().getUri(), ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_URI, exceptions);
+        }
     }
 }

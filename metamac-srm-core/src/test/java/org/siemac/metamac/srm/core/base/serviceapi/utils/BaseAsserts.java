@@ -22,7 +22,7 @@ public class BaseAsserts {
     public static void assertEqualsMaintainableArtefact(MaintainableArtefact expected, MaintainableArtefact actual) {
         
          // IdentifiableArtefact
-         assertEquals(expected.getIdLogic(), actual.getIdLogic());
+         assertEquals(expected.getCode(), actual.getCode());
         
          // NameableArtefact
          assertEqualsInternationalString(expected.getName(), actual.getName());

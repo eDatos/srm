@@ -26,7 +26,7 @@ Application Base {
 			databaseTable = "TB_IDENTIFIABLE_ARTEFACTS"
 			
 			"The unique identifier of the object."
-			String idLogic nullable;
+			String code nullable;
 			"Universal resource identifier that may or may not be resolvable. Only filled for external resources of Metamac. For internal resources this metadata is filled by Rest Api"
 			String uri nullable;			
 			"Universal resource name, this is for use in registries: all registered objects have a urn."
@@ -88,7 +88,7 @@ Application Base {
 			
 			"Identifier for the Annotation. It can be used to disambiguate one Annotation from another where there are several
 			Annotations for the same annotated object. Is optional"
-			String idLogic nullable;
+			String code nullable;
 			"A title used to identify an annotation."
 			String title nullable;
 			"I used to distinguish between annotations designed to support various uses. The types are not enumerated, as these can 
@@ -519,7 +519,7 @@ Application Base {
 //			saveOrganization => OrganizationRepository.save;
 //			deleteOrganization => OrganizationRepository.delete;
 //			findAllOrganizations => OrganizationRepository.findAll;
-//			@Organisation findOrganization(String idLogic) throws org.siemac.metamac.core_base.exception.OrganisationNotFoundException;
+//			@Organisation findOrganization(String code) throws org.siemac.metamac.core_base.exception.OrganisationNotFoundException;
 
 //			saveConcept => ConceptRepository.save;
 //			deleteConcept => ConceptRepository.delete;

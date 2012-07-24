@@ -6,7 +6,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.siemac.metamac.srm.core.structure.domain.DataStructureDefinitionProperties.id;
-import static org.siemac.metamac.srm.core.structure.domain.DataStructureDefinitionProperties.idLogic;
+import static org.siemac.metamac.srm.core.structure.domain.DataStructureDefinitionProperties.code;
 import static org.siemac.metamac.srm.core.structure.domain.DataStructureDefinitionProperties.serviceURL;
 
 import java.io.File;
@@ -612,7 +612,7 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest /* implements SrmCoreS
     // *************************************************************************
 
     private PagedResult<DataStructureDefinitionDto> findDSD(String dsdId) throws MetamacException {
-        List<ConditionalCriteria> dsdConditions = criteriaFor(DataStructureDefinition.class).withProperty(idLogic()).eq(dsdId).build();
+        List<ConditionalCriteria> dsdConditions = criteriaFor(DataStructureDefinition.class).withProperty(code()).eq(dsdId).build();
 
         return srmCoreServiceFacade.findDsdByCondition(serviceContext, dsdConditions, PagingParameter.pageAccess(10));
     }

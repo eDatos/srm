@@ -40,7 +40,7 @@
         ID="11"
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
-        ID_LOGIC="CONCEPTSCHEME01"
+        CODE="CONCEPTSCHEME01"
         URI="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.concepscheme.ConceptScheme=ISTAC:CONCEPTSCHEME01(01.000)"
         REPLACED_BY="02.000"
@@ -98,7 +98,7 @@
         ID="12"
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
-        ID_LOGIC="CONCEPTSCHEME01"
+        CODE="CONCEPTSCHEME01"
         URI="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.concepscheme.ConceptScheme=ISTAC:CONCEPTSCHEME01(02.000)"
         REPLACED_BY="[null]"
@@ -167,7 +167,7 @@
         ID="21"
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
-        ID_LOGIC="CONCEPTSCHEME02"
+        CODE="CONCEPTSCHEME02"
         URI="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.concepscheme.ConceptScheme=ISTAC:CONCEPTSCHEME02(01.000)"
         REPLACED_BY="[null]"
@@ -235,7 +235,7 @@
         ID="31"
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
-        ID_LOGIC="CONCEPTSCHEME03"
+        CODE="CONCEPTSCHEME03"
         URI="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.concepscheme.ConceptScheme=ISTAC:CONCEPTSCHEME03(01.000)"
         REPLACED_BY="[null]"

@@ -70,7 +70,7 @@ public class ConceptsServiceTest extends SrmBaseTest implements ConceptsServiceT
         assertEquals(MaintainableArtefactProcStatusEnum.DRAFT, conceptSchemeVersionRetrieved.getMaintainableArtefact().getProcStatus());
         assertEquals("01.000", conceptSchemeVersionRetrieved.getMaintainableArtefact().getVersionLogic());
         assertEquals(GeneratorUrnUtils.generateSdmxConceptSchemeUrn(conceptSchemeVersion.getMaintainableArtefact().getMaintainer().getCode(), conceptSchemeVersion.getMaintainableArtefact()
-                .getIdLogic(), "01.000"), conceptSchemeVersionRetrieved.getMaintainableArtefact().getUrn());
+                .getCode(), "01.000"), conceptSchemeVersionRetrieved.getMaintainableArtefact().getUrn());
         assertNull(conceptSchemeVersionRetrieved.getMaintainableArtefact().getValidFrom());
         assertNull(conceptSchemeVersionRetrieved.getMaintainableArtefact().getValidTo());
         assertTrue(conceptSchemeVersionRetrieved.getMaintainableArtefact().getIsLastVersion());
@@ -88,10 +88,10 @@ public class ConceptsServiceTest extends SrmBaseTest implements ConceptsServiceT
     }
 
     @Test
-    public void testCreateConceptSchemeSameIdLogicAnotherMantainer() throws Exception {
+    public void testCreateConceptSchemeSameCodeAnotherMantainer() throws Exception {
 
         ConceptSchemeVersion conceptSchemeVersion = ConceptsDoMocks.createConceptScheme();
-        conceptSchemeVersion.getMaintainableArtefact().setIdLogic("CONCEPTSCHEME01");
+        conceptSchemeVersion.getMaintainableArtefact().setCode("CONCEPTSCHEME01");
 
         // Create
         ConceptSchemeVersion conceptSchemeVersionCreated = conceptsService.createConceptScheme(getServiceContextAdministrador(), conceptSchemeVersion);
@@ -106,7 +106,7 @@ public class ConceptsServiceTest extends SrmBaseTest implements ConceptsServiceT
         ConceptSchemeVersion conceptSchemeVersion = ConceptsDoMocks.createConceptScheme();
         conceptSchemeVersion.setType(null);
         conceptSchemeVersion.setRelatedOperation(null); // avoid unexpected
-        conceptSchemeVersion.getMaintainableArtefact().setIdLogic(null);
+        conceptSchemeVersion.getMaintainableArtefact().setCode(null);
         conceptSchemeVersion.getMaintainableArtefact().setName(null);
 
         try {
@@ -121,7 +121,7 @@ public class ConceptsServiceTest extends SrmBaseTest implements ConceptsServiceT
 
             assertEquals(ServiceExceptionType.METADATA_REQUIRED.getCode(), e.getExceptionItems().get(1).getCode());
             assertEquals(1, e.getExceptionItems().get(1).getMessageParameters().length);
-            assertEquals(ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_ID_LOGIC, e.getExceptionItems().get(1).getMessageParameters()[0]);
+            assertEquals(ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_CODE, e.getExceptionItems().get(1).getMessageParameters()[0]);
         }
     }
 
@@ -145,10 +145,10 @@ public class ConceptsServiceTest extends SrmBaseTest implements ConceptsServiceT
     }
 
     @Test
-    public void testCreateConceptSchemeErrorIdLogicDuplicated() throws Exception {
+    public void testCreateConceptSchemeErrorCodeDuplicated() throws Exception {
 
         ConceptSchemeVersion conceptSchemeVersion = ConceptsDoMocks.createConceptScheme();
-        conceptSchemeVersion.getMaintainableArtefact().setIdLogic("CONCEPTSCHEME01");
+        conceptSchemeVersion.getMaintainableArtefact().setCode("CONCEPTSCHEME01");
         conceptSchemeVersion.getMaintainableArtefact().getMaintainer().setUrn("urn:sdmx:org.sdmx.infomodel.base.Agency=ISTAC:STANDALONE(01.000).ISTAC");
 
         try {
@@ -156,18 +156,18 @@ public class ConceptsServiceTest extends SrmBaseTest implements ConceptsServiceT
             fail("code duplicated");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEquals(ServiceExceptionType.CONCEPT_SCHEME_ALREADY_EXIST_ID_LOGIC_DUPLICATED.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(ServiceExceptionType.CONCEPT_SCHEME_ALREADY_EXIST_CODE_DUPLICATED.getCode(), e.getExceptionItems().get(0).getCode());
             assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
-            assertEquals(conceptSchemeVersion.getMaintainableArtefact().getIdLogic(), e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals(conceptSchemeVersion.getMaintainableArtefact().getCode(), e.getExceptionItems().get(0).getMessageParameters()[0]);
             assertEquals(conceptSchemeVersion.getMaintainableArtefact().getMaintainer().getUrn(), e.getExceptionItems().get(0).getMessageParameters()[1]);
         }
     }
 
     @Test
-    public void testCreateConceptSchemeErrorIdLogicDuplicatedInsensitive() throws Exception {
+    public void testCreateConceptSchemeErrorCodeDuplicatedInsensitive() throws Exception {
 
         ConceptSchemeVersion conceptSchemeVersion = ConceptsDoMocks.createConceptScheme();
-        conceptSchemeVersion.getMaintainableArtefact().setIdLogic("conceptscheme01");
+        conceptSchemeVersion.getMaintainableArtefact().setCode("conceptscheme01");
         conceptSchemeVersion.getMaintainableArtefact().getMaintainer().setUrn("urn:sdmx:org.sdmx.infomodel.base.Agency=ISTAC:STANDALONE(01.000).ISTAC");
 
         try {
@@ -175,27 +175,27 @@ public class ConceptsServiceTest extends SrmBaseTest implements ConceptsServiceT
             fail("code duplicated");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEquals(ServiceExceptionType.CONCEPT_SCHEME_ALREADY_EXIST_ID_LOGIC_DUPLICATED.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(ServiceExceptionType.CONCEPT_SCHEME_ALREADY_EXIST_CODE_DUPLICATED.getCode(), e.getExceptionItems().get(0).getCode());
             assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
-            assertEquals(conceptSchemeVersion.getMaintainableArtefact().getIdLogic(), e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals(conceptSchemeVersion.getMaintainableArtefact().getCode(), e.getExceptionItems().get(0).getMessageParameters()[0]);
             assertEquals(conceptSchemeVersion.getMaintainableArtefact().getMaintainer().getUrn(), e.getExceptionItems().get(0).getMessageParameters()[1]);
         }
     }
     @Test
-    public void testCreateConceptSchemeErrorIdLogicIncorrect() throws Exception {
+    public void testCreateConceptSchemeErrorCodeIncorrect() throws Exception {
 
         ConceptSchemeVersion conceptSchemeVersion = ConceptsDoMocks.createConceptScheme();
-        conceptSchemeVersion.getMaintainableArtefact().setIdLogic("A*b-?");
+        conceptSchemeVersion.getMaintainableArtefact().setCode("A*b-?");
 
         // Create
         try {
             conceptsService.createConceptScheme(getServiceContextAdministrador(), conceptSchemeVersion);
-            fail("idlogic incorrect");
+            fail("code incorrect");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
             assertEquals(ServiceExceptionType.METADATA_INCORRECT.getCode(), e.getExceptionItems().get(0).getCode());
             assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-            assertEquals(ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_ID_LOGIC, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals(ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_CODE, e.getExceptionItems().get(0).getMessageParameters()[0]);
         }
     }
 
@@ -211,7 +211,7 @@ public class ConceptsServiceTest extends SrmBaseTest implements ConceptsServiceT
         // Validate
         assertEquals("conceptScheme-1-v1", conceptSchemeVersion.getUuid());
         MaintainableArtefact maintainableArtefact = conceptSchemeVersion.getMaintainableArtefact();
-        assertEquals("CONCEPTSCHEME01", maintainableArtefact.getIdLogic());
+        assertEquals("CONCEPTSCHEME01", maintainableArtefact.getCode());
         assertEquals(urn, maintainableArtefact.getUrn());
         assertEquals("02.000", maintainableArtefact.getReplacedBy());
 

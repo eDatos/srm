@@ -59,7 +59,7 @@ public class SrmDtoMocks {
         DataStructureDefinitionDto dataStructureDefinitionDto = new DataStructureDefinitionDto();
 
         // Required --------
-        dataStructureDefinitionDto.setIdLogic("DSD_" + RandomStringUtils.randomAlphabetic(10));
+        dataStructureDefinitionDto.setCode("DSD_" + RandomStringUtils.randomAlphabetic(10));
         
         // Name
         InternationalStringDto name = new InternationalStringDto();
@@ -82,7 +82,7 @@ public class SrmDtoMocks {
         dataStructureDefinitionDto.setServiceURL("test");
         
         // Version Logic
-        dataStructureDefinitionDto.setVersionLogic(VersionUtil.VERSION_LOGIC_INITIAL_VERSION);
+        dataStructureDefinitionDto.setVersionLogic(VersionUtil.VERSION_INITIAL_VERSION);
 
         // Audit
         dataStructureDefinitionDto.setCreatedBy(serviceContext.getApplicationId());
@@ -343,7 +343,7 @@ public class SrmDtoMocks {
 //        return conceptDto;
 //    }
 
-    public static DataflowDefinitionDto createDataflowDefinitionDTO(String structureIdLogic) {
+    public static DataflowDefinitionDto createDataflowDefinitionDTO(String structureCode) {
         DataflowDefinitionDto describedBy = new DataflowDefinitionDto();
 
         // Required
@@ -360,7 +360,7 @@ public class SrmDtoMocks {
 
         describedBy.setName(name);
 
-        // maintainerIdLogic
+        // maintainerCode
         describedBy.setMaintainer(MetamacMocks.mockExternalItemDto(BaseDoMocks.mockAgencyUrn(), TypeExternalArtefactsEnum.AGENCY));
 
         // structure

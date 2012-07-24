@@ -30,8 +30,8 @@ public class DataStructureInvocationValidator {
         }
         
         // Metadata Required
-        // IdLogic
-        ValidationUtils.checkMetadataRequired(dataStructureDefinition.getIdLogic(), ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION_ID_LOGIC, exceptions);
+        // Code
+        ValidationUtils.checkMetadataRequired(dataStructureDefinition.getCode(), ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION_CODE, exceptions);
         // Name
         if (SrmValidationUtils.isInternationalStringEmpty(dataStructureDefinition.getName())) {
             exceptions.add(new MetamacExceptionItem(CommonServiceExceptionType.METADATA_REQUIRED, ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION_NAME));

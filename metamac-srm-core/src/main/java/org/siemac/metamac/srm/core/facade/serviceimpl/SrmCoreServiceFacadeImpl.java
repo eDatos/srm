@@ -205,7 +205,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         // Auxiliary structure for update references
         HashMap<String, DimensionComponentDto> dimensionComponents = new HashMap<String, DimensionComponentDto>();
         for (ComponentDto componentDto : dimensionDesDto.getComponents()) {
-            dimensionComponents.put(componentDto.getIdLogic(), (DimensionComponentDto) componentDto);
+            dimensionComponents.put(componentDto.getCode(), (DimensionComponentDto) componentDto);
         }
 
         // Save GroupDescriptor
@@ -215,13 +215,13 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
                 // 1: Update References For GroupDimensionDescriptor->components
                 Set<ComponentDto> componentsUpdate = new HashSet<ComponentDto>();
                 for (ComponentDto componentDto : componentListDto.getComponents()) {
-                    if (dimensionComponents.get(componentDto.getIdLogic()) == null) {
+                    if (dimensionComponents.get(componentDto.getCode()) == null) {
                         MetamacException metamacException = new MetamacException(ServiceExceptionType.UNKNOWN, "Unable to update the references. (GroupDescriptor)");
                         logger.info(metamacException.getMessage());
                         metamacException.setLogged(true);
                         throw metamacException;
                     } else {
-                        componentsUpdate.add(dimensionComponents.get(componentDto.getIdLogic()));
+                        componentsUpdate.add(dimensionComponents.get(componentDto.getCode()));
                     }
                 }
 
@@ -232,7 +232,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
                 // Don't need save new components only descriptor
                 DescriptorDto groupDescriptorDto = saveDescriptorForDsd(ctx, dataStructureDefinitionDto.getId(), (DescriptorDto) componentListDto);
 
-                groupDescriptors.put(groupDescriptorDto.getIdLogic(), groupDescriptorDto); // Auxiliary structure for update references
+                groupDescriptors.put(groupDescriptorDto.getCode(), groupDescriptorDto); // Auxiliary structure for update references
             }
         }
 
@@ -246,13 +246,13 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
                     if (relationshipDto.getDimensionForDimensionRelationship() != null) {
                         Set<DimensionComponentDto> componentsUpdate = new HashSet<DimensionComponentDto>();
                         for (ComponentDto itemRefDto : relationshipDto.getDimensionForDimensionRelationship()) {
-                            if (dimensionComponents.get(itemRefDto.getIdLogic()) == null) {
+                            if (dimensionComponents.get(itemRefDto.getCode()) == null) {
                                 MetamacException metamacException = new MetamacException(ServiceExceptionType.UNKNOWN, "Unable to update the references. (AttributeDescriptor)");
                                 logger.info(metamacException.getMessage());
                                 metamacException.setLogged(true);
                                 throw metamacException;
                             } else {
-                                componentsUpdate.add(dimensionComponents.get(itemRefDto.getIdLogic()));
+                                componentsUpdate.add(dimensionComponents.get(itemRefDto.getCode()));
                             }
                         }
                         relationshipDto.getDimensionForDimensionRelationship().clear();
@@ -262,13 +262,13 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
                     if (relationshipDto.getGroupKeyForDimensionRelationship() != null) {
                         Set<DescriptorDto> descriptorsDtoUpdate = new HashSet<DescriptorDto>();
                         for (DescriptorDto itemRefDto : relationshipDto.getGroupKeyForDimensionRelationship()) {
-                            if (groupDescriptors.get(itemRefDto.getIdLogic()) == null) {
+                            if (groupDescriptors.get(itemRefDto.getCode()) == null) {
                                 MetamacException metamacException = new MetamacException(ServiceExceptionType.UNKNOWN, "Unable to update the references. (AttributeDescriptor)");
                                 logger.info(metamacException.getMessage());
                                 metamacException.setLogged(true);
                                 throw metamacException;
                             } else {
-                                descriptorsDtoUpdate.add(groupDescriptors.get(itemRefDto.getIdLogic()));
+                                descriptorsDtoUpdate.add(groupDescriptors.get(itemRefDto.getCode()));
                             }
                         }
                         relationshipDto.getGroupKeyForDimensionRelationship().clear();
@@ -276,13 +276,13 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
                     }
 
                     if (relationshipDto.getGroupKeyForGroupRelationship() != null) {
-                        if (groupDescriptors.get(relationshipDto.getGroupKeyForGroupRelationship().getIdLogic()) == null) {
+                        if (groupDescriptors.get(relationshipDto.getGroupKeyForGroupRelationship().getCode()) == null) {
                             MetamacException metamacException = new MetamacException(ServiceExceptionType.UNKNOWN, "Unable to update the references. (AttributeDescriptor)");
                             logger.info(metamacException.getMessage());
                             metamacException.setLogged(true);
                             throw metamacException;
                         } else {
-                            relationshipDto.setGroupKeyForGroupRelationship(groupDescriptors.get(relationshipDto.getGroupKeyForGroupRelationship().getIdLogic()));
+                            relationshipDto.setGroupKeyForGroupRelationship(groupDescriptors.get(relationshipDto.getGroupKeyForGroupRelationship().getCode()));
                         }
                     }
                 }

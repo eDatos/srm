@@ -243,7 +243,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         }
 
         // Metadata modifiable
-        target.setIdLogic(source.getIdLogic());
+        target.setCode(source.getCode());
         target.setTitle(source.getTitle());
         target.setType(source.getType());
         target.setUrl(source.getUrl());
@@ -292,11 +292,11 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         }
 
         // Metadata modifiable
-        // IdLogic: Some artifacts has a fixed ID -> Overwrite with fixed ID if is possible
+        // code: Some artifacts has a fixed ID -> Overwrite with fixed ID if is possible
         String fixedID = null;
-        target.setIdLogic(source.getIdLogic());
+        target.setCode(source.getCode());
         if ((fixedID = SdmxToolsServer.checkIfFixedId(target)) != null) {
-            ((IdentifiableArtefact) target).setIdLogic(fixedID);
+            ((IdentifiableArtefact) target).setCode(fixedID);
         }
 
         // TODO URI, URN and ReplaceBy filled in service

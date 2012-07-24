@@ -76,11 +76,10 @@ public class BaseInvocationValidator {
         if (identifiableArtefact == null) {
             return;
         }
-        ValidationUtils.checkMetadataRequired(identifiableArtefact.getIdLogic(), ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_ID_LOGIC, exceptions);
-        if (identifiableArtefact.getIdLogic() != null && !CoreCommonUtil.isSemanticIdentifier(identifiableArtefact.getIdLogic())) {
-            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_ID_LOGIC));
+        ValidationUtils.checkMetadataRequired(identifiableArtefact.getCode(), ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_CODE, exceptions);
+        if (identifiableArtefact.getCode() != null && !CoreCommonUtil.isSemanticIdentifier(identifiableArtefact.getCode())) {
+            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_CODE));
         }
-        // TODO uri?
         checkAnnotableArtefact(identifiableArtefact, exceptions);
     }
 

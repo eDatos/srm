@@ -314,7 +314,7 @@ public class DataStructureDefinitionServiceImpl extends DataStructureDefinitionS
             getBaseService().deleteComponent(ctx, componentFound);
         } else {
             // Not Found, throw exception
-            MetamacException metamacException = new MetamacException(ServiceExceptionType.SRM_SEARCH_NOT_FOUND, component.getIdLogic());
+            MetamacException metamacException = new MetamacException(ServiceExceptionType.SRM_SEARCH_NOT_FOUND, component.getCode());
             metamacException.setLoggedLevel(ExceptionLevelEnum.DEBUG);
             throw metamacException;
         }
