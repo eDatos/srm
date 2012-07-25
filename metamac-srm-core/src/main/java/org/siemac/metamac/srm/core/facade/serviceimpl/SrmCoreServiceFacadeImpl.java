@@ -208,7 +208,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         DataStructureDefinition dataStructureDefinition = loadDsdById(ctx, idDsd);
 
         // TO DTO
-        return getDo2DtoMapper().dataStructureDefinitionToDataStructureDefinitionExtendDto(ctx, typeDozerCopyMode, dataStructureDefinition, getBaseService());
+        return getDo2DtoMapper().dataStructureDefinitionToDataStructureDefinitionExtendDto(typeDozerCopyMode, dataStructureDefinition);
     }
 
     @Override
@@ -364,13 +364,13 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         List<DescriptorDto> descriptorDtos = new ArrayList<DescriptorDto>();
         for (ComponentList componentList : dataStructureDefinition.getGrouping()) {
             if ((componentList instanceof AttributeDescriptor) && typeComponentList.equals(TypeComponentList.ATTRIBUTE_DESCRIPTOR)) {
-                descriptorDtos.add((DescriptorDto) getDo2DtoMapper().componentListToComponentListDto(ctx, TypeDozerCopyMode.UPDATE, componentList, getBaseService()));
+                descriptorDtos.add((DescriptorDto) getDo2DtoMapper().componentListToComponentListDto(TypeDozerCopyMode.UPDATE, componentList));
             } else if ((componentList instanceof DimensionDescriptor) && typeComponentList.equals(TypeComponentList.DIMENSION_DESCRIPTOR)) {
-                descriptorDtos.add((DescriptorDto) getDo2DtoMapper().componentListToComponentListDto(ctx, TypeDozerCopyMode.UPDATE, componentList, getBaseService()));
+                descriptorDtos.add((DescriptorDto) getDo2DtoMapper().componentListToComponentListDto(TypeDozerCopyMode.UPDATE, componentList));
             } else if ((componentList instanceof GroupDimensionDescriptor) && typeComponentList.equals(TypeComponentList.GROUP_DIMENSION_DESCRIPTOR)) {
-                descriptorDtos.add((DescriptorDto) getDo2DtoMapper().componentListToComponentListDto(ctx, TypeDozerCopyMode.UPDATE, componentList, getBaseService()));
+                descriptorDtos.add((DescriptorDto) getDo2DtoMapper().componentListToComponentListDto(TypeDozerCopyMode.UPDATE, componentList));
             } else if ((componentList instanceof MeasureDescriptor) && typeComponentList.equals(TypeComponentList.MEASURE_DESCRIPTOR)) {
-                descriptorDtos.add((DescriptorDto) getDo2DtoMapper().componentListToComponentListDto(ctx, TypeDozerCopyMode.UPDATE, componentList, getBaseService()));
+                descriptorDtos.add((DescriptorDto) getDo2DtoMapper().componentListToComponentListDto(TypeDozerCopyMode.UPDATE, componentList));
             }
         }
 
@@ -395,7 +395,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         componentListDescriptor = getDataStructureDefinitionService().saveDescriptorForDsd(ctx, dataStructureDefinition, componentListDescriptor);
 
         // Entities to DTOs
-        return getDo2DtoMapper().componentListToComponentListDto(ctx, TypeDozerCopyMode.UPDATE, componentListDescriptor, getBaseService());
+        return getDo2DtoMapper().componentListToComponentListDto(TypeDozerCopyMode.UPDATE, componentListDescriptor);
     }
 
     @Override
@@ -427,7 +427,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         component = getDataStructureDefinitionService().saveComponentForDsd(ctx, dataStructureDefinition, component, typeComponentList);
 
         // Entitys to DTOs
-        return getDo2DtoMapper().componentToComponentDto(ctx, TypeDozerCopyMode.UPDATE, component, getBaseService());
+        return getDo2DtoMapper().componentToComponentDto(TypeDozerCopyMode.UPDATE, component);
     }
 
     @Override
@@ -576,7 +576,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
             descriptorDtos = new ArrayList<DescriptorDto>();
             for (ComponentList componentList : dataStructureDefinition.getGrouping()) {
-                descriptorDtos.add((DescriptorDto) getDo2DtoMapper().componentListToComponentListDto(ctx, typeDozerCopyMode, componentList, getBaseService()));
+                descriptorDtos.add((DescriptorDto) getDo2DtoMapper().componentListToComponentListDto(typeDozerCopyMode, componentList));
             }
         } catch (DataStructureDefinitionNotFoundException e) {
             // TODO poner la exp adecuada y quitar el unknow

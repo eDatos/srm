@@ -11,22 +11,10 @@ import org.siemac.metamac.srm.core.structure.domain.DataStructureDefinition;
 
 public interface Dto2DoMapper {
 
-    // public <T extends Item> T itemDtoToItem(ItemDto itemDto,
-    // ServiceContext ctx, BaseService baseService);
-
-    // public <T extends ItemScheme> T itemschemeDtoToItemScheme(
-    // ItemSchemeDto itemSchemeDto, ServiceContext ctx,
-    // BaseService baseService) throws MappingException,
-    // OrganisationNotFoundException;
-
     public <T extends Component> T componentDtoToComponent(ServiceContext ctx, ComponentDto source) throws MetamacException;
 
     public <T extends ComponentList> T componentListDtoToComponentList(ServiceContext ctx, ComponentListDto componentListDto) throws MetamacException;
 
     public DataStructureDefinition dataStructureDefinitionDtoToDataStructureDefinition(ServiceContext ctx, DataStructureDefinitionDto dataStructureDefinitionDto) throws MetamacException;
-
-//    public Representation representationDtoToRepresentation(RepresentationDto representationDto, ServiceContext ctx, BaseService baseService, Representation representationOlder) throws MetamacException;
-//
-//    public ExternalItem externalItemDtoToExternalItem(ServiceContext ctx, ExternalItemDto externalItemDto) throws MetamacException;
 
 }

@@ -156,10 +156,172 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         return facetRepository;
     }
 
+
     /**************************************************************************
-     * METHODS
+     * COMPONENTS
      **************************************************************************/
 
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T extends Component> T componentDtoToComponent(ServiceContext ctx, ComponentDto source) throws MetamacException {
+        if (source == null) {
+            return null;
+        }
+        if (source.getTypeComponent() == null) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(CommonServiceExceptionType.PARAMETER_REQUIRED).withMessageParameters(ServiceExceptionParameters.COMPONENT_TYPE)
+                    .withLoggedLevel(ExceptionLevelEnum.DEBUG).build();
+        }
+
+        // Hierarchy:
+        //
+        // AnnotableArtefact > IdentifiableArtefact > Component
+        // -|_ DataAttribute
+        // --|_ ReportingYearStartDay
+        // |_ DimensionComponent
+        // --|_ Dimension
+        // --|_ MeasureDimension
+        // --|_ TimeDimension
+        // |_ PrimaryMeasure
+        //
+        // IdentityDto > AuditableDto > AnnotableArtefactDto > IdentifiableArtefactDto > ComponentDto
+        // |_ DataAttributeDto
+        // |_ DimensionComponentDto
+
+        T result = null;
+        // DataAttribute ******************************************************
+        if (source.getTypeComponent().equals(TypeComponent.DATA_ATTRIBUTE)) {
+            result = (T)dataAttributeDtoToDataAttribute(ctx, (DataAttributeDto) source);
+        }
+        // DimensionComponent ***************************************************
+        else if (source.getTypeComponent().equals(TypeComponent.DIMENSION_COMPONENT)) {
+            result = (T)dimensionComponentDtoToDimensionComponent(ctx, (DimensionComponentDto) source);
+        }
+        // Primary Measure ***************************************************
+        else if (source.getTypeComponent().equals(TypeComponent.PRIMARY_MEASURE)) {
+            result = (T)componentDtoToPrimaryMeasure(ctx, source);
+        } else {
+            // The TargetObject may be enumerated and, if so, can use any ItemScheme
+            // 785 (Codelist, ConceptScheme, OrganisationScheme, CategoryScheme,
+            // 786 ReportingTaxonomy)
+            // The MetadataAttribute may be non-enumerated and, if so, uses one or more
+            // 792 ExtendedFacet
+            // The MetadataAttribute may be enumerated and, if so, use a
+            // 783 Codelist
+            throw new UnsupportedOperationException("componentDtoToComponent for Unknown Entity not implemented");
+        }
+
+        return identifiableArtefactDtoToEntity(ctx, source, result);
+    }
+
+ 
+
+    /**************************************************************************
+     * COMPONENT_LISTS
+     **************************************************************************/
+    @Override
+    public <T extends ComponentList> T componentListDtoToComponentList(ServiceContext ctx, ComponentListDto source) throws MetamacException {
+        if (source == null) {
+            return null;
+        }
+        // Hierachy:
+        // AnnotableArtefact < IdentifiableArtefact < ComponentList
+        // |_ AttributeDescriptor
+        // |_ DimensionDescriptor
+        // |_ GroupDimensionDescriptor
+        // |_ MeasureDescriptor
+        // |_ MetadataTarget
+        // |_ ReportStructure
+        // DimensionDescriptorDto > ComponentListDto > IdentifiableArtefactDto > AnnotableArtefactDto > AuditablteDto > IdentityDto
+
+        T result = null;
+
+        if (source.getId() == null) {
+            // New
+            switch (source.getTypeComponentList()) {
+                case ATTRIBUTE_DESCRIPTOR:
+                    result = (T) new AttributeDescriptor();
+                    break;
+                case GROUP_DIMENSION_DESCRIPTOR:
+                    result = (T) new GroupDimensionDescriptor();
+                    // TODO Metamac not support AttachmenConstraint ((GroupDimensionDescriptor)result).setIsAttachmentConstraint(source.get)
+                    break;
+                case DIMENSION_DESCRIPTOR:
+                    result = (T) new DimensionDescriptor();
+                    break;
+                case MEASURE_DESCRIPTOR:
+                    result = (T) new MeasureDescriptor();
+                    break;
+                default:
+                    // ComponentList is a abstract class, cannot be instantiated
+                    throw new UnsupportedOperationException("componentListDtoToComponentList for Unknown Entity not implemented");
+            }
+        }
+        else {
+            // Update
+            try {
+                result = (T) getComponentListRepository().findById(source.getId());
+                OptimisticLockingUtils.checkVersion(result.getVersion(), source.getVersion());
+            } catch (ComponentListNotFoundException e) {
+                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SRM_SEARCH_NOT_FOUND).withMessageParameters(ServiceExceptionParameters.COMPONENT_LIST)
+                .withLoggedLevel(ExceptionLevelEnum.ERROR).build();
+            }
+        }
+
+        // Related entities
+        // Components
+        for (ComponentDto componentDto : source.getComponents()) {
+            result.addComponent(componentDtoToComponent(ctx, componentDto));
+        }
+
+        return identifiableArtefactDtoToEntity(ctx, source, result);
+    }
+
+    
+
+    /**************************************************************************
+     * DATASTRUCTUREDEFINITION
+     **************************************************************************/
+    @Override
+    public DataStructureDefinition dataStructureDefinitionDtoToDataStructureDefinition(ServiceContext ctx, DataStructureDefinitionDto source) throws MetamacException {
+        if (source == null) {
+            return null;
+        }
+        
+        // Hierachy:
+        // DataStructureDefinitionDto > MaintainableArtefactDto > NameableArtefactDto > IdentifiableArtefactDto > AnnotableArtefacDto > AuditableDto > IdentityDto
+        // DataStructureDefinition > Structure > MaintainableArtefact > NameableArtefact > IdentifiableArtefact > AnnotableArtefact
+        DataStructureDefinition result = null;
+        if (source.getId() == null) {
+            // New
+            result = new DataStructureDefinition();
+        } else {
+            // Update
+            try {
+                result = getDataStructureDefinitionRepository().findById(source.getId());
+                OptimisticLockingUtils.checkVersion(result.getVersion(), source.getVersion());
+            } catch (DataStructureDefinitionNotFoundException e) {
+                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SRM_SEARCH_NOT_FOUND)
+                        .withMessageParameters(ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION).withLoggedLevel(ExceptionLevelEnum.ERROR).build();
+            }
+
+            // Withouts DTO fields: NO MERGE NEEDED!!!
+            // |_ Grouping
+            result.getGrouping().addAll(result.getGrouping());
+            // |_ Annotations
+        }
+
+        // Parent
+        return maintainableArtefactToEntity(ctx, source, result, result);
+    }
+
+    /**************************************************************************
+     * PRIVATE
+     **************************************************************************/
+
+    // ------------------------------------------------------------
+    // BASE
+    // ------------------------------------------------------------
+    
     /**
      * @param source Dto to transform
      * @param older Current Entity for this Dto, null if is new
@@ -375,63 +537,11 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
 
         return nameableToEntity(ctx, source, target, older);
     }
-
-    /**************************************************************************
-     * COMPONENTS
-     **************************************************************************/
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T extends Component> T componentDtoToComponent(ServiceContext ctx, ComponentDto source) throws MetamacException {
-        if (source == null) {
-            return null;
-        }
-        if (source.getTypeComponent() == null) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(CommonServiceExceptionType.PARAMETER_REQUIRED).withMessageParameters(ServiceExceptionParameters.COMPONENT_TYPE)
-                    .withLoggedLevel(ExceptionLevelEnum.DEBUG).build();
-        }
-
-        // Hierarchy:
-        //
-        // AnnotableArtefact > IdentifiableArtefact > Component
-        // -|_ DataAttribute
-        // --|_ ReportingYearStartDay
-        // |_ DimensionComponent
-        // --|_ Dimension
-        // --|_ MeasureDimension
-        // --|_ TimeDimension
-        // |_ PrimaryMeasure
-        //
-        // IdentityDto > AuditableDto > AnnotableArtefactDto > IdentifiableArtefactDto > ComponentDto
-        // |_ DataAttributeDto
-        // |_ DimensionComponentDto
-
-        T result = null;
-        // DataAttribute ******************************************************
-        if (source.getTypeComponent().equals(TypeComponent.DATA_ATTRIBUTE)) {
-            result = (T)dataAttributeDtoToDataAttribute(ctx, (DataAttributeDto) source);
-        }
-        // DimensionComponent ***************************************************
-        else if (source.getTypeComponent().equals(TypeComponent.DIMENSION_COMPONENT)) {
-            result = (T)dimensionComponentDtoToDimensionComponent(ctx, (DimensionComponentDto) source);
-        }
-        // Primary Measure ***************************************************
-        else if (source.getTypeComponent().equals(TypeComponent.PRIMARY_MEASURE)) {
-            result = (T)componentDtoToPrimaryMeasure(ctx, source);
-        } else {
-            // The TargetObject may be enumerated and, if so, can use any ItemScheme
-            // 785 (Codelist, ConceptScheme, OrganisationScheme, CategoryScheme,
-            // 786 ReportingTaxonomy)
-            // The MetadataAttribute may be non-enumerated and, if so, uses one or more
-            // 792 ExtendedFacet
-            // The MetadataAttribute may be enumerated and, if so, use a
-            // 783 Codelist
-            throw new UnsupportedOperationException("componentDtoToComponent for Unknown Entity not implemented");
-        }
-
-        return identifiableArtefactDtoToEntity(ctx, source, result);
-    }
-
+    
+    // ------------------------------------------------------------
+    // COMPONTENTS
+    // ------------------------------------------------------------
+    
     private <T extends DataAttribute> T dataAttributeDtoToDataAttribute(ServiceContext ctx, DataAttributeDto source) throws MetamacException {
         if (source == null) {
             return null;
@@ -715,68 +825,11 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
 
         return result;
     }
-
-    /**************************************************************************
-     * COMPONENT_LISTS
-     **************************************************************************/
-    @Override
-    public <T extends ComponentList> T componentListDtoToComponentList(ServiceContext ctx, ComponentListDto source) throws MetamacException {
-        if (source == null) {
-            return null;
-        }
-        // Hierachy:
-        // AnnotableArtefact < IdentifiableArtefact < ComponentList
-        // |_ AttributeDescriptor
-        // |_ DimensionDescriptor
-        // |_ GroupDimensionDescriptor
-        // |_ MeasureDescriptor
-        // |_ MetadataTarget
-        // |_ ReportStructure
-        // DimensionDescriptorDto > ComponentListDto > IdentifiableArtefactDto > AnnotableArtefactDto > AuditablteDto > IdentityDto
-
-        T result = null;
-
-        if (source.getId() == null) {
-            // New
-            switch (source.getTypeComponentList()) {
-                case ATTRIBUTE_DESCRIPTOR:
-                    result = (T) new AttributeDescriptor();
-                    break;
-                case GROUP_DIMENSION_DESCRIPTOR:
-                    result = (T) new GroupDimensionDescriptor();
-                    // TODO Metamac not support AttachmenConstraint ((GroupDimensionDescriptor)result).setIsAttachmentConstraint(source.get)
-                    break;
-                case DIMENSION_DESCRIPTOR:
-                    result = (T) new DimensionDescriptor();
-                    break;
-                case MEASURE_DESCRIPTOR:
-                    result = (T) new MeasureDescriptor();
-                    break;
-                default:
-                    // ComponentList is a abstract class, cannot be instantiated
-                    throw new UnsupportedOperationException("componentListDtoToComponentList for Unknown Entity not implemented");
-            }
-        }
-        else {
-            // Update
-            try {
-                result = (T) getComponentListRepository().findById(source.getId());
-                OptimisticLockingUtils.checkVersion(result.getVersion(), source.getVersion());
-            } catch (ComponentListNotFoundException e) {
-                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SRM_SEARCH_NOT_FOUND).withMessageParameters(ServiceExceptionParameters.COMPONENT_LIST)
-                .withLoggedLevel(ExceptionLevelEnum.ERROR).build();
-            }
-        }
-
-        // Related entities
-        // Components
-        for (ComponentDto componentDto : source.getComponents()) {
-            result.addComponent(componentDtoToComponent(ctx, componentDto));
-        }
-
-        return identifiableArtefactDtoToEntity(ctx, source, result);
-    }
-
+    
+    // ------------------------------------------------------------
+    // ATTRIBUTE RELATIONSHIP
+    // ------------------------------------------------------------
+    
     private AttributeRelationship attributeRelationshipDtoToAttributeRelationship(ServiceContext ctx, RelationshipDto source, AttributeRelationship attributeRelationshipOlder) throws MetamacException {
         if (source == null) {
             // Delete old entity
@@ -949,43 +1002,11 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
 
         return result;
     }
-
-    /**************************************************************************
-     * DATASTRUCTUREDEFINITION
-     **************************************************************************/
-    @Override
-    public DataStructureDefinition dataStructureDefinitionDtoToDataStructureDefinition(ServiceContext ctx, DataStructureDefinitionDto source) throws MetamacException {
-        if (source == null) {
-            return null;
-        }
-        
-        // Hierachy:
-        // DataStructureDefinitionDto > MaintainableArtefactDto > NameableArtefactDto > IdentifiableArtefactDto > AnnotableArtefacDto > AuditableDto > IdentityDto
-        // DataStructureDefinition > Structure > MaintainableArtefact > NameableArtefact > IdentifiableArtefact > AnnotableArtefact
-        DataStructureDefinition result = null;
-        if (source.getId() == null) {
-            // New
-            result = new DataStructureDefinition();
-        } else {
-            // Update
-            try {
-                result = getDataStructureDefinitionRepository().findById(source.getId());
-                OptimisticLockingUtils.checkVersion(result.getVersion(), source.getVersion());
-            } catch (DataStructureDefinitionNotFoundException e) {
-                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SRM_SEARCH_NOT_FOUND)
-                        .withMessageParameters(ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION).withLoggedLevel(ExceptionLevelEnum.ERROR).build();
-            }
-
-            // Withouts DTO fields: NO MERGE NEEDED!!!
-            // |_ Grouping
-            result.getGrouping().addAll(result.getGrouping());
-            // |_ Annotations
-        }
-
-        // Parent
-        return maintainableArtefactToEntity(ctx, source, result, result);
-    }
-
+    
+    // ------------------------------------------------------------
+    // REPRESENTATION
+    // ------------------------------------------------------------
+    
     private Representation representationDtoToRepresentation(ServiceContext ctx, RepresentationDto source, Representation representationOlder, String metadataEnumTitle)
             throws MetamacException {
         if (source == null) {
@@ -1119,6 +1140,10 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         return result;
     }
 
+    // ------------------------------------------------------------
+    // EXERNATLITEM
+    // ------------------------------------------------------------
+    
     private ExternalItem externalItemDtoToExternalItem(ServiceContext ctx, ExternalItemDto source, String metadataName) throws MetamacException {
         if (source == null) {
             return null;
@@ -1145,120 +1170,4 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         return result;
     }
 
-    /*
-     * @SuppressWarnings("unchecked")
-     * @Override
-     * public <T extends Item> T itemDtoToItem(ItemDto itemDto,
-     * ServiceContext ctx, BaseService baseService) {
-     * if (itemDto == null) {
-     * return null;
-     * }
-     * // Hierachy:
-     * // AnnotableArtefact < IdentifiableArtefact < NameableArtefact < Item
-     * // |_ Category
-     * // |_ Code
-     * // |_ Concept
-     * // |_ Organisation
-     * // |_ Agency
-     * // |_ DataConsumer
-     * // |_ DataProvider
-     * // |_ OrganisationUnit
-     * // |_ ReportingCategory
-     * // IdentityDto < AuditableDto < AnnotableArtefactDto < NameableArtefactDto < ItemDto
-     * // |_ ConceptDto
-     * // |_ CategoryDto
-     * // |_ CodeDto
-     * T result = null;
-     * if (itemDto instanceof CategoryDto) {
-     * result = (T) mapToEntity(itemDto, Category.class);
-     * //***************
-     * // FIELDS
-     * //***************
-     * }
-     * else if (itemDto instanceof CodeDto) {
-     * result = (T) mapToEntity(itemDto, Code.class);
-     * //***************
-     * //* FIELDS
-     * /****************
-     * }
-     * else if (itemDto instanceof ConceptDto) {
-     * result = (T) mapToEntity(itemDto, Concept.class);
-     * //***************
-     * //* FIELDS
-     * //***************
-     * }
-     * else {
-     * throw new UnsupportedOperationException("itemDtoToItem for Unknonw DTO not implemented");
-     * }
-     * //****************
-     * // * FIELDS
-     * // ***************
-     * // Set<@ItemDto> hierarchy
-     * for (ItemDto hierarchyItemDto : itemDto.getHierarchy()) {
-     * result.addHierarchy(itemDtoToItem(hierarchyItemDto, ctx, baseService));
-     * }
-     * // Parent
-     * return nameableToEntity(itemDto, result);
-     * }
-     */
-
-    /*
-     * @SuppressWarnings("unchecked")
-     * @Override
-     * public <T extends ItemScheme> T itemschemeDtoToItemScheme(
-     * ItemSchemeDto itemSchemeDto, ServiceContext ctx,
-     * BaseService baseService) throws MappingException, OrganisationNotFoundException {
-     * if (itemSchemeDto == null) {
-     * return null;
-     * }
-     * // Hierachy:
-     * // AnnotableArtefact < IdentifiableArtefact < NameableArtefact < MaintainableArtefact < ItemScheme
-     * // |_ CategoryScheme
-     * // |_ CodeList
-     * // |_ ConceptScheme
-     * // |_ OrganisationScheme
-     * // |_ AgencyScheme
-     * // |_ DataConsumerScheme
-     * // |_ DataProviderScheme
-     * // |_ OrganisationUnitScheme
-     * // |_ ReportingTaxonomy
-     * // IdentityDTo < AuditableDto < AnnotableArtefacDto < IdentifiableArtefactDTO < NameableArtefactDto < MaintainableArtefactDto < ItemSchemeDto
-     * // |_ CodeListDto
-     * // |_ ConceptSchemeDto
-     * T result = null;
-     * if (itemSchemeDto instanceof CategorySchemeDto) {
-     * throw new UnsupportedOperationException("itemschemeDtoToItemScheme for CategorySchemeDto not implemented");
-     * }
-     * else
-     * if (itemSchemeDto instanceof CodeListDto) {
-     * result = (T) mapToEntity(itemSchemeDto, CodeList.class);
-     * //****************
-     * // FIELDS
-     * //****************
-     * }
-     * else
-     * if (itemSchemeDto instanceof ConceptSchemeDto) {
-     * result = (T) mapToEntity(itemSchemeDto, ConceptScheme.class);
-     * //****************
-     * // FIELDS
-     * //****************
-     * }
-     * else if (itemSchemeDto instanceof OrganisationSchemeDto) {
-     * }
-     * else if (itemSchemeDto instanceof ReportingTaxonomy) {
-     * }
-     * else {
-     * throw new UnsupportedOperationException("itemschemeDtoToItemScheme for Unknonw DTO not implemented");
-     * }
-     * //***************
-     * // FIELDS
-     * //***************
-     * // ItemScheme: Set<@Item> items
-     * for (ItemDto itemDto : itemSchemeDto.getItems()) {
-     * result.addItem(itemDtoToItem(itemDto, ctx, baseService));
-     * }
-     * // Parent
-     * return maintainableArtefactToEntity(itemSchemeDto, result, ctx, baseService);
-     * }
-     */
 }

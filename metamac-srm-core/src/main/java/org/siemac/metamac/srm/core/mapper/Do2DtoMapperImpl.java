@@ -87,6 +87,196 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
     }
 
     /**************************************************************************
+     * PUBLIC (INTERFACE)
+     **************************************************************************/
+
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T extends ComponentDto> T componentToComponentDto(TypeDozerCopyMode typeDozerCopyMode, Component component) {
+        if (component == null) {
+            return null;
+        }
+        // Hierachy:
+        // AnnotableArtefact > IdentifiableArtefact > Component
+        // |_ DataAttribute
+        // |_ ReportingYearStartDay
+        // |_ DimensionComponent
+        // |_ Dimension
+        // |_ MeasureDimension
+        // |_ TimeDimension
+        // |_ PrimaryMeasure
+        // IdentityDto > AuditableDto > AnnotableArtefactDto > IdentifiableArtefactDto > ComponentDto
+        // |_ DataAttributeDto
+        // |_ DimensionComponentDto
+        T result = null;
+
+        // DataAttribute ******************************************************
+        if (component instanceof DataAttribute) {
+            result = (T) getMapperCore(typeDozerCopyMode).map(component, DataAttributeDto.class);
+            result.setTypeComponent(TypeComponent.DATA_ATTRIBUTE);
+
+            // Type of DataAttribute
+            if (component instanceof ReportingYearStartDay) {
+                ((DataAttributeDto) result).setTypeDataAttribute(TypeDataAttribute.REPORTING_YEAR_START_DAY);
+            } else {
+                // DataAttribute is a concrete class, could be instantiated
+                ((DataAttributeDto) result).setTypeDataAttribute(TypeDataAttribute.DATA_ATTRIBUTE);
+            }
+
+            // Relate To
+            ((DataAttributeDto) result).setRelateTo(attributeRelationshipToattributeRelationshipDto(typeDozerCopyMode, ((DataAttribute) component).getRelateTo()));
+
+            // Role
+            for (ExternalItem conceptExtItem : ((DataAttribute) component).getRole()) {
+                // ((DataAttributeDto)result).addRole((ConceptDto) itemToItemDto(concept, ctx, sdmxBaseService));
+                ((DataAttributeDto) result).addRole(externalItemToExternalItemDto(typeDozerCopyMode, conceptExtItem));
+            }
+        }
+        // DimensionComponent *************************************************
+        else if (component instanceof DimensionComponent) {
+            result = (T) getMapperCore(typeDozerCopyMode).map(component, DimensionComponentDto.class);
+            result.setTypeComponent(TypeComponent.DIMENSION_COMPONENT);
+
+            // TYPE of Dimension **********************************************
+            if (component instanceof Dimension) {
+                ((DimensionComponentDto) result).setTypeDimensionComponent(TypeDimensionComponent.DIMENSION);
+
+                // Role
+                for (ExternalItem conceptExtItem : ((Dimension) component).getRole()) {
+                    // ((DimensionComponentDto)result).addRole((ConceptDto) itemToItemDto(concept, ctx, sdmxBaseService));
+                    ((DimensionComponentDto) result).addRole(externalItemToExternalItemDto(typeDozerCopyMode, conceptExtItem));
+                }
+            }
+            // TYPE of MeasureDimension ***************************************
+            else if (component instanceof MeasureDimension) {
+                ((DimensionComponentDto) result).setTypeDimensionComponent(TypeDimensionComponent.MEASUREDIMENSION);
+
+                // Role
+                for (ExternalItem conceptExtItem : ((MeasureDimension) component).getRole()) {
+                    // ((DimensionComponentDto)result).addRole((ConceptDto) itemToItemDto(concept, ctx, sdmxBaseService));
+                    ((DimensionComponentDto) result).addRole(externalItemToExternalItemDto(typeDozerCopyMode, conceptExtItem));
+                }
+            }
+            // TYPE of TimeDimension ******************************************
+            else if (component instanceof TimeDimension) {
+                ((DimensionComponentDto) result).setTypeDimensionComponent(TypeDimensionComponent.TIMEDIMENSION);
+            } else {
+                // DimensionComponent is a abstract class, cannot be instantiated
+                throw new UnsupportedOperationException("componentToComponentDto::dimensionComponentToDimensionComponentDto for Unknown Entity not implemented");
+            }
+
+        }
+        // PrimaryMeasure *****************************************************
+        else if (component instanceof PrimaryMeasure) {
+            result = (T) getMapperCore(typeDozerCopyMode).map(component, ComponentDto.class);
+            result.setTypeComponent(TypeComponent.PRIMARY_MEASURE);
+        } else {
+            // Component is a abstract class, cannot be instantiated
+            throw new UnsupportedOperationException("componentToComponentDto for Unknown Entity not implemented");
+        }
+
+        /************************
+         * FIELDS
+         ***********************/
+        // ConceptIdentity
+        if (component.getCptIdRef() != null) {
+            result.setCptIdRef(getMapperCore(typeDozerCopyMode).map(component.getCptIdRef(), ExternalItemDto.class));
+        }
+        // result.setConceptIdentity((ConceptDto) itemToItemDto(component.getConceptIdentity(), ctx, sdmxBaseService));
+
+        // LocalRepresentation
+        result.setLocalRepresentation(representationToRepresentationDto(typeDozerCopyMode, component.getLocalRepresentation()));
+
+        return annotableToDto(typeDozerCopyMode, component, result);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T extends ComponentListDto> T componentListToComponentListDto(TypeDozerCopyMode typeDozerCopyMode, ComponentList componentList) {
+        if (componentList == null) {
+            return null;
+        }
+        // Hierachy:
+        // AnnotableArtefact < IdentifiableArtefact < ComponentList
+        // |_ AttributeDescriptor
+        // |_ DimensionDescriptor
+        // |_ GroupDimensionDescriptor
+        // |_ MeasureDescriptor
+        // |_ MetadataTarget
+        // |_ ReportStructure
+        // DimensionDescriptorDto > ComponentListDto > IdentifiableArtefactDto > AnnotableArtefactDto > AuditablteDto > IdentityDto
+
+        T result = null;
+
+        if (componentList instanceof AttributeDescriptor) {
+            result = (T) getMapperCore(typeDozerCopyMode).map(componentList, DescriptorDto.class);
+            // TypeComponentList
+            result.setTypeComponentList(TypeComponentList.ATTRIBUTE_DESCRIPTOR);
+        } else if (componentList instanceof DimensionDescriptor) {
+            result = (T) getMapperCore(typeDozerCopyMode).map(componentList, DescriptorDto.class);
+            // TypeComponentList
+            result.setTypeComponentList(TypeComponentList.DIMENSION_DESCRIPTOR);
+        } else if (componentList instanceof GroupDimensionDescriptor) {
+            result = (T) getMapperCore(typeDozerCopyMode).map(componentList, DescriptorDto.class);
+            // TypeComponentList
+            result.setTypeComponentList(TypeComponentList.GROUP_DIMENSION_DESCRIPTOR);
+        } else if (componentList instanceof MeasureDescriptor) {
+            result = (T) getMapperCore(typeDozerCopyMode).map(componentList, DescriptorDto.class);
+            // TypeComponentList
+            result.setTypeComponentList(TypeComponentList.MEASURE_DESCRIPTOR);
+        } else {
+            // ComponentList is a abstract class, cannot be instantiated
+            throw new UnsupportedOperationException("componentListToComponentListDto for Unknown Entity not implemented");
+        }
+
+        /****************
+         * FIELDS
+         ****************/
+        // Components
+        for (Component component : componentList.getComponents()) {
+            result.addComponent(componentToComponentDto(typeDozerCopyMode, component));
+        }
+
+        return annotableToDto(typeDozerCopyMode, componentList, result);
+    }
+
+    @Override
+    public DataStructureDefinitionDto dataStructureDefinitionToDataStructureDefinitionDto(TypeDozerCopyMode typeDozerCopyMode, DataStructureDefinition dataStructureDefinition) {
+        if (dataStructureDefinition == null) {
+            return null;
+        }
+        // Hierachy:
+        // DataStructureDefinitionDto > MaintainableArtefactDto > NameableArtefactDto > IdentifiableArtefactDto > AnnotableArtefacDto > AuditableDto > IdentityDto
+        // DataStructureDefinition > Structure > MaintainableArtefact > NameableArtefact > IdentifiableArtefact > AnnotableArtefact
+
+        DataStructureDefinitionDto result = getMapperCore(typeDozerCopyMode).map(dataStructureDefinition, DataStructureDefinitionDto.class);
+
+        // Parent
+        return maintainableArtefactToDto(typeDozerCopyMode, dataStructureDefinition, result);
+    }
+    
+    @Override
+    public DataStructureDefinitionExtendDto dataStructureDefinitionToDataStructureDefinitionExtendDto(TypeDozerCopyMode typeDozerCopyMode, DataStructureDefinition dataStructureDefinition) {
+        if (dataStructureDefinition == null) {
+            return null;
+        }
+        // Hierachy:
+        // DataStructureDefinitionDto > MaintainableArtefactDto > NameableArtefactDto > IdentifiableArtefactDto > AnnotableArtefacDto > AuditableDto > IdentityDto
+        // DataStructureDefinition > Structure > MaintainableArtefact > NameableArtefact > IdentifiableArtefact > AnnotableArtefact
+
+        // TO EXTENDS
+        DataStructureDefinitionExtendDto result = getMapperCore(typeDozerCopyMode).map(dataStructureDefinition, DataStructureDefinitionExtendDto.class);
+        
+        for (ComponentList componentList : dataStructureDefinition.getGrouping()) {
+            result.addGrouping((DescriptorDto) componentListToComponentListDto(typeDozerCopyMode, componentList));
+        }
+
+        // Parent
+        return maintainableArtefactToDto(typeDozerCopyMode, dataStructureDefinition, result);
+    }
+
+    /**************************************************************************
      * PRIVATE
      **************************************************************************/
 
@@ -193,164 +383,7 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
         return nameableToDto(typeDozerCopyMode, source, result);
     }
 
-    /**************************************************************************
-     * PUBLIC (INTERFACE)
-     **************************************************************************/
-
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T extends ComponentDto> T componentToComponentDto(ServiceContext ctx, TypeDozerCopyMode typeDozerCopyMode, Component component, BaseService sdmxBaseService) {
-        if (component == null) {
-            return null;
-        }
-        // Hierachy:
-        // AnnotableArtefact > IdentifiableArtefact > Component
-        // |_ DataAttribute
-        // |_ ReportingYearStartDay
-        // |_ DimensionComponent
-        // |_ Dimension
-        // |_ MeasureDimension
-        // |_ TimeDimension
-        // |_ PrimaryMeasure
-        // IdentityDto > AuditableDto > AnnotableArtefactDto > IdentifiableArtefactDto > ComponentDto
-        // |_ DataAttributeDto
-        // |_ DimensionComponentDto
-        T result = null;
-
-        // DataAttribute ******************************************************
-        if (component instanceof DataAttribute) {
-            result = (T) getMapperCore(typeDozerCopyMode).map(component, DataAttributeDto.class);
-            result.setTypeComponent(TypeComponent.DATA_ATTRIBUTE);
-
-            // Type of DataAttribute
-            if (component instanceof ReportingYearStartDay) {
-                ((DataAttributeDto) result).setTypeDataAttribute(TypeDataAttribute.REPORTING_YEAR_START_DAY);
-            } else {
-                // DataAttribute is a concrete class, could be instantiated
-                ((DataAttributeDto) result).setTypeDataAttribute(TypeDataAttribute.DATA_ATTRIBUTE);
-            }
-
-            // Relate To
-            ((DataAttributeDto) result).setRelateTo(attributeRelationshipToattributeRelationshipDto(ctx, typeDozerCopyMode, ((DataAttribute) component).getRelateTo(), sdmxBaseService));
-
-            // Role
-            for (ExternalItem conceptExtItem : ((DataAttribute) component).getRole()) {
-                // ((DataAttributeDto)result).addRole((ConceptDto) itemToItemDto(concept, ctx, sdmxBaseService));
-                ((DataAttributeDto) result).addRole(externalItemToExternalItemDto(ctx, typeDozerCopyMode, conceptExtItem, sdmxBaseService));
-            }
-        }
-        // DimensionComponent *************************************************
-        else if (component instanceof DimensionComponent) {
-            result = (T) getMapperCore(typeDozerCopyMode).map(component, DimensionComponentDto.class);
-            result.setTypeComponent(TypeComponent.DIMENSION_COMPONENT);
-
-            // TYPE of Dimension **********************************************
-            if (component instanceof Dimension) {
-                ((DimensionComponentDto) result).setTypeDimensionComponent(TypeDimensionComponent.DIMENSION);
-
-                // Role
-                for (ExternalItem conceptExtItem : ((Dimension) component).getRole()) {
-                    // ((DimensionComponentDto)result).addRole((ConceptDto) itemToItemDto(concept, ctx, sdmxBaseService));
-                    ((DimensionComponentDto) result).addRole(externalItemToExternalItemDto(ctx, typeDozerCopyMode, conceptExtItem, sdmxBaseService));
-                }
-            }
-            // TYPE of MeasureDimension ***************************************
-            else if (component instanceof MeasureDimension) {
-                ((DimensionComponentDto) result).setTypeDimensionComponent(TypeDimensionComponent.MEASUREDIMENSION);
-
-                // Role
-                for (ExternalItem conceptExtItem : ((MeasureDimension) component).getRole()) {
-                    // ((DimensionComponentDto)result).addRole((ConceptDto) itemToItemDto(concept, ctx, sdmxBaseService));
-                    ((DimensionComponentDto) result).addRole(externalItemToExternalItemDto(ctx, typeDozerCopyMode, conceptExtItem, sdmxBaseService));
-                }
-            }
-            // TYPE of TimeDimension ******************************************
-            else if (component instanceof TimeDimension) {
-                ((DimensionComponentDto) result).setTypeDimensionComponent(TypeDimensionComponent.TIMEDIMENSION);
-            } else {
-                // DimensionComponent is a abstract class, cannot be instantiated
-                throw new UnsupportedOperationException("componentToComponentDto::dimensionComponentToDimensionComponentDto for Unknown Entity not implemented");
-            }
-
-        }
-        // PrimaryMeasure *****************************************************
-        else if (component instanceof PrimaryMeasure) {
-            result = (T) getMapperCore(typeDozerCopyMode).map(component, ComponentDto.class);
-            result.setTypeComponent(TypeComponent.PRIMARY_MEASURE);
-        } else {
-            // Component is a abstract class, cannot be instantiated
-            throw new UnsupportedOperationException("componentToComponentDto for Unknown Entity not implemented");
-        }
-
-        /************************
-         * FIELDS
-         ***********************/
-        // ConceptIdentity
-        if (component.getCptIdRef() != null) {
-            result.setCptIdRef(getMapperCore(typeDozerCopyMode).map(component.getCptIdRef(), ExternalItemDto.class));
-        }
-        // result.setConceptIdentity((ConceptDto) itemToItemDto(component.getConceptIdentity(), ctx, sdmxBaseService));
-
-        // LocalRepresentation
-        result.setLocalRepresentation(representationToRepresentationDto(ctx, typeDozerCopyMode, component.getLocalRepresentation(), sdmxBaseService));
-
-        return annotableToDto(typeDozerCopyMode, component, result);
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T extends ComponentListDto> T componentListToComponentListDto(ServiceContext ctx, TypeDozerCopyMode typeDozerCopyMode, ComponentList componentList, BaseService sdmxBaseService) {
-        if (componentList == null) {
-            return null;
-        }
-        // Hierachy:
-        // AnnotableArtefact < IdentifiableArtefact < ComponentList
-        // |_ AttributeDescriptor
-        // |_ DimensionDescriptor
-        // |_ GroupDimensionDescriptor
-        // |_ MeasureDescriptor
-        // |_ MetadataTarget
-        // |_ ReportStructure
-        // DimensionDescriptorDto > ComponentListDto > IdentifiableArtefactDto > AnnotableArtefactDto > AuditablteDto > IdentityDto
-
-        T result = null;
-
-        if (componentList instanceof AttributeDescriptor) {
-            result = (T) getMapperCore(typeDozerCopyMode).map(componentList, DescriptorDto.class);
-            // TypeComponentList
-            result.setTypeComponentList(TypeComponentList.ATTRIBUTE_DESCRIPTOR);
-        } else if (componentList instanceof DimensionDescriptor) {
-            result = (T) getMapperCore(typeDozerCopyMode).map(componentList, DescriptorDto.class);
-            // TypeComponentList
-            result.setTypeComponentList(TypeComponentList.DIMENSION_DESCRIPTOR);
-        } else if (componentList instanceof GroupDimensionDescriptor) {
-            result = (T) getMapperCore(typeDozerCopyMode).map(componentList, DescriptorDto.class);
-            // TypeComponentList
-            result.setTypeComponentList(TypeComponentList.GROUP_DIMENSION_DESCRIPTOR);
-        } else if (componentList instanceof MeasureDescriptor) {
-            result = (T) getMapperCore(typeDozerCopyMode).map(componentList, DescriptorDto.class);
-            // TypeComponentList
-            result.setTypeComponentList(TypeComponentList.MEASURE_DESCRIPTOR);
-        } else {
-            // ComponentList is a abstract class, cannot be instantiated
-            throw new UnsupportedOperationException("componentListToComponentListDto for Unknown Entity not implemented");
-        }
-
-        /****************
-         * FIELDS
-         ****************/
-        // Components
-        for (Component component : componentList.getComponents()) {
-            result.addComponent(componentToComponentDto(ctx, typeDozerCopyMode, component, sdmxBaseService));
-        }
-
-        return annotableToDto(typeDozerCopyMode, componentList, result);
-    }
-
-    @Override
-    public RelationshipDto attributeRelationshipToattributeRelationshipDto(ServiceContext ctx, TypeDozerCopyMode typeDozerCopyMode, AttributeRelationship attributeRelationship,
-            BaseService sdmxBaseService) {
+    private RelationshipDto attributeRelationshipToattributeRelationshipDto(TypeDozerCopyMode typeDozerCopyMode, AttributeRelationship attributeRelationship) {
         if (attributeRelationship == null) {
             return null;
         }
@@ -379,7 +412,7 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
             // TypeRelationship
             result.setTypeRelathionship(TypeRelathionship.GROUP_RELATIONSHIP);
             // groupKeyForGroupRelationship
-            result.setGroupKeyForGroupRelationship((DescriptorDto) componentListToComponentListDto(ctx, typeDozerCopyMode, ((GroupRelationship) attributeRelationship).getGroupKey(), sdmxBaseService));
+            result.setGroupKeyForGroupRelationship((DescriptorDto) componentListToComponentListDto(typeDozerCopyMode, ((GroupRelationship) attributeRelationship).getGroupKey()));
 
         } else if (attributeRelationship instanceof DimensionRelationship) {
             result = getMapperCore(typeDozerCopyMode).map(attributeRelationship, RelationshipDto.class);
@@ -387,11 +420,11 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
             result.setTypeRelathionship(TypeRelathionship.DIMENSION_RELATIONSHIP);
             // dimensionForDimensionRelationship
             for (DimensionComponent dimensionComponent : ((DimensionRelationship) attributeRelationship).getDimension()) {
-                result.addDimensionForDimensionRelationship((DimensionComponentDto) componentToComponentDto(ctx, typeDozerCopyMode, dimensionComponent, sdmxBaseService));
+                result.addDimensionForDimensionRelationship((DimensionComponentDto) componentToComponentDto(typeDozerCopyMode, dimensionComponent));
             }
             // groupKeyForDimensionRelationship
             for (GroupDimensionDescriptor groupDimensionDescriptor : ((DimensionRelationship) attributeRelationship).getGroupKey()) {
-                result.addGroupKeyForDimensionRelationship((DescriptorDto) componentListToComponentListDto(ctx, typeDozerCopyMode, groupDimensionDescriptor, sdmxBaseService));
+                result.addGroupKeyForDimensionRelationship((DescriptorDto) componentListToComponentListDto(typeDozerCopyMode, groupDimensionDescriptor));
             }
         }
 
@@ -401,44 +434,8 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
 
         return result;
     }
-
-    @Override
-    public DataStructureDefinitionDto dataStructureDefinitionToDataStructureDefinitionDto(TypeDozerCopyMode typeDozerCopyMode, DataStructureDefinition dataStructureDefinition) {
-        if (dataStructureDefinition == null) {
-            return null;
-        }
-        // Hierachy:
-        // DataStructureDefinitionDto > MaintainableArtefactDto > NameableArtefactDto > IdentifiableArtefactDto > AnnotableArtefacDto > AuditableDto > IdentityDto
-        // DataStructureDefinition > Structure > MaintainableArtefact > NameableArtefact > IdentifiableArtefact > AnnotableArtefact
-
-        DataStructureDefinitionDto result = getMapperCore(typeDozerCopyMode).map(dataStructureDefinition, DataStructureDefinitionDto.class);
-
-        // Parent
-        return maintainableArtefactToDto(typeDozerCopyMode, dataStructureDefinition, result);
-    }
     
-    @Override
-    public DataStructureDefinitionExtendDto dataStructureDefinitionToDataStructureDefinitionExtendDto(ServiceContext ctx, TypeDozerCopyMode typeDozerCopyMode, DataStructureDefinition dataStructureDefinition, BaseService sdmxBaseService) {
-        if (dataStructureDefinition == null) {
-            return null;
-        }
-        // Hierachy:
-        // DataStructureDefinitionDto > MaintainableArtefactDto > NameableArtefactDto > IdentifiableArtefactDto > AnnotableArtefacDto > AuditableDto > IdentityDto
-        // DataStructureDefinition > Structure > MaintainableArtefact > NameableArtefact > IdentifiableArtefact > AnnotableArtefact
-
-        // TO EXTENDS
-        DataStructureDefinitionExtendDto result = getMapperCore(typeDozerCopyMode).map(dataStructureDefinition, DataStructureDefinitionExtendDto.class);
-        
-        for (ComponentList componentList : dataStructureDefinition.getGrouping()) {
-            result.addGrouping((DescriptorDto) componentListToComponentListDto(ctx, typeDozerCopyMode, componentList, sdmxBaseService));
-        }
-
-        // Parent
-        return maintainableArtefactToDto(typeDozerCopyMode, dataStructureDefinition, result);
-    }
-
-    @Override
-    public RepresentationDto representationToRepresentationDto(ServiceContext ctx, TypeDozerCopyMode typeDozerCopyMode, Representation representation, BaseService sdmxBaseService) {
+    private RepresentationDto representationToRepresentationDto(TypeDozerCopyMode typeDozerCopyMode, Representation representation) {
         if (representation == null) {
             return null;
         }
@@ -464,14 +461,13 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
             // TypeRepresentationEnum
             result.setTypeRepresentationEnum(TypeRepresentationEnum.TEXT_FORMAT);
 
-            result.setNonEnumerated(facetToFacetDto(ctx, typeDozerCopyMode, ((TextFormatRepresentation) representation).getNonEnumerated(), sdmxBaseService));
+            result.setNonEnumerated(facetToFacetDto(typeDozerCopyMode, ((TextFormatRepresentation) representation).getNonEnumerated()));
         }
 
         return result;
     }
 
-    @Override
-    public FacetDto facetToFacetDto(ServiceContext ctx, TypeDozerCopyMode typeDozerCopyMode, Facet facet, BaseService sdmxBaseService) {
+    private FacetDto facetToFacetDto(TypeDozerCopyMode typeDozerCopyMode, Facet facet) {
         if (facet == null) {
             return null;
         }
@@ -481,8 +477,7 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
         return facetDto;
     }
 
-    @Override
-    public ExternalItemDto externalItemToExternalItemDto(ServiceContext ctx, TypeDozerCopyMode typeDozerCopyMode, ExternalItem externalItem, BaseService sdmxBaseService) {
+    private ExternalItemDto externalItemToExternalItemDto(TypeDozerCopyMode typeDozerCopyMode, ExternalItem externalItem) {
         if (externalItem == null) {
             return null;
         }
@@ -493,134 +488,4 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
         return result;
     }
 
-    
-    /*
-     * @SuppressWarnings("unchecked")
-     * @Override
-     * public <T extends ItemDto> T itemToItemDto(Item item, ServiceContext ctx,
-     * BaseService sdmxBaseService) {
-     * if (item == null) {
-     * return null;
-     * }
-     * // Hierachy:
-     * // AnnotableArtefact < IdentifiableArtefact < NameableArtefact < Item
-     * // |_ Category
-     * // |_ Code
-     * // |_ Concept
-     * // |_ Organisation
-     * // |_ Agency
-     * // |_ DataConsumer
-     * // |_ DataProvider
-     * // |_ OrganisationUnit
-     * // |_ ReportingCategory
-     * // IdentityDto < AuditableDto < AnnotableArtefactDto < NameableArtefactDto < ItemDto
-     * // |_ ConceptDto
-     * // |_ CategoryDto
-     * // |_ CodeDto
-     * T result = null;
-     * if (item instanceof Category) {
-     * result = (T) getMapper().map(item, CategoryDto.class);
-     * //****************
-     * //* FIELDS
-     * // ***************
-     * }
-     * else if (item instanceof Code) {
-     * result = (T) getMapper().map(item, CodeDto.class);
-     * //****************
-     * //* FIELDS
-     * //****************
-     * ;
-     * }
-     * else if (item instanceof Concept) {
-     * result = (T) getMapper().map(item, ConceptDto.class);
-     * //****************
-     * //* FIELDS
-     * //****************
-     * ;
-     * }
-     * else if (item instanceof Organisation) {
-     * throw new UnsupportedOperationException("itemToItemDto for Organisation not implemented");
-     * }
-     * else if (item instanceof ReportingCategory) {
-     * throw new UnsupportedOperationException("itemToItemDto for ReportingCategory not implemented");
-     * }
-     * else {
-     * // Item is a abstract class, cannot be instantiated
-     * throw new UnsupportedOperationException("itemToItemDto for Unknown Entity not implemented");
-     * }
-     * //****************
-     * //* FIELDS
-     * //****************
-     * // Set<@ItemDto> hierarchy
-     * for (Item hierarchyitem : item.getHierarchy()) {
-     * result.addHierarchy(itemToItemDto(hierarchyitem, ctx, sdmxBaseService));
-     * }
-     * // Parent
-     * return nameableToDto(item, result);
-     * }
-     */
-
-    /*
-     * @SuppressWarnings("unchecked")
-     * @Override
-     * public <T extends ItemSchemeDto> T itemschemeToItemSchemeDto(ItemScheme itemScheme, ServiceContext ctx,
-     * BaseService sdmxBaseService) {
-     * if (itemScheme == null) {
-     * return null;
-     * }
-     * // Hierachy:
-     * // AnnotableArtefact < IdentifiableArtefact < NameableArtefact < MaintainableArtefact < ItemScheme
-     * // |_ CategoryScheme
-     * // |_ CodeList
-     * // |_ ConceptScheme
-     * // |_ OrganisationScheme
-     * // |_ AgencyScheme
-     * // |_ DataConsumerScheme
-     * // |_ DataProviderScheme
-     * // |_ OrganisationUnitScheme
-     * // |_ ReportingTaxonomy
-     * // IdentityDTo < AuditableDto < AnnotableArtefacDto < IdentifiableArtefactDTO < NameableArtefactDto < MaintainableArtefactDto < ItemSchemeDto
-     * // |_ CodeListDto
-     * // |_ ConceptSchemeDto
-     * T result = null;
-     * if (itemScheme instanceof CategoryScheme) {
-     * throw new UnsupportedOperationException("itemschemeToItemSchemeDto for CategoryScheme not implemented");
-     * }
-     * else if (itemScheme instanceof CodeList) {
-     * result = (T) getMapper().map(itemScheme, CodeListDto.class);
-     * //****************
-     * //* FIELDS
-     * // ***************
-     * ;
-     * }
-     * else if (itemScheme instanceof ConceptScheme) {
-     * result = (T) getMapper().map(itemScheme, ConceptSchemeDto.class);
-     * //****************
-     * //* FIELDS
-     * // ***************
-     * ;
-     * }
-     * else if (itemScheme instanceof OrganisationScheme) {
-     * throw new UnsupportedOperationException("itemschemeToItemSchemeDto for OrganisationScheme not implemented");
-     * }
-     * else if (itemScheme instanceof ReportingTaxonomy) {
-     * throw new UnsupportedOperationException("itemschemeToItemSchemeDto for ReportingTaxonomy not implemented");
-     * }
-     * else {
-     * // ItemScheme is a abstract class, cannot be instantiated
-     * throw new UnsupportedOperationException("itemschemeToItemSchemeDto for Unknown Entity not implemented");
-     * }
-     * //****************
-     * //* FIELDS
-     * //****************
-     * // ItemSchemeDto: Set<@ItemDto> items
-     * for (Item item : itemScheme.getItems()) {
-     * result.addItem(itemToItemDto(item, ctx, sdmxBaseService));
-     * }
-     * // IsPartial
-     * result.setIsPartial(itemScheme.getIsPartial());
-     * // Parent
-     * return maintainableArtefactToDto(itemScheme, result);
-     * }
-     */
 }
