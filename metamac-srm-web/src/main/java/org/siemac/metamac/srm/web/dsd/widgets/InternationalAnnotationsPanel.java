@@ -280,7 +280,7 @@ public class InternationalAnnotationsPanel extends VLayout {
                 System.out.println("------------------------------");
                 System.out.println(record.getId());
                 System.out.println(record.getIdDs());
-                System.out.println(record.getIdLogic());
+                System.out.println(record.getCode());
                 System.out.println(record.getTitle());
                 System.out.println(record.getText());
                 System.out.println(record.getLocale());

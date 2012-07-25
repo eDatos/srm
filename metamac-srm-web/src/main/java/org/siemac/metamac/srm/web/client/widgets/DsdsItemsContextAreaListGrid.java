@@ -20,20 +20,20 @@ public class DsdsItemsContextAreaListGrid extends ListGrid {
 
         this.setShowAllRecords(true);
 
-        ListGridField idLogicDsdField = new ListGridField(DsdRecord.ID_LOGIC, MetamacSrmWeb.getConstants().dsdIdLogic());
+        ListGridField codeDsdField = new ListGridField(DsdRecord.CODE, MetamacSrmWeb.getConstants().dsdCode());
         ListGridField nameDsdField = new ListGridField(DsdRecord.NAME, MetamacSrmWeb.getConstants().dsdName());
         ListGridField descriptionDsdField = new ListGridField(DsdRecord.DESCRIPTION, MetamacSrmWeb.getConstants().dsdDescription());
         ListGridField finalStructureDsdField = new ListGridField(DsdRecord.FINAL_STRUCTURE, MetamacSrmWeb.getConstants().dsdFinalStructure());
         finalStructureDsdField.setType(ListGridFieldType.BOOLEAN);
 
         // ToolTip
-        idLogicDsdField.setShowHover(true);
-        idLogicDsdField.setHoverCustomizer(new HoverCustomizer() {
+        codeDsdField.setShowHover(true);
+        codeDsdField.setHoverCustomizer(new HoverCustomizer() {
 
             @Override
             public String hoverHTML(Object value, ListGridRecord record, int rowNum, int colNum) {
                 DsdRecord dsdRecord = (DsdRecord) record;
-                return dsdRecord.getIdLogic();
+                return dsdRecord.getCode();
             }
         });
         nameDsdField.setShowHover(true);
@@ -54,7 +54,7 @@ public class DsdsItemsContextAreaListGrid extends ListGrid {
                 return dsdRecord.getDescription();
             }
         });
-        this.setFields(idLogicDsdField, nameDsdField, descriptionDsdField, finalStructureDsdField);
+        this.setFields(codeDsdField, nameDsdField, descriptionDsdField, finalStructureDsdField);
     }
 
     public void setDsds(List<DataStructureDefinitionDto> dataStructureDefinitionDtos) {
@@ -71,7 +71,7 @@ public class DsdsItemsContextAreaListGrid extends ListGrid {
      **************************************************************************/
 
     private DsdRecord createDsdRecord(DataStructureDefinitionDto dsd) {
-        return new DsdRecord(dsd.getId(), dsd.getIdLogic(), InternationalStringUtils.getLocalisedString(dsd.getName()), InternationalStringUtils.getLocalisedString(dsd.getDescription()),
+        return new DsdRecord(dsd.getId(), dsd.getCode(), InternationalStringUtils.getLocalisedString(dsd.getName()), InternationalStringUtils.getLocalisedString(dsd.getDescription()),
                 dsd.getFinalLogic(), dsd);
     }
 

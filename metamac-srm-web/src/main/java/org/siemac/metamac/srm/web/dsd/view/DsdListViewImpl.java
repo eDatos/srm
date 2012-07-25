@@ -58,7 +58,7 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
     private Window                       winModal;
     private CustomDynamicForm            newDsdForm;
     private RequiredTextItem             nameItem;
-    private RequiredTextItem             idLogicItem;
+    private RequiredTextItem             codeItem;
     private ButtonItem                   createDsdButton;
 
     private ToolStripButton              newToolStripButton;
@@ -86,9 +86,9 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
 
         nameItem = new RequiredTextItem("name-new-dsd", MetamacSrmWeb.getConstants().dsdName());
         nameItem.setWidth(230);
-        idLogicItem = new RequiredTextItem("id-logic-new-dsd", MetamacSrmWeb.getConstants().dsdIdLogic());
-        idLogicItem.setWidth(230);
-        idLogicItem.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());
+        codeItem = new RequiredTextItem("id-logic-new-dsd", MetamacSrmWeb.getConstants().dsdCode());
+        codeItem.setWidth(230);
+        codeItem.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());
         createDsdButton = new ButtonItem("create-new-dsd", MetamacSrmWeb.getConstants().dsdCreate());
         createDsdButton.setColSpan(2);
         createDsdButton.setAlign(Alignment.CENTER);
@@ -100,7 +100,7 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
         newDsdForm.setWidth100();
         newDsdForm.setPadding(5);
         newDsdForm.setLayoutAlign(VerticalAlignment.BOTTOM);
-        newDsdForm.setFields(idLogicItem, nameItem, createDsdButton);
+        newDsdForm.setFields(codeItem, nameItem, createDsdButton);
 
         // ToolStrip
 
@@ -275,7 +275,7 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
     @Override
     public DataStructureDefinitionDto getNewDsd() {
         DataStructureDefinitionDto dsd = new DataStructureDefinitionDto();
-        dsd.setIdLogic(idLogicItem.getValueAsString());
+        dsd.setCode(codeItem.getValueAsString());
         InternationalStringDto internationalName = InternationalStringUtils.updateInternationalString(new InternationalStringDto(), nameItem.getValueAsString());
         dsd.setName(internationalName);
         // TODO Organization (MaintainerIdLogic)

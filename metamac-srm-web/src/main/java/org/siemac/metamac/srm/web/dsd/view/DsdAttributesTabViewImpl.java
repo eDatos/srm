@@ -177,18 +177,18 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         attributesGrid.setHeight(150);
         attributesGrid.setSelectionType(SelectionStyle.SIMPLE);
         attributesGrid.setSelectionAppearance(SelectionAppearance.CHECKBOX);
-        ListGridField idLogicField = new ListGridField(AttributeRecord.ID_LOGIC, MetamacSrmWeb.getConstants().dsdAttributeId());
+        ListGridField codeField = new ListGridField(AttributeRecord.CODE, MetamacSrmWeb.getConstants().dsdAttributeId());
         ListGridField assigmentField = new ListGridField(AttributeRecord.ASSIGNMENT, MetamacSrmWeb.getConstants().dsdAttributeAssignmentStatus());
         ListGridField attributeConceptField = new ListGridField(AttributeRecord.CONCEPT, MetamacSrmWeb.getConstants().dsdAttributeConcept());
-        attributesGrid.setFields(idLogicField, assigmentField, attributeConceptField);
+        attributesGrid.setFields(codeField, assigmentField, attributeConceptField);
         // ToolTip
-        idLogicField.setShowHover(true);
-        idLogicField.setHoverCustomizer(new HoverCustomizer() {
+        codeField.setShowHover(true);
+        codeField.setHoverCustomizer(new HoverCustomizer() {
 
             @Override
             public String hoverHTML(Object value, ListGridRecord record, int rowNum, int colNum) {
                 AttributeRecord attributeRecord = (AttributeRecord) record;
-                return attributeRecord.getIdLogic();
+                return attributeRecord.getCode();
             }
         });
         assigmentField.setShowHover(true);
@@ -545,7 +545,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         this.dataAttributeDto = dataAttributeDto;
 
         // Id
-        staticIdLogic.setValue(dataAttributeDto.getIdLogic());
+        staticIdLogic.setValue(dataAttributeDto.getCode());
 
         // Concept
         staticConceptItem.setValue(dataAttributeDto.getCptIdRef() == null ? null : dataAttributeDto.getCptIdRef().getCode());
@@ -575,7 +575,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
             // Group keys for group relationship
             if (TypeRelathionship.GROUP_RELATIONSHIP.equals(dataAttributeDto.getRelateTo().getTypeRelathionship())) {
                 staticGroupKeyFormForGroupRelationship.setValue((dataAttributeDto.getRelateTo().getGroupKeyForGroupRelationship() == null) ? null : dataAttributeDto.getRelateTo()
-                        .getGroupKeyForGroupRelationship().getIdLogic());
+                        .getGroupKeyForGroupRelationship().getCode());
                 staticGroupKeyFormForGroupRelationship.show();
             }
 
@@ -586,7 +586,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
                 StringBuilder groupKeysBuilder = new StringBuilder();
                 for (int i = 0; i < attributeGroupKeys.size(); i++) {
                     groupKeysBuilder.append(i != 0 ? ",  " : "");
-                    groupKeysBuilder.append(attributeGroupKeys.get(i).getIdLogic());
+                    groupKeysBuilder.append(attributeGroupKeys.get(i).getCode());
                 }
                 staticGroupKeysForDimensionRelationshipItem.setValue(groupKeysBuilder.toString());
                 staticGroupKeysForDimensionRelationshipItem.show();
@@ -597,7 +597,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
                 StringBuilder dimensionBuilder = new StringBuilder();
                 for (int i = 0; i < attributeDimensions.size(); i++) {
                     dimensionBuilder.append(i != 0 ? ",  " : "");
-                    dimensionBuilder.append(attributeDimensions.get(i).getIdLogic());
+                    dimensionBuilder.append(attributeDimensions.get(i).getCode());
                 }
                 staticDimensionsForDimensionRelationshipItem.setValue(dimensionBuilder.toString());
                 staticDimensionsForDimensionRelationshipItem.show();
@@ -634,7 +634,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         this.dataAttributeDto = dataAttributeDto;
 
         // Id
-        idLogic.setValue(dataAttributeDto.getIdLogic());
+        idLogic.setValue(dataAttributeDto.getCode());
 
         // Concept
         conceptItem.clearValue(); // Clear concept value: which is the scheme of a concept?
@@ -719,7 +719,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
     @Override
     public DataAttributeDto getDsdAttribute() {
         // Id
-        dataAttributeDto.setIdLogic(idLogic.getValueAsString());
+        dataAttributeDto.setCode(idLogic.getValueAsString());
 
         // Role
         dataAttributeDto.getRole().clear();
@@ -856,7 +856,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
             setAttributeEditionMode(attributeSelected);
             mainFormLayout.setEditionMode();
         } else {
-            mainFormLayout.setTitleLabelContents(attributeSelected.getIdLogic());
+            mainFormLayout.setTitleLabelContents(attributeSelected.getCode());
             deleteToolStripButton.show();
             setAttribute(attributeSelected);
             mainFormLayout.setViewMode();

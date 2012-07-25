@@ -7,7 +7,7 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
 public class DimensionRecord extends ListGridRecord {
 
     public static final String IDENTIFIER              = "identifier";
-    public static final String ID_LOGIC                = "id_logic";
+    public static final String CODE                    = "dim-code";
     public static final String CONCEPT                 = "concept";
     public static final String ROLE                    = "role";
     public static final String TYPE                    = "type";
@@ -18,7 +18,7 @@ public class DimensionRecord extends ListGridRecord {
 
     public DimensionRecord(Long id, String idLogic, String concept, String type, DimensionComponentDto dimensionComponentDto) {
         setIdentifier(id);
-        setIdLogic(idLogic);
+        setCode(idLogic);
         setConcept(concept);
         setType(type);
         setDimensionComponentDto(dimensionComponentDto);
@@ -28,8 +28,8 @@ public class DimensionRecord extends ListGridRecord {
         setAttribute(IDENTIFIER, value);
     }
 
-    public void setIdLogic(String value) {
-        setAttribute(ID_LOGIC, value);
+    public void setCode(String value) {
+        setAttribute(CODE, value);
     }
 
     public void setConcept(String attribute) {
@@ -48,8 +48,8 @@ public class DimensionRecord extends ListGridRecord {
         return getAttributeAsLong(IDENTIFIER);
     }
 
-    public String getIdLogic() {
-        return getAttributeAsString(ID_LOGIC);
+    public String getCode() {
+        return getAttributeAsString(CODE);
     }
 
     public String getConcept() {

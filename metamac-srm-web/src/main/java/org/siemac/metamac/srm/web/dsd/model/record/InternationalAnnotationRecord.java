@@ -8,7 +8,7 @@ public class InternationalAnnotationRecord extends ListGridRecord {
 
     public static final String ID             = "ident";
     public static final String ID_DS          = "id-ds";     // DataSource primary key
-    public static final String ID_LOGIC       = "id-logic";
+    public static final String CODE           = "code";
     public static final String TITLE          = "title";
     public static final String TYPE           = "type";
     public static final String URL            = "url";
@@ -25,7 +25,7 @@ public class InternationalAnnotationRecord extends ListGridRecord {
     public InternationalAnnotationRecord(String id, String idDs, String idLogic, String title, String type, String url, String text, String locale, String flag, AnnotationDto annotationDto) {
         setId(id);
         setIdDs(idDs);
-        setIdLogic(idLogic);
+        setCode(idLogic);
         setTitle(title);
         setType(type);
         setUrl(url);
@@ -51,12 +51,12 @@ public class InternationalAnnotationRecord extends ListGridRecord {
         return getAttributeAsString(ID_DS);
     }
 
-    public void setIdLogic(String value) {
-        setAttribute(ID_LOGIC, value);
+    public void setCode(String value) {
+        setAttribute(CODE, value);
     }
 
-    public String getIdLogic() {
-        return getAttributeAsString(ID_LOGIC);
+    public String getCode() {
+        return getAttributeAsString(CODE);
     }
 
     public void setTitle(String value) {

@@ -21,18 +21,18 @@ public class ConceptSchemesItemsContextAreaListGrid extends ListGrid {
 
         this.setShowAllRecords(true);
 
-        ListGridField idLogicField = new ListGridField(ConceptSchemeDS.ID_LOGIC, getConstants().conceptSchemeIdLogic());
+        ListGridField codeField = new ListGridField(ConceptSchemeDS.CODE, getConstants().conceptSchemeCode());
         ListGridField nameField = new ListGridField(ConceptSchemeDS.NAME, getConstants().conceptSchemeName());
         ListGridField descriptionField = new ListGridField(ConceptSchemeDS.DESCRIPTION, getConstants().conceptSchemeDescription());
 
         // ToolTip
-        idLogicField.setShowHover(true);
-        idLogicField.setHoverCustomizer(new HoverCustomizer() {
+        codeField.setShowHover(true);
+        codeField.setHoverCustomizer(new HoverCustomizer() {
 
             @Override
             public String hoverHTML(Object value, ListGridRecord record, int rowNum, int colNum) {
                 ConceptSchemeRecord schemeRecord = (ConceptSchemeRecord) record;
-                return schemeRecord.getIdLogic();
+                return schemeRecord.getCode();
             }
         });
         nameField.setShowHover(true);
@@ -53,7 +53,7 @@ public class ConceptSchemesItemsContextAreaListGrid extends ListGrid {
                 return schemeRecord.getDescription();
             }
         });
-        this.setFields(idLogicField, nameField, descriptionField);
+        this.setFields(codeField, nameField, descriptionField);
     }
 
     public void setConceptSchemes(List<ConceptSchemeDto> conceptSchemeDtos) {

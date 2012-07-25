@@ -9,7 +9,7 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
 public class DsdRecord extends ListGridRecord {
 
     public static final String IDENTIFIER      = "identifier";
-    public static final String ID_LOGIC        = "idLogic";
+    public static final String CODE            = "dsd-code";
     public static final String VERSION         = "version";
     public static final String AGENCY          = "agency";
     public static final String NAME            = "name";
@@ -25,9 +25,9 @@ public class DsdRecord extends ListGridRecord {
     }
 
     // Last modified record
-    public DsdRecord(Long id, String idLogic, String name, String description, Boolean finalStructure, DataStructureDefinitionDto dsd) {
+    public DsdRecord(Long id, String code, String name, String description, Boolean finalStructure, DataStructureDefinitionDto dsd) {
         setIdentifier(id);
-        setIdLogic(idLogic);
+        setCode(code);
         setName(name);
         setDescription(description);
         setFinalStructure(finalStructure);
@@ -35,9 +35,9 @@ public class DsdRecord extends ListGridRecord {
     }
 
     // Complete record
-    public DsdRecord(Long identifier, String idLogic, String version, String agency, String name, String description, String uri, String urn, Boolean finalStructure, Date startDate, Date endDate) {
+    public DsdRecord(Long identifier, String code, String version, String agency, String name, String description, String uri, String urn, Boolean finalStructure, Date startDate, Date endDate) {
         setIdentifier(identifier);
-        setIdLogic(idLogic);
+        setCode(code);
         setVersion(version);
         setAgency(agency);
         setName(name);
@@ -53,8 +53,8 @@ public class DsdRecord extends ListGridRecord {
         setAttribute(IDENTIFIER, attribute);
     }
 
-    public void setIdLogic(String attribute) {
-        setAttribute(ID_LOGIC, attribute);
+    public void setCode(String attribute) {
+        setAttribute(CODE, attribute);
     }
 
     public void setVersion(String attribute) {
@@ -101,8 +101,8 @@ public class DsdRecord extends ListGridRecord {
         return getAttributeAsLong(IDENTIFIER);
     }
 
-    public String getIdLogic() {
-        return getAttributeAsString(ID_LOGIC);
+    public String getCode() {
+        return getAttributeAsString(CODE);
     }
 
     public String getVersion() {

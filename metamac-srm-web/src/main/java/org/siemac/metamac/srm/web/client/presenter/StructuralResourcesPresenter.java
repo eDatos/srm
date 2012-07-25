@@ -165,11 +165,11 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
     }
 
     @Override
-    public void goToConceptScheme(String idLogic) {
-        if (idLogic != null) {
+    public void goToConceptScheme(String code) {
+        if (code != null) {
             PlaceRequest structuralResourcesPlace = new PlaceRequest(NameTokens.structuralResourcesPage);
             PlaceRequest schemesListPlace = new PlaceRequest(NameTokens.conceptSchemeListPage);
-            PlaceRequest conceptPlace = new PlaceRequest(NameTokens.conceptSchemePage).with(PlaceRequestParams.conceptSchemeParam, idLogic);
+            PlaceRequest conceptPlace = new PlaceRequest(NameTokens.conceptSchemePage).with(PlaceRequestParams.conceptSchemeParam, code);
             List<PlaceRequest> placeRequests = new ArrayList<PlaceRequest>();
             placeRequests.add(structuralResourcesPlace);
             placeRequests.add(schemesListPlace);

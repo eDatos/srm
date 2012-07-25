@@ -6,7 +6,7 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
 
 public class AnnotationRecord extends ListGridRecord {
 
-    public static final String ID_LOGIC       = "an-id";
+    public static final String CODE       = "an-id";
     public static final String TITLE          = "an-title";
     public static final String TYPE           = "an-type";
     public static final String URL            = "an-url";
@@ -17,7 +17,7 @@ public class AnnotationRecord extends ListGridRecord {
     }
 
     public AnnotationRecord(String idLogic, String title, String type, String url, String text, AnnotationDto annotationDto) {
-        setIdLogic(idLogic);
+        setCode(idLogic);
         setTitle(title);
         setType(type);
         setUrl(url);
@@ -25,12 +25,12 @@ public class AnnotationRecord extends ListGridRecord {
         setAnnotationDto(annotationDto);
     }
 
-    public void setIdLogic(String value) {
-        setAttribute(ID_LOGIC, value);
+    public void setCode(String value) {
+        setAttribute(CODE, value);
     }
 
     public String getIdLogic() {
-        return getAttributeAsString(ID_LOGIC);
+        return getAttributeAsString(CODE);
     }
 
     public void setTitle(String value) {

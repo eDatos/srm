@@ -55,7 +55,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
 
     private GroupDynamicForm            identifiersEditionForm;
     private GroupDynamicForm            generalEditionForm;
-    private RequiredTextItem            idLogicItem;
+    private RequiredTextItem            codeItem;
     private MultiLanguageTextItem       nameItem;
     private MultiLanguageTextItem       descriptionItem;
 
@@ -132,8 +132,8 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
      * @return
      */
     private void createEditionForm() {
-        idLogicItem = new RequiredTextItem("idLogicDsd", MetamacSrmWeb.getConstants().dsdIdLogic());
-        idLogicItem.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());
+        codeItem = new RequiredTextItem("idLogicDsd", MetamacSrmWeb.getConstants().dsdCode());
+        codeItem.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());
 
         // Name
         nameItem = new MultiLanguageTextItem("nameDsd", MetamacSrmWeb.getConstants().dsdName());
@@ -152,7 +152,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
 
         // Identifiers Form
         identifiersEditionForm = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdIdentifiers());
-        identifiersEditionForm.setFields(idLogicItem, staticUriItemEdit, staticUrnItemEdit, staticVersionEdit);
+        identifiersEditionForm.setFields(codeItem, staticUriItemEdit, staticUrnItemEdit, staticVersionEdit);
 
         // General Form
         generalEditionForm = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdDetails());
@@ -192,7 +192,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
     }
 
     private void setDsdViewMode(DataStructureDefinitionDto dsd) {
-        staticIdLogic.setValue(dsd.getIdLogic());
+        staticIdLogic.setValue(dsd.getCode());
         staticUriItem.setValue(dsd.getUri());
         staticUrnItem.setValue(dsd.getUrn());
         staticVersion.setValue(dsd.getVersionLogic());
@@ -207,7 +207,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
     }
 
     private void setDsdEditionMode(DataStructureDefinitionDto dsd) {
-        idLogicItem.setValue(dsd.getIdLogic());
+        codeItem.setValue(dsd.getCode());
         staticUriItemEdit.setValue(dsd.getUri());
         staticUrnItemEdit.setValue(dsd.getUrn());
         staticVersionEdit.setValue(dsd.getVersionLogic());
@@ -233,7 +233,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
 
     @Override
     public DataStructureDefinitionDto getDataStructureDefinitionDto(DataStructureDefinitionDto dsd) {
-        dsd.setIdLogic(idLogicItem.getValueAsString());
+        dsd.setCode(codeItem.getValueAsString());
         dsd.setName(nameItem.getValue());
         dsd.setDescription(descriptionItem.getValue());
 

@@ -7,7 +7,7 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
 public class AttributeRecord extends ListGridRecord {
 
     public static final String IDENTIFIER         = "identifier";
-    public static final String ID_LOGIC           = "id_logic";
+    public static final String CODE               = "attr-code";
     public static final String ASSIGNMENT         = "assignment";
     public static final String CONCEPT            = "concept";
     public static final String DATA_ATTRIBUTE_DTO = "data_attribute_dto";
@@ -15,9 +15,9 @@ public class AttributeRecord extends ListGridRecord {
     public AttributeRecord() {
     }
 
-    public AttributeRecord(Long id, String idLogic, String assigment, String conceptDto, DataAttributeDto dataAttributeDto) {
+    public AttributeRecord(Long id, String code, String assigment, String conceptDto, DataAttributeDto dataAttributeDto) {
         setIdentifier(id);
-        setIdLogic(idLogic);
+        setCode(code);
         setAssignment(assigment);
         setConcept(conceptDto);
         setDataAttributeDto(dataAttributeDto);
@@ -27,8 +27,8 @@ public class AttributeRecord extends ListGridRecord {
         setAttribute(IDENTIFIER, value);
     }
 
-    public void setIdLogic(String value) {
-        setAttribute(ID_LOGIC, value);
+    public void setCode(String value) {
+        setAttribute(CODE, value);
     }
 
     public void setAssignment(String value) {
@@ -47,8 +47,8 @@ public class AttributeRecord extends ListGridRecord {
         return getAttributeAsLong(IDENTIFIER);
     }
 
-    public String getIdLogic() {
-        return getAttributeAsString(ID_LOGIC);
+    public String getCode() {
+        return getAttributeAsString(CODE);
     }
 
     public String getAssigment() {

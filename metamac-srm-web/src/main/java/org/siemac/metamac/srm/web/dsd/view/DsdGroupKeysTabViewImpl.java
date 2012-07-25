@@ -118,7 +118,7 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
         groupKeysGrid.setHeight(150);
         groupKeysGrid.setSelectionType(SelectionStyle.SIMPLE);
         groupKeysGrid.setSelectionAppearance(SelectionAppearance.CHECKBOX);
-        ListGridField idLogicField = new ListGridField(GroupKeysRecord.ID_LOGIC, MetamacSrmWeb.getConstants().dsdGroupKeysIdLogic());
+        ListGridField idLogicField = new ListGridField(GroupKeysRecord.CODE, MetamacSrmWeb.getConstants().dsdGroupKeysIdLogic());
         groupKeysGrid.setFields(idLogicField);
         // ToolTip
         idLogicField.setShowHover(true);
@@ -127,7 +127,7 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
             @Override
             public String hoverHTML(Object value, ListGridRecord record, int rowNum, int colNum) {
                 GroupKeysRecord groupKeysRecord = (GroupKeysRecord) record;
-                return groupKeysRecord.getIdLogic();
+                return groupKeysRecord.getCode();
             }
         });
         // Show attribute details when record clicked
@@ -276,7 +276,7 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
 
     @Override
     public DescriptorDto getGroupKeys() {
-        descriptorDto.setIdLogic(idLogic.getValueAsString());
+        descriptorDto.setCode(idLogic.getValueAsString());
 
         descriptorDto.getComponents().clear();
         List<DimensionComponentDto> dimensions = getDimensions(dimensionsItem.getValues());
@@ -332,7 +332,7 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
     private void setGroupKeysViewMode(DescriptorDto descriptorDto) {
         this.descriptorDto = descriptorDto;
 
-        staticIdLogic.setValue(descriptorDto.getIdLogic());
+        staticIdLogic.setValue(descriptorDto.getCode());
 
         staticDimensionsItem.clearValue();
         List<ComponentDto> dimensionComponentDtos = new ArrayList<ComponentDto>(descriptorDto.getComponents());
@@ -340,7 +340,7 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
         StringBuilder dimensionBuilder = new StringBuilder();
         for (int i = 0; i < dimensionComponentDtos.size(); i++) {
             dimensionBuilder.append(i != 0 ? ",  " : "");
-            dimensionBuilder.append(dimensionComponentDtos.get(i).getIdLogic());
+            dimensionBuilder.append(dimensionComponentDtos.get(i).getCode());
         }
         staticDimensionsItem.setValue(dimensionBuilder.toString());
 
@@ -351,7 +351,7 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
     private void setGroupKeysEditionMode(DescriptorDto descriptorDto) {
         this.descriptorDto = descriptorDto;
 
-        idLogic.setValue(descriptorDto.getIdLogic());
+        idLogic.setValue(descriptorDto.getCode());
 
         dimensionsItem.clearValue();
         Set<ComponentDto> dimensionComponentDtos = descriptorDto.getComponents();
@@ -379,7 +379,7 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
             setGroupKeysEditionMode(groupKeysSelected);
             mainFormLayout.setEditionMode();
         } else {
-            mainFormLayout.setTitleLabelContents(groupKeysSelected.getIdLogic());
+            mainFormLayout.setTitleLabelContents(groupKeysSelected.getCode());
             deleteToolStripButton.show();
             setGroupKeys(groupKeysSelected);
             mainFormLayout.setViewMode();

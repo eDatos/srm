@@ -161,7 +161,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         dimensionsGrid.setHeight(150);
         dimensionsGrid.setSelectionType(SelectionStyle.SIMPLE);
         dimensionsGrid.setSelectionAppearance(SelectionAppearance.CHECKBOX);
-        ListGridField idLogicField = new ListGridField(DimensionRecord.ID_LOGIC, MetamacSrmWeb.getConstants().dsdDimensionsId());
+        ListGridField idLogicField = new ListGridField(DimensionRecord.CODE, MetamacSrmWeb.getConstants().dsdDimensionsId());
         ListGridField typeField = new ListGridField(DimensionRecord.TYPE, MetamacSrmWeb.getConstants().dsdDimensionsType());
         ListGridField conceptField = new ListGridField(DimensionRecord.CONCEPT, MetamacSrmWeb.getConstants().dsdDimensionsConcept());
         dimensionsGrid.setFields(idLogicField, typeField, conceptField);
@@ -172,7 +172,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
             @Override
             public String hoverHTML(Object value, ListGridRecord record, int rowNum, int colNum) {
                 DimensionRecord dimensionRecord = (DimensionRecord) record;
-                return dimensionRecord.getIdLogic();
+                return dimensionRecord.getCode();
             }
         });
         typeField.setShowHover(true);
@@ -524,7 +524,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
     @Override
     public DimensionComponentDto getDsdDimension() {
         // Id
-        dimensionComponentDto.setIdLogic(idLogic.getVisible() ? idLogic.getValueAsString() : null);
+        dimensionComponentDto.setCode(idLogic.getVisible() ? idLogic.getValueAsString() : null);
 
         // Type
         dimensionComponentDto.setTypeDimensionComponent(TypeDimensionComponent.valueOf(typeItem.getValueAsString()));
@@ -608,7 +608,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
     private void setDimensionViewMode(DimensionComponentDto dimensionComponentDto) {
         this.dimensionComponentDto = dimensionComponentDto;
         // Id
-        staticIdLogic.setValue(dimensionComponentDto.getIdLogic());
+        staticIdLogic.setValue(dimensionComponentDto.getCode());
         // Type
         String value = (dimensionComponentDto.getTypeDimensionComponent() == null) ? null : MetamacSrmWeb.getCoreMessages().getString(
                 MetamacSrmWeb.getCoreMessages().typeDimensionComponent() + dimensionComponentDto.getTypeDimensionComponent().toString());
@@ -666,8 +666,8 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
     private void setDimensionEditionMode(DimensionComponentDto dimensionComponentDto) {
         this.dimensionComponentDto = dimensionComponentDto;
         // Id
-        idLogic.setValue(dimensionComponentDto.getIdLogic());
-        staticIdLogicEdit.setValue(dimensionComponentDto.getIdLogic());
+        idLogic.setValue(dimensionComponentDto.getCode());
+        staticIdLogicEdit.setValue(dimensionComponentDto.getCode());
         // Type
         typeItem.setValue((dimensionComponentDto.getTypeDimensionComponent() == null) ? null : dimensionComponentDto.getTypeDimensionComponent().toString());
         String value = (dimensionComponentDto.getTypeDimensionComponent() == null) ? null : MetamacSrmWeb.getCoreMessages().getString(
@@ -787,7 +787,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
             setDimensionEditionMode(dimensionSelected);
             mainFormLayout.setEditionMode();
         } else {
-            mainFormLayout.setTitleLabelContents(dimensionSelected.getIdLogic());
+            mainFormLayout.setTitleLabelContents(dimensionSelected.getCode());
             deleteToolStripButton.show();
             setDimension(dimensionSelected);
             mainFormLayout.setViewMode();

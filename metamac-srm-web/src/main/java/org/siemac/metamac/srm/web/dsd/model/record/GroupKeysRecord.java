@@ -10,7 +10,7 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
 public class GroupKeysRecord extends ListGridRecord {
 
     public static final String IDENTIFIER     = "identifier";
-    public static final String ID_LOGIC       = "id_logic";
+    public static final String CODE           = "gr-code";
     public static final String DIMENSIONS     = "dimensions";
     public static final String DESCRIPTOR_DTO = "descriptor_dto";
 
@@ -19,7 +19,7 @@ public class GroupKeysRecord extends ListGridRecord {
 
     public GroupKeysRecord(Long id, String idLogic, List<ComponentDto> dimensions, DescriptorDto descriptorDto) {
         setIdentifier(id);
-        setIdLogic(idLogic);
+        setCode(idLogic);
         setDimensions(dimensions);
         setDescriptorDto(descriptorDto);
     }
@@ -28,8 +28,8 @@ public class GroupKeysRecord extends ListGridRecord {
         setAttribute(IDENTIFIER, value);
     }
 
-    public void setIdLogic(String value) {
-        setAttribute(ID_LOGIC, value);
+    public void setCode(String value) {
+        setAttribute(CODE, value);
     }
 
     public void setDimensions(List<ComponentDto> value) {
@@ -44,8 +44,8 @@ public class GroupKeysRecord extends ListGridRecord {
         return getAttributeAsLong(IDENTIFIER);
     }
 
-    public String getIdLogic() {
-        return getAttributeAsString(ID_LOGIC);
+    public String getCode() {
+        return getAttributeAsString(CODE);
     }
 
     public DescriptorDto getDescriptorDto() {
