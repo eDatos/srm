@@ -1,8 +1,5 @@
 package org.siemac.metamac.srm.core.facade.serviceimpl;
 
-import static org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder.criteriaFor;
-import static org.siemac.metamac.srm.core.structure.domain.DataStructureDefinitionProperties.urn;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
