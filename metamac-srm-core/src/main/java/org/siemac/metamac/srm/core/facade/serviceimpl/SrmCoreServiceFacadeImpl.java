@@ -29,6 +29,7 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.core.common.ws.ServicesResolver;
+import org.siemac.metamac.domain.concept.dto.ConceptSchemeDto;
 import org.siemac.metamac.domain.srm.dto.ComponentDto;
 import org.siemac.metamac.domain.srm.dto.ComponentListDto;
 import org.siemac.metamac.domain.srm.dto.DataAttributeDto;
@@ -45,6 +46,7 @@ import org.siemac.metamac.srm.core.base.domain.Component;
 import org.siemac.metamac.srm.core.base.domain.ComponentList;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
+import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersion;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.core.mapper.Do2DtoMapper;
 import org.siemac.metamac.srm.core.mapper.Dto2DoMapper;
@@ -508,6 +510,21 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public List<ExternalItemDto> findConcepts(ServiceContext ctx, String uriConceptScheme) {
         return ServicesResolver.retrieveConceptScheme(uriConceptScheme);
+    }
+
+    @Override
+    public ConceptSchemeDto createConceptScheme(ServiceContext ctx, ConceptSchemeDto conceptSchemeDto) throws MetamacException {
+        // Security TODO
+        
+        // Transform
+        ConceptSchemeVersion conceptSchemeVersion = dto2DoMapper.conceptSchemeDtoToDo(ctx, conceptSchemeDto);
+
+        // Create
+        ConceptSchemeVersion conceptSchemeVersionCreated = getConceptsService().createConceptScheme(ctx, conceptSchemeVersion);
+
+        // Transform to Dto
+        conceptSchemeDto = do2DtoMapper.conceptSchemeDoToDto(conceptSchemeVersionCreated);
+        return conceptSchemeDto;
     }
 
     @Override

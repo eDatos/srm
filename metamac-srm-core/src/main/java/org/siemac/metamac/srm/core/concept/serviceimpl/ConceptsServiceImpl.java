@@ -196,11 +196,11 @@ public class ConceptsServiceImpl extends ConceptsServiceImplBase {
         }
     }
 
-    public ItemSchemeRepository getItemSchemeRepository() {
+    private ItemSchemeRepository getItemSchemeRepository() {
         return itemSchemeRepository;
     }
 
-    public ItemSchemeVersionRepository getItemSchemeVersionRepository() {
+    private ItemSchemeVersionRepository getItemSchemeVersionRepository() {
         return itemSchemeVersionRepository;
     }
 

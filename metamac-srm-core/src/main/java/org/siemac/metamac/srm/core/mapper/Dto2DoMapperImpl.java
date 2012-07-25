@@ -5,9 +5,9 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.commons.lang.StringUtils;
 import org.dozer.MappingException;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
+import org.joda.time.DateTime;
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.dto.LocalisedStringDto;
@@ -23,8 +23,8 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.serviceimpl.utils.ValidationUtils;
 import org.siemac.metamac.core.common.util.CoreCommonUtil;
-import org.siemac.metamac.core.common.util.GeneratorUrnUtils;
 import org.siemac.metamac.core.common.util.OptimisticLockingUtils;
+import org.siemac.metamac.domain.concept.dto.ConceptSchemeDto;
 import org.siemac.metamac.domain.srm.dto.AnnotableArtefactDto;
 import org.siemac.metamac.domain.srm.dto.AnnotationDto;
 import org.siemac.metamac.domain.srm.dto.ComponentDto;
@@ -35,6 +35,7 @@ import org.siemac.metamac.domain.srm.dto.DescriptorDto;
 import org.siemac.metamac.domain.srm.dto.DimensionComponentDto;
 import org.siemac.metamac.domain.srm.dto.FacetDto;
 import org.siemac.metamac.domain.srm.dto.IdentifiableArtefactDto;
+import org.siemac.metamac.domain.srm.dto.ItemSchemeDto;
 import org.siemac.metamac.domain.srm.dto.MaintainableArtefactDto;
 import org.siemac.metamac.domain.srm.dto.NameableArtefactDto;
 import org.siemac.metamac.domain.srm.dto.RelationshipDto;
@@ -53,6 +54,10 @@ import org.siemac.metamac.srm.core.base.domain.EnumeratedRepresentation;
 import org.siemac.metamac.srm.core.base.domain.Facet;
 import org.siemac.metamac.srm.core.base.domain.FacetRepository;
 import org.siemac.metamac.srm.core.base.domain.IdentifiableArtefact;
+import org.siemac.metamac.srm.core.base.domain.ItemScheme;
+import org.siemac.metamac.srm.core.base.domain.ItemSchemeRepository;
+import org.siemac.metamac.srm.core.base.domain.ItemSchemeVersion;
+import org.siemac.metamac.srm.core.base.domain.ItemSchemeVersionRepository;
 import org.siemac.metamac.srm.core.base.domain.MaintainableArtefact;
 import org.siemac.metamac.srm.core.base.domain.NameableArtefact;
 import org.siemac.metamac.srm.core.base.domain.Representation;
@@ -62,9 +67,11 @@ import org.siemac.metamac.srm.core.base.exception.AnnotationNotFoundException;
 import org.siemac.metamac.srm.core.base.exception.ComponentListNotFoundException;
 import org.siemac.metamac.srm.core.base.exception.ComponentNotFoundException;
 import org.siemac.metamac.srm.core.base.exception.FacetNotFoundException;
+import org.siemac.metamac.srm.core.base.exception.ItemSchemeVersionNotFoundException;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParametersInternal;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
+import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersion;
 import org.siemac.metamac.srm.core.service.utils.SdmxToolsServer;
 import org.siemac.metamac.srm.core.structure.domain.AttributeDescriptor;
 import org.siemac.metamac.srm.core.structure.domain.AttributeRelationship;
@@ -117,6 +124,9 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
     @Autowired
     private FacetRepository                   facetRepository;
 
+    @Autowired
+    private ItemSchemeVersionRepository       itemSchemeVersionRepository;    
+    
     /**************************************************************************
      * GETTERS
      **************************************************************************/
@@ -144,18 +154,21 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         return attributeRelationshipRepository;
     }
 
-    public RepresentationRepository getRepresentationRepository() {
+    protected RepresentationRepository getRepresentationRepository() {
         return representationRepository;
     }
 
-    public ExternalItemRepository getExternalItemRepository() {
+    protected ExternalItemRepository getExternalItemRepository() {
         return externalItemRepository;
     }
 
-    public FacetRepository getFacetRepository() {
+    protected FacetRepository getFacetRepository() {
         return facetRepository;
     }
 
+    protected ItemSchemeVersionRepository getItemSchemeVersionRepository() {
+        return itemSchemeVersionRepository;
+    }
 
     /**************************************************************************
      * COMPONENTS
@@ -1169,5 +1182,52 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
 
         return result;
     }
+    
+
+    // ------------------------------------------------------------
+    // CONCEPT SCHEME
+    // ------------------------------------------------------------
+    @Override
+    public ConceptSchemeVersion conceptSchemeDtoToDo(ServiceContext ctx, ConceptSchemeDto source) throws MetamacException {
+
+        if (source == null) {
+            return null;
+        }
+
+        // If exists, retrieves existing entity. Otherwise, creates new entity
+        ConceptSchemeVersion target = null;
+        if (source.getId() == null) {
+            target = new ConceptSchemeVersion();
+            target.setItemScheme(new ItemScheme());
+            target.setMaintainableArtefact(new MaintainableArtefact());
+        } else {
+            try {
+                target = (ConceptSchemeVersion) getItemSchemeVersionRepository().findById(source.getId());
+            } catch (ItemSchemeVersionNotFoundException e) {
+                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.CONCEPT_SCHEME_NOT_FOUND).withMessageParameters(source.getCode())
+                        .withLoggedLevel(ExceptionLevelEnum.ERROR).build();
+            }
+            OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersion());
+        }
+
+        // Optimistic locking: Update "update date" attribute to force update to root entity, to increase attribute "version"
+        target.setUpdateDate(new DateTime());
+
+        // Attributes modifiables
+        target.setType(source.getType());
+        target.setRelatedOperation(externalItemDtoToExternalItem(ctx, source.getRelatedOperation(), ServiceExceptionParameters.CONCEPT_SCHEME_RELATED_OPERATION));
+
+        return target;
+    }
+    
+    private void itemSchemeDtoToDo(ServiceContext ctx, ItemSchemeDto source, ItemSchemeVersion target) throws MetamacException {
+        // Required target entity because this class is abstract
+        if (target == null) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.PARAMETER_REQUIRED).withMessageParameters(ServiceExceptionParameters.ITEM_SCHEME).build();
+        }
+        target.setIsPartial(source.getIsPartial());
+//        return maintainableArtefactToEntity(ctx, source, target, older); // TODO
+    }
+
 
 }

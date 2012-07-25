@@ -149,6 +149,7 @@ Application Base {
 			Repository ItemSchemeVersionRepository {
 				save;
 				delete;
+				findById;
 				findByCondition(PagingParameter pagingParameter);
 			}
 		}

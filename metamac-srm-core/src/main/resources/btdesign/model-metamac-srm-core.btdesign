@@ -206,7 +206,7 @@ Application SrmCore {
        		List<@ExternalItemDto> findConcepts(String uriConceptScheme);
        		
 	   		
-//	   		@ConceptSchemeDto createConceptScheme(@ConceptSchemeDto conceptSchemeDto) throws MetamacException;
+	   		@ConceptSchemeDto createConceptScheme(@ConceptSchemeDto conceptSchemeDto) throws MetamacException;
 //            @ConceptSchemeDto updateConceptScheme(@ConceptSchemeDto conceptSchemeDto) throws MetamacException;
             deleteConceptScheme(String urn) throws MetamacException;
 //            List<@ConceptSchemeDto> findAllConceptSchemes  throws MetamacException;

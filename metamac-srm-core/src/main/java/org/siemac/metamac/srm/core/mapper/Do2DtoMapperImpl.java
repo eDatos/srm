@@ -8,6 +8,7 @@ import org.siemac.metamac.core.common.dto.LocalisedStringDto;
 import org.siemac.metamac.core.common.ent.domain.ExternalItem;
 import org.siemac.metamac.core.common.ent.domain.InternationalString;
 import org.siemac.metamac.core.common.ent.domain.LocalisedString;
+import org.siemac.metamac.domain.concept.dto.ConceptSchemeDto;
 import org.siemac.metamac.domain.srm.dto.AnnotableArtefactDto;
 import org.siemac.metamac.domain.srm.dto.AnnotationDto;
 import org.siemac.metamac.domain.srm.dto.ComponentDto;
@@ -40,6 +41,7 @@ import org.siemac.metamac.srm.core.base.domain.NameableArtefact;
 import org.siemac.metamac.srm.core.base.domain.Representation;
 import org.siemac.metamac.srm.core.base.domain.TextFormatRepresentation;
 import org.siemac.metamac.srm.core.base.serviceapi.BaseService;
+import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersion;
 import org.siemac.metamac.srm.core.structure.domain.AttributeDescriptor;
 import org.siemac.metamac.srm.core.structure.domain.AttributeRelationship;
 import org.siemac.metamac.srm.core.structure.domain.DataAttribute;
@@ -486,6 +488,12 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
         result.setTitle(internationalStringToDto(typeDozerCopyMode, externalItem.getTitle()));
 
         return result;
+    }
+
+    @Override
+    public ConceptSchemeDto conceptSchemeDoToDto(ConceptSchemeVersion conceptSchemeVersion) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }
