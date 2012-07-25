@@ -48,6 +48,8 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
             switch (propertyNameCriteria) {
                 case CODE:
                     return DataStructureDefinitionProperties.code();
+                case NAME:
+                    return DataStructureDefinitionProperties.name().texts().label();
 
                 default:
                     throw new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, order.getPropertyName());
