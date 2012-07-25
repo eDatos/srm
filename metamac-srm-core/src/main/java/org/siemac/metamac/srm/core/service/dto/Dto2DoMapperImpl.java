@@ -983,15 +983,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         }
 
         // Parent
-        result = maintainableArtefactToEntity(ctx, source, result, result);
-        
-        // PosProcessed
-        // Populate URN
-        if (StringUtils.isNotEmpty(source.getCode()) && source.getCode().equals(result.getCode())) {
-            result.setUrn(GeneratorUrnUtils.generateSdmxDatastructureUrn(result.getMaintainer().getCode(), result.getCode(), result.getVersionLogic()));
-        }
-        
-        return result;
+        return maintainableArtefactToEntity(ctx, source, result, result);
     }
 
     private Representation representationDtoToRepresentation(ServiceContext ctx, RepresentationDto source, Representation representationOlder, String metadataEnumTitle)

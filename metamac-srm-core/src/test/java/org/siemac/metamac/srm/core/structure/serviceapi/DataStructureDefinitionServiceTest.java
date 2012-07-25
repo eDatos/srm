@@ -27,6 +27,7 @@ import org.siemac.metamac.srm.core.base.serviceapi.utils.BaseDoMocks;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.structure.domain.DataStructureDefinition;
 import org.siemac.metamac.srm.core.structure.domain.MeasureDimension;
+import org.siemac.metamac.srm.core.structure.serviceimpl.DataStructureDefinitionServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -35,7 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/srm/applicationContext-test.xml"})
-@TransactionConfiguration(transactionManager="txManagerCore", defaultRollback=true)
+@TransactionConfiguration(transactionManager = "txManagerCore", defaultRollback = false)
 @Transactional
 public class DataStructureDefinitionServiceTest extends SrmBaseTest implements DataStructureDefinitionServiceTestBase {
 
@@ -43,21 +44,22 @@ public class DataStructureDefinitionServiceTest extends SrmBaseTest implements D
     protected DataStructureDefinitionService dataStructureDefinitionService;
 
     @Autowired
-    protected BaseService                baseService;
+    protected BaseService                    baseService;
 
-    private final ServiceContext             serviceContext               = new ServiceContext("system", "123456", "junit");
+    private final ServiceContext             serviceContext = new ServiceContext("system", "123456", "junit");
+
+    private final String                     DSD_01_URN     = "uurn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=AgencyMock:YMw3luBafPtzLHctMfp6Cm4S40EaCXSoV0CdL3QcVmYZgYdR1o(01.000)";
 
     protected ServiceContext getServiceContext() {
         return serviceContext;
     }
-
 
     /**************************************************************************
      * DSD Tests
      **************************************************************************/
     @Test
     public void testSaveDsd() throws Exception {
-        
+
         DataStructureDefinition dataStructureDefinition = dataStructureDefinitionService.saveDsd(getServiceContext(), createDsd());
         assertNotNull(dataStructureDefinition);
     }
@@ -78,11 +80,12 @@ public class DataStructureDefinitionServiceTest extends SrmBaseTest implements D
 
         assertTrue(dataStructureDefinitionPagedList.getValues().isEmpty());
     }
-    
-    @Override
+
+    @Test
     public void testRetrieveDataStructureDefinitionByUrn() throws Exception {
-        // TODO Auto-generated method stub
-        
+        DataStructureDefinition dataStructureDefinition = dataStructureDefinitionService.retrieveDataStructureDefinitionByUrn(getServiceContext(), DSD_01_URN);
+        assertNotNull(dataStructureDefinition);
+        assertTrue(DSD_01_URN.equals(dataStructureDefinition.getUrn()));
     }
 
     @Test
@@ -116,15 +119,14 @@ public class DataStructureDefinitionServiceTest extends SrmBaseTest implements D
 
         assertNotNull(dataStructureDefinition);
     }
-    
+
     @Test
     public void testSaveDescriptorForDsd() throws Exception {
-        
+
         testSaveDsd();
         List<DataStructureDefinition> dsds = dataStructureDefinitionService.findAllDsds(getServiceContext());
         assertTrue(dsds.size() > 0);
-        
-        
+
         ComponentList componentList = BaseDoMocks.createDimensionDescriptor();
         dataStructureDefinitionService.saveDescriptorForDsd(getServiceContext(), dsds.get(0), componentList);
     }
@@ -132,25 +134,24 @@ public class DataStructureDefinitionServiceTest extends SrmBaseTest implements D
     @Override
     public void testDeleteDescriptorForDsd() throws Exception {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Test
     public void testSaveComponentForDsd() throws Exception {
         testSaveDescriptorForDsd();
         List<DataStructureDefinition> dsds = dataStructureDefinitionService.findAllDsds(getServiceContext());
-        
+
         MeasureDimension measureDim = BaseDoMocks.createMeasureDimension();
         dataStructureDefinitionService.saveComponentForDsd(getServiceContext(), dsds.get(0), measureDim, TypeComponentList.DIMENSION_DESCRIPTOR);
-        
+
         MeasureDimension measureDimFail = BaseDoMocks.createMeasureDimension();
         measureDimFail.setUri(null); // This is an error
-        
+
         try {
             dataStructureDefinitionService.saveComponentForDsd(getServiceContext(), dsds.get(0), measureDimFail, TypeComponentList.DIMENSION_DESCRIPTOR);
             fail("");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             // TODO: handle exception
         }
     }

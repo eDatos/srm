@@ -15,7 +15,7 @@ import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.ExceptionLevelEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
+import org.siemac.metamac.core.common.util.GeneratorUrnUtils;
 import org.siemac.metamac.domain.srm.enume.domain.TypeComponentList;
 import org.siemac.metamac.srm.core.base.domain.Component;
 import org.siemac.metamac.srm.core.base.domain.ComponentList;
@@ -45,6 +45,11 @@ public class DataStructureDefinitionServiceImpl extends DataStructureDefinitionS
         // Validation
         DataStructureInvocationValidator.checkSaveDataStructureDefinition(dataStructureDefinition, null); // Parameters and metadata check
 
+        // Populate URN
+        if (StringUtils.isNotEmpty(dataStructureDefinition.getCode())) {
+            dataStructureDefinition.setUrn(GeneratorUrnUtils.generateSdmxDatastructureUrn(dataStructureDefinition.getMaintainer().getCode(), dataStructureDefinition.getCode(), dataStructureDefinition.getVersionLogic()));
+        }
+        
         // Save DataStructureDefinition
         return getDataStructureDefinitionRepository().save(dataStructureDefinition);
     }
