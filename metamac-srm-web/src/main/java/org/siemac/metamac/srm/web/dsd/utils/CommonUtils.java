@@ -136,7 +136,7 @@ public class CommonUtils {
         LinkedHashMap<String, String> valueMap = new LinkedHashMap<String, String>();
         valueMap.put(new String(), new String());
         for (DimensionComponentDto d : dimensionComponentDtos) {
-            valueMap.put(d.getId().toString(), d.getIdLogic());
+            valueMap.put(d.getId().toString(), d.getCode());
         }
         return valueMap;
     }
@@ -145,7 +145,7 @@ public class CommonUtils {
         LinkedHashMap<String, String> valueMap = new LinkedHashMap<String, String>();
         valueMap.put(new String(), new String());
         for (DescriptorDto descriptorDto : descriptorDtos) {
-            valueMap.put(descriptorDto.getId().toString(), descriptorDto.getIdLogic());
+            valueMap.put(descriptorDto.getId().toString(), descriptorDto.getCode());
         }
         return valueMap;
     }

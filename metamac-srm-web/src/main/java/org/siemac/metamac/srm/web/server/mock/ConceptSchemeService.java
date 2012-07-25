@@ -36,7 +36,7 @@ public class ConceptSchemeService {
 
     public static ConceptSchemeDto retriveConceptSchemeByIdLogic(String idLogic) throws MetamacException {
         for (ConceptSchemeDto scheme : conceptSchemeList) {
-            if (scheme.getIdLogic().equals(idLogic)) {
+            if (scheme.getCode().equals(idLogic)) {
                 return scheme;
             }
         }
@@ -122,7 +122,7 @@ public class ConceptSchemeService {
             conceptScheme.setVersionLogic("01.000");
             conceptScheme.setProcStatus(MaintainableArtefactProcStatusEnum.DRAFT);
             DecimalFormat nformat = new DecimalFormat("0000");
-            conceptScheme.setIdLogic("SCH" + nformat.format(i));
+            conceptScheme.setCode("SCH" + nformat.format(i));
 
             InternationalStringDto intStr = new InternationalStringDto();
             LocalisedStringDto locStr = new LocalisedStringDto();

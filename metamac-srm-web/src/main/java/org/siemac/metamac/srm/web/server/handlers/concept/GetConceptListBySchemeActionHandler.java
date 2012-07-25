@@ -32,7 +32,7 @@ public class GetConceptListBySchemeActionHandler extends SecurityActionHandler<G
 
         ConceptDto conceptDto = new ConceptDto();
         conceptDto.setId(1L);
-        conceptDto.setIdLogic("concept-0001");
+        conceptDto.setCode("concept-0001");
         conceptDto.setName(name);
 
         List<ConceptDto> conceptDtos = new ArrayList<ConceptDto>();

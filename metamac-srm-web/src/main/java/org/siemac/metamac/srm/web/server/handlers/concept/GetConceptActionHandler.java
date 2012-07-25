@@ -28,7 +28,7 @@ public class GetConceptActionHandler extends SecurityActionHandler<GetConceptAct
 
         ConceptDto conceptDto = new ConceptDto();
         conceptDto.setId(1L);
-        conceptDto.setIdLogic("concept-0001");
+        conceptDto.setCode("concept-0001");
         conceptDto.setName(name);
 
         return new GetConceptResult(conceptDto);

@@ -26,7 +26,7 @@ public class RecordUtils {
      * @return
      */
     public static DimensionRecord getDimensionRecord(DimensionComponentDto dimensionComponentDto) {
-        DimensionRecord dimensionRecord = new DimensionRecord(dimensionComponentDto.getId(), dimensionComponentDto.getIdLogic(), dimensionComponentDto.getCptIdRef() == null
+        DimensionRecord dimensionRecord = new DimensionRecord(dimensionComponentDto.getId(), dimensionComponentDto.getCode(), dimensionComponentDto.getCptIdRef() == null
                 ? null
                 : dimensionComponentDto.getCptIdRef().getCode(), MetamacSrmWeb.getCoreMessages().getString(
                 MetamacSrmWeb.getCoreMessages().typeDimensionComponent() + dimensionComponentDto.getTypeDimensionComponent().getName()), dimensionComponentDto);
@@ -40,7 +40,7 @@ public class RecordUtils {
      * @return
      */
     public static AttributeRecord getAttributeRecord(DataAttributeDto dataAttributeDto) {
-        AttributeRecord record = new AttributeRecord(dataAttributeDto.getId(), dataAttributeDto.getIdLogic(), MetamacSrmWeb.getCoreMessages().getString(
+        AttributeRecord record = new AttributeRecord(dataAttributeDto.getId(), dataAttributeDto.getCode(), MetamacSrmWeb.getCoreMessages().getString(
                 MetamacSrmWeb.getCoreMessages().usageStatus() + dataAttributeDto.getUsageStatus().getName()), dataAttributeDto.getCptIdRef() == null ? null : dataAttributeDto.getCptIdRef().getCode(),
                 dataAttributeDto);
         return record;
@@ -53,7 +53,7 @@ public class RecordUtils {
      * @return
      */
     public static GroupKeysRecord getGroupKeysRecord(DescriptorDto groupKeys) {
-        GroupKeysRecord record = new GroupKeysRecord(groupKeys.getId(), groupKeys.getIdLogic(), null, groupKeys);
+        GroupKeysRecord record = new GroupKeysRecord(groupKeys.getId(), groupKeys.getCode(), null, groupKeys);
         return record;
     }
 
@@ -76,7 +76,7 @@ public class RecordUtils {
      */
     public static InternationalAnnotationRecord getInternationalAnnotationRecord(AnnotationDto annotationDto) {
         InternationalAnnotationRecord record = new InternationalAnnotationRecord(annotationDto.getId().toString(), annotationDto.getId() + InternationalStringUtils.getCurrentLocale(),
-                annotationDto.getIdLogic(), annotationDto.getTitle(), annotationDto.getType(), annotationDto.getUrl(), InternationalStringUtils.getLocalisedString(annotationDto.getText()),
+                annotationDto.getCode(), annotationDto.getTitle(), annotationDto.getType(), annotationDto.getUrl(), InternationalStringUtils.getLocalisedString(annotationDto.getText()),
                 InternationalStringUtils.getCurrentLocale(), ((ImageResource) GlobalResources.RESOURCE.getResource(InternationalStringUtils.getCurrentLocale())).getURL(), annotationDto);
         return record;
     }
@@ -89,8 +89,8 @@ public class RecordUtils {
      * @return
      */
     public static InternationalAnnotationRecord getInternationalAnnotationRecord(AnnotationDto annotationDto, String locale) {
-        InternationalAnnotationRecord record = new InternationalAnnotationRecord(annotationDto.getId().toString(), annotationDto.getId() + locale, annotationDto.getIdLogic(),
-                annotationDto.getTitle(), annotationDto.getType(), annotationDto.getUrl(), InternationalStringUtils.getLocalisedString(annotationDto.getText(), locale), locale,
+        InternationalAnnotationRecord record = new InternationalAnnotationRecord(annotationDto.getId().toString(), annotationDto.getId() + locale, annotationDto.getCode(), annotationDto.getTitle(),
+                annotationDto.getType(), annotationDto.getUrl(), InternationalStringUtils.getLocalisedString(annotationDto.getText(), locale), locale,
                 ((ImageResource) GlobalResources.RESOURCE.getResource(locale)).getURL(), annotationDto);
         return record;
     }
@@ -102,7 +102,7 @@ public class RecordUtils {
      * @return
      */
     public static AnnotationRecord getAnnotationRecord(AnnotationDto annotationDto) {
-        AnnotationRecord record = new AnnotationRecord(annotationDto.getIdLogic(), annotationDto.getTitle(), annotationDto.getType(), annotationDto.getUrl(),
+        AnnotationRecord record = new AnnotationRecord(annotationDto.getCode(), annotationDto.getTitle(), annotationDto.getType(), annotationDto.getUrl(),
                 InternationalStringUtils.getLocalisedString(annotationDto.getText()), annotationDto);
         return record;
     }
@@ -114,8 +114,8 @@ public class RecordUtils {
      * @return
      */
     public static AnnotationRecord getAnnotationRecord(AnnotationDto annotationDto, String locale) {
-        AnnotationRecord record = new AnnotationRecord(annotationDto.getIdLogic(), annotationDto.getTitle(), annotationDto.getType(), annotationDto.getUrl(),
-                InternationalStringUtils.getLocalisedString(annotationDto.getText(), locale), annotationDto);
+        AnnotationRecord record = new AnnotationRecord(annotationDto.getCode(), annotationDto.getTitle(), annotationDto.getType(), annotationDto.getUrl(), InternationalStringUtils.getLocalisedString(
+                annotationDto.getText(), locale), annotationDto);
         return record;
     }
 
