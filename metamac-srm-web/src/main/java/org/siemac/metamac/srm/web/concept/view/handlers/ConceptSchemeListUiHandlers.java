@@ -8,7 +8,7 @@ import com.gwtplatform.mvp.client.UiHandlers;
 
 public interface ConceptSchemeListUiHandlers extends UiHandlers {
 
-    void goToConceptScheme(String idLogic);
+    void goToConceptScheme(String code);
 
     void createConceptScheme(ConceptSchemeDto conceptSchemeDto);
 
@@ -16,10 +16,4 @@ public interface ConceptSchemeListUiHandlers extends UiHandlers {
 
     void retrieveConceptSchemes(int firstResult, int maxResults);
 
-    /*
-     * void onResultSetFirstButtonClicked();
-     * void onResultSetPreviousButtonClicked();
-     * void onResultSetNextButtonClicked();
-     * void onResultSetLastButtonClicked();
-     */
 }

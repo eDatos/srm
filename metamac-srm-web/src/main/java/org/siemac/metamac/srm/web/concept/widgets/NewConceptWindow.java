@@ -26,7 +26,7 @@ public class NewConceptWindow extends CustomWindow {
         super(title);
         setAutoSize(true);
 
-        RequiredTextItem codeItem = new RequiredTextItem(ConceptDS.ID_LOGIC, getConstants().conceptIdLogic());
+        RequiredTextItem codeItem = new RequiredTextItem(ConceptDS.CODE, getConstants().conceptCode());
         codeItem.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());
         codeItem.setWidth(FORM_ITEM_CUSTOM_WIDTH);
 
@@ -49,7 +49,7 @@ public class NewConceptWindow extends CustomWindow {
 
     public ConceptDto getNewConceptDto() {
         ConceptDto conceptDto = new ConceptDto();
-        conceptDto.setIdLogic(form.getValueAsString(ConceptDS.ID_LOGIC));
+        conceptDto.setCode(form.getValueAsString(ConceptDS.CODE));
         conceptDto.setName(InternationalStringUtils.updateInternationalString(new InternationalStringDto(), form.getValueAsString(ConceptDS.NAME)));
         return conceptDto;
     }

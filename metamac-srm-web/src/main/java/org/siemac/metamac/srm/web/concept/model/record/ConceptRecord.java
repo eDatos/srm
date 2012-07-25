@@ -7,9 +7,9 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
 
 public class ConceptRecord extends ListGridRecord {
 
-    public ConceptRecord(Long id, String idLogic, String name, String description, ConceptDto conceptDto) {
+    public ConceptRecord(Long id, String code, String name, String description, ConceptDto conceptDto) {
         setId(id);
-        setIdLogic(idLogic);
+        setCode(code);
         setName(name);
         setDescription(description);
         setConceptDto(conceptDto);
@@ -27,8 +27,8 @@ public class ConceptRecord extends ListGridRecord {
         setAttribute(ConceptDS.DESCRIPTION, desc);
     }
 
-    public void setIdLogic(String idLogic) {
-        setAttribute(ConceptDS.ID_LOGIC, idLogic);
+    public void setCode(String code) {
+        setAttribute(ConceptDS.CODE, code);
     }
 
     public void setConceptDto(ConceptDto conceptDto) {
@@ -39,8 +39,8 @@ public class ConceptRecord extends ListGridRecord {
         return getAttributeAsLong(ConceptDS.ID);
     }
 
-    public String getIdLogic() {
-        return getAttribute(ConceptDS.ID_LOGIC);
+    public String getCode() {
+        return getAttribute(ConceptDS.CODE);
     }
 
     public String getName() {

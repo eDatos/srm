@@ -9,7 +9,7 @@ public class ConceptSchemeDS extends DataSource {
 
     // IDENTIFIERS
     public static final String ID                = "sch-id";
-    public static final String ID_LOGIC          = "sch-id-logic";
+    public static final String CODE              = "sch-code";
     public static final String URI               = "sch-uri";
     public static final String URN               = "sch-urn";
     public static final String VERSION           = "sch-version";
@@ -30,9 +30,9 @@ public class ConceptSchemeDS extends DataSource {
     public static String       DTO               = "sch-dto";
 
     public ConceptSchemeDS() {
-        DataSourceIntegerField idLogic = new DataSourceIntegerField(ID_LOGIC, MetamacSrmWeb.getConstants().conceptId());
-        idLogic.setPrimaryKey(true);
-        addField(idLogic);
+        DataSourceIntegerField code = new DataSourceIntegerField(CODE, MetamacSrmWeb.getConstants().conceptCode());
+        code.setPrimaryKey(true);
+        addField(code);
     }
 
 }

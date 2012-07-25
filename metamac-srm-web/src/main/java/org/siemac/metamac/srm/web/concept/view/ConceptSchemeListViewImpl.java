@@ -119,13 +119,13 @@ public class ConceptSchemeListViewImpl extends ViewImpl implements ConceptScheme
             @Override
             public void onRecordClick(RecordClickEvent event) {
                 if (event.getFieldNum() != 0) { // Clicking checkBox will be ignored
-                    String idLogic = event.getRecord().getAttribute(ConceptSchemeDS.ID_LOGIC);
-                    uiHandlers.goToConceptScheme(idLogic);
+                    String code = event.getRecord().getAttribute(ConceptSchemeDS.CODE);
+                    uiHandlers.goToConceptScheme(code);
                 }
             }
         });
 
-        ListGridField fieldCode = new ListGridField(ConceptSchemeDS.ID_LOGIC, getConstants().conceptSchemeIdLogic());
+        ListGridField fieldCode = new ListGridField(ConceptSchemeDS.CODE, getConstants().conceptSchemeCode());
         fieldCode.setAlign(Alignment.LEFT);
         ListGridField fieldName = new ListGridField(ConceptSchemeDS.NAME, getConstants().conceptSchemeName());
         ListGridField status = new ListGridField(ConceptSchemeDS.PROC_STATUS, getConstants().conceptSchemeProcStatus());

@@ -259,17 +259,17 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
                 // TODO conceptsListGrid.addData(org.siemac.metamac.srm.web.concept.utils.RecordUtils.getConceptSchemeRecord(conceptDto))
             }
         }
-
     }
+
     private void createViewForm() {
         // Identifiers Form
         identifiersForm = new GroupDynamicForm(getConstants().conceptSchemeIdentifiers());
-        ViewTextItem idLogic = new ViewTextItem(ConceptSchemeDS.ID_LOGIC, getConstants().conceptSchemeIdLogic());
-        ViewMultiLanguageTextItem title = new ViewMultiLanguageTextItem(ConceptSchemeDS.NAME, getConstants().conceptSchemeTitle());
+        ViewTextItem code = new ViewTextItem(ConceptSchemeDS.CODE, getConstants().conceptSchemeCode());
+        ViewMultiLanguageTextItem name = new ViewMultiLanguageTextItem(ConceptSchemeDS.NAME, getConstants().conceptSchemeName());
         ViewTextItem uri = new ViewTextItem(ConceptSchemeDS.URI, getConstants().conceptSchemeUri());
         ViewTextItem urn = new ViewTextItem(ConceptSchemeDS.URN, getConstants().conceptSchemeUrn());
         ViewTextItem version = new ViewTextItem(ConceptSchemeDS.VERSION, getConstants().conceptSchemeVersion());
-        identifiersForm.setFields(idLogic, title, uri, urn, version);
+        identifiersForm.setFields(code, name, uri, urn, version);
 
         // Content descriptors
         contentDescriptorsForm = new GroupDynamicForm(getConstants().conceptSchemeContentDescriptors());
@@ -305,13 +305,13 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
     private void createEditionForm() {
         // Identifiers
         identifiersEditionForm = new GroupDynamicForm(getConstants().conceptSchemeIdentifiers());
-        ViewTextItem idLogic = new ViewTextItem(ConceptSchemeDS.ID_LOGIC, getConstants().conceptSchemeIdLogic());
-        MultiLanguageTextItem title = new MultiLanguageTextItem(ConceptSchemeDS.NAME, getConstants().conceptSchemeTitle());
-        title.setRequired(true);
+        ViewTextItem code = new ViewTextItem(ConceptSchemeDS.CODE, getConstants().conceptSchemeCode());
+        MultiLanguageTextItem name = new MultiLanguageTextItem(ConceptSchemeDS.NAME, getConstants().conceptSchemeName());
+        name.setRequired(true);
         ViewTextItem uri = new ViewTextItem(ConceptSchemeDS.URI, getConstants().conceptSchemeUri());
         ViewTextItem urn = new ViewTextItem(ConceptSchemeDS.URN, getConstants().conceptSchemeUrn());
         ViewTextItem version = new ViewTextItem(ConceptSchemeDS.VERSION, getConstants().conceptSchemeVersion());
-        identifiersEditionForm.setFields(idLogic, title, uri, urn, version);
+        identifiersEditionForm.setFields(code, name, uri, urn, version);
 
         // Content descriptors
         contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().conceptSchemeContentDescriptors());
@@ -350,7 +350,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
 
     public void setConceptSchemeViewMode(ConceptSchemeDto conceptSchemeDto) {
         // Identifiers
-        identifiersForm.setValue(ConceptSchemeDS.ID_LOGIC, conceptSchemeDto.getIdLogic());
+        identifiersForm.setValue(ConceptSchemeDS.CODE, conceptSchemeDto.getCode());
         identifiersForm.setValue(ConceptSchemeDS.URI, conceptSchemeDto.getUri());
         identifiersForm.setValue(ConceptSchemeDS.URN, conceptSchemeDto.getUrn());
         identifiersForm.setValue(ConceptSchemeDS.VERSION, conceptSchemeDto.getVersionLogic());
@@ -374,7 +374,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
 
     public void setConceptSchemeEditionMode(ConceptSchemeDto conceptSchemeDto) {
         // Identifiers
-        identifiersEditionForm.setValue(ConceptSchemeDS.ID_LOGIC, conceptSchemeDto.getIdLogic());
+        identifiersEditionForm.setValue(ConceptSchemeDS.CODE, conceptSchemeDto.getCode());
         identifiersEditionForm.setValue(ConceptSchemeDS.URI, conceptSchemeDto.getUri());
         identifiersEditionForm.setValue(ConceptSchemeDS.URN, conceptSchemeDto.getUrn());
         identifiersEditionForm.setValue(ConceptSchemeDS.VERSION, conceptSchemeDto.getVersionLogic());
