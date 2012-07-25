@@ -13,9 +13,11 @@ import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.core.common.util.GeneratorUrnUtils;
 import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.base.domain.ComponentList;
+import org.siemac.metamac.srm.core.base.domain.EnumeratedRepresentation;
 import org.siemac.metamac.srm.core.base.domain.ItemScheme;
 import org.siemac.metamac.srm.core.base.domain.ItemSchemeVersion;
 import org.siemac.metamac.srm.core.base.domain.MaintainableArtefact;
+import org.siemac.metamac.srm.core.base.domain.Representation;
 import org.siemac.metamac.srm.core.structure.domain.Dimension;
 import org.siemac.metamac.srm.core.structure.domain.DimensionDescriptor;
 import org.siemac.metamac.srm.core.structure.domain.MeasureDescriptor;
@@ -89,6 +91,10 @@ public class BaseDoMocks {
     public static ExternalItem mockConceptExternalItem() {
         return new ExternalItem(CONCEPT_MOCK, URI_MOCK, mockConceptUrn(), TypeExternalArtefactsEnum.CONCEPT);
     }
+    
+    public static ExternalItem mockConceptSchemeExternalItem() {
+        return new ExternalItem(CONCEPT_SCHEME_MOCK, URI_MOCK, mockConceptSchemeUrn(), TypeExternalArtefactsEnum.CONCEPT_SCHEME);
+    }
 
     public static String mockAgencyUrn() {
         return GeneratorUrnUtils.generateSdmxAgencyUrn(AGENCY_MOCK, AGENCY_SCHEME_MOCK, VersionUtil.VERSION_INITIAL_VERSION, AGENCY_MOCK);
@@ -149,6 +155,11 @@ public class BaseDoMocks {
         measureDimension.setUri(RandomStringUtils.random(50, true, true));
         measureDimension.setCptIdRef(BaseDoMocks.mockConceptExternalItem());
         measureDimension.setOrderLogic(1);
+        
+        // Representation: ConceptScheme
+        Representation representation = new EnumeratedRepresentation();
+        ((EnumeratedRepresentation)representation).setEnumerated(BaseDoMocks.mockConceptSchemeExternalItem());
+        measureDimension.setLocalRepresentation(representation);
 
         // Some Auditory
         measureDimension.setCreatedBy("Junit");

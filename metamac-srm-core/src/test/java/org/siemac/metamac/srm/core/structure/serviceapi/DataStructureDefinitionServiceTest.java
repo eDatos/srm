@@ -67,10 +67,7 @@ public class DataStructureDefinitionServiceTest extends SrmBaseTest implements D
     @Test
     public void testDeleteDsd() throws Exception {
 
-        testSaveDsd();
-
-        List<DataStructureDefinition> dataStructureDefinitions = dataStructureDefinitionService.findAllDsds(getServiceContext());
-        DataStructureDefinition dataStructureDefinition = dataStructureDefinitions.get(dataStructureDefinitions.size() - 1);
+        DataStructureDefinition dataStructureDefinition = dataStructureDefinitionService.saveDsd(getServiceContext(), createDsd());
 
         dataStructureDefinitionService.deleteDsd(getServiceContext(), dataStructureDefinition);
 
@@ -91,7 +88,7 @@ public class DataStructureDefinitionServiceTest extends SrmBaseTest implements D
     @Test
     public void testFindDsdByCondition() throws Exception {
 
-        testSaveDsd();
+        DataStructureDefinition dataStructureDefinition = dataStructureDefinitionService.saveDsd(getServiceContext(), createDsd());
 
         List<ConditionalCriteria> conditions = criteriaFor(DataStructureDefinition.class).withProperty(serviceURL()).eq("www.prueba.url").build();
 
@@ -139,17 +136,19 @@ public class DataStructureDefinitionServiceTest extends SrmBaseTest implements D
 
     @Test
     public void testSaveComponentForDsd() throws Exception {
-        testSaveDescriptorForDsd();
-        List<DataStructureDefinition> dsds = dataStructureDefinitionService.findAllDsds(getServiceContext());
+        DataStructureDefinition dataStructureDefinition = dataStructureDefinitionService.saveDsd(getServiceContext(), createDsd());
 
+        ComponentList componentList = BaseDoMocks.createDimensionDescriptor();
+        dataStructureDefinitionService.saveDescriptorForDsd(getServiceContext(), dataStructureDefinition, componentList);
+        
         MeasureDimension measureDim = BaseDoMocks.createMeasureDimension();
-        dataStructureDefinitionService.saveComponentForDsd(getServiceContext(), dsds.get(0), measureDim, TypeComponentList.DIMENSION_DESCRIPTOR);
+        dataStructureDefinitionService.saveComponentForDsd(getServiceContext(), dataStructureDefinition, measureDim, TypeComponentList.DIMENSION_DESCRIPTOR);
 
         MeasureDimension measureDimFail = BaseDoMocks.createMeasureDimension();
         measureDimFail.setUri(null); // This is an error
 
         try {
-            dataStructureDefinitionService.saveComponentForDsd(getServiceContext(), dsds.get(0), measureDimFail, TypeComponentList.DIMENSION_DESCRIPTOR);
+            dataStructureDefinitionService.saveComponentForDsd(getServiceContext(), dataStructureDefinition, measureDimFail, TypeComponentList.DIMENSION_DESCRIPTOR);
             fail("");
         } catch (Exception e) {
             // TODO: handle exception
