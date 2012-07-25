@@ -60,7 +60,6 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
     private ToolStripPresenterWidget toolStripPresenterWidget;
 
     public static final int          MAX_RESULTS = 10;
-    private String                   conceptSchemeUrn;
 
     @TitleFunction
     public static String getTranslatedTitle() {
@@ -110,7 +109,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
         super.prepareFromRequest(request);
         String urn = PlaceRequestUtils.getConceptSchemeParamFromUrl(placeManager);
         if (urn != null) {
-            retrieveConceptScheme(conceptSchemeUrn);
+            retrieveConceptScheme(urn);
         }
     }
 
@@ -143,7 +142,6 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorSave()), MessageTypeEnum.ERROR);
             }
-
             @Override
             public void onWaitSuccess(GetConceptSchemeResult result) {
                 setConceptScheme(result.getConceptSchemeDto());
@@ -160,7 +158,6 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorSendingToPendingPublication()), MessageTypeEnum.ERROR);
             }
-
             @Override
             public void onWaitSuccess(SendConceptSchemeToPendingPublicationResult result) {
                 ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getMessageList(getMessages().conceptSchemeSentToPendingPublication()), MessageTypeEnum.SUCCESS);
@@ -177,7 +174,6 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorPublishingExternally()), MessageTypeEnum.ERROR);
             }
-
             @Override
             public void onWaitSuccess(PublishConceptSchemeExternallyResult result) {
                 ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getMessageList(getMessages().conceptSchemePublishedExternally()), MessageTypeEnum.SUCCESS);
@@ -194,7 +190,6 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorPublishingInternally()), MessageTypeEnum.ERROR);
             }
-
             @Override
             public void onWaitSuccess(PublishConceptSchemeInternallyResult result) {
                 ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getMessageList(getMessages().conceptSchemePublishedInternally()), MessageTypeEnum.SUCCESS);
@@ -211,7 +206,6 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorRejecting()), MessageTypeEnum.ERROR);
             }
-
             @Override
             public void onWaitSuccess(RejectConceptSchemeResult result) {
                 ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getMessageList(getMessages().conceptSchemeRejected()), MessageTypeEnum.SUCCESS);
@@ -228,7 +222,6 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorVersioning()), MessageTypeEnum.ERROR);
             }
-
             @Override
             public void onWaitSuccess(VersionConceptSchemeResult result) {
                 ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getMessageList(getMessages().conceptSchemeVersioned()), MessageTypeEnum.SUCCESS);
@@ -261,7 +254,6 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorRetrievingConceptList()), MessageTypeEnum.ERROR);
             }
-
             @Override
             public void onWaitSuccess(GetConceptListBySchemeResult result) {
                 getView().setConceptList(result.getConceptDto());

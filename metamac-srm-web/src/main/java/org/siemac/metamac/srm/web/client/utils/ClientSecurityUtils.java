@@ -2,6 +2,10 @@ package org.siemac.metamac.srm.web.client.utils;
 
 public class ClientSecurityUtils {
 
+    // DSDs
+
+    // Concepts
+
     public static boolean canCreateConceptScheme() {
         return true;
     }
@@ -27,6 +31,14 @@ public class ClientSecurityUtils {
     }
 
     public static boolean canVersioningConceptScheme() {
+        return true;
+    }
+
+    public static boolean canCreateConcept() {
+        return true;
+    }
+
+    public static boolean canEditConcept() {
         return true;
     }
 

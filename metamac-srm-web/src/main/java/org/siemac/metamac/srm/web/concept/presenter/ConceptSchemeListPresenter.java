@@ -154,9 +154,9 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
     }
 
     @Override
-    public void goToConceptScheme(String idLogic) {
-        if (idLogic != null) {
-            placeManager.revealRelativePlace(new PlaceRequest(NameTokens.conceptSchemePage).with(PlaceRequestParams.conceptSchemeParam, idLogic));
+    public void goToConceptScheme(String code) {
+        if (code != null) {
+            placeManager.revealRelativePlace(new PlaceRequest(NameTokens.conceptSchemePage).with(PlaceRequestParams.conceptSchemeParam, code));
         }
     }
 
