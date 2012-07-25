@@ -38,6 +38,7 @@
     <inherits name="org.siemac.metamac.Serviceapi" />
     <inherits name="org.siemac.metamac.web.common.MetamacWebCommon" />
     <inherits name="org.siemac.metamac.SsoClient" />
+    <inherits name="org.siemac.metamac.srm.core.SrmCore" />
 
     <!-- Specify the app entry point class. -->
     <entry-point class='org.siemac.metamac.srm.web.client.MetamacSrmWeb' />
