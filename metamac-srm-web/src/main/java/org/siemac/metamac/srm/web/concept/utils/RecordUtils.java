@@ -10,13 +10,13 @@ import org.siemac.metamac.srm.web.concept.model.record.ConceptSchemeRecord;
 public class RecordUtils {
 
     public static ConceptSchemeRecord getConceptSchemeRecord(ConceptSchemeDto conceptSchemeDto) {
-        ConceptSchemeRecord record = new ConceptSchemeRecord(conceptSchemeDto.getId(), conceptSchemeDto.getIdLogic(), getLocalisedString(conceptSchemeDto.getName()),
+        ConceptSchemeRecord record = new ConceptSchemeRecord(conceptSchemeDto.getId(), conceptSchemeDto.getCode(), getLocalisedString(conceptSchemeDto.getName()),
                 getLocalisedString(conceptSchemeDto.getDescription()), CommonUtils.getConceptSchemeProcStatus(conceptSchemeDto), conceptSchemeDto);
         return record;
     }
 
     public static ConceptRecord getConceptSchemeRecord(ConceptDto conceptDto) {
-        ConceptRecord record = new ConceptRecord(conceptDto.getId(), conceptDto.getIdLogic(), getLocalisedString(conceptDto.getName()), getLocalisedString(conceptDto.getDescription()), conceptDto);
+        ConceptRecord record = new ConceptRecord(conceptDto.getId(), conceptDto.getCode(), getLocalisedString(conceptDto.getName()), getLocalisedString(conceptDto.getDescription()), conceptDto);
         return record;
     }
 
