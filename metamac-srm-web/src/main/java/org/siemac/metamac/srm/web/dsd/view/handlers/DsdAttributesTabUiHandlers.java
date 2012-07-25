@@ -8,7 +8,7 @@ import com.gwtplatform.mvp.client.UiHandlers;
 
 public interface DsdAttributesTabUiHandlers extends UiHandlers {
 
-    void retrieveDsd(Long id);
+    void retrieveDsd(String urn);
     void saveAttribute(DataAttributeDto dataAttributeDto);
     void deleteAttributes(List<DataAttributeDto> dataAttributeDtos);
 

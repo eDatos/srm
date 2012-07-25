@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.web.client.presenter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
@@ -12,6 +13,7 @@ import org.siemac.metamac.srm.web.client.view.handlers.StructuralResourcesUiHand
 import org.siemac.metamac.srm.web.client.widgets.presenter.ToolStripPresenterWidget;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdListAction;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdListResult;
+import org.siemac.metamac.web.common.client.utils.UrnUtils;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
 import com.google.gwt.event.shared.EventBus;
@@ -93,7 +95,7 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
             @Override
             public void onRecordClick(RecordClickEvent event) {
                 DsdRecord record = (DsdRecord) event.getRecord();
-                goToDsd(record.getIdentifier());
+                goToDsd(record.getDsd().getUrn());
             }
         }));
     }
@@ -151,11 +153,11 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
      **************************************************************************/
 
     @Override
-    public void goToDsd(Long id) {
-        if (id != null) {
+    public void goToDsd(String urn) {
+        if (!StringUtils.isBlank(urn)) {
             PlaceRequest structuralResourcesPlace = new PlaceRequest(NameTokens.structuralResourcesPage);
             PlaceRequest dsdListPlace = new PlaceRequest(NameTokens.dsdListPage);
-            PlaceRequest dsdPlace = new PlaceRequest(NameTokens.dsdPage).with(PlaceRequestParams.dsdParam, id.toString());
+            PlaceRequest dsdPlace = new PlaceRequest(NameTokens.dsdPage).with(PlaceRequestParams.dsdParam, UrnUtils.removePrefix(urn));
             List<PlaceRequest> placeRequests = new ArrayList<PlaceRequest>();
             placeRequests.add(structuralResourcesPlace);
             placeRequests.add(dsdListPlace);

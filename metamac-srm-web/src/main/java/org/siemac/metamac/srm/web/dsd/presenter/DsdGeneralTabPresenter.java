@@ -1,5 +1,7 @@
 package org.siemac.metamac.srm.web.dsd.presenter;
 
+import org.siemac.metamac.core.common.constants.shared.UrnConstants;
+import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
@@ -17,6 +19,7 @@ import org.siemac.metamac.srm.web.shared.dsd.SaveDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.SaveDsdResult;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
+import org.siemac.metamac.web.common.client.utils.UrnUtils;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
 import com.google.gwt.event.shared.EventBus;
@@ -45,7 +48,6 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
     private final DispatchAsync        dispatcher;
     private final PlaceManager         placeManager;
 
-    private Long                       idDsd;
     private DataStructureDefinitionDto dsd;
 
     @ProxyCodeSplit
@@ -84,15 +86,14 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
     @Override
     public void prepareFromRequest(PlaceRequest request) {
         super.prepareFromRequest(request);
-        String id = PlaceRequestUtils.getDsdParamFromUrl(placeManager);
-        if (id != null) {
-            if (idDsd == null || (idDsd != null && !idDsd.equals(Long.valueOf(id)))) {
-                idDsd = Long.valueOf(id);
-                retrieveDsd(idDsd);
+        String dsdIdentifier = PlaceRequestUtils.getDsdParamFromUrl(placeManager);// DSD identifier is the URN without the prefix
+        if (!StringUtils.isBlank(dsdIdentifier)) {
+            // Load DSD completely if it hasn't been loaded previously
+            if (dsd == null || !dsdIdentifier.equals(UrnUtils.removePrefix(dsd.getUrn()))) {
+                retrieveDsd(UrnUtils.generateUrn(UrnConstants.URN_SDMX_CLASS_DATASTRUCTURE_PREFIX, dsdIdentifier));
             }
         }
     }
-
     @Override
     protected void onReveal() {
         super.onReveal();
@@ -107,7 +108,6 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
     @ProxyEvent
     @Override
     public void onSelectDsdAndDescriptors(SelectDsdAndDescriptorsEvent event) {
-        idDsd = event.getDataStructureDefinitionDto().getId();
         dsd = event.getDataStructureDefinitionDto();
         getView().setDsd(dsd);
     }
@@ -115,7 +115,6 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
     @ProxyEvent
     @Override
     public void onUpdateDsd(UpdateDsdEvent event) {
-        idDsd = event.getDataStructureDefinitionDto().getId();
         dsd = event.getDataStructureDefinitionDto();
         getView().setDsd(dsd);
     }
@@ -154,8 +153,8 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
     }
 
     @Override
-    public void retrieveDsd(Long id) {
-        dispatcher.execute(new GetDsdAndDescriptorsAction(id), new WaitingAsyncCallback<GetDsdAndDescriptorsResult>() {
+    public void retrieveDsd(String urn) {
+        dispatcher.execute(new GetDsdAndDescriptorsAction(urn), new WaitingAsyncCallback<GetDsdAndDescriptorsResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {

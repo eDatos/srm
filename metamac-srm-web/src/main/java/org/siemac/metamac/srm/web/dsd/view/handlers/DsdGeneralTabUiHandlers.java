@@ -6,7 +6,7 @@ import com.gwtplatform.mvp.client.UiHandlers;
 
 public interface DsdGeneralTabUiHandlers extends UiHandlers {
 
-    void retrieveDsd(Long id);
+    void retrieveDsd(String urn);
     void saveDsd(DataStructureDefinitionDto dataStructureDefinitionDto);
 
 }

@@ -13,7 +13,7 @@ import com.gwtplatform.dispatch.annotation.Out;
 public class GetDsdAndDescriptors {
 
     @In(1)
-    Long                       idDsd;
+    String                     dsdUrn;
 
     @Out(1)
     DataStructureDefinitionDto dsd;

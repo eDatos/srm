@@ -2,8 +2,11 @@ package org.siemac.metamac.srm.web.dsd.presenter;
 
 import java.util.List;
 
+import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
+import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.domain.srm.dto.ComponentDto;
+import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
 import org.siemac.metamac.domain.srm.dto.DescriptorDto;
 import org.siemac.metamac.domain.srm.enume.domain.TypeComponent;
 import org.siemac.metamac.domain.srm.enume.domain.TypeComponentList;
@@ -32,6 +35,7 @@ import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.events.UpdateConceptSchemesEvent;
 import org.siemac.metamac.web.common.client.events.UpdateConceptSchemesEvent.UpdateConceptSchemesHandler;
+import org.siemac.metamac.web.common.client.utils.UrnUtils;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
 import com.google.gwt.event.shared.EventBus;
@@ -62,16 +66,16 @@ public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTa
             SelectDsdAndDescriptorsHandler,
             UpdateConceptSchemesHandler {
 
-    private final DispatchAsync dispatcher;
-    private final PlaceManager  placeManager;
+    private final DispatchAsync        dispatcher;
+    private final PlaceManager         placeManager;
 
-    private Long                idDsd;
-    private boolean             isNewDescriptor;
-    private ComponentDto        primaryMeasure;
+    private DataStructureDefinitionDto dataStructureDefinitionDto;
+    private boolean                    isNewDescriptor;
+    private ComponentDto               primaryMeasure;
 
     // Storing selected concept and representation type allows improving performance when loading code lists
-    private String              selectedConceptUri;
-    private boolean             enumeratedRepresentation;
+    private String                     selectedConceptUri;
+    private boolean                    enumeratedRepresentation;
 
     @ProxyCodeSplit
     @NameToken(NameTokens.dsdPrimaryMeasurePage)
@@ -120,11 +124,11 @@ public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTa
     @Override
     public void prepareFromRequest(PlaceRequest request) {
         super.prepareFromRequest(request);
-        String id = PlaceRequestUtils.getDsdParamFromUrl(placeManager);
-        if (id != null) {
-            if (idDsd == null || (idDsd != null && !idDsd.equals(Long.valueOf(id)))) {
-                idDsd = Long.valueOf(id);
-                retrieveDsd(idDsd);
+        String dsdIdentifier = PlaceRequestUtils.getDsdParamFromUrl(placeManager);// DSD identifier is the URN without the prefix
+        if (!StringUtils.isBlank(dsdIdentifier)) {
+            // Load DSD completely if it hasn't been loaded previously
+            if (dataStructureDefinitionDto == null || !dsdIdentifier.equals(UrnUtils.removePrefix(dataStructureDefinitionDto.getUrn()))) {
+                retrieveDsd(UrnUtils.generateUrn(UrnConstants.URN_SDMX_CLASS_DATASTRUCTURE_PREFIX, dsdIdentifier));
             }
         }
     }
@@ -191,7 +195,7 @@ public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTa
     @ProxyEvent
     @Override
     public void onSelectDsdAndDescriptors(SelectDsdAndDescriptorsEvent event) {
-        idDsd = event.getDataStructureDefinitionDto().getId();
+        dataStructureDefinitionDto = event.getDataStructureDefinitionDto();
         DescriptorDto primaryMeasureDescriptor = event.getPrimaryMeasure();
         isNewDescriptor = primaryMeasureDescriptor.getId() == null;
         primaryMeasure = primaryMeasureDescriptor.getComponents().isEmpty() ? new ComponentDto(TypeComponent.PRIMARY_MEASURE, null) : primaryMeasureDescriptor.getComponents().iterator().next();
@@ -209,7 +213,7 @@ public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTa
 
     @Override
     public void savePrimaryMeasure(ComponentDto component) {
-        dispatcher.execute(new SaveComponentForDsdAction(idDsd, component, TypeComponentList.MEASURE_DESCRIPTOR), new WaitingAsyncCallback<SaveComponentForDsdResult>() {
+        dispatcher.execute(new SaveComponentForDsdAction(dataStructureDefinitionDto.getId(), component, TypeComponentList.MEASURE_DESCRIPTOR), new WaitingAsyncCallback<SaveComponentForDsdResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -230,7 +234,7 @@ public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTa
     }
 
     private void updateDsd() {
-        dispatcher.execute(new GetDsdAction(idDsd), new WaitingAsyncCallback<GetDsdResult>() {
+        dispatcher.execute(new GetDsdAction(dataStructureDefinitionDto.getId()), new WaitingAsyncCallback<GetDsdResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -244,8 +248,8 @@ public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTa
     }
 
     @Override
-    public void retrieveDsd(Long id) {
-        dispatcher.execute(new GetDsdAndDescriptorsAction(id), new WaitingAsyncCallback<GetDsdAndDescriptorsResult>() {
+    public void retrieveDsd(String urn) {
+        dispatcher.execute(new GetDsdAndDescriptorsAction(urn), new WaitingAsyncCallback<GetDsdAndDescriptorsResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
