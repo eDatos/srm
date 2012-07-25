@@ -153,26 +153,6 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public PagedResult<DataStructureDefinitionDto> findDsdByCondition(ServiceContext ctx, List<ConditionalCriteria> condition, PagingParameter pagingParameter) throws MetamacException {
-
-        // Search
-        PagedResult<DataStructureDefinition> dataStructureDefinitionPagedList = getDataStructureDefinitionService().findDsdByCondition(ctx, condition, pagingParameter);
-
-        // To DTO
-        List<DataStructureDefinitionDto> dataStructureDefinitionDtoList = new ArrayList<DataStructureDefinitionDto>();
-        for (DataStructureDefinition dsd : dataStructureDefinitionPagedList.getValues()) {
-            dataStructureDefinitionDtoList.add(getDo2DtoMapper().dataStructureDefinitionToDataStructureDefinitionDto(TypeDozerCopyMode.UPDATE, dsd));
-        }
-
-        // Return preparation
-        PagedResult<DataStructureDefinitionDto> dataStructureDefinitionDtoPagedList = new PagedResult<DataStructureDefinitionDto>(dataStructureDefinitionDtoList,
-                dataStructureDefinitionPagedList.getStartRow(), dataStructureDefinitionPagedList.getRowCount(), dataStructureDefinitionPagedList.getPageSize(),
-                dataStructureDefinitionPagedList.getTotalRows(), dataStructureDefinitionPagedList.getAdditionalResultRows());
-
-        return dataStructureDefinitionDtoPagedList;
-    }
-
-    @Override
     public MetamacCriteriaResult<DataStructureDefinitionDto> findDsdByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
         // Transform
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getDataStructureDefinitionCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);

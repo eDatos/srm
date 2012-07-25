@@ -1,14 +1,12 @@
 package org.siemac.metamac.srm.core.facade.serviceapi;
 
 import static org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder.criteriaFor;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import static org.siemac.metamac.srm.core.structure.domain.DataStructureDefinitionProperties.id;
 import static org.siemac.metamac.srm.core.structure.domain.DataStructureDefinitionProperties.code;
-import static org.siemac.metamac.srm.core.structure.domain.DataStructureDefinitionProperties.serviceURL;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -32,6 +30,10 @@ import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.siemac.metamac.core.common.criteria.MetamacCriteria;
+import org.siemac.metamac.core.common.criteria.MetamacCriteriaDisjunctionRestriction;
+import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction;
+import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction.OperationType;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.dto.LocalisedStringDto;
@@ -50,6 +52,7 @@ import org.siemac.metamac.domain.srm.enume.domain.TypeRepresentationEnum;
 import org.siemac.metamac.domain.trans.dto.StructureMsgDto;
 import org.siemac.metamac.srm.core.base.serviceapi.BaseService;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
+import org.siemac.metamac.srm.core.criteria.DataStructureDefinitionCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.facade.serviceapi.utils.SDMXResources;
 import org.siemac.metamac.srm.core.facade.serviceapi.utils.SrmDtoMocks;
 import org.siemac.metamac.srm.core.structure.domain.DataStructureDefinition;
@@ -161,28 +164,16 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest /* implements SrmCoreS
     public void testDeleteDsd() throws Exception {
         DataStructureDefinitionDto dataStructureDefinitionDto = srmCoreServiceFacade.saveDsd(getServiceContext(), SrmDtoMocks.createDdsDTO());
 
-        List<ConditionalCriteria> conditions = criteriaFor(DataStructureDefinition.class).withProperty(id()).eq(dataStructureDefinitionDto.getId()).build();
+        srmCoreServiceFacade.deleteDsd(getServiceContext(), dataStructureDefinitionDto);
 
-        PagedResult<DataStructureDefinitionDto> dataStructureDefinitionDtoPagedList = srmCoreServiceFacade.findDsdByCondition(getServiceContext(), conditions, PagingParameter.pageAccess(10));
-        assertTrue(!dataStructureDefinitionDtoPagedList.getValues().isEmpty());
-
-        srmCoreServiceFacade.deleteDsd(getServiceContext(), dataStructureDefinitionDtoPagedList.getValues().get(0));
-
-        dataStructureDefinitionDtoPagedList = srmCoreServiceFacade.findDsdByCondition(getServiceContext(), conditions, PagingParameter.pageAccess(10));
-
-        assertTrue(dataStructureDefinitionDtoPagedList.getValues().isEmpty());
+        MetamacCriteriaResult<DataStructureDefinitionDto> result = srmCoreServiceFacade.findDsdByCondition(getServiceContext(), null);
+        assertEquals(1, result.getResults().size());
     }
 
     @Test
     public void testFindDsdByCondition() throws Exception {
         srmCoreServiceFacade.saveDsd(getServiceContext(), SrmDtoMocks.createDdsDTO());
 
-        List<ConditionalCriteria> conditions = criteriaFor(DataStructureDefinition.class).withProperty(serviceURL()).eq("test").build();
-
-        PagedResult<DataStructureDefinitionDto> dataStructureDefinitionDtoPagedList = srmCoreServiceFacade.findDsdByCondition(getServiceContext(), conditions, PagingParameter.pageAccess(10));
-
-        assertTrue(!dataStructureDefinitionDtoPagedList.getValues().isEmpty());
-        
         MetamacCriteriaResult<DataStructureDefinitionDto> result = srmCoreServiceFacade.findDsdByCondition(getServiceContext(), null);
         assertEquals(2, result.getResults().size());
     }
@@ -539,35 +530,41 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest /* implements SrmCoreS
         exportStructureMessage("ECB_EXR_SG");
     }
 
-    private void exportStructureMessage(String dsdId) throws MetamacException, FileNotFoundException {
+    private void exportStructureMessage(String code) throws MetamacException, FileNotFoundException {
         StructureMsgDto structureMsgDto = new StructureMsgDto();
 
         // DSD
-        PagedResult<DataStructureDefinitionDto> dataStructureDefinitionDtoPagedList = findDSD(dsdId);
+        MetamacCriteria metamacCriteria = new MetamacCriteria();
+        MetamacCriteriaDisjunctionRestriction disjunction = new MetamacCriteriaDisjunctionRestriction();
+        disjunction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(DataStructureDefinitionCriteriaPropertyEnum.CODE.name(), code, OperationType.EQ));
+        metamacCriteria.setRestriction(disjunction);
+        
+        MetamacCriteriaResult<DataStructureDefinitionDto> metamacCriteriaResult = srmCoreServiceFacade.findDsdByCondition(getServiceContext(), metamacCriteria);
 
-        if (dataStructureDefinitionDtoPagedList.getValues().isEmpty()) {
-            if (dsdId.equals("ECB_EXR_NG")) {
+        if (metamacCriteriaResult.getResults().isEmpty()) {
+            if (code.equals("ECB_EXR_NG")) {
                 srmCoreServiceFacade.importSDMXStructureMsg(serviceContext, SrmDtoMocks.createContentInput(new File(SDMXResources.DSD_ECB_EXR_NG_FULL)));
-            } else if (dsdId.equals("ECB_EXR_RG")) {
+            } else if (code.equals("ECB_EXR_RG")) {
                 srmCoreServiceFacade.importSDMXStructureMsg(serviceContext, SrmDtoMocks.createContentInput(new File(SDMXResources.DSD_ECB_EXR_RG_FULL)));
-            } else if (dsdId.equals("ECB_EXR_SG")) {
+            } else if (code.equals("ECB_EXR_SG")) {
                 srmCoreServiceFacade.importSDMXStructureMsg(serviceContext, SrmDtoMocks.createContentInput(new File(SDMXResources.DSD_ECB_EXR_SG_FULL)));
             } else {
                 fail("Error in test");
             }
-            dataStructureDefinitionDtoPagedList = findDSD(dsdId);
+            metamacCriteriaResult = srmCoreServiceFacade.findDsdByCondition(getServiceContext(), metamacCriteria);
         }
 
-        // Create DSD extend (with desciptors)
-        DataStructureDefinitionExtendDto dataStructureDefinitionExtendDto = mapper.map(dataStructureDefinitionDtoPagedList.getValues().get(0), DataStructureDefinitionExtendDto.class);
+        DataStructureDefinitionDto dataStructureDefinitionDto = metamacCriteriaResult.getResults().iterator().next();
+        // Create DSD extend (with descriptors)
+        DataStructureDefinitionExtendDto dataStructureDefinitionExtendDto = mapper.map(metamacCriteriaResult.getResults().iterator().next(), DataStructureDefinitionExtendDto.class);
         // Name and descriptions
-        dataStructureDefinitionExtendDto.setName(dataStructureDefinitionDtoPagedList.getValues().get(0).getName());
-        dataStructureDefinitionExtendDto.setDescription(dataStructureDefinitionDtoPagedList.getValues().get(0).getDescription());
+        dataStructureDefinitionExtendDto.setName(dataStructureDefinitionDto.getName());
+        dataStructureDefinitionExtendDto.setDescription(dataStructureDefinitionDto.getDescription());
         // Annotations
-        dataStructureDefinitionExtendDto.getAnnotations().addAll(dataStructureDefinitionDtoPagedList.getValues().get(0).getAnnotations());
+        dataStructureDefinitionExtendDto.getAnnotations().addAll(dataStructureDefinitionDto.getAnnotations());
 
         // Add descriptors
-        dataStructureDefinitionExtendDto.getGrouping().addAll(srmCoreServiceFacade.findDescriptorsForDsd(serviceContext, dataStructureDefinitionDtoPagedList.getValues().get(0).getId()));
+        dataStructureDefinitionExtendDto.getGrouping().addAll(srmCoreServiceFacade.findDescriptorsForDsd(serviceContext, dataStructureDefinitionDto.getId()));
 
         structureMsgDto.getDataStructureDefinitionDtos().add(dataStructureDefinitionExtendDto);
 
@@ -610,16 +607,6 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest /* implements SrmCoreS
             // System.out.println(writer.toString());
         }
 
-    }
-
-    // *************************************************************************
-    // COMMON
-    // *************************************************************************
-
-    private PagedResult<DataStructureDefinitionDto> findDSD(String dsdId) throws MetamacException {
-        List<ConditionalCriteria> dsdConditions = criteriaFor(DataStructureDefinition.class).withProperty(code()).eq(dsdId).build();
-
-        return srmCoreServiceFacade.findDsdByCondition(serviceContext, dsdConditions, PagingParameter.pageAccess(10));
     }
 
     @Test

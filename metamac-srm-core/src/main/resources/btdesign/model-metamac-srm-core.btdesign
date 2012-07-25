@@ -41,14 +41,12 @@ Application SrmCore {
 			" 
        		deleteDsd(@DataStructureDefinitionDto dataStructureDefinitionDto) throws MetamacException;
 			
-			"                           
+			"
+			 Find DSDs by criteria                           
 			 @param ctx                 
-			 @param condition           
-			 @param pagingParameter     
+			 @param criteria           
 			 @return                    
 			"
-			PagedResult<@DataStructureDefinitionDto> findDsdByCondition(List<org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria> condition, org.fornax.cartridges.sculptor.framework.domain.PagingParameter pagingParameter) throws MetamacException;
-          	
 	    	MetamacCriteriaResult<@DataStructureDefinitionDto> findDsdByCondition(MetamacCriteria criteria) throws MetamacException;
           	
           	"          
