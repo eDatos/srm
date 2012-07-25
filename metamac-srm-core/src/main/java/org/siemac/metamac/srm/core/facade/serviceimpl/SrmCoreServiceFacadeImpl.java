@@ -18,9 +18,7 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import org.apache.commons.lang.StringUtils;
-import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
-import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.criteria.MetamacCriteria;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
@@ -45,6 +43,7 @@ import org.siemac.metamac.domain.trans.dto.StructureMsgDto;
 import org.siemac.metamac.domain.util.dto.ContentInputDto;
 import org.siemac.metamac.srm.core.base.domain.Component;
 import org.siemac.metamac.srm.core.base.domain.ComponentList;
+import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.core.mapper.Do2DtoMapper;
@@ -238,10 +237,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
                 Set<ComponentDto> componentsUpdate = new HashSet<ComponentDto>();
                 for (ComponentDto componentDto : componentListDto.getComponents()) {
                     if (dimensionComponents.get(componentDto.getCode()) == null) {
-                        MetamacException metamacException = new MetamacException(ServiceExceptionType.UNKNOWN, "Unable to update the references. (GroupDescriptor)");
-                        logger.info(metamacException.getMessage());
-                        metamacException.setLogged(true);
-                        throw metamacException;
+                        throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.SRM_VALIDATION_GROUP_DESCRIPTOR_UNABLE_UPDATE).build();
                     } else {
                         componentsUpdate.add(dimensionComponents.get(componentDto.getCode()));
                     }
@@ -269,10 +265,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
                         Set<DimensionComponentDto> componentsUpdate = new HashSet<DimensionComponentDto>();
                         for (ComponentDto itemRefDto : relationshipDto.getDimensionForDimensionRelationship()) {
                             if (dimensionComponents.get(itemRefDto.getCode()) == null) {
-                                MetamacException metamacException = new MetamacException(ServiceExceptionType.UNKNOWN, "Unable to update the references. (AttributeDescriptor)");
-                                logger.info(metamacException.getMessage());
-                                metamacException.setLogged(true);
-                                throw metamacException;
+                                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.SRM_VALIDATION_ATTRIBUTE_DESCRIPTOR_UNABLE_UPDATE).build();
                             } else {
                                 componentsUpdate.add(dimensionComponents.get(itemRefDto.getCode()));
                             }
@@ -285,10 +278,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
                         Set<DescriptorDto> descriptorsDtoUpdate = new HashSet<DescriptorDto>();
                         for (DescriptorDto itemRefDto : relationshipDto.getGroupKeyForDimensionRelationship()) {
                             if (groupDescriptors.get(itemRefDto.getCode()) == null) {
-                                MetamacException metamacException = new MetamacException(ServiceExceptionType.UNKNOWN, "Unable to update the references. (AttributeDescriptor)");
-                                logger.info(metamacException.getMessage());
-                                metamacException.setLogged(true);
-                                throw metamacException;
+                                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.SRM_VALIDATION_ATTRIBUTE_DESCRIPTOR_UNABLE_UPDATE).build();
                             } else {
                                 descriptorsDtoUpdate.add(groupDescriptors.get(itemRefDto.getCode()));
                             }
@@ -299,10 +289,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
                     if (relationshipDto.getGroupKeyForGroupRelationship() != null) {
                         if (groupDescriptors.get(relationshipDto.getGroupKeyForGroupRelationship().getCode()) == null) {
-                            MetamacException metamacException = new MetamacException(ServiceExceptionType.UNKNOWN, "Unable to update the references. (AttributeDescriptor)");
-                            logger.info(metamacException.getMessage());
-                            metamacException.setLogged(true);
-                            throw metamacException;
+                            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.SRM_VALIDATION_ATTRIBUTE_DESCRIPTOR_UNABLE_UPDATE).build();
                         } else {
                             relationshipDto.setGroupKeyForGroupRelationship(groupDescriptors.get(relationshipDto.getGroupKeyForGroupRelationship().getCode()));
                         }
@@ -336,7 +323,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         // Check Type
         if (!typeComponentList.equals(TypeComponentList.ATTRIBUTE_DESCRIPTOR) && !typeComponentList.equals(TypeComponentList.DIMENSION_DESCRIPTOR)
                 && !typeComponentList.equals(TypeComponentList.GROUP_DIMENSION_DESCRIPTOR) && !typeComponentList.equals(TypeComponentList.MEASURE_DESCRIPTOR)) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.PARAMETER_INCORRECT).withLoggedLevel(ExceptionLevelEnum.INFO).withMessageParameters("typeComponentList")
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.PARAMETER_INCORRECT).withLoggedLevel(ExceptionLevelEnum.INFO).withMessageParameters(ServiceExceptionParameters.COMPONENT_LIST)
                     .build();
         }
 
@@ -559,11 +546,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
                 descriptorDtos.add((DescriptorDto) getDo2DtoMapper().componentListToComponentListDto(typeDozerCopyMode, componentList));
             }
         } catch (DataStructureDefinitionNotFoundException e) {
-            // TODO poner la exp adecuada y quitar el unknow
-            MetamacException metamacException = new MetamacException(e, ServiceExceptionType.PARAMETER_REQUIRED);
-            logger.info(metamacException.getMessage());
-            metamacException.setLogged(true);
-            throw metamacException;
+            throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SRM_SEARCH_NOT_FOUND).withMessageParameters(ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION).build();
         }
 
         return descriptorDtos;
