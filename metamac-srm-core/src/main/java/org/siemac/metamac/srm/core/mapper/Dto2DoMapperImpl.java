@@ -1,4 +1,4 @@
-package org.siemac.metamac.srm.core.service.dto;
+package org.siemac.metamac.srm.core.mapper;
 
 import java.util.HashMap;
 import java.util.Iterator;

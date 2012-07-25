@@ -1,6 +1,7 @@
 package org.siemac.metamac.srm.core.facade.serviceapi;
 
 import static org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder.criteriaFor;
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -31,6 +32,7 @@ import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.dto.LocalisedStringDto;
 import org.siemac.metamac.core.common.exception.MetamacException;
@@ -180,6 +182,9 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest /* implements SrmCoreS
         PagedResult<DataStructureDefinitionDto> dataStructureDefinitionDtoPagedList = srmCoreServiceFacade.findDsdByCondition(getServiceContext(), conditions, PagingParameter.pageAccess(10));
 
         assertTrue(!dataStructureDefinitionDtoPagedList.getValues().isEmpty());
+        
+        MetamacCriteriaResult<DataStructureDefinitionDto> result = srmCoreServiceFacade.findDsdByCondition(getServiceContext(), null);
+        assertEquals(2, result.getResults().size());
     }
 
     @Test

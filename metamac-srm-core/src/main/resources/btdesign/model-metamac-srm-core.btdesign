@@ -49,6 +49,8 @@ Application SrmCore {
 			"
 			PagedResult<@DataStructureDefinitionDto> findDsdByCondition(List<org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria> condition, org.fornax.cartridges.sculptor.framework.domain.PagingParameter pagingParameter) throws MetamacException;
           	
+	    	MetamacCriteriaResult<@DataStructureDefinitionDto> findDsdByCondition(MetamacCriteria criteria) throws MetamacException;
+          	
           	"          
 			@param ctx
 			@return   

@@ -1,4 +1,4 @@
-package org.siemac.metamac.srm.core.service.dto;
+package org.siemac.metamac.srm.core.mapper;
 
 import org.dozer.DozerBeanMapper;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
@@ -22,11 +22,6 @@ import org.siemac.metamac.srm.core.structure.domain.DataStructureDefinition;
 
 public interface Do2DtoMapper {
 
-    // public <T extends ItemDto> T itemToItemDto(Item item, ServiceContext ctx, SdmxBaseService sdmxBaseService);
-
-    // public <T extends ItemSchemeDto> T itemschemeToItemSchemeDto(ItemScheme itemScheme, ServiceContext ctx,
-    // SdmxBaseService sdmxBaseService);
-
     public DozerBeanMapper getMapperCore(TypeDozerCopyMode typeDozerCopyMode);
 
     public <T extends ComponentDto> T componentToComponentDto(ServiceContext ctx, TypeDozerCopyMode typeDozerCopyMode, Component component, BaseService baseService);
@@ -36,8 +31,7 @@ public interface Do2DtoMapper {
     public RelationshipDto attributeRelationshipToattributeRelationshipDto(ServiceContext ctx, TypeDozerCopyMode typeDozerCopyMode, AttributeRelationship attributeRelationship,
             BaseService baseService);
 
-    public DataStructureDefinitionDto dataStructureDefinitionToDataStructureDefinitionDto(ServiceContext ctx, TypeDozerCopyMode typeDozerCopyMode, DataStructureDefinition dataStructureDefinition,
-            BaseService baseService);
+    public DataStructureDefinitionDto dataStructureDefinitionToDataStructureDefinitionDto(TypeDozerCopyMode typeDozerCopyMode, DataStructureDefinition dataStructureDefinition);
     
     public DataStructureDefinitionExtendDto dataStructureDefinitionToDataStructureDefinitionExtendDto(ServiceContext ctx, TypeDozerCopyMode typeDozerCopyMode, DataStructureDefinition dataStructureDefinition, BaseService baseService);
 

@@ -22,6 +22,9 @@ import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
+import org.siemac.metamac.core.common.criteria.MetamacCriteria;
+import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
+import org.siemac.metamac.core.common.criteria.SculptorCriteria;
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.exception.ExceptionLevelEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
@@ -44,8 +47,10 @@ import org.siemac.metamac.srm.core.base.domain.Component;
 import org.siemac.metamac.srm.core.base.domain.ComponentList;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
-import org.siemac.metamac.srm.core.service.dto.Do2DtoMapper;
-import org.siemac.metamac.srm.core.service.dto.Dto2DoMapper;
+import org.siemac.metamac.srm.core.mapper.Do2DtoMapper;
+import org.siemac.metamac.srm.core.mapper.Dto2DoMapper;
+import org.siemac.metamac.srm.core.mapper.MetamacCriteria2SculptorCriteriaMapper;
+import org.siemac.metamac.srm.core.mapper.SculptorCriteria2MetamacCriteriaMapper;
 import org.siemac.metamac.srm.core.structure.domain.AttributeDescriptor;
 import org.siemac.metamac.srm.core.structure.domain.DataStructureDefinition;
 import org.siemac.metamac.srm.core.structure.domain.DimensionDescriptor;
@@ -71,17 +76,23 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     public SrmCoreServiceFacadeImpl() {
     }
 
-    private Logger          logger = LoggerFactory.getLogger(SrmCoreServiceFacade.class);
+    private Logger                                 logger = LoggerFactory.getLogger(SrmCoreServiceFacade.class);
 
     @Autowired
-    private Do2DtoMapper    do2DtoMapper;
+    private Do2DtoMapper                           do2DtoMapper;
 
     @Autowired
-    private Dto2DoMapper    dto2DoMapper;
+    private Dto2DoMapper                           dto2DoMapper;
 
     @Autowired
     @Qualifier("jaxb2MarshallerWithValidation")
-    private Jaxb2Marshaller marshallerWithValidation;
+    private Jaxb2Marshaller                        marshallerWithValidation;
+
+    @Autowired
+    private MetamacCriteria2SculptorCriteriaMapper metamacCriteria2SculptorCriteriaMapper;
+
+    @Autowired
+    private SculptorCriteria2MetamacCriteriaMapper sculptorCriteria2MetamacCriteriaMapper;
 
     public Jaxb2Marshaller getMarshallerWithValidation() {
         return marshallerWithValidation;
@@ -93,6 +104,14 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     protected Dto2DoMapper getDto2DoMapper() {
         return dto2DoMapper;
+    }
+
+    public MetamacCriteria2SculptorCriteriaMapper getMetamacCriteria2SculptorCriteriaMapper() {
+        return metamacCriteria2SculptorCriteriaMapper;
+    }
+
+    public SculptorCriteria2MetamacCriteriaMapper getSculptorCriteria2MetamacCriteriaMapper() {
+        return sculptorCriteria2MetamacCriteriaMapper;
     }
 
     /**************************************************************************
@@ -108,7 +127,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         dataStructureDefinition = getDataStructureDefinitionService().saveDsd(ctx, dataStructureDefinition);
 
         // Entities to DTOs
-        return getDo2DtoMapper().dataStructureDefinitionToDataStructureDefinitionDto(ctx, TypeDozerCopyMode.UPDATE, dataStructureDefinition, getBaseService());
+        return getDo2DtoMapper().dataStructureDefinitionToDataStructureDefinitionDto(TypeDozerCopyMode.UPDATE, dataStructureDefinition);
     }
 
     @Override
@@ -142,7 +161,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         // To DTO
         List<DataStructureDefinitionDto> dataStructureDefinitionDtoList = new ArrayList<DataStructureDefinitionDto>();
         for (DataStructureDefinition dsd : dataStructureDefinitionPagedList.getValues()) {
-            dataStructureDefinitionDtoList.add(getDo2DtoMapper().dataStructureDefinitionToDataStructureDefinitionDto(ctx, TypeDozerCopyMode.UPDATE, dsd, getBaseService()));
+            dataStructureDefinitionDtoList.add(getDo2DtoMapper().dataStructureDefinitionToDataStructureDefinitionDto(TypeDozerCopyMode.UPDATE, dsd));
         }
 
         // Return preparation
@@ -154,6 +173,20 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
+    public MetamacCriteriaResult<DataStructureDefinitionDto> findDsdByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
+        // Transform
+        SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getDataStructureDefinitionCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
+
+        // Find
+        PagedResult<DataStructureDefinition> result = getDataStructureDefinitionService().findDsdByCondition(ctx, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
+
+        // Transform
+        MetamacCriteriaResult<DataStructureDefinitionDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultDataStructureDefinition(result,
+                sculptorCriteria.getPageSize());
+        return metamacCriteriaResult;
+    }
+
+    @Override
     public List<DataStructureDefinitionDto> findAllDsds(ServiceContext ctx) {
 
         // Search
@@ -162,7 +195,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         // To DTO
         List<DataStructureDefinitionDto> dataStructureDefinitionDtoList = new ArrayList<DataStructureDefinitionDto>();
         for (DataStructureDefinition dsd : dataStructureDefinitionList) {
-            dataStructureDefinitionDtoList.add(getDo2DtoMapper().dataStructureDefinitionToDataStructureDefinitionDto(ctx, TypeDozerCopyMode.UPDATE, dsd, getBaseService()));
+            dataStructureDefinitionDtoList.add(getDo2DtoMapper().dataStructureDefinitionToDataStructureDefinitionDto(TypeDozerCopyMode.UPDATE, dsd));
         }
 
         return dataStructureDefinitionDtoList;
@@ -185,16 +218,16 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         DataStructureDefinition dataStructureDefinition = loadDsdById(ctx, idDsd);
 
         // TO DTO
-        return getDo2DtoMapper().dataStructureDefinitionToDataStructureDefinitionDto(ctx, typeDozerCopyMode, dataStructureDefinition, getBaseService());
+        return getDo2DtoMapper().dataStructureDefinitionToDataStructureDefinitionDto(typeDozerCopyMode, dataStructureDefinition);
     }
 
     @Override
     public DataStructureDefinitionDto retrieveDsdByUrn(ServiceContext ctx, String urn) throws MetamacException {
         // Search
         DataStructureDefinition dataStructureDefinition = getDataStructureDefinitionService().retrieveDataStructureDefinitionByUrn(ctx, urn);
-        
+
         // TO DTO
-        return getDo2DtoMapper().dataStructureDefinitionToDataStructureDefinitionDto(ctx, TypeDozerCopyMode.UPDATE, dataStructureDefinition, getBaseService());
+        return getDo2DtoMapper().dataStructureDefinitionToDataStructureDefinitionDto(TypeDozerCopyMode.UPDATE, dataStructureDefinition);
     }
 
     @Override
@@ -323,8 +356,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         // Check Type
         if (!typeComponentList.equals(TypeComponentList.ATTRIBUTE_DESCRIPTOR) && !typeComponentList.equals(TypeComponentList.DIMENSION_DESCRIPTOR)
                 && !typeComponentList.equals(TypeComponentList.GROUP_DIMENSION_DESCRIPTOR) && !typeComponentList.equals(TypeComponentList.MEASURE_DESCRIPTOR)) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.PARAMETER_INCORRECT).withLoggedLevel(ExceptionLevelEnum.INFO)
-                    .withMessageParameters("typeComponentList").build();
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.PARAMETER_INCORRECT).withLoggedLevel(ExceptionLevelEnum.INFO).withMessageParameters("typeComponentList")
+                    .build();
         }
 
         // To DTOs
@@ -509,15 +542,15 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     public List<ExternalItemDto> findConcepts(ServiceContext ctx, String uriConceptScheme) {
         return ServicesResolver.retrieveConceptScheme(uriConceptScheme);
     }
-    
+
     @Override
     public void deleteConceptScheme(ServiceContext ctx, String urn) throws MetamacException {
         // TODO security
-        
+
         // Delete
         getConceptsService().deleteConceptScheme(ctx, urn);
     }
-    
+
     /**************************************************************************
      * PRIVATE
      *************************************************************************/

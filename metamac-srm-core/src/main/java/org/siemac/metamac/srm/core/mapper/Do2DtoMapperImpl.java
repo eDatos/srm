@@ -1,4 +1,4 @@
-package org.siemac.metamac.srm.core.service.dto;
+package org.siemac.metamac.srm.core.mapper;
 
 import org.dozer.DozerBeanMapper;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
@@ -403,8 +403,7 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
     }
 
     @Override
-    public DataStructureDefinitionDto dataStructureDefinitionToDataStructureDefinitionDto(ServiceContext ctx, TypeDozerCopyMode typeDozerCopyMode, DataStructureDefinition dataStructureDefinition,
-            BaseService sdmxBaseService) {
+    public DataStructureDefinitionDto dataStructureDefinitionToDataStructureDefinitionDto(TypeDozerCopyMode typeDozerCopyMode, DataStructureDefinition dataStructureDefinition) {
         if (dataStructureDefinition == null) {
             return null;
         }

@@ -29,10 +29,10 @@
 	</bean>
 	
 	<!-- Domain Object to Data Transfers Object	-->
-	<bean id="do2DtoMapperCore" name="do2DtoMapperCore" class="org.siemac.metamac.srm.core.service.dto.Do2DtoMapperImpl"></bean>
+	<bean id="do2DtoMapperCore" name="do2DtoMapperCore" class="org.siemac.metamac.srm.core.mapper.Do2DtoMapperImpl"></bean>
 	
 	<!-- Data Transfers Object to Domain Object	-->
-	<bean id="dto2DoMapperCore" name="dto2DoMapperCore" class="org.siemac.metamac.srm.core.service.dto.Dto2DoMapperImpl"></bean>
+	<bean id="dto2DoMapperCore" name="dto2DoMapperCore" class="org.siemac.metamac.srm.core.mapper.Dto2DoMapperImpl"></bean>
 
 
 	<bean id="jaxb2MarshallerWithValidation" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">

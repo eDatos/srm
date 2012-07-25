@@ -1,4 +1,4 @@
-package org.siemac.metamac.srm.core.service.dto;
+package org.siemac.metamac.srm.core.mapper;
 
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
