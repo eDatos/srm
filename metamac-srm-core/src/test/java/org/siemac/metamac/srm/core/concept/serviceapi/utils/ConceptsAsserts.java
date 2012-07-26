@@ -10,7 +10,7 @@ public class ConceptsAsserts {
     public static void assertEqualsConceptScheme(ConceptSchemeVersion expected, ConceptSchemeVersion actual) {
         assertEquals(expected.getType(), actual.getType());
         BaseAsserts.assertEqualsExternalItem(expected.getRelatedOperation(), actual.getRelatedOperation());
-        
+
         BaseAsserts.assertEqualsItemScheme(expected, actual);
     }
 }

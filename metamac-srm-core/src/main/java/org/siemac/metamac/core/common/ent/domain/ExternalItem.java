@@ -1,9 +1,9 @@
 package org.siemac.metamac.core.common.ent.domain;
 
-import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
-
 import javax.persistence.Entity;
 import javax.persistence.Table;
+
+import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 
 /**
  * Entity for store information about ExternalItems.

@@ -69,8 +69,8 @@ public class ConceptsServiceTest extends SrmBaseTest implements ConceptsServiceT
         ConceptSchemeVersion conceptSchemeVersionRetrieved = conceptsService.findConceptSchemeByUrn(getServiceContextAdministrador(), conceptSchemeVersionCreated.getMaintainableArtefact().getUrn());
         assertEquals(MaintainableArtefactProcStatusEnum.DRAFT, conceptSchemeVersionRetrieved.getMaintainableArtefact().getProcStatus());
         assertEquals("01.000", conceptSchemeVersionRetrieved.getMaintainableArtefact().getVersionLogic());
-        assertEquals(GeneratorUrnUtils.generateSdmxConceptSchemeUrn(conceptSchemeVersion.getMaintainableArtefact().getMaintainer().getCode(), conceptSchemeVersion.getMaintainableArtefact()
-                .getCode(), "01.000"), conceptSchemeVersionRetrieved.getMaintainableArtefact().getUrn());
+        assertEquals(GeneratorUrnUtils.generateSdmxConceptSchemeUrn(conceptSchemeVersion.getMaintainableArtefact().getMaintainer().getCode(), conceptSchemeVersion.getMaintainableArtefact().getCode(),
+                "01.000"), conceptSchemeVersionRetrieved.getMaintainableArtefact().getUrn());
         assertNull(conceptSchemeVersionRetrieved.getMaintainableArtefact().getValidFrom());
         assertNull(conceptSchemeVersionRetrieved.getMaintainableArtefact().getValidTo());
         assertTrue(conceptSchemeVersionRetrieved.getMaintainableArtefact().getIsLastVersion());

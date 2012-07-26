@@ -47,9 +47,10 @@ public class DataStructureDefinitionServiceImpl extends DataStructureDefinitionS
 
         // Populate URN
         if (StringUtils.isNotEmpty(dataStructureDefinition.getCode())) {
-            dataStructureDefinition.setUrn(GeneratorUrnUtils.generateSdmxDatastructureUrn(dataStructureDefinition.getMaintainer().getCode(), dataStructureDefinition.getCode(), dataStructureDefinition.getVersionLogic()));
+            dataStructureDefinition.setUrn(GeneratorUrnUtils.generateSdmxDatastructureUrn(dataStructureDefinition.getMaintainer().getCode(), dataStructureDefinition.getCode(),
+                    dataStructureDefinition.getVersionLogic()));
         }
-        
+
         // Save DataStructureDefinition
         return getDataStructureDefinitionRepository().save(dataStructureDefinition);
     }
@@ -103,7 +104,7 @@ public class DataStructureDefinitionServiceImpl extends DataStructureDefinitionS
         // 5 - Remove DSD
         getDataStructureDefinitionRepository().delete(dataStructureDefinition);
     }
-    
+
     @Override
     public DataStructureDefinition retrieveDataStructureDefinitionByUrn(ServiceContext ctx, String urn) throws MetamacException {
         // Validation
@@ -111,16 +112,15 @@ public class DataStructureDefinitionServiceImpl extends DataStructureDefinitionS
 
         // Prepare conditions
         List<ConditionalCriteria> conditions = criteriaFor(DataStructureDefinition.class).withProperty(urn()).eq(urn).build();
-        
+
         // Search
         PagedResult<DataStructureDefinition> pagedResult = findDsdByCondition(ctx, conditions, PagingParameter.pageAccess(1));
-        
+
         if (pagedResult.getValues().isEmpty()) {
             MetamacException metamacException = new MetamacException(ServiceExceptionType.SRM_SEARCH_NOT_FOUND, ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION);
             metamacException.setLoggedLevel(ExceptionLevelEnum.DEBUG);
             throw metamacException;
-        }
-        else {
+        } else {
             return pagedResult.getValues().iterator().next();
         }
     }
@@ -146,7 +146,7 @@ public class DataStructureDefinitionServiceImpl extends DataStructureDefinitionS
     public void deleteDescriptorForDsd(ServiceContext ctx, DataStructureDefinition dataStructureDefinition, ComponentList componentList) throws MetamacException {
         // Validation
         DataStructureInvocationValidator.checkDeleteDescriptorForDataStructureDefinition(dataStructureDefinition, componentList, null); // Parameters and metadata check
-        
+
         // Remove Association with DSD
         Iterator<ComponentList> iterCmpList = dataStructureDefinition.getGrouping().iterator();
         while (iterCmpList.hasNext()) {
@@ -290,7 +290,7 @@ public class DataStructureDefinitionServiceImpl extends DataStructureDefinitionS
     public void deleteComponentForDsd(ServiceContext ctx, DataStructureDefinition dataStructureDefinition, Component component, TypeComponentList typeComponentList) throws MetamacException {
         // Validation
         DataStructureInvocationValidator.checkDeleteComponentForDataStructureDefinition(dataStructureDefinition, component, null); // Parameters and metadata check
-        
+
         // Check type component
         if (typeComponentList == null) {
             MetamacException metamacException = new MetamacException(ServiceExceptionType.PARAMETER_REQUIRED, "TypeComponentList");

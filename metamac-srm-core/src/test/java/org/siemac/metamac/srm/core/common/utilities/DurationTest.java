@@ -19,5 +19,5 @@ public class DurationTest {
         //
         // System.out.println("====Date.toString====== " + XMLGregorianCalendarUtil.transformToDate(departureDate).toString());
     }
-        
+
 }

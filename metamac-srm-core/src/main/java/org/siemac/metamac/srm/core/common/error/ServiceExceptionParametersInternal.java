@@ -3,11 +3,11 @@ package org.siemac.metamac.srm.core.common.error;
 public class ServiceExceptionParametersInternal {
 
     // External Item
-    public static final String EXTERNAL_ITEM_CODE                           = ".external_item.type";
-    public static final String EXTERNAL_ITEM_URI                            = ".external_item.uri";
-    public static final String EXTERNAL_ITEM_URN                            = ".external_item.urn";
-    public static final String EXTERNAL_ITEM_TYPE                           = ".external_item.type";
-    public static final String EXTERNAL_ITEM_TITLE                          = ".external_item.title";
+    public static final String EXTERNAL_ITEM_CODE                          = ".external_item.type";
+    public static final String EXTERNAL_ITEM_URI                           = ".external_item.uri";
+    public static final String EXTERNAL_ITEM_URN                           = ".external_item.urn";
+    public static final String EXTERNAL_ITEM_TYPE                          = ".external_item.type";
+    public static final String EXTERNAL_ITEM_TITLE                         = ".external_item.title";
 
     // Facet
     public static final String FACET_IS_SEQUENCE_FT                        = ".facet.is_sequence_ft";

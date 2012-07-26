@@ -43,9 +43,9 @@ public class KryoTest {
     @Autowired
     protected SrmCoreServiceFacade srmCoreServiceFacade;
 
-    private ByteBuffer                   buffer = ByteBuffer.allocateDirect(1024);
+    private ByteBuffer             buffer = ByteBuffer.allocateDirect(1024);
 
-    static Logger                        logger = Logger.getLogger(KryoTest.class.getName());
+    static Logger                  logger = Logger.getLogger(KryoTest.class.getName());
 
     @BeforeClass
     public static void setUp() {
@@ -83,7 +83,8 @@ public class KryoTest {
         return serviceContext;
     }
 
-    @Ignore // TODO está fallando
+    @Ignore
+    // TODO está fallando
     @Test
     // @Rollback(false)
     public void testSerializeDSD() throws Exception {

@@ -27,7 +27,6 @@ import org.siemac.metamac.srm.core.base.serviceapi.utils.BaseDoMocks;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.structure.domain.DataStructureDefinition;
 import org.siemac.metamac.srm.core.structure.domain.MeasureDimension;
-import org.siemac.metamac.srm.core.structure.serviceimpl.DataStructureDefinitionServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -140,7 +139,7 @@ public class DataStructureDefinitionServiceTest extends SrmBaseTest implements D
 
         ComponentList componentList = BaseDoMocks.createDimensionDescriptor();
         dataStructureDefinitionService.saveDescriptorForDsd(getServiceContext(), dataStructureDefinition, componentList);
-        
+
         MeasureDimension measureDim = BaseDoMocks.createMeasureDimension();
         dataStructureDefinitionService.saveComponentForDsd(getServiceContext(), dataStructureDefinition, measureDim, TypeComponentList.DIMENSION_DESCRIPTOR);
 

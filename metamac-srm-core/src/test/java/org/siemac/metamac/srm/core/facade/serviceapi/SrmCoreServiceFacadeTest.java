@@ -1,12 +1,10 @@
 package org.siemac.metamac.srm.core.facade.serviceapi;
 
-import static org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder.criteriaFor;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import static org.siemac.metamac.srm.core.structure.domain.DataStructureDefinitionProperties.code;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -23,9 +21,6 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.apache.commons.lang.StringUtils;
 import org.dozer.DozerBeanMapper;
-import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
-import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
-import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -55,7 +50,6 @@ import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.criteria.DataStructureDefinitionCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.facade.serviceapi.utils.SDMXResources;
 import org.siemac.metamac.srm.core.facade.serviceapi.utils.SrmDtoMocks;
-import org.siemac.metamac.srm.core.structure.domain.DataStructureDefinition;
 import org.siemac.metamac.trans.v2_1.message.Structure;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -538,7 +532,7 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest /* implements SrmCoreS
         MetamacCriteriaDisjunctionRestriction disjunction = new MetamacCriteriaDisjunctionRestriction();
         disjunction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(DataStructureDefinitionCriteriaPropertyEnum.CODE.name(), code, OperationType.EQ));
         metamacCriteria.setRestriction(disjunction);
-        
+
         MetamacCriteriaResult<DataStructureDefinitionDto> metamacCriteriaResult = srmCoreServiceFacade.findDsdByCondition(getServiceContext(), metamacCriteria);
 
         if (metamacCriteriaResult.getResults().isEmpty()) {

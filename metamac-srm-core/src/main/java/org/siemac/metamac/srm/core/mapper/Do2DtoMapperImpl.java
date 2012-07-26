@@ -1,7 +1,6 @@
 package org.siemac.metamac.srm.core.mapper;
 
 import org.dozer.DozerBeanMapper;
-import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.dto.LocalisedStringDto;
@@ -40,7 +39,6 @@ import org.siemac.metamac.srm.core.base.domain.MaintainableArtefact;
 import org.siemac.metamac.srm.core.base.domain.NameableArtefact;
 import org.siemac.metamac.srm.core.base.domain.Representation;
 import org.siemac.metamac.srm.core.base.domain.TextFormatRepresentation;
-import org.siemac.metamac.srm.core.base.serviceapi.BaseService;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersion;
 import org.siemac.metamac.srm.core.structure.domain.AttributeDescriptor;
 import org.siemac.metamac.srm.core.structure.domain.AttributeRelationship;
@@ -91,7 +89,6 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
     /**************************************************************************
      * PUBLIC (INTERFACE)
      **************************************************************************/
-
 
     @SuppressWarnings("unchecked")
     @Override
@@ -257,7 +254,7 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
         // Parent
         return maintainableArtefactToDto(typeDozerCopyMode, dataStructureDefinition, result);
     }
-    
+
     @Override
     public DataStructureDefinitionExtendDto dataStructureDefinitionToDataStructureDefinitionExtendDto(TypeDozerCopyMode typeDozerCopyMode, DataStructureDefinition dataStructureDefinition) {
         if (dataStructureDefinition == null) {
@@ -269,7 +266,7 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
 
         // TO EXTENDS
         DataStructureDefinitionExtendDto result = getMapperCore(typeDozerCopyMode).map(dataStructureDefinition, DataStructureDefinitionExtendDto.class);
-        
+
         for (ComponentList componentList : dataStructureDefinition.getGrouping()) {
             result.addGrouping((DescriptorDto) componentListToComponentListDto(typeDozerCopyMode, componentList));
         }
@@ -436,7 +433,7 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
 
         return result;
     }
-    
+
     private RepresentationDto representationToRepresentationDto(TypeDozerCopyMode typeDozerCopyMode, Representation representation) {
         if (representation == null) {
             return null;

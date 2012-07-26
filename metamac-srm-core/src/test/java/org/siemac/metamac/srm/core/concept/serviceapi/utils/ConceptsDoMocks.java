@@ -12,8 +12,9 @@ public class ConceptsDoMocks {
     public static ConceptSchemeVersion createConceptScheme() {
         ConceptSchemeVersion conceptSchemeVersion = new ConceptSchemeVersion();
         conceptSchemeVersion.setType(ConceptSchemeTypeEnum.OPERATION);
-        conceptSchemeVersion.setRelatedOperation(new ExternalItem("relatedOperation" + MetamacMocks.mockString(10), BaseDoMocks.URI_MOCK, "urn:" + "relatedOperation" + MetamacMocks.mockString(10), TypeExternalArtefactsEnum.CONCEPT_SCHEME));
-        
+        conceptSchemeVersion.setRelatedOperation(new ExternalItem("relatedOperation" + MetamacMocks.mockString(10), BaseDoMocks.URI_MOCK, "urn:" + "relatedOperation" + MetamacMocks.mockString(10),
+                TypeExternalArtefactsEnum.CONCEPT_SCHEME));
+
         // item scheme
         BaseDoMocks.fillItemSchemeToCreate(conceptSchemeVersion);
         return conceptSchemeVersion;

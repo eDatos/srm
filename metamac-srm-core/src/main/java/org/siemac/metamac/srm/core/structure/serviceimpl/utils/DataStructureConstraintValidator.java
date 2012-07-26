@@ -19,9 +19,9 @@ import org.siemac.metamac.srm.core.base.domain.EnumeratedRepresentation;
 import org.siemac.metamac.srm.core.base.domain.Facet;
 import org.siemac.metamac.srm.core.base.domain.Representation;
 import org.siemac.metamac.srm.core.base.domain.TextFormatRepresentation;
-import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParametersInternal;
+import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.structure.domain.AttributeDescriptor;
 import org.siemac.metamac.srm.core.structure.domain.AttributeRelationship;
 import org.siemac.metamac.srm.core.structure.domain.DataAttribute;
@@ -434,8 +434,8 @@ public class DataStructureConstraintValidator {
                 checkTimeTextFormatType(((TextFormatRepresentation) representation).getNonEnumerated(), ServiceExceptionParameters.TIME_DIMENSION, exceptions);
             }
         } else if (representation instanceof EnumeratedRepresentation) {
-            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.PARAMETER_INCORRECT, ServiceExceptionParameters.TIME_DIMENSION
-                    + ServiceExceptionParametersInternal.REPRESENTATION_ENUMERATED));
+            exceptions
+                    .add(new MetamacExceptionItem(ServiceExceptionType.PARAMETER_INCORRECT, ServiceExceptionParameters.TIME_DIMENSION + ServiceExceptionParametersInternal.REPRESENTATION_ENUMERATED));
         }
     }
 

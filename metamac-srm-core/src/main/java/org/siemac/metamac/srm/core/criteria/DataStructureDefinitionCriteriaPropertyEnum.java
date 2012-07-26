@@ -1,9 +1,9 @@
 package org.siemac.metamac.srm.core.criteria;
 
-public enum DataStructureDefinitionCriteriaPropertyEnum  {
+public enum DataStructureDefinitionCriteriaPropertyEnum {
 
     CODE;
-    
+
     public String value() {
         return name();
     }

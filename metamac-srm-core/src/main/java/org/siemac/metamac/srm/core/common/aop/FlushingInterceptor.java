@@ -6,7 +6,7 @@ import javax.persistence.PersistenceContext;
 import org.siemac.metamac.core.common.aop.FlushingInterceptorBase;
 
 public class FlushingInterceptor extends FlushingInterceptorBase {
-    
+
     @Override
     @PersistenceContext(unitName = "SrmCoreEntityManagerFactory")
     protected void setEntityManager(EntityManager entityManager) {

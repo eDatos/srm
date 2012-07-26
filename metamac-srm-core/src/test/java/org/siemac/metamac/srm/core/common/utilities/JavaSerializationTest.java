@@ -34,9 +34,9 @@ public class JavaSerializationTest {
     @Autowired
     protected SrmCoreServiceFacade srmCoreServiceFacade;
 
-    private ByteBuffer                   buffer = ByteBuffer.allocateDirect(1024);
+    private ByteBuffer             buffer = ByteBuffer.allocateDirect(1024);
 
-    static Logger                        logger = Logger.getLogger(JavaSerializationTest.class.getName());
+    static Logger                  logger = Logger.getLogger(JavaSerializationTest.class.getName());
 
     @BeforeClass
     public static void setUp() {

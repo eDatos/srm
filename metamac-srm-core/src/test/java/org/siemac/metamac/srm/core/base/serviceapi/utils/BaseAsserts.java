@@ -18,23 +18,22 @@ public class BaseAsserts {
     public static void assertEqualsItemScheme(ItemSchemeVersion expected, ItemSchemeVersion actual) {
         assertEqualsMaintainableArtefact(expected.getMaintainableArtefact(), actual.getMaintainableArtefact());
     }
-    
-    public static void assertEqualsMaintainableArtefact(MaintainableArtefact expected, MaintainableArtefact actual) {
-        
-         // IdentifiableArtefact
-         assertEquals(expected.getCode(), actual.getCode());
-        
-         // NameableArtefact
-         assertEqualsInternationalString(expected.getName(), actual.getName());
-         assertEqualsInternationalString(expected.getDescription(), actual.getDescription());
-        
-         // MaintainableArtefact
-         assertEquals(expected.getIsExternalReference(), actual.getIsExternalReference());
-         assertEquals(expected.getStructureURL(), actual.getStructureURL());
-         assertEquals(expected.getServiceURL(), actual.getServiceURL());
-         assertEqualsExternalItem(expected.getMaintainer(), actual.getMaintainer());
-    }
 
+    public static void assertEqualsMaintainableArtefact(MaintainableArtefact expected, MaintainableArtefact actual) {
+
+        // IdentifiableArtefact
+        assertEquals(expected.getCode(), actual.getCode());
+
+        // NameableArtefact
+        assertEqualsInternationalString(expected.getName(), actual.getName());
+        assertEqualsInternationalString(expected.getDescription(), actual.getDescription());
+
+        // MaintainableArtefact
+        assertEquals(expected.getIsExternalReference(), actual.getIsExternalReference());
+        assertEquals(expected.getStructureURL(), actual.getStructureURL());
+        assertEquals(expected.getServiceURL(), actual.getServiceURL());
+        assertEqualsExternalItem(expected.getMaintainer(), actual.getMaintainer());
+    }
 
     // -----------------------------------------------------------------
     // INTERNATIONAL STRING

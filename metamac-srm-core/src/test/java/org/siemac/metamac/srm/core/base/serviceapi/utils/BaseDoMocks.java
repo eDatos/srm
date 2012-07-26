@@ -91,7 +91,7 @@ public class BaseDoMocks {
     public static ExternalItem mockConceptExternalItem() {
         return new ExternalItem(CONCEPT_MOCK, URI_MOCK, mockConceptUrn(), TypeExternalArtefactsEnum.CONCEPT);
     }
-    
+
     public static ExternalItem mockConceptSchemeExternalItem() {
         return new ExternalItem(CONCEPT_SCHEME_MOCK, URI_MOCK, mockConceptSchemeUrn(), TypeExternalArtefactsEnum.CONCEPT_SCHEME);
     }
@@ -155,10 +155,10 @@ public class BaseDoMocks {
         measureDimension.setUri(RandomStringUtils.random(50, true, true));
         measureDimension.setCptIdRef(BaseDoMocks.mockConceptExternalItem());
         measureDimension.setOrderLogic(1);
-        
+
         // Representation: ConceptScheme
         Representation representation = new EnumeratedRepresentation();
-        ((EnumeratedRepresentation)representation).setEnumerated(BaseDoMocks.mockConceptSchemeExternalItem());
+        ((EnumeratedRepresentation) representation).setEnumerated(BaseDoMocks.mockConceptSchemeExternalItem());
         measureDimension.setLocalRepresentation(representation);
 
         // Some Auditory

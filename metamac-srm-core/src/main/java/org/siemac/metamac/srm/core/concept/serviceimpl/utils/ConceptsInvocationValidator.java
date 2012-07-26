@@ -66,7 +66,7 @@ public class ConceptsInvocationValidator {
 
     // TODO nombre de los parámetros de las excepciones? ¿poner conceptScheme en lugar del genérico itemScheme?
     private static void checkConceptScheme(ConceptSchemeVersion conceptSchemeVersion, List<MetamacExceptionItem> exceptions) {
-        
+
         // Common metadata of item scheme
         BaseInvocationValidator.checkItemScheme(conceptSchemeVersion, exceptions);
 

@@ -45,7 +45,6 @@ public class SrmDtoMocks {
         return serviceContext;
     }
 
-
     /**************************************************************************
      * UTILS
      **************************************************************************/
@@ -60,7 +59,7 @@ public class SrmDtoMocks {
 
         // Required --------
         dataStructureDefinitionDto.setCode("DSD_" + RandomStringUtils.randomAlphabetic(10));
-        
+
         // Name
         InternationalStringDto name = new InternationalStringDto();
 
@@ -74,13 +73,13 @@ public class SrmDtoMocks {
         name.addText(name_en);
         name.addText(name_es);
         dataStructureDefinitionDto.setName(name);
-        
+
         // Maintainer
         dataStructureDefinitionDto.setMaintainer(MetamacMocks.mockExternalItemDto(BaseDoMocks.mockAgencyUrn(), TypeExternalArtefactsEnum.AGENCY));
-        
+
         // Other --------
         dataStructureDefinitionDto.setServiceURL("test");
-        
+
         // Version Logic
         dataStructureDefinitionDto.setVersionLogic(VersionUtil.VERSION_INITIAL_VERSION);
 
@@ -241,10 +240,9 @@ public class SrmDtoMocks {
         primaryMeasure.setCptIdRef(conceptDtos.get(0));
         primaryMeasure.setTypeComponent(TypeComponent.PRIMARY_MEASURE);
         primaryMeasure.setCptIdRef(MetamacMocks.mockExternalItemDto(BaseDoMocks.mockConceptUrn(), TypeExternalArtefactsEnum.CONCEPT));
-        
+
         // Other
         primaryMeasure.setUri(RandomStringUtils.random(50, true, true));
-
 
         return primaryMeasure;
     }
@@ -312,36 +310,36 @@ public class SrmDtoMocks {
         return descriptorDto;
     }
 
-//    /**
-//     * Concept
-//     * 
-//     * @return
-//     */
-//    public static ConceptDto createConceptDTO() {
-//        ConceptDto conceptDto = new ConceptDto();
-//
-//        // Required
-//        conceptDto.setUri(RandomStringUtils.random(50, true, true));
-//
-//        // Required: Name
-//        InternationalStringDto name = new InternationalStringDto();
-//        LocalisedStringDto name_es = new LocalisedStringDto();
-//        name_es.setLabel("NAME ES CONCEPT");
-//        name_es.setLocale("es");
-//        LocalisedStringDto name_en = new LocalisedStringDto();
-//        name_en.setLabel("NAME EN CONCEPT");
-//        name_en.setLocale("en");
-//
-//        name.addText(name_en);
-//        name.addText(name_es);
-//        conceptDto.setName(name);
-//
-//        // Others
-//        conceptDto.setISOConceptReferenceAgency("iSOConceptReferenceAgency");
-//        conceptDto.setISOConceptReferenceSchemeID("ISOConceptReferenceSchemeID");
-//
-//        return conceptDto;
-//    }
+    // /**
+    // * Concept
+    // *
+    // * @return
+    // */
+    // public static ConceptDto createConceptDTO() {
+    // ConceptDto conceptDto = new ConceptDto();
+    //
+    // // Required
+    // conceptDto.setUri(RandomStringUtils.random(50, true, true));
+    //
+    // // Required: Name
+    // InternationalStringDto name = new InternationalStringDto();
+    // LocalisedStringDto name_es = new LocalisedStringDto();
+    // name_es.setLabel("NAME ES CONCEPT");
+    // name_es.setLocale("es");
+    // LocalisedStringDto name_en = new LocalisedStringDto();
+    // name_en.setLabel("NAME EN CONCEPT");
+    // name_en.setLocale("en");
+    //
+    // name.addText(name_en);
+    // name.addText(name_es);
+    // conceptDto.setName(name);
+    //
+    // // Others
+    // conceptDto.setISOConceptReferenceAgency("iSOConceptReferenceAgency");
+    // conceptDto.setISOConceptReferenceSchemeID("ISOConceptReferenceSchemeID");
+    //
+    // return conceptDto;
+    // }
 
     public static DataflowDefinitionDto createDataflowDefinitionDTO(String structureCode) {
         DataflowDefinitionDto describedBy = new DataflowDefinitionDto();

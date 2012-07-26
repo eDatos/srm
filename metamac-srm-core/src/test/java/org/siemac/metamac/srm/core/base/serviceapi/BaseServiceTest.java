@@ -20,14 +20,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/srm/applicationContext-test.xml"})
-@TransactionConfiguration(transactionManager="txManagerCore", defaultRollback=true)
+@TransactionConfiguration(transactionManager = "txManagerCore", defaultRollback = true)
 @Transactional
 public class BaseServiceTest extends SrmBaseTest implements BaseServiceTestBase {
 
     @Autowired
-    protected BaseService    baseService;
+    protected BaseService        baseService;
 
-    private final ServiceContext serviceContext               = new ServiceContext("system", "123456", "junit");
+    private final ServiceContext serviceContext = new ServiceContext("system", "123456", "junit");
 
     protected ServiceContext getServiceContext() {
         return serviceContext;

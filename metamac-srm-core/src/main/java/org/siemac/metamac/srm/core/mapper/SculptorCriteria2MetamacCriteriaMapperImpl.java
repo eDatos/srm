@@ -16,20 +16,19 @@ public class SculptorCriteria2MetamacCriteriaMapperImpl implements SculptorCrite
 
     @Autowired
     private Do2DtoMapper do2DtoMapper;
-    
+
     @Override
     public MetamacCriteriaResult<DataStructureDefinitionDto> pageResultToMetamacCriteriaResultDataStructureDefinition(PagedResult<DataStructureDefinition> source, Integer pageSize) {
         MetamacCriteriaResult<DataStructureDefinitionDto> target = new MetamacCriteriaResult<DataStructureDefinitionDto>();
         target.setPaginatorResult(SculptorCriteria2MetamacCriteria.sculptorResultToMetamacCriteriaResult(source, pageSize));
-        if (source.getValues() !=  null) {
+        if (source.getValues() != null) {
             target.setResults(new ArrayList<DataStructureDefinitionDto>());
-            for (DataStructureDefinition dataStructureDefinition: source.getValues()) {
+            for (DataStructureDefinition dataStructureDefinition : source.getValues()) {
                 target.getResults().add(do2DtoMapper.dataStructureDefinitionToDataStructureDefinitionDto(TypeDozerCopyMode.UPDATE, dataStructureDefinition));
             }
         }
-        
+
         return target;
     }
-
 
 }

@@ -325,8 +325,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         // Check Type
         if (!typeComponentList.equals(TypeComponentList.ATTRIBUTE_DESCRIPTOR) && !typeComponentList.equals(TypeComponentList.DIMENSION_DESCRIPTOR)
                 && !typeComponentList.equals(TypeComponentList.GROUP_DIMENSION_DESCRIPTOR) && !typeComponentList.equals(TypeComponentList.MEASURE_DESCRIPTOR)) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.PARAMETER_INCORRECT).withLoggedLevel(ExceptionLevelEnum.INFO).withMessageParameters(ServiceExceptionParameters.COMPONENT_LIST)
-                    .build();
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.PARAMETER_INCORRECT).withLoggedLevel(ExceptionLevelEnum.INFO)
+                    .withMessageParameters(ServiceExceptionParameters.COMPONENT_LIST).build();
         }
 
         // To DTOs
@@ -515,7 +515,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public ConceptSchemeDto createConceptScheme(ServiceContext ctx, ConceptSchemeDto conceptSchemeDto) throws MetamacException {
         // Security TODO
-        
+
         // Transform
         ConceptSchemeVersion conceptSchemeVersion = dto2DoMapper.conceptSchemeDtoToDo(ctx, conceptSchemeDto);
 
@@ -563,7 +563,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
                 descriptorDtos.add((DescriptorDto) getDo2DtoMapper().componentListToComponentListDto(typeDozerCopyMode, componentList));
             }
         } catch (DataStructureDefinitionNotFoundException e) {
-            throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SRM_SEARCH_NOT_FOUND).withMessageParameters(ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION).build();
+            throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SRM_SEARCH_NOT_FOUND)
+                    .withMessageParameters(ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION).build();
         }
 
         return descriptorDtos;

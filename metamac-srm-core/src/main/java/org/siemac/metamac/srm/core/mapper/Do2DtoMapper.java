@@ -21,7 +21,7 @@ public interface Do2DtoMapper {
     public <T extends ComponentListDto> T componentListToComponentListDto(TypeDozerCopyMode typeDozerCopyMode, ComponentList componentList);
 
     public DataStructureDefinitionDto dataStructureDefinitionToDataStructureDefinitionDto(TypeDozerCopyMode typeDozerCopyMode, DataStructureDefinition dataStructureDefinition);
-    
+
     public DataStructureDefinitionExtendDto dataStructureDefinitionToDataStructureDefinitionExtendDto(TypeDozerCopyMode typeDozerCopyMode, DataStructureDefinition dataStructureDefinition);
 
     public ConceptSchemeDto conceptSchemeDoToDto(ConceptSchemeVersion conceptSchemeVersion);

@@ -124,15 +124,15 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
     private FacetRepository                   facetRepository;
 
     @Autowired
-    private ItemSchemeVersionRepository       itemSchemeVersionRepository;    
-    
+    private ItemSchemeVersionRepository       itemSchemeVersionRepository;
+
     /**************************************************************************
      * GETTERS
      **************************************************************************/
     protected ComponentListRepository getComponentListRepository() {
         return componentListRepository;
     }
-    
+
     protected ComponentRepository getComponentRepository() {
         return componentRepository;
     }
@@ -202,15 +202,15 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         T result = null;
         // DataAttribute ******************************************************
         if (source.getTypeComponent().equals(TypeComponent.DATA_ATTRIBUTE)) {
-            result = (T)dataAttributeDtoToDataAttribute(ctx, (DataAttributeDto) source);
+            result = (T) dataAttributeDtoToDataAttribute(ctx, (DataAttributeDto) source);
         }
         // DimensionComponent ***************************************************
         else if (source.getTypeComponent().equals(TypeComponent.DIMENSION_COMPONENT)) {
-            result = (T)dimensionComponentDtoToDimensionComponent(ctx, (DimensionComponentDto) source);
+            result = (T) dimensionComponentDtoToDimensionComponent(ctx, (DimensionComponentDto) source);
         }
         // Primary Measure ***************************************************
         else if (source.getTypeComponent().equals(TypeComponent.PRIMARY_MEASURE)) {
-            result = (T)componentDtoToPrimaryMeasure(ctx, source);
+            result = (T) componentDtoToPrimaryMeasure(ctx, source);
         } else {
             // The TargetObject may be enumerated and, if so, can use any ItemScheme
             // 785 (Codelist, ConceptScheme, OrganisationScheme, CategoryScheme,
@@ -224,8 +224,6 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
 
         return identifiableArtefactDtoToEntity(ctx, source, result);
     }
-
- 
 
     /**************************************************************************
      * COMPONENT_LISTS
@@ -267,15 +265,14 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
                     // ComponentList is a abstract class, cannot be instantiated
                     throw new UnsupportedOperationException("componentListDtoToComponentList for Unknown Entity not implemented");
             }
-        }
-        else {
+        } else {
             // Update
             try {
                 result = (T) getComponentListRepository().findById(source.getId());
                 OptimisticLockingUtils.checkVersion(result.getVersion(), source.getVersion());
             } catch (ComponentListNotFoundException e) {
                 throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SRM_SEARCH_NOT_FOUND).withMessageParameters(ServiceExceptionParameters.COMPONENT_LIST)
-                .withLoggedLevel(ExceptionLevelEnum.ERROR).build();
+                        .withLoggedLevel(ExceptionLevelEnum.ERROR).build();
             }
         }
 
@@ -288,8 +285,6 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         return identifiableArtefactDtoToEntity(ctx, source, result);
     }
 
-    
-
     /**************************************************************************
      * DATASTRUCTUREDEFINITION
      **************************************************************************/
@@ -298,7 +293,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         if (source == null) {
             return null;
         }
-        
+
         // Hierachy:
         // DataStructureDefinitionDto > MaintainableArtefactDto > NameableArtefactDto > IdentifiableArtefactDto > AnnotableArtefacDto > AuditableDto > IdentityDto
         // DataStructureDefinition > Structure > MaintainableArtefact > NameableArtefact > IdentifiableArtefact > AnnotableArtefact
@@ -333,7 +328,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
     // ------------------------------------------------------------
     // BASE
     // ------------------------------------------------------------
-    
+
     /**
      * @param source Dto to transform
      * @param older Current Entity for this Dto, null if is new
@@ -412,8 +407,8 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
                 target = getAnnotationRepository().findById(source.getId());
                 OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersion());
             } catch (AnnotationNotFoundException e) {
-                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SRM_SEARCH_NOT_FOUND)
-                        .withMessageParameters(ServiceExceptionParameters.ANNOTATION).withLoggedLevel(ExceptionLevelEnum.ERROR).build();
+                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SRM_SEARCH_NOT_FOUND).withMessageParameters(ServiceExceptionParameters.ANNOTATION)
+                        .withLoggedLevel(ExceptionLevelEnum.ERROR).build();
             }
         }
 
@@ -549,11 +544,11 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
 
         return nameableToEntity(ctx, source, target, older);
     }
-    
+
     // ------------------------------------------------------------
     // COMPONTENTS
     // ------------------------------------------------------------
-    
+
     private <T extends DataAttribute> T dataAttributeDtoToDataAttribute(ServiceContext ctx, DataAttributeDto source) throws MetamacException {
         if (source == null) {
             return null;
@@ -593,8 +588,8 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
                 result = (T) getComponentRepository().findById(source.getId());
                 OptimisticLockingUtils.checkVersion(result.getVersion(), source.getVersion());
             } catch (ComponentNotFoundException e) {
-                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SRM_SEARCH_NOT_FOUND)
-                        .withMessageParameters(ServiceExceptionParameters.DATA_ATTRIBUTE).withLoggedLevel(ExceptionLevelEnum.ERROR).build();
+                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SRM_SEARCH_NOT_FOUND).withMessageParameters(ServiceExceptionParameters.DATA_ATTRIBUTE)
+                        .withLoggedLevel(ExceptionLevelEnum.ERROR).build();
             }
         }
 
@@ -604,7 +599,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         // Related entities
         // Relate To
         ((DataAttribute) result).setRelateTo(attributeRelationshipDtoToAttributeRelationship(ctx, source.getRelateTo(), ((DataAttribute) result).getRelateTo()));
-        
+
         if (TypeDataAttribute.DATA_ATTRIBUTE.equals(source.getTypeDataAttribute())) {
             // Concept identity
             result.setCptIdRef(externalItemDtoToExternalItem(ctx, source.getCptIdRef(), "DataAttributeConceptIdentity")); // TODO args exp
@@ -719,9 +714,9 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         }
 
         // LocalRepresentation
-        result.setLocalRepresentation(representationDtoToRepresentation(ctx, source.getLocalRepresentation(), result.getLocalRepresentation(),
-                ServiceExceptionParameters.DIMENSION + ServiceExceptionParametersInternal.REPRESENTATION));
-        
+        result.setLocalRepresentation(representationDtoToRepresentation(ctx, source.getLocalRepresentation(), result.getLocalRepresentation(), ServiceExceptionParameters.DIMENSION
+                + ServiceExceptionParametersInternal.REPRESENTATION));
+
         // Concept identity
         result.setCptIdRef(externalItemDtoToExternalItem(ctx, source.getCptIdRef(), "DimensionConceptIdentity")); // TODO args exp
 
@@ -743,8 +738,8 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
                 result = (T) getComponentRepository().findById(source.getId());
                 OptimisticLockingUtils.checkVersion(result.getVersion(), source.getVersion());
             } catch (ComponentNotFoundException e) {
-                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SRM_SEARCH_NOT_FOUND)
-                        .withMessageParameters(ServiceExceptionParameters.MEASURE_DIMENSION).withLoggedLevel(ExceptionLevelEnum.ERROR).build();
+                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SRM_SEARCH_NOT_FOUND).withMessageParameters(ServiceExceptionParameters.MEASURE_DIMENSION)
+                        .withLoggedLevel(ExceptionLevelEnum.ERROR).build();
             }
         }
 
@@ -772,12 +767,12 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         }
 
         // LocalRepresentation
-        result.setLocalRepresentation(representationDtoToRepresentation(ctx, source.getLocalRepresentation(), result.getLocalRepresentation(),
-                ServiceExceptionParameters.MEASURE_DIMENSION + ServiceExceptionParametersInternal.REPRESENTATION));
+        result.setLocalRepresentation(representationDtoToRepresentation(ctx, source.getLocalRepresentation(), result.getLocalRepresentation(), ServiceExceptionParameters.MEASURE_DIMENSION
+                + ServiceExceptionParametersInternal.REPRESENTATION));
 
         // Concept identity
         result.setCptIdRef(externalItemDtoToExternalItem(ctx, source.getCptIdRef(), "MeasureDimensionConceptIdentity")); // TODO args exp
-        
+
         return result;
     }
 
@@ -796,14 +791,14 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
                 result = (T) getComponentRepository().findById(source.getId());
                 OptimisticLockingUtils.checkVersion(result.getVersion(), source.getVersion());
             } catch (ComponentNotFoundException e) {
-                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SRM_SEARCH_NOT_FOUND)
-                        .withMessageParameters(ServiceExceptionParameters.TIME_DIMENSION).withLoggedLevel(ExceptionLevelEnum.ERROR).build();
+                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SRM_SEARCH_NOT_FOUND).withMessageParameters(ServiceExceptionParameters.TIME_DIMENSION)
+                        .withLoggedLevel(ExceptionLevelEnum.ERROR).build();
             }
         }
 
         // LocalRepresentation
-        result.setLocalRepresentation(representationDtoToRepresentation(ctx, source.getLocalRepresentation(), result.getLocalRepresentation(),
-                ServiceExceptionParameters.TIME_DIMENSION + ServiceExceptionParametersInternal.REPRESENTATION));
+        result.setLocalRepresentation(representationDtoToRepresentation(ctx, source.getLocalRepresentation(), result.getLocalRepresentation(), ServiceExceptionParameters.TIME_DIMENSION
+                + ServiceExceptionParametersInternal.REPRESENTATION));
 
         return result;
     }
@@ -823,25 +818,25 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
                 result = (T) getComponentRepository().findById(source.getId());
                 OptimisticLockingUtils.checkVersion(result.getVersion(), source.getVersion());
             } catch (ComponentNotFoundException e) {
-                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SRM_SEARCH_NOT_FOUND)
-                        .withMessageParameters(ServiceExceptionParameters.PRIMARY_MEASURE).withLoggedLevel(ExceptionLevelEnum.ERROR).build();
+                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SRM_SEARCH_NOT_FOUND).withMessageParameters(ServiceExceptionParameters.PRIMARY_MEASURE)
+                        .withLoggedLevel(ExceptionLevelEnum.ERROR).build();
             }
         }
 
         // LocalRepresentation
-        result.setLocalRepresentation(representationDtoToRepresentation(ctx, source.getLocalRepresentation(), result.getLocalRepresentation(),
-                ServiceExceptionParameters.COMPONENT + ServiceExceptionParametersInternal.REPRESENTATION));
-        
+        result.setLocalRepresentation(representationDtoToRepresentation(ctx, source.getLocalRepresentation(), result.getLocalRepresentation(), ServiceExceptionParameters.COMPONENT
+                + ServiceExceptionParametersInternal.REPRESENTATION));
+
         // Concept identity
         result.setCptIdRef(externalItemDtoToExternalItem(ctx, source.getCptIdRef(), "PrimaryMeasureConceptIdentity")); // TODO args exp
 
         return result;
     }
-    
+
     // ------------------------------------------------------------
     // ATTRIBUTE RELATIONSHIP
     // ------------------------------------------------------------
-    
+
     private AttributeRelationship attributeRelationshipDtoToAttributeRelationship(ServiceContext ctx, RelationshipDto source, AttributeRelationship attributeRelationshipOlder) throws MetamacException {
         if (source == null) {
             // Delete old entity
@@ -890,13 +885,12 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
             // if source is different than previous
             if (!(attributeRelationshipOlder instanceof DimensionRelationship) || (source.getId().compareTo(attributeRelationshipOlder.getId()) != 0)) {
                 getAttributeRelationshipRepository().delete(attributeRelationshipOlder);
-            }
-            else {
+            } else {
                 // Update
-                result = (DimensionRelationship)attributeRelationshipOlder;
+                result = (DimensionRelationship) attributeRelationshipOlder;
             }
         }
-        
+
         // New
         if (result == null) {
             result = new DimensionRelationship();
@@ -933,19 +927,18 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         }
 
         GroupRelationship result = null;
-        
+
         // Previous version?
         if (attributeRelationshipOlder != null) {
             // if source is different than previous
             if (!(attributeRelationshipOlder instanceof GroupRelationship) || (source.getId().compareTo(attributeRelationshipOlder.getId()) != 0)) {
                 getAttributeRelationshipRepository().delete(attributeRelationshipOlder);
-            }
-            else {
+            } else {
                 // Update
-                result = (GroupRelationship)attributeRelationshipOlder;
+                result = (GroupRelationship) attributeRelationshipOlder;
             }
         }
-        
+
         // New
         if (result == null) {
             result = new GroupRelationship();
@@ -965,19 +958,18 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         }
 
         NoSpecifiedRelationship result = null;
-        
+
         // Previous version?
         if (attributeRelationshipOlder != null) {
             // if source is different than previous
             if (!(attributeRelationshipOlder instanceof NoSpecifiedRelationship) || (source.getId().compareTo(attributeRelationshipOlder.getId()) != 0)) {
                 getAttributeRelationshipRepository().delete(attributeRelationshipOlder);
-            }
-            else {
+            } else {
                 // Update
-                result = (NoSpecifiedRelationship)attributeRelationshipOlder;
+                result = (NoSpecifiedRelationship) attributeRelationshipOlder;
             }
         }
-        
+
         // New
         if (result == null) {
             result = new NoSpecifiedRelationship();
@@ -994,19 +986,18 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         }
 
         PrimaryMeasureRelationship result = null;
-        
+
         // Remove old data
         if (attributeRelationshipOlder != null) {
             // if source is different than previous
             if (!(attributeRelationshipOlder instanceof PrimaryMeasureRelationship) || (source.getId().compareTo(attributeRelationshipOlder.getId()) != 0)) {
                 getAttributeRelationshipRepository().delete(attributeRelationshipOlder);
-            }
-            else {
+            } else {
                 // Update
-                result = (PrimaryMeasureRelationship)attributeRelationshipOlder;
+                result = (PrimaryMeasureRelationship) attributeRelationshipOlder;
             }
         }
-        
+
         // New
         if (result == null) {
             result = new PrimaryMeasureRelationship();
@@ -1014,13 +1005,12 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
 
         return result;
     }
-    
+
     // ------------------------------------------------------------
     // REPRESENTATION
     // ------------------------------------------------------------
-    
-    private Representation representationDtoToRepresentation(ServiceContext ctx, RepresentationDto source, Representation representationOlder, String metadataEnumTitle)
-            throws MetamacException {
+
+    private Representation representationDtoToRepresentation(ServiceContext ctx, RepresentationDto source, Representation representationOlder, String metadataEnumTitle) throws MetamacException {
         if (source == null) {
             // Delete old entity
             if (representationOlder != null) {
@@ -1056,7 +1046,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         if (source == null) {
             return null;
         }
-        
+
         EnumeratedRepresentation result = null;
 
         // Previous version?
@@ -1064,13 +1054,12 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
             // if source is different than previous
             if (!(representationOlder instanceof EnumeratedRepresentation) || (representationOlder.getId().compareTo(source.getId()) != 0)) {
                 getRepresentationRepository().delete(representationOlder); // Remove old data
-            }
-            else {
+            } else {
                 // Update
-                result = (EnumeratedRepresentation)representationOlder;
+                result = (EnumeratedRepresentation) representationOlder;
             }
         }
-        
+
         // New
         if (result == null) {
             result = new EnumeratedRepresentation();
@@ -1086,21 +1075,20 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         if (source == null) {
             return null;
         }
-        
+
         TextFormatRepresentation result = null;
-        
+
         // Previous version?
         if (representationOlder != null) {
             // if source is different than previous
             if (!(representationOlder instanceof TextFormatRepresentation) || (representationOlder.getId().compareTo(source.getId()) != 0)) {
                 getRepresentationRepository().delete(representationOlder);
-            }
-            else {
+            } else {
                 // Update
-                result = (TextFormatRepresentation)representationOlder;
+                result = (TextFormatRepresentation) representationOlder;
             }
         }
-        
+
         // New
         if (result == null) {
             result = new TextFormatRepresentation();
@@ -1155,7 +1143,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
     // ------------------------------------------------------------
     // EXERNATLITEM
     // ------------------------------------------------------------
-    
+
     private ExternalItem externalItemDtoToExternalItem(ServiceContext ctx, ExternalItemDto source, String metadataName) throws MetamacException {
         if (source == null) {
             return null;
@@ -1181,7 +1169,6 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
 
         return result;
     }
-    
 
     // ------------------------------------------------------------
     // CONCEPT SCHEME
@@ -1218,15 +1205,14 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
 
         return target;
     }
-    
+
     private void itemSchemeDtoToDo(ServiceContext ctx, ItemSchemeDto source, ItemSchemeVersion target) throws MetamacException {
         // Required target entity because this class is abstract
         if (target == null) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.PARAMETER_REQUIRED).withMessageParameters(ServiceExceptionParameters.ITEM_SCHEME).build();
         }
         target.setIsPartial(source.getIsPartial());
-//        return maintainableArtefactToEntity(ctx, source, target, older); // TODO
+        // return maintainableArtefactToEntity(ctx, source, target, older); // TODO
     }
-
 
 }
