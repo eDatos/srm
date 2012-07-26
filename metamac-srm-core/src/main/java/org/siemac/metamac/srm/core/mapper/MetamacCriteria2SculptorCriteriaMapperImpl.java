@@ -54,7 +54,7 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                 case NAME:
                     return DataStructureDefinitionProperties.name().texts().label();
                 case LAST_UPDATED:
-                    return new LeafProperty<DataStructureDefinition>(DataStructureDefinitionProperties.lastUpdated().getName(), CoreCommonConstants.CRITERIA_DATETIME_COLUMN_OFFSET, true,
+                    return new LeafProperty<DataStructureDefinition>(DataStructureDefinitionProperties.lastUpdated().getName(), CoreCommonConstants.CRITERIA_DATETIME_COLUMN_DATETIME, true,
                             DataStructureDefinition.class);
                 default:
                     throw new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, order.getPropertyName());
