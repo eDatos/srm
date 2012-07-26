@@ -3,9 +3,11 @@ package org.siemac.metamac.srm.web.dsd.utils;
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.domain.srm.dto.AnnotationDto;
 import org.siemac.metamac.domain.srm.dto.DataAttributeDto;
+import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
 import org.siemac.metamac.domain.srm.dto.DescriptorDto;
 import org.siemac.metamac.domain.srm.dto.DimensionComponentDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
+import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
 import org.siemac.metamac.srm.web.dsd.model.record.AnnotationRecord;
 import org.siemac.metamac.srm.web.dsd.model.record.AttributeRecord;
 import org.siemac.metamac.srm.web.dsd.model.record.ConceptRecord;
@@ -18,6 +20,17 @@ import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import com.google.gwt.resources.client.ImageResource;
 
 public class RecordUtils {
+
+    /**
+     * Returns {@link DsdRecord} from {@link DataStructureDefinitionDto}
+     * 
+     * @param dsd
+     * @return
+     */
+    public static DsdRecord getDsdRecord(DataStructureDefinitionDto dsd) {
+        return new DsdRecord(dsd.getId(), dsd.getCode(), InternationalStringUtils.getLocalisedString(dsd.getName()), InternationalStringUtils.getLocalisedString(dsd.getDescription()),
+                dsd.getFinalLogic(), dsd);
+    }
 
     /**
      * Returns {@link DimensionRecord} from {@link DimensionComponentDto}

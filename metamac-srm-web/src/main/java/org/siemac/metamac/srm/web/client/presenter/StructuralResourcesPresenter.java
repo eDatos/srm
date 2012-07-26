@@ -42,6 +42,9 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
         implements
             StructuralResourcesUiHandlers {
 
+    public final static int                  RESOURCE_LIST_FIRST_RESULT = 0;
+    public final static int                  RESOURCE_LIST_MAX_RESULTS  = 10;
+
     private final DispatchAsync              dispatcher;
     private final PlaceManager               placeManager;
 
@@ -134,7 +137,7 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
      * AsyncCallback to fetch DSDs
      */
     protected void retrieveDsds() {
-        dispatcher.execute(new GetDsdListAction(), new WaitingAsyncCallback<GetDsdListResult>() {
+        dispatcher.execute(new GetDsdListAction(RESOURCE_LIST_FIRST_RESULT, RESOURCE_LIST_MAX_RESULTS), new WaitingAsyncCallback<GetDsdListResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {

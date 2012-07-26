@@ -13,10 +13,8 @@ import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.widgets.presenter.ToolStripPresenterWidget;
 import org.siemac.metamac.srm.web.dsd.events.SelectDsdAndDescriptorsEvent;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdListUiHandlers;
-import org.siemac.metamac.srm.web.shared.dsd.DeleteDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.DeleteDsdListAction;
 import org.siemac.metamac.srm.web.shared.dsd.DeleteDsdListResult;
-import org.siemac.metamac.srm.web.shared.dsd.DeleteDsdResult;
 import org.siemac.metamac.srm.web.shared.dsd.ExportDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.ExportDsdResult;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdAndDescriptorsAction;
@@ -59,12 +57,13 @@ import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 
 public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, DsdListPresenter.DsdListProxy> implements DsdListUiHandlers {
 
+    public final static int                           DSD_LIST_FIRST_RESULT                    = 0;
+    public final static int                           DSD_LIST_MAX_RESULTS                     = 30;
+
     private final DispatchAsync                       dispatcher;
     private final PlaceManager                        placeManager;
 
     private ToolStripPresenterWidget                  toolStripPresenterWidget;
-
-    private List<DataStructureDefinitionDto>          dsdList;
 
     /**
      * Use this in leaf presenters, inside their {@link #revealInParent} method.
@@ -86,10 +85,11 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
 
     public interface DsdListView extends View, HasUiHandlers<DsdListUiHandlers> {
 
-        public void setDsds(List<DataStructureDefinitionDto> dataStructureDefinitionDtos);
+        public void setDsds(List<DataStructureDefinitionDto> dataStructureDefinitionDtos, int firstResult, int totalResults);
         HasRecordClickHandlers getSelectedDsd();
         List<DataStructureDefinitionDto> getSelectedDsds();
         DataStructureDefinitionDto getNewDsd();
+        void onNewDsdCreated();
 
         HasClickHandlers getCreateDsd();
         com.smartgwt.client.widgets.events.HasClickHandlers getDelete();
@@ -116,7 +116,7 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
     @Override
     public void prepareFromRequest(PlaceRequest request) {
         super.prepareFromRequest(request);
-        retrieveDsds();
+        retrieveDsdList(DSD_LIST_FIRST_RESULT, DSD_LIST_MAX_RESULTS);
     }
 
     @Override
@@ -215,33 +215,17 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
     }
 
     @Override
-    public void deleteDsd(DataStructureDefinitionDto dataStructureDefinitionDto) {
-        dispatcher.execute(new DeleteDsdAction(dataStructureDefinitionDto), new WaitingAsyncCallback<DeleteDsdResult>() {
-
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorDelete()), MessageTypeEnum.ERROR);
-            }
-            @Override
-            public void onWaitSuccess(DeleteDsdResult result) {
-                ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdDeleted()), MessageTypeEnum.SUCCESS);
-                retrieveDsds();
-            }
-        });
-    }
-
-    @Override
     public void deleteDsds(List<DataStructureDefinitionDto> dataStructureDefinitionDtos) {
         dispatcher.execute(new DeleteDsdListAction(dataStructureDefinitionDtos), new WaitingAsyncCallback<DeleteDsdListResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                retrieveDsds();
+                retrieveDsdList(DSD_LIST_FIRST_RESULT, DSD_LIST_MAX_RESULTS);
                 ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorDelete()), MessageTypeEnum.ERROR);
             }
             @Override
             public void onWaitSuccess(DeleteDsdListResult result) {
-                retrieveDsds();
+                retrieveDsdList(DSD_LIST_FIRST_RESULT, DSD_LIST_MAX_RESULTS);
                 ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdDeleted()), MessageTypeEnum.SUCCESS);
             }
         });
@@ -251,8 +235,8 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
      * AsyncCallback to fetch DSDs
      */
     @Override
-    public void retrieveDsds() {
-        dispatcher.execute(new GetDsdListAction(), new WaitingAsyncCallback<GetDsdListResult>() {
+    public void retrieveDsdList(int firstResult, int maxResults) {
+        dispatcher.execute(new GetDsdListAction(firstResult, maxResults), new WaitingAsyncCallback<GetDsdListResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -260,8 +244,7 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
             }
             @Override
             public void onWaitSuccess(GetDsdListResult result) {
-                dsdList = result.getDsdDtos();
-                getView().setDsds(dsdList);
+                getView().setDsds(result.getDsdDtos(), result.getFirstResultOut(), result.getTotalResults());
             }
         });
     }
@@ -269,8 +252,7 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
     @Override
     public void dsdSuccessfullyImported(String fileName) {
         ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdImported()), MessageTypeEnum.SUCCESS);
-        // Reload DSD list
-        retrieveDsds();
+        getView().onNewDsdCreated();
     }
 
     @Override

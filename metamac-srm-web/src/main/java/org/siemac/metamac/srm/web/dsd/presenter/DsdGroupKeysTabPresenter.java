@@ -261,7 +261,7 @@ public class DsdGroupKeysTabPresenter extends Presenter<DsdGroupKeysTabPresenter
     }
 
     private void updateDsd() {
-        dispatcher.execute(new GetDsdAction(dataStructureDefinitionDto.getId()), new WaitingAsyncCallback<GetDsdResult>() {
+        dispatcher.execute(new GetDsdAction(dataStructureDefinitionDto.getUrn()), new WaitingAsyncCallback<GetDsdResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {

@@ -1,18 +1,8 @@
 package org.siemac.metamac.srm.web.server.handlers.dsd;
 
-import static org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder.criteriaFor;
-
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
-import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
-import org.siemac.metamac.srm.core.structure.domain.DataStructureDefinition;
-import org.siemac.metamac.srm.core.structure.domain.DataStructureDefinitionProperties;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdResult;
 import org.siemac.metamac.web.common.server.ServiceContextHolder;
@@ -27,8 +17,6 @@ import com.gwtplatform.dispatch.shared.ActionException;
 @Component
 public class GetDsdActionHandler extends SecurityActionHandler<GetDsdAction, GetDsdResult> {
 
-    private static Logger        logger = Logger.getLogger(GetDsdActionHandler.class.getName());
-
     @Autowired
     private SrmCoreServiceFacade srmCoreServiceFacade;
 
@@ -39,16 +27,11 @@ public class GetDsdActionHandler extends SecurityActionHandler<GetDsdAction, Get
     @Override
     public GetDsdResult executeSecurityAction(GetDsdAction action) throws ActionException {
         try {
-            List<ConditionalCriteria> conditions = criteriaFor(DataStructureDefinition.class).withProperty(DataStructureDefinitionProperties.id()).eq(action.getIdDsd()).build();
-            List<DataStructureDefinitionDto> dsdList = srmCoreServiceFacade.findDsdByCondition(ServiceContextHolder.getCurrentServiceContext(), conditions, PagingParameter.pageAccess(10)).getValues();
-            logger.log(Level.INFO, "ACTION SUCCESSFULLY: findDsdById");
-            if (!dsdList.isEmpty()) {
-                return new GetDsdResult(dsdList.get(0));
-            }
+            DataStructureDefinitionDto dataStructureDefinitionDto = srmCoreServiceFacade.retrieveDsdByUrn(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
+            return new GetDsdResult(dataStructureDefinitionDto);
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);
         }
-        return null;
     }
 
     @Override

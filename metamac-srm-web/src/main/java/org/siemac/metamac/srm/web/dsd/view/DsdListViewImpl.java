@@ -12,7 +12,7 @@ import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
 import org.siemac.metamac.srm.web.client.resources.GlobalResources;
-import org.siemac.metamac.srm.web.client.widgets.DsdsItemsContextAreaListGrid;
+import org.siemac.metamac.srm.web.client.widgets.DsdPaginatedListGrid;
 import org.siemac.metamac.srm.web.dsd.listener.UploadListener;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdListPresenter;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdListUiHandlers;
@@ -20,6 +20,7 @@ import org.siemac.metamac.srm.web.dsd.widgets.ImportDsdWindow;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
+import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.form.CustomDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
 
@@ -27,8 +28,6 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
 import com.smartgwt.client.types.Alignment;
-import com.smartgwt.client.types.SelectionAppearance;
-import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.types.VerticalAlignment;
 import com.smartgwt.client.types.Visibility;
 import com.smartgwt.client.widgets.Canvas;
@@ -51,32 +50,37 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> implements DsdListPresenter.DsdListView {
 
-    private VLayout                      panel;
+    private VLayout                  panel;
 
-    private DsdsItemsContextAreaListGrid dsdListGrid;
+    private DsdPaginatedListGrid     dsdListGrid;
 
-    private Window                       winModal;
-    private CustomDynamicForm            newDsdForm;
-    private RequiredTextItem             nameItem;
-    private RequiredTextItem             codeItem;
-    private ButtonItem                   createDsdButton;
+    private Window                   winModal;
+    private CustomDynamicForm        newDsdForm;
+    private RequiredTextItem         nameItem;
+    private RequiredTextItem         codeItem;
+    private ButtonItem               createDsdButton;
 
-    private ToolStripButton              newToolStripButton;
-    private ToolStripButton              deleteToolStripButton;
-    private ToolStripButton              importToolStripButton;
-    private ToolStripButton              exportToolStripButton;
+    private ToolStripButton          newToolStripButton;
+    private ToolStripButton          deleteToolStripButton;
+    private ToolStripButton          importToolStripButton;
+    private ToolStripButton          exportToolStripButton;
 
-    private DeleteConfirmationWindow     deleteConfirmationWindow;
-    private ImportDsdWindow              importDsdWindow;
+    private DeleteConfirmationWindow deleteConfirmationWindow;
+    private ImportDsdWindow          importDsdWindow;
 
     @Inject
-    public DsdListViewImpl(final DsdsItemsContextAreaListGrid dsdsItemsContextAreaListGrid) {
+    public DsdListViewImpl() {
         super();
         panel = new VLayout();
 
-        dsdListGrid = dsdsItemsContextAreaListGrid;
-        dsdListGrid.setSelectionType(SelectionStyle.SIMPLE);
-        dsdListGrid.setSelectionAppearance(SelectionAppearance.CHECKBOX);
+        dsdListGrid = new DsdPaginatedListGrid(DsdListPresenter.DSD_LIST_MAX_RESULTS, new PaginatedAction() {
+
+            @Override
+            public void retrieveResultSet(int firstResult, int maxResults) {
+                getUiHandlers().retrieveDsdList(firstResult, maxResults);
+            }
+        });
+        dsdListGrid.setHeight(720);
 
         // ············
         // List of DSDs
@@ -159,7 +163,7 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
 
             @Override
             public void onClick(ClickEvent event) {
-                ListGridRecord record = dsdListGrid.getSelectedRecord();
+                ListGridRecord record = dsdListGrid.getListGrid().getSelectedRecord();
                 if (record instanceof DsdRecord) {
                     getUiHandlers().exportDsd(((DsdRecord) record).getDsd());
                 }
@@ -189,18 +193,18 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
 
         // Grid
 
-        dsdListGrid.addSelectionChangedHandler(new SelectionChangedHandler() {
+        dsdListGrid.getListGrid().addSelectionChangedHandler(new SelectionChangedHandler() {
 
             @Override
             public void onSelectionChanged(SelectionEvent event) {
-                if (dsdListGrid.getSelectedRecords() != null && dsdListGrid.getSelectedRecords().length == 1) {
-                    DsdRecord record = (DsdRecord) dsdListGrid.getSelectedRecord();
+                if (dsdListGrid.getListGrid().getSelectedRecords() != null && dsdListGrid.getListGrid().getSelectedRecords().length == 1) {
+                    DsdRecord record = (DsdRecord) dsdListGrid.getListGrid().getSelectedRecord();
                     DataStructureDefinitionDto dsd = record.getDsd();
                     selectDsd(dsd);
                 } else {
                     // No record selected
                     deselectDsd();
-                    if (dsdListGrid.getSelectedRecords().length > 1) {
+                    if (dsdListGrid.getListGrid().getSelectedRecords().length > 1) {
                         // Delete more than one DSD with one click
                         deleteToolStripButton.show();
                         exportToolStripButton.hide();
@@ -208,13 +212,13 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
                 }
             }
         });
-        dsdListGrid.addRecordClickHandler(new RecordClickHandler() {
+        dsdListGrid.getListGrid().addRecordClickHandler(new RecordClickHandler() {
 
             @Override
             public void onRecordClick(RecordClickEvent event) {
                 if (event.getFieldNum() != 0) { // CheckBox is not clicked
-                    dsdListGrid.deselectAllRecords();
-                    dsdListGrid.selectRecord(event.getRecord());
+                    dsdListGrid.getListGrid().deselectAllRecords();
+                    dsdListGrid.getListGrid().selectRecord(event.getRecord());
                 }
             }
         });
@@ -253,13 +257,13 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
     }
 
     @Override
-    public void setDsds(List<DataStructureDefinitionDto> dataStructureDefinitionDtos) {
-        dsdListGrid.setDsds(dataStructureDefinitionDtos);
+    public void setDsds(List<DataStructureDefinitionDto> dataStructureDefinitionDtos, int firstResult, int totalResults) {
+        dsdListGrid.setDsds(dataStructureDefinitionDtos, firstResult, totalResults);
     }
 
     @Override
     public HasRecordClickHandlers getSelectedDsd() {
-        return dsdListGrid;
+        return dsdListGrid.getListGrid();
     }
 
     @Override
@@ -300,8 +304,8 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
 
     @Override
     public List<DataStructureDefinitionDto> getSelectedDsds() {
-        if (dsdListGrid.getSelectedRecords() != null) {
-            ListGridRecord[] records = dsdListGrid.getSelectedRecords();
+        if (dsdListGrid.getListGrid().getSelectedRecords() != null) {
+            ListGridRecord[] records = dsdListGrid.getListGrid().getSelectedRecords();
             List<DataStructureDefinitionDto> selectedDsds = new ArrayList<DataStructureDefinitionDto>();
             for (int i = 0; i < records.length; i++) {
                 DsdRecord record = (DsdRecord) records[i];
@@ -321,7 +325,7 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
         if (dsdSelected.getId() == null) {
             // New dimension
             deleteToolStripButton.hide();
-            dsdListGrid.deselectAllRecords();
+            dsdListGrid.getListGrid().deselectAllRecords();
         } else {
             deleteToolStripButton.show();
             exportToolStripButton.show();
@@ -334,6 +338,11 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
     private void deselectDsd() {
         deleteToolStripButton.hide();
         exportToolStripButton.hide();
+    }
+
+    @Override
+    public void onNewDsdCreated() {
+        dsdListGrid.goToLastPageAfterCreate();
     }
 
 }

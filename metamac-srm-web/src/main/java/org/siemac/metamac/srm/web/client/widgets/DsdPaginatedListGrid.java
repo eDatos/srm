@@ -5,20 +5,21 @@ import java.util.List;
 import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
-import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
+import org.siemac.metamac.srm.web.dsd.utils.RecordUtils;
+import org.siemac.metamac.web.common.client.widgets.PaginatedCheckListGrid;
+import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 
 import com.smartgwt.client.types.ListGridFieldType;
 import com.smartgwt.client.widgets.grid.HoverCustomizer;
-import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 
-public class DsdsItemsContextAreaListGrid extends ListGrid {
+public class DsdPaginatedListGrid extends PaginatedCheckListGrid {
 
-    public DsdsItemsContextAreaListGrid() {
-        super();
+    public DsdPaginatedListGrid(int maxResults, PaginatedAction action) {
+        super(maxResults, action);
 
-        this.setShowAllRecords(true);
+        getListGrid().setShowAllRecords(true);
 
         ListGridField codeDsdField = new ListGridField(DsdRecord.CODE, MetamacSrmWeb.getConstants().dsdCode());
         ListGridField nameDsdField = new ListGridField(DsdRecord.NAME, MetamacSrmWeb.getConstants().dsdName());
@@ -54,25 +55,17 @@ public class DsdsItemsContextAreaListGrid extends ListGrid {
                 return dsdRecord.getDescription();
             }
         });
-        this.setFields(codeDsdField, nameDsdField, descriptionDsdField, finalStructureDsdField);
+        getListGrid().setFields(codeDsdField, nameDsdField, descriptionDsdField, finalStructureDsdField);
     }
 
-    public void setDsds(List<DataStructureDefinitionDto> dataStructureDefinitionDtos) {
+    public void setDsds(List<DataStructureDefinitionDto> dataStructureDefinitionDtos, int firstResult, int totalResults) {
         DsdRecord[] dsdRecords = new DsdRecord[dataStructureDefinitionDtos.size()];
         for (int i = 0; i < dataStructureDefinitionDtos.size(); i++) {
-            dsdRecords[i] = createDsdRecord(dataStructureDefinitionDtos.get(i));
+            dsdRecords[i] = RecordUtils.getDsdRecord(dataStructureDefinitionDtos.get(i));
         }
         // Populate the List Grid
-        this.setData(dsdRecords);
-    }
-
-    /**************************************************************************
-     * Private methods
-     **************************************************************************/
-
-    private DsdRecord createDsdRecord(DataStructureDefinitionDto dsd) {
-        return new DsdRecord(dsd.getId(), dsd.getCode(), InternationalStringUtils.getLocalisedString(dsd.getName()), InternationalStringUtils.getLocalisedString(dsd.getDescription()),
-                dsd.getFinalLogic(), dsd);
+        getListGrid().setData(dsdRecords);
+        refreshPaginationInfo(firstResult, dataStructureDefinitionDtos.size(), totalResults);
     }
 
 }

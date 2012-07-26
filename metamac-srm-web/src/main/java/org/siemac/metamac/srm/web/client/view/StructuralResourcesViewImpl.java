@@ -7,7 +7,7 @@ import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.presenter.StructuralResourcesPresenter;
 import org.siemac.metamac.srm.web.client.view.handlers.StructuralResourcesUiHandlers;
 import org.siemac.metamac.srm.web.client.widgets.ConceptSchemesItemsContextAreaListGrid;
-import org.siemac.metamac.srm.web.client.widgets.DsdsItemsContextAreaListGrid;
+import org.siemac.metamac.srm.web.client.widgets.DsdListGrid;
 
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -26,7 +26,7 @@ public class StructuralResourcesViewImpl extends ViewWithUiHandlers<StructuralRe
 
     private static final String                          CONTEXT_AREA_WIDTH = "*";
 
-    private final DsdsItemsContextAreaListGrid           dsdsItemsContextAreaListGrid;
+    private final DsdListGrid                            dsdListGrid;
     private final ConceptSchemesItemsContextAreaListGrid conceptSchemesItemsContextAreaListGrid;
 
     private final SectionStack                           lastModifiedArtifactsSectionStack;
@@ -34,10 +34,10 @@ public class StructuralResourcesViewImpl extends ViewWithUiHandlers<StructuralRe
     private VLayout                                      panel;
 
     @Inject
-    public StructuralResourcesViewImpl(DsdsItemsContextAreaListGrid dsdsItemsContextAreaListGrid, ConceptSchemesItemsContextAreaListGrid conceptSchemesItemsContextAreaListGrid) {
+    public StructuralResourcesViewImpl(DsdListGrid dsdListGrid, ConceptSchemesItemsContextAreaListGrid conceptSchemesItemsContextAreaListGrid) {
         super();
 
-        this.dsdsItemsContextAreaListGrid = dsdsItemsContextAreaListGrid;
+        this.dsdListGrid = dsdListGrid;
         this.conceptSchemesItemsContextAreaListGrid = conceptSchemesItemsContextAreaListGrid;
 
         panel = new VLayout();
@@ -56,7 +56,7 @@ public class StructuralResourcesViewImpl extends ViewWithUiHandlers<StructuralRe
         SectionStackSection lastDsdModifiedSection = new SectionStackSection();
         lastDsdModifiedSection.setTitle(MetamacSrmWeb.getConstants().dsdLastModified());
         lastDsdModifiedSection.setExpanded(false);
-        lastDsdModifiedSection.setItems(this.dsdsItemsContextAreaListGrid);
+        lastDsdModifiedSection.setItems(this.dsdListGrid);
 
         SectionStackSection lastConceptSchemesModifiedSection = new SectionStackSection();
         lastConceptSchemesModifiedSection.setTitle(MetamacSrmWeb.getConstants().conceptSchemeLastModified());
@@ -125,13 +125,13 @@ public class StructuralResourcesViewImpl extends ViewWithUiHandlers<StructuralRe
     public void setResultSetDsd(List<DataStructureDefinitionDto> resultSet) {
         // resultSet == null when there are no items in table
         if (resultSet != null) {
-            dsdsItemsContextAreaListGrid.setDsds(resultSet);
+            dsdListGrid.setDsds(resultSet);
         }
     }
 
     @Override
     public HasRecordClickHandlers getSelectedDsd() {
-        return dsdsItemsContextAreaListGrid;
+        return dsdListGrid;
     }
 
 }
