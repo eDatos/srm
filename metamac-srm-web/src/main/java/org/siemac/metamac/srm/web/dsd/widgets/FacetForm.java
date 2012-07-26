@@ -62,7 +62,7 @@ public class FacetForm extends GroupDynamicForm {
 
         interval = new CustomTextItem("interval-attr", MetamacSrmWeb.getConstants().dsdRepresentationInterval());
         interval.setShowIfCondition(FacetFormUtils.getIntervalIfFunction());
-        interval.setValidators(XsdDataTypesValidators.getIntegerValidator());
+        interval.setValidators(XsdDataTypesValidators.getDecimalValidator());
 
         timeInterval = new CustomTextItem("time-interval-attr", MetamacSrmWeb.getConstants().dsdRepresentationTimeInterval());
         timeInterval.setShowIfCondition(FacetFormUtils.getTimeIntervalIfFunction());
