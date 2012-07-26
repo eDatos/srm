@@ -89,7 +89,7 @@ public class StaticFacetForm extends GroupDynamicForm {
         maxValue.setValue(facetDto.getMaxValueFT());
         startValue.setValue(facetDto.getStartValueFT());
         endValue.setValue(facetDto.getEndValueFT());
-        interval.setValue(facetDto.getInterval());
+        interval.setValue(facetDto.getIntervalFT());
         timeInterval.setValue(facetDto.getTimeIntervalFT());
         decimals.setValue(facetDto.getDecimalsFT());
         pattern.setValue(facetDto.getPatternFT());

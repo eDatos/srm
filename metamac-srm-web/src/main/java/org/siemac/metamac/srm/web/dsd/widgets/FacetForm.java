@@ -105,7 +105,7 @@ public class FacetForm extends GroupDynamicForm {
         maxValue.setValue(facetDto.getMaxValueFT());
         startValue.setValue(facetDto.getStartValueFT());
         endValue.setValue(facetDto.getEndValueFT());
-        interval.setValue(facetDto.getInterval());
+        interval.setValue(facetDto.getIntervalFT());
         timeInterval.setValue(facetDto.getTimeIntervalFT());
         decimals.setValue(facetDto.getDecimalsFT());
         pattern.setValue(facetDto.getPatternFT());
@@ -124,7 +124,7 @@ public class FacetForm extends GroupDynamicForm {
         facetDto.setMaxValueFT(maxValue.getVisible() ? maxValue.getValueAsString() : null);
         facetDto.setStartValueFT(startValue.getVisible() ? startValue.getValueAsString() : null);
         facetDto.setEndValueFT(endValue.getVisible() ? endValue.getValueAsString() : null);
-        facetDto.setInterval(interval.getVisible() ? interval.getValueAsString() : null);
+        facetDto.setIntervalFT(interval.getVisible() ? interval.getValueAsString() : null);
         facetDto.setTimeIntervalFT(timeInterval.getVisible() ? timeInterval.getValueAsString() : null);
         facetDto.setDecimalsFT(decimals.getVisible() ? decimals.getValueAsString() : null);
         facetDto.setPatternFT(pattern.getVisible() ? pattern.getValueAsString() : null);
