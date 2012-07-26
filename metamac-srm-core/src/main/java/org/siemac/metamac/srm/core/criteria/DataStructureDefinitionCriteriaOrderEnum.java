@@ -2,8 +2,7 @@ package org.siemac.metamac.srm.core.criteria;
 
 public enum DataStructureDefinitionCriteriaOrderEnum {
 
-    CODE,
-    NAME;
+    CODE, NAME, LAST_UPDATED;
 
     public String value() {
         return name();

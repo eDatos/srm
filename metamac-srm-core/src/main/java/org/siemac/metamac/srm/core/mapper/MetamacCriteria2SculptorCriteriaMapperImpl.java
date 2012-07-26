@@ -20,7 +20,8 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
     private MetamacCriteria2SculptorCriteria<DataStructureDefinition> dataStructureDefinitionMapper = null;
 
     public MetamacCriteria2SculptorCriteriaMapperImpl() throws MetamacException {
-        dataStructureDefinitionMapper = new MetamacCriteria2SculptorCriteria<DataStructureDefinition>(DataStructureDefinition.class, DataStructureDefinitionCriteriaOrderEnum.class, DataStructureDefinitionCriteriaPropertyEnum.class, new DataStructureDefinitionCriteriaCallback());
+        dataStructureDefinitionMapper = new MetamacCriteria2SculptorCriteria<DataStructureDefinition>(DataStructureDefinition.class, DataStructureDefinitionCriteriaOrderEnum.class,
+                DataStructureDefinitionCriteriaPropertyEnum.class, new DataStructureDefinitionCriteriaCallback());
     }
 
     @Override
@@ -50,7 +51,8 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                     return DataStructureDefinitionProperties.code();
                 case NAME:
                     return DataStructureDefinitionProperties.name().texts().label();
-
+                case LAST_UPDATED:
+                    return DataStructureDefinitionProperties.lastUpdated();
                 default:
                     throw new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, order.getPropertyName());
             }
@@ -60,7 +62,7 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
         public Property<DataStructureDefinition> retrievePropertyOrderDefault() throws MetamacException {
             return DataStructureDefinitionProperties.id();
         }
-        
+
     }
 
 }
