@@ -15,7 +15,7 @@ public class RecordUtils {
         return record;
     }
 
-    public static ConceptRecord getConceptSchemeRecord(ConceptDto conceptDto) {
+    public static ConceptRecord getConceptRecord(ConceptDto conceptDto) {
         ConceptRecord record = new ConceptRecord(conceptDto.getId(), conceptDto.getCode(), getLocalisedString(conceptDto.getName()), getLocalisedString(conceptDto.getDescription()), conceptDto);
         return record;
     }

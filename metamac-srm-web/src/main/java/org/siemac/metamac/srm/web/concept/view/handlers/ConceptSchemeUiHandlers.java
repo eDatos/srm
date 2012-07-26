@@ -1,5 +1,7 @@
 package org.siemac.metamac.srm.web.concept.view.handlers;
 
+import java.util.List;
+
 import org.siemac.metamac.domain.concept.dto.ConceptDto;
 import org.siemac.metamac.domain.concept.dto.ConceptSchemeDto;
 
@@ -16,6 +18,8 @@ public interface ConceptSchemeUiHandlers extends UiHandlers {
     // Concepts
 
     void createConcept(ConceptDto conceptDto);
+    void deleteConcepts(List<Long> conceptIds);
+    void goToConcept(String code);
 
     // Life cycle
 

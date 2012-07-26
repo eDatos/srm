@@ -26,4 +26,13 @@ public class PlaceRequestUtils {
         return null;
     }
 
+    public static String getConceptParamFromUrl(PlaceManager placeManager) {
+        for (PlaceRequest request : placeManager.getCurrentPlaceHierarchy()) {
+            if (NameTokens.conceptPage.equals(request.getNameToken())) {
+                return request.getParameter(PlaceRequestParams.conceptParam, null);
+            }
+        }
+        return null;
+    }
+
 }

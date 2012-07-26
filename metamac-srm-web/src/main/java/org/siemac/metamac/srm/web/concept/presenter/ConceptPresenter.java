@@ -2,6 +2,8 @@ package org.siemac.metamac.srm.web.concept.presenter;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
+import org.siemac.metamac.core.common.constants.shared.UrnConstants;
+import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.domain.concept.dto.ConceptDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
@@ -16,6 +18,7 @@ import org.siemac.metamac.srm.web.shared.concept.SaveConceptAction;
 import org.siemac.metamac.srm.web.shared.concept.SaveConceptResult;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
+import org.siemac.metamac.web.common.client.utils.UrnUtils;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
 import com.google.gwt.event.shared.EventBus;
@@ -67,6 +70,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
         super(eventBus, view, proxy);
         this.dispatcher = dispatcher;
         this.placeManager = placeManager;
+        this.toolStripPresenterWidget = toolStripPresenterWidget;
         getView().setUiHandlers(this);
     }
 
@@ -85,8 +89,10 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     @Override
     public void prepareFromRequest(PlaceRequest request) {
         super.prepareFromRequest(request);
-        String urn = PlaceRequestUtils.getConceptSchemeParamFromUrl(placeManager);
-        if (urn != null) {
+        String schemeParam = PlaceRequestUtils.getConceptSchemeParamFromUrl(placeManager);
+        String conceptCode = PlaceRequestUtils.getConceptParamFromUrl(placeManager);
+        if (!StringUtils.isBlank(schemeParam) && !StringUtils.isBlank(conceptCode)) {
+            String urn = UrnUtils.generateUrn(UrnConstants.URN_SDMX_CLASS_CONCEPT_PREFIX, schemeParam, conceptCode);
             retrieveConcept(urn);
         }
     }

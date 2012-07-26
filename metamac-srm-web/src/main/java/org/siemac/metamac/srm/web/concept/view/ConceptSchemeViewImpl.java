@@ -13,7 +13,9 @@ import org.siemac.metamac.domain.srm.enume.domain.MaintainableArtefactProcStatus
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.utils.ClientSecurityUtils;
+import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
+import org.siemac.metamac.srm.web.concept.model.record.ConceptRecord;
 import org.siemac.metamac.srm.web.concept.presenter.ConceptSchemePresenter;
 import org.siemac.metamac.srm.web.concept.utils.CommonUtils;
 import org.siemac.metamac.srm.web.concept.view.handlers.ConceptSchemeUiHandlers;
@@ -34,11 +36,17 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
+import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.fields.BooleanItem;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
+import com.smartgwt.client.widgets.grid.ListGridField;
+import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
+import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
+import com.smartgwt.client.widgets.grid.events.SelectionChangedHandler;
+import com.smartgwt.client.widgets.grid.events.SelectionEvent;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
@@ -73,6 +81,8 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
     public ConceptSchemeViewImpl() {
         super();
         panel = new VLayout();
+        panel.setHeight100();
+        panel.setOverflow(Overflow.SCROLL);
         mainFormLayout = new ConceptSchemeMainFormLayout(ClientSecurityUtils.canEditConceptScheme());
         bindMainFormLayoutEvents();
 
@@ -98,9 +108,46 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
                 });
             }
         });
+        conceptsToolStripListGrid.getDeleteConfirmationWindow().getYesButton().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+
+            }
+        });
 
         conceptsListGrid = new CustomListGrid();
         conceptsListGrid.setHeight(300);
+        ListGridField codeField = new ListGridField(ConceptDS.CODE, getConstants().conceptCode());
+        ListGridField nameField = new ListGridField(ConceptDS.NAME, getConstants().conceptName());
+        conceptsListGrid.setFields(codeField, nameField);
+        conceptsListGrid.addSelectionChangedHandler(new SelectionChangedHandler() {
+
+            @Override
+            public void onSelectionChanged(SelectionEvent event) {
+                if (conceptsListGrid.getSelectedRecords() != null && conceptsListGrid.getSelectedRecords().length == 1) {
+                    ConceptRecord record = (ConceptRecord) conceptsListGrid.getSelectedRecord();
+                    selectConcept(record.getId());
+                } else {
+                    // No record selected
+                    hideConceptListGridDeleteButton();
+                    if (conceptsListGrid.getSelectedRecords().length > 1) {
+                        // Delete more than one concept with one click
+                        showConceptListGridDeleteButton();
+                    }
+                }
+            }
+        });
+        conceptsListGrid.addRecordClickHandler(new RecordClickHandler() {
+
+            @Override
+            public void onRecordClick(RecordClickEvent event) {
+                if (event.getFieldNum() != 0) {
+                    ConceptRecord record = (ConceptRecord) event.getRecord();
+                    uiHandlers.goToConcept(record.getCode());
+                }
+            }
+        });
 
         VLayout conceptsListGridLayout = new VLayout();
         conceptsListGridLayout.setMargin(15);
@@ -256,7 +303,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         conceptsListGrid.removeAllData();
         if (conceptDtos != null) {
             for (ConceptDto conceptDto : conceptDtos) {
-                // TODO conceptsListGrid.addData(org.siemac.metamac.srm.web.concept.utils.RecordUtils.getConceptSchemeRecord(conceptDto))
+                conceptsListGrid.addData(org.siemac.metamac.srm.web.concept.utils.RecordUtils.getConceptRecord(conceptDto));
             }
         }
     }
@@ -402,6 +449,26 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         conceptSchemeDto.setDescription((InternationalStringDto) contentDescriptorsEditionForm.getValue(ConceptSchemeDS.DESCRIPTION));
         conceptSchemeDto.setIsPartial((Boolean) contentDescriptorsEditionForm.getValue(ConceptSchemeDS.IS_PARTIAL));
         return conceptSchemeDto;
+    }
+
+    private void showConceptListGridDeleteButton() {
+        if (ClientSecurityUtils.canDeleteConcept()) {
+            conceptsToolStripListGrid.getDeleteButton().show();
+        }
+    }
+
+    private void hideConceptListGridDeleteButton() {
+        conceptsToolStripListGrid.getDeleteButton().hide();
+    }
+
+    private void selectConcept(Long id) {
+        if (id == null) {
+            // New concept
+            conceptsToolStripListGrid.getDeleteButton().hide();
+            conceptsListGrid.deselectAllRecords();
+        } else {
+            showConceptListGridDeleteButton();
+        }
     }
 
 }

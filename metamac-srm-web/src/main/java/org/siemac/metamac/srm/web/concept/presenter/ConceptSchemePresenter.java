@@ -8,11 +8,14 @@ import org.siemac.metamac.domain.concept.dto.ConceptDto;
 import org.siemac.metamac.domain.concept.dto.ConceptSchemeDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
+import org.siemac.metamac.srm.web.client.PlaceRequestParams;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.client.widgets.presenter.ToolStripPresenterWidget;
 import org.siemac.metamac.srm.web.concept.view.handlers.ConceptSchemeUiHandlers;
+import org.siemac.metamac.srm.web.shared.concept.DeleteConceptListAction;
+import org.siemac.metamac.srm.web.shared.concept.DeleteConceptListResult;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptListBySchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptListBySchemeResult;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeAction;
@@ -59,7 +62,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
     private final PlaceManager       placeManager;
     private ToolStripPresenterWidget toolStripPresenterWidget;
 
-    public static final int          MAX_RESULTS = 10;
+    private ConceptSchemeDto         conceptSchemeDto;
 
     @TitleFunction
     public static String getTranslatedTitle() {
@@ -129,6 +132,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
             @Override
             public void onWaitSuccess(SaveConceptSchemeResult result) {
                 ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getMessageList(getMessages().conceptSchemeSaved()), MessageTypeEnum.SUCCESS);
+                ConceptSchemePresenter.this.conceptSchemeDto = result.getSavedConceptSchemeDto();
                 setConceptScheme(result.getSavedConceptSchemeDto());
             }
         });
@@ -144,6 +148,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
             }
             @Override
             public void onWaitSuccess(GetConceptSchemeResult result) {
+                ConceptSchemePresenter.this.conceptSchemeDto = result.getConceptSchemeDto();
                 setConceptScheme(result.getConceptSchemeDto());
                 retrieveConceptListByScheme(result.getConceptSchemeDto().getUrn());
             }
@@ -161,6 +166,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
             @Override
             public void onWaitSuccess(SendConceptSchemeToPendingPublicationResult result) {
                 ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getMessageList(getMessages().conceptSchemeSentToPendingPublication()), MessageTypeEnum.SUCCESS);
+                ConceptSchemePresenter.this.conceptSchemeDto = result.getConceptSchemeDto();
                 setConceptScheme(result.getConceptSchemeDto());
             }
         });
@@ -177,6 +183,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
             @Override
             public void onWaitSuccess(PublishConceptSchemeExternallyResult result) {
                 ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getMessageList(getMessages().conceptSchemePublishedExternally()), MessageTypeEnum.SUCCESS);
+                ConceptSchemePresenter.this.conceptSchemeDto = result.getConceptSchemeDto();
                 setConceptScheme(result.getConceptSchemeDto());
             }
         });
@@ -193,6 +200,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
             @Override
             public void onWaitSuccess(PublishConceptSchemeInternallyResult result) {
                 ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getMessageList(getMessages().conceptSchemePublishedInternally()), MessageTypeEnum.SUCCESS);
+                ConceptSchemePresenter.this.conceptSchemeDto = result.getConceptSchemeDto();
                 setConceptScheme(result.getConceptSchemeDto());
             }
         });
@@ -209,6 +217,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
             @Override
             public void onWaitSuccess(RejectConceptSchemeResult result) {
                 ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getMessageList(getMessages().conceptSchemeRejected()), MessageTypeEnum.SUCCESS);
+                ConceptSchemePresenter.this.conceptSchemeDto = result.getConceptSchemeDto();
                 setConceptScheme(result.getConceptSchemeDto());
             }
         });
@@ -225,6 +234,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
             @Override
             public void onWaitSuccess(VersionConceptSchemeResult result) {
                 ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getMessageList(getMessages().conceptSchemeVersioned()), MessageTypeEnum.SUCCESS);
+                ConceptSchemePresenter.this.conceptSchemeDto = result.getConceptSchemeDto();
                 setConceptScheme(result.getConceptSchemeDto());
             }
         });
@@ -259,6 +269,26 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
                 getView().setConceptList(result.getConceptDto());
             }
         });
+    }
+
+    @Override
+    public void deleteConcepts(List<Long> conceptIds) {
+        dispatcher.execute(new DeleteConceptListAction(conceptIds), new WaitingAsyncCallback<DeleteConceptListResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptErrorDelete()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(DeleteConceptListResult result) {
+                retrieveConceptListByScheme(conceptSchemeDto.getUrn());
+            }
+        });
+    }
+
+    @Override
+    public void goToConcept(String code) {
+        placeManager.revealRelativePlace(new PlaceRequest(NameTokens.conceptPage).with(PlaceRequestParams.conceptParam, code));
     }
 
 }

@@ -10,14 +10,19 @@ import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
 import org.siemac.metamac.srm.web.concept.presenter.ConceptPresenter;
 import org.siemac.metamac.srm.web.concept.view.handlers.ConceptUiHandlers;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
+import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.InternationalMainFormLayout;
+import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextItem;
+import org.siemac.metamac.web.common.client.widgets.form.fields.MultilanguageRichTextEditorItem;
+import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
+import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
@@ -54,6 +59,8 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
     public ConceptViewImpl() {
         super();
         panel = new VLayout();
+        panel.setHeight100();
+        panel.setOverflow(Overflow.SCROLL);
         mainFormLayout = new InternationalMainFormLayout(ClientSecurityUtils.canEditConcept());
 
         // Translations
@@ -172,10 +179,57 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
         legalActsForm = new GroupDynamicForm(getConstants().conceptLegalActs());
         ViewMultiLanguageTextItem legalActs = new ViewMultiLanguageTextItem(ConceptDS.LEGAL_ACTS, getConstants().conceptLegalActs());
         legalActsForm.setFields(legalActs);
+
+        mainFormLayout.addViewCanvas(identifiersForm);
+        mainFormLayout.addViewCanvas(contentDescriptorsForm);
+        mainFormLayout.addViewCanvas(classDescriptorsForm);
+        mainFormLayout.addViewCanvas(productionDescriptorsForm);
+        mainFormLayout.addViewCanvas(relationBetweenConceptsForm);
+        mainFormLayout.addViewCanvas(legalActsForm);
     }
 
     private void createEditionForm() {
+        // Identifiers Form
+        identifiersEditionForm = new GroupDynamicForm(getConstants().conceptIdentifiers());
+        RequiredTextItem code = new RequiredTextItem(ConceptDS.CODE, getConstants().conceptCode());
+        MultiLanguageTextItem name = new MultiLanguageTextItem(ConceptDS.NAME, getConstants().conceptName());
+        name.setRequired(true);
+        MultiLanguageTextItem pluralName = new MultiLanguageTextItem(ConceptDS.PLURAL_NAME, getConstants().conceptPluralName());
+        MultiLanguageTextItem acronym = new MultiLanguageTextItem(ConceptDS.ACRONYM, getConstants().conceptAcronym());
+        ViewTextItem uri = new ViewTextItem(ConceptDS.URI, getConstants().conceptUri());
+        ViewTextItem urn = new ViewTextItem(ConceptDS.URN, getConstants().conceptUrn());
+        identifiersEditionForm.setFields(code, name, pluralName, acronym, uri, urn);
 
+        // Content descriptors
+        contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().conceptContentDescriptors());
+        MultilanguageRichTextEditorItem description = new MultilanguageRichTextEditorItem(ConceptDS.DESCRIPTION, getConstants().conceptDescription());
+        MultilanguageRichTextEditorItem descriptionSource = new MultilanguageRichTextEditorItem(ConceptDS.DESCRIPTION_SOURCE, getConstants().conceptDescriptionSource());
+        MultilanguageRichTextEditorItem context = new MultilanguageRichTextEditorItem(ConceptDS.CONTEXT, getConstants().conceptContext());
+        MultilanguageRichTextEditorItem docMethod = new MultilanguageRichTextEditorItem(ConceptDS.DOC_METHOD, getConstants().conceptDocMethod());
+        contentDescriptorsEditionForm.setFields(description, descriptionSource, context, docMethod);
+
+        // Class descriptors
+        classDescriptorsEditionForm = new GroupDynamicForm(getConstants().conceptClassDescriptors());
+
+        // Production descriptors
+        productionDescriptorsEditionForm = new GroupDynamicForm(getConstants().conceptProductionDescriptors());
+        MultilanguageRichTextEditorItem derivation = new MultilanguageRichTextEditorItem(ConceptDS.DERIVATION, getConstants().conceptDerivation());
+        productionDescriptorsEditionForm.setFields(derivation);
+
+        // Relation between concepts
+        relationBetweenConceptsEditionForm = new GroupDynamicForm(getConstants().conceptRelationBetweenConcepts());
+
+        // Legal acts
+        legalActsEditionForm = new GroupDynamicForm(getConstants().conceptLegalActs());
+        MultilanguageRichTextEditorItem legalActs = new MultilanguageRichTextEditorItem(ConceptDS.LEGAL_ACTS, getConstants().conceptLegalActs());
+        legalActsEditionForm.setFields(legalActs);
+
+        mainFormLayout.addEditionCanvas(identifiersEditionForm);
+        mainFormLayout.addEditionCanvas(contentDescriptorsEditionForm);
+        mainFormLayout.addEditionCanvas(classDescriptorsEditionForm);
+        mainFormLayout.addEditionCanvas(productionDescriptorsEditionForm);
+        mainFormLayout.addEditionCanvas(relationBetweenConceptsEditionForm);
+        mainFormLayout.addEditionCanvas(legalActsEditionForm);
     }
 
     @Override
@@ -193,11 +247,23 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
     }
 
     private void setConceptViewMode(ConceptDto conceptDto) {
-
+        // Identifiers Form
+        identifiersForm.setValue(ConceptDS.CODE, conceptDto.getCode());
+        identifiersForm.setValue(ConceptDS.NAME, RecordUtils.getInternationalStringRecord(conceptDto.getName()));
+        identifiersForm.setValue(ConceptDS.PLURAL_NAME, "TODO"); // TODO
+        identifiersForm.setValue(ConceptDS.ACRONYM, "TODO"); // TODO
+        identifiersForm.setValue(ConceptDS.URI, conceptDto.getUri());
+        identifiersForm.setValue(ConceptDS.URN, conceptDto.getUrn());
     }
 
     private void setConceptEditionMode(ConceptDto conceptDto) {
-
+        // Identifiers Form
+        identifiersEditionForm.setValue(ConceptDS.CODE, conceptDto.getCode());
+        identifiersEditionForm.setValue(ConceptDS.NAME, RecordUtils.getInternationalStringRecord(conceptDto.getName()));
+        identifiersEditionForm.setValue(ConceptDS.PLURAL_NAME, "TODO"); // TODO
+        identifiersEditionForm.setValue(ConceptDS.ACRONYM, "TODO"); // TODO
+        identifiersEditionForm.setValue(ConceptDS.URI, conceptDto.getUri());
+        identifiersEditionForm.setValue(ConceptDS.URN, conceptDto.getUrn());
     }
 
     private ConceptDto getConceptDto() {

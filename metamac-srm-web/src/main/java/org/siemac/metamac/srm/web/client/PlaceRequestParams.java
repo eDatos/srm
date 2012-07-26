@@ -4,5 +4,6 @@ public class PlaceRequestParams {
 
     public static final String dsdParam           = "id";
     public static final String conceptSchemeParam = "id";
+    public static final String conceptParam       = "id";
 
 }

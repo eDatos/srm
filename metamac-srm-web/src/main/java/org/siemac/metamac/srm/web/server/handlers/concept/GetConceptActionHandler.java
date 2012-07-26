@@ -30,6 +30,8 @@ public class GetConceptActionHandler extends SecurityActionHandler<GetConceptAct
         conceptDto.setId(1L);
         conceptDto.setCode("concept-0001");
         conceptDto.setName(name);
+        conceptDto.setUri("URI");
+        conceptDto.setUrn("URN");
 
         return new GetConceptResult(conceptDto);
     }

@@ -14,6 +14,10 @@ public class ClientSecurityUtils {
         return true;
     }
 
+    public static boolean canDeleteConceptScheme() {
+        return true;
+    }
+
     public static boolean canSendConceptSchemeToPendingPublication() {
         return true;
     }
@@ -39,6 +43,10 @@ public class ClientSecurityUtils {
     }
 
     public static boolean canEditConcept() {
+        return true;
+    }
+
+    public static boolean canDeleteConcept() {
         return true;
     }
 
