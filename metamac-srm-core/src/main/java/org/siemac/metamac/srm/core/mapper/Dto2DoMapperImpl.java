@@ -55,7 +55,6 @@ import org.siemac.metamac.srm.core.base.domain.Facet;
 import org.siemac.metamac.srm.core.base.domain.FacetRepository;
 import org.siemac.metamac.srm.core.base.domain.IdentifiableArtefact;
 import org.siemac.metamac.srm.core.base.domain.ItemScheme;
-import org.siemac.metamac.srm.core.base.domain.ItemSchemeRepository;
 import org.siemac.metamac.srm.core.base.domain.ItemSchemeVersion;
 import org.siemac.metamac.srm.core.base.domain.ItemSchemeVersionRepository;
 import org.siemac.metamac.srm.core.base.domain.MaintainableArtefact;
@@ -1135,7 +1134,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
 
         result.setFacetValue(source.getFacetValue());
         result.setIsSequenceFT(source.getIsSequenceFT());
-        result.setIntervalFT(source.getInterval());
+        result.setIntervalFT(source.getIntervalFT());
         result.setStartValueFT(source.getStartValueFT());
         result.setEndValueFT(source.getEndValueFT());
         result.setTimeIntervalFT(source.getTimeIntervalFT());
