@@ -66,37 +66,32 @@ public class ConceptSchemeService {
 
     /* Life cycle */
     public static ConceptSchemeDto sendToPendingPublication(Long id) throws MetamacException {
-        int index = getConceptSchemeIndexById(id);
-        ConceptSchemeDto scheme = conceptSchemeList.get(index);
+        ConceptSchemeDto scheme = conceptSchemeList.get(0);
         scheme.setProcStatus(MaintainableArtefactProcStatusEnum.PENDING_PUBLICATION);
         return scheme;
     }
 
     public static ConceptSchemeDto reject(Long id) throws MetamacException {
-        int index = getConceptSchemeIndexById(id);
-        ConceptSchemeDto scheme = conceptSchemeList.get(index);
+        ConceptSchemeDto scheme = conceptSchemeList.get(0);
         scheme.setProcStatus(MaintainableArtefactProcStatusEnum.VALIDATION_REJECTED);
         return scheme;
     }
 
     public static ConceptSchemeDto publishInternally(Long id) throws MetamacException {
-        int index = getConceptSchemeIndexById(id);
-        ConceptSchemeDto scheme = conceptSchemeList.get(index);
+        ConceptSchemeDto scheme = conceptSchemeList.get(0);
         scheme.setProcStatus(MaintainableArtefactProcStatusEnum.INTERNALLY_PUBLISHED);
         return scheme;
     }
 
     public static ConceptSchemeDto publishExternally(Long id) throws MetamacException {
-        int index = getConceptSchemeIndexById(id);
-        ConceptSchemeDto scheme = conceptSchemeList.get(index);
+        ConceptSchemeDto scheme = conceptSchemeList.get(0);
         scheme.setValidFrom(new Date());
         scheme.setProcStatus(MaintainableArtefactProcStatusEnum.EXTERNALLY_PUBLISHED);
         return scheme;
     }
 
     public static ConceptSchemeDto versioning(Long id) throws MetamacException {
-        int index = getConceptSchemeIndexById(id);
-        ConceptSchemeDto scheme = conceptSchemeList.get(index);
+        ConceptSchemeDto scheme = conceptSchemeList.get(0);
         scheme.setProcStatus(MaintainableArtefactProcStatusEnum.DRAFT);
         return scheme;
     }
@@ -117,7 +112,7 @@ public class ConceptSchemeService {
             ConceptSchemeDto conceptScheme = new ConceptSchemeDto();
             conceptScheme.setId(Long.valueOf(i * 1));
             conceptScheme.setUuid(UUID.randomUUID().toString());
-            conceptScheme.setUrn(UUID.randomUUID().toString());
+            conceptScheme.setUrn("prefix=" + UUID.randomUUID().toString());
             conceptScheme.setUri(UUID.randomUUID().toString());
             conceptScheme.setVersionLogic("01.000");
             conceptScheme.setProcStatus(MaintainableArtefactProcStatusEnum.DRAFT);

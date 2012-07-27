@@ -6,14 +6,14 @@ import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
 import org.siemac.metamac.srm.web.dsd.utils.RecordUtils;
+import org.siemac.metamac.web.common.client.widgets.BaseCustomListGrid;
 
 import com.smartgwt.client.types.ListGridFieldType;
 import com.smartgwt.client.widgets.grid.HoverCustomizer;
-import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 
-public class DsdListGrid extends ListGrid {
+public class DsdListGrid extends BaseCustomListGrid {
 
     public DsdListGrid() {
         super();

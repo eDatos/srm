@@ -16,10 +16,12 @@ import org.siemac.metamac.srm.web.client.utils.ClientSecurityUtils;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptRecord;
+import org.siemac.metamac.srm.web.concept.model.record.ConceptSchemeRecord;
 import org.siemac.metamac.srm.web.concept.presenter.ConceptSchemePresenter;
 import org.siemac.metamac.srm.web.concept.utils.CommonUtils;
 import org.siemac.metamac.srm.web.concept.view.handlers.ConceptSchemeUiHandlers;
 import org.siemac.metamac.srm.web.concept.widgets.ConceptSchemeMainFormLayout;
+import org.siemac.metamac.srm.web.concept.widgets.HistorySectionStack;
 import org.siemac.metamac.srm.web.concept.widgets.NewConceptWindow;
 import org.siemac.metamac.web.common.client.utils.DateUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
@@ -75,6 +77,8 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
     private ListGridToolStrip           conceptsToolStripListGrid;
     private CustomListGrid              conceptsListGrid;
 
+    private HistorySectionStack         historySectionStack;
+
     private ConceptSchemeDto            conceptSchemeDto;
 
     @Inject
@@ -83,11 +87,27 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         panel = new VLayout();
         panel.setHeight100();
         panel.setOverflow(Overflow.SCROLL);
+
+        // Scheme version list
+
+        historySectionStack = new HistorySectionStack();
+        historySectionStack.getListGrid().addRecordClickHandler(new RecordClickHandler() {
+
+            @Override
+            public void onRecordClick(RecordClickEvent event) {
+                String urn = ((ConceptSchemeRecord) event.getRecord()).getUrn();
+                uiHandlers.goToConceptScheme(urn);
+            }
+        });
+
+        // Scheme
+
         mainFormLayout = new ConceptSchemeMainFormLayout(ClientSecurityUtils.canEditConceptScheme());
         bindMainFormLayoutEvents();
-
         createViewForm();
         createEditionForm();
+
+        // Concept list
 
         conceptsToolStripListGrid = new ListGridToolStrip(getConstants().conceptDeleteTitle(), getConstants().conceptDeleteConfirmation());
         conceptsToolStripListGrid.getNewButton().addClickHandler(new ClickHandler() {
@@ -155,6 +175,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         conceptsListGridLayout.addMember(conceptsToolStripListGrid);
         conceptsListGridLayout.addMember(conceptsListGrid);
 
+        panel.addMember(historySectionStack);
         panel.addMember(mainFormLayout);
         panel.addMember(conceptsListGridLayout);
     }
@@ -308,6 +329,11 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         }
     }
 
+    @Override
+    public void setConceptSchemeHistoryList(List<ConceptSchemeDto> conceptSchemeDtos) {
+        historySectionStack.setConceptSchemes(conceptSchemeDtos);
+    }
+
     private void createViewForm() {
         // Identifiers Form
         identifiersForm = new GroupDynamicForm(getConstants().conceptSchemeIdentifiers());
@@ -315,7 +341,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         ViewMultiLanguageTextItem name = new ViewMultiLanguageTextItem(ConceptSchemeDS.NAME, getConstants().conceptSchemeName());
         ViewTextItem uri = new ViewTextItem(ConceptSchemeDS.URI, getConstants().conceptSchemeUri());
         ViewTextItem urn = new ViewTextItem(ConceptSchemeDS.URN, getConstants().conceptSchemeUrn());
-        ViewTextItem version = new ViewTextItem(ConceptSchemeDS.VERSION, getConstants().conceptSchemeVersion());
+        ViewTextItem version = new ViewTextItem(ConceptSchemeDS.VERSION_LOGIC, getConstants().conceptSchemeVersion());
         identifiersForm.setFields(code, name, uri, urn, version);
 
         // Content descriptors
@@ -357,7 +383,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         name.setRequired(true);
         ViewTextItem uri = new ViewTextItem(ConceptSchemeDS.URI, getConstants().conceptSchemeUri());
         ViewTextItem urn = new ViewTextItem(ConceptSchemeDS.URN, getConstants().conceptSchemeUrn());
-        ViewTextItem version = new ViewTextItem(ConceptSchemeDS.VERSION, getConstants().conceptSchemeVersion());
+        ViewTextItem version = new ViewTextItem(ConceptSchemeDS.VERSION_LOGIC, getConstants().conceptSchemeVersion());
         identifiersEditionForm.setFields(code, name, uri, urn, version);
 
         // Content descriptors
@@ -400,7 +426,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         identifiersForm.setValue(ConceptSchemeDS.CODE, conceptSchemeDto.getCode());
         identifiersForm.setValue(ConceptSchemeDS.URI, conceptSchemeDto.getUri());
         identifiersForm.setValue(ConceptSchemeDS.URN, conceptSchemeDto.getUrn());
-        identifiersForm.setValue(ConceptSchemeDS.VERSION, conceptSchemeDto.getVersionLogic());
+        identifiersForm.setValue(ConceptSchemeDS.VERSION_LOGIC, conceptSchemeDto.getVersionLogic());
         identifiersForm.setValue(ConceptSchemeDS.NAME, RecordUtils.getInternationalStringRecord(conceptSchemeDto.getName()));
 
         // Content descriptors
@@ -424,7 +450,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         identifiersEditionForm.setValue(ConceptSchemeDS.CODE, conceptSchemeDto.getCode());
         identifiersEditionForm.setValue(ConceptSchemeDS.URI, conceptSchemeDto.getUri());
         identifiersEditionForm.setValue(ConceptSchemeDS.URN, conceptSchemeDto.getUrn());
-        identifiersEditionForm.setValue(ConceptSchemeDS.VERSION, conceptSchemeDto.getVersionLogic());
+        identifiersEditionForm.setValue(ConceptSchemeDS.VERSION_LOGIC, conceptSchemeDto.getVersionLogic());
         identifiersEditionForm.setValue(ConceptSchemeDS.NAME, RecordUtils.getInternationalStringRecord(conceptSchemeDto.getName()));
 
         // Content descriptors

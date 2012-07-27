@@ -9,6 +9,7 @@ import org.siemac.metamac.srm.web.server.handlers.concept.DeleteConceptSchemeLis
 import org.siemac.metamac.srm.web.server.handlers.concept.GetConceptActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.GetConceptListBySchemeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.GetConceptSchemeActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.concept.GetConceptSchemeHistoryListActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.GetConceptSchemePaginatedListActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.PublishConceptSchemeExternallyActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.PublishConceptSchemeInternallyActionHandler;
@@ -40,6 +41,7 @@ import org.siemac.metamac.srm.web.shared.concept.DeleteConceptSchemeListAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptListBySchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeAction;
+import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeHistoryListAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemePaginatedListAction;
 import org.siemac.metamac.srm.web.shared.concept.PublishConceptSchemeExternallyAction;
 import org.siemac.metamac.srm.web.shared.concept.PublishConceptSchemeInternallyAction;
@@ -112,6 +114,7 @@ public class ServerModule extends HandlerModule {
         bindHandler(GetConceptSchemeAction.class, GetConceptSchemeActionHandler.class);
         bindHandler(GetConceptSchemePaginatedListAction.class, GetConceptSchemePaginatedListActionHandler.class);
         bindHandler(GetConceptSchemeAction.class, GetConceptSchemeActionHandler.class);
+        bindHandler(GetConceptSchemeHistoryListAction.class, GetConceptSchemeHistoryListActionHandler.class);
         bindHandler(SaveConceptSchemeAction.class, SaveConceptSchemeActionHandler.class);
         bindHandler(DeleteConceptSchemeListAction.class, DeleteConceptSchemeListActionHandler.class);
         bindHandler(SendConceptSchemeToPendingPublicationAction.class, SendConceptSchemeToPendingPublicationActionHandler.class);

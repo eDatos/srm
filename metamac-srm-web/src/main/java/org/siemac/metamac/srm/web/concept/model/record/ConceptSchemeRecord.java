@@ -7,12 +7,14 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
 
 public class ConceptSchemeRecord extends ListGridRecord {
 
-    public ConceptSchemeRecord(Long id, String code, String name, String description, String status, ConceptSchemeDto conceptSchemeDto) {
+    public ConceptSchemeRecord(Long id, String code, String name, String description, String status, String versionLogic, String urn, ConceptSchemeDto conceptSchemeDto) {
         setId(id);
         setCode(code);
         setName(name);
         setDescription(description);
         setProcStatus(status);
+        setVersionLogic(versionLogic);
+        setUrn(urn);
         setConceptSchemeDto(conceptSchemeDto);
     }
 
@@ -36,6 +38,14 @@ public class ConceptSchemeRecord extends ListGridRecord {
         setAttribute(ConceptSchemeDS.PROC_STATUS, value);
     }
 
+    public void setVersionLogic(String value) {
+        setAttribute(ConceptSchemeDS.VERSION_LOGIC, value);
+    }
+
+    public void setUrn(String value) {
+        setAttribute(ConceptSchemeDS.URN, value);
+    }
+
     public void setConceptSchemeDto(ConceptSchemeDto conceptSchemeDto) {
         setAttribute(ConceptSchemeDS.DTO, conceptSchemeDto);
     }
@@ -54,6 +64,10 @@ public class ConceptSchemeRecord extends ListGridRecord {
 
     public String getDescription() {
         return getAttribute(ConceptSchemeDS.DESCRIPTION);
+    }
+
+    public String getUrn() {
+        return getAttributeAsString(ConceptSchemeDS.URN);
     }
 
 }

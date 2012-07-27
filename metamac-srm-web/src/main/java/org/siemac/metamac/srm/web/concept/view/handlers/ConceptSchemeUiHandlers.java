@@ -13,13 +13,15 @@ public interface ConceptSchemeUiHandlers extends UiHandlers {
 
     void retrieveConceptScheme(String conceptSchemeUrn);
     void retrieveConceptListByScheme(String conceptSchemeUrn);
+    void retrieveConceptSchemeHistoryList(String conceptSchemeUrn);
     void saveConceptScheme(ConceptSchemeDto conceptScheme);
+    void goToConceptScheme(String urn);
 
     // Concepts
 
     void createConcept(ConceptDto conceptDto);
     void deleteConcepts(List<Long> conceptIds);
-    void goToConcept(String code);
+    void goToConcept(String urn);
 
     // Life cycle
 

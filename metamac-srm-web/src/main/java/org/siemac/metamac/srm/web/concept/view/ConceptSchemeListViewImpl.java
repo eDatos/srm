@@ -119,8 +119,8 @@ public class ConceptSchemeListViewImpl extends ViewImpl implements ConceptScheme
             @Override
             public void onRecordClick(RecordClickEvent event) {
                 if (event.getFieldNum() != 0) { // Clicking checkBox will be ignored
-                    String code = event.getRecord().getAttribute(ConceptSchemeDS.CODE);
-                    uiHandlers.goToConceptScheme(code);
+                    String urn = ((ConceptSchemeRecord) event.getRecord()).getAttribute(ConceptSchemeDS.URN);
+                    uiHandlers.goToConceptScheme(urn);
                 }
             }
         });

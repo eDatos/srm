@@ -12,7 +12,7 @@ public class ConceptSchemeDS extends DataSource {
     public static final String CODE              = "sch-code";
     public static final String URI               = "sch-uri";
     public static final String URN               = "sch-urn";
-    public static final String VERSION           = "sch-version";
+    public static final String VERSION_LOGIC           = "sch-version";
     public static final String NAME              = "sch-name";
     // CONTENT DESCRIPTORS
     public static final String DESCRIPTION       = "sch-desc";
