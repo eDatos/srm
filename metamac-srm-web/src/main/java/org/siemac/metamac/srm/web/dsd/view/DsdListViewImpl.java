@@ -80,7 +80,6 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
                 getUiHandlers().retrieveDsdList(firstResult, maxResults);
             }
         });
-        dsdListGrid.setHeight(720);
 
         // ············
         // List of DSDs
