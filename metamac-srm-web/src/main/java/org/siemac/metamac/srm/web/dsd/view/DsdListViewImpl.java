@@ -15,6 +15,7 @@ import org.siemac.metamac.srm.web.client.resources.GlobalResources;
 import org.siemac.metamac.srm.web.client.widgets.DsdPaginatedListGrid;
 import org.siemac.metamac.srm.web.dsd.listener.UploadListener;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdListPresenter;
+import org.siemac.metamac.srm.web.dsd.utils.DsdClientSecurityUtils;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdListUiHandlers;
 import org.siemac.metamac.srm.web.dsd.widgets.ImportDsdWindow;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
@@ -137,6 +138,7 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
                 winModal.show();
             }
         });
+        newToolStripButton.setVisibility(DsdClientSecurityUtils.canCreateDsd() ? Visibility.VISIBLE : Visibility.HIDDEN);
 
         importToolStripButton = new ToolStripButton(MetamacSrmWeb.getConstants().actionImport(), GlobalResources.RESOURCE.importDsd().getURL());
         importToolStripButton.addClickHandler(new ClickHandler() {
@@ -146,6 +148,7 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
                 importDsdWindow.show();
             }
         });
+        importToolStripButton.setVisibility(DsdClientSecurityUtils.canImportDsd() ? Visibility.VISIBLE : Visibility.HIDDEN);
 
         importDsdWindow = new ImportDsdWindow();
         importDsdWindow.setVisibility(Visibility.HIDDEN);
@@ -221,7 +224,7 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
                     deselectDsd();
                     if (dsdListGrid.getListGrid().getSelectedRecords().length > 1) {
                         // Delete more than one DSD with one click
-                        deleteToolStripButton.show();
+                        showDeleteToolStripButton();
                         exportToolStripButton.hide();
                     }
                 }
@@ -343,8 +346,8 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
             deleteToolStripButton.hide();
             dsdListGrid.getListGrid().deselectAllRecords();
         } else {
-            deleteToolStripButton.show();
-            exportToolStripButton.show();
+            showDeleteToolStripButton();
+            showExportToolStripButton();
         }
     }
 
@@ -364,6 +367,18 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
     @Override
     public void clearSearchSection() {
         searchSectionStack.reset();
+    }
+
+    private void showDeleteToolStripButton() {
+        if (DsdClientSecurityUtils.canDeleteDsd()) {
+            deleteToolStripButton.show();
+        }
+    }
+
+    private void showExportToolStripButton() {
+        if (DsdClientSecurityUtils.canExportDsd()) {
+            exportToolStripButton.show();
+        }
     }
 
 }
