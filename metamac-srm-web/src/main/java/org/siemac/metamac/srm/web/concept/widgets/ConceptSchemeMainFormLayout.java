@@ -5,17 +5,22 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 import org.siemac.metamac.domain.srm.enume.domain.MaintainableArtefactProcStatusEnum;
 import org.siemac.metamac.srm.web.client.resources.GlobalResources;
 import org.siemac.metamac.srm.web.client.utils.ClientSecurityUtils;
+import org.siemac.metamac.web.common.client.MetamacWebCommon;
+import org.siemac.metamac.web.common.client.widgets.AnnounceToolStripButton;
+import org.siemac.metamac.web.common.client.widgets.MainFormLayoutButton;
 import org.siemac.metamac.web.common.client.widgets.form.InternationalMainFormLayout;
 
+import com.smartgwt.client.types.Visibility;
 import com.smartgwt.client.widgets.events.HasClickHandlers;
 
 public class ConceptSchemeMainFormLayout extends InternationalMainFormLayout {
 
-    private PublishToolStripButton             pendingPublication;
-    private PublishToolStripButton             rejectValidation;
-    private PublishToolStripButton             publishInternally;
-    private PublishToolStripButton             publishExternally;
-    private PublishToolStripButton             versioning;
+    private MainFormLayoutButton               pendingPublication;
+    private MainFormLayoutButton               rejectValidation;
+    private MainFormLayoutButton               publishInternally;
+    private MainFormLayoutButton               publishExternally;
+    private MainFormLayoutButton               versioning;
+    private AnnounceToolStripButton            announce;
 
     private MaintainableArtefactProcStatusEnum status;
 
@@ -33,17 +38,20 @@ public class ConceptSchemeMainFormLayout extends InternationalMainFormLayout {
         // Remove handler from edit button
         editHandlerRegistration.removeHandler();
 
-        pendingPublication = new PublishToolStripButton(getConstants().conceptSchemeSendToPendingPublication(), GlobalResources.RESOURCE.pendingPublication().getURL());
-        publishInternally = new PublishToolStripButton(getConstants().conceptSchemePublishInternally(), GlobalResources.RESOURCE.internalPublish().getURL());
-        publishExternally = new PublishToolStripButton(getConstants().conceptSchemePublishExternally(), GlobalResources.RESOURCE.externalPublish().getURL());
-        rejectValidation = new PublishToolStripButton(getConstants().conceptSchemeRejectValidation(), GlobalResources.RESOURCE.reject().getURL());
-        versioning = new PublishToolStripButton(getConstants().conceptSchemeVersioning(), GlobalResources.RESOURCE.version().getURL());
+        pendingPublication = new MainFormLayoutButton(getConstants().conceptSchemeSendToPendingPublication(), GlobalResources.RESOURCE.pendingPublication().getURL());
+        publishInternally = new MainFormLayoutButton(getConstants().conceptSchemePublishInternally(), GlobalResources.RESOURCE.internalPublish().getURL());
+        publishExternally = new MainFormLayoutButton(getConstants().conceptSchemePublishExternally(), GlobalResources.RESOURCE.externalPublish().getURL());
+        rejectValidation = new MainFormLayoutButton(getConstants().conceptSchemeRejectValidation(), GlobalResources.RESOURCE.reject().getURL());
+        versioning = new MainFormLayoutButton(getConstants().conceptSchemeVersioning(), GlobalResources.RESOURCE.version().getURL());
+        announce = new AnnounceToolStripButton(MetamacWebCommon.getConstants().announce(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.announce().getURL());
+        announce.setVisibility(Visibility.VISIBLE);
 
         toolStrip.addButton(pendingPublication);
         toolStrip.addButton(publishInternally);
         toolStrip.addButton(publishExternally);
         toolStrip.addButton(rejectValidation);
         toolStrip.addButton(versioning);
+        toolStrip.addButton(announce);
     }
 
     public void updatePublishSection(MaintainableArtefactProcStatusEnum status) {
