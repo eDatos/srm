@@ -91,6 +91,8 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
         DataStructureDefinitionDto getNewDsd();
         void onNewDsdCreated();
 
+        void clearSearchSection();
+
         HasClickHandlers getCreateDsd();
         com.smartgwt.client.widgets.events.HasClickHandlers getDelete();
 
@@ -116,7 +118,7 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
     @Override
     public void prepareFromRequest(PlaceRequest request) {
         super.prepareFromRequest(request);
-        retrieveDsdList(DSD_LIST_FIRST_RESULT, DSD_LIST_MAX_RESULTS);
+        retrieveDsdList(DSD_LIST_FIRST_RESULT, DSD_LIST_MAX_RESULTS, null);
     }
 
     @Override
@@ -220,12 +222,12 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                retrieveDsdList(DSD_LIST_FIRST_RESULT, DSD_LIST_MAX_RESULTS);
+                retrieveDsdList(DSD_LIST_FIRST_RESULT, DSD_LIST_MAX_RESULTS, null);
                 ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorDelete()), MessageTypeEnum.ERROR);
             }
             @Override
             public void onWaitSuccess(DeleteDsdListResult result) {
-                retrieveDsdList(DSD_LIST_FIRST_RESULT, DSD_LIST_MAX_RESULTS);
+                retrieveDsdList(DSD_LIST_FIRST_RESULT, DSD_LIST_MAX_RESULTS, null);
                 ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdDeleted()), MessageTypeEnum.SUCCESS);
             }
         });
@@ -235,8 +237,8 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
      * AsyncCallback to fetch DSDs
      */
     @Override
-    public void retrieveDsdList(int firstResult, int maxResults) {
-        dispatcher.execute(new GetDsdListAction(firstResult, maxResults), new WaitingAsyncCallback<GetDsdListResult>() {
+    public void retrieveDsdList(int firstResult, int maxResults, final String dsd) {
+        dispatcher.execute(new GetDsdListAction(firstResult, maxResults, dsd), new WaitingAsyncCallback<GetDsdListResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -245,6 +247,9 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
             @Override
             public void onWaitSuccess(GetDsdListResult result) {
                 getView().setDsds(result.getDsdDtos(), result.getFirstResultOut(), result.getTotalResults());
+                if (StringUtils.isBlank(dsd)) {
+                    getView().clearSearchSection();
+                }
             }
         });
     }

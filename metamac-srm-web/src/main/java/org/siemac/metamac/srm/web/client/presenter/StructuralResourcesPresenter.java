@@ -137,7 +137,7 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
      * AsyncCallback to fetch DSDs
      */
     protected void retrieveDsds() {
-        dispatcher.execute(new GetDsdListAction(RESOURCE_LIST_FIRST_RESULT, RESOURCE_LIST_MAX_RESULTS), new WaitingAsyncCallback<GetDsdListResult>() {
+        dispatcher.execute(new GetDsdListAction(RESOURCE_LIST_FIRST_RESULT, RESOURCE_LIST_MAX_RESULTS, null), new WaitingAsyncCallback<GetDsdListResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {

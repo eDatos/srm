@@ -18,16 +18,20 @@ import org.siemac.metamac.srm.web.concept.widgets.NewConceptSchemeWindow;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemePaginatedListResult;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 import org.siemac.metamac.web.common.client.widgets.PaginatedCheckListGrid;
+import org.siemac.metamac.web.common.client.widgets.SearchSectionStack;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 import com.smartgwt.client.types.Alignment;
+import com.smartgwt.client.types.Autofit;
 import com.smartgwt.client.types.Visibility;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
+import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
+import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
@@ -43,8 +47,10 @@ public class ConceptSchemeListViewImpl extends ViewImpl implements ConceptScheme
     private ConceptSchemeListUiHandlers uiHandlers;
     private VLayout                     panel;
 
-    private ToolStripButton             newConceptSchemeActor;
-    private ToolStripButton             deleteConceptSchemeActor;
+    private ToolStripButton             newConceptSchemeButton;
+    private ToolStripButton             deleteConceptSchemeButton;
+
+    private SearchSectionStack          searchSectionStack;
 
     private PaginatedCheckListGrid      conceptSchemesList;
 
@@ -55,11 +61,12 @@ public class ConceptSchemeListViewImpl extends ViewImpl implements ConceptScheme
         super();
 
         // ToolStrip
+
         ToolStrip toolStrip = new ToolStrip();
         toolStrip.setWidth100();
 
-        newConceptSchemeActor = new ToolStripButton(getConstants().actionNew(), RESOURCE.newListGrid().getURL());
-        newConceptSchemeActor.addClickHandler(new ClickHandler() {
+        newConceptSchemeButton = new ToolStripButton(getConstants().actionNew(), RESOURCE.newListGrid().getURL());
+        newConceptSchemeButton.addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
@@ -76,12 +83,11 @@ public class ConceptSchemeListViewImpl extends ViewImpl implements ConceptScheme
                 });
             }
         });
-        // Security
-        newConceptSchemeActor.setVisibility(ClientSecurityUtils.canCreateConceptScheme() ? Visibility.VISIBLE : Visibility.HIDDEN);
+        newConceptSchemeButton.setVisibility(ClientSecurityUtils.canCreateConceptScheme() ? Visibility.VISIBLE : Visibility.HIDDEN);
 
-        deleteConceptSchemeActor = new ToolStripButton(getConstants().actionDelete(), RESOURCE.deleteListGrid().getURL());
-        deleteConceptSchemeActor.setVisibility(Visibility.HIDDEN);
-        deleteConceptSchemeActor.addClickHandler(new ClickHandler() {
+        deleteConceptSchemeButton = new ToolStripButton(getConstants().actionDelete(), RESOURCE.deleteListGrid().getURL());
+        deleteConceptSchemeButton.setVisibility(Visibility.HIDDEN);
+        deleteConceptSchemeButton.addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
@@ -89,17 +95,31 @@ public class ConceptSchemeListViewImpl extends ViewImpl implements ConceptScheme
             }
         });
 
-        toolStrip.addButton(newConceptSchemeActor);
-        toolStrip.addButton(deleteConceptSchemeActor);
+        toolStrip.addButton(newConceptSchemeButton);
+        toolStrip.addButton(deleteConceptSchemeButton);
 
-        conceptSchemesList = new PaginatedCheckListGrid(ConceptSchemeListPresenter.DEFAULT_MAX_RESULTS, new PaginatedAction() {
+        // Search
+
+        searchSectionStack = new SearchSectionStack();
+        searchSectionStack.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
+
+            @Override
+            public void onFormItemClick(FormItemIconClickEvent event) {
+                uiHandlers.retrieveConceptSchemes(ConceptSchemeListPresenter.SCHEME_LIST_FIRST_RESULT, ConceptSchemeListPresenter.SCHEME_LIST_MAX_RESULTS, searchSectionStack.getSearchCriteria());
+            }
+        });
+
+        // Concepts scheme list
+
+        conceptSchemesList = new PaginatedCheckListGrid(ConceptSchemeListPresenter.SCHEME_LIST_MAX_RESULTS, new PaginatedAction() {
 
             @Override
             public void retrieveResultSet(int firstResult, int maxResults) {
-                uiHandlers.retrieveConceptSchemes(firstResult, maxResults);
+                uiHandlers.retrieveConceptSchemes(firstResult, maxResults, null);
             }
         });
-        conceptSchemesList.setHeight(680);
+        conceptSchemesList.getListGrid().setAutoFitMaxRecords(ConceptSchemeListPresenter.SCHEME_LIST_MAX_RESULTS);
+        conceptSchemesList.getListGrid().setAutoFitData(Autofit.VERTICAL);
         conceptSchemesList.getListGrid().setDataSource(new ConceptSchemeDS());
         conceptSchemesList.getListGrid().setUseAllDataSourceFields(false);
         conceptSchemesList.getListGrid().addSelectionChangedHandler(new SelectionChangedHandler() {
@@ -107,9 +127,9 @@ public class ConceptSchemeListViewImpl extends ViewImpl implements ConceptScheme
             @Override
             public void onSelectionChanged(SelectionEvent event) {
                 if (conceptSchemesList.getListGrid().getSelectedRecords().length > 0) {
-                    deleteConceptSchemeActor.show();
+                    deleteConceptSchemeButton.show();
                 } else {
-                    deleteConceptSchemeActor.hide();
+                    deleteConceptSchemeButton.hide();
                 }
             }
         });
@@ -133,6 +153,7 @@ public class ConceptSchemeListViewImpl extends ViewImpl implements ConceptScheme
 
         panel = new VLayout();
         panel.addMember(toolStrip);
+        panel.addMember(searchSectionStack);
         panel.addMember(conceptSchemesList);
 
         deleteConfirmationWindow = new DeleteConfirmationWindow(getConstants().conceptSchemeDeleteConfirmationTitle(), getConstants().conceptSchemeDeleteConfirmation());
@@ -205,6 +226,11 @@ public class ConceptSchemeListViewImpl extends ViewImpl implements ConceptScheme
     @Override
     public void setUiHandlers(ConceptSchemeListUiHandlers uiHandlers) {
         this.uiHandlers = uiHandlers;
+    }
+
+    @Override
+    public void clearSearchSection() {
+        searchSectionStack.reset();
     }
 
 }

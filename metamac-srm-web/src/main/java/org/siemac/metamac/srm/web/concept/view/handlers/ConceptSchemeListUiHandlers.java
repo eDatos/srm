@@ -14,6 +14,6 @@ public interface ConceptSchemeListUiHandlers extends UiHandlers {
 
     void deleteConceptSchemes(List<Long> idsFromSelected);
 
-    void retrieveConceptSchemes(int firstResult, int maxResults);
+    void retrieveConceptSchemes(int firstResult, int maxResults, String conceptScheme);
 
 }

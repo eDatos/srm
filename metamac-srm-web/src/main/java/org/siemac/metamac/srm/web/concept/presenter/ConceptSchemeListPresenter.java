@@ -46,7 +46,8 @@ import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 
 public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPresenter.ConceptSchemeListView, ConceptSchemeListPresenter.ConceptSchemeListProxy> implements ConceptSchemeListUiHandlers {
 
-    public static final int                           DEFAULT_MAX_RESULTS                                = 30;
+    public final static int                           SCHEME_LIST_FIRST_RESULT                           = 0;
+    public final static int                           SCHEME_LIST_MAX_RESULTS                            = 30;
 
     private final DispatchAsync                       dispatcher;
     private final PlaceManager                        placeManager;
@@ -72,6 +73,8 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
 
         void setConceptSchemePaginatedList(GetConceptSchemePaginatedListResult conceptSchemesPaginatedList);
         void goToConceptSchemeListLastPageAfterCreate();
+
+        void clearSearchSection();
     }
 
     @Inject
@@ -94,7 +97,7 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
         super.onReset();
         SetTitleEvent.fire(this, getConstants().conceptSchemes());
 
-        retrieveConceptSchemes(0, DEFAULT_MAX_RESULTS);
+        retrieveConceptSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, null);
     }
 
     @Override
@@ -104,8 +107,8 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
     }
 
     @Override
-    public void retrieveConceptSchemes(int firstResult, int maxResults) {
-        dispatcher.execute(new GetConceptSchemePaginatedListAction(maxResults, firstResult), new WaitingAsyncCallback<GetConceptSchemePaginatedListResult>() {
+    public void retrieveConceptSchemes(int firstResult, int maxResults, final String conceptScheme) {
+        dispatcher.execute(new GetConceptSchemePaginatedListAction(maxResults, firstResult, conceptScheme), new WaitingAsyncCallback<GetConceptSchemePaginatedListResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -115,11 +118,13 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
             @Override
             public void onWaitSuccess(GetConceptSchemePaginatedListResult result) {
                 getView().setConceptSchemePaginatedList(result);
+                if (StringUtils.isBlank(conceptScheme)) {
+                    getView().clearSearchSection();
+                }
             }
         });
     }
 
-    // Handlers
     @Override
     public void createConceptScheme(ConceptSchemeDto conceptSchemeDto) {
         dispatcher.execute(new SaveConceptSchemeAction(conceptSchemeDto), new WaitingAsyncCallback<SaveConceptSchemeResult>() {
@@ -132,7 +137,7 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
             @Override
             public void onWaitSuccess(SaveConceptSchemeResult result) {
                 ShowMessageEvent.fire(ConceptSchemeListPresenter.this, ErrorUtils.getMessageList(getMessages().conceptSchemeSaved()), MessageTypeEnum.SUCCESS);
-                retrieveConceptSchemes(0, DEFAULT_MAX_RESULTS);
+                retrieveConceptSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, null);
                 getView().goToConceptSchemeListLastPageAfterCreate();
             }
         });
@@ -150,7 +155,7 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
             @Override
             public void onWaitSuccess(DeleteConceptSchemeListResult result) {
                 ShowMessageEvent.fire(ConceptSchemeListPresenter.this, ErrorUtils.getMessageList(getMessages().conceptSchemeDeleted()), MessageTypeEnum.SUCCESS);
-                retrieveConceptSchemes(0, DEFAULT_MAX_RESULTS); // reload list
+                retrieveConceptSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, null);
             }
         });
     }

@@ -17,6 +17,9 @@ public class GetConceptSchemePaginatedList {
     @In(2)
     int                    firstResult;
 
+    @In(3)
+    String                 conceptScheme;
+
     @Out(1)
     List<ConceptSchemeDto> conceptSchemeList;
 

@@ -20,6 +20,7 @@ import org.siemac.metamac.srm.web.dsd.widgets.ImportDsdWindow;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
+import org.siemac.metamac.web.common.client.widgets.SearchSectionStack;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.form.CustomDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
@@ -37,6 +38,8 @@ import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.events.CloseClickEvent;
 import com.smartgwt.client.widgets.events.CloseClickHandler;
 import com.smartgwt.client.widgets.form.fields.ButtonItem;
+import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
+import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
 import com.smartgwt.client.widgets.form.fields.events.HasClickHandlers;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.grid.events.HasRecordClickHandlers;
@@ -68,6 +71,8 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
     private DeleteConfirmationWindow deleteConfirmationWindow;
     private ImportDsdWindow          importDsdWindow;
 
+    private SearchSectionStack       searchSectionStack;
+
     @Inject
     public DsdListViewImpl() {
         super();
@@ -77,7 +82,7 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
 
             @Override
             public void retrieveResultSet(int firstResult, int maxResults) {
-                getUiHandlers().retrieveDsdList(firstResult, maxResults);
+                getUiHandlers().retrieveDsdList(firstResult, maxResults, null);
             }
         });
 
@@ -190,7 +195,18 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
         dsdGridToolStrip.addButton(importToolStripButton);
         dsdGridToolStrip.addButton(exportToolStripButton);
 
-        // Grid
+        // Search
+
+        searchSectionStack = new SearchSectionStack();
+        searchSectionStack.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
+
+            @Override
+            public void onFormItemClick(FormItemIconClickEvent event) {
+                getUiHandlers().retrieveDsdList(DsdListPresenter.DSD_LIST_FIRST_RESULT, DsdListPresenter.DSD_LIST_MAX_RESULTS, searchSectionStack.getSearchCriteria());
+            }
+        });
+
+        // DSD ListGrid
 
         dsdListGrid.getListGrid().addSelectionChangedHandler(new SelectionChangedHandler() {
 
@@ -223,6 +239,7 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
         });
 
         panel.addMember(dsdGridToolStrip);
+        panel.addMember(searchSectionStack);
         panel.addMember(dsdListGrid);
     }
 
@@ -342,6 +359,11 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
     @Override
     public void onNewDsdCreated() {
         dsdListGrid.goToLastPageAfterCreate();
+    }
+
+    @Override
+    public void clearSearchSection() {
+        searchSectionStack.reset();
     }
 
 }

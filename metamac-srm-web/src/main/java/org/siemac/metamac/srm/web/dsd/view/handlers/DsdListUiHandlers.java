@@ -8,7 +8,7 @@ import com.gwtplatform.mvp.client.UiHandlers;
 
 public interface DsdListUiHandlers extends UiHandlers {
 
-    void retrieveDsdList(int firstResult, int maxResults);
+    void retrieveDsdList(int firstResult, int maxResults, String dsd);
     void goToDsd(String urn);
     void saveDsd(DataStructureDefinitionDto dataStructureDefinitionDto);
     void deleteDsds(List<DataStructureDefinitionDto> dataStructureDefinitionDtos);

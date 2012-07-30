@@ -17,6 +17,9 @@ public class GetDsdList {
     @In(2)
     int                              maxResults;
 
+    @In(3)
+    String                           dsd;
+
     @Out(1)
     List<DataStructureDefinitionDto> dsdDtos;
 
