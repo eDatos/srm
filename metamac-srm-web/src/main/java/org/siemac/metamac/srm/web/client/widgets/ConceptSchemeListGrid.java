@@ -8,15 +8,15 @@ import org.siemac.metamac.domain.concept.dto.ConceptSchemeDto;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptSchemeRecord;
 import org.siemac.metamac.srm.web.concept.utils.RecordUtils;
+import org.siemac.metamac.web.common.client.widgets.BaseCustomListGrid;
 
 import com.smartgwt.client.widgets.grid.HoverCustomizer;
-import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 
-public class ConceptSchemesItemsContextAreaListGrid extends ListGrid {
+public class ConceptSchemeListGrid extends BaseCustomListGrid {
 
-    public ConceptSchemesItemsContextAreaListGrid() {
+    public ConceptSchemeListGrid() {
         super();
 
         this.setShowAllRecords(true);
@@ -57,12 +57,13 @@ public class ConceptSchemesItemsContextAreaListGrid extends ListGrid {
     }
 
     public void setConceptSchemes(List<ConceptSchemeDto> conceptSchemeDtos) {
-        ConceptSchemeRecord[] schemeRecords = new ConceptSchemeRecord[conceptSchemeDtos.size()];
-        for (int i = 0; i < conceptSchemeDtos.size(); i++) {
-            schemeRecords[i] = RecordUtils.getConceptSchemeRecord(conceptSchemeDtos.get(i));
+        removeAllData();
+        if (conceptSchemeDtos != null) {
+            ConceptSchemeRecord[] schemeRecords = new ConceptSchemeRecord[conceptSchemeDtos.size()];
+            for (int i = 0; i < conceptSchemeDtos.size(); i++) {
+                schemeRecords[i] = RecordUtils.getConceptSchemeRecord(conceptSchemeDtos.get(i));
+            }
+            this.setData(schemeRecords);
         }
-        // Populate the List Grid
-        this.setData(schemeRecords);
     }
-
 }

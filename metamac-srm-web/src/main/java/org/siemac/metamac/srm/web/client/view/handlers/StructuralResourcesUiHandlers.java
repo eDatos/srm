@@ -6,6 +6,6 @@ public interface StructuralResourcesUiHandlers extends UiHandlers {
 
     void goToDsd(String urn);
 
-    void goToConceptScheme(String id);
+    void goToConceptScheme(String urn);
 
 }

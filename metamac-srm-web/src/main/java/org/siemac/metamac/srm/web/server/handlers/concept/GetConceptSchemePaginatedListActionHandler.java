@@ -9,7 +9,6 @@ import org.siemac.metamac.web.common.server.handlers.SecurityActionHandler;
 import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
 import org.springframework.stereotype.Component;
 
-import com.gwtplatform.dispatch.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 @Component
@@ -22,6 +21,7 @@ public class GetConceptSchemePaginatedListActionHandler extends SecurityActionHa
     @Override
     public GetConceptSchemePaginatedListResult executeSecurityAction(GetConceptSchemePaginatedListAction action) throws ActionException {
         // TODO: replace mock
+        // TODO ORDER BY last_update
         try {
             ConceptSchemePage page = ConceptSchemeService.findAllConceptSchemes(action.getFirstResult(), action.getMaxResults());
             int pageNumber = (action.getFirstResult() / action.getMaxResults()) + 1;
@@ -31,8 +31,4 @@ public class GetConceptSchemePaginatedListActionHandler extends SecurityActionHa
         }
     }
 
-    @Override
-    public void undo(GetConceptSchemePaginatedListAction action, GetConceptSchemePaginatedListResult result, ExecutionContext context) throws ActionException {
-        // NOTHING
-    }
 }

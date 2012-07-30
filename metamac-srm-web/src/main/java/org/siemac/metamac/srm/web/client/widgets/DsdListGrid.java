@@ -58,12 +58,14 @@ public class DsdListGrid extends BaseCustomListGrid {
     }
 
     public void setDsds(List<DataStructureDefinitionDto> dataStructureDefinitionDtos) {
-        DsdRecord[] dsdRecords = new DsdRecord[dataStructureDefinitionDtos.size()];
-        for (int i = 0; i < dataStructureDefinitionDtos.size(); i++) {
-            dsdRecords[i] = RecordUtils.getDsdRecord(dataStructureDefinitionDtos.get(i));
+        removeAllData();
+        if (dataStructureDefinitionDtos != null) {
+            DsdRecord[] dsdRecords = new DsdRecord[dataStructureDefinitionDtos.size()];
+            for (int i = 0; i < dataStructureDefinitionDtos.size(); i++) {
+                dsdRecords[i] = RecordUtils.getDsdRecord(dataStructureDefinitionDtos.get(i));
+            }
+            setData(dsdRecords);
         }
-        // Populate the List Grid
-        this.setData(dsdRecords);
     }
 
 }

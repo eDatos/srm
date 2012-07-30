@@ -4,21 +4,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.siemac.metamac.core.common.util.shared.StringUtils;
+import org.siemac.metamac.domain.concept.dto.ConceptSchemeDto;
 import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
 import org.siemac.metamac.srm.web.client.PlaceRequestParams;
-import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
+import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.view.handlers.StructuralResourcesUiHandlers;
 import org.siemac.metamac.srm.web.client.widgets.presenter.ToolStripPresenterWidget;
+import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemePaginatedListAction;
+import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemePaginatedListResult;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdListAction;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdListResult;
+import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
+import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.utils.UrnUtils;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
-import com.google.gwt.user.client.Window;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.HasUiHandlers;
@@ -34,23 +38,18 @@ import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
-import com.smartgwt.client.widgets.grid.events.HasRecordClickHandlers;
-import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
-import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 
 public class StructuralResourcesPresenter extends Presenter<StructuralResourcesPresenter.StructuralResourcesView, StructuralResourcesPresenter.StructuralResourcesProxy>
         implements
             StructuralResourcesUiHandlers {
 
-    public final static int                  RESOURCE_LIST_FIRST_RESULT = 0;
-    public final static int                  RESOURCE_LIST_MAX_RESULTS  = 10;
+    public final static int          RESOURCE_LIST_FIRST_RESULT = 0;
+    public final static int          RESOURCE_LIST_MAX_RESULTS  = 10;
 
-    private final DispatchAsync              dispatcher;
-    private final PlaceManager               placeManager;
+    private final DispatchAsync      dispatcher;
+    private final PlaceManager       placeManager;
 
-    private ToolStripPresenterWidget         toolStripPresenterWidget;
-
-    private List<DataStructureDefinitionDto> dsdList;
+    private ToolStripPresenterWidget toolStripPresenterWidget;
 
     @ProxyCodeSplit
     @NameToken(NameTokens.structuralResourcesPage)
@@ -65,8 +64,9 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
 
     public interface StructuralResourcesView extends View, HasUiHandlers<StructuralResourcesUiHandlers> {
 
-        void setResultSetDsd(List<DataStructureDefinitionDto> resultSet);
-        HasRecordClickHandlers getSelectedDsd();
+        void setDsdList(List<DataStructureDefinitionDto> dataStructureDefinitionDtos);
+        void setConceptSchemeList(List<ConceptSchemeDto> conceptSchemeDtos);
+
         void resetView();
     }
 
@@ -89,26 +89,11 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
     }
 
     @Override
-    protected void onBind() {
-        super.onBind();
-
-        // Operation click
-        registerHandler(getView().getSelectedDsd().addRecordClickHandler(new RecordClickHandler() {
-
-            @Override
-            public void onRecordClick(RecordClickEvent event) {
-                DsdRecord record = (DsdRecord) event.getRecord();
-                goToDsd(record.getDsd().getUrn());
-            }
-        }));
-    }
-
-    @Override
     protected void onReset() {
         super.onReset();
         getView().resetView();
-        retrieveDsds(); // Fetch DSDs
-        // retrieveConceptSchemes(); // Fetch ConceptSchemes
+        retrieveDsds();
+        retrieveConceptSchemes();
     }
 
     @Override
@@ -133,20 +118,30 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
         super.prepareFromRequest(request);
     }
 
-    /**
-     * AsyncCallback to fetch DSDs
-     */
     protected void retrieveDsds() {
         dispatcher.execute(new GetDsdListAction(RESOURCE_LIST_FIRST_RESULT, RESOURCE_LIST_MAX_RESULTS, null), new WaitingAsyncCallback<GetDsdListResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                Window.alert("Error fetching DSDs" + caught.toString());
+                ShowMessageEvent.fire(StructuralResourcesPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
             }
             @Override
             public void onWaitSuccess(GetDsdListResult result) {
-                dsdList = result.getDsdDtos();
-                getView().setResultSetDsd(dsdList);
+                getView().setDsdList(result.getDsdDtos());
+            }
+        });
+    }
+
+    protected void retrieveConceptSchemes() {
+        dispatcher.execute(new GetConceptSchemePaginatedListAction(RESOURCE_LIST_FIRST_RESULT, RESOURCE_LIST_MAX_RESULTS, null), new WaitingAsyncCallback<GetConceptSchemePaginatedListResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(StructuralResourcesPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().conceptSchemeErrorRetrieveList()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetConceptSchemePaginatedListResult result) {
+                getView().setConceptSchemeList(result.getConceptSchemeList());
             }
         });
     }
@@ -170,11 +165,11 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
     }
 
     @Override
-    public void goToConceptScheme(String code) {
-        if (code != null) {
+    public void goToConceptScheme(String urn) {
+        if (urn != null) {
             PlaceRequest structuralResourcesPlace = new PlaceRequest(NameTokens.structuralResourcesPage);
             PlaceRequest schemesListPlace = new PlaceRequest(NameTokens.conceptSchemeListPage);
-            PlaceRequest conceptPlace = new PlaceRequest(NameTokens.conceptSchemePage).with(PlaceRequestParams.conceptSchemeParam, code);
+            PlaceRequest conceptPlace = new PlaceRequest(NameTokens.conceptSchemePage).with(PlaceRequestParams.conceptSchemeParam, UrnUtils.removePrefix(urn));
             List<PlaceRequest> placeRequests = new ArrayList<PlaceRequest>();
             placeRequests.add(structuralResourcesPlace);
             placeRequests.add(schemesListPlace);
