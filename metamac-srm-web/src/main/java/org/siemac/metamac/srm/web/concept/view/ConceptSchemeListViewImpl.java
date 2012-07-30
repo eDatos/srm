@@ -8,10 +8,10 @@ import java.util.List;
 
 import org.siemac.metamac.domain.concept.dto.ConceptSchemeDto;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
-import org.siemac.metamac.srm.web.client.utils.ClientSecurityUtils;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptSchemeRecord;
 import org.siemac.metamac.srm.web.concept.presenter.ConceptSchemeListPresenter;
+import org.siemac.metamac.srm.web.concept.utils.ConceptClientSecurityUtils;
 import org.siemac.metamac.srm.web.concept.utils.RecordUtils;
 import org.siemac.metamac.srm.web.concept.view.handlers.ConceptSchemeListUiHandlers;
 import org.siemac.metamac.srm.web.concept.widgets.NewConceptSchemeWindow;
@@ -83,7 +83,7 @@ public class ConceptSchemeListViewImpl extends ViewImpl implements ConceptScheme
                 });
             }
         });
-        newConceptSchemeButton.setVisibility(ClientSecurityUtils.canCreateConceptScheme() ? Visibility.VISIBLE : Visibility.HIDDEN);
+        newConceptSchemeButton.setVisibility(ConceptClientSecurityUtils.canCreateConceptScheme() ? Visibility.VISIBLE : Visibility.HIDDEN);
 
         deleteConceptSchemeButton = new ToolStripButton(getConstants().actionDelete(), RESOURCE.deleteListGrid().getURL());
         deleteConceptSchemeButton.setVisibility(Visibility.HIDDEN);
@@ -127,7 +127,7 @@ public class ConceptSchemeListViewImpl extends ViewImpl implements ConceptScheme
             @Override
             public void onSelectionChanged(SelectionEvent event) {
                 if (conceptSchemesList.getListGrid().getSelectedRecords().length > 0) {
-                    deleteConceptSchemeButton.show();
+                    showListGridDeleteButton();
                 } else {
                     deleteConceptSchemeButton.hide();
                 }
@@ -231,6 +231,12 @@ public class ConceptSchemeListViewImpl extends ViewImpl implements ConceptScheme
     @Override
     public void clearSearchSection() {
         searchSectionStack.reset();
+    }
+
+    private void showListGridDeleteButton() {
+        if (ConceptClientSecurityUtils.canDeleteConceptScheme()) {
+            deleteConceptSchemeButton.show();
+        }
     }
 
 }

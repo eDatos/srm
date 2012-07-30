@@ -4,7 +4,7 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
 import org.siemac.metamac.domain.srm.enume.domain.MaintainableArtefactProcStatusEnum;
 import org.siemac.metamac.srm.web.client.resources.GlobalResources;
-import org.siemac.metamac.srm.web.client.utils.ClientSecurityUtils;
+import org.siemac.metamac.srm.web.concept.utils.ConceptClientSecurityUtils;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.widgets.AnnounceToolStripButton;
 import org.siemac.metamac.web.common.client.widgets.MainFormLayoutButton;
@@ -44,7 +44,7 @@ public class ConceptSchemeMainFormLayout extends InternationalMainFormLayout {
         rejectValidation = new MainFormLayoutButton(getConstants().conceptSchemeRejectValidation(), GlobalResources.RESOURCE.reject().getURL());
         versioning = new MainFormLayoutButton(getConstants().conceptSchemeVersioning(), GlobalResources.RESOURCE.version().getURL());
         announce = new AnnounceToolStripButton(MetamacWebCommon.getConstants().announce(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.announce().getURL());
-        announce.setVisibility(Visibility.VISIBLE);
+        announce.setVisibility(ConceptClientSecurityUtils.canAnnounceConceptScheme() ? Visibility.VISIBLE : Visibility.HIDDEN);
 
         toolStrip.addButton(pendingPublication);
         toolStrip.addButton(publishInternally);
@@ -122,33 +122,33 @@ public class ConceptSchemeMainFormLayout extends InternationalMainFormLayout {
     }
 
     private void showSendToPendingPublication() {
-        if (ClientSecurityUtils.canSendConceptSchemeToPendingPublication()) {
+        if (ConceptClientSecurityUtils.canSendConceptSchemeToPendingPublication()) {
             pendingPublication.show();
         }
     }
 
     private void showRejectValidationButton() {
         if (MaintainableArtefactProcStatusEnum.PENDING_PUBLICATION.equals(status)) {
-            if (ClientSecurityUtils.canRejectConceptSchemeValidation()) {
+            if (ConceptClientSecurityUtils.canRejectConceptSchemeValidation()) {
                 rejectValidation.show();
             }
         }
     }
 
     private void showPublishInternallyButton() {
-        if (ClientSecurityUtils.canPublishInternallyConceptScheme()) {
+        if (ConceptClientSecurityUtils.canPublishInternallyConceptScheme()) {
             publishInternally.show();
         }
     }
 
     private void showPublishExternallyButton() {
-        if (ClientSecurityUtils.canPublishExternallyConceptScheme()) {
+        if (ConceptClientSecurityUtils.canPublishExternallyConceptScheme()) {
             publishExternally.show();
         }
     }
 
     private void showVersioningButton() {
-        if (ClientSecurityUtils.canVersioningConceptScheme()) {
+        if (ConceptClientSecurityUtils.canVersioningConceptScheme()) {
             versioning.show();
         }
     }

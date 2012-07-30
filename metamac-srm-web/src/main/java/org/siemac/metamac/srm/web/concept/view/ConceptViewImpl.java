@@ -5,9 +5,9 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.domain.concept.dto.ConceptDto;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
-import org.siemac.metamac.srm.web.client.utils.ClientSecurityUtils;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
 import org.siemac.metamac.srm.web.concept.presenter.ConceptPresenter;
+import org.siemac.metamac.srm.web.concept.utils.ConceptClientSecurityUtils;
 import org.siemac.metamac.srm.web.concept.view.handlers.ConceptUiHandlers;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
@@ -61,7 +61,7 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
         panel = new VLayout();
         panel.setHeight100();
         panel.setOverflow(Overflow.SCROLL);
-        mainFormLayout = new InternationalMainFormLayout(ClientSecurityUtils.canEditConcept());
+        mainFormLayout = new InternationalMainFormLayout(ConceptClientSecurityUtils.canEditConcept());
 
         // Translations
         mainFormLayout.getTranslateToolStripButton().addClickHandler(new ClickHandler() {

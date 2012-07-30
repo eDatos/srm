@@ -1,10 +1,8 @@
-package org.siemac.metamac.srm.web.client.utils;
+package org.siemac.metamac.srm.web.concept.utils;
 
-public class ClientSecurityUtils {
+public class ConceptClientSecurityUtils {
 
-    // DSDs
-
-    // Concepts
+    // Schemes
 
     public static boolean canCreateConceptScheme() {
         return true;
@@ -37,6 +35,12 @@ public class ClientSecurityUtils {
     public static boolean canVersioningConceptScheme() {
         return true;
     }
+
+    public static boolean canAnnounceConceptScheme() {
+        return true;
+    }
+
+    // Concepts
 
     public static boolean canCreateConcept() {
         return true;

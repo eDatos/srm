@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.web.concept.view;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
@@ -12,13 +13,13 @@ import org.siemac.metamac.domain.concept.dto.ConceptSchemeDto;
 import org.siemac.metamac.domain.srm.enume.domain.MaintainableArtefactProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
-import org.siemac.metamac.srm.web.client.utils.ClientSecurityUtils;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptRecord;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptSchemeRecord;
 import org.siemac.metamac.srm.web.concept.presenter.ConceptSchemePresenter;
 import org.siemac.metamac.srm.web.concept.utils.CommonUtils;
+import org.siemac.metamac.srm.web.concept.utils.ConceptClientSecurityUtils;
 import org.siemac.metamac.srm.web.concept.view.handlers.ConceptSchemeUiHandlers;
 import org.siemac.metamac.srm.web.concept.widgets.ConceptSchemeMainFormLayout;
 import org.siemac.metamac.srm.web.concept.widgets.HistorySectionStack;
@@ -39,12 +40,14 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 import com.smartgwt.client.types.Overflow;
+import com.smartgwt.client.types.Visibility;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.fields.BooleanItem;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.grid.ListGridField;
+import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 import com.smartgwt.client.widgets.grid.events.SelectionChangedHandler;
@@ -66,6 +69,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
     private GroupDynamicForm            classDescriptorsForm;
     private GroupDynamicForm            productionDescriptorsForm;
     private GroupDynamicForm            diffusionDescriptorsForm;
+    private GroupDynamicForm            versionResponsibilityForm;
 
     // Edition forms
     private GroupDynamicForm            identifiersEditionForm;
@@ -73,6 +77,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
     private GroupDynamicForm            classDescriptorsEditionForm;
     private GroupDynamicForm            productionDescriptorsEditionForm;
     private GroupDynamicForm            diffusionDescriptorsEditionForm;
+    private GroupDynamicForm            versionResponsibilityEditionForm;
 
     private ListGridToolStrip           conceptsToolStripListGrid;
     private CustomListGrid              conceptsListGrid;
@@ -88,6 +93,13 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         panel.setHeight100();
         panel.setOverflow(Overflow.SCROLL);
 
+        // Scheme
+
+        mainFormLayout = new ConceptSchemeMainFormLayout(ConceptClientSecurityUtils.canEditConceptScheme());
+        bindMainFormLayoutEvents();
+        createViewForm();
+        createEditionForm();
+
         // Scheme version list
 
         historySectionStack = new HistorySectionStack();
@@ -99,13 +111,6 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
                 uiHandlers.goToConceptScheme(urn);
             }
         });
-
-        // Scheme
-
-        mainFormLayout = new ConceptSchemeMainFormLayout(ClientSecurityUtils.canEditConceptScheme());
-        bindMainFormLayoutEvents();
-        createViewForm();
-        createEditionForm();
 
         // Concept list
 
@@ -128,11 +133,12 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
                 });
             }
         });
+        conceptsToolStripListGrid.getNewButton().setVisibility(ConceptClientSecurityUtils.canCreateConcept() ? Visibility.VISIBLE : Visibility.HIDDEN);
         conceptsToolStripListGrid.getDeleteConfirmationWindow().getYesButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-
+                uiHandlers.deleteConcepts(getSelectedConcepts());
             }
         });
 
@@ -175,11 +181,10 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         conceptsListGridLayout.addMember(conceptsToolStripListGrid);
         conceptsListGridLayout.addMember(conceptsListGrid);
 
-        panel.addMember(historySectionStack);
         panel.addMember(mainFormLayout);
+        panel.addMember(historySectionStack);
         panel.addMember(conceptsListGridLayout);
     }
-
     private void bindMainFormLayoutEvents() {
         mainFormLayout.getTranslateToolStripButton().addClickHandler(new ClickHandler() {
 
@@ -200,6 +205,9 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
 
                 diffusionDescriptorsForm.setTranslationsShowed(translationsShowed);
                 diffusionDescriptorsEditionForm.setTranslationsShowed(translationsShowed);
+
+                versionResponsibilityForm.setTranslationsShowed(translationsShowed);
+                versionResponsibilityEditionForm.setTranslationsShowed(translationsShowed);
             }
         });
 
@@ -368,11 +376,18 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         ViewTextItem endDate = new ViewTextItem(ConceptSchemeDS.VALID_TO, getConstants().conceptSchemeEndDate());
         diffusionDescriptorsForm.setFields(startDate, endDate);
 
+        // Version responsibility
+        versionResponsibilityForm = new GroupDynamicForm(getConstants().conceptSchemeVersionResponsibility());
+        ViewTextItem productionEnvironment = new ViewTextItem("prod", getConstants().conceptSchemeVersionResponsibilityProduction()); // TODO
+        ViewTextItem diffusionEnvironment = new ViewTextItem("diff", getConstants().conceptSchemeVersionResponsibilityDiffusion()); // TODO
+        versionResponsibilityForm.setFields(productionEnvironment, diffusionEnvironment);
+
         mainFormLayout.addViewCanvas(identifiersForm);
         mainFormLayout.addViewCanvas(contentDescriptorsForm);
         mainFormLayout.addViewCanvas(classDescriptorsForm);
         mainFormLayout.addViewCanvas(productionDescriptorsForm);
         mainFormLayout.addViewCanvas(diffusionDescriptorsForm);
+        mainFormLayout.addViewCanvas(versionResponsibilityForm);
     }
 
     private void createEditionForm() {
@@ -410,11 +425,18 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         ViewTextItem endDate = new ViewTextItem(ConceptSchemeDS.VALID_TO, getConstants().conceptSchemeEndDate());
         diffusionDescriptorsEditionForm.setFields(startDate, endDate);
 
+        // Version responsibility
+        versionResponsibilityEditionForm = new GroupDynamicForm(getConstants().conceptSchemeVersionResponsibility());
+        ViewTextItem productionEnvironment = new ViewTextItem("prod", getConstants().conceptSchemeVersionResponsibilityProduction()); // TODO
+        ViewTextItem diffusionEnvironment = new ViewTextItem("diff", getConstants().conceptSchemeVersionResponsibilityDiffusion()); // TODO
+        versionResponsibilityEditionForm.setFields(productionEnvironment, diffusionEnvironment);
+
         mainFormLayout.addEditionCanvas(identifiersEditionForm);
         mainFormLayout.addEditionCanvas(contentDescriptorsEditionForm);
         mainFormLayout.addEditionCanvas(classDescriptorsEditionForm);
         mainFormLayout.addEditionCanvas(productionDescriptorsEditionForm);
         mainFormLayout.addEditionCanvas(diffusionDescriptorsEditionForm);
+        mainFormLayout.addEditionCanvas(versionResponsibilityEditionForm);
     }
 
     public void setEditionMode() {
@@ -478,7 +500,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
     }
 
     private void showConceptListGridDeleteButton() {
-        if (ClientSecurityUtils.canDeleteConcept()) {
+        if (ConceptClientSecurityUtils.canDeleteConcept()) {
             conceptsToolStripListGrid.getDeleteButton().show();
         }
     }
@@ -495,6 +517,18 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         } else {
             showConceptListGridDeleteButton();
         }
+    }
+
+    public List<Long> getSelectedConcepts() {
+        List<Long> selectedConcepts = new ArrayList<Long>();
+        if (conceptsListGrid.getSelectedRecords() != null) {
+            ListGridRecord[] records = conceptsListGrid.getSelectedRecords();
+            for (int i = 0; i < records.length; i++) {
+                ConceptRecord record = (ConceptRecord) records[i];
+                selectedConcepts.add(record.getId());
+            }
+        }
+        return selectedConcepts;
     }
 
 }

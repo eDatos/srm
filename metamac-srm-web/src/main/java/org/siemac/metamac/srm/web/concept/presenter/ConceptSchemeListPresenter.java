@@ -108,7 +108,7 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
 
     @Override
     public void retrieveConceptSchemes(int firstResult, int maxResults, final String conceptScheme) {
-        dispatcher.execute(new GetConceptSchemePaginatedListAction(maxResults, firstResult, conceptScheme), new WaitingAsyncCallback<GetConceptSchemePaginatedListResult>() {
+        dispatcher.execute(new GetConceptSchemePaginatedListAction(firstResult, maxResults, conceptScheme), new WaitingAsyncCallback<GetConceptSchemePaginatedListResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
