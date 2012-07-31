@@ -13,11 +13,10 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
     @Autowired
     @Qualifier("metamacCriteria2SculptorCriteriaMapperSdmxSrm")
     private com.arte.statistic.sdmx.srm.core.mapper.MetamacCriteria2SculptorCriteriaMapper metamacCriteria2SculptorCriteriaMapperSdmxSrm;
-    
+
     @Override
     public MetamacCriteria2SculptorCriteria<DataStructureDefinition> getDataStructureDefinitionCriteriaMapper() {
         return metamacCriteria2SculptorCriteriaMapperSdmxSrm.getDataStructureDefinitionCriteriaMapper();
     }
 
-   
 }

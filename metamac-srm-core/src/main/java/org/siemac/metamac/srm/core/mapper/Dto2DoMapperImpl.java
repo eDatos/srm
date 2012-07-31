@@ -16,19 +16,19 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;
 
 @org.springframework.stereotype.Component("dto2DoMapper")
 public class Dto2DoMapperImpl implements Dto2DoMapper {
-    
+
     @Autowired
     @Qualifier("dto2DoMapperSdmxSrm")
     private com.arte.statistic.sdmx.srm.core.mapper.Dto2DoMapper dto2DoMapperSdmxSrm;
 
     @Override
     public <U extends Component> U componentDtoToComponent(ServiceContext ctx, ComponentDto source) throws MetamacException {
-        return (U)dto2DoMapperSdmxSrm.componentDtoToComponent(ctx, source);
+        return (U) dto2DoMapperSdmxSrm.componentDtoToComponent(ctx, source);
     }
 
     @Override
     public <U extends ComponentList> U componentListDtoToComponentList(ServiceContext ctx, ComponentListDto componentListDto) throws MetamacException {
-        return (U)dto2DoMapperSdmxSrm.componentListDtoToComponentList(ctx, componentListDto);
+        return (U) dto2DoMapperSdmxSrm.componentListDtoToComponentList(ctx, componentListDto);
     }
 
     @Override

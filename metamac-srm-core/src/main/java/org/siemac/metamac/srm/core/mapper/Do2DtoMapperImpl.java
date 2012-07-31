@@ -14,7 +14,6 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionExtendDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeDozerCopyMode;
 
-
 @org.springframework.stereotype.Component("do2DtoMapper")
 public class Do2DtoMapperImpl implements Do2DtoMapper {
 
@@ -24,12 +23,12 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
 
     @Override
     public <U extends ComponentDto> U componentToComponentDto(TypeDozerCopyMode typeDozerCopyMode, Component component) {
-        return (U)do2DtoMapperSdmxSrm.componentToComponentDto(typeDozerCopyMode, component);
+        return (U) do2DtoMapperSdmxSrm.componentToComponentDto(typeDozerCopyMode, component);
     }
 
     @Override
     public <U extends ComponentListDto> U componentListToComponentListDto(TypeDozerCopyMode typeDozerCopyMode, ComponentList componentList) {
-        return (U)do2DtoMapperSdmxSrm.componentListToComponentListDto(typeDozerCopyMode, componentList);
+        return (U) do2DtoMapperSdmxSrm.componentListToComponentListDto(typeDozerCopyMode, componentList);
     }
 
     @Override

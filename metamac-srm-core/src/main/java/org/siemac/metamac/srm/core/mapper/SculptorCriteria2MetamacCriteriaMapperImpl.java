@@ -15,7 +15,7 @@ public class SculptorCriteria2MetamacCriteriaMapperImpl implements SculptorCrite
     @Autowired
     @Qualifier("sculptorCriteria2MetamacCriteriaMapper")
     private com.arte.statistic.sdmx.srm.core.mapper.SculptorCriteria2MetamacCriteriaMapper sculptorCriteria2MetamacCriteriaMapper;
-    
+
     @Override
     public MetamacCriteriaResult<DataStructureDefinitionDto> pageResultToMetamacCriteriaResultDataStructureDefinition(PagedResult<DataStructureDefinition> source, Integer pageSize) {
         return sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultDataStructureDefinition(source, pageSize);
