@@ -1,4 +1,4 @@
-package org.siemac.metamac.srm.core.base.serviceapi.utils;
+package com.arte.statistic.sdmx.srm.core.base.serviceapi.utils;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -6,8 +6,9 @@ import static org.junit.Assert.fail;
 import org.siemac.metamac.core.common.ent.domain.ExternalItem;
 import org.siemac.metamac.core.common.ent.domain.InternationalString;
 import org.siemac.metamac.core.common.ent.domain.LocalisedString;
-import org.siemac.metamac.srm.core.base.domain.ItemSchemeVersion;
-import org.siemac.metamac.srm.core.base.domain.MaintainableArtefact;
+
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
+import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 
 public class BaseAsserts {
 

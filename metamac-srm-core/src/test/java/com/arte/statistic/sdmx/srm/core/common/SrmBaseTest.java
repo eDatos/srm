@@ -1,4 +1,4 @@
-package org.siemac.metamac.srm.core.common;
+package com.arte.statistic.sdmx.srm.core.common;
 
 import java.util.ArrayList;
 import java.util.HashMap;

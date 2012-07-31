@@ -18,24 +18,25 @@ import org.siemac.metamac.core.common.dto.LocalisedStringDto;
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.util.shared.VersionUtil;
-import org.siemac.metamac.domain.srm.dto.ComponentDto;
-import org.siemac.metamac.domain.srm.dto.DataAttributeDto;
-import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
-import org.siemac.metamac.domain.srm.dto.DataflowDefinitionDto;
-import org.siemac.metamac.domain.srm.dto.DescriptorDto;
-import org.siemac.metamac.domain.srm.dto.DimensionComponentDto;
-import org.siemac.metamac.domain.srm.dto.RelationshipDto;
-import org.siemac.metamac.domain.srm.dto.RepresentationDto;
-import org.siemac.metamac.domain.srm.enume.domain.TypeComponent;
-import org.siemac.metamac.domain.srm.enume.domain.TypeComponentList;
-import org.siemac.metamac.domain.srm.enume.domain.TypeDataAttribute;
-import org.siemac.metamac.domain.srm.enume.domain.TypeDimensionComponent;
-import org.siemac.metamac.domain.srm.enume.domain.TypeRelathionship;
-import org.siemac.metamac.domain.srm.enume.domain.TypeRepresentationEnum;
-import org.siemac.metamac.domain.srm.enume.domain.UsageStatus;
-import org.siemac.metamac.domain.util.dto.ContentInputDto;
-import org.siemac.metamac.srm.core.base.serviceapi.utils.BaseDoMocks;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
+
+import com.arte.statistic.sdmx.srm.core.base.serviceapi.utils.BaseDoMocks;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataAttributeDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataflowDefinitionDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DescriptorDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.RelationshipDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.RepresentationDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.util.ContentInputDto;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponent;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponentList;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeDataAttribute;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeDimensionComponent;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeRelathionship;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeRepresentationEnum;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.UsageStatus;
 
 public class SrmDtoMocks {
 

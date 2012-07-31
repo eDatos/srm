@@ -2,10 +2,11 @@ package org.siemac.metamac.srm.core.facade.serviceapi;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import com.arte.statistic.sdmx.srm.core.common.SrmBaseTest;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/srm/include/core-mockito.xml", "classpath:spring/srm/applicationContext-test.xml"})

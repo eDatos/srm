@@ -34,23 +34,9 @@ import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.dto.LocalisedStringDto;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.jaxb.CustomJaxb2Marshaller;
-import org.siemac.metamac.domain.srm.dto.ComponentDto;
-import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
-import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionExtendDto;
-import org.siemac.metamac.domain.srm.dto.DescriptorDto;
-import org.siemac.metamac.domain.srm.dto.FacetDto;
-import org.siemac.metamac.domain.srm.dto.RepresentationDto;
-import org.siemac.metamac.domain.srm.enume.domain.FacetValueTypeEnum;
-import org.siemac.metamac.domain.srm.enume.domain.TypeComponentList;
-import org.siemac.metamac.domain.srm.enume.domain.TypeDozerCopyMode;
-import org.siemac.metamac.domain.srm.enume.domain.TypeRepresentationEnum;
-import org.siemac.metamac.domain.trans.dto.StructureMsgDto;
-import org.siemac.metamac.srm.core.base.serviceapi.BaseService;
-import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.criteria.DataStructureDefinitionCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.facade.serviceapi.utils.SDMXResources;
 import org.siemac.metamac.srm.core.facade.serviceapi.utils.SrmDtoMocks;
-import org.siemac.metamac.trans.v2_1.message.Structure;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
@@ -58,6 +44,21 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.arte.statistic.sdmx.srm.core.base.serviceapi.BaseService;
+import com.arte.statistic.sdmx.srm.core.common.SrmBaseTest;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionExtendDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DescriptorDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.FacetDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.RepresentationDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.trans.StructureMsgDto;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.FacetValueTypeEnum;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponentList;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeDozerCopyMode;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeRepresentationEnum;
+import com.arte.statistic.sdmx.v2_1.domain.jaxb.message.Structure;
 
 // TODO esta clase debería tender a sustituirse por mockear los servicios con Mockito (SrmCoreServiceFacadeCoreMockedTest)
 @RunWith(SpringJUnit4ClassRunner.class)

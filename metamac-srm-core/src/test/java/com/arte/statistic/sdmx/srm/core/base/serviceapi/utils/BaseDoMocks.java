@@ -1,4 +1,4 @@
-package org.siemac.metamac.srm.core.base.serviceapi.utils;
+package com.arte.statistic.sdmx.srm.core.base.serviceapi.utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,16 +12,17 @@ import org.siemac.metamac.core.common.ent.domain.LocalisedString;
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.core.common.util.GeneratorUrnUtils;
 import org.siemac.metamac.core.common.util.shared.VersionUtil;
-import org.siemac.metamac.srm.core.base.domain.ComponentList;
-import org.siemac.metamac.srm.core.base.domain.EnumeratedRepresentation;
-import org.siemac.metamac.srm.core.base.domain.ItemScheme;
-import org.siemac.metamac.srm.core.base.domain.ItemSchemeVersion;
-import org.siemac.metamac.srm.core.base.domain.MaintainableArtefact;
-import org.siemac.metamac.srm.core.base.domain.Representation;
-import org.siemac.metamac.srm.core.structure.domain.Dimension;
-import org.siemac.metamac.srm.core.structure.domain.DimensionDescriptor;
-import org.siemac.metamac.srm.core.structure.domain.MeasureDescriptor;
-import org.siemac.metamac.srm.core.structure.domain.MeasureDimension;
+
+import com.arte.statistic.sdmx.srm.core.base.domain.ComponentList;
+import com.arte.statistic.sdmx.srm.core.base.domain.EnumeratedRepresentation;
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemScheme;
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
+import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
+import com.arte.statistic.sdmx.srm.core.base.domain.Representation;
+import com.arte.statistic.sdmx.srm.core.structure.domain.Dimension;
+import com.arte.statistic.sdmx.srm.core.structure.domain.DimensionDescriptor;
+import com.arte.statistic.sdmx.srm.core.structure.domain.MeasureDescriptor;
+import com.arte.statistic.sdmx.srm.core.structure.domain.MeasureDimension;
 
 public class BaseDoMocks {
 
