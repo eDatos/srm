@@ -32,10 +32,16 @@
                 </exclusion>
             </exclusions>
         </dependency>
+<!--         <dependency> -->
+<!--             <groupId>org.siemac.metamac</groupId> -->
+<!--             <artifactId>metamac-transformation</artifactId> -->
+<!--             <version>${metamac-transformation.version}</version> -->
+<!--             <classifier>client</classifier> -->
+<!--         </dependency> -->
         <dependency>
-            <groupId>org.siemac.metamac</groupId>
-            <artifactId>metamac-transformation</artifactId>
-            <version>${metamac-transformation.version}</version>
+            <groupId>com.arte.statistic.statistic-sdmx-srm</groupId>
+            <artifactId>statistic-sdmx-srm-core</artifactId>
+            <version>${statistic-sdmx-srm.version}</version>
             <classifier>client</classifier>
         </dependency>
 
@@ -374,12 +380,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.googlecode</groupId>
-            <artifactId>kryo</artifactId>
-            <version>${kryo.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>net.java.dev.stax-utils</groupId>
             <artifactId>stax-utils</artifactId>
             <version>20070216</version>
@@ -512,6 +512,9 @@
                                 <delete file="${basedir}/src/test/generated/resources/Interceptor-test.xml" />
                                 <delete file="${basedir}/src/test/generated/resources/applicationContext-test.xml" />
                                 <delete file="${basedir}/src/test/generated/resources/EntityManagerFactory-test.xml" />
+                                
+                                                                <!-- TODO DELETE THIS -->
+                                <delete file="${basedir}/src/generated/resources/META-INF/persistence.xml" />
                             </target>
                         </configuration>
                     </execution>
