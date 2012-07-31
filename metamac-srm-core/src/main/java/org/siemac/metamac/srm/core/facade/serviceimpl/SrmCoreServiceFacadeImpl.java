@@ -29,37 +29,13 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.core.common.ws.ServicesResolver;
-import org.siemac.metamac.domain.concept.dto.ConceptSchemeDto;
-import org.siemac.metamac.domain.srm.dto.ComponentDto;
-import org.siemac.metamac.domain.srm.dto.ComponentListDto;
-import org.siemac.metamac.domain.srm.dto.DataAttributeDto;
-import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
-import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionExtendDto;
-import org.siemac.metamac.domain.srm.dto.DescriptorDto;
-import org.siemac.metamac.domain.srm.dto.DimensionComponentDto;
-import org.siemac.metamac.domain.srm.dto.RelationshipDto;
-import org.siemac.metamac.domain.srm.enume.domain.TypeComponentList;
-import org.siemac.metamac.domain.srm.enume.domain.TypeDozerCopyMode;
-import org.siemac.metamac.domain.trans.dto.StructureMsgDto;
-import org.siemac.metamac.domain.util.dto.ContentInputDto;
-import org.siemac.metamac.srm.core.base.domain.Component;
-import org.siemac.metamac.srm.core.base.domain.ComponentList;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
-import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersion;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.core.mapper.Do2DtoMapper;
 import org.siemac.metamac.srm.core.mapper.Dto2DoMapper;
 import org.siemac.metamac.srm.core.mapper.MetamacCriteria2SculptorCriteriaMapper;
 import org.siemac.metamac.srm.core.mapper.SculptorCriteria2MetamacCriteriaMapper;
-import org.siemac.metamac.srm.core.structure.domain.AttributeDescriptor;
-import org.siemac.metamac.srm.core.structure.domain.DataStructureDefinition;
-import org.siemac.metamac.srm.core.structure.domain.DimensionDescriptor;
-import org.siemac.metamac.srm.core.structure.domain.GroupDimensionDescriptor;
-import org.siemac.metamac.srm.core.structure.domain.MeasureDescriptor;
-import org.siemac.metamac.srm.core.structure.exception.DataStructureDefinitionNotFoundException;
-import org.siemac.metamac.trans.error.MetamacTransExceptionType;
-import org.siemac.metamac.trans.v2_1.message.Structure;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,6 +43,31 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.oxm.XmlMappingException;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.stereotype.Service;
+
+import com.arte.statistic.sdmx.srm.core.base.domain.Component;
+import com.arte.statistic.sdmx.srm.core.base.domain.ComponentList;
+import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptSchemeVersion;
+import com.arte.statistic.sdmx.srm.core.structure.domain.AttributeDescriptor;
+import com.arte.statistic.sdmx.srm.core.structure.domain.DataStructureDefinition;
+import com.arte.statistic.sdmx.srm.core.structure.domain.DimensionDescriptor;
+import com.arte.statistic.sdmx.srm.core.structure.domain.GroupDimensionDescriptor;
+import com.arte.statistic.sdmx.srm.core.structure.domain.MeasureDescriptor;
+import com.arte.statistic.sdmx.srm.core.structure.exception.DataStructureDefinitionNotFoundException;
+import com.arte.statistic.sdmx.v2_1.domain.dto.concept.ConceptSchemeDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentListDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataAttributeDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionExtendDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DescriptorDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.RelationshipDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.trans.StructureMsgDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.util.ContentInputDto;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponentList;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeDozerCopyMode;
+import com.arte.statistic.sdmx.v2_1.domain.jaxb.message.Structure;
+import com.arte.statistic.sdmx.v2_1.transformation.error.MetamacTransExceptionType;
 
 /**
  * Implementation of srmCoreServiceFacade.
@@ -80,9 +81,11 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     private Logger                                 logger = LoggerFactory.getLogger(SrmCoreServiceFacade.class);
 
     @Autowired
+    @Qualifier("do2DtoMapper")
     private Do2DtoMapper                           do2DtoMapper;
 
     @Autowired
+    @Qualifier("dto2DoMapper")
     private Dto2DoMapper                           dto2DoMapper;
 
     @Autowired
