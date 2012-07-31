@@ -16,7 +16,7 @@
 	**************************************************************** -->
 
 	<mapping>
-		<class-a>org.siemac.metamac.srm.core.base.domain.AnnotableArtefact</class-a>
+		<class-a>com.arte.statistic.sdmx.srm.core.base.domain.AnnotableArtefact</class-a>
   		<class-b>org.siemac.metamac.core.common.dto.IdentityDto</class-b>
   		<field-exclude> 
 		  <a>id</a> 
@@ -107,7 +107,7 @@
 	</mapping>
 
 	<mapping>
-		<class-a>org.siemac.metamac.srm.core.structure.domain.AttributeRelationship</class-a>
+		<class-a>com.arte.statistic.sdmx.srm.core.structure.domain.AttributeRelationship</class-a>
   		<class-b>org.siemac.metamac.core.common.dto.IdentityDto</class-b>
   		<field-exclude> 
 		  <a>id</a> 
@@ -140,7 +140,7 @@
 	</mapping>
 	
 	<mapping>
-		<class-a>org.siemac.metamac.srm.core.base.domain.Representation</class-a>
+		<class-a>com.arte.statistic.sdmx.srm.core.base.domain.Representation</class-a>
   		<class-b>org.siemac.metamac.core.common.dto.IdentityDto</class-b>
   		<field-exclude> 
 		  <a>id</a> 
@@ -173,7 +173,7 @@
 	</mapping>
 	
 	<mapping>
-		<class-a>org.siemac.metamac.srm.core.base.domain.Annotation</class-a>
+		<class-a>com.arte.statistic.sdmx.srm.core.base.domain.Annotation</class-a>
   		<class-b>org.siemac.metamac.core.common.dto.IdentityDto</class-b>
   		<field-exclude> 
 		  <a>id</a> 
@@ -206,7 +206,7 @@
 	</mapping>
 	
 	<mapping>
-		<class-a>org.siemac.metamac.srm.core.base.domain.Facet</class-a>
+		<class-a>com.arte.statistic.sdmx.srm.core.base.domain.Facet</class-a>
   		<class-b>org.siemac.metamac.core.common.dto.IdentityDto</class-b>
   		<field-exclude> 
 		  <a>id</a> 
@@ -245,8 +245,8 @@
 	<!-- Because DataAttribute.relateTO is a AttributeRelationship class and the abstract class, 
 	cannot be instantiated -->
 	<mapping>
-		<class-a>org.siemac.metamac.domain.srm.dto.DataAttributeDto</class-a>
-  		<class-b >org.siemac.metamac.srm.core.structure.domain.DataAttribute</class-b>
+		<class-a>com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataAttributeDto</class-a>
+  		<class-b>com.arte.statistic.sdmx.srm.core.structure.domain.DataAttribute</class-b>
 		<field-exclude> 
 		  <a>relateTo</a> 
 		  <b>relateTo</b> 
@@ -256,8 +256,8 @@
 	<!-- Because Component.localRepresentation is a Representation class and the abstract class, 
 	cannot be instantiated -->
 	<mapping>
-		<class-a>org.siemac.metamac.domain.srm.dto.ComponentDto</class-a>
-  		<class-b >org.siemac.metamac.srm.core.base.domain.Component</class-b>
+		<class-a>com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto</class-a>
+  		<class-b >com.arte.statistic.sdmx.srm.core.base.domain.Component</class-b>
 		<field-exclude> 
 		  <a>localRepresentation</a> 
 		  <b>localRepresentation</b> 

@@ -1,18 +1,16 @@
-import "classpath:/btdesign/metamac-api-domain-dtos-trans.btdesign"
-import "classpath:/btdesign/metamac-api-domain-dtos-core.btdesign"
-import "classpath:/btdesign/metamac-api-domain-dtos-util.btdesign"
-import "classpath:/btdesign/metamac-api-domain-enums.btdesign"
-
-import "classpath:/btdesign/metamac-api-domain-dtos-concepts.btdesign"
-import "classpath:/btdesign/metamac-api-domain-enums-concept.btdesign"
+import "classpath:/btdesign/statistic-sdmx-v2_1-domain-trans.btdesign"
+import "classpath:/btdesign/statistic-sdmx-v2_1-domain-dtos-core.btdesign"
+import "classpath:/btdesign/statistic-sdmx-v2_1-domain-dtos-util.btdesign"
+import "classpath:/btdesign/statistic-sdmx-v2_1-domain-enums.btdesign"
+import "classpath:/btdesign/statistic-sdmx-v2_1-domain-dtos-concepts.btdesign"
+import "classpath:/btdesign/statistic-sdmx-v2_1-domain-enums-concept.btdesign"
 
 import "classpath:/btdesign/metamac-core-common-dtos.btdesign"
-import "classpath:/btdesign/model-metamac-transformation.btdesign"
+import "classpath:/btdesign/model-statistic-sdmx-v2_1-transformation.btdesign"
 
-import "classpath:/btdesign/metamac-srm-core-base.btdesign"
-import "classpath:/btdesign/metamac-srm-core-structure.btdesign"
-
-import "classpath:/btdesign/metamac-srm-core-concepts.btdesign"
+import "classpath:/btdesign/statistic-sdmx-core-base.btdesign"
+import "classpath:/btdesign/statistic-sdmx-core-structure.btdesign"
+import "classpath:/btdesign/statistic-sdmx-core-concepts.btdesign"
 
 Application SrmCore {
     basePackage=unused
