@@ -6,6 +6,22 @@
     http://www.springframework.org/schema/tx/spring-tx.xsd"
     default-autowire="byName">
 
+    <bean id="defaultPum" class="org.springframework.orm.jpa.persistenceunit.DefaultPersistenceUnitManager">
+      <property name="persistenceXmlLocations">
+        <list>
+            <value>classpath*:META-INF/persistence-statistic-sdmx-core.xml</value>
+            <value>classpath*:META-INF/persistence.xml</value>
+        </list>
+      </property>
+      <!-- if no datasource is specified, use this one -->
+      <property name="defaultDataSource" ref="dataSource"/>
+      
+      <!-- This merges all JPA entities from multiple jars -->
+      <property name="persistenceUnitPostProcessors">
+        <bean class="org.siemac.metamac.srm.core.util.MergingPersistenceUnitPostProcessor"/>
+      </property>
+    </bean>
+    
     <!-- Creates a EntityManagerFactory for use with the Hibernate JPA provider -->
     <bean id="entityManagerFactoryCore" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="jpaVendorAdapter">
@@ -13,8 +29,9 @@
                 <property name="databasePlatform" value="${jpaVendorAdapter.databasePlatform}" />
             </bean>
         </property>
+        <property name="persistenceUnitManager" ref="defaultPum"/>
+        <property name="persistenceUnitName" value="SrmCoreEntityManagerFactory" />
         <property name="dataSource" ref="dataSource" />
-        <property name="persistenceXmlLocation" value="META-INF/persistence-test.xml" />
         <property name="jpaProperties">
             <props>
                 <!-- These properties override persistence-test.xml -->
