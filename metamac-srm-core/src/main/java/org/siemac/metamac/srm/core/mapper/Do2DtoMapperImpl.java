@@ -23,13 +23,13 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
     private com.arte.statistic.sdmx.srm.core.mapper.Do2DtoMapper do2DtoMapperSdmxSrm;
 
     @Override
-    public <T extends ComponentDto> T componentToComponentDto(TypeDozerCopyMode typeDozerCopyMode, Component component) {
-        return do2DtoMapperSdmxSrm.componentToComponentDto(typeDozerCopyMode, component);
+    public <U extends ComponentDto> U componentToComponentDto(TypeDozerCopyMode typeDozerCopyMode, Component component) {
+        return (U)do2DtoMapperSdmxSrm.componentToComponentDto(typeDozerCopyMode, component);
     }
 
     @Override
-    public <T extends ComponentListDto> T componentListToComponentListDto(TypeDozerCopyMode typeDozerCopyMode, ComponentList componentList) {
-        return do2DtoMapperSdmxSrm.componentListToComponentListDto(typeDozerCopyMode, componentList);
+    public <U extends ComponentListDto> U componentListToComponentListDto(TypeDozerCopyMode typeDozerCopyMode, ComponentList componentList) {
+        return (U)do2DtoMapperSdmxSrm.componentListToComponentListDto(typeDozerCopyMode, componentList);
     }
 
     @Override

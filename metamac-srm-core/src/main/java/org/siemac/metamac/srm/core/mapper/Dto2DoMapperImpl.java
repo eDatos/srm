@@ -22,13 +22,13 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
     private com.arte.statistic.sdmx.srm.core.mapper.Dto2DoMapper dto2DoMapperSdmxSrm;
 
     @Override
-    public <T extends Component> T componentDtoToComponent(ServiceContext ctx, ComponentDto source) throws MetamacException {
-        return dto2DoMapperSdmxSrm.componentDtoToComponent(ctx, source);
+    public <U extends Component> U componentDtoToComponent(ServiceContext ctx, ComponentDto source) throws MetamacException {
+        return (U)dto2DoMapperSdmxSrm.componentDtoToComponent(ctx, source);
     }
 
     @Override
-    public <T extends ComponentList> T componentListDtoToComponentList(ServiceContext ctx, ComponentListDto componentListDto) throws MetamacException {
-        return dto2DoMapperSdmxSrm.componentListDtoToComponentList(ctx, componentListDto);
+    public <U extends ComponentList> U componentListDtoToComponentList(ServiceContext ctx, ComponentListDto componentListDto) throws MetamacException {
+        return (U)dto2DoMapperSdmxSrm.componentListDtoToComponentList(ctx, componentListDto);
     }
 
     @Override
