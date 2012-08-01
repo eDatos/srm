@@ -214,107 +214,6 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         return getDo2DtoMapper().dataStructureDefinitionToDataStructureDefinitionDto(TypeDozerCopyMode.UPDATE, dataStructureDefinition);
     }
 
-    @Override
-    public DataStructureDefinitionDto saveDsdGraph(ServiceContext ctx, DataStructureDefinitionExtendDto dataStructureDefinitionExtendDto) throws MetamacException {
-
-        // Save DSD (without grouping)
-        DataStructureDefinitionDto dataStructureDefinitionDto = saveDsd(ctx, dataStructureDefinitionExtendDto);
-
-        // Save DimensionDescriptor
-        DescriptorDto dimensionDesDto = new DescriptorDto();
-        for (ComponentListDto componentListDto : dataStructureDefinitionExtendDto.getGrouping()) {
-            if (componentListDto.getTypeComponentList().equals(TypeComponentList.DIMENSION_DESCRIPTOR)) {
-                dimensionDesDto = (DescriptorDto) saveDescriptorAndComponents(ctx, dataStructureDefinitionDto.getId(), componentListDto);
-            }
-        }
-
-        // Auxiliary structure for update references
-        HashMap<String, DimensionComponentDto> dimensionComponents = new HashMap<String, DimensionComponentDto>();
-        for (ComponentDto componentDto : dimensionDesDto.getComponents()) {
-            dimensionComponents.put(componentDto.getCode(), (DimensionComponentDto) componentDto);
-        }
-
-        // Save GroupDescriptor
-        HashMap<String, DescriptorDto> groupDescriptors = new HashMap<String, DescriptorDto>();
-        for (ComponentListDto componentListDto : dataStructureDefinitionExtendDto.getGrouping()) {
-            if (componentListDto.getTypeComponentList().equals(TypeComponentList.GROUP_DIMENSION_DESCRIPTOR)) {
-                // 1: Update References For GroupDimensionDescriptor->components
-                Set<ComponentDto> componentsUpdate = new HashSet<ComponentDto>();
-                for (ComponentDto componentDto : componentListDto.getComponents()) {
-                    if (dimensionComponents.get(componentDto.getCode()) == null) {
-                        throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.SRM_VALIDATION_GROUP_DESCRIPTOR_UNABLE_UPDATE).build();
-                    } else {
-                        componentsUpdate.add(dimensionComponents.get(componentDto.getCode()));
-                    }
-                }
-
-                componentListDto.getComponents().clear();
-                componentListDto.getComponents().addAll(componentsUpdate);
-
-                // 2: Save groupDescriptor
-                // Don't need save new components only descriptor
-                DescriptorDto groupDescriptorDto = saveDescriptorForDsd(ctx, dataStructureDefinitionDto.getId(), (DescriptorDto) componentListDto);
-
-                groupDescriptors.put(groupDescriptorDto.getCode(), groupDescriptorDto); // Auxiliary structure for update references
-            }
-        }
-
-        // Save AttributeDescriptor
-        for (ComponentListDto componentListDto : dataStructureDefinitionExtendDto.getGrouping()) {
-            if (componentListDto.getTypeComponentList().equals(TypeComponentList.ATTRIBUTE_DESCRIPTOR)) {
-                for (ComponentDto componentDto : componentListDto.getComponents()) {
-                    // 1: Update references for AttributeRelationship
-                    RelationshipDto relationshipDto = ((DataAttributeDto) componentDto).getRelateTo();
-
-                    if (relationshipDto.getDimensionForDimensionRelationship() != null) {
-                        Set<DimensionComponentDto> componentsUpdate = new HashSet<DimensionComponentDto>();
-                        for (ComponentDto itemRefDto : relationshipDto.getDimensionForDimensionRelationship()) {
-                            if (dimensionComponents.get(itemRefDto.getCode()) == null) {
-                                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.SRM_VALIDATION_ATTRIBUTE_DESCRIPTOR_UNABLE_UPDATE).build();
-                            } else {
-                                componentsUpdate.add(dimensionComponents.get(itemRefDto.getCode()));
-                            }
-                        }
-                        relationshipDto.getDimensionForDimensionRelationship().clear();
-                        relationshipDto.getDimensionForDimensionRelationship().addAll(componentsUpdate);
-                    }
-
-                    if (relationshipDto.getGroupKeyForDimensionRelationship() != null) {
-                        Set<DescriptorDto> descriptorsDtoUpdate = new HashSet<DescriptorDto>();
-                        for (DescriptorDto itemRefDto : relationshipDto.getGroupKeyForDimensionRelationship()) {
-                            if (groupDescriptors.get(itemRefDto.getCode()) == null) {
-                                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.SRM_VALIDATION_ATTRIBUTE_DESCRIPTOR_UNABLE_UPDATE).build();
-                            } else {
-                                descriptorsDtoUpdate.add(groupDescriptors.get(itemRefDto.getCode()));
-                            }
-                        }
-                        relationshipDto.getGroupKeyForDimensionRelationship().clear();
-                        relationshipDto.getGroupKeyForDimensionRelationship().addAll(descriptorsDtoUpdate);
-                    }
-
-                    if (relationshipDto.getGroupKeyForGroupRelationship() != null) {
-                        if (groupDescriptors.get(relationshipDto.getGroupKeyForGroupRelationship().getCode()) == null) {
-                            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.SRM_VALIDATION_ATTRIBUTE_DESCRIPTOR_UNABLE_UPDATE).build();
-                        } else {
-                            relationshipDto.setGroupKeyForGroupRelationship(groupDescriptors.get(relationshipDto.getGroupKeyForGroupRelationship().getCode()));
-                        }
-                    }
-                }
-                // 2: Save AttributeDescriptor
-                saveDescriptorAndComponents(ctx, dataStructureDefinitionDto.getId(), componentListDto);
-            }
-        }
-
-        // Save MeasureDescriptor
-        for (ComponentListDto componentListDto : dataStructureDefinitionExtendDto.getGrouping()) {
-            if (componentListDto.getTypeComponentList().equals(TypeComponentList.MEASURE_DESCRIPTOR)) {
-                saveDescriptorAndComponents(ctx, dataStructureDefinitionDto.getId(), componentListDto);
-            }
-        }
-
-        return dataStructureDefinitionDto;
-    }
-
     /**************************************************************************
      * Descriptors
      **************************************************************************/
@@ -552,6 +451,106 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
                     .withLoggedLevel(ExceptionLevelEnum.ERROR).build();
         }
         return dataStructureDefinition;
+    }
+
+    private DataStructureDefinitionDto saveDsdGraph(ServiceContext ctx, DataStructureDefinitionExtendDto dataStructureDefinitionExtendDto) throws MetamacException {
+
+        // Save DSD (without grouping)
+        DataStructureDefinitionDto dataStructureDefinitionDto = saveDsd(ctx, dataStructureDefinitionExtendDto);
+
+        // Save DimensionDescriptor
+        DescriptorDto dimensionDesDto = new DescriptorDto();
+        for (ComponentListDto componentListDto : dataStructureDefinitionExtendDto.getGrouping()) {
+            if (componentListDto.getTypeComponentList().equals(TypeComponentList.DIMENSION_DESCRIPTOR)) {
+                dimensionDesDto = (DescriptorDto) saveDescriptorAndComponents(ctx, dataStructureDefinitionDto.getId(), componentListDto);
+            }
+        }
+
+        // Auxiliary structure for update references
+        HashMap<String, DimensionComponentDto> dimensionComponents = new HashMap<String, DimensionComponentDto>();
+        for (ComponentDto componentDto : dimensionDesDto.getComponents()) {
+            dimensionComponents.put(componentDto.getCode(), (DimensionComponentDto) componentDto);
+        }
+
+        // Save GroupDescriptor
+        HashMap<String, DescriptorDto> groupDescriptors = new HashMap<String, DescriptorDto>();
+        for (ComponentListDto componentListDto : dataStructureDefinitionExtendDto.getGrouping()) {
+            if (componentListDto.getTypeComponentList().equals(TypeComponentList.GROUP_DIMENSION_DESCRIPTOR)) {
+                // 1: Update References For GroupDimensionDescriptor->components
+                Set<ComponentDto> componentsUpdate = new HashSet<ComponentDto>();
+                for (ComponentDto componentDto : componentListDto.getComponents()) {
+                    if (dimensionComponents.get(componentDto.getCode()) == null) {
+                        throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.SRM_VALIDATION_GROUP_DESCRIPTOR_UNABLE_UPDATE).build();
+                    } else {
+                        componentsUpdate.add(dimensionComponents.get(componentDto.getCode()));
+                    }
+                }
+
+                componentListDto.getComponents().clear();
+                componentListDto.getComponents().addAll(componentsUpdate);
+
+                // 2: Save groupDescriptor
+                // Don't need save new components only descriptor
+                DescriptorDto groupDescriptorDto = saveDescriptorForDsd(ctx, dataStructureDefinitionDto.getId(), (DescriptorDto) componentListDto);
+
+                groupDescriptors.put(groupDescriptorDto.getCode(), groupDescriptorDto); // Auxiliary structure for update references
+            }
+        }
+
+        // Save AttributeDescriptor
+        for (ComponentListDto componentListDto : dataStructureDefinitionExtendDto.getGrouping()) {
+            if (componentListDto.getTypeComponentList().equals(TypeComponentList.ATTRIBUTE_DESCRIPTOR)) {
+                for (ComponentDto componentDto : componentListDto.getComponents()) {
+                    // 1: Update references for AttributeRelationship
+                    RelationshipDto relationshipDto = ((DataAttributeDto) componentDto).getRelateTo();
+
+                    if (relationshipDto.getDimensionForDimensionRelationship() != null) {
+                        Set<DimensionComponentDto> componentsUpdate = new HashSet<DimensionComponentDto>();
+                        for (ComponentDto itemRefDto : relationshipDto.getDimensionForDimensionRelationship()) {
+                            if (dimensionComponents.get(itemRefDto.getCode()) == null) {
+                                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.SRM_VALIDATION_ATTRIBUTE_DESCRIPTOR_UNABLE_UPDATE).build();
+                            } else {
+                                componentsUpdate.add(dimensionComponents.get(itemRefDto.getCode()));
+                            }
+                        }
+                        relationshipDto.getDimensionForDimensionRelationship().clear();
+                        relationshipDto.getDimensionForDimensionRelationship().addAll(componentsUpdate);
+                    }
+
+                    if (relationshipDto.getGroupKeyForDimensionRelationship() != null) {
+                        Set<DescriptorDto> descriptorsDtoUpdate = new HashSet<DescriptorDto>();
+                        for (DescriptorDto itemRefDto : relationshipDto.getGroupKeyForDimensionRelationship()) {
+                            if (groupDescriptors.get(itemRefDto.getCode()) == null) {
+                                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.SRM_VALIDATION_ATTRIBUTE_DESCRIPTOR_UNABLE_UPDATE).build();
+                            } else {
+                                descriptorsDtoUpdate.add(groupDescriptors.get(itemRefDto.getCode()));
+                            }
+                        }
+                        relationshipDto.getGroupKeyForDimensionRelationship().clear();
+                        relationshipDto.getGroupKeyForDimensionRelationship().addAll(descriptorsDtoUpdate);
+                    }
+
+                    if (relationshipDto.getGroupKeyForGroupRelationship() != null) {
+                        if (groupDescriptors.get(relationshipDto.getGroupKeyForGroupRelationship().getCode()) == null) {
+                            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.SRM_VALIDATION_ATTRIBUTE_DESCRIPTOR_UNABLE_UPDATE).build();
+                        } else {
+                            relationshipDto.setGroupKeyForGroupRelationship(groupDescriptors.get(relationshipDto.getGroupKeyForGroupRelationship().getCode()));
+                        }
+                    }
+                }
+                // 2: Save AttributeDescriptor
+                saveDescriptorAndComponents(ctx, dataStructureDefinitionDto.getId(), componentListDto);
+            }
+        }
+
+        // Save MeasureDescriptor
+        for (ComponentListDto componentListDto : dataStructureDefinitionExtendDto.getGrouping()) {
+            if (componentListDto.getTypeComponentList().equals(TypeComponentList.MEASURE_DESCRIPTOR)) {
+                saveDescriptorAndComponents(ctx, dataStructureDefinitionDto.getId(), componentListDto);
+            }
+        }
+
+        return dataStructureDefinitionDto;
     }
 
     private List<DescriptorDto> findDescriptorsForDsd(ServiceContext ctx, Long idDsd, TypeDozerCopyMode typeDozerCopyMode) throws MetamacException {
