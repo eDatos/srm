@@ -440,31 +440,6 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest /* implements SrmCoreS
     }
 
     @Test
-    public void testSaveDsdGraph() throws Exception {
-
-        DataStructureDefinitionDto dataStructureDefinitionDto = SrmCoreServiceFacadeTest.saveDescriptorForDsd(getServiceContext(), srmCoreServiceFacade);
-
-        List<DataStructureDefinitionDto> dataStructureDefinitionDtoList = srmCoreServiceFacade.findAllDsds(getServiceContext());
-        assertTrue(dataStructureDefinitionDtoList.size() == 2);
-
-        // In UPDATE MODE (no create)
-        DataStructureDefinitionExtendDto dataStructureDefinitionExtendDto = srmCoreServiceFacade.retrieveExtendedDsd(getServiceContext(), dataStructureDefinitionDto.getId(), TypeDozerCopyMode.UPDATE);
-
-        srmCoreServiceFacade.saveDsdGraph(getServiceContext(), dataStructureDefinitionExtendDto);
-
-        dataStructureDefinitionDtoList = srmCoreServiceFacade.findAllDsds(getServiceContext());
-        assertTrue(dataStructureDefinitionDtoList.size() == 2);
-
-        // In UPDATE MODE (no create)
-        dataStructureDefinitionExtendDto = srmCoreServiceFacade.retrieveExtendedDsd(getServiceContext(), dataStructureDefinitionDto.getId(), TypeDozerCopyMode.CREATE);
-
-        srmCoreServiceFacade.saveDsdGraph(getServiceContext(), dataStructureDefinitionExtendDto);
-
-        dataStructureDefinitionDtoList = srmCoreServiceFacade.findAllDsds(getServiceContext());
-        assertTrue(dataStructureDefinitionDtoList.size() == 3);
-    }
-
-    @Test
     public void testRetrieveDsd() throws Exception {
         DataStructureDefinitionDto dataStructureDefinitionDto = SrmCoreServiceFacadeTest.saveDescriptorForDsd(getServiceContext(), srmCoreServiceFacade);
 
