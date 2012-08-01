@@ -80,15 +80,7 @@ Application SrmCore {
 			 @throws org.siemac.metamac.core.common.exception.MetamacException
 			"
 			@DataStructureDefinitionDto retrieveDsdByUrn(String urn) throws MetamacException;				    	
-	    	
-	    	"
-			 @param ctx                                                                         
-			 @param dataStructureDefinitionDto
-			 @return                                            
-			 @throws org.siemac.metamac.core.common.exception.MetamacException
-			"
-	    	@DataStructureDefinitionDto saveDsdGraph(@DataStructureDefinitionExtendDto dataStructureDefinitionExtendDto) throws MetamacException;
-	    	
+
 			"
 			 @param ctx                                                                          
 			 @param idDsd                                                   
