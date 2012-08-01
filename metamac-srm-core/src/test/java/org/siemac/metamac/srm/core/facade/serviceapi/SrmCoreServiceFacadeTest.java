@@ -448,8 +448,6 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest /* implements SrmCoreS
         assertNotNull(dataStructureDefinitionDto2);
     }
 
-    @Ignore
-    // TODO está fallando
     @Test
     public void testImportSDMXStructureMsg() throws Exception {
         File file = null;
@@ -485,8 +483,6 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest /* implements SrmCoreS
 
     }
 
-    @Ignore
-    // TODO está fallando
     @Test
     public void testExportSDMXStructureMsg() throws Exception {
 
