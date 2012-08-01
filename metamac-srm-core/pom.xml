@@ -44,7 +44,14 @@
             <version>${statistic-sdmx-srm.version}</version>
             <classifier>client</classifier>
         </dependency>
-
+        <dependency>
+            <groupId>com.arte.statistic.statistic-sdmx-srm</groupId>
+            <artifactId>statistic-sdmx-srm-core</artifactId>
+            <type>test-jar</type>
+            <version>${statistic-sdmx-srm.version}</version>
+            <scope>test</scope>
+        </dependency>
+        
         <dependency>
             <groupId>javax.annotation</groupId>
             <artifactId>jsr250-api</artifactId>
@@ -227,6 +234,17 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-context-support</artifactId>
             <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-jpa</artifactId>
+            <version>${spring-data-version}</version>
+            <exclusions>
+            	<exclusion>
+            		<artifactId>junit-dep</artifactId>
+            		<groupId>junit</groupId>
+            	</exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.aspectj</groupId>
