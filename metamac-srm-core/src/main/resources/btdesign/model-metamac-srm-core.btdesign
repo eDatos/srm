@@ -12,6 +12,9 @@ import "classpath:/btdesign/statistic-sdmx-core-base.btdesign"
 import "classpath:/btdesign/statistic-sdmx-core-structure.btdesign"
 import "classpath:/btdesign/statistic-sdmx-core-concepts.btdesign"
 
+import "classpath:/btdesign/metamac-srm-core-dtos-concepts.btdesign"
+import "classpath:/btdesign/metamac-srm-core-enum.btdesign"
+
 Application SrmCore {
     basePackage=unused
     

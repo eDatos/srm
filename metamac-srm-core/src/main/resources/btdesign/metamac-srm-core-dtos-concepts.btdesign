@@ -1,0 +1,21 @@
+
+import "classpath:/btdesign/statistic-sdmx-v2_1-domain-dtos-concepts.btdesign"
+import "classpath:/btdesign/metamac-srm-core-enum.btdesign"
+
+Application DtosMetamacConceptDomain {
+	basePackage=unused
+
+	Module domain_metamac_concept_dto {
+		basePackage=org.siemac.metamac.srm.core.concept.dto
+		"Dto for ConceptSchemeDto"
+		DataTransferObject MetamacConceptSchemeDto extends @ConceptSchemeDto {
+			- @MaintainableArtefactProcStatusEnum procStatus required;
+		}
+
+		"Dto for ConceptDto"
+		DataTransferObject MetamacConceptDto extends @ConceptDto {
+		}
+
+	}
+
+}

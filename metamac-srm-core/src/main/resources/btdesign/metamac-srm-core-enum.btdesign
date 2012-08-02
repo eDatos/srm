@@ -1,0 +1,19 @@
+Application EnumsSrmDomain {
+    basePackage=unused
+
+    Module domain_srm_enums {
+        basePackage=org.siemac.metamac.srm.core.enume
+        
+		"Maintainable Artefact Proc Status"
+    	enum MaintainableArtefactProcStatusEnum {
+    		DRAFT, 
+    		PRODUCTION_VALIDATION,
+    		DIFFUSION_VALIDATION,
+    		VALIDATION_REJECTED,
+    		INTERNALLY_PUBLISHED,
+    		EXTERNALLY_PUBLISHED,
+    		EXTERNAL_PUBLICATION_FAILED;
+    	}
+    }
+
+}
