@@ -67,8 +67,12 @@ public interface GlobalResources extends ClientBundleWithLookup {
     ImageResource resultSetPreviousDisabled();
 
     @ImageOptions(repeatStyle = RepeatStyle.Both)
-    @Source("images/pending_publication.png")
-    ImageResource pendingPublication();
+    @Source("images/validate_production.png")
+    ImageResource validateProduction();
+
+    @ImageOptions(repeatStyle = RepeatStyle.Both)
+    @Source("images/validate_diffusion.png")
+    ImageResource validateDiffusion();
 
     @ImageOptions(repeatStyle = RepeatStyle.Both)
     @Source("images/publish_internally.png")

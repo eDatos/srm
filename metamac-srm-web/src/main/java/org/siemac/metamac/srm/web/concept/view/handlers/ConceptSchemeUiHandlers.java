@@ -25,7 +25,8 @@ public interface ConceptSchemeUiHandlers extends UiHandlers {
 
     // Life cycle
 
-    void sendToPendingPublication(Long id);
+    void sendToProductionValidation(Long id);
+    void sendToDiffusionValidation(Long id);
     void rejectValidation(Long id);
     void publishInternally(Long id);
     void publishExternally(Long id);

@@ -33,8 +33,6 @@ import org.siemac.metamac.srm.web.shared.concept.SaveConceptAction;
 import org.siemac.metamac.srm.web.shared.concept.SaveConceptResult;
 import org.siemac.metamac.srm.web.shared.concept.SaveConceptSchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.SaveConceptSchemeResult;
-import org.siemac.metamac.srm.web.shared.concept.SendConceptSchemeToPendingPublicationAction;
-import org.siemac.metamac.srm.web.shared.concept.SendConceptSchemeToPendingPublicationResult;
 import org.siemac.metamac.srm.web.shared.concept.VersionConceptSchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.VersionConceptSchemeResult;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
@@ -162,23 +160,6 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
     }
 
     @Override
-    public void sendToPendingPublication(Long id) {
-        dispatcher.execute(new SendConceptSchemeToPendingPublicationAction(id), new WaitingAsyncCallback<SendConceptSchemeToPendingPublicationResult>() {
-
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorSendingToPendingPublication()), MessageTypeEnum.ERROR);
-            }
-            @Override
-            public void onWaitSuccess(SendConceptSchemeToPendingPublicationResult result) {
-                ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getMessageList(getMessages().conceptSchemeSentToPendingPublication()), MessageTypeEnum.SUCCESS);
-                ConceptSchemePresenter.this.conceptSchemeDto = result.getConceptSchemeDto();
-                setConceptScheme(result.getConceptSchemeDto());
-            }
-        });
-    }
-
-    @Override
     public void publishExternally(Long id) {
         dispatcher.execute(new PublishConceptSchemeExternallyAction(id), new WaitingAsyncCallback<PublishConceptSchemeExternallyResult>() {
 
@@ -211,6 +192,34 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
             }
         });
     }
+
+    @Override
+    public void sendToProductionValidation(Long id) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void sendToDiffusionValidation(Long id) {
+        // TODO Auto-generated method stub
+
+    }
+
+    // public void sendToPendingPublication(Long id) {
+    // dispatcher.execute(new SendConceptSchemeToPendingPublicationAction(id), new WaitingAsyncCallback<SendConceptSchemeToPendingPublicationResult>() {
+    //
+    // @Override
+    // public void onWaitFailure(Throwable caught) {
+    // ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorSendingToPendingPublication()), MessageTypeEnum.ERROR);
+    // }
+    // @Override
+    // public void onWaitSuccess(SendConceptSchemeToPendingPublicationResult result) {
+    // ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getMessageList(getMessages().conceptSchemeSentToPendingPublication()), MessageTypeEnum.SUCCESS);
+    // ConceptSchemePresenter.this.conceptSchemeDto = result.getConceptSchemeDto();
+    // setConceptScheme(result.getConceptSchemeDto());
+    // }
+    // });
+    // }
 
     @Override
     public void rejectValidation(Long id) {

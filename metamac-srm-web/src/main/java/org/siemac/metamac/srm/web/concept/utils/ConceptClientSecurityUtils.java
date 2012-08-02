@@ -16,7 +16,11 @@ public class ConceptClientSecurityUtils {
         return true;
     }
 
-    public static boolean canSendConceptSchemeToPendingPublication() {
+    public static boolean canSendConceptSchemeToProductionValidation() {
+        return true;
+    }
+
+    public static boolean canSendConceptSchemeToDiffusionValidation() {
         return true;
     }
 

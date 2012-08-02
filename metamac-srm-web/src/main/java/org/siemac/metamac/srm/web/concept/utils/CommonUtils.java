@@ -7,7 +7,7 @@ import org.siemac.metamac.srm.core.concept.dto.MetamacConceptSchemeDto;
 public class CommonUtils {
 
     public static String getConceptSchemeProcStatus(MetamacConceptSchemeDto conceptSchemeDto) {
-        return getCoreMessages().getString(getCoreMessages().conceptSchemeProcStatusEnum() + conceptSchemeDto.getProcStatus().getName());
+        return getCoreMessages().getString(getCoreMessages().maintainableArtefactProcStatusEnum() + conceptSchemeDto.getProcStatus().getName());
     }
 
 }

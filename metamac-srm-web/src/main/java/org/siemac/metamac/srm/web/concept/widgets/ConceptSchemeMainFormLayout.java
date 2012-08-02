@@ -15,7 +15,8 @@ import com.smartgwt.client.widgets.events.HasClickHandlers;
 
 public class ConceptSchemeMainFormLayout extends InternationalMainFormLayout {
 
-    private MainFormLayoutButton               pendingPublication;
+    private MainFormLayoutButton               productionValidation;
+    private MainFormLayoutButton               diffusionValidation;
     private MainFormLayoutButton               rejectValidation;
     private MainFormLayoutButton               publishInternally;
     private MainFormLayoutButton               publishExternally;
@@ -38,7 +39,8 @@ public class ConceptSchemeMainFormLayout extends InternationalMainFormLayout {
         // Remove handler from edit button
         editHandlerRegistration.removeHandler();
 
-        pendingPublication = new MainFormLayoutButton(getConstants().conceptSchemeSendToPendingPublication(), GlobalResources.RESOURCE.pendingPublication().getURL());
+        productionValidation = new MainFormLayoutButton(getConstants().conceptSchemeSendToProductionValidation(), GlobalResources.RESOURCE.validateProduction().getURL());
+        diffusionValidation = new MainFormLayoutButton(getConstants().conceptSchemeSendToDiffusionValidation(), GlobalResources.RESOURCE.validateDiffusion().getURL());
         publishInternally = new MainFormLayoutButton(getConstants().conceptSchemePublishInternally(), GlobalResources.RESOURCE.internalPublish().getURL());
         publishExternally = new MainFormLayoutButton(getConstants().conceptSchemePublishExternally(), GlobalResources.RESOURCE.externalPublish().getURL());
         rejectValidation = new MainFormLayoutButton(getConstants().conceptSchemeRejectValidation(), GlobalResources.RESOURCE.reject().getURL());
@@ -46,7 +48,8 @@ public class ConceptSchemeMainFormLayout extends InternationalMainFormLayout {
         announce = new AnnounceToolStripButton(MetamacWebCommon.getConstants().announce(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.announce().getURL());
         announce.setVisibility(ConceptClientSecurityUtils.canAnnounceConceptScheme() ? Visibility.VISIBLE : Visibility.HIDDEN);
 
-        toolStrip.addButton(pendingPublication);
+        toolStrip.addButton(productionValidation);
+        toolStrip.addButton(diffusionValidation);
         toolStrip.addButton(publishInternally);
         toolStrip.addButton(publishExternally);
         toolStrip.addButton(rejectValidation);
@@ -63,21 +66,22 @@ public class ConceptSchemeMainFormLayout extends InternationalMainFormLayout {
         hideAllPublishButtons();
         // Show buttons depending on the status
         if (MaintainableArtefactProcStatusEnum.DRAFT.equals(status)) {
-            showSendToPendingPublication();
-        } else if (MaintainableArtefactProcStatusEnum.PENDING_PUBLICATION.equals(status)) {
+            showSendToProductionValidation();
+        } else if (MaintainableArtefactProcStatusEnum.VALIDATION_REJECTED.equals(status)) {
+            showSendToProductionValidation();
+        } else if (MaintainableArtefactProcStatusEnum.PRODUCTION_VALIDATION.equals(status)) {
+            showSendToDiffusionValidation();
+            showRejectValidationButton();
+        } else if (MaintainableArtefactProcStatusEnum.DIFFUSION_VALIDATION.equals(status)) {
             showPublishInternallyButton();
             showRejectValidationButton();
-        } else if (MaintainableArtefactProcStatusEnum.VALIDATION_REJECTED.equals(status)) {
-            showSendToPendingPublication();
-        } else if (MaintainableArtefactProcStatusEnum.INTERNAL_PUBLICATION_FAILED.equals(status)) {
-            showPublishInternallyButton();
-        } else if (MaintainableArtefactProcStatusEnum.EXTERNAL_PUBLICATION_FAILED.equals(status)) {
-            showPublishExternallyButton();
         } else if (MaintainableArtefactProcStatusEnum.INTERNALLY_PUBLISHED.equals(status)) {
             showPublishExternallyButton();
             showVersioningButton();
         } else if (MaintainableArtefactProcStatusEnum.EXTERNALLY_PUBLISHED.equals(status)) {
             showVersioningButton();
+        } else if (MaintainableArtefactProcStatusEnum.EXTERNAL_PUBLICATION_FAILED.equals(status)) {
+            showPublishExternallyButton();
         }
     }
 
@@ -93,8 +97,12 @@ public class ConceptSchemeMainFormLayout extends InternationalMainFormLayout {
         hideAllPublishButtons();
     }
 
-    public HasClickHandlers getSendToPendingPublication() {
-        return pendingPublication;
+    public HasClickHandlers getSendToProductionValidation() {
+        return productionValidation;
+    }
+
+    public HasClickHandlers getSendToDiffusionValidation() {
+        return diffusionValidation;
     }
 
     public HasClickHandlers getRejectValidation() {
@@ -114,24 +122,29 @@ public class ConceptSchemeMainFormLayout extends InternationalMainFormLayout {
     }
 
     private void hideAllPublishButtons() {
-        pendingPublication.hide();
+        productionValidation.hide();
+        diffusionValidation.hide();
         rejectValidation.hide();
         publishInternally.hide();
         publishExternally.hide();
         versioning.hide();
     }
 
-    private void showSendToPendingPublication() {
-        if (ConceptClientSecurityUtils.canSendConceptSchemeToPendingPublication()) {
-            pendingPublication.show();
+    private void showSendToProductionValidation() {
+        if (ConceptClientSecurityUtils.canSendConceptSchemeToProductionValidation()) {
+            productionValidation.show();
+        }
+    }
+
+    private void showSendToDiffusionValidation() {
+        if (ConceptClientSecurityUtils.canSendConceptSchemeToDiffusionValidation()) {
+            diffusionValidation.show();
         }
     }
 
     private void showRejectValidationButton() {
-        if (MaintainableArtefactProcStatusEnum.PENDING_PUBLICATION.equals(status)) {
-            if (ConceptClientSecurityUtils.canRejectConceptSchemeValidation()) {
-                rejectValidation.show();
-            }
+        if (ConceptClientSecurityUtils.canRejectConceptSchemeValidation()) {
+            rejectValidation.show();
         }
     }
 

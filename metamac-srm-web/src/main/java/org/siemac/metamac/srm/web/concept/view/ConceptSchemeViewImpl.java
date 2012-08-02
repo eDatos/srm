@@ -241,11 +241,18 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         });
 
         // Life cycle
-        mainFormLayout.getSendToPendingPublication().addClickHandler(new ClickHandler() {
+        mainFormLayout.getSendToProductionValidation().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                uiHandlers.sendToPendingPublication(conceptSchemeDto.getId());
+                uiHandlers.sendToProductionValidation(conceptSchemeDto.getId());
+            }
+        });
+        mainFormLayout.getSendToDiffusionValidation().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                uiHandlers.sendToDiffusionValidation(conceptSchemeDto.getId());
             }
         });
         mainFormLayout.getRejectValidation().addClickHandler(new ClickHandler() {
