@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module>
-  <!-- Inherit the core Web Toolkit stuff. -->
-  <inherits name='com.google.gwt.user.User'/>
+    <!-- Inherit the core Web Toolkit stuff. -->
+    <inherits name='com.google.gwt.user.User' />
 
-  <!-- Specify the paths for translatable code -->
-  <source path='structure/serviceimpl/utils/shared'/>
-  
+    <!-- Specify the paths for translatable code -->
+    <source path='concept/dto' />
+    <source path='enume/domain' />
 </module>
