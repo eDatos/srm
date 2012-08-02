@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Set;
 
-import org.siemac.metamac.domain.srm.dto.AnnotationDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.resources.GlobalResources;
 import org.siemac.metamac.srm.web.dsd.model.record.AnnotationRecord;
@@ -13,6 +12,7 @@ import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.utils.ApplicationEditionLanguages;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.AnnotationDto;
 import com.google.gwt.resources.client.ImageResource;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Alignment;

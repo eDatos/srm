@@ -2,9 +2,8 @@ package org.siemac.metamac.srm.web.concept.view.handlers;
 
 import java.util.List;
 
-import org.siemac.metamac.domain.concept.dto.ConceptDto;
-import org.siemac.metamac.domain.concept.dto.ConceptSchemeDto;
-
+import com.arte.statistic.sdmx.v2_1.domain.dto.concept.ConceptDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.concept.ConceptSchemeDto;
 import com.gwtplatform.mvp.client.UiHandlers;
 
 public interface ConceptSchemeUiHandlers extends UiHandlers {

@@ -6,13 +6,6 @@ import java.util.List;
 
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
-import org.siemac.metamac.domain.srm.dto.DimensionComponentDto;
-import org.siemac.metamac.domain.srm.dto.FacetDto;
-import org.siemac.metamac.domain.srm.dto.RepresentationDto;
-import org.siemac.metamac.domain.srm.enume.domain.FacetValueTypeEnum;
-import org.siemac.metamac.domain.srm.enume.domain.TypeComponent;
-import org.siemac.metamac.domain.srm.enume.domain.TypeDimensionComponent;
-import org.siemac.metamac.domain.srm.enume.domain.TypeRepresentationEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.resources.GlobalResources;
 import org.siemac.metamac.srm.web.dsd.model.record.DimensionRecord;
@@ -36,6 +29,13 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredSelectIt
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.FacetDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.RepresentationDto;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.FacetValueTypeEnum;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponent;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeDimensionComponent;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeRepresentationEnum;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;

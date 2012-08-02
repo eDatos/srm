@@ -2,7 +2,6 @@ package org.siemac.metamac.srm.web.concept.widgets;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
-import org.siemac.metamac.domain.srm.enume.domain.MaintainableArtefactProcStatusEnum;
 import org.siemac.metamac.srm.web.client.resources.GlobalResources;
 import org.siemac.metamac.srm.web.concept.utils.ConceptClientSecurityUtils;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;

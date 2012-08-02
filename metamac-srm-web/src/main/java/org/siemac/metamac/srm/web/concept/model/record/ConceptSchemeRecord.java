@@ -1,8 +1,8 @@
 package org.siemac.metamac.srm.web.concept.model.record;
 
-import org.siemac.metamac.domain.concept.dto.ConceptSchemeDto;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.concept.ConceptSchemeDto;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 
 public class ConceptSchemeRecord extends ListGridRecord {

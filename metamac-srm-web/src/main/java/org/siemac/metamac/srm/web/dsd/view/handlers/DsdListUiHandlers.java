@@ -2,8 +2,7 @@ package org.siemac.metamac.srm.web.dsd.view.handlers;
 
 import java.util.List;
 
-import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
-
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;
 import com.gwtplatform.mvp.client.UiHandlers;
 
 public interface DsdListUiHandlers extends UiHandlers {

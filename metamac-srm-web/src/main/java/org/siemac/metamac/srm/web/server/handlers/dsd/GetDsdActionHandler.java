@@ -1,7 +1,6 @@
 package org.siemac.metamac.srm.web.server.handlers.dsd;
 
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdResult;
@@ -11,6 +10,7 @@ import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;
 import com.gwtplatform.dispatch.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 

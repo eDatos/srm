@@ -1,10 +1,11 @@
 package org.siemac.metamac.srm.web.dsd.widgets;
 
-import org.siemac.metamac.domain.srm.dto.FacetDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.dsd.utils.FacetFormUtils;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
+
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.FacetDto;
 
 public class StaticFacetForm extends GroupDynamicForm {
 

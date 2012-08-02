@@ -2,12 +2,11 @@ package org.siemac.metamac.srm.web.dsd.events;
 
 import java.util.List;
 
-import org.siemac.metamac.domain.srm.dto.ComponentDto;
-import org.siemac.metamac.domain.srm.dto.DataAttributeDto;
-import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
-import org.siemac.metamac.domain.srm.dto.DescriptorDto;
-import org.siemac.metamac.domain.srm.dto.DimensionComponentDto;
-
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataAttributeDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DescriptorDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HasHandlers;

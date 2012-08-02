@@ -1,9 +1,6 @@
 package org.siemac.metamac.srm.web.server.handlers.dsd;
 
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionExtendDto;
-import org.siemac.metamac.domain.srm.enume.domain.TypeDozerCopyMode;
-import org.siemac.metamac.domain.trans.dto.StructureMsgDto;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.web.shared.dsd.ExportDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.ExportDsdResult;
@@ -13,6 +10,9 @@ import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionExtendDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.trans.StructureMsgDto;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeDozerCopyMode;
 import com.gwtplatform.dispatch.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 

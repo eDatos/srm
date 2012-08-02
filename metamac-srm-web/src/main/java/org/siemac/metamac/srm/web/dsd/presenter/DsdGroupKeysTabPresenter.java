@@ -5,10 +5,6 @@ import java.util.List;
 
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
-import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
-import org.siemac.metamac.domain.srm.dto.DescriptorDto;
-import org.siemac.metamac.domain.srm.dto.DimensionComponentDto;
-import org.siemac.metamac.domain.srm.enume.domain.TypeComponentList;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
@@ -37,6 +33,10 @@ import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.utils.UrnUtils;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DescriptorDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponentList;
 import com.google.gwt.event.shared.EventBus;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.shared.DispatchAsync;

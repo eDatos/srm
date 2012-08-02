@@ -1,7 +1,5 @@
 package org.siemac.metamac.srm.web.dsd.presenter;
 
-import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
-import org.siemac.metamac.domain.srm.enume.domain.TypeComponentList;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
@@ -21,6 +19,8 @@ import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.events.UpdateConceptSchemesEvent;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponentList;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;

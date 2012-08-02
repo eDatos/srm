@@ -1,8 +1,7 @@
 package org.siemac.metamac.srm.web.shared.dsd;
 
-import org.siemac.metamac.domain.srm.dto.ComponentDto;
-import org.siemac.metamac.domain.srm.enume.domain.TypeComponentList;
-
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponentList;
 import com.gwtplatform.dispatch.annotation.GenDispatch;
 import com.gwtplatform.dispatch.annotation.In;
 

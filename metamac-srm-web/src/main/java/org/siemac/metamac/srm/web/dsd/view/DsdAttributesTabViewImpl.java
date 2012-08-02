@@ -5,17 +5,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
-import org.siemac.metamac.domain.srm.dto.DataAttributeDto;
-import org.siemac.metamac.domain.srm.dto.DescriptorDto;
-import org.siemac.metamac.domain.srm.dto.DimensionComponentDto;
-import org.siemac.metamac.domain.srm.dto.FacetDto;
-import org.siemac.metamac.domain.srm.dto.RelationshipDto;
-import org.siemac.metamac.domain.srm.dto.RepresentationDto;
-import org.siemac.metamac.domain.srm.enume.domain.TypeComponent;
-import org.siemac.metamac.domain.srm.enume.domain.TypeDataAttribute;
-import org.siemac.metamac.domain.srm.enume.domain.TypeRelathionship;
-import org.siemac.metamac.domain.srm.enume.domain.TypeRepresentationEnum;
-import org.siemac.metamac.domain.srm.enume.domain.UsageStatus;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.dsd.model.record.AttributeRecord;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdAttributesTabPresenter;
@@ -38,6 +27,17 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredSelectIt
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataAttributeDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DescriptorDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.FacetDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.RelationshipDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.RepresentationDto;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponent;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeDataAttribute;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeRelathionship;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeRepresentationEnum;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.UsageStatus;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;

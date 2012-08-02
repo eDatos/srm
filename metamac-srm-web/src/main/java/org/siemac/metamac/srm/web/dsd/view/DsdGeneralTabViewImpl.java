@@ -1,6 +1,5 @@
 package org.siemac.metamac.srm.web.dsd.view;
 
-import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdGeneralTabPresenter;
 import org.siemac.metamac.srm.web.dsd.utils.DsdClientSecurityUtils;
@@ -14,6 +13,7 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;

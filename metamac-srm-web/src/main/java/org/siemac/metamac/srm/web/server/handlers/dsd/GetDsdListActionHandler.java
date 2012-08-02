@@ -5,11 +5,10 @@ import java.util.List;
 
 import org.siemac.metamac.core.common.criteria.MetamacCriteria;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder;
-import org.siemac.metamac.core.common.criteria.MetamacCriteriaPaginator;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder.OrderTypeEnum;
+import org.siemac.metamac.core.common.criteria.MetamacCriteriaPaginator;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
 import org.siemac.metamac.srm.core.criteria.DataStructureDefinitionCriteriaOrderEnum;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdListAction;
@@ -20,6 +19,7 @@ import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 @Component

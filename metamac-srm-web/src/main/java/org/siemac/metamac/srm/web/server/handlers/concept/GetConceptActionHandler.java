@@ -2,12 +2,12 @@ package org.siemac.metamac.srm.web.server.handlers.concept;
 
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.dto.LocalisedStringDto;
-import org.siemac.metamac.domain.concept.dto.ConceptDto;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptResult;
 import org.siemac.metamac.web.common.server.handlers.SecurityActionHandler;
 import org.springframework.stereotype.Component;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.concept.ConceptDto;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 @Component

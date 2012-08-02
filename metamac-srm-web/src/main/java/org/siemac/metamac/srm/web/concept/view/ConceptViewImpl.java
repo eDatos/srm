@@ -3,7 +3,6 @@ package org.siemac.metamac.srm.web.concept.view;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
 import org.siemac.metamac.core.common.util.shared.StringUtils;
-import org.siemac.metamac.domain.concept.dto.ConceptDto;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
 import org.siemac.metamac.srm.web.concept.presenter.ConceptPresenter;
@@ -19,6 +18,7 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.concept.ConceptDto;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;

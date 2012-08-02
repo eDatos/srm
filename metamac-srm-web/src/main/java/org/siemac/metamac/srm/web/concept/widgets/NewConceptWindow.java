@@ -3,7 +3,6 @@ package org.siemac.metamac.srm.web.concept.widgets;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
-import org.siemac.metamac.domain.concept.dto.ConceptDto;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
@@ -12,6 +11,7 @@ import org.siemac.metamac.web.common.client.widgets.form.CustomDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomButtonItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.concept.ConceptDto;
 import com.smartgwt.client.widgets.form.fields.events.HasClickHandlers;
 
 public class NewConceptWindow extends CustomWindow {

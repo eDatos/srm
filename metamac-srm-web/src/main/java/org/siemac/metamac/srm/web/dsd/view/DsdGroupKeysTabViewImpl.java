@@ -4,10 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.siemac.metamac.domain.srm.dto.ComponentDto;
-import org.siemac.metamac.domain.srm.dto.DescriptorDto;
-import org.siemac.metamac.domain.srm.dto.DimensionComponentDto;
-import org.siemac.metamac.domain.srm.enume.domain.TypeComponentList;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.dsd.model.record.GroupKeysRecord;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdGroupKeysTabPresenter;
@@ -23,6 +19,10 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.CustomSelectItem
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DescriptorDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponentList;
 import com.google.gwt.user.client.ui.Widget;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
 import com.smartgwt.client.types.SelectionAppearance;

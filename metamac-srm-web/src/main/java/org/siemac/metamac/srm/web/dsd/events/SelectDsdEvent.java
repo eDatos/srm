@@ -1,7 +1,6 @@
 package org.siemac.metamac.srm.web.dsd.events;
 
-import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
-
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HasHandlers;

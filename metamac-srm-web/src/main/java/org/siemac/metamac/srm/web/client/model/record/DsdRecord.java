@@ -2,8 +2,7 @@ package org.siemac.metamac.srm.web.client.model.record;
 
 import java.util.Date;
 
-import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
-
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 
 public class DsdRecord extends ListGridRecord {

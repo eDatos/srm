@@ -3,10 +3,6 @@ package org.siemac.metamac.srm.web.dsd.view;
 import java.util.List;
 
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
-import org.siemac.metamac.domain.srm.dto.ComponentDto;
-import org.siemac.metamac.domain.srm.dto.FacetDto;
-import org.siemac.metamac.domain.srm.dto.RepresentationDto;
-import org.siemac.metamac.domain.srm.enume.domain.TypeRepresentationEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdPrimaryMeasureTabPresenter;
 import org.siemac.metamac.srm.web.dsd.utils.CommonUtils;
@@ -22,6 +18,10 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.CustomSelectItem
 import org.siemac.metamac.web.common.client.widgets.form.fields.ExternalSelectItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.FacetDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.RepresentationDto;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeRepresentationEnum;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;

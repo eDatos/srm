@@ -1,7 +1,5 @@
 package org.siemac.metamac.srm.web.dsd.widgets;
 
-import org.siemac.metamac.domain.srm.dto.FacetDto;
-import org.siemac.metamac.domain.srm.enume.domain.FacetValueTypeEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.dsd.utils.CommonUtils;
 import org.siemac.metamac.srm.web.dsd.utils.FacetFormUtils;
@@ -11,6 +9,8 @@ import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredSelectItem;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.FacetDto;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.FacetValueTypeEnum;
 import com.smartgwt.client.types.Visibility;
 import com.smartgwt.client.widgets.form.fields.CheckboxItem;
 

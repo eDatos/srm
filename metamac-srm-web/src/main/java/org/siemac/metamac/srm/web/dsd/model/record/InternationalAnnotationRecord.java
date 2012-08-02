@@ -1,7 +1,6 @@
 package org.siemac.metamac.srm.web.dsd.model.record;
 
-import org.siemac.metamac.domain.srm.dto.AnnotationDto;
-
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.AnnotationDto;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 
 public class InternationalAnnotationRecord extends ListGridRecord {

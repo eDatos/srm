@@ -5,16 +5,17 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
-import org.siemac.metamac.domain.srm.dto.ComponentDto;
-import org.siemac.metamac.domain.srm.dto.DataAttributeDto;
-import org.siemac.metamac.domain.srm.dto.DescriptorDto;
-import org.siemac.metamac.domain.srm.dto.DimensionComponentDto;
-import org.siemac.metamac.domain.srm.enume.domain.FacetValueTypeEnum;
-import org.siemac.metamac.domain.srm.enume.domain.TypeDimensionComponent;
-import org.siemac.metamac.domain.srm.enume.domain.TypeRelathionship;
-import org.siemac.metamac.domain.srm.enume.domain.TypeRepresentationEnum;
-import org.siemac.metamac.domain.srm.enume.domain.UsageStatus;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
+
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataAttributeDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DescriptorDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.FacetValueTypeEnum;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeDimensionComponent;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeRelathionship;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeRepresentationEnum;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.UsageStatus;
 
 public class CommonUtils {
 

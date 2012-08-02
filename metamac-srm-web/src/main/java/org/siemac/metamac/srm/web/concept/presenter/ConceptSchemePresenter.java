@@ -5,8 +5,6 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 import java.util.List;
 
 import org.siemac.metamac.core.common.util.shared.StringUtils;
-import org.siemac.metamac.domain.concept.dto.ConceptDto;
-import org.siemac.metamac.domain.concept.dto.ConceptSchemeDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
 import org.siemac.metamac.srm.web.client.PlaceRequestParams;
@@ -42,6 +40,8 @@ import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.utils.UrnUtils;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.concept.ConceptDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.concept.ConceptSchemeDto;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;

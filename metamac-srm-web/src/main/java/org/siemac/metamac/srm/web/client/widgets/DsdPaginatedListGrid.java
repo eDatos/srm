@@ -2,7 +2,6 @@ package org.siemac.metamac.srm.web.client.widgets;
 
 import java.util.List;
 
-import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdListPresenter;
@@ -10,6 +9,7 @@ import org.siemac.metamac.srm.web.dsd.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.widgets.PaginatedCheckListGrid;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;
 import com.smartgwt.client.types.Autofit;
 import com.smartgwt.client.types.ListGridFieldType;
 import com.smartgwt.client.widgets.grid.HoverCustomizer;

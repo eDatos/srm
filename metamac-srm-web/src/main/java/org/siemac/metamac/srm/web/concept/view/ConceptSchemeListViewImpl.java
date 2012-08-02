@@ -6,7 +6,6 @@ import static org.siemac.metamac.web.common.client.resources.GlobalResources.RES
 import java.util.ArrayList;
 import java.util.List;
 
-import org.siemac.metamac.domain.concept.dto.ConceptSchemeDto;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptSchemeRecord;
@@ -21,6 +20,7 @@ import org.siemac.metamac.web.common.client.widgets.PaginatedCheckListGrid;
 import org.siemac.metamac.web.common.client.widgets.SearchSectionStack;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.concept.ConceptSchemeDto;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;

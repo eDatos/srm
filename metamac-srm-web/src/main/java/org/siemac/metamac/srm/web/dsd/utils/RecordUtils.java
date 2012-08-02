@@ -1,11 +1,6 @@
 package org.siemac.metamac.srm.web.dsd.utils;
 
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
-import org.siemac.metamac.domain.srm.dto.AnnotationDto;
-import org.siemac.metamac.domain.srm.dto.DataAttributeDto;
-import org.siemac.metamac.domain.srm.dto.DataStructureDefinitionDto;
-import org.siemac.metamac.domain.srm.dto.DescriptorDto;
-import org.siemac.metamac.domain.srm.dto.DimensionComponentDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
 import org.siemac.metamac.srm.web.dsd.model.record.AnnotationRecord;
@@ -17,6 +12,11 @@ import org.siemac.metamac.srm.web.dsd.model.record.InternationalAnnotationRecord
 import org.siemac.metamac.web.common.client.resources.GlobalResources;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.AnnotationDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataAttributeDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DescriptorDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
 import com.google.gwt.resources.client.ImageResource;
 
 public class RecordUtils {

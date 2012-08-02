@@ -1,7 +1,6 @@
 package org.siemac.metamac.srm.web.shared.dsd;
 
-import org.siemac.metamac.domain.srm.dto.DescriptorDto;
-
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DescriptorDto;
 import com.gwtplatform.dispatch.annotation.GenDispatch;
 import com.gwtplatform.dispatch.annotation.In;
 import com.gwtplatform.dispatch.annotation.Out;

@@ -3,10 +3,10 @@ package org.siemac.metamac.srm.web.dsd.utils;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.siemac.metamac.domain.srm.enume.domain.FacetValueTypeEnum;
-import org.siemac.metamac.srm.core.structure.serviceimpl.utils.shared.DataStructureConstraintSharedValidator;
 import org.siemac.metamac.srm.web.dsd.widgets.FacetForm;
 
+import com.arte.statistic.sdmx.srm.core.structure.serviceimpl.utils.shared.DataStructureConstraintSharedValidator;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.FacetValueTypeEnum;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.FormItemIfFunction;
 import com.smartgwt.client.widgets.form.fields.FormItem;

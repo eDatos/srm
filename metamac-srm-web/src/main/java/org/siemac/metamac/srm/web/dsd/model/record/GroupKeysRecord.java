@@ -2,9 +2,8 @@ package org.siemac.metamac.srm.web.dsd.model.record;
 
 import java.util.List;
 
-import org.siemac.metamac.domain.srm.dto.ComponentDto;
-import org.siemac.metamac.domain.srm.dto.DescriptorDto;
-
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DescriptorDto;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 
 public class GroupKeysRecord extends ListGridRecord {
