@@ -23,7 +23,7 @@
     </properties>
 
     <dependencies>
-        <dependency> 
+        <dependency>
             <groupId>org.siemac.metamac</groupId>
             <artifactId>metamac-web-common</artifactId>
             <version>${metamac-web-common.version}</version>
@@ -253,10 +253,12 @@
                     <debugPort>9997</debugPort>
                     <inplace>true</inplace>
                     <compileSourcesArtifacts>
-                        <artifact>org.siemac.metamac.metamac-srm:metamac-srm-core:jar:client</artifact>                  
+                        <artifact>org.siemac.metamac.metamac-srm:metamac-srm-core:jar:client</artifact>
                         <artifact>org.siemac.metamac:metamac-api-domain:jar:client</artifact>
                         <artifact>org.siemac.metamac:metamac-core-common:jar:client</artifact>
                         <artifact>org.siemac.metamac.metamac-sso:metamac-sso-client:jar</artifact>
+                        <artifact>com.arte.statistic.statistic-sdmx-v2_1:statistic-sdmx-v2_1-domain:jar:client</artifact>
+                        <artifact>com.arte.statistic.statistic-sdmx-srm:statistic-sdmx-srm-core:jar:client</artifact>
                     </compileSourcesArtifacts>
                     <!-- In inplace mode, the warSourceDirectory is used to match the same use case of the war:inplace http://maven.apache.org/plugins/maven-war-plugin/inplace-mojo.html goal. -->
                     <inplace>true</inplace>
