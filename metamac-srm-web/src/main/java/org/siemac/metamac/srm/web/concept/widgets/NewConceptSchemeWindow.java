@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.web.concept.widgets;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
+import org.siemac.metamac.srm.core.concept.dto.MetamacConceptSchemeDto;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
@@ -11,7 +12,6 @@ import org.siemac.metamac.web.common.client.widgets.form.CustomDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomButtonItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.concept.ConceptSchemeDto;
 import com.smartgwt.client.widgets.form.fields.events.HasClickHandlers;
 
 public class NewConceptSchemeWindow extends CustomWindow {
@@ -47,8 +47,8 @@ public class NewConceptSchemeWindow extends CustomWindow {
         return form.getItem(FIELD_SAVE);
     }
 
-    public ConceptSchemeDto getNewConceptSchemeDto() {
-        ConceptSchemeDto conceptSchemeDto = new ConceptSchemeDto();
+    public MetamacConceptSchemeDto getNewConceptSchemeDto() {
+        MetamacConceptSchemeDto conceptSchemeDto = new MetamacConceptSchemeDto();
 
         conceptSchemeDto.setCode(form.getValueAsString(ConceptSchemeDS.CODE));
         conceptSchemeDto.setName(InternationalStringUtils.updateInternationalString(new InternationalStringDto(), form.getValueAsString(ConceptSchemeDS.NAME)));

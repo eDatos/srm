@@ -10,13 +10,14 @@ import java.util.UUID;
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.dto.LocalisedStringDto;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.srm.core.concept.dto.MetamacConceptSchemeDto;
+import org.siemac.metamac.srm.core.enume.domain.MaintainableArtefactProcStatusEnum;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.concept.ConceptSchemeDto;
 import com.ibm.icu.text.DecimalFormat;
 
 public class ConceptSchemeService {
 
-    private static List<ConceptSchemeDto> conceptSchemeList = null;
+    private static List<MetamacConceptSchemeDto> conceptSchemeList = null;
 
     static {
         fillConceptSchemes();
@@ -24,7 +25,7 @@ public class ConceptSchemeService {
 
     public static ConceptSchemePage findAllConceptSchemes(int firstResult, int maxResults) throws MetamacException {
         ConceptSchemePage pageResult = new ConceptSchemePage();
-        List<ConceptSchemeDto> concepts = new ArrayList<ConceptSchemeDto>();
+        List<MetamacConceptSchemeDto> concepts = new ArrayList<MetamacConceptSchemeDto>();
         for (int i = firstResult; i < firstResult + maxResults && i < conceptSchemeList.size(); i++) {
             concepts.add(conceptSchemeList.get(i));
         }
@@ -33,8 +34,8 @@ public class ConceptSchemeService {
         return pageResult;
     }
 
-    public static ConceptSchemeDto retriveConceptSchemeByIdLogic(String idLogic) throws MetamacException {
-        for (ConceptSchemeDto scheme : conceptSchemeList) {
+    public static MetamacConceptSchemeDto retriveConceptSchemeByIdLogic(String idLogic) throws MetamacException {
+        for (MetamacConceptSchemeDto scheme : conceptSchemeList) {
             if (scheme.getCode().equals(idLogic)) {
                 return scheme;
             }
@@ -47,7 +48,7 @@ public class ConceptSchemeService {
         conceptSchemeList.remove(chosen);
     }
 
-    public static ConceptSchemeDto saveConceptScheme(ConceptSchemeDto schemeDto) throws MetamacException {
+    public static MetamacConceptSchemeDto saveConceptScheme(MetamacConceptSchemeDto schemeDto) throws MetamacException {
         if (schemeDto.getUuid() == null) {
             schemeDto.setUuid(UUID.randomUUID().toString());
             schemeDto.setId(new Random().nextInt(Integer.MAX_VALUE) + 1L);
@@ -64,33 +65,39 @@ public class ConceptSchemeService {
     }
 
     /* Life cycle */
-    public static ConceptSchemeDto sendToPendingPublication(Long id) throws MetamacException {
-        ConceptSchemeDto scheme = conceptSchemeList.get(0);
-        scheme.setProcStatus(MaintainableArtefactProcStatusEnum.PENDING_PUBLICATION);
+    public static MetamacConceptSchemeDto sendToProductionValidation(Long id) throws MetamacException {
+        MetamacConceptSchemeDto scheme = conceptSchemeList.get(0);
+        scheme.setProcStatus(MaintainableArtefactProcStatusEnum.PRODUCTION_VALIDATION);
         return scheme;
     }
 
-    public static ConceptSchemeDto reject(Long id) throws MetamacException {
-        ConceptSchemeDto scheme = conceptSchemeList.get(0);
+    public static MetamacConceptSchemeDto sendToDiffusionValidation(Long id) throws MetamacException {
+        MetamacConceptSchemeDto scheme = conceptSchemeList.get(0);
+        scheme.setProcStatus(MaintainableArtefactProcStatusEnum.DIFFUSION_VALIDATION);
+        return scheme;
+    }
+
+    public static MetamacConceptSchemeDto reject(Long id) throws MetamacException {
+        MetamacConceptSchemeDto scheme = conceptSchemeList.get(0);
         scheme.setProcStatus(MaintainableArtefactProcStatusEnum.VALIDATION_REJECTED);
         return scheme;
     }
 
-    public static ConceptSchemeDto publishInternally(Long id) throws MetamacException {
-        ConceptSchemeDto scheme = conceptSchemeList.get(0);
+    public static MetamacConceptSchemeDto publishInternally(Long id) throws MetamacException {
+        MetamacConceptSchemeDto scheme = conceptSchemeList.get(0);
         scheme.setProcStatus(MaintainableArtefactProcStatusEnum.INTERNALLY_PUBLISHED);
         return scheme;
     }
 
-    public static ConceptSchemeDto publishExternally(Long id) throws MetamacException {
-        ConceptSchemeDto scheme = conceptSchemeList.get(0);
+    public static MetamacConceptSchemeDto publishExternally(Long id) throws MetamacException {
+        MetamacConceptSchemeDto scheme = conceptSchemeList.get(0);
         scheme.setValidFrom(new Date());
         scheme.setProcStatus(MaintainableArtefactProcStatusEnum.EXTERNALLY_PUBLISHED);
         return scheme;
     }
 
-    public static ConceptSchemeDto versioning(Long id) throws MetamacException {
-        ConceptSchemeDto scheme = conceptSchemeList.get(0);
+    public static MetamacConceptSchemeDto versioning(Long id) throws MetamacException {
+        MetamacConceptSchemeDto scheme = conceptSchemeList.get(0);
         scheme.setProcStatus(MaintainableArtefactProcStatusEnum.DRAFT);
         return scheme;
     }
@@ -106,9 +113,9 @@ public class ConceptSchemeService {
     }
 
     private static void fillConceptSchemes() {
-        conceptSchemeList = new LinkedList<ConceptSchemeDto>();
+        conceptSchemeList = new LinkedList<MetamacConceptSchemeDto>();
         for (int i = 0; i < 100; i++) {
-            ConceptSchemeDto conceptScheme = new ConceptSchemeDto();
+            MetamacConceptSchemeDto conceptScheme = new MetamacConceptSchemeDto();
             conceptScheme.setId(Long.valueOf(i * 1));
             conceptScheme.setUuid(UUID.randomUUID().toString());
             conceptScheme.setUrn("prefix=" + UUID.randomUUID().toString());
@@ -131,8 +138,8 @@ public class ConceptSchemeService {
 
     public static class ConceptSchemePage {
 
-        public List<ConceptSchemeDto> resultList;
-        public Integer                totalResults;
+        public List<MetamacConceptSchemeDto> resultList;
+        public Integer                       totalResults;
 
         public ConceptSchemePage() {
             // TODO Auto-generated constructor stub

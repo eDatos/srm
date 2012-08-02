@@ -5,12 +5,13 @@ import java.util.List;
 
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.dto.LocalisedStringDto;
+import org.siemac.metamac.srm.core.concept.dto.MetamacConceptSchemeDto;
+import org.siemac.metamac.srm.core.enume.domain.MaintainableArtefactProcStatusEnum;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeHistoryListAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeHistoryListResult;
 import org.siemac.metamac.web.common.server.handlers.SecurityActionHandler;
 import org.springframework.stereotype.Component;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.concept.ConceptSchemeDto;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 @Component
@@ -22,13 +23,13 @@ public class GetConceptSchemeHistoryListActionHandler extends SecurityActionHand
 
     @Override
     public GetConceptSchemeHistoryListResult executeSecurityAction(GetConceptSchemeHistoryListAction action) throws ActionException {
-        List<ConceptSchemeDto> conceptSchemeDtos = new ArrayList<ConceptSchemeDto>();
+        List<MetamacConceptSchemeDto> conceptSchemeDtos = new ArrayList<MetamacConceptSchemeDto>();
         conceptSchemeDtos.add(getConceptSchemeDto1());
         conceptSchemeDtos.add(getConceptSchemeDto2());
         return new GetConceptSchemeHistoryListResult(conceptSchemeDtos);
     }
 
-    private ConceptSchemeDto getConceptSchemeDto1() {
+    private MetamacConceptSchemeDto getConceptSchemeDto1() {
         InternationalStringDto name = new InternationalStringDto();
         LocalisedStringDto localisedStringDto = new LocalisedStringDto();
         localisedStringDto.setId(2L);
@@ -36,7 +37,7 @@ public class GetConceptSchemeHistoryListActionHandler extends SecurityActionHand
         localisedStringDto.setLocale("es");
         name.addText(localisedStringDto);
 
-        ConceptSchemeDto conceptSchemeDto = new ConceptSchemeDto();
+        MetamacConceptSchemeDto conceptSchemeDto = new MetamacConceptSchemeDto();
         conceptSchemeDto.setId(1L);
         conceptSchemeDto.setCode("scheme-0001");
         conceptSchemeDto.setName(name);
@@ -47,7 +48,7 @@ public class GetConceptSchemeHistoryListActionHandler extends SecurityActionHand
         return conceptSchemeDto;
     }
 
-    private ConceptSchemeDto getConceptSchemeDto2() {
+    private MetamacConceptSchemeDto getConceptSchemeDto2() {
         InternationalStringDto name = new InternationalStringDto();
         LocalisedStringDto localisedStringDto = new LocalisedStringDto();
         localisedStringDto.setId(2L);
@@ -55,7 +56,7 @@ public class GetConceptSchemeHistoryListActionHandler extends SecurityActionHand
         localisedStringDto.setLocale("es");
         name.addText(localisedStringDto);
 
-        ConceptSchemeDto conceptSchemeDto = new ConceptSchemeDto();
+        MetamacConceptSchemeDto conceptSchemeDto = new MetamacConceptSchemeDto();
         conceptSchemeDto.setId(1L);
         conceptSchemeDto.setCode("scheme-0002");
         conceptSchemeDto.setName(name);

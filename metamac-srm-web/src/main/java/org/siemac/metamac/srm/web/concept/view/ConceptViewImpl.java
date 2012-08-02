@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.web.concept.view;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
 import org.siemac.metamac.core.common.util.shared.StringUtils;
+import org.siemac.metamac.srm.core.concept.dto.MetamacConceptDto;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
 import org.siemac.metamac.srm.web.concept.presenter.ConceptPresenter;
@@ -18,7 +19,6 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.concept.ConceptDto;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
@@ -53,7 +53,7 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
     private GroupDynamicForm            relationBetweenConceptsEditionForm;
     private GroupDynamicForm            legalActsEditionForm;
 
-    private ConceptDto                  conceptDto;
+    private MetamacConceptDto           conceptDto;
 
     @Inject
     public ConceptViewImpl() {
@@ -233,7 +233,7 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
     }
 
     @Override
-    public void setConcept(ConceptDto conceptDto) {
+    public void setConcept(MetamacConceptDto conceptDto) {
         this.conceptDto = conceptDto;
 
         String defaultLocalized = InternationalStringUtils.getLocalisedString(conceptDto.getName());
@@ -246,7 +246,7 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
         setConceptEditionMode(conceptDto);
     }
 
-    private void setConceptViewMode(ConceptDto conceptDto) {
+    private void setConceptViewMode(MetamacConceptDto conceptDto) {
         // Identifiers Form
         identifiersForm.setValue(ConceptDS.CODE, conceptDto.getCode());
         identifiersForm.setValue(ConceptDS.NAME, RecordUtils.getInternationalStringRecord(conceptDto.getName()));
@@ -256,7 +256,7 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
         identifiersForm.setValue(ConceptDS.URN, conceptDto.getUrn());
     }
 
-    private void setConceptEditionMode(ConceptDto conceptDto) {
+    private void setConceptEditionMode(MetamacConceptDto conceptDto) {
         // Identifiers Form
         identifiersEditionForm.setValue(ConceptDS.CODE, conceptDto.getCode());
         identifiersEditionForm.setValue(ConceptDS.NAME, RecordUtils.getInternationalStringRecord(conceptDto.getName()));
@@ -266,7 +266,7 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
         identifiersEditionForm.setValue(ConceptDS.URN, conceptDto.getUrn());
     }
 
-    private ConceptDto getConceptDto() {
+    private MetamacConceptDto getConceptDto() {
         return conceptDto;
     }
 

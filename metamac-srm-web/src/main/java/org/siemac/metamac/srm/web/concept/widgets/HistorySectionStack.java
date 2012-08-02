@@ -4,10 +4,10 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
 import java.util.List;
 
+import org.siemac.metamac.srm.core.concept.dto.MetamacConceptSchemeDto;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 import org.siemac.metamac.srm.web.concept.utils.RecordUtils;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.concept.ConceptSchemeDto;
 import com.smartgwt.client.types.AnimationEffect;
 import com.smartgwt.client.types.Autofit;
 import com.smartgwt.client.types.Overflow;
@@ -62,10 +62,10 @@ public class HistorySectionStack extends SectionStack {
         setSections(section);
     }
 
-    public void setConceptSchemes(List<ConceptSchemeDto> conceptSchemeDtos) {
+    public void setConceptSchemes(List<MetamacConceptSchemeDto> conceptSchemeDtos) {
         listGrid.selectAllRecords();
         listGrid.removeSelectedData();
-        for (ConceptSchemeDto conceptSchemeDto : conceptSchemeDtos) {
+        for (MetamacConceptSchemeDto conceptSchemeDto : conceptSchemeDtos) {
             listGrid.addData(RecordUtils.getConceptSchemeRecord(conceptSchemeDto));
         }
     }

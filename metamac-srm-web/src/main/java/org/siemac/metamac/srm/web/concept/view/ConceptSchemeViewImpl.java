@@ -8,6 +8,9 @@ import java.util.List;
 
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
+import org.siemac.metamac.srm.core.concept.dto.MetamacConceptDto;
+import org.siemac.metamac.srm.core.concept.dto.MetamacConceptSchemeDto;
+import org.siemac.metamac.srm.core.enume.domain.MaintainableArtefactProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
@@ -33,8 +36,6 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTex
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.concept.ConceptDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.concept.ConceptSchemeDto;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
@@ -83,7 +84,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
 
     private HistorySectionStack         historySectionStack;
 
-    private ConceptSchemeDto            conceptSchemeDto;
+    private MetamacConceptSchemeDto     conceptSchemeDto;
 
     @Inject
     public ConceptSchemeViewImpl() {
@@ -312,7 +313,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
     }
 
     @Override
-    public void setConceptScheme(ConceptSchemeDto conceptScheme) {
+    public void setConceptScheme(MetamacConceptSchemeDto conceptScheme) {
         this.conceptSchemeDto = conceptScheme;
 
         String defaultLocalized = InternationalStringUtils.getLocalisedString(conceptScheme.getName());
@@ -327,17 +328,17 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
     }
 
     @Override
-    public void setConceptList(List<ConceptDto> conceptDtos) {
+    public void setConceptList(List<MetamacConceptDto> conceptDtos) {
         conceptsListGrid.removeAllData();
         if (conceptDtos != null) {
-            for (ConceptDto conceptDto : conceptDtos) {
+            for (MetamacConceptDto conceptDto : conceptDtos) {
                 conceptsListGrid.addData(org.siemac.metamac.srm.web.concept.utils.RecordUtils.getConceptRecord(conceptDto));
             }
         }
     }
 
     @Override
-    public void setConceptSchemeHistoryList(List<ConceptSchemeDto> conceptSchemeDtos) {
+    public void setConceptSchemeHistoryList(List<MetamacConceptSchemeDto> conceptSchemeDtos) {
         historySectionStack.setConceptSchemes(conceptSchemeDtos);
     }
 
@@ -442,7 +443,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         mainFormLayout.setEditionMode();
     }
 
-    public void setConceptSchemeViewMode(ConceptSchemeDto conceptSchemeDto) {
+    public void setConceptSchemeViewMode(MetamacConceptSchemeDto conceptSchemeDto) {
         // Identifiers
         identifiersForm.setValue(ConceptSchemeDS.CODE, conceptSchemeDto.getCode());
         identifiersForm.setValue(ConceptSchemeDS.URI, conceptSchemeDto.getUri());
@@ -466,7 +467,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         diffusionDescriptorsForm.setValue(ConceptSchemeDS.VALID_TO, DateUtils.getFormattedDate(conceptSchemeDto.getValidTo()));
     }
 
-    public void setConceptSchemeEditionMode(ConceptSchemeDto conceptSchemeDto) {
+    public void setConceptSchemeEditionMode(MetamacConceptSchemeDto conceptSchemeDto) {
         // Identifiers
         identifiersEditionForm.setValue(ConceptSchemeDS.CODE, conceptSchemeDto.getCode());
         identifiersEditionForm.setValue(ConceptSchemeDS.URI, conceptSchemeDto.getUri());
@@ -489,7 +490,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         diffusionDescriptorsEditionForm.setValue(ConceptSchemeDS.VALID_TO, DateUtils.getFormattedDate(conceptSchemeDto.getValidTo()));
     }
 
-    public ConceptSchemeDto getConceptSchemeDto() {
+    public MetamacConceptSchemeDto getConceptSchemeDto() {
         // Identifiers
         conceptSchemeDto.setName((InternationalStringDto) identifiersEditionForm.getValue(ConceptSchemeDS.NAME));
         // Content descriptors

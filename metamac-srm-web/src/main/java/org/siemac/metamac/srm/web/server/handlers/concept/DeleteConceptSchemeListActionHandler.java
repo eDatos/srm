@@ -8,7 +8,6 @@ import org.siemac.metamac.web.common.server.handlers.SecurityActionHandler;
 import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
 import org.springframework.stereotype.Component;
 
-import com.gwtplatform.dispatch.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 @Component
@@ -28,11 +27,6 @@ public class DeleteConceptSchemeListActionHandler extends SecurityActionHandler<
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);
         }
-    }
-
-    @Override
-    public void undo(DeleteConceptSchemeListAction action, DeleteConceptSchemeListResult result, ExecutionContext context) throws ActionException {
-        // NOTHING
     }
 
 }

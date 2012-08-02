@@ -2,12 +2,13 @@ package org.siemac.metamac.srm.web.server.handlers.concept;
 
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.dto.LocalisedStringDto;
+import org.siemac.metamac.srm.core.concept.dto.MetamacConceptSchemeDto;
+import org.siemac.metamac.srm.core.enume.domain.MaintainableArtefactProcStatusEnum;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeResult;
 import org.siemac.metamac.web.common.server.handlers.SecurityActionHandler;
 import org.springframework.stereotype.Component;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.concept.ConceptSchemeDto;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 @Component
@@ -26,7 +27,7 @@ public class GetConceptSchemeActionHandler extends SecurityActionHandler<GetConc
         localisedStringDto.setLocale("es");
         name.addText(localisedStringDto);
 
-        ConceptSchemeDto scheme = new ConceptSchemeDto();
+        MetamacConceptSchemeDto scheme = new MetamacConceptSchemeDto();
         scheme.setName(name);
         scheme.setUrn("urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX:CROSS_DOMAIN_CONCEPTS(1.0)");
         scheme.setCode("CROSS_DOMAIN_CONCEPTS");

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.siemac.metamac.core.common.util.shared.StringUtils;
+import org.siemac.metamac.srm.core.concept.dto.MetamacConceptSchemeDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
 import org.siemac.metamac.srm.web.client.PlaceRequestParams;
@@ -19,7 +20,6 @@ import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.utils.UrnUtils;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.concept.ConceptSchemeDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
@@ -65,7 +65,7 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
     public interface StructuralResourcesView extends View, HasUiHandlers<StructuralResourcesUiHandlers> {
 
         void setDsdList(List<DataStructureDefinitionDto> dataStructureDefinitionDtos);
-        void setConceptSchemeList(List<ConceptSchemeDto> conceptSchemeDtos);
+        void setConceptSchemeList(List<MetamacConceptSchemeDto> conceptSchemeDtos);
 
         void resetView();
     }

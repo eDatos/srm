@@ -4,12 +4,12 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
 import java.util.List;
 
+import org.siemac.metamac.srm.core.concept.dto.MetamacConceptSchemeDto;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptSchemeRecord;
 import org.siemac.metamac.srm.web.concept.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.widgets.BaseCustomListGrid;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.concept.ConceptSchemeDto;
 import com.smartgwt.client.widgets.grid.HoverCustomizer;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
@@ -56,7 +56,7 @@ public class ConceptSchemeListGrid extends BaseCustomListGrid {
         this.setFields(codeField, nameField, descriptionField);
     }
 
-    public void setConceptSchemes(List<ConceptSchemeDto> conceptSchemeDtos) {
+    public void setConceptSchemes(List<MetamacConceptSchemeDto> conceptSchemeDtos) {
         removeAllData();
         if (conceptSchemeDtos != null) {
             ConceptSchemeRecord[] schemeRecords = new ConceptSchemeRecord[conceptSchemeDtos.size()];

@@ -1,13 +1,13 @@
 package org.siemac.metamac.srm.web.concept.model.record;
 
+import org.siemac.metamac.srm.core.concept.dto.MetamacConceptSchemeDto;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.concept.ConceptSchemeDto;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 
 public class ConceptSchemeRecord extends ListGridRecord {
 
-    public ConceptSchemeRecord(Long id, String code, String name, String description, String status, String versionLogic, String urn, ConceptSchemeDto conceptSchemeDto) {
+    public ConceptSchemeRecord(Long id, String code, String name, String description, String status, String versionLogic, String urn, MetamacConceptSchemeDto conceptSchemeDto) {
         setId(id);
         setCode(code);
         setName(name);
@@ -46,7 +46,7 @@ public class ConceptSchemeRecord extends ListGridRecord {
         setAttribute(ConceptSchemeDS.URN, value);
     }
 
-    public void setConceptSchemeDto(ConceptSchemeDto conceptSchemeDto) {
+    public void setConceptSchemeDto(MetamacConceptSchemeDto conceptSchemeDto) {
         setAttribute(ConceptSchemeDS.DTO, conceptSchemeDto);
     }
 

@@ -5,6 +5,8 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 import java.util.List;
 
 import org.siemac.metamac.core.common.util.shared.StringUtils;
+import org.siemac.metamac.srm.core.concept.dto.MetamacConceptDto;
+import org.siemac.metamac.srm.core.concept.dto.MetamacConceptSchemeDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
 import org.siemac.metamac.srm.web.client.PlaceRequestParams;
@@ -40,8 +42,6 @@ import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.utils.UrnUtils;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.concept.ConceptDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.concept.ConceptSchemeDto;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
@@ -66,7 +66,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
     private final PlaceManager       placeManager;
     private ToolStripPresenterWidget toolStripPresenterWidget;
 
-    private ConceptSchemeDto         conceptSchemeDto;
+    private MetamacConceptSchemeDto  conceptSchemeDto;
 
     @TitleFunction
     public static String getTranslatedTitle() {
@@ -80,9 +80,9 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
 
     public interface ConceptSchemeView extends View, HasUiHandlers<ConceptSchemeUiHandlers> {
 
-        void setConceptScheme(ConceptSchemeDto conceptSchemeDto);
-        void setConceptList(List<ConceptDto> conceptDtos);
-        void setConceptSchemeHistoryList(List<ConceptSchemeDto> conceptSchemeDtos);
+        void setConceptScheme(MetamacConceptSchemeDto conceptSchemeDto);
+        void setConceptList(List<MetamacConceptDto> conceptDtos);
+        void setConceptSchemeHistoryList(List<MetamacConceptSchemeDto> conceptSchemeDtos);
     }
 
     @ContentSlot
@@ -121,12 +121,12 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
         }
     }
 
-    private void setConceptScheme(ConceptSchemeDto conceptScheme) {
+    private void setConceptScheme(MetamacConceptSchemeDto conceptScheme) {
         getView().setConceptScheme(conceptScheme);
     }
 
     @Override
-    public void saveConceptScheme(ConceptSchemeDto conceptScheme) {
+    public void saveConceptScheme(MetamacConceptSchemeDto conceptScheme) {
         dispatcher.execute(new SaveConceptSchemeAction(conceptScheme), new WaitingAsyncCallback<SaveConceptSchemeResult>() {
 
             @Override
@@ -247,7 +247,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
     }
 
     @Override
-    public void createConcept(ConceptDto conceptDto) {
+    public void createConcept(MetamacConceptDto conceptDto) {
         dispatcher.execute(new SaveConceptAction(conceptDto), new WaitingAsyncCallback<SaveConceptResult>() {
 
             @Override

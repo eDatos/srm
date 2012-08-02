@@ -2,7 +2,8 @@ package org.siemac.metamac.srm.web.shared.concept;
 
 import java.util.List;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.concept.ConceptSchemeDto;
+import org.siemac.metamac.srm.core.concept.dto.MetamacConceptSchemeDto;
+
 import com.gwtplatform.dispatch.annotation.GenDispatch;
 import com.gwtplatform.dispatch.annotation.In;
 import com.gwtplatform.dispatch.annotation.Out;
@@ -11,21 +12,21 @@ import com.gwtplatform.dispatch.annotation.Out;
 public class GetConceptSchemePaginatedList {
 
     @In(1)
-    int                    firstResult;
+    int                           firstResult;
 
     @In(2)
-    int                    maxResults;
+    int                           maxResults;
 
     @In(3)
-    String                 conceptScheme;
+    String                        conceptScheme;
 
     @Out(1)
-    List<ConceptSchemeDto> conceptSchemeList;
+    List<MetamacConceptSchemeDto> conceptSchemeList;
 
     @Out(2)
-    Integer                pageNumber;
+    Integer                       pageNumber;
 
     @Out(3)
-    Integer                totalResults;
+    Integer                       totalResults;
 
 }
