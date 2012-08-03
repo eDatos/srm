@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.web.concept.view;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
+import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.concept.dto.MetamacConceptDto;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
@@ -202,9 +203,9 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
 
         // Content descriptors
         contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().conceptContentDescriptors());
-        MultilanguageRichTextEditorItem description = new MultilanguageRichTextEditorItem(ConceptDS.DESCRIPTION, getConstants().conceptDescription());
-        MultilanguageRichTextEditorItem descriptionSource = new MultilanguageRichTextEditorItem(ConceptDS.DESCRIPTION_SOURCE, getConstants().conceptDescriptionSource());
-        MultilanguageRichTextEditorItem context = new MultilanguageRichTextEditorItem(ConceptDS.CONTEXT, getConstants().conceptContext());
+        MultiLanguageTextItem description = new MultiLanguageTextItem(ConceptDS.DESCRIPTION, getConstants().conceptDescription());
+        MultiLanguageTextItem descriptionSource = new MultiLanguageTextItem(ConceptDS.DESCRIPTION_SOURCE, getConstants().conceptDescriptionSource());
+        MultiLanguageTextItem context = new MultiLanguageTextItem(ConceptDS.CONTEXT, getConstants().conceptContext());
         MultilanguageRichTextEditorItem docMethod = new MultilanguageRichTextEditorItem(ConceptDS.DOC_METHOD, getConstants().conceptDocMethod());
         contentDescriptorsEditionForm.setFields(description, descriptionSource, context, docMethod);
 
@@ -213,7 +214,7 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
 
         // Production descriptors
         productionDescriptorsEditionForm = new GroupDynamicForm(getConstants().conceptProductionDescriptors());
-        MultilanguageRichTextEditorItem derivation = new MultilanguageRichTextEditorItem(ConceptDS.DERIVATION, getConstants().conceptDerivation());
+        MultiLanguageTextItem derivation = new MultiLanguageTextItem(ConceptDS.DERIVATION, getConstants().conceptDerivation());
         productionDescriptorsEditionForm.setFields(derivation);
 
         // Relation between concepts
@@ -231,7 +232,6 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
         mainFormLayout.addEditionCanvas(relationBetweenConceptsEditionForm);
         mainFormLayout.addEditionCanvas(legalActsEditionForm);
     }
-
     @Override
     public void setConcept(MetamacConceptDto conceptDto) {
         this.conceptDto = conceptDto;
@@ -250,23 +250,78 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
         // Identifiers Form
         identifiersForm.setValue(ConceptDS.CODE, conceptDto.getCode());
         identifiersForm.setValue(ConceptDS.NAME, RecordUtils.getInternationalStringRecord(conceptDto.getName()));
-        identifiersForm.setValue(ConceptDS.PLURAL_NAME, "TODO"); // TODO
-        identifiersForm.setValue(ConceptDS.ACRONYM, "TODO"); // TODO
+        identifiersForm.setValue(ConceptDS.PLURAL_NAME, RecordUtils.getInternationalStringRecord(conceptDto.getPluralName()));
+        identifiersForm.setValue(ConceptDS.ACRONYM, RecordUtils.getInternationalStringRecord(conceptDto.getAcronym()));
         identifiersForm.setValue(ConceptDS.URI, conceptDto.getUri());
         identifiersForm.setValue(ConceptDS.URN, conceptDto.getUrn());
+
+        // Content descriptors
+        contentDescriptorsForm.setValue(ConceptDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(conceptDto.getDescription()));
+        contentDescriptorsForm.setValue(ConceptDS.DESCRIPTION_SOURCE, RecordUtils.getInternationalStringRecord(conceptDto.getDescriptionSource()));
+        contentDescriptorsForm.setValue(ConceptDS.CONTEXT, RecordUtils.getInternationalStringRecord(conceptDto.getContext()));
+        contentDescriptorsForm.setValue(ConceptDS.DOC_METHOD, RecordUtils.getInternationalStringRecord(conceptDto.getDocMethod()));
+
+        // Class descriptors
+
+        // Production descriptors
+        productionDescriptorsForm.setValue(ConceptDS.DERIVATION, RecordUtils.getInternationalStringRecord(conceptDto.getDerivation()));
+
+        // Relation between concepts
+
+        // Legal acts
+        legalActsForm.setValue(ConceptDS.LEGAL_ACTS, RecordUtils.getInternationalStringRecord(conceptDto.getLegalActs()));
+
     }
 
     private void setConceptEditionMode(MetamacConceptDto conceptDto) {
         // Identifiers Form
         identifiersEditionForm.setValue(ConceptDS.CODE, conceptDto.getCode());
         identifiersEditionForm.setValue(ConceptDS.NAME, RecordUtils.getInternationalStringRecord(conceptDto.getName()));
-        identifiersEditionForm.setValue(ConceptDS.PLURAL_NAME, "TODO"); // TODO
-        identifiersEditionForm.setValue(ConceptDS.ACRONYM, "TODO"); // TODO
+        identifiersEditionForm.setValue(ConceptDS.PLURAL_NAME, RecordUtils.getInternationalStringRecord(conceptDto.getPluralName()));
+        identifiersEditionForm.setValue(ConceptDS.ACRONYM, RecordUtils.getInternationalStringRecord(conceptDto.getAcronym()));
         identifiersEditionForm.setValue(ConceptDS.URI, conceptDto.getUri());
         identifiersEditionForm.setValue(ConceptDS.URN, conceptDto.getUrn());
+
+        // Content descriptors
+        contentDescriptorsEditionForm.setValue(ConceptDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(conceptDto.getDescription()));
+        contentDescriptorsEditionForm.setValue(ConceptDS.DESCRIPTION_SOURCE, RecordUtils.getInternationalStringRecord(conceptDto.getDescriptionSource()));
+        contentDescriptorsEditionForm.setValue(ConceptDS.CONTEXT, RecordUtils.getInternationalStringRecord(conceptDto.getContext()));
+        contentDescriptorsEditionForm.setValue(ConceptDS.DOC_METHOD, RecordUtils.getInternationalStringRecord(conceptDto.getDocMethod()));
+
+        // Class descriptors
+
+        // Production descriptors
+        productionDescriptorsEditionForm.setValue(ConceptDS.DERIVATION, RecordUtils.getInternationalStringRecord(conceptDto.getDerivation()));
+
+        // Relation between concepts
+
+        // Legal acts
+        legalActsEditionForm.setValue(ConceptDS.LEGAL_ACTS, RecordUtils.getInternationalStringRecord(conceptDto.getLegalActs()));
     }
 
     private MetamacConceptDto getConceptDto() {
+        // Identifiers Form
+        conceptDto.setCode(identifiersEditionForm.getValueAsString(ConceptDS.CODE));
+        conceptDto.setName((InternationalStringDto) identifiersEditionForm.getValue(ConceptDS.NAME));
+        conceptDto.setPluralName((InternationalStringDto) identifiersEditionForm.getValue(ConceptDS.PLURAL_NAME));
+        conceptDto.setAcronym((InternationalStringDto) identifiersEditionForm.getValue(ConceptDS.ACRONYM));
+
+        // Content descriptors
+        conceptDto.setDescription((InternationalStringDto) contentDescriptorsEditionForm.getValue(ConceptDS.DESCRIPTION));
+        conceptDto.setDescriptionSource((InternationalStringDto) contentDescriptorsEditionForm.getValue(ConceptDS.DESCRIPTION_SOURCE));
+        conceptDto.setContext((InternationalStringDto) contentDescriptorsEditionForm.getValue(ConceptDS.CONTEXT));
+        conceptDto.setDocMethod((InternationalStringDto) contentDescriptorsEditionForm.getValue(ConceptDS.DOC_METHOD));
+
+        // Class descriptors
+
+        // Production descriptors
+        conceptDto.setDerivation((InternationalStringDto) productionDescriptorsEditionForm.getValue(ConceptDS.DERIVATION));
+
+        // Relation between concepts
+
+        // Legal acts
+        conceptDto.setLegalActs((InternationalStringDto) legalActsEditionForm.getValue(ConceptDS.LEGAL_ACTS));
+
         return conceptDto;
     }
 

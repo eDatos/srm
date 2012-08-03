@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
+import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.concept.dto.MetamacConceptDto;
 import org.siemac.metamac.srm.core.concept.dto.MetamacConceptSchemeDto;
 import org.siemac.metamac.srm.core.enume.domain.MaintainableArtefactProcStatusEnum;
@@ -33,6 +34,7 @@ import org.siemac.metamac.web.common.client.widgets.ListGridToolStrip;
 import org.siemac.metamac.web.common.client.widgets.TitleLabel;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextItem;
+import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 
@@ -44,7 +46,10 @@ import com.smartgwt.client.types.Visibility;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
+import com.smartgwt.client.widgets.form.DynamicForm;
+import com.smartgwt.client.widgets.form.FormItemIfFunction;
 import com.smartgwt.client.widgets.form.fields.BooleanItem;
+import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
@@ -400,13 +405,36 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
     private void createEditionForm() {
         // Identifiers
         identifiersEditionForm = new GroupDynamicForm(getConstants().conceptSchemeIdentifiers());
-        ViewTextItem code = new ViewTextItem(ConceptSchemeDS.CODE, getConstants().conceptSchemeCode());
+        RequiredTextItem code = new RequiredTextItem(ConceptSchemeDS.CODE, getConstants().conceptSchemeCode());
+        code.setShowIfCondition(new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                // CODE cannot be modified if status is INTERNALLY_PUBLISHED, EXTERNALLY_PUBLISHED or EXTERNAL_PUBLICATION_FAILED or if version is greater then VERSION_INITIAL_VERSION (01.000)
+                if ((MaintainableArtefactProcStatusEnum.INTERNALLY_PUBLISHED.equals(conceptSchemeDto.getProcStatus())
+                        || MaintainableArtefactProcStatusEnum.EXTERNALLY_PUBLISHED.equals(conceptSchemeDto.getProcStatus()) || MaintainableArtefactProcStatusEnum.EXTERNAL_PUBLICATION_FAILED
+                        .equals(conceptSchemeDto.getProcStatus()))
+                        || (!VersionUtil.VERSION_INITIAL_VERSION.equals(conceptSchemeDto.getVersionLogic()) && !StringUtils.isBlank(conceptSchemeDto.getVersionLogic()))) {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+        });
+        ViewTextItem staticCode = new ViewTextItem(ConceptSchemeDS.CODE, getConstants().conceptSchemeCode());
+        staticCode.setShowIfCondition(new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return !form.getItem(ConceptSchemeDS.CODE).isVisible();
+            }
+        });
         MultiLanguageTextItem name = new MultiLanguageTextItem(ConceptSchemeDS.NAME, getConstants().conceptSchemeName());
         name.setRequired(true);
         ViewTextItem uri = new ViewTextItem(ConceptSchemeDS.URI, getConstants().conceptSchemeUri());
         ViewTextItem urn = new ViewTextItem(ConceptSchemeDS.URN, getConstants().conceptSchemeUrn());
         ViewTextItem version = new ViewTextItem(ConceptSchemeDS.VERSION_LOGIC, getConstants().conceptSchemeVersion());
-        identifiersEditionForm.setFields(code, name, uri, urn, version);
+        identifiersEditionForm.setFields(code, staticCode, name, uri, urn, version);
 
         // Content descriptors
         contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().conceptSchemeContentDescriptors());
