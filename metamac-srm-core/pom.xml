@@ -14,10 +14,6 @@
     <packaging>jar</packaging>
     <name>SIEMAC :: METAMAC :: SRM :: CORE</name>
 
-    <properties>
-
-    </properties>
-
     <dependencies>
         <!-- METAMAC -->
         <dependency>
@@ -32,12 +28,11 @@
                 </exclusion>
             </exclusions>
         </dependency>
-<!--         <dependency> -->
-<!--             <groupId>org.siemac.metamac</groupId> -->
-<!--             <artifactId>metamac-transformation</artifactId> -->
-<!--             <version>${metamac-transformation.version}</version> -->
-<!--             <classifier>client</classifier> -->
-<!--         </dependency> -->
+        <dependency>
+            <groupId>org.siemac.metamac.metamac-sso</groupId>
+            <artifactId>metamac-sso-client</artifactId>
+            <version>${metamac-sso.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.arte.statistic.statistic-sdmx-srm</groupId>
             <artifactId>statistic-sdmx-srm-core</artifactId>
@@ -51,7 +46,7 @@
             <version>${statistic-sdmx-srm.version}</version>
             <scope>test</scope>
         </dependency>
-        
+
         <dependency>
             <groupId>javax.annotation</groupId>
             <artifactId>jsr250-api</artifactId>
@@ -130,7 +125,7 @@
             <groupId>org.jadira.usertype</groupId>
             <artifactId>usertype.jodatime</artifactId>
             <version>${usertype.jodatime.version}</version>
-        </dependency>        
+        </dependency>
         <dependency>
             <groupId>net.sf.ehcache</groupId>
             <artifactId>ehcache-core</artifactId>
@@ -240,10 +235,10 @@
             <artifactId>spring-data-jpa</artifactId>
             <version>${spring-data-version}</version>
             <exclusions>
-            	<exclusion>
-            		<artifactId>junit-dep</artifactId>
-            		<groupId>junit</groupId>
-            	</exclusion>
+                <exclusion>
+                    <artifactId>junit-dep</artifactId>
+                    <groupId>junit</groupId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
@@ -530,8 +525,8 @@
                                 <delete file="${basedir}/src/test/generated/resources/Interceptor-test.xml" />
                                 <delete file="${basedir}/src/test/generated/resources/applicationContext-test.xml" />
                                 <delete file="${basedir}/src/test/generated/resources/EntityManagerFactory-test.xml" />
-                                
-                                                                <!-- TODO DELETE THIS -->
+
+                                <!-- TODO DELETE THIS -->
                                 <delete file="${basedir}/src/generated/resources/META-INF/persistence.xml" />
                             </target>
                         </configuration>
