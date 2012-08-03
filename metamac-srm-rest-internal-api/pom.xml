@@ -18,12 +18,12 @@
 	<description>SIEMAC :: METAMAC :: SRM :: REST :: INTERNAL :: API</description>
 
 	<dependencies>
-		<dependency>
-			<groupId>org.siemac.metamac</groupId>
-			<artifactId>metamac-transformation</artifactId>
-			<version>${metamac-transformation.version}</version>
-			<classifier>client</classifier>
-		</dependency>
+<!--         <dependency> -->
+<!--             <groupId>com.arte.statistic.statistic-sdmx-v2_1</groupId> -->
+<!--             <artifactId>statistic-sdmx-v2_1-transformation</artifactId> -->
+<!--             <version>${statistic-sdmx-v2_1.version}</version> -->
+<!--             <classifier>client</classifier> -->
+<!--         </dependency> -->
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-rt-transports-http</artifactId>
