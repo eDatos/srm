@@ -3,7 +3,7 @@ Application EnumsSrmDomain {
 
     Module domain_srm_enums {
         basePackage=org.siemac.metamac.srm.core.enume
-        
+
 		"Maintainable Artefact Proc Status"
     	enum MaintainableArtefactProcStatusEnum {
     		DRAFT, 
@@ -14,6 +14,18 @@ Application EnumsSrmDomain {
     		EXTERNALLY_PUBLISHED,
     		EXTERNAL_PUBLICATION_FAILED;
     	}
+
+    	enum SrmRoleEnum {
+    		ADMINISTRADOR,
+    		TECNICO_APOYO_NORMALIZACION,
+    		TECNICO_NORMALIZACION,
+    		JEFE_NORMALIZACION,
+    		TECNICO_APOYO_PRODUCCION,
+    		TECNICO_PRODUCCION,
+    		JEFE_PRODUCCION,
+    		ANY_ROLE_ALLOWED;
+    	}
+
     }
 
 }

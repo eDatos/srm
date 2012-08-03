@@ -1,61 +1,76 @@
 package org.siemac.metamac.srm.web.concept.utils;
 
+import org.siemac.metamac.srm.core.enume.domain.MaintainableArtefactProcStatusEnum;
+import org.siemac.metamac.srm.core.security.shared.SharedSecurityUtils;
+import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
+
+import com.arte.statistic.sdmx.v2_1.domain.enume.concept.domain.ConceptSchemeTypeEnum;
+
 public class ConceptClientSecurityUtils {
+
+    // TODO Remove these attributes!!!
+    private static MaintainableArtefactProcStatusEnum procStatus;
+    private static ConceptSchemeTypeEnum              type;
+    private static String                             operationCode;
 
     // Schemes
 
     public static boolean canCreateConceptScheme() {
-        return true;
+        return SharedSecurityUtils.canCreateConceptScheme(MetamacSrmWeb.getCurrentUser());
     }
 
-    public static boolean canEditConceptScheme() {
-        return true;
+    public static boolean canUpdateConceptScheme() {
+        return SharedSecurityUtils.canUpdateConceptScheme(MetamacSrmWeb.getCurrentUser(), procStatus, type, operationCode);
     }
 
     public static boolean canDeleteConceptScheme() {
-        return true;
+        return SharedSecurityUtils.canDeleteConceptScheme(MetamacSrmWeb.getCurrentUser());
     }
 
     public static boolean canSendConceptSchemeToProductionValidation() {
-        return true;
+        return SharedSecurityUtils.canSendConceptSchemeToProductionValidation(MetamacSrmWeb.getCurrentUser(), type, operationCode);
     }
 
     public static boolean canSendConceptSchemeToDiffusionValidation() {
-        return true;
+        return SharedSecurityUtils.canSendConceptSchemeToDiffusionValidation(MetamacSrmWeb.getCurrentUser(), type, operationCode);
     }
 
     public static boolean canRejectConceptSchemeValidation() {
-        return true;
+        return SharedSecurityUtils.canRejectConceptSchemeValidation(MetamacSrmWeb.getCurrentUser(), procStatus, type, operationCode);
     }
 
     public static boolean canPublishInternallyConceptScheme() {
-        return true;
+        return SharedSecurityUtils.canPublishInternallyConceptScheme(MetamacSrmWeb.getCurrentUser(), type, operationCode);
     }
 
     public static boolean canPublishExternallyConceptScheme() {
-        return true;
+        return SharedSecurityUtils.canPublishExternallyConceptScheme(MetamacSrmWeb.getCurrentUser(), type, operationCode);
     }
 
     public static boolean canVersioningConceptScheme() {
-        return true;
+        return SharedSecurityUtils.canVersioningConceptScheme(MetamacSrmWeb.getCurrentUser(), type, operationCode);
     }
 
     public static boolean canAnnounceConceptScheme() {
-        return true;
+        return SharedSecurityUtils.canAnnounceConceptScheme(MetamacSrmWeb.getCurrentUser(), type, operationCode);
+    }
+
+    public static boolean canCancelConceptSchemeValidity() {
+        return SharedSecurityUtils.canCancelConceptSchemeValidity(MetamacSrmWeb.getCurrentUser(), type, operationCode);
     }
 
     // Concepts
 
     public static boolean canCreateConcept() {
-        return true;
+        return SharedSecurityUtils.canCreateConcept(MetamacSrmWeb.getCurrentUser(), procStatus, type, operationCode);
     }
 
     public static boolean canEditConcept() {
-        return true;
+        return SharedSecurityUtils.canUpdateConcept(MetamacSrmWeb.getCurrentUser(), procStatus, type, operationCode);
     }
 
     public static boolean canDeleteConcept() {
-        return true;
+        return SharedSecurityUtils.canDeleteConcept(MetamacSrmWeb.getCurrentUser(), procStatus, type, operationCode);
     }
 
 }

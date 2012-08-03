@@ -100,7 +100,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
 
         // Scheme
 
-        mainFormLayout = new ConceptSchemeMainFormLayout(ConceptClientSecurityUtils.canEditConceptScheme());
+        mainFormLayout = new ConceptSchemeMainFormLayout(ConceptClientSecurityUtils.canUpdateConceptScheme());
         bindMainFormLayoutEvents();
         createViewForm();
         createEditionForm();
