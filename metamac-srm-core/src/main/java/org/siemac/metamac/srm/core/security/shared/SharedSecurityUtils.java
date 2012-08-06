@@ -24,7 +24,7 @@ public class SharedSecurityUtils {
      * @param roles
      * @return
      */
-    protected static boolean isRoleAllowed(MetamacPrincipal metamacPrincipal, SrmRoleEnum... roles) {
+    protected static boolean isSrmRoleAllowed(MetamacPrincipal metamacPrincipal, SrmRoleEnum... roles) {
         // Administration has total control
         if (SharedSecurityUtils.isAdministrador(metamacPrincipal)) {
             return true;
@@ -33,7 +33,7 @@ public class SharedSecurityUtils {
         if (roles != null) {
             for (int i = 0; i < roles.length; i++) {
                 SrmRoleEnum role = roles[i];
-                if (SharedSecurityUtils.isUserInRol(metamacPrincipal, role)) {
+                if (SharedSecurityUtils.isUserInSrmRol(metamacPrincipal, role)) {
                     return true;
                 }
             }
@@ -59,7 +59,7 @@ public class SharedSecurityUtils {
                 SrmRoleEnum role = roles[i];
                 // If role is any of the normalization roles, do not check permissions related to the statistical operation (does not matter the operation associated)
                 if (isAnyNormalizationRole(role)) {
-                    if (isUserInRol(metamacPrincipal, role)) {
+                    if (isUserInSrmRol(metamacPrincipal, role)) {
                         return true;
                     }
                 } else if (haveAccessToOperationInRol(metamacPrincipal, role, operationCode)) {
@@ -73,7 +73,7 @@ public class SharedSecurityUtils {
     /**
      * Checks user has any role
      */
-    protected static boolean isUserInRol(MetamacPrincipal metamacPrincipal, SrmRoleEnum role) {
+    protected static boolean isUserInSrmRol(MetamacPrincipal metamacPrincipal, SrmRoleEnum role) {
         if (ANY_ROLE_ALLOWED.equals(role)) {
             return isAnySrmRole(metamacPrincipal);
         } else {
