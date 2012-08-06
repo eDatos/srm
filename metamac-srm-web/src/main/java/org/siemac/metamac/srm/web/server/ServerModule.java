@@ -4,6 +4,8 @@ import org.siemac.metamac.srm.web.server.handlers.FindCodeListsActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.FindConceptSchemesActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.FindConceptsActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.ValidateTicketActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.concept.AnnounceConceptSchemeActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.concept.CancelConceptSchemeValidityActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.DeleteConceptListActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.DeleteConceptSchemeListActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.GetConceptActionHandler;
@@ -33,6 +35,8 @@ import org.siemac.metamac.srm.web.server.handlers.dsd.SaveDsdActionHandler;
 import org.siemac.metamac.srm.web.shared.FindCodeListsAction;
 import org.siemac.metamac.srm.web.shared.FindConceptSchemesAction;
 import org.siemac.metamac.srm.web.shared.FindConceptsAction;
+import org.siemac.metamac.srm.web.shared.concept.AnnounceConceptSchemeAction;
+import org.siemac.metamac.srm.web.shared.concept.CancelConceptSchemeValidityAction;
 import org.siemac.metamac.srm.web.shared.concept.DeleteConceptListAction;
 import org.siemac.metamac.srm.web.shared.concept.DeleteConceptSchemeListAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptAction;
@@ -117,6 +121,8 @@ public class ServerModule extends HandlerModule {
         bindHandler(SaveConceptAction.class, SaveConceptActionHandler.class);
         bindHandler(DeleteConceptListAction.class, DeleteConceptListActionHandler.class);
         bindHandler(UpdateConceptSchemeProcStatusAction.class, UpdateConceptSchemeProcStatusActionHandler.class);
+        bindHandler(AnnounceConceptSchemeAction.class, AnnounceConceptSchemeActionHandler.class);
+        bindHandler(CancelConceptSchemeValidityAction.class, CancelConceptSchemeValidityActionHandler.class);
 
         bindHandler(ValidateTicketAction.class, ValidateTicketActionHandler.class);
         bindHandler(GetLoginPageUrlAction.class, GetLoginPageUrlActionHandler.class);
