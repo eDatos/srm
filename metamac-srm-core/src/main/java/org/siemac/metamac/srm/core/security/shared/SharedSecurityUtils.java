@@ -95,8 +95,13 @@ public class SharedSecurityUtils {
     }
 
     public static boolean canPublishInternallyConceptScheme(MetamacPrincipal metamacPrincipal, ConceptSchemeTypeEnum type, String operationCode) {
-        SrmRoleEnum[] roles = {};
-        return isRoleAllowed(metamacPrincipal, roles);
+        if (isNonOperationConceptSchemeType(type)) {
+            return isRoleAllowed(metamacPrincipal, JEFE_NORMALIZACION);
+        } else if (isOperationConceptSchemeType(type)) {
+            SrmRoleEnum[] roles = {JEFE_NORMALIZACION};
+            return isRoleAllowed(metamacPrincipal, roles) && isOperationAllowed(metamacPrincipal, operationCode, roles);
+        }
+        return false;
     }
 
     public static boolean canPublishExternallyConceptScheme(MetamacPrincipal metamacPrincipal, ConceptSchemeTypeEnum type, String operationCode) {
@@ -121,7 +126,7 @@ public class SharedSecurityUtils {
 
     public static boolean canAnnounceConceptScheme(MetamacPrincipal metamacPrincipal, ConceptSchemeTypeEnum type, String operationCode) {
         if (isNonOperationConceptSchemeType(type)) {
-            return isRoleAllowed(metamacPrincipal, JEFE_NORMALIZACION);
+            return isRoleAllowed(metamacPrincipal, TECNICO_NORMALIZACION, JEFE_NORMALIZACION);
         } else if (isOperationConceptSchemeType(type)) {
             SrmRoleEnum roles[] = {TECNICO_PRODUCCION, TECNICO_NORMALIZACION, JEFE_NORMALIZACION, JEFE_PRODUCCION};
             return isRoleAllowed(metamacPrincipal, roles) && isOperationAllowed(metamacPrincipal, operationCode, roles);
@@ -159,7 +164,7 @@ public class SharedSecurityUtils {
             if (isNonOperationConceptSchemeType(type)) {
                 return isRoleAllowed(metamacPrincipal, JEFE_NORMALIZACION);
             } else if (isOperationConceptSchemeType(type)) {
-                SrmRoleEnum[] roles = {JEFE_NORMALIZACION};
+                SrmRoleEnum[] roles = {JEFE_NORMALIZACION, JEFE_PRODUCCION};
                 return isRoleAllowed(metamacPrincipal, roles) && isOperationAllowed(metamacPrincipal, operationCode, roles);
             }
         }
@@ -184,7 +189,7 @@ public class SharedSecurityUtils {
             if (isNonOperationConceptSchemeType(type)) {
                 return isRoleAllowed(metamacPrincipal, JEFE_NORMALIZACION);
             } else if (isOperationConceptSchemeType(type)) {
-                SrmRoleEnum[] roles = {JEFE_NORMALIZACION};
+                SrmRoleEnum[] roles = {JEFE_NORMALIZACION, JEFE_PRODUCCION};
                 return isRoleAllowed(metamacPrincipal, roles) && isOperationAllowed(metamacPrincipal, operationCode, roles);
             }
         }
@@ -209,7 +214,7 @@ public class SharedSecurityUtils {
             if (isNonOperationConceptSchemeType(type)) {
                 return isRoleAllowed(metamacPrincipal, JEFE_NORMALIZACION);
             } else if (isOperationConceptSchemeType(type)) {
-                SrmRoleEnum[] roles = {JEFE_NORMALIZACION};
+                SrmRoleEnum[] roles = {JEFE_NORMALIZACION, JEFE_PRODUCCION};
                 return isRoleAllowed(metamacPrincipal, roles) && isOperationAllowed(metamacPrincipal, operationCode, roles);
             }
         }
@@ -256,7 +261,12 @@ public class SharedSecurityUtils {
         if (roles != null) {
             for (int i = 0; i < roles.length; i++) {
                 SrmRoleEnum role = roles[i];
-                if (haveAccessToOperationInRol(metamacPrincipal, role, operationCode)) {
+                // If role is any of the normalization roles, do not check permissions related to the statistical operation (does not matter the operation associated)
+                if (isAnyNormalizationRole(role)) {
+                    if (isUserInRol(metamacPrincipal, role)) {
+                        return true;
+                    }
+                } else if (haveAccessToOperationInRol(metamacPrincipal, role, operationCode)) {
                     return true;
                 }
             }
@@ -309,6 +319,10 @@ public class SharedSecurityUtils {
     private static Boolean isAnySrmRole(MetamacPrincipal metamacPrincipal) {
         return isAdministrador(metamacPrincipal) || isTecnicoApoyoNormalizacion(metamacPrincipal) || isTecnicoNormalizacion(metamacPrincipal) || isJefeNormalizacion(metamacPrincipal)
                 || isTecnicoApoyoProduccion(metamacPrincipal) || isTecnicoProduccion(metamacPrincipal) || isJefeProduccion(metamacPrincipal);
+    }
+
+    private static boolean isAnyNormalizationRole(SrmRoleEnum role) {
+        return (SrmRoleEnum.TECNICO_APOYO_NORMALIZACION.equals(role) || SrmRoleEnum.TECNICO_NORMALIZACION.equals(role) || SrmRoleEnum.JEFE_NORMALIZACION.equals(role));
     }
 
     private static Boolean isTecnicoApoyoNormalizacion(MetamacPrincipal metamacPrincipal) {
