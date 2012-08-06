@@ -3,7 +3,7 @@ package org.siemac.metamac.srm.web.server.handlers;
 import javax.servlet.http.HttpServletRequestWrapper;
 
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
-import org.siemac.metamac.srm.core.common.constants.SrmConstants;
+import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.sso.client.MetamacPrincipal;
 import org.siemac.metamac.sso.client.SsoClientConstants;
 import org.siemac.metamac.web.common.server.ServiceContextHolder;
@@ -50,7 +50,6 @@ public class ValidateTicketActionHandler extends ValidateTicketAbstractActionHan
         } catch (final org.siemac.metamac.sso.exception.TicketValidationException e) {
             throw new ActionException(e);
         }
-
     }
 
 }
