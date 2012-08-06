@@ -6,6 +6,7 @@ import java.util.List;
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
+import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
@@ -55,6 +56,7 @@ import com.gwtplatform.mvp.client.annotations.NameToken;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.annotations.ProxyEvent;
 import com.gwtplatform.mvp.client.annotations.TitleFunction;
+import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
 import com.gwtplatform.mvp.client.proxy.Place;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.PlaceRequest;
@@ -89,6 +91,7 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
 
     @ProxyCodeSplit
     @NameToken(NameTokens.dsdDimensionsPage)
+    @UseGatekeeper(LoggedInGatekeeper.class)
     public interface DsdDimensionsTabProxy extends Proxy<DsdDimensionsTabPresenter>, Place {
 
     }

@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.web.dsd.presenter;
 import java.util.List;
 
 import org.siemac.metamac.core.common.util.shared.StringUtils;
+import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
 import org.siemac.metamac.srm.web.client.PlaceRequestParams;
@@ -42,6 +43,7 @@ import com.gwtplatform.mvp.client.annotations.ContentSlot;
 import com.gwtplatform.mvp.client.annotations.NameToken;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.annotations.TitleFunction;
+import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
 import com.gwtplatform.mvp.client.proxy.Place;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.PlaceRequest;
@@ -75,6 +77,7 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
 
     @ProxyCodeSplit
     @NameToken(NameTokens.dsdListPage)
+    @UseGatekeeper(LoggedInGatekeeper.class)
     public interface DsdListProxy extends Proxy<DsdListPresenter>, Place {
     }
 

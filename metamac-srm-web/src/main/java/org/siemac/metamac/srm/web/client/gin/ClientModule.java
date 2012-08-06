@@ -1,5 +1,6 @@
 package org.siemac.metamac.srm.web.client.gin;
 
+import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacPlaceManager;
 import org.siemac.metamac.srm.web.client.NameTokens;
 import org.siemac.metamac.srm.web.client.presenter.ErrorPagePresenter;
@@ -34,6 +35,7 @@ import org.siemac.metamac.srm.web.dsd.view.DsdPrimaryMeasureTabViewImpl;
 import org.siemac.metamac.srm.web.dsd.view.DsdViewImpl;
 import org.siemac.metamac.srm.web.shared.utils.SharedTokens;
 
+import com.google.inject.Singleton;
 import com.gwtplatform.dispatch.shared.SecurityCookie;
 import com.gwtplatform.mvp.client.gin.AbstractPresenterModule;
 import com.gwtplatform.mvp.client.gin.DefaultModule;
@@ -59,6 +61,9 @@ public class ClientModule extends AbstractPresenterModule {
 
         // PresenterWidgets
         bindSingletonPresenterWidget(ToolStripPresenterWidget.class, ToolStripPresenterWidget.ToolStripView.class, ToolStripViewImpl.class);
+
+        // Gate keeper
+        bind(LoggedInGatekeeper.class).in(Singleton.class);
 
         // Main presenters
         bindPresenter(MainPagePresenter.class, MainPagePresenter.MainPageView.class, MainPageViewImpl.class, MainPagePresenter.MainPageProxy.class);

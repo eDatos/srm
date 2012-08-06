@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.web.dsd.presenter;
 
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
+import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
@@ -32,6 +33,7 @@ import com.gwtplatform.mvp.client.annotations.NameToken;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.annotations.ProxyEvent;
 import com.gwtplatform.mvp.client.annotations.TitleFunction;
+import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
 import com.gwtplatform.mvp.client.proxy.Place;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.PlaceRequest;
@@ -52,6 +54,7 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
 
     @ProxyCodeSplit
     @NameToken(NameTokens.dsdGeneralPage)
+    @UseGatekeeper(LoggedInGatekeeper.class)
     public interface DsdGeneralTabProxy extends Proxy<DsdGeneralTabPresenter>, Place {
 
     }
