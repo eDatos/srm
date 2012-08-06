@@ -21,6 +21,7 @@ public class ConceptSchemeMainFormLayout extends InternationalMainFormLayout {
     private MainFormLayoutButton               publishInternally;
     private MainFormLayoutButton               publishExternally;
     private MainFormLayoutButton               versioning;
+    private MainFormLayoutButton               cancelValidity;
     private AnnounceToolStripButton            announce;
 
     private MaintainableArtefactProcStatusEnum status;
@@ -45,6 +46,7 @@ public class ConceptSchemeMainFormLayout extends InternationalMainFormLayout {
         publishExternally = new MainFormLayoutButton(getConstants().conceptSchemePublishExternally(), GlobalResources.RESOURCE.externalPublish().getURL());
         rejectValidation = new MainFormLayoutButton(getConstants().conceptSchemeRejectValidation(), GlobalResources.RESOURCE.reject().getURL());
         versioning = new MainFormLayoutButton(getConstants().conceptSchemeVersioning(), GlobalResources.RESOURCE.version().getURL());
+        cancelValidity = new MainFormLayoutButton(getConstants().conceptSchemeCancelValidity(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.disable().getURL());
         announce = new AnnounceToolStripButton(MetamacWebCommon.getConstants().announce(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.announce().getURL());
         announce.setVisibility(ConceptClientSecurityUtils.canAnnounceConceptScheme() ? Visibility.VISIBLE : Visibility.HIDDEN);
 
@@ -54,6 +56,7 @@ public class ConceptSchemeMainFormLayout extends InternationalMainFormLayout {
         toolStrip.addButton(publishExternally);
         toolStrip.addButton(rejectValidation);
         toolStrip.addButton(versioning);
+        toolStrip.addButton(cancelValidity);
         toolStrip.addButton(announce);
     }
 
@@ -80,6 +83,7 @@ public class ConceptSchemeMainFormLayout extends InternationalMainFormLayout {
             showVersioningButton();
         } else if (MaintainableArtefactProcStatusEnum.EXTERNALLY_PUBLISHED.equals(status)) {
             showVersioningButton();
+            showCancelValidityButton();
         } else if (MaintainableArtefactProcStatusEnum.EXTERNAL_PUBLICATION_FAILED.equals(status)) {
             showPublishExternallyButton();
         }
@@ -121,6 +125,14 @@ public class ConceptSchemeMainFormLayout extends InternationalMainFormLayout {
         return versioning;
     }
 
+    public HasClickHandlers getCancelValidity() {
+        return cancelValidity;
+    }
+
+    public HasClickHandlers getAnnounce() {
+        return announce;
+    }
+
     private void hideAllPublishButtons() {
         productionValidation.hide();
         diffusionValidation.hide();
@@ -128,6 +140,7 @@ public class ConceptSchemeMainFormLayout extends InternationalMainFormLayout {
         publishInternally.hide();
         publishExternally.hide();
         versioning.hide();
+        cancelValidity.hide();
     }
 
     private void showSendToProductionValidation() {
@@ -163,6 +176,12 @@ public class ConceptSchemeMainFormLayout extends InternationalMainFormLayout {
     private void showVersioningButton() {
         if (ConceptClientSecurityUtils.canVersioningConceptScheme()) {
             versioning.show();
+        }
+    }
+
+    private void showCancelValidityButton() {
+        if (ConceptClientSecurityUtils.canCancelConceptSchemeValidity()) {
+            cancelValidity.show();
         }
     }
 

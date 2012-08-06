@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.siemac.metamac.srm.core.concept.dto.MetamacConceptSchemeDto;
+import org.siemac.metamac.srm.core.enume.domain.MaintainableArtefactProcStatusEnum;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptSchemeRecord;
@@ -16,6 +17,7 @@ import org.siemac.metamac.srm.web.concept.utils.RecordUtils;
 import org.siemac.metamac.srm.web.concept.view.handlers.ConceptSchemeListUiHandlers;
 import org.siemac.metamac.srm.web.concept.widgets.NewConceptSchemeWindow;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemePaginatedListResult;
+import org.siemac.metamac.web.common.client.resources.GlobalResources;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 import org.siemac.metamac.web.common.client.widgets.PaginatedCheckListGrid;
 import org.siemac.metamac.web.common.client.widgets.SearchSectionStack;
@@ -49,6 +51,7 @@ public class ConceptSchemeListViewImpl extends ViewImpl implements ConceptScheme
 
     private ToolStripButton             newConceptSchemeButton;
     private ToolStripButton             deleteConceptSchemeButton;
+    private ToolStripButton             cancelConceptSchemeValidityButton;
 
     private SearchSectionStack          searchSectionStack;
 
@@ -95,8 +98,12 @@ public class ConceptSchemeListViewImpl extends ViewImpl implements ConceptScheme
             }
         });
 
+        cancelConceptSchemeValidityButton = new ToolStripButton(getConstants().conceptSchemeCancelValidity(), GlobalResources.RESOURCE.disable().getURL());
+        cancelConceptSchemeValidityButton.setVisibility(Visibility.HIDDEN);
+
         toolStrip.addButton(newConceptSchemeButton);
         toolStrip.addButton(deleteConceptSchemeButton);
+        toolStrip.addButton(cancelConceptSchemeValidityButton);
 
         // Search
 
@@ -127,9 +134,13 @@ public class ConceptSchemeListViewImpl extends ViewImpl implements ConceptScheme
             @Override
             public void onSelectionChanged(SelectionEvent event) {
                 if (conceptSchemesList.getListGrid().getSelectedRecords().length > 0) {
+                    // Show delete button
                     showListGridDeleteButton();
+                    // Show cancel validity button
+                    showListGridCancelValidityDeleteButton(conceptSchemesList.getListGrid().getSelectedRecords());
                 } else {
                     deleteConceptSchemeButton.hide();
+                    cancelConceptSchemeValidityButton.hide();
                 }
             }
         });
@@ -237,6 +248,22 @@ public class ConceptSchemeListViewImpl extends ViewImpl implements ConceptScheme
         if (ConceptClientSecurityUtils.canDeleteConceptScheme()) {
             deleteConceptSchemeButton.show();
         }
+    }
+
+    private void showListGridCancelValidityDeleteButton(ListGridRecord[] records) {
+        boolean allSelectedSchemesExternallyPublished = true;
+        for (ListGridRecord record : records) {
+            ConceptSchemeRecord conceptSchemeRecord = (ConceptSchemeRecord) record;
+            if (!MaintainableArtefactProcStatusEnum.EXTERNALLY_PUBLISHED.equals(conceptSchemeRecord.getProcStatus())) {
+                allSelectedSchemesExternallyPublished = false;
+            }
+        }
+        if (allSelectedSchemesExternallyPublished) {
+            if (ConceptClientSecurityUtils.canCancelConceptSchemeValidity()) {
+                cancelConceptSchemeValidityButton.show();
+            }
+        }
+
     }
 
 }

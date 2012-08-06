@@ -1,6 +1,7 @@
 package org.siemac.metamac.srm.web.concept.model.record;
 
 import org.siemac.metamac.srm.core.concept.dto.MetamacConceptSchemeDto;
+import org.siemac.metamac.srm.core.enume.domain.MaintainableArtefactProcStatusEnum;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 
 import com.smartgwt.client.widgets.grid.ListGridRecord;
@@ -60,6 +61,10 @@ public class ConceptSchemeRecord extends ListGridRecord {
 
     public String getName() {
         return getAttribute(ConceptSchemeDS.NAME);
+    }
+
+    public MaintainableArtefactProcStatusEnum getProcStatus() {
+        return ((MetamacConceptSchemeDto) getAttributeAsObject(ConceptSchemeDS.DTO)).getProcStatus();
     }
 
     public String getDescription() {
