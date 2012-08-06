@@ -376,9 +376,7 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
     }
 
     private void showExportToolStripButton() {
-        if (DsdClientSecurityUtils.canExportDsd()) {
-            exportToolStripButton.show();
-        }
+        exportToolStripButton.show();
     }
 
 }
