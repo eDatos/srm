@@ -1,4 +1,4 @@
-package org.siemac.metamac.srm.core.common.constants;
+package org.siemac.metamac.srm.core.constants;
 
 public class SrmConstants {
 

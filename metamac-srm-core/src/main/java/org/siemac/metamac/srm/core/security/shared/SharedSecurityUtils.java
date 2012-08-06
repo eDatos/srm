@@ -10,12 +10,12 @@ import static org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum.TECNICO_NORMA
 import static org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum.TECNICO_PRODUCCION;
 
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.enume.domain.MaintainableArtefactProcStatusEnum;
 import org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum;
 import org.siemac.metamac.sso.client.MetamacPrincipal;
 import org.siemac.metamac.sso.client.MetamacPrincipalAccess;
 
-import com.arte.statistic.sdmx.srm.core.common.constants.SrmConstants;
 import com.arte.statistic.sdmx.v2_1.domain.enume.concept.domain.ConceptSchemeTypeEnum;
 
 public class SharedSecurityUtils {
