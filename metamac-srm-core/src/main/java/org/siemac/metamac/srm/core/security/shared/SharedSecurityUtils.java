@@ -9,7 +9,6 @@ import static org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum.TECNICO_APOYO
 import static org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum.TECNICO_NORMALIZACION;
 import static org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum.TECNICO_PRODUCCION;
 
-import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum;
 import org.siemac.metamac.sso.client.MetamacPrincipal;
@@ -48,7 +47,6 @@ public class SharedSecurityUtils {
      * @param operationCode
      * @param roles
      * @return
-     * @throws MetamacException
      */
     protected static boolean isOperationAllowed(MetamacPrincipal metamacPrincipal, String operationCode, SrmRoleEnum... roles) {
         // Administrator has total control in all statistical operations
