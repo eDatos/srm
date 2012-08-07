@@ -95,7 +95,7 @@ public class SharedConceptSecurityUtils extends SharedSecurityUtils {
         return false;
     }
 
-    public static boolean canPublishInternallyConceptScheme(MetamacPrincipal metamacPrincipal, ConceptSchemeTypeEnum type, String operationCode) {
+    public static boolean canPublishConceptSchemeInternally(MetamacPrincipal metamacPrincipal, ConceptSchemeTypeEnum type, String operationCode) {
         if (isNonOperationConceptSchemeType(type)) {
             return isSrmRoleAllowed(metamacPrincipal, JEFE_NORMALIZACION);
         } else if (isOperationConceptSchemeType(type)) {
@@ -105,7 +105,7 @@ public class SharedConceptSecurityUtils extends SharedSecurityUtils {
         return false;
     }
 
-    public static boolean canPublishExternallyConceptScheme(MetamacPrincipal metamacPrincipal, ConceptSchemeTypeEnum type, String operationCode) {
+    public static boolean canPublishConceptSchemeExternally(MetamacPrincipal metamacPrincipal, ConceptSchemeTypeEnum type, String operationCode) {
         if (isNonOperationConceptSchemeType(type)) {
             return isSrmRoleAllowed(metamacPrincipal, JEFE_NORMALIZACION);
         } else if (isOperationConceptSchemeType(type)) {

@@ -1,6 +1,7 @@
 package org.siemac.metamac.srm.core.security.shared;
 
 import static org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum.JEFE_PRODUCCION;
+import static org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum.TECNICO_APOYO_PRODUCCION;
 import static org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum.TECNICO_PRODUCCION;
 
 import org.siemac.metamac.srm.core.enume.domain.MaintainableArtefactProcStatusEnum;
@@ -100,6 +101,31 @@ public class SharedDsdSecurityUtils extends SharedSecurityUtils {
     }
 
     public static boolean canAnnounceDsd(MetamacPrincipal metamacPrincipal) {
+        return isSrmRoleAllowed(metamacPrincipal, TECNICO_PRODUCCION, JEFE_PRODUCCION);
+    }
+
+    public static boolean canSendDsdToProductionValidation(MetamacPrincipal metamacPrincipal) {
+        return isSrmRoleAllowed(metamacPrincipal, TECNICO_APOYO_PRODUCCION, TECNICO_PRODUCCION, JEFE_PRODUCCION);
+    }
+
+    public static boolean canSendDsdToDiffusionValidation(MetamacPrincipal metamacPrincipal) {
+        return isSrmRoleAllowed(metamacPrincipal, TECNICO_PRODUCCION, JEFE_PRODUCCION);
+    }
+
+    public static boolean canRejectDsdValidation(MetamacPrincipal metamacPrincipal, MaintainableArtefactProcStatusEnum procStatus) {
+        if (MaintainableArtefactProcStatusEnum.PRODUCTION_VALIDATION.equals(procStatus)) {
+            return isSrmRoleAllowed(metamacPrincipal, TECNICO_PRODUCCION, JEFE_PRODUCCION);
+        } else if (MaintainableArtefactProcStatusEnum.DIFFUSION_VALIDATION.equals(procStatus)) {
+            return isSrmRoleAllowed(metamacPrincipal, JEFE_PRODUCCION);
+        }
+        return false;
+    }
+
+    public static boolean canPublishDsdInternally(MetamacPrincipal metamacPrincipal) {
+        return isSrmRoleAllowed(metamacPrincipal, JEFE_PRODUCCION);
+    }
+
+    public static boolean canPublishDsdExternally(MetamacPrincipal metamacPrincipal) {
         return isSrmRoleAllowed(metamacPrincipal, TECNICO_PRODUCCION, JEFE_PRODUCCION);
     }
 
