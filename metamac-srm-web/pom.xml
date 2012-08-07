@@ -257,6 +257,7 @@
                         <artifact>org.siemac.metamac:metamac-api-domain:jar:client</artifact>
                         <artifact>org.siemac.metamac:metamac-core-common:jar:client</artifact>
                         <artifact>org.siemac.metamac.metamac-sso:metamac-sso-client:jar</artifact>
+                        <artifact>org.siemac.metamac:metamac-web-common:jar</artifact>
                         <artifact>com.arte.statistic.statistic-sdmx-v2_1:statistic-sdmx-v2_1-domain:jar:client</artifact>
                         <artifact>com.arte.statistic.statistic-sdmx-srm:statistic-sdmx-srm-core:jar:client</artifact>
                     </compileSourcesArtifacts>
