@@ -525,9 +525,6 @@
                                 <delete file="${basedir}/src/test/generated/resources/Interceptor-test.xml" />
                                 <delete file="${basedir}/src/test/generated/resources/applicationContext-test.xml" />
                                 <delete file="${basedir}/src/test/generated/resources/EntityManagerFactory-test.xml" />
-
-                                <!-- TODO DELETE THIS -->
-                                <delete file="${basedir}/src/generated/resources/META-INF/persistence.xml" />
                             </target>
                         </configuration>
                     </execution>
