@@ -35,6 +35,11 @@
             <classifier>client</classifier>
         </dependency>
         <dependency>
+            <groupId>org.siemac.metamac.metamac-statistical-operations</groupId>
+            <artifactId>metamac-statistical-operations-rest-internal-api</artifactId>
+            <version>${metamac-statistical-operations.version}</version>
+        </dependency>
+        <dependency>
             <groupId>com.google.gwt</groupId>
             <artifactId>gwt-servlet</artifactId>
             <version>${gwt.version}</version>
