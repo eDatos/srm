@@ -39,12 +39,12 @@ public class ConceptClientSecurityUtils {
         return SharedConceptSecurityUtils.canRejectConceptSchemeValidation(MetamacSrmWeb.getCurrentUser(), procStatus, type, operationCode);
     }
 
-    public static boolean canPublishInternallyConceptScheme() {
-        return SharedConceptSecurityUtils.canPublishInternallyConceptScheme(MetamacSrmWeb.getCurrentUser(), type, operationCode);
+    public static boolean canPublishConceptSchemeInternally() {
+        return SharedConceptSecurityUtils.canPublishConceptSchemeInternally(MetamacSrmWeb.getCurrentUser(), type, operationCode);
     }
 
-    public static boolean canPublishExternallyConceptScheme() {
-        return SharedConceptSecurityUtils.canPublishExternallyConceptScheme(MetamacSrmWeb.getCurrentUser(), type, operationCode);
+    public static boolean canPublishConceptSchemeExternally() {
+        return SharedConceptSecurityUtils.canPublishConceptSchemeExternally(MetamacSrmWeb.getCurrentUser(), type, operationCode);
     }
 
     public static boolean canVersioningConceptScheme() {

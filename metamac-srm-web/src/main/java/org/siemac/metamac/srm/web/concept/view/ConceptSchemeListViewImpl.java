@@ -98,7 +98,7 @@ public class ConceptSchemeListViewImpl extends ViewImpl implements ConceptScheme
             }
         });
 
-        cancelConceptSchemeValidityButton = new ToolStripButton(getConstants().conceptSchemeCancelValidity(), GlobalResources.RESOURCE.disable().getURL());
+        cancelConceptSchemeValidityButton = new ToolStripButton(getConstants().lifeCycleCancelValidity(), GlobalResources.RESOURCE.disable().getURL());
         cancelConceptSchemeValidityButton.setVisibility(Visibility.HIDDEN);
 
         toolStrip.addButton(newConceptSchemeButton);

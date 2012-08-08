@@ -1,10 +1,10 @@
-package org.siemac.metamac.srm.web.concept.widgets;
+package org.siemac.metamac.srm.web.dsd.widgets;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
 import org.siemac.metamac.srm.core.enume.domain.MaintainableArtefactProcStatusEnum;
 import org.siemac.metamac.srm.web.client.resources.GlobalResources;
-import org.siemac.metamac.srm.web.concept.utils.ConceptClientSecurityUtils;
+import org.siemac.metamac.srm.web.dsd.utils.DsdClientSecurityUtils;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.widgets.AnnounceToolStripButton;
 import org.siemac.metamac.web.common.client.widgets.MainFormLayoutButton;
@@ -13,7 +13,7 @@ import org.siemac.metamac.web.common.client.widgets.form.InternationalMainFormLa
 import com.smartgwt.client.types.Visibility;
 import com.smartgwt.client.widgets.events.HasClickHandlers;
 
-public class ConceptSchemeMainFormLayout extends InternationalMainFormLayout {
+public class DsdMainFormLayout extends InternationalMainFormLayout {
 
     private MainFormLayoutButton               productionValidation;
     private MainFormLayoutButton               diffusionValidation;
@@ -26,13 +26,11 @@ public class ConceptSchemeMainFormLayout extends InternationalMainFormLayout {
 
     private MaintainableArtefactProcStatusEnum status;
 
-    public ConceptSchemeMainFormLayout() {
-        super();
+    public DsdMainFormLayout() {
         common();
     }
 
-    public ConceptSchemeMainFormLayout(boolean canEdit) {
-        super(canEdit);
+    public DsdMainFormLayout(boolean canEdit) {
         common();
     }
 
@@ -48,7 +46,7 @@ public class ConceptSchemeMainFormLayout extends InternationalMainFormLayout {
         versioning = new MainFormLayoutButton(getConstants().lifeCycleVersioning(), GlobalResources.RESOURCE.version().getURL());
         cancelValidity = new MainFormLayoutButton(getConstants().lifeCycleCancelValidity(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.disable().getURL());
         announce = new AnnounceToolStripButton(MetamacWebCommon.getConstants().announce(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.announce().getURL());
-        announce.setVisibility(ConceptClientSecurityUtils.canAnnounceConceptScheme() ? Visibility.VISIBLE : Visibility.HIDDEN);
+        announce.setVisibility(DsdClientSecurityUtils.canAnnounceDsd() ? Visibility.VISIBLE : Visibility.HIDDEN);
 
         toolStrip.addButton(productionValidation);
         toolStrip.addButton(diffusionValidation);
@@ -144,43 +142,43 @@ public class ConceptSchemeMainFormLayout extends InternationalMainFormLayout {
     }
 
     private void showSendToProductionValidation() {
-        if (ConceptClientSecurityUtils.canSendConceptSchemeToProductionValidation()) {
+        if (DsdClientSecurityUtils.canSendDsdToProductionValidation()) {
             productionValidation.show();
         }
     }
 
     private void showSendToDiffusionValidation() {
-        if (ConceptClientSecurityUtils.canSendConceptSchemeToDiffusionValidation()) {
+        if (DsdClientSecurityUtils.canSendDsdToDiffusionValidation()) {
             diffusionValidation.show();
         }
     }
 
     private void showRejectValidationButton() {
-        if (ConceptClientSecurityUtils.canRejectConceptSchemeValidation()) {
+        if (DsdClientSecurityUtils.canRejectDsdValidation()) {
             rejectValidation.show();
         }
     }
 
     private void showPublishInternallyButton() {
-        if (ConceptClientSecurityUtils.canPublishConceptSchemeInternally()) {
+        if (DsdClientSecurityUtils.canPublishDsdInternally()) {
             publishInternally.show();
         }
     }
 
     private void showPublishExternallyButton() {
-        if (ConceptClientSecurityUtils.canPublishConceptSchemeExternally()) {
+        if (DsdClientSecurityUtils.canPublishDsdExternally()) {
             publishExternally.show();
         }
     }
 
     private void showVersioningButton() {
-        if (ConceptClientSecurityUtils.canVersioningConceptScheme()) {
+        if (DsdClientSecurityUtils.canVersioningDsd()) {
             versioning.show();
         }
     }
 
     private void showCancelValidityButton() {
-        if (ConceptClientSecurityUtils.canCancelConceptSchemeValidity()) {
+        if (DsdClientSecurityUtils.canCancelDsdValidity()) {
             cancelValidity.show();
         }
     }

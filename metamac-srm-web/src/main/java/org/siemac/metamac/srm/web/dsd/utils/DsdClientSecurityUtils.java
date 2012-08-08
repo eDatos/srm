@@ -57,4 +57,24 @@ public class DsdClientSecurityUtils {
         return SharedDsdSecurityUtils.canAnnounceDsd(MetamacSrmWeb.getCurrentUser());
     }
 
+    public static boolean canSendDsdToProductionValidation() {
+        return SharedDsdSecurityUtils.canSendDsdToProductionValidation(MetamacSrmWeb.getCurrentUser());
+    }
+
+    public static boolean canSendDsdToDiffusionValidation() {
+        return SharedDsdSecurityUtils.canSendDsdToDiffusionValidation(MetamacSrmWeb.getCurrentUser());
+    }
+
+    public static boolean canRejectDsdValidation() {
+        return SharedDsdSecurityUtils.canRejectDsdValidation(MetamacSrmWeb.getCurrentUser(), procStatus);
+    }
+
+    public static boolean canPublishDsdInternally() {
+        return SharedDsdSecurityUtils.canPublishDsdInternally(MetamacSrmWeb.getCurrentUser());
+    }
+
+    public static boolean canPublishDsdExternally() {
+        return SharedDsdSecurityUtils.canPublishDsdExternally(MetamacSrmWeb.getCurrentUser());
+    }
+
 }

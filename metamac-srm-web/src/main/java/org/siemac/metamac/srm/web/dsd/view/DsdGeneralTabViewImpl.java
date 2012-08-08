@@ -5,9 +5,9 @@ import org.siemac.metamac.srm.web.dsd.presenter.DsdGeneralTabPresenter;
 import org.siemac.metamac.srm.web.dsd.utils.DsdClientSecurityUtils;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdGeneralTabUiHandlers;
 import org.siemac.metamac.srm.web.dsd.widgets.AnnotationsPanel;
+import org.siemac.metamac.srm.web.dsd.widgets.DsdMainFormLayout;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
-import org.siemac.metamac.web.common.client.widgets.form.InternationalMainFormLayout;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
@@ -24,52 +24,52 @@ import com.smartgwt.client.widgets.layout.VLayout;
 
 public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHandlers> implements DsdGeneralTabPresenter.DsdGeneralTabView {
 
-    private VLayout                     panel;
+    private VLayout                   panel;
 
-    private InternationalMainFormLayout mainFormLayout;
+    private DsdMainFormLayout         mainFormLayout;
 
-    private AnnotationsPanel            viewAnnotationsPanel;
-    private AnnotationsPanel            editionAnnotationsPanel;
+    private AnnotationsPanel          viewAnnotationsPanel;
+    private AnnotationsPanel          editionAnnotationsPanel;
 
     // VIEW FORM
 
-    private ViewTextItem                staticIdLogic;
-    private ViewTextItem                staticVersion;
-    private ViewTextItem                staticAgency;
-    private ViewMultiLanguageTextItem   staticNameItem;
-    private ViewMultiLanguageTextItem   staticDescriptionItem;
-    private ViewTextItem                staticUriItem;
-    private ViewTextItem                staticUrnItem;
-    private ViewTextItem                staticFinalItem;
-    private ViewTextItem                staticStartDateItem;
-    private ViewTextItem                staticEndDateItem;
-    private ViewTextItem                staticVersionEdit;
-    private ViewTextItem                staticAgencyEdit;
-    private ViewTextItem                staticUriItemEdit;
-    private ViewTextItem                staticUrnItemEdit;
-    private ViewTextItem                staticFinalItemEdit;
-    private ViewTextItem                staticStartDateItemEdit;
-    private ViewTextItem                staticEndDateItemEdit;
-    private GroupDynamicForm            generalForm;
+    private ViewTextItem              staticIdLogic;
+    private ViewTextItem              staticVersion;
+    private ViewTextItem              staticAgency;
+    private ViewMultiLanguageTextItem staticNameItem;
+    private ViewMultiLanguageTextItem staticDescriptionItem;
+    private ViewTextItem              staticUriItem;
+    private ViewTextItem              staticUrnItem;
+    private ViewTextItem              staticFinalItem;
+    private ViewTextItem              staticStartDateItem;
+    private ViewTextItem              staticEndDateItem;
+    private ViewTextItem              staticVersionEdit;
+    private ViewTextItem              staticAgencyEdit;
+    private ViewTextItem              staticUriItemEdit;
+    private ViewTextItem              staticUrnItemEdit;
+    private ViewTextItem              staticFinalItemEdit;
+    private ViewTextItem              staticStartDateItemEdit;
+    private ViewTextItem              staticEndDateItemEdit;
+    private GroupDynamicForm          generalForm;
 
     // EDITION FORM
 
-    private GroupDynamicForm            identifiersEditionForm;
-    private GroupDynamicForm            generalEditionForm;
-    private RequiredTextItem            codeItem;
-    private MultiLanguageTextItem       nameItem;
-    private MultiLanguageTextItem       descriptionItem;
+    private GroupDynamicForm          identifiersEditionForm;
+    private GroupDynamicForm          generalEditionForm;
+    private RequiredTextItem          codeItem;
+    private MultiLanguageTextItem     nameItem;
+    private MultiLanguageTextItem     descriptionItem;
 
     // private InternationalAnnotationsPanel annotationsPanel;
 
-    private boolean                     translationsShowed;
+    private boolean                   translationsShowed;
 
     @Inject
     public DsdGeneralTabViewImpl() {
         super();
         panel = new VLayout();
 
-        mainFormLayout = new InternationalMainFormLayout(DsdClientSecurityUtils.canUpdateDsd());
+        mainFormLayout = new DsdMainFormLayout(DsdClientSecurityUtils.canUpdateDsd());
         mainFormLayout.getTranslateToolStripButton().addClickHandler(new ClickHandler() {
 
             @Override
@@ -180,6 +180,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
     @Override
     public void setDsd(DataStructureDefinitionDto dsd) {
         mainFormLayout.setViewMode();
+        // TODO mainFormLayout.updatePublishSection(dsd.getProcStatus());
 
         setDsdViewMode(dsd);
         setDsdEditionMode(dsd);
