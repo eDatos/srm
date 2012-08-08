@@ -445,6 +445,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         // Class descriptors
         classDescriptorsEditionForm = new GroupDynamicForm(getConstants().conceptSchemeClassDescriptors());
         SelectItem type = new SelectItem(ConceptSchemeDS.TYPE, getConstants().conceptSchemeType());
+        type.setValueMap(CommonUtils.getConceptSchemeTypeHashMap());
         SelectItem operation = new SelectItem(ConceptSchemeDS.RELATED_OPERATION, getConstants().conceptSchemeOperation());
         ViewTextItem agency = new ViewTextItem(ConceptSchemeDS.AGENCY, getConstants().conceptSchemeAgency());
         classDescriptorsEditionForm.setFields(type, operation, agency);
