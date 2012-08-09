@@ -6,6 +6,7 @@ import static org.siemac.metamac.web.common.client.resources.GlobalResources.RES
 import java.util.ArrayList;
 import java.util.List;
 
+import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.srm.core.concept.dto.MetamacConceptSchemeDto;
 import org.siemac.metamac.srm.core.enume.domain.MaintainableArtefactProcStatusEnum;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
@@ -57,6 +58,7 @@ public class ConceptSchemeListViewImpl extends ViewImpl implements ConceptScheme
 
     private PaginatedCheckListGrid      conceptSchemesList;
 
+    private NewConceptSchemeWindow      newConceptSchemeWindow;
     private DeleteConfirmationWindow    deleteConfirmationWindow;
 
     @Inject
@@ -73,14 +75,15 @@ public class ConceptSchemeListViewImpl extends ViewImpl implements ConceptScheme
 
             @Override
             public void onClick(ClickEvent event) {
-                final NewConceptSchemeWindow window = new NewConceptSchemeWindow(getConstants().conceptSchemeCreate());
-                window.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
+                newConceptSchemeWindow = new NewConceptSchemeWindow(getConstants().conceptSchemeCreate());
+                newConceptSchemeWindow.setUiHandlers(uiHandlers);
+                newConceptSchemeWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
 
                     @Override
                     public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
-                        if (window.validateForm()) {
-                            uiHandlers.createConceptScheme(window.getNewConceptSchemeDto());
-                            window.destroy();
+                        if (newConceptSchemeWindow.validateForm()) {
+                            uiHandlers.createConceptScheme(newConceptSchemeWindow.getNewConceptSchemeDto());
+                            newConceptSchemeWindow.destroy();
                         }
                     }
                 });
@@ -264,6 +267,14 @@ public class ConceptSchemeListViewImpl extends ViewImpl implements ConceptScheme
             }
         }
 
+    }
+
+    @Override
+    public void setOperations(List<ExternalItemDto> operations, int firstResult, int totalResults) {
+        if (newConceptSchemeWindow != null) {
+            newConceptSchemeWindow.setOperations(operations);
+            newConceptSchemeWindow.refreshOperationsPaginationInfo(firstResult, operations.size(), totalResults);
+        }
     }
 
 }

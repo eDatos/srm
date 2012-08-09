@@ -6,6 +6,7 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.core.common.util.shared.VersionUtil;
@@ -31,10 +32,14 @@ import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.widgets.CustomListGrid;
 import org.siemac.metamac.web.common.client.widgets.InformationWindow;
 import org.siemac.metamac.web.common.client.widgets.ListGridToolStrip;
+import org.siemac.metamac.web.common.client.widgets.SearchExternalItemWindow;
 import org.siemac.metamac.web.common.client.widgets.TitleLabel;
+import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
+import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
+import org.siemac.metamac.web.common.client.widgets.form.fields.SearchViewTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 
@@ -51,6 +56,8 @@ import com.smartgwt.client.widgets.form.FormItemIfFunction;
 import com.smartgwt.client.widgets.form.fields.BooleanItem;
 import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
+import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
+import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
@@ -90,6 +97,8 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
     private HistorySectionStack         historySectionStack;
 
     private MetamacConceptSchemeDto     conceptSchemeDto;
+
+    private SearchExternalItemWindow    searchOperationsWindow;
 
     @Inject
     public ConceptSchemeViewImpl() {
@@ -446,7 +455,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         classDescriptorsEditionForm = new GroupDynamicForm(getConstants().conceptSchemeClassDescriptors());
         SelectItem type = new SelectItem(ConceptSchemeDS.TYPE, getConstants().conceptSchemeType());
         type.setValueMap(CommonUtils.getConceptSchemeTypeHashMap());
-        SelectItem operation = new SelectItem(ConceptSchemeDS.RELATED_OPERATION, getConstants().conceptSchemeOperation());
+        SearchViewTextItem operation = createRelatedOperationItem(ConceptSchemeDS.RELATED_OPERATION, getConstants().conceptSchemeOperation());
         ViewTextItem agency = new ViewTextItem(ConceptSchemeDS.AGENCY, getConstants().conceptSchemeAgency());
         classDescriptorsEditionForm.setFields(type, operation, agency);
 
@@ -565,6 +574,50 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
             }
         }
         return selectedConcepts;
+    }
+
+    private SearchViewTextItem createRelatedOperationItem(String name, String title) {
+        SearchViewTextItem operation = new SearchViewTextItem(name, title);
+        operation.setRequired(true);
+        operation.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
+
+            @Override
+            public void onFormItemClick(FormItemIconClickEvent event) {
+                final int OPERATION_FIRST_RESULT = 0;
+                final int OPERATION_MAX_RESULTS = 16;
+                searchOperationsWindow = new SearchExternalItemWindow(getConstants().conceptSchemeSearchOperations(), OPERATION_MAX_RESULTS, new PaginatedAction() {
+
+                    @Override
+                    public void retrieveResultSet(int firstResult, int maxResults) {
+                        uiHandlers.retrieveStatisticalOperations(firstResult, maxResults, null);
+                    }
+                });
+                uiHandlers.retrieveStatisticalOperations(OPERATION_FIRST_RESULT, OPERATION_MAX_RESULTS, null);
+                searchOperationsWindow.getExternalListGridItem().setSearchAction(new SearchPaginatedAction() {
+
+                    @Override
+                    public void retrieveResultSet(int firstResult, int maxResults, String code) {
+                        uiHandlers.retrieveStatisticalOperations(firstResult, maxResults, code);
+                    }
+                });
+                searchOperationsWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
+
+                    @Override
+                    public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
+                        searchOperationsWindow.destroy();
+                    }
+                });
+            }
+        });
+        return operation;
+    }
+
+    @Override
+    public void setOperations(List<ExternalItemDto> operations, int firstResult, int totalResults) {
+        if (searchOperationsWindow != null) {
+            searchOperationsWindow.setExternalItems(operations);
+            searchOperationsWindow.refreshSourcePaginationInfo(firstResult, operations.size(), totalResults);
+        }
     }
 
 }
