@@ -13,6 +13,7 @@ import org.siemac.metamac.srm.web.server.handlers.concept.GetConceptListByScheme
 import org.siemac.metamac.srm.web.server.handlers.concept.GetConceptSchemeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.GetConceptSchemeHistoryListActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.GetConceptSchemePaginatedListActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.concept.GetStatisticalOperationsPaginatedListActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.SaveConceptActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.SaveConceptSchemeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.UpdateConceptSchemeProcStatusActionHandler;
@@ -45,6 +46,7 @@ import org.siemac.metamac.srm.web.shared.concept.GetConceptListBySchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeHistoryListAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemePaginatedListAction;
+import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsPaginatedListAction;
 import org.siemac.metamac.srm.web.shared.concept.SaveConceptAction;
 import org.siemac.metamac.srm.web.shared.concept.SaveConceptSchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.UpdateConceptSchemeProcStatusAction;
@@ -131,6 +133,9 @@ public class ServerModule extends HandlerModule {
         bindHandler(GetLoginPageUrlAction.class, GetLoginPageUrlActionHandler.class);
         bindHandler(CloseSessionAction.class, CloseSessionActionHandler.class);
         bindHandler(GetNavigationBarUrlAction.class, GetNavigationBarUrlActionHandler.class);
+
+        // Rest
+        bindHandler(GetStatisticalOperationsPaginatedListAction.class, GetStatisticalOperationsPaginatedListActionHandler.class);
 
         bindHandler(GetEditionLanguagesAction.class, GetEditionLanguagesActionHandlers.class);
 
