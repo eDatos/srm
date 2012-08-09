@@ -1,8 +1,8 @@
-package com.arte.statistic.sdmx.srm.core.common;
+package org.siemac.metamac.srm.core.common;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
-import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacadeCoreMockedTest;
+import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacadeMockedServiceTest;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacadeTest;
 
 /**
@@ -10,6 +10,6 @@ import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacadeTest;
  */
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({SrmCoreServiceFacadeTest.class, SrmCoreServiceFacadeCoreMockedTest.class})
+@Suite.SuiteClasses({SrmCoreServiceFacadeTest.class, SrmCoreServiceFacadeMockedServiceTest.class})
 public class SrmSuite {
 }

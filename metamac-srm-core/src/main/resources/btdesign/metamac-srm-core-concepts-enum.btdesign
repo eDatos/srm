@@ -1,0 +1,15 @@
+Application EnumsMetamacConceptDomain {
+	basePackage=unused
+
+	Module domain_metamac_concept_enums {
+		basePackage=org.siemac.metamac.srm.core.concept.enume
+		
+		"Type of concept scheme"
+    	enum ConceptSchemeTypeEnum {
+    		GLOSSARY,
+    		TRANSVERSAL,
+    		OPERATION,
+    		ROLE
+    	}
+	}
+}

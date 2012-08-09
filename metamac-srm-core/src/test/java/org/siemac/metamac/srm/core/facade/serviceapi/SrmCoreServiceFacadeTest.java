@@ -22,7 +22,6 @@ import javax.xml.transform.stream.StreamSource;
 import org.apache.commons.lang.StringUtils;
 import org.dozer.DozerBeanMapper;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.core.common.criteria.MetamacCriteria;
@@ -35,7 +34,6 @@ import org.siemac.metamac.core.common.dto.LocalisedStringDto;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.jaxb.CustomJaxb2Marshaller;
 import org.siemac.metamac.srm.core.criteria.DataStructureDefinitionCriteriaPropertyEnum;
-import org.siemac.metamac.srm.core.facade.serviceapi.utils.SDMXResources;
 import org.siemac.metamac.srm.core.facade.serviceapi.utils.SrmDtoMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -46,7 +44,8 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.arte.statistic.sdmx.srm.core.base.serviceapi.BaseService;
-import com.arte.statistic.sdmx.srm.core.common.SrmBaseTest;
+import com.arte.statistic.sdmx.srm.core.common.SdmxSrmBaseTest;
+import com.arte.statistic.sdmx.srm.core.facade.serviceapi.utils.SdmxResources;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionExtendDto;
@@ -65,7 +64,7 @@ import com.arte.statistic.sdmx.v2_1.domain.jaxb.message.Structure;
 @ContextConfiguration(locations = {"classpath:spring/srm/applicationContext-test.xml"})
 @TransactionConfiguration(transactionManager = "txManagerCore", defaultRollback = true)
 @Transactional
-public class SrmCoreServiceFacadeTest extends SrmBaseTest /* implements SrmCoreServiceFacadeTestBase */{
+public class SrmCoreServiceFacadeTest extends SdmxSrmBaseTest /* implements SrmCoreServiceFacadeTestBase */{
 
     @Autowired
     protected SrmCoreServiceFacade srmCoreServiceFacade;
@@ -453,32 +452,32 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest /* implements SrmCoreS
         File file = null;
 
         // ECB **************************
-        file = new File(SDMXResources.DSD_ECB_EXR_NG_FULL);
+        file = new File(SdmxResources.DSD_ECB_EXR_NG_FULL);
         srmCoreServiceFacade.importSDMXStructureMsg(getServiceContext(), SrmDtoMocks.createContentInput(file));
 
-        file = new File(SDMXResources.DSD_ECB_EXR_SG_FULL);
+        file = new File(SdmxResources.DSD_ECB_EXR_SG_FULL);
         srmCoreServiceFacade.importSDMXStructureMsg(getServiceContext(), SrmDtoMocks.createContentInput(file));
 
-        file = new File(SDMXResources.DSD_ECB_EXR_RG_FULL);
+        file = new File(SdmxResources.DSD_ECB_EXR_RG_FULL);
         srmCoreServiceFacade.importSDMXStructureMsg(getServiceContext(), SrmDtoMocks.createContentInput(file));
 
         // INE **************************
-        file = new File(SDMXResources.DSD_INE_DPOP);
+        file = new File(SdmxResources.DSD_INE_DPOP);
         srmCoreServiceFacade.importSDMXStructureMsg(getServiceContext(), SrmDtoMocks.createContentInput(file));
 
-        file = new File(SDMXResources.DSD_INE_EPOP);
+        file = new File(SdmxResources.DSD_INE_EPOP);
         srmCoreServiceFacade.importSDMXStructureMsg(getServiceContext(), SrmDtoMocks.createContentInput(file));
 
-        file = new File(SDMXResources.DSD_INE_IDB);
+        file = new File(SdmxResources.DSD_INE_IDB);
         srmCoreServiceFacade.importSDMXStructureMsg(getServiceContext(), SrmDtoMocks.createContentInput(file));
 
-        file = new File(SDMXResources.DSD_INE_IPC);
+        file = new File(SdmxResources.DSD_INE_IPC);
         srmCoreServiceFacade.importSDMXStructureMsg(getServiceContext(), SrmDtoMocks.createContentInput(file));
 
-        file = new File(SDMXResources.DSD_INE_IPCA);
+        file = new File(SdmxResources.DSD_INE_IPCA);
         srmCoreServiceFacade.importSDMXStructureMsg(getServiceContext(), SrmDtoMocks.createContentInput(file));
 
-        file = new File(SDMXResources.DSD_INE_MNP);
+        file = new File(SdmxResources.DSD_INE_MNP);
         srmCoreServiceFacade.importSDMXStructureMsg(getServiceContext(), SrmDtoMocks.createContentInput(file));
 
     }
@@ -509,11 +508,11 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest /* implements SrmCoreS
 
         if (metamacCriteriaResult.getResults().isEmpty()) {
             if (code.equals("ECB_EXR_NG")) {
-                srmCoreServiceFacade.importSDMXStructureMsg(serviceContext, SrmDtoMocks.createContentInput(new File(SDMXResources.DSD_ECB_EXR_NG_FULL)));
+                srmCoreServiceFacade.importSDMXStructureMsg(serviceContext, SrmDtoMocks.createContentInput(new File(SdmxResources.DSD_ECB_EXR_NG_FULL)));
             } else if (code.equals("ECB_EXR_RG")) {
-                srmCoreServiceFacade.importSDMXStructureMsg(serviceContext, SrmDtoMocks.createContentInput(new File(SDMXResources.DSD_ECB_EXR_RG_FULL)));
+                srmCoreServiceFacade.importSDMXStructureMsg(serviceContext, SrmDtoMocks.createContentInput(new File(SdmxResources.DSD_ECB_EXR_RG_FULL)));
             } else if (code.equals("ECB_EXR_SG")) {
-                srmCoreServiceFacade.importSDMXStructureMsg(serviceContext, SrmDtoMocks.createContentInput(new File(SDMXResources.DSD_ECB_EXR_SG_FULL)));
+                srmCoreServiceFacade.importSDMXStructureMsg(serviceContext, SrmDtoMocks.createContentInput(new File(SdmxResources.DSD_ECB_EXR_SG_FULL)));
             } else {
                 fail("Error in test");
             }
@@ -543,17 +542,17 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest /* implements SrmCoreS
         List<FileInputStream> fileInputStreams = new ArrayList<FileInputStream>();
 
         // ECB **************************
-        fileInputStreams.add(new FileInputStream(new File(SDMXResources.DSD_ECB_EXR_NG_FULL)));
-        fileInputStreams.add(new FileInputStream(new File(SDMXResources.DSD_ECB_EXR_SG_FULL)));
-        fileInputStreams.add(new FileInputStream(new File(SDMXResources.DSD_ECB_EXR_RG_FULL)));
+        fileInputStreams.add(new FileInputStream(new File(SdmxResources.DSD_ECB_EXR_NG_FULL)));
+        fileInputStreams.add(new FileInputStream(new File(SdmxResources.DSD_ECB_EXR_SG_FULL)));
+        fileInputStreams.add(new FileInputStream(new File(SdmxResources.DSD_ECB_EXR_RG_FULL)));
 
         // INE **************************
-        fileInputStreams.add(new FileInputStream(new File(SDMXResources.DSD_INE_DPOP)));
-        fileInputStreams.add(new FileInputStream(new File(SDMXResources.DSD_INE_EPOP)));
-        fileInputStreams.add(new FileInputStream(new File(SDMXResources.DSD_INE_IDB)));
-        fileInputStreams.add(new FileInputStream(new File(SDMXResources.DSD_INE_IPC)));
-        fileInputStreams.add(new FileInputStream(new File(SDMXResources.DSD_INE_IPCA)));
-        fileInputStreams.add(new FileInputStream(new File(SDMXResources.DSD_INE_MNP)));
+        fileInputStreams.add(new FileInputStream(new File(SdmxResources.DSD_INE_DPOP)));
+        fileInputStreams.add(new FileInputStream(new File(SdmxResources.DSD_INE_EPOP)));
+        fileInputStreams.add(new FileInputStream(new File(SdmxResources.DSD_INE_IDB)));
+        fileInputStreams.add(new FileInputStream(new File(SdmxResources.DSD_INE_IPC)));
+        fileInputStreams.add(new FileInputStream(new File(SdmxResources.DSD_INE_IPCA)));
+        fileInputStreams.add(new FileInputStream(new File(SdmxResources.DSD_INE_MNP)));
 
         for (FileInputStream fis : fileInputStreams) {
 

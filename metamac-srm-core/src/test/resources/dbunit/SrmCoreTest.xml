@@ -3,8 +3,8 @@
 <dataset>
     
     <!-- ************************************************************************************** -->
-    <!-- CONCEPT SCHEME 1                                                                        -->
-    <!--        - Version 1: published                                                          -->
+    <!-- CONCEPT SCHEME 1                                                                       -->
+    <!--        - Version 1: published internally                                               -->
     <!--        - Version 2: draft                                                              -->
     <!-- *************************************************************************************  -->
 
@@ -12,12 +12,6 @@
         ID="1"
         UUID="itemScheme-1"
         VERSION="1"
-    />
-    
-    <TB_CONCEPT_SCHEMES_VERSIONS
-        TB_ITEM_SCHEMES_VERSIONS="11"
-        CONCEPT_SCHEME_TYPE="GLOSSARY"
-        RELATED_OPERATION_FK="[null]"
     />
     
     <TB_ITEM_SCHEMES_VERSIONS
@@ -35,6 +29,17 @@
         LAST_UPDATED="2011-01-22 01:02:03"
         LAST_UPDATED_TZ="Europe/London"  
     />
+        
+    <TB_CONCEPT_SCHEMES_VERSIONS
+        TB_ITEM_SCHEMES_VERSIONS="11"
+    />
+    
+    <TB_M_CONCEPT_SCHEMES_VERSIONS
+        TB_CONCEPT_SCHEMES_VERSIONS="11"
+        CONCEPT_SCHEME_TYPE="OPERATION"          
+        RELATED_OPERATION_FK="13"
+        PROC_STATUS="INTERNALLY_PUBLISHED"
+    />    
     
     <TB_ANNOTABLE_ARTEFACTS 
         ID="11"
@@ -58,7 +63,6 @@
         IS_EXTERNAL_REFERENCE="0"
         STRUCTURE_URL="[null]"
         SERVICE_URL="[null]"
-        PROC_STATUS="EXTERNALLY_PUBLISHED"
         IS_LAST_VERSION="0"
         MAINTAINER_FK="11"
         
@@ -71,12 +75,6 @@
         LAST_UPDATED="2011-01-22 01:02:03"
         LAST_UPDATED_TZ="Europe/London"
 
-    />
-    
-    <TB_CONCEPT_SCHEMES_VERSIONS
-        TB_ITEM_SCHEMES_VERSIONS="12"
-        CONCEPT_SCHEME_TYPE="GLOSSARY"
-        RELATED_OPERATION_FK="[null]"
     />
     
     <TB_ITEM_SCHEMES_VERSIONS
@@ -94,6 +92,17 @@
         LAST_UPDATED="2011-01-22 01:02:03"
         LAST_UPDATED_TZ="Europe/London"  
     />
+    
+    <TB_CONCEPT_SCHEMES_VERSIONS
+        TB_ITEM_SCHEMES_VERSIONS="12"
+    />    
+    
+    <TB_M_CONCEPT_SCHEMES_VERSIONS
+        TB_CONCEPT_SCHEMES_VERSIONS="12"
+        CONCEPT_SCHEME_TYPE="GLOSSARY"          
+        RELATED_OPERATION_FK="[null]"
+        PROC_STATUS="DRAFT"
+    />       
     
     <TB_ANNOTABLE_ARTEFACTS 
         ID="12"
@@ -117,7 +126,6 @@
         IS_EXTERNAL_REFERENCE="0"
         STRUCTURE_URL="[null]"
         SERVICE_URL="[null]"
-        PROC_STATUS="DRAFT"
         IS_LAST_VERSION="1"
         MAINTAINER_FK="12"
         
@@ -131,6 +139,7 @@
         LAST_UPDATED_TZ="Europe/London"
     />    
     
+    
     <!-- ************************************************************************************** -->
     <!-- CONCEPT SCHEME 2                                                                       -->
     <!--        - Version 1: draft                                                              -->
@@ -140,12 +149,6 @@
         ID="2"
         UUID="itemScheme-2"
         VERSION="1"
-    />
-    
-    <TB_CONCEPT_SCHEMES_VERSIONS
-        TB_ITEM_SCHEMES_VERSIONS="21"
-        CONCEPT_SCHEME_TYPE="GLOSSARY"
-        RELATED_OPERATION_FK="[null]"
     />
     
     <TB_ITEM_SCHEMES_VERSIONS
@@ -163,6 +166,17 @@
         LAST_UPDATED="2011-01-22 01:02:03"
         LAST_UPDATED_TZ="Europe/London"  
     />
+
+    <TB_CONCEPT_SCHEMES_VERSIONS
+        TB_ITEM_SCHEMES_VERSIONS="21"
+    />
+    
+    <TB_M_CONCEPT_SCHEMES_VERSIONS
+        TB_CONCEPT_SCHEMES_VERSIONS="21"
+        CONCEPT_SCHEME_TYPE="ROLE"          
+        RELATED_OPERATION_FK="[null]"
+        PROC_STATUS="DRAFT"
+    />     
     
     <TB_ANNOTABLE_ARTEFACTS 
         ID="21"
@@ -185,7 +199,6 @@
         IS_EXTERNAL_REFERENCE="0"
         STRUCTURE_URL="[null]"
         SERVICE_URL="[null]"
-        PROC_STATUS="DRAFT"
         IS_LAST_VERSION="1"
         MAINTAINER_FK="21"
         
@@ -201,19 +214,13 @@
         
     <!-- ************************************************************************************** -->
     <!-- CONCEPT SCHEME 3                                                                       -->
-    <!--        - Version 1: published                                                          -->
+    <!--        - Version 1: published internally                                               -->
     <!-- *************************************************************************************  -->
 
     <TB_ITEM_SCHEMES
         ID="3"
         UUID="itemScheme-3"
         VERSION="1"
-    />
-    
-    <TB_CONCEPT_SCHEMES_VERSIONS
-        TB_ITEM_SCHEMES_VERSIONS="31"
-        CONCEPT_SCHEME_TYPE="GLOSSARY"
-        RELATED_OPERATION_FK="[null]"
     />
     
     <TB_ITEM_SCHEMES_VERSIONS
@@ -232,6 +239,17 @@
         LAST_UPDATED_TZ="Europe/London"  
     />
     
+    <TB_CONCEPT_SCHEMES_VERSIONS
+        TB_ITEM_SCHEMES_VERSIONS="31"
+    />
+    
+    <TB_M_CONCEPT_SCHEMES_VERSIONS
+        TB_CONCEPT_SCHEMES_VERSIONS="31"
+        CONCEPT_SCHEME_TYPE="ROLE"          
+        RELATED_OPERATION_FK="[null]"
+        PROC_STATUS="INTERNALLY_PUBLISHED"
+    />     
+
     <TB_ANNOTABLE_ARTEFACTS 
         ID="31"
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
@@ -253,7 +271,6 @@
         IS_EXTERNAL_REFERENCE="0"
         STRUCTURE_URL="[null]"
         SERVICE_URL="[null]"
-        PROC_STATUS="EXTERNALLY_PUBLISHED"
         IS_LAST_VERSION="1"
         MAINTAINER_FK="31"
         
@@ -292,7 +309,6 @@
         IS_EXTERNAL_REFERENCE="0"
         STRUCTURE_URL="[null]"
         SERVICE_URL="[null]"
-        PROC_STATUS="DRAFT"
         IS_LAST_VERSION="0"
         MAINTAINER_FK="11"
         
@@ -330,7 +346,18 @@
         TITLE_FK="[null]"
         TYPE="AGENCY"
     /> 
-
+    
+    <TB_EXTERNAL_ITEMS 
+        ID="13"
+        CODE="op1"
+        URI="http://op1"
+        URN="urn:op1"
+        MANAGEMENT_APP_URL="http://app/operations"
+        VERSION="1"
+        TITLE_FK="[null]"
+        TYPE="STATISTICAL_OPERATION"
+    />     
+    
     <TB_EXTERNAL_ITEMS 
         ID="21"
         CODE="ISTAC"

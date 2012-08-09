@@ -1,20 +1,26 @@
-
 import "classpath:/btdesign/metamac-core-common-dtos.btdesign"
 import "classpath:/btdesign/statistic-sdmx-v2_1-domain-dtos-concepts.btdesign"
 import "classpath:/btdesign/metamac-srm-core-enum.btdesign"
+import "classpath:/btdesign/metamac-srm-core-concepts-enum.btdesign"
 
 Application DtosMetamacConceptDomain {
 	basePackage=unused
 
 	Module domain_metamac_concept_dto {
 		basePackage=org.siemac.metamac.srm.core.concept.dto
-		"Dto for ConceptSchemeDto"
-		DataTransferObject MetamacConceptSchemeDto extends @ConceptSchemeDto {
-			- @MaintainableArtefactProcStatusEnum procStatus required;
+		
+		"Dto for ConceptSchemeMetamacDto"
+		DataTransferObject ConceptSchemeMetamacDto extends @ConceptSchemeDto {
+			"Status"
+			- @ItemSchemeMetamacProcStatusEnum procStatus required;
+			"Type"
+			- @ConceptSchemeTypeEnum type required;
+			"Related operation, only when type is Operation"
+			- @ExternalItemDto relatedOperation nullable;
 		}
 
-		"Dto for ConceptDto"
-		DataTransferObject MetamacConceptDto extends @ConceptDto {
+		"Dto for ConceptMetamacDto"
+		DataTransferObject ConceptMetamacDto extends @ConceptDto {
 			- @InternationalStringDto pluralName nullable;
 			- @InternationalStringDto acronym nullable;
 			- @InternationalStringDto description nullable;
@@ -24,7 +30,5 @@ Application DtosMetamacConceptDomain {
 			- @InternationalStringDto derivation nullable;
 			- @InternationalStringDto legalActs nullable;
 		}
-
 	}
-
 }

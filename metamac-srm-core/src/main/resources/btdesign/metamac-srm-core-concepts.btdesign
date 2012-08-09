@@ -1,0 +1,48 @@
+import "classpath:/btdesign/export/metamac-core-common-entity.btdesign"
+import "classpath:/btdesign/statistic-sdmx-core-concepts.btdesign"
+import "classpath:/btdesign/metamac-srm-core-enum.btdesign"
+import "classpath:/btdesign/metamac-srm-core-concepts-enum.btdesign"
+
+Application ConceptsMetamac {
+	basePackage=unused
+
+	Module domain_concepts_metamac {
+		basePackage=org.siemac.metamac.srm.core.concept
+
+		// ----------------------------------------------------------------
+		// 							SERVICES
+		// ----------------------------------------------------------------  
+		"Provides access to Scheme Concepts Artefacts"
+		Service ConceptsMetamacService {
+			
+			> @ConceptSchemeVersionMetamacRepository
+			
+			"Create concept scheme"
+			@ConceptSchemeVersionMetamac createConceptScheme(@ConceptSchemeVersionMetamac conceptSchemeVersion) throws MetamacException;
+			"Retrieve concept scheme by urn"
+			@ConceptSchemeVersionMetamac retrieveConceptSchemeByUrn(String urn) throws MetamacException;
+    		"Finds concept schemes by criteria in any status, returning last versions"
+    		PagedResult<@ConceptSchemeVersionMetamac> findConceptSchemesByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
+		}
+
+		// ----------------------------------------------------------------
+		// 							ENTITIES
+		// ----------------------------------------------------------------  
+		Entity ConceptSchemeVersionMetamac extends @ConceptSchemeVersion {
+			databaseTable="TB_M_CONCEPT_SCHEMES_VERSIONS"
+			hint="idSequence=M_CONCEPT_SCHEMES_VERSIONS"
+			!auditable
+
+			"Status"
+			- @ItemSchemeMetamacProcStatusEnum procStatus;
+			"Type"
+			- @ConceptSchemeTypeEnum type databaseColumn="CONCEPT_SCHEME_TYPE";
+			"Related operation, only when type is Operation"
+			- @ExternalItem relatedOperation nullable cascade="all" databaseColumn="RELATED_OPERATION_FK";
+			
+			Repository ConceptSchemeVersionMetamacRepository {
+				findByCondition(PagingParameter pagingParameter);
+			}			
+		}
+	}
+}

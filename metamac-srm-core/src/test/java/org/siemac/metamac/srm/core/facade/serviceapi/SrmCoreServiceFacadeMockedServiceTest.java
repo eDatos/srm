@@ -6,12 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.arte.statistic.sdmx.srm.core.common.SrmBaseTest;
+import com.arte.statistic.sdmx.srm.core.common.SdmxSrmBaseTest;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/srm/include/core-mockito.xml", "classpath:spring/srm/applicationContext-test.xml"})
-public class SrmCoreServiceFacadeCoreMockedTest extends SrmBaseTest {
+public class SrmCoreServiceFacadeMockedServiceTest extends SdmxSrmBaseTest {
 
+    // TODO completar tests de facade
+    
+    
     @Autowired
     protected SrmCoreServiceFacade srmCoreServiceFacade;
 
