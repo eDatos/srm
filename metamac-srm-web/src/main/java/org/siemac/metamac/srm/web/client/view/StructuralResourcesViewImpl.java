@@ -2,7 +2,7 @@ package org.siemac.metamac.srm.web.client.view;
 
 import java.util.List;
 
-import org.siemac.metamac.srm.core.concept.dto.MetamacConceptSchemeDto;
+import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
 import org.siemac.metamac.srm.web.client.presenter.StructuralResourcesPresenter;
@@ -147,7 +147,7 @@ public class StructuralResourcesViewImpl extends ViewWithUiHandlers<StructuralRe
     }
 
     @Override
-    public void setConceptSchemeList(List<MetamacConceptSchemeDto> conceptSchemeDtos) {
+    public void setConceptSchemeList(List<ConceptSchemeMetamacDto> conceptSchemeDtos) {
         conceptSchemeListGrid.setConceptSchemes(conceptSchemeDtos);
     }
 

@@ -2,7 +2,7 @@ package org.siemac.metamac.srm.web.dsd.widgets;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
-import org.siemac.metamac.srm.core.enume.domain.MaintainableArtefactProcStatusEnum;
+import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
 import org.siemac.metamac.srm.web.client.resources.GlobalResources;
 import org.siemac.metamac.srm.web.dsd.utils.DsdClientSecurityUtils;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
@@ -24,7 +24,7 @@ public class DsdMainFormLayout extends InternationalMainFormLayout {
     private MainFormLayoutButton               cancelValidity;
     private AnnounceToolStripButton            announce;
 
-    private MaintainableArtefactProcStatusEnum status;
+    private ItemSchemeMetamacProcStatusEnum status;
 
     public DsdMainFormLayout() {
         common();
@@ -58,7 +58,7 @@ public class DsdMainFormLayout extends InternationalMainFormLayout {
         toolStrip.addButton(announce);
     }
 
-    public void updatePublishSection(MaintainableArtefactProcStatusEnum status) {
+    public void updatePublishSection(ItemSchemeMetamacProcStatusEnum status) {
         this.status = status;
     }
 
@@ -66,23 +66,23 @@ public class DsdMainFormLayout extends InternationalMainFormLayout {
         // Hide all buttons
         hideAllPublishButtons();
         // Show buttons depending on the status
-        if (MaintainableArtefactProcStatusEnum.DRAFT.equals(status)) {
+        if (ItemSchemeMetamacProcStatusEnum.DRAFT.equals(status)) {
             showSendToProductionValidation();
-        } else if (MaintainableArtefactProcStatusEnum.VALIDATION_REJECTED.equals(status)) {
+        } else if (ItemSchemeMetamacProcStatusEnum.VALIDATION_REJECTED.equals(status)) {
             showSendToProductionValidation();
-        } else if (MaintainableArtefactProcStatusEnum.PRODUCTION_VALIDATION.equals(status)) {
+        } else if (ItemSchemeMetamacProcStatusEnum.PRODUCTION_VALIDATION.equals(status)) {
             showSendToDiffusionValidation();
             showRejectValidationButton();
-        } else if (MaintainableArtefactProcStatusEnum.DIFFUSION_VALIDATION.equals(status)) {
+        } else if (ItemSchemeMetamacProcStatusEnum.DIFFUSION_VALIDATION.equals(status)) {
             showPublishInternallyButton();
             showRejectValidationButton();
-        } else if (MaintainableArtefactProcStatusEnum.INTERNALLY_PUBLISHED.equals(status)) {
+        } else if (ItemSchemeMetamacProcStatusEnum.INTERNALLY_PUBLISHED.equals(status)) {
             showPublishExternallyButton();
             showVersioningButton();
-        } else if (MaintainableArtefactProcStatusEnum.EXTERNALLY_PUBLISHED.equals(status)) {
+        } else if (ItemSchemeMetamacProcStatusEnum.EXTERNALLY_PUBLISHED.equals(status)) {
             showVersioningButton();
             showCancelValidityButton();
-        } else if (MaintainableArtefactProcStatusEnum.EXTERNAL_PUBLICATION_FAILED.equals(status)) {
+        } else if (ItemSchemeMetamacProcStatusEnum.EXTERNAL_PUBLICATION_FAILED.equals(status)) {
             showPublishExternallyButton();
         }
     }

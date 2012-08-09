@@ -4,7 +4,7 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
 import java.util.List;
 
-import org.siemac.metamac.srm.core.concept.dto.MetamacConceptSchemeDto;
+import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 import org.siemac.metamac.srm.web.concept.utils.RecordUtils;
 
@@ -62,10 +62,10 @@ public class HistorySectionStack extends SectionStack {
         setSections(section);
     }
 
-    public void setConceptSchemes(List<MetamacConceptSchemeDto> conceptSchemeDtos) {
+    public void setConceptSchemes(List<ConceptSchemeMetamacDto> conceptSchemeDtos) {
         listGrid.selectAllRecords();
         listGrid.removeSelectedData();
-        for (MetamacConceptSchemeDto conceptSchemeDto : conceptSchemeDtos) {
+        for (ConceptSchemeMetamacDto conceptSchemeDto : conceptSchemeDtos) {
             listGrid.addData(RecordUtils.getConceptSchemeRecord(conceptSchemeDto));
         }
     }

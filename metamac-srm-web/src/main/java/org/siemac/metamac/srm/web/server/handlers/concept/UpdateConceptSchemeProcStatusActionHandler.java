@@ -1,8 +1,8 @@
 package org.siemac.metamac.srm.web.server.handlers.concept;
 
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.srm.core.concept.dto.MetamacConceptSchemeDto;
-import org.siemac.metamac.srm.core.enume.domain.MaintainableArtefactProcStatusEnum;
+import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
+import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
 import org.siemac.metamac.srm.web.server.mock.ConceptSchemeService;
 import org.siemac.metamac.srm.web.shared.concept.UpdateConceptSchemeProcStatusAction;
 import org.siemac.metamac.srm.web.shared.concept.UpdateConceptSchemeProcStatusResult;
@@ -22,16 +22,16 @@ public class UpdateConceptSchemeProcStatusActionHandler extends SecurityActionHa
     @Override
     public UpdateConceptSchemeProcStatusResult executeSecurityAction(UpdateConceptSchemeProcStatusAction action) throws ActionException {
         try {
-            MetamacConceptSchemeDto scheme = null;
-            if (MaintainableArtefactProcStatusEnum.PRODUCTION_VALIDATION.equals(action.getProcStatus())) {
+            ConceptSchemeMetamacDto scheme = null;
+            if (ItemSchemeMetamacProcStatusEnum.PRODUCTION_VALIDATION.equals(action.getProcStatus())) {
                 scheme = ConceptSchemeService.sendToProductionValidation(action.getId());
-            } else if (MaintainableArtefactProcStatusEnum.DIFFUSION_VALIDATION.equals(action.getProcStatus())) {
+            } else if (ItemSchemeMetamacProcStatusEnum.DIFFUSION_VALIDATION.equals(action.getProcStatus())) {
                 scheme = ConceptSchemeService.sendToDiffusionValidation(action.getId());
-            } else if (MaintainableArtefactProcStatusEnum.VALIDATION_REJECTED.equals(action.getProcStatus())) {
+            } else if (ItemSchemeMetamacProcStatusEnum.VALIDATION_REJECTED.equals(action.getProcStatus())) {
                 scheme = ConceptSchemeService.reject(action.getId());
-            } else if (MaintainableArtefactProcStatusEnum.INTERNALLY_PUBLISHED.equals(action.getProcStatus())) {
+            } else if (ItemSchemeMetamacProcStatusEnum.INTERNALLY_PUBLISHED.equals(action.getProcStatus())) {
                 scheme = ConceptSchemeService.publishInternally(action.getId());
-            } else if (MaintainableArtefactProcStatusEnum.EXTERNALLY_PUBLISHED.equals(action.getProcStatus())) {
+            } else if (ItemSchemeMetamacProcStatusEnum.EXTERNALLY_PUBLISHED.equals(action.getProcStatus())) {
                 scheme = ConceptSchemeService.publishExternally(action.getId());
             }
             return new UpdateConceptSchemeProcStatusResult(scheme);

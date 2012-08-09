@@ -3,7 +3,7 @@ package org.siemac.metamac.srm.web.concept.widgets;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
-import org.siemac.metamac.srm.core.concept.dto.MetamacConceptDto;
+import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
@@ -47,8 +47,8 @@ public class NewConceptWindow extends CustomWindow {
         return form.getItem(FIELD_SAVE);
     }
 
-    public MetamacConceptDto getNewConceptDto() {
-        MetamacConceptDto conceptDto = new MetamacConceptDto();
+    public ConceptMetamacDto getNewConceptDto() {
+        ConceptMetamacDto conceptDto = new ConceptMetamacDto();
         conceptDto.setCode(form.getValueAsString(ConceptDS.CODE));
         conceptDto.setName(InternationalStringUtils.updateInternationalString(new InternationalStringDto(), form.getValueAsString(ConceptDS.NAME)));
         return conceptDto;

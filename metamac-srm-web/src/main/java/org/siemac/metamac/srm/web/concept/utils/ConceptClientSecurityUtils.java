@@ -1,15 +1,14 @@
 package org.siemac.metamac.srm.web.concept.utils;
 
-import org.siemac.metamac.srm.core.enume.domain.MaintainableArtefactProcStatusEnum;
+import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
+import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
 import org.siemac.metamac.srm.core.security.shared.SharedConceptSecurityUtils;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
-
-import com.arte.statistic.sdmx.v2_1.domain.enume.concept.domain.ConceptSchemeTypeEnum;
 
 public class ConceptClientSecurityUtils {
 
     // TODO Remove these attributes!!!
-    private static MaintainableArtefactProcStatusEnum procStatus = MaintainableArtefactProcStatusEnum.DRAFT;
+    private static ItemSchemeMetamacProcStatusEnum procStatus = ItemSchemeMetamacProcStatusEnum.DRAFT;
     private static ConceptSchemeTypeEnum              type       = ConceptSchemeTypeEnum.GLOSSARY;
     private static String                             operationCode;
 

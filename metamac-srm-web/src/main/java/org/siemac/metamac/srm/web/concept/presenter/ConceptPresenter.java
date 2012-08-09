@@ -4,7 +4,7 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
-import org.siemac.metamac.srm.core.concept.dto.MetamacConceptDto;
+import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
@@ -60,7 +60,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
 
     public interface ConceptView extends View, HasUiHandlers<ConceptUiHandlers> {
 
-        void setConcept(MetamacConceptDto conceptDto);
+        void setConcept(ConceptMetamacDto conceptDto);
     }
 
     @ContentSlot
@@ -116,7 +116,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     }
 
     @Override
-    public void saveConcept(MetamacConceptDto conceptDto) {
+    public void saveConcept(ConceptMetamacDto conceptDto) {
         dispatcher.execute(new SaveConceptAction(conceptDto), new WaitingAsyncCallback<SaveConceptResult>() {
 
             @Override

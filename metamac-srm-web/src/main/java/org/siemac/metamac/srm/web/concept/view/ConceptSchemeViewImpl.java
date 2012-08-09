@@ -10,9 +10,9 @@ import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.core.common.util.shared.VersionUtil;
-import org.siemac.metamac.srm.core.concept.dto.MetamacConceptDto;
-import org.siemac.metamac.srm.core.concept.dto.MetamacConceptSchemeDto;
-import org.siemac.metamac.srm.core.enume.domain.MaintainableArtefactProcStatusEnum;
+import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
+import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
+import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
@@ -96,7 +96,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
 
     private HistorySectionStack         historySectionStack;
 
-    private MetamacConceptSchemeDto     conceptSchemeDto;
+    private ConceptSchemeMetamacDto     conceptSchemeDto;
 
     private SearchExternalItemWindow    searchOperationsWindow;
 
@@ -230,8 +230,8 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
 
             @Override
             public void onClick(ClickEvent event) {
-                MaintainableArtefactProcStatusEnum status = conceptSchemeDto.getProcStatus();
-                if (MaintainableArtefactProcStatusEnum.INTERNALLY_PUBLISHED.equals(status) || MaintainableArtefactProcStatusEnum.EXTERNALLY_PUBLISHED.equals(status)) {
+                ItemSchemeMetamacProcStatusEnum status = conceptSchemeDto.getProcStatus();
+                if (ItemSchemeMetamacProcStatusEnum.INTERNALLY_PUBLISHED.equals(status) || ItemSchemeMetamacProcStatusEnum.EXTERNALLY_PUBLISHED.equals(status)) {
                     // Create a new version
                     final InformationWindow window = new InformationWindow(getMessages().conceptSchemeEditionInfo(), getMessages().conceptSchemeEditionInfoDetailedMessage());
                     window.show();
@@ -334,7 +334,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
     }
 
     @Override
-    public void setConceptScheme(MetamacConceptSchemeDto conceptScheme) {
+    public void setConceptScheme(ConceptSchemeMetamacDto conceptScheme) {
         this.conceptSchemeDto = conceptScheme;
 
         String defaultLocalized = InternationalStringUtils.getLocalisedString(conceptScheme.getName());
@@ -349,17 +349,17 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
     }
 
     @Override
-    public void setConceptList(List<MetamacConceptDto> conceptDtos) {
+    public void setConceptList(List<ConceptMetamacDto> conceptDtos) {
         conceptsListGrid.removeAllData();
         if (conceptDtos != null) {
-            for (MetamacConceptDto conceptDto : conceptDtos) {
+            for (ConceptMetamacDto conceptDto : conceptDtos) {
                 conceptsListGrid.addData(org.siemac.metamac.srm.web.concept.utils.RecordUtils.getConceptRecord(conceptDto));
             }
         }
     }
 
     @Override
-    public void setConceptSchemeHistoryList(List<MetamacConceptSchemeDto> conceptSchemeDtos) {
+    public void setConceptSchemeHistoryList(List<ConceptSchemeMetamacDto> conceptSchemeDtos) {
         historySectionStack.setConceptSchemes(conceptSchemeDtos);
     }
 
@@ -420,8 +420,8 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
                 // CODE cannot be modified if status is INTERNALLY_PUBLISHED, EXTERNALLY_PUBLISHED or EXTERNAL_PUBLICATION_FAILED or if version is greater then VERSION_INITIAL_VERSION (01.000)
-                if ((MaintainableArtefactProcStatusEnum.INTERNALLY_PUBLISHED.equals(conceptSchemeDto.getProcStatus())
-                        || MaintainableArtefactProcStatusEnum.EXTERNALLY_PUBLISHED.equals(conceptSchemeDto.getProcStatus()) || MaintainableArtefactProcStatusEnum.EXTERNAL_PUBLICATION_FAILED
+                if ((ItemSchemeMetamacProcStatusEnum.INTERNALLY_PUBLISHED.equals(conceptSchemeDto.getProcStatus())
+                        || ItemSchemeMetamacProcStatusEnum.EXTERNALLY_PUBLISHED.equals(conceptSchemeDto.getProcStatus()) || ItemSchemeMetamacProcStatusEnum.EXTERNAL_PUBLICATION_FAILED
                         .equals(conceptSchemeDto.getProcStatus()))
                         || (!VersionUtil.VERSION_INITIAL_VERSION.equals(conceptSchemeDto.getVersionLogic()) && !StringUtils.isBlank(conceptSchemeDto.getVersionLogic()))) {
                     return false;
@@ -488,7 +488,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         mainFormLayout.setEditionMode();
     }
 
-    public void setConceptSchemeViewMode(MetamacConceptSchemeDto conceptSchemeDto) {
+    public void setConceptSchemeViewMode(ConceptSchemeMetamacDto conceptSchemeDto) {
         // Identifiers
         identifiersForm.setValue(ConceptSchemeDS.CODE, conceptSchemeDto.getCode());
         identifiersForm.setValue(ConceptSchemeDS.URI, conceptSchemeDto.getUri());
@@ -512,7 +512,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         diffusionDescriptorsForm.setValue(ConceptSchemeDS.VALID_TO, DateUtils.getFormattedDate(conceptSchemeDto.getValidTo()));
     }
 
-    public void setConceptSchemeEditionMode(MetamacConceptSchemeDto conceptSchemeDto) {
+    public void setConceptSchemeEditionMode(ConceptSchemeMetamacDto conceptSchemeDto) {
         // Identifiers
         identifiersEditionForm.setValue(ConceptSchemeDS.CODE, conceptSchemeDto.getCode());
         identifiersEditionForm.setValue(ConceptSchemeDS.URI, conceptSchemeDto.getUri());
@@ -535,7 +535,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         diffusionDescriptorsEditionForm.setValue(ConceptSchemeDS.VALID_TO, DateUtils.getFormattedDate(conceptSchemeDto.getValidTo()));
     }
 
-    public MetamacConceptSchemeDto getConceptSchemeDto() {
+    public ConceptSchemeMetamacDto getConceptSchemeDto() {
         // Identifiers
         conceptSchemeDto.setName((InternationalStringDto) identifiersEditionForm.getValue(ConceptSchemeDS.NAME));
         // Content descriptors

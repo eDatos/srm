@@ -1,14 +1,14 @@
 package org.siemac.metamac.srm.web.concept.model.record;
 
-import org.siemac.metamac.srm.core.concept.dto.MetamacConceptSchemeDto;
-import org.siemac.metamac.srm.core.enume.domain.MaintainableArtefactProcStatusEnum;
+import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
+import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 
 public class ConceptSchemeRecord extends ListGridRecord {
 
-    public ConceptSchemeRecord(Long id, String code, String name, String description, String status, String versionLogic, String urn, MetamacConceptSchemeDto conceptSchemeDto) {
+    public ConceptSchemeRecord(Long id, String code, String name, String description, String status, String versionLogic, String urn, ConceptSchemeMetamacDto conceptSchemeDto) {
         setId(id);
         setCode(code);
         setName(name);
@@ -47,7 +47,7 @@ public class ConceptSchemeRecord extends ListGridRecord {
         setAttribute(ConceptSchemeDS.URN, value);
     }
 
-    public void setConceptSchemeDto(MetamacConceptSchemeDto conceptSchemeDto) {
+    public void setConceptSchemeDto(ConceptSchemeMetamacDto conceptSchemeDto) {
         setAttribute(ConceptSchemeDS.DTO, conceptSchemeDto);
     }
 
@@ -63,8 +63,8 @@ public class ConceptSchemeRecord extends ListGridRecord {
         return getAttribute(ConceptSchemeDS.NAME);
     }
 
-    public MaintainableArtefactProcStatusEnum getProcStatus() {
-        return ((MetamacConceptSchemeDto) getAttributeAsObject(ConceptSchemeDS.DTO)).getProcStatus();
+    public ItemSchemeMetamacProcStatusEnum getProcStatus() {
+        return ((ConceptSchemeMetamacDto) getAttributeAsObject(ConceptSchemeDS.DTO)).getProcStatus();
     }
 
     public String getDescription() {

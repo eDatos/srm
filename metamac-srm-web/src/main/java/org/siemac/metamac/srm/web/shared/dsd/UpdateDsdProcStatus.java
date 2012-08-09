@@ -1,6 +1,6 @@
 package org.siemac.metamac.srm.web.shared.dsd;
 
-import org.siemac.metamac.srm.core.enume.domain.MaintainableArtefactProcStatusEnum;
+import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;
 import com.gwtplatform.dispatch.annotation.GenDispatch;
@@ -14,7 +14,7 @@ public class UpdateDsdProcStatus {
     Long                               id;
 
     @In(2)
-    MaintainableArtefactProcStatusEnum procStatus;
+    ItemSchemeMetamacProcStatusEnum procStatus;
 
     @Out(1)
     DataStructureDefinitionDto         dataStructureDefinitionDto;

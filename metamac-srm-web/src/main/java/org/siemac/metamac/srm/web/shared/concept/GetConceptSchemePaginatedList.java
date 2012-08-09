@@ -2,7 +2,7 @@ package org.siemac.metamac.srm.web.shared.concept;
 
 import java.util.List;
 
-import org.siemac.metamac.srm.core.concept.dto.MetamacConceptSchemeDto;
+import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 
 import com.gwtplatform.dispatch.annotation.GenDispatch;
 import com.gwtplatform.dispatch.annotation.In;
@@ -21,7 +21,7 @@ public class GetConceptSchemePaginatedList {
     String                        conceptScheme;
 
     @Out(1)
-    List<MetamacConceptSchemeDto> conceptSchemeList;
+    List<ConceptSchemeMetamacDto> conceptSchemeList;
 
     @Out(2)
     Integer                       pageNumber;

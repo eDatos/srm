@@ -1,13 +1,13 @@
 package org.siemac.metamac.srm.web.dsd.utils;
 
-import org.siemac.metamac.srm.core.enume.domain.MaintainableArtefactProcStatusEnum;
+import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
 import org.siemac.metamac.srm.core.security.shared.SharedDsdSecurityUtils;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 
 public class DsdClientSecurityUtils {
 
     // TODO Remove this attribute!!!
-    private static MaintainableArtefactProcStatusEnum procStatus = MaintainableArtefactProcStatusEnum.DRAFT;
+    private static ItemSchemeMetamacProcStatusEnum procStatus = ItemSchemeMetamacProcStatusEnum.DRAFT;
 
     public static boolean canCreateDsd() {
         return SharedDsdSecurityUtils.canCreateDsd(MetamacSrmWeb.getCurrentUser());

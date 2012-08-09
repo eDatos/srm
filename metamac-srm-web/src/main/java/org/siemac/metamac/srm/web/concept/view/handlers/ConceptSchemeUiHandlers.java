@@ -2,8 +2,8 @@ package org.siemac.metamac.srm.web.concept.view.handlers;
 
 import java.util.List;
 
-import org.siemac.metamac.srm.core.concept.dto.MetamacConceptDto;
-import org.siemac.metamac.srm.core.concept.dto.MetamacConceptSchemeDto;
+import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
+import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 
 import com.gwtplatform.mvp.client.UiHandlers;
 
@@ -14,13 +14,13 @@ public interface ConceptSchemeUiHandlers extends UiHandlers {
     void retrieveConceptScheme(String conceptSchemeUrn);
     void retrieveConceptListByScheme(String conceptSchemeUrn);
     void retrieveConceptSchemeHistoryList(String conceptSchemeUrn);
-    void saveConceptScheme(MetamacConceptSchemeDto conceptScheme);
+    void saveConceptScheme(ConceptSchemeMetamacDto conceptScheme);
     void goToConceptScheme(String urn);
     void retrieveStatisticalOperations(int firstResult, int maxResults, String operation);
 
     // Concepts
 
-    void createConcept(MetamacConceptDto conceptDto);
+    void createConcept(ConceptMetamacDto conceptDto);
     void deleteConcepts(List<Long> conceptIds);
     void goToConcept(String urn);
 

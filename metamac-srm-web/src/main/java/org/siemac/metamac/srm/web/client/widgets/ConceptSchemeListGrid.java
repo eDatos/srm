@@ -4,7 +4,7 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
 import java.util.List;
 
-import org.siemac.metamac.srm.core.concept.dto.MetamacConceptSchemeDto;
+import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptSchemeRecord;
 import org.siemac.metamac.srm.web.concept.utils.RecordUtils;
@@ -56,7 +56,7 @@ public class ConceptSchemeListGrid extends BaseCustomListGrid {
         this.setFields(codeField, nameField, descriptionField);
     }
 
-    public void setConceptSchemes(List<MetamacConceptSchemeDto> conceptSchemeDtos) {
+    public void setConceptSchemes(List<ConceptSchemeMetamacDto> conceptSchemeDtos) {
         removeAllData();
         if (conceptSchemeDtos != null) {
             ConceptSchemeRecord[] schemeRecords = new ConceptSchemeRecord[conceptSchemeDtos.size()];

@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
-import org.siemac.metamac.srm.core.concept.dto.MetamacConceptSchemeDto;
-import org.siemac.metamac.srm.core.enume.domain.MaintainableArtefactProcStatusEnum;
+import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
+import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptSchemeRecord;
@@ -193,10 +193,10 @@ public class ConceptSchemeListViewImpl extends ViewImpl implements ConceptScheme
         conceptSchemesList.goToLastPageAfterCreate();
     }
 
-    private void setConceptSchemeList(List<MetamacConceptSchemeDto> conceptSchemesDtos) {
+    private void setConceptSchemeList(List<ConceptSchemeMetamacDto> conceptSchemesDtos) {
         ConceptSchemeRecord[] records = new ConceptSchemeRecord[conceptSchemesDtos.size()];
         int index = 0;
-        for (MetamacConceptSchemeDto scheme : conceptSchemesDtos) {
+        for (ConceptSchemeMetamacDto scheme : conceptSchemesDtos) {
             records[index++] = RecordUtils.getConceptSchemeRecord(scheme);
         }
         conceptSchemesList.getListGrid().setData(records);
@@ -257,7 +257,7 @@ public class ConceptSchemeListViewImpl extends ViewImpl implements ConceptScheme
         boolean allSelectedSchemesExternallyPublished = true;
         for (ListGridRecord record : records) {
             ConceptSchemeRecord conceptSchemeRecord = (ConceptSchemeRecord) record;
-            if (!MaintainableArtefactProcStatusEnum.EXTERNALLY_PUBLISHED.equals(conceptSchemeRecord.getProcStatus())) {
+            if (!ItemSchemeMetamacProcStatusEnum.EXTERNALLY_PUBLISHED.equals(conceptSchemeRecord.getProcStatus())) {
                 allSelectedSchemesExternallyPublished = false;
             }
         }

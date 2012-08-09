@@ -6,9 +6,9 @@ import java.util.List;
 
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
-import org.siemac.metamac.srm.core.concept.dto.MetamacConceptDto;
-import org.siemac.metamac.srm.core.concept.dto.MetamacConceptSchemeDto;
-import org.siemac.metamac.srm.core.enume.domain.MaintainableArtefactProcStatusEnum;
+import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
+import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
+import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
@@ -66,7 +66,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
     private final PlaceManager       placeManager;
     private ToolStripPresenterWidget toolStripPresenterWidget;
 
-    private MetamacConceptSchemeDto  conceptSchemeDto;
+    private ConceptSchemeMetamacDto  conceptSchemeDto;
 
     @TitleFunction
     public static String getTranslatedTitle() {
@@ -81,9 +81,9 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
 
     public interface ConceptSchemeView extends View, HasUiHandlers<ConceptSchemeUiHandlers> {
 
-        void setConceptScheme(MetamacConceptSchemeDto conceptSchemeDto);
-        void setConceptList(List<MetamacConceptDto> conceptDtos);
-        void setConceptSchemeHistoryList(List<MetamacConceptSchemeDto> conceptSchemeDtos);
+        void setConceptScheme(ConceptSchemeMetamacDto conceptSchemeDto);
+        void setConceptList(List<ConceptMetamacDto> conceptDtos);
+        void setConceptSchemeHistoryList(List<ConceptSchemeMetamacDto> conceptSchemeDtos);
         void setOperations(List<ExternalItemDto> operations, int firstResult, int totalResults);
     }
 
@@ -123,12 +123,12 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
         }
     }
 
-    private void setConceptScheme(MetamacConceptSchemeDto conceptScheme) {
+    private void setConceptScheme(ConceptSchemeMetamacDto conceptScheme) {
         getView().setConceptScheme(conceptScheme);
     }
 
     @Override
-    public void saveConceptScheme(MetamacConceptSchemeDto conceptScheme) {
+    public void saveConceptScheme(ConceptSchemeMetamacDto conceptScheme) {
         dispatcher.execute(new SaveConceptSchemeAction(conceptScheme), new WaitingAsyncCallback<SaveConceptSchemeResult>() {
 
             @Override
@@ -165,7 +165,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
 
     @Override
     public void sendToProductionValidation(Long id) {
-        dispatcher.execute(new UpdateConceptSchemeProcStatusAction(id, MaintainableArtefactProcStatusEnum.PRODUCTION_VALIDATION), new WaitingAsyncCallback<UpdateConceptSchemeProcStatusResult>() {
+        dispatcher.execute(new UpdateConceptSchemeProcStatusAction(id, ItemSchemeMetamacProcStatusEnum.PRODUCTION_VALIDATION), new WaitingAsyncCallback<UpdateConceptSchemeProcStatusResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -182,7 +182,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
 
     @Override
     public void sendToDiffusionValidation(Long id) {
-        dispatcher.execute(new UpdateConceptSchemeProcStatusAction(id, MaintainableArtefactProcStatusEnum.DIFFUSION_VALIDATION), new WaitingAsyncCallback<UpdateConceptSchemeProcStatusResult>() {
+        dispatcher.execute(new UpdateConceptSchemeProcStatusAction(id, ItemSchemeMetamacProcStatusEnum.DIFFUSION_VALIDATION), new WaitingAsyncCallback<UpdateConceptSchemeProcStatusResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -199,7 +199,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
 
     @Override
     public void rejectValidation(Long id) {
-        dispatcher.execute(new UpdateConceptSchemeProcStatusAction(id, MaintainableArtefactProcStatusEnum.VALIDATION_REJECTED), new WaitingAsyncCallback<UpdateConceptSchemeProcStatusResult>() {
+        dispatcher.execute(new UpdateConceptSchemeProcStatusAction(id, ItemSchemeMetamacProcStatusEnum.VALIDATION_REJECTED), new WaitingAsyncCallback<UpdateConceptSchemeProcStatusResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -216,7 +216,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
 
     @Override
     public void publishInternally(Long id) {
-        dispatcher.execute(new UpdateConceptSchemeProcStatusAction(id, MaintainableArtefactProcStatusEnum.INTERNALLY_PUBLISHED), new WaitingAsyncCallback<UpdateConceptSchemeProcStatusResult>() {
+        dispatcher.execute(new UpdateConceptSchemeProcStatusAction(id, ItemSchemeMetamacProcStatusEnum.INTERNALLY_PUBLISHED), new WaitingAsyncCallback<UpdateConceptSchemeProcStatusResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -233,7 +233,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
 
     @Override
     public void publishExternally(Long id) {
-        dispatcher.execute(new UpdateConceptSchemeProcStatusAction(id, MaintainableArtefactProcStatusEnum.EXTERNALLY_PUBLISHED), new WaitingAsyncCallback<UpdateConceptSchemeProcStatusResult>() {
+        dispatcher.execute(new UpdateConceptSchemeProcStatusAction(id, ItemSchemeMetamacProcStatusEnum.EXTERNALLY_PUBLISHED), new WaitingAsyncCallback<UpdateConceptSchemeProcStatusResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -266,7 +266,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
     }
 
     @Override
-    public void createConcept(MetamacConceptDto conceptDto) {
+    public void createConcept(ConceptMetamacDto conceptDto) {
         dispatcher.execute(new SaveConceptAction(conceptDto), new WaitingAsyncCallback<SaveConceptResult>() {
 
             @Override

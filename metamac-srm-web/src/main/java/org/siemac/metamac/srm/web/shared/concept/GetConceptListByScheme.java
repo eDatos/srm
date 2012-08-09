@@ -2,7 +2,7 @@ package org.siemac.metamac.srm.web.shared.concept;
 
 import java.util.List;
 
-import org.siemac.metamac.srm.core.concept.dto.MetamacConceptDto;
+import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 
 import com.gwtplatform.dispatch.annotation.GenDispatch;
 import com.gwtplatform.dispatch.annotation.In;
@@ -15,6 +15,6 @@ public class GetConceptListByScheme {
     String                  conceptSchemeUrn;
 
     @Out(1)
-    List<MetamacConceptDto> conceptDto;
+    List<ConceptMetamacDto> conceptDto;
 
 }

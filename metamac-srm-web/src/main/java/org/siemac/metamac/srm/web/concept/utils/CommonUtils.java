@@ -4,15 +4,14 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getCoreMessages;
 
 import java.util.LinkedHashMap;
 
-import org.siemac.metamac.srm.core.concept.dto.MetamacConceptSchemeDto;
+import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
+import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
-
-import com.arte.statistic.sdmx.v2_1.domain.enume.concept.domain.ConceptSchemeTypeEnum;
 
 public class CommonUtils {
 
-    public static String getConceptSchemeProcStatus(MetamacConceptSchemeDto conceptSchemeDto) {
-        return getCoreMessages().getString(getCoreMessages().maintainableArtefactProcStatusEnum() + conceptSchemeDto.getProcStatus().getName());
+    public static String getConceptSchemeProcStatus(ConceptSchemeMetamacDto conceptSchemeDto) {
+        return getCoreMessages().getString(getCoreMessages().itemSchemeMetamacProcStatusEnum() + conceptSchemeDto.getProcStatus().getName());
     }
 
     public static LinkedHashMap<String, String> getConceptSchemeTypeHashMap() {

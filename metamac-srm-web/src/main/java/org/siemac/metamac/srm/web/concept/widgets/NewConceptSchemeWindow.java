@@ -6,7 +6,8 @@ import java.util.List;
 
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
-import org.siemac.metamac.srm.core.concept.dto.MetamacConceptSchemeDto;
+import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
+import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 import org.siemac.metamac.srm.web.concept.utils.CommonUtils;
 import org.siemac.metamac.srm.web.concept.view.handlers.ConceptSchemeListUiHandlers;
@@ -21,7 +22,6 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredSelectIt
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.SearchExternalPaginatedItem;
 
-import com.arte.statistic.sdmx.v2_1.domain.enume.concept.domain.ConceptSchemeTypeEnum;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.FormItemIfFunction;
 import com.smartgwt.client.widgets.form.fields.FormItem;
@@ -111,8 +111,8 @@ public class NewConceptSchemeWindow extends CustomWindow {
         ((SearchExternalPaginatedItem) form.getItem(ConceptSchemeDS.RELATED_OPERATION)).refreshPaginationInfo(firstResult, elementsInPage, totalResults);
     }
 
-    public MetamacConceptSchemeDto getNewConceptSchemeDto() {
-        MetamacConceptSchemeDto conceptSchemeDto = new MetamacConceptSchemeDto();
+    public ConceptSchemeMetamacDto getNewConceptSchemeDto() {
+        ConceptSchemeMetamacDto conceptSchemeDto = new ConceptSchemeMetamacDto();
         conceptSchemeDto.setCode(form.getValueAsString(ConceptSchemeDS.CODE));
         conceptSchemeDto.setName(InternationalStringUtils.updateInternationalString(new InternationalStringDto(), form.getValueAsString(ConceptSchemeDS.NAME)));
         return conceptSchemeDto;

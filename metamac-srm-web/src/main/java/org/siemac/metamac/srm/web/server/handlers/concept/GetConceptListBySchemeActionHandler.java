@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.dto.LocalisedStringDto;
-import org.siemac.metamac.srm.core.concept.dto.MetamacConceptDto;
+import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptListBySchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptListBySchemeResult;
 import org.siemac.metamac.web.common.server.handlers.SecurityActionHandler;
@@ -30,12 +30,12 @@ public class GetConceptListBySchemeActionHandler extends SecurityActionHandler<G
         localisedStringDto.setLocale("es");
         name.addText(localisedStringDto);
 
-        MetamacConceptDto conceptDto = new MetamacConceptDto();
+        ConceptMetamacDto conceptDto = new ConceptMetamacDto();
         conceptDto.setId(1L);
         conceptDto.setCode("concept-0001");
         conceptDto.setName(name);
 
-        List<MetamacConceptDto> conceptDtos = new ArrayList<MetamacConceptDto>();
+        List<ConceptMetamacDto> conceptDtos = new ArrayList<ConceptMetamacDto>();
         conceptDtos.add(conceptDto);
 
         return new GetConceptListBySchemeResult(conceptDtos);
