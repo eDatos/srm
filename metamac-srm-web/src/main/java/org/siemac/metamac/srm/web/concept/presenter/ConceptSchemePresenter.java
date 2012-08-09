@@ -4,6 +4,7 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
 import java.util.List;
 
+import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.concept.dto.MetamacConceptDto;
 import org.siemac.metamac.srm.core.concept.dto.MetamacConceptSchemeDto;
@@ -25,6 +26,8 @@ import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeHistoryListAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeHistoryListResult;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeResult;
+import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsPaginatedListAction;
+import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsPaginatedListResult;
 import org.siemac.metamac.srm.web.shared.concept.SaveConceptAction;
 import org.siemac.metamac.srm.web.shared.concept.SaveConceptResult;
 import org.siemac.metamac.srm.web.shared.concept.SaveConceptSchemeAction;
@@ -81,6 +84,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
         void setConceptScheme(MetamacConceptSchemeDto conceptSchemeDto);
         void setConceptList(List<MetamacConceptDto> conceptDtos);
         void setConceptSchemeHistoryList(List<MetamacConceptSchemeDto> conceptSchemeDtos);
+        void setOperations(List<ExternalItemDto> operations, int firstResult, int totalResults);
     }
 
     @ContentSlot
@@ -332,6 +336,21 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
         if (!StringUtils.isBlank(urn)) {
             placeManager.revealRelativePlace(new PlaceRequest(NameTokens.conceptSchemePage).with(PlaceRequestParams.conceptSchemeParam, UrnUtils.removePrefix(urn)), -1);
         }
+    }
+
+    @Override
+    public void retrieveStatisticalOperations(int firstResult, int maxResults, String operation) {
+        dispatcher.execute(new GetStatisticalOperationsPaginatedListAction(firstResult, maxResults, operation), new WaitingAsyncCallback<GetStatisticalOperationsPaginatedListResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorRetrievingOperations()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetStatisticalOperationsPaginatedListResult result) {
+                getView().setOperations(result.getOperations(), result.getFirstResultOut(), result.getTotalResults());
+            }
+        });
     }
 
 }

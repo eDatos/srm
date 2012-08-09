@@ -16,6 +16,7 @@ public interface ConceptSchemeUiHandlers extends UiHandlers {
     void retrieveConceptSchemeHistoryList(String conceptSchemeUrn);
     void saveConceptScheme(MetamacConceptSchemeDto conceptScheme);
     void goToConceptScheme(String urn);
+    void retrieveStatisticalOperations(int firstResult, int maxResults, String operation);
 
     // Concepts
 
