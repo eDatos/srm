@@ -31,6 +31,8 @@ import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.core.common.ws.ServicesResolver;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
+import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
+import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.core.mapper.Do2DtoMapper;
 import org.siemac.metamac.srm.core.mapper.Dto2DoMapper;
@@ -46,14 +48,12 @@ import org.springframework.stereotype.Service;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Component;
 import com.arte.statistic.sdmx.srm.core.base.domain.ComponentList;
-import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.structure.domain.AttributeDescriptor;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DataStructureDefinition;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DimensionDescriptor;
 import com.arte.statistic.sdmx.srm.core.structure.domain.GroupDimensionDescriptor;
 import com.arte.statistic.sdmx.srm.core.structure.domain.MeasureDescriptor;
 import com.arte.statistic.sdmx.srm.core.structure.exception.DataStructureDefinitionNotFoundException;
-import com.arte.statistic.sdmx.v2_1.domain.dto.concept.ConceptSchemeDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentListDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataAttributeDto;
@@ -328,9 +328,9 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
      **************************************************************************/
 
     @Override
-    public ExternalItemDto findOrganisation(ServiceContext ctx, String uriOrganistaion) throws MetamacException {
-        // TODO find organistaion
-        return ServicesResolver.resolveOrganisation(uriOrganistaion);
+    public ExternalItemDto findOrganisation(ServiceContext ctx, String uriOrganisation) throws MetamacException {
+        // TODO find organization
+        return ServicesResolver.resolveOrganisation(uriOrganisation);
     }
 
     /**************************************************************************
@@ -402,43 +402,60 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
      * CONCEPTS
      *************************************************************************/
 
-    // TODO para qué?
+    // TODO REMOVE when DSDs were related to ConceptDtos (not to ExternalItemDtos)
     @Override
     public List<ExternalItemDto> findConceptSchemeRefs(ServiceContext ctx) {
         return ServicesResolver.findAllConceptSchemes();
     }
 
-    // TODO para qué?
+    // TODO REMOVE when DSDs were related to ConceptDtos (not to ExternalItemDtos)
     @Override
     public List<ExternalItemDto> findConcepts(ServiceContext ctx, String uriConceptScheme) {
         return ServicesResolver.retrieveConceptScheme(uriConceptScheme);
     }
 
     @Override
-    public ConceptSchemeDto createConceptScheme(ServiceContext ctx, ConceptSchemeDto conceptSchemeDto) throws MetamacException {
-        // Security TODO
+    public ConceptSchemeMetamacDto createConceptScheme(ServiceContext ctx, ConceptSchemeMetamacDto conceptSchemeDto) throws MetamacException {
+        // TODO Security
 
         // Transform
-        ConceptSchemeVersion conceptSchemeVersion = dto2DoMapper.conceptSchemeDtoToDo(ctx, conceptSchemeDto);
+        ConceptSchemeVersionMetamac conceptSchemeVersion = dto2DoMapper.conceptSchemeDtoToDo(ctx, conceptSchemeDto);
 
         // Create
-        ConceptSchemeVersion conceptSchemeVersionCreated = getConceptsService().createConceptScheme(ctx, conceptSchemeVersion);
+        // TODO ConceptSchemeVersionMetamac conceptSchemeVersionCreated = (ConceptSchemeVersionMetamac) getConceptsService().createConceptScheme(ctx, conceptSchemeVersion);
 
-        // Transform to Dto
-        conceptSchemeDto = do2DtoMapper.conceptSchemeDoToDto(conceptSchemeVersionCreated);
+        // Transform to DTO
+        // conceptSchemeDto = do2DtoMapper.conceptSchemeMetamacDoToDto(conceptSchemeVersionCreated);
         return conceptSchemeDto;
     }
 
     @Override
     public void deleteConceptScheme(ServiceContext ctx, String urn) throws MetamacException {
-        // TODO security
+        // TODO Security
 
         // Delete
-        getConceptsService().deleteConceptScheme(ctx, urn);
+        // TODO getConceptsMetamacService().deleteConceptScheme(ctx, urn);
+    }
+
+    @Override
+    public MetamacCriteriaResult<ConceptSchemeMetamacDto> findConceptSchemesByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
+        // TODO Security
+
+        // Transform
+        SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptSchemeMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
+
+        // Find
+        PagedResult<ConceptSchemeVersionMetamac> result = getConceptsMetamacService().findConceptSchemesByCondition(ctx, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
+
+        // Transform
+        MetamacCriteriaResult<ConceptSchemeMetamacDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultConceptSchemeVersion(result,
+                sculptorCriteria.getPageSize());
+
+        return metamacCriteriaResult;
     }
 
     /**************************************************************************
-     * PRIVATE
+     * PRIVATE METHODS
      *************************************************************************/
 
     private DataStructureDefinition loadDsdById(ServiceContext ctx, Long idDsd) throws MetamacException {

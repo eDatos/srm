@@ -40,6 +40,9 @@ Application ConceptsMetamac {
 			"Related operation, only when type is Operation"
 			- @ExternalItem relatedOperation nullable cascade="all" databaseColumn="RELATED_OPERATION_FK";
 			
+			"Last update to optimistic locking"
+			DateTimeTZ updateDateMetamac nullable;
+			
 			Repository ConceptSchemeVersionMetamacRepository {
 				findByCondition(PagingParameter pagingParameter);
 			}			

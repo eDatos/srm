@@ -17,6 +17,9 @@ Application DtosMetamacConceptDomain {
 			- @ConceptSchemeTypeEnum type required;
 			"Related operation, only when type is Operation"
 			- @ExternalItemDto relatedOperation nullable;
+			
+			"Version to optimistic locking"
+			Long versionOptimisticLocking;
 		}
 
 		"Dto for ConceptMetamacDto"
@@ -29,6 +32,9 @@ Application DtosMetamacConceptDomain {
 			- @InternationalStringDto docMethod nullable;
 			- @InternationalStringDto derivation nullable;
 			- @InternationalStringDto legalActs nullable;
+			
+			"Version to optimistic locking"
+			Long versionOptimisticLocking;
 		}
 	}
 }

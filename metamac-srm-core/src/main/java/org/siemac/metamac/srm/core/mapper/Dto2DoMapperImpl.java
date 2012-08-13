@@ -2,14 +2,14 @@ package org.siemac.metamac.srm.core.mapper;
 
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
+import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Component;
 import com.arte.statistic.sdmx.srm.core.base.domain.ComponentList;
-import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DataStructureDefinition;
-import com.arte.statistic.sdmx.v2_1.domain.dto.concept.ConceptSchemeDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentListDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;
@@ -37,8 +37,8 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
     }
 
     @Override
-    public ConceptSchemeVersion conceptSchemeDtoToDo(ServiceContext ctx, ConceptSchemeDto conceptSchemeDto) throws MetamacException {
-        return dto2DoMapperSdmxSrm.conceptSchemeDtoToDo(ctx, conceptSchemeDto);
+    public ConceptSchemeVersionMetamac conceptSchemeDtoToDo(ServiceContext ctx, ConceptSchemeMetamacDto conceptSchemeDto) throws MetamacException {
+        return (ConceptSchemeVersionMetamac) dto2DoMapperSdmxSrm.conceptSchemeDtoToDo(ctx, conceptSchemeDto);
     }
 
 }

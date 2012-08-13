@@ -26,7 +26,7 @@ Application SrmCore {
        		> @BaseService
        		> @DataStructureDefinitionService
        		> @TransformationServiceFacade
-       		> @ConceptsService
+       		> @ConceptsMetamacService
 
 			"          
 			 @param ctx  
@@ -170,7 +170,7 @@ Application SrmCore {
 			 @param ctx  
 			 @return     
        		"
-       		@ExternalItemDto findOrganisation(String uriOrganistaion) throws MetamacException;
+       		@ExternalItemDto findOrganisation(String uriOrganisation) throws MetamacException;
        		
        		/**************************************************************************
 		     * CODELIST
@@ -200,10 +200,10 @@ Application SrmCore {
        		List<@ExternalItemDto> findConcepts(String uriConceptScheme);
        		
 	   		
-	   		@ConceptSchemeDto createConceptScheme(@ConceptSchemeDto conceptSchemeDto) throws MetamacException;
+	   		@ConceptSchemeMetamacDto createConceptScheme(@ConceptSchemeMetamacDto conceptSchemeDto) throws MetamacException;
 //            @ConceptSchemeDto updateConceptScheme(@ConceptSchemeDto conceptSchemeDto) throws MetamacException;
             deleteConceptScheme(String urn) throws MetamacException;
-//            List<@ConceptSchemeDto> findAllConceptSchemes  throws MetamacException;
+            MetamacCriteriaResult<@ConceptSchemeMetamacDto> findConceptSchemesByCondition(MetamacCriteria criteria) throws MetamacException;
 //            @ConceptSchemeDto retrieveConceptScheme(Long id) throws MetamacException;
 //            @ConceptSchemeDto sendConceptSchemeToPendingPublication throws MetamacException;
 //            @ConceptSchemeDto publishConceptSchemeInternally(Long conceptSchemeId) throws MetamacException;

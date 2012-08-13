@@ -1,6 +1,7 @@
 package org.siemac.metamac.srm.core.mapper;
 
 import org.siemac.metamac.core.common.criteria.mapper.MetamacCriteria2SculptorCriteria;
+import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -19,4 +20,9 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
         return metamacCriteria2SculptorCriteriaMapperSdmxSrm.getDataStructureDefinitionCriteriaMapper();
     }
 
+    @Override
+    public MetamacCriteria2SculptorCriteria<ConceptSchemeVersionMetamac> getConceptSchemeMetamacCriteriaMapper() {
+        // metamacCriteria2SculptorCriteriaMapperSdmxSrm.get
+        return null;
+    }
 }
