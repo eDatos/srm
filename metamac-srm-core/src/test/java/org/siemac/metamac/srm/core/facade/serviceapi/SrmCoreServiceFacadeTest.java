@@ -33,6 +33,7 @@ import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.dto.LocalisedStringDto;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.jaxb.CustomJaxb2Marshaller;
+import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.criteria.DataStructureDefinitionCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.facade.serviceapi.utils.SrmDtoMocks;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +45,6 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.arte.statistic.sdmx.srm.core.base.serviceapi.BaseService;
-import com.arte.statistic.sdmx.srm.core.common.SdmxSrmBaseTest;
 import com.arte.statistic.sdmx.srm.core.facade.serviceapi.utils.SdmxResources;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;
@@ -64,7 +64,7 @@ import com.arte.statistic.sdmx.v2_1.domain.jaxb.message.Structure;
 @ContextConfiguration(locations = {"classpath:spring/srm/applicationContext-test.xml"})
 @TransactionConfiguration(transactionManager = "txManagerCore", defaultRollback = true)
 @Transactional
-public class SrmCoreServiceFacadeTest extends SdmxSrmBaseTest /* implements SrmCoreServiceFacadeTestBase */{
+public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServiceFacadeTestBase {
 
     @Autowired
     protected SrmCoreServiceFacade srmCoreServiceFacade;
@@ -578,5 +578,29 @@ public class SrmCoreServiceFacadeTest extends SdmxSrmBaseTest /* implements SrmC
     public void testFindOrganisation() throws Exception {
         // TODO Auto-generated method stub
 
+    }
+
+    @Override
+    public void testRetrieveDsdByUrn() throws Exception {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void testCreateConceptScheme() throws Exception {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void testDeleteConceptScheme() throws Exception {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void testFindConceptSchemesByCondition() throws Exception {
+        // TODO Auto-generated method stub
+        
     }
 }
