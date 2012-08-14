@@ -18,9 +18,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import com.arte.statistic.sdmx.srm.core.common.error.ServiceExceptionType;
-import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptSchemeVersion;
-import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptSchemeVersionProperties;
-import com.arte.statistic.sdmx.srm.core.criteria.ConceptSchemeVersionCriteriaPropertyEnum;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DataStructureDefinition;
 
 @Component("metamacCriteria2SculptorCriteriaMapperSrm")
@@ -38,7 +35,7 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
 
     public MetamacCriteria2SculptorCriteriaMapperImpl() throws MetamacException {
         conceptSchemeMetamacMapper = new MetamacCriteria2SculptorCriteria<ConceptSchemeVersionMetamac>(ConceptSchemeVersionMetamac.class, ConceptSchemeVersionMetamacCriteriaOrderEnum.class,
-                ConceptSchemeVersionCriteriaPropertyEnum.class, new ConceptSchemeVersionMetamacCriteriaCallback());
+                ConceptSchemeVersionMetamacCriteriaPropertyEnum.class, new ConceptSchemeVersionMetamacCriteriaCallback());
     }
 
     /**************************************************************************
@@ -97,8 +94,8 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
         }
 
         @Override
-        public Property<ConceptSchemeVersion> retrievePropertyOrderDefault() throws MetamacException {
-            return ConceptSchemeVersionProperties.id();
+        public Property<ConceptSchemeVersionMetamac> retrievePropertyOrderDefault() throws MetamacException {
+            return ConceptSchemeVersionMetamacProperties.id();
         }
 
     }
