@@ -18,7 +18,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import com.arte.statistic.sdmx.srm.core.common.error.ServiceExceptionType;
-import com.arte.statistic.sdmx.srm.core.structure.domain.DataStructureDefinition;
+import com.arte.statistic.sdmx.srm.core.structure.domain.DataStructureDefinitionVersion;
 
 @Component("metamacCriteria2SculptorCriteriaMapperSrm")
 public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriteria2SculptorCriteriaMapper {
@@ -43,7 +43,7 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
      **************************************************************************/
 
     @Override
-    public MetamacCriteria2SculptorCriteria<DataStructureDefinition> getDataStructureDefinitionCriteriaMapper() {
+    public MetamacCriteria2SculptorCriteria<DataStructureDefinitionVersion> getDataStructureDefinitionCriteriaMapper() {
         return metamacCriteria2SculptorCriteriaMapperSdmxSrm.getDataStructureDefinitionCriteriaMapper();
     }
 
