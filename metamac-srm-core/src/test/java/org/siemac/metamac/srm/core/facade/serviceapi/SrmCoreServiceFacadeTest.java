@@ -51,6 +51,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.arte.statistic.sdmx.srm.core.base.serviceapi.BaseService;
 import com.arte.statistic.sdmx.srm.core.facade.serviceapi.utils.SdmxResources;
+import com.arte.statistic.sdmx.v2_1.domain.dto.concept.ConceptSchemeDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionExtendDto;
@@ -613,6 +614,7 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServ
         order.setPropertyName(ConceptSchemeVersionMetamacCriteriaPropertyEnum.URN.name());
         metamacCriteria.setOrdersBy(new ArrayList<MetamacCriteriaOrder>());
         metamacCriteria.getOrdersBy().add(order);
+        
         // Pagination
         metamacCriteria.setPaginator(new MetamacCriteriaPaginator());
         metamacCriteria.getPaginator().setFirstResult(0);
@@ -620,6 +622,12 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServ
 
         MetamacCriteriaResult<ConceptSchemeMetamacDto> result = srmCoreServiceFacade.findConceptSchemesByCondition(serviceContext, metamacCriteria);
 
-        assertEquals(3, result.getPaginatorResult().getTotalResults().intValue());
+        assertEquals(4, result.getPaginatorResult().getTotalResults().intValue());
+        
+        String firstUrn = ((ConceptSchemeMetamacDto)result.getResults().iterator().next()).getUrn();
+        
+        for (ConceptSchemeDto conceptSchemeDto: result.getResults()) {
+            assertTrue((conceptSchemeDto.getUrn().compareTo(firstUrn) == 0) ||(conceptSchemeDto.getUrn().compareTo(firstUrn) > 0) );
+        }
     }
 }
