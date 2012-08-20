@@ -204,7 +204,7 @@ Application SrmCore {
 //            @ConceptSchemeDto updateConceptScheme(@ConceptSchemeDto conceptSchemeDto) throws MetamacException;
             deleteConceptScheme(String urn) throws MetamacException;
             MetamacCriteriaResult<@ConceptSchemeMetamacDto> findConceptSchemesByCondition(MetamacCriteria criteria) throws MetamacException;
-//            @ConceptSchemeDto retrieveConceptScheme(Long id) throws MetamacException;
+            @ConceptSchemeMetamacDto retrieveConceptSchemeByUrn(String urn) throws MetamacException;
 //            @ConceptSchemeDto sendConceptSchemeToPendingPublication throws MetamacException;
 //            @ConceptSchemeDto publishConceptSchemeInternally(Long conceptSchemeId) throws MetamacException;
 //            @ConceptSchemeDto publishConceptSchemeExternally(Long conceptSchemeId) throws MetamacException;

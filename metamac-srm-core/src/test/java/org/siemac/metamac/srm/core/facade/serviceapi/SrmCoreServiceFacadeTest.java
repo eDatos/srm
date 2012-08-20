@@ -37,6 +37,8 @@ import org.siemac.metamac.core.common.dto.LocalisedStringDto;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.jaxb.CustomJaxb2Marshaller;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
+import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
+import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.core.criteria.ConceptSchemeVersionMetamacCriteriaPropertyEnum;
@@ -92,10 +94,11 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServ
     @Qualifier("mapperCoreUpdateMode")
     private DozerBeanMapper        mapper;
 
-    private String                 CONCEPT_SCHEME_1_V1 = "urn:sdmx:org.sdmx.infomodel.concepscheme.ConceptScheme=ISTAC:CONCEPTSCHEME01(01.000)";
-    private String                 CONCEPT_SCHEME_1_V2 = "urn:sdmx:org.sdmx.infomodel.concepscheme.ConceptScheme=ISTAC:CONCEPTSCHEME01(02.000)";
-    private String                 CONCEPT_SCHEME_2_V1 = "urn:sdmx:org.sdmx.infomodel.concepscheme.ConceptScheme=ISTAC:CONCEPTSCHEME02(01.000)";
-    private String                 CONCEPT_SCHEME_3_V1 = "urn:sdmx:org.sdmx.infomodel.concepscheme.ConceptScheme=ISTAC:CONCEPTSCHEME03(01.000)";
+    private static final String    CONCEPT_SCHEME_1_V1 = "urn:sdmx:org.sdmx.infomodel.concepscheme.ConceptScheme=ISTAC:CONCEPTSCHEME01(01.000)";
+    private static final String    CONCEPT_SCHEME_1_V2 = "urn:sdmx:org.sdmx.infomodel.concepscheme.ConceptScheme=ISTAC:CONCEPTSCHEME01(02.000)";
+    private static final String    CONCEPT_SCHEME_2_V1 = "urn:sdmx:org.sdmx.infomodel.concepscheme.ConceptScheme=ISTAC:CONCEPTSCHEME02(01.000)";
+    private static final String    CONCEPT_SCHEME_3_V1 = "urn:sdmx:org.sdmx.infomodel.concepscheme.ConceptScheme=ISTAC:CONCEPTSCHEME03(01.000)";
+    private static final String    NOT_EXISTS          = "not-exists";
 
     private final ServiceContext   serviceContext      = new ServiceContext("system", "123456", "junit");
 
@@ -599,6 +602,63 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServ
 
     }
 
+    /**************************************************************************
+     * CONCEPTS
+     **************************************************************************/
+
+    @Test
+    public void testRetrieveConceptSchemeByUrn() throws Exception {
+        ConceptSchemeMetamacDto conceptSchemeMetamacDto = srmCoreServiceFacade.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_1_V1);
+        assertEquals(CONCEPT_SCHEME_1_V1, conceptSchemeMetamacDto.getUrn());
+        assertEquals("CONCEPTSCHEME01", conceptSchemeMetamacDto.getCode());
+        assertEquals(ItemSchemeMetamacProcStatusEnum.INTERNALLY_PUBLISHED, conceptSchemeMetamacDto.getProcStatus());
+
+        assertEquals(ConceptSchemeTypeEnum.OPERATION, conceptSchemeMetamacDto.getType());
+        assertEquals("op1", conceptSchemeMetamacDto.getRelatedOperation().getCode());
+        assertEquals("http://op1", conceptSchemeMetamacDto.getRelatedOperation().getUri());
+        assertEquals("urn:op1", conceptSchemeMetamacDto.getRelatedOperation().getUrn());
+        assertEquals("http://app/operations", conceptSchemeMetamacDto.getRelatedOperation().getManagementAppUrl());
+        assertEquals(1, conceptSchemeMetamacDto.getRelatedOperation().getVersion().longValue());
+    }
+
+    @Test
+    public void testRetrieveConceptSchemeByUrnWithoutRelatedOperation() throws Exception {
+        ConceptSchemeMetamacDto conceptSchemeMetamacDto = srmCoreServiceFacade.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_3_V1);
+        assertEquals(CONCEPT_SCHEME_3_V1, conceptSchemeMetamacDto.getUrn());
+        assertEquals(ItemSchemeMetamacProcStatusEnum.INTERNALLY_PUBLISHED, conceptSchemeMetamacDto.getProcStatus());
+
+        assertEquals(ConceptSchemeTypeEnum.ROLE, conceptSchemeMetamacDto.getType());
+        assertNull(conceptSchemeMetamacDto.getRelatedOperation());
+    }
+
+    @Test
+    public void testRetrieveConceptSchemeByUrnErrorParameterRequired() throws Exception {
+        String urn = null;
+        try {
+            srmCoreServiceFacade.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), urn);
+            fail("parameter required");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.PARAMETER_REQUIRED.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(ServiceExceptionParameters.URN, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
+    @Test
+    public void testRetrieveIndicatorErrorNotExists() throws Exception {
+        String urn = NOT_EXISTS;
+        try {
+            srmCoreServiceFacade.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), urn);
+            fail("parameter required");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.CONCEPT_SCHEME_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
     @Override
     public void testCreateConceptScheme() throws Exception {
         // TODO Auto-generated method stub
@@ -627,11 +687,11 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServ
         metamacCriteria.getPaginator().setFirstResult(0);
         metamacCriteria.getPaginator().setMaximumResultSize(Integer.MAX_VALUE);
 
-        MetamacCriteriaResult<ConceptSchemeMetamacDto> result = srmCoreServiceFacade.findConceptSchemesByCondition(serviceContext, metamacCriteria);
+        MetamacCriteriaResult<ConceptSchemeMetamacDto> result = srmCoreServiceFacade.findConceptSchemesByCondition(getServiceContextAdministrador(), metamacCriteria);
 
         assertEquals(4, result.getPaginatorResult().getTotalResults().intValue());
 
-        String firstUrn = ((ConceptSchemeMetamacDto) result.getResults().iterator().next()).getUrn();
+        String firstUrn = result.getResults().get(0).getUrn();
         for (ConceptSchemeDto conceptSchemeDto : result.getResults()) {
             assertTrue((conceptSchemeDto.getUrn().compareTo(firstUrn) == 0) || (conceptSchemeDto.getUrn().compareTo(firstUrn) > 0));
         }
@@ -646,7 +706,7 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServ
             assertNull(conceptSchemeMetamacDto.getReplaceTo());
 
             assertEquals(ConceptSchemeTypeEnum.OPERATION, conceptSchemeMetamacDto.getType());
-            assertEquals(13, conceptSchemeMetamacDto.getRelatedOperation().getId().longValue());
+            assertEquals("urn:op1", conceptSchemeMetamacDto.getRelatedOperation().getUrn());
             assertEquals(ItemSchemeMetamacProcStatusEnum.INTERNALLY_PUBLISHED, conceptSchemeMetamacDto.getProcStatus());
         }
         {

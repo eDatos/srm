@@ -44,12 +44,12 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
     @Override
     public ConceptSchemeVersionMetamac retrieveConceptSchemeByUrn(ServiceContext ctx, String urn) throws MetamacException {
-        return retrieveConceptSchemeMetamacByUrn(ctx, urn);
+        return (ConceptSchemeVersionMetamac) conceptsService.retrieveConceptSchemeByUrn(ctx, urn);
     }
 
     @Override
     public PagedResult<ConceptSchemeVersionMetamac> findConceptSchemesByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
-        
+
         // Validation
         ConceptsMetamacInvocationValidator.checkFindConceptSchemesByCondition(conditions, pagingParameter, null);
 
@@ -61,7 +61,4 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         return conceptSchemeVersionPagedResult;
     }
 
-    private ConceptSchemeVersionMetamac retrieveConceptSchemeMetamacByUrn(ServiceContext ctx, String urn) throws MetamacException {
-        return (ConceptSchemeVersionMetamac) conceptsService.retrieveConceptSchemeByUrn(ctx, urn);
-    }
 }
