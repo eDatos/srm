@@ -38,8 +38,10 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.jaxb.CustomJaxb2Marshaller;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
+import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.core.criteria.ConceptSchemeVersionMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.criteria.DataStructureDefinitionCriteriaPropertyEnum;
+import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
 import org.siemac.metamac.srm.core.facade.serviceapi.utils.SrmDtoMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -90,7 +92,12 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServ
     @Qualifier("mapperCoreUpdateMode")
     private DozerBeanMapper        mapper;
 
-    private final ServiceContext   serviceContext = new ServiceContext("system", "123456", "junit");
+    private String                 CONCEPT_SCHEME_1_V1 = "urn:sdmx:org.sdmx.infomodel.concepscheme.ConceptScheme=ISTAC:CONCEPTSCHEME01(01.000)";
+    private String                 CONCEPT_SCHEME_1_V2 = "urn:sdmx:org.sdmx.infomodel.concepscheme.ConceptScheme=ISTAC:CONCEPTSCHEME01(02.000)";
+    private String                 CONCEPT_SCHEME_2_V1 = "urn:sdmx:org.sdmx.infomodel.concepscheme.ConceptScheme=ISTAC:CONCEPTSCHEME02(01.000)";
+    private String                 CONCEPT_SCHEME_3_V1 = "urn:sdmx:org.sdmx.infomodel.concepscheme.ConceptScheme=ISTAC:CONCEPTSCHEME03(01.000)";
+
+    private final ServiceContext   serviceContext      = new ServiceContext("system", "123456", "junit");
 
     protected ServiceContext getServiceContext() {
         return serviceContext;
@@ -614,7 +621,7 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServ
         order.setPropertyName(ConceptSchemeVersionMetamacCriteriaPropertyEnum.URN.name());
         metamacCriteria.setOrdersBy(new ArrayList<MetamacCriteriaOrder>());
         metamacCriteria.getOrdersBy().add(order);
-        
+
         // Pagination
         metamacCriteria.setPaginator(new MetamacCriteriaPaginator());
         metamacCriteria.getPaginator().setFirstResult(0);
@@ -623,11 +630,141 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServ
         MetamacCriteriaResult<ConceptSchemeMetamacDto> result = srmCoreServiceFacade.findConceptSchemesByCondition(serviceContext, metamacCriteria);
 
         assertEquals(4, result.getPaginatorResult().getTotalResults().intValue());
-        
-        String firstUrn = ((ConceptSchemeMetamacDto)result.getResults().iterator().next()).getUrn();
-        
-        for (ConceptSchemeDto conceptSchemeDto: result.getResults()) {
-            assertTrue((conceptSchemeDto.getUrn().compareTo(firstUrn) == 0) ||(conceptSchemeDto.getUrn().compareTo(firstUrn) > 0) );
+
+        String firstUrn = ((ConceptSchemeMetamacDto) result.getResults().iterator().next()).getUrn();
+        for (ConceptSchemeDto conceptSchemeDto : result.getResults()) {
+            assertTrue((conceptSchemeDto.getUrn().compareTo(firstUrn) == 0) || (conceptSchemeDto.getUrn().compareTo(firstUrn) > 0));
+        }
+
+        {
+            ConceptSchemeMetamacDto conceptSchemeMetamacDto = result.getResults().get(0);
+            assertEquals(CONCEPT_SCHEME_1_V1, conceptSchemeMetamacDto.getUrn());
+            assertEquals("CONCEPTSCHEME01", conceptSchemeMetamacDto.getCode());
+            assertTrue(conceptSchemeMetamacDto.getFinalLogic());
+            assertEquals("01.000", conceptSchemeMetamacDto.getVersionLogic());
+            assertEquals("02.000", conceptSchemeMetamacDto.getReplacedBy());
+            assertNull(conceptSchemeMetamacDto.getReplaceTo());
+
+            assertEquals(ConceptSchemeTypeEnum.OPERATION, conceptSchemeMetamacDto.getType());
+            assertEquals(13, conceptSchemeMetamacDto.getRelatedOperation().getId().longValue());
+            assertEquals(ItemSchemeMetamacProcStatusEnum.INTERNALLY_PUBLISHED, conceptSchemeMetamacDto.getProcStatus());
+        }
+        {
+            ConceptSchemeMetamacDto conceptSchemeMetamacDto = result.getResults().get(1);
+            assertEquals(CONCEPT_SCHEME_1_V2, conceptSchemeMetamacDto.getUrn());
+            assertEquals("CONCEPTSCHEME01", conceptSchemeMetamacDto.getCode());
+            assertTrue(conceptSchemeMetamacDto.getFinalLogic());
+            assertEquals("02.000", conceptSchemeMetamacDto.getVersionLogic());
+            assertNull(conceptSchemeMetamacDto.getReplacedBy());
+            assertEquals("01.000", conceptSchemeMetamacDto.getReplaceTo());
+
+            assertEquals(ConceptSchemeTypeEnum.GLOSSARY, conceptSchemeMetamacDto.getType());
+            assertNull(conceptSchemeMetamacDto.getRelatedOperation());
+            assertEquals(ItemSchemeMetamacProcStatusEnum.DRAFT, conceptSchemeMetamacDto.getProcStatus());
+        }
+        {
+            ConceptSchemeMetamacDto conceptSchemeMetamacDto = result.getResults().get(2);
+            assertEquals(CONCEPT_SCHEME_2_V1, conceptSchemeMetamacDto.getUrn());
+            assertEquals("CONCEPTSCHEME02", conceptSchemeMetamacDto.getCode());
+            assertTrue(conceptSchemeMetamacDto.getFinalLogic());
+            assertEquals("01.000", conceptSchemeMetamacDto.getVersionLogic());
+            assertNull(conceptSchemeMetamacDto.getReplacedBy());
+            assertNull(conceptSchemeMetamacDto.getReplaceTo());
+
+            assertEquals(ConceptSchemeTypeEnum.ROLE, conceptSchemeMetamacDto.getType());
+            assertNull(conceptSchemeMetamacDto.getRelatedOperation());
+            assertEquals(ItemSchemeMetamacProcStatusEnum.DRAFT, conceptSchemeMetamacDto.getProcStatus());
+        }
+        {
+            ConceptSchemeMetamacDto conceptSchemeMetamacDto = result.getResults().get(3);
+            assertEquals(CONCEPT_SCHEME_3_V1, conceptSchemeMetamacDto.getUrn());
+            assertEquals("CONCEPTSCHEME03", conceptSchemeMetamacDto.getCode());
+            assertTrue(conceptSchemeMetamacDto.getFinalLogic());
+            assertEquals("01.000", conceptSchemeMetamacDto.getVersionLogic());
+            assertNull(conceptSchemeMetamacDto.getReplacedBy());
+            assertNull(conceptSchemeMetamacDto.getReplaceTo());
+
+            assertEquals(ConceptSchemeTypeEnum.ROLE, conceptSchemeMetamacDto.getType());
+            assertNull(conceptSchemeMetamacDto.getRelatedOperation());
+            assertEquals(ItemSchemeMetamacProcStatusEnum.INTERNALLY_PUBLISHED, conceptSchemeMetamacDto.getProcStatus());
         }
     }
+
+    @Test
+    public void testFindConceptSchemesByProcStatus() throws Exception {
+        MetamacCriteria metamacCriteria = new MetamacCriteria();
+        // Order
+        MetamacCriteriaOrder order = new MetamacCriteriaOrder();
+        order.setType(OrderTypeEnum.ASC);
+        order.setPropertyName(ConceptSchemeVersionMetamacCriteriaPropertyEnum.URN.name());
+        metamacCriteria.setOrdersBy(new ArrayList<MetamacCriteriaOrder>());
+        metamacCriteria.getOrdersBy().add(order);
+
+        // Pagination
+        metamacCriteria.setPaginator(new MetamacCriteriaPaginator());
+        metamacCriteria.getPaginator().setFirstResult(0);
+        metamacCriteria.getPaginator().setMaximumResultSize(Integer.MAX_VALUE);
+
+        {
+            MetamacCriteriaPropertyRestriction propertyRestriction = new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.PROC_STATUS.name(),
+                    ItemSchemeMetamacProcStatusEnum.DRAFT, OperationType.EQ);
+            metamacCriteria.setRestriction(propertyRestriction);
+
+            MetamacCriteriaResult<ConceptSchemeMetamacDto> result = srmCoreServiceFacade.findConceptSchemesByCondition(serviceContext, metamacCriteria);
+
+            assertEquals(2, result.getPaginatorResult().getTotalResults().intValue());
+            for (ConceptSchemeMetamacDto conceptSchemeMetamacDto : result.getResults()) {
+                assertEquals(ItemSchemeMetamacProcStatusEnum.DRAFT, conceptSchemeMetamacDto.getProcStatus());
+            }
+        }
+        {
+            MetamacCriteriaPropertyRestriction propertyRestriction = new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.PROC_STATUS.name(),
+                    ItemSchemeMetamacProcStatusEnum.INTERNALLY_PUBLISHED, OperationType.EQ);
+            metamacCriteria.setRestriction(propertyRestriction);
+
+            MetamacCriteriaResult<ConceptSchemeMetamacDto> result = srmCoreServiceFacade.findConceptSchemesByCondition(serviceContext, metamacCriteria);
+
+            assertEquals(2, result.getPaginatorResult().getTotalResults().intValue());
+            for (ConceptSchemeMetamacDto conceptSchemeMetamacDto : result.getResults()) {
+                assertEquals(ItemSchemeMetamacProcStatusEnum.INTERNALLY_PUBLISHED, conceptSchemeMetamacDto.getProcStatus());
+            }
+        }
+    }
+
+    @Test
+    public void testFindConceptSchemesPaginated() throws Exception {
+        MetamacCriteria metamacCriteria = new MetamacCriteria();
+        // Order
+        MetamacCriteriaOrder order = new MetamacCriteriaOrder();
+        order.setType(OrderTypeEnum.ASC);
+        order.setPropertyName(ConceptSchemeVersionMetamacCriteriaPropertyEnum.URN.name());
+        metamacCriteria.setOrdersBy(new ArrayList<MetamacCriteriaOrder>());
+        metamacCriteria.getOrdersBy().add(order);
+        // Pagination
+        int maxResultSize = 2;
+        metamacCriteria.setPaginator(new MetamacCriteriaPaginator());
+        metamacCriteria.getPaginator().setMaximumResultSize(maxResultSize);
+        metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
+
+        {
+            int firstResult = 0;
+            metamacCriteria.getPaginator().setFirstResult(firstResult);
+
+            MetamacCriteriaResult<ConceptSchemeMetamacDto> result = srmCoreServiceFacade.findConceptSchemesByCondition(serviceContext, metamacCriteria);
+
+            assertEquals(firstResult, result.getPaginatorResult().getFirstResult().intValue());
+            assertEquals(maxResultSize, result.getPaginatorResult().getMaximumResultSize().intValue());
+            assertEquals(CONCEPT_SCHEME_1_V1, result.getResults().get(0).getUrn());
+        }
+        {
+            int firstResult = 2;
+            metamacCriteria.getPaginator().setFirstResult(firstResult);
+
+            MetamacCriteriaResult<ConceptSchemeMetamacDto> result = srmCoreServiceFacade.findConceptSchemesByCondition(serviceContext, metamacCriteria);
+
+            assertEquals(firstResult, result.getPaginatorResult().getFirstResult().intValue());
+            assertEquals(CONCEPT_SCHEME_2_V1, result.getResults().get(0).getUrn());
+        }
+    }
+
 }
