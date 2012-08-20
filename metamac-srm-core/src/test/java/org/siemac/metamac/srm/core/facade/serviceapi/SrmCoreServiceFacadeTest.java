@@ -666,6 +666,12 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServ
     }
 
     @Override
+    public void testUpdateConceptScheme() throws Exception {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
     public void testDeleteConceptScheme() throws Exception {
         // TODO Auto-generated method stub
 

@@ -201,7 +201,7 @@ Application SrmCore {
        		
 	   		
 	   		@ConceptSchemeMetamacDto createConceptScheme(@ConceptSchemeMetamacDto conceptSchemeDto) throws MetamacException;
-//            @ConceptSchemeDto updateConceptScheme(@ConceptSchemeDto conceptSchemeDto) throws MetamacException;
+            @ConceptSchemeMetamacDto updateConceptScheme(@ConceptSchemeMetamacDto conceptSchemeDto) throws MetamacException;
             deleteConceptScheme(String urn) throws MetamacException;
             MetamacCriteriaResult<@ConceptSchemeMetamacDto> findConceptSchemesByCondition(MetamacCriteria criteria) throws MetamacException;
             @ConceptSchemeMetamacDto retrieveConceptSchemeByUrn(String urn) throws MetamacException;

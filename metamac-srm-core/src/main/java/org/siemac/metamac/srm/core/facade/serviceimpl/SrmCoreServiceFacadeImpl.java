@@ -418,13 +418,23 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     public ConceptSchemeMetamacDto retrieveConceptSchemeByUrn(ServiceContext ctx, String urn) throws MetamacException {
         // TODO Security
 
-        // Find
+        // Retrieve
         ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptsMetamacService().retrieveConceptSchemeByUrn(ctx, urn);
 
         // Transform
         ConceptSchemeMetamacDto conceptSchemeMetamacDto = do2DtoMapper.conceptSchemeMetamacDoToDto(conceptSchemeVersion);
 
         return conceptSchemeMetamacDto;
+    }
+
+    @Override
+    public ConceptSchemeMetamacDto updateConceptScheme(ServiceContext ctx, ConceptSchemeMetamacDto conceptSchemeDto) throws MetamacException {
+        // TODO Security
+        
+        // Update
+//        getConceptsMetamacService().
+        
+        return null;
     }
 
     @Override

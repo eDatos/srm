@@ -19,6 +19,8 @@ Application ConceptsMetamac {
 			
 			"Create concept scheme"
 			@ConceptSchemeVersionMetamac createConceptScheme(@ConceptSchemeVersionMetamac conceptSchemeVersion) throws MetamacException;
+			"Update concept scheme"
+			@ConceptSchemeVersionMetamac updateConceptScheme(@ConceptSchemeVersionMetamac conceptSchemeVersion) throws MetamacException;
 			"Retrieve concept scheme by urn"
 			@ConceptSchemeVersionMetamac retrieveConceptSchemeByUrn(String urn) throws MetamacException;
     		"Finds concept schemes by criteria in any status, returning last versions"

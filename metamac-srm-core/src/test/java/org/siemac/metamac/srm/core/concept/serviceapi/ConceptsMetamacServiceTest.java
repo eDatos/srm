@@ -99,6 +99,13 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
     @Override
     @Test
+    public void testUpdateConceptScheme() throws Exception {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    @Test
     public void testRetrieveConceptSchemeByUrn() throws Exception {
 
         // Retrieve
@@ -175,4 +182,5 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertEquals(CONCEPT_SCHEME_3_V1, conceptSchemeVersionPagedResult.getValues().get(2).getMaintainableArtefact().getUrn());
         }
     }
+
 }
