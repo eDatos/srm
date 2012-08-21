@@ -33,4 +33,9 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
 
         ExceptionUtils.throwIfException(exceptions);
     }
+
+    public static void checkUpdateConceptScheme(ConceptSchemeVersionMetamac conceptSchemeVersion, List<MetamacExceptionItem> exceptionItems) throws MetamacException {
+        // TODO
+    }
+
 }
