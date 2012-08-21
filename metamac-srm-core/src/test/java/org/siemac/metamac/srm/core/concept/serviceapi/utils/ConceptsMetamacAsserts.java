@@ -13,4 +13,5 @@ public class ConceptsMetamacAsserts extends ConceptsAsserts {
         assertEqualsExternalItem(expected.getRelatedOperation(), actual.getRelatedOperation());
         assertEqualsConceptScheme(expected, actual);
     }
+
 }

@@ -46,7 +46,6 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
     @Test
     public void testCreateConceptScheme() throws Exception {
-
         ConceptSchemeVersionMetamac conceptSchemeVersion = ConceptsMetamacDoMocks.mockConceptScheme();
 
         // Create
@@ -61,17 +60,15 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
     @Test
     public void testCreateConceptSchemeErrorMetadatasRequired() throws Exception {
-
         ConceptSchemeVersionMetamac conceptSchemeVersion = ConceptsMetamacDoMocks.mockConceptScheme();
         conceptSchemeVersion.setType(null);
-        conceptSchemeVersion.setRelatedOperation(null); // avoid error metadata unexpected
+        conceptSchemeVersion.setRelatedOperation(null); // avoid error unexpected metadata
 
         try {
             conceptsService.createConceptScheme(getServiceContextAdministrador(), conceptSchemeVersion);
             fail("metadata required");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-
             assertEquals(ServiceExceptionType.METADATA_REQUIRED.getCode(), e.getExceptionItems().get(0).getCode());
             assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
             assertEquals(ServiceExceptionParameters.CONCEPT_SCHEME_TYPE, e.getExceptionItems().get(0).getMessageParameters()[0]);
@@ -80,7 +77,6 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
     @Test
     public void testCreateConceptSchemeErrorMetadataUnexpected() throws Exception {
-
         ConceptSchemeVersionMetamac conceptSchemeVersion = ConceptsMetamacDoMocks.mockConceptScheme();
         conceptSchemeVersion.setType(ConceptSchemeTypeEnum.GLOSSARY);
         assertNotNull(conceptSchemeVersion.getRelatedOperation());
@@ -90,7 +86,6 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             fail("metadatas unexpected");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-
             assertEquals(ServiceExceptionType.METADATA_UNEXPECTED.getCode(), e.getExceptionItems().get(0).getCode());
             assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
             assertEquals(ServiceExceptionParameters.CONCEPT_SCHEME_RELATED_OPERATION, e.getExceptionItems().get(0).getMessageParameters()[0]);

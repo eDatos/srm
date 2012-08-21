@@ -106,9 +106,9 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServ
         return serviceContext;
     }
 
-    /**************************************************************************
-     * DSDs
-     **************************************************************************/
+    // -------------------------------------------------------------------------------
+    // DSDs
+    // -------------------------------------------------------------------------------
 
     @Test
     public void testSaveDsd() throws Exception {
@@ -201,9 +201,9 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServ
 
     }
 
-    /**************************************************************************
-     * Descriptors
-     **************************************************************************/
+    // -------------------------------------------------------------------------------
+    // Descriptors
+    // -------------------------------------------------------------------------------
 
     @Test
     public void testFindDescriptorsForDsd() throws Exception {
@@ -602,9 +602,9 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServ
 
     }
 
-    /**************************************************************************
-     * CONCEPTS
-     **************************************************************************/
+    // -------------------------------------------------------------------------------
+    // CONCEPTS
+    // -------------------------------------------------------------------------------
 
     @Test
     public void testRetrieveConceptSchemeByUrn() throws Exception {
@@ -646,7 +646,7 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServ
     }
 
     @Test
-    public void testRetrieveIndicatorErrorNotExists() throws Exception {
+    public void testRetrieveConceptSchemeErrorNotExists() throws Exception {
         String urn = NOT_EXISTS;
         try {
             srmCoreServiceFacade.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), urn);
