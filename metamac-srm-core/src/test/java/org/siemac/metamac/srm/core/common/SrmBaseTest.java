@@ -13,11 +13,6 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
     // --------------------------------------------------------------------------------------------------------------
 
     @Override
-    protected String getDataSetFile() {
-        return "dbunit/SrmCoreTest.xml";
-    }
-
-    @Override
     protected List<String> getTablesToRemoveContent() {
         List<String> tables = new ArrayList<String>();
         tables.add("TB_M_CONCEPT_SCHEMES_VERSIONS");
@@ -39,5 +34,11 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
         tablePrimaryKeys.put("TB_M_CONCEPT_SCHEMES_VERSIONS", "TB_CONCEPT_SCHEMES_VERSIONS");
         tablePrimaryKeys.putAll(super.getTablePrimaryKeys());
         return tablePrimaryKeys;
+    }
+
+    @Override
+    protected String getDataSetFile() {
+        // throw exception because this method is already overrided by SdmxSrmBaseTest class, and in SRM must be override by children classes
+        throw new IllegalArgumentException("Dbunit file must be override by children");
     }
 }

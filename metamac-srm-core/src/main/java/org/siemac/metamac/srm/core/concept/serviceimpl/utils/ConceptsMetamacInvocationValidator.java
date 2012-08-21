@@ -38,4 +38,12 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
         // TODO
     }
 
+    public static void checkSendConceptSchemeToProductionValidation(String urn, List<MetamacExceptionItem> exceptions) throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+        ValidationUtils.checkParameterRequired(urn, ServiceExceptionParameters.URN, exceptions);
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
 }
