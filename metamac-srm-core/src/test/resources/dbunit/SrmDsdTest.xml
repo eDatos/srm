@@ -151,7 +151,7 @@
         LABEL="Dsd example name"
         LOCALE="en"
         VERSION="1"
-        INTERNATIONAL_STRING_FK="2"
+        INTERNATIONAL_STRING_FK="1"
     />      
     
     <TB_INTERNATIONAL_STRINGS
