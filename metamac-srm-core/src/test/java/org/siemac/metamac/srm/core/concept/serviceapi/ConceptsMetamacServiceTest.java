@@ -48,6 +48,8 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
     private String                 CONCEPT_SCHEME_1_V2 = "urn:sdmx:org.sdmx.infomodel.concepscheme.ConceptScheme=ISTAC:CONCEPTSCHEME01(02.000)";
     private String                 CONCEPT_SCHEME_2_V1 = "urn:sdmx:org.sdmx.infomodel.concepscheme.ConceptScheme=ISTAC:CONCEPTSCHEME02(01.000)";
     private String                 CONCEPT_SCHEME_3_V1 = "urn:sdmx:org.sdmx.infomodel.concepscheme.ConceptScheme=ISTAC:CONCEPTSCHEME03(01.000)";
+    private String                 CONCEPT_SCHEME_4_V1 = "urn:sdmx:org.sdmx.infomodel.concepscheme.ConceptScheme=ISTAC:CONCEPTSCHEME04(01.000)";
+    private String                 NOT_EXISTS          = "NOT_EXISTS";
 
     @Test
     public void testCreateConceptScheme() throws Exception {
@@ -165,11 +167,12 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             PagedResult<ConceptSchemeVersionMetamac> conceptSchemeVersionPagedResult = conceptsService.findConceptSchemesByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
 
             // Validate
-            assertEquals(4, conceptSchemeVersionPagedResult.getTotalRows());
+            assertEquals(5, conceptSchemeVersionPagedResult.getTotalRows());
             assertEquals(CONCEPT_SCHEME_1_V1, conceptSchemeVersionPagedResult.getValues().get(0).getMaintainableArtefact().getUrn());
             assertEquals(CONCEPT_SCHEME_1_V2, conceptSchemeVersionPagedResult.getValues().get(1).getMaintainableArtefact().getUrn());
             assertEquals(CONCEPT_SCHEME_2_V1, conceptSchemeVersionPagedResult.getValues().get(2).getMaintainableArtefact().getUrn());
             assertEquals(CONCEPT_SCHEME_3_V1, conceptSchemeVersionPagedResult.getValues().get(3).getMaintainableArtefact().getUrn());
+            assertEquals(CONCEPT_SCHEME_4_V1, conceptSchemeVersionPagedResult.getValues().get(4).getMaintainableArtefact().getUrn());
         }
 
         // Find published
@@ -194,10 +197,11 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             PagedResult<ConceptSchemeVersionMetamac> conceptSchemeVersionPagedResult = conceptsService.findConceptSchemesByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
 
             // Validate
-            assertEquals(3, conceptSchemeVersionPagedResult.getTotalRows());
+            assertEquals(4, conceptSchemeVersionPagedResult.getTotalRows());
             assertEquals(CONCEPT_SCHEME_1_V2, conceptSchemeVersionPagedResult.getValues().get(0).getMaintainableArtefact().getUrn());
             assertEquals(CONCEPT_SCHEME_2_V1, conceptSchemeVersionPagedResult.getValues().get(1).getMaintainableArtefact().getUrn());
             assertEquals(CONCEPT_SCHEME_3_V1, conceptSchemeVersionPagedResult.getValues().get(2).getMaintainableArtefact().getUrn());
+            assertEquals(CONCEPT_SCHEME_4_V1, conceptSchemeVersionPagedResult.getValues().get(3).getMaintainableArtefact().getUrn());
         }
     }
 
@@ -235,135 +239,102 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         }
     }
 
-    // TODO
-    // @Test
-    // public void testSendIndicatorToProductionValidationInProcStatusRejected() throws Exception {
-    //
-    // String uuid = INDICATOR_9;
-    // String productionVersion = "1.000";
-    //
-    // {
-    // IndicatorDto indicatorDto = indicatorsServiceFacade.retrieveIndicator(getServiceContextAdministrador(), uuid, productionVersion);
-    // assertEquals(productionVersion, indicatorDto.getProductionVersion());
-    // assertNull(indicatorDto.getPublishedVersion());
-    // assertNull(indicatorDto.getArchivedVersion());
-    // assertEquals(IndicatorProcStatusEnum.VALIDATION_REJECTED, indicatorDto.getProcStatus());
-    // }
-    //
-    // // Sends to production validation
-    // indicatorsServiceFacade.sendIndicatorToProductionValidation(getServiceContextAdministrador2(), uuid);
-    //
-    // // Validation
-    // {
-    // IndicatorDto indicatorDto = indicatorsServiceFacade.retrieveIndicator(getServiceContextAdministrador(), uuid, productionVersion);
-    // assertEquals(productionVersion, indicatorDto.getProductionVersion());
-    // assertNull(indicatorDto.getPublishedVersion());
-    // assertNull(indicatorDto.getArchivedVersion());
-    // assertEquals(IndicatorProcStatusEnum.PRODUCTION_VALIDATION, indicatorDto.getProcStatus());
-    // }
-    // }
-    //
-    // @Test
-    // public void testSendIndicatorToProductionValidationErrorNotExists() throws Exception {
-    //
-    // try {
-    // indicatorsServiceFacade.sendIndicatorToProductionValidation(getServiceContextAdministrador(), NOT_EXISTS);
-    // fail("Indicator not exists");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.INDICATOR_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(NOT_EXISTS, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // }
-    // }
-    //
-    // @Test
-    // public void testSendIndicatorToProductionValidationErrorWrongProcStatus() throws Exception {
-    //
-    // String uuid = INDICATOR_3;
-    //
-    // {
-    // IndicatorDto indicatorDto = indicatorsServiceFacade.retrieveIndicator(getServiceContextAdministrador(), uuid, INDICATOR_3_VERSION);
-    // assertEquals(IndicatorProcStatusEnum.PUBLISHED, indicatorDto.getProcStatus());
-    // assertNull(indicatorDto.getProductionVersion());
-    // }
-    //
-    // try {
-    // indicatorsServiceFacade.sendIndicatorToProductionValidation(getServiceContextAdministrador(), uuid);
-    // fail("Indicator is not draft");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.INDICATOR_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(uuid, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // assertEquals(ServiceExceptionParameters.INDICATOR_PROC_STATUS_DRAFT, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
-    // assertEquals(ServiceExceptionParameters.INDICATOR_PROC_STATUS_VALIDATION_REJECTED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[1]);
-    //
-    // }
-    // }
-    //
-    // @Test
-    // public void testSendIndicatorToProductionValidationErrorWithoutDataSources() throws Exception {
-    //
-    // String uuid = INDICATOR_2;
-    //
-    // {
-    // IndicatorDto indicatorDto = indicatorsServiceFacade.retrieveIndicator(getServiceContextAdministrador(), uuid, "1.000");
-    // assertEquals(IndicatorProcStatusEnum.DRAFT, indicatorDto.getProcStatus());
-    //
-    // // Check zero data sources
-    // List<DataSourceDto> dataSources = indicatorsServiceFacade.retrieveDataSourcesByIndicator(getServiceContextAdministrador(), uuid, "1.000");
-    // assertEquals(0, dataSources.size());
-    // }
-    //
-    // try {
-    // indicatorsServiceFacade.sendIndicatorToProductionValidation(getServiceContextAdministrador(), uuid);
-    // fail("Indicator hasn't data sources");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.INDICATOR_MUST_HAVE_DATA_SOURCES.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(uuid, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // }
-    // }
-    //
-    // @Test
-    // public void testSendIndicatorToProductionValidationErrorQuantityIncomplete() throws Exception {
-    //
-    // String uuid = INDICATOR_1;
-    // String productionVersion = "2.000";
-    //
-    // IndicatorDto indicatorDtoV2 = indicatorsServiceFacade.retrieveIndicator(getServiceContextAdministrador(), uuid, productionVersion);
-    // assertEquals(productionVersion, indicatorDtoV2.getProductionVersion());
-    // assertEquals(IndicatorProcStatusEnum.DRAFT, indicatorDtoV2.getProcStatus());
-    //
-    // // Update to clear quantity required attributes
-    // indicatorDtoV2.getQuantity().setType(QuantityTypeEnum.CHANGE_RATE);
-    // indicatorDtoV2.getQuantity().setUnitUuid(null);
-    // indicatorsServiceFacade.updateIndicator(getServiceContextAdministrador(), indicatorDtoV2);
-    //
-    // // Sends to production validation
-    // try {
-    // indicatorsServiceFacade.sendIndicatorToProductionValidation(getServiceContextAdministrador(), uuid);
-    // fail("Indicator quantity incomplete");
-    // } catch (MetamacException e) {
-    // assertEquals(3, e.getExceptionItems().size());
-    //
-    // assertEquals(ServiceExceptionType.METADATA_REQUIRED.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(ServiceExceptionParameters.INDICATOR_QUANTITY_UNIT_UUID, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    //
-    // assertEquals(ServiceExceptionType.METADATA_REQUIRED.getCode(), e.getExceptionItems().get(1).getCode());
-    // assertEquals(1, e.getExceptionItems().get(1).getMessageParameters().length);
-    // assertEquals(ServiceExceptionParameters.INDICATOR_QUANTITY_IS_PERCENTAGE, e.getExceptionItems().get(1).getMessageParameters()[0]);
-    //
-    // assertEquals(ServiceExceptionType.METADATA_REQUIRED.getCode(), e.getExceptionItems().get(2).getCode());
-    // assertEquals(1, e.getExceptionItems().get(2).getMessageParameters().length);
-    // assertEquals(ServiceExceptionParameters.INDICATOR_QUANTITY_BASE_QUANTITY_INDICATOR_UUID, e.getExceptionItems().get(2).getMessageParameters()[0]);
-    // }
-    // }
+    @Test
+    public void testSendConceptSchemeToProductionValidationInProcStatusRejected() throws Exception {
 
-    
+        String urn = CONCEPT_SCHEME_4_V1;
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        {
+            ConceptSchemeVersionMetamac conceptSchemeVersionMetamac = conceptsService.retrieveConceptSchemeByUrn(ctx, urn);
+            assertEquals(ItemSchemeMetamacProcStatusEnum.VALIDATION_REJECTED, conceptSchemeVersionMetamac.getProcStatus());
+            assertNull(conceptSchemeVersionMetamac.getProductionValidationDate());
+            assertNull(conceptSchemeVersionMetamac.getProductionValidationUser());
+        }
+
+        // Sends to production validation
+        ConceptSchemeVersionMetamac conceptSchemeVersionProductionValidation = conceptsService.sendConceptSchemeToProductionValidation(ctx, urn);
+
+        // Validation
+        {
+            assertEquals(ItemSchemeMetamacProcStatusEnum.PRODUCTION_VALIDATION, conceptSchemeVersionProductionValidation.getProcStatus());
+            assertTrue(DateUtils.isSameDay(new Date(), conceptSchemeVersionProductionValidation.getProductionValidationDate().toDate()));
+            assertEquals(ctx.getUserId(), conceptSchemeVersionProductionValidation.getProductionValidationUser());
+            assertNull(conceptSchemeVersionProductionValidation.getDiffusionValidationDate());
+            assertNull(conceptSchemeVersionProductionValidation.getDiffusionValidationUser());
+        }
+        {
+            conceptSchemeVersionProductionValidation = conceptsService.retrieveConceptSchemeByUrn(ctx, urn);
+            assertEquals(ItemSchemeMetamacProcStatusEnum.PRODUCTION_VALIDATION, conceptSchemeVersionProductionValidation.getProcStatus());
+            assertTrue(DateUtils.isSameDay(new Date(), conceptSchemeVersionProductionValidation.getProductionValidationDate().toDate()));
+            assertEquals(ctx.getUserId(), conceptSchemeVersionProductionValidation.getProductionValidationUser());
+            assertNull(conceptSchemeVersionProductionValidation.getDiffusionValidationDate());
+            assertNull(conceptSchemeVersionProductionValidation.getDiffusionValidationUser());
+        }
+    }
+
+    @Test
+    public void testSendConceptSchemeToProductionValidationErrorNotExists() throws Exception {
+
+        String urn = NOT_EXISTS;
+        try {
+            conceptsService.sendConceptSchemeToProductionValidation(getServiceContextAdministrador(), urn);
+            fail("ConceptScheme not exists");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.CONCEPT_SCHEME_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
+    @Test
+    public void testSendConceptSchemeToProductionValidationErrorWrongProcStatus() throws Exception {
+
+        String urn = CONCEPT_SCHEME_1_V1;
+
+        {
+            ConceptSchemeVersionMetamac conceptSchemeVersionMetamac = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), urn);
+            assertEquals(ItemSchemeMetamacProcStatusEnum.INTERNALLY_PUBLISHED, conceptSchemeVersionMetamac.getProcStatus());
+        }
+
+        try {
+            conceptsService.sendConceptSchemeToProductionValidation(getServiceContextAdministrador(), urn);
+            fail("ConceptScheme wrong proc status");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.CONCEPT_SCHEME_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_DRAFT, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_VALIDATION_REJECTED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[1]);
+        }
+    }
+
+    // TODO testear cuando se implemente el update
+//    @Test
+//    public void testSendConceptSchemeToProductionValidationErrorMetadataRequired() throws Exception {
+//
+//        String urn = CONCEPT_SCHEME_1_V2;
+//
+//        // Update to clear metadata
+//        ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), urn);
+//        conceptSchemeVersion.setIsPartial(null);
+//        conceptsService.updateConceptScheme(getServiceContextAdministrador(), conceptSchemeVersion);
+//        
+//        // Sends to production validation
+//        try {
+//            conceptsService.sendConceptSchemeToProductionValidation(getServiceContextAdministrador(), urn);
+//            fail("ConceptScheme metadata required");
+//        } catch (MetamacException e) {
+//            assertEquals(3, e.getExceptionItems().size());
+//
+//            assertEquals(ServiceExceptionType.METADATA_REQUIRED.getCode(), e.getExceptionItems().get(0).getCode());
+//            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+//            assertEquals(ServiceExceptionParameters.ITEM_SCHEME_IS_PARTIAL, e.getExceptionItems().get(0).getMessageParameters()[0]);
+//        }
+//    }
+
     @Override
     protected String getDataSetFile() {
         return "dbunit/SrmConceptSchemeTest.xml";

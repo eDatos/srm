@@ -87,7 +87,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         ConceptsMetamacInvocationValidator.checkSendConceptSchemeToProductionValidation(urn, null);
 
         // Retrieve version in draft
-        ConceptSchemeVersionMetamac conceptSchemeVersion = retrieveConceptSchemeVersionInProcStatus(ctx, urn, ItemSchemeMetamacProcStatusEnum.DRAFT);
+        ConceptSchemeVersionMetamac conceptSchemeVersion = retrieveConceptSchemeVersionInProcStatus(ctx, urn, ItemSchemeMetamacProcStatusEnum.DRAFT, ItemSchemeMetamacProcStatusEnum.VALIDATION_REJECTED);
 
         // Validate to send to production
         checkConceptSchemeToSendToProductionValidation(ctx, urn, conceptSchemeVersion);
@@ -104,13 +104,24 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     /**
      * Retrieves version of a concept scheme in specific procStatus
      */
-    private ConceptSchemeVersionMetamac retrieveConceptSchemeVersionInProcStatus(ServiceContext ctx, String urn, ItemSchemeMetamacProcStatusEnum procStatus) throws MetamacException {
+    private ConceptSchemeVersionMetamac retrieveConceptSchemeVersionInProcStatus(ServiceContext ctx, String urn, ItemSchemeMetamacProcStatusEnum...procStatus) throws MetamacException {
+        
         List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class)
-                .withProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact().urn()).eq(urn).withProperty(ConceptSchemeVersionMetamacProperties.procStatus()).eq(procStatus).build();
+                .withProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact().urn()).eq(urn).withProperty(ConceptSchemeVersionMetamacProperties.procStatus()).in((Object[]) procStatus)
+                .build();
         PagingParameter pagingParameter = PagingParameter.pageAccess(1);
         PagedResult<ConceptSchemeVersionMetamac> conceptSchemeVersionPagedResult = getConceptSchemeVersionMetamacRepository().findByCondition(conditions, pagingParameter);
+        
         if (conceptSchemeVersionPagedResult.getValues().size() != 1) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CONCEPT_SCHEME_WRONG_PROC_STATUS).withMessageParameters(urn, new String[]{procStatus.name()}).build();
+            // check concept scheme exists
+            retrieveConceptSchemeByUrn(ctx, urn);
+            
+            // if exists, throw exception about wrong proc status
+            String[] procStatusString = new String[procStatus.length];
+            for (int i = 0; i < procStatus.length; i++) {
+                procStatusString[i] = procStatus[i].name();
+            }
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CONCEPT_SCHEME_WRONG_PROC_STATUS).withMessageParameters(urn, procStatusString).build();
         }
         return conceptSchemeVersionPagedResult.getValues().get(0);
     }
@@ -124,16 +135,16 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         List<MetamacExceptionItem> exceptions = new ArrayList<MetamacExceptionItem>();
 
         // Check proc status
-        String[] roles = new String[]{ItemSchemeMetamacProcStatusEnum.DRAFT.name(), ItemSchemeMetamacProcStatusEnum.VALIDATION_REJECTED.name()};
-        if (!ArrayUtils.contains(roles, conceptSchemeVersion.getProcStatus().name())) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CONCEPT_SCHEME_WRONG_PROC_STATUS).withMessageParameters(urn, roles).build();
+        String[] procStatusString = new String[]{ItemSchemeMetamacProcStatusEnum.DRAFT.name(), ItemSchemeMetamacProcStatusEnum.VALIDATION_REJECTED.name()};
+        if (!ArrayUtils.contains(procStatusString, conceptSchemeVersion.getProcStatus().name())) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CONCEPT_SCHEME_WRONG_PROC_STATUS).withMessageParameters(urn, procStatusString).build();
         }
         // Check other conditions
         checkConditionsSinceSendToProductionValidation(conceptSchemeVersion, exceptions);
 
         ExceptionUtils.throwIfException(exceptions);
     }
-    
+
     /**
      * TODO alguna validación sobre los conceptos?
      */
