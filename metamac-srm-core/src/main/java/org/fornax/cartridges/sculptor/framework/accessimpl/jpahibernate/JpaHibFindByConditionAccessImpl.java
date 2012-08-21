@@ -101,6 +101,9 @@ public class JpaHibFindByConditionAccessImpl<T> extends JpaAccessBase<T> impleme
         addConditionalCriteria(criteria);
         addFetchStrategy(criteria);
 
+        // Prepare orderBy
+        addOrderBy(criteria);
+        
         boolean hasLimit = false;
         if (firstResult >= 0) {
             criteria.setFirstResult(firstResult);
@@ -110,7 +113,7 @@ public class JpaHibFindByConditionAccessImpl<T> extends JpaAccessBase<T> impleme
             criteria.setMaxResults(maxResult);
             hasLimit = true;
         }
-
+        
         if (realDistinctRoot && hasLimit) {
             addProjection(criteria);
             List<?> idList = criteria.list();
@@ -130,43 +133,15 @@ public class JpaHibFindByConditionAccessImpl<T> extends JpaAccessBase<T> impleme
             }
 
             // Fix: ARTE - http://jira.arte-consultores.com/browse/METAMAC-957 ************
-            /* 
-             criteria=createCriteria(); 
-             //Orders by
-             addOrderBy(criteria);
-            */
-
-            criteria = HibernateSessionHelper.getHibernateSession(getEntityManager()).createCriteria(getPersistentClass(), "root");
-
-            // Create Alias for Order Foreign Fields Criterias
-            for (ConditionalCriteria crit : cndCriterias) {
-                if (Operator.OrderAsc.equals(crit.getOperator()) || Operator.OrderDesc.equals(crit.getOperator())) {
-                    if (crit.getPropertyPath() != null && crit.getPropertyPath().length > 0) {
-                        StringBuilder strBuilder = new StringBuilder("root");
-                        for (int i = 0; i < crit.getPropertyPath().length; i++) {
-                            strBuilder.append(".").append(crit.getPropertyPath()[i]);
-                        }
-                        String alias = strBuilder.toString().replaceAll("\\.", "");
-                        criteria.createAlias(strBuilder.toString(), alias);
-                        
-                        if (Operator.OrderAsc.equals(crit.getOperator())) {
-                            criteria.addOrder(Order.asc(alias + "." + crit.getPropertyName()));
-                        }
-                        else if (Operator.OrderDesc.equals(crit.getOperator())){
-                            criteria.addOrder(Order.desc(alias + "." + crit.getPropertyName()));
-                        }
-                    }
-                }
-            }
+            criteria=createCriteria(); 
+            addSubCriterias(criteria);
+            addOrderBy(criteria);
             // END FIX *********************************************************************
 
             addResultTransformer(criteria);
             criteria.add(Restrictions.in("id", distinctIds));
             addFetchStrategy(criteria);
         } else {
-            // Prepare orderBy
-            addOrderBy(criteria); // Fix: ARTE - http://jira.arte-consultores.com/browse/METAMAC-957
-
             addResultTransformer(criteria);
         }
 
@@ -189,23 +164,60 @@ public class JpaHibFindByConditionAccessImpl<T> extends JpaAccessBase<T> impleme
         ProjectionList proj = Projections.projectionList().add(Projections.id());
         for (ConditionalCriteria crit : cndCriterias) {
             if (Operator.OrderAsc.equals(crit.getOperator()) || Operator.OrderDesc.equals(crit.getOperator())) {
+                // Fix: ARTE - http://jira.arte-consultores.com/browse/METAMAC-957
                 if (crit.getPropertyPath() != null && crit.getPropertyPath().length > 0) {
-                    // Fix: ARTE - http://jira.arte-consultores.com/browse/METAMAC-957
                     // throw new PersistenceException("Can't create distinct condition order by foreign field '"+crit.getPropertyFullName()+"'");
-                } else {
-                    proj.add(Projections.property(crit.getPropertyFullName()));
+                    
+                    // Add Projection by alias (alias was previously added)
+                    StringBuilder strBuilder = new StringBuilder("");
+                    for (int i = 0; i < crit.getPropertyPath().length; i++) {
+                        if (i != 0) {
+                            strBuilder.append(".");
+                        }
+                        strBuilder.append(crit.getPropertyPath()[i]);
+                    }
+                    proj.add(Projections.property(strBuilder.toString().replace('.', '_') + "." + crit.getPropertyName())); // Foreign property
                 }
+                else {
+                    proj.add(Projections.property(crit.getPropertyFullName())); // Root property
+                }
+                // END FIX *********************************************************************
             }
         }
+        
         criteria.setProjection(Projections.distinct(proj));
     }
 
+//    private void addOrderBy(Criteria criteria) {
+//        for (ConditionalCriteria crit : cndCriterias) {
+//            if (Operator.OrderAsc.equals(crit.getOperator())) {
+//                criteria.addOrder(Order.asc(crit.getPropertyFullName()));
+//            } else if (Operator.OrderDesc.equals(crit.getOperator())) {
+//                criteria.addOrder(Order.desc(crit.getPropertyFullName()));
+//            }
+//        }
+//    }
+    
     private void addOrderBy(Criteria criteria) {
         for (ConditionalCriteria crit : cndCriterias) {
-            if (Operator.OrderAsc.equals(crit.getOperator())) {
-                criteria.addOrder(Order.asc(crit.getPropertyFullName()));
-            } else if (Operator.OrderDesc.equals(crit.getOperator())) {
-                criteria.addOrder(Order.desc(crit.getPropertyFullName()));
+            if (Operator.OrderAsc.equals(crit.getOperator()) || Operator.OrderDesc.equals(crit.getOperator())) {
+                if (crit.getPropertyPath() != null && crit.getPropertyPath().length > 0) {
+                    StringBuilder strBuilder = new StringBuilder();
+                    for (int i = 0; i < crit.getPropertyPath().length; i++) {
+                        if (i != 0) {
+                            strBuilder.append(".");
+                        }
+                        strBuilder.append(crit.getPropertyPath()[i]);
+                    }
+                    String alias = strBuilder.toString().replace('.', '_');
+                    
+                    if (Operator.OrderAsc.equals(crit.getOperator())) {
+                        criteria.addOrder(Order.asc(alias + "." + crit.getPropertyName()));
+                    }
+                    else if (Operator.OrderDesc.equals(crit.getOperator())){
+                        criteria.addOrder(Order.desc(alias + "." + crit.getPropertyName()));
+                    }
+                }
             }
         }
     }
