@@ -290,24 +290,24 @@
         LAST_UPDATED_TZ="Europe/London"
     />        
     
-    <!-- ************************************************************************************** -->
-    <!-- DataStructureDefinition                                                                -->
-    <!--                                                                                        -->
-    <!-- *************************************************************************************  -->
+  	<!-- ************************************************************************************** -->
+    <!-- DATASTRUCTUREDEFINITION 1                                                              -->
+    <!--       - Version 1: draft                                                               -->
+    <!-- *************************************************************************************  -->        
     <TB_ANNOTABLE_ARTEFACTS 
         ID="41"
-        ANNOTABLE_ARTEFACT_TYPE="DataStructureDefinition"
+        ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
-        CODE="YMw3luBafPtzLHctMfp6Cm4S40EaCXSoV0CdL3QcVmYZgYdR1o"
+        CODE="DATASTRUCTUREDEFINITION01"
         URI="[null]"
-        URN="uurn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=AgencyMock:YMw3luBafPtzLHctMfp6Cm4S40EaCXSoV0CdL3QcVmYZgYdR1o(01.000)"
+        URN="uurn:sdmx:org.sdmx.infomodel.datastructure.datastructure=agencymock:datastructuredefinition01(01.000)"
         REPLACED_BY="[null]"
         REPLACE_TO="[null]"
         
         NAME_FK="6"
         
         VERSION_LOGIC="01.000"
-        FINAL_LOGIC="0"
+        FINAL_LOGIC="1"
         VALID_FROM_TZ="[null]"
         VALID_FROM="[null]" 
         VALID_TO_TZ="[null]"
@@ -315,10 +315,10 @@
         IS_EXTERNAL_REFERENCE="0"
         STRUCTURE_URL="[null]"
         SERVICE_URL="[null]"
-        IS_LAST_VERSION="0"
+        IS_LAST_VERSION="1"
         MAINTAINER_FK="11"
         
-        UUID="17e03ca0-9574-4745-bc5a-db45192d99ba"
+        UUID="annotableArtifact-41"
         VERSION="1"
         CREATED_BY="user1"
         CREATED_DATE="2011-01-01 01:02:03"
@@ -326,7 +326,95 @@
         LAST_UPDATED_BY="user2"
         LAST_UPDATED="2011-01-22 01:02:03"
         LAST_UPDATED_TZ="Europe/London"
-    /> 
+    />
+    
+    <TB_STRUCTURES
+        ID="1"
+        UUID="structure-1"
+        VERSION="1"
+    />
+    
+    <TB_STRUCTURES_VERSIONS
+        ID="41"
+        STRUCTURE_FK="1"
+        MAINTANABLE_ARTIFACT_FK="41"
+        
+        UUID="structure-1-v1"
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user2"
+        LAST_UPDATED="2011-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"  
+    />
+    
+    <TB_DATASTRUCTURE_VERSIONS
+        TB_STRUCTURES_VERSIONS="41"
+    />
+    
+      <!-- ************************************************************************************** -->
+    <!-- DATASTRUCTUREDEFINITION 2                                                              -->
+    <!--       - Version 1: draft                                                               -->
+    <!-- *************************************************************************************  -->        
+    <TB_ANNOTABLE_ARTEFACTS 
+        ID="51"
+        ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
+        
+        CODE="DATASTRUCTUREDEFINITION02"
+        URI="[null]"
+        URN="uurn:sdmx:org.sdmx.infomodel.datastructure.datastructure=agencymock:datastructuredefinition02(01.000)"
+        REPLACED_BY="[null]"
+        REPLACE_TO="[null]"
+        
+        NAME_FK="7"
+        
+        VERSION_LOGIC="01.000"
+        FINAL_LOGIC="1"
+        VALID_FROM_TZ="[null]"
+        VALID_FROM="[null]" 
+        VALID_TO_TZ="[null]"
+        VALID_TO="[null]"
+        IS_EXTERNAL_REFERENCE="0"
+        STRUCTURE_URL="[null]"
+        SERVICE_URL="[null]"
+        IS_LAST_VERSION="1"
+        MAINTAINER_FK="11"
+        
+        UUID="annotableArtifact-51"
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user2"
+        LAST_UPDATED="2011-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"
+    />
+    
+    <TB_STRUCTURES
+        ID="1"
+        UUID="structure-2"
+        VERSION="1"
+    />
+    
+    <TB_STRUCTURES_VERSIONS
+        ID="51"
+        STRUCTURE_FK="1"
+        MAINTANABLE_ARTIFACT_FK="51"
+        
+        UUID="structure-2-v1"
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user2"
+        LAST_UPDATED="2011-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"  
+    />
+    
+    <TB_DATASTRUCTURE_VERSIONS
+        TB_STRUCTURES_VERSIONS="51"
+    />
     
     <!-- ************************************************************************************** -->
     <!-- EXTERNAL ITEMS                                                                         -->
@@ -504,5 +592,26 @@
         LOCALE="en"
         VERSION="1"
         INTERNATIONAL_STRING_FK="6"
-    />       
+    />      
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="7"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="12"
+        LABEL="Ejemplo de nombre de dsd 02"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="7"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="13"
+        LABEL="Dsd example name 02"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="7"
+    />   
 </dataset>
