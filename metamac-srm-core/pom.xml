@@ -519,6 +519,8 @@
                                 <delete file="${basedir}/src/generated/resources/beanRefContext.xml" />
                                 <delete file="${basedir}/src/generated/resources/generated-spring.properties" />
 
+                                <delete file="${basedir}/src/test/java/org/siemac/metamac/srm/core/facade/serviceapi/SrmCoreServiceFacadeTest.java" />
+
                                 <delete file="${basedir}/src/test/resources/more-test.xml" />
                                 <delete file="${basedir}/src/test/resources/pub-sub.xml" />
 
