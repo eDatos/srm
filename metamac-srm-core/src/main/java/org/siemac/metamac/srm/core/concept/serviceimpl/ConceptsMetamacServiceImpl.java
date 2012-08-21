@@ -99,7 +99,6 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         conceptSchemeVersion = (ConceptSchemeVersionMetamac) itemSchemeVersionRepository.save(conceptSchemeVersion);
 
         return conceptSchemeVersion;
-
     }
 
     /**
@@ -126,7 +125,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
         // Check proc status
         String[] roles = new String[]{ItemSchemeMetamacProcStatusEnum.DRAFT.name(), ItemSchemeMetamacProcStatusEnum.VALIDATION_REJECTED.name()};
-        if (!ArrayUtils.contains(roles, conceptSchemeVersion.getProcStatus())) {
+        if (!ArrayUtils.contains(roles, conceptSchemeVersion.getProcStatus().name())) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CONCEPT_SCHEME_WRONG_PROC_STATUS).withMessageParameters(urn, roles).build();
         }
         // Check other conditions
