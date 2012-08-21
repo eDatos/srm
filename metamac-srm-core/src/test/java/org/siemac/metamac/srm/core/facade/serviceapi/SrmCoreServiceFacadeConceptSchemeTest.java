@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.siemac.metamac.common.test.utils.MetamacAsserts.assertEqualsInternationalStringDto;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,7 +14,6 @@ import org.apache.commons.lang.time.DateUtils;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.siemac.metamac.common.test.utils.MetamacAsserts;
 import org.siemac.metamac.common.test.utils.MetamacMocks;
 import org.siemac.metamac.core.common.criteria.MetamacCriteria;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder;
@@ -126,16 +126,29 @@ public class SrmCoreServiceFacadeConceptSchemeTest extends SrmBaseTest {
         conceptSchemeDto.setMaintainer(MetamacMocks.mockExternalItemDto("urn:maintiner", TypeExternalArtefactsEnum.AGENCY));
 
         ConceptSchemeMetamacDto conceptSchemeMetamacCreated = srmCoreServiceFacade.createConceptScheme(getServiceContextAdministrador(), conceptSchemeDto);
-        conceptSchemeDto = srmCoreServiceFacade.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), conceptSchemeMetamacCreated.getUrn());
 
+        // Identifiers
         assertNotNull(conceptSchemeMetamacCreated);
         assertEquals(conceptSchemeDto.getCode(), conceptSchemeMetamacCreated.getCode());
-        // URI
-        // assert
+        assertNull(conceptSchemeMetamacCreated.getUri());
+        assertNotNull(conceptSchemeMetamacCreated.getUrn());
         assertNotNull(conceptSchemeMetamacCreated.getVersionLogic());
-        MetamacAsserts.assertEqualsInternationalStringDto(conceptSchemeDto.getName(), conceptSchemeMetamacCreated.getName());
+        assertEqualsInternationalStringDto(conceptSchemeDto.getName(), conceptSchemeMetamacCreated.getName());
+
+        // Content descriptors
+        assertEqualsInternationalStringDto(conceptSchemeDto.getDescription(), conceptSchemeMetamacCreated.getDescription());
+        assertEquals(conceptSchemeDto.getIsPartial(), conceptSchemeMetamacCreated.getIsPartial());
+
+        // Class descriptors
+        assertEquals(conceptSchemeDto.getType(), conceptSchemeMetamacCreated.getType());
+        assertEquals(conceptSchemeDto.getRelatedOperation(), conceptSchemeMetamacCreated.getRelatedOperation());
+
+        // Production descriptors
         assertEquals(ItemSchemeMetamacProcStatusEnum.DRAFT, conceptSchemeMetamacCreated.getProcStatus());
 
+        // Diffusion descriptors
+        assertNull(conceptSchemeMetamacCreated.getValidFrom());
+        assertNull(conceptSchemeMetamacCreated.getValidTo());
     }
 
     @Test
