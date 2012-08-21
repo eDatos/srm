@@ -1,5 +1,6 @@
 package org.siemac.metamac.srm.core.mapper;
 
+import org.siemac.metamac.core.common.util.CoreCommonUtil;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,8 +51,10 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
         target.setProcStatus(source.getProcStatus());
         target.setType(source.getType());
         target.setRelatedOperation(do2DtoMapperSdmxSrm.externalItemToExternalItemDto(TypeDozerCopyMode.UPDATE, source.getRelatedOperation()));
+        target.setProductionValidationDate(CoreCommonUtil.transformDateTimeToDate(source.getProductionValidationDate()));
+        target.setProductionValidationUser(source.getProductionValidationUser());
+
         do2DtoMapperSdmxSrm.conceptSchemeDoToDto(source, target);
         return target;
     }
-
 }

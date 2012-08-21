@@ -17,6 +17,14 @@ Application DtosMetamacConceptDomain {
 			- @ConceptSchemeTypeEnum type required;
 			"Related operation, only when type is Operation"
 			- @ExternalItemDto relatedOperation nullable;
+			"Date when the concept scheme was sended to production validation"
+			JAVADATE productionValidationDate nullable;
+			"User who sended to production validation"
+			String productionValidationUser nullable;
+			"Date when the concept scheme was sended to diffusion validation"
+			JAVADATE diffusionValidationDate nullable;
+			"User who sended to diffusion validation"
+			String diffusionValidationUser nullable;
 			
 			"Version to optimistic locking"
 			Long versionOptimisticLocking;

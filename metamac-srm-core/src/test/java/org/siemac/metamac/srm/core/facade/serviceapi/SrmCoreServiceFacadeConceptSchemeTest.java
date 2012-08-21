@@ -7,7 +7,9 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
+import java.util.Date;
 
+import org.apache.commons.lang.time.DateUtils;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -301,6 +303,30 @@ public class SrmCoreServiceFacadeConceptSchemeTest extends SrmBaseTest {
             assertEquals(CONCEPT_SCHEME_2_V1, result.getResults().get(0).getUrn());
         }
     }
+    
+    @Test
+    public void testSendConceptSchemeToProductionValidation() throws Exception {
+
+        String urn = CONCEPT_SCHEME_2_V1;
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        // Sends to production validation
+        ConceptSchemeMetamacDto conceptSchemeDto = srmCoreServiceFacade.sendConceptSchemeToProductionValidation(ctx, urn);
+
+        // Validation
+        {
+            assertEquals(ItemSchemeMetamacProcStatusEnum.PRODUCTION_VALIDATION, conceptSchemeDto.getProcStatus());
+            assertTrue(DateUtils.isSameDay(new Date(), conceptSchemeDto.getProductionValidationDate()));
+            assertEquals(ctx.getUserId(), conceptSchemeDto.getProductionValidationUser());
+        }
+        {
+            conceptSchemeDto = srmCoreServiceFacade.retrieveConceptSchemeByUrn(ctx, urn);
+            assertEquals(ItemSchemeMetamacProcStatusEnum.PRODUCTION_VALIDATION, conceptSchemeDto.getProcStatus());
+            assertTrue(DateUtils.isSameDay(new Date(), conceptSchemeDto.getProductionValidationDate()));
+            assertEquals(ctx.getUserId(), conceptSchemeDto.getProductionValidationUser());
+        }
+    }
+
 
     @Override
     protected String getDataSetFile() {

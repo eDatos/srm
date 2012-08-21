@@ -205,18 +205,8 @@ Application SrmCore {
             deleteConceptScheme(String urn) throws MetamacException;
             MetamacCriteriaResult<@ConceptSchemeMetamacDto> findConceptSchemesByCondition(MetamacCriteria criteria) throws MetamacException;
             @ConceptSchemeMetamacDto retrieveConceptSchemeByUrn(String urn) throws MetamacException;
-//            @ConceptSchemeDto sendConceptSchemeToPendingPublication throws MetamacException;
-//            @ConceptSchemeDto publishConceptSchemeInternally(Long conceptSchemeId) throws MetamacException;
-//            @ConceptSchemeDto publishConceptSchemeExternally(Long conceptSchemeId) throws MetamacException;
-//   		
-//            @ConceptDto createConcept(@ConceptDto conceptDto, Long conceptSchemeId) throws MetamacException;
-//            @ConceptDto updateConcept(@ConceptDto conceptDto) throws MetamacException;
-//            deleteConcept(Long conceptId) throws MetamacException;
-//            List<@ConceptDto> findConceptsForConceptScheme(Long conceptSchemeId)  throws MetamacException;
-//            @ConceptDto retrieveConcept(Long id) throws MetamacException;
-//            @ConceptDto sendConceptToPendingPublication throws MetamacException;
-//            @ConceptDto publishConceptInternally(Long conceptId) throws MetamacException;
-//            @ConceptDto publishConceptExternally(Long conceptId) throws MetamacException;
+	    	"Sends concept scheme to production validation"
+	    	@ConceptSchemeMetamacDto sendConceptSchemeToProductionValidation(String urn) throws MetamacException;
    		
     	}
 /*    	
