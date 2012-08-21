@@ -24,6 +24,8 @@ import org.dozer.DozerBeanMapper;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.siemac.metamac.common.test.utils.MetamacAsserts;
+import org.siemac.metamac.common.test.utils.MetamacMocks;
 import org.siemac.metamac.core.common.criteria.MetamacCriteria;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaDisjunctionRestriction;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder;
@@ -34,6 +36,7 @@ import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestrictio
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.dto.LocalisedStringDto;
+import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.jaxb.CustomJaxb2Marshaller;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
@@ -41,6 +44,7 @@ import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
+import org.siemac.metamac.srm.core.concept.serviceapi.utils.ConceptsMetamacAsserts;
 import org.siemac.metamac.srm.core.criteria.ConceptSchemeVersionMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.criteria.DataStructureDefinitionCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
@@ -659,9 +663,24 @@ public class SrmCoreServiceFacadeTest extends SrmBaseTest implements SrmCoreServ
         }
     }
 
-    @Override
+    @Test
     public void testCreateConceptScheme() throws Exception {
-        // TODO Auto-generated method stub
+        ConceptSchemeMetamacDto conceptSchemeDto = new ConceptSchemeMetamacDto();
+        conceptSchemeDto.setCode("code-" + MetamacMocks.mockString(10));
+        conceptSchemeDto.setName(MetamacMocks.mockInternationalString());
+        conceptSchemeDto.setType(ConceptSchemeTypeEnum.GLOSSARY);
+        conceptSchemeDto.setMaintainer(MetamacMocks.mockExternalItemDto("urn:maintiner", TypeExternalArtefactsEnum.AGENCY));
+
+        ConceptSchemeMetamacDto conceptSchemeMetamacCreated = srmCoreServiceFacade.createConceptScheme(getServiceContextAdministrador(), conceptSchemeDto);
+        ConceptSchemeMetamacDto dto = srmCoreServiceFacade.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), conceptSchemeMetamacCreated.getUrn());
+
+        assertNotNull(conceptSchemeMetamacCreated);
+        assertEquals(conceptSchemeDto.getCode(), conceptSchemeMetamacCreated.getCode());
+        // URI
+        // assert
+        assertNotNull(conceptSchemeMetamacCreated.getVersionLogic());
+        MetamacAsserts.assertEqualsInternationalStringDto(conceptSchemeDto.getName(), conceptSchemeMetamacCreated.getName());
+        assertEquals(ItemSchemeMetamacProcStatusEnum.DRAFT, conceptSchemeMetamacCreated.getProcStatus());
 
     }
 
