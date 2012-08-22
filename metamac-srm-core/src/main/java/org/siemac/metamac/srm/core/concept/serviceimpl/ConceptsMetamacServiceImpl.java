@@ -56,14 +56,14 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         return (ConceptSchemeVersionMetamac) conceptsService.createConceptScheme(ctx, conceptSchemeVersion);
     }
 
-    // TODO No se pueden realizar modificaciones sobre versiones de esquemas de conceptos que se encuentren INTERNALLY_PUBLISHED o EXTERNALLY_PUBLISHED
     @Override
     public ConceptSchemeVersionMetamac updateConceptScheme(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeVersion) throws MetamacException {
         // Validation
         ConceptsMetamacInvocationValidator.checkUpdateConceptScheme(conceptSchemeVersion, null);
 
-        // Fill metadata
-        // conceptSchemeVersion.setProcStatus(ItemSchemeMetamacProcStatusEnum.DRAFT);
+        // Schemes cannot be updated when procStatus is INTERNALLY_PUBLISHED or EXTERNALLY_PUBLISHED
+        retrieveConceptSchemeVersionByProcStatus(ctx, conceptSchemeVersion.getMaintainableArtefact().getUrn(), ItemSchemeMetamacProcStatusEnum.DRAFT,
+                ItemSchemeMetamacProcStatusEnum.PRODUCTION_VALIDATION, ItemSchemeMetamacProcStatusEnum.DIFFUSION_VALIDATION, ItemSchemeMetamacProcStatusEnum.VALIDATION_REJECTED);
 
         // Save conceptScheme
         return (ConceptSchemeVersionMetamac) conceptsService.updateConceptScheme(ctx, conceptSchemeVersion);

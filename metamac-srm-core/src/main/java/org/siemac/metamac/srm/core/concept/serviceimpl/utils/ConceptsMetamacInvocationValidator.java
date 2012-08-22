@@ -24,12 +24,7 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
             return;
         }
 
-        ValidationUtils.checkMetadataRequired(conceptSchemeVersion.getType(), ServiceExceptionParameters.CONCEPT_SCHEME_TYPE, exceptions);
-        if (ConceptSchemeTypeEnum.OPERATION.equals(conceptSchemeVersion.getType())) {
-            ValidationUtils.checkMetadataRequired(conceptSchemeVersion.getRelatedOperation(), ServiceExceptionParameters.CONCEPT_SCHEME_RELATED_OPERATION, exceptions);
-        } else {
-            ValidationUtils.checkMetadataEmpty(conceptSchemeVersion.getRelatedOperation(), ServiceExceptionParameters.CONCEPT_SCHEME_RELATED_OPERATION, exceptions);
-        }
+        checkConceptScheme(conceptSchemeVersion, exceptions);
 
         ExceptionUtils.throwIfException(exceptions);
     }
@@ -43,12 +38,7 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
             return;
         }
 
-        ValidationUtils.checkMetadataRequired(conceptSchemeVersion.getType(), ServiceExceptionParameters.CONCEPT_SCHEME_TYPE, exceptions);
-        if (ConceptSchemeTypeEnum.OPERATION.equals(conceptSchemeVersion.getType())) {
-            ValidationUtils.checkMetadataRequired(conceptSchemeVersion.getRelatedOperation(), ServiceExceptionParameters.CONCEPT_SCHEME_RELATED_OPERATION, exceptions);
-        } else {
-            ValidationUtils.checkMetadataEmpty(conceptSchemeVersion.getRelatedOperation(), ServiceExceptionParameters.CONCEPT_SCHEME_RELATED_OPERATION, exceptions);
-        }
+        checkConceptScheme(conceptSchemeVersion, exceptions);
 
         ExceptionUtils.throwIfException(exceptions);
     }
@@ -106,4 +96,14 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
 
         ExceptionUtils.throwIfException(exceptions);
     }
+
+    private static void checkConceptScheme(ConceptSchemeVersionMetamac conceptSchemeVersion, List<MetamacExceptionItem> exceptions) {
+        ValidationUtils.checkMetadataRequired(conceptSchemeVersion.getType(), ServiceExceptionParameters.CONCEPT_SCHEME_TYPE, exceptions);
+        if (ConceptSchemeTypeEnum.OPERATION.equals(conceptSchemeVersion.getType())) {
+            ValidationUtils.checkMetadataRequired(conceptSchemeVersion.getRelatedOperation(), ServiceExceptionParameters.CONCEPT_SCHEME_RELATED_OPERATION, exceptions);
+        } else {
+            ValidationUtils.checkMetadataEmpty(conceptSchemeVersion.getRelatedOperation(), ServiceExceptionParameters.CONCEPT_SCHEME_RELATED_OPERATION, exceptions);
+        }
+    }
+
 }
