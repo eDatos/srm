@@ -14,6 +14,7 @@ import org.apache.commons.lang.time.DateUtils;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.siemac.metamac.common.test.utils.MetamacAsserts;
 import org.siemac.metamac.common.test.utils.MetamacMocks;
 import org.siemac.metamac.core.common.criteria.MetamacCriteria;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder;
@@ -70,7 +71,14 @@ public class SrmCoreServiceFacadeConceptSchemeTest extends SrmBaseTest {
         assertEquals("http://app/operations", conceptSchemeMetamacDto.getRelatedOperation().getManagementAppUrl());
         assertEquals(1, conceptSchemeMetamacDto.getRelatedOperation().getVersion().longValue());
 
-        // TODO testear fechas de cambios de estado
+        MetamacAsserts.assertEqualsDate("2011-01-01 01:02:03", conceptSchemeMetamacDto.getProductionValidationDate());
+        assertEquals("user1", conceptSchemeMetamacDto.getProductionValidationUser());
+        MetamacAsserts.assertEqualsDate("2011-01-02 02:02:03", conceptSchemeMetamacDto.getDiffusionValidationDate());
+        assertEquals("user2", conceptSchemeMetamacDto.getDiffusionValidationUser());
+        MetamacAsserts.assertEqualsDate("2011-01-03 03:02:03", conceptSchemeMetamacDto.getInternalPublicationDate());
+        assertEquals("user3", conceptSchemeMetamacDto.getInternalPublicationUser());
+        assertNull(conceptSchemeMetamacDto.getExternalPublicationDate());
+        assertNull(conceptSchemeMetamacDto.getExternalPublicationUser());
     }
 
     @Test
