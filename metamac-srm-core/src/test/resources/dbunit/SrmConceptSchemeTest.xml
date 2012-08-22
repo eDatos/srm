@@ -761,7 +761,178 @@
         LAST_UPDATED="2011-01-22 01:02:03"
         LAST_UPDATED_TZ="Europe/London"
     />    
-            
+    
+    <!-- ************************************************************************************** -->
+    <!-- CONCEPT SCHEME 8                                                                       -->
+    <!--        - Version 1: draft (operation type)                                             -->
+    <!-- *************************************************************************************  -->
+
+    <TB_ITEM_SCHEMES
+        ID="8"
+        UUID="itemScheme-8"
+        VERSION="1"
+    />
+    
+    <TB_ITEM_SCHEMES_VERSIONS
+        ID="81"
+        ITEM_SCHEME_FK="8"
+        IS_PARTIAL="0"
+        MAINTANABLE_ARTIFACT_FK="81"
+        
+        UUID="conceptScheme-8-v1"
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user8"
+        LAST_UPDATED="2011-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"  
+    />
+
+    <TB_CONCEPT_SCHEMES_VERSIONS
+        TB_ITEM_SCHEMES_VERSIONS="81"
+    />
+    
+    <TB_M_CONCEPT_SCHEMES_VERSIONS
+        TB_CONCEPT_SCHEMES_VERSIONS="81"
+        CONCEPT_SCHEME_TYPE="OPERATION"          
+        RELATED_OPERATION_FK="13"
+        PROC_STATUS="DRAFT"
+        
+        PRODUCTION_VALIDATION_DATE_TZ="[null]"
+        PRODUCTION_VALIDATION_DATE="[null]"
+        PRODUCTION_VALIDATION_USER="[null]"
+        DIFFUSION_VALIDATION_DATE_TZ="[null]"
+        DIFFUSION_VALIDATION_DATE="[null]"
+        DIFFUSION_VALIDATION_USER="[null]"
+        INTERNAL_PUBLICATION_DATE_TZ="[null]"
+        INTERNAL_PUBLICATION_DATE="[null]"
+        INTERNAL_PUBLICATION_USER="[null]"
+        EXTERNAL_PUBLICATION_DATE_TZ="[null]"
+        EXTERNAL_PUBLICATION_DATE="[null]"
+        EXTERNAL_PUBLICATION_USER="[null]"
+    />     
+    
+    <TB_ANNOTABLE_ARTEFACTS 
+        ID="81"
+        ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
+        
+        CODE="CONCEPTSCHEME08"
+        URI="[null]"
+        URN="urn:sdmx:org.sdmx.infomodel.concepscheme.ConceptScheme=ISTAC:CONCEPTSCHEME08(01.000)"
+        REPLACED_BY="[null]"
+        REPLACE_TO="[null]"
+        
+        NAME_FK="5"
+        
+        VERSION_LOGIC="01.000"
+        FINAL_LOGIC="0"
+        VALID_FROM_TZ="[null]"
+        VALID_FROM="[null]" 
+        VALID_TO_TZ="[null]"
+        VALID_TO="[null]"
+        IS_EXTERNAL_REFERENCE="0"
+        STRUCTURE_URL="[null]"
+        SERVICE_URL="[null]"
+        IS_LAST_VERSION="1"
+        MAINTAINER_FK="81"
+        
+        UUID="annotableArtifact-81"
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user8"
+        LAST_UPDATED="2011-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"
+    />
+    
+    <!-- ************************************************************************************** -->
+    <!-- CONCEPT SCHEME 9                                                                       -->
+    <!--        - Version 1: draft (glossary type)                                              -->
+    <!-- *************************************************************************************  -->
+
+    <TB_ITEM_SCHEMES
+        ID="9"
+        UUID="itemScheme-9"
+        VERSION="1"
+    />
+    
+    <TB_ITEM_SCHEMES_VERSIONS
+        ID="91"
+        ITEM_SCHEME_FK="9"
+        IS_PARTIAL="0"
+        MAINTANABLE_ARTIFACT_FK="91"
+        
+        UUID="conceptScheme-9-v1"
+        VERSION="1"
+        CREATED_BY="user9"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user9"
+        LAST_UPDATED="2011-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"  
+    />
+
+    <TB_CONCEPT_SCHEMES_VERSIONS
+        TB_ITEM_SCHEMES_VERSIONS="91"
+    />
+    
+    <TB_M_CONCEPT_SCHEMES_VERSIONS
+        TB_CONCEPT_SCHEMES_VERSIONS="91"
+        CONCEPT_SCHEME_TYPE="GLOSSARY"          
+        RELATED_OPERATION_FK="[null]"
+        PROC_STATUS="DRAFT"
+        
+        PRODUCTION_VALIDATION_DATE_TZ="[null]"
+        PRODUCTION_VALIDATION_DATE="[null]"
+        PRODUCTION_VALIDATION_USER="[null]"
+        DIFFUSION_VALIDATION_DATE_TZ="[null]"
+        DIFFUSION_VALIDATION_DATE="[null]"
+        DIFFUSION_VALIDATION_USER="[null]"
+        INTERNAL_PUBLICATION_DATE_TZ="[null]"
+        INTERNAL_PUBLICATION_DATE="[null]"
+        INTERNAL_PUBLICATION_USER="[null]"
+        EXTERNAL_PUBLICATION_DATE_TZ="[null]"
+        EXTERNAL_PUBLICATION_DATE="[null]"
+        EXTERNAL_PUBLICATION_USER="[null]"
+    />     
+    
+    <TB_ANNOTABLE_ARTEFACTS 
+        ID="91"
+        ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
+        
+        CODE="CONCEPTSCHEME09"
+        URI="[null]"
+        URN="urn:sdmx:org.sdmx.infomodel.concepscheme.ConceptScheme=ISTAC:CONCEPTSCHEME09(01.000)"
+        REPLACED_BY="[null]"
+        REPLACE_TO="[null]"
+        
+        NAME_FK="5"
+        
+        VERSION_LOGIC="01.000"
+        FINAL_LOGIC="0"
+        VALID_FROM_TZ="[null]"
+        VALID_FROM="[null]" 
+        VALID_TO_TZ="[null]"
+        VALID_TO="[null]"
+        IS_EXTERNAL_REFERENCE="0"
+        STRUCTURE_URL="[null]"
+        SERVICE_URL="[null]"
+        IS_LAST_VERSION="1"
+        MAINTAINER_FK="91"
+        
+        UUID="annotableArtifact-91"
+        VERSION="1"
+        CREATED_BY="user9"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user2"
+        LAST_UPDATED="2011-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"
+    />
+    
+    
             
     <!-- ************************************************************************************** -->
     <!-- EXTERNAL ITEMS                                                                         -->
