@@ -65,6 +65,20 @@
         TB_STRUCTURES_VERSIONS="41"
     />
     
+    <!-- ************************************************************************************** -->
+    <!-- EXTERNAL ITEMS                                                                         -->
+    <!-- *************************************************************************************  -->    
+    <TB_EXTERNAL_ITEMS 
+        ID="11"
+        CODE="ISTAC"
+        URI="http://data.siemac.org/srm/v1/agenciesSchemes/standalone/agencies/ISTAC"
+        URN="urn:sdmx:org.sdmx.infomodel.base.Agency=ISTAC:STANDALONE(01.000).ISTAC"
+        MANAGEMENT_APP_URL="[null]"
+        VERSION="1"
+        TITLE_FK="[null]"
+        TYPE="AGENCY"
+    />  
+    
       <!-- ************************************************************************************** -->
     <!-- DATASTRUCTUREDEFINITION 2                                                              -->
     <!--       - Version 1: draft                                                               -->
