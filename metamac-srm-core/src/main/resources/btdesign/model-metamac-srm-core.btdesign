@@ -219,6 +219,8 @@ Application SrmCore {
 	    	@ConceptSchemeMetamacDto rejectConceptSchemeDiffusionValidation(String urn) throws MetamacException; 
 	    	"Publish internally a concept scheme"
 	    	@ConceptSchemeMetamacDto publishInternallyConceptScheme(String urn) throws MetamacException;
+	    	"Publish externally a concept scheme"
+	    	@ConceptSchemeMetamacDto publishExternallyConceptScheme(String urn) throws MetamacException;
     	}
 /*    	
     	Service ImportServiceFacade {

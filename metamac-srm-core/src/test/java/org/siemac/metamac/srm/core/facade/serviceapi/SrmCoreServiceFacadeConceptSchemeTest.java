@@ -580,6 +580,54 @@ public class SrmCoreServiceFacadeConceptSchemeTest extends SrmBaseTest {
             assertTrue(conceptSchemeDto.getFinalLogic());
         }
     }
+    
+    @Test
+    public void testPublishExternallyConceptScheme() throws Exception {
+
+        String urn = CONCEPT_SCHEME_7_V2;
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        {
+            ConceptSchemeMetamacDto conceptSchemeDto = srmCoreServiceFacade.retrieveConceptSchemeByUrn(ctx, urn);
+            assertEquals(ItemSchemeMetamacProcStatusEnum.INTERNALLY_PUBLISHED, conceptSchemeDto.getProcStatus());
+            assertNull(conceptSchemeDto.getValidFrom());
+            assertNull(conceptSchemeDto.getValidTo());
+        }
+
+        // Publish externally
+        ConceptSchemeMetamacDto conceptSchemeDto = srmCoreServiceFacade.publishExternallyConceptScheme(ctx, urn);
+
+        // Validate response
+        {
+            assertEquals(ItemSchemeMetamacProcStatusEnum.EXTERNALLY_PUBLISHED, conceptSchemeDto.getProcStatus());
+            assertNotNull(conceptSchemeDto.getProductionValidationDate());
+            assertNotNull(conceptSchemeDto.getProductionValidationUser());
+            assertNotNull(conceptSchemeDto.getDiffusionValidationDate());
+            assertNotNull(conceptSchemeDto.getDiffusionValidationUser());
+            assertNotNull(conceptSchemeDto.getInternalPublicationDate());
+            assertNotNull(conceptSchemeDto.getInternalPublicationUser());
+            assertTrue(DateUtils.isSameDay(new Date(), conceptSchemeDto.getExternalPublicationDate()));
+            assertEquals(ctx.getUserId(), conceptSchemeDto.getExternalPublicationUser());
+            assertTrue(DateUtils.isSameDay(new Date(), conceptSchemeDto.getValidFrom()));
+            assertNull(conceptSchemeDto.getValidTo());
+        }
+        // Validate retrieving
+        {
+            conceptSchemeDto = srmCoreServiceFacade.retrieveConceptSchemeByUrn(ctx, urn);
+            
+            assertEquals(ItemSchemeMetamacProcStatusEnum.EXTERNALLY_PUBLISHED, conceptSchemeDto.getProcStatus());
+            assertNotNull(conceptSchemeDto.getProductionValidationDate());
+            assertNotNull(conceptSchemeDto.getProductionValidationUser());
+            assertNotNull(conceptSchemeDto.getDiffusionValidationDate());
+            assertNotNull(conceptSchemeDto.getDiffusionValidationUser());
+            assertNotNull(conceptSchemeDto.getInternalPublicationDate());
+            assertNotNull(conceptSchemeDto.getInternalPublicationUser());
+            assertTrue(DateUtils.isSameDay(new Date(), conceptSchemeDto.getExternalPublicationDate()));
+            assertEquals(ctx.getUserId(), conceptSchemeDto.getExternalPublicationUser());
+            assertTrue(DateUtils.isSameDay(new Date(), conceptSchemeDto.getValidFrom()));
+            assertNull(conceptSchemeDto.getValidTo());
+        }
+    }
 
     @Override
     protected String getDataSetFile() {
