@@ -199,11 +199,15 @@ Application SrmCore {
 			"                
        		List<@ExternalItemDto> findConcepts(String uriConceptScheme);
        		
-	   		
+	   		"Create concept scheme"
 	   		@ConceptSchemeMetamacDto createConceptScheme(@ConceptSchemeMetamacDto conceptSchemeDto) throws MetamacException;
+	   		"Update concept scheme"
             @ConceptSchemeMetamacDto updateConceptScheme(@ConceptSchemeMetamacDto conceptSchemeDto) throws MetamacException;
+            "Delete concept scheme"
             deleteConceptScheme(String urn) throws MetamacException;
+            "Find concepts schemes by criteria"
             MetamacCriteriaResult<@ConceptSchemeMetamacDto> findConceptSchemesByCondition(MetamacCriteria criteria) throws MetamacException;
+            "Retrieve concept scheme by urn"
             @ConceptSchemeMetamacDto retrieveConceptSchemeByUrn(String urn) throws MetamacException;
 	    	"Sends concept scheme to production validation"
 	    	@ConceptSchemeMetamacDto sendConceptSchemeToProductionValidation(String urn) throws MetamacException;
@@ -212,7 +216,9 @@ Application SrmCore {
 	    	"Rejects production validation of concept scheme"    		
 	    	@ConceptSchemeMetamacDto rejectConceptSchemeProductionValidation(String urn) throws MetamacException;
 	    	"Rejects diffusion validation of concept scheme"
-	    	@ConceptSchemeMetamacDto rejectConceptSchemeDiffusionValidation(String urn) throws MetamacException;    		
+	    	@ConceptSchemeMetamacDto rejectConceptSchemeDiffusionValidation(String urn) throws MetamacException; 
+	    	"Publish internally a concept scheme"
+	    	@ConceptSchemeMetamacDto publishInternallyConceptScheme(String urn) throws MetamacException;
     	}
 /*    	
     	Service ImportServiceFacade {
