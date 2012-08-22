@@ -8,6 +8,14 @@ import com.arte.statistic.sdmx.srm.core.common.SdmxSrmBaseTest;
 
 public abstract class SrmBaseTest extends SdmxSrmBaseTest {
 
+    protected static final String CONCEPT_SCHEME_1_V1 = "urn:sdmx:org.sdmx.infomodel.concepscheme.ConceptScheme=ISTAC:CONCEPTSCHEME01(01.000)";
+    protected static final String CONCEPT_SCHEME_1_V2 = "urn:sdmx:org.sdmx.infomodel.concepscheme.ConceptScheme=ISTAC:CONCEPTSCHEME01(02.000)";
+    protected static final String CONCEPT_SCHEME_2_V1 = "urn:sdmx:org.sdmx.infomodel.concepscheme.ConceptScheme=ISTAC:CONCEPTSCHEME02(01.000)";
+    protected static final String CONCEPT_SCHEME_3_V1 = "urn:sdmx:org.sdmx.infomodel.concepscheme.ConceptScheme=ISTAC:CONCEPTSCHEME03(01.000)";
+    protected static final String CONCEPT_SCHEME_4_V1 = "urn:sdmx:org.sdmx.infomodel.concepscheme.ConceptScheme=ISTAC:CONCEPTSCHEME04(01.000)";
+    protected static final String CONCEPT_SCHEME_5_V1 = "urn:sdmx:org.sdmx.infomodel.concepscheme.ConceptScheme=ISTAC:CONCEPTSCHEME05(01.000)";
+    protected static final String NOT_EXISTS          = "not-exists";
+
     // --------------------------------------------------------------------------------------------------------------
     // DBUNIT CONFIGURATION
     // --------------------------------------------------------------------------------------------------------------

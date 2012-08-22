@@ -207,7 +207,8 @@ Application SrmCore {
             @ConceptSchemeMetamacDto retrieveConceptSchemeByUrn(String urn) throws MetamacException;
 	    	"Sends concept scheme to production validation"
 	    	@ConceptSchemeMetamacDto sendConceptSchemeToProductionValidation(String urn) throws MetamacException;
-   		
+    		"Send to diffusion validation"
+    		@ConceptSchemeMetamacDto sendConceptSchemeToDiffusionValidation(String urn) throws MetamacException;
     	}
 /*    	
     	Service ImportServiceFacade {

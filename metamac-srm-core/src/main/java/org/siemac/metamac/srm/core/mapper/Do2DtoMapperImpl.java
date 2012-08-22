@@ -53,6 +53,12 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
         target.setRelatedOperation(do2DtoMapperSdmxSrm.externalItemToExternalItemDto(TypeDozerCopyMode.UPDATE, source.getRelatedOperation()));
         target.setProductionValidationDate(CoreCommonUtil.transformDateTimeToDate(source.getProductionValidationDate()));
         target.setProductionValidationUser(source.getProductionValidationUser());
+        target.setDiffusionValidationDate(CoreCommonUtil.transformDateTimeToDate(source.getDiffusionValidationDate()));
+        target.setDiffusionValidationUser(source.getDiffusionValidationUser());
+        target.setInternalPublicationDate(CoreCommonUtil.transformDateTimeToDate(source.getInternalPublicationDate()));
+        target.setInternalPublicationUser(source.getInternalPublicationUser());
+        target.setExternalPublicationDate(CoreCommonUtil.transformDateTimeToDate(source.getExternalPublicationDate()));
+        target.setExternalPublicationUser(source.getExternalPublicationUser());
 
         do2DtoMapperSdmxSrm.conceptSchemeDoToDto(source, target);
         return target;
