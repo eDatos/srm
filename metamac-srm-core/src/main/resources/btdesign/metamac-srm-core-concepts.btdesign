@@ -33,6 +33,8 @@ Application ConceptsMetamac {
 	    	@ConceptSchemeVersionMetamac rejectConceptSchemeProductionValidation(String urn) throws MetamacException;
 	    	"Rejects diffusion validation of concept scheme"
 	    	@ConceptSchemeVersionMetamac rejectConceptSchemeDiffusionValidation(String urn) throws MetamacException;
+	    	"Publish internally a concept scheme"
+	    	@ConceptSchemeVersionMetamac publishInternallyConceptScheme(String urn) throws MetamacException;
 		}
 
 		// ----------------------------------------------------------------

@@ -74,4 +74,21 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
         ExceptionUtils.throwIfException(exceptions);
     }
 
+    public static void checkPublishInternallyConceptScheme(String urn, List<MetamacExceptionItem> exceptions) throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+        ValidationUtils.checkParameterRequired(urn, ServiceExceptionParameters.URN, exceptions);
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
+
+    public static void checkPublishExternallyConceptScheme(String urn, List<MetamacExceptionItem> exceptions) throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+        ValidationUtils.checkParameterRequired(urn, ServiceExceptionParameters.URN, exceptions);
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
 }
