@@ -198,7 +198,17 @@ public class SrmCoreServiceFacadeConceptSchemeTest extends SrmBaseTest {
 
     @Test
     public void testUpdateConceptScheme() throws Exception {
-        // TODO Auto-generated method stub
+        ConceptSchemeMetamacDto conceptSchemeDto = new ConceptSchemeMetamacDto();
+        conceptSchemeDto.setCode("code-" + MetamacMocks.mockString(10));
+        conceptSchemeDto.setName(MetamacMocks.mockInternationalString());
+        conceptSchemeDto.setType(ConceptSchemeTypeEnum.GLOSSARY);
+        conceptSchemeDto.setMaintainer(MetamacMocks.mockExternalItemDto("urn:maintiner", TypeExternalArtefactsEnum.AGENCY));
+
+        ConceptSchemeMetamacDto conceptSchemeMetamacCreated = srmCoreServiceFacade.createConceptScheme(getServiceContextAdministrador(), conceptSchemeDto);
+        conceptSchemeMetamacCreated.setCode("new-code");
+
+        ConceptSchemeMetamacDto conceptSchemeMetamacUpdated = srmCoreServiceFacade.updateConceptScheme(getServiceContextAdministrador(), conceptSchemeMetamacCreated);
+        System.out.println();
     }
 
     @Test

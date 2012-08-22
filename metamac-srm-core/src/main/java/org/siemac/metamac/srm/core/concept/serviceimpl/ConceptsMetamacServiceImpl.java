@@ -59,8 +59,14 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     // TODO No se pueden realizar modificaciones sobre versiones de esquemas de conceptos que se encuentren INTERNALLY_PUBLISHED o EXTERNALLY_PUBLISHED
     @Override
     public ConceptSchemeVersionMetamac updateConceptScheme(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeVersion) throws MetamacException {
-        // TODO Auto-generated method stub
-        return null;
+        // Validation
+        ConceptsMetamacInvocationValidator.checkUpdateConceptScheme(conceptSchemeVersion, null);
+
+        // Fill metadata
+        // conceptSchemeVersion.setProcStatus(ItemSchemeMetamacProcStatusEnum.DRAFT);
+
+        // Save conceptScheme
+        return (ConceptSchemeVersionMetamac) conceptsService.updateConceptScheme(ctx, conceptSchemeVersion);
     }
 
     @Override
@@ -211,9 +217,10 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         conceptSchemeVersion.setExternalPublicationUser(ctx.getUserId());
         conceptSchemeVersion.getMaintainableArtefact().setValidFrom(conceptSchemeVersion.getExternalPublicationDate());
         conceptSchemeVersion = (ConceptSchemeVersionMetamac) itemSchemeVersionRepository.save(conceptSchemeVersion);
-        
+
         // Fill validTo in previous internally published versions
-        List<ConceptSchemeVersionMetamac> versionsExternallyPublished = findConceptSchemeVersionsOfConceptSchemeInProcStatus(ctx, conceptSchemeVersion.getItemScheme(), ItemSchemeMetamacProcStatusEnum.EXTERNALLY_PUBLISHED);
+        List<ConceptSchemeVersionMetamac> versionsExternallyPublished = findConceptSchemeVersionsOfConceptSchemeInProcStatus(ctx, conceptSchemeVersion.getItemScheme(),
+                ItemSchemeMetamacProcStatusEnum.EXTERNALLY_PUBLISHED);
         for (ConceptSchemeVersionMetamac versionExternallyPublished : versionsExternallyPublished) {
             if (versionExternallyPublished.getId().equals(conceptSchemeVersion.getId())) {
                 continue;

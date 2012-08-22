@@ -428,16 +428,6 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public ConceptSchemeMetamacDto updateConceptScheme(ServiceContext ctx, ConceptSchemeMetamacDto conceptSchemeDto) throws MetamacException {
-        // TODO Security
-
-        // Update
-        // getConceptsMetamacService().
-
-        return null;
-    }
-
-    @Override
     public ConceptSchemeMetamacDto createConceptScheme(ServiceContext ctx, ConceptSchemeMetamacDto conceptSchemeDto) throws MetamacException {
         // TODO Security
 
@@ -446,6 +436,21 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
         // Create
         ConceptSchemeVersionMetamac conceptSchemeVersionCreated = getConceptsMetamacService().createConceptScheme(ctx, conceptSchemeVersion);
+
+        // Transform to DTO
+        conceptSchemeDto = do2DtoMapper.conceptSchemeMetamacDoToDto(conceptSchemeVersionCreated);
+        return conceptSchemeDto;
+    }
+
+    @Override
+    public ConceptSchemeMetamacDto updateConceptScheme(ServiceContext ctx, ConceptSchemeMetamacDto conceptSchemeDto) throws MetamacException {
+        // TODO Security
+
+        // Transform
+        ConceptSchemeVersionMetamac conceptSchemeVersion = dto2DoMapper.conceptSchemeDtoToDo(ctx, conceptSchemeDto);
+
+        // Update
+        ConceptSchemeVersionMetamac conceptSchemeVersionCreated = getConceptsMetamacService().updateConceptScheme(ctx, conceptSchemeVersion);
 
         // Transform to DTO
         conceptSchemeDto = do2DtoMapper.conceptSchemeMetamacDoToDto(conceptSchemeVersionCreated);

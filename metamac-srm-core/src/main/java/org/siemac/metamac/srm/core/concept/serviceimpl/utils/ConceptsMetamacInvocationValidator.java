@@ -34,8 +34,23 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
         ExceptionUtils.throwIfException(exceptions);
     }
 
-    public static void checkUpdateConceptScheme(ConceptSchemeVersionMetamac conceptSchemeVersion, List<MetamacExceptionItem> exceptionItems) throws MetamacException {
-        // TODO
+    public static void checkUpdateConceptScheme(ConceptSchemeVersionMetamac conceptSchemeVersion, List<MetamacExceptionItem> exceptions) throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+        ValidationUtils.checkParameterRequired(conceptSchemeVersion, ServiceExceptionParameters.CONCEPT_SCHEME, exceptions);
+        if (conceptSchemeVersion == null) {
+            return;
+        }
+
+        ValidationUtils.checkMetadataRequired(conceptSchemeVersion.getType(), ServiceExceptionParameters.CONCEPT_SCHEME_TYPE, exceptions);
+        if (ConceptSchemeTypeEnum.OPERATION.equals(conceptSchemeVersion.getType())) {
+            ValidationUtils.checkMetadataRequired(conceptSchemeVersion.getRelatedOperation(), ServiceExceptionParameters.CONCEPT_SCHEME_RELATED_OPERATION, exceptions);
+        } else {
+            ValidationUtils.checkMetadataEmpty(conceptSchemeVersion.getRelatedOperation(), ServiceExceptionParameters.CONCEPT_SCHEME_RELATED_OPERATION, exceptions);
+        }
+
+        ExceptionUtils.throwIfException(exceptions);
     }
 
     public static void checkSendConceptSchemeToProductionValidation(String urn, List<MetamacExceptionItem> exceptions) throws MetamacException {

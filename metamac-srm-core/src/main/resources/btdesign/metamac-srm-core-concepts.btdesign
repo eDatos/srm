@@ -75,6 +75,7 @@ Application ConceptsMetamac {
 			DateTimeTZ updateDateMetamac nullable;
 			
 			Repository ConceptSchemeVersionMetamacRepository {
+				findById;
 				findByCondition(PagingParameter pagingParameter);
 			}			
 		}
