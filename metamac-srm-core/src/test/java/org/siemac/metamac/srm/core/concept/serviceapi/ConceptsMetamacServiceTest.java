@@ -63,7 +63,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         assertNull(conceptSchemeVersion.getInternalPublicationDate());
         assertNull(conceptSchemeVersion.getInternalPublicationUser());
         assertNull(conceptSchemeVersion.getExternalPublicationDate());
-        assertNull(conceptSchemeVersion.getExternalPublicationUser());        
+        assertNull(conceptSchemeVersion.getExternalPublicationUser());
         ConceptsMetamacAsserts.assertEqualsConceptSchemeMetamac(conceptSchemeVersion, conceptSchemeVersionRetrieved);
     }
 
@@ -142,7 +142,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         assertEquals("http://op1", conceptSchemeVersion.getRelatedOperation().getUri());
         assertEquals(TypeExternalArtefactsEnum.STATISTICAL_OPERATION, conceptSchemeVersion.getRelatedOperation().getType());
         assertEquals("http://app/operations", conceptSchemeVersion.getRelatedOperation().getManagementAppUrl());
-        
+
         MetamacAsserts.assertEqualsDate("2011-01-01 01:02:03", conceptSchemeVersion.getProductionValidationDate());
         assertEquals("user1", conceptSchemeVersion.getProductionValidationUser());
         MetamacAsserts.assertEqualsDate("2011-01-02 02:02:03", conceptSchemeVersion.getDiffusionValidationDate());
@@ -178,13 +178,14 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             PagedResult<ConceptSchemeVersionMetamac> conceptSchemeVersionPagedResult = conceptsService.findConceptSchemesByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
 
             // Validate
-            assertEquals(6, conceptSchemeVersionPagedResult.getTotalRows());
+            assertEquals(7, conceptSchemeVersionPagedResult.getTotalRows());
             assertEquals(CONCEPT_SCHEME_1_V1, conceptSchemeVersionPagedResult.getValues().get(0).getMaintainableArtefact().getUrn());
             assertEquals(CONCEPT_SCHEME_1_V2, conceptSchemeVersionPagedResult.getValues().get(1).getMaintainableArtefact().getUrn());
             assertEquals(CONCEPT_SCHEME_2_V1, conceptSchemeVersionPagedResult.getValues().get(2).getMaintainableArtefact().getUrn());
             assertEquals(CONCEPT_SCHEME_3_V1, conceptSchemeVersionPagedResult.getValues().get(3).getMaintainableArtefact().getUrn());
             assertEquals(CONCEPT_SCHEME_4_V1, conceptSchemeVersionPagedResult.getValues().get(4).getMaintainableArtefact().getUrn());
             assertEquals(CONCEPT_SCHEME_5_V1, conceptSchemeVersionPagedResult.getValues().get(5).getMaintainableArtefact().getUrn());
+            assertEquals(CONCEPT_SCHEME_6_V1, conceptSchemeVersionPagedResult.getValues().get(6).getMaintainableArtefact().getUrn());
         }
 
         // Find published
@@ -209,12 +210,13 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             PagedResult<ConceptSchemeVersionMetamac> conceptSchemeVersionPagedResult = conceptsService.findConceptSchemesByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
 
             // Validate
-            assertEquals(5, conceptSchemeVersionPagedResult.getTotalRows());
+            assertEquals(6, conceptSchemeVersionPagedResult.getTotalRows());
             assertEquals(CONCEPT_SCHEME_1_V2, conceptSchemeVersionPagedResult.getValues().get(0).getMaintainableArtefact().getUrn());
             assertEquals(CONCEPT_SCHEME_2_V1, conceptSchemeVersionPagedResult.getValues().get(1).getMaintainableArtefact().getUrn());
             assertEquals(CONCEPT_SCHEME_3_V1, conceptSchemeVersionPagedResult.getValues().get(2).getMaintainableArtefact().getUrn());
             assertEquals(CONCEPT_SCHEME_4_V1, conceptSchemeVersionPagedResult.getValues().get(3).getMaintainableArtefact().getUrn());
             assertEquals(CONCEPT_SCHEME_5_V1, conceptSchemeVersionPagedResult.getValues().get(4).getMaintainableArtefact().getUrn());
+            assertEquals(CONCEPT_SCHEME_6_V1, conceptSchemeVersionPagedResult.getValues().get(5).getMaintainableArtefact().getUrn());
         }
     }
 
@@ -248,6 +250,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         }
         {
             conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(ctx, urn);
+
             assertEquals(ItemSchemeMetamacProcStatusEnum.PRODUCTION_VALIDATION, conceptSchemeVersion.getProcStatus());
             assertTrue(DateUtils.isSameDay(new Date(), conceptSchemeVersion.getProductionValidationDate().toDate()));
             assertEquals(ctx.getUserId(), conceptSchemeVersion.getProductionValidationUser());
@@ -286,6 +289,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         }
         {
             conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(ctx, urn);
+
             assertEquals(ItemSchemeMetamacProcStatusEnum.PRODUCTION_VALIDATION, conceptSchemeVersion.getProcStatus());
             assertTrue(DateUtils.isSameDay(new Date(), conceptSchemeVersion.getProductionValidationDate().toDate()));
             assertEquals(ctx.getUserId(), conceptSchemeVersion.getProductionValidationUser());
@@ -333,29 +337,29 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
     }
 
     // TODO testear cuando se implemente el update
-//    @Test
-//    public void testSendConceptSchemeToProductionValidationErrorMetadataRequired() throws Exception {
-//
-//        String urn = CONCEPT_SCHEME_1_V2;
-//
-//        // Update to clear metadata
-//        ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), urn);
-//        conceptSchemeVersion.setIsPartial(null);
-//        conceptsService.updateConceptScheme(getServiceContextAdministrador(), conceptSchemeVersion);
-//        
-//        // Sends to production validation
-//        try {
-//            conceptsService.sendConceptSchemeToProductionValidation(getServiceContextAdministrador(), urn);
-//            fail("ConceptScheme metadata required");
-//        } catch (MetamacException e) {
-//            assertEquals(3, e.getExceptionItems().size());
-//
-//            assertEquals(ServiceExceptionType.METADATA_REQUIRED.getCode(), e.getExceptionItems().get(0).getCode());
-//            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-//            assertEquals(ServiceExceptionParameters.ITEM_SCHEME_IS_PARTIAL, e.getExceptionItems().get(0).getMessageParameters()[0]);
-//        }
-//    }
-    
+    // @Test
+    // public void testSendConceptSchemeToProductionValidationErrorMetadataRequired() throws Exception {
+    //
+    // String urn = CONCEPT_SCHEME_1_V2;
+    //
+    // // Update to clear metadata
+    // ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), urn);
+    // conceptSchemeVersion.setIsPartial(null);
+    // conceptsService.updateConceptScheme(getServiceContextAdministrador(), conceptSchemeVersion);
+    //
+    // // Sends to production validation
+    // try {
+    // conceptsService.sendConceptSchemeToProductionValidation(getServiceContextAdministrador(), urn);
+    // fail("ConceptScheme metadata required");
+    // } catch (MetamacException e) {
+    // assertEquals(3, e.getExceptionItems().size());
+    //
+    // assertEquals(ServiceExceptionType.METADATA_REQUIRED.getCode(), e.getExceptionItems().get(0).getCode());
+    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+    // assertEquals(ServiceExceptionParameters.ITEM_SCHEME_IS_PARTIAL, e.getExceptionItems().get(0).getMessageParameters()[0]);
+    // }
+    // }
+
     @Test
     public void testSendConceptSchemeToDiffusionValidation() throws Exception {
 
@@ -386,6 +390,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         }
         {
             conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(ctx, urn);
+
             assertEquals(ItemSchemeMetamacProcStatusEnum.DIFFUSION_VALIDATION, conceptSchemeVersion.getProcStatus());
             assertNotNull(conceptSchemeVersion.getProductionValidationDate());
             assertNotNull(conceptSchemeVersion.getProductionValidationUser());
@@ -414,7 +419,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
     }
 
     @Test
-    public void testSendConceptSchemeToDiffusionValidationErrorWrongProcStatusDraft() throws Exception {
+    public void testSendConceptSchemeToDiffusionValidationErrorWrongProcStatus() throws Exception {
 
         String urn = CONCEPT_SCHEME_2_V1;
         ServiceContext ctx = getServiceContextAdministrador();
@@ -435,6 +440,166 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
             assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
             assertEquals(ServiceExceptionParameters.PROC_STATUS_PRODUCTION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
+        }
+    }
+
+    @Test
+    public void testRejectConceptSchemeProductionValidation() throws Exception {
+
+        String urn = CONCEPT_SCHEME_5_V1;
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        {
+            ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(ctx, urn);
+            assertEquals(ItemSchemeMetamacProcStatusEnum.PRODUCTION_VALIDATION, conceptSchemeVersion.getProcStatus());
+            assertNotNull(conceptSchemeVersion.getProductionValidationDate());
+            assertNotNull(conceptSchemeVersion.getProductionValidationUser());
+        }
+
+        // Rejects validation
+        ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.rejectConceptSchemeProductionValidation(ctx, urn);
+
+        // Validation
+        {
+            assertEquals(ItemSchemeMetamacProcStatusEnum.VALIDATION_REJECTED, conceptSchemeVersion.getProcStatus());
+            assertNull(conceptSchemeVersion.getProductionValidationDate());
+            assertNull(conceptSchemeVersion.getProductionValidationUser());
+            assertNull(conceptSchemeVersion.getDiffusionValidationDate());
+            assertNull(conceptSchemeVersion.getDiffusionValidationUser());
+            assertNull(conceptSchemeVersion.getInternalPublicationDate());
+            assertNull(conceptSchemeVersion.getInternalPublicationUser());
+            assertNull(conceptSchemeVersion.getExternalPublicationDate());
+            assertNull(conceptSchemeVersion.getExternalPublicationUser());
+        }
+        {
+            conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(ctx, urn);
+
+            assertNull(conceptSchemeVersion.getProductionValidationDate());
+            assertNull(conceptSchemeVersion.getProductionValidationUser());
+            assertNull(conceptSchemeVersion.getDiffusionValidationDate());
+            assertNull(conceptSchemeVersion.getDiffusionValidationUser());
+            assertNull(conceptSchemeVersion.getInternalPublicationDate());
+            assertNull(conceptSchemeVersion.getInternalPublicationUser());
+            assertNull(conceptSchemeVersion.getExternalPublicationDate());
+            assertNull(conceptSchemeVersion.getExternalPublicationUser());
+        }
+    }
+
+    @Test
+    public void testRejectConceptSchemeProductionValidationErrorNotExists() throws Exception {
+
+        String urn = NOT_EXISTS;
+        try {
+            conceptsService.rejectConceptSchemeProductionValidation(getServiceContextAdministrador(), urn);
+            fail("ConceptScheme not exists");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.CONCEPT_SCHEME_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
+    @Test
+    public void testRejectConceptSchemeProductionValidationErrorWrongProcStatus() throws Exception {
+
+        String urn = CONCEPT_SCHEME_1_V1;
+
+        {
+            ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), urn);
+            assertEquals(ItemSchemeMetamacProcStatusEnum.INTERNALLY_PUBLISHED, conceptSchemeVersion.getProcStatus());
+        }
+
+        try {
+            conceptsService.rejectConceptSchemeProductionValidation(getServiceContextAdministrador(), urn);
+            fail("ConceptScheme wrong proc status");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.CONCEPT_SCHEME_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_PRODUCTION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
+        }
+    }
+
+    @Test
+    public void testRejectConceptSchemeDiffusionValidation() throws Exception {
+
+        String urn = CONCEPT_SCHEME_6_V1;
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        {
+            ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(ctx, urn);
+            assertEquals(ItemSchemeMetamacProcStatusEnum.DIFFUSION_VALIDATION, conceptSchemeVersion.getProcStatus());
+            assertNotNull(conceptSchemeVersion.getProductionValidationDate());
+            assertNotNull(conceptSchemeVersion.getProductionValidationUser());
+            assertNotNull(conceptSchemeVersion.getDiffusionValidationDate());
+            assertNotNull(conceptSchemeVersion.getDiffusionValidationUser());
+        }
+
+        // Rejects validation
+        ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.rejectConceptSchemeDiffusionValidation(ctx, urn);
+
+        // Validation
+        {
+            assertEquals(ItemSchemeMetamacProcStatusEnum.VALIDATION_REJECTED, conceptSchemeVersion.getProcStatus());
+            assertNull(conceptSchemeVersion.getProductionValidationDate());
+            assertNull(conceptSchemeVersion.getProductionValidationUser());
+            assertNull(conceptSchemeVersion.getDiffusionValidationDate());
+            assertNull(conceptSchemeVersion.getDiffusionValidationUser());
+            assertNull(conceptSchemeVersion.getInternalPublicationDate());
+            assertNull(conceptSchemeVersion.getInternalPublicationUser());
+            assertNull(conceptSchemeVersion.getExternalPublicationDate());
+            assertNull(conceptSchemeVersion.getExternalPublicationUser());
+        }
+        {
+            conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(ctx, urn);
+
+            assertNull(conceptSchemeVersion.getProductionValidationDate());
+            assertNull(conceptSchemeVersion.getProductionValidationUser());
+            assertNull(conceptSchemeVersion.getDiffusionValidationDate());
+            assertNull(conceptSchemeVersion.getDiffusionValidationUser());
+            assertNull(conceptSchemeVersion.getInternalPublicationDate());
+            assertNull(conceptSchemeVersion.getInternalPublicationUser());
+            assertNull(conceptSchemeVersion.getExternalPublicationDate());
+            assertNull(conceptSchemeVersion.getExternalPublicationUser());
+        }
+    }
+
+    @Test
+    public void testRejectConceptSchemeDiffusionValidationErrorNotExists() throws Exception {
+
+        String urn = NOT_EXISTS;
+        try {
+            conceptsService.rejectConceptSchemeDiffusionValidation(getServiceContextAdministrador(), urn);
+            fail("ConceptScheme not exists");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.CONCEPT_SCHEME_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
+    @Test
+    public void testRejectConceptSchemeDiffusionValidationErrorWrongProcStatus() throws Exception {
+
+        String urn = CONCEPT_SCHEME_1_V1;
+
+        {
+            ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), urn);
+            assertEquals(ItemSchemeMetamacProcStatusEnum.INTERNALLY_PUBLISHED, conceptSchemeVersion.getProcStatus());
+        }
+
+        try {
+            conceptsService.rejectConceptSchemeDiffusionValidation(getServiceContextAdministrador(), urn);
+            fail("ConceptScheme wrong proc status");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.CONCEPT_SCHEME_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_DIFFUSION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
         }
     }
 

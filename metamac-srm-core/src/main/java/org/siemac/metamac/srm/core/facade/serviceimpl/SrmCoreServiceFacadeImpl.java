@@ -500,6 +500,30 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         ConceptSchemeMetamacDto conceptSchemeDto = do2DtoMapper.conceptSchemeMetamacDoToDto(conceptSchemeVersion);
         return conceptSchemeDto;
     }
+    
+    @Override
+    public ConceptSchemeMetamacDto rejectConceptSchemeProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
+        
+        // TODO Security
+
+        ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptsMetamacService().rejectConceptSchemeProductionValidation(ctx, urn);
+
+        // Transform to Dto
+        ConceptSchemeMetamacDto conceptSchemeDto = do2DtoMapper.conceptSchemeMetamacDoToDto(conceptSchemeVersion);
+        return conceptSchemeDto;
+    }
+
+    @Override
+    public ConceptSchemeMetamacDto rejectConceptSchemeDiffusionValidation(ServiceContext ctx, String urn) throws MetamacException {
+        
+        // TODO Security
+
+        ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptsMetamacService().rejectConceptSchemeDiffusionValidation(ctx, urn);
+
+        // Transform to Dto
+        ConceptSchemeMetamacDto conceptSchemeDto = do2DtoMapper.conceptSchemeMetamacDoToDto(conceptSchemeVersion);
+        return conceptSchemeDto;
+    }
 
     /**************************************************************************
      * PRIVATE METHODS

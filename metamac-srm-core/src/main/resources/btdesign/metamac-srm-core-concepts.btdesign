@@ -25,10 +25,14 @@ Application ConceptsMetamac {
 			@ConceptSchemeVersionMetamac retrieveConceptSchemeByUrn(String urn) throws MetamacException;
     		"Finds concept schemes by criteria in any status, returning last versions"
     		PagedResult<@ConceptSchemeVersionMetamac> findConceptSchemesByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
-    		"Send to production validation"
+    		"Send concept scheme to production validation"
     		@ConceptSchemeVersionMetamac sendConceptSchemeToProductionValidation(String urn) throws MetamacException;
-    		"Send to diffusion validation"
+    		"Send concept scheme to diffusion validation"
     		@ConceptSchemeVersionMetamac sendConceptSchemeToDiffusionValidation(String urn) throws MetamacException;
+	    	"Rejects production validation of concept scheme"    		
+	    	@ConceptSchemeVersionMetamac rejectConceptSchemeProductionValidation(String urn) throws MetamacException;
+	    	"Rejects diffusion validation of concept scheme"
+	    	@ConceptSchemeVersionMetamac rejectConceptSchemeDiffusionValidation(String urn) throws MetamacException;
 		}
 
 		// ----------------------------------------------------------------
