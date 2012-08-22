@@ -141,14 +141,66 @@ public class SrmCoreServiceFacadeConceptSchemeTest extends SrmBaseTest {
 
         // Class descriptors
         assertEquals(conceptSchemeDto.getType(), conceptSchemeMetamacCreated.getType());
-        assertEquals(conceptSchemeDto.getRelatedOperation(), conceptSchemeMetamacCreated.getRelatedOperation());
+        assertNull(conceptSchemeMetamacCreated.getRelatedOperation());
 
         // Production descriptors
         assertEquals(ItemSchemeMetamacProcStatusEnum.DRAFT, conceptSchemeMetamacCreated.getProcStatus());
+        assertNull(conceptSchemeMetamacCreated.getProductionValidationDate());
+        assertNull(conceptSchemeMetamacCreated.getProductionValidationUser());
 
         // Diffusion descriptors
         assertNull(conceptSchemeMetamacCreated.getValidFrom());
         assertNull(conceptSchemeMetamacCreated.getValidTo());
+        assertNull(conceptSchemeMetamacCreated.getDiffusionValidationDate());
+        assertNull(conceptSchemeMetamacCreated.getDiffusionValidationUser());
+        // assertNull(conceptSchemeMetamacCreated.getInternalPublicationDate());
+        // assertNull(conceptSchemeMetamacCreated.getInternalPublicationUser());
+        // assertNull(conceptSchemeMetamacCreated.getExternalPublicationDate());
+        // assertNull(conceptSchemeMetamacCreated.getExternalPublicationUser());
+    }
+
+    @Test
+    public void testCreateConceptSchemeOperationType() throws Exception {
+        ConceptSchemeMetamacDto conceptSchemeDto = new ConceptSchemeMetamacDto();
+        conceptSchemeDto.setCode("code-" + MetamacMocks.mockString(10));
+        conceptSchemeDto.setName(MetamacMocks.mockInternationalString());
+        conceptSchemeDto.setType(ConceptSchemeTypeEnum.OPERATION);
+        conceptSchemeDto.setRelatedOperation(MetamacMocks.mockExternalItemDto("urn:operation", TypeExternalArtefactsEnum.STATISTICAL_OPERATION));
+        conceptSchemeDto.setMaintainer(MetamacMocks.mockExternalItemDto("urn:maintiner", TypeExternalArtefactsEnum.AGENCY));
+
+        ConceptSchemeMetamacDto conceptSchemeMetamacCreated = srmCoreServiceFacade.createConceptScheme(getServiceContextAdministrador(), conceptSchemeDto);
+
+        // Identifiers
+        assertNotNull(conceptSchemeMetamacCreated);
+        assertEquals(conceptSchemeDto.getCode(), conceptSchemeMetamacCreated.getCode());
+        assertNull(conceptSchemeMetamacCreated.getUri());
+        assertNotNull(conceptSchemeMetamacCreated.getUrn());
+        assertNotNull(conceptSchemeMetamacCreated.getVersionLogic());
+        assertEqualsInternationalStringDto(conceptSchemeDto.getName(), conceptSchemeMetamacCreated.getName());
+
+        // Content descriptors
+        assertEqualsInternationalStringDto(conceptSchemeDto.getDescription(), conceptSchemeMetamacCreated.getDescription());
+        assertEquals(conceptSchemeDto.getIsPartial(), conceptSchemeMetamacCreated.getIsPartial());
+
+        // Class descriptors
+        assertEquals(conceptSchemeDto.getType(), conceptSchemeMetamacCreated.getType());
+        assertNotNull(conceptSchemeMetamacCreated.getRelatedOperation());
+        assertEquals(conceptSchemeDto.getRelatedOperation(), conceptSchemeMetamacCreated.getRelatedOperation());
+
+        // Production descriptors
+        assertEquals(ItemSchemeMetamacProcStatusEnum.DRAFT, conceptSchemeMetamacCreated.getProcStatus());
+        assertNull(conceptSchemeMetamacCreated.getProductionValidationDate());
+        assertNull(conceptSchemeMetamacCreated.getProductionValidationUser());
+
+        // Diffusion descriptors
+        assertNull(conceptSchemeMetamacCreated.getValidFrom());
+        assertNull(conceptSchemeMetamacCreated.getValidTo());
+        assertNull(conceptSchemeMetamacCreated.getDiffusionValidationDate());
+        assertNull(conceptSchemeMetamacCreated.getDiffusionValidationUser());
+        // assertNull(conceptSchemeMetamacCreated.getInternalPublicationDate());
+        // assertNull(conceptSchemeMetamacCreated.getInternalPublicationUser());
+        // assertNull(conceptSchemeMetamacCreated.getExternalPublicationDate());
+        // assertNull(conceptSchemeMetamacCreated.getExternalPublicationUser());
     }
 
     @Test
@@ -316,7 +368,7 @@ public class SrmCoreServiceFacadeConceptSchemeTest extends SrmBaseTest {
             assertEquals(CONCEPT_SCHEME_2_V1, result.getResults().get(0).getUrn());
         }
     }
-    
+
     @Test
     public void testSendConceptSchemeToProductionValidation() throws Exception {
 
@@ -339,7 +391,6 @@ public class SrmCoreServiceFacadeConceptSchemeTest extends SrmBaseTest {
             assertEquals(ctx.getUserId(), conceptSchemeDto.getProductionValidationUser());
         }
     }
-
 
     @Override
     protected String getDataSetFile() {
