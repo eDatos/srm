@@ -37,6 +37,8 @@ Application ConceptsMetamac {
 	    	@ConceptSchemeVersionMetamac publishInternallyConceptScheme(String urn) throws MetamacException;
 	    	"Publish externally a concept scheme"
 	    	@ConceptSchemeVersionMetamac publishExternallyConceptScheme(String urn) throws MetamacException;
+			"Delete concept scheme version. This must be last version and no published"
+    		deleteConceptScheme(String urn) throws MetamacException;
 		}
 
 		// ----------------------------------------------------------------

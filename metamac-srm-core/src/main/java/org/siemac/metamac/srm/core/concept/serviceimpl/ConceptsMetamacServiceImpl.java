@@ -94,7 +94,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         // Validation
         ConceptsMetamacInvocationValidator.checkSendConceptSchemeToProductionValidation(urn, null);
 
-        // Retrieve version in draft
+        // Retrieve version in specific procStatus
         ConceptSchemeVersionMetamac conceptSchemeVersion = retrieveConceptSchemeVersionByProcStatus(ctx, urn, ItemSchemeMetamacProcStatusEnum.DRAFT,
                 ItemSchemeMetamacProcStatusEnum.VALIDATION_REJECTED);
 
@@ -116,7 +116,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         // Validation
         ConceptsMetamacInvocationValidator.checkSendConceptSchemeToDiffusionValidation(urn, null);
 
-        // Retrieve version in production validation
+        // Retrieve version in specific procStatus
         ConceptSchemeVersionMetamac conceptSchemeVersion = retrieveConceptSchemeVersionByProcStatus(ctx, urn, ItemSchemeMetamacProcStatusEnum.PRODUCTION_VALIDATION);
 
         // Validate to send to diffusion
@@ -137,7 +137,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         // Validation
         ConceptsMetamacInvocationValidator.checkRejectConceptSchemeProductionValidation(urn, null);
 
-        // Retrieve version in production validation
+        // Retrieve version in specific procStatus
         ConceptSchemeVersionMetamac conceptSchemeVersion = retrieveConceptSchemeVersionByProcStatus(ctx, urn, ItemSchemeMetamacProcStatusEnum.PRODUCTION_VALIDATION);
 
         // Validate to reject
@@ -158,7 +158,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         // Validation
         ConceptsMetamacInvocationValidator.checkRejectConceptSchemeDiffusionValidation(urn, null);
 
-        // Retrieve version in diffusion validation
+        // Retrieve version in specific procStatus
         ConceptSchemeVersionMetamac conceptSchemeVersion = retrieveConceptSchemeVersionByProcStatus(ctx, urn, ItemSchemeMetamacProcStatusEnum.DIFFUSION_VALIDATION);
 
         // Validate to reject
@@ -182,7 +182,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         // Validation
         ConceptsMetamacInvocationValidator.checkPublishInternallyConceptScheme(urn, null);
 
-        // Retrieve version in diffusion validation
+        // Retrieve version in specific procStatus
         ConceptSchemeVersionMetamac conceptSchemeVersion = retrieveConceptSchemeVersionByProcStatus(ctx, urn, ItemSchemeMetamacProcStatusEnum.DIFFUSION_VALIDATION);
 
         // Validate to publish internally
@@ -205,7 +205,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         // Validation
         ConceptsMetamacInvocationValidator.checkPublishExternallyConceptScheme(urn, null);
 
-        // Retrieve version internally published
+        // Retrieve version in specific procStatus
         ConceptSchemeVersionMetamac conceptSchemeVersion = retrieveConceptSchemeVersionByProcStatus(ctx, urn, ItemSchemeMetamacProcStatusEnum.INTERNALLY_PUBLISHED);
 
         // Validate to publish externally
@@ -230,6 +230,20 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         }
 
         return conceptSchemeVersion;
+    }
+
+    @Override
+    public void deleteConceptScheme(ServiceContext ctx, String urn) throws MetamacException {
+
+        // Validation
+        ConceptsMetamacInvocationValidator.checkDeleteConceptScheme(urn, null);
+
+        // Retrieve version in specific procStatus to check exist and can be deleted
+        retrieveConceptSchemeVersionByProcStatus(ctx, urn, ItemSchemeMetamacProcStatusEnum.DRAFT, ItemSchemeMetamacProcStatusEnum.VALIDATION_REJECTED,
+                ItemSchemeMetamacProcStatusEnum.PRODUCTION_VALIDATION, ItemSchemeMetamacProcStatusEnum.DIFFUSION_VALIDATION);
+
+        // Delete
+        conceptsService.deleteConceptScheme(ctx, urn);
     }
 
     /**
