@@ -25,7 +25,15 @@ Application DtosMetamacConceptDomain {
 			JAVADATE diffusionValidationDate nullable;
 			"User who sended to diffusion validation"
 			String diffusionValidationUser nullable;
-			
+			"Date when the concept scheme was published internally"
+			JAVADATE internalPublicationDate nullable;
+			"User who published internally"
+			String internalPublicationUser nullable;
+			"Date when the concept scheme was published externally"
+			JAVADATE externalPublicationDate nullable;
+			"User who published externally"
+			String externalPublicationUser nullable;
+						
 			"Version to optimistic locking"
 			Long versionOptimisticLocking;
 		}

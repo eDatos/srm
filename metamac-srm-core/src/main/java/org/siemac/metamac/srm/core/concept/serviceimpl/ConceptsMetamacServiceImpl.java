@@ -101,6 +101,27 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         return conceptSchemeVersion;
     }
 
+    @Override
+    public ConceptSchemeVersionMetamac sendConceptSchemeToDiffusionValidation(ServiceContext ctx, String urn) throws MetamacException {
+
+        // Validation
+        ConceptsMetamacInvocationValidator.checkSendConceptSchemeToDiffusionValidation(urn, null);
+
+        // Retrieve version in production validation
+        ConceptSchemeVersionMetamac conceptSchemeVersion = retrieveConceptSchemeVersionInProcStatus(ctx, urn, ItemSchemeMetamacProcStatusEnum.PRODUCTION_VALIDATION);
+
+        // Validate to send to diffusion
+        checkConceptSchemeToSendToDiffusionValidation(ctx, urn, conceptSchemeVersion);
+
+        // Update proc status
+        conceptSchemeVersion.setProcStatus(ItemSchemeMetamacProcStatusEnum.DIFFUSION_VALIDATION);
+        conceptSchemeVersion.setDiffusionValidationDate(new DateTime());
+        conceptSchemeVersion.setDiffusionValidationUser(ctx.getUserId());
+        conceptSchemeVersion = (ConceptSchemeVersionMetamac) itemSchemeVersionRepository.save(conceptSchemeVersion);
+
+        return conceptSchemeVersion;
+    }
+
     /**
      * Retrieves version of a concept scheme in specific procStatus
      */
@@ -127,8 +148,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     }
 
     /**
-     * Makes validations to sent to production validation.
-     * Checks actual processing status and if it is correct checks conditions to send to production validation
+     * Makes validations to sent to production validation
      */
     private void checkConceptSchemeToSendToProductionValidation(ServiceContext ctx, String urn, ConceptSchemeVersionMetamac conceptSchemeVersion) throws MetamacException {
 
@@ -146,6 +166,24 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     }
 
     /**
+     * Makes validations to sent to diffusion validation
+     */
+    private void checkConceptSchemeToSendToDiffusionValidation(ServiceContext ctx, String urn, ConceptSchemeVersionMetamac conceptSchemeVersion) throws MetamacException {
+
+        List<MetamacExceptionItem> exceptions = new ArrayList<MetamacExceptionItem>();
+
+        // Check proc status
+        String[] procStatusString = new String[]{ItemSchemeMetamacProcStatusEnum.PRODUCTION_VALIDATION.name()};
+        if (!ArrayUtils.contains(procStatusString, conceptSchemeVersion.getProcStatus().name())) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CONCEPT_SCHEME_WRONG_PROC_STATUS).withMessageParameters(urn, procStatusString).build();
+        }
+        // Check other conditions
+        checkConditionsSinceSendToDiffusionValidation(conceptSchemeVersion, exceptions);
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
+    
+    /**
      * TODO alguna validación sobre los conceptos?
      */
     private void checkConditionsSinceSendToProductionValidation(ConceptSchemeVersionMetamac conceptSchemeVersion, List<MetamacExceptionItem> exceptions) {
@@ -153,4 +191,8 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         // Metadata required
         ValidationUtils.checkMetadataRequired(conceptSchemeVersion.getIsPartial(), ServiceExceptionParameters.ITEM_SCHEME_IS_PARTIAL, exceptions);
     }
+    
+    private void checkConditionsSinceSendToDiffusionValidation(ConceptSchemeVersionMetamac conceptSchemeVersion, List<MetamacExceptionItem> exceptions) {
+        checkConditionsSinceSendToProductionValidation(conceptSchemeVersion, exceptions);
+    }    
 }
