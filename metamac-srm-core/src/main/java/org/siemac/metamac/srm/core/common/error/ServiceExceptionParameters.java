@@ -14,5 +14,6 @@ public class ServiceExceptionParameters extends com.arte.statistic.sdmx.srm.core
     public static final String PROC_STATUS_PRODUCTION_VALIDATION = ItemSchemeMetamacProcStatusEnum.PRODUCTION_VALIDATION.name();
     public static final String PROC_STATUS_DIFFUSION_VALIDATION  = ItemSchemeMetamacProcStatusEnum.DIFFUSION_VALIDATION.name();
     public static final String PROC_STATUS_VALIDATION_REJECTED   = ItemSchemeMetamacProcStatusEnum.VALIDATION_REJECTED.name();
-
+    public static final String PROC_STATUS_INTERNALLY_PUBLISHED  = ItemSchemeMetamacProcStatusEnum.INTERNALLY_PUBLISHED.name();
+    public static final String PROC_STATUS_EXTERNALLY_PUBLISHED  = ItemSchemeMetamacProcStatusEnum.EXTERNALLY_PUBLISHED.name();
 }
