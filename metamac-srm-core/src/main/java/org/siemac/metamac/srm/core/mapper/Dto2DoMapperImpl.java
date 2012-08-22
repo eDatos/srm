@@ -25,7 +25,6 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacRepository;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.exception.ConceptSchemeVersionMetamacNotFoundException;
-import org.siemac.metamac.srm.core.concept.serviceapi.ConceptsMetamacService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
@@ -49,9 +48,6 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
     @Autowired
     @Qualifier("dto2DoMapperSdmxSrm")
     private com.arte.statistic.sdmx.srm.core.mapper.Dto2DoMapper dto2DoMapperSdmxSrm;
-
-    @Autowired
-    private ConceptsMetamacService                               conceptsMetamacService;
 
     @Autowired
     private ConceptSchemeVersionMetamacRepository                conceptSchemeVersionMetamacRepository;
@@ -90,11 +86,11 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         if (source.getId() == null) {
             target = new ConceptSchemeVersionMetamac();
         } else {
-            // target = conceptsMetamacService.retrieveConceptSchemeByUrn(ctx, source.getUrn());
             try {
                 target = conceptSchemeVersionMetamacRepository.findById(source.getId());
             } catch (ConceptSchemeVersionMetamacNotFoundException e) {
-                e.printStackTrace();
+                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SRM_SEARCH_NOT_FOUND).withMessageParameters(ServiceExceptionParameters.CONCEPT_SCHEME)
+                        .withLoggedLevel(ExceptionLevelEnum.ERROR).build();
             }
             OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersion());
         }
