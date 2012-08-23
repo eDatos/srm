@@ -1078,12 +1078,13 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertEquals(versionExpected, conceptSchemeVersionLast.getMaintainableArtefact().getReplacedBy());
             assertFalse(conceptSchemeVersionLast.getMaintainableArtefact().getIsLastVersion());
 
-            // All versions // TODO
-            // List<ConceptSchemeVersionMetamac> allVersions = conceptsService.retrieveConceptSchemeHistoric(getServiceContextAdministrador(), urn);
-            // assertEquals(3, allVersions.size());
-            // assertEquals(urn, allVersions.get(0).getMaintainableArtefact().getUrn());
-            // assertEquals(urnLast, allVersions.get(1).getMaintainableArtefact().getUrn());
-            // assertEquals(urnExpected, allVersions.get(2).getMaintainableArtefact().getUrn());
+            // All versions
+            List<ConceptSchemeVersionMetamac> allVersions = conceptsService.retrieveConceptSchemeVersions(getServiceContextAdministrador(), conceptSchemeVersionNewVersion.getMaintainableArtefact()
+                    .getUrn());
+            assertEquals(3, allVersions.size());
+            assertEquals(CONCEPT_SCHEME_7_V1, allVersions.get(0).getMaintainableArtefact().getUrn());
+            assertEquals(urnLastVersion, allVersions.get(1).getMaintainableArtefact().getUrn());
+            assertEquals(urnExpected, allVersions.get(2).getMaintainableArtefact().getUrn());
         }
     }
 
@@ -1101,6 +1102,12 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
             assertEquals(CONCEPT_SCHEME_1_V2, e.getExceptionItems().get(0).getMessageParameters()[0]);
         }
+    }
+
+    @Override
+    public void testCancelConceptSchemeValidity() throws Exception {
+        // TODO Auto-generated method stub
+
     }
 
     @Override
