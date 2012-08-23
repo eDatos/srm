@@ -24,7 +24,7 @@ Application ConceptsMetamac {
 			@ConceptSchemeVersionMetamac updateConceptScheme(@ConceptSchemeVersionMetamac conceptSchemeVersion) throws MetamacException;
 			"Retrieve concept scheme by urn"
 			@ConceptSchemeVersionMetamac retrieveConceptSchemeByUrn(String urn) throws MetamacException;
-    		"Finds concept schemes by criteria in any status, returning last versions"
+    		"Finds concept schemes by criteria"
     		PagedResult<@ConceptSchemeVersionMetamac> findConceptSchemesByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
     		"Send concept scheme to production validation"
     		@ConceptSchemeVersionMetamac sendConceptSchemeToProductionValidation(String urn) throws MetamacException;
@@ -40,8 +40,8 @@ Application ConceptsMetamac {
 	    	@ConceptSchemeVersionMetamac publishExternallyConceptScheme(String urn) throws MetamacException;
 			"Delete concept scheme version. This must be last version and no published"
     		deleteConceptScheme(String urn) throws MetamacException;
-    		"Creates a new version of a concept scheme"
-    		@ConceptSchemeVersionMetamac versioningConceptScheme(String urn, @VersionTypeEnum versionType) throws MetamacException;
+    		"Creates a new version of a concept scheme, copying metadata from version with provided urn"
+    		@ConceptSchemeVersionMetamac versioningConceptScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
 		}
 
 		// ----------------------------------------------------------------

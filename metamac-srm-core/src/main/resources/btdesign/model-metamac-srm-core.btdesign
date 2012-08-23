@@ -221,6 +221,8 @@ Application SrmCore {
 	    	@ConceptSchemeMetamacDto publishInternallyConceptScheme(String urn) throws MetamacException;
 	    	"Publish externally a concept scheme"
 	    	@ConceptSchemeMetamacDto publishExternallyConceptScheme(String urn) throws MetamacException;
+    		"Creates a new version of a concept scheme, copying metadata from version with provided urn"
+    		@ConceptSchemeMetamacDto versioningConceptScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
     	}
 /*    	
     	Service ImportServiceFacade {

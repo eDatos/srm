@@ -66,6 +66,7 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.trans.StructureMsgDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.util.ContentInputDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponentList;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeDozerCopyMode;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.jaxb.message.Structure;
 import com.arte.statistic.sdmx.v2_1.transformation.error.MetamacTransExceptionType;
 
@@ -548,6 +549,18 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         // TODO Security
 
         ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptsMetamacService().publishExternallyConceptScheme(ctx, urn);
+
+        // Transform to Dto
+        ConceptSchemeMetamacDto conceptSchemeDto = do2DtoMapper.conceptSchemeMetamacDoToDto(conceptSchemeVersion);
+        return conceptSchemeDto;
+    }
+
+    @Override
+    public ConceptSchemeMetamacDto versioningConceptScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
+        
+        // TODO Security
+
+        ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptsMetamacService().versioningConceptScheme(ctx, urnToCopy, versionType);
 
         // Transform to Dto
         ConceptSchemeMetamacDto conceptSchemeDto = do2DtoMapper.conceptSchemeMetamacDoToDto(conceptSchemeVersion);

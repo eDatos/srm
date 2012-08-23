@@ -1019,9 +1019,11 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         String urnExpected = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:CONCEPTSCHEME07(03.000)";
 
         ConceptSchemeVersionMetamac conceptSchemeVersionToCopy = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), urnToCopy);
+        assertEquals(ItemSchemeMetamacProcStatusEnum.EXTERNALLY_PUBLISHED, conceptSchemeVersionToCopy.getProcStatus());
         assertFalse(conceptSchemeVersionToCopy.getMaintainableArtefact().getIsLastVersion());
         
         ConceptSchemeVersionMetamac conceptSchemeVersionLast = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), urnLastVersion);
+        assertEquals(ItemSchemeMetamacProcStatusEnum.INTERNALLY_PUBLISHED, conceptSchemeVersionLast.getProcStatus());
         assertTrue(conceptSchemeVersionLast.getMaintainableArtefact().getIsLastVersion());
         
         ConceptSchemeVersionMetamac conceptSchemeVersionNewVersion = conceptsService.versioningConceptScheme(getServiceContextAdministrador(), urnToCopy, VersionTypeEnum.MAJOR);
