@@ -463,7 +463,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         // TODO Security
 
         // Delete
-        // TODO getConceptsMetamacService().deleteConceptScheme(ctx, urn);
+         getConceptsMetamacService().deleteConceptScheme(ctx, urn);
     }
 
     @Override

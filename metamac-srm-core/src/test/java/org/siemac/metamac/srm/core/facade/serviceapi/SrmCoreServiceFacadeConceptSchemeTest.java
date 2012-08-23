@@ -227,7 +227,21 @@ public class SrmCoreServiceFacadeConceptSchemeTest extends SrmBaseTest {
 
     @Test
     public void testDeleteConceptScheme() throws Exception {
-        // TODO Auto-generated method stub
+        String urn = CONCEPT_SCHEME_2_V1;
+
+        // Delete concept scheme only with version in draft
+        srmCoreServiceFacade.deleteConceptScheme(getServiceContextAdministrador(), urn);
+
+        // Validation
+        try {
+            srmCoreServiceFacade.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), urn);
+            fail("ConceptScheme deleted");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.CONCEPT_SCHEME_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
     }
 
     @Test
