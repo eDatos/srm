@@ -26,6 +26,7 @@ import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestrictio
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.core.common.util.GeneratorUrnUtils;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
@@ -212,16 +213,16 @@ public class SrmCoreServiceFacadeConceptSchemeTest extends SrmBaseTest {
 
     @Test
     public void testUpdateConceptSchemeCode() throws Exception {
-        // String code = "code-" + MetamacMocks.mockString(10);
-        // ConceptSchemeMetamacDto conceptSchemeMetamacDto = srmCoreServiceFacade.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_9_V1);
-        // conceptSchemeMetamacDto.setCode(code);
-        //
-        // conceptSchemeMetamacDto = srmCoreServiceFacade.updateConceptScheme(getServiceContextAdministrador(), conceptSchemeMetamacDto);
-        //
-        // String expextedUrn = GeneratorUrnUtils.generateSdmxConceptSchemeUrn(conceptSchemeMetamacDto.getMaintainer().getCode(), code, conceptSchemeMetamacDto.getVersionLogic());
-        //
-        // assertEquals(code, conceptSchemeMetamacDto.getCode());
-        // assertEquals(expextedUrn, conceptSchemeMetamacDto.getUrn());
+        String code = "code-" + MetamacMocks.mockString(10);
+        ConceptSchemeMetamacDto conceptSchemeMetamacDto = srmCoreServiceFacade.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_9_V1);
+        conceptSchemeMetamacDto.setCode(code);
+
+        conceptSchemeMetamacDto = srmCoreServiceFacade.updateConceptScheme(getServiceContextAdministrador(), conceptSchemeMetamacDto);
+
+        String expextedUrn = GeneratorUrnUtils.generateSdmxConceptSchemeUrn(conceptSchemeMetamacDto.getMaintainer().getCode(), code, conceptSchemeMetamacDto.getVersionLogic());
+
+        assertEquals(code, conceptSchemeMetamacDto.getCode());
+        assertEquals(expextedUrn, conceptSchemeMetamacDto.getUrn());
     }
 
     @Test
