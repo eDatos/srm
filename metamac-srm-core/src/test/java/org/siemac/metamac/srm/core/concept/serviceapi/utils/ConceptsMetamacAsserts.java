@@ -11,10 +11,10 @@ import com.arte.statistic.sdmx.srm.core.concept.serviceapi.utils.ConceptsAsserts
 
 public class ConceptsMetamacAsserts extends ConceptsAsserts {
 
-    public static void assertEqualsConceptSchemeMetamac(ConceptSchemeVersionMetamac expected, ConceptSchemeVersionMetamac actual) {
+    public static void assertEqualsConceptScheme(ConceptSchemeVersionMetamac expected, ConceptSchemeVersionMetamac actual) {
         assertEquals(expected.getType(), actual.getType());
         assertEqualsExternalItem(expected.getRelatedOperation(), actual.getRelatedOperation());
-        assertEqualsConceptScheme(expected, actual);
+        ConceptsAsserts.assertEqualsConceptScheme(expected, actual);
     }
 
     public static void assertEqualsConceptSchemeMetamacDto(ConceptSchemeMetamacDto expected, ConceptSchemeMetamacDto actual) {
@@ -24,6 +24,6 @@ public class ConceptsMetamacAsserts extends ConceptsAsserts {
         assertEquals(expected.getIsPartial(), actual.getIsPartial());
         assertEquals(expected.getType(), actual.getType());
         assertEqualsExternalItemDto(expected.getRelatedOperation(), actual.getRelatedOperation());
+        // TODO comprobar el resto ConceptSchemeDto
     }
-
 }

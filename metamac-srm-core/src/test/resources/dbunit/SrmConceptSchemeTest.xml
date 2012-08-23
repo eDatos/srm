@@ -62,7 +62,7 @@
         
         CODE="CONCEPTSCHEME01"
         URI="[null]"
-        URN="urn:sdmx:org.sdmx.infomodel.concepscheme.ConceptScheme=ISTAC:CONCEPTSCHEME01(01.000)"
+        URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:CONCEPTSCHEME01(01.000)"
         REPLACED_BY="02.000"
         REPLACE_TO="[null]"
         
@@ -140,7 +140,7 @@
         
         CODE="CONCEPTSCHEME01"
         URI="[null]"
-        URN="urn:sdmx:org.sdmx.infomodel.concepscheme.ConceptScheme=ISTAC:CONCEPTSCHEME01(02.000)"
+        URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:CONCEPTSCHEME01(02.000)"
         REPLACED_BY="[null]"
         REPLACE_TO="01.000"
         
@@ -227,7 +227,7 @@
         
         CODE="CONCEPTSCHEME02"
         URI="[null]"
-        URN="urn:sdmx:org.sdmx.infomodel.concepscheme.ConceptScheme=ISTAC:CONCEPTSCHEME02(01.000)"
+        URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:CONCEPTSCHEME02(01.000)"
         REPLACED_BY="[null]"
         REPLACE_TO="[null]"
         
@@ -314,11 +314,11 @@
         
         CODE="CONCEPTSCHEME03"
         URI="[null]"
-        URN="urn:sdmx:org.sdmx.infomodel.concepscheme.ConceptScheme=ISTAC:CONCEPTSCHEME03(01.000)"
+        URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:CONCEPTSCHEME03(01.000)"
         REPLACED_BY="[null]"
         REPLACE_TO="[null]"
         
-        NAME_FK="[null]"
+        NAME_FK="6"
         
         VERSION_LOGIC="01.000"
         FINAL_LOGIC="1"
@@ -400,7 +400,7 @@
         
         CODE="CONCEPTSCHEME04"
         URI="[null]"
-        URN="urn:sdmx:org.sdmx.infomodel.concepscheme.ConceptScheme=ISTAC:CONCEPTSCHEME04(01.000)"
+        URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:CONCEPTSCHEME04(01.000)"
         REPLACED_BY="[null]"
         REPLACE_TO="[null]"
         
@@ -485,7 +485,7 @@
         
         CODE="CONCEPTSCHEME05"
         URI="[null]"
-        URN="urn:sdmx:org.sdmx.infomodel.concepscheme.ConceptScheme=ISTAC:CONCEPTSCHEME05(01.000)"
+        URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:CONCEPTSCHEME05(01.000)"
         REPLACED_BY="[null]"
         REPLACE_TO="[null]"
         
@@ -570,7 +570,7 @@
         
         CODE="CONCEPTSCHEME06"
         URI="[null]"
-        URN="urn:sdmx:org.sdmx.infomodel.concepscheme.ConceptScheme=ISTAC:CONCEPTSCHEME06(01.000)"
+        URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:CONCEPTSCHEME06(01.000)"
         REPLACED_BY="[null]"
         REPLACE_TO="[null]"
         
@@ -658,7 +658,7 @@
         
         CODE="CONCEPTSCHEME07"
         URI="[null]"
-        URN="urn:sdmx:org.sdmx.infomodel.concepscheme.ConceptScheme=ISTAC:CONCEPTSCHEME07(01.000)"
+        URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:CONCEPTSCHEME07(01.000)"
         REPLACED_BY="02.000"
         REPLACE_TO="[null]"
         
@@ -734,7 +734,7 @@
         
         CODE="CONCEPTSCHEME07"
         URI="[null]"
-        URN="urn:sdmx:org.sdmx.infomodel.concepscheme.ConceptScheme=ISTAC:CONCEPTSCHEME07(02.000)"
+        URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:CONCEPTSCHEME07(02.000)"
         REPLACED_BY="[null]"
         REPLACE_TO="01.000"
         
@@ -819,7 +819,7 @@
         
         CODE="CONCEPTSCHEME08"
         URI="[null]"
-        URN="urn:sdmx:org.sdmx.infomodel.concepscheme.ConceptScheme=ISTAC:CONCEPTSCHEME08(01.000)"
+        URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:CONCEPTSCHEME08(01.000)"
         REPLACED_BY="[null]"
         REPLACE_TO="[null]"
         
@@ -904,7 +904,7 @@
         
         CODE="CONCEPTSCHEME09"
         URI="[null]"
-        URN="urn:sdmx:org.sdmx.infomodel.concepscheme.ConceptScheme=ISTAC:CONCEPTSCHEME09(01.000)"
+        URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:CONCEPTSCHEME09(01.000)"
         REPLACED_BY="[null]"
         REPLACE_TO="[null]"
         
@@ -1167,4 +1167,17 @@
         VERSION="1"
         INTERNATIONAL_STRING_FK="5"
     />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="6"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="61"
+        LABEL="Título conceptScheme-3-v1"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="6"
+    />    
 </dataset>

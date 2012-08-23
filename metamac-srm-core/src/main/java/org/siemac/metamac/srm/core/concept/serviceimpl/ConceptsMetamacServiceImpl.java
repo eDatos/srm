@@ -20,6 +20,7 @@ import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacProperties;
 import org.siemac.metamac.srm.core.concept.serviceimpl.utils.ConceptsMetamacInvocationValidator;
+import org.siemac.metamac.srm.core.concept.serviceimpl.utils.DoCopyUtils;
 import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,7 @@ import org.springframework.stereotype.Service;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemScheme;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.concept.serviceapi.ConceptsService;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
 
 /**
  * Implementation of ConceptsMetamacService.
@@ -244,6 +246,30 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
         // Delete
         conceptsService.deleteConceptScheme(ctx, urn);
+    }
+
+    // TODO en el módulo srm, controlar procStatus
+    // TODO TEST: validar que la versión creada es draft, y atributos type y relatedoperation
+
+    @Override
+    public ConceptSchemeVersionMetamac versioningConceptScheme(ServiceContext ctx, String urn, VersionTypeEnum versionType) throws MetamacException {
+
+        // Validation
+        ConceptsMetamacInvocationValidator.checkVersioningConceptScheme(urn, versionType, null);
+
+        // TODO check no existe draft
+
+        // Initialize new version, copying values of version selected
+        ConceptSchemeVersionMetamac conceptSchemeVersionToCopy = retrieveConceptSchemeVersionByProcStatus(ctx, urn, ItemSchemeMetamacProcStatusEnum.INTERNALLY_PUBLISHED,
+                ItemSchemeMetamacProcStatusEnum.EXTERNALLY_PUBLISHED);
+        ConceptSchemeVersionMetamac conceptSchemeNewVersion = new ConceptSchemeVersionMetamac();
+        conceptSchemeNewVersion.setProcStatus(ItemSchemeMetamacProcStatusEnum.DRAFT);
+        
+        DoCopyUtils.copy(conceptSchemeVersionToCopy, conceptSchemeNewVersion);
+
+
+        // Versioning
+        return (ConceptSchemeVersionMetamac) conceptsService.versioningConceptScheme(ctx, conceptSchemeVersionToCopy.getItemScheme(), conceptSchemeNewVersion, versionType);
     }
 
     /**

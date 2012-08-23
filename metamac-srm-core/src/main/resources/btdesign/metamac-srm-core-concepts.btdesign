@@ -2,6 +2,7 @@ import "classpath:/btdesign/export/metamac-core-common-entity.btdesign"
 import "classpath:/btdesign/statistic-sdmx-core-concepts.btdesign"
 import "classpath:/btdesign/metamac-srm-core-enum.btdesign"
 import "classpath:/btdesign/metamac-srm-core-concepts-enum.btdesign"
+import "classpath:/btdesign/statistic-sdmx-v2_1-domain-enums.btdesign"
 
 Application ConceptsMetamac {
 	basePackage=unused
@@ -39,6 +40,8 @@ Application ConceptsMetamac {
 	    	@ConceptSchemeVersionMetamac publishExternallyConceptScheme(String urn) throws MetamacException;
 			"Delete concept scheme version. This must be last version and no published"
     		deleteConceptScheme(String urn) throws MetamacException;
+    		"Creates a new version of a concept scheme"
+    		@ConceptSchemeVersionMetamac versioningConceptScheme(String urn, @VersionTypeEnum versionType) throws MetamacException;
 		}
 
 		// ----------------------------------------------------------------

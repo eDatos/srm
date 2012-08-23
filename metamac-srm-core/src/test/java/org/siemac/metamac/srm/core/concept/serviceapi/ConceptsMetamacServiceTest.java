@@ -38,6 +38,7 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptSchemeVersion;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/srm/applicationContext-test.xml"})
@@ -67,7 +68,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         assertNull(conceptSchemeVersion.getInternalPublicationUser());
         assertNull(conceptSchemeVersion.getExternalPublicationDate());
         assertNull(conceptSchemeVersion.getExternalPublicationUser());
-        ConceptsMetamacAsserts.assertEqualsConceptSchemeMetamac(conceptSchemeVersion, conceptSchemeVersionRetrieved);
+        ConceptsMetamacAsserts.assertEqualsConceptScheme(conceptSchemeVersion, conceptSchemeVersionRetrieved);
     }
 
     @Test
@@ -956,8 +957,70 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
             assertEquals(ServiceExceptionParameters.PROC_STATUS_DRAFT, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
             assertEquals(ServiceExceptionParameters.PROC_STATUS_VALIDATION_REJECTED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[1]);
-            assertEquals(ServiceExceptionParameters.PROC_STATUS_PRODUCTION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[1]);
-            assertEquals(ServiceExceptionParameters.PROC_STATUS_DIFFUSION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[1]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_PRODUCTION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[2]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_DIFFUSION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[3]);
+        }
+    }
+
+    @Test
+    public void testVersioningConceptScheme() throws Exception {
+
+        String urn = CONCEPT_SCHEME_3_V1;
+        String versionExpected = "02.000";
+        String urnExpected = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:CONCEPTSCHEME03(02.000)";
+
+        ConceptSchemeVersionMetamac conceptSchemeVersionToCopy = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), urn);
+        ConceptSchemeVersionMetamac conceptSchemeVersionNewVersion = conceptsService.versioningConceptScheme(getServiceContextAdministrador(), urn, VersionTypeEnum.MAJOR);
+
+        // Validate response
+        {
+            assertEquals(versionExpected, conceptSchemeVersionNewVersion.getMaintainableArtefact().getVersionLogic());
+            assertEquals(urnExpected, conceptSchemeVersionNewVersion.getMaintainableArtefact().getUrn());
+            assertEquals(ItemSchemeMetamacProcStatusEnum.DRAFT, conceptSchemeVersionNewVersion.getProcStatus());
+            ConceptsMetamacAsserts.assertEqualsConceptScheme(conceptSchemeVersionToCopy, conceptSchemeVersionNewVersion);
+        }
+
+        // Validate retrieving
+        {
+            // New version
+            conceptSchemeVersionNewVersion = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), conceptSchemeVersionNewVersion.getMaintainableArtefact().getUrn());
+            assertEquals(versionExpected, conceptSchemeVersionNewVersion.getMaintainableArtefact().getVersionLogic());
+            assertEquals(urnExpected, conceptSchemeVersionNewVersion.getMaintainableArtefact().getUrn());
+            assertEquals(ItemSchemeMetamacProcStatusEnum.DRAFT, conceptSchemeVersionNewVersion.getProcStatus());
+            assertEquals("01.000", conceptSchemeVersionNewVersion.getMaintainableArtefact().getReplaceTo());
+            assertEquals(null, conceptSchemeVersionNewVersion.getMaintainableArtefact().getReplacedBy());
+            assertTrue(conceptSchemeVersionNewVersion.getMaintainableArtefact().getIsLastVersion());
+            ConceptsMetamacAsserts.assertEqualsConceptScheme(conceptSchemeVersionToCopy, conceptSchemeVersionNewVersion);
+
+            // Version copied
+            conceptSchemeVersionToCopy = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), urn);
+            assertEquals("01.000", conceptSchemeVersionToCopy.getMaintainableArtefact().getVersionLogic());
+            assertEquals(urn, conceptSchemeVersionToCopy.getMaintainableArtefact().getUrn());
+            assertEquals(null, conceptSchemeVersionToCopy.getMaintainableArtefact().getReplaceTo());
+            assertEquals(versionExpected, conceptSchemeVersionToCopy.getMaintainableArtefact().getReplacedBy());
+            assertFalse(conceptSchemeVersionToCopy.getMaintainableArtefact().getIsLastVersion());
+
+            // All versions // TODO
+            // List<ConceptSchemeVersionMetamac> allVersions = conceptsService.retrieveConceptSchemeHistoric(getServiceContextAdministrador(), urn);
+            // assertEquals(2, allVersions.size());
+            // assertEquals(urn, allVersions.get(0).getMaintainableArtefact().getUrn());
+            // assertEquals(urnExpected, allVersions.get(1).getMaintainableArtefact().getUrn());
+        }
+    }
+
+    @Test
+    public void testVersioningConceptSchemeErrorAlreadyExistsDraft() throws Exception {
+
+        String urn = CONCEPT_SCHEME_1_V1;
+
+        try {
+            conceptsService.versioningConceptScheme(getServiceContextAdministrador(), urn, VersionTypeEnum.MAJOR);
+            fail("ConceptScheme already exists in no final");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.CONCEPT_SCHEME_VERSIONING_NOT_SUPPORTED.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(CONCEPT_SCHEME_1_V2, e.getExceptionItems().get(0).getMessageParameters()[0]);
         }
     }
 
