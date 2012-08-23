@@ -291,6 +291,22 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         return (ConceptSchemeVersionMetamac) conceptsService.versioningConceptScheme(ctx, conceptSchemeVersionToCopy.getItemScheme(), conceptSchemeNewVersion, versionType);
     }
 
+    @Override
+    public ConceptSchemeVersionMetamac cancelConceptSchemeValidity(ServiceContext ctx, String urn) throws MetamacException {
+
+        // Validation
+        ConceptsMetamacInvocationValidator.checkCancelConceptSchemeValidity(urn, null);
+
+        // Retrieve version in specific procStatus
+        ConceptSchemeVersionMetamac conceptSchemeVersion = retrieveConceptSchemeVersionByProcStatus(ctx, urn, ItemSchemeMetamacProcStatusEnum.EXTERNALLY_PUBLISHED);
+
+        // Cancel validity
+        conceptSchemeVersion.getMaintainableArtefact().setValidTo(new DateTime());
+        conceptSchemeVersion = (ConceptSchemeVersionMetamac) itemSchemeVersionRepository.save(conceptSchemeVersion);
+
+        return conceptSchemeVersion;
+    }
+
     /**
      * Retrieves version of a concept scheme in specific procStatus
      */

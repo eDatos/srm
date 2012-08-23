@@ -736,16 +736,25 @@ public class SrmCoreServiceFacadeConceptSchemeTest extends SrmBaseTest {
             assertEquals(null, conceptSchemeDtoToCopy.getReplaceTo());
             assertEquals(versionExpected, conceptSchemeDtoToCopy.getReplacedBy());
 
-            // All versions // TODO
-            // List<ConceptSchemeVersionMetamac> allVersions = srmCoreServiceFacade.retrieveConceptSchemeHistoric(getServiceContextAdministrador(), urn);
-            // assertEquals(2, allVersions.size());
-            // assertEquals(urn, allVersions.get(0).getUrn());
-            // assertEquals(urnExpected, allVersions.get(1).getUrn());
+            // All versions
+            List<ConceptSchemeMetamacDto> allVersions = srmCoreServiceFacade.retrieveConceptSchemeVersions(getServiceContextAdministrador(), urn);
+            assertEquals(2, allVersions.size());
+            assertEquals(urn, allVersions.get(0).getUrn());
+            assertEquals(urnExpected, allVersions.get(1).getUrn());
         }
+    }
+
+    @Test
+    public void testCancelConceptSchemeValidity() throws Exception {
+        ConceptSchemeMetamacDto conceptSchemeMetamacDto = srmCoreServiceFacade.cancelConceptSchemeValidity(getServiceContextAdministrador(), CONCEPT_SCHEME_7_V1);
+
+        assertNotNull(conceptSchemeMetamacDto);
+        assertNotNull(conceptSchemeMetamacDto.getValidTo());
     }
 
     @Override
     protected String getDataSetFile() {
         return "dbunit/SrmConceptSchemeTest.xml";
     }
+
 }

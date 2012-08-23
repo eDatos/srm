@@ -44,6 +44,8 @@ Application ConceptsMetamac {
     		deleteConceptScheme(String urn) throws MetamacException;
     		"Creates a new version of a concept scheme, copying metadata from version with provided urn"
     		@ConceptSchemeVersionMetamac versioningConceptScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
+    		"Cancels the concept scheme validity"
+    		@ConceptSchemeVersionMetamac cancelConceptSchemeValidity(String urn) throws MetamacException;
 		}
 
 		// ----------------------------------------------------------------

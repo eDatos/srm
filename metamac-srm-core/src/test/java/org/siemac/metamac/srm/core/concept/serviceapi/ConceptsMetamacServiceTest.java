@@ -1104,10 +1104,29 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         }
     }
 
-    @Override
+    @Test
     public void testCancelConceptSchemeValidity() throws Exception {
-        // TODO Auto-generated method stub
+        ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.cancelConceptSchemeValidity(getServiceContextAdministrador(), CONCEPT_SCHEME_7_V1);
 
+        assertNotNull(conceptSchemeVersion);
+        assertNotNull(conceptSchemeVersion.getMaintainableArtefact().getValidTo());
+    }
+
+    @Test
+    public void testCancelConceptSchemeValidityErrorWrongProcStatus() throws Exception {
+        String[] urns = {CONCEPT_SCHEME_1_V1, CONCEPT_SCHEME_4_V1, CONCEPT_SCHEME_6_V1};
+        for (String urn : urns) {
+            try {
+                conceptsService.cancelConceptSchemeValidity(getServiceContextAdministrador(), urn);
+                fail("wrong procStatus");
+            } catch (MetamacException e) {
+                assertEquals(1, e.getExceptionItems().size());
+                assertEquals(ServiceExceptionType.CONCEPT_SCHEME_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
+                assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
+                assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+                assertEquals(ServiceExceptionParameters.PROC_STATUS_EXTERNALLY_PUBLISHED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
+            }
+        }
     }
 
     @Override

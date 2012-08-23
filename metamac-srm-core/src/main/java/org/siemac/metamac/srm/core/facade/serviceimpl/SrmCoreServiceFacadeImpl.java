@@ -575,6 +575,18 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         return conceptSchemeDto;
     }
 
+    @Override
+    public ConceptSchemeMetamacDto cancelConceptSchemeValidity(ServiceContext ctx, String urn) throws MetamacException {
+        // TODO Security
+
+        ConceptSchemeVersionMetamac conceptSchemeVersionMetamac = getConceptsMetamacService().cancelConceptSchemeValidity(ctx, urn);
+
+        // Transform
+        ConceptSchemeMetamacDto conceptSchemeMetamacDto = do2DtoMapper.conceptSchemeMetamacDoToDto(conceptSchemeVersionMetamac);
+
+        return conceptSchemeMetamacDto;
+    }
+
     /**************************************************************************
      * PRIVATE METHODS
      *************************************************************************/
