@@ -49,10 +49,4 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
         tablePrimaryKeys.putAll(super.getTablePrimaryKeys());
         return tablePrimaryKeys;
     }
-
-    @Override
-    protected String getDataSetFile() {
-        // throw exception because this method is already overrided by SdmxSrmBaseTest class, and in SRM must be override by children classes
-        throw new IllegalArgumentException("Dbunit file must be override by children");
-    }
 }
