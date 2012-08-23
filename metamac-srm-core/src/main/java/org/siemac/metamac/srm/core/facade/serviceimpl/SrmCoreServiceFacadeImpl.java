@@ -33,13 +33,10 @@ import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
-import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.core.mapper.Do2DtoMapper;
 import org.siemac.metamac.srm.core.mapper.Dto2DoMapper;
 import org.siemac.metamac.srm.core.mapper.MetamacCriteria2SculptorCriteriaMapper;
 import org.siemac.metamac.srm.core.mapper.SculptorCriteria2MetamacCriteriaMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.oxm.XmlMappingException;
@@ -78,8 +75,6 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     public SrmCoreServiceFacadeImpl() {
     }
-
-    private Logger                                 logger = LoggerFactory.getLogger(SrmCoreServiceFacade.class);
 
     @Autowired
     @Qualifier("do2DtoMapper")
@@ -429,6 +424,19 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
+    public List<ConceptSchemeMetamacDto> retrieveConceptSchemeVersions(ServiceContext ctx, String urn) throws MetamacException {
+        // TODO Security
+
+        // Retrieve
+        List<ConceptSchemeVersionMetamac> conceptSchemeVersionMetamacs = getConceptsMetamacService().retrieveConceptSchemeVersions(ctx, urn);
+
+        // Transform
+        List<ConceptSchemeMetamacDto> conceptSchemeMetamacDtos = do2DtoMapper.conceptSchemeMetamacDoListToDtoList(conceptSchemeVersionMetamacs);
+
+        return conceptSchemeMetamacDtos;
+    }
+
+    @Override
     public ConceptSchemeMetamacDto createConceptScheme(ServiceContext ctx, ConceptSchemeMetamacDto conceptSchemeDto) throws MetamacException {
         // TODO Security
 
@@ -463,7 +471,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         // TODO Security
 
         // Delete
-         getConceptsMetamacService().deleteConceptScheme(ctx, urn);
+        getConceptsMetamacService().deleteConceptScheme(ctx, urn);
     }
 
     @Override
@@ -506,10 +514,10 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         ConceptSchemeMetamacDto conceptSchemeDto = do2DtoMapper.conceptSchemeMetamacDoToDto(conceptSchemeVersion);
         return conceptSchemeDto;
     }
-    
+
     @Override
     public ConceptSchemeMetamacDto rejectConceptSchemeProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
-        
+
         // TODO Security
 
         ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptsMetamacService().rejectConceptSchemeProductionValidation(ctx, urn);
@@ -521,7 +529,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public ConceptSchemeMetamacDto rejectConceptSchemeDiffusionValidation(ServiceContext ctx, String urn) throws MetamacException {
-        
+
         // TODO Security
 
         ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptsMetamacService().rejectConceptSchemeDiffusionValidation(ctx, urn);
@@ -533,7 +541,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public ConceptSchemeMetamacDto publishInternallyConceptScheme(ServiceContext ctx, String urn) throws MetamacException {
-        
+
         // TODO Security
 
         ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptsMetamacService().publishInternallyConceptScheme(ctx, urn);
@@ -545,7 +553,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public ConceptSchemeMetamacDto publishExternallyConceptScheme(ServiceContext ctx, String urn) throws MetamacException {
-        
+
         // TODO Security
 
         ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptsMetamacService().publishExternallyConceptScheme(ctx, urn);
@@ -557,7 +565,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public ConceptSchemeMetamacDto versioningConceptScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
-        
+
         // TODO Security
 
         ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptsMetamacService().versioningConceptScheme(ctx, urnToCopy, versionType);

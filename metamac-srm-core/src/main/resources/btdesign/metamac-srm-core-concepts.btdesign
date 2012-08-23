@@ -22,9 +22,11 @@ Application ConceptsMetamac {
 			@ConceptSchemeVersionMetamac createConceptScheme(@ConceptSchemeVersionMetamac conceptSchemeVersion) throws MetamacException;
 			"Update concept scheme"
 			@ConceptSchemeVersionMetamac updateConceptScheme(@ConceptSchemeVersionMetamac conceptSchemeVersion) throws MetamacException;
-			"Retrieve concept scheme by urn"
+			"Retrieves concept scheme by urn"
 			@ConceptSchemeVersionMetamac retrieveConceptSchemeByUrn(String urn) throws MetamacException;
-    		"Finds concept schemes by criteria"
+			"Retrieves all concept schemes versions"
+			List<@ConceptSchemeVersionMetamac> retrieveConceptSchemeVersions(String urn) throws MetamacException;
+			"Finds concept schemes by criteria"
     		PagedResult<@ConceptSchemeVersionMetamac> findConceptSchemesByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
     		"Send concept scheme to production validation"
     		@ConceptSchemeVersionMetamac sendConceptSchemeToProductionValidation(String urn) throws MetamacException;

@@ -1,5 +1,8 @@
 package org.siemac.metamac.srm.core.mapper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.siemac.metamac.core.common.util.CoreCommonUtil;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
@@ -17,6 +20,10 @@ import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeDozerCopyMode;
 
 @org.springframework.stereotype.Component("do2DtoMapper")
 public class Do2DtoMapperImpl implements Do2DtoMapper {
+
+    // ------------------------------------------------------------
+    // DSDs
+    // ------------------------------------------------------------
 
     @Autowired
     @Qualifier("do2DtoMapperSdmxSrm")
@@ -42,6 +49,10 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
         return do2DtoMapperSdmxSrm.dataStructureDefinitionToDataStructureDefinitionExtendDto(typeDozerCopyMode, dataStructureDefinitionVersion);
     }
 
+    // ------------------------------------------------------------
+    // CONCEPTS
+    // ------------------------------------------------------------
+
     @Override
     public ConceptSchemeMetamacDto conceptSchemeMetamacDoToDto(ConceptSchemeVersionMetamac source) {
         if (source == null) {
@@ -63,4 +74,14 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
         do2DtoMapperSdmxSrm.conceptSchemeDoToDto(source, target);
         return target;
     }
+
+    @Override
+    public List<ConceptSchemeMetamacDto> conceptSchemeMetamacDoListToDtoList(List<ConceptSchemeVersionMetamac> conceptSchemeVersions) {
+        List<ConceptSchemeMetamacDto> conceptSchemeMetamacDtos = new ArrayList<ConceptSchemeMetamacDto>();
+        for (ConceptSchemeVersionMetamac conceptSchemeVersion : conceptSchemeVersions) {
+            conceptSchemeMetamacDtos.add(conceptSchemeMetamacDoToDto(conceptSchemeVersion));
+        }
+        return conceptSchemeMetamacDtos;
+    }
+
 }

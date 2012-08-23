@@ -10,6 +10,7 @@ import static org.siemac.metamac.srm.core.concept.serviceapi.utils.ConceptsMetam
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.lang.time.DateUtils;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
@@ -112,6 +113,18 @@ public class SrmCoreServiceFacadeConceptSchemeTest extends SrmBaseTest {
             assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
             assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
         }
+    }
+
+    @Test
+    public void testRetrieveConceptSchemeVersions() throws Exception {
+        // Retrieve all versions
+        String urn = CONCEPT_SCHEME_1_V1;
+        List<ConceptSchemeMetamacDto> conceptSchemeMetamacDtos = srmCoreServiceFacade.retrieveConceptSchemeVersions(getServiceContextAdministrador(), urn);
+
+        // Validate
+        assertEquals(2, conceptSchemeMetamacDtos.size());
+        assertEquals(CONCEPT_SCHEME_1_V1, conceptSchemeMetamacDtos.get(0).getUrn());
+        assertEquals(CONCEPT_SCHEME_1_V2, conceptSchemeMetamacDtos.get(1).getUrn());
     }
 
     @Test

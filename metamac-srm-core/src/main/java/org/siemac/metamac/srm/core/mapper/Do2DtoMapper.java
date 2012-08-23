@@ -1,5 +1,7 @@
 package org.siemac.metamac.srm.core.mapper;
 
+import java.util.List;
+
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 
@@ -23,5 +25,6 @@ public interface Do2DtoMapper {
     public DataStructureDefinitionExtendDto dataStructureDefinitionToDataStructureDefinitionExtendDto(TypeDozerCopyMode typeDozerCopyMode, DataStructureDefinitionVersion dataStructureDefinitionVersion);
 
     public ConceptSchemeMetamacDto conceptSchemeMetamacDoToDto(ConceptSchemeVersionMetamac conceptSchemeVersion);
+    public List<ConceptSchemeMetamacDto> conceptSchemeMetamacDoListToDtoList(List<ConceptSchemeVersionMetamac> conceptSchemeVersions);
 
 }

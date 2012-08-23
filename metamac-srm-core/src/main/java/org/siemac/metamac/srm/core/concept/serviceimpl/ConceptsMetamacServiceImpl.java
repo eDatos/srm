@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemScheme;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
+import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.concept.serviceapi.ConceptsService;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
 
@@ -74,6 +75,21 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     @Override
     public ConceptSchemeVersionMetamac retrieveConceptSchemeByUrn(ServiceContext ctx, String urn) throws MetamacException {
         return (ConceptSchemeVersionMetamac) conceptsService.retrieveConceptSchemeByUrn(ctx, urn);
+    }
+
+    @Override
+    public List<ConceptSchemeVersionMetamac> retrieveConceptSchemeVersions(ServiceContext ctx, String urn) throws MetamacException {
+
+        // Retrieve conceptSchemeVersions
+        List<ConceptSchemeVersion> conceptSchemeVersions = conceptsService.retrieveConceptSchemeVersions(ctx, urn);
+
+        // Type cast to ConceptSchemeVersionMetamac
+        List<ConceptSchemeVersionMetamac> conceptSchemeVersionMetamacs = new ArrayList<ConceptSchemeVersionMetamac>();
+        for (ConceptSchemeVersion conceptSchemeVersion : conceptSchemeVersions) {
+            conceptSchemeVersionMetamacs.add((ConceptSchemeVersionMetamac) conceptSchemeVersion);
+        }
+
+        return conceptSchemeVersionMetamacs;
     }
 
     @Override
@@ -440,4 +456,5 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         }
         return procStatusString;
     }
+
 }
