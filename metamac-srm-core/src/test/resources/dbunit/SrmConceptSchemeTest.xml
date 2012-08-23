@@ -662,7 +662,7 @@
         REPLACED_BY="02.000"
         REPLACE_TO="[null]"
         
-        NAME_FK="[null]"
+        NAME_FK="7"
         
         VERSION_LOGIC="01.000"
         FINAL_LOGIC="1"
@@ -738,7 +738,7 @@
         REPLACED_BY="[null]"
         REPLACE_TO="01.000"
         
-        NAME_FK="[null]"
+        NAME_FK="8"
         
         VERSION_LOGIC="02.000"
         FINAL_LOGIC="1"
@@ -1180,4 +1180,30 @@
         VERSION="1"
         INTERNATIONAL_STRING_FK="6"
     />    
+    
+  <TB_INTERNATIONAL_STRINGS
+        ID="7"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="71"
+        LABEL="Título conceptScheme-7-v1"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="7"
+    />    
+    
+  <TB_INTERNATIONAL_STRINGS
+        ID="8"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="81"
+        LABEL="Título conceptScheme-7-v2"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="8"
+    />            
 </dataset>

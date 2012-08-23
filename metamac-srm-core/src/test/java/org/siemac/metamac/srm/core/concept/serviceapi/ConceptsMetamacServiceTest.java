@@ -1009,6 +1009,69 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
     }
 
     @Test
+    public void testVersioningConceptSchemeWithTwoVersionsPublished() throws Exception {
+
+        // This test checks the copy from one version but replacing to another one that is last version.
+        
+        String urnToCopy = CONCEPT_SCHEME_7_V1;
+        String urnLastVersion = CONCEPT_SCHEME_7_V2;
+        String versionExpected = "03.000";
+        String urnExpected = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:CONCEPTSCHEME07(03.000)";
+
+        ConceptSchemeVersionMetamac conceptSchemeVersionToCopy = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), urnToCopy);
+        assertFalse(conceptSchemeVersionToCopy.getMaintainableArtefact().getIsLastVersion());
+        
+        ConceptSchemeVersionMetamac conceptSchemeVersionLast = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), urnLastVersion);
+        assertTrue(conceptSchemeVersionLast.getMaintainableArtefact().getIsLastVersion());
+        
+        ConceptSchemeVersionMetamac conceptSchemeVersionNewVersion = conceptsService.versioningConceptScheme(getServiceContextAdministrador(), urnToCopy, VersionTypeEnum.MAJOR);
+
+        // Validate response
+        {
+            assertEquals(versionExpected, conceptSchemeVersionNewVersion.getMaintainableArtefact().getVersionLogic());
+            assertEquals(urnExpected, conceptSchemeVersionNewVersion.getMaintainableArtefact().getUrn());
+            assertEquals(ItemSchemeMetamacProcStatusEnum.DRAFT, conceptSchemeVersionNewVersion.getProcStatus());
+            ConceptsMetamacAsserts.assertEqualsConceptScheme(conceptSchemeVersionToCopy, conceptSchemeVersionNewVersion);
+        }
+
+        // Validate retrieving
+        {
+            // New version
+            conceptSchemeVersionNewVersion = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), conceptSchemeVersionNewVersion.getMaintainableArtefact().getUrn());
+            assertEquals(versionExpected, conceptSchemeVersionNewVersion.getMaintainableArtefact().getVersionLogic());
+            assertEquals(urnExpected, conceptSchemeVersionNewVersion.getMaintainableArtefact().getUrn());
+            assertEquals(ItemSchemeMetamacProcStatusEnum.DRAFT, conceptSchemeVersionNewVersion.getProcStatus());
+            assertEquals("02.000", conceptSchemeVersionNewVersion.getMaintainableArtefact().getReplaceTo());
+            assertEquals(null, conceptSchemeVersionNewVersion.getMaintainableArtefact().getReplacedBy());
+            assertTrue(conceptSchemeVersionNewVersion.getMaintainableArtefact().getIsLastVersion());
+            ConceptsMetamacAsserts.assertEqualsConceptScheme(conceptSchemeVersionToCopy, conceptSchemeVersionNewVersion);
+
+            // Version copied
+            conceptSchemeVersionToCopy = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), urnToCopy);
+            assertEquals("01.000", conceptSchemeVersionToCopy.getMaintainableArtefact().getVersionLogic());
+            assertEquals(urnToCopy, conceptSchemeVersionToCopy.getMaintainableArtefact().getUrn());
+            assertEquals(null, conceptSchemeVersionToCopy.getMaintainableArtefact().getReplaceTo());
+            assertEquals("02.000", conceptSchemeVersionToCopy.getMaintainableArtefact().getReplacedBy());
+            assertFalse(conceptSchemeVersionToCopy.getMaintainableArtefact().getIsLastVersion());
+            
+            // Last version
+            conceptSchemeVersionLast = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), urnLastVersion);
+            assertEquals("02.000", conceptSchemeVersionLast.getMaintainableArtefact().getVersionLogic());
+            assertEquals(urnLastVersion, conceptSchemeVersionLast.getMaintainableArtefact().getUrn());
+            assertEquals("01.000", conceptSchemeVersionLast.getMaintainableArtefact().getReplaceTo());
+            assertEquals(versionExpected, conceptSchemeVersionLast.getMaintainableArtefact().getReplacedBy());
+            assertFalse(conceptSchemeVersionLast.getMaintainableArtefact().getIsLastVersion());
+
+            // All versions // TODO
+            // List<ConceptSchemeVersionMetamac> allVersions = conceptsService.retrieveConceptSchemeHistoric(getServiceContextAdministrador(), urn);
+            // assertEquals(3, allVersions.size());
+            // assertEquals(urn, allVersions.get(0).getMaintainableArtefact().getUrn());
+            // assertEquals(urnLast, allVersions.get(1).getMaintainableArtefact().getUrn());
+//            assertEquals(urnExpected, allVersions.get(2).getMaintainableArtefact().getUrn());
+        }
+    }
+    
+    @Test
     public void testVersioningConceptSchemeErrorAlreadyExistsDraft() throws Exception {
 
         String urn = CONCEPT_SCHEME_1_V1;
