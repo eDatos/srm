@@ -1014,11 +1014,11 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertEquals(versionExpected, conceptSchemeVersionToCopy.getMaintainableArtefact().getReplacedBy());
             assertFalse(conceptSchemeVersionToCopy.getMaintainableArtefact().getIsLastVersion());
 
-            // All versions // TODO
-            // List<ConceptSchemeVersionMetamac> allVersions = conceptsService.retrieveConceptSchemeHistoric(getServiceContextAdministrador(), urn);
-            // assertEquals(2, allVersions.size());
-            // assertEquals(urn, allVersions.get(0).getMaintainableArtefact().getUrn());
-            // assertEquals(urnExpected, allVersions.get(1).getMaintainableArtefact().getUrn());
+            // All versions
+            List<ConceptSchemeVersionMetamac> allVersions = conceptsService.retrieveConceptSchemeVersions(getServiceContextAdministrador(), urn);
+            assertEquals(2, allVersions.size());
+            assertEquals(urn, allVersions.get(0).getMaintainableArtefact().getUrn());
+            assertEquals(urnExpected, allVersions.get(1).getMaintainableArtefact().getUrn());
         }
     }
 
@@ -1082,7 +1082,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             List<ConceptSchemeVersionMetamac> allVersions = conceptsService.retrieveConceptSchemeVersions(getServiceContextAdministrador(), conceptSchemeVersionNewVersion.getMaintainableArtefact()
                     .getUrn());
             assertEquals(3, allVersions.size());
-            assertEquals(CONCEPT_SCHEME_7_V1, allVersions.get(0).getMaintainableArtefact().getUrn());
+            assertEquals(urnToCopy, allVersions.get(0).getMaintainableArtefact().getUrn());
             assertEquals(urnLastVersion, allVersions.get(1).getMaintainableArtefact().getUrn());
             assertEquals(urnExpected, allVersions.get(2).getMaintainableArtefact().getUrn());
         }
