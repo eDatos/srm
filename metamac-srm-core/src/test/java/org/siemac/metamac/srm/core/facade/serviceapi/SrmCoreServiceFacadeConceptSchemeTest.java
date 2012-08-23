@@ -1,7 +1,6 @@
 package org.siemac.metamac.srm.core.facade.serviceapi;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -24,6 +23,7 @@ import org.siemac.metamac.core.common.criteria.MetamacCriteriaPaginator;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction.OperationType;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
+import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
@@ -198,17 +198,20 @@ public class SrmCoreServiceFacadeConceptSchemeTest extends SrmBaseTest {
 
     @Test
     public void testUpdateConceptScheme() throws Exception {
-        ConceptSchemeMetamacDto conceptSchemeDto = new ConceptSchemeMetamacDto();
-        conceptSchemeDto.setCode("code-" + MetamacMocks.mockString(10));
-        conceptSchemeDto.setName(MetamacMocks.mockInternationalString());
-        conceptSchemeDto.setType(ConceptSchemeTypeEnum.GLOSSARY);
-        conceptSchemeDto.setMaintainer(MetamacMocks.mockExternalItemDto("urn:maintiner", TypeExternalArtefactsEnum.AGENCY));
+        ConceptSchemeMetamacDto conceptSchemeMetamacDto = srmCoreServiceFacade.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_9_V1);
 
-        ConceptSchemeMetamacDto conceptSchemeMetamacCreated = srmCoreServiceFacade.createConceptScheme(getServiceContextAdministrador(), conceptSchemeDto);
-        conceptSchemeMetamacCreated.setCode("new-code");
+        InternationalStringDto name = MetamacMocks.mockInternationalString();
+        InternationalStringDto description = MetamacMocks.mockInternationalString();
+        Boolean isPartial = Boolean.TRUE;
+        ConceptSchemeTypeEnum type = ConceptSchemeTypeEnum.ROLE;
 
-        ConceptSchemeMetamacDto conceptSchemeMetamacUpdated = srmCoreServiceFacade.updateConceptScheme(getServiceContextAdministrador(), conceptSchemeMetamacCreated);
-        System.out.println();
+        conceptSchemeMetamacDto = srmCoreServiceFacade.updateConceptScheme(getServiceContextAdministrador(), conceptSchemeMetamacDto);
+
+        assertNotNull(conceptSchemeMetamacDto);
+        assertEqualsInternationalStringDto(name, conceptSchemeMetamacDto.getName());
+        assertEqualsInternationalStringDto(description, conceptSchemeMetamacDto.getDescription());
+        assertEquals(isPartial, conceptSchemeMetamacDto.getIsPartial());
+        assertEquals(type, conceptSchemeMetamacDto.getType());
     }
 
     @Test
@@ -590,7 +593,7 @@ public class SrmCoreServiceFacadeConceptSchemeTest extends SrmBaseTest {
             assertTrue(conceptSchemeDto.getFinalLogic());
         }
     }
-    
+
     @Test
     public void testPublishExternallyConceptScheme() throws Exception {
 
@@ -624,7 +627,7 @@ public class SrmCoreServiceFacadeConceptSchemeTest extends SrmBaseTest {
         // Validate retrieving
         {
             conceptSchemeDto = srmCoreServiceFacade.retrieveConceptSchemeByUrn(ctx, urn);
-            
+
             assertEquals(ItemSchemeMetamacProcStatusEnum.EXTERNALLY_PUBLISHED, conceptSchemeDto.getProcStatus());
             assertNotNull(conceptSchemeDto.getProductionValidationDate());
             assertNotNull(conceptSchemeDto.getProductionValidationUser());
