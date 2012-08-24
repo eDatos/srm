@@ -25,7 +25,6 @@ import org.siemac.metamac.core.common.criteria.MetamacCriteriaPaginator;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction.OperationType;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
-import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.util.GeneratorUrnUtils;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
@@ -34,6 +33,7 @@ import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.core.concept.serviceapi.utils.ConceptsMetamacAsserts;
+import org.siemac.metamac.srm.core.concept.serviceapi.utils.ConceptsMetamacDtoMocks;
 import org.siemac.metamac.srm.core.criteria.ConceptSchemeVersionMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -129,11 +129,7 @@ public class SrmCoreServiceFacadeConceptSchemeTest extends SrmBaseTest {
 
     @Test
     public void testCreateConceptScheme() throws Exception {
-        ConceptSchemeMetamacDto conceptSchemeDto = new ConceptSchemeMetamacDto();
-        conceptSchemeDto.setCode("code-" + MetamacMocks.mockString(10));
-        conceptSchemeDto.setName(MetamacMocks.mockInternationalString());
-        conceptSchemeDto.setType(ConceptSchemeTypeEnum.GLOSSARY);
-        conceptSchemeDto.setMaintainer(MetamacMocks.mockExternalItemDto("urn:maintiner", TypeExternalArtefactsEnum.AGENCY));
+        ConceptSchemeMetamacDto conceptSchemeDto = ConceptsMetamacDtoMocks.mockConceptSchemeDtoGlossaryType();
 
         ConceptSchemeMetamacDto conceptSchemeMetamacCreated = srmCoreServiceFacade.createConceptScheme(getServiceContextAdministrador(), conceptSchemeDto);
 
@@ -171,12 +167,7 @@ public class SrmCoreServiceFacadeConceptSchemeTest extends SrmBaseTest {
 
     @Test
     public void testCreateConceptSchemeOperationType() throws Exception {
-        ConceptSchemeMetamacDto conceptSchemeDto = new ConceptSchemeMetamacDto();
-        conceptSchemeDto.setCode("code-" + MetamacMocks.mockString(10));
-        conceptSchemeDto.setName(MetamacMocks.mockInternationalString());
-        conceptSchemeDto.setType(ConceptSchemeTypeEnum.OPERATION);
-        conceptSchemeDto.setRelatedOperation(MetamacMocks.mockExternalItemDto("urn:operation", TypeExternalArtefactsEnum.STATISTICAL_OPERATION));
-        conceptSchemeDto.setMaintainer(MetamacMocks.mockExternalItemDto("urn:maintiner", TypeExternalArtefactsEnum.AGENCY));
+        ConceptSchemeMetamacDto conceptSchemeDto = ConceptsMetamacDtoMocks.mockConceptSchemeDtoOperationType();
 
         ConceptSchemeMetamacDto conceptSchemeMetamacCreated = srmCoreServiceFacade.createConceptScheme(getServiceContextAdministrador(), conceptSchemeDto);
 
