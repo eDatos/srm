@@ -96,12 +96,12 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
     @Test
     public void testSaveDsd() throws Exception {
 
-        // Save
+        // Save ****************
         DataStructureDefinitionDto dataStructureDefinitionDto = srmCoreServiceFacade.saveDsd(getServiceContext(), SrmDtoMocks.createDdsDTO());
 
         assertNotNull(dataStructureDefinitionDto.getId());
 
-        // Update Name & Description
+        // Update Name & Description **********************
         InternationalStringDto name = new InternationalStringDto();
 
         LocalisedStringDto name_es = new LocalisedStringDto();
@@ -118,19 +118,23 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
 
         dataStructureDefinitionDto.setDescription(null);
 
-        srmCoreServiceFacade.saveDsd(getServiceContext(), dataStructureDefinitionDto);
+        dataStructureDefinitionDto = srmCoreServiceFacade.saveDsd(getServiceContext(), dataStructureDefinitionDto);
 
         assertTrue(dataStructureDefinitionDto.getName().getTexts().iterator().next().getLabel().contains("CHANGED"));
         assertNull(dataStructureDefinitionDto.getDescription());
-
-        // Remove Label --> Dont' save
-        name = dataStructureDefinitionDto.getName();
-
+    }
+    
+    @Test
+    public void testRemoveLabel() throws Exception {
+        // Remove Label --> Dont' save ********************
+        DataStructureDefinitionDto dataStructureDefinitionDto = srmCoreServiceFacade.saveDsd(getServiceContext(), SrmDtoMocks.createDdsDTO());
+        InternationalStringDto name = dataStructureDefinitionDto.getName();
+    
         LocalisedStringDto localisedStringDto = name.getTexts().iterator().next();
         localisedStringDto.setLabel(StringUtils.EMPTY);
-
+    
         dataStructureDefinitionDto.setName(name);
-
+    
         try {
             dataStructureDefinitionDto = srmCoreServiceFacade.saveDsd(getServiceContext(), dataStructureDefinitionDto);
             fail("");
@@ -157,18 +161,24 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
     public void testDeleteDsd() throws Exception {
         DataStructureDefinitionDto dataStructureDefinitionDto = srmCoreServiceFacade.saveDsd(getServiceContext(), SrmDtoMocks.createDdsDTO());
 
+        MetamacCriteriaResult<DataStructureDefinitionDto> result = srmCoreServiceFacade.findDsdByCondition(getServiceContext(), null);
+        int previousSize = result.getResults().size();
+        
         srmCoreServiceFacade.deleteDsd(getServiceContext(), dataStructureDefinitionDto);
 
-        MetamacCriteriaResult<DataStructureDefinitionDto> result = srmCoreServiceFacade.findDsdByCondition(getServiceContext(), null);
-        assertEquals(1, result.getResults().size());
+        result = srmCoreServiceFacade.findDsdByCondition(getServiceContext(), null);
+        assertEquals(previousSize - 1, result.getResults().size());
     }
 
     @Test
     public void testFindDsdByCondition() throws Exception {
+        MetamacCriteriaResult<DataStructureDefinitionDto> result = srmCoreServiceFacade.findDsdByCondition(getServiceContext(), null);
+        int previousSize = result.getResults().size();
+        
         srmCoreServiceFacade.saveDsd(getServiceContext(), SrmDtoMocks.createDdsDTO());
 
-        MetamacCriteriaResult<DataStructureDefinitionDto> result = srmCoreServiceFacade.findDsdByCondition(getServiceContext(), null);
-        assertEquals(2, result.getResults().size());
+        result = srmCoreServiceFacade.findDsdByCondition(getServiceContext(), null);
+        assertEquals(previousSize + 1, result.getResults().size());
     }
 
     @Test
@@ -410,24 +420,6 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
     }
 
     @Test
-    public void testFindConceptSchemeRefs() throws Exception {
-        // TODO make test
-        srmCoreServiceFacade.findConceptSchemeRefs(getServiceContext());
-    }
-
-    @Test
-    public void testFindConcepts() throws Exception {
-        // TODO make test
-        srmCoreServiceFacade.findConcepts(getServiceContext(), StringUtils.EMPTY);
-    }
-
-    @Test
-    public void testFindCodelists() throws Exception {
-        // TODO make test
-        srmCoreServiceFacade.findCodelists(getServiceContext(), StringUtils.EMPTY);
-    }
-
-    @Test
     public void testRetrieveExtendedDsd() throws Exception {
 
         DataStructureDefinitionDto dataStructureDefinitionDto = SrmCoreServiceFacadeDsdTest.saveDescriptorForDsd(getServiceContext(), srmCoreServiceFacade);
@@ -571,17 +563,6 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
             // System.out.println(writer.toString());
         }
 
-    }
-
-    @Test
-    public void testFindOrganisation() throws Exception {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Test
-    public void testRetrieveDsdByUrn() throws Exception {
-        // TODO Auto-generated method stub
     }
 
     @Override
