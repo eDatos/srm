@@ -12,7 +12,7 @@ import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
 import org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum;
 import org.siemac.metamac.sso.client.MetamacPrincipal;
 
-public class SharedConceptSecurityUtils extends SharedSecurityUtils {
+public class SharedConceptsSecurityUtils extends SharedSecurityUtils {
 
     // Schemes
 
