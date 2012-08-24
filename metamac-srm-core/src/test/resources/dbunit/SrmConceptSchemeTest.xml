@@ -4,8 +4,8 @@
     
     <!-- ************************************************************************************** -->
     <!-- CONCEPT SCHEME 1                                                                       -->
-    <!--        - Version 1: internally published                                               -->
-    <!--        - Version 2: draft                                                              -->
+    <!--        - Version 1: internally published (operation type)                              -->
+    <!--        - Version 2: draft (glossary)                                                   -->
     <!-- *************************************************************************************  -->
 
     <TB_ITEM_SCHEMES
@@ -430,7 +430,7 @@
     
     <!-- ************************************************************************************** -->
     <!-- CONCEPT SCHEME 5                                                                       -->
-    <!--        - Version 1: production validation                                              -->
+    <!--        - Version 1: production validation (role type)                                  -->
     <!-- *************************************************************************************  -->
 
     <TB_ITEM_SCHEMES
@@ -515,7 +515,7 @@
     
     <!-- ************************************************************************************** -->
     <!-- CONCEPT SCHEME 6                                                                       -->
-    <!--        - Version 1: diffusion validation                                               -->
+    <!--        - Version 1: diffusion validation (role type)                                   -->
     <!-- *************************************************************************************  -->
 
     <TB_ITEM_SCHEMES
@@ -772,7 +772,9 @@
         UUID="itemScheme-8"
         VERSION="1"
     />
-    
+
+    <!-- Version 1 -->
+
     <TB_ITEM_SCHEMES_VERSIONS
         ID="81"
         ITEM_SCHEME_FK="8"
@@ -932,6 +934,333 @@
         LAST_UPDATED_TZ="Europe/London"
     />
     
+    <!-- ************************************************************************************** -->
+    <!-- CONCEPT SCHEME 10                                                                      -->
+    <!--        - Version 1: externally published (glossary type)                               -->
+    <!--        - Version 2: internally published                                               -->
+    <!--        - Version 3: production validation (operation type)                             -->
+    <!-- *************************************************************************************  -->
+
+    <TB_ITEM_SCHEMES
+        ID="10"
+        UUID="itemScheme-10"
+        VERSION="1"
+    />
+    
+    <!-- Version 1 -->
+    
+    <TB_ITEM_SCHEMES_VERSIONS
+        ID="101"
+        ITEM_SCHEME_FK="10"
+        IS_PARTIAL="0"
+        MAINTANABLE_ARTEFACT_FK="101"
+        
+        UUID="conceptScheme-10-v1"
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user2"
+        LAST_UPDATED="2011-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"  
+    />
+        
+    <TB_CONCEPT_SCHEMES_VERSIONS
+        TB_ITEM_SCHEMES_VERSIONS="101"
+    />
+    
+    <TB_M_CONCEPT_SCHEMES_VERSIONS
+        TB_CONCEPT_SCHEMES_VERSIONS="101"
+        CONCEPT_SCHEME_TYPE="GLOSSARY"          
+        RELATED_OPERATION_FK="[null]"
+        PROC_STATUS="EXTERNALLY_PUBLISHED"
+        
+        PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
+        PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
+        PRODUCTION_VALIDATION_USER="user1"
+        DIFFUSION_VALIDATION_DATE_TZ="Europe/London"
+        DIFFUSION_VALIDATION_DATE="2011-01-02 02:02:03"
+        DIFFUSION_VALIDATION_USER="user2"
+        INTERNAL_PUBLICATION_DATE_TZ="Europe/London"
+        INTERNAL_PUBLICATION_DATE="2011-01-03 03:02:03"
+        INTERNAL_PUBLICATION_USER="user3"
+        EXTERNAL_PUBLICATION_DATE_TZ="Europe/London"
+        EXTERNAL_PUBLICATION_DATE="2011-01-01 01:02:03"
+        EXTERNAL_PUBLICATION_USER="user4"
+    />
+    
+    <TB_ANNOTABLE_ARTEFACTS 
+        ID="101"
+        ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
+        
+        CODE="CONCEPTSCHEME10"
+        URI="[null]"
+        URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:CONCEPTSCHEME10(01.000)"
+        REPLACED_BY="02.000"
+        REPLACE_TO="[null]"
+        
+        NAME_FK="7"
+        
+        VERSION_LOGIC="01.000"
+        FINAL_LOGIC="1"
+        VALID_FROM_TZ="Europe/London"
+        VALID_FROM="2011-01-02 02:02:04" 
+        VALID_TO_TZ="[null]"
+        VALID_TO="[null]"
+        IS_EXTERNAL_REFERENCE="0"
+        STRUCTURE_URL="[null]"
+        SERVICE_URL="[null]"
+        IS_LAST_VERSION="0"
+        MAINTAINER_FK="101"
+        
+        UUID="annotableArtefact-101"
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user2"
+        LAST_UPDATED="2011-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"
+    />
+    
+    <!-- Version 2 -->
+    
+    <TB_ITEM_SCHEMES_VERSIONS
+        ID="102"
+        ITEM_SCHEME_FK="10"
+        IS_PARTIAL="0"
+        MAINTANABLE_ARTEFACT_FK="102"
+        
+        UUID="conceptScheme-10-v2"
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user2"
+        LAST_UPDATED="2011-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"  
+    />
+    
+    <TB_CONCEPT_SCHEMES_VERSIONS
+        TB_ITEM_SCHEMES_VERSIONS="102"
+    />    
+    
+    <TB_M_CONCEPT_SCHEMES_VERSIONS
+        TB_CONCEPT_SCHEMES_VERSIONS="102"
+        CONCEPT_SCHEME_TYPE="GLOSSARY"          
+        RELATED_OPERATION_FK="[null]"
+        PROC_STATUS="INTERNALLY_PUBLISHED"
+        
+        PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
+        PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
+        PRODUCTION_VALIDATION_USER="user1"
+        DIFFUSION_VALIDATION_DATE_TZ="Europe/London"
+        DIFFUSION_VALIDATION_DATE="2011-01-02 02:02:03"
+        DIFFUSION_VALIDATION_USER="user2"
+        INTERNAL_PUBLICATION_DATE_TZ="Europe/London"
+        INTERNAL_PUBLICATION_DATE="2011-01-03 03:02:03"
+        INTERNAL_PUBLICATION_USER="user3"
+        EXTERNAL_PUBLICATION_DATE_TZ="[null]"
+        EXTERNAL_PUBLICATION_DATE="[null]"
+        EXTERNAL_PUBLICATION_USER="[null]"
+    />       
+    
+    <TB_ANNOTABLE_ARTEFACTS 
+        ID="102"
+        ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
+        
+        CODE="CONCEPTSCHEME10"
+        URI="[null]"
+        URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:CONCEPTSCHEME10(02.000)"
+        REPLACED_BY="02.000"
+        REPLACE_TO="01.000"
+        
+        NAME_FK="8"
+        
+        VERSION_LOGIC="02.000"
+        FINAL_LOGIC="1"
+        VALID_FROM_TZ="[null]"
+        VALID_FROM="[null]" 
+        VALID_TO_TZ="[null]"
+        VALID_TO="[null]"
+        IS_EXTERNAL_REFERENCE="0"
+        STRUCTURE_URL="[null]"
+        SERVICE_URL="[null]"
+        IS_LAST_VERSION="0"
+        MAINTAINER_FK="102"
+        
+        UUID="annotableArtefact-102"
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user2"
+        LAST_UPDATED="2011-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"
+    />
+    
+    <!-- Version 3 -->
+    
+    <TB_ITEM_SCHEMES_VERSIONS
+        ID="103"
+        ITEM_SCHEME_FK="10"
+        IS_PARTIAL="0"
+        MAINTANABLE_ARTEFACT_FK="103"
+        
+        UUID="conceptScheme-10-v3"
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user2"
+        LAST_UPDATED="2011-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"  
+    />
+    
+    <TB_CONCEPT_SCHEMES_VERSIONS
+        TB_ITEM_SCHEMES_VERSIONS="103"
+    />    
+    
+    <TB_M_CONCEPT_SCHEMES_VERSIONS
+        TB_CONCEPT_SCHEMES_VERSIONS="103"
+        CONCEPT_SCHEME_TYPE="OPERATION"          
+        RELATED_OPERATION_FK="13"
+        PROC_STATUS="PRODUCTION_VALIDATION"
+        
+        PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
+        PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
+        PRODUCTION_VALIDATION_USER="user1"
+        DIFFUSION_VALIDATION_DATE_TZ="[null]"
+        DIFFUSION_VALIDATION_DATE="[null]"
+        DIFFUSION_VALIDATION_USER="[null]"
+        INTERNAL_PUBLICATION_DATE_TZ="[null]"
+        INTERNAL_PUBLICATION_DATE="[null]"
+        INTERNAL_PUBLICATION_USER="[null]"
+        EXTERNAL_PUBLICATION_DATE_TZ="[null]"
+        EXTERNAL_PUBLICATION_DATE="[null]"
+        EXTERNAL_PUBLICATION_USER="[null]"
+    />       
+    
+    <TB_ANNOTABLE_ARTEFACTS 
+        ID="103"
+        ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
+        
+        CODE="CONCEPTSCHEME10"
+        URI="[null]"
+        URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:CONCEPTSCHEME10(03.000)"
+        REPLACED_BY="[null]"
+        REPLACE_TO="02.000"
+        
+        NAME_FK="8"
+        
+        VERSION_LOGIC="03.000"
+        FINAL_LOGIC="1"
+        VALID_FROM_TZ="[null]"
+        VALID_FROM="[null]" 
+        VALID_TO_TZ="[null]"
+        VALID_TO="[null]"
+        IS_EXTERNAL_REFERENCE="0"
+        STRUCTURE_URL="[null]"
+        SERVICE_URL="[null]"
+        IS_LAST_VERSION="1"
+        MAINTAINER_FK="103"
+        
+        UUID="annotableArtefact-103"
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user2"
+        LAST_UPDATED="2011-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"
+    />
+    
+    <!-- ************************************************************************************** -->
+    <!-- CONCEPT SCHEME 11                                                                       -->
+    <!--        - Version 1: diffusion validation (role type)                                   -->
+    <!-- *************************************************************************************  -->
+
+    <TB_ITEM_SCHEMES
+        ID="11"
+        UUID="itemScheme-11"
+        VERSION="1"
+    />
+    
+    <!-- Version 1 -->
+    
+    <TB_ITEM_SCHEMES_VERSIONS
+        ID="111"
+        ITEM_SCHEME_FK="11"
+        IS_PARTIAL="0"
+        MAINTANABLE_ARTEFACT_FK="111"
+        
+        UUID="conceptScheme-11-v1"
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user2"
+        LAST_UPDATED="2011-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"  
+    />
+
+    <TB_CONCEPT_SCHEMES_VERSIONS
+        TB_ITEM_SCHEMES_VERSIONS="111"
+    />
+    
+    <TB_M_CONCEPT_SCHEMES_VERSIONS
+        TB_CONCEPT_SCHEMES_VERSIONS="111"
+        CONCEPT_SCHEME_TYPE="OPERATION"          
+        RELATED_OPERATION_FK="13"
+        PROC_STATUS="DIFFUSION_VALIDATION"
+        
+        PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
+        PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
+        PRODUCTION_VALIDATION_USER="user2"
+        DIFFUSION_VALIDATION_DATE_TZ="Europe/London"
+        DIFFUSION_VALIDATION_DATE="2011-01-01 01:02:03"
+        DIFFUSION_VALIDATION_USER="user3"
+        INTERNAL_PUBLICATION_DATE_TZ="[null]"
+        INTERNAL_PUBLICATION_DATE="[null]"
+        INTERNAL_PUBLICATION_USER="[null]"
+        EXTERNAL_PUBLICATION_DATE_TZ="[null]"
+        EXTERNAL_PUBLICATION_DATE="[null]"
+        EXTERNAL_PUBLICATION_USER="[null]"
+    />     
+    
+    <TB_ANNOTABLE_ARTEFACTS 
+        ID="111"
+        ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
+        
+        CODE="CONCEPTSCHEME11"
+        URI="[null]"
+        URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:CONCEPTSCHEME11(01.000)"
+        REPLACED_BY="[null]"
+        REPLACE_TO="[null]"
+        
+        NAME_FK="[null]"
+        
+        VERSION_LOGIC="01.000"
+        FINAL_LOGIC="0"
+        VALID_FROM_TZ="[null]"
+        VALID_FROM="[null]" 
+        VALID_TO_TZ="[null]"
+        VALID_TO="[null]"
+        IS_EXTERNAL_REFERENCE="0"
+        STRUCTURE_URL="[null]"
+        SERVICE_URL="[null]"
+        IS_LAST_VERSION="1"
+        MAINTAINER_FK="11"
+        
+        UUID="annotableArtefact-111"
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user2"
+        LAST_UPDATED="2011-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"
+    />
     
             
     <!-- ************************************************************************************** -->
@@ -1056,7 +1385,7 @@
         VERSION="1"
         TITLE_FK="[null]"
         TYPE="AGENCY"
-    /> 
+    />
     
     <TB_EXTERNAL_ITEMS 
         ID="72"
@@ -1067,7 +1396,40 @@
         VERSION="1"
         TITLE_FK="[null]"
         TYPE="AGENCY"
-    />           
+    />    
+
+    <TB_EXTERNAL_ITEMS 
+        ID="101"
+        CODE="ISTAC"
+        URI="http://data.siemac.org/srm/v1/agenciesSchemes/standalone/agencies/ISTAC"
+        URN="urn:sdmx:org.sdmx.infomodel.base.Agency=ISTAC:STANDALONE(01.000).ISTAC"
+        MANAGEMENT_APP_URL="[null]"
+        VERSION="1"
+        TITLE_FK="[null]"
+        TYPE="AGENCY"
+    /> 
+    
+    <TB_EXTERNAL_ITEMS 
+        ID="102"
+        CODE="ISTAC"
+        URI="http://data.siemac.org/srm/v1/agenciesSchemes/standalone/agencies/ISTAC"
+        URN="urn:sdmx:org.sdmx.infomodel.base.Agency=ISTAC:STANDALONE(01.000).ISTAC"
+        MANAGEMENT_APP_URL="[null]"
+        VERSION="1"
+        TITLE_FK="[null]"
+        TYPE="AGENCY"
+    />
+    
+    <TB_EXTERNAL_ITEMS 
+        ID="103"
+        CODE="ISTAC"
+        URI="http://data.siemac.org/srm/v1/agenciesSchemes/standalone/agencies/ISTAC"
+        URN="urn:sdmx:org.sdmx.infomodel.base.Agency=ISTAC:STANDALONE(01.000).ISTAC"
+        MANAGEMENT_APP_URL="[null]"
+        VERSION="1"
+        TITLE_FK="[null]"
+        TYPE="AGENCY"
+    />
            
     <!-- ************************************************************************************** -->
     <!-- INTERNATIONAL STRINGS                                                                  -->
