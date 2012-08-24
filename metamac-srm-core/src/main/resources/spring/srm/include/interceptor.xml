@@ -33,8 +33,8 @@
 
         <!-- Repeating the expression, since I can't find a way to refer to the other pointcuts. -->
         <aop:pointcut id="updatingServiceFacade"
-            expression="execution(public * org.siemac.metamac.srm..*Facade.*(..)) and not (execution(public * org.siemac.metamac.srm..*.retrieve*(..)) or execution(public * org.siemac.metamac.srm..*.find*(..))) or
-                        execution(public * com.arte.statistic.sdmx.srm..service.*Facade.*(..)) and not (execution(public * com.arte.statistic.sdmx.srm..service.*.retrieve*(..)) or execution(public * com.arte.statistic.sdmx.srm..service.*.find*(..)))" />
+            expression="(execution(public * org.siemac.metamac.srm..*Facade.*(..)) and not (execution(public * org.siemac.metamac.srm..*.retrieve*(..)) or execution(public * org.siemac.metamac.srm..*.find*(..)))) or
+                        (execution(public * com.arte.statistic.sdmx.srm..service.*Facade.*(..)) and not (execution(public * com.arte.statistic.sdmx.srm..service.*.retrieve*(..)) or execution(public * com.arte.statistic.sdmx.srm..service.*.find*(..))))" />
 
         <aop:advisor pointcut-ref="serviceFacadePointCut" advice-ref="txAdviceCore" order="1" />
         <aop:advisor pointcut-ref="serviceFacadePointCut" advice-ref="serviceContextStoreAdvice" order="2" />
