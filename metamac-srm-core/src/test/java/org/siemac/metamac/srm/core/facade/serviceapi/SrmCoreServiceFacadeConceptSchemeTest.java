@@ -749,7 +749,7 @@ public class SrmCoreServiceFacadeConceptSchemeTest extends SrmBaseTest {
         ConceptSchemeMetamacDto conceptSchemeMetamacDto = srmCoreServiceFacade.cancelConceptSchemeValidity(getServiceContextAdministrador(), CONCEPT_SCHEME_7_V1);
 
         assertNotNull(conceptSchemeMetamacDto);
-        assertNotNull(conceptSchemeMetamacDto.getValidTo());
+        assertTrue(DateUtils.isSameDay(new Date(), conceptSchemeMetamacDto.getValidTo()));
     }
 
     @Override
