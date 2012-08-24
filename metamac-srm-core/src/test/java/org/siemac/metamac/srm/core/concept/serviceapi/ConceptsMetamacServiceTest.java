@@ -60,6 +60,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         // Validate (only metadata in SRM Metamac; the others are checked in sdmx project)
         ConceptSchemeVersionMetamac conceptSchemeVersionRetrieved = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), urn);
         assertEquals(ItemSchemeMetamacProcStatusEnum.DRAFT, conceptSchemeVersionRetrieved.getProcStatus());
+        assertFalse(conceptSchemeVersion.getMaintainableArtefact().getIsExternalReference());
         assertNull(conceptSchemeVersion.getProductionValidationDate());
         assertNull(conceptSchemeVersion.getProductionValidationUser());
         assertNull(conceptSchemeVersion.getDiffusionValidationDate());
