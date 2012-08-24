@@ -20,7 +20,7 @@
         ID="11"
         ITEM_SCHEME_FK="1"
         IS_PARTIAL="0"
-        MAINTANABLE_ARTIFACT_FK="11"
+        MAINTANABLE_ARTEFACT_FK="11"
         
         UUID="conceptScheme-1-v1"
         VERSION="1"
@@ -81,7 +81,7 @@
         IS_LAST_VERSION="0"
         MAINTAINER_FK="11"
         
-        UUID="annotableArtifact-11"
+        UUID="annotableArtefact-11"
         VERSION="1"
         CREATED_BY="user1"
         CREATED_DATE="2011-01-01 01:02:03"
@@ -98,7 +98,7 @@
         ID="12"
         ITEM_SCHEME_FK="1"
         IS_PARTIAL="0"
-        MAINTANABLE_ARTIFACT_FK="12"
+        MAINTANABLE_ARTEFACT_FK="12"
         
         UUID="conceptScheme-2-v2"
         VERSION="1"
@@ -159,7 +159,7 @@
         IS_LAST_VERSION="1"
         MAINTAINER_FK="12"
         
-        UUID="annotableArtifact-12"
+        UUID="annotableArtefact-12"
         VERSION="1"
         CREATED_BY="user1"
         CREATED_DATE="2011-01-01 01:02:03"
@@ -185,7 +185,7 @@
         ID="21"
         ITEM_SCHEME_FK="2"
         IS_PARTIAL="0"
-        MAINTANABLE_ARTIFACT_FK="21"
+        MAINTANABLE_ARTEFACT_FK="21"
         
         UUID="conceptScheme-2-v1"
         VERSION="1"
@@ -245,7 +245,7 @@
         IS_LAST_VERSION="1"
         MAINTAINER_FK="21"
         
-        UUID="annotableArtifact-21"
+        UUID="annotableArtefact-21"
         VERSION="1"
         CREATED_BY="user1"
         CREATED_DATE="2011-01-01 01:02:03"
@@ -272,7 +272,7 @@
         ID="31"
         ITEM_SCHEME_FK="3"
         IS_PARTIAL="0"
-        MAINTANABLE_ARTIFACT_FK="31"
+        MAINTANABLE_ARTEFACT_FK="31"
         
         UUID="conceptScheme-3-v1"
         VERSION="1"
@@ -332,7 +332,7 @@
         IS_LAST_VERSION="1"
         MAINTAINER_FK="31"
         
-        UUID="annotableArtifact-31"
+        UUID="annotableArtefact-31"
         VERSION="1"
         CREATED_BY="user1"
         CREATED_DATE="2011-01-01 01:02:03"
@@ -358,7 +358,7 @@
         ID="41"
         ITEM_SCHEME_FK="4"
         IS_PARTIAL="0"
-        MAINTANABLE_ARTIFACT_FK="41"
+        MAINTANABLE_ARTEFACT_FK="41"
         
         UUID="conceptScheme-4-v1"
         VERSION="1"
@@ -418,7 +418,7 @@
         IS_LAST_VERSION="1"
         MAINTAINER_FK="41"
         
-        UUID="annotableArtifact-41"
+        UUID="annotableArtefact-41"
         VERSION="1"
         CREATED_BY="user1"
         CREATED_DATE="2011-01-01 01:02:03"
@@ -443,7 +443,7 @@
         ID="51"
         ITEM_SCHEME_FK="5"
         IS_PARTIAL="0"
-        MAINTANABLE_ARTIFACT_FK="51"
+        MAINTANABLE_ARTEFACT_FK="51"
         
         UUID="conceptScheme-5-v1"
         VERSION="1"
@@ -503,7 +503,7 @@
         IS_LAST_VERSION="1"
         MAINTAINER_FK="51"
         
-        UUID="annotableArtifact-51"
+        UUID="annotableArtefact-51"
         VERSION="1"
         CREATED_BY="user1"
         CREATED_DATE="2011-01-01 01:02:03"
@@ -528,7 +528,7 @@
         ID="61"
         ITEM_SCHEME_FK="6"
         IS_PARTIAL="0"
-        MAINTANABLE_ARTIFACT_FK="61"
+        MAINTANABLE_ARTEFACT_FK="61"
         
         UUID="conceptScheme-6-v1"
         VERSION="1"
@@ -588,7 +588,7 @@
         IS_LAST_VERSION="1"
         MAINTAINER_FK="61"
         
-        UUID="annotableArtifact-61"
+        UUID="annotableArtefact-61"
         VERSION="1"
         CREATED_BY="user1"
         CREATED_DATE="2011-01-01 01:02:03"
@@ -616,7 +616,7 @@
         ID="71"
         ITEM_SCHEME_FK="7"
         IS_PARTIAL="0"
-        MAINTANABLE_ARTIFACT_FK="71"
+        MAINTANABLE_ARTEFACT_FK="71"
         
         UUID="conceptScheme-7-v1"
         VERSION="1"
@@ -676,7 +676,7 @@
         IS_LAST_VERSION="0"
         MAINTAINER_FK="71"
         
-        UUID="annotableArtifact-71"
+        UUID="annotableArtefact-71"
         VERSION="1"
         CREATED_BY="user1"
         CREATED_DATE="2011-01-01 01:02:03"
@@ -692,7 +692,7 @@
         ID="72"
         ITEM_SCHEME_FK="7"
         IS_PARTIAL="0"
-        MAINTANABLE_ARTIFACT_FK="72"
+        MAINTANABLE_ARTEFACT_FK="72"
         
         UUID="conceptScheme-7-v2"
         VERSION="1"
@@ -752,7 +752,7 @@
         IS_LAST_VERSION="1"
         MAINTAINER_FK="72"
         
-        UUID="annotableArtifact-72"
+        UUID="annotableArtefact-72"
         VERSION="1"
         CREATED_BY="user1"
         CREATED_DATE="2011-01-01 01:02:03"
@@ -777,7 +777,7 @@
         ID="81"
         ITEM_SCHEME_FK="8"
         IS_PARTIAL="0"
-        MAINTANABLE_ARTIFACT_FK="81"
+        MAINTANABLE_ARTEFACT_FK="81"
         
         UUID="conceptScheme-8-v1"
         VERSION="1"
@@ -837,7 +837,7 @@
         IS_LAST_VERSION="1"
         MAINTAINER_FK="81"
         
-        UUID="annotableArtifact-81"
+        UUID="annotableArtefact-81"
         VERSION="1"
         CREATED_BY="user1"
         CREATED_DATE="2011-01-01 01:02:03"
@@ -862,7 +862,7 @@
         ID="91"
         ITEM_SCHEME_FK="9"
         IS_PARTIAL="0"
-        MAINTANABLE_ARTIFACT_FK="91"
+        MAINTANABLE_ARTEFACT_FK="91"
         
         UUID="conceptScheme-9-v1"
         VERSION="1"
@@ -922,7 +922,7 @@
         IS_LAST_VERSION="1"
         MAINTAINER_FK="91"
         
-        UUID="annotableArtifact-91"
+        UUID="annotableArtefact-91"
         VERSION="1"
         CREATED_BY="user9"
         CREATED_DATE="2011-01-01 01:02:03"
