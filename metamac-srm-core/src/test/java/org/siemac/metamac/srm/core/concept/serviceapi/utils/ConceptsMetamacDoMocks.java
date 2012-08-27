@@ -31,7 +31,7 @@ public class ConceptsMetamacDoMocks extends ConceptsDoMocks {
         concept.setDescriptionSource(mockInternationalString());
         concept.setContext(mockInternationalString());
         concept.setDocMethod(mockInternationalString());
-        concept.setSdmxRelatedArtefact(ConceptRoleEnum.DIMENSION);
+        concept.setSdmxRelatedArtefact(ConceptRoleEnum.ATTRIBUTE);
         // TODO type
         concept.setDerivation(mockInternationalString());
         concept.setLegalActs(mockInternationalString());

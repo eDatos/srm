@@ -5,7 +5,7 @@
     <!-- ************************************************************************************** -->
     <!-- CONCEPT SCHEME 1                                                                       -->
     <!--        - Version 1: internally published (operation type)                              -->
-    <!--        - Version 2: draft (glossary)                                                   -->
+    <!--        - Version 2: draft (transversal)                                                -->
     <!-- *************************************************************************************  -->
 
     <TB_ITEM_SCHEMES
@@ -118,7 +118,7 @@
     
     <TB_M_CONCEPT_SCHEMES_VERSIONS
         TB_CONCEPT_SCHEMES_VERSIONS="12"
-        CONCEPT_SCHEME_TYPE="GLOSSARY"          
+        CONCEPT_SCHEME_TYPE="TRANSVERSAL"          
         RELATED_OPERATION_FK="[null]"
         PROC_STATUS="DRAFT"
         
