@@ -33,8 +33,6 @@ Application DtosMetamacConceptDomain {
 			JAVADATE externalPublicationDate nullable;
 			"User who published externally"
 			String externalPublicationUser nullable;
-			"The external publication of the concept scheme is in progress"
-			Boolean isExternalPublicationInProgess nullable;
 			"The external publication failed"
 			Boolean isExternalPublicationFailed nullable;
 			"External publication failed date"
