@@ -814,6 +814,9 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertNull(conceptSchemeVersion.getExternalPublicationUser());
             assertNull(conceptSchemeVersion.getMaintainableArtefact().getValidFrom());
             assertNull(conceptSchemeVersion.getMaintainableArtefact().getValidTo());
+            assertNull(conceptSchemeVersion.getIsExternalPublicationInProgess());
+            assertNull(conceptSchemeVersion.getIsExternalPublicationFailed());
+            assertNull(conceptSchemeVersion.getExternalPublicationFailedDate());
 
             ConceptSchemeVersionMetamac conceptSchemeVersionExternallyPublished = conceptsService.retrieveConceptSchemeByUrn(ctx, CONCEPT_SCHEME_7_V1);
             assertEquals(ItemSchemeMetamacProcStatusEnum.EXTERNALLY_PUBLISHED, conceptSchemeVersionExternallyPublished.getProcStatus());
@@ -837,6 +840,9 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertEquals(ctx.getUserId(), conceptSchemeVersion.getExternalPublicationUser());
             assertTrue(DateUtils.isSameDay(new Date(), conceptSchemeVersion.getMaintainableArtefact().getValidFrom().toDate()));
             assertNull(conceptSchemeVersion.getMaintainableArtefact().getValidTo());
+            assertTrue(conceptSchemeVersion.getIsExternalPublicationInProgess());
+            assertNull(conceptSchemeVersion.getIsExternalPublicationFailed());
+            assertNull(conceptSchemeVersion.getExternalPublicationFailedDate());
         }
         // Validate retrieving
         {
@@ -852,6 +858,9 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertEquals(ctx.getUserId(), conceptSchemeVersion.getExternalPublicationUser());
             assertTrue(DateUtils.isSameDay(new Date(), conceptSchemeVersion.getMaintainableArtefact().getValidFrom().toDate()));
             assertNull(conceptSchemeVersion.getMaintainableArtefact().getValidTo());
+            assertTrue(conceptSchemeVersion.getIsExternalPublicationInProgess());
+            assertNull(conceptSchemeVersion.getIsExternalPublicationFailed());
+            assertNull(conceptSchemeVersion.getExternalPublicationFailedDate());
         }
         // Validate previous published externally versions
         {

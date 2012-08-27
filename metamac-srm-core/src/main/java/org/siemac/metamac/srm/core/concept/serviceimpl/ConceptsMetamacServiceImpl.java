@@ -238,6 +238,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         conceptSchemeVersion.setExternalPublicationDate(new DateTime());
         conceptSchemeVersion.setExternalPublicationUser(ctx.getUserId());
         conceptSchemeVersion.getMaintainableArtefact().setValidFrom(conceptSchemeVersion.getExternalPublicationDate());
+        conceptSchemeVersion.setIsExternalPublicationInProgess(Boolean.TRUE);
         conceptSchemeVersion = (ConceptSchemeVersionMetamac) itemSchemeVersionRepository.save(conceptSchemeVersion);
 
         // Fill validTo in previous internally published versions
