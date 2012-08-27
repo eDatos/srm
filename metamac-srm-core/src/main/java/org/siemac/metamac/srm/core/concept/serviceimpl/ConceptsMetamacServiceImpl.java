@@ -60,7 +60,6 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         return (ConceptSchemeVersionMetamac) conceptsService.createConceptScheme(ctx, conceptSchemeVersion);
     }
 
- // TODO RF – 29 El sistema no permitirá que se den de alta esquemas de conceptos que referencien a esquemas de conceptos existentes en otras ubicaciones. Esto implica que el metadato “isExternalReference” de SDMX siempre será cumplimentado como “false”.
     @Override
     public ConceptSchemeVersionMetamac updateConceptScheme(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeVersion) throws MetamacException {
         // Validation
@@ -238,7 +237,6 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         conceptSchemeVersion.setExternalPublicationDate(new DateTime());
         conceptSchemeVersion.setExternalPublicationUser(ctx.getUserId());
         conceptSchemeVersion.getMaintainableArtefact().setValidFrom(conceptSchemeVersion.getExternalPublicationDate());
-        conceptSchemeVersion.setIsExternalPublicationInProgess(Boolean.TRUE);
         conceptSchemeVersion = (ConceptSchemeVersionMetamac) itemSchemeVersionRepository.save(conceptSchemeVersion);
 
         // Fill validTo in previous internally published versions
