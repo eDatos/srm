@@ -1236,7 +1236,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
     @Override
     protected String getDataSetFile() {
-        return "dbunit/SrmConceptSchemeTest.xml";
+        return "dbunit/SrmConceptsTest.xml";
     }
 
 }

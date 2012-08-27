@@ -733,7 +733,7 @@ public class SrmCoreServiceFacadeConceptSchemeSecurityTest extends SrmBaseTest {
 
     @Override
     protected String getDataSetFile() {
-        return "dbunit/SrmConceptSchemeTest.xml";
+        return "dbunit/SrmConceptsTest.xml";
     }
 
 }
