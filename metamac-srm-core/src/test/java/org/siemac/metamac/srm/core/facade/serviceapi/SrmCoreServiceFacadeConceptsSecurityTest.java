@@ -31,7 +31,7 @@ import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
 @ContextConfiguration(locations = {"classpath:spring/srm/applicationContext-test.xml"})
 @TransactionConfiguration(transactionManager = "txManagerCore", defaultRollback = true)
 @Transactional
-public class SrmCoreServiceFacadeConceptSchemeSecurityTest extends SrmBaseTest {
+public class SrmCoreServiceFacadeConceptsSecurityTest extends SrmBaseTest {
 
     @Autowired
     protected SrmCoreServiceFacade srmCoreServiceFacade;
