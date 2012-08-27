@@ -120,7 +120,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             fail("duplicated code");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEquals(ServiceExceptionType.CONCEPT_SCHEME_CODE_DUPLICATED.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(ServiceExceptionType.CONCEPT_SCHEME_ALREADY_EXIST_CODE_DUPLICATED.getCode(), e.getExceptionItems().get(0).getCode());
         }
     }
 
@@ -189,6 +189,22 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
                 assertEquals(1, e.getExceptionItems().size());
                 assertEquals(ServiceExceptionType.CONCEPT_SCHEME_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
             }
+        }
+    }
+
+    @Test
+    public void testUpdateConceptSchemeExternalReference() throws Exception {
+        ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_7_V2);
+        conceptSchemeVersion.getMaintainableArtefact().setIsExternalReference(Boolean.TRUE);
+
+        try {
+            conceptSchemeVersion = conceptsService.updateConceptScheme(getServiceContextAdministrador(), conceptSchemeVersion);
+            fail("concept scheme cannot be a external reference");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.METADATA_INCORRECT.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(ServiceExceptionParameters.MAINTAINABLE_ARTEFACT_IS_EXTERNAL_REFERENCE, e.getExceptionItems().get(0).getMessageParameters()[0]);
         }
     }
 
@@ -814,9 +830,8 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertNull(conceptSchemeVersion.getExternalPublicationUser());
             assertNull(conceptSchemeVersion.getMaintainableArtefact().getValidFrom());
             assertNull(conceptSchemeVersion.getMaintainableArtefact().getValidTo());
-            assertNull(conceptSchemeVersion.getIsExternalPublicationInProgess());
-            assertNull(conceptSchemeVersion.getIsExternalPublicationFailed());
-            assertNull(conceptSchemeVersion.getExternalPublicationFailedDate());
+            assertNull(conceptSchemeVersion.getIsExtPublicationFailed());
+            assertNull(conceptSchemeVersion.getExtPublicationFailedDate());
 
             ConceptSchemeVersionMetamac conceptSchemeVersionExternallyPublished = conceptsService.retrieveConceptSchemeByUrn(ctx, CONCEPT_SCHEME_7_V1);
             assertEquals(ItemSchemeMetamacProcStatusEnum.EXTERNALLY_PUBLISHED, conceptSchemeVersionExternallyPublished.getProcStatus());
@@ -840,9 +855,8 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertEquals(ctx.getUserId(), conceptSchemeVersion.getExternalPublicationUser());
             assertTrue(DateUtils.isSameDay(new Date(), conceptSchemeVersion.getMaintainableArtefact().getValidFrom().toDate()));
             assertNull(conceptSchemeVersion.getMaintainableArtefact().getValidTo());
-            assertTrue(conceptSchemeVersion.getIsExternalPublicationInProgess());
-            assertNull(conceptSchemeVersion.getIsExternalPublicationFailed());
-            assertNull(conceptSchemeVersion.getExternalPublicationFailedDate());
+            assertNull(conceptSchemeVersion.getIsExtPublicationFailed());
+            assertNull(conceptSchemeVersion.getExtPublicationFailedDate());
         }
         // Validate retrieving
         {
@@ -858,9 +872,8 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertEquals(ctx.getUserId(), conceptSchemeVersion.getExternalPublicationUser());
             assertTrue(DateUtils.isSameDay(new Date(), conceptSchemeVersion.getMaintainableArtefact().getValidFrom().toDate()));
             assertNull(conceptSchemeVersion.getMaintainableArtefact().getValidTo());
-            assertTrue(conceptSchemeVersion.getIsExternalPublicationInProgess());
-            assertNull(conceptSchemeVersion.getIsExternalPublicationFailed());
-            assertNull(conceptSchemeVersion.getExternalPublicationFailedDate());
+            assertNull(conceptSchemeVersion.getIsExtPublicationFailed());
+            assertNull(conceptSchemeVersion.getExtPublicationFailedDate());
         }
         // Validate previous published externally versions
         {
