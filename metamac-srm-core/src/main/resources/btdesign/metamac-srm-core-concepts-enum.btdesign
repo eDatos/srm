@@ -11,5 +11,12 @@ Application EnumsMetamacConceptDomain {
     		OPERATION,
     		ROLE
     	}
+    	
+    	"Concept role"
+    	enum ConceptRoleEnum {
+    		DIMENSION,
+    		ATTRIBUTE,
+    		PRIMARY_MEASURE
+    	}
 	}
 }

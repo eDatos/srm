@@ -25,6 +25,7 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
+import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacProperties;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
@@ -120,7 +121,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             fail("duplicated code");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEquals(ServiceExceptionType.CONCEPT_SCHEME_ALREADY_EXIST_CODE_DUPLICATED.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(ServiceExceptionType.CONCEPT_SCHEME_CODE_DUPLICATED.getCode(), e.getExceptionItems().get(0).getCode());
         }
     }
 
@@ -1158,6 +1159,77 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
                 assertEquals(ServiceExceptionParameters.PROC_STATUS_EXTERNALLY_PUBLISHED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
             }
         }
+    }
+    
+    @Test // TODO
+    public void testCreateConcept() throws Exception {
+
+        // TODO metadata type
+
+        // Create concept
+        ConceptMetamac concept = ConceptsMetamacDoMocks.mockConcept();
+        concept.setParent(null);
+//
+//        String conceptSchemeUrn = CONCEPT_SCHEME_1_V2;
+//        ConceptMetamac conceptCreated = conceptsService.createConcept(getServiceContextAdministrador(), conceptSchemeUrn, concept);
+//        ConceptsMetamacAsserts.assertEqualsConcept(concept, conceptCreated);
+//
+//        // Validate
+//        Concept conceptRetrieved = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), conceptCreated.getNameableArtefact().getUrn());
+//        ConceptsAsserts.assertEqualsConcept(concept, conceptRetrieved);
+//
+//        // Check metadata filled by service
+//        assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME01(02.000)." + conceptRetrieved.getNameableArtefact().getCode(), conceptRetrieved.getNameableArtefact()
+//                .getUrn());
+//        // assertEquals(getServiceContextAdministrador().getUserId(), conceptSchemeVersionRetrieved.getCreatedBy());
+//        assertTrue(DateUtils.isSameDay(new Date(), conceptRetrieved.getCreatedDate().toDate()));
+//        // assertEquals(getServiceContextAdministrador().getUserId(), conceptSchemeVersionRetrieved.getLastUpdatedBy());
+//        assertTrue(DateUtils.isSameDay(new Date(), conceptRetrieved.getLastUpdated().toDate()));
+//
+//        // Validate new structure
+//        ConceptSchemeVersion conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), conceptSchemeUrn);
+//        assertEquals(3, conceptSchemeVersion.getItemsFirstLevel().size());
+//        assertEquals(5, conceptSchemeVersion.getItems().size());
+//        assertEquals(CONCEPT_SCHEME_1_V1_CONCEPT_1, conceptSchemeVersion.getItemsFirstLevel().get(0).getNameableArtefact().getUrn());
+//        assertEquals(CONCEPT_SCHEME_1_V1_CONCEPT_2, conceptSchemeVersion.getItemsFirstLevel().get(1).getNameableArtefact().getUrn());
+//        assertEquals(CONCEPT_SCHEME_1_V1_CONCEPT_2_1, conceptSchemeVersion.getItemsFirstLevel().get(1).getChildren().get(0).getNameableArtefact().getUrn());
+//        assertEquals(CONCEPT_SCHEME_1_V1_CONCEPT_2_1_1, conceptSchemeVersion.getItemsFirstLevel().get(1).getChildren().get(0).getChildren().get(0).getNameableArtefact().getUrn());
+//        assertEquals(conceptRetrieved.getNameableArtefact().getUrn(), conceptSchemeVersion.getItemsFirstLevel().get(2).getNameableArtefact().getUrn());
+    }
+
+    // TODO
+//    @Test
+//    public void testCreateConceptSubconcept() throws Exception {
+//
+//        // Create concept
+//        Concept concept = ConceptsDoMocks.mockConcept();
+//        Concept conceptParent = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_1_V1_CONCEPT_1);
+//        concept.setParent(conceptParent);
+//
+//        String conceptSchemeUrn = CONCEPT_SCHEME_1_V2;
+//        Concept conceptCreated = conceptsService.createConcept(getServiceContextAdministrador(), conceptSchemeUrn, concept);
+//        ConceptsAsserts.assertEqualsConcept(concept, conceptCreated);
+//
+//        // Validate
+//        Concept conceptRetrieved = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), conceptCreated.getNameableArtefact().getUrn());
+//        ConceptsAsserts.assertEqualsConcept(concept, conceptRetrieved);
+//        assertEquals(conceptParent.getNameableArtefact().getUrn(), conceptRetrieved.getParent().getNameableArtefact().getUrn());
+//
+//        // Validate new structure
+//        ConceptSchemeVersion conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), conceptSchemeUrn);
+//        assertEquals(2, conceptSchemeVersion.getItemsFirstLevel().size());
+//        assertEquals(5, conceptSchemeVersion.getItems().size());
+//        assertEquals(CONCEPT_SCHEME_1_V1_CONCEPT_1, conceptSchemeVersion.getItemsFirstLevel().get(0).getNameableArtefact().getUrn());
+//        assertEquals(conceptRetrieved.getNameableArtefact().getUrn(), conceptSchemeVersion.getItemsFirstLevel().get(0).getChildren().get(0).getNameableArtefact().getUrn());
+//        assertEquals(CONCEPT_SCHEME_1_V1_CONCEPT_2, conceptSchemeVersion.getItemsFirstLevel().get(1).getNameableArtefact().getUrn());
+//        assertEquals(CONCEPT_SCHEME_1_V1_CONCEPT_2_1, conceptSchemeVersion.getItemsFirstLevel().get(1).getChildren().get(0).getNameableArtefact().getUrn());
+//        assertEquals(CONCEPT_SCHEME_1_V1_CONCEPT_2_1_1, conceptSchemeVersion.getItemsFirstLevel().get(1).getChildren().get(0).getChildren().get(0).getNameableArtefact().getUrn());
+//    }
+
+    @Test // TODO
+    public void testRetrieveConceptByUrn() throws Exception {
+        // TODO Auto-generated method stub
+        
     }
 
     @Override

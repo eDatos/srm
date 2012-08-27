@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.core.concept.serviceapi.utils;
 import static org.junit.Assert.assertEquals;
 import static org.siemac.metamac.common.test.utils.MetamacAsserts.assertEqualsExternalItemDto;
 
+import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 
@@ -16,6 +17,20 @@ public class ConceptsMetamacAsserts extends ConceptsAsserts {
         ConceptsAsserts.assertEqualsConceptScheme(expected, actual);
     }
 
+    public static void assertEqualsConcept(ConceptMetamac expected, ConceptMetamac actual) {
+        ConceptsAsserts.assertEqualsInternationalString(expected.getPluralName(), actual.getPluralName());
+        ConceptsAsserts.assertEqualsInternationalString(expected.getAcronym(), actual.getAcronym());
+        ConceptsAsserts.assertEqualsInternationalString(expected.getDescriptionSource(), actual.getDescriptionSource());
+        ConceptsAsserts.assertEqualsInternationalString(expected.getContext(), actual.getContext());
+        ConceptsAsserts.assertEqualsInternationalString(expected.getDocMethod(), actual.getDocMethod());
+        assertEquals(expected.getSdmxRelatedArtefact(), actual.getSdmxRelatedArtefact());
+        // TODO type
+        ConceptsAsserts.assertEqualsInternationalString(expected.getDerivation(), actual.getDerivation());
+        ConceptsAsserts.assertEqualsInternationalString(expected.getLegalActs(), actual.getLegalActs());
+        
+        ConceptsAsserts.assertEqualsConcept(expected, actual);
+    }
+    
     public static void assertEqualsConceptSchemeMetamacDto(ConceptSchemeMetamacDto expected, ConceptSchemeMetamacDto actual) {
         assertEquals(expected.getType(), actual.getType());
         assertEqualsExternalItemDto(expected.getRelatedOperation(), actual.getRelatedOperation());

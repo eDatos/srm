@@ -10,6 +10,7 @@ import org.siemac.metamac.core.common.exception.utils.ExceptionUtils;
 import org.siemac.metamac.core.common.serviceimpl.utils.ValidationUtils;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
+import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 
@@ -108,6 +109,29 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
         ExceptionUtils.throwIfException(exceptions);
     }
 
+    public static void checkCreateConcept(ConceptSchemeVersionMetamac conceptSchemeVersion, ConceptMetamac concept, List<MetamacExceptionItem> exceptions) throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+
+        ValidationUtils.checkParameterRequired(conceptSchemeVersion, ServiceExceptionParameters.CONCEPT_SCHEME, exceptions);
+        if (conceptSchemeVersion != null) {
+            if (ConceptSchemeTypeEnum.OPERATION.equals(conceptSchemeVersion.getType()) || ConceptSchemeTypeEnum.TRANSVERSAL.equals(conceptSchemeVersion.getType())) {
+                ValidationUtils.checkMetadataRequired(conceptSchemeVersion, ServiceExceptionParameters.CONCEPT_SDMX_RELATED_ARTEFACT, exceptions);
+            } else {
+                ValidationUtils.checkMetadataEmpty(conceptSchemeVersion, ServiceExceptionParameters.CONCEPT_SDMX_RELATED_ARTEFACT, exceptions);
+            }
+        }
+
+        ValidationUtils.checkParameterRequired(concept, ServiceExceptionParameters.CONCEPT, exceptions);
+        if (concept == null) {
+            return;
+        }
+        checkConcept(concept, exceptions);
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
+
     private static void checkConceptScheme(ConceptSchemeVersionMetamac conceptSchemeVersion, List<MetamacExceptionItem> exceptions) {
         ValidationUtils.checkMetadataRequired(conceptSchemeVersion.getType(), ServiceExceptionParameters.CONCEPT_SCHEME_TYPE, exceptions);
         if (ConceptSchemeTypeEnum.OPERATION.equals(conceptSchemeVersion.getType())) {
@@ -120,4 +144,6 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
         }
     }
 
+    private static void checkConcept(ConceptMetamac concept, List<MetamacExceptionItem> exceptions) {
+    }
 }

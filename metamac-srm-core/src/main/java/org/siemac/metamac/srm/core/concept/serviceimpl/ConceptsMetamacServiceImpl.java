@@ -17,6 +17,7 @@ import org.siemac.metamac.core.common.exception.utils.ExceptionUtils;
 import org.siemac.metamac.core.common.serviceimpl.utils.ValidationUtils;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
+import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacProperties;
 import org.siemac.metamac.srm.core.concept.serviceimpl.utils.ConceptsMetamacInvocationValidator;
@@ -60,14 +61,15 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         return (ConceptSchemeVersionMetamac) conceptsService.createConceptScheme(ctx, conceptSchemeVersion);
     }
 
+    // TODO RF – 29 El sistema no permitirá que se den de alta esquemas de conceptos que referencien a esquemas de conceptos existentes en otras ubicaciones. Esto implica que el metadato
+    // “isExternalReference” de SDMX siempre será cumplimentado como “false”.
     @Override
     public ConceptSchemeVersionMetamac updateConceptScheme(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeVersion) throws MetamacException {
         // Validation
         ConceptsMetamacInvocationValidator.checkUpdateConceptScheme(conceptSchemeVersion, null);
 
         // Schemes cannot be updated when procStatus is INTERNALLY_PUBLISHED or EXTERNALLY_PUBLISHED
-        retrieveConceptSchemeVersionByProcStatus(ctx, conceptSchemeVersion.getMaintainableArtefact().getUrn(), ItemSchemeMetamacProcStatusEnum.DRAFT,
-                ItemSchemeMetamacProcStatusEnum.PRODUCTION_VALIDATION, ItemSchemeMetamacProcStatusEnum.DIFFUSION_VALIDATION, ItemSchemeMetamacProcStatusEnum.VALIDATION_REJECTED);
+        retrieveConceptSchemeVersionCanBeModified(ctx, conceptSchemeVersion.getMaintainableArtefact().getUrn());
 
         // Save conceptScheme
         return (ConceptSchemeVersionMetamac) conceptsService.updateConceptScheme(ctx, conceptSchemeVersion);
@@ -260,8 +262,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         ConceptsMetamacInvocationValidator.checkDeleteConceptScheme(urn, null);
 
         // Retrieve version in specific procStatus to check exist and can be deleted
-        retrieveConceptSchemeVersionByProcStatus(ctx, urn, ItemSchemeMetamacProcStatusEnum.DRAFT, ItemSchemeMetamacProcStatusEnum.VALIDATION_REJECTED,
-                ItemSchemeMetamacProcStatusEnum.PRODUCTION_VALIDATION, ItemSchemeMetamacProcStatusEnum.DIFFUSION_VALIDATION);
+        retrieveConceptSchemeVersionCanBeModified(ctx, urn);
 
         // Delete
         conceptsService.deleteConceptScheme(ctx, urn);
@@ -310,6 +311,35 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         return conceptSchemeVersion;
     }
 
+    // TODO Comprobar 'roles': Se rellena únicamente para esquemas de tipo "operación" y "transversal", y serán relaciones a conceptos de un esquema de tipo rol.
+    @Override
+    public ConceptMetamac createConcept(ServiceContext ctx, String conceptSchemeUrn, ConceptMetamac concept) throws MetamacException {
+
+        // Validation
+        ConceptSchemeVersionMetamac conceptSchemeVersion = null;
+        if (conceptSchemeUrn != null) {
+            conceptSchemeVersion = retrieveConceptSchemeVersionCanBeModified(ctx, conceptSchemeUrn);
+        }
+        ConceptsMetamacInvocationValidator.checkCreateConcept(conceptSchemeVersion, concept, null);
+
+        // Save concept
+        return (ConceptMetamac) conceptsService.createConcept(ctx, conceptSchemeUrn, concept);
+    }
+
+    @Override
+    public ConceptMetamac retrieveConceptByUrn(ServiceContext ctx, String urn) throws MetamacException {
+        return (ConceptMetamac) conceptsService.retrieveConceptByUrn(ctx, urn);
+    }
+
+    /**
+     * Retrieves version of a concept scheme that can be modified
+     */
+    private ConceptSchemeVersionMetamac retrieveConceptSchemeVersionCanBeModified(ServiceContext ctx, String urn) throws MetamacException {
+        return retrieveConceptSchemeVersionByProcStatus(ctx, urn, ItemSchemeMetamacProcStatusEnum.DRAFT, ItemSchemeMetamacProcStatusEnum.VALIDATION_REJECTED,
+                ItemSchemeMetamacProcStatusEnum.PRODUCTION_VALIDATION, ItemSchemeMetamacProcStatusEnum.DIFFUSION_VALIDATION);
+
+    }
+
     /**
      * Retrieves version of a concept scheme in specific procStatus
      */
@@ -322,7 +352,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         PagedResult<ConceptSchemeVersionMetamac> conceptSchemeVersionPagedResult = getConceptSchemeVersionMetamacRepository().findByCondition(conditions, pagingParameter);
 
         if (conceptSchemeVersionPagedResult.getValues().size() != 1) {
-            // check concept scheme exists
+            // check concept scheme exists to throws specific exception
             retrieveConceptSchemeByUrn(ctx, urn);
 
             // if exists, throw exception about wrong proc status
@@ -452,10 +482,14 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         checkConditionsSinceSendToProductionValidation(conceptSchemeVersion, exceptions);
     }
 
+    // TODO roles: En principio se podrán asociar independientemente del estado del esquema de conceptos, pero al publicar internamente se ha de comprobar que el esquema de conceptos relacionado tb
+    // esté publicado internamente. Idem al publicar externamente. Está pendiente que Alberto confirme que se podrán asociar en un principio aunque estén en borrador.
     private void checkConditionsSincePublishInternally(ConceptSchemeVersionMetamac conceptSchemeVersion, List<MetamacExceptionItem> exceptions) {
         checkConditionsSinceSendToDiffusionValidation(conceptSchemeVersion, exceptions);
     }
 
+    // TODO roles: En principio se podrán asociar independientemente del estado del esquema de conceptos, pero al publicar internamente se ha de comprobar que el esquema de conceptos relacionado tb
+    // esté publicado internamente. Idem al publicar externamente. Está pendiente que Alberto confirme que se podrán asociar en un principio aunque estén en borrador.
     private void checkConditionsSincePublishExternally(ConceptSchemeVersionMetamac conceptSchemeVersion, List<MetamacExceptionItem> exceptions) {
         checkConditionsSincePublishInternally(conceptSchemeVersion, exceptions);
     }
