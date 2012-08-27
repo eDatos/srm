@@ -46,6 +46,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     public ConceptsMetamacServiceImpl() {
     }
 
+    // TODO RF – 29 El sistema no permitirá que se den de alta esquemas de conceptos que referencien a esquemas de conceptos existentes en otras ubicaciones. Esto implica que el metadato “isExternalReference” de SDMX siempre será cumplimentado como “false”.
     @Override
     public ConceptSchemeVersionMetamac createConceptScheme(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeVersion) throws MetamacException {
 
@@ -60,6 +61,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         return (ConceptSchemeVersionMetamac) conceptsService.createConceptScheme(ctx, conceptSchemeVersion);
     }
 
+ // TODO RF – 29 El sistema no permitirá que se den de alta esquemas de conceptos que referencien a esquemas de conceptos existentes en otras ubicaciones. Esto implica que el metadato “isExternalReference” de SDMX siempre será cumplimentado como “false”.
     @Override
     public ConceptSchemeVersionMetamac updateConceptScheme(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeVersion) throws MetamacException {
         // Validation
@@ -195,6 +197,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     }
 
     // TODO Para llevar a cabo la publicación interna de un recurso será necesario que previamente exista al menos un anuncio sobre el esquema de conceptos a publicar
+    // TODO Comprobación: los conceptos relacionados han de estar en concept scheme ya pub. internamente
     @Override
     public ConceptSchemeVersionMetamac publishInternallyConceptScheme(ServiceContext ctx, String urn) throws MetamacException {
 
@@ -218,6 +221,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     }
 
     // TODO validTo, validFrom: ¿rellenar cuando el artefacto no sea del ISTAC? Pendiente decisión del ISTAC.
+    // TODO Comprobación: los conceptos relacionados han de estar en concept scheme ya pub. externamente.
     @Override
     public ConceptSchemeVersionMetamac publishExternallyConceptScheme(ServiceContext ctx, String urn) throws MetamacException {
 
@@ -473,5 +477,4 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         }
         return procStatusString;
     }
-
 }
