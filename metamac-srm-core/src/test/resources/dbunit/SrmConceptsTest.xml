@@ -1419,7 +1419,7 @@
         NAME_FK="10"
         
         VERSION_LOGIC="03.000"
-        FINAL_LOGIC="1"
+        FINAL_LOGIC="0"
         VALID_FROM_TZ="[null]"
         VALID_FROM="[null]" 
         VALID_TO_TZ="[null]"
