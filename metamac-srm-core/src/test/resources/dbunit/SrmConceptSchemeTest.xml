@@ -54,6 +54,8 @@
         EXTERNAL_PUBLICATION_DATE_TZ="[null]"
         EXTERNAL_PUBLICATION_DATE="[null]"
         EXTERNAL_PUBLICATION_USER="[null]"
+        IS_EXT_PUBLICATION_FAILED="[null]"
+        EXT_PUBLICATION_FAILED_DATE="[null]"
     />
     
     <TB_ANNOTABLE_ARTEFACTS 
@@ -132,6 +134,8 @@
         EXTERNAL_PUBLICATION_DATE_TZ="[null]"
         EXTERNAL_PUBLICATION_DATE="[null]"
         EXTERNAL_PUBLICATION_USER="[null]"
+        IS_EXT_PUBLICATION_FAILED="[null]"
+        EXT_PUBLICATION_FAILED_DATE="[null]"
     />       
     
     <TB_ANNOTABLE_ARTEFACTS 
@@ -219,6 +223,8 @@
         EXTERNAL_PUBLICATION_DATE_TZ="[null]"
         EXTERNAL_PUBLICATION_DATE="[null]"
         EXTERNAL_PUBLICATION_USER="[null]"
+        IS_EXT_PUBLICATION_FAILED="[null]"
+        EXT_PUBLICATION_FAILED_DATE="[null]"
     />     
     
     <TB_ANNOTABLE_ARTEFACTS 
@@ -306,6 +312,8 @@
         EXTERNAL_PUBLICATION_DATE_TZ="[null]"
         EXTERNAL_PUBLICATION_DATE="[null]"
         EXTERNAL_PUBLICATION_USER="[null]"
+        IS_EXT_PUBLICATION_FAILED="[null]"
+        EXT_PUBLICATION_FAILED_DATE="[null]"
     />     
 
     <TB_ANNOTABLE_ARTEFACTS 
@@ -392,6 +400,8 @@
         EXTERNAL_PUBLICATION_DATE_TZ="[null]"
         EXTERNAL_PUBLICATION_DATE="[null]"
         EXTERNAL_PUBLICATION_USER="[null]"
+        IS_EXT_PUBLICATION_FAILED="[null]"
+        EXT_PUBLICATION_FAILED_DATE="[null]"
     />     
     
     <TB_ANNOTABLE_ARTEFACTS 
@@ -477,6 +487,8 @@
         EXTERNAL_PUBLICATION_DATE_TZ="[null]"
         EXTERNAL_PUBLICATION_DATE="[null]"
         EXTERNAL_PUBLICATION_USER="[null]"
+        IS_EXT_PUBLICATION_FAILED="[null]"
+        EXT_PUBLICATION_FAILED_DATE="[null]"
     />     
     
     <TB_ANNOTABLE_ARTEFACTS 
@@ -562,6 +574,8 @@
         EXTERNAL_PUBLICATION_DATE_TZ="[null]"
         EXTERNAL_PUBLICATION_DATE="[null]"
         EXTERNAL_PUBLICATION_USER="[null]"
+        IS_EXT_PUBLICATION_FAILED="[null]"
+        EXT_PUBLICATION_FAILED_DATE="[null]"
     />     
     
     <TB_ANNOTABLE_ARTEFACTS 
@@ -650,6 +664,8 @@
         EXTERNAL_PUBLICATION_DATE_TZ="Europe/London"
         EXTERNAL_PUBLICATION_DATE="2011-01-01 01:02:03"
         EXTERNAL_PUBLICATION_USER="user4"
+        IS_EXT_PUBLICATION_FAILED="[null]"
+        EXT_PUBLICATION_FAILED_DATE="[null]"
     />
     
     <TB_ANNOTABLE_ARTEFACTS 
@@ -726,6 +742,8 @@
         EXTERNAL_PUBLICATION_DATE_TZ="[null]"
         EXTERNAL_PUBLICATION_DATE="[null]"
         EXTERNAL_PUBLICATION_USER="[null]"
+        IS_EXT_PUBLICATION_FAILED="[null]"
+        EXT_PUBLICATION_FAILED_DATE="[null]"
     />       
     
     <TB_ANNOTABLE_ARTEFACTS 
@@ -813,6 +831,8 @@
         EXTERNAL_PUBLICATION_DATE_TZ="[null]"
         EXTERNAL_PUBLICATION_DATE="[null]"
         EXTERNAL_PUBLICATION_USER="[null]"
+        IS_EXT_PUBLICATION_FAILED="[null]"
+        EXT_PUBLICATION_FAILED_DATE="[null]"
     />     
     
     <TB_ANNOTABLE_ARTEFACTS 
@@ -898,6 +918,8 @@
         EXTERNAL_PUBLICATION_DATE_TZ="[null]"
         EXTERNAL_PUBLICATION_DATE="[null]"
         EXTERNAL_PUBLICATION_USER="[null]"
+        IS_EXT_PUBLICATION_FAILED="[null]"
+        EXT_PUBLICATION_FAILED_DATE="[null]"
     />     
     
     <TB_ANNOTABLE_ARTEFACTS 
@@ -987,6 +1009,8 @@
         EXTERNAL_PUBLICATION_DATE_TZ="Europe/London"
         EXTERNAL_PUBLICATION_DATE="2011-01-01 01:02:03"
         EXTERNAL_PUBLICATION_USER="user4"
+        IS_EXT_PUBLICATION_FAILED="[null]"
+        EXT_PUBLICATION_FAILED_DATE="[null]"
     />
     
     <TB_ANNOTABLE_ARTEFACTS 
@@ -1063,6 +1087,8 @@
         EXTERNAL_PUBLICATION_DATE_TZ="[null]"
         EXTERNAL_PUBLICATION_DATE="[null]"
         EXTERNAL_PUBLICATION_USER="[null]"
+        IS_EXT_PUBLICATION_FAILED="[null]"
+        EXT_PUBLICATION_FAILED_DATE="[null]"
     />       
     
     <TB_ANNOTABLE_ARTEFACTS 
@@ -1139,6 +1165,8 @@
         EXTERNAL_PUBLICATION_DATE_TZ="[null]"
         EXTERNAL_PUBLICATION_DATE="[null]"
         EXTERNAL_PUBLICATION_USER="[null]"
+        IS_EXT_PUBLICATION_FAILED="[null]"
+        EXT_PUBLICATION_FAILED_DATE="[null]"
     />       
     
     <TB_ANNOTABLE_ARTEFACTS 
@@ -1226,6 +1254,8 @@
         EXTERNAL_PUBLICATION_DATE_TZ="[null]"
         EXTERNAL_PUBLICATION_DATE="[null]"
         EXTERNAL_PUBLICATION_USER="[null]"
+        IS_EXT_PUBLICATION_FAILED="[null]"
+        EXT_PUBLICATION_FAILED_DATE="[null]"
     />     
     
     <TB_ANNOTABLE_ARTEFACTS 
