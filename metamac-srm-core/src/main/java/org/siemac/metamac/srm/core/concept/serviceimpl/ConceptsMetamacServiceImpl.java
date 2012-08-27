@@ -214,9 +214,9 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         conceptSchemeVersion.setProcStatus(ItemSchemeMetamacProcStatusEnum.INTERNALLY_PUBLISHED);
         conceptSchemeVersion.setInternalPublicationDate(new DateTime());
         conceptSchemeVersion.setInternalPublicationUser(ctx.getUserId());
-        conceptSchemeVersion.getMaintainableArtefact().setFinalLogic(Boolean.TRUE);
         conceptSchemeVersion = (ConceptSchemeVersionMetamac) itemSchemeVersionRepository.save(conceptSchemeVersion);
-
+        conceptSchemeVersion = (ConceptSchemeVersionMetamac) conceptsService.markConceptSchemeAsFinal(ctx, urn);
+        
         return conceptSchemeVersion;
     }
 
