@@ -500,7 +500,7 @@
         
     <!-- ************************************************************************************** -->
     <!-- CONCEPT SCHEME 3                                                                       -->
-    <!--        - Version 1: internally published                                               -->
+    <!--        - Version 1: internally published (role type)                                   -->
     <!-- *************************************************************************************  -->
 
     <TB_ITEM_SCHEMES
@@ -851,7 +851,7 @@
     
     <!-- ************************************************************************************** -->
     <!-- CONCEPT SCHEME 7                                                                       -->
-    <!--        - Version 1: externally published                                               -->
+    <!--        - Version 1: externally published (glossary type)                               -->
     <!--        - Version 2: internally published                                               -->
     <!-- *************************************************************************************  -->
 
@@ -1053,7 +1053,7 @@
     <TB_M_CONCEPT_SCHEMES_VERSIONS
         TB_CONCEPT_SCHEMES_VERSIONS="81"
         CONCEPT_SCHEME_TYPE="OPERATION"          
-        RELATED_OPERATION_FK="13"
+        RELATED_OPERATION_FK="82"
         PROC_STATUS="DRAFT"
         
         PRODUCTION_VALIDATION_DATE_TZ="[null]"
@@ -1529,6 +1529,95 @@
         LAST_UPDATED_TZ="Europe/London"
     />
     
+    <!-- ************************************************************************************** -->
+    <!-- CONCEPT SCHEME 12                                                                      -->
+    <!--        - Version 1: externally published (operation type)                              -->
+    <!-- *************************************************************************************  -->
+
+    <TB_ITEM_SCHEMES
+        ID="12"
+        UUID="itemScheme-12"
+        VERSION="1"
+    />
+    
+    <!-- Version 1 -->
+    
+    <TB_ITEM_SCHEMES_VERSIONS
+        ID="121"
+        ITEM_SCHEME_FK="12"
+        IS_PARTIAL="0"
+        MAINTANABLE_ARTEFACT_FK="121"
+        
+        UUID="conceptScheme-12-v1"
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user2"
+        LAST_UPDATED="2011-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"  
+    />
+        
+    <TB_CONCEPT_SCHEMES_VERSIONS
+        TB_ITEM_SCHEMES_VERSIONS="121"
+    />
+    
+    <TB_M_CONCEPT_SCHEMES_VERSIONS
+        TB_CONCEPT_SCHEMES_VERSIONS="121"
+        CONCEPT_SCHEME_TYPE="OPERATION"          
+        RELATED_OPERATION_FK="13"
+        PROC_STATUS="EXTERNALLY_PUBLISHED"
+        
+        PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
+        PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
+        PRODUCTION_VALIDATION_USER="user1"
+        DIFFUSION_VALIDATION_DATE_TZ="Europe/London"
+        DIFFUSION_VALIDATION_DATE="2011-01-02 02:02:03"
+        DIFFUSION_VALIDATION_USER="user2"
+        INTERNAL_PUBLICATION_DATE_TZ="Europe/London"
+        INTERNAL_PUBLICATION_DATE="2011-01-03 03:02:03"
+        INTERNAL_PUBLICATION_USER="user3"
+        EXTERNAL_PUBLICATION_DATE_TZ="Europe/London"
+        EXTERNAL_PUBLICATION_DATE="2011-01-01 01:02:03"
+        EXTERNAL_PUBLICATION_USER="user4"
+        IS_EXT_PUBLICATION_FAILED="[null]"
+        EXT_PUBLICATION_FAILED_DATE="[null]"
+    />
+    
+    <TB_ANNOTABLE_ARTEFACTS 
+        ID="121"
+        ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
+        
+        CODE="CONCEPTSCHEME12"
+        URI="[null]"
+        URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:CONCEPTSCHEME12(01.000)"
+        REPLACED_BY="[null]"
+        REPLACE_TO="[null]"
+        
+        NAME_FK="12"
+        
+        VERSION_LOGIC="01.000"
+        FINAL_LOGIC="1"
+        VALID_FROM_TZ="Europe/London"
+        VALID_FROM="2011-01-02 02:02:04" 
+        VALID_TO_TZ="[null]"
+        VALID_TO="[null]"
+        IS_EXTERNAL_REFERENCE="0"
+        STRUCTURE_URL="[null]"
+        SERVICE_URL="[null]"
+        IS_LAST_VERSION="1"
+        MAINTAINER_FK="11"
+        
+        UUID="annotableArtefact-121"
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user2"
+        LAST_UPDATED="2011-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"
+    />
+    
             
     <!-- ************************************************************************************** -->
     <!-- EXTERNAL ITEMS                                                                         -->
@@ -1564,7 +1653,18 @@
         VERSION="1"
         TITLE_FK="[null]"
         TYPE="STATISTICAL_OPERATION"
-    />     
+    />
+    
+    <TB_EXTERNAL_ITEMS 
+        ID="82"
+        CODE="op1"
+        URI="http://op1"
+        URN="urn:op1"
+        MANAGEMENT_APP_URL="http://app/operations"
+        VERSION="1"
+        TITLE_FK="[null]"
+        TYPE="STATISTICAL_OPERATION"
+    />
     
     <TB_EXTERNAL_ITEMS 
         ID="21"
@@ -2029,5 +2129,5 @@
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="23"
-    />          
+    />           
 </dataset>
