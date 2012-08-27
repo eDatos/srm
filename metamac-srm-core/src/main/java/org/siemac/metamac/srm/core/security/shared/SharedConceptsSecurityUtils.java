@@ -1,9 +1,9 @@
 package org.siemac.metamac.srm.core.security.shared;
 
-import static org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum.ANY_ROLE_ALLOWED;
 import static org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum.JEFE_NORMALIZACION;
 import static org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum.JEFE_PRODUCCION;
 import static org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum.TECNICO_APOYO_NORMALIZACION;
+import static org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum.TECNICO_APOYO_PRODUCCION;
 import static org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum.TECNICO_NORMALIZACION;
 import static org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum.TECNICO_PRODUCCION;
 
@@ -75,7 +75,9 @@ public class SharedConceptsSecurityUtils extends SharedSecurityUtils {
         if (isNonOperationConceptSchemeType(type)) {
             return isSrmRoleAllowed(metamacPrincipal, TECNICO_APOYO_NORMALIZACION, TECNICO_NORMALIZACION, JEFE_NORMALIZACION);
         } else if (isOperationConceptSchemeType(type)) {
-            return isAnySrmRole(metamacPrincipal) && isOperationAllowed(metamacPrincipal, operationCode, ANY_ROLE_ALLOWED);
+            return isAnySrmRole(metamacPrincipal)
+                    && isOperationAllowed(metamacPrincipal, operationCode, TECNICO_APOYO_PRODUCCION, TECNICO_APOYO_NORMALIZACION, TECNICO_PRODUCCION, TECNICO_NORMALIZACION, JEFE_PRODUCCION,
+                            JEFE_NORMALIZACION);
         }
         return false;
     }
@@ -166,7 +168,9 @@ public class SharedConceptsSecurityUtils extends SharedSecurityUtils {
             if (isNonOperationConceptSchemeType(type)) {
                 return isSrmRoleAllowed(metamacPrincipal, TECNICO_APOYO_NORMALIZACION, TECNICO_NORMALIZACION, JEFE_NORMALIZACION);
             } else if (isOperationConceptSchemeType(type)) {
-                return isAnySrmRole(metamacPrincipal) && isOperationAllowed(metamacPrincipal, operationCode, ANY_ROLE_ALLOWED);
+                return isAnySrmRole(metamacPrincipal)
+                        && isOperationAllowed(metamacPrincipal, operationCode, TECNICO_APOYO_PRODUCCION, TECNICO_APOYO_NORMALIZACION, TECNICO_PRODUCCION, TECNICO_NORMALIZACION, JEFE_PRODUCCION,
+                                JEFE_NORMALIZACION);
             }
         } else if (ItemSchemeMetamacProcStatusEnum.PRODUCTION_VALIDATION.equals(procStatus)) {
             if (isNonOperationConceptSchemeType(type)) {
@@ -191,7 +195,9 @@ public class SharedConceptsSecurityUtils extends SharedSecurityUtils {
             if (isNonOperationConceptSchemeType(type)) {
                 return isSrmRoleAllowed(metamacPrincipal, TECNICO_APOYO_NORMALIZACION, TECNICO_NORMALIZACION, JEFE_NORMALIZACION);
             } else if (isOperationConceptSchemeType(type)) {
-                return isAnySrmRole(metamacPrincipal) && isOperationAllowed(metamacPrincipal, operationCode, ANY_ROLE_ALLOWED);
+                return isAnySrmRole(metamacPrincipal)
+                        && isOperationAllowed(metamacPrincipal, operationCode, TECNICO_APOYO_PRODUCCION, TECNICO_APOYO_NORMALIZACION, TECNICO_PRODUCCION, TECNICO_NORMALIZACION, JEFE_PRODUCCION,
+                                JEFE_NORMALIZACION);
             }
         } else if (ItemSchemeMetamacProcStatusEnum.PRODUCTION_VALIDATION.equals(procStatus)) {
             if (isNonOperationConceptSchemeType(type)) {
@@ -216,7 +222,9 @@ public class SharedConceptsSecurityUtils extends SharedSecurityUtils {
             if (isNonOperationConceptSchemeType(type)) {
                 return isSrmRoleAllowed(metamacPrincipal, TECNICO_APOYO_NORMALIZACION, TECNICO_NORMALIZACION, JEFE_NORMALIZACION);
             } else if (isOperationConceptSchemeType(type)) {
-                return isAnySrmRole(metamacPrincipal) && isOperationAllowed(metamacPrincipal, operationCode, ANY_ROLE_ALLOWED);
+                return isAnySrmRole(metamacPrincipal)
+                        && isOperationAllowed(metamacPrincipal, operationCode, TECNICO_APOYO_PRODUCCION, TECNICO_APOYO_NORMALIZACION, TECNICO_PRODUCCION, TECNICO_NORMALIZACION, JEFE_PRODUCCION,
+                                JEFE_NORMALIZACION);
             }
         } else if (ItemSchemeMetamacProcStatusEnum.PRODUCTION_VALIDATION.equals(procStatus)) {
             if (isNonOperationConceptSchemeType(type)) {

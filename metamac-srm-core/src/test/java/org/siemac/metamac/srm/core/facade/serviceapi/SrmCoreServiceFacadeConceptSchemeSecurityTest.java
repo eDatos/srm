@@ -25,6 +25,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/srm/applicationContext-test.xml"})
 @TransactionConfiguration(transactionManager = "txManagerCore", defaultRollback = true)
@@ -97,7 +99,7 @@ public class SrmCoreServiceFacadeConceptSchemeSecurityTest extends SrmBaseTest {
 
     @Test
     public void testCreateConceptScheme() throws Exception {
-        srmCoreServiceFacade.createConceptScheme(getServiceContextAdministrador(), ConceptsMetamacDtoMocks.mockConceptSchemeDtoGlossaryType());
+        srmCoreServiceFacade.createConceptScheme(getServiceContextJefeNormalizacion(), ConceptsMetamacDtoMocks.mockConceptSchemeDtoGlossaryType());
     }
 
     @Test
@@ -206,7 +208,7 @@ public class SrmCoreServiceFacadeConceptSchemeSecurityTest extends SrmBaseTest {
     public void testDeleteConceptSchemeJefeNormalizacion() throws Exception {
         String nonOperationConceptSchemeUrn = CONCEPT_SCHEME_2_V1;
         String operationConceptSchemeUrn = CONCEPT_SCHEME_8_V1;
-        
+
         String[] urns = {nonOperationConceptSchemeUrn, operationConceptSchemeUrn};
 
         for (String urn : urns) {
@@ -217,7 +219,7 @@ public class SrmCoreServiceFacadeConceptSchemeSecurityTest extends SrmBaseTest {
     @Test
     public void testDeleteConceptSchemeJefeProduccion() throws Exception {
         String operationConceptSchemeUrn = CONCEPT_SCHEME_8_V1;
-        
+
         srmCoreServiceFacade.deleteConceptScheme(getServiceContextJefeProduccion(), operationConceptSchemeUrn);
     }
 
@@ -283,38 +285,367 @@ public class SrmCoreServiceFacadeConceptSchemeSecurityTest extends SrmBaseTest {
     }
 
     @Test
-    public void testSendConceptSchemeToProductionValidation() throws Exception {
-
+    public void testSendConceptSchemeToProductionValidationTecnicoApoyoNormalizacion() throws Exception {
+        {
+            String nonOperationConceptSchemeUrn = CONCEPT_SCHEME_1_V2;
+            srmCoreServiceFacade.sendConceptSchemeToProductionValidation(getServiceContextTecnicoApoyoNormalizacion(), nonOperationConceptSchemeUrn);
+        }
+        {
+            String operationConceptSchemeUrn = CONCEPT_SCHEME_8_V1;
+            srmCoreServiceFacade.sendConceptSchemeToProductionValidation(getServiceContextTecnicoApoyoNormalizacion(), operationConceptSchemeUrn);
+        }
     }
 
     @Test
-    public void testSendConceptSchemeToDiffusionValidation() throws Exception {
-
+    public void testSendConceptSchemeToProductionValidationTecnicoNormalizacion() throws Exception {
+        ServiceContext ctx = getServiceContextTecnicoNormalizacion();
+        {
+            String nonOperationConceptSchemeUrn = CONCEPT_SCHEME_1_V2;
+            srmCoreServiceFacade.sendConceptSchemeToProductionValidation(ctx, nonOperationConceptSchemeUrn);
+        }
+        {
+            String operationConceptSchemeUrn = CONCEPT_SCHEME_8_V1;
+            srmCoreServiceFacade.sendConceptSchemeToProductionValidation(ctx, operationConceptSchemeUrn);
+        }
     }
 
     @Test
-    public void testRejectConceptSchemeProductionValidation() throws Exception {
+    public void testSendConceptSchemeToProductionValidationJefeNormalizacion() throws Exception {
+        ServiceContext ctx = getServiceContextJefeNormalizacion();
+        {
+            String nonOperationConceptSchemeUrn = CONCEPT_SCHEME_1_V2;
+            srmCoreServiceFacade.sendConceptSchemeToProductionValidation(ctx, nonOperationConceptSchemeUrn);
+        }
+        {
+            String operationConceptSchemeUrn = CONCEPT_SCHEME_8_V1;
+            srmCoreServiceFacade.sendConceptSchemeToProductionValidation(ctx, operationConceptSchemeUrn);
+        }
+    }
 
+    @Test
+    public void testSendConceptSchemeToProductionValidationTecnicoProduccion() throws Exception {
+        ServiceContext ctx = getServiceContextTecnicoProduccion();
+        String operationConceptSchemeUrn = CONCEPT_SCHEME_8_V1;
+        srmCoreServiceFacade.sendConceptSchemeToProductionValidation(ctx, operationConceptSchemeUrn);
+    }
+
+    @Test
+    public void testSendConceptSchemeToProductionValidationTecnicoApoyoProduccion() throws Exception {
+        ServiceContext ctx = getServiceContextTecnicoApoyoProduccion();
+        String operationConceptSchemeUrn = CONCEPT_SCHEME_8_V1;
+        srmCoreServiceFacade.sendConceptSchemeToProductionValidation(ctx, operationConceptSchemeUrn);
+    }
+
+    @Test
+    public void testSendConceptSchemeToProductionValidationJefeProduccion() throws Exception {
+        ServiceContext ctx = getServiceContextJefeProduccion();
+        String operationConceptSchemeUrn = CONCEPT_SCHEME_8_V1;
+        srmCoreServiceFacade.sendConceptSchemeToProductionValidation(ctx, operationConceptSchemeUrn);
+    }
+
+    @Test
+    public void testSendConceptSchemeToProductionValidationError() throws Exception {
+        {
+            String nonOperationConceptSchemeUrn = CONCEPT_SCHEME_1_V2;
+
+            ServiceContext[] contexts = {getServiceContextTecnicoApoyoProduccion(), getServiceContextTecnicoProduccion(), getServiceContextJefeProduccion(), getServiceContextWithoutAccesses(),
+                    getServiceContextWithoutAccessToApplication(), getServiceContextWithoutSrmRole()};
+
+            for (ServiceContext ctx : contexts) {
+                try {
+                    srmCoreServiceFacade.sendConceptSchemeToProductionValidation(ctx, nonOperationConceptSchemeUrn);
+                    fail("action not allowed");
+                } catch (MetamacException e) {
+                    assertEquals(1, e.getExceptionItems().size());
+                    assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+                }
+            }
+        }
+        {
+            String operationConceptSchemeUrn = CONCEPT_SCHEME_8_V1;
+
+            ServiceContext[] contexts = {getServiceContextWithoutAccesses(), getServiceContextWithoutAccessToApplication(), getServiceContextWithoutSrmRole()};
+
+            for (ServiceContext ctx : contexts) {
+                try {
+                    srmCoreServiceFacade.sendConceptSchemeToProductionValidation(ctx, operationConceptSchemeUrn);
+                    fail("action not allowed");
+                } catch (MetamacException e) {
+                    assertEquals(1, e.getExceptionItems().size());
+                    assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+                }
+            }
+        }
+    }
+
+    @Test
+    public void testSendConceptSchemeToDiffusionValidationTecnicoNormalizacion() throws Exception {
+        ServiceContext ctx = getServiceContextTecnicoNormalizacion();
+        {
+            String nonOperationConceptSchemeUrn = CONCEPT_SCHEME_5_V1;
+            srmCoreServiceFacade.sendConceptSchemeToDiffusionValidation(ctx, nonOperationConceptSchemeUrn);
+        }
+        {
+            String operationConceptSchemeUrn = CONCEPT_SCHEME_10_V3;
+            srmCoreServiceFacade.sendConceptSchemeToDiffusionValidation(ctx, operationConceptSchemeUrn);
+        }
+    }
+
+    @Test
+    public void testSendConceptSchemeToDiffusionValidationJefeNormalizacion() throws Exception {
+        ServiceContext ctx = getServiceContextJefeNormalizacion();
+        {
+            String nonOperationConceptSchemeUrn = CONCEPT_SCHEME_5_V1;
+            srmCoreServiceFacade.sendConceptSchemeToDiffusionValidation(ctx, nonOperationConceptSchemeUrn);
+        }
+        {
+            String operationConceptSchemeUrn = CONCEPT_SCHEME_10_V3;
+            srmCoreServiceFacade.sendConceptSchemeToDiffusionValidation(ctx, operationConceptSchemeUrn);
+        }
+    }
+
+    @Test
+    public void testSendConceptSchemeToDiffusionValidationTecnicoProduccion() throws Exception {
+        ServiceContext ctx = getServiceContextTecnicoProduccion();
+        String operationConceptSchemeUrn = CONCEPT_SCHEME_10_V3;
+        srmCoreServiceFacade.sendConceptSchemeToDiffusionValidation(ctx, operationConceptSchemeUrn);
+    }
+
+    @Test
+    public void testSendConceptSchemeToDiffusionValidationJefeProduccion() throws Exception {
+        ServiceContext ctx = getServiceContextJefeProduccion();
+        String operationConceptSchemeUrn = CONCEPT_SCHEME_10_V3;
+        srmCoreServiceFacade.sendConceptSchemeToDiffusionValidation(ctx, operationConceptSchemeUrn);
+    }
+
+    @Test
+    public void testSendConceptSchemeToDiffusionValidationError() throws Exception {
+        {
+            String nonOperationConceptSchemeUrn = CONCEPT_SCHEME_5_V1;
+
+            ServiceContext[] contexts = {getServiceContextTecnicoApoyoProduccion(), getServiceContextTecnicoProduccion(), getServiceContextJefeProduccion(),
+                    getServiceContextTecnicoApoyoNormalizacion(), getServiceContextWithoutAccesses(), getServiceContextWithoutAccessToApplication(), getServiceContextWithoutSrmRole()};
+
+            for (ServiceContext ctx : contexts) {
+                try {
+                    srmCoreServiceFacade.sendConceptSchemeToDiffusionValidation(ctx, nonOperationConceptSchemeUrn);
+                    fail("action not allowed");
+                } catch (MetamacException e) {
+                    assertEquals(1, e.getExceptionItems().size());
+                    assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+                }
+            }
+        }
+        {
+            String operationConceptSchemeUrn = CONCEPT_SCHEME_10_V3;
+
+            ServiceContext[] contexts = {getServiceContextTecnicoApoyoNormalizacion(), getServiceContextTecnicoApoyoProduccion(), getServiceContextWithoutAccesses(),
+                    getServiceContextWithoutAccessToApplication(), getServiceContextWithoutSrmRole()};
+
+            for (ServiceContext ctx : contexts) {
+                try {
+                    srmCoreServiceFacade.sendConceptSchemeToDiffusionValidation(ctx, operationConceptSchemeUrn);
+                    fail("action not allowed");
+                } catch (MetamacException e) {
+                    assertEquals(1, e.getExceptionItems().size());
+                    assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+                }
+            }
+        }
+    }
+
+    @Test
+    public void testRejectConceptSchemeToProductionValidationTecnicoNormalizacion() throws Exception {
+        ServiceContext ctx = getServiceContextTecnicoNormalizacion();
+        {
+            String nonOperationConceptSchemeUrn = CONCEPT_SCHEME_5_V1;
+            srmCoreServiceFacade.rejectConceptSchemeProductionValidation(ctx, nonOperationConceptSchemeUrn);
+        }
+        {
+            String operationConceptSchemeUrn = CONCEPT_SCHEME_10_V3;
+            srmCoreServiceFacade.rejectConceptSchemeProductionValidation(ctx, operationConceptSchemeUrn);
+        }
+    }
+
+    @Test
+    public void testRejectConceptSchemeToProductionValidationJefeNormalizacion() throws Exception {
+        ServiceContext ctx = getServiceContextJefeNormalizacion();
+        {
+            String nonOperationConceptSchemeUrn = CONCEPT_SCHEME_5_V1;
+            srmCoreServiceFacade.rejectConceptSchemeProductionValidation(ctx, nonOperationConceptSchemeUrn);
+        }
+        {
+            String operationConceptSchemeUrn = CONCEPT_SCHEME_10_V3;
+            srmCoreServiceFacade.rejectConceptSchemeProductionValidation(ctx, operationConceptSchemeUrn);
+        }
+    }
+
+    @Test
+    public void testRejectConceptSchemeToProductionValidationTecnicoProduccion() throws Exception {
+        ServiceContext ctx = getServiceContextTecnicoProduccion();
+        String operationConceptSchemeUrn = CONCEPT_SCHEME_10_V3;
+        srmCoreServiceFacade.rejectConceptSchemeProductionValidation(ctx, operationConceptSchemeUrn);
+    }
+
+    @Test
+    public void testRejectConceptSchemeToProductionValidationJefeProduccion() throws Exception {
+        ServiceContext ctx = getServiceContextJefeProduccion();
+        String operationConceptSchemeUrn = CONCEPT_SCHEME_10_V3;
+        srmCoreServiceFacade.rejectConceptSchemeProductionValidation(ctx, operationConceptSchemeUrn);
+    }
+
+    @Test
+    public void testRejectConceptSchemeToProductionValidationError() throws Exception {
+        {
+            String nonOperationConceptSchemeUrn = CONCEPT_SCHEME_5_V1;
+
+            ServiceContext[] contexts = {getServiceContextTecnicoApoyoProduccion(), getServiceContextTecnicoProduccion(), getServiceContextJefeProduccion(),
+                    getServiceContextTecnicoApoyoNormalizacion(), getServiceContextWithoutAccesses(), getServiceContextWithoutAccessToApplication(), getServiceContextWithoutSrmRole()};
+
+            for (ServiceContext ctx : contexts) {
+                try {
+                    srmCoreServiceFacade.rejectConceptSchemeProductionValidation(ctx, nonOperationConceptSchemeUrn);
+                    fail("action not allowed");
+                } catch (MetamacException e) {
+                    assertEquals(1, e.getExceptionItems().size());
+                    assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+                }
+            }
+        }
+        {
+            String operationConceptSchemeUrn = CONCEPT_SCHEME_10_V3;
+
+            ServiceContext[] contexts = {getServiceContextTecnicoApoyoNormalizacion(), getServiceContextTecnicoApoyoProduccion(), getServiceContextWithoutAccesses(),
+                    getServiceContextWithoutAccessToApplication(), getServiceContextWithoutSrmRole()};
+
+            for (ServiceContext ctx : contexts) {
+                try {
+                    srmCoreServiceFacade.rejectConceptSchemeProductionValidation(ctx, operationConceptSchemeUrn);
+                    fail("action not allowed");
+                } catch (MetamacException e) {
+                    assertEquals(1, e.getExceptionItems().size());
+                    assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+                }
+            }
+        }
     }
 
     @Test
     public void testRejectConceptSchemeDiffusionValidation() throws Exception {
+        srmCoreServiceFacade.rejectConceptSchemeDiffusionValidation(getServiceContextJefeNormalizacion(), CONCEPT_SCHEME_11_V1);
+    }
 
+    @Test
+    public void testRejectConceptSchemeDiffusionValidationError() throws Exception {
+        ServiceContext[] contexts = {getServiceContextTecnicoApoyoNormalizacion(), getServiceContextTecnicoApoyoProduccion(), getServiceContextTecnicoNormalizacion(),
+                getServiceContextTecnicoProduccion(), getServiceContextJefeProduccion(), getServiceContextAdministrador(), getServiceContextWithoutAccesses(),
+                getServiceContextWithoutAccessToApplication(), getServiceContextWithoutSrmRole()};
+
+        for (ServiceContext ctx : contexts) {
+            try {
+                srmCoreServiceFacade.rejectConceptSchemeDiffusionValidation(ctx, CONCEPT_SCHEME_11_V1);
+                fail("action not allowed");
+            } catch (MetamacException e) {
+                assertEquals(1, e.getExceptionItems().size());
+                assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+            }
+        }
     }
 
     @Test
     public void testPublishInternallyConceptScheme() throws Exception {
-
+        srmCoreServiceFacade.publishInternallyConceptScheme(getServiceContextJefeNormalizacion(), CONCEPT_SCHEME_11_V1);
     }
 
     @Test
-    public void testPublishExternallyConceptScheme() throws Exception {
+    public void testPublishInternallyConceptSchemeError() throws Exception {
+        ServiceContext[] contexts = {getServiceContextTecnicoApoyoNormalizacion(), getServiceContextTecnicoApoyoProduccion(), getServiceContextTecnicoNormalizacion(),
+                getServiceContextTecnicoProduccion(), getServiceContextJefeProduccion(), getServiceContextAdministrador(), getServiceContextWithoutAccesses(),
+                getServiceContextWithoutAccessToApplication(), getServiceContextWithoutSrmRole()};
 
+        for (ServiceContext ctx : contexts) {
+            try {
+                srmCoreServiceFacade.publishInternallyConceptScheme(ctx, CONCEPT_SCHEME_11_V1);
+                fail("action not allowed");
+            } catch (MetamacException e) {
+                assertEquals(1, e.getExceptionItems().size());
+                assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+            }
+        }
+    }
+
+    @Test
+    public void testPublishExternallyConceptSchemeJefeNormalizacion() throws Exception {
+        String nonOperationConceptSchemeUrn = CONCEPT_SCHEME_3_V1;
+        srmCoreServiceFacade.publishExternallyConceptScheme(getServiceContextJefeNormalizacion(), nonOperationConceptSchemeUrn);
+
+        String operationConceptSchemeUrn = CONCEPT_SCHEME_1_V1;
+        srmCoreServiceFacade.publishExternallyConceptScheme(getServiceContextJefeNormalizacion(), operationConceptSchemeUrn);
+    }
+
+    @Test
+    public void testPublishExternallyConceptSchemeJefeProduccion() throws Exception {
+        String operationConceptSchemeUrn = CONCEPT_SCHEME_1_V1;
+        srmCoreServiceFacade.publishExternallyConceptScheme(getServiceContextJefeProduccion(), operationConceptSchemeUrn);
+    }
+
+    @Test
+    public void testPublishExternallyConceptSchemeError() throws Exception {
+        {
+            String nonOperationConceptSchemeUrn = CONCEPT_SCHEME_3_V1;
+
+            ServiceContext[] contexts = {getServiceContextTecnicoApoyoNormalizacion(), getServiceContextTecnicoApoyoProduccion(), getServiceContextTecnicoNormalizacion(),
+                    getServiceContextTecnicoProduccion(), getServiceContextJefeProduccion(), getServiceContextAdministrador(), getServiceContextWithoutAccesses(),
+                    getServiceContextWithoutAccessToApplication(), getServiceContextWithoutSrmRole()};
+
+            for (ServiceContext ctx : contexts) {
+                try {
+                    srmCoreServiceFacade.publishExternallyConceptScheme(ctx, nonOperationConceptSchemeUrn);
+                    fail("action not allowed");
+                } catch (MetamacException e) {
+                    assertEquals(1, e.getExceptionItems().size());
+                    assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+                }
+            }
+        }
+        {
+            String nonOperationConceptSchemeUrn = CONCEPT_SCHEME_1_V1;
+
+            ServiceContext[] contexts = {getServiceContextTecnicoApoyoNormalizacion(), getServiceContextTecnicoApoyoProduccion(), getServiceContextTecnicoNormalizacion(),
+                    getServiceContextTecnicoProduccion(), getServiceContextAdministrador(), getServiceContextWithoutAccesses(), getServiceContextWithoutAccessToApplication(),
+                    getServiceContextWithoutSrmRole()};
+
+            for (ServiceContext ctx : contexts) {
+                try {
+                    srmCoreServiceFacade.publishExternallyConceptScheme(ctx, nonOperationConceptSchemeUrn);
+                    fail("action not allowed");
+                } catch (MetamacException e) {
+                    assertEquals(1, e.getExceptionItems().size());
+                    assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+                }
+            }
+        }
     }
 
     @Test
     public void testVersioningConceptScheme() throws Exception {
+        srmCoreServiceFacade.versioningConceptScheme(getServiceContextJefeNormalizacion(), CONCEPT_SCHEME_7_V1, VersionTypeEnum.MAJOR);
+    }
 
+    @Test
+    public void testVersioningConceptSchemeError() throws Exception {
+        ServiceContext[] contexts = {getServiceContextWithoutAccesses(), getServiceContextWithoutAccessToApplication(), getServiceContextWithoutSrmRole(), getServiceContextJefeProduccion(),
+                getServiceContextTecnicoApoyoProduccion(), getServiceContextTecnicoProduccion(), getServiceContextTecnicoApoyoNormalizacion(), getServiceContextTecnicoNormalizacion()};
+
+        for (ServiceContext ctx : contexts) {
+            try {
+                srmCoreServiceFacade.versioningConceptScheme(ctx, CONCEPT_SCHEME_7_V1, VersionTypeEnum.MAJOR);
+                fail("action not allowed");
+            } catch (MetamacException e) {
+                assertEquals(1, e.getExceptionItems().size());
+                assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+            }
+        }
     }
 
     @Test
@@ -332,7 +663,7 @@ public class SrmCoreServiceFacadeConceptSchemeSecurityTest extends SrmBaseTest {
     @Test
     public void testCancelConceptSchemeValidityJefeProduccion() throws Exception {
         String operationConceptSchemeUrn = CONCEPT_SCHEME_12_V1;
-        
+
         srmCoreServiceFacade.cancelConceptSchemeValidity(getServiceContextJefeProduccion(), operationConceptSchemeUrn);
     }
 
