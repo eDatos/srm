@@ -28,6 +28,7 @@ import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacProperties;
+import org.siemac.metamac.srm.core.concept.enume.domain.ConceptRoleEnum;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.core.concept.serviceapi.utils.ConceptsMetamacAsserts;
 import org.siemac.metamac.srm.core.concept.serviceapi.utils.ConceptsMetamacDoMocks;
@@ -1197,15 +1198,42 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
     // }
 
     @Test
-    // TODO
     public void testRetrieveConceptByUrn() throws Exception {
-        // TODO Auto-generated method stub
+        // Retrieve
+        String urn = CONCEPT_SCHEME_1_V2_CONCEPT_1;
+        ConceptMetamac concept = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), urn);
 
+        // Validate (only metadata in SRM Metamac; the others are checked in sdmx project)
+        assertEquals(urn, concept.getNameableArtefact().getUrn());
+        ConceptsMetamacAsserts.assertEqualsInternationalString(concept.getPluralName(), "es", "PluralName conceptScheme-1-v2-concept-1", null, null);
+        ConceptsMetamacAsserts.assertEqualsInternationalString(concept.getAcronym(), "es", "Acronym conceptScheme-1-v2-concept-1", null, null);
+        ConceptsMetamacAsserts.assertEqualsInternationalString(concept.getDescriptionSource(), "es", "DescriptionSource conceptScheme-1-v2-concept-1", null, null);
+        ConceptsMetamacAsserts.assertEqualsInternationalString(concept.getContext(), "es", "Context conceptScheme-1-v2-concept-1", null, null);
+        ConceptsMetamacAsserts.assertEqualsInternationalString(concept.getDocMethod(), "es", "DocMethod conceptScheme-1-v2-concept-1", null, null);
+        ConceptsMetamacAsserts.assertEqualsInternationalString(concept.getDerivation(), "es", "Derivation conceptScheme-1-v2-concept-1", null, null);
+        ConceptsMetamacAsserts.assertEqualsInternationalString(concept.getLegalActs(), "es", "LegalActs conceptScheme-1-v2-concept-1", null, null);
+        assertEquals(ConceptRoleEnum.ATTRIBUTE, concept.getSdmxRelatedArtefact());
+        // TODO type
     }
 
+    @Test
+    public void testRetrieveConceptByUrnWithParentAndChildren() throws Exception {
+
+        // Retrieve
+        String urn = CONCEPT_SCHEME_1_V2_CONCEPT_2_1;
+        ConceptMetamac concept = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), urn);
+
+        // Validate
+        assertEquals("conceptScheme-1-v1-concept-2-1", concept.getUuid());
+        assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2, concept.getParent().getNameableArtefact().getUrn());
+        assertEquals(1, concept.getChildren().size());
+        assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2_1_1, concept.getChildren().get(0).getNameableArtefact().getUrn());
+        assertEquals(CONCEPT_SCHEME_1_V2, concept.getItemSchemeVersion().getMaintainableArtefact().getUrn());
+        assertEquals(null, concept.getItemSchemeVersionFirstLevel());
+    }
+    
     @Override
     protected String getDataSetFile() {
         return "dbunit/SrmConceptSchemeTest.xml";
     }
-
 }
