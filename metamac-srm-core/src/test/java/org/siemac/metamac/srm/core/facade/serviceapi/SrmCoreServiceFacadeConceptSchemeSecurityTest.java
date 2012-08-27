@@ -3,14 +3,20 @@ package org.siemac.metamac.srm.core.facade.serviceapi;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
+import java.util.ArrayList;
+
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.siemac.metamac.core.common.criteria.MetamacCriteria;
+import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder;
+import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder.OrderTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.serviceapi.utils.ConceptsMetamacDtoMocks;
+import org.siemac.metamac.srm.core.criteria.ConceptSchemeVersionMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.sso.client.MetamacPrincipal;
 import org.siemac.metamac.sso.client.SsoClientConstants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +51,12 @@ public class SrmCoreServiceFacadeConceptSchemeSecurityTest extends SrmBaseTest {
 
     @Test
     public void testRetrieveConceptSchemeByUrn() throws Exception {
-        srmCoreServiceFacade.retrieveConceptSchemeByUrn(getServiceContextTecnicoProduccion(), CONCEPT_SCHEME_1_V1);
+        ServiceContext[] ctxs = {getServiceContextTecnicoApoyoNormalizacion(), getServiceContextTecnicoApoyoProduccion(), getServiceContextTecnicoNormalizacion(),
+                getServiceContextTecnicoProduccion(), getServiceContextJefeNormalizacion(), getServiceContextJefeProduccion(), getServiceContextAdministrador()};
+
+        for (ServiceContext ctx : ctxs) {
+            srmCoreServiceFacade.retrieveConceptSchemeByUrn(ctx, CONCEPT_SCHEME_1_V1);
+        }
     }
 
     @Test
@@ -55,6 +66,7 @@ public class SrmCoreServiceFacadeConceptSchemeSecurityTest extends SrmBaseTest {
         for (ServiceContext ctx : contexts) {
             try {
                 srmCoreServiceFacade.retrieveConceptSchemeByUrn(ctx, CONCEPT_SCHEME_1_V1);
+                fail("action not allowed");
             } catch (MetamacException e) {
                 assertEquals(1, e.getExceptionItems().size());
                 assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
@@ -75,6 +87,7 @@ public class SrmCoreServiceFacadeConceptSchemeSecurityTest extends SrmBaseTest {
         for (ServiceContext ctx : contexts) {
             try {
                 srmCoreServiceFacade.retrieveConceptSchemeVersions(ctx, CONCEPT_SCHEME_1_V1);
+                fail("action not allowed");
             } catch (MetamacException e) {
                 assertEquals(1, e.getExceptionItems().size());
                 assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
@@ -95,6 +108,7 @@ public class SrmCoreServiceFacadeConceptSchemeSecurityTest extends SrmBaseTest {
         for (ServiceContext ctx : contexts) {
             try {
                 srmCoreServiceFacade.createConceptScheme(ctx, ConceptsMetamacDtoMocks.mockConceptSchemeDtoGlossaryType());
+                fail("action not allowed");
             } catch (MetamacException e) {
                 assertEquals(1, e.getExceptionItems().size());
                 assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
@@ -132,17 +146,140 @@ public class SrmCoreServiceFacadeConceptSchemeSecurityTest extends SrmBaseTest {
 
     @Test
     public void testUpdateConceptSchemeError() throws Exception {
+        ConceptSchemeMetamacDto draftNonOperationSchemeVersion = srmCoreServiceFacade.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_1_V2);
+        ConceptSchemeMetamacDto draftOperationSchemeVersion = srmCoreServiceFacade.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_8_V1);
+        ConceptSchemeMetamacDto prodValidationNonOperationSchemeVersion = srmCoreServiceFacade.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_5_V1);
+        ConceptSchemeMetamacDto prodValidationOperationSchemeVersion = srmCoreServiceFacade.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_10_V3);
+        ConceptSchemeMetamacDto diffValidationNonOperationSchemeVersion = srmCoreServiceFacade.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_6_V1);
+        ConceptSchemeMetamacDto diffValidationOperationSchemeVersion = srmCoreServiceFacade.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_11_V1);
+        {
+            // TECNICO_PRODUCCION
+            ConceptSchemeMetamacDto[] conceptSchemeMetamacDtos = {draftNonOperationSchemeVersion, prodValidationNonOperationSchemeVersion, prodValidationOperationSchemeVersion,
+                    diffValidationNonOperationSchemeVersion, diffValidationOperationSchemeVersion};
 
+            ServiceContext ctx = getServiceContextTecnicoProduccion();
+
+            for (ConceptSchemeMetamacDto conceptSchemeMetamacDto : conceptSchemeMetamacDtos) {
+                try {
+                    srmCoreServiceFacade.createConceptScheme(ctx, conceptSchemeMetamacDto);
+                    fail("action not allowed");
+                } catch (MetamacException e) {
+                    assertEquals(1, e.getExceptionItems().size());
+                    assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+                }
+            }
+        }
+        {
+            // JEFE_PRODUCCION
+            ConceptSchemeMetamacDto[] conceptSchemeMetamacDtos = {draftNonOperationSchemeVersion, prodValidationNonOperationSchemeVersion, diffValidationNonOperationSchemeVersion};
+
+            ServiceContext ctx = getServiceContextJefeProduccion();
+
+            for (ConceptSchemeMetamacDto conceptSchemeMetamacDto : conceptSchemeMetamacDtos) {
+                try {
+                    srmCoreServiceFacade.createConceptScheme(ctx, conceptSchemeMetamacDto);
+                    fail("action not allowed");
+                } catch (MetamacException e) {
+                    assertEquals(1, e.getExceptionItems().size());
+                    assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+                }
+            }
+        }
+        {
+            // NOT_EXISTS
+            ConceptSchemeMetamacDto[] conceptSchemeMetamacDtos = {draftNonOperationSchemeVersion, draftOperationSchemeVersion, prodValidationNonOperationSchemeVersion,
+                    prodValidationOperationSchemeVersion, diffValidationNonOperationSchemeVersion, diffValidationOperationSchemeVersion};
+
+            for (ConceptSchemeMetamacDto conceptSchemeMetamacDto : conceptSchemeMetamacDtos) {
+                try {
+                    srmCoreServiceFacade.createConceptScheme(getServiceContextWithoutSrmRole(), conceptSchemeMetamacDto);
+                    fail("action not allowed");
+                } catch (MetamacException e) {
+                    assertEquals(1, e.getExceptionItems().size());
+                    assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+                }
+            }
+        }
     }
 
     @Test
-    public void testDeleteConceptScheme() throws Exception {
+    public void testDeleteConceptSchemeJefeNormalizacion() throws Exception {
+        String nonOperationConceptSchemeUrn = CONCEPT_SCHEME_2_V1;
+        String operationConceptSchemeUrn = CONCEPT_SCHEME_8_V1;
+        
+        String[] urns = {nonOperationConceptSchemeUrn, operationConceptSchemeUrn};
 
+        for (String urn : urns) {
+            srmCoreServiceFacade.deleteConceptScheme(getServiceContextJefeNormalizacion(), urn);
+        }
+    }
+
+    @Test
+    public void testDeleteConceptSchemeJefeProduccion() throws Exception {
+        String operationConceptSchemeUrn = CONCEPT_SCHEME_8_V1;
+        
+        srmCoreServiceFacade.deleteConceptScheme(getServiceContextJefeProduccion(), operationConceptSchemeUrn);
+    }
+
+    @Test
+    public void testDeleteConceptSchemeError() {
+        String nonOperationConceptSchemeUrn = CONCEPT_SCHEME_1_V2;
+        String operationConceptSchemeUrn = CONCEPT_SCHEME_8_V1;
+        {
+            ServiceContext[] ctxs = {getServiceContextTecnicoApoyoNormalizacion(), getServiceContextTecnicoApoyoProduccion(), getServiceContextTecnicoNormalizacion(),
+                    getServiceContextTecnicoProduccion(), getServiceContextWithoutSrmRole()};
+
+            for (ServiceContext ctx : ctxs) {
+                try {
+                    srmCoreServiceFacade.deleteConceptScheme(ctx, nonOperationConceptSchemeUrn);
+                    fail("action not allowed");
+                } catch (MetamacException e) {
+                    assertEquals(1, e.getExceptionItems().size());
+                    assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+                }
+                try {
+                    srmCoreServiceFacade.deleteConceptScheme(ctx, operationConceptSchemeUrn);
+                    fail("action not allowed");
+                } catch (MetamacException e) {
+                    assertEquals(1, e.getExceptionItems().size());
+                    assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+                }
+            }
+        }
+        {
+            try {
+                srmCoreServiceFacade.deleteConceptScheme(getServiceContextJefeProduccion(), nonOperationConceptSchemeUrn);
+                fail("action not allowed");
+            } catch (MetamacException e) {
+                assertEquals(1, e.getExceptionItems().size());
+                assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+            }
+        }
     }
 
     @Test
     public void testFindConceptSchemesByCondition() throws Exception {
+        ServiceContext[] ctxs = {getServiceContextTecnicoApoyoNormalizacion(), getServiceContextTecnicoApoyoProduccion(), getServiceContextTecnicoNormalizacion(),
+                getServiceContextTecnicoProduccion(), getServiceContextJefeNormalizacion(), getServiceContextJefeProduccion(), getServiceContextAdministrador()};
 
+        for (ServiceContext ctx : ctxs) {
+            srmCoreServiceFacade.findConceptSchemesByCondition(ctx, getMetamacCriteria());
+        }
+    }
+
+    @Test
+    public void testFindConceptSchemesByConditionError() throws Exception {
+        ServiceContext[] contexts = {getServiceContextWithoutAccesses(), getServiceContextWithoutAccessToApplication(), getServiceContextWithoutSrmRole()};
+
+        for (ServiceContext ctx : contexts) {
+            try {
+                srmCoreServiceFacade.findConceptSchemesByCondition(ctx, getMetamacCriteria());
+                fail("action not allowed");
+            } catch (MetamacException e) {
+                assertEquals(1, e.getExceptionItems().size());
+                assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+            }
+        }
     }
 
     @Test
@@ -181,8 +318,58 @@ public class SrmCoreServiceFacadeConceptSchemeSecurityTest extends SrmBaseTest {
     }
 
     @Test
-    public void testCancelConceptSchemeValidity() throws Exception {
+    public void testCancelConceptSchemeValidityJefeNormalizacion() throws Exception {
+        String nonOperationConceptSchemeUrn = CONCEPT_SCHEME_7_V1;
+        String operationConceptSchemeUrn = CONCEPT_SCHEME_12_V1;
 
+        String[] urns = {nonOperationConceptSchemeUrn, operationConceptSchemeUrn};
+
+        for (String urn : urns) {
+            srmCoreServiceFacade.cancelConceptSchemeValidity(getServiceContextJefeNormalizacion(), urn);
+        }
+    }
+
+    @Test
+    public void testCancelConceptSchemeValidityJefeProduccion() throws Exception {
+        String operationConceptSchemeUrn = CONCEPT_SCHEME_12_V1;
+        
+        srmCoreServiceFacade.cancelConceptSchemeValidity(getServiceContextJefeProduccion(), operationConceptSchemeUrn);
+    }
+
+    @Test
+    public void testCancelConceptSchemeValidityError() throws Exception {
+        String nonOperationConceptSchemeUrn = CONCEPT_SCHEME_1_V2;
+        String operationConceptSchemeUrn = CONCEPT_SCHEME_8_V1;
+        {
+            ServiceContext[] ctxs = {getServiceContextTecnicoApoyoNormalizacion(), getServiceContextTecnicoApoyoProduccion(), getServiceContextTecnicoNormalizacion(),
+                    getServiceContextTecnicoProduccion(), getServiceContextWithoutSrmRole()};
+
+            for (ServiceContext ctx : ctxs) {
+                try {
+                    srmCoreServiceFacade.cancelConceptSchemeValidity(ctx, nonOperationConceptSchemeUrn);
+                    fail("action not allowed");
+                } catch (MetamacException e) {
+                    assertEquals(1, e.getExceptionItems().size());
+                    assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+                }
+                try {
+                    srmCoreServiceFacade.cancelConceptSchemeValidity(ctx, operationConceptSchemeUrn);
+                    fail("action not allowed");
+                } catch (MetamacException e) {
+                    assertEquals(1, e.getExceptionItems().size());
+                    assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+                }
+            }
+        }
+        {
+            try {
+                srmCoreServiceFacade.cancelConceptSchemeValidity(getServiceContextJefeProduccion(), nonOperationConceptSchemeUrn);
+                fail("action not allowed");
+            } catch (MetamacException e) {
+                assertEquals(1, e.getExceptionItems().size());
+                assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+            }
+        }
     }
 
     private ServiceContext getServiceContextWithoutAccesses() {
@@ -201,6 +388,16 @@ public class SrmCoreServiceFacadeConceptSchemeSecurityTest extends SrmBaseTest {
         ServiceContext ctxWithoutSrmRole = getServiceContextJefeNormalizacion();
         ((MetamacPrincipal) ctxWithoutSrmRole.getProperty(SsoClientConstants.PRINCIPAL_ATTRIBUTE)).getAccesses().get(0).setRole(NOT_EXISTS);
         return ctxWithoutSrmRole;
+    }
+
+    private MetamacCriteria getMetamacCriteria() {
+        MetamacCriteria metamacCriteria = new MetamacCriteria();
+        MetamacCriteriaOrder order = new MetamacCriteriaOrder();
+        order.setType(OrderTypeEnum.ASC);
+        order.setPropertyName(ConceptSchemeVersionMetamacCriteriaPropertyEnum.URN.name());
+        metamacCriteria.setOrdersBy(new ArrayList<MetamacCriteriaOrder>());
+        metamacCriteria.getOrdersBy().add(order);
+        return metamacCriteria;
     }
 
     @Override
