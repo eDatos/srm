@@ -41,12 +41,11 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     private ConceptsService             conceptsService;
 
     @Autowired
-    private ItemSchemeVersionRepository itemSchemeVersionRepository; // TODO acceder al repositorio o al servicio para hacer "save"?
+    private ItemSchemeVersionRepository itemSchemeVersionRepository;
 
     public ConceptsMetamacServiceImpl() {
     }
 
-    // TODO RF – 29 El sistema no permitirá que se den de alta esquemas de conceptos que referencien a esquemas de conceptos existentes en otras ubicaciones. Esto implica que el metadato “isExternalReference” de SDMX siempre será cumplimentado como “false”.
     @Override
     public ConceptSchemeVersionMetamac createConceptScheme(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeVersion) throws MetamacException {
 
