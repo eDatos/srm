@@ -404,7 +404,7 @@
         REPLACED_BY="[null]"
         REPLACE_TO="[null]"
         
-        NAME_FK="[null]"
+        NAME_FK="4"
         
         VERSION_LOGIC="01.000"
         FINAL_LOGIC="0"
@@ -489,7 +489,7 @@
         REPLACED_BY="[null]"
         REPLACE_TO="[null]"
         
-        NAME_FK="[null]"
+        NAME_FK="5"
         
         VERSION_LOGIC="01.000"
         FINAL_LOGIC="0"
@@ -574,7 +574,7 @@
         REPLACED_BY="[null]"
         REPLACE_TO="[null]"
         
-        NAME_FK="[null]"
+        NAME_FK="6"
         
         VERSION_LOGIC="01.000"
         FINAL_LOGIC="0"
@@ -825,7 +825,7 @@
         REPLACED_BY="[null]"
         REPLACE_TO="[null]"
         
-        NAME_FK="5"
+        NAME_FK="8"
         
         VERSION_LOGIC="01.000"
         FINAL_LOGIC="0"
@@ -910,7 +910,7 @@
         REPLACED_BY="[null]"
         REPLACE_TO="[null]"
         
-        NAME_FK="5"
+        NAME_FK="9"
         
         VERSION_LOGIC="01.000"
         FINAL_LOGIC="0"
@@ -999,7 +999,7 @@
         REPLACED_BY="02.000"
         REPLACE_TO="[null]"
         
-        NAME_FK="7"
+        NAME_FK="10"
         
         VERSION_LOGIC="01.000"
         FINAL_LOGIC="1"
@@ -1075,7 +1075,7 @@
         REPLACED_BY="02.000"
         REPLACE_TO="01.000"
         
-        NAME_FK="8"
+        NAME_FK="10"
         
         VERSION_LOGIC="02.000"
         FINAL_LOGIC="1"
@@ -1151,7 +1151,7 @@
         REPLACED_BY="[null]"
         REPLACE_TO="02.000"
         
-        NAME_FK="8"
+        NAME_FK="10"
         
         VERSION_LOGIC="03.000"
         FINAL_LOGIC="1"
@@ -1176,8 +1176,8 @@
     />
     
     <!-- ************************************************************************************** -->
-    <!-- CONCEPT SCHEME 11                                                                       -->
-    <!--        - Version 1: diffusion validation (role type)                                   -->
+    <!-- CONCEPT SCHEME 11                                                                      -->
+    <!--        - Version 1: diffusion validation (operation type)                              -->
     <!-- *************************************************************************************  -->
 
     <TB_ITEM_SCHEMES
@@ -1238,7 +1238,7 @@
         REPLACED_BY="[null]"
         REPLACE_TO="[null]"
         
-        NAME_FK="[null]"
+        NAME_FK="11"
         
         VERSION_LOGIC="01.000"
         FINAL_LOGIC="0"
@@ -1567,5 +1567,57 @@
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="8"
-    />            
+    />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="9"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="91"
+        LABEL="Título conceptScheme-9-v2"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="9"
+    />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="10"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="101"
+        LABEL="Título conceptScheme-10-v2"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="10"
+    />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="11"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="111"
+        LABEL="Título conceptScheme-11-v2"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="11"
+    />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="12"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="121"
+        LABEL="Título conceptScheme-12-v2"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="12"
+    />
 </dataset>

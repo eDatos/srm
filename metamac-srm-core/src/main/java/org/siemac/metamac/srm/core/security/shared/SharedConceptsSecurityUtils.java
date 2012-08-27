@@ -14,7 +14,17 @@ import org.siemac.metamac.sso.client.MetamacPrincipal;
 
 public class SharedConceptsSecurityUtils extends SharedSecurityUtils {
 
-    // Schemes
+    //
+    // CONCEPT SCHEMES
+    //
+
+    public static boolean canRetrieveConceptSchemeByUrn(MetamacPrincipal metamacPrincipal) {
+        return isAnySrmRole(metamacPrincipal);
+    }
+
+    public static boolean canRetrieveConceptSchemeVersions(MetamacPrincipal metamacPrincipal) {
+        return isAnySrmRole(metamacPrincipal);
+    }
 
     public static boolean canCreateConceptScheme(MetamacPrincipal metamacPrincipal) {
         // Note: when conceptScheme is Operation type, do not check if user has access to operation because all normalization roles have access to all operations
@@ -55,6 +65,10 @@ public class SharedConceptsSecurityUtils extends SharedSecurityUtils {
             return isSrmRoleAllowed(metamacPrincipal, roles) && isOperationAllowed(metamacPrincipal, operationCode, roles);
         }
         return false;
+    }
+
+    public static boolean canFindConceptSchemesByCondition(MetamacPrincipal metamacPrincipal) {
+        return isAnySrmRole(metamacPrincipal);
     }
 
     public static boolean canSendConceptSchemeToProductionValidation(MetamacPrincipal metamacPrincipal, ConceptSchemeTypeEnum type, String operationCode) {
