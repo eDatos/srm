@@ -10,7 +10,7 @@ public class DoCopyUtils {
     public static void copy(ConceptSchemeVersionMetamac source, ConceptSchemeVersionMetamac target) {
 
         target.setType(source.getType());
-        target.setRelatedOperation(com.arte.statistic.sdmx.srm.core.concept.serviceimpl.utils.DoCopyUtils.copy(source.getRelatedOperation()));
+        target.setRelatedOperation(com.arte.statistic.sdmx.srm.core.common.service.utils.DoCopyUtils.copy(source.getRelatedOperation()));
         
         // Metadata of ConceptSchemeVersion
         com.arte.statistic.sdmx.srm.core.concept.serviceimpl.utils.DoCopyUtils.copy(source, target);
