@@ -49,7 +49,10 @@ Application DtosMetamacConceptDomain {
 			- @InternationalStringDto descriptionSource nullable;
 			- @InternationalStringDto context nullable;
 			- @InternationalStringDto docMethod nullable;
+			- @ConceptRoleEnum sdmxRelatedArtefact nullable;
+			// TYPE
 			- @InternationalStringDto derivation nullable;
+			// RELATED_CONCEPTS
 			- @InternationalStringDto legalActs nullable;
 			
 			"Version to optimistic locking"

@@ -55,6 +55,10 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
     @Autowired
     protected SrmCoreServiceFacade srmCoreServiceFacade;
 
+    // ---------------------------------------------------------------------------------------
+    // CONCEPT SCHEMES
+    // ---------------------------------------------------------------------------------------
+
     @Test
     public void testRetrieveConceptSchemeByUrn() throws Exception {
         ConceptSchemeMetamacDto conceptSchemeMetamacDto = srmCoreServiceFacade.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_1_V1);
@@ -831,6 +835,24 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
                 }
             }
         }
+    }
+
+    // ---------------------------------------------------------------------------------------
+    // CONCEPTS
+    // ---------------------------------------------------------------------------------------
+
+    @Test
+    public void testRetrieveConceptByUrn() throws Exception {
+        ConceptMetamacDto conceptMetamacDto = srmCoreServiceFacade.retrieveConceptByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_1_V2_CONCEPT_1);
+        assertNotNull(conceptMetamacDto);
+        assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_1, conceptMetamacDto.getUrn());
+        assertEqualsInternationalStringDto(conceptMetamacDto.getPluralName(), "es", "PluralName conceptScheme-1-v2-concept-1", null, null);
+        assertEqualsInternationalStringDto(conceptMetamacDto.getAcronym(), "es", "Acronym conceptScheme-1-v2-concept-1", null, null);
+        assertEqualsInternationalStringDto(conceptMetamacDto.getDescriptionSource(), "es", "DescriptionSource conceptScheme-1-v2-concept-1", null, null);
+        assertEqualsInternationalStringDto(conceptMetamacDto.getContext(), "es", "Context conceptScheme-1-v2-concept-1", null, null);
+        assertEqualsInternationalStringDto(conceptMetamacDto.getDocMethod(), "es", "DocMethod conceptScheme-1-v2-concept-1", null, null);
+        assertEqualsInternationalStringDto(conceptMetamacDto.getDerivation(), "es", "Derivation conceptScheme-1-v2-concept-1", null, null);
+        assertEqualsInternationalStringDto(conceptMetamacDto.getLegalActs(), "es", "LegalActs conceptScheme-1-v2-concept-1", null, null);
     }
 
     @Override
