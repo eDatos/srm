@@ -100,6 +100,7 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
         target.setDescriptionSource(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.UPDATE, source.getDescriptionSource()));
         target.setContext(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.UPDATE, source.getContext()));
         target.setDocMethod(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.UPDATE, source.getDocMethod()));
+        target.setSdmxRelatedArtefact(source.getSdmxRelatedArtefact());
         target.setDerivation(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.UPDATE, source.getDerivation()));
         target.setLegalActs(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.UPDATE, source.getLegalActs()));
 
@@ -128,17 +129,17 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
 
     private ItemHierarchyDto conceptMetamacDoToItemHierarchyDto(ConceptMetamac conceptMetamac) {
         ItemHierarchyDto itemHierarchyDto = new ItemHierarchyDto();
-        
+
         // Concept
         ConceptMetamacDto conceptMetamacDto = conceptMetamacDoToDto(conceptMetamac);
         itemHierarchyDto.setItem(conceptMetamacDto);
 
         // Children
         for (Item item : conceptMetamac.getChildren()) {
-            ItemHierarchyDto itemHierarchyChildrenDto = conceptMetamacDoToItemHierarchyDto((ConceptMetamac)item);
+            ItemHierarchyDto itemHierarchyChildrenDto = conceptMetamacDoToItemHierarchyDto((ConceptMetamac) item);
             itemHierarchyDto.addChildren(itemHierarchyChildrenDto);
         }
-        
+
         return itemHierarchyDto;
     }
 
