@@ -126,6 +126,11 @@ Application ConceptsMetamac {
 						
 			"Last update to optimistic locking"
 			DateTimeTZ updateDateMetamac nullable;
+			
+			Repository ConceptMetamacRepository {
+				findById;
+				findByCondition(PagingParameter pagingParameter);
+			}
 		}
 	}
 }
