@@ -618,6 +618,14 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         return conceptMetamacDto;
     }
 
+    @Override
+    public void deleteConcept(ServiceContext ctx, String urn) throws MetamacException {
+        // TODO Security
+
+        // Delete
+        getConceptsMetamacService().deleteConcept(ctx, urn);
+    }
+
     /**************************************************************************
      * PRIVATE METHODS
      *************************************************************************/

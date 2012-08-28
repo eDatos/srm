@@ -199,29 +199,29 @@ Application SrmCore {
 			"                
        		List<@ExternalItemDto> findConcepts(String uriConceptScheme);
        		
-	   		"Create concept scheme"
+	   		"Creates concept scheme"
 	   		@ConceptSchemeMetamacDto createConceptScheme(@ConceptSchemeMetamacDto conceptSchemeDto) throws MetamacException;
-	   		"Update concept scheme"
+	   		"Updates concept scheme"
             @ConceptSchemeMetamacDto updateConceptScheme(@ConceptSchemeMetamacDto conceptSchemeDto) throws MetamacException;
-            "Delete concept scheme"
+            "Deletes concept scheme"
             deleteConceptScheme(String urn) throws MetamacException;
-            "Find concepts schemes by criteria"
+            "Finds concepts schemes by criteria"
             MetamacCriteriaResult<@ConceptSchemeMetamacDto> findConceptSchemesByCondition(MetamacCriteria criteria) throws MetamacException;
             "Retrieves a concept scheme by URN"
             @ConceptSchemeMetamacDto retrieveConceptSchemeByUrn(String urn) throws MetamacException;
-            "Retrieve all concept scheme versions"
+            "Retrieves all concept scheme versions"
             List<@ConceptSchemeMetamacDto> retrieveConceptSchemeVersions(String urn) throws MetamacException;
 	    	"Sends concept scheme to production validation"
 	    	@ConceptSchemeMetamacDto sendConceptSchemeToProductionValidation(String urn) throws MetamacException;
-    		"Send to diffusion validation"
+    		"Sends to diffusion validation"
     		@ConceptSchemeMetamacDto sendConceptSchemeToDiffusionValidation(String urn) throws MetamacException;
 	    	"Rejects production validation of concept scheme"    		
 	    	@ConceptSchemeMetamacDto rejectConceptSchemeProductionValidation(String urn) throws MetamacException;
 	    	"Rejects diffusion validation of concept scheme"
 	    	@ConceptSchemeMetamacDto rejectConceptSchemeDiffusionValidation(String urn) throws MetamacException; 
-	    	"Publish internally a concept scheme"
+	    	"Publishes internally a concept scheme"
 	    	@ConceptSchemeMetamacDto publishInternallyConceptScheme(String urn) throws MetamacException;
-	    	"Publish externally a concept scheme"
+	    	"Publishes externally a concept scheme"
 	    	@ConceptSchemeMetamacDto publishExternallyConceptScheme(String urn) throws MetamacException;
     		"Creates a new version of a concept scheme, copying metadata from version with provided urn"
     		@ConceptSchemeMetamacDto versioningConceptScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
@@ -230,6 +230,8 @@ Application SrmCore {
     		
     		"Retrieves a concept by URN"
             @ConceptMetamacDto retrieveConceptByUrn(String urn) throws MetamacException;
+			"Deletes concept"
+            deleteConcept(String urn) throws MetamacException;            
     	}
 /*    	
     	Service ImportServiceFacade {

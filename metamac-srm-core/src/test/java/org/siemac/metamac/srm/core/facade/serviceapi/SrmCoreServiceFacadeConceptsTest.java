@@ -774,6 +774,27 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         assertNotNull(conceptSchemeMetamacDto);
         assertTrue(DateUtils.isSameDay(new Date(), conceptSchemeMetamacDto.getValidTo()));
     }
+    
+    @Test
+    public void testDeleteConcept() throws Exception {
+
+        String urn = CONCEPT_SCHEME_1_V2_CONCEPT_1;
+
+        // Delete concept
+        srmCoreServiceFacade.deleteConcept(getServiceContextAdministrador(), urn);
+
+        // Validation
+        try {
+            srmCoreServiceFacade.retrieveConceptByUrn(getServiceContextAdministrador(), urn);
+            fail("Concept deleted");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.CONCEPT_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
 
     @Override
     protected String getDataSetFile() {

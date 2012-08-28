@@ -65,9 +65,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     public ConceptSchemeVersionMetamac updateConceptScheme(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeVersion) throws MetamacException {
         // Validation
         ConceptsMetamacInvocationValidator.checkUpdateConceptScheme(conceptSchemeVersion, null);
-
-        // Schemes cannot be updated when procStatus is INTERNALLY_PUBLISHED or EXTERNALLY_PUBLISHED
-        retrieveConceptSchemeVersionCanBeModified(ctx, conceptSchemeVersion.getMaintainableArtefact().getUrn());
+        // ConceptsService checks conceptScheme isn't final (Schemes cannot be updated when procStatus is INTERNALLY_PUBLISHED or EXTERNALLY_PUBLISHED)
 
         // Save conceptScheme
         return (ConceptSchemeVersionMetamac) conceptsService.updateConceptScheme(ctx, conceptSchemeVersion);
@@ -214,7 +212,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         conceptSchemeVersion.setInternalPublicationUser(ctx.getUserId());
         conceptSchemeVersion = (ConceptSchemeVersionMetamac) itemSchemeVersionRepository.save(conceptSchemeVersion);
         conceptSchemeVersion = (ConceptSchemeVersionMetamac) conceptsService.markConceptSchemeAsFinal(ctx, urn);
-        
+
         return conceptSchemeVersion;
     }
 
@@ -258,9 +256,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
         // Validation
         ConceptsMetamacInvocationValidator.checkDeleteConceptScheme(urn, null);
-
-        // Retrieve version 'no final' to check exist and can be deleted
-        retrieveConceptSchemeVersionCanBeModified(ctx, urn);
+        // ConceptsService checks conceptScheme isn't final
 
         // Delete
         conceptsService.deleteConceptScheme(ctx, urn);
@@ -316,9 +312,10 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         // Validation
         ConceptSchemeVersionMetamac conceptSchemeVersion = null;
         if (conceptSchemeUrn != null) {
-            conceptSchemeVersion = retrieveConceptSchemeVersionCanBeModified(ctx, conceptSchemeUrn);
+            conceptSchemeVersion = retrieveConceptSchemeByUrn(ctx, conceptSchemeUrn);
         }
         ConceptsMetamacInvocationValidator.checkCreateConcept(conceptSchemeVersion, concept, null);
+        // ConceptsService checks conceptScheme isn't final
 
         // Save concept
         return (ConceptMetamac) conceptsService.createConcept(ctx, conceptSchemeUrn, concept);
@@ -334,21 +331,10 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
         // Validation
         ConceptsMetamacInvocationValidator.checkDeleteConcept(urn, null);
-
-        // Retrieve version 'no final' to check exist and can be deleted
-        retrieveConceptSchemeVersionCanBeModified(ctx, urn);
+        // ConceptsService checks conceptScheme isn't final
 
         // Delete
         conceptsService.deleteConcept(ctx, urn);
-    }
-    
-    /**
-     * Retrieves version of a concept scheme that can be modified
-     */
-    private ConceptSchemeVersionMetamac retrieveConceptSchemeVersionCanBeModified(ServiceContext ctx, String urn) throws MetamacException {
-        return retrieveConceptSchemeVersionByProcStatus(ctx, urn, ItemSchemeMetamacProcStatusEnum.DRAFT, ItemSchemeMetamacProcStatusEnum.VALIDATION_REJECTED,
-                ItemSchemeMetamacProcStatusEnum.PRODUCTION_VALIDATION, ItemSchemeMetamacProcStatusEnum.DIFFUSION_VALIDATION);
-
     }
 
     /**
