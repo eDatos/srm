@@ -16,6 +16,7 @@ import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBui
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.common.test.utils.MetamacAsserts;
@@ -170,8 +171,9 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
     @Test
     public void testUpdateConceptSchemePublished() throws Exception {
-        {
-            ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_7_V2);
+        String[] urns = {CONCEPT_SCHEME_7_V2, CONCEPT_SCHEME_7_V1};
+        for (String urn : urns) {
+            ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), urn);
 
             try {
                 conceptSchemeVersion = conceptsService.updateConceptScheme(getServiceContextAdministrador(), conceptSchemeVersion);
@@ -179,17 +181,13 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             } catch (MetamacException e) {
                 assertEquals(1, e.getExceptionItems().size());
                 assertEquals(ServiceExceptionType.CONCEPT_SCHEME_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
-            }
-        }
-        {
-            ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_7_V1);
-
-            try {
-                conceptSchemeVersion = conceptsService.updateConceptScheme(getServiceContextAdministrador(), conceptSchemeVersion);
-                fail("wrong proc status");
-            } catch (MetamacException e) {
-                assertEquals(1, e.getExceptionItems().size());
-                assertEquals(ServiceExceptionType.CONCEPT_SCHEME_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
+                assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
+                assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+                assertEquals(4, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1]).length);
+                assertEquals(ServiceExceptionParameters.PROC_STATUS_DRAFT, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
+                assertEquals(ServiceExceptionParameters.PROC_STATUS_VALIDATION_REJECTED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[1]);
+                assertEquals(ServiceExceptionParameters.PROC_STATUS_PRODUCTION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[2]);
+                assertEquals(ServiceExceptionParameters.PROC_STATUS_DIFFUSION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[3]);
             }
         }
     }
@@ -974,23 +972,6 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
     }
 
     @Test
-    public void testDeleteConceptSchemeErrorNotExists() throws Exception {
-
-        String urn = NOT_EXISTS;
-
-        // Validation
-        try {
-            conceptsService.deleteConceptScheme(getServiceContextAdministrador(), urn);
-            fail("ConceptScheme not exists");
-        } catch (MetamacException e) {
-            assertEquals(1, e.getExceptionItems().size());
-            assertEquals(ServiceExceptionType.CONCEPT_SCHEME_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
-            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-        }
-    }
-
-    @Test
     public void testDeleteConceptSchemeErrorPublished() throws Exception {
 
         String urn = CONCEPT_SCHEME_1_V1;
@@ -1004,6 +985,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertEquals(ServiceExceptionType.CONCEPT_SCHEME_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
             assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
             assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals(4, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1]).length);
             assertEquals(ServiceExceptionParameters.PROC_STATUS_DRAFT, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
             assertEquals(ServiceExceptionParameters.PROC_STATUS_VALIDATION_REJECTED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[1]);
             assertEquals(ServiceExceptionParameters.PROC_STATUS_PRODUCTION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[2]);
@@ -1226,12 +1208,104 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         ConceptMetamac concept = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), urn);
 
         // Validate
-        assertEquals("conceptScheme-1-v1-concept-2-1", concept.getUuid());
+        assertEquals("conceptScheme-1-v2-concept-2-1", concept.getUuid());
         assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2, concept.getParent().getNameableArtefact().getUrn());
         assertEquals(1, concept.getChildren().size());
         assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2_1_1, concept.getChildren().get(0).getNameableArtefact().getUrn());
         assertEquals(CONCEPT_SCHEME_1_V2, concept.getItemSchemeVersion().getMaintainableArtefact().getUrn());
         assertEquals(null, concept.getItemSchemeVersionFirstLevel());
+    }
+
+    @Ignore // TODO
+    @Test
+    public void testDeleteConcept() throws Exception {
+
+        String urn = CONCEPT_SCHEME_1_V2_CONCEPT_1;
+        String conceptSchemeUrn = CONCEPT_SCHEME_1_V2;
+
+        ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), conceptSchemeUrn);
+        assertEquals(2, conceptSchemeVersion.getItemsFirstLevel().size());
+        assertEquals(4, conceptSchemeVersion.getItems().size());
+
+        // Delete concept
+        conceptsService.deleteConcept(getServiceContextAdministrador(), urn);
+
+        // Validation
+        try {
+            conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), urn);
+            fail("Concept deleted");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.CONCEPT_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+
+        conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), conceptSchemeUrn);
+        assertEquals(1, conceptSchemeVersion.getItemsFirstLevel().size());
+        assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2, conceptSchemeVersion.getItemsFirstLevel().get(0).getNameableArtefact().getUrn());
+        assertEquals(3, conceptSchemeVersion.getItems().size());
+        assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2, conceptSchemeVersion.getItems().get(0).getNameableArtefact().getUrn());
+        assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2_1, conceptSchemeVersion.getItems().get(1).getNameableArtefact().getUrn());
+        assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2_1_1, conceptSchemeVersion.getItems().get(2).getNameableArtefact().getUrn());
+    }
+
+    @Ignore // TODO
+    @Test
+    public void testDeleteConceptWithParentAndChildren() throws Exception {
+
+        String urn = CONCEPT_SCHEME_1_V2_CONCEPT_2_1;
+        String conceptSchemeUrn = CONCEPT_SCHEME_1_V2;
+
+        ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), conceptSchemeUrn);
+        assertEquals(4, conceptSchemeVersion.getItems().size());
+        assertEquals(2, conceptSchemeVersion.getItemsFirstLevel().size());
+
+        // Delete concept
+        conceptsService.deleteConcept(getServiceContextAdministrador(), urn);
+
+        // Validation
+        try {
+            conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), urn);
+            fail("Concept deleted");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.CONCEPT_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+
+        conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), conceptSchemeUrn);
+        assertEquals(2, conceptSchemeVersion.getItems().size());
+        assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_1, conceptSchemeVersion.getItems().get(0).getNameableArtefact().getUrn());
+        assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2, conceptSchemeVersion.getItems().get(1).getNameableArtefact().getUrn());
+        assertEquals(2, conceptSchemeVersion.getItemsFirstLevel().size());
+        assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_1, conceptSchemeVersion.getItemsFirstLevel().get(0).getNameableArtefact().getUrn());
+        assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2, conceptSchemeVersion.getItemsFirstLevel().get(1).getNameableArtefact().getUrn());
+    }
+
+    @Ignore // TODO
+    @Test
+    public void testDeleteConceptErrorConceptSchemePublished() throws Exception {
+
+        String urn = CONCEPT_SCHEME_1_V1_CONCEPT_1;
+        String conceptSchemeUrn = CONCEPT_SCHEME_1_V1;
+
+        // Validation
+        try {
+            conceptsService.deleteConcept(getServiceContextAdministrador(), urn);
+            fail("Concept can not be deleted");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.CONCEPT_SCHEME_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(conceptSchemeUrn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals(4, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1]).length);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_DRAFT, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_VALIDATION_REJECTED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[1]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_PRODUCTION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[2]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_DIFFUSION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[3]);
+        }
     }
 
     @Override

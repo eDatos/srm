@@ -92,8 +92,66 @@
         LAST_UPDATED_BY="user2"
         LAST_UPDATED="2011-01-22 01:02:03"
         LAST_UPDATED_TZ="Europe/London"
-
     />
+    
+            <!-- CONCEPTS -->
+            
+            <!-- CONCEPT01 -->
+            <TB_CONCEPTS
+                TB_ITEMS="111"    
+            />
+
+            <TB_M_CONCEPTS
+              PLURAL_NAME_FK="[null]"
+              ACRONYM_FK="[null]"
+              DESCRIPTION_SOURCE_FK="[null]"
+              CONTEXT_FK="[null]"
+              DOC_METHOD_FK="[null]"
+              DERIVATION_FK="[null]"
+              LEGAL_ACTS_FK="[null]"
+              SDMX_RELATED_ARTEFACT="[null]"
+              TB_CONCEPTS="111"
+             />
+            
+            <TB_ITEMS
+                ID="111"
+                PARENT_FK="[null]"
+                ITEM_SCHEME_VERSION_FK="11"
+                ITEM_SCHEME_VERSION_FIRST_FK="11"
+                NAMEABLE_ARTEFACT_FK="99111"
+                      
+                UUID="conceptScheme-1-v1-concept-1"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"  
+            />
+        
+            <TB_ANNOTABLE_ARTEFACTS 
+                ID="99111"
+                ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+                
+                CODE="CONCEPT01"
+                URI="[null]"
+                URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME01(01.000).CONCEPT01"
+                REPLACED_BY="[null]"
+                REPLACE_TO="[null]"
+                
+                NAME_FK="[null]"
+                DESCRIPTION_FK="[null]"
+                
+                UUID="annotableArtefact-99111"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"
+            />      
     
     <!-- **************************************************************************************  -->                
     <!-- VERSION 2                                                                               -->
@@ -203,9 +261,9 @@
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="12"
                 ITEM_SCHEME_VERSION_FIRST_FK="12"
-                NAMEABLE_ARTEFACT_FK="121"
+                NAMEABLE_ARTEFACT_FK="99121"
                       
-                UUID="conceptScheme-1-v1-concept-1"
+                UUID="conceptScheme-1-v2-concept-1"
                 VERSION="1"
                 CREATED_BY="user1"
                 CREATED_DATE="2011-01-01 01:02:03"
@@ -216,7 +274,7 @@
             />
         
             <TB_ANNOTABLE_ARTEFACTS 
-                ID="121"
+                ID="99121"
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="CONCEPT01"
@@ -228,7 +286,7 @@
                 NAME_FK="12"
                 DESCRIPTION_FK="13"
                 
-                UUID="annotableArtefact-121"
+                UUID="annotableArtefact-99121"
                 VERSION="1"
                 CREATED_BY="user1"
                 CREATED_DATE="2011-01-01 01:02:03"
@@ -260,9 +318,9 @@
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="12"
                 ITEM_SCHEME_VERSION_FIRST_FK="12"
-                NAMEABLE_ARTEFACT_FK="122"
+                NAMEABLE_ARTEFACT_FK="99122"
                       
-                UUID="conceptScheme-1-v1-concept-2"
+                UUID="conceptScheme-1-v2-concept-2"
                 VERSION="1"
                 CREATED_BY="user1"
                 CREATED_DATE="2012-01-01 01:02:03"
@@ -273,7 +331,7 @@
             />
         
             <TB_ANNOTABLE_ARTEFACTS 
-                ID="122"
+                ID="99122"
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="CONCEPT02"
@@ -285,7 +343,7 @@
                 NAME_FK="14"
                 DESCRIPTION_FK="[null]"
                 
-                UUID="annotableArtefact-112"
+                UUID="annotableArtefact-99112"
                 VERSION="1"
                 CREATED_BY="user1"
                 CREATED_DATE="2012-01-01 01:02:03"
@@ -317,9 +375,9 @@
                 PARENT_FK="122"
                 ITEM_SCHEME_VERSION_FK="12"
                 ITEM_SCHEME_VERSION_FIRST_FK="[null]"
-                NAMEABLE_ARTEFACT_FK="1221"
+                NAMEABLE_ARTEFACT_FK="991221"
                       
-                UUID="conceptScheme-1-v1-concept-2-1"
+                UUID="conceptScheme-1-v2-concept-2-1"
                 VERSION="1"
                 CREATED_BY="user1"
                 CREATED_DATE="2011-01-01 01:02:03"
@@ -330,7 +388,7 @@
             />
         
             <TB_ANNOTABLE_ARTEFACTS 
-                ID="1221"
+                ID="991221"
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="CONCEPT0201"
@@ -342,7 +400,7 @@
                 NAME_FK="15"
                 DESCRIPTION_FK="[null]"
                 
-                UUID="annotableArtefact-1221"
+                UUID="annotableArtefact-991221"
                 VERSION="1"
                 CREATED_BY="user1"
                 CREATED_DATE="2012-01-01 01:02:03"
@@ -374,9 +432,9 @@
                 PARENT_FK="1221"
                 ITEM_SCHEME_VERSION_FK="12"
                 ITEM_SCHEME_VERSION_FIRST_FK="[null]"
-                NAMEABLE_ARTEFACT_FK="12211"
+                NAMEABLE_ARTEFACT_FK="9912211"
                       
-                UUID="conceptScheme-1-v1-concept-2-1-1"
+                UUID="conceptScheme-1-v2-concept-2-1-1"
                 VERSION="1"
                 CREATED_BY="user1"
                 CREATED_DATE="2011-01-01 01:02:03"
@@ -387,7 +445,7 @@
             />
         
             <TB_ANNOTABLE_ARTEFACTS 
-                ID="12211"
+                ID="9912211"
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="CONCEPT020101"
@@ -399,7 +457,7 @@
                 NAME_FK="16"
                 DESCRIPTION_FK="[null]"
                 
-                UUID="annotableArtefact-12211"
+                UUID="annotableArtefact-9912211"
                 VERSION="1"
                 CREATED_BY="user1"
                 CREATED_DATE="2011-01-01 01:02:03"
@@ -1982,7 +2040,7 @@
     
     <TB_LOCALISED_STRINGS
         ID="121"
-        LABEL="Nombre conceptScheme-1-v1-concept-1"
+        LABEL="Nombre conceptScheme-1-v2-concept-1"
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="12"
@@ -1995,7 +2053,7 @@
     
     <TB_LOCALISED_STRINGS
         ID="131"
-        LABEL="Descripción conceptScheme-1-v1-concept-1"
+        LABEL="Descripción conceptScheme-1-v2-concept-1"
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="13"
@@ -2008,7 +2066,7 @@
     
     <TB_LOCALISED_STRINGS
         ID="141"
-        LABEL="Nombre conceptScheme-1-v1-concept-2"
+        LABEL="Nombre conceptScheme-1-v2-concept-2"
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="14"

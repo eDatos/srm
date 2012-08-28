@@ -18,9 +18,9 @@ Application ConceptsMetamac {
 			
 			> @ConceptSchemeVersionMetamacRepository
 			
-			"Create concept scheme"
+			"Creates concept scheme"
 			@ConceptSchemeVersionMetamac createConceptScheme(@ConceptSchemeVersionMetamac conceptSchemeVersion) throws MetamacException;
-			"Update concept scheme"
+			"Updates concept scheme"
 			@ConceptSchemeVersionMetamac updateConceptScheme(@ConceptSchemeVersionMetamac conceptSchemeVersion) throws MetamacException;
 			"Retrieves concept scheme by urn"
 			@ConceptSchemeVersionMetamac retrieveConceptSchemeByUrn(String urn) throws MetamacException;
@@ -28,9 +28,9 @@ Application ConceptsMetamac {
 			List<@ConceptSchemeVersionMetamac> retrieveConceptSchemeVersions(String urn) throws MetamacException;
 			"Finds concept schemes by criteria"
     		PagedResult<@ConceptSchemeVersionMetamac> findConceptSchemesByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
-    		"Send concept scheme to production validation"
+    		"Sends concept scheme to production validation"
     		@ConceptSchemeVersionMetamac sendConceptSchemeToProductionValidation(String urn) throws MetamacException;
-    		"Send concept scheme to diffusion validation"
+    		"Sends concept scheme to diffusion validation"
     		@ConceptSchemeVersionMetamac sendConceptSchemeToDiffusionValidation(String urn) throws MetamacException;
 	    	"Rejects production validation of concept scheme"    		
 	    	@ConceptSchemeVersionMetamac rejectConceptSchemeProductionValidation(String urn) throws MetamacException;
@@ -40,7 +40,7 @@ Application ConceptsMetamac {
 	    	@ConceptSchemeVersionMetamac publishInternallyConceptScheme(String urn) throws MetamacException;
 	    	"Publish externally a concept scheme"
 	    	@ConceptSchemeVersionMetamac publishExternallyConceptScheme(String urn) throws MetamacException;
-			"Delete concept scheme version. This must be last version and no published"
+			"Deletes concept scheme version. This must be last version and no published"
     		deleteConceptScheme(String urn) throws MetamacException;
     		"Creates a new version of a concept scheme, copying metadata from version with provided urn"
     		@ConceptSchemeVersionMetamac versioningConceptScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
@@ -51,6 +51,8 @@ Application ConceptsMetamac {
 			@ConceptMetamac createConcept(String conceptSchemeUrn, @ConceptMetamac concept) throws MetamacException;
     		"Retrieves concept by urn"
     		@ConceptMetamac retrieveConceptByUrn(String urn) throws MetamacException;
+			"Deletes concept"
+    		deleteConcept(String urn) throws MetamacException;
 		}
 
 		// ----------------------------------------------------------------

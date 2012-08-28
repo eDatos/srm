@@ -61,8 +61,6 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         return (ConceptSchemeVersionMetamac) conceptsService.createConceptScheme(ctx, conceptSchemeVersion);
     }
 
-    // TODO RF – 29 El sistema no permitirá que se den de alta esquemas de conceptos que referencien a esquemas de conceptos existentes en otras ubicaciones. Esto implica que el metadato
-    // “isExternalReference” de SDMX siempre será cumplimentado como “false”.
     @Override
     public ConceptSchemeVersionMetamac updateConceptScheme(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeVersion) throws MetamacException {
         // Validation
@@ -261,7 +259,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         // Validation
         ConceptsMetamacInvocationValidator.checkDeleteConceptScheme(urn, null);
 
-        // Retrieve version in specific procStatus to check exist and can be deleted
+        // Retrieve version 'no final' to check exist and can be deleted
         retrieveConceptSchemeVersionCanBeModified(ctx, urn);
 
         // Delete
@@ -331,6 +329,19 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         return (ConceptMetamac) conceptsService.retrieveConceptByUrn(ctx, urn);
     }
 
+    @Override
+    public void deleteConcept(ServiceContext ctx, String urn) throws MetamacException {
+
+        // Validation
+        ConceptsMetamacInvocationValidator.checkDeleteConcept(urn, null);
+
+        // Retrieve version 'no final' to check exist and can be deleted
+        retrieveConceptSchemeVersionCanBeModified(ctx, urn);
+
+        // Delete
+        conceptsService.deleteConcept(ctx, urn);
+    }
+    
     /**
      * Retrieves version of a concept scheme that can be modified
      */
