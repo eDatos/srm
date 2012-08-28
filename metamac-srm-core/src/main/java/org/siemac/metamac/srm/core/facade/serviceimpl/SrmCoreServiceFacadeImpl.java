@@ -402,6 +402,10 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
      * CONCEPTS
      *************************************************************************/
 
+    // ------------------------------------------------------------------------
+    // CONCEPT SCHEMES
+    // ------------------------------------------------------------------------
+
     // TODO REMOVE when DSDs were related to ConceptDtos (not to ExternalItemDtos)
     @Override
     public List<ExternalItemDto> findConceptSchemeRefs(ServiceContext ctx) {
@@ -607,6 +611,26 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         return conceptSchemeDto;
     }
 
+    // ------------------------------------------------------------------------
+    // CONCEPTS
+    // ------------------------------------------------------------------------
+
+    @Override
+    public ConceptMetamacDto createConcept(ServiceContext ctx, ConceptMetamacDto conceptMetamacDto) throws MetamacException {
+        // TODO Security
+
+        // Transform
+        ConceptMetamac conceptMetamac = dto2DoMapper.conceptDtoToDo(ctx, conceptMetamacDto);
+
+        // Create
+        ConceptMetamac conceMetamacCreated = getConceptsMetamacService().createConcept(ctx, conceptMetamacDto.getItemParentUrn(), conceptMetamac);
+
+        // Transform to DTO
+        conceptMetamacDto = do2DtoMapper.conceptMetamacDoToDto(conceMetamacCreated);
+
+        return conceptMetamacDto;
+    }
+
     @Override
     public ConceptMetamacDto retrieveConceptByUrn(ServiceContext ctx, String urn) throws MetamacException {
         // TODO Security
@@ -630,7 +654,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public List<ItemHierarchyDto> retrieveConceptsByConceptSchemeUrn(ServiceContext ctx, String conceptSchemeUrn) throws MetamacException {
         // TODO Security
-        
+
         // Retrieve
         List<ConceptMetamac> concepts = getConceptsMetamacService().retrieveConceptsByConceptSchemeUrn(ctx, conceptSchemeUrn);
 
