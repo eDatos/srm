@@ -49,7 +49,7 @@
     <TB_STRUCTURES_VERSIONS
         ID="41"
         STRUCTURE_FK="1"
-        MAINTANABLE_ARTIFACT_FK="41"
+        MAINTANABLE_ARTEFACT_FK="41"
         
         UUID="structure-1-v1"
         VERSION="1"
@@ -126,7 +126,7 @@
     <TB_STRUCTURES_VERSIONS
         ID="51"
         STRUCTURE_FK="1"
-        MAINTANABLE_ARTIFACT_FK="51"
+        MAINTANABLE_ARTEFACT_FK="51"
         
         UUID="structure-2-v1"
         VERSION="1"
