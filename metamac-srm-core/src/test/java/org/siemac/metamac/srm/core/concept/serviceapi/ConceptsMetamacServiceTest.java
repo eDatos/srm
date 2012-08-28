@@ -39,6 +39,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.arte.statistic.sdmx.srm.core.concept.domain.Concept;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptSchemeVersion;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
 
@@ -1287,6 +1288,38 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertEquals(ServiceExceptionType.CONCEPT_SCHEME_UNMODIFIABLE.getCode(), e.getExceptionItems().get(0).getCode());
             assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
             assertEquals(conceptSchemeUrn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+    
+    @Test
+    public void testRetrieveConceptsByConceptSchemeUrn() throws Exception {
+
+        // Retrieve
+        String conceptSchemeUrn = CONCEPT_SCHEME_1_V2;
+        List<ConceptMetamac> concepts = conceptsService.retrieveConceptsByConceptSchemeUrn(getServiceContextAdministrador(), conceptSchemeUrn);
+
+        // Validate
+        assertEquals(2, concepts.size());
+
+        {
+            ConceptMetamac concept = concepts.get(0);
+            assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_1, concept.getNameableArtefact().getUrn());
+            assertEquals(0, concept.getChildren().size());
+        }
+        {
+            ConceptMetamac concept = concepts.get(1);
+            assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2, concept.getNameableArtefact().getUrn());
+            assertEquals(1, concept.getChildren().size());
+            {
+                ConceptMetamac conceptChild = (ConceptMetamac) concept.getChildren().get(0);
+                assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2_1, conceptChild.getNameableArtefact().getUrn());
+                assertEquals(1, conceptChild.getChildren().size());
+                {
+                    ConceptMetamac conceptChildChild = (ConceptMetamac) conceptChild.getChildren().get(0);
+                    assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2_1_1, conceptChildChild.getNameableArtefact().getUrn());
+                    assertEquals(0, conceptChildChild.getChildren().size());
+                }
+            }
         }
     }
 

@@ -13,11 +13,13 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Component;
 import com.arte.statistic.sdmx.srm.core.base.domain.ComponentList;
+import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DataStructureDefinitionVersion;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentListDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionExtendDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeDozerCopyMode;
 
 @org.springframework.stereotype.Component("do2DtoMapper")
@@ -112,6 +114,32 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
             conceptMetamacDtos.add(conceptMetamacDoToDto(conceptMetamac));
         }
         return conceptMetamacDtos;
+    }
+
+    @Override
+    public List<ItemHierarchyDto> conceptMetamacDoListToItemHierarchyDtoList(List<ConceptMetamac> conceptMetamacs) {
+        List<ItemHierarchyDto> itemHierarchyDtos = new ArrayList<ItemHierarchyDto>();
+        for (ConceptMetamac conceptMetamac : conceptMetamacs) {
+            ItemHierarchyDto itemHierarchyDto = conceptMetamacDoToItemHierarchyDto(conceptMetamac);
+            itemHierarchyDtos.add(itemHierarchyDto);
+        }
+        return itemHierarchyDtos;
+    }
+
+    private ItemHierarchyDto conceptMetamacDoToItemHierarchyDto(ConceptMetamac conceptMetamac) {
+        ItemHierarchyDto itemHierarchyDto = new ItemHierarchyDto();
+        
+        // Concept
+        ConceptMetamacDto conceptMetamacDto = conceptMetamacDoToDto(conceptMetamac);
+        itemHierarchyDto.setItem(conceptMetamacDto);
+
+        // Children
+        for (Item item : conceptMetamac.getChildren()) {
+            ItemHierarchyDto itemHierarchyChildrenDto = conceptMetamacDoToItemHierarchyDto((ConceptMetamac)item);
+            itemHierarchyDto.addChildren(itemHierarchyChildrenDto);
+        }
+        
+        return itemHierarchyDto;
     }
 
 }

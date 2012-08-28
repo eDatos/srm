@@ -231,7 +231,10 @@ Application SrmCore {
     		"Retrieves a concept by URN"
             @ConceptMetamacDto retrieveConceptByUrn(String urn) throws MetamacException;
 			"Deletes concept"
-            deleteConcept(String urn) throws MetamacException;            
+            deleteConcept(String urn) throws MetamacException;
+    		"Retrieves concepts by concept scheme, in tree structure"
+    		List<@ItemHierarchyDto> retrieveConceptsByConceptSchemeUrn(String conceptSchemeUrn) throws MetamacException;
+                        
     	}
 /*    	
     	Service ImportServiceFacade {

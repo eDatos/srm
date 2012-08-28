@@ -53,6 +53,8 @@ Application ConceptsMetamac {
     		@ConceptMetamac retrieveConceptByUrn(String urn) throws MetamacException;
 			"Deletes concept"
     		deleteConcept(String urn) throws MetamacException;
+    		"Retrieves concepts by concept scheme, in tree structure"
+    		List<@ConceptMetamac> retrieveConceptsByConceptSchemeUrn(String conceptSchemeUrn) throws MetamacException;
 		}
 
 		// ----------------------------------------------------------------

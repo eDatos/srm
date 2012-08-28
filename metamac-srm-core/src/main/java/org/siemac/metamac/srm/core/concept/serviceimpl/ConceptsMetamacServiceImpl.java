@@ -26,8 +26,10 @@ import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemScheme;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
+import com.arte.statistic.sdmx.srm.core.concept.domain.Concept;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.concept.serviceapi.ConceptsService;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
@@ -254,11 +256,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     @Override
     public void deleteConceptScheme(ServiceContext ctx, String urn) throws MetamacException {
 
-        // Validation
-        ConceptsMetamacInvocationValidator.checkDeleteConceptScheme(urn, null);
-        // ConceptsService checks conceptScheme isn't final
-
-        // Delete
+        // Note: ConceptsService checks conceptScheme isn't final
         conceptsService.deleteConceptScheme(ctx, urn);
     }
 
@@ -329,12 +327,27 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     @Override
     public void deleteConcept(ServiceContext ctx, String urn) throws MetamacException {
 
-        // Validation
-        ConceptsMetamacInvocationValidator.checkDeleteConcept(urn, null);
-        // ConceptsService checks conceptScheme isn't final
-
-        // Delete
+        // Note: ConceptsService checks conceptScheme isn't final
         conceptsService.deleteConcept(ctx, urn);
+    }
+
+    @Override
+    public List<ConceptMetamac> retrieveConceptsByConceptSchemeUrn(ServiceContext ctx, String conceptSchemeUrn) throws MetamacException {
+
+        // Retrieve
+        List<Concept> concepts = conceptsService.retrieveConceptsByConceptSchemeUrn(ctx, conceptSchemeUrn);
+        
+        // Typecast
+        List<ConceptMetamac> conceptsMetamac = conceptsToConceptMetamac(concepts);
+        return conceptsMetamac;
+    }
+
+    private List<ConceptMetamac> conceptsToConceptMetamac(List<Concept> items) {
+        List<ConceptMetamac> concepts = new ArrayList<ConceptMetamac>();
+        for (Item item : items) {
+            concepts.add((ConceptMetamac) item);
+        }
+        return concepts;
     }
 
     /**

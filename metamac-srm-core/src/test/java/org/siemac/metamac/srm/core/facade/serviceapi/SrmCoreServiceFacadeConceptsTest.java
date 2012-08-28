@@ -30,6 +30,7 @@ import org.siemac.metamac.core.common.util.GeneratorUrnUtils;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
+import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.core.concept.serviceapi.utils.ConceptsMetamacAsserts;
@@ -42,6 +43,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -795,6 +797,41 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         }
     }
 
+    @Test
+    public void testRetrieveConceptsByConceptSchemeUrn() throws Exception {
+
+        // Retrieve
+        String conceptSchemeUrn = CONCEPT_SCHEME_1_V2;
+        List<ItemHierarchyDto> concepts = srmCoreServiceFacade.retrieveConceptsByConceptSchemeUrn(getServiceContextAdministrador(), conceptSchemeUrn);
+
+        // Validate
+        assertEquals(2, concepts.size());
+
+        {
+            ItemHierarchyDto concept = concepts.get(0);
+            assertTrue(concept.getItem() instanceof ConceptMetamacDto);
+            assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_1, concept.getItem().getUrn());
+            assertEquals(0, concept.getChildren().size());
+        }
+        {
+            ItemHierarchyDto concept = concepts.get(1);
+            assertTrue(concept.getItem() instanceof ConceptMetamacDto);
+            assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2, concept.getItem().getUrn());
+            assertEquals(1, concept.getChildren().size());
+            {
+                ItemHierarchyDto conceptChild = concept.getChildren().get(0);
+                assertTrue(conceptChild.getItem() instanceof ConceptMetamacDto);
+                assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2_1, conceptChild.getItem().getUrn());
+                assertEquals(1, conceptChild.getChildren().size());
+                {
+                    ItemHierarchyDto conceptChildChild = conceptChild.getChildren().get(0);
+                    assertTrue(conceptChildChild.getItem() instanceof ConceptMetamacDto);
+                    assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2_1_1, conceptChildChild.getItem().getUrn());
+                    assertEquals(0, conceptChildChild.getChildren().size());
+                }
+            }
+        }
+    }
 
     @Override
     protected String getDataSetFile() {
