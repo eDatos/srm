@@ -228,6 +228,8 @@ Application SrmCore {
     		"Cancels the concept scheme validity"
     		@ConceptSchemeMetamacDto cancelConceptSchemeValidity(String urn) throws MetamacException;
     		
+    		"Creates concept"
+	   		@ConceptMetamacDto createConcept(@ConceptMetamacDto conceptMetamacDto) throws MetamacException;
     		"Retrieves a concept by URN"
             @ConceptMetamacDto retrieveConceptByUrn(String urn) throws MetamacException;
 			"Deletes concept"
