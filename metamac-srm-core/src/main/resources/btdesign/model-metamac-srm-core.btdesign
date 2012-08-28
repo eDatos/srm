@@ -207,7 +207,7 @@ Application SrmCore {
             deleteConceptScheme(String urn) throws MetamacException;
             "Find concepts schemes by criteria"
             MetamacCriteriaResult<@ConceptSchemeMetamacDto> findConceptSchemesByCondition(MetamacCriteria criteria) throws MetamacException;
-            "Retrieve concept scheme by urn"
+            "Retrieves a concept scheme by URN"
             @ConceptSchemeMetamacDto retrieveConceptSchemeByUrn(String urn) throws MetamacException;
             "Retrieve all concept scheme versions"
             List<@ConceptSchemeMetamacDto> retrieveConceptSchemeVersions(String urn) throws MetamacException;
@@ -227,6 +227,9 @@ Application SrmCore {
     		@ConceptSchemeMetamacDto versioningConceptScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
     		"Cancels the concept scheme validity"
     		@ConceptSchemeMetamacDto cancelConceptSchemeValidity(String urn) throws MetamacException;
+    		
+    		"Retrieves a concept by URN"
+            @ConceptMetamacDto retrieveConceptByUrn(String urn) throws MetamacException;
     	}
 /*    	
     	Service ImportServiceFacade {

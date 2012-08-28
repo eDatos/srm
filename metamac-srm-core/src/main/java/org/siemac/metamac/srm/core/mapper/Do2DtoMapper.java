@@ -2,7 +2,9 @@ package org.siemac.metamac.srm.core.mapper;
 
 import java.util.List;
 
+import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
+import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Component;
@@ -26,5 +28,8 @@ public interface Do2DtoMapper {
 
     public ConceptSchemeMetamacDto conceptSchemeMetamacDoToDto(ConceptSchemeVersionMetamac conceptSchemeVersion);
     public List<ConceptSchemeMetamacDto> conceptSchemeMetamacDoListToDtoList(List<ConceptSchemeVersionMetamac> conceptSchemeVersions);
+
+    public ConceptMetamacDto conceptMetamacDoToDto(ConceptMetamac conceptMetamac);
+    public List<ConceptMetamacDto> conceptMetamacDoListToDtoList(List<ConceptMetamac> conceptMetamacs);
 
 }

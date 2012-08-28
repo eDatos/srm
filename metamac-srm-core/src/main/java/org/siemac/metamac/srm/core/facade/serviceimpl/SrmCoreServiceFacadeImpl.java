@@ -31,7 +31,9 @@ import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.core.common.ws.ServicesResolver;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
+import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
+import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.mapper.Do2DtoMapper;
 import org.siemac.metamac.srm.core.mapper.Dto2DoMapper;
@@ -602,6 +604,18 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         ConceptSchemeMetamacDto conceptSchemeDto = do2DtoMapper.conceptSchemeMetamacDoToDto(conceptSchemeVersionMetamac);
 
         return conceptSchemeDto;
+    }
+
+    @Override
+    public ConceptMetamacDto retrieveConceptByUrn(ServiceContext ctx, String urn) throws MetamacException {
+        // TODO Security
+
+        ConceptMetamac conceptMetamac = getConceptsMetamacService().retrieveConceptByUrn(ctx, urn);
+
+        // Transform
+        ConceptMetamacDto conceptMetamacDto = do2DtoMapper.conceptMetamacDoToDto(conceptMetamac);
+
+        return conceptMetamacDto;
     }
 
     /**************************************************************************

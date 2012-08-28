@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.siemac.metamac.core.common.util.CoreCommonUtil;
+import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
+import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -82,6 +84,34 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
             conceptSchemeMetamacDtos.add(conceptSchemeMetamacDoToDto(conceptSchemeVersion));
         }
         return conceptSchemeMetamacDtos;
+    }
+
+    @Override
+    public ConceptMetamacDto conceptMetamacDoToDto(ConceptMetamac source) {
+        if (source == null) {
+            return null;
+        }
+        ConceptMetamacDto target = new ConceptMetamacDto();
+
+        target.setPluralName(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.UPDATE, source.getPluralName()));
+        target.setAcronym(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.UPDATE, source.getAcronym()));
+        target.setDescriptionSource(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.UPDATE, source.getDescriptionSource()));
+        target.setContext(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.UPDATE, source.getContext()));
+        target.setDocMethod(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.UPDATE, source.getDocMethod()));
+        target.setDerivation(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.UPDATE, source.getDerivation()));
+        target.setLegalActs(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.UPDATE, source.getLegalActs()));
+
+        do2DtoMapperSdmxSrm.conceptDoToDto(source, target);
+        return target;
+    }
+
+    @Override
+    public List<ConceptMetamacDto> conceptMetamacDoListToDtoList(List<ConceptMetamac> conceptMetamacs) {
+        List<ConceptMetamacDto> conceptMetamacDtos = new ArrayList<ConceptMetamacDto>();
+        for (ConceptMetamac conceptMetamac : conceptMetamacs) {
+            conceptMetamacDtos.add(conceptMetamacDoToDto(conceptMetamac));
+        }
+        return conceptMetamacDtos;
     }
 
 }

@@ -46,7 +46,6 @@ Application DtosMetamacConceptDomain {
 		DataTransferObject ConceptMetamacDto extends @ConceptDto {
 			- @InternationalStringDto pluralName nullable;
 			- @InternationalStringDto acronym nullable;
-			- @InternationalStringDto description nullable;
 			- @InternationalStringDto descriptionSource nullable;
 			- @InternationalStringDto context nullable;
 			- @InternationalStringDto docMethod nullable;
