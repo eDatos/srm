@@ -759,7 +759,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
             assertEquals(null, conceptSchemeDtoNewVersion.getReplacedBy());
             ConceptsMetamacAsserts.assertEqualsConceptSchemeMetamacDto(conceptSchemeDtoToCopy, conceptSchemeDtoNewVersion);
 
-            // Version copied
+            // Copied version
             conceptSchemeDtoToCopy = srmCoreServiceFacade.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), urn);
             assertEquals("01.000", conceptSchemeDtoToCopy.getVersionLogic());
             assertEquals(urn, conceptSchemeDtoToCopy.getUrn());

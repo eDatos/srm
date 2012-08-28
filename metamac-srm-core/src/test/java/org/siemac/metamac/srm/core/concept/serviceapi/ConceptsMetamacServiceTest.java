@@ -39,7 +39,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.arte.statistic.sdmx.srm.core.concept.domain.Concept;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptSchemeVersion;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
 
@@ -990,39 +989,105 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         String urn = CONCEPT_SCHEME_3_V1;
         String versionExpected = "02.000";
         String urnExpected = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:CONCEPTSCHEME03(02.000)";
+        String urnExpectedConcept1 = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME03(02.000).CONCEPT01";
+        String urnExpectedConcept2 = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME03(02.000).CONCEPT02";
+        String urnExpectedConcept21 = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME03(02.000).CONCEPT0201";
+        String urnExpectedConcept211 = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME03(02.000).CONCEPT020101";
+        String urnExpectedConcept22 = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME03(02.000).CONCEPT0202";
 
         ConceptSchemeVersionMetamac conceptSchemeVersionToCopy = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), urn);
         ConceptSchemeVersionMetamac conceptSchemeVersionNewVersion = conceptsService.versioningConceptScheme(getServiceContextAdministrador(), urn, VersionTypeEnum.MAJOR);
 
         // Validate response
         {
+            assertEquals(ItemSchemeMetamacProcStatusEnum.DRAFT, conceptSchemeVersionNewVersion.getProcStatus());
             assertEquals(versionExpected, conceptSchemeVersionNewVersion.getMaintainableArtefact().getVersionLogic());
             assertEquals(urnExpected, conceptSchemeVersionNewVersion.getMaintainableArtefact().getUrn());
-            assertEquals(ItemSchemeMetamacProcStatusEnum.DRAFT, conceptSchemeVersionNewVersion.getProcStatus());
             ConceptsMetamacAsserts.assertEqualsConceptScheme(conceptSchemeVersionToCopy, conceptSchemeVersionNewVersion);
         }
 
         // Validate retrieving
+        // New version
         {
-            // New version
             conceptSchemeVersionNewVersion = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), conceptSchemeVersionNewVersion.getMaintainableArtefact().getUrn());
+            assertEquals(ItemSchemeMetamacProcStatusEnum.DRAFT, conceptSchemeVersionNewVersion.getProcStatus());
             assertEquals(versionExpected, conceptSchemeVersionNewVersion.getMaintainableArtefact().getVersionLogic());
             assertEquals(urnExpected, conceptSchemeVersionNewVersion.getMaintainableArtefact().getUrn());
-            assertEquals(ItemSchemeMetamacProcStatusEnum.DRAFT, conceptSchemeVersionNewVersion.getProcStatus());
             assertEquals("01.000", conceptSchemeVersionNewVersion.getMaintainableArtefact().getReplaceTo());
             assertEquals(null, conceptSchemeVersionNewVersion.getMaintainableArtefact().getReplacedBy());
             assertTrue(conceptSchemeVersionNewVersion.getMaintainableArtefact().getIsLastVersion());
             ConceptsMetamacAsserts.assertEqualsConceptScheme(conceptSchemeVersionToCopy, conceptSchemeVersionNewVersion);
 
-            // Version copied
+            // Concepts
+            assertEquals(5, conceptSchemeVersionNewVersion.getItems().size());
+            assertEquals(urnExpectedConcept1, conceptSchemeVersionNewVersion.getItems().get(0).getNameableArtefact().getUrn());
+            assertEquals(urnExpectedConcept2, conceptSchemeVersionNewVersion.getItems().get(1).getNameableArtefact().getUrn());
+            assertEquals(urnExpectedConcept21, conceptSchemeVersionNewVersion.getItems().get(2).getNameableArtefact().getUrn());
+            assertEquals(urnExpectedConcept211, conceptSchemeVersionNewVersion.getItems().get(3).getNameableArtefact().getUrn());
+            assertEquals(urnExpectedConcept22, conceptSchemeVersionNewVersion.getItems().get(4).getNameableArtefact().getUrn());
+
+            assertEquals(2, conceptSchemeVersionNewVersion.getItemsFirstLevel().size());
+            {
+                ConceptMetamac concept = (ConceptMetamac) conceptSchemeVersionNewVersion.getItemsFirstLevel().get(0);
+                assertEquals(urnExpectedConcept1, concept.getNameableArtefact().getUrn());
+                
+                ConceptsMetamacAsserts.assertEqualsInternationalString(concept.getNameableArtefact().getName(), "es", "Nombre conceptScheme-3-v1-concept-1", null, null);
+                ConceptsMetamacAsserts.assertEqualsInternationalString(concept.getPluralName(), "es", "PluralName conceptScheme-3-v1-concept-1", null, null);
+                ConceptsMetamacAsserts.assertEqualsInternationalString(concept.getAcronym(), "es", "Acronym conceptScheme-3-v1-concept-1", null, null);
+                ConceptsMetamacAsserts.assertEqualsInternationalString(concept.getDescriptionSource(), "es", "DescriptionSource conceptScheme-3-v1-concept-1", null, null);
+                ConceptsMetamacAsserts.assertEqualsInternationalString(concept.getContext(), "es", "Context conceptScheme-3-v1-concept-1", null, null);
+                ConceptsMetamacAsserts.assertEqualsInternationalString(concept.getDocMethod(), "es", "DocMethod conceptScheme-3-v1-concept-1", null, null);
+                ConceptsMetamacAsserts.assertEqualsInternationalString(concept.getDerivation(), "es", "Derivation conceptScheme-3-v1-concept-1", null, null);
+                ConceptsMetamacAsserts.assertEqualsInternationalString(concept.getLegalActs(), "es", "LegalActs conceptScheme-3-v1-concept-1", null, null);
+                assertEquals(ConceptRoleEnum.ATTRIBUTE, concept.getSdmxRelatedArtefact());
+                // TODO type
+                
+                assertEquals(0, concept.getChildren().size());
+            }
+            {
+                ConceptMetamac concept = (ConceptMetamac) conceptSchemeVersionNewVersion.getItemsFirstLevel().get(1);
+                assertEquals(urnExpectedConcept2, concept.getNameableArtefact().getUrn());
+
+                ConceptsMetamacAsserts.assertEqualsInternationalString(concept.getNameableArtefact().getName(), "es", "Nombre conceptScheme-3-v1-concept-2", null, null);
+                ConceptsMetamacAsserts.assertEqualsInternationalString(concept.getPluralName(), "es", "PluralName conceptScheme-3-v1-concept-2", null, null);
+                assertNull(concept.getAcronym());
+                assertNull(concept.getDescriptionSource());
+                assertNull(concept.getContext());
+                assertNull(concept.getDocMethod());
+                assertNull(concept.getDerivation());
+                assertNull(concept.getLegalActs());
+                assertNull(concept.getSdmxRelatedArtefact());
+
+                assertEquals(2, concept.getChildren().size());
+                {
+                    ConceptMetamac conceptChild = (ConceptMetamac) concept.getChildren().get(0);
+                    assertEquals(urnExpectedConcept21, conceptChild.getNameableArtefact().getUrn());
+                    assertEquals(1, conceptChild.getChildren().size());
+                    {
+                        ConceptMetamac conceptChildChild = (ConceptMetamac) conceptChild.getChildren().get(0);
+                        assertEquals(urnExpectedConcept211, conceptChildChild.getNameableArtefact().getUrn());
+                        assertEquals(0, conceptChildChild.getChildren().size());
+                    }
+                }
+                {
+                    ConceptMetamac conceptChild = (ConceptMetamac) concept.getChildren().get(1);
+                    assertEquals(urnExpectedConcept22, conceptChild.getNameableArtefact().getUrn());
+                    assertEquals(0, conceptChild.getChildren().size());
+                }
+            }
+        }
+
+        // Copied version
+        {
             conceptSchemeVersionToCopy = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), urn);
             assertEquals("01.000", conceptSchemeVersionToCopy.getMaintainableArtefact().getVersionLogic());
             assertEquals(urn, conceptSchemeVersionToCopy.getMaintainableArtefact().getUrn());
             assertEquals(null, conceptSchemeVersionToCopy.getMaintainableArtefact().getReplaceTo());
             assertEquals(versionExpected, conceptSchemeVersionToCopy.getMaintainableArtefact().getReplacedBy());
             assertFalse(conceptSchemeVersionToCopy.getMaintainableArtefact().getIsLastVersion());
-
-            // All versions
+        }
+        // All versions
+        {
             List<ConceptSchemeVersionMetamac> allVersions = conceptsService.retrieveConceptSchemeVersions(getServiceContextAdministrador(), urn);
             assertEquals(2, allVersions.size());
             assertEquals(urn, allVersions.get(0).getMaintainableArtefact().getUrn());

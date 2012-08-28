@@ -260,6 +260,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         conceptsService.deleteConceptScheme(ctx, urn);
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public ConceptSchemeVersionMetamac versioningConceptScheme(ServiceContext ctx, String urn, VersionTypeEnum versionType) throws MetamacException {
 
@@ -279,12 +280,13 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
                     .withMessageParameters(versionsNotPublished.get(0).getMaintainableArtefact().getUrn()).build();
         }
 
-        // Versioning
-        ConceptSchemeVersionMetamac conceptSchemeNewVersion = new ConceptSchemeVersionMetamac();
+        // Copy values
+        ConceptSchemeVersionMetamac conceptSchemeNewVersion = DoCopyUtils.copyConceptSchemeVersionMetamac(conceptSchemeVersionToCopy);
         conceptSchemeNewVersion.setProcStatus(ItemSchemeMetamacProcStatusEnum.DRAFT);
-        DoCopyUtils.copy(conceptSchemeVersionToCopy, conceptSchemeNewVersion);
-
-        return (ConceptSchemeVersionMetamac) conceptsService.versioningConceptScheme(ctx, conceptSchemeVersionToCopy.getItemScheme(), conceptSchemeNewVersion, versionType);
+        List concepts = DoCopyUtils.copyConceptsMetamac(conceptSchemeVersionToCopy);
+        
+        // Versioning
+        return (ConceptSchemeVersionMetamac) conceptsService.versioningConceptScheme(ctx, conceptSchemeVersionToCopy.getItemScheme(), conceptSchemeNewVersion, concepts, versionType);
     }
 
     @Override
