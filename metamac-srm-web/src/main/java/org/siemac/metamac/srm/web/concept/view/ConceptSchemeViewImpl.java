@@ -420,10 +420,8 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
                 // CODE cannot be modified if status is INTERNALLY_PUBLISHED, EXTERNALLY_PUBLISHED or EXTERNAL_PUBLICATION_FAILED or if version is greater then VERSION_INITIAL_VERSION (01.000)
-                if ((ItemSchemeMetamacProcStatusEnum.INTERNALLY_PUBLISHED.equals(conceptSchemeDto.getProcStatus())
-                        || ItemSchemeMetamacProcStatusEnum.EXTERNALLY_PUBLISHED.equals(conceptSchemeDto.getProcStatus()) || ItemSchemeMetamacProcStatusEnum.EXTERNAL_PUBLICATION_FAILED
-                        .equals(conceptSchemeDto.getProcStatus()))
-                        || (!VersionUtil.VERSION_INITIAL_VERSION.equals(conceptSchemeDto.getVersionLogic()) && !StringUtils.isBlank(conceptSchemeDto.getVersionLogic()))) {
+                if ((ItemSchemeMetamacProcStatusEnum.INTERNALLY_PUBLISHED.equals(conceptSchemeDto.getProcStatus()) || ItemSchemeMetamacProcStatusEnum.EXTERNALLY_PUBLISHED.equals(conceptSchemeDto
+                        .getProcStatus())) || (!VersionUtil.VERSION_INITIAL_VERSION.equals(conceptSchemeDto.getVersionLogic()) && !StringUtils.isBlank(conceptSchemeDto.getVersionLogic()))) {
                     return false;
                 } else {
                     return true;

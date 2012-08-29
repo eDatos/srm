@@ -15,14 +15,14 @@ import com.smartgwt.client.widgets.events.HasClickHandlers;
 
 public class ConceptSchemeMainFormLayout extends InternationalMainFormLayout {
 
-    private MainFormLayoutButton               productionValidation;
-    private MainFormLayoutButton               diffusionValidation;
-    private MainFormLayoutButton               rejectValidation;
-    private MainFormLayoutButton               publishInternally;
-    private MainFormLayoutButton               publishExternally;
-    private MainFormLayoutButton               versioning;
-    private MainFormLayoutButton               cancelValidity;
-    private AnnounceToolStripButton            announce;
+    private MainFormLayoutButton            productionValidation;
+    private MainFormLayoutButton            diffusionValidation;
+    private MainFormLayoutButton            rejectValidation;
+    private MainFormLayoutButton            publishInternally;
+    private MainFormLayoutButton            publishExternally;
+    private MainFormLayoutButton            versioning;
+    private MainFormLayoutButton            cancelValidity;
+    private AnnounceToolStripButton         announce;
 
     private ItemSchemeMetamacProcStatusEnum status;
 
@@ -84,8 +84,6 @@ public class ConceptSchemeMainFormLayout extends InternationalMainFormLayout {
         } else if (ItemSchemeMetamacProcStatusEnum.EXTERNALLY_PUBLISHED.equals(status)) {
             showVersioningButton();
             showCancelValidityButton();
-        } else if (ItemSchemeMetamacProcStatusEnum.EXTERNAL_PUBLICATION_FAILED.equals(status)) {
-            showPublishExternallyButton();
         }
     }
 
