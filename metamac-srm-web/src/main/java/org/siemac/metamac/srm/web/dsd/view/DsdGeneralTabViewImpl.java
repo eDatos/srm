@@ -103,8 +103,8 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         staticUriItem = new ViewTextItem("uri-dsd-view", MetamacSrmWeb.getConstants().dsdUri());
         staticUrnItem = new ViewTextItem("urn-dsd-view", MetamacSrmWeb.getConstants().dsdUrn());
         staticFinalItem = new ViewTextItem("final-dsd-view", MetamacSrmWeb.getConstants().dsdFinalStructure());
-        staticStartDateItem = new ViewTextItem("start-date-dsd-view", MetamacSrmWeb.getConstants().dsdStartDate());
-        staticEndDateItem = new ViewTextItem("end-date-dsd-view", MetamacSrmWeb.getConstants().dsdEndDate());
+        staticStartDateItem = new ViewTextItem("start-date-dsd-view", MetamacSrmWeb.getConstants().dsdValidFrom());
+        staticEndDateItem = new ViewTextItem("end-date-dsd-view", MetamacSrmWeb.getConstants().dsdValidTo());
 
         // Identifiers Form
         GroupDynamicForm identifiersForm = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdIdentifiers());
@@ -148,8 +148,8 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         staticUriItemEdit = new ViewTextItem("uri-dsd-edit", MetamacSrmWeb.getConstants().dsdUri());
         staticUrnItemEdit = new ViewTextItem("urn-dsd-edit", MetamacSrmWeb.getConstants().dsdUrn());
         staticFinalItemEdit = new ViewTextItem("final-dsd-edit", MetamacSrmWeb.getConstants().dsdFinalStructure());
-        staticStartDateItemEdit = new ViewTextItem("start-date-dsd-edit", MetamacSrmWeb.getConstants().dsdStartDate());
-        staticEndDateItemEdit = new ViewTextItem("end-date-dsd-edit", MetamacSrmWeb.getConstants().dsdEndDate());
+        staticStartDateItemEdit = new ViewTextItem("start-date-dsd-edit", MetamacSrmWeb.getConstants().dsdValidFrom());
+        staticEndDateItemEdit = new ViewTextItem("end-date-dsd-edit", MetamacSrmWeb.getConstants().dsdValidTo());
 
         // Identifiers Form
         identifiersEditionForm = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdIdentifiers());
