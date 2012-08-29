@@ -858,23 +858,65 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         assertEqualsInternationalStringDto(conceptMetamacDto.getLegalActs(), "es", "LegalActs conceptScheme-1-v2-concept-1", null, null);
     }
 
-    // @Test
-    // public void testRetrieveConceptByUrnErrorParameterRequired() throws Exception {
-    // String urn = null;
-    // try {
-    // srmCoreServiceFacade.retrieveConceptByUrn(getServiceContextAdministrador(), urn);
-    // fail("parameter required");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.PARAMETER_REQUIRED.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(ServiceExceptionParameters.URN, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // }
-    // }
+    @Test
+    public void testRetrieveConceptByUrnErrorParameterRequired() throws Exception {
+        String urn = null;
+        try {
+            srmCoreServiceFacade.retrieveConceptByUrn(getServiceContextAdministrador(), urn);
+            fail("parameter required");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.PARAMETER_REQUIRED.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(ServiceExceptionParameters.URN, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
+    @Test
+    public void testRetrieveConceptErrorNotExists() throws Exception {
+        String urn = NOT_EXISTS;
+        try {
+            srmCoreServiceFacade.retrieveConceptByUrn(getServiceContextAdministrador(), urn);
+            fail("parameter required");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.CONCEPT_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
 
     @Test
     public void testCreateConcept() throws Exception {
         ConceptMetamacDto conceptMetamacDto = ConceptsMetamacDtoMocks.mockConceptDto();
+        conceptMetamacDto.setItemSchemeVersionUrn(CONCEPT_SCHEME_1_V2);
+
+        ConceptMetamacDto conceptMetamacDtoCreated = srmCoreServiceFacade.createConcept(getServiceContextAdministrador(), conceptMetamacDto);
+
+        assertEqualsConceptDto(conceptMetamacDtoCreated, conceptMetamacDto);
+
+        // Identifiers
+        assertNotNull(conceptMetamacDtoCreated);
+        assertNull(conceptMetamacDtoCreated.getUri());
+        assertNotNull(conceptMetamacDtoCreated.getUrn());
+
+        // Content descriptors
+
+        // Class descriptors
+        assertNotNull(conceptMetamacDtoCreated.getSdmxRelatedArtefact());
+
+        // Production descriptors
+
+        // Relation between concepts
+
+        // Legals acts
+    }
+
+    @Test
+    public void testCreateConceptWithConceptParent() throws Exception {
+        ConceptMetamacDto conceptMetamacDto = ConceptsMetamacDtoMocks.mockConceptDto();
+        conceptMetamacDto.setItemParentUrn(CONCEPT_SCHEME_1_V2_CONCEPT_1);
+        conceptMetamacDto.setItemSchemeVersionUrn(CONCEPT_SCHEME_1_V2);
 
         ConceptMetamacDto conceptMetamacDtoCreated = srmCoreServiceFacade.createConcept(getServiceContextAdministrador(), conceptMetamacDto);
 
