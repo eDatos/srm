@@ -9,7 +9,6 @@ import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder.OrderTypeEnu
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPaginator;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.srm.core.criteria.DataStructureDefinitionCriteriaOrderEnum;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdListAction;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdListResult;
@@ -19,6 +18,7 @@ import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.arte.statistic.sdmx.srm.core.criteria.DataStructureDefinitionCriteriaOrderEnum;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;
 import com.gwtplatform.dispatch.shared.ActionException;
 
