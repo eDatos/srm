@@ -33,8 +33,10 @@ import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
+import org.siemac.metamac.srm.core.concept.domain.ConceptType;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
+import org.siemac.metamac.srm.core.concept.dto.ConceptTypeDto;
 import org.siemac.metamac.srm.core.mapper.Do2DtoMapper;
 import org.siemac.metamac.srm.core.mapper.Dto2DoMapper;
 import org.siemac.metamac.srm.core.mapper.MetamacCriteria2SculptorCriteriaMapper;
@@ -662,7 +664,31 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         List<ItemHierarchyDto> itemsHierarchyDto = do2DtoMapper.conceptMetamacDoListToItemHierarchyDtoList(concepts);
         return itemsHierarchyDto;
     }
+    
+    @Override
+    public List<ConceptTypeDto> findAllConceptTypes(ServiceContext ctx) throws MetamacException {
+        // TODO Security
 
+        // Find
+        List<ConceptType> conceptTypes = getConceptsMetamacService().findAllConceptTypes(ctx);
+
+        // Transform
+        List<ConceptTypeDto> conceptTypesDto = do2DtoMapper.conceptTypeDoListToConceptTypeDtoList(conceptTypes);
+        return conceptTypesDto;
+    }
+
+    @Override
+    public ConceptTypeDto retrieveConceptTypeByIdentifier(ServiceContext ctx, String identifier) throws MetamacException {
+        // TODO Security
+
+        // Retrieve
+        ConceptType conceptType = getConceptsMetamacService().retrieveConceptTypeByIdentifier(ctx, identifier);
+
+        // Transform
+        ConceptTypeDto conceptTypeDto = do2DtoMapper.conceptTypeDoToDto(conceptType);
+        return conceptTypeDto;
+    }
+    
     /**************************************************************************
      * PRIVATE METHODS
      *************************************************************************/

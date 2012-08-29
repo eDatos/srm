@@ -10,6 +10,7 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptType;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
+import org.siemac.metamac.srm.core.concept.dto.ConceptTypeDto;
 
 import com.arte.statistic.sdmx.srm.core.concept.serviceapi.utils.ConceptsAsserts;
 
@@ -31,7 +32,7 @@ public class ConceptsMetamacAsserts extends ConceptsAsserts {
         assertEqualsConceptType(expected.getType(), actual.getType());
         assertEqualsInternationalString(expected.getDerivation(), actual.getDerivation());
         assertEqualsInternationalString(expected.getLegalActs(), actual.getLegalActs());
-
+        // TODO relatedConcepts
         ConceptsAsserts.assertEqualsConcept(expected, actual);
     }
 
@@ -48,14 +49,25 @@ public class ConceptsMetamacAsserts extends ConceptsAsserts {
         assertEqualsInternationalStringDto(expected.getContext(), actual.getContext());
         assertEqualsInternationalStringDto(expected.getDocMethod(), actual.getDocMethod());
         assertEquals(expected.getSdmxRelatedArtefact(), actual.getSdmxRelatedArtefact());
-        // TODO type
+        assertEqualsConceptType(expected.getType(), actual.getType());
         assertEqualsInternationalStringDto(expected.getDerivation(), actual.getDerivation());
         assertEqualsInternationalStringDto(expected.getLegalActs(), actual.getLegalActs());
-
+        // TODO relatedConcepts
+        
         ConceptsAsserts.assertEqualsConceptDto(expected, actual);
     }
     
     private static void assertEqualsConceptType(ConceptType expected, ConceptType actual) {
+        if (expected == null && actual == null) {
+            return;
+        } else if (expected != null && actual != null) {
+            assertEquals(expected.getIdentifier(), actual.getIdentifier());
+        } else {
+            fail("ConceptType are different");
+        }
+    }
+    
+    private static void assertEqualsConceptType(ConceptTypeDto expected, ConceptTypeDto actual) {
         if (expected == null && actual == null) {
             return;
         } else if (expected != null && actual != null) {

@@ -6,8 +6,10 @@ import java.util.List;
 import org.siemac.metamac.core.common.util.CoreCommonUtil;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
+import org.siemac.metamac.srm.core.concept.domain.ConceptType;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
+import org.siemac.metamac.srm.core.concept.dto.ConceptTypeDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
@@ -101,31 +103,52 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
         target.setContext(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.UPDATE, source.getContext()));
         target.setDocMethod(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.UPDATE, source.getDocMethod()));
         target.setSdmxRelatedArtefact(source.getSdmxRelatedArtefact());
+        target.setType(conceptTypeDoToDto(source.getType()));
         target.setDerivation(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.UPDATE, source.getDerivation()));
         target.setLegalActs(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.UPDATE, source.getLegalActs()));
-
+        // TODO relatedConcepts
         do2DtoMapperSdmxSrm.conceptDoToDto(source, target);
         return target;
     }
 
     @Override
-    public List<ConceptMetamacDto> conceptMetamacDoListToDtoList(List<ConceptMetamac> conceptMetamacs) {
-        List<ConceptMetamacDto> conceptMetamacDtos = new ArrayList<ConceptMetamacDto>();
-        for (ConceptMetamac conceptMetamac : conceptMetamacs) {
-            conceptMetamacDtos.add(conceptMetamacDoToDto(conceptMetamac));
+    public List<ConceptMetamacDto> conceptMetamacDoListToDtoList(List<ConceptMetamac> sources) {
+        List<ConceptMetamacDto> targets = new ArrayList<ConceptMetamacDto>();
+        for (ConceptMetamac source : sources) {
+            targets.add(conceptMetamacDoToDto(source));
         }
-        return conceptMetamacDtos;
+        return targets;
     }
 
     @Override
-    public List<ItemHierarchyDto> conceptMetamacDoListToItemHierarchyDtoList(List<ConceptMetamac> conceptMetamacs) {
-        List<ItemHierarchyDto> itemHierarchyDtos = new ArrayList<ItemHierarchyDto>();
-        for (ConceptMetamac conceptMetamac : conceptMetamacs) {
-            ItemHierarchyDto itemHierarchyDto = conceptMetamacDoToItemHierarchyDto(conceptMetamac);
-            itemHierarchyDtos.add(itemHierarchyDto);
+    public List<ItemHierarchyDto> conceptMetamacDoListToItemHierarchyDtoList(List<ConceptMetamac> sources) {
+        List<ItemHierarchyDto> targets = new ArrayList<ItemHierarchyDto>();
+        for (ConceptMetamac source : sources) {
+            ItemHierarchyDto target = conceptMetamacDoToItemHierarchyDto(source);
+            targets.add(target);
         }
-        return itemHierarchyDtos;
+        return targets;
     }
+    
+    @Override
+    public ConceptTypeDto conceptTypeDoToDto(ConceptType source) {
+        if (source == null) {
+            return null;
+        }
+        ConceptTypeDto target = new ConceptTypeDto();
+        target.setIdentifier(source.getIdentifier());
+        target.setDescription(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.UPDATE, source.getDescription()));
+        return target;
+    }
+    
+    @Override
+    public List<ConceptTypeDto> conceptTypeDoListToConceptTypeDtoList(List<ConceptType> sources) {
+        List<ConceptTypeDto> targets = new ArrayList<ConceptTypeDto>();
+        for (ConceptType source : sources) {
+            targets.add(conceptTypeDoToDto(source));
+        }
+        return targets;
+    }    
 
     private ItemHierarchyDto conceptMetamacDoToItemHierarchyDto(ConceptMetamac conceptMetamac) {
         ItemHierarchyDto itemHierarchyDto = new ItemHierarchyDto();

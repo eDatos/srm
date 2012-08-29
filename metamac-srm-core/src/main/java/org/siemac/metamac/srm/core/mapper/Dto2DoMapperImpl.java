@@ -25,8 +25,11 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacRepository;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacRepository;
+import org.siemac.metamac.srm.core.concept.domain.ConceptType;
+import org.siemac.metamac.srm.core.concept.domain.ConceptTypeRepository;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
+import org.siemac.metamac.srm.core.concept.dto.ConceptTypeDto;
 import org.siemac.metamac.srm.core.concept.exception.ConceptMetamacNotFoundException;
 import org.siemac.metamac.srm.core.concept.exception.ConceptSchemeVersionMetamacNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +61,9 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
 
     @Autowired
     private ConceptMetamacRepository                             conceptMetamacRepository;
+
+    @Autowired
+    private ConceptTypeRepository                                conceptTypeRepository;
 
     // ------------------------------------------------------------
     // DSDs
@@ -145,12 +151,26 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         target.setContext(internationalStringToDo(ctx, source.getContext(), target.getContext(), ServiceExceptionParameters.CONCEPT_CONTEXT));
         target.setDocMethod(internationalStringToDo(ctx, source.getDocMethod(), target.getDocMethod(), ServiceExceptionParameters.CONCEPT_DOC_METHOD));
         target.setSdmxRelatedArtefact(source.getSdmxRelatedArtefact());
+        target.setType(conceptTypeDtoToDo(source.getType()));
         target.setDerivation(internationalStringToDo(ctx, source.getDerivation(), target.getDerivation(), ServiceExceptionParameters.CONCEPT_DERIVATION));
         target.setLegalActs(internationalStringToDo(ctx, source.getLegalActs(), target.getLegalActs(), ServiceExceptionParameters.CONCEPT_LEGAL_ACTS));
+        // TODO relatedConcepts
 
         dto2DoMapperSdmxSrm.conceptDtoToDo(ctx, source, target);
 
         return target;
+    }
+
+    private ConceptType conceptTypeDtoToDo(ConceptTypeDto source) throws MetamacException {
+        if (source == null) {
+            return null;
+        }
+
+        ConceptType conceptType = conceptTypeRepository.findByIdentifier(source.getIdentifier());
+        if (conceptType == null) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CONCEPT_TYPE_NOT_FOUND).withMessageParameters(source.getIdentifier()).build();
+        }
+        return conceptType;
     }
 
     // ------------------------------------------------------------

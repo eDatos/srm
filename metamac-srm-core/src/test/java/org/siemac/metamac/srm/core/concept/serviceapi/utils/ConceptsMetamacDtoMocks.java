@@ -4,6 +4,7 @@ import org.siemac.metamac.common.test.utils.MetamacMocks;
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
+import org.siemac.metamac.srm.core.concept.dto.ConceptTypeDto;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptRoleEnum;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 
@@ -43,7 +44,13 @@ public class ConceptsMetamacDtoMocks {
         conceptMetamacDto.setCode("code-" + MetamacMocks.mockString(10));
         conceptMetamacDto.setName(MetamacMocks.mockInternationalString());
         conceptMetamacDto.setSdmxRelatedArtefact(ConceptRoleEnum.ATTRIBUTE);
+        conceptMetamacDto.setType(mockConceptTypeDto());
         return conceptMetamacDto;
     }
-
+    
+    public static ConceptTypeDto mockConceptTypeDto() {
+        ConceptTypeDto conceptTypeDto = new ConceptTypeDto();
+        conceptTypeDto.setIdentifier("DERIVED");
+        return conceptTypeDto;
+    }
 }

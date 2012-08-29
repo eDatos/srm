@@ -9,7 +9,7 @@ Application DtosMetamacConceptDomain {
 	Module domain_metamac_concept_dto {
 		basePackage=org.siemac.metamac.srm.core.concept.dto
 		
-		"Dto for ConceptSchemeMetamacDto"
+		"Dto for ConceptSchemeMetamac"
 		DataTransferObject ConceptSchemeMetamacDto extends @ConceptSchemeDto {
 			"Status"
 			- @ItemSchemeMetamacProcStatusEnum procStatus required;
@@ -42,7 +42,7 @@ Application DtosMetamacConceptDomain {
 			Long versionOptimisticLocking;
 		}
 
-		"Dto for ConceptMetamacDto"
+		"Dto for ConceptMetamac"
 		DataTransferObject ConceptMetamacDto extends @ConceptDto {
 			- @InternationalStringDto pluralName nullable;
 			- @InternationalStringDto acronym nullable;
@@ -50,7 +50,7 @@ Application DtosMetamacConceptDomain {
 			- @InternationalStringDto context nullable;
 			- @InternationalStringDto docMethod nullable;
 			- @ConceptRoleEnum sdmxRelatedArtefact nullable;
-			// TYPE
+			- @ConceptTypeDto type nullable;			
 			- @InternationalStringDto derivation nullable;
 			// RELATED_CONCEPTS
 			- @InternationalStringDto legalActs nullable;
@@ -58,5 +58,11 @@ Application DtosMetamacConceptDomain {
 			"Version to optimistic locking"
 			Long versionOptimisticLocking;
 		}
+		
+        "Dto for ConceptType"
+        DataTransferObject ConceptTypeDto extends @IdentityDto {
+            String identifier;
+            - @InternationalStringDto description nullable;
+        }
 	}
 }

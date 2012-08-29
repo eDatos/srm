@@ -33,6 +33,7 @@ import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
+import org.siemac.metamac.srm.core.concept.dto.ConceptTypeDto;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptRoleEnum;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.core.concept.serviceapi.utils.ConceptsMetamacAsserts;
@@ -854,8 +855,10 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         assertEqualsInternationalStringDto(conceptMetamacDto.getContext(), "es", "Context conceptScheme-1-v2-concept-1", null, null);
         assertEqualsInternationalStringDto(conceptMetamacDto.getDocMethod(), "es", "DocMethod conceptScheme-1-v2-concept-1", null, null);
         assertEquals(ConceptRoleEnum.ATTRIBUTE, conceptMetamacDto.getSdmxRelatedArtefact());
+        assertEquals("DIRECT", conceptMetamacDto.getType().getIdentifier());
         assertEqualsInternationalStringDto(conceptMetamacDto.getDerivation(), "es", "Derivation conceptScheme-1-v2-concept-1", null, null);
         assertEqualsInternationalStringDto(conceptMetamacDto.getLegalActs(), "es", "LegalActs conceptScheme-1-v2-concept-1", null, null);
+        // TODO relatedConcepts
     }
 
     @Test
@@ -937,6 +940,41 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         // Relation between concepts
 
         // Legals acts
+    }
+
+    @Test
+    public void testFindAllConceptTypes() throws Exception {
+
+        // Find
+        List<ConceptTypeDto> conceptTypes = srmCoreServiceFacade.findAllConceptTypes(getServiceContextAdministrador());
+
+        // Validate
+        assertEquals(2, conceptTypes.size());
+        int i = 0;
+        {
+            ConceptTypeDto conceptType = conceptTypes.get(i++);
+            assertEquals("DIRECT", conceptType.getIdentifier());
+            assertEqualsInternationalStringDto(conceptType.getDescription(), "en", "Direct", "es", "Directo");
+        }
+        {
+            ConceptTypeDto conceptType = conceptTypes.get(i++);
+            assertEquals("DERIVED", conceptType.getIdentifier());
+            assertEqualsInternationalStringDto(conceptType.getDescription(), "en", "Derived", "es", "Derivado");
+        }
+        assertEquals(conceptTypes.size(), i);
+    }
+
+    @Test
+    public void testRetrieveConceptTypeByIdentifier() throws Exception {
+
+        String identifier = "DERIVED";
+
+        // Retrieve
+        ConceptTypeDto conceptType = srmCoreServiceFacade.retrieveConceptTypeByIdentifier(getServiceContextAdministrador(), identifier);
+
+        // Validate
+        assertEquals(identifier, conceptType.getIdentifier());
+        assertEqualsInternationalStringDto(conceptType.getDescription(), "en", "Derived", "es", "Derivado");
     }
 
     @Override
