@@ -104,6 +104,7 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
         List<String> tables = new ArrayList<String>();
         tables.add("TB_M_CONCEPTS");
         tables.add("TB_M_CONCEPT_SCHEMES_VERSIONS");
+        tables.add("TB_M_LIS_CONCEPT_TYPES");
         tables.addAll(super.getTablesToRemoveContent());
         return tables;
     }
@@ -114,6 +115,7 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
         sequences.addAll(super.getSequencesToRestart());
         sequences.add("SEQ_M_CONCEPT_SCHEMES_VERSIONS");
         sequences.add("SEQ_M_CONCEPTS");
+        sequences.add("SEQ_M_CONCEPT_TYPES");
         return sequences;
     }
 

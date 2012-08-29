@@ -4,6 +4,8 @@ import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
 
 public class ServiceExceptionParameters extends com.arte.statistic.sdmx.srm.core.common.error.ServiceExceptionParameters {
 
+    public static final String IDENTIFIER                        = "identifier";
+
     // CONCEPT_SCHEME
     public static final String CONCEPT_SCHEME_CODE               = CONCEPT_SCHEME + ".code";
     public static final String CONCEPT_SCHEME_TYPE               = CONCEPT_SCHEME + ".type";

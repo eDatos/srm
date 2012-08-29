@@ -20,6 +20,7 @@ import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacProperties;
+import org.siemac.metamac.srm.core.concept.domain.ConceptType;
 import org.siemac.metamac.srm.core.concept.serviceimpl.utils.ConceptsMetamacInvocationValidator;
 import org.siemac.metamac.srm.core.concept.serviceimpl.utils.DoCopyUtils;
 import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
@@ -101,7 +102,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
         // Find
         if (conditions == null) {
-            conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).build();
+            conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).distinctRoot().build();
         }
         PagedResult<ConceptSchemeVersionMetamac> conceptSchemeVersionPagedResult = getConceptSchemeVersionMetamacRepository().findByCondition(conditions, pagingParameter);
         return conceptSchemeVersionPagedResult;
@@ -343,6 +344,30 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         List<ConceptMetamac> conceptsMetamac = conceptsToConceptMetamac(concepts);
         return conceptsMetamac;
     }
+    
+    @Override
+    public List<ConceptType> findAllConceptTypes(ServiceContext ctx) throws MetamacException {
+
+        // Validation
+        ConceptsMetamacInvocationValidator.checkFindAllConceptTypes(null);
+
+        // Find
+        return getConceptTypeRepository().findAll();
+    }
+    
+    @Override
+    public ConceptType retrieveConceptTypeByIdentifier(ServiceContext ctx, String identifier) throws MetamacException {
+
+        // Validation
+        ConceptsMetamacInvocationValidator.checkRetrieveConceptTypeByIdentifier(identifier, null);
+
+        // Retrieve
+        ConceptType conceptType = getConceptTypeRepository().findByIdentifier(identifier);
+        if (conceptType == null) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CONCEPT_TYPE_NOT_FOUND).withMessageParameters(identifier).build();   
+        }
+        return conceptType;
+    }
 
     private List<ConceptMetamac> conceptsToConceptMetamac(List<Concept> items) {
         List<ConceptMetamac> concepts = new ArrayList<ConceptMetamac>();
@@ -359,7 +384,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
         List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class)
                 .withProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact().urn()).eq(urn).withProperty(ConceptSchemeVersionMetamacProperties.procStatus()).in((Object[]) procStatus)
-                .build();
+                .distinctRoot().build();
         PagingParameter pagingParameter = PagingParameter.pageAccess(1);
         PagedResult<ConceptSchemeVersionMetamac> conceptSchemeVersionPagedResult = getConceptSchemeVersionMetamacRepository().findByCondition(conditions, pagingParameter);
 
@@ -381,7 +406,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
             throws MetamacException {
 
         List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).withProperty(ConceptSchemeVersionMetamacProperties.itemScheme().id())
-                .eq(conceptScheme.getId()).withProperty(ConceptSchemeVersionMetamacProperties.procStatus()).in((Object[]) procStatus).build();
+                .eq(conceptScheme.getId()).withProperty(ConceptSchemeVersionMetamacProperties.procStatus()).in((Object[]) procStatus).distinctRoot().build();
         PagingParameter pagingParameter = PagingParameter.noLimits();
         PagedResult<ConceptSchemeVersionMetamac> conceptSchemeVersionPagedResult = getConceptSchemeVersionMetamacRepository().findByCondition(conditions, pagingParameter);
         return conceptSchemeVersionPagedResult.getValues();

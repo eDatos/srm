@@ -61,21 +61,22 @@ public class DoCopyUtils {
 
     /**
      * Create a new {@link ConceptMetamac} copying values from a source. Do not copy children
-     * TODO copiar atributos pendientes (type, relatedConcepts)
+     * TODO copiar atributos pendientes (relatedConcepts)
      */
-    public static ConceptMetamac copyConceptMetamac(ConceptMetamac source) {
+    private static ConceptMetamac copyConceptMetamac(ConceptMetamac source) {
         ConceptMetamac target = new ConceptMetamac();
 
         // Common metadata of Concept
         com.arte.statistic.sdmx.srm.core.concept.serviceimpl.utils.DoCopyUtils.copyConcept(source, target);
 
-        // Metamac metadata // TODO testear copia
+        // Metamac metadata
         target.setPluralName(copy(source.getPluralName()));
         target.setAcronym(copy(source.getAcronym()));
         target.setDescriptionSource(copy(source.getDescriptionSource()));
         target.setContext(copy(source.getContext()));
         target.setDocMethod(copy(source.getDocMethod()));
         target.setSdmxRelatedArtefact(source.getSdmxRelatedArtefact());
+        target.setType(source.getType());
         target.setDerivation(copy(source.getDerivation()));
         target.setLegalActs(copy(source.getLegalActs()));
 

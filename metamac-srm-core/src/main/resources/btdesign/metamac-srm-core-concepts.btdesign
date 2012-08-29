@@ -17,6 +17,7 @@ Application ConceptsMetamac {
 		Service ConceptsMetamacService {
 			
 			> @ConceptSchemeVersionMetamacRepository
+			> @ConceptTypeRepository
 			
 			"Creates concept scheme"
 			@ConceptSchemeVersionMetamac createConceptScheme(@ConceptSchemeVersionMetamac conceptSchemeVersion) throws MetamacException;
@@ -55,6 +56,11 @@ Application ConceptsMetamac {
     		deleteConcept(String urn) throws MetamacException;
     		"Retrieves concepts by concept scheme, in tree structure"
     		List<@ConceptMetamac> retrieveConceptsByConceptSchemeUrn(String conceptSchemeUrn) throws MetamacException;
+    		
+    		"Finds all concept types"
+    		List<@ConceptType> findAllConceptTypes throws MetamacException;
+    		"Retrieves concept type by identifier"
+    		@ConceptType retrieveConceptTypeByIdentifier(String identifier) throws MetamacException;
 		}
 
 		// ----------------------------------------------------------------
@@ -119,6 +125,8 @@ Application ConceptsMetamac {
 			- @InternationalString docMethod nullable cascade="all" databaseColumn="DOC_METHOD_FK";
 			"Concept role"
 			- @ConceptRoleEnum sdmxRelatedArtefact nullable;
+       		"Concept type"
+       		- @ConceptType type cascade="none" nullable databaseColumn="CONCEPT_TYPE_FK";
 			"A description of the way the derived variable is computed with the use of other variables"
 			- @InternationalString derivation nullable cascade="all" databaseColumn="DERIVATION_FK";
 			"Web addresses where relevant legal acts are disseminated"
@@ -132,5 +140,26 @@ Application ConceptsMetamac {
 				findByCondition(PagingParameter pagingParameter);
 			}
 		}
+		
+		"Concept Type List"
+    	Entity ConceptType {
+    		databaseTable="TB_M_LIS_CONCEPT_TYPES"
+    		hint="idSequence=M_CONCEPT_TYPES"
+    		not auditable
+    		!optimisticLocking
+    		
+			"Added explicitly to avoid that Sculptor generate UUID"
+			Long id key;
+			"Code identifier"    		
+    		String identifier;
+    		"Description"
+    		- @InternationalString description nullable databaseColumn="DESCRIPTION_FK";
+    		
+    		Repository ConceptTypeRepository {
+    			@ConceptType findByIdentifier(String identifier);
+    			findAll;
+    			findByCondition;
+    		}
+    	}		
 	}
 }

@@ -28,6 +28,7 @@ import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacProperties;
+import org.siemac.metamac.srm.core.concept.domain.ConceptType;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptRoleEnum;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.core.concept.serviceapi.utils.ConceptsMetamacAsserts;
@@ -40,6 +41,7 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptSchemeVersion;
+import com.arte.statistic.sdmx.srm.core.concept.serviceapi.utils.ConceptsAsserts;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -450,29 +452,29 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         }
     }
 
-    // TODO testear cuando se implemente el update
-    // @Test
-    // public void testSendConceptSchemeToProductionValidationErrorMetadataRequired() throws Exception {
-    //
-    // String urn = CONCEPT_SCHEME_1_V2;
-    //
-    // // Update to clear metadata
-    // ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), urn);
-    // conceptSchemeVersion.setIsPartial(null);
-    // conceptsService.updateConceptScheme(getServiceContextAdministrador(), conceptSchemeVersion);
-    //
-    // // Send to production validation
-    // try {
-    // conceptsService.sendConceptSchemeToProductionValidation(getServiceContextAdministrador(), urn);
-    // fail("ConceptScheme metadata required");
-    // } catch (MetamacException e) {
-    // assertEquals(3, e.getExceptionItems().size());
-    //
-    // assertEquals(ServiceExceptionType.METADATA_REQUIRED.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(ServiceExceptionParameters.ITEM_SCHEME_IS_PARTIAL, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // }
-    // }
+    @Test
+    public void testSendConceptSchemeToProductionValidationErrorMetadataRequired() throws Exception {
+
+        String urn = CONCEPT_SCHEME_1_V2;
+
+        // Update to clear metadata
+        ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), urn);
+        conceptSchemeVersion.setIsPartial(null);
+        conceptSchemeVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
+        conceptsService.updateConceptScheme(getServiceContextAdministrador(), conceptSchemeVersion);
+
+        // Send to production validation
+        try {
+            conceptsService.sendConceptSchemeToProductionValidation(getServiceContextAdministrador(), urn);
+            fail("ConceptScheme metadata required");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+
+            assertEquals(ServiceExceptionType.METADATA_REQUIRED.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(ServiceExceptionParameters.ITEM_SCHEME_IS_PARTIAL, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
 
     @Test
     public void testSendConceptSchemeToDiffusionValidation() throws Exception {
@@ -1030,7 +1032,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             {
                 ConceptMetamac concept = (ConceptMetamac) conceptSchemeVersionNewVersion.getItemsFirstLevel().get(0);
                 assertEquals(urnExpectedConcept1, concept.getNameableArtefact().getUrn());
-                
+
                 ConceptsMetamacAsserts.assertEqualsInternationalString(concept.getNameableArtefact().getName(), "es", "Nombre conceptScheme-3-v1-concept-1", null, null);
                 ConceptsMetamacAsserts.assertEqualsInternationalString(concept.getPluralName(), "es", "PluralName conceptScheme-3-v1-concept-1", null, null);
                 ConceptsMetamacAsserts.assertEqualsInternationalString(concept.getAcronym(), "es", "Acronym conceptScheme-3-v1-concept-1", null, null);
@@ -1040,8 +1042,8 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
                 ConceptsMetamacAsserts.assertEqualsInternationalString(concept.getDerivation(), "es", "Derivation conceptScheme-3-v1-concept-1", null, null);
                 ConceptsMetamacAsserts.assertEqualsInternationalString(concept.getLegalActs(), "es", "LegalActs conceptScheme-3-v1-concept-1", null, null);
                 assertEquals(ConceptRoleEnum.ATTRIBUTE, concept.getSdmxRelatedArtefact());
-                // TODO type
-                
+                assertEquals("DERIVED", concept.getType().getIdentifier());
+
                 assertEquals(0, concept.getChildren().size());
             }
             {
@@ -1057,6 +1059,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
                 assertNull(concept.getDerivation());
                 assertNull(concept.getLegalActs());
                 assertNull(concept.getSdmxRelatedArtefact());
+                assertNull(concept.getType());
 
                 assertEquals(2, concept.getChildren().size());
                 {
@@ -1207,6 +1210,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
         ConceptMetamac concept = ConceptsMetamacDoMocks.mockConcept();
         concept.setParent(null);
+        concept.setType(conceptsService.retrieveConceptTypeByIdentifier(getServiceContextAdministrador(), "DIRECT"));
         String conceptSchemeUrn = CONCEPT_SCHEME_1_V2;
 
         // Create
@@ -1216,26 +1220,44 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         // Validate (only metadata in SRM Metamac; the others are checked in sdmx project)
         ConceptMetamac conceptRetrieved = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), urn);
         ConceptsMetamacAsserts.assertEqualsConcept(concept, conceptRetrieved);
+
+        // Validate new structure
+        ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), conceptSchemeUrn);
+        assertEquals(3, conceptSchemeVersion.getItemsFirstLevel().size());
+        assertEquals(5, conceptSchemeVersion.getItems().size());
+        assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_1, conceptSchemeVersion.getItemsFirstLevel().get(0).getNameableArtefact().getUrn());
+        assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2, conceptSchemeVersion.getItemsFirstLevel().get(1).getNameableArtefact().getUrn());
+        assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2_1, conceptSchemeVersion.getItemsFirstLevel().get(1).getChildren().get(0).getNameableArtefact().getUrn());
+        assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2_1_1, conceptSchemeVersion.getItemsFirstLevel().get(1).getChildren().get(0).getChildren().get(0).getNameableArtefact().getUrn());
+        assertEquals(conceptRetrieved.getNameableArtefact().getUrn(), conceptSchemeVersion.getItemsFirstLevel().get(2).getNameableArtefact().getUrn());
     }
 
-    // TODO
-    // @Test
-    // public void testCreateConceptSubconcept() throws Exception {
+    @Test
+    public void testCreateConceptSubconcept() throws Exception {
 
-    // ConceptMetamac concept = ConceptsMetamacDoMocks.mockConcept();
-    // ConceptMetamac conceptParent = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_1_V1_CONCEPT_1);
-    // // concept.setParent(conceptParent);
-    // String conceptSchemeUrn = CONCEPT_SCHEME_1_V2;
-    //
-    // // Create
-    // ConceptMetamac conceptSchemeVersionCreated = conceptsService.createConcept(getServiceContextAdministrador(), conceptSchemeUrn, concept);
-    // String urn = conceptSchemeVersionCreated.getNameableArtefact().getUrn();
-    //
-    // // Validate (only metadata in SRM Metamac; the others are checked in sdmx project)
-    // ConceptMetamac conceptRetrieved = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), urn);
-    // ConceptsMetamacAsserts.assertEqualsConcept(concept, conceptRetrieved);
+        ConceptMetamac concept = ConceptsMetamacDoMocks.mockConcept();
+        ConceptMetamac conceptParent = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_1_V2_CONCEPT_1);
+        concept.setParent(conceptParent);
+        String conceptSchemeUrn = CONCEPT_SCHEME_1_V2;
 
-    // }
+        // Create
+        ConceptMetamac conceptSchemeVersionCreated = conceptsService.createConcept(getServiceContextAdministrador(), conceptSchemeUrn, concept);
+        String urn = conceptSchemeVersionCreated.getNameableArtefact().getUrn();
+
+        // Validate (only metadata in SRM Metamac; the others are checked in sdmx project)
+        ConceptMetamac conceptRetrieved = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), urn);
+        ConceptsMetamacAsserts.assertEqualsConcept(concept, conceptRetrieved);
+
+        // Validate new structure
+        ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), conceptSchemeUrn);
+        assertEquals(2, conceptSchemeVersion.getItemsFirstLevel().size());
+        assertEquals(5, conceptSchemeVersion.getItems().size());
+        assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_1, conceptSchemeVersion.getItemsFirstLevel().get(0).getNameableArtefact().getUrn());
+        assertEquals(conceptRetrieved.getNameableArtefact().getUrn(), conceptSchemeVersion.getItemsFirstLevel().get(0).getChildren().get(0).getNameableArtefact().getUrn());
+        assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2, conceptSchemeVersion.getItemsFirstLevel().get(1).getNameableArtefact().getUrn());
+        assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2_1, conceptSchemeVersion.getItemsFirstLevel().get(1).getChildren().get(0).getNameableArtefact().getUrn());
+        assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2_1_1, conceptSchemeVersion.getItemsFirstLevel().get(1).getChildren().get(0).getChildren().get(0).getNameableArtefact().getUrn());
+    }
 
     @Test
     public void testRetrieveConceptByUrn() throws Exception {
@@ -1253,7 +1275,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         ConceptsMetamacAsserts.assertEqualsInternationalString(concept.getDerivation(), "es", "Derivation conceptScheme-1-v2-concept-1", null, null);
         ConceptsMetamacAsserts.assertEqualsInternationalString(concept.getLegalActs(), "es", "LegalActs conceptScheme-1-v2-concept-1", null, null);
         assertEquals(ConceptRoleEnum.ATTRIBUTE, concept.getSdmxRelatedArtefact());
-        // TODO type
+        assertEquals("DIRECT", concept.getType().getIdentifier());
     }
 
     @Test
@@ -1355,7 +1377,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertEquals(conceptSchemeUrn, e.getExceptionItems().get(0).getMessageParameters()[0]);
         }
     }
-    
+
     @Test
     public void testRetrieveConceptsByConceptSchemeUrn() throws Exception {
 
@@ -1386,6 +1408,41 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
                 }
             }
         }
+    }
+
+    @Test
+    public void testFindAllConceptTypes() throws Exception {
+
+        // Find
+        List<ConceptType> conceptTypes = conceptsService.findAllConceptTypes(getServiceContextAdministrador());
+
+        // Validate
+        assertEquals(2, conceptTypes.size());
+        int i = 0;
+        {
+            ConceptType conceptType = conceptTypes.get(i++);
+            assertEquals("DIRECT", conceptType.getIdentifier());
+            ConceptsAsserts.assertEqualsInternationalString(conceptType.getDescription(), "en", "Direct", "es", "Directo");
+        }
+        {
+            ConceptType conceptType = conceptTypes.get(i++);
+            assertEquals("DERIVED", conceptType.getIdentifier());
+            ConceptsAsserts.assertEqualsInternationalString(conceptType.getDescription(), "en", "Derived", "es", "Derivado");
+        }
+        assertEquals(conceptTypes.size(), i);
+    }
+
+    @Test
+    public void testRetrieveConceptTypeByIdentifier() throws Exception {
+
+        String identifier = "DERIVED";
+
+        // Retrieve
+        ConceptType conceptType = conceptsService.retrieveConceptTypeByIdentifier(getServiceContextAdministrador(), identifier);
+
+        // Validate
+        assertEquals(identifier, conceptType.getIdentifier());
+        ConceptsAsserts.assertEqualsInternationalString(conceptType.getDescription(), "en", "Derived", "es", "Derivado");
     }
 
     @Override

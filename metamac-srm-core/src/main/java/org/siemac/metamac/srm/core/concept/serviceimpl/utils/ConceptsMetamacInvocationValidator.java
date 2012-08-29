@@ -131,6 +131,20 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
 
         ExceptionUtils.throwIfException(exceptions);
     }
+    
+    public static void checkFindAllConceptTypes(List<MetamacExceptionItem> exceptions) throws MetamacException {
+        // nothing
+    }
+    
+    public static void checkRetrieveConceptTypeByIdentifier(String identifier, List<MetamacExceptionItem> exceptions) throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+
+        ValidationUtils.checkParameterRequired(identifier, ServiceExceptionParameters.IDENTIFIER, exceptions);
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
 
     private static void checkConceptScheme(ConceptSchemeVersionMetamac conceptSchemeVersion, List<MetamacExceptionItem> exceptions) {
         ValidationUtils.checkMetadataRequired(conceptSchemeVersion.getType(), ServiceExceptionParameters.CONCEPT_SCHEME_TYPE, exceptions);
@@ -145,5 +159,7 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
     }
 
     private static void checkConcept(ConceptMetamac concept, List<MetamacExceptionItem> exceptions) {
+        // all optional.
+        // common metadata in sdmx are checked in Sdmx module
     }
 }

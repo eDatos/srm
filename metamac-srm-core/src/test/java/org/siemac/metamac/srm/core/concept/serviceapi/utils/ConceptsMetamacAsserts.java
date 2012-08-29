@@ -1,11 +1,13 @@
 package org.siemac.metamac.srm.core.concept.serviceapi.utils;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import static org.siemac.metamac.common.test.utils.MetamacAsserts.assertEqualsExternalItemDto;
 import static org.siemac.metamac.common.test.utils.MetamacAsserts.assertEqualsInternationalStringDto;
 
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
+import org.siemac.metamac.srm.core.concept.domain.ConceptType;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 
@@ -26,11 +28,11 @@ public class ConceptsMetamacAsserts extends ConceptsAsserts {
         assertEqualsInternationalString(expected.getContext(), actual.getContext());
         assertEqualsInternationalString(expected.getDocMethod(), actual.getDocMethod());
         assertEquals(expected.getSdmxRelatedArtefact(), actual.getSdmxRelatedArtefact());
-        // TODO type
+        assertEqualsConceptType(expected.getType(), actual.getType());
         assertEqualsInternationalString(expected.getDerivation(), actual.getDerivation());
         assertEqualsInternationalString(expected.getLegalActs(), actual.getLegalActs());
 
-        assertEqualsConcept(expected, actual);
+        ConceptsAsserts.assertEqualsConcept(expected, actual);
     }
 
     public static void assertEqualsConceptSchemeMetamacDto(ConceptSchemeMetamacDto expected, ConceptSchemeMetamacDto actual) {
@@ -52,5 +54,14 @@ public class ConceptsMetamacAsserts extends ConceptsAsserts {
 
         ConceptsAsserts.assertEqualsConceptDto(expected, actual);
     }
-
+    
+    private static void assertEqualsConceptType(ConceptType expected, ConceptType actual) {
+        if (expected == null && actual == null) {
+            return;
+        } else if (expected != null && actual != null) {
+            assertEquals(expected.getIdentifier(), actual.getIdentifier());
+        } else {
+            fail("ConceptType are different");
+        }
+    }
 }
