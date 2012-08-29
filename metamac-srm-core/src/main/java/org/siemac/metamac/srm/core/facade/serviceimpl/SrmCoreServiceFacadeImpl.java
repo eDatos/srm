@@ -623,7 +623,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         ConceptMetamac conceptMetamac = dto2DoMapper.conceptDtoToDo(ctx, conceptMetamacDto);
 
         // Create
-        ConceptMetamac conceMetamacCreated = getConceptsMetamacService().createConcept(ctx, conceptMetamacDto.getItemParentUrn(), conceptMetamac);
+        ConceptMetamac conceMetamacCreated = getConceptsMetamacService().createConcept(ctx, conceptMetamacDto.getItemSchemeVersionUrn(), conceptMetamac);
 
         // Transform to DTO
         conceptMetamacDto = do2DtoMapper.conceptMetamacDoToDto(conceMetamacCreated);
