@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.siemac.metamac.common.test.utils.MetamacAsserts.assertEqualsInternationalStringDto;
+import static org.siemac.metamac.srm.core.concept.serviceapi.utils.ConceptsMetamacAsserts.assertEqualsConceptDto;
 import static org.siemac.metamac.srm.core.concept.serviceapi.utils.ConceptsMetamacAsserts.assertEqualsConceptSchemeMetamacDto;
 
 import java.util.ArrayList;
@@ -855,6 +856,45 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         assertEquals(ConceptRoleEnum.ATTRIBUTE, conceptMetamacDto.getSdmxRelatedArtefact());
         assertEqualsInternationalStringDto(conceptMetamacDto.getDerivation(), "es", "Derivation conceptScheme-1-v2-concept-1", null, null);
         assertEqualsInternationalStringDto(conceptMetamacDto.getLegalActs(), "es", "LegalActs conceptScheme-1-v2-concept-1", null, null);
+    }
+
+    // @Test
+    // public void testRetrieveConceptByUrnErrorParameterRequired() throws Exception {
+    // String urn = null;
+    // try {
+    // srmCoreServiceFacade.retrieveConceptByUrn(getServiceContextAdministrador(), urn);
+    // fail("parameter required");
+    // } catch (MetamacException e) {
+    // assertEquals(1, e.getExceptionItems().size());
+    // assertEquals(ServiceExceptionType.PARAMETER_REQUIRED.getCode(), e.getExceptionItems().get(0).getCode());
+    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+    // assertEquals(ServiceExceptionParameters.URN, e.getExceptionItems().get(0).getMessageParameters()[0]);
+    // }
+    // }
+
+    @Test
+    public void testCreateConcept() throws Exception {
+        ConceptMetamacDto conceptMetamacDto = ConceptsMetamacDtoMocks.mockConceptDto();
+
+        ConceptMetamacDto conceptMetamacDtoCreated = srmCoreServiceFacade.createConcept(getServiceContextAdministrador(), conceptMetamacDto);
+
+        assertEqualsConceptDto(conceptMetamacDtoCreated, conceptMetamacDto);
+
+        // Identifiers
+        assertNotNull(conceptMetamacDtoCreated);
+        assertNull(conceptMetamacDtoCreated.getUri());
+        assertNotNull(conceptMetamacDtoCreated.getUrn());
+
+        // Content descriptors
+
+        // Class descriptors
+        assertNotNull(conceptMetamacDtoCreated.getSdmxRelatedArtefact());
+
+        // Production descriptors
+
+        // Relation between concepts
+
+        // Legals acts
     }
 
     @Override

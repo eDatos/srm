@@ -21,9 +21,13 @@ import org.siemac.metamac.core.common.serviceimpl.utils.ValidationUtils;
 import org.siemac.metamac.core.common.util.OptimisticLockingUtils;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
+import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
+import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacRepository;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacRepository;
+import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
+import org.siemac.metamac.srm.core.concept.exception.ConceptMetamacNotFoundException;
 import org.siemac.metamac.srm.core.concept.exception.ConceptSchemeVersionMetamacNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -51,6 +55,9 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
 
     @Autowired
     private ConceptSchemeVersionMetamacRepository                conceptSchemeVersionMetamacRepository;
+
+    @Autowired
+    private ConceptMetamacRepository                             conceptMetamacRepository;
 
     // ------------------------------------------------------------
     // DSDs
@@ -104,6 +111,44 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         target.setProcStatus(source.getProcStatus());
 
         dto2DoMapperSdmxSrm.conceptSchemeDtoToDo(ctx, source, target);
+
+        return target;
+    }
+
+    @Override
+    public ConceptMetamac conceptDtoToDo(ServiceContext ctx, ConceptMetamacDto source) throws MetamacException {
+        if (source == null) {
+            return null;
+        }
+
+        // If exists, retrieves existing entity. Otherwise, creates new entity.
+        ConceptMetamac target = null;
+        if (source.getId() == null) {
+            target = new ConceptMetamac();
+        } else {
+            try {
+                target = conceptMetamacRepository.findById(source.getId());
+            } catch (ConceptMetamacNotFoundException e) {
+                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SRM_SEARCH_NOT_FOUND).withMessageParameters(ServiceExceptionParameters.CONCEPT)
+                        .withLoggedLevel(ExceptionLevelEnum.ERROR).build();
+            }
+            OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersion());
+        }
+
+        // Optimistic locking: Update "update date" attribute to force root entity update, to increment "version" attribute
+        target.setUpdateDateMetamac(new DateTime());
+
+        // Modifiable attributes
+        target.setPluralName(internationalStringToDo(ctx, source.getPluralName(), target.getPluralName(), ServiceExceptionParameters.CONCEPT_PLURAL_NAME));
+        target.setAcronym(internationalStringToDo(ctx, source.getAcronym(), target.getAcronym(), ServiceExceptionParameters.CONCEPT_ACRONYM));
+        target.setDescriptionSource(internationalStringToDo(ctx, source.getDescriptionSource(), target.getDescriptionSource(), ServiceExceptionParameters.CONCEPT_DESCRIPTION_SOURCE));
+        target.setContext(internationalStringToDo(ctx, source.getContext(), target.getContext(), ServiceExceptionParameters.CONCEPT_CONTEXT));
+        target.setDocMethod(internationalStringToDo(ctx, source.getDocMethod(), target.getDocMethod(), ServiceExceptionParameters.CONCEPT_DOC_METHOD));
+        target.setSdmxRelatedArtefact(source.getSdmxRelatedArtefact());
+        target.setDerivation(internationalStringToDo(ctx, source.getDerivation(), target.getDerivation(), ServiceExceptionParameters.CONCEPT_DERIVATION));
+        target.setLegalActs(internationalStringToDo(ctx, source.getLegalActs(), target.getLegalActs(), ServiceExceptionParameters.CONCEPT_LEGAL_ACTS));
+
+        dto2DoMapperSdmxSrm.conceptDtoToDo(ctx, source);
 
         return target;
     }

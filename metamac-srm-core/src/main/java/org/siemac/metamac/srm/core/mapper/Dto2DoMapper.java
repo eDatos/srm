@@ -2,7 +2,9 @@ package org.siemac.metamac.srm.core.mapper;
 
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
+import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Component;
@@ -20,5 +22,7 @@ public interface Dto2DoMapper {
     public DataStructureDefinitionVersion dataStructureDefinitionDtoToDataStructureDefinition(ServiceContext ctx, DataStructureDefinitionDto dataStructureDefinitionDto) throws MetamacException;
 
     public ConceptSchemeVersionMetamac conceptSchemeDtoToDo(ServiceContext ctx, ConceptSchemeMetamacDto conceptSchemeDto) throws MetamacException;
+
+    public ConceptMetamac conceptDtoToDo(ServiceContext ctx, ConceptMetamacDto conceptDto) throws MetamacException;
 
 }
