@@ -383,7 +383,8 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         contentDescriptorsForm = new GroupDynamicForm(getConstants().conceptSchemeContentDescriptors());
         ViewMultiLanguageTextItem description = new ViewMultiLanguageTextItem(ConceptSchemeDS.DESCRIPTION, getConstants().conceptSchemeDescription());
         ViewTextItem partial = new ViewTextItem(ConceptSchemeDS.IS_PARTIAL, getConstants().conceptSchemeIsPartial());
-        contentDescriptorsForm.setFields(description, partial);
+        ViewTextItem isExternalReference = new ViewTextItem(ConceptSchemeDS.IS_EXTERNAL_REFERENCE, getConstants().conceptSchemeIsExternalReference());
+        contentDescriptorsForm.setFields(description, partial, isExternalReference);
 
         // Class descriptors
         classDescriptorsForm = new GroupDynamicForm(getConstants().conceptSchemeClassDescriptors());
@@ -461,7 +462,8 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().conceptSchemeContentDescriptors());
         MultiLanguageTextItem description = new MultiLanguageTextItem(ConceptSchemeDS.DESCRIPTION, getConstants().conceptSchemeDescription());
         CustomCheckboxItem partial = new CustomCheckboxItem(ConceptSchemeDS.IS_PARTIAL, getConstants().conceptSchemeIsPartial());
-        contentDescriptorsEditionForm.setFields(description, partial);
+        ViewTextItem isExternalReference = new ViewTextItem(ConceptSchemeDS.IS_EXTERNAL_REFERENCE, getConstants().conceptSchemeIsExternalReference());
+        contentDescriptorsEditionForm.setFields(description, partial, isExternalReference);
 
         // Class descriptors
         classDescriptorsEditionForm = new GroupDynamicForm(getConstants().conceptSchemeClassDescriptors());
@@ -533,8 +535,11 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
 
         // Content descriptors
         contentDescriptorsForm.setValue(ConceptSchemeDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(conceptSchemeDto.getDescription()));
-        contentDescriptorsForm.setValue(ConceptSchemeDS.IS_PARTIAL, (conceptSchemeDto.getIsPartial() != null && conceptSchemeDto.getIsPartial()) ? MetamacSrmWeb.getConstants().yes() : MetamacSrmWeb
-                .getConstants().no());
+        contentDescriptorsForm.setValue(ConceptSchemeDS.IS_PARTIAL, conceptSchemeDto.getIsPartial() != null ? (conceptSchemeDto.getIsPartial()
+                ? MetamacWebCommon.getConstants().yes()
+                : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
+        contentDescriptorsForm.setValue(ConceptSchemeDS.IS_EXTERNAL_REFERENCE, conceptSchemeDto.getIsExternalReference() != null ? (conceptSchemeDto.getIsExternalReference() ? MetamacWebCommon
+                .getConstants().yes() : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
 
         // Class descriptors
         classDescriptorsForm.setValue(ConceptSchemeDS.TYPE, MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().conceptSchemeTypeEnum() + conceptSchemeDto.getType().name()));
@@ -561,7 +566,6 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         versionResponsibilityForm.setValue(ConceptSchemeDS.INTERNAL_PUBLICATION_USER, conceptSchemeDto.getInternalPublicationUser());
         versionResponsibilityForm.setValue(ConceptSchemeDS.EXTERNAL_PUBLICATION_USER, conceptSchemeDto.getExternalPublicationUser());
     }
-
     public void setConceptSchemeEditionMode(ConceptSchemeMetamacDto conceptSchemeDto) {
         // Identifiers
         identifiersEditionForm.setValue(ConceptSchemeDS.CODE, conceptSchemeDto.getCode());
@@ -573,6 +577,8 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         // Content descriptors
         contentDescriptorsEditionForm.setValue(ConceptSchemeDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(conceptSchemeDto.getDescription()));
         contentDescriptorsEditionForm.setValue(ConceptSchemeDS.IS_PARTIAL, conceptSchemeDto.getIsPartial() != null ? conceptSchemeDto.getIsPartial() : false);
+        contentDescriptorsEditionForm.setValue(ConceptSchemeDS.IS_EXTERNAL_REFERENCE, conceptSchemeDto.getIsExternalReference() != null ? (conceptSchemeDto.getIsExternalReference() ? MetamacWebCommon
+                .getConstants().yes() : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
 
         // Class descriptors
         classDescriptorsEditionForm.setValue(ConceptSchemeDS.TYPE, conceptSchemeDto.getType().name());
