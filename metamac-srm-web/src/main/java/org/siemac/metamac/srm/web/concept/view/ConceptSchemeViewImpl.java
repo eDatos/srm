@@ -8,10 +8,12 @@ import java.util.List;
 
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
+import org.siemac.metamac.core.common.util.shared.BooleanUtils;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
+import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
@@ -26,7 +28,9 @@ import org.siemac.metamac.srm.web.concept.view.handlers.ConceptSchemeUiHandlers;
 import org.siemac.metamac.srm.web.concept.widgets.ConceptSchemeMainFormLayout;
 import org.siemac.metamac.srm.web.concept.widgets.HistorySectionStack;
 import org.siemac.metamac.srm.web.concept.widgets.NewConceptWindow;
+import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.utils.DateUtils;
+import org.siemac.metamac.web.common.client.utils.ExternalItemUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.widgets.CustomListGrid;
@@ -37,7 +41,9 @@ import org.siemac.metamac.web.common.client.widgets.TitleLabel;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
+import org.siemac.metamac.web.common.client.widgets.form.fields.CustomCheckboxItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextItem;
+import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredSelectItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.SearchViewTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
@@ -53,9 +59,9 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.FormItemIfFunction;
-import com.smartgwt.client.widgets.form.fields.BooleanItem;
 import com.smartgwt.client.widgets.form.fields.FormItem;
-import com.smartgwt.client.widgets.form.fields.SelectItem;
+import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
+import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
 import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
 import com.smartgwt.client.widgets.grid.ListGridField;
@@ -389,19 +395,27 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         // Production descriptors
         productionDescriptorsForm = new GroupDynamicForm(getConstants().conceptSchemeProductionDescriptors());
         ViewTextItem procStatus = new ViewTextItem(ConceptSchemeDS.PROC_STATUS, getConstants().conceptSchemeProcStatus());
-        productionDescriptorsForm.setFields(procStatus);
+        ViewTextItem productionValidationDate = new ViewTextItem(ConceptSchemeDS.PRODUCTION_VALIDATION_DATE, getConstants().lifeCycleProductionValidationDate());
+        productionDescriptorsForm.setFields(procStatus, productionValidationDate);
 
         // Diffusion descriptors
         diffusionDescriptorsForm = new GroupDynamicForm(getConstants().conceptSchemeDiffusionDescriptors());
-        ViewTextItem startDate = new ViewTextItem(ConceptSchemeDS.VALID_FROM, getConstants().conceptSchemeStartDate());
-        ViewTextItem endDate = new ViewTextItem(ConceptSchemeDS.VALID_TO, getConstants().conceptSchemeEndDate());
-        diffusionDescriptorsForm.setFields(startDate, endDate);
+        ViewTextItem startDate = new ViewTextItem(ConceptSchemeDS.VALID_FROM, getConstants().conceptSchemeValidFrom());
+        ViewTextItem endDate = new ViewTextItem(ConceptSchemeDS.VALID_TO, getConstants().conceptSchemeValidTo());
+        ViewTextItem diffusionValidationDate = new ViewTextItem(ConceptSchemeDS.DIFFUSION_VALIDATION_DATE, getConstants().lifeCycleDiffusionValidationDate());
+        ViewTextItem internalPublicationDate = new ViewTextItem(ConceptSchemeDS.INTERNAL_PUBLICATION_DATE, getConstants().lifeCycleInternalPublicationDate());
+        ViewTextItem externalPublicationDate = new ViewTextItem(ConceptSchemeDS.EXTERNAL_PUBLICATION_DATE, getConstants().lifeCycleExternalPublicationDate());
+        ViewTextItem externalPublicationFailed = new ViewTextItem(ConceptSchemeDS.IS_EXTERNAL_PUBLICATION_FAILED, getConstants().lifeCycleExternalPublicationFailed());
+        ViewTextItem externalPublicationFailedDate = new ViewTextItem(ConceptSchemeDS.EXTERNAL_PUBLICATION_FAILED_DATE, getConstants().lifeCycleExternalPublicationFailedDate());
+        diffusionDescriptorsForm.setFields(startDate, endDate, diffusionValidationDate, internalPublicationDate, externalPublicationDate, externalPublicationFailed, externalPublicationFailedDate);
 
         // Version responsibility
         versionResponsibilityForm = new GroupDynamicForm(getConstants().conceptSchemeVersionResponsibility());
-        ViewTextItem productionEnvironment = new ViewTextItem("prod", getConstants().conceptSchemeVersionResponsibilityProduction()); // TODO
-        ViewTextItem diffusionEnvironment = new ViewTextItem("diff", getConstants().conceptSchemeVersionResponsibilityDiffusion()); // TODO
-        versionResponsibilityForm.setFields(productionEnvironment, diffusionEnvironment);
+        ViewTextItem productionEnvironment = new ViewTextItem(ConceptSchemeDS.PRODUCTION_VALIDATION_USER, getConstants().conceptSchemeVersionResponsibilityProduction());
+        ViewTextItem diffusionEnvironment = new ViewTextItem(ConceptSchemeDS.DIFFUSION_VALIDATION_USER, getConstants().conceptSchemeVersionResponsibilityDiffusion());
+        ViewTextItem internalPublication = new ViewTextItem(ConceptSchemeDS.INTERNAL_PUBLICATION_USER, getConstants().conceptSchemeVersionResponsibilityInternalPublication());
+        ViewTextItem externalPublication = new ViewTextItem(ConceptSchemeDS.EXTERNAL_PUBLICATION_USER, getConstants().conceptSchemeVersionResponsibilityExternalPublication());
+        versionResponsibilityForm.setFields(productionEnvironment, diffusionEnvironment, internalPublication, externalPublication);
 
         mainFormLayout.addViewCanvas(identifiersForm);
         mainFormLayout.addViewCanvas(contentDescriptorsForm);
@@ -446,33 +460,56 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         // Content descriptors
         contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().conceptSchemeContentDescriptors());
         MultiLanguageTextItem description = new MultiLanguageTextItem(ConceptSchemeDS.DESCRIPTION, getConstants().conceptSchemeDescription());
-        BooleanItem partial = new BooleanItem(ConceptSchemeDS.IS_PARTIAL, getConstants().conceptSchemeIsPartial());
+        CustomCheckboxItem partial = new CustomCheckboxItem(ConceptSchemeDS.IS_PARTIAL, getConstants().conceptSchemeIsPartial());
         contentDescriptorsEditionForm.setFields(description, partial);
 
         // Class descriptors
         classDescriptorsEditionForm = new GroupDynamicForm(getConstants().conceptSchemeClassDescriptors());
-        SelectItem type = new SelectItem(ConceptSchemeDS.TYPE, getConstants().conceptSchemeType());
+        RequiredSelectItem type = new RequiredSelectItem(ConceptSchemeDS.TYPE, getConstants().conceptSchemeType());
         type.setValueMap(CommonUtils.getConceptSchemeTypeHashMap());
+        type.addChangedHandler(new ChangedHandler() {
+
+            @Override
+            public void onChanged(ChangedEvent event) {
+                classDescriptorsEditionForm.markForRedraw();
+            }
+        });
         SearchViewTextItem operation = createRelatedOperationItem(ConceptSchemeDS.RELATED_OPERATION, getConstants().conceptSchemeOperation());
+        operation.setShowIfCondition(new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return ConceptSchemeTypeEnum.OPERATION.name().equals(form.getValueAsString(ConceptSchemeDS.TYPE));
+            }
+        });
         ViewTextItem agency = new ViewTextItem(ConceptSchemeDS.AGENCY, getConstants().conceptSchemeAgency());
         classDescriptorsEditionForm.setFields(type, operation, agency);
 
         // Production descriptors
         productionDescriptorsEditionForm = new GroupDynamicForm(getConstants().conceptSchemeProductionDescriptors());
         ViewTextItem procStatus = new ViewTextItem(ConceptSchemeDS.PROC_STATUS, getConstants().conceptSchemeProcStatus());
-        productionDescriptorsEditionForm.setFields(procStatus);
+        ViewTextItem productionValidationDate = new ViewTextItem(ConceptSchemeDS.PRODUCTION_VALIDATION_DATE, getConstants().lifeCycleProductionValidationDate());
+        productionDescriptorsEditionForm.setFields(procStatus, productionValidationDate);
 
         // Diffusion descriptors
         diffusionDescriptorsEditionForm = new GroupDynamicForm(getConstants().conceptSchemeDiffusionDescriptors());
-        ViewTextItem startDate = new ViewTextItem(ConceptSchemeDS.VALID_FROM, getConstants().conceptSchemeStartDate());
-        ViewTextItem endDate = new ViewTextItem(ConceptSchemeDS.VALID_TO, getConstants().conceptSchemeEndDate());
-        diffusionDescriptorsEditionForm.setFields(startDate, endDate);
+        ViewTextItem startDate = new ViewTextItem(ConceptSchemeDS.VALID_FROM, getConstants().conceptSchemeValidFrom());
+        ViewTextItem endDate = new ViewTextItem(ConceptSchemeDS.VALID_TO, getConstants().conceptSchemeValidTo());
+        ViewTextItem diffusionValidationDate = new ViewTextItem(ConceptSchemeDS.DIFFUSION_VALIDATION_DATE, getConstants().lifeCycleDiffusionValidationDate());
+        ViewTextItem internalPublicationDate = new ViewTextItem(ConceptSchemeDS.INTERNAL_PUBLICATION_DATE, getConstants().lifeCycleInternalPublicationDate());
+        ViewTextItem externalPublicationDate = new ViewTextItem(ConceptSchemeDS.EXTERNAL_PUBLICATION_DATE, getConstants().lifeCycleExternalPublicationDate());
+        ViewTextItem externalPublicationFailed = new ViewTextItem(ConceptSchemeDS.IS_EXTERNAL_PUBLICATION_FAILED, getConstants().lifeCycleExternalPublicationFailed());
+        ViewTextItem externalPublicationFailedDate = new ViewTextItem(ConceptSchemeDS.EXTERNAL_PUBLICATION_FAILED_DATE, getConstants().lifeCycleExternalPublicationFailedDate());
+        diffusionDescriptorsEditionForm.setFields(startDate, endDate, diffusionValidationDate, internalPublicationDate, externalPublicationDate, externalPublicationFailed,
+                externalPublicationFailedDate);
 
         // Version responsibility
         versionResponsibilityEditionForm = new GroupDynamicForm(getConstants().conceptSchemeVersionResponsibility());
-        ViewTextItem productionEnvironment = new ViewTextItem("prod", getConstants().conceptSchemeVersionResponsibilityProduction()); // TODO
-        ViewTextItem diffusionEnvironment = new ViewTextItem("diff", getConstants().conceptSchemeVersionResponsibilityDiffusion()); // TODO
-        versionResponsibilityEditionForm.setFields(productionEnvironment, diffusionEnvironment);
+        ViewTextItem productionEnvironment = new ViewTextItem(ConceptSchemeDS.PRODUCTION_VALIDATION_USER, getConstants().conceptSchemeVersionResponsibilityProduction());
+        ViewTextItem diffusionEnvironment = new ViewTextItem(ConceptSchemeDS.DIFFUSION_VALIDATION_USER, getConstants().conceptSchemeVersionResponsibilityDiffusion());
+        ViewTextItem internalPublication = new ViewTextItem(ConceptSchemeDS.INTERNAL_PUBLICATION_USER, getConstants().conceptSchemeVersionResponsibilityInternalPublication());
+        ViewTextItem externalPublication = new ViewTextItem(ConceptSchemeDS.EXTERNAL_PUBLICATION_USER, getConstants().conceptSchemeVersionResponsibilityExternalPublication());
+        versionResponsibilityEditionForm.setFields(productionEnvironment, diffusionEnvironment, internalPublication, externalPublication);
 
         mainFormLayout.addEditionCanvas(identifiersEditionForm);
         mainFormLayout.addEditionCanvas(contentDescriptorsEditionForm);
@@ -500,14 +537,29 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
                 .getConstants().no());
 
         // Class descriptors
+        classDescriptorsForm.setValue(ConceptSchemeDS.TYPE, MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().conceptSchemeTypeEnum() + conceptSchemeDto.getType().name()));
+        classDescriptorsEditionForm.setValue(ConceptSchemeDS.RELATED_OPERATION, ExternalItemUtils.getExternalItemName(conceptSchemeDto.getRelatedOperation()));
         classDescriptorsForm.setValue(ConceptSchemeDS.AGENCY, conceptSchemeDto.getMaintainer() != null ? conceptSchemeDto.getMaintainer().getCode() : StringUtils.EMPTY);
 
         // Production descriptors
         productionDescriptorsForm.setValue(ConceptSchemeDS.PROC_STATUS, CommonUtils.getConceptSchemeProcStatus(conceptSchemeDto));
+        productionDescriptorsForm.setValue(ConceptSchemeDS.PRODUCTION_VALIDATION_DATE, conceptSchemeDto.getProductionValidationDate());
 
         // Diffusion descriptors
         diffusionDescriptorsForm.setValue(ConceptSchemeDS.VALID_FROM, DateUtils.getFormattedDate(conceptSchemeDto.getValidFrom()));
         diffusionDescriptorsForm.setValue(ConceptSchemeDS.VALID_TO, DateUtils.getFormattedDate(conceptSchemeDto.getValidTo()));
+        diffusionDescriptorsForm.setValue(ConceptSchemeDS.DIFFUSION_VALIDATION_DATE, DateUtils.getFormattedDate(conceptSchemeDto.getDiffusionValidationDate()));
+        diffusionDescriptorsForm.setValue(ConceptSchemeDS.INTERNAL_PUBLICATION_DATE, DateUtils.getFormattedDate(conceptSchemeDto.getInternalPublicationDate()));
+        diffusionDescriptorsForm.setValue(ConceptSchemeDS.EXTERNAL_PUBLICATION_DATE, DateUtils.getFormattedDate(conceptSchemeDto.getExternalPublicationDate()));
+        diffusionDescriptorsForm.setValue(ConceptSchemeDS.IS_EXTERNAL_PUBLICATION_FAILED, BooleanUtils.isTrue(conceptSchemeDto.getIsExternalPublicationFailed()) ? MetamacWebCommon.getConstants()
+                .yes() : StringUtils.EMPTY);
+        diffusionDescriptorsForm.setValue(ConceptSchemeDS.EXTERNAL_PUBLICATION_FAILED_DATE, DateUtils.getFormattedDate(conceptSchemeDto.getExternalPublicationFailedDate()));
+
+        // Version responsibility
+        versionResponsibilityForm.setValue(ConceptSchemeDS.PRODUCTION_VALIDATION_USER, conceptSchemeDto.getProductionValidationUser());
+        versionResponsibilityForm.setValue(ConceptSchemeDS.DIFFUSION_VALIDATION_USER, conceptSchemeDto.getDiffusionValidationUser());
+        versionResponsibilityForm.setValue(ConceptSchemeDS.INTERNAL_PUBLICATION_USER, conceptSchemeDto.getInternalPublicationUser());
+        versionResponsibilityForm.setValue(ConceptSchemeDS.EXTERNAL_PUBLICATION_USER, conceptSchemeDto.getExternalPublicationUser());
     }
 
     public void setConceptSchemeEditionMode(ConceptSchemeMetamacDto conceptSchemeDto) {
@@ -523,14 +575,29 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         contentDescriptorsEditionForm.setValue(ConceptSchemeDS.IS_PARTIAL, conceptSchemeDto.getIsPartial() != null ? conceptSchemeDto.getIsPartial() : false);
 
         // Class descriptors
+        classDescriptorsEditionForm.setValue(ConceptSchemeDS.TYPE, conceptSchemeDto.getType().name());
+        // TODO related operation
         classDescriptorsEditionForm.setValue(ConceptSchemeDS.AGENCY, conceptSchemeDto.getMaintainer() != null ? conceptSchemeDto.getMaintainer().getCode() : StringUtils.EMPTY);
 
         // Production descriptors
         productionDescriptorsEditionForm.setValue(ConceptSchemeDS.PROC_STATUS, CommonUtils.getConceptSchemeProcStatus(conceptSchemeDto));
+        productionDescriptorsEditionForm.setValue(ConceptSchemeDS.PRODUCTION_VALIDATION_DATE, conceptSchemeDto.getProductionValidationDate());
 
         // Diffusion descriptors
         diffusionDescriptorsEditionForm.setValue(ConceptSchemeDS.VALID_FROM, DateUtils.getFormattedDate(conceptSchemeDto.getValidFrom()));
         diffusionDescriptorsEditionForm.setValue(ConceptSchemeDS.VALID_TO, DateUtils.getFormattedDate(conceptSchemeDto.getValidTo()));
+        diffusionDescriptorsEditionForm.setValue(ConceptSchemeDS.DIFFUSION_VALIDATION_DATE, DateUtils.getFormattedDate(conceptSchemeDto.getDiffusionValidationDate()));
+        diffusionDescriptorsEditionForm.setValue(ConceptSchemeDS.INTERNAL_PUBLICATION_DATE, DateUtils.getFormattedDate(conceptSchemeDto.getInternalPublicationDate()));
+        diffusionDescriptorsEditionForm.setValue(ConceptSchemeDS.EXTERNAL_PUBLICATION_DATE, DateUtils.getFormattedDate(conceptSchemeDto.getExternalPublicationDate()));
+        diffusionDescriptorsEditionForm.setValue(ConceptSchemeDS.IS_EXTERNAL_PUBLICATION_FAILED, BooleanUtils.isTrue(conceptSchemeDto.getIsExternalPublicationFailed()) ? MetamacWebCommon
+                .getConstants().yes() : MetamacWebCommon.getConstants().no());
+        diffusionDescriptorsEditionForm.setValue(ConceptSchemeDS.EXTERNAL_PUBLICATION_FAILED_DATE, DateUtils.getFormattedDate(conceptSchemeDto.getExternalPublicationFailedDate()));
+
+        // Version responsibility
+        versionResponsibilityEditionForm.setValue(ConceptSchemeDS.PRODUCTION_VALIDATION_USER, conceptSchemeDto.getProductionValidationUser());
+        versionResponsibilityEditionForm.setValue(ConceptSchemeDS.DIFFUSION_VALIDATION_USER, conceptSchemeDto.getDiffusionValidationUser());
+        versionResponsibilityEditionForm.setValue(ConceptSchemeDS.INTERNAL_PUBLICATION_USER, conceptSchemeDto.getInternalPublicationUser());
+        versionResponsibilityEditionForm.setValue(ConceptSchemeDS.EXTERNAL_PUBLICATION_USER, conceptSchemeDto.getExternalPublicationUser());
     }
 
     public ConceptSchemeMetamacDto getConceptSchemeDto() {
@@ -539,6 +606,9 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         // Content descriptors
         conceptSchemeDto.setDescription((InternationalStringDto) contentDescriptorsEditionForm.getValue(ConceptSchemeDS.DESCRIPTION));
         conceptSchemeDto.setIsPartial((Boolean) contentDescriptorsEditionForm.getValue(ConceptSchemeDS.IS_PARTIAL));
+        // Class descriptors
+        conceptSchemeDto.setType(ConceptSchemeTypeEnum.valueOf(classDescriptorsEditionForm.getValueAsString(ConceptSchemeDS.TYPE)));
+        // TODO related operation
         return conceptSchemeDto;
     }
 
