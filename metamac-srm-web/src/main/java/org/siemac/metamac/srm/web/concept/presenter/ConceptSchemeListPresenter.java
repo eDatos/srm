@@ -150,14 +150,14 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
     }
 
     @Override
-    public void deleteConceptSchemes(List<Long> idsFromSelected) {
-        dispatcher.execute(new DeleteConceptSchemeListAction(idsFromSelected), new WaitingAsyncCallback<DeleteConceptSchemeListResult>() {
+    public void deleteConceptSchemes(List<String> urns) {
+        dispatcher.execute(new DeleteConceptSchemeListAction(urns), new WaitingAsyncCallback<DeleteConceptSchemeListResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(ConceptSchemeListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorDelete()), MessageTypeEnum.ERROR);
+                retrieveConceptSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, null);
             }
-
             @Override
             public void onWaitSuccess(DeleteConceptSchemeListResult result) {
                 ShowMessageEvent.fire(ConceptSchemeListPresenter.this, ErrorUtils.getMessageList(getMessages().conceptSchemeDeleted()), MessageTypeEnum.SUCCESS);

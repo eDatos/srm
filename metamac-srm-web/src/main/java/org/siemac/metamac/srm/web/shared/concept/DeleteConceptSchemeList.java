@@ -9,5 +9,5 @@ import com.gwtplatform.dispatch.annotation.In;
 public class DeleteConceptSchemeList {
 
     @In(1)
-    List<Long> ids;
+    List<String> urns;
 }

@@ -10,7 +10,7 @@ public interface ConceptSchemeListUiHandlers extends UiHandlers {
 
     void goToConceptScheme(String code);
     void createConceptScheme(ConceptSchemeMetamacDto conceptSchemeDto);
-    void deleteConceptSchemes(List<Long> idsFromSelected);
+    void deleteConceptSchemes(List<String> urns);
     void retrieveConceptSchemes(int firstResult, int maxResults, String conceptScheme);
 
     void retrieveStatisticalOperations(int firstResult, int maxResults, String operation);

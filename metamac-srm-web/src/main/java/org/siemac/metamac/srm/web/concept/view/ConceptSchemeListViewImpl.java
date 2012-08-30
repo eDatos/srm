@@ -176,7 +176,7 @@ public class ConceptSchemeListViewImpl extends ViewImpl implements ConceptScheme
 
             @Override
             public void onClick(ClickEvent event) {
-                uiHandlers.deleteConceptSchemes(getIdsFromSelected());
+                uiHandlers.deleteConceptSchemes(getUrnsFromSelectedConceptSchemes());
                 deleteConfirmationWindow.hide();
             }
         });
@@ -202,13 +202,13 @@ public class ConceptSchemeListViewImpl extends ViewImpl implements ConceptScheme
         conceptSchemesList.getListGrid().setData(records);
     }
 
-    public List<Long> getIdsFromSelected() {
-        List<Long> codes = new ArrayList<Long>();
+    public List<String> getUrnsFromSelectedConceptSchemes() {
+        List<String> urns = new ArrayList<String>();
         for (ListGridRecord record : conceptSchemesList.getListGrid().getSelectedRecords()) {
             ConceptSchemeRecord schemeRecord = (ConceptSchemeRecord) record;
-            codes.add(schemeRecord.getId());
+            urns.add(schemeRecord.getUrn());
         }
-        return codes;
+        return urns;
     }
 
     @Override
