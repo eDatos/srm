@@ -261,12 +261,11 @@ public class ConceptSchemeListViewImpl extends ViewImpl implements ConceptScheme
                 allSelectedSchemesExternallyPublished = false;
             }
         }
-        if (allSelectedSchemesExternallyPublished) {
-            if (ConceptClientSecurityUtils.canCancelConceptSchemeValidity()) {
-                cancelConceptSchemeValidityButton.show();
-            }
+        if (allSelectedSchemesExternallyPublished && ConceptClientSecurityUtils.canCancelConceptSchemeValidity()) {
+            cancelConceptSchemeValidityButton.show();
+        } else {
+            cancelConceptSchemeValidityButton.hide();
         }
-
     }
 
     @Override
