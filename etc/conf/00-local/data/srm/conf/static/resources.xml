@@ -2,5 +2,5 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
     <comment>Configurations</comment>
-    <entry key="metamac.srm.clients.statistical.operations.rest.internal">${metamac.endpoints.statistical.operations.rest.internal}/v1.0</entry>
+    <entry key="metamac.srm.clients.statistical.operations.rest.internal">${metamac.endpoints.statistical.operations.rest.internal}</entry>
 </properties>
