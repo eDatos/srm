@@ -79,8 +79,8 @@
         VALID_TO_TZ="[null]"
         VALID_TO="[null]"
         IS_EXTERNAL_REFERENCE="0"
-        STRUCTURE_URL="[null]"
-        SERVICE_URL="[null]"
+        STRUCTURE_URL="http://structureUrl1"
+        SERVICE_URL="http://serviceUrl1"
         IS_LAST_VERSION="0"
         MAINTAINER_FK="11"
         
@@ -244,7 +244,7 @@
             <!-- CONCEPT01 -->
             <TB_CONCEPTS
                 TB_ITEMS="121"
-                CORE_REPRESENTATION_FK="[null]"    
+                CORE_REPRESENTATION_FK="121"    
             />
             
             <TB_M_CONCEPTS
@@ -299,6 +299,16 @@
                 LAST_UPDATED="2011-01-22 01:02:03"
                 LAST_UPDATED_TZ="Europe/London"
             />   
+            
+            <TB_REPRESENTATIONS
+                ID="121"
+                REPRESENTATION_TYPE="ENUMERATED_REPRESENTATION"
+                ENUMERATED_FK="121"
+                FACET_FK="[null]"
+                
+                UUID="representation-121"
+                VERSION="1"
+            />                 
             
             <!-- CONCEPT02 -->
             <TB_CONCEPTS
@@ -1989,7 +1999,7 @@
         CODE="ISTAC"
         URI="http://data.siemac.org/srm/v1/agenciesSchemes/standalone/agencies/ISTAC"
         URN="urn:sdmx:org.sdmx.infomodel.base.Agency=ISTAC:STANDALONE(01.000).ISTAC"
-        MANAGEMENT_APP_URL="[null]"
+        MANAGEMENT_APP_URL="http://manageISTAC"
         VERSION="1"
         TITLE_FK="[null]"
         TYPE="AGENCY"
@@ -2159,6 +2169,17 @@
         TITLE_FK="[null]"
         TYPE="AGENCY"
     />
+    
+    <TB_EXTERNAL_ITEMS 
+        ID="121"
+        CODE="CODE_LIST_1"
+        URI="http://data.siemac.org/srm/v1/codeLists/1"
+        URN="urn:sdmx:org.sdmx.infomodel.base.CodeList.1"
+        MANAGEMENT_APP_URL="http://managementCodeList1"
+        VERSION="1"
+        TITLE_FK="36"
+        TYPE="CODELIST"
+    />               
 
     <!-- ************************************************************************************** -->
     <!-- CONCEPT TYPES                                                                          -->
@@ -2678,6 +2699,19 @@
         LOCALE="en"
         VERSION="1"
         INTERNATIONAL_STRING_FK="35"
-    />                
+    />    
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="36"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="361"
+        LABEL="CodeList1"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="36"
+    />                  
                     
 </dataset>
