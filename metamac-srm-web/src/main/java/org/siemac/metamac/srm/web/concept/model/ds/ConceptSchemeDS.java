@@ -22,6 +22,7 @@ public class ConceptSchemeDS extends DataSource {
     // CLASS DESCRIPTORS
     public static final String AGENCY                           = "sch-agency";
     public static final String TYPE                             = "sch-type";
+    public static final String TYPE_VIEW                        = "sch-type-view";        // Not mapped in DTO
     public static final String RELATED_OPERATION                = "sch-operation";
     // PRODUCTION DESCRIPTORS
     public static final String PROC_STATUS                      = "sch-status";
