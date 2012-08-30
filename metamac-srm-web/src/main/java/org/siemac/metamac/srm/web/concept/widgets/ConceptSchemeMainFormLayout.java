@@ -2,6 +2,8 @@ package org.siemac.metamac.srm.web.concept.widgets;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
+import java.util.Date;
+
 import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
 import org.siemac.metamac.srm.web.client.resources.GlobalResources;
 import org.siemac.metamac.srm.web.concept.utils.ConceptClientSecurityUtils;
@@ -25,6 +27,7 @@ public class ConceptSchemeMainFormLayout extends InternationalMainFormLayout {
     private AnnounceToolStripButton         announce;
 
     private ItemSchemeMetamacProcStatusEnum status;
+    private Date                            validTo;
 
     public ConceptSchemeMainFormLayout() {
         super();
@@ -60,8 +63,9 @@ public class ConceptSchemeMainFormLayout extends InternationalMainFormLayout {
         toolStrip.addButton(announce);
     }
 
-    public void updatePublishSection(ItemSchemeMetamacProcStatusEnum status) {
+    public void updatePublishSection(ItemSchemeMetamacProcStatusEnum status, Date validTo) {
         this.status = status;
+        this.validTo = validTo;
     }
 
     private void updateVisibility() {
@@ -83,7 +87,10 @@ public class ConceptSchemeMainFormLayout extends InternationalMainFormLayout {
             showVersioningButton();
         } else if (ItemSchemeMetamacProcStatusEnum.EXTERNALLY_PUBLISHED.equals(status)) {
             showVersioningButton();
-            showCancelValidityButton();
+            // Only cancel scheme validity if it has not been canceled previously
+            if (validTo == null) {
+                showCancelValidityButton();
+            }
         }
     }
 

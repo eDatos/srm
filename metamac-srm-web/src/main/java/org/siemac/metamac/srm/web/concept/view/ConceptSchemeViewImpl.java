@@ -307,6 +307,13 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
                 uiHandlers.versioning(conceptSchemeDto.getUrn());
             }
         });
+        mainFormLayout.getCancelValidity().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                uiHandlers.cancelValidity(conceptSchemeDto.getUrn());
+            }
+        });
     }
     /*
      * GWTP will call setInSlot when a child presenter asks to be added under this view
@@ -350,7 +357,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         String title = defaultLocalized != null ? defaultLocalized : StringUtils.EMPTY;
         mainFormLayout.setTitleLabelContents(title);
 
-        mainFormLayout.updatePublishSection(conceptScheme.getProcStatus());
+        mainFormLayout.updatePublishSection(conceptScheme.getProcStatus(), conceptScheme.getValidTo());
         mainFormLayout.setViewMode();
 
         setConceptSchemeViewMode(conceptScheme);

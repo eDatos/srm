@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.web.concept.presenter;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
@@ -19,6 +20,8 @@ import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.client.widgets.presenter.ToolStripPresenterWidget;
 import org.siemac.metamac.srm.web.concept.view.handlers.ConceptSchemeUiHandlers;
+import org.siemac.metamac.srm.web.shared.concept.CancelConceptSchemeValidityAction;
+import org.siemac.metamac.srm.web.shared.concept.CancelConceptSchemeValidityResult;
 import org.siemac.metamac.srm.web.shared.concept.DeleteConceptListAction;
 import org.siemac.metamac.srm.web.shared.concept.DeleteConceptListResult;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptListBySchemeAction;
@@ -147,9 +150,13 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
     }
 
     @Override
-    public void retrieveConceptScheme(String urn) {
-        String schemeUrn = UrnUtils.generateUrn(UrnConstants.URN_SDMX_CLASS_CONCEPTSCHEME_PREFIX, urn);
-        dispatcher.execute(new GetConceptSchemeAction(schemeUrn), new WaitingAsyncCallback<GetConceptSchemeResult>() {
+    public void retrieveConceptScheme(String param) {
+        String schemeUrn = UrnUtils.generateUrn(UrnConstants.URN_SDMX_CLASS_CONCEPTSCHEME_PREFIX, param);
+        retrieveConceptSchemeByUrn(schemeUrn);
+    }
+
+    private void retrieveConceptSchemeByUrn(String urn) {
+        dispatcher.execute(new GetConceptSchemeAction(urn), new WaitingAsyncCallback<GetConceptSchemeResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -329,6 +336,24 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
             @Override
             public void onWaitSuccess(DeleteConceptListResult result) {
                 retrieveConceptListByScheme(conceptSchemeDto.getUrn());
+            }
+        });
+    }
+
+    @Override
+    public void cancelValidity(final String urn) {
+        List<String> urns = new ArrayList<String>();
+        urns.add(urn);
+        dispatcher.execute(new CancelConceptSchemeValidityAction(urns), new WaitingAsyncCallback<CancelConceptSchemeValidityResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorCancelValidity()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(CancelConceptSchemeValidityResult result) {
+                ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getMessageList(getMessages().conceptSchemeDeleted()), MessageTypeEnum.SUCCESS);
+                retrieveConceptSchemeByUrn(urn);
             }
         });
     }

@@ -75,4 +75,8 @@ public class ConceptSchemeRecord extends ListGridRecord {
         return getAttributeAsString(ConceptSchemeDS.URN);
     }
 
+    public ConceptSchemeMetamacDto getConceptSchemeDto() {
+        return (ConceptSchemeMetamacDto) getAttributeAsObject(ConceptSchemeDS.DTO);
+    }
+
 }

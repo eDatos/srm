@@ -103,6 +103,13 @@ public class ConceptSchemeListViewImpl extends ViewImpl implements ConceptScheme
 
         cancelConceptSchemeValidityButton = new ToolStripButton(getConstants().lifeCycleCancelValidity(), GlobalResources.RESOURCE.disable().getURL());
         cancelConceptSchemeValidityButton.setVisibility(Visibility.HIDDEN);
+        cancelConceptSchemeValidityButton.addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                uiHandlers.cancelValidity(getUrnsFromSelectedConceptSchemes());
+            }
+        });
 
         toolStrip.addButton(newConceptSchemeButton);
         toolStrip.addButton(deleteConceptSchemeButton);
@@ -257,7 +264,8 @@ public class ConceptSchemeListViewImpl extends ViewImpl implements ConceptScheme
         boolean allSelectedSchemesExternallyPublished = true;
         for (ListGridRecord record : records) {
             ConceptSchemeRecord conceptSchemeRecord = (ConceptSchemeRecord) record;
-            if (!ItemSchemeMetamacProcStatusEnum.EXTERNALLY_PUBLISHED.equals(conceptSchemeRecord.getProcStatus())) {
+            // Do not show cancel validity button if scheme is not published externally or if scheme validity has been canceled previously
+            if (!ItemSchemeMetamacProcStatusEnum.EXTERNALLY_PUBLISHED.equals(conceptSchemeRecord.getProcStatus()) || conceptSchemeRecord.getConceptSchemeDto().getValidTo() != null) {
                 allSelectedSchemesExternallyPublished = false;
             }
         }

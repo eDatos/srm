@@ -12,6 +12,7 @@ public interface ConceptSchemeListUiHandlers extends UiHandlers {
     void createConceptScheme(ConceptSchemeMetamacDto conceptSchemeDto);
     void deleteConceptSchemes(List<String> urns);
     void retrieveConceptSchemes(int firstResult, int maxResults, String conceptScheme);
+    void cancelValidity(List<String> urn);
 
     void retrieveStatisticalOperations(int firstResult, int maxResults, String operation);
 }

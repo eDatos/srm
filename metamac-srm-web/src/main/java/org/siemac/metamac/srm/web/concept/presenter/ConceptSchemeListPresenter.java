@@ -16,6 +16,8 @@ import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.widgets.presenter.ToolStripPresenterWidget;
 import org.siemac.metamac.srm.web.concept.view.handlers.ConceptSchemeListUiHandlers;
+import org.siemac.metamac.srm.web.shared.concept.CancelConceptSchemeValidityAction;
+import org.siemac.metamac.srm.web.shared.concept.CancelConceptSchemeValidityResult;
 import org.siemac.metamac.srm.web.shared.concept.DeleteConceptSchemeListAction;
 import org.siemac.metamac.srm.web.shared.concept.DeleteConceptSchemeListResult;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemePaginatedListAction;
@@ -160,6 +162,23 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
             }
             @Override
             public void onWaitSuccess(DeleteConceptSchemeListResult result) {
+                ShowMessageEvent.fire(ConceptSchemeListPresenter.this, ErrorUtils.getMessageList(getMessages().conceptSchemeDeleted()), MessageTypeEnum.SUCCESS);
+                retrieveConceptSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, null);
+            }
+        });
+    }
+
+    @Override
+    public void cancelValidity(List<String> urns) {
+        dispatcher.execute(new CancelConceptSchemeValidityAction(urns), new WaitingAsyncCallback<CancelConceptSchemeValidityResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(ConceptSchemeListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorCancelValidity()), MessageTypeEnum.ERROR);
+                retrieveConceptSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, null);
+            }
+            @Override
+            public void onWaitSuccess(CancelConceptSchemeValidityResult result) {
                 ShowMessageEvent.fire(ConceptSchemeListPresenter.this, ErrorUtils.getMessageList(getMessages().conceptSchemeDeleted()), MessageTypeEnum.SUCCESS);
                 retrieveConceptSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, null);
             }
