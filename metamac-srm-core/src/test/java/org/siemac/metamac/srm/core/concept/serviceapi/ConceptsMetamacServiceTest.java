@@ -1208,9 +1208,9 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
     @Test
     public void testCreateConcept() throws Exception {
 
-        ConceptMetamac concept = ConceptsMetamacDoMocks.mockConcept();
+        ConceptType conceptType = conceptsService.retrieveConceptTypeByIdentifier(getServiceContextAdministrador(), "DIRECT");
+        ConceptMetamac concept = ConceptsMetamacDoMocks.mockConcept(conceptType);
         concept.setParent(null);
-        concept.setType(conceptsService.retrieveConceptTypeByIdentifier(getServiceContextAdministrador(), "DIRECT"));
         String conceptSchemeUrn = CONCEPT_SCHEME_1_V2;
 
         // Create
@@ -1235,7 +1235,8 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
     @Test
     public void testCreateConceptSubconcept() throws Exception {
 
-        ConceptMetamac concept = ConceptsMetamacDoMocks.mockConcept();
+        ConceptType conceptType = null;
+        ConceptMetamac concept = ConceptsMetamacDoMocks.mockConcept(conceptType);
         ConceptMetamac conceptParent = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_1_V2_CONCEPT_1);
         concept.setParent(conceptParent);
         String conceptSchemeUrn = CONCEPT_SCHEME_1_V2;

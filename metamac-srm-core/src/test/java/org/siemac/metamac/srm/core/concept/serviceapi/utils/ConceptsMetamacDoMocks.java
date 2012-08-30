@@ -6,6 +6,7 @@ import org.siemac.metamac.core.common.ent.domain.ExternalItem;
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
+import org.siemac.metamac.srm.core.concept.domain.ConceptType;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptRoleEnum;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 
@@ -23,7 +24,7 @@ public class ConceptsMetamacDoMocks extends ConceptsDoMocks {
         return conceptSchemeVersion;
     }
     
-    public static ConceptMetamac mockConcept() {
+    public static ConceptMetamac mockConcept(ConceptType conceptType) {
 
         ConceptMetamac concept = new ConceptMetamac();
         concept.setPluralName(mockInternationalString());
@@ -32,11 +33,11 @@ public class ConceptsMetamacDoMocks extends ConceptsDoMocks {
         concept.setContext(mockInternationalString());
         concept.setDocMethod(mockInternationalString());
         concept.setSdmxRelatedArtefact(ConceptRoleEnum.ATTRIBUTE);
-        // TODO type
+        concept.setType(conceptType);
         concept.setDerivation(mockInternationalString());
         concept.setLegalActs(mockInternationalString());
         
-        mockConcept(concept);
+        mockConcept(concept, Boolean.TRUE);
         return concept;
     }
 

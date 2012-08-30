@@ -98,7 +98,8 @@
             
             <!-- CONCEPT01 -->
             <TB_CONCEPTS
-                TB_ITEMS="111"    
+                TB_ITEMS="111"
+                CORE_REPRESENTATION_FK="[null]"    
             />
 
             <TB_M_CONCEPTS
@@ -242,7 +243,8 @@
             
             <!-- CONCEPT01 -->
             <TB_CONCEPTS
-                TB_ITEMS="121"    
+                TB_ITEMS="121"
+                CORE_REPRESENTATION_FK="[null]"    
             />
             
             <TB_M_CONCEPTS
@@ -300,7 +302,8 @@
             
             <!-- CONCEPT02 -->
             <TB_CONCEPTS
-                TB_ITEMS="122"    
+                TB_ITEMS="122"
+                CORE_REPRESENTATION_FK="[null]"    
             />
             
             <TB_M_CONCEPTS
@@ -357,7 +360,8 @@
             
             <!-- CONCEPT0201 -->
             <TB_CONCEPTS
-                TB_ITEMS="1221"    
+                TB_ITEMS="1221"
+                CORE_REPRESENTATION_FK="[null]"    
             />
 
             <TB_M_CONCEPTS
@@ -414,7 +418,8 @@
         
             <!-- CONCEPT020101 -->
             <TB_CONCEPTS
-                TB_ITEMS="12211"    
+                TB_ITEMS="12211"
+                CORE_REPRESENTATION_FK="[null]"    
             />
             
             <TB_M_CONCEPTS
@@ -655,7 +660,8 @@
             <!--    -> CONCEPT0202 -->
 
             <TB_CONCEPTS
-                TB_ITEMS="311"    
+                TB_ITEMS="311"
+                CORE_REPRESENTATION_FK="[null]"    
             />
             
             <TB_M_CONCEPTS
@@ -713,7 +719,8 @@
             
             <!-- CONCEPT02 -->
             <TB_CONCEPTS
-                TB_ITEMS="312"    
+                TB_ITEMS="312"
+                CORE_REPRESENTATION_FK="[null]"    
             />
             
             <TB_M_CONCEPTS
@@ -770,7 +777,8 @@
             
             <!-- CONCEPT0201 -->
             <TB_CONCEPTS
-                TB_ITEMS="3121"    
+                TB_ITEMS="3121"
+                CORE_REPRESENTATION_FK="[null]"    
             />
             
             <TB_M_CONCEPTS
@@ -827,7 +835,8 @@
             
                     <!-- CONCEPT020101 -->
                     <TB_CONCEPTS
-                        TB_ITEMS="31211"    
+                        TB_ITEMS="31211"
+                        CORE_REPRESENTATION_FK="[null]"    
                     />
                     
                     <TB_M_CONCEPTS
@@ -884,7 +893,8 @@
             
             <!-- CONCEPT0202 -->
             <TB_CONCEPTS
-                TB_ITEMS="3122"    
+                TB_ITEMS="3122"
+                CORE_REPRESENTATION_FK="[null]"    
             />
         
             <TB_M_CONCEPTS
