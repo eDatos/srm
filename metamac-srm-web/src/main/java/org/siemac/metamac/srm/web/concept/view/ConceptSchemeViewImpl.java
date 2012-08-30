@@ -409,27 +409,28 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         // Production descriptors
         productionDescriptorsForm = new GroupDynamicForm(getConstants().conceptSchemeProductionDescriptors());
         ViewTextItem procStatus = new ViewTextItem(ConceptSchemeDS.PROC_STATUS, getConstants().conceptSchemeProcStatus());
-        ViewTextItem productionValidationDate = new ViewTextItem(ConceptSchemeDS.PRODUCTION_VALIDATION_DATE, getConstants().lifeCycleProductionValidationDate());
-        productionDescriptorsForm.setFields(procStatus, productionValidationDate);
+        productionDescriptorsForm.setFields(procStatus);
 
         // Diffusion descriptors
         diffusionDescriptorsForm = new GroupDynamicForm(getConstants().conceptSchemeDiffusionDescriptors());
         ViewTextItem startDate = new ViewTextItem(ConceptSchemeDS.VALID_FROM, getConstants().conceptSchemeValidFrom());
         ViewTextItem endDate = new ViewTextItem(ConceptSchemeDS.VALID_TO, getConstants().conceptSchemeValidTo());
-        ViewTextItem diffusionValidationDate = new ViewTextItem(ConceptSchemeDS.DIFFUSION_VALIDATION_DATE, getConstants().lifeCycleDiffusionValidationDate());
-        ViewTextItem internalPublicationDate = new ViewTextItem(ConceptSchemeDS.INTERNAL_PUBLICATION_DATE, getConstants().lifeCycleInternalPublicationDate());
-        ViewTextItem externalPublicationDate = new ViewTextItem(ConceptSchemeDS.EXTERNAL_PUBLICATION_DATE, getConstants().lifeCycleExternalPublicationDate());
         ViewTextItem externalPublicationFailed = new ViewTextItem(ConceptSchemeDS.IS_EXTERNAL_PUBLICATION_FAILED, getConstants().lifeCycleExternalPublicationFailed());
         ViewTextItem externalPublicationFailedDate = new ViewTextItem(ConceptSchemeDS.EXTERNAL_PUBLICATION_FAILED_DATE, getConstants().lifeCycleExternalPublicationFailedDate());
-        diffusionDescriptorsForm.setFields(startDate, endDate, diffusionValidationDate, internalPublicationDate, externalPublicationDate, externalPublicationFailed, externalPublicationFailedDate);
+        diffusionDescriptorsForm.setFields(startDate, endDate, externalPublicationFailed, externalPublicationFailedDate);
 
         // Version responsibility
         versionResponsibilityForm = new GroupDynamicForm(getConstants().conceptSchemeVersionResponsibility());
-        ViewTextItem productionEnvironment = new ViewTextItem(ConceptSchemeDS.PRODUCTION_VALIDATION_USER, getConstants().conceptSchemeVersionResponsibilityProduction());
-        ViewTextItem diffusionEnvironment = new ViewTextItem(ConceptSchemeDS.DIFFUSION_VALIDATION_USER, getConstants().conceptSchemeVersionResponsibilityDiffusion());
-        ViewTextItem internalPublication = new ViewTextItem(ConceptSchemeDS.INTERNAL_PUBLICATION_USER, getConstants().conceptSchemeVersionResponsibilityInternalPublication());
-        ViewTextItem externalPublication = new ViewTextItem(ConceptSchemeDS.EXTERNAL_PUBLICATION_USER, getConstants().conceptSchemeVersionResponsibilityExternalPublication());
-        versionResponsibilityForm.setFields(productionEnvironment, diffusionEnvironment, internalPublication, externalPublication);
+        ViewTextItem productionValidationUser = new ViewTextItem(ConceptSchemeDS.PRODUCTION_VALIDATION_USER, getConstants().lifeCycleProductionValidationUser());
+        ViewTextItem productionValidationDate = new ViewTextItem(ConceptSchemeDS.PRODUCTION_VALIDATION_DATE, getConstants().lifeCycleProductionValidationDate());
+        ViewTextItem diffusionValidationUser = new ViewTextItem(ConceptSchemeDS.DIFFUSION_VALIDATION_USER, getConstants().lifeCycleDiffusionValidationUser());
+        ViewTextItem diffusionValidationDate = new ViewTextItem(ConceptSchemeDS.DIFFUSION_VALIDATION_DATE, getConstants().lifeCycleDiffusionValidationDate());
+        ViewTextItem internalPublicationUser = new ViewTextItem(ConceptSchemeDS.INTERNAL_PUBLICATION_USER, getConstants().lifeCycleInternalPublicationUser());
+        ViewTextItem internalPublicationDate = new ViewTextItem(ConceptSchemeDS.INTERNAL_PUBLICATION_DATE, getConstants().lifeCycleInternalPublicationDate());
+        ViewTextItem externalPublicationUser = new ViewTextItem(ConceptSchemeDS.EXTERNAL_PUBLICATION_USER, getConstants().lifeCycleExternalPublicationUser());
+        ViewTextItem externalPublicationDate = new ViewTextItem(ConceptSchemeDS.EXTERNAL_PUBLICATION_DATE, getConstants().lifeCycleExternalPublicationDate());
+        versionResponsibilityForm.setFields(productionValidationUser, productionValidationDate, diffusionValidationUser, diffusionValidationDate, internalPublicationUser, internalPublicationDate,
+                externalPublicationUser, externalPublicationDate);
 
         mainFormLayout.addViewCanvas(identifiersForm);
         mainFormLayout.addViewCanvas(contentDescriptorsForm);
@@ -519,28 +520,28 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         // Production descriptors
         productionDescriptorsEditionForm = new GroupDynamicForm(getConstants().conceptSchemeProductionDescriptors());
         ViewTextItem procStatus = new ViewTextItem(ConceptSchemeDS.PROC_STATUS, getConstants().conceptSchemeProcStatus());
-        ViewTextItem productionValidationDate = new ViewTextItem(ConceptSchemeDS.PRODUCTION_VALIDATION_DATE, getConstants().lifeCycleProductionValidationDate());
-        productionDescriptorsEditionForm.setFields(procStatus, productionValidationDate);
+        productionDescriptorsEditionForm.setFields(procStatus);
 
         // Diffusion descriptors
         diffusionDescriptorsEditionForm = new GroupDynamicForm(getConstants().conceptSchemeDiffusionDescriptors());
         ViewTextItem startDate = new ViewTextItem(ConceptSchemeDS.VALID_FROM, getConstants().conceptSchemeValidFrom());
         ViewTextItem endDate = new ViewTextItem(ConceptSchemeDS.VALID_TO, getConstants().conceptSchemeValidTo());
-        ViewTextItem diffusionValidationDate = new ViewTextItem(ConceptSchemeDS.DIFFUSION_VALIDATION_DATE, getConstants().lifeCycleDiffusionValidationDate());
-        ViewTextItem internalPublicationDate = new ViewTextItem(ConceptSchemeDS.INTERNAL_PUBLICATION_DATE, getConstants().lifeCycleInternalPublicationDate());
-        ViewTextItem externalPublicationDate = new ViewTextItem(ConceptSchemeDS.EXTERNAL_PUBLICATION_DATE, getConstants().lifeCycleExternalPublicationDate());
         ViewTextItem externalPublicationFailed = new ViewTextItem(ConceptSchemeDS.IS_EXTERNAL_PUBLICATION_FAILED, getConstants().lifeCycleExternalPublicationFailed());
         ViewTextItem externalPublicationFailedDate = new ViewTextItem(ConceptSchemeDS.EXTERNAL_PUBLICATION_FAILED_DATE, getConstants().lifeCycleExternalPublicationFailedDate());
-        diffusionDescriptorsEditionForm.setFields(startDate, endDate, diffusionValidationDate, internalPublicationDate, externalPublicationDate, externalPublicationFailed,
-                externalPublicationFailedDate);
+        diffusionDescriptorsEditionForm.setFields(startDate, endDate, externalPublicationFailed, externalPublicationFailedDate);
 
         // Version responsibility
         versionResponsibilityEditionForm = new GroupDynamicForm(getConstants().conceptSchemeVersionResponsibility());
-        ViewTextItem productionEnvironment = new ViewTextItem(ConceptSchemeDS.PRODUCTION_VALIDATION_USER, getConstants().conceptSchemeVersionResponsibilityProduction());
-        ViewTextItem diffusionEnvironment = new ViewTextItem(ConceptSchemeDS.DIFFUSION_VALIDATION_USER, getConstants().conceptSchemeVersionResponsibilityDiffusion());
-        ViewTextItem internalPublication = new ViewTextItem(ConceptSchemeDS.INTERNAL_PUBLICATION_USER, getConstants().conceptSchemeVersionResponsibilityInternalPublication());
-        ViewTextItem externalPublication = new ViewTextItem(ConceptSchemeDS.EXTERNAL_PUBLICATION_USER, getConstants().conceptSchemeVersionResponsibilityExternalPublication());
-        versionResponsibilityEditionForm.setFields(productionEnvironment, diffusionEnvironment, internalPublication, externalPublication);
+        ViewTextItem productionValidationUser = new ViewTextItem(ConceptSchemeDS.PRODUCTION_VALIDATION_USER, getConstants().lifeCycleProductionValidationUser());
+        ViewTextItem productionValidationDate = new ViewTextItem(ConceptSchemeDS.PRODUCTION_VALIDATION_DATE, getConstants().lifeCycleProductionValidationDate());
+        ViewTextItem diffusionValidationUser = new ViewTextItem(ConceptSchemeDS.DIFFUSION_VALIDATION_USER, getConstants().lifeCycleDiffusionValidationUser());
+        ViewTextItem diffusionValidationDate = new ViewTextItem(ConceptSchemeDS.DIFFUSION_VALIDATION_DATE, getConstants().lifeCycleDiffusionValidationDate());
+        ViewTextItem internalPublicationUser = new ViewTextItem(ConceptSchemeDS.INTERNAL_PUBLICATION_USER, getConstants().lifeCycleInternalPublicationUser());
+        ViewTextItem internalPublicationDate = new ViewTextItem(ConceptSchemeDS.INTERNAL_PUBLICATION_DATE, getConstants().lifeCycleInternalPublicationDate());
+        ViewTextItem externalPublicationUser = new ViewTextItem(ConceptSchemeDS.EXTERNAL_PUBLICATION_USER, getConstants().lifeCycleExternalPublicationUser());
+        ViewTextItem externalPublicationDate = new ViewTextItem(ConceptSchemeDS.EXTERNAL_PUBLICATION_DATE, getConstants().lifeCycleExternalPublicationDate());
+        versionResponsibilityEditionForm.setFields(productionValidationUser, productionValidationDate, diffusionValidationUser, diffusionValidationDate, internalPublicationUser,
+                internalPublicationDate, externalPublicationUser, externalPublicationDate);
 
         mainFormLayout.addEditionCanvas(identifiersEditionForm);
         mainFormLayout.addEditionCanvas(contentDescriptorsEditionForm);
@@ -583,24 +584,25 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
 
         // Production descriptors
         productionDescriptorsForm.setValue(ConceptSchemeDS.PROC_STATUS, CommonUtils.getConceptSchemeProcStatus(conceptSchemeDto));
-        productionDescriptorsForm.setValue(ConceptSchemeDS.PRODUCTION_VALIDATION_DATE, conceptSchemeDto.getProductionValidationDate());
 
         // Diffusion descriptors
         diffusionDescriptorsForm.setValue(ConceptSchemeDS.VALID_FROM, DateUtils.getFormattedDate(conceptSchemeDto.getValidFrom()));
         diffusionDescriptorsForm.setValue(ConceptSchemeDS.VALID_TO, DateUtils.getFormattedDate(conceptSchemeDto.getValidTo()));
-        diffusionDescriptorsForm.setValue(ConceptSchemeDS.DIFFUSION_VALIDATION_DATE, DateUtils.getFormattedDate(conceptSchemeDto.getDiffusionValidationDate()));
-        diffusionDescriptorsForm.setValue(ConceptSchemeDS.INTERNAL_PUBLICATION_DATE, DateUtils.getFormattedDate(conceptSchemeDto.getInternalPublicationDate()));
-        diffusionDescriptorsForm.setValue(ConceptSchemeDS.EXTERNAL_PUBLICATION_DATE, DateUtils.getFormattedDate(conceptSchemeDto.getExternalPublicationDate()));
         diffusionDescriptorsForm.setValue(ConceptSchemeDS.IS_EXTERNAL_PUBLICATION_FAILED, BooleanUtils.isTrue(conceptSchemeDto.getIsExternalPublicationFailed()) ? MetamacWebCommon.getConstants()
                 .yes() : StringUtils.EMPTY);
         diffusionDescriptorsForm.setValue(ConceptSchemeDS.EXTERNAL_PUBLICATION_FAILED_DATE, DateUtils.getFormattedDate(conceptSchemeDto.getExternalPublicationFailedDate()));
 
         // Version responsibility
         versionResponsibilityForm.setValue(ConceptSchemeDS.PRODUCTION_VALIDATION_USER, conceptSchemeDto.getProductionValidationUser());
+        versionResponsibilityForm.setValue(ConceptSchemeDS.PRODUCTION_VALIDATION_DATE, conceptSchemeDto.getProductionValidationDate());
         versionResponsibilityForm.setValue(ConceptSchemeDS.DIFFUSION_VALIDATION_USER, conceptSchemeDto.getDiffusionValidationUser());
+        versionResponsibilityForm.setValue(ConceptSchemeDS.DIFFUSION_VALIDATION_DATE, DateUtils.getFormattedDate(conceptSchemeDto.getDiffusionValidationDate()));
         versionResponsibilityForm.setValue(ConceptSchemeDS.INTERNAL_PUBLICATION_USER, conceptSchemeDto.getInternalPublicationUser());
+        versionResponsibilityForm.setValue(ConceptSchemeDS.INTERNAL_PUBLICATION_DATE, DateUtils.getFormattedDate(conceptSchemeDto.getInternalPublicationDate()));
         versionResponsibilityForm.setValue(ConceptSchemeDS.EXTERNAL_PUBLICATION_USER, conceptSchemeDto.getExternalPublicationUser());
+        versionResponsibilityForm.setValue(ConceptSchemeDS.EXTERNAL_PUBLICATION_DATE, DateUtils.getFormattedDate(conceptSchemeDto.getExternalPublicationDate()));
     }
+
     public void setConceptSchemeEditionMode(ConceptSchemeMetamacDto conceptSchemeDto) {
         // Identifiers
         identifiersEditionForm.setValue(ConceptSchemeDS.CODE, conceptSchemeDto.getCode());
@@ -622,23 +624,23 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
 
         // Production descriptors
         productionDescriptorsEditionForm.setValue(ConceptSchemeDS.PROC_STATUS, CommonUtils.getConceptSchemeProcStatus(conceptSchemeDto));
-        productionDescriptorsEditionForm.setValue(ConceptSchemeDS.PRODUCTION_VALIDATION_DATE, conceptSchemeDto.getProductionValidationDate());
 
         // Diffusion descriptors
         diffusionDescriptorsEditionForm.setValue(ConceptSchemeDS.VALID_FROM, DateUtils.getFormattedDate(conceptSchemeDto.getValidFrom()));
         diffusionDescriptorsEditionForm.setValue(ConceptSchemeDS.VALID_TO, DateUtils.getFormattedDate(conceptSchemeDto.getValidTo()));
-        diffusionDescriptorsEditionForm.setValue(ConceptSchemeDS.DIFFUSION_VALIDATION_DATE, DateUtils.getFormattedDate(conceptSchemeDto.getDiffusionValidationDate()));
-        diffusionDescriptorsEditionForm.setValue(ConceptSchemeDS.INTERNAL_PUBLICATION_DATE, DateUtils.getFormattedDate(conceptSchemeDto.getInternalPublicationDate()));
-        diffusionDescriptorsEditionForm.setValue(ConceptSchemeDS.EXTERNAL_PUBLICATION_DATE, DateUtils.getFormattedDate(conceptSchemeDto.getExternalPublicationDate()));
         diffusionDescriptorsEditionForm.setValue(ConceptSchemeDS.IS_EXTERNAL_PUBLICATION_FAILED, BooleanUtils.isTrue(conceptSchemeDto.getIsExternalPublicationFailed()) ? MetamacWebCommon
                 .getConstants().yes() : MetamacWebCommon.getConstants().no());
         diffusionDescriptorsEditionForm.setValue(ConceptSchemeDS.EXTERNAL_PUBLICATION_FAILED_DATE, DateUtils.getFormattedDate(conceptSchemeDto.getExternalPublicationFailedDate()));
 
         // Version responsibility
         versionResponsibilityEditionForm.setValue(ConceptSchemeDS.PRODUCTION_VALIDATION_USER, conceptSchemeDto.getProductionValidationUser());
+        versionResponsibilityEditionForm.setValue(ConceptSchemeDS.PRODUCTION_VALIDATION_DATE, conceptSchemeDto.getProductionValidationDate());
         versionResponsibilityEditionForm.setValue(ConceptSchemeDS.DIFFUSION_VALIDATION_USER, conceptSchemeDto.getDiffusionValidationUser());
+        versionResponsibilityEditionForm.setValue(ConceptSchemeDS.DIFFUSION_VALIDATION_DATE, DateUtils.getFormattedDate(conceptSchemeDto.getDiffusionValidationDate()));
         versionResponsibilityEditionForm.setValue(ConceptSchemeDS.INTERNAL_PUBLICATION_USER, conceptSchemeDto.getInternalPublicationUser());
+        versionResponsibilityEditionForm.setValue(ConceptSchemeDS.INTERNAL_PUBLICATION_DATE, DateUtils.getFormattedDate(conceptSchemeDto.getInternalPublicationDate()));
         versionResponsibilityEditionForm.setValue(ConceptSchemeDS.EXTERNAL_PUBLICATION_USER, conceptSchemeDto.getExternalPublicationUser());
+        versionResponsibilityEditionForm.setValue(ConceptSchemeDS.EXTERNAL_PUBLICATION_DATE, DateUtils.getFormattedDate(conceptSchemeDto.getExternalPublicationDate()));
     }
 
     public ConceptSchemeMetamacDto getConceptSchemeDto() {
