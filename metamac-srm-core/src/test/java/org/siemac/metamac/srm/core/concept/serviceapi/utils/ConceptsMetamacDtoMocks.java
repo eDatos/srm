@@ -8,6 +8,8 @@ import org.siemac.metamac.srm.core.concept.dto.ConceptTypeDto;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptRoleEnum;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 
+import com.arte.statistic.sdmx.srm.core.concept.serviceapi.utils.ConceptsDtoMocks;
+
 public class ConceptsMetamacDtoMocks {
 
     // -----------------------------------------------------------------------------------
@@ -16,21 +18,19 @@ public class ConceptsMetamacDtoMocks {
 
     public static ConceptSchemeMetamacDto mockConceptSchemeDtoGlossaryType() {
         ConceptSchemeMetamacDto conceptSchemeDto = new ConceptSchemeMetamacDto();
-        conceptSchemeDto.setCode("code-" + MetamacMocks.mockString(10));
-        conceptSchemeDto.setName(MetamacMocks.mockInternationalString());
+        ConceptsDtoMocks.mockConceptSchemeDto(conceptSchemeDto);
         conceptSchemeDto.setType(ConceptSchemeTypeEnum.GLOSSARY);
-        conceptSchemeDto.setMaintainer(MetamacMocks.mockExternalItemDto("urn:maintiner", TypeExternalArtefactsEnum.AGENCY));
+        conceptSchemeDto.setMaintainer(MetamacMocks.mockExternalItemDto("urn:maintainer", TypeExternalArtefactsEnum.AGENCY));
 
         return conceptSchemeDto;
     }
 
     public static ConceptSchemeMetamacDto mockConceptSchemeDtoOperationType() {
         ConceptSchemeMetamacDto conceptSchemeDto = new ConceptSchemeMetamacDto();
-        conceptSchemeDto.setCode("code-" + MetamacMocks.mockString(10));
-        conceptSchemeDto.setName(MetamacMocks.mockInternationalString());
+        ConceptsDtoMocks.mockConceptSchemeDto(conceptSchemeDto);
         conceptSchemeDto.setType(ConceptSchemeTypeEnum.OPERATION);
         conceptSchemeDto.setRelatedOperation(MetamacMocks.mockExternalItemDto("urn:operation", TypeExternalArtefactsEnum.STATISTICAL_OPERATION));
-        conceptSchemeDto.setMaintainer(MetamacMocks.mockExternalItemDto("urn:maintiner", TypeExternalArtefactsEnum.AGENCY));
+        conceptSchemeDto.setMaintainer(MetamacMocks.mockExternalItemDto("urn:maintainer", TypeExternalArtefactsEnum.AGENCY));
 
         return conceptSchemeDto;
     }
@@ -39,10 +39,9 @@ public class ConceptsMetamacDtoMocks {
     // CONCEPTS
     // -----------------------------------------------------------------------------------
 
-    public static ConceptMetamacDto mockConceptDto() {
+    public static ConceptMetamacDto mockConceptDto(Boolean enumerated) {
         ConceptMetamacDto conceptMetamacDto = new ConceptMetamacDto();
-        conceptMetamacDto.setCode("code-" + MetamacMocks.mockString(10));
-        conceptMetamacDto.setName(MetamacMocks.mockInternationalString());
+        ConceptsDtoMocks.mockConceptDto(conceptMetamacDto, enumerated);
         conceptMetamacDto.setSdmxRelatedArtefact(ConceptRoleEnum.ATTRIBUTE);
         conceptMetamacDto.setType(mockConceptTypeDto());
         return conceptMetamacDto;
