@@ -54,6 +54,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 import com.smartgwt.client.types.Overflow;
+import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.types.Visibility;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -701,6 +702,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
                     }
                 });
                 uiHandlers.retrieveStatisticalOperations(OPERATION_FIRST_RESULT, OPERATION_MAX_RESULTS, null);
+                searchOperationsWindow.getListGrid().setSelectionType(SelectionStyle.SINGLE); // Only one statistical operation can be selected
                 searchOperationsWindow.getExternalListGridItem().setSearchAction(new SearchPaginatedAction() {
 
                     @Override
@@ -715,6 +717,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
                         relatedOperation = searchOperationsWindow.getSelectedExternalItem();
                         searchOperationsWindow.destroy();
                         classDescriptorsEditionForm.setValue(ConceptSchemeDS.RELATED_OPERATION, ExternalItemUtils.getExternalItemName(relatedOperation));
+                        classDescriptorsEditionForm.validate(false);
                     }
                 });
             }
