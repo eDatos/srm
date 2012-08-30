@@ -67,7 +67,7 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
         ConceptSchemeMetamacDto target = new ConceptSchemeMetamacDto();
         target.setProcStatus(source.getProcStatus());
         target.setType(source.getType());
-        target.setRelatedOperation(do2DtoMapperSdmxSrm.externalItemToExternalItemDto(TypeDozerCopyMode.UPDATE, source.getRelatedOperation()));
+        target.setRelatedOperation(do2DtoMapperSdmxSrm.externalItemToExternalItemDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getRelatedOperation()));
         target.setProductionValidationDate(CoreCommonUtil.transformDateTimeToDate(source.getProductionValidationDate()));
         target.setProductionValidationUser(source.getProductionValidationUser());
         target.setDiffusionValidationDate(CoreCommonUtil.transformDateTimeToDate(source.getDiffusionValidationDate()));
@@ -97,15 +97,15 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
         }
         ConceptMetamacDto target = new ConceptMetamacDto();
 
-        target.setPluralName(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.UPDATE, source.getPluralName()));
-        target.setAcronym(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.UPDATE, source.getAcronym()));
-        target.setDescriptionSource(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.UPDATE, source.getDescriptionSource()));
-        target.setContext(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.UPDATE, source.getContext()));
-        target.setDocMethod(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.UPDATE, source.getDocMethod()));
+        target.setPluralName(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getPluralName()));
+        target.setAcronym(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getAcronym()));
+        target.setDescriptionSource(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getDescriptionSource()));
+        target.setContext(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getContext()));
+        target.setDocMethod(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getDocMethod()));
         target.setSdmxRelatedArtefact(source.getSdmxRelatedArtefact());
         target.setType(conceptTypeDoToDto(source.getType()));
-        target.setDerivation(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.UPDATE, source.getDerivation()));
-        target.setLegalActs(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.UPDATE, source.getLegalActs()));
+        target.setDerivation(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getDerivation()));
+        target.setLegalActs(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getLegalActs()));
         // TODO relatedConcepts
         do2DtoMapperSdmxSrm.conceptDoToDto(source, target);
         return target;
@@ -137,7 +137,7 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
         }
         ConceptTypeDto target = new ConceptTypeDto();
         target.setIdentifier(source.getIdentifier());
-        target.setDescription(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.UPDATE, source.getDescription()));
+        target.setDescription(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getDescription()));
         return target;
     }
     

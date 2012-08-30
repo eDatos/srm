@@ -133,7 +133,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         dataStructureDefinitionVersion = getDataStructureDefinitionService().saveDsd(ctx, dataStructureDefinitionVersion);
 
         // Entities to DTOs
-        return getDo2DtoMapper().dataStructureDefinitionToDataStructureDefinitionDto(TypeDozerCopyMode.UPDATE, dataStructureDefinitionVersion);
+        return getDo2DtoMapper().dataStructureDefinitionToDataStructureDefinitionDto(TypeDozerCopyMode.COPY_ALL_METADATA, dataStructureDefinitionVersion);
     }
 
     @Override
@@ -150,7 +150,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     public DataStructureDefinitionDto createDsdVersion(ServiceContext ctx, Long idDsd, boolean minorVersion) throws MetamacException {
 
         // Load extends DSD (in create mode)
-        DataStructureDefinitionExtendDto dataStructureDefinitionExtendDto = retrieveExtendedDsd(ctx, idDsd, TypeDozerCopyMode.CREATE);
+        DataStructureDefinitionExtendDto dataStructureDefinitionExtendDto = retrieveExtendedDsd(ctx, idDsd, TypeDozerCopyMode.COPY_TO_VERSIONING);
 
         dataStructureDefinitionExtendDto.setVersionLogic(VersionUtil.createNextVersionTag(dataStructureDefinitionExtendDto.getVersionLogic(), minorVersion));
 
@@ -181,7 +181,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         // To DTO
         List<DataStructureDefinitionDto> dataStructureDefinitionDtoList = new ArrayList<DataStructureDefinitionDto>();
         for (DataStructureDefinitionVersion dsd : dataStructureDefinitionList) {
-            dataStructureDefinitionDtoList.add(getDo2DtoMapper().dataStructureDefinitionToDataStructureDefinitionDto(TypeDozerCopyMode.UPDATE, dsd));
+            dataStructureDefinitionDtoList.add(getDo2DtoMapper().dataStructureDefinitionToDataStructureDefinitionDto(TypeDozerCopyMode.COPY_ALL_METADATA, dsd));
         }
 
         return dataStructureDefinitionDtoList;
@@ -213,7 +213,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         DataStructureDefinitionVersion dataStructureDefinitionVersion = getDataStructureDefinitionService().retrieveDataStructureDefinitionByUrn(ctx, urn);
 
         // TO DTO
-        return getDo2DtoMapper().dataStructureDefinitionToDataStructureDefinitionDto(TypeDozerCopyMode.UPDATE, dataStructureDefinitionVersion);
+        return getDo2DtoMapper().dataStructureDefinitionToDataStructureDefinitionDto(TypeDozerCopyMode.COPY_ALL_METADATA, dataStructureDefinitionVersion);
     }
 
     /**************************************************************************
@@ -237,13 +237,13 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         List<DescriptorDto> descriptorDtos = new ArrayList<DescriptorDto>();
         for (ComponentList componentList : dataStructureDefinitionVersion.getGrouping()) {
             if ((componentList instanceof AttributeDescriptor) && typeComponentList.equals(TypeComponentList.ATTRIBUTE_DESCRIPTOR)) {
-                descriptorDtos.add((DescriptorDto) getDo2DtoMapper().componentListToComponentListDto(TypeDozerCopyMode.UPDATE, componentList));
+                descriptorDtos.add((DescriptorDto) getDo2DtoMapper().componentListToComponentListDto(TypeDozerCopyMode.COPY_ALL_METADATA, componentList));
             } else if ((componentList instanceof DimensionDescriptor) && typeComponentList.equals(TypeComponentList.DIMENSION_DESCRIPTOR)) {
-                descriptorDtos.add((DescriptorDto) getDo2DtoMapper().componentListToComponentListDto(TypeDozerCopyMode.UPDATE, componentList));
+                descriptorDtos.add((DescriptorDto) getDo2DtoMapper().componentListToComponentListDto(TypeDozerCopyMode.COPY_ALL_METADATA, componentList));
             } else if ((componentList instanceof GroupDimensionDescriptor) && typeComponentList.equals(TypeComponentList.GROUP_DIMENSION_DESCRIPTOR)) {
-                descriptorDtos.add((DescriptorDto) getDo2DtoMapper().componentListToComponentListDto(TypeDozerCopyMode.UPDATE, componentList));
+                descriptorDtos.add((DescriptorDto) getDo2DtoMapper().componentListToComponentListDto(TypeDozerCopyMode.COPY_ALL_METADATA, componentList));
             } else if ((componentList instanceof MeasureDescriptor) && typeComponentList.equals(TypeComponentList.MEASURE_DESCRIPTOR)) {
-                descriptorDtos.add((DescriptorDto) getDo2DtoMapper().componentListToComponentListDto(TypeDozerCopyMode.UPDATE, componentList));
+                descriptorDtos.add((DescriptorDto) getDo2DtoMapper().componentListToComponentListDto(TypeDozerCopyMode.COPY_ALL_METADATA, componentList));
             }
         }
 
@@ -252,7 +252,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public List<DescriptorDto> findDescriptorsForDsd(ServiceContext ctx, Long idDsd) throws MetamacException {
-        return findDescriptorsForDsd(ctx, idDsd, TypeDozerCopyMode.UPDATE);
+        return findDescriptorsForDsd(ctx, idDsd, TypeDozerCopyMode.COPY_ALL_METADATA);
     }
 
     @Override
@@ -268,7 +268,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         componentListDescriptor = getDataStructureDefinitionService().saveDescriptorForDsd(ctx, dataStructureDefinitionVersion, componentListDescriptor);
 
         // Entities to DTOs
-        return getDo2DtoMapper().componentListToComponentListDto(TypeDozerCopyMode.UPDATE, componentListDescriptor);
+        return getDo2DtoMapper().componentListToComponentListDto(TypeDozerCopyMode.COPY_ALL_METADATA, componentListDescriptor);
     }
 
     @Override
@@ -300,7 +300,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         component = getDataStructureDefinitionService().saveComponentForDsd(ctx, dataStructureDefinitionVersion, component, typeComponentList);
 
         // Entitys to DTOs
-        return getDo2DtoMapper().componentToComponentDto(TypeDozerCopyMode.UPDATE, component);
+        return getDo2DtoMapper().componentToComponentDto(TypeDozerCopyMode.COPY_ALL_METADATA, component);
     }
 
     @Override

@@ -80,7 +80,7 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
     private CustomJaxb2Marshaller  marshallerWithoutValidation;
 
     @Autowired
-    @Qualifier("mapperCoreUpdateMode")
+    @Qualifier("mapperCoreCopyAllMetadataMode")
     private DozerBeanMapper        mapper;
 
     private final ServiceContext   serviceContext = new ServiceContext("system", "123456", "junit");
@@ -424,7 +424,7 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
 
         DataStructureDefinitionDto dataStructureDefinitionDto = SrmCoreServiceFacadeDsdTest.saveDescriptorForDsd(getServiceContext(), srmCoreServiceFacade);
 
-        DataStructureDefinitionExtendDto dataStructureDefinitionExtendDto = srmCoreServiceFacade.retrieveExtendedDsd(getServiceContext(), dataStructureDefinitionDto.getId(), TypeDozerCopyMode.CREATE);
+        DataStructureDefinitionExtendDto dataStructureDefinitionExtendDto = srmCoreServiceFacade.retrieveExtendedDsd(getServiceContext(), dataStructureDefinitionDto.getId(), TypeDozerCopyMode.COPY_TO_VERSIONING);
 
         assertNotNull(dataStructureDefinitionExtendDto);
     }
@@ -433,7 +433,7 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
     public void testRetrieveDsd() throws Exception {
         DataStructureDefinitionDto dataStructureDefinitionDto = SrmCoreServiceFacadeDsdTest.saveDescriptorForDsd(getServiceContext(), srmCoreServiceFacade);
 
-        DataStructureDefinitionDto dataStructureDefinitionDto2 = srmCoreServiceFacade.retrieveDsd(getServiceContext(), dataStructureDefinitionDto.getId(), TypeDozerCopyMode.CREATE);
+        DataStructureDefinitionDto dataStructureDefinitionDto2 = srmCoreServiceFacade.retrieveDsd(getServiceContext(), dataStructureDefinitionDto.getId(), TypeDozerCopyMode.COPY_TO_VERSIONING);
 
         assertNotNull(dataStructureDefinitionDto2);
     }

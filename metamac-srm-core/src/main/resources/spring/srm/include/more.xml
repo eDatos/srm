@@ -12,18 +12,18 @@
     <bean id="contextApplicationContextProvider" class="org.siemac.metamac.core.common.util.ApplicationContextProvider"></bean> 
     
 	<!-- Dozer is a Java Bean to Java Bean mapper that recursively copies data from one object to another.-->
-	<bean id="mapperCoreUpdateMode" name="mapperCoreUpdateMode" class="org.dozer.DozerBeanMapper">
+	<bean id="mapperCoreCopyAllMetadataMode" name="mapperCoreCopyAllMetadataMode" class="org.dozer.DozerBeanMapper">
 		<property name="mappingFiles">
 			<list>
-				<value>coreUpdateDozerBeanMapping.xml</value>
+				<value>coreCopyAllMetadataDozerBeanMapping.xml</value>
 			</list>
 		</property>
 	</bean>
 	
-	<bean id="mapperCoreCreateMode" name="mapperCoreCreateMode" class="org.dozer.DozerBeanMapper">
+	<bean id="mapperCoreCopyToVersioningMode" name="mapperCoreCopyToVersioningMode" class="org.dozer.DozerBeanMapper">
 		<property name="mappingFiles">
 			<list>
-				<value>coreCreateDozerBeanMapping.xml</value>
+				<value>coreCopyToVersioningDozerBeanMapping.xml</value>
 			</list>
 		</property>
 	</bean>
