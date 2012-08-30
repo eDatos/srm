@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
+import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
 
 import com.gwtplatform.mvp.client.UiHandlers;
 
@@ -26,10 +27,10 @@ public interface ConceptSchemeUiHandlers extends UiHandlers {
 
     // Life cycle
 
-    void sendToProductionValidation(Long id);
-    void sendToDiffusionValidation(Long id);
-    void rejectValidation(Long id);
-    void publishInternally(Long id);
-    void publishExternally(Long id);
-    void versioning(Long id);
+    void sendToProductionValidation(String urn, ItemSchemeMetamacProcStatusEnum currentProcStatus);
+    void sendToDiffusionValidation(String urn, ItemSchemeMetamacProcStatusEnum currentProcStatus);
+    void rejectValidation(String urn, ItemSchemeMetamacProcStatusEnum currentProcStatus);
+    void publishInternally(String urn, ItemSchemeMetamacProcStatusEnum currentProcStatus);
+    void publishExternally(String urn, ItemSchemeMetamacProcStatusEnum currentProcStatus);
+    void versioning(String urn);
 }

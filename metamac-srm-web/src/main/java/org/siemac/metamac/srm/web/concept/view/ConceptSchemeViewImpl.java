@@ -42,7 +42,7 @@ import org.siemac.metamac.web.common.client.widgets.TitleLabel;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
-import org.siemac.metamac.web.common.client.widgets.form.fields.CustomCheckboxItem;
+import org.siemac.metamac.web.common.client.widgets.form.fields.BooleanSelectItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredSelectItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
@@ -269,46 +269,45 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
 
             @Override
             public void onClick(ClickEvent event) {
-                uiHandlers.sendToProductionValidation(conceptSchemeDto.getId());
+                uiHandlers.sendToProductionValidation(conceptSchemeDto.getUrn(), conceptSchemeDto.getProcStatus());
             }
         });
         mainFormLayout.getSendToDiffusionValidation().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                uiHandlers.sendToDiffusionValidation(conceptSchemeDto.getId());
+                uiHandlers.sendToDiffusionValidation(conceptSchemeDto.getUrn(), conceptSchemeDto.getProcStatus());
             }
         });
         mainFormLayout.getRejectValidation().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                uiHandlers.rejectValidation(conceptSchemeDto.getId());
+                uiHandlers.rejectValidation(conceptSchemeDto.getUrn(), conceptSchemeDto.getProcStatus());
             }
         });
         mainFormLayout.getPublishInternally().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                uiHandlers.publishInternally(conceptSchemeDto.getId());
+                uiHandlers.publishInternally(conceptSchemeDto.getUrn(), conceptSchemeDto.getProcStatus());
             }
         });
         mainFormLayout.getPublishExternally().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                uiHandlers.publishExternally(conceptSchemeDto.getId());
+                uiHandlers.publishExternally(conceptSchemeDto.getUrn(), conceptSchemeDto.getProcStatus());
             }
         });
         mainFormLayout.getVersioning().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                uiHandlers.versioning(conceptSchemeDto.getId());
+                uiHandlers.versioning(conceptSchemeDto.getUrn());
             }
         });
     }
-
     /*
      * GWTP will call setInSlot when a child presenter asks to be added under this view
      */
@@ -475,7 +474,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         // Content descriptors
         contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().conceptSchemeContentDescriptors());
         MultiLanguageTextItem description = new MultiLanguageTextItem(ConceptSchemeDS.DESCRIPTION, getConstants().conceptSchemeDescription());
-        CustomCheckboxItem partial = new CustomCheckboxItem(ConceptSchemeDS.IS_PARTIAL, getConstants().conceptSchemeIsPartial());
+        BooleanSelectItem partial = new BooleanSelectItem(ConceptSchemeDS.IS_PARTIAL, getConstants().conceptSchemeIsPartial());
         ViewTextItem isExternalReference = new ViewTextItem(ConceptSchemeDS.IS_EXTERNAL_REFERENCE, getConstants().conceptSchemeIsExternalReference());
         contentDescriptorsEditionForm.setFields(description, partial, isExternalReference);
 
@@ -648,7 +647,8 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         conceptSchemeDto.setName((InternationalStringDto) identifiersEditionForm.getValue(ConceptSchemeDS.NAME));
         // Content descriptors
         conceptSchemeDto.setDescription((InternationalStringDto) contentDescriptorsEditionForm.getValue(ConceptSchemeDS.DESCRIPTION));
-        conceptSchemeDto.setIsPartial((Boolean) contentDescriptorsEditionForm.getValue(ConceptSchemeDS.IS_PARTIAL));
+        conceptSchemeDto.setIsPartial((contentDescriptorsEditionForm.getValue(ConceptSchemeDS.IS_PARTIAL) != null && !StringUtils.isEmpty(contentDescriptorsEditionForm
+                .getValueAsString(ConceptSchemeDS.IS_PARTIAL))) ? Boolean.valueOf(contentDescriptorsEditionForm.getValueAsString(ConceptSchemeDS.IS_PARTIAL)) : false);
         // Class descriptors
         conceptSchemeDto.setType(ConceptSchemeTypeEnum.valueOf(classDescriptorsEditionForm.getValueAsString(ConceptSchemeDS.TYPE)));
         conceptSchemeDto.setRelatedOperation(ExternalItemUtils.removeTitle(relatedOperation));
