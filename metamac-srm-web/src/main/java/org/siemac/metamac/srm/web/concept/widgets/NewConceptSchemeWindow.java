@@ -6,12 +6,14 @@ import java.util.List;
 
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
+import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 import org.siemac.metamac.srm.web.concept.utils.CommonUtils;
 import org.siemac.metamac.srm.web.concept.view.handlers.ConceptSchemeListUiHandlers;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
+import org.siemac.metamac.web.common.client.utils.ExternalItemUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.widgets.CustomWindow;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
@@ -22,12 +24,14 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredSelectIt
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.SearchExternalPaginatedItem;
 
+import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.FormItemIfFunction;
 import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.form.fields.events.HasClickHandlers;
+import com.smartgwt.client.widgets.form.validator.CustomValidator;
 
 public class NewConceptSchemeWindow extends CustomWindow {
 
@@ -35,7 +39,7 @@ public class NewConceptSchemeWindow extends CustomWindow {
     private static final String         FIELD_SAVE                  = "save-sch";
 
     private final static int            OPERATION_LIST_FIRST_RESULT = 0;
-    private final static int            OPERATION_LIST_MAX_RESULTS  = 2;
+    private final static int            OPERATION_LIST_MAX_RESULTS  = 6;
 
     private CustomDynamicForm           form;
 
@@ -66,7 +70,7 @@ public class NewConceptSchemeWindow extends CustomWindow {
             }
         });
 
-        SearchExternalPaginatedItem operation = new SearchExternalPaginatedItem(ConceptSchemeDS.RELATED_OPERATION, getConstants().conceptSchemeOperation(), FORM_ITEM_CUSTOM_WIDTH + 100,
+        final SearchExternalPaginatedItem operation = new SearchExternalPaginatedItem(ConceptSchemeDS.RELATED_OPERATION, getConstants().conceptSchemeOperation(), FORM_ITEM_CUSTOM_WIDTH + 100,
                 OPERATION_LIST_MAX_RESULTS, new PaginatedAction() {
 
                     @Override
@@ -74,6 +78,7 @@ public class NewConceptSchemeWindow extends CustomWindow {
                         uiHandlers.retrieveStatisticalOperations(firstResult, maxResults, null);
                     }
                 });
+        operation.getListGrid().setSelectionType(SelectionStyle.SINGLE);
         operation.setSearchAction(new SearchPaginatedAction() {
 
             @Override
@@ -89,6 +94,14 @@ public class NewConceptSchemeWindow extends CustomWindow {
                 return ConceptSchemeTypeEnum.OPERATION.getName().equals(form.getValueAsString(ConceptSchemeDS.TYPE));
             }
         });
+        CustomValidator customValidator = new CustomValidator() {
+
+            @Override
+            protected boolean condition(Object value) {
+                return operation.isVisible() ? !(operation.getSelectedExternalItem() == null) : true;
+            }
+        };
+        operation.setValidators(customValidator);
 
         CustomButtonItem saveItem = new CustomButtonItem(FIELD_SAVE, getConstants().conceptSchemeCreate());
 
@@ -113,13 +126,20 @@ public class NewConceptSchemeWindow extends CustomWindow {
 
     public ConceptSchemeMetamacDto getNewConceptSchemeDto() {
         ConceptSchemeMetamacDto conceptSchemeDto = new ConceptSchemeMetamacDto();
+
+        // TODO agency
+        ExternalItemDto agency = new ExternalItemDto("agency_CODE", "uri:3421", "METAMAC_ORGANISATION", TypeExternalArtefactsEnum.AGENCY);
+        conceptSchemeDto.setMaintainer(agency);
+
         conceptSchemeDto.setCode(form.getValueAsString(ConceptSchemeDS.CODE));
         conceptSchemeDto.setName(InternationalStringUtils.updateInternationalString(new InternationalStringDto(), form.getValueAsString(ConceptSchemeDS.NAME)));
+        conceptSchemeDto.setType(ConceptSchemeTypeEnum.valueOf(form.getValueAsString(ConceptSchemeDS.TYPE)));
+        conceptSchemeDto.setRelatedOperation(ExternalItemUtils.removeTitle(((SearchExternalPaginatedItem) form.getItem(ConceptSchemeDS.RELATED_OPERATION)).getSelectedExternalItem()));
         return conceptSchemeDto;
     }
 
     public boolean validateForm() {
-        return form.validate();
+        return form.validate(false);
     }
 
     public void setUiHandlers(ConceptSchemeListUiHandlers uiHandlers) {
