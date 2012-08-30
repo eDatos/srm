@@ -10,7 +10,7 @@ public class ConceptSchemeDS extends DataSource {
     // IDENTIFIERS
     public static final String ID                               = "sch-id";
     public static final String CODE                             = "sch-code";
-    public static final String CODE_VIEW                        = "sch-code-view ";       // Not mapped in DTO
+    public static final String CODE_VIEW                        = "sch-code-view";        // Not mapped in DTO
     public static final String URI                              = "sch-uri";
     public static final String URN                              = "sch-urn";
     public static final String VERSION_LOGIC                    = "sch-version";
