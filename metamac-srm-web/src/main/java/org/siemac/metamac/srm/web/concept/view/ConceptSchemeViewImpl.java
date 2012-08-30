@@ -17,6 +17,7 @@ import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
+import org.siemac.metamac.srm.web.client.widgets.VersionWindow;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptRecord;
@@ -304,7 +305,17 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
 
             @Override
             public void onClick(ClickEvent event) {
-                uiHandlers.versioning(conceptSchemeDto.getUrn());
+                final VersionWindow versionWindow = new VersionWindow(getConstants().lifeCycleVersioning());
+                versionWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
+
+                    @Override
+                    public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
+                        if (versionWindow.validateForm()) {
+                            uiHandlers.versioning(conceptSchemeDto.getUrn(), versionWindow.getSelectedVersion());
+                            versionWindow.destroy();
+                        }
+                    }
+                });
             }
         });
         mainFormLayout.getCancelValidity().addClickHandler(new ClickHandler() {
@@ -315,6 +326,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
             }
         });
     }
+
     /*
      * GWTP will call setInSlot when a child presenter asks to be added under this view
      */

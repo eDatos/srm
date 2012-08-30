@@ -6,6 +6,7 @@ import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
 
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
 import com.gwtplatform.mvp.client.UiHandlers;
 
 public interface ConceptSchemeUiHandlers extends UiHandlers {
@@ -33,5 +34,5 @@ public interface ConceptSchemeUiHandlers extends UiHandlers {
     void rejectValidation(String urn, ItemSchemeMetamacProcStatusEnum currentProcStatus);
     void publishInternally(String urn, ItemSchemeMetamacProcStatusEnum currentProcStatus);
     void publishExternally(String urn, ItemSchemeMetamacProcStatusEnum currentProcStatus);
-    void versioning(String urn);
+    void versioning(String urn, VersionTypeEnum versionType);
 }

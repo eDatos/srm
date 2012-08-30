@@ -45,6 +45,7 @@ import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.utils.UrnUtils;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
@@ -263,8 +264,8 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
     }
 
     @Override
-    public void versioning(String urn) {
-        dispatcher.execute(new VersionConceptSchemeAction(urn), new WaitingAsyncCallback<VersionConceptSchemeResult>() {
+    public void versioning(final String urn, VersionTypeEnum versionType) {
+        dispatcher.execute(new VersionConceptSchemeAction(urn, versionType), new WaitingAsyncCallback<VersionConceptSchemeResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -274,7 +275,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
             public void onWaitSuccess(VersionConceptSchemeResult result) {
                 ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getMessageList(getMessages().conceptSchemeVersioned()), MessageTypeEnum.SUCCESS);
                 ConceptSchemePresenter.this.conceptSchemeDto = result.getConceptSchemeDto();
-                setConceptScheme(result.getConceptSchemeDto());
+                retrieveConceptSchemeByUrn(conceptSchemeDto.getUrn());
             }
         });
     }
