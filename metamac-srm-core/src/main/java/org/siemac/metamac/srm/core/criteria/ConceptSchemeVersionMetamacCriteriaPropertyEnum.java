@@ -2,7 +2,7 @@ package org.siemac.metamac.srm.core.criteria;
 
 public enum ConceptSchemeVersionMetamacCriteriaPropertyEnum {
 
-    CODE, URN, PROC_STATUS;
+    CODE, URN, PROC_STATUS, IS_LAST_VERSION;
 
     public String value() {
         return name();
