@@ -259,7 +259,6 @@
                     <inplace>true</inplace>
                     <compileSourcesArtifacts>
                         <artifact>org.siemac.metamac.metamac-srm:metamac-srm-core:jar:client</artifact>
-                        <artifact>org.siemac.metamac:metamac-api-domain:jar:client</artifact>
                         <artifact>org.siemac.metamac:metamac-core-common:jar:client</artifact>
                         <artifact>org.siemac.metamac.metamac-sso:metamac-sso-client:jar</artifact>
                         <artifact>org.siemac.metamac:metamac-web-common:jar</artifact>
