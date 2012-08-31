@@ -16,7 +16,6 @@ import java.util.List;
 
 import org.apache.commons.lang.time.DateUtils;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.common.test.utils.MetamacAsserts;
@@ -251,7 +250,6 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         }
     }
 
-    @Ignore // TODO pendiente de librería Finder que sobreescribe la de Sculptor
     @Test
     public void testFindConceptSchemesByCondition() throws Exception {
 
