@@ -58,11 +58,11 @@ Application ConceptsMetamac {
     		deleteConcept(String urn) throws MetamacException;
     		"Retrieves concepts by concept scheme, in tree structure"
     		List<@ConceptMetamac> retrieveConceptsByConceptSchemeUrn(String conceptSchemeUrn) throws MetamacException;
-    		"Add a concepts relation"
+    		"Adds a concepts relation"
     		@ConceptRelation addConceptRelation(String urn1, String urn2) throws MetamacException;
-    		"Delete a concepts relation"
+    		"Deletes a concepts relation"
     		deleteConceptRelation(String urn1, String urn2) throws MetamacException;
-    		"Retrieve all related concepts with a concept"
+    		"Retrieves all related concepts with a concept"
     		List<@ConceptMetamac> retrieveRelatedConcepts(String urn) throws MetamacException;
     		
     		"Finds all concept types"

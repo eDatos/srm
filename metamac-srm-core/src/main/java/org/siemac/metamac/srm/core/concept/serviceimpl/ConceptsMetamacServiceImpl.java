@@ -103,7 +103,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
         // Find
         if (conditions == null) {
-            conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).distinctRoot().build();
+            conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).build();
         }
         PagedResult<ConceptSchemeVersionMetamac> conceptSchemeVersionPagedResult = getConceptSchemeVersionMetamacRepository().findByCondition(conditions, pagingParameter);
         return conceptSchemeVersionPagedResult;

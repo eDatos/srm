@@ -237,6 +237,12 @@ Application SrmCore {
     		"Retrieves concepts by concept scheme, in tree structure"
     		List<@ItemHierarchyDto> retrieveConceptsByConceptSchemeUrn(String conceptSchemeUrn) throws MetamacException;
     		
+    		"Adds concepts relation"
+    		addConceptRelation(String urn1, String urn2) throws MetamacException;
+    		"Deletes a concepts relation"
+    		deleteConceptRelation(String urn1, String urn2) throws MetamacException;
+    		"Retrieves all related concepts with a concept"
+    		List<@ConceptMetamacDto> retrieveRelatedConcepts(String urn) throws MetamacException;
     		
     		"Finds all concept types"
     		List<@ConceptTypeDto> findAllConceptTypes throws MetamacException;

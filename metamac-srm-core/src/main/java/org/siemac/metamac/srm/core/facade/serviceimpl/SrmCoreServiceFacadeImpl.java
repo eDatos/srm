@@ -664,7 +664,33 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         List<ItemHierarchyDto> itemsHierarchyDto = do2DtoMapper.conceptMetamacDoListToItemHierarchyDtoList(concepts);
         return itemsHierarchyDto;
     }
-    
+
+    @Override
+    public void addConceptRelation(ServiceContext ctx, String urn1, String urn2) throws MetamacException {
+        // TODO Security
+
+        getConceptsMetamacService().addConceptRelation(ctx, urn1, urn2);
+    }
+
+    @Override
+    public void deleteConceptRelation(ServiceContext ctx, String urn1, String urn2) throws MetamacException {
+        // TODO Security
+
+        getConceptsMetamacService().deleteConceptRelation(ctx, urn1, urn2);
+    }
+
+    @Override
+    public List<ConceptMetamacDto> retrieveRelatedConcepts(ServiceContext ctx, String urn) throws MetamacException {
+        // TODO Security
+
+        // Retrieve
+        List<ConceptMetamac> concepts = getConceptsMetamacService().retrieveRelatedConcepts(ctx, urn);
+
+        // Transform
+        List<ConceptMetamacDto> conceptsDto = do2DtoMapper.conceptMetamacDoListToDtoList(concepts);
+        return conceptsDto;
+    }
+
     @Override
     public List<ConceptTypeDto> findAllConceptTypes(ServiceContext ctx) throws MetamacException {
         // TODO Security
@@ -688,7 +714,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         ConceptTypeDto conceptTypeDto = do2DtoMapper.conceptTypeDoToDto(conceptType);
         return conceptTypeDto;
     }
-    
+
     /**************************************************************************
      * PRIVATE METHODS
      *************************************************************************/
