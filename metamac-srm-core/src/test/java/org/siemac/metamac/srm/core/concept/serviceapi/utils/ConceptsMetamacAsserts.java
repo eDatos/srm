@@ -32,7 +32,6 @@ public class ConceptsMetamacAsserts extends ConceptsAsserts {
         assertEqualsConceptType(expected.getType(), actual.getType());
         assertEqualsInternationalString(expected.getDerivation(), actual.getDerivation());
         assertEqualsInternationalString(expected.getLegalActs(), actual.getLegalActs());
-        // TODO relatedConcepts
         ConceptsAsserts.assertEqualsConcept(expected, actual);
     }
 
@@ -52,8 +51,7 @@ public class ConceptsMetamacAsserts extends ConceptsAsserts {
         assertEqualsConceptType(expected.getType(), actual.getType());
         assertEqualsInternationalStringDto(expected.getDerivation(), actual.getDerivation());
         assertEqualsInternationalStringDto(expected.getLegalActs(), actual.getLegalActs());
-        // TODO relatedConcepts
-        
+
         ConceptsAsserts.assertEqualsConceptDto(expected, actual);
     }
     

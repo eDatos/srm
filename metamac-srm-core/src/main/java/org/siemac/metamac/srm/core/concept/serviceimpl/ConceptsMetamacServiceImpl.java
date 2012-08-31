@@ -258,7 +258,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     @Override
     public void deleteConceptScheme(ServiceContext ctx, String urn) throws MetamacException {
 
-        // Delete related concepts TODO intentar borrar más eficientemente
+        // Delete related concepts
         ConceptSchemeVersion conceptSchemeVersion = retrieveConceptSchemeByUrn(ctx, urn);
         List<ConceptRelation> relatedConceptsAllConceptSchemeVersion = findRelatedConceptsByConceptSchemeVersion(conceptSchemeVersion.getMaintainableArtefact().getUrn());
         for (ConceptRelation relatedConcept : relatedConceptsAllConceptSchemeVersion) {
@@ -351,7 +351,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         return (ConceptMetamac) conceptsService.retrieveConceptByUrn(ctx, urn);
     }
 
-    // TODO se lanza error si hay conceptos relacionados. Pendiente de confirmación de Alberto
+    // TODO Pendiente de confirmación de Alberto: se está lanzando excepción si hay conceptos relacionados
     @Override
     public void deleteConcept(ServiceContext ctx, String urn) throws MetamacException {
 
