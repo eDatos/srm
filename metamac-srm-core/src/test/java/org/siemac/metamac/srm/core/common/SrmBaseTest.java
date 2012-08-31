@@ -38,6 +38,10 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
     protected static final String CONCEPT_SCHEME_1_V2_CONCEPT_2     = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME01(02.000).CONCEPT02";
     protected static final String CONCEPT_SCHEME_1_V2_CONCEPT_2_1   = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME01(02.000).CONCEPT0201";
     protected static final String CONCEPT_SCHEME_1_V2_CONCEPT_2_1_1 = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME01(02.000).CONCEPT020101";
+    protected static final String CONCEPT_SCHEME_1_V2_CONCEPT_3     = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME01(02.000).CONCEPT03";
+    protected static final String CONCEPT_SCHEME_1_V2_CONCEPT_4     = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME01(02.000).CONCEPT04";
+    protected static final String CONCEPT_SCHEME_1_V2_CONCEPT_4_1   = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME01(02.000).CONCEPT0401";
+    protected static final String CONCEPT_SCHEME_1_V2_CONCEPT_4_1_1 = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME01(02.000).CONCEPT040101";
 
     protected static final String NOT_EXISTS                        = "not-exists";
 
@@ -102,6 +106,7 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
     @Override
     protected List<String> getTablesToRemoveContent() {
         List<String> tables = new ArrayList<String>();
+        tables.add("TB_M_CONCEPTS_RELATIONS");
         tables.add("TB_M_CONCEPTS");
         tables.add("TB_M_CONCEPT_SCHEMES_VERSIONS");
         tables.add("TB_M_LIS_CONCEPT_TYPES");
@@ -116,6 +121,7 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
         sequences.add("SEQ_M_CONCEPT_SCHEMES_VERSIONS");
         sequences.add("SEQ_M_CONCEPTS");
         sequences.add("SEQ_M_CONCEPT_TYPES");
+        sequences.add("SEQ_M_CONCEPTS_RELATIONS");
         return sequences;
     }
 
@@ -124,7 +130,6 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
         Map<String, String> tablePrimaryKeys = super.getTablePrimaryKeys();
         tablePrimaryKeys.put("TB_M_CONCEPT_SCHEMES_VERSIONS", "TB_CONCEPT_SCHEMES_VERSIONS");
         tablePrimaryKeys.put("TB_M_CONCEPTS", "TB_CONCEPTS");
-        tablePrimaryKeys.putAll(super.getTablePrimaryKeys());
         return tablePrimaryKeys;
     }
 }

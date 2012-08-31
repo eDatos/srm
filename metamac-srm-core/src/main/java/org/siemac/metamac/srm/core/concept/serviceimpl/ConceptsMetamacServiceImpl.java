@@ -18,6 +18,7 @@ import org.siemac.metamac.core.common.serviceimpl.utils.ValidationUtils;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
+import org.siemac.metamac.srm.core.concept.domain.ConceptRelation;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacProperties;
 import org.siemac.metamac.srm.core.concept.domain.ConceptType;
@@ -196,7 +197,6 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     }
 
     // TODO Para llevar a cabo la publicación interna de un recurso será necesario que previamente exista al menos un anuncio sobre el esquema de conceptos a publicar
-    // TODO Comprobación: los conceptos relacionados han de estar en concept scheme ya pub. internamente
     @Override
     public ConceptSchemeVersionMetamac publishInternallyConceptScheme(ServiceContext ctx, String urn) throws MetamacException {
 
@@ -220,7 +220,6 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     }
 
     // TODO validTo, validFrom: ¿rellenar cuando el artefacto no sea del ISTAC? Pendiente decisión del ISTAC.
-    // TODO Comprobación: los conceptos relacionados han de estar en concept scheme ya pub. externamente.
     @Override
     public ConceptSchemeVersionMetamac publishExternallyConceptScheme(ServiceContext ctx, String urn) throws MetamacException {
 
@@ -258,6 +257,13 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
     @Override
     public void deleteConceptScheme(ServiceContext ctx, String urn) throws MetamacException {
+
+        // Delete related concepts TODO intentar borrar más eficientemente
+        ConceptSchemeVersion conceptSchemeVersion = retrieveConceptSchemeByUrn(ctx, urn);
+        List<ConceptRelation> relatedConceptsAllConceptSchemeVersion = findRelatedConceptsByConceptSchemeVersion(conceptSchemeVersion.getMaintainableArtefact().getUrn());
+        for (ConceptRelation relatedConcept : relatedConceptsAllConceptSchemeVersion) {
+            getConceptRelationRepository().delete(relatedConcept);
+        }
 
         // Note: ConceptsService checks conceptScheme isn't final
         conceptsService.deleteConceptScheme(ctx, urn);
@@ -307,7 +313,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         return conceptSchemeVersion;
     }
 
-    // TODO Comprobar 'roles': Se rellena únicamente para esquemas de tipo "operación" y "transversal", y serán relaciones a conceptos de un esquema de tipo rol.
+    // TODO metadato 'roles' de sdmx: Se rellena únicamente para esquemas de tipo "operación" y "transversal", y serán relaciones a conceptos de un esquema de tipo rol.
     @Override
     public ConceptMetamac createConcept(ServiceContext ctx, String conceptSchemeUrn, ConceptMetamac concept) throws MetamacException {
 
@@ -328,8 +334,14 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         return (ConceptMetamac) conceptsService.retrieveConceptByUrn(ctx, urn);
     }
 
+    // TODO se lanza error si hay conceptos relacionados. Pendiente de confirmación de Alberto
     @Override
     public void deleteConcept(ServiceContext ctx, String urn) throws MetamacException {
+
+        Concept concept = retrieveConceptByUrn(ctx, urn);
+
+        // Check concept has not related concepts
+        checkConceptHierarchyWithoutRelatedConcepts(concept);
 
         // Note: ConceptsService checks conceptScheme isn't final
         conceptsService.deleteConcept(ctx, urn);
@@ -344,6 +356,70 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         // Typecast
         List<ConceptMetamac> conceptsMetamac = conceptsToConceptMetamac(concepts);
         return conceptsMetamac;
+    }
+
+    @Override
+    public ConceptRelation addConceptRelation(ServiceContext ctx, String urn1, String urn2) throws MetamacException {
+
+        // Validation
+        ConceptsMetamacInvocationValidator.checkAddConceptRelation(urn1, urn2, null);
+
+        // Check not exists
+        ConceptRelation conceptRelation = getConceptRelationRepository().find(urn1, urn2);
+        if (conceptRelation != null) {
+            return conceptRelation;
+        }
+        
+        // Create
+        ConceptMetamac concept1 = retrieveConceptByUrn(ctx, urn1);
+        ConceptMetamac concept2 = retrieveConceptByUrn(ctx, urn2);
+
+        // Concept scheme not published
+        retrieveConceptSchemeVersionCanBeModified(ctx, concept1.getItemSchemeVersion().getMaintainableArtefact().getUrn()); // note: itemScheme is the same to two concepts
+
+        conceptRelation = new ConceptRelation(concept1, concept2);
+        conceptRelation = getConceptRelationRepository().save(conceptRelation);
+
+        return conceptRelation;
+    }
+
+    @Override
+    public void deleteConceptRelation(ServiceContext ctx, String urn1, String urn2) throws MetamacException {
+
+        // Validation
+        ConceptsMetamacInvocationValidator.checkDeleteConceptRelation(urn1, urn2, null);
+
+        // Retrieve
+        ConceptRelation conceptRelation = getConceptRelationRepository().find(urn1, urn2);
+        if (conceptRelation == null) {
+            return;
+        }
+
+        // Concept scheme not published
+        retrieveConceptSchemeVersionCanBeModified(ctx, conceptRelation.getConcept1().getItemSchemeVersion().getMaintainableArtefact().getUrn()); // note: itemScheme is the same to two concepts
+
+        // Delete
+        getConceptRelationRepository().delete(conceptRelation);
+    }
+
+    @Override
+    public List<ConceptMetamac> retrieveRelatedConcepts(ServiceContext ctx, String urn) throws MetamacException {
+
+        // Validation
+        ConceptsMetamacInvocationValidator.checkRetrieveRelatedConcepts(urn, null);
+
+        // Retrieve
+        List<ConceptRelation> conceptsRelations = getConceptRelationRepository().findByConcept(urn);
+
+        List<ConceptMetamac> relatedConcepts = new ArrayList<ConceptMetamac>();
+        for (ConceptRelation conceptRelation : conceptsRelations) {
+            if (!conceptRelation.getConcept1().getNameableArtefact().getUrn().equals(urn)) {
+                relatedConcepts.add(conceptRelation.getConcept1());
+            } else if (!conceptRelation.getConcept2().getNameableArtefact().getUrn().equals(urn)) {
+                relatedConcepts.add(conceptRelation.getConcept2());
+            }
+        }
+        return relatedConcepts;
     }
 
     @Override
@@ -520,13 +596,15 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         checkConditionsSinceSendToProductionValidation(conceptSchemeVersion, exceptions);
     }
 
-    // TODO roles: En principio se podrán asociar independientemente del estado del esquema de conceptos, pero al publicar internamente se ha de comprobar que el esquema de conceptos relacionado tb
+    // TODO metadato 'roles' de sdmx: En principio se podrán asociar independientemente del estado del esquema de conceptos, pero al publicar internamente se ha de comprobar que el esquema de
+    // conceptos relacionado tb
     // esté publicado internamente. Idem al publicar externamente. Está pendiente que Alberto confirme que se podrán asociar en un principio aunque estén en borrador.
     private void checkConditionsSincePublishInternally(ConceptSchemeVersionMetamac conceptSchemeVersion, List<MetamacExceptionItem> exceptions) {
         checkConditionsSinceSendToDiffusionValidation(conceptSchemeVersion, exceptions);
     }
 
-    // TODO roles: En principio se podrán asociar independientemente del estado del esquema de conceptos, pero al publicar internamente se ha de comprobar que el esquema de conceptos relacionado tb
+    // TODO metadato 'roles' de sdmx:En principio se podrán asociar independientemente del estado del esquema de conceptos, pero al publicar internamente se ha de comprobar que el esquema de conceptos
+    // relacionado tb
     // esté publicado internamente. Idem al publicar externamente. Está pendiente que Alberto confirme que se podrán asociar en un principio aunque estén en borrador.
     private void checkConditionsSincePublishExternally(ConceptSchemeVersionMetamac conceptSchemeVersion, List<MetamacExceptionItem> exceptions) {
         checkConditionsSincePublishInternally(conceptSchemeVersion, exceptions);
@@ -546,5 +624,28 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
             procStatusString[i] = procStatus[i].name();
         }
         return procStatusString;
+    }
+
+    private List<ConceptRelation> findRelatedConceptsByConceptSchemeVersion(String urn) {
+        return getConceptRelationRepository().findByConceptSchemeVersion(urn);
+    }
+
+    private void checkConceptHierarchyWithoutRelatedConcepts(Concept concept) throws MetamacException {
+        List<ConceptRelation> conceptsRelations = getConceptRelationRepository().findByConcept(concept.getNameableArtefact().getUrn());
+        if (conceptsRelations.size() != 0) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CONCEPT_WITH_RELATED_CONCEPTS).withMessageParameters(concept.getNameableArtefact().getUrn()).build();
+        }
+        for (Item item : concept.getChildren()) {
+            ConceptMetamac child = (ConceptMetamac) item;
+            checkConceptHierarchyWithoutRelatedConcepts(child);
+        }
+    }
+
+    /**
+     * Retrieves version of a concept scheme, checking that can be modified
+     */
+    private ConceptSchemeVersionMetamac retrieveConceptSchemeVersionCanBeModified(ServiceContext ctx, String urn) throws MetamacException {
+        return retrieveConceptSchemeVersionByProcStatus(ctx, urn, ItemSchemeMetamacProcStatusEnum.DRAFT, ItemSchemeMetamacProcStatusEnum.VALIDATION_REJECTED,
+                ItemSchemeMetamacProcStatusEnum.PRODUCTION_VALIDATION, ItemSchemeMetamacProcStatusEnum.DIFFUSION_VALIDATION);
     }
 }
