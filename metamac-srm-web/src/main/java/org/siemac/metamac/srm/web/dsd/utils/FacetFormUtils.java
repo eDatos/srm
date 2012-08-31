@@ -5,7 +5,7 @@ import java.util.Set;
 
 import org.siemac.metamac.srm.web.dsd.widgets.FacetForm;
 
-import com.arte.statistic.sdmx.srm.core.structure.serviceimpl.utils.shared.DataStructureConstraintSharedValidator;
+import com.arte.statistic.sdmx.srm.core.common.service.utils.shared.RepresentationConstraintSharedValidator;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.FacetValueTypeEnum;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.FormItemIfFunction;
@@ -43,7 +43,7 @@ public class FacetFormUtils {
         // SimpleDataType values
         if (dsdFacetValueTypeEnums == null) {
             dsdFacetValueTypeEnums = new HashSet<FacetValueTypeEnum>();
-            for (FacetValueTypeEnum f : DataStructureConstraintSharedValidator.simpleDataTypeValues) {
+            for (FacetValueTypeEnum f : RepresentationConstraintSharedValidator.simpleDataTypeValues) {
                 dsdFacetValueTypeEnums.add(f);
             }
         }
@@ -57,7 +57,7 @@ public class FacetFormUtils {
      * @return
      */
     public static boolean representsTime(FacetValueTypeEnum f) {
-        return DataStructureConstraintSharedValidator.isTimeDataType(f);
+        return RepresentationConstraintSharedValidator.isTimeDataType(f);
     }
 
     // /////////////////////////////////////
