@@ -233,11 +233,13 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         // Validate to publish externally
         checkConceptSchemeToPublishExternally(ctx, urn, conceptSchemeVersion);
 
+        // Start concept scheme validity
+        conceptSchemeVersion = (ConceptSchemeVersionMetamac) conceptsService.startConceptSchemeValidity(ctx, urn);
+
         // Update proc status
         conceptSchemeVersion.setProcStatus(ItemSchemeMetamacProcStatusEnum.EXTERNALLY_PUBLISHED);
         conceptSchemeVersion.setExternalPublicationDate(new DateTime());
         conceptSchemeVersion.setExternalPublicationUser(ctx.getUserId());
-        conceptSchemeVersion.getMaintainableArtefact().setValidFrom(conceptSchemeVersion.getExternalPublicationDate());
         conceptSchemeVersion = (ConceptSchemeVersionMetamac) itemSchemeVersionRepository.save(conceptSchemeVersion);
 
         // Fill validTo in previous internally published versions
@@ -285,7 +287,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         ConceptSchemeVersionMetamac conceptSchemeNewVersion = DoCopyUtils.copyConceptSchemeVersionMetamac(conceptSchemeVersionToCopy);
         conceptSchemeNewVersion.setProcStatus(ItemSchemeMetamacProcStatusEnum.DRAFT);
         List concepts = DoCopyUtils.copyConceptsMetamac(conceptSchemeVersionToCopy);
-        
+
         // Versioning
         return (ConceptSchemeVersionMetamac) conceptsService.versioningConceptScheme(ctx, conceptSchemeVersionToCopy.getItemScheme(), conceptSchemeNewVersion, concepts, versionType);
     }
@@ -300,8 +302,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         ConceptSchemeVersionMetamac conceptSchemeVersion = retrieveConceptSchemeVersionByProcStatus(ctx, urn, ItemSchemeMetamacProcStatusEnum.EXTERNALLY_PUBLISHED);
 
         // Cancel validity
-        conceptSchemeVersion.getMaintainableArtefact().setValidTo(new DateTime());
-        conceptSchemeVersion = (ConceptSchemeVersionMetamac) itemSchemeVersionRepository.save(conceptSchemeVersion);
+        conceptSchemeVersion = (ConceptSchemeVersionMetamac) conceptsService.endConceptSchemeValidity(ctx, urn);
 
         return conceptSchemeVersion;
     }
@@ -339,12 +340,12 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
         // Retrieve
         List<Concept> concepts = conceptsService.retrieveConceptsByConceptSchemeUrn(ctx, conceptSchemeUrn);
-        
+
         // Typecast
         List<ConceptMetamac> conceptsMetamac = conceptsToConceptMetamac(concepts);
         return conceptsMetamac;
     }
-    
+
     @Override
     public List<ConceptType> findAllConceptTypes(ServiceContext ctx) throws MetamacException {
 
@@ -354,7 +355,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         // Find
         return getConceptTypeRepository().findAll();
     }
-    
+
     @Override
     public ConceptType retrieveConceptTypeByIdentifier(ServiceContext ctx, String identifier) throws MetamacException {
 
@@ -364,7 +365,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         // Retrieve
         ConceptType conceptType = getConceptTypeRepository().findByIdentifier(identifier);
         if (conceptType == null) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CONCEPT_TYPE_NOT_FOUND).withMessageParameters(identifier).build();   
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CONCEPT_TYPE_NOT_FOUND).withMessageParameters(identifier).build();
         }
         return conceptType;
     }
