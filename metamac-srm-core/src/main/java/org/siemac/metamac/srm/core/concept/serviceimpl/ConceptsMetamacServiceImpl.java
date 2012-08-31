@@ -18,7 +18,6 @@ import org.siemac.metamac.core.common.serviceimpl.utils.ValidationUtils;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
-import org.siemac.metamac.srm.core.concept.domain.ConceptRelation;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacProperties;
 import org.siemac.metamac.srm.core.concept.domain.ConceptType;
@@ -32,7 +31,10 @@ import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemScheme;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.concept.domain.Concept;
+import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptRelation;
+import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptRelationRepository;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptSchemeVersion;
+import com.arte.statistic.sdmx.srm.core.concept.enume.domain.ConceptRelationTypeEnum;
 import com.arte.statistic.sdmx.srm.core.concept.serviceapi.ConceptsService;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
 
@@ -47,6 +49,9 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
     @Autowired
     private ItemSchemeVersionRepository itemSchemeVersionRepository;
+
+    @Autowired
+    private ConceptRelationRepository   conceptRelationRepository;
 
     public ConceptsMetamacServiceImpl() {
     }
@@ -262,7 +267,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         ConceptSchemeVersion conceptSchemeVersion = retrieveConceptSchemeByUrn(ctx, urn);
         List<ConceptRelation> relatedConceptsAllConceptSchemeVersion = findRelatedConceptsByConceptSchemeVersion(conceptSchemeVersion.getMaintainableArtefact().getUrn());
         for (ConceptRelation relatedConcept : relatedConceptsAllConceptSchemeVersion) {
-            getConceptRelationRepository().delete(relatedConcept);
+            conceptRelationRepository.delete(relatedConcept);
         }
 
         // Note: ConceptsService checks conceptScheme isn't final
@@ -300,7 +305,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
         // Copy concept relations
         String conceptSchemeNewVersionUrn = conceptSchemeNewVersion.getMaintainableArtefact().getUrn();
-        List<ConceptRelation> relatedConcepts = getConceptRelationRepository().findByConceptSchemeVersion(urn);
+        List<ConceptRelation> relatedConcepts = conceptRelationRepository.findByConceptSchemeVersion(urn);
         for (ConceptRelation conceptRelationOldVersion : relatedConcepts) {
             String concept1CodeVersionToCopy = conceptRelationOldVersion.getConcept1().getNameableArtefact().getCode();
             String concept2CodeVersionToCopy = conceptRelationOldVersion.getConcept2().getNameableArtefact().getCode();
@@ -308,8 +313,8 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
             ConceptMetamac concept1NewVersion = getConceptMetamacRepository().findByCodeInConceptSchemeVersion(concept1CodeVersionToCopy, conceptSchemeNewVersionUrn);
             ConceptMetamac concept2NewVersion = getConceptMetamacRepository().findByCodeInConceptSchemeVersion(concept2CodeVersionToCopy, conceptSchemeNewVersionUrn);
 
-            ConceptRelation conceptRelation = new ConceptRelation(concept1NewVersion, concept2NewVersion);
-            conceptRelation = getConceptRelationRepository().save(conceptRelation);
+            ConceptRelation conceptRelation = new ConceptRelation(ConceptRelationTypeEnum.BIDIRECTIONAL, concept1NewVersion, concept2NewVersion);
+            conceptRelation = conceptRelationRepository.save(conceptRelation);
         }
 
         return conceptSchemeNewVersion;
@@ -382,7 +387,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         ConceptsMetamacInvocationValidator.checkAddConceptRelation(urn1, urn2, null);
 
         // Check not exists
-        ConceptRelation conceptRelation = getConceptRelationRepository().find(urn1, urn2);
+        ConceptRelation conceptRelation = conceptRelationRepository.find(urn1, urn2);
         if (conceptRelation != null) {
             return conceptRelation;
         }
@@ -394,8 +399,8 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         // Concept scheme not published
         retrieveConceptSchemeVersionCanBeModified(ctx, concept1.getItemSchemeVersion().getMaintainableArtefact().getUrn()); // note: itemScheme is the same to two concepts
 
-        conceptRelation = new ConceptRelation(concept1, concept2);
-        conceptRelation = getConceptRelationRepository().save(conceptRelation);
+        conceptRelation = new ConceptRelation(ConceptRelationTypeEnum.BIDIRECTIONAL, concept1, concept2);
+        conceptRelation = conceptRelationRepository.save(conceptRelation);
 
         return conceptRelation;
     }
@@ -407,7 +412,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         ConceptsMetamacInvocationValidator.checkDeleteConceptRelation(urn1, urn2, null);
 
         // Retrieve
-        ConceptRelation conceptRelation = getConceptRelationRepository().find(urn1, urn2);
+        ConceptRelation conceptRelation = conceptRelationRepository.find(urn1, urn2);
         if (conceptRelation == null) {
             return;
         }
@@ -416,7 +421,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         retrieveConceptSchemeVersionCanBeModified(ctx, conceptRelation.getConcept1().getItemSchemeVersion().getMaintainableArtefact().getUrn()); // note: itemScheme is the same to two concepts
 
         // Delete
-        getConceptRelationRepository().delete(conceptRelation);
+        conceptRelationRepository.delete(conceptRelation);
     }
 
     @Override
@@ -426,14 +431,14 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         ConceptsMetamacInvocationValidator.checkRetrieveRelatedConcepts(urn, null);
 
         // Retrieve
-        List<ConceptRelation> conceptsRelations = getConceptRelationRepository().findByConcept(urn);
+        List<ConceptRelation> conceptsRelations = conceptRelationRepository.findByConcept(urn);
 
         List<ConceptMetamac> relatedConcepts = new ArrayList<ConceptMetamac>();
         for (ConceptRelation conceptRelation : conceptsRelations) {
             if (!conceptRelation.getConcept1().getNameableArtefact().getUrn().equals(urn)) {
-                relatedConcepts.add(conceptRelation.getConcept1());
+                relatedConcepts.add((ConceptMetamac)conceptRelation.getConcept1());
             } else if (!conceptRelation.getConcept2().getNameableArtefact().getUrn().equals(urn)) {
-                relatedConcepts.add(conceptRelation.getConcept2());
+                relatedConcepts.add((ConceptMetamac)conceptRelation.getConcept2());
             }
         }
         return relatedConcepts;
@@ -644,11 +649,11 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     }
 
     private List<ConceptRelation> findRelatedConceptsByConceptSchemeVersion(String urn) {
-        return getConceptRelationRepository().findByConceptSchemeVersion(urn);
+        return conceptRelationRepository.findByConceptSchemeVersion(urn);
     }
 
     private void checkConceptHierarchyWithoutRelatedConcepts(Concept concept) throws MetamacException {
-        List<ConceptRelation> conceptsRelations = getConceptRelationRepository().findByConcept(concept.getNameableArtefact().getUrn());
+        List<ConceptRelation> conceptsRelations = conceptRelationRepository.findByConcept(concept.getNameableArtefact().getUrn());
         if (conceptsRelations.size() != 0) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CONCEPT_WITH_RELATED_CONCEPTS).withMessageParameters(concept.getNameableArtefact().getUrn()).build();
         }

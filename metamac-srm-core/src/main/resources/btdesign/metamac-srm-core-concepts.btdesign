@@ -19,7 +19,6 @@ Application ConceptsMetamac {
 			> @ConceptSchemeVersionMetamacRepository
 			> @ConceptMetamacRepository
 			> @ConceptTypeRepository
-			> @ConceptRelationRepository
 			
 			"Creates concept scheme"
 			@ConceptSchemeVersionMetamac createConceptScheme(@ConceptSchemeVersionMetamac conceptSchemeVersion) throws MetamacException;
@@ -148,29 +147,6 @@ Application ConceptsMetamac {
 				findById;
 				@ConceptMetamac findByCodeInConceptSchemeVersion(String conceptCode, String conceptSchemeUrn);
 				findByCondition(PagingParameter pagingParameter);
-			}
-		}
-		
-		Entity ConceptRelation {
-			databaseTable="TB_M_CONCEPTS_RELATIONS"
-			hint="idSequence=M_CONCEPTS_RELATIONS"
-			!auditable
-			!optimisticLocking
-			
-			"Added explicitly to avoid that Sculptor generate UUID"
-			Long id key;
-			"Concept 1"
-			- @ConceptMetamac concept1 required cascade="none" databaseColumn="CONCEPT_1_FK";
-			"Concept 2"
-			- @ConceptMetamac concept2 required cascade="none" databaseColumn="CONCEPT_2_FK";
-			
-			Repository ConceptRelationRepository {
-				save;
-				delete;
-				findByQuery;
-				@ConceptRelation find(String urn1, String urn2);
-				List<@ConceptRelation> findByConcept(String urn);
-				List<@ConceptRelation> findByConceptSchemeVersion(String urn);
 			}
 		}
 		

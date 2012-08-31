@@ -61,7 +61,6 @@ public class DoCopyUtils {
 
     /**
      * Create a new {@link ConceptMetamac} copying values from a source. Do not copy children
-     * TODO copiar atributos pendientes (relatedConcepts)
      */
     private static ConceptMetamac copyConceptMetamac(ConceptMetamac source) {
         ConceptMetamac target = new ConceptMetamac();
