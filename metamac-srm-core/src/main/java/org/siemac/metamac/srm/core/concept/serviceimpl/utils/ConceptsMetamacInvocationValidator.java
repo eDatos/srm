@@ -117,9 +117,9 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
         ValidationUtils.checkParameterRequired(conceptSchemeVersion, ServiceExceptionParameters.CONCEPT_SCHEME, exceptions);
         if (conceptSchemeVersion != null) {
             if (ConceptSchemeTypeEnum.OPERATION.equals(conceptSchemeVersion.getType()) || ConceptSchemeTypeEnum.TRANSVERSAL.equals(conceptSchemeVersion.getType())) {
-                ValidationUtils.checkMetadataRequired(conceptSchemeVersion, ServiceExceptionParameters.CONCEPT_SDMX_RELATED_ARTEFACT, exceptions);
+                ValidationUtils.checkMetadataRequired(concept.getSdmxRelatedArtefact(), ServiceExceptionParameters.CONCEPT_SDMX_RELATED_ARTEFACT, exceptions);
             } else {
-                ValidationUtils.checkMetadataEmpty(conceptSchemeVersion, ServiceExceptionParameters.CONCEPT_SDMX_RELATED_ARTEFACT, exceptions);
+                ValidationUtils.checkMetadataEmpty(concept.getSdmxRelatedArtefact(), ServiceExceptionParameters.CONCEPT_SDMX_RELATED_ARTEFACT, exceptions);
             }
         }
 
@@ -131,6 +131,7 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
 
         ExceptionUtils.throwIfException(exceptions);
     }
+
 
     public static void checkAddConceptRelation(String urn1, String urn2, List<MetamacExceptionItem> exceptions) throws MetamacException {
         if (exceptions == null) {
