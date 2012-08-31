@@ -295,7 +295,24 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         List concepts = DoCopyUtils.copyConceptsMetamac(conceptSchemeVersionToCopy);
 
         // Versioning
-        return (ConceptSchemeVersionMetamac) conceptsService.versioningConceptScheme(ctx, conceptSchemeVersionToCopy.getItemScheme(), conceptSchemeNewVersion, concepts, versionType);
+        conceptSchemeNewVersion = (ConceptSchemeVersionMetamac) conceptsService
+                .versioningConceptScheme(ctx, conceptSchemeVersionToCopy.getItemScheme(), conceptSchemeNewVersion, concepts, versionType);
+
+        // Copy concept relations
+        String conceptSchemeNewVersionUrn = conceptSchemeNewVersion.getMaintainableArtefact().getUrn();
+        List<ConceptRelation> relatedConcepts = getConceptRelationRepository().findByConceptSchemeVersion(urn);
+        for (ConceptRelation conceptRelationOldVersion : relatedConcepts) {
+            String concept1CodeVersionToCopy = conceptRelationOldVersion.getConcept1().getNameableArtefact().getCode();
+            String concept2CodeVersionToCopy = conceptRelationOldVersion.getConcept2().getNameableArtefact().getCode();
+
+            ConceptMetamac concept1NewVersion = getConceptMetamacRepository().findByCodeInConceptSchemeVersion(concept1CodeVersionToCopy, conceptSchemeNewVersionUrn);
+            ConceptMetamac concept2NewVersion = getConceptMetamacRepository().findByCodeInConceptSchemeVersion(concept2CodeVersionToCopy, conceptSchemeNewVersionUrn);
+
+            ConceptRelation conceptRelation = new ConceptRelation(concept1NewVersion, concept2NewVersion);
+            conceptRelation = getConceptRelationRepository().save(conceptRelation);
+        }
+
+        return conceptSchemeNewVersion;
     }
 
     @Override
@@ -369,7 +386,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         if (conceptRelation != null) {
             return conceptRelation;
         }
-        
+
         // Create
         ConceptMetamac concept1 = retrieveConceptByUrn(ctx, urn1);
         ConceptMetamac concept2 = retrieveConceptByUrn(ctx, urn2);

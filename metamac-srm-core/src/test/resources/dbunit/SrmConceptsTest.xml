@@ -724,17 +724,17 @@
             <!--  CONCEPTS RELATIONS -->
             
             <TB_M_CONCEPTS_RELATIONS
-                ID="1"
+                ID="121"
                 CONCEPT_2_FK="121"
                 CONCEPT_1_FK="12211"
             />         
             <TB_M_CONCEPTS_RELATIONS
-                ID="2"
+                ID="122"
                 CONCEPT_2_FK="121"
                 CONCEPT_1_FK="1221"
             />
              <TB_M_CONCEPTS_RELATIONS
-                ID="3"
+                ID="123"
                 CONCEPT_2_FK="1221"
                 CONCEPT_1_FK="12211"
             />                    
@@ -1211,7 +1211,33 @@
                 LAST_UPDATED_BY="user2"
                 LAST_UPDATED="2011-01-22 01:02:03"
                 LAST_UPDATED_TZ="Europe/London"
-            />                        
+            />           
+            
+            
+            <!--  CONCEPTS RELATIONS -->
+                    
+            <!-- CONCEPTS -->
+            <!-- -> CONCEPT01 -->
+            <!-- -> CONCEPT02 -->
+            <!--    -> CONCEPT0201 -->
+            <!--        -> CONCEPT020101 -->
+            <!--    -> CONCEPT0202 -->
+            
+            <TB_M_CONCEPTS_RELATIONS
+                ID="311"
+                CONCEPT_2_FK="311"
+                CONCEPT_1_FK="31211"
+            />        
+            <TB_M_CONCEPTS_RELATIONS
+                ID="312"
+                CONCEPT_2_FK="312"
+                CONCEPT_1_FK="3121"
+            />  
+            <TB_M_CONCEPTS_RELATIONS
+                ID="313"
+                CONCEPT_2_FK="312"
+                CONCEPT_1_FK="3122"
+            />  
                          
         
     <!-- ************************************************************************************** -->
