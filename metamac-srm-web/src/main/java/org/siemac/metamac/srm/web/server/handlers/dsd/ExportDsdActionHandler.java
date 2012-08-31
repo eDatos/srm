@@ -32,7 +32,7 @@ public class ExportDsdActionHandler extends SecurityActionHandler<ExportDsdActio
 
         try {
             DataStructureDefinitionExtendDto dataStructureDefinitionExtendDto = srmCoreServiceFacade.retrieveExtendedDsd(ServiceContextHolder.getCurrentServiceContext(), action.getDsd().getId(),
-                    TypeDozerCopyMode.UPDATE);
+                    TypeDozerCopyMode.COPY_ALL_METADATA);
             structureMsgDto.getDataStructureDefinitionDtos().add(dataStructureDefinitionExtendDto);
             String fileName = srmCoreServiceFacade.exportSDMXStructureMsg(ServiceContextHolder.getCurrentServiceContext(), structureMsgDto);
             return new ExportDsdResult(fileName);
