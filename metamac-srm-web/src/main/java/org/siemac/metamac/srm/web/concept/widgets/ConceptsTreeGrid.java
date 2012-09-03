@@ -13,6 +13,7 @@ import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
+import com.smartgwt.client.types.Autofit;
 import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.types.TreeModelType;
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -51,7 +52,10 @@ public class ConceptsTreeGrid extends TreeGrid {
     private BaseConceptUiHandlers    uiHandlers;
 
     public ConceptsTreeGrid() {
-        setHeight(200);
+
+        setAutoFitMaxRecords(10);
+        setAutoFitData(Autofit.VERTICAL);
+
         setShowOpenIcons(false);
         setShowDropIcons(false);
         setShowSelectedStyle(true);
@@ -172,6 +176,7 @@ public class ConceptsTreeGrid extends TreeGrid {
         tree.setModelType(TreeModelType.CHILDREN);
         tree.setData(new TreeNode[]{conceptSchemeTreeNode});
         setData(tree);
+        getData().openAll();
     }
 
     private TreeNode createConceptSchemeTreeNode(ConceptSchemeMetamacDto conceptSchemeMetamacDto) {
