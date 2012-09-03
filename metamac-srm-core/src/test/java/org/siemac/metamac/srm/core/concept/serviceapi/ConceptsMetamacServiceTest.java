@@ -40,9 +40,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.EnumeratedRepresentation;
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.concept.serviceapi.utils.ConceptsAsserts;
+import com.arte.statistic.sdmx.srm.core.concept.serviceapi.utils.ConceptsDoMocks;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -157,7 +159,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
     @Test
     public void testUpdateConceptSchemeFromOperationToGlossaryType() throws Exception {
         ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_8_V1);
-
+        conceptSchemeVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
         conceptSchemeVersion.setType(ConceptSchemeTypeEnum.GLOSSARY);
 
         try {
@@ -1193,7 +1195,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertEquals(urnExpected, allVersions.get(2).getMaintainableArtefact().getUrn());
         }
     }
-    
+
     @Test
     public void testVersioningConceptSchemeCheckRelatedConceptsRole() throws Exception {
 
@@ -1342,6 +1344,22 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2, conceptSchemeVersion.getItemsFirstLevel().get(1).getNameableArtefact().getUrn());
         assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_3, conceptSchemeVersion.getItemsFirstLevel().get(2).getNameableArtefact().getUrn());
         assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_4, conceptSchemeVersion.getItemsFirstLevel().get(3).getNameableArtefact().getUrn());
+    }
+
+    @Test
+    public void testUpdateConcept() throws Exception {
+
+        ConceptMetamac concept = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_1_V2_CONCEPT_1);
+        concept.getNameableArtefact().setIsCodeUpdated(Boolean.FALSE);
+        concept.getNameableArtefact().setName(ConceptsDoMocks.mockInternationalString());
+        assertTrue(concept.getCoreRepresentation() instanceof EnumeratedRepresentation);
+        concept.setCoreRepresentation(ConceptsDoMocks.mockConceptTextFormatRepresentation());
+
+        // Update
+        ConceptMetamac conceptUpdated = conceptsService.updateConcept(getServiceContextAdministrador(), concept);
+
+        // Validate
+        ConceptsMetamacAsserts.assertEqualsConcept(concept, conceptUpdated);
     }
 
     @Test
@@ -1708,7 +1726,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         assertListConceptsContainsConcept(relatedConcepts, CONCEPT_SCHEME_3_V1_CONCEPT_2_1_1);
         assertListConceptsContainsConcept(relatedConcepts, urnNewRelation);
     }
-    
+
     @Test
     public void testAddConceptRelationRolesErrorConceptSchemeWrongType() throws Exception {
 

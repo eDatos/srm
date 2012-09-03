@@ -230,7 +230,9 @@ Application SrmCore {
     		
     		"Creates concept"
 	   		@ConceptMetamacDto createConcept(@ConceptMetamacDto conceptMetamacDto) throws MetamacException;
-    		"Retrieves a concept by URN"
+	   		"Updates concept"
+            @ConceptMetamacDto updateConcept(@ConceptMetamacDto conceptDto) throws MetamacException;
+	   		"Retrieves a concept by URN"
             @ConceptMetamacDto retrieveConceptByUrn(String urn) throws MetamacException;
 			"Deletes concept"
             deleteConcept(String urn) throws MetamacException;

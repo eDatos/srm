@@ -51,6 +51,8 @@ Application ConceptsMetamac {
     		
 			"Creates concept"
 			@ConceptMetamac createConcept(String conceptSchemeUrn, @ConceptMetamac concept) throws MetamacException;
+			"Updates concept"
+			@ConceptMetamac updateConcept(@ConceptMetamac concept) throws MetamacException;
     		"Retrieves concept by urn"
     		@ConceptMetamac retrieveConceptByUrn(String urn) throws MetamacException;
 			"Deletes concept"

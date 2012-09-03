@@ -155,7 +155,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         target.setDerivation(internationalStringToDo(ctx, source.getDerivation(), target.getDerivation(), ServiceExceptionParameters.CONCEPT_DERIVATION));
         target.setLegalActs(internationalStringToDo(ctx, source.getLegalActs(), target.getLegalActs(), ServiceExceptionParameters.CONCEPT_LEGAL_ACTS));
 
-        // note: not conversion to relatedConcepts. Call 'add/delete RelatedConcepts' operation of Service
+        // note: not conversion to relatedConcepts, roles... Call 'add/delete RelatedConcepts' operation of Service
 
         dto2DoMapperSdmxSrm.conceptDtoToDo(ctx, source, target);
 

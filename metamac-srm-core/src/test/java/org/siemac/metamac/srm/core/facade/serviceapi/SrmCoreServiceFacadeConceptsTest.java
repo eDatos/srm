@@ -923,7 +923,20 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         ConceptMetamacDto conceptMetamacDtoCreated = srmCoreServiceFacade.createConcept(getServiceContextAdministrador(), conceptMetamacDto);
         assertEqualsConceptDto(conceptMetamacDtoCreated, conceptMetamacDto);
     }
-    
+
+    @Test
+    public void testUpdateConcept() throws Exception {
+        ConceptMetamacDto conceptMetamacDto = srmCoreServiceFacade.retrieveConceptByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_1_V2_CONCEPT_1);
+
+        conceptMetamacDto.setName(MetamacMocks.mockInternationalString());
+        conceptMetamacDto.setDescription(MetamacMocks.mockInternationalString());
+
+        ConceptMetamacDto conceptMetamacDtoUpdated = srmCoreServiceFacade.updateConcept(getServiceContextAdministrador(), conceptMetamacDto);
+
+        assertNotNull(conceptMetamacDto);
+        assertEqualsConceptDto(conceptMetamacDto, conceptMetamacDtoUpdated);
+    }
+
     @Test
     public void testRetrieveRelatedConcepts() throws Exception {
 
@@ -955,7 +968,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
             assertListConceptsContainsConcept(relatedConcepts, CONCEPT_SCHEME_1_V2_CONCEPT_2_1);
         }
     }
-    
+
     @Test
     public void testRetrieveRelatedConceptsRoles() throws Exception {
 
@@ -1007,7 +1020,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
     protected String getDataSetFile() {
         return "dbunit/SrmConceptsTest.xml";
     }
-    
+
     private void assertListConceptsContainsConcept(List<ConceptMetamacDto> items, String urn) {
         for (ConceptMetamacDto item : items) {
             if (item.getUrn().equals(urn)) {

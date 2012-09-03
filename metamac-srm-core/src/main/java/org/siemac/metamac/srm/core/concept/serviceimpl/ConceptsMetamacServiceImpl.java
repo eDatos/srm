@@ -34,6 +34,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.concept.domain.Concept;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptRelation;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptRelationRepository;
+import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptRepository;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.concept.enume.domain.ConceptRelationTypeEnum;
 import com.arte.statistic.sdmx.srm.core.concept.serviceapi.ConceptsService;
@@ -51,6 +52,9 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
     @Autowired
     private ItemSchemeVersionRepository itemSchemeVersionRepository;
+
+    @Autowired
+    private ConceptRepository           conceptRepository;
 
     @Autowired
     private ConceptRelationRepository   conceptRelationRepository;
@@ -312,8 +316,8 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
             String concept1CodeVersionToCopy = conceptRelationOldVersion.getConcept1().getNameableArtefact().getCode();
             String concept2CodeVersionToCopy = conceptRelationOldVersion.getConcept2().getNameableArtefact().getCode();
 
-            ConceptMetamac concept1NewVersion = getConceptMetamacRepository().findByCodeInConceptSchemeVersion(concept1CodeVersionToCopy, conceptSchemeNewVersionUrn);
-            ConceptMetamac concept2NewVersion = getConceptMetamacRepository().findByCodeInConceptSchemeVersion(concept2CodeVersionToCopy, conceptSchemeNewVersionUrn);
+            Concept concept1NewVersion = conceptRepository.findByCodeInConceptSchemeVersion(concept1CodeVersionToCopy, conceptSchemeNewVersionUrn);
+            Concept concept2NewVersion = conceptRepository.findByCodeInConceptSchemeVersion(concept2CodeVersionToCopy, conceptSchemeNewVersionUrn);
 
             ConceptRelation conceptRelation = new ConceptRelation(ConceptRelationTypeEnum.BIDIRECTIONAL, concept1NewVersion, concept2NewVersion);
             conceptRelation = conceptRelationRepository.save(conceptRelation);
@@ -350,6 +354,11 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
         // Save concept
         return (ConceptMetamac) conceptsService.createConcept(ctx, conceptSchemeUrn, concept);
+    }
+    
+    @Override
+    public ConceptMetamac updateConcept(ServiceContext ctx, ConceptMetamac concept) throws MetamacException {
+        return (ConceptMetamac) conceptsService.updateConcept(ctx, concept);
     }
 
     @Override

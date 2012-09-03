@@ -473,10 +473,10 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         ConceptSchemeVersionMetamac conceptSchemeVersion = dto2DoMapper.conceptSchemeDtoToDo(ctx, conceptSchemeDto);
 
         // Update
-        ConceptSchemeVersionMetamac conceptSchemeVersionCreated = getConceptsMetamacService().updateConceptScheme(ctx, conceptSchemeVersion);
+        ConceptSchemeVersionMetamac conceptSchemeVersionUpdated = getConceptsMetamacService().updateConceptScheme(ctx, conceptSchemeVersion);
 
         // Transform to DTO
-        conceptSchemeDto = do2DtoMapper.conceptSchemeMetamacDoToDto(conceptSchemeVersionCreated);
+        conceptSchemeDto = do2DtoMapper.conceptSchemeMetamacDoToDto(conceptSchemeVersionUpdated);
         return conceptSchemeDto;
     }
 
@@ -634,6 +634,21 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
+    public ConceptMetamacDto updateConcept(ServiceContext ctx, ConceptMetamacDto conceptDto) throws MetamacException {
+        // TODO Security
+
+        // Transform
+        ConceptMetamac conceptMetamac = dto2DoMapper.conceptDtoToDo(ctx, conceptDto);
+
+        // Update
+        ConceptMetamac conceptUpdated = getConceptsMetamacService().updateConcept(ctx, conceptMetamac);
+
+        // Transform to DTO
+        conceptDto = do2DtoMapper.conceptMetamacDoToDto(conceptUpdated);
+        return conceptDto;
+    }
+
+    @Override
     public ConceptMetamacDto retrieveConceptByUrn(ServiceContext ctx, String urn) throws MetamacException {
         // TODO Security
 
@@ -690,7 +705,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         List<ConceptMetamacDto> conceptsDto = do2DtoMapper.conceptMetamacDoListToDtoList(concepts);
         return conceptsDto;
     }
-    
+
     @Override
     public void addConceptRelationRoles(ServiceContext ctx, String urn, String conceptRoleUrn) throws MetamacException {
         // TODO Security
