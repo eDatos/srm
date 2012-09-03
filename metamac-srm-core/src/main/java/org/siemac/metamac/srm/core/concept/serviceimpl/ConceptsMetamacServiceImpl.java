@@ -637,7 +637,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         checkConceptSchemeProcStatus(conceptSchemeVersion, ItemSchemeMetamacProcStatusEnum.DIFFUSION_VALIDATION);
 
         // Note: in SDMX module check related concept with 'role' belong to concepts schemes were marked as "final" ( = publish internally)
-        
+
         // Check other conditions
         checkConditionsSincePublishInternally(conceptSchemeVersion, exceptions);
 
@@ -656,19 +656,21 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
         // Check other conditions
         checkConditionsSincePublishExternally(conceptSchemeVersion, exceptions);
-        
-        // Note: in SDMX module check related concept with 'role' belong to concepts schemes with filled "validFrom" ( = publish externally) 
+
+        // Note: in SDMX module check related concept with 'role' belong to concepts schemes with filled "validFrom" ( = publish externally)
 
         ExceptionUtils.throwIfException(exceptions);
     }
 
-    /**
-     * TODO alguna validación sobre los conceptos?
-     */
     private void checkConditionsSinceSendToProductionValidation(ConceptSchemeVersionMetamac conceptSchemeVersion, List<MetamacExceptionItem> exceptions) {
 
         // Metadata required
         ValidationUtils.checkMetadataRequired(conceptSchemeVersion.getIsPartial(), ServiceExceptionParameters.ITEM_SCHEME_IS_PARTIAL, exceptions);
+
+        // At least one concept
+        if (conceptSchemeVersion.getItems().size() == 0) {
+            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.CONCEPT_SCHEME_WITHOUT_CONCEPTS, conceptSchemeVersion.getMaintainableArtefact().getUrn()));
+        }
     }
 
     private void checkConditionsSinceSendToDiffusionValidation(ConceptSchemeVersionMetamac conceptSchemeVersion, List<MetamacExceptionItem> exceptions) {
