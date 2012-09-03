@@ -265,7 +265,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
         // Delete related concepts
         ConceptSchemeVersion conceptSchemeVersion = retrieveConceptSchemeByUrn(ctx, urn);
-        List<ConceptRelation> relatedConceptsAllConceptSchemeVersion = findRelatedConceptsByConceptSchemeVersion(conceptSchemeVersion.getMaintainableArtefact().getUrn());
+        List<ConceptRelation> relatedConceptsAllConceptSchemeVersion = findConceptsRelationsBidirectionalByConceptSchemeVersion(conceptSchemeVersion.getMaintainableArtefact().getUrn());
         for (ConceptRelation relatedConcept : relatedConceptsAllConceptSchemeVersion) {
             conceptRelationRepository.delete(relatedConcept);
         }
@@ -305,7 +305,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
         // Copy concept relations
         String conceptSchemeNewVersionUrn = conceptSchemeNewVersion.getMaintainableArtefact().getUrn();
-        List<ConceptRelation> relatedConcepts = conceptRelationRepository.findByConceptSchemeVersion(urn);
+        List<ConceptRelation> relatedConcepts = findConceptsRelationsBidirectionalByConceptSchemeVersion(urn);
         for (ConceptRelation conceptRelationOldVersion : relatedConcepts) {
             String concept1CodeVersionToCopy = conceptRelationOldVersion.getConcept1().getNameableArtefact().getCode();
             String concept2CodeVersionToCopy = conceptRelationOldVersion.getConcept2().getNameableArtefact().getCode();
@@ -387,7 +387,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         ConceptsMetamacInvocationValidator.checkAddConceptRelation(urn1, urn2, null);
 
         // Check not exists
-        ConceptRelation conceptRelation = conceptRelationRepository.find(urn1, urn2);
+        ConceptRelation conceptRelation = findConceptRelationBidirectionalByConcepts(urn1, urn2);
         if (conceptRelation != null) {
             return conceptRelation;
         }
@@ -412,7 +412,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         ConceptsMetamacInvocationValidator.checkDeleteConceptRelation(urn1, urn2, null);
 
         // Retrieve
-        ConceptRelation conceptRelation = conceptRelationRepository.find(urn1, urn2);
+        ConceptRelation conceptRelation = findConceptRelationBidirectionalByConcepts(urn1, urn2);
         if (conceptRelation == null) {
             return;
         }
@@ -431,14 +431,14 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         ConceptsMetamacInvocationValidator.checkRetrieveRelatedConcepts(urn, null);
 
         // Retrieve
-        List<ConceptRelation> conceptsRelations = conceptRelationRepository.findByConcept(urn);
+        List<ConceptRelation> conceptsRelations = retrieveConceptsRelationsBidirectionalByConcept(urn);
 
         List<ConceptMetamac> relatedConcepts = new ArrayList<ConceptMetamac>();
         for (ConceptRelation conceptRelation : conceptsRelations) {
             if (!conceptRelation.getConcept1().getNameableArtefact().getUrn().equals(urn)) {
-                relatedConcepts.add((ConceptMetamac)conceptRelation.getConcept1());
+                relatedConcepts.add((ConceptMetamac) conceptRelation.getConcept1());
             } else if (!conceptRelation.getConcept2().getNameableArtefact().getUrn().equals(urn)) {
-                relatedConcepts.add((ConceptMetamac)conceptRelation.getConcept2());
+                relatedConcepts.add((ConceptMetamac) conceptRelation.getConcept2());
             }
         }
         return relatedConcepts;
@@ -647,13 +647,8 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         }
         return procStatusString;
     }
-
-    private List<ConceptRelation> findRelatedConceptsByConceptSchemeVersion(String urn) {
-        return conceptRelationRepository.findByConceptSchemeVersion(urn);
-    }
-
     private void checkConceptHierarchyWithoutRelatedConcepts(Concept concept) throws MetamacException {
-        List<ConceptRelation> conceptsRelations = conceptRelationRepository.findByConcept(concept.getNameableArtefact().getUrn());
+        List<ConceptRelation> conceptsRelations = retrieveConceptsRelationsBidirectionalByConcept(concept.getNameableArtefact().getUrn());
         if (conceptsRelations.size() != 0) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CONCEPT_WITH_RELATED_CONCEPTS).withMessageParameters(concept.getNameableArtefact().getUrn()).build();
         }
@@ -669,5 +664,39 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     private ConceptSchemeVersionMetamac retrieveConceptSchemeVersionCanBeModified(ServiceContext ctx, String urn) throws MetamacException {
         return retrieveConceptSchemeVersionByProcStatus(ctx, urn, ItemSchemeMetamacProcStatusEnum.DRAFT, ItemSchemeMetamacProcStatusEnum.VALIDATION_REJECTED,
                 ItemSchemeMetamacProcStatusEnum.PRODUCTION_VALIDATION, ItemSchemeMetamacProcStatusEnum.DIFFUSION_VALIDATION);
+    }
+
+    private ConceptRelation findConceptRelationBidirectionalByConcepts(String urn1, String urn2) {
+        ConceptRelation conceptRelation = null;
+
+        // First possible order
+        conceptRelation = conceptRelationRepository.findConceptRelation(urn1, urn2, ConceptRelationTypeEnum.BIDIRECTIONAL);
+        if (conceptRelation != null) {
+            return conceptRelation;
+        }
+
+        // Second possible order
+        conceptRelation = conceptRelationRepository.findConceptRelation(urn2, urn1, ConceptRelationTypeEnum.BIDIRECTIONAL);
+        if (conceptRelation != null) {
+            return conceptRelation;
+        }
+
+        return null;
+    }
+
+    private List<ConceptRelation> retrieveConceptsRelationsBidirectionalByConcept(String urn) {
+
+        List<ConceptRelation> conceptsRelations1 = conceptRelationRepository.findByConcept1(urn, ConceptRelationTypeEnum.BIDIRECTIONAL);
+        List<ConceptRelation> conceptsRelations2 = conceptRelationRepository.findByConcept2(urn, ConceptRelationTypeEnum.BIDIRECTIONAL);
+
+        List<ConceptRelation> conceptsRelations = new ArrayList<ConceptRelation>();
+        conceptsRelations.addAll(conceptsRelations1);
+        conceptsRelations.addAll(conceptsRelations2);
+        return conceptsRelations;
+    }
+
+    private List<ConceptRelation> findConceptsRelationsBidirectionalByConceptSchemeVersion(String urn) {
+        // can search by concept1 or concept2, because conceptSchemeVersion is same
+        return conceptRelationRepository.findByConceptSchemeVersionSearchingByConcept2(urn, ConceptRelationTypeEnum.BIDIRECTIONAL);
     }
 }

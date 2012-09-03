@@ -106,7 +106,6 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
     @Override
     protected List<String> getTablesToRemoveContent() {
         List<String> tables = new ArrayList<String>();
-        tables.add("TB_M_CONCEPTS_RELATIONS");
         tables.add("TB_M_CONCEPTS");
         tables.add("TB_M_CONCEPT_SCHEMES_VERSIONS");
         tables.add("TB_M_LIS_CONCEPT_TYPES");
@@ -121,7 +120,6 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
         sequences.add("SEQ_M_CONCEPT_SCHEMES_VERSIONS");
         sequences.add("SEQ_M_CONCEPTS");
         sequences.add("SEQ_M_CONCEPT_TYPES");
-        sequences.add("SEQ_M_CONCEPTS_RELATIONS");
         return sequences;
     }
 

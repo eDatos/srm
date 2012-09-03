@@ -723,19 +723,19 @@
         
             <!--  CONCEPTS RELATIONS -->
             
-            <TB_M_CONCEPTS_RELATIONS
+            <TB_CONCEPTS_RELATIONS
                 ID="121"
                 CONCEPT_2_FK="121"
                 CONCEPT_1_FK="12211"
                 RELATION_TYPE="BIDIRECTIONAL"
             />         
-            <TB_M_CONCEPTS_RELATIONS
+            <TB_CONCEPTS_RELATIONS
                 ID="122"
-                CONCEPT_2_FK="121"
-                CONCEPT_1_FK="1221"
+                CONCEPT_2_FK="1221"
+                CONCEPT_1_FK="121"
                 RELATION_TYPE="BIDIRECTIONAL"
             />
-             <TB_M_CONCEPTS_RELATIONS
+             <TB_CONCEPTS_RELATIONS
                 ID="123"
                 CONCEPT_2_FK="1221"
                 CONCEPT_1_FK="12211"
@@ -1226,19 +1226,19 @@
             <!--        -> CONCEPT020101 -->
             <!--    -> CONCEPT0202 -->
             
-            <TB_M_CONCEPTS_RELATIONS
+            <TB_CONCEPTS_RELATIONS
                 ID="311"
                 CONCEPT_2_FK="311"
                 CONCEPT_1_FK="31211"
                 RELATION_TYPE="BIDIRECTIONAL"
             />        
-            <TB_M_CONCEPTS_RELATIONS
+            <TB_CONCEPTS_RELATIONS
                 ID="312"
                 CONCEPT_2_FK="312"
                 CONCEPT_1_FK="3121"
                 RELATION_TYPE="BIDIRECTIONAL"
             />  
-            <TB_M_CONCEPTS_RELATIONS
+            <TB_CONCEPTS_RELATIONS
                 ID="313"
                 CONCEPT_2_FK="312"
                 CONCEPT_1_FK="3122"
