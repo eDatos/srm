@@ -239,7 +239,7 @@
             <!-- -> CONCEPT01 -->
             <!-- -> CONCEPT02 -->
             <!--    -> CONCEPT0201 -->
-            <!--       -> CONCEPT020102 -->
+            <!--       -> CONCEPT020101 -->
             <!-- -> CONCEPT03 -->
             <!-- -> CONCEPT04 -->
             <!--    -> CONCEPT0401 -->
@@ -725,20 +725,20 @@
             
             <TB_CONCEPTS_RELATIONS
                 ID="121"
-                CONCEPT_2_FK="121"
                 CONCEPT_1_FK="12211"
+                CONCEPT_2_FK="121"
                 RELATION_TYPE="BIDIRECTIONAL"
             />         
             <TB_CONCEPTS_RELATIONS
                 ID="122"
-                CONCEPT_2_FK="1221"
                 CONCEPT_1_FK="121"
+                CONCEPT_2_FK="1221"
                 RELATION_TYPE="BIDIRECTIONAL"
             />
              <TB_CONCEPTS_RELATIONS
                 ID="123"
-                CONCEPT_2_FK="1221"
                 CONCEPT_1_FK="12211"
+                CONCEPT_2_FK="1221"
                 RELATION_TYPE="BIDIRECTIONAL"
             />                    
 
@@ -1219,29 +1219,22 @@
             
             <!--  CONCEPTS RELATIONS -->
                     
-            <!-- CONCEPTS -->
-            <!-- -> CONCEPT01 -->
-            <!-- -> CONCEPT02 -->
-            <!--    -> CONCEPT0201 -->
-            <!--        -> CONCEPT020101 -->
-            <!--    -> CONCEPT0202 -->
-            
             <TB_CONCEPTS_RELATIONS
                 ID="311"
-                CONCEPT_2_FK="311"
                 CONCEPT_1_FK="31211"
+                CONCEPT_2_FK="311"
                 RELATION_TYPE="BIDIRECTIONAL"
             />        
             <TB_CONCEPTS_RELATIONS
                 ID="312"
-                CONCEPT_2_FK="312"
                 CONCEPT_1_FK="3121"
+                CONCEPT_2_FK="312"
                 RELATION_TYPE="BIDIRECTIONAL"
             />  
             <TB_CONCEPTS_RELATIONS
                 ID="313"
-                CONCEPT_2_FK="312"
                 CONCEPT_1_FK="3122"
+                CONCEPT_2_FK="312"
                 RELATION_TYPE="BIDIRECTIONAL"
             />  
                          

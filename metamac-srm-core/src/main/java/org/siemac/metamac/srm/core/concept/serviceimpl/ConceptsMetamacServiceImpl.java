@@ -647,17 +647,25 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         }
         return procStatusString;
     }
+
     private void checkConceptHierarchyWithoutRelatedConcepts(Concept concept) throws MetamacException {
-        List<ConceptRelation> conceptsRelations = retrieveConceptsRelationsBidirectionalByConcept(concept.getNameableArtefact().getUrn());
+        
+        String conceptUrn = concept.getNameableArtefact().getUrn();
+        
+        List<ConceptRelation> conceptsRelations = retrieveConceptsRelationsBidirectionalByConcept(conceptUrn);
         if (conceptsRelations.size() != 0) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CONCEPT_WITH_RELATED_CONCEPTS).withMessageParameters(concept.getNameableArtefact().getUrn()).build();
+            // say one relation
+            String conceptRelationUrn = conceptsRelations.get(0).getConcept1().getNameableArtefact().getUrn();
+            if (conceptUrn.equals(conceptRelationUrn)) {
+                conceptRelationUrn = conceptsRelations.get(0).getConcept2().getNameableArtefact().getUrn();
+            }
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CONCEPT_WITH_RELATED_CONCEPTS).withMessageParameters(conceptUrn, conceptRelationUrn).build();
         }
         for (Item item : concept.getChildren()) {
-            ConceptMetamac child = (ConceptMetamac) item;
+            Concept child = (Concept) item;
             checkConceptHierarchyWithoutRelatedConcepts(child);
         }
     }
-
     /**
      * Retrieves version of a concept scheme, checking that can be modified
      */
