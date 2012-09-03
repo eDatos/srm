@@ -305,7 +305,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         conceptSchemeNewVersion = (ConceptSchemeVersionMetamac) conceptsService
                 .versioningConceptScheme(ctx, conceptSchemeVersionToCopy.getItemScheme(), conceptSchemeNewVersion, concepts, versionType);
 
-        // Copy concept relations
+        // Copy concept relations (metadata of Metamac 'relatedConcepts'. Note: metadata 'roles' is copied in SDMX module
         String conceptSchemeNewVersionUrn = conceptSchemeNewVersion.getMaintainableArtefact().getUrn();
         List<ConceptRelation> relatedConcepts = findConceptsRelationsBidirectionalByConceptSchemeVersion(urn);
         for (ConceptRelation conceptRelationOldVersion : relatedConcepts) {
@@ -337,7 +337,6 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         return conceptSchemeVersion;
     }
 
-    // TODO metadato 'roles' de sdmx: Se rellena únicamente para esquemas de tipo "operación" y "transversal", y serán relaciones a conceptos de un esquema de tipo rol.
     @Override
     public ConceptMetamac createConcept(ServiceContext ctx, String conceptSchemeUrn, ConceptMetamac concept) throws MetamacException {
 
@@ -637,6 +636,8 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         // Check proc status
         checkConceptSchemeProcStatus(conceptSchemeVersion, ItemSchemeMetamacProcStatusEnum.DIFFUSION_VALIDATION);
 
+        // Note: in SDMX module check related concept with 'role' belong to concepts schemes were marked as "final" ( = publish internally)
+        
         // Check other conditions
         checkConditionsSincePublishInternally(conceptSchemeVersion, exceptions);
 
@@ -655,6 +656,8 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
         // Check other conditions
         checkConditionsSincePublishExternally(conceptSchemeVersion, exceptions);
+        
+        // Note: in SDMX module check related concept with 'role' belong to concepts schemes with filled "validFrom" ( = publish externally) 
 
         ExceptionUtils.throwIfException(exceptions);
     }
@@ -672,16 +675,10 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         checkConditionsSinceSendToProductionValidation(conceptSchemeVersion, exceptions);
     }
 
-    // TODO metadato 'roles' de sdmx: En principio se podrán asociar independientemente del estado del esquema de conceptos, pero al publicar internamente se ha de comprobar que el esquema de
-    // conceptos relacionado tb
-    // esté publicado internamente. Idem al publicar externamente. Está pendiente que Alberto confirme que se podrán asociar en un principio aunque estén en borrador.
     private void checkConditionsSincePublishInternally(ConceptSchemeVersionMetamac conceptSchemeVersion, List<MetamacExceptionItem> exceptions) {
         checkConditionsSinceSendToDiffusionValidation(conceptSchemeVersion, exceptions);
     }
 
-    // TODO metadato 'roles' de sdmx:En principio se podrán asociar independientemente del estado del esquema de conceptos, pero al publicar internamente se ha de comprobar que el esquema de conceptos
-    // relacionado tb
-    // esté publicado internamente. Idem al publicar externamente. Está pendiente que Alberto confirme que se podrán asociar en un principio aunque estén en borrador.
     private void checkConditionsSincePublishExternally(ConceptSchemeVersionMetamac conceptSchemeVersion, List<MetamacExceptionItem> exceptions) {
         checkConditionsSincePublishInternally(conceptSchemeVersion, exceptions);
     }
