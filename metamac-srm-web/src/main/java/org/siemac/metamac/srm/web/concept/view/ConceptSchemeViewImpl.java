@@ -16,7 +16,6 @@ import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.widgets.VersionWindow;
-import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptSchemeRecord;
 import org.siemac.metamac.srm.web.concept.presenter.ConceptSchemePresenter;
@@ -52,7 +51,6 @@ import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.types.SelectionStyle;
-import com.smartgwt.client.types.TreeModelType;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
@@ -69,8 +67,6 @@ import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
-import com.smartgwt.client.widgets.tree.Tree;
-import com.smartgwt.client.widgets.tree.TreeNode;
 
 public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePresenter.ConceptSchemeView {
 
@@ -320,28 +316,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
 
     @Override
     public void setConceptList(List<ItemHierarchyDto> itemHierarchyDtos) {
-        TreeNode[] treeNodes = new TreeNode[itemHierarchyDtos.size()];
-        for (int i = 0; i < itemHierarchyDtos.size(); i++) {
-            treeNodes[i] = createTreeNode(itemHierarchyDtos.get(i));
-        }
-        Tree tree = new Tree();
-        tree.setModelType(TreeModelType.CHILDREN);
-        tree.setData(treeNodes);
-        conceptsTreeGrid.setData(tree);
-    }
-
-    private TreeNode createTreeNode(ItemHierarchyDto itemHierarchyDto) {
-        TreeNode node = new TreeNode(itemHierarchyDto.getItem().getId().toString());
-        node.setAttribute(ConceptDS.CODE, itemHierarchyDto.getItem().getCode());
-        node.setAttribute(ConceptDS.NAME, InternationalStringUtils.getLocalisedString(itemHierarchyDto.getItem().getName()));
-        node.setAttribute(ConceptDS.URN, itemHierarchyDto.getItem().getUrn());
-        // Node children
-        TreeNode[] children = new TreeNode[itemHierarchyDto.getChildren().size()];
-        for (int i = 0; i < itemHierarchyDto.getChildren().size(); i++) {
-            children[i] = createTreeNode(itemHierarchyDto.getChildren().get(i));
-        }
-        node.setChildren(children);
-        return node;
+        conceptsTreeGrid.setConcepts(conceptSchemeDto, itemHierarchyDtos);
     }
 
     @Override
