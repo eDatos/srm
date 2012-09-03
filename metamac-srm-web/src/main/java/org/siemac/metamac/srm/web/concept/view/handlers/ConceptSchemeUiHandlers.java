@@ -1,31 +1,21 @@
 package org.siemac.metamac.srm.web.concept.view.handlers;
 
-import java.util.List;
-
-import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
 
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
-import com.gwtplatform.mvp.client.UiHandlers;
 
-public interface ConceptSchemeUiHandlers extends UiHandlers {
+public interface ConceptSchemeUiHandlers extends BaseConceptUiHandlers {
 
     // Schemes
 
     void retrieveConceptScheme(String conceptSchemeUrn);
     void retrieveConceptListByScheme(String conceptSchemeUrn);
-    void retrieveConceptSchemeHistoryList(String conceptSchemeUrn);
+    void retrieveConceptSchemeVersions(String conceptSchemeUrn);
     void saveConceptScheme(ConceptSchemeMetamacDto conceptScheme);
     void goToConceptScheme(String urn);
     void retrieveStatisticalOperations(int firstResult, int maxResults, String operation);
     void cancelValidity(String urn);
-
-    // Concepts
-
-    void createConcept(ConceptMetamacDto conceptDto);
-    void deleteConcepts(List<Long> conceptIds);
-    void goToConcept(String urn);
 
     // Life cycle
 

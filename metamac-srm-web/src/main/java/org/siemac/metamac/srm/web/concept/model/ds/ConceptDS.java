@@ -3,7 +3,7 @@ package org.siemac.metamac.srm.web.concept.model.ds;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 
 import com.smartgwt.client.data.DataSource;
-import com.smartgwt.client.data.fields.DataSourceIntegerField;
+import com.smartgwt.client.data.fields.DataSourceTextField;
 
 public class ConceptDS extends DataSource {
 
@@ -35,7 +35,7 @@ public class ConceptDS extends DataSource {
     public static String       DTO                   = "con-dto";
 
     public ConceptDS() {
-        DataSourceIntegerField code = new DataSourceIntegerField(CODE, MetamacSrmWeb.getConstants().conceptSchemeCode());
+        DataSourceTextField code = new DataSourceTextField(CODE, MetamacSrmWeb.getConstants().conceptCode());
         code.setPrimaryKey(true);
         addField(code);
     }

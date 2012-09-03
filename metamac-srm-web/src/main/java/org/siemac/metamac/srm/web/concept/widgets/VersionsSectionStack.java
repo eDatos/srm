@@ -19,11 +19,11 @@ import com.smartgwt.client.widgets.grid.events.HasRecordClickHandlers;
 import com.smartgwt.client.widgets.layout.SectionStack;
 import com.smartgwt.client.widgets.layout.SectionStackSection;
 
-public class HistorySectionStack extends SectionStack {
+public class VersionsSectionStack extends SectionStack {
 
     private ListGrid listGrid;
 
-    public HistorySectionStack() {
+    public VersionsSectionStack() {
         setWidth100();
         setVisibilityMode(VisibilityMode.MULTIPLE);
         setAnimateSections(true);

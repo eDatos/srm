@@ -22,14 +22,14 @@ import org.siemac.metamac.srm.web.client.widgets.presenter.ToolStripPresenterWid
 import org.siemac.metamac.srm.web.concept.view.handlers.ConceptSchemeUiHandlers;
 import org.siemac.metamac.srm.web.shared.concept.CancelConceptSchemeValidityAction;
 import org.siemac.metamac.srm.web.shared.concept.CancelConceptSchemeValidityResult;
-import org.siemac.metamac.srm.web.shared.concept.DeleteConceptListAction;
-import org.siemac.metamac.srm.web.shared.concept.DeleteConceptListResult;
+import org.siemac.metamac.srm.web.shared.concept.DeleteConceptAction;
+import org.siemac.metamac.srm.web.shared.concept.DeleteConceptResult;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptListBySchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptListBySchemeResult;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeAction;
-import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeHistoryListAction;
-import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeHistoryListResult;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeResult;
+import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeVersionsAction;
+import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeVersionsResult;
 import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsPaginatedListAction;
 import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsPaginatedListResult;
 import org.siemac.metamac.srm.web.shared.concept.SaveConceptAction;
@@ -45,6 +45,7 @@ import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.utils.UrnUtils;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
@@ -87,8 +88,8 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
     public interface ConceptSchemeView extends View, HasUiHandlers<ConceptSchemeUiHandlers> {
 
         void setConceptScheme(ConceptSchemeMetamacDto conceptSchemeDto);
-        void setConceptList(List<ConceptMetamacDto> conceptDtos);
-        void setConceptSchemeHistoryList(List<ConceptSchemeMetamacDto> conceptSchemeDtos);
+        void setConceptList(List<ItemHierarchyDto> itemHierarchyDtos);
+        void setConceptSchemeVersions(List<ConceptSchemeMetamacDto> conceptSchemeDtos);
         void setOperations(List<ExternalItemDto> operations, int firstResult, int totalResults);
     }
 
@@ -168,7 +169,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
                 ConceptSchemePresenter.this.conceptSchemeDto = result.getConceptSchemeDto();
                 setConceptScheme(result.getConceptSchemeDto());
                 retrieveConceptListByScheme(result.getConceptSchemeDto().getUrn());
-                retrieveConceptSchemeHistoryList(result.getConceptSchemeDto().getUrn());
+                retrieveConceptSchemeVersions(result.getConceptSchemeDto().getUrn());
             }
         });
     }
@@ -306,36 +307,36 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
             }
             @Override
             public void onWaitSuccess(GetConceptListBySchemeResult result) {
-                getView().setConceptList(result.getConceptDto());
+                getView().setConceptList(result.getItemHierarchyDtos());
             }
         });
     }
 
     @Override
-    public void retrieveConceptSchemeHistoryList(String conceptSchemeUrn) {
-        dispatcher.execute(new GetConceptSchemeHistoryListAction(conceptSchemeUrn), new WaitingAsyncCallback<GetConceptSchemeHistoryListResult>() {
+    public void retrieveConceptSchemeVersions(String conceptSchemeUrn) {
+        dispatcher.execute(new GetConceptSchemeVersionsAction(conceptSchemeUrn), new WaitingAsyncCallback<GetConceptSchemeVersionsResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorRetrievingHistoryList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorRetrievingVersions()), MessageTypeEnum.ERROR);
             }
             @Override
-            public void onWaitSuccess(GetConceptSchemeHistoryListResult result) {
-                getView().setConceptSchemeHistoryList(result.getConceptSchemeDtos());
+            public void onWaitSuccess(GetConceptSchemeVersionsResult result) {
+                getView().setConceptSchemeVersions(result.getConceptSchemeDtos());
             }
         });
     }
 
     @Override
-    public void deleteConcepts(List<Long> conceptIds) {
-        dispatcher.execute(new DeleteConceptListAction(conceptIds), new WaitingAsyncCallback<DeleteConceptListResult>() {
+    public void deleteConcept(String urn) {
+        dispatcher.execute(new DeleteConceptAction(urn), new WaitingAsyncCallback<DeleteConceptResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptErrorDelete()), MessageTypeEnum.ERROR);
             }
             @Override
-            public void onWaitSuccess(DeleteConceptListResult result) {
+            public void onWaitSuccess(DeleteConceptResult result) {
                 retrieveConceptListByScheme(conceptSchemeDto.getUrn());
             }
         });
