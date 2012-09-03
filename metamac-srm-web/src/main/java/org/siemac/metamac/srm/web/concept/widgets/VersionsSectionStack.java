@@ -8,6 +8,8 @@ import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 import org.siemac.metamac.srm.web.concept.utils.RecordUtils;
 
+import com.smartgwt.client.data.Record;
+import com.smartgwt.client.data.RecordList;
 import com.smartgwt.client.types.AnimationEffect;
 import com.smartgwt.client.types.Autofit;
 import com.smartgwt.client.types.Overflow;
@@ -49,6 +51,7 @@ public class VersionsSectionStack extends SectionStack {
         listGrid.setAnimateRollUnder(true);
         listGrid.setShowSelectionCanvas(true);
         listGrid.setAnimateSelectionUnder(true);
+        listGrid.setLeaveScrollbarGap(false);
 
         ListGridField codeField = new ListGridField(ConceptSchemeDS.CODE, getConstants().conceptSchemeCode());
         codeField.setWidth("30%");
@@ -68,6 +71,12 @@ public class VersionsSectionStack extends SectionStack {
         for (ConceptSchemeMetamacDto conceptSchemeDto : conceptSchemeDtos) {
             listGrid.addData(RecordUtils.getConceptSchemeRecord(conceptSchemeDto));
         }
+    }
+
+    public void selectConceptScheme(ConceptSchemeMetamacDto conceptSchemeMetamacDto) {
+        RecordList recordList = listGrid.getRecordList();
+        Record record = recordList.find(ConceptSchemeDS.URN, conceptSchemeMetamacDto.getUrn());
+        listGrid.selectRecord(record);
     }
 
     public HasRecordClickHandlers getListGrid() {

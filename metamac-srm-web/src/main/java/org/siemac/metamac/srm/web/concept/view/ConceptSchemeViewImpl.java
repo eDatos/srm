@@ -93,7 +93,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
 
     private ConceptsTreeGrid            conceptsTreeGrid;
 
-    private VersionsSectionStack        historySectionStack;
+    private VersionsSectionStack        versionsSectionStack;
 
     private ConceptSchemeMetamacDto     conceptSchemeDto;
     private ExternalItemDto             relatedOperation;
@@ -120,8 +120,8 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         // CONCEPT SCHEME VERSIONS
         //
 
-        historySectionStack = new VersionsSectionStack();
-        historySectionStack.getListGrid().addRecordClickHandler(new RecordClickHandler() {
+        versionsSectionStack = new VersionsSectionStack();
+        versionsSectionStack.getListGrid().addRecordClickHandler(new RecordClickHandler() {
 
             @Override
             public void onRecordClick(RecordClickEvent event) {
@@ -142,7 +142,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         conceptsListGridLayout.addMember(conceptsTreeGrid);
 
         panel.addMember(mainFormLayout);
-        panel.addMember(historySectionStack);
+        panel.addMember(versionsSectionStack);
         panel.addMember(conceptsListGridLayout);
     }
 
@@ -320,7 +320,8 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
 
     @Override
     public void setConceptSchemeVersions(List<ConceptSchemeMetamacDto> conceptSchemeDtos) {
-        historySectionStack.setConceptSchemes(conceptSchemeDtos);
+        versionsSectionStack.setConceptSchemes(conceptSchemeDtos);
+        versionsSectionStack.selectConceptScheme(conceptSchemeDto);
     }
 
     private void createViewForm() {
