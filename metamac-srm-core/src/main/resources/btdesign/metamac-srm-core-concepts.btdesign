@@ -151,7 +151,6 @@ Application ConceptsMetamac {
 			Repository ConceptMetamacRepository {
 				findByQuery;
 				findById;
-				@ConceptMetamac findByCodeInConceptSchemeVersion(String conceptCode, String conceptSchemeUrn);
 				findByCondition(PagingParameter pagingParameter);
 			}
 		}

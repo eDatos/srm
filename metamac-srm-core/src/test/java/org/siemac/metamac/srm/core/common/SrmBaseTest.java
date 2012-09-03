@@ -43,6 +43,7 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
     protected static final String CONCEPT_SCHEME_1_V2_CONCEPT_4_1   = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME01(02.000).CONCEPT0401";
     protected static final String CONCEPT_SCHEME_1_V2_CONCEPT_4_1_1 = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME01(02.000).CONCEPT040101";
     protected static final String CONCEPT_SCHEME_2_V1_CONCEPT_1     = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME02(01.000).CONCEPT01";
+    protected static final String CONCEPT_SCHEME_2_V1_CONCEPT_2     = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME02(01.000).CONCEPT02";
     protected static final String CONCEPT_SCHEME_3_V1_CONCEPT_1     = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME03(01.000).CONCEPT01";
     protected static final String CONCEPT_SCHEME_3_V1_CONCEPT_2     = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME03(01.000).CONCEPT02";
     protected static final String CONCEPT_SCHEME_3_V1_CONCEPT_2_1   = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME03(01.000).CONCEPT0201";

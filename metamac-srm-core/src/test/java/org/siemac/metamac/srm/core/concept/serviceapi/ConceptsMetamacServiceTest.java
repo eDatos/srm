@@ -1193,6 +1193,59 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertEquals(urnExpected, allVersions.get(2).getMaintainableArtefact().getUrn());
         }
     }
+    
+    @Test
+    public void testVersioningConceptSchemeCheckRelatedConceptsRole() throws Exception {
+
+        // Check related roles until versioning
+        {
+            // Concept 1
+            {
+                List<ConceptMetamac> relatedConceptsRole = conceptsService.retrieveRelatedConceptsRoles(getServiceContextAdministrador(), CONCEPT_SCHEME_2_V1_CONCEPT_1);
+                assertEquals(2, relatedConceptsRole.size());
+                assertListConceptsContainsConcept(relatedConceptsRole, CONCEPT_SCHEME_3_V1_CONCEPT_1);
+                assertListConceptsContainsConcept(relatedConceptsRole, CONCEPT_SCHEME_3_V1_CONCEPT_2_1);
+            }
+
+            // Concept 2
+            {
+                List<ConceptMetamac> relatedConceptsRole = conceptsService.retrieveRelatedConceptsRoles(getServiceContextAdministrador(), CONCEPT_SCHEME_2_V1_CONCEPT_2);
+                assertEquals(1, relatedConceptsRole.size());
+                assertListConceptsContainsConcept(relatedConceptsRole, CONCEPT_SCHEME_3_V1_CONCEPT_2_1);
+            }
+
+        }
+
+        // We prefer do isolated tests but.. publish internally to versioning and check copy of related concepts type 'role'
+        String urn = CONCEPT_SCHEME_2_V1;
+        conceptsService.sendConceptSchemeToProductionValidation(getServiceContextAdministrador(), urn);
+        conceptsService.sendConceptSchemeToDiffusionValidation(getServiceContextAdministrador(), urn);
+        conceptsService.publishInternallyConceptScheme(getServiceContextAdministrador(), urn);
+
+        // Versioning
+        conceptsService.versioningConceptScheme(getServiceContextAdministrador(), CONCEPT_SCHEME_2_V1, VersionTypeEnum.MAJOR);
+        String urnExpectedConcept1 = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME02(01.000).CONCEPT01";
+        String urnExpectedConcept2 = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME02(01.000).CONCEPT02";
+
+        // Only check related roles
+        {
+            // Concept 1
+            {
+                List<ConceptMetamac> relatedConceptsRole = conceptsService.retrieveRelatedConceptsRoles(getServiceContextAdministrador(), urnExpectedConcept1);
+                assertEquals(2, relatedConceptsRole.size());
+                assertListConceptsContainsConcept(relatedConceptsRole, CONCEPT_SCHEME_3_V1_CONCEPT_1);
+                assertListConceptsContainsConcept(relatedConceptsRole, CONCEPT_SCHEME_3_V1_CONCEPT_2_1);
+            }
+
+            // Concept 2
+            {
+                List<ConceptMetamac> relatedConceptsRole = conceptsService.retrieveRelatedConceptsRoles(getServiceContextAdministrador(), urnExpectedConcept2);
+                assertEquals(1, relatedConceptsRole.size());
+                assertListConceptsContainsConcept(relatedConceptsRole, CONCEPT_SCHEME_3_V1_CONCEPT_2_1);
+            }
+
+        }
+    }
 
     @Test
     public void testVersioningConceptSchemeErrorAlreadyExistsDraft() throws Exception {

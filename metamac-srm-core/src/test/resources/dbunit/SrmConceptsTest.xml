@@ -853,6 +853,7 @@
     
             <!-- CONCEPTS -->
             <!-- -> CONCEPT01 -->
+            <!-- -> CONCEPT02 -->
             
             <!-- CONCEPT01 -->
             <TB_CONCEPTS
@@ -912,6 +913,87 @@
                 LAST_UPDATED="2011-01-22 01:02:03"
                 LAST_UPDATED_TZ="Europe/London"
             />       
+            
+            <!-- CONCEPT02 -->
+            <TB_CONCEPTS
+                TB_ITEMS="212"
+                CORE_REPRESENTATION_FK="[null]"    
+            />
+        
+            <TB_M_CONCEPTS
+              PLURAL_NAME_FK="[null]"
+              ACRONYM_FK="[null]"
+              DESCRIPTION_SOURCE_FK="[null]"
+              CONTEXT_FK="[null]"
+              DOC_METHOD_FK="[null]"
+              DERIVATION_FK="[null]"
+              LEGAL_ACTS_FK="[null]"
+              SDMX_RELATED_ARTEFACT="ATTRIBUTE"
+              CONCEPT_TYPE_FK="2"              
+              TB_CONCEPTS="212"
+             />        
+                     
+            <TB_ITEMS
+                ID="212"
+                PARENT_FK="[null]"
+                ITEM_SCHEME_VERSION_FK="21"
+                ITEM_SCHEME_VERSION_FIRST_FK="21"
+                NAMEABLE_ARTEFACT_FK="212"
+                      
+                UUID="conceptScheme-2-v1-concept-2"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"  
+            />
+        
+            <TB_ANNOTABLE_ARTEFACTS 
+                ID="212"
+                ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+                
+                CODE="CONCEPT02"
+                URI="[null]"
+                URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME02(01.000).CONCEPT02"
+                REPLACED_BY="[null]"
+                REPLACE_TO="[null]"
+                
+                NAME_FK="[null]"
+                DESCRIPTION_FK="[null]"
+                
+                UUID="annotableArtefact-212"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"
+            />                 
+            
+              <!--  CONCEPTS RELATIONS ROLE -->
+            
+             <TB_CONCEPTS_RELATIONS
+                ID="211"
+                CONCEPT_1_FK="211"
+                CONCEPT_2_FK="311"
+                RELATION_TYPE="ROLE"
+            />  
+            <TB_CONCEPTS_RELATIONS
+                ID="212"
+                CONCEPT_1_FK="211"
+                CONCEPT_2_FK="3121"
+                RELATION_TYPE="ROLE"
+            /> 
+            <TB_CONCEPTS_RELATIONS
+                ID="213"
+                CONCEPT_1_FK="212"
+                CONCEPT_2_FK="3121"
+                RELATION_TYPE="ROLE"
+            />             
+                    
         
     <!-- ************************************************************************************** -->
     <!-- CONCEPT SCHEME 3                                                                       -->
