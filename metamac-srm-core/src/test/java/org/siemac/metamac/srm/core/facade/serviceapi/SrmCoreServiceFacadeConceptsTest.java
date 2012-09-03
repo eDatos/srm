@@ -955,6 +955,18 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
             assertListConceptsContainsConcept(relatedConcepts, CONCEPT_SCHEME_1_V2_CONCEPT_2_1);
         }
     }
+    
+    @Test
+    public void testRetrieveRelatedConceptsRoles() throws Exception {
+
+        // Retrieve
+        List<ConceptMetamacDto> relatedConcepts = srmCoreServiceFacade.retrieveRelatedConceptsRoles(getServiceContextAdministrador(), CONCEPT_SCHEME_1_V2_CONCEPT_1);
+
+        // Validate
+        assertEquals(2, relatedConcepts.size());
+        assertListConceptsContainsConcept(relatedConcepts, CONCEPT_SCHEME_3_V1_CONCEPT_2);
+        assertListConceptsContainsConcept(relatedConcepts, CONCEPT_SCHEME_3_V1_CONCEPT_2_1_1);
+    }
 
     @Test
     public void testFindAllConceptTypes() throws Exception {

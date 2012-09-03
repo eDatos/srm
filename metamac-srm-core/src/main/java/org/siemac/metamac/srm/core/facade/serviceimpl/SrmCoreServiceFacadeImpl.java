@@ -690,6 +690,32 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         List<ConceptMetamacDto> conceptsDto = do2DtoMapper.conceptMetamacDoListToDtoList(concepts);
         return conceptsDto;
     }
+    
+    @Override
+    public void addConceptRelationRoles(ServiceContext ctx, String urn, String conceptRoleUrn) throws MetamacException {
+        // TODO Security
+
+        getConceptsMetamacService().addConceptRelationRoles(ctx, urn, conceptRoleUrn);
+    }
+
+    @Override
+    public void deleteConceptRelationRoles(ServiceContext ctx, String urn, String conceptRoleUrn) throws MetamacException {
+        // TODO Security
+
+        getConceptsMetamacService().deleteConceptRelationRoles(ctx, urn, conceptRoleUrn);
+    }
+
+    @Override
+    public List<ConceptMetamacDto> retrieveRelatedConceptsRoles(ServiceContext ctx, String urn) throws MetamacException {
+        // TODO Security
+
+        // Retrieve
+        List<ConceptMetamac> concepts = getConceptsMetamacService().retrieveRelatedConceptsRoles(ctx, urn);
+
+        // Transform
+        List<ConceptMetamacDto> conceptsDto = do2DtoMapper.conceptMetamacDoListToDtoList(concepts);
+        return conceptsDto;
+    }
 
     @Override
     public List<ConceptTypeDto> findAllConceptTypes(ServiceContext ctx) throws MetamacException {
