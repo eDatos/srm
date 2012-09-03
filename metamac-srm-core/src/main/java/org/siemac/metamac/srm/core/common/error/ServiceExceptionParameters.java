@@ -1,5 +1,6 @@
 package org.siemac.metamac.srm.core.common.error;
 
+import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
 
 public class ServiceExceptionParameters extends com.arte.statistic.sdmx.srm.core.common.error.ServiceExceptionParameters {
@@ -10,6 +11,11 @@ public class ServiceExceptionParameters extends com.arte.statistic.sdmx.srm.core
     public static final String CONCEPT_SCHEME_CODE               = CONCEPT_SCHEME + ".code";
     public static final String CONCEPT_SCHEME_TYPE               = CONCEPT_SCHEME + ".type";
     public static final String CONCEPT_SCHEME_RELATED_OPERATION  = CONCEPT_SCHEME + ".related_operation";
+    // TYPES
+    public static final String CONCEPT_SCHEME_TYPE_GLOSSARY      = ConceptSchemeTypeEnum.GLOSSARY.name();
+    public static final String CONCEPT_SCHEME_TYPE_ROLE          = ConceptSchemeTypeEnum.ROLE.name();
+    public static final String CONCEPT_SCHEME_TYPE_OPERATION     = ConceptSchemeTypeEnum.OPERATION.name();
+    public static final String CONCEPT_SCHEME_TYPE_TRANSVERSAL   = ConceptSchemeTypeEnum.TRANSVERSAL.name();
 
     // CONCEPT
     public static final String CONCEPT_PLURAL_NAME               = CONCEPT + ".plural_name";

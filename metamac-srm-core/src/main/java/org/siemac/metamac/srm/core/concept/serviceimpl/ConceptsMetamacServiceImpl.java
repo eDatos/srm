@@ -21,6 +21,7 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacProperties;
 import org.siemac.metamac.srm.core.concept.domain.ConceptType;
+import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.core.concept.serviceimpl.utils.ConceptsMetamacInvocationValidator;
 import org.siemac.metamac.srm.core.concept.serviceimpl.utils.DoCopyUtils;
 import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
@@ -36,6 +37,7 @@ import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptRelationRepository
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.concept.enume.domain.ConceptRelationTypeEnum;
 import com.arte.statistic.sdmx.srm.core.concept.serviceapi.ConceptsService;
+import com.arte.statistic.sdmx.srm.core.concept.serviceimpl.utils.ConceptsInvocationValidator;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
 
 /**
@@ -445,6 +447,58 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     }
 
     @Override
+    public ConceptRelation addConceptRelationRoles(ServiceContext ctx, String urn, String conceptRoleUrn) throws MetamacException {
+
+        // Validation
+        ConceptsInvocationValidator.checkAddConceptRelationRoles(urn, conceptRoleUrn, null);
+
+        Concept concept = retrieveConceptByUrn(ctx, urn);
+        Concept conceptRole = retrieveConceptByUrn(ctx, conceptRoleUrn);
+
+        // Check concept scheme of concept 'urn' is Operation or Transversal (it is retrieved by conceptsService to avoid ClassCastException)
+        ConceptSchemeVersionMetamac conceptSchemeVersionOfConcept = (ConceptSchemeVersionMetamac) conceptsService.retrieveConceptSchemeByUrn(ctx, concept.getItemSchemeVersion()
+                .getMaintainableArtefact().getUrn());
+        if (!ConceptSchemeTypeEnum.OPERATION.equals(conceptSchemeVersionOfConcept.getType()) && !ConceptSchemeTypeEnum.TRANSVERSAL.equals(conceptSchemeVersionOfConcept.getType())) {
+            throw MetamacExceptionBuilder
+                    .builder()
+                    .withExceptionItems(ServiceExceptionType.CONCEPT_SCHEME_WRONG_TYPE)
+                    .withMessageParameters(conceptSchemeVersionOfConcept.getMaintainableArtefact().getUrn(),
+                            new String[]{ServiceExceptionParameters.CONCEPT_SCHEME_TYPE_OPERATION, ServiceExceptionParameters.CONCEPT_SCHEME_TYPE_TRANSVERSAL}).build();
+        }
+        // Check concept scheme of concept 'conceptRoleUrn' is Role
+        ConceptSchemeVersionMetamac conceptSchemeVersionOfRole = (ConceptSchemeVersionMetamac) conceptsService.retrieveConceptSchemeByUrn(ctx, conceptRole.getItemSchemeVersion()
+                .getMaintainableArtefact().getUrn());
+        if (!ConceptSchemeTypeEnum.ROLE.equals(conceptSchemeVersionOfRole.getType())) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CONCEPT_SCHEME_WRONG_TYPE)
+                    .withMessageParameters(conceptSchemeVersionOfRole.getMaintainableArtefact().getUrn(), new String[]{ServiceExceptionParameters.CONCEPT_SCHEME_TYPE_ROLE}).build();
+        }
+
+        return conceptsService.addConceptRelationRoles(ctx, urn, conceptRoleUrn);
+    }
+
+    @Override
+    public void deleteConceptRelationRoles(ServiceContext ctx, String urn, String conceptRoleUrn) throws MetamacException {
+
+        // Validation
+        ConceptsInvocationValidator.checkDeleteConceptRelationRoles(urn, conceptRoleUrn, null);
+
+        conceptsService.deleteConceptRelationRoles(ctx, urn, conceptRoleUrn);
+    }
+
+    @Override
+    public List<ConceptMetamac> retrieveRelatedConceptsRoles(ServiceContext ctx, String urn) throws MetamacException {
+
+        // Validation
+        ConceptsInvocationValidator.checkRetrieveRelatedConceptsRoles(urn, null);
+
+        // Retrieve
+        List<Concept> conceptsRole = conceptsService.retrieveRelatedConceptsRoles(ctx, urn);
+        List<ConceptMetamac> conceptsRoleMetamac = conceptsToConceptMetamac(conceptsRole);
+
+        return conceptsRoleMetamac;
+    }
+
+    @Override
     public List<ConceptType> findAllConceptTypes(ServiceContext ctx) throws MetamacException {
 
         // Validation
@@ -649,9 +703,9 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     }
 
     private void checkConceptHierarchyWithoutRelatedConcepts(Concept concept) throws MetamacException {
-        
+
         String conceptUrn = concept.getNameableArtefact().getUrn();
-        
+
         List<ConceptRelation> conceptsRelations = retrieveConceptsRelationsBidirectionalByConcept(conceptUrn);
         if (conceptsRelations.size() != 0) {
             // say one relation

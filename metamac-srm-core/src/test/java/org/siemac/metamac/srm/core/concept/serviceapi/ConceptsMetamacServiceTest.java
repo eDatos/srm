@@ -1637,6 +1637,72 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         }
     }
 
+    @Test
+    public void testAddConceptRelationRoles() throws Exception {
+
+        String urn = CONCEPT_SCHEME_1_V2_CONCEPT_1;
+        List<ConceptMetamac> relatedConcepts = conceptsService.retrieveRelatedConceptsRoles(getServiceContextAdministrador(), urn);
+        assertEquals(2, relatedConcepts.size());
+
+        String urnNewRelation = CONCEPT_SCHEME_3_V1_CONCEPT_1;
+        // Add relation
+        conceptsService.addConceptRelationRoles(getServiceContextAdministrador(), urn, urnNewRelation);
+
+        // Validate
+        relatedConcepts = conceptsService.retrieveRelatedConceptsRoles(getServiceContextAdministrador(), urn);
+        assertEquals(3, relatedConcepts.size());
+        assertListConceptsContainsConcept(relatedConcepts, CONCEPT_SCHEME_3_V1_CONCEPT_2);
+        assertListConceptsContainsConcept(relatedConcepts, CONCEPT_SCHEME_3_V1_CONCEPT_2_1_1);
+        assertListConceptsContainsConcept(relatedConcepts, urnNewRelation);
+    }
+    
+    @Test
+    public void testAddConceptRelationRolesErrorConceptSchemeWrongType() throws Exception {
+
+        String urn = CONCEPT_SCHEME_2_V1_CONCEPT_1;
+        String urnNewRelation = CONCEPT_SCHEME_1_V2_CONCEPT_1;
+
+        try {
+            conceptsService.addConceptRelationRoles(getServiceContextAdministrador(), urn, urnNewRelation);
+            fail("wrong type");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.CONCEPT_SCHEME_WRONG_TYPE.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(CONCEPT_SCHEME_2_V1, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals(ServiceExceptionParameters.CONCEPT_SCHEME_TYPE_OPERATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
+            assertEquals(ServiceExceptionParameters.CONCEPT_SCHEME_TYPE_TRANSVERSAL, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[1]);
+        }
+    }
+
+    @Test
+    public void testAddConceptRelationRolesErrorConceptSchemeTargetWrongType() throws Exception {
+
+        String urn = CONCEPT_SCHEME_1_V2_CONCEPT_1;
+        String urnNewRelation = CONCEPT_SCHEME_2_V1_CONCEPT_1;
+
+        try {
+            conceptsService.addConceptRelationRoles(getServiceContextAdministrador(), urn, urnNewRelation);
+            fail("wrong type");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.CONCEPT_SCHEME_WRONG_TYPE.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(CONCEPT_SCHEME_2_V1, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals(ServiceExceptionParameters.CONCEPT_SCHEME_TYPE_ROLE, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
+        }
+    }
+
+    @Test
+    public void testDeleteConceptRelationRoles() throws Exception {
+        // In SDMX Module
+    }
+
+    @Test
+    public void testRetrieveRelatedConceptsRoles() throws Exception {
+        // In SDMX Module
+    }
+
     private void assertListItemsContainsConcept(List<Item> items, String urn) {
         for (Item item : items) {
             if (item.getNameableArtefact().getUrn().equals(urn)) {
