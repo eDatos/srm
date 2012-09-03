@@ -4,6 +4,7 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
 import java.util.List;
 
+import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
@@ -13,6 +14,8 @@ import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
+import com.smartgwt.client.data.Record;
+import com.smartgwt.client.data.RecordList;
 import com.smartgwt.client.types.Autofit;
 import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.types.TreeModelType;
@@ -72,8 +75,10 @@ public class ConceptsTreeGrid extends TreeGrid {
         TreeGridField codeField = new TreeGridField(ConceptDS.CODE, getConstants().conceptCode());
         codeField.setWidth("30%");
         TreeGridField nameField = new TreeGridField(ConceptDS.NAME, getConstants().conceptName());
+        TreeGridField type = new TreeGridField(ConceptDS.TYPE, getConstants().conceptType());
+        TreeGridField sdmxRelatedArtefact = new TreeGridField(ConceptDS.SDMX_RELATED_ARTEFACT, getConstants().conceptSdmxRelatedArtefact());
 
-        setFields(codeField, nameField);
+        setFields(codeField, nameField, type, sdmxRelatedArtefact);
 
         // Menu
 
@@ -164,6 +169,8 @@ public class ConceptsTreeGrid extends TreeGrid {
     }
 
     public void setConcepts(ConceptSchemeMetamacDto conceptSchemeMetamacDto, List<ItemHierarchyDto> itemHierarchyDtos) {
+        this.conceptSchemeUrn = conceptSchemeMetamacDto.getUrn();
+
         TreeNode[] treeNodes = new TreeNode[itemHierarchyDtos.size()];
         for (int i = 0; i < itemHierarchyDtos.size(); i++) {
             treeNodes[i] = createConceptTreeNode(itemHierarchyDtos.get(i));
@@ -191,6 +198,12 @@ public class ConceptsTreeGrid extends TreeGrid {
         node.setAttribute(ConceptDS.CODE, itemHierarchyDto.getItem().getCode());
         node.setAttribute(ConceptDS.NAME, InternationalStringUtils.getLocalisedString(itemHierarchyDto.getItem().getName()));
         node.setAttribute(ConceptDS.URN, itemHierarchyDto.getItem().getUrn());
+        node.setAttribute(
+                ConceptDS.TYPE,
+                ((ConceptMetamacDto) itemHierarchyDto.getItem()).getType() != null ? InternationalStringUtils.getLocalisedString(((ConceptMetamacDto) itemHierarchyDto.getItem()).getType()
+                        .getDescription()) : StringUtils.EMPTY);
+        node.setAttribute(ConceptDS.SDMX_RELATED_ARTEFACT, ((ConceptMetamacDto) itemHierarchyDto.getItem()).getSdmxRelatedArtefact() != null ? ((ConceptMetamacDto) itemHierarchyDto.getItem())
+                .getSdmxRelatedArtefact().name() : StringUtils.EMPTY);
 
         // Node children
         TreeNode[] children = new TreeNode[itemHierarchyDto.getChildren().size()];
@@ -206,8 +219,10 @@ public class ConceptsTreeGrid extends TreeGrid {
         this.uiHandlers = uiHandlers;
     }
 
-    public void setConceptSchemeUrn(String urn) {
-        this.conceptSchemeUrn = urn;
+    public void selectConcept(ConceptMetamacDto conceptMetamacDto) {
+        RecordList nodes = getDataAsRecordList();
+        Record record = nodes.find(ConceptDS.CODE, conceptMetamacDto.getCode());
+        selectRecord(record);
     }
 
     private void showContextMenu() {

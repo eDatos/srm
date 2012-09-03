@@ -361,8 +361,9 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
     }
 
     @Override
-    public void goToConcept(String code) {
-        placeManager.revealRelativePlace(new PlaceRequest(NameTokens.conceptPage).with(PlaceRequestParams.conceptParam, code));
+    public void goToConcept(String urn) {
+        String[] splitUrn = UrnUtils.splitUrnByDots(UrnUtils.removePrefix(urn));
+        placeManager.revealRelativePlace(new PlaceRequest(NameTokens.conceptPage).with(PlaceRequestParams.conceptParam, splitUrn[splitUrn.length - 1]));
     }
 
     @Override

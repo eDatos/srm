@@ -2,16 +2,21 @@ package org.siemac.metamac.srm.web.concept.view;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
+import java.util.List;
+
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
+import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
 import org.siemac.metamac.srm.web.concept.presenter.ConceptPresenter;
 import org.siemac.metamac.srm.web.concept.utils.ConceptClientSecurityUtils;
 import org.siemac.metamac.srm.web.concept.view.handlers.ConceptUiHandlers;
+import org.siemac.metamac.srm.web.concept.widgets.ConceptsTreeGrid;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
+import org.siemac.metamac.web.common.client.widgets.TitleLabel;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.InternationalMainFormLayout;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextItem;
@@ -20,6 +25,7 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
@@ -37,6 +43,8 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
 
     private VLayout                     panel;
     private InternationalMainFormLayout mainFormLayout;
+
+    private ConceptsTreeGrid            conceptsTreeGrid;
 
     // View forms
     private GroupDynamicForm            identifiersForm;
@@ -62,6 +70,22 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
         panel = new VLayout();
         panel.setHeight100();
         panel.setOverflow(Overflow.SCROLL);
+
+        //
+        // CONCEPTS HIERARCHY
+        //
+
+        conceptsTreeGrid = new ConceptsTreeGrid();
+
+        VLayout conceptsListGridLayout = new VLayout();
+        conceptsListGridLayout.setMargin(15);
+        conceptsListGridLayout.addMember(new TitleLabel(getConstants().conceptSchemeConcepts()));
+        conceptsListGridLayout.addMember(conceptsTreeGrid);
+
+        //
+        // CONCEPT
+        //
+
         mainFormLayout = new InternationalMainFormLayout(ConceptClientSecurityUtils.canEditConcept());
 
         // Translations
@@ -105,6 +129,7 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
         createViewForm();
         createEditionForm();
 
+        panel.addMember(conceptsListGridLayout);
         panel.addMember(mainFormLayout);
     }
 
@@ -116,6 +141,7 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
     @Override
     public void setUiHandlers(ConceptUiHandlers uiHandlers) {
         this.uiHandlers = uiHandlers;
+        conceptsTreeGrid.setUiHandlers(uiHandlers);
     }
 
     @Override
@@ -232,9 +258,13 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
         mainFormLayout.addEditionCanvas(relationBetweenConceptsEditionForm);
         mainFormLayout.addEditionCanvas(legalActsEditionForm);
     }
+
     @Override
     public void setConcept(ConceptMetamacDto conceptDto) {
         this.conceptDto = conceptDto;
+
+        // TODO Only reload tree when necessary
+        uiHandlers.retrieveConceptListByScheme(conceptDto.getItemSchemeVersionUrn());
 
         String defaultLocalized = InternationalStringUtils.getLocalisedString(conceptDto.getName());
         String title = defaultLocalized != null ? defaultLocalized : StringUtils.EMPTY;
@@ -244,6 +274,12 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
 
         setConceptViewMode(conceptDto);
         setConceptEditionMode(conceptDto);
+    }
+
+    @Override
+    public void setConceptList(ConceptSchemeMetamacDto conceptSchemeMetamacDto, List<ItemHierarchyDto> itemHierarchyDtos) {
+        conceptsTreeGrid.setConcepts(conceptSchemeMetamacDto, itemHierarchyDtos);
+        conceptsTreeGrid.selectConcept(conceptDto);
     }
 
     private void setConceptViewMode(ConceptMetamacDto conceptDto) {

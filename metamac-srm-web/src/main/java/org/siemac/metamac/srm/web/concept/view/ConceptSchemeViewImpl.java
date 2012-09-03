@@ -301,7 +301,6 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
     @Override
     public void setConceptScheme(ConceptSchemeMetamacDto conceptScheme) {
         this.conceptSchemeDto = conceptScheme;
-        this.conceptsTreeGrid.setConceptSchemeUrn(conceptScheme.getUrn());
 
         String defaultLocalized = InternationalStringUtils.getLocalisedString(conceptScheme.getName());
         String title = defaultLocalized != null ? defaultLocalized : StringUtils.EMPTY;
