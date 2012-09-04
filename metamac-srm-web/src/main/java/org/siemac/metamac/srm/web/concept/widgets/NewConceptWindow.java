@@ -4,12 +4,15 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
+import org.siemac.metamac.srm.core.concept.enume.domain.ConceptRoleEnum;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
+import org.siemac.metamac.srm.web.concept.utils.CommonUtils;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.widgets.CustomWindow;
 import org.siemac.metamac.web.common.client.widgets.form.CustomDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomButtonItem;
+import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredSelectItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
 
 import com.smartgwt.client.widgets.form.fields.events.HasClickHandlers;
@@ -33,11 +36,15 @@ public class NewConceptWindow extends CustomWindow {
         RequiredTextItem nameItem = new RequiredTextItem(ConceptDS.NAME, getConstants().conceptName());
         nameItem.setWidth(FORM_ITEM_CUSTOM_WIDTH);
 
+        RequiredSelectItem sdmxRelatedArtefact = new RequiredSelectItem(ConceptDS.SDMX_RELATED_ARTEFACT, getConstants().conceptSdmxRelatedArtefact());
+        sdmxRelatedArtefact.setValueMap(CommonUtils.getConceptRoleHashMap());
+        sdmxRelatedArtefact.setWidth(FORM_ITEM_CUSTOM_WIDTH);
+
         CustomButtonItem saveItem = new CustomButtonItem(FIELD_SAVE, getConstants().conceptCreate());
 
         form = new CustomDynamicForm();
         form.setMargin(5);
-        form.setFields(codeItem, nameItem, saveItem);
+        form.setFields(codeItem, nameItem, sdmxRelatedArtefact, saveItem);
 
         addItem(form);
         show();
@@ -51,6 +58,7 @@ public class NewConceptWindow extends CustomWindow {
         ConceptMetamacDto conceptDto = new ConceptMetamacDto();
         conceptDto.setCode(form.getValueAsString(ConceptDS.CODE));
         conceptDto.setName(InternationalStringUtils.updateInternationalString(new InternationalStringDto(), form.getValueAsString(ConceptDS.NAME)));
+        conceptDto.setSdmxRelatedArtefact(ConceptRoleEnum.valueOf(form.getValueAsString(ConceptDS.SDMX_RELATED_ARTEFACT)));
         return conceptDto;
     }
 

@@ -282,7 +282,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
     }
 
     @Override
-    public void createConcept(ConceptMetamacDto conceptDto) {
+    public void saveConcept(ConceptMetamacDto conceptDto) {
         dispatcher.execute(new SaveConceptAction(conceptDto), new WaitingAsyncCallback<SaveConceptResult>() {
 
             @Override

@@ -8,6 +8,7 @@ import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
+import org.siemac.metamac.srm.core.concept.dto.ConceptTypeDto;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
@@ -19,6 +20,8 @@ import org.siemac.metamac.srm.web.client.widgets.presenter.ToolStripPresenterWid
 import org.siemac.metamac.srm.web.concept.view.handlers.ConceptUiHandlers;
 import org.siemac.metamac.srm.web.shared.concept.DeleteConceptAction;
 import org.siemac.metamac.srm.web.shared.concept.DeleteConceptResult;
+import org.siemac.metamac.srm.web.shared.concept.FindAllConceptTypesAction;
+import org.siemac.metamac.srm.web.shared.concept.FindAllConceptTypesResult;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptListBySchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptListBySchemeResult;
@@ -60,6 +63,8 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
 
     private String                   conceptSchemeUrn;
 
+    private List<ConceptTypeDto>     conceptTypeDtos = null;
+
     @TitleFunction
     public static String getTranslatedTitle() {
         return MetamacSrmWeb.getConstants().breadcrumbConcept();
@@ -75,6 +80,8 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
 
         void setConcept(ConceptMetamacDto conceptDto);
         void setConceptList(ConceptSchemeMetamacDto conceptSchemeMetamacDto, List<ItemHierarchyDto> itemHierarchyDtos);
+
+        void setConceptTypes(List<ConceptTypeDto> conceptTypeDtos);
     }
 
     @ContentSlot
@@ -94,6 +101,11 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     @Override
     protected void revealInParent() {
         RevealContentEvent.fire(this, MainPagePresenter.TYPE_SetContextAreaContent, this);
+    }
+
+    @Override
+    protected void onBind() {
+        super.onBind();
     }
 
     @Override
@@ -131,21 +143,6 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     }
 
     @Override
-    public void saveConcept(ConceptMetamacDto conceptDto) {
-        dispatcher.execute(new SaveConceptAction(conceptDto), new WaitingAsyncCallback<SaveConceptResult>() {
-
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptErrorSave()), MessageTypeEnum.ERROR);
-            }
-            @Override
-            public void onWaitSuccess(SaveConceptResult result) {
-                getView().setConcept(result.getConceptDto());
-            }
-        });
-    }
-
-    @Override
     public void retrieveConceptListByScheme(String conceptSchemeUrn) {
         dispatcher.execute(new GetConceptListBySchemeAction(conceptSchemeUrn), new WaitingAsyncCallback<GetConceptListBySchemeResult>() {
 
@@ -172,17 +169,17 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     }
 
     @Override
-    public void createConcept(ConceptMetamacDto conceptDto) {
+    public void saveConcept(ConceptMetamacDto conceptDto) {
         dispatcher.execute(new SaveConceptAction(conceptDto), new WaitingAsyncCallback<SaveConceptResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptErrorCreate()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptErrorSave()), MessageTypeEnum.ERROR);
             }
             @Override
             public void onWaitSuccess(SaveConceptResult result) {
-                ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getMessageList(getMessages().conceptCreated()), MessageTypeEnum.SUCCESS);
-                retrieveConceptListByScheme(conceptSchemeUrn);
+                ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getMessageList(getMessages().conceptSaved()), MessageTypeEnum.SUCCESS);
+                getView().setConcept(result.getConceptDto());
             }
         });
     }
@@ -206,6 +203,26 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     public void goToConcept(String urn) {
         String[] splitUrn = UrnUtils.splitUrnByDots(UrnUtils.removePrefix(urn));
         placeManager.revealRelativePlace(new PlaceRequest(NameTokens.conceptPage).with(PlaceRequestParams.conceptParam, splitUrn[splitUrn.length - 1]), -1);
+    }
+
+    @Override
+    public void retrieveConceptTypes() {
+        if (conceptTypeDtos == null) {
+            dispatcher.execute(new FindAllConceptTypesAction(), new WaitingAsyncCallback<FindAllConceptTypesResult>() {
+
+                @Override
+                public void onWaitFailure(Throwable caught) {
+                    ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptErrorRetrievingConceptTypeList()), MessageTypeEnum.ERROR);
+                }
+                @Override
+                public void onWaitSuccess(FindAllConceptTypesResult result) {
+                    conceptTypeDtos = result.getConceptTypeDtos();
+                    getView().setConceptTypes(conceptTypeDtos);
+                }
+            });
+        } else {
+            getView().setConceptTypes(conceptTypeDtos);
+        }
     }
 
 }

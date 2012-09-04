@@ -9,6 +9,7 @@ import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
+import org.siemac.metamac.srm.web.concept.utils.CommonUtils;
 import org.siemac.metamac.srm.web.concept.view.handlers.BaseConceptUiHandlers;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
@@ -96,7 +97,7 @@ public class ConceptsTreeGrid extends TreeGrid {
                             ConceptMetamacDto conceptMetamacDto = newConceptWindow.getNewConceptDto();
                             conceptMetamacDto.setItemSchemeVersionUrn(conceptSchemeUrn); // Set concept scheme URN
                             conceptMetamacDto.setItemParentUrn(selectedConceptUrn); // Set concept parent URN
-                            ConceptsTreeGrid.this.uiHandlers.createConcept(conceptMetamacDto);
+                            ConceptsTreeGrid.this.uiHandlers.saveConcept(conceptMetamacDto);
                             newConceptWindow.destroy();
                         }
                     }
@@ -202,8 +203,7 @@ public class ConceptsTreeGrid extends TreeGrid {
                 ConceptDS.TYPE,
                 ((ConceptMetamacDto) itemHierarchyDto.getItem()).getType() != null ? InternationalStringUtils.getLocalisedString(((ConceptMetamacDto) itemHierarchyDto.getItem()).getType()
                         .getDescription()) : StringUtils.EMPTY);
-        node.setAttribute(ConceptDS.SDMX_RELATED_ARTEFACT, ((ConceptMetamacDto) itemHierarchyDto.getItem()).getSdmxRelatedArtefact() != null ? ((ConceptMetamacDto) itemHierarchyDto.getItem())
-                .getSdmxRelatedArtefact().name() : StringUtils.EMPTY);
+        node.setAttribute(ConceptDS.SDMX_RELATED_ARTEFACT, CommonUtils.getConceptRoleName(((ConceptMetamacDto) itemHierarchyDto.getItem()).getSdmxRelatedArtefact()));
 
         // Node children
         TreeNode[] children = new TreeNode[itemHierarchyDto.getChildren().size()];

@@ -8,6 +8,7 @@ import org.siemac.metamac.srm.web.server.handlers.concept.AnnounceConceptSchemeA
 import org.siemac.metamac.srm.web.server.handlers.concept.CancelConceptSchemeValidityActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.DeleteConceptActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.DeleteConceptSchemeListActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.concept.FindAllConceptTypesActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.GetConceptActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.GetConceptListBySchemeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.GetConceptSchemeActionHandler;
@@ -41,6 +42,7 @@ import org.siemac.metamac.srm.web.shared.concept.AnnounceConceptSchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.CancelConceptSchemeValidityAction;
 import org.siemac.metamac.srm.web.shared.concept.DeleteConceptAction;
 import org.siemac.metamac.srm.web.shared.concept.DeleteConceptSchemeListAction;
+import org.siemac.metamac.srm.web.shared.concept.FindAllConceptTypesAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptListBySchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeAction;
@@ -128,6 +130,7 @@ public class ServerModule extends HandlerModule {
         bindHandler(UpdateConceptSchemeProcStatusAction.class, UpdateConceptSchemeProcStatusActionHandler.class);
         bindHandler(AnnounceConceptSchemeAction.class, AnnounceConceptSchemeActionHandler.class);
         bindHandler(CancelConceptSchemeValidityAction.class, CancelConceptSchemeValidityActionHandler.class);
+        bindHandler(FindAllConceptTypesAction.class, FindAllConceptTypesActionHandler.class);
 
         bindHandler(ValidateTicketAction.class, ValidateTicketActionHandler.class);
         bindHandler(GetLoginPageUrlAction.class, GetLoginPageUrlActionHandler.class);

@@ -6,7 +6,7 @@ import com.gwtplatform.mvp.client.UiHandlers;
 
 public interface BaseConceptUiHandlers extends UiHandlers {
 
-    void createConcept(ConceptMetamacDto conceptDto);
+    void saveConcept(ConceptMetamacDto conceptDto);
     void deleteConcept(String urn);
     void goToConcept(String urn);
 

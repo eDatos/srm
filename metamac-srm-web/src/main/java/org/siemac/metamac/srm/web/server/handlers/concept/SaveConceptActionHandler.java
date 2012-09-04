@@ -34,7 +34,7 @@ public class SaveConceptActionHandler extends SecurityActionHandler<SaveConceptA
                 return new SaveConceptResult(savedConcept);
             } else {
                 // Update
-                // TODO savedConcept = srmCoreServiceFacade.updateConcept(ServiceContextHolder.getCurrentServiceContext(), conceptToSave);
+                savedConcept = srmCoreServiceFacade.updateConcept(ServiceContextHolder.getCurrentServiceContext(), conceptToSave);
             }
             return new SaveConceptResult(savedConcept);
         } catch (MetamacException e) {
