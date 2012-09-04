@@ -17,7 +17,8 @@ public class RecordUtils {
     }
 
     public static ConceptRecord getConceptRecord(ConceptMetamacDto conceptDto) {
-        ConceptRecord record = new ConceptRecord(conceptDto.getId(), conceptDto.getCode(), getLocalisedString(conceptDto.getName()), getLocalisedString(conceptDto.getDescription()), conceptDto);
+        ConceptRecord record = new ConceptRecord(conceptDto.getId(), conceptDto.getCode(), getLocalisedString(conceptDto.getName()), conceptDto.getUrn(),
+                getLocalisedString(conceptDto.getDescription()), conceptDto);
         return record;
     }
 
