@@ -221,7 +221,7 @@ public class ConceptsTreeGrid extends TreeGrid {
 
     public void selectConcept(ConceptMetamacDto conceptMetamacDto) {
         RecordList nodes = getDataAsRecordList();
-        Record record = nodes.find(ConceptDS.CODE, conceptMetamacDto.getCode());
+        Record record = nodes.find(ConceptDS.URN, conceptMetamacDto.getUrn());
         selectRecord(record);
     }
 
