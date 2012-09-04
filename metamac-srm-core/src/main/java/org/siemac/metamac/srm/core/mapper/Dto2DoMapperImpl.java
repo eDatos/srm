@@ -13,7 +13,6 @@ import org.siemac.metamac.core.common.ent.domain.ExternalItemRepository;
 import org.siemac.metamac.core.common.ent.domain.InternationalString;
 import org.siemac.metamac.core.common.ent.domain.InternationalStringRepository;
 import org.siemac.metamac.core.common.ent.domain.LocalisedString;
-import org.siemac.metamac.core.common.ent.exception.ExternalItemNotFoundException;
 import org.siemac.metamac.core.common.exception.ExceptionLevelEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
@@ -113,7 +112,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
 
         // Modifiable attributes
         target.setType(source.getType());
-        target.setRelatedOperation(externalItemDtoToExternalItem(ctx, source.getRelatedOperation(), ServiceExceptionParameters.CONCEPT_SCHEME_RELATED_OPERATION));
+        target.setRelatedOperation(externalItemDtoToExternalItem(ctx, source.getRelatedOperation(), target.getRelatedOperation(), ServiceExceptionParameters.CONCEPT_SCHEME_RELATED_OPERATION));
         target.setProcStatus(source.getProcStatus());
 
         dto2DoMapperSdmxSrm.conceptSchemeDtoToDo(ctx, source, target);
@@ -177,31 +176,27 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
     // ------------------------------------------------------------
     // EXTERNAL ITEM
     // ------------------------------------------------------------
-
-    private ExternalItem externalItemDtoToExternalItem(ServiceContext ctx, ExternalItemDto source, String metadataName) throws MetamacException {
+    private ExternalItem externalItemDtoToExternalItem(ServiceContext ctx, ExternalItemDto source, ExternalItem target, String metadataName) throws MetamacException {
         if (source == null) {
+            if (target != null) {
+                // delete previous entity
+                externalItemRepository.delete(target);
+            }
             return null;
         }
 
-        ExternalItem result = null;
-
-        if (source.getId() == null) {
+        if (target == null) {
             // New
-            result = new ExternalItem(source.getCode(), source.getUri(), source.getUrn(), source.getType());
-        } else {
-            // Update
-            try {
-                result = externalItemRepository.findById(source.getId());
-            } catch (ExternalItemNotFoundException e) {
-                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SRM_SEARCH_NOT_FOUND).withMessageParameters(metadataName)
-                        .withLoggedLevel(ExceptionLevelEnum.ERROR).build();
-            }
+            target = new ExternalItem(source.getCode(), source.getUri(), source.getUrn(), source.getType());
         }
+        target.setCode(source.getCode());
+        target.setUri(source.getUri());
+        target.setUrn(source.getUrn());
+        target.setType(source.getType());
+        target.setManagementAppUrl(source.getManagementAppUrl());
+        target.setTitle(internationalStringToDo(ctx, source.getTitle(), target.getTitle(), metadataName + ServiceExceptionParametersInternal.EXTERNAL_ITEM_TITLE));
 
-        // Relate Entities
-        result.setTitle(internationalStringToDo(ctx, source.getTitle(), result.getTitle(), metadataName + ServiceExceptionParametersInternal.EXTERNAL_ITEM_TITLE));
-
-        return result;
+        return target;
     }
 
     // ------------------------------------------------------------
