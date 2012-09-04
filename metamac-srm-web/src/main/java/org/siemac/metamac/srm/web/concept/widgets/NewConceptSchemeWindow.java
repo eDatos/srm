@@ -112,6 +112,7 @@ public class NewConceptSchemeWindow extends CustomWindow {
         addItem(form);
         show();
     }
+
     public HasClickHandlers getSave() {
         return form.getItem(FIELD_SAVE);
     }
