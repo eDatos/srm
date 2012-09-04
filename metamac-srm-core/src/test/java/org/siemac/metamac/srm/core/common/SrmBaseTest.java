@@ -79,6 +79,12 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
         putMetamacPrincipalInServiceContext(serviceContext, SrmRoleEnum.JEFE_NORMALIZACION);
         return serviceContext;
     }
+    
+    protected ServiceContext getServiceContextJefeNormalizacionWithOperation1() {
+        ServiceContext serviceContext = super.getServiceContextWithoutPrincipal();
+        putMetamacPrincipalInServiceContext(serviceContext, SrmRoleEnum.JEFE_NORMALIZACION, "Operation1");
+        return serviceContext;
+    }
 
     protected ServiceContext getServiceContextTecnicoApoyoProduccion() {
         ServiceContext serviceContext = super.getServiceContextWithoutPrincipal();
@@ -99,9 +105,13 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
     }
 
     protected void putMetamacPrincipalInServiceContext(ServiceContext serviceContext, SrmRoleEnum role) {
+        putMetamacPrincipalInServiceContext(serviceContext, role, null);
+    }
+    
+    protected void putMetamacPrincipalInServiceContext(ServiceContext serviceContext, SrmRoleEnum role, String operation) {
         MetamacPrincipal metamacPrincipal = new MetamacPrincipal();
         metamacPrincipal.setUserId(serviceContext.getUserId());
-        metamacPrincipal.getAccesses().add(new MetamacPrincipalAccess(role.getName(), SrmConstants.SECURITY_APPLICATION_ID, null));
+        metamacPrincipal.getAccesses().add(new MetamacPrincipalAccess(role.getName(), SrmConstants.SECURITY_APPLICATION_ID, operation));
         serviceContext.setProperty(SsoClientConstants.PRINCIPAL_ATTRIBUTE, metamacPrincipal);
     }
 

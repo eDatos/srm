@@ -56,12 +56,7 @@ public class SharedSecurityUtils {
         if (roles != null) {
             for (int i = 0; i < roles.length; i++) {
                 SrmRoleEnum role = roles[i];
-                // If role is any of the normalization roles, do not check permissions related to the statistical operation (does not matter the operation associated)
-                if (isAnyNormalizationRole(role)) {
-                    if (isUserInSrmRol(metamacPrincipal, role)) {
-                        return true;
-                    }
-                } else if (haveAccessToOperationInRol(metamacPrincipal, role, operationCode)) {
+                if (haveAccessToOperationInRol(metamacPrincipal, role, operationCode)) {
                     return true;
                 }
             }
