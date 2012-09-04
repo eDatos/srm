@@ -467,10 +467,11 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public ConceptSchemeMetamacDto updateConceptScheme(ServiceContext ctx, ConceptSchemeMetamacDto conceptSchemeDto) throws MetamacException {
         // Security
-        ConceptsSecurityUtils.canUpdateConceptScheme(ctx, conceptSchemeDto);
+        ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptsMetamacService().retrieveConceptSchemeByUrn(ctx, conceptSchemeDto.getUrn());
+        ConceptsSecurityUtils.canUpdateConceptScheme(ctx, conceptSchemeVersion);
 
         // Transform
-        ConceptSchemeVersionMetamac conceptSchemeVersion = dto2DoMapper.conceptSchemeDtoToDo(ctx, conceptSchemeDto);
+        conceptSchemeVersion = dto2DoMapper.conceptSchemeDtoToDo(ctx, conceptSchemeDto);
 
         // Update
         ConceptSchemeVersionMetamac conceptSchemeVersionUpdated = getConceptsMetamacService().updateConceptScheme(ctx, conceptSchemeVersion);
@@ -483,8 +484,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public void deleteConceptScheme(ServiceContext ctx, String urn) throws MetamacException {
         // Security
-        ConceptSchemeMetamacDto conceptSchemeMetamacDto = retrieveConceptSchemeByUrn(ctx, urn);
-        ConceptsSecurityUtils.canDeleteConceptScheme(ctx, conceptSchemeMetamacDto);
+        ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptsMetamacService().retrieveConceptSchemeByUrn(ctx, urn);
+        ConceptsSecurityUtils.canDeleteConceptScheme(ctx, conceptSchemeVersion);
 
         // Delete
         getConceptsMetamacService().deleteConceptScheme(ctx, urn);
@@ -511,104 +512,109 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public ConceptSchemeMetamacDto sendConceptSchemeToProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
         // Security
-        ConceptSchemeMetamacDto conceptSchemeMetamacDto = retrieveConceptSchemeByUrn(ctx, urn);
-        ConceptsSecurityUtils.canSendConceptSchemeToProductionValidation(ctx, conceptSchemeMetamacDto);
+        ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptsMetamacService().retrieveConceptSchemeByUrn(ctx, urn);
+        ConceptsSecurityUtils.canSendConceptSchemeToProductionValidation(ctx, conceptSchemeVersion);
 
-        ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptsMetamacService().sendConceptSchemeToProductionValidation(ctx, urn);
+        // Send
+        ConceptSchemeVersionMetamac conceptSchemeVersionProductionValidation = getConceptsMetamacService().sendConceptSchemeToProductionValidation(ctx, urn);
 
         // Transform to Dto
-        ConceptSchemeMetamacDto conceptSchemeDto = do2DtoMapper.conceptSchemeMetamacDoToDto(conceptSchemeVersion);
+        ConceptSchemeMetamacDto conceptSchemeDto = do2DtoMapper.conceptSchemeMetamacDoToDto(conceptSchemeVersionProductionValidation);
         return conceptSchemeDto;
     }
 
     @Override
     public ConceptSchemeMetamacDto sendConceptSchemeToDiffusionValidation(ServiceContext ctx, String urn) throws MetamacException {
         // Security
-        ConceptSchemeMetamacDto conceptSchemeMetamacDto = retrieveConceptSchemeByUrn(ctx, urn);
-        ConceptsSecurityUtils.canSendConceptSchemeToDiffusionValidation(ctx, conceptSchemeMetamacDto);
+        ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptsMetamacService().retrieveConceptSchemeByUrn(ctx, urn);
+        ConceptsSecurityUtils.canSendConceptSchemeToDiffusionValidation(ctx, conceptSchemeVersion);
 
-        ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptsMetamacService().sendConceptSchemeToDiffusionValidation(ctx, urn);
+        // Send
+        ConceptSchemeVersionMetamac conceptSchemeVersionDiffusionValidation = getConceptsMetamacService().sendConceptSchemeToDiffusionValidation(ctx, urn);
 
         // Transform to Dto
-        ConceptSchemeMetamacDto conceptSchemeDto = do2DtoMapper.conceptSchemeMetamacDoToDto(conceptSchemeVersion);
+        ConceptSchemeMetamacDto conceptSchemeDto = do2DtoMapper.conceptSchemeMetamacDoToDto(conceptSchemeVersionDiffusionValidation);
         return conceptSchemeDto;
     }
 
     @Override
     public ConceptSchemeMetamacDto rejectConceptSchemeProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
         // Security
-        ConceptSchemeMetamacDto conceptSchemeMetamacDto = retrieveConceptSchemeByUrn(ctx, urn);
-        ConceptsSecurityUtils.canRejectConceptSchemeValidation(ctx, conceptSchemeMetamacDto);
+        ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptsMetamacService().retrieveConceptSchemeByUrn(ctx, urn);
+        ConceptsSecurityUtils.canRejectConceptSchemeValidation(ctx, conceptSchemeVersion);
 
-        ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptsMetamacService().rejectConceptSchemeProductionValidation(ctx, urn);
+        // Reject
+        ConceptSchemeVersionMetamac conceptSchemeVersionRejected = getConceptsMetamacService().rejectConceptSchemeProductionValidation(ctx, urn);
 
         // Transform to Dto
-        ConceptSchemeMetamacDto conceptSchemeDto = do2DtoMapper.conceptSchemeMetamacDoToDto(conceptSchemeVersion);
+        ConceptSchemeMetamacDto conceptSchemeDto = do2DtoMapper.conceptSchemeMetamacDoToDto(conceptSchemeVersionRejected);
         return conceptSchemeDto;
     }
 
     @Override
     public ConceptSchemeMetamacDto rejectConceptSchemeDiffusionValidation(ServiceContext ctx, String urn) throws MetamacException {
         // Security
-        ConceptSchemeMetamacDto conceptSchemeMetamacDto = retrieveConceptSchemeByUrn(ctx, urn);
-        ConceptsSecurityUtils.canRejectConceptSchemeValidation(ctx, conceptSchemeMetamacDto);
+        ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptsMetamacService().retrieveConceptSchemeByUrn(ctx, urn);
+        ConceptsSecurityUtils.canRejectConceptSchemeValidation(ctx, conceptSchemeVersion);
 
-        ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptsMetamacService().rejectConceptSchemeDiffusionValidation(ctx, urn);
+        // Reject
+        ConceptSchemeVersionMetamac conceptSchemeVersionRejected = getConceptsMetamacService().rejectConceptSchemeDiffusionValidation(ctx, urn);
 
         // Transform to Dto
-        ConceptSchemeMetamacDto conceptSchemeDto = do2DtoMapper.conceptSchemeMetamacDoToDto(conceptSchemeVersion);
+        ConceptSchemeMetamacDto conceptSchemeDto = do2DtoMapper.conceptSchemeMetamacDoToDto(conceptSchemeVersionRejected);
         return conceptSchemeDto;
     }
 
     @Override
     public ConceptSchemeMetamacDto publishInternallyConceptScheme(ServiceContext ctx, String urn) throws MetamacException {
         // Security
-        ConceptSchemeMetamacDto conceptSchemeMetamacDto = retrieveConceptSchemeByUrn(ctx, urn);
-        ConceptsSecurityUtils.canPublishConceptSchemeInternally(ctx, conceptSchemeMetamacDto);
+        ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptsMetamacService().retrieveConceptSchemeByUrn(ctx, urn);
+        ConceptsSecurityUtils.canPublishConceptSchemeInternally(ctx, conceptSchemeVersion);
 
-        ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptsMetamacService().publishInternallyConceptScheme(ctx, urn);
+        // Publish
+        ConceptSchemeVersionMetamac conceptSchemeVersionPublished = getConceptsMetamacService().publishInternallyConceptScheme(ctx, urn);
 
         // Transform to Dto
-        ConceptSchemeMetamacDto conceptSchemeDto = do2DtoMapper.conceptSchemeMetamacDoToDto(conceptSchemeVersion);
+        ConceptSchemeMetamacDto conceptSchemeDto = do2DtoMapper.conceptSchemeMetamacDoToDto(conceptSchemeVersionPublished);
         return conceptSchemeDto;
     }
 
     @Override
     public ConceptSchemeMetamacDto publishExternallyConceptScheme(ServiceContext ctx, String urn) throws MetamacException {
         // Security
-        ConceptSchemeMetamacDto conceptSchemeMetamacDto = retrieveConceptSchemeByUrn(ctx, urn);
-        ConceptsSecurityUtils.canPublishConceptSchemeExternally(ctx, conceptSchemeMetamacDto);
+        ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptsMetamacService().retrieveConceptSchemeByUrn(ctx, urn);
+        ConceptsSecurityUtils.canPublishConceptSchemeExternally(ctx, conceptSchemeVersion);
 
-        ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptsMetamacService().publishExternallyConceptScheme(ctx, urn);
+        ConceptSchemeVersionMetamac conceptSchemeVersionPublished = getConceptsMetamacService().publishExternallyConceptScheme(ctx, urn);
 
         // Transform to Dto
-        ConceptSchemeMetamacDto conceptSchemeDto = do2DtoMapper.conceptSchemeMetamacDoToDto(conceptSchemeVersion);
+        ConceptSchemeMetamacDto conceptSchemeDto = do2DtoMapper.conceptSchemeMetamacDoToDto(conceptSchemeVersionPublished);
         return conceptSchemeDto;
     }
 
     @Override
     public ConceptSchemeMetamacDto versioningConceptScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
         // Security
-        ConceptSchemeMetamacDto conceptSchemeMetamacDto = retrieveConceptSchemeByUrn(ctx, urnToCopy);
-        ConceptsSecurityUtils.canVersioningConceptScheme(ctx, conceptSchemeMetamacDto);
+        ConceptSchemeVersionMetamac conceptSchemeVersionToCopy = getConceptsMetamacService().retrieveConceptSchemeByUrn(ctx, urnToCopy);
+        ConceptsSecurityUtils.canVersioningConceptScheme(ctx, conceptSchemeVersionToCopy);
 
-        ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptsMetamacService().versioningConceptScheme(ctx, urnToCopy, versionType);
+        ConceptSchemeVersionMetamac conceptSchemeVersioned = getConceptsMetamacService().versioningConceptScheme(ctx, urnToCopy, versionType);
 
         // Transform to Dto
-        ConceptSchemeMetamacDto conceptSchemeDto = do2DtoMapper.conceptSchemeMetamacDoToDto(conceptSchemeVersion);
+        ConceptSchemeMetamacDto conceptSchemeDto = do2DtoMapper.conceptSchemeMetamacDoToDto(conceptSchemeVersioned);
         return conceptSchemeDto;
     }
 
     @Override
     public ConceptSchemeMetamacDto cancelConceptSchemeValidity(ServiceContext ctx, String urn) throws MetamacException {
         // Security
-        ConceptSchemeMetamacDto conceptSchemeMetamacDto = retrieveConceptSchemeByUrn(ctx, urn);
-        ConceptsSecurityUtils.canCancelConceptSchemeValidity(ctx, conceptSchemeMetamacDto);
+        ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptsMetamacService().retrieveConceptSchemeByUrn(ctx, urn);
+        ConceptsSecurityUtils.canCancelConceptSchemeValidity(ctx, conceptSchemeVersion);
 
-        ConceptSchemeVersionMetamac conceptSchemeVersionMetamac = getConceptsMetamacService().cancelConceptSchemeValidity(ctx, urn);
+        ConceptSchemeVersionMetamac conceptSchemeCanceled = getConceptsMetamacService().cancelConceptSchemeValidity(ctx, urn);
 
         // Transform
-        ConceptSchemeMetamacDto conceptSchemeDto = do2DtoMapper.conceptSchemeMetamacDoToDto(conceptSchemeVersionMetamac);
+        ConceptSchemeMetamacDto conceptSchemeDto = do2DtoMapper.conceptSchemeMetamacDoToDto(conceptSchemeCanceled);
 
         return conceptSchemeDto;
     }

@@ -27,6 +27,7 @@ public class SharedConceptsSecurityUtils extends SharedSecurityUtils {
     }
 
     public static boolean canCreateConceptScheme(MetamacPrincipal metamacPrincipal) {
+        // TODO chequear operación
         // Note: when conceptScheme is Operation type, do not check if user has access to operation because all normalization roles have access to all operations
         return isSrmRoleAllowed(metamacPrincipal, JEFE_NORMALIZACION);
     }
