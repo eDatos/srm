@@ -30,6 +30,7 @@ import org.springframework.stereotype.Service;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemScheme;
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.concept.domain.Concept;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptRelation;
@@ -82,10 +83,18 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         ConceptsMetamacInvocationValidator.checkUpdateConceptScheme(conceptSchemeVersion, null);
         // ConceptsService checks conceptScheme isn't final (Schemes cannot be updated when procStatus is INTERNALLY_PUBLISHED or EXTERNALLY_PUBLISHED)
 
+        // Check do not modify 'type' if this version is not the first one
+        if (!isConceptSchemeFirstVersion(conceptSchemeVersion)) {
+            ConceptSchemeVersionMetamac conceptSchemePreviousVersion = (ConceptSchemeVersionMetamac) itemSchemeVersionRepository.findByVersion(conceptSchemeVersion.getItemScheme().getId(),
+                    conceptSchemeVersion.getMaintainableArtefact().getReplaceTo());
+            if (!conceptSchemePreviousVersion.getType().equals(conceptSchemeVersion.getType())) {
+                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_UNMODIFIABLE).withMessageParameters(ServiceExceptionParameters.CONCEPT_SCHEME_TYPE).build();
+            }
+        }
+
         // Save conceptScheme
         return (ConceptSchemeVersionMetamac) conceptsService.updateConceptScheme(ctx, conceptSchemeVersion);
     }
-
     @Override
     public ConceptSchemeVersionMetamac retrieveConceptSchemeByUrn(ServiceContext ctx, String urn) throws MetamacException {
         return (ConceptSchemeVersionMetamac) conceptsService.retrieveConceptSchemeByUrn(ctx, urn);
@@ -786,4 +795,8 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         // can search by concept1 or concept2, because conceptSchemeVersion is same
         return conceptRelationRepository.findByConceptSchemeVersionSearchingByConcept2(urn, ConceptRelationTypeEnum.BIDIRECTIONAL);
     }
+    
+    private Boolean isConceptSchemeFirstVersion(ItemSchemeVersion itemSchemeVersion) {
+        return itemSchemeVersion.getMaintainableArtefact().getReplaceTo() == null;
+    }    
 }
