@@ -143,86 +143,49 @@ public class SharedConceptsSecurityUtils extends SharedSecurityUtils {
     // Concepts
 
     public static boolean canCreateConcept(MetamacPrincipal metamacPrincipal, ItemSchemeMetamacProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode) {
-        if (ItemSchemeMetamacProcStatusEnum.DRAFT.equals(procStatus)) {
-            if (isNonOperationConceptSchemeType(type)) {
-                return isSrmRoleAllowed(metamacPrincipal, TECNICO_APOYO_NORMALIZACION, TECNICO_NORMALIZACION, JEFE_NORMALIZACION);
-            } else if (isOperationConceptSchemeType(type)) {
-                return isAnySrmRole(metamacPrincipal)
-                        && isOperationAllowed(metamacPrincipal, operationCode, TECNICO_APOYO_PRODUCCION, TECNICO_APOYO_NORMALIZACION, TECNICO_PRODUCCION, TECNICO_NORMALIZACION, JEFE_PRODUCCION,
-                                JEFE_NORMALIZACION);
-            }
-        } else if (ItemSchemeMetamacProcStatusEnum.PRODUCTION_VALIDATION.equals(procStatus)) {
-            if (isNonOperationConceptSchemeType(type)) {
-                return isSrmRoleAllowed(metamacPrincipal, TECNICO_NORMALIZACION, JEFE_NORMALIZACION);
-            } else if (isOperationConceptSchemeType(type)) {
-                SrmRoleEnum[] roles = {TECNICO_PRODUCCION, TECNICO_NORMALIZACION, JEFE_NORMALIZACION, JEFE_PRODUCCION};
-                return isSrmRoleAllowed(metamacPrincipal, roles) && isOperationAllowed(metamacPrincipal, operationCode, roles);
-            }
-        } else if (ItemSchemeMetamacProcStatusEnum.DIFFUSION_VALIDATION.equals(procStatus)) {
-            if (isNonOperationConceptSchemeType(type)) {
-                return isSrmRoleAllowed(metamacPrincipal, JEFE_NORMALIZACION);
-            } else if (isOperationConceptSchemeType(type)) {
-                SrmRoleEnum[] roles = {JEFE_NORMALIZACION, JEFE_PRODUCCION};
-                return isSrmRoleAllowed(metamacPrincipal, roles) && isOperationAllowed(metamacPrincipal, operationCode, roles);
-            }
-        }
-        return false;
+        return canCrudConceptInConceptScheme(metamacPrincipal, procStatus, type, operationCode);
     }
 
     public static boolean canUpdateConcept(MetamacPrincipal metamacPrincipal, ItemSchemeMetamacProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode) {
-        if (ItemSchemeMetamacProcStatusEnum.DRAFT.equals(procStatus)) {
-            if (isNonOperationConceptSchemeType(type)) {
-                return isSrmRoleAllowed(metamacPrincipal, TECNICO_APOYO_NORMALIZACION, TECNICO_NORMALIZACION, JEFE_NORMALIZACION);
-            } else if (isOperationConceptSchemeType(type)) {
-                return isAnySrmRole(metamacPrincipal)
-                        && isOperationAllowed(metamacPrincipal, operationCode, TECNICO_APOYO_PRODUCCION, TECNICO_APOYO_NORMALIZACION, TECNICO_PRODUCCION, TECNICO_NORMALIZACION, JEFE_PRODUCCION,
-                                JEFE_NORMALIZACION);
-            }
-        } else if (ItemSchemeMetamacProcStatusEnum.PRODUCTION_VALIDATION.equals(procStatus)) {
-            if (isNonOperationConceptSchemeType(type)) {
-                return isSrmRoleAllowed(metamacPrincipal, TECNICO_NORMALIZACION, JEFE_NORMALIZACION);
-            } else if (isOperationConceptSchemeType(type)) {
-                SrmRoleEnum[] roles = {TECNICO_PRODUCCION, TECNICO_NORMALIZACION, JEFE_NORMALIZACION, JEFE_PRODUCCION};
-                return isSrmRoleAllowed(metamacPrincipal, roles) && isOperationAllowed(metamacPrincipal, operationCode, roles);
-            }
-        } else if (ItemSchemeMetamacProcStatusEnum.DIFFUSION_VALIDATION.equals(procStatus)) {
-            if (isNonOperationConceptSchemeType(type)) {
-                return isSrmRoleAllowed(metamacPrincipal, JEFE_NORMALIZACION);
-            } else if (isOperationConceptSchemeType(type)) {
-                SrmRoleEnum[] roles = {JEFE_NORMALIZACION, JEFE_PRODUCCION};
-                return isSrmRoleAllowed(metamacPrincipal, roles) && isOperationAllowed(metamacPrincipal, operationCode, roles);
-            }
-        }
-        return false;
+        return canCrudConceptInConceptScheme(metamacPrincipal, procStatus, type, operationCode);
+    }
+
+    public static boolean canRetrieveConceptByUrn(MetamacPrincipal metamacPrincipal) {
+        return isAnySrmRole(metamacPrincipal);
     }
 
     public static boolean canDeleteConcept(MetamacPrincipal metamacPrincipal, ItemSchemeMetamacProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode) {
-        if (ItemSchemeMetamacProcStatusEnum.DRAFT.equals(procStatus)) {
-            if (isNonOperationConceptSchemeType(type)) {
-                return isSrmRoleAllowed(metamacPrincipal, TECNICO_APOYO_NORMALIZACION, TECNICO_NORMALIZACION, JEFE_NORMALIZACION);
-            } else if (isOperationConceptSchemeType(type)) {
-                return isAnySrmRole(metamacPrincipal)
-                        && isOperationAllowed(metamacPrincipal, operationCode, TECNICO_APOYO_PRODUCCION, TECNICO_APOYO_NORMALIZACION, TECNICO_PRODUCCION, TECNICO_NORMALIZACION, JEFE_PRODUCCION,
-                                JEFE_NORMALIZACION);
-            }
-        } else if (ItemSchemeMetamacProcStatusEnum.PRODUCTION_VALIDATION.equals(procStatus)) {
-            if (isNonOperationConceptSchemeType(type)) {
-                return isSrmRoleAllowed(metamacPrincipal, TECNICO_NORMALIZACION, JEFE_NORMALIZACION);
-            } else if (isOperationConceptSchemeType(type)) {
-                SrmRoleEnum[] roles = {TECNICO_PRODUCCION, TECNICO_NORMALIZACION, JEFE_NORMALIZACION, JEFE_PRODUCCION};
-                return isSrmRoleAllowed(metamacPrincipal, roles) && isOperationAllowed(metamacPrincipal, operationCode, roles);
-            }
-        } else if (ItemSchemeMetamacProcStatusEnum.DIFFUSION_VALIDATION.equals(procStatus)) {
-            if (isNonOperationConceptSchemeType(type)) {
-                return isSrmRoleAllowed(metamacPrincipal, JEFE_NORMALIZACION);
-            } else if (isOperationConceptSchemeType(type)) {
-                SrmRoleEnum[] roles = {JEFE_NORMALIZACION, JEFE_PRODUCCION};
-                return isSrmRoleAllowed(metamacPrincipal, roles) && isOperationAllowed(metamacPrincipal, operationCode, roles);
-            }
-        }
-        return false;
+        return canCrudConceptInConceptScheme(metamacPrincipal, procStatus, type, operationCode);
+    }
+
+    public static boolean canRetrieveConceptsByConceptSchemeUrn(MetamacPrincipal metamacPrincipal) {
+        return isAnySrmRole(metamacPrincipal);
+    }
+
+    public static boolean canAddConceptRelation(MetamacPrincipal metamacPrincipal, ItemSchemeMetamacProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode) {
+        return canCrudConceptInConceptScheme(metamacPrincipal, procStatus, type, operationCode);
+    }
+
+    public static boolean canDeleteConceptRelation(MetamacPrincipal metamacPrincipal, ItemSchemeMetamacProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode) {
+        return canCrudConceptInConceptScheme(metamacPrincipal, procStatus, type, operationCode);
+    }
+
+    public static boolean canRetrieveRelatedConcepts(MetamacPrincipal metamacPrincipal) {
+        return isAnySrmRole(metamacPrincipal);
+    }
+
+    public static boolean canRetrieveRelatedConceptsRoles(MetamacPrincipal metamacPrincipal) {
+        return isAnySrmRole(metamacPrincipal);
     }
     
+    public static boolean canRetrieveConceptTypeByIdentifier(MetamacPrincipal metamacPrincipal) {
+        return isAnySrmRole(metamacPrincipal);
+    }
+    
+    public static boolean canFindAllConceptTypes(MetamacPrincipal metamacPrincipal) {
+        return isAnySrmRole(metamacPrincipal);
+    }
+
     private static boolean canUpdateConceptScheme(MetamacPrincipal metamacPrincipal, ItemSchemeMetamacProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode) {
         if (ItemSchemeMetamacProcStatusEnum.DRAFT.equals(procStatus)) {
             if (isNonOperationConceptSchemeType(type)) {
@@ -236,6 +199,33 @@ public class SharedConceptsSecurityUtils extends SharedSecurityUtils {
                 return isSrmRoleAllowed(metamacPrincipal, TECNICO_NORMALIZACION, JEFE_NORMALIZACION);
             } else if (isOperationConceptSchemeType(type)) {
                 SrmRoleEnum[] roles = {TECNICO_PRODUCCION, TECNICO_NORMALIZACION, JEFE_PRODUCCION, JEFE_NORMALIZACION};
+                return isSrmRoleAllowed(metamacPrincipal, roles) && isOperationAllowed(metamacPrincipal, operationCode, roles);
+            }
+        } else if (ItemSchemeMetamacProcStatusEnum.DIFFUSION_VALIDATION.equals(procStatus)) {
+            if (isNonOperationConceptSchemeType(type)) {
+                return isSrmRoleAllowed(metamacPrincipal, JEFE_NORMALIZACION);
+            } else if (isOperationConceptSchemeType(type)) {
+                SrmRoleEnum[] roles = {JEFE_NORMALIZACION, JEFE_PRODUCCION};
+                return isSrmRoleAllowed(metamacPrincipal, roles) && isOperationAllowed(metamacPrincipal, operationCode, roles);
+            }
+        }
+        return false;
+    }
+
+    private static boolean canCrudConceptInConceptScheme(MetamacPrincipal metamacPrincipal, ItemSchemeMetamacProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode) {
+        if (ItemSchemeMetamacProcStatusEnum.DRAFT.equals(procStatus)) {
+            if (isNonOperationConceptSchemeType(type)) {
+                return isSrmRoleAllowed(metamacPrincipal, TECNICO_APOYO_NORMALIZACION, TECNICO_NORMALIZACION, JEFE_NORMALIZACION);
+            } else if (isOperationConceptSchemeType(type)) {
+                return isAnySrmRole(metamacPrincipal)
+                        && isOperationAllowed(metamacPrincipal, operationCode, TECNICO_APOYO_PRODUCCION, TECNICO_APOYO_NORMALIZACION, TECNICO_PRODUCCION, TECNICO_NORMALIZACION, JEFE_PRODUCCION,
+                                JEFE_NORMALIZACION);
+            }
+        } else if (ItemSchemeMetamacProcStatusEnum.PRODUCTION_VALIDATION.equals(procStatus)) {
+            if (isNonOperationConceptSchemeType(type)) {
+                return isSrmRoleAllowed(metamacPrincipal, TECNICO_NORMALIZACION, JEFE_NORMALIZACION);
+            } else if (isOperationConceptSchemeType(type)) {
+                SrmRoleEnum[] roles = {TECNICO_PRODUCCION, TECNICO_NORMALIZACION, JEFE_NORMALIZACION, JEFE_PRODUCCION};
                 return isSrmRoleAllowed(metamacPrincipal, roles) && isOperationAllowed(metamacPrincipal, operationCode, roles);
             }
         } else if (ItemSchemeMetamacProcStatusEnum.DIFFUSION_VALIDATION.equals(procStatus)) {

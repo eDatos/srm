@@ -1683,7 +1683,7 @@
                 REPLACED_BY="[null]"
                 REPLACE_TO="[null]"
                 
-                NAME_FK="[null]"
+                NAME_FK="40"
                 DESCRIPTION_FK="[null]"
                 
                 UUID="annotableArtefact-99511"
@@ -1829,7 +1829,7 @@
                 REPLACED_BY="[null]"
                 REPLACE_TO="[null]"
                 
-                NAME_FK="[null]"
+                NAME_FK="42"
                 DESCRIPTION_FK="[null]"
                 
                 UUID="annotableArtefact-99611"
@@ -1841,6 +1841,7 @@
                 LAST_UPDATED="2011-01-22 01:02:03"
                 LAST_UPDATED_TZ="Europe/London"
             />     
+            
     <!-- ************************************************************************************** -->
     <!-- CONCEPT SCHEME 7                                                                       -->
     <!--        - Version 1: externally published (glossary type)                               -->
@@ -2203,7 +2204,7 @@
                 REPLACED_BY="[null]"
                 REPLACE_TO="[null]"
                 
-                NAME_FK="[null]"
+                NAME_FK="39"
                 DESCRIPTION_FK="[null]"
                 
                 UUID="annotableArtefact-811"
@@ -2596,7 +2597,7 @@
                 REPLACED_BY="[null]"
                 REPLACE_TO="[null]"
                 
-                NAME_FK="[null]"
+                NAME_FK="41"
                 DESCRIPTION_FK="[null]"
                 
                 UUID="annotableArtefact-1031"
@@ -2744,7 +2745,7 @@
                 REPLACED_BY="[null]"
                 REPLACE_TO="[null]"
                 
-                NAME_FK="[null]"
+                NAME_FK="43"
                 DESCRIPTION_FK="[null]"
                 
                 UUID="annotableArtefact-1111"
@@ -3596,5 +3597,70 @@
         VERSION="1"
         INTERNATIONAL_STRING_FK="38"
     />                   
+
+    <TB_INTERNATIONAL_STRINGS
+        ID="39"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="391"
+        LABEL="b"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="39"
+    />           
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="40"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="401"
+        LABEL="b"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="40"
+    />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="41"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="411"
+        LABEL="b"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="41"
+    />  
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="42"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="421"
+        LABEL="b"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="42"
+    />    
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="43"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="431"
+        LABEL="b"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="43"
+    />                               
                     
 </dataset>

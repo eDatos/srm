@@ -624,7 +624,9 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public ConceptMetamacDto createConcept(ServiceContext ctx, ConceptMetamacDto conceptMetamacDto) throws MetamacException {
-        // TODO Security
+        // Security
+        ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptsMetamacService().retrieveConceptSchemeByUrn(ctx, conceptMetamacDto.getItemSchemeVersionUrn());
+        ConceptsSecurityUtils.canCreateConcept(ctx, conceptSchemeVersion);
 
         // Transform
         ConceptMetamac conceptMetamac = dto2DoMapper.conceptDtoToDo(ctx, conceptMetamacDto);
@@ -640,7 +642,10 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public ConceptMetamacDto updateConcept(ServiceContext ctx, ConceptMetamacDto conceptDto) throws MetamacException {
-        // TODO Security
+
+        // Security
+        ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptsMetamacService().retrieveConceptSchemeByConceptUrn(ctx, conceptDto.getUrn());
+        ConceptsSecurityUtils.canUpdateConcept(ctx, conceptSchemeVersion);
 
         // Transform
         ConceptMetamac conceptMetamac = dto2DoMapper.conceptDtoToDo(ctx, conceptDto);
@@ -655,8 +660,11 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public ConceptMetamacDto retrieveConceptByUrn(ServiceContext ctx, String urn) throws MetamacException {
-        // TODO Security
 
+        // Security
+        ConceptsSecurityUtils.canRetrieveConceptByUrn(ctx);
+
+        // Retrieve
         ConceptMetamac conceptMetamac = getConceptsMetamacService().retrieveConceptByUrn(ctx, urn);
 
         // Transform
@@ -667,7 +675,10 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public void deleteConcept(ServiceContext ctx, String urn) throws MetamacException {
-        // TODO Security
+
+        // Security
+        ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptsMetamacService().retrieveConceptSchemeByConceptUrn(ctx, urn);
+        ConceptsSecurityUtils.canDeleteConcept(ctx, conceptSchemeVersion);
 
         // Delete
         getConceptsMetamacService().deleteConcept(ctx, urn);
@@ -675,7 +686,9 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public List<ItemHierarchyDto> retrieveConceptsByConceptSchemeUrn(ServiceContext ctx, String conceptSchemeUrn) throws MetamacException {
-        // TODO Security
+
+        // Security
+        ConceptsSecurityUtils.canRetrieveConceptsByConceptSchemeUrn(ctx);
 
         // Retrieve
         List<ConceptMetamac> concepts = getConceptsMetamacService().retrieveConceptsByConceptSchemeUrn(ctx, conceptSchemeUrn);
@@ -687,21 +700,31 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public void addConceptRelation(ServiceContext ctx, String urn1, String urn2) throws MetamacException {
-        // TODO Security
 
+        // Security
+        ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptsMetamacService().retrieveConceptSchemeByConceptUrn(ctx, urn1); // concept scheme of urn1 is same that urn2
+        ConceptsSecurityUtils.canAddConceptRelation(ctx, conceptSchemeVersion);
+
+        // Add relation
         getConceptsMetamacService().addConceptRelation(ctx, urn1, urn2);
     }
 
     @Override
     public void deleteConceptRelation(ServiceContext ctx, String urn1, String urn2) throws MetamacException {
-        // TODO Security
 
+        // Security
+        ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptsMetamacService().retrieveConceptSchemeByConceptUrn(ctx, urn1); // concept scheme of urn1 is same that urn2
+        ConceptsSecurityUtils.canDeleteConceptRelation(ctx, conceptSchemeVersion);
+
+        // Delete concept relation
         getConceptsMetamacService().deleteConceptRelation(ctx, urn1, urn2);
     }
 
     @Override
     public List<ConceptMetamacDto> retrieveRelatedConcepts(ServiceContext ctx, String urn) throws MetamacException {
-        // TODO Security
+
+        // Security
+        ConceptsSecurityUtils.canRetrieveRelatedConcepts(ctx);
 
         // Retrieve
         List<ConceptMetamac> concepts = getConceptsMetamacService().retrieveRelatedConcepts(ctx, urn);
@@ -713,21 +736,23 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public void addConceptRelationRoles(ServiceContext ctx, String urn, String conceptRoleUrn) throws MetamacException {
-        // TODO Security
+        // TODO Security ¿sobre los dos esquemas de concepto?
 
         getConceptsMetamacService().addConceptRelationRoles(ctx, urn, conceptRoleUrn);
     }
 
     @Override
     public void deleteConceptRelationRoles(ServiceContext ctx, String urn, String conceptRoleUrn) throws MetamacException {
-        // TODO Security
+        // TODO Security ¿sobre los dos esquemas de concepto?
 
         getConceptsMetamacService().deleteConceptRelationRoles(ctx, urn, conceptRoleUrn);
     }
 
     @Override
     public List<ConceptMetamacDto> retrieveRelatedConceptsRoles(ServiceContext ctx, String urn) throws MetamacException {
-        // TODO Security
+
+        // Security
+        ConceptsSecurityUtils.canRetrieveRelatedConceptsRoles(ctx);
 
         // Retrieve
         List<ConceptMetamac> concepts = getConceptsMetamacService().retrieveRelatedConceptsRoles(ctx, urn);
@@ -739,7 +764,9 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public List<ConceptTypeDto> findAllConceptTypes(ServiceContext ctx) throws MetamacException {
-        // TODO Security
+
+        // Security
+        ConceptsSecurityUtils.canFindAllConceptTypes(ctx);
 
         // Find
         List<ConceptType> conceptTypes = getConceptsMetamacService().findAllConceptTypes(ctx);
@@ -751,7 +778,9 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public ConceptTypeDto retrieveConceptTypeByIdentifier(ServiceContext ctx, String identifier) throws MetamacException {
-        // TODO Security
+
+        // Security
+        ConceptsSecurityUtils.canRetrieveConceptTypeByIdentifier(ctx);
 
         // Retrieve
         ConceptType conceptType = getConceptsMetamacService().retrieveConceptTypeByIdentifier(ctx, identifier);

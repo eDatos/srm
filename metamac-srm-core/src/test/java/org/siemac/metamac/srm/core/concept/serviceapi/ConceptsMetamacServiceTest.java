@@ -1774,6 +1774,33 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         // In SDMX Module
     }
 
+
+    @Override
+    public void testRetrieveConceptSchemeByConceptUrn() throws Exception {
+        // Retrieve
+        String urn = CONCEPT_SCHEME_1_V2_CONCEPT_1;
+        ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.retrieveConceptSchemeByConceptUrn(getServiceContextAdministrador(), urn);
+
+        // Validate
+        assertEquals(CONCEPT_SCHEME_1_V2, conceptSchemeVersion.getMaintainableArtefact().getUrn());
+    }
+    
+    @Test
+    public void testRetrieveConceptSchemeByConceptUrnErrorNotExists() throws Exception {
+
+        String urn = NOT_EXISTS;
+
+        try {
+            conceptsService.retrieveConceptSchemeByConceptUrn(getServiceContextAdministrador(), urn);
+            fail("not exists");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.CONCEPT_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
     private void assertListItemsContainsConcept(List<Item> items, String urn) {
         for (Item item : items) {
             if (item.getNameableArtefact().getUrn().equals(urn)) {

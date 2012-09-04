@@ -48,7 +48,17 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
     protected static final String CONCEPT_SCHEME_3_V1_CONCEPT_2     = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME03(01.000).CONCEPT02";
     protected static final String CONCEPT_SCHEME_3_V1_CONCEPT_2_1   = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME03(01.000).CONCEPT0201";
     protected static final String CONCEPT_SCHEME_3_V1_CONCEPT_2_1_1 = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME03(01.000).CONCEPT020101";
+    protected static final String CONCEPT_SCHEME_5_V1_CONCEPT_1     = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME05(01.000).CONCEPT01";
+    protected static final String CONCEPT_SCHEME_6_V1_CONCEPT_1     = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME06(01.000).CONCEPT01";
+    protected static final String CONCEPT_SCHEME_8_V1_CONCEPT_1     = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME08(01.000).CONCEPT01";
+    protected static final String CONCEPT_SCHEME_10_V3_CONCEPT_1    = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME10(03.000).CONCEPT01";
+    protected static final String CONCEPT_SCHEME_11_V1_CONCEPT_1    = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME11(01.000).CONCEPT01";
 
+    // Concept types
+    protected static final String CONCEPT_TYPE_DERIVED              = "DERIVED";
+    protected static final String CONCEPT_TYPE_DIRECT               = "DIRECT";
+
+    // Other
     protected static final String NOT_EXISTS                        = "not-exists";
 
     // --------------------------------------------------------------------------------------------------------------
@@ -57,58 +67,89 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
 
     @Override
     protected ServiceContext getServiceContextAdministrador() {
-        ServiceContext serviceContext = super.getServiceContextWithoutPrincipal();
+        ServiceContext serviceContext = getServiceContextWithoutPrincipal();
         putMetamacPrincipalInServiceContext(serviceContext, SrmRoleEnum.ADMINISTRADOR);
         return serviceContext;
     }
 
     protected ServiceContext getServiceContextTecnicoApoyoNormalizacion() {
-        ServiceContext serviceContext = super.getServiceContextWithoutPrincipal();
+        ServiceContext serviceContext = getServiceContextWithoutPrincipal();
         putMetamacPrincipalInServiceContext(serviceContext, SrmRoleEnum.TECNICO_APOYO_NORMALIZACION);
         return serviceContext;
     }
 
     protected ServiceContext getServiceContextTecnicoNormalizacion() {
-        ServiceContext serviceContext = super.getServiceContextWithoutPrincipal();
+        ServiceContext serviceContext = getServiceContextWithoutPrincipal();
         putMetamacPrincipalInServiceContext(serviceContext, SrmRoleEnum.TECNICO_NORMALIZACION);
         return serviceContext;
     }
 
     protected ServiceContext getServiceContextJefeNormalizacion() {
-        ServiceContext serviceContext = super.getServiceContextWithoutPrincipal();
+        ServiceContext serviceContext = getServiceContextWithoutPrincipal();
         putMetamacPrincipalInServiceContext(serviceContext, SrmRoleEnum.JEFE_NORMALIZACION);
         return serviceContext;
     }
-    
+
     protected ServiceContext getServiceContextJefeNormalizacionWithOperation1() {
-        ServiceContext serviceContext = super.getServiceContextWithoutPrincipal();
+        ServiceContext serviceContext = getServiceContextWithoutPrincipal();
         putMetamacPrincipalInServiceContext(serviceContext, SrmRoleEnum.JEFE_NORMALIZACION, "Operation1");
         return serviceContext;
     }
 
     protected ServiceContext getServiceContextTecnicoApoyoProduccion() {
-        ServiceContext serviceContext = super.getServiceContextWithoutPrincipal();
+        ServiceContext serviceContext = getServiceContextWithoutPrincipal();
         putMetamacPrincipalInServiceContext(serviceContext, SrmRoleEnum.TECNICO_APOYO_PRODUCCION);
         return serviceContext;
     }
 
     protected ServiceContext getServiceContextTecnicoProduccion() {
-        ServiceContext serviceContext = super.getServiceContextWithoutPrincipal();
+        ServiceContext serviceContext = getServiceContextWithoutPrincipal();
         putMetamacPrincipalInServiceContext(serviceContext, SrmRoleEnum.TECNICO_PRODUCCION);
         return serviceContext;
     }
 
     protected ServiceContext getServiceContextJefeProduccion() {
-        ServiceContext serviceContext = super.getServiceContextWithoutPrincipal();
+        ServiceContext serviceContext = getServiceContextWithoutPrincipal();
         putMetamacPrincipalInServiceContext(serviceContext, SrmRoleEnum.JEFE_PRODUCCION);
         return serviceContext;
     }
 
-    protected void putMetamacPrincipalInServiceContext(ServiceContext serviceContext, SrmRoleEnum role) {
+    protected ServiceContext getServiceContextWithoutAccesses() {
+        ServiceContext ctxWithoutAcceses = getServiceContextWithoutPrincipal();
+
+        MetamacPrincipal metamacPrincipal = new MetamacPrincipal();
+        metamacPrincipal.setUserId(ctxWithoutAcceses.getUserId());
+        metamacPrincipal.getAccesses().clear();
+        ctxWithoutAcceses.setProperty(SsoClientConstants.PRINCIPAL_ATTRIBUTE, metamacPrincipal);
+        return ctxWithoutAcceses;
+    }
+
+    protected ServiceContext getServiceContextWithoutAccessToApplication() {
+
+        ServiceContext ctxWithoutAccessToApplication = getServiceContextWithoutPrincipal();
+
+        MetamacPrincipal metamacPrincipal = new MetamacPrincipal();
+        metamacPrincipal.setUserId(ctxWithoutAccessToApplication.getUserId());
+        metamacPrincipal.getAccesses().add(new MetamacPrincipalAccess(SrmRoleEnum.JEFE_PRODUCCION.getName(), NOT_EXISTS, null));
+        ctxWithoutAccessToApplication.setProperty(SsoClientConstants.PRINCIPAL_ATTRIBUTE, metamacPrincipal);
+        return ctxWithoutAccessToApplication;
+    }
+
+    protected ServiceContext getServiceContextWithoutSrmRole() {
+        ServiceContext ctxWithoutAccessToApplication = getServiceContextWithoutPrincipal();
+
+        MetamacPrincipal metamacPrincipal = new MetamacPrincipal();
+        metamacPrincipal.setUserId(ctxWithoutAccessToApplication.getUserId());
+        metamacPrincipal.getAccesses().add(new MetamacPrincipalAccess(NOT_EXISTS, SrmConstants.SECURITY_APPLICATION_ID, null));
+        ctxWithoutAccessToApplication.setProperty(SsoClientConstants.PRINCIPAL_ATTRIBUTE, metamacPrincipal);
+        return ctxWithoutAccessToApplication;
+    }
+
+    private void putMetamacPrincipalInServiceContext(ServiceContext serviceContext, SrmRoleEnum role) {
         putMetamacPrincipalInServiceContext(serviceContext, role, null);
     }
-    
-    protected void putMetamacPrincipalInServiceContext(ServiceContext serviceContext, SrmRoleEnum role, String operation) {
+
+    private void putMetamacPrincipalInServiceContext(ServiceContext serviceContext, SrmRoleEnum role, String operation) {
         MetamacPrincipal metamacPrincipal = new MetamacPrincipal();
         metamacPrincipal.setUserId(serviceContext.getUserId());
         metamacPrincipal.getAccesses().add(new MetamacPrincipalAccess(role.getName(), SrmConstants.SECURITY_APPLICATION_ID, operation));
@@ -145,5 +186,10 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
         tablePrimaryKeys.put("TB_M_CONCEPT_SCHEMES_VERSIONS", "TB_CONCEPT_SCHEMES_VERSIONS");
         tablePrimaryKeys.put("TB_M_CONCEPTS", "TB_CONCEPTS");
         return tablePrimaryKeys;
+    }
+
+    @Override
+    protected ServiceContext getServiceContextWithoutPrincipal() {
+        return new ServiceContext("junit", "junit", "app");
     }
 }

@@ -48,6 +48,8 @@ Application ConceptsMetamac {
     		@ConceptSchemeVersionMetamac versioningConceptScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
     		"Cancels the concept scheme validity"
     		@ConceptSchemeVersionMetamac cancelConceptSchemeValidity(String urn) throws MetamacException;
+    		"Retrieves concepts scheme by concept urn"
+    		@ConceptSchemeVersionMetamac retrieveConceptSchemeByConceptUrn(String conceptUrn) throws MetamacException;
     		
 			"Creates concept"
 			@ConceptMetamac createConcept(String conceptSchemeUrn, @ConceptMetamac concept) throws MetamacException;
@@ -119,7 +121,9 @@ Application ConceptsMetamac {
 			
 			Repository ConceptSchemeVersionMetamacRepository {
 				findById;
+				findByQuery(String query, Map<String, Object> parameters, int maxResult);
 				findByCondition(PagingParameter pagingParameter);
+				@ConceptSchemeVersionMetamac findByConcept(String urn);
 			}			
 		}
 		

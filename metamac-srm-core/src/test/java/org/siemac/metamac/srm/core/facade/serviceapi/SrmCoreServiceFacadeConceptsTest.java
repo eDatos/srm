@@ -992,12 +992,12 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         int i = 0;
         {
             ConceptTypeDto conceptType = conceptTypes.get(i++);
-            assertEquals("DIRECT", conceptType.getIdentifier());
+            assertEquals(CONCEPT_TYPE_DIRECT, conceptType.getIdentifier());
             assertEqualsInternationalStringDto(conceptType.getDescription(), "en", "Direct", "es", "Directo");
         }
         {
             ConceptTypeDto conceptType = conceptTypes.get(i++);
-            assertEquals("DERIVED", conceptType.getIdentifier());
+            assertEquals(CONCEPT_TYPE_DERIVED, conceptType.getIdentifier());
             assertEqualsInternationalStringDto(conceptType.getDescription(), "en", "Derived", "es", "Derivado");
         }
         assertEquals(conceptTypes.size(), i);
@@ -1006,7 +1006,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
     @Test
     public void testRetrieveConceptTypeByIdentifier() throws Exception {
 
-        String identifier = "DERIVED";
+        String identifier = CONCEPT_TYPE_DERIVED;
 
         // Retrieve
         ConceptTypeDto conceptType = srmCoreServiceFacade.retrieveConceptTypeByIdentifier(getServiceContextAdministrador(), identifier);
