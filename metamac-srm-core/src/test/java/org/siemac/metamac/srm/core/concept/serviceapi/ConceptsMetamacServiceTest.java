@@ -236,13 +236,8 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
         // Validate (only metadata in SRM Metamac; the others are checked in sdmx project)
         assertEquals(urn, conceptSchemeVersion.getMaintainableArtefact().getUrn());
-        assertEquals(ConceptSchemeTypeEnum.OPERATION, conceptSchemeVersion.getType());
-        assertEquals("op1", conceptSchemeVersion.getRelatedOperation().getCode());
-        assertEquals("urn:op1", conceptSchemeVersion.getRelatedOperation().getUrn());
-        assertEquals("http://op1", conceptSchemeVersion.getRelatedOperation().getUri());
-        assertEquals(TypeExternalArtefactsEnum.STATISTICAL_OPERATION, conceptSchemeVersion.getRelatedOperation().getType());
-        assertEquals("http://app/operations", conceptSchemeVersion.getRelatedOperation().getManagementAppUrl());
-
+        assertEquals(ConceptSchemeTypeEnum.TRANSVERSAL, conceptSchemeVersion.getType());
+        assertNull(conceptSchemeVersion.getRelatedOperation());
         MetamacAsserts.assertEqualsDate("2011-01-01 01:02:03", conceptSchemeVersion.getProductionValidationDate());
         assertEquals("user1", conceptSchemeVersion.getProductionValidationUser());
         MetamacAsserts.assertEqualsDate("2011-01-02 02:02:03", conceptSchemeVersion.getDiffusionValidationDate());
@@ -254,16 +249,20 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
     }
 
     @Test
-    public void testRetrieveConceptSchemeByUrnWithoutRelatedOperation() throws Exception {
+    public void testRetrieveConceptSchemeByUrnWithRelatedOperation() throws Exception {
 
         // Retrieve
-        String urn = CONCEPT_SCHEME_1_V2;
+        String urn = CONCEPT_SCHEME_8_V1;
         ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), urn);
 
         // Validate
         assertEquals(urn, conceptSchemeVersion.getMaintainableArtefact().getUrn());
-        assertEquals(ConceptSchemeTypeEnum.TRANSVERSAL, conceptSchemeVersion.getType());
-        assertNull(conceptSchemeVersion.getRelatedOperation());
+        assertEquals(ConceptSchemeTypeEnum.OPERATION, conceptSchemeVersion.getType());
+        assertEquals("op1", conceptSchemeVersion.getRelatedOperation().getCode());
+        assertEquals("urn:op1", conceptSchemeVersion.getRelatedOperation().getUrn());
+        assertEquals("http://op1", conceptSchemeVersion.getRelatedOperation().getUri());
+        assertEquals(TypeExternalArtefactsEnum.STATISTICAL_OPERATION, conceptSchemeVersion.getRelatedOperation().getType());
+        assertEquals("http://app/operations", conceptSchemeVersion.getRelatedOperation().getManagementAppUrl());
     }
 
     @Test
@@ -833,6 +832,32 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
     }
 
     @Test
+    public void testPublishInternallyConceptSchemeErrorConceptExtendsInConceptSchemeNoPublished() throws Exception {
+
+        String urn = CONCEPT_SCHEME_6_V1;
+        String urnConceptConceptSchemeToPublish = CONCEPT_SCHEME_6_V1_CONCEPT_1;
+        String urnConceptExtends = CONCEPT_SCHEME_1_V2_CONCEPT_1;
+
+        // Update concept to add extends concept of concept scheme to publish
+        ConceptMetamac concept = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), urnConceptExtends);
+        ConceptMetamac conceptConceptSchemeToPublish = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(),urnConceptConceptSchemeToPublish);
+        conceptConceptSchemeToPublish.setConceptExtends(concept);
+        conceptConceptSchemeToPublish.getNameableArtefact().setIsCodeUpdated(Boolean.FALSE);
+        conceptsService.updateConcept(getServiceContextAdministrador(), conceptConceptSchemeToPublish);
+        
+        try {
+            conceptsService.publishInternallyConceptScheme(getServiceContextAdministrador(), urn);
+            fail("ConceptScheme wrong proc status");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.CONCEPT_SCHEME_WITH_RELATED_CONCEPTS_NOT_FINAL.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals(urnConceptExtends, e.getExceptionItems().get(0).getMessageParameters()[1]);
+        }
+    }
+    
+    @Test
     public void testPublishExternallyConceptScheme() throws Exception {
 
         String urn = CONCEPT_SCHEME_7_V2;
@@ -941,6 +966,23 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertEquals(ServiceExceptionParameters.PROC_STATUS_INTERNALLY_PUBLISHED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
         }
     }
+    
+    @Test
+    public void testPublishExternallyConceptSchemeErrorConceptExtendsInConceptSchemeNoPublished() throws Exception {
+
+        String urn = CONCEPT_SCHEME_1_V1;
+
+        try {
+            conceptsService.publishExternallyConceptScheme(getServiceContextAdministrador(), urn);
+            fail("ConceptScheme wrong proc status");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.CONCEPT_SCHEME_WITH_RELATED_CONCEPTS_VALIDITY_NOT_STARTED.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals(CONCEPT_SCHEME_10_V3_CONCEPT_1, e.getExceptionItems().get(0).getMessageParameters()[1]);
+        }
+    }
 
     @Test
     public void testDeleteConceptScheme() throws Exception {
@@ -993,7 +1035,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
     @Test
     public void testDeleteConceptSchemeErrorPublished() throws Exception {
 
-        String urn = CONCEPT_SCHEME_1_V1;
+        String urn = CONCEPT_SCHEME_10_V2;
 
         // Validation
         try {
@@ -1004,6 +1046,24 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertEquals(ServiceExceptionType.CONCEPT_SCHEME_UNMODIFIABLE.getCode(), e.getExceptionItems().get(0).getCode());
             assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
             assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+    
+    @Test
+    public void testDeleteConceptSchemeErrorOtherConceptExtends() throws Exception {
+
+        String urn = CONCEPT_SCHEME_5_V1;
+
+        // Validation
+        try {
+            conceptsService.deleteConceptScheme(getServiceContextAdministrador(), urn);
+            fail("ConceptScheme can not be deleted");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.CONCEPT_SCHEME_WITH_RELATED_CONCEPTS.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(CONCEPT_SCHEME_3_V1, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals(CONCEPT_SCHEME_3_V1_CONCEPT_1, e.getExceptionItems().get(0).getMessageParameters()[1]);
         }
     }
 
@@ -1064,7 +1124,8 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
                 ConceptsMetamacAsserts.assertEqualsInternationalString(concept.getDerivation(), "es", "Derivation conceptScheme-3-v1-concept-1", null, null);
                 ConceptsMetamacAsserts.assertEqualsInternationalString(concept.getLegalActs(), "es", "LegalActs conceptScheme-3-v1-concept-1", null, null);
                 assertEquals(ConceptRoleEnum.ATTRIBUTE, concept.getSdmxRelatedArtefact());
-                assertEquals("DERIVED", concept.getType().getIdentifier());
+                assertEquals(CONCEPT_TYPE_DERIVED, concept.getType().getIdentifier());
+                assertEquals(CONCEPT_SCHEME_5_V1_CONCEPT_1, concept.getConceptExtends().getNameableArtefact().getUrn());
 
                 // related concepts
                 List<ConceptMetamac> relatedConcepts = conceptsService.retrieveRelatedConcepts(getServiceContextAdministrador(), concept.getNameableArtefact().getUrn());
@@ -1087,6 +1148,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
                 assertNull(concept.getLegalActs());
                 assertNull(concept.getSdmxRelatedArtefact());
                 assertNull(concept.getType());
+                assertNull(concept.getConceptExtends());
 
                 // related concepts
                 List<ConceptMetamac> relatedConcepts = conceptsService.retrieveRelatedConcepts(getServiceContextAdministrador(), concept.getNameableArtefact().getUrn());
@@ -1108,6 +1170,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
                     {
                         ConceptMetamac conceptChildChild = (ConceptMetamac) conceptChild.getChildren().get(0);
                         assertEquals(urnExpectedConcept211, conceptChildChild.getNameableArtefact().getUrn());
+                        assertEquals(CONCEPT_SCHEME_6_V1_CONCEPT_1, conceptChildChild.getConceptExtends().getNameableArtefact().getUrn());
 
                         // related concepts
                         relatedConcepts = conceptsService.retrieveRelatedConcepts(getServiceContextAdministrador(), conceptChildChild.getNameableArtefact().getUrn());
@@ -1312,9 +1375,12 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
     @Test
     public void testCreateConcept() throws Exception {
 
-        ConceptType conceptType = conceptsService.retrieveConceptTypeByIdentifier(getServiceContextAdministrador(), "DIRECT");
+        ConceptType conceptType = conceptsService.retrieveConceptTypeByIdentifier(getServiceContextAdministrador(), CONCEPT_TYPE_DIRECT);
         ConceptMetamac concept = ConceptsMetamacDoMocks.mockConcept(conceptType);
         concept.setParent(null);
+        ConceptMetamac conceptExtends = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_3_V1_CONCEPT_1);
+        concept.setConceptExtends(conceptExtends);
+
         String conceptSchemeUrn = CONCEPT_SCHEME_1_V2;
 
         // Create
@@ -1366,16 +1432,45 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
     }
 
     @Test
+    public void testCreateConceptErrorExtendsSameConceptScheme() throws Exception {
+
+        ConceptType conceptType = null;
+        ConceptMetamac concept = ConceptsMetamacDoMocks.mockConcept(conceptType);
+        ConceptMetamac conceptExtends = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_1_V2_CONCEPT_1);
+        concept.setConceptExtends(conceptExtends);
+        String conceptSchemeUrn = CONCEPT_SCHEME_1_V2;
+
+        // Create
+        try {
+            conceptsService.createConcept(getServiceContextAdministrador(), conceptSchemeUrn, concept);
+            fail("Concept deleted");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.METADATA_INCORRECT.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(ServiceExceptionParameters.CONCEPT_EXTENDS, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
+    @Test
     public void testUpdateConcept() throws Exception {
 
         ConceptMetamac concept = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_1_V2_CONCEPT_1);
         concept.getNameableArtefact().setIsCodeUpdated(Boolean.FALSE);
         concept.getNameableArtefact().setName(ConceptsDoMocks.mockInternationalString());
+        concept.setConceptExtends(conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_10_V3_CONCEPT_1));
         assertTrue(concept.getCoreRepresentation() instanceof EnumeratedRepresentation);
         concept.setCoreRepresentation(ConceptsDoMocks.mockConceptTextFormatRepresentation());
 
         // Update
         ConceptMetamac conceptUpdated = conceptsService.updateConcept(getServiceContextAdministrador(), concept);
+
+        // Validate
+        ConceptsMetamacAsserts.assertEqualsConcept(concept, conceptUpdated);
+
+        // Update to remove metadata 'extends'
+        conceptUpdated.setConceptExtends(null);
+        conceptUpdated = conceptsService.updateConcept(getServiceContextAdministrador(), concept);
 
         // Validate
         ConceptsMetamacAsserts.assertEqualsConcept(concept, conceptUpdated);
@@ -1397,7 +1492,8 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         ConceptsMetamacAsserts.assertEqualsInternationalString(concept.getDerivation(), "es", "Derivation conceptScheme-1-v2-concept-1", null, null);
         ConceptsMetamacAsserts.assertEqualsInternationalString(concept.getLegalActs(), "es", "LegalActs conceptScheme-1-v2-concept-1", null, null);
         assertEquals(ConceptRoleEnum.ATTRIBUTE, concept.getSdmxRelatedArtefact());
-        assertEquals("DIRECT", concept.getType().getIdentifier());
+        assertEquals(CONCEPT_TYPE_DIRECT, concept.getType().getIdentifier());
+        assertEquals(CONCEPT_SCHEME_3_V1_CONCEPT_1, concept.getConceptExtends().getNameableArtefact().getUrn());
     }
 
     @Test
@@ -1421,10 +1517,15 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
         String urn = CONCEPT_SCHEME_1_V2_CONCEPT_3;
         String conceptSchemeUrn = CONCEPT_SCHEME_1_V2;
+        String conceptExtendsBeforeDeleteUrn = CONCEPT_SCHEME_3_V1_CONCEPT_2_1;
 
         ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), conceptSchemeUrn);
         assertEquals(4, conceptSchemeVersion.getItemsFirstLevel().size());
         assertEquals(8, conceptSchemeVersion.getItems().size());
+
+        // Retrieve concept to check extends metadata
+        ConceptMetamac conceptMetamac = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), urn);
+        assertEquals(conceptExtendsBeforeDeleteUrn, conceptMetamac.getConceptExtends().getNameableArtefact().getUrn());
 
         // Delete concept
         conceptsService.deleteConcept(getServiceContextAdministrador(), urn);
@@ -1439,7 +1540,10 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
             assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
         }
+        // Check do not delete concept extends
+        conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), conceptExtendsBeforeDeleteUrn);
 
+        // Check hierarchy
         conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), conceptSchemeUrn);
         assertEquals(3, conceptSchemeVersion.getItemsFirstLevel().size());
         assertListItemsContainsConcept(conceptSchemeVersion.getItemsFirstLevel(), CONCEPT_SCHEME_1_V2_CONCEPT_1);
@@ -1533,10 +1637,28 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
     }
 
     @Test
+    public void testDeleteConceptErrorConceptRelatedAsExtends() throws Exception {
+
+        String urn = CONCEPT_SCHEME_5_V1_CONCEPT_1;
+
+        // Validation
+        try {
+            conceptsService.deleteConcept(getServiceContextAdministrador(), urn);
+            fail("Concept can not be deleted");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.CONCEPT_WITH_RELATED_CONCEPTS.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals(CONCEPT_SCHEME_3_V1_CONCEPT_1, e.getExceptionItems().get(0).getMessageParameters()[1]);
+        }
+    }
+
+    @Test
     public void testDeleteConceptErrorConceptSchemePublished() throws Exception {
 
-        String urn = CONCEPT_SCHEME_1_V1_CONCEPT_1;
-        String conceptSchemeUrn = CONCEPT_SCHEME_1_V1;
+        String urn = CONCEPT_SCHEME_12_V1_CONCEPT_1;
+        String conceptSchemeUrn = CONCEPT_SCHEME_12_V1;
 
         // Validation
         try {
@@ -1620,10 +1742,10 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             PagedResult<ConceptMetamac> conceptsPagedResult = conceptsService.findConceptsByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
 
             // Validate
-            assertEquals(23, conceptsPagedResult.getTotalRows());
-            assertEquals(23, conceptsPagedResult.getValues().size());
+            assertEquals(25, conceptsPagedResult.getTotalRows());
+            assertEquals(25, conceptsPagedResult.getValues().size());
             assertTrue(conceptsPagedResult.getValues().get(0) instanceof ConceptMetamac);
-            
+
             int i = 0;
             assertEquals(CONCEPT_SCHEME_1_V1_CONCEPT_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
@@ -1646,8 +1768,10 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertEquals(CONCEPT_SCHEME_6_V1_CONCEPT_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(CONCEPT_SCHEME_7_V2_CONCEPT_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(CONCEPT_SCHEME_8_V1_CONCEPT_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CONCEPT_SCHEME_10_V2_CONCEPT_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(CONCEPT_SCHEME_10_V3_CONCEPT_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(CONCEPT_SCHEME_11_V1_CONCEPT_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CONCEPT_SCHEME_12_V1_CONCEPT_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(conceptsPagedResult.getValues().size(), i);
         }
 
@@ -1720,7 +1844,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
                 assertEquals(8, conceptsPagedResult.getTotalRows());
                 assertEquals(2, conceptsPagedResult.getValues().size());
                 assertTrue(conceptsPagedResult.getValues().get(0) instanceof ConceptMetamac);
-                
+
                 int i = 0;
                 assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2_1_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
                 assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_4_1_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
@@ -1740,12 +1864,12 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         int i = 0;
         {
             ConceptType conceptType = conceptTypes.get(i++);
-            assertEquals("DIRECT", conceptType.getIdentifier());
+            assertEquals(CONCEPT_TYPE_DIRECT, conceptType.getIdentifier());
             ConceptsAsserts.assertEqualsInternationalString(conceptType.getDescription(), "en", "Direct", "es", "Directo");
         }
         {
             ConceptType conceptType = conceptTypes.get(i++);
-            assertEquals("DERIVED", conceptType.getIdentifier());
+            assertEquals(CONCEPT_TYPE_DERIVED, conceptType.getIdentifier());
             ConceptsAsserts.assertEqualsInternationalString(conceptType.getDescription(), "en", "Derived", "es", "Derivado");
         }
         assertEquals(conceptTypes.size(), i);
@@ -1754,7 +1878,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
     @Test
     public void testRetrieveConceptTypeByIdentifier() throws Exception {
 
-        String identifier = "DERIVED";
+        String identifier = CONCEPT_TYPE_DERIVED;
 
         // Retrieve
         ConceptType conceptType = conceptsService.retrieveConceptTypeByIdentifier(getServiceContextAdministrador(), identifier);

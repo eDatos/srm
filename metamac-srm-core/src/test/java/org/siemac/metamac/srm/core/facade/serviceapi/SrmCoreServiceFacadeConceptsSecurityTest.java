@@ -671,16 +671,16 @@ public class SrmCoreServiceFacadeConceptsSecurityTest extends SrmBaseTest {
 
     @Test
     public void testPublishExternallyConceptSchemeJefeNormalizacion() throws Exception {
-        String nonOperationConceptSchemeUrn = CONCEPT_SCHEME_3_V1;
+        String nonOperationConceptSchemeUrn = CONCEPT_SCHEME_7_V2;
         srmCoreServiceFacade.publishExternallyConceptScheme(getServiceContextJefeNormalizacion(), nonOperationConceptSchemeUrn);
 
-        String operationConceptSchemeUrn = CONCEPT_SCHEME_1_V1;
+        String operationConceptSchemeUrn = CONCEPT_SCHEME_10_V2;
         srmCoreServiceFacade.publishExternallyConceptScheme(getServiceContextJefeNormalizacion(), operationConceptSchemeUrn);
     }
 
     @Test
     public void testPublishExternallyConceptSchemeJefeProduccion() throws Exception {
-        String operationConceptSchemeUrn = CONCEPT_SCHEME_1_V1;
+        String operationConceptSchemeUrn = CONCEPT_SCHEME_10_V2;
         srmCoreServiceFacade.publishExternallyConceptScheme(getServiceContextJefeProduccion(), operationConceptSchemeUrn);
     }
 
@@ -704,14 +704,14 @@ public class SrmCoreServiceFacadeConceptsSecurityTest extends SrmBaseTest {
             }
         }
         {
-            String nonOperationConceptSchemeUrn = CONCEPT_SCHEME_1_V1;
+            String operationConceptSchemeUrn = CONCEPT_SCHEME_10_V2;
 
             ServiceContext[] contexts = {getServiceContextTecnicoApoyoNormalizacion(), getServiceContextTecnicoApoyoProduccion(), getServiceContextTecnicoNormalizacion(),
                     getServiceContextTecnicoProduccion(), getServiceContextWithoutAccesses(), getServiceContextWithoutAccessToApplication(), getServiceContextWithoutSrmRole()};
 
             for (ServiceContext ctx : contexts) {
                 try {
-                    srmCoreServiceFacade.publishExternallyConceptScheme(ctx, nonOperationConceptSchemeUrn);
+                    srmCoreServiceFacade.publishExternallyConceptScheme(ctx, operationConceptSchemeUrn);
                     fail("action not allowed");
                 } catch (MetamacException e) {
                     assertEquals(1, e.getExceptionItems().size());

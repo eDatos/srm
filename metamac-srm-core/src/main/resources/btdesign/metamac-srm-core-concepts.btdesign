@@ -152,14 +152,22 @@ Application ConceptsMetamac {
 			- @InternationalString derivation nullable cascade="all" databaseColumn="DERIVATION_FK";
 			"Web addresses where relevant legal acts are disseminated"
 			- @InternationalString legalActs nullable cascade="all" databaseColumn="LEGAL_ACTS_FK";
+			"Extends concept of other concept scheme"
+			- @ConceptMetamac conceptExtends nullable cascade="none" databaseColumn="EXTENDS_FK";
 						
 			"Last update to optimistic locking"
 			DateTimeTZ updateDateMetamac nullable;
 			
 			Repository ConceptMetamacRepository {
 				findByQuery;
+				findByQuery(String query, Map<String, Object> parameters, int maxResult);
 				findById;
+				@ConceptMetamac findByUrn(String urn);
 				findByCondition(PagingParameter pagingParameter);
+				@ConceptMetamac findOneConceptByConceptExtends(Long idConceptExtends);
+				@ConceptMetamac findOneConceptWithConceptExtendsOfConceptSchemeVersion(String conceptSchemeUrn);
+				@ConceptMetamac findOneConceptExtendsConceptInConceptSchemeNotFinal(String conceptSchemeUrn);
+				@ConceptMetamac findOneConceptExtendsConceptInConceptSchemeNotValid(String conceptSchemeUrn);
 			}
 		}
 		

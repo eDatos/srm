@@ -154,6 +154,16 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         target.setDerivation(internationalStringToDo(ctx, source.getDerivation(), target.getDerivation(), ServiceExceptionParameters.CONCEPT_DERIVATION));
         target.setLegalActs(internationalStringToDo(ctx, source.getLegalActs(), target.getLegalActs(), ServiceExceptionParameters.CONCEPT_LEGAL_ACTS));
 
+        if (source.getConceptExtendsUrn() != null) {
+            ConceptMetamac conceptExtends = conceptMetamacRepository.findByUrn(source.getConceptExtendsUrn());
+            if (conceptExtends == null) {
+                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CONCEPT_NOT_FOUND).withMessageParameters(source.getConceptExtendsUrn()).build();
+            }
+            target.setConceptExtends(conceptExtends);
+        } else {
+            target.setConceptExtends(null);
+        }
+        
         // note: not conversion to relatedConcepts, roles... Call 'add/delete RelatedConcepts' operation of Service
 
         dto2DoMapperSdmxSrm.conceptDtoToDo(ctx, source, target);

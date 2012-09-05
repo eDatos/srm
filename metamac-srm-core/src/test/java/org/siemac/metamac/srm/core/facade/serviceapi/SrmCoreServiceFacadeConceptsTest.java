@@ -93,12 +93,8 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         assertEqualsInternationalStringDto(conceptSchemeMetamacDto.getName(), "es", "Nombre conceptScheme-1-v1", "en", "Name conceptScheme-1-v1");
         assertEqualsInternationalStringDto(conceptSchemeMetamacDto.getDescription(), "es", "Descripción conceptScheme-1-v1", "en", "Description conceptScheme-1-v1");
 
-        assertEquals(ConceptSchemeTypeEnum.OPERATION, conceptSchemeMetamacDto.getType());
-        assertEquals("op1", conceptSchemeMetamacDto.getRelatedOperation().getCode());
-        assertEquals("http://op1", conceptSchemeMetamacDto.getRelatedOperation().getUri());
-        assertEquals("urn:op1", conceptSchemeMetamacDto.getRelatedOperation().getUrn());
-        assertEquals("http://app/operations", conceptSchemeMetamacDto.getRelatedOperation().getManagementAppUrl());
-        assertEquals(1, conceptSchemeMetamacDto.getRelatedOperation().getVersion().longValue());
+        assertEquals(ConceptSchemeTypeEnum.TRANSVERSAL, conceptSchemeMetamacDto.getType());
+        assertNull(conceptSchemeMetamacDto.getRelatedOperation());
 
         MetamacAsserts.assertEqualsDate("2011-01-01 01:02:03", conceptSchemeMetamacDto.getProductionValidationDate());
         assertEquals("user1", conceptSchemeMetamacDto.getProductionValidationUser());
@@ -111,13 +107,18 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
     }
 
     @Test
-    public void testRetrieveConceptSchemeByUrnWithoutRelatedOperation() throws Exception {
-        ConceptSchemeMetamacDto conceptSchemeMetamacDto = srmCoreServiceFacade.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_3_V1);
-        assertEquals(CONCEPT_SCHEME_3_V1, conceptSchemeMetamacDto.getUrn());
-        assertEquals(ItemSchemeMetamacProcStatusEnum.INTERNALLY_PUBLISHED, conceptSchemeMetamacDto.getProcStatus());
-
-        assertEquals(ConceptSchemeTypeEnum.ROLE, conceptSchemeMetamacDto.getType());
-        assertNull(conceptSchemeMetamacDto.getRelatedOperation());
+    public void testRetrieveConceptSchemeByUrnWithRelatedOperation() throws Exception {
+        String urn = CONCEPT_SCHEME_8_V1;
+        
+        ConceptSchemeMetamacDto conceptSchemeMetamacDto = srmCoreServiceFacade.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), urn);
+        assertEquals(urn, conceptSchemeMetamacDto.getUrn());
+        
+        assertEquals(ConceptSchemeTypeEnum.OPERATION, conceptSchemeMetamacDto.getType());
+        assertEquals("op1", conceptSchemeMetamacDto.getRelatedOperation().getCode());
+        assertEquals("http://op1", conceptSchemeMetamacDto.getRelatedOperation().getUri());
+        assertEquals("urn:op1", conceptSchemeMetamacDto.getRelatedOperation().getUrn());
+        assertEquals("http://app/operations", conceptSchemeMetamacDto.getRelatedOperation().getManagementAppUrl());
+        assertEquals(1, conceptSchemeMetamacDto.getRelatedOperation().getVersion().longValue());        
     }
 
     @Test
@@ -885,7 +886,8 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         assertEquals("DIRECT", conceptMetamacDto.getType().getIdentifier());
         assertEqualsInternationalStringDto(conceptMetamacDto.getDerivation(), "es", "Derivation conceptScheme-1-v2-concept-1", null, null);
         assertEqualsInternationalStringDto(conceptMetamacDto.getLegalActs(), "es", "LegalActs conceptScheme-1-v2-concept-1", null, null);
-
+        assertEquals(CONCEPT_SCHEME_3_V1_CONCEPT_1, conceptMetamacDto.getConceptExtendsUrn());
+        
         // Core representation
         assertEquals(TypeRepresentationEnum.ENUMERATED, conceptMetamacDto.getCoreRepresentation().getTypeRepresentationEnum());
         assertEquals("CODE_LIST_1", conceptMetamacDto.getCoreRepresentation().getEnumerated().getCode());
@@ -925,8 +927,8 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
             MetamacCriteriaResult<ConceptMetamacDto> conceptsPagedResult = srmCoreServiceFacade.findConceptsByCondition(getServiceContextAdministrador(), metamacCriteria);
 
             // Validate
-            assertEquals(23, conceptsPagedResult.getPaginatorResult().getTotalResults().intValue());
-            assertEquals(23, conceptsPagedResult.getResults().size());
+            assertEquals(25, conceptsPagedResult.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(25, conceptsPagedResult.getResults().size());
             assertTrue(conceptsPagedResult.getResults().get(0) instanceof ConceptMetamacDto);
             assertEquals(CONCEPT_SCHEME_1_V1, conceptsPagedResult.getResults().get(0).getItemSchemeVersionUrn());
 
@@ -952,8 +954,10 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
             assertEquals(CONCEPT_SCHEME_6_V1_CONCEPT_1, conceptsPagedResult.getResults().get(i++).getUrn());
             assertEquals(CONCEPT_SCHEME_7_V2_CONCEPT_1, conceptsPagedResult.getResults().get(i++).getUrn());
             assertEquals(CONCEPT_SCHEME_8_V1_CONCEPT_1, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_10_V2_CONCEPT_1, conceptsPagedResult.getResults().get(i++).getUrn());
             assertEquals(CONCEPT_SCHEME_10_V3_CONCEPT_1, conceptsPagedResult.getResults().get(i++).getUrn());
             assertEquals(CONCEPT_SCHEME_11_V1_CONCEPT_1, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_12_V1_CONCEPT_1, conceptsPagedResult.getResults().get(i++).getUrn());
             assertEquals(conceptsPagedResult.getResults().size(), i);
         }
         
@@ -1132,6 +1136,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
     public void testCreateConcept() throws Exception {
         ConceptMetamacDto conceptMetamacDto = ConceptsMetamacDtoMocks.mockConceptDto(Boolean.TRUE);
         conceptMetamacDto.setItemSchemeVersionUrn(CONCEPT_SCHEME_1_V2);
+        conceptMetamacDto.setConceptExtendsUrn(CONCEPT_SCHEME_12_V1_CONCEPT_1);
 
         ConceptMetamacDto conceptMetamacDtoCreated = srmCoreServiceFacade.createConcept(getServiceContextAdministrador(), conceptMetamacDto);
         assertEquals(GeneratorUrnUtils.generateSdmxConceptUrn("ISTAC", "CONCEPTSCHEME01", "02.000", conceptMetamacDto.getCode()), conceptMetamacDtoCreated.getUrn());
@@ -1165,14 +1170,22 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
     @Test
     public void testUpdateConcept() throws Exception {
         ConceptMetamacDto conceptMetamacDto = srmCoreServiceFacade.retrieveConceptByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_1_V2_CONCEPT_1);
-
+        assertNotNull(conceptMetamacDto.getConceptExtendsUrn());
         conceptMetamacDto.setName(MetamacMocks.mockInternationalString());
         conceptMetamacDto.setDescription(MetamacMocks.mockInternationalString());
+        conceptMetamacDto.setConceptExtendsUrn(CONCEPT_SCHEME_3_V1_CONCEPT_2_1_1);
 
         ConceptMetamacDto conceptMetamacDtoUpdated = srmCoreServiceFacade.updateConcept(getServiceContextAdministrador(), conceptMetamacDto);
 
         assertNotNull(conceptMetamacDto);
         assertEqualsConceptDto(conceptMetamacDto, conceptMetamacDtoUpdated);
+        
+        // Update again to check removing concept extends
+        conceptMetamacDtoUpdated.setConceptExtendsUrn(null);
+        ConceptMetamacDto conceptMetamacDtoUpdatedAgain = srmCoreServiceFacade.updateConcept(getServiceContextAdministrador(), conceptMetamacDtoUpdated);
+
+        assertNotNull(conceptMetamacDto);
+        assertEqualsConceptDto(conceptMetamacDtoUpdated, conceptMetamacDtoUpdatedAgain);
     }
 
     @Test

@@ -3,9 +3,9 @@
 <dataset>
     
     <!-- ************************************************************************************** -->
-    <!-- CONCEPT SCHEME 1                                                                       -->
-    <!--        - Version 1: internally published (operation type)                              -->
-    <!--        - Version 2: draft (transversal)                                                -->
+    <!-- CONCEPT SCHEME 1    (transversal)                                                      -->
+    <!--        - Version 1: internally published                                               -->
+    <!--        - Version 2: draft                                                              -->
     <!-- *************************************************************************************  -->
 
     <TB_ITEM_SCHEMES
@@ -39,8 +39,8 @@
     
     <TB_M_CONCEPT_SCHEMES_VERSIONS
         TB_CONCEPT_SCHEMES_VERSIONS="11"
-        CONCEPT_SCHEME_TYPE="OPERATION"          
-        RELATED_OPERATION_FK="13"
+        CONCEPT_SCHEME_TYPE="TRANSVERSAL"          
+        RELATED_OPERATION_FK="[null]"
         PROC_STATUS="INTERNALLY_PUBLISHED"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
@@ -112,6 +112,7 @@
               LEGAL_ACTS_FK="[null]"
               SDMX_RELATED_ARTEFACT="[null]"
               CONCEPT_TYPE_FK="[null]"
+              EXTENDS_FK="1031"
               TB_CONCEPTS="111"
              />
             
@@ -261,6 +262,7 @@
               LEGAL_ACTS_FK="23"
               SDMX_RELATED_ARTEFACT="ATTRIBUTE"
               CONCEPT_TYPE_FK="1"
+              EXTENDS_FK="311"
               TB_CONCEPTS="121"
              />
             
@@ -329,6 +331,7 @@
               DERIVATION_FK="[null]"
               LEGAL_ACTS_FK="[null]"
               SDMX_RELATED_ARTEFACT="[null]"
+              EXTENDS_FK="[null]"
               TB_CONCEPTS="122"
              />
                      
@@ -387,6 +390,7 @@
               DERIVATION_FK="[null]"
               LEGAL_ACTS_FK="[null]"
               SDMX_RELATED_ARTEFACT="[null]"
+              EXTENDS_FK="[null]"
               TB_CONCEPTS="1221"
              />
         
@@ -445,6 +449,7 @@
               DERIVATION_FK="[null]"
               LEGAL_ACTS_FK="[null]"
               SDMX_RELATED_ARTEFACT="[null]"
+              EXTENDS_FK="[null]"
               TB_CONCEPTS="12211"
              />
         
@@ -504,6 +509,7 @@
               LEGAL_ACTS_FK="[null]"
               SDMX_RELATED_ARTEFACT="ATTRIBUTE"
               CONCEPT_TYPE_FK="1"
+              EXTENDS_FK="3121"
               TB_CONCEPTS="123"
              />
             
@@ -562,6 +568,7 @@
               DERIVATION_FK="[null]"
               LEGAL_ACTS_FK="[null]"
               SDMX_RELATED_ARTEFACT="[null]"
+              EXTENDS_FK="[null]"
               TB_CONCEPTS="124"
              />
                      
@@ -620,6 +627,7 @@
               DERIVATION_FK="[null]"
               LEGAL_ACTS_FK="[null]"
               SDMX_RELATED_ARTEFACT="[null]"
+              EXTENDS_FK="[null]"
               TB_CONCEPTS="1241"
              />
         
@@ -678,6 +686,7 @@
               DERIVATION_FK="[null]"
               LEGAL_ACTS_FK="[null]"
               SDMX_RELATED_ARTEFACT="[null]"
+              EXTENDS_FK="[null]"
               TB_CONCEPTS="12411"
              />
         
@@ -870,7 +879,8 @@
               DERIVATION_FK="[null]"
               LEGAL_ACTS_FK="[null]"
               SDMX_RELATED_ARTEFACT="ATTRIBUTE"
-              CONCEPT_TYPE_FK="2"              
+              CONCEPT_TYPE_FK="2"
+              EXTENDS_FK="[null]"              
               TB_CONCEPTS="211"
              />            
         
@@ -929,7 +939,8 @@
               DERIVATION_FK="[null]"
               LEGAL_ACTS_FK="[null]"
               SDMX_RELATED_ARTEFACT="ATTRIBUTE"
-              CONCEPT_TYPE_FK="2"              
+              CONCEPT_TYPE_FK="2"
+              EXTENDS_FK="[null]"              
               TB_CONCEPTS="212"
              />        
                      
@@ -1105,7 +1116,8 @@
               DERIVATION_FK="30"
               LEGAL_ACTS_FK="31"
               SDMX_RELATED_ARTEFACT="ATTRIBUTE"
-              CONCEPT_TYPE_FK="2"              
+              CONCEPT_TYPE_FK="2"
+              EXTENDS_FK="511"              
               TB_CONCEPTS="311"
              />
             
@@ -1164,6 +1176,7 @@
               DERIVATION_FK="[null]"
               LEGAL_ACTS_FK="[null]"
               SDMX_RELATED_ARTEFACT="[null]"
+              EXTENDS_FK="[null]"
               TB_CONCEPTS="312"
              />            
         
@@ -1222,6 +1235,7 @@
               DERIVATION_FK="[null]"
               LEGAL_ACTS_FK="[null]"
               SDMX_RELATED_ARTEFACT="[null]"
+              EXTENDS_FK="[null]"
               TB_CONCEPTS="3121"
              />            
         
@@ -1280,6 +1294,7 @@
                       DERIVATION_FK="[null]"
                       LEGAL_ACTS_FK="[null]"
                       SDMX_RELATED_ARTEFACT="[null]"
+                      EXTENDS_FK="611"
                       TB_CONCEPTS="31211"
                      />                    
                 
@@ -1338,6 +1353,7 @@
               DERIVATION_FK="[null]"
               LEGAL_ACTS_FK="[null]"
               SDMX_RELATED_ARTEFACT="[null]"
+              EXTENDS_FK="[null]"
               TB_CONCEPTS="3122"
              />
                      
@@ -1507,6 +1523,7 @@
               LEGAL_ACTS_FK="[null]"
               SDMX_RELATED_ARTEFACT="[null]"
               CONCEPT_TYPE_FK="[null]"
+              EXTENDS_FK="[null]"
               TB_CONCEPTS="411"
              />
             
@@ -1653,6 +1670,7 @@
               LEGAL_ACTS_FK="[null]"
               SDMX_RELATED_ARTEFACT="[null]"
               CONCEPT_TYPE_FK="[null]"
+              EXTENDS_FK="[null]"
               TB_CONCEPTS="511"
              />
             
@@ -1799,6 +1817,7 @@
               LEGAL_ACTS_FK="[null]"
               SDMX_RELATED_ARTEFACT="[null]"
               CONCEPT_TYPE_FK="[null]"
+              EXTENDS_FK="111"
               TB_CONCEPTS="611"
              />
             
@@ -2026,6 +2045,7 @@
               LEGAL_ACTS_FK="[null]"
               SDMX_RELATED_ARTEFACT="[null]"
               CONCEPT_TYPE_FK="[null]"
+              EXTENDS_FK="[null]"
               TB_CONCEPTS="721"
              />
             
@@ -2173,7 +2193,8 @@
               DERIVATION_FK="[null]"
               LEGAL_ACTS_FK="[null]"
               SDMX_RELATED_ARTEFACT="ATTRIBUTE"
-              CONCEPT_TYPE_FK="2"              
+              CONCEPT_TYPE_FK="2"
+              EXTENDS_FK="[null]"              
               TB_CONCEPTS="811"
              />            
         
@@ -2305,10 +2326,10 @@
     />
     
     <!-- ************************************************************************************** -->
-    <!-- CONCEPT SCHEME 10                                                                      -->
-    <!--        - Version 1: externally published (glossary type)                               -->
+    <!-- CONCEPT SCHEME 10 (operation type)                                                     -->
+    <!--        - Version 1: externally published                                               -->
     <!--        - Version 2: internally published                                               -->
-    <!--        - Version 3: production validation (operation type)                             -->
+    <!--        - Version 3: production validation                                              -->
     <!-- *************************************************************************************  -->
 
     <TB_ITEM_SCHEMES
@@ -2341,7 +2362,7 @@
     
     <TB_M_CONCEPT_SCHEMES_VERSIONS
         TB_CONCEPT_SCHEMES_VERSIONS="101"
-        CONCEPT_SCHEME_TYPE="GLOSSARY"          
+        CONCEPT_SCHEME_TYPE="OPERATION"          
         RELATED_OPERATION_FK="[null]"
         PROC_STATUS="EXTERNALLY_PUBLISHED"
         
@@ -2419,7 +2440,7 @@
     
     <TB_M_CONCEPT_SCHEMES_VERSIONS
         TB_CONCEPT_SCHEMES_VERSIONS="102"
-        CONCEPT_SCHEME_TYPE="GLOSSARY"          
+        CONCEPT_SCHEME_TYPE="OPERATION"          
         RELATED_OPERATION_FK="[null]"
         PROC_STATUS="INTERNALLY_PUBLISHED"
         
@@ -2473,6 +2494,66 @@
         LAST_UPDATED_TZ="Europe/London"
     />
     
+            <!-- CONCEPT01 -->
+            <TB_CONCEPTS
+                TB_ITEMS="1021"
+                CORE_REPRESENTATION_FK="[null]"    
+            />
+ 
+            <TB_M_CONCEPTS
+              PLURAL_NAME_FK="[null]"
+              ACRONYM_FK="[null]"
+              DESCRIPTION_SOURCE_FK="[null]"
+              CONTEXT_FK="[null]"
+              DOC_METHOD_FK="[null]"
+              DERIVATION_FK="[null]"
+              LEGAL_ACTS_FK="[null]"
+              SDMX_RELATED_ARTEFACT="ATTRIBUTE"
+              CONCEPT_TYPE_FK="2"
+              EXTENDS_FK="[null]"              
+              TB_CONCEPTS="1021"
+             />            
+        
+            <TB_ITEMS
+                ID="1021"
+                PARENT_FK="[null]"
+                ITEM_SCHEME_VERSION_FK="102"
+                ITEM_SCHEME_VERSION_FIRST_FK="102"
+                NAMEABLE_ARTEFACT_FK="1021"
+                      
+                UUID="conceptScheme-10-v2-concept-1"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"  
+            />
+        
+            <TB_ANNOTABLE_ARTEFACTS 
+                ID="1021"
+                ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+                
+                CODE="CONCEPT01"
+                URI="[null]"
+                URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME10(02.000).CONCEPT01"
+                REPLACED_BY="[null]"
+                REPLACE_TO="[null]"
+                
+                NAME_FK="[null]"
+                DESCRIPTION_FK="[null]"
+                
+                UUID="annotableArtefact-1021"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"
+            />      
+    
     <!-- Version 3 -->
     
     <TB_ITEM_SCHEMES_VERSIONS
@@ -2515,7 +2596,7 @@
         EXTERNAL_PUBLICATION_USER="[null]"
         IS_EXT_PUBLICATION_FAILED="[null]"
         EXT_PUBLICATION_FAILED_DATE="[null]"
-    />       
+    /> 
     
     <TB_ANNOTABLE_ARTEFACTS 
         ID="103"
@@ -2566,7 +2647,8 @@
               DERIVATION_FK="[null]"
               LEGAL_ACTS_FK="[null]"
               SDMX_RELATED_ARTEFACT="ATTRIBUTE"
-              CONCEPT_TYPE_FK="2"              
+              CONCEPT_TYPE_FK="2"
+              EXTENDS_FK="[null]"              
               TB_CONCEPTS="1031"
              />            
         
@@ -2714,7 +2796,8 @@
               DERIVATION_FK="[null]"
               LEGAL_ACTS_FK="[null]"
               SDMX_RELATED_ARTEFACT="ATTRIBUTE"
-              CONCEPT_TYPE_FK="2"              
+              CONCEPT_TYPE_FK="2"
+              EXTENDS_FK="[null]"              
               TB_CONCEPTS="1111"
              />            
         
@@ -2848,6 +2931,65 @@
         LAST_UPDATED_TZ="Europe/London"
     />
     
+            <!-- CONCEPT01 -->
+            <TB_CONCEPTS
+                TB_ITEMS="1211"
+                CORE_REPRESENTATION_FK="[null]"    
+            />
+ 
+            <TB_M_CONCEPTS
+              PLURAL_NAME_FK="[null]"
+              ACRONYM_FK="[null]"
+              DESCRIPTION_SOURCE_FK="[null]"
+              CONTEXT_FK="[null]"
+              DOC_METHOD_FK="[null]"
+              DERIVATION_FK="[null]"
+              LEGAL_ACTS_FK="[null]"
+              SDMX_RELATED_ARTEFACT="ATTRIBUTE"
+              CONCEPT_TYPE_FK="2"
+              EXTENDS_FK="[null]"              
+              TB_CONCEPTS="1211"
+             />            
+        
+            <TB_ITEMS
+                ID="1211"
+                PARENT_FK="[null]"
+                ITEM_SCHEME_VERSION_FK="121"
+                ITEM_SCHEME_VERSION_FIRST_FK="121"
+                NAMEABLE_ARTEFACT_FK="1211"
+                      
+                UUID="conceptScheme-12-v1-concept-1"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"  
+            />
+        
+            <TB_ANNOTABLE_ARTEFACTS 
+                ID="1211"
+                ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+                
+                CODE="CONCEPT01"
+                URI="[null]"
+                URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME12(01.000).CONCEPT01"
+                REPLACED_BY="[null]"
+                REPLACE_TO="[null]"
+                
+                NAME_FK="43"
+                DESCRIPTION_FK="[null]"
+                
+                UUID="annotableArtefact-1211"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"
+            />      
             
     <!-- ************************************************************************************** -->
     <!-- EXTERNAL ITEMS                                                                         -->

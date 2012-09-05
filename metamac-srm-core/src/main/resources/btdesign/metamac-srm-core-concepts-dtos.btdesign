@@ -52,8 +52,8 @@ Application DtosMetamacConceptDomain {
 			- @ConceptRoleEnum sdmxRelatedArtefact nullable;
 			- @ConceptTypeDto type nullable;			
 			- @InternationalStringDto derivation nullable;
-			// RELATED_CONCEPTS
 			- @InternationalStringDto legalActs nullable;
+			String conceptExtendsUrn nullable;
 			
 			"Version to optimistic locking"
 			Long versionOptimisticLocking;

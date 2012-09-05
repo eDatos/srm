@@ -78,6 +78,7 @@ public class DoCopyUtils {
         target.setType(source.getType());
         target.setDerivation(copy(source.getDerivation()));
         target.setLegalActs(copy(source.getLegalActs()));
+        target.setConceptExtends(source.getConceptExtends()); // concept in another concept scheme
 
         return target;
     }

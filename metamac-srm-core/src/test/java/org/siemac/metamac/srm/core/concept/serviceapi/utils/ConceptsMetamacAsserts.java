@@ -32,6 +32,7 @@ public class ConceptsMetamacAsserts extends ConceptsAsserts {
         assertEqualsConceptType(expected.getType(), actual.getType());
         assertEqualsInternationalString(expected.getDerivation(), actual.getDerivation());
         assertEqualsInternationalString(expected.getLegalActs(), actual.getLegalActs());
+        assertEqualsConceptExtends(expected.getConceptExtends(), actual.getConceptExtends());
         ConceptsAsserts.assertEqualsConcept(expected, actual);
     }
 
@@ -51,10 +52,11 @@ public class ConceptsMetamacAsserts extends ConceptsAsserts {
         assertEqualsConceptType(expected.getType(), actual.getType());
         assertEqualsInternationalStringDto(expected.getDerivation(), actual.getDerivation());
         assertEqualsInternationalStringDto(expected.getLegalActs(), actual.getLegalActs());
+        assertEquals(expected.getConceptExtendsUrn(), actual.getConceptExtendsUrn());
 
         ConceptsAsserts.assertEqualsConceptDto(expected, actual);
     }
-    
+
     private static void assertEqualsConceptType(ConceptType expected, ConceptType actual) {
         if (expected == null && actual == null) {
             return;
@@ -64,7 +66,7 @@ public class ConceptsMetamacAsserts extends ConceptsAsserts {
             fail("ConceptType are different");
         }
     }
-    
+
     private static void assertEqualsConceptType(ConceptTypeDto expected, ConceptTypeDto actual) {
         if (expected == null && actual == null) {
             return;
@@ -72,6 +74,16 @@ public class ConceptsMetamacAsserts extends ConceptsAsserts {
             assertEquals(expected.getIdentifier(), actual.getIdentifier());
         } else {
             fail("ConceptType are different");
+        }
+    }
+
+    private static void assertEqualsConceptExtends(ConceptMetamac expected, ConceptMetamac actual) {
+        if (expected == null && actual == null) {
+            return;
+        } else if (expected != null && actual != null) {
+            assertEquals(expected.getNameableArtefact().getUrn(), actual.getNameableArtefact().getUrn());
+        } else {
+            fail("ConceptExtends are different");
         }
     }
 }

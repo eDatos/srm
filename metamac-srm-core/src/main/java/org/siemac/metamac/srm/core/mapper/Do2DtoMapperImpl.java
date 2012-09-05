@@ -106,9 +106,12 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
         target.setType(conceptTypeDoToDto(source.getType()));
         target.setDerivation(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getDerivation()));
         target.setLegalActs(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getLegalActs()));
+        if (source.getConceptExtends() != null) {
+            target.setConceptExtendsUrn(source.getConceptExtends().getNameableArtefact().getUrn());
+        }
         do2DtoMapperSdmxSrm.conceptDoToDto(source, target);
         
-        // note: not conversion to relatedConcepts. Call 'retrieveRelatedConcepts' operation of Service
+        // note: not conversion to relatedConcepts and roles. Call 'retrieveRelatedConcepts' operation of Service
 
         return target;
     }

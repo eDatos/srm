@@ -54,8 +54,10 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
     protected static final String CONCEPT_SCHEME_6_V1_CONCEPT_1     = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME06(01.000).CONCEPT01";
     protected static final String CONCEPT_SCHEME_7_V2_CONCEPT_1     = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME07(02.000).CONCEPT01";
     protected static final String CONCEPT_SCHEME_8_V1_CONCEPT_1     = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME08(01.000).CONCEPT01";
+    protected static final String CONCEPT_SCHEME_10_V2_CONCEPT_1    = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME10(02.000).CONCEPT01";
     protected static final String CONCEPT_SCHEME_10_V3_CONCEPT_1    = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME10(03.000).CONCEPT01";
     protected static final String CONCEPT_SCHEME_11_V1_CONCEPT_1    = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME11(01.000).CONCEPT01";
+    protected static final String CONCEPT_SCHEME_12_V1_CONCEPT_1    = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME12(01.000).CONCEPT01";
 
     // Concept types
     protected static final String CONCEPT_TYPE_DERIVED              = "DERIVED";

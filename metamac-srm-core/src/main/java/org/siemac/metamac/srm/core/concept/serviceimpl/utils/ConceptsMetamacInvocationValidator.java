@@ -14,6 +14,7 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.concept.serviceimpl.utils.ConceptsInvocationValidator;
 
 public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValidator {
@@ -23,11 +24,9 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
             exceptions = new ArrayList<MetamacExceptionItem>();
         }
         ValidationUtils.checkParameterRequired(conceptSchemeVersion, ServiceExceptionParameters.CONCEPT_SCHEME, exceptions);
-        if (conceptSchemeVersion == null) {
-            return;
+        if (conceptSchemeVersion != null) {
+            checkConceptScheme(conceptSchemeVersion, exceptions);
         }
-
-        checkConceptScheme(conceptSchemeVersion, exceptions);
 
         ExceptionUtils.throwIfException(exceptions);
     }
@@ -37,11 +36,9 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
             exceptions = new ArrayList<MetamacExceptionItem>();
         }
         ValidationUtils.checkParameterRequired(conceptSchemeVersion, ServiceExceptionParameters.CONCEPT_SCHEME, exceptions);
-        if (conceptSchemeVersion == null) {
-            return;
+        if (conceptSchemeVersion != null) {
+            checkConceptScheme(conceptSchemeVersion, exceptions);
         }
-
-        checkConceptScheme(conceptSchemeVersion, exceptions);
 
         ExceptionUtils.throwIfException(exceptions);
     }
@@ -124,14 +121,26 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
         }
 
         ValidationUtils.checkParameterRequired(concept, ServiceExceptionParameters.CONCEPT, exceptions);
-        if (concept == null) {
-            return;
+        if (concept != null && conceptSchemeVersion != null) {
+            checkConcept(conceptSchemeVersion, concept, exceptions);
         }
-        checkConcept(concept, exceptions);
 
         ExceptionUtils.throwIfException(exceptions);
     }
 
+    public static void checkUpdateConcept(ConceptMetamac concept, List<MetamacExceptionItem> exceptions) throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+
+        ValidationUtils.checkParameterRequired(concept, ServiceExceptionParameters.CONCEPT, exceptions);
+        if (concept != null) {
+            checkConcept(concept.getItemSchemeVersion(), concept, exceptions);
+        }
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
+    
     public static void checkAddConceptRelation(String urn1, String urn2, List<MetamacExceptionItem> exceptions) throws MetamacException {
         if (exceptions == null) {
             exceptions = new ArrayList<MetamacExceptionItem>();
@@ -200,8 +209,15 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
         }
     }
 
-    private static void checkConcept(ConceptMetamac concept, List<MetamacExceptionItem> exceptions) {
-        // all optional.
+    private static void checkConcept(ItemSchemeVersion conceptSchemeVersion, ConceptMetamac concept, List<MetamacExceptionItem> exceptions) {
+
+        // Not same concept scheme
+        if (concept.getConceptExtends() != null) {
+            if (conceptSchemeVersion.getItemScheme().getId().equals(concept.getConceptExtends().getItemSchemeVersion().getItemScheme().getId())) {
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.CONCEPT_EXTENDS));
+            }
+        }
+
         // common metadata in sdmx are checked in Sdmx module
     }
 }

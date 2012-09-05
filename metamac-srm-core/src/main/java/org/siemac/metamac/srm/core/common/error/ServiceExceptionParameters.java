@@ -26,6 +26,7 @@ public class ServiceExceptionParameters extends com.arte.statistic.sdmx.srm.core
     public static final String CONCEPT_SDMX_RELATED_ARTEFACT     = CONCEPT + ".sdmx_related_artefact";
     public static final String CONCEPT_DERIVATION                = CONCEPT + ".derivation";
     public static final String CONCEPT_LEGAL_ACTS                = CONCEPT + ".legal_acts";
+    public static final String CONCEPT_EXTENDS                   = CONCEPT + ".extends";
 
     // LIFECYCLE
     public static final String PROC_STATUS_DRAFT                 = ItemSchemeMetamacProcStatusEnum.DRAFT.name();
