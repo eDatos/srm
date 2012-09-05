@@ -42,6 +42,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.EnumeratedRepresentation;
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
+import com.arte.statistic.sdmx.srm.core.concept.domain.Concept;
+import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptProperties;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.concept.serviceapi.utils.ConceptsAsserts;
 import com.arte.statistic.sdmx.srm.core.concept.serviceapi.utils.ConceptsDoMocks;
@@ -1603,6 +1605,126 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
                     assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_4_1_1, conceptChildChild.getNameableArtefact().getUrn());
                     assertEquals(0, conceptChildChild.getChildren().size());
                 }
+            }
+        }
+    }
+
+    @Test
+    public void testFindConceptsByCondition() throws Exception {
+
+        // Find all
+        {
+            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(Concept.class).orderBy(ConceptProperties.itemSchemeVersion().maintainableArtefact().urn()).ascending()
+                    .orderBy(ConceptProperties.id()).ascending().distinctRoot().build();
+            PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
+            PagedResult<ConceptMetamac> conceptsPagedResult = conceptsService.findConceptsByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
+
+            // Validate
+            assertEquals(23, conceptsPagedResult.getTotalRows());
+            assertEquals(23, conceptsPagedResult.getValues().size());
+            assertTrue(conceptsPagedResult.getValues().get(0) instanceof ConceptMetamac);
+            
+            int i = 0;
+            assertEquals(CONCEPT_SCHEME_1_V1_CONCEPT_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_3, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_4, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_4_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2_1_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_4_1_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CONCEPT_SCHEME_2_V1_CONCEPT_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CONCEPT_SCHEME_2_V1_CONCEPT_2, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CONCEPT_SCHEME_3_V1_CONCEPT_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CONCEPT_SCHEME_3_V1_CONCEPT_2, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CONCEPT_SCHEME_3_V1_CONCEPT_2_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CONCEPT_SCHEME_3_V1_CONCEPT_2_2, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CONCEPT_SCHEME_3_V1_CONCEPT_2_1_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CONCEPT_SCHEME_4_V1_CONCEPT_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CONCEPT_SCHEME_5_V1_CONCEPT_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CONCEPT_SCHEME_6_V1_CONCEPT_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CONCEPT_SCHEME_7_V2_CONCEPT_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CONCEPT_SCHEME_8_V1_CONCEPT_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CONCEPT_SCHEME_10_V3_CONCEPT_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CONCEPT_SCHEME_11_V1_CONCEPT_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(conceptsPagedResult.getValues().size(), i);
+        }
+
+        // Find by name (like), code (like) and concept scheme urn
+        {
+            String name = "Nombre conceptScheme-1-v2-concept-2-";
+            String code = "CONCEPT02";
+            String conceptSchemeUrn = CONCEPT_SCHEME_1_V2;
+            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(Concept.class).withProperty(ConceptProperties.itemSchemeVersion().maintainableArtefact().urn())
+                    .eq(conceptSchemeUrn).withProperty(ConceptProperties.nameableArtefact().code()).like(code + "%").withProperty(ConceptProperties.nameableArtefact().name().texts().label())
+                    .like(name + "%").orderBy(ConceptProperties.id()).ascending().distinctRoot().build();
+            PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
+            PagedResult<ConceptMetamac> conceptsPagedResult = conceptsService.findConceptsByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
+
+            // Validate
+            assertEquals(2, conceptsPagedResult.getTotalRows());
+            assertEquals(2, conceptsPagedResult.getValues().size());
+            assertTrue(conceptsPagedResult.getValues().get(0) instanceof ConceptMetamac);
+
+            int i = 0;
+            assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2_1_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(conceptsPagedResult.getValues().size(), i);
+        }
+
+        // Find by concept scheme urn paginated
+        {
+            String conceptSchemeUrn = CONCEPT_SCHEME_1_V2;
+            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(Concept.class).withProperty(ConceptProperties.itemSchemeVersion().maintainableArtefact().urn())
+                    .eq(conceptSchemeUrn).orderBy(ConceptProperties.id()).ascending().distinctRoot().build();
+
+            // First page
+            {
+                PagingParameter pagingParameter = PagingParameter.rowAccess(0, 3, true);
+                PagedResult<ConceptMetamac> conceptsPagedResult = conceptsService.findConceptsByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
+
+                // Validate
+                assertEquals(8, conceptsPagedResult.getTotalRows());
+                assertEquals(3, conceptsPagedResult.getValues().size());
+                assertTrue(conceptsPagedResult.getValues().get(0) instanceof ConceptMetamac);
+
+                int i = 0;
+                assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+                assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+                assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_3, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+                assertEquals(conceptsPagedResult.getValues().size(), i);
+            }
+            // Second page
+            {
+                PagingParameter pagingParameter = PagingParameter.rowAccess(3, 6, true);
+                PagedResult<ConceptMetamac> conceptsPagedResult = conceptsService.findConceptsByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
+
+                // Validate
+                assertEquals(8, conceptsPagedResult.getTotalRows());
+                assertEquals(3, conceptsPagedResult.getValues().size());
+                assertTrue(conceptsPagedResult.getValues().get(0) instanceof ConceptMetamac);
+
+                int i = 0;
+                assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_4, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+                assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+                assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_4_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+                assertEquals(conceptsPagedResult.getValues().size(), i);
+            }
+            // Third page
+            {
+                PagingParameter pagingParameter = PagingParameter.rowAccess(6, 9, true);
+                PagedResult<ConceptMetamac> conceptsPagedResult = conceptsService.findConceptsByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
+
+                // Validate
+                assertEquals(8, conceptsPagedResult.getTotalRows());
+                assertEquals(2, conceptsPagedResult.getValues().size());
+                assertTrue(conceptsPagedResult.getValues().get(0) instanceof ConceptMetamac);
+                
+                int i = 0;
+                assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2_1_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+                assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_4_1_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+                assertEquals(conceptsPagedResult.getValues().size(), i);
             }
         }
     }

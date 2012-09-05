@@ -134,6 +134,12 @@ public class ConceptsSecurityUtils {
         }
     }
 
+    public static void canFindConceptsByCondition(ServiceContext ctx) throws MetamacException {
+        if (!SharedConceptsSecurityUtils.canFindConceptsByCondition(getMetamacPrincipal(ctx))) {
+            throw new MetamacException(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED, ctx.getUserId());
+        }
+    }
+
     public static void canAddConceptRelation(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeMetamac) throws MetamacException {
         if (!SharedConceptsSecurityUtils.canAddConceptRelation(getMetamacPrincipal(ctx), conceptSchemeMetamac.getProcStatus(), conceptSchemeMetamac.getType(), getOperationCode(conceptSchemeMetamac))) {
             throw new MetamacException(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED, ctx.getUserId());
@@ -152,7 +158,7 @@ public class ConceptsSecurityUtils {
             throw new MetamacException(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED, ctx.getUserId());
         }
     }
-    
+
     public static void canRetrieveRelatedConceptsRoles(ServiceContext ctx) throws MetamacException {
         if (!SharedConceptsSecurityUtils.canRetrieveRelatedConceptsRoles(getMetamacPrincipal(ctx))) {
             throw new MetamacException(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED, ctx.getUserId());

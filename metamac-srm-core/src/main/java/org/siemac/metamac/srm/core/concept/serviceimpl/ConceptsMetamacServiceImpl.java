@@ -121,7 +121,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         // Validation
         ConceptsMetamacInvocationValidator.checkFindConceptSchemesByCondition(conditions, pagingParameter, null);
 
-        // Find
+        // Find (do not call sdmx module to avoid typecast)
         if (conditions == null) {
             conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).build();
         }
@@ -373,6 +373,20 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     @Override
     public ConceptMetamac retrieveConceptByUrn(ServiceContext ctx, String urn) throws MetamacException {
         return (ConceptMetamac) conceptsService.retrieveConceptByUrn(ctx, urn);
+    }
+    
+    @Override
+    public PagedResult<ConceptMetamac> findConceptsByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
+
+        // Validation
+        ConceptsMetamacInvocationValidator.checkFindConceptsByCondition(conditions, pagingParameter, null);
+
+        // Find (do not call sdmx module to avoid typecast)
+        if (conditions == null) {
+            conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class).build();
+        }
+        PagedResult<ConceptMetamac> conceptPagedResult = getConceptMetamacRepository().findByCondition(conditions, pagingParameter);
+        return conceptPagedResult;
     }
 
     // TODO Pendiente de confirmación de Alberto: se está lanzando excepción si hay conceptos relacionados

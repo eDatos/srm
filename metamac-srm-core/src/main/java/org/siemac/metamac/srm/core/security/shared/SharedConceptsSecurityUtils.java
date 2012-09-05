@@ -161,6 +161,10 @@ public class SharedConceptsSecurityUtils extends SharedSecurityUtils {
     public static boolean canRetrieveConceptsByConceptSchemeUrn(MetamacPrincipal metamacPrincipal) {
         return isAnySrmRole(metamacPrincipal);
     }
+    
+    public static boolean canFindConceptsByCondition(MetamacPrincipal metamacPrincipal) {
+        return isAnySrmRole(metamacPrincipal);
+    }
 
     public static boolean canAddConceptRelation(MetamacPrincipal metamacPrincipal, ItemSchemeMetamacProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode) {
         return canCrudConceptInConceptScheme(metamacPrincipal, procStatus, type, operationCode);

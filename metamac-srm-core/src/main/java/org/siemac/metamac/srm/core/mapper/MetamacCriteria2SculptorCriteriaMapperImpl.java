@@ -9,8 +9,12 @@ import org.siemac.metamac.core.common.criteria.SculptorPropertyCriteria;
 import org.siemac.metamac.core.common.criteria.mapper.MetamacCriteria2SculptorCriteria;
 import org.siemac.metamac.core.common.criteria.mapper.MetamacCriteria2SculptorCriteria.CriteriaCallback;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
+import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacProperties;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacProperties;
+import org.siemac.metamac.srm.core.criteria.ConceptMetamacCriteriaOrderEnum;
+import org.siemac.metamac.srm.core.criteria.ConceptMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.criteria.ConceptSchemeVersionMetamacCriteriaOrderEnum;
 import org.siemac.metamac.srm.core.criteria.ConceptSchemeVersionMetamacCriteriaPropertyEnum;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +33,8 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
 
     private MetamacCriteria2SculptorCriteria<ConceptSchemeVersionMetamac>                  conceptSchemeMetamacMapper = null;
 
+    private MetamacCriteria2SculptorCriteria<ConceptMetamac>                               conceptMetamacMapper       = null;
+
     /**************************************************************************
      * Constructor
      **************************************************************************/
@@ -36,6 +42,9 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
     public MetamacCriteria2SculptorCriteriaMapperImpl() throws MetamacException {
         conceptSchemeMetamacMapper = new MetamacCriteria2SculptorCriteria<ConceptSchemeVersionMetamac>(ConceptSchemeVersionMetamac.class, ConceptSchemeVersionMetamacCriteriaOrderEnum.class,
                 ConceptSchemeVersionMetamacCriteriaPropertyEnum.class, new ConceptSchemeVersionMetamacCriteriaCallback());
+
+        conceptMetamacMapper = new MetamacCriteria2SculptorCriteria<ConceptMetamac>(ConceptMetamac.class, ConceptMetamacCriteriaOrderEnum.class, ConceptMetamacCriteriaPropertyEnum.class,
+                new ConceptMetamacCriteriaCallback());
     }
 
     /**************************************************************************
@@ -50,6 +59,11 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
     @Override
     public MetamacCriteria2SculptorCriteria<ConceptSchemeVersionMetamac> getConceptSchemeMetamacCriteriaMapper() {
         return conceptSchemeMetamacMapper;
+    }
+
+    @Override
+    public MetamacCriteria2SculptorCriteria<ConceptMetamac> getConceptMetamacCriteriaMapper() {
+        return conceptMetamacMapper;
     }
 
     /**************************************************************************
@@ -99,7 +113,51 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
         public Property<ConceptSchemeVersionMetamac> retrievePropertyOrderDefault() throws MetamacException {
             return ConceptSchemeVersionMetamacProperties.id();
         }
-
     }
 
+    private class ConceptMetamacCriteriaCallback implements CriteriaCallback {
+
+        @Override
+        public SculptorPropertyCriteria retrieveProperty(MetamacCriteriaPropertyRestriction propertyRestriction) throws MetamacException {
+            ConceptMetamacCriteriaPropertyEnum propertyEnum = ConceptMetamacCriteriaPropertyEnum.fromValue(propertyRestriction.getPropertyName());
+            switch (propertyEnum) {
+                case CODE:
+                    return new SculptorPropertyCriteria(ConceptMetamacProperties.nameableArtefact().code(), propertyRestriction.getStringValue());
+                case URN:
+                    return new SculptorPropertyCriteria(ConceptMetamacProperties.nameableArtefact().urn(), propertyRestriction.getStringValue());
+                case NAME:
+                    return new SculptorPropertyCriteria(ConceptMetamacProperties.nameableArtefact().name().texts().label(), propertyRestriction.getStringValue());
+                case CONCEPT_SCHEME_URN:
+                    return new SculptorPropertyCriteria(ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact().urn(), propertyRestriction.getStringValue());
+                case CONCEPT_SCHEME_TYPE:
+                    return new SculptorPropertyCriteria(new LeafProperty<ConceptMetamac>(ConceptMetamacProperties.itemSchemeVersion().getName(),
+                            ConceptSchemeVersionMetamacProperties.type().getName(), true, ConceptMetamac.class), propertyRestriction.getEnumValue());
+                case CONCEPT_SCHEME_IS_LAST_VERSION:
+                    return new SculptorPropertyCriteria(ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact().isLastVersion(), propertyRestriction.getBooleanValue());
+                default:
+                    throw new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, propertyRestriction.getPropertyName());
+            }
+        }
+        @Override
+        public Property<ConceptMetamac> retrievePropertyOrder(MetamacCriteriaOrder order) throws MetamacException {
+            ConceptMetamacCriteriaOrderEnum propertyOrderEnum = ConceptMetamacCriteriaOrderEnum.fromValue(order.getPropertyName());
+            switch (propertyOrderEnum) {
+                case CODE:
+                    return ConceptMetamacProperties.nameableArtefact().code();
+                case URN:
+                    return ConceptMetamacProperties.nameableArtefact().urn();
+                case NAME:
+                    return ConceptMetamacProperties.nameableArtefact().name().texts().label();
+                case CONCEPT_SCHEME_URN:
+                    return ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact().urn();
+                default:
+                    throw new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, order.getPropertyName());
+            }
+        }
+
+        @Override
+        public Property<ConceptMetamac> retrievePropertyOrderDefault() throws MetamacException {
+            return ConceptMetamacProperties.id();
+        }
+    }
 }

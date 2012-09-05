@@ -21,6 +21,7 @@ import org.junit.runner.RunWith;
 import org.siemac.metamac.common.test.utils.MetamacAsserts;
 import org.siemac.metamac.common.test.utils.MetamacMocks;
 import org.siemac.metamac.core.common.criteria.MetamacCriteria;
+import org.siemac.metamac.core.common.criteria.MetamacCriteriaConjunctionRestriction;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder.OrderTypeEnum;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPaginator;
@@ -39,6 +40,9 @@ import org.siemac.metamac.srm.core.concept.enume.domain.ConceptRoleEnum;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.core.concept.serviceapi.utils.ConceptsMetamacAsserts;
 import org.siemac.metamac.srm.core.concept.serviceapi.utils.ConceptsMetamacDtoMocks;
+import org.siemac.metamac.srm.core.criteria.ConceptMetamacCriteriaOrderEnum;
+import org.siemac.metamac.srm.core.criteria.ConceptMetamacCriteriaPropertyEnum;
+import org.siemac.metamac.srm.core.criteria.ConceptSchemeVersionMetamacCriteriaOrderEnum;
 import org.siemac.metamac.srm.core.criteria.ConceptSchemeVersionMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -257,7 +261,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         // Order
         MetamacCriteriaOrder order = new MetamacCriteriaOrder();
         order.setType(OrderTypeEnum.ASC);
-        order.setPropertyName(ConceptSchemeVersionMetamacCriteriaPropertyEnum.URN.name());
+        order.setPropertyName(ConceptSchemeVersionMetamacCriteriaOrderEnum.URN.name());
         metamacCriteria.setOrdersBy(new ArrayList<MetamacCriteriaOrder>());
         metamacCriteria.getOrdersBy().add(order);
 
@@ -265,6 +269,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         metamacCriteria.setPaginator(new MetamacCriteriaPaginator());
         metamacCriteria.getPaginator().setFirstResult(0);
         metamacCriteria.getPaginator().setMaximumResultSize(Integer.MAX_VALUE);
+        metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
 
         MetamacCriteriaResult<ConceptSchemeMetamacDto> result = srmCoreServiceFacade.findConceptSchemesByCondition(getServiceContextAdministrador(), metamacCriteria);
 
@@ -360,7 +365,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         // Order
         MetamacCriteriaOrder order = new MetamacCriteriaOrder();
         order.setType(OrderTypeEnum.ASC);
-        order.setPropertyName(ConceptSchemeVersionMetamacCriteriaPropertyEnum.URN.name());
+        order.setPropertyName(ConceptSchemeVersionMetamacCriteriaOrderEnum.URN.name());
         metamacCriteria.setOrdersBy(new ArrayList<MetamacCriteriaOrder>());
         metamacCriteria.getOrdersBy().add(order);
 
@@ -368,6 +373,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         metamacCriteria.setPaginator(new MetamacCriteriaPaginator());
         metamacCriteria.getPaginator().setFirstResult(0);
         metamacCriteria.getPaginator().setMaximumResultSize(Integer.MAX_VALUE);
+        metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
 
         {
             MetamacCriteriaPropertyRestriction propertyRestriction = new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.PROC_STATUS.name(),
@@ -439,7 +445,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         // Order
         MetamacCriteriaOrder order = new MetamacCriteriaOrder();
         order.setType(OrderTypeEnum.ASC);
-        order.setPropertyName(ConceptSchemeVersionMetamacCriteriaPropertyEnum.URN.name());
+        order.setPropertyName(ConceptSchemeVersionMetamacCriteriaOrderEnum.URN.name());
         metamacCriteria.setOrdersBy(new ArrayList<MetamacCriteriaOrder>());
         metamacCriteria.getOrdersBy().add(order);
         // Pagination
@@ -888,6 +894,238 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         assertEquals(TypeExternalArtefactsEnum.CODELIST, conceptMetamacDto.getCoreRepresentation().getEnumerated().getType());
         assertEquals("urn:sdmx:org.sdmx.infomodel.base.CodeList.1", conceptMetamacDto.getCoreRepresentation().getEnumerated().getUrn());
         assertEquals("http://data.siemac.org/srm/v1/codeLists/1", conceptMetamacDto.getCoreRepresentation().getEnumerated().getUri());
+    }
+
+    @Test
+    public void testFindConceptsByCondition() throws Exception {
+
+        // Find all
+        {
+            MetamacCriteria metamacCriteria = new MetamacCriteria();
+            // Order
+            metamacCriteria.setOrdersBy(new ArrayList<MetamacCriteriaOrder>());
+
+            MetamacCriteriaOrder orderUrn = new MetamacCriteriaOrder();
+            orderUrn.setType(OrderTypeEnum.ASC);
+            orderUrn.setPropertyName(ConceptMetamacCriteriaOrderEnum.URN.name());
+            metamacCriteria.getOrdersBy().add(orderUrn);
+
+            MetamacCriteriaOrder orderConceptSchemeUrn = new MetamacCriteriaOrder();
+            orderConceptSchemeUrn.setType(OrderTypeEnum.ASC);
+            orderConceptSchemeUrn.setPropertyName(ConceptMetamacCriteriaOrderEnum.CONCEPT_SCHEME_URN.name());
+            metamacCriteria.getOrdersBy().add(orderConceptSchemeUrn);
+
+            // Pagination
+            metamacCriteria.setPaginator(new MetamacCriteriaPaginator());
+            metamacCriteria.getPaginator().setFirstResult(0);
+            metamacCriteria.getPaginator().setMaximumResultSize(Integer.MAX_VALUE);
+            metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
+
+            // Find
+            MetamacCriteriaResult<ConceptMetamacDto> conceptsPagedResult = srmCoreServiceFacade.findConceptsByCondition(getServiceContextAdministrador(), metamacCriteria);
+
+            // Validate
+            assertEquals(23, conceptsPagedResult.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(23, conceptsPagedResult.getResults().size());
+            assertTrue(conceptsPagedResult.getResults().get(0) instanceof ConceptMetamacDto);
+            assertEquals(CONCEPT_SCHEME_1_V1, conceptsPagedResult.getResults().get(0).getItemSchemeVersionUrn());
+
+            int i = 0;
+            assertEquals(CONCEPT_SCHEME_1_V1_CONCEPT_1, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_1, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2_1, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2_1_1, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_3, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_4, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_4_1, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_4_1_1, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_2_V1_CONCEPT_1, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_2_V1_CONCEPT_2, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_3_V1_CONCEPT_1, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_3_V1_CONCEPT_2, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_3_V1_CONCEPT_2_1, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_3_V1_CONCEPT_2_1_1, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_3_V1_CONCEPT_2_2, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_4_V1_CONCEPT_1, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_5_V1_CONCEPT_1, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_6_V1_CONCEPT_1, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_7_V2_CONCEPT_1, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_8_V1_CONCEPT_1, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_10_V3_CONCEPT_1, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_11_V1_CONCEPT_1, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(conceptsPagedResult.getResults().size(), i);
+        }
+        
+        // Find by concept scheme type
+        {
+            MetamacCriteria metamacCriteria = new MetamacCriteria();
+            // Order
+            metamacCriteria.setOrdersBy(new ArrayList<MetamacCriteriaOrder>());
+
+            MetamacCriteriaOrder orderUrn = new MetamacCriteriaOrder();
+            orderUrn.setType(OrderTypeEnum.ASC);
+            orderUrn.setPropertyName(ConceptMetamacCriteriaOrderEnum.URN.name());
+            metamacCriteria.getOrdersBy().add(orderUrn);
+
+            MetamacCriteriaOrder orderConceptSchemeUrn = new MetamacCriteriaOrder();
+            orderConceptSchemeUrn.setType(OrderTypeEnum.ASC);
+            orderConceptSchemeUrn.setPropertyName(ConceptMetamacCriteriaOrderEnum.CONCEPT_SCHEME_URN.name());
+            metamacCriteria.getOrdersBy().add(orderConceptSchemeUrn);
+
+            // Pagination
+            metamacCriteria.setPaginator(new MetamacCriteriaPaginator());
+            metamacCriteria.getPaginator().setFirstResult(0);
+            metamacCriteria.getPaginator().setMaximumResultSize(Integer.MAX_VALUE);
+            metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
+
+            // Restrictions
+            metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(ConceptMetamacCriteriaPropertyEnum.CONCEPT_SCHEME_TYPE.name(), ConceptSchemeTypeEnum.ROLE, OperationType.EQ));
+            
+            // Find
+            MetamacCriteriaResult<ConceptMetamacDto> conceptsPagedResult = srmCoreServiceFacade.findConceptsByCondition(getServiceContextAdministrador(), metamacCriteria);
+
+            // Validate
+            assertEquals(8, conceptsPagedResult.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(8, conceptsPagedResult.getResults().size());
+            assertTrue(conceptsPagedResult.getResults().get(0) instanceof ConceptMetamacDto);
+
+            int i = 0;
+            assertEquals(CONCEPT_SCHEME_3_V1_CONCEPT_1, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_3_V1_CONCEPT_2, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_3_V1_CONCEPT_2_1, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_3_V1_CONCEPT_2_1_1, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_3_V1_CONCEPT_2_2, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_4_V1_CONCEPT_1, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_5_V1_CONCEPT_1, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_6_V1_CONCEPT_1, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(conceptsPagedResult.getResults().size(), i);
+        }        
+
+        // Find by name (like), code (like) and concept scheme urn
+        {
+            MetamacCriteria metamacCriteria = new MetamacCriteria();
+            // Order
+            metamacCriteria.setOrdersBy(new ArrayList<MetamacCriteriaOrder>());
+
+            MetamacCriteriaOrder orderUrn = new MetamacCriteriaOrder();
+            orderUrn.setType(OrderTypeEnum.ASC);
+            orderUrn.setPropertyName(ConceptMetamacCriteriaOrderEnum.URN.name());
+            metamacCriteria.getOrdersBy().add(orderUrn);
+
+            // Restrictions
+            MetamacCriteriaConjunctionRestriction conjunctionRestriction = new MetamacCriteriaConjunctionRestriction();
+            conjunctionRestriction.getRestrictions().add(
+                    new MetamacCriteriaPropertyRestriction(ConceptMetamacCriteriaPropertyEnum.NAME.name(), "Nombre conceptScheme-1-v2-concept-2-", OperationType.LIKE));
+            conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(ConceptMetamacCriteriaPropertyEnum.CODE.name(), "CONCEPT02", OperationType.LIKE));
+            conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(ConceptMetamacCriteriaPropertyEnum.CONCEPT_SCHEME_URN.name(), CONCEPT_SCHEME_1_V2, OperationType.EQ));
+            metamacCriteria.setRestriction(conjunctionRestriction);
+
+            // Pagination
+            metamacCriteria.setPaginator(new MetamacCriteriaPaginator());
+            metamacCriteria.getPaginator().setFirstResult(0);
+            metamacCriteria.getPaginator().setMaximumResultSize(Integer.MAX_VALUE);
+            metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
+
+            // Find
+            MetamacCriteriaResult<ConceptMetamacDto> conceptsPagedResult = srmCoreServiceFacade.findConceptsByCondition(getServiceContextAdministrador(), metamacCriteria);
+
+            // Validate
+            assertEquals(2, conceptsPagedResult.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(2, conceptsPagedResult.getResults().size());
+            assertTrue(conceptsPagedResult.getResults().get(0) instanceof ConceptMetamacDto);
+            assertEquals(CONCEPT_SCHEME_1_V2, conceptsPagedResult.getResults().get(0).getItemSchemeVersionUrn());
+
+            int i = 0;
+            assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2_1, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2_1_1, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(conceptsPagedResult.getResults().size(), i);
+        }
+
+        // Find by concept scheme urn paginated
+        {
+
+            MetamacCriteria metamacCriteria = new MetamacCriteria();
+            // Order
+            metamacCriteria.setOrdersBy(new ArrayList<MetamacCriteriaOrder>());
+
+            MetamacCriteriaOrder orderUrn = new MetamacCriteriaOrder();
+            orderUrn.setType(OrderTypeEnum.ASC);
+            orderUrn.setPropertyName(ConceptMetamacCriteriaOrderEnum.URN.name());
+            metamacCriteria.getOrdersBy().add(orderUrn);
+
+            // Restrictions
+            metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(ConceptMetamacCriteriaPropertyEnum.CONCEPT_SCHEME_URN.name(), CONCEPT_SCHEME_1_V2, OperationType.EQ));
+
+            // First page
+            {
+                // Pagination
+                metamacCriteria.setPaginator(new MetamacCriteriaPaginator());
+                metamacCriteria.getPaginator().setFirstResult(0);
+                metamacCriteria.getPaginator().setMaximumResultSize(3);
+                metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
+
+                // Find
+                MetamacCriteriaResult<ConceptMetamacDto> conceptsPagedResult = srmCoreServiceFacade.findConceptsByCondition(getServiceContextAdministrador(), metamacCriteria);
+
+                // Validate
+                assertEquals(8, conceptsPagedResult.getPaginatorResult().getTotalResults().intValue());
+                assertEquals(3, conceptsPagedResult.getResults().size());
+                assertTrue(conceptsPagedResult.getResults().get(0) instanceof ConceptMetamacDto);
+                assertEquals(CONCEPT_SCHEME_1_V2, conceptsPagedResult.getResults().get(0).getItemSchemeVersionUrn());
+
+                int i = 0;
+                assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_1, conceptsPagedResult.getResults().get(i++).getUrn());
+                assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2, conceptsPagedResult.getResults().get(i++).getUrn());
+                assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2_1, conceptsPagedResult.getResults().get(i++).getUrn());
+                assertEquals(conceptsPagedResult.getResults().size(), i);
+            }
+            // Second page
+            {
+                // Pagination
+                metamacCriteria.setPaginator(new MetamacCriteriaPaginator());
+                metamacCriteria.getPaginator().setFirstResult(3);
+                metamacCriteria.getPaginator().setMaximumResultSize(3);
+                metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
+
+                // Find
+                MetamacCriteriaResult<ConceptMetamacDto> conceptsPagedResult = srmCoreServiceFacade.findConceptsByCondition(getServiceContextAdministrador(), metamacCriteria);
+
+                // Validate
+                assertEquals(8, conceptsPagedResult.getPaginatorResult().getTotalResults().intValue());
+                assertEquals(3, conceptsPagedResult.getResults().size());
+                assertTrue(conceptsPagedResult.getResults().get(0) instanceof ConceptMetamacDto);
+                assertEquals(CONCEPT_SCHEME_1_V2, conceptsPagedResult.getResults().get(0).getItemSchemeVersionUrn());
+
+                int i = 0;
+                assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2_1_1, conceptsPagedResult.getResults().get(i++).getUrn());
+                assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_3, conceptsPagedResult.getResults().get(i++).getUrn());
+                assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_4, conceptsPagedResult.getResults().get(i++).getUrn());
+                assertEquals(conceptsPagedResult.getResults().size(), i);
+            }
+            // Third page
+            {
+                // Pagination
+                metamacCriteria.setPaginator(new MetamacCriteriaPaginator());
+                metamacCriteria.getPaginator().setFirstResult(6);
+                metamacCriteria.getPaginator().setMaximumResultSize(3);
+                metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
+
+                // Find
+                MetamacCriteriaResult<ConceptMetamacDto> conceptsPagedResult = srmCoreServiceFacade.findConceptsByCondition(getServiceContextAdministrador(), metamacCriteria);
+
+                // Validate
+                assertEquals(8, conceptsPagedResult.getPaginatorResult().getTotalResults().intValue());
+                assertEquals(2, conceptsPagedResult.getResults().size());
+                assertTrue(conceptsPagedResult.getResults().get(0) instanceof ConceptMetamacDto);
+                assertEquals(CONCEPT_SCHEME_1_V2, conceptsPagedResult.getResults().get(0).getItemSchemeVersionUrn());
+
+                int i = 0;
+                assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_4_1, conceptsPagedResult.getResults().get(i++).getUrn());
+                assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_4_1_1, conceptsPagedResult.getResults().get(i++).getUrn());
+                assertEquals(conceptsPagedResult.getResults().size(), i);
+            }
+        }
     }
 
     @Test

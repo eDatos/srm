@@ -234,6 +234,8 @@ Application SrmCore {
             @ConceptMetamacDto updateConcept(@ConceptMetamacDto conceptDto) throws MetamacException;
 	   		"Retrieves a concept by URN"
             @ConceptMetamacDto retrieveConceptByUrn(String urn) throws MetamacException;
+            "Finds concepts by criteria"
+            MetamacCriteriaResult<@ConceptMetamacDto> findConceptsByCondition(MetamacCriteria criteria) throws MetamacException;
 			"Deletes concept"
             deleteConcept(String urn) throws MetamacException;
     		"Retrieves concepts by concept scheme, in tree structure"
