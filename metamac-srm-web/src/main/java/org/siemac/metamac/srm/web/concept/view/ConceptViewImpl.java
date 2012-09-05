@@ -17,6 +17,7 @@ import org.siemac.metamac.srm.web.concept.utils.CommonUtils;
 import org.siemac.metamac.srm.web.concept.utils.ConceptClientSecurityUtils;
 import org.siemac.metamac.srm.web.concept.view.handlers.ConceptUiHandlers;
 import org.siemac.metamac.srm.web.concept.widgets.ConceptsTreeGrid;
+import org.siemac.metamac.srm.web.concept.widgets.ConceptsTreeWindow;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
@@ -28,9 +29,11 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTex
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultilanguageRichTextEditorItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredSelectItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
+import org.siemac.metamac.web.common.client.widgets.form.fields.SearchViewTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -40,6 +43,8 @@ import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
+import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
+import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
@@ -71,6 +76,8 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
 
     private List<ConceptTypeDto>        conceptTypeDtos;
 
+    private ConceptSchemeMetamacDto     conceptSchemeMetamacDto;
+    private List<ItemHierarchyDto>      itemHierarchyDtos;
     private ConceptMetamacDto           conceptDto;
 
     @Inject
@@ -207,8 +214,8 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
 
         // Relation between concepts
         relationBetweenConceptsForm = new GroupDynamicForm(getConstants().conceptRelationBetweenConcepts());
-        ViewTextItem extendsConcept = new ViewTextItem(ConceptDS.EXTENDS, getConstants().conceptExtends());
-        ViewTextItem relatedConcepts = new ViewTextItem(ConceptDS.RELATED_CONCEPTS, getConstants().conceptRelatedConcepts());
+        ViewTextItem extendsConcept = new ViewTextItem(ConceptDS.EXTENDS, getConstants().conceptExtends()); // TODO extends
+        ViewTextItem relatedConcepts = new ViewTextItem(ConceptDS.RELATED_CONCEPTS, getConstants().conceptRelatedConcepts()); // TODO related_concepts
         relationBetweenConceptsForm.setFields(extendsConcept, relatedConcepts);
 
         // Legal acts
@@ -259,6 +266,9 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
 
         // Relation between concepts
         relationBetweenConceptsEditionForm = new GroupDynamicForm(getConstants().conceptRelationBetweenConcepts());
+        // TODO Extends
+        SearchViewTextItem relatedConcepts = createExtendsItem(ConceptDS.RELATED_CONCEPTS, getConstants().conceptRelatedConcepts());
+        relationBetweenConceptsEditionForm.setFields(relatedConcepts);
 
         // Legal acts
         legalActsEditionForm = new GroupDynamicForm(getConstants().conceptLegalActs());
@@ -295,6 +305,8 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
 
     @Override
     public void setConceptList(ConceptSchemeMetamacDto conceptSchemeMetamacDto, List<ItemHierarchyDto> itemHierarchyDtos) {
+        this.conceptSchemeMetamacDto = conceptSchemeMetamacDto;
+        this.itemHierarchyDtos = itemHierarchyDtos;
         conceptsTreeGrid.setConcepts(conceptSchemeMetamacDto, itemHierarchyDtos);
         conceptsTreeGrid.selectConcept(conceptDto);
     }
@@ -329,6 +341,8 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
         productionDescriptorsForm.setValue(ConceptDS.DERIVATION, RecordUtils.getInternationalStringRecord(conceptDto.getDerivation()));
 
         // Relation between concepts
+        // TODO Extends
+        // TODO Related concepts
 
         // Legal acts
         legalActsForm.setValue(ConceptDS.LEGAL_ACTS, RecordUtils.getInternationalStringRecord(conceptDto.getLegalActs()));
@@ -359,6 +373,8 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
         productionDescriptorsEditionForm.setValue(ConceptDS.DERIVATION, RecordUtils.getInternationalStringRecord(conceptDto.getDerivation()));
 
         // Relation between concepts
+        // TODO Extends
+        // TODO Related concepts
 
         // Legal acts
         legalActsEditionForm.setValue(ConceptDS.LEGAL_ACTS, RecordUtils.getInternationalStringRecord(conceptDto.getLegalActs()));
@@ -386,6 +402,8 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
         conceptDto.setDerivation((InternationalStringDto) productionDescriptorsEditionForm.getValue(ConceptDS.DERIVATION));
 
         // Relation between concepts
+        // TODO Extends
+        // TODO Related concepts
 
         // Legal acts
         conceptDto.setLegalActs((InternationalStringDto) legalActsEditionForm.getValue(ConceptDS.LEGAL_ACTS));
@@ -400,6 +418,28 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
             }
         }
         return null;
+    }
+
+    private SearchViewTextItem createExtendsItem(String name, String title) {
+        SearchViewTextItem conceptExtended = new SearchViewTextItem(name, title);
+        conceptExtended.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
+
+            @Override
+            public void onFormItemClick(FormItemIconClickEvent event) {
+                final ConceptsTreeWindow extendedConceptWindow = new ConceptsTreeWindow(getConstants().conceptSelection());
+                extendedConceptWindow.setConcepts(conceptSchemeMetamacDto, itemHierarchyDtos);
+                extendedConceptWindow.getSaveClickHandlers().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
+
+                    @Override
+                    public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
+                        List<ItemDto> itemDtos = extendedConceptWindow.getSelectedConcepts();
+                        extendedConceptWindow.destroy();
+                        // TODO Set selected concepts in form
+                    }
+                });
+            }
+        });
+        return conceptExtended;
     }
 
 }

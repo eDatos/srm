@@ -3,16 +3,15 @@ package org.siemac.metamac.srm.web.concept.model.record;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
 
-import com.smartgwt.client.widgets.grid.ListGridRecord;
+import com.smartgwt.client.widgets.tree.TreeNode;
 
-public class ConceptRecord extends ListGridRecord {
+public class ConceptTreeNode extends TreeNode {
 
-    public ConceptRecord(Long id, String code, String name, String urn, String description, ConceptMetamacDto conceptDto) {
+    public ConceptTreeNode(Long id, String code, String name, String urn, ConceptMetamacDto conceptDto) {
         setId(id);
         setCode(code);
         setName(name);
         setUrn(urn);
-        setDescription(description);
         setConceptDto(conceptDto);
     }
 
@@ -26,10 +25,6 @@ public class ConceptRecord extends ListGridRecord {
 
     public void setUrn(String value) {
         setAttribute(ConceptDS.URN, value);
-    }
-
-    public void setDescription(String desc) {
-        setAttribute(ConceptDS.DESCRIPTION, desc);
     }
 
     public void setCode(String code) {
@@ -54,10 +49,6 @@ public class ConceptRecord extends ListGridRecord {
 
     public String getUrn() {
         return getAttribute(ConceptDS.URN);
-    }
-
-    public String getDescription() {
-        return getAttribute(ConceptDS.DESCRIPTION);
     }
 
     public ConceptMetamacDto getConceptDto() {

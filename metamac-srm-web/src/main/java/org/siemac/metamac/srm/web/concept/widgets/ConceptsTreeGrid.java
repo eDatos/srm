@@ -199,6 +199,7 @@ public class ConceptsTreeGrid extends TreeGrid {
         node.setAttribute(ConceptDS.CODE, itemHierarchyDto.getItem().getCode());
         node.setAttribute(ConceptDS.NAME, InternationalStringUtils.getLocalisedString(itemHierarchyDto.getItem().getName()));
         node.setAttribute(ConceptDS.URN, itemHierarchyDto.getItem().getUrn());
+        node.setAttribute(ConceptDS.DTO, itemHierarchyDto.getItem());
         node.setAttribute(
                 ConceptDS.TYPE,
                 ((ConceptMetamacDto) itemHierarchyDto.getItem()).getType() != null ? InternationalStringUtils.getLocalisedString(((ConceptMetamacDto) itemHierarchyDto.getItem()).getType()
