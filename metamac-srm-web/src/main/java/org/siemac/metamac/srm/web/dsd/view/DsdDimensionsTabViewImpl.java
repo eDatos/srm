@@ -276,7 +276,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         staticConceptItem = new ViewTextItem("concept-dim-view", MetamacSrmWeb.getConstants().dsdDimensionsConcept());
         staticRoleItem = new ViewTextItem("role-dim-view", MetamacSrmWeb.getConstants().dsdDimensionsRole());
         // staticPositionItem = new StaticTextItem("position-dim-view", MetamacSrmWeb.getConstants().dsdDimensionsPosition());
-        staticRepresentationTypeItem = new ViewTextItem("repr-dim-view", MetamacSrmWeb.getConstants().dsdRepresentation());
+        staticRepresentationTypeItem = new ViewTextItem("repr-dim-view", MetamacSrmWeb.getConstants().representation());
         staticCodeListItem = new ViewTextItem("repr-enum-code-list-view", MetamacSrmWeb.getConstants().dsdCodeList());
         staticConceptSchemeItem = new ViewTextItem("repr-enum-concept-scheme-view", MetamacSrmWeb.getConstants().dsdConceptScheme());
 
@@ -383,9 +383,9 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
         // Representation
 
-        representationTypeItem = new CustomSelectItem("repr-dim", MetamacSrmWeb.getConstants().dsdRepresentation());
+        representationTypeItem = new CustomSelectItem("repr-dim", MetamacSrmWeb.getConstants().representation());
         representationTypeItem.setType("comboBox");
-        representationTypeItem.setValueMap(CommonUtils.getTypeRepresentationEnumHashMap());
+        representationTypeItem.setValueMap(org.siemac.metamac.srm.web.client.utils.CommonUtils.getTypeRepresentationEnumHashMap());
         representationTypeItem.setRedrawOnChange(true);
         // Show FacetForm if RepresentationTypeEnum = NON_NUMERATED
         representationTypeItem.addChangedHandler(new ChangedHandler() {

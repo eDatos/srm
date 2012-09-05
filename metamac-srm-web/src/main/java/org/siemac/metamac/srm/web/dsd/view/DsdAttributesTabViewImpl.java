@@ -293,7 +293,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         staticGroupKeysForDimensionRelationshipItem = new ViewTextItem("groups-dim-attr-view", MetamacSrmWeb.getConstants().dsdAttributeGroupKeysForDimensionRelationship());
         staticDimensionsForDimensionRelationshipItem = new ViewTextItem("dims-dim-attr-view", MetamacSrmWeb.getConstants().dsdAttributeDimensionsForDimensionRelationship());
         staticGroupKeyFormForGroupRelationship = new ViewTextItem("relate-group-group-attr-view", MetamacSrmWeb.getConstants().dsdAttributeGroupKeyFormGroupRelationship());
-        staticRepresentationTypeItem = new ViewTextItem("repr-dim-view", MetamacSrmWeb.getConstants().dsdRepresentation());
+        staticRepresentationTypeItem = new ViewTextItem("repr-dim-view", MetamacSrmWeb.getConstants().representation());
         staticCodeListItem = new ViewTextItem("repr-enum-code-list-view", MetamacSrmWeb.getConstants().dsdCodeList());
 
         GroupDynamicForm staticForm = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdAttributeDetails());
@@ -425,9 +425,9 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
         // Representation
 
-        representationTypeItem = new CustomSelectItem("repr-dim", MetamacSrmWeb.getConstants().dsdRepresentation());
+        representationTypeItem = new CustomSelectItem("repr-dim", MetamacSrmWeb.getConstants().representation());
         representationTypeItem.setType("comboBox");
-        representationTypeItem.setValueMap(CommonUtils.getTypeRepresentationEnumHashMap());
+        representationTypeItem.setValueMap(org.siemac.metamac.srm.web.client.utils.CommonUtils.getTypeRepresentationEnumHashMap());
         representationTypeItem.setRedrawOnChange(true);
         // Show FacetForm if RepresentationTypeEnum = NON_NUMERATED
         representationTypeItem.addChangedHandler(new ChangedHandler() {

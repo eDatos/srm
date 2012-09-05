@@ -101,16 +101,6 @@ public class CommonUtils {
         return valueMap;
     }
 
-    public static LinkedHashMap<String, String> getTypeRepresentationEnumHashMap() {
-        LinkedHashMap<String, String> valueMap = new LinkedHashMap<String, String>();
-        valueMap.put(new String(), new String());
-        for (TypeRepresentationEnum r : TypeRepresentationEnum.values()) {
-            String value = MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().typeRepresentationEnum() + r.getName());
-            valueMap.put(r.toString(), value);
-        }
-        return valueMap;
-    }
-
     public static LinkedHashMap<String, String> getTypeDimensionComponentHashMap() {
         LinkedHashMap<String, String> valueMap = new LinkedHashMap<String, String>();
         valueMap.put(new String(), new String());

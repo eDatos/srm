@@ -91,7 +91,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
      */
     private void createViewForm() {
         staticConceptItem = new ViewTextItem("concept-pmeas-view", MetamacSrmWeb.getConstants().concept());
-        staticRepresentationTypeItem = new ViewTextItem("repr-pmeas", MetamacSrmWeb.getConstants().dsdRepresentation());
+        staticRepresentationTypeItem = new ViewTextItem("repr-pmeas", MetamacSrmWeb.getConstants().representation());
         staticCodeListItem = new ViewTextItem("repr-enum-code-list-view", MetamacSrmWeb.getConstants().dsdCodeList());
 
         GroupDynamicForm staticForm = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdPrimaryMeasureDetails());
@@ -116,9 +116,9 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
         conceptItem = new ExternalSelectItem("concept-pmeas", MetamacSrmWeb.getConstants().concept());
         conceptItem.setRequired(true);
 
-        representationTypeItem = new CustomSelectItem("repr-pmeas", MetamacSrmWeb.getConstants().dsdRepresentation());
+        representationTypeItem = new CustomSelectItem("repr-pmeas", MetamacSrmWeb.getConstants().representation());
         representationTypeItem.setType("comboBox");
-        representationTypeItem.setValueMap(CommonUtils.getTypeRepresentationEnumHashMap());
+        representationTypeItem.setValueMap(org.siemac.metamac.srm.web.client.utils.CommonUtils.getTypeRepresentationEnumHashMap());
         representationTypeItem.setRedrawOnChange(true);
         // Show FacetForm if RepresentationTypeEnum = NON_NUMERATED
         representationTypeItem.addChangedHandler(new ChangedHandler() {

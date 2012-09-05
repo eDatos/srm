@@ -1,6 +1,7 @@
 package org.siemac.metamac.srm.web.dsd.widgets;
 
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
+import org.siemac.metamac.srm.web.client.model.ds.RepresentationDS;
 import org.siemac.metamac.srm.web.dsd.utils.CommonUtils;
 import org.siemac.metamac.srm.web.dsd.utils.FacetFormUtils;
 import org.siemac.metamac.web.common.client.utils.SDMXCommonWebValidatorsV2_1;
@@ -32,63 +33,63 @@ public class FacetForm extends GroupDynamicForm {
     private CustomTextItem     pattern;
 
     public FacetForm() {
-        super(MetamacSrmWeb.getConstants().dsdDimensionNonNumeratedRepresentation());
+        super(MetamacSrmWeb.getConstants().representationNonNumerated());
         setVisibility(Visibility.HIDDEN);
 
-        textType = new RequiredSelectItem(FacetFormUtils.TEXT_TYPE_FIELD_NAME, MetamacSrmWeb.getConstants().dsdRepresentationTextType());
+        textType = new RequiredSelectItem(FacetFormUtils.TEXT_TYPE_FIELD_NAME, MetamacSrmWeb.getConstants().representationFacetTextType());
         textType.setValueMap(CommonUtils.getFacetValueTypeHashMap());
         textType.setRedrawOnChange(true);
         textType.setWidth(205);
 
-        isSequence = new CheckboxItem("sequence-attr", MetamacSrmWeb.getConstants().dsdRepresentationIsSequence());
+        isSequence = new CheckboxItem(RepresentationDS.FACET_IS_SEQUENCE, MetamacSrmWeb.getConstants().representationFacetIsSequence());
         isSequence.setLabelAsTitle(true);
         isSequence.setShowIfCondition(FacetFormUtils.getIsSequenceIfFunction());
 
-        minLength = new CustomTextItem("min-length-attr", MetamacSrmWeb.getConstants().dsdRepresentationMinLength());
+        minLength = new CustomTextItem(RepresentationDS.FACET_MIN_LENGTH, MetamacSrmWeb.getConstants().representationFacetMinLength());
         minLength.setShowIfCondition(FacetFormUtils.getMinLengthIfFunction());
         minLength.setValidators(XsdDataTypesValidators.getPositiveIntegerValidator());
 
-        maxLength = new CustomTextItem("max-length", MetamacSrmWeb.getConstants().dsdRepresentationMaxLength());
+        maxLength = new CustomTextItem(RepresentationDS.FACET_MAX_LENGTH, MetamacSrmWeb.getConstants().representationFacetMaxLength());
         maxLength.setShowIfCondition(FacetFormUtils.getMaxLengthIfFunction());
         maxLength.setValidators(XsdDataTypesValidators.getPositiveIntegerValidator());
 
-        startValue = new CustomTextItem("start-value-attr", MetamacSrmWeb.getConstants().dsdRepresentationStartValue());
+        startValue = new CustomTextItem(RepresentationDS.FACET_START_VALUE, MetamacSrmWeb.getConstants().representationFacetStartValue());
         startValue.setShowIfCondition(FacetFormUtils.getStartValueIfFunction());
         startValue.setValidators(XsdDataTypesValidators.getDecimalValidator());
 
-        endValue = new CustomTextItem("end-value-attr", MetamacSrmWeb.getConstants().dsdRepresentationEndValue());
+        endValue = new CustomTextItem(RepresentationDS.FACET_END_VALUE, MetamacSrmWeb.getConstants().representationFacetEndValue());
         endValue.setShowIfCondition(FacetFormUtils.getEndValueIfFunction());
         endValue.setValidators(XsdDataTypesValidators.getDecimalValidator());
 
-        interval = new CustomTextItem("interval-attr", MetamacSrmWeb.getConstants().dsdRepresentationInterval());
+        interval = new CustomTextItem(RepresentationDS.FACET_INTERVAL, MetamacSrmWeb.getConstants().representationFacetInterval());
         interval.setShowIfCondition(FacetFormUtils.getIntervalIfFunction());
         interval.setValidators(XsdDataTypesValidators.getDecimalValidator());
 
-        timeInterval = new CustomTextItem("time-interval-attr", MetamacSrmWeb.getConstants().dsdRepresentationTimeInterval());
+        timeInterval = new CustomTextItem(RepresentationDS.FACET_TIME_INTERVAL, MetamacSrmWeb.getConstants().representationFacetTimeInterval());
         timeInterval.setShowIfCondition(FacetFormUtils.getTimeIntervalIfFunction());
         timeInterval.setValidators(XsdDataTypesValidators.getDurationValidator());
 
-        startTime = new CustomTextItem("start-time-attr", MetamacSrmWeb.getConstants().dsdRepresentationStartTime());
+        startTime = new CustomTextItem(RepresentationDS.FACET_START_TIME, MetamacSrmWeb.getConstants().representationFacetStartTime());
         startTime.setShowIfCondition(FacetFormUtils.getStartTimeIfFunction());
         startTime.setValidators(SDMXCommonWebValidatorsV2_1.getBasicTimePeriodValidator());
 
-        endTime = new CustomTextItem("end-time-attr", MetamacSrmWeb.getConstants().dsdRepresentationEndTime());
+        endTime = new CustomTextItem(RepresentationDS.FACET_END_TIME, MetamacSrmWeb.getConstants().representationFacetEndTime());
         endTime.setShowIfCondition(FacetFormUtils.getEndTimeIfFunction());
         endTime.setValidators(SDMXCommonWebValidatorsV2_1.getBasicTimePeriodValidator());
 
-        minValue = new CustomTextItem("min-value-attr", MetamacSrmWeb.getConstants().dsdRepresentationMinValue());
+        minValue = new CustomTextItem(RepresentationDS.FACET_MIN_VALUE, MetamacSrmWeb.getConstants().representationFacetMinValue());
         minValue.setShowIfCondition(FacetFormUtils.getMinValueIfFunction());
         minValue.setValidators(XsdDataTypesValidators.getDecimalValidator());
 
-        maxValue = new CustomTextItem("max-value-attr", MetamacSrmWeb.getConstants().dsdRepresentationMaxValue());
+        maxValue = new CustomTextItem(RepresentationDS.FACET_MAX_VALUE, MetamacSrmWeb.getConstants().representationFacetMaxValue());
         maxValue.setShowIfCondition(FacetFormUtils.getMaxValueIfFunction());
         maxValue.setValidators(XsdDataTypesValidators.getDecimalValidator());
 
-        decimals = new CustomTextItem("decimals-attr", MetamacSrmWeb.getConstants().dsdRepresentationDecimals());
+        decimals = new CustomTextItem(RepresentationDS.FACET_DECIMALS, MetamacSrmWeb.getConstants().representationFacetDecimals());
         decimals.setShowIfCondition(FacetFormUtils.getDecimalsIfFunction());
         decimals.setValidators(XsdDataTypesValidators.getPositiveIntegerValidator());
 
-        pattern = new CustomTextItem("pattern-attr", MetamacSrmWeb.getConstants().dsdRepresentationPattern());
+        pattern = new CustomTextItem(RepresentationDS.FACET_PATTERN, MetamacSrmWeb.getConstants().representationFacetPattern());
         pattern.setShowIfCondition(FacetFormUtils.getPatternIfFunction());
 
         setFields(textType, minLength, maxLength, isSequence, startValue, endValue, interval, timeInterval, startTime, endTime, minValue, maxValue, decimals, pattern);

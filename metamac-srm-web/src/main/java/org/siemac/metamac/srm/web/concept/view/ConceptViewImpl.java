@@ -11,6 +11,7 @@ import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptTypeDto;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptRoleEnum;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
+import org.siemac.metamac.srm.web.client.model.ds.RepresentationDS;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
 import org.siemac.metamac.srm.web.concept.presenter.ConceptPresenter;
 import org.siemac.metamac.srm.web.concept.utils.CommonUtils;
@@ -24,6 +25,7 @@ import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.widgets.TitleLabel;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.InternationalMainFormLayout;
+import org.siemac.metamac.web.common.client.widgets.form.fields.CustomSelectItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextAreaItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultilanguageRichTextEditorItem;
@@ -35,6 +37,8 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.RepresentationDto;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeRepresentationEnum;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
@@ -198,7 +202,9 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
         ViewMultiLanguageTextItem descriptionSource = new ViewMultiLanguageTextItem(ConceptDS.DESCRIPTION_SOURCE, getConstants().conceptDescriptionSource());
         ViewMultiLanguageTextItem context = new ViewMultiLanguageTextItem(ConceptDS.CONTEXT, getConstants().conceptContext());
         ViewMultiLanguageTextItem docMethod = new ViewMultiLanguageTextItem(ConceptDS.DOC_METHOD, getConstants().conceptDocMethod());
-        contentDescriptorsForm.setFields(description, descriptionSource, context, docMethod);
+        ViewTextItem representation = new ViewTextItem(RepresentationDS.TYPE, getConstants().representation());
+        ViewTextItem enumeratedRepresentation = new ViewTextItem(RepresentationDS.ENUMERATED, getConstants().representationEnumerated());
+        contentDescriptorsForm.setFields(description, descriptionSource, context, docMethod, representation, enumeratedRepresentation);
 
         // Class descriptors
         classDescriptorsForm = new GroupDynamicForm(getConstants().conceptClassDescriptors());
@@ -249,7 +255,9 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
         MultiLanguageTextItem descriptionSource = new MultiLanguageTextItem(ConceptDS.DESCRIPTION_SOURCE, getConstants().conceptDescriptionSource());
         MultiLanguageTextItem context = new MultiLanguageTextItem(ConceptDS.CONTEXT, getConstants().conceptContext());
         MultilanguageRichTextEditorItem docMethod = new MultilanguageRichTextEditorItem(ConceptDS.DOC_METHOD, getConstants().conceptDocMethod());
-        contentDescriptorsEditionForm.setFields(description, descriptionSource, context, docMethod);
+        CustomSelectItem representation = new CustomSelectItem(RepresentationDS.TYPE, getConstants().representation());
+        representation.setValueMap(org.siemac.metamac.srm.web.client.utils.CommonUtils.getTypeRepresentationEnumHashMap());
+        contentDescriptorsEditionForm.setFields(description, descriptionSource, context, docMethod, representation);
 
         // Class descriptors
         classDescriptorsEditionForm = new GroupDynamicForm(getConstants().conceptClassDescriptors());
@@ -331,6 +339,10 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
         contentDescriptorsForm.setValue(ConceptDS.DESCRIPTION_SOURCE, RecordUtils.getInternationalStringRecord(conceptDto.getDescriptionSource()));
         contentDescriptorsForm.setValue(ConceptDS.CONTEXT, RecordUtils.getInternationalStringRecord(conceptDto.getContext()));
         contentDescriptorsForm.setValue(ConceptDS.DOC_METHOD, RecordUtils.getInternationalStringRecord(conceptDto.getDocMethod()));
+        contentDescriptorsForm.setValue(
+                RepresentationDS.TYPE,
+                conceptDto.getCoreRepresentation() != null ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getTypeRepresentationName(conceptDto.getCoreRepresentation()
+                        .getTypeRepresentationEnum()) : null);
 
         // Class descriptors
         classDescriptorsForm.setValue(ConceptDS.SDMX_RELATED_ARTEFACT, CommonUtils.getConceptRoleName(conceptDto.getSdmxRelatedArtefact()));
@@ -363,6 +375,7 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
         contentDescriptorsEditionForm.setValue(ConceptDS.DESCRIPTION_SOURCE, RecordUtils.getInternationalStringRecord(conceptDto.getDescriptionSource()));
         contentDescriptorsEditionForm.setValue(ConceptDS.CONTEXT, RecordUtils.getInternationalStringRecord(conceptDto.getContext()));
         contentDescriptorsEditionForm.setValue(ConceptDS.DOC_METHOD, RecordUtils.getInternationalStringRecord(conceptDto.getDocMethod()));
+        contentDescriptorsEditionForm.setValue(RepresentationDS.TYPE, conceptDto.getCoreRepresentation() != null ? conceptDto.getCoreRepresentation().getTypeRepresentationEnum().name() : null);
 
         // Class descriptors
         classDescriptorsEditionForm.setValue(ConceptDS.SDMX_RELATED_ARTEFACT, conceptDto.getSdmxRelatedArtefact() != null ? conceptDto.getSdmxRelatedArtefact().name() : StringUtils.EMPTY);
@@ -392,6 +405,21 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
         conceptDto.setDescriptionSource((InternationalStringDto) contentDescriptorsEditionForm.getValue(ConceptDS.DESCRIPTION_SOURCE));
         conceptDto.setContext((InternationalStringDto) contentDescriptorsEditionForm.getValue(ConceptDS.CONTEXT));
         conceptDto.setDocMethod((InternationalStringDto) contentDescriptorsEditionForm.getValue(ConceptDS.DOC_METHOD));
+        if (contentDescriptorsEditionForm.getValue(RepresentationDS.TYPE) != null) {
+            if (conceptDto.getCoreRepresentation() == null) {
+                conceptDto.setCoreRepresentation(new RepresentationDto());
+            }
+            conceptDto.getCoreRepresentation().setTypeRepresentationEnum(TypeRepresentationEnum.valueOf(contentDescriptorsEditionForm.getValueAsString(RepresentationDS.TYPE)));
+            if (TypeRepresentationEnum.ENUMERATED.equals(conceptDto.getCoreRepresentation().getTypeRepresentationEnum())) {
+                conceptDto.getCoreRepresentation().setNonEnumerated(null);
+                // TODO
+            } else if (TypeRepresentationEnum.TEXT_FORMAT.equals(conceptDto.getCoreRepresentation().getTypeRepresentationEnum())) {
+                conceptDto.getCoreRepresentation().setEnumerated(null);
+                // TODO
+            }
+        } else {
+            conceptDto.setCoreRepresentation(null);
+        }
 
         // Class descriptors
         conceptDto.setSdmxRelatedArtefact(ConceptRoleEnum.valueOf(classDescriptorsEditionForm.getValueAsString(ConceptDS.SDMX_RELATED_ARTEFACT)));
