@@ -4,6 +4,7 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
 import java.util.List;
 
+import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
@@ -20,6 +21,8 @@ import org.siemac.metamac.srm.web.concept.view.handlers.ConceptUiHandlers;
 import org.siemac.metamac.srm.web.concept.widgets.ConceptsTreeGrid;
 import org.siemac.metamac.srm.web.concept.widgets.ConceptsTreeWindow;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
+import org.siemac.metamac.web.common.client.utils.ExternalItemUtils;
+import org.siemac.metamac.web.common.client.utils.FormItemUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.widgets.TitleLabel;
@@ -46,7 +49,12 @@ import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
+import com.smartgwt.client.widgets.form.DynamicForm;
+import com.smartgwt.client.widgets.form.FormItemIfFunction;
+import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
+import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
+import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
 import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
 import com.smartgwt.client.widgets.layout.VLayout;
@@ -79,6 +87,7 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
     private GroupDynamicForm            legalActsEditionForm;
 
     private List<ConceptTypeDto>        conceptTypeDtos;
+    private List<ExternalItemDto>       codeLists;
 
     private ConceptSchemeMetamacDto     conceptSchemeMetamacDto;
     private List<ItemHierarchyDto>      itemHierarchyDtos;
@@ -203,8 +212,17 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
         ViewMultiLanguageTextItem context = new ViewMultiLanguageTextItem(ConceptDS.CONTEXT, getConstants().conceptContext());
         ViewMultiLanguageTextItem docMethod = new ViewMultiLanguageTextItem(ConceptDS.DOC_METHOD, getConstants().conceptDocMethod());
         ViewTextItem representation = new ViewTextItem(RepresentationDS.TYPE, getConstants().representation());
-        ViewTextItem enumeratedRepresentation = new ViewTextItem(RepresentationDS.ENUMERATED, getConstants().representationEnumerated());
-        contentDescriptorsForm.setFields(description, descriptionSource, context, docMethod, representation, enumeratedRepresentation);
+        representation.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
+        ViewTextItem representationView = new ViewTextItem(RepresentationDS.TYPE_VIEW, getConstants().representation());
+        ViewTextItem enumeratedRepresentation = new ViewTextItem(RepresentationDS.ENUMERATED, getConstants().representationCodeList());
+        enumeratedRepresentation.setShowIfCondition(new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return TypeRepresentationEnum.ENUMERATED.name().equals(form.getValueAsString(RepresentationDS.TYPE));
+            }
+        });
+        contentDescriptorsForm.setFields(description, descriptionSource, context, docMethod, representation, representationView, enumeratedRepresentation);
 
         // Class descriptors
         classDescriptorsForm = new GroupDynamicForm(getConstants().conceptClassDescriptors());
@@ -257,7 +275,26 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
         MultilanguageRichTextEditorItem docMethod = new MultilanguageRichTextEditorItem(ConceptDS.DOC_METHOD, getConstants().conceptDocMethod());
         CustomSelectItem representation = new CustomSelectItem(RepresentationDS.TYPE, getConstants().representation());
         representation.setValueMap(org.siemac.metamac.srm.web.client.utils.CommonUtils.getTypeRepresentationEnumHashMap());
-        contentDescriptorsEditionForm.setFields(description, descriptionSource, context, docMethod, representation);
+        representation.addChangedHandler(new ChangedHandler() {
+
+            @Override
+            public void onChanged(ChangedEvent event) {
+                contentDescriptorsEditionForm.markForRedraw();
+            }
+        });
+        RequiredSelectItem enumeratedRepresentation = new RequiredSelectItem(RepresentationDS.ENUMERATED, getConstants().representationCodeList()); // Value map set in setCodeLists method
+        enumeratedRepresentation.setShowIfCondition(new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                boolean isRepresentationEnumerated = TypeRepresentationEnum.ENUMERATED.name().equals(form.getValueAsString(RepresentationDS.TYPE));
+                if (isRepresentationEnumerated) {
+                    uiHandlers.retrieveCodeLists(conceptDto.getUrn());
+                }
+                return isRepresentationEnumerated;
+            }
+        });
+        contentDescriptorsEditionForm.setFields(description, descriptionSource, context, docMethod, representation, enumeratedRepresentation);
 
         // Class descriptors
         classDescriptorsEditionForm = new GroupDynamicForm(getConstants().conceptClassDescriptors());
@@ -325,6 +362,12 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
         classDescriptorsEditionForm.getItem(ConceptDS.TYPE).setValueMap(CommonUtils.getConceptTypeHashMap(conceptTypeDtos));
     }
 
+    @Override
+    public void setCodeLists(List<ExternalItemDto> codeLists) {
+        this.codeLists = codeLists;
+        contentDescriptorsEditionForm.getItem(RepresentationDS.ENUMERATED).setValueMap(ExternalItemUtils.getExternalItemsHashMap(codeLists));
+    }
+
     private void setConceptViewMode(ConceptMetamacDto conceptDto) {
         // Identifiers Form
         identifiersForm.setValue(ConceptDS.CODE, conceptDto.getCode());
@@ -339,10 +382,14 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
         contentDescriptorsForm.setValue(ConceptDS.DESCRIPTION_SOURCE, RecordUtils.getInternationalStringRecord(conceptDto.getDescriptionSource()));
         contentDescriptorsForm.setValue(ConceptDS.CONTEXT, RecordUtils.getInternationalStringRecord(conceptDto.getContext()));
         contentDescriptorsForm.setValue(ConceptDS.DOC_METHOD, RecordUtils.getInternationalStringRecord(conceptDto.getDocMethod()));
+        contentDescriptorsForm.setValue(RepresentationDS.TYPE, conceptDto.getCoreRepresentation() != null ? conceptDto.getCoreRepresentation().getTypeRepresentationEnum().name() : null);
         contentDescriptorsForm.setValue(
-                RepresentationDS.TYPE,
+                RepresentationDS.TYPE_VIEW,
                 conceptDto.getCoreRepresentation() != null ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getTypeRepresentationName(conceptDto.getCoreRepresentation()
                         .getTypeRepresentationEnum()) : null);
+        contentDescriptorsForm.setValue(RepresentationDS.ENUMERATED,
+                conceptDto.getCoreRepresentation() != null ? ExternalItemUtils.getExternalItemName(conceptDto.getCoreRepresentation().getEnumerated()) : null);
+        contentDescriptorsForm.markForRedraw();
 
         // Class descriptors
         classDescriptorsForm.setValue(ConceptDS.SDMX_RELATED_ARTEFACT, CommonUtils.getConceptRoleName(conceptDto.getSdmxRelatedArtefact()));
@@ -376,6 +423,8 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
         contentDescriptorsEditionForm.setValue(ConceptDS.CONTEXT, RecordUtils.getInternationalStringRecord(conceptDto.getContext()));
         contentDescriptorsEditionForm.setValue(ConceptDS.DOC_METHOD, RecordUtils.getInternationalStringRecord(conceptDto.getDocMethod()));
         contentDescriptorsEditionForm.setValue(RepresentationDS.TYPE, conceptDto.getCoreRepresentation() != null ? conceptDto.getCoreRepresentation().getTypeRepresentationEnum().name() : null);
+        contentDescriptorsEditionForm.setValue(RepresentationDS.ENUMERATED, conceptDto.getCoreRepresentation() != null && conceptDto.getCoreRepresentation().getEnumerated() != null ? conceptDto
+                .getCoreRepresentation().getEnumerated().getUrn() : null);
 
         // Class descriptors
         classDescriptorsEditionForm.setValue(ConceptDS.SDMX_RELATED_ARTEFACT, conceptDto.getSdmxRelatedArtefact() != null ? conceptDto.getSdmxRelatedArtefact().name() : StringUtils.EMPTY);
@@ -412,10 +461,10 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
             conceptDto.getCoreRepresentation().setTypeRepresentationEnum(TypeRepresentationEnum.valueOf(contentDescriptorsEditionForm.getValueAsString(RepresentationDS.TYPE)));
             if (TypeRepresentationEnum.ENUMERATED.equals(conceptDto.getCoreRepresentation().getTypeRepresentationEnum())) {
                 conceptDto.getCoreRepresentation().setNonEnumerated(null);
-                // TODO
+                conceptDto.getCoreRepresentation().setEnumerated(ExternalItemUtils.getExternalItemDtoFromUrn(codeLists, contentDescriptorsEditionForm.getValueAsString(RepresentationDS.ENUMERATED)));
             } else if (TypeRepresentationEnum.TEXT_FORMAT.equals(conceptDto.getCoreRepresentation().getTypeRepresentationEnum())) {
                 conceptDto.getCoreRepresentation().setEnumerated(null);
-                // TODO
+                // TODO facet
             }
         } else {
             conceptDto.setCoreRepresentation(null);

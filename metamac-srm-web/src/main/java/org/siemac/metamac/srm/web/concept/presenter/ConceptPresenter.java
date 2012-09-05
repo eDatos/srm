@@ -5,6 +5,7 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 import java.util.List;
 
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
+import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
@@ -18,6 +19,8 @@ import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.client.widgets.presenter.ToolStripPresenterWidget;
 import org.siemac.metamac.srm.web.concept.view.handlers.ConceptUiHandlers;
+import org.siemac.metamac.srm.web.shared.FindCodeListsAction;
+import org.siemac.metamac.srm.web.shared.FindCodeListsResult;
 import org.siemac.metamac.srm.web.shared.concept.DeleteConceptAction;
 import org.siemac.metamac.srm.web.shared.concept.DeleteConceptResult;
 import org.siemac.metamac.srm.web.shared.concept.FindAllConceptTypesAction;
@@ -82,6 +85,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
         void setConceptList(ConceptSchemeMetamacDto conceptSchemeMetamacDto, List<ItemHierarchyDto> itemHierarchyDtos);
 
         void setConceptTypes(List<ConceptTypeDto> conceptTypeDtos);
+        void setCodeLists(List<ExternalItemDto> codeLists);
     }
 
     @ContentSlot
@@ -223,6 +227,21 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
         } else {
             getView().setConceptTypes(conceptTypeDtos);
         }
+    }
+
+    @Override
+    public void retrieveCodeLists(String conceptUrn) {
+        dispatcher.execute(new FindCodeListsAction(conceptUrn), new WaitingAsyncCallback<FindCodeListsResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().codeListsErrorRetrievingData()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(FindCodeListsResult result) {
+                getView().setCodeLists(result.getCodeLists());
+            }
+        });
     }
 
 }

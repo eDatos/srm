@@ -6,8 +6,12 @@ import com.smartgwt.client.data.fields.DataSourceIntegerField;
 public class RepresentationDS extends DataSource {
 
     public static final String ID                    = "repr-id";
+
     public static final String TYPE                  = "repr-type";
+    public static final String TYPE_VIEW             = "repr-type-view"; // Not mapped in DTO
+
     public static final String ENUMERATED            = "repr-enum";
+
     public static final String FACET_IS_SEQUENCE     = "fac-seq";
     public static final String FACET_INTERVAL        = "fac-int";
     public static final String FACET_START_VALUE     = "fac-start-val";
