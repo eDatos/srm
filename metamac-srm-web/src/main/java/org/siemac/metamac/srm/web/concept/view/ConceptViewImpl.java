@@ -454,11 +454,13 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
         conceptDto.setDescriptionSource((InternationalStringDto) contentDescriptorsEditionForm.getValue(ConceptDS.DESCRIPTION_SOURCE));
         conceptDto.setContext((InternationalStringDto) contentDescriptorsEditionForm.getValue(ConceptDS.CONTEXT));
         conceptDto.setDocMethod((InternationalStringDto) contentDescriptorsEditionForm.getValue(ConceptDS.DOC_METHOD));
-        if (contentDescriptorsEditionForm.getValue(RepresentationDS.TYPE) != null) {
+        if (!StringUtils.isEmpty(contentDescriptorsEditionForm.getValueAsString(RepresentationDS.TYPE))) {
             if (conceptDto.getCoreRepresentation() == null) {
                 conceptDto.setCoreRepresentation(new RepresentationDto());
             }
-            conceptDto.getCoreRepresentation().setTypeRepresentationEnum(TypeRepresentationEnum.valueOf(contentDescriptorsEditionForm.getValueAsString(RepresentationDS.TYPE)));
+            conceptDto.getCoreRepresentation().setTypeRepresentationEnum(
+                    !StringUtils.isEmpty(contentDescriptorsEditionForm.getValueAsString(RepresentationDS.TYPE)) ? TypeRepresentationEnum.valueOf(contentDescriptorsEditionForm
+                            .getValueAsString(RepresentationDS.TYPE)) : null);
             if (TypeRepresentationEnum.ENUMERATED.equals(conceptDto.getCoreRepresentation().getTypeRepresentationEnum())) {
                 conceptDto.getCoreRepresentation().setNonEnumerated(null);
                 conceptDto.getCoreRepresentation().setEnumerated(ExternalItemUtils.getExternalItemDtoFromUrn(codeLists, contentDescriptorsEditionForm.getValueAsString(RepresentationDS.ENUMERATED)));
