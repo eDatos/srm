@@ -42,6 +42,7 @@ public class ConceptsTreeWindow extends CustomWindow {
         conceptsTreeGrid.setMargin(5);
         conceptsTreeGrid.setAutoFitMaxRecords(15);
         conceptsTreeGrid.getField(ConceptDS.CODE).setWidth("50%");
+
         // Do not show TYPE and SDMX_RELATED_ARTEFACT fields
         conceptsTreeGrid.getField(ConceptDS.TYPE).setShowIfCondition(new ListGridFieldIfFunction() {
 
@@ -57,9 +58,13 @@ public class ConceptsTreeWindow extends CustomWindow {
                 return false;
             }
         });
+
         // Change selection type (checkBox)
         conceptsTreeGrid.setSelectionType(SelectionStyle.SIMPLE);
         conceptsTreeGrid.setSelectionAppearance(SelectionAppearance.CHECKBOX);
+
+        // Remove node actions
+        conceptsTreeGrid.removeHandlerRegistrations();
 
         CustomButtonItem saveItem = new CustomButtonItem(FIELD_SAVE, MetamacWebCommon.getConstants().actionSave());
         form = new CustomDynamicForm();

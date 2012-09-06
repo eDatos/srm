@@ -15,6 +15,7 @@ import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.data.RecordList;
 import com.smartgwt.client.types.Autofit;
@@ -54,6 +55,11 @@ public class ConceptsTreeGrid extends TreeGrid {
     private String                   selectedConceptUrn;
 
     private BaseConceptUiHandlers    uiHandlers;
+
+    private HandlerRegistration      folderContextHandlerRegistration;
+    private HandlerRegistration      leafContextHandlerRegistration;
+    private HandlerRegistration      folderClickHandlerRegistration;
+    private HandlerRegistration      leafClickHandlerRegistration;
 
     public ConceptsTreeGrid() {
 
@@ -128,7 +134,7 @@ public class ConceptsTreeGrid extends TreeGrid {
 
         // Bind events
 
-        addFolderContextClickHandler(new FolderContextClickHandler() {
+        folderContextHandlerRegistration = addFolderContextClickHandler(new FolderContextClickHandler() {
 
             @Override
             public void onFolderContextClick(final FolderContextClickEvent event) {
@@ -138,7 +144,7 @@ public class ConceptsTreeGrid extends TreeGrid {
             }
         });
 
-        addLeafContextClickHandler(new LeafContextClickHandler() {
+        leafContextHandlerRegistration = addLeafContextClickHandler(new LeafContextClickHandler() {
 
             @Override
             public void onLeafContextClick(LeafContextClickEvent event) {
@@ -148,7 +154,7 @@ public class ConceptsTreeGrid extends TreeGrid {
             }
         });
 
-        addFolderClickHandler(new FolderClickHandler() {
+        folderClickHandlerRegistration = addFolderClickHandler(new FolderClickHandler() {
 
             @Override
             public void onFolderClick(FolderClickEvent event) {
@@ -158,7 +164,7 @@ public class ConceptsTreeGrid extends TreeGrid {
             }
         });
 
-        addLeafClickHandler(new LeafClickHandler() {
+        leafClickHandlerRegistration = addLeafClickHandler(new LeafClickHandler() {
 
             @Override
             public void onLeafClick(LeafClickEvent event) {
@@ -224,6 +230,13 @@ public class ConceptsTreeGrid extends TreeGrid {
         RecordList nodes = getDataAsRecordList();
         Record record = nodes.find(ConceptDS.URN, conceptMetamacDto.getUrn());
         selectRecord(record);
+    }
+
+    public void removeHandlerRegistrations() {
+        folderContextHandlerRegistration.removeHandler();
+        leafContextHandlerRegistration.removeHandler();
+        folderClickHandlerRegistration.removeHandler();
+        leafClickHandlerRegistration.removeHandler();
     }
 
     private void showContextMenu() {

@@ -153,7 +153,7 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
             @Override
             public void onClick(ClickEvent event) {
                 if (validateEditionForms()) {
-                    uiHandlers.saveConcept(getConceptDto());
+                    uiHandlers.saveConcept(getConceptDto(), getRelatedConcepts());
                 }
             }
         });
@@ -514,12 +514,16 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
 
         // Relation between concepts
         // TODO Extends
-        // TODO Related concepts
+        // Related concepts get in getRelatedConcepts method
 
         // Legal acts
         conceptDto.setLegalActs((InternationalStringDto) legalActsEditionForm.getValue(ConceptDS.LEGAL_ACTS));
 
         return conceptDto;
+    }
+
+    public List<String> getRelatedConcepts() {
+        return ((ConceptsListItem) relationBetweenConceptsEditionForm.getItem(ConceptDS.RELATED_CONCEPTS)).getConceptUrns();
     }
 
     private ConceptTypeDto getConceptTypeDto(String identifier) {
@@ -539,6 +543,8 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
             public void onFormItemClick(FormItemIconClickEvent event) {
                 final ConceptsTreeWindow extendedConceptWindow = new ConceptsTreeWindow(getConstants().conceptSelection());
                 extendedConceptWindow.setConcepts(conceptSchemeMetamacDto, itemHierarchyDtos);
+
+                // TODO Disable selection of current concept and concept scheme
 
                 // Select related concepts
                 List<String> selectedRelatedConcepts = ((ConceptsListItem) relationBetweenConceptsEditionForm.getItem(ConceptDS.RELATED_CONCEPTS)).getConceptUrns();

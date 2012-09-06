@@ -14,6 +14,9 @@ public class SaveConcept {
     @In(1)
     ConceptMetamacDto       conceptToSave;
 
+    @In(2)
+    List<String>            relatedConceptsToSave;
+
     @Out(1)
     ConceptMetamacDto       conceptDto;
 

@@ -80,9 +80,11 @@ public class ConceptsListItem extends CustomCanvasItem {
     public List<String> getConceptUrns() {
         List<String> urns = new ArrayList<String>();
         ListGridRecord[] records = listGrid.getRecords();
-        for (ListGridRecord record : records) {
-            ConceptRecord conceptRecord = (ConceptRecord) record;
-            urns.add(conceptRecord.getUrn());
+        if (records != null) {
+            for (ListGridRecord record : records) {
+                ConceptRecord conceptRecord = (ConceptRecord) record;
+                urns.add(conceptRecord.getUrn());
+            }
         }
         return urns;
     }
