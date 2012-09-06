@@ -268,8 +268,10 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
             if (versionExternallyPublished.getId().equals(conceptSchemeVersion.getId())) {
                 continue;
             }
-            versionExternallyPublished.getMaintainableArtefact().setValidTo(conceptSchemeVersion.getExternalPublicationDate());
-            itemSchemeVersionRepository.save(versionExternallyPublished);
+            if (versionExternallyPublished.getMaintainableArtefact().getValidTo() == null) {
+                versionExternallyPublished.getMaintainableArtefact().setValidTo(conceptSchemeVersion.getExternalPublicationDate());
+                itemSchemeVersionRepository.save(versionExternallyPublished);
+            }
         }
 
         return conceptSchemeVersion;
