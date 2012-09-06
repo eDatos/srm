@@ -29,7 +29,7 @@
     <aop:config>
         <aop:pointcut id="updateServicePointCut" expression="execution(public * org.siemac.metamac.srm..serviceapi.*Service.*update*(..)) or execution(public * com.arte.statistic.sdmx.srm..serviceapi.*Service.*update*(..))" />
         <aop:pointcut id="serviceFacadePointCut" expression="execution(public * org.siemac.metamac.srm..*Facade.*(..)) or execution(public * com.arte.statistic.sdmx.srm..*Facade.*(..))" />
-        <aop:pointcut id="doMapperPointCut" expression="execution(public * org.siemac.metamac.srm..service.dto.*2DoMapper.*(..)) or execution(public * com.arte.statistic.sdmx.srm..mapper.*2DoMapper.*(..))" />
+        <aop:pointcut id="doMapperPointCut" expression="execution(public * org.siemac.metamac.srm..mapper.*2DoMapper.*(..)) or execution(public * com.arte.statistic.sdmx.srm..mapper.*2DoMapper.*(..))" />
 
         <!-- Repeating the expression, since I can't find a way to refer to the other pointcuts. -->
         <aop:pointcut id="updatingServiceFacade"
