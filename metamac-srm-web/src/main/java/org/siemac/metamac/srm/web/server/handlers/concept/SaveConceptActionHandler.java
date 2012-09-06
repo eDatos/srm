@@ -1,5 +1,7 @@
 package org.siemac.metamac.srm.web.server.handlers.concept;
 
+import java.util.List;
+
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
@@ -35,7 +37,8 @@ public class SaveConceptActionHandler extends SecurityActionHandler<SaveConceptA
                 // Update
                 savedConcept = srmCoreServiceFacade.updateConcept(ServiceContextHolder.getCurrentServiceContext(), conceptToSave);
             }
-            return new SaveConceptResult(savedConcept);
+            List<ConceptMetamacDto> relatedConcepts = srmCoreServiceFacade.retrieveRelatedConcepts(ServiceContextHolder.getCurrentServiceContext(), savedConcept.getUrn());
+            return new SaveConceptResult(savedConcept, relatedConcepts);
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);
         }

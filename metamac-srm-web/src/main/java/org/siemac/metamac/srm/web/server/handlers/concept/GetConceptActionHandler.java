@@ -1,5 +1,7 @@
 package org.siemac.metamac.srm.web.server.handlers.concept;
 
+import java.util.List;
+
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
@@ -27,7 +29,9 @@ public class GetConceptActionHandler extends SecurityActionHandler<GetConceptAct
     public GetConceptResult executeSecurityAction(GetConceptAction action) throws ActionException {
         try {
             ConceptMetamacDto conceptMetamacDto = srmCoreServiceFacade.retrieveConceptByUrn(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
-            return new GetConceptResult(conceptMetamacDto);
+            List<ConceptMetamacDto> relatedConcepts = srmCoreServiceFacade.retrieveRelatedConcepts(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
+            List<ConceptMetamacDto> relatedRoleConcepts = srmCoreServiceFacade.retrieveRelatedConceptsRoles(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
+            return new GetConceptResult(conceptMetamacDto, relatedConcepts, relatedRoleConcepts);
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);
         }
