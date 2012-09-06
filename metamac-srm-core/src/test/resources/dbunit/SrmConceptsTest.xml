@@ -1483,7 +1483,7 @@
         REPLACED_BY="[null]"
         REPLACE_TO="[null]"
         
-        NAME_FK="4"
+        NAME_FK="46"
         
         VERSION_LOGIC="01.000"
         FINAL_LOGIC="0"
@@ -1630,7 +1630,7 @@
         REPLACED_BY="[null]"
         REPLACE_TO="[null]"
         
-        NAME_FK="5"
+        NAME_FK="44"
         
         VERSION_LOGIC="01.000"
         FINAL_LOGIC="0"
@@ -2907,7 +2907,7 @@
         REPLACED_BY="[null]"
         REPLACE_TO="[null]"
         
-        NAME_FK="12"
+        NAME_FK="45"
         
         VERSION_LOGIC="01.000"
         FINAL_LOGIC="1"
@@ -3803,6 +3803,45 @@
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="43"
-    />                               
+    />     
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="44"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="441"
+        LABEL="b"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="44"
+    />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="45"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="451"
+        LABEL="b"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="45"
+    />     
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="46"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="461"
+        LABEL="b"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="46"
+    />                                         
                     
 </dataset>
