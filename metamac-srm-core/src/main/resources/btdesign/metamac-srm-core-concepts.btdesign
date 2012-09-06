@@ -88,8 +88,7 @@ Application ConceptsMetamac {
 		Entity ConceptSchemeVersionMetamac extends @ConceptSchemeVersion {
 			databaseTable="TB_M_CONCEPT_SCHEMES_VERSIONS"
 			hint="idSequence=M_CONCEPT_SCHEMES_VERSIONS"
-			!auditable
-
+			
 			"Status"
 			- @ItemSchemeMetamacProcStatusEnum procStatus;
 			"Type"
@@ -118,9 +117,6 @@ Application ConceptsMetamac {
 			"External publication failed date"
 			DateTimeTZ externalPublicationFailedDate nullable databaseColumn="EXT_PUBLICATION_FAILED_DATE";
 			
-			"Last update to optimistic locking"
-			DateTimeTZ updateDateMetamac nullable;
-			
 			Repository ConceptSchemeVersionMetamacRepository {
 				findById;
 				findByQuery(String query, Map<String, Object> parameters, int maxResult);
@@ -132,7 +128,6 @@ Application ConceptsMetamac {
 		Entity ConceptMetamac extends @Concept {
 			databaseTable="TB_M_CONCEPTS"
 			hint="idSequence=M_CONCEPTS"
-			!auditable
 			
 			"Plural name"
 			- @InternationalString pluralName nullable cascade="all" databaseColumn="PLURAL_NAME_FK";
@@ -154,9 +149,6 @@ Application ConceptsMetamac {
 			- @InternationalString legalActs nullable cascade="all" databaseColumn="LEGAL_ACTS_FK";
 			"Extends concept of other concept scheme"
 			- @ConceptMetamac conceptExtends nullable cascade="none" databaseColumn="EXTENDS_FK";
-						
-			"Last update to optimistic locking"
-			DateTimeTZ updateDateMetamac nullable;
 			
 			Repository ConceptMetamacRepository {
 				findByQuery;

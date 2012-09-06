@@ -37,9 +37,6 @@ Application DtosMetamacConceptDomain {
 			Boolean isExternalPublicationFailed nullable;
 			"External publication failed date"
 			JAVADATE externalPublicationFailedDate nullable; 
-
-			"Version to optimistic locking"
-			Long versionOptimisticLocking;
 		}
 
 		"Dto for ConceptMetamac"
@@ -54,9 +51,6 @@ Application DtosMetamacConceptDomain {
 			- @InternationalStringDto derivation nullable;
 			- @InternationalStringDto legalActs nullable;
 			String conceptExtendsUrn nullable;
-			
-			"Version to optimistic locking"
-			Long versionOptimisticLocking;
 		}
 		
         "Dto for ConceptType"

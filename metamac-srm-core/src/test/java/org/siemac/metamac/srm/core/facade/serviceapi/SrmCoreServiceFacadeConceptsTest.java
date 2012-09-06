@@ -170,6 +170,9 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         assertNull(conceptSchemeMetamacCreated.getInternalPublicationUser());
         assertNull(conceptSchemeMetamacCreated.getExternalPublicationDate());
         assertNull(conceptSchemeMetamacCreated.getExternalPublicationUser());
+        
+        // Other
+        assertEquals(Long.valueOf(0), conceptSchemeMetamacCreated.getVersionOptimisticLocking());
     }
 
     @Test
@@ -220,6 +223,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
 
         assertNotNull(conceptSchemeMetamacDto);
         assertEqualsConceptSchemeMetamacDto(conceptSchemeMetamacDto, conceptSchemeMetamacDtoUpdated);
+        assertTrue(conceptSchemeMetamacDtoUpdated.getVersionOptimisticLocking() > conceptSchemeMetamacDto.getVersionOptimisticLocking());
     }
 
     @Test
@@ -234,6 +238,39 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
 
         assertEquals(code, conceptSchemeMetamacDto.getCode());
         assertEquals(expextedUrn, conceptSchemeMetamacDto.getUrn());
+    }
+    
+    @Test
+    public void testUpdateConceptSchemeErrorOptimisticLocking() throws Exception {
+
+        String urn = CONCEPT_SCHEME_9_V1;
+
+        ConceptSchemeMetamacDto conceptSchemeMetamacDtoSession1 = srmCoreServiceFacade.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), urn);
+        assertEquals(Long.valueOf(1), conceptSchemeMetamacDtoSession1.getVersionOptimisticLocking());
+        conceptSchemeMetamacDtoSession1.setIsPartial(Boolean.TRUE);
+
+        ConceptSchemeMetamacDto conceptSchemeMetamacDtoSession2 = srmCoreServiceFacade.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), urn);
+        assertEquals(Long.valueOf(1), conceptSchemeMetamacDtoSession2.getVersionOptimisticLocking());
+        conceptSchemeMetamacDtoSession2.setIsPartial(Boolean.TRUE);
+
+        // Update by session 1
+        ConceptSchemeMetamacDto conceptSchemeMetamacDtoSession1AfterUpdate1 = srmCoreServiceFacade.updateConceptScheme(getServiceContextAdministrador(), conceptSchemeMetamacDtoSession1);
+        assertTrue(conceptSchemeMetamacDtoSession1AfterUpdate1.getVersionOptimisticLocking() > conceptSchemeMetamacDtoSession1.getVersionOptimisticLocking());
+        
+        // Fails when is updated by session 2
+        try {
+            srmCoreServiceFacade.updateConceptScheme(getServiceContextAdministrador(), conceptSchemeMetamacDtoSession2);
+            fail("Optimistic locking");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.OPTIMISTIC_LOCKING.getCode(), e.getExceptionItems().get(0).getCode());
+            assertNull(e.getExceptionItems().get(0).getMessageParameters());
+        }
+
+        // Session 1 can modify because has last version
+        conceptSchemeMetamacDtoSession1AfterUpdate1.setIsPartial(Boolean.FALSE);
+        ConceptSchemeMetamacDto conceptSchemeMetamacDtoSession1AfterUpdate2 = srmCoreServiceFacade.updateConceptScheme(getServiceContextAdministrador(), conceptSchemeMetamacDtoSession1AfterUpdate1);
+        assertTrue(conceptSchemeMetamacDtoSession1AfterUpdate2.getVersionOptimisticLocking() > conceptSchemeMetamacDtoSession1AfterUpdate1.getVersionOptimisticLocking());
     }
 
     @Test
@@ -1179,6 +1216,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
 
         assertNotNull(conceptMetamacDto);
         assertEqualsConceptDto(conceptMetamacDto, conceptMetamacDtoUpdated);
+        assertTrue(conceptMetamacDtoUpdated.getVersionOptimisticLocking() > conceptMetamacDto.getVersionOptimisticLocking());
         
         // Update again to check removing concept extends
         conceptMetamacDtoUpdated.setConceptExtendsUrn(null);
@@ -1186,6 +1224,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
 
         assertNotNull(conceptMetamacDto);
         assertEqualsConceptDto(conceptMetamacDtoUpdated, conceptMetamacDtoUpdatedAgain);
+        assertTrue(conceptMetamacDtoUpdatedAgain.getVersionOptimisticLocking() > conceptMetamacDtoUpdated.getVersionOptimisticLocking());
     }
 
     @Test

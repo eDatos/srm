@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
-import org.joda.time.DateTime;
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.dto.LocalisedStringDto;
@@ -107,9 +106,6 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
             OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersion());
         }
 
-        // Optimistic locking: Update "update date" attribute to force root entity update, to increment "version" attribute
-        target.setUpdateDateMetamac(new DateTime());
-
         // Modifiable attributes
         target.setType(source.getType());
         target.setRelatedOperation(externalItemDtoToExternalItem(ctx, source.getRelatedOperation(), target.getRelatedOperation(), ServiceExceptionParameters.CONCEPT_SCHEME_RELATED_OPERATION));
@@ -140,9 +136,6 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
             OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersion());
         }
 
-        // Optimistic locking: Update "update date" attribute to force root entity update, to increment "version" attribute
-        target.setUpdateDateMetamac(new DateTime());
-
         // Modifiable attributes
         target.setPluralName(internationalStringToDo(ctx, source.getPluralName(), target.getPluralName(), ServiceExceptionParameters.CONCEPT_PLURAL_NAME));
         target.setAcronym(internationalStringToDo(ctx, source.getAcronym(), target.getAcronym(), ServiceExceptionParameters.CONCEPT_ACRONYM));
@@ -163,7 +156,7 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         } else {
             target.setConceptExtends(null);
         }
-        
+
         // note: not conversion to relatedConcepts, roles... Call 'add/delete RelatedConcepts' operation of Service
 
         dto2DoMapperSdmxSrm.conceptDtoToDo(ctx, source, target);

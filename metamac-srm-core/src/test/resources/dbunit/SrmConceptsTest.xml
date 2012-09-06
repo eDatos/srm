@@ -2154,7 +2154,7 @@
         REPLACED_BY="[null]"
         REPLACE_TO="[null]"
         
-        NAME_FK="8"
+        NAME_FK="47"
         
         VERSION_LOGIC="01.000"
         FINAL_LOGIC="0"
@@ -3842,6 +3842,19 @@
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="46"
+    />                                         
+
+    <TB_INTERNATIONAL_STRINGS
+        ID="47"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="471"
+        LABEL="nombre"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="47"
     />                                         
                     
 </dataset>
