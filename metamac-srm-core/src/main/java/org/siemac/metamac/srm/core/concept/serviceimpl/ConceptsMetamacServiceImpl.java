@@ -438,6 +438,10 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         if (conceptRelation != null) {
             return conceptRelation;
         }
+        // Not same concept
+        if (urn1.equals(urn2)) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.PARAMETER_INCORRECT).withMessageParameters("Concepts must be different").build();
+        }
 
         // Create
         ConceptMetamac concept1 = retrieveConceptByUrn(ctx, urn1);
