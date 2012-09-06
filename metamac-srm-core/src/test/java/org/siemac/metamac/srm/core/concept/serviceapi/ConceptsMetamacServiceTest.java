@@ -840,11 +840,11 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
         // Update concept to add extends concept of concept scheme to publish
         ConceptMetamac concept = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), urnConceptExtends);
-        ConceptMetamac conceptConceptSchemeToPublish = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(),urnConceptConceptSchemeToPublish);
+        ConceptMetamac conceptConceptSchemeToPublish = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), urnConceptConceptSchemeToPublish);
         conceptConceptSchemeToPublish.setConceptExtends(concept);
         conceptConceptSchemeToPublish.getNameableArtefact().setIsCodeUpdated(Boolean.FALSE);
         conceptsService.updateConcept(getServiceContextAdministrador(), conceptConceptSchemeToPublish);
-        
+
         try {
             conceptsService.publishInternallyConceptScheme(getServiceContextAdministrador(), urn);
             fail("ConceptScheme wrong proc status");
@@ -856,7 +856,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertEquals(urnConceptExtends, e.getExceptionItems().get(0).getMessageParameters()[1]);
         }
     }
-    
+
     @Test
     public void testPublishExternallyConceptScheme() throws Exception {
 
@@ -966,7 +966,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertEquals(ServiceExceptionParameters.PROC_STATUS_INTERNALLY_PUBLISHED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
         }
     }
-    
+
     @Test
     public void testPublishExternallyConceptSchemeErrorConceptExtendsInConceptSchemeNoPublished() throws Exception {
 
@@ -1048,7 +1048,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
         }
     }
-    
+
     @Test
     public void testDeleteConceptSchemeErrorOtherConceptExtends() throws Exception {
 
@@ -1599,22 +1599,8 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
     }
 
     @Test
-    public void testDeleteConceptErrorConceptRelated() throws Exception {
-
-        String urn = CONCEPT_SCHEME_1_V2_CONCEPT_1;
-
-        // Validation
-        try {
-            conceptsService.deleteConcept(getServiceContextAdministrador(), urn);
-            fail("Concept can not be deleted");
-        } catch (MetamacException e) {
-            assertEquals(1, e.getExceptionItems().size());
-            assertEquals(ServiceExceptionType.CONCEPT_WITH_RELATED_CONCEPTS.getCode(), e.getExceptionItems().get(0).getCode());
-            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
-            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-            assertTrue(CONCEPT_SCHEME_1_V2_CONCEPT_2_1.equals(e.getExceptionItems().get(0).getMessageParameters()[1])
-                    || CONCEPT_SCHEME_1_V2_CONCEPT_2_1_1.equals(e.getExceptionItems().get(0).getMessageParameters()[1]));
-        }
+    public void testDeleteConceptErrorConceptRelatedRole() throws Exception {
+        // In SDMX module
     }
 
     @Test
