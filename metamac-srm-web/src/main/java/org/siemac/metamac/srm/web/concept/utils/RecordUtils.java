@@ -8,6 +8,8 @@ import org.siemac.metamac.srm.web.concept.model.record.ConceptRecord;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptSchemeRecord;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptTreeNode;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemDto;
+
 public class RecordUtils {
 
     // CONCEPT SCHEMES
@@ -24,6 +26,11 @@ public class RecordUtils {
     public static ConceptRecord getConceptRecord(ConceptMetamacDto conceptDto) {
         ConceptRecord record = new ConceptRecord(conceptDto.getId(), conceptDto.getCode(), getLocalisedString(conceptDto.getName()), conceptDto.getUrn(),
                 getLocalisedString(conceptDto.getDescription()), conceptDto);
+        return record;
+    }
+
+    public static ConceptRecord getConceptRecord(ItemDto itemDto) {
+        ConceptRecord record = new ConceptRecord(itemDto.getId(), itemDto.getCode(), getLocalisedString(itemDto.getName()), itemDto.getUrn(), null, null);
         return record;
     }
 

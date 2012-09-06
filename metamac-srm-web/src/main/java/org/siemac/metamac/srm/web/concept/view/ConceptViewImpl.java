@@ -426,7 +426,7 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
 
         // Relation between concepts
         // TODO Extends
-        ((ConceptsListItem) relationBetweenConceptsForm.getItem(ConceptDS.RELATED_CONCEPTS)).setConcepts(relatedConcepts);
+        ((ConceptsListItem) relationBetweenConceptsForm.getItem(ConceptDS.RELATED_CONCEPTS)).setDataConcepts(relatedConcepts);
 
         // Legal acts
         legalActsForm.setValue(ConceptDS.LEGAL_ACTS, RecordUtils.getInternationalStringRecord(conceptDto.getLegalActs()));
@@ -468,7 +468,7 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
 
         // Relation between concepts
         // TODO Extends
-        ((ConceptsListItem) relationBetweenConceptsEditionForm.getItem(ConceptDS.RELATED_CONCEPTS)).setConcepts(relatedConcepts);
+        ((ConceptsListItem) relationBetweenConceptsEditionForm.getItem(ConceptDS.RELATED_CONCEPTS)).setDataConcepts(relatedConcepts);
 
         // Legal acts
         legalActsEditionForm.setValue(ConceptDS.LEGAL_ACTS, RecordUtils.getInternationalStringRecord(conceptDto.getLegalActs()));
@@ -540,17 +540,18 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
                 final ConceptsTreeWindow extendedConceptWindow = new ConceptsTreeWindow(getConstants().conceptSelection());
                 extendedConceptWindow.setConcepts(conceptSchemeMetamacDto, itemHierarchyDtos);
 
-                // TODO Select related concepts
-                // List<ConceptMetamacDto> selectedRelatedConcepts = ((ConceptsListItem) relationBetweenConceptsEditionForm.getItem(ConceptDS.RELATED_CONCEPTS)).getConcepts();
+                // Select related concepts
+                List<String> selectedRelatedConcepts = ((ConceptsListItem) relationBetweenConceptsEditionForm.getItem(ConceptDS.RELATED_CONCEPTS)).getConceptUrns();
+                extendedConceptWindow.selectConcepts(selectedRelatedConcepts);
 
                 extendedConceptWindow.getSaveClickHandlers().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
 
                     @Override
                     public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
                         List<ItemDto> itemDtos = extendedConceptWindow.getSelectedConcepts();
-                        extendedConceptWindow.destroy();
-                        // TODO Set selected concepts in form
-                        // ((ConceptsListItem)relationBetweenConceptsEditionForm.getItem(ConceptDS.RELATED_CONCEPTS)).setConcepts(conceptMetamacDtos);
+                        extendedConceptWindow.markForDestroy();
+                        // Set selected concepts in form
+                        ((ConceptsListItem) relationBetweenConceptsEditionForm.getItem(ConceptDS.RELATED_CONCEPTS)).setDataItems(itemDtos);
                     }
                 });
             }

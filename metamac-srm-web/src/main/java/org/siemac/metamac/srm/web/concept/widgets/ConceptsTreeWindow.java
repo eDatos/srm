@@ -12,6 +12,8 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.CustomButtonItem
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
+import com.smartgwt.client.data.Record;
+import com.smartgwt.client.data.RecordList;
 import com.smartgwt.client.types.SelectionAppearance;
 import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.widgets.form.fields.events.HasClickHandlers;
@@ -92,6 +94,16 @@ public class ConceptsTreeWindow extends CustomWindow {
             return itemDtos;
         }
         return null;
+    }
+
+    public void selectConcepts(List<String> conceptsUrn) {
+        RecordList recordList = conceptsTreeGrid.getDataAsRecordList();
+        for (String urn : conceptsUrn) {
+            Record record = recordList.find(ConceptDS.URN, urn);
+            if (record != null) {
+                conceptsTreeGrid.selectRecord(record);
+            }
+        }
     }
 
 }

@@ -13,6 +13,7 @@ import org.siemac.metamac.web.common.client.widgets.BaseCustomListGrid;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomCanvasItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.SearchViewTextItem;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemDto;
 import com.smartgwt.client.types.Autofit;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.events.HasFormItemClickHandlers;
@@ -56,10 +57,18 @@ public class ConceptsListItem extends CustomCanvasItem {
         setCanvas(hLayout);
     }
 
-    public void setConcepts(List<ConceptMetamacDto> conceptMetamacDtos) {
+    public void setDataConcepts(List<ConceptMetamacDto> conceptMetamacDtos) {
         listGrid.removeAllData();
         for (ConceptMetamacDto conceptMetamacDto : conceptMetamacDtos) {
             ConceptRecord record = RecordUtils.getConceptRecord(conceptMetamacDto);
+            listGrid.addData(record);
+        }
+    }
+
+    public void setDataItems(List<ItemDto> itemDtos) {
+        listGrid.removeAllData();
+        for (ItemDto itemDto : itemDtos) {
+            ConceptRecord record = RecordUtils.getConceptRecord(itemDto);
             listGrid.addData(record);
         }
     }
@@ -68,14 +77,14 @@ public class ConceptsListItem extends CustomCanvasItem {
         return searchViewTextItem.getSearchIcon();
     }
 
-    public List<ConceptMetamacDto> getConcepts() {
-        List<ConceptMetamacDto> conceptMetamacDtos = new ArrayList<ConceptMetamacDto>();
+    public List<String> getConceptUrns() {
+        List<String> urns = new ArrayList<String>();
         ListGridRecord[] records = listGrid.getRecords();
         for (ListGridRecord record : records) {
             ConceptRecord conceptRecord = (ConceptRecord) record;
-            conceptMetamacDtos.add(conceptRecord.getConceptDto());
+            urns.add(conceptRecord.getUrn());
         }
-        return conceptMetamacDtos;
+        return urns;
     }
 
 }
