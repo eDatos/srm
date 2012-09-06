@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
+import org.siemac.metamac.srm.web.client.utils.FacetFormUtils;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataAttributeDto;
@@ -111,7 +112,7 @@ public class CommonUtils {
         return valueMap;
     }
 
-    public static LinkedHashMap<String, String> getFacetValueTypeHashMap() {
+    public static LinkedHashMap<String, String> getDsdFacetValueTypeHashMap() {
         LinkedHashMap<String, String> valueMap = new LinkedHashMap<String, String>();
         valueMap.put(new String(), new String());
         for (FacetValueTypeEnum f : FacetFormUtils.getDsdFacetValueTypeEnums()) {

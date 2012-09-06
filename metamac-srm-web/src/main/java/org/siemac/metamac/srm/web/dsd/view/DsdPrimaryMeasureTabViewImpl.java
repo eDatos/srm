@@ -4,13 +4,13 @@ import java.util.List;
 
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
+import org.siemac.metamac.srm.web.client.representation.widgets.StaticFacetForm;
+import org.siemac.metamac.srm.web.client.utils.FacetFormUtils;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdPrimaryMeasureTabPresenter;
 import org.siemac.metamac.srm.web.dsd.utils.CommonUtils;
-import org.siemac.metamac.srm.web.dsd.utils.FacetFormUtils;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdPrimaryMeasureTabUiHandlers;
 import org.siemac.metamac.srm.web.dsd.widgets.AnnotationsPanel;
-import org.siemac.metamac.srm.web.dsd.widgets.FacetForm;
-import org.siemac.metamac.srm.web.dsd.widgets.StaticFacetForm;
+import org.siemac.metamac.srm.web.dsd.widgets.DsdFacetForm;
 import org.siemac.metamac.web.common.client.utils.ExternalItemUtils;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.InternationalMainFormLayout;
@@ -62,7 +62,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
     private ExternalSelectItem          conceptItem;
     private CustomSelectItem            representationTypeItem;
     private CustomSelectItem            codeListItem;
-    private FacetForm                   facetForm;
+    private DsdFacetForm                facetForm;
 
     @Inject
     public DsdPrimaryMeasureTabViewImpl() {
@@ -143,7 +143,8 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
         form = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdPrimaryMeasureDetails());
         form.setFields(conceptItem, representationTypeItem, codeListItem);
 
-        facetForm = new FacetForm();
+        facetForm = new DsdFacetForm();
+        facetForm.setVisibility(Visibility.HIDDEN);
 
         // Annotations
         editionAnnotationsPanel = new AnnotationsPanel(false);
@@ -265,7 +266,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
                 // Facet
             } else if (TypeRepresentationEnum.TEXT_FORMAT.equals(representationType)) {
                 componentDto.getLocalRepresentation().setTypeRepresentationEnum(TypeRepresentationEnum.TEXT_FORMAT);
-                FacetDto facetDto = facetForm.getFacet(componentDto.getLocalRepresentation().getNonEnumerated() == null ? new FacetDto() : componentDto.getLocalRepresentation().getNonEnumerated());
+                FacetDto facetDto = facetForm.getFacet();
                 componentDto.getLocalRepresentation().setNonEnumerated(facetDto);
                 componentDto.getLocalRepresentation().setEnumerated(null);
             }

@@ -13,11 +13,13 @@ import org.siemac.metamac.srm.core.concept.dto.ConceptTypeDto;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptRoleEnum;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.model.ds.RepresentationDS;
+import org.siemac.metamac.srm.web.client.representation.widgets.StaticFacetForm;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
 import org.siemac.metamac.srm.web.concept.presenter.ConceptPresenter;
 import org.siemac.metamac.srm.web.concept.utils.CommonUtils;
 import org.siemac.metamac.srm.web.concept.utils.ConceptClientSecurityUtils;
 import org.siemac.metamac.srm.web.concept.view.handlers.ConceptUiHandlers;
+import org.siemac.metamac.srm.web.concept.widgets.ConceptFacetForm;
 import org.siemac.metamac.srm.web.concept.widgets.ConceptsTreeGrid;
 import org.siemac.metamac.srm.web.concept.widgets.ConceptsTreeWindow;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
@@ -73,6 +75,7 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
     // View forms
     private GroupDynamicForm            identifiersForm;
     private GroupDynamicForm            contentDescriptorsForm;
+    private StaticFacetForm             facetForm;
     private GroupDynamicForm            classDescriptorsForm;
     private GroupDynamicForm            productionDescriptorsForm;
     private GroupDynamicForm            relationBetweenConceptsForm;
@@ -81,6 +84,7 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
     // Edition forms
     private GroupDynamicForm            identifiersEditionForm;
     private GroupDynamicForm            contentDescriptorsEditionForm;
+    private ConceptFacetForm            facetEditionForm;
     private GroupDynamicForm            classDescriptorsEditionForm;
     private GroupDynamicForm            productionDescriptorsEditionForm;
     private GroupDynamicForm            relationBetweenConceptsEditionForm;
@@ -148,8 +152,7 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
 
             @Override
             public void onClick(ClickEvent event) {
-                if (identifiersEditionForm.validate(false) && contentDescriptorsEditionForm.validate(false) && classDescriptorsEditionForm.validate(false)
-                        && productionDescriptorsEditionForm.validate(false) && relationBetweenConceptsEditionForm.validate(false) && legalActsEditionForm.validate(false)) {
+                if (validateEditionForms()) {
                     uiHandlers.saveConcept(getConceptDto());
                 }
             }
@@ -224,6 +227,9 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
         });
         contentDescriptorsForm.setFields(description, descriptionSource, context, docMethod, representation, representationView, enumeratedRepresentation);
 
+        // Non enumerated representation
+        facetForm = new StaticFacetForm();
+
         // Class descriptors
         classDescriptorsForm = new GroupDynamicForm(getConstants().conceptClassDescriptors());
         ViewTextItem sdmxRelatedArtefact = new ViewTextItem(ConceptDS.SDMX_RELATED_ARTEFACT, getConstants().conceptSdmxRelatedArtefact());
@@ -249,6 +255,7 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
 
         mainFormLayout.addViewCanvas(identifiersForm);
         mainFormLayout.addViewCanvas(contentDescriptorsForm);
+        mainFormLayout.addViewCanvas(facetForm);
         mainFormLayout.addViewCanvas(classDescriptorsForm);
         mainFormLayout.addViewCanvas(productionDescriptorsForm);
         mainFormLayout.addViewCanvas(relationBetweenConceptsForm);
@@ -273,12 +280,17 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
         MultiLanguageTextItem descriptionSource = new MultiLanguageTextItem(ConceptDS.DESCRIPTION_SOURCE, getConstants().conceptDescriptionSource());
         MultiLanguageTextItem context = new MultiLanguageTextItem(ConceptDS.CONTEXT, getConstants().conceptContext());
         MultilanguageRichTextEditorItem docMethod = new MultilanguageRichTextEditorItem(ConceptDS.DOC_METHOD, getConstants().conceptDocMethod());
-        CustomSelectItem representation = new CustomSelectItem(RepresentationDS.TYPE, getConstants().representation());
+        final CustomSelectItem representation = new CustomSelectItem(RepresentationDS.TYPE, getConstants().representation());
         representation.setValueMap(org.siemac.metamac.srm.web.client.utils.CommonUtils.getTypeRepresentationEnumHashMap());
         representation.addChangedHandler(new ChangedHandler() {
 
             @Override
             public void onChanged(ChangedEvent event) {
+                if (TypeRepresentationEnum.TEXT_FORMAT.name().equals(representation.getValueAsString())) {
+                    facetEditionForm.show();
+                } else {
+                    facetEditionForm.hide();
+                }
                 contentDescriptorsEditionForm.markForRedraw();
             }
         });
@@ -295,6 +307,9 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
             }
         });
         contentDescriptorsEditionForm.setFields(description, descriptionSource, context, docMethod, representation, enumeratedRepresentation);
+
+        // Non enumerated representation
+        facetEditionForm = new ConceptFacetForm();
 
         // Class descriptors
         classDescriptorsEditionForm = new GroupDynamicForm(getConstants().conceptClassDescriptors());
@@ -322,6 +337,7 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
 
         mainFormLayout.addEditionCanvas(identifiersEditionForm);
         mainFormLayout.addEditionCanvas(contentDescriptorsEditionForm);
+        mainFormLayout.addEditionCanvas(facetEditionForm);
         mainFormLayout.addEditionCanvas(classDescriptorsEditionForm);
         mainFormLayout.addEditionCanvas(productionDescriptorsEditionForm);
         mainFormLayout.addEditionCanvas(relationBetweenConceptsEditionForm);
@@ -391,6 +407,15 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
                 conceptDto.getCoreRepresentation() != null ? ExternalItemUtils.getExternalItemName(conceptDto.getCoreRepresentation().getEnumerated()) : null);
         contentDescriptorsForm.markForRedraw();
 
+        // Non enumerated representation
+        if (conceptDto.getCoreRepresentation() != null && TypeRepresentationEnum.TEXT_FORMAT.equals(conceptDto.getCoreRepresentation().getTypeRepresentationEnum())) {
+            facetForm.show();
+        } else {
+            facetForm.hide();
+        }
+        facetForm.setFacet(conceptDto.getCoreRepresentation() != null ? conceptDto.getCoreRepresentation().getNonEnumerated() : null);
+        facetForm.markForRedraw();
+
         // Class descriptors
         classDescriptorsForm.setValue(ConceptDS.SDMX_RELATED_ARTEFACT, CommonUtils.getConceptRoleName(conceptDto.getSdmxRelatedArtefact()));
         classDescriptorsForm.setValue(ConceptDS.TYPE, conceptDto.getType() != null ? CommonWebUtils.getElementName(conceptDto.getType().getIdentifier(), conceptDto.getType().getDescription()) : null);
@@ -425,6 +450,14 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
         contentDescriptorsEditionForm.setValue(RepresentationDS.TYPE, conceptDto.getCoreRepresentation() != null ? conceptDto.getCoreRepresentation().getTypeRepresentationEnum().name() : null);
         contentDescriptorsEditionForm.setValue(RepresentationDS.ENUMERATED, conceptDto.getCoreRepresentation() != null && conceptDto.getCoreRepresentation().getEnumerated() != null ? conceptDto
                 .getCoreRepresentation().getEnumerated().getUrn() : null);
+
+        // Non enumerated representation
+        if (conceptDto.getCoreRepresentation() != null && TypeRepresentationEnum.TEXT_FORMAT.equals(conceptDto.getCoreRepresentation().getTypeRepresentationEnum())) {
+            facetEditionForm.show();
+        } else {
+            facetEditionForm.hide();
+        }
+        facetEditionForm.setFacet(conceptDto.getCoreRepresentation() != null ? conceptDto.getCoreRepresentation().getNonEnumerated() : null);
 
         // Class descriptors
         classDescriptorsEditionForm.setValue(ConceptDS.SDMX_RELATED_ARTEFACT, conceptDto.getSdmxRelatedArtefact() != null ? conceptDto.getSdmxRelatedArtefact().name() : StringUtils.EMPTY);
@@ -466,7 +499,7 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
                 conceptDto.getCoreRepresentation().setEnumerated(ExternalItemUtils.getExternalItemDtoFromUrn(codeLists, contentDescriptorsEditionForm.getValueAsString(RepresentationDS.ENUMERATED)));
             } else if (TypeRepresentationEnum.TEXT_FORMAT.equals(conceptDto.getCoreRepresentation().getTypeRepresentationEnum())) {
                 conceptDto.getCoreRepresentation().setEnumerated(null);
-                // TODO facet
+                conceptDto.getCoreRepresentation().setNonEnumerated(facetEditionForm.getFacet());
             }
         } else {
             conceptDto.setCoreRepresentation(null);
@@ -519,6 +552,12 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
             }
         });
         return conceptExtended;
+    }
+
+    private boolean validateEditionForms() {
+        return identifiersEditionForm.validate(false) && contentDescriptorsEditionForm.validate(false) && (facetEditionForm.isVisible() ? facetEditionForm.validate(false) : true)
+                && classDescriptorsEditionForm.validate(false) && productionDescriptorsEditionForm.validate(false) && relationBetweenConceptsEditionForm.validate(false)
+                && legalActsEditionForm.validate(false);
     }
 
 }

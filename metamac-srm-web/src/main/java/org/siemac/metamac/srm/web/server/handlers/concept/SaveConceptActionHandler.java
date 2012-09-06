@@ -31,7 +31,6 @@ public class SaveConceptActionHandler extends SecurityActionHandler<SaveConceptA
             if (conceptToSave.getId() == null) {
                 // Create
                 savedConcept = srmCoreServiceFacade.createConcept(ServiceContextHolder.getCurrentServiceContext(), conceptToSave);
-                return new SaveConceptResult(savedConcept);
             } else {
                 // Update
                 savedConcept = srmCoreServiceFacade.updateConcept(ServiceContextHolder.getCurrentServiceContext(), conceptToSave);

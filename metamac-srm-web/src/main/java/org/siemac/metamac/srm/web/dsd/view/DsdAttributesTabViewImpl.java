@@ -6,16 +6,16 @@ import java.util.List;
 
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
+import org.siemac.metamac.srm.web.client.representation.widgets.StaticFacetForm;
+import org.siemac.metamac.srm.web.client.utils.FacetFormUtils;
 import org.siemac.metamac.srm.web.dsd.model.record.AttributeRecord;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdAttributesTabPresenter;
 import org.siemac.metamac.srm.web.dsd.utils.CommonUtils;
-import org.siemac.metamac.srm.web.dsd.utils.FacetFormUtils;
 import org.siemac.metamac.srm.web.dsd.utils.RecordUtils;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdAttributesTabUiHandlers;
 import org.siemac.metamac.srm.web.dsd.widgets.AnnotationsPanel;
-import org.siemac.metamac.srm.web.dsd.widgets.FacetForm;
+import org.siemac.metamac.srm.web.dsd.widgets.DsdFacetForm;
 import org.siemac.metamac.srm.web.dsd.widgets.RoleSelectItem;
-import org.siemac.metamac.srm.web.dsd.widgets.StaticFacetForm;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.utils.ExternalItemUtils;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
@@ -118,7 +118,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
     // Representation
     private CustomSelectItem            representationTypeItem;
     private CustomSelectItem            codeListItem;
-    private FacetForm                   facetForm = null;
+    private DsdFacetForm                facetForm = null;
 
     private ToolStripButton             newToolStripButton;
     // private ToolStripButton editToolStripButton;
@@ -455,7 +455,8 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
         // Facet Form
 
-        facetForm = new FacetForm();
+        facetForm = new DsdFacetForm();
+        facetForm.setVisibility(Visibility.HIDDEN);
 
         // Annotations
         editionAnnotationsPanel = new AnnotationsPanel(false);
@@ -774,8 +775,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
                 // Facet
             } else if (TypeRepresentationEnum.TEXT_FORMAT.equals(representationType)) {
                 dataAttributeDto.getLocalRepresentation().setTypeRepresentationEnum(TypeRepresentationEnum.TEXT_FORMAT);
-                FacetDto facetDto = facetForm.getFacet(dataAttributeDto.getLocalRepresentation().getNonEnumerated() == null ? new FacetDto() : dataAttributeDto.getLocalRepresentation()
-                        .getNonEnumerated());
+                FacetDto facetDto = facetForm.getFacet();
                 dataAttributeDto.getLocalRepresentation().setNonEnumerated(facetDto);
                 dataAttributeDto.getLocalRepresentation().setEnumerated(null);
             }

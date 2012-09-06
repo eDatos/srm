@@ -10,12 +10,16 @@ import org.siemac.metamac.srm.core.concept.dto.ConceptTypeDto;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptRoleEnum;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
+import org.siemac.metamac.srm.web.client.utils.FacetFormUtils;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
+
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.FacetValueTypeEnum;
 
 public class CommonUtils {
 
-    private static LinkedHashMap<String, String> conceptSchemeTypeHashMap = null;
-    private static LinkedHashMap<String, String> conceptRoleHashMap       = null;
+    private static LinkedHashMap<String, String> conceptSchemeTypeHashMap     = null;
+    private static LinkedHashMap<String, String> conceptRoleHashMap           = null;
+    private static LinkedHashMap<String, String> conceptFacetValueTypeHashMap = null;
 
     public static String getConceptSchemeProcStatus(ConceptSchemeMetamacDto conceptSchemeDto) {
         return getCoreMessages().getString(getCoreMessages().itemSchemeMetamacProcStatusEnum() + conceptSchemeDto.getProcStatus().getName());
@@ -60,6 +64,18 @@ public class CommonUtils {
 
     public static String getConceptRoleName(ConceptRoleEnum conceptRoleEnum) {
         return conceptRoleEnum != null ? MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().conceptRoleEnum() + conceptRoleEnum.name()) : null;
+    }
+
+    public static LinkedHashMap<String, String> getConceptFacetValueTypeHashMap() {
+        if (conceptFacetValueTypeHashMap == null) {
+            conceptFacetValueTypeHashMap = new LinkedHashMap<String, String>();
+            conceptFacetValueTypeHashMap.put(new String(), new String());
+            for (FacetValueTypeEnum f : FacetFormUtils.getConceptFacetValueTypeEnums()) {
+                String value = MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().facetValueTypeEnum() + f.getName());
+                conceptFacetValueTypeHashMap.put(f.toString(), value);
+            }
+        }
+        return conceptFacetValueTypeHashMap;
     }
 
 }

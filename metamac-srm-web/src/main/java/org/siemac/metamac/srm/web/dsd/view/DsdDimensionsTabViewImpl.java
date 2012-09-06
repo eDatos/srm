@@ -7,17 +7,17 @@ import java.util.List;
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
+import org.siemac.metamac.srm.web.client.representation.widgets.StaticFacetForm;
 import org.siemac.metamac.srm.web.client.resources.GlobalResources;
+import org.siemac.metamac.srm.web.client.utils.FacetFormUtils;
 import org.siemac.metamac.srm.web.dsd.model.record.DimensionRecord;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdDimensionsTabPresenter;
 import org.siemac.metamac.srm.web.dsd.utils.CommonUtils;
-import org.siemac.metamac.srm.web.dsd.utils.FacetFormUtils;
 import org.siemac.metamac.srm.web.dsd.utils.RecordUtils;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdDimensionsTabUiHandlers;
 import org.siemac.metamac.srm.web.dsd.widgets.AnnotationsPanel;
-import org.siemac.metamac.srm.web.dsd.widgets.FacetForm;
+import org.siemac.metamac.srm.web.dsd.widgets.DsdFacetForm;
 import org.siemac.metamac.srm.web.dsd.widgets.RoleSelectItem;
-import org.siemac.metamac.srm.web.dsd.widgets.StaticFacetForm;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.utils.ExternalItemUtils;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
@@ -108,7 +108,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
     private CustomSelectItem            representationTypeItem;
     private CustomSelectItem            codeListItem;
     private CustomSelectItem            conceptSchemeItem;
-    private FacetForm                   facetForm;
+    private DsdFacetForm                facetForm;
 
     private ToolStripButton             newToolStripButton;
     private ToolStripButton             deleteToolStripButton;
@@ -450,7 +450,8 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
         // Facet Form
 
-        facetForm = new FacetForm();
+        facetForm = new DsdFacetForm();
+        facetForm.setVisibility(Visibility.HIDDEN);
         // TextType applicable to TimeDimension is restricted to those that represent time
         CustomValidator timeValidator = new CustomValidator() {
 
@@ -559,8 +560,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
                 // Facet
             } else if (TypeRepresentationEnum.TEXT_FORMAT.equals(representationType)) {
                 dimensionComponentDto.getLocalRepresentation().setTypeRepresentationEnum(TypeRepresentationEnum.TEXT_FORMAT);
-                FacetDto facetDto = facetForm.getFacet(dimensionComponentDto.getLocalRepresentation().getNonEnumerated() == null ? new FacetDto() : dimensionComponentDto.getLocalRepresentation()
-                        .getNonEnumerated());
+                FacetDto facetDto = facetForm.getFacet();
                 dimensionComponentDto.getLocalRepresentation().setNonEnumerated(facetDto);
                 dimensionComponentDto.getLocalRepresentation().setEnumerated(null);
             }

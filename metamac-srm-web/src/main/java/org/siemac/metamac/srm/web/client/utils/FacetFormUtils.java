@@ -1,9 +1,10 @@
-package org.siemac.metamac.srm.web.dsd.utils;
+package org.siemac.metamac.srm.web.client.utils;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import org.siemac.metamac.srm.web.dsd.widgets.FacetForm;
+import org.siemac.metamac.srm.web.dsd.utils.CommonUtils;
+import org.siemac.metamac.srm.web.dsd.widgets.DsdFacetForm;
 
 import com.arte.statistic.sdmx.srm.core.common.service.utils.shared.RepresentationConstraintSharedValidator;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.FacetValueTypeEnum;
@@ -16,7 +17,7 @@ public class FacetFormUtils {
     public static final String            TEXT_TYPE_FIELD_NAME = "repr-no-enum-text-type";
 
     public static Set<FacetValueTypeEnum> dsdFacetValueTypeEnums;
-    public static Set<FacetValueTypeEnum> timeFacetValueTypeEnums;
+    public static Set<FacetValueTypeEnum> conceptFacetValueTypeEnums;
 
     /**
      * Shows or hides facetForm depending on whether representationType is ENUMERATED or not.
@@ -24,7 +25,7 @@ public class FacetFormUtils {
      * @param facetForm
      * @param representationType
      */
-    public static void setFacetFormVisibility(FacetForm facetForm, String representationType) {
+    public static void setFacetFormVisibility(DsdFacetForm facetForm, String representationType) {
         if (representationType == null || representationType.isEmpty()) {
             facetForm.hide();
         } else if (!CommonUtils.isRepresentationTypeEnumerated(representationType)) {
@@ -51,6 +52,22 @@ public class FacetFormUtils {
     }
 
     /**
+     * Returns the valid FacetValueTypeEnums for Concepts
+     * 
+     * @return
+     */
+    public static Set<FacetValueTypeEnum> getConceptFacetValueTypeEnums() {
+        // BasicComponentDataType values
+        if (conceptFacetValueTypeEnums == null) {
+            conceptFacetValueTypeEnums = new HashSet<FacetValueTypeEnum>();
+            for (FacetValueTypeEnum f : RepresentationConstraintSharedValidator.basicComponentDataTypeValues) {
+                conceptFacetValueTypeEnums.add(f);
+            }
+        }
+        return conceptFacetValueTypeEnums;
+    }
+
+    /**
      * True if {@link FacetValueTypeEnum} f represents time
      * 
      * @param f
@@ -60,11 +77,9 @@ public class FacetFormUtils {
         return RepresentationConstraintSharedValidator.isTimeDataType(f);
     }
 
-    // /////////////////////////////////////
-    // //
-    // FormItemIfFunction for FacetTypes //
-    // //
-    // /////////////////////////////////////
+    //
+    // FormItemIfFunction for FacetTypes
+    //
 
     /**
      * Is sequence
@@ -78,7 +93,7 @@ public class FacetFormUtils {
             public boolean execute(FormItem item, Object value, DynamicForm form) {
                 if (form.getValueAsString(TEXT_TYPE_FIELD_NAME) != null) {
                     FacetValueTypeEnum type = FacetValueTypeEnum.valueOf(form.getValueAsString(TEXT_TYPE_FIELD_NAME));
-                    return representsTime(type) ? false : true;
+                    return !representsTime(type);
                 }
                 return false;
             }
@@ -97,7 +112,7 @@ public class FacetFormUtils {
             public boolean execute(FormItem item, Object value, DynamicForm form) {
                 if (form.getValueAsString(TEXT_TYPE_FIELD_NAME) != null) {
                     FacetValueTypeEnum type = FacetValueTypeEnum.valueOf(form.getValueAsString(TEXT_TYPE_FIELD_NAME));
-                    return representsTime(type) ? false : true;
+                    return !representsTime(type);
                 }
                 return false;
             }
@@ -116,7 +131,7 @@ public class FacetFormUtils {
             public boolean execute(FormItem item, Object value, DynamicForm form) {
                 if (form.getValueAsString(TEXT_TYPE_FIELD_NAME) != null) {
                     FacetValueTypeEnum type = FacetValueTypeEnum.valueOf(form.getValueAsString(TEXT_TYPE_FIELD_NAME));
-                    return representsTime(type) ? false : true;
+                    return !representsTime(type);
                 }
                 return false;
             }
@@ -135,7 +150,7 @@ public class FacetFormUtils {
             public boolean execute(FormItem item, Object value, DynamicForm form) {
                 if (form.getValueAsString(TEXT_TYPE_FIELD_NAME) != null) {
                     FacetValueTypeEnum type = FacetValueTypeEnum.valueOf(form.getValueAsString(TEXT_TYPE_FIELD_NAME));
-                    return representsTime(type) ? false : true;
+                    return !representsTime(type);
                 }
                 return false;
             }
@@ -154,7 +169,7 @@ public class FacetFormUtils {
             public boolean execute(FormItem item, Object value, DynamicForm form) {
                 if (form.getValueAsString(TEXT_TYPE_FIELD_NAME) != null) {
                     FacetValueTypeEnum type = FacetValueTypeEnum.valueOf(form.getValueAsString(TEXT_TYPE_FIELD_NAME));
-                    return representsTime(type) ? false : true;
+                    return !representsTime(type);
                 }
                 return false;
             }
@@ -171,10 +186,7 @@ public class FacetFormUtils {
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
-                if (form.getValueAsString(TEXT_TYPE_FIELD_NAME) != null) {
-                    return true;
-                }
-                return false;
+                return form.getValueAsString(TEXT_TYPE_FIELD_NAME) != null;
             }
         };
     }
@@ -189,10 +201,7 @@ public class FacetFormUtils {
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
-                if (form.getValueAsString(TEXT_TYPE_FIELD_NAME) != null) {
-                    return true;
-                }
-                return false;
+                return form.getValueAsString(TEXT_TYPE_FIELD_NAME) != null;
             }
         };
     }
@@ -209,7 +218,7 @@ public class FacetFormUtils {
             public boolean execute(FormItem item, Object value, DynamicForm form) {
                 if (form.getValueAsString(TEXT_TYPE_FIELD_NAME) != null) {
                     FacetValueTypeEnum type = FacetValueTypeEnum.valueOf(form.getValueAsString(TEXT_TYPE_FIELD_NAME));
-                    return representsTime(type) ? false : true;
+                    return !representsTime(type);
                 }
                 return false;
             }
@@ -228,7 +237,7 @@ public class FacetFormUtils {
             public boolean execute(FormItem item, Object value, DynamicForm form) {
                 if (form.getValueAsString(TEXT_TYPE_FIELD_NAME) != null) {
                     FacetValueTypeEnum type = FacetValueTypeEnum.valueOf(form.getValueAsString(TEXT_TYPE_FIELD_NAME));
-                    return representsTime(type) ? false : true;
+                    return !representsTime(type);
                 }
                 return false;
             }
@@ -247,7 +256,7 @@ public class FacetFormUtils {
             public boolean execute(FormItem item, Object value, DynamicForm form) {
                 if (form.getValueAsString(TEXT_TYPE_FIELD_NAME) != null) {
                     FacetValueTypeEnum type = FacetValueTypeEnum.valueOf(form.getValueAsString(TEXT_TYPE_FIELD_NAME));
-                    return representsTime(type) ? false : true;
+                    return !representsTime(type);
                 }
                 return false;
             }
@@ -266,7 +275,7 @@ public class FacetFormUtils {
             public boolean execute(FormItem item, Object value, DynamicForm form) {
                 if (form.getValueAsString(TEXT_TYPE_FIELD_NAME) != null) {
                     FacetValueTypeEnum type = FacetValueTypeEnum.valueOf(form.getValueAsString(TEXT_TYPE_FIELD_NAME));
-                    return representsTime(type) ? false : true;
+                    return !representsTime(type);
                 }
                 return false;
             }
@@ -285,7 +294,7 @@ public class FacetFormUtils {
             public boolean execute(FormItem item, Object value, DynamicForm form) {
                 if (form.getValueAsString(TEXT_TYPE_FIELD_NAME) != null) {
                     FacetValueTypeEnum type = FacetValueTypeEnum.valueOf(form.getValueAsString(TEXT_TYPE_FIELD_NAME));
-                    return representsTime(type) ? false : true;
+                    return !representsTime(type);
                 }
                 return false;
             }
@@ -304,7 +313,7 @@ public class FacetFormUtils {
             public boolean execute(FormItem item, Object value, DynamicForm form) {
                 if (form.getValueAsString(TEXT_TYPE_FIELD_NAME) != null) {
                     FacetValueTypeEnum type = FacetValueTypeEnum.valueOf(form.getValueAsString(TEXT_TYPE_FIELD_NAME));
-                    return representsTime(type) ? false : true;
+                    return !representsTime(type);
                 }
                 return false;
             }
