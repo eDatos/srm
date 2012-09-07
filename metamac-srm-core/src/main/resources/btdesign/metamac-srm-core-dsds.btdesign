@@ -1,0 +1,103 @@
+import "classpath:/btdesign/statistic-sdmx-core-structure.btdesign"
+import "classpath:/btdesign/metamac-srm-core-enum.btdesign"
+import "classpath:/btdesign/statistic-sdmx-v2_1-domain-enums.btdesign"
+
+Application DsdsMetamac {
+	basePackage=unused
+
+	Module domain_dsds_metamac {
+		basePackage=org.siemac.metamac.srm.core.dsd
+
+		// ----------------------------------------------------------------
+		// 							SERVICES
+		// ----------------------------------------------------------------  
+		"Provides access to Scheme Concepts Artefacts"
+		Service DsdsMetamacService {
+			
+			> @DataStructureDefinitionVersionMetamacRepository
+//			
+//			"Creates concept scheme"
+//			@ConceptSchemeVersionMetamac createConceptScheme(@ConceptSchemeVersionMetamac conceptSchemeVersion) throws MetamacException;
+//			"Updates concept scheme"
+//			@ConceptSchemeVersionMetamac updateConceptScheme(@ConceptSchemeVersionMetamac conceptSchemeVersion) throws MetamacException;
+
+//			"Retrieves data structure definition by urn"
+//			@ConceptSchemeVersionMetamac retrieveConceptSchemeByUrn(String urn) throws MetamacException;
+//			"Retrieves all concept schemes versions"
+//			List<@ConceptSchemeVersionMetamac> retrieveConceptSchemeVersions(String urn) throws MetamacException;
+//			"Finds concept schemes by criteria"
+//    		PagedResult<@ConceptSchemeVersionMetamac> findConceptSchemesByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
+    		
+    		"Retrieves data structure definition by urn"
+			@DataStructureDefinitionVersionMetamac retrieveDataStructureDefinitionByUrn(String urn) throws MetamacException;
+			"Retrieves all data structure definition versions"
+			List<@DataStructureDefinitionVersionMetamac> retrieveDataStructureDefinitionVersions(String urn) throws MetamacException;
+			"Finds data structures by criteria"
+    		PagedResult<@DataStructureDefinitionVersionMetamac> findDataStructureDefinitionsByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException;
+			
+			"Sends data structure definition to production validation"
+    		@DataStructureDefinitionVersionMetamac sendDataStructureDefinitionToProductionValidation(String urn) throws MetamacException;
+    		"Sends data structure definition to diffusion validation"
+    		@DataStructureDefinitionVersionMetamac sendDataStructureDefinitionToDiffusionValidation(String urn) throws MetamacException;
+	    	"Rejects production validation of data structure definition"    		
+	    	@DataStructureDefinitionVersionMetamac rejectDataStructureDefinitionProductionValidation(String urn) throws MetamacException;
+	    	"Rejects diffusion validation of data structure definition"
+	    	@DataStructureDefinitionVersionMetamac rejectDataStructureDefinitionDiffusionValidation(String urn) throws MetamacException;
+	    	"Publish internally a data structure definition"
+	    	@DataStructureDefinitionVersionMetamac publishInternallyDataStructureDefinition(String urn) throws MetamacException;
+	    	"Publish externally a data structure definition"
+	    	@DataStructureDefinitionVersionMetamac publishExternallyDataStructureDefinition(String urn) throws MetamacException;
+			"Deletes data structure definition version. This must be last version and no published"
+    		deleteDataStructureDefinitionVersionMetamac(String urn) throws MetamacException;
+    		"Creates a new version of a data structure definition, copying metadata from version with provided urn"
+    		@DataStructureDefinitionVersionMetamac versioningDataStructureDefinition(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
+    		"Cancels the data structure definition validity"
+    		@DataStructureDefinitionVersionMetamac cancelDataStructureDefinitionVersionMetamacValidity(String urn) throws MetamacException;
+    		
+		}
+
+		// ----------------------------------------------------------------
+		// 							ENTITIES
+		// ----------------------------------------------------------------  
+		Entity DataStructureDefinitionVersionMetamac extends @DataStructureDefinitionVersion {
+			databaseTable="TB_M_DATASTRUCTURE_VERSIONS"
+			hint="idSequence=M_DATASTRUCTURE_VERSIONS"
+			!auditable
+
+			"Status"
+			- @ItemSchemeMetamacProcStatusEnum procStatus;
+//			"Related operation, only when type is Operation"
+//			- @ExternalItem relatedOperation nullable cascade="all" databaseColumn="RELATED_OPERATION_FK";
+			
+			"Date when the concept scheme was sended to production validation"
+			DateTimeTZ productionValidationDate nullable;
+			"User who sended to production validation"
+			String productionValidationUser nullable;
+			"Date when the concept scheme was sended to diffusion validation"
+			DateTimeTZ diffusionValidationDate nullable;
+			"User who sended to diffusion validation"
+			String diffusionValidationUser nullable;
+			"Date when the concept scheme was published internally"
+			DateTimeTZ internalPublicationDate nullable;
+			"User who published internally"
+			String internalPublicationUser nullable;
+			"Date when the concept scheme was published externally"
+			DateTimeTZ externalPublicationDate nullable;
+			"User who published externally"
+			String externalPublicationUser nullable;
+			"The external publication failed"
+			Boolean isExternalPublicationFailed nullable databaseColumn="IS_EXT_PUBLICATION_FAILED";
+			"External publication failed date"
+			DateTimeTZ externalPublicationFailedDate nullable databaseColumn="EXT_PUBLICATION_FAILED_DATE";
+			
+			"Last update to optimistic locking"
+			DateTimeTZ updateDateMetamac nullable;
+			
+			Repository DataStructureDefinitionVersionMetamacRepository {
+				findById;
+				findByCondition(PagingParameter pagingParameter);
+			}			
+		}
+
+	}
+}

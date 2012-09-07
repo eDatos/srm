@@ -1,0 +1,40 @@
+import "classpath:/btdesign/metamac-core-common-dtos.btdesign"
+import "classpath:/btdesign/statistic-sdmx-v2_1-domain-dtos-core.btdesign"
+import "classpath:/btdesign/metamac-srm-core-enum.btdesign"
+
+Application DtosMetamacDsdDomain {
+	basePackage=unused
+
+	Module domain_metamac_dsd_dto {
+		basePackage=org.siemac.metamac.srm.core.dsd.dto
+		
+		"Dto for ConceptSchemeMetamac"
+		DataTransferObject DataStructureDefinitionMetamacDto extends @DataStructureDefinitionDto {
+			"Status"
+			- @ItemSchemeMetamacProcStatusEnum procStatus required;
+			"Date when the data structure definition was sended to production validation"
+			JAVADATE productionValidationDate nullable;
+			"User who sended to production validation"
+			String productionValidationUser nullable;
+			"Date when the data structure definition was sended to diffusion validation"
+			JAVADATE diffusionValidationDate nullable;
+			"User who sended to diffusion validation"
+			String diffusionValidationUser nullable;
+			"Date when the data structure definition was published internally"
+			JAVADATE internalPublicationDate nullable;
+			"User who published internally"
+			String internalPublicationUser nullable;
+			"Date when the data structure definition was published externally"
+			JAVADATE externalPublicationDate nullable;
+			"User who published externally"
+			String externalPublicationUser nullable;
+			"The external publication failed"
+			Boolean isExternalPublicationFailed nullable;
+			"External publication failed date"
+			JAVADATE externalPublicationFailedDate nullable; 
+
+			"Version to optimistic locking"
+			Long versionOptimisticLocking;
+		}
+	}
+}

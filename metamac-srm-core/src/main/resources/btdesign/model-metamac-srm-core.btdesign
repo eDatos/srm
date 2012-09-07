@@ -16,6 +16,9 @@ import "classpath:/btdesign/metamac-srm-core-concepts.btdesign"
 import "classpath:/btdesign/metamac-srm-core-concepts-dtos.btdesign"
 import "classpath:/btdesign/metamac-srm-core-enum.btdesign"
 
+import "classpath:/btdesign/metamac-srm-core-dsds.btdesign"
+import "classpath:/btdesign/metamac-srm-core-dsds-dtos.btdesign"
+
 Application SrmCore {
     basePackage=unused
     
@@ -27,6 +30,7 @@ Application SrmCore {
        		> @DataStructureDefinitionService
        		> @TransformationServiceFacade
        		> @ConceptsMetamacService
+       		> @DsdsMetamacService
 
 			"          
 			 @param ctx  
@@ -38,10 +42,10 @@ Application SrmCore {
        		
 			"       		                                                                                    
 			 @param ctx                                                                          
-			 @param dataStructureDefinitionDto                                                   
+			 @param urn                                                   
 			 @throws org.siemac.metamac.core.common.exception.MetamacException
 			" 
-       		deleteDsd(@DataStructureDefinitionDto dataStructureDefinitionDto) throws MetamacException;
+       		deleteDataStructureDefinition(String urn) throws MetamacException;
 			
 			"
 			 Find DSDs by criteria                           
@@ -50,13 +54,7 @@ Application SrmCore {
 			 @return                    
 			"
 	    	MetamacCriteriaResult<@DataStructureDefinitionDto> findDsdByCondition(MetamacCriteria criteria) throws MetamacException;
-          	
-          	"          
-			@param ctx
-			@return   
-          	"
-          	List<@DataStructureDefinitionDto> findAllDsds;
-          	
+
           	"
           	 Retrieve a DSD with Grouping relationships.
 		     @param ctx
@@ -94,6 +92,83 @@ Application SrmCore {
 			"  
 			@DataStructureDefinitionDto createDsdVersion(Long idDsd, boolean minorVersion) throws MetamacException;
 			
+	    	/*
+	    	 * CICLO DE VIDA DSDs
+	    	 */
+	    	
+	    	"
+	    	 Sends dsd to production validation
+		     @param ctx
+		     @param urn
+		     @return
+		     @throws org.siemac.metamac.core.common.exception.MetamacException
+		    "
+	    	@DataStructureDefinitionMetamacDto sendDataStructureDefinitionToProductionValidation(String urn) throws MetamacException;
+    		
+    		"
+    		 Sends to diffusion validation
+		     @param ctx
+		     @param urn Urn of DataStructureDefinition
+		     @return
+		     @throws org.siemac.metamac.core.common.exception.MetamacException
+		    "
+    		@DataStructureDefinitionMetamacDto sendDataStructureDefinitionDtoToDiffusionValidation(String urn) throws MetamacException;
+	    	
+	    	"
+	    	 Rejects production validation of dsd   		
+		     @param ctx
+		     @param urn Urn of DataStructureDefinition
+		     @return
+		     @throws org.siemac.metamac.core.common.exception.MetamacException
+		    "
+	    	@DataStructureDefinitionMetamacDto rejectDataStructureDefinitionDtoProductionValidation(String urn) throws MetamacException;
+	    	
+	    	"
+	    	 Rejects diffusion validation of dsd  		
+		     @param ctx
+		     @param urn Urn of DataStructureDefinition
+		     @return
+		     @throws org.siemac.metamac.core.common.exception.MetamacException
+		    "
+	    	@DataStructureDefinitionMetamacDto rejectDataStructureDefinitionDtoDiffusionValidation(String urn) throws MetamacException; 
+	    	
+	    	"
+	    	 Publishes internally a dsd  		
+		     @param ctx
+		     @param urn Urn of DataStructureDefinition
+		     @return
+		     @throws org.siemac.metamac.core.common.exception.MetamacException
+		    "
+	    	@DataStructureDefinitionMetamacDto publishInternallyDataStructureDefinitionDto(String urn) throws MetamacException;
+	    	
+	    	"
+	    	 Publishes externally a dsd  		
+		     @param ctx
+		     @param urn Urn of DataStructureDefinition
+		     @return
+		     @throws org.siemac.metamac.core.common.exception.MetamacException
+		    "
+	    	@DataStructureDefinitionMetamacDto publishExternallyDataStructureDefinitionDto(String urn) throws MetamacException;
+    		
+    		"
+	    	 Creates a new version of a dsd, copying metadata from version with provided urn  		
+		     @param ctx
+		     @param urnToCopy Urn of DataStructureDefinition to copy
+		     @param versionType MAJOR or MINOR version
+		     @return
+		     @throws org.siemac.metamac.core.common.exception.MetamacException
+		    "
+    		@DataStructureDefinitionMetamacDto versioningDataStructureDefinitionDto(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
+    		
+    		"
+	    	 Cancels the dsd scheme validity  		
+		     @param ctx
+		     @param urn Urn of DataStructureDefinition
+		     @return
+		     @throws org.siemac.metamac.core.common.exception.MetamacException
+		    "
+    		@DataStructureDefinitionMetamacDto cancelDataStructureDefinitionDtoValidity(String urn) throws MetamacException;
+	    	
 			"
 			 @param ctx                                                                         
 			 @param idDsd                                                                       
@@ -161,8 +236,7 @@ Application SrmCore {
 			 @throws org.siemac.metamac.core.common.exception.MetamacException
 			"
 	    	String exportSDMXStructureMsg(@StructureMsgDto structureMsgDto) throws MetamacException;
-	    	
-	    	
+
 	    	/**************************************************************************
 		     * ORGANISATION
 		     **************************************************************************/
