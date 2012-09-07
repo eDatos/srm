@@ -79,7 +79,9 @@ public class JavaSerializationTest {
     @Ignore
     // @Rollback(false)
     public void testSerializeDSD() throws Exception {
+        //TODO TEST serializar DSD
 
+        /*
         List<DataStructureDefinitionDto> dsds = srmCoreServiceFacade.findAllDsds(getServiceContext());
 
         File serializationFile = File.createTempFile("METAMAC", "ser");
@@ -100,7 +102,7 @@ public class JavaSerializationTest {
         fis.close();
 
         assertTrue(ser.getCode() != null);
-
+*/
     }
 
     /************************************************************************************
