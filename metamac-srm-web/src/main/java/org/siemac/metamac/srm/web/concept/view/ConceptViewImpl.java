@@ -47,6 +47,8 @@ import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeRepresentationEn
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
+import com.smartgwt.client.data.Record;
+import com.smartgwt.client.data.RecordList;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -536,15 +538,24 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
     }
 
     private ConceptsListItem createRelatedConceptsItem(String name, String title) {
-        ConceptsListItem conceptExtended = new ConceptsListItem(name, title, true);
-        conceptExtended.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
+        ConceptsListItem relatedConceptsItem = new ConceptsListItem(name, title, true);
+        relatedConceptsItem.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
 
             @Override
             public void onFormItemClick(FormItemIconClickEvent event) {
                 final ConceptsTreeWindow extendedConceptWindow = new ConceptsTreeWindow(getConstants().conceptSelection());
                 extendedConceptWindow.setConcepts(conceptSchemeMetamacDto, itemHierarchyDtos);
 
-                // TODO Disable selection of current concept and concept scheme
+                // Disable selection of current concept and concept scheme
+                RecordList records = extendedConceptWindow.getConceptsTreeGrid().getDataAsRecordList();
+                if (records != null && !records.isEmpty()) {
+                    Record conceptSchemeRecord = records.find(ConceptDS.CODE, conceptSchemeMetamacDto.getCode());
+                    Record currentConceptRecord = records.find(ConceptDS.URN, conceptDto.getUrn());
+                    int conceptSchemeRecordIndex = extendedConceptWindow.getConceptsTreeGrid().getRecordIndex(conceptSchemeRecord);
+                    int currentConceptRecordIndex = extendedConceptWindow.getConceptsTreeGrid().getRecordIndex(currentConceptRecord);
+                    extendedConceptWindow.getConceptsTreeGrid().getRecord(conceptSchemeRecordIndex).setEnabled(false);
+                    extendedConceptWindow.getConceptsTreeGrid().getRecord(currentConceptRecordIndex).setEnabled(false);
+                }
 
                 // Select related concepts
                 List<String> selectedRelatedConcepts = ((ConceptsListItem) relationBetweenConceptsEditionForm.getItem(ConceptDS.RELATED_CONCEPTS)).getConceptUrns();
@@ -562,7 +573,7 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
                 });
             }
         });
-        return conceptExtended;
+        return relatedConceptsItem;
     }
 
     private boolean validateEditionForms() {
