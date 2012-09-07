@@ -43,60 +43,6 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
         ExceptionUtils.throwIfException(exceptions);
     }
 
-    public static void checkSendConceptSchemeToProductionValidation(String urn, List<MetamacExceptionItem> exceptions) throws MetamacException {
-        if (exceptions == null) {
-            exceptions = new ArrayList<MetamacExceptionItem>();
-        }
-        ValidationUtils.checkParameterRequired(urn, ServiceExceptionParameters.URN, exceptions);
-
-        ExceptionUtils.throwIfException(exceptions);
-    }
-
-    public static void checkSendConceptSchemeToDiffusionValidation(String urn, List<MetamacExceptionItem> exceptions) throws MetamacException {
-        if (exceptions == null) {
-            exceptions = new ArrayList<MetamacExceptionItem>();
-        }
-        ValidationUtils.checkParameterRequired(urn, ServiceExceptionParameters.URN, exceptions);
-
-        ExceptionUtils.throwIfException(exceptions);
-    }
-
-    public static void checkRejectConceptSchemeProductionValidation(String urn, List<MetamacExceptionItem> exceptions) throws MetamacException {
-        if (exceptions == null) {
-            exceptions = new ArrayList<MetamacExceptionItem>();
-        }
-        ValidationUtils.checkParameterRequired(urn, ServiceExceptionParameters.URN, exceptions);
-
-        ExceptionUtils.throwIfException(exceptions);
-    }
-
-    public static void checkRejectConceptSchemeDiffusionValidation(String urn, List<MetamacExceptionItem> exceptions) throws MetamacException {
-        if (exceptions == null) {
-            exceptions = new ArrayList<MetamacExceptionItem>();
-        }
-        ValidationUtils.checkParameterRequired(urn, ServiceExceptionParameters.URN, exceptions);
-
-        ExceptionUtils.throwIfException(exceptions);
-    }
-
-    public static void checkPublishInternallyConceptScheme(String urn, List<MetamacExceptionItem> exceptions) throws MetamacException {
-        if (exceptions == null) {
-            exceptions = new ArrayList<MetamacExceptionItem>();
-        }
-        ValidationUtils.checkParameterRequired(urn, ServiceExceptionParameters.URN, exceptions);
-
-        ExceptionUtils.throwIfException(exceptions);
-    }
-
-    public static void checkPublishExternallyConceptScheme(String urn, List<MetamacExceptionItem> exceptions) throws MetamacException {
-        if (exceptions == null) {
-            exceptions = new ArrayList<MetamacExceptionItem>();
-        }
-        ValidationUtils.checkParameterRequired(urn, ServiceExceptionParameters.URN, exceptions);
-
-        ExceptionUtils.throwIfException(exceptions);
-    }
-
     public static void checkCancelConceptSchemeValidity(String urn, List<MetamacExceptionItem> exceptions) throws MetamacException {
         if (exceptions == null) {
             exceptions = new ArrayList<MetamacExceptionItem>();
@@ -140,7 +86,7 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
 
         ExceptionUtils.throwIfException(exceptions);
     }
-    
+
     public static void checkAddConceptRelation(String urn1, String urn2, List<MetamacExceptionItem> exceptions) throws MetamacException {
         if (exceptions == null) {
             exceptions = new ArrayList<MetamacExceptionItem>();

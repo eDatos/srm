@@ -121,6 +121,8 @@ Application ConceptsMetamac {
 				findById;
 				findByQuery(String query, Map<String, Object> parameters, int maxResult);
 				findByCondition(PagingParameter pagingParameter);
+				@ConceptSchemeVersionMetamac findByUrn(String urn);
+				@ConceptSchemeVersionMetamac retrieveConceptSchemeVersionByProcStatus(String urn, ArrayItemSchemeMetamacProcStatusEnum procStatus) throws MetamacException;
 				@ConceptSchemeVersionMetamac findByConcept(String urn);
 			}			
 		}

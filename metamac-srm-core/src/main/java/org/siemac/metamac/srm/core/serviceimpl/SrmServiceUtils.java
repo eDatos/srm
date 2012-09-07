@@ -1,5 +1,8 @@
 package org.siemac.metamac.srm.core.serviceimpl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
 
 public class SrmServiceUtils {
@@ -11,6 +14,12 @@ public class SrmServiceUtils {
         }
         return procStatusString;
     }
-    
-}
 
+    public static List<ItemSchemeMetamacProcStatusEnum> procStatusEnumToList(ItemSchemeMetamacProcStatusEnum[] procStatusArray) {
+        List<ItemSchemeMetamacProcStatusEnum> procStatus = new ArrayList<ItemSchemeMetamacProcStatusEnum>();
+        for (int i = 0; i < procStatusArray.length; i++) {
+            procStatus.add(procStatusArray[i]);
+        }
+        return procStatus;
+    }
+}
