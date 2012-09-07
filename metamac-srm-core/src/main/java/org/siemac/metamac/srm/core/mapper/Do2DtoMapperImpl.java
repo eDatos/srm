@@ -10,6 +10,8 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptType;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptTypeDto;
+import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
+import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
@@ -55,6 +57,28 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
         return do2DtoMapperSdmxSrm.dataStructureDefinitionToDataStructureDefinitionExtendDto(typeDozerCopyMode, dataStructureDefinitionVersion);
     }
 
+    @Override
+    public DataStructureDefinitionMetamacDto dataStructureDefinitionVersionMetamacDoToDto(DataStructureDefinitionVersionMetamac source) {
+        if (source == null) {
+            return null;
+        }
+        
+        DataStructureDefinitionMetamacDto target = new DataStructureDefinitionMetamacDto();
+        target.setProcStatus(source.getProcStatus());
+        target.setProductionValidationDate(CoreCommonUtil.transformDateTimeToDate(source.getProductionValidationDate()));
+        target.setProductionValidationUser(source.getProductionValidationUser());
+        target.setDiffusionValidationDate(CoreCommonUtil.transformDateTimeToDate(source.getDiffusionValidationDate()));
+        target.setDiffusionValidationUser(source.getDiffusionValidationUser());
+        target.setInternalPublicationDate(CoreCommonUtil.transformDateTimeToDate(source.getInternalPublicationDate()));
+        target.setInternalPublicationUser(source.getInternalPublicationUser());
+        target.setExternalPublicationDate(CoreCommonUtil.transformDateTimeToDate(source.getExternalPublicationDate()));
+        target.setExternalPublicationUser(source.getExternalPublicationUser());
+        
+        do2DtoMapperSdmxSrm.dataStructureDefinitionToDataStructureDefinitionDto(TypeDozerCopyMode.COPY_ALL_METADATA, source);
+        
+        return null;
+    }
+    
     // ------------------------------------------------------------
     // CONCEPTS
     // ------------------------------------------------------------

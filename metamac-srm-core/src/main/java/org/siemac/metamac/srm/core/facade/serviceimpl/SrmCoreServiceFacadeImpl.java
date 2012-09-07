@@ -37,6 +37,8 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptType;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptTypeDto;
+import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
+import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.core.mapper.Do2DtoMapper;
 import org.siemac.metamac.srm.core.mapper.Dto2DoMapper;
 import org.siemac.metamac.srm.core.mapper.MetamacCriteria2SculptorCriteriaMapper;
@@ -135,15 +137,15 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         // Entities to DTOs
         return getDo2DtoMapper().dataStructureDefinitionToDataStructureDefinitionDto(TypeDozerCopyMode.COPY_ALL_METADATA, dataStructureDefinitionVersion);
     }
-
+    
     @Override
-    public void deleteDsd(ServiceContext ctx, DataStructureDefinitionDto dataStructureDefinitionDto) throws MetamacException {
+    public void deleteDataStructureDefinition(ServiceContext ctx, String urn) throws MetamacException {
+        // Security
+//        ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptsMetamacService().retrieveConceptSchemeByUrn(ctx, urn);
+//        ConceptsSecurityUtils.canDeleteConceptScheme(ctx, conceptSchemeVersion);
 
-        // DTOs to Entitys
-        DataStructureDefinitionVersion dataStructureDefinitionVersion = getDto2DoMapper().dataStructureDefinitionDtoToDataStructureDefinition(ctx, dataStructureDefinitionDto);
-
-        // Remove DSD
-        getDataStructureDefinitionService().deleteDsd(ctx, dataStructureDefinitionVersion);
+        // Delete
+        getDataStructureDefinitionService().deleteDataStructureDefinition(ctx, urn);
     }
 
     @Override
@@ -164,27 +166,12 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getDataStructureDefinitionCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
 
         // Find
-        PagedResult<DataStructureDefinitionVersion> result = getDataStructureDefinitionService().findDsdByCondition(ctx, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
+        PagedResult<DataStructureDefinitionVersion> result = getDataStructureDefinitionService().findDataStructureDefinitioByCondition(ctx, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
 
         // Transform
         MetamacCriteriaResult<DataStructureDefinitionDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultDataStructureDefinition(result,
                 sculptorCriteria.getPageSize());
         return metamacCriteriaResult;
-    }
-
-    @Override
-    public List<DataStructureDefinitionDto> findAllDsds(ServiceContext ctx) {
-
-        // Search
-        List<DataStructureDefinitionVersion> dataStructureDefinitionList = getDataStructureDefinitionService().findAllDsds(ctx);
-
-        // To DTO
-        List<DataStructureDefinitionDto> dataStructureDefinitionDtoList = new ArrayList<DataStructureDefinitionDto>();
-        for (DataStructureDefinitionVersion dsd : dataStructureDefinitionList) {
-            dataStructureDefinitionDtoList.add(getDo2DtoMapper().dataStructureDefinitionToDataStructureDefinitionDto(TypeDozerCopyMode.COPY_ALL_METADATA, dsd));
-        }
-
-        return dataStructureDefinitionDtoList;
     }
 
     @Override
@@ -216,6 +203,110 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         return getDo2DtoMapper().dataStructureDefinitionToDataStructureDefinitionDto(TypeDozerCopyMode.COPY_ALL_METADATA, dataStructureDefinitionVersion);
     }
 
+    @Override
+    public DataStructureDefinitionMetamacDto sendDataStructureDefinitionToProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
+        // Security
+//        ConceptSchemeMetamacDto conceptSchemeMetamacDto = retrieveConceptSchemeByUrn(ctx, urn);
+//        ConceptsSecurityUtils.canSendConceptSchemeToProductionValidation(ctx, conceptSchemeMetamacDto);
+
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDsdsMetamacService().sendDataStructureDefinitionToProductionValidation(ctx, urn);
+
+        // Transform to Dto
+        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = do2DtoMapper.dataStructureDefinitionVersionMetamacDoToDto(dataStructureDefinitionVersionMetamac);
+        return dataStructureDefinitionMetamacDto;
+    }
+
+    @Override
+    public DataStructureDefinitionMetamacDto sendDataStructureDefinitionDtoToDiffusionValidation(ServiceContext ctx, String urn) throws MetamacException {
+        // Security
+//        ConceptSchemeMetamacDto conceptSchemeMetamacDto = retrieveConceptSchemeByUrn(ctx, urn);
+//        ConceptsSecurityUtils.canSendConceptSchemeToDiffusionValidation(ctx, conceptSchemeMetamacDto);
+
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDsdsMetamacService().sendDataStructureDefinitionToDiffusionValidation(ctx, urn);
+
+        // Transform to Dto
+        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = do2DtoMapper.dataStructureDefinitionVersionMetamacDoToDto(dataStructureDefinitionVersionMetamac);
+        return dataStructureDefinitionMetamacDto;
+    }
+
+    @Override
+    public DataStructureDefinitionMetamacDto rejectDataStructureDefinitionDtoProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
+        // Security
+//        ConceptSchemeMetamacDto conceptSchemeMetamacDto = retrieveConceptSchemeByUrn(ctx, urn);
+//        ConceptsSecurityUtils.canRejectConceptSchemeValidation(ctx, conceptSchemeMetamacDto);
+
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDsdsMetamacService().rejectDataStructureDefinitionProductionValidation(ctx, urn);
+
+        // Transform to Dto
+        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = do2DtoMapper.dataStructureDefinitionVersionMetamacDoToDto(dataStructureDefinitionVersionMetamac);
+        return dataStructureDefinitionMetamacDto;
+    }
+
+    @Override
+    public DataStructureDefinitionMetamacDto rejectDataStructureDefinitionDtoDiffusionValidation(ServiceContext ctx, String urn) throws MetamacException {
+        // Security
+//        ConceptSchemeMetamacDto conceptSchemeMetamacDto = retrieveConceptSchemeByUrn(ctx, urn);
+//        ConceptsSecurityUtils.canRejectConceptSchemeValidation(ctx, conceptSchemeMetamacDto);
+
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDsdsMetamacService().rejectDataStructureDefinitionDiffusionValidation(ctx, urn);
+
+        // Transform to Dto
+        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = do2DtoMapper.dataStructureDefinitionVersionMetamacDoToDto(dataStructureDefinitionVersionMetamac);
+        return dataStructureDefinitionMetamacDto;
+    }
+
+    @Override
+    public DataStructureDefinitionMetamacDto publishInternallyDataStructureDefinitionDto(ServiceContext ctx, String urn) throws MetamacException {
+        // Security
+//        ConceptSchemeMetamacDto conceptSchemeMetamacDto = retrieveConceptSchemeByUrn(ctx, urn);
+//        ConceptsSecurityUtils.canPublishConceptSchemeInternally(ctx, conceptSchemeMetamacDto);
+
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDsdsMetamacService().publishInternallyDataStructureDefinition(ctx, urn);
+
+        // Transform to Dto
+        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = do2DtoMapper.dataStructureDefinitionVersionMetamacDoToDto(dataStructureDefinitionVersionMetamac);
+        return dataStructureDefinitionMetamacDto;
+    }
+
+    @Override
+    public DataStructureDefinitionMetamacDto publishExternallyDataStructureDefinitionDto(ServiceContext ctx, String urn) throws MetamacException {
+        // Security
+//      ConceptSchemeMetamacDto conceptSchemeMetamacDto = retrieveConceptSchemeByUrn(ctx, urn);
+//      ConceptsSecurityUtils.canPublishExternallyDataStructureDefinition(ctx, conceptSchemeMetamacDto);
+        
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDsdsMetamacService().publishExternallyDataStructureDefinition(ctx, urn);
+        
+        // Transform to Dto
+        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = do2DtoMapper.dataStructureDefinitionVersionMetamacDoToDto(dataStructureDefinitionVersionMetamac);
+        return dataStructureDefinitionMetamacDto;
+    }
+
+    @Override
+    public DataStructureDefinitionMetamacDto versioningDataStructureDefinitionDto(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
+        // Security
+//        ConceptSchemeMetamacDto conceptSchemeMetamacDto = retrieveConceptSchemeByUrn(ctx, urnToCopy);
+//        ConceptsSecurityUtils.canVersioningConceptScheme(ctx, conceptSchemeMetamacDto);
+
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDsdsMetamacService().versioningDataStructureDefinition(ctx, urnToCopy, versionType);
+
+        // Transform to Dto
+        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = do2DtoMapper.dataStructureDefinitionVersionMetamacDoToDto(dataStructureDefinitionVersionMetamac);
+        return dataStructureDefinitionMetamacDto;
+    }
+
+    @Override
+    public DataStructureDefinitionMetamacDto cancelDataStructureDefinitionDtoValidity(ServiceContext ctx, String urn) throws MetamacException {
+        // Security
+//        ConceptSchemeMetamacDto conceptSchemeMetamacDto = retrieveConceptSchemeByUrn(ctx, urn);
+//        ConceptsSecurityUtils.canCancelConceptSchemeValidity(ctx, conceptSchemeMetamacDto);
+
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDsdsMetamacService().cancelDataStructureDefinitionVersionMetamacValidity(ctx, urn);
+
+        // Transform
+        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = do2DtoMapper.dataStructureDefinitionVersionMetamacDoToDto(dataStructureDefinitionVersionMetamac);
+        return dataStructureDefinitionMetamacDto;
+    }
+   
     /**************************************************************************
      * Descriptors
      **************************************************************************/
