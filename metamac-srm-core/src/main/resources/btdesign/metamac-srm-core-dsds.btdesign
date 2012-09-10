@@ -15,26 +15,16 @@ Application DsdsMetamac {
 		Service DsdsMetamacService {
 			
 			> @DataStructureDefinitionVersionMetamacRepository
-//			
-//			"Creates concept scheme"
-//			@ConceptSchemeVersionMetamac createConceptScheme(@ConceptSchemeVersionMetamac conceptSchemeVersion) throws MetamacException;
-//			"Updates concept scheme"
-//			@ConceptSchemeVersionMetamac updateConceptScheme(@ConceptSchemeVersionMetamac conceptSchemeVersion) throws MetamacException;
-
-//			"Retrieves data structure definition by urn"
-//			@ConceptSchemeVersionMetamac retrieveConceptSchemeByUrn(String urn) throws MetamacException;
-//			"Retrieves all concept schemes versions"
-//			List<@ConceptSchemeVersionMetamac> retrieveConceptSchemeVersions(String urn) throws MetamacException;
-//			"Finds concept schemes by criteria"
-//    		PagedResult<@ConceptSchemeVersionMetamac> findConceptSchemesByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
     		
+    		"Create and Update DataStructureDefinition"
+          	@DataStructureDefinitionVersionMetamac saveDataStructureDefinition(@DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac) throws MetamacException;
     		"Retrieves data structure definition by urn"
 			@DataStructureDefinitionVersionMetamac retrieveDataStructureDefinitionByUrn(String urn) throws MetamacException;
 			"Retrieves all data structure definition versions"
 			List<@DataStructureDefinitionVersionMetamac> retrieveDataStructureDefinitionVersions(String urn) throws MetamacException;
 			"Finds data structures by criteria"
     		PagedResult<@DataStructureDefinitionVersionMetamac> findDataStructureDefinitionsByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException;
-			
+          	
 			"Sends data structure definition to production validation"
     		@DataStructureDefinitionVersionMetamac sendDataStructureDefinitionToProductionValidation(String urn) throws MetamacException;
     		"Sends data structure definition to diffusion validation"
@@ -95,7 +85,10 @@ Application DsdsMetamac {
 			
 			Repository DataStructureDefinitionVersionMetamacRepository {
 				findById;
+				findByQuery(String query, Map<String, Object> parameters, int maxResult);
 				findByCondition(PagingParameter pagingParameter);
+				@DataStructureDefinitionVersionMetamac findByUrn(String urn);
+				@DataStructureDefinitionVersionMetamac retrieveDataStructureDefinitionVersionByProcStatus(String urn, ArrayItemSchemeMetamacProcStatusEnum procStatusArray) throws MetamacException;
 			}			
 		}
 

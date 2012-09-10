@@ -15,6 +15,7 @@ public class DsdsMetamacServiceTest extends AbstractDbUnitJpaTests
     protected DsdsMetamacService dsdsMetamacService;
 
     @Test
+    @Override
     public void testSendDataStructureDefinitionToProductionValidation()
         throws Exception {
         // TODO Auto-generated method stub
@@ -23,6 +24,7 @@ public class DsdsMetamacServiceTest extends AbstractDbUnitJpaTests
     }
 
     @Test
+    @Override
     public void testSendDataStructureDefinitionToDiffusionValidation()
         throws Exception {
         // TODO Auto-generated method stub
@@ -31,6 +33,7 @@ public class DsdsMetamacServiceTest extends AbstractDbUnitJpaTests
     }
 
     @Test
+    @Override
     public void testRejectDataStructureDefinitionProductionValidation()
         throws Exception {
         // TODO Auto-generated method stub
@@ -39,6 +42,7 @@ public class DsdsMetamacServiceTest extends AbstractDbUnitJpaTests
     }
 
     @Test
+    @Override
     public void testRejectDataStructureDefinitionDiffusionValidation()
         throws Exception {
         // TODO Auto-generated method stub
@@ -47,18 +51,21 @@ public class DsdsMetamacServiceTest extends AbstractDbUnitJpaTests
     }
 
     @Test
+    @Override
     public void testPublishInternallyDataStructureDefinition() throws Exception {
         // TODO Auto-generated method stub
         fail("testPublishInternallyDataStructureDefinition not implemented");
     }
 
     @Test
+    @Override
     public void testPublishExternallyDataStructureDefinition() throws Exception {
         // TODO Auto-generated method stub
         fail("testPublishExternallyDataStructureDefinition not implemented");
     }
 
     @Test
+    @Override
     public void testDeleteDataStructureDefinitionVersionMetamac()
         throws Exception {
         // TODO Auto-generated method stub
@@ -66,12 +73,14 @@ public class DsdsMetamacServiceTest extends AbstractDbUnitJpaTests
     }
 
     @Test
+    @Override
     public void testVersioningDataStructureDefinition() throws Exception {
         // TODO Auto-generated method stub
         fail("testVersioningDataStructureDefinition not implemented");
     }
 
     @Test
+    @Override
     public void testCancelDataStructureDefinitionVersionMetamacValidity()
         throws Exception {
         // TODO Auto-generated method stub
@@ -79,21 +88,35 @@ public class DsdsMetamacServiceTest extends AbstractDbUnitJpaTests
             "testCancelDataStructureDefinitionVersionMetamacValidity not implemented");
     }
 
+    @Test
     @Override
     public void testRetrieveDataStructureDefinitionByUrn() throws Exception {
         // TODO Auto-generated method stub
-        
+        fail(
+        "testRetrieveDataStructureDefinitionByUrn not implemented");
     }
 
+    @Test
     @Override
     public void testRetrieveDataStructureDefinitionVersions() throws Exception {
         // TODO Auto-generated method stub
-        
+        fail(
+        "testRetrieveDataStructureDefinitionVersions not implemented");
     }
 
+    @Test
     @Override
     public void testFindDataStructureDefinitionsByCondition() throws Exception {
         // TODO Auto-generated method stub
-        
+        fail(
+        "testFindDataStructureDefinitionsByCondition not implemented");
+    }
+
+    @Test
+    @Override
+    public void testSaveDataStructureDefinition() throws Exception {
+        // TODO Auto-generated method stub
+        fail(
+        "testSaveDataStructureDefinition not implemented");
     }
 }
