@@ -10,7 +10,9 @@ import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
+import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
+import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.serviceimpl.utils.ConceptsMetamacInvocationValidator;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamacProperties;
@@ -34,27 +36,35 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
     private DataStructureDefinitionService dataStructureDefinitionService;
 
     @Autowired
-    private DsdLifecycle      dsdLifecycle;
+    private DsdLifecycle                   dsdLifecycle;
 
     public DsdsMetamacServiceImpl() {
     }
 
     @Override
-    public DataStructureDefinitionVersionMetamac saveDataStructureDefinition(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac) throws MetamacException {
+    public DataStructureDefinitionVersionMetamac createDataStructureDefinition(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion) throws MetamacException {
         // Validation
-        DsdsMetamacInvocationValidator.checkSaveDataStructureDefinition(dataStructureDefinitionVersionMetamac, null);
+        DsdsMetamacInvocationValidator.checkCreateDataStructureDefinition(dataStructureDefinitionVersion, null);
 
         // Fill metadata
-        // Create
-        if (dataStructureDefinitionVersionMetamac.getId() == null) {
-            dataStructureDefinitionVersionMetamac.setProcStatus(ItemSchemeMetamacProcStatusEnum.DRAFT);
-            dataStructureDefinitionVersionMetamac.getMaintainableArtefact().setIsExternalReference(Boolean.FALSE);
-        }
+        dataStructureDefinitionVersion.setProcStatus(ItemSchemeMetamacProcStatusEnum.DRAFT);
+        dataStructureDefinitionVersion.getMaintainableArtefact().setIsExternalReference(Boolean.FALSE);
 
         // Save conceptScheme
-        return (DataStructureDefinitionVersionMetamac) dataStructureDefinitionService.saveDsd(ctx, dataStructureDefinitionVersionMetamac);
+        return (DataStructureDefinitionVersionMetamac) dataStructureDefinitionService.createDataStructureDefinition(ctx, dataStructureDefinitionVersion);
+
     }
 
+    @Override
+    public DataStructureDefinitionVersionMetamac updateDataStructureDefinition(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion) throws MetamacException {
+        // Validation
+        DsdsMetamacInvocationValidator.checkUpdateDataStructureDefinition(dataStructureDefinitionVersion, null);
+        // ConceptsService checks data structure definition isn't final (Schemes cannot be updated when procStatus is INTERNALLY_PUBLISHED or EXTERNALLY_PUBLISHED)
+
+        // Save conceptScheme
+        return (DataStructureDefinitionVersionMetamac) dataStructureDefinitionService.updateDataStructureDefinition(ctx, dataStructureDefinitionVersion);
+    }
+    
     @Override
     public DataStructureDefinitionVersionMetamac retrieveDataStructureDefinitionByUrn(ServiceContext ctx, String urn) throws MetamacException {
         return (DataStructureDefinitionVersionMetamac) dataStructureDefinitionService.retrieveDataStructureDefinitionByUrn(ctx, urn);
@@ -62,7 +72,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
 
     @Override
     public List<DataStructureDefinitionVersionMetamac> retrieveDataStructureDefinitionVersions(ServiceContext ctx, String urn) throws MetamacException {
-        // Retrieve conceptSchemeVersions
+        // Retrieve dataStructureDefinitionVersions
         List<DataStructureDefinitionVersion> dataStructureDefinitionVersionVersions = dataStructureDefinitionService.retrieveDataStructureDefinitionVersions(ctx, urn);
 
         // Type cast to DataStructureDefinitionVersionMetamac
@@ -77,7 +87,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
     @Override
     public PagedResult<DataStructureDefinitionVersionMetamac> findDataStructureDefinitionsByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)
             throws MetamacException {
-        
+
         // Validation
         DsdsMetamacInvocationValidator.checkFindDataStructureDefinitionsByCondition(conditions, pagingParameter, null);
 
@@ -129,7 +139,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
     public DataStructureDefinitionVersionMetamac cancelDataStructureDefinitionVersionMetamacValidity(ServiceContext ctx, String urn) throws MetamacException {
 
         // Validation
-        ConceptsMetamacInvocationValidator.checkCancelConceptSchemeValidity(urn, null);
+        DsdsMetamacInvocationValidator.cancelDataStructureDefinitionVersionMetamacValidity(urn, null);
 
         // Retrieve version in specific procStatus
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = retrieveDataStructureDefinitionVersionByProcStatus(ctx, urn, ItemSchemeMetamacProcStatusEnum.EXTERNALLY_PUBLISHED);
@@ -157,15 +167,14 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
                 pagingParameter);
 
         if (dataStructureDefinitionVersionMetamacPagedResult.getValues().size() != 1) {
-            // check concept scheme exists to throws specific exception
+            // check data structure definition exists to throws specific exception
             retrieveDataStructureDefinitionByUrn(ctx, urn);
 
             // if exists, throw exception about wrong proc status
             String[] procStatusString = SrmServiceUtils.procStatusEnumToString(procStatus);
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CONCEPT_SCHEME_WRONG_PROC_STATUS).withMessageParameters(urn, procStatusString).build();
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_WRONG_PROC_STATUS).withMessageParameters(urn, procStatusString).build();
         }
         return dataStructureDefinitionVersionMetamacPagedResult.getValues().get(0);
     }
-
 
 }

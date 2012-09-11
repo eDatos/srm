@@ -31,17 +31,11 @@ public class DsdLifecycleImpl implements DsdLifecycle {
     @Autowired
     private StructureVersionRepository                      structureVersionRepository;
 
-    // @Autowired
-    // private ConceptSchemeVersionMetamacRepository conceptSchemeVersionMetamacRepository;
-
     @Autowired
     private DataStructureDefinitionVersionMetamacRepository dataStructureDefinitionVersionMetamacRepository;
 
     @Autowired
     private DataStructureDefinitionService                  dataStructureDefinitionService;
-
-    // @Autowired
-    // private ConceptMetamacRepository conceptMetamacRepository;
 
     private StructureLifecycle                              structureLifecycle = null;
 
@@ -166,22 +160,23 @@ public class DsdLifecycleImpl implements DsdLifecycle {
 
         @Override
         public List<StructureVersion> findStructureVersionsOfItemSchemeInProcStatus(ServiceContext ctx, Structure structure, ItemSchemeMetamacProcStatusEnum... procStatus) {
-            
-            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(DataStructureDefinitionVersionMetamac.class).withProperty(DataStructureDefinitionVersionMetamacProperties.structure().id())
-                .eq(structure.getId()).withProperty(DataStructureDefinitionVersionMetamacProperties.procStatus()).in((Object[]) procStatus).distinctRoot().build();
+
+            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(DataStructureDefinitionVersionMetamac.class)
+                    .withProperty(DataStructureDefinitionVersionMetamacProperties.structure().id()).eq(structure.getId()).withProperty(DataStructureDefinitionVersionMetamacProperties.procStatus())
+                    .in((Object[]) procStatus).distinctRoot().build();
             PagingParameter pagingParameter = PagingParameter.noLimits();
             PagedResult<DataStructureDefinitionVersionMetamac> dataStructureDefinitionVersionMetamac = dataStructureDefinitionVersionMetamacRepository.findByCondition(conditions, pagingParameter);
-            return conceptSchemeMetamacToItemScheme(dataStructureDefinitionVersionMetamac.getValues());
+            return dataStructureDefinitionMetamacVersionsToStructureVersions(dataStructureDefinitionVersionMetamac.getValues());
         }
 
         /**********************************************************************
-         *  PRIVATES
+         * PRIVATES
          **********************************************************************/
         private DataStructureDefinitionVersionMetamac getDataStructureDefinitionVersionMetamac(StructureVersion structureVersion) {
             return (DataStructureDefinitionVersionMetamac) structureVersion;
         }
-        
-        private List<StructureVersion> conceptSchemeMetamacToItemScheme(List<DataStructureDefinitionVersionMetamac> dataStructureDefinitionVersions) {
+
+        private List<StructureVersion> dataStructureDefinitionMetamacVersionsToStructureVersions(List<DataStructureDefinitionVersionMetamac> dataStructureDefinitionVersions) {
             List<StructureVersion> structureVersions = new ArrayList<StructureVersion>();
             for (DataStructureDefinitionVersionMetamac dataStructureVersion : dataStructureDefinitionVersions) {
                 structureVersions.add((StructureVersion) dataStructureVersion);
