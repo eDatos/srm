@@ -112,11 +112,18 @@ public class DsdsMetamacServiceTest extends AbstractDbUnitJpaTests
         "testFindDataStructureDefinitionsByCondition not implemented");
     }
 
-    @Test
     @Override
-    public void testSaveDataStructureDefinition() throws Exception {
+    public void testCreateDataStructureDefinition() throws Exception {
         // TODO Auto-generated method stub
         fail(
-        "testSaveDataStructureDefinition not implemented");
+        "testCreateDataStructureDefinition not implemented");
     }
+
+    @Override
+    public void testUpdateDataStructureDefinition() throws Exception {
+        // TODO Auto-generated method stub
+        fail(
+        "testUpdateDataStructureDefinition not implemented");
+    }
+
 }

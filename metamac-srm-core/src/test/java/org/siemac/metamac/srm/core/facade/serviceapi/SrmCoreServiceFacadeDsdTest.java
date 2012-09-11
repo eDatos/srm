@@ -96,8 +96,8 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
     @Test
     public void testSaveDsd() throws Exception {
 
-        // Save ****************
-        DataStructureDefinitionDto dataStructureDefinitionDto = srmCoreServiceFacade.saveDsd(getServiceContext(), SrmDtoMocks.createDdsDTO());
+        // Create ****************
+        DataStructureDefinitionDto dataStructureDefinitionDto = srmCoreServiceFacade.createDataStructureDefinition(getServiceContext(), SrmDtoMocks.createDdsDTO());
 
         assertNotNull(dataStructureDefinitionDto.getId());
 
@@ -118,7 +118,7 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
 
         dataStructureDefinitionDto.setDescription(null);
 
-        dataStructureDefinitionDto = srmCoreServiceFacade.saveDsd(getServiceContext(), dataStructureDefinitionDto);
+        dataStructureDefinitionDto = srmCoreServiceFacade.updateDataStructureDefinition(getServiceContext(), dataStructureDefinitionDto);
 
         assertTrue(dataStructureDefinitionDto.getName().getTexts().iterator().next().getLabel().contains("CHANGED"));
         assertNull(dataStructureDefinitionDto.getDescription());
@@ -127,7 +127,7 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
     @Test
     public void testRemoveLabel() throws Exception {
         // Remove Label --> Dont' save ********************
-        DataStructureDefinitionDto dataStructureDefinitionDto = srmCoreServiceFacade.saveDsd(getServiceContext(), SrmDtoMocks.createDdsDTO());
+        DataStructureDefinitionDto dataStructureDefinitionDto = srmCoreServiceFacade.createDataStructureDefinition(getServiceContext(), SrmDtoMocks.createDdsDTO());
         InternationalStringDto name = dataStructureDefinitionDto.getName();
     
         LocalisedStringDto localisedStringDto = name.getTexts().iterator().next();
@@ -136,7 +136,7 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
         dataStructureDefinitionDto.setName(name);
     
         try {
-            dataStructureDefinitionDto = srmCoreServiceFacade.saveDsd(getServiceContext(), dataStructureDefinitionDto);
+            dataStructureDefinitionDto = srmCoreServiceFacade.updateDataStructureDefinition(getServiceContext(), dataStructureDefinitionDto);
             fail("");
         } catch (Exception e) {
         }
@@ -145,7 +145,7 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
     @Test
     public void testCreateDsdVersion() throws Exception {
         // Save
-        DataStructureDefinitionDto dataStructureDefinitionDto = srmCoreServiceFacade.saveDsd(getServiceContext(), SrmDtoMocks.createDdsDTO());
+        DataStructureDefinitionDto dataStructureDefinitionDto = srmCoreServiceFacade.createDataStructureDefinition(getServiceContext(), SrmDtoMocks.createDdsDTO());
         assertNotNull(dataStructureDefinitionDto);
 
         // Create DSD Version
@@ -178,7 +178,7 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
         MetamacCriteriaResult<DataStructureDefinitionDto> result = srmCoreServiceFacade.findDsdByCondition(getServiceContext(), null);
         int previousSize = result.getResults().size();
         
-        srmCoreServiceFacade.saveDsd(getServiceContext(), SrmDtoMocks.createDdsDTO());
+        srmCoreServiceFacade.createDataStructureDefinition(getServiceContext(), SrmDtoMocks.createDdsDTO());
 
         result = srmCoreServiceFacade.findDsdByCondition(getServiceContext(), null);
         assertEquals(previousSize + 1, result.getResults().size());
@@ -190,7 +190,7 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
 
     @Test
     public void testFindDescriptorsForDsd() throws Exception {
-        DataStructureDefinitionDto dataStructureDefinitionDto = srmCoreServiceFacade.saveDsd(getServiceContext(), SrmDtoMocks.createDdsDTO());
+        DataStructureDefinitionDto dataStructureDefinitionDto = srmCoreServiceFacade.createDataStructureDefinition(getServiceContext(), SrmDtoMocks.createDdsDTO());
 
         // Save DimensionDescriptor
         DescriptorDto descriptorDto = srmCoreServiceFacade.saveDescriptorForDsd(getServiceContext(), dataStructureDefinitionDto.getId(), SrmDtoMocks.createDimensionDescriptorDto());
@@ -203,7 +203,7 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
 
     @Test
     public void testFindDescriptorForDsd() throws Exception {
-        DataStructureDefinitionDto dataStructureDefinitionDto = srmCoreServiceFacade.saveDsd(getServiceContext(), SrmDtoMocks.createDdsDTO());
+        DataStructureDefinitionDto dataStructureDefinitionDto = srmCoreServiceFacade.createDataStructureDefinition(getServiceContext(), SrmDtoMocks.createDdsDTO());
 
         // Save DimensionDescriptor
         DescriptorDto descriptorDto = srmCoreServiceFacade.saveDescriptorForDsd(getServiceContext(), dataStructureDefinitionDto.getId(), SrmDtoMocks.createDimensionDescriptorDto());
@@ -267,7 +267,7 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
     public static DataStructureDefinitionDto saveDescriptorForDsd(ServiceContext ctx, SrmCoreServiceFacade srmCoreServiceFacade) throws MetamacException {
         DataStructureDefinitionDto dataStructureDefinitionDto = SrmDtoMocks.createDdsDTO();
 
-        dataStructureDefinitionDto = srmCoreServiceFacade.saveDsd(ctx, dataStructureDefinitionDto);
+        dataStructureDefinitionDto = srmCoreServiceFacade.createDataStructureDefinition(ctx, dataStructureDefinitionDto);
 
         // Save DimensionDescriptors
         DescriptorDto descriptorDto = srmCoreServiceFacade.saveDescriptorForDsd(ctx, dataStructureDefinitionDto.getId(), SrmDtoMocks.createDimensionDescriptorDto());
@@ -294,7 +294,7 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
 
     @Test
     public void testCreateDescriptorAndThenAssociateRepresentation() throws Exception {
-        DataStructureDefinitionDto dataStructureDefinitionDto = srmCoreServiceFacade.saveDsd(getServiceContext(), SrmDtoMocks.createDdsDTO());
+        DataStructureDefinitionDto dataStructureDefinitionDto = srmCoreServiceFacade.createDataStructureDefinition(getServiceContext(), SrmDtoMocks.createDdsDTO());
 
         // Save PrimaryMeasure
         ComponentDto componentDto = srmCoreServiceFacade.saveComponentForDsd(getServiceContext(), dataStructureDefinitionDto.getId(), SrmDtoMocks.createPrimaryMeasureDto(srmCoreServiceFacade),
@@ -323,7 +323,7 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
 
     @Test
     public void testDeleteDescriptorForDsd() throws Exception {
-        DataStructureDefinitionDto dataStructureDefinitionDto = srmCoreServiceFacade.saveDsd(getServiceContext(), SrmDtoMocks.createDdsDTO());
+        DataStructureDefinitionDto dataStructureDefinitionDto = srmCoreServiceFacade.createDataStructureDefinition(getServiceContext(), SrmDtoMocks.createDdsDTO());
 
         // Save DimensionDescriptors
         DescriptorDto descriptorDto = srmCoreServiceFacade.saveDescriptorForDsd(getServiceContext(), dataStructureDefinitionDto.getId(), SrmDtoMocks.createDimensionDescriptorDto());
@@ -337,7 +337,7 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
 
     @Test
     public void testSaveComponentForDsd() throws Exception {
-        DataStructureDefinitionDto dataStructureDefinitionDto = srmCoreServiceFacade.saveDsd(getServiceContext(), SrmDtoMocks.createDdsDTO());
+        DataStructureDefinitionDto dataStructureDefinitionDto = srmCoreServiceFacade.createDataStructureDefinition(getServiceContext(), SrmDtoMocks.createDdsDTO());
 
         ComponentDto componentDto = srmCoreServiceFacade.saveComponentForDsd(getServiceContext(), dataStructureDefinitionDto.getId(), SrmDtoMocks.createDimensionDtos(srmCoreServiceFacade).get(0),
                 TypeComponentList.DIMENSION_DESCRIPTOR);
@@ -352,7 +352,7 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
 
     @Test
     public void testSaveComponentForDsdWithDescriptorExist() throws Exception {
-        DataStructureDefinitionDto dataStructureDefinitionDto = srmCoreServiceFacade.saveDsd(getServiceContext(), SrmDtoMocks.createDdsDTO());
+        DataStructureDefinitionDto dataStructureDefinitionDto = srmCoreServiceFacade.createDataStructureDefinition(getServiceContext(), SrmDtoMocks.createDdsDTO());
 
         ComponentDto componentDto = srmCoreServiceFacade.saveComponentForDsd(getServiceContext(), dataStructureDefinitionDto.getId(), SrmDtoMocks.createDimensionDtos(srmCoreServiceFacade).get(0),
                 TypeComponentList.DIMENSION_DESCRIPTOR);
@@ -372,7 +372,7 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
 
     @Test
     public void testSaveComponentForDsdWithDescriptorAndComponentExist() throws Exception {
-        DataStructureDefinitionDto dataStructureDefinitionDto = srmCoreServiceFacade.saveDsd(getServiceContext(), SrmDtoMocks.createDdsDTO());
+        DataStructureDefinitionDto dataStructureDefinitionDto = srmCoreServiceFacade.createDataStructureDefinition(getServiceContext(), SrmDtoMocks.createDdsDTO());
 
         ComponentDto componentDto = srmCoreServiceFacade.saveComponentForDsd(getServiceContext(), dataStructureDefinitionDto.getId(), SrmDtoMocks.createDimensionDtos(srmCoreServiceFacade).get(0),
                 TypeComponentList.DIMENSION_DESCRIPTOR);
@@ -391,7 +391,7 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
 
     @Test
     public void testDeleteComponentForDsd() throws Exception {
-        DataStructureDefinitionDto dataStructureDefinitionDto = srmCoreServiceFacade.saveDsd(getServiceContext(), SrmDtoMocks.createDdsDTO());
+        DataStructureDefinitionDto dataStructureDefinitionDto = srmCoreServiceFacade.createDataStructureDefinition(getServiceContext(), SrmDtoMocks.createDdsDTO());
 
         // SAVE COMPONENT
         ComponentDto componentDto = srmCoreServiceFacade.saveComponentForDsd(getServiceContext(), dataStructureDefinitionDto.getId(), SrmDtoMocks.createDimensionDtos(srmCoreServiceFacade).get(0),
