@@ -38,7 +38,15 @@ Application SrmCore {
 			 @return                                                                            
 			 @throws org.siemac.metamac.core.common.exception.MetamacException
 			"
-       		@DataStructureDefinitionDto saveDsd(@DataStructureDefinitionDto dataStructureDefinitionDto) throws MetamacException;
+       		@DataStructureDefinitionDto createDataStructureDefinition(@DataStructureDefinitionDto dataStructureDefinitionDto) throws MetamacException;
+       		
+       		"          
+			 @param ctx  
+			 @param dataStructureDefinitionDto                                                  
+			 @return                                                                            
+			 @throws org.siemac.metamac.core.common.exception.MetamacException
+			"
+       		@DataStructureDefinitionDto updateDataStructureDefinition(@DataStructureDefinitionDto dataStructureDefinitionDto) throws MetamacException;
        		
 			"       		                                                                                    
 			 @param ctx                                                                          

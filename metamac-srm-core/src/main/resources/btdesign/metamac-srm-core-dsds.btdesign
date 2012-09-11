@@ -16,8 +16,10 @@ Application DsdsMetamac {
 			
 			> @DataStructureDefinitionVersionMetamacRepository
     		
-    		"Create and Update DataStructureDefinition"
-          	@DataStructureDefinitionVersionMetamac saveDataStructureDefinition(@DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac) throws MetamacException;
+    		"Creates DataStructureDefinition"
+			@DataStructureDefinitionVersionMetamac createDataStructureDefinition(@DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion) throws MetamacException;
+			"Updates DataStructureDefinition"
+			@DataStructureDefinitionVersionMetamac updateDataStructureDefinition(@DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion) throws MetamacException;
     		"Retrieves data structure definition by urn"
 			@DataStructureDefinitionVersionMetamac retrieveDataStructureDefinitionByUrn(String urn) throws MetamacException;
 			"Retrieves all data structure definition versions"
