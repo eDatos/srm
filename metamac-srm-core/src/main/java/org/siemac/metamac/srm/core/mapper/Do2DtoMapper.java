@@ -16,21 +16,22 @@ import com.arte.statistic.sdmx.srm.core.base.domain.ComponentList;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DataStructureDefinitionVersion;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentListDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionExtendDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeDozerCopyMode;
 
 public interface Do2DtoMapper {
 
+    //TODO cambiar a tipos metamac
     public <U extends ComponentDto> U componentToComponentDto(TypeDozerCopyMode typeDozerCopyMode, Component component);
-
     public <U extends ComponentListDto> U componentListToComponentListDto(TypeDozerCopyMode typeDozerCopyMode, ComponentList componentList);
 
-    public DataStructureDefinitionDto dataStructureDefinitionToDataStructureDefinitionDto(TypeDozerCopyMode typeDozerCopyMode, DataStructureDefinitionVersion dataStructureDefinitionVersion);
-
+    public DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDoToDto(TypeDozerCopyMode typeDozerCopyMode, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac);
+    public DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDoToDto(DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac);
+    
     public DataStructureDefinitionExtendDto dataStructureDefinitionToDataStructureDefinitionExtendDto(TypeDozerCopyMode typeDozerCopyMode, DataStructureDefinitionVersion dataStructureDefinitionVersion);
 
+    
     public ConceptSchemeMetamacDto conceptSchemeMetamacDoToDto(ConceptSchemeVersionMetamac conceptSchemeVersion);
     public List<ConceptSchemeMetamacDto> conceptSchemeMetamacDoListToDtoList(List<ConceptSchemeVersionMetamac> conceptSchemeVersions);
 
@@ -40,6 +41,4 @@ public interface Do2DtoMapper {
 
     public ConceptTypeDto conceptTypeDoToDto(ConceptType conceptType);
     public List<ConceptTypeDto> conceptTypeDoListToConceptTypeDtoList(List<ConceptType> conceptTypes);
-
-    public DataStructureDefinitionMetamacDto dataStructureDefinitionVersionMetamacDoToDto(DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac);
 }

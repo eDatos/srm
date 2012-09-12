@@ -30,13 +30,16 @@ import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptTypeDto;
 import org.siemac.metamac.srm.core.concept.exception.ConceptMetamacNotFoundException;
 import org.siemac.metamac.srm.core.concept.exception.ConceptSchemeVersionMetamacNotFoundException;
+import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
+import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamacRepository;
+import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
+import org.siemac.metamac.srm.core.dsd.exception.DataStructureDefinitionVersionMetamacNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Component;
 import com.arte.statistic.sdmx.srm.core.base.domain.ComponentList;
 import com.arte.statistic.sdmx.srm.core.common.error.ServiceExceptionParametersInternal;
-import com.arte.statistic.sdmx.srm.core.structure.domain.DataStructureDefinitionVersion;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentListDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;
@@ -62,6 +65,9 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
 
     @Autowired
     private ConceptTypeRepository                                conceptTypeRepository;
+    
+    @Autowired
+    private DataStructureDefinitionVersionMetamacRepository                dataStructureDefinitionVersionMetamacRepository;
 
     // ------------------------------------------------------------
     // DSDs
@@ -78,8 +84,32 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
     }
 
     @Override
-    public DataStructureDefinitionVersion dataStructureDefinitionDtoToDataStructureDefinition(ServiceContext ctx, DataStructureDefinitionDto dataStructureDefinitionDto) throws MetamacException {
-        return dto2DoMapperSdmxSrm.dataStructureDefinitionDtoToDataStructureDefinition(ctx, dataStructureDefinitionDto);
+    public DataStructureDefinitionVersionMetamac dataStructureDefinitionDtoToDataStructureDefinition(ServiceContext ctx, DataStructureDefinitionMetamacDto source) throws MetamacException {
+        if (source == null) {
+            return null;
+        }
+
+        // If exists, retrieves existing entity. Otherwise, creates new entity.
+        DataStructureDefinitionVersionMetamac target = null;
+        if (source.getId() == null) {
+            target = new DataStructureDefinitionVersionMetamac();
+        }
+        else {
+            try {
+                target = dataStructureDefinitionVersionMetamacRepository.findById(source.getId());
+            } catch (DataStructureDefinitionVersionMetamacNotFoundException e) {
+                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SRM_SEARCH_NOT_FOUND).withMessageParameters(ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION)
+                        .withLoggedLevel(ExceptionLevelEnum.ERROR).build();
+            }
+            OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersion());
+        }
+        
+        // Modifiable attributes
+        target.setProcStatus(source.getProcStatus());
+        
+        dto2DoMapperSdmxSrm.dataStructureDefinitionDtoToDataStructureDefinition(ctx, source, target);
+        
+        return target;
     }
 
     // ------------------------------------------------------------

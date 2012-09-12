@@ -10,10 +10,7 @@ import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
-import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
-import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
-import org.siemac.metamac.srm.core.concept.serviceimpl.utils.ConceptsMetamacInvocationValidator;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamacProperties;
 import org.siemac.metamac.srm.core.dsd.serviceimpl.utils.DsdsMetamacInvocationValidator;
@@ -22,8 +19,11 @@ import org.siemac.metamac.srm.core.serviceimpl.SrmServiceUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.Component;
+import com.arte.statistic.sdmx.srm.core.base.domain.ComponentList;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DataStructureDefinitionVersion;
 import com.arte.statistic.sdmx.srm.core.structure.serviceapi.DataStructureDefinitionService;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponentList;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
 
 /**
@@ -100,6 +100,28 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
     }
 
     @Override
+    public ComponentList saveDescriptorForDataStructureDefinition(ServiceContext ctx, String dataStructureDefinitionVersionUrn, ComponentList componentList) throws MetamacException {
+        return dataStructureDefinitionService.saveDescriptorForDataStructureDefinition(ctx, dataStructureDefinitionVersionUrn, componentList);
+    }
+
+    @Override
+    public void deleteDescriptorForDataStructureDefinition(ServiceContext ctx, String dataStructureDefinitionVersionUrn, ComponentList componentList) throws MetamacException {
+        dataStructureDefinitionService.deleteDescriptorForDataStructureDefinition(ctx, dataStructureDefinitionVersionUrn, componentList);
+    }
+
+    @Override
+    public Component saveComponentForDataStructureDefinition(ServiceContext ctx, String dataStructureDefinitionVersionUrn, Component component, TypeComponentList typeComponentList)
+            throws MetamacException {
+        return dataStructureDefinitionService.saveComponentForDataStructureDefinition(ctx, dataStructureDefinitionVersionUrn, component, typeComponentList);
+    }
+
+    @Override
+    public void deleteComponentForDataStructureDefinition(ServiceContext ctx, String dataStructureDefinitionVersionUrn, Component component, TypeComponentList typeComponentList)
+            throws MetamacException {
+        dataStructureDefinitionService.deleteComponentForDataStructureDefinition(ctx, dataStructureDefinitionVersionUrn, component, typeComponentList);
+    }
+
+    @Override
     public DataStructureDefinitionVersionMetamac sendDataStructureDefinitionToProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
         return (DataStructureDefinitionVersionMetamac) dsdLifecycle.sendToProductionValidation(ctx, urn);
     }
@@ -109,34 +131,40 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         return (DataStructureDefinitionVersionMetamac) dsdLifecycle.sendToDiffusionValidation(ctx, urn);
     }
 
+    @Override
     public DataStructureDefinitionVersionMetamac rejectDataStructureDefinitionProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
         return (DataStructureDefinitionVersionMetamac) dsdLifecycle.rejectProductionValidation(ctx, urn);
     }
 
+    @Override
     public DataStructureDefinitionVersionMetamac rejectDataStructureDefinitionDiffusionValidation(ServiceContext ctx, String urn) throws MetamacException {
         return (DataStructureDefinitionVersionMetamac) dsdLifecycle.rejectDiffusionValidation(ctx, urn);
     }
 
+    @Override
     public DataStructureDefinitionVersionMetamac publishInternallyDataStructureDefinition(ServiceContext ctx, String urn) throws MetamacException {
         return (DataStructureDefinitionVersionMetamac) dsdLifecycle.publishInternally(ctx, urn);
     }
 
     // TODO validTo, validFrom: ¿rellenar cuando el artefacto no sea del ISTAC? Pendiente decisión del ISTAC.
+    @Override
     public DataStructureDefinitionVersionMetamac publishExternallyDataStructureDefinition(ServiceContext ctx, String urn) throws MetamacException {
         return (DataStructureDefinitionVersionMetamac) dsdLifecycle.publishExternally(ctx, urn);
     }
 
-    public void deleteDataStructureDefinitionVersionMetamac(ServiceContext ctx, String urn) throws MetamacException {
+    @Override
+    public void deleteDataStructureDefinition(ServiceContext ctx, String urn) throws MetamacException {
         dataStructureDefinitionService.deleteDataStructureDefinition(ctx, urn);
     }
 
+    @Override
     public DataStructureDefinitionVersionMetamac versioningDataStructureDefinition(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("versioningDataStructureDefinition not implemented");
-
     }
 
-    public DataStructureDefinitionVersionMetamac cancelDataStructureDefinitionVersionMetamacValidity(ServiceContext ctx, String urn) throws MetamacException {
+    @Override
+    public DataStructureDefinitionVersionMetamac cancelDataStructureDefinitionValidity(ServiceContext ctx, String urn) throws MetamacException {
 
         // Validation
         DsdsMetamacInvocationValidator.cancelDataStructureDefinitionVersionMetamacValidity(urn, null);

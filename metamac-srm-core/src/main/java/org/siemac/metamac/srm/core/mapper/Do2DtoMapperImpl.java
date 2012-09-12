@@ -21,7 +21,6 @@ import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DataStructureDefinitionVersion;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentListDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionExtendDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeDozerCopyMode;
@@ -48,21 +47,28 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
     }
 
     @Override
-    public DataStructureDefinitionDto dataStructureDefinitionToDataStructureDefinitionDto(TypeDozerCopyMode typeDozerCopyMode, DataStructureDefinitionVersion dataStructureDefinitionVersion) {
-        return do2DtoMapperSdmxSrm.dataStructureDefinitionToDataStructureDefinitionDto(typeDozerCopyMode, dataStructureDefinitionVersion);
-    }
-
-    @Override
-    public DataStructureDefinitionExtendDto dataStructureDefinitionToDataStructureDefinitionExtendDto(TypeDozerCopyMode typeDozerCopyMode, DataStructureDefinitionVersion dataStructureDefinitionVersion) {
-        return do2DtoMapperSdmxSrm.dataStructureDefinitionToDataStructureDefinitionExtendDto(typeDozerCopyMode, dataStructureDefinitionVersion);
-    }
-
-    @Override
-    public DataStructureDefinitionMetamacDto dataStructureDefinitionVersionMetamacDoToDto(DataStructureDefinitionVersionMetamac source) {
+    public DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDoToDto(TypeDozerCopyMode typeDozerCopyMode, DataStructureDefinitionVersionMetamac source) {
         if (source == null) {
             return null;
         }
         
+        DataStructureDefinitionMetamacDto target = dataStructureDefinitionVersionMetamacDoToDto(source, typeDozerCopyMode);
+        
+        return target;
+    }
+
+    @Override
+    public DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDoToDto(DataStructureDefinitionVersionMetamac source) {
+        if (source == null) {
+            return null;
+        }
+        
+        DataStructureDefinitionMetamacDto target = dataStructureDefinitionVersionMetamacDoToDto(source, TypeDozerCopyMode.COPY_ALL_METADATA);
+        
+        return target;
+    }
+
+    private DataStructureDefinitionMetamacDto dataStructureDefinitionVersionMetamacDoToDto(DataStructureDefinitionVersionMetamac source, TypeDozerCopyMode typeDozerCopyMode) {
         DataStructureDefinitionMetamacDto target = new DataStructureDefinitionMetamacDto();
         target.setProcStatus(source.getProcStatus());
         target.setProductionValidationDate(CoreCommonUtil.transformDateTimeToDate(source.getProductionValidationDate()));
@@ -74,9 +80,13 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
         target.setExternalPublicationDate(CoreCommonUtil.transformDateTimeToDate(source.getExternalPublicationDate()));
         target.setExternalPublicationUser(source.getExternalPublicationUser());
         
-        do2DtoMapperSdmxSrm.dataStructureDefinitionToDataStructureDefinitionDto(TypeDozerCopyMode.COPY_ALL_METADATA, source);
-        
-        return null;
+        do2DtoMapperSdmxSrm.dataStructureDefinitionToDataStructureDefinitionDto(typeDozerCopyMode, source);
+        return target;
+    }
+    
+    @Override
+    public DataStructureDefinitionExtendDto dataStructureDefinitionToDataStructureDefinitionExtendDto(TypeDozerCopyMode typeDozerCopyMode, DataStructureDefinitionVersion dataStructureDefinitionVersion) {
+        return do2DtoMapperSdmxSrm.dataStructureDefinitionToDataStructureDefinitionExtendDto(typeDozerCopyMode, dataStructureDefinitionVersion);
     }
     
     // ------------------------------------------------------------

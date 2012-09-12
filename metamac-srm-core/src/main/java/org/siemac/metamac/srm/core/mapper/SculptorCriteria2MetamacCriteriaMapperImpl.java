@@ -9,12 +9,11 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
+import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
+import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
-
-import com.arte.statistic.sdmx.srm.core.structure.domain.DataStructureDefinitionVersion;
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;
 
 @Component
 public class SculptorCriteria2MetamacCriteriaMapperImpl implements SculptorCriteria2MetamacCriteriaMapper {
@@ -27,8 +26,16 @@ public class SculptorCriteria2MetamacCriteriaMapperImpl implements SculptorCrite
     private com.arte.statistic.sdmx.srm.core.mapper.SculptorCriteria2MetamacCriteriaMapper sculptorCriteria2MetamacCriteriaMapper;
 
     @Override
-    public MetamacCriteriaResult<DataStructureDefinitionDto> pageResultToMetamacCriteriaResultDataStructureDefinition(PagedResult<DataStructureDefinitionVersion> source, Integer pageSize) {
-        return sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultDataStructureDefinition(source, pageSize);
+    public MetamacCriteriaResult<DataStructureDefinitionMetamacDto> pageResultToMetamacCriteriaResultDataStructureDefinition(PagedResult<DataStructureDefinitionVersionMetamac> source, Integer pageSize) {
+        MetamacCriteriaResult<DataStructureDefinitionMetamacDto> target = new MetamacCriteriaResult<DataStructureDefinitionMetamacDto>();
+        target.setPaginatorResult(SculptorCriteria2MetamacCriteria.sculptorResultToMetamacCriteriaResult(source, pageSize));
+        if (source.getValues() != null) {
+            target.setResults(new ArrayList<DataStructureDefinitionMetamacDto>());
+            for (DataStructureDefinitionVersionMetamac scheme : source.getValues()) {
+                target.getResults().add(do2DtoMapper.dataStructureDefinitionMetamacDoToDto(scheme));
+            }
+        }
+        return target;
     }
 
     @Override
