@@ -18,6 +18,7 @@ import org.siemac.metamac.core.common.dto.LocalisedStringDto;
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.util.shared.VersionUtil;
+import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 
 import com.arte.statistic.sdmx.srm.core.base.serviceapi.utils.BaseDoMocks;
@@ -55,11 +56,11 @@ public class SrmDtoMocks {
      * 
      * @return
      */
-    public static DataStructureDefinitionDto createDdsDTO() {
-        DataStructureDefinitionDto dataStructureDefinitionDto = new DataStructureDefinitionDto();
+    public static DataStructureDefinitionMetamacDto createDdsDTO() {
+        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = new DataStructureDefinitionMetamacDto();
 
         // Required --------
-        dataStructureDefinitionDto.setCode("DSD_" + RandomStringUtils.randomAlphabetic(10));
+        dataStructureDefinitionMetamacDto.setCode("DSD_" + RandomStringUtils.randomAlphabetic(10));
 
         // Name
         InternationalStringDto name = new InternationalStringDto();
@@ -73,22 +74,22 @@ public class SrmDtoMocks {
 
         name.addText(name_en);
         name.addText(name_es);
-        dataStructureDefinitionDto.setName(name);
+        dataStructureDefinitionMetamacDto.setName(name);
 
         // Maintainer
-        dataStructureDefinitionDto.setMaintainer(MetamacMocks.mockExternalItemDto(BaseDoMocks.mockAgencyUrn(), TypeExternalArtefactsEnum.AGENCY));
+        dataStructureDefinitionMetamacDto.setMaintainer(MetamacMocks.mockExternalItemDto(BaseDoMocks.mockAgencyUrn(), TypeExternalArtefactsEnum.AGENCY));
 
         // Other --------
-        dataStructureDefinitionDto.setServiceURL("test");
+        dataStructureDefinitionMetamacDto.setServiceURL("test");
 
         // Version Logic
-        dataStructureDefinitionDto.setVersionLogic(VersionUtil.VERSION_INITIAL_VERSION);
+        dataStructureDefinitionMetamacDto.setVersionLogic(VersionUtil.VERSION_INITIAL_VERSION);
 
         // Audit
-        dataStructureDefinitionDto.setCreatedBy(serviceContext.getApplicationId());
-        dataStructureDefinitionDto.setCreatedDate(new Date());
+        dataStructureDefinitionMetamacDto.setCreatedBy(serviceContext.getApplicationId());
+        dataStructureDefinitionMetamacDto.setCreatedDate(new Date());
 
-        return dataStructureDefinitionDto;
+        return dataStructureDefinitionMetamacDto;
     }
 
     /**
@@ -164,7 +165,7 @@ public class SrmDtoMocks {
      * @return
      * @throws ApplicationException
      */
-    public static RelationshipDto createAttributeRelationship(SrmCoreServiceFacade srmCoreServiceFacade, Long dataStructureDefinitionId) throws MetamacException {
+    public static RelationshipDto createAttributeRelationship(SrmCoreServiceFacade srmCoreServiceFacade, String urnDsd) throws MetamacException {
 
         RelationshipDto relationshipDto = new RelationshipDto();
 
@@ -173,7 +174,7 @@ public class SrmDtoMocks {
 
         // For Group
         // Save GroupDimensionDescriptors
-        DescriptorDto descriptorDto4 = srmCoreServiceFacade.saveDescriptorForDsd(getServiceContext(), dataStructureDefinitionId, createGroupDimensionDescriptorDto());
+        DescriptorDto descriptorDto4 = srmCoreServiceFacade.saveDescriptorForDsd(getServiceContext(), urnDsd, createGroupDimensionDescriptorDto());
 
         relationshipDto.setGroupKeyForGroupRelationship(descriptorDto4);
 
@@ -186,14 +187,14 @@ public class SrmDtoMocks {
      * @return
      * @throws ApplicationException
      */
-    public static List<DataAttributeDto> createDataAttribute(SrmCoreServiceFacade srmCoreServiceFacade, Long dataStructureDefinitionId) throws MetamacException {
+    public static List<DataAttributeDto> createDataAttribute(SrmCoreServiceFacade srmCoreServiceFacade, String urnDsd) throws MetamacException {
 
         List<ExternalItemDto> conceptDtos = srmCoreServiceFacade.findConcepts(getServiceContext(), null);
 
         DataAttributeDto dataAttributeDto1 = new DataAttributeDto();
         // Required
         dataAttributeDto1.setCptIdRef(conceptDtos.get(0));
-        dataAttributeDto1.setRelateTo(createAttributeRelationship(srmCoreServiceFacade, dataStructureDefinitionId));
+        dataAttributeDto1.setRelateTo(createAttributeRelationship(srmCoreServiceFacade, urnDsd));
         dataAttributeDto1.setTypeComponent(TypeComponent.DATA_ATTRIBUTE);
         dataAttributeDto1.setTypeDataAttribute(TypeDataAttribute.DATA_ATTRIBUTE);
         dataAttributeDto1.setUsageStatus(UsageStatus.CONDITIONAL);
@@ -204,7 +205,7 @@ public class SrmDtoMocks {
         DataAttributeDto dataAttributeDto2 = new DataAttributeDto();
         // Required
         dataAttributeDto2.setCptIdRef(conceptDtos.get(0));
-        dataAttributeDto2.setRelateTo(createAttributeRelationship(srmCoreServiceFacade, dataStructureDefinitionId));
+        dataAttributeDto2.setRelateTo(createAttributeRelationship(srmCoreServiceFacade, urnDsd));
         dataAttributeDto2.setTypeComponent(TypeComponent.DATA_ATTRIBUTE);
         dataAttributeDto2.setTypeDataAttribute(TypeDataAttribute.REPORTING_YEAR_START_DAY);
         dataAttributeDto2.setUsageStatus(UsageStatus.CONDITIONAL);
@@ -215,7 +216,7 @@ public class SrmDtoMocks {
         DataAttributeDto dataAttributeDto3 = new DataAttributeDto();
         // Required
         dataAttributeDto3.setCptIdRef(conceptDtos.get(0));
-        dataAttributeDto3.setRelateTo(createAttributeRelationship(srmCoreServiceFacade, dataStructureDefinitionId));
+        dataAttributeDto3.setRelateTo(createAttributeRelationship(srmCoreServiceFacade, urnDsd));
         dataAttributeDto3.setTypeComponent(TypeComponent.DATA_ATTRIBUTE);
         dataAttributeDto3.setTypeDataAttribute(TypeDataAttribute.DATA_ATTRIBUTE);
         dataAttributeDto3.setUsageStatus(UsageStatus.CONDITIONAL);
