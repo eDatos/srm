@@ -1,3 +1,4 @@
+import "classpath:/btdesign/statistic-sdmx-core-base.btdesign"
 import "classpath:/btdesign/statistic-sdmx-core-structure.btdesign"
 import "classpath:/btdesign/metamac-srm-core-enum.btdesign"
 import "classpath:/btdesign/statistic-sdmx-v2_1-domain-enums.btdesign"
@@ -27,6 +28,13 @@ Application DsdsMetamac {
 			"Finds data structures by criteria"
     		PagedResult<@DataStructureDefinitionVersionMetamac> findDataStructureDefinitionsByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException;
           	
+          	@ComponentList saveDescriptorForDataStructureDefinition(String dataStructureDefinitionVersionUrn, @ComponentList componentList) throws MetamacException;
+	   		deleteDescriptorForDataStructureDefinition(String dataStructureDefinitionVersionUrn, @ComponentList componentList) throws MetamacException;
+	   
+	   		@Component saveComponentForDataStructureDefinition(String dataStructureDefinitionVersionUrn, @Component component, @TypeComponentList typeComponentList) throws MetamacException;	   
+	    	deleteComponentForDataStructureDefinition(String dataStructureDefinitionVersionUrn, @Component component, @TypeComponentList typeComponentList) throws MetamacException;
+          	
+          	
 			"Sends data structure definition to production validation"
     		@DataStructureDefinitionVersionMetamac sendDataStructureDefinitionToProductionValidation(String urn) throws MetamacException;
     		"Sends data structure definition to diffusion validation"
@@ -40,11 +48,11 @@ Application DsdsMetamac {
 	    	"Publish externally a data structure definition"
 	    	@DataStructureDefinitionVersionMetamac publishExternallyDataStructureDefinition(String urn) throws MetamacException;
 			"Deletes data structure definition version. This must be last version and no published"
-    		deleteDataStructureDefinitionVersionMetamac(String urn) throws MetamacException;
+    		deleteDataStructureDefinition(String urn) throws MetamacException;
     		"Creates a new version of a data structure definition, copying metadata from version with provided urn"
     		@DataStructureDefinitionVersionMetamac versioningDataStructureDefinition(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
     		"Cancels the data structure definition validity"
-    		@DataStructureDefinitionVersionMetamac cancelDataStructureDefinitionVersionMetamacValidity(String urn) throws MetamacException;
+    		@DataStructureDefinitionVersionMetamac cancelDataStructureDefinitionValidity(String urn) throws MetamacException;
     		
 		}
 
