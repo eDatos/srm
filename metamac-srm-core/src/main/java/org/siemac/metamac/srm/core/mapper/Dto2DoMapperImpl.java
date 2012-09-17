@@ -1,21 +1,13 @@
 package org.siemac.metamac.srm.core.mapper;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
-import org.siemac.metamac.core.common.dto.InternationalStringDto;
-import org.siemac.metamac.core.common.dto.LocalisedStringDto;
 import org.siemac.metamac.core.common.ent.domain.ExternalItem;
 import org.siemac.metamac.core.common.ent.domain.ExternalItemRepository;
-import org.siemac.metamac.core.common.ent.domain.InternationalString;
 import org.siemac.metamac.core.common.ent.domain.InternationalStringRepository;
-import org.siemac.metamac.core.common.ent.domain.LocalisedString;
 import org.siemac.metamac.core.common.exception.ExceptionLevelEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
-import org.siemac.metamac.core.common.serviceimpl.utils.ValidationUtils;
 import org.siemac.metamac.core.common.util.OptimisticLockingUtils;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
@@ -42,10 +34,9 @@ import com.arte.statistic.sdmx.srm.core.base.domain.ComponentList;
 import com.arte.statistic.sdmx.srm.core.common.error.ServiceExceptionParametersInternal;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentListDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;
 
 @org.springframework.stereotype.Component("dto2DoMapper")
-public class Dto2DoMapperImpl implements Dto2DoMapper {
+public class Dto2DoMapperImpl extends com.arte.statistic.sdmx.srm.core.mapper.Dto2DoMapperImpl implements Dto2DoMapper {
 
     @Autowired
     private InternationalStringRepository                        internationalStringRepository;
@@ -167,15 +158,15 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         }
 
         // Modifiable attributes
-        target.setPluralName(internationalStringToDo(ctx, source.getPluralName(), target.getPluralName(), ServiceExceptionParameters.CONCEPT_PLURAL_NAME));
-        target.setAcronym(internationalStringToDo(ctx, source.getAcronym(), target.getAcronym(), ServiceExceptionParameters.CONCEPT_ACRONYM));
-        target.setDescriptionSource(internationalStringToDo(ctx, source.getDescriptionSource(), target.getDescriptionSource(), ServiceExceptionParameters.CONCEPT_DESCRIPTION_SOURCE));
-        target.setContext(internationalStringToDo(ctx, source.getContext(), target.getContext(), ServiceExceptionParameters.CONCEPT_CONTEXT));
-        target.setDocMethod(internationalStringToDo(ctx, source.getDocMethod(), target.getDocMethod(), ServiceExceptionParameters.CONCEPT_DOC_METHOD));
+        target.setPluralName(internationalStringToEntity(ctx, source.getPluralName(), target.getPluralName(), ServiceExceptionParameters.CONCEPT_PLURAL_NAME));
+        target.setAcronym(internationalStringToEntity(ctx, source.getAcronym(), target.getAcronym(), ServiceExceptionParameters.CONCEPT_ACRONYM));
+        target.setDescriptionSource(internationalStringToEntity(ctx, source.getDescriptionSource(), target.getDescriptionSource(), ServiceExceptionParameters.CONCEPT_DESCRIPTION_SOURCE));
+        target.setContext(internationalStringToEntity(ctx, source.getContext(), target.getContext(), ServiceExceptionParameters.CONCEPT_CONTEXT));
+        target.setDocMethod(internationalStringToEntity(ctx, source.getDocMethod(), target.getDocMethod(), ServiceExceptionParameters.CONCEPT_DOC_METHOD));
         target.setSdmxRelatedArtefact(source.getSdmxRelatedArtefact());
         target.setType(conceptTypeDtoToDo(source.getType()));
-        target.setDerivation(internationalStringToDo(ctx, source.getDerivation(), target.getDerivation(), ServiceExceptionParameters.CONCEPT_DERIVATION));
-        target.setLegalActs(internationalStringToDo(ctx, source.getLegalActs(), target.getLegalActs(), ServiceExceptionParameters.CONCEPT_LEGAL_ACTS));
+        target.setDerivation(internationalStringToEntity(ctx, source.getDerivation(), target.getDerivation(), ServiceExceptionParameters.CONCEPT_DERIVATION));
+        target.setLegalActs(internationalStringToEntity(ctx, source.getLegalActs(), target.getLegalActs(), ServiceExceptionParameters.CONCEPT_LEGAL_ACTS));
 
         if (source.getConceptExtendsUrn() != null) {
             ConceptMetamac conceptExtends = conceptMetamacRepository.findByUrn(source.getConceptExtendsUrn());
@@ -227,82 +218,10 @@ public class Dto2DoMapperImpl implements Dto2DoMapper {
         target.setUrn(source.getUrn());
         target.setType(source.getType());
         target.setManagementAppUrl(source.getManagementAppUrl());
-        target.setTitle(internationalStringToDo(ctx, source.getTitle(), target.getTitle(), metadataName + ServiceExceptionParametersInternal.EXTERNAL_ITEM_TITLE));
+        target.setTitle(internationalStringToEntity(ctx, source.getTitle(), target.getTitle(), metadataName + ServiceExceptionParametersInternal.EXTERNAL_ITEM_TITLE));
 
         return target;
     }
 
-    // ------------------------------------------------------------
-    // INTERNATIONAL STRING
-    // ------------------------------------------------------------
-
-    /**
-     * Transform {@link InternationalStringDto} to {@link InternationalString}
-     * 
-     * @param source DTO to transform
-     * @param target Current Entity for this DTO, null if is new
-     * @param metadataName Parameter name's on the internationalString relationship
-     * @return
-     */
-    private InternationalString internationalStringToDo(ServiceContext ctx, InternationalStringDto source, InternationalString target, String metadataName) throws MetamacException {
-        if (source == null) {
-            if (target != null) {
-                // delete previous entity
-                internationalStringRepository.delete(target);
-            }
-            return null;
-        }
-
-        if (target == null) {
-            target = new InternationalString();
-        }
-
-        if (ValidationUtils.isEmpty(source)) {
-            throw new MetamacException(ServiceExceptionType.METADATA_REQUIRED, metadataName);
-        }
-
-        Set<LocalisedString> localisedStringEntities = localisedStringDtoToDo(ctx, source.getTexts(), target.getTexts());
-        target.getTexts().clear();
-        target.getTexts().addAll(localisedStringEntities);
-
-        return target;
-    }
-
-    /**
-     * Transform a {@link LocalisedString}, reusing existing locales
-     */
-    private Set<LocalisedString> localisedStringDtoToDo(ServiceContext ctx, Set<LocalisedStringDto> sources, Set<LocalisedString> targets) {
-
-        Set<LocalisedString> targetsBefore = targets;
-        targets = new HashSet<LocalisedString>();
-
-        for (LocalisedStringDto source : sources) {
-            boolean existsBefore = false;
-            for (LocalisedString target : targetsBefore) {
-                if (source.getLocale().equals(target.getLocale())) {
-                    targets.add(localisedStringDtoToDo(ctx, source, target));
-                    existsBefore = true;
-                    break;
-                }
-            }
-            if (!existsBefore) {
-                targets.add(localisedStringDtoToDo(ctx, source));
-            }
-        }
-        return targets;
-    }
-
-    private LocalisedString localisedStringDtoToDo(ServiceContext ctx, LocalisedStringDto source) {
-        LocalisedString target = new LocalisedString();
-        target.setLabel(source.getLabel());
-        target.setLocale(source.getLocale());
-        return target;
-    }
-
-    private LocalisedString localisedStringDtoToDo(ServiceContext ctx, LocalisedStringDto source, LocalisedString target) {
-        target.setLabel(source.getLabel());
-        target.setLocale(source.getLocale());
-        return target;
-    }
 
 }
