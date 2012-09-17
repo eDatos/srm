@@ -66,8 +66,6 @@ Application DsdsMetamac {
 
 			"Status"
 			- @ItemSchemeMetamacProcStatusEnum procStatus;
-//			"Related operation, only when type is Operation"
-//			- @ExternalItem relatedOperation nullable cascade="all" databaseColumn="RELATED_OPERATION_FK";
 			
 			"Date when the concept scheme was sended to production validation"
 			DateTimeTZ productionValidationDate nullable;
@@ -89,9 +87,6 @@ Application DsdsMetamac {
 			Boolean isExternalPublicationFailed nullable databaseColumn="IS_EXT_PUBLICATION_FAILED";
 			"External publication failed date"
 			DateTimeTZ externalPublicationFailedDate nullable databaseColumn="EXT_PUBLICATION_FAILED_DATE";
-			
-			"Last update to optimistic locking"
-			DateTimeTZ updateDateMetamac nullable;
 			
 			Repository DataStructureDefinitionVersionMetamacRepository {
 				findById;

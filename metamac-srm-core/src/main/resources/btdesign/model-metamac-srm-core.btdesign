@@ -58,7 +58,7 @@ Application SrmCore {
 			 @param criteria           
 			 @return                    
 			"
-	    	MetamacCriteriaResult<@DataStructureDefinitionMetamacDto> findDsdByCondition(MetamacCriteria criteria) throws MetamacException;
+	    	MetamacCriteriaResult<@DataStructureDefinitionMetamacDto> findDataStructureDefinitionsByCondition(MetamacCriteria criteria) throws MetamacException;
 
           	"
           	 Retrieve a DSD with Grouping relationships.
@@ -68,7 +68,7 @@ Application SrmCore {
 		     @return
 		     @throws org.siemac.metamac.core.common.exception.MetamacException
 		    "
-          	@DataStructureDefinitionExtendDto retrieveExtendedDsd(String urn, @TypeDozerCopyMode typeDozerCopyMode) throws MetamacException;
+          	@DataStructureDefinitionExtendDto retrieveExtendedDataStructureDefinition(String urn, @TypeDozerCopyMode typeDozerCopyMode) throws MetamacException;
 			
 			"
           	 Retrieve a DSD without Grouping relationships.
@@ -78,7 +78,7 @@ Application SrmCore {
 		     @return
 		     @throws org.siemac.metamac.core.common.exception.MetamacException
 		    "
-			@DataStructureDefinitionMetamacDto retrieveDsd(String urn, @TypeDozerCopyMode typeDozerCopyMode) throws MetamacException;
+			@DataStructureDefinitionMetamacDto retrieveDataStructureDefinition(String urn, @TypeDozerCopyMode typeDozerCopyMode) throws MetamacException;
 			
 			" Retrieve a DSD by URN.
 			 @param ctx
@@ -86,7 +86,7 @@ Application SrmCore {
 			 @return
 			 @throws org.siemac.metamac.core.common.exception.MetamacException
 			"
-			@DataStructureDefinitionMetamacDto retrieveDsdByUrn(String urn) throws MetamacException;				    	
+			@DataStructureDefinitionMetamacDto retrieveDataStructureDefinitionByUrn(String urn) throws MetamacException;				    	
 
 			"
 			 @param ctx                                                                          
@@ -95,7 +95,7 @@ Application SrmCore {
 			 @return The new DSD                                                                 
 			 @throws org.siemac.metamac.core.common.exception.MetamacException
 			"  
-			@DataStructureDefinitionMetamacDto createDsdVersion(String urn, boolean minorVersion) throws MetamacException;
+			@DataStructureDefinitionMetamacDto createDataStructureDefinitionVersion(String urn, boolean minorVersion) throws MetamacException;
 			
 	    	/*
 	    	 * CICLO DE VIDA DSDs
@@ -181,7 +181,7 @@ Application SrmCore {
 			 @return                                                                            
 			 @throws org.siemac.metamac.core.common.exception.MetamacException
 			"
-          	List<@DescriptorDto> findDescriptorForDsd(String urnDsd, @TypeComponentList typeComponentList) throws MetamacException;
+          	List<@DescriptorDto> findDescriptorForDataStructureDefinition(String urnDsd, @TypeComponentList typeComponentList) throws MetamacException;
           	
           	"
           	 @param ctx                                                                         
@@ -189,7 +189,7 @@ Application SrmCore {
 			 @return                                                                            
 			 @throws org.siemac.metamac.core.common.exception.MetamacException
           	"
-          	List<@DescriptorDto> findDescriptorsForDsd(String urnDsd) throws MetamacException;
+          	List<@DescriptorDto> findDescriptorsForDataStructureDefinition(String urnDsd) throws MetamacException;
 	   		
 	   		"                                                                                    
 			 @param ctx                                                                          
@@ -198,7 +198,7 @@ Application SrmCore {
 			 @return                                                                             
 			 @throws org.siemac.metamac.core.common.exception.MetamacException
 			" 
-	   		@DescriptorDto saveDescriptorForDsd(String urnDsd, @DescriptorDto descriptorDto) throws MetamacException;
+	   		@DescriptorDto saveDescriptorForDataStructureDefinition(String urnDsd, @DescriptorDto descriptorDto) throws MetamacException;
 	   		
 	   		"
 	   		 @param ctx                                                                          
@@ -206,7 +206,7 @@ Application SrmCore {
 			 @param descriptorDto                                                                
 			 @throws org.siemac.metamac.core.common.exception.MetamacException 
 	   		"
-	   		deleteDescriptorForDsd(String urnDsd, @DescriptorDto descriptorDto)throws MetamacException;
+	   		deleteDescriptorForDataStructureDefinition(String urnDsd, @DescriptorDto descriptorDto)throws MetamacException;
 	   
 	   		"
 			 @param ctx                                                                         
@@ -216,7 +216,7 @@ Application SrmCore {
 			 @return                                                                            
 			 @throws org.siemac.metamac.core.common.exception.MetamacException
 	   		"
-	   		@ComponentDto saveComponentForDsd(String urnDsd, @ComponentDto componentDto, @TypeComponentList typeComponentList) throws MetamacException;
+	   		@ComponentDto saveComponentForDataStructureDefinition(String urnDsd, @ComponentDto componentDto, @TypeComponentList typeComponentList) throws MetamacException;
 	   		
 	   		"                                                                                    
 			 @param ctx                                                                          
@@ -225,7 +225,7 @@ Application SrmCore {
 			 @param typeComponentList                                                            
 			 @throws org.siemac.metamac.core.common.exception.MetamacException
 			" 
-	   		deleteComponentForDsd(String urnDsd, @ComponentDto componentDto, @TypeComponentList typeComponentList) throws MetamacException;
+	   		deleteComponentForDataStructureDefinition(String urnDsd, @ComponentDto componentDto, @TypeComponentList typeComponentList) throws MetamacException;
 	   		
 	   		"
 	    	 @param ctx                                                                          
