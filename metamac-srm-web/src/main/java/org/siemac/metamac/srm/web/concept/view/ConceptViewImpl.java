@@ -268,6 +268,7 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
         // Identifiers Form
         identifiersEditionForm = new GroupDynamicForm(getConstants().conceptIdentifiers());
         RequiredTextItem code = new RequiredTextItem(ConceptDS.CODE, getConstants().conceptCode());
+        code.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());
         MultiLanguageTextItem name = new MultiLanguageTextItem(ConceptDS.NAME, getConstants().conceptName());
         name.setRequired(true);
         MultiLanguageTextItem pluralName = new MultiLanguageTextItem(ConceptDS.PLURAL_NAME, getConstants().conceptPluralName());
@@ -328,9 +329,9 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
 
         // Relation between concepts
         relationBetweenConceptsEditionForm = new GroupDynamicForm(getConstants().conceptRelationBetweenConcepts());
-        // TODO Extends
+        ViewTextItem extendsConcept = new ViewTextItem(ConceptDS.EXTENDS, getConstants().conceptExtends()); // TODO extends
         ConceptsListItem relatedConcepts = createRelatedConceptsItem(ConceptDS.RELATED_CONCEPTS, getConstants().conceptRelatedConcepts());
-        relationBetweenConceptsEditionForm.setFields(relatedConcepts);
+        relationBetweenConceptsEditionForm.setFields(extendsConcept, relatedConcepts);
 
         // Legal acts
         legalActsEditionForm = new GroupDynamicForm(getConstants().conceptLegalActs());
