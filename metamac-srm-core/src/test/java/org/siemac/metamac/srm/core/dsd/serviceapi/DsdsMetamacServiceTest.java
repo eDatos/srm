@@ -1,15 +1,19 @@
 package org.siemac.metamac.srm.core.dsd.serviceapi;
 
-import org.fornax.cartridges.sculptor.framework.test.AbstractDbUnitJpaTests;
-import static org.junit.Assert.fail;
 import org.junit.Test;
-
+import org.junit.runner.RunWith;
+import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.transaction.TransactionConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 
-/**
- * Spring based transactional test with DbUnit support.
- */
-public class DsdsMetamacServiceTest extends AbstractDbUnitJpaTests
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"classpath:spring/srm/applicationContext-test.xml"})
+@TransactionConfiguration(transactionManager = "txManagerCore", defaultRollback = true)
+@Transactional
+public class DsdsMetamacServiceTest extends SrmBaseTest
     implements DsdsMetamacServiceTestBase {
     @Autowired
     protected DsdsMetamacService dsdsMetamacService;
@@ -138,6 +142,11 @@ public class DsdsMetamacServiceTest extends AbstractDbUnitJpaTests
     public void testCancelDataStructureDefinitionValidity() throws Exception {
         // TODO Auto-generated method stub
         
+    }
+
+    @Override
+    protected String getDataSetFile() {
+        return "dbunit/SrmDsdTest.xml";
     }
    
 }
