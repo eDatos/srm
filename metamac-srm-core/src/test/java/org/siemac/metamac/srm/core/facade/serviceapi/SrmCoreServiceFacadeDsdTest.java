@@ -35,7 +35,9 @@ import org.siemac.metamac.core.common.dto.LocalisedStringDto;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.jaxb.CustomJaxb2Marshaller;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
+import org.siemac.metamac.srm.core.concept.serviceapi.ConceptsMetamacService;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
+import org.siemac.metamac.srm.core.dsd.serviceapi.DsdsMetamacService;
 import org.siemac.metamac.srm.core.facade.serviceapi.utils.SrmDtoMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -48,6 +50,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.arte.statistic.sdmx.srm.core.base.serviceapi.BaseService;
 import com.arte.statistic.sdmx.srm.core.criteria.DataStructureDefinitionCriteriaPropertyEnum;
 import com.arte.statistic.sdmx.srm.core.facade.serviceapi.utils.SdmxResources;
+import com.arte.statistic.sdmx.srm.core.structure.serviceapi.DataStructureDefinitionService;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionExtendDto;
@@ -69,6 +72,9 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
 
     @Autowired
     protected SrmCoreServiceFacade srmCoreServiceFacade;
+    
+    @Autowired
+    private DsdsMetamacService dsdsMetamacService;
 
     @Autowired
     protected BaseService          baseService;
@@ -95,6 +101,69 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
     // DSDs
     // -------------------------------------------------------------------------------
 
+//   @DataStructureDefinitionMetamacDto createDataStructureDefinition(@DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) throws MetamacException;
+//   
+//   @DataStructureDefinitionMetamacDto updateDataStructureDefinition(@DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) throws MetamacException;
+//   
+//   deleteDataStructureDefinition(String urn) throws MetamacException;
+//   
+//   MetamacCriteriaResult<@DataStructureDefinitionMetamacDto> findDsdByCondition(MetamacCriteria criteria) throws MetamacException;
+//
+    @Test
+    public void testFindDataStructureDefinitionsByCondition() throws Exception {
+        MetamacCriteriaResult<DataStructureDefinitionMetamacDto> result;
+        int previousSize;
+//        dsdsMetamacService.createDataStructureDefinition(getServiceContext(), dataStructureDefinitionVersion);
+                
+//        MetamacCriteriaResult<DataStructureDefinitionMetamacDto> result = srmCoreServiceFacade.findDsdByCondition(getServiceContext(), null);
+//        int previousSize = result.getResults().size();
+        
+        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacCreatedDto = srmCoreServiceFacade.createDataStructureDefinition(getServiceContext(), SrmDtoMocks.createDdsDTO());
+
+        result = srmCoreServiceFacade.findDsdByCondition(getServiceContext(), null);
+//        assertEquals(previousSize + 1, result.getResults().size());
+    }
+//   @DataStructureDefinitionExtendDto retrieveExtendedDsd(String urn, @TypeDozerCopyMode typeDozerCopyMode) throws MetamacException;
+//   
+//   @DataStructureDefinitionMetamacDto retrieveDsd(String urn, @TypeDozerCopyMode typeDozerCopyMode) throws MetamacException;
+//   
+//   @DataStructureDefinitionMetamacDto retrieveDsdByUrn(String urn) throws MetamacException;                        
+//
+//   @DataStructureDefinitionMetamacDto createDsdVersion(String urn, boolean minorVersion) throws MetamacException;
+//   
+//   @DataStructureDefinitionMetamacDto sendDataStructureDefinitionToProductionValidation(String urn) throws MetamacException;
+//   
+//   @DataStructureDefinitionMetamacDto sendDataStructureDefinitionDtoToDiffusionValidation(String urn) throws MetamacException;
+//   
+//   @DataStructureDefinitionMetamacDto rejectDataStructureDefinitionDtoProductionValidation(String urn) throws MetamacException;
+//   
+//   @DataStructureDefinitionMetamacDto rejectDataStructureDefinitionDtoDiffusionValidation(String urn) throws MetamacException; 
+//   
+//   @DataStructureDefinitionMetamacDto publishInternallyDataStructureDefinitionDto(String urn) throws MetamacException;
+//   
+//   @DataStructureDefinitionMetamacDto publishExternallyDataStructureDefinitionDto(String urn) throws MetamacException;
+//   
+//   @DataStructureDefinitionMetamacDto versioningDataStructureDefinitionDto(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
+//   
+//   @DataStructureDefinitionMetamacDto cancelDataStructureDefinitionDtoValidity(String urn) throws MetamacException;
+//   
+//   List<@DescriptorDto> findDescriptorForDsd(String urnDsd, @TypeComponentList typeComponentList) throws MetamacException;
+//   
+//   List<@DescriptorDto> findDescriptorsForDsd(String urnDsd) throws MetamacException;
+//   
+//   @DescriptorDto saveDescriptorForDsd(String urnDsd, @DescriptorDto descriptorDto) throws MetamacException;
+//   
+//   deleteDescriptorForDsd(String urnDsd, @DescriptorDto descriptorDto)throws MetamacException;
+//
+//   @ComponentDto saveComponentForDsd(String urnDsd, @ComponentDto componentDto, @TypeComponentList typeComponentList) throws MetamacException;
+//   
+//   deleteComponentForDsd(String urnDsd, @ComponentDto componentDto, @TypeComponentList typeComponentList) throws MetamacException;
+//   
+//   importSDMXStructureMsg(@ContentInputDto contentDto) throws MetamacException;
+//   
+//   String exportSDMXStructureMsg(@StructureMsgDto structureMsgDto) throws MetamacException;
+
+    
     @Test
     @Ignore
     public void testSaveDsd() throws Exception {

@@ -82,9 +82,6 @@ public class SrmDtoMocks {
         // Other --------
         dataStructureDefinitionMetamacDto.setServiceURL("test");
 
-        // Version Logic
-        dataStructureDefinitionMetamacDto.setVersionLogic(VersionUtil.VERSION_INITIAL_VERSION);
-
         // Audit
         dataStructureDefinitionMetamacDto.setCreatedBy(serviceContext.getApplicationId());
         dataStructureDefinitionMetamacDto.setCreatedDate(new Date());
