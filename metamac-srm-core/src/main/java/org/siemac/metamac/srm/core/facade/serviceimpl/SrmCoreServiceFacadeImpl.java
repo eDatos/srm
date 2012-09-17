@@ -27,7 +27,6 @@ import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.exception.ExceptionLevelEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
-import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.core.common.ws.ServicesResolver;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
@@ -57,16 +56,12 @@ import com.arte.statistic.sdmx.srm.core.structure.domain.DataStructureDefinition
 import com.arte.statistic.sdmx.srm.core.structure.domain.DimensionDescriptor;
 import com.arte.statistic.sdmx.srm.core.structure.domain.GroupDimensionDescriptor;
 import com.arte.statistic.sdmx.srm.core.structure.domain.MeasureDescriptor;
-import com.arte.statistic.sdmx.srm.core.structure.exception.DataStructureDefinitionVersionNotFoundException;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentListDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataAttributeDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionExtendDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DescriptorDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.RelationshipDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.trans.StructureMsgDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.util.ContentInputDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponentList;
@@ -162,7 +157,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public DataStructureDefinitionMetamacDto createDsdVersion(ServiceContext ctx, String urn, boolean minorVersion) throws MetamacException {
+    public DataStructureDefinitionMetamacDto createDataStructureDefinitionVersion(ServiceContext ctx, String urn, boolean minorVersion) throws MetamacException {
 
         throw new UnsupportedOperationException("createDsdVersion NOT IMPLEMENTD!!!");
         /*
@@ -177,7 +172,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public MetamacCriteriaResult<DataStructureDefinitionMetamacDto> findDsdByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
+    public MetamacCriteriaResult<DataStructureDefinitionMetamacDto> findDataStructureDefinitionsByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
         // Transform
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getDataStructureDefinitionCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
 
@@ -190,7 +185,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public DataStructureDefinitionExtendDto retrieveExtendedDsd(ServiceContext ctx, String urn, TypeDozerCopyMode typeDozerCopyMode) throws MetamacException {
+    public DataStructureDefinitionExtendDto retrieveExtendedDataStructureDefinition(ServiceContext ctx, String urn, TypeDozerCopyMode typeDozerCopyMode) throws MetamacException {
 
         // Load Dsd
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDsdsMetamacService().retrieveDataStructureDefinitionByUrn(ctx, urn);
@@ -200,7 +195,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public DataStructureDefinitionMetamacDto retrieveDsd(ServiceContext ctx, String urn, TypeDozerCopyMode typeDozerCopyMode) throws MetamacException {
+    public DataStructureDefinitionMetamacDto retrieveDataStructureDefinition(ServiceContext ctx, String urn, TypeDozerCopyMode typeDozerCopyMode) throws MetamacException {
 
         // Load Dsd
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDsdsMetamacService().retrieveDataStructureDefinitionByUrn(ctx, urn);
@@ -210,7 +205,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public DataStructureDefinitionMetamacDto retrieveDsdByUrn(ServiceContext ctx, String urn) throws MetamacException {
+    public DataStructureDefinitionMetamacDto retrieveDataStructureDefinitionByUrn(ServiceContext ctx, String urn) throws MetamacException {
         // Search
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDsdsMetamacService().retrieveDataStructureDefinitionByUrn(ctx, urn);
 
@@ -327,7 +322,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
      **************************************************************************/
 
     @Override
-    public List<DescriptorDto> findDescriptorForDsd(ServiceContext ctx, String urnDsd, TypeComponentList typeComponentList) throws MetamacException {
+    public List<DescriptorDto> findDescriptorForDataStructureDefinition(ServiceContext ctx, String urnDsd, TypeComponentList typeComponentList) throws MetamacException {
 
         // Load Dsd
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDsdsMetamacService().retrieveDataStructureDefinitionByUrn(ctx, urnDsd);
@@ -357,12 +352,12 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public List<DescriptorDto> findDescriptorsForDsd(ServiceContext ctx, String urnDsd) throws MetamacException {
+    public List<DescriptorDto> findDescriptorsForDataStructureDefinition(ServiceContext ctx, String urnDsd) throws MetamacException {
         return findDescriptorsForDsd(ctx, urnDsd, TypeDozerCopyMode.COPY_ALL_METADATA);
     }
 
     @Override
-    public DescriptorDto saveDescriptorForDsd(ServiceContext ctx, String urnDsd, DescriptorDto descriptorDto) throws MetamacException {
+    public DescriptorDto saveDescriptorForDataStructureDefinition(ServiceContext ctx, String urnDsd, DescriptorDto descriptorDto) throws MetamacException {
 
         // DTOs to Entities
         ComponentList componentListDescriptor = getDto2DoMapper().componentListDtoToComponentList(ctx, descriptorDto);
@@ -378,7 +373,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public void deleteDescriptorForDsd(ServiceContext ctx, String urnDsd, DescriptorDto descriptorDto) throws MetamacException {
+    public void deleteDescriptorForDataStructureDefinition(ServiceContext ctx, String urnDsd, DescriptorDto descriptorDto) throws MetamacException {
         // DTOs to Entities
         ComponentList componentListDescriptor = getDto2DoMapper().componentListDtoToComponentList(ctx, descriptorDto);
 
@@ -394,7 +389,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
      **************************************************************************/
 
     @Override
-    public ComponentDto saveComponentForDsd(ServiceContext ctx, String urnDsd, ComponentDto componentDto, TypeComponentList typeComponentList) throws MetamacException {
+    public ComponentDto saveComponentForDataStructureDefinition(ServiceContext ctx, String urnDsd, ComponentDto componentDto, TypeComponentList typeComponentList) throws MetamacException {
 
         // Dto to entity
         Component component = getDto2DoMapper().componentDtoToComponent(ctx, componentDto);
@@ -410,7 +405,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public void deleteComponentForDsd(ServiceContext ctx, String urnDsd, ComponentDto componentDto, TypeComponentList typeComponentList) throws MetamacException {
+    public void deleteComponentForDataStructureDefinition(ServiceContext ctx, String urnDsd, ComponentDto componentDto, TypeComponentList typeComponentList) throws MetamacException {
 
         // Dto to entity
         Component component = getDto2DoMapper().componentDtoToComponent(ctx, componentDto);
@@ -919,18 +914,6 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
      * PRIVATE METHODS
      *************************************************************************/
 
-//    private DataStructureDefinitionVersion loadDsdById(ServiceContext ctx, Long idDsd) throws MetamacException {
-//        // Load DSD
-//        DataStructureDefinitionVersion dataStructureDefinitionVersion;
-//        try {
-//            dataStructureDefinitionVersion = getDsdsMetamacService().findDsdById(ctx, idDsd);
-//        } catch (DataStructureDefinitionVersionNotFoundException e) {
-//            throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SRM_SEARCH_NOT_FOUND).withMessageParameters(DataStructureDefinitionVersion.class.getName())
-//                    .withLoggedLevel(ExceptionLevelEnum.ERROR).build();
-//        }
-//        return dataStructureDefinitionVersion;
-//    }
-
     private DataStructureDefinitionDto saveDsdGraph(ServiceContext ctx, DataStructureDefinitionExtendDto dataStructureDefinitionExtendDto) throws MetamacException {
         return null;
         /*
@@ -1068,11 +1051,11 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         componentListDto.removeAllComponents();
 
         // Save ComponentList
-        componentListDto = saveDescriptorForDsd(ctx, urnDsd, (DescriptorDto) componentListDto);
+        componentListDto = saveDescriptorForDataStructureDefinition(ctx, urnDsd, (DescriptorDto) componentListDto);
 
         // Save Components
         for (ComponentDto componentDto : componentBackupDtos) {
-            componentDto = saveComponentForDsd(ctx, urnDsd, componentDto, componentListDto.getTypeComponentList());
+            componentDto = saveComponentForDataStructureDefinition(ctx, urnDsd, componentDto, componentListDto.getTypeComponentList());
             componentListDto.getComponents().add(componentDto); // Recreate association with components
         }
 
