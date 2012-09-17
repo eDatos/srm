@@ -13,6 +13,7 @@ import org.siemac.metamac.srm.web.dsd.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.utils.ApplicationEditionLanguages;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
+import org.siemac.metamac.web.common.client.utils.UrlUtils;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.AnnotationDto;
 import com.google.gwt.resources.client.ImageResource;
@@ -171,7 +172,9 @@ public class AnnotationsPanel extends VLayout {
                     }
                     // URL
                     if (event.getNewValues().containsKey(AnnotationDS.URL)) {
-                        annotationDto.setUrl(event.getNewValues().get(AnnotationDS.URL) != null ? (String) event.getNewValues().get(AnnotationDS.URL) : null);
+                        String url = event.getNewValues().get(AnnotationDS.URL) != null ? UrlUtils.addHttpPrefixIfNeeded((String) event.getNewValues().get(AnnotationDS.URL)) : null;
+                        annotationDto.setUrl(url);
+                        grid.getRecord(event.getRowNum()).setAttribute(AnnotationDS.URL, url);
                     }
                     grid.getRecord(event.getRowNum()).setAttribute(AnnotationDS.ANNOTATION_DTO, annotationDto);
                 }
