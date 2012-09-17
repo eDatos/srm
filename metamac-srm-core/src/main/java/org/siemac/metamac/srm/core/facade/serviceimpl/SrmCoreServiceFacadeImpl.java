@@ -157,21 +157,6 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public DataStructureDefinitionMetamacDto createDataStructureDefinitionVersion(ServiceContext ctx, String urn, boolean minorVersion) throws MetamacException {
-
-        throw new UnsupportedOperationException("createDsdVersion NOT IMPLEMENTD!!!");
-        /*
-        // Load extends DSD (in create mode)
-        DataStructureDefinitionExtendDto dataStructureDefinitionExtendDto = retrieveExtendedDsd(ctx, idDsd, TypeDozerCopyMode.COPY_TO_VERSIONING);
-
-        dataStructureDefinitionExtendDto.setVersionLogic(VersionUtil.createNextVersionTag(dataStructureDefinitionExtendDto.getVersionLogic(), minorVersion));
-
-        // Save graph
-        return saveDsdGraph(ctx, dataStructureDefinitionExtendDto);
-        */
-    }
-
-    @Override
     public MetamacCriteriaResult<DataStructureDefinitionMetamacDto> findDataStructureDefinitionsByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
         // Transform
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getDataStructureDefinitionCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
