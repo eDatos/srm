@@ -80,7 +80,7 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
         target.setExternalPublicationDate(CoreCommonUtil.transformDateTimeToDate(source.getExternalPublicationDate()));
         target.setExternalPublicationUser(source.getExternalPublicationUser());
         
-        do2DtoMapperSdmxSrm.dataStructureDefinitionToDataStructureDefinitionDto(typeDozerCopyMode, source);
+        do2DtoMapperSdmxSrm.dataStructureDefinitionDoToDto(typeDozerCopyMode, source, target);
         return target;
     }
     
