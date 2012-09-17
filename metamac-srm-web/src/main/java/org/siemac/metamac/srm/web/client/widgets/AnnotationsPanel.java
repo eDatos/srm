@@ -1,10 +1,11 @@
-package org.siemac.metamac.srm.web.dsd.widgets;
+package org.siemac.metamac.srm.web.client.widgets;
+
+import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Set;
 
-import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.resources.GlobalResources;
 import org.siemac.metamac.srm.web.dsd.model.record.AnnotationRecord;
 import org.siemac.metamac.srm.web.dsd.utils.RecordUtils;
@@ -19,6 +20,7 @@ import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.AnimationEffect;
 import com.smartgwt.client.types.Cursor;
 import com.smartgwt.client.types.ListGridEditEvent;
+import com.smartgwt.client.types.ListGridFieldType;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.widgets.Canvas;
@@ -60,13 +62,13 @@ public class AnnotationsPanel extends VLayout {
 
         if (viewOnly) {
             Img annotationImg = new Img(GlobalResources.RESOURCE.annotations().getURL());
-            annotationImg.setTooltip(MetamacSrmWeb.getConstants().annotations());
+            annotationImg.setTooltip(getConstants().annotations());
             annotationImg.setSize(32);
             annotationImg.setAlign(Alignment.LEFT);
             imgLayout.addMember(annotationImg);
         } else {
             Img addAnnotationImg = new Img(GlobalResources.RESOURCE.addAnnotation().getURL());
-            addAnnotationImg.setTooltip(MetamacSrmWeb.getConstants().addAnnotation());
+            addAnnotationImg.setTooltip(getConstants().addAnnotation());
             addAnnotationImg.setCursor(Cursor.POINTER);
             addAnnotationImg.setName("note-img");
             addAnnotationImg.setSize(32);
@@ -116,25 +118,24 @@ public class AnnotationsPanel extends VLayout {
         imgLayout.addMember(form);
 
         grid = new ListGrid();
-        grid.setStyleName("annotationGrid");
+        // grid.setStyleName("annotationGrid");
         grid.setLeaveScrollbarGap(false);
-        grid.setCellPadding(4);
-        grid.setCellHeight(40);
-        grid.setNormalCellHeight(40);
+        // grid.setCellPadding(4);
+        // grid.setCellHeight(40);
+        // grid.setNormalCellHeight(40);
         grid.setAlternateRecordStyles(false);
-        grid.setShowRollOverCanvas(true);
+        // grid.setShowRollOverCanvas(true);
         grid.setAnimateRollUnder(true);
         grid.setSelectionType(SelectionStyle.SIMPLE);
-        grid.setBaseStyle("annotationCell");
+        // grid.setBaseStyle("annotationCell");
         grid.setShowSelectionCanvas(true);
         grid.setAnimateSelectionUnder(true);
         grid.setWrapCells(true);
-        grid.setShowHeader(false);
         grid.setBorder("1px solid #A7ABB4");
         grid.setEditEvent(ListGridEditEvent.DOUBLECLICK);
         grid.setCanEdit(!viewOnly);
         grid.setCanRemoveRecords(!viewOnly);
-        grid.setRemoveFieldTitle(MetamacSrmWeb.getConstants().actionDelete());
+        grid.setRemoveFieldTitle(getConstants().actionDelete());
         grid.setRemoveIcon(org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.deleteListGrid().getURL());
         grid.setRemoveIconSize(14);
         grid.addEditCompleteHandler(new EditCompleteHandler() {
@@ -165,16 +166,22 @@ public class AnnotationsPanel extends VLayout {
                         String text = event.getNewValues().get(AnnotationRecord.TEXT) != null ? (String) event.getNewValues().get(AnnotationRecord.TEXT) : new String();
                         annotationDto.setText(InternationalStringUtils.updateInternationalString(locale, annotationDto.getText(), text));
                     }
+                    if (event.getNewValues().containsKey(AnnotationRecord.URL)) {
+                        annotationDto.setUrl(event.getNewValues().get(AnnotationRecord.URL) != null ? (String) event.getNewValues().get(AnnotationRecord.URL) : new String());
+                    }
                     grid.getRecord(event.getRowNum()).setAttribute(AnnotationRecord.ANNOTATION_DTO, annotationDto);
                 }
                 // }
             }
         });
 
-        ListGridField titleField = new ListGridField(AnnotationRecord.TITLE, "Title");
-        titleField.setWidth("15%");
-        ListGridField textField = new ListGridField(AnnotationRecord.TEXT, "Annotation");
-        grid.setFields(titleField, textField);
+        ListGridField codeField = new ListGridField(AnnotationRecord.CODE, getConstants().annotationCode());
+        codeField.setWidth("15%");
+        ListGridField titleField = new ListGridField(AnnotationRecord.TITLE, getConstants().annotationTitle());
+        ListGridField textField = new ListGridField(AnnotationRecord.TEXT, getConstants().annotationText());
+        ListGridField urlField = new ListGridField(AnnotationRecord.URL, getConstants().annotationUrl());
+        urlField.setType(ListGridFieldType.LINK);
+        grid.setFields(codeField, titleField, textField, urlField);
 
         Canvas rollUnderCanvasProperties = new Canvas();
         rollUnderCanvasProperties.setAnimateFadeTime(600);

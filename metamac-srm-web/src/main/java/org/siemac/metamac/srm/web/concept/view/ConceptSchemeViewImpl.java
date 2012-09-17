@@ -15,6 +15,7 @@ import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
+import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.VersionWindow;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptSchemeRecord;
@@ -83,6 +84,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
     private GroupDynamicForm            productionDescriptorsForm;
     private GroupDynamicForm            diffusionDescriptorsForm;
     private GroupDynamicForm            versionResponsibilityForm;
+    private AnnotationsPanel            annotationsPanel;
 
     // Edition forms
     private GroupDynamicForm            identifiersEditionForm;
@@ -91,6 +93,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
     private GroupDynamicForm            productionDescriptorsEditionForm;
     private GroupDynamicForm            diffusionDescriptorsEditionForm;
     private GroupDynamicForm            versionResponsibilityEditionForm;
+    private AnnotationsPanel            annotationsEditionPanel;
 
     private ConceptsTreeGrid            conceptsTreeGrid;
 
@@ -170,6 +173,9 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
 
                 versionResponsibilityForm.setTranslationsShowed(translationsShowed);
                 versionResponsibilityEditionForm.setTranslationsShowed(translationsShowed);
+
+                annotationsPanel.setTranslationsShowed(translationsShowed);
+                annotationsEditionPanel.setTranslationsShowed(translationsShowed);
             }
         });
 
@@ -384,12 +390,16 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         versionResponsibilityForm.setFields(productionValidationUser, productionValidationDate, diffusionValidationUser, diffusionValidationDate, internalPublicationUser, internalPublicationDate,
                 externalPublicationUser, externalPublicationDate);
 
+        // Annotations
+        annotationsPanel = new AnnotationsPanel(true);
+
         mainFormLayout.addViewCanvas(identifiersForm);
         mainFormLayout.addViewCanvas(contentDescriptorsForm);
         mainFormLayout.addViewCanvas(classDescriptorsForm);
         mainFormLayout.addViewCanvas(productionDescriptorsForm);
         mainFormLayout.addViewCanvas(diffusionDescriptorsForm);
         mainFormLayout.addViewCanvas(versionResponsibilityForm);
+        mainFormLayout.addViewCanvas(annotationsPanel);
     }
 
     private void createEditionForm() {
@@ -509,12 +519,16 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         versionResponsibilityEditionForm.setFields(productionValidationUser, productionValidationDate, diffusionValidationUser, diffusionValidationDate, internalPublicationUser,
                 internalPublicationDate, externalPublicationUser, externalPublicationDate);
 
+        // Annotations
+        annotationsEditionPanel = new AnnotationsPanel(false);
+
         mainFormLayout.addEditionCanvas(identifiersEditionForm);
         mainFormLayout.addEditionCanvas(contentDescriptorsEditionForm);
         mainFormLayout.addEditionCanvas(classDescriptorsEditionForm);
         mainFormLayout.addEditionCanvas(productionDescriptorsEditionForm);
         mainFormLayout.addEditionCanvas(diffusionDescriptorsEditionForm);
         mainFormLayout.addEditionCanvas(versionResponsibilityEditionForm);
+        mainFormLayout.addEditionCanvas(annotationsEditionPanel);
     }
 
     public void setEditionMode() {
@@ -567,6 +581,9 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         versionResponsibilityForm.setValue(ConceptSchemeDS.INTERNAL_PUBLICATION_DATE, DateUtils.getFormattedDate(conceptSchemeDto.getInternalPublicationDate()));
         versionResponsibilityForm.setValue(ConceptSchemeDS.EXTERNAL_PUBLICATION_USER, conceptSchemeDto.getExternalPublicationUser());
         versionResponsibilityForm.setValue(ConceptSchemeDS.EXTERNAL_PUBLICATION_DATE, DateUtils.getFormattedDate(conceptSchemeDto.getExternalPublicationDate()));
+
+        // Annotations
+        annotationsPanel.setAnnotations(conceptSchemeDto.getAnnotations());
     }
 
     public void setConceptSchemeEditionMode(ConceptSchemeMetamacDto conceptSchemeDto) {
@@ -610,6 +627,9 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         versionResponsibilityEditionForm.setValue(ConceptSchemeDS.INTERNAL_PUBLICATION_DATE, DateUtils.getFormattedDate(conceptSchemeDto.getInternalPublicationDate()));
         versionResponsibilityEditionForm.setValue(ConceptSchemeDS.EXTERNAL_PUBLICATION_USER, conceptSchemeDto.getExternalPublicationUser());
         versionResponsibilityEditionForm.setValue(ConceptSchemeDS.EXTERNAL_PUBLICATION_DATE, DateUtils.getFormattedDate(conceptSchemeDto.getExternalPublicationDate()));
+
+        // Annotations
+        annotationsEditionPanel.setAnnotations(conceptSchemeDto.getAnnotations());
     }
 
     public ConceptSchemeMetamacDto getConceptSchemeDto() {
@@ -622,6 +642,11 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         // Class descriptors
         conceptSchemeDto.setType(ConceptSchemeTypeEnum.valueOf(classDescriptorsEditionForm.getValueAsString(ConceptSchemeDS.TYPE)));
         conceptSchemeDto.setRelatedOperation(ExternalItemUtils.removeTitle(relatedOperation));
+
+        // Annotations
+        conceptSchemeDto.getAnnotations().clear();
+        conceptSchemeDto.getAnnotations().addAll(annotationsEditionPanel.getAnnotations());
+
         return conceptSchemeDto;
     }
 
