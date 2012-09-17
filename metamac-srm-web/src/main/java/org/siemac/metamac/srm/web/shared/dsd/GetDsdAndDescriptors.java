@@ -2,7 +2,8 @@ package org.siemac.metamac.srm.web.shared.dsd;
 
 import java.util.List;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;
+import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
+
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DescriptorDto;
 import com.gwtplatform.dispatch.annotation.GenDispatch;
 import com.gwtplatform.dispatch.annotation.In;
@@ -12,21 +13,21 @@ import com.gwtplatform.dispatch.annotation.Out;
 public class GetDsdAndDescriptors {
 
     @In(1)
-    String                     dsdUrn;
+    String                            dsdUrn;
 
     @Out(1)
-    DataStructureDefinitionDto dsd;
+    DataStructureDefinitionMetamacDto dsd;
 
     @Out(2)
-    DescriptorDto              primaryMeasure;
+    DescriptorDto                     primaryMeasure;
 
     @Out(3)
-    DescriptorDto              dimensions;
+    DescriptorDto                     dimensions;
 
     @Out(4)
-    DescriptorDto              attributes;
+    DescriptorDto                     attributes;
 
     @Out(5)
-    List<DescriptorDto>        groupKeys;
+    List<DescriptorDto>               groupKeys;
 
 }

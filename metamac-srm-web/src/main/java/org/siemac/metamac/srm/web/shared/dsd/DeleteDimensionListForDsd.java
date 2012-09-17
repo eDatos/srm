@@ -11,7 +11,7 @@ import com.gwtplatform.dispatch.annotation.In;
 public class DeleteDimensionListForDsd {
 
     @In(1)
-    Long                        idDsd;
+    String                      dsdUrn;
 
     @In(2)
     List<DimensionComponentDto> dimensionComponentDtos;

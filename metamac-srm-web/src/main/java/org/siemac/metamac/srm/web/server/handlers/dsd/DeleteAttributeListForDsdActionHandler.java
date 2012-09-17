@@ -1,8 +1,6 @@
 package org.siemac.metamac.srm.web.server.handlers.dsd;
 
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
@@ -21,8 +19,6 @@ import com.gwtplatform.dispatch.shared.ActionException;
 @Component
 public class DeleteAttributeListForDsdActionHandler extends SecurityActionHandler<DeleteAttributeListForDsdAction, DeleteAttributeListForDsdResult> {
 
-    private static Logger        logger = Logger.getLogger(DeleteAttributeListForDsdActionHandler.class.getName());
-
     @Autowired
     private SrmCoreServiceFacade srmCoreServiceFacade;
 
@@ -35,9 +31,8 @@ public class DeleteAttributeListForDsdActionHandler extends SecurityActionHandle
         List<DataAttributeDto> dataAttributeDtos = action.getDataAttributeDtos();
         for (DataAttributeDto a : dataAttributeDtos) {
             try {
-                srmCoreServiceFacade.deleteComponentForDsd(ServiceContextHolder.getCurrentServiceContext(), action.getIdDsd(), a, action.getTypeComponentList());
+                srmCoreServiceFacade.deleteComponentForDsd(ServiceContextHolder.getCurrentServiceContext(), action.getDsdUrn(), a, action.getTypeComponentList());
             } catch (MetamacException e) {
-                logger.log(Level.SEVERE, " Error deleting attribute " + action.getTypeComponentList() + " for DSD with id = " + action.getIdDsd() + ". " + e.getMessage());
                 throw WebExceptionUtils.createMetamacWebException(e);
             }
         }

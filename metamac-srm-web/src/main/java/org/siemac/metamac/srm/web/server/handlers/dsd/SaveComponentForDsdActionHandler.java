@@ -1,8 +1,5 @@
 package org.siemac.metamac.srm.web.server.handlers.dsd;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.web.shared.dsd.SaveComponentForDsdAction;
@@ -20,8 +17,6 @@ import com.gwtplatform.dispatch.shared.ActionException;
 @Component
 public class SaveComponentForDsdActionHandler extends SecurityActionHandler<SaveComponentForDsdAction, SaveComponentForDsdResult> {
 
-    private static Logger        logger = Logger.getLogger(SaveComponentForDsdActionHandler.class.getName());
-
     @Autowired
     private SrmCoreServiceFacade srmCoreServiceFacade;
 
@@ -32,11 +27,10 @@ public class SaveComponentForDsdActionHandler extends SecurityActionHandler<Save
     @Override
     public SaveComponentForDsdResult executeSecurityAction(SaveComponentForDsdAction action) throws ActionException {
         try {
-            ComponentDto componentDto = srmCoreServiceFacade.saveComponentForDsd(ServiceContextHolder.getCurrentServiceContext(), action.getIdDsd(), action.getComponentDto(),
+            ComponentDto componentDto = srmCoreServiceFacade.saveComponentForDsd(ServiceContextHolder.getCurrentServiceContext(), action.getDsdUrn(), action.getComponentDto(),
                     action.getTypeComponentList());
             return new SaveComponentForDsdResult(componentDto);
         } catch (MetamacException e) {
-            logger.log(Level.SEVERE, " Error saving component " + action.getTypeComponentList() + " for DSD with id = " + action.getIdDsd() + ". " + e.getMessage());
             throw WebExceptionUtils.createMetamacWebException(e);
         }
     }

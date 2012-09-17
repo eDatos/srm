@@ -2,7 +2,8 @@ package org.siemac.metamac.srm.web.shared.dsd;
 
 import java.util.List;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;
+import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
+
 import com.gwtplatform.dispatch.annotation.GenDispatch;
 import com.gwtplatform.dispatch.annotation.In;
 import com.gwtplatform.dispatch.annotation.Out;
@@ -11,21 +12,21 @@ import com.gwtplatform.dispatch.annotation.Out;
 public class GetDsdList {
 
     @In(1)
-    int                              firstResult;
+    int                                     firstResult;
 
     @In(2)
-    int                              maxResults;
+    int                                     maxResults;
 
     @In(3)
-    String                           dsd;
+    String                                  dsd;
 
     @Out(1)
-    List<DataStructureDefinitionDto> dsdDtos;
+    List<DataStructureDefinitionMetamacDto> dsdDtos;
 
     @Out(2)
-    int                              firstResultOut;
+    int                                     firstResultOut;
 
     @Out(3)
-    int                              totalResults;
+    int                                     totalResults;
 
 }

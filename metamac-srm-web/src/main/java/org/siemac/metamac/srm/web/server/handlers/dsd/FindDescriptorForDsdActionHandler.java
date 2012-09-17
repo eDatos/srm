@@ -33,11 +33,10 @@ public class FindDescriptorForDsdActionHandler extends SecurityActionHandler<Fin
     @Override
     public FindDescriptorForDsdResult executeSecurityAction(FindDescriptorForDsdAction action) throws ActionException {
         try {
-            List<DescriptorDto> descriptorDtos = srmCoreServiceFacade.findDescriptorForDsd(ServiceContextHolder.getCurrentServiceContext(), action.getIdDsd(), action.getTypeComponentList());
+            List<DescriptorDto> descriptorDtos = srmCoreServiceFacade.findDescriptorForDsd(ServiceContextHolder.getCurrentServiceContext(), action.getDsdUrn(), action.getTypeComponentList());
             logger.log(Level.INFO, "ACTION SUCCESSFULLY: findDescriptorForDsd");
             return new FindDescriptorForDsdResult(descriptorDtos);
         } catch (MetamacException e) {
-            logger.log(Level.SEVERE, "Error in findDescriptorForDsd with idDsd =  " + action.getIdDsd() + " and typeComponentList = " + action.getTypeComponentList() + ". " + e.getMessage());
             throw WebExceptionUtils.createMetamacWebException(e);
         }
     }

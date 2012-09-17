@@ -10,7 +10,7 @@ import com.gwtplatform.dispatch.annotation.Out;
 public class SaveComponentForDsd {
 
     @In(1)
-    Long              idDsd;
+    String            dsdUrn;
 
     @In(2)
     ComponentDto      componentDto;

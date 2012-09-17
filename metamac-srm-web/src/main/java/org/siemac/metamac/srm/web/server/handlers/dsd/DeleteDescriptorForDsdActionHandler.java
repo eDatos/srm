@@ -1,8 +1,5 @@
 package org.siemac.metamac.srm.web.server.handlers.dsd;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.web.shared.dsd.DeleteDescriptorForDsdAction;
@@ -19,8 +16,6 @@ import com.gwtplatform.dispatch.shared.ActionException;
 @Component
 public class DeleteDescriptorForDsdActionHandler extends SecurityActionHandler<DeleteDescriptorForDsdAction, DeleteDescriptorForDsdResult> {
 
-    private static Logger        logger = Logger.getLogger(DeleteDescriptorForDsdActionHandler.class.getName());
-
     @Autowired
     private SrmCoreServiceFacade srmCoreServiceFacade;
 
@@ -31,10 +26,9 @@ public class DeleteDescriptorForDsdActionHandler extends SecurityActionHandler<D
     @Override
     public DeleteDescriptorForDsdResult executeSecurityAction(DeleteDescriptorForDsdAction action) throws ActionException {
         try {
-            srmCoreServiceFacade.deleteDescriptorForDsd(ServiceContextHolder.getCurrentServiceContext(), action.getIdDsd(), action.getDescriptorDto());
+            srmCoreServiceFacade.deleteDescriptorForDsd(ServiceContextHolder.getCurrentServiceContext(), action.getDsdUrn(), action.getDescriptorDto());
             return new DeleteDescriptorForDsdResult();
         } catch (MetamacException e) {
-            logger.log(Level.SEVERE, " Error deleting descriptor for DSD with id = " + action.getIdDsd() + ". " + e.getMessage());
             throw WebExceptionUtils.createMetamacWebException(e);
         }
     }

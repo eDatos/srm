@@ -9,7 +9,7 @@ import com.gwtplatform.dispatch.annotation.Out;
 public class SaveDescriptorForDsd {
 
     @In(1)
-    Long          idDsd;
+    String        dsdUrn;
 
     @In(2)
     DescriptorDto descriptorDto;

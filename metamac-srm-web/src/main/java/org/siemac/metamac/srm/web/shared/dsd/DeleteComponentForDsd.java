@@ -9,7 +9,7 @@ import com.gwtplatform.dispatch.annotation.In;
 public class DeleteComponentForDsd {
 
     @In(1)
-    Long              idDsd;
+    String            dsdUrn;
 
     @In(2)
     ComponentDto      componentDto;

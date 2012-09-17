@@ -1,6 +1,7 @@
 package org.siemac.metamac.srm.web.shared.dsd;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;
+import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
+
 import com.gwtplatform.dispatch.annotation.GenDispatch;
 import com.gwtplatform.dispatch.annotation.In;
 import com.gwtplatform.dispatch.annotation.Out;
@@ -9,8 +10,8 @@ import com.gwtplatform.dispatch.annotation.Out;
 public class SaveDsd {
 
     @In(1)
-    DataStructureDefinitionDto dsd;
+    DataStructureDefinitionMetamacDto dsd;
 
     @Out(1)
-    DataStructureDefinitionDto dsdSaved;
+    DataStructureDefinitionMetamacDto dsdSaved;
 }

@@ -1,8 +1,5 @@
 package org.siemac.metamac.srm.web.server.handlers.dsd;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.web.shared.dsd.SaveDescriptorForDsdAction;
@@ -20,8 +17,6 @@ import com.gwtplatform.dispatch.shared.ActionException;
 @Component
 public class SaveDescriptorForDsdActionHandler extends SecurityActionHandler<SaveDescriptorForDsdAction, SaveDescriptorForDsdResult> {
 
-    private static Logger        logger = Logger.getLogger(SaveDescriptorForDsdActionHandler.class.getName());
-
     @Autowired
     private SrmCoreServiceFacade srmCoreServiceFacade;
 
@@ -32,10 +27,9 @@ public class SaveDescriptorForDsdActionHandler extends SecurityActionHandler<Sav
     @Override
     public SaveDescriptorForDsdResult executeSecurityAction(SaveDescriptorForDsdAction action) throws ActionException {
         try {
-            DescriptorDto descriptorDto = srmCoreServiceFacade.saveDescriptorForDsd(ServiceContextHolder.getCurrentServiceContext(), action.getIdDsd(), action.getDescriptorDto());
+            DescriptorDto descriptorDto = srmCoreServiceFacade.saveDescriptorForDsd(ServiceContextHolder.getCurrentServiceContext(), action.getDsdUrn(), action.getDescriptorDto());
             return new SaveDescriptorForDsdResult(descriptorDto);
         } catch (MetamacException e) {
-            logger.log(Level.SEVERE, " Error saving descriptor for DSD with id = " + action.getIdDsd() + ". " + e.getMessage());
             throw WebExceptionUtils.createMetamacWebException(e);
         }
     }

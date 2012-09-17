@@ -8,7 +8,7 @@ import com.gwtplatform.dispatch.annotation.In;
 public class DeleteDescriptorForDsd {
 
     @In(1)
-    Long          idDsd;
+    String        dsdUrn;
 
     @In(2)
     DescriptorDto descriptorDto;

@@ -12,7 +12,7 @@ import com.gwtplatform.dispatch.annotation.Out;
 public class FindDescriptorForDsd {
 
     @In(1)
-    Long                idDsd;
+    String              dsdUrn;
 
     @In(2)
     TypeComponentList   typeComponentList;

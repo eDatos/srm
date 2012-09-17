@@ -4,6 +4,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.web.shared.dsd.SaveDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.SaveDsdResult;
@@ -13,7 +14,6 @@ import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;
 import com.gwtplatform.dispatch.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
@@ -32,8 +32,14 @@ public class SaveDsdActionHandler extends SecurityActionHandler<SaveDsdAction, S
     @Override
     public SaveDsdResult executeSecurityAction(SaveDsdAction action) throws ActionException {
         try {
-            DataStructureDefinitionDto dsd = srmCoreServiceFacade.saveDsd(ServiceContextHolder.getCurrentServiceContext(), action.getDsd());
-            return new SaveDsdResult(dsd);
+            DataStructureDefinitionMetamacDto dsdToSave = action.getDsd();
+            DataStructureDefinitionMetamacDto savedDsd = null;
+            if (dsdToSave.getId() == null) {
+                savedDsd = srmCoreServiceFacade.createDataStructureDefinition(ServiceContextHolder.getCurrentServiceContext(), dsdToSave);
+            } else {
+                savedDsd = srmCoreServiceFacade.updateDataStructureDefinition(ServiceContextHolder.getCurrentServiceContext(), dsdToSave);
+            }
+            return new SaveDsdResult(savedDsd);
         } catch (MetamacException e) {
             logger.log(Level.SEVERE, "Error saving DSD with id = " + action.getDsd().getId() + ". " + e.getMessage());
             throw WebExceptionUtils.createMetamacWebException(e);
