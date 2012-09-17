@@ -30,6 +30,7 @@ public class DsdRecord extends ListGridRecord {
         setName(name);
         setDescription(description);
         setFinalStructure(finalStructure);
+        setUrn(dsd.getUrn());
         setDsd(dsd);
     }
 

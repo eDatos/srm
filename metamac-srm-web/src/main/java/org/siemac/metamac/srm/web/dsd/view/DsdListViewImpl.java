@@ -322,15 +322,15 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
     }
 
     @Override
-    public List<DataStructureDefinitionDto> getSelectedDsds() {
+    public List<String> getSelectedDsdUrns() {
         if (dsdListGrid.getListGrid().getSelectedRecords() != null) {
             ListGridRecord[] records = dsdListGrid.getListGrid().getSelectedRecords();
-            List<DataStructureDefinitionDto> selectedDsds = new ArrayList<DataStructureDefinitionDto>();
+            List<String> selectedDsdUrns = new ArrayList<String>();
             for (int i = 0; i < records.length; i++) {
                 DsdRecord record = (DsdRecord) records[i];
-                selectedDsds.add(record.getDsd());
+                selectedDsdUrns.add(record.getUrn());
             }
-            return selectedDsds;
+            return selectedDsdUrns;
         }
         return null;
     }

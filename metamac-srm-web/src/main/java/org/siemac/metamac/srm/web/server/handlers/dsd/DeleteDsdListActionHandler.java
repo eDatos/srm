@@ -1,6 +1,5 @@
 package org.siemac.metamac.srm.web.server.handlers.dsd;
 
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -14,8 +13,6 @@ import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;
-import com.gwtplatform.dispatch.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 @Component
@@ -32,21 +29,15 @@ public class DeleteDsdListActionHandler extends SecurityActionHandler<DeleteDsdL
 
     @Override
     public DeleteDsdListResult executeSecurityAction(DeleteDsdListAction action) throws ActionException {
-        List<DataStructureDefinitionDto> dataStructureDefinitionDtos = action.getDataStructureDefinitionDtos();
-        for (DataStructureDefinitionDto dsd : dataStructureDefinitionDtos) {
+        for (String urn : action.getUrns()) {
             try {
-                srmCoreServiceFacade.deleteDsd(ServiceContextHolder.getCurrentServiceContext(), dsd);
+                srmCoreServiceFacade.deleteDataStructureDefinition(ServiceContextHolder.getCurrentServiceContext(), urn);
             } catch (MetamacException e) {
                 logger.log(Level.SEVERE, " Error deleting dsd. " + e.getMessage());
                 throw WebExceptionUtils.createMetamacWebException(e);
             }
         }
         return new DeleteDsdListResult();
-    }
-
-    @Override
-    public void undo(DeleteDsdListAction action, DeleteDsdListResult result, ExecutionContext context) throws ActionException {
-
     }
 
 }

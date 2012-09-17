@@ -10,7 +10,7 @@ public interface DsdListUiHandlers extends UiHandlers {
     void retrieveDsdList(int firstResult, int maxResults, String dsd);
     void goToDsd(String urn);
     void saveDsd(DataStructureDefinitionDto dataStructureDefinitionDto);
-    void deleteDsds(List<DataStructureDefinitionDto> dataStructureDefinitionDtos);
+    void deleteDsds(List<String> urns);
 
     void dsdSuccessfullyImported(String fileName);
     void dsdImportFailed(String fileName);

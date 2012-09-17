@@ -90,7 +90,7 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
 
         public void setDsds(List<DataStructureDefinitionDto> dataStructureDefinitionDtos, int firstResult, int totalResults);
         HasRecordClickHandlers getSelectedDsd();
-        List<DataStructureDefinitionDto> getSelectedDsds();
+        List<String> getSelectedDsdUrns();
         DataStructureDefinitionDto getNewDsd();
         void onNewDsdCreated();
 
@@ -157,7 +157,7 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
 
             @Override
             public void onClick(com.smartgwt.client.widgets.events.ClickEvent event) {
-                List<DataStructureDefinitionDto> dsdsToDelete = getView().getSelectedDsds();
+                List<String> dsdsToDelete = getView().getSelectedDsdUrns();
                 deleteDsds(dsdsToDelete);
             }
         }));
@@ -220,8 +220,8 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
     }
 
     @Override
-    public void deleteDsds(List<DataStructureDefinitionDto> dataStructureDefinitionDtos) {
-        dispatcher.execute(new DeleteDsdListAction(dataStructureDefinitionDtos), new WaitingAsyncCallback<DeleteDsdListResult>() {
+    public void deleteDsds(List<String> urns) {
+        dispatcher.execute(new DeleteDsdListAction(urns), new WaitingAsyncCallback<DeleteDsdListResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
