@@ -171,7 +171,7 @@ public class SrmDtoMocks {
 
         // For Group
         // Save GroupDimensionDescriptors
-        DescriptorDto descriptorDto4 = srmCoreServiceFacade.saveDescriptorForDsd(getServiceContext(), urnDsd, createGroupDimensionDescriptorDto());
+        DescriptorDto descriptorDto4 = srmCoreServiceFacade.saveDescriptorForDataStructureDefinition(getServiceContext(), urnDsd, createGroupDimensionDescriptorDto());
 
         relationshipDto.setGroupKeyForGroupRelationship(descriptorDto4);
 
