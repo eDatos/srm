@@ -217,22 +217,6 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
 
     @Test
     @Ignore
-    public void testCreateDsdVersion() throws Exception {
-        // Save
-        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = srmCoreServiceFacade.createDataStructureDefinition(getServiceContext(), SrmDtoMocks.createDdsDTO());
-        assertNotNull(dataStructureDefinitionMetamacDto);
-
-        // Create DSD Version
-        String previousVersion = dataStructureDefinitionMetamacDto.getUrn();
-        dataStructureDefinitionMetamacDto = srmCoreServiceFacade.createDataStructureDefinitionVersion(getServiceContext(), dataStructureDefinitionMetamacDto.getUrn(), Boolean.TRUE);
-
-        assertNotNull(dataStructureDefinitionMetamacDto.getUrn());
-        assertTrue(previousVersion != dataStructureDefinitionMetamacDto.getUrn());
-        assertTrue(dataStructureDefinitionMetamacDto.getVersionLogic().equals("01.001"));
-    }
-
-    @Test
-    @Ignore
     public void testDeleteDsd() throws Exception {
         //TODO TEST delete DSD en fachada
         /*
