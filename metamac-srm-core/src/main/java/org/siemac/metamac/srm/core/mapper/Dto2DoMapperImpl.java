@@ -1,10 +1,6 @@
 package org.siemac.metamac.srm.core.mapper;
 
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
-import org.siemac.metamac.core.common.dto.ExternalItemDto;
-import org.siemac.metamac.core.common.ent.domain.ExternalItem;
-import org.siemac.metamac.core.common.ent.domain.ExternalItemRepository;
-import org.siemac.metamac.core.common.ent.domain.InternationalStringRepository;
 import org.siemac.metamac.core.common.exception.ExceptionLevelEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
@@ -31,18 +27,11 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Component;
 import com.arte.statistic.sdmx.srm.core.base.domain.ComponentList;
-import com.arte.statistic.sdmx.srm.core.common.error.ServiceExceptionParametersInternal;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentListDto;
 
 @org.springframework.stereotype.Component("dto2DoMapper")
 public class Dto2DoMapperImpl extends com.arte.statistic.sdmx.srm.core.mapper.Dto2DoMapperImpl implements Dto2DoMapper {
-
-    @Autowired
-    private InternationalStringRepository                        internationalStringRepository;
-
-    @Autowired
-    private ExternalItemRepository                               externalItemRepository;
 
     @Autowired
     @Qualifier("dto2DoMapperSdmxSrm")
@@ -56,12 +45,12 @@ public class Dto2DoMapperImpl extends com.arte.statistic.sdmx.srm.core.mapper.Dt
 
     @Autowired
     private ConceptTypeRepository                                conceptTypeRepository;
-    
+
     @Autowired
-    private DataStructureDefinitionVersionMetamacRepository                dataStructureDefinitionVersionMetamacRepository;
+    private DataStructureDefinitionVersionMetamacRepository      dataStructureDefinitionVersionMetamacRepository;
 
     // ------------------------------------------------------------
-    // DSDs
+    // DATA STRUCTURE DEFINITIONS
     // ------------------------------------------------------------
 
     @Override
@@ -84,22 +73,21 @@ public class Dto2DoMapperImpl extends com.arte.statistic.sdmx.srm.core.mapper.Dt
         DataStructureDefinitionVersionMetamac target = null;
         if (source.getId() == null) {
             target = new DataStructureDefinitionVersionMetamac();
-        }
-        else {
+        } else {
             try {
                 target = dataStructureDefinitionVersionMetamacRepository.findById(source.getId());
             } catch (DataStructureDefinitionVersionMetamacNotFoundException e) {
-                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SRM_SEARCH_NOT_FOUND).withMessageParameters(ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION)
-                        .withLoggedLevel(ExceptionLevelEnum.ERROR).build();
+                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SRM_SEARCH_NOT_FOUND)
+                        .withMessageParameters(ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION).withLoggedLevel(ExceptionLevelEnum.ERROR).build();
             }
             OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersion());
         }
-        
+
         // Modifiable attributes
         target.setProcStatus(source.getProcStatus());
-        
+
         dto2DoMapperSdmxSrm.dataStructureDefinitionDtoToDataStructureDefinition(ctx, source, target);
-        
+
         return target;
     }
 
