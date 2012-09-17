@@ -7,6 +7,7 @@ import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.core.common.util.shared.VersionUtil;
+import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
@@ -25,7 +26,6 @@ import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.form.CustomDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
@@ -217,7 +217,7 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
             public void onSelectionChanged(SelectionEvent event) {
                 if (dsdListGrid.getListGrid().getSelectedRecords() != null && dsdListGrid.getListGrid().getSelectedRecords().length == 1) {
                     DsdRecord record = (DsdRecord) dsdListGrid.getListGrid().getSelectedRecord();
-                    DataStructureDefinitionDto dsd = record.getDsd();
+                    DataStructureDefinitionMetamacDto dsd = record.getDsd();
                     selectDsd(dsd);
                 } else {
                     // No record selected
@@ -276,7 +276,7 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
     }
 
     @Override
-    public void setDsds(List<DataStructureDefinitionDto> dataStructureDefinitionDtos, int firstResult, int totalResults) {
+    public void setDsds(List<DataStructureDefinitionMetamacDto> dataStructureDefinitionDtos, int firstResult, int totalResults) {
         dsdListGrid.setDsds(dataStructureDefinitionDtos, firstResult, totalResults);
     }
 
@@ -296,8 +296,8 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
     }
 
     @Override
-    public DataStructureDefinitionDto getNewDsd() {
-        DataStructureDefinitionDto dsd = new DataStructureDefinitionDto();
+    public DataStructureDefinitionMetamacDto getNewDsd() {
+        DataStructureDefinitionMetamacDto dsd = new DataStructureDefinitionMetamacDto();
         dsd.setCode(codeItem.getValueAsString());
         InternationalStringDto internationalName = InternationalStringUtils.updateInternationalString(new InternationalStringDto(), nameItem.getValueAsString());
         dsd.setName(internationalName);
@@ -340,7 +340,7 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
      * 
      * @param dsdSelected
      */
-    private void selectDsd(DataStructureDefinitionDto dsdSelected) {
+    private void selectDsd(DataStructureDefinitionMetamacDto dsdSelected) {
         if (dsdSelected.getId() == null) {
             // New dimension
             deleteToolStripButton.hide();

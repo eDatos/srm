@@ -1,5 +1,6 @@
 package org.siemac.metamac.srm.web.dsd.view;
 
+import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdAttributesTabPresenter.DsdAttributesTabView;
@@ -12,7 +13,6 @@ import org.siemac.metamac.srm.web.dsd.view.handlers.DsdUiHandlers;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.widgets.TitleLabel;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
@@ -104,7 +104,7 @@ public class DsdViewImpl extends ViewWithUiHandlers<DsdUiHandlers> implements Ds
     }
 
     @Override
-    public void setDsd(DataStructureDefinitionDto dsd) {
+    public void setDsd(DataStructureDefinitionMetamacDto dsd) {
         dsdTitle.setContents(InternationalStringUtils.getLocalisedString(dsd.getName()) == null ? new String() : InternationalStringUtils.getLocalisedString(dsd.getName()));
     }
 

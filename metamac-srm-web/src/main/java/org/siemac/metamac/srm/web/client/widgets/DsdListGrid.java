@@ -2,12 +2,12 @@ package org.siemac.metamac.srm.web.client.widgets;
 
 import java.util.List;
 
+import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
 import org.siemac.metamac.srm.web.dsd.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.widgets.BaseCustomListGrid;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;
 import com.smartgwt.client.types.ListGridFieldType;
 import com.smartgwt.client.widgets.grid.HoverCustomizer;
 import com.smartgwt.client.widgets.grid.ListGridField;
@@ -57,12 +57,12 @@ public class DsdListGrid extends BaseCustomListGrid {
         this.setFields(codeDsdField, nameDsdField, descriptionDsdField, finalStructureDsdField);
     }
 
-    public void setDsds(List<DataStructureDefinitionDto> dataStructureDefinitionDtos) {
+    public void setDsds(List<DataStructureDefinitionMetamacDto> dataStructureDefinitionMetamacDtos) {
         removeAllData();
-        if (dataStructureDefinitionDtos != null) {
-            DsdRecord[] dsdRecords = new DsdRecord[dataStructureDefinitionDtos.size()];
-            for (int i = 0; i < dataStructureDefinitionDtos.size(); i++) {
-                dsdRecords[i] = RecordUtils.getDsdRecord(dataStructureDefinitionDtos.get(i));
+        if (dataStructureDefinitionMetamacDtos != null) {
+            DsdRecord[] dsdRecords = new DsdRecord[dataStructureDefinitionMetamacDtos.size()];
+            for (int i = 0; i < dataStructureDefinitionMetamacDtos.size(); i++) {
+                dsdRecords[i] = RecordUtils.getDsdRecord(dataStructureDefinitionMetamacDtos.get(i));
             }
             setData(dsdRecords);
         }

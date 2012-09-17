@@ -6,6 +6,7 @@ import java.util.List;
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
+import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
@@ -45,7 +46,6 @@ import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataAttributeDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DescriptorDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponentList;
@@ -84,16 +84,16 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
             UpdateDimensionsHandler,
             UpdateGroupKeysHandler {
 
-    private final DispatchAsync        dispatcher;
-    private final PlaceManager         placeManager;
+    private final DispatchAsync               dispatcher;
+    private final PlaceManager                placeManager;
 
-    private DataStructureDefinitionDto dataStructureDefinitionDto;
-    private boolean                    isNewDescriptor;
-    private List<DataAttributeDto>     dataAttributeDtos;
+    private DataStructureDefinitionMetamacDto dataStructureDefinitionDto;
+    private boolean                           isNewDescriptor;
+    private List<DataAttributeDto>            dataAttributeDtos;
 
     // Storing selected concept and representation type allows improving performance when loading code lists
-    private String                     selectedConceptUri;
-    private boolean                    enumeratedRepresentation;
+    private String                            selectedConceptUri;
+    private boolean                           enumeratedRepresentation;
 
     @ProxyCodeSplit
     @NameToken(NameTokens.dsdAttributesPage)
@@ -175,7 +175,7 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
     public void onUpdateDimensions(final UpdateDimensionsEvent event) {
         // Update Attributes
         dataAttributeDtos = new ArrayList<DataAttributeDto>();
-        dispatcher.execute(new FindDescriptorForDsdAction(dataStructureDefinitionDto.getId(), TypeComponentList.ATTRIBUTE_DESCRIPTOR), new WaitingAsyncCallback<FindDescriptorForDsdResult>() {
+        dispatcher.execute(new FindDescriptorForDsdAction(dataStructureDefinitionDto.getUrn(), TypeComponentList.ATTRIBUTE_DESCRIPTOR), new WaitingAsyncCallback<FindDescriptorForDsdResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -207,7 +207,7 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
     public void onUpdateGroupKeys(final UpdateGroupKeysEvent event) {
         // Update Attributes
         dataAttributeDtos = new ArrayList<DataAttributeDto>();
-        dispatcher.execute(new FindDescriptorForDsdAction(dataStructureDefinitionDto.getId(), TypeComponentList.ATTRIBUTE_DESCRIPTOR), new WaitingAsyncCallback<FindDescriptorForDsdResult>() {
+        dispatcher.execute(new FindDescriptorForDsdAction(dataStructureDefinitionDto.getUrn(), TypeComponentList.ATTRIBUTE_DESCRIPTOR), new WaitingAsyncCallback<FindDescriptorForDsdResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -336,30 +336,31 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
 
     @Override
     public void saveAttribute(DataAttributeDto attribute) {
-        dispatcher.execute(new SaveComponentForDsdAction(dataStructureDefinitionDto.getId(), attribute, TypeComponentList.ATTRIBUTE_DESCRIPTOR), new WaitingAsyncCallback<SaveComponentForDsdResult>() {
+        dispatcher.execute(new SaveComponentForDsdAction(dataStructureDefinitionDto.getUrn(), attribute, TypeComponentList.ATTRIBUTE_DESCRIPTOR),
+                new WaitingAsyncCallback<SaveComponentForDsdResult>() {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdAttributeErrorSave()), MessageTypeEnum.ERROR);
-            }
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdAttributeErrorSave()), MessageTypeEnum.ERROR);
+                    }
 
-            @Override
-            public void onWaitSuccess(SaveComponentForDsdResult result) {
-                ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdAttributeSaved()), MessageTypeEnum.SUCCESS);
-                updateAttributeList(false);
-                getView().onAttributeSaved((DataAttributeDto) result.getComponentDtoSaved());
-                if (isNewDescriptor) {
-                    // The first time a descriptor is saved, the DSD version changes.
-                    isNewDescriptor = false;
-                    updateDsd();
-                }
-            }
-        });
+                    @Override
+                    public void onWaitSuccess(SaveComponentForDsdResult result) {
+                        ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdAttributeSaved()), MessageTypeEnum.SUCCESS);
+                        updateAttributeList(false);
+                        getView().onAttributeSaved((DataAttributeDto) result.getComponentDtoSaved());
+                        if (isNewDescriptor) {
+                            // The first time a descriptor is saved, the DSD version changes.
+                            isNewDescriptor = false;
+                            updateDsd();
+                        }
+                    }
+                });
     }
 
     @Override
     public void deleteAttributes(List<DataAttributeDto> attributesToDelete) {
-        dispatcher.execute(new DeleteAttributeListForDsdAction(dataStructureDefinitionDto.getId(), attributesToDelete, TypeComponentList.ATTRIBUTE_DESCRIPTOR),
+        dispatcher.execute(new DeleteAttributeListForDsdAction(dataStructureDefinitionDto.getUrn(), attributesToDelete, TypeComponentList.ATTRIBUTE_DESCRIPTOR),
                 new WaitingAsyncCallback<DeleteAttributeListForDsdResult>() {
 
                     @Override
@@ -392,7 +393,7 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
 
     private void updateAttributeList(final boolean updateView) {
         dataAttributeDtos = new ArrayList<DataAttributeDto>();
-        dispatcher.execute(new FindDescriptorForDsdAction(dataStructureDefinitionDto.getId(), TypeComponentList.ATTRIBUTE_DESCRIPTOR), new WaitingAsyncCallback<FindDescriptorForDsdResult>() {
+        dispatcher.execute(new FindDescriptorForDsdAction(dataStructureDefinitionDto.getUrn(), TypeComponentList.ATTRIBUTE_DESCRIPTOR), new WaitingAsyncCallback<FindDescriptorForDsdResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {

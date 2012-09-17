@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.web.client.view;
 import java.util.List;
 
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
+import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
 import org.siemac.metamac.srm.web.client.presenter.StructuralResourcesPresenter;
@@ -11,7 +12,6 @@ import org.siemac.metamac.srm.web.client.widgets.ConceptSchemeListGrid;
 import org.siemac.metamac.srm.web.client.widgets.DsdListGrid;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptSchemeRecord;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
@@ -142,8 +142,8 @@ public class StructuralResourcesViewImpl extends ViewWithUiHandlers<StructuralRe
     }
 
     @Override
-    public void setDsdList(List<DataStructureDefinitionDto> dataStructureDefinitionDtos) {
-        dsdListGrid.setDsds(dataStructureDefinitionDtos);
+    public void setDsdList(List<DataStructureDefinitionMetamacDto> dataStructureDefinitionMetamacDtos) {
+        dsdListGrid.setDsds(dataStructureDefinitionMetamacDtos);
     }
 
     @Override

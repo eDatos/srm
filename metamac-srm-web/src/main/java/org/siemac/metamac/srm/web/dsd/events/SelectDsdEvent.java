@@ -1,6 +1,7 @@
 package org.siemac.metamac.srm.web.dsd.events;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;
+import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
+
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HasHandlers;
@@ -20,19 +21,19 @@ public class SelectDsdEvent extends GwtEvent<SelectDsdEvent.SelectDsdHandler> {
     }
 
     // TODO HasEventBus should be used instead of HasHandlers ¿?
-    public static void fire(HasHandlers source, DataStructureDefinitionDto dataStructureDefinitionDto) {
+    public static void fire(HasHandlers source, DataStructureDefinitionMetamacDto dataStructureDefinitionDto) {
         if (TYPE != null) {
             source.fireEvent(new SelectDsdEvent(dataStructureDefinitionDto));
         }
     }
 
-    private final DataStructureDefinitionDto dataStructureDefinitionDto;
+    private final DataStructureDefinitionMetamacDto dataStructureDefinitionDto;
 
-    public SelectDsdEvent(DataStructureDefinitionDto dataStructureDefinitionDto) {
+    public SelectDsdEvent(DataStructureDefinitionMetamacDto dataStructureDefinitionDto) {
         this.dataStructureDefinitionDto = dataStructureDefinitionDto;
     }
 
-    public DataStructureDefinitionDto getDataStructureDefinitionDto() {
+    public DataStructureDefinitionMetamacDto getDataStructureDefinitionDto() {
         return dataStructureDefinitionDto;
     }
 

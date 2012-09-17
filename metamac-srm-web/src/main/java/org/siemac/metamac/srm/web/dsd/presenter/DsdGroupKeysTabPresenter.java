@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
+import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
@@ -34,7 +35,6 @@ import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.utils.UrnUtils;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DescriptorDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponentList;
@@ -64,12 +64,12 @@ public class DsdGroupKeysTabPresenter extends Presenter<DsdGroupKeysTabPresenter
             SelectDsdAndDescriptorsHandler,
             UpdateDimensionsHandler {
 
-    private final DispatchAsync         dispatcher;
-    private final PlaceManager          placeManager;
+    private final DispatchAsync               dispatcher;
+    private final PlaceManager                placeManager;
 
-    private DataStructureDefinitionDto  dataStructureDefinitionDto;
-    private List<DescriptorDto>         groupKeys;
-    private List<DimensionComponentDto> dimensionComponentDtos;
+    private DataStructureDefinitionMetamacDto dataStructureDefinitionDto;
+    private List<DescriptorDto>               groupKeys;
+    private List<DimensionComponentDto>       dimensionComponentDtos;
 
     @ProxyCodeSplit
     @NameToken(NameTokens.dsdGroupKeysPage)
@@ -170,7 +170,7 @@ public class DsdGroupKeysTabPresenter extends Presenter<DsdGroupKeysTabPresenter
     public void onUpdateDimensions(final UpdateDimensionsEvent event) {
         // Update Group Keys
         groupKeys = new ArrayList<DescriptorDto>();
-        dispatcher.execute(new FindDescriptorForDsdAction(dataStructureDefinitionDto.getId(), TypeComponentList.GROUP_DIMENSION_DESCRIPTOR), new WaitingAsyncCallback<FindDescriptorForDsdResult>() {
+        dispatcher.execute(new FindDescriptorForDsdAction(dataStructureDefinitionDto.getUrn(), TypeComponentList.GROUP_DIMENSION_DESCRIPTOR), new WaitingAsyncCallback<FindDescriptorForDsdResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -192,7 +192,7 @@ public class DsdGroupKeysTabPresenter extends Presenter<DsdGroupKeysTabPresenter
     public void saveGroupKeys(DescriptorDto descriptorDto) {
         // Update DSD only if a new group keys descriptor is saved
         final boolean updateDsd = descriptorDto.getId() == null;
-        dispatcher.execute(new SaveDescriptorForDsdAction(dataStructureDefinitionDto.getId(), descriptorDto), new WaitingAsyncCallback<SaveDescriptorForDsdResult>() {
+        dispatcher.execute(new SaveDescriptorForDsdAction(dataStructureDefinitionDto.getUrn(), descriptorDto), new WaitingAsyncCallback<SaveDescriptorForDsdResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -212,7 +212,7 @@ public class DsdGroupKeysTabPresenter extends Presenter<DsdGroupKeysTabPresenter
 
     @Override
     public void deleteGroupKeys(List<DescriptorDto> descriptorsToDelete) {
-        dispatcher.execute(new DeleteDescriptorListForDsdAction(dataStructureDefinitionDto.getId(), descriptorsToDelete), new WaitingAsyncCallback<DeleteDescriptorListForDsdResult>() {
+        dispatcher.execute(new DeleteDescriptorListForDsdAction(dataStructureDefinitionDto.getUrn(), descriptorsToDelete), new WaitingAsyncCallback<DeleteDescriptorListForDsdResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -246,7 +246,7 @@ public class DsdGroupKeysTabPresenter extends Presenter<DsdGroupKeysTabPresenter
 
     private void updateGroupKeysList(final boolean updateView) {
         groupKeys = new ArrayList<DescriptorDto>();
-        dispatcher.execute(new FindDescriptorForDsdAction(dataStructureDefinitionDto.getId(), TypeComponentList.GROUP_DIMENSION_DESCRIPTOR), new WaitingAsyncCallback<FindDescriptorForDsdResult>() {
+        dispatcher.execute(new FindDescriptorForDsdAction(dataStructureDefinitionDto.getUrn(), TypeComponentList.GROUP_DIMENSION_DESCRIPTOR), new WaitingAsyncCallback<FindDescriptorForDsdResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {

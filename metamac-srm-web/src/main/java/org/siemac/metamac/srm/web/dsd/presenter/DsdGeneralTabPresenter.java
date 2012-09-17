@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.web.dsd.presenter;
 
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
+import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
@@ -22,7 +23,6 @@ import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.utils.UrnUtils;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;
 import com.google.gwt.event.shared.EventBus;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
@@ -47,10 +47,10 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
             SelectDsdAndDescriptorsHandler,
             UpdateDsdHandler {
 
-    private final DispatchAsync        dispatcher;
-    private final PlaceManager         placeManager;
+    private final DispatchAsync               dispatcher;
+    private final PlaceManager                placeManager;
 
-    private DataStructureDefinitionDto dsd;
+    private DataStructureDefinitionMetamacDto dsd;
 
     @ProxyCodeSplit
     @NameToken(NameTokens.dsdGeneralPage)
@@ -66,11 +66,11 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
 
     public interface DsdGeneralTabView extends View, HasUiHandlers<DsdGeneralTabUiHandlers> {
 
-        void setDsd(DataStructureDefinitionDto dataStructureDefinitionDto);
-        DataStructureDefinitionDto getDataStructureDefinitionDto(DataStructureDefinitionDto dsd);
+        void setDsd(DataStructureDefinitionMetamacDto dataStructureDefinitionDto);
+        DataStructureDefinitionMetamacDto getDataStructureDefinitionDto(DataStructureDefinitionMetamacDto dsd);
         boolean validate();
         HasClickHandlers getSave();
-        void onDsdSaved(DataStructureDefinitionDto dsd);
+        void onDsdSaved(DataStructureDefinitionMetamacDto dsd);
     }
 
     @Inject
@@ -138,7 +138,7 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
     }
 
     @Override
-    public void saveDsd(DataStructureDefinitionDto dataStructureDefinitionDto) {
+    public void saveDsd(DataStructureDefinitionMetamacDto dataStructureDefinitionDto) {
         dispatcher.execute(new SaveDsdAction(dataStructureDefinitionDto), new WaitingAsyncCallback<SaveDsdResult>() {
 
             @Override

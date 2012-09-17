@@ -5,6 +5,7 @@ import java.util.List;
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
+import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
@@ -34,7 +35,6 @@ import org.siemac.metamac.web.common.client.utils.UrnUtils;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DescriptorDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponent;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponentList;
@@ -68,16 +68,16 @@ public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTa
             SelectDsdAndDescriptorsHandler,
             UpdateConceptSchemesHandler {
 
-    private final DispatchAsync        dispatcher;
-    private final PlaceManager         placeManager;
+    private final DispatchAsync               dispatcher;
+    private final PlaceManager                placeManager;
 
-    private DataStructureDefinitionDto dataStructureDefinitionDto;
-    private boolean                    isNewDescriptor;
-    private ComponentDto               primaryMeasure;
+    private DataStructureDefinitionMetamacDto dataStructureDefinitionDto;
+    private boolean                           isNewDescriptor;
+    private ComponentDto                      primaryMeasure;
 
     // Storing selected concept and representation type allows improving performance when loading code lists
-    private String                     selectedConceptUri;
-    private boolean                    enumeratedRepresentation;
+    private String                            selectedConceptUri;
+    private boolean                           enumeratedRepresentation;
 
     @ProxyCodeSplit
     @NameToken(NameTokens.dsdPrimaryMeasurePage)
@@ -216,7 +216,7 @@ public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTa
 
     @Override
     public void savePrimaryMeasure(ComponentDto component) {
-        dispatcher.execute(new SaveComponentForDsdAction(dataStructureDefinitionDto.getId(), component, TypeComponentList.MEASURE_DESCRIPTOR), new WaitingAsyncCallback<SaveComponentForDsdResult>() {
+        dispatcher.execute(new SaveComponentForDsdAction(dataStructureDefinitionDto.getUrn(), component, TypeComponentList.MEASURE_DESCRIPTOR), new WaitingAsyncCallback<SaveComponentForDsdResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {

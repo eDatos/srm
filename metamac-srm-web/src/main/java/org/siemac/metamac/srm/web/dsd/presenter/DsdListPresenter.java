@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.web.dsd.presenter;
 import java.util.List;
 
 import org.siemac.metamac.core.common.util.shared.StringUtils;
+import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
@@ -29,7 +30,6 @@ import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.utils.UrnUtils;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.http.client.URL;
@@ -88,10 +88,10 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
 
     public interface DsdListView extends View, HasUiHandlers<DsdListUiHandlers> {
 
-        public void setDsds(List<DataStructureDefinitionDto> dataStructureDefinitionDtos, int firstResult, int totalResults);
+        public void setDsds(List<DataStructureDefinitionMetamacDto> dataStructureDefinitionDtos, int firstResult, int totalResults);
         HasRecordClickHandlers getSelectedDsd();
         List<String> getSelectedDsdUrns();
-        DataStructureDefinitionDto getNewDsd();
+        DataStructureDefinitionMetamacDto getNewDsd();
         void onNewDsdCreated();
 
         void clearSearchSection();
@@ -146,7 +146,7 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
             @Override
             public void onClick(ClickEvent event) {
                 if (getView().validate()) {
-                    DataStructureDefinitionDto dsd = getView().getNewDsd();
+                    DataStructureDefinitionMetamacDto dsd = getView().getNewDsd();
                     saveDsd(dsd);
                 }
             }
@@ -202,8 +202,8 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
     }
 
     @Override
-    public void saveDsd(DataStructureDefinitionDto dataStructureDefinitionDto) {
-        dispatcher.execute(new SaveDsdAction(dataStructureDefinitionDto), new WaitingAsyncCallback<SaveDsdResult>() {
+    public void saveDsd(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
+        dispatcher.execute(new SaveDsdAction(dataStructureDefinitionMetamacDto), new WaitingAsyncCallback<SaveDsdResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -213,7 +213,7 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
             @Override
             public void onWaitSuccess(SaveDsdResult result) {
                 getView().closeDsdWindow();
-                DataStructureDefinitionDto dsdSaved = result.getDsdSaved();
+                DataStructureDefinitionMetamacDto dsdSaved = result.getDsdSaved();
                 goToDsd(dsdSaved.getUrn());
             }
         });
@@ -269,8 +269,8 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
     }
 
     @Override
-    public void exportDsd(DataStructureDefinitionDto dsd) {
-        dispatcher.execute(new ExportDsdAction(dsd), new WaitingAsyncCallback<ExportDsdResult>() {
+    public void exportDsd(DataStructureDefinitionMetamacDto dsd) {
+        dispatcher.execute(new ExportDsdAction(dsd.getUrn()), new WaitingAsyncCallback<ExportDsdResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {

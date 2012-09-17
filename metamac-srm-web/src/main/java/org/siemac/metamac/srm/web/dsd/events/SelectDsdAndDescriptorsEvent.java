@@ -2,7 +2,8 @@ package org.siemac.metamac.srm.web.dsd.events;
 
 import java.util.List;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;
+import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
+
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DescriptorDto;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
@@ -18,7 +19,7 @@ public class SelectDsdAndDescriptorsEvent extends GwtEvent<SelectDsdAndDescripto
     private static Type<SelectDsdAndDescriptorsHandler> TYPE = new Type<SelectDsdAndDescriptorsHandler>();
 
     // TODO HasEventBus should be used instead of HasHandlers ¿?
-    public static void fire(HasHandlers source, DataStructureDefinitionDto dataStructureDefinitionDto, DescriptorDto primaryMeasure, DescriptorDto dimensions, DescriptorDto attributes,
+    public static void fire(HasHandlers source, DataStructureDefinitionMetamacDto dataStructureDefinitionDto, DescriptorDto primaryMeasure, DescriptorDto dimensions, DescriptorDto attributes,
             List<DescriptorDto> groupKeys) {
         if (TYPE != null) {
             source.fireEvent(new SelectDsdAndDescriptorsEvent(dataStructureDefinitionDto, primaryMeasure, dimensions, attributes, groupKeys));
@@ -30,13 +31,13 @@ public class SelectDsdAndDescriptorsEvent extends GwtEvent<SelectDsdAndDescripto
         return TYPE;
     }
 
-    private final DataStructureDefinitionDto dataStructureDefinitionDto;
-    private final DescriptorDto              primaryMeasure;
-    private final DescriptorDto              dimensions;
-    private final DescriptorDto              attributes;
-    private final List<DescriptorDto>        groupKeys;
+    private final DataStructureDefinitionMetamacDto dataStructureDefinitionDto;
+    private final DescriptorDto                     primaryMeasure;
+    private final DescriptorDto                     dimensions;
+    private final DescriptorDto                     attributes;
+    private final List<DescriptorDto>               groupKeys;
 
-    public SelectDsdAndDescriptorsEvent(DataStructureDefinitionDto dataStructureDefinitionDto, DescriptorDto primaryMeasure, DescriptorDto dimensions, DescriptorDto attributes,
+    public SelectDsdAndDescriptorsEvent(DataStructureDefinitionMetamacDto dataStructureDefinitionDto, DescriptorDto primaryMeasure, DescriptorDto dimensions, DescriptorDto attributes,
             List<DescriptorDto> groupKeys) {
         this.dataStructureDefinitionDto = dataStructureDefinitionDto;
         this.primaryMeasure = primaryMeasure;
@@ -45,7 +46,7 @@ public class SelectDsdAndDescriptorsEvent extends GwtEvent<SelectDsdAndDescripto
         this.groupKeys = groupKeys;
     }
 
-    public DataStructureDefinitionDto getDataStructureDefinitionDto() {
+    public DataStructureDefinitionMetamacDto getDataStructureDefinitionDto() {
         return dataStructureDefinitionDto;
     }
 

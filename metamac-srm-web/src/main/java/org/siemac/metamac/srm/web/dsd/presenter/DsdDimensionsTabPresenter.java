@@ -6,6 +6,7 @@ import java.util.List;
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
+import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
@@ -41,7 +42,6 @@ import org.siemac.metamac.web.common.client.utils.UrnUtils;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DescriptorDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponentList;
@@ -78,16 +78,16 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
             SelectDsdAndDescriptorsHandler,
             UpdateConceptSchemesHandler {
 
-    private final DispatchAsync         dispatcher;
-    private final PlaceManager          placeManager;
+    private final DispatchAsync               dispatcher;
+    private final PlaceManager                placeManager;
 
-    private DataStructureDefinitionDto  dataStructureDefinitionDto;
-    private boolean                     isNewDescriptor;
-    private List<DimensionComponentDto> dimensionComponentDtos;
+    private DataStructureDefinitionMetamacDto dataStructureDefinitionDto;
+    private boolean                           isNewDescriptor;
+    private List<DimensionComponentDto>       dimensionComponentDtos;
 
     // Storing selected concept and representation type allows improving performance when loading code lists
-    private String                      selectedConceptUri;
-    private boolean                     enumeratedRepresentation;
+    private String                            selectedConceptUri;
+    private boolean                           enumeratedRepresentation;
 
     @ProxyCodeSplit
     @NameToken(NameTokens.dsdDimensionsPage)
@@ -267,7 +267,7 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
         // }
         // }
 
-        dispatcher.execute(new SaveComponentForDsdAction(dataStructureDefinitionDto.getId(), dimensionToSave, TypeComponentList.DIMENSION_DESCRIPTOR),
+        dispatcher.execute(new SaveComponentForDsdAction(dataStructureDefinitionDto.getUrn(), dimensionToSave, TypeComponentList.DIMENSION_DESCRIPTOR),
                 new WaitingAsyncCallback<SaveComponentForDsdResult>() {
 
                     @Override
@@ -291,7 +291,7 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
 
     @Override
     public void deleteDimensions(List<DimensionComponentDto> dimensionsToDelete) {
-        dispatcher.execute(new DeleteDimensionListForDsdAction(dataStructureDefinitionDto.getId(), dimensionsToDelete, TypeComponentList.DIMENSION_DESCRIPTOR),
+        dispatcher.execute(new DeleteDimensionListForDsdAction(dataStructureDefinitionDto.getUrn(), dimensionsToDelete, TypeComponentList.DIMENSION_DESCRIPTOR),
                 new WaitingAsyncCallback<DeleteDimensionListForDsdResult>() {
 
                     @Override
@@ -324,7 +324,7 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
 
     private void updateDimensionList(final boolean updateView) {
         dimensionComponentDtos = new ArrayList<DimensionComponentDto>();
-        dispatcher.execute(new FindDescriptorForDsdAction(dataStructureDefinitionDto.getId(), TypeComponentList.DIMENSION_DESCRIPTOR), new WaitingAsyncCallback<FindDescriptorForDsdResult>() {
+        dispatcher.execute(new FindDescriptorForDsdAction(dataStructureDefinitionDto.getUrn(), TypeComponentList.DIMENSION_DESCRIPTOR), new WaitingAsyncCallback<FindDescriptorForDsdResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {

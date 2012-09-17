@@ -1,5 +1,6 @@
 package org.siemac.metamac.srm.web.dsd.view;
 
+import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdGeneralTabPresenter;
 import org.siemac.metamac.srm.web.dsd.utils.DsdClientSecurityUtils;
@@ -13,7 +14,6 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
@@ -178,7 +178,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
     }
 
     @Override
-    public void setDsd(DataStructureDefinitionDto dsd) {
+    public void setDsd(DataStructureDefinitionMetamacDto dsd) {
         mainFormLayout.setViewMode();
         // TODO mainFormLayout.updatePublishSection(dsd.getProcStatus());
 
@@ -193,7 +193,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         generalEditionForm.clearErrors(true);
     }
 
-    private void setDsdViewMode(DataStructureDefinitionDto dsd) {
+    private void setDsdViewMode(DataStructureDefinitionMetamacDto dsd) {
         staticIdLogic.setValue(dsd.getCode());
         staticUriItem.setValue(dsd.getUri());
         staticUrnItem.setValue(dsd.getUrn());
@@ -208,7 +208,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         viewAnnotationsPanel.setAnnotations(dsd.getAnnotations());
     }
 
-    private void setDsdEditionMode(DataStructureDefinitionDto dsd) {
+    private void setDsdEditionMode(DataStructureDefinitionMetamacDto dsd) {
         codeItem.setValue(dsd.getCode());
         staticUriItemEdit.setValue(dsd.getUri());
         staticUrnItemEdit.setValue(dsd.getUrn());
@@ -234,7 +234,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
     }
 
     @Override
-    public DataStructureDefinitionDto getDataStructureDefinitionDto(DataStructureDefinitionDto dsd) {
+    public DataStructureDefinitionMetamacDto getDataStructureDefinitionDto(DataStructureDefinitionMetamacDto dsd) {
         dsd.setCode(codeItem.getValueAsString());
         dsd.setName(nameItem.getValue());
         dsd.setDescription(descriptionItem.getValue());
@@ -250,7 +250,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
     }
 
     @Override
-    public void onDsdSaved(DataStructureDefinitionDto dsd) {
+    public void onDsdSaved(DataStructureDefinitionMetamacDto dsd) {
         setDsd(dsd);
         mainFormLayout.setViewMode();
     }

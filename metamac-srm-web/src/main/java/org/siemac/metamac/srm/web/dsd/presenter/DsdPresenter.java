@@ -1,5 +1,6 @@
 package org.siemac.metamac.srm.web.dsd.presenter;
 
+import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
@@ -20,7 +21,6 @@ import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.events.UpdateConceptSchemesEvent;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponentList;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
@@ -51,7 +51,7 @@ public class DsdPresenter extends Presenter<DsdPresenter.DsdView, DsdPresenter.D
     private final PlaceManager                        placeManager;
     private final DispatchAsync                       dispatcher;
 
-    private DataStructureDefinitionDto                dsd;
+    private DataStructureDefinitionMetamacDto         dsd;
 
     private ToolStripPresenterWidget                  toolStripPresenterWidget;
 
@@ -77,7 +77,7 @@ public class DsdPresenter extends Presenter<DsdPresenter.DsdView, DsdPresenter.D
 
     public interface DsdView extends View, HasUiHandlers<DsdUiHandlers> {
 
-        void setDsd(DataStructureDefinitionDto dataStructureDefinitionDto);
+        void setDsd(DataStructureDefinitionMetamacDto dataStructureDefinitionDto);
         TabSet getDsdTabSet();
         HasTabSelectedHandlers getGeneralTab();
         HasTabSelectedHandlers getPrimaryMeasureTab();

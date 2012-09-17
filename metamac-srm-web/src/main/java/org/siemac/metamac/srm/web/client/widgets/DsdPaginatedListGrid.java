@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.web.client.widgets;
 
 import java.util.List;
 
+import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdListPresenter;
@@ -9,7 +10,6 @@ import org.siemac.metamac.srm.web.dsd.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.widgets.PaginatedCheckListGrid;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;
 import com.smartgwt.client.types.Autofit;
 import com.smartgwt.client.types.ListGridFieldType;
 import com.smartgwt.client.widgets.grid.HoverCustomizer;
@@ -62,14 +62,14 @@ public class DsdPaginatedListGrid extends PaginatedCheckListGrid {
         getListGrid().setFields(codeDsdField, nameDsdField, descriptionDsdField, finalStructureDsdField);
     }
 
-    public void setDsds(List<DataStructureDefinitionDto> dataStructureDefinitionDtos, int firstResult, int totalResults) {
-        DsdRecord[] dsdRecords = new DsdRecord[dataStructureDefinitionDtos.size()];
-        for (int i = 0; i < dataStructureDefinitionDtos.size(); i++) {
-            dsdRecords[i] = RecordUtils.getDsdRecord(dataStructureDefinitionDtos.get(i));
+    public void setDsds(List<DataStructureDefinitionMetamacDto> dataStructureDefinitionMetamacDtos, int firstResult, int totalResults) {
+        DsdRecord[] dsdRecords = new DsdRecord[dataStructureDefinitionMetamacDtos.size()];
+        for (int i = 0; i < dataStructureDefinitionMetamacDtos.size(); i++) {
+            dsdRecords[i] = RecordUtils.getDsdRecord(dataStructureDefinitionMetamacDtos.get(i));
         }
         // Populate the List Grid
         getListGrid().setData(dsdRecords);
-        refreshPaginationInfo(firstResult, dataStructureDefinitionDtos.size(), totalResults);
+        refreshPaginationInfo(firstResult, dataStructureDefinitionMetamacDtos.size(), totalResults);
     }
 
 }

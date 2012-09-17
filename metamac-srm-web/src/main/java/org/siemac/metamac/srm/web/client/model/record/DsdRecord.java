@@ -2,7 +2,8 @@ package org.siemac.metamac.srm.web.client.model.record;
 
 import java.util.Date;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;
+import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
+
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 
 public class DsdRecord extends ListGridRecord {
@@ -24,7 +25,7 @@ public class DsdRecord extends ListGridRecord {
     }
 
     // Last modified record
-    public DsdRecord(Long id, String code, String name, String description, Boolean finalStructure, DataStructureDefinitionDto dsd) {
+    public DsdRecord(Long id, String code, String name, String description, Boolean finalStructure, DataStructureDefinitionMetamacDto dsd) {
         setIdentifier(id);
         setCode(code);
         setName(name);
@@ -93,7 +94,7 @@ public class DsdRecord extends ListGridRecord {
         setAttribute(END_DATE, endDate);
     }
 
-    public void setDsd(DataStructureDefinitionDto value) {
+    public void setDsd(DataStructureDefinitionMetamacDto value) {
         setAttribute(DSD, value);
     }
 
@@ -141,8 +142,8 @@ public class DsdRecord extends ListGridRecord {
         return getAttributeAsDate(END_DATE);
     }
 
-    public DataStructureDefinitionDto getDsd() {
-        return (DataStructureDefinitionDto) getAttributeAsObject(DSD);
+    public DataStructureDefinitionMetamacDto getDsd() {
+        return (DataStructureDefinitionMetamacDto) getAttributeAsObject(DSD);
     }
 
 }
