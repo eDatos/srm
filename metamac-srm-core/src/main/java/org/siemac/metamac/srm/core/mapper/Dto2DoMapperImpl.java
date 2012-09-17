@@ -197,31 +197,4 @@ public class Dto2DoMapperImpl extends com.arte.statistic.sdmx.srm.core.mapper.Dt
         return conceptType;
     }
 
-    // ------------------------------------------------------------
-    // EXTERNAL ITEM
-    // ------------------------------------------------------------
-    private ExternalItem externalItemDtoToExternalItem(ServiceContext ctx, ExternalItemDto source, ExternalItem target, String metadataName) throws MetamacException {
-        if (source == null) {
-            if (target != null) {
-                // delete previous entity
-                externalItemRepository.delete(target);
-            }
-            return null;
-        }
-
-        if (target == null) {
-            // New
-            target = new ExternalItem(source.getCode(), source.getUri(), source.getUrn(), source.getType());
-        }
-        target.setCode(source.getCode());
-        target.setUri(source.getUri());
-        target.setUrn(source.getUrn());
-        target.setType(source.getType());
-        target.setManagementAppUrl(source.getManagementAppUrl());
-        target.setTitle(internationalStringToEntity(ctx, source.getTitle(), target.getTitle(), metadataName + ServiceExceptionParametersInternal.EXTERNAL_ITEM_TITLE));
-
-        return target;
-    }
-
-
 }
