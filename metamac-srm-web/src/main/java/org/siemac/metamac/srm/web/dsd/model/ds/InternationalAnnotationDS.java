@@ -6,9 +6,9 @@ import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.data.fields.DataSourceIntegerField;
 import com.smartgwt.client.data.fields.DataSourceTextField;
 
-public class AnnotationDS extends DataSource {
+public class InternationalAnnotationDS extends DataSource {
 
-    public AnnotationDS() {
+    public InternationalAnnotationDS() {
         DataSourceIntegerField id = new DataSourceIntegerField(InternationalAnnotationRecord.ID, "Id");
         addField(id);
 

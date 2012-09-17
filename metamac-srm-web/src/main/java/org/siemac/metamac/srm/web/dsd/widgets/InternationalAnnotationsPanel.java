@@ -6,7 +6,7 @@ import java.util.Set;
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.resources.GlobalResources;
-import org.siemac.metamac.srm.web.dsd.model.ds.AnnotationDS;
+import org.siemac.metamac.srm.web.dsd.model.ds.InternationalAnnotationDS;
 import org.siemac.metamac.srm.web.dsd.model.record.InternationalAnnotationRecord;
 import org.siemac.metamac.srm.web.dsd.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.utils.ApplicationEditionLanguages;
@@ -69,7 +69,7 @@ public class InternationalAnnotationsPanel extends VLayout {
         imgLayout.setStyleName("annotationPanel");
 
         grid = new ListGrid();
-        grid.setDataSource(new AnnotationDS());
+        grid.setDataSource(new InternationalAnnotationDS());
         grid.setAutoFetchData(true);
         grid.setAutoSaveEdits(true);
         grid.setStyleName("annotationGrid");

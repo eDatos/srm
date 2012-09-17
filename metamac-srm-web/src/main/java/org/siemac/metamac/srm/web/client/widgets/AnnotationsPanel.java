@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Set;
 
+import org.siemac.metamac.srm.web.client.model.ds.AnnotationDS;
 import org.siemac.metamac.srm.web.client.resources.GlobalResources;
 import org.siemac.metamac.srm.web.dsd.model.record.AnnotationRecord;
 import org.siemac.metamac.srm.web.dsd.utils.RecordUtils;
@@ -18,10 +19,10 @@ import com.google.gwt.resources.client.ImageResource;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.AnimationEffect;
+import com.smartgwt.client.types.Autofit;
 import com.smartgwt.client.types.Cursor;
 import com.smartgwt.client.types.ListGridEditEvent;
 import com.smartgwt.client.types.ListGridFieldType;
-import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.Img;
@@ -50,8 +51,6 @@ public class AnnotationsPanel extends VLayout {
 
     public AnnotationsPanel(boolean viewOnly) {
         super();
-        setHeight(200);
-        setOverflow(Overflow.AUTO);
 
         HLayout imgLayout = new HLayout();
         imgLayout.setMembersMargin(10);
@@ -118,6 +117,8 @@ public class AnnotationsPanel extends VLayout {
         imgLayout.addMember(form);
 
         grid = new ListGrid();
+        grid.setAutoFitMaxRecords(10);
+        grid.setAutoFitData(Autofit.VERTICAL);
         // grid.setStyleName("annotationGrid");
         grid.setLeaveScrollbarGap(false);
         // grid.setCellPadding(4);
@@ -155,36 +156,40 @@ public class AnnotationsPanel extends VLayout {
                 if (event.getNewValues() != null && event.getNewValues().size() > 0) {
                     Record record = grid.getRecord(event.getRowNum());
                     AnnotationDto annotationDto = new AnnotationDto();
-                    if (record.getAttributeAsObject(AnnotationRecord.ANNOTATION_DTO) != null && record.getAttributeAsObject(AnnotationRecord.ANNOTATION_DTO) instanceof AnnotationDto) {
-                        annotationDto = (AnnotationDto) record.getAttributeAsObject(AnnotationRecord.ANNOTATION_DTO);
+                    if (record.getAttributeAsObject(AnnotationDS.ANNOTATION_DTO) != null && record.getAttributeAsObject(AnnotationDS.ANNOTATION_DTO) instanceof AnnotationDto) {
+                        annotationDto = (AnnotationDto) record.getAttributeAsObject(AnnotationDS.ANNOTATION_DTO);
                     }
-                    if (event.getNewValues().containsKey(AnnotationRecord.TITLE)) {
-                        annotationDto.setTitle(event.getNewValues().get(AnnotationRecord.TITLE) != null ? (String) event.getNewValues().get(AnnotationRecord.TITLE) : new String());
+                    // Title
+                    if (event.getNewValues().containsKey(AnnotationDS.TITLE)) {
+                        annotationDto.setTitle(event.getNewValues().get(AnnotationDS.TITLE) != null ? (String) event.getNewValues().get(AnnotationDS.TITLE) : null);
                     }
-                    if (event.getNewValues().containsKey(AnnotationRecord.TEXT)) {
+                    // Text
+                    if (event.getNewValues().containsKey(AnnotationDS.TEXT)) {
                         String locale = translationsShowed ? selectItem.getValueAsString() : InternationalStringUtils.getCurrentLocale();
-                        String text = event.getNewValues().get(AnnotationRecord.TEXT) != null ? (String) event.getNewValues().get(AnnotationRecord.TEXT) : new String();
+                        String text = event.getNewValues().get(AnnotationDS.TEXT) != null ? (String) event.getNewValues().get(AnnotationDS.TEXT) : null;
                         annotationDto.setText(InternationalStringUtils.updateInternationalString(locale, annotationDto.getText(), text));
                     }
-                    if (event.getNewValues().containsKey(AnnotationRecord.URL)) {
-                        annotationDto.setUrl(event.getNewValues().get(AnnotationRecord.URL) != null ? (String) event.getNewValues().get(AnnotationRecord.URL) : new String());
+                    // URL
+                    if (event.getNewValues().containsKey(AnnotationDS.URL)) {
+                        annotationDto.setUrl(event.getNewValues().get(AnnotationDS.URL) != null ? (String) event.getNewValues().get(AnnotationDS.URL) : null);
                     }
-                    grid.getRecord(event.getRowNum()).setAttribute(AnnotationRecord.ANNOTATION_DTO, annotationDto);
+                    grid.getRecord(event.getRowNum()).setAttribute(AnnotationDS.ANNOTATION_DTO, annotationDto);
                 }
                 // }
             }
         });
 
-        ListGridField codeField = new ListGridField(AnnotationRecord.CODE, getConstants().annotationCode());
+        ListGridField codeField = new ListGridField(AnnotationDS.CODE, getConstants().annotationCode());
         codeField.setWidth("15%");
-        ListGridField titleField = new ListGridField(AnnotationRecord.TITLE, getConstants().annotationTitle());
-        ListGridField textField = new ListGridField(AnnotationRecord.TEXT, getConstants().annotationText());
-        ListGridField urlField = new ListGridField(AnnotationRecord.URL, getConstants().annotationUrl());
+        ListGridField titleField = new ListGridField(AnnotationDS.TITLE, getConstants().annotationTitle());
+        ListGridField textField = new ListGridField(AnnotationDS.TEXT, getConstants().annotationText());
+        ListGridField urlField = new ListGridField(AnnotationDS.URL, getConstants().annotationUrl());
         urlField.setType(ListGridFieldType.LINK);
         grid.setFields(codeField, titleField, textField, urlField);
 
         Canvas rollUnderCanvasProperties = new Canvas();
         rollUnderCanvasProperties.setAnimateFadeTime(600);
+
         rollUnderCanvasProperties.setAnimateShowEffect(AnimationEffect.FADE);
         rollUnderCanvasProperties.setBackgroundColor("#ffe973");
         rollUnderCanvasProperties.setOpacity(50);
@@ -217,7 +222,7 @@ public class AnnotationsPanel extends VLayout {
         Set<AnnotationDto> annotations = new HashSet<AnnotationDto>();
         ListGridRecord[] records = grid.getRecords();
         for (int i = 0; i < records.length; i++) {
-            AnnotationDto annotationDto = (AnnotationDto) records[i].getAttributeAsObject(AnnotationRecord.ANNOTATION_DTO);
+            AnnotationDto annotationDto = (AnnotationDto) records[i].getAttributeAsObject(AnnotationDS.ANNOTATION_DTO);
             annotations.add(annotationDto);
         }
         return annotations;
@@ -237,9 +242,9 @@ public class AnnotationsPanel extends VLayout {
 
     private void changeAnnotationsLanguage(String locale) {
         for (int i = 0; i < grid.getRecords().length; i++) {
-            if (grid.getRecord(i).getAttribute(AnnotationRecord.ANNOTATION_DTO) != null) {
-                AnnotationDto annotationDto = (AnnotationDto) grid.getRecord(i).getAttributeAsObject(AnnotationRecord.ANNOTATION_DTO);
-                grid.getRecord(i).setAttribute(AnnotationRecord.TEXT, InternationalStringUtils.getLocalisedString(annotationDto.getText(), locale));
+            if (grid.getRecord(i).getAttribute(AnnotationDS.ANNOTATION_DTO) != null) {
+                AnnotationDto annotationDto = (AnnotationDto) grid.getRecord(i).getAttributeAsObject(AnnotationDS.ANNOTATION_DTO);
+                grid.getRecord(i).setAttribute(AnnotationDS.TEXT, InternationalStringUtils.getLocalisedString(annotationDto.getText(), locale));
             }
         }
         grid.redraw();

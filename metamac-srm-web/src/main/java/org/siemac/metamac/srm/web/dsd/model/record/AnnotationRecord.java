@@ -1,21 +1,17 @@
 package org.siemac.metamac.srm.web.dsd.model.record;
 
+import org.siemac.metamac.srm.web.client.model.ds.AnnotationDS;
+
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.AnnotationDto;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 
 public class AnnotationRecord extends ListGridRecord {
 
-    public static final String CODE           = "an-id";
-    public static final String TITLE          = "an-title";
-    public static final String TYPE           = "an-type";
-    public static final String URL            = "an-url";
-    public static final String TEXT           = "an-text";
-    public static final String ANNOTATION_DTO = "an-annotation";
-
     public AnnotationRecord() {
     }
 
-    public AnnotationRecord(String code, String title, String type, String url, String text, AnnotationDto annotationDto) {
+    public AnnotationRecord(Long id, String code, String title, String type, String url, String text, AnnotationDto annotationDto) {
+        setId(id);
         setCode(code);
         setTitle(title);
         setType(type);
@@ -24,52 +20,60 @@ public class AnnotationRecord extends ListGridRecord {
         setAnnotationDto(annotationDto);
     }
 
-    public void setCode(String value) {
-        setAttribute(CODE, value);
+    public void setId(Long id) {
+        setAttribute(AnnotationDS.ID, id);
     }
 
-    public String getIdLogic() {
-        return getAttributeAsString(CODE);
+    public Long getId() {
+        return getAttributeAsLong(AnnotationDS.ID);
+    }
+
+    public void setCode(String value) {
+        setAttribute(AnnotationDS.CODE, value);
+    }
+
+    public String getCode() {
+        return getAttributeAsString(AnnotationDS.CODE);
     }
 
     public void setTitle(String value) {
-        setAttribute(TITLE, value);
+        setAttribute(AnnotationDS.TITLE, value);
     }
 
     public String getTitle() {
-        return getAttributeAsString(TITLE);
+        return getAttributeAsString(AnnotationDS.TITLE);
     }
 
     public void setType(String value) {
-        setAttribute(TYPE, value);
+        setAttribute(AnnotationDS.TYPE, value);
     }
 
     public String getType() {
-        return getAttributeAsString(TYPE);
+        return getAttributeAsString(AnnotationDS.TYPE);
     }
 
     public void setUrl(String value) {
-        setAttribute(URL, value);
+        setAttribute(AnnotationDS.URL, value);
     }
 
     public String getUrl() {
-        return getAttributeAsString(URL);
+        return getAttributeAsString(AnnotationDS.URL);
     }
 
     public void setText(String value) {
-        setAttribute(TEXT, value);
+        setAttribute(AnnotationDS.TEXT, value);
     }
 
     public String getText() {
-        return getAttributeAsString(TEXT);
+        return getAttributeAsString(AnnotationDS.TEXT);
     }
 
     public void setAnnotationDto(AnnotationDto value) {
-        setAttribute(ANNOTATION_DTO, value);
+        setAttribute(AnnotationDS.ANNOTATION_DTO, value);
     }
 
     public AnnotationDto getAnnotationDto() {
-        return (AnnotationDto) getAttributeAsObject(ANNOTATION_DTO);
+        return (AnnotationDto) getAttributeAsObject(AnnotationDS.ANNOTATION_DTO);
     }
 
 }

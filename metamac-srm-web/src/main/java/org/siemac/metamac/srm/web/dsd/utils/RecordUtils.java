@@ -115,7 +115,7 @@ public class RecordUtils {
      * @return
      */
     public static AnnotationRecord getAnnotationRecord(AnnotationDto annotationDto) {
-        AnnotationRecord record = new AnnotationRecord(annotationDto.getCode(), annotationDto.getTitle(), annotationDto.getType(), annotationDto.getUrl(),
+        AnnotationRecord record = new AnnotationRecord(annotationDto.getId(), annotationDto.getCode(), annotationDto.getTitle(), annotationDto.getType(), annotationDto.getUrl(),
                 InternationalStringUtils.getLocalisedString(annotationDto.getText()), annotationDto);
         return record;
     }
@@ -127,8 +127,8 @@ public class RecordUtils {
      * @return
      */
     public static AnnotationRecord getAnnotationRecord(AnnotationDto annotationDto, String locale) {
-        AnnotationRecord record = new AnnotationRecord(annotationDto.getCode(), annotationDto.getTitle(), annotationDto.getType(), annotationDto.getUrl(), InternationalStringUtils.getLocalisedString(
-                annotationDto.getText(), locale), annotationDto);
+        AnnotationRecord record = new AnnotationRecord(annotationDto.getId(), annotationDto.getCode(), annotationDto.getTitle(), annotationDto.getType(), annotationDto.getUrl(),
+                InternationalStringUtils.getLocalisedString(annotationDto.getText(), locale), annotationDto);
         return record;
     }
 
