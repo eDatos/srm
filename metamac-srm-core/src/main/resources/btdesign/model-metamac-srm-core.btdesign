@@ -8,7 +8,6 @@ import "classpath:/btdesign/statistic-sdmx-v2_1-domain-enums-concept.btdesign"
 import "classpath:/btdesign/metamac-core-common-dtos.btdesign"
 import "classpath:/btdesign/model-statistic-sdmx-v2_1-transformation.btdesign"
 
-import "classpath:/btdesign/statistic-sdmx-core-base.btdesign"
 import "classpath:/btdesign/statistic-sdmx-core-structure.btdesign"
 import "classpath:/btdesign/statistic-sdmx-core-concepts.btdesign"
 
@@ -26,7 +25,6 @@ Application SrmCore {
     	basePackage=org.siemac.metamac.srm.core.facade
     	
 		Service SrmCoreServiceFacade {
-       		> @BaseService
        		> @TransformationServiceFacade
        		> @ConceptsMetamacService
        		> @DsdsMetamacService
