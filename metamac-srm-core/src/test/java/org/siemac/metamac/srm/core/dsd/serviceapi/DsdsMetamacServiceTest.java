@@ -1,5 +1,8 @@
 package org.siemac.metamac.srm.core.dsd.serviceapi;
 
+import static org.junit.Assert.*;
+import static org.junit.Assert.assertNull;
+
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -157,11 +160,13 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
     public void testVersioningDataStructureDefinition() throws Exception {
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacToCopy = createDataStructureDefinitionGraph();
         
-        dataStructureDefinitionService.markDataStructureAsFinal(getServiceContext(), dataStructureDefinitionVersionMetamacToCopy.getMaintainableArtefact().getUrn());
+        dsdsMetamacService.sendDataStructureDefinitionToProductionValidation(getServiceContextAdministrador(), dataStructureDefinitionVersionMetamacToCopy.getMaintainableArtefact().getUrn());
+        dsdsMetamacService.sendDataStructureDefinitionToDiffusionValidation(getServiceContextAdministrador(), dataStructureDefinitionVersionMetamacToCopy.getMaintainableArtefact().getUrn());
+        dsdsMetamacService.publishInternallyDataStructureDefinition(getServiceContextAdministrador(), dataStructureDefinitionVersionMetamacToCopy.getMaintainableArtefact().getUrn());
         
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacCreated = dsdsMetamacService.versioningDataStructureDefinition(getServiceContextAdministrador(), dataStructureDefinitionVersionMetamacToCopy.getMaintainableArtefact().getUrn(), VersionTypeEnum.MAJOR);
     
-        int kaka = 23;
+        assertNotNull(dataStructureDefinitionVersionMetamacCreated);
     }
 
     @Test
@@ -176,6 +181,11 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
         return "dbunit/SrmDsdTest.xml";
     }
 
+    /************************************************************************************
+     * 
+     * PRIVATE
+     * 
+     ************************************************************************************/
     private DataStructureDefinitionVersionMetamac createDataStructureDefinitionGraph() throws MetamacException {
 
         // Create DSD
