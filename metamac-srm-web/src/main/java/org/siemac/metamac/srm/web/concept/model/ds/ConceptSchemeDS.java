@@ -19,6 +19,7 @@ public class ConceptSchemeDS extends DataSource {
     public static final String DESCRIPTION                      = "sch-desc";
     public static final String IS_PARTIAL                       = "sch-is-partial";
     public static final String IS_EXTERNAL_REFERENCE            = "sch-ext-ref";
+    public static final String FINAL                            = "sch-final";
     // CLASS DESCRIPTORS
     public static final String AGENCY                           = "sch-agency";
     public static final String TYPE                             = "sch-type";
