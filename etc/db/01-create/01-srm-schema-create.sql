@@ -1,3 +1,10 @@
+-- ###########################################
+-- # Create
+-- ###########################################
+-- Create pk sequence
+    
+
+
 -- Create normal entities
     
 CREATE TABLE TB_M_LIS_CONCEPT_TYPES (
