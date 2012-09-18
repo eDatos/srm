@@ -201,6 +201,19 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
+    public List<DataStructureDefinitionMetamacDto> retrieveDataStructureDefinitionVersions(ServiceContext ctx, String urn) throws MetamacException {
+        // Security
+        
+        // Retrieve
+        List<DataStructureDefinitionVersionMetamac>  dataStructureDefinitionVersionMetamacs = getDsdsMetamacService().retrieveDataStructureDefinitionVersions(ctx, urn);
+
+        // Transform
+        List<DataStructureDefinitionMetamacDto> dataStructureDefinitionMetamacDto = do2DtoMapper.dataStructureDefinitionMetamacDoListToDtoList(dataStructureDefinitionVersionMetamacs);
+        
+        return dataStructureDefinitionMetamacDto;
+    }
+    
+    @Override
     public DataStructureDefinitionMetamacDto sendDataStructureDefinitionToProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
         // Security
         // ConceptSchemeMetamacDto conceptSchemeMetamacDto = retrieveConceptSchemeByUrn(ctx, urn);
