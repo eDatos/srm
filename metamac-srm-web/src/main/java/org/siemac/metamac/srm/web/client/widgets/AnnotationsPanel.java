@@ -35,6 +35,7 @@ import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
+import com.smartgwt.client.widgets.grid.HoverCustomizer;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
@@ -45,7 +46,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
 
 public class AnnotationsPanel extends VLayout {
 
-    private ListGrid    grid;
+    private ListGrid    listGrid;
     private DynamicForm form;
     private SelectItem  selectItem;
     private boolean     translationsShowed;
@@ -77,7 +78,7 @@ public class AnnotationsPanel extends VLayout {
 
                 @Override
                 public void onClick(ClickEvent event) {
-                    grid.startEditingNew();
+                    listGrid.startEditingNew();
                 }
             });
             imgLayout.addMember(addAnnotationImg);
@@ -117,30 +118,32 @@ public class AnnotationsPanel extends VLayout {
         form.setFields(selectItem);
         imgLayout.addMember(form);
 
-        grid = new ListGrid();
-        grid.setAutoFitMaxRecords(10);
-        grid.setAutoFitData(Autofit.VERTICAL);
+        listGrid = new ListGrid();
+        listGrid.setCellHeight(40);
+        listGrid.setAutoFitMaxRecords(10);
+        listGrid.setAutoFitData(Autofit.VERTICAL);
+        listGrid.setShowRowNumbers(true);
         // grid.setStyleName("annotationGrid");
-        grid.setLeaveScrollbarGap(false);
+        listGrid.setLeaveScrollbarGap(false);
         // grid.setCellPadding(4);
         // grid.setCellHeight(40);
         // grid.setNormalCellHeight(40);
-        grid.setAlternateRecordStyles(false);
+        listGrid.setAlternateRecordStyles(false);
         // grid.setShowRollOverCanvas(true);
-        grid.setAnimateRollUnder(true);
-        grid.setSelectionType(SelectionStyle.SIMPLE);
+        listGrid.setAnimateRollUnder(true);
+        listGrid.setSelectionType(SelectionStyle.SIMPLE);
         // grid.setBaseStyle("annotationCell");
-        grid.setShowSelectionCanvas(true);
-        grid.setAnimateSelectionUnder(true);
-        grid.setWrapCells(true);
-        grid.setBorder("1px solid #A7ABB4");
-        grid.setEditEvent(ListGridEditEvent.DOUBLECLICK);
-        grid.setCanEdit(!viewOnly);
-        grid.setCanRemoveRecords(!viewOnly);
-        grid.setRemoveFieldTitle(getConstants().actionDelete());
-        grid.setRemoveIcon(org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.deleteListGrid().getURL());
-        grid.setRemoveIconSize(14);
-        grid.addEditCompleteHandler(new EditCompleteHandler() {
+        listGrid.setShowSelectionCanvas(true);
+        listGrid.setAnimateSelectionUnder(true);
+        listGrid.setWrapCells(true);
+        listGrid.setBorder("1px solid #A7ABB4");
+        listGrid.setEditEvent(ListGridEditEvent.DOUBLECLICK);
+        listGrid.setCanEdit(!viewOnly);
+        listGrid.setCanRemoveRecords(!viewOnly);
+        listGrid.setRemoveFieldTitle(getConstants().actionDelete());
+        listGrid.setRemoveIcon(org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.deleteListGrid().getURL());
+        listGrid.setRemoveIconSize(14);
+        listGrid.addEditCompleteHandler(new EditCompleteHandler() {
 
             @Override
             public void onEditComplete(EditCompleteEvent event) {
@@ -155,7 +158,7 @@ public class AnnotationsPanel extends VLayout {
                 // }
                 // } else {
                 if (event.getNewValues() != null && event.getNewValues().size() > 0) {
-                    Record record = grid.getRecord(event.getRowNum());
+                    Record record = listGrid.getRecord(event.getRowNum());
                     AnnotationDto annotationDto = new AnnotationDto();
                     if (record.getAttributeAsObject(AnnotationDS.ANNOTATION_DTO) != null && record.getAttributeAsObject(AnnotationDS.ANNOTATION_DTO) instanceof AnnotationDto) {
                         annotationDto = (AnnotationDto) record.getAttributeAsObject(AnnotationDS.ANNOTATION_DTO);
@@ -174,21 +177,28 @@ public class AnnotationsPanel extends VLayout {
                     if (event.getNewValues().containsKey(AnnotationDS.URL)) {
                         String url = event.getNewValues().get(AnnotationDS.URL) != null ? UrlUtils.addHttpPrefixIfNeeded((String) event.getNewValues().get(AnnotationDS.URL)) : null;
                         annotationDto.setUrl(url);
-                        grid.getRecord(event.getRowNum()).setAttribute(AnnotationDS.URL, url);
+                        listGrid.getRecord(event.getRowNum()).setAttribute(AnnotationDS.URL, url);
                     }
-                    grid.getRecord(event.getRowNum()).setAttribute(AnnotationDS.ANNOTATION_DTO, annotationDto);
+                    listGrid.getRecord(event.getRowNum()).setAttribute(AnnotationDS.ANNOTATION_DTO, annotationDto);
                 }
                 // }
             }
         });
 
-        ListGridField codeField = new ListGridField(AnnotationDS.CODE, getConstants().annotationCode());
-        codeField.setWidth("15%");
-        ListGridField titleField = new ListGridField(AnnotationDS.TITLE, getConstants().annotationTitle());
         ListGridField textField = new ListGridField(AnnotationDS.TEXT, getConstants().annotationText());
+        textField.setShowHover(true);
+        textField.setHoverCustomizer(new HoverCustomizer() {
+
+            @Override
+            public String hoverHTML(Object value, ListGridRecord record, int rowNum, int colNum) {
+                return record.getAttribute(AnnotationDS.TEXT);
+            }
+        });
+        textField.setWidth("75%");
+
         ListGridField urlField = new ListGridField(AnnotationDS.URL, getConstants().annotationUrl());
         urlField.setType(ListGridFieldType.LINK);
-        grid.setFields(codeField, titleField, textField, urlField);
+        listGrid.setFields(textField, urlField);
 
         Canvas rollUnderCanvasProperties = new Canvas();
         rollUnderCanvasProperties.setAnimateFadeTime(600);
@@ -196,34 +206,34 @@ public class AnnotationsPanel extends VLayout {
         rollUnderCanvasProperties.setAnimateShowEffect(AnimationEffect.FADE);
         rollUnderCanvasProperties.setBackgroundColor("#ffe973");
         rollUnderCanvasProperties.setOpacity(50);
-        grid.setRollUnderCanvasProperties(rollUnderCanvasProperties);
+        listGrid.setRollUnderCanvasProperties(rollUnderCanvasProperties);
 
         Canvas background = new Canvas();
         background.setBackgroundColor("#FFFFE0");
-        grid.setBackgroundComponent(background);
+        listGrid.setBackgroundComponent(background);
 
         addMember(imgLayout);
-        addMember(grid);
+        addMember(listGrid);
     }
 
     public void setAnnotations(Set<AnnotationDto> annotations) {
         // Clear annotations
-        grid.selectAllRecords();
-        grid.removeSelectedData();
-        grid.deselectAllRecords();
+        listGrid.selectAllRecords();
+        listGrid.removeSelectedData();
+        listGrid.deselectAllRecords();
         String selectedLocale = InternationalStringUtils.getCurrentLocale();
         if (selectItem.getValueAsString() != null && !selectItem.getValueAsString().isEmpty()) {
             selectedLocale = selectItem.getValueAsString();
         }
         for (AnnotationDto annotationDto : annotations) {
             AnnotationRecord record = RecordUtils.getAnnotationRecord(annotationDto, selectedLocale);
-            grid.addData(record);
+            listGrid.addData(record);
         }
     }
 
     public Set<AnnotationDto> getAnnotations() {
         Set<AnnotationDto> annotations = new HashSet<AnnotationDto>();
-        ListGridRecord[] records = grid.getRecords();
+        ListGridRecord[] records = listGrid.getRecords();
         for (int i = 0; i < records.length; i++) {
             AnnotationDto annotationDto = (AnnotationDto) records[i].getAttributeAsObject(AnnotationDS.ANNOTATION_DTO);
             annotations.add(annotationDto);
@@ -244,13 +254,13 @@ public class AnnotationsPanel extends VLayout {
     }
 
     private void changeAnnotationsLanguage(String locale) {
-        for (int i = 0; i < grid.getRecords().length; i++) {
-            if (grid.getRecord(i).getAttribute(AnnotationDS.ANNOTATION_DTO) != null) {
-                AnnotationDto annotationDto = (AnnotationDto) grid.getRecord(i).getAttributeAsObject(AnnotationDS.ANNOTATION_DTO);
-                grid.getRecord(i).setAttribute(AnnotationDS.TEXT, InternationalStringUtils.getLocalisedString(annotationDto.getText(), locale));
+        for (int i = 0; i < listGrid.getRecords().length; i++) {
+            if (listGrid.getRecord(i).getAttribute(AnnotationDS.ANNOTATION_DTO) != null) {
+                AnnotationDto annotationDto = (AnnotationDto) listGrid.getRecord(i).getAttributeAsObject(AnnotationDS.ANNOTATION_DTO);
+                listGrid.getRecord(i).setAttribute(AnnotationDS.TEXT, InternationalStringUtils.getLocalisedString(annotationDto.getText(), locale));
             }
         }
-        grid.redraw();
+        listGrid.redraw();
     }
 
 }
