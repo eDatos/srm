@@ -42,6 +42,10 @@ public class GetDsdListActionHandler extends SecurityActionHandler<GetDsdListAct
         List<MetamacCriteriaOrder> criteriaOrders = new ArrayList<MetamacCriteriaOrder>();
         criteriaOrders.add(order);
         criteria.setOrdersBy(criteriaOrders);
+        // TODO Only find last versions
+        // MetamacCriteriaPropertyRestriction propertyRestriction = new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.IS_LAST_VERSION.name(), Boolean.TRUE,
+        // OperationType.EQ);
+        // criteria.setRestriction(propertyRestriction);
         // Pagination
         criteria.setPaginator(new MetamacCriteriaPaginator());
         criteria.getPaginator().setFirstResult(action.getFirstResult());
