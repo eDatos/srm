@@ -1,11 +1,8 @@
 package org.siemac.metamac.srm.web.concept.utils;
 
-import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getCoreMessages;
-
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptTypeDto;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptRoleEnum;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
@@ -20,10 +17,6 @@ public class CommonUtils {
     private static LinkedHashMap<String, String> conceptSchemeTypeHashMap     = null;
     private static LinkedHashMap<String, String> conceptRoleHashMap           = null;
     private static LinkedHashMap<String, String> conceptFacetValueTypeHashMap = null;
-
-    public static String getConceptSchemeProcStatus(ConceptSchemeMetamacDto conceptSchemeDto) {
-        return getCoreMessages().getString(getCoreMessages().itemSchemeMetamacProcStatusEnum() + conceptSchemeDto.getProcStatus().getName());
-    }
 
     public static LinkedHashMap<String, String> getConceptTypeHashMap(List<ConceptTypeDto> conceptTypeDtos) {
         LinkedHashMap<String, String> hashMap = new LinkedHashMap<String, String>();

@@ -4,6 +4,7 @@ import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
+import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 import org.siemac.metamac.srm.web.dsd.model.record.AnnotationRecord;
 import org.siemac.metamac.srm.web.dsd.model.record.AttributeRecord;
 import org.siemac.metamac.srm.web.dsd.model.record.ConceptRecord;
@@ -29,7 +30,7 @@ public class RecordUtils {
      */
     public static DsdRecord getDsdRecord(DataStructureDefinitionMetamacDto dsd) {
         return new DsdRecord(dsd.getId(), dsd.getCode(), InternationalStringUtils.getLocalisedString(dsd.getName()), InternationalStringUtils.getLocalisedString(dsd.getDescription()),
-                dsd.getFinalLogic(), dsd);
+                dsd.getFinalLogic(), CommonUtils.getProcStatusName(dsd.getProcStatus()), dsd);
     }
 
     /**

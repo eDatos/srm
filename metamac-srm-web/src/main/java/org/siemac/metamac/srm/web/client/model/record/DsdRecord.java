@@ -3,41 +3,31 @@ package org.siemac.metamac.srm.web.client.model.record;
 import java.util.Date;
 
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
+import org.siemac.metamac.srm.web.dsd.model.ds.DataStructureDefinitionDS;
 
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 
 public class DsdRecord extends ListGridRecord {
 
-    public static final String IDENTIFIER      = "identifier";
-    public static final String CODE            = "dsd-code";
-    public static final String VERSION         = "version";
-    public static final String AGENCY          = "agency";
-    public static final String NAME            = "name";
-    public static final String DESCRIPTION     = "description";
-    public static final String URI             = "uri";
-    public static final String URN             = "urn";
-    public static final String FINAL_STRUCTURE = "finalStructure";
-    public static final String START_DATE      = "startDate";
-    public static final String END_DATE        = "endDate";
-    public static final String DSD             = "dsd";
-
     public DsdRecord() {
     }
 
     // Last modified record
-    public DsdRecord(Long id, String code, String name, String description, Boolean finalStructure, DataStructureDefinitionMetamacDto dsd) {
-        setIdentifier(id);
+    public DsdRecord(Long id, String code, String name, String description, Boolean finalStructure, String procStatus, DataStructureDefinitionMetamacDto dsd) {
+        setId(id);
         setCode(code);
         setName(name);
         setDescription(description);
         setFinalStructure(finalStructure);
         setUrn(dsd.getUrn());
+        setProcStatus(procStatus);
         setDsd(dsd);
     }
 
     // Complete record
-    public DsdRecord(Long identifier, String code, String version, String agency, String name, String description, String uri, String urn, Boolean finalStructure, Date startDate, Date endDate) {
-        setIdentifier(identifier);
+    public DsdRecord(Long identifier, String code, String version, String agency, String name, String description, String uri, String urn, Boolean finalStructure, String procStatus, Date startDate,
+            Date endDate) {
+        setId(identifier);
         setCode(code);
         setVersion(version);
         setAgency(agency);
@@ -45,105 +35,110 @@ public class DsdRecord extends ListGridRecord {
         setDescription(description);
         setUri(uri);
         setUrn(urn);
+        setProcStatus(procStatus);
         setFinalStructure(finalStructure);
         setStartDate(startDate);
         setEndDate(endDate);
     }
 
-    public void setIdentifier(Long attribute) {
-        setAttribute(IDENTIFIER, attribute);
+    public void setId(Long attribute) {
+        setAttribute(DataStructureDefinitionDS.ID, attribute);
     }
 
     public void setCode(String attribute) {
-        setAttribute(CODE, attribute);
+        setAttribute(DataStructureDefinitionDS.CODE, attribute);
     }
 
     public void setVersion(String attribute) {
-        setAttribute(VERSION, attribute);
+        setAttribute(DataStructureDefinitionDS.VERSION_LOGIC, attribute);
     }
 
     public void setAgency(String attribute) {
-        setAttribute(AGENCY, attribute);
+        setAttribute(DataStructureDefinitionDS.AGENCY, attribute);
     }
 
     public void setName(String attribute) {
-        setAttribute(NAME, attribute);
+        setAttribute(DataStructureDefinitionDS.NAME, attribute);
     }
 
     public void setDescription(String attribute) {
-        setAttribute(DESCRIPTION, attribute);
+        setAttribute(DataStructureDefinitionDS.DESCRIPTION, attribute);
     }
 
     public void setUri(String attribute) {
-        setAttribute(URI, attribute);
+        setAttribute(DataStructureDefinitionDS.URI, attribute);
     }
 
     public void setUrn(String attribute) {
-        setAttribute(URN, attribute);
+        setAttribute(DataStructureDefinitionDS.URN, attribute);
     }
 
     public void setFinalStructure(Boolean attribute) {
-        setAttribute(FINAL_STRUCTURE, attribute);
+        setAttribute(DataStructureDefinitionDS.FINAL, attribute);
+    }
+
+    public void setProcStatus(String procStatus) {
+        setAttribute(DataStructureDefinitionDS.PROC_STATUS, procStatus);
     }
 
     public void setStartDate(Date startDate) {
-        setAttribute(START_DATE, startDate);
+        setAttribute(DataStructureDefinitionDS.VALID_FROM, startDate);
     }
 
     public void setEndDate(Date endDate) {
-        setAttribute(END_DATE, endDate);
+        setAttribute(DataStructureDefinitionDS.VALID_TO, endDate);
     }
 
     public void setDsd(DataStructureDefinitionMetamacDto value) {
-        setAttribute(DSD, value);
+        setAttribute(DataStructureDefinitionDS.DTO, value);
     }
 
-    public Long getIdentifier() {
-        return getAttributeAsLong(IDENTIFIER);
+    public Long getId() {
+        return getAttributeAsLong(DataStructureDefinitionDS.ID);
     }
 
     public String getCode() {
-        return getAttributeAsString(CODE);
+        return getAttributeAsString(DataStructureDefinitionDS.CODE);
     }
 
     public String getVersion() {
-        return getAttributeAsString(VERSION);
+        return getAttributeAsString(DataStructureDefinitionDS.VERSION_LOGIC);
     }
 
     public String getAgency() {
-        return getAttributeAsString(AGENCY);
+        return getAttributeAsString(DataStructureDefinitionDS.AGENCY);
     }
 
     public String getName() {
-        return getAttributeAsString(NAME);
+        return getAttributeAsString(DataStructureDefinitionDS.NAME);
     }
 
     public String getDescription() {
-        return getAttributeAsString(DESCRIPTION);
+        return getAttributeAsString(DataStructureDefinitionDS.DESCRIPTION);
     }
 
     public String getUri() {
-        return getAttributeAsString(URI);
+        return getAttributeAsString(DataStructureDefinitionDS.URI);
     }
 
     public String getUrn() {
-        return getAttributeAsString(URN);
+        return getAttributeAsString(DataStructureDefinitionDS.URN);
     }
 
     public Boolean isFinalStructure() {
-        return getAttributeAsBoolean(FINAL_STRUCTURE);
+        return getAttributeAsBoolean(DataStructureDefinitionDS.FINAL);
     }
 
     public Date getStartDate() {
-        return getAttributeAsDate(START_DATE);
+        return getAttributeAsDate(DataStructureDefinitionDS.VALID_FROM);
     }
 
     public Date getEndDate() {
-        return getAttributeAsDate(END_DATE);
+        return getAttributeAsDate(DataStructureDefinitionDS.VALID_TO);
     }
 
     public DataStructureDefinitionMetamacDto getDsd() {
-        return (DataStructureDefinitionMetamacDto) getAttributeAsObject(DSD);
+        return (DataStructureDefinitionMetamacDto) getAttributeAsObject(DataStructureDefinitionDS.DTO);
     }
 
 }

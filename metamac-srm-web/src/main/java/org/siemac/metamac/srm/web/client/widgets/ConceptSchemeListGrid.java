@@ -23,7 +23,7 @@ public class ConceptSchemeListGrid extends BaseCustomListGrid {
 
         ListGridField codeField = new ListGridField(ConceptSchemeDS.CODE, getConstants().conceptSchemeCode());
         ListGridField nameField = new ListGridField(ConceptSchemeDS.NAME, getConstants().conceptSchemeName());
-        ListGridField descriptionField = new ListGridField(ConceptSchemeDS.DESCRIPTION, getConstants().conceptSchemeDescription());
+        ListGridField procStatusField = new ListGridField(ConceptSchemeDS.PROC_STATUS, getConstants().conceptSchemeProcStatus());
 
         // ToolTip
         codeField.setShowHover(true);
@@ -44,16 +44,7 @@ public class ConceptSchemeListGrid extends BaseCustomListGrid {
                 return schemeRecord.getName();
             }
         });
-        descriptionField.setShowHover(true);
-        descriptionField.setHoverCustomizer(new HoverCustomizer() {
-
-            @Override
-            public String hoverHTML(Object value, ListGridRecord record, int rowNum, int colNum) {
-                ConceptSchemeRecord schemeRecord = (ConceptSchemeRecord) record;
-                return schemeRecord.getDescription();
-            }
-        });
-        this.setFields(codeField, nameField, descriptionField);
+        this.setFields(codeField, nameField, procStatusField);
     }
 
     public void setConceptSchemes(List<ConceptSchemeMetamacDto> conceptSchemeDtos) {

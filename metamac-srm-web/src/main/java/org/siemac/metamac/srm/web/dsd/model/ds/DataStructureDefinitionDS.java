@@ -30,4 +30,6 @@ public class DataStructureDefinitionDS {
     public static final String IS_EXTERNAL_PUBLICATION_FAILED   = "dsd-ext-pub-fail";
     public static final String EXTERNAL_PUBLICATION_FAILED_DATE = "dsd-ext-pub-fail-date";
 
+    public static final String DTO                              = "dsd-dto";
+
 }

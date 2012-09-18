@@ -5,10 +5,10 @@ import java.util.List;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
+import org.siemac.metamac.srm.web.dsd.model.ds.DataStructureDefinitionDS;
 import org.siemac.metamac.srm.web.dsd.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.widgets.BaseCustomListGrid;
 
-import com.smartgwt.client.types.ListGridFieldType;
 import com.smartgwt.client.widgets.grid.HoverCustomizer;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
@@ -20,11 +20,9 @@ public class DsdListGrid extends BaseCustomListGrid {
 
         this.setShowAllRecords(true);
 
-        ListGridField codeDsdField = new ListGridField(DsdRecord.CODE, MetamacSrmWeb.getConstants().dsdCode());
-        ListGridField nameDsdField = new ListGridField(DsdRecord.NAME, MetamacSrmWeb.getConstants().dsdName());
-        ListGridField descriptionDsdField = new ListGridField(DsdRecord.DESCRIPTION, MetamacSrmWeb.getConstants().dsdDescription());
-        ListGridField finalStructureDsdField = new ListGridField(DsdRecord.FINAL_STRUCTURE, MetamacSrmWeb.getConstants().dsdFinalStructure());
-        finalStructureDsdField.setType(ListGridFieldType.BOOLEAN);
+        ListGridField codeDsdField = new ListGridField(DataStructureDefinitionDS.CODE, MetamacSrmWeb.getConstants().dsdCode());
+        ListGridField nameDsdField = new ListGridField(DataStructureDefinitionDS.NAME, MetamacSrmWeb.getConstants().dsdName());
+        ListGridField procStatusField = new ListGridField(DataStructureDefinitionDS.PROC_STATUS, MetamacSrmWeb.getConstants().dsdProcStatus());
 
         // ToolTip
         codeDsdField.setShowHover(true);
@@ -45,16 +43,7 @@ public class DsdListGrid extends BaseCustomListGrid {
                 return dsdRecord.getName();
             }
         });
-        descriptionDsdField.setShowHover(true);
-        descriptionDsdField.setHoverCustomizer(new HoverCustomizer() {
-
-            @Override
-            public String hoverHTML(Object value, ListGridRecord record, int rowNum, int colNum) {
-                DsdRecord dsdRecord = (DsdRecord) record;
-                return dsdRecord.getDescription();
-            }
-        });
-        this.setFields(codeDsdField, nameDsdField, descriptionDsdField, finalStructureDsdField);
+        setFields(codeDsdField, nameDsdField, procStatusField);
     }
 
     public void setDsds(List<DataStructureDefinitionMetamacDto> dataStructureDefinitionMetamacDtos) {
