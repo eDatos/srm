@@ -27,7 +27,7 @@ public class SaveDescriptorForDsdActionHandler extends SecurityActionHandler<Sav
     @Override
     public SaveDescriptorForDsdResult executeSecurityAction(SaveDescriptorForDsdAction action) throws ActionException {
         try {
-            DescriptorDto descriptorDto = srmCoreServiceFacade.saveDescriptorForDsd(ServiceContextHolder.getCurrentServiceContext(), action.getDsdUrn(), action.getDescriptorDto());
+            DescriptorDto descriptorDto = srmCoreServiceFacade.saveDescriptorForDataStructureDefinition(ServiceContextHolder.getCurrentServiceContext(), action.getDsdUrn(), action.getDescriptorDto());
             return new SaveDescriptorForDsdResult(descriptorDto);
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);

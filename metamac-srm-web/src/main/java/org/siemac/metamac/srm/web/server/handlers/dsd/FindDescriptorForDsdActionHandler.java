@@ -1,8 +1,6 @@
 package org.siemac.metamac.srm.web.server.handlers.dsd;
 
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
@@ -21,8 +19,6 @@ import com.gwtplatform.dispatch.shared.ActionException;
 @Component
 public class FindDescriptorForDsdActionHandler extends SecurityActionHandler<FindDescriptorForDsdAction, FindDescriptorForDsdResult> {
 
-    private static Logger        logger = Logger.getLogger(FindDescriptorForDsdActionHandler.class.getName());
-
     @Autowired
     private SrmCoreServiceFacade srmCoreServiceFacade;
 
@@ -33,8 +29,8 @@ public class FindDescriptorForDsdActionHandler extends SecurityActionHandler<Fin
     @Override
     public FindDescriptorForDsdResult executeSecurityAction(FindDescriptorForDsdAction action) throws ActionException {
         try {
-            List<DescriptorDto> descriptorDtos = srmCoreServiceFacade.findDescriptorForDsd(ServiceContextHolder.getCurrentServiceContext(), action.getDsdUrn(), action.getTypeComponentList());
-            logger.log(Level.INFO, "ACTION SUCCESSFULLY: findDescriptorForDsd");
+            List<DescriptorDto> descriptorDtos = srmCoreServiceFacade.findDescriptorsForDataStructureDefinition(ServiceContextHolder.getCurrentServiceContext(), action.getDsdUrn(),
+                    action.getTypeComponentList());
             return new FindDescriptorForDsdResult(descriptorDtos);
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);

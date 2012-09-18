@@ -213,8 +213,7 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
             @Override
             public void onWaitSuccess(SaveDsdResult result) {
                 getView().closeDsdWindow();
-                DataStructureDefinitionMetamacDto dsdSaved = result.getDsdSaved();
-                goToDsd(dsdSaved.getUrn());
+                retrieveDsdList(DSD_LIST_FIRST_RESULT, DSD_LIST_MAX_RESULTS, null);
             }
         });
     }

@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.web.dsd.presenter;
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
+import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
@@ -18,11 +19,16 @@ import org.siemac.metamac.srm.web.shared.dsd.GetDsdAndDescriptorsAction;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdAndDescriptorsResult;
 import org.siemac.metamac.srm.web.shared.dsd.SaveDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.SaveDsdResult;
+import org.siemac.metamac.srm.web.shared.dsd.UpdateDsdProcStatusAction;
+import org.siemac.metamac.srm.web.shared.dsd.UpdateDsdProcStatusResult;
+import org.siemac.metamac.srm.web.shared.dsd.VersionDsdAction;
+import org.siemac.metamac.srm.web.shared.dsd.VersionDsdResult;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.utils.UrnUtils;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
 import com.google.gwt.event.shared.EventBus;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
@@ -67,8 +73,7 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
     public interface DsdGeneralTabView extends View, HasUiHandlers<DsdGeneralTabUiHandlers> {
 
         void setDsd(DataStructureDefinitionMetamacDto dataStructureDefinitionDto);
-        DataStructureDefinitionMetamacDto getDataStructureDefinitionDto(DataStructureDefinitionMetamacDto dsd);
-        boolean validate();
+        DataStructureDefinitionMetamacDto getDataStructureDefinitionDto();
         HasClickHandlers getSave();
         void onDsdSaved(DataStructureDefinitionMetamacDto dsd);
     }
@@ -123,21 +128,6 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
     }
 
     @Override
-    protected void onBind() {
-        super.onBind();
-
-        registerHandler(getView().getSave().addClickHandler(new com.smartgwt.client.widgets.events.ClickHandler() {
-
-            @Override
-            public void onClick(com.smartgwt.client.widgets.events.ClickEvent event) {
-                if (getView().validate()) {
-                    saveDsd(getView().getDataStructureDefinitionDto(dsd));
-                }
-            }
-        }));
-    }
-
-    @Override
     public void saveDsd(DataStructureDefinitionMetamacDto dataStructureDefinitionDto) {
         dispatcher.execute(new SaveDsdAction(dataStructureDefinitionDto), new WaitingAsyncCallback<SaveDsdResult>() {
 
@@ -167,6 +157,102 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
             public void onWaitSuccess(GetDsdAndDescriptorsResult result) {
                 dsd = result.getDsd();
                 SelectDsdAndDescriptorsEvent.fire(DsdGeneralTabPresenter.this, dsd, result.getPrimaryMeasure(), result.getDimensions(), result.getAttributes(), result.getGroupKeys());
+            }
+        });
+    }
+
+    @Override
+    public void sendToProductionValidation(final String urn, ItemSchemeMetamacProcStatusEnum currentProcStatus) {
+        dispatcher.execute(new UpdateDsdProcStatusAction(urn, ItemSchemeMetamacProcStatusEnum.PRODUCTION_VALIDATION, currentProcStatus), new WaitingAsyncCallback<UpdateDsdProcStatusResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(DsdGeneralTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorSendingToProductionValidation()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(UpdateDsdProcStatusResult result) {
+                ShowMessageEvent.fire(DsdGeneralTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdSentToProductionValidation()), MessageTypeEnum.SUCCESS);
+                retrieveDsd(urn);
+            }
+        });
+    }
+
+    @Override
+    public void sendToDiffusionValidation(final String urn, ItemSchemeMetamacProcStatusEnum currentProcStatus) {
+        dispatcher.execute(new UpdateDsdProcStatusAction(urn, ItemSchemeMetamacProcStatusEnum.DIFFUSION_VALIDATION, currentProcStatus), new WaitingAsyncCallback<UpdateDsdProcStatusResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(DsdGeneralTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorSendingToDiffusionValidation()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(UpdateDsdProcStatusResult result) {
+                ShowMessageEvent.fire(DsdGeneralTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdSentToDiffusionValidation()), MessageTypeEnum.SUCCESS);
+                retrieveDsd(urn);
+            }
+        });
+    }
+
+    @Override
+    public void rejectValidation(final String urn, ItemSchemeMetamacProcStatusEnum currentProcStatus) {
+        dispatcher.execute(new UpdateDsdProcStatusAction(urn, ItemSchemeMetamacProcStatusEnum.VALIDATION_REJECTED, currentProcStatus), new WaitingAsyncCallback<UpdateDsdProcStatusResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(DsdGeneralTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorRejecting()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(UpdateDsdProcStatusResult result) {
+                ShowMessageEvent.fire(DsdGeneralTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdRejected()), MessageTypeEnum.SUCCESS);
+                retrieveDsd(urn);
+            }
+        });
+    }
+
+    @Override
+    public void publishInternally(final String urn, ItemSchemeMetamacProcStatusEnum currentProcStatus) {
+        dispatcher.execute(new UpdateDsdProcStatusAction(urn, ItemSchemeMetamacProcStatusEnum.INTERNALLY_PUBLISHED, currentProcStatus), new WaitingAsyncCallback<UpdateDsdProcStatusResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(DsdGeneralTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorPublishingInternally()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(UpdateDsdProcStatusResult result) {
+                ShowMessageEvent.fire(DsdGeneralTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdPublishedInternally()), MessageTypeEnum.SUCCESS);
+                retrieveDsd(urn);
+            }
+        });
+    }
+
+    @Override
+    public void publishExternally(final String urn, ItemSchemeMetamacProcStatusEnum currentProcStatus) {
+        dispatcher.execute(new UpdateDsdProcStatusAction(urn, ItemSchemeMetamacProcStatusEnum.EXTERNALLY_PUBLISHED, currentProcStatus), new WaitingAsyncCallback<UpdateDsdProcStatusResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(DsdGeneralTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorPublishingExternally()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(UpdateDsdProcStatusResult result) {
+                ShowMessageEvent.fire(DsdGeneralTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdPublishedExternally()), MessageTypeEnum.SUCCESS);
+                retrieveDsd(urn);
+            }
+        });
+    }
+
+    @Override
+    public void versioning(String urn, VersionTypeEnum versionType) {
+        dispatcher.execute(new VersionDsdAction(urn, versionType), new WaitingAsyncCallback<VersionDsdResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(DsdGeneralTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorVersioning()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(VersionDsdResult result) {
+                ShowMessageEvent.fire(DsdGeneralTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdVersioned()), MessageTypeEnum.SUCCESS);
+                retrieveDsd(result.getDataStructureDefinitionMetamacDto().getUrn());
             }
         });
     }

@@ -48,7 +48,7 @@ public class GetDsdListActionHandler extends SecurityActionHandler<GetDsdListAct
         criteria.getPaginator().setMaximumResultSize(action.getMaxResults());
         criteria.getPaginator().setCountTotalResults(true);
         try {
-            MetamacCriteriaResult<DataStructureDefinitionMetamacDto> result = srmCoreServiceFacade.findDsdByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria);
+            MetamacCriteriaResult<DataStructureDefinitionMetamacDto> result = srmCoreServiceFacade.findDataStructureDefinitionsByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria);
             return new GetDsdListResult(result.getResults(), result.getPaginatorResult().getFirstResult(), result.getPaginatorResult().getTotalResults());
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);

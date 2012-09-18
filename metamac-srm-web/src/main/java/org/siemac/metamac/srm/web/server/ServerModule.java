@@ -20,8 +20,6 @@ import org.siemac.metamac.srm.web.server.handlers.concept.SaveConceptSchemeActio
 import org.siemac.metamac.srm.web.server.handlers.concept.UpdateConceptSchemeProcStatusActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.VersionConceptSchemeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.dsd.DeleteAttributeListForDsdActionHandler;
-import org.siemac.metamac.srm.web.server.handlers.dsd.DeleteComponentForDsdActionHandler;
-import org.siemac.metamac.srm.web.server.handlers.dsd.DeleteDescriptorForDsdActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.dsd.DeleteDescriptorListForDsdActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.dsd.DeleteDimensionListForDsdActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.dsd.DeleteDsdListActionHandler;
@@ -34,6 +32,7 @@ import org.siemac.metamac.srm.web.server.handlers.dsd.SaveComponentForDsdActionH
 import org.siemac.metamac.srm.web.server.handlers.dsd.SaveDescriptorForDsdActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.dsd.SaveDsdActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.dsd.UpdateDsdProcStatusActionHandlder;
+import org.siemac.metamac.srm.web.server.handlers.dsd.VersionDsdActionHandler;
 import org.siemac.metamac.srm.web.shared.FindCodeListsAction;
 import org.siemac.metamac.srm.web.shared.FindConceptSchemesAction;
 import org.siemac.metamac.srm.web.shared.FindConceptsAction;
@@ -53,8 +52,6 @@ import org.siemac.metamac.srm.web.shared.concept.SaveConceptSchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.UpdateConceptSchemeProcStatusAction;
 import org.siemac.metamac.srm.web.shared.concept.VersionConceptSchemeAction;
 import org.siemac.metamac.srm.web.shared.dsd.DeleteAttributeListForDsdAction;
-import org.siemac.metamac.srm.web.shared.dsd.DeleteComponentForDsdAction;
-import org.siemac.metamac.srm.web.shared.dsd.DeleteDescriptorForDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.DeleteDescriptorListForDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.DeleteDimensionListForDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.DeleteDsdListAction;
@@ -67,6 +64,7 @@ import org.siemac.metamac.srm.web.shared.dsd.SaveComponentForDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.SaveDescriptorForDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.SaveDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.UpdateDsdProcStatusAction;
+import org.siemac.metamac.srm.web.shared.dsd.VersionDsdAction;
 import org.siemac.metamac.web.common.server.handlers.CloseSessionActionHandler;
 import org.siemac.metamac.web.common.server.handlers.GetEditionLanguagesActionHandlers;
 import org.siemac.metamac.web.common.server.handlers.GetLoginPageUrlActionHandler;
@@ -103,14 +101,13 @@ public class ServerModule extends HandlerModule {
         bindHandler(SaveComponentForDsdAction.class, SaveComponentForDsdActionHandler.class);
         bindHandler(SaveDescriptorForDsdAction.class, SaveDescriptorForDsdActionHandler.class);
         bindHandler(DeleteDsdListAction.class, DeleteDsdListActionHandler.class);
-        bindHandler(DeleteComponentForDsdAction.class, DeleteComponentForDsdActionHandler.class);
         bindHandler(DeleteDimensionListForDsdAction.class, DeleteDimensionListForDsdActionHandler.class);
         bindHandler(DeleteAttributeListForDsdAction.class, DeleteAttributeListForDsdActionHandler.class);
-        bindHandler(DeleteDescriptorForDsdAction.class, DeleteDescriptorForDsdActionHandler.class);
         bindHandler(DeleteDescriptorListForDsdAction.class, DeleteDescriptorListForDsdActionHandler.class);
         bindHandler(FindCodeListsAction.class, FindCodeListsActionHandler.class);
         bindHandler(ExportDsdAction.class, ExportDsdActionHandler.class);
         bindHandler(UpdateDsdProcStatusAction.class, UpdateDsdProcStatusActionHandlder.class);
+        bindHandler(VersionDsdAction.class, VersionDsdActionHandler.class);
 
         // Concept Schemes
         bindHandler(GetConceptSchemeAction.class, GetConceptSchemeActionHandler.class);

@@ -31,7 +31,7 @@ public class DeleteDescriptorListForDsdActionHandler extends SecurityActionHandl
         List<DescriptorDto> descriptorsToDelete = action.getDescriptorDtos();
         for (DescriptorDto d : descriptorsToDelete) {
             try {
-                srmCoreServiceFacade.deleteDescriptorForDsd(ServiceContextHolder.getCurrentServiceContext(), action.getDsdUrn(), d);
+                srmCoreServiceFacade.deleteDescriptorForDataStructureDefinition(ServiceContextHolder.getCurrentServiceContext(), action.getDsdUrn(), d);
             } catch (MetamacException e) {
                 throw WebExceptionUtils.createMetamacWebException(e);
             }

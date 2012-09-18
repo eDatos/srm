@@ -39,9 +39,9 @@ public class UpdateConceptSchemeProcStatusActionHandler extends SecurityActionHa
                     scheme = srmCoreServiceFacade.rejectConceptSchemeDiffusionValidation(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
                 }
             } else if (ItemSchemeMetamacProcStatusEnum.INTERNALLY_PUBLISHED.equals(action.getNextProcStatus())) {
-                scheme = srmCoreServiceFacade.publishInternallyConceptScheme(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
+                scheme = srmCoreServiceFacade.publishConceptSchemeInternally(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
             } else if (ItemSchemeMetamacProcStatusEnum.EXTERNALLY_PUBLISHED.equals(action.getNextProcStatus())) {
-                scheme = srmCoreServiceFacade.publishExternallyConceptScheme(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
+                scheme = srmCoreServiceFacade.publishConceptSchemeExternally(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
             }
             return new UpdateConceptSchemeProcStatusResult(scheme);
         } catch (MetamacException e) {

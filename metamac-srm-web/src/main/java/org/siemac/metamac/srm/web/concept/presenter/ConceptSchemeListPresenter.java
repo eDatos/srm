@@ -146,7 +146,6 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
             public void onWaitSuccess(SaveConceptSchemeResult result) {
                 ShowMessageEvent.fire(ConceptSchemeListPresenter.this, ErrorUtils.getMessageList(getMessages().conceptSchemeSaved()), MessageTypeEnum.SUCCESS);
                 retrieveConceptSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, null);
-                getView().goToConceptSchemeListLastPageAfterCreate();
             }
         });
     }

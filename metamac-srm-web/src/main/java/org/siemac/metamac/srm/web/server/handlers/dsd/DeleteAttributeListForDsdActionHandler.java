@@ -31,7 +31,7 @@ public class DeleteAttributeListForDsdActionHandler extends SecurityActionHandle
         List<DataAttributeDto> dataAttributeDtos = action.getDataAttributeDtos();
         for (DataAttributeDto a : dataAttributeDtos) {
             try {
-                srmCoreServiceFacade.deleteComponentForDsd(ServiceContextHolder.getCurrentServiceContext(), action.getDsdUrn(), a, action.getTypeComponentList());
+                srmCoreServiceFacade.deleteComponentForDataStructureDefinition(ServiceContextHolder.getCurrentServiceContext(), action.getDsdUrn(), a, action.getTypeComponentList());
             } catch (MetamacException e) {
                 throw WebExceptionUtils.createMetamacWebException(e);
             }

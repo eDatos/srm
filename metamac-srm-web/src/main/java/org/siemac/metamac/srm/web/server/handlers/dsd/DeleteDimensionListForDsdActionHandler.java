@@ -31,7 +31,7 @@ public class DeleteDimensionListForDsdActionHandler extends SecurityActionHandle
         List<DimensionComponentDto> dimensionComponentDtos = action.getDimensionComponentDtos();
         for (DimensionComponentDto d : dimensionComponentDtos) {
             try {
-                srmCoreServiceFacade.deleteComponentForDsd(ServiceContextHolder.getCurrentServiceContext(), action.getDsdUrn(), d, action.getTypeComponentList());
+                srmCoreServiceFacade.deleteComponentForDataStructureDefinition(ServiceContextHolder.getCurrentServiceContext(), action.getDsdUrn(), d, action.getTypeComponentList());
             } catch (MetamacException e) {
                 throw WebExceptionUtils.createMetamacWebException(e);
             }

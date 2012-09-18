@@ -27,7 +27,7 @@ public class SaveComponentForDsdActionHandler extends SecurityActionHandler<Save
     @Override
     public SaveComponentForDsdResult executeSecurityAction(SaveComponentForDsdAction action) throws ActionException {
         try {
-            ComponentDto componentDto = srmCoreServiceFacade.saveComponentForDsd(ServiceContextHolder.getCurrentServiceContext(), action.getDsdUrn(), action.getComponentDto(),
+            ComponentDto componentDto = srmCoreServiceFacade.saveComponentForDataStructureDefinition(ServiceContextHolder.getCurrentServiceContext(), action.getDsdUrn(), action.getComponentDto(),
                     action.getTypeComponentList());
             return new SaveComponentForDsdResult(componentDto);
         } catch (MetamacException e) {
