@@ -6,6 +6,7 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.util.shared.BooleanUtils;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
+import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
@@ -32,6 +33,9 @@ import com.gwtplatform.mvp.client.ViewWithUiHandlers;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.events.HasClickHandlers;
+import com.smartgwt.client.widgets.form.DynamicForm;
+import com.smartgwt.client.widgets.form.FormItemIfFunction;
+import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHandlers> implements DsdGeneralTabPresenter.DsdGeneralTabView {
@@ -216,12 +220,32 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
     private void createEditionForm() {
         // Identifiers Form
         identifiersEditionForm = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdIdentifiers());
-        RequiredTextItem codeItem = new RequiredTextItem(DataStructureDefinitionDS.CODE, MetamacSrmWeb.getConstants().dsdCode());
-        codeItem.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());
+
+        RequiredTextItem code = new RequiredTextItem(DataStructureDefinitionDS.CODE, getConstants().dsdCode());
+        code.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());
+        code.setShowIfCondition(new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                // CODE cannot be modified if status is INTERNALLY_PUBLISHED or EXTERNALLY_PUBLISHED, or if version is greater than VERSION_INITIAL_VERSION (01.000)
+                return !((ItemSchemeMetamacProcStatusEnum.INTERNALLY_PUBLISHED.equals(dataStructureDefinitionMetamacDto.getProcStatus()) || ItemSchemeMetamacProcStatusEnum.EXTERNALLY_PUBLISHED
+                        .equals(dataStructureDefinitionMetamacDto.getProcStatus())) || (!VersionUtil.VERSION_INITIAL_VERSION.equals(dataStructureDefinitionMetamacDto.getVersionLogic()) && !StringUtils
+                        .isBlank(dataStructureDefinitionMetamacDto.getVersionLogic())));
+            }
+        });
+        ViewTextItem staticCode = new ViewTextItem(DataStructureDefinitionDS.CODE_VIEW, getConstants().dsdCode());
+        staticCode.setShowIfCondition(new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return !form.getItem(DataStructureDefinitionDS.CODE).isVisible();
+            }
+        });
+
         ViewTextItem staticUriItemEdit = new ViewTextItem(DataStructureDefinitionDS.URI, MetamacSrmWeb.getConstants().dsdUri());
         ViewTextItem staticUrnItemEdit = new ViewTextItem(DataStructureDefinitionDS.URN, MetamacSrmWeb.getConstants().dsdUrn());
         ViewTextItem staticVersionEdit = new ViewTextItem(DataStructureDefinitionDS.VERSION_LOGIC, MetamacSrmWeb.getConstants().dsdVersion());
-        identifiersEditionForm.setFields(codeItem, staticUriItemEdit, staticUrnItemEdit, staticVersionEdit);
+        identifiersEditionForm.setFields(code, staticCode, staticUriItemEdit, staticUrnItemEdit, staticVersionEdit);
 
         // General Form
         generalEditionForm = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdDetails());
@@ -296,6 +320,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
     private void setDsdEditionMode(DataStructureDefinitionMetamacDto dsd) {
         // Identifiers form
         identifiersEditionForm.setValue(DataStructureDefinitionDS.CODE, dsd.getCode());
+        identifiersEditionForm.setValue(DataStructureDefinitionDS.CODE_VIEW, dsd.getCode());
         identifiersEditionForm.setValue(DataStructureDefinitionDS.URI, dsd.getUri());
         identifiersEditionForm.setValue(DataStructureDefinitionDS.URN, dsd.getUrn());
         identifiersEditionForm.setValue(DataStructureDefinitionDS.VERSION_LOGIC, dsd.getVersionLogic());
