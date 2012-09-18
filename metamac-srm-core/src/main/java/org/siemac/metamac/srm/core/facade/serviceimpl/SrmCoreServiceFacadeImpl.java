@@ -122,7 +122,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
      **************************************************************************/
     @Override
     public DataStructureDefinitionMetamacDto createDataStructureDefinition(ServiceContext ctx, DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) throws MetamacException {
-        
+
         // DTOs to Entities
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDto2DoMapper().dataStructureDefinitionDtoToDataStructureDefinition(ctx, dataStructureDefinitionMetamacDto);
 
@@ -135,7 +135,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public DataStructureDefinitionMetamacDto updateDataStructureDefinition(ServiceContext ctx, DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) throws MetamacException {
-        
+
         // DTOs to Entities
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDto2DoMapper().dataStructureDefinitionDtoToDataStructureDefinition(ctx, dataStructureDefinitionMetamacDto);
 
@@ -145,12 +145,12 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         // Entities to DTOs
         return getDo2DtoMapper().dataStructureDefinitionMetamacDoToDto(TypeDozerCopyMode.COPY_ALL_METADATA, dataStructureDefinitionVersionMetamac);
     }
-    
+
     @Override
     public void deleteDataStructureDefinition(ServiceContext ctx, String urn) throws MetamacException {
         // Security
-//        ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptsMetamacService().retrieveConceptSchemeByUrn(ctx, urn);
-//        ConceptsSecurityUtils.canDeleteConceptScheme(ctx, conceptSchemeVersion);
+        // ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptsMetamacService().retrieveConceptSchemeByUrn(ctx, urn);
+        // ConceptsSecurityUtils.canDeleteConceptScheme(ctx, conceptSchemeVersion);
 
         // Delete
         getDsdsMetamacService().deleteDataStructureDefinition(ctx, urn);
@@ -162,10 +162,12 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getDataStructureDefinitionCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
 
         // Find
-        PagedResult<DataStructureDefinitionVersionMetamac> result = getDsdsMetamacService().findDataStructureDefinitionsByCondition(ctx, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
+        PagedResult<DataStructureDefinitionVersionMetamac> result = getDsdsMetamacService().findDataStructureDefinitionsByCondition(ctx, sculptorCriteria.getConditions(),
+                sculptorCriteria.getPagingParameter());
 
         // Transform
-        MetamacCriteriaResult<DataStructureDefinitionMetamacDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultDataStructureDefinition(result, sculptorCriteria.getPageSize());
+        MetamacCriteriaResult<DataStructureDefinitionMetamacDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultDataStructureDefinition(result,
+                sculptorCriteria.getPageSize());
         return metamacCriteriaResult;
     }
 
@@ -201,8 +203,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public DataStructureDefinitionMetamacDto sendDataStructureDefinitionToProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
         // Security
-//        ConceptSchemeMetamacDto conceptSchemeMetamacDto = retrieveConceptSchemeByUrn(ctx, urn);
-//        ConceptsSecurityUtils.canSendConceptSchemeToProductionValidation(ctx, conceptSchemeMetamacDto);
+        // ConceptSchemeMetamacDto conceptSchemeMetamacDto = retrieveConceptSchemeByUrn(ctx, urn);
+        // ConceptsSecurityUtils.canSendConceptSchemeToProductionValidation(ctx, conceptSchemeMetamacDto);
 
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDsdsMetamacService().sendDataStructureDefinitionToProductionValidation(ctx, urn);
 
@@ -212,10 +214,10 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public DataStructureDefinitionMetamacDto sendDataStructureDefinitionDtoToDiffusionValidation(ServiceContext ctx, String urn) throws MetamacException {
+    public DataStructureDefinitionMetamacDto sendDataStructureDefinitionToDiffusionValidation(ServiceContext ctx, String urn) throws MetamacException {
         // Security
-//        ConceptSchemeMetamacDto conceptSchemeMetamacDto = retrieveConceptSchemeByUrn(ctx, urn);
-//        ConceptsSecurityUtils.canSendConceptSchemeToDiffusionValidation(ctx, conceptSchemeMetamacDto);
+        // ConceptSchemeMetamacDto conceptSchemeMetamacDto = retrieveConceptSchemeByUrn(ctx, urn);
+        // ConceptsSecurityUtils.canSendConceptSchemeToDiffusionValidation(ctx, conceptSchemeMetamacDto);
 
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDsdsMetamacService().sendDataStructureDefinitionToDiffusionValidation(ctx, urn);
 
@@ -225,10 +227,10 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public DataStructureDefinitionMetamacDto rejectDataStructureDefinitionDtoProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
+    public DataStructureDefinitionMetamacDto rejectDataStructureDefinitionProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
         // Security
-//        ConceptSchemeMetamacDto conceptSchemeMetamacDto = retrieveConceptSchemeByUrn(ctx, urn);
-//        ConceptsSecurityUtils.canRejectConceptSchemeValidation(ctx, conceptSchemeMetamacDto);
+        // ConceptSchemeMetamacDto conceptSchemeMetamacDto = retrieveConceptSchemeByUrn(ctx, urn);
+        // ConceptsSecurityUtils.canRejectConceptSchemeValidation(ctx, conceptSchemeMetamacDto);
 
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDsdsMetamacService().rejectDataStructureDefinitionProductionValidation(ctx, urn);
 
@@ -238,10 +240,10 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public DataStructureDefinitionMetamacDto rejectDataStructureDefinitionDtoDiffusionValidation(ServiceContext ctx, String urn) throws MetamacException {
+    public DataStructureDefinitionMetamacDto rejectDataStructureDefinitionDiffusionValidation(ServiceContext ctx, String urn) throws MetamacException {
         // Security
-//        ConceptSchemeMetamacDto conceptSchemeMetamacDto = retrieveConceptSchemeByUrn(ctx, urn);
-//        ConceptsSecurityUtils.canRejectConceptSchemeValidation(ctx, conceptSchemeMetamacDto);
+        // ConceptSchemeMetamacDto conceptSchemeMetamacDto = retrieveConceptSchemeByUrn(ctx, urn);
+        // ConceptsSecurityUtils.canRejectConceptSchemeValidation(ctx, conceptSchemeMetamacDto);
 
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDsdsMetamacService().rejectDataStructureDefinitionDiffusionValidation(ctx, urn);
 
@@ -251,10 +253,10 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public DataStructureDefinitionMetamacDto publishInternallyDataStructureDefinitionDto(ServiceContext ctx, String urn) throws MetamacException {
+    public DataStructureDefinitionMetamacDto publishDataStructureDefinitionInternally(ServiceContext ctx, String urn) throws MetamacException {
         // Security
-//        ConceptSchemeMetamacDto conceptSchemeMetamacDto = retrieveConceptSchemeByUrn(ctx, urn);
-//        ConceptsSecurityUtils.canPublishConceptSchemeInternally(ctx, conceptSchemeMetamacDto);
+        // ConceptSchemeMetamacDto conceptSchemeMetamacDto = retrieveConceptSchemeByUrn(ctx, urn);
+        // ConceptsSecurityUtils.canPublishConceptSchemeInternally(ctx, conceptSchemeMetamacDto);
 
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDsdsMetamacService().publishInternallyDataStructureDefinition(ctx, urn);
 
@@ -264,23 +266,23 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public DataStructureDefinitionMetamacDto publishExternallyDataStructureDefinitionDto(ServiceContext ctx, String urn) throws MetamacException {
+    public DataStructureDefinitionMetamacDto publishDataStructureDefinitionExternally(ServiceContext ctx, String urn) throws MetamacException {
         // Security
-//      ConceptSchemeMetamacDto conceptSchemeMetamacDto = retrieveConceptSchemeByUrn(ctx, urn);
-//      ConceptsSecurityUtils.canPublishExternallyDataStructureDefinition(ctx, conceptSchemeMetamacDto);
-        
+        // ConceptSchemeMetamacDto conceptSchemeMetamacDto = retrieveConceptSchemeByUrn(ctx, urn);
+        // ConceptsSecurityUtils.canPublishExternallyDataStructureDefinition(ctx, conceptSchemeMetamacDto);
+
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDsdsMetamacService().publishExternallyDataStructureDefinition(ctx, urn);
-        
+
         // Transform to Dto
         DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = do2DtoMapper.dataStructureDefinitionMetamacDoToDto(dataStructureDefinitionVersionMetamac);
         return dataStructureDefinitionMetamacDto;
     }
 
     @Override
-    public DataStructureDefinitionMetamacDto versioningDataStructureDefinitionDto(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
+    public DataStructureDefinitionMetamacDto versioningDataStructureDefinition(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
         // Security
-//        ConceptSchemeMetamacDto conceptSchemeMetamacDto = retrieveConceptSchemeByUrn(ctx, urnToCopy);
-//        ConceptsSecurityUtils.canVersioningConceptScheme(ctx, conceptSchemeMetamacDto);
+        // ConceptSchemeMetamacDto conceptSchemeMetamacDto = retrieveConceptSchemeByUrn(ctx, urnToCopy);
+        // ConceptsSecurityUtils.canVersioningConceptScheme(ctx, conceptSchemeMetamacDto);
 
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDsdsMetamacService().versioningDataStructureDefinition(ctx, urnToCopy, versionType);
 
@@ -290,10 +292,10 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public DataStructureDefinitionMetamacDto cancelDataStructureDefinitionDtoValidity(ServiceContext ctx, String urn) throws MetamacException {
+    public DataStructureDefinitionMetamacDto cancelDataStructureDefinitionValidity(ServiceContext ctx, String urn) throws MetamacException {
         // Security
-//        ConceptSchemeMetamacDto conceptSchemeMetamacDto = retrieveConceptSchemeByUrn(ctx, urn);
-//        ConceptsSecurityUtils.canCancelConceptSchemeValidity(ctx, conceptSchemeMetamacDto);
+        // ConceptSchemeMetamacDto conceptSchemeMetamacDto = retrieveConceptSchemeByUrn(ctx, urn);
+        // ConceptsSecurityUtils.canCancelConceptSchemeValidity(ctx, conceptSchemeMetamacDto);
 
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDsdsMetamacService().cancelDataStructureDefinitionValidity(ctx, urn);
 
@@ -301,13 +303,13 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = do2DtoMapper.dataStructureDefinitionMetamacDoToDto(dataStructureDefinitionVersionMetamac);
         return dataStructureDefinitionMetamacDto;
     }
-   
+
     /**************************************************************************
      * Descriptors
      **************************************************************************/
 
     @Override
-    public List<DescriptorDto> findDescriptorForDataStructureDefinition(ServiceContext ctx, String urnDsd, TypeComponentList typeComponentList) throws MetamacException {
+    public List<DescriptorDto> findDescriptorsForDataStructureDefinition(ServiceContext ctx, String urnDsd, TypeComponentList typeComponentList) throws MetamacException {
 
         // Load Dsd
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDsdsMetamacService().retrieveDataStructureDefinitionByUrn(ctx, urnDsd);
@@ -351,7 +353,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDsdsMetamacService().retrieveDataStructureDefinitionByUrn(ctx, urnDsd);
 
         // Save
-        componentListDescriptor = getDsdsMetamacService().saveDescriptorForDataStructureDefinition(ctx, dataStructureDefinitionVersionMetamac.getMaintainableArtefact().getUrn(), componentListDescriptor);
+        componentListDescriptor = getDsdsMetamacService().saveDescriptorForDataStructureDefinition(ctx, dataStructureDefinitionVersionMetamac.getMaintainableArtefact().getUrn(),
+                componentListDescriptor);
 
         // Entities to DTOs
         return getDo2DtoMapper().componentListToComponentListDto(TypeDozerCopyMode.COPY_ALL_METADATA, componentListDescriptor);
@@ -651,7 +654,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public ConceptSchemeMetamacDto publishInternallyConceptScheme(ServiceContext ctx, String urn) throws MetamacException {
+    public ConceptSchemeMetamacDto publishConceptSchemeInternally(ServiceContext ctx, String urn) throws MetamacException {
         // Security
         ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptsMetamacService().retrieveConceptSchemeByUrn(ctx, urn);
         ConceptsSecurityUtils.canPublishConceptSchemeInternally(ctx, conceptSchemeVersion);
@@ -665,7 +668,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public ConceptSchemeMetamacDto publishExternallyConceptScheme(ServiceContext ctx, String urn) throws MetamacException {
+    public ConceptSchemeMetamacDto publishConceptSchemeExternally(ServiceContext ctx, String urn) throws MetamacException {
         // Security
         ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptsMetamacService().retrieveConceptSchemeByUrn(ctx, urn);
         ConceptsSecurityUtils.canPublishConceptSchemeExternally(ctx, conceptSchemeVersion);
@@ -783,7 +786,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         List<ItemHierarchyDto> itemsHierarchyDto = do2DtoMapper.conceptMetamacDoListToItemHierarchyDtoList(concepts);
         return itemsHierarchyDto;
     }
-    
+
     @Override
     public MetamacCriteriaResult<ConceptMetamacDto> findConceptsByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
         // Security
@@ -796,12 +799,10 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         PagedResult<ConceptMetamac> result = getConceptsMetamacService().findConceptsByCondition(ctx, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
 
         // Transform
-        MetamacCriteriaResult<ConceptMetamacDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultConcept(result,
-                sculptorCriteria.getPageSize());
+        MetamacCriteriaResult<ConceptMetamacDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultConcept(result, sculptorCriteria.getPageSize());
 
         return metamacCriteriaResult;
     }
-
 
     @Override
     public void addConceptRelation(ServiceContext ctx, String urn1, String urn2) throws MetamacException {
@@ -902,126 +903,114 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     private DataStructureDefinitionDto saveDsdGraph(ServiceContext ctx, DataStructureDefinitionExtendDto dataStructureDefinitionExtendDto) throws MetamacException {
         return null;
         /*
-        // Save DSD (without grouping)
-        DataStructureDefinitionDto dataStructureDefinitionDto = null;
-        if (dataStructureDefinitionExtendDto.getId() != null) {
-            dataStructureDefinitionDto = updateDataStructureDefinition(ctx, dataStructureDefinitionExtendDto);
-        }
-        else {
-            dataStructureDefinitionDto = createDataStructureDefinition(ctx, dataStructureDefinitionExtendDto);
-        }
-
-        // Save DimensionDescriptor
-        DescriptorDto dimensionDesDto = new DescriptorDto();
-        for (ComponentListDto componentListDto : dataStructureDefinitionExtendDto.getGrouping()) {
-            if (componentListDto.getTypeComponentList().equals(TypeComponentList.DIMENSION_DESCRIPTOR)) {
-                dimensionDesDto = (DescriptorDto) saveDescriptorAndComponents(ctx, dataStructureDefinitionDto.getId(), componentListDto);
-            }
-        }
-
-        // Auxiliary structure for update references
-        HashMap<String, DimensionComponentDto> dimensionComponents = new HashMap<String, DimensionComponentDto>();
-        for (ComponentDto componentDto : dimensionDesDto.getComponents()) {
-            dimensionComponents.put(componentDto.getCode(), (DimensionComponentDto) componentDto);
-        }
-
-        // Save GroupDescriptor
-        HashMap<String, DescriptorDto> groupDescriptors = new HashMap<String, DescriptorDto>();
-        for (ComponentListDto componentListDto : dataStructureDefinitionExtendDto.getGrouping()) {
-            if (componentListDto.getTypeComponentList().equals(TypeComponentList.GROUP_DIMENSION_DESCRIPTOR)) {
-                // 1: Update References For GroupDimensionDescriptor->components
-                Set<ComponentDto> componentsUpdate = new HashSet<ComponentDto>();
-                for (ComponentDto componentDto : componentListDto.getComponents()) {
-                    if (dimensionComponents.get(componentDto.getCode()) == null) {
-                        throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.SRM_VALIDATION_GROUP_DESCRIPTOR_UNABLE_UPDATE).build();
-                    } else {
-                        componentsUpdate.add(dimensionComponents.get(componentDto.getCode()));
-                    }
-                }
-
-                componentListDto.getComponents().clear();
-                componentListDto.getComponents().addAll(componentsUpdate);
-
-                // 2: Save groupDescriptor
-                // Don't need save new components only descriptor
-                DescriptorDto groupDescriptorDto = saveDescriptorForDsd(ctx, dataStructureDefinitionDto.getId(), (DescriptorDto) componentListDto);
-
-                groupDescriptors.put(groupDescriptorDto.getCode(), groupDescriptorDto); // Auxiliary structure for update references
-            }
-        }
-
-        // Save AttributeDescriptor
-        for (ComponentListDto componentListDto : dataStructureDefinitionExtendDto.getGrouping()) {
-            if (componentListDto.getTypeComponentList().equals(TypeComponentList.ATTRIBUTE_DESCRIPTOR)) {
-                for (ComponentDto componentDto : componentListDto.getComponents()) {
-                    // 1: Update references for AttributeRelationship
-                    RelationshipDto relationshipDto = ((DataAttributeDto) componentDto).getRelateTo();
-
-                    if (relationshipDto.getDimensionForDimensionRelationship() != null) {
-                        Set<DimensionComponentDto> componentsUpdate = new HashSet<DimensionComponentDto>();
-                        for (ComponentDto itemRefDto : relationshipDto.getDimensionForDimensionRelationship()) {
-                            if (dimensionComponents.get(itemRefDto.getCode()) == null) {
-                                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.SRM_VALIDATION_ATTRIBUTE_DESCRIPTOR_UNABLE_UPDATE).build();
-                            } else {
-                                componentsUpdate.add(dimensionComponents.get(itemRefDto.getCode()));
-                            }
-                        }
-                        relationshipDto.getDimensionForDimensionRelationship().clear();
-                        relationshipDto.getDimensionForDimensionRelationship().addAll(componentsUpdate);
-                    }
-
-                    if (relationshipDto.getGroupKeyForDimensionRelationship() != null) {
-                        Set<DescriptorDto> descriptorsDtoUpdate = new HashSet<DescriptorDto>();
-                        for (DescriptorDto itemRefDto : relationshipDto.getGroupKeyForDimensionRelationship()) {
-                            if (groupDescriptors.get(itemRefDto.getCode()) == null) {
-                                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.SRM_VALIDATION_ATTRIBUTE_DESCRIPTOR_UNABLE_UPDATE).build();
-                            } else {
-                                descriptorsDtoUpdate.add(groupDescriptors.get(itemRefDto.getCode()));
-                            }
-                        }
-                        relationshipDto.getGroupKeyForDimensionRelationship().clear();
-                        relationshipDto.getGroupKeyForDimensionRelationship().addAll(descriptorsDtoUpdate);
-                    }
-
-                    if (relationshipDto.getGroupKeyForGroupRelationship() != null) {
-                        if (groupDescriptors.get(relationshipDto.getGroupKeyForGroupRelationship().getCode()) == null) {
-                            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.SRM_VALIDATION_ATTRIBUTE_DESCRIPTOR_UNABLE_UPDATE).build();
-                        } else {
-                            relationshipDto.setGroupKeyForGroupRelationship(groupDescriptors.get(relationshipDto.getGroupKeyForGroupRelationship().getCode()));
-                        }
-                    }
-                }
-                // 2: Save AttributeDescriptor
-                saveDescriptorAndComponents(ctx, dataStructureDefinitionDto.getId(), componentListDto);
-            }
-        }
-
-        // Save MeasureDescriptor
-        for (ComponentListDto componentListDto : dataStructureDefinitionExtendDto.getGrouping()) {
-            if (componentListDto.getTypeComponentList().equals(TypeComponentList.MEASURE_DESCRIPTOR)) {
-                saveDescriptorAndComponents(ctx, dataStructureDefinitionDto.getId(), componentListDto);
-            }
-        }
-
-        return dataStructureDefinitionDto;
-        */
+         * // Save DSD (without grouping)
+         * DataStructureDefinitionDto dataStructureDefinitionDto = null;
+         * if (dataStructureDefinitionExtendDto.getId() != null) {
+         * dataStructureDefinitionDto = updateDataStructureDefinition(ctx, dataStructureDefinitionExtendDto);
+         * }
+         * else {
+         * dataStructureDefinitionDto = createDataStructureDefinition(ctx, dataStructureDefinitionExtendDto);
+         * }
+         * // Save DimensionDescriptor
+         * DescriptorDto dimensionDesDto = new DescriptorDto();
+         * for (ComponentListDto componentListDto : dataStructureDefinitionExtendDto.getGrouping()) {
+         * if (componentListDto.getTypeComponentList().equals(TypeComponentList.DIMENSION_DESCRIPTOR)) {
+         * dimensionDesDto = (DescriptorDto) saveDescriptorAndComponents(ctx, dataStructureDefinitionDto.getId(), componentListDto);
+         * }
+         * }
+         * // Auxiliary structure for update references
+         * HashMap<String, DimensionComponentDto> dimensionComponents = new HashMap<String, DimensionComponentDto>();
+         * for (ComponentDto componentDto : dimensionDesDto.getComponents()) {
+         * dimensionComponents.put(componentDto.getCode(), (DimensionComponentDto) componentDto);
+         * }
+         * // Save GroupDescriptor
+         * HashMap<String, DescriptorDto> groupDescriptors = new HashMap<String, DescriptorDto>();
+         * for (ComponentListDto componentListDto : dataStructureDefinitionExtendDto.getGrouping()) {
+         * if (componentListDto.getTypeComponentList().equals(TypeComponentList.GROUP_DIMENSION_DESCRIPTOR)) {
+         * // 1: Update References For GroupDimensionDescriptor->components
+         * Set<ComponentDto> componentsUpdate = new HashSet<ComponentDto>();
+         * for (ComponentDto componentDto : componentListDto.getComponents()) {
+         * if (dimensionComponents.get(componentDto.getCode()) == null) {
+         * throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.SRM_VALIDATION_GROUP_DESCRIPTOR_UNABLE_UPDATE).build();
+         * } else {
+         * componentsUpdate.add(dimensionComponents.get(componentDto.getCode()));
+         * }
+         * }
+         * componentListDto.getComponents().clear();
+         * componentListDto.getComponents().addAll(componentsUpdate);
+         * // 2: Save groupDescriptor
+         * // Don't need save new components only descriptor
+         * DescriptorDto groupDescriptorDto = saveDescriptorForDsd(ctx, dataStructureDefinitionDto.getId(), (DescriptorDto) componentListDto);
+         * groupDescriptors.put(groupDescriptorDto.getCode(), groupDescriptorDto); // Auxiliary structure for update references
+         * }
+         * }
+         * // Save AttributeDescriptor
+         * for (ComponentListDto componentListDto : dataStructureDefinitionExtendDto.getGrouping()) {
+         * if (componentListDto.getTypeComponentList().equals(TypeComponentList.ATTRIBUTE_DESCRIPTOR)) {
+         * for (ComponentDto componentDto : componentListDto.getComponents()) {
+         * // 1: Update references for AttributeRelationship
+         * RelationshipDto relationshipDto = ((DataAttributeDto) componentDto).getRelateTo();
+         * if (relationshipDto.getDimensionForDimensionRelationship() != null) {
+         * Set<DimensionComponentDto> componentsUpdate = new HashSet<DimensionComponentDto>();
+         * for (ComponentDto itemRefDto : relationshipDto.getDimensionForDimensionRelationship()) {
+         * if (dimensionComponents.get(itemRefDto.getCode()) == null) {
+         * throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.SRM_VALIDATION_ATTRIBUTE_DESCRIPTOR_UNABLE_UPDATE).build();
+         * } else {
+         * componentsUpdate.add(dimensionComponents.get(itemRefDto.getCode()));
+         * }
+         * }
+         * relationshipDto.getDimensionForDimensionRelationship().clear();
+         * relationshipDto.getDimensionForDimensionRelationship().addAll(componentsUpdate);
+         * }
+         * if (relationshipDto.getGroupKeyForDimensionRelationship() != null) {
+         * Set<DescriptorDto> descriptorsDtoUpdate = new HashSet<DescriptorDto>();
+         * for (DescriptorDto itemRefDto : relationshipDto.getGroupKeyForDimensionRelationship()) {
+         * if (groupDescriptors.get(itemRefDto.getCode()) == null) {
+         * throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.SRM_VALIDATION_ATTRIBUTE_DESCRIPTOR_UNABLE_UPDATE).build();
+         * } else {
+         * descriptorsDtoUpdate.add(groupDescriptors.get(itemRefDto.getCode()));
+         * }
+         * }
+         * relationshipDto.getGroupKeyForDimensionRelationship().clear();
+         * relationshipDto.getGroupKeyForDimensionRelationship().addAll(descriptorsDtoUpdate);
+         * }
+         * if (relationshipDto.getGroupKeyForGroupRelationship() != null) {
+         * if (groupDescriptors.get(relationshipDto.getGroupKeyForGroupRelationship().getCode()) == null) {
+         * throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.SRM_VALIDATION_ATTRIBUTE_DESCRIPTOR_UNABLE_UPDATE).build();
+         * } else {
+         * relationshipDto.setGroupKeyForGroupRelationship(groupDescriptors.get(relationshipDto.getGroupKeyForGroupRelationship().getCode()));
+         * }
+         * }
+         * }
+         * // 2: Save AttributeDescriptor
+         * saveDescriptorAndComponents(ctx, dataStructureDefinitionDto.getId(), componentListDto);
+         * }
+         * }
+         * // Save MeasureDescriptor
+         * for (ComponentListDto componentListDto : dataStructureDefinitionExtendDto.getGrouping()) {
+         * if (componentListDto.getTypeComponentList().equals(TypeComponentList.MEASURE_DESCRIPTOR)) {
+         * saveDescriptorAndComponents(ctx, dataStructureDefinitionDto.getId(), componentListDto);
+         * }
+         * }
+         * return dataStructureDefinitionDto;
+         */
     }
 
     private List<DescriptorDto> findDescriptorsForDsd(ServiceContext ctx, String urnDsd, TypeDozerCopyMode typeDozerCopyMode) throws MetamacException {
         // 2 - Retrieve Descriptor
         List<DescriptorDto> descriptorDtos;
-//        try {
-            // 1 - Retrieve DSD
-            DataStructureDefinitionVersion dataStructureDefinitionVersion = getDsdsMetamacService().retrieveDataStructureDefinitionByUrn(ctx, urnDsd);
+        // try {
+        // 1 - Retrieve DSD
+        DataStructureDefinitionVersion dataStructureDefinitionVersion = getDsdsMetamacService().retrieveDataStructureDefinitionByUrn(ctx, urnDsd);
 
-            descriptorDtos = new ArrayList<DescriptorDto>();
-            for (ComponentList componentList : dataStructureDefinitionVersion.getGrouping()) {
-                descriptorDtos.add((DescriptorDto) getDo2DtoMapper().componentListToComponentListDto(typeDozerCopyMode, componentList));
-            }
-//        } catch (DataStructureDefinitionVersionNotFoundException e) {
-//            throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SRM_SEARCH_NOT_FOUND)
-//                    .withMessageParameters(ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION).build();
-//        }
+        descriptorDtos = new ArrayList<DescriptorDto>();
+        for (ComponentList componentList : dataStructureDefinitionVersion.getGrouping()) {
+            descriptorDtos.add((DescriptorDto) getDo2DtoMapper().componentListToComponentListDto(typeDozerCopyMode, componentList));
+        }
+        // } catch (DataStructureDefinitionVersionNotFoundException e) {
+        // throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SRM_SEARCH_NOT_FOUND)
+        // .withMessageParameters(ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION).build();
+        // }
 
         return descriptorDtos;
     }

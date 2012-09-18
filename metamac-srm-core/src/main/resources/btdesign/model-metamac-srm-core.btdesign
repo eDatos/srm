@@ -104,7 +104,7 @@ Application SrmCore {
 		     @return
 		     @throws org.siemac.metamac.core.common.exception.MetamacException
 		    "
-    		@DataStructureDefinitionMetamacDto sendDataStructureDefinitionDtoToDiffusionValidation(String urn) throws MetamacException;
+    		@DataStructureDefinitionMetamacDto sendDataStructureDefinitionToDiffusionValidation(String urn) throws MetamacException;
 	    	
 	    	"
 	    	 Rejects production validation of dsd   		
@@ -113,7 +113,7 @@ Application SrmCore {
 		     @return
 		     @throws org.siemac.metamac.core.common.exception.MetamacException
 		    "
-	    	@DataStructureDefinitionMetamacDto rejectDataStructureDefinitionDtoProductionValidation(String urn) throws MetamacException;
+	    	@DataStructureDefinitionMetamacDto rejectDataStructureDefinitionProductionValidation(String urn) throws MetamacException;
 	    	
 	    	"
 	    	 Rejects diffusion validation of dsd  		
@@ -122,7 +122,7 @@ Application SrmCore {
 		     @return
 		     @throws org.siemac.metamac.core.common.exception.MetamacException
 		    "
-	    	@DataStructureDefinitionMetamacDto rejectDataStructureDefinitionDtoDiffusionValidation(String urn) throws MetamacException; 
+	    	@DataStructureDefinitionMetamacDto rejectDataStructureDefinitionDiffusionValidation(String urn) throws MetamacException; 
 	    	
 	    	"
 	    	 Publishes internally a dsd  		
@@ -131,7 +131,7 @@ Application SrmCore {
 		     @return
 		     @throws org.siemac.metamac.core.common.exception.MetamacException
 		    "
-	    	@DataStructureDefinitionMetamacDto publishInternallyDataStructureDefinitionDto(String urn) throws MetamacException;
+	    	@DataStructureDefinitionMetamacDto publishDataStructureDefinitionInternally(String urn) throws MetamacException;
 	    	
 	    	"
 	    	 Publishes externally a dsd  		
@@ -140,7 +140,7 @@ Application SrmCore {
 		     @return
 		     @throws org.siemac.metamac.core.common.exception.MetamacException
 		    "
-	    	@DataStructureDefinitionMetamacDto publishExternallyDataStructureDefinitionDto(String urn) throws MetamacException;
+	    	@DataStructureDefinitionMetamacDto publishDataStructureDefinitionExternally(String urn) throws MetamacException;
     		
     		"
 	    	 Creates a new version of a dsd, copying metadata from version with provided urn  		
@@ -150,7 +150,7 @@ Application SrmCore {
 		     @return
 		     @throws org.siemac.metamac.core.common.exception.MetamacException
 		    "
-    		@DataStructureDefinitionMetamacDto versioningDataStructureDefinitionDto(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
+    		@DataStructureDefinitionMetamacDto versioningDataStructureDefinition(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
     		
     		"
 	    	 Cancels the dsd scheme validity  		
@@ -159,7 +159,7 @@ Application SrmCore {
 		     @return
 		     @throws org.siemac.metamac.core.common.exception.MetamacException
 		    "
-    		@DataStructureDefinitionMetamacDto cancelDataStructureDefinitionDtoValidity(String urn) throws MetamacException;
+    		@DataStructureDefinitionMetamacDto cancelDataStructureDefinitionValidity(String urn) throws MetamacException;
 	    	
 			"
 			 @param ctx                                                                         
@@ -168,7 +168,7 @@ Application SrmCore {
 			 @return                                                                            
 			 @throws org.siemac.metamac.core.common.exception.MetamacException
 			"
-          	List<@DescriptorDto> findDescriptorForDataStructureDefinition(String urnDsd, @TypeComponentList typeComponentList) throws MetamacException;
+          	List<@DescriptorDto> findDescriptorsForDataStructureDefinition(String urnDsd, @TypeComponentList typeComponentList) throws MetamacException;
           	
           	"
           	 @param ctx                                                                         
@@ -286,9 +286,9 @@ Application SrmCore {
 	    	"Rejects diffusion validation of concept scheme"
 	    	@ConceptSchemeMetamacDto rejectConceptSchemeDiffusionValidation(String urn) throws MetamacException; 
 	    	"Publishes internally a concept scheme"
-	    	@ConceptSchemeMetamacDto publishInternallyConceptScheme(String urn) throws MetamacException;
+	    	@ConceptSchemeMetamacDto publishConceptSchemeInternally(String urn) throws MetamacException;
 	    	"Publishes externally a concept scheme"
-	    	@ConceptSchemeMetamacDto publishExternallyConceptScheme(String urn) throws MetamacException;
+	    	@ConceptSchemeMetamacDto publishConceptSchemeExternally(String urn) throws MetamacException;
     		"Creates a new version of a concept scheme, copying metadata from version with provided urn"
     		@ConceptSchemeMetamacDto versioningConceptScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
     		"Cancels the concept scheme validity"

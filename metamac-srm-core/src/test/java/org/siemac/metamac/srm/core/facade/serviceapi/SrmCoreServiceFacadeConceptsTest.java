@@ -109,16 +109,16 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
     @Test
     public void testRetrieveConceptSchemeByUrnWithRelatedOperation() throws Exception {
         String urn = CONCEPT_SCHEME_8_V1;
-        
+
         ConceptSchemeMetamacDto conceptSchemeMetamacDto = srmCoreServiceFacade.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), urn);
         assertEquals(urn, conceptSchemeMetamacDto.getUrn());
-        
+
         assertEquals(ConceptSchemeTypeEnum.OPERATION, conceptSchemeMetamacDto.getType());
         assertEquals("op1", conceptSchemeMetamacDto.getRelatedOperation().getCode());
         assertEquals("http://op1", conceptSchemeMetamacDto.getRelatedOperation().getUri());
         assertEquals("urn:op1", conceptSchemeMetamacDto.getRelatedOperation().getUrn());
         assertEquals("http://app/operations", conceptSchemeMetamacDto.getRelatedOperation().getManagementAppUrl());
-        assertEquals(1, conceptSchemeMetamacDto.getRelatedOperation().getVersion().longValue());        
+        assertEquals(1, conceptSchemeMetamacDto.getRelatedOperation().getVersion().longValue());
     }
 
     @Test
@@ -170,7 +170,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         assertNull(conceptSchemeMetamacCreated.getInternalPublicationUser());
         assertNull(conceptSchemeMetamacCreated.getExternalPublicationDate());
         assertNull(conceptSchemeMetamacCreated.getExternalPublicationUser());
-        
+
         // Other
         assertEquals(Long.valueOf(0), conceptSchemeMetamacCreated.getVersionOptimisticLocking());
     }
@@ -239,7 +239,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         assertEquals(code, conceptSchemeMetamacDto.getCode());
         assertEquals(expextedUrn, conceptSchemeMetamacDto.getUrn());
     }
-    
+
     @Test
     public void testUpdateConceptSchemeErrorOptimisticLocking() throws Exception {
 
@@ -256,7 +256,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         // Update by session 1
         ConceptSchemeMetamacDto conceptSchemeMetamacDtoSession1AfterUpdate1 = srmCoreServiceFacade.updateConceptScheme(getServiceContextAdministrador(), conceptSchemeMetamacDtoSession1);
         assertTrue(conceptSchemeMetamacDtoSession1AfterUpdate1.getVersionOptimisticLocking() > conceptSchemeMetamacDtoSession1.getVersionOptimisticLocking());
-        
+
         // Fails when is updated by session 2
         try {
             srmCoreServiceFacade.updateConceptScheme(getServiceContextAdministrador(), conceptSchemeMetamacDtoSession2);
@@ -687,7 +687,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         }
 
         // Publish internally
-        ConceptSchemeMetamacDto conceptSchemeDto = srmCoreServiceFacade.publishInternallyConceptScheme(ctx, urn);
+        ConceptSchemeMetamacDto conceptSchemeDto = srmCoreServiceFacade.publishConceptSchemeInternally(ctx, urn);
 
         // Validate response
         {
@@ -733,7 +733,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         }
 
         // Publish externally
-        ConceptSchemeMetamacDto conceptSchemeDto = srmCoreServiceFacade.publishExternallyConceptScheme(ctx, urn);
+        ConceptSchemeMetamacDto conceptSchemeDto = srmCoreServiceFacade.publishConceptSchemeExternally(ctx, urn);
 
         // Validate response
         {
@@ -924,7 +924,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         assertEqualsInternationalStringDto(conceptMetamacDto.getDerivation(), "es", "Derivation conceptScheme-1-v2-concept-1", null, null);
         assertEqualsInternationalStringDto(conceptMetamacDto.getLegalActs(), "es", "LegalActs conceptScheme-1-v2-concept-1", null, null);
         assertEquals(CONCEPT_SCHEME_3_V1_CONCEPT_1, conceptMetamacDto.getConceptExtendsUrn());
-        
+
         // Core representation
         assertEquals(TypeRepresentationEnum.ENUMERATED, conceptMetamacDto.getCoreRepresentation().getTypeRepresentationEnum());
         assertEquals("CODE_LIST_1", conceptMetamacDto.getCoreRepresentation().getEnumerated().getCode());
@@ -997,7 +997,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
             assertEquals(CONCEPT_SCHEME_12_V1_CONCEPT_1, conceptsPagedResult.getResults().get(i++).getUrn());
             assertEquals(conceptsPagedResult.getResults().size(), i);
         }
-        
+
         // Find by concept scheme type
         {
             MetamacCriteria metamacCriteria = new MetamacCriteria();
@@ -1022,7 +1022,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
 
             // Restrictions
             metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(ConceptMetamacCriteriaPropertyEnum.CONCEPT_SCHEME_TYPE.name(), ConceptSchemeTypeEnum.ROLE, OperationType.EQ));
-            
+
             // Find
             MetamacCriteriaResult<ConceptMetamacDto> conceptsPagedResult = srmCoreServiceFacade.findConceptsByCondition(getServiceContextAdministrador(), metamacCriteria);
 
@@ -1041,7 +1041,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
             assertEquals(CONCEPT_SCHEME_5_V1_CONCEPT_1, conceptsPagedResult.getResults().get(i++).getUrn());
             assertEquals(CONCEPT_SCHEME_6_V1_CONCEPT_1, conceptsPagedResult.getResults().get(i++).getUrn());
             assertEquals(conceptsPagedResult.getResults().size(), i);
-        }        
+        }
 
         // Find by name (like), code (like) and concept scheme urn
         {
@@ -1217,7 +1217,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         assertNotNull(conceptMetamacDto);
         assertEqualsConceptDto(conceptMetamacDto, conceptMetamacDtoUpdated);
         assertTrue(conceptMetamacDtoUpdated.getVersionOptimisticLocking() > conceptMetamacDto.getVersionOptimisticLocking());
-        
+
         // Update again to check removing concept extends
         conceptMetamacDtoUpdated.setConceptExtendsUrn(null);
         ConceptMetamacDto conceptMetamacDtoUpdatedAgain = srmCoreServiceFacade.updateConcept(getServiceContextAdministrador(), conceptMetamacDtoUpdated);

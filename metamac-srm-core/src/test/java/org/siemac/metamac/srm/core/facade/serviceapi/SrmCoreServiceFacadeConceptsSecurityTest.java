@@ -649,7 +649,7 @@ public class SrmCoreServiceFacadeConceptsSecurityTest extends SrmBaseTest {
 
     @Test
     public void testPublishInternallyConceptScheme() throws Exception {
-        srmCoreServiceFacade.publishInternallyConceptScheme(getServiceContextJefeNormalizacion(), CONCEPT_SCHEME_11_V1);
+        srmCoreServiceFacade.publishConceptSchemeInternally(getServiceContextJefeNormalizacion(), CONCEPT_SCHEME_11_V1);
     }
 
     @Test
@@ -660,7 +660,7 @@ public class SrmCoreServiceFacadeConceptsSecurityTest extends SrmBaseTest {
 
         for (ServiceContext ctx : contexts) {
             try {
-                srmCoreServiceFacade.publishInternallyConceptScheme(ctx, CONCEPT_SCHEME_11_V1);
+                srmCoreServiceFacade.publishConceptSchemeInternally(ctx, CONCEPT_SCHEME_11_V1);
                 fail("action not allowed");
             } catch (MetamacException e) {
                 assertEquals(1, e.getExceptionItems().size());
@@ -672,16 +672,16 @@ public class SrmCoreServiceFacadeConceptsSecurityTest extends SrmBaseTest {
     @Test
     public void testPublishExternallyConceptSchemeJefeNormalizacion() throws Exception {
         String nonOperationConceptSchemeUrn = CONCEPT_SCHEME_7_V2;
-        srmCoreServiceFacade.publishExternallyConceptScheme(getServiceContextJefeNormalizacion(), nonOperationConceptSchemeUrn);
+        srmCoreServiceFacade.publishConceptSchemeExternally(getServiceContextJefeNormalizacion(), nonOperationConceptSchemeUrn);
 
         String operationConceptSchemeUrn = CONCEPT_SCHEME_10_V2;
-        srmCoreServiceFacade.publishExternallyConceptScheme(getServiceContextJefeNormalizacion(), operationConceptSchemeUrn);
+        srmCoreServiceFacade.publishConceptSchemeExternally(getServiceContextJefeNormalizacion(), operationConceptSchemeUrn);
     }
 
     @Test
     public void testPublishExternallyConceptSchemeJefeProduccion() throws Exception {
         String operationConceptSchemeUrn = CONCEPT_SCHEME_10_V2;
-        srmCoreServiceFacade.publishExternallyConceptScheme(getServiceContextJefeProduccion(), operationConceptSchemeUrn);
+        srmCoreServiceFacade.publishConceptSchemeExternally(getServiceContextJefeProduccion(), operationConceptSchemeUrn);
     }
 
     @Test
@@ -695,7 +695,7 @@ public class SrmCoreServiceFacadeConceptsSecurityTest extends SrmBaseTest {
 
             for (ServiceContext ctx : contexts) {
                 try {
-                    srmCoreServiceFacade.publishExternallyConceptScheme(ctx, nonOperationConceptSchemeUrn);
+                    srmCoreServiceFacade.publishConceptSchemeExternally(ctx, nonOperationConceptSchemeUrn);
                     fail("action not allowed");
                 } catch (MetamacException e) {
                     assertEquals(1, e.getExceptionItems().size());
@@ -711,7 +711,7 @@ public class SrmCoreServiceFacadeConceptsSecurityTest extends SrmBaseTest {
 
             for (ServiceContext ctx : contexts) {
                 try {
-                    srmCoreServiceFacade.publishExternallyConceptScheme(ctx, operationConceptSchemeUrn);
+                    srmCoreServiceFacade.publishConceptSchemeExternally(ctx, operationConceptSchemeUrn);
                     fail("action not allowed");
                 } catch (MetamacException e) {
                     assertEquals(1, e.getExceptionItems().size());
