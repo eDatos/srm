@@ -3,12 +3,15 @@ package org.siemac.metamac.srm.web.dsd.view;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
+import java.util.List;
+
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
+import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.VersionWindow;
 import org.siemac.metamac.srm.web.dsd.model.ds.DataStructureDefinitionDS;
@@ -16,6 +19,7 @@ import org.siemac.metamac.srm.web.dsd.presenter.DsdGeneralTabPresenter;
 import org.siemac.metamac.srm.web.dsd.utils.DsdClientSecurityUtils;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdGeneralTabUiHandlers;
 import org.siemac.metamac.srm.web.dsd.widgets.DsdMainFormLayout;
+import org.siemac.metamac.srm.web.dsd.widgets.DsdVersionsSectionStack;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
@@ -36,6 +40,8 @@ import com.smartgwt.client.widgets.events.HasClickHandlers;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.FormItemIfFunction;
 import com.smartgwt.client.widgets.form.fields.FormItem;
+import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
+import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHandlers> implements DsdGeneralTabPresenter.DsdGeneralTabView {
@@ -45,6 +51,8 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
     private VLayout                           panel;
 
     private DsdMainFormLayout                 mainFormLayout;
+
+    private DsdVersionsSectionStack           versionsSectionStack;
 
     // VIEW FORM
 
@@ -69,13 +77,27 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         super();
         panel = new VLayout();
 
+        // DSD
+
         mainFormLayout = new DsdMainFormLayout();
         bindMainFormLayoutEvents();
-
         createViewForm();
         createEditionForm();
 
+        // Versions
+
+        versionsSectionStack = new DsdVersionsSectionStack(getConstants().dsdVersions());
+        versionsSectionStack.getListGrid().addRecordClickHandler(new RecordClickHandler() {
+
+            @Override
+            public void onRecordClick(RecordClickEvent event) {
+                String urn = ((DsdRecord) event.getRecord()).getUrn();
+                uiHandlers.goToDsd(urn);
+            }
+        });
+
         panel.addMember(mainFormLayout);
+        panel.addMember(versionsSectionStack);
     }
 
     private void bindMainFormLayoutEvents() {
@@ -429,7 +451,13 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         mainFormLayout.setViewMode();
     }
 
-    public void setEditionMode() {
+    @Override
+    public void setDsdVersions(List<DataStructureDefinitionMetamacDto> dataStructureDefinitionMetamacDtos) {
+        versionsSectionStack.setDataStructureDefinitions(dataStructureDefinitionMetamacDtos);
+        versionsSectionStack.selectDataStructureDefinition(dataStructureDefinitionMetamacDto);
+    }
+
+    private void setEditionMode() {
         mainFormLayout.setEditionMode();
     }
 

@@ -9,7 +9,9 @@ import com.gwtplatform.mvp.client.UiHandlers;
 public interface DsdGeneralTabUiHandlers extends UiHandlers {
 
     void retrieveDsd(String urn);
+    void retrieveDsdVersions(String dsdUrn);
     void saveDsd(DataStructureDefinitionMetamacDto dataStructureDefinitionDto);
+    void goToDsd(String urn);
 
     // Life cycle
 

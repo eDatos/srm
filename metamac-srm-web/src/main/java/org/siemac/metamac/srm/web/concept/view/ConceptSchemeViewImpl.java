@@ -25,7 +25,7 @@ import org.siemac.metamac.srm.web.concept.utils.ConceptClientSecurityUtils;
 import org.siemac.metamac.srm.web.concept.view.handlers.ConceptSchemeUiHandlers;
 import org.siemac.metamac.srm.web.concept.widgets.ConceptSchemeMainFormLayout;
 import org.siemac.metamac.srm.web.concept.widgets.ConceptsTreeGrid;
-import org.siemac.metamac.srm.web.concept.widgets.VersionsSectionStack;
+import org.siemac.metamac.srm.web.concept.widgets.ConceptSchemeVersionsSectionStack;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.utils.DateUtils;
@@ -72,37 +72,37 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePresenter.ConceptSchemeView {
 
-    private ConceptSchemeUiHandlers     uiHandlers;
+    private ConceptSchemeUiHandlers           uiHandlers;
 
-    private VLayout                     panel;
-    private ConceptSchemeMainFormLayout mainFormLayout;
+    private VLayout                           panel;
+    private ConceptSchemeMainFormLayout       mainFormLayout;
 
     // View forms
-    private GroupDynamicForm            identifiersForm;
-    private GroupDynamicForm            contentDescriptorsForm;
-    private GroupDynamicForm            classDescriptorsForm;
-    private GroupDynamicForm            productionDescriptorsForm;
-    private GroupDynamicForm            diffusionDescriptorsForm;
-    private GroupDynamicForm            versionResponsibilityForm;
-    private AnnotationsPanel            annotationsPanel;
+    private GroupDynamicForm                  identifiersForm;
+    private GroupDynamicForm                  contentDescriptorsForm;
+    private GroupDynamicForm                  classDescriptorsForm;
+    private GroupDynamicForm                  productionDescriptorsForm;
+    private GroupDynamicForm                  diffusionDescriptorsForm;
+    private GroupDynamicForm                  versionResponsibilityForm;
+    private AnnotationsPanel                  annotationsPanel;
 
     // Edition forms
-    private GroupDynamicForm            identifiersEditionForm;
-    private GroupDynamicForm            contentDescriptorsEditionForm;
-    private GroupDynamicForm            classDescriptorsEditionForm;
-    private GroupDynamicForm            productionDescriptorsEditionForm;
-    private GroupDynamicForm            diffusionDescriptorsEditionForm;
-    private GroupDynamicForm            versionResponsibilityEditionForm;
-    private AnnotationsPanel            annotationsEditionPanel;
+    private GroupDynamicForm                  identifiersEditionForm;
+    private GroupDynamicForm                  contentDescriptorsEditionForm;
+    private GroupDynamicForm                  classDescriptorsEditionForm;
+    private GroupDynamicForm                  productionDescriptorsEditionForm;
+    private GroupDynamicForm                  diffusionDescriptorsEditionForm;
+    private GroupDynamicForm                  versionResponsibilityEditionForm;
+    private AnnotationsPanel                  annotationsEditionPanel;
 
-    private ConceptsTreeGrid            conceptsTreeGrid;
+    private ConceptsTreeGrid                  conceptsTreeGrid;
 
-    private VersionsSectionStack        versionsSectionStack;
+    private ConceptSchemeVersionsSectionStack versionsSectionStack;
 
-    private ConceptSchemeMetamacDto     conceptSchemeDto;
-    private ExternalItemDto             relatedOperation;
+    private ConceptSchemeMetamacDto           conceptSchemeDto;
+    private ExternalItemDto                   relatedOperation;
 
-    private SearchExternalItemWindow    searchOperationsWindow;
+    private SearchExternalItemWindow          searchOperationsWindow;
 
     @Inject
     public ConceptSchemeViewImpl() {
@@ -124,7 +124,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         // CONCEPT SCHEME VERSIONS
         //
 
-        versionsSectionStack = new VersionsSectionStack();
+        versionsSectionStack = new ConceptSchemeVersionsSectionStack(getConstants().conceptSchemeVersions());
         versionsSectionStack.getListGrid().addRecordClickHandler(new RecordClickHandler() {
 
             @Override

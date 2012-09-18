@@ -30,7 +30,7 @@ public class RecordUtils {
      */
     public static DsdRecord getDsdRecord(DataStructureDefinitionMetamacDto dsd) {
         return new DsdRecord(dsd.getId(), dsd.getCode(), InternationalStringUtils.getLocalisedString(dsd.getName()), InternationalStringUtils.getLocalisedString(dsd.getDescription()),
-                dsd.getFinalLogic(), CommonUtils.getProcStatusName(dsd.getProcStatus()), dsd);
+                dsd.getFinalLogic(), CommonUtils.getProcStatusName(dsd.getProcStatus()), dsd.getVersionLogic(), dsd);
     }
 
     /**

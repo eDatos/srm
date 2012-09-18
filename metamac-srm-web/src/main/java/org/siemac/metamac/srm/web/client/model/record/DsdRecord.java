@@ -13,7 +13,7 @@ public class DsdRecord extends ListGridRecord {
     }
 
     // Last modified record
-    public DsdRecord(Long id, String code, String name, String description, Boolean finalStructure, String procStatus, DataStructureDefinitionMetamacDto dsd) {
+    public DsdRecord(Long id, String code, String name, String description, Boolean finalStructure, String procStatus, String version, DataStructureDefinitionMetamacDto dsd) {
         setId(id);
         setCode(code);
         setName(name);
@@ -21,6 +21,7 @@ public class DsdRecord extends ListGridRecord {
         setFinalStructure(finalStructure);
         setUrn(dsd.getUrn());
         setProcStatus(procStatus);
+        setVersion(version);
         setDsd(dsd);
     }
 
