@@ -150,7 +150,7 @@ public class DsdLifecycleImpl implements DsdLifecycle {
 
         @Override
         public StructureVersion markStructureAsFinal(ServiceContext ctx, StructureVersion structureVersion) throws MetamacException {
-            return dataStructureDefinitionService.startDataStructureDefinitionValidity(ctx, structureVersion.getMaintainableArtefact().getUrn());
+            return dataStructureDefinitionService.markDataStructureAsFinal(ctx, structureVersion.getMaintainableArtefact().getUrn());
         }
 
         @Override
