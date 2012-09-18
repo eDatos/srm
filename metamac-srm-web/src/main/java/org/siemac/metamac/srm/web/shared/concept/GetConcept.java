@@ -19,7 +19,7 @@ public class GetConcept {
 
     @Out(2)
     List<ConceptMetamacDto> relatedConcepts;
-    
+
     @Out(3)
     List<ConceptMetamacDto> relatedRoleConcepts;
 

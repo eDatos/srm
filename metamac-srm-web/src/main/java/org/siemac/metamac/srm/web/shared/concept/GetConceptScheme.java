@@ -10,7 +10,7 @@ import com.gwtplatform.dispatch.annotation.Out;
 public class GetConceptScheme {
 
     @In(1)
-    String           urn;
+    String                  urn;
 
     @Out(1)
     ConceptSchemeMetamacDto conceptSchemeDto;
