@@ -88,6 +88,9 @@ Application SrmCore {
 			"
 			@DataStructureDefinitionMetamacDto retrieveDataStructureDefinitionByUrn(String urn) throws MetamacException;				    	
 
+            "Retrieves all data structure definitions versions"
+            List<@DataStructureDefinitionMetamacDto> retrieveDataStructureDefinitionVersions(String urn) throws MetamacException;
+            
 	    	"
 	    	 Sends dsd to production validation
 		     @param ctx
