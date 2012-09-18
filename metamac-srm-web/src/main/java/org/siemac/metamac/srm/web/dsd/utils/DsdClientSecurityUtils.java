@@ -6,14 +6,11 @@ import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 
 public class DsdClientSecurityUtils {
 
-    // TODO Remove this attribute!!!
-    private static ItemSchemeMetamacProcStatusEnum procStatus = ItemSchemeMetamacProcStatusEnum.DRAFT;
-
     public static boolean canCreateDsd() {
         return SharedDsdSecurityUtils.canCreateDsd(MetamacSrmWeb.getCurrentUser());
     }
 
-    public static boolean canUpdateDsd() {
+    public static boolean canUpdateDsd(ItemSchemeMetamacProcStatusEnum procStatus) {
         return SharedDsdSecurityUtils.canUpdateDsd(MetamacSrmWeb.getCurrentUser(), procStatus);
     }
 
@@ -21,23 +18,23 @@ public class DsdClientSecurityUtils {
         return SharedDsdSecurityUtils.canVersioningDsd(MetamacSrmWeb.getCurrentUser());
     }
 
-    public static boolean canUpdatePrimaryMeasure() {
+    public static boolean canUpdatePrimaryMeasure(ItemSchemeMetamacProcStatusEnum procStatus) {
         return SharedDsdSecurityUtils.canUpdatePrimaryMeasure(MetamacSrmWeb.getCurrentUser(), procStatus);
     }
 
-    public static boolean canUpdateDimensions() {
+    public static boolean canUpdateDimensions(ItemSchemeMetamacProcStatusEnum procStatus) {
         return SharedDsdSecurityUtils.canUpdateDimensions(MetamacSrmWeb.getCurrentUser(), procStatus);
     }
 
-    public static boolean canUpdateAttributes() {
+    public static boolean canUpdateAttributes(ItemSchemeMetamacProcStatusEnum procStatus) {
         return SharedDsdSecurityUtils.canUpdateAttributes(MetamacSrmWeb.getCurrentUser(), procStatus);
     }
 
-    public static boolean canUpdateGroupKeys() {
+    public static boolean canUpdateGroupKeys(ItemSchemeMetamacProcStatusEnum procStatus) {
         return SharedDsdSecurityUtils.canUpdateGroupKeys(MetamacSrmWeb.getCurrentUser(), procStatus);
     }
 
-    public static boolean canDeleteDsd() {
+    public static boolean canDeleteDsd(ItemSchemeMetamacProcStatusEnum procStatus) {
         return SharedDsdSecurityUtils.canDeleteDsd(MetamacSrmWeb.getCurrentUser(), procStatus);
     }
 
@@ -45,7 +42,7 @@ public class DsdClientSecurityUtils {
         return SharedDsdSecurityUtils.canImportDsd(MetamacSrmWeb.getCurrentUser());
     }
 
-    public static boolean canUpdateAnnotations() {
+    public static boolean canUpdateAnnotations(ItemSchemeMetamacProcStatusEnum procStatus) {
         return SharedDsdSecurityUtils.canUpdateAnnotations(MetamacSrmWeb.getCurrentUser(), procStatus);
     }
 
@@ -65,7 +62,7 @@ public class DsdClientSecurityUtils {
         return SharedDsdSecurityUtils.canSendDsdToDiffusionValidation(MetamacSrmWeb.getCurrentUser());
     }
 
-    public static boolean canRejectDsdValidation() {
+    public static boolean canRejectDsdValidation(ItemSchemeMetamacProcStatusEnum procStatus) {
         return SharedDsdSecurityUtils.canRejectDsdValidation(MetamacSrmWeb.getCurrentUser(), procStatus);
     }
 

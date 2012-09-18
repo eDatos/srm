@@ -6,6 +6,7 @@ import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
+import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
@@ -101,9 +102,9 @@ public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTa
         void setCodeLists(List<ExternalItemDto> codeLists);
         HasChangeHandlers onRepresentationTypeChange();
 
-        void setDsdPrimaryMeasure(ComponentDto componentDto);
+        void setDsdPrimaryMeasure(ItemSchemeMetamacProcStatusEnum procStatus, ComponentDto componentDto);
         ComponentDto getDsdPrimaryMeasure(ComponentDto componentDto);
-        void onPrimaryMeasureSaved(ComponentDto componentDto);
+        void onPrimaryMeasureSaved(ItemSchemeMetamacProcStatusEnum procStatus, ComponentDto componentDto);
         boolean validate();
 
         HasClickHandlers getSave();
@@ -205,7 +206,7 @@ public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTa
         enumeratedRepresentation = TypeRepresentationEnum.ENUMERATED.equals(primaryMeasure.getLocalRepresentation() != null
                 ? primaryMeasure.getLocalRepresentation().getTypeRepresentationEnum()
                 : false);
-        getView().setDsdPrimaryMeasure(primaryMeasure);
+        getView().setDsdPrimaryMeasure(dataStructureDefinitionDto.getProcStatus(), primaryMeasure);
     }
 
     @ProxyEvent
@@ -226,7 +227,7 @@ public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTa
             public void onWaitSuccess(SaveComponentForDsdResult result) {
                 ShowMessageEvent.fire(DsdPrimaryMeasureTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdPrimaryMeasureSaved()), MessageTypeEnum.SUCCESS);
                 primaryMeasure = result.getComponentDtoSaved();
-                getView().onPrimaryMeasureSaved(primaryMeasure);
+                getView().onPrimaryMeasureSaved(dataStructureDefinitionDto.getProcStatus(), primaryMeasure);
                 if (isNewDescriptor) {
                     // The first time a descriptor is saved, the DSD version changes.
                     isNewDescriptor = false;

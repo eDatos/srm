@@ -152,7 +152,7 @@ public class DsdMainFormLayout extends InternationalMainFormLayout {
     }
 
     private void showRejectValidationButton() {
-        if (DsdClientSecurityUtils.canRejectDsdValidation()) {
+        if (DsdClientSecurityUtils.canRejectDsdValidation(status)) {
             rejectValidation.show();
         }
     }

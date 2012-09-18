@@ -3,12 +3,14 @@ package org.siemac.metamac.srm.web.dsd.view;
 import java.util.List;
 
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
+import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.representation.widgets.StaticFacetForm;
 import org.siemac.metamac.srm.web.client.utils.FacetFormUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdPrimaryMeasureTabPresenter;
 import org.siemac.metamac.srm.web.dsd.utils.CommonUtils;
+import org.siemac.metamac.srm.web.dsd.utils.DsdClientSecurityUtils;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdPrimaryMeasureTabUiHandlers;
 import org.siemac.metamac.srm.web.dsd.widgets.DsdFacetForm;
 import org.siemac.metamac.web.common.client.utils.ExternalItemUtils;
@@ -177,8 +179,11 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
     }
 
     @Override
-    public void setDsdPrimaryMeasure(ComponentDto componentDto) {
+    public void setDsdPrimaryMeasure(ItemSchemeMetamacProcStatusEnum procStatus, ComponentDto componentDto) {
         mainFormLayout.setViewMode();
+
+        // Security
+        mainFormLayout.setCanEdit(DsdClientSecurityUtils.canUpdatePrimaryMeasure(procStatus));
 
         setPrimaryMeasureViewMode(componentDto);
         setPrimaryMeasureEditionMode(componentDto);
@@ -288,8 +293,8 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
     }
 
     @Override
-    public void onPrimaryMeasureSaved(ComponentDto componentDto) {
-        setDsdPrimaryMeasure(componentDto);
+    public void onPrimaryMeasureSaved(ItemSchemeMetamacProcStatusEnum procStatus, ComponentDto componentDto) {
+        setDsdPrimaryMeasure(procStatus, componentDto);
         mainFormLayout.setViewMode();
     }
 

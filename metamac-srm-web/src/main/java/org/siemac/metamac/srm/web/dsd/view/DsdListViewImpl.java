@@ -7,6 +7,7 @@ import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
+import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
@@ -368,13 +369,33 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
     }
 
     private void showDeleteToolStripButton() {
-        if (DsdClientSecurityUtils.canDeleteDsd()) {
+        List<ItemSchemeMetamacProcStatusEnum> statusList = getSelectedDsdsProcStatus();
+        boolean actionAllowed = true;
+        for (ItemSchemeMetamacProcStatusEnum procStatus : statusList) {
+            if (!DsdClientSecurityUtils.canDeleteDsd(procStatus)) {
+                actionAllowed = false;
+                break;
+            }
+        }
+        if (actionAllowed) {
             deleteToolStripButton.show();
         }
     }
 
     private void showExportToolStripButton() {
         exportToolStripButton.show();
+    }
+
+    private List<ItemSchemeMetamacProcStatusEnum> getSelectedDsdsProcStatus() {
+        List<ItemSchemeMetamacProcStatusEnum> status = new ArrayList<ItemSchemeMetamacProcStatusEnum>();
+        if (dsdListGrid.getListGrid().getSelectedRecords() != null) {
+            ListGridRecord[] records = dsdListGrid.getListGrid().getSelectedRecords();
+            for (int i = 0; i < records.length; i++) {
+                DsdRecord record = (DsdRecord) records[i];
+                status.add(record.getDsd().getProcStatus());
+            }
+        }
+        return status;
     }
 
 }
