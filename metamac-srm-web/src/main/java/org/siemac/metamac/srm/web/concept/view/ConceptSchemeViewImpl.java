@@ -378,7 +378,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         diffusionDescriptorsForm.setFields(startDate, endDate, externalPublicationFailed, externalPublicationFailedDate);
 
         // Version responsibility
-        versionResponsibilityForm = new GroupDynamicForm(getConstants().conceptSchemeVersionResponsibility());
+        versionResponsibilityForm = new GroupDynamicForm(getConstants().lifeCycleVersionResponsibility());
         ViewTextItem productionValidationUser = new ViewTextItem(ConceptSchemeDS.PRODUCTION_VALIDATION_USER, getConstants().lifeCycleProductionValidationUser());
         ViewTextItem productionValidationDate = new ViewTextItem(ConceptSchemeDS.PRODUCTION_VALIDATION_DATE, getConstants().lifeCycleProductionValidationDate());
         ViewTextItem diffusionValidationUser = new ViewTextItem(ConceptSchemeDS.DIFFUSION_VALIDATION_USER, getConstants().lifeCycleDiffusionValidationUser());
@@ -507,7 +507,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         diffusionDescriptorsEditionForm.setFields(startDate, endDate, externalPublicationFailed, externalPublicationFailedDate);
 
         // Version responsibility
-        versionResponsibilityEditionForm = new GroupDynamicForm(getConstants().conceptSchemeVersionResponsibility());
+        versionResponsibilityEditionForm = new GroupDynamicForm(getConstants().lifeCycleVersionResponsibility());
         ViewTextItem productionValidationUser = new ViewTextItem(ConceptSchemeDS.PRODUCTION_VALIDATION_USER, getConstants().lifeCycleProductionValidationUser());
         ViewTextItem productionValidationDate = new ViewTextItem(ConceptSchemeDS.PRODUCTION_VALIDATION_DATE, getConstants().lifeCycleProductionValidationDate());
         ViewTextItem diffusionValidationUser = new ViewTextItem(ConceptSchemeDS.DIFFUSION_VALIDATION_USER, getConstants().lifeCycleDiffusionValidationUser());

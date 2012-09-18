@@ -12,12 +12,14 @@ import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.VersionWindow;
+import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 import org.siemac.metamac.srm.web.dsd.model.ds.DataStructureDefinitionDS;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdGeneralTabPresenter;
 import org.siemac.metamac.srm.web.dsd.utils.DsdClientSecurityUtils;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdGeneralTabUiHandlers;
 import org.siemac.metamac.srm.web.dsd.widgets.DsdMainFormLayout;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
+import org.siemac.metamac.web.common.client.utils.DateUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.widgets.InformationWindow;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
@@ -46,20 +48,21 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
 
     private DsdMainFormLayout                 mainFormLayout;
 
-    private AnnotationsPanel                  viewAnnotationsPanel;
-    private AnnotationsPanel                  editionAnnotationsPanel;
-
     // VIEW FORM
 
     private GroupDynamicForm                  identifiersForm;
     private GroupDynamicForm                  generalForm;
     private GroupDynamicForm                  statusForm;
+    private GroupDynamicForm                  versionResponsibilityForm;
+    private AnnotationsPanel                  annotationsPanel;
 
     // EDITION FORM
 
     private GroupDynamicForm                  identifiersEditionForm;
     private GroupDynamicForm                  generalEditionForm;
     private GroupDynamicForm                  statusEditionForm;
+    private GroupDynamicForm                  versionResponsibilityEditionForm;
+    private AnnotationsPanel                  annotationsEditionPanel;
 
     private DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto;
 
@@ -87,8 +90,8 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
                 generalForm.setTranslationsShowed(translationsShowed);
                 generalEditionForm.setTranslationsShowed(translationsShowed);
 
-                viewAnnotationsPanel.setTranslationsShowed(translationsShowed);
-                editionAnnotationsPanel.setTranslationsShowed(translationsShowed);
+                annotationsPanel.setTranslationsShowed(translationsShowed);
+                annotationsEditionPanel.setTranslationsShowed(translationsShowed);
             }
         });
 
@@ -203,13 +206,27 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         ViewTextItem staticEndDateItem = new ViewTextItem(DataStructureDefinitionDS.VALID_TO, MetamacSrmWeb.getConstants().dsdValidTo());
         statusForm.setFields(staticFinalItem, staticStartDateItem, staticEndDateItem);
 
+        // Version responsibility
+        versionResponsibilityForm = new GroupDynamicForm(getConstants().lifeCycleVersionResponsibility());
+        ViewTextItem productionValidationUser = new ViewTextItem(DataStructureDefinitionDS.PRODUCTION_VALIDATION_USER, getConstants().lifeCycleProductionValidationUser());
+        ViewTextItem productionValidationDate = new ViewTextItem(DataStructureDefinitionDS.PRODUCTION_VALIDATION_DATE, getConstants().lifeCycleProductionValidationDate());
+        ViewTextItem diffusionValidationUser = new ViewTextItem(DataStructureDefinitionDS.DIFFUSION_VALIDATION_USER, getConstants().lifeCycleDiffusionValidationUser());
+        ViewTextItem diffusionValidationDate = new ViewTextItem(DataStructureDefinitionDS.DIFFUSION_VALIDATION_DATE, getConstants().lifeCycleDiffusionValidationDate());
+        ViewTextItem internalPublicationUser = new ViewTextItem(DataStructureDefinitionDS.INTERNAL_PUBLICATION_USER, getConstants().lifeCycleInternalPublicationUser());
+        ViewTextItem internalPublicationDate = new ViewTextItem(DataStructureDefinitionDS.INTERNAL_PUBLICATION_DATE, getConstants().lifeCycleInternalPublicationDate());
+        ViewTextItem externalPublicationUser = new ViewTextItem(DataStructureDefinitionDS.EXTERNAL_PUBLICATION_USER, getConstants().lifeCycleExternalPublicationUser());
+        ViewTextItem externalPublicationDate = new ViewTextItem(DataStructureDefinitionDS.EXTERNAL_PUBLICATION_DATE, getConstants().lifeCycleExternalPublicationDate());
+        versionResponsibilityForm.setFields(productionValidationUser, productionValidationDate, diffusionValidationUser, diffusionValidationDate, internalPublicationUser, internalPublicationDate,
+                externalPublicationUser, externalPublicationDate);
+
         // Annotations
-        viewAnnotationsPanel = new AnnotationsPanel(true);
+        annotationsPanel = new AnnotationsPanel(true);
 
         mainFormLayout.addViewCanvas(identifiersForm);
         mainFormLayout.addViewCanvas(generalForm);
         mainFormLayout.addViewCanvas(statusForm);
-        mainFormLayout.addViewCanvas(viewAnnotationsPanel);
+        mainFormLayout.addViewCanvas(versionResponsibilityForm);
+        mainFormLayout.addViewCanvas(annotationsPanel);
     }
 
     /**
@@ -262,13 +279,27 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         ViewTextItem staticEndDateItemEdit = new ViewTextItem(DataStructureDefinitionDS.VALID_TO, MetamacSrmWeb.getConstants().dsdValidTo());
         statusEditionForm.setFields(staticFinalItemEdit, staticStartDateItemEdit, staticEndDateItemEdit);
 
+        // Version responsibility
+        versionResponsibilityEditionForm = new GroupDynamicForm(getConstants().lifeCycleVersionResponsibility());
+        ViewTextItem productionValidationUser = new ViewTextItem(DataStructureDefinitionDS.PRODUCTION_VALIDATION_USER, getConstants().lifeCycleProductionValidationUser());
+        ViewTextItem productionValidationDate = new ViewTextItem(DataStructureDefinitionDS.PRODUCTION_VALIDATION_DATE, getConstants().lifeCycleProductionValidationDate());
+        ViewTextItem diffusionValidationUser = new ViewTextItem(DataStructureDefinitionDS.DIFFUSION_VALIDATION_USER, getConstants().lifeCycleDiffusionValidationUser());
+        ViewTextItem diffusionValidationDate = new ViewTextItem(DataStructureDefinitionDS.DIFFUSION_VALIDATION_DATE, getConstants().lifeCycleDiffusionValidationDate());
+        ViewTextItem internalPublicationUser = new ViewTextItem(DataStructureDefinitionDS.INTERNAL_PUBLICATION_USER, getConstants().lifeCycleInternalPublicationUser());
+        ViewTextItem internalPublicationDate = new ViewTextItem(DataStructureDefinitionDS.INTERNAL_PUBLICATION_DATE, getConstants().lifeCycleInternalPublicationDate());
+        ViewTextItem externalPublicationUser = new ViewTextItem(DataStructureDefinitionDS.EXTERNAL_PUBLICATION_USER, getConstants().lifeCycleExternalPublicationUser());
+        ViewTextItem externalPublicationDate = new ViewTextItem(DataStructureDefinitionDS.EXTERNAL_PUBLICATION_DATE, getConstants().lifeCycleExternalPublicationDate());
+        versionResponsibilityEditionForm.setFields(productionValidationUser, productionValidationDate, diffusionValidationUser, diffusionValidationDate, internalPublicationUser,
+                internalPublicationDate, externalPublicationUser, externalPublicationDate);
+
         // Annotations
-        editionAnnotationsPanel = new AnnotationsPanel(false);
+        annotationsEditionPanel = new AnnotationsPanel(false);
 
         mainFormLayout.addEditionCanvas(identifiersEditionForm);
         mainFormLayout.addEditionCanvas(generalEditionForm);
         mainFormLayout.addEditionCanvas(statusForm);
-        mainFormLayout.addEditionCanvas(editionAnnotationsPanel);
+        mainFormLayout.addEditionCanvas(versionResponsibilityEditionForm);
+        mainFormLayout.addEditionCanvas(annotationsEditionPanel);
     }
 
     @Override
@@ -313,8 +344,18 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         statusForm.setValue(DataStructureDefinitionDS.VALID_FROM, dsd.getValidFrom());
         statusForm.setValue(DataStructureDefinitionDS.VALID_TO, dsd.getValidTo());
 
+        // Version responsibility
+        versionResponsibilityForm.setValue(DataStructureDefinitionDS.PRODUCTION_VALIDATION_USER, dsd.getProductionValidationUser());
+        versionResponsibilityForm.setValue(DataStructureDefinitionDS.PRODUCTION_VALIDATION_DATE, dsd.getProductionValidationDate());
+        versionResponsibilityForm.setValue(DataStructureDefinitionDS.DIFFUSION_VALIDATION_USER, dsd.getDiffusionValidationUser());
+        versionResponsibilityForm.setValue(DataStructureDefinitionDS.DIFFUSION_VALIDATION_DATE, DateUtils.getFormattedDate(dsd.getDiffusionValidationDate()));
+        versionResponsibilityForm.setValue(DataStructureDefinitionDS.INTERNAL_PUBLICATION_USER, dsd.getInternalPublicationUser());
+        versionResponsibilityForm.setValue(DataStructureDefinitionDS.INTERNAL_PUBLICATION_DATE, DateUtils.getFormattedDate(dsd.getInternalPublicationDate()));
+        versionResponsibilityForm.setValue(DataStructureDefinitionDS.EXTERNAL_PUBLICATION_USER, dsd.getExternalPublicationUser());
+        versionResponsibilityForm.setValue(DataStructureDefinitionDS.EXTERNAL_PUBLICATION_DATE, DateUtils.getFormattedDate(dsd.getExternalPublicationDate()));
+
         // Annotations
-        viewAnnotationsPanel.setAnnotations(dsd.getAnnotations());
+        annotationsPanel.setAnnotations(dsd.getAnnotations());
     }
 
     private void setDsdEditionMode(DataStructureDefinitionMetamacDto dsd) {
@@ -335,8 +376,18 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         statusEditionForm.setValue(DataStructureDefinitionDS.VALID_FROM, dsd.getValidFrom());
         statusEditionForm.setValue(DataStructureDefinitionDS.VALID_TO, dsd.getValidTo());
 
+        // Version responsibility
+        versionResponsibilityEditionForm.setValue(ConceptSchemeDS.PRODUCTION_VALIDATION_USER, dsd.getProductionValidationUser());
+        versionResponsibilityEditionForm.setValue(DataStructureDefinitionDS.PRODUCTION_VALIDATION_DATE, dsd.getProductionValidationDate());
+        versionResponsibilityEditionForm.setValue(DataStructureDefinitionDS.DIFFUSION_VALIDATION_USER, dsd.getDiffusionValidationUser());
+        versionResponsibilityEditionForm.setValue(DataStructureDefinitionDS.DIFFUSION_VALIDATION_DATE, DateUtils.getFormattedDate(dsd.getDiffusionValidationDate()));
+        versionResponsibilityEditionForm.setValue(DataStructureDefinitionDS.INTERNAL_PUBLICATION_USER, dsd.getInternalPublicationUser());
+        versionResponsibilityEditionForm.setValue(DataStructureDefinitionDS.INTERNAL_PUBLICATION_DATE, DateUtils.getFormattedDate(dsd.getInternalPublicationDate()));
+        versionResponsibilityEditionForm.setValue(DataStructureDefinitionDS.EXTERNAL_PUBLICATION_USER, dsd.getExternalPublicationUser());
+        versionResponsibilityEditionForm.setValue(DataStructureDefinitionDS.EXTERNAL_PUBLICATION_DATE, DateUtils.getFormattedDate(dsd.getExternalPublicationDate()));
+
         // Annotations
-        editionAnnotationsPanel.setAnnotations(dsd.getAnnotations());
+        annotationsEditionPanel.setAnnotations(dsd.getAnnotations());
     }
 
     @Override
@@ -355,7 +406,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
 
         // Annotations
         dataStructureDefinitionMetamacDto.getAnnotations().clear();
-        dataStructureDefinitionMetamacDto.getAnnotations().addAll(editionAnnotationsPanel.getAnnotations());
+        dataStructureDefinitionMetamacDto.getAnnotations().addAll(annotationsEditionPanel.getAnnotations());
         return dataStructureDefinitionMetamacDto;
     }
 
