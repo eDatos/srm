@@ -51,7 +51,7 @@ public class ConceptsTreeGrid extends TreeGrid {
     private MenuItem                 createConceptMenuItem;
     private MenuItem                 deleteConceptMenuItem;
 
-    private String                   conceptSchemeUrn;
+    private ConceptSchemeMetamacDto  conceptSchemeMetamacDto;
     private String                   selectedConceptUrn;
 
     private BaseConceptUiHandlers    uiHandlers;
@@ -94,14 +94,14 @@ public class ConceptsTreeGrid extends TreeGrid {
 
             @Override
             public void onClick(MenuItemClickEvent event) {
-                newConceptWindow = new NewConceptWindow(MetamacSrmWeb.getConstants().conceptCreate());
+                newConceptWindow = new NewConceptWindow(MetamacSrmWeb.getConstants().conceptCreate(), conceptSchemeMetamacDto.getType());
                 newConceptWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
 
                     @Override
                     public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
                         if (newConceptWindow.validateForm()) {
                             ConceptMetamacDto conceptMetamacDto = newConceptWindow.getNewConceptDto();
-                            conceptMetamacDto.setItemSchemeVersionUrn(conceptSchemeUrn); // Set concept scheme URN
+                            conceptMetamacDto.setItemSchemeVersionUrn(conceptSchemeMetamacDto.getUrn()); // Set concept scheme URN
                             conceptMetamacDto.setItemParentUrn(selectedConceptUrn); // Set concept parent URN
                             ConceptsTreeGrid.this.uiHandlers.saveConcept(conceptMetamacDto);
                             newConceptWindow.destroy();
@@ -176,7 +176,7 @@ public class ConceptsTreeGrid extends TreeGrid {
     }
 
     public void setConcepts(ConceptSchemeMetamacDto conceptSchemeMetamacDto, List<ItemHierarchyDto> itemHierarchyDtos) {
-        this.conceptSchemeUrn = conceptSchemeMetamacDto.getUrn();
+        this.conceptSchemeMetamacDto = conceptSchemeMetamacDto;
 
         TreeNode[] treeNodes = new TreeNode[itemHierarchyDtos.size()];
         for (int i = 0; i < itemHierarchyDtos.size(); i++) {

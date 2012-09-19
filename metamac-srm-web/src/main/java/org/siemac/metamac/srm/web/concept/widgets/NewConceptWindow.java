@@ -5,6 +5,7 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptRoleEnum;
+import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
 import org.siemac.metamac.srm.web.concept.utils.CommonUtils;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
@@ -25,7 +26,7 @@ public class NewConceptWindow extends CustomWindow {
 
     private CustomDynamicForm   form;
 
-    public NewConceptWindow(String title) {
+    public NewConceptWindow(String title, ConceptSchemeTypeEnum type) {
         super(title);
         setAutoSize(true);
 
@@ -39,6 +40,7 @@ public class NewConceptWindow extends CustomWindow {
         RequiredSelectItem sdmxRelatedArtefact = new RequiredSelectItem(ConceptDS.SDMX_RELATED_ARTEFACT, getConstants().conceptSdmxRelatedArtefact());
         sdmxRelatedArtefact.setValueMap(CommonUtils.getConceptRoleHashMap());
         sdmxRelatedArtefact.setWidth(FORM_ITEM_CUSTOM_WIDTH);
+        sdmxRelatedArtefact.setVisible(ConceptSchemeTypeEnum.OPERATION.equals(type) || ConceptSchemeTypeEnum.TRANSVERSAL.equals(type));
 
         CustomButtonItem saveItem = new CustomButtonItem(FIELD_SAVE, getConstants().conceptCreate());
 
@@ -58,12 +60,12 @@ public class NewConceptWindow extends CustomWindow {
         ConceptMetamacDto conceptDto = new ConceptMetamacDto();
         conceptDto.setCode(form.getValueAsString(ConceptDS.CODE));
         conceptDto.setName(InternationalStringUtils.updateInternationalString(new InternationalStringDto(), form.getValueAsString(ConceptDS.NAME)));
-        conceptDto.setSdmxRelatedArtefact(ConceptRoleEnum.valueOf(form.getValueAsString(ConceptDS.SDMX_RELATED_ARTEFACT)));
+        conceptDto.setSdmxRelatedArtefact(form.getItem(ConceptDS.SDMX_RELATED_ARTEFACT).isVisible() ? ConceptRoleEnum.valueOf(form.getValueAsString(ConceptDS.SDMX_RELATED_ARTEFACT)) : null);
         return conceptDto;
     }
 
     public boolean validateForm() {
-        return form.validate();
+        return form.validate(false);
     }
 
 }
