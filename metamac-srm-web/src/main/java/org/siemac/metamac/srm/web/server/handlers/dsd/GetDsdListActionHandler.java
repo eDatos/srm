@@ -7,8 +7,11 @@ import org.siemac.metamac.core.common.criteria.MetamacCriteria;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder.OrderTypeEnum;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPaginator;
+import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction;
+import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction.OperationType;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.srm.core.criteria.ConceptSchemeVersionMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdListAction;
@@ -42,10 +45,10 @@ public class GetDsdListActionHandler extends SecurityActionHandler<GetDsdListAct
         List<MetamacCriteriaOrder> criteriaOrders = new ArrayList<MetamacCriteriaOrder>();
         criteriaOrders.add(order);
         criteria.setOrdersBy(criteriaOrders);
-        // TODO Only find last versions
-        // MetamacCriteriaPropertyRestriction propertyRestriction = new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.IS_LAST_VERSION.name(), Boolean.TRUE,
-        // OperationType.EQ);
-        // criteria.setRestriction(propertyRestriction);
+        // Only find last versions
+        MetamacCriteriaPropertyRestriction propertyRestriction = new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.IS_LAST_VERSION.name(), Boolean.TRUE,
+                OperationType.EQ);
+        criteria.setRestriction(propertyRestriction);
         // Pagination
         criteria.setPaginator(new MetamacCriteriaPaginator());
         criteria.getPaginator().setFirstResult(action.getFirstResult());
@@ -58,5 +61,4 @@ public class GetDsdListActionHandler extends SecurityActionHandler<GetDsdListAct
             throw WebExceptionUtils.createMetamacWebException(e);
         }
     }
-
 }
