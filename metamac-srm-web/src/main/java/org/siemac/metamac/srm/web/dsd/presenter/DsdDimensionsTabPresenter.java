@@ -7,6 +7,7 @@ import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
+import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
@@ -114,7 +115,7 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
         HasSelectionChangedHandlers onDimensionSelected();
         HasChangeHandlers onRepresentationTypeChange();
 
-        void setDsdDimensions(List<DimensionComponentDto> dimensionComponentDtos);
+        void setDsdDimensions(ItemSchemeMetamacProcStatusEnum procStatus, List<DimensionComponentDto> dimensionComponentDtos);
         DimensionComponentDto getDsdDimension();
         List<DimensionComponentDto> getSelectedDimensions();
         void onDimensionSaved(DimensionComponentDto dimensionComponentDto);
@@ -250,7 +251,7 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
         DescriptorDto dimensionsDescriptor = event.getDimensions();
         isNewDescriptor = dimensionsDescriptor.getId() == null;
         dimensionComponentDtos = CommonUtils.getDimensionComponents(dimensionsDescriptor);
-        getView().setDsdDimensions(dimensionComponentDtos);
+        getView().setDsdDimensions(dataStructureDefinitionDto.getProcStatus(), dimensionComponentDtos);
     }
 
     @ProxyEvent
@@ -345,7 +346,7 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
                     }
                 }
                 if (updateView) {
-                    getView().setDsdDimensions(dimensionComponentDtos);
+                    getView().setDsdDimensions(dataStructureDefinitionDto.getProcStatus(), dimensionComponentDtos);
                 }
                 UpdateDimensionsEvent.fire(DsdDimensionsTabPresenter.this, dimensionComponentDtos);
             }

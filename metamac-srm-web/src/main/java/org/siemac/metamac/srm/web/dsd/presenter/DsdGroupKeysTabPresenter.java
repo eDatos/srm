@@ -6,6 +6,7 @@ import java.util.List;
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
+import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
@@ -85,7 +86,7 @@ public class DsdGroupKeysTabPresenter extends Presenter<DsdGroupKeysTabPresenter
 
     public interface DsdGroupKeysTabView extends View, HasUiHandlers<DsdGroupKeysTabUiHandlers> {
 
-        void setDsdGroupKeys(List<DimensionComponentDto> dimensionComponentDtos, List<DescriptorDto> descriptorDtos);
+        void setDsdGroupKeys(ItemSchemeMetamacProcStatusEnum procStatus, List<DimensionComponentDto> dimensionComponentDtos, List<DescriptorDto> descriptorDtos);
         void setGroupKeys(DescriptorDto descriptorDto);
         DescriptorDto getGroupKeys();
         List<DescriptorDto> getSelectedGroupKeys();
@@ -162,7 +163,7 @@ public class DsdGroupKeysTabPresenter extends Presenter<DsdGroupKeysTabPresenter
         dataStructureDefinitionDto = event.getDataStructureDefinitionDto();
         dimensionComponentDtos = CommonUtils.getDimensionComponents(event.getDimensions());
         groupKeys = event.getGroupKeys();
-        getView().setDsdGroupKeys(dimensionComponentDtos, groupKeys);
+        getView().setDsdGroupKeys(dataStructureDefinitionDto.getProcStatus(), dimensionComponentDtos, groupKeys);
     }
 
     @ProxyEvent
@@ -180,10 +181,10 @@ public class DsdGroupKeysTabPresenter extends Presenter<DsdGroupKeysTabPresenter
             public void onWaitSuccess(FindDescriptorForDsdResult result) {
                 groupKeys = result.getDescriptorDtos();
                 dimensionComponentDtos = event.getDimensionComponentDtos();
-                getView().setDsdGroupKeys(dimensionComponentDtos, groupKeys);
+                getView().setDsdGroupKeys(dataStructureDefinitionDto.getProcStatus(), dimensionComponentDtos, groupKeys);
                 UpdateGroupKeysEvent.fire(DsdGroupKeysTabPresenter.this, groupKeys);
                 // Update Dimensions
-                getView().setDsdGroupKeys(event.getDimensionComponentDtos(), groupKeys);
+                getView().setDsdGroupKeys(dataStructureDefinitionDto.getProcStatus(), event.getDimensionComponentDtos(), groupKeys);
             }
         });
     }
@@ -256,7 +257,7 @@ public class DsdGroupKeysTabPresenter extends Presenter<DsdGroupKeysTabPresenter
             public void onWaitSuccess(FindDescriptorForDsdResult result) {
                 groupKeys = result.getDescriptorDtos();
                 if (updateView) {
-                    getView().setDsdGroupKeys(dimensionComponentDtos, groupKeys);
+                    getView().setDsdGroupKeys(dataStructureDefinitionDto.getProcStatus(), dimensionComponentDtos, groupKeys);
                 }
                 UpdateGroupKeysEvent.fire(DsdGroupKeysTabPresenter.this, groupKeys);
             }

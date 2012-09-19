@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
+import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.representation.widgets.StaticFacetForm;
 import org.siemac.metamac.srm.web.client.resources.GlobalResources;
@@ -14,6 +15,7 @@ import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.dsd.model.record.DimensionRecord;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdDimensionsTabPresenter;
 import org.siemac.metamac.srm.web.dsd.utils.CommonUtils;
+import org.siemac.metamac.srm.web.dsd.utils.DsdClientSecurityUtils;
 import org.siemac.metamac.srm.web.dsd.utils.RecordUtils;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdDimensionsTabUiHandlers;
 import org.siemac.metamac.srm.web.dsd.widgets.DsdFacetForm;
@@ -69,51 +71,53 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTabUiHandlers> implements DsdDimensionsTabPresenter.DsdDimensionsTabView {
 
-    private DimensionComponentDto       dimensionComponentDto;
-    private List<ExternalItemDto>       codeLists;
-    private List<ExternalItemDto>       conceptSchemes;
-    private List<ExternalItemDto>       concepts;
+    private ItemSchemeMetamacProcStatusEnum procStatus;
 
-    private VLayout                     panel;
-    private VLayout                     selectedComponentLayout;
-    private ListGrid                    dimensionsGrid;
-    private InternationalMainFormLayout mainFormLayout;
+    private DimensionComponentDto           dimensionComponentDto;
+    private List<ExternalItemDto>           codeLists;
+    private List<ExternalItemDto>           conceptSchemes;
+    private List<ExternalItemDto>           concepts;
 
-    private AnnotationsPanel            viewAnnotationsPanel;
-    private AnnotationsPanel            editionAnnotationsPanel;
+    private VLayout                         panel;
+    private VLayout                         selectedComponentLayout;
+    private ListGrid                        dimensionsGrid;
+    private InternationalMainFormLayout     mainFormLayout;
+
+    private AnnotationsPanel                viewAnnotationsPanel;
+    private AnnotationsPanel                editionAnnotationsPanel;
 
     // VIEW FORM
 
-    private ViewTextItem                staticIdLogic;
-    private ViewTextItem                staticTypeItem;
-    private ViewTextItem                staticConceptItem;
-    private ViewTextItem                staticRoleItem;
+    private ViewTextItem                    staticIdLogic;
+    private ViewTextItem                    staticTypeItem;
+    private ViewTextItem                    staticConceptItem;
+    private ViewTextItem                    staticRoleItem;
     // private StaticTextItem staticPositionItem;
     // Representation
-    private ViewTextItem                staticRepresentationTypeItem;
-    private ViewTextItem                staticCodeListItem;
-    private ViewTextItem                staticConceptSchemeItem;
-    private StaticFacetForm             staticFacetForm;
+    private ViewTextItem                    staticRepresentationTypeItem;
+    private ViewTextItem                    staticCodeListItem;
+    private ViewTextItem                    staticConceptSchemeItem;
+    private StaticFacetForm                 staticFacetForm;
 
     // EDITION FORM
 
-    private GroupDynamicForm            form;
-    private RequiredTextItem            code;
-    private ViewTextItem                staticCodeEdit;
-    private ViewTextItem                staticTypeItemEdit;          // Type cannot be modified
-    private RequiredSelectItem          typeItem;
-    private ExternalSelectItem          conceptItem;
-    private RoleSelectItem              roleItem;
+    private GroupDynamicForm                form;
+    private RequiredTextItem                code;
+    private ViewTextItem                    staticCodeEdit;
+    private ViewTextItem                    staticTypeItemEdit;          // Type cannot be modified
+    private RequiredSelectItem              typeItem;
+    private ExternalSelectItem              conceptItem;
+    private RoleSelectItem                  roleItem;
     // Representation
-    private CustomSelectItem            representationTypeItem;
-    private CustomSelectItem            codeListItem;
-    private CustomSelectItem            conceptSchemeItem;
-    private DsdFacetForm                facetForm;
+    private CustomSelectItem                representationTypeItem;
+    private CustomSelectItem                codeListItem;
+    private CustomSelectItem                conceptSchemeItem;
+    private DsdFacetForm                    facetForm;
 
-    private ToolStripButton             newToolStripButton;
-    private ToolStripButton             deleteToolStripButton;
+    private ToolStripButton                 newToolStripButton;
+    private ToolStripButton                 deleteToolStripButton;
 
-    private DeleteConfirmationWindow    deleteConfirmationWindow;
+    private DeleteConfirmationWindow        deleteConfirmationWindow;
 
     @Inject
     public DsdDimensionsTabViewImpl() {
@@ -207,7 +211,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
                     deselectDimension();
                     if (dimensionsGrid.getSelectedRecords().length > 1) {
                         // Delete more than one dimension with one click
-                        deleteToolStripButton.show();
+                        showDeleteToolStripButton();
                     }
                 }
             }
@@ -477,8 +481,14 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
     }
 
     @Override
-    public void setDsdDimensions(List<DimensionComponentDto> dimensionComponentDtos) {
+    public void setDsdDimensions(ItemSchemeMetamacProcStatusEnum procStatus, List<DimensionComponentDto> dimensionComponentDtos) {
+        this.procStatus = procStatus;
         deselectDimension();
+
+        // Security
+        newToolStripButton.setVisibility(DsdClientSecurityUtils.canUpdateDimensions(procStatus) ? Visibility.VISIBLE : Visibility.HIDDEN);
+        mainFormLayout.setCanEdit(DsdClientSecurityUtils.canUpdateDimensions(procStatus));
+
         dimensionsGrid.selectAllRecords();
         dimensionsGrid.removeSelectedData();
         dimensionsGrid.deselectAllRecords();
@@ -780,7 +790,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
             mainFormLayout.setEditionMode();
         } else {
             mainFormLayout.setTitleLabelContents(dimensionSelected.getCode());
-            deleteToolStripButton.show();
+            showDeleteToolStripButton();
             setDimension(dimensionSelected);
             mainFormLayout.setViewMode();
         }
@@ -804,6 +814,12 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
     private void setTranslationsShowed(boolean translationsShowed) {
         viewAnnotationsPanel.setTranslationsShowed(translationsShowed);
         editionAnnotationsPanel.setTranslationsShowed(translationsShowed);
+    }
+
+    private void showDeleteToolStripButton() {
+        if (DsdClientSecurityUtils.canUpdateDimensions(procStatus)) {
+            deleteToolStripButton.show();
+        }
     }
 
 }

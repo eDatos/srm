@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.dsd.model.record.GroupKeysRecord;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdGroupKeysTabPresenter;
 import org.siemac.metamac.srm.web.dsd.utils.CommonUtils;
+import org.siemac.metamac.srm.web.dsd.utils.DsdClientSecurityUtils;
 import org.siemac.metamac.srm.web.dsd.utils.RecordUtils;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdGroupKeysTabUiHandlers;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
@@ -45,33 +47,35 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabUiHandlers> implements DsdGroupKeysTabPresenter.DsdGroupKeysTabView {
 
-    private List<DimensionComponentDto> dimensionComponentDtos;
-    private DescriptorDto               descriptorDto;
+    private ItemSchemeMetamacProcStatusEnum procStatus;
 
-    private VLayout                     panel;
-    private VLayout                     selectedDescriptorLayout;
-    private ListGrid                    groupKeysGrid;
+    private List<DimensionComponentDto>     dimensionComponentDtos;
+    private DescriptorDto                   descriptorDto;
 
-    private InternationalMainFormLayout mainFormLayout;
+    private VLayout                         panel;
+    private VLayout                         selectedDescriptorLayout;
+    private ListGrid                        groupKeysGrid;
 
-    private AnnotationsPanel            viewAnnotationsPanel;
-    private AnnotationsPanel            editionAnnotationsPanel;
+    private InternationalMainFormLayout     mainFormLayout;
+
+    private AnnotationsPanel                viewAnnotationsPanel;
+    private AnnotationsPanel                editionAnnotationsPanel;
 
     // VIEW FORM
 
-    private ViewTextItem                staticIdLogic;
-    private ViewTextItem                staticDimensionsItem;
+    private ViewTextItem                    staticIdLogic;
+    private ViewTextItem                    staticDimensionsItem;
 
     // EDITION FORM
 
-    private GroupDynamicForm            form;
-    private RequiredTextItem            idLogic;
-    private CustomSelectItem            dimensionsItem;
+    private GroupDynamicForm                form;
+    private RequiredTextItem                idLogic;
+    private CustomSelectItem                dimensionsItem;
 
-    private ToolStripButton             newToolStripButton;
-    private ToolStripButton             deleteToolStripButton;
+    private ToolStripButton                 newToolStripButton;
+    private ToolStripButton                 deleteToolStripButton;
 
-    private DeleteConfirmationWindow    deleteConfirmationWindow;
+    private DeleteConfirmationWindow        deleteConfirmationWindow;
 
     public DsdGroupKeysTabViewImpl() {
         super();
@@ -144,7 +148,7 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
                     deselectGroupKeys();
                     if (groupKeysGrid.getSelectedRecords().length > 1) {
                         // Delete more than one group keys with one click
-                        deleteToolStripButton.show();
+                        showDeleteToolStripButton();
                     }
                 }
             }
@@ -250,7 +254,13 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
     }
 
     @Override
-    public void setDsdGroupKeys(List<DimensionComponentDto> dimensionComponentDtos, List<DescriptorDto> descriptorDtos) {
+    public void setDsdGroupKeys(ItemSchemeMetamacProcStatusEnum procStatus, List<DimensionComponentDto> dimensionComponentDtos, List<DescriptorDto> descriptorDtos) {
+        this.procStatus = procStatus;
+
+        // Security
+        newToolStripButton.setVisibility(DsdClientSecurityUtils.canUpdateGroupKeys(procStatus) ? Visibility.VISIBLE : Visibility.HIDDEN);
+        mainFormLayout.setCanEdit(DsdClientSecurityUtils.canUpdateGroupKeys(procStatus));
+
         deselectGroupKeys();
         this.dimensionComponentDtos = dimensionComponentDtos;
         dimensionsItem.setValueMap(CommonUtils.getDimensionComponentDtoHashMap(dimensionComponentDtos));
@@ -380,7 +390,7 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
             mainFormLayout.setEditionMode();
         } else {
             mainFormLayout.setTitleLabelContents(groupKeysSelected.getCode());
-            deleteToolStripButton.show();
+            showDeleteToolStripButton();
             setGroupKeys(groupKeysSelected);
             mainFormLayout.setViewMode();
         }
@@ -423,6 +433,12 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
     private void setTranslationsShowed(boolean translationsShowed) {
         viewAnnotationsPanel.setTranslationsShowed(translationsShowed);
         editionAnnotationsPanel.setTranslationsShowed(translationsShowed);
+    }
+
+    private void showDeleteToolStripButton() {
+        if (DsdClientSecurityUtils.canUpdateGroupKeys(procStatus)) {
+            deleteToolStripButton.show();
+        }
     }
 
 }

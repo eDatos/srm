@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
+import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.representation.widgets.StaticFacetForm;
 import org.siemac.metamac.srm.web.client.utils.FacetFormUtils;
@@ -12,6 +13,7 @@ import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.dsd.model.record.AttributeRecord;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdAttributesTabPresenter;
 import org.siemac.metamac.srm.web.dsd.utils.CommonUtils;
+import org.siemac.metamac.srm.web.dsd.utils.DsdClientSecurityUtils;
 import org.siemac.metamac.srm.web.dsd.utils.RecordUtils;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdAttributesTabUiHandlers;
 import org.siemac.metamac.srm.web.dsd.widgets.DsdFacetForm;
@@ -70,63 +72,65 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTabUiHandlers> implements DsdAttributesTabPresenter.DsdAttributesTabView {
 
-    private DataAttributeDto            dataAttributeDto;
-    private List<ExternalItemDto>       concepts;
-    private List<ExternalItemDto>       codeLists;
-    private List<DimensionComponentDto> dimensionComponentDtos;
-    private List<DescriptorDto>         descriptorDtos;                              // Group Keys
+    private ItemSchemeMetamacProcStatusEnum procStatus;
 
-    private VLayout                     panel;
-    private VLayout                     selectedComponentLayout;
-    private ListGrid                    attributesGrid;
+    private DataAttributeDto                dataAttributeDto;
+    private List<ExternalItemDto>           concepts;
+    private List<ExternalItemDto>           codeLists;
+    private List<DimensionComponentDto>     dimensionComponentDtos;
+    private List<DescriptorDto>             descriptorDtos;                              // Group Keys
 
-    private InternationalMainFormLayout mainFormLayout;
+    private VLayout                         panel;
+    private VLayout                         selectedComponentLayout;
+    private ListGrid                        attributesGrid;
+
+    private InternationalMainFormLayout     mainFormLayout;
     // private VLayout viewLayout;
     // private VLayout editionLayout;
 
-    private AnnotationsPanel            viewAnnotationsPanel;
-    private AnnotationsPanel            editionAnnotationsPanel;
+    private AnnotationsPanel                viewAnnotationsPanel;
+    private AnnotationsPanel                editionAnnotationsPanel;
 
     // VIEW FORM
 
-    private ViewTextItem                staticIdLogic;
-    private ViewTextItem                staticConceptItem;
-    private ViewTextItem                staticRoleItem;
-    private ViewTextItem                staticAssignmentStatusItem;
+    private ViewTextItem                    staticIdLogic;
+    private ViewTextItem                    staticConceptItem;
+    private ViewTextItem                    staticRoleItem;
+    private ViewTextItem                    staticAssignmentStatusItem;
     // Relation
-    private ViewTextItem                staticRelationType;
-    private ViewTextItem                staticGroupKeysForDimensionRelationshipItem;
-    private ViewTextItem                staticDimensionsForDimensionRelationshipItem;
-    private ViewTextItem                staticGroupKeyFormForGroupRelationship;
+    private ViewTextItem                    staticRelationType;
+    private ViewTextItem                    staticGroupKeysForDimensionRelationshipItem;
+    private ViewTextItem                    staticDimensionsForDimensionRelationshipItem;
+    private ViewTextItem                    staticGroupKeyFormForGroupRelationship;
     // Representation
-    private ViewTextItem                staticRepresentationTypeItem;
-    private ViewTextItem                staticCodeListItem;
-    private StaticFacetForm             staticFacetForm;
+    private ViewTextItem                    staticRepresentationTypeItem;
+    private ViewTextItem                    staticCodeListItem;
+    private StaticFacetForm                 staticFacetForm;
 
     // EDITION FORM
 
-    private GroupDynamicForm            form;
-    private RequiredTextItem            idLogic;
-    private ExternalSelectItem          conceptItem;
-    private RoleSelectItem              roleItem;
-    private RequiredSelectItem          assignmentStatusItem;
+    private GroupDynamicForm                form;
+    private RequiredTextItem                idLogic;
+    private ExternalSelectItem              conceptItem;
+    private RoleSelectItem                  roleItem;
+    private RequiredSelectItem              assignmentStatusItem;
     // Relation
-    private RequiredSelectItem          relationType;
-    private CustomSelectItem            groupKeysForDimensionRelationshipItem;
-    private RequiredSelectItem          dimensionsForDimensionRelationshipItem;      // Required if relationType == DIMENSION_RELATIONSHIP
-    private RequiredSelectItem          groupKeyFormForGroupRelationship;            // Required if relationType == GROUP_RELATIONSHIP
+    private RequiredSelectItem              relationType;
+    private CustomSelectItem                groupKeysForDimensionRelationshipItem;
+    private RequiredSelectItem              dimensionsForDimensionRelationshipItem;      // Required if relationType == DIMENSION_RELATIONSHIP
+    private RequiredSelectItem              groupKeyFormForGroupRelationship;            // Required if relationType == GROUP_RELATIONSHIP
     // Representation
-    private CustomSelectItem            representationTypeItem;
-    private CustomSelectItem            codeListItem;
-    private DsdFacetForm                facetForm = null;
+    private CustomSelectItem                representationTypeItem;
+    private CustomSelectItem                codeListItem;
+    private DsdFacetForm                    facetForm = null;
 
-    private ToolStripButton             newToolStripButton;
+    private ToolStripButton                 newToolStripButton;
     // private ToolStripButton editToolStripButton;
     // private ToolStripButton saveToolStripButton;
     // private ToolStripButton cancelToolStripButton;
-    private ToolStripButton             deleteToolStripButton;
+    private ToolStripButton                 deleteToolStripButton;
 
-    private DeleteConfirmationWindow    importDsdWindow;
+    private DeleteConfirmationWindow        importDsdWindow;
 
     @Inject
     public DsdAttributesTabViewImpl() {
@@ -223,7 +227,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
                     deselectAttribute();
                     if (attributesGrid.getSelectedRecords().length > 1) {
                         // Delete more than one dimension with one click
-                        deleteToolStripButton.show();
+                        showDeleteToolStripButton();
                     }
                 }
             }
@@ -526,7 +530,13 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
     }
 
     @Override
-    public void setDsdAttributes(List<DataAttributeDto> dataAttributeDtos) {
+    public void setDsdAttributes(ItemSchemeMetamacProcStatusEnum procStatus, List<DataAttributeDto> dataAttributeDtos) {
+        this.procStatus = procStatus;
+
+        // Security
+        newToolStripButton.setVisibility(DsdClientSecurityUtils.canUpdateAttributes(procStatus) ? Visibility.VISIBLE : Visibility.HIDDEN);
+        mainFormLayout.setCanEdit(DsdClientSecurityUtils.canUpdateAttributes(procStatus));
+
         deselectAttribute();
         attributesGrid.selectAllRecords();
         attributesGrid.removeSelectedData();
@@ -857,7 +867,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
             mainFormLayout.setEditionMode();
         } else {
             mainFormLayout.setTitleLabelContents(attributeSelected.getCode());
-            deleteToolStripButton.show();
+            showDeleteToolStripButton();
             setAttribute(attributeSelected);
             mainFormLayout.setViewMode();
         }
@@ -921,6 +931,12 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
     private void setTranslationsShowed(boolean translationsShowed) {
         viewAnnotationsPanel.setTranslationsShowed(translationsShowed);
         editionAnnotationsPanel.setTranslationsShowed(translationsShowed);
+    }
+
+    private void showDeleteToolStripButton() {
+        if (DsdClientSecurityUtils.canUpdateAttributes(procStatus)) {
+            deleteToolStripButton.show();
+        }
     }
 
 }
