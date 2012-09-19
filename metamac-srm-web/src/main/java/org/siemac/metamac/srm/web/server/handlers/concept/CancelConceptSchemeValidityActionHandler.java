@@ -38,7 +38,6 @@ public class CancelConceptSchemeValidityActionHandler extends SecurityActionHand
             }
         }
         return new CancelConceptSchemeValidityResult(conceptSchemeMetamacDtos);
-
     }
 
 }

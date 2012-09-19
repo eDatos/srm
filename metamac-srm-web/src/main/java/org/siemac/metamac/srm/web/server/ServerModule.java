@@ -19,6 +19,7 @@ import org.siemac.metamac.srm.web.server.handlers.concept.SaveConceptActionHandl
 import org.siemac.metamac.srm.web.server.handlers.concept.SaveConceptSchemeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.UpdateConceptSchemeProcStatusActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.VersionConceptSchemeActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.dsd.CancelDsdValidityActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.dsd.DeleteAttributeListForDsdActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.dsd.DeleteDescriptorListForDsdActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.dsd.DeleteDimensionListForDsdActionHandler;
@@ -52,6 +53,7 @@ import org.siemac.metamac.srm.web.shared.concept.SaveConceptAction;
 import org.siemac.metamac.srm.web.shared.concept.SaveConceptSchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.UpdateConceptSchemeProcStatusAction;
 import org.siemac.metamac.srm.web.shared.concept.VersionConceptSchemeAction;
+import org.siemac.metamac.srm.web.shared.dsd.CancelDsdValidityAction;
 import org.siemac.metamac.srm.web.shared.dsd.DeleteAttributeListForDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.DeleteDescriptorListForDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.DeleteDimensionListForDsdAction;
@@ -111,6 +113,7 @@ public class ServerModule extends HandlerModule {
         bindHandler(UpdateDsdProcStatusAction.class, UpdateDsdProcStatusActionHandlder.class);
         bindHandler(VersionDsdAction.class, VersionDsdActionHandler.class);
         bindHandler(GetDsdVersionsAction.class, GetDsdVersionsActionHandler.class);
+        bindHandler(CancelDsdValidityAction.class, CancelDsdValidityActionHandler.class);
 
         // Concept Schemes
         bindHandler(GetConceptSchemeAction.class, GetConceptSchemeActionHandler.class);
