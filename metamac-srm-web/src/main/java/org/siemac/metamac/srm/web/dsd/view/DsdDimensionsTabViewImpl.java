@@ -98,8 +98,8 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
     // EDITION FORM
 
     private GroupDynamicForm            form;
-    private RequiredTextItem            idLogic;
-    private ViewTextItem                staticIdLogicEdit;
+    private RequiredTextItem            code;
+    private ViewTextItem                staticCodeEdit;
     private ViewTextItem                staticTypeItemEdit;          // Type cannot be modified
     private RequiredSelectItem          typeItem;
     private ExternalSelectItem          conceptItem;
@@ -301,33 +301,25 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
     private void createEditionForm() {
         // Id
 
-        idLogic = new RequiredTextItem("id-dim", MetamacSrmWeb.getConstants().dsdDimensionsId());
-        idLogic.setRedrawOnChange(true);
-        idLogic.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());
+        code = new RequiredTextItem("id-dim", MetamacSrmWeb.getConstants().dsdDimensionsId());
+        code.setRedrawOnChange(true);
+        code.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());
 
-        staticIdLogicEdit = new ViewTextItem("static-id-dim-view", MetamacSrmWeb.getConstants().dsdDimensionsId());
-        staticIdLogicEdit.setRedrawOnChange(true);
-        // Do not edit idLogic if TypeDimensionComponent == TIMEDIMENSION or TypeDimensionComponent == MEASUREDIMENSION
-        idLogic.setShowIfCondition(new FormItemIfFunction() {
+        staticCodeEdit = new ViewTextItem("static-id-dim-view", MetamacSrmWeb.getConstants().dsdDimensionsId());
+        staticCodeEdit.setRedrawOnChange(true);
+        // Do not edit code if TypeDimensionComponent == TIMEDIMENSION (code will be fixed to TIME_PERIOD)
+        code.setShowIfCondition(new FormItemIfFunction() {
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
-                if (TypeDimensionComponent.TIMEDIMENSION.toString().equals(typeItem.getValueAsString()) || TypeDimensionComponent.MEASUREDIMENSION.toString().equals(typeItem.getValueAsString())) {
-                    return false;
-                } else {
-                    return true;
-                }
+                return !TypeDimensionComponent.TIMEDIMENSION.toString().equals(typeItem.getValueAsString());
             }
         });
-        staticIdLogicEdit.setShowIfCondition(new FormItemIfFunction() {
+        staticCodeEdit.setShowIfCondition(new FormItemIfFunction() {
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
-                if (TypeDimensionComponent.TIMEDIMENSION.toString().equals(typeItem.getValueAsString()) || TypeDimensionComponent.MEASUREDIMENSION.toString().equals(typeItem.getValueAsString())) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return TypeDimensionComponent.TIMEDIMENSION.toString().equals(typeItem.getValueAsString());
             }
         });
 
@@ -446,7 +438,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         });
 
         form = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdDimensionDetails());
-        form.setFields(idLogic, staticIdLogicEdit, staticTypeItemEdit, typeItem, conceptItem, roleItem, representationTypeItem, codeListItem, conceptSchemeItem);
+        form.setFields(code, staticCodeEdit, staticTypeItemEdit, typeItem, conceptItem, roleItem, representationTypeItem, codeListItem, conceptSchemeItem);
 
         // Facet Form
 
@@ -525,7 +517,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
     @Override
     public DimensionComponentDto getDsdDimension() {
         // Id
-        dimensionComponentDto.setCode(idLogic.getVisible() ? idLogic.getValueAsString() : null);
+        dimensionComponentDto.setCode(code.getVisible() ? code.getValueAsString() : null);
 
         // Type
         dimensionComponentDto.setTypeDimensionComponent(TypeDimensionComponent.valueOf(typeItem.getValueAsString()));
@@ -666,8 +658,8 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
     private void setDimensionEditionMode(DimensionComponentDto dimensionComponentDto) {
         this.dimensionComponentDto = dimensionComponentDto;
         // Id
-        idLogic.setValue(dimensionComponentDto.getCode());
-        staticIdLogicEdit.setValue(dimensionComponentDto.getCode());
+        code.setValue(dimensionComponentDto.getCode());
+        staticCodeEdit.setValue(dimensionComponentDto.getCode());
         // Type
         typeItem.setValue((dimensionComponentDto.getTypeDimensionComponent() == null) ? null : dimensionComponentDto.getTypeDimensionComponent().toString());
         String value = (dimensionComponentDto.getTypeDimensionComponent() == null) ? null : MetamacSrmWeb.getCoreMessages().getString(
