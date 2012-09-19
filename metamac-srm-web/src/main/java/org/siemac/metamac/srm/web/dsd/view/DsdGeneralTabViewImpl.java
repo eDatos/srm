@@ -196,6 +196,13 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
                 });
             }
         });
+        mainFormLayout.getCancelValidity().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                uiHandlers.cancelValidity(dataStructureDefinitionMetamacDto.getUrn());
+            }
+        });
     }
 
     /**
@@ -341,7 +348,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         // Security
         mainFormLayout.setCanEdit(DsdClientSecurityUtils.canUpdateDsd(dataStructureDefinitionMetamacDto.getProcStatus()));
 
-        mainFormLayout.updatePublishSection(dataStructureDefinitionMetamacDto.getProcStatus());
+        mainFormLayout.updatePublishSection(dataStructureDefinitionMetamacDto.getProcStatus(), dataStructureDefinitionMetamacDto.getValidTo());
         mainFormLayout.setViewMode();
 
         setDsdViewMode(dataStructureDefinitionMetamacDto);

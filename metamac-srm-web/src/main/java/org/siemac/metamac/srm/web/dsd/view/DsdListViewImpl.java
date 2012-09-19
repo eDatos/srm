@@ -1,5 +1,7 @@
 package org.siemac.metamac.srm.web.dsd.view;
 
+import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,6 +70,7 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
     private ToolStripButton          deleteToolStripButton;
     private ToolStripButton          importToolStripButton;
     private ToolStripButton          exportToolStripButton;
+    private ToolStripButton          cancelValidityButton;
 
     private DeleteConfirmationWindow deleteConfirmationWindow;
     private ImportDsdWindow          importDsdWindow;
@@ -190,10 +193,21 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
             }
         });
 
+        cancelValidityButton = new ToolStripButton(getConstants().lifeCycleCancelValidity(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.disable().getURL());
+        cancelValidityButton.setVisibility(Visibility.HIDDEN);
+        cancelValidityButton.addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                getUiHandlers().cancelValidity(getSelectedDsdsUrns());
+            }
+        });
+
         ToolStrip dsdGridToolStrip = new ToolStrip();
         dsdGridToolStrip.setWidth100();
         dsdGridToolStrip.addButton(newToolStripButton);
         dsdGridToolStrip.addButton(deleteToolStripButton);
+        dsdGridToolStrip.addButton(cancelValidityButton);
         dsdGridToolStrip.addSeparator();
         dsdGridToolStrip.addButton(importToolStripButton);
         dsdGridToolStrip.addButton(exportToolStripButton);
@@ -219,12 +233,14 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
                     DsdRecord record = (DsdRecord) dsdListGrid.getListGrid().getSelectedRecord();
                     DataStructureDefinitionMetamacDto dsd = record.getDsd();
                     selectDsd(dsd);
+                    showCancelValidityDeleteButton(new ListGridRecord[]{record});
                 } else {
                     // No record selected
                     deselectDsd();
                     if (dsdListGrid.getListGrid().getSelectedRecords().length > 1) {
                         // Delete more than one DSD with one click
                         showDeleteToolStripButton();
+                        showCancelValidityDeleteButton(dsdListGrid.getListGrid().getSelectedRecords());
                         exportToolStripButton.hide();
                     }
                 }
@@ -304,7 +320,6 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
         // TODO Organization (MaintainerIdLogic)
         ExternalItemDto agency = new ExternalItemDto("agency_CODE", "uri:3421", "METAMAC_ORGANISATION", TypeExternalArtefactsEnum.AGENCY);
         dsd.setMaintainer(agency);
-        // TODO Are this values correctly settled?
         dsd.setFinalLogic(false);
         dsd.setIsExternalReference(false);
         return dsd;
@@ -356,6 +371,7 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
     private void deselectDsd() {
         deleteToolStripButton.hide();
         exportToolStripButton.hide();
+        cancelValidityButton.hide();
     }
 
     @Override
@@ -396,6 +412,34 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
             }
         }
         return status;
+    }
+
+    private List<String> getSelectedDsdsUrns() {
+        List<String> urns = new ArrayList<String>();
+        if (dsdListGrid.getListGrid().getSelectedRecords() != null) {
+            ListGridRecord[] records = dsdListGrid.getListGrid().getSelectedRecords();
+            for (int i = 0; i < records.length; i++) {
+                DsdRecord record = (DsdRecord) records[i];
+                urns.add(record.getDsd().getUrn());
+            }
+        }
+        return urns;
+    }
+
+    private void showCancelValidityDeleteButton(ListGridRecord[] records) {
+        boolean allSelectedDsdsExternallyPublished = true;
+        for (ListGridRecord record : records) {
+            DsdRecord dsdRecord = (DsdRecord) record;
+            // Do not show cancel validity button if scheme is not published externally or if scheme validity has been canceled previously
+            if (!ItemSchemeMetamacProcStatusEnum.EXTERNALLY_PUBLISHED.equals(dsdRecord.getDsd().getProcStatus()) || dsdRecord.getDsd().getValidTo() != null) {
+                allSelectedDsdsExternallyPublished = false;
+            }
+        }
+        if (allSelectedDsdsExternallyPublished && DsdClientSecurityUtils.canCancelDsdValidity()) {
+            cancelValidityButton.show();
+        } else {
+            cancelValidityButton.hide();
+        }
     }
 
 }

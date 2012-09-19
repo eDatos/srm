@@ -1,5 +1,7 @@
 package org.siemac.metamac.srm.web.dsd.presenter;
 
+import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
+
 import java.util.List;
 
 import org.siemac.metamac.core.common.util.shared.StringUtils;
@@ -14,6 +16,8 @@ import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.widgets.presenter.ToolStripPresenterWidget;
 import org.siemac.metamac.srm.web.dsd.events.SelectDsdAndDescriptorsEvent;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdListUiHandlers;
+import org.siemac.metamac.srm.web.shared.dsd.CancelDsdValidityAction;
+import org.siemac.metamac.srm.web.shared.dsd.CancelDsdValidityResult;
 import org.siemac.metamac.srm.web.shared.dsd.DeleteDsdListAction;
 import org.siemac.metamac.srm.web.shared.dsd.DeleteDsdListResult;
 import org.siemac.metamac.srm.web.shared.dsd.ExportDsdAction;
@@ -282,6 +286,23 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
                 url.append(URL.encode(MetamacSrmWeb.getRelativeURL(SharedTokens.FILE_DOWNLOAD_DIR_PATH)));
                 url.append("?").append(URL.encode(SharedTokens.PARAM_FILE_NAME)).append("=").append(URL.encode(result.getFileName()));
                 Window.open(url.toString(), "_blank", "");
+            }
+        });
+    }
+
+    @Override
+    public void cancelValidity(List<String> urns) {
+        dispatcher.execute(new CancelDsdValidityAction(urns), new WaitingAsyncCallback<CancelDsdValidityResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().dsdErrorCancelValidity()), MessageTypeEnum.ERROR);
+                retrieveDsdList(DSD_LIST_FIRST_RESULT, DSD_LIST_MAX_RESULTS, null);
+            }
+            @Override
+            public void onWaitSuccess(CancelDsdValidityResult result) {
+                ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getMessageList(getMessages().dsdCanceledValidity()), MessageTypeEnum.SUCCESS);
+                retrieveDsdList(DSD_LIST_FIRST_RESULT, DSD_LIST_MAX_RESULTS, null);
             }
         });
     }

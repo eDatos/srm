@@ -18,4 +18,6 @@ public interface DsdListUiHandlers extends UiHandlers {
 
     void exportDsd(DataStructureDefinitionMetamacDto dsd);
 
+    void cancelValidity(List<String> urns);
+
 }

@@ -21,5 +21,6 @@ public interface DsdGeneralTabUiHandlers extends UiHandlers {
     void publishInternally(String urn, ItemSchemeMetamacProcStatusEnum currentProcStatus);
     void publishExternally(String urn, ItemSchemeMetamacProcStatusEnum currentProcStatus);
     void versioning(String urn, VersionTypeEnum versionType);
+    void cancelValidity(String urn);
 
 }
