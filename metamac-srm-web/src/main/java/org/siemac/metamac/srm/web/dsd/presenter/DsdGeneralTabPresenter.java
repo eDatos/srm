@@ -113,6 +113,7 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
             }
         }
     }
+
     @Override
     protected void onReveal() {
         super.onReveal();
@@ -264,7 +265,7 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
             @Override
             public void onWaitSuccess(VersionDsdResult result) {
                 ShowMessageEvent.fire(DsdGeneralTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdVersioned()), MessageTypeEnum.SUCCESS);
-                retrieveDsd(result.getDataStructureDefinitionMetamacDto().getUrn());
+                goToDsd(result.getDataStructureDefinitionMetamacDto().getUrn());
             }
         });
     }
