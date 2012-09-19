@@ -181,7 +181,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
                 ItemSchemeMetamacProcStatusEnum.DRAFT, ItemSchemeMetamacProcStatusEnum.PRODUCTION_VALIDATION, ItemSchemeMetamacProcStatusEnum.DIFFUSION_VALIDATION,
                 ItemSchemeMetamacProcStatusEnum.VALIDATION_REJECTED);
         if (versionsNotPublished.size() != 0) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CONCEPT_SCHEME_VERSIONING_NOT_SUPPORTED)
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.SRM_DATA_STRUCTURE_DEFINITION_VERSIONING_NOT_SUPPORTED)
                     .withMessageParameters(versionsNotPublished.get(0).getMaintainableArtefact().getUrn()).build();
         }
         
