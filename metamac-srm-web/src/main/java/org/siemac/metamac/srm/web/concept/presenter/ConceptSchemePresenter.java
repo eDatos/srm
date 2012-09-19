@@ -297,7 +297,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
             @Override
             public void onWaitSuccess(SaveConceptResult result) {
                 ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getMessageList(getMessages().conceptCreated()), MessageTypeEnum.SUCCESS);
-                retrieveConceptListByScheme(conceptSchemeDto.getUrn());
+                retrieveConceptSchemeByUrn(conceptSchemeDto.getUrn());
             }
         });
     }
