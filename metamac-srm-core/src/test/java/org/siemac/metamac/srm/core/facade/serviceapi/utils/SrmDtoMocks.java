@@ -56,7 +56,7 @@ public class SrmDtoMocks {
      * 
      * @return
      */
-    public static DataStructureDefinitionMetamacDto createDdsDTO() {
+    public static DataStructureDefinitionMetamacDto createDataStructureDefinitionMetamacDtoMock() {
         DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = new DataStructureDefinitionMetamacDto();
 
         // Required --------
@@ -93,7 +93,7 @@ public class SrmDtoMocks {
      * @return
      */
     public static DataStructureDefinitionDto createDdsDTOwhithDescription() {
-        DataStructureDefinitionDto dataStructureDefinitionDto = createDdsDTO();
+        DataStructureDefinitionDto dataStructureDefinitionDto = createDataStructureDefinitionMetamacDtoMock();
 
         InternationalStringDto desc = new InternationalStringDto();
 
