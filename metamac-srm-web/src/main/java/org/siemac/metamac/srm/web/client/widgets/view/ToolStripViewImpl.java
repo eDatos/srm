@@ -28,7 +28,6 @@ public class ToolStripViewImpl implements ToolStripPresenterWidget.ToolStripView
         toolStrip.setWidth100();
         toolStrip.setAlign(Alignment.LEFT);
 
-        // ToolStripButton
         dsdListButton = new CustomToolStripButton(MetamacSrmWeb.getConstants().dsds());
         dsdListButton.setID(ToolStripButtonEnum.DSD_LIST.getValue());
 
@@ -44,7 +43,6 @@ public class ToolStripViewImpl implements ToolStripPresenterWidget.ToolStripView
         categoriesButton = new CustomToolStripButton(MetamacSrmWeb.getConstants().categorySchemes());
         categoriesButton.setID(ToolStripButtonEnum.CATEGORIES.getValue());
 
-        // Add buttons to toolStrip
         toolStrip.addButton(dsdListButton);
         toolStrip.addButton(conceptsButton);
         toolStrip.addButton(organisationsButton);
@@ -73,13 +71,18 @@ public class ToolStripViewImpl implements ToolStripPresenterWidget.ToolStripView
     }
 
     @Override
-    public HasClickHandlers getDsdButton() {
+    public HasClickHandlers getDsdsButton() {
         return dsdListButton;
     }
 
     @Override
-    public HasClickHandlers getConceptSchemeButton() {
+    public HasClickHandlers getConceptSchemesButton() {
         return conceptsButton;
+    }
+
+    @Override
+    public HasClickHandlers getOrganisationSchemesButton() {
+        return organisationsButton;
     }
 
 }

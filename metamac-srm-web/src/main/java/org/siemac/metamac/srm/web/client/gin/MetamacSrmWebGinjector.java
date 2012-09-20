@@ -15,6 +15,7 @@ import org.siemac.metamac.srm.web.dsd.presenter.DsdGroupKeysTabPresenter;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdListPresenter;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdPresenter;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdPrimaryMeasureTabPresenter;
+import org.siemac.metamac.srm.web.organisation.presenter.OrganisationSchemeListPresenter;
 
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.inject.client.AsyncProvider;
@@ -40,7 +41,7 @@ public interface MetamacSrmWebGinjector extends Ginjector {
     AsyncProvider<ErrorPagePresenter> getErrorPagePresenter();
     AsyncProvider<UnauthorizedPagePresenter> getUnauthorizedPagePresenter();
 
-    // DSD
+    // DSDs
     AsyncProvider<DsdListPresenter> getDsdListPresenter();
     AsyncProvider<DsdPresenter> getDsdPresenter();
     AsyncProvider<DsdGeneralTabPresenter> getDsdGeneralTabPresenter();
@@ -49,9 +50,12 @@ public interface MetamacSrmWebGinjector extends Ginjector {
     AsyncProvider<DsdAttributesTabPresenter> getDsdAttributesTabPresenter();
     AsyncProvider<DsdGroupKeysTabPresenter> getDsdGroupKeysTabPresenter();
 
-    // Concept
+    // Concepts
     AsyncProvider<ConceptSchemeListPresenter> getConceptSchemeListPresenter();
     AsyncProvider<ConceptSchemePresenter> getConceptSchemePresenter();
     AsyncProvider<ConceptPresenter> getConceptPresenter();
+
+    // Organisations
+    AsyncProvider<OrganisationSchemeListPresenter> getOrganisationSchemeListPresenter();
 
 }

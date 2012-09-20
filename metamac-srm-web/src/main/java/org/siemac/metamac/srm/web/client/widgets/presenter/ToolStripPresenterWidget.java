@@ -21,8 +21,9 @@ public class ToolStripPresenterWidget extends PresenterWidget<ToolStripPresenter
 
     public interface ToolStripView extends View {
 
-        HasClickHandlers getDsdButton();
-        HasClickHandlers getConceptSchemeButton();
+        HasClickHandlers getDsdsButton();
+        HasClickHandlers getConceptSchemesButton();
+        HasClickHandlers getOrganisationSchemesButton();
     }
 
     @Inject
@@ -35,7 +36,7 @@ public class ToolStripPresenterWidget extends PresenterWidget<ToolStripPresenter
     protected void onBind() {
         super.onBind();
 
-        registerHandler(getView().getDsdButton().addClickHandler(new ClickHandler() {
+        registerHandler(getView().getDsdsButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
@@ -48,7 +49,7 @@ public class ToolStripPresenterWidget extends PresenterWidget<ToolStripPresenter
             }
         }));
 
-        registerHandler(getView().getConceptSchemeButton().addClickHandler(new ClickHandler() {
+        registerHandler(getView().getConceptSchemesButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
@@ -57,6 +58,19 @@ public class ToolStripPresenterWidget extends PresenterWidget<ToolStripPresenter
                 List<PlaceRequest> placeRequestHierarchy = new ArrayList<PlaceRequest>();
                 placeRequestHierarchy.add(resourcesRequest);
                 placeRequestHierarchy.add(conceptSchemeListRequest);
+                placeManager.revealPlaceHierarchy(placeRequestHierarchy);
+            }
+        }));
+
+        registerHandler(getView().getOrganisationSchemesButton().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                PlaceRequest resourcesRequest = new PlaceRequest(NameTokens.structuralResourcesPage);
+                PlaceRequest organisationSchemeListRequest = new PlaceRequest(NameTokens.organisationSchemeListPage);
+                List<PlaceRequest> placeRequestHierarchy = new ArrayList<PlaceRequest>();
+                placeRequestHierarchy.add(resourcesRequest);
+                placeRequestHierarchy.add(organisationSchemeListRequest);
                 placeManager.revealPlaceHierarchy(placeRequestHierarchy);
             }
         }));

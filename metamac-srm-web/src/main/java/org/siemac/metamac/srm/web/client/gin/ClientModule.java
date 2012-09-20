@@ -33,6 +33,8 @@ import org.siemac.metamac.srm.web.dsd.view.DsdGroupKeysTabViewImpl;
 import org.siemac.metamac.srm.web.dsd.view.DsdListViewImpl;
 import org.siemac.metamac.srm.web.dsd.view.DsdPrimaryMeasureTabViewImpl;
 import org.siemac.metamac.srm.web.dsd.view.DsdViewImpl;
+import org.siemac.metamac.srm.web.organisation.presenter.OrganisationSchemeListPresenter;
+import org.siemac.metamac.srm.web.organisation.view.OrganisationSchemeListViewImpl;
 import org.siemac.metamac.srm.web.shared.utils.SharedTokens;
 
 import com.google.inject.Singleton;
@@ -74,8 +76,7 @@ public class ClientModule extends AbstractPresenterModule {
         bindPresenter(ErrorPagePresenter.class, ErrorPagePresenter.ErrorPageView.class, ErrorPageViewImpl.class, ErrorPagePresenter.ErrorPageProxy.class);
         bindPresenter(UnauthorizedPagePresenter.class, UnauthorizedPagePresenter.UnauthorizedPageView.class, UnauthorizedPageViewImpl.class, UnauthorizedPagePresenter.UnauthorizedPageProxy.class);
 
-        // DSD
-        // TODO: DEV
+        // DSDs
         bindPresenter(DsdListPresenter.class, DsdListPresenter.DsdListView.class, DsdListViewImpl.class, DsdListPresenter.DsdListProxy.class);
         bindPresenter(DsdPresenter.class, DsdPresenter.DsdView.class, DsdViewImpl.class, DsdPresenter.DsdProxy.class);
         bindPresenter(DsdGeneralTabPresenter.class, DsdGeneralTabPresenter.DsdGeneralTabView.class, DsdGeneralTabViewImpl.class, DsdGeneralTabPresenter.DsdGeneralTabProxy.class);
@@ -85,11 +86,15 @@ public class ClientModule extends AbstractPresenterModule {
         bindPresenter(DsdAttributesTabPresenter.class, DsdAttributesTabPresenter.DsdAttributesTabView.class, DsdAttributesTabViewImpl.class, DsdAttributesTabPresenter.DsdAttributesTabProxy.class);
         bindPresenter(DsdGroupKeysTabPresenter.class, DsdGroupKeysTabPresenter.DsdGroupKeysTabView.class, DsdGroupKeysTabViewImpl.class, DsdGroupKeysTabPresenter.DsdGroupKeysTabProxy.class);
 
-        // Concept
+        // Concepts
         bindPresenter(ConceptSchemeListPresenter.class, ConceptSchemeListPresenter.ConceptSchemeListView.class, ConceptSchemeListViewImpl.class,
                 ConceptSchemeListPresenter.ConceptSchemeListProxy.class);
         bindPresenter(ConceptSchemePresenter.class, ConceptSchemePresenter.ConceptSchemeView.class, ConceptSchemeViewImpl.class, ConceptSchemePresenter.ConceptSchemeProxy.class);
         bindPresenter(ConceptPresenter.class, ConceptPresenter.ConceptView.class, ConceptViewImpl.class, ConceptPresenter.ConceptProxy.class);
 
+        // Organisations
+        bindPresenter(OrganisationSchemeListPresenter.class, OrganisationSchemeListPresenter.OrganisationSchemeListView.class, OrganisationSchemeListViewImpl.class,
+                OrganisationSchemeListPresenter.OrganisationSchemeListProxy.class);
     }
+
 }

@@ -48,6 +48,7 @@
     <source path='client' />
     <source path='dsd' />
     <source path='concept' />
+    <source path='organisation' />
     <source path='shared' />
 
     <stylesheet src="MetamacSrmWeb.css" />
