@@ -10,7 +10,7 @@ import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
 import org.siemac.metamac.srm.web.concept.utils.CommonUtils;
-import org.siemac.metamac.srm.web.concept.utils.ConceptClientSecurityUtils;
+import org.siemac.metamac.srm.web.concept.utils.ConceptsClientSecurityUtils;
 import org.siemac.metamac.srm.web.concept.view.handlers.BaseConceptUiHandlers;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
@@ -245,11 +245,11 @@ public class ConceptsTreeGrid extends TreeGrid {
 
     private void onNodeContextClick(String nodeName, String conceptUrn) {
         selectedConceptUrn = conceptUrn;
-        createConceptMenuItem.setEnabled(ConceptClientSecurityUtils.canCreateConcept(conceptSchemeMetamacDto.getProcStatus(), conceptSchemeMetamacDto.getType(),
+        createConceptMenuItem.setEnabled(ConceptsClientSecurityUtils.canCreateConcept(conceptSchemeMetamacDto.getProcStatus(), conceptSchemeMetamacDto.getType(),
                 CommonUtils.getRelatedOperationCode(conceptSchemeMetamacDto)));
         deleteConceptMenuItem
                 .setEnabled(!SCHEME_NODE_NAME.equals(nodeName)
-                        && ConceptClientSecurityUtils.canDeleteConcept(conceptSchemeMetamacDto.getProcStatus(), conceptSchemeMetamacDto.getType(),
+                        && ConceptsClientSecurityUtils.canDeleteConcept(conceptSchemeMetamacDto.getProcStatus(), conceptSchemeMetamacDto.getType(),
                                 CommonUtils.getRelatedOperationCode(conceptSchemeMetamacDto)));
         showContextMenu();
     }

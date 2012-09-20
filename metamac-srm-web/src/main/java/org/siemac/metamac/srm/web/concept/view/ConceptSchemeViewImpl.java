@@ -21,7 +21,7 @@ import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptSchemeRecord;
 import org.siemac.metamac.srm.web.concept.presenter.ConceptSchemePresenter;
 import org.siemac.metamac.srm.web.concept.utils.CommonUtils;
-import org.siemac.metamac.srm.web.concept.utils.ConceptClientSecurityUtils;
+import org.siemac.metamac.srm.web.concept.utils.ConceptsClientSecurityUtils;
 import org.siemac.metamac.srm.web.concept.view.handlers.ConceptSchemeUiHandlers;
 import org.siemac.metamac.srm.web.concept.widgets.ConceptSchemeMainFormLayout;
 import org.siemac.metamac.srm.web.concept.widgets.ConceptSchemeVersionsSectionStack;
@@ -116,7 +116,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         // CONCEPT SCHEME
         //
 
-        mainFormLayout = new ConceptSchemeMainFormLayout(ConceptClientSecurityUtils.canUpdateConceptScheme());
+        mainFormLayout = new ConceptSchemeMainFormLayout(ConceptsClientSecurityUtils.canUpdateConceptScheme());
         bindMainFormLayoutEvents();
         createViewForm();
         createEditionForm();

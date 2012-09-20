@@ -14,7 +14,7 @@ import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptSchemeRecord;
 import org.siemac.metamac.srm.web.concept.presenter.ConceptSchemeListPresenter;
 import org.siemac.metamac.srm.web.concept.utils.CommonUtils;
-import org.siemac.metamac.srm.web.concept.utils.ConceptClientSecurityUtils;
+import org.siemac.metamac.srm.web.concept.utils.ConceptsClientSecurityUtils;
 import org.siemac.metamac.srm.web.concept.utils.RecordUtils;
 import org.siemac.metamac.srm.web.concept.view.handlers.ConceptSchemeListUiHandlers;
 import org.siemac.metamac.srm.web.concept.widgets.NewConceptSchemeWindow;
@@ -90,7 +90,7 @@ public class ConceptSchemeListViewImpl extends ViewImpl implements ConceptScheme
                 });
             }
         });
-        newConceptSchemeButton.setVisibility(ConceptClientSecurityUtils.canCreateConceptScheme() ? Visibility.VISIBLE : Visibility.HIDDEN);
+        newConceptSchemeButton.setVisibility(ConceptsClientSecurityUtils.canCreateConceptScheme() ? Visibility.VISIBLE : Visibility.HIDDEN);
 
         deleteConceptSchemeButton = new ToolStripButton(getConstants().actionDelete(), RESOURCE.deleteListGrid().getURL());
         deleteConceptSchemeButton.setVisibility(Visibility.HIDDEN);
@@ -269,7 +269,7 @@ public class ConceptSchemeListViewImpl extends ViewImpl implements ConceptScheme
             ConceptSchemeMetamacDto conceptSchemeMetamacDto = ((ConceptSchemeRecord) record).getConceptSchemeDto();
             if (ItemSchemeMetamacProcStatusEnum.INTERNALLY_PUBLISHED.equals(conceptSchemeMetamacDto.getProcStatus())
                     || ItemSchemeMetamacProcStatusEnum.EXTERNALLY_PUBLISHED.equals(conceptSchemeMetamacDto.getProcStatus())
-                    || !ConceptClientSecurityUtils.canDeleteConceptScheme(conceptSchemeMetamacDto.getType(), CommonUtils.getRelatedOperationCode(conceptSchemeMetamacDto))) {
+                    || !ConceptsClientSecurityUtils.canDeleteConceptScheme(conceptSchemeMetamacDto.getType(), CommonUtils.getRelatedOperationCode(conceptSchemeMetamacDto))) {
                 allSelectedSchemesCanBeDeleted = false;
                 break;
             }
@@ -287,7 +287,7 @@ public class ConceptSchemeListViewImpl extends ViewImpl implements ConceptScheme
             ConceptSchemeMetamacDto conceptSchemeMetamacDto = ((ConceptSchemeRecord) record).getConceptSchemeDto();
             // Do not show cancel validity button if scheme is not published externally or if scheme validity has been canceled previously
             if (!ItemSchemeMetamacProcStatusEnum.EXTERNALLY_PUBLISHED.equals(conceptSchemeMetamacDto.getProcStatus()) || conceptSchemeMetamacDto.getValidTo() != null
-                    || !ConceptClientSecurityUtils.canCancelConceptSchemeValidity(conceptSchemeMetamacDto.getType(), CommonUtils.getRelatedOperationCode(conceptSchemeMetamacDto))) {
+                    || !ConceptsClientSecurityUtils.canCancelConceptSchemeValidity(conceptSchemeMetamacDto.getType(), CommonUtils.getRelatedOperationCode(conceptSchemeMetamacDto))) {
                 allSelectedSchemesValidityCanBeCanceled = false;
             }
         }

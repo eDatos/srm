@@ -9,7 +9,7 @@ import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
 import org.siemac.metamac.srm.web.client.resources.GlobalResources;
 import org.siemac.metamac.srm.web.concept.utils.CommonUtils;
-import org.siemac.metamac.srm.web.concept.utils.ConceptClientSecurityUtils;
+import org.siemac.metamac.srm.web.concept.utils.ConceptsClientSecurityUtils;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.widgets.AnnounceToolStripButton;
 import org.siemac.metamac.web.common.client.widgets.MainFormLayoutButton;
@@ -156,49 +156,49 @@ public class ConceptSchemeMainFormLayout extends InternationalMainFormLayout {
     }
 
     private void showSendToProductionValidation() {
-        if (ConceptClientSecurityUtils.canSendConceptSchemeToProductionValidation(type, relatedOperationCode)) {
+        if (ConceptsClientSecurityUtils.canSendConceptSchemeToProductionValidation(type, relatedOperationCode)) {
             productionValidation.show();
         }
     }
 
     private void showSendToDiffusionValidation() {
-        if (ConceptClientSecurityUtils.canSendConceptSchemeToDiffusionValidation(type, relatedOperationCode)) {
+        if (ConceptsClientSecurityUtils.canSendConceptSchemeToDiffusionValidation(type, relatedOperationCode)) {
             diffusionValidation.show();
         }
     }
 
     private void showRejectValidationButton() {
-        if (ConceptClientSecurityUtils.canRejectConceptSchemeValidation(status, type, relatedOperationCode)) {
+        if (ConceptsClientSecurityUtils.canRejectConceptSchemeValidation(status, type, relatedOperationCode)) {
             rejectValidation.show();
         }
     }
 
     private void showPublishInternallyButton() {
-        if (ConceptClientSecurityUtils.canPublishConceptSchemeInternally(type, relatedOperationCode)) {
+        if (ConceptsClientSecurityUtils.canPublishConceptSchemeInternally(type, relatedOperationCode)) {
             publishInternally.show();
         }
     }
 
     private void showPublishExternallyButton() {
-        if (ConceptClientSecurityUtils.canPublishConceptSchemeExternally(type, relatedOperationCode)) {
+        if (ConceptsClientSecurityUtils.canPublishConceptSchemeExternally(type, relatedOperationCode)) {
             publishExternally.show();
         }
     }
 
     private void showVersioningButton() {
-        if (ConceptClientSecurityUtils.canVersioningConceptScheme(type, relatedOperationCode)) {
+        if (ConceptsClientSecurityUtils.canVersioningConceptScheme(type, relatedOperationCode)) {
             versioning.show();
         }
     }
 
     private void showCancelValidityButton() {
-        if (ConceptClientSecurityUtils.canCancelConceptSchemeValidity(type, relatedOperationCode)) {
+        if (ConceptsClientSecurityUtils.canCancelConceptSchemeValidity(type, relatedOperationCode)) {
             cancelValidity.show();
         }
     }
 
     private void showAnnounceButton() {
-        if (ConceptClientSecurityUtils.canAnnounceConceptScheme(type, relatedOperationCode)) {
+        if (ConceptsClientSecurityUtils.canAnnounceConceptScheme(type, relatedOperationCode)) {
             announce.show();
         }
     }

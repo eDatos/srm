@@ -5,7 +5,7 @@ import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
 import org.siemac.metamac.srm.core.security.shared.SharedConceptsSecurityUtils;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 
-public class ConceptClientSecurityUtils {
+public class ConceptsClientSecurityUtils {
 
     // Schemes
 

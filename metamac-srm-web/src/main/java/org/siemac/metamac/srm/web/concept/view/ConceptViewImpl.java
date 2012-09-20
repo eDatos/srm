@@ -18,7 +18,7 @@ import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
 import org.siemac.metamac.srm.web.concept.presenter.ConceptPresenter;
 import org.siemac.metamac.srm.web.concept.utils.CommonUtils;
-import org.siemac.metamac.srm.web.concept.utils.ConceptClientSecurityUtils;
+import org.siemac.metamac.srm.web.concept.utils.ConceptsClientSecurityUtils;
 import org.siemac.metamac.srm.web.concept.view.handlers.ConceptUiHandlers;
 import org.siemac.metamac.srm.web.concept.widgets.ConceptFacetForm;
 import org.siemac.metamac.srm.web.concept.widgets.ConceptsListItem;
@@ -389,7 +389,7 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
         conceptsTreeGrid.selectConcept(conceptDto);
 
         // Security
-        mainFormLayout.setCanEdit(ConceptClientSecurityUtils.canUpdateConcept(conceptSchemeMetamacDto.getProcStatus(), conceptSchemeMetamacDto.getType(),
+        mainFormLayout.setCanEdit(ConceptsClientSecurityUtils.canUpdateConcept(conceptSchemeMetamacDto.getProcStatus(), conceptSchemeMetamacDto.getType(),
                 CommonUtils.getRelatedOperationCode(conceptSchemeMetamacDto)));
     }
 
