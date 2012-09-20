@@ -35,6 +35,9 @@ import org.siemac.metamac.core.common.dto.LocalisedStringDto;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.jaxb.CustomJaxb2Marshaller;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
+import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
+import org.siemac.metamac.srm.core.criteria.ConceptMetamacCriteriaPropertyEnum;
+import org.siemac.metamac.srm.core.criteria.DataStructureDefinitionVersionMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.core.dsd.serviceapi.DsdsMetamacService;
 import org.siemac.metamac.srm.core.facade.serviceapi.utils.SrmDtoMocks;
@@ -227,15 +230,21 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
     }
 
     @Test
-    @Ignore
     public void testFindDsdByCondition() throws Exception {
-        MetamacCriteriaResult<DataStructureDefinitionMetamacDto> result = srmCoreServiceFacade.findDataStructureDefinitionsByCondition(getServiceContext(), null);
-        int previousSize = result.getResults().size();
+        MetamacCriteriaResult<DataStructureDefinitionMetamacDto> result = null;
 
         srmCoreServiceFacade.createDataStructureDefinition(getServiceContext(), SrmDtoMocks.createDataStructureDefinitionMetamacDtoMock());
 
-        result = srmCoreServiceFacade.findDataStructureDefinitionsByCondition(getServiceContext(), null);
-        assertEquals(previousSize + 1, result.getResults().size());
+        // By Name
+        MetamacCriteria metamacCriteria = new MetamacCriteria();
+        metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.NAME.name(), "NAME ES DSD", OperationType.EQ));
+
+        result = srmCoreServiceFacade.findDataStructureDefinitionsByCondition(getServiceContext(), metamacCriteria);
+        assertEquals(1, result.getResults().size());
+        
+        metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.NAME.name(), "NOT FOUND", OperationType.EQ));
+        result = srmCoreServiceFacade.findDataStructureDefinitionsByCondition(getServiceContext(), metamacCriteria);
+        assertEquals(0, result.getResults().size());
     }
 
     // -------------------------------------------------------------------------------
