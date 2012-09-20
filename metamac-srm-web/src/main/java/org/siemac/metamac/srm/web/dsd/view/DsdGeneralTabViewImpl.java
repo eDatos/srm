@@ -228,11 +228,13 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
 
         // Status Form
         statusForm = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdStatus());
-        ViewTextItem staticStartDateItem = new ViewTextItem(DataStructureDefinitionDS.VALID_FROM, MetamacSrmWeb.getConstants().maintainableArtefactValidFrom());
-        ViewTextItem staticEndDateItem = new ViewTextItem(DataStructureDefinitionDS.VALID_TO, MetamacSrmWeb.getConstants().maintainableArtefactValidTo());
+        ViewTextItem replacedBy = new ViewTextItem(DataStructureDefinitionDS.REPLACED_BY, getConstants().maintainableArtefactReplacedBy());
+        ViewTextItem replaceTo = new ViewTextItem(DataStructureDefinitionDS.REPLACE_TO, getConstants().maintainableArtefactReplaceTo());
+        ViewTextItem validFrom = new ViewTextItem(DataStructureDefinitionDS.VALID_FROM, MetamacSrmWeb.getConstants().maintainableArtefactValidFrom());
+        ViewTextItem validTo = new ViewTextItem(DataStructureDefinitionDS.VALID_TO, MetamacSrmWeb.getConstants().maintainableArtefactValidTo());
         ViewTextItem staticFinalItem = new ViewTextItem(DataStructureDefinitionDS.FINAL, MetamacSrmWeb.getConstants().maintainableArtefactFinalLogic());
         ViewTextItem isExternalReference = new ViewTextItem(DataStructureDefinitionDS.IS_EXTERNAL_REFERENCE, getConstants().maintainableArtefactIsExternalReference());
-        statusForm.setFields(staticStartDateItem, staticEndDateItem, staticFinalItem, isExternalReference);
+        statusForm.setFields(replacedBy, replaceTo, validFrom, validTo, staticFinalItem, isExternalReference);
 
         // Version responsibility
         versionResponsibilityForm = new GroupDynamicForm(getConstants().lifeCycleVersionResponsibility());
@@ -302,11 +304,13 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
 
         // Status Form
         statusEditionForm = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdStatus());
-        ViewTextItem staticStartDateItemEdit = new ViewTextItem(DataStructureDefinitionDS.VALID_FROM, MetamacSrmWeb.getConstants().maintainableArtefactValidFrom());
-        ViewTextItem staticEndDateItemEdit = new ViewTextItem(DataStructureDefinitionDS.VALID_TO, MetamacSrmWeb.getConstants().maintainableArtefactValidTo());
+        ViewTextItem replacedBy = new ViewTextItem(DataStructureDefinitionDS.REPLACED_BY, getConstants().maintainableArtefactReplacedBy());
+        ViewTextItem replaceTo = new ViewTextItem(DataStructureDefinitionDS.REPLACE_TO, getConstants().maintainableArtefactReplaceTo());
+        ViewTextItem validFrom = new ViewTextItem(DataStructureDefinitionDS.VALID_FROM, MetamacSrmWeb.getConstants().maintainableArtefactValidFrom());
+        ViewTextItem validTo = new ViewTextItem(DataStructureDefinitionDS.VALID_TO, MetamacSrmWeb.getConstants().maintainableArtefactValidTo());
         ViewTextItem staticFinalItemEdit = new ViewTextItem(DataStructureDefinitionDS.FINAL, MetamacSrmWeb.getConstants().maintainableArtefactFinalLogic());
         ViewTextItem isExternalReference = new ViewTextItem(DataStructureDefinitionDS.IS_EXTERNAL_REFERENCE, MetamacSrmWeb.getConstants().maintainableArtefactIsExternalReference());
-        statusEditionForm.setFields(staticStartDateItemEdit, staticEndDateItemEdit, staticFinalItemEdit, isExternalReference);
+        statusEditionForm.setFields(replacedBy, replaceTo, validFrom, validTo, staticFinalItemEdit, isExternalReference);
 
         // Version responsibility
         versionResponsibilityEditionForm = new GroupDynamicForm(getConstants().lifeCycleVersionResponsibility());
@@ -372,6 +376,8 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         generalForm.setValue(DataStructureDefinitionDS.MAINTAINER, dsd.getMaintainer() != null ? dsd.getMaintainer().getCode() : StringUtils.EMPTY); // TODO AGENCY
 
         // Status form
+        statusForm.setValue(DataStructureDefinitionDS.REPLACED_BY, dsd.getReplacedBy());
+        statusForm.setValue(DataStructureDefinitionDS.REPLACE_TO, dsd.getReplaceTo());
         statusForm.setValue(DataStructureDefinitionDS.VALID_FROM, dsd.getValidFrom());
         statusForm.setValue(DataStructureDefinitionDS.VALID_TO, dsd.getValidTo());
         statusForm.setValue(DataStructureDefinitionDS.FINAL, dsd.getFinalLogic() != null

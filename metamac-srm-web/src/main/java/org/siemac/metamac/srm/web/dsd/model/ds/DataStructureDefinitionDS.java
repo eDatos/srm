@@ -17,6 +17,8 @@ public class DataStructureDefinitionDS {
     public static final String PROC_STATUS                      = "dsd-status";
     public static final String FINAL                            = "dsd-final";
     public static final String IS_EXTERNAL_REFERENCE            = "dsd-ext-ref";
+    public static final String REPLACED_BY                      = "dsd-replaced-by";
+    public static final String REPLACE_TO                       = "dsd-replace-to";
     public static final String VALID_FROM                       = "dsd-valid-from";
     public static final String VALID_TO                         = "dsd-valid-to";
 
