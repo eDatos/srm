@@ -42,10 +42,6 @@ public class DsdClientSecurityUtils {
         return SharedDsdSecurityUtils.canImportDsd(MetamacSrmWeb.getCurrentUser());
     }
 
-    public static boolean canUpdateAnnotations(ItemSchemeMetamacProcStatusEnum procStatus) {
-        return SharedDsdSecurityUtils.canUpdateAnnotations(MetamacSrmWeb.getCurrentUser(), procStatus);
-    }
-
     public static boolean canCancelDsdValidity() {
         return SharedDsdSecurityUtils.canCancelDsdValidity(MetamacSrmWeb.getCurrentUser());
     }
