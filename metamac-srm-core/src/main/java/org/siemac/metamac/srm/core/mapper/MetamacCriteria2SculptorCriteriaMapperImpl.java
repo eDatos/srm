@@ -17,8 +17,8 @@ import org.siemac.metamac.srm.core.criteria.ConceptMetamacCriteriaOrderEnum;
 import org.siemac.metamac.srm.core.criteria.ConceptMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.criteria.ConceptSchemeVersionMetamacCriteriaOrderEnum;
 import org.siemac.metamac.srm.core.criteria.ConceptSchemeVersionMetamacCriteriaPropertyEnum;
-import org.siemac.metamac.srm.core.criteria.DataStructureVersionMetamacCriteriaOrderEnum;
-import org.siemac.metamac.srm.core.criteria.DataStructureVersionMetamacCriteriaPropertyEnum;
+import org.siemac.metamac.srm.core.criteria.DataStructureDefinitionVersionMetamacCriteriaOrderEnum;
+import org.siemac.metamac.srm.core.criteria.DataStructureDefinitionVersionMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamacProperties;
 import org.springframework.stereotype.Component;
@@ -34,18 +34,19 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
 
     private MetamacCriteria2SculptorCriteria<DataStructureDefinitionVersionMetamac> dataStructureMetamacMapper = null;
 
-    private MetamacCriteria2SculptorCriteria<ConceptSchemeVersionMetamac>    conceptSchemeMetamacMapper = null;
+    private MetamacCriteria2SculptorCriteria<ConceptSchemeVersionMetamac>           conceptSchemeMetamacMapper = null;
 
-    private MetamacCriteria2SculptorCriteria<ConceptMetamac>                 conceptMetamacMapper       = null;
+    private MetamacCriteria2SculptorCriteria<ConceptMetamac>                        conceptMetamacMapper       = null;
 
     /**************************************************************************
      * Constructor
      **************************************************************************/
 
     public MetamacCriteria2SculptorCriteriaMapperImpl() throws MetamacException {
-        dataStructureMetamacMapper = new MetamacCriteria2SculptorCriteria<DataStructureDefinitionVersionMetamac>(DataStructureDefinitionVersionMetamac.class, DataStructureVersionMetamacCriteriaOrderEnum.class,
-                DataStructureVersionMetamacCriteriaPropertyEnum.class, new DataStructureDefinitionVersionMetamacCriteriaCallback());
-        
+        dataStructureMetamacMapper = new MetamacCriteria2SculptorCriteria<DataStructureDefinitionVersionMetamac>(DataStructureDefinitionVersionMetamac.class,
+                DataStructureDefinitionVersionMetamacCriteriaOrderEnum.class, DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.class,
+                new DataStructureDefinitionVersionMetamacCriteriaCallback());
+
         conceptSchemeMetamacMapper = new MetamacCriteria2SculptorCriteria<ConceptSchemeVersionMetamac>(ConceptSchemeVersionMetamac.class, ConceptSchemeVersionMetamacCriteriaOrderEnum.class,
                 ConceptSchemeVersionMetamacCriteriaPropertyEnum.class, new ConceptSchemeVersionMetamacCriteriaCallback());
 
@@ -75,12 +76,12 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
     /**************************************************************************
      * CallBacks classes
      *************************************************************************/
-    
+
     private class DataStructureDefinitionVersionMetamacCriteriaCallback implements CriteriaCallback {
 
         @Override
         public SculptorPropertyCriteria retrieveProperty(MetamacCriteriaPropertyRestriction propertyRestriction) throws MetamacException {
-            DataStructureVersionMetamacCriteriaPropertyEnum propertyEnum = DataStructureVersionMetamacCriteriaPropertyEnum.fromValue(propertyRestriction.getPropertyName());
+            DataStructureDefinitionVersionMetamacCriteriaPropertyEnum propertyEnum = DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.fromValue(propertyRestriction.getPropertyName());
             switch (propertyEnum) {
                 case CODE:
                     return new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.maintainableArtefact().code(), propertyRestriction.getStringValue());
@@ -97,7 +98,7 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
 
         @Override
         public Property<DataStructureDefinitionVersionMetamac> retrievePropertyOrder(MetamacCriteriaOrder order) throws MetamacException {
-            DataStructureVersionMetamacCriteriaOrderEnum propertyOrderEnum = DataStructureVersionMetamacCriteriaOrderEnum.fromValue(order.getPropertyName());
+            DataStructureDefinitionVersionMetamacCriteriaOrderEnum propertyOrderEnum = DataStructureDefinitionVersionMetamacCriteriaOrderEnum.fromValue(order.getPropertyName());
             switch (propertyOrderEnum) {
                 case CODE:
                     return DataStructureDefinitionVersionMetamacProperties.maintainableArtefact().code();
@@ -120,7 +121,7 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
             return ConceptSchemeVersionMetamacProperties.id();
         }
     }
-    
+
     private class ConceptSchemeVersionMetamacCriteriaCallback implements CriteriaCallback {
 
         @Override
@@ -165,7 +166,7 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
             return ConceptSchemeVersionMetamacProperties.id();
         }
     }
-    
+
     private class ConceptMetamacCriteriaCallback implements CriteriaCallback {
 
         @Override

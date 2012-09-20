@@ -1,6 +1,6 @@
 package org.siemac.metamac.srm.core.criteria;
 
-public enum DataStructureVersionMetamacCriteriaOrderEnum {
+public enum DataStructureDefinitionVersionMetamacCriteriaOrderEnum {
 
     CODE, URN, NAME, PROC_STATUS, LAST_UPDATED;
 
@@ -8,7 +8,7 @@ public enum DataStructureVersionMetamacCriteriaOrderEnum {
         return name();
     }
 
-    public static DataStructureVersionMetamacCriteriaOrderEnum fromValue(String v) {
+    public static DataStructureDefinitionVersionMetamacCriteriaOrderEnum fromValue(String v) {
         return valueOf(v);
     }
 
