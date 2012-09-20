@@ -15,6 +15,7 @@ import org.siemac.metamac.srm.web.concept.view.handlers.BaseConceptUiHandlers;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.smartgwt.client.data.Record;
@@ -53,7 +54,7 @@ public class ConceptsTreeGrid extends TreeGrid {
     private MenuItem                 deleteConceptMenuItem;
 
     private ConceptSchemeMetamacDto  conceptSchemeMetamacDto;
-    private String                   selectedConceptUrn;
+    private ItemDto                  selectedConcept;
 
     private BaseConceptUiHandlers    uiHandlers;
 
@@ -103,7 +104,7 @@ public class ConceptsTreeGrid extends TreeGrid {
                         if (newConceptWindow.validateForm()) {
                             ConceptMetamacDto conceptMetamacDto = newConceptWindow.getNewConceptDto();
                             conceptMetamacDto.setItemSchemeVersionUrn(conceptSchemeMetamacDto.getUrn()); // Set concept scheme URN
-                            conceptMetamacDto.setItemParentUrn(selectedConceptUrn); // Set concept parent URN
+                            conceptMetamacDto.setItemParentUrn(selectedConcept != null ? selectedConcept.getUrn() : null); // Set concept parent URN
                             ConceptsTreeGrid.this.uiHandlers.saveConcept(conceptMetamacDto);
                             newConceptWindow.destroy();
                         }
@@ -118,7 +119,7 @@ public class ConceptsTreeGrid extends TreeGrid {
 
             @Override
             public void onClick(ClickEvent event) {
-                ConceptsTreeGrid.this.uiHandlers.deleteConcept(selectedConceptUrn);
+                ConceptsTreeGrid.this.uiHandlers.deleteConcept(selectedConcept);
             }
         });
         deleteConceptMenuItem.addClickHandler(new ClickHandler() {
@@ -139,7 +140,7 @@ public class ConceptsTreeGrid extends TreeGrid {
 
             @Override
             public void onFolderContextClick(final FolderContextClickEvent event) {
-                onNodeContextClick(event.getFolder().getName(), event.getFolder().getAttribute(ConceptDS.URN));
+                onNodeContextClick(event.getFolder().getName(), (ItemDto) event.getFolder().getAttributeAsObject(ConceptDS.DTO));
             }
         });
 
@@ -147,7 +148,7 @@ public class ConceptsTreeGrid extends TreeGrid {
 
             @Override
             public void onLeafContextClick(LeafContextClickEvent event) {
-                onNodeContextClick(event.getLeaf().getName(), event.getLeaf().getAttribute(ConceptDS.URN));
+                onNodeContextClick(event.getLeaf().getName(), (ItemDto) event.getLeaf().getAttributeAsObject(ConceptDS.DTO));
             }
         });
 
@@ -243,8 +244,8 @@ public class ConceptsTreeGrid extends TreeGrid {
         }
     }
 
-    private void onNodeContextClick(String nodeName, String conceptUrn) {
-        selectedConceptUrn = conceptUrn;
+    private void onNodeContextClick(String nodeName, ItemDto concept) {
+        selectedConcept = concept;
         createConceptMenuItem.setEnabled(ConceptsClientSecurityUtils.canCreateConcept(conceptSchemeMetamacDto.getProcStatus(), conceptSchemeMetamacDto.getType(),
                 CommonUtils.getRelatedOperationCode(conceptSchemeMetamacDto)));
         deleteConceptMenuItem.setEnabled(!SCHEME_NODE_NAME.equals(nodeName)

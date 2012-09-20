@@ -38,6 +38,7 @@ import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.utils.UrnUtils;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
@@ -194,8 +195,8 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     }
 
     @Override
-    public void deleteConcept(String urn) {
-        dispatcher.execute(new DeleteConceptAction(urn), new WaitingAsyncCallback<DeleteConceptResult>() {
+    public void deleteConcept(final ItemDto itemDto) {
+        dispatcher.execute(new DeleteConceptAction(itemDto.getUrn()), new WaitingAsyncCallback<DeleteConceptResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -203,7 +204,12 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
             }
             @Override
             public void onWaitSuccess(DeleteConceptResult result) {
-                retrieveConceptListByScheme(conceptSchemeUrn);
+                // If deleted concept had a concept parent, go to this concept parent. If not, go to the concept scheme.
+                if (itemDto.getItemParentUrn() != null) {
+                    goToConcept(itemDto.getItemParentUrn());
+                } else {
+                    goToConceptScheme(itemDto.getItemSchemeVersionUrn());
+                }
             }
         });
     }
@@ -212,6 +218,10 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     public void goToConcept(String urn) {
         String[] splitUrn = UrnUtils.splitUrnByDots(UrnUtils.removePrefix(urn));
         placeManager.revealRelativePlace(new PlaceRequest(NameTokens.conceptPage).with(PlaceRequestParams.conceptParam, splitUrn[splitUrn.length - 1]), -1);
+    }
+
+    private void goToConceptScheme(String urn) {
+        placeManager.revealRelativePlace(new PlaceRequest(NameTokens.conceptSchemePage).with(PlaceRequestParams.conceptSchemeParam, UrnUtils.removePrefix(urn)), -2);
     }
 
     @Override
