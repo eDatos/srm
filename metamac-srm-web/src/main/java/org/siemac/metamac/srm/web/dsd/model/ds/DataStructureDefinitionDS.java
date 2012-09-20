@@ -11,7 +11,7 @@ public class DataStructureDefinitionDS {
     public static final String VERSION_LOGIC                    = "dsd-version";
     public static final String NAME                             = "dsd-name";
     public static final String DESCRIPTION                      = "dsd-desc";
-    public static final String AGENCY                           = "dsd-agency";
+    public static final String MAINTAINER                       = "dsd-main";
 
     // LIFE CYCLE
     public static final String PROC_STATUS                      = "dsd-status";

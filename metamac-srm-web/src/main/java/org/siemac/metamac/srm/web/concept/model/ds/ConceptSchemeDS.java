@@ -21,7 +21,7 @@ public class ConceptSchemeDS extends DataSource {
     public static final String IS_EXTERNAL_REFERENCE            = "sch-ext-ref";
     public static final String FINAL                            = "sch-final";
     // CLASS DESCRIPTORS
-    public static final String AGENCY                           = "sch-agency";
+    public static final String MAINTAINER                       = "sch-maintainer";
     public static final String TYPE                             = "sch-type";
     public static final String TYPE_VIEW                        = "sch-type-view";        // Not mapped in DTO
     public static final String RELATED_OPERATION                = "sch-operation";
@@ -30,6 +30,8 @@ public class ConceptSchemeDS extends DataSource {
     public static final String PRODUCTION_VALIDATION_DATE       = "sch-prod-date";
     public static final String PRODUCTION_VALIDATION_USER       = "sch-prod-user";
     // DIFFUSION DESCRIPTORS
+    public static final String REPLACED_BY                      = "sch-replaced-by";
+    public static final String REPLACE_TO                       = "sch-replace-to";
     public static final String VALID_FROM                       = "sch-valid-from";
     public static final String VALID_TO                         = "sch-valid-to";
     public static final String DIFFUSION_VALIDATION_DATE        = "sch-dif-date";

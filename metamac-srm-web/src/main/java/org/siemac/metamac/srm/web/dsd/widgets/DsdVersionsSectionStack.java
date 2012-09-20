@@ -23,7 +23,7 @@ public class DsdVersionsSectionStack extends VersionsSectionStack {
 
         ListGridField nameField = new ListGridField(DataStructureDefinitionDS.NAME, getConstants().dsdName());
 
-        ListGridField versionField = new ListGridField(DataStructureDefinitionDS.VERSION_LOGIC, getConstants().dsdVersion());
+        ListGridField versionField = new ListGridField(DataStructureDefinitionDS.VERSION_LOGIC, getConstants().maintainableArtefactVersionLogic());
         versionField.setWidth("15%");
 
         listGrid.setFields(codeField, nameField, versionField);

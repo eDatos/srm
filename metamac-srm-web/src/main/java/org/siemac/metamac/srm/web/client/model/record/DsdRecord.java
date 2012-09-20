@@ -55,7 +55,7 @@ public class DsdRecord extends ListGridRecord {
     }
 
     public void setAgency(String attribute) {
-        setAttribute(DataStructureDefinitionDS.AGENCY, attribute);
+        setAttribute(DataStructureDefinitionDS.MAINTAINER, attribute);
     }
 
     public void setName(String attribute) {
@@ -107,7 +107,7 @@ public class DsdRecord extends ListGridRecord {
     }
 
     public String getAgency() {
-        return getAttributeAsString(DataStructureDefinitionDS.AGENCY);
+        return getAttributeAsString(DataStructureDefinitionDS.MAINTAINER);
     }
 
     public String getName() {

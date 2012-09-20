@@ -23,7 +23,7 @@ public class ConceptSchemeVersionsSectionStack extends VersionsSectionStack {
 
         ListGridField nameField = new ListGridField(ConceptSchemeDS.NAME, getConstants().conceptSchemeName());
 
-        ListGridField versionField = new ListGridField(ConceptSchemeDS.VERSION_LOGIC, getConstants().conceptSchemeVersion());
+        ListGridField versionField = new ListGridField(ConceptSchemeDS.VERSION_LOGIC, getConstants().maintainableArtefactVersionLogic());
         versionField.setWidth("15%");
 
         listGrid.setFields(codeField, nameField, versionField);
