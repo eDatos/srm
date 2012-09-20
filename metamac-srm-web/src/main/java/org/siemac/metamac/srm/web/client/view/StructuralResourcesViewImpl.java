@@ -63,6 +63,8 @@ public class StructuralResourcesViewImpl extends ViewWithUiHandlers<StructuralRe
         });
 
         panel = new VLayout();
+        panel.setHeight100();
+        panel.setOverflow(Overflow.SCROLL);
 
         // Initialize the OperationsList View layout container
         panel.setStyleName("metamac-ContextArea");

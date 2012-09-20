@@ -30,6 +30,7 @@ import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.Autofit;
+import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.types.Visibility;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -174,6 +175,8 @@ public class ConceptSchemeListViewImpl extends ViewImpl implements ConceptScheme
         conceptSchemesList.getListGrid().setFields(fieldCode, fieldName, status);
 
         panel = new VLayout();
+        panel.setHeight100();
+        panel.setOverflow(Overflow.SCROLL);
         panel.addMember(toolStrip);
         panel.addMember(searchSectionStack);
         panel.addMember(conceptSchemesList);
