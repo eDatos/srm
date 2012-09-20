@@ -4,15 +4,17 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
 import java.util.Date;
 
+import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
+import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
 import org.siemac.metamac.srm.web.client.resources.GlobalResources;
+import org.siemac.metamac.srm.web.concept.utils.CommonUtils;
 import org.siemac.metamac.srm.web.concept.utils.ConceptClientSecurityUtils;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.widgets.AnnounceToolStripButton;
 import org.siemac.metamac.web.common.client.widgets.MainFormLayoutButton;
 import org.siemac.metamac.web.common.client.widgets.form.InternationalMainFormLayout;
 
-import com.smartgwt.client.types.Visibility;
 import com.smartgwt.client.widgets.events.HasClickHandlers;
 
 public class ConceptSchemeMainFormLayout extends InternationalMainFormLayout {
@@ -26,6 +28,8 @@ public class ConceptSchemeMainFormLayout extends InternationalMainFormLayout {
     private MainFormLayoutButton            cancelValidity;
     private AnnounceToolStripButton         announce;
 
+    private ConceptSchemeTypeEnum           type;
+    private String                          relatedOperationCode;
     private ItemSchemeMetamacProcStatusEnum status;
     private Date                            validTo;
 
@@ -51,7 +55,6 @@ public class ConceptSchemeMainFormLayout extends InternationalMainFormLayout {
         versioning = new MainFormLayoutButton(getConstants().lifeCycleVersioning(), GlobalResources.RESOURCE.version().getURL());
         cancelValidity = new MainFormLayoutButton(getConstants().lifeCycleCancelValidity(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.disable().getURL());
         announce = new AnnounceToolStripButton(MetamacWebCommon.getConstants().announce(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.announce().getURL());
-        announce.setVisibility(ConceptClientSecurityUtils.canAnnounceConceptScheme() ? Visibility.VISIBLE : Visibility.HIDDEN);
 
         toolStrip.addButton(productionValidation);
         toolStrip.addButton(diffusionValidation);
@@ -63,9 +66,11 @@ public class ConceptSchemeMainFormLayout extends InternationalMainFormLayout {
         toolStrip.addButton(announce);
     }
 
-    public void updatePublishSection(ItemSchemeMetamacProcStatusEnum status, Date validTo) {
-        this.status = status;
-        this.validTo = validTo;
+    public void updatePublishSection(ConceptSchemeMetamacDto conceptSchemeMetamacDto) {
+        this.type = conceptSchemeMetamacDto.getType();
+        this.relatedOperationCode = CommonUtils.getRelatedOperationCode(conceptSchemeMetamacDto);
+        this.status = conceptSchemeMetamacDto.getProcStatus();
+        this.validTo = conceptSchemeMetamacDto.getValidTo();
     }
 
     private void updateVisibility() {
@@ -92,6 +97,7 @@ public class ConceptSchemeMainFormLayout extends InternationalMainFormLayout {
                 showCancelValidityButton();
             }
         }
+        showAnnounceButton();
     }
 
     @Override
@@ -146,47 +152,54 @@ public class ConceptSchemeMainFormLayout extends InternationalMainFormLayout {
         publishExternally.hide();
         versioning.hide();
         cancelValidity.hide();
+        announce.hide();
     }
 
     private void showSendToProductionValidation() {
-        if (ConceptClientSecurityUtils.canSendConceptSchemeToProductionValidation()) {
+        if (ConceptClientSecurityUtils.canSendConceptSchemeToProductionValidation(type, relatedOperationCode)) {
             productionValidation.show();
         }
     }
 
     private void showSendToDiffusionValidation() {
-        if (ConceptClientSecurityUtils.canSendConceptSchemeToDiffusionValidation()) {
+        if (ConceptClientSecurityUtils.canSendConceptSchemeToDiffusionValidation(type, relatedOperationCode)) {
             diffusionValidation.show();
         }
     }
 
     private void showRejectValidationButton() {
-        if (ConceptClientSecurityUtils.canRejectConceptSchemeValidation()) {
+        if (ConceptClientSecurityUtils.canRejectConceptSchemeValidation(status, type, relatedOperationCode)) {
             rejectValidation.show();
         }
     }
 
     private void showPublishInternallyButton() {
-        if (ConceptClientSecurityUtils.canPublishConceptSchemeInternally()) {
+        if (ConceptClientSecurityUtils.canPublishConceptSchemeInternally(type, relatedOperationCode)) {
             publishInternally.show();
         }
     }
 
     private void showPublishExternallyButton() {
-        if (ConceptClientSecurityUtils.canPublishConceptSchemeExternally()) {
+        if (ConceptClientSecurityUtils.canPublishConceptSchemeExternally(type, relatedOperationCode)) {
             publishExternally.show();
         }
     }
 
     private void showVersioningButton() {
-        if (ConceptClientSecurityUtils.canVersioningConceptScheme()) {
+        if (ConceptClientSecurityUtils.canVersioningConceptScheme(type, relatedOperationCode)) {
             versioning.show();
         }
     }
 
     private void showCancelValidityButton() {
-        if (ConceptClientSecurityUtils.canCancelConceptSchemeValidity()) {
+        if (ConceptClientSecurityUtils.canCancelConceptSchemeValidity(type, relatedOperationCode)) {
             cancelValidity.show();
+        }
+    }
+
+    private void showAnnounceButton() {
+        if (ConceptClientSecurityUtils.canAnnounceConceptScheme(type, relatedOperationCode)) {
+            announce.show();
         }
     }
 

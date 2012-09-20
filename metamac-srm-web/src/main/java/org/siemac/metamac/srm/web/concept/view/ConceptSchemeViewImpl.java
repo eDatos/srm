@@ -309,12 +309,13 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
     @Override
     public void setConceptScheme(ConceptSchemeMetamacDto conceptScheme) {
         this.conceptSchemeDto = conceptScheme;
+        this.relatedOperation = conceptScheme.getRelatedOperation();
 
         String defaultLocalized = InternationalStringUtils.getLocalisedString(conceptScheme.getName());
         String title = defaultLocalized != null ? defaultLocalized : StringUtils.EMPTY;
         mainFormLayout.setTitleLabelContents(title);
 
-        mainFormLayout.updatePublishSection(conceptScheme.getProcStatus(), conceptScheme.getValidTo());
+        mainFormLayout.updatePublishSection(conceptScheme);
         mainFormLayout.setViewMode();
 
         setConceptSchemeViewMode(conceptScheme);
@@ -642,6 +643,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
 
     public ConceptSchemeMetamacDto getConceptSchemeDto() {
         // Identifiers
+        conceptSchemeDto.setCode(identifiersEditionForm.getValueAsString(ConceptSchemeDS.CODE));
         conceptSchemeDto.setName((InternationalStringDto) identifiersEditionForm.getValue(ConceptSchemeDS.NAME));
         // Content descriptors
         conceptSchemeDto.setDescription((InternationalStringDto) contentDescriptorsEditionForm.getValue(ConceptSchemeDS.DESCRIPTION));

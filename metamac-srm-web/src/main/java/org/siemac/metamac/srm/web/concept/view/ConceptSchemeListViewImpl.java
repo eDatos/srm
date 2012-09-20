@@ -13,6 +13,7 @@ import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptSchemeRecord;
 import org.siemac.metamac.srm.web.concept.presenter.ConceptSchemeListPresenter;
+import org.siemac.metamac.srm.web.concept.utils.CommonUtils;
 import org.siemac.metamac.srm.web.concept.utils.ConceptClientSecurityUtils;
 import org.siemac.metamac.srm.web.concept.utils.RecordUtils;
 import org.siemac.metamac.srm.web.concept.view.handlers.ConceptSchemeListUiHandlers;
@@ -145,7 +146,7 @@ public class ConceptSchemeListViewImpl extends ViewImpl implements ConceptScheme
             public void onSelectionChanged(SelectionEvent event) {
                 if (conceptSchemesList.getListGrid().getSelectedRecords().length > 0) {
                     // Show delete button
-                    showListGridDeleteButton();
+                    showListGridDeleteButton(conceptSchemesList.getListGrid().getSelectedRecords());
                     // Show cancel validity button
                     showListGridCancelValidityDeleteButton(conceptSchemesList.getListGrid().getSelectedRecords());
                 } else {
@@ -254,33 +255,46 @@ public class ConceptSchemeListViewImpl extends ViewImpl implements ConceptScheme
         searchSectionStack.reset();
     }
 
-    private void showListGridDeleteButton() {
-        if (ConceptClientSecurityUtils.canDeleteConceptScheme()) {
-            deleteConceptSchemeButton.show();
-        }
-    }
-
-    private void showListGridCancelValidityDeleteButton(ListGridRecord[] records) {
-        boolean allSelectedSchemesExternallyPublished = true;
-        for (ListGridRecord record : records) {
-            ConceptSchemeRecord conceptSchemeRecord = (ConceptSchemeRecord) record;
-            // Do not show cancel validity button if scheme is not published externally or if scheme validity has been canceled previously
-            if (!ItemSchemeMetamacProcStatusEnum.EXTERNALLY_PUBLISHED.equals(conceptSchemeRecord.getProcStatus()) || conceptSchemeRecord.getConceptSchemeDto().getValidTo() != null) {
-                allSelectedSchemesExternallyPublished = false;
-            }
-        }
-        if (allSelectedSchemesExternallyPublished && ConceptClientSecurityUtils.canCancelConceptSchemeValidity()) {
-            cancelConceptSchemeValidityButton.show();
-        } else {
-            cancelConceptSchemeValidityButton.hide();
-        }
-    }
-
     @Override
     public void setOperations(List<ExternalItemDto> operations, int firstResult, int totalResults) {
         if (newConceptSchemeWindow != null) {
             newConceptSchemeWindow.setOperations(operations);
             newConceptSchemeWindow.refreshOperationsPaginationInfo(firstResult, operations.size(), totalResults);
+        }
+    }
+
+    private void showListGridDeleteButton(ListGridRecord[] records) {
+        boolean allSelectedSchemesCanBeDeleted = true;
+        for (ListGridRecord record : records) {
+            ConceptSchemeMetamacDto conceptSchemeMetamacDto = ((ConceptSchemeRecord) record).getConceptSchemeDto();
+            if (ItemSchemeMetamacProcStatusEnum.INTERNALLY_PUBLISHED.equals(conceptSchemeMetamacDto.getProcStatus())
+                    || ItemSchemeMetamacProcStatusEnum.EXTERNALLY_PUBLISHED.equals(conceptSchemeMetamacDto.getProcStatus())
+                    || !ConceptClientSecurityUtils.canDeleteConceptScheme(conceptSchemeMetamacDto.getType(), CommonUtils.getRelatedOperationCode(conceptSchemeMetamacDto))) {
+                allSelectedSchemesCanBeDeleted = false;
+                break;
+            }
+        }
+        if (allSelectedSchemesCanBeDeleted) {
+            deleteConceptSchemeButton.show();
+        } else {
+            deleteConceptSchemeButton.hide();
+        }
+    }
+
+    private void showListGridCancelValidityDeleteButton(ListGridRecord[] records) {
+        boolean allSelectedSchemesValidityCanBeCanceled = true;
+        for (ListGridRecord record : records) {
+            ConceptSchemeMetamacDto conceptSchemeMetamacDto = ((ConceptSchemeRecord) record).getConceptSchemeDto();
+            // Do not show cancel validity button if scheme is not published externally or if scheme validity has been canceled previously
+            if (!ItemSchemeMetamacProcStatusEnum.EXTERNALLY_PUBLISHED.equals(conceptSchemeMetamacDto.getProcStatus()) || conceptSchemeMetamacDto.getValidTo() != null
+                    || !ConceptClientSecurityUtils.canCancelConceptSchemeValidity(conceptSchemeMetamacDto.getType(), CommonUtils.getRelatedOperationCode(conceptSchemeMetamacDto))) {
+                allSelectedSchemesValidityCanBeCanceled = false;
+            }
+        }
+        if (allSelectedSchemesValidityCanBeCanceled) {
+            cancelConceptSchemeValidityButton.show();
+        } else {
+            cancelConceptSchemeValidityButton.hide();
         }
     }
 
