@@ -124,7 +124,7 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
         // CONCEPT
         //
 
-        mainFormLayout = new InternationalMainFormLayout(ConceptClientSecurityUtils.canEditConcept());
+        mainFormLayout = new InternationalMainFormLayout();
 
         // Translations
         mainFormLayout.getTranslateToolStripButton().addClickHandler(new ClickHandler() {
@@ -387,6 +387,10 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
         this.itemHierarchyDtos = itemHierarchyDtos;
         conceptsTreeGrid.setConcepts(conceptSchemeMetamacDto, itemHierarchyDtos);
         conceptsTreeGrid.selectConcept(conceptDto);
+
+        // Security
+        mainFormLayout.setCanEdit(ConceptClientSecurityUtils.canUpdateConcept(conceptSchemeMetamacDto.getProcStatus(), conceptSchemeMetamacDto.getType(),
+                CommonUtils.getRelatedOperationCode(conceptSchemeMetamacDto)));
     }
 
     @Override

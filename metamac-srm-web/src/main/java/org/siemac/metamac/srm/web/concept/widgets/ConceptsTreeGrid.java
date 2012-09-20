@@ -10,6 +10,7 @@ import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
 import org.siemac.metamac.srm.web.concept.utils.CommonUtils;
+import org.siemac.metamac.srm.web.concept.utils.ConceptClientSecurityUtils;
 import org.siemac.metamac.srm.web.concept.view.handlers.BaseConceptUiHandlers;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
@@ -138,9 +139,7 @@ public class ConceptsTreeGrid extends TreeGrid {
 
             @Override
             public void onFolderContextClick(final FolderContextClickEvent event) {
-                selectedConceptUrn = event.getFolder().getAttribute(ConceptDS.URN);
-                deleteConceptMenuItem.setEnabled(!SCHEME_NODE_NAME.equals(event.getFolder().getName()));
-                showContextMenu();
+                onNodeContextClick(event.getFolder().getName(), event.getFolder().getAttribute(ConceptDS.URN));
             }
         });
 
@@ -148,9 +147,7 @@ public class ConceptsTreeGrid extends TreeGrid {
 
             @Override
             public void onLeafContextClick(LeafContextClickEvent event) {
-                selectedConceptUrn = event.getLeaf().getAttribute(ConceptDS.URN);
-                deleteConceptMenuItem.setEnabled(!SCHEME_NODE_NAME.equals(event.getLeaf().getName()));
-                showContextMenu();
+                onNodeContextClick(event.getLeaf().getName(), event.getLeaf().getAttribute(ConceptDS.URN));
             }
         });
 
@@ -158,9 +155,7 @@ public class ConceptsTreeGrid extends TreeGrid {
 
             @Override
             public void onFolderClick(FolderClickEvent event) {
-                if (!SCHEME_NODE_NAME.equals(event.getFolder().getName())) {
-                    uiHandlers.goToConcept(event.getFolder().getAttribute(ConceptDS.URN));
-                }
+                onNodeClick(event.getFolder().getName(), event.getFolder().getAttribute(ConceptDS.URN));
             }
         });
 
@@ -168,9 +163,7 @@ public class ConceptsTreeGrid extends TreeGrid {
 
             @Override
             public void onLeafClick(LeafClickEvent event) {
-                if (!SCHEME_NODE_NAME.equals(event.getLeaf().getName())) {
-                    uiHandlers.goToConcept(event.getLeaf().getAttribute(ConceptDS.URN));
-                }
+                onNodeClick(event.getLeaf().getName(), event.getLeaf().getAttribute(ConceptDS.URN));
             }
         });
     }
@@ -191,6 +184,23 @@ public class ConceptsTreeGrid extends TreeGrid {
         tree.setData(new TreeNode[]{conceptSchemeTreeNode});
         setData(tree);
         getData().openAll();
+    }
+
+    public void setUiHandlers(BaseConceptUiHandlers uiHandlers) {
+        this.uiHandlers = uiHandlers;
+    }
+
+    public void selectConcept(ConceptMetamacDto conceptMetamacDto) {
+        RecordList nodes = getDataAsRecordList();
+        Record record = nodes.find(ConceptDS.URN, conceptMetamacDto.getUrn());
+        selectRecord(record);
+    }
+
+    public void removeHandlerRegistrations() {
+        folderContextHandlerRegistration.removeHandler();
+        leafContextHandlerRegistration.removeHandler();
+        folderClickHandlerRegistration.removeHandler();
+        leafClickHandlerRegistration.removeHandler();
     }
 
     private TreeNode createConceptSchemeTreeNode(ConceptSchemeMetamacDto conceptSchemeMetamacDto) {
@@ -222,26 +232,26 @@ public class ConceptsTreeGrid extends TreeGrid {
         return node;
     }
 
-    public void setUiHandlers(BaseConceptUiHandlers uiHandlers) {
-        this.uiHandlers = uiHandlers;
-    }
-
-    public void selectConcept(ConceptMetamacDto conceptMetamacDto) {
-        RecordList nodes = getDataAsRecordList();
-        Record record = nodes.find(ConceptDS.URN, conceptMetamacDto.getUrn());
-        selectRecord(record);
-    }
-
-    public void removeHandlerRegistrations() {
-        folderContextHandlerRegistration.removeHandler();
-        leafContextHandlerRegistration.removeHandler();
-        folderClickHandlerRegistration.removeHandler();
-        leafClickHandlerRegistration.removeHandler();
-    }
-
     private void showContextMenu() {
         contextMenu.markForRedraw();
         contextMenu.showContextMenu();
+    }
+
+    private void onNodeClick(String nodeName, String conceptUrn) {
+        if (!SCHEME_NODE_NAME.equals(nodeName)) {
+            uiHandlers.goToConcept(conceptUrn);
+        }
+    }
+
+    private void onNodeContextClick(String nodeName, String conceptUrn) {
+        selectedConceptUrn = conceptUrn;
+        createConceptMenuItem.setEnabled(ConceptClientSecurityUtils.canCreateConcept(conceptSchemeMetamacDto.getProcStatus(), conceptSchemeMetamacDto.getType(),
+                CommonUtils.getRelatedOperationCode(conceptSchemeMetamacDto)));
+        deleteConceptMenuItem
+                .setEnabled(!SCHEME_NODE_NAME.equals(nodeName)
+                        && ConceptClientSecurityUtils.canDeleteConcept(conceptSchemeMetamacDto.getProcStatus(), conceptSchemeMetamacDto.getType(),
+                                CommonUtils.getRelatedOperationCode(conceptSchemeMetamacDto)));
+        showContextMenu();
     }
 
 }
