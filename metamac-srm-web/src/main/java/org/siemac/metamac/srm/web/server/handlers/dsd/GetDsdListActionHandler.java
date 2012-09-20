@@ -63,7 +63,8 @@ public class GetDsdListActionHandler extends SecurityActionHandler<GetDsdListAct
         if (!StringUtils.isBlank(action.getDsd())) {
             dsdCriteriaDisjuction.getRestrictions().add(
                     new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.CODE.name(), action.getDsd(), OperationType.ILIKE));
-            // disjuction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.NAME.name(), action.getDsd(), OperationType.ILIKE));
+            dsdCriteriaDisjuction.getRestrictions().add(
+                    new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.NAME.name(), action.getDsd(), OperationType.ILIKE));
             restriction.getRestrictions().add(dsdCriteriaDisjuction);
         }
 

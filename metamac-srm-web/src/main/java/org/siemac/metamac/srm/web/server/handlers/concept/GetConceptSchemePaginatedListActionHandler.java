@@ -62,7 +62,8 @@ public class GetConceptSchemePaginatedListActionHandler extends SecurityActionHa
         if (!StringUtils.isBlank(action.getConceptScheme())) {
             conceptSchemeCriteriaDisjuction.getRestrictions().add(
                     new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.CODE.name(), action.getConceptScheme(), OperationType.ILIKE));
-            // disjuction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.NAME.name(), action.getConceptScheme(), OperationType.ILIKE));
+            conceptSchemeCriteriaDisjuction.getRestrictions().add(
+                    new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.NAME.name(), action.getConceptScheme(), OperationType.ILIKE));
             restriction.getRestrictions().add(conceptSchemeCriteriaDisjuction);
         }
 
