@@ -85,17 +85,6 @@ public class SharedDsdSecurityUtils extends SharedSecurityUtils {
         return isSrmRoleAllowed(metamacPrincipal, TECNICO_PRODUCCION, JEFE_PRODUCCION);
     }
 
-    public static boolean canUpdateAnnotations(MetamacPrincipal metamacPrincipal, ItemSchemeMetamacProcStatusEnum procStatus) {
-        if (ItemSchemeMetamacProcStatusEnum.DRAFT.equals(procStatus)) {
-            return isAnyDsdRole(metamacPrincipal);
-        } else if (ItemSchemeMetamacProcStatusEnum.PRODUCTION_VALIDATION.equals(procStatus)) {
-            return isSrmRoleAllowed(metamacPrincipal, TECNICO_PRODUCCION, JEFE_PRODUCCION);
-        } else if (ItemSchemeMetamacProcStatusEnum.DIFFUSION_VALIDATION.equals(procStatus)) {
-            return isSrmRoleAllowed(metamacPrincipal, JEFE_PRODUCCION);
-        }
-        return false;
-    }
-
     public static boolean canCancelDsdValidity(MetamacPrincipal metamacPrincipal) {
         return isSrmRoleAllowed(metamacPrincipal, JEFE_PRODUCCION);
     }
