@@ -3,7 +3,10 @@ package org.siemac.metamac.srm.web.server.handlers.concept;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.siemac.metamac.core.common.criteria.MetamacCriteria;
+import org.siemac.metamac.core.common.criteria.MetamacCriteriaConjunctionRestriction;
+import org.siemac.metamac.core.common.criteria.MetamacCriteriaDisjunctionRestriction;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder.OrderTypeEnum;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPaginator;
@@ -38,6 +41,7 @@ public class GetConceptSchemePaginatedListActionHandler extends SecurityActionHa
     @Override
     public GetConceptSchemePaginatedListResult executeSecurityAction(GetConceptSchemePaginatedListAction action) throws ActionException {
         MetamacCriteria criteria = new MetamacCriteria();
+
         // Order
         MetamacCriteriaOrder order = new MetamacCriteriaOrder();
         order.setType(OrderTypeEnum.DESC);
@@ -45,15 +49,31 @@ public class GetConceptSchemePaginatedListActionHandler extends SecurityActionHa
         List<MetamacCriteriaOrder> criteriaOrders = new ArrayList<MetamacCriteriaOrder>();
         criteriaOrders.add(order);
         criteria.setOrdersBy(criteriaOrders);
+
+        MetamacCriteriaConjunctionRestriction restriction = new MetamacCriteriaConjunctionRestriction();
+
         // Only find last versions
-        MetamacCriteriaPropertyRestriction propertyRestriction = new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.IS_LAST_VERSION.name(), Boolean.TRUE,
+        MetamacCriteriaPropertyRestriction lastVersionRestriction = new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.IS_LAST_VERSION.name(), Boolean.TRUE,
                 OperationType.EQ);
-        criteria.setRestriction(propertyRestriction);
+        restriction.getRestrictions().add(lastVersionRestriction);
+
+        // Concept scheme Criteria
+        MetamacCriteriaDisjunctionRestriction conceptSchemeCriteriaDisjuction = new MetamacCriteriaDisjunctionRestriction();
+        if (!StringUtils.isBlank(action.getConceptScheme())) {
+            conceptSchemeCriteriaDisjuction.getRestrictions().add(
+                    new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.CODE.name(), action.getConceptScheme(), OperationType.ILIKE));
+            // disjuction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.NAME.name(), action.getConceptScheme(), OperationType.ILIKE));
+            restriction.getRestrictions().add(conceptSchemeCriteriaDisjuction);
+        }
+
+        criteria.setRestriction(restriction);
+
         // Pagination
         criteria.setPaginator(new MetamacCriteriaPaginator());
         criteria.getPaginator().setFirstResult(action.getFirstResult());
         criteria.getPaginator().setMaximumResultSize(action.getMaxResults());
         criteria.getPaginator().setCountTotalResults(true);
+
         try {
             MetamacCriteriaResult<ConceptSchemeMetamacDto> result = srmCoreServiceFacade.findConceptSchemesByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria);
             return new GetConceptSchemePaginatedListResult(result.getResults(), result.getPaginatorResult().getFirstResult(), result.getPaginatorResult().getTotalResults());
