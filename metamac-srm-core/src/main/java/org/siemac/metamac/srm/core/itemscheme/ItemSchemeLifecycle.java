@@ -29,7 +29,7 @@ public class ItemSchemeLifecycle {
     private static final ProcStatusEnum[] procStatusToPublishInternally          = {ProcStatusEnum.DIFFUSION_VALIDATION};
     private static final ProcStatusEnum[] procStatusToPublishExternally          = {ProcStatusEnum.INTERNALLY_PUBLISHED};
 
-    private ItemSchemeLifecycleCallback                    callback                               = null;
+    private ItemSchemeLifecycleCallback   callback                               = null;
 
     public ItemSchemeLifecycle(ItemSchemeLifecycleCallback callback) {
         this.callback = callback;
@@ -145,8 +145,7 @@ public class ItemSchemeLifecycle {
         itemSchemeVersion = callback.updateItemScheme(itemSchemeVersion);
 
         // Fill validTo in previous internally published versions
-        List<ItemSchemeVersion> versionsExternallyPublished = callback.findItemSchemeVersionsOfItemSchemeInProcStatus(ctx, itemSchemeVersion.getItemScheme(),
-                ProcStatusEnum.EXTERNALLY_PUBLISHED);
+        List<ItemSchemeVersion> versionsExternallyPublished = callback.findItemSchemeVersionsOfItemSchemeInProcStatus(ctx, itemSchemeVersion.getItemScheme(), ProcStatusEnum.EXTERNALLY_PUBLISHED);
         for (ItemSchemeVersion versionExternallyPublished : versionsExternallyPublished) {
             if (versionExternallyPublished.getId().equals(itemSchemeVersion.getId())) {
                 continue;
@@ -253,7 +252,7 @@ public class ItemSchemeLifecycle {
 
         // Additional conditions of concrete classes
         callback.checkAdditionalConditionsToPublishExternally(itemSchemeVersion, exceptions);
-        
+
         // Check other conditions
         checkConditionsSincePublishExternally(itemSchemeVersion, exceptions);
 

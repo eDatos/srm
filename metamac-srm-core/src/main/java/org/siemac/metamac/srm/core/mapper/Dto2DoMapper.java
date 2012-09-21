@@ -19,8 +19,9 @@ public interface Dto2DoMapper {
     // TODO Cambiar a tipos de METAMAC
     public <U extends Component> U componentDtoToComponent(ServiceContext ctx, ComponentDto source) throws MetamacException;
     public <U extends ComponentList> U componentListDtoToComponentList(ServiceContext ctx, ComponentListDto componentListDto) throws MetamacException;
-    
-    public DataStructureDefinitionVersionMetamac dataStructureDefinitionDtoToDataStructureDefinition(ServiceContext ctx, DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) throws MetamacException;
+
+    public DataStructureDefinitionVersionMetamac dataStructureDefinitionDtoToDataStructureDefinition(ServiceContext ctx, DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto)
+            throws MetamacException;
 
     public ConceptSchemeVersionMetamac conceptSchemeDtoToDo(ServiceContext ctx, ConceptSchemeMetamacDto conceptSchemeDto) throws MetamacException;
 

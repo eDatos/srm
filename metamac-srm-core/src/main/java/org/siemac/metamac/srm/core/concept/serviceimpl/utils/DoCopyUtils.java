@@ -25,7 +25,7 @@ public class DoCopyUtils {
 
         // Common metadata of ConceptSchemeVersion
         copyConceptSchemeVersion(source, target);
-        
+
         return target;
     }
 

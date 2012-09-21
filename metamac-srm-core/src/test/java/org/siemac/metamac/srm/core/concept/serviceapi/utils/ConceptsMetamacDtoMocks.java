@@ -46,7 +46,7 @@ public class ConceptsMetamacDtoMocks {
         conceptMetamacDto.setType(mockConceptTypeDto());
         return conceptMetamacDto;
     }
-    
+
     public static ConceptTypeDto mockConceptTypeDto() {
         ConceptTypeDto conceptTypeDto = new ConceptTypeDto();
         conceptTypeDto.setIdentifier("DERIVED");

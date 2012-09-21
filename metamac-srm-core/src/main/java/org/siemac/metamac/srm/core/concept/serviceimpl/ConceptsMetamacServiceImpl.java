@@ -60,7 +60,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
     public ConceptsMetamacServiceImpl() {
     }
-    
+
     @Override
     public ConceptSchemeVersionMetamac createConceptScheme(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeVersion) throws MetamacException {
 
@@ -192,9 +192,8 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
                 new ProcStatusEnum[]{ProcStatusEnum.INTERNALLY_PUBLISHED, ProcStatusEnum.EXTERNALLY_PUBLISHED});
 
         // Check not exists version not published
-        List<ConceptSchemeVersionMetamac> versionsNotPublished = findConceptSchemeVersionsOfConceptSchemeInProcStatus(ctx, conceptSchemeVersionToCopy.getItemScheme(),
-                ProcStatusEnum.DRAFT, ProcStatusEnum.PRODUCTION_VALIDATION, ProcStatusEnum.DIFFUSION_VALIDATION,
-                ProcStatusEnum.VALIDATION_REJECTED);
+        List<ConceptSchemeVersionMetamac> versionsNotPublished = findConceptSchemeVersionsOfConceptSchemeInProcStatus(ctx, conceptSchemeVersionToCopy.getItemScheme(), ProcStatusEnum.DRAFT,
+                ProcStatusEnum.PRODUCTION_VALIDATION, ProcStatusEnum.DIFFUSION_VALIDATION, ProcStatusEnum.VALIDATION_REJECTED);
         if (versionsNotPublished.size() != 0) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CONCEPT_SCHEME_VERSIONING_NOT_SUPPORTED)
                     .withMessageParameters(versionsNotPublished.get(0).getMaintainableArtefact().getUrn()).build();
@@ -482,8 +481,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     /**
      * Finds versions of concept scheme in specific procStatus
      */
-    private List<ConceptSchemeVersionMetamac> findConceptSchemeVersionsOfConceptSchemeInProcStatus(ServiceContext ctx, ItemScheme conceptScheme, ProcStatusEnum... procStatus)
-            throws MetamacException {
+    private List<ConceptSchemeVersionMetamac> findConceptSchemeVersionsOfConceptSchemeInProcStatus(ServiceContext ctx, ItemScheme conceptScheme, ProcStatusEnum... procStatus) throws MetamacException {
 
         List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).withProperty(ConceptSchemeVersionMetamacProperties.itemScheme().id())
                 .eq(conceptScheme.getId()).withProperty(ConceptSchemeVersionMetamacProperties.procStatus()).in((Object[]) procStatus).distinctRoot().build();
@@ -522,10 +520,8 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
      * Retrieves version of a concept scheme, checking that can be modified
      */
     private ConceptSchemeVersionMetamac retrieveConceptSchemeVersionCanBeModified(ServiceContext ctx, String urn) throws MetamacException {
-        return getConceptSchemeVersionMetamacRepository().retrieveConceptSchemeVersionByProcStatus(
-                urn,
-                new ProcStatusEnum[]{ProcStatusEnum.DRAFT, ProcStatusEnum.VALIDATION_REJECTED,
-                        ProcStatusEnum.PRODUCTION_VALIDATION, ProcStatusEnum.DIFFUSION_VALIDATION});
+        return getConceptSchemeVersionMetamacRepository().retrieveConceptSchemeVersionByProcStatus(urn,
+                new ProcStatusEnum[]{ProcStatusEnum.DRAFT, ProcStatusEnum.VALIDATION_REJECTED, ProcStatusEnum.PRODUCTION_VALIDATION, ProcStatusEnum.DIFFUSION_VALIDATION});
     }
 
     private ConceptRelation findConceptRelationBidirectionalByConcepts(String urn1, String urn2) {

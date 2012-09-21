@@ -9,10 +9,10 @@ public class DataStructureDefinitionMetamacDoMocks extends DataStructureDefiniti
     public static DataStructureDefinitionVersionMetamac mockDataStructureDefinitionVersionMetamac() {
 
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = new DataStructureDefinitionVersionMetamac();
-        
+
         mockDataStructureDefinition(dataStructureDefinitionVersionMetamac);
-        
+
         return dataStructureDefinitionVersionMetamac;
     }
-    
+
 }

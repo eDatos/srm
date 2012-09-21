@@ -11,8 +11,6 @@ import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
-import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
-import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacProperties;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamacProperties;
 import org.siemac.metamac.srm.core.dsd.serviceimpl.utils.DsdsMetamacInvocationValidator;
@@ -23,11 +21,9 @@ import org.springframework.stereotype.Service;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Component;
 import com.arte.statistic.sdmx.srm.core.base.domain.ComponentList;
-import com.arte.statistic.sdmx.srm.core.base.domain.ItemScheme;
 import com.arte.statistic.sdmx.srm.core.base.domain.Structure;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DataStructureDefinitionVersion;
 import com.arte.statistic.sdmx.srm.core.structure.serviceapi.DataStructureDefinitionService;
-import com.arte.statistic.sdmx.srm.core.structure.serviceimpl.utils.StructureCopyCallbackSdmxImpl;
 import com.arte.statistic.sdmx.srm.core.structure.serviceimpl.utils.StructureDoCopyUtils.StructureCopyCallback;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponentList;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
@@ -170,22 +166,19 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
     public DataStructureDefinitionVersionMetamac versioningDataStructureDefinition(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
         // Validation
         DsdsMetamacInvocationValidator.checkVersioningDataStructureDefinition(urnToCopy, versionType, null);
-        
+
         // Initialize new version, copying values of version selected
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionToCopy = getDataStructureDefinitionVersionMetamacRepository().retrieveDataStructureDefinitionVersionByProcStatus(urnToCopy,
                 new ProcStatusEnum[]{ProcStatusEnum.INTERNALLY_PUBLISHED, ProcStatusEnum.EXTERNALLY_PUBLISHED});
 
-        
         // Check not exists version not published
         List<DataStructureDefinitionVersionMetamac> versionsNotPublished = findDataStructureVersionsOfDataStructureInProcStatus(ctx, dataStructureDefinitionVersionToCopy.getStructure(),
-                ProcStatusEnum.DRAFT, ProcStatusEnum.PRODUCTION_VALIDATION, ProcStatusEnum.DIFFUSION_VALIDATION,
-                ProcStatusEnum.VALIDATION_REJECTED);
+                ProcStatusEnum.DRAFT, ProcStatusEnum.PRODUCTION_VALIDATION, ProcStatusEnum.DIFFUSION_VALIDATION, ProcStatusEnum.VALIDATION_REJECTED);
         if (versionsNotPublished.size() != 0) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.SRM_DATA_STRUCTURE_DEFINITION_VERSIONING_NOT_SUPPORTED)
                     .withMessageParameters(versionsNotPublished.get(0).getMaintainableArtefact().getUrn()).build();
         }
-        
-        
+
         return (DataStructureDefinitionVersionMetamac) dataStructureDefinitionService.versioningDataStructureDefinition(ctx, urnToCopy, versionType, structureCopyCallback);
     }
 
@@ -210,8 +203,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
     /**
      * Retrieves version of a data structure definition in specific procStatus
      */
-    private DataStructureDefinitionVersionMetamac retrieveDataStructureDefinitionVersionByProcStatus(ServiceContext ctx, String urn, ProcStatusEnum... procStatus)
-            throws MetamacException {
+    private DataStructureDefinitionVersionMetamac retrieveDataStructureDefinitionVersionByProcStatus(ServiceContext ctx, String urn, ProcStatusEnum... procStatus) throws MetamacException {
 
         List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(DataStructureDefinitionVersionMetamac.class)
                 .withProperty(DataStructureDefinitionVersionMetamacProperties.maintainableArtefact().urn()).eq(urn).withProperty(DataStructureDefinitionVersionMetamacProperties.procStatus())
@@ -230,17 +222,19 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         }
         return dataStructureDefinitionVersionMetamacPagedResult.getValues().get(0);
     }
-    
+
     /**
      * Finds versions of data structure definition in specific procStatus
      */
     private List<DataStructureDefinitionVersionMetamac> findDataStructureVersionsOfDataStructureInProcStatus(ServiceContext ctx, Structure structure, ProcStatusEnum... procStatus)
             throws MetamacException {
 
-        List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(DataStructureDefinitionVersionMetamac.class).withProperty(DataStructureDefinitionVersionMetamacProperties.structure().id())
-                .eq(structure.getId()).withProperty(DataStructureDefinitionVersionMetamacProperties.procStatus()).in((Object[]) procStatus).distinctRoot().build();
+        List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(DataStructureDefinitionVersionMetamac.class)
+                .withProperty(DataStructureDefinitionVersionMetamacProperties.structure().id()).eq(structure.getId()).withProperty(DataStructureDefinitionVersionMetamacProperties.procStatus())
+                .in((Object[]) procStatus).distinctRoot().build();
         PagingParameter pagingParameter = PagingParameter.noLimits();
-        PagedResult<DataStructureDefinitionVersionMetamac> dataStructureDefinitionVersionPagedResult = getDataStructureDefinitionVersionMetamacRepository().findByCondition(conditions, pagingParameter);
+        PagedResult<DataStructureDefinitionVersionMetamac> dataStructureDefinitionVersionPagedResult = getDataStructureDefinitionVersionMetamacRepository()
+                .findByCondition(conditions, pagingParameter);
         return dataStructureDefinitionVersionPagedResult.getValues();
     }
 

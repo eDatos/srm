@@ -23,7 +23,7 @@ public class DsdsMetamacInvocationValidator extends DataStructureInvocationValid
         if (exceptions == null) {
             exceptions = new ArrayList<MetamacExceptionItem>();
         }
-        
+
         ValidationUtils.checkParameterRequired(dataStructureDefinitionVersionMetamac, ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION, exceptions);
         if (dataStructureDefinitionVersionMetamac != null) {
             if (dataStructureDefinitionVersionMetamac != null) {
@@ -33,12 +33,12 @@ public class DsdsMetamacInvocationValidator extends DataStructureInvocationValid
 
         ExceptionUtils.throwIfException(exceptions);
     }
-    
+
     public static void checkUpdateDataStructureDefinition(DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac, List<MetamacExceptionItem> exceptions) throws MetamacException {
         if (exceptions == null) {
             exceptions = new ArrayList<MetamacExceptionItem>();
         }
-        
+
         ValidationUtils.checkParameterRequired(dataStructureDefinitionVersionMetamac, ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION, exceptions);
         if (dataStructureDefinitionVersionMetamac != null) {
             checkDataStructureDefinition(dataStructureDefinitionVersionMetamac, exceptions);
@@ -46,41 +46,41 @@ public class DsdsMetamacInvocationValidator extends DataStructureInvocationValid
 
         ExceptionUtils.throwIfException(exceptions);
     }
-    
-    public static void checkFindDataStructureDefinitionsByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, List<MetamacExceptionItem> exceptions) throws MetamacException {
+
+    public static void checkFindDataStructureDefinitionsByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, List<MetamacExceptionItem> exceptions)
+            throws MetamacException {
         if (exceptions == null) {
             exceptions = new ArrayList<MetamacExceptionItem>();
         }
 
         ExceptionUtils.throwIfException(exceptions);
     }
-    
+
     public static void cancelDataStructureDefinitionVersionMetamacValidity(String urn, List<MetamacExceptionItem> exceptions) throws MetamacException {
         if (exceptions == null) {
             exceptions = new ArrayList<MetamacExceptionItem>();
         }
-        
+
         ValidationUtils.checkParameterRequired(urn, ServiceExceptionParameters.URN, exceptions);
 
         ExceptionUtils.throwIfException(exceptions);
     }
-    
+
     public static void cancelVersioningDataStructureDefinition(String urn, VersionTypeEnum versionType, List<MetamacExceptionItem> exceptions) throws MetamacException {
         if (exceptions == null) {
             exceptions = new ArrayList<MetamacExceptionItem>();
         }
-        
+
         ValidationUtils.checkParameterRequired(urn, ServiceExceptionParameters.URN, exceptions);
         ValidationUtils.checkParameterRequired(versionType, ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION_VERSION_TYPE, exceptions);
 
         ExceptionUtils.throwIfException(exceptions);
-    }    
-    
-    
+    }
+
     /**************************************************************************
      * PRIVATES
      *************************************************************************/
-    
+
     private static void checkDataStructureDefinition(DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac, List<MetamacExceptionItem> exceptions) {
         if (dataStructureDefinitionVersionMetamac.getMaintainableArtefact() != null && BooleanUtils.isTrue(dataStructureDefinitionVersionMetamac.getMaintainableArtefact().getIsExternalReference())) {
             exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.MAINTAINABLE_ARTEFACT_IS_EXTERNAL_REFERENCE));

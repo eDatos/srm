@@ -35,8 +35,6 @@ import org.siemac.metamac.core.common.dto.LocalisedStringDto;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.jaxb.CustomJaxb2Marshaller;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
-import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
-import org.siemac.metamac.srm.core.criteria.ConceptMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.criteria.DataStructureDefinitionVersionMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.core.dsd.serviceapi.DsdsMetamacService;
@@ -122,7 +120,7 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
 
         result = srmCoreServiceFacade.findDataStructureDefinitionsByCondition(getServiceContext(), metamacCriteria);
         assertEquals(1, result.getResults().size());
-        
+
         metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.NAME.name(), "NOT FOUND", OperationType.EQ));
         result = srmCoreServiceFacade.findDataStructureDefinitionsByCondition(getServiceContext(), metamacCriteria);
         assertEquals(0, result.getResults().size());
@@ -172,7 +170,8 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
     public void testSaveDsd() throws Exception {
 
         // Create ****************
-        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = srmCoreServiceFacade.createDataStructureDefinition(getServiceContext(), SrmDtoMocks.createDataStructureDefinitionMetamacDtoMock());
+        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = srmCoreServiceFacade.createDataStructureDefinition(getServiceContext(),
+                SrmDtoMocks.createDataStructureDefinitionMetamacDtoMock());
 
         assertNotNull(dataStructureDefinitionMetamacDto.getId());
 
@@ -203,7 +202,8 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
     @Ignore
     public void testRemoveLabel() throws Exception {
         // Remove Label --> Dont' save ********************
-        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = srmCoreServiceFacade.createDataStructureDefinition(getServiceContext(), SrmDtoMocks.createDataStructureDefinitionMetamacDtoMock());
+        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = srmCoreServiceFacade.createDataStructureDefinition(getServiceContext(),
+                SrmDtoMocks.createDataStructureDefinitionMetamacDtoMock());
         InternationalStringDto name = dataStructureDefinitionMetamacDto.getName();
 
         LocalisedStringDto localisedStringDto = name.getTexts().iterator().next();
@@ -239,7 +239,8 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
     @Test
     @Ignore
     public void testFindDescriptorsForDsd() throws Exception {
-        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = srmCoreServiceFacade.createDataStructureDefinition(getServiceContext(), SrmDtoMocks.createDataStructureDefinitionMetamacDtoMock());
+        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = srmCoreServiceFacade.createDataStructureDefinition(getServiceContext(),
+                SrmDtoMocks.createDataStructureDefinitionMetamacDtoMock());
 
         // Save DimensionDescriptor
         DescriptorDto descriptorDto = srmCoreServiceFacade.saveDescriptorForDataStructureDefinition(getServiceContext(), dataStructureDefinitionMetamacDto.getUrn(),
@@ -254,7 +255,8 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
     @Test
     @Ignore
     public void testFindDescriptorForDsd() throws Exception {
-        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = srmCoreServiceFacade.createDataStructureDefinition(getServiceContext(), SrmDtoMocks.createDataStructureDefinitionMetamacDtoMock());
+        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = srmCoreServiceFacade.createDataStructureDefinition(getServiceContext(),
+                SrmDtoMocks.createDataStructureDefinitionMetamacDtoMock());
 
         // Save DimensionDescriptor
         DescriptorDto descriptorDto = srmCoreServiceFacade.saveDescriptorForDataStructureDefinition(getServiceContext(), dataStructureDefinitionMetamacDto.getUrn(),
@@ -342,7 +344,8 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
     @Test
     @Ignore
     public void testCreateDescriptorAndThenAssociateRepresentation() throws Exception {
-        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = srmCoreServiceFacade.createDataStructureDefinition(getServiceContext(), SrmDtoMocks.createDataStructureDefinitionMetamacDtoMock());
+        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = srmCoreServiceFacade.createDataStructureDefinition(getServiceContext(),
+                SrmDtoMocks.createDataStructureDefinitionMetamacDtoMock());
 
         // Save PrimaryMeasure
         ComponentDto componentDto = srmCoreServiceFacade.saveComponentForDataStructureDefinition(getServiceContext(), dataStructureDefinitionMetamacDto.getUrn(),
@@ -373,7 +376,8 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
     @Test
     @Ignore
     public void testDeleteDescriptorForDsd() throws Exception {
-        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = srmCoreServiceFacade.createDataStructureDefinition(getServiceContext(), SrmDtoMocks.createDataStructureDefinitionMetamacDtoMock());
+        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = srmCoreServiceFacade.createDataStructureDefinition(getServiceContext(),
+                SrmDtoMocks.createDataStructureDefinitionMetamacDtoMock());
 
         // Save DimensionDescriptors
         DescriptorDto descriptorDto = srmCoreServiceFacade.saveDescriptorForDataStructureDefinition(getServiceContext(), dataStructureDefinitionMetamacDto.getUrn(),
@@ -390,7 +394,8 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
     @Test
     @Ignore
     public void testSaveComponentForDsd() throws Exception {
-        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = srmCoreServiceFacade.createDataStructureDefinition(getServiceContext(), SrmDtoMocks.createDataStructureDefinitionMetamacDtoMock());
+        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = srmCoreServiceFacade.createDataStructureDefinition(getServiceContext(),
+                SrmDtoMocks.createDataStructureDefinitionMetamacDtoMock());
 
         ComponentDto componentDto = srmCoreServiceFacade.saveComponentForDataStructureDefinition(getServiceContext(), dataStructureDefinitionMetamacDto.getUrn(),
                 SrmDtoMocks.createDimensionDtos(srmCoreServiceFacade).get(0), TypeComponentList.DIMENSION_DESCRIPTOR);
@@ -407,7 +412,8 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
     @Test
     @Ignore
     public void testSaveComponentForDsdWithDescriptorExist() throws Exception {
-        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = srmCoreServiceFacade.createDataStructureDefinition(getServiceContext(), SrmDtoMocks.createDataStructureDefinitionMetamacDtoMock());
+        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = srmCoreServiceFacade.createDataStructureDefinition(getServiceContext(),
+                SrmDtoMocks.createDataStructureDefinitionMetamacDtoMock());
 
         ComponentDto componentDto = srmCoreServiceFacade.saveComponentForDataStructureDefinition(getServiceContext(), dataStructureDefinitionMetamacDto.getUrn(),
                 SrmDtoMocks.createDimensionDtos(srmCoreServiceFacade).get(0), TypeComponentList.DIMENSION_DESCRIPTOR);
@@ -429,7 +435,8 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
     @Test
     @Ignore
     public void testSaveComponentForDsdWithDescriptorAndComponentExist() throws Exception {
-        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = srmCoreServiceFacade.createDataStructureDefinition(getServiceContext(), SrmDtoMocks.createDataStructureDefinitionMetamacDtoMock());
+        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = srmCoreServiceFacade.createDataStructureDefinition(getServiceContext(),
+                SrmDtoMocks.createDataStructureDefinitionMetamacDtoMock());
 
         ComponentDto componentDto = srmCoreServiceFacade.saveComponentForDataStructureDefinition(getServiceContext(), dataStructureDefinitionMetamacDto.getUrn(),
                 SrmDtoMocks.createDimensionDtos(srmCoreServiceFacade).get(0), TypeComponentList.DIMENSION_DESCRIPTOR);
@@ -451,7 +458,8 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
     @Test
     @Ignore
     public void testDeleteComponentForDsd() throws Exception {
-        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = srmCoreServiceFacade.createDataStructureDefinition(getServiceContext(), SrmDtoMocks.createDataStructureDefinitionMetamacDtoMock());
+        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = srmCoreServiceFacade.createDataStructureDefinition(getServiceContext(),
+                SrmDtoMocks.createDataStructureDefinitionMetamacDtoMock());
 
         // SAVE COMPONENT
         ComponentDto componentDto = srmCoreServiceFacade.saveComponentForDataStructureDefinition(getServiceContext(), dataStructureDefinitionMetamacDto.getUrn(),

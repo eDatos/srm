@@ -27,7 +27,7 @@ public class StructureLifecycle {
     private static final ProcStatusEnum[] procStatusToPublishInternally          = {ProcStatusEnum.DIFFUSION_VALIDATION};
     private static final ProcStatusEnum[] procStatusToPublishExternally          = {ProcStatusEnum.INTERNALLY_PUBLISHED};
 
-    private StructureLifecycleCallback                    callback                               = null;
+    private StructureLifecycleCallback    callback                               = null;
 
     public StructureLifecycle(StructureLifecycleCallback callback) {
         this.callback = callback;
@@ -143,8 +143,7 @@ public class StructureLifecycle {
         structureVersion = callback.updateStructure(structureVersion);
 
         // Fill validTo in previous internally published versions
-        List<StructureVersion> versionsExternallyPublished = callback.findStructureVersionsOfItemSchemeInProcStatus(ctx, structureVersion.getStructure(),
-                ProcStatusEnum.EXTERNALLY_PUBLISHED);
+        List<StructureVersion> versionsExternallyPublished = callback.findStructureVersionsOfItemSchemeInProcStatus(ctx, structureVersion.getStructure(), ProcStatusEnum.EXTERNALLY_PUBLISHED);
         for (StructureVersion versionExternallyPublished : versionsExternallyPublished) {
             if (versionExternallyPublished.getId().equals(structureVersion.getId())) {
                 continue;
@@ -173,7 +172,7 @@ public class StructureLifecycle {
 
         ExceptionUtils.throwIfException(exceptions);
     }
-    
+
     /**
      * Makes validations to sent to diffusion validation
      */
@@ -251,13 +250,13 @@ public class StructureLifecycle {
 
         // Additional conditions of concrete classes
         callback.checkAdditionalConditionsToPublishExternally(structureVersion, exceptions);
-        
+
         // Check other conditions
         checkConditionsSincePublishExternally(structureVersion, exceptions);
 
         ExceptionUtils.throwIfException(exceptions);
     }
-    
+
     /**
      * Checks proc status of data structure definition in proc status expected and throws exceptions if it is incorrect
      */

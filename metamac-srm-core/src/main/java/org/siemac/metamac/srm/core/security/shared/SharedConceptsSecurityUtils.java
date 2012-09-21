@@ -31,8 +31,8 @@ public class SharedConceptsSecurityUtils extends SharedSecurityUtils {
         return isSrmRoleAllowed(metamacPrincipal, roles) && (!isOperationConceptSchemeType(type) || isOperationAllowed(metamacPrincipal, operationCode, roles));
     }
 
-    public static boolean canUpdateConceptScheme(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus, ConceptSchemeTypeEnum typeOld, String operationCodeOld,
-            ConceptSchemeTypeEnum typeNew, String operationCodeNew) {
+    public static boolean canUpdateConceptScheme(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus, ConceptSchemeTypeEnum typeOld, String operationCodeOld, ConceptSchemeTypeEnum typeNew,
+            String operationCodeNew) {
         return canUpdateConceptScheme(metamacPrincipal, procStatus, typeOld, operationCodeOld) && canUpdateConceptScheme(metamacPrincipal, procStatus, typeNew, operationCodeNew);
     }
 
@@ -161,7 +161,7 @@ public class SharedConceptsSecurityUtils extends SharedSecurityUtils {
     public static boolean canRetrieveConceptsByConceptSchemeUrn(MetamacPrincipal metamacPrincipal) {
         return isAnySrmRole(metamacPrincipal);
     }
-    
+
     public static boolean canFindConceptsByCondition(MetamacPrincipal metamacPrincipal) {
         return isAnySrmRole(metamacPrincipal);
     }
@@ -181,11 +181,11 @@ public class SharedConceptsSecurityUtils extends SharedSecurityUtils {
     public static boolean canRetrieveRelatedConceptsRoles(MetamacPrincipal metamacPrincipal) {
         return isAnySrmRole(metamacPrincipal);
     }
-    
+
     public static boolean canRetrieveConceptTypeByIdentifier(MetamacPrincipal metamacPrincipal) {
         return isAnySrmRole(metamacPrincipal);
     }
-    
+
     public static boolean canFindAllConceptTypes(MetamacPrincipal metamacPrincipal) {
         return isAnySrmRole(metamacPrincipal);
     }

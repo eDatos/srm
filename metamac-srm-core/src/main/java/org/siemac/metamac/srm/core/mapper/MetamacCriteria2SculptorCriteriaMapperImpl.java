@@ -90,7 +90,7 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                 case PROC_STATUS:
                     return new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.procStatus(), propertyRestriction.getEnumValue());
                 case NAME:
-                    return  new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.maintainableArtefact().name().texts().label(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.maintainableArtefact().name().texts().label(), propertyRestriction.getStringValue());
                 case IS_LAST_VERSION:
                     return new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.maintainableArtefact().isLastVersion(), propertyRestriction.getBooleanValue());
                 default:
@@ -137,7 +137,7 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                 case PROC_STATUS:
                     return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.procStatus(), propertyRestriction.getEnumValue());
                 case NAME:
-                    return  new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.maintainableArtefact().name().texts().label(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.maintainableArtefact().name().texts().label(), propertyRestriction.getStringValue());
                 case IS_LAST_VERSION:
                     return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.maintainableArtefact().isLastVersion(), propertyRestriction.getBooleanValue());
                 default:

@@ -1,19 +1,12 @@
 package org.siemac.metamac.srm.core.common.utilities;
 
-import static org.junit.Assert.assertTrue;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.nio.ByteBuffer;
 import java.sql.SQLException;
-import java.util.List;
 
 import javax.naming.NamingException;
 
 import oracle.jdbc.pool.OracleDataSource;
 
-import org.apache.commons.lang.SerializationUtils;
 import org.apache.log4j.Logger;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.junit.BeforeClass;
@@ -25,8 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.jndi.SimpleNamingContextBuilder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/srm/applicationContext-test.xml"})
@@ -79,30 +70,24 @@ public class JavaSerializationTest {
     @Ignore
     // @Rollback(false)
     public void testSerializeDSD() throws Exception {
-        //TODO TEST serializar DSD
+        // TODO TEST serializar DSD
 
         /*
-        List<DataStructureDefinitionDto> dsds = srmCoreServiceFacade.findAllDsds(getServiceContext());
-
-        File serializationFile = File.createTempFile("METAMAC", "ser");
-
-        // New file output stream for the file
-        FileOutputStream fos = new FileOutputStream(serializationFile);
-
-        // Serialize DSD
-        SerializationUtils.serialize(dsds.get(dsds.size() - 1), fos);
-        fos.close();
-
-        // Open FileInputStream to the file
-        FileInputStream fis = new FileInputStream(serializationFile);
-
-        // Deserialize and cast into DSD
-        DataStructureDefinitionDto ser = (DataStructureDefinitionDto) SerializationUtils.deserialize(fis);
-        System.out.println(ser);
-        fis.close();
-
-        assertTrue(ser.getCode() != null);
-*/
+         * List<DataStructureDefinitionDto> dsds = srmCoreServiceFacade.findAllDsds(getServiceContext());
+         * File serializationFile = File.createTempFile("METAMAC", "ser");
+         * // New file output stream for the file
+         * FileOutputStream fos = new FileOutputStream(serializationFile);
+         * // Serialize DSD
+         * SerializationUtils.serialize(dsds.get(dsds.size() - 1), fos);
+         * fos.close();
+         * // Open FileInputStream to the file
+         * FileInputStream fis = new FileInputStream(serializationFile);
+         * // Deserialize and cast into DSD
+         * DataStructureDefinitionDto ser = (DataStructureDefinitionDto) SerializationUtils.deserialize(fis);
+         * System.out.println(ser);
+         * fis.close();
+         * assertTrue(ser.getCode() != null);
+         */
     }
 
     /************************************************************************************

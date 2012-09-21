@@ -23,27 +23,27 @@ import com.arte.statistic.sdmx.srm.core.structure.serviceimpl.utils.StructureDoC
 
 @Component("structureCopyCallback")
 public class StructureCopyCallbackMetamacImpl implements StructureCopyCallback {
-  
+
     /****************
-     * DSD 
+     * DSD
      ****************/
 
     @Override
     public DataStructureDefinitionVersion copyDataStructureDefinitionVersion(DataStructureDefinitionVersion source) {
-        DataStructureDefinitionVersionMetamac sourceMetamac = (DataStructureDefinitionVersionMetamac)source;
-        
+        DataStructureDefinitionVersionMetamac sourceMetamac = (DataStructureDefinitionVersionMetamac) source;
+
         DataStructureDefinitionVersionMetamac target = new DataStructureDefinitionVersionMetamac();
-        
+
         // Metamac Metadata
         target.setProcStatus(ProcStatusEnum.DRAFT); // New structure in draft version
-        
+
         return target;
     }
 
     /***************
-     * Descriptors 
+     * Descriptors
      ***************/
-    
+
     @Override
     public AttributeDescriptor copyAttributeDescriptor(AttributeDescriptor source) {
         AttributeDescriptor target = new AttributeDescriptor();
@@ -69,9 +69,9 @@ public class StructureCopyCallbackMetamacImpl implements StructureCopyCallback {
     }
 
     /*************
-     * Components 
+     * Components
      *************/
-    
+
     @Override
     public DataAttribute copyDataAttribute(DataAttribute source) {
         DataAttribute target = new DataAttribute();
@@ -109,7 +109,7 @@ public class StructureCopyCallbackMetamacImpl implements StructureCopyCallback {
     }
 
     /*************
-     * AttributeRelationships 
+     * AttributeRelationships
      *************/
     @Override
     public DimensionRelationship copyDimensionRelationship(DimensionRelationship source) {

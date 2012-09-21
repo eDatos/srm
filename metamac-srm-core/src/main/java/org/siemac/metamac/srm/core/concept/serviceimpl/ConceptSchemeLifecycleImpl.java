@@ -73,7 +73,7 @@ public class ConceptSchemeLifecycleImpl implements ConceptSchemeLifecycle {
     public ItemSchemeVersion publishInternally(ServiceContext ctx, String urn) throws MetamacException {
         return itemSchemeLifecycle.publishInternally(ctx, urn);
     }
-    
+
     @Override
     public ItemSchemeVersion publishExternally(ServiceContext ctx, String urn) throws MetamacException {
         return itemSchemeLifecycle.publishExternally(ctx, urn);
@@ -127,7 +127,7 @@ public class ConceptSchemeLifecycleImpl implements ConceptSchemeLifecycle {
                     throw new IllegalArgumentException("unsupported: " + newProcStatus);
             }
         }
-        
+
         @Override
         public ProcStatusEnum getProcStatusMetadataValue(ItemSchemeVersion itemSchemeVersion) {
             ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptSchemeVersionMetamac(itemSchemeVersion);
@@ -139,7 +139,6 @@ public class ConceptSchemeLifecycleImpl implements ConceptSchemeLifecycle {
             ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptSchemeVersionMetamac(itemSchemeVersion);
             return conceptSchemeVersion.getExternalPublicationDate();
         }
-        
 
         @Override
         public void checkAdditionalConditionsSinceSendToProductionValidation(ItemSchemeVersion itemSchemeVersion, List<MetamacExceptionItem> exceptions) {
@@ -197,7 +196,7 @@ public class ConceptSchemeLifecycleImpl implements ConceptSchemeLifecycle {
             PagedResult<ConceptSchemeVersionMetamac> conceptSchemeVersionPagedResult = conceptSchemeVersionMetamacRepository.findByCondition(conditions, pagingParameter);
             return conceptSchemeMetamacToItemScheme(conceptSchemeVersionPagedResult.getValues());
         }
-        
+
         private ConceptSchemeVersionMetamac getConceptSchemeVersionMetamac(ItemSchemeVersion itemSchemeVersion) {
             return (ConceptSchemeVersionMetamac) itemSchemeVersion;
         }

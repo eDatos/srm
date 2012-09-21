@@ -51,9 +51,9 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
         if (source == null) {
             return null;
         }
-        
+
         DataStructureDefinitionMetamacDto target = dataStructureDefinitionVersionMetamacDoToDto(source, typeDozerCopyMode);
-        
+
         return target;
     }
 
@@ -62,9 +62,9 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
         if (source == null) {
             return null;
         }
-        
+
         DataStructureDefinitionMetamacDto target = dataStructureDefinitionVersionMetamacDoToDto(source, TypeDozerCopyMode.COPY_ALL_METADATA);
-        
+
         return target;
     }
 
@@ -79,11 +79,11 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
         target.setInternalPublicationUser(source.getInternalPublicationUser());
         target.setExternalPublicationDate(CoreCommonUtil.transformDateTimeToDate(source.getExternalPublicationDate()));
         target.setExternalPublicationUser(source.getExternalPublicationUser());
-        
+
         do2DtoMapperSdmxSrm.dataStructureDefinitionDoToDto(typeDozerCopyMode, source, target);
         return target;
     }
-    
+
     @Override
     public DataStructureDefinitionExtendDto dataStructureDefinitionToDataStructureDefinitionExtendDto(TypeDozerCopyMode typeDozerCopyMode, DataStructureDefinitionVersion dataStructureDefinitionVersion) {
         return do2DtoMapperSdmxSrm.dataStructureDefinitionToDataStructureDefinitionExtendDto(typeDozerCopyMode, dataStructureDefinitionVersion);
@@ -97,7 +97,7 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
         }
         return dataStructureDefinitionMetamacDtos;
     }
-    
+
     // ------------------------------------------------------------
     // CONCEPTS
     // ------------------------------------------------------------
@@ -153,7 +153,7 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
             target.setConceptExtendsUrn(source.getConceptExtends().getNameableArtefact().getUrn());
         }
         do2DtoMapperSdmxSrm.conceptDoToDto(source, target);
-        
+
         // note: not conversion to relatedConcepts and roles. Call 'retrieveRelatedConcepts' operation of Service
 
         return target;
@@ -177,7 +177,7 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
         }
         return targets;
     }
-    
+
     @Override
     public ConceptTypeDto conceptTypeDoToDto(ConceptType source) {
         if (source == null) {
@@ -188,7 +188,7 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
         target.setDescription(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getDescription()));
         return target;
     }
-    
+
     @Override
     public List<ConceptTypeDto> conceptTypeDoListToConceptTypeDtoList(List<ConceptType> sources) {
         List<ConceptTypeDto> targets = new ArrayList<ConceptTypeDto>();
@@ -196,7 +196,7 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
             targets.add(conceptTypeDoToDto(source));
         }
         return targets;
-    }    
+    }
 
     private ItemHierarchyDto conceptMetamacDoToItemHierarchyDto(ConceptMetamac conceptMetamac) {
         ItemHierarchyDto itemHierarchyDto = new ItemHierarchyDto();
@@ -213,6 +213,5 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
 
         return itemHierarchyDto;
     }
-
 
 }

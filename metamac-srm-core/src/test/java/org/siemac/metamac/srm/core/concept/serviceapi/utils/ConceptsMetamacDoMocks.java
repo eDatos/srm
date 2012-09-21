@@ -23,7 +23,7 @@ public class ConceptsMetamacDoMocks extends ConceptsDoMocks {
         mockConceptScheme(conceptSchemeVersion);
         return conceptSchemeVersion;
     }
-    
+
     public static ConceptMetamac mockConcept(ConceptType conceptType) {
 
         ConceptMetamac concept = new ConceptMetamac();
@@ -36,7 +36,7 @@ public class ConceptsMetamacDoMocks extends ConceptsDoMocks {
         concept.setType(conceptType);
         concept.setDerivation(mockInternationalString());
         concept.setLegalActs(mockInternationalString());
-        
+
         mockConcept(concept, Boolean.TRUE);
         return concept;
     }

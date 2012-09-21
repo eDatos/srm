@@ -26,7 +26,7 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
         }
         return null;
     }
-    
+
     @Override
     public ConceptMetamac findOneConceptByConceptExtends(Long idConceptExtends) {
         Map<String, Object> parameters = new HashMap<String, Object>();
