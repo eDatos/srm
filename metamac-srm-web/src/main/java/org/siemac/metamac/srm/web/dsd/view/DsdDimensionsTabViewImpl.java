@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
-import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
+import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.representation.widgets.StaticFacetForm;
 import org.siemac.metamac.srm.web.client.resources.GlobalResources;
@@ -71,7 +71,7 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTabUiHandlers> implements DsdDimensionsTabPresenter.DsdDimensionsTabView {
 
-    private ItemSchemeMetamacProcStatusEnum procStatus;
+    private ProcStatusEnum procStatus;
 
     private DimensionComponentDto           dimensionComponentDto;
     private List<ExternalItemDto>           codeLists;
@@ -481,7 +481,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
     }
 
     @Override
-    public void setDsdDimensions(ItemSchemeMetamacProcStatusEnum procStatus, List<DimensionComponentDto> dimensionComponentDtos) {
+    public void setDsdDimensions(ProcStatusEnum procStatus, List<DimensionComponentDto> dimensionComponentDtos) {
         this.procStatus = procStatus;
         deselectDimension();
 

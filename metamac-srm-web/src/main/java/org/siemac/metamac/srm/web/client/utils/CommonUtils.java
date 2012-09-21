@@ -4,7 +4,7 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getCoreMessages;
 
 import java.util.LinkedHashMap;
 
-import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
+import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeRepresentationEnum;
@@ -15,8 +15,8 @@ public class CommonUtils {
     private static LinkedHashMap<String, String> versionTypeHashMap        = null;
     private static LinkedHashMap<String, String> typeRepresentationHashMap = null;
 
-    public static String getProcStatusName(ItemSchemeMetamacProcStatusEnum procStatus) {
-        return getCoreMessages().getString(getCoreMessages().itemSchemeMetamacProcStatusEnum() + procStatus.getName());
+    public static String getProcStatusName(ProcStatusEnum procStatus) {
+        return getCoreMessages().getString(getCoreMessages().procStatusEnum() + procStatus.getName());
     }
 
     public static LinkedHashMap<String, String> getVersionTypeHashMap() {

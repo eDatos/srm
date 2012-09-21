@@ -4,7 +4,7 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
 import java.util.Date;
 
-import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
+import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.resources.GlobalResources;
 import org.siemac.metamac.srm.web.dsd.utils.DsdClientSecurityUtils;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
@@ -26,7 +26,7 @@ public class DsdMainFormLayout extends InternationalMainFormLayout {
     private MainFormLayoutButton            cancelValidity;
     private AnnounceToolStripButton         announce;
 
-    private ItemSchemeMetamacProcStatusEnum status;
+    private ProcStatusEnum status;
     private Date                            validTo;
 
     public DsdMainFormLayout() {
@@ -61,7 +61,7 @@ public class DsdMainFormLayout extends InternationalMainFormLayout {
         toolStrip.addButton(announce);
     }
 
-    public void updatePublishSection(ItemSchemeMetamacProcStatusEnum status, Date validTo) {
+    public void updatePublishSection(ProcStatusEnum status, Date validTo) {
         this.status = status;
         this.validTo = validTo;
     }
@@ -70,20 +70,20 @@ public class DsdMainFormLayout extends InternationalMainFormLayout {
         // Hide all buttons
         hideAllPublishButtons();
         // Show buttons depending on the status
-        if (ItemSchemeMetamacProcStatusEnum.DRAFT.equals(status)) {
+        if (ProcStatusEnum.DRAFT.equals(status)) {
             showSendToProductionValidation();
-        } else if (ItemSchemeMetamacProcStatusEnum.VALIDATION_REJECTED.equals(status)) {
+        } else if (ProcStatusEnum.VALIDATION_REJECTED.equals(status)) {
             showSendToProductionValidation();
-        } else if (ItemSchemeMetamacProcStatusEnum.PRODUCTION_VALIDATION.equals(status)) {
+        } else if (ProcStatusEnum.PRODUCTION_VALIDATION.equals(status)) {
             showSendToDiffusionValidation();
             showRejectValidationButton();
-        } else if (ItemSchemeMetamacProcStatusEnum.DIFFUSION_VALIDATION.equals(status)) {
+        } else if (ProcStatusEnum.DIFFUSION_VALIDATION.equals(status)) {
             showPublishInternallyButton();
             showRejectValidationButton();
-        } else if (ItemSchemeMetamacProcStatusEnum.INTERNALLY_PUBLISHED.equals(status)) {
+        } else if (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(status)) {
             showPublishExternallyButton();
             showVersioningButton();
-        } else if (ItemSchemeMetamacProcStatusEnum.EXTERNALLY_PUBLISHED.equals(status)) {
+        } else if (ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(status)) {
             showVersioningButton();
             // Only cancel scheme validity if it has not been canceled previously
             if (validTo == null) {

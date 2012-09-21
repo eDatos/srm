@@ -1,7 +1,7 @@
 package org.siemac.metamac.srm.web.concept.utils;
 
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
-import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
+import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.security.shared.SharedConceptsSecurityUtils;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 
@@ -31,7 +31,7 @@ public class ConceptsClientSecurityUtils {
         return SharedConceptsSecurityUtils.canSendConceptSchemeToDiffusionValidation(MetamacSrmWeb.getCurrentUser(), type, operationCode);
     }
 
-    public static boolean canRejectConceptSchemeValidation(ItemSchemeMetamacProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode) {
+    public static boolean canRejectConceptSchemeValidation(ProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode) {
         return SharedConceptsSecurityUtils.canRejectConceptSchemeValidation(MetamacSrmWeb.getCurrentUser(), procStatus, type, operationCode);
     }
 
@@ -57,15 +57,15 @@ public class ConceptsClientSecurityUtils {
 
     // Concepts
 
-    public static boolean canCreateConcept(ItemSchemeMetamacProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode) {
+    public static boolean canCreateConcept(ProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode) {
         return SharedConceptsSecurityUtils.canCreateConcept(MetamacSrmWeb.getCurrentUser(), procStatus, type, operationCode);
     }
 
-    public static boolean canUpdateConcept(ItemSchemeMetamacProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode) {
+    public static boolean canUpdateConcept(ProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode) {
         return SharedConceptsSecurityUtils.canUpdateConcept(MetamacSrmWeb.getCurrentUser(), procStatus, type, operationCode);
     }
 
-    public static boolean canDeleteConcept(ItemSchemeMetamacProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode) {
+    public static boolean canDeleteConcept(ProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode) {
         return SharedConceptsSecurityUtils.canDeleteConcept(MetamacSrmWeb.getCurrentUser(), procStatus, type, operationCode);
     }
 

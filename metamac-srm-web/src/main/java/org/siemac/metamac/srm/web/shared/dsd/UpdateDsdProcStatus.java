@@ -1,7 +1,7 @@
 package org.siemac.metamac.srm.web.shared.dsd;
 
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
-import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
+import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 
 import com.gwtplatform.dispatch.annotation.GenDispatch;
 import com.gwtplatform.dispatch.annotation.In;
@@ -14,10 +14,10 @@ public class UpdateDsdProcStatus {
     String                            urn;
 
     @In(2)
-    ItemSchemeMetamacProcStatusEnum   nextProcStatus;
+    ProcStatusEnum   nextProcStatus;
 
     @In(3)
-    ItemSchemeMetamacProcStatusEnum   currentProcStatus;
+    ProcStatusEnum   currentProcStatus;
 
     @Out(1)
     DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto;

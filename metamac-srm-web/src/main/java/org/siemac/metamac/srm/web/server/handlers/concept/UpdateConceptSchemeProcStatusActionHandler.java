@@ -2,7 +2,7 @@ package org.siemac.metamac.srm.web.server.handlers.concept;
 
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
-import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
+import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.web.shared.concept.UpdateConceptSchemeProcStatusAction;
 import org.siemac.metamac.srm.web.shared.concept.UpdateConceptSchemeProcStatusResult;
@@ -28,19 +28,19 @@ public class UpdateConceptSchemeProcStatusActionHandler extends SecurityActionHa
     public UpdateConceptSchemeProcStatusResult executeSecurityAction(UpdateConceptSchemeProcStatusAction action) throws ActionException {
         try {
             ConceptSchemeMetamacDto scheme = null;
-            if (ItemSchemeMetamacProcStatusEnum.PRODUCTION_VALIDATION.equals(action.getNextProcStatus())) {
+            if (ProcStatusEnum.PRODUCTION_VALIDATION.equals(action.getNextProcStatus())) {
                 scheme = srmCoreServiceFacade.sendConceptSchemeToProductionValidation(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
-            } else if (ItemSchemeMetamacProcStatusEnum.DIFFUSION_VALIDATION.equals(action.getNextProcStatus())) {
+            } else if (ProcStatusEnum.DIFFUSION_VALIDATION.equals(action.getNextProcStatus())) {
                 scheme = srmCoreServiceFacade.sendConceptSchemeToDiffusionValidation(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
-            } else if (ItemSchemeMetamacProcStatusEnum.VALIDATION_REJECTED.equals(action.getNextProcStatus())) {
-                if (ItemSchemeMetamacProcStatusEnum.PRODUCTION_VALIDATION.equals(action.getCurrentProcStatus())) {
+            } else if (ProcStatusEnum.VALIDATION_REJECTED.equals(action.getNextProcStatus())) {
+                if (ProcStatusEnum.PRODUCTION_VALIDATION.equals(action.getCurrentProcStatus())) {
                     scheme = srmCoreServiceFacade.rejectConceptSchemeProductionValidation(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
-                } else if (ItemSchemeMetamacProcStatusEnum.DIFFUSION_VALIDATION.equals(action.getCurrentProcStatus())) {
+                } else if (ProcStatusEnum.DIFFUSION_VALIDATION.equals(action.getCurrentProcStatus())) {
                     scheme = srmCoreServiceFacade.rejectConceptSchemeDiffusionValidation(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
                 }
-            } else if (ItemSchemeMetamacProcStatusEnum.INTERNALLY_PUBLISHED.equals(action.getNextProcStatus())) {
+            } else if (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(action.getNextProcStatus())) {
                 scheme = srmCoreServiceFacade.publishConceptSchemeInternally(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
-            } else if (ItemSchemeMetamacProcStatusEnum.EXTERNALLY_PUBLISHED.equals(action.getNextProcStatus())) {
+            } else if (ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(action.getNextProcStatus())) {
                 scheme = srmCoreServiceFacade.publishConceptSchemeExternally(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
             }
             return new UpdateConceptSchemeProcStatusResult(scheme);

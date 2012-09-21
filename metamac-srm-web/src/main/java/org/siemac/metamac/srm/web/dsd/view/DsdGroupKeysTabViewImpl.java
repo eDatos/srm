@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
+import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.dsd.model.record.GroupKeysRecord;
@@ -47,7 +47,7 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabUiHandlers> implements DsdGroupKeysTabPresenter.DsdGroupKeysTabView {
 
-    private ItemSchemeMetamacProcStatusEnum procStatus;
+    private ProcStatusEnum procStatus;
 
     private List<DimensionComponentDto>     dimensionComponentDtos;
     private DescriptorDto                   descriptorDto;
@@ -254,7 +254,7 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
     }
 
     @Override
-    public void setDsdGroupKeys(ItemSchemeMetamacProcStatusEnum procStatus, List<DimensionComponentDto> dimensionComponentDtos, List<DescriptorDto> descriptorDtos) {
+    public void setDsdGroupKeys(ProcStatusEnum procStatus, List<DimensionComponentDto> dimensionComponentDtos, List<DescriptorDto> descriptorDtos) {
         this.procStatus = procStatus;
 
         // Security

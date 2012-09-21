@@ -1,7 +1,7 @@
 package org.siemac.metamac.srm.web.concept.model.record;
 
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
-import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
+import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 
 import com.smartgwt.client.widgets.grid.ListGridRecord;
@@ -63,7 +63,7 @@ public class ConceptSchemeRecord extends ListGridRecord {
         return getAttribute(ConceptSchemeDS.NAME);
     }
 
-    public ItemSchemeMetamacProcStatusEnum getProcStatus() {
+    public ProcStatusEnum getProcStatus() {
         return ((ConceptSchemeMetamacDto) getAttributeAsObject(ConceptSchemeDS.DTO)).getProcStatus();
     }
 

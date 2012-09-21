@@ -8,7 +8,7 @@ import java.util.List;
 
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
-import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
+import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptSchemeRecord;
@@ -270,8 +270,8 @@ public class ConceptSchemeListViewImpl extends ViewImpl implements ConceptScheme
         boolean allSelectedSchemesCanBeDeleted = true;
         for (ListGridRecord record : records) {
             ConceptSchemeMetamacDto conceptSchemeMetamacDto = ((ConceptSchemeRecord) record).getConceptSchemeDto();
-            if (ItemSchemeMetamacProcStatusEnum.INTERNALLY_PUBLISHED.equals(conceptSchemeMetamacDto.getProcStatus())
-                    || ItemSchemeMetamacProcStatusEnum.EXTERNALLY_PUBLISHED.equals(conceptSchemeMetamacDto.getProcStatus())
+            if (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(conceptSchemeMetamacDto.getProcStatus())
+                    || ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(conceptSchemeMetamacDto.getProcStatus())
                     || !ConceptsClientSecurityUtils.canDeleteConceptScheme(conceptSchemeMetamacDto.getType(), CommonUtils.getRelatedOperationCode(conceptSchemeMetamacDto))) {
                 allSelectedSchemesCanBeDeleted = false;
                 break;
@@ -289,7 +289,7 @@ public class ConceptSchemeListViewImpl extends ViewImpl implements ConceptScheme
         for (ListGridRecord record : records) {
             ConceptSchemeMetamacDto conceptSchemeMetamacDto = ((ConceptSchemeRecord) record).getConceptSchemeDto();
             // Do not show cancel validity button if scheme is not published externally or if scheme validity has been canceled previously
-            if (!ItemSchemeMetamacProcStatusEnum.EXTERNALLY_PUBLISHED.equals(conceptSchemeMetamacDto.getProcStatus()) || conceptSchemeMetamacDto.getValidTo() != null
+            if (!ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(conceptSchemeMetamacDto.getProcStatus()) || conceptSchemeMetamacDto.getValidTo() != null
                     || !ConceptsClientSecurityUtils.canCancelConceptSchemeValidity(conceptSchemeMetamacDto.getType(), CommonUtils.getRelatedOperationCode(conceptSchemeMetamacDto))) {
                 allSelectedSchemesValidityCanBeCanceled = false;
             }

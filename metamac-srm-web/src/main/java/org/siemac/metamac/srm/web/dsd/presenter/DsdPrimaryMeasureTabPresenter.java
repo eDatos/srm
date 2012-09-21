@@ -6,7 +6,7 @@ import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
-import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
+import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
@@ -102,9 +102,9 @@ public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTa
         void setCodeLists(List<ExternalItemDto> codeLists);
         HasChangeHandlers onRepresentationTypeChange();
 
-        void setDsdPrimaryMeasure(ItemSchemeMetamacProcStatusEnum procStatus, ComponentDto componentDto);
+        void setDsdPrimaryMeasure(ProcStatusEnum procStatus, ComponentDto componentDto);
         ComponentDto getDsdPrimaryMeasure(ComponentDto componentDto);
-        void onPrimaryMeasureSaved(ItemSchemeMetamacProcStatusEnum procStatus, ComponentDto componentDto);
+        void onPrimaryMeasureSaved(ProcStatusEnum procStatus, ComponentDto componentDto);
         boolean validate();
 
         HasClickHandlers getSave();

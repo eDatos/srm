@@ -7,7 +7,7 @@ import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
-import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
+import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
@@ -124,7 +124,7 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
         void setDimensions(List<DimensionComponentDto> dimensionComponentDtos);
         void setGroupKeys(List<DescriptorDto> descriptorDtos);
 
-        void setDsdAttributes(ItemSchemeMetamacProcStatusEnum procStatus, List<DataAttributeDto> dataAttributeDtos);
+        void setDsdAttributes(ProcStatusEnum procStatus, List<DataAttributeDto> dataAttributeDtos);
         DataAttributeDto getDsdAttribute();
         List<DataAttributeDto> getSelectedAttributes();
         void onAttributeSaved(DataAttributeDto dataAttributeDto);

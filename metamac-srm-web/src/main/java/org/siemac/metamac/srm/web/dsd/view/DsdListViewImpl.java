@@ -9,7 +9,7 @@ import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
-import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
+import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
@@ -388,9 +388,9 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
     }
 
     private void showDeleteToolStripButton() {
-        List<ItemSchemeMetamacProcStatusEnum> statusList = getSelectedDsdsProcStatus();
+        List<ProcStatusEnum> statusList = getSelectedDsdsProcStatus();
         boolean actionAllowed = true;
-        for (ItemSchemeMetamacProcStatusEnum procStatus : statusList) {
+        for (ProcStatusEnum procStatus : statusList) {
             if (!DsdClientSecurityUtils.canDeleteDsd(procStatus)) {
                 actionAllowed = false;
                 break;
@@ -405,8 +405,8 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
         exportToolStripButton.show();
     }
 
-    private List<ItemSchemeMetamacProcStatusEnum> getSelectedDsdsProcStatus() {
-        List<ItemSchemeMetamacProcStatusEnum> status = new ArrayList<ItemSchemeMetamacProcStatusEnum>();
+    private List<ProcStatusEnum> getSelectedDsdsProcStatus() {
+        List<ProcStatusEnum> status = new ArrayList<ProcStatusEnum>();
         if (dsdListGrid.getListGrid().getSelectedRecords() != null) {
             ListGridRecord[] records = dsdListGrid.getListGrid().getSelectedRecords();
             for (int i = 0; i < records.length; i++) {
@@ -434,7 +434,7 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
         for (ListGridRecord record : records) {
             DsdRecord dsdRecord = (DsdRecord) record;
             // Do not show cancel validity button if scheme is not published externally or if scheme validity has been canceled previously
-            if (!ItemSchemeMetamacProcStatusEnum.EXTERNALLY_PUBLISHED.equals(dsdRecord.getDsd().getProcStatus()) || dsdRecord.getDsd().getValidTo() != null) {
+            if (!ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(dsdRecord.getDsd().getProcStatus()) || dsdRecord.getDsd().getValidTo() != null) {
                 allSelectedDsdsExternallyPublished = false;
             }
         }

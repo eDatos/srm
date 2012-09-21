@@ -1,6 +1,6 @@
 package org.siemac.metamac.srm.web.dsd.utils;
 
-import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
+import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.security.shared.SharedDsdSecurityUtils;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 
@@ -10,7 +10,7 @@ public class DsdClientSecurityUtils {
         return SharedDsdSecurityUtils.canCreateDsd(MetamacSrmWeb.getCurrentUser());
     }
 
-    public static boolean canUpdateDsd(ItemSchemeMetamacProcStatusEnum procStatus) {
+    public static boolean canUpdateDsd(ProcStatusEnum procStatus) {
         return SharedDsdSecurityUtils.canUpdateDsd(MetamacSrmWeb.getCurrentUser(), procStatus);
     }
 
@@ -18,23 +18,23 @@ public class DsdClientSecurityUtils {
         return SharedDsdSecurityUtils.canVersioningDsd(MetamacSrmWeb.getCurrentUser());
     }
 
-    public static boolean canUpdatePrimaryMeasure(ItemSchemeMetamacProcStatusEnum procStatus) {
+    public static boolean canUpdatePrimaryMeasure(ProcStatusEnum procStatus) {
         return SharedDsdSecurityUtils.canUpdatePrimaryMeasure(MetamacSrmWeb.getCurrentUser(), procStatus);
     }
 
-    public static boolean canUpdateDimensions(ItemSchemeMetamacProcStatusEnum procStatus) {
+    public static boolean canUpdateDimensions(ProcStatusEnum procStatus) {
         return SharedDsdSecurityUtils.canUpdateDimensions(MetamacSrmWeb.getCurrentUser(), procStatus);
     }
 
-    public static boolean canUpdateAttributes(ItemSchemeMetamacProcStatusEnum procStatus) {
+    public static boolean canUpdateAttributes(ProcStatusEnum procStatus) {
         return SharedDsdSecurityUtils.canUpdateAttributes(MetamacSrmWeb.getCurrentUser(), procStatus);
     }
 
-    public static boolean canUpdateGroupKeys(ItemSchemeMetamacProcStatusEnum procStatus) {
+    public static boolean canUpdateGroupKeys(ProcStatusEnum procStatus) {
         return SharedDsdSecurityUtils.canUpdateGroupKeys(MetamacSrmWeb.getCurrentUser(), procStatus);
     }
 
-    public static boolean canDeleteDsd(ItemSchemeMetamacProcStatusEnum procStatus) {
+    public static boolean canDeleteDsd(ProcStatusEnum procStatus) {
         return SharedDsdSecurityUtils.canDeleteDsd(MetamacSrmWeb.getCurrentUser(), procStatus);
     }
 
@@ -58,7 +58,7 @@ public class DsdClientSecurityUtils {
         return SharedDsdSecurityUtils.canSendDsdToDiffusionValidation(MetamacSrmWeb.getCurrentUser());
     }
 
-    public static boolean canRejectDsdValidation(ItemSchemeMetamacProcStatusEnum procStatus) {
+    public static boolean canRejectDsdValidation(ProcStatusEnum procStatus) {
         return SharedDsdSecurityUtils.canRejectDsdValidation(MetamacSrmWeb.getCurrentUser(), procStatus);
     }
 

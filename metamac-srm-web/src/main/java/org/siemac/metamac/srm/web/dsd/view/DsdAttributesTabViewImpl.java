@@ -5,7 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
-import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
+import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.representation.widgets.StaticFacetForm;
 import org.siemac.metamac.srm.web.client.utils.FacetFormUtils;
@@ -72,7 +72,7 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTabUiHandlers> implements DsdAttributesTabPresenter.DsdAttributesTabView {
 
-    private ItemSchemeMetamacProcStatusEnum procStatus;
+    private ProcStatusEnum procStatus;
 
     private DataAttributeDto                dataAttributeDto;
     private List<ExternalItemDto>           concepts;
@@ -530,7 +530,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
     }
 
     @Override
-    public void setDsdAttributes(ItemSchemeMetamacProcStatusEnum procStatus, List<DataAttributeDto> dataAttributeDtos) {
+    public void setDsdAttributes(ProcStatusEnum procStatus, List<DataAttributeDto> dataAttributeDtos) {
         this.procStatus = procStatus;
 
         // Security

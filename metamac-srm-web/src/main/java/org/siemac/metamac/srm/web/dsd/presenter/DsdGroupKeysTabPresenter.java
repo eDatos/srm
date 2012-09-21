@@ -6,7 +6,7 @@ import java.util.List;
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
-import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
+import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
@@ -86,7 +86,7 @@ public class DsdGroupKeysTabPresenter extends Presenter<DsdGroupKeysTabPresenter
 
     public interface DsdGroupKeysTabView extends View, HasUiHandlers<DsdGroupKeysTabUiHandlers> {
 
-        void setDsdGroupKeys(ItemSchemeMetamacProcStatusEnum procStatus, List<DimensionComponentDto> dimensionComponentDtos, List<DescriptorDto> descriptorDtos);
+        void setDsdGroupKeys(ProcStatusEnum procStatus, List<DimensionComponentDto> dimensionComponentDtos, List<DescriptorDto> descriptorDtos);
         void setGroupKeys(DescriptorDto descriptorDto);
         DescriptorDto getGroupKeys();
         List<DescriptorDto> getSelectedGroupKeys();

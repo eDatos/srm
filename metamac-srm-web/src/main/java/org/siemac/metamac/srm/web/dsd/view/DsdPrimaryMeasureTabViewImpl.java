@@ -3,7 +3,7 @@ package org.siemac.metamac.srm.web.dsd.view;
 import java.util.List;
 
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
-import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
+import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.representation.widgets.StaticFacetForm;
 import org.siemac.metamac.srm.web.client.utils.FacetFormUtils;
@@ -179,7 +179,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
     }
 
     @Override
-    public void setDsdPrimaryMeasure(ItemSchemeMetamacProcStatusEnum procStatus, ComponentDto componentDto) {
+    public void setDsdPrimaryMeasure(ProcStatusEnum procStatus, ComponentDto componentDto) {
         mainFormLayout.setViewMode();
 
         // Security
@@ -293,7 +293,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
     }
 
     @Override
-    public void onPrimaryMeasureSaved(ItemSchemeMetamacProcStatusEnum procStatus, ComponentDto componentDto) {
+    public void onPrimaryMeasureSaved(ProcStatusEnum procStatus, ComponentDto componentDto) {
         setDsdPrimaryMeasure(procStatus, componentDto);
         mainFormLayout.setViewMode();
     }

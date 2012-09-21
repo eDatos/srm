@@ -9,7 +9,7 @@ import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
-import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
+import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
@@ -120,8 +120,8 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
 
             @Override
             public void onClick(ClickEvent event) {
-                ItemSchemeMetamacProcStatusEnum status = dataStructureDefinitionMetamacDto.getProcStatus();
-                if (ItemSchemeMetamacProcStatusEnum.INTERNALLY_PUBLISHED.equals(status) || ItemSchemeMetamacProcStatusEnum.EXTERNALLY_PUBLISHED.equals(status)) {
+                ProcStatusEnum status = dataStructureDefinitionMetamacDto.getProcStatus();
+                if (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(status) || ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(status)) {
                     // Create a new version
                     final InformationWindow window = new InformationWindow(getMessages().dsdEditionInfo(), getMessages().dsdEditionInfoDetailedMessage());
                     window.show();
@@ -275,7 +275,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
                 // CODE cannot be modified if status is INTERNALLY_PUBLISHED or EXTERNALLY_PUBLISHED, or if version is greater than VERSION_INITIAL_VERSION (01.000)
-                return !((ItemSchemeMetamacProcStatusEnum.INTERNALLY_PUBLISHED.equals(dataStructureDefinitionMetamacDto.getProcStatus()) || ItemSchemeMetamacProcStatusEnum.EXTERNALLY_PUBLISHED
+                return !((ProcStatusEnum.INTERNALLY_PUBLISHED.equals(dataStructureDefinitionMetamacDto.getProcStatus()) || ProcStatusEnum.EXTERNALLY_PUBLISHED
                         .equals(dataStructureDefinitionMetamacDto.getProcStatus())) || (!VersionUtil.VERSION_INITIAL_VERSION.equals(dataStructureDefinitionMetamacDto.getVersionLogic()) && !StringUtils
                         .isBlank(dataStructureDefinitionMetamacDto.getVersionLogic())));
             }

@@ -10,7 +10,7 @@ import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
-import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
+import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
@@ -176,8 +176,8 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
     }
 
     @Override
-    public void sendToProductionValidation(String urn, ItemSchemeMetamacProcStatusEnum procStatus) {
-        dispatcher.execute(new UpdateConceptSchemeProcStatusAction(urn, ItemSchemeMetamacProcStatusEnum.PRODUCTION_VALIDATION, procStatus),
+    public void sendToProductionValidation(String urn, ProcStatusEnum procStatus) {
+        dispatcher.execute(new UpdateConceptSchemeProcStatusAction(urn, ProcStatusEnum.PRODUCTION_VALIDATION, procStatus),
                 new WaitingAsyncCallback<UpdateConceptSchemeProcStatusResult>() {
 
                     @Override
@@ -194,8 +194,8 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
     }
 
     @Override
-    public void sendToDiffusionValidation(String urn, ItemSchemeMetamacProcStatusEnum procStatus) {
-        dispatcher.execute(new UpdateConceptSchemeProcStatusAction(urn, ItemSchemeMetamacProcStatusEnum.DIFFUSION_VALIDATION, procStatus),
+    public void sendToDiffusionValidation(String urn, ProcStatusEnum procStatus) {
+        dispatcher.execute(new UpdateConceptSchemeProcStatusAction(urn, ProcStatusEnum.DIFFUSION_VALIDATION, procStatus),
                 new WaitingAsyncCallback<UpdateConceptSchemeProcStatusResult>() {
 
                     @Override
@@ -212,8 +212,8 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
     }
 
     @Override
-    public void rejectValidation(String urn, ItemSchemeMetamacProcStatusEnum procStatus) {
-        dispatcher.execute(new UpdateConceptSchemeProcStatusAction(urn, ItemSchemeMetamacProcStatusEnum.VALIDATION_REJECTED, procStatus),
+    public void rejectValidation(String urn, ProcStatusEnum procStatus) {
+        dispatcher.execute(new UpdateConceptSchemeProcStatusAction(urn, ProcStatusEnum.VALIDATION_REJECTED, procStatus),
                 new WaitingAsyncCallback<UpdateConceptSchemeProcStatusResult>() {
 
                     @Override
@@ -230,8 +230,8 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
     }
 
     @Override
-    public void publishInternally(String urn, ItemSchemeMetamacProcStatusEnum procStatus) {
-        dispatcher.execute(new UpdateConceptSchemeProcStatusAction(urn, ItemSchemeMetamacProcStatusEnum.INTERNALLY_PUBLISHED, procStatus),
+    public void publishInternally(String urn, ProcStatusEnum procStatus) {
+        dispatcher.execute(new UpdateConceptSchemeProcStatusAction(urn, ProcStatusEnum.INTERNALLY_PUBLISHED, procStatus),
                 new WaitingAsyncCallback<UpdateConceptSchemeProcStatusResult>() {
 
                     @Override
@@ -248,8 +248,8 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
     }
 
     @Override
-    public void publishExternally(String urn, ItemSchemeMetamacProcStatusEnum procStatus) {
-        dispatcher.execute(new UpdateConceptSchemeProcStatusAction(urn, ItemSchemeMetamacProcStatusEnum.EXTERNALLY_PUBLISHED, procStatus),
+    public void publishExternally(String urn, ProcStatusEnum procStatus) {
+        dispatcher.execute(new UpdateConceptSchemeProcStatusAction(urn, ProcStatusEnum.EXTERNALLY_PUBLISHED, procStatus),
                 new WaitingAsyncCallback<UpdateConceptSchemeProcStatusResult>() {
 
                     @Override

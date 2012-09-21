@@ -12,7 +12,7 @@ import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
-import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
+import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
@@ -185,8 +185,8 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
 
             @Override
             public void onClick(ClickEvent event) {
-                ItemSchemeMetamacProcStatusEnum status = conceptSchemeDto.getProcStatus();
-                if (ItemSchemeMetamacProcStatusEnum.INTERNALLY_PUBLISHED.equals(status) || ItemSchemeMetamacProcStatusEnum.EXTERNALLY_PUBLISHED.equals(status)) {
+                ProcStatusEnum status = conceptSchemeDto.getProcStatus();
+                if (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(status) || ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(status)) {
                     // Create a new version
                     final InformationWindow window = new InformationWindow(getMessages().conceptSchemeEditionInfo(), getMessages().conceptSchemeEditionInfoDetailedMessage());
                     window.show();
@@ -417,7 +417,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
                 // CODE cannot be modified if status is INTERNALLY_PUBLISHED or EXTERNALLY_PUBLISHED, or if version is greater than VERSION_INITIAL_VERSION (01.000)
-                return !((ItemSchemeMetamacProcStatusEnum.INTERNALLY_PUBLISHED.equals(conceptSchemeDto.getProcStatus()) || ItemSchemeMetamacProcStatusEnum.EXTERNALLY_PUBLISHED.equals(conceptSchemeDto
+                return !((ProcStatusEnum.INTERNALLY_PUBLISHED.equals(conceptSchemeDto.getProcStatus()) || ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(conceptSchemeDto
                         .getProcStatus())) || (!VersionUtil.VERSION_INITIAL_VERSION.equals(conceptSchemeDto.getVersionLogic()) && !StringUtils.isBlank(conceptSchemeDto.getVersionLogic())));
             }
         });
@@ -464,7 +464,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
                 // TYPE cannot be modified if status is INTERNALLY_PUBLISHED or EXTERNALLY_PUBLISHED, or if version is greater than VERSION_INITIAL_VERSION (01.000)
-                return !((ItemSchemeMetamacProcStatusEnum.INTERNALLY_PUBLISHED.equals(conceptSchemeDto.getProcStatus()) || ItemSchemeMetamacProcStatusEnum.EXTERNALLY_PUBLISHED.equals(conceptSchemeDto
+                return !((ProcStatusEnum.INTERNALLY_PUBLISHED.equals(conceptSchemeDto.getProcStatus()) || ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(conceptSchemeDto
                         .getProcStatus())) || (!VersionUtil.VERSION_INITIAL_VERSION.equals(conceptSchemeDto.getVersionLogic()) && !StringUtils.isBlank(conceptSchemeDto.getVersionLogic())));
             }
         });

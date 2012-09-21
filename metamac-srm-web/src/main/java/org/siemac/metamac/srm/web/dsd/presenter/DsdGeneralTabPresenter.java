@@ -8,7 +8,7 @@ import java.util.List;
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
-import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
+import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
@@ -175,8 +175,8 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
     }
 
     @Override
-    public void sendToProductionValidation(final String urn, ItemSchemeMetamacProcStatusEnum currentProcStatus) {
-        dispatcher.execute(new UpdateDsdProcStatusAction(urn, ItemSchemeMetamacProcStatusEnum.PRODUCTION_VALIDATION, currentProcStatus), new WaitingAsyncCallback<UpdateDsdProcStatusResult>() {
+    public void sendToProductionValidation(final String urn, ProcStatusEnum currentProcStatus) {
+        dispatcher.execute(new UpdateDsdProcStatusAction(urn, ProcStatusEnum.PRODUCTION_VALIDATION, currentProcStatus), new WaitingAsyncCallback<UpdateDsdProcStatusResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -191,8 +191,8 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
     }
 
     @Override
-    public void sendToDiffusionValidation(final String urn, ItemSchemeMetamacProcStatusEnum currentProcStatus) {
-        dispatcher.execute(new UpdateDsdProcStatusAction(urn, ItemSchemeMetamacProcStatusEnum.DIFFUSION_VALIDATION, currentProcStatus), new WaitingAsyncCallback<UpdateDsdProcStatusResult>() {
+    public void sendToDiffusionValidation(final String urn, ProcStatusEnum currentProcStatus) {
+        dispatcher.execute(new UpdateDsdProcStatusAction(urn, ProcStatusEnum.DIFFUSION_VALIDATION, currentProcStatus), new WaitingAsyncCallback<UpdateDsdProcStatusResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -207,8 +207,8 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
     }
 
     @Override
-    public void rejectValidation(final String urn, ItemSchemeMetamacProcStatusEnum currentProcStatus) {
-        dispatcher.execute(new UpdateDsdProcStatusAction(urn, ItemSchemeMetamacProcStatusEnum.VALIDATION_REJECTED, currentProcStatus), new WaitingAsyncCallback<UpdateDsdProcStatusResult>() {
+    public void rejectValidation(final String urn, ProcStatusEnum currentProcStatus) {
+        dispatcher.execute(new UpdateDsdProcStatusAction(urn, ProcStatusEnum.VALIDATION_REJECTED, currentProcStatus), new WaitingAsyncCallback<UpdateDsdProcStatusResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -223,8 +223,8 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
     }
 
     @Override
-    public void publishInternally(final String urn, ItemSchemeMetamacProcStatusEnum currentProcStatus) {
-        dispatcher.execute(new UpdateDsdProcStatusAction(urn, ItemSchemeMetamacProcStatusEnum.INTERNALLY_PUBLISHED, currentProcStatus), new WaitingAsyncCallback<UpdateDsdProcStatusResult>() {
+    public void publishInternally(final String urn, ProcStatusEnum currentProcStatus) {
+        dispatcher.execute(new UpdateDsdProcStatusAction(urn, ProcStatusEnum.INTERNALLY_PUBLISHED, currentProcStatus), new WaitingAsyncCallback<UpdateDsdProcStatusResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -239,8 +239,8 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
     }
 
     @Override
-    public void publishExternally(final String urn, ItemSchemeMetamacProcStatusEnum currentProcStatus) {
-        dispatcher.execute(new UpdateDsdProcStatusAction(urn, ItemSchemeMetamacProcStatusEnum.EXTERNALLY_PUBLISHED, currentProcStatus), new WaitingAsyncCallback<UpdateDsdProcStatusResult>() {
+    public void publishExternally(final String urn, ProcStatusEnum currentProcStatus) {
+        dispatcher.execute(new UpdateDsdProcStatusAction(urn, ProcStatusEnum.EXTERNALLY_PUBLISHED, currentProcStatus), new WaitingAsyncCallback<UpdateDsdProcStatusResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
