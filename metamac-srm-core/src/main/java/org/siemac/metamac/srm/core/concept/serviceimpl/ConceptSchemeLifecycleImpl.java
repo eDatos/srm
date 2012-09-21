@@ -17,7 +17,7 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacRepository;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacProperties;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacRepository;
-import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
+import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.itemscheme.ItemSchemeLifecycle;
 import org.siemac.metamac.srm.core.itemscheme.ItemSchemeLifecycle.ItemSchemeLifecycleCallback;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,12 +87,12 @@ public class ConceptSchemeLifecycleImpl implements ConceptSchemeLifecycle {
         }
 
         @Override
-        public ItemSchemeVersion retrieveItemSchemeByProcStatus(String urn, ItemSchemeMetamacProcStatusEnum[] procStatus) throws MetamacException {
+        public ItemSchemeVersion retrieveItemSchemeByProcStatus(String urn, ProcStatusEnum[] procStatus) throws MetamacException {
             return conceptSchemeVersionMetamacRepository.retrieveConceptSchemeVersionByProcStatus(urn, procStatus);
         }
 
         @Override
-        public void setItemSchemeProcStatusAndInformationStatus(ItemSchemeVersion itemSchemeVersion, ItemSchemeMetamacProcStatusEnum newProcStatus, String user) {
+        public void setItemSchemeProcStatusAndInformationStatus(ItemSchemeVersion itemSchemeVersion, ProcStatusEnum newProcStatus, String user) {
 
             ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptSchemeVersionMetamac(itemSchemeVersion);
 
@@ -129,7 +129,7 @@ public class ConceptSchemeLifecycleImpl implements ConceptSchemeLifecycle {
         }
         
         @Override
-        public ItemSchemeMetamacProcStatusEnum getProcStatusMetadataValue(ItemSchemeVersion itemSchemeVersion) {
+        public ProcStatusEnum getProcStatusMetadataValue(ItemSchemeVersion itemSchemeVersion) {
             ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptSchemeVersionMetamac(itemSchemeVersion);
             return conceptSchemeVersion.getProcStatus();
         }
@@ -189,7 +189,7 @@ public class ConceptSchemeLifecycleImpl implements ConceptSchemeLifecycle {
         }
 
         @Override
-        public List<ItemSchemeVersion> findItemSchemeVersionsOfItemSchemeInProcStatus(ServiceContext ctx, ItemScheme itemScheme, ItemSchemeMetamacProcStatusEnum... procStatus) {
+        public List<ItemSchemeVersion> findItemSchemeVersionsOfItemSchemeInProcStatus(ServiceContext ctx, ItemScheme itemScheme, ProcStatusEnum... procStatus) {
 
             List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).withProperty(ConceptSchemeVersionMetamacProperties.itemScheme().id())
                     .eq(itemScheme.getId()).withProperty(ConceptSchemeVersionMetamacProperties.procStatus()).in((Object[]) procStatus).distinctRoot().build();

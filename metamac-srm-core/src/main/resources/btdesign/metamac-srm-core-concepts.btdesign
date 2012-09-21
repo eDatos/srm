@@ -90,7 +90,7 @@ Application ConceptsMetamac {
 			hint="idSequence=M_CONCEPT_SCHEMES_VERSIONS"
 			
 			"Status"
-			- @ItemSchemeMetamacProcStatusEnum procStatus;
+			- @ProcStatusEnum procStatus;
 			"Type"
 			- @ConceptSchemeTypeEnum type databaseColumn="CONCEPT_SCHEME_TYPE";
 			"Related operation, only when type is Operation"
@@ -122,7 +122,7 @@ Application ConceptsMetamac {
 				findByQuery(String query, Map<String, Object> parameters, int maxResult);
 				findByCondition(PagingParameter pagingParameter);
 				@ConceptSchemeVersionMetamac findByUrn(String urn);
-				@ConceptSchemeVersionMetamac retrieveConceptSchemeVersionByProcStatus(String urn, ArrayItemSchemeMetamacProcStatusEnum procStatus) throws MetamacException;
+				@ConceptSchemeVersionMetamac retrieveConceptSchemeVersionByProcStatus(String urn, ArrayProcStatusEnum procStatus) throws MetamacException;
 				@ConceptSchemeVersionMetamac findByConcept(String urn);
 			}			
 		}

@@ -14,7 +14,7 @@ import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamacProperties;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamacRepository;
-import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
+import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.structure.StructureLifecycle;
 import org.siemac.metamac.srm.core.structure.StructureLifecycle.StructureLifecycleCallback;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,7 +76,7 @@ public class DsdLifecycleImpl implements DsdLifecycle {
     private class DataStructureDefinitionLifecycleCallback implements StructureLifecycleCallback {
 
         @Override
-        public StructureVersion retrieveStructureByProcStatus(String urn, ItemSchemeMetamacProcStatusEnum[] procStatus) throws MetamacException {
+        public StructureVersion retrieveStructureByProcStatus(String urn, ProcStatusEnum[] procStatus) throws MetamacException {
             return dataStructureDefinitionVersionMetamacRepository.retrieveDataStructureDefinitionVersionByProcStatus(urn, procStatus);
         }
 
@@ -86,7 +86,7 @@ public class DsdLifecycleImpl implements DsdLifecycle {
         }
 
         @Override
-        public ItemSchemeMetamacProcStatusEnum getProcStatusMetadataValue(StructureVersion structureVersion) {
+        public ProcStatusEnum getProcStatusMetadataValue(StructureVersion structureVersion) {
             DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDataStructureDefinitionVersionMetamac(structureVersion);
             return dataStructureDefinitionVersionMetamac.getProcStatus();
         }
@@ -98,7 +98,7 @@ public class DsdLifecycleImpl implements DsdLifecycle {
         }
 
         @Override
-        public void setStructureProcStatusAndInformationStatus(StructureVersion structureVersion, ItemSchemeMetamacProcStatusEnum newProcStatus, String user) {
+        public void setStructureProcStatusAndInformationStatus(StructureVersion structureVersion, ProcStatusEnum newProcStatus, String user) {
             DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDataStructureDefinitionVersionMetamac(structureVersion);
 
             // Proc status
@@ -159,7 +159,7 @@ public class DsdLifecycleImpl implements DsdLifecycle {
         }
 
         @Override
-        public List<StructureVersion> findStructureVersionsOfItemSchemeInProcStatus(ServiceContext ctx, Structure structure, ItemSchemeMetamacProcStatusEnum... procStatus) {
+        public List<StructureVersion> findStructureVersionsOfItemSchemeInProcStatus(ServiceContext ctx, Structure structure, ProcStatusEnum... procStatus) {
 
             List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(DataStructureDefinitionVersionMetamac.class)
                     .withProperty(DataStructureDefinitionVersionMetamacProperties.structure().id()).eq(structure.getId()).withProperty(DataStructureDefinitionVersionMetamacProperties.procStatus())

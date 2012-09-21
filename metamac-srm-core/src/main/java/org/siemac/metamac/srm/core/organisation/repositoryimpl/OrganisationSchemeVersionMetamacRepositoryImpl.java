@@ -1,6 +1,6 @@
 package org.siemac.metamac.srm.core.organisation.repositoryimpl;
 
-import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
+import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeMetamac;
 
 import org.springframework.stereotype.Repository;
@@ -22,7 +22,7 @@ public class OrganisationSchemeVersionMetamacRepositoryImpl
     }
 
     public OrganisationSchemeMetamac retrieveOrganisationSchemeByProcStatus(
-        String urn, ItemSchemeMetamacProcStatusEnum[] procStatus) {
+        String urn, ProcStatusEnum[] procStatus) {
 
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException(

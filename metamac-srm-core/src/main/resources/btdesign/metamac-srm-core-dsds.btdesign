@@ -65,7 +65,7 @@ Application DsdsMetamac {
 			!auditable
 
 			"Status"
-			- @ItemSchemeMetamacProcStatusEnum procStatus;
+			- @ProcStatusEnum procStatus;
 			
 			"Date when the concept scheme was sended to production validation"
 			DateTimeTZ productionValidationDate nullable;
@@ -93,7 +93,7 @@ Application DsdsMetamac {
 				findByQuery(String query, Map<String, Object> parameters, int maxResult);
 				findByCondition(PagingParameter pagingParameter);
 				@DataStructureDefinitionVersionMetamac findByUrn(String urn);
-				@DataStructureDefinitionVersionMetamac retrieveDataStructureDefinitionVersionByProcStatus(String urn, ArrayItemSchemeMetamacProcStatusEnum procStatusArray) throws MetamacException;
+				@DataStructureDefinitionVersionMetamac retrieveDataStructureDefinitionVersionByProcStatus(String urn, ArrayProcStatusEnum procStatusArray) throws MetamacException;
 			}			
 		}
 

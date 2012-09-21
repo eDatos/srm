@@ -1,7 +1,7 @@
 package org.siemac.metamac.srm.core.common.error;
 
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
-import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
+import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 
 public class ServiceExceptionParameters extends com.arte.statistic.sdmx.srm.core.common.error.ServiceExceptionParameters {
 
@@ -29,10 +29,10 @@ public class ServiceExceptionParameters extends com.arte.statistic.sdmx.srm.core
     public static final String CONCEPT_EXTENDS                   = CONCEPT + ".extends";
 
     // LIFECYCLE
-    public static final String PROC_STATUS_DRAFT                 = ItemSchemeMetamacProcStatusEnum.DRAFT.name();
-    public static final String PROC_STATUS_PRODUCTION_VALIDATION = ItemSchemeMetamacProcStatusEnum.PRODUCTION_VALIDATION.name();
-    public static final String PROC_STATUS_DIFFUSION_VALIDATION  = ItemSchemeMetamacProcStatusEnum.DIFFUSION_VALIDATION.name();
-    public static final String PROC_STATUS_VALIDATION_REJECTED   = ItemSchemeMetamacProcStatusEnum.VALIDATION_REJECTED.name();
-    public static final String PROC_STATUS_INTERNALLY_PUBLISHED  = ItemSchemeMetamacProcStatusEnum.INTERNALLY_PUBLISHED.name();
-    public static final String PROC_STATUS_EXTERNALLY_PUBLISHED  = ItemSchemeMetamacProcStatusEnum.EXTERNALLY_PUBLISHED.name();
+    public static final String PROC_STATUS_DRAFT                 = ProcStatusEnum.DRAFT.name();
+    public static final String PROC_STATUS_PRODUCTION_VALIDATION = ProcStatusEnum.PRODUCTION_VALIDATION.name();
+    public static final String PROC_STATUS_DIFFUSION_VALIDATION  = ProcStatusEnum.DIFFUSION_VALIDATION.name();
+    public static final String PROC_STATUS_VALIDATION_REJECTED   = ProcStatusEnum.VALIDATION_REJECTED.name();
+    public static final String PROC_STATUS_INTERNALLY_PUBLISHED  = ProcStatusEnum.INTERNALLY_PUBLISHED.name();
+    public static final String PROC_STATUS_EXTERNALLY_PUBLISHED  = ProcStatusEnum.EXTERNALLY_PUBLISHED.name();
 }

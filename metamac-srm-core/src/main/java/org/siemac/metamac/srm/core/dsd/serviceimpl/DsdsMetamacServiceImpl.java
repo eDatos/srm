@@ -16,7 +16,7 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacPro
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamacProperties;
 import org.siemac.metamac.srm.core.dsd.serviceimpl.utils.DsdsMetamacInvocationValidator;
-import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
+import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.serviceimpl.SrmServiceUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -56,7 +56,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         DsdsMetamacInvocationValidator.checkCreateDataStructureDefinition(dataStructureDefinitionVersion, null);
 
         // Fill metadata
-        dataStructureDefinitionVersion.setProcStatus(ItemSchemeMetamacProcStatusEnum.DRAFT);
+        dataStructureDefinitionVersion.setProcStatus(ProcStatusEnum.DRAFT);
         dataStructureDefinitionVersion.getMaintainableArtefact().setIsExternalReference(Boolean.FALSE);
 
         // Save conceptScheme
@@ -173,13 +173,13 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         
         // Initialize new version, copying values of version selected
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionToCopy = getDataStructureDefinitionVersionMetamacRepository().retrieveDataStructureDefinitionVersionByProcStatus(urnToCopy,
-                new ItemSchemeMetamacProcStatusEnum[]{ItemSchemeMetamacProcStatusEnum.INTERNALLY_PUBLISHED, ItemSchemeMetamacProcStatusEnum.EXTERNALLY_PUBLISHED});
+                new ProcStatusEnum[]{ProcStatusEnum.INTERNALLY_PUBLISHED, ProcStatusEnum.EXTERNALLY_PUBLISHED});
 
         
         // Check not exists version not published
         List<DataStructureDefinitionVersionMetamac> versionsNotPublished = findDataStructureVersionsOfDataStructureInProcStatus(ctx, dataStructureDefinitionVersionToCopy.getStructure(),
-                ItemSchemeMetamacProcStatusEnum.DRAFT, ItemSchemeMetamacProcStatusEnum.PRODUCTION_VALIDATION, ItemSchemeMetamacProcStatusEnum.DIFFUSION_VALIDATION,
-                ItemSchemeMetamacProcStatusEnum.VALIDATION_REJECTED);
+                ProcStatusEnum.DRAFT, ProcStatusEnum.PRODUCTION_VALIDATION, ProcStatusEnum.DIFFUSION_VALIDATION,
+                ProcStatusEnum.VALIDATION_REJECTED);
         if (versionsNotPublished.size() != 0) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.SRM_DATA_STRUCTURE_DEFINITION_VERSIONING_NOT_SUPPORTED)
                     .withMessageParameters(versionsNotPublished.get(0).getMaintainableArtefact().getUrn()).build();
@@ -196,7 +196,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         DsdsMetamacInvocationValidator.cancelDataStructureDefinitionVersionMetamacValidity(urn, null);
 
         // Retrieve version in specific procStatus
-        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = retrieveDataStructureDefinitionVersionByProcStatus(ctx, urn, ItemSchemeMetamacProcStatusEnum.EXTERNALLY_PUBLISHED);
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = retrieveDataStructureDefinitionVersionByProcStatus(ctx, urn, ProcStatusEnum.EXTERNALLY_PUBLISHED);
 
         // Cancel validity
         dataStructureDefinitionVersionMetamac = (DataStructureDefinitionVersionMetamac) dataStructureDefinitionService.endDataStructureDefinitionValidity(ctx, urn);
@@ -210,7 +210,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
     /**
      * Retrieves version of a data structure definition in specific procStatus
      */
-    private DataStructureDefinitionVersionMetamac retrieveDataStructureDefinitionVersionByProcStatus(ServiceContext ctx, String urn, ItemSchemeMetamacProcStatusEnum... procStatus)
+    private DataStructureDefinitionVersionMetamac retrieveDataStructureDefinitionVersionByProcStatus(ServiceContext ctx, String urn, ProcStatusEnum... procStatus)
             throws MetamacException {
 
         List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(DataStructureDefinitionVersionMetamac.class)
@@ -234,7 +234,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
     /**
      * Finds versions of data structure definition in specific procStatus
      */
-    private List<DataStructureDefinitionVersionMetamac> findDataStructureVersionsOfDataStructureInProcStatus(ServiceContext ctx, Structure structure, ItemSchemeMetamacProcStatusEnum... procStatus)
+    private List<DataStructureDefinitionVersionMetamac> findDataStructureVersionsOfDataStructureInProcStatus(ServiceContext ctx, Structure structure, ProcStatusEnum... procStatus)
             throws MetamacException {
 
         List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(DataStructureDefinitionVersionMetamac.class).withProperty(DataStructureDefinitionVersionMetamacProperties.structure().id())

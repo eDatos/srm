@@ -4,8 +4,7 @@ Application EnumsSrmDomain {
     Module domain_srm_enums {
         basePackage=org.siemac.metamac.srm.core.enume
 
-		"Item Scheme Proc Status"
-    	enum ItemSchemeMetamacProcStatusEnum {
+    	enum ProcStatusEnum {
     		DRAFT, 
     		PRODUCTION_VALIDATION,
     		DIFFUSION_VALIDATION,

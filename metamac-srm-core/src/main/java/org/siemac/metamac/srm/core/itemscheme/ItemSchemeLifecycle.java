@@ -13,7 +13,7 @@ import org.siemac.metamac.core.common.exception.utils.ExceptionUtils;
 import org.siemac.metamac.core.common.serviceimpl.utils.ValidationUtils;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
-import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
+import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.serviceimpl.SrmServiceUtils;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemScheme;
@@ -22,12 +22,12 @@ import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 public class ItemSchemeLifecycle {
 
     // TODO eliminar el enumerado validation_rejected y poner una marca?? así se evitarían los []
-    private static final ItemSchemeMetamacProcStatusEnum[] procStatusToSendToProductionValidation = {ItemSchemeMetamacProcStatusEnum.DRAFT, ItemSchemeMetamacProcStatusEnum.VALIDATION_REJECTED};
-    private static final ItemSchemeMetamacProcStatusEnum[] procStatusToSendToDiffusionValidation  = {ItemSchemeMetamacProcStatusEnum.PRODUCTION_VALIDATION};
-    private static final ItemSchemeMetamacProcStatusEnum[] procStatusToRejectProductionValidation = {ItemSchemeMetamacProcStatusEnum.PRODUCTION_VALIDATION};
-    private static final ItemSchemeMetamacProcStatusEnum[] procStatusToRejectDiffusionValidation  = {ItemSchemeMetamacProcStatusEnum.DIFFUSION_VALIDATION};
-    private static final ItemSchemeMetamacProcStatusEnum[] procStatusToPublishInternally          = {ItemSchemeMetamacProcStatusEnum.DIFFUSION_VALIDATION};
-    private static final ItemSchemeMetamacProcStatusEnum[] procStatusToPublishExternally          = {ItemSchemeMetamacProcStatusEnum.INTERNALLY_PUBLISHED};
+    private static final ProcStatusEnum[] procStatusToSendToProductionValidation = {ProcStatusEnum.DRAFT, ProcStatusEnum.VALIDATION_REJECTED};
+    private static final ProcStatusEnum[] procStatusToSendToDiffusionValidation  = {ProcStatusEnum.PRODUCTION_VALIDATION};
+    private static final ProcStatusEnum[] procStatusToRejectProductionValidation = {ProcStatusEnum.PRODUCTION_VALIDATION};
+    private static final ProcStatusEnum[] procStatusToRejectDiffusionValidation  = {ProcStatusEnum.DIFFUSION_VALIDATION};
+    private static final ProcStatusEnum[] procStatusToPublishInternally          = {ProcStatusEnum.DIFFUSION_VALIDATION};
+    private static final ProcStatusEnum[] procStatusToPublishExternally          = {ProcStatusEnum.INTERNALLY_PUBLISHED};
 
     private ItemSchemeLifecycleCallback                    callback                               = null;
 
@@ -47,7 +47,7 @@ public class ItemSchemeLifecycle {
         checkItemSchemeToSendToProductionValidation(urn, itemSchemeVersion);
 
         // Update proc status
-        callback.setItemSchemeProcStatusAndInformationStatus(itemSchemeVersion, ItemSchemeMetamacProcStatusEnum.PRODUCTION_VALIDATION, ctx.getUserId());
+        callback.setItemSchemeProcStatusAndInformationStatus(itemSchemeVersion, ProcStatusEnum.PRODUCTION_VALIDATION, ctx.getUserId());
         itemSchemeVersion = callback.updateItemScheme(itemSchemeVersion);
 
         return itemSchemeVersion;
@@ -65,7 +65,7 @@ public class ItemSchemeLifecycle {
         checkItemSchemeToSendToDiffusionValidation(urn, itemSchemeVersion);
 
         // Update proc status
-        callback.setItemSchemeProcStatusAndInformationStatus(itemSchemeVersion, ItemSchemeMetamacProcStatusEnum.DIFFUSION_VALIDATION, ctx.getUserId());
+        callback.setItemSchemeProcStatusAndInformationStatus(itemSchemeVersion, ProcStatusEnum.DIFFUSION_VALIDATION, ctx.getUserId());
         itemSchemeVersion = callback.updateItemScheme(itemSchemeVersion);
 
         return itemSchemeVersion;
@@ -83,7 +83,7 @@ public class ItemSchemeLifecycle {
         checkItemSchemeToRejectProductionValidation(urn, itemSchemeVersion);
 
         // Update proc status
-        callback.setItemSchemeProcStatusAndInformationStatus(itemSchemeVersion, ItemSchemeMetamacProcStatusEnum.VALIDATION_REJECTED, ctx.getUserId());
+        callback.setItemSchemeProcStatusAndInformationStatus(itemSchemeVersion, ProcStatusEnum.VALIDATION_REJECTED, ctx.getUserId());
         itemSchemeVersion = callback.updateItemScheme(itemSchemeVersion);
 
         return itemSchemeVersion;
@@ -101,7 +101,7 @@ public class ItemSchemeLifecycle {
         checkItemSchemeToRejectDiffusionValidation(urn, itemSchemeVersion);
 
         // Update proc status
-        callback.setItemSchemeProcStatusAndInformationStatus(itemSchemeVersion, ItemSchemeMetamacProcStatusEnum.VALIDATION_REJECTED, ctx.getUserId());
+        callback.setItemSchemeProcStatusAndInformationStatus(itemSchemeVersion, ProcStatusEnum.VALIDATION_REJECTED, ctx.getUserId());
         itemSchemeVersion = callback.updateItemScheme(itemSchemeVersion);
 
         return itemSchemeVersion;
@@ -119,7 +119,7 @@ public class ItemSchemeLifecycle {
         checkItemSchemeToPublishInternally(ctx, urn, itemSchemeVersion);
 
         // Update proc status
-        callback.setItemSchemeProcStatusAndInformationStatus(itemSchemeVersion, ItemSchemeMetamacProcStatusEnum.INTERNALLY_PUBLISHED, ctx.getUserId());
+        callback.setItemSchemeProcStatusAndInformationStatus(itemSchemeVersion, ProcStatusEnum.INTERNALLY_PUBLISHED, ctx.getUserId());
         itemSchemeVersion = callback.updateItemScheme(itemSchemeVersion);
         itemSchemeVersion = callback.markItemSchemeAsFinal(ctx, itemSchemeVersion);
 
@@ -141,12 +141,12 @@ public class ItemSchemeLifecycle {
         itemSchemeVersion = callback.startItemSchemeValidity(ctx, itemSchemeVersion);
 
         // Update proc status
-        callback.setItemSchemeProcStatusAndInformationStatus(itemSchemeVersion, ItemSchemeMetamacProcStatusEnum.EXTERNALLY_PUBLISHED, ctx.getUserId());
+        callback.setItemSchemeProcStatusAndInformationStatus(itemSchemeVersion, ProcStatusEnum.EXTERNALLY_PUBLISHED, ctx.getUserId());
         itemSchemeVersion = callback.updateItemScheme(itemSchemeVersion);
 
         // Fill validTo in previous internally published versions
         List<ItemSchemeVersion> versionsExternallyPublished = callback.findItemSchemeVersionsOfItemSchemeInProcStatus(ctx, itemSchemeVersion.getItemScheme(),
-                ItemSchemeMetamacProcStatusEnum.EXTERNALLY_PUBLISHED);
+                ProcStatusEnum.EXTERNALLY_PUBLISHED);
         for (ItemSchemeVersion versionExternallyPublished : versionsExternallyPublished) {
             if (versionExternallyPublished.getId().equals(itemSchemeVersion.getId())) {
                 continue;
@@ -263,7 +263,7 @@ public class ItemSchemeLifecycle {
     /**
      * Checks proc status of item scheme in proc status expected and throws exceptions if it is incorrect
      */
-    private void checkProcStatus(ItemSchemeVersion itemSchemeVersion, ItemSchemeMetamacProcStatusEnum expected, ItemSchemeMetamacProcStatusEnum[] actuals) throws MetamacException {
+    private void checkProcStatus(ItemSchemeVersion itemSchemeVersion, ProcStatusEnum expected, ProcStatusEnum[] actuals) throws MetamacException {
         if (!ArrayUtils.contains(actuals, expected)) {
             String[] procStatusString = SrmServiceUtils.procStatusEnumToString(actuals);
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CONCEPT_SCHEME_WRONG_PROC_STATUS)
@@ -309,16 +309,16 @@ public class ItemSchemeLifecycle {
      */
     public static interface ItemSchemeLifecycleCallback {
 
-        public ItemSchemeVersion retrieveItemSchemeByProcStatus(String urn, ItemSchemeMetamacProcStatusEnum[] procStatus) throws MetamacException;
+        public ItemSchemeVersion retrieveItemSchemeByProcStatus(String urn, ProcStatusEnum[] procStatus) throws MetamacException;
         public ItemSchemeVersion updateItemScheme(ItemSchemeVersion itemSchemeVersion);
-        public ItemSchemeMetamacProcStatusEnum getProcStatusMetadataValue(ItemSchemeVersion itemSchemeVersion);
+        public ProcStatusEnum getProcStatusMetadataValue(ItemSchemeVersion itemSchemeVersion);
         public DateTime getExternalPublicationDateMetadataValue(ItemSchemeVersion itemSchemeVersion);
-        public void setItemSchemeProcStatusAndInformationStatus(ItemSchemeVersion itemSchemeVersion, ItemSchemeMetamacProcStatusEnum newProcStatus, String user);
+        public void setItemSchemeProcStatusAndInformationStatus(ItemSchemeVersion itemSchemeVersion, ProcStatusEnum newProcStatus, String user);
         public void checkAdditionalConditionsSinceSendToProductionValidation(ItemSchemeVersion itemSchemeVersion, List<MetamacExceptionItem> exceptions);
         public void checkAdditionalConditionsToPublishInternally(ItemSchemeVersion itemSchemeVersion, List<MetamacExceptionItem> exceptions);
         public void checkAdditionalConditionsToPublishExternally(ItemSchemeVersion itemSchemeVersion, List<MetamacExceptionItem> exceptions);
         public ItemSchemeVersion markItemSchemeAsFinal(ServiceContext ctx, ItemSchemeVersion itemSchemeVersion) throws MetamacException;
         public ItemSchemeVersion startItemSchemeValidity(ServiceContext ctx, ItemSchemeVersion itemSchemeVersion) throws MetamacException;
-        List<ItemSchemeVersion> findItemSchemeVersionsOfItemSchemeInProcStatus(ServiceContext ctx, ItemScheme itemScheme, ItemSchemeMetamacProcStatusEnum... procStatus);
+        List<ItemSchemeVersion> findItemSchemeVersionsOfItemSchemeInProcStatus(ServiceContext ctx, ItemScheme itemScheme, ProcStatusEnum... procStatus);
     }
 }

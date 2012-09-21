@@ -4,7 +4,7 @@ import static org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum.JEFE_PRODUCCI
 import static org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum.TECNICO_APOYO_PRODUCCION;
 import static org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum.TECNICO_PRODUCCION;
 
-import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
+import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.sso.client.MetamacPrincipal;
 
 public class SharedDsdSecurityUtils extends SharedSecurityUtils {
@@ -13,12 +13,12 @@ public class SharedDsdSecurityUtils extends SharedSecurityUtils {
         return isSrmRoleAllowed(metamacPrincipal, TECNICO_PRODUCCION, JEFE_PRODUCCION);
     }
 
-    public static boolean canUpdateDsd(MetamacPrincipal metamacPrincipal, ItemSchemeMetamacProcStatusEnum procStatus) {
-        if (ItemSchemeMetamacProcStatusEnum.DRAFT.equals(procStatus)) {
+    public static boolean canUpdateDsd(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus) {
+        if (ProcStatusEnum.DRAFT.equals(procStatus)) {
             return isAnyDsdRole(metamacPrincipal);
-        } else if (ItemSchemeMetamacProcStatusEnum.PRODUCTION_VALIDATION.equals(procStatus)) {
+        } else if (ProcStatusEnum.PRODUCTION_VALIDATION.equals(procStatus)) {
             return isSrmRoleAllowed(metamacPrincipal, TECNICO_PRODUCCION, JEFE_PRODUCCION);
-        } else if (ItemSchemeMetamacProcStatusEnum.DIFFUSION_VALIDATION.equals(procStatus)) {
+        } else if (ProcStatusEnum.DIFFUSION_VALIDATION.equals(procStatus)) {
             return isSrmRoleAllowed(metamacPrincipal, JEFE_PRODUCCION);
         }
         return false;
@@ -28,54 +28,54 @@ public class SharedDsdSecurityUtils extends SharedSecurityUtils {
         return isSrmRoleAllowed(metamacPrincipal, TECNICO_PRODUCCION, JEFE_PRODUCCION);
     }
 
-    public static boolean canUpdatePrimaryMeasure(MetamacPrincipal metamacPrincipal, ItemSchemeMetamacProcStatusEnum procStatus) {
-        if (ItemSchemeMetamacProcStatusEnum.DRAFT.equals(procStatus)) {
+    public static boolean canUpdatePrimaryMeasure(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus) {
+        if (ProcStatusEnum.DRAFT.equals(procStatus)) {
             return isAnyDsdRole(metamacPrincipal);
-        } else if (ItemSchemeMetamacProcStatusEnum.PRODUCTION_VALIDATION.equals(procStatus)) {
+        } else if (ProcStatusEnum.PRODUCTION_VALIDATION.equals(procStatus)) {
             return isSrmRoleAllowed(metamacPrincipal, TECNICO_PRODUCCION, JEFE_PRODUCCION);
-        } else if (ItemSchemeMetamacProcStatusEnum.DIFFUSION_VALIDATION.equals(procStatus)) {
+        } else if (ProcStatusEnum.DIFFUSION_VALIDATION.equals(procStatus)) {
             return isSrmRoleAllowed(metamacPrincipal, JEFE_PRODUCCION);
         }
         return false;
     }
 
-    public static boolean canUpdateDimensions(MetamacPrincipal metamacPrincipal, ItemSchemeMetamacProcStatusEnum procStatus) {
-        if (ItemSchemeMetamacProcStatusEnum.DRAFT.equals(procStatus)) {
+    public static boolean canUpdateDimensions(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus) {
+        if (ProcStatusEnum.DRAFT.equals(procStatus)) {
             return isAnyDsdRole(metamacPrincipal);
-        } else if (ItemSchemeMetamacProcStatusEnum.PRODUCTION_VALIDATION.equals(procStatus)) {
+        } else if (ProcStatusEnum.PRODUCTION_VALIDATION.equals(procStatus)) {
             return isSrmRoleAllowed(metamacPrincipal, TECNICO_PRODUCCION, JEFE_PRODUCCION);
-        } else if (ItemSchemeMetamacProcStatusEnum.DIFFUSION_VALIDATION.equals(procStatus)) {
+        } else if (ProcStatusEnum.DIFFUSION_VALIDATION.equals(procStatus)) {
             return isSrmRoleAllowed(metamacPrincipal, JEFE_PRODUCCION);
         }
         return false;
     }
 
-    public static boolean canUpdateAttributes(MetamacPrincipal metamacPrincipal, ItemSchemeMetamacProcStatusEnum procStatus) {
-        if (ItemSchemeMetamacProcStatusEnum.DRAFT.equals(procStatus)) {
+    public static boolean canUpdateAttributes(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus) {
+        if (ProcStatusEnum.DRAFT.equals(procStatus)) {
             return isAnyDsdRole(metamacPrincipal);
-        } else if (ItemSchemeMetamacProcStatusEnum.PRODUCTION_VALIDATION.equals(procStatus)) {
+        } else if (ProcStatusEnum.PRODUCTION_VALIDATION.equals(procStatus)) {
             return isSrmRoleAllowed(metamacPrincipal, TECNICO_PRODUCCION, JEFE_PRODUCCION);
-        } else if (ItemSchemeMetamacProcStatusEnum.DIFFUSION_VALIDATION.equals(procStatus)) {
+        } else if (ProcStatusEnum.DIFFUSION_VALIDATION.equals(procStatus)) {
             return isSrmRoleAllowed(metamacPrincipal, JEFE_PRODUCCION);
         }
         return false;
     }
 
-    public static boolean canUpdateGroupKeys(MetamacPrincipal metamacPrincipal, ItemSchemeMetamacProcStatusEnum procStatus) {
-        if (ItemSchemeMetamacProcStatusEnum.DRAFT.equals(procStatus)) {
+    public static boolean canUpdateGroupKeys(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus) {
+        if (ProcStatusEnum.DRAFT.equals(procStatus)) {
             return isAnyDsdRole(metamacPrincipal);
-        } else if (ItemSchemeMetamacProcStatusEnum.PRODUCTION_VALIDATION.equals(procStatus)) {
+        } else if (ProcStatusEnum.PRODUCTION_VALIDATION.equals(procStatus)) {
             return isSrmRoleAllowed(metamacPrincipal, TECNICO_PRODUCCION, JEFE_PRODUCCION);
-        } else if (ItemSchemeMetamacProcStatusEnum.DIFFUSION_VALIDATION.equals(procStatus)) {
+        } else if (ProcStatusEnum.DIFFUSION_VALIDATION.equals(procStatus)) {
             return isSrmRoleAllowed(metamacPrincipal, JEFE_PRODUCCION);
         }
         return false;
     }
 
-    public static boolean canDeleteDsd(MetamacPrincipal metamacPrincipal, ItemSchemeMetamacProcStatusEnum procStatus) {
-        if (ItemSchemeMetamacProcStatusEnum.DRAFT.equals(procStatus) || ItemSchemeMetamacProcStatusEnum.PRODUCTION_VALIDATION.equals(procStatus)) {
+    public static boolean canDeleteDsd(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus) {
+        if (ProcStatusEnum.DRAFT.equals(procStatus) || ProcStatusEnum.PRODUCTION_VALIDATION.equals(procStatus)) {
             return isSrmRoleAllowed(metamacPrincipal, TECNICO_PRODUCCION, JEFE_PRODUCCION);
-        } else if (ItemSchemeMetamacProcStatusEnum.DIFFUSION_VALIDATION.equals(procStatus)) {
+        } else if (ProcStatusEnum.DIFFUSION_VALIDATION.equals(procStatus)) {
             return isSrmRoleAllowed(metamacPrincipal, JEFE_PRODUCCION);
         }
         return false;
@@ -101,10 +101,10 @@ public class SharedDsdSecurityUtils extends SharedSecurityUtils {
         return isSrmRoleAllowed(metamacPrincipal, TECNICO_PRODUCCION, JEFE_PRODUCCION);
     }
 
-    public static boolean canRejectDsdValidation(MetamacPrincipal metamacPrincipal, ItemSchemeMetamacProcStatusEnum procStatus) {
-        if (ItemSchemeMetamacProcStatusEnum.PRODUCTION_VALIDATION.equals(procStatus)) {
+    public static boolean canRejectDsdValidation(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus) {
+        if (ProcStatusEnum.PRODUCTION_VALIDATION.equals(procStatus)) {
             return isSrmRoleAllowed(metamacPrincipal, TECNICO_PRODUCCION, JEFE_PRODUCCION);
-        } else if (ItemSchemeMetamacProcStatusEnum.DIFFUSION_VALIDATION.equals(procStatus)) {
+        } else if (ProcStatusEnum.DIFFUSION_VALIDATION.equals(procStatus)) {
             return isSrmRoleAllowed(metamacPrincipal, JEFE_PRODUCCION);
         }
         return false;

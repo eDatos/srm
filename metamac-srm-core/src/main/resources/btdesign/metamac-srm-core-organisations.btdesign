@@ -23,7 +23,7 @@ Application OrganisationsMetamac {
 			hint="idSequence=M_ORGANISATION_SCHEMES"
 
 			"Status"
-			- @ItemSchemeMetamacProcStatusEnum procStatus;
+			- @ProcStatusEnum procStatus;
 
 			"Date when the organisation scheme was sended to production validation"
 			DateTimeTZ productionValidationDate nullable;
@@ -51,8 +51,7 @@ Application OrganisationsMetamac {
 				findByQuery(String query, Map<String, Object> parameters, int maxResult);
 				findByCondition(PagingParameter pagingParameter);
 				@OrganisationSchemeMetamac findByUrn(String urn);
-				@OrganisationSchemeMetamac retrieveOrganisationSchemeByProcStatus(String urn, ArrayItemSchemeMetamacProcStatusEnum
-				procStatus) throws MetamacException;
+				@OrganisationSchemeMetamac retrieveOrganisationSchemeByProcStatus(String urn, ArrayProcStatusEnum procStatus) throws MetamacException;
 			}
 
 		}

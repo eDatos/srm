@@ -8,7 +8,7 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
-import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
+import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.serviceimpl.SrmServiceUtils;
 import org.springframework.stereotype.Repository;
 
@@ -44,7 +44,7 @@ public class ConceptSchemeVersionMetamacRepositoryImpl extends ConceptSchemeVers
     }
 
     @Override
-    public ConceptSchemeVersionMetamac retrieveConceptSchemeVersionByProcStatus(String urn, ItemSchemeMetamacProcStatusEnum[] procStatusArray) throws MetamacException {
+    public ConceptSchemeVersionMetamac retrieveConceptSchemeVersionByProcStatus(String urn, ProcStatusEnum[] procStatusArray) throws MetamacException {
 
         Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put("urn", urn);

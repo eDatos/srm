@@ -11,7 +11,7 @@ Application DtosMetamacDsdDomain {
 		"Dto for ConceptSchemeMetamac"
 		DataTransferObject DataStructureDefinitionMetamacDto extends @DataStructureDefinitionDto {
 			"Status"
-			- @ItemSchemeMetamacProcStatusEnum procStatus required;
+			- @ProcStatusEnum procStatus required;
 			"Date when the data structure definition was sended to production validation"
 			JAVADATE productionValidationDate nullable;
 			"User who sended to production validation"

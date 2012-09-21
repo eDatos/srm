@@ -8,7 +8,7 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
-import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
+import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.serviceimpl.SrmServiceUtils;
 import org.springframework.stereotype.Repository;
 
@@ -34,7 +34,7 @@ public class DataStructureDefinitionVersionMetamacRepositoryImpl extends DataStr
     }
     
     @Override
-    public DataStructureDefinitionVersionMetamac retrieveDataStructureDefinitionVersionByProcStatus(String urn, ItemSchemeMetamacProcStatusEnum[] procStatusArray) throws MetamacException {
+    public DataStructureDefinitionVersionMetamac retrieveDataStructureDefinitionVersionByProcStatus(String urn, ProcStatusEnum[] procStatusArray) throws MetamacException {
         Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put("urn", urn);
         parameters.put("procStatus", SrmServiceUtils.procStatusEnumToList(procStatusArray));

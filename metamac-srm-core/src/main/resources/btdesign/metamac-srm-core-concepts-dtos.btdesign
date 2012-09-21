@@ -12,7 +12,7 @@ Application DtosMetamacConceptDomain {
 		"Dto for ConceptSchemeMetamac"
 		DataTransferObject ConceptSchemeMetamacDto extends @ConceptSchemeDto {
 			"Status"
-			- @ItemSchemeMetamacProcStatusEnum procStatus required;
+			- @ProcStatusEnum procStatus required;
 			"Type"
 			- @ConceptSchemeTypeEnum type required;
 			"Related operation, only when type is Operation"

@@ -8,7 +8,7 @@ import static org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum.TECNICO_NORMA
 import static org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum.TECNICO_PRODUCCION;
 
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
-import org.siemac.metamac.srm.core.enume.domain.ItemSchemeMetamacProcStatusEnum;
+import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum;
 import org.siemac.metamac.sso.client.MetamacPrincipal;
 
@@ -31,7 +31,7 @@ public class SharedConceptsSecurityUtils extends SharedSecurityUtils {
         return isSrmRoleAllowed(metamacPrincipal, roles) && (!isOperationConceptSchemeType(type) || isOperationAllowed(metamacPrincipal, operationCode, roles));
     }
 
-    public static boolean canUpdateConceptScheme(MetamacPrincipal metamacPrincipal, ItemSchemeMetamacProcStatusEnum procStatus, ConceptSchemeTypeEnum typeOld, String operationCodeOld,
+    public static boolean canUpdateConceptScheme(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus, ConceptSchemeTypeEnum typeOld, String operationCodeOld,
             ConceptSchemeTypeEnum typeNew, String operationCodeNew) {
         return canUpdateConceptScheme(metamacPrincipal, procStatus, typeOld, operationCodeOld) && canUpdateConceptScheme(metamacPrincipal, procStatus, typeNew, operationCodeNew);
     }
@@ -71,15 +71,15 @@ public class SharedConceptsSecurityUtils extends SharedSecurityUtils {
         return false;
     }
 
-    public static boolean canRejectConceptSchemeValidation(MetamacPrincipal metamacPrincipal, ItemSchemeMetamacProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode) {
-        if (ItemSchemeMetamacProcStatusEnum.PRODUCTION_VALIDATION.equals(procStatus)) {
+    public static boolean canRejectConceptSchemeValidation(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode) {
+        if (ProcStatusEnum.PRODUCTION_VALIDATION.equals(procStatus)) {
             if (isNonOperationConceptSchemeType(type)) {
                 return isSrmRoleAllowed(metamacPrincipal, TECNICO_NORMALIZACION, JEFE_NORMALIZACION);
             } else if (isOperationConceptSchemeType(type)) {
                 SrmRoleEnum[] roles = {TECNICO_PRODUCCION, TECNICO_NORMALIZACION, JEFE_NORMALIZACION, JEFE_PRODUCCION};
                 return isSrmRoleAllowed(metamacPrincipal, roles) && isOperationAllowed(metamacPrincipal, operationCode, roles);
             }
-        } else if (ItemSchemeMetamacProcStatusEnum.DIFFUSION_VALIDATION.equals(procStatus)) {
+        } else if (ProcStatusEnum.DIFFUSION_VALIDATION.equals(procStatus)) {
             if (isNonOperationConceptSchemeType(type)) {
                 return isSrmRoleAllowed(metamacPrincipal, JEFE_NORMALIZACION);
             } else if (isOperationConceptSchemeType(type)) {
@@ -142,11 +142,11 @@ public class SharedConceptsSecurityUtils extends SharedSecurityUtils {
 
     // Concepts
 
-    public static boolean canCreateConcept(MetamacPrincipal metamacPrincipal, ItemSchemeMetamacProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode) {
+    public static boolean canCreateConcept(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode) {
         return canCrudConceptInConceptScheme(metamacPrincipal, procStatus, type, operationCode);
     }
 
-    public static boolean canUpdateConcept(MetamacPrincipal metamacPrincipal, ItemSchemeMetamacProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode) {
+    public static boolean canUpdateConcept(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode) {
         return canCrudConceptInConceptScheme(metamacPrincipal, procStatus, type, operationCode);
     }
 
@@ -154,7 +154,7 @@ public class SharedConceptsSecurityUtils extends SharedSecurityUtils {
         return isAnySrmRole(metamacPrincipal);
     }
 
-    public static boolean canDeleteConcept(MetamacPrincipal metamacPrincipal, ItemSchemeMetamacProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode) {
+    public static boolean canDeleteConcept(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode) {
         return canCrudConceptInConceptScheme(metamacPrincipal, procStatus, type, operationCode);
     }
 
@@ -166,11 +166,11 @@ public class SharedConceptsSecurityUtils extends SharedSecurityUtils {
         return isAnySrmRole(metamacPrincipal);
     }
 
-    public static boolean canAddConceptRelation(MetamacPrincipal metamacPrincipal, ItemSchemeMetamacProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode) {
+    public static boolean canAddConceptRelation(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode) {
         return canCrudConceptInConceptScheme(metamacPrincipal, procStatus, type, operationCode);
     }
 
-    public static boolean canDeleteConceptRelation(MetamacPrincipal metamacPrincipal, ItemSchemeMetamacProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode) {
+    public static boolean canDeleteConceptRelation(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode) {
         return canCrudConceptInConceptScheme(metamacPrincipal, procStatus, type, operationCode);
     }
 
@@ -190,22 +190,22 @@ public class SharedConceptsSecurityUtils extends SharedSecurityUtils {
         return isAnySrmRole(metamacPrincipal);
     }
 
-    private static boolean canUpdateConceptScheme(MetamacPrincipal metamacPrincipal, ItemSchemeMetamacProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode) {
-        if (ItemSchemeMetamacProcStatusEnum.DRAFT.equals(procStatus)) {
+    private static boolean canUpdateConceptScheme(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode) {
+        if (ProcStatusEnum.DRAFT.equals(procStatus)) {
             if (isNonOperationConceptSchemeType(type)) {
                 return isSrmRoleAllowed(metamacPrincipal, TECNICO_NORMALIZACION, JEFE_NORMALIZACION);
             } else if (isOperationConceptSchemeType(type)) {
                 SrmRoleEnum[] roles = {TECNICO_PRODUCCION, TECNICO_NORMALIZACION, JEFE_PRODUCCION, JEFE_NORMALIZACION};
                 return isSrmRoleAllowed(metamacPrincipal, roles) && isOperationAllowed(metamacPrincipal, operationCode, roles);
             }
-        } else if (ItemSchemeMetamacProcStatusEnum.PRODUCTION_VALIDATION.equals(procStatus)) {
+        } else if (ProcStatusEnum.PRODUCTION_VALIDATION.equals(procStatus)) {
             if (isNonOperationConceptSchemeType(type)) {
                 return isSrmRoleAllowed(metamacPrincipal, TECNICO_NORMALIZACION, JEFE_NORMALIZACION);
             } else if (isOperationConceptSchemeType(type)) {
                 SrmRoleEnum[] roles = {TECNICO_PRODUCCION, TECNICO_NORMALIZACION, JEFE_PRODUCCION, JEFE_NORMALIZACION};
                 return isSrmRoleAllowed(metamacPrincipal, roles) && isOperationAllowed(metamacPrincipal, operationCode, roles);
             }
-        } else if (ItemSchemeMetamacProcStatusEnum.DIFFUSION_VALIDATION.equals(procStatus)) {
+        } else if (ProcStatusEnum.DIFFUSION_VALIDATION.equals(procStatus)) {
             if (isNonOperationConceptSchemeType(type)) {
                 return isSrmRoleAllowed(metamacPrincipal, JEFE_NORMALIZACION);
             } else if (isOperationConceptSchemeType(type)) {
@@ -216,8 +216,8 @@ public class SharedConceptsSecurityUtils extends SharedSecurityUtils {
         return false;
     }
 
-    private static boolean canCrudConceptInConceptScheme(MetamacPrincipal metamacPrincipal, ItemSchemeMetamacProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode) {
-        if (ItemSchemeMetamacProcStatusEnum.DRAFT.equals(procStatus)) {
+    private static boolean canCrudConceptInConceptScheme(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode) {
+        if (ProcStatusEnum.DRAFT.equals(procStatus)) {
             if (isNonOperationConceptSchemeType(type)) {
                 return isSrmRoleAllowed(metamacPrincipal, TECNICO_APOYO_NORMALIZACION, TECNICO_NORMALIZACION, JEFE_NORMALIZACION);
             } else if (isOperationConceptSchemeType(type)) {
@@ -225,14 +225,14 @@ public class SharedConceptsSecurityUtils extends SharedSecurityUtils {
                         && isOperationAllowed(metamacPrincipal, operationCode, TECNICO_APOYO_PRODUCCION, TECNICO_APOYO_NORMALIZACION, TECNICO_PRODUCCION, TECNICO_NORMALIZACION, JEFE_PRODUCCION,
                                 JEFE_NORMALIZACION);
             }
-        } else if (ItemSchemeMetamacProcStatusEnum.PRODUCTION_VALIDATION.equals(procStatus)) {
+        } else if (ProcStatusEnum.PRODUCTION_VALIDATION.equals(procStatus)) {
             if (isNonOperationConceptSchemeType(type)) {
                 return isSrmRoleAllowed(metamacPrincipal, TECNICO_NORMALIZACION, JEFE_NORMALIZACION);
             } else if (isOperationConceptSchemeType(type)) {
                 SrmRoleEnum[] roles = {TECNICO_PRODUCCION, TECNICO_NORMALIZACION, JEFE_NORMALIZACION, JEFE_PRODUCCION};
                 return isSrmRoleAllowed(metamacPrincipal, roles) && isOperationAllowed(metamacPrincipal, operationCode, roles);
             }
-        } else if (ItemSchemeMetamacProcStatusEnum.DIFFUSION_VALIDATION.equals(procStatus)) {
+        } else if (ProcStatusEnum.DIFFUSION_VALIDATION.equals(procStatus)) {
             if (isNonOperationConceptSchemeType(type)) {
                 return isSrmRoleAllowed(metamacPrincipal, JEFE_NORMALIZACION);
             } else if (isOperationConceptSchemeType(type)) {

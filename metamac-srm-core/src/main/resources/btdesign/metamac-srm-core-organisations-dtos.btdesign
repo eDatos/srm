@@ -11,7 +11,7 @@ Application DtosMetamacOrganisationDomain {
 		"Dto for OrganisationSchemeMetamac"
 		DataTransferObject OrganisationSchemeMetamacDto extends @OrganisationSchemeDto {
 			"Status"
-			- @ItemSchemeMetamacProcStatusEnum procStatus required;
+			- @ProcStatusEnum procStatus required;
 			
 			"Date when the organisation scheme was sended to production validation"
 			JAVADATE productionValidationDate nullable;
