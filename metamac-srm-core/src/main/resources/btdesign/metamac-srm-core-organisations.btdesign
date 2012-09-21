@@ -1,0 +1,86 @@
+
+import "classpath:/btdesign/export/metamac-core-common-entity.btdesign"
+import "classpath:/btdesign/statistic-sdmx-core-organisations.btdesign"
+import "classpath:/btdesign/metamac-srm-core-enum.btdesign"
+import "classpath:/btdesign/statistic-sdmx-v2_1-domain-enums.btdesign"
+
+Application OrganisationsMetamac {
+	basePackage=unused
+
+	Module domain_organisations_metamac {
+		basePackage=org.siemac.metamac.srm.core.organisation
+
+		// ----------------------------------------------------------------
+		// 							SERVICES
+		// ----------------------------------------------------------------  
+
+		// ----------------------------------------------------------------
+		// 							ENTITIES
+		// ----------------------------------------------------------------  
+		Entity OrganisationSchemeMetamac extends @OrganisationScheme {
+			databaseTable="TB_M_ORGANISATION_SCHEMES"
+
+			hint="idSequence=M_ORGANISATION_SCHEMES"
+
+			"Status"
+			- @ItemSchemeMetamacProcStatusEnum procStatus;
+
+			"Date when the organisation scheme was sended to production validation"
+			DateTimeTZ productionValidationDate nullable;
+			"User who sended to production validation"
+			String productionValidationUser nullable;
+			"Date when the organisation scheme was sended to diffusion validation"
+			DateTimeTZ diffusionValidationDate nullable;
+			"User who sended to diffusion validation"
+			String diffusionValidationUser nullable;
+			"Date when the organisation scheme was published internally"
+			DateTimeTZ internalPublicationDate nullable;
+			"User who published internally"
+			String internalPublicationUser nullable;
+			"Date when the organisation scheme was published externally"
+			DateTimeTZ externalPublicationDate nullable;
+			"User who published externally"
+			String externalPublicationUser nullable;
+			"The external publication failed"
+			Boolean isExternalPublicationFailed nullable databaseColumn="IS_EXT_PUBLICATION_FAILED";
+			"External publication failed date"
+			DateTimeTZ externalPublicationFailedDate nullable databaseColumn="EXT_PUBLICATION_FAILED_DATE";
+
+			Repository OrganisationSchemeVersionMetamacRepository {
+				findById;
+				findByQuery(String query, Map<String, Object> parameters, int maxResult);
+				findByCondition(PagingParameter pagingParameter);
+				@OrganisationSchemeMetamac findByUrn(String urn);
+				@OrganisationSchemeMetamac retrieveOrganisationSchemeByProcStatus(String urn, ArrayItemSchemeMetamacProcStatusEnum
+				procStatus) throws MetamacException;
+			}
+
+		}
+
+		"A maintained collection of Maintenace Agencies."
+		Entity AgencySchemeMetamac extends @OrganisationSchemeMetamac {
+			databaseTable="TB_M_AGENCY_SCHEMES"
+
+		}
+
+		"A maintained collection of Data Providers."
+		Entity DataProviderSchemeMetamac extends @OrganisationSchemeMetamac {
+			databaseTable="TB_M_DATA_PROVIDER_SCHEMES"
+
+		}
+
+		"A maintained collection of Data Consumers."
+		Entity DataConsumerSchemeMetamac extends @OrganisationSchemeMetamac {
+			databaseTable="TB_M_DATA_CONSUMER_SCHEMES"
+
+		}
+
+		"A maintained collection of Organisation Units."
+		Entity OrganisationUnitSchemeMetamac extends @OrganisationScheme {
+			databaseTable="TB_M_ORGANISATION_UNIT_SCHEMES"
+
+		}
+
+	}
+
+}
