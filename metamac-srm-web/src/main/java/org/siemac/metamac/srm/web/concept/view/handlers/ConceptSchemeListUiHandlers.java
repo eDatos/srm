@@ -8,7 +8,7 @@ import com.gwtplatform.mvp.client.UiHandlers;
 
 public interface ConceptSchemeListUiHandlers extends UiHandlers {
 
-    void goToConceptScheme(String code);
+    void goToConceptScheme(String urn);
     void createConceptScheme(ConceptSchemeMetamacDto conceptSchemeDto);
     void deleteConceptSchemes(List<String> urns);
     void retrieveConceptSchemes(int firstResult, int maxResults, String conceptScheme);
