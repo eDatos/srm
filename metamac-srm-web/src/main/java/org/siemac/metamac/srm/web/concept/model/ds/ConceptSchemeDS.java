@@ -1,7 +1,5 @@
 package org.siemac.metamac.srm.web.concept.model.ds;
 
-import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
-
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.data.fields.DataSourceIntegerField;
 
@@ -46,9 +44,9 @@ public class ConceptSchemeDS extends DataSource {
     public static String       DTO                              = "sch-dto";
 
     public ConceptSchemeDS() {
-        DataSourceIntegerField code = new DataSourceIntegerField(CODE, MetamacSrmWeb.getConstants().conceptCode());
-        code.setPrimaryKey(true);
-        addField(code);
+        DataSourceIntegerField identifier = new DataSourceIntegerField(ID, "identifier");
+        identifier.setPrimaryKey(true);
+        addField(identifier);
     }
 
 }

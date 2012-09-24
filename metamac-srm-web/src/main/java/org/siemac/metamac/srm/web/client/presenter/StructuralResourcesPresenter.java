@@ -6,6 +6,7 @@ import java.util.List;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
+import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
@@ -17,6 +18,8 @@ import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemePaginatedListAc
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemePaginatedListResult;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdListAction;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdListResult;
+import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeListAction;
+import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeListResult;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.utils.UrnUtils;
@@ -69,6 +72,7 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
 
         void setDsdList(List<DataStructureDefinitionMetamacDto> dataStructureDefinitionMetamacDtos);
         void setConceptSchemeList(List<ConceptSchemeMetamacDto> conceptSchemeDtos);
+        void setOrganisationSchemeList(List<OrganisationSchemeMetamacDto> organisationSchemeMetamacDtos);
 
         void resetView();
     }
@@ -97,6 +101,7 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
         getView().resetView();
         retrieveDsds();
         retrieveConceptSchemes();
+        retrieveOrganisationSchemes();
     }
 
     @Override
@@ -121,7 +126,7 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
         super.prepareFromRequest(request);
     }
 
-    protected void retrieveDsds() {
+    private void retrieveDsds() {
         dispatcher.execute(new GetDsdListAction(RESOURCE_LIST_FIRST_RESULT, RESOURCE_LIST_MAX_RESULTS, null), new WaitingAsyncCallback<GetDsdListResult>() {
 
             @Override
@@ -135,7 +140,7 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
         });
     }
 
-    protected void retrieveConceptSchemes() {
+    private void retrieveConceptSchemes() {
         dispatcher.execute(new GetConceptSchemePaginatedListAction(RESOURCE_LIST_FIRST_RESULT, RESOURCE_LIST_MAX_RESULTS, null), new WaitingAsyncCallback<GetConceptSchemePaginatedListResult>() {
 
             @Override
@@ -145,6 +150,20 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
             @Override
             public void onWaitSuccess(GetConceptSchemePaginatedListResult result) {
                 getView().setConceptSchemeList(result.getConceptSchemeList());
+            }
+        });
+    }
+
+    private void retrieveOrganisationSchemes() {
+        dispatcher.execute(new GetOrganisationSchemeListAction(RESOURCE_LIST_FIRST_RESULT, RESOURCE_LIST_MAX_RESULTS, null), new WaitingAsyncCallback<GetOrganisationSchemeListResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(StructuralResourcesPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().organisationSchemeErrorRetrieveList()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetOrganisationSchemeListResult result) {
+                getView().setOrganisationSchemeList(result.getOrganisationSchemeMetamacDtos());
             }
         });
     }
@@ -177,6 +196,20 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
             placeRequests.add(structuralResourcesPlace);
             placeRequests.add(schemesListPlace);
             placeRequests.add(conceptPlace);
+            placeManager.revealPlaceHierarchy(placeRequests);
+        }
+    }
+
+    @Override
+    public void goToOrganisationScheme(String urn) {
+        if (urn != null) {
+            PlaceRequest structuralResourcesPlace = new PlaceRequest(NameTokens.structuralResourcesPage);
+            PlaceRequest schemesListPlace = new PlaceRequest(NameTokens.organisationSchemeListPage);
+            PlaceRequest organisationPlace = new PlaceRequest(NameTokens.organisationSchemePage).with(PlaceRequestParams.organisationSchemeParam, UrnUtils.removePrefix(urn));
+            List<PlaceRequest> placeRequests = new ArrayList<PlaceRequest>();
+            placeRequests.add(structuralResourcesPlace);
+            placeRequests.add(schemesListPlace);
+            placeRequests.add(organisationPlace);
             placeManager.revealPlaceHierarchy(placeRequests);
         }
     }

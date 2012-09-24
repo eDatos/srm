@@ -16,7 +16,7 @@ public class CommonUtils {
     private static LinkedHashMap<String, String> typeRepresentationHashMap = null;
 
     public static String getProcStatusName(ProcStatusEnum procStatus) {
-        return getCoreMessages().getString(getCoreMessages().procStatusEnum() + procStatus.getName());
+        return procStatus != null ? getCoreMessages().getString(getCoreMessages().procStatusEnum() + procStatus.getName()) : null;
     }
 
     public static LinkedHashMap<String, String> getVersionTypeHashMap() {

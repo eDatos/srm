@@ -23,7 +23,7 @@ public class ConceptSchemeListGrid extends BaseCustomListGrid {
 
         ListGridField codeField = new ListGridField(ConceptSchemeDS.CODE, getConstants().conceptSchemeCode());
         ListGridField nameField = new ListGridField(ConceptSchemeDS.NAME, getConstants().conceptSchemeName());
-        ListGridField procStatusField = new ListGridField(ConceptSchemeDS.PROC_STATUS, getConstants().conceptSchemeProcStatus());
+        ListGridField procStatusField = new ListGridField(ConceptSchemeDS.PROC_STATUS, getConstants().lifeCycleProcStatus());
 
         // ToolTip
         codeField.setShowHover(true);

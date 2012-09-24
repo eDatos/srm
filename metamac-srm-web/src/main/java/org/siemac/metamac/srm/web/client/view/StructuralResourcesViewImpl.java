@@ -4,13 +4,16 @@ import java.util.List;
 
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
+import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
 import org.siemac.metamac.srm.web.client.presenter.StructuralResourcesPresenter;
 import org.siemac.metamac.srm.web.client.view.handlers.StructuralResourcesUiHandlers;
 import org.siemac.metamac.srm.web.client.widgets.ConceptSchemeListGrid;
 import org.siemac.metamac.srm.web.client.widgets.DsdListGrid;
+import org.siemac.metamac.srm.web.client.widgets.OrganisationSchemeListGrid;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptSchemeRecord;
+import org.siemac.metamac.srm.web.organisation.model.record.OrganisationSchemeRecord;
 
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -28,17 +31,18 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 public class StructuralResourcesViewImpl extends ViewWithUiHandlers<StructuralResourcesUiHandlers> implements StructuralResourcesPresenter.StructuralResourcesView {
 
-    private static final String         CONTEXT_AREA_WIDTH = "*";
+    private static final String              CONTEXT_AREA_WIDTH = "*";
 
-    private final DsdListGrid           dsdListGrid;
-    private final ConceptSchemeListGrid conceptSchemeListGrid;
+    private final DsdListGrid                dsdListGrid;
+    private final ConceptSchemeListGrid      conceptSchemeListGrid;
+    private final OrganisationSchemeListGrid organisationSchemeListGrid;
 
-    private final SectionStack          lastModifiedArtifactsSectionStack;
+    private final SectionStack               lastModifiedArtifactsSectionStack;
 
-    private VLayout                     panel;
+    private VLayout                          panel;
 
     @Inject
-    public StructuralResourcesViewImpl(DsdListGrid dsdListGrid, ConceptSchemeListGrid conceptSchemeListGrid) {
+    public StructuralResourcesViewImpl(DsdListGrid dsdListGrid, ConceptSchemeListGrid conceptSchemeListGrid, OrganisationSchemeListGrid organisationSchemeListGrid) {
         super();
 
         this.dsdListGrid = dsdListGrid;
@@ -59,6 +63,16 @@ public class StructuralResourcesViewImpl extends ViewWithUiHandlers<StructuralRe
                 ConceptSchemeRecord record = (ConceptSchemeRecord) event.getRecord();
                 getUiHandlers().goToConceptScheme(record.getUrn());
 
+            }
+        });
+
+        this.organisationSchemeListGrid = organisationSchemeListGrid;
+        this.organisationSchemeListGrid.addRecordClickHandler(new RecordClickHandler() {
+
+            @Override
+            public void onRecordClick(RecordClickEvent event) {
+                OrganisationSchemeRecord record = (OrganisationSchemeRecord) event.getRecord();
+                getUiHandlers().goToOrganisationScheme(record.getUrn());
             }
         });
 
@@ -87,10 +101,10 @@ public class StructuralResourcesViewImpl extends ViewWithUiHandlers<StructuralRe
         lastConceptSchemesModifiedSection.setExpanded(false);
         lastConceptSchemesModifiedSection.setItems(this.conceptSchemeListGrid);
 
-        SectionStackSection lastOrgSchemesModifiedSection = new SectionStackSection();
-        lastOrgSchemesModifiedSection.setTitle(MetamacSrmWeb.getConstants().organisationSchemeLastModified());
-        lastOrgSchemesModifiedSection.setExpanded(false);
-        // lastOrgSchemesModifiedSection.setItems();
+        SectionStackSection lastOrganisationSchemesModifiedSection = new SectionStackSection();
+        lastOrganisationSchemesModifiedSection.setTitle(MetamacSrmWeb.getConstants().organisationSchemeLastModified());
+        lastOrganisationSchemesModifiedSection.setExpanded(false);
+        lastOrganisationSchemesModifiedSection.setItems(this.organisationSchemeListGrid);
 
         SectionStackSection lastCatSchemesModifiedSection = new SectionStackSection();
         lastCatSchemesModifiedSection.setTitle(MetamacSrmWeb.getConstants().categorySchemeLastModified());
@@ -102,13 +116,14 @@ public class StructuralResourcesViewImpl extends ViewWithUiHandlers<StructuralRe
         lastClassifModifiedSection.setExpanded(false);
         // lastClassifModifiedSection.setItems();
 
-        lastModifiedArtifactsSectionStack.setSections(lastDsdModifiedSection, lastConceptSchemesModifiedSection, lastOrgSchemesModifiedSection, lastCatSchemesModifiedSection,
+        lastModifiedArtifactsSectionStack.setSections(lastDsdModifiedSection, lastConceptSchemesModifiedSection, lastOrganisationSchemesModifiedSection, lastCatSchemesModifiedSection,
                 lastClassifModifiedSection);
 
         // Add the ToolStrip to the Operation View layout container
         panel.addMember(this.lastModifiedArtifactsSectionStack);
 
     }
+
     @Override
     public Widget asWidget() {
         return panel;
@@ -151,6 +166,11 @@ public class StructuralResourcesViewImpl extends ViewWithUiHandlers<StructuralRe
     @Override
     public void setConceptSchemeList(List<ConceptSchemeMetamacDto> conceptSchemeDtos) {
         conceptSchemeListGrid.setConceptSchemes(conceptSchemeDtos);
+    }
+
+    @Override
+    public void setOrganisationSchemeList(List<OrganisationSchemeMetamacDto> organisationSchemeMetamacDtos) {
+        organisationSchemeListGrid.setOrganisationSchemes(organisationSchemeMetamacDtos);
     }
 
 }
