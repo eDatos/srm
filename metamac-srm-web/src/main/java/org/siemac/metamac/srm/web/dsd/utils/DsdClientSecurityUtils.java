@@ -7,7 +7,7 @@ import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 public class DsdClientSecurityUtils {
 
     public static boolean canCreateDsd() {
-        return SharedDsdSecurityUtils.canCreateDsd(MetamacSrmWeb.getCurrentUser());
+        return SharedDsdSecurityUtils.canCreateDataStructureDefinition(MetamacSrmWeb.getCurrentUser());
     }
 
     public static boolean canUpdateDsd(ProcStatusEnum procStatus) {
