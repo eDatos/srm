@@ -168,9 +168,9 @@ public class ConceptSchemeListViewImpl extends ViewImpl implements ConceptScheme
             }
         });
 
-        ListGridField fieldCode = new ListGridField(ConceptSchemeDS.CODE, getConstants().conceptSchemeCode());
+        ListGridField fieldCode = new ListGridField(ConceptSchemeDS.CODE, getConstants().maintainableArtefactCode());
         fieldCode.setAlign(Alignment.LEFT);
-        ListGridField fieldName = new ListGridField(ConceptSchemeDS.NAME, getConstants().conceptSchemeName());
+        ListGridField fieldName = new ListGridField(ConceptSchemeDS.NAME, getConstants().maintainableArtefactName());
         ListGridField status = new ListGridField(ConceptSchemeDS.PROC_STATUS, getConstants().lifeCycleProcStatus());
         conceptSchemesList.getListGrid().setFields(fieldCode, fieldName, status);
 
@@ -270,8 +270,7 @@ public class ConceptSchemeListViewImpl extends ViewImpl implements ConceptScheme
         boolean allSelectedSchemesCanBeDeleted = true;
         for (ListGridRecord record : records) {
             ConceptSchemeMetamacDto conceptSchemeMetamacDto = ((ConceptSchemeRecord) record).getConceptSchemeDto();
-            if (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(conceptSchemeMetamacDto.getProcStatus())
-                    || ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(conceptSchemeMetamacDto.getProcStatus())
+            if (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(conceptSchemeMetamacDto.getProcStatus()) || ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(conceptSchemeMetamacDto.getProcStatus())
                     || !ConceptsClientSecurityUtils.canDeleteConceptScheme(conceptSchemeMetamacDto.getType(), CommonUtils.getRelatedOperationCode(conceptSchemeMetamacDto))) {
                 allSelectedSchemesCanBeDeleted = false;
                 break;

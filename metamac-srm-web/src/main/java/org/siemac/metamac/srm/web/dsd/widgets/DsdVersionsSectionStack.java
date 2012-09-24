@@ -18,10 +18,10 @@ public class DsdVersionsSectionStack extends VersionsSectionStack {
     public DsdVersionsSectionStack(String title) {
         super(title);
 
-        ListGridField codeField = new ListGridField(DataStructureDefinitionDS.CODE, getConstants().dsdCode());
+        ListGridField codeField = new ListGridField(DataStructureDefinitionDS.CODE, getConstants().maintainableArtefactCode());
         codeField.setWidth("30%");
 
-        ListGridField nameField = new ListGridField(DataStructureDefinitionDS.NAME, getConstants().dsdName());
+        ListGridField nameField = new ListGridField(DataStructureDefinitionDS.NAME, getConstants().maintainableArtefactName());
 
         ListGridField versionField = new ListGridField(DataStructureDefinitionDS.VERSION_LOGIC, getConstants().maintainableArtefactVersionLogic());
         versionField.setWidth("15%");

@@ -18,10 +18,10 @@ public class ConceptSchemeVersionsSectionStack extends VersionsSectionStack {
     public ConceptSchemeVersionsSectionStack(String title) {
         super(title);
 
-        ListGridField codeField = new ListGridField(ConceptSchemeDS.CODE, getConstants().conceptSchemeCode());
+        ListGridField codeField = new ListGridField(ConceptSchemeDS.CODE, getConstants().maintainableArtefactCode());
         codeField.setWidth("30%");
 
-        ListGridField nameField = new ListGridField(ConceptSchemeDS.NAME, getConstants().conceptSchemeName());
+        ListGridField nameField = new ListGridField(ConceptSchemeDS.NAME, getConstants().maintainableArtefactName());
 
         ListGridField versionField = new ListGridField(ConceptSchemeDS.VERSION_LOGIC, getConstants().maintainableArtefactVersionLogic());
         versionField.setWidth("15%");
