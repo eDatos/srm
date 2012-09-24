@@ -72,65 +72,65 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTabUiHandlers> implements DsdAttributesTabPresenter.DsdAttributesTabView {
 
-    private ProcStatusEnum procStatus;
+    private ProcStatusEnum              procStatus;
 
-    private DataAttributeDto                dataAttributeDto;
-    private List<ExternalItemDto>           concepts;
-    private List<ExternalItemDto>           codeLists;
-    private List<DimensionComponentDto>     dimensionComponentDtos;
-    private List<DescriptorDto>             descriptorDtos;                              // Group Keys
+    private DataAttributeDto            dataAttributeDto;
+    private List<ExternalItemDto>       concepts;
+    private List<ExternalItemDto>       codeLists;
+    private List<DimensionComponentDto> dimensionComponentDtos;
+    private List<DescriptorDto>         descriptorDtos;                              // Group Keys
 
-    private VLayout                         panel;
-    private VLayout                         selectedComponentLayout;
-    private ListGrid                        attributesGrid;
+    private VLayout                     panel;
+    private VLayout                     selectedComponentLayout;
+    private ListGrid                    attributesGrid;
 
-    private InternationalMainFormLayout     mainFormLayout;
+    private InternationalMainFormLayout mainFormLayout;
     // private VLayout viewLayout;
     // private VLayout editionLayout;
 
-    private AnnotationsPanel                viewAnnotationsPanel;
-    private AnnotationsPanel                editionAnnotationsPanel;
+    private AnnotationsPanel            viewAnnotationsPanel;
+    private AnnotationsPanel            editionAnnotationsPanel;
 
     // VIEW FORM
 
-    private ViewTextItem                    staticIdLogic;
-    private ViewTextItem                    staticConceptItem;
-    private ViewTextItem                    staticRoleItem;
-    private ViewTextItem                    staticAssignmentStatusItem;
+    private ViewTextItem                staticIdLogic;
+    private ViewTextItem                staticConceptItem;
+    private ViewTextItem                staticRoleItem;
+    private ViewTextItem                staticAssignmentStatusItem;
     // Relation
-    private ViewTextItem                    staticRelationType;
-    private ViewTextItem                    staticGroupKeysForDimensionRelationshipItem;
-    private ViewTextItem                    staticDimensionsForDimensionRelationshipItem;
-    private ViewTextItem                    staticGroupKeyFormForGroupRelationship;
+    private ViewTextItem                staticRelationType;
+    private ViewTextItem                staticGroupKeysForDimensionRelationshipItem;
+    private ViewTextItem                staticDimensionsForDimensionRelationshipItem;
+    private ViewTextItem                staticGroupKeyFormForGroupRelationship;
     // Representation
-    private ViewTextItem                    staticRepresentationTypeItem;
-    private ViewTextItem                    staticCodeListItem;
-    private StaticFacetForm                 staticFacetForm;
+    private ViewTextItem                staticRepresentationTypeItem;
+    private ViewTextItem                staticCodeListItem;
+    private StaticFacetForm             staticFacetForm;
 
     // EDITION FORM
 
-    private GroupDynamicForm                form;
-    private RequiredTextItem                idLogic;
-    private ExternalSelectItem              conceptItem;
-    private RoleSelectItem                  roleItem;
-    private RequiredSelectItem              assignmentStatusItem;
+    private GroupDynamicForm            form;
+    private RequiredTextItem            idLogic;
+    private ExternalSelectItem          conceptItem;
+    private RoleSelectItem              roleItem;
+    private RequiredSelectItem          assignmentStatusItem;
     // Relation
-    private RequiredSelectItem              relationType;
-    private CustomSelectItem                groupKeysForDimensionRelationshipItem;
-    private RequiredSelectItem              dimensionsForDimensionRelationshipItem;      // Required if relationType == DIMENSION_RELATIONSHIP
-    private RequiredSelectItem              groupKeyFormForGroupRelationship;            // Required if relationType == GROUP_RELATIONSHIP
+    private RequiredSelectItem          relationType;
+    private CustomSelectItem            groupKeysForDimensionRelationshipItem;
+    private RequiredSelectItem          dimensionsForDimensionRelationshipItem;      // Required if relationType == DIMENSION_RELATIONSHIP
+    private RequiredSelectItem          groupKeyFormForGroupRelationship;            // Required if relationType == GROUP_RELATIONSHIP
     // Representation
-    private CustomSelectItem                representationTypeItem;
-    private CustomSelectItem                codeListItem;
-    private DsdFacetForm                    facetForm = null;
+    private CustomSelectItem            representationTypeItem;
+    private CustomSelectItem            codeListItem;
+    private DsdFacetForm                facetForm = null;
 
-    private ToolStripButton                 newToolStripButton;
+    private ToolStripButton             newToolStripButton;
     // private ToolStripButton editToolStripButton;
     // private ToolStripButton saveToolStripButton;
     // private ToolStripButton cancelToolStripButton;
-    private ToolStripButton                 deleteToolStripButton;
+    private ToolStripButton             deleteToolStripButton;
 
-    private DeleteConfirmationWindow        importDsdWindow;
+    private DeleteConfirmationWindow    importDsdWindow;
 
     @Inject
     public DsdAttributesTabViewImpl() {

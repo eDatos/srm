@@ -71,53 +71,53 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTabUiHandlers> implements DsdDimensionsTabPresenter.DsdDimensionsTabView {
 
-    private ProcStatusEnum procStatus;
+    private ProcStatusEnum              procStatus;
 
-    private DimensionComponentDto           dimensionComponentDto;
-    private List<ExternalItemDto>           codeLists;
-    private List<ExternalItemDto>           conceptSchemes;
-    private List<ExternalItemDto>           concepts;
+    private DimensionComponentDto       dimensionComponentDto;
+    private List<ExternalItemDto>       codeLists;
+    private List<ExternalItemDto>       conceptSchemes;
+    private List<ExternalItemDto>       concepts;
 
-    private VLayout                         panel;
-    private VLayout                         selectedComponentLayout;
-    private ListGrid                        dimensionsGrid;
-    private InternationalMainFormLayout     mainFormLayout;
+    private VLayout                     panel;
+    private VLayout                     selectedComponentLayout;
+    private ListGrid                    dimensionsGrid;
+    private InternationalMainFormLayout mainFormLayout;
 
-    private AnnotationsPanel                viewAnnotationsPanel;
-    private AnnotationsPanel                editionAnnotationsPanel;
+    private AnnotationsPanel            viewAnnotationsPanel;
+    private AnnotationsPanel            editionAnnotationsPanel;
 
     // VIEW FORM
 
-    private ViewTextItem                    staticIdLogic;
-    private ViewTextItem                    staticTypeItem;
-    private ViewTextItem                    staticConceptItem;
-    private ViewTextItem                    staticRoleItem;
+    private ViewTextItem                staticIdLogic;
+    private ViewTextItem                staticTypeItem;
+    private ViewTextItem                staticConceptItem;
+    private ViewTextItem                staticRoleItem;
     // private StaticTextItem staticPositionItem;
     // Representation
-    private ViewTextItem                    staticRepresentationTypeItem;
-    private ViewTextItem                    staticCodeListItem;
-    private ViewTextItem                    staticConceptSchemeItem;
-    private StaticFacetForm                 staticFacetForm;
+    private ViewTextItem                staticRepresentationTypeItem;
+    private ViewTextItem                staticCodeListItem;
+    private ViewTextItem                staticConceptSchemeItem;
+    private StaticFacetForm             staticFacetForm;
 
     // EDITION FORM
 
-    private GroupDynamicForm                form;
-    private RequiredTextItem                code;
-    private ViewTextItem                    staticCodeEdit;
-    private ViewTextItem                    staticTypeItemEdit;          // Type cannot be modified
-    private RequiredSelectItem              typeItem;
-    private ExternalSelectItem              conceptItem;
-    private RoleSelectItem                  roleItem;
+    private GroupDynamicForm            form;
+    private RequiredTextItem            code;
+    private ViewTextItem                staticCodeEdit;
+    private ViewTextItem                staticTypeItemEdit;          // Type cannot be modified
+    private RequiredSelectItem          typeItem;
+    private ExternalSelectItem          conceptItem;
+    private RoleSelectItem              roleItem;
     // Representation
-    private CustomSelectItem                representationTypeItem;
-    private CustomSelectItem                codeListItem;
-    private CustomSelectItem                conceptSchemeItem;
-    private DsdFacetForm                    facetForm;
+    private CustomSelectItem            representationTypeItem;
+    private CustomSelectItem            codeListItem;
+    private CustomSelectItem            conceptSchemeItem;
+    private DsdFacetForm                facetForm;
 
-    private ToolStripButton                 newToolStripButton;
-    private ToolStripButton                 deleteToolStripButton;
+    private ToolStripButton             newToolStripButton;
+    private ToolStripButton             deleteToolStripButton;
 
-    private DeleteConfirmationWindow        deleteConfirmationWindow;
+    private DeleteConfirmationWindow    deleteConfirmationWindow;
 
     @Inject
     public DsdDimensionsTabViewImpl() {

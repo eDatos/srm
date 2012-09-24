@@ -14,10 +14,10 @@ public class UpdateDsdProcStatus {
     String                            urn;
 
     @In(2)
-    ProcStatusEnum   nextProcStatus;
+    ProcStatusEnum                    nextProcStatus;
 
     @In(3)
-    ProcStatusEnum   currentProcStatus;
+    ProcStatusEnum                    currentProcStatus;
 
     @Out(1)
     DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto;

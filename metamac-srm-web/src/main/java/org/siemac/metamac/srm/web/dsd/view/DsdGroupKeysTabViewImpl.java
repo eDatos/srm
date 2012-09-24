@@ -47,35 +47,35 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabUiHandlers> implements DsdGroupKeysTabPresenter.DsdGroupKeysTabView {
 
-    private ProcStatusEnum procStatus;
+    private ProcStatusEnum              procStatus;
 
-    private List<DimensionComponentDto>     dimensionComponentDtos;
-    private DescriptorDto                   descriptorDto;
+    private List<DimensionComponentDto> dimensionComponentDtos;
+    private DescriptorDto               descriptorDto;
 
-    private VLayout                         panel;
-    private VLayout                         selectedDescriptorLayout;
-    private ListGrid                        groupKeysGrid;
+    private VLayout                     panel;
+    private VLayout                     selectedDescriptorLayout;
+    private ListGrid                    groupKeysGrid;
 
-    private InternationalMainFormLayout     mainFormLayout;
+    private InternationalMainFormLayout mainFormLayout;
 
-    private AnnotationsPanel                viewAnnotationsPanel;
-    private AnnotationsPanel                editionAnnotationsPanel;
+    private AnnotationsPanel            viewAnnotationsPanel;
+    private AnnotationsPanel            editionAnnotationsPanel;
 
     // VIEW FORM
 
-    private ViewTextItem                    staticIdLogic;
-    private ViewTextItem                    staticDimensionsItem;
+    private ViewTextItem                staticIdLogic;
+    private ViewTextItem                staticDimensionsItem;
 
     // EDITION FORM
 
-    private GroupDynamicForm                form;
-    private RequiredTextItem                idLogic;
-    private CustomSelectItem                dimensionsItem;
+    private GroupDynamicForm            form;
+    private RequiredTextItem            idLogic;
+    private CustomSelectItem            dimensionsItem;
 
-    private ToolStripButton                 newToolStripButton;
-    private ToolStripButton                 deleteToolStripButton;
+    private ToolStripButton             newToolStripButton;
+    private ToolStripButton             deleteToolStripButton;
 
-    private DeleteConfirmationWindow        deleteConfirmationWindow;
+    private DeleteConfirmationWindow    deleteConfirmationWindow;
 
     public DsdGroupKeysTabViewImpl() {
         super();

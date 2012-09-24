@@ -11,15 +11,15 @@ import com.gwtplatform.dispatch.annotation.Out;
 public class UpdateConceptSchemeProcStatus {
 
     @In(1)
-    String                          urn;
+    String                  urn;
 
     @In(2)
-    ProcStatusEnum nextProcStatus;
+    ProcStatusEnum          nextProcStatus;
 
     @In(3)
-    ProcStatusEnum currentProcStatus;
+    ProcStatusEnum          currentProcStatus;
 
     @Out(1)
-    ConceptSchemeMetamacDto         conceptSchemeDto;
+    ConceptSchemeMetamacDto conceptSchemeDto;
 
 }

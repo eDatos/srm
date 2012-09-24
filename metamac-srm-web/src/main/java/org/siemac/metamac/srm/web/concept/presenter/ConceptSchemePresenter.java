@@ -177,92 +177,87 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
 
     @Override
     public void sendToProductionValidation(String urn, ProcStatusEnum procStatus) {
-        dispatcher.execute(new UpdateConceptSchemeProcStatusAction(urn, ProcStatusEnum.PRODUCTION_VALIDATION, procStatus),
-                new WaitingAsyncCallback<UpdateConceptSchemeProcStatusResult>() {
+        dispatcher.execute(new UpdateConceptSchemeProcStatusAction(urn, ProcStatusEnum.PRODUCTION_VALIDATION, procStatus), new WaitingAsyncCallback<UpdateConceptSchemeProcStatusResult>() {
 
-                    @Override
-                    public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorSendingToProductionValidation()), MessageTypeEnum.ERROR);
-                    }
-                    @Override
-                    public void onWaitSuccess(UpdateConceptSchemeProcStatusResult result) {
-                        ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getMessageList(getMessages().conceptSchemeSentToProductionValidation()), MessageTypeEnum.SUCCESS);
-                        ConceptSchemePresenter.this.conceptSchemeDto = result.getConceptSchemeDto();
-                        setConceptScheme(result.getConceptSchemeDto());
-                    }
-                });
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorSendingToProductionValidation()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(UpdateConceptSchemeProcStatusResult result) {
+                ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getMessageList(getMessages().conceptSchemeSentToProductionValidation()), MessageTypeEnum.SUCCESS);
+                ConceptSchemePresenter.this.conceptSchemeDto = result.getConceptSchemeDto();
+                setConceptScheme(result.getConceptSchemeDto());
+            }
+        });
     }
 
     @Override
     public void sendToDiffusionValidation(String urn, ProcStatusEnum procStatus) {
-        dispatcher.execute(new UpdateConceptSchemeProcStatusAction(urn, ProcStatusEnum.DIFFUSION_VALIDATION, procStatus),
-                new WaitingAsyncCallback<UpdateConceptSchemeProcStatusResult>() {
+        dispatcher.execute(new UpdateConceptSchemeProcStatusAction(urn, ProcStatusEnum.DIFFUSION_VALIDATION, procStatus), new WaitingAsyncCallback<UpdateConceptSchemeProcStatusResult>() {
 
-                    @Override
-                    public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorSendingToDiffusionValidation()), MessageTypeEnum.ERROR);
-                    }
-                    @Override
-                    public void onWaitSuccess(UpdateConceptSchemeProcStatusResult result) {
-                        ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getMessageList(getMessages().conceptSchemeSentToDiffusionValidation()), MessageTypeEnum.SUCCESS);
-                        ConceptSchemePresenter.this.conceptSchemeDto = result.getConceptSchemeDto();
-                        setConceptScheme(result.getConceptSchemeDto());
-                    }
-                });
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorSendingToDiffusionValidation()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(UpdateConceptSchemeProcStatusResult result) {
+                ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getMessageList(getMessages().conceptSchemeSentToDiffusionValidation()), MessageTypeEnum.SUCCESS);
+                ConceptSchemePresenter.this.conceptSchemeDto = result.getConceptSchemeDto();
+                setConceptScheme(result.getConceptSchemeDto());
+            }
+        });
     }
 
     @Override
     public void rejectValidation(String urn, ProcStatusEnum procStatus) {
-        dispatcher.execute(new UpdateConceptSchemeProcStatusAction(urn, ProcStatusEnum.VALIDATION_REJECTED, procStatus),
-                new WaitingAsyncCallback<UpdateConceptSchemeProcStatusResult>() {
+        dispatcher.execute(new UpdateConceptSchemeProcStatusAction(urn, ProcStatusEnum.VALIDATION_REJECTED, procStatus), new WaitingAsyncCallback<UpdateConceptSchemeProcStatusResult>() {
 
-                    @Override
-                    public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorRejecting()), MessageTypeEnum.ERROR);
-                    }
-                    @Override
-                    public void onWaitSuccess(UpdateConceptSchemeProcStatusResult result) {
-                        ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getMessageList(getMessages().conceptSchemeRejected()), MessageTypeEnum.SUCCESS);
-                        ConceptSchemePresenter.this.conceptSchemeDto = result.getConceptSchemeDto();
-                        setConceptScheme(result.getConceptSchemeDto());
-                    }
-                });
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorRejecting()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(UpdateConceptSchemeProcStatusResult result) {
+                ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getMessageList(getMessages().conceptSchemeRejected()), MessageTypeEnum.SUCCESS);
+                ConceptSchemePresenter.this.conceptSchemeDto = result.getConceptSchemeDto();
+                setConceptScheme(result.getConceptSchemeDto());
+            }
+        });
     }
 
     @Override
     public void publishInternally(String urn, ProcStatusEnum procStatus) {
-        dispatcher.execute(new UpdateConceptSchemeProcStatusAction(urn, ProcStatusEnum.INTERNALLY_PUBLISHED, procStatus),
-                new WaitingAsyncCallback<UpdateConceptSchemeProcStatusResult>() {
+        dispatcher.execute(new UpdateConceptSchemeProcStatusAction(urn, ProcStatusEnum.INTERNALLY_PUBLISHED, procStatus), new WaitingAsyncCallback<UpdateConceptSchemeProcStatusResult>() {
 
-                    @Override
-                    public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorPublishingInternally()), MessageTypeEnum.ERROR);
-                    }
-                    @Override
-                    public void onWaitSuccess(UpdateConceptSchemeProcStatusResult result) {
-                        ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getMessageList(getMessages().conceptSchemePublishedInternally()), MessageTypeEnum.SUCCESS);
-                        ConceptSchemePresenter.this.conceptSchemeDto = result.getConceptSchemeDto();
-                        setConceptScheme(result.getConceptSchemeDto());
-                    }
-                });
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorPublishingInternally()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(UpdateConceptSchemeProcStatusResult result) {
+                ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getMessageList(getMessages().conceptSchemePublishedInternally()), MessageTypeEnum.SUCCESS);
+                ConceptSchemePresenter.this.conceptSchemeDto = result.getConceptSchemeDto();
+                setConceptScheme(result.getConceptSchemeDto());
+            }
+        });
     }
 
     @Override
     public void publishExternally(String urn, ProcStatusEnum procStatus) {
-        dispatcher.execute(new UpdateConceptSchemeProcStatusAction(urn, ProcStatusEnum.EXTERNALLY_PUBLISHED, procStatus),
-                new WaitingAsyncCallback<UpdateConceptSchemeProcStatusResult>() {
+        dispatcher.execute(new UpdateConceptSchemeProcStatusAction(urn, ProcStatusEnum.EXTERNALLY_PUBLISHED, procStatus), new WaitingAsyncCallback<UpdateConceptSchemeProcStatusResult>() {
 
-                    @Override
-                    public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorPublishingExternally()), MessageTypeEnum.ERROR);
-                    }
-                    @Override
-                    public void onWaitSuccess(UpdateConceptSchemeProcStatusResult result) {
-                        ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getMessageList(getMessages().conceptSchemePublishedExternally()), MessageTypeEnum.SUCCESS);
-                        ConceptSchemePresenter.this.conceptSchemeDto = result.getConceptSchemeDto();
-                        setConceptScheme(result.getConceptSchemeDto());
-                    }
-                });
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorPublishingExternally()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(UpdateConceptSchemeProcStatusResult result) {
+                ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getMessageList(getMessages().conceptSchemePublishedExternally()), MessageTypeEnum.SUCCESS);
+                ConceptSchemePresenter.this.conceptSchemeDto = result.getConceptSchemeDto();
+                setConceptScheme(result.getConceptSchemeDto());
+            }
+        });
     }
 
     @Override
