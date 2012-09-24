@@ -95,7 +95,7 @@ public class OrganisationSchemeListPresenter extends Presenter<OrganisationSchem
     @Override
     protected void onReset() {
         super.onReset();
-        SetTitleEvent.fire(this, getConstants().organisations());
+        SetTitleEvent.fire(this, getConstants().organisationSchemes());
         retrieveOrganisationSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, null);
     }
 

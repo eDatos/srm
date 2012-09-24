@@ -35,4 +35,22 @@ public class PlaceRequestUtils {
         return null;
     }
 
+    public static String getOrganisationSchemeParamFromUrl(PlaceManager placeManager) {
+        for (PlaceRequest request : placeManager.getCurrentPlaceHierarchy()) {
+            if (NameTokens.organisationSchemePage.equals(request.getNameToken())) {
+                return request.getParameter(PlaceRequestParams.organisationSchemeParam, null);
+            }
+        }
+        return null;
+    }
+
+    public static String getOrganisationParamFromUrl(PlaceManager placeManager) {
+        for (PlaceRequest request : placeManager.getCurrentPlaceHierarchy()) {
+            if (NameTokens.organisationPage.equals(request.getNameToken())) {
+                return request.getParameter(PlaceRequestParams.organisationParam, null);
+            }
+        }
+        return null;
+    }
+
 }

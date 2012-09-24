@@ -30,6 +30,7 @@ public class GetOrganisationSchemeListActionHandler extends SecurityActionHandle
             OrganisationSchemeMetamacDto organisationSchemeMetamacDto = new OrganisationSchemeMetamacDto();
             organisationSchemeMetamacDto.setId(Long.valueOf(i));
             organisationSchemeMetamacDto.setCode("organisation-scheme-" + i);
+            organisationSchemeMetamacDto.setUrn("urn:sdmx:org.sdmx.infomodel.organisationscheme.OrganisationScheme=agency_CODE:scheme0001(01.000)");
             organisationSchemeMetamacDto.setProcStatus(ProcStatusEnum.DRAFT);
             organisationSchemeMetamacDto.setName(MockService.createInternationalStringDto("Esquema de organizaciones " + i, "Organisation scheme " + i));
             organisationSchemeMetamacDtos.add(organisationSchemeMetamacDto);

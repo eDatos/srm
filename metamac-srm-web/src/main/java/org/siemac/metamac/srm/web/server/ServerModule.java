@@ -35,6 +35,7 @@ import org.siemac.metamac.srm.web.server.handlers.dsd.SaveDescriptorForDsdAction
 import org.siemac.metamac.srm.web.server.handlers.dsd.SaveDsdActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.dsd.UpdateDsdProcStatusActionHandlder;
 import org.siemac.metamac.srm.web.server.handlers.dsd.VersionDsdActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.organisation.GetOrganisationSchemeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.GetOrganisationSchemeListActionHandler;
 import org.siemac.metamac.srm.web.shared.FindCodeListsAction;
 import org.siemac.metamac.srm.web.shared.FindConceptSchemesAction;
@@ -70,6 +71,7 @@ import org.siemac.metamac.srm.web.shared.dsd.SaveDescriptorForDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.SaveDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.UpdateDsdProcStatusAction;
 import org.siemac.metamac.srm.web.shared.dsd.VersionDsdAction;
+import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeAction;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeListAction;
 import org.siemac.metamac.web.common.server.handlers.CloseSessionActionHandler;
 import org.siemac.metamac.web.common.server.handlers.GetEditionLanguagesActionHandlers;
@@ -136,6 +138,7 @@ public class ServerModule extends HandlerModule {
 
         // Organisations
         bindHandler(GetOrganisationSchemeListAction.class, GetOrganisationSchemeListActionHandler.class);
+        bindHandler(GetOrganisationSchemeAction.class, GetOrganisationSchemeActionHandler.class);
 
         bindHandler(ValidateTicketAction.class, ValidateTicketActionHandler.class);
         bindHandler(GetLoginPageUrlAction.class, GetLoginPageUrlActionHandler.class);
