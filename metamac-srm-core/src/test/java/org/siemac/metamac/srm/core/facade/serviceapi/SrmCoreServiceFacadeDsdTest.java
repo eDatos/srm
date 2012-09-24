@@ -112,17 +112,17 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
     public void testFindDataStructureDefinitionsByCondition() throws Exception {
         MetamacCriteriaResult<DataStructureDefinitionMetamacDto> result = null;
 
-        srmCoreServiceFacade.createDataStructureDefinition(getServiceContext(), SrmDtoMocks.createDataStructureDefinitionMetamacDtoMock());
+        srmCoreServiceFacade.createDataStructureDefinition(getServiceContextAdministrador(), SrmDtoMocks.createDataStructureDefinitionMetamacDtoMock());
 
         // By Name
         MetamacCriteria metamacCriteria = new MetamacCriteria();
         metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.NAME.name(), "NAME ES DSD", OperationType.EQ));
 
-        result = srmCoreServiceFacade.findDataStructureDefinitionsByCondition(getServiceContext(), metamacCriteria);
+        result = srmCoreServiceFacade.findDataStructureDefinitionsByCondition(getServiceContextAdministrador(), metamacCriteria);
         assertEquals(1, result.getResults().size());
 
         metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.NAME.name(), "NOT FOUND", OperationType.EQ));
-        result = srmCoreServiceFacade.findDataStructureDefinitionsByCondition(getServiceContext(), metamacCriteria);
+        result = srmCoreServiceFacade.findDataStructureDefinitionsByCondition(getServiceContextAdministrador(), metamacCriteria);
         assertEquals(0, result.getResults().size());
     }
     // @DataStructureDefinitionExtendDto retrieveExtendedDsd(String urn, @TypeDozerCopyMode typeDozerCopyMode) throws MetamacException;
