@@ -1,197 +1,79 @@
 package org.siemac.metamac.srm.web.concept.widgets;
 
-import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
-
-import java.util.Date;
-
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
-import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
-import org.siemac.metamac.srm.web.client.resources.GlobalResources;
+import org.siemac.metamac.srm.web.client.widgets.LifeCycleMainFormLayout;
 import org.siemac.metamac.srm.web.concept.utils.CommonUtils;
 import org.siemac.metamac.srm.web.concept.utils.ConceptsClientSecurityUtils;
-import org.siemac.metamac.web.common.client.MetamacWebCommon;
-import org.siemac.metamac.web.common.client.widgets.AnnounceToolStripButton;
-import org.siemac.metamac.web.common.client.widgets.MainFormLayoutButton;
-import org.siemac.metamac.web.common.client.widgets.form.InternationalMainFormLayout;
 
-import com.smartgwt.client.widgets.events.HasClickHandlers;
+public class ConceptSchemeMainFormLayout extends LifeCycleMainFormLayout {
 
-public class ConceptSchemeMainFormLayout extends InternationalMainFormLayout {
-
-    private MainFormLayoutButton            productionValidation;
-    private MainFormLayoutButton            diffusionValidation;
-    private MainFormLayoutButton            rejectValidation;
-    private MainFormLayoutButton            publishInternally;
-    private MainFormLayoutButton            publishExternally;
-    private MainFormLayoutButton            versioning;
-    private MainFormLayoutButton            cancelValidity;
-    private AnnounceToolStripButton         announce;
-
-    private ConceptSchemeTypeEnum           type;
-    private String                          relatedOperationCode;
-    private ProcStatusEnum status;
-    private Date                            validTo;
+    private ConceptSchemeTypeEnum type;
+    private String                relatedOperationCode;
 
     public ConceptSchemeMainFormLayout() {
         super();
-        common();
     }
 
     public ConceptSchemeMainFormLayout(boolean canEdit) {
         super(canEdit);
-        common();
-    }
-
-    private void common() {
-        // Remove handler from edit button
-        editHandlerRegistration.removeHandler();
-
-        productionValidation = new MainFormLayoutButton(getConstants().lifeCycleSendToProductionValidation(), GlobalResources.RESOURCE.validateProduction().getURL());
-        diffusionValidation = new MainFormLayoutButton(getConstants().lifeCycleSendToDiffusionValidation(), GlobalResources.RESOURCE.validateDiffusion().getURL());
-        publishInternally = new MainFormLayoutButton(getConstants().lifeCyclePublishInternally(), GlobalResources.RESOURCE.internalPublish().getURL());
-        publishExternally = new MainFormLayoutButton(getConstants().lifeCyclePublishExternally(), GlobalResources.RESOURCE.externalPublish().getURL());
-        rejectValidation = new MainFormLayoutButton(getConstants().lifeCycleRejectValidation(), GlobalResources.RESOURCE.reject().getURL());
-        versioning = new MainFormLayoutButton(getConstants().lifeCycleVersioning(), GlobalResources.RESOURCE.version().getURL());
-        cancelValidity = new MainFormLayoutButton(getConstants().lifeCycleCancelValidity(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.disable().getURL());
-        announce = new AnnounceToolStripButton(MetamacWebCommon.getConstants().announce(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.announce().getURL());
-
-        toolStrip.addButton(productionValidation);
-        toolStrip.addButton(diffusionValidation);
-        toolStrip.addButton(publishInternally);
-        toolStrip.addButton(publishExternally);
-        toolStrip.addButton(rejectValidation);
-        toolStrip.addButton(versioning);
-        toolStrip.addButton(cancelValidity);
-        toolStrip.addButton(announce);
     }
 
     public void updatePublishSection(ConceptSchemeMetamacDto conceptSchemeMetamacDto) {
+        super.updatePublishSection(conceptSchemeMetamacDto.getProcStatus(), conceptSchemeMetamacDto.getValidTo());
         this.type = conceptSchemeMetamacDto.getType();
         this.relatedOperationCode = CommonUtils.getRelatedOperationCode(conceptSchemeMetamacDto);
-        this.status = conceptSchemeMetamacDto.getProcStatus();
-        this.validTo = conceptSchemeMetamacDto.getValidTo();
     }
 
-    private void updateVisibility() {
-        // Hide all buttons
-        hideAllPublishButtons();
-        // Show buttons depending on the status
-        if (ProcStatusEnum.DRAFT.equals(status)) {
-            showSendToProductionValidation();
-        } else if (ProcStatusEnum.VALIDATION_REJECTED.equals(status)) {
-            showSendToProductionValidation();
-        } else if (ProcStatusEnum.PRODUCTION_VALIDATION.equals(status)) {
-            showSendToDiffusionValidation();
-            showRejectValidationButton();
-        } else if (ProcStatusEnum.DIFFUSION_VALIDATION.equals(status)) {
-            showPublishInternallyButton();
-            showRejectValidationButton();
-        } else if (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(status)) {
-            showPublishExternallyButton();
-            showVersioningButton();
-        } else if (ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(status)) {
-            showVersioningButton();
-            // Only cancel scheme validity if it has not been canceled previously
-            if (validTo == null) {
-                showCancelValidityButton();
-            }
-        }
+    protected void updateVisibility() {
+        super.updateVisibility();
         showAnnounceButton();
     }
 
     @Override
-    public void setViewMode() {
-        super.setViewMode();
-        updateVisibility();
-    }
-
-    @Override
-    public void setEditionMode() {
-        super.setEditionMode();
-        hideAllPublishButtons();
-    }
-
-    public HasClickHandlers getSendToProductionValidation() {
-        return productionValidation;
-    }
-
-    public HasClickHandlers getSendToDiffusionValidation() {
-        return diffusionValidation;
-    }
-
-    public HasClickHandlers getRejectValidation() {
-        return rejectValidation;
-    }
-
-    public HasClickHandlers getPublishInternally() {
-        return publishInternally;
-    }
-
-    public HasClickHandlers getPublishExternally() {
-        return publishExternally;
-    }
-
-    public HasClickHandlers getVersioning() {
-        return versioning;
-    }
-
-    public HasClickHandlers getCancelValidity() {
-        return cancelValidity;
-    }
-
-    public HasClickHandlers getAnnounce() {
-        return announce;
-    }
-
-    private void hideAllPublishButtons() {
-        productionValidation.hide();
-        diffusionValidation.hide();
-        rejectValidation.hide();
-        publishInternally.hide();
-        publishExternally.hide();
-        versioning.hide();
-        cancelValidity.hide();
-        announce.hide();
-    }
-
-    private void showSendToProductionValidation() {
+    protected void showSendToProductionValidation() {
         if (ConceptsClientSecurityUtils.canSendConceptSchemeToProductionValidation(type, relatedOperationCode)) {
             productionValidation.show();
         }
     }
 
-    private void showSendToDiffusionValidation() {
+    @Override
+    protected void showSendToDiffusionValidation() {
         if (ConceptsClientSecurityUtils.canSendConceptSchemeToDiffusionValidation(type, relatedOperationCode)) {
             diffusionValidation.show();
         }
     }
 
-    private void showRejectValidationButton() {
+    @Override
+    protected void showRejectValidationButton() {
         if (ConceptsClientSecurityUtils.canRejectConceptSchemeValidation(status, type, relatedOperationCode)) {
             rejectValidation.show();
         }
     }
 
-    private void showPublishInternallyButton() {
+    @Override
+    protected void showPublishInternallyButton() {
         if (ConceptsClientSecurityUtils.canPublishConceptSchemeInternally(type, relatedOperationCode)) {
             publishInternally.show();
         }
     }
 
-    private void showPublishExternallyButton() {
+    @Override
+    protected void showPublishExternallyButton() {
         if (ConceptsClientSecurityUtils.canPublishConceptSchemeExternally(type, relatedOperationCode)) {
             publishExternally.show();
         }
     }
 
-    private void showVersioningButton() {
+    @Override
+    protected void showVersioningButton() {
         if (ConceptsClientSecurityUtils.canVersioningConceptScheme(type, relatedOperationCode)) {
             versioning.show();
         }
     }
 
-    private void showCancelValidityButton() {
+    @Override
+    protected void showCancelValidityButton() {
         if (ConceptsClientSecurityUtils.canCancelConceptSchemeValidity(type, relatedOperationCode)) {
             cancelValidity.show();
         }
