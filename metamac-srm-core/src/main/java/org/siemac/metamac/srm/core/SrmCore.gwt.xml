@@ -8,6 +8,7 @@
     <source path='dsd/dto' />
     <source path='concept/dto' />
     <source path='concept/enume/domain' />
+    <source path='organisation/dto' />
     <source path='enume/domain' />
     <source path='security/shared' />
 </module>
