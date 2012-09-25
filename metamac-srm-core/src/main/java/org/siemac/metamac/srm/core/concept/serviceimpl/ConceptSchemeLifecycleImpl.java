@@ -10,7 +10,7 @@ import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
-import org.siemac.metamac.srm.core.base.domain.SrmLifecycleMetadata;
+import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacRepository;
@@ -82,7 +82,7 @@ public class ConceptSchemeLifecycleImpl implements ConceptSchemeLifecycle {
     private class ConceptSchemeLifecycleCallback implements ItemSchemeLifecycleCallback {
 
         @Override
-        public SrmLifecycleMetadata getSrmLifecycleMetadata(ItemSchemeVersion itemSchemeVersion) {
+        public SrmLifeCycleMetadata getSrmLifeCycleMetadata(ItemSchemeVersion itemSchemeVersion) {
             ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptSchemeVersionMetamac(itemSchemeVersion);
             return conceptSchemeVersion.getLifecycleMetadata();
         }

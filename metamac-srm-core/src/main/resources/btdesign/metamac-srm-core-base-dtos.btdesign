@@ -1,14 +1,12 @@
 import "classpath:/btdesign/metamac-srm-core-enum.btdesign"
 
-Application SrmEntitiesBaseCore {
+Application SrmDtosBaseCore {
     basePackage=unused
     
     Module core_entities_base {
-    	basePackage=org.siemac.metamac.srm.core.base
+    	basePackage=org.siemac.metamac.srm.core.base.dto
     
-    	BasicType SrmLifeCycleMetadata {
-			!immutable
-			
+    	DataTransferObject LifeCycleDto {
 			"Status"
 			- @ProcStatusEnum procStatus required;
 			"Date when the scheme was sended to production validation"

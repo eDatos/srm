@@ -14,6 +14,7 @@ import "classpath:/btdesign/statistic-sdmx-core-concepts.btdesign"
 import "classpath:/btdesign/metamac-srm-core-enum.btdesign"
 import "classpath:/btdesign/metamac-srm-core-facade.btdesign"
 import "classpath:/btdesign/metamac-srm-core-base.btdesign"
+import "classpath:/btdesign/metamac-srm-core-base-dtos.btdesign"
 
 import "classpath:/btdesign/metamac-srm-core-concepts.btdesign"
 import "classpath:/btdesign/metamac-srm-core-organisations.btdesign"

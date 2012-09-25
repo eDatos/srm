@@ -96,7 +96,7 @@ Application ConceptsMetamac {
 			- @ExternalItem relatedOperation nullable cascade="all" databaseColumn="RELATED_OPERATION_FK";
 			
 			"Lifecycle information"
-			- @SrmLifecycleMetadata lifecycleMetadata databaseColumn="";
+			- @SrmLifeCycleMetadata lifecycleMetadata databaseColumn="";
 			
 			Repository ConceptSchemeVersionMetamacRepository {
 				findById;

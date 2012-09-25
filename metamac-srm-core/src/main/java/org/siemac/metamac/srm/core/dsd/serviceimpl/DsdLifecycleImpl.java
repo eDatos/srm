@@ -10,7 +10,7 @@ import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
-import org.siemac.metamac.srm.core.base.domain.SrmLifecycleMetadata;
+import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamacProperties;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamacRepository;
@@ -76,7 +76,7 @@ public class DsdLifecycleImpl implements DsdLifecycle {
     private class DataStructureDefinitionLifecycleCallback implements StructureLifecycleCallback {
 
         @Override
-        public SrmLifecycleMetadata getSrmLifecycleMetadata(StructureVersion structureVersion) {
+        public SrmLifeCycleMetadata getSrmLifeCycleMetadata(StructureVersion structureVersion) {
             DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDataStructureDefinitionVersionMetamac(structureVersion);
             return dataStructureDefinitionVersionMetamac.getLifecycleMetadata();
         }

@@ -70,7 +70,7 @@ Application OrganisationsMetamac {
 			hint="idSequence=M_ORG_SCHEMES_VERSIONS"
 			
 			"Lifecycle information"
-			- @SrmLifecycleMetadata lifecycleMetadata databaseColumn="";
+			- @SrmLifeCycleMetadata lifecycleMetadata databaseColumn="";
 			
 			Repository OrganisationSchemeVersionMetamacRepository {
 				findById;

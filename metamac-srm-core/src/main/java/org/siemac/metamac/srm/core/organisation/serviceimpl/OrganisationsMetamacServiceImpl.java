@@ -2,7 +2,7 @@ package org.siemac.metamac.srm.core.organisation.serviceimpl;
 
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.srm.core.base.domain.SrmLifecycleMetadata;
+import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.organisation.serviceimpl.utils.OrganisationsMetamacInvocationValidator;
@@ -40,7 +40,7 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
         OrganisationsMetamacInvocationValidator.checkCreateOrganisationScheme(organisationSchemeVersion, null);
 
         // Fill metadata
-        organisationSchemeVersion.setLifecycleMetadata(new SrmLifecycleMetadata(ProcStatusEnum.DRAFT));
+        organisationSchemeVersion.setLifecycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
         organisationSchemeVersion.getMaintainableArtefact().setIsExternalReference(Boolean.FALSE);
 
         // Save organisationScheme
@@ -163,7 +163,7 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
     //
     // // Copy values
     // OrganisationSchemeVersionMetamac organisationSchemeNewVersion = DoCopyUtils.copyOrganisationSchemeVersionMetamac(organisationSchemeVersionToCopy);
-    // organisationSchemeNewVersion.setLifecycleMetadata(new SrmLifecycleMetadata(ProcStatusEnum.DRAFT));
+    // organisationSchemeNewVersion.setLifecycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
     // List organisations = DoCopyUtils.copyOrganisationsMetamac(organisationSchemeVersionToCopy);
     //
     // // Versioning
