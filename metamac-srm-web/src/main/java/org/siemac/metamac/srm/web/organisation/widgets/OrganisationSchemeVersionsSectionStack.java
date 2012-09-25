@@ -18,10 +18,10 @@ public class OrganisationSchemeVersionsSectionStack extends VersionsSectionStack
     public OrganisationSchemeVersionsSectionStack(String title) {
         super(title);
 
-        ListGridField codeField = new ListGridField(OrganisationSchemeDS.CODE, getConstants().maintainableArtefactCode());
+        ListGridField codeField = new ListGridField(OrganisationSchemeDS.CODE, getConstants().identifiableArtefactCode());
         codeField.setWidth("30%");
 
-        ListGridField nameField = new ListGridField(OrganisationSchemeDS.NAME, getConstants().maintainableArtefactName());
+        ListGridField nameField = new ListGridField(OrganisationSchemeDS.NAME, getConstants().nameableArtefactName());
 
         ListGridField versionField = new ListGridField(OrganisationSchemeDS.VERSION_LOGIC, getConstants().maintainableArtefactVersionLogic());
         versionField.setWidth("15%");

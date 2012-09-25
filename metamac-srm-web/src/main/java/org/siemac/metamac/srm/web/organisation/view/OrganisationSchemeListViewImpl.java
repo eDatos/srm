@@ -164,9 +164,9 @@ public class OrganisationSchemeListViewImpl extends ViewWithUiHandlers<Organisat
             }
         });
 
-        ListGridField fieldCode = new ListGridField(OrganisationSchemeDS.CODE, getConstants().maintainableArtefactCode());
+        ListGridField fieldCode = new ListGridField(OrganisationSchemeDS.CODE, getConstants().identifiableArtefactCode());
         fieldCode.setAlign(Alignment.LEFT);
-        ListGridField fieldName = new ListGridField(OrganisationSchemeDS.NAME, getConstants().maintainableArtefactName());
+        ListGridField fieldName = new ListGridField(OrganisationSchemeDS.NAME, getConstants().nameableArtefactName());
         ListGridField status = new ListGridField(OrganisationSchemeDS.PROC_STATUS, getConstants().lifeCycleProcStatus());
         organisationSchemeList.getListGrid().setFields(fieldCode, fieldName, status);
 

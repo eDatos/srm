@@ -30,7 +30,7 @@ public class SearchConceptsPaginatedItem extends BaseSearchPaginatedItem {
 
         // Set list grid fields
 
-        ListGridField codeField = new ListGridField(ConceptDS.CODE, MetamacSrmWeb.getConstants().conceptCode());
+        ListGridField codeField = new ListGridField(ConceptDS.CODE, MetamacSrmWeb.getConstants().identifiableArtefactCode());
         codeField.setShowHover(true);
         codeField.setWidth("30%");
         codeField.setHoverCustomizer(new HoverCustomizer() {
@@ -42,7 +42,7 @@ public class SearchConceptsPaginatedItem extends BaseSearchPaginatedItem {
             }
         });
 
-        ListGridField titleField = new ListGridField(ConceptDS.NAME, MetamacSrmWeb.getConstants().conceptName());
+        ListGridField titleField = new ListGridField(ConceptDS.NAME, MetamacSrmWeb.getConstants().nameableArtefactName());
         titleField.setShowHover(true);
         titleField.setHoverCustomizer(new HoverCustomizer() {
 
@@ -53,7 +53,7 @@ public class SearchConceptsPaginatedItem extends BaseSearchPaginatedItem {
             }
         });
 
-        ListGridField urnField = new ListGridField(ConceptDS.URN, MetamacSrmWeb.getConstants().conceptUrn());
+        ListGridField urnField = new ListGridField(ConceptDS.URN, MetamacSrmWeb.getConstants().identifiableArtefactUrn());
         urnField.setShowHover(true);
         urnField.setHoverCustomizer(new HoverCustomizer() {
 

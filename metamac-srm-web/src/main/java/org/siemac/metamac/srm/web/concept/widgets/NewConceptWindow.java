@@ -30,11 +30,11 @@ public class NewConceptWindow extends CustomWindow {
         super(title);
         setAutoSize(true);
 
-        RequiredTextItem codeItem = new RequiredTextItem(ConceptDS.CODE, getConstants().conceptCode());
+        RequiredTextItem codeItem = new RequiredTextItem(ConceptDS.CODE, getConstants().identifiableArtefactCode());
         codeItem.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());
         codeItem.setWidth(FORM_ITEM_CUSTOM_WIDTH);
 
-        RequiredTextItem nameItem = new RequiredTextItem(ConceptDS.NAME, getConstants().conceptName());
+        RequiredTextItem nameItem = new RequiredTextItem(ConceptDS.NAME, getConstants().nameableArtefactName());
         nameItem.setWidth(FORM_ITEM_CUSTOM_WIDTH);
 
         RequiredSelectItem sdmxRelatedArtefact = new RequiredSelectItem(ConceptDS.SDMX_RELATED_ARTEFACT, getConstants().conceptSdmxRelatedArtefact());

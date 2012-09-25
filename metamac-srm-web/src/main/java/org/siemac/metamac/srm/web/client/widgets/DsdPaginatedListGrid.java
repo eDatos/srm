@@ -25,8 +25,8 @@ public class DsdPaginatedListGrid extends PaginatedCheckListGrid {
         getListGrid().setAutoFitData(Autofit.VERTICAL);
         getListGrid().setShowAllRecords(true);
 
-        ListGridField codeDsdField = new ListGridField(DataStructureDefinitionDS.CODE, MetamacSrmWeb.getConstants().maintainableArtefactCode());
-        ListGridField nameDsdField = new ListGridField(DataStructureDefinitionDS.NAME, MetamacSrmWeb.getConstants().maintainableArtefactName());
+        ListGridField codeDsdField = new ListGridField(DataStructureDefinitionDS.CODE, MetamacSrmWeb.getConstants().identifiableArtefactCode());
+        ListGridField nameDsdField = new ListGridField(DataStructureDefinitionDS.NAME, MetamacSrmWeb.getConstants().nameableArtefactName());
         ListGridField procStatusField = new ListGridField(DataStructureDefinitionDS.PROC_STATUS, MetamacSrmWeb.getConstants().dsdProcStatus());
 
         // ToolTip

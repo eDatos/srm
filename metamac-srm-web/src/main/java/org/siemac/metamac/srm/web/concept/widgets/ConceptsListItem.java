@@ -31,9 +31,9 @@ public class ConceptsListItem extends CustomCanvasItem {
         super(name, title);
         setCellStyle("dragAndDropCellStyle");
 
-        ListGridField codeField = new ListGridField(ConceptDS.CODE, getConstants().conceptCode());
+        ListGridField codeField = new ListGridField(ConceptDS.CODE, getConstants().identifiableArtefactCode());
         codeField.setWidth("40%");
-        ListGridField nameField = new ListGridField(ConceptDS.NAME, getConstants().conceptName());
+        ListGridField nameField = new ListGridField(ConceptDS.NAME, getConstants().nameableArtefactName());
 
         listGrid = new BaseCustomListGrid();
         listGrid.setAutoFitMaxRecords(6);

@@ -35,7 +35,7 @@ public class ConceptDS extends DataSource {
     public static String       DTO                   = "con-dto";
 
     public ConceptDS() {
-        DataSourceTextField code = new DataSourceTextField(CODE, MetamacSrmWeb.getConstants().conceptCode());
+        DataSourceTextField code = new DataSourceTextField(CODE, MetamacSrmWeb.getConstants().identifiableArtefactCode());
         code.setPrimaryKey(true);
         addField(code);
     }

@@ -21,8 +21,8 @@ public class ConceptSchemeListGrid extends BaseCustomListGrid {
 
         this.setShowAllRecords(true);
 
-        ListGridField codeField = new ListGridField(ConceptSchemeDS.CODE, getConstants().maintainableArtefactCode());
-        ListGridField nameField = new ListGridField(ConceptSchemeDS.NAME, getConstants().maintainableArtefactName());
+        ListGridField codeField = new ListGridField(ConceptSchemeDS.CODE, getConstants().identifiableArtefactCode());
+        ListGridField nameField = new ListGridField(ConceptSchemeDS.NAME, getConstants().nameableArtefactName());
         ListGridField procStatusField = new ListGridField(ConceptSchemeDS.PROC_STATUS, getConstants().lifeCycleProcStatus());
 
         // ToolTip

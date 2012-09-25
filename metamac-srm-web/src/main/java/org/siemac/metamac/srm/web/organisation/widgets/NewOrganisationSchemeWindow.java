@@ -34,11 +34,11 @@ public class NewOrganisationSchemeWindow extends CustomWindow {
         typeItem.setValueMap(CommonUtils.getOrganisationSchemeTypeHashMap());
         typeItem.setWidth(FORM_ITEM_CUSTOM_WIDTH);
 
-        RequiredTextItem codeItem = new RequiredTextItem(OrganisationSchemeDS.CODE, getConstants().maintainableArtefactCode());
+        RequiredTextItem codeItem = new RequiredTextItem(OrganisationSchemeDS.CODE, getConstants().identifiableArtefactCode());
         codeItem.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());
         codeItem.setWidth(FORM_ITEM_CUSTOM_WIDTH);
 
-        RequiredTextItem nameItem = new RequiredTextItem(OrganisationSchemeDS.NAME, getConstants().maintainableArtefactName());
+        RequiredTextItem nameItem = new RequiredTextItem(OrganisationSchemeDS.NAME, getConstants().nameableArtefactName());
         nameItem.setWidth(FORM_ITEM_CUSTOM_WIDTH);
 
         CustomButtonItem saveItem = new CustomButtonItem(FIELD_SAVE, getConstants().organisationSchemeCreate());

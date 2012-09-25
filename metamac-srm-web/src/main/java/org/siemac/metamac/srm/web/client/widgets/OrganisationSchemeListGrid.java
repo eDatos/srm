@@ -21,8 +21,8 @@ public class OrganisationSchemeListGrid extends BaseCustomListGrid {
 
         this.setShowAllRecords(true);
 
-        ListGridField codeField = new ListGridField(OrganisationSchemeDS.CODE, getConstants().maintainableArtefactCode());
-        ListGridField nameField = new ListGridField(OrganisationSchemeDS.NAME, getConstants().maintainableArtefactName());
+        ListGridField codeField = new ListGridField(OrganisationSchemeDS.CODE, getConstants().identifiableArtefactCode());
+        ListGridField nameField = new ListGridField(OrganisationSchemeDS.NAME, getConstants().nameableArtefactName());
         ListGridField procStatusField = new ListGridField(OrganisationSchemeDS.PROC_STATUS, getConstants().lifeCycleProcStatus());
 
         // ToolTip

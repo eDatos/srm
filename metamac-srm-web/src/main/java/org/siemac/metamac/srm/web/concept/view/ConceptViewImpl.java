@@ -208,17 +208,17 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
     private void createViewForm() {
         // Identifiers Form
         identifiersForm = new GroupDynamicForm(getConstants().conceptIdentifiers());
-        ViewTextItem code = new ViewTextItem(ConceptDS.CODE, getConstants().conceptCode());
-        ViewMultiLanguageTextItem name = new ViewMultiLanguageTextItem(ConceptDS.NAME, getConstants().conceptName());
+        ViewTextItem code = new ViewTextItem(ConceptDS.CODE, getConstants().identifiableArtefactCode());
+        ViewMultiLanguageTextItem name = new ViewMultiLanguageTextItem(ConceptDS.NAME, getConstants().nameableArtefactName());
         ViewMultiLanguageTextItem pluralName = new ViewMultiLanguageTextItem(ConceptDS.PLURAL_NAME, getConstants().conceptPluralName());
         ViewMultiLanguageTextItem acronym = new ViewMultiLanguageTextItem(ConceptDS.ACRONYM, getConstants().conceptAcronym());
-        ViewTextItem uri = new ViewTextItem(ConceptDS.URI, getConstants().conceptUri());
-        ViewTextItem urn = new ViewTextItem(ConceptDS.URN, getConstants().conceptUrn());
+        ViewTextItem uri = new ViewTextItem(ConceptDS.URI, getConstants().identifiableArtefactUri());
+        ViewTextItem urn = new ViewTextItem(ConceptDS.URN, getConstants().identifiableArtefactUrn());
         identifiersForm.setFields(code, name, pluralName, acronym, uri, urn);
 
         // Content descriptors
         contentDescriptorsForm = new GroupDynamicForm(getConstants().conceptContentDescriptors());
-        ViewMultiLanguageTextItem description = new ViewMultiLanguageTextItem(ConceptDS.DESCRIPTION, getConstants().conceptDescription());
+        ViewMultiLanguageTextItem description = new ViewMultiLanguageTextItem(ConceptDS.DESCRIPTION, getConstants().nameableArtefactDescription());
         ViewMultiLanguageTextItem descriptionSource = new ViewMultiLanguageTextItem(ConceptDS.DESCRIPTION_SOURCE, getConstants().conceptDescriptionSource());
         ViewMultiLanguageTextItem context = new ViewMultiLanguageTextItem(ConceptDS.CONTEXT, getConstants().conceptContext());
         ViewMultiLanguageTextItem docMethod = new ViewMultiLanguageTextItem(ConceptDS.DOC_METHOD, getConstants().conceptDocMethod());
@@ -277,19 +277,19 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
     private void createEditionForm() {
         // Identifiers Form
         identifiersEditionForm = new GroupDynamicForm(getConstants().conceptIdentifiers());
-        RequiredTextItem code = new RequiredTextItem(ConceptDS.CODE, getConstants().conceptCode());
+        RequiredTextItem code = new RequiredTextItem(ConceptDS.CODE, getConstants().identifiableArtefactCode());
         code.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());
-        MultiLanguageTextItem name = new MultiLanguageTextItem(ConceptDS.NAME, getConstants().conceptName());
+        MultiLanguageTextItem name = new MultiLanguageTextItem(ConceptDS.NAME, getConstants().nameableArtefactName());
         name.setRequired(true);
         MultiLanguageTextItem pluralName = new MultiLanguageTextItem(ConceptDS.PLURAL_NAME, getConstants().conceptPluralName());
         MultiLanguageTextItem acronym = new MultiLanguageTextItem(ConceptDS.ACRONYM, getConstants().conceptAcronym());
-        ViewTextItem uri = new ViewTextItem(ConceptDS.URI, getConstants().conceptUri());
-        ViewTextItem urn = new ViewTextItem(ConceptDS.URN, getConstants().conceptUrn());
+        ViewTextItem uri = new ViewTextItem(ConceptDS.URI, getConstants().identifiableArtefactUri());
+        ViewTextItem urn = new ViewTextItem(ConceptDS.URN, getConstants().identifiableArtefactUrn());
         identifiersEditionForm.setFields(code, name, pluralName, acronym, uri, urn);
 
         // Content descriptors
         contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().conceptContentDescriptors());
-        MultiLanguageTextAreaItem description = new MultiLanguageTextAreaItem(ConceptDS.DESCRIPTION, getConstants().conceptDescription());
+        MultiLanguageTextAreaItem description = new MultiLanguageTextAreaItem(ConceptDS.DESCRIPTION, getConstants().nameableArtefactDescription());
         MultiLanguageTextItem descriptionSource = new MultiLanguageTextItem(ConceptDS.DESCRIPTION_SOURCE, getConstants().conceptDescriptionSource());
         MultiLanguageTextItem context = new MultiLanguageTextItem(ConceptDS.CONTEXT, getConstants().conceptContext());
         MultilanguageRichTextEditorItem docMethod = new MultilanguageRichTextEditorItem(ConceptDS.DOC_METHOD, getConstants().conceptDocMethod());

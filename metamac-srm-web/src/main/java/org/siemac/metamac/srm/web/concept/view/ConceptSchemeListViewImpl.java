@@ -168,9 +168,9 @@ public class ConceptSchemeListViewImpl extends ViewImpl implements ConceptScheme
             }
         });
 
-        ListGridField fieldCode = new ListGridField(ConceptSchemeDS.CODE, getConstants().maintainableArtefactCode());
+        ListGridField fieldCode = new ListGridField(ConceptSchemeDS.CODE, getConstants().identifiableArtefactCode());
         fieldCode.setAlign(Alignment.LEFT);
-        ListGridField fieldName = new ListGridField(ConceptSchemeDS.NAME, getConstants().maintainableArtefactName());
+        ListGridField fieldName = new ListGridField(ConceptSchemeDS.NAME, getConstants().nameableArtefactName());
         ListGridField status = new ListGridField(ConceptSchemeDS.PROC_STATUS, getConstants().lifeCycleProcStatus());
         conceptSchemesList.getListGrid().setFields(fieldCode, fieldName, status);
 

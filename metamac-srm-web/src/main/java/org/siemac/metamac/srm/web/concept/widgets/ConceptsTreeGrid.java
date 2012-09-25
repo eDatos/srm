@@ -81,9 +81,9 @@ public class ConceptsTreeGrid extends TreeGrid {
         setShowCellContextMenus(true);
         setLeaveScrollbarGap(Boolean.FALSE);
 
-        TreeGridField codeField = new TreeGridField(ConceptDS.CODE, getConstants().conceptCode());
+        TreeGridField codeField = new TreeGridField(ConceptDS.CODE, getConstants().identifiableArtefactCode());
         codeField.setWidth("30%");
-        TreeGridField nameField = new TreeGridField(ConceptDS.NAME, getConstants().conceptName());
+        TreeGridField nameField = new TreeGridField(ConceptDS.NAME, getConstants().nameableArtefactName());
         TreeGridField type = new TreeGridField(ConceptDS.TYPE, getConstants().conceptType());
         TreeGridField sdmxRelatedArtefact = new TreeGridField(ConceptDS.SDMX_RELATED_ARTEFACT, getConstants().conceptSdmxRelatedArtefact());
 

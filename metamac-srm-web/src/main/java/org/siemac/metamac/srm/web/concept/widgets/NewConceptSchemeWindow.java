@@ -49,11 +49,11 @@ public class NewConceptSchemeWindow extends CustomWindow {
         super(title);
         setAutoSize(true);
 
-        RequiredTextItem codeItem = new RequiredTextItem(ConceptSchemeDS.CODE, getConstants().maintainableArtefactCode());
+        RequiredTextItem codeItem = new RequiredTextItem(ConceptSchemeDS.CODE, getConstants().identifiableArtefactCode());
         codeItem.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());
         codeItem.setWidth(FORM_ITEM_CUSTOM_WIDTH);
 
-        RequiredTextItem nameItem = new RequiredTextItem(ConceptSchemeDS.NAME, getConstants().maintainableArtefactName());
+        RequiredTextItem nameItem = new RequiredTextItem(ConceptSchemeDS.NAME, getConstants().nameableArtefactName());
         nameItem.setWidth(FORM_ITEM_CUSTOM_WIDTH);
 
         RequiredSelectItem type = new RequiredSelectItem(ConceptSchemeDS.TYPE, getConstants().conceptSchemeType());

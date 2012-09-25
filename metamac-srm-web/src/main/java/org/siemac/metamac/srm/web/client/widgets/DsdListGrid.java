@@ -20,8 +20,8 @@ public class DsdListGrid extends BaseCustomListGrid {
 
         this.setShowAllRecords(true);
 
-        ListGridField codeDsdField = new ListGridField(DataStructureDefinitionDS.CODE, MetamacSrmWeb.getConstants().maintainableArtefactCode());
-        ListGridField nameDsdField = new ListGridField(DataStructureDefinitionDS.NAME, MetamacSrmWeb.getConstants().maintainableArtefactName());
+        ListGridField codeDsdField = new ListGridField(DataStructureDefinitionDS.CODE, MetamacSrmWeb.getConstants().identifiableArtefactCode());
+        ListGridField nameDsdField = new ListGridField(DataStructureDefinitionDS.NAME, MetamacSrmWeb.getConstants().nameableArtefactName());
         ListGridField procStatusField = new ListGridField(DataStructureDefinitionDS.PROC_STATUS, MetamacSrmWeb.getConstants().dsdProcStatus());
 
         // ToolTip

@@ -336,16 +336,16 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
     private void createViewForm() {
         // Identifiers Form
         identifiersForm = new GroupDynamicForm(getConstants().conceptSchemeIdentifiers());
-        ViewTextItem code = new ViewTextItem(ConceptSchemeDS.CODE, getConstants().maintainableArtefactCode());
-        ViewMultiLanguageTextItem name = new ViewMultiLanguageTextItem(ConceptSchemeDS.NAME, getConstants().maintainableArtefactName());
-        ViewTextItem uri = new ViewTextItem(ConceptSchemeDS.URI, getConstants().maintainableArtefactUri());
-        ViewTextItem urn = new ViewTextItem(ConceptSchemeDS.URN, getConstants().maintainableArtefactUrn());
+        ViewTextItem code = new ViewTextItem(ConceptSchemeDS.CODE, getConstants().identifiableArtefactCode());
+        ViewMultiLanguageTextItem name = new ViewMultiLanguageTextItem(ConceptSchemeDS.NAME, getConstants().nameableArtefactName());
+        ViewTextItem uri = new ViewTextItem(ConceptSchemeDS.URI, getConstants().identifiableArtefactUri());
+        ViewTextItem urn = new ViewTextItem(ConceptSchemeDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem version = new ViewTextItem(ConceptSchemeDS.VERSION_LOGIC, getConstants().maintainableArtefactVersionLogic());
         identifiersForm.setFields(code, name, uri, urn, version);
 
         // Content descriptors
         contentDescriptorsForm = new GroupDynamicForm(getConstants().conceptSchemeContentDescriptors());
-        ViewMultiLanguageTextItem description = new ViewMultiLanguageTextItem(ConceptSchemeDS.DESCRIPTION, getConstants().maintainableArtefactDescription());
+        ViewMultiLanguageTextItem description = new ViewMultiLanguageTextItem(ConceptSchemeDS.DESCRIPTION, getConstants().nameableArtefactDescription());
         ViewTextItem partial = new ViewTextItem(ConceptSchemeDS.IS_PARTIAL, getConstants().itemSchemeIsPartial());
         ViewTextItem isExternalReference = new ViewTextItem(ConceptSchemeDS.IS_EXTERNAL_REFERENCE, getConstants().maintainableArtefactIsExternalReference());
         ViewTextItem isFinal = new ViewTextItem(ConceptSchemeDS.FINAL, getConstants().maintainableArtefactFinalLogic());
@@ -410,7 +410,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
     private void createEditionForm() {
         // Identifiers
         identifiersEditionForm = new GroupDynamicForm(getConstants().conceptSchemeIdentifiers());
-        RequiredTextItem code = new RequiredTextItem(ConceptSchemeDS.CODE, getConstants().maintainableArtefactCode());
+        RequiredTextItem code = new RequiredTextItem(ConceptSchemeDS.CODE, getConstants().identifiableArtefactCode());
         code.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());
         code.setShowIfCondition(new FormItemIfFunction() {
 
@@ -421,7 +421,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
                         .equals(conceptSchemeDto.getVersionLogic()) && !StringUtils.isBlank(conceptSchemeDto.getVersionLogic())));
             }
         });
-        ViewTextItem staticCode = new ViewTextItem(ConceptSchemeDS.CODE_VIEW, getConstants().maintainableArtefactCode());
+        ViewTextItem staticCode = new ViewTextItem(ConceptSchemeDS.CODE_VIEW, getConstants().identifiableArtefactCode());
         staticCode.setShowIfCondition(new FormItemIfFunction() {
 
             @Override
@@ -429,16 +429,16 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
                 return !form.getItem(ConceptSchemeDS.CODE).isVisible();
             }
         });
-        MultiLanguageTextItem name = new MultiLanguageTextItem(ConceptSchemeDS.NAME, getConstants().maintainableArtefactName());
+        MultiLanguageTextItem name = new MultiLanguageTextItem(ConceptSchemeDS.NAME, getConstants().nameableArtefactName());
         name.setRequired(true);
-        ViewTextItem uri = new ViewTextItem(ConceptSchemeDS.URI, getConstants().maintainableArtefactUri());
-        ViewTextItem urn = new ViewTextItem(ConceptSchemeDS.URN, getConstants().maintainableArtefactUrn());
+        ViewTextItem uri = new ViewTextItem(ConceptSchemeDS.URI, getConstants().identifiableArtefactUri());
+        ViewTextItem urn = new ViewTextItem(ConceptSchemeDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem version = new ViewTextItem(ConceptSchemeDS.VERSION_LOGIC, getConstants().maintainableArtefactVersionLogic());
         identifiersEditionForm.setFields(code, staticCode, name, uri, urn, version);
 
         // Content descriptors
         contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().conceptSchemeContentDescriptors());
-        MultiLanguageTextAreaItem description = new MultiLanguageTextAreaItem(ConceptSchemeDS.DESCRIPTION, getConstants().maintainableArtefactDescription());
+        MultiLanguageTextAreaItem description = new MultiLanguageTextAreaItem(ConceptSchemeDS.DESCRIPTION, getConstants().nameableArtefactDescription());
         BooleanSelectItem partial = new BooleanSelectItem(ConceptSchemeDS.IS_PARTIAL, getConstants().itemSchemeIsPartial());
         ViewTextItem isExternalReference = new ViewTextItem(ConceptSchemeDS.IS_EXTERNAL_REFERENCE, getConstants().maintainableArtefactIsExternalReference());
         ViewTextItem isFinal = new ViewTextItem(ConceptSchemeDS.FINAL, getConstants().maintainableArtefactFinalLogic());
