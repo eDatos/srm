@@ -8,6 +8,7 @@ import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.AnnotationDto;
+import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 
 public class MockService {
 
@@ -28,6 +29,7 @@ public class MockService {
         OrganisationSchemeMetamacDto organisationSchemeMetamacDto = new OrganisationSchemeMetamacDto();
         organisationSchemeMetamacDto.setId(1L);
         organisationSchemeMetamacDto.setCode("organisation-scheme-1");
+        organisationSchemeMetamacDto.setType(OrganisationSchemeTypeEnum.AGENCY_SCHEME);
         organisationSchemeMetamacDto.setUrn("urn:sdmx:org.sdmx.infomodel.organisationscheme.OrganisationScheme=agency_CODE:scheme0001(01.000)");
         organisationSchemeMetamacDto.setProcStatus(ProcStatusEnum.DRAFT);
         organisationSchemeMetamacDto.setName(MockService.createInternationalStringDto("Esquema de organizaciones 1", "Organisation scheme 1"));

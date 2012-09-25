@@ -17,6 +17,7 @@ import org.siemac.metamac.srm.web.client.widgets.VersionWindow;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptSchemeRecord;
 import org.siemac.metamac.srm.web.organisation.model.ds.OrganisationSchemeDS;
 import org.siemac.metamac.srm.web.organisation.presenter.OrganisationSchemePresenter;
+import org.siemac.metamac.srm.web.organisation.utils.CommonUtils;
 import org.siemac.metamac.srm.web.organisation.utils.OrganisationsClientSecurityUtils;
 import org.siemac.metamac.srm.web.organisation.view.handlers.OrganisationSchemeUiHandlers;
 import org.siemac.metamac.srm.web.organisation.widgets.OrganisationSchemeMainFormLayout;
@@ -244,11 +245,12 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
 
         // Content descriptors
         contentDescriptorsForm = new GroupDynamicForm(getConstants().organisationSchemeContentDescriptors());
+        ViewTextItem type = new ViewTextItem(OrganisationSchemeDS.TYPE, getConstants().organisationSchemeType());
         ViewMultiLanguageTextItem description = new ViewMultiLanguageTextItem(OrganisationSchemeDS.DESCRIPTION, getConstants().maintainableArtefactDescription());
         ViewTextItem partial = new ViewTextItem(OrganisationSchemeDS.IS_PARTIAL, getConstants().itemSchemeIsPartial());
         ViewTextItem isExternalReference = new ViewTextItem(OrganisationSchemeDS.IS_EXTERNAL_REFERENCE, getConstants().maintainableArtefactIsExternalReference());
         ViewTextItem isFinal = new ViewTextItem(OrganisationSchemeDS.FINAL, getConstants().maintainableArtefactFinalLogic());
-        contentDescriptorsForm.setFields(description, partial, isExternalReference, isFinal);
+        contentDescriptorsForm.setFields(type, description, partial, isExternalReference, isFinal);
 
         // Class descriptors
         classDescriptorsForm = new GroupDynamicForm(getConstants().organisationSchemeClassDescriptors());
@@ -326,11 +328,12 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
 
         // Content descriptors
         contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().organisationSchemeContentDescriptors());
+        ViewTextItem type = new ViewTextItem(OrganisationSchemeDS.TYPE, getConstants().organisationSchemeType());
         MultiLanguageTextAreaItem description = new MultiLanguageTextAreaItem(OrganisationSchemeDS.DESCRIPTION, getConstants().maintainableArtefactDescription());
         BooleanSelectItem partial = new BooleanSelectItem(OrganisationSchemeDS.IS_PARTIAL, getConstants().itemSchemeIsPartial());
         ViewTextItem isExternalReference = new ViewTextItem(OrganisationSchemeDS.IS_EXTERNAL_REFERENCE, getConstants().maintainableArtefactIsExternalReference());
         ViewTextItem isFinal = new ViewTextItem(OrganisationSchemeDS.FINAL, getConstants().maintainableArtefactFinalLogic());
-        contentDescriptorsEditionForm.setFields(description, partial, isExternalReference, isFinal);
+        contentDescriptorsEditionForm.setFields(type, description, partial, isExternalReference, isFinal);
 
         // Class descriptors
         classDescriptorsEditionForm = new GroupDynamicForm(getConstants().organisationSchemeClassDescriptors());
@@ -427,104 +430,106 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         versionsSectionStack.selectOrganisationScheme(organisationSchemeDto);
     }
 
-    public void setOrganisationSchemeViewMode(OrganisationSchemeMetamacDto organisationSchemeMetamacDto) {
+    public void setOrganisationSchemeViewMode(OrganisationSchemeMetamacDto organisationSchemeDto) {
         // Identifiers
-        identifiersForm.setValue(OrganisationSchemeDS.CODE, organisationSchemeMetamacDto.getCode());
-        identifiersForm.setValue(OrganisationSchemeDS.URI, organisationSchemeMetamacDto.getUri());
-        identifiersForm.setValue(OrganisationSchemeDS.URN, organisationSchemeMetamacDto.getUrn());
-        identifiersForm.setValue(OrganisationSchemeDS.VERSION_LOGIC, organisationSchemeMetamacDto.getVersionLogic());
-        identifiersForm.setValue(OrganisationSchemeDS.NAME, RecordUtils.getInternationalStringRecord(organisationSchemeMetamacDto.getName()));
+        identifiersForm.setValue(OrganisationSchemeDS.CODE, organisationSchemeDto.getCode());
+        identifiersForm.setValue(OrganisationSchemeDS.URI, organisationSchemeDto.getUri());
+        identifiersForm.setValue(OrganisationSchemeDS.URN, organisationSchemeDto.getUrn());
+        identifiersForm.setValue(OrganisationSchemeDS.VERSION_LOGIC, organisationSchemeDto.getVersionLogic());
+        identifiersForm.setValue(OrganisationSchemeDS.NAME, RecordUtils.getInternationalStringRecord(organisationSchemeDto.getName()));
 
         // Content descriptors
-        contentDescriptorsForm.setValue(OrganisationSchemeDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(organisationSchemeMetamacDto.getDescription()));
-        contentDescriptorsForm.setValue(OrganisationSchemeDS.IS_PARTIAL, organisationSchemeMetamacDto.getIsPartial() != null ? (organisationSchemeMetamacDto.getIsPartial() ? MetamacWebCommon
-                .getConstants().yes() : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
-        contentDescriptorsForm.setValue(OrganisationSchemeDS.IS_EXTERNAL_REFERENCE,
-                organisationSchemeMetamacDto.getIsExternalReference() != null ? (organisationSchemeMetamacDto.getIsExternalReference() ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon
-                        .getConstants().no()) : StringUtils.EMPTY);
-        contentDescriptorsForm.setValue(OrganisationSchemeDS.FINAL, organisationSchemeMetamacDto.getFinalLogic() != null ? (organisationSchemeMetamacDto.getFinalLogic() ? MetamacWebCommon
-                .getConstants().yes() : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
+        contentDescriptorsForm.setValue(OrganisationSchemeDS.TYPE, CommonUtils.getOrganisationSchemeTypeName(organisationSchemeDto.getType()));
+        contentDescriptorsForm.setValue(OrganisationSchemeDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(organisationSchemeDto.getDescription()));
+        contentDescriptorsForm.setValue(OrganisationSchemeDS.IS_PARTIAL, organisationSchemeDto.getIsPartial() != null ? (organisationSchemeDto.getIsPartial()
+                ? MetamacWebCommon.getConstants().yes()
+                : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
+        contentDescriptorsForm.setValue(OrganisationSchemeDS.IS_EXTERNAL_REFERENCE, organisationSchemeDto.getIsExternalReference() != null ? (organisationSchemeDto.getIsExternalReference()
+                ? MetamacWebCommon.getConstants().yes()
+                : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
+        contentDescriptorsForm.setValue(OrganisationSchemeDS.FINAL, organisationSchemeDto.getFinalLogic() != null ? (organisationSchemeDto.getFinalLogic()
+                ? MetamacWebCommon.getConstants().yes()
+                : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
 
         // Class descriptors
-        classDescriptorsForm.setValue(OrganisationSchemeDS.MAINTAINER, organisationSchemeMetamacDto.getMaintainer() != null
-                ? organisationSchemeMetamacDto.getMaintainer().getCode()
-                : StringUtils.EMPTY);
+        classDescriptorsForm.setValue(OrganisationSchemeDS.MAINTAINER, organisationSchemeDto.getMaintainer() != null ? organisationSchemeDto.getMaintainer().getCode() : StringUtils.EMPTY);
 
         // Production descriptors
-        productionDescriptorsForm.setValue(OrganisationSchemeDS.PROC_STATUS, org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(organisationSchemeMetamacDto.getProcStatus()));
+        productionDescriptorsForm.setValue(OrganisationSchemeDS.PROC_STATUS, org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(organisationSchemeDto.getProcStatus()));
 
         // Diffusion descriptors
-        diffusionDescriptorsForm.setValue(OrganisationSchemeDS.REPLACED_BY, organisationSchemeMetamacDto.getReplacedBy());
-        diffusionDescriptorsForm.setValue(OrganisationSchemeDS.REPLACE_TO, organisationSchemeMetamacDto.getReplaceTo());
-        diffusionDescriptorsForm.setValue(OrganisationSchemeDS.VALID_FROM, organisationSchemeMetamacDto.getValidFrom());
-        diffusionDescriptorsForm.setValue(OrganisationSchemeDS.VALID_TO, organisationSchemeMetamacDto.getValidTo());
-        diffusionDescriptorsForm.setValue(OrganisationSchemeDS.IS_EXTERNAL_PUBLICATION_FAILED, BooleanUtils.isTrue(organisationSchemeMetamacDto.getIsExternalPublicationFailed()) ? MetamacWebCommon
+        diffusionDescriptorsForm.setValue(OrganisationSchemeDS.REPLACED_BY, organisationSchemeDto.getReplacedBy());
+        diffusionDescriptorsForm.setValue(OrganisationSchemeDS.REPLACE_TO, organisationSchemeDto.getReplaceTo());
+        diffusionDescriptorsForm.setValue(OrganisationSchemeDS.VALID_FROM, organisationSchemeDto.getValidFrom());
+        diffusionDescriptorsForm.setValue(OrganisationSchemeDS.VALID_TO, organisationSchemeDto.getValidTo());
+        diffusionDescriptorsForm.setValue(OrganisationSchemeDS.IS_EXTERNAL_PUBLICATION_FAILED, BooleanUtils.isTrue(organisationSchemeDto.getIsExternalPublicationFailed()) ? MetamacWebCommon
                 .getConstants().yes() : StringUtils.EMPTY);
-        diffusionDescriptorsForm.setValue(OrganisationSchemeDS.EXTERNAL_PUBLICATION_FAILED_DATE, DateUtils.getFormattedDate(organisationSchemeMetamacDto.getExternalPublicationFailedDate()));
+        diffusionDescriptorsForm.setValue(OrganisationSchemeDS.EXTERNAL_PUBLICATION_FAILED_DATE, DateUtils.getFormattedDate(organisationSchemeDto.getExternalPublicationFailedDate()));
 
         // Version responsibility
-        versionResponsibilityForm.setValue(OrganisationSchemeDS.PRODUCTION_VALIDATION_USER, organisationSchemeMetamacDto.getProductionValidationUser());
-        versionResponsibilityForm.setValue(OrganisationSchemeDS.PRODUCTION_VALIDATION_DATE, organisationSchemeMetamacDto.getProductionValidationDate());
-        versionResponsibilityForm.setValue(OrganisationSchemeDS.DIFFUSION_VALIDATION_USER, organisationSchemeMetamacDto.getDiffusionValidationUser());
-        versionResponsibilityForm.setValue(OrganisationSchemeDS.DIFFUSION_VALIDATION_DATE, organisationSchemeMetamacDto.getDiffusionValidationDate());
-        versionResponsibilityForm.setValue(OrganisationSchemeDS.INTERNAL_PUBLICATION_USER, organisationSchemeMetamacDto.getInternalPublicationUser());
-        versionResponsibilityForm.setValue(OrganisationSchemeDS.INTERNAL_PUBLICATION_DATE, organisationSchemeMetamacDto.getInternalPublicationDate());
-        versionResponsibilityForm.setValue(OrganisationSchemeDS.EXTERNAL_PUBLICATION_USER, organisationSchemeMetamacDto.getExternalPublicationUser());
-        versionResponsibilityForm.setValue(OrganisationSchemeDS.EXTERNAL_PUBLICATION_DATE, organisationSchemeMetamacDto.getExternalPublicationDate());
+        versionResponsibilityForm.setValue(OrganisationSchemeDS.PRODUCTION_VALIDATION_USER, organisationSchemeDto.getProductionValidationUser());
+        versionResponsibilityForm.setValue(OrganisationSchemeDS.PRODUCTION_VALIDATION_DATE, organisationSchemeDto.getProductionValidationDate());
+        versionResponsibilityForm.setValue(OrganisationSchemeDS.DIFFUSION_VALIDATION_USER, organisationSchemeDto.getDiffusionValidationUser());
+        versionResponsibilityForm.setValue(OrganisationSchemeDS.DIFFUSION_VALIDATION_DATE, organisationSchemeDto.getDiffusionValidationDate());
+        versionResponsibilityForm.setValue(OrganisationSchemeDS.INTERNAL_PUBLICATION_USER, organisationSchemeDto.getInternalPublicationUser());
+        versionResponsibilityForm.setValue(OrganisationSchemeDS.INTERNAL_PUBLICATION_DATE, organisationSchemeDto.getInternalPublicationDate());
+        versionResponsibilityForm.setValue(OrganisationSchemeDS.EXTERNAL_PUBLICATION_USER, organisationSchemeDto.getExternalPublicationUser());
+        versionResponsibilityForm.setValue(OrganisationSchemeDS.EXTERNAL_PUBLICATION_DATE, organisationSchemeDto.getExternalPublicationDate());
 
         // Annotations
-        annotationsPanel.setAnnotations(organisationSchemeMetamacDto.getAnnotations());
+        annotationsPanel.setAnnotations(organisationSchemeDto.getAnnotations());
     }
 
-    public void setOrganisationSchemeEditionMode(OrganisationSchemeMetamacDto organisationSchemeMetamacDto) {
+    public void setOrganisationSchemeEditionMode(OrganisationSchemeMetamacDto organisationSchemeDto) {
         // Identifiers
-        identifiersEditionForm.setValue(OrganisationSchemeDS.CODE, organisationSchemeMetamacDto.getCode());
-        identifiersEditionForm.setValue(OrganisationSchemeDS.CODE_VIEW, organisationSchemeMetamacDto.getCode());
-        identifiersEditionForm.setValue(OrganisationSchemeDS.URI, organisationSchemeMetamacDto.getUri());
-        identifiersEditionForm.setValue(OrganisationSchemeDS.URN, organisationSchemeMetamacDto.getUrn());
-        identifiersEditionForm.setValue(OrganisationSchemeDS.VERSION_LOGIC, organisationSchemeMetamacDto.getVersionLogic());
-        identifiersEditionForm.setValue(OrganisationSchemeDS.NAME, RecordUtils.getInternationalStringRecord(organisationSchemeMetamacDto.getName()));
+        identifiersEditionForm.setValue(OrganisationSchemeDS.CODE, organisationSchemeDto.getCode());
+        identifiersEditionForm.setValue(OrganisationSchemeDS.CODE_VIEW, organisationSchemeDto.getCode());
+        identifiersEditionForm.setValue(OrganisationSchemeDS.URI, organisationSchemeDto.getUri());
+        identifiersEditionForm.setValue(OrganisationSchemeDS.URN, organisationSchemeDto.getUrn());
+        identifiersEditionForm.setValue(OrganisationSchemeDS.VERSION_LOGIC, organisationSchemeDto.getVersionLogic());
+        identifiersEditionForm.setValue(OrganisationSchemeDS.NAME, RecordUtils.getInternationalStringRecord(organisationSchemeDto.getName()));
 
         // Content descriptors
-        contentDescriptorsEditionForm.setValue(OrganisationSchemeDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(organisationSchemeMetamacDto.getDescription()));
-        contentDescriptorsEditionForm.setValue(OrganisationSchemeDS.IS_PARTIAL, organisationSchemeMetamacDto.getIsPartial() != null ? organisationSchemeMetamacDto.getIsPartial() : false);
+        contentDescriptorsEditionForm.setValue(OrganisationSchemeDS.TYPE, CommonUtils.getOrganisationSchemeTypeName(organisationSchemeDto.getType()));
+        contentDescriptorsEditionForm.setValue(OrganisationSchemeDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(organisationSchemeDto.getDescription()));
+        contentDescriptorsEditionForm.setValue(OrganisationSchemeDS.IS_PARTIAL, organisationSchemeDto.getIsPartial() != null ? organisationSchemeDto.getIsPartial() : false);
         contentDescriptorsEditionForm.setValue(OrganisationSchemeDS.IS_EXTERNAL_REFERENCE,
-                organisationSchemeMetamacDto.getIsExternalReference() != null ? (organisationSchemeMetamacDto.getIsExternalReference() ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon
+                organisationSchemeDto.getIsExternalReference() != null ? (organisationSchemeDto.getIsExternalReference() ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon
                         .getConstants().no()) : StringUtils.EMPTY);
-        contentDescriptorsEditionForm.setValue(OrganisationSchemeDS.FINAL, organisationSchemeMetamacDto.getFinalLogic() != null ? (organisationSchemeMetamacDto.getFinalLogic() ? MetamacWebCommon
+        contentDescriptorsEditionForm.setValue(OrganisationSchemeDS.FINAL, organisationSchemeDto.getFinalLogic() != null ? (organisationSchemeDto.getFinalLogic() ? MetamacWebCommon
                 .getConstants().yes() : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
 
         // Class descriptors
-        classDescriptorsEditionForm.setValue(OrganisationSchemeDS.MAINTAINER, organisationSchemeMetamacDto.getMaintainer() != null
-                ? organisationSchemeMetamacDto.getMaintainer().getCode()
+        classDescriptorsEditionForm.setValue(OrganisationSchemeDS.MAINTAINER, organisationSchemeDto.getMaintainer() != null
+                ? organisationSchemeDto.getMaintainer().getCode()
                 : StringUtils.EMPTY);
 
         // Production descriptors
         productionDescriptorsEditionForm
-                .setValue(OrganisationSchemeDS.PROC_STATUS, org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(organisationSchemeMetamacDto.getProcStatus()));
+                .setValue(OrganisationSchemeDS.PROC_STATUS, org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(organisationSchemeDto.getProcStatus()));
 
         // Diffusion descriptors
-        diffusionDescriptorsEditionForm.setValue(OrganisationSchemeDS.REPLACED_BY, organisationSchemeMetamacDto.getReplacedBy());
-        diffusionDescriptorsEditionForm.setValue(OrganisationSchemeDS.REPLACE_TO, organisationSchemeMetamacDto.getReplaceTo());
-        diffusionDescriptorsEditionForm.setValue(OrganisationSchemeDS.VALID_FROM, DateUtils.getFormattedDate(organisationSchemeMetamacDto.getValidFrom()));
-        diffusionDescriptorsEditionForm.setValue(OrganisationSchemeDS.VALID_TO, DateUtils.getFormattedDate(organisationSchemeMetamacDto.getValidTo()));
-        diffusionDescriptorsEditionForm.setValue(OrganisationSchemeDS.IS_EXTERNAL_PUBLICATION_FAILED, BooleanUtils.isTrue(organisationSchemeMetamacDto.getIsExternalPublicationFailed())
+        diffusionDescriptorsEditionForm.setValue(OrganisationSchemeDS.REPLACED_BY, organisationSchemeDto.getReplacedBy());
+        diffusionDescriptorsEditionForm.setValue(OrganisationSchemeDS.REPLACE_TO, organisationSchemeDto.getReplaceTo());
+        diffusionDescriptorsEditionForm.setValue(OrganisationSchemeDS.VALID_FROM, DateUtils.getFormattedDate(organisationSchemeDto.getValidFrom()));
+        diffusionDescriptorsEditionForm.setValue(OrganisationSchemeDS.VALID_TO, DateUtils.getFormattedDate(organisationSchemeDto.getValidTo()));
+        diffusionDescriptorsEditionForm.setValue(OrganisationSchemeDS.IS_EXTERNAL_PUBLICATION_FAILED, BooleanUtils.isTrue(organisationSchemeDto.getIsExternalPublicationFailed())
                 ? MetamacWebCommon.getConstants().yes()
                 : MetamacWebCommon.getConstants().no());
-        diffusionDescriptorsEditionForm.setValue(OrganisationSchemeDS.EXTERNAL_PUBLICATION_FAILED_DATE, DateUtils.getFormattedDate(organisationSchemeMetamacDto.getExternalPublicationFailedDate()));
+        diffusionDescriptorsEditionForm.setValue(OrganisationSchemeDS.EXTERNAL_PUBLICATION_FAILED_DATE, DateUtils.getFormattedDate(organisationSchemeDto.getExternalPublicationFailedDate()));
 
         // Version responsibility
-        versionResponsibilityEditionForm.setValue(OrganisationSchemeDS.PRODUCTION_VALIDATION_USER, organisationSchemeMetamacDto.getProductionValidationUser());
-        versionResponsibilityEditionForm.setValue(OrganisationSchemeDS.PRODUCTION_VALIDATION_DATE, organisationSchemeMetamacDto.getProductionValidationDate());
-        versionResponsibilityEditionForm.setValue(OrganisationSchemeDS.DIFFUSION_VALIDATION_USER, organisationSchemeMetamacDto.getDiffusionValidationUser());
-        versionResponsibilityEditionForm.setValue(OrganisationSchemeDS.DIFFUSION_VALIDATION_DATE, organisationSchemeMetamacDto.getDiffusionValidationDate());
-        versionResponsibilityEditionForm.setValue(OrganisationSchemeDS.INTERNAL_PUBLICATION_USER, organisationSchemeMetamacDto.getInternalPublicationUser());
-        versionResponsibilityEditionForm.setValue(OrganisationSchemeDS.INTERNAL_PUBLICATION_DATE, organisationSchemeMetamacDto.getInternalPublicationDate());
-        versionResponsibilityEditionForm.setValue(OrganisationSchemeDS.EXTERNAL_PUBLICATION_USER, organisationSchemeMetamacDto.getExternalPublicationUser());
-        versionResponsibilityEditionForm.setValue(OrganisationSchemeDS.EXTERNAL_PUBLICATION_DATE, organisationSchemeMetamacDto.getExternalPublicationDate());
+        versionResponsibilityEditionForm.setValue(OrganisationSchemeDS.PRODUCTION_VALIDATION_USER, organisationSchemeDto.getProductionValidationUser());
+        versionResponsibilityEditionForm.setValue(OrganisationSchemeDS.PRODUCTION_VALIDATION_DATE, organisationSchemeDto.getProductionValidationDate());
+        versionResponsibilityEditionForm.setValue(OrganisationSchemeDS.DIFFUSION_VALIDATION_USER, organisationSchemeDto.getDiffusionValidationUser());
+        versionResponsibilityEditionForm.setValue(OrganisationSchemeDS.DIFFUSION_VALIDATION_DATE, organisationSchemeDto.getDiffusionValidationDate());
+        versionResponsibilityEditionForm.setValue(OrganisationSchemeDS.INTERNAL_PUBLICATION_USER, organisationSchemeDto.getInternalPublicationUser());
+        versionResponsibilityEditionForm.setValue(OrganisationSchemeDS.INTERNAL_PUBLICATION_DATE, organisationSchemeDto.getInternalPublicationDate());
+        versionResponsibilityEditionForm.setValue(OrganisationSchemeDS.EXTERNAL_PUBLICATION_USER, organisationSchemeDto.getExternalPublicationUser());
+        versionResponsibilityEditionForm.setValue(OrganisationSchemeDS.EXTERNAL_PUBLICATION_DATE, organisationSchemeDto.getExternalPublicationDate());
 
         // Annotations
-        annotationsEditionPanel.setAnnotations(organisationSchemeMetamacDto.getAnnotations());
+        annotationsEditionPanel.setAnnotations(organisationSchemeDto.getAnnotations());
     }
 
     public OrganisationSchemeMetamacDto getOrganisationSchemeDto() {

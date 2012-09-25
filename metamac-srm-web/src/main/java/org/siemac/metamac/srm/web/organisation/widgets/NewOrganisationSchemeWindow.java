@@ -7,13 +7,16 @@ import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 import org.siemac.metamac.srm.web.organisation.model.ds.OrganisationSchemeDS;
+import org.siemac.metamac.srm.web.organisation.utils.CommonUtils;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.widgets.CustomWindow;
 import org.siemac.metamac.web.common.client.widgets.form.CustomDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomButtonItem;
+import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredSelectItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
 
+import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.smartgwt.client.widgets.form.fields.events.HasClickHandlers;
 
 public class NewOrganisationSchemeWindow extends CustomWindow {
@@ -27,6 +30,10 @@ public class NewOrganisationSchemeWindow extends CustomWindow {
         super(title);
         setAutoSize(true);
 
+        RequiredSelectItem typeItem = new RequiredSelectItem(OrganisationSchemeDS.TYPE, getConstants().organisationSchemeType());
+        typeItem.setValueMap(CommonUtils.getOrganisationSchemeTypeHashMap());
+        typeItem.setWidth(FORM_ITEM_CUSTOM_WIDTH);
+
         RequiredTextItem codeItem = new RequiredTextItem(OrganisationSchemeDS.CODE, getConstants().maintainableArtefactCode());
         codeItem.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());
         codeItem.setWidth(FORM_ITEM_CUSTOM_WIDTH);
@@ -38,7 +45,7 @@ public class NewOrganisationSchemeWindow extends CustomWindow {
 
         form = new CustomDynamicForm();
         form.setMargin(5);
-        form.setFields(codeItem, nameItem, saveItem);
+        form.setFields(typeItem, codeItem, nameItem, saveItem);
 
         addItem(form);
         show();
@@ -59,6 +66,7 @@ public class NewOrganisationSchemeWindow extends CustomWindow {
         ExternalItemDto agency = new ExternalItemDto("agency_CODE", "uri:3421", "METAMAC_ORGANISATION", TypeExternalArtefactsEnum.AGENCY);
         organisationSchemeDto.setMaintainer(agency);
 
+        organisationSchemeDto.setType(OrganisationSchemeTypeEnum.valueOf(form.getValueAsString(OrganisationSchemeDS.TYPE)));
         organisationSchemeDto.setCode(form.getValueAsString(OrganisationSchemeDS.CODE));
         organisationSchemeDto.setName(InternationalStringUtils.updateInternationalString(new InternationalStringDto(), form.getValueAsString(OrganisationSchemeDS.NAME)));
         return organisationSchemeDto;

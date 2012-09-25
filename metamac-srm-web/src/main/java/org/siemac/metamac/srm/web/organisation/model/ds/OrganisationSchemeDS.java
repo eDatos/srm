@@ -18,6 +18,7 @@ public class OrganisationSchemeDS extends DataSource {
     public static final String IS_PARTIAL                       = "sch-is-partial";
     public static final String IS_EXTERNAL_REFERENCE            = "sch-ext-ref";
     public static final String FINAL                            = "sch-final";
+    public static final String TYPE                             = "sch-type";
     // CLASS DESCRIPTORS
     public static final String MAINTAINER                       = "sch-maintainer";
     // PRODUCTION DESCRIPTORS
