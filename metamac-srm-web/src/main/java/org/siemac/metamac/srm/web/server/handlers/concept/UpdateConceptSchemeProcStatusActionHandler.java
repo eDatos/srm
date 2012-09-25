@@ -48,4 +48,5 @@ public class UpdateConceptSchemeProcStatusActionHandler extends SecurityActionHa
             throw WebExceptionUtils.createMetamacWebException(e);
         }
     }
+
 }
