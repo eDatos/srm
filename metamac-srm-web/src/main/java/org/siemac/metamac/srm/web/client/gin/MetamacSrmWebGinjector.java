@@ -15,6 +15,7 @@ import org.siemac.metamac.srm.web.dsd.presenter.DsdGroupKeysTabPresenter;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdListPresenter;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdPresenter;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdPrimaryMeasureTabPresenter;
+import org.siemac.metamac.srm.web.organisation.presenter.OrganisationPresenter;
 import org.siemac.metamac.srm.web.organisation.presenter.OrganisationSchemeListPresenter;
 import org.siemac.metamac.srm.web.organisation.presenter.OrganisationSchemePresenter;
 
@@ -59,5 +60,6 @@ public interface MetamacSrmWebGinjector extends Ginjector {
     // Organisations
     AsyncProvider<OrganisationSchemeListPresenter> getOrganisationSchemeListPresenter();
     AsyncProvider<OrganisationSchemePresenter> getOrganisationSchemePresenter();
+    AsyncProvider<OrganisationPresenter> getOrganisationPresenter();
 
 }

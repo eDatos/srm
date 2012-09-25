@@ -33,10 +33,12 @@ import org.siemac.metamac.srm.web.dsd.view.DsdGroupKeysTabViewImpl;
 import org.siemac.metamac.srm.web.dsd.view.DsdListViewImpl;
 import org.siemac.metamac.srm.web.dsd.view.DsdPrimaryMeasureTabViewImpl;
 import org.siemac.metamac.srm.web.dsd.view.DsdViewImpl;
+import org.siemac.metamac.srm.web.organisation.presenter.OrganisationPresenter;
 import org.siemac.metamac.srm.web.organisation.presenter.OrganisationSchemeListPresenter;
 import org.siemac.metamac.srm.web.organisation.presenter.OrganisationSchemePresenter;
 import org.siemac.metamac.srm.web.organisation.view.OrganisationSchemeListViewImpl;
 import org.siemac.metamac.srm.web.organisation.view.OrganisationSchemeViewImpl;
+import org.siemac.metamac.srm.web.organisation.view.OrganisationViewImpl;
 import org.siemac.metamac.srm.web.shared.utils.SharedTokens;
 
 import com.google.inject.Singleton;
@@ -99,6 +101,7 @@ public class ClientModule extends AbstractPresenterModule {
                 OrganisationSchemeListPresenter.OrganisationSchemeListProxy.class);
         bindPresenter(OrganisationSchemePresenter.class, OrganisationSchemePresenter.OrganisationSchemeView.class, OrganisationSchemeViewImpl.class,
                 OrganisationSchemePresenter.OrganisationSchemeProxy.class);
+        bindPresenter(OrganisationPresenter.class, OrganisationPresenter.OrganisationView.class, OrganisationViewImpl.class, OrganisationPresenter.OrganisationProxy.class);
     }
 
 }
