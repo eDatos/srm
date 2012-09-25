@@ -135,7 +135,7 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                 case URN:
                     return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.maintainableArtefact().urn(), propertyRestriction.getStringValue());
                 case PROC_STATUS:
-                    return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.procStatus(), propertyRestriction.getEnumValue());
+                    return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.lifecycleMetadata().procStatus(), propertyRestriction.getEnumValue());
                 case NAME:
                     return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.maintainableArtefact().name().texts().label(), propertyRestriction.getStringValue());
                 case IS_LAST_VERSION:
@@ -154,7 +154,7 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                 case URN:
                     return ConceptSchemeVersionMetamacProperties.maintainableArtefact().urn();
                 case PROC_STATUS:
-                    return ConceptSchemeVersionMetamacProperties.procStatus();
+                    return ConceptSchemeVersionMetamacProperties.lifecycleMetadata().procStatus();
                 case NAME:
                     return ConceptSchemeVersionMetamacProperties.maintainableArtefact().name().texts().label();
                 case LAST_UPDATED:

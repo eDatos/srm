@@ -10,6 +10,7 @@ import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
+import org.siemac.metamac.srm.core.base.domain.SrmLifecycleMetadata;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
@@ -68,7 +69,8 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         ConceptsMetamacInvocationValidator.checkCreateConceptScheme(conceptSchemeVersion, null);
 
         // Fill metadata
-        conceptSchemeVersion.setProcStatus(ProcStatusEnum.DRAFT);
+        conceptSchemeVersion.setLifecycleMetadata(new SrmLifecycleMetadata());
+        conceptSchemeVersion.getLifecycleMetadata().setProcStatus(ProcStatusEnum.DRAFT);
         conceptSchemeVersion.getMaintainableArtefact().setIsExternalReference(Boolean.FALSE);
 
         // Save conceptScheme
@@ -201,7 +203,8 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
         // Copy values
         ConceptSchemeVersionMetamac conceptSchemeNewVersion = DoCopyUtils.copyConceptSchemeVersionMetamac(conceptSchemeVersionToCopy);
-        conceptSchemeNewVersion.setProcStatus(ProcStatusEnum.DRAFT);
+        conceptSchemeNewVersion.setLifecycleMetadata(new SrmLifecycleMetadata());
+        conceptSchemeNewVersion.getLifecycleMetadata().setProcStatus(ProcStatusEnum.DRAFT);
         List concepts = DoCopyUtils.copyConceptsMetamac(conceptSchemeVersionToCopy);
 
         // Versioning
@@ -484,7 +487,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     private List<ConceptSchemeVersionMetamac> findConceptSchemeVersionsOfConceptSchemeInProcStatus(ServiceContext ctx, ItemScheme conceptScheme, ProcStatusEnum... procStatus) throws MetamacException {
 
         List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).withProperty(ConceptSchemeVersionMetamacProperties.itemScheme().id())
-                .eq(conceptScheme.getId()).withProperty(ConceptSchemeVersionMetamacProperties.procStatus()).in((Object[]) procStatus).distinctRoot().build();
+                .eq(conceptScheme.getId()).withProperty(ConceptSchemeVersionMetamacProperties.lifecycleMetadata().procStatus()).in((Object[]) procStatus).distinctRoot().build();
         PagingParameter pagingParameter = PagingParameter.noLimits();
         PagedResult<ConceptSchemeVersionMetamac> conceptSchemeVersionPagedResult = getConceptSchemeVersionMetamacRepository().findByCondition(conditions, pagingParameter);
         return conceptSchemeVersionPagedResult.getValues();

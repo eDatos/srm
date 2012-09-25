@@ -11,16 +11,17 @@ import "classpath:/btdesign/model-statistic-sdmx-v2_1-transformation.btdesign"
 import "classpath:/btdesign/statistic-sdmx-core-structure.btdesign"
 import "classpath:/btdesign/statistic-sdmx-core-concepts.btdesign"
 
+import "classpath:/btdesign/metamac-srm-core-enum.btdesign"
+import "classpath:/btdesign/metamac-srm-core-facade.btdesign"
+import "classpath:/btdesign/metamac-srm-core-base.btdesign"
+
 import "classpath:/btdesign/metamac-srm-core-concepts.btdesign"
 import "classpath:/btdesign/metamac-srm-core-organisations.btdesign"
 import "classpath:/btdesign/metamac-srm-core-concepts-dtos.btdesign"
 import "classpath:/btdesign/metamac-srm-core-organisations-dtos.btdesign"
-import "classpath:/btdesign/metamac-srm-core-enum.btdesign"
 
 import "classpath:/btdesign/metamac-srm-core-dsds.btdesign"
 import "classpath:/btdesign/metamac-srm-core-dsds-dtos.btdesign"
-
-import "classpath:/btdesign/metamac-srm-core-facade.btdesign"
 
 Application SrmCore {
     basePackage=unused

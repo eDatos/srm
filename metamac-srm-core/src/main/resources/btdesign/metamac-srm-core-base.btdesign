@@ -1,0 +1,36 @@
+import "classpath:/btdesign/metamac-srm-core-enum.btdesign"
+
+Application SrmEntitiesBaseCore {
+    basePackage=unused
+    
+    Module core_entities_base {
+    	basePackage=org.siemac.metamac.srm.core.base
+    
+    	BasicType SrmLifecycleMetadata {
+			!immutable
+			
+			"Status"
+			- @ProcStatusEnum procStatus;
+			"Date when the scheme was sended to production validation"
+			DateTimeTZ productionValidationDate nullable;
+			"User who sended to production validation"
+			String productionValidationUser nullable;
+			"Date when the scheme was sended to diffusion validation"
+			DateTimeTZ diffusionValidationDate nullable;
+			"User who sended to diffusion validation"
+			String diffusionValidationUser nullable;
+			"Date when the scheme was published internally"
+			DateTimeTZ internalPublicationDate nullable;
+			"User who published internally"
+			String internalPublicationUser nullable;
+			"Date when the scheme was published externally"
+			DateTimeTZ externalPublicationDate nullable;
+			"User who published externally"
+			String externalPublicationUser nullable;
+			"The external publication failed"
+			Boolean isExternalPublicationFailed nullable databaseColumn="IS_EXT_PUBLICATION_FAILED";
+			"External publication failed date"
+			DateTimeTZ externalPublicationFailedDate nullable databaseColumn="EXT_PUBLICATION_FAILED_DATE";
+		}    	
+	}
+}

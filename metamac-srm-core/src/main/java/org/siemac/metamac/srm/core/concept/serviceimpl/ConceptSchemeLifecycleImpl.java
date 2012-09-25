@@ -8,9 +8,9 @@ import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBui
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
-import org.joda.time.DateTime;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
+import org.siemac.metamac.srm.core.base.domain.SrmLifecycleMetadata;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacRepository;
@@ -82,6 +82,12 @@ public class ConceptSchemeLifecycleImpl implements ConceptSchemeLifecycle {
     private class ConceptSchemeLifecycleCallback implements ItemSchemeLifecycleCallback {
 
         @Override
+        public SrmLifecycleMetadata getSrmLifecycleMetadata(ItemSchemeVersion itemSchemeVersion) {
+            ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptSchemeVersionMetamac(itemSchemeVersion);
+            return conceptSchemeVersion.getLifecycleMetadata();
+        }
+
+        @Override
         public ItemSchemeVersion updateItemScheme(ItemSchemeVersion itemSchemeVersion) {
             return itemSchemeVersionRepository.save(itemSchemeVersion);
         }
@@ -89,55 +95,6 @@ public class ConceptSchemeLifecycleImpl implements ConceptSchemeLifecycle {
         @Override
         public ItemSchemeVersion retrieveItemSchemeByProcStatus(String urn, ProcStatusEnum[] procStatus) throws MetamacException {
             return conceptSchemeVersionMetamacRepository.retrieveConceptSchemeVersionByProcStatus(urn, procStatus);
-        }
-
-        @Override
-        public void setItemSchemeProcStatusAndInformationStatus(ItemSchemeVersion itemSchemeVersion, ProcStatusEnum newProcStatus, String user) {
-
-            ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptSchemeVersionMetamac(itemSchemeVersion);
-
-            // Proc status
-            conceptSchemeVersion.setProcStatus(newProcStatus);
-
-            // User and date
-            switch (newProcStatus) {
-                case PRODUCTION_VALIDATION:
-                    conceptSchemeVersion.setProductionValidationDate(new DateTime());
-                    conceptSchemeVersion.setProductionValidationUser(user);
-                    break;
-                case DIFFUSION_VALIDATION:
-                    conceptSchemeVersion.setDiffusionValidationDate(new DateTime());
-                    conceptSchemeVersion.setDiffusionValidationUser(user);
-                    break;
-                case VALIDATION_REJECTED:
-                    conceptSchemeVersion.setProductionValidationDate(null);
-                    conceptSchemeVersion.setProductionValidationUser(null);
-                    conceptSchemeVersion.setDiffusionValidationDate(null);
-                    conceptSchemeVersion.setDiffusionValidationUser(null);
-                    break;
-                case INTERNALLY_PUBLISHED:
-                    conceptSchemeVersion.setInternalPublicationDate(new DateTime());
-                    conceptSchemeVersion.setInternalPublicationUser(user);
-                    break;
-                case EXTERNALLY_PUBLISHED:
-                    conceptSchemeVersion.setExternalPublicationDate(new DateTime());
-                    conceptSchemeVersion.setExternalPublicationUser(user);
-                    break;
-                default:
-                    throw new IllegalArgumentException("unsupported: " + newProcStatus);
-            }
-        }
-
-        @Override
-        public ProcStatusEnum getProcStatusMetadataValue(ItemSchemeVersion itemSchemeVersion) {
-            ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptSchemeVersionMetamac(itemSchemeVersion);
-            return conceptSchemeVersion.getProcStatus();
-        }
-
-        @Override
-        public DateTime getExternalPublicationDateMetadataValue(ItemSchemeVersion itemSchemeVersion) {
-            ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptSchemeVersionMetamac(itemSchemeVersion);
-            return conceptSchemeVersion.getExternalPublicationDate();
         }
 
         @Override
@@ -191,7 +148,7 @@ public class ConceptSchemeLifecycleImpl implements ConceptSchemeLifecycle {
         public List<ItemSchemeVersion> findItemSchemeVersionsOfItemSchemeInProcStatus(ServiceContext ctx, ItemScheme itemScheme, ProcStatusEnum... procStatus) {
 
             List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).withProperty(ConceptSchemeVersionMetamacProperties.itemScheme().id())
-                    .eq(itemScheme.getId()).withProperty(ConceptSchemeVersionMetamacProperties.procStatus()).in((Object[]) procStatus).distinctRoot().build();
+                    .eq(itemScheme.getId()).withProperty(ConceptSchemeVersionMetamacProperties.lifecycleMetadata().procStatus()).in((Object[]) procStatus).distinctRoot().build();
             PagingParameter pagingParameter = PagingParameter.noLimits();
             PagedResult<ConceptSchemeVersionMetamac> conceptSchemeVersionPagedResult = conceptSchemeVersionMetamacRepository.findByCondition(conditions, pagingParameter);
             return conceptSchemeMetamacToItemScheme(conceptSchemeVersionPagedResult.getValues());

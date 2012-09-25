@@ -3,6 +3,7 @@ import "classpath:/btdesign/statistic-sdmx-core-concepts.btdesign"
 import "classpath:/btdesign/metamac-srm-core-enum.btdesign"
 import "classpath:/btdesign/metamac-srm-core-concepts-enum.btdesign"
 import "classpath:/btdesign/statistic-sdmx-v2_1-domain-enums.btdesign"
+import "classpath:/btdesign/metamac-srm-core-base.btdesign"
 
 Application ConceptsMetamac {
 	basePackage=unused
@@ -89,33 +90,13 @@ Application ConceptsMetamac {
 			databaseTable="TB_M_CONCEPT_SCHEMES_VERSIONS"
 			hint="idSequence=M_CONCEPT_SCHEMES_VERSIONS"
 			
-			"Status"
-			- @ProcStatusEnum procStatus;
 			"Type"
 			- @ConceptSchemeTypeEnum type databaseColumn="CONCEPT_SCHEME_TYPE";
 			"Related operation, only when type is Operation"
 			- @ExternalItem relatedOperation nullable cascade="all" databaseColumn="RELATED_OPERATION_FK";
 			
-			"Date when the concept scheme was sended to production validation"
-			DateTimeTZ productionValidationDate nullable;
-			"User who sended to production validation"
-			String productionValidationUser nullable;
-			"Date when the concept scheme was sended to diffusion validation"
-			DateTimeTZ diffusionValidationDate nullable;
-			"User who sended to diffusion validation"
-			String diffusionValidationUser nullable;
-			"Date when the concept scheme was published internally"
-			DateTimeTZ internalPublicationDate nullable;
-			"User who published internally"
-			String internalPublicationUser nullable;
-			"Date when the concept scheme was published externally"
-			DateTimeTZ externalPublicationDate nullable;
-			"User who published externally"
-			String externalPublicationUser nullable;
-			"The external publication failed"
-			Boolean isExternalPublicationFailed nullable databaseColumn="IS_EXT_PUBLICATION_FAILED";
-			"External publication failed date"
-			DateTimeTZ externalPublicationFailedDate nullable databaseColumn="EXT_PUBLICATION_FAILED_DATE";
+			"Lifecycle information"
+			- @SrmLifecycleMetadata lifecycleMetadata nullable databaseColumn="";
 			
 			Repository ConceptSchemeVersionMetamacRepository {
 				findById;

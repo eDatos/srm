@@ -72,7 +72,7 @@ public class DsdsMetamacInvocationValidator extends DataStructureInvocationValid
         }
 
         ValidationUtils.checkParameterRequired(urn, ServiceExceptionParameters.URN, exceptions);
-        ValidationUtils.checkParameterRequired(versionType, ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION_VERSION_TYPE, exceptions);
+        ValidationUtils.checkParameterRequired(versionType, ServiceExceptionParameters.VERSION_TYPE, exceptions);
 
         ExceptionUtils.throwIfException(exceptions);
     }

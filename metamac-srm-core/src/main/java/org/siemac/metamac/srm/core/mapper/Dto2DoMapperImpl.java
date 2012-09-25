@@ -84,8 +84,6 @@ public class Dto2DoMapperImpl extends com.arte.statistic.sdmx.srm.core.mapper.Dt
         }
 
         // Modifiable attributes
-        target.setProcStatus(source.getProcStatus());
-
         dto2DoMapperSdmxSrm.dataStructureDefinitionDtoToDataStructureDefinition(ctx, source, target);
 
         return target;
@@ -118,7 +116,6 @@ public class Dto2DoMapperImpl extends com.arte.statistic.sdmx.srm.core.mapper.Dt
         // Modifiable attributes
         target.setType(source.getType());
         target.setRelatedOperation(externalItemDtoToExternalItem(ctx, source.getRelatedOperation(), target.getRelatedOperation(), ServiceExceptionParameters.CONCEPT_SCHEME_RELATED_OPERATION));
-        target.setProcStatus(source.getProcStatus());
 
         dto2DoMapperSdmxSrm.conceptSchemeDtoToDo(ctx, source, target);
 

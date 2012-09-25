@@ -108,17 +108,19 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
             return null;
         }
         ConceptSchemeMetamacDto target = new ConceptSchemeMetamacDto();
-        target.setProcStatus(source.getProcStatus());
+        
+        // TODO lifecycle conversion a común. tb el del dsd
+        target.setProcStatus(source.getLifecycleMetadata().getProcStatus());
         target.setType(source.getType());
         target.setRelatedOperation(do2DtoMapperSdmxSrm.externalItemToExternalItemDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getRelatedOperation()));
-        target.setProductionValidationDate(CoreCommonUtil.transformDateTimeToDate(source.getProductionValidationDate()));
-        target.setProductionValidationUser(source.getProductionValidationUser());
-        target.setDiffusionValidationDate(CoreCommonUtil.transformDateTimeToDate(source.getDiffusionValidationDate()));
-        target.setDiffusionValidationUser(source.getDiffusionValidationUser());
-        target.setInternalPublicationDate(CoreCommonUtil.transformDateTimeToDate(source.getInternalPublicationDate()));
-        target.setInternalPublicationUser(source.getInternalPublicationUser());
-        target.setExternalPublicationDate(CoreCommonUtil.transformDateTimeToDate(source.getExternalPublicationDate()));
-        target.setExternalPublicationUser(source.getExternalPublicationUser());
+        target.setProductionValidationDate(CoreCommonUtil.transformDateTimeToDate(source.getLifecycleMetadata().getProductionValidationDate()));
+        target.setProductionValidationUser(source.getLifecycleMetadata().getProductionValidationUser());
+        target.setDiffusionValidationDate(CoreCommonUtil.transformDateTimeToDate(source.getLifecycleMetadata().getDiffusionValidationDate()));
+        target.setDiffusionValidationUser(source.getLifecycleMetadata().getDiffusionValidationUser());
+        target.setInternalPublicationDate(CoreCommonUtil.transformDateTimeToDate(source.getLifecycleMetadata().getInternalPublicationDate()));
+        target.setInternalPublicationUser(source.getLifecycleMetadata().getInternalPublicationUser());
+        target.setExternalPublicationDate(CoreCommonUtil.transformDateTimeToDate(source.getLifecycleMetadata().getExternalPublicationDate()));
+        target.setExternalPublicationUser(source.getLifecycleMetadata().getExternalPublicationUser());
 
         do2DtoMapperSdmxSrm.conceptSchemeDoToDto(source, target);
         return target;

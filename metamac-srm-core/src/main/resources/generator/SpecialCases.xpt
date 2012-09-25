@@ -23,14 +23,11 @@
     «ENDIF»
 «ENDAROUND»
 
-
-«AROUND templates::db::OracleDDL::column(String prefix) FOR Attribute-»
-  «IF type == "DateTimeTZ" || name == "lastUpdated" || name == "createdDate" »«getDatabaseName()»_TZ VARCHAR2(50)«IF !nullable»
-NOT NULL«ENDIF»,
+«AROUND templates::db::OracleDDL::column(String prefix, boolean parentIsNullable) FOR Attribute-»
+  «IF type == "DateTimeTZ" || name == "lastUpdated" || name == "createdDate"»«getDatabaseName()»_TZ VARCHAR2(50)«parentIsNullable || nullable ? "" : getDatabaseTypeNullability()-»,
   «ENDIF-»
-«targetDef.proceed()-»
+  «targetDef.proceed()-»
 «ENDAROUND»
-
 
 «AROUND templates::domain::DomainObjectProperties::domainObjectProperties FOR DomainObject-»
 	«IF name.endsWith("Dto")»
@@ -67,10 +64,20 @@ NOT NULL«ENDIF»,
 	«ENDIF -»
 «ENDAROUND»
 
-«REM»HibernateSeuence is not needed in this project «ENDREM»
+«REM»HibernateSequence is not needed in this project «ENDREM»
 «AROUND templates::db::OracleDDL::dropSequence FOR Application»
 «ENDAROUND»
 
-«REM»HibernateSeuence is not needed in this project «ENDREM»
+«REM»HibernateSequence is not needed in this project «ENDREM»
 «AROUND templates::db::OracleDDL::createSequence FOR Application»
+«ENDAROUND»
+
+«REM»Inclusion of a BasicType in an Entity«ENDREM»
+«AROUND templates::domain::DomainObjectReferenceAnnotation::basicTypeJpaAnnotation FOR Reference»
+	«IF name == "lifecycleMetadata"-»
+		@javax.persistence.Embedded
+		«REM»Nothing more due to a bug with joda time columns. AttributeOverride is not necessary because prefix column name is not specified«ENDREM»
+	«ELSE»
+    	«targetDef.proceed()»
+    «ENDIF»
 «ENDAROUND»
