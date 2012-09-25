@@ -15,6 +15,7 @@ import com.arte.statistic.sdmx.srm.core.common.SdmxSrmBaseTest;
 
 public abstract class SrmBaseTest extends SdmxSrmBaseTest {
 
+    // Concepts schemes
     protected static final String CONCEPT_SCHEME_1_V1               = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:CONCEPTSCHEME01(01.000)";
     protected static final String CONCEPT_SCHEME_1_V2               = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:CONCEPTSCHEME01(02.000)";
     protected static final String CONCEPT_SCHEME_2_V1               = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:CONCEPTSCHEME02(01.000)";
@@ -63,6 +64,9 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
     protected static final String CONCEPT_TYPE_DERIVED              = "DERIVED";
     protected static final String CONCEPT_TYPE_DIRECT               = "DIRECT";
 
+    // Organisations schemes
+    protected static final String ORGANISATION_SCHEME_1_V1          = "urn:sdmx:org.sdmx.infomodel.organisationscheme.OrganisationScheme=ISTAC:ORGANISATIONSCHEME01(01.000)";
+
     // Other
     protected static final String NOT_EXISTS                        = "not-exists";
 
@@ -98,8 +102,7 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
     protected ServiceContext getServiceContextJefeNormalizacionWithOperation1() {
         ServiceContext serviceContext = getServiceContextWithoutPrincipal();
         putMetamacPrincipalInServiceContext(serviceContext, SrmRoleEnum.JEFE_NORMALIZACION, "Operation1");
-        return serviceContext;
-    }
+        return serviceContext;    }
 
     protected ServiceContext getServiceContextTecnicoApoyoProduccion() {
         ServiceContext serviceContext = getServiceContextWithoutPrincipal();
@@ -171,6 +174,7 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
         tables.add("TB_M_CONCEPTS");
         tables.add("TB_M_CONCEPT_SCHEMES_VERSIONS");
         tables.add("TB_M_LIS_CONCEPT_TYPES");
+        tables.add("TB_M_ORG_SCHEMES_VERSIONS");
         tables.addAll(super.getTablesToRemoveContent());
         return tables;
     }
@@ -182,6 +186,7 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
         sequences.add("SEQ_M_CONCEPT_SCHEMES_VERSIONS");
         sequences.add("SEQ_M_CONCEPTS");
         sequences.add("SEQ_M_CONCEPT_TYPES");
+        sequences.add("SEQ_M_ORG_SCHEMES_VERSIONS");
         return sequences;
     }
 
@@ -190,6 +195,7 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
         Map<String, String> tablePrimaryKeys = super.getTablePrimaryKeys();
         tablePrimaryKeys.put("TB_M_CONCEPT_SCHEMES_VERSIONS", "TB_CONCEPT_SCHEMES_VERSIONS");
         tablePrimaryKeys.put("TB_M_CONCEPTS", "TB_CONCEPTS");
+        tablePrimaryKeys.put("TB_M_ORG_SCHEMES_VERSIONS", "TB_ORG_SCHEMES_VERSIONS");
         return tablePrimaryKeys;
     }
 

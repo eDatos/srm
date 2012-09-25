@@ -1,8 +1,6 @@
-
 import "classpath:/btdesign/export/metamac-core-common-entity.btdesign"
 import "classpath:/btdesign/statistic-sdmx-core-organisations.btdesign"
-import "classpath:/btdesign/metamac-srm-core-enum.btdesign"
-import "classpath:/btdesign/statistic-sdmx-v2_1-domain-enums.btdesign"
+import "classpath:/btdesign/metamac-srm-core-base.btdesign"
 
 Application OrganisationsMetamac {
 	basePackage=unused
@@ -13,73 +11,75 @@ Application OrganisationsMetamac {
 		// ----------------------------------------------------------------
 		// 							SERVICES
 		// ----------------------------------------------------------------  
-
+		"Provides access to Organisations"
+		Service OrganisationsMetamacService {
+			
+			> @OrganisationSchemeVersionMetamacRepository
+//			> @OrganisationMetamacRepository
+			
+//			"Creates organisation scheme"
+//			@OrganisationSchemeVersionMetamac createOrganisationScheme(@OrganisationSchemeVersionMetamac organisationSchemeVersion) throws MetamacException;
+//			"Updates organisation scheme"
+//			@OrganisationSchemeVersionMetamac updateOrganisationScheme(@OrganisationSchemeVersionMetamac organisationSchemeVersion) throws MetamacException;
+			"Retrieves organisation scheme by urn"
+			@OrganisationSchemeVersionMetamac retrieveOrganisationSchemeByUrn(String urn) throws MetamacException;
+//			"Retrieves all organisation schemes versions"
+//			List<@OrganisationSchemeVersionMetamac> retrieveOrganisationSchemeVersions(String urn) throws MetamacException;
+//			"Finds organisation schemes by criteria"
+//    		PagedResult<@OrganisationSchemeVersionMetamac> findOrganisationSchemesByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
+//    		"Sends organisation scheme to production validation"
+//    		@OrganisationSchemeVersionMetamac sendOrganisationSchemeToProductionValidation(String urn) throws MetamacException;
+//    		"Sends organisation scheme to diffusion validation"
+//    		@OrganisationSchemeVersionMetamac sendOrganisationSchemeToDiffusionValidation(String urn) throws MetamacException;
+//	    	"Rejects production validation of organisation scheme"    		
+//	    	@OrganisationSchemeVersionMetamac rejectOrganisationSchemeProductionValidation(String urn) throws MetamacException;
+//	    	"Rejects diffusion validation of organisation scheme"
+//	    	@OrganisationSchemeVersionMetamac rejectOrganisationSchemeDiffusionValidation(String urn) throws MetamacException;
+//	    	"Publish internally a organisation scheme"
+//	    	@OrganisationSchemeVersionMetamac publishInternallyOrganisationScheme(String urn) throws MetamacException;
+//	    	"Publish externally a organisation scheme"
+//	    	@OrganisationSchemeVersionMetamac publishExternallyOrganisationScheme(String urn) throws MetamacException;
+//			"Deletes organisation scheme version. This must be last version and no published"
+//    		deleteOrganisationScheme(String urn) throws MetamacException;
+//    		"Creates a new version of a organisation scheme, copying metadata from version with provided urn"
+//    		@OrganisationSchemeVersionMetamac versioningOrganisationScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
+//    		"Cancels the organisation scheme validity"
+//    		@OrganisationSchemeVersionMetamac cancelOrganisationSchemeValidity(String urn) throws MetamacException;
+//    		"Retrieves organisations scheme by organisation urn"
+//    		@OrganisationSchemeVersionMetamac retrieveOrganisationSchemeByOrganisationUrn(String organisationUrn) throws MetamacException;
+    		
+//			"Creates organisation"
+//			@OrganisationMetamac createOrganisation(String organisationSchemeUrn, @OrganisationMetamac organisation) throws MetamacException;
+//			"Updates organisation"
+//			@OrganisationMetamac updateOrganisation(@OrganisationMetamac organisation) throws MetamacException;
+//    		"Retrieves organisation by urn"
+//    		@OrganisationMetamac retrieveOrganisationByUrn(String urn) throws MetamacException;
+//    		"Finds organisations by criteria"
+//    		PagedResult<@OrganisationMetamac> findOrganisationsByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
+//			"Deletes organisation"
+//    		deleteOrganisation(String urn) throws MetamacException;
+//    		"Retrieves organisations by organisation scheme, in tree structure"
+//    		List<@OrganisationMetamac> retrieveOrganisationsByOrganisationSchemeUrn(String organisationSchemeUrn) throws MetamacException;
+		}
+		
 		// ----------------------------------------------------------------
 		// 							ENTITIES
-		// ----------------------------------------------------------------  
-//		Entity OrganisationSchemeMetamac extends @OrganisationScheme {
-//			databaseTable="TB_M_ORGANISATION_SCHEMES"
-//
-//			hint="idSequence=M_ORGANISATION_SCHEMES"
-//
-//			"Status"
-//			- @ProcStatusEnum procStatus;
-//
-//			"Date when the organisation scheme was sended to production validation"
-//			DateTimeTZ productionValidationDate nullable;
-//			"User who sended to production validation"
-//			String productionValidationUser nullable;
-//			"Date when the organisation scheme was sended to diffusion validation"
-//			DateTimeTZ diffusionValidationDate nullable;
-//			"User who sended to diffusion validation"
-//			String diffusionValidationUser nullable;
-//			"Date when the organisation scheme was published internally"
-//			DateTimeTZ internalPublicationDate nullable;
-//			"User who published internally"
-//			String internalPublicationUser nullable;
-//			"Date when the organisation scheme was published externally"
-//			DateTimeTZ externalPublicationDate nullable;
-//			"User who published externally"
-//			String externalPublicationUser nullable;
-//			"The external publication failed"
-//			Boolean isExternalPublicationFailed nullable databaseColumn="IS_EXT_PUBLICATION_FAILED";
-//			"External publication failed date"
-//			DateTimeTZ externalPublicationFailedDate nullable databaseColumn="EXT_PUBLICATION_FAILED_DATE";
-//
-//			Repository OrganisationSchemeVersionMetamacRepository {
-//				findById;
-//				findByQuery(String query, Map<String, Object> parameters, int maxResult);
-//				findByCondition(PagingParameter pagingParameter);
-//				@OrganisationSchemeMetamac findByUrn(String urn);
-//				@OrganisationSchemeMetamac retrieveOrganisationSchemeByProcStatus(String urn, ArrayProcStatusEnum procStatus) throws MetamacException;
-//			}
-//
-//		}
-//
-//		"A maintained collection of Maintenace Agencies."
-//		Entity AgencySchemeMetamac extends @OrganisationSchemeMetamac {
-//			databaseTable="TB_M_AGENCY_SCHEMES"
-//
-//		}
-//
-//		"A maintained collection of Data Providers."
-//		Entity DataProviderSchemeMetamac extends @OrganisationSchemeMetamac {
-//			databaseTable="TB_M_DATA_PROVIDER_SCHEMES"
-//
-//		}
-//
-//		"A maintained collection of Data Consumers."
-//		Entity DataConsumerSchemeMetamac extends @OrganisationSchemeMetamac {
-//			databaseTable="TB_M_DATA_CONSUMER_SCHEMES"
-//
-//		}
-//
-//		"A maintained collection of Organisation Units."
-//		Entity OrganisationUnitSchemeMetamac extends @OrganisationScheme {
-//			databaseTable="TB_M_ORGANISATION_UNIT_SCHEMES"
-//
-//		}
-//
+		// ----------------------------------------------------------------
+		Entity OrganisationSchemeVersionMetamac extends @OrganisationSchemeVersion {
+			databaseTable="TB_M_ORG_SCHEMES_VERSIONS"
+			hint="idSequence=M_ORG_SCHEMES_VERSIONS"
+			
+			"Lifecycle information"
+			- @SrmLifecycleMetadata lifecycleMetadata databaseColumn="";
+			
+			Repository OrganisationSchemeVersionMetamacRepository {
+				findById;
+				findByQuery(String query, Map<String, Object> parameters, int maxResult);
+				findByCondition(PagingParameter pagingParameter);
+				@OrganisationSchemeVersionMetamac findByUrn(String urn);
+				@OrganisationSchemeVersionMetamac retrieveOrganisationSchemeVersionByProcStatus(String urn, ArrayProcStatusEnum procStatus) throws MetamacException;
+				@OrganisationSchemeVersionMetamac findByOrganisation(String urn);
+			}			
+		}
 	}
-
 }
