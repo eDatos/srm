@@ -17,8 +17,8 @@ Application OrganisationsMetamac {
 			> @OrganisationSchemeVersionMetamacRepository
 //			> @OrganisationMetamacRepository
 			
-//			"Creates organisation scheme"
-//			@OrganisationSchemeVersionMetamac createOrganisationScheme(@OrganisationSchemeVersionMetamac organisationSchemeVersion) throws MetamacException;
+			"Creates organisation scheme"
+			@OrganisationSchemeVersionMetamac createOrganisationScheme(@OrganisationSchemeVersionMetamac organisationSchemeVersion) throws MetamacException;
 //			"Updates organisation scheme"
 //			@OrganisationSchemeVersionMetamac updateOrganisationScheme(@OrganisationSchemeVersionMetamac organisationSchemeVersion) throws MetamacException;
 			"Retrieves organisation scheme by urn"

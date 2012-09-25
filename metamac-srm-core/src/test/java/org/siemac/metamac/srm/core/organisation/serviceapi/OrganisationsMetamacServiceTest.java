@@ -1,18 +1,24 @@
 package org.siemac.metamac.srm.core.organisation.serviceapi;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.common.test.utils.MetamacAsserts;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
+import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
+import org.siemac.metamac.srm.core.organisation.serviceapi.utils.OrganisationsMetamacAsserts;
+import org.siemac.metamac.srm.core.organisation.serviceapi.utils.OrganisationsMetamacDoMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/srm/applicationContext-test.xml"})
@@ -23,81 +29,29 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
     @Autowired
     private OrganisationsMetamacService organisationsService;
 
-//    @Test
-//    public void testCreateOrganisationScheme() throws Exception {
-//        OrganisationSchemeVersionMetamac organisationSchemeVersion = OrganisationsMetamacDoMocks.mockOrganisationScheme();
-//
-//        // Create
-//        OrganisationSchemeVersionMetamac organisationSchemeVersionCreated = organisationsService.createOrganisationScheme(getServiceContextAdministrador(), organisationSchemeVersion);
-//        String urn = organisationSchemeVersionCreated.getMaintainableArtefact().getUrn();
-//
-//        // Validate (only metadata in SRM Metamac; the others are checked in sdmx project)
-//        OrganisationSchemeVersionMetamac organisationSchemeVersionRetrieved = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), urn);
-//        assertEquals(ProcStatusEnum.DRAFT, organisationSchemeVersionRetrieved.getLifecycleMetadata().getProcStatus());
-//        assertFalse(organisationSchemeVersion.getMaintainableArtefact().getIsExternalReference());
-//        assertNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate());
-//        assertNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
-//        assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate());
-//        assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
-//        assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationDate());
-//        assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationUser());
-//        assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationDate());
-//        assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationUser());
-//        OrganisationsMetamacAsserts.assertEqualsOrganisationScheme(organisationSchemeVersion, organisationSchemeVersionRetrieved);
-//    }
-//
-//    @Test
-//    public void testCreateOrganisationSchemeErrorMetadatasRequired() throws Exception {
-//        OrganisationSchemeVersionMetamac organisationSchemeVersion = OrganisationsMetamacDoMocks.mockOrganisationScheme();
-//        organisationSchemeVersion.setType(null);
-//        organisationSchemeVersion.setRelatedOperation(null); // avoid error unexpected metadata
-//
-//        try {
-//            organisationsService.createOrganisationScheme(getServiceContextAdministrador(), organisationSchemeVersion);
-//            fail("metadata required");
-//        } catch (MetamacException e) {
-//            assertEquals(1, e.getExceptionItems().size());
-//            assertEquals(ServiceExceptionType.METADATA_REQUIRED.getCode(), e.getExceptionItems().get(0).getCode());
-//            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-//            assertEquals(ServiceExceptionParameters.ORGANISATION_SCHEME_TYPE, e.getExceptionItems().get(0).getMessageParameters()[0]);
-//        }
-//    }
-//
-//    @Test
-//    public void testCreateOrganisationSchemeErrorMetadataUnexpected() throws Exception {
-//        OrganisationSchemeVersionMetamac organisationSchemeVersion = OrganisationsMetamacDoMocks.mockOrganisationScheme();
-//        organisationSchemeVersion.setType(OrganisationSchemeTypeEnum.GLOSSARY);
-//        assertNotNull(organisationSchemeVersion.getRelatedOperation());
-//
-//        try {
-//            organisationsService.createOrganisationScheme(getServiceContextAdministrador(), organisationSchemeVersion);
-//            fail("metadatas unexpected");
-//        } catch (MetamacException e) {
-//            assertEquals(1, e.getExceptionItems().size());
-//            assertEquals(ServiceExceptionType.METADATA_UNEXPECTED.getCode(), e.getExceptionItems().get(0).getCode());
-//            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-//            assertEquals(ServiceExceptionParameters.ORGANISATION_SCHEME_RELATED_OPERATION, e.getExceptionItems().get(0).getMessageParameters()[0]);
-//        }
-//    }
-//
-//    @Test
-//    public void testCreateOrganisationSchemeErrorDuplicatedCode() throws Exception {
-//        OrganisationSchemeVersionMetamac organisationSchemeVersion1 = OrganisationsMetamacDoMocks.mockOrganisationScheme();
-//        OrganisationSchemeVersionMetamac organisationSchemeVersion2 = OrganisationsMetamacDoMocks.mockOrganisationScheme();
-//        String code = "code-" + MetamacMocks.mockString(10);
-//        organisationSchemeVersion1.getMaintainableArtefact().setCode(code);
-//        organisationSchemeVersion2.getMaintainableArtefact().setCode(code);
-//
-//        organisationsService.createOrganisationScheme(getServiceContextAdministrador(), organisationSchemeVersion1);
-//        try {
-//            organisationsService.createOrganisationScheme(getServiceContextAdministrador(), organisationSchemeVersion2);
-//            fail("duplicated code");
-//        } catch (MetamacException e) {
-//            assertEquals(1, e.getExceptionItems().size());
-//            assertEquals(ServiceExceptionType.ORGANISATION_SCHEME_CODE_DUPLICATED.getCode(), e.getExceptionItems().get(0).getCode());
-//        }
-//    }
-//
+    @Test
+    public void testCreateOrganisationScheme() throws Exception {
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = OrganisationsMetamacDoMocks.mockOrganisationScheme(OrganisationSchemeTypeEnum.AGENCY_SCHEME);
+
+        // Create
+        OrganisationSchemeVersionMetamac organisationSchemeVersionCreated = organisationsService.createOrganisationScheme(getServiceContextAdministrador(), organisationSchemeVersion);
+        String urn = organisationSchemeVersionCreated.getMaintainableArtefact().getUrn();
+
+        // Validate (only metadata in SRM Metamac; the others are checked in sdmx project)
+        OrganisationSchemeVersionMetamac organisationSchemeVersionRetrieved = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), urn);
+        assertEquals(ProcStatusEnum.DRAFT, organisationSchemeVersionRetrieved.getLifecycleMetadata().getProcStatus());
+        assertFalse(organisationSchemeVersion.getMaintainableArtefact().getIsExternalReference());
+        assertNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate());
+        assertNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
+        assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate());
+        assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
+        assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationDate());
+        assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationUser());
+        assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationDate());
+        assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationUser());
+        OrganisationsMetamacAsserts.assertEqualsOrganisationScheme(organisationSchemeVersion, organisationSchemeVersionRetrieved);
+    }
+
 //    @Test
 //    public void testUpdateOrganisationScheme() throws Exception {
 //        OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), ORGANISATION_SCHEME_2_V1);
@@ -107,39 +61,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
 //
 //        assertNotNull(organisationSchemeVersionUpdated);
 //    }
-//
-//    @Test
-//    public void testUpdateOrganisationSchemeFromGlossaryToOperationTypeErrorRelatedOperationRequired() throws Exception {
-//        OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), ORGANISATION_SCHEME_9_V1);
-//
-//        organisationSchemeVersion.setType(OrganisationSchemeTypeEnum.OPERATION);
-//
-//        try {
-//            organisationSchemeVersion = organisationsService.updateOrganisationScheme(getServiceContextAdministrador(), organisationSchemeVersion);
-//            fail("empty related operation");
-//        } catch (MetamacException e) {
-//            assertEquals(1, e.getExceptionItems().size());
-//            assertEquals(ServiceExceptionType.METADATA_REQUIRED.getCode(), e.getExceptionItems().get(0).getCode());
-//        }
-//    }
-//
-//    @Test
-//    public void testUpdateOrganisationSchemeFromOperationToGlossaryTypeErrorRelatedOperationUnexpected() throws Exception {
-//        OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), ORGANISATION_SCHEME_8_V1);
-//        organisationSchemeVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
-//        organisationSchemeVersion.setType(OrganisationSchemeTypeEnum.GLOSSARY);
-//
-//        try {
-//            organisationSchemeVersion = organisationsService.updateOrganisationScheme(getServiceContextAdministrador(), organisationSchemeVersion);
-//            fail("unexpected related operation");
-//        } catch (MetamacException e) {
-//            assertEquals(1, e.getExceptionItems().size());
-//            assertEquals(ServiceExceptionType.METADATA_UNEXPECTED.getCode(), e.getExceptionItems().get(0).getCode());
-//            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-//            assertEquals(ServiceExceptionParameters.ORGANISATION_SCHEME_RELATED_OPERATION, e.getExceptionItems().get(0).getMessageParameters()[0]);
-//        }
-//    }
-//
+//    
 //    @Test
 //    public void testUpdateOrganisationSchemePublished() throws Exception {
 //        String[] urns = {ORGANISATION_SCHEME_7_V2, ORGANISATION_SCHEME_7_V1};
