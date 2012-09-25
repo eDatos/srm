@@ -10,25 +10,25 @@ Application SrmDtosBaseCore {
 			"Status"
 			- @ProcStatusEnum procStatus required;
 			"Date when the scheme was sended to production validation"
-			DateTimeTZ productionValidationDate nullable;
+			JAVADATE productionValidationDate nullable;
 			"User who sended to production validation"
 			String productionValidationUser nullable;
 			"Date when the scheme was sended to diffusion validation"
-			DateTimeTZ diffusionValidationDate nullable;
+			JAVADATE diffusionValidationDate nullable;
 			"User who sended to diffusion validation"
 			String diffusionValidationUser nullable;
 			"Date when the scheme was published internally"
-			DateTimeTZ internalPublicationDate nullable;
+			JAVADATE internalPublicationDate nullable;
 			"User who published internally"
 			String internalPublicationUser nullable;
 			"Date when the scheme was published externally"
-			DateTimeTZ externalPublicationDate nullable;
+			JAVADATE externalPublicationDate nullable;
 			"User who published externally"
 			String externalPublicationUser nullable;
 			"The external publication failed"
-			Boolean isExternalPublicationFailed nullable databaseColumn="IS_EXT_PUBLICATION_FAILED";
+			Boolean isExternalPublicationFailed nullable;
 			"External publication failed date"
-			DateTimeTZ externalPublicationFailedDate nullable databaseColumn="EXT_PUBLICATION_FAILED_DATE";
+			JAVADATE externalPublicationFailedDate nullable; 
 		}    	
 	}
 }
