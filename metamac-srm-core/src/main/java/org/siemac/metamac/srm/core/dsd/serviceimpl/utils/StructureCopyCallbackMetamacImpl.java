@@ -1,5 +1,6 @@
 package org.siemac.metamac.srm.core.dsd.serviceimpl.utils;
 
+import org.siemac.metamac.srm.core.base.domain.SrmLifecycleMetadata;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.springframework.stereotype.Component;
@@ -35,7 +36,7 @@ public class StructureCopyCallbackMetamacImpl implements StructureCopyCallback {
         DataStructureDefinitionVersionMetamac target = new DataStructureDefinitionVersionMetamac();
 
         // Metamac Metadata
-        target.setProcStatus(ProcStatusEnum.DRAFT); // New structure in draft version
+        target.setLifecycleMetadata(new SrmLifecycleMetadata(ProcStatusEnum.DRAFT));  // New structure in draft version
 
         return target;
     }

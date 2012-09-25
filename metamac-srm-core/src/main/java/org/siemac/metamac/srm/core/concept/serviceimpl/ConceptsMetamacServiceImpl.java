@@ -69,8 +69,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         ConceptsMetamacInvocationValidator.checkCreateConceptScheme(conceptSchemeVersion, null);
 
         // Fill metadata
-        conceptSchemeVersion.setLifecycleMetadata(new SrmLifecycleMetadata());
-        conceptSchemeVersion.getLifecycleMetadata().setProcStatus(ProcStatusEnum.DRAFT);
+        conceptSchemeVersion.setLifecycleMetadata(new SrmLifecycleMetadata(ProcStatusEnum.DRAFT));
         conceptSchemeVersion.getMaintainableArtefact().setIsExternalReference(Boolean.FALSE);
 
         // Save conceptScheme
@@ -203,8 +202,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
         // Copy values
         ConceptSchemeVersionMetamac conceptSchemeNewVersion = DoCopyUtils.copyConceptSchemeVersionMetamac(conceptSchemeVersionToCopy);
-        conceptSchemeNewVersion.setLifecycleMetadata(new SrmLifecycleMetadata());
-        conceptSchemeNewVersion.getLifecycleMetadata().setProcStatus(ProcStatusEnum.DRAFT);
+        conceptSchemeNewVersion.setLifecycleMetadata(new SrmLifecycleMetadata(ProcStatusEnum.DRAFT));
         List concepts = DoCopyUtils.copyConceptsMetamac(conceptSchemeVersionToCopy);
 
         // Versioning

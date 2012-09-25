@@ -21,13 +21,13 @@ public class DataStructureDefinitionSecurityUtils {
     }
 
     public static void canUpdateDataStructureDefinition(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac) throws MetamacException {
-        if (!SharedDsdSecurityUtils.canUpdateDsd(getMetamacPrincipal(ctx), dataStructureDefinitionVersionMetamac.getProcStatus())) {
+        if (!SharedDsdSecurityUtils.canUpdateDsd(getMetamacPrincipal(ctx), dataStructureDefinitionVersionMetamac.getLifecycleMetadata().getProcStatus())) {
             throw new MetamacException(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED, ctx.getUserId());
         }
     }
 
     public static void canDeleteDataStructureDefinition(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac) throws MetamacException {
-        if (!SharedDsdSecurityUtils.canDeleteDsd(getMetamacPrincipal(ctx), dataStructureDefinitionVersionMetamac.getProcStatus())) {
+        if (!SharedDsdSecurityUtils.canDeleteDsd(getMetamacPrincipal(ctx), dataStructureDefinitionVersionMetamac.getLifecycleMetadata().getProcStatus())) {
             throw new MetamacException(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED, ctx.getUserId());
         }
     }
@@ -73,7 +73,7 @@ public class DataStructureDefinitionSecurityUtils {
     }
 
     public static void canRejectDataStructureDefinitionValidation(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac) throws MetamacException {
-        if (!SharedDsdSecurityUtils.canRejectDsdValidation(getMetamacPrincipal(ctx), dataStructureDefinitionVersionMetamac.getProcStatus())) {
+        if (!SharedDsdSecurityUtils.canRejectDsdValidation(getMetamacPrincipal(ctx), dataStructureDefinitionVersionMetamac.getLifecycleMetadata().getProcStatus())) {
             throw new MetamacException(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED, ctx.getUserId());
         }
     }
@@ -119,25 +119,25 @@ public class DataStructureDefinitionSecurityUtils {
     }
     
     public static void canSaveDescriptorForDataStructureDefinition(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac) throws MetamacException {
-        if (!SharedDsdSecurityUtils.canSaveDescriptorForDataStructureDefinition(getMetamacPrincipal(ctx), dataStructureDefinitionVersionMetamac.getProcStatus())) {
+        if (!SharedDsdSecurityUtils.canSaveDescriptorForDataStructureDefinition(getMetamacPrincipal(ctx), dataStructureDefinitionVersionMetamac.getLifecycleMetadata().getProcStatus())) {
             throw new MetamacException(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED, ctx.getUserId());
         }
     }
     
     public static void canDeleteDescriptorForDataStructureDefinition(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac) throws MetamacException {
-        if (!SharedDsdSecurityUtils.canDeleteDescriptorForDataStructureDefinition(getMetamacPrincipal(ctx), dataStructureDefinitionVersionMetamac.getProcStatus())) {
+        if (!SharedDsdSecurityUtils.canDeleteDescriptorForDataStructureDefinition(getMetamacPrincipal(ctx), dataStructureDefinitionVersionMetamac.getLifecycleMetadata().getProcStatus())) {
             throw new MetamacException(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED, ctx.getUserId());
         }
     }
     
     public static void canSaveComponentForDataStructureDefinition(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac) throws MetamacException {
-        if (!SharedDsdSecurityUtils.canSaveComponentForDataStructureDefinition(getMetamacPrincipal(ctx), dataStructureDefinitionVersionMetamac.getProcStatus())) {
+        if (!SharedDsdSecurityUtils.canSaveComponentForDataStructureDefinition(getMetamacPrincipal(ctx), dataStructureDefinitionVersionMetamac.getLifecycleMetadata().getProcStatus())) {
             throw new MetamacException(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED, ctx.getUserId());
         }
     }
     
     public static void canDeleteComponentForDataStructureDefinition(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac) throws MetamacException {
-        if (!SharedDsdSecurityUtils.canDeleteComponentForDataStructureDefinition(getMetamacPrincipal(ctx), dataStructureDefinitionVersionMetamac.getProcStatus())) {
+        if (!SharedDsdSecurityUtils.canDeleteComponentForDataStructureDefinition(getMetamacPrincipal(ctx), dataStructureDefinitionVersionMetamac.getLifecycleMetadata().getProcStatus())) {
             throw new MetamacException(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED, ctx.getUserId());
         }
     }

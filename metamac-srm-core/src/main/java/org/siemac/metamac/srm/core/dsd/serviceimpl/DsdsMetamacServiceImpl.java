@@ -10,6 +10,7 @@ import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
+import org.siemac.metamac.srm.core.base.domain.SrmLifecycleMetadata;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamacProperties;
@@ -52,7 +53,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         DsdsMetamacInvocationValidator.checkCreateDataStructureDefinition(dataStructureDefinitionVersion, null);
 
         // Fill metadata
-        dataStructureDefinitionVersion.setProcStatus(ProcStatusEnum.DRAFT);
+        dataStructureDefinitionVersion.setLifecycleMetadata(new SrmLifecycleMetadata(ProcStatusEnum.DRAFT));
         dataStructureDefinitionVersion.getMaintainableArtefact().setIsExternalReference(Boolean.FALSE);
 
         // Save conceptScheme
@@ -206,8 +207,8 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
     private DataStructureDefinitionVersionMetamac retrieveDataStructureDefinitionVersionByProcStatus(ServiceContext ctx, String urn, ProcStatusEnum... procStatus) throws MetamacException {
 
         List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(DataStructureDefinitionVersionMetamac.class)
-                .withProperty(DataStructureDefinitionVersionMetamacProperties.maintainableArtefact().urn()).eq(urn).withProperty(DataStructureDefinitionVersionMetamacProperties.procStatus())
-                .in((Object[]) procStatus).distinctRoot().build();
+                .withProperty(DataStructureDefinitionVersionMetamacProperties.maintainableArtefact().urn()).eq(urn)
+                .withProperty(DataStructureDefinitionVersionMetamacProperties.lifecycleMetadata().procStatus()).in((Object[]) procStatus).distinctRoot().build();
         PagingParameter pagingParameter = PagingParameter.pageAccess(1);
         PagedResult<DataStructureDefinitionVersionMetamac> dataStructureDefinitionVersionMetamacPagedResult = getDataStructureDefinitionVersionMetamacRepository().findByCondition(conditions,
                 pagingParameter);
@@ -230,8 +231,8 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
             throws MetamacException {
 
         List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(DataStructureDefinitionVersionMetamac.class)
-                .withProperty(DataStructureDefinitionVersionMetamacProperties.structure().id()).eq(structure.getId()).withProperty(DataStructureDefinitionVersionMetamacProperties.procStatus())
-                .in((Object[]) procStatus).distinctRoot().build();
+                .withProperty(DataStructureDefinitionVersionMetamacProperties.structure().id()).eq(structure.getId())
+                .withProperty(DataStructureDefinitionVersionMetamacProperties.lifecycleMetadata().procStatus()).in((Object[]) procStatus).distinctRoot().build();
         PagingParameter pagingParameter = PagingParameter.noLimits();
         PagedResult<DataStructureDefinitionVersionMetamac> dataStructureDefinitionVersionPagedResult = getDataStructureDefinitionVersionMetamacRepository()
                 .findByCondition(conditions, pagingParameter);

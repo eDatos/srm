@@ -10,6 +10,7 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.core.common.exception.utils.ExceptionUtils;
+import org.siemac.metamac.srm.core.base.domain.SrmLifecycleMetadata;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.serviceimpl.SrmServiceUtils;
@@ -17,6 +18,7 @@ import org.siemac.metamac.srm.core.serviceimpl.SrmServiceUtils;
 import com.arte.statistic.sdmx.srm.core.base.domain.Structure;
 import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersion;
 
+// TODO unir con ItemSchemeLifecycle
 public class StructureLifecycle {
 
     // TODO eliminar el enumerado validation_rejected y poner una marca?? así se evitarían los []
@@ -44,8 +46,11 @@ public class StructureLifecycle {
         // Validate to send to production
         checkStructureToSendToProductionValidation(urn, structureVersion);
 
-        // Update proc status
-        callback.setStructureProcStatusAndInformationStatus(structureVersion, ProcStatusEnum.PRODUCTION_VALIDATION, ctx.getUserId());
+        // Update lifecycle metadata
+        SrmLifecycleMetadata lifecycle = callback.getSrmLifecycleMetadata(structureVersion);
+        lifecycle.setProcStatus(ProcStatusEnum.PRODUCTION_VALIDATION);
+        lifecycle.setProductionValidationDate(new DateTime());
+        lifecycle.setProductionValidationUser(ctx.getUserId());
         structureVersion = callback.updateStructure(structureVersion);
 
         return structureVersion;
@@ -62,8 +67,11 @@ public class StructureLifecycle {
         // Validate to send to Diffusion
         checkStructureToSendToDiffusionValidation(urn, structureVersion);
 
-        // Update proc status
-        callback.setStructureProcStatusAndInformationStatus(structureVersion, ProcStatusEnum.DIFFUSION_VALIDATION, ctx.getUserId());
+        // Update lifecycle metadata
+        SrmLifecycleMetadata lifecycle = callback.getSrmLifecycleMetadata(structureVersion);
+        lifecycle.setProcStatus(ProcStatusEnum.DIFFUSION_VALIDATION);
+        lifecycle.setDiffusionValidationDate(new DateTime());
+        lifecycle.setDiffusionValidationUser(ctx.getUserId());
         structureVersion = callback.updateStructure(structureVersion);
 
         return structureVersion;
@@ -80,8 +88,13 @@ public class StructureLifecycle {
         // Validate to reject
         checkStructureToRejectProductionValidation(urn, structureVersion);
 
-        // Update proc status
-        callback.setStructureProcStatusAndInformationStatus(structureVersion, ProcStatusEnum.VALIDATION_REJECTED, ctx.getUserId());
+        // Update lifecycle metadata
+        SrmLifecycleMetadata lifecycle = callback.getSrmLifecycleMetadata(structureVersion);
+        lifecycle.setProcStatus(ProcStatusEnum.VALIDATION_REJECTED);
+        lifecycle.setProductionValidationDate(null);
+        lifecycle.setProductionValidationUser(null);
+        lifecycle.setDiffusionValidationDate(null);
+        lifecycle.setDiffusionValidationUser(null);
         structureVersion = callback.updateStructure(structureVersion);
 
         return structureVersion;
@@ -98,8 +111,13 @@ public class StructureLifecycle {
         // Validate to reject
         checkStructureToRejectDiffusionValidation(urn, structureVersion);
 
-        // Update proc status
-        callback.setStructureProcStatusAndInformationStatus(structureVersion, ProcStatusEnum.VALIDATION_REJECTED, ctx.getUserId());
+        // Update lifecycle metadata
+        SrmLifecycleMetadata lifecycle = callback.getSrmLifecycleMetadata(structureVersion);
+        lifecycle.setProcStatus(ProcStatusEnum.VALIDATION_REJECTED);
+        lifecycle.setProductionValidationDate(null);
+        lifecycle.setProductionValidationUser(null);
+        lifecycle.setDiffusionValidationDate(null);
+        lifecycle.setDiffusionValidationUser(null);
         structureVersion = callback.updateStructure(structureVersion);
 
         return structureVersion;
@@ -116,8 +134,11 @@ public class StructureLifecycle {
         // Validate to publish internally
         checkStructureToPublishInternally(ctx, urn, structureVersion);
 
-        // Update proc status
-        callback.setStructureProcStatusAndInformationStatus(structureVersion, ProcStatusEnum.INTERNALLY_PUBLISHED, ctx.getUserId());
+        // Update lifecycle metadata
+        SrmLifecycleMetadata lifecycle = callback.getSrmLifecycleMetadata(structureVersion);
+        lifecycle.setProcStatus(ProcStatusEnum.INTERNALLY_PUBLISHED);
+        lifecycle.setInternalPublicationDate(new DateTime());
+        lifecycle.setInternalPublicationUser(ctx.getUserId());
         structureVersion = callback.updateStructure(structureVersion);
         structureVersion = callback.markStructureAsFinal(ctx, structureVersion);
 
@@ -138,8 +159,11 @@ public class StructureLifecycle {
         // Start concept scheme validity
         structureVersion = callback.startStructureValidity(ctx, structureVersion);
 
-        // Update proc status
-        callback.setStructureProcStatusAndInformationStatus(structureVersion, ProcStatusEnum.EXTERNALLY_PUBLISHED, ctx.getUserId());
+        // Update lifecycle metadata
+        SrmLifecycleMetadata lifecycle = callback.getSrmLifecycleMetadata(structureVersion);
+        lifecycle.setProcStatus(ProcStatusEnum.EXTERNALLY_PUBLISHED);
+        lifecycle.setExternalPublicationDate(new DateTime());
+        lifecycle.setExternalPublicationUser(ctx.getUserId());
         structureVersion = callback.updateStructure(structureVersion);
 
         // Fill validTo in previous internally published versions
@@ -149,7 +173,7 @@ public class StructureLifecycle {
                 continue;
             }
             if (versionExternallyPublished.getMaintainableArtefact().getValidTo() == null) {
-                versionExternallyPublished.getMaintainableArtefact().setValidTo(callback.getExternalPublicationDateMetadataValue(structureVersion));
+                versionExternallyPublished.getMaintainableArtefact().setValidTo(lifecycle.getExternalPublicationDate());
                 callback.updateStructure(versionExternallyPublished);
             }
         }
@@ -165,7 +189,7 @@ public class StructureLifecycle {
         List<MetamacExceptionItem> exceptions = new ArrayList<MetamacExceptionItem>();
 
         // Check proc status
-        checkProcStatus(structureVersion, callback.getProcStatusMetadataValue(structureVersion), procStatusToSendToProductionValidation);
+        checkProcStatus(structureVersion, procStatusToSendToProductionValidation);
 
         // Check other conditions
         checkConditionsSinceSendToProductionValidation(structureVersion, exceptions);
@@ -181,7 +205,7 @@ public class StructureLifecycle {
         List<MetamacExceptionItem> exceptions = new ArrayList<MetamacExceptionItem>();
 
         // Check proc status
-        checkProcStatus(structureVersion, callback.getProcStatusMetadataValue(structureVersion), procStatusToSendToDiffusionValidation);
+        checkProcStatus(structureVersion, procStatusToSendToDiffusionValidation);
 
         // Check other conditions
         checkConditionsSinceSendToDiffusionValidation(structureVersion, exceptions);
@@ -197,7 +221,7 @@ public class StructureLifecycle {
         List<MetamacExceptionItem> exceptions = new ArrayList<MetamacExceptionItem>();
 
         // Check proc status
-        checkProcStatus(structureVersion, callback.getProcStatusMetadataValue(structureVersion), procStatusToRejectProductionValidation);
+        checkProcStatus(structureVersion, procStatusToRejectProductionValidation);
 
         // nothing more
 
@@ -212,7 +236,7 @@ public class StructureLifecycle {
         List<MetamacExceptionItem> exceptions = new ArrayList<MetamacExceptionItem>();
 
         // Check proc status
-        checkProcStatus(structureVersion, callback.getProcStatusMetadataValue(structureVersion), procStatusToRejectDiffusionValidation);
+        checkProcStatus(structureVersion, procStatusToRejectDiffusionValidation);
 
         // nothing more
 
@@ -227,7 +251,7 @@ public class StructureLifecycle {
         List<MetamacExceptionItem> exceptions = new ArrayList<MetamacExceptionItem>();
 
         // Check proc status
-        checkProcStatus(structureVersion, callback.getProcStatusMetadataValue(structureVersion), procStatusToPublishInternally);
+        checkProcStatus(structureVersion, procStatusToPublishInternally);
 
         // Additional conditions of concrete classes
         callback.checkAdditionalConditionsToPublishInternally(structureVersion, exceptions);
@@ -246,7 +270,7 @@ public class StructureLifecycle {
         List<MetamacExceptionItem> exceptions = new ArrayList<MetamacExceptionItem>();
 
         // Check proc status
-        checkProcStatus(structureVersion, callback.getProcStatusMetadataValue(structureVersion), procStatusToPublishExternally);
+        checkProcStatus(structureVersion, procStatusToPublishExternally);
 
         // Additional conditions of concrete classes
         callback.checkAdditionalConditionsToPublishExternally(structureVersion, exceptions);
@@ -257,17 +281,16 @@ public class StructureLifecycle {
         ExceptionUtils.throwIfException(exceptions);
     }
 
-    /**
-     * Checks proc status of data structure definition in proc status expected and throws exceptions if it is incorrect
-     */
-    private void checkProcStatus(StructureVersion structureVersion, ProcStatusEnum expected, ProcStatusEnum[] actuals) throws MetamacException {
-        if (!ArrayUtils.contains(actuals, expected)) {
-            String[] procStatusString = SrmServiceUtils.procStatusEnumToString(actuals);
+    private void checkProcStatus(StructureVersion structureVersion, ProcStatusEnum[] expecteds) throws MetamacException {
+        SrmLifecycleMetadata lifecycle = callback.getSrmLifecycleMetadata(structureVersion);
+        ProcStatusEnum actual = lifecycle.getProcStatus();
+        if (!ArrayUtils.contains(expecteds, actual)) {
+            String[] procStatusString = SrmServiceUtils.procStatusEnumToString(expecteds);
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_WRONG_PROC_STATUS)
                     .withMessageParameters(structureVersion.getMaintainableArtefact().getUrn(), procStatusString).build();
         }
     }
-
+    
     /**
      * Checks common conditions of item schemes to send to production validation
      */
@@ -306,9 +329,7 @@ public class StructureLifecycle {
 
         public StructureVersion retrieveStructureByProcStatus(String urn, ProcStatusEnum[] procStatus) throws MetamacException;
         public StructureVersion updateStructure(StructureVersion structureVersion);
-        public ProcStatusEnum getProcStatusMetadataValue(StructureVersion structureVersion);
-        public DateTime getExternalPublicationDateMetadataValue(StructureVersion structureVersion);
-        public void setStructureProcStatusAndInformationStatus(StructureVersion structureVersion, ProcStatusEnum newProcStatus, String user);
+        public SrmLifecycleMetadata getSrmLifecycleMetadata(StructureVersion structureVersion);
         public void checkAdditionalConditionsSinceSendToProductionValidation(StructureVersion structureVersion, List<MetamacExceptionItem> exceptions);
         public void checkAdditionalConditionsToPublishInternally(StructureVersion structureVersion, List<MetamacExceptionItem> exceptions);
         public void checkAdditionalConditionsToPublishExternally(StructureVersion structureVersion, List<MetamacExceptionItem> exceptions);

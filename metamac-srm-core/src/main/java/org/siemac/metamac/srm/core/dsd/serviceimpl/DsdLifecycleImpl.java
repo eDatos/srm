@@ -8,9 +8,9 @@ import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBui
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
-import org.joda.time.DateTime;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
+import org.siemac.metamac.srm.core.base.domain.SrmLifecycleMetadata;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamacProperties;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamacRepository;
@@ -76,6 +76,12 @@ public class DsdLifecycleImpl implements DsdLifecycle {
     private class DataStructureDefinitionLifecycleCallback implements StructureLifecycleCallback {
 
         @Override
+        public SrmLifecycleMetadata getSrmLifecycleMetadata(StructureVersion structureVersion) {
+            DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDataStructureDefinitionVersionMetamac(structureVersion);
+            return dataStructureDefinitionVersionMetamac.getLifecycleMetadata();
+        }
+
+        @Override
         public StructureVersion retrieveStructureByProcStatus(String urn, ProcStatusEnum[] procStatus) throws MetamacException {
             return dataStructureDefinitionVersionMetamacRepository.retrieveDataStructureDefinitionVersionByProcStatus(urn, procStatus);
         }
@@ -83,54 +89,6 @@ public class DsdLifecycleImpl implements DsdLifecycle {
         @Override
         public StructureVersion updateStructure(StructureVersion structureVersion) {
             return structureVersionRepository.save(structureVersion);
-        }
-
-        @Override
-        public ProcStatusEnum getProcStatusMetadataValue(StructureVersion structureVersion) {
-            DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDataStructureDefinitionVersionMetamac(structureVersion);
-            return dataStructureDefinitionVersionMetamac.getProcStatus();
-        }
-
-        @Override
-        public DateTime getExternalPublicationDateMetadataValue(StructureVersion structureVersion) {
-            DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDataStructureDefinitionVersionMetamac(structureVersion);
-            return dataStructureDefinitionVersionMetamac.getExternalPublicationDate();
-        }
-
-        @Override
-        public void setStructureProcStatusAndInformationStatus(StructureVersion structureVersion, ProcStatusEnum newProcStatus, String user) {
-            DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDataStructureDefinitionVersionMetamac(structureVersion);
-
-            // Proc status
-            dataStructureDefinitionVersionMetamac.setProcStatus(newProcStatus);
-
-            // User and date
-            switch (newProcStatus) {
-                case PRODUCTION_VALIDATION:
-                    dataStructureDefinitionVersionMetamac.setProductionValidationDate(new DateTime());
-                    dataStructureDefinitionVersionMetamac.setProductionValidationUser(user);
-                    break;
-                case DIFFUSION_VALIDATION:
-                    dataStructureDefinitionVersionMetamac.setDiffusionValidationDate(new DateTime());
-                    dataStructureDefinitionVersionMetamac.setDiffusionValidationUser(user);
-                    break;
-                case VALIDATION_REJECTED:
-                    dataStructureDefinitionVersionMetamac.setProductionValidationDate(null);
-                    dataStructureDefinitionVersionMetamac.setProductionValidationUser(null);
-                    dataStructureDefinitionVersionMetamac.setDiffusionValidationDate(null);
-                    dataStructureDefinitionVersionMetamac.setDiffusionValidationUser(null);
-                    break;
-                case INTERNALLY_PUBLISHED:
-                    dataStructureDefinitionVersionMetamac.setInternalPublicationDate(new DateTime());
-                    dataStructureDefinitionVersionMetamac.setInternalPublicationUser(user);
-                    break;
-                case EXTERNALLY_PUBLISHED:
-                    dataStructureDefinitionVersionMetamac.setExternalPublicationDate(new DateTime());
-                    dataStructureDefinitionVersionMetamac.setExternalPublicationUser(user);
-                    break;
-                default:
-                    throw new IllegalArgumentException("unsupported: " + newProcStatus);
-            }
         }
 
         @Override
@@ -162,8 +120,8 @@ public class DsdLifecycleImpl implements DsdLifecycle {
         public List<StructureVersion> findStructureVersionsOfItemSchemeInProcStatus(ServiceContext ctx, Structure structure, ProcStatusEnum... procStatus) {
 
             List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(DataStructureDefinitionVersionMetamac.class)
-                    .withProperty(DataStructureDefinitionVersionMetamacProperties.structure().id()).eq(structure.getId()).withProperty(DataStructureDefinitionVersionMetamacProperties.procStatus())
-                    .in((Object[]) procStatus).distinctRoot().build();
+                    .withProperty(DataStructureDefinitionVersionMetamacProperties.structure().id()).eq(structure.getId())
+                    .withProperty(DataStructureDefinitionVersionMetamacProperties.lifecycleMetadata().procStatus()).in((Object[]) procStatus).distinctRoot().build();
             PagingParameter pagingParameter = PagingParameter.noLimits();
             PagedResult<DataStructureDefinitionVersionMetamac> dataStructureDefinitionVersionMetamac = dataStructureDefinitionVersionMetamacRepository.findByCondition(conditions, pagingParameter);
             return dataStructureDefinitionMetamacVersionsToStructureVersions(dataStructureDefinitionVersionMetamac.getValues());
@@ -183,6 +141,5 @@ public class DsdLifecycleImpl implements DsdLifecycle {
             }
             return structureVersions;
         }
-
     }
 }

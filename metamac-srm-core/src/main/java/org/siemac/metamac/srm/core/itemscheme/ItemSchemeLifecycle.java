@@ -68,7 +68,7 @@ public class ItemSchemeLifecycle {
         // Validate to send to Diffusion
         checkItemSchemeToSendToDiffusionValidation(urn, itemSchemeVersion);
 
-        // Update proc status
+        // Update lifecycle metadata
         SrmLifecycleMetadata lifecycle = callback.getSrmLifecycleMetadata(itemSchemeVersion);
         lifecycle.setProcStatus(ProcStatusEnum.DIFFUSION_VALIDATION);
         lifecycle.setDiffusionValidationDate(new DateTime());
@@ -89,7 +89,7 @@ public class ItemSchemeLifecycle {
         // Validate to reject
         checkItemSchemeToRejectProductionValidation(urn, itemSchemeVersion);
 
-        // Update proc status
+        // Update lifecycle metadata
         SrmLifecycleMetadata lifecycle = callback.getSrmLifecycleMetadata(itemSchemeVersion);
         lifecycle.setProcStatus(ProcStatusEnum.VALIDATION_REJECTED);
         lifecycle.setProductionValidationDate(null);
@@ -112,7 +112,7 @@ public class ItemSchemeLifecycle {
         // Validate to reject
         checkItemSchemeToRejectDiffusionValidation(urn, itemSchemeVersion);
 
-        // Update proc status
+        // Update lifecycle metadata
         SrmLifecycleMetadata lifecycle = callback.getSrmLifecycleMetadata(itemSchemeVersion);
         lifecycle.setProcStatus(ProcStatusEnum.VALIDATION_REJECTED);
         lifecycle.setProductionValidationDate(null);
@@ -135,7 +135,7 @@ public class ItemSchemeLifecycle {
         // Validate to publish internally
         checkItemSchemeToPublishInternally(ctx, urn, itemSchemeVersion);
 
-        // Update proc status
+        // Update lifecycle metadata
         SrmLifecycleMetadata lifecycle = callback.getSrmLifecycleMetadata(itemSchemeVersion);
         lifecycle.setProcStatus(ProcStatusEnum.INTERNALLY_PUBLISHED);
         lifecycle.setInternalPublicationDate(new DateTime());
@@ -160,7 +160,7 @@ public class ItemSchemeLifecycle {
         // Start concept scheme validity
         itemSchemeVersion = callback.startItemSchemeValidity(ctx, itemSchemeVersion);
 
-        // Update proc status
+        // Update lifecycle metadata
         SrmLifecycleMetadata lifecycle = callback.getSrmLifecycleMetadata(itemSchemeVersion);
         lifecycle.setProcStatus(ProcStatusEnum.EXTERNALLY_PUBLISHED);
         lifecycle.setExternalPublicationDate(new DateTime());

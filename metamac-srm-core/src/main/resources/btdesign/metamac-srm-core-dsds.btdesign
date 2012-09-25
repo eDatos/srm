@@ -2,6 +2,7 @@ import "classpath:/btdesign/statistic-sdmx-core-base.btdesign"
 import "classpath:/btdesign/statistic-sdmx-core-structure.btdesign"
 import "classpath:/btdesign/metamac-srm-core-enum.btdesign"
 import "classpath:/btdesign/statistic-sdmx-v2_1-domain-enums.btdesign"
+import "classpath:/btdesign/metamac-srm-core-base.btdesign"
 
 Application DsdsMetamac {
 	basePackage=unused
@@ -12,7 +13,7 @@ Application DsdsMetamac {
 		// ----------------------------------------------------------------
 		// 							SERVICES
 		// ----------------------------------------------------------------  
-		"Provides access to Scheme Concepts Artefacts"
+		"Provides access to Dsd Artefacts"
 		Service DsdsMetamacService {
 			
 			> @DataStructureDefinitionVersionMetamacRepository
@@ -64,30 +65,9 @@ Application DsdsMetamac {
 			hint="idSequence=M_DATASTRUCTURE_VERSIONS"
 			!auditable
 
-			"Status"
-			- @ProcStatusEnum procStatus;
-			
-			"Date when the concept scheme was sended to production validation"
-			DateTimeTZ productionValidationDate nullable;
-			"User who sended to production validation"
-			String productionValidationUser nullable;
-			"Date when the concept scheme was sended to diffusion validation"
-			DateTimeTZ diffusionValidationDate nullable;
-			"User who sended to diffusion validation"
-			String diffusionValidationUser nullable;
-			"Date when the concept scheme was published internally"
-			DateTimeTZ internalPublicationDate nullable;
-			"User who published internally"
-			String internalPublicationUser nullable;
-			"Date when the concept scheme was published externally"
-			DateTimeTZ externalPublicationDate nullable;
-			"User who published externally"
-			String externalPublicationUser nullable;
-			"The external publication failed"
-			Boolean isExternalPublicationFailed nullable databaseColumn="IS_EXT_PUBLICATION_FAILED";
-			"External publication failed date"
-			DateTimeTZ externalPublicationFailedDate nullable databaseColumn="EXT_PUBLICATION_FAILED_DATE";
-			
+			"Lifecycle information"
+			- @SrmLifecycleMetadata lifecycleMetadata databaseColumn="";
+
 			Repository DataStructureDefinitionVersionMetamacRepository {
 				findById;
 				findByQuery(String query, Map<String, Object> parameters, int maxResult);

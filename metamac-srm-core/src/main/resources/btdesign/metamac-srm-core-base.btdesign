@@ -10,7 +10,7 @@ Application SrmEntitiesBaseCore {
 			!immutable
 			
 			"Status"
-			- @ProcStatusEnum procStatus;
+			- @ProcStatusEnum procStatus required;
 			"Date when the scheme was sended to production validation"
 			DateTimeTZ productionValidationDate nullable;
 			"User who sended to production validation"
