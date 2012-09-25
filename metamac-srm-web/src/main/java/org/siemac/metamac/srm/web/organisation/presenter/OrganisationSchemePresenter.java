@@ -3,20 +3,36 @@ package org.siemac.metamac.srm.web.organisation.presenter;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
+import org.siemac.metamac.srm.web.client.PlaceRequestParams;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.client.widgets.presenter.ToolStripPresenterWidget;
 import org.siemac.metamac.srm.web.organisation.view.handlers.OrganisationSchemeUiHandlers;
+import org.siemac.metamac.srm.web.shared.organisation.CancelOrganisationSchemeValidityAction;
+import org.siemac.metamac.srm.web.shared.organisation.CancelOrganisationSchemeValidityResult;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeAction;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeResult;
+import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeVersionListAction;
+import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeVersionListResult;
+import org.siemac.metamac.srm.web.shared.organisation.SaveOrganisationSchemeAction;
+import org.siemac.metamac.srm.web.shared.organisation.SaveOrganisationSchemeResult;
+import org.siemac.metamac.srm.web.shared.organisation.UpdateOrganisationSchemeProcStatusAction;
+import org.siemac.metamac.srm.web.shared.organisation.UpdateOrganisationSchemeProcStatusResult;
+import org.siemac.metamac.srm.web.shared.organisation.VersionOrganisationSchemeAction;
+import org.siemac.metamac.srm.web.shared.organisation.VersionOrganisationSchemeResult;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
+import org.siemac.metamac.web.common.client.utils.UrnUtils;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
@@ -63,6 +79,7 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
     public interface OrganisationSchemeView extends View, HasUiHandlers<OrganisationSchemeUiHandlers> {
 
         void setOrganisationScheme(OrganisationSchemeMetamacDto organisationSchemeMetamacDto);
+        void setOrganisationSchemeVersions(List<OrganisationSchemeMetamacDto> organisationSchemeMetamacDtos);
     }
 
     @ContentSlot
@@ -112,62 +129,175 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
             public void onWaitSuccess(GetOrganisationSchemeResult result) {
                 organisationSchemeMetamacDto = result.getOrganisationSchemeMetamacDto();
                 getView().setOrganisationScheme(organisationSchemeMetamacDto);
+                retrieveOrganisationSchemeVersions(result.getOrganisationSchemeMetamacDto().getUrn());
             }
         });
     }
 
     @Override
     public void retrieveOrganisationSchemeVersions(String organisationSchemeUrn) {
-        // TODO Auto-generated method stub
+        dispatcher.execute(new GetOrganisationSchemeVersionListAction(organisationSchemeUrn), new WaitingAsyncCallback<GetOrganisationSchemeVersionListResult>() {
 
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().organisationSchemeErrorRetrievingVersions()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetOrganisationSchemeVersionListResult result) {
+                getView().setOrganisationSchemeVersions(result.getOrganisationSchemeMetamacDtos());
+            }
+        });
     }
 
     @Override
     public void saveOrganisationScheme(OrganisationSchemeMetamacDto organisationScheme) {
-        // TODO Auto-generated method stub
+        dispatcher.execute(new SaveOrganisationSchemeAction(organisationScheme), new WaitingAsyncCallback<SaveOrganisationSchemeResult>() {
 
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().organisationSchemeErrorSave()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(SaveOrganisationSchemeResult result) {
+                ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getMessageList(getMessages().organisationSchemeSaved()), MessageTypeEnum.SUCCESS);
+                organisationSchemeMetamacDto = result.getOrganisationSchemeSaved();
+                getView().setOrganisationScheme(organisationSchemeMetamacDto);
+            }
+        });
     }
 
     @Override
-    public void cancelValidity(String urn) {
-        // TODO Auto-generated method stub
+    public void cancelValidity(final String urn) {
+        List<String> urns = new ArrayList<String>();
+        urns.add(urn);
+        dispatcher.execute(new CancelOrganisationSchemeValidityAction(urns), new WaitingAsyncCallback<CancelOrganisationSchemeValidityResult>() {
 
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().organisationSchemeErrorCancelValidity()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(CancelOrganisationSchemeValidityResult result) {
+                ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getMessageList(getMessages().organisationSchemeDeleted()), MessageTypeEnum.SUCCESS);
+                retrieveOrganisationSchemeByUrn(urn);
+            }
+        });
     }
 
     @Override
     public void sendToProductionValidation(String urn, ProcStatusEnum currentProcStatus) {
-        // TODO Auto-generated method stub
+        dispatcher.execute(new UpdateOrganisationSchemeProcStatusAction(urn, ProcStatusEnum.PRODUCTION_VALIDATION, currentProcStatus),
+                new WaitingAsyncCallback<UpdateOrganisationSchemeProcStatusResult>() {
 
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().organisationSchemeErrorSendingToProductionValidation()),
+                                MessageTypeEnum.ERROR);
+                    }
+                    @Override
+                    public void onWaitSuccess(UpdateOrganisationSchemeProcStatusResult result) {
+                        ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getMessageList(getMessages().organisationSchemeSentToProductionValidation()), MessageTypeEnum.SUCCESS);
+                        organisationSchemeMetamacDto = result.getOrganisationSchemeDto();
+                        getView().setOrganisationScheme(organisationSchemeMetamacDto);
+                    }
+                });
     }
 
     @Override
     public void sendToDiffusionValidation(String urn, ProcStatusEnum currentProcStatus) {
-        // TODO Auto-generated method stub
+        dispatcher.execute(new UpdateOrganisationSchemeProcStatusAction(urn, ProcStatusEnum.DIFFUSION_VALIDATION, currentProcStatus),
+                new WaitingAsyncCallback<UpdateOrganisationSchemeProcStatusResult>() {
 
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().organisationSchemeErrorSendingToDiffusionValidation()),
+                                MessageTypeEnum.ERROR);
+                    }
+                    @Override
+                    public void onWaitSuccess(UpdateOrganisationSchemeProcStatusResult result) {
+                        ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getMessageList(getMessages().organisationSchemeSentToDiffusionValidation()), MessageTypeEnum.SUCCESS);
+                        organisationSchemeMetamacDto = result.getOrganisationSchemeDto();
+                        getView().setOrganisationScheme(organisationSchemeMetamacDto);
+                    }
+                });
     }
 
     @Override
     public void rejectValidation(String urn, ProcStatusEnum currentProcStatus) {
-        // TODO Auto-generated method stub
+        dispatcher.execute(new UpdateOrganisationSchemeProcStatusAction(urn, ProcStatusEnum.VALIDATION_REJECTED, currentProcStatus),
+                new WaitingAsyncCallback<UpdateOrganisationSchemeProcStatusResult>() {
 
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().organisationSchemeErrorRejecting()), MessageTypeEnum.ERROR);
+                    }
+                    @Override
+                    public void onWaitSuccess(UpdateOrganisationSchemeProcStatusResult result) {
+                        ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getMessageList(getMessages().organisationSchemeRejected()), MessageTypeEnum.SUCCESS);
+                        organisationSchemeMetamacDto = result.getOrganisationSchemeDto();
+                        getView().setOrganisationScheme(organisationSchemeMetamacDto);
+                    }
+                });
     }
 
     @Override
     public void publishInternally(String urn, ProcStatusEnum currentProcStatus) {
-        // TODO Auto-generated method stub
+        dispatcher.execute(new UpdateOrganisationSchemeProcStatusAction(urn, ProcStatusEnum.INTERNALLY_PUBLISHED, currentProcStatus),
+                new WaitingAsyncCallback<UpdateOrganisationSchemeProcStatusResult>() {
 
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().organisationSchemeErrorPublishingInternally()), MessageTypeEnum.ERROR);
+                    }
+                    @Override
+                    public void onWaitSuccess(UpdateOrganisationSchemeProcStatusResult result) {
+                        ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getMessageList(getMessages().organisationSchemePublishedInternally()), MessageTypeEnum.SUCCESS);
+                        organisationSchemeMetamacDto = result.getOrganisationSchemeDto();
+                        getView().setOrganisationScheme(organisationSchemeMetamacDto);
+                    }
+                });
     }
 
     @Override
     public void publishExternally(String urn, ProcStatusEnum currentProcStatus) {
-        // TODO Auto-generated method stub
+        dispatcher.execute(new UpdateOrganisationSchemeProcStatusAction(urn, ProcStatusEnum.EXTERNALLY_PUBLISHED, currentProcStatus),
+                new WaitingAsyncCallback<UpdateOrganisationSchemeProcStatusResult>() {
 
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().organisationSchemeErrorPublishingExternally()), MessageTypeEnum.ERROR);
+                    }
+                    @Override
+                    public void onWaitSuccess(UpdateOrganisationSchemeProcStatusResult result) {
+                        ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getMessageList(getMessages().organisationSchemePublishedExternally()), MessageTypeEnum.SUCCESS);
+                        organisationSchemeMetamacDto = result.getOrganisationSchemeDto();
+                        getView().setOrganisationScheme(organisationSchemeMetamacDto);
+                    }
+                });
     }
 
     @Override
     public void versioning(String urn, VersionTypeEnum versionType) {
-        // TODO Auto-generated method stub
+        dispatcher.execute(new VersionOrganisationSchemeAction(urn, versionType), new WaitingAsyncCallback<VersionOrganisationSchemeResult>() {
 
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().organisationSchemeErrorVersioning()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(VersionOrganisationSchemeResult result) {
+                ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getMessageList(getMessages().organisationSchemeVersioned()), MessageTypeEnum.SUCCESS);
+                organisationSchemeMetamacDto = result.getOrganisationSchemeMetamacDto();
+                retrieveOrganisationSchemeByUrn(organisationSchemeMetamacDto.getUrn());
+            }
+        });
+    }
+
+    @Override
+    public void goToOrganisationScheme(String urn) {
+        if (!StringUtils.isBlank(urn)) {
+            placeManager.revealRelativePlace(new PlaceRequest(NameTokens.organisationSchemePage).with(PlaceRequestParams.organisationSchemeParam, UrnUtils.removePrefix(urn)), -1);
+        }
     }
 
 }

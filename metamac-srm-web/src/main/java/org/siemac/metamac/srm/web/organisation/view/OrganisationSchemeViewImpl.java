@@ -3,6 +3,8 @@ package org.siemac.metamac.srm.web.organisation.view;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
+import java.util.List;
+
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.util.shared.BooleanUtils;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
@@ -12,11 +14,13 @@ import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.VersionWindow;
+import org.siemac.metamac.srm.web.concept.model.record.ConceptSchemeRecord;
 import org.siemac.metamac.srm.web.organisation.model.ds.OrganisationSchemeDS;
 import org.siemac.metamac.srm.web.organisation.presenter.OrganisationSchemePresenter;
 import org.siemac.metamac.srm.web.organisation.utils.OrganisationsClientSecurityUtils;
 import org.siemac.metamac.srm.web.organisation.view.handlers.OrganisationSchemeUiHandlers;
 import org.siemac.metamac.srm.web.organisation.widgets.OrganisationSchemeMainFormLayout;
+import org.siemac.metamac.srm.web.organisation.widgets.OrganisationSchemeVersionsSectionStack;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.utils.DateUtils;
@@ -41,34 +45,38 @@ import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.FormItemIfFunction;
 import com.smartgwt.client.widgets.form.fields.FormItem;
+import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
+import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationSchemeUiHandlers> implements OrganisationSchemePresenter.OrganisationSchemeView {
 
-    private VLayout                          panel;
-    private OrganisationSchemeMainFormLayout mainFormLayout;
+    private VLayout                                panel;
+    private OrganisationSchemeMainFormLayout       mainFormLayout;
 
     // View forms
-    private GroupDynamicForm                 identifiersForm;
-    private GroupDynamicForm                 contentDescriptorsForm;
-    private GroupDynamicForm                 classDescriptorsForm;
-    private GroupDynamicForm                 productionDescriptorsForm;
-    private GroupDynamicForm                 diffusionDescriptorsForm;
-    private GroupDynamicForm                 versionResponsibilityForm;
-    private AnnotationsPanel                 annotationsPanel;
+    private GroupDynamicForm                       identifiersForm;
+    private GroupDynamicForm                       contentDescriptorsForm;
+    private GroupDynamicForm                       classDescriptorsForm;
+    private GroupDynamicForm                       productionDescriptorsForm;
+    private GroupDynamicForm                       diffusionDescriptorsForm;
+    private GroupDynamicForm                       versionResponsibilityForm;
+    private AnnotationsPanel                       annotationsPanel;
 
     // Edition forms
-    private GroupDynamicForm                 identifiersEditionForm;
-    private GroupDynamicForm                 contentDescriptorsEditionForm;
-    private GroupDynamicForm                 classDescriptorsEditionForm;
-    private GroupDynamicForm                 productionDescriptorsEditionForm;
-    private GroupDynamicForm                 diffusionDescriptorsEditionForm;
-    private GroupDynamicForm                 versionResponsibilityEditionForm;
-    private AnnotationsPanel                 annotationsEditionPanel;
+    private GroupDynamicForm                       identifiersEditionForm;
+    private GroupDynamicForm                       contentDescriptorsEditionForm;
+    private GroupDynamicForm                       classDescriptorsEditionForm;
+    private GroupDynamicForm                       productionDescriptorsEditionForm;
+    private GroupDynamicForm                       diffusionDescriptorsEditionForm;
+    private GroupDynamicForm                       versionResponsibilityEditionForm;
+    private AnnotationsPanel                       annotationsEditionPanel;
 
-    private OrganisationSchemeMetamacDto     organisationSchemeDto;
+    private OrganisationSchemeVersionsSectionStack versionsSectionStack;
+
+    private OrganisationSchemeMetamacDto           organisationSchemeDto;
 
     @Inject
     public OrganisationSchemeViewImpl() {
@@ -86,7 +94,22 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         createViewForm();
         createEditionForm();
 
+        //
+        // ORGANISATION SCHEME VERSIONS
+        //
+
+        versionsSectionStack = new OrganisationSchemeVersionsSectionStack(getConstants().organisationSchemeVersions());
+        versionsSectionStack.getListGrid().addRecordClickHandler(new RecordClickHandler() {
+
+            @Override
+            public void onRecordClick(RecordClickEvent event) {
+                String urn = ((ConceptSchemeRecord) event.getRecord()).getUrn();
+                getUiHandlers().goToOrganisationScheme(urn);
+            }
+        });
+
         panel.addMember(mainFormLayout);
+        panel.addMember(versionsSectionStack);
     }
 
     private void bindMainFormLayoutEvents() {
@@ -396,6 +419,12 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
 
         setOrganisationSchemeViewMode(organisationSchemeMetamacDto);
         setOrganisationSchemeEditionMode(organisationSchemeMetamacDto);
+    }
+
+    @Override
+    public void setOrganisationSchemeVersions(List<OrganisationSchemeMetamacDto> organisationSchemeMetamacDtos) {
+        versionsSectionStack.setOrganisationSchemes(organisationSchemeMetamacDtos);
+        versionsSectionStack.selectOrganisationScheme(organisationSchemeDto);
     }
 
     public void setOrganisationSchemeViewMode(OrganisationSchemeMetamacDto organisationSchemeMetamacDto) {

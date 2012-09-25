@@ -40,7 +40,9 @@ public class DsdVersionsSectionStack extends VersionsSectionStack {
     public void selectDataStructureDefinition(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
         RecordList recordList = listGrid.getRecordList();
         Record record = recordList.find(DataStructureDefinitionDS.URN, dataStructureDefinitionMetamacDto.getUrn());
-        listGrid.selectRecord(record);
+        if (record != null) {
+            listGrid.selectRecord(record);
+        }
     }
 
 }

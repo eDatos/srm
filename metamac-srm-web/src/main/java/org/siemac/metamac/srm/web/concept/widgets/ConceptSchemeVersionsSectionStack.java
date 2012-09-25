@@ -40,7 +40,9 @@ public class ConceptSchemeVersionsSectionStack extends VersionsSectionStack {
     public void selectConceptScheme(ConceptSchemeMetamacDto conceptSchemeMetamacDto) {
         RecordList recordList = listGrid.getRecordList();
         Record record = recordList.find(ConceptSchemeDS.URN, conceptSchemeMetamacDto.getUrn());
-        listGrid.selectRecord(record);
+        if (record != null) {
+            listGrid.selectRecord(record);
+        }
     }
 
 }
