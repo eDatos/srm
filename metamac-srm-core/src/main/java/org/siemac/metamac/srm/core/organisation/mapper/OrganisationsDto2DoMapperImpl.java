@@ -13,6 +13,7 @@ import org.siemac.metamac.srm.core.organisation.exception.OrganisationSchemeVers
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
+@org.springframework.stereotype.Component("organisationsDto2DoMapper")
 public class OrganisationsDto2DoMapperImpl implements OrganisationsDto2DoMapper {
 
     @Autowired
@@ -27,7 +28,7 @@ public class OrganisationsDto2DoMapperImpl implements OrganisationsDto2DoMapper 
     }
 
     @Override
-    public OrganisationSchemeVersionMetamac organisationSchemeDtoToDo(OrganisationSchemeMetamacDto source) throws MetamacException {
+    public OrganisationSchemeVersionMetamac organisationSchemeMetamacDtoToDo(OrganisationSchemeMetamacDto source) throws MetamacException {
 
         if (source == null) {
             return null;

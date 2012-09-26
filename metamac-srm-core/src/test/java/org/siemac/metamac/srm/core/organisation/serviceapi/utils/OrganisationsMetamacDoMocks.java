@@ -10,7 +10,6 @@ import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.Organisatio
 public class OrganisationsMetamacDoMocks extends OrganisationsDoMocks {
 
     public static OrganisationSchemeVersionMetamac mockOrganisationScheme(OrganisationSchemeTypeEnum type) {
-
         OrganisationSchemeVersionMetamac organisationSchemeVersion = new OrganisationSchemeVersionMetamac(type);
         mockOrganisationScheme(organisationSchemeVersion);
         return organisationSchemeVersion;

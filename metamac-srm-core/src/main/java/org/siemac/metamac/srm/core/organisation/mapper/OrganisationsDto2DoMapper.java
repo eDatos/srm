@@ -6,6 +6,6 @@ import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto
 
 public interface OrganisationsDto2DoMapper {
 
-    public OrganisationSchemeVersionMetamac organisationSchemeDtoToDo(OrganisationSchemeMetamacDto source) throws MetamacException;
+    public OrganisationSchemeVersionMetamac organisationSchemeMetamacDtoToDo(OrganisationSchemeMetamacDto source) throws MetamacException;
 
 }
