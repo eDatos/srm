@@ -235,13 +235,26 @@ Application SrmFacadeCore {
 	    	String exportSDMXStructureMsg(@StructureMsgDto structureMsgDto) throws MetamacException;
 
 	    	/**************************************************************************
-		     * ORGANISATION
+		     * ORGANISATIONS
 		     **************************************************************************/
 			"          
 			 @param ctx  
 			 @return     
        		"
        		@ExternalItemDto findOrganisation(String uriOrganisation) throws MetamacException;
+       		
+       		"Creates organisation scheme"
+	   		@OrganisationSchemeMetamacDto createOrganisationScheme(@OrganisationSchemeMetamacDto organisationSchemeDto) throws MetamacException;
+//	   		"Updates organisation scheme"
+//            @OrganisationSchemeMetamacDto updateOrganisationScheme(@OrganisationSchemeMetamacDto organisationSchemeDto) throws MetamacException;
+            "Deletes organisation scheme"
+            deleteOrganisationScheme(String urn) throws MetamacException;
+            "Finds organisation schemes by criteria"
+            MetamacCriteriaResult<@OrganisationSchemeMetamacDto> findOrganisationSchemesByCondition(MetamacCriteria criteria) throws MetamacException;
+            "Retrieves a organisation scheme by URN"
+            @OrganisationSchemeMetamacDto retrieveOrganisationSchemeByUrn(String urn) throws MetamacException;
+            "Retrieves all organisation scheme versions"
+            List<@OrganisationSchemeMetamacDto> retrieveOrganisationSchemeVersions(String urn) throws MetamacException;
        		
        		/**************************************************************************
 		     * CODELIST

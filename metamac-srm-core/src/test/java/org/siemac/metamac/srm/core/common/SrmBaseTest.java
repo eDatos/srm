@@ -66,6 +66,8 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
 
     // Organisations schemes
     protected static final String ORGANISATION_SCHEME_1_V1          = "urn:sdmx:org.sdmx.infomodel.organisationscheme.OrganisationScheme=ISTAC:ORGANISATIONSCHEME01(01.000)";
+    protected static final String ORGANISATION_SCHEME_1_V2          = "urn:sdmx:org.sdmx.infomodel.organisationscheme.OrganisationScheme=ISTAC:ORGANISATIONSCHEME01(02.000)";
+    protected static final String ORGANISATION_SCHEME_2_V1          = "urn:sdmx:org.sdmx.infomodel.organisationscheme.OrganisationScheme=ISTAC:ORGANISATIONSCHEME02(01.000)";
 
     // Other
     protected static final String NOT_EXISTS                        = "not-exists";
@@ -102,7 +104,8 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
     protected ServiceContext getServiceContextJefeNormalizacionWithOperation1() {
         ServiceContext serviceContext = getServiceContextWithoutPrincipal();
         putMetamacPrincipalInServiceContext(serviceContext, SrmRoleEnum.JEFE_NORMALIZACION, "Operation1");
-        return serviceContext;    }
+        return serviceContext;
+    }
 
     protected ServiceContext getServiceContextTecnicoApoyoProduccion() {
         ServiceContext serviceContext = getServiceContextWithoutPrincipal();

@@ -7,6 +7,7 @@ import org.siemac.metamac.srm.core.concept.serviceapi.ConceptsMetamacServiceTest
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacadeConceptsSecurityTest;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacadeConceptsTest;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacadeDsdTest;
+import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacadeOrganisationsSecurityTest;
 
 /**
  * Spring based transactional test with DbUnit support.
@@ -14,6 +15,6 @@ import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacadeDsdTest
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({SrmCoreServiceFacadeConceptsTest.class, SrmCoreServiceFacadeConceptsSecurityTest.class, SrmCoreServiceFacadeDsdTest.class, ConceptsMetamacServiceTest.class,
-        BaseDo2DtoMapperTest.class})
+        BaseDo2DtoMapperTest.class, SrmCoreServiceFacadeOrganisationsSecurityTest.class})
 public class SrmSuite {
 }

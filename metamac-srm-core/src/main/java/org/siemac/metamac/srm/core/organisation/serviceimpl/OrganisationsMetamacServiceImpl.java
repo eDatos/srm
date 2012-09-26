@@ -1,5 +1,12 @@
 package org.siemac.metamac.srm.core.organisation.serviceimpl;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
+import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
+import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
+import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
@@ -10,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
+import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.organisation.serviceapi.OrganisationsService;
 
 /**
@@ -72,36 +80,36 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
         return (OrganisationSchemeVersionMetamac) organisationsService.retrieveOrganisationSchemeByUrn(ctx, urn);
     }
 
-    // @Override
-    // public List<OrganisationSchemeVersionMetamac> retrieveOrganisationSchemeVersions(ServiceContext ctx, String urn) throws MetamacException {
-    //
-    // // Retrieve organisationSchemeVersions
-    // List<OrganisationSchemeVersion> organisationSchemeVersions = organisationsService.retrieveOrganisationSchemeVersions(ctx, urn);
-    //
-    // // Type cast to OrganisationSchemeVersionMetamac
-    // List<OrganisationSchemeVersionMetamac> organisationSchemeVersionMetamacs = new ArrayList<OrganisationSchemeVersionMetamac>();
-    // for (OrganisationSchemeVersion organisationSchemeVersion : organisationSchemeVersions) {
-    // organisationSchemeVersionMetamacs.add((OrganisationSchemeVersionMetamac) organisationSchemeVersion);
-    // }
-    //
-    // return organisationSchemeVersionMetamacs;
-    // }
-    //
-    // @Override
-    // public PagedResult<OrganisationSchemeVersionMetamac> findOrganisationSchemesByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws
-    // MetamacException {
-    //
-    // // Validation
-    // OrganisationsMetamacInvocationValidator.checkFindOrganisationSchemesByCondition(conditions, pagingParameter, null);
-    //
-    // // Find (do not call sdmx module to avoid typecast)
-    // if (conditions == null) {
-    // conditions = ConditionalCriteriaBuilder.criteriaFor(OrganisationSchemeVersionMetamac.class).build();
-    // }
-    // PagedResult<OrganisationSchemeVersionMetamac> organisationSchemeVersionPagedResult = getOrganisationSchemeVersionMetamacRepository().findByCondition(conditions, pagingParameter);
-    // return organisationSchemeVersionPagedResult;
-    // }
-    //
+    @Override
+    public List<OrganisationSchemeVersionMetamac> retrieveOrganisationSchemeVersions(ServiceContext ctx, String urn) throws MetamacException {
+
+        // Retrieve organisationSchemeVersions
+        List<OrganisationSchemeVersion> organisationSchemeVersions = organisationsService.retrieveOrganisationSchemeVersions(ctx, urn);
+
+        // Type cast to OrganisationSchemeVersionMetamac
+        List<OrganisationSchemeVersionMetamac> organisationSchemeVersionMetamacs = new ArrayList<OrganisationSchemeVersionMetamac>();
+        for (OrganisationSchemeVersion organisationSchemeVersion : organisationSchemeVersions) {
+            organisationSchemeVersionMetamacs.add((OrganisationSchemeVersionMetamac) organisationSchemeVersion);
+        }
+
+        return organisationSchemeVersionMetamacs;
+    }
+
+    @Override
+    public PagedResult<OrganisationSchemeVersionMetamac> findOrganisationSchemesByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)
+            throws MetamacException {
+
+        // Validation
+        OrganisationsMetamacInvocationValidator.checkFindOrganisationSchemesByCondition(conditions, pagingParameter, null);
+
+        // Find (do not call SDMX module to avoid type cast)
+        if (conditions == null) {
+            conditions = ConditionalCriteriaBuilder.criteriaFor(OrganisationSchemeVersionMetamac.class).build();
+        }
+        PagedResult<OrganisationSchemeVersionMetamac> organisationSchemeVersionPagedResult = getOrganisationSchemeVersionMetamacRepository().findByCondition(conditions, pagingParameter);
+        return organisationSchemeVersionPagedResult;
+    }
+
     // @Override
     // public OrganisationSchemeVersionMetamac sendOrganisationSchemeToProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
     // return (OrganisationSchemeVersionMetamac) organisationSchemeLifecycle.sendToProductionValidation(ctx, urn);
@@ -133,14 +141,13 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
     // public OrganisationSchemeVersionMetamac publishExternallyOrganisationScheme(ServiceContext ctx, String urn) throws MetamacException {
     // return (OrganisationSchemeVersionMetamac) organisationSchemeLifecycle.publishExternally(ctx, urn);
     // }
-    //
-    // @Override
-    // public void deleteOrganisationScheme(ServiceContext ctx, String urn) throws MetamacException {
-    //
-    // // Note: OrganisationsService checks organisationScheme isn't final and other conditions
-    // organisationsService.deleteOrganisationScheme(ctx, urn);
-    // }
-    //
+
+    @Override
+    public void deleteOrganisationScheme(ServiceContext ctx, String urn) throws MetamacException {
+        // Note: OrganisationsService checks organisationScheme isn't final and other conditions
+        organisationsService.deleteOrganisationScheme(ctx, urn);
+    }
+
     // @SuppressWarnings({"rawtypes", "unchecked"})
     // @Override
     // public OrganisationSchemeVersionMetamac versioningOrganisationScheme(ServiceContext ctx, String urn, VersionTypeEnum versionType) throws MetamacException {

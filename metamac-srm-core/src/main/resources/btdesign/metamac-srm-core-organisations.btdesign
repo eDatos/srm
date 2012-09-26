@@ -23,10 +23,10 @@ Application OrganisationsMetamac {
 //			@OrganisationSchemeVersionMetamac updateOrganisationScheme(@OrganisationSchemeVersionMetamac organisationSchemeVersion) throws MetamacException;
 			"Retrieves organisation scheme by urn"
 			@OrganisationSchemeVersionMetamac retrieveOrganisationSchemeByUrn(String urn) throws MetamacException;
-//			"Retrieves all organisation schemes versions"
-//			List<@OrganisationSchemeVersionMetamac> retrieveOrganisationSchemeVersions(String urn) throws MetamacException;
-//			"Finds organisation schemes by criteria"
-//    		PagedResult<@OrganisationSchemeVersionMetamac> findOrganisationSchemesByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
+			"Retrieves all organisation schemes versions"
+			List<@OrganisationSchemeVersionMetamac> retrieveOrganisationSchemeVersions(String urn) throws MetamacException;
+			"Finds organisation schemes by criteria"
+    		PagedResult<@OrganisationSchemeVersionMetamac> findOrganisationSchemesByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
 //    		"Sends organisation scheme to production validation"
 //    		@OrganisationSchemeVersionMetamac sendOrganisationSchemeToProductionValidation(String urn) throws MetamacException;
 //    		"Sends organisation scheme to diffusion validation"
@@ -39,8 +39,8 @@ Application OrganisationsMetamac {
 //	    	@OrganisationSchemeVersionMetamac publishInternallyOrganisationScheme(String urn) throws MetamacException;
 //	    	"Publish externally a organisation scheme"
 //	    	@OrganisationSchemeVersionMetamac publishExternallyOrganisationScheme(String urn) throws MetamacException;
-//			"Deletes organisation scheme version. This must be last version and no published"
-//    		deleteOrganisationScheme(String urn) throws MetamacException;
+			"Deletes organisation scheme version. This must be last version and no published"
+    		deleteOrganisationScheme(String urn) throws MetamacException;
 //    		"Creates a new version of a organisation scheme, copying metadata from version with provided urn"
 //    		@OrganisationSchemeVersionMetamac versioningOrganisationScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
 //    		"Cancels the organisation scheme validity"
