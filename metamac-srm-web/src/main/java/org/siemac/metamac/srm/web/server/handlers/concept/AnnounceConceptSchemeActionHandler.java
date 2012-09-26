@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.dto.LocalisedStringDto;
+import org.siemac.metamac.srm.core.base.dto.LifeCycleDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.shared.concept.AnnounceConceptSchemeAction;
@@ -29,7 +30,7 @@ public class AnnounceConceptSchemeActionHandler extends SecurityActionHandler<An
         conceptSchemeDto.setUrn("prefix=" + UUID.randomUUID().toString());
         conceptSchemeDto.setUri(UUID.randomUUID().toString());
         conceptSchemeDto.setVersionLogic("01.000");
-        conceptSchemeDto.setProcStatus(ProcStatusEnum.DRAFT);
+        conceptSchemeDto.setLifeCycle(new LifeCycleDto(ProcStatusEnum.DRAFT));
         DecimalFormat nformat = new DecimalFormat("0000");
         conceptSchemeDto.setCode("SCH" + nformat.format(5));
 

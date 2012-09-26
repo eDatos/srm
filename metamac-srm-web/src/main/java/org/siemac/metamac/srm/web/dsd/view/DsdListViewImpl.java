@@ -411,7 +411,7 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
             ListGridRecord[] records = dsdListGrid.getListGrid().getSelectedRecords();
             for (int i = 0; i < records.length; i++) {
                 DsdRecord record = (DsdRecord) records[i];
-                status.add(record.getDsd().getProcStatus());
+                status.add(record.getDsd().getLifeCycle().getProcStatus());
             }
         }
         return status;
@@ -434,7 +434,7 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
         for (ListGridRecord record : records) {
             DsdRecord dsdRecord = (DsdRecord) record;
             // Do not show cancel validity button if scheme is not published externally or if scheme validity has been canceled previously
-            if (!ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(dsdRecord.getDsd().getProcStatus()) || dsdRecord.getDsd().getValidTo() != null) {
+            if (!ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(dsdRecord.getDsd().getLifeCycle().getProcStatus()) || dsdRecord.getDsd().getValidTo() != null) {
                 allSelectedDsdsExternallyPublished = false;
             }
         }

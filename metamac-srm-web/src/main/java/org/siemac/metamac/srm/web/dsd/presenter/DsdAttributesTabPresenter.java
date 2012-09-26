@@ -161,7 +161,7 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
         isNewDescriptor = attributesDescriptor.getId() == null;
         dataAttributeDtos = CommonUtils.getAttributeComponents(attributesDescriptor);
         getView().setDimensions(CommonUtils.getDimensionComponents(event.getDimensions()));
-        getView().setDsdAttributes(dataStructureDefinitionDto.getProcStatus(), CommonUtils.getAttributeComponents(event.getAttributes()));
+        getView().setDsdAttributes(dataStructureDefinitionDto.getLifeCycle().getProcStatus(), CommonUtils.getAttributeComponents(event.getAttributes()));
         getView().setGroupKeys(event.getGroupKeys());
     }
 
@@ -195,7 +195,7 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
                             }
                         }
                     }
-                    getView().setDsdAttributes(dataStructureDefinitionDto.getProcStatus(), dataAttributeDtos);
+                    getView().setDsdAttributes(dataStructureDefinitionDto.getLifeCycle().getProcStatus(), dataAttributeDtos);
                 }
                 // Update Dimensions
                 getView().setDimensions(event.getDimensionComponentDtos());
@@ -227,7 +227,7 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
                             }
                         }
                     }
-                    getView().setDsdAttributes(dataStructureDefinitionDto.getProcStatus(), dataAttributeDtos);
+                    getView().setDsdAttributes(dataStructureDefinitionDto.getLifeCycle().getProcStatus(), dataAttributeDtos);
                 }
                 // Update Group Keys
                 getView().setGroupKeys(event.getGroupKeys());
@@ -414,7 +414,7 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
                         }
                     }
                     if (updateView) {
-                        getView().setDsdAttributes(dataStructureDefinitionDto.getProcStatus(), dataAttributeDtos);
+                        getView().setDsdAttributes(dataStructureDefinitionDto.getLifeCycle().getProcStatus(), dataAttributeDtos);
                     }
                 }
             }

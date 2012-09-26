@@ -64,7 +64,7 @@ public class ConceptSchemeRecord extends ListGridRecord {
     }
 
     public ProcStatusEnum getProcStatus() {
-        return ((ConceptSchemeMetamacDto) getAttributeAsObject(ConceptSchemeDS.DTO)).getProcStatus();
+        return ((ConceptSchemeMetamacDto) getAttributeAsObject(ConceptSchemeDS.DTO)).getLifeCycle().getProcStatus();
     }
 
     public String getDescription() {

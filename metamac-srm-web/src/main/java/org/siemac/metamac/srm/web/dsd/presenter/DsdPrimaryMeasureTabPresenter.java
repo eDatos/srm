@@ -206,7 +206,7 @@ public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTa
         enumeratedRepresentation = TypeRepresentationEnum.ENUMERATED.equals(primaryMeasure.getLocalRepresentation() != null
                 ? primaryMeasure.getLocalRepresentation().getTypeRepresentationEnum()
                 : false);
-        getView().setDsdPrimaryMeasure(dataStructureDefinitionDto.getProcStatus(), primaryMeasure);
+        getView().setDsdPrimaryMeasure(dataStructureDefinitionDto.getLifeCycle().getProcStatus(), primaryMeasure);
     }
 
     @ProxyEvent
@@ -227,7 +227,7 @@ public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTa
             public void onWaitSuccess(SaveComponentForDsdResult result) {
                 ShowMessageEvent.fire(DsdPrimaryMeasureTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdPrimaryMeasureSaved()), MessageTypeEnum.SUCCESS);
                 primaryMeasure = result.getComponentDtoSaved();
-                getView().onPrimaryMeasureSaved(dataStructureDefinitionDto.getProcStatus(), primaryMeasure);
+                getView().onPrimaryMeasureSaved(dataStructureDefinitionDto.getLifeCycle().getProcStatus(), primaryMeasure);
                 if (isNewDescriptor) {
                     // The first time a descriptor is saved, the DSD version changes.
                     isNewDescriptor = false;

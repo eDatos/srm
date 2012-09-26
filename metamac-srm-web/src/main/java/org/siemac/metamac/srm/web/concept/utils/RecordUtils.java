@@ -16,7 +16,7 @@ public class RecordUtils {
 
     public static ConceptSchemeRecord getConceptSchemeRecord(ConceptSchemeMetamacDto conceptSchemeDto) {
         ConceptSchemeRecord record = new ConceptSchemeRecord(conceptSchemeDto.getId(), conceptSchemeDto.getCode(), getLocalisedString(conceptSchemeDto.getName()),
-                getLocalisedString(conceptSchemeDto.getDescription()), org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(conceptSchemeDto.getProcStatus()),
+                getLocalisedString(conceptSchemeDto.getDescription()), org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(conceptSchemeDto.getLifeCycle().getProcStatus()),
                 conceptSchemeDto.getVersionLogic(), conceptSchemeDto.getUrn(), conceptSchemeDto);
         return record;
     }

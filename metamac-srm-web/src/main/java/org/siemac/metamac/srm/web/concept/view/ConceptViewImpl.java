@@ -389,7 +389,7 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
         conceptsTreeGrid.selectConcept(conceptDto);
 
         // Security
-        mainFormLayout.setCanEdit(ConceptsClientSecurityUtils.canUpdateConcept(conceptSchemeMetamacDto.getProcStatus(), conceptSchemeMetamacDto.getType(),
+        mainFormLayout.setCanEdit(ConceptsClientSecurityUtils.canUpdateConcept(conceptSchemeMetamacDto.getLifeCycle().getProcStatus(), conceptSchemeMetamacDto.getType(),
                 CommonUtils.getRelatedOperationCode(conceptSchemeMetamacDto)));
     }
 

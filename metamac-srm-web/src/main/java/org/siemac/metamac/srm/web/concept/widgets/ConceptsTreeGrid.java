@@ -246,10 +246,10 @@ public class ConceptsTreeGrid extends TreeGrid {
 
     private void onNodeContextClick(String nodeName, ItemDto concept) {
         selectedConcept = concept;
-        createConceptMenuItem.setEnabled(ConceptsClientSecurityUtils.canCreateConcept(conceptSchemeMetamacDto.getProcStatus(), conceptSchemeMetamacDto.getType(),
+        createConceptMenuItem.setEnabled(ConceptsClientSecurityUtils.canCreateConcept(conceptSchemeMetamacDto.getLifeCycle().getProcStatus(), conceptSchemeMetamacDto.getType(),
                 CommonUtils.getRelatedOperationCode(conceptSchemeMetamacDto)));
         deleteConceptMenuItem.setEnabled(!SCHEME_NODE_NAME.equals(nodeName)
-                && ConceptsClientSecurityUtils.canDeleteConcept(conceptSchemeMetamacDto.getProcStatus(), conceptSchemeMetamacDto.getType(),
+                && ConceptsClientSecurityUtils.canDeleteConcept(conceptSchemeMetamacDto.getLifeCycle().getProcStatus(), conceptSchemeMetamacDto.getType(),
                         CommonUtils.getRelatedOperationCode(conceptSchemeMetamacDto)));
         showContextMenu();
     }

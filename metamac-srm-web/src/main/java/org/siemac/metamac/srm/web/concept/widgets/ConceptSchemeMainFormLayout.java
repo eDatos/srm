@@ -20,7 +20,7 @@ public class ConceptSchemeMainFormLayout extends LifeCycleMainFormLayout {
     }
 
     public void updatePublishSection(ConceptSchemeMetamacDto conceptSchemeMetamacDto) {
-        super.updatePublishSection(conceptSchemeMetamacDto.getProcStatus(), conceptSchemeMetamacDto.getValidTo());
+        super.updatePublishSection(conceptSchemeMetamacDto.getLifeCycle().getProcStatus(), conceptSchemeMetamacDto.getValidTo());
         this.type = conceptSchemeMetamacDto.getType();
         this.relatedOperationCode = CommonUtils.getRelatedOperationCode(conceptSchemeMetamacDto);
     }
