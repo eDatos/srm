@@ -1,6 +1,5 @@
 package org.siemac.metamac.srm.core.mapper;
 
-import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.ExceptionLevelEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
@@ -54,17 +53,17 @@ public class Dto2DoMapperImpl extends com.arte.statistic.sdmx.srm.core.mapper.Dt
     // ------------------------------------------------------------
 
     @Override
-    public <U extends Component> U componentDtoToComponent(ServiceContext ctx, ComponentDto source) throws MetamacException {
-        return (U) dto2DoMapperSdmxSrm.componentDtoToComponent(ctx, source);
+    public <U extends Component> U componentDtoToComponent(ComponentDto source) throws MetamacException {
+        return (U) dto2DoMapperSdmxSrm.componentDtoToComponent(source);
     }
 
     @Override
-    public <U extends ComponentList> U componentListDtoToComponentList(ServiceContext ctx, ComponentListDto componentListDto) throws MetamacException {
-        return (U) dto2DoMapperSdmxSrm.componentListDtoToComponentList(ctx, componentListDto);
+    public <U extends ComponentList> U componentListDtoToComponentList(ComponentListDto componentListDto) throws MetamacException {
+        return (U) dto2DoMapperSdmxSrm.componentListDtoToComponentList(componentListDto);
     }
 
     @Override
-    public DataStructureDefinitionVersionMetamac dataStructureDefinitionDtoToDataStructureDefinition(ServiceContext ctx, DataStructureDefinitionMetamacDto source) throws MetamacException {
+    public DataStructureDefinitionVersionMetamac dataStructureDefinitionDtoToDataStructureDefinition(DataStructureDefinitionMetamacDto source) throws MetamacException {
         if (source == null) {
             return null;
         }
@@ -84,7 +83,7 @@ public class Dto2DoMapperImpl extends com.arte.statistic.sdmx.srm.core.mapper.Dt
         }
 
         // Modifiable attributes
-        dto2DoMapperSdmxSrm.dataStructureDefinitionDtoToDataStructureDefinition(ctx, source, target);
+        dto2DoMapperSdmxSrm.dataStructureDefinitionDtoToDataStructureDefinition(source, target);
 
         return target;
     }
@@ -94,7 +93,7 @@ public class Dto2DoMapperImpl extends com.arte.statistic.sdmx.srm.core.mapper.Dt
     // ------------------------------------------------------------
 
     @Override
-    public ConceptSchemeVersionMetamac conceptSchemeDtoToDo(ServiceContext ctx, ConceptSchemeMetamacDto source) throws MetamacException {
+    public ConceptSchemeVersionMetamac conceptSchemeDtoToDo(ConceptSchemeMetamacDto source) throws MetamacException {
         if (source == null) {
             return null;
         }
@@ -115,15 +114,15 @@ public class Dto2DoMapperImpl extends com.arte.statistic.sdmx.srm.core.mapper.Dt
 
         // Modifiable attributes
         target.setType(source.getType());
-        target.setRelatedOperation(externalItemDtoToExternalItem(ctx, source.getRelatedOperation(), target.getRelatedOperation(), ServiceExceptionParameters.CONCEPT_SCHEME_RELATED_OPERATION));
+        target.setRelatedOperation(externalItemDtoToExternalItem(source.getRelatedOperation(), target.getRelatedOperation(), ServiceExceptionParameters.CONCEPT_SCHEME_RELATED_OPERATION));
 
-        dto2DoMapperSdmxSrm.conceptSchemeDtoToDo(ctx, source, target);
+        dto2DoMapperSdmxSrm.conceptSchemeDtoToDo(source, target);
 
         return target;
     }
 
     @Override
-    public ConceptMetamac conceptDtoToDo(ServiceContext ctx, ConceptMetamacDto source) throws MetamacException {
+    public ConceptMetamac conceptDtoToDo(ConceptMetamacDto source) throws MetamacException {
         if (source == null) {
             return null;
         }
@@ -143,15 +142,15 @@ public class Dto2DoMapperImpl extends com.arte.statistic.sdmx.srm.core.mapper.Dt
         }
 
         // Modifiable attributes
-        target.setPluralName(internationalStringToEntity(ctx, source.getPluralName(), target.getPluralName(), ServiceExceptionParameters.CONCEPT_PLURAL_NAME));
-        target.setAcronym(internationalStringToEntity(ctx, source.getAcronym(), target.getAcronym(), ServiceExceptionParameters.CONCEPT_ACRONYM));
-        target.setDescriptionSource(internationalStringToEntity(ctx, source.getDescriptionSource(), target.getDescriptionSource(), ServiceExceptionParameters.CONCEPT_DESCRIPTION_SOURCE));
-        target.setContext(internationalStringToEntity(ctx, source.getContext(), target.getContext(), ServiceExceptionParameters.CONCEPT_CONTEXT));
-        target.setDocMethod(internationalStringToEntity(ctx, source.getDocMethod(), target.getDocMethod(), ServiceExceptionParameters.CONCEPT_DOC_METHOD));
+        target.setPluralName(internationalStringToEntity(source.getPluralName(), target.getPluralName(), ServiceExceptionParameters.CONCEPT_PLURAL_NAME));
+        target.setAcronym(internationalStringToEntity(source.getAcronym(), target.getAcronym(), ServiceExceptionParameters.CONCEPT_ACRONYM));
+        target.setDescriptionSource(internationalStringToEntity(source.getDescriptionSource(), target.getDescriptionSource(), ServiceExceptionParameters.CONCEPT_DESCRIPTION_SOURCE));
+        target.setContext(internationalStringToEntity(source.getContext(), target.getContext(), ServiceExceptionParameters.CONCEPT_CONTEXT));
+        target.setDocMethod(internationalStringToEntity(source.getDocMethod(), target.getDocMethod(), ServiceExceptionParameters.CONCEPT_DOC_METHOD));
         target.setSdmxRelatedArtefact(source.getSdmxRelatedArtefact());
         target.setType(conceptTypeDtoToDo(source.getType()));
-        target.setDerivation(internationalStringToEntity(ctx, source.getDerivation(), target.getDerivation(), ServiceExceptionParameters.CONCEPT_DERIVATION));
-        target.setLegalActs(internationalStringToEntity(ctx, source.getLegalActs(), target.getLegalActs(), ServiceExceptionParameters.CONCEPT_LEGAL_ACTS));
+        target.setDerivation(internationalStringToEntity(source.getDerivation(), target.getDerivation(), ServiceExceptionParameters.CONCEPT_DERIVATION));
+        target.setLegalActs(internationalStringToEntity(source.getLegalActs(), target.getLegalActs(), ServiceExceptionParameters.CONCEPT_LEGAL_ACTS));
 
         if (source.getConceptExtendsUrn() != null) {
             ConceptMetamac conceptExtends = conceptMetamacRepository.findByUrn(source.getConceptExtendsUrn());
@@ -165,7 +164,7 @@ public class Dto2DoMapperImpl extends com.arte.statistic.sdmx.srm.core.mapper.Dt
 
         // note: not conversion to relatedConcepts, roles... Call 'add/delete RelatedConcepts' operation of Service
 
-        dto2DoMapperSdmxSrm.conceptDtoToDo(ctx, source, target);
+        dto2DoMapperSdmxSrm.conceptDtoToDo(source, target);
 
         return target;
     }

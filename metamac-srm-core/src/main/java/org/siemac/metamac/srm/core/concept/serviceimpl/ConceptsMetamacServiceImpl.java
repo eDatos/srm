@@ -120,7 +120,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         // Validation
         ConceptsMetamacInvocationValidator.checkFindConceptSchemesByCondition(conditions, pagingParameter, null);
 
-        // Find (do not call sdmx module to avoid typecast)
+        // Find (do not call SDMX module to avoid type cast)
         if (conditions == null) {
             conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).build();
         }

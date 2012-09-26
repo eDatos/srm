@@ -1,6 +1,5 @@
 package org.siemac.metamac.srm.core.mapper;
 
-import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
@@ -17,14 +16,13 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentListDto;
 public interface Dto2DoMapper {
 
     // TODO Cambiar a tipos de METAMAC
-    public <U extends Component> U componentDtoToComponent(ServiceContext ctx, ComponentDto source) throws MetamacException;
-    public <U extends ComponentList> U componentListDtoToComponentList(ServiceContext ctx, ComponentListDto componentListDto) throws MetamacException;
+    public <U extends Component> U componentDtoToComponent(ComponentDto source) throws MetamacException;
+    public <U extends ComponentList> U componentListDtoToComponentList(ComponentListDto componentListDto) throws MetamacException;
 
-    public DataStructureDefinitionVersionMetamac dataStructureDefinitionDtoToDataStructureDefinition(ServiceContext ctx, DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto)
-            throws MetamacException;
+    public DataStructureDefinitionVersionMetamac dataStructureDefinitionDtoToDataStructureDefinition(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) throws MetamacException;
 
-    public ConceptSchemeVersionMetamac conceptSchemeDtoToDo(ServiceContext ctx, ConceptSchemeMetamacDto conceptSchemeDto) throws MetamacException;
+    public ConceptSchemeVersionMetamac conceptSchemeDtoToDo(ConceptSchemeMetamacDto conceptSchemeDto) throws MetamacException;
 
-    public ConceptMetamac conceptDtoToDo(ServiceContext ctx, ConceptMetamacDto conceptDto) throws MetamacException;
+    public ConceptMetamac conceptDtoToDo(ConceptMetamacDto conceptDto) throws MetamacException;
 
 }
