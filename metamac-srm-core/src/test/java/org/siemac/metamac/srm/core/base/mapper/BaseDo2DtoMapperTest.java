@@ -1,10 +1,9 @@
 package org.siemac.metamac.srm.core.base.mapper;
 
-import static org.junit.Assert.assertEquals;
+import static org.siemac.metamac.srm.core.base.utils.BaseAsserts.assertEqualsLifeCycle;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.siemac.metamac.core.common.util.CoreCommonUtil;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.base.dto.LifeCycleDto;
 import org.siemac.metamac.srm.core.base.utils.BaseDoMocks;
@@ -27,17 +26,9 @@ public class BaseDo2DtoMapperTest {
 
     @Test
     public void testLifeCycleMetadata() {
-        SrmLifeCycleMetadata source = BaseDoMocks.mockLifeCycle();
-        LifeCycleDto target = do2DtoMapper.lifeCycleDoToDto(source);
-        assertEquals(source.getProcStatus(), target.getProcStatus());
-        assertEquals(CoreCommonUtil.transformDateTimeToDate(source.getProductionValidationDate()), target.getProductionValidationDate());
-        assertEquals(source.getProductionValidationUser(), target.getProductionValidationUser());
-        assertEquals(CoreCommonUtil.transformDateTimeToDate(source.getDiffusionValidationDate()), target.getDiffusionValidationDate());
-        assertEquals(source.getDiffusionValidationUser(), target.getDiffusionValidationUser());
-        assertEquals(CoreCommonUtil.transformDateTimeToDate(source.getInternalPublicationDate()), target.getInternalPublicationDate());
-        assertEquals(source.getInternalPublicationUser(), target.getInternalPublicationUser());
-        assertEquals(CoreCommonUtil.transformDateTimeToDate(source.getExternalPublicationDate()), target.getExternalPublicationDate());
-        assertEquals(source.getExternalPublicationUser(), target.getExternalPublicationUser());
+        SrmLifeCycleMetadata entity = BaseDoMocks.mockLifeCycle();
+        LifeCycleDto dto = do2DtoMapper.lifeCycleDoToDto(entity);
+        assertEqualsLifeCycle(entity, dto);
     }
 
 }
