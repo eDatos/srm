@@ -25,24 +25,24 @@ public class UpdateOrganisationSchemeProcStatusActionHandler extends SecurityAct
         // try {
         OrganisationSchemeMetamacDto scheme = MockService.getOrganisationSchemeMetamacDto();
         if (ProcStatusEnum.PRODUCTION_VALIDATION.equals(action.getNextProcStatus())) {
-            scheme.setProcStatus(ProcStatusEnum.PRODUCTION_VALIDATION);
+            scheme.getLifeCycle().setProcStatus(ProcStatusEnum.PRODUCTION_VALIDATION);
             // scheme = srmCoreServiceFacade.sendOrganisationSchemeToProductionValidation(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
         } else if (ProcStatusEnum.DIFFUSION_VALIDATION.equals(action.getNextProcStatus())) {
-            scheme.setProcStatus(ProcStatusEnum.DIFFUSION_VALIDATION);
+            scheme.getLifeCycle().setProcStatus(ProcStatusEnum.DIFFUSION_VALIDATION);
             // scheme = srmCoreServiceFacade.sendOrganisationSchemeToDiffusionValidation(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
         } else if (ProcStatusEnum.VALIDATION_REJECTED.equals(action.getNextProcStatus())) {
             if (ProcStatusEnum.PRODUCTION_VALIDATION.equals(action.getCurrentProcStatus())) {
-                scheme.setProcStatus(ProcStatusEnum.VALIDATION_REJECTED);
+                scheme.getLifeCycle().setProcStatus(ProcStatusEnum.VALIDATION_REJECTED);
                 // scheme = srmCoreServiceFacade.rejectOrganisationSchemeProductionValidation(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
             } else if (ProcStatusEnum.DIFFUSION_VALIDATION.equals(action.getCurrentProcStatus())) {
-                scheme.setProcStatus(ProcStatusEnum.VALIDATION_REJECTED);
+                scheme.getLifeCycle().setProcStatus(ProcStatusEnum.VALIDATION_REJECTED);
                 // scheme = srmCoreServiceFacade.rejectOrganisationSchemeDiffusionValidation(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
             }
         } else if (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(action.getNextProcStatus())) {
-            scheme.setProcStatus(ProcStatusEnum.INTERNALLY_PUBLISHED);
+            scheme.getLifeCycle().setProcStatus(ProcStatusEnum.INTERNALLY_PUBLISHED);
             // scheme = srmCoreServiceFacade.publishOrganisationSchemeInternally(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
         } else if (ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(action.getNextProcStatus())) {
-            scheme.setProcStatus(ProcStatusEnum.EXTERNALLY_PUBLISHED);
+            scheme.getLifeCycle().setProcStatus(ProcStatusEnum.EXTERNALLY_PUBLISHED);
             // scheme = srmCoreServiceFacade.publishOrganisationSchemeExternally(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
         }
         return new UpdateOrganisationSchemeProcStatusResult(scheme);

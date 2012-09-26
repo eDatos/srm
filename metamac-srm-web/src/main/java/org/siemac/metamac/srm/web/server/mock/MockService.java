@@ -4,6 +4,7 @@ import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.dto.LocalisedStringDto;
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
+import org.siemac.metamac.srm.core.base.dto.LifeCycleDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 
@@ -31,7 +32,7 @@ public class MockService {
         organisationSchemeMetamacDto.setCode("organisation-scheme-1");
         organisationSchemeMetamacDto.setType(OrganisationSchemeTypeEnum.AGENCY_SCHEME);
         organisationSchemeMetamacDto.setUrn("urn:sdmx:org.sdmx.infomodel.organisationscheme.OrganisationScheme=agency_CODE:scheme0001(01.000)");
-        organisationSchemeMetamacDto.setProcStatus(ProcStatusEnum.DRAFT);
+        organisationSchemeMetamacDto.setLifeCycle(new LifeCycleDto(ProcStatusEnum.DRAFT));
         organisationSchemeMetamacDto.setName(MockService.createInternationalStringDto("Esquema de organizaciones 1", "Organisation scheme 1"));
         organisationSchemeMetamacDto.setUrn("urn:organisation:1");
         organisationSchemeMetamacDto.setDescription(MockService.createInternationalStringDto("Descripción", "Description"));

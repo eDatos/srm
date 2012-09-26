@@ -3,13 +3,14 @@ package org.siemac.metamac.srm.core.organisation.mapper;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.siemac.metamac.srm.core.base.mapper.BaseDo2DtoMapperImpl;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 @org.springframework.stereotype.Component("organisationsDo2DtoMapper")
-public class OrganisationsDo2DtoMapperImpl implements OrganisationsDo2DtoMapper {
+public class OrganisationsDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements OrganisationsDo2DtoMapper {
 
     @Autowired
     @Qualifier("organisationsDo2DtoMapperSdmxSrm")
@@ -21,9 +22,7 @@ public class OrganisationsDo2DtoMapperImpl implements OrganisationsDo2DtoMapper 
             return null;
         }
         OrganisationSchemeMetamacDto target = new OrganisationSchemeMetamacDto();
-
-        // TODO life cycle
-
+        target.setLifeCycle(lifeCycleDoToDto(source.getLifecycleMetadata()));
         do2DtoMapper.organisationSchemeDoToDto(source);
         return target;
     }

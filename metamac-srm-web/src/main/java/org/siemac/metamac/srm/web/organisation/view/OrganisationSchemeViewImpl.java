@@ -147,7 +147,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
 
             @Override
             public void onClick(ClickEvent event) {
-                ProcStatusEnum status = organisationSchemeDto.getProcStatus();
+                ProcStatusEnum status = organisationSchemeDto.getLifeCycle().getProcStatus();
                 if (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(status) || ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(status)) {
                     // Create a new version
                     final InformationWindow window = new InformationWindow(getMessages().organisationSchemeEditionInfo(), getMessages().organisationSchemeEditionInfoDetailedMessage());
@@ -176,35 +176,35 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
 
             @Override
             public void onClick(ClickEvent event) {
-                getUiHandlers().sendToProductionValidation(organisationSchemeDto.getUrn(), organisationSchemeDto.getProcStatus());
+                getUiHandlers().sendToProductionValidation(organisationSchemeDto.getUrn(), organisationSchemeDto.getLifeCycle().getProcStatus());
             }
         });
         mainFormLayout.getSendToDiffusionValidation().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                getUiHandlers().sendToDiffusionValidation(organisationSchemeDto.getUrn(), organisationSchemeDto.getProcStatus());
+                getUiHandlers().sendToDiffusionValidation(organisationSchemeDto.getUrn(), organisationSchemeDto.getLifeCycle().getProcStatus());
             }
         });
         mainFormLayout.getRejectValidation().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                getUiHandlers().rejectValidation(organisationSchemeDto.getUrn(), organisationSchemeDto.getProcStatus());
+                getUiHandlers().rejectValidation(organisationSchemeDto.getUrn(), organisationSchemeDto.getLifeCycle().getProcStatus());
             }
         });
         mainFormLayout.getPublishInternally().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                getUiHandlers().publishInternally(organisationSchemeDto.getUrn(), organisationSchemeDto.getProcStatus());
+                getUiHandlers().publishInternally(organisationSchemeDto.getUrn(), organisationSchemeDto.getLifeCycle().getProcStatus());
             }
         });
         mainFormLayout.getPublishExternally().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                getUiHandlers().publishExternally(organisationSchemeDto.getUrn(), organisationSchemeDto.getProcStatus());
+                getUiHandlers().publishExternally(organisationSchemeDto.getUrn(), organisationSchemeDto.getLifeCycle().getProcStatus());
             }
         });
         mainFormLayout.getVersioning().addClickHandler(new ClickHandler() {
@@ -307,8 +307,9 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
                 // CODE cannot be modified if status is INTERNALLY_PUBLISHED or EXTERNALLY_PUBLISHED, or if version is greater than VERSION_INITIAL_VERSION (01.000)
-                return !((ProcStatusEnum.INTERNALLY_PUBLISHED.equals(organisationSchemeDto.getProcStatus()) || ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(organisationSchemeDto.getProcStatus())) || (!VersionUtil.VERSION_INITIAL_VERSION
-                        .equals(organisationSchemeDto.getVersionLogic()) && !StringUtils.isBlank(organisationSchemeDto.getVersionLogic())));
+                return !((ProcStatusEnum.INTERNALLY_PUBLISHED.equals(organisationSchemeDto.getLifeCycle().getProcStatus()) || ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(organisationSchemeDto
+                        .getLifeCycle().getProcStatus())) || (!VersionUtil.VERSION_INITIAL_VERSION.equals(organisationSchemeDto.getVersionLogic()) && !StringUtils.isBlank(organisationSchemeDto
+                        .getVersionLogic())));
             }
         });
         ViewTextItem staticCode = new ViewTextItem(OrganisationSchemeDS.CODE_VIEW, getConstants().identifiableArtefactCode());
@@ -417,7 +418,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         String title = defaultLocalized != null ? defaultLocalized : StringUtils.EMPTY;
         mainFormLayout.setTitleLabelContents(title);
 
-        mainFormLayout.updatePublishSection(organisationSchemeMetamacDto.getProcStatus(), organisationSchemeMetamacDto.getValidTo());
+        mainFormLayout.updatePublishSection(organisationSchemeMetamacDto.getLifeCycle().getProcStatus(), organisationSchemeMetamacDto.getValidTo());
         mainFormLayout.setViewMode();
 
         setOrganisationSchemeViewMode(organisationSchemeMetamacDto);
@@ -455,26 +456,28 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         classDescriptorsForm.setValue(OrganisationSchemeDS.MAINTAINER, organisationSchemeDto.getMaintainer() != null ? organisationSchemeDto.getMaintainer().getCode() : StringUtils.EMPTY);
 
         // Production descriptors
-        productionDescriptorsForm.setValue(OrganisationSchemeDS.PROC_STATUS, org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(organisationSchemeDto.getProcStatus()));
+        productionDescriptorsForm.setValue(OrganisationSchemeDS.PROC_STATUS,
+                org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(organisationSchemeDto.getLifeCycle().getProcStatus()));
 
         // Diffusion descriptors
         diffusionDescriptorsForm.setValue(OrganisationSchemeDS.REPLACED_BY, organisationSchemeDto.getReplacedBy());
         diffusionDescriptorsForm.setValue(OrganisationSchemeDS.REPLACE_TO, organisationSchemeDto.getReplaceTo());
         diffusionDescriptorsForm.setValue(OrganisationSchemeDS.VALID_FROM, organisationSchemeDto.getValidFrom());
         diffusionDescriptorsForm.setValue(OrganisationSchemeDS.VALID_TO, organisationSchemeDto.getValidTo());
-        diffusionDescriptorsForm.setValue(OrganisationSchemeDS.IS_EXTERNAL_PUBLICATION_FAILED, BooleanUtils.isTrue(organisationSchemeDto.getIsExternalPublicationFailed()) ? MetamacWebCommon
-                .getConstants().yes() : StringUtils.EMPTY);
-        diffusionDescriptorsForm.setValue(OrganisationSchemeDS.EXTERNAL_PUBLICATION_FAILED_DATE, DateUtils.getFormattedDate(organisationSchemeDto.getExternalPublicationFailedDate()));
+        diffusionDescriptorsForm.setValue(OrganisationSchemeDS.IS_EXTERNAL_PUBLICATION_FAILED, BooleanUtils.isTrue(organisationSchemeDto.getLifeCycle().getIsExternalPublicationFailed())
+                ? MetamacWebCommon.getConstants().yes()
+                : StringUtils.EMPTY);
+        diffusionDescriptorsForm.setValue(OrganisationSchemeDS.EXTERNAL_PUBLICATION_FAILED_DATE, DateUtils.getFormattedDate(organisationSchemeDto.getLifeCycle().getExternalPublicationFailedDate()));
 
         // Version responsibility
-        versionResponsibilityForm.setValue(OrganisationSchemeDS.PRODUCTION_VALIDATION_USER, organisationSchemeDto.getProductionValidationUser());
-        versionResponsibilityForm.setValue(OrganisationSchemeDS.PRODUCTION_VALIDATION_DATE, organisationSchemeDto.getProductionValidationDate());
-        versionResponsibilityForm.setValue(OrganisationSchemeDS.DIFFUSION_VALIDATION_USER, organisationSchemeDto.getDiffusionValidationUser());
-        versionResponsibilityForm.setValue(OrganisationSchemeDS.DIFFUSION_VALIDATION_DATE, organisationSchemeDto.getDiffusionValidationDate());
-        versionResponsibilityForm.setValue(OrganisationSchemeDS.INTERNAL_PUBLICATION_USER, organisationSchemeDto.getInternalPublicationUser());
-        versionResponsibilityForm.setValue(OrganisationSchemeDS.INTERNAL_PUBLICATION_DATE, organisationSchemeDto.getInternalPublicationDate());
-        versionResponsibilityForm.setValue(OrganisationSchemeDS.EXTERNAL_PUBLICATION_USER, organisationSchemeDto.getExternalPublicationUser());
-        versionResponsibilityForm.setValue(OrganisationSchemeDS.EXTERNAL_PUBLICATION_DATE, organisationSchemeDto.getExternalPublicationDate());
+        versionResponsibilityForm.setValue(OrganisationSchemeDS.PRODUCTION_VALIDATION_USER, organisationSchemeDto.getLifeCycle().getProductionValidationUser());
+        versionResponsibilityForm.setValue(OrganisationSchemeDS.PRODUCTION_VALIDATION_DATE, organisationSchemeDto.getLifeCycle().getProductionValidationDate());
+        versionResponsibilityForm.setValue(OrganisationSchemeDS.DIFFUSION_VALIDATION_USER, organisationSchemeDto.getLifeCycle().getDiffusionValidationUser());
+        versionResponsibilityForm.setValue(OrganisationSchemeDS.DIFFUSION_VALIDATION_DATE, organisationSchemeDto.getLifeCycle().getDiffusionValidationDate());
+        versionResponsibilityForm.setValue(OrganisationSchemeDS.INTERNAL_PUBLICATION_USER, organisationSchemeDto.getLifeCycle().getInternalPublicationUser());
+        versionResponsibilityForm.setValue(OrganisationSchemeDS.INTERNAL_PUBLICATION_DATE, organisationSchemeDto.getLifeCycle().getInternalPublicationDate());
+        versionResponsibilityForm.setValue(OrganisationSchemeDS.EXTERNAL_PUBLICATION_USER, organisationSchemeDto.getLifeCycle().getExternalPublicationUser());
+        versionResponsibilityForm.setValue(OrganisationSchemeDS.EXTERNAL_PUBLICATION_DATE, organisationSchemeDto.getLifeCycle().getExternalPublicationDate());
 
         // Annotations
         annotationsPanel.setAnnotations(organisationSchemeDto.getAnnotations());
@@ -503,26 +506,29 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         classDescriptorsEditionForm.setValue(OrganisationSchemeDS.MAINTAINER, organisationSchemeDto.getMaintainer() != null ? organisationSchemeDto.getMaintainer().getCode() : StringUtils.EMPTY);
 
         // Production descriptors
-        productionDescriptorsEditionForm.setValue(OrganisationSchemeDS.PROC_STATUS, org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(organisationSchemeDto.getProcStatus()));
+        productionDescriptorsEditionForm.setValue(OrganisationSchemeDS.PROC_STATUS,
+                org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(organisationSchemeDto.getLifeCycle().getProcStatus()));
 
         // Diffusion descriptors
         diffusionDescriptorsEditionForm.setValue(OrganisationSchemeDS.REPLACED_BY, organisationSchemeDto.getReplacedBy());
         diffusionDescriptorsEditionForm.setValue(OrganisationSchemeDS.REPLACE_TO, organisationSchemeDto.getReplaceTo());
         diffusionDescriptorsEditionForm.setValue(OrganisationSchemeDS.VALID_FROM, DateUtils.getFormattedDate(organisationSchemeDto.getValidFrom()));
         diffusionDescriptorsEditionForm.setValue(OrganisationSchemeDS.VALID_TO, DateUtils.getFormattedDate(organisationSchemeDto.getValidTo()));
-        diffusionDescriptorsEditionForm.setValue(OrganisationSchemeDS.IS_EXTERNAL_PUBLICATION_FAILED, BooleanUtils.isTrue(organisationSchemeDto.getIsExternalPublicationFailed()) ? MetamacWebCommon
-                .getConstants().yes() : MetamacWebCommon.getConstants().no());
-        diffusionDescriptorsEditionForm.setValue(OrganisationSchemeDS.EXTERNAL_PUBLICATION_FAILED_DATE, DateUtils.getFormattedDate(organisationSchemeDto.getExternalPublicationFailedDate()));
+        diffusionDescriptorsEditionForm.setValue(OrganisationSchemeDS.IS_EXTERNAL_PUBLICATION_FAILED, BooleanUtils.isTrue(organisationSchemeDto.getLifeCycle().getIsExternalPublicationFailed())
+                ? MetamacWebCommon.getConstants().yes()
+                : MetamacWebCommon.getConstants().no());
+        diffusionDescriptorsEditionForm.setValue(OrganisationSchemeDS.EXTERNAL_PUBLICATION_FAILED_DATE,
+                DateUtils.getFormattedDate(organisationSchemeDto.getLifeCycle().getExternalPublicationFailedDate()));
 
         // Version responsibility
-        versionResponsibilityEditionForm.setValue(OrganisationSchemeDS.PRODUCTION_VALIDATION_USER, organisationSchemeDto.getProductionValidationUser());
-        versionResponsibilityEditionForm.setValue(OrganisationSchemeDS.PRODUCTION_VALIDATION_DATE, organisationSchemeDto.getProductionValidationDate());
-        versionResponsibilityEditionForm.setValue(OrganisationSchemeDS.DIFFUSION_VALIDATION_USER, organisationSchemeDto.getDiffusionValidationUser());
-        versionResponsibilityEditionForm.setValue(OrganisationSchemeDS.DIFFUSION_VALIDATION_DATE, organisationSchemeDto.getDiffusionValidationDate());
-        versionResponsibilityEditionForm.setValue(OrganisationSchemeDS.INTERNAL_PUBLICATION_USER, organisationSchemeDto.getInternalPublicationUser());
-        versionResponsibilityEditionForm.setValue(OrganisationSchemeDS.INTERNAL_PUBLICATION_DATE, organisationSchemeDto.getInternalPublicationDate());
-        versionResponsibilityEditionForm.setValue(OrganisationSchemeDS.EXTERNAL_PUBLICATION_USER, organisationSchemeDto.getExternalPublicationUser());
-        versionResponsibilityEditionForm.setValue(OrganisationSchemeDS.EXTERNAL_PUBLICATION_DATE, organisationSchemeDto.getExternalPublicationDate());
+        versionResponsibilityEditionForm.setValue(OrganisationSchemeDS.PRODUCTION_VALIDATION_USER, organisationSchemeDto.getLifeCycle().getProductionValidationUser());
+        versionResponsibilityEditionForm.setValue(OrganisationSchemeDS.PRODUCTION_VALIDATION_DATE, organisationSchemeDto.getLifeCycle().getProductionValidationDate());
+        versionResponsibilityEditionForm.setValue(OrganisationSchemeDS.DIFFUSION_VALIDATION_USER, organisationSchemeDto.getLifeCycle().getDiffusionValidationUser());
+        versionResponsibilityEditionForm.setValue(OrganisationSchemeDS.DIFFUSION_VALIDATION_DATE, organisationSchemeDto.getLifeCycle().getDiffusionValidationDate());
+        versionResponsibilityEditionForm.setValue(OrganisationSchemeDS.INTERNAL_PUBLICATION_USER, organisationSchemeDto.getLifeCycle().getInternalPublicationUser());
+        versionResponsibilityEditionForm.setValue(OrganisationSchemeDS.INTERNAL_PUBLICATION_DATE, organisationSchemeDto.getLifeCycle().getInternalPublicationDate());
+        versionResponsibilityEditionForm.setValue(OrganisationSchemeDS.EXTERNAL_PUBLICATION_USER, organisationSchemeDto.getLifeCycle().getExternalPublicationUser());
+        versionResponsibilityEditionForm.setValue(OrganisationSchemeDS.EXTERNAL_PUBLICATION_DATE, organisationSchemeDto.getLifeCycle().getExternalPublicationDate());
 
         // Annotations
         annotationsEditionPanel.setAnnotations(organisationSchemeDto.getAnnotations());

@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.web.server.handlers.organisation;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.siemac.metamac.srm.core.base.dto.LifeCycleDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 import org.siemac.metamac.srm.web.server.mock.MockService;
@@ -31,7 +32,7 @@ public class GetOrganisationSchemeListActionHandler extends SecurityActionHandle
             organisationSchemeMetamacDto.setId(Long.valueOf(i));
             organisationSchemeMetamacDto.setCode("organisation-scheme-" + i);
             organisationSchemeMetamacDto.setUrn("urn:sdmx:org.sdmx.infomodel.organisationscheme.OrganisationScheme=agency_CODE:scheme0001(01.000)");
-            organisationSchemeMetamacDto.setProcStatus(ProcStatusEnum.DRAFT);
+            organisationSchemeMetamacDto.setLifeCycle(new LifeCycleDto(ProcStatusEnum.DRAFT));
             organisationSchemeMetamacDto.setName(MockService.createInternationalStringDto("Esquema de organizaciones " + i, "Organisation scheme " + i));
             organisationSchemeMetamacDtos.add(organisationSchemeMetamacDto);
         }

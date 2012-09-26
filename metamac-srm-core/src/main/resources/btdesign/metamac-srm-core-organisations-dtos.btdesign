@@ -1,6 +1,5 @@
-import "classpath:/btdesign/metamac-core-common-dtos.btdesign"
 import "classpath:/btdesign/statistic-sdmx-v2_1-domain-dtos-organisations.btdesign"
-import "classpath:/btdesign/metamac-srm-core-enum.btdesign"
+import "classpath:/btdesign/metamac-srm-core-base-dtos.btdesign"
 
 Application DtosMetamacOrganisationDomain {
 	basePackage=unused
@@ -10,29 +9,8 @@ Application DtosMetamacOrganisationDomain {
 		
 		"Dto for OrganisationSchemeMetamac"
 		DataTransferObject OrganisationSchemeMetamacDto extends @OrganisationSchemeDto {
-			"Status"
-			- @ProcStatusEnum procStatus required;
-			
-			"Date when the organisation scheme was sended to production validation"
-			JAVADATE productionValidationDate nullable;
-			"User who sended to production validation"
-			String productionValidationUser nullable;
-			"Date when the organisation scheme was sended to diffusion validation"
-			JAVADATE diffusionValidationDate nullable;
-			"User who sended to diffusion validation"
-			String diffusionValidationUser nullable;
-			"Date when the organisation scheme was published internally"
-			JAVADATE internalPublicationDate nullable;
-			"User who published internally"
-			String internalPublicationUser nullable;
-			"Date when the organisation scheme was published externally"
-			JAVADATE externalPublicationDate nullable;
-			"User who published externally"
-			String externalPublicationUser nullable;
-			"The external publication failed"
-			Boolean isExternalPublicationFailed nullable;
-			"External publication failed date"
-			JAVADATE externalPublicationFailedDate nullable; 
+			"Life cycle"
+			- @LifeCycleDto lifeCycle required;
 		}
 	}
 	

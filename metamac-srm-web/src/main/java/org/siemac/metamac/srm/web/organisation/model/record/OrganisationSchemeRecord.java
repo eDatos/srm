@@ -64,7 +64,7 @@ public class OrganisationSchemeRecord extends ListGridRecord {
     }
 
     public ProcStatusEnum getProcStatus() {
-        return ((OrganisationSchemeMetamacDto) getAttributeAsObject(OrganisationSchemeDS.DTO)).getProcStatus();
+        return ((OrganisationSchemeMetamacDto) getAttributeAsObject(OrganisationSchemeDS.DTO)).getLifeCycle().getProcStatus();
     }
 
     public String getDescription() {
