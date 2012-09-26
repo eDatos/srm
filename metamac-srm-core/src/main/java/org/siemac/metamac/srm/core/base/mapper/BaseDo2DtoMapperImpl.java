@@ -21,6 +21,8 @@ public class BaseDo2DtoMapperImpl implements org.siemac.metamac.srm.core.base.ma
         target.setInternalPublicationUser(source.getInternalPublicationUser());
         target.setExternalPublicationDate(CoreCommonUtil.transformDateTimeToDate(source.getExternalPublicationDate()));
         target.setExternalPublicationUser(source.getExternalPublicationUser());
+        // TODO isExternalPublicationFailed
+        // TODO externalPublicationFailedDate
         return target;
     }
 

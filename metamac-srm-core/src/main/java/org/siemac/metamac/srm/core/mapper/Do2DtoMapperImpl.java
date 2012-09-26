@@ -3,7 +3,7 @@ package org.siemac.metamac.srm.core.mapper;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.siemac.metamac.core.common.util.CoreCommonUtil;
+import org.siemac.metamac.srm.core.base.mapper.BaseDo2DtoMapperImpl;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptType;
@@ -26,7 +26,7 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeDozerCopyMode;
 
 @org.springframework.stereotype.Component("do2DtoMapper")
-public class Do2DtoMapperImpl implements Do2DtoMapper {
+public class Do2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Do2DtoMapper {
 
     // ------------------------------------------------------------
     // DSDs
@@ -70,16 +70,7 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
 
     private DataStructureDefinitionMetamacDto dataStructureDefinitionVersionMetamacDoToDto(DataStructureDefinitionVersionMetamac source, TypeDozerCopyMode typeDozerCopyMode) {
         DataStructureDefinitionMetamacDto target = new DataStructureDefinitionMetamacDto();
-        target.setProcStatus(source.getLifecycleMetadata().getProcStatus());
-        target.setProductionValidationDate(CoreCommonUtil.transformDateTimeToDate(source.getLifecycleMetadata().getProductionValidationDate()));
-        target.setProductionValidationUser(source.getLifecycleMetadata().getProductionValidationUser());
-        target.setDiffusionValidationDate(CoreCommonUtil.transformDateTimeToDate(source.getLifecycleMetadata().getDiffusionValidationDate()));
-        target.setDiffusionValidationUser(source.getLifecycleMetadata().getDiffusionValidationUser());
-        target.setInternalPublicationDate(CoreCommonUtil.transformDateTimeToDate(source.getLifecycleMetadata().getInternalPublicationDate()));
-        target.setInternalPublicationUser(source.getLifecycleMetadata().getInternalPublicationUser());
-        target.setExternalPublicationDate(CoreCommonUtil.transformDateTimeToDate(source.getLifecycleMetadata().getExternalPublicationDate()));
-        target.setExternalPublicationUser(source.getLifecycleMetadata().getExternalPublicationUser());
-
+        target.setLifeCycle(lifeCycleDoToDto(source.getLifecycleMetadata()));
         do2DtoMapperSdmxSrm.dataStructureDefinitionDoToDto(typeDozerCopyMode, source, target);
         return target;
     }
@@ -108,19 +99,10 @@ public class Do2DtoMapperImpl implements Do2DtoMapper {
             return null;
         }
         ConceptSchemeMetamacDto target = new ConceptSchemeMetamacDto();
-        
-        // TODO lifecycle conversion a común. tb el del dsd
-        target.setProcStatus(source.getLifecycleMetadata().getProcStatus());
+
         target.setType(source.getType());
         target.setRelatedOperation(do2DtoMapperSdmxSrm.externalItemToExternalItemDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getRelatedOperation()));
-        target.setProductionValidationDate(CoreCommonUtil.transformDateTimeToDate(source.getLifecycleMetadata().getProductionValidationDate()));
-        target.setProductionValidationUser(source.getLifecycleMetadata().getProductionValidationUser());
-        target.setDiffusionValidationDate(CoreCommonUtil.transformDateTimeToDate(source.getLifecycleMetadata().getDiffusionValidationDate()));
-        target.setDiffusionValidationUser(source.getLifecycleMetadata().getDiffusionValidationUser());
-        target.setInternalPublicationDate(CoreCommonUtil.transformDateTimeToDate(source.getLifecycleMetadata().getInternalPublicationDate()));
-        target.setInternalPublicationUser(source.getLifecycleMetadata().getInternalPublicationUser());
-        target.setExternalPublicationDate(CoreCommonUtil.transformDateTimeToDate(source.getLifecycleMetadata().getExternalPublicationDate()));
-        target.setExternalPublicationUser(source.getLifecycleMetadata().getExternalPublicationUser());
+        target.setLifeCycle(lifeCycleDoToDto(source.getLifecycleMetadata()));
 
         do2DtoMapperSdmxSrm.conceptSchemeDoToDto(source, target);
         return target;
