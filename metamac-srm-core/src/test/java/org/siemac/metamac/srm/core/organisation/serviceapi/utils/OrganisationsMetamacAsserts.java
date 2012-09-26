@@ -10,7 +10,7 @@ import com.arte.statistic.sdmx.srm.core.organisation.serviceapi.utils.Organisati
 public class OrganisationsMetamacAsserts extends OrganisationsAsserts {
 
     public static void assertEqualsOrganisationScheme(OrganisationSchemeVersionMetamac expected, OrganisationSchemeVersionMetamac actual) {
-        assertEquals(expected.getType(), actual.getType());
+        assertEquals(expected.getOrganisationSchemeType(), actual.getOrganisationSchemeType());
         OrganisationsAsserts.assertEqualsOrganisationScheme(expected, actual);
     }
 
