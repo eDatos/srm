@@ -4,6 +4,7 @@ import org.siemac.metamac.core.common.util.CoreCommonUtil;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.base.dto.LifeCycleDto;
 
+@org.springframework.stereotype.Component("baseDo2DtoMapper")
 public class BaseDo2DtoMapperImpl implements org.siemac.metamac.srm.core.base.mapper.BaseDo2DtoMapper {
 
     @Override
