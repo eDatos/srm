@@ -5,6 +5,7 @@
 
     <!-- Specify the paths for translatable code -->
     <source path='constants' />
+    <source path='base/dto' />
     <source path='dsd/dto' />
     <source path='concept/dto' />
     <source path='concept/enume/domain' />
