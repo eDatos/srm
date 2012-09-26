@@ -16,7 +16,7 @@ public class SearchConceptsWindow extends BaseSearchWindow {
     private SearchConceptsPaginatedItem conceptsListGridItem;
 
     public SearchConceptsWindow(String title, int maxResults, PaginatedAction action) {
-        super(title, maxResults, action);
+        super(title, maxResults);
 
         conceptsListGridItem = new SearchConceptsPaginatedItem("list", "title", FORM_ITEM_CUSTOM_WIDTH, maxResults, action);
         conceptsListGridItem.setWidth(FORM_ITEM_CUSTOM_WIDTH);
