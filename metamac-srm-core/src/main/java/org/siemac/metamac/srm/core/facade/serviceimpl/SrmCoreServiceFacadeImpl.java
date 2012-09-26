@@ -42,7 +42,10 @@ import org.siemac.metamac.srm.core.mapper.Do2DtoMapper;
 import org.siemac.metamac.srm.core.mapper.Dto2DoMapper;
 import org.siemac.metamac.srm.core.mapper.MetamacCriteria2SculptorCriteriaMapper;
 import org.siemac.metamac.srm.core.mapper.SculptorCriteria2MetamacCriteriaMapper;
+import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
+import org.siemac.metamac.srm.core.organisation.mapper.OrganisationsDo2DtoMapper;
+import org.siemac.metamac.srm.core.organisation.mapper.OrganisationsDto2DoMapper;
 import org.siemac.metamac.srm.core.security.ConceptsSecurityUtils;
 import org.siemac.metamac.srm.core.security.DataStructureDefinitionSecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,6 +91,14 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Autowired
     @Qualifier("dto2DoMapper")
     private Dto2DoMapper                           dto2DoMapper;
+
+    @Autowired
+    @Qualifier("organisationsDo2DtoMapper")
+    private OrganisationsDo2DtoMapper              organisationsDo2DtoMapper;
+
+    @Autowired
+    @Qualifier("organisationsDto2DoMapper")
+    private OrganisationsDto2DoMapper              organisationsDto2DoMapper;
 
     @Autowired
     @Qualifier("jaxb2MarshallerWithValidation")
@@ -536,32 +547,73 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public OrganisationSchemeMetamacDto createOrganisationScheme(ServiceContext ctx, OrganisationSchemeMetamacDto organisationSchemeDto) throws MetamacException {
-        // TODO Auto-generated method stub
-        return null;
+        // TODO Security and transform
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsDto2DoMapper.organisationSchemeMetamacDtoToDo(organisationSchemeDto);
+        // OrganisationsSecurityUtils.canCreateOrganisationScheme(ctx, organisationSchemeVersion);
+
+        // Create
+        OrganisationSchemeVersionMetamac organisationSchemeVersionCreated = getOrganisationsMetamacService().createOrganisationScheme(ctx, organisationSchemeVersion);
+
+        // Transform to DTO
+        organisationSchemeDto = organisationsDo2DtoMapper.organisationSchemeMetamacDoToDto(organisationSchemeVersionCreated);
+        return organisationSchemeDto;
     }
 
     @Override
     public void deleteOrganisationScheme(ServiceContext ctx, String urn) throws MetamacException {
-        // TODO Auto-generated method stub
+        // TODO Security
+        // OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationsMetamacService().retrieveOrganisationSchemeByUrn(ctx, urn);
+        // OrganisationsSecurityUtils.canDeleteOrganisationScheme(ctx, organisationSchemeVersion);
 
+        // Delete
+        getOrganisationsMetamacService().deleteOrganisationScheme(ctx, urn);
     }
 
     @Override
     public MetamacCriteriaResult<OrganisationSchemeMetamacDto> findOrganisationSchemesByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
-        // TODO Auto-generated method stub
-        return null;
+        // TODO Security
+        // OrganisationsSecurityUtils.canFindOrganisationSchemesByCondition(ctx);
+
+        // Transform
+        SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getOrganisationSchemeMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
+
+        // Find
+        PagedResult<OrganisationSchemeVersionMetamac> result = getOrganisationsMetamacService().findOrganisationSchemesByCondition(ctx, sculptorCriteria.getConditions(),
+                sculptorCriteria.getPagingParameter());
+
+        // Transform
+        MetamacCriteriaResult<OrganisationSchemeMetamacDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultOrganisationSchemeVersion(result,
+                sculptorCriteria.getPageSize());
+
+        return metamacCriteriaResult;
     }
 
     @Override
     public OrganisationSchemeMetamacDto retrieveOrganisationSchemeByUrn(ServiceContext ctx, String urn) throws MetamacException {
-        // TODO Auto-generated method stub
-        return null;
+        // TODO Security
+        // OrganisationsSecurityUtils.canRetrieveOrganisationSchemeByUrn(ctx);
+
+        // Retrieve
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationsMetamacService().retrieveOrganisationSchemeByUrn(ctx, urn);
+
+        // Transform
+        OrganisationSchemeMetamacDto organisationSchemeMetamacDto = organisationsDo2DtoMapper.organisationSchemeMetamacDoToDto(organisationSchemeVersion);
+
+        return organisationSchemeMetamacDto;
     }
 
     @Override
     public List<OrganisationSchemeMetamacDto> retrieveOrganisationSchemeVersions(ServiceContext ctx, String urn) throws MetamacException {
-        // TODO Auto-generated method stub
-        return null;
+        // TODO Security
+        // OrganisationsSecurityUtils.canRetrieveOrganisationSchemeVersions(ctx);
+
+        // Retrieve
+        List<OrganisationSchemeVersionMetamac> organisationSchemeVersionMetamacs = getOrganisationsMetamacService().retrieveOrganisationSchemeVersions(ctx, urn);
+
+        // Transform
+        List<OrganisationSchemeMetamacDto> organisationSchemeMetamacDtos = organisationsDo2DtoMapper.organisationSchemeMetamacDoListToDtoList(organisationSchemeVersionMetamacs);
+
+        return organisationSchemeMetamacDtos;
     }
 
     /**************************************************************************
