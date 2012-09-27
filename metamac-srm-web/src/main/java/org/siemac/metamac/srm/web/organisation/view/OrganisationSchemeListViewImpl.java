@@ -170,7 +170,8 @@ public class OrganisationSchemeListViewImpl extends ViewWithUiHandlers<Organisat
         fieldCode.setAlign(Alignment.LEFT);
         ListGridField fieldName = new ListGridField(OrganisationSchemeDS.NAME, getConstants().nameableArtefactName());
         ListGridField status = new ListGridField(OrganisationSchemeDS.PROC_STATUS, getConstants().lifeCycleProcStatus());
-        organisationSchemeList.getListGrid().setFields(fieldCode, fieldName, status);
+        ListGridField type = new ListGridField(OrganisationSchemeDS.TYPE, getConstants().organisationSchemeType());
+        organisationSchemeList.getListGrid().setFields(fieldCode, fieldName, status, type);
 
         panel = new VLayout();
         panel.setHeight100();

@@ -11,8 +11,8 @@ public class RecordUtils {
 
     public static OrganisationSchemeRecord getOrganisationSchemeRecord(OrganisationSchemeMetamacDto organisationSchemeDto) {
         OrganisationSchemeRecord record = new OrganisationSchemeRecord(organisationSchemeDto.getId(), organisationSchemeDto.getCode(), getLocalisedString(organisationSchemeDto.getName()),
-                getLocalisedString(organisationSchemeDto.getDescription()), org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(organisationSchemeDto.getLifeCycle().getProcStatus()),
-                organisationSchemeDto.getVersionLogic(), organisationSchemeDto.getUrn(), organisationSchemeDto);
+                org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(organisationSchemeDto.getLifeCycle().getProcStatus()),
+                CommonUtils.getOrganisationSchemeTypeName(organisationSchemeDto.getType()), organisationSchemeDto.getVersionLogic(), organisationSchemeDto.getUrn(), organisationSchemeDto);
         return record;
     }
 

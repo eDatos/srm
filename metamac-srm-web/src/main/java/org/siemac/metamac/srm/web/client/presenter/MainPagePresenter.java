@@ -10,6 +10,8 @@ import org.siemac.metamac.srm.web.client.widgets.BreadCrumbsPanel;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.HideMessageEvent;
 import org.siemac.metamac.web.common.client.events.HideMessageEvent.HideMessageHandler;
+import org.siemac.metamac.web.common.client.events.SetTitleEvent;
+import org.siemac.metamac.web.common.client.events.SetTitleEvent.SetTitleHandler;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent.ShowMessageHandler;
 import org.siemac.metamac.web.common.client.widgets.MasterHead;
@@ -38,7 +40,12 @@ import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 import com.gwtplatform.mvp.client.proxy.RevealRootContentEvent;
 import com.gwtplatform.mvp.client.proxy.SetPlaceTitleHandler;
 
-public class MainPagePresenter extends Presenter<MainPagePresenter.MainPageView, MainPagePresenter.MainPageProxy> implements MainPageUiHandlers, ShowMessageHandler, HideMessageHandler {
+public class MainPagePresenter extends Presenter<MainPagePresenter.MainPageView, MainPagePresenter.MainPageProxy>
+        implements
+            MainPageUiHandlers,
+            ShowMessageHandler,
+            HideMessageHandler,
+            SetTitleHandler {
 
     private static Logger       logger = Logger.getLogger(MainPagePresenter.class.getName());
 
@@ -56,6 +63,8 @@ public class MainPagePresenter extends Presenter<MainPagePresenter.MainPageView,
 
     public interface MainPageView extends View, HasUiHandlers<MainPageUiHandlers> {
 
+        void setTitle(String title);
+        
         MasterHead getMasterHead();
 
         BreadCrumbsPanel getBreadCrumbsPanel();
@@ -142,6 +151,12 @@ public class MainPagePresenter extends Presenter<MainPagePresenter.MainPageView,
     @Override
     public void onHideMessage(HideMessageEvent event) {
         hideMessages();
+    }
+
+    @ProxyEvent
+    @Override
+    public void onSetTitle(SetTitleEvent event) {
+        getView().setTitle(event.getTitle());
     }
 
     public static MasterHead getMasterHead() {

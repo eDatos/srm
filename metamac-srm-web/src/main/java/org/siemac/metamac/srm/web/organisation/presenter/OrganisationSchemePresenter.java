@@ -1,6 +1,6 @@
 package org.siemac.metamac.srm.web.organisation.presenter;
 
-import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
+import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getCoreMessages;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
 import java.util.ArrayList;
@@ -32,6 +32,7 @@ import org.siemac.metamac.srm.web.shared.organisation.UpdateOrganisationSchemePr
 import org.siemac.metamac.srm.web.shared.organisation.VersionOrganisationSchemeAction;
 import org.siemac.metamac.srm.web.shared.organisation.VersionOrganisationSchemeResult;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
+import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.utils.UrnUtils;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
@@ -103,7 +104,6 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
     protected void onReveal() {
         super.onReveal();
         setInSlot(TYPE_SetContextAreaContentOrganisationSchemeToolBar, toolStripPresenterWidget);
-        MainPagePresenter.getMasterHead().setTitleLabel(getConstants().organisationScheme());
     }
 
     @Override
@@ -128,15 +128,19 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
         switch (type) {
             case AGENCY_SCHEME:
                 urn = UrnUtils.generateUrn(UrnConstants.URN_SDMX_CLASS_AGENCYSCHEME_PREFIX, identifier);
+                SetTitleEvent.fire(this, getCoreMessages().organisationSchemeTypeEnumAGENCY_SCHEME());
                 break;
             case ORGANISATION_UNIT_SCHEME:
                 urn = UrnUtils.generateUrn(UrnConstants.URN_SDMX_CLASS_ORGANISATIONUNITSCHEME_PREFIX, identifier);
+                SetTitleEvent.fire(this, getCoreMessages().organisationSchemeTypeEnumORGANISATION_UNIT_SCHEME());
                 break;
             case DATA_PROVIDER_SCHEME:
                 urn = UrnUtils.generateUrn(UrnConstants.URN_SDMX_CLASS_DATAPROVIDERSCHEME_PREFIX, identifier);
+                SetTitleEvent.fire(this, getCoreMessages().organisationSchemeTypeEnumDATA_PROVIDER_SCHEME());
                 break;
             case DATA_CONSUMER_SCHEME:
                 urn = UrnUtils.generateUrn(UrnConstants.URN_SDMX_CLASS_DATACONSUMERSCHEME_PREFIX, identifier);
+                SetTitleEvent.fire(this, getCoreMessages().organisationSchemeTypeEnumDATA_CONSUMER_SCHEME());
                 break;
             default:
                 break;

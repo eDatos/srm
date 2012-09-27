@@ -8,12 +8,12 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
 
 public class OrganisationSchemeRecord extends ListGridRecord {
 
-    public OrganisationSchemeRecord(Long id, String code, String name, String description, String status, String versionLogic, String urn, OrganisationSchemeMetamacDto organisationSchemeMetamacDto) {
+    public OrganisationSchemeRecord(Long id, String code, String name, String status, String type, String versionLogic, String urn, OrganisationSchemeMetamacDto organisationSchemeMetamacDto) {
         setId(id);
         setCode(code);
         setName(name);
-        setDescription(description);
         setProcStatus(status);
+        setType(type);
         setVersionLogic(versionLogic);
         setUrn(urn);
         setOrganisationSchemeDto(organisationSchemeMetamacDto);
@@ -27,16 +27,16 @@ public class OrganisationSchemeRecord extends ListGridRecord {
         setAttribute(OrganisationSchemeDS.NAME, name);
     }
 
-    public void setDescription(String desc) {
-        setAttribute(OrganisationSchemeDS.DESCRIPTION, desc);
-    }
-
     public void setCode(String code) {
         setAttribute(OrganisationSchemeDS.CODE, code);
     }
 
     public void setProcStatus(String value) {
         setAttribute(OrganisationSchemeDS.PROC_STATUS, value);
+    }
+
+    public void setType(String value) {
+        setAttribute(OrganisationSchemeDS.TYPE, value);
     }
 
     public void setVersionLogic(String value) {
@@ -65,10 +65,6 @@ public class OrganisationSchemeRecord extends ListGridRecord {
 
     public ProcStatusEnum getProcStatus() {
         return ((OrganisationSchemeMetamacDto) getAttributeAsObject(OrganisationSchemeDS.DTO)).getLifeCycle().getProcStatus();
-    }
-
-    public String getDescription() {
-        return getAttribute(OrganisationSchemeDS.DESCRIPTION);
     }
 
     public String getUrn() {

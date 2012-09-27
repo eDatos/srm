@@ -24,8 +24,8 @@ public class OrganisationSchemeListGrid extends BaseCustomListGrid {
         ListGridField codeField = new ListGridField(OrganisationSchemeDS.CODE, getConstants().identifiableArtefactCode());
         ListGridField nameField = new ListGridField(OrganisationSchemeDS.NAME, getConstants().nameableArtefactName());
         ListGridField procStatusField = new ListGridField(OrganisationSchemeDS.PROC_STATUS, getConstants().lifeCycleProcStatus());
+        ListGridField typeField = new ListGridField(OrganisationSchemeDS.TYPE, getConstants().organisationSchemeType());
 
-        // ToolTip
         codeField.setShowHover(true);
         codeField.setHoverCustomizer(new HoverCustomizer() {
 
@@ -35,6 +35,7 @@ public class OrganisationSchemeListGrid extends BaseCustomListGrid {
                 return schemeRecord.getCode();
             }
         });
+
         nameField.setShowHover(true);
         nameField.setHoverCustomizer(new HoverCustomizer() {
 
@@ -44,7 +45,8 @@ public class OrganisationSchemeListGrid extends BaseCustomListGrid {
                 return schemeRecord.getName();
             }
         });
-        this.setFields(codeField, nameField, procStatusField);
+
+        this.setFields(codeField, nameField, procStatusField, typeField);
     }
 
     public void setOrganisationSchemes(List<OrganisationSchemeMetamacDto> organisationSchemeDtos) {
