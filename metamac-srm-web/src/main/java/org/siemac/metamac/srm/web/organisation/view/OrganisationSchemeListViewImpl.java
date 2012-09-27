@@ -22,6 +22,7 @@ import org.siemac.metamac.web.common.client.widgets.PaginatedCheckListGrid;
 import org.siemac.metamac.web.common.client.widgets.SearchSectionStack;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 
+import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
@@ -159,7 +160,8 @@ public class OrganisationSchemeListViewImpl extends ViewWithUiHandlers<Organisat
             public void onRecordClick(RecordClickEvent event) {
                 if (event.getFieldNum() != 0) { // Clicking checkBox will be ignored
                     String urn = ((OrganisationSchemeRecord) event.getRecord()).getAttribute(OrganisationSchemeDS.URN);
-                    getUiHandlers().goToOrganisationScheme(urn);
+                    OrganisationSchemeTypeEnum type = ((OrganisationSchemeRecord) event.getRecord()).getOrganisationSchemeDto().getType();
+                    getUiHandlers().goToOrganisationScheme(urn, type);
                 }
             }
         });

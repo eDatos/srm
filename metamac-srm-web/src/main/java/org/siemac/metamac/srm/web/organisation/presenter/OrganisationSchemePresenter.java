@@ -6,6 +6,7 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
@@ -35,6 +36,7 @@ import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.utils.UrnUtils;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
+import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
@@ -112,17 +114,36 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
     @Override
     public void prepareFromRequest(PlaceRequest request) {
         super.prepareFromRequest(request);
-        String urn = PlaceRequestUtils.getOrganisationSchemeParamFromUrl(placeManager);
-        if (urn != null) {
-            retrieveOrganisationScheme(urn);
+        String urn = PlaceRequestUtils.getOrganisationSchemeIdParamFromUrl(placeManager);
+        String typeParam = PlaceRequestUtils.getOrganisationSchemeTypeParamFromUrl(placeManager);
+        OrganisationSchemeTypeEnum type = !StringUtils.isBlank(typeParam) ? OrganisationSchemeTypeEnum.valueOf(typeParam) : null;
+        if (urn != null && type != null) {
+            retrieveOrganisationScheme(urn, type);
         }
     }
 
     @Override
-    public void retrieveOrganisationScheme(String identifier) {
-        // TODO How can I build the URN if i don't know 
-        // String schemeUrn = UrnUtils.generateUrn(UrnConstants.URN_SDMX_CLASS_CONCEPTSCHEME_PREFIX, identifier);
-        // retrieveOrganisationSchemeByUrn(schemeUrn);
+    public void retrieveOrganisationScheme(String identifier, OrganisationSchemeTypeEnum type) {
+        String urn = null;
+        switch (type) {
+            case AGENCY_SCHEME:
+                urn = UrnUtils.generateUrn(UrnConstants.URN_SDMX_CLASS_AGENCYSCHEME_PREFIX, identifier);
+                break;
+            case ORGANISATION_UNIT_SCHEME:
+                urn = UrnUtils.generateUrn(UrnConstants.URN_SDMX_CLASS_ORGANISATIONUNITSCHEME_PREFIX, identifier);
+                break;
+            case DATA_PROVIDER_SCHEME:
+                urn = UrnUtils.generateUrn(UrnConstants.URN_SDMX_CLASS_DATAPROVIDERSCHEME_PREFIX, identifier);
+                break;
+            case DATA_CONSUMER_SCHEME:
+                urn = UrnUtils.generateUrn(UrnConstants.URN_SDMX_CLASS_DATACONSUMERSCHEME_PREFIX, identifier);
+                break;
+            default:
+                break;
+        }
+        if (!StringUtils.isBlank(urn)) {
+            retrieveOrganisationSchemeByUrn(urn);
+        }
     }
 
     private void retrieveOrganisationSchemeByUrn(String urn) {
@@ -301,9 +322,11 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
     }
 
     @Override
-    public void goToOrganisationScheme(String urn) {
+    public void goToOrganisationScheme(String urn, OrganisationSchemeTypeEnum type) {
         if (!StringUtils.isBlank(urn)) {
-            placeManager.revealRelativePlace(new PlaceRequest(NameTokens.organisationSchemePage).with(PlaceRequestParams.organisationSchemeParamId, UrnUtils.removePrefix(urn)), -1);
+            placeManager.revealRelativePlace(
+                    new PlaceRequest(NameTokens.organisationSchemePage).with(PlaceRequestParams.organisationSchemeParamType, type.name()).with(PlaceRequestParams.organisationSchemeParamId,
+                            UrnUtils.removePrefix(urn)), -1);
         }
     }
 

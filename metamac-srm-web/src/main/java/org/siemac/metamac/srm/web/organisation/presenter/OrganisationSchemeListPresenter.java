@@ -29,6 +29,7 @@ import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.utils.UrnUtils;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
+import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
@@ -112,9 +113,10 @@ public class OrganisationSchemeListPresenter extends Presenter<OrganisationSchem
     }
 
     @Override
-    public void goToOrganisationScheme(String urn) {
+    public void goToOrganisationScheme(String urn, OrganisationSchemeTypeEnum type) {
         if (!StringUtils.isBlank(urn)) {
-            placeManager.revealRelativePlace(new PlaceRequest(NameTokens.organisationSchemePage).with(PlaceRequestParams.organisationSchemeParamId, UrnUtils.removePrefix(urn)));
+            placeManager.revealRelativePlace(new PlaceRequest(NameTokens.organisationSchemePage).with(PlaceRequestParams.organisationSchemeParamType, type.name()).with(
+                    PlaceRequestParams.organisationSchemeParamId, UrnUtils.removePrefix(urn)));
         }
     }
 

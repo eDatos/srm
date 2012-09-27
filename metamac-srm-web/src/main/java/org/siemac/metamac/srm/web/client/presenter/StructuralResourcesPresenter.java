@@ -25,6 +25,7 @@ import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.utils.UrnUtils;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
+import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
@@ -201,11 +202,12 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
     }
 
     @Override
-    public void goToOrganisationScheme(String urn) {
+    public void goToOrganisationScheme(String urn, OrganisationSchemeTypeEnum type) {
         if (urn != null) {
             PlaceRequest structuralResourcesPlace = new PlaceRequest(NameTokens.structuralResourcesPage);
             PlaceRequest schemesListPlace = new PlaceRequest(NameTokens.organisationSchemeListPage);
-            PlaceRequest organisationPlace = new PlaceRequest(NameTokens.organisationSchemePage).with(PlaceRequestParams.organisationSchemeParamId, UrnUtils.removePrefix(urn));
+            PlaceRequest organisationPlace = new PlaceRequest(NameTokens.organisationSchemePage).with(PlaceRequestParams.organisationSchemeParamType, type.name()).with(
+                    PlaceRequestParams.organisationSchemeParamId, UrnUtils.removePrefix(urn));
             List<PlaceRequest> placeRequests = new ArrayList<PlaceRequest>();
             placeRequests.add(structuralResourcesPlace);
             placeRequests.add(schemesListPlace);

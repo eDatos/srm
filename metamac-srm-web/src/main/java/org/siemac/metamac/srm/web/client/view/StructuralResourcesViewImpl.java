@@ -72,7 +72,7 @@ public class StructuralResourcesViewImpl extends ViewWithUiHandlers<StructuralRe
             @Override
             public void onRecordClick(RecordClickEvent event) {
                 OrganisationSchemeRecord record = (OrganisationSchemeRecord) event.getRecord();
-                getUiHandlers().goToOrganisationScheme(record.getUrn());
+                getUiHandlers().goToOrganisationScheme(record.getUrn(), record.getOrganisationSchemeDto().getType());
             }
         });
 

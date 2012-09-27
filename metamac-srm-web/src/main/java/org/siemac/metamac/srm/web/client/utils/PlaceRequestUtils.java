@@ -35,10 +35,19 @@ public class PlaceRequestUtils {
         return null;
     }
 
-    public static String getOrganisationSchemeParamFromUrl(PlaceManager placeManager) {
+    public static String getOrganisationSchemeIdParamFromUrl(PlaceManager placeManager) {
         for (PlaceRequest request : placeManager.getCurrentPlaceHierarchy()) {
             if (NameTokens.organisationSchemePage.equals(request.getNameToken())) {
                 return request.getParameter(PlaceRequestParams.organisationSchemeParamId, null);
+            }
+        }
+        return null;
+    }
+
+    public static String getOrganisationSchemeTypeParamFromUrl(PlaceManager placeManager) {
+        for (PlaceRequest request : placeManager.getCurrentPlaceHierarchy()) {
+            if (NameTokens.organisationSchemePage.equals(request.getNameToken())) {
+                return request.getParameter(PlaceRequestParams.organisationSchemeParamType, null);
             }
         }
         return null;
