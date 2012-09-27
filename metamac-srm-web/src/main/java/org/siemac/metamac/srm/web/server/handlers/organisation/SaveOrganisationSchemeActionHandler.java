@@ -34,7 +34,7 @@ public class SaveOrganisationSchemeActionHandler extends SecurityActionHandler<S
                 return new SaveOrganisationSchemeResult(savedOrganisationSchemeDto);
             } else {
                 // Update
-                // TODO savedOrganisationSchemeDto = srmCoreServiceFacade.updateOrganisationScheme(ServiceContextHolder.getCurrentServiceContext(), organisationSchemeToSave);
+                savedOrganisationSchemeDto = srmCoreServiceFacade.updateOrganisationScheme(ServiceContextHolder.getCurrentServiceContext(), organisationSchemeToSave);
             }
             return new SaveOrganisationSchemeResult(savedOrganisationSchemeDto);
         } catch (MetamacException e) {
