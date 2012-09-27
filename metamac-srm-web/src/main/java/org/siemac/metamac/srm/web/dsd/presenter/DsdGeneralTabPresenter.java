@@ -289,7 +289,7 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
     @Override
     public void goToDsd(String urn) {
         if (!StringUtils.isBlank(urn)) {
-            placeManager.revealRelativePlace(new PlaceRequest(NameTokens.dsdPage).with(PlaceRequestParams.dsdParam, UrnUtils.removePrefix(urn)), -2);
+            placeManager.revealRelativePlace(new PlaceRequest(NameTokens.dsdPage).with(PlaceRequestParams.dsdParamId, UrnUtils.removePrefix(urn)), -2);
         }
     }
 

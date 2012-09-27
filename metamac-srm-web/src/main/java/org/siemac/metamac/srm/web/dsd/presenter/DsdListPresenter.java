@@ -190,7 +190,7 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
     @Override
     public void goToDsd(String urn) {
         if (!StringUtils.isBlank(urn)) {
-            placeManager.revealRelativePlace(new PlaceRequest(NameTokens.dsdPage).with(PlaceRequestParams.dsdParam, UrnUtils.removePrefix(urn)));
+            placeManager.revealRelativePlace(new PlaceRequest(NameTokens.dsdPage).with(PlaceRequestParams.dsdParamId, UrnUtils.removePrefix(urn)));
             dispatcher.execute(new GetDsdAndDescriptorsAction(urn), new WaitingAsyncCallback<GetDsdAndDescriptorsResult>() {
 
                 @Override

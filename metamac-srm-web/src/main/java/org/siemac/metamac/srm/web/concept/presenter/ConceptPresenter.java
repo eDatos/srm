@@ -217,11 +217,11 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     @Override
     public void goToConcept(String urn) {
         String[] splitUrn = UrnUtils.splitUrnByDots(UrnUtils.removePrefix(urn));
-        placeManager.revealRelativePlace(new PlaceRequest(NameTokens.conceptPage).with(PlaceRequestParams.conceptParam, splitUrn[splitUrn.length - 1]), -1);
+        placeManager.revealRelativePlace(new PlaceRequest(NameTokens.conceptPage).with(PlaceRequestParams.conceptParamId, splitUrn[splitUrn.length - 1]), -1);
     }
 
     private void goToConceptScheme(String urn) {
-        placeManager.revealRelativePlace(new PlaceRequest(NameTokens.conceptSchemePage).with(PlaceRequestParams.conceptSchemeParam, UrnUtils.removePrefix(urn)), -2);
+        placeManager.revealRelativePlace(new PlaceRequest(NameTokens.conceptSchemePage).with(PlaceRequestParams.conceptSchemeParamId, UrnUtils.removePrefix(urn)), -2);
     }
 
     @Override

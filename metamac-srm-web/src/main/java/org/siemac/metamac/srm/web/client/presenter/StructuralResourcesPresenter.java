@@ -177,7 +177,7 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
         if (!StringUtils.isBlank(urn)) {
             PlaceRequest structuralResourcesPlace = new PlaceRequest(NameTokens.structuralResourcesPage);
             PlaceRequest dsdListPlace = new PlaceRequest(NameTokens.dsdListPage);
-            PlaceRequest dsdPlace = new PlaceRequest(NameTokens.dsdPage).with(PlaceRequestParams.dsdParam, UrnUtils.removePrefix(urn));
+            PlaceRequest dsdPlace = new PlaceRequest(NameTokens.dsdPage).with(PlaceRequestParams.dsdParamId, UrnUtils.removePrefix(urn));
             List<PlaceRequest> placeRequests = new ArrayList<PlaceRequest>();
             placeRequests.add(structuralResourcesPlace);
             placeRequests.add(dsdListPlace);
@@ -191,7 +191,7 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
         if (urn != null) {
             PlaceRequest structuralResourcesPlace = new PlaceRequest(NameTokens.structuralResourcesPage);
             PlaceRequest schemesListPlace = new PlaceRequest(NameTokens.conceptSchemeListPage);
-            PlaceRequest conceptPlace = new PlaceRequest(NameTokens.conceptSchemePage).with(PlaceRequestParams.conceptSchemeParam, UrnUtils.removePrefix(urn));
+            PlaceRequest conceptPlace = new PlaceRequest(NameTokens.conceptSchemePage).with(PlaceRequestParams.conceptSchemeParamId, UrnUtils.removePrefix(urn));
             List<PlaceRequest> placeRequests = new ArrayList<PlaceRequest>();
             placeRequests.add(structuralResourcesPlace);
             placeRequests.add(schemesListPlace);
@@ -205,7 +205,7 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
         if (urn != null) {
             PlaceRequest structuralResourcesPlace = new PlaceRequest(NameTokens.structuralResourcesPage);
             PlaceRequest schemesListPlace = new PlaceRequest(NameTokens.organisationSchemeListPage);
-            PlaceRequest organisationPlace = new PlaceRequest(NameTokens.organisationSchemePage).with(PlaceRequestParams.organisationSchemeParam, UrnUtils.removePrefix(urn));
+            PlaceRequest organisationPlace = new PlaceRequest(NameTokens.organisationSchemePage).with(PlaceRequestParams.organisationSchemeParamId, UrnUtils.removePrefix(urn));
             List<PlaceRequest> placeRequests = new ArrayList<PlaceRequest>();
             placeRequests.add(structuralResourcesPlace);
             placeRequests.add(schemesListPlace);

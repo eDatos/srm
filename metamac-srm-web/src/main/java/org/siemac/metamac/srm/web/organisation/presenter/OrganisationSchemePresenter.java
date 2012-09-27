@@ -303,7 +303,7 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
     @Override
     public void goToOrganisationScheme(String urn) {
         if (!StringUtils.isBlank(urn)) {
-            placeManager.revealRelativePlace(new PlaceRequest(NameTokens.organisationSchemePage).with(PlaceRequestParams.organisationSchemeParam, UrnUtils.removePrefix(urn)), -1);
+            placeManager.revealRelativePlace(new PlaceRequest(NameTokens.organisationSchemePage).with(PlaceRequestParams.organisationSchemeParamId, UrnUtils.removePrefix(urn)), -1);
         }
     }
 

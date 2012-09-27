@@ -364,13 +364,13 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
     @Override
     public void goToConcept(String urn) {
         String[] splitUrn = UrnUtils.splitUrnByDots(UrnUtils.removePrefix(urn));
-        placeManager.revealRelativePlace(new PlaceRequest(NameTokens.conceptPage).with(PlaceRequestParams.conceptParam, splitUrn[splitUrn.length - 1]));
+        placeManager.revealRelativePlace(new PlaceRequest(NameTokens.conceptPage).with(PlaceRequestParams.conceptParamId, splitUrn[splitUrn.length - 1]));
     }
 
     @Override
     public void goToConceptScheme(String urn) {
         if (!StringUtils.isBlank(urn)) {
-            placeManager.revealRelativePlace(new PlaceRequest(NameTokens.conceptSchemePage).with(PlaceRequestParams.conceptSchemeParam, UrnUtils.removePrefix(urn)), -1);
+            placeManager.revealRelativePlace(new PlaceRequest(NameTokens.conceptSchemePage).with(PlaceRequestParams.conceptSchemeParamId, UrnUtils.removePrefix(urn)), -1);
         }
     }
 

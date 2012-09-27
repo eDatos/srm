@@ -11,7 +11,7 @@ public class PlaceRequestUtils {
     public static String getDsdParamFromUrl(PlaceManager placeManager) {
         for (PlaceRequest request : placeManager.getCurrentPlaceHierarchy()) {
             if (NameTokens.dsdPage.equals(request.getNameToken())) {
-                return request.getParameter(PlaceRequestParams.dsdParam, null);
+                return request.getParameter(PlaceRequestParams.dsdParamId, null);
             }
         }
         return null;
@@ -20,7 +20,7 @@ public class PlaceRequestUtils {
     public static String getConceptSchemeParamFromUrl(PlaceManager placeManager) {
         for (PlaceRequest request : placeManager.getCurrentPlaceHierarchy()) {
             if (NameTokens.conceptSchemePage.equals(request.getNameToken())) {
-                return request.getParameter(PlaceRequestParams.conceptSchemeParam, null);
+                return request.getParameter(PlaceRequestParams.conceptSchemeParamId, null);
             }
         }
         return null;
@@ -29,7 +29,7 @@ public class PlaceRequestUtils {
     public static String getConceptParamFromUrl(PlaceManager placeManager) {
         for (PlaceRequest request : placeManager.getCurrentPlaceHierarchy()) {
             if (NameTokens.conceptPage.equals(request.getNameToken())) {
-                return request.getParameter(PlaceRequestParams.conceptParam, null);
+                return request.getParameter(PlaceRequestParams.conceptParamId, null);
             }
         }
         return null;
@@ -38,7 +38,7 @@ public class PlaceRequestUtils {
     public static String getOrganisationSchemeParamFromUrl(PlaceManager placeManager) {
         for (PlaceRequest request : placeManager.getCurrentPlaceHierarchy()) {
             if (NameTokens.organisationSchemePage.equals(request.getNameToken())) {
-                return request.getParameter(PlaceRequestParams.organisationSchemeParam, null);
+                return request.getParameter(PlaceRequestParams.organisationSchemeParamId, null);
             }
         }
         return null;
@@ -47,7 +47,7 @@ public class PlaceRequestUtils {
     public static String getOrganisationParamFromUrl(PlaceManager placeManager) {
         for (PlaceRequest request : placeManager.getCurrentPlaceHierarchy()) {
             if (NameTokens.organisationPage.equals(request.getNameToken())) {
-                return request.getParameter(PlaceRequestParams.organisationParam, null);
+                return request.getParameter(PlaceRequestParams.organisationParamId, null);
             }
         }
         return null;
