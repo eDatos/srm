@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.core.organisation.serviceapi;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -17,6 +18,7 @@ import org.junit.runner.RunWith;
 import org.siemac.metamac.common.test.utils.MetamacAsserts;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
+import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
@@ -29,6 +31,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationSchemeVersion;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -63,67 +66,51 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         OrganisationsMetamacAsserts.assertEqualsOrganisationScheme(organisationSchemeVersion, organisationSchemeVersionRetrieved);
     }
 
-    // @Test
-    // public void testUpdateOrganisationScheme() throws Exception {
-    // OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), ORGANISATION_SCHEME_2_V1);
-    // organisationSchemeVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
-    //
-    // OrganisationSchemeVersion organisationSchemeVersionUpdated = organisationsService.updateOrganisationScheme(getServiceContextAdministrador(), organisationSchemeVersion);
-    //
-    // assertNotNull(organisationSchemeVersionUpdated);
-    // }
-    //
-    // @Test
-    // public void testUpdateOrganisationSchemePublished() throws Exception {
-    // String[] urns = {ORGANISATION_SCHEME_7_V2, ORGANISATION_SCHEME_7_V1};
-    // for (String urn : urns) {
-    // OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), urn);
-    //
-    // try {
-    // organisationSchemeVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
-    // organisationSchemeVersion = organisationsService.updateOrganisationScheme(getServiceContextAdministrador(), organisationSchemeVersion);
-    // fail("wrong proc status");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.ORGANISATION_SCHEME_UNMODIFIABLE.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // }
-    // }
-    // }
-    //
-    // @Test
-    // public void testUpdateOrganisationSchemeErrorExternalReference() throws Exception {
-    // OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), ORGANISATION_SCHEME_7_V2);
-    // organisationSchemeVersion.getMaintainableArtefact().setIsExternalReference(Boolean.TRUE);
-    //
-    // try {
-    // organisationSchemeVersion = organisationsService.updateOrganisationScheme(getServiceContextAdministrador(), organisationSchemeVersion);
-    // fail("organisation scheme cannot be a external reference");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.METADATA_INCORRECT.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(ServiceExceptionParameters.MAINTAINABLE_ARTEFACT_IS_EXTERNAL_REFERENCE, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // }
-    // }
-    //
-    // @Test
-    // public void testUpdateOrganisationSchemeErrorChangeTypeOrganisationSchemeAlreadyPublished() throws Exception {
-    // OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), ORGANISATION_SCHEME_1_V2);
-    // assertEquals(OrganisationSchemeTypeEnum.TRANSVERSAL, organisationSchemeVersion.getType());
-    // organisationSchemeVersion.setType(OrganisationSchemeTypeEnum.GLOSSARY);
-    //
-    // try {
-    // organisationSchemeVersion = organisationsService.updateOrganisationScheme(getServiceContextAdministrador(), organisationSchemeVersion);
-    // fail("metadata unmodifiable");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.METADATA_UNMODIFIABLE.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(ServiceExceptionParameters.ORGANISATION_SCHEME_TYPE, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // }
-    // }
+    @Test
+    public void testUpdateOrganisationScheme() throws Exception {
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), ORGANISATION_SCHEME_2_V1);
+        organisationSchemeVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
+
+        OrganisationSchemeVersion organisationSchemeVersionUpdated = organisationsService.updateOrganisationScheme(getServiceContextAdministrador(), organisationSchemeVersion);
+
+        assertNotNull(organisationSchemeVersionUpdated);
+    }
+
+    @Test
+    public void testUpdateOrganisationSchemePublished() throws Exception {
+        String[] urns = {ORGANISATION_SCHEME_1_V1};
+        for (String urn : urns) {
+            OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), urn);
+
+            try {
+                organisationSchemeVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
+                organisationSchemeVersion = organisationsService.updateOrganisationScheme(getServiceContextAdministrador(), organisationSchemeVersion);
+                fail("wrong proc status");
+            } catch (MetamacException e) {
+                assertEquals(1, e.getExceptionItems().size());
+                assertEquals(ServiceExceptionType.ORGANISATION_SCHEME_UNMODIFIABLE.getCode(), e.getExceptionItems().get(0).getCode());
+                assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+                assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            }
+        }
+    }
+
+    @Test
+    public void testUpdateOrganisationSchemeErrorExternalReference() throws Exception {
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), ORGANISATION_SCHEME_1_V2);
+        organisationSchemeVersion.getMaintainableArtefact().setIsExternalReference(Boolean.TRUE);
+
+        try {
+            organisationSchemeVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
+            organisationSchemeVersion = organisationsService.updateOrganisationScheme(getServiceContextAdministrador(), organisationSchemeVersion);
+            fail("organisation scheme cannot be a external reference");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.METADATA_INCORRECT.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(ServiceExceptionParameters.MAINTAINABLE_ARTEFACT_IS_EXTERNAL_REFERENCE, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
 
     @Test
     public void testRetrieveOrganisationSchemeByUrn() throws Exception {

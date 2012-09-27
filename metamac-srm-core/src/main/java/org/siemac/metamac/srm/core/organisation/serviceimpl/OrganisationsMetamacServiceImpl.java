@@ -16,6 +16,7 @@ import org.siemac.metamac.srm.core.organisation.serviceimpl.utils.OrganisationsM
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.organisation.serviceapi.OrganisationsService;
@@ -55,25 +56,15 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
         return (OrganisationSchemeVersionMetamac) organisationsService.createOrganisationScheme(ctx, organisationSchemeVersion);
     }
 
-    // @Override
-    // public OrganisationSchemeVersionMetamac updateOrganisationScheme(ServiceContext ctx, OrganisationSchemeVersionMetamac organisationSchemeVersion) throws MetamacException {
-    // // Validation
-    // OrganisationsMetamacInvocationValidator.checkUpdateOrganisationScheme(organisationSchemeVersion, null);
-    // // OrganisationsService checks organisationScheme isn't final (Schemes cannot be updated when procStatus is INTERNALLY_PUBLISHED or EXTERNALLY_PUBLISHED)
-    //
-    // // if this version is not the first one, check not modify 'type'
-    // if (!isOrganisationSchemeFirstVersion(organisationSchemeVersion)) {
-    // OrganisationSchemeVersionMetamac organisationSchemePreviousVersion = (OrganisationSchemeVersionMetamac)
-    // itemSchemeVersionRepository.findByVersion(organisationSchemeVersion.getItemScheme().getId(),
-    // organisationSchemeVersion.getMaintainableArtefact().getReplaceTo());
-    // if (!organisationSchemePreviousVersion.getType().equals(organisationSchemeVersion.getType())) {
-    // throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_UNMODIFIABLE).withMessageParameters(ServiceExceptionParameters.ORGANISATION_SCHEME_TYPE).build();
-    // }
-    // }
-    //
-    // // Save organisationScheme
-    // return (OrganisationSchemeVersionMetamac) organisationsService.updateOrganisationScheme(ctx, organisationSchemeVersion);
-    // }
+    @Override
+    public OrganisationSchemeVersionMetamac updateOrganisationScheme(ServiceContext ctx, OrganisationSchemeVersionMetamac organisationSchemeVersion) throws MetamacException {
+        // Validation
+        OrganisationsMetamacInvocationValidator.checkUpdateOrganisationScheme(organisationSchemeVersion, null);
+        // OrganisationsService checks organisationScheme is not final (Schemes cannot be updated when procStatus is INTERNALLY_PUBLISHED or EXTERNALLY_PUBLISHED)
+
+        // Save organisationScheme
+        return (OrganisationSchemeVersionMetamac) organisationsService.updateOrganisationScheme(ctx, organisationSchemeVersion);
+    }
 
     @Override
     public OrganisationSchemeVersionMetamac retrieveOrganisationSchemeByUrn(ServiceContext ctx, String urn) throws MetamacException {

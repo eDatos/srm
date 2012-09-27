@@ -560,6 +560,22 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
+    public OrganisationSchemeMetamacDto updateOrganisationScheme(ServiceContext ctx, OrganisationSchemeMetamacDto organisationSchemeDto) throws MetamacException {
+        // Security
+        // OrganisationsSecurityUtils.canUpdateOrganisationScheme();
+
+        // Transform
+        OrganisationSchemeVersionMetamac organisationSchemeVersionToUpdate = organisationsDto2DoMapper.organisationSchemeMetamacDtoToDo(organisationSchemeDto);
+
+        // Update
+        OrganisationSchemeVersionMetamac organisationSchemeVersionUpdated = getOrganisationsMetamacService().updateOrganisationScheme(ctx, organisationSchemeVersionToUpdate);
+
+        // Transform to DTO
+        organisationSchemeDto = organisationsDo2DtoMapper.organisationSchemeMetamacDoToDto(organisationSchemeVersionUpdated);
+        return organisationSchemeDto;
+    }
+
+    @Override
     public void deleteOrganisationScheme(ServiceContext ctx, String urn) throws MetamacException {
         // TODO Security
         // OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationsMetamacService().retrieveOrganisationSchemeByUrn(ctx, urn);

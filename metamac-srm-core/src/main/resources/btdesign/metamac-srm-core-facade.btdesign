@@ -246,8 +246,8 @@ Application SrmFacadeCore {
        		
        		"Creates organisation scheme"
 	   		@OrganisationSchemeMetamacDto createOrganisationScheme(@OrganisationSchemeMetamacDto organisationSchemeDto) throws MetamacException;
-//	   		"Updates organisation scheme"
-//            @OrganisationSchemeMetamacDto updateOrganisationScheme(@OrganisationSchemeMetamacDto organisationSchemeDto) throws MetamacException;
+	   		"Updates organisation scheme"
+            @OrganisationSchemeMetamacDto updateOrganisationScheme(@OrganisationSchemeMetamacDto organisationSchemeDto) throws MetamacException;
             "Deletes organisation scheme"
             deleteOrganisationScheme(String urn) throws MetamacException;
             "Finds organisation schemes by criteria"
