@@ -114,8 +114,15 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
         super.prepareFromRequest(request);
         String urn = PlaceRequestUtils.getOrganisationSchemeParamFromUrl(placeManager);
         if (urn != null) {
-            retrieveOrganisationSchemeByUrn(urn);
+            retrieveOrganisationScheme(urn);
         }
+    }
+
+    @Override
+    public void retrieveOrganisationScheme(String identifier) {
+        // TODO How can I build the URN if i don't know 
+        // String schemeUrn = UrnUtils.generateUrn(UrnConstants.URN_SDMX_CLASS_CONCEPTSCHEME_PREFIX, identifier);
+        // retrieveOrganisationSchemeByUrn(schemeUrn);
     }
 
     private void retrieveOrganisationSchemeByUrn(String urn) {

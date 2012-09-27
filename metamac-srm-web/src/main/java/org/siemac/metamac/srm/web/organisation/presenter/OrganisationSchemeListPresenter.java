@@ -15,8 +15,14 @@ import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.widgets.presenter.ToolStripPresenterWidget;
 import org.siemac.metamac.srm.web.organisation.view.handlers.OrganisationSchemeListUiHandlers;
+import org.siemac.metamac.srm.web.shared.organisation.CancelOrganisationSchemeValidityAction;
+import org.siemac.metamac.srm.web.shared.organisation.CancelOrganisationSchemeValidityResult;
+import org.siemac.metamac.srm.web.shared.organisation.DeleteOrganisationSchemeListAction;
+import org.siemac.metamac.srm.web.shared.organisation.DeleteOrganisationSchemeListResult;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeListAction;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeListResult;
+import org.siemac.metamac.srm.web.shared.organisation.SaveOrganisationSchemeAction;
+import org.siemac.metamac.srm.web.shared.organisation.SaveOrganisationSchemeResult;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
@@ -114,14 +120,35 @@ public class OrganisationSchemeListPresenter extends Presenter<OrganisationSchem
 
     @Override
     public void createOrganisationScheme(OrganisationSchemeMetamacDto organisationSchemeMetamacDto) {
-        // TODO Auto-generated method stub
+        dispatcher.execute(new SaveOrganisationSchemeAction(organisationSchemeMetamacDto), new WaitingAsyncCallback<SaveOrganisationSchemeResult>() {
 
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(OrganisationSchemeListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().organisationSchemeErrorSave()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(SaveOrganisationSchemeResult result) {
+                ShowMessageEvent.fire(OrganisationSchemeListPresenter.this, ErrorUtils.getMessageList(getMessages().organisationSchemeSaved()), MessageTypeEnum.SUCCESS);
+                retrieveOrganisationSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS);
+            }
+        });
     }
 
     @Override
     public void deleteOrganisationSchemes(List<String> urns) {
-        // TODO Auto-generated method stub
+        dispatcher.execute(new DeleteOrganisationSchemeListAction(urns), new WaitingAsyncCallback<DeleteOrganisationSchemeListResult>() {
 
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(OrganisationSchemeListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().organisationSchemeErrorDelete()), MessageTypeEnum.ERROR);
+                retrieveOrganisationSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS);
+            }
+            @Override
+            public void onWaitSuccess(DeleteOrganisationSchemeListResult result) {
+                ShowMessageEvent.fire(OrganisationSchemeListPresenter.this, ErrorUtils.getMessageList(getMessages().organisationSchemeDeleted()), MessageTypeEnum.SUCCESS);
+                retrieveOrganisationSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS);
+            }
+        });
     }
 
     @Override
@@ -145,13 +172,22 @@ public class OrganisationSchemeListPresenter extends Presenter<OrganisationSchem
                 }
             }
         });
-
     }
 
     @Override
-    public void cancelValidity(List<String> urn) {
-        // TODO Auto-generated method stub
+    public void cancelValidity(List<String> urns) {
+        dispatcher.execute(new CancelOrganisationSchemeValidityAction(urns), new WaitingAsyncCallback<CancelOrganisationSchemeValidityResult>() {
 
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(OrganisationSchemeListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().organisationSchemeErrorCancelValidity()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(CancelOrganisationSchemeValidityResult result) {
+                ShowMessageEvent.fire(OrganisationSchemeListPresenter.this, ErrorUtils.getMessageList(getMessages().organisationSchemeCanceledValidity()), MessageTypeEnum.SUCCESS);
+                retrieveOrganisationSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS);
+            }
+        });
     }
 
 }

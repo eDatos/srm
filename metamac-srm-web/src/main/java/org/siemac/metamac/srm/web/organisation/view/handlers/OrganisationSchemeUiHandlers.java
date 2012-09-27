@@ -8,6 +8,7 @@ import com.gwtplatform.mvp.client.UiHandlers;
 
 public interface OrganisationSchemeUiHandlers extends UiHandlers {
 
+    void retrieveOrganisationScheme(String identifier);
     void retrieveOrganisationSchemeVersions(String organisationSchemeUrn);
     void saveOrganisationScheme(OrganisationSchemeMetamacDto organisationScheme);
     void cancelValidity(String urn);
