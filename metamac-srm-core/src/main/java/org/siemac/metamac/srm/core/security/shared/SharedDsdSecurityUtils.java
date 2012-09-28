@@ -12,11 +12,11 @@ public class SharedDsdSecurityUtils extends SharedSecurityUtils {
     /**
      * DSD
      */
-    
+
     public static boolean canCreateDataStructureDefinition(MetamacPrincipal metamacPrincipal) {
         return isSrmRoleAllowed(metamacPrincipal, TECNICO_PRODUCCION, JEFE_PRODUCCION);
     }
-    
+
     public static boolean canUpdateDsd(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus) {
         if (ProcStatusEnum.DRAFT.equals(procStatus)) {
             return isAnyDsdRole(metamacPrincipal);
@@ -36,15 +36,15 @@ public class SharedDsdSecurityUtils extends SharedSecurityUtils {
         }
         return false;
     }
-    
+
     public static boolean canFindDataStructureDefinitionByCondition(MetamacPrincipal metamacPrincipal) {
         return isAnySrmRole(metamacPrincipal);
     }
-    
+
     public static boolean canRetrieveDataStructureDefinitionByUrn(MetamacPrincipal metamacPrincipal) {
         return isAnySrmRole(metamacPrincipal);
     }
-    
+
     public static boolean canRetrieveDataStructureDefinitionVersions(MetamacPrincipal metamacPrincipal) {
         return isAnySrmRole(metamacPrincipal);
     }
@@ -53,11 +53,10 @@ public class SharedDsdSecurityUtils extends SharedSecurityUtils {
         return isSrmRoleAllowed(metamacPrincipal, TECNICO_PRODUCCION, JEFE_PRODUCCION);
     }
 
-
     /**
      * LIFECYCLE
      */
-    
+
     public static boolean canSendDsdToProductionValidation(MetamacPrincipal metamacPrincipal) {
         return isSrmRoleAllowed(metamacPrincipal, TECNICO_APOYO_PRODUCCION, TECNICO_PRODUCCION, JEFE_PRODUCCION);
     }
@@ -82,7 +81,7 @@ public class SharedDsdSecurityUtils extends SharedSecurityUtils {
     public static boolean canPublishDsdExternally(MetamacPrincipal metamacPrincipal) {
         return isSrmRoleAllowed(metamacPrincipal, TECNICO_PRODUCCION, JEFE_PRODUCCION);
     }
-    
+
     public static boolean canVersioningDsd(MetamacPrincipal metamacPrincipal) {
         return isSrmRoleAllowed(metamacPrincipal, TECNICO_PRODUCCION, JEFE_PRODUCCION);
     }
@@ -95,11 +94,10 @@ public class SharedDsdSecurityUtils extends SharedSecurityUtils {
         return isSrmRoleAllowed(metamacPrincipal, JEFE_PRODUCCION);
     }
 
-    
     /**
      * ARTEFACTS IN DSD
      */
-    
+
     public static boolean canUpdatePrimaryMeasure(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus) {
         if (ProcStatusEnum.DRAFT.equals(procStatus)) {
             return isAnyDsdRole(metamacPrincipal);
@@ -158,7 +156,7 @@ public class SharedDsdSecurityUtils extends SharedSecurityUtils {
         }
         return false;
     }
-    
+
     public static boolean canDeleteDescriptorForDataStructureDefinition(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus) {
         if (ProcStatusEnum.DRAFT.equals(procStatus) || ProcStatusEnum.PRODUCTION_VALIDATION.equals(procStatus)) {
             return isSrmRoleAllowed(metamacPrincipal, TECNICO_PRODUCCION, JEFE_PRODUCCION);
@@ -167,7 +165,7 @@ public class SharedDsdSecurityUtils extends SharedSecurityUtils {
         }
         return false;
     }
-    
+
     public static boolean canSaveComponentForDataStructureDefinition(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus) {
         if (ProcStatusEnum.DRAFT.equals(procStatus)) {
             return isAnyDsdRole(metamacPrincipal);
@@ -178,7 +176,7 @@ public class SharedDsdSecurityUtils extends SharedSecurityUtils {
         }
         return false;
     }
-    
+
     public static boolean canDeleteComponentForDataStructureDefinition(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus) {
         if (ProcStatusEnum.DRAFT.equals(procStatus) || ProcStatusEnum.PRODUCTION_VALIDATION.equals(procStatus)) {
             return isSrmRoleAllowed(metamacPrincipal, TECNICO_PRODUCCION, JEFE_PRODUCCION);
@@ -187,7 +185,7 @@ public class SharedDsdSecurityUtils extends SharedSecurityUtils {
         }
         return false;
     }
-    
+
     /**
      * Checks if metamacPrincipal has any of the roles allowed in SRM module
      * 

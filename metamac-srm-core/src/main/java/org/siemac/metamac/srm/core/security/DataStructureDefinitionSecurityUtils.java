@@ -37,25 +37,25 @@ public class DataStructureDefinitionSecurityUtils {
             throw new MetamacException(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED, ctx.getUserId());
         }
     }
-    
+
     public static void canRetrieveDataStructureDefinitionByUrn(ServiceContext ctx) throws MetamacException {
         if (!SharedDsdSecurityUtils.canRetrieveDataStructureDefinitionByUrn(getMetamacPrincipal(ctx))) {
             throw new MetamacException(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED, ctx.getUserId());
         }
     }
-    
+
     public static void canDataStructureDefinitionVersions(ServiceContext ctx) throws MetamacException {
         if (!SharedDsdSecurityUtils.canRetrieveDataStructureDefinitionVersions(getMetamacPrincipal(ctx))) {
             throw new MetamacException(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED, ctx.getUserId());
         }
     }
-    
+
     public static void canImportDataStructureDefinition(ServiceContext ctx) throws MetamacException {
         if (!SharedDsdSecurityUtils.canImportDsd(getMetamacPrincipal(ctx))) {
             throw new MetamacException(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED, ctx.getUserId());
         }
     }
-    
+
     /**
      * LIFECYCLE
      */
@@ -107,42 +107,41 @@ public class DataStructureDefinitionSecurityUtils {
             throw new MetamacException(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED, ctx.getUserId());
         }
     }
-  
+
     /**
      * ARTEFACTS IN DSD
      */
-    
+
     public static void canFindDescriptorsForDataStructureDefinition(ServiceContext ctx) throws MetamacException {
         if (!SharedDsdSecurityUtils.canFindDescriptorsForDataStructureDefinition(getMetamacPrincipal(ctx))) {
             throw new MetamacException(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED, ctx.getUserId());
         }
     }
-    
+
     public static void canSaveDescriptorForDataStructureDefinition(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac) throws MetamacException {
         if (!SharedDsdSecurityUtils.canSaveDescriptorForDataStructureDefinition(getMetamacPrincipal(ctx), dataStructureDefinitionVersionMetamac.getLifecycleMetadata().getProcStatus())) {
             throw new MetamacException(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED, ctx.getUserId());
         }
     }
-    
+
     public static void canDeleteDescriptorForDataStructureDefinition(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac) throws MetamacException {
         if (!SharedDsdSecurityUtils.canDeleteDescriptorForDataStructureDefinition(getMetamacPrincipal(ctx), dataStructureDefinitionVersionMetamac.getLifecycleMetadata().getProcStatus())) {
             throw new MetamacException(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED, ctx.getUserId());
         }
     }
-    
+
     public static void canSaveComponentForDataStructureDefinition(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac) throws MetamacException {
         if (!SharedDsdSecurityUtils.canSaveComponentForDataStructureDefinition(getMetamacPrincipal(ctx), dataStructureDefinitionVersionMetamac.getLifecycleMetadata().getProcStatus())) {
             throw new MetamacException(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED, ctx.getUserId());
         }
     }
-    
+
     public static void canDeleteComponentForDataStructureDefinition(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac) throws MetamacException {
         if (!SharedDsdSecurityUtils.canDeleteComponentForDataStructureDefinition(getMetamacPrincipal(ctx), dataStructureDefinitionVersionMetamac.getLifecycleMetadata().getProcStatus())) {
             throw new MetamacException(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED, ctx.getUserId());
         }
     }
-    
-    
+
     /**
      * Retrieves MetamacPrincipal in ServiceContext
      */

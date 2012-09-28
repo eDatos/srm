@@ -290,7 +290,7 @@ public class StructureLifecycle {
                     .withMessageParameters(structureVersion.getMaintainableArtefact().getUrn(), procStatusString).build();
         }
     }
-    
+
     /**
      * Checks common conditions of item schemes to send to production validation
      */

@@ -94,6 +94,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         // Save conceptScheme
         return (ConceptSchemeVersionMetamac) conceptsService.updateConceptScheme(ctx, conceptSchemeVersion);
     }
+
     @Override
     public ConceptSchemeVersionMetamac retrieveConceptSchemeByUrn(ServiceContext ctx, String urn) throws MetamacException {
         return (ConceptSchemeVersionMetamac) conceptsService.retrieveConceptSchemeByUrn(ctx, urn);
