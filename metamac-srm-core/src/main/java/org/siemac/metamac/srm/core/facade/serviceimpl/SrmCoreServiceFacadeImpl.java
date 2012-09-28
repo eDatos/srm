@@ -8,10 +8,8 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.xml.bind.Marshaller;
 import javax.xml.transform.stream.StreamResult;
@@ -62,7 +60,6 @@ import com.arte.statistic.sdmx.srm.core.structure.domain.DimensionDescriptor;
 import com.arte.statistic.sdmx.srm.core.structure.domain.GroupDimensionDescriptor;
 import com.arte.statistic.sdmx.srm.core.structure.domain.MeasureDescriptor;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentListDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionExtendDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DescriptorDto;
@@ -632,6 +629,116 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         return organisationSchemeMetamacDtos;
     }
 
+    @Override
+    public OrganisationSchemeMetamacDto sendOrganisationSchemeToProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
+        // TODO Security
+        // OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationsMetamacService().retrieveOrganisationSchemeByUrn(ctx, urn);
+        // OrganisationsSecurityUtils.canSendOrganisationSchemeToProductionValidation(ctx, organisationSchemeVersion);
+
+        // Send
+        OrganisationSchemeVersionMetamac organisationSchemeVersionProductionValidation = getOrganisationsMetamacService().sendOrganisationSchemeToProductionValidation(ctx, urn);
+
+        // Transform to DTO
+        OrganisationSchemeMetamacDto organisationSchemeDto = organisationsDo2DtoMapper.organisationSchemeMetamacDoToDto(organisationSchemeVersionProductionValidation);
+        return organisationSchemeDto;
+    }
+
+    @Override
+    public OrganisationSchemeMetamacDto sendOrganisationSchemeToDiffusionValidation(ServiceContext ctx, String urn) throws MetamacException {
+        // TODO Security
+        // OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationsMetamacService().retrieveOrganisationSchemeByUrn(ctx, urn);
+        // OrganisationsSecurityUtils.canSendOrganisationSchemeToDiffusionValidation(ctx, organisationSchemeVersion);
+
+        // Send
+        OrganisationSchemeVersionMetamac organisationSchemeVersionDiffusionValidation = getOrganisationsMetamacService().sendOrganisationSchemeToDiffusionValidation(ctx, urn);
+
+        // Transform to DTO
+        OrganisationSchemeMetamacDto organisationSchemeDto = organisationsDo2DtoMapper.organisationSchemeMetamacDoToDto(organisationSchemeVersionDiffusionValidation);
+        return organisationSchemeDto;
+    }
+
+    @Override
+    public OrganisationSchemeMetamacDto rejectOrganisationSchemeProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
+        // TODO Security
+        // OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationsMetamacService().retrieveOrganisationSchemeByUrn(ctx, urn);
+        // OrganisationsSecurityUtils.canRejectOrganisationSchemeValidation(ctx, organisationSchemeVersion);
+
+        // Reject
+        OrganisationSchemeVersionMetamac organisationSchemeVersionRejected = getOrganisationsMetamacService().rejectOrganisationSchemeProductionValidation(ctx, urn);
+
+        // Transform to DTO
+        OrganisationSchemeMetamacDto organisationSchemeDto = organisationsDo2DtoMapper.organisationSchemeMetamacDoToDto(organisationSchemeVersionRejected);
+        return organisationSchemeDto;
+    }
+
+    @Override
+    public OrganisationSchemeMetamacDto rejectOrganisationSchemeDiffusionValidation(ServiceContext ctx, String urn) throws MetamacException {
+        // TODO Security
+        // OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationsMetamacService().retrieveOrganisationSchemeByUrn(ctx, urn);
+        // OrganisationsSecurityUtils.canRejectOrganisationSchemeValidation(ctx, organisationSchemeVersion);
+
+        // Reject
+        OrganisationSchemeVersionMetamac organisationSchemeVersionRejected = getOrganisationsMetamacService().rejectOrganisationSchemeDiffusionValidation(ctx, urn);
+
+        // Transform to DTO
+        OrganisationSchemeMetamacDto organisationSchemeDto = organisationsDo2DtoMapper.organisationSchemeMetamacDoToDto(organisationSchemeVersionRejected);
+        return organisationSchemeDto;
+    }
+
+    @Override
+    public OrganisationSchemeMetamacDto publishOrganisationSchemeInternally(ServiceContext ctx, String urn) throws MetamacException {
+        // TODO Security
+        // OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationsMetamacService().retrieveOrganisationSchemeByUrn(ctx, urn);
+        // OrganisationsSecurityUtils.canPublishOrganisationSchemeInternally(ctx, organisationSchemeVersion);
+
+        // Publish
+        OrganisationSchemeVersionMetamac organisationSchemeVersionPublished = getOrganisationsMetamacService().publishInternallyOrganisationScheme(ctx, urn);
+
+        // Transform to DTO
+        OrganisationSchemeMetamacDto organisationSchemeDto = organisationsDo2DtoMapper.organisationSchemeMetamacDoToDto(organisationSchemeVersionPublished);
+        return organisationSchemeDto;
+    }
+
+    @Override
+    public OrganisationSchemeMetamacDto publishOrganisationSchemeExternally(ServiceContext ctx, String urn) throws MetamacException {
+        // TODO Security
+        // OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationsMetamacService().retrieveOrganisationSchemeByUrn(ctx, urn);
+        // OrganisationsSecurityUtils.canPublishOrganisationSchemeExternally(ctx, organisationSchemeVersion);
+
+        OrganisationSchemeVersionMetamac organisationSchemeVersionPublished = getOrganisationsMetamacService().publishExternallyOrganisationScheme(ctx, urn);
+
+        // Transform to DTO
+        OrganisationSchemeMetamacDto organisationSchemeDto = organisationsDo2DtoMapper.organisationSchemeMetamacDoToDto(organisationSchemeVersionPublished);
+        return organisationSchemeDto;
+    }
+
+    @Override
+    public OrganisationSchemeMetamacDto versioningOrganisationScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
+        // TODO Security
+        // OrganisationSchemeVersionMetamac organisationSchemeVersionToCopy = getOrganisationsMetamacService().retrieveOrganisationSchemeByUrn(ctx, urnToCopy);
+        // OrganisationsSecurityUtils.canVersioningOrganisationScheme(ctx, organisationSchemeVersionToCopy);
+
+        OrganisationSchemeVersionMetamac organisationSchemeVersioned = getOrganisationsMetamacService().versioningOrganisationScheme(ctx, urnToCopy, versionType);
+
+        // Transform to DTO
+        OrganisationSchemeMetamacDto organisationSchemeDto = organisationsDo2DtoMapper.organisationSchemeMetamacDoToDto(organisationSchemeVersioned);
+        return organisationSchemeDto;
+    }
+
+    @Override
+    public OrganisationSchemeMetamacDto cancelOrganisationSchemeValidity(ServiceContext ctx, String urn) throws MetamacException {
+        // TODO Security
+        // OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationsMetamacService().retrieveOrganisationSchemeByUrn(ctx, urn);
+        // OrganisationsSecurityUtils.canCancelOrganisationSchemeValidity(ctx, organisationSchemeVersion);
+
+        OrganisationSchemeVersionMetamac organisationSchemeCanceled = getOrganisationsMetamacService().cancelOrganisationSchemeValidity(ctx, urn);
+
+        // Transform to DTO
+        OrganisationSchemeMetamacDto organisationSchemeDto = organisationsDo2DtoMapper.organisationSchemeMetamacDoToDto(organisationSchemeCanceled);
+
+        return organisationSchemeDto;
+    }
+
     /**************************************************************************
      * CONCEPTS
      *************************************************************************/
@@ -1158,25 +1265,25 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         return descriptorDtos;
     }
 
-    private ComponentListDto saveDescriptorAndComponents(ServiceContext ctx, String urnDsd, ComponentListDto componentListDto) throws MetamacException {
-        Set<ComponentDto> componentBackupDtos = new HashSet<ComponentDto>();
-        for (ComponentDto componentDto : componentListDto.getComponents()) {
-            componentBackupDtos.add(componentDto);
-        }
-
-        // Remove association with components (temporal)
-        componentListDto.removeAllComponents();
-
-        // Save ComponentList
-        componentListDto = saveDescriptorForDataStructureDefinition(ctx, urnDsd, (DescriptorDto) componentListDto);
-
-        // Save Components
-        for (ComponentDto componentDto : componentBackupDtos) {
-            componentDto = saveComponentForDataStructureDefinition(ctx, urnDsd, componentDto, componentListDto.getTypeComponentList());
-            componentListDto.getComponents().add(componentDto); // Recreate association with components
-        }
-
-        return componentListDto;
-    }
+    // private ComponentListDto saveDescriptorAndComponents(ServiceContext ctx, String urnDsd, ComponentListDto componentListDto) throws MetamacException {
+    // Set<ComponentDto> componentBackupDtos = new HashSet<ComponentDto>();
+    // for (ComponentDto componentDto : componentListDto.getComponents()) {
+    // componentBackupDtos.add(componentDto);
+    // }
+    //
+    // // Remove association with components (temporal)
+    // componentListDto.removeAllComponents();
+    //
+    // // Save ComponentList
+    // componentListDto = saveDescriptorForDataStructureDefinition(ctx, urnDsd, (DescriptorDto) componentListDto);
+    //
+    // // Save Components
+    // for (ComponentDto componentDto : componentBackupDtos) {
+    // componentDto = saveComponentForDataStructureDefinition(ctx, urnDsd, componentDto, componentListDto.getTypeComponentList());
+    // componentListDto.getComponents().add(componentDto); // Recreate association with components
+    // }
+    //
+    // return componentListDto;
+    // }
 
 }

@@ -256,6 +256,24 @@ Application SrmFacadeCore {
             @OrganisationSchemeMetamacDto retrieveOrganisationSchemeByUrn(String urn) throws MetamacException;
             "Retrieves all organisation scheme versions"
             List<@OrganisationSchemeMetamacDto> retrieveOrganisationSchemeVersions(String urn) throws MetamacException;
+            
+            "Sends organisation scheme to production validation"
+	    	@OrganisationSchemeMetamacDto sendOrganisationSchemeToProductionValidation(String urn) throws MetamacException;
+    		"Sends to diffusion validation"
+    		@OrganisationSchemeMetamacDto sendOrganisationSchemeToDiffusionValidation(String urn) throws MetamacException;
+	    	"Rejects production validation of organisation scheme"    		
+	    	@OrganisationSchemeMetamacDto rejectOrganisationSchemeProductionValidation(String urn) throws MetamacException;
+	    	"Rejects diffusion validation of organisation scheme"
+	    	@OrganisationSchemeMetamacDto rejectOrganisationSchemeDiffusionValidation(String urn) throws MetamacException; 
+	    	"Publishes internally a organisation scheme"
+	    	@OrganisationSchemeMetamacDto publishOrganisationSchemeInternally(String urn) throws MetamacException;
+	    	"Publishes externally a organisation scheme"
+	    	@OrganisationSchemeMetamacDto publishOrganisationSchemeExternally(String urn) throws MetamacException;
+    		"Creates a new version of a organisation scheme, copying metadata from version with provided urn"
+    		@OrganisationSchemeMetamacDto versioningOrganisationScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
+    		"Cancels the organisation scheme validity"
+    		@OrganisationSchemeMetamacDto cancelOrganisationSchemeValidity(String urn) throws MetamacException;
+            
        		
        		/**************************************************************************
 		     * CODELIST
