@@ -493,6 +493,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         identifiersEditionForm.setValue(OrganisationSchemeDS.URN, organisationSchemeDto.getUrn());
         identifiersEditionForm.setValue(OrganisationSchemeDS.VERSION_LOGIC, organisationSchemeDto.getVersionLogic());
         identifiersEditionForm.setValue(OrganisationSchemeDS.NAME, RecordUtils.getInternationalStringRecord(organisationSchemeDto.getName()));
+        identifiersEditionForm.markForRedraw();
 
         // Content descriptors
         contentDescriptorsEditionForm.setValue(OrganisationSchemeDS.TYPE, CommonUtils.getOrganisationSchemeTypeName(organisationSchemeDto.getType()));

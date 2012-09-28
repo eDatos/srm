@@ -417,8 +417,8 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
                 // CODE cannot be modified if status is INTERNALLY_PUBLISHED or EXTERNALLY_PUBLISHED, or if version is greater than VERSION_INITIAL_VERSION (01.000)
-                return !((ProcStatusEnum.INTERNALLY_PUBLISHED.equals(conceptSchemeDto.getLifeCycle().getProcStatus()) || ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(conceptSchemeDto.getLifeCycle().getProcStatus())) || (!VersionUtil.VERSION_INITIAL_VERSION
-                        .equals(conceptSchemeDto.getVersionLogic()) && !StringUtils.isBlank(conceptSchemeDto.getVersionLogic())));
+                return !((ProcStatusEnum.INTERNALLY_PUBLISHED.equals(conceptSchemeDto.getLifeCycle().getProcStatus()) || ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(conceptSchemeDto.getLifeCycle()
+                        .getProcStatus())) || (!VersionUtil.VERSION_INITIAL_VERSION.equals(conceptSchemeDto.getVersionLogic()) && !StringUtils.isBlank(conceptSchemeDto.getVersionLogic())));
             }
         });
         ViewTextItem staticCode = new ViewTextItem(ConceptSchemeDS.CODE_VIEW, getConstants().identifiableArtefactCode());
@@ -464,8 +464,8 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
                 // TYPE cannot be modified if status is INTERNALLY_PUBLISHED or EXTERNALLY_PUBLISHED, or if version is greater than VERSION_INITIAL_VERSION (01.000)
-                return !((ProcStatusEnum.INTERNALLY_PUBLISHED.equals(conceptSchemeDto.getLifeCycle().getProcStatus()) || ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(conceptSchemeDto.getLifeCycle().getProcStatus())) || (!VersionUtil.VERSION_INITIAL_VERSION
-                        .equals(conceptSchemeDto.getVersionLogic()) && !StringUtils.isBlank(conceptSchemeDto.getVersionLogic())));
+                return !((ProcStatusEnum.INTERNALLY_PUBLISHED.equals(conceptSchemeDto.getLifeCycle().getProcStatus()) || ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(conceptSchemeDto.getLifeCycle()
+                        .getProcStatus())) || (!VersionUtil.VERSION_INITIAL_VERSION.equals(conceptSchemeDto.getVersionLogic()) && !StringUtils.isBlank(conceptSchemeDto.getVersionLogic())));
             }
         });
         ViewTextItem typeView = new ViewTextItem(ConceptSchemeDS.TYPE_VIEW, getConstants().conceptSchemeType());
@@ -606,6 +606,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         identifiersEditionForm.setValue(ConceptSchemeDS.URN, conceptSchemeDto.getUrn());
         identifiersEditionForm.setValue(ConceptSchemeDS.VERSION_LOGIC, conceptSchemeDto.getVersionLogic());
         identifiersEditionForm.setValue(ConceptSchemeDS.NAME, RecordUtils.getInternationalStringRecord(conceptSchemeDto.getName()));
+        identifiersEditionForm.markForRedraw();
 
         // Content descriptors
         contentDescriptorsEditionForm.setValue(ConceptSchemeDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(conceptSchemeDto.getDescription()));

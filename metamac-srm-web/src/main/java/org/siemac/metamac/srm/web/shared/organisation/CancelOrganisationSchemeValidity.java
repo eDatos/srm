@@ -12,9 +12,9 @@ import com.gwtplatform.dispatch.annotation.Out;
 public class CancelOrganisationSchemeValidity {
 
     @In(1)
-    List<String>                 urns;
+    List<String>                       urns;
 
     @Out(1)
-    OrganisationSchemeMetamacDto organisationSchemeMetamacDto;
+    List<OrganisationSchemeMetamacDto> organisationSchemeMetamacDtos;
 
 }
