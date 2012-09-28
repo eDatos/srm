@@ -7,12 +7,15 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang.time.DateUtils;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
+import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.common.test.utils.MetamacAsserts;
@@ -144,17 +147,17 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
                     pagingParameter);
 
             // Validate
-            assertEquals(3, organisationSchemeVersionPagedResult.getTotalRows());
+            assertEquals(8, organisationSchemeVersionPagedResult.getTotalRows());
             int i = 0;
             assertEquals(ORGANISATION_SCHEME_1_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(ORGANISATION_SCHEME_1_V2, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(ORGANISATION_SCHEME_2_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             // assertEquals(ORGANISATION_SCHEME_3_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
-            // assertEquals(ORGANISATION_SCHEME_4_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
-            // assertEquals(ORGANISATION_SCHEME_5_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
-            // assertEquals(ORGANISATION_SCHEME_6_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
-            // assertEquals(ORGANISATION_SCHEME_7_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
-            // assertEquals(ORGANISATION_SCHEME_7_V2, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+            assertEquals(ORGANISATION_SCHEME_4_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+            assertEquals(ORGANISATION_SCHEME_5_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+            assertEquals(ORGANISATION_SCHEME_6_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+            assertEquals(ORGANISATION_SCHEME_7_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+            assertEquals(ORGANISATION_SCHEME_7_V2, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             // assertEquals(ORGANISATION_SCHEME_8_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             // assertEquals(ORGANISATION_SCHEME_9_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             // assertEquals(ORGANISATION_SCHEME_10_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
@@ -175,11 +178,11 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
                     pagingParameter);
 
             // Validate
-            assertEquals(1, organisationSchemeVersionPagedResult.getTotalRows());
+            assertEquals(2, organisationSchemeVersionPagedResult.getTotalRows());
             int i = 0;
             assertEquals(ORGANISATION_SCHEME_1_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             // assertEquals(ORGANISATION_SCHEME_3_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
-            // assertEquals(ORGANISATION_SCHEME_7_V2, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+            assertEquals(ORGANISATION_SCHEME_7_V2, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             // assertEquals(ORGANISATION_SCHEME_10_V2, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(organisationSchemeVersionPagedResult.getTotalRows(), i);
         }
@@ -194,15 +197,15 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
                     pagingParameter);
 
             // Validate
-            assertEquals(2, organisationSchemeVersionPagedResult.getTotalRows());
+            assertEquals(6, organisationSchemeVersionPagedResult.getTotalRows());
             int i = 0;
             assertEquals(ORGANISATION_SCHEME_1_V2, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(ORGANISATION_SCHEME_2_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             // assertEquals(ORGANISATION_SCHEME_3_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
-            // assertEquals(ORGANISATION_SCHEME_4_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
-            // assertEquals(ORGANISATION_SCHEME_5_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
-            // assertEquals(ORGANISATION_SCHEME_6_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
-            // assertEquals(ORGANISATION_SCHEME_7_V2, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+            assertEquals(ORGANISATION_SCHEME_4_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+            assertEquals(ORGANISATION_SCHEME_5_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+            assertEquals(ORGANISATION_SCHEME_6_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+            assertEquals(ORGANISATION_SCHEME_7_V2, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             // assertEquals(ORGANISATION_SCHEME_8_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             // assertEquals(ORGANISATION_SCHEME_9_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             // assertEquals(ORGANISATION_SCHEME_10_V3, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
@@ -225,634 +228,591 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         assertEquals(ORGANISATION_SCHEME_1_V2, organisationSchemeVersions.get(1).getMaintainableArtefact().getUrn());
     }
 
-    // @Test
-    // public void testSendOrganisationSchemeToProductionValidation() throws Exception {
-    //
-    // String urn = ORGANISATION_SCHEME_2_V1;
-    // ServiceContext ctx = getServiceContextAdministrador();
-    //
-    // {
-    // OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(ctx, urn);
-    // assertEquals(ProcStatusEnum.DRAFT, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
-    // }
-    //
-    // // Send to production validation
-    // OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.sendOrganisationSchemeToProductionValidation(ctx, urn);
-    //
-    // // Validate response
-    // {
-    // assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
-    // assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate().toDate()));
-    // assertEquals(ctx.getUserId(), organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationDate());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationUser());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationDate());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationUser());
-    // }
-    // // Validate retrieving
-    // {
-    // organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(ctx, urn);
-    //
-    // assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
-    // assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate().toDate()));
-    // assertEquals(ctx.getUserId(), organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationDate());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationUser());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationDate());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationUser());
-    // }
-    // }
-    //
-    // @Test
-    // public void testSendOrganisationSchemeToProductionValidationInProcStatusRejected() throws Exception {
-    //
-    // String urn = ORGANISATION_SCHEME_4_V1;
-    // ServiceContext ctx = getServiceContextAdministrador();
-    //
-    // {
-    // OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(ctx, urn);
-    // assertEquals(ProcStatusEnum.VALIDATION_REJECTED, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
-    // }
-    //
-    // // Send to production validation
-    // OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.sendOrganisationSchemeToProductionValidation(ctx, urn);
-    //
-    // // Validate response
-    // {
-    // assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
-    // assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate().toDate()));
-    // assertEquals(ctx.getUserId(), organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
-    // }
-    // // Validate retrieving
-    // {
-    // organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(ctx, urn);
-    //
-    // assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
-    // assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate().toDate()));
-    // assertEquals(ctx.getUserId(), organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
-    // }
-    // }
-    //
-    // @Test
-    // public void testSendOrganisationSchemeToProductionValidationErrorNotExists() throws Exception {
-    //
-    // String urn = NOT_EXISTS;
-    // try {
-    // organisationsService.sendOrganisationSchemeToProductionValidation(getServiceContextAdministrador(), urn);
-    // fail("OrganisationScheme not exists");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.ORGANISATION_SCHEME_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // }
-    // }
-    //
-    // @Test
-    // public void testSendOrganisationSchemeToProductionValidationErrorWrongProcStatus() throws Exception {
-    //
-    // String urn = ORGANISATION_SCHEME_1_V1;
-    //
-    // {
-    // OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), urn);
-    // assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
-    // }
-    //
-    // try {
-    // organisationsService.sendOrganisationSchemeToProductionValidation(getServiceContextAdministrador(), urn);
-    // fail("OrganisationScheme wrong proc status");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.ORGANISATION_SCHEME_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // assertEquals(ServiceExceptionParameters.PROC_STATUS_DRAFT, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
-    // assertEquals(ServiceExceptionParameters.PROC_STATUS_VALIDATION_REJECTED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[1]);
-    // }
-    // }
-    //
-    // @Test
-    // public void testSendOrganisationSchemeToProductionValidationErrorMetadataRequired() throws Exception {
-    //
-    // String urn = ORGANISATION_SCHEME_2_V1;
-    //
-    // // Update to clear metadata
-    // OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), urn);
-    // organisationSchemeVersion.setIsPartial(null);
-    // organisationSchemeVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
-    // organisationsService.updateOrganisationScheme(getServiceContextAdministrador(), organisationSchemeVersion);
-    //
-    // // Send to production validation
-    // try {
-    // organisationsService.sendOrganisationSchemeToProductionValidation(getServiceContextAdministrador(), urn);
-    // fail("OrganisationScheme metadata required");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    //
-    // assertEquals(ServiceExceptionType.METADATA_REQUIRED.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(ServiceExceptionParameters.ITEM_SCHEME_IS_PARTIAL, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // }
-    // }
-    //
-    // @Test
-    // public void testSendOrganisationSchemeToDiffusionValidation() throws Exception {
-    //
-    // String urn = ORGANISATION_SCHEME_5_V1;
-    // ServiceContext ctx = getServiceContextAdministrador();
-    //
-    // {
-    // OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(ctx, urn);
-    // assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
-    // }
-    //
-    // // Sends to diffusion validation
-    // OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.sendOrganisationSchemeToDiffusionValidation(ctx, urn);
-    //
-    // // Validate response
-    // {
-    // assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
-    // assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate());
-    // assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
-    // assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate().toDate()));
-    // assertEquals(ctx.getUserId(), organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationDate());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationUser());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationDate());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationUser());
-    // }
-    // // Validate retrieving
-    // {
-    // organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(ctx, urn);
-    //
-    // assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
-    // assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate());
-    // assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
-    // assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate().toDate()));
-    // assertEquals(ctx.getUserId(), organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationDate());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationUser());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationDate());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationUser());
-    // }
-    // }
-    //
-    // @Test
-    // public void testSendOrganisationSchemeToDiffusionValidationErrorNotExists() throws Exception {
-    //
-    // String urn = NOT_EXISTS;
-    // try {
-    // organisationsService.sendOrganisationSchemeToDiffusionValidation(getServiceContextAdministrador(), urn);
-    // fail("OrganisationScheme not exists");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.ORGANISATION_SCHEME_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // }
-    // }
-    //
-    // @Test
-    // public void testSendOrganisationSchemeToDiffusionValidationErrorWrongProcStatus() throws Exception {
-    //
-    // String urn = ORGANISATION_SCHEME_2_V1;
-    // ServiceContext ctx = getServiceContextAdministrador();
-    //
-    // {
-    // OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(ctx, urn);
-    // assertEquals(ProcStatusEnum.DRAFT, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
-    // }
-    //
-    // try {
-    // organisationsService.sendOrganisationSchemeToDiffusionValidation(getServiceContextAdministrador(), urn);
-    // fail("OrganisationScheme wrong proc status");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.ORGANISATION_SCHEME_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // assertEquals(ServiceExceptionParameters.PROC_STATUS_PRODUCTION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
-    // }
-    // }
-    //
-    // @Test
-    // public void testRejectOrganisationSchemeProductionValidation() throws Exception {
-    //
-    // String urn = ORGANISATION_SCHEME_5_V1;
-    // ServiceContext ctx = getServiceContextAdministrador();
-    //
-    // {
-    // OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(ctx, urn);
-    // assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
-    // assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate());
-    // assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
-    // }
-    //
-    // // Reject validation
-    // OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.rejectOrganisationSchemeProductionValidation(ctx, urn);
-    //
-    // // Validate response
-    // {
-    // assertEquals(ProcStatusEnum.VALIDATION_REJECTED, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationDate());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationUser());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationDate());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationUser());
-    // }
-    // // Validate restrieving
-    // {
-    // organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(ctx, urn);
-    //
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationDate());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationUser());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationDate());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationUser());
-    // }
-    // }
-    //
-    // @Test
-    // public void testRejectOrganisationSchemeProductionValidationErrorNotExists() throws Exception {
-    //
-    // String urn = NOT_EXISTS;
-    // try {
-    // organisationsService.rejectOrganisationSchemeProductionValidation(getServiceContextAdministrador(), urn);
-    // fail("OrganisationScheme not exists");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.ORGANISATION_SCHEME_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // }
-    // }
-    //
-    // @Test
-    // public void testRejectOrganisationSchemeProductionValidationErrorWrongProcStatus() throws Exception {
-    //
-    // String urn = ORGANISATION_SCHEME_1_V1;
-    //
-    // {
-    // OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), urn);
-    // assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
-    // }
-    //
-    // try {
-    // organisationsService.rejectOrganisationSchemeProductionValidation(getServiceContextAdministrador(), urn);
-    // fail("OrganisationScheme wrong proc status");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.ORGANISATION_SCHEME_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // assertEquals(ServiceExceptionParameters.PROC_STATUS_PRODUCTION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
-    // }
-    // }
-    //
-    // @Test
-    // public void testRejectOrganisationSchemeDiffusionValidation() throws Exception {
-    //
-    // String urn = ORGANISATION_SCHEME_6_V1;
-    // ServiceContext ctx = getServiceContextAdministrador();
-    //
-    // {
-    // OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(ctx, urn);
-    // assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
-    // assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate());
-    // assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
-    // assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate());
-    // assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
-    // }
-    //
-    // // Reject validation
-    // OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.rejectOrganisationSchemeDiffusionValidation(ctx, urn);
-    //
-    // // Validate response
-    // {
-    // assertEquals(ProcStatusEnum.VALIDATION_REJECTED, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationDate());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationUser());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationDate());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationUser());
-    // }
-    // // Validate retrieving
-    // {
-    // organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(ctx, urn);
-    //
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationDate());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationUser());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationDate());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationUser());
-    // }
-    // }
-    //
-    // @Test
-    // public void testRejectOrganisationSchemeDiffusionValidationErrorNotExists() throws Exception {
-    //
-    // String urn = NOT_EXISTS;
-    // try {
-    // organisationsService.rejectOrganisationSchemeDiffusionValidation(getServiceContextAdministrador(), urn);
-    // fail("OrganisationScheme not exists");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.ORGANISATION_SCHEME_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // }
-    // }
-    //
-    // @Test
-    // public void testRejectOrganisationSchemeDiffusionValidationErrorWrongProcStatus() throws Exception {
-    //
-    // String urn = ORGANISATION_SCHEME_1_V1;
-    //
-    // {
-    // OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), urn);
-    // assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
-    // }
-    //
-    // try {
-    // organisationsService.rejectOrganisationSchemeDiffusionValidation(getServiceContextAdministrador(), urn);
-    // fail("OrganisationScheme wrong proc status");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.ORGANISATION_SCHEME_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // assertEquals(ServiceExceptionParameters.PROC_STATUS_DIFFUSION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
-    // }
-    // }
-    //
-    // @Test
-    // public void testPublishInternallyOrganisationScheme() throws Exception {
-    //
-    // String urn = ORGANISATION_SCHEME_6_V1;
-    // ServiceContext ctx = getServiceContextAdministrador();
-    //
-    // {
-    // OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(ctx, urn);
-    // assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
-    // assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate());
-    // assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
-    // assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate());
-    // assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationDate());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationUser());
-    // assertFalse(organisationSchemeVersion.getMaintainableArtefact().getFinalLogic());
-    // }
-    //
-    // // Publish internally
-    // OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.publishInternallyOrganisationScheme(ctx, urn);
-    //
-    // // Validate response
-    // {
-    // assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
-    // assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate());
-    // assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
-    // assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate());
-    // assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
-    // assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationDate().toDate()));
-    // assertEquals(ctx.getUserId(), organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationUser());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationDate());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationUser());
-    // assertTrue(organisationSchemeVersion.getMaintainableArtefact().getFinalLogic());
-    // }
-    // // Validate retrieving
-    // {
-    // organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(ctx, urn);
-    //
-    // assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
-    // assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate());
-    // assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
-    // assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate());
-    // assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
-    // assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationDate().toDate()));
-    // assertEquals(ctx.getUserId(), organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationUser());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationDate());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationUser());
-    // assertTrue(organisationSchemeVersion.getMaintainableArtefact().getFinalLogic());
-    // }
-    // }
-    //
-    // @Test
-    // public void testPublishInternallyOrganisationSchemeErrorNotExists() throws Exception {
-    //
-    // String urn = NOT_EXISTS;
-    // try {
-    // organisationsService.publishInternallyOrganisationScheme(getServiceContextAdministrador(), urn);
-    // fail("OrganisationScheme not exists");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.ORGANISATION_SCHEME_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // }
-    // }
-    //
-    // @Test
-    // public void testPublishInternallyOrganisationSchemeErrorWrongProcStatus() throws Exception {
-    //
-    // String urn = ORGANISATION_SCHEME_1_V1;
-    //
-    // {
-    // OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), urn);
-    // assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
-    // }
-    //
-    // try {
-    // organisationsService.publishInternallyOrganisationScheme(getServiceContextAdministrador(), urn);
-    // fail("OrganisationScheme wrong proc status");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.ORGANISATION_SCHEME_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // assertEquals(ServiceExceptionParameters.PROC_STATUS_DIFFUSION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
-    // }
-    // }
-    //
-    // @Test
-    // public void testPublishInternallyOrganisationSchemeErrorOrganisationExtendsInOrganisationSchemeNoPublished() throws Exception {
-    //
-    // String urn = ORGANISATION_SCHEME_6_V1;
-    // String urnOrganisationOrganisationSchemeToPublish = ORGANISATION_SCHEME_6_V1_ORGANISATION_1;
-    // String urnOrganisationExtends = ORGANISATION_SCHEME_1_V2_ORGANISATION_1;
-    //
-    // // Update organisation to add extends organisation of organisation scheme to publish
-    // OrganisationMetamac organisation = organisationsService.retrieveOrganisationByUrn(getServiceContextAdministrador(), urnOrganisationExtends);
-    // OrganisationMetamac organisationOrganisationSchemeToPublish = organisationsService.retrieveOrganisationByUrn(getServiceContextAdministrador(), urnOrganisationOrganisationSchemeToPublish);
-    // organisationOrganisationSchemeToPublish.setOrganisationExtends(organisation);
-    // organisationOrganisationSchemeToPublish.getNameableArtefact().setIsCodeUpdated(Boolean.FALSE);
-    // organisationsService.updateOrganisation(getServiceContextAdministrador(), organisationOrganisationSchemeToPublish);
-    //
-    // try {
-    // organisationsService.publishInternallyOrganisationScheme(getServiceContextAdministrador(), urn);
-    // fail("OrganisationScheme wrong proc status");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.ORGANISATION_SCHEME_WITH_RELATED_ORGANISATIONS_NOT_FINAL.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // assertEquals(urnOrganisationExtends, e.getExceptionItems().get(0).getMessageParameters()[1]);
-    // }
-    // }
-    //
-    // @Test
-    // public void testPublishExternallyOrganisationScheme() throws Exception {
-    //
-    // String urn = ORGANISATION_SCHEME_7_V2;
-    // ServiceContext ctx = getServiceContextAdministrador();
-    //
-    // {
-    // OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(ctx, urn);
-    // assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
-    // assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate());
-    // assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
-    // assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate());
-    // assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
-    // assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationDate());
-    // assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationUser());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationDate());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationUser());
-    // assertNull(organisationSchemeVersion.getMaintainableArtefact().getValidFrom());
-    // assertNull(organisationSchemeVersion.getMaintainableArtefact().getValidTo());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getIsExternalPublicationFailed());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationFailedDate());
-    //
-    // OrganisationSchemeVersionMetamac organisationSchemeVersionExternallyPublished = organisationsService.retrieveOrganisationSchemeByUrn(ctx, ORGANISATION_SCHEME_7_V1);
-    // assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, organisationSchemeVersionExternallyPublished.getLifecycleMetadata().getProcStatus());
-    // assertNotNull(organisationSchemeVersionExternallyPublished.getMaintainableArtefact().getValidFrom());
-    // assertNull(organisationSchemeVersionExternallyPublished.getMaintainableArtefact().getValidTo());
-    // }
-    //
-    // // Publish externally
-    // OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.publishExternallyOrganisationScheme(ctx, urn);
-    //
-    // // Validate response
-    // {
-    // assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
-    // assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate());
-    // assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
-    // assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate());
-    // assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
-    // assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationDate());
-    // assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationUser());
-    // assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationDate().toDate()));
-    // assertEquals(ctx.getUserId(), organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationUser());
-    // assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeVersion.getMaintainableArtefact().getValidFrom().toDate()));
-    // assertNull(organisationSchemeVersion.getMaintainableArtefact().getValidTo());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getIsExternalPublicationFailed());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationFailedDate());
-    // }
-    // // Validate retrieving
-    // {
-    // organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(ctx, urn);
-    // assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
-    // assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate());
-    // assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
-    // assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate());
-    // assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
-    // assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationDate());
-    // assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationUser());
-    // assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationDate().toDate()));
-    // assertEquals(ctx.getUserId(), organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationUser());
-    // assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeVersion.getMaintainableArtefact().getValidFrom().toDate()));
-    // assertNull(organisationSchemeVersion.getMaintainableArtefact().getValidTo());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getIsExternalPublicationFailed());
-    // assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationFailedDate());
-    // }
-    // // Validate previous published externally versions
-    // {
-    // OrganisationSchemeVersionMetamac organisationSchemeVersionExternallyPublished = organisationsService.retrieveOrganisationSchemeByUrn(ctx, ORGANISATION_SCHEME_7_V1);
-    // assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, organisationSchemeVersionExternallyPublished.getLifecycleMetadata().getProcStatus());
-    // assertNotNull(organisationSchemeVersionExternallyPublished.getMaintainableArtefact().getValidFrom());
-    // assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeVersionExternallyPublished.getMaintainableArtefact().getValidTo().toDate()));
-    // }
-    // }
-    //
-    // @Test
-    // public void testPublishExternallyOrganisationSchemeErrorNotExists() throws Exception {
-    //
-    // String urn = NOT_EXISTS;
-    // try {
-    // organisationsService.publishExternallyOrganisationScheme(getServiceContextAdministrador(), urn);
-    // fail("OrganisationScheme not exists");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.ORGANISATION_SCHEME_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // }
-    // }
-    //
-    // @Test
-    // public void testPublishExternallyOrganisationSchemeErrorWrongProcStatus() throws Exception {
-    //
-    // String urn = ORGANISATION_SCHEME_1_V2;
-    //
-    // {
-    // OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), urn);
-    // assertEquals(ProcStatusEnum.DRAFT, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
-    // }
-    //
-    // try {
-    // organisationsService.publishExternallyOrganisationScheme(getServiceContextAdministrador(), urn);
-    // fail("OrganisationScheme wrong proc status");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.ORGANISATION_SCHEME_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // assertEquals(ServiceExceptionParameters.PROC_STATUS_INTERNALLY_PUBLISHED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
-    // }
-    // }
-    //
-    // @Test
-    // public void testPublishExternallyOrganisationSchemeErrorOrganisationExtendsInOrganisationSchemeNoPublished() throws Exception {
-    //
-    // String urn = ORGANISATION_SCHEME_1_V1;
-    //
-    // try {
-    // organisationsService.publishExternallyOrganisationScheme(getServiceContextAdministrador(), urn);
-    // fail("OrganisationScheme wrong proc status");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.ORGANISATION_SCHEME_WITH_RELATED_ORGANISATIONS_VALIDITY_NOT_STARTED.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // assertEquals(ORGANISATION_SCHEME_10_V3_ORGANISATION_1, e.getExceptionItems().get(0).getMessageParameters()[1]);
-    // }
-    // }
+    @Test
+    public void testSendOrganisationSchemeToProductionValidation() throws Exception {
+
+        String urn = ORGANISATION_SCHEME_2_V1;
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        {
+            OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(ctx, urn);
+            assertEquals(ProcStatusEnum.DRAFT, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
+        }
+
+        // Send to production validation
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.sendOrganisationSchemeToProductionValidation(ctx, urn);
+
+        // Validate response
+        {
+            assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
+            assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate().toDate()));
+            assertEquals(ctx.getUserId(), organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationDate());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationUser());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationDate());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationUser());
+        }
+        // Validate retrieving
+        {
+            organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(ctx, urn);
+
+            assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
+            assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate().toDate()));
+            assertEquals(ctx.getUserId(), organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationDate());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationUser());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationDate());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationUser());
+        }
+    }
+
+    @Test
+    public void testSendOrganisationSchemeToProductionValidationInProcStatusRejected() throws Exception {
+
+        String urn = ORGANISATION_SCHEME_4_V1;
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        {
+            OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(ctx, urn);
+            assertEquals(ProcStatusEnum.VALIDATION_REJECTED, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
+        }
+
+        // Send to production validation
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.sendOrganisationSchemeToProductionValidation(ctx, urn);
+
+        // Validate response
+        {
+            assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
+            assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate().toDate()));
+            assertEquals(ctx.getUserId(), organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
+        }
+        // Validate retrieving
+        {
+            organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(ctx, urn);
+
+            assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
+            assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate().toDate()));
+            assertEquals(ctx.getUserId(), organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
+        }
+    }
+
+    @Test
+    public void testSendOrganisationSchemeToProductionValidationErrorNotExists() throws Exception {
+
+        String urn = NOT_EXISTS;
+        try {
+            organisationsService.sendOrganisationSchemeToProductionValidation(getServiceContextAdministrador(), urn);
+            fail("OrganisationScheme not exists");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.ORGANISATION_SCHEME_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
+    @Test
+    public void testSendOrganisationSchemeToProductionValidationErrorWrongProcStatus() throws Exception {
+
+        String urn = ORGANISATION_SCHEME_1_V1;
+
+        {
+            OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), urn);
+            assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
+        }
+
+        try {
+            organisationsService.sendOrganisationSchemeToProductionValidation(getServiceContextAdministrador(), urn);
+            fail("OrganisationScheme wrong proc status");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.ORGANISATION_SCHEME_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_DRAFT, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_VALIDATION_REJECTED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[1]);
+        }
+    }
+
+    @Test
+    public void testSendOrganisationSchemeToProductionValidationErrorMetadataRequired() throws Exception {
+
+        String urn = ORGANISATION_SCHEME_2_V1;
+
+        // Update to clear metadata
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), urn);
+        organisationSchemeVersion.setIsPartial(null);
+        organisationSchemeVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
+        organisationsService.updateOrganisationScheme(getServiceContextAdministrador(), organisationSchemeVersion);
+
+        // Send to production validation
+        try {
+            organisationsService.sendOrganisationSchemeToProductionValidation(getServiceContextAdministrador(), urn);
+            fail("OrganisationScheme metadata required");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+
+            assertEquals(ServiceExceptionType.METADATA_REQUIRED.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(ServiceExceptionParameters.ITEM_SCHEME_IS_PARTIAL, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
+    @Test
+    public void testSendOrganisationSchemeToDiffusionValidation() throws Exception {
+
+        String urn = ORGANISATION_SCHEME_5_V1;
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        {
+            OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(ctx, urn);
+            assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
+        }
+
+        // Sends to diffusion validation
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.sendOrganisationSchemeToDiffusionValidation(ctx, urn);
+
+        // Validate response
+        {
+            assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
+            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate());
+            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
+            assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate().toDate()));
+            assertEquals(ctx.getUserId(), organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationDate());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationUser());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationDate());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationUser());
+        }
+        // Validate retrieving
+        {
+            organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(ctx, urn);
+
+            assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
+            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate());
+            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
+            assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate().toDate()));
+            assertEquals(ctx.getUserId(), organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationDate());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationUser());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationDate());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationUser());
+        }
+    }
+
+    @Test
+    public void testSendOrganisationSchemeToDiffusionValidationErrorNotExists() throws Exception {
+
+        String urn = NOT_EXISTS;
+        try {
+            organisationsService.sendOrganisationSchemeToDiffusionValidation(getServiceContextAdministrador(), urn);
+            fail("OrganisationScheme not exists");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.ORGANISATION_SCHEME_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
+    @Test
+    public void testSendOrganisationSchemeToDiffusionValidationErrorWrongProcStatus() throws Exception {
+
+        String urn = ORGANISATION_SCHEME_2_V1;
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        {
+            OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(ctx, urn);
+            assertEquals(ProcStatusEnum.DRAFT, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
+        }
+
+        try {
+            organisationsService.sendOrganisationSchemeToDiffusionValidation(getServiceContextAdministrador(), urn);
+            fail("OrganisationScheme wrong proc status");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.ORGANISATION_SCHEME_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_PRODUCTION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
+        }
+    }
+
+    @Test
+    public void testRejectOrganisationSchemeProductionValidation() throws Exception {
+
+        String urn = ORGANISATION_SCHEME_5_V1;
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        {
+            OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(ctx, urn);
+            assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
+            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate());
+            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
+        }
+
+        // Reject validation
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.rejectOrganisationSchemeProductionValidation(ctx, urn);
+
+        // Validate response
+        {
+            assertEquals(ProcStatusEnum.VALIDATION_REJECTED, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationDate());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationUser());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationDate());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationUser());
+        }
+        // Validate restrieving
+        {
+            organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(ctx, urn);
+
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationDate());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationUser());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationDate());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationUser());
+        }
+    }
+
+    @Test
+    public void testRejectOrganisationSchemeProductionValidationErrorNotExists() throws Exception {
+
+        String urn = NOT_EXISTS;
+        try {
+            organisationsService.rejectOrganisationSchemeProductionValidation(getServiceContextAdministrador(), urn);
+            fail("OrganisationScheme not exists");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.ORGANISATION_SCHEME_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
+    @Test
+    public void testRejectOrganisationSchemeProductionValidationErrorWrongProcStatus() throws Exception {
+
+        String urn = ORGANISATION_SCHEME_1_V1;
+
+        {
+            OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), urn);
+            assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
+        }
+
+        try {
+            organisationsService.rejectOrganisationSchemeProductionValidation(getServiceContextAdministrador(), urn);
+            fail("OrganisationScheme wrong proc status");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.ORGANISATION_SCHEME_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_PRODUCTION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
+        }
+    }
+
+    @Test
+    public void testRejectOrganisationSchemeDiffusionValidation() throws Exception {
+
+        String urn = ORGANISATION_SCHEME_6_V1;
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        {
+            OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(ctx, urn);
+            assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
+            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate());
+            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
+            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate());
+            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
+        }
+
+        // Reject validation
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.rejectOrganisationSchemeDiffusionValidation(ctx, urn);
+
+        // Validate response
+        {
+            assertEquals(ProcStatusEnum.VALIDATION_REJECTED, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationDate());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationUser());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationDate());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationUser());
+        }
+        // Validate retrieving
+        {
+            organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(ctx, urn);
+
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationDate());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationUser());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationDate());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationUser());
+        }
+    }
+
+    @Test
+    public void testRejectOrganisationSchemeDiffusionValidationErrorNotExists() throws Exception {
+
+        String urn = NOT_EXISTS;
+        try {
+            organisationsService.rejectOrganisationSchemeDiffusionValidation(getServiceContextAdministrador(), urn);
+            fail("OrganisationScheme not exists");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.ORGANISATION_SCHEME_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
+    @Test
+    public void testRejectOrganisationSchemeDiffusionValidationErrorWrongProcStatus() throws Exception {
+
+        String urn = ORGANISATION_SCHEME_1_V1;
+
+        {
+            OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), urn);
+            assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
+        }
+
+        try {
+            organisationsService.rejectOrganisationSchemeDiffusionValidation(getServiceContextAdministrador(), urn);
+            fail("OrganisationScheme wrong proc status");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.ORGANISATION_SCHEME_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_DIFFUSION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
+        }
+    }
+
+    @Test
+    public void testPublishInternallyOrganisationScheme() throws Exception {
+
+        String urn = ORGANISATION_SCHEME_6_V1;
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        {
+            OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(ctx, urn);
+            assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
+            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate());
+            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
+            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate());
+            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationDate());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationUser());
+            assertFalse(organisationSchemeVersion.getMaintainableArtefact().getFinalLogic());
+        }
+
+        // Publish internally
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.publishInternallyOrganisationScheme(ctx, urn);
+
+        // Validate response
+        {
+            assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
+            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate());
+            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
+            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate());
+            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
+            assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationDate().toDate()));
+            assertEquals(ctx.getUserId(), organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationUser());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationDate());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationUser());
+            assertTrue(organisationSchemeVersion.getMaintainableArtefact().getFinalLogic());
+        }
+        // Validate retrieving
+        {
+            organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(ctx, urn);
+
+            assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
+            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate());
+            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
+            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate());
+            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
+            assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationDate().toDate()));
+            assertEquals(ctx.getUserId(), organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationUser());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationDate());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationUser());
+            assertTrue(organisationSchemeVersion.getMaintainableArtefact().getFinalLogic());
+        }
+    }
+
+    @Test
+    public void testPublishInternallyOrganisationSchemeErrorNotExists() throws Exception {
+
+        String urn = NOT_EXISTS;
+        try {
+            organisationsService.publishInternallyOrganisationScheme(getServiceContextAdministrador(), urn);
+            fail("OrganisationScheme not exists");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.ORGANISATION_SCHEME_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
+    @Test
+    public void testPublishInternallyOrganisationSchemeErrorWrongProcStatus() throws Exception {
+
+        String urn = ORGANISATION_SCHEME_1_V1;
+
+        {
+            OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), urn);
+            assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
+        }
+
+        try {
+            organisationsService.publishInternallyOrganisationScheme(getServiceContextAdministrador(), urn);
+            fail("OrganisationScheme wrong proc status");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.ORGANISATION_SCHEME_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_DIFFUSION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
+        }
+    }
+
+    @Test
+    public void testPublishExternallyOrganisationScheme() throws Exception {
+
+        String urn = ORGANISATION_SCHEME_7_V2;
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        {
+            OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(ctx, urn);
+            assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
+            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate());
+            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
+            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate());
+            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
+            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationDate());
+            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationUser());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationDate());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationUser());
+            assertNull(organisationSchemeVersion.getMaintainableArtefact().getValidFrom());
+            assertNull(organisationSchemeVersion.getMaintainableArtefact().getValidTo());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getIsExternalPublicationFailed());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationFailedDate());
+
+            OrganisationSchemeVersionMetamac organisationSchemeVersionExternallyPublished = organisationsService.retrieveOrganisationSchemeByUrn(ctx, ORGANISATION_SCHEME_7_V1);
+            assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, organisationSchemeVersionExternallyPublished.getLifecycleMetadata().getProcStatus());
+            assertNotNull(organisationSchemeVersionExternallyPublished.getMaintainableArtefact().getValidFrom());
+            assertNull(organisationSchemeVersionExternallyPublished.getMaintainableArtefact().getValidTo());
+        }
+
+        // Publish externally
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.publishExternallyOrganisationScheme(ctx, urn);
+
+        // Validate response
+        {
+            assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
+            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate());
+            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
+            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate());
+            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
+            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationDate());
+            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationUser());
+            assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationDate().toDate()));
+            assertEquals(ctx.getUserId(), organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationUser());
+            assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeVersion.getMaintainableArtefact().getValidFrom().toDate()));
+            assertNull(organisationSchemeVersion.getMaintainableArtefact().getValidTo());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getIsExternalPublicationFailed());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationFailedDate());
+        }
+        // Validate retrieving
+        {
+            organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(ctx, urn);
+            assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
+            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate());
+            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
+            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate());
+            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
+            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationDate());
+            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationUser());
+            assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationDate().toDate()));
+            assertEquals(ctx.getUserId(), organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationUser());
+            assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeVersion.getMaintainableArtefact().getValidFrom().toDate()));
+            assertNull(organisationSchemeVersion.getMaintainableArtefact().getValidTo());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getIsExternalPublicationFailed());
+            assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationFailedDate());
+        }
+        // Validate previous published externally versions
+        {
+            OrganisationSchemeVersionMetamac organisationSchemeVersionExternallyPublished = organisationsService.retrieveOrganisationSchemeByUrn(ctx, ORGANISATION_SCHEME_7_V1);
+            assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, organisationSchemeVersionExternallyPublished.getLifecycleMetadata().getProcStatus());
+            assertNotNull(organisationSchemeVersionExternallyPublished.getMaintainableArtefact().getValidFrom());
+            assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeVersionExternallyPublished.getMaintainableArtefact().getValidTo().toDate()));
+        }
+    }
+
+    @Test
+    public void testPublishExternallyOrganisationSchemeErrorNotExists() throws Exception {
+
+        String urn = NOT_EXISTS;
+        try {
+            organisationsService.publishExternallyOrganisationScheme(getServiceContextAdministrador(), urn);
+            fail("OrganisationScheme not exists");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.ORGANISATION_SCHEME_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
+    @Test
+    public void testPublishExternallyOrganisationSchemeErrorWrongProcStatus() throws Exception {
+
+        String urn = ORGANISATION_SCHEME_1_V2;
+
+        {
+            OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), urn);
+            assertEquals(ProcStatusEnum.DRAFT, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
+        }
+
+        try {
+            organisationsService.publishExternallyOrganisationScheme(getServiceContextAdministrador(), urn);
+            fail("OrganisationScheme wrong proc status");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.ORGANISATION_SCHEME_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_INTERNALLY_PUBLISHED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
+        }
+    }
 
     @Test
     public void testDeleteOrganisationScheme() throws Exception {

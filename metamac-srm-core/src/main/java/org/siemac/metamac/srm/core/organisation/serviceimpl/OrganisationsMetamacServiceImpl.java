@@ -16,8 +16,6 @@ import org.siemac.metamac.srm.core.organisation.serviceimpl.utils.OrganisationsM
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
-import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.organisation.serviceapi.OrganisationsService;
 
@@ -30,14 +28,14 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
     @Autowired
     private OrganisationsService        organisationsService;
 
-    @Autowired
-    private ItemSchemeVersionRepository itemSchemeVersionRepository;
+    // @Autowired
+    // private ItemSchemeVersionRepository itemSchemeVersionRepository;
 
     // @Autowired
     // private OrganisationRepository organisationRepository;
 
-    // @Autowired
-    // private OrganisationSchemeLifecycle organisationSchemeLifecycle;
+    @Autowired
+    private OrganisationSchemeLifecycle organisationSchemeLifecycle;
 
     public OrganisationsMetamacServiceImpl() {
     }
@@ -101,37 +99,37 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
         return organisationSchemeVersionPagedResult;
     }
 
-    // @Override
-    // public OrganisationSchemeVersionMetamac sendOrganisationSchemeToProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
-    // return (OrganisationSchemeVersionMetamac) organisationSchemeLifecycle.sendToProductionValidation(ctx, urn);
-    // }
-    //
-    // @Override
-    // public OrganisationSchemeVersionMetamac sendOrganisationSchemeToDiffusionValidation(ServiceContext ctx, String urn) throws MetamacException {
-    // return (OrganisationSchemeVersionMetamac) organisationSchemeLifecycle.sendToDiffusionValidation(ctx, urn);
-    // }
-    //
-    // @Override
-    // public OrganisationSchemeVersionMetamac rejectOrganisationSchemeProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
-    // return (OrganisationSchemeVersionMetamac) organisationSchemeLifecycle.rejectProductionValidation(ctx, urn);
-    // }
-    //
-    // @Override
-    // public OrganisationSchemeVersionMetamac rejectOrganisationSchemeDiffusionValidation(ServiceContext ctx, String urn) throws MetamacException {
-    // return (OrganisationSchemeVersionMetamac) organisationSchemeLifecycle.rejectDiffusionValidation(ctx, urn);
-    // }
-    //
-    // // TODO Para llevar a cabo la publicación interna de un recurso será necesario que previamente exista al menos un anuncio sobre el esquema de organisationos a publicar
-    // @Override
-    // public OrganisationSchemeVersionMetamac publishInternallyOrganisationScheme(ServiceContext ctx, String urn) throws MetamacException {
-    // return (OrganisationSchemeVersionMetamac) organisationSchemeLifecycle.publishInternally(ctx, urn);
-    // }
-    //
-    // // TODO validTo, validFrom: ¿rellenar cuando el artefacto no sea del ISTAC? Pendiente decisión del ISTAC.
-    // @Override
-    // public OrganisationSchemeVersionMetamac publishExternallyOrganisationScheme(ServiceContext ctx, String urn) throws MetamacException {
-    // return (OrganisationSchemeVersionMetamac) organisationSchemeLifecycle.publishExternally(ctx, urn);
-    // }
+    @Override
+    public OrganisationSchemeVersionMetamac sendOrganisationSchemeToProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
+        return (OrganisationSchemeVersionMetamac) organisationSchemeLifecycle.sendToProductionValidation(ctx, urn);
+    }
+
+    @Override
+    public OrganisationSchemeVersionMetamac sendOrganisationSchemeToDiffusionValidation(ServiceContext ctx, String urn) throws MetamacException {
+        return (OrganisationSchemeVersionMetamac) organisationSchemeLifecycle.sendToDiffusionValidation(ctx, urn);
+    }
+
+    @Override
+    public OrganisationSchemeVersionMetamac rejectOrganisationSchemeProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
+        return (OrganisationSchemeVersionMetamac) organisationSchemeLifecycle.rejectProductionValidation(ctx, urn);
+    }
+
+    @Override
+    public OrganisationSchemeVersionMetamac rejectOrganisationSchemeDiffusionValidation(ServiceContext ctx, String urn) throws MetamacException {
+        return (OrganisationSchemeVersionMetamac) organisationSchemeLifecycle.rejectDiffusionValidation(ctx, urn);
+    }
+
+    // TODO Para llevar a cabo la publicación interna de un recurso será necesario que previamente exista al menos un anuncio sobre el esquema de organisationos a publicar
+    @Override
+    public OrganisationSchemeVersionMetamac publishInternallyOrganisationScheme(ServiceContext ctx, String urn) throws MetamacException {
+        return (OrganisationSchemeVersionMetamac) organisationSchemeLifecycle.publishInternally(ctx, urn);
+    }
+
+    // TODO validTo, validFrom: ¿rellenar cuando el artefacto no sea del ISTAC? Pendiente decisión del ISTAC.
+    @Override
+    public OrganisationSchemeVersionMetamac publishExternallyOrganisationScheme(ServiceContext ctx, String urn) throws MetamacException {
+        return (OrganisationSchemeVersionMetamac) organisationSchemeLifecycle.publishExternally(ctx, urn);
+    }
 
     @Override
     public void deleteOrganisationScheme(ServiceContext ctx, String urn) throws MetamacException {

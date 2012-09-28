@@ -42,8 +42,8 @@ public class OrganisationsDto2DoMapperImpl implements OrganisationsDto2DoMapper 
             try {
                 target = getOrganisationSchemeVersionMetamacRepository().findById(source.getId());
             } catch (OrganisationSchemeVersionMetamacNotFoundException e) {
-                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SRM_SEARCH_NOT_FOUND).withMessageParameters(ServiceExceptionParameters.CONCEPT_SCHEME)
-                        .withLoggedLevel(ExceptionLevelEnum.ERROR).build();
+                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SRM_SEARCH_NOT_FOUND)
+                        .withMessageParameters(ServiceExceptionParameters.ORGANISATION_SCHEME).withLoggedLevel(ExceptionLevelEnum.ERROR).build();
             }
             OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersion());
         }

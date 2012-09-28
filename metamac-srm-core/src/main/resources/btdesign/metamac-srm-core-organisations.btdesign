@@ -27,18 +27,18 @@ Application OrganisationsMetamac {
 			List<@OrganisationSchemeVersionMetamac> retrieveOrganisationSchemeVersions(String urn) throws MetamacException;
 			"Finds organisation schemes by criteria"
     		PagedResult<@OrganisationSchemeVersionMetamac> findOrganisationSchemesByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
-//    		"Sends organisation scheme to production validation"
-//    		@OrganisationSchemeVersionMetamac sendOrganisationSchemeToProductionValidation(String urn) throws MetamacException;
-//    		"Sends organisation scheme to diffusion validation"
-//    		@OrganisationSchemeVersionMetamac sendOrganisationSchemeToDiffusionValidation(String urn) throws MetamacException;
-//	    	"Rejects production validation of organisation scheme"    		
-//	    	@OrganisationSchemeVersionMetamac rejectOrganisationSchemeProductionValidation(String urn) throws MetamacException;
-//	    	"Rejects diffusion validation of organisation scheme"
-//	    	@OrganisationSchemeVersionMetamac rejectOrganisationSchemeDiffusionValidation(String urn) throws MetamacException;
-//	    	"Publish internally a organisation scheme"
-//	    	@OrganisationSchemeVersionMetamac publishInternallyOrganisationScheme(String urn) throws MetamacException;
-//	    	"Publish externally a organisation scheme"
-//	    	@OrganisationSchemeVersionMetamac publishExternallyOrganisationScheme(String urn) throws MetamacException;
+    		"Sends organisation scheme to production validation"
+    		@OrganisationSchemeVersionMetamac sendOrganisationSchemeToProductionValidation(String urn) throws MetamacException;
+    		"Sends organisation scheme to diffusion validation"
+    		@OrganisationSchemeVersionMetamac sendOrganisationSchemeToDiffusionValidation(String urn) throws MetamacException;
+	    	"Rejects production validation of organisation scheme"    		
+	    	@OrganisationSchemeVersionMetamac rejectOrganisationSchemeProductionValidation(String urn) throws MetamacException;
+	    	"Rejects diffusion validation of organisation scheme"
+	    	@OrganisationSchemeVersionMetamac rejectOrganisationSchemeDiffusionValidation(String urn) throws MetamacException;
+	    	"Publish internally a organisation scheme"
+	    	@OrganisationSchemeVersionMetamac publishInternallyOrganisationScheme(String urn) throws MetamacException;
+	    	"Publish externally a organisation scheme"
+	    	@OrganisationSchemeVersionMetamac publishExternallyOrganisationScheme(String urn) throws MetamacException;
 			"Deletes organisation scheme version. This must be last version and no published"
     		deleteOrganisationScheme(String urn) throws MetamacException;
 //    		"Creates a new version of a organisation scheme, copying metadata from version with provided urn"
