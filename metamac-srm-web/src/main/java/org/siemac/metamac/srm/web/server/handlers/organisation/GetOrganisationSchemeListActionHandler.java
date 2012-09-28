@@ -31,8 +31,8 @@ import com.gwtplatform.dispatch.shared.ActionException;
 @Component
 public class GetOrganisationSchemeListActionHandler extends SecurityActionHandler<GetOrganisationSchemeListAction, GetOrganisationSchemeListResult> {
 
-     @Autowired
-     private SrmCoreServiceFacade srmCoreServiceFacade;
+    @Autowired
+    private SrmCoreServiceFacade srmCoreServiceFacade;
 
     public GetOrganisationSchemeListActionHandler() {
         super(GetOrganisationSchemeListAction.class);

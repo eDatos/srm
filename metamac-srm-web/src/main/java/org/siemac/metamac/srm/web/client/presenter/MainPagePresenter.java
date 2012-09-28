@@ -64,7 +64,7 @@ public class MainPagePresenter extends Presenter<MainPagePresenter.MainPageView,
     public interface MainPageView extends View, HasUiHandlers<MainPageUiHandlers> {
 
         void setTitle(String title);
-        
+
         MasterHead getMasterHead();
 
         BreadCrumbsPanel getBreadCrumbsPanel();
