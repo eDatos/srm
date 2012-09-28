@@ -12,6 +12,10 @@ public class OrganisationsMetamacAsserts extends OrganisationsAsserts {
 
     public static void assertEqualsOrganisationScheme(OrganisationSchemeVersionMetamac expected, OrganisationSchemeVersionMetamac actual) {
         BaseAsserts.assertEqualsLifeCycle(expected.getLifecycleMetadata(), actual.getLifecycleMetadata());
+        assertEqualsOrganisationSchemeWithoutLifeCycleMetadata(expected, actual);
+    }
+
+    public static void assertEqualsOrganisationSchemeWithoutLifeCycleMetadata(OrganisationSchemeVersionMetamac expected, OrganisationSchemeVersionMetamac actual) {
         OrganisationsAsserts.assertEqualsOrganisationScheme(expected, actual);
     }
 

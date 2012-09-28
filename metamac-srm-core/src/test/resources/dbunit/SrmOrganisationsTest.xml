@@ -64,7 +64,7 @@
         
         CODE="ORGANISATIONSCHEME01"
         URI="[null]"
-        URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME01(01.000)"
+        URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=ISTAC:ORGANISATIONSCHEME01(01.000)"
         REPLACED_BY="02.000"
         REPLACE_TO="[null]"
         
@@ -143,7 +143,7 @@
         
         CODE="ORGANISATIONSCHEME01"
         URI="[null]"
-        URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME01(02.000)"
+        URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=ISTAC:ORGANISATIONSCHEME01(02.000)"
         REPLACED_BY="[null]"
         REPLACE_TO="01.000"
         
@@ -234,7 +234,7 @@
         
         CODE="ORGANISATIONSCHEME02"
         URI="[null]"
-        URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME02(01.000)"
+        URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=ISTAC:ORGANISATIONSCHEME02(01.000)"
         REPLACED_BY="[null]"
         REPLACE_TO="[null]"
         
@@ -253,6 +253,96 @@
         MAINTAINER_FK="21"
         
         UUID="annotableArtefact-21"
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user2"
+        LAST_UPDATED="2011-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"
+    />
+    
+    <!-- ************************************************************************************** -->
+    <!-- ORGANISATION SCHEME 3                                                                  -->
+    <!--        - Version 1: internally published                                                              -->
+    <!-- *************************************************************************************  -->
+
+    <TB_ITEM_SCHEMES
+        ID="3"
+        UUID="itemScheme-3"
+        VERSION="1"
+    />
+    
+    <!-- **************************************************************************************  -->                
+    <!-- VERSION 1                                                                               -->
+    <!-- **************************************************************************************  -->
+    
+    <TB_ITEM_SCHEMES_VERSIONS
+        ID="31"
+        ITEM_SCHEME_FK="3"
+        IS_PARTIAL="0"
+        MAINTANABLE_ARTEFACT_FK="31"
+        
+        UUID="organisationScheme-3-v1"
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user3"
+        LAST_UPDATED="2011-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"  
+    />
+
+    <TB_ORG_SCHEMES_VERSIONS
+        TB_ITEM_SCHEMES_VERSIONS="31"
+        ORGANISATION_SCHEME_TYPE="ORGANISATION_UNIT_SCHEME"
+    />
+    
+    <TB_M_ORG_SCHEMES_VERSIONS
+        TB_ORG_SCHEMES_VERSIONS="31"
+        PROC_STATUS="INTERNALLY_PUBLISHED"
+        
+        PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
+        PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
+        PRODUCTION_VALIDATION_USER="user2"
+        DIFFUSION_VALIDATION_DATE_TZ="Europe/London"
+        DIFFUSION_VALIDATION_DATE="2011-01-01 02:02:03"
+        DIFFUSION_VALIDATION_USER="user2"
+        INTERNAL_PUBLICATION_DATE_TZ="Europe/London"
+        INTERNAL_PUBLICATION_DATE="2011-01-01 03:02:03"
+        INTERNAL_PUBLICATION_USER="user2"
+        EXTERNAL_PUBLICATION_DATE_TZ="[null]"
+        EXTERNAL_PUBLICATION_DATE="[null]"
+        EXTERNAL_PUBLICATION_USER="[null]"
+        IS_EXT_PUBLICATION_FAILED="[null]"
+        EXT_PUBLICATION_FAILED_DATE="[null]"
+    />     
+    
+    <TB_ANNOTABLE_ARTEFACTS 
+        ID="31"
+        ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
+        
+        CODE="ORGANISATIONSCHEME03"
+        URI="[null]"
+        URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=ISTAC:ORGANISATIONSCHEME03(01.000)"
+        REPLACED_BY="[null]"
+        REPLACE_TO="[null]"
+        
+        NAME_FK="31"
+        
+        VERSION_LOGIC="01.000"
+        FINAL_LOGIC="1"
+        VALID_FROM_TZ="[null]"
+        VALID_FROM="[null]" 
+        VALID_TO_TZ="[null]"
+        VALID_TO="[null]"
+        IS_EXTERNAL_REFERENCE="0"
+        STRUCTURE_URL="[null]"
+        SERVICE_URL="[null]"
+        IS_LAST_VERSION="1"
+        MAINTAINER_FK="31"
+        
+        UUID="annotableArtefact-31"
         VERSION="1"
         CREATED_BY="user1"
         CREATED_DATE="2011-01-01 01:02:03"
@@ -324,7 +414,7 @@
         
         CODE="ORGANISATIONSCHEME04"
         URI="[null]"
-        URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME04(01.000)"
+        URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=ISTAC:ORGANISATIONSCHEME04(01.000)"
         REPLACED_BY="[null]"
         REPLACE_TO="[null]"
         
@@ -415,7 +505,7 @@
         
         CODE="ORGANISATIONSCHEME05"
         URI="[null]"
-        URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME05(01.000)"
+        URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=ISTAC:ORGANISATIONSCHEME05(01.000)"
         REPLACED_BY="[null]"
         REPLACE_TO="[null]"
         
@@ -505,7 +595,7 @@
         
         CODE="ORGANISATIONSCHEME06"
         URI="[null]"
-        URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME06(01.000)"
+        URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=ISTAC:ORGANISATIONSCHEME06(01.000)"
         REPLACED_BY="[null]"
         REPLACE_TO="[null]"
         
@@ -596,7 +686,7 @@
         
         CODE="ORGANISATIONSCHEME07"
         URI="[null]"
-        URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME07(01.000)"
+        URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=ISTAC:ORGANISATIONSCHEME07(01.000)"
         REPLACED_BY="02.000"
         REPLACE_TO="[null]"
         
@@ -675,7 +765,7 @@
         
         CODE="ORGANISATIONSCHEME07"
         URI="[null]"
-        URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME07(02.000)"
+        URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=ISTAC:ORGANISATIONSCHEME07(02.000)"
         REPLACED_BY="[null]"
         REPLACE_TO="01.000"
         
@@ -731,6 +821,17 @@
     
     <TB_EXTERNAL_ITEMS 
         ID="21"
+        CODE="ISTAC"
+        URI="http://data.siemac.org/srm/v1/agenciesSchemes/standalone/agencies/ISTAC"
+        URN="urn:sdmx:org.sdmx.infomodel.base.Agency=ISTAC:STANDALONE(01.000).ISTAC"
+        MANAGEMENT_APP_URL="http://manageISTAC"
+        VERSION="1"
+        TITLE_FK="[null]"
+        TYPE="AGENCY"
+    />
+    
+    <TB_EXTERNAL_ITEMS 
+        ID="31"
         CODE="ISTAC"
         URI="http://data.siemac.org/srm/v1/agenciesSchemes/standalone/agencies/ISTAC"
         URN="urn:sdmx:org.sdmx.infomodel.base.Agency=ISTAC:STANDALONE(01.000).ISTAC"
@@ -858,6 +959,26 @@
         LOCALE="en"
         VERSION="1"
         INTERNATIONAL_STRING_FK="3"
+    />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="31"
+        VERSION="1"
+    />  
+    
+    <TB_LOCALISED_STRINGS
+        ID="311"
+        LABEL="Nombre organisationScheme-1-v2"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="31"
+    />  
+    <TB_LOCALISED_STRINGS
+        ID="312"
+        LABEL="Name organisationScheme-1-v1"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="31"
     />
     
     <TB_INTERNATIONAL_STRINGS

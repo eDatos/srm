@@ -65,14 +65,15 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
     protected static final String CONCEPT_TYPE_DIRECT               = "DIRECT";
 
     // Organisations schemes
-    protected static final String ORGANISATION_SCHEME_1_V1          = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME01(01.000)";
-    protected static final String ORGANISATION_SCHEME_1_V2          = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME01(02.000)";
-    protected static final String ORGANISATION_SCHEME_2_V1          = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME02(01.000)";
-    protected static final String ORGANISATION_SCHEME_4_V1          = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME04(01.000)";
-    protected static final String ORGANISATION_SCHEME_5_V1          = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME05(01.000)";
-    protected static final String ORGANISATION_SCHEME_6_V1          = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME06(01.000)";
-    protected static final String ORGANISATION_SCHEME_7_V1          = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME07(01.000)";
-    protected static final String ORGANISATION_SCHEME_7_V2          = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME07(02.000)";
+    protected static final String ORGANISATION_SCHEME_1_V1          = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=ISTAC:ORGANISATIONSCHEME01(01.000)";
+    protected static final String ORGANISATION_SCHEME_1_V2          = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=ISTAC:ORGANISATIONSCHEME01(02.000)";
+    protected static final String ORGANISATION_SCHEME_2_V1          = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=ISTAC:ORGANISATIONSCHEME02(01.000)";
+    protected static final String ORGANISATION_SCHEME_3_V1          = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=ISTAC:ORGANISATIONSCHEME03(01.000)";
+    protected static final String ORGANISATION_SCHEME_4_V1          = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=ISTAC:ORGANISATIONSCHEME04(01.000)";
+    protected static final String ORGANISATION_SCHEME_5_V1          = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=ISTAC:ORGANISATIONSCHEME05(01.000)";
+    protected static final String ORGANISATION_SCHEME_6_V1          = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=ISTAC:ORGANISATIONSCHEME06(01.000)";
+    protected static final String ORGANISATION_SCHEME_7_V1          = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=ISTAC:ORGANISATIONSCHEME07(01.000)";
+    protected static final String ORGANISATION_SCHEME_7_V2          = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=ISTAC:ORGANISATIONSCHEME07(02.000)";
     // Other
     protected static final String NOT_EXISTS                        = "not-exists";
 

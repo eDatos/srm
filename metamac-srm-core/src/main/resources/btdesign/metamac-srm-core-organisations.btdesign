@@ -1,5 +1,6 @@
 import "classpath:/btdesign/export/metamac-core-common-entity.btdesign"
 import "classpath:/btdesign/statistic-sdmx-core-organisations.btdesign"
+import "classpath:/btdesign/statistic-sdmx-v2_1-domain-enums.btdesign"
 import "classpath:/btdesign/metamac-srm-core-base.btdesign"
 
 Application OrganisationsMetamac {
@@ -41,10 +42,10 @@ Application OrganisationsMetamac {
 	    	@OrganisationSchemeVersionMetamac publishExternallyOrganisationScheme(String urn) throws MetamacException;
 			"Deletes organisation scheme version. This must be last version and no published"
     		deleteOrganisationScheme(String urn) throws MetamacException;
-//    		"Creates a new version of a organisation scheme, copying metadata from version with provided urn"
-//    		@OrganisationSchemeVersionMetamac versioningOrganisationScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
-//    		"Cancels the organisation scheme validity"
-//    		@OrganisationSchemeVersionMetamac cancelOrganisationSchemeValidity(String urn) throws MetamacException;
+    		"Creates a new version of a organisation scheme, copying metadata from version with provided urn"
+    		@OrganisationSchemeVersionMetamac versioningOrganisationScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
+    		"Cancels the organisation scheme validity"
+    		@OrganisationSchemeVersionMetamac cancelOrganisationSchemeValidity(String urn) throws MetamacException;
 //    		"Retrieves organisations scheme by organisation urn"
 //    		@OrganisationSchemeVersionMetamac retrieveOrganisationSchemeByOrganisationUrn(String organisationUrn) throws MetamacException;
     		

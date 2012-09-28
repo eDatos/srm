@@ -36,6 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationSchemeVersion;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/srm/applicationContext-test.xml"})
@@ -147,12 +148,12 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
                     pagingParameter);
 
             // Validate
-            assertEquals(8, organisationSchemeVersionPagedResult.getTotalRows());
+            assertEquals(9, organisationSchemeVersionPagedResult.getTotalRows());
             int i = 0;
             assertEquals(ORGANISATION_SCHEME_1_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(ORGANISATION_SCHEME_1_V2, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(ORGANISATION_SCHEME_2_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
-            // assertEquals(ORGANISATION_SCHEME_3_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+            assertEquals(ORGANISATION_SCHEME_3_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(ORGANISATION_SCHEME_4_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(ORGANISATION_SCHEME_5_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(ORGANISATION_SCHEME_6_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
@@ -178,10 +179,10 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
                     pagingParameter);
 
             // Validate
-            assertEquals(2, organisationSchemeVersionPagedResult.getTotalRows());
+            assertEquals(3, organisationSchemeVersionPagedResult.getTotalRows());
             int i = 0;
             assertEquals(ORGANISATION_SCHEME_1_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
-            // assertEquals(ORGANISATION_SCHEME_3_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+            assertEquals(ORGANISATION_SCHEME_3_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(ORGANISATION_SCHEME_7_V2, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             // assertEquals(ORGANISATION_SCHEME_10_V2, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(organisationSchemeVersionPagedResult.getTotalRows(), i);
@@ -197,11 +198,11 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
                     pagingParameter);
 
             // Validate
-            assertEquals(6, organisationSchemeVersionPagedResult.getTotalRows());
+            assertEquals(7, organisationSchemeVersionPagedResult.getTotalRows());
             int i = 0;
             assertEquals(ORGANISATION_SCHEME_1_V2, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(ORGANISATION_SCHEME_2_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
-            // assertEquals(ORGANISATION_SCHEME_3_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+            assertEquals(ORGANISATION_SCHEME_3_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(ORGANISATION_SCHEME_4_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(ORGANISATION_SCHEME_5_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(ORGANISATION_SCHEME_6_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
@@ -879,314 +880,260 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         }
     }
 
-    // @Test
-    // public void testVersioningOrganisationScheme() throws Exception {
-    //
-    // String urn = ORGANISATION_SCHEME_3_V1;
-    // String versionExpected = "02.000";
-    // String urnExpected = "urn:sdmx:org.sdmx.infomodel.organisationscheme.OrganisationScheme=ISTAC:ORGANISATIONSCHEME03(02.000)";
-    // String urnExpectedOrganisation1 = "urn:sdmx:org.sdmx.infomodel.organisationscheme.Organisation=ISTAC:ORGANISATIONSCHEME03(02.000).ORGANISATION01";
-    // String urnExpectedOrganisation2 = "urn:sdmx:org.sdmx.infomodel.organisationscheme.Organisation=ISTAC:ORGANISATIONSCHEME03(02.000).ORGANISATION02";
-    // String urnExpectedOrganisation21 = "urn:sdmx:org.sdmx.infomodel.organisationscheme.Organisation=ISTAC:ORGANISATIONSCHEME03(02.000).ORGANISATION0201";
-    // String urnExpectedOrganisation211 = "urn:sdmx:org.sdmx.infomodel.organisationscheme.Organisation=ISTAC:ORGANISATIONSCHEME03(02.000).ORGANISATION020101";
-    // String urnExpectedOrganisation22 = "urn:sdmx:org.sdmx.infomodel.organisationscheme.Organisation=ISTAC:ORGANISATIONSCHEME03(02.000).ORGANISATION0202";
-    //
-    // OrganisationSchemeVersionMetamac organisationSchemeVersionToCopy = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), urn);
-    // OrganisationSchemeVersionMetamac organisationSchemeVersionNewVersion = organisationsService.versioningOrganisationScheme(getServiceContextAdministrador(), urn, VersionTypeEnum.MAJOR);
-    //
-    // // Validate response
-    // {
-    // assertEquals(ProcStatusEnum.DRAFT, organisationSchemeVersionNewVersion.getLifecycleMetadata().getProcStatus());
-    // assertEquals(versionExpected, organisationSchemeVersionNewVersion.getMaintainableArtefact().getVersionLogic());
-    // assertEquals(urnExpected, organisationSchemeVersionNewVersion.getMaintainableArtefact().getUrn());
-    // OrganisationsMetamacAsserts.assertEqualsOrganisationScheme(organisationSchemeVersionToCopy, organisationSchemeVersionNewVersion);
-    // }
-    //
-    // // Validate retrieving
-    // // New version
-    // {
-    // organisationSchemeVersionNewVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(),
-    // organisationSchemeVersionNewVersion.getMaintainableArtefact().getUrn());
-    // assertEquals(ProcStatusEnum.DRAFT, organisationSchemeVersionNewVersion.getLifecycleMetadata().getProcStatus());
-    // assertEquals(versionExpected, organisationSchemeVersionNewVersion.getMaintainableArtefact().getVersionLogic());
-    // assertEquals(urnExpected, organisationSchemeVersionNewVersion.getMaintainableArtefact().getUrn());
-    // assertEquals("01.000", organisationSchemeVersionNewVersion.getMaintainableArtefact().getReplaceTo());
-    // assertEquals(null, organisationSchemeVersionNewVersion.getMaintainableArtefact().getReplacedBy());
-    // assertTrue(organisationSchemeVersionNewVersion.getMaintainableArtefact().getIsLastVersion());
-    // OrganisationsMetamacAsserts.assertEqualsOrganisationScheme(organisationSchemeVersionToCopy, organisationSchemeVersionNewVersion);
-    //
-    // // Organisations
-    // assertEquals(5, organisationSchemeVersionNewVersion.getItems().size());
-    // assertEquals(urnExpectedOrganisation1, organisationSchemeVersionNewVersion.getItems().get(0).getNameableArtefact().getUrn());
-    // assertEquals(urnExpectedOrganisation2, organisationSchemeVersionNewVersion.getItems().get(1).getNameableArtefact().getUrn());
-    // assertEquals(urnExpectedOrganisation21, organisationSchemeVersionNewVersion.getItems().get(2).getNameableArtefact().getUrn());
-    // assertEquals(urnExpectedOrganisation211, organisationSchemeVersionNewVersion.getItems().get(3).getNameableArtefact().getUrn());
-    // assertEquals(urnExpectedOrganisation22, organisationSchemeVersionNewVersion.getItems().get(4).getNameableArtefact().getUrn());
-    //
-    // assertEquals(2, organisationSchemeVersionNewVersion.getItemsFirstLevel().size());
-    // {
-    // OrganisationMetamac organisation = (OrganisationMetamac) organisationSchemeVersionNewVersion.getItemsFirstLevel().get(0);
-    // assertEquals(urnExpectedOrganisation1, organisation.getNameableArtefact().getUrn());
-    //
-    // OrganisationsMetamacAsserts.assertEqualsInternationalString(organisation.getNameableArtefact().getName(), "es", "Nombre organisationScheme-3-v1-organisation-1", null, null);
-    // OrganisationsMetamacAsserts.assertEqualsInternationalString(organisation.getPluralName(), "es", "PluralName organisationScheme-3-v1-organisation-1", null, null);
-    // OrganisationsMetamacAsserts.assertEqualsInternationalString(organisation.getAcronym(), "es", "Acronym organisationScheme-3-v1-organisation-1", null, null);
-    // OrganisationsMetamacAsserts.assertEqualsInternationalString(organisation.getDescriptionSource(), "es", "DescriptionSource organisationScheme-3-v1-organisation-1", null, null);
-    // OrganisationsMetamacAsserts.assertEqualsInternationalString(organisation.getContext(), "es", "Context organisationScheme-3-v1-organisation-1", null, null);
-    // OrganisationsMetamacAsserts.assertEqualsInternationalString(organisation.getDocMethod(), "es", "DocMethod organisationScheme-3-v1-organisation-1", null, null);
-    // OrganisationsMetamacAsserts.assertEqualsInternationalString(organisation.getDerivation(), "es", "Derivation organisationScheme-3-v1-organisation-1", null, null);
-    // OrganisationsMetamacAsserts.assertEqualsInternationalString(organisation.getLegalActs(), "es", "LegalActs organisationScheme-3-v1-organisation-1", null, null);
-    // assertEquals(OrganisationRoleEnum.ATTRIBUTE, organisation.getSdmxRelatedArtefact());
-    // assertEquals(ORGANISATION_TYPE_DERIVED, organisation.getType().getIdentifier());
-    // assertEquals(ORGANISATION_SCHEME_5_V1_ORGANISATION_1, organisation.getOrganisationExtends().getNameableArtefact().getUrn());
-    //
-    // // related organisations
-    // List<OrganisationMetamac> relatedOrganisations = organisationsService.retrieveRelatedOrganisations(getServiceContextAdministrador(), organisation.getNameableArtefact().getUrn());
-    // assertEquals(1, relatedOrganisations.size());
-    // assertListOrganisationsContainsOrganisation(relatedOrganisations, urnExpectedOrganisation211);
-    //
-    // assertEquals(0, organisation.getChildren().size());
-    // }
-    // {
-    // OrganisationMetamac organisation = (OrganisationMetamac) organisationSchemeVersionNewVersion.getItemsFirstLevel().get(1);
-    // assertEquals(urnExpectedOrganisation2, organisation.getNameableArtefact().getUrn());
-    //
-    // OrganisationsMetamacAsserts.assertEqualsInternationalString(organisation.getNameableArtefact().getName(), "es", "Nombre organisationScheme-3-v1-organisation-2", null, null);
-    // OrganisationsMetamacAsserts.assertEqualsInternationalString(organisation.getPluralName(), "es", "PluralName organisationScheme-3-v1-organisation-2", null, null);
-    // assertNull(organisation.getAcronym());
-    // assertNull(organisation.getDescriptionSource());
-    // assertNull(organisation.getContext());
-    // assertNull(organisation.getDocMethod());
-    // assertNull(organisation.getDerivation());
-    // assertNull(organisation.getLegalActs());
-    // assertNull(organisation.getSdmxRelatedArtefact());
-    // assertNull(organisation.getType());
-    // assertNull(organisation.getOrganisationExtends());
-    //
-    // // related organisations
-    // List<OrganisationMetamac> relatedOrganisations = organisationsService.retrieveRelatedOrganisations(getServiceContextAdministrador(), organisation.getNameableArtefact().getUrn());
-    // assertEquals(2, relatedOrganisations.size());
-    // assertListOrganisationsContainsOrganisation(relatedOrganisations, urnExpectedOrganisation21);
-    // assertListOrganisationsContainsOrganisation(relatedOrganisations, urnExpectedOrganisation22);
-    //
-    // assertEquals(2, organisation.getChildren().size());
-    // {
-    // OrganisationMetamac organisationChild = (OrganisationMetamac) organisation.getChildren().get(0);
-    // assertEquals(urnExpectedOrganisation21, organisationChild.getNameableArtefact().getUrn());
-    //
-    // // related organisations
-    // relatedOrganisations = organisationsService.retrieveRelatedOrganisations(getServiceContextAdministrador(), organisationChild.getNameableArtefact().getUrn());
-    // assertEquals(1, relatedOrganisations.size());
-    // assertListOrganisationsContainsOrganisation(relatedOrganisations, urnExpectedOrganisation2);
-    //
-    // assertEquals(1, organisationChild.getChildren().size());
-    // {
-    // OrganisationMetamac organisationChildChild = (OrganisationMetamac) organisationChild.getChildren().get(0);
-    // assertEquals(urnExpectedOrganisation211, organisationChildChild.getNameableArtefact().getUrn());
-    // assertEquals(ORGANISATION_SCHEME_6_V1_ORGANISATION_1, organisationChildChild.getOrganisationExtends().getNameableArtefact().getUrn());
-    //
-    // // related organisations
-    // relatedOrganisations = organisationsService.retrieveRelatedOrganisations(getServiceContextAdministrador(), organisationChildChild.getNameableArtefact().getUrn());
-    // assertEquals(1, relatedOrganisations.size());
-    // assertListOrganisationsContainsOrganisation(relatedOrganisations, urnExpectedOrganisation1);
-    //
-    // assertEquals(0, organisationChildChild.getChildren().size());
-    // }
-    // }
-    // {
-    // OrganisationMetamac organisationChild = (OrganisationMetamac) organisation.getChildren().get(1);
-    // assertEquals(urnExpectedOrganisation22, organisationChild.getNameableArtefact().getUrn());
-    //
-    // // related organisations
-    // relatedOrganisations = organisationsService.retrieveRelatedOrganisations(getServiceContextAdministrador(), organisationChild.getNameableArtefact().getUrn());
-    // assertEquals(1, relatedOrganisations.size());
-    // assertListOrganisationsContainsOrganisation(relatedOrganisations, urnExpectedOrganisation2);
-    //
-    // assertEquals(0, organisationChild.getChildren().size());
-    // }
-    // }
-    // }
-    //
-    // // Copied version
-    // {
-    // organisationSchemeVersionToCopy = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), urn);
-    // assertEquals("01.000", organisationSchemeVersionToCopy.getMaintainableArtefact().getVersionLogic());
-    // assertEquals(urn, organisationSchemeVersionToCopy.getMaintainableArtefact().getUrn());
-    // assertEquals(null, organisationSchemeVersionToCopy.getMaintainableArtefact().getReplaceTo());
-    // assertEquals(versionExpected, organisationSchemeVersionToCopy.getMaintainableArtefact().getReplacedBy());
-    // assertFalse(organisationSchemeVersionToCopy.getMaintainableArtefact().getIsLastVersion());
-    // }
-    // // All versions
-    // {
-    // List<OrganisationSchemeVersionMetamac> allVersions = organisationsService.retrieveOrganisationSchemeVersions(getServiceContextAdministrador(), urn);
-    // assertEquals(2, allVersions.size());
-    // assertEquals(urn, allVersions.get(0).getMaintainableArtefact().getUrn());
-    // assertEquals(urnExpected, allVersions.get(1).getMaintainableArtefact().getUrn());
-    // }
-    // }
-    //
-    // @Test
-    // public void testVersioningOrganisationSchemeWithTwoVersionsPublished() throws Exception {
-    //
-    // // This test checks the copy from one version but replacing to another one that is last version.
-    //
-    // String urnToCopy = ORGANISATION_SCHEME_7_V1;
-    // String urnLastVersion = ORGANISATION_SCHEME_7_V2;
-    // String versionExpected = "03.000";
-    // String urnExpected = "urn:sdmx:org.sdmx.infomodel.organisationscheme.OrganisationScheme=ISTAC:ORGANISATIONSCHEME07(03.000)";
-    //
-    // OrganisationSchemeVersionMetamac organisationSchemeVersionToCopy = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), urnToCopy);
-    // assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, organisationSchemeVersionToCopy.getLifecycleMetadata().getProcStatus());
-    // assertFalse(organisationSchemeVersionToCopy.getMaintainableArtefact().getIsLastVersion());
-    //
-    // OrganisationSchemeVersionMetamac organisationSchemeVersionLast = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), urnLastVersion);
-    // assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, organisationSchemeVersionLast.getLifecycleMetadata().getProcStatus());
-    // assertTrue(organisationSchemeVersionLast.getMaintainableArtefact().getIsLastVersion());
-    //
-    // OrganisationSchemeVersionMetamac organisationSchemeVersionNewVersion = organisationsService.versioningOrganisationScheme(getServiceContextAdministrador(), urnToCopy, VersionTypeEnum.MAJOR);
-    //
-    // // Validate response
-    // {
-    // assertEquals(versionExpected, organisationSchemeVersionNewVersion.getMaintainableArtefact().getVersionLogic());
-    // assertEquals(urnExpected, organisationSchemeVersionNewVersion.getMaintainableArtefact().getUrn());
-    // assertEquals(ProcStatusEnum.DRAFT, organisationSchemeVersionNewVersion.getLifecycleMetadata().getProcStatus());
-    // OrganisationsMetamacAsserts.assertEqualsOrganisationScheme(organisationSchemeVersionToCopy, organisationSchemeVersionNewVersion);
-    // }
-    //
-    // // Validate retrieving
-    // {
-    // // New version
-    // organisationSchemeVersionNewVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(),
-    // organisationSchemeVersionNewVersion.getMaintainableArtefact().getUrn());
-    // assertEquals(versionExpected, organisationSchemeVersionNewVersion.getMaintainableArtefact().getVersionLogic());
-    // assertEquals(urnExpected, organisationSchemeVersionNewVersion.getMaintainableArtefact().getUrn());
-    // assertEquals(ProcStatusEnum.DRAFT, organisationSchemeVersionNewVersion.getLifecycleMetadata().getProcStatus());
-    // assertEquals("02.000", organisationSchemeVersionNewVersion.getMaintainableArtefact().getReplaceTo());
-    // assertEquals(null, organisationSchemeVersionNewVersion.getMaintainableArtefact().getReplacedBy());
-    // assertTrue(organisationSchemeVersionNewVersion.getMaintainableArtefact().getIsLastVersion());
-    // OrganisationsMetamacAsserts.assertEqualsOrganisationScheme(organisationSchemeVersionToCopy, organisationSchemeVersionNewVersion);
-    //
-    // // Version copied
-    // organisationSchemeVersionToCopy = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), urnToCopy);
-    // assertEquals("01.000", organisationSchemeVersionToCopy.getMaintainableArtefact().getVersionLogic());
-    // assertEquals(urnToCopy, organisationSchemeVersionToCopy.getMaintainableArtefact().getUrn());
-    // assertEquals(null, organisationSchemeVersionToCopy.getMaintainableArtefact().getReplaceTo());
-    // assertEquals("02.000", organisationSchemeVersionToCopy.getMaintainableArtefact().getReplacedBy());
-    // assertFalse(organisationSchemeVersionToCopy.getMaintainableArtefact().getIsLastVersion());
-    //
-    // // Last version
-    // organisationSchemeVersionLast = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), urnLastVersion);
-    // assertEquals("02.000", organisationSchemeVersionLast.getMaintainableArtefact().getVersionLogic());
-    // assertEquals(urnLastVersion, organisationSchemeVersionLast.getMaintainableArtefact().getUrn());
-    // assertEquals("01.000", organisationSchemeVersionLast.getMaintainableArtefact().getReplaceTo());
-    // assertEquals(versionExpected, organisationSchemeVersionLast.getMaintainableArtefact().getReplacedBy());
-    // assertFalse(organisationSchemeVersionLast.getMaintainableArtefact().getIsLastVersion());
-    //
-    // // All versions
-    // List<OrganisationSchemeVersionMetamac> allVersions = organisationsService.retrieveOrganisationSchemeVersions(getServiceContextAdministrador(),
-    // organisationSchemeVersionNewVersion.getMaintainableArtefact()
-    // .getUrn());
-    // assertEquals(3, allVersions.size());
-    // assertEquals(urnToCopy, allVersions.get(0).getMaintainableArtefact().getUrn());
-    // assertEquals(urnLastVersion, allVersions.get(1).getMaintainableArtefact().getUrn());
-    // assertEquals(urnExpected, allVersions.get(2).getMaintainableArtefact().getUrn());
-    // }
-    // }
-    //
-    // @Test
-    // public void testVersioningOrganisationSchemeCheckRelatedOrganisationsRole() throws Exception {
-    //
-    // // Check related roles until versioning
-    // {
-    // // Organisation 1
-    // {
-    // List<OrganisationMetamac> relatedOrganisationsRole = organisationsService.retrieveRelatedOrganisationsRoles(getServiceContextAdministrador(), ORGANISATION_SCHEME_2_V1_ORGANISATION_1);
-    // assertEquals(2, relatedOrganisationsRole.size());
-    // assertListOrganisationsContainsOrganisation(relatedOrganisationsRole, ORGANISATION_SCHEME_3_V1_ORGANISATION_1);
-    // assertListOrganisationsContainsOrganisation(relatedOrganisationsRole, ORGANISATION_SCHEME_3_V1_ORGANISATION_2_1);
-    // }
-    //
-    // // Organisation 2
-    // {
-    // List<OrganisationMetamac> relatedOrganisationsRole = organisationsService.retrieveRelatedOrganisationsRoles(getServiceContextAdministrador(), ORGANISATION_SCHEME_2_V1_ORGANISATION_2);
-    // assertEquals(1, relatedOrganisationsRole.size());
-    // assertListOrganisationsContainsOrganisation(relatedOrganisationsRole, ORGANISATION_SCHEME_3_V1_ORGANISATION_2_1);
-    // }
-    //
-    // }
-    //
-    // // We prefer do isolated tests but.. publish internally to versioning and check copy of related organisations type 'role'
-    // String urn = ORGANISATION_SCHEME_2_V1;
-    // organisationsService.sendOrganisationSchemeToProductionValidation(getServiceContextAdministrador(), urn);
-    // organisationsService.sendOrganisationSchemeToDiffusionValidation(getServiceContextAdministrador(), urn);
-    // organisationsService.publishInternallyOrganisationScheme(getServiceContextAdministrador(), urn);
-    //
-    // // Versioning
-    // organisationsService.versioningOrganisationScheme(getServiceContextAdministrador(), ORGANISATION_SCHEME_2_V1, VersionTypeEnum.MAJOR);
-    // String urnExpectedOrganisation1 = "urn:sdmx:org.sdmx.infomodel.organisationscheme.Organisation=ISTAC:ORGANISATIONSCHEME02(01.000).ORGANISATION01";
-    // String urnExpectedOrganisation2 = "urn:sdmx:org.sdmx.infomodel.organisationscheme.Organisation=ISTAC:ORGANISATIONSCHEME02(01.000).ORGANISATION02";
-    //
-    // // Only check related roles
-    // {
-    // // Organisation 1
-    // {
-    // List<OrganisationMetamac> relatedOrganisationsRole = organisationsService.retrieveRelatedOrganisationsRoles(getServiceContextAdministrador(), urnExpectedOrganisation1);
-    // assertEquals(2, relatedOrganisationsRole.size());
-    // assertListOrganisationsContainsOrganisation(relatedOrganisationsRole, ORGANISATION_SCHEME_3_V1_ORGANISATION_1);
-    // assertListOrganisationsContainsOrganisation(relatedOrganisationsRole, ORGANISATION_SCHEME_3_V1_ORGANISATION_2_1);
-    // }
-    //
-    // // Organisation 2
-    // {
-    // List<OrganisationMetamac> relatedOrganisationsRole = organisationsService.retrieveRelatedOrganisationsRoles(getServiceContextAdministrador(), urnExpectedOrganisation2);
-    // assertEquals(1, relatedOrganisationsRole.size());
-    // assertListOrganisationsContainsOrganisation(relatedOrganisationsRole, ORGANISATION_SCHEME_3_V1_ORGANISATION_2_1);
-    // }
-    //
-    // }
-    // }
-    //
-    // @Test
-    // public void testVersioningOrganisationSchemeErrorAlreadyExistsDraft() throws Exception {
-    //
-    // String urn = ORGANISATION_SCHEME_1_V1;
-    //
-    // try {
-    // organisationsService.versioningOrganisationScheme(getServiceContextAdministrador(), urn, VersionTypeEnum.MAJOR);
-    // fail("OrganisationScheme already exists in no final");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.ORGANISATION_SCHEME_VERSIONING_NOT_SUPPORTED.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(ORGANISATION_SCHEME_1_V2, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // }
-    // }
-    //
-    // @Test
-    // public void testCancelOrganisationSchemeValidity() throws Exception {
-    // OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.cancelOrganisationSchemeValidity(getServiceContextAdministrador(), ORGANISATION_SCHEME_7_V1);
-    //
-    // assertNotNull(organisationSchemeVersion);
-    // assertNotNull(organisationSchemeVersion.getMaintainableArtefact().getValidTo());
-    // }
-    //
-    // @Test
-    // public void testCancelOrganisationSchemeValidityErrorWrongProcStatus() throws Exception {
-    // String[] urns = {ORGANISATION_SCHEME_1_V1, ORGANISATION_SCHEME_4_V1, ORGANISATION_SCHEME_6_V1};
-    // for (String urn : urns) {
-    // try {
-    // organisationsService.cancelOrganisationSchemeValidity(getServiceContextAdministrador(), urn);
-    // fail("wrong procStatus");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.ORGANISATION_SCHEME_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // assertEquals(ServiceExceptionParameters.PROC_STATUS_EXTERNALLY_PUBLISHED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
-    // }
-    // }
-    // }
-    //
+    @Test
+    public void testVersioningOrganisationScheme() throws Exception {
+
+        String urn = ORGANISATION_SCHEME_3_V1;
+        String versionExpected = "02.000";
+        String urnExpected = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=ISTAC:ORGANISATIONSCHEME03(02.000)";
+        // String urnExpectedOrganisation1 = "urn:sdmx:org.sdmx.infomodel.organisationscheme.Organisation=ISTAC:ORGANISATIONSCHEME03(02.000).ORGANISATION01";
+        // String urnExpectedOrganisation2 = "urn:sdmx:org.sdmx.infomodel.organisationscheme.Organisation=ISTAC:ORGANISATIONSCHEME03(02.000).ORGANISATION02";
+        // String urnExpectedOrganisation21 = "urn:sdmx:org.sdmx.infomodel.organisationscheme.Organisation=ISTAC:ORGANISATIONSCHEME03(02.000).ORGANISATION0201";
+        // String urnExpectedOrganisation211 = "urn:sdmx:org.sdmx.infomodel.organisationscheme.Organisation=ISTAC:ORGANISATIONSCHEME03(02.000).ORGANISATION020101";
+        // String urnExpectedOrganisation22 = "urn:sdmx:org.sdmx.infomodel.organisationscheme.Organisation=ISTAC:ORGANISATIONSCHEME03(02.000).ORGANISATION0202";
+
+        OrganisationSchemeVersionMetamac organisationSchemeVersionToCopy = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), urn);
+        OrganisationSchemeVersionMetamac organisationSchemeVersionNewVersion = organisationsService.versioningOrganisationScheme(getServiceContextAdministrador(), urn, VersionTypeEnum.MAJOR);
+
+        // Validate response
+        {
+            assertEquals(ProcStatusEnum.DRAFT, organisationSchemeVersionNewVersion.getLifecycleMetadata().getProcStatus());
+            assertEquals(versionExpected, organisationSchemeVersionNewVersion.getMaintainableArtefact().getVersionLogic());
+            assertEquals(urnExpected, organisationSchemeVersionNewVersion.getMaintainableArtefact().getUrn());
+            OrganisationsMetamacAsserts.assertEqualsOrganisationSchemeWithoutLifeCycleMetadata(organisationSchemeVersionToCopy, organisationSchemeVersionNewVersion);
+        }
+
+        // Validate retrieving
+        // New version
+        {
+            organisationSchemeVersionNewVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), organisationSchemeVersionNewVersion.getMaintainableArtefact()
+                    .getUrn());
+            assertEquals(ProcStatusEnum.DRAFT, organisationSchemeVersionNewVersion.getLifecycleMetadata().getProcStatus());
+            assertEquals(versionExpected, organisationSchemeVersionNewVersion.getMaintainableArtefact().getVersionLogic());
+            assertEquals(urnExpected, organisationSchemeVersionNewVersion.getMaintainableArtefact().getUrn());
+            assertEquals("01.000", organisationSchemeVersionNewVersion.getMaintainableArtefact().getReplaceTo());
+            assertEquals(null, organisationSchemeVersionNewVersion.getMaintainableArtefact().getReplacedBy());
+            assertTrue(organisationSchemeVersionNewVersion.getMaintainableArtefact().getIsLastVersion());
+            OrganisationsMetamacAsserts.assertEqualsOrganisationSchemeWithoutLifeCycleMetadata(organisationSchemeVersionToCopy, organisationSchemeVersionNewVersion);
+
+            // TODO Organisations
+            // assertEquals(5, organisationSchemeVersionNewVersion.getItems().size());
+            // assertEquals(urnExpectedOrganisation1, organisationSchemeVersionNewVersion.getItems().get(0).getNameableArtefact().getUrn());
+            // assertEquals(urnExpectedOrganisation2, organisationSchemeVersionNewVersion.getItems().get(1).getNameableArtefact().getUrn());
+            // assertEquals(urnExpectedOrganisation21, organisationSchemeVersionNewVersion.getItems().get(2).getNameableArtefact().getUrn());
+            // assertEquals(urnExpectedOrganisation211, organisationSchemeVersionNewVersion.getItems().get(3).getNameableArtefact().getUrn());
+            // assertEquals(urnExpectedOrganisation22, organisationSchemeVersionNewVersion.getItems().get(4).getNameableArtefact().getUrn());
+
+            // assertEquals(2, organisationSchemeVersionNewVersion.getItemsFirstLevel().size());
+            // {
+            // OrganisationMetamac organisation = (OrganisationMetamac) organisationSchemeVersionNewVersion.getItemsFirstLevel().get(0);
+            // assertEquals(urnExpectedOrganisation1, organisation.getNameableArtefact().getUrn());
+            //
+            // OrganisationsMetamacAsserts.assertEqualsInternationalString(organisation.getNameableArtefact().getName(), "es", "Nombre organisationScheme-3-v1-organisation-1", null, null);
+            // OrganisationsMetamacAsserts.assertEqualsInternationalString(organisation.getPluralName(), "es", "PluralName organisationScheme-3-v1-organisation-1", null, null);
+            // OrganisationsMetamacAsserts.assertEqualsInternationalString(organisation.getAcronym(), "es", "Acronym organisationScheme-3-v1-organisation-1", null, null);
+            // OrganisationsMetamacAsserts.assertEqualsInternationalString(organisation.getDescriptionSource(), "es", "DescriptionSource organisationScheme-3-v1-organisation-1", null, null);
+            // OrganisationsMetamacAsserts.assertEqualsInternationalString(organisation.getContext(), "es", "Context organisationScheme-3-v1-organisation-1", null, null);
+            // OrganisationsMetamacAsserts.assertEqualsInternationalString(organisation.getDocMethod(), "es", "DocMethod organisationScheme-3-v1-organisation-1", null, null);
+            // OrganisationsMetamacAsserts.assertEqualsInternationalString(organisation.getDerivation(), "es", "Derivation organisationScheme-3-v1-organisation-1", null, null);
+            // OrganisationsMetamacAsserts.assertEqualsInternationalString(organisation.getLegalActs(), "es", "LegalActs organisationScheme-3-v1-organisation-1", null, null);
+            // assertEquals(OrganisationRoleEnum.ATTRIBUTE, organisation.getSdmxRelatedArtefact());
+            // assertEquals(ORGANISATION_TYPE_DERIVED, organisation.getType().getIdentifier());
+            // assertEquals(ORGANISATION_SCHEME_5_V1_ORGANISATION_1, organisation.getOrganisationExtends().getNameableArtefact().getUrn());
+            //
+            // // related organisations
+            // List<OrganisationMetamac> relatedOrganisations = organisationsService.retrieveRelatedOrganisations(getServiceContextAdministrador(), organisation.getNameableArtefact().getUrn());
+            // assertEquals(1, relatedOrganisations.size());
+            // assertListOrganisationsContainsOrganisation(relatedOrganisations, urnExpectedOrganisation211);
+            //
+            // assertEquals(0, organisation.getChildren().size());
+            // }
+            // {
+            // OrganisationMetamac organisation = (OrganisationMetamac) organisationSchemeVersionNewVersion.getItemsFirstLevel().get(1);
+            // assertEquals(urnExpectedOrganisation2, organisation.getNameableArtefact().getUrn());
+            //
+            // OrganisationsMetamacAsserts.assertEqualsInternationalString(organisation.getNameableArtefact().getName(), "es", "Nombre organisationScheme-3-v1-organisation-2", null, null);
+            // OrganisationsMetamacAsserts.assertEqualsInternationalString(organisation.getPluralName(), "es", "PluralName organisationScheme-3-v1-organisation-2", null, null);
+            // assertNull(organisation.getAcronym());
+            // assertNull(organisation.getDescriptionSource());
+            // assertNull(organisation.getContext());
+            // assertNull(organisation.getDocMethod());
+            // assertNull(organisation.getDerivation());
+            // assertNull(organisation.getLegalActs());
+            // assertNull(organisation.getSdmxRelatedArtefact());
+            // assertNull(organisation.getType());
+            // assertNull(organisation.getOrganisationExtends());
+            //
+            // // related organisations
+            // List<OrganisationMetamac> relatedOrganisations = organisationsService.retrieveRelatedOrganisations(getServiceContextAdministrador(), organisation.getNameableArtefact().getUrn());
+            // assertEquals(2, relatedOrganisations.size());
+            // assertListOrganisationsContainsOrganisation(relatedOrganisations, urnExpectedOrganisation21);
+            // assertListOrganisationsContainsOrganisation(relatedOrganisations, urnExpectedOrganisation22);
+            //
+            // assertEquals(2, organisation.getChildren().size());
+            // {
+            // OrganisationMetamac organisationChild = (OrganisationMetamac) organisation.getChildren().get(0);
+            // assertEquals(urnExpectedOrganisation21, organisationChild.getNameableArtefact().getUrn());
+            //
+            // // related organisations
+            // relatedOrganisations = organisationsService.retrieveRelatedOrganisations(getServiceContextAdministrador(), organisationChild.getNameableArtefact().getUrn());
+            // assertEquals(1, relatedOrganisations.size());
+            // assertListOrganisationsContainsOrganisation(relatedOrganisations, urnExpectedOrganisation2);
+            //
+            // assertEquals(1, organisationChild.getChildren().size());
+            // {
+            // OrganisationMetamac organisationChildChild = (OrganisationMetamac) organisationChild.getChildren().get(0);
+            // assertEquals(urnExpectedOrganisation211, organisationChildChild.getNameableArtefact().getUrn());
+            // assertEquals(ORGANISATION_SCHEME_6_V1_ORGANISATION_1, organisationChildChild.getOrganisationExtends().getNameableArtefact().getUrn());
+            //
+            // // related organisations
+            // relatedOrganisations = organisationsService.retrieveRelatedOrganisations(getServiceContextAdministrador(), organisationChildChild.getNameableArtefact().getUrn());
+            // assertEquals(1, relatedOrganisations.size());
+            // assertListOrganisationsContainsOrganisation(relatedOrganisations, urnExpectedOrganisation1);
+            //
+            // assertEquals(0, organisationChildChild.getChildren().size());
+            // }
+            // }
+            // {
+            // OrganisationMetamac organisationChild = (OrganisationMetamac) organisation.getChildren().get(1);
+            // assertEquals(urnExpectedOrganisation22, organisationChild.getNameableArtefact().getUrn());
+            //
+            // // related organisations
+            // relatedOrganisations = organisationsService.retrieveRelatedOrganisations(getServiceContextAdministrador(), organisationChild.getNameableArtefact().getUrn());
+            // assertEquals(1, relatedOrganisations.size());
+            // assertListOrganisationsContainsOrganisation(relatedOrganisations, urnExpectedOrganisation2);
+            //
+            // assertEquals(0, organisationChild.getChildren().size());
+            // }
+            // }
+        }
+
+        // Copied version
+        {
+            organisationSchemeVersionToCopy = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), urn);
+            assertEquals("01.000", organisationSchemeVersionToCopy.getMaintainableArtefact().getVersionLogic());
+            assertEquals(urn, organisationSchemeVersionToCopy.getMaintainableArtefact().getUrn());
+            assertEquals(null, organisationSchemeVersionToCopy.getMaintainableArtefact().getReplaceTo());
+            assertEquals(versionExpected, organisationSchemeVersionToCopy.getMaintainableArtefact().getReplacedBy());
+            assertFalse(organisationSchemeVersionToCopy.getMaintainableArtefact().getIsLastVersion());
+        }
+        // All versions
+        {
+            List<OrganisationSchemeVersionMetamac> allVersions = organisationsService.retrieveOrganisationSchemeVersions(getServiceContextAdministrador(), urn);
+            assertEquals(2, allVersions.size());
+            assertEquals(urn, allVersions.get(0).getMaintainableArtefact().getUrn());
+            assertEquals(urnExpected, allVersions.get(1).getMaintainableArtefact().getUrn());
+        }
+    }
+
+    @Test
+    public void testVersioningOrganisationSchemeWithTwoVersionsPublished() throws Exception {
+
+        // This test checks the copy from one version but replacing to another one that is last version.
+
+        String urnToCopy = ORGANISATION_SCHEME_7_V1;
+        String urnLastVersion = ORGANISATION_SCHEME_7_V2;
+        String versionExpected = "03.000";
+        String urnExpected = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=ISTAC:ORGANISATIONSCHEME07(03.000)";
+
+        OrganisationSchemeVersionMetamac organisationSchemeVersionToCopy = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), urnToCopy);
+        assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, organisationSchemeVersionToCopy.getLifecycleMetadata().getProcStatus());
+        assertFalse(organisationSchemeVersionToCopy.getMaintainableArtefact().getIsLastVersion());
+
+        OrganisationSchemeVersionMetamac organisationSchemeVersionLast = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), urnLastVersion);
+        assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, organisationSchemeVersionLast.getLifecycleMetadata().getProcStatus());
+        assertTrue(organisationSchemeVersionLast.getMaintainableArtefact().getIsLastVersion());
+
+        OrganisationSchemeVersionMetamac organisationSchemeVersionNewVersion = organisationsService.versioningOrganisationScheme(getServiceContextAdministrador(), urnToCopy, VersionTypeEnum.MAJOR);
+
+        // Validate response
+        {
+            assertEquals(versionExpected, organisationSchemeVersionNewVersion.getMaintainableArtefact().getVersionLogic());
+            assertEquals(urnExpected, organisationSchemeVersionNewVersion.getMaintainableArtefact().getUrn());
+            assertEquals(ProcStatusEnum.DRAFT, organisationSchemeVersionNewVersion.getLifecycleMetadata().getProcStatus());
+            OrganisationsMetamacAsserts.assertEqualsOrganisationSchemeWithoutLifeCycleMetadata(organisationSchemeVersionToCopy, organisationSchemeVersionNewVersion);
+        }
+
+        // Validate retrieving
+        {
+            // New version
+            organisationSchemeVersionNewVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), organisationSchemeVersionNewVersion.getMaintainableArtefact()
+                    .getUrn());
+            assertEquals(versionExpected, organisationSchemeVersionNewVersion.getMaintainableArtefact().getVersionLogic());
+            assertEquals(urnExpected, organisationSchemeVersionNewVersion.getMaintainableArtefact().getUrn());
+            assertEquals(ProcStatusEnum.DRAFT, organisationSchemeVersionNewVersion.getLifecycleMetadata().getProcStatus());
+            assertEquals("02.000", organisationSchemeVersionNewVersion.getMaintainableArtefact().getReplaceTo());
+            assertEquals(null, organisationSchemeVersionNewVersion.getMaintainableArtefact().getReplacedBy());
+            assertTrue(organisationSchemeVersionNewVersion.getMaintainableArtefact().getIsLastVersion());
+            OrganisationsMetamacAsserts.assertEqualsOrganisationSchemeWithoutLifeCycleMetadata(organisationSchemeVersionToCopy, organisationSchemeVersionNewVersion);
+
+            // Version copied
+            organisationSchemeVersionToCopy = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), urnToCopy);
+            assertEquals("01.000", organisationSchemeVersionToCopy.getMaintainableArtefact().getVersionLogic());
+            assertEquals(urnToCopy, organisationSchemeVersionToCopy.getMaintainableArtefact().getUrn());
+            assertEquals(null, organisationSchemeVersionToCopy.getMaintainableArtefact().getReplaceTo());
+            assertEquals("02.000", organisationSchemeVersionToCopy.getMaintainableArtefact().getReplacedBy());
+            assertFalse(organisationSchemeVersionToCopy.getMaintainableArtefact().getIsLastVersion());
+
+            // Last version
+            organisationSchemeVersionLast = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), urnLastVersion);
+            assertEquals("02.000", organisationSchemeVersionLast.getMaintainableArtefact().getVersionLogic());
+            assertEquals(urnLastVersion, organisationSchemeVersionLast.getMaintainableArtefact().getUrn());
+            assertEquals("01.000", organisationSchemeVersionLast.getMaintainableArtefact().getReplaceTo());
+            assertEquals(versionExpected, organisationSchemeVersionLast.getMaintainableArtefact().getReplacedBy());
+            assertFalse(organisationSchemeVersionLast.getMaintainableArtefact().getIsLastVersion());
+
+            // All versions
+            List<OrganisationSchemeVersionMetamac> allVersions = organisationsService.retrieveOrganisationSchemeVersions(getServiceContextAdministrador(), organisationSchemeVersionNewVersion
+                    .getMaintainableArtefact().getUrn());
+            assertEquals(3, allVersions.size());
+            assertEquals(urnToCopy, allVersions.get(0).getMaintainableArtefact().getUrn());
+            assertEquals(urnLastVersion, allVersions.get(1).getMaintainableArtefact().getUrn());
+            assertEquals(urnExpected, allVersions.get(2).getMaintainableArtefact().getUrn());
+        }
+    }
+
+    @Test
+    public void testVersioningOrganisationSchemeErrorAlreadyExistsDraft() throws Exception {
+
+        String urn = ORGANISATION_SCHEME_1_V1;
+
+        try {
+            organisationsService.versioningOrganisationScheme(getServiceContextAdministrador(), urn, VersionTypeEnum.MAJOR);
+            fail("OrganisationScheme already exists in no final");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.ORGANISATION_SCHEME_VERSIONING_NOT_SUPPORTED.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(ORGANISATION_SCHEME_1_V2, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
+    @Test
+    public void testCancelOrganisationSchemeValidity() throws Exception {
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.cancelOrganisationSchemeValidity(getServiceContextAdministrador(), ORGANISATION_SCHEME_7_V1);
+
+        assertNotNull(organisationSchemeVersion);
+        assertNotNull(organisationSchemeVersion.getMaintainableArtefact().getValidTo());
+    }
+
+    @Test
+    public void testCancelOrganisationSchemeValidityErrorWrongProcStatus() throws Exception {
+        String[] urns = {ORGANISATION_SCHEME_1_V1, ORGANISATION_SCHEME_4_V1, ORGANISATION_SCHEME_6_V1};
+        for (String urn : urns) {
+            try {
+                organisationsService.cancelOrganisationSchemeValidity(getServiceContextAdministrador(), urn);
+                fail("wrong procStatus");
+            } catch (MetamacException e) {
+                assertEquals(1, e.getExceptionItems().size());
+                assertEquals(ServiceExceptionType.ORGANISATION_SCHEME_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
+                assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
+                assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+                assertEquals(ServiceExceptionParameters.PROC_STATUS_EXTERNALLY_PUBLISHED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
+            }
+        }
+    }
+
     // @Test
     // public void testCreateOrganisation() throws Exception {
     //

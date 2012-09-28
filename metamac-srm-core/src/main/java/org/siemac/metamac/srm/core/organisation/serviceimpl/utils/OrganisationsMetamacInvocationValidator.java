@@ -49,6 +49,15 @@ public class OrganisationsMetamacInvocationValidator extends OrganisationsInvoca
         }
     }
 
+    public static void checkCancelOrganisationSchemeValidity(String urn, List<MetamacExceptionItem> exceptions) throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+        ValidationUtils.checkParameterRequired(urn, ServiceExceptionParameters.URN, exceptions);
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
+
     // ORGANISATIONS
 
     // public static void checkCreateOrganisation(OrganisationSchemeVersionMetamac organisationSchemeVersion, OrganisationMetamac organisation, List<MetamacExceptionItem> exceptions) throws

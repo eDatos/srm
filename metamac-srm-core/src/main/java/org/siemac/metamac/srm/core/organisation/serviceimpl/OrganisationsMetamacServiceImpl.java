@@ -9,15 +9,22 @@ import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
+import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
+import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamacProperties;
+import org.siemac.metamac.srm.core.organisation.serviceimpl.utils.DoCopyUtils;
 import org.siemac.metamac.srm.core.organisation.serviceimpl.utils.OrganisationsMetamacInvocationValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemScheme;
+import com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.organisation.serviceapi.OrganisationsService;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
 
 /**
  * Implementation of OrganisationsMetamacService.
@@ -137,54 +144,53 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
         organisationsService.deleteOrganisationScheme(ctx, urn);
     }
 
-    // @SuppressWarnings({"rawtypes", "unchecked"})
-    // @Override
-    // public OrganisationSchemeVersionMetamac versioningOrganisationScheme(ServiceContext ctx, String urn, VersionTypeEnum versionType) throws MetamacException {
-    //
-    // // Validation
-    // OrganisationsMetamacInvocationValidator.checkVersioningOrganisationScheme(urn, versionType, null);
-    //
-    // // Initialize new version, copying values of version selected
-    // OrganisationSchemeVersionMetamac organisationSchemeVersionToCopy = getOrganisationSchemeVersionMetamacRepository().retrieveOrganisationSchemeVersionByProcStatus(urn,
-    // new ProcStatusEnum[]{ProcStatusEnum.INTERNALLY_PUBLISHED, ProcStatusEnum.EXTERNALLY_PUBLISHED});
-    //
-    // // Check not exists version not published
-    // List<OrganisationSchemeVersionMetamac> versionsNotPublished = findOrganisationSchemeVersionsOfOrganisationSchemeInProcStatus(ctx, organisationSchemeVersionToCopy.getItemScheme(),
-    // ProcStatusEnum.DRAFT,
-    // ProcStatusEnum.PRODUCTION_VALIDATION, ProcStatusEnum.DIFFUSION_VALIDATION, ProcStatusEnum.VALIDATION_REJECTED);
-    // if (versionsNotPublished.size() != 0) {
-    // throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.ORGANISATION_SCHEME_VERSIONING_NOT_SUPPORTED)
-    // .withMessageParameters(versionsNotPublished.get(0).getMaintainableArtefact().getUrn()).build();
-    // }
-    //
-    // // Copy values
-    // OrganisationSchemeVersionMetamac organisationSchemeNewVersion = DoCopyUtils.copyOrganisationSchemeVersionMetamac(organisationSchemeVersionToCopy);
-    // organisationSchemeNewVersion.setLifecycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
-    // List organisations = DoCopyUtils.copyOrganisationsMetamac(organisationSchemeVersionToCopy);
-    //
-    // // Versioning
-    // organisationSchemeNewVersion = (OrganisationSchemeVersionMetamac) organisationsService
-    // .versioningOrganisationScheme(ctx, organisationSchemeVersionToCopy.getItemScheme(), organisationSchemeNewVersion, organisations, versionType);
-    //
-    // return organisationSchemeNewVersion;
-    // }
-    //
-    // @Override
-    // public OrganisationSchemeVersionMetamac cancelOrganisationSchemeValidity(ServiceContext ctx, String urn) throws MetamacException {
-    //
-    // // Validation
-    // OrganisationsMetamacInvocationValidator.checkCancelOrganisationSchemeValidity(urn, null);
-    //
-    // // Retrieve version in specific procStatus
-    // OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationSchemeVersionMetamacRepository().retrieveOrganisationSchemeVersionByProcStatus(urn,
-    // new ProcStatusEnum[]{ProcStatusEnum.EXTERNALLY_PUBLISHED});
-    //
-    // // Cancel validity
-    // organisationSchemeVersion = (OrganisationSchemeVersionMetamac) organisationsService.endOrganisationSchemeValidity(ctx, urn);
-    //
-    // return organisationSchemeVersion;
-    // }
-    //
+    @Override
+    public OrganisationSchemeVersionMetamac versioningOrganisationScheme(ServiceContext ctx, String urn, VersionTypeEnum versionType) throws MetamacException {
+
+        // Validation
+        OrganisationsMetamacInvocationValidator.checkVersioningOrganisationScheme(urn, versionType, null);
+
+        // Initialize new version, copying values of version selected
+        OrganisationSchemeVersionMetamac organisationSchemeVersionToCopy = getOrganisationSchemeVersionMetamacRepository().retrieveOrganisationSchemeVersionByProcStatus(urn,
+                new ProcStatusEnum[]{ProcStatusEnum.INTERNALLY_PUBLISHED, ProcStatusEnum.EXTERNALLY_PUBLISHED});
+
+        // Check not exists version not published
+        List<OrganisationSchemeVersionMetamac> versionsNotPublished = findOrganisationSchemeVersionsOfOrganisationSchemeInProcStatus(ctx, organisationSchemeVersionToCopy.getItemScheme(),
+                ProcStatusEnum.DRAFT, ProcStatusEnum.PRODUCTION_VALIDATION, ProcStatusEnum.DIFFUSION_VALIDATION, ProcStatusEnum.VALIDATION_REJECTED);
+        if (versionsNotPublished.size() != 0) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.ORGANISATION_SCHEME_VERSIONING_NOT_SUPPORTED)
+                    .withMessageParameters(versionsNotPublished.get(0).getMaintainableArtefact().getUrn()).build();
+        }
+
+        // Copy values
+        OrganisationSchemeVersionMetamac organisationSchemeNewVersion = DoCopyUtils.copyOrganisationSchemeVersionMetamac(organisationSchemeVersionToCopy);
+        organisationSchemeNewVersion.setLifecycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
+        // TODO List organisations = DoCopyUtils.copyOrganisationsMetamac(organisationSchemeVersionToCopy);
+        List<Organisation> organisations = new ArrayList<Organisation>(); // TODO REMOVE THIS LINE!!!!!
+
+        // Versioning
+        organisationSchemeNewVersion = (OrganisationSchemeVersionMetamac) organisationsService.versioningOrganisationScheme(ctx, organisationSchemeVersionToCopy.getItemScheme(),
+                organisationSchemeNewVersion, organisations, versionType);
+
+        return organisationSchemeNewVersion;
+    }
+
+    @Override
+    public OrganisationSchemeVersionMetamac cancelOrganisationSchemeValidity(ServiceContext ctx, String urn) throws MetamacException {
+
+        // Validation
+        OrganisationsMetamacInvocationValidator.checkCancelOrganisationSchemeValidity(urn, null);
+
+        // Retrieve version in specific procStatus
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationSchemeVersionMetamacRepository().retrieveOrganisationSchemeVersionByProcStatus(urn,
+                new ProcStatusEnum[]{ProcStatusEnum.EXTERNALLY_PUBLISHED});
+
+        // Cancel validity
+        organisationSchemeVersion = (OrganisationSchemeVersionMetamac) organisationsService.endOrganisationSchemeValidity(ctx, urn);
+
+        return organisationSchemeVersion;
+    }
+
     // @Override
     // public OrganisationMetamac createOrganisation(ServiceContext ctx, String organisationSchemeUrn, OrganisationMetamac organisation) throws MetamacException {
     //
@@ -270,20 +276,21 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
     // }
     // return organisations;
     // }
-    //
-    // /**
-    // * Finds versions of organisation scheme in specific procStatus
-    // */
-    // private List<OrganisationSchemeVersionMetamac> findOrganisationSchemeVersionsOfOrganisationSchemeInProcStatus(ServiceContext ctx, ItemScheme organisationScheme, ProcStatusEnum... procStatus)
-    // throws MetamacException {
-    //
-    // List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(OrganisationSchemeVersionMetamac.class).withProperty(OrganisationSchemeVersionMetamacProperties.itemScheme().id())
-    // .eq(organisationScheme.getId()).withProperty(OrganisationSchemeVersionMetamacProperties.lifecycleMetadata().procStatus()).in((Object[]) procStatus).distinctRoot().build();
-    // PagingParameter pagingParameter = PagingParameter.noLimits();
-    // PagedResult<OrganisationSchemeVersionMetamac> organisationSchemeVersionPagedResult = getOrganisationSchemeVersionMetamacRepository().findByCondition(conditions, pagingParameter);
-    // return organisationSchemeVersionPagedResult.getValues();
-    // }
-    //
+
+    /**
+     * Finds versions of organisation scheme in specific procStatus
+     */
+    private List<OrganisationSchemeVersionMetamac> findOrganisationSchemeVersionsOfOrganisationSchemeInProcStatus(ServiceContext ctx, ItemScheme organisationScheme, ProcStatusEnum... procStatus)
+            throws MetamacException {
+
+        List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(OrganisationSchemeVersionMetamac.class)
+                .withProperty(OrganisationSchemeVersionMetamacProperties.itemScheme().id()).eq(organisationScheme.getId())
+                .withProperty(OrganisationSchemeVersionMetamacProperties.lifecycleMetadata().procStatus()).in((Object[]) procStatus).distinctRoot().build();
+        PagingParameter pagingParameter = PagingParameter.noLimits();
+        PagedResult<OrganisationSchemeVersionMetamac> organisationSchemeVersionPagedResult = getOrganisationSchemeVersionMetamacRepository().findByCondition(conditions, pagingParameter);
+        return organisationSchemeVersionPagedResult.getValues();
+    }
+
     // /**
     // * Retrieves version of a organisation scheme, checking that can be modified
     // */
