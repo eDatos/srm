@@ -26,6 +26,7 @@
     
     <!-- metamac-srm -->    
     <import resource="classpath:/spring/srm/include/datasource.xml" />
+    <import resource="classpath:/spring/srm/include/entity-manager-factory.xml" />
     <import resource="classpath:/spring/srm/include/interceptor.xml" />
     <import resource="classpath:/spring/srm/include/more.xml" /> 
     

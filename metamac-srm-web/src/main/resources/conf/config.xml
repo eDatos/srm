@@ -12,6 +12,7 @@
         <properties fileName="${environment.metamac.data}/common/conf/static/endpoints.xml" basePath="" config-optional="false" />
         <properties fileName="${environment.metamac.data}/conf/static/resources.xml" basePath="" config-optional="false" />
         <properties fileName="${environment.metamac.data}/srm/conf/static/resources.xml" basePath="" config-optional="false" />
+        <properties fileName="${environment.metamac.data}/srm/conf/static/datasource.xml" basePath="" config-optional="false" />
     </override>
 
 </configuration>

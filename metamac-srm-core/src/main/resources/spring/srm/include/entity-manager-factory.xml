@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:jee="http://www.springframework.org/schema/jee" xmlns:util="http://www.springframework.org/schema/util"
+    xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd 
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+    http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
+    http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd"
+    default-autowire="byName">
+
+    <bean id="defaultPum" class="org.springframework.data.jpa.support.MergingPersistenceUnitManager">
+        <property name="persistenceXmlLocations">
+            <list>
+                <value>classpath*:META-INF/persistence-statistic-sdmx-core.xml</value>
+                <value>classpath*:META-INF/persistence.xml</value>
+            </list>
+        </property>
+        <!-- if no datasource is specified, use this one -->
+        <property name="defaultDataSource" ref="dataSourceCore" />
+    </bean>
+
+    <bean id="entityManagerFactoryCore" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="persistenceUnitManager" ref="defaultPum" />
+        <property name="persistenceUnitName" value="SrmCoreEntityManagerFactory" />
+        <property name="dataSource" ref="dataSourceCore" />
+        <property name="jpaProperties">
+            <props>
+                <!-- These properties override persistence.xml -->
+                <prop key="hibernate.hbm2ddl.auto">validate</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.ejb.cfgfile">hibernate.cfg.xml</prop>
+                <prop key="query.substitutions">true 1, false 0</prop>
+                <prop key="hibernate.cache.use_query_cache">true</prop>
+                <prop key="hibernate.cache.provider_class">net.sf.ehcache.hibernate.EhCacheProvider</prop>
+                <prop key="hibernate.dialect">org.hibernate.dialect.Oracle10gDialect</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="txManagerCore" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactoryCore" />
+        <property name="dataSource" ref="dataSourceCore" />
+    </bean>
+
+</beans>
