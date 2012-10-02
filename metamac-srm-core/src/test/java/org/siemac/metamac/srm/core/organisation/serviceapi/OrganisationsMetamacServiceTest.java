@@ -74,6 +74,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
     public void testUpdateOrganisationScheme() throws Exception {
         OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), ORGANISATION_SCHEME_2_V1);
         organisationSchemeVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
+        organisationSchemeVersion.setIsTypeUpdated(Boolean.FALSE);
 
         OrganisationSchemeVersion organisationSchemeVersionUpdated = organisationsService.updateOrganisationScheme(getServiceContextAdministrador(), organisationSchemeVersion);
 
@@ -88,6 +89,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
 
             try {
                 organisationSchemeVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
+                organisationSchemeVersion.setIsTypeUpdated(Boolean.FALSE);
                 organisationSchemeVersion = organisationsService.updateOrganisationScheme(getServiceContextAdministrador(), organisationSchemeVersion);
                 fail("wrong proc status");
             } catch (MetamacException e) {
@@ -356,6 +358,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), urn);
         organisationSchemeVersion.setIsPartial(null);
         organisationSchemeVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
+        organisationSchemeVersion.setIsTypeUpdated(Boolean.FALSE);
         organisationsService.updateOrganisationScheme(getServiceContextAdministrador(), organisationSchemeVersion);
 
         // Send to production validation
