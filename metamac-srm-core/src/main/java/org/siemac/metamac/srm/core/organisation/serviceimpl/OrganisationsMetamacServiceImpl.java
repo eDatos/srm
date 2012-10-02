@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.core.organisation.serviceimpl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.ObjectUtils;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
@@ -10,6 +11,7 @@ import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
+import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
@@ -21,6 +23,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemScheme;
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
+import com.arte.statistic.sdmx.srm.core.common.error.ServiceExceptionParameters;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.organisation.serviceapi.OrganisationsService;
@@ -35,8 +39,8 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
     @Autowired
     private OrganisationsService        organisationsService;
 
-    // @Autowired
-    // private ItemSchemeVersionRepository itemSchemeVersionRepository;
+    @Autowired
+    private ItemSchemeVersionRepository itemSchemeVersionRepository;
 
     // @Autowired
     // private OrganisationRepository organisationRepository;
@@ -66,6 +70,16 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
         // Validation
         OrganisationsMetamacInvocationValidator.checkUpdateOrganisationScheme(organisationSchemeVersion, null);
         // OrganisationsService checks organisationScheme is not final (Schemes cannot be updated when procStatus is INTERNALLY_PUBLISHED or EXTERNALLY_PUBLISHED)
+
+        // Check type modification: type can only be modified when is in initial version and when has no children (this last requisite is checked in SDMX service)
+        if (!VersionUtil.VERSION_INITIAL_VERSION.equals(organisationSchemeVersion.getMaintainableArtefact().getVersionLogic())) {
+            OrganisationSchemeVersionMetamac previousVersion = (OrganisationSchemeVersionMetamac) itemSchemeVersionRepository.findByVersion(organisationSchemeVersion.getItemScheme().getId(),
+                    organisationSchemeVersion.getMaintainableArtefact().getReplaceTo());
+            if (!ObjectUtils.equals(previousVersion.getOrganisationSchemeType(), organisationSchemeVersion.getOrganisationSchemeType())) {
+                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_UNMODIFIABLE).withMessageParameters(ServiceExceptionParameters.ORGANISATION_SCHEME_TYPE)
+                        .build();
+            }
+        }
 
         // Save organisationScheme
         return (OrganisationSchemeVersionMetamac) organisationsService.updateOrganisationScheme(ctx, organisationSchemeVersion);

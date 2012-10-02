@@ -119,6 +119,33 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
     }
 
     @Test
+    public void testUpdateOrganisationSchemeChangetType() throws Exception {
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), ORGANISATION_SCHEME_2_V1);
+        organisationSchemeVersion.setOrganisationSchemeType(OrganisationSchemeTypeEnum.DATA_PROVIDER_SCHEME);
+        organisationSchemeVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.TRUE);
+        organisationSchemeVersion.setIsTypeUpdated(Boolean.FALSE);
+        organisationSchemeVersion = organisationsService.updateOrganisationScheme(getServiceContextAdministrador(), organisationSchemeVersion);
+
+        assertEquals(OrganisationSchemeTypeEnum.DATA_PROVIDER_SCHEME, organisationSchemeVersion.getOrganisationSchemeType());
+    }
+
+    @Test
+    public void testUpdateOrganisationSchemeErrorChangetType() throws Exception {
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), ORGANISATION_SCHEME_1_V2);
+        organisationSchemeVersion.setOrganisationSchemeType(OrganisationSchemeTypeEnum.DATA_PROVIDER_SCHEME);
+        organisationSchemeVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
+        organisationSchemeVersion.setIsTypeUpdated(Boolean.FALSE);
+        try {
+            organisationSchemeVersion = organisationsService.updateOrganisationScheme(getServiceContextAdministrador(), organisationSchemeVersion);
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.METADATA_UNMODIFIABLE.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(ServiceExceptionParameters.ORGANISATION_SCHEME_TYPE, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
+    @Test
     public void testRetrieveOrganisationSchemeByUrn() throws Exception {
 
         // Retrieve
