@@ -13,6 +13,7 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
+import org.siemac.metamac.srm.core.common.Lifecycle;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
@@ -20,6 +21,7 @@ import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersion
 import org.siemac.metamac.srm.core.organisation.serviceimpl.utils.DoCopyUtils;
 import org.siemac.metamac.srm.core.organisation.serviceimpl.utils.OrganisationsMetamacInvocationValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemScheme;
@@ -46,7 +48,8 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
     // private OrganisationRepository organisationRepository;
 
     @Autowired
-    private OrganisationSchemeLifecycle organisationSchemeLifecycle;
+    @Qualifier("organisationSchemeLifecycle")
+    private Lifecycle                   organisationSchemeLifecycle;
 
     public OrganisationsMetamacServiceImpl() {
     }

@@ -11,6 +11,7 @@ import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
+import org.siemac.metamac.srm.core.common.Lifecycle;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
@@ -22,6 +23,7 @@ import org.siemac.metamac.srm.core.concept.serviceimpl.utils.ConceptsMetamacInvo
 import org.siemac.metamac.srm.core.concept.serviceimpl.utils.DoCopyUtils;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
@@ -57,7 +59,8 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     private ConceptRelationRepository   conceptRelationRepository;
 
     @Autowired
-    private ConceptSchemeLifecycle      conceptSchemeLifecycle;
+    @Qualifier("conceptSchemeLifecycle")
+    private Lifecycle                   conceptSchemeLifecycle;
 
     public ConceptsMetamacServiceImpl() {
     }

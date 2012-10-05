@@ -10,26 +10,29 @@ import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
+import org.siemac.metamac.core.common.exception.MetamacExceptionItemBuilder;
+import org.siemac.metamac.core.common.serviceimpl.utils.ValidationUtils;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
+import org.siemac.metamac.srm.core.common.LifecycleImpl;
+import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
+import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
-import org.siemac.metamac.srm.core.itemscheme.ItemSchemeLifecycle;
-import org.siemac.metamac.srm.core.itemscheme.ItemSchemeLifecycle.ItemSchemeLifecycleCallback;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamacProperties;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamacRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.arte.statistic.sdmx.srm.core.base.domain.ItemScheme;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
+import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.organisation.serviceapi.OrganisationsService;
 
 @Service("organisationSchemeLifecycle")
-public class OrganisationSchemeLifecycleImpl implements OrganisationSchemeLifecycle {
+public class OrganisationSchemeLifecycleImpl extends LifecycleImpl {
 
     @Autowired
-    private ItemSchemeVersionRepository                itemSchemeVersionRepository;
+    private ItemSchemeVersionRepository           itemSchemeVersionRepository;
 
     @Autowired
     private OrganisationSchemeVersionMetamacRepository organisationSchemeVersionMetamacRepository;
@@ -37,115 +40,116 @@ public class OrganisationSchemeLifecycleImpl implements OrganisationSchemeLifecy
     @Autowired
     private OrganisationsService                       organisationsService;
 
-    private ItemSchemeLifecycle                        itemSchemeLifecycle = null;
-
     public OrganisationSchemeLifecycleImpl() {
-        itemSchemeLifecycle = new ItemSchemeLifecycle(new OrganisationSchemeLifecycleCallback());
+        this.callback = new OrganisationSchemeLifecycleCallback();
     }
 
-    @Override
-    public ItemSchemeVersion sendToProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
-        return itemSchemeLifecycle.sendToProductionValidation(ctx, urn);
-    }
-
-    @Override
-    public ItemSchemeVersion sendToDiffusionValidation(ServiceContext ctx, String urn) throws MetamacException {
-        return itemSchemeLifecycle.sendToDiffusionValidation(ctx, urn);
-    }
-
-    @Override
-    public ItemSchemeVersion rejectProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
-        return itemSchemeLifecycle.rejectProductionValidation(ctx, urn);
-    }
-
-    @Override
-    public ItemSchemeVersion rejectDiffusionValidation(ServiceContext ctx, String urn) throws MetamacException {
-        return itemSchemeLifecycle.rejectDiffusionValidation(ctx, urn);
-    }
-
-    @Override
-    public ItemSchemeVersion publishInternally(ServiceContext ctx, String urn) throws MetamacException {
-        return itemSchemeLifecycle.publishInternally(ctx, urn);
-    }
-
-    @Override
-    public ItemSchemeVersion publishExternally(ServiceContext ctx, String urn) throws MetamacException {
-        return itemSchemeLifecycle.publishExternally(ctx, urn);
-    }
-
-    private class OrganisationSchemeLifecycleCallback implements ItemSchemeLifecycleCallback {
+    private class OrganisationSchemeLifecycleCallback implements LifecycleCallback {
 
         @Override
-        public SrmLifeCycleMetadata getSrmLifeCycleMetadata(ItemSchemeVersion itemSchemeVersion) {
-            OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationSchemeVersionMetamac(itemSchemeVersion);
-            return organisationSchemeVersion.getLifecycleMetadata();
+        public SrmLifeCycleMetadata getLifeCycleMetadata(Object srmResourceVersion) {
+            return getOrganisationSchemeVersionMetamac(srmResourceVersion).getLifecycleMetadata();
+        }
+        
+        @Override
+        public MaintainableArtefact getMaintainableArtefact(Object srmResourceVersion) {
+            return getOrganisationSchemeVersionMetamac(srmResourceVersion).getMaintainableArtefact();
         }
 
         @Override
-        public ItemSchemeVersion updateItemScheme(ItemSchemeVersion itemSchemeVersion) {
-            return itemSchemeVersionRepository.save(itemSchemeVersion);
+        public Object updateSrmResource(Object srmResourceVersion) {
+            return itemSchemeVersionRepository.save(getOrganisationSchemeVersionMetamac(srmResourceVersion));
         }
 
         @Override
-        public ItemSchemeVersion retrieveItemSchemeByProcStatus(String urn, ProcStatusEnum[] procStatus) throws MetamacException {
+        public Object retrieveSrmResourceByProcStatus(String urn, ProcStatusEnum[] procStatus) throws MetamacException {
             return organisationSchemeVersionMetamacRepository.retrieveOrganisationSchemeVersionByProcStatus(urn, procStatus);
         }
-
+        
         @Override
-        public void checkAdditionalConditionsSinceSendToProductionValidation(ItemSchemeVersion itemSchemeVersion, List<MetamacExceptionItem> exceptions) {
+        public void checkConcreteResourceInProductionValidation(Object srmResourceVersion, List<MetamacExceptionItem> exceptions) {
+         
+            OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationSchemeVersionMetamac(srmResourceVersion);
 
-            OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationSchemeVersionMetamac(itemSchemeVersion);
-
-            // TODO One organisation at least
-            // if (organisationSchemeVersion.getItems().size() == 0) {
-            // exceptions.add(new MetamacExceptionItem(ServiceExceptionType.ORGANISATION_SCHEME_WITHOUT_ORGANISATIONS, organisationSchemeVersion.getMaintainableArtefact().getUrn()));
-            // }
+            // Metadata required
+            ValidationUtils.checkMetadataRequired(organisationSchemeVersion.getIsPartial(), ServiceExceptionParameters.ITEM_SCHEME_IS_PARTIAL, exceptions);
+            
+//            // TODO One organisation at least
+//            if (organisationSchemeVersion.getItems().size() == 0) {
+//                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.ORGANISATION_SCHEME_WITHOUT_ORGANISATIONS, organisationSchemeVersion.getMaintainableArtefact().getUrn()));
+//            }
+        }
+        
+        @Override
+        public void checkConcreteResourceInDiffusionValidation(Object srmResourceVersion, List<MetamacExceptionItem> exceptions) {
+            // nothing
+        }
+        
+        @Override
+        public void checkConcreteResourceInRejectProductionValidation(Object srmResourceVersion, List<MetamacExceptionItem> exceptions) {
+            // nothing
+        }
+        
+        @Override
+        public void checkConcreteResourceInRejectDiffusionValidation(Object srmResourceVersion, List<MetamacExceptionItem> exceptions) {
+            // nothing
         }
 
         @Override
-        public void checkAdditionalConditionsToPublishInternally(ItemSchemeVersion itemSchemeVersion, List<MetamacExceptionItem> exceptions) {
-
-            // No conditions
-
+        public void checkConcreteResourceInInternallyPublished(Object srmResourceVersion, List<MetamacExceptionItem> exceptions) {
+            // nothing
         }
 
         @Override
-        public void checkAdditionalConditionsToPublishExternally(ItemSchemeVersion itemSchemeVersion, List<MetamacExceptionItem> exceptions) {
-
-            // No conditions
+        public void checkConcreteResourceInExternallyPublished(Object srmResourceVersion, List<MetamacExceptionItem> exceptions) {
+            // nothing
         }
 
         @Override
-        public ItemSchemeVersion markItemSchemeAsFinal(ServiceContext ctx, ItemSchemeVersion itemSchemeVersion) throws MetamacException {
-            return organisationsService.markOrganisationSchemeAsFinal(ctx, itemSchemeVersion.getMaintainableArtefact().getUrn());
+        public Object markSrmResourceAsFinal(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
+            return organisationsService.markOrganisationSchemeAsFinal(ctx, getOrganisationSchemeVersionMetamac(srmResourceVersion).getMaintainableArtefact().getUrn());
         }
 
         @Override
-        public ItemSchemeVersion startItemSchemeValidity(ServiceContext ctx, ItemSchemeVersion itemSchemeVersion) throws MetamacException {
-            return organisationsService.startOrganisationSchemeValidity(ctx, itemSchemeVersion.getMaintainableArtefact().getUrn());
+        public Object startSrmResourceValidity(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
+            return organisationsService.startOrganisationSchemeValidity(ctx, getOrganisationSchemeVersionMetamac(srmResourceVersion).getMaintainableArtefact().getUrn());
+        }
+        
+        @Override
+        public Object endSrmResourceValidity(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
+            return organisationsService.endOrganisationSchemeValidity(ctx, getOrganisationSchemeVersionMetamac(srmResourceVersion).getMaintainableArtefact().getUrn());
         }
 
         @Override
-        public List<ItemSchemeVersion> findItemSchemeVersionsOfItemSchemeInProcStatus(ServiceContext ctx, ItemScheme itemScheme, ProcStatusEnum... procStatus) {
+        public List<Object> findSrmResourceVersionsOfSrmResourceInProcStatus(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum... procStatus) {
 
-            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(OrganisationSchemeVersionMetamac.class)
-                    .withProperty(OrganisationSchemeVersionMetamacProperties.itemScheme().id()).eq(itemScheme.getId())
-                    .withProperty(OrganisationSchemeVersionMetamacProperties.lifecycleMetadata().procStatus()).in((Object[]) procStatus).distinctRoot().build();
+            OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationSchemeVersionMetamac(srmResourceVersion);
+
+            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(OrganisationSchemeVersionMetamac.class).withProperty(OrganisationSchemeVersionMetamacProperties.itemScheme().id())
+                    .eq(organisationSchemeVersion.getItemScheme().getId()).withProperty(OrganisationSchemeVersionMetamacProperties.lifecycleMetadata().procStatus()).in((Object[]) procStatus).distinctRoot()
+                    .build();
             PagingParameter pagingParameter = PagingParameter.noLimits();
             PagedResult<OrganisationSchemeVersionMetamac> organisationSchemeVersionPagedResult = organisationSchemeVersionMetamacRepository.findByCondition(conditions, pagingParameter);
-            return organisationSchemeMetamacToItemScheme(organisationSchemeVersionPagedResult.getValues());
+            return organisationSchemeMetamacToObject(organisationSchemeVersionPagedResult.getValues());
         }
 
-        private OrganisationSchemeVersionMetamac getOrganisationSchemeVersionMetamac(ItemSchemeVersion itemSchemeVersion) {
-            return (OrganisationSchemeVersionMetamac) itemSchemeVersion;
+        @Override
+        public MetamacExceptionItem buildExceptionItemWrongProcStatus(Object srmResourceVersion, String[] procStatusExpecteds) {
+            OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationSchemeVersionMetamac(srmResourceVersion);
+            return MetamacExceptionItemBuilder.metamacExceptionItem().withCommonServiceExceptionType(ServiceExceptionType.ORGANISATION_SCHEME_WRONG_PROC_STATUS)
+                    .withMessageParameters(organisationSchemeVersion.getMaintainableArtefact().getUrn(), procStatusExpecteds).build();
         }
 
-        private List<ItemSchemeVersion> organisationSchemeMetamacToItemScheme(List<OrganisationSchemeVersionMetamac> organisationSchemeVersions) {
-            List<ItemSchemeVersion> itemSchemeVersions = new ArrayList<ItemSchemeVersion>();
+        private OrganisationSchemeVersionMetamac getOrganisationSchemeVersionMetamac(Object srmResource) {
+            return (OrganisationSchemeVersionMetamac) srmResource;
+        }
+
+        private List<Object> organisationSchemeMetamacToObject(List<OrganisationSchemeVersionMetamac> organisationSchemeVersions) {
+            List<Object> objects = new ArrayList<Object>();
             for (OrganisationSchemeVersionMetamac organisationSchemeVersion : organisationSchemeVersions) {
-                itemSchemeVersions.add((ItemSchemeVersion) organisationSchemeVersion);
+                objects.add((ItemSchemeVersion) organisationSchemeVersion);
             }
-            return itemSchemeVersions;
+            return objects;
         }
     }
 }

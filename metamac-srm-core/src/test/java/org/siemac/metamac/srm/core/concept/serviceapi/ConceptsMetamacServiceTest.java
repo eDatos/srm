@@ -981,7 +981,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertEquals(ServiceExceptionType.CONCEPT_SCHEME_WITH_RELATED_CONCEPTS_VALIDITY_NOT_STARTED.getCode(), e.getExceptionItems().get(0).getCode());
             assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
             assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-            assertEquals(CONCEPT_SCHEME_10_V3_CONCEPT_1, e.getExceptionItems().get(0).getMessageParameters()[1]);
+            assertEquals(CONCEPT_SCHEME_7_V2_CONCEPT_1, e.getExceptionItems().get(0).getMessageParameters()[1]);
         }
     }
 

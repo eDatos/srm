@@ -112,7 +112,7 @@
               LEGAL_ACTS_FK="[null]"
               SDMX_RELATED_ARTEFACT="[null]"
               CONCEPT_TYPE_FK="[null]"
-              EXTENDS_FK="1031"
+              EXTENDS_FK="721"
               TB_CONCEPTS="111"
              />
             

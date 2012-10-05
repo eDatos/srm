@@ -10,7 +10,11 @@ import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
+import org.siemac.metamac.core.common.exception.MetamacExceptionItemBuilder;
+import org.siemac.metamac.core.common.serviceimpl.utils.ValidationUtils;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
+import org.siemac.metamac.srm.core.common.LifecycleImpl;
+import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacRepository;
@@ -18,18 +22,16 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacProperties;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacRepository;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
-import org.siemac.metamac.srm.core.itemscheme.ItemSchemeLifecycle;
-import org.siemac.metamac.srm.core.itemscheme.ItemSchemeLifecycle.ItemSchemeLifecycleCallback;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.arte.statistic.sdmx.srm.core.base.domain.ItemScheme;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
+import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.concept.serviceapi.ConceptsService;
 
 @Service("conceptSchemeLifecycle")
-public class ConceptSchemeLifecycleImpl implements ConceptSchemeLifecycle {
+public class ConceptSchemeLifecycleImpl extends LifecycleImpl {
 
     @Autowired
     private ItemSchemeVersionRepository           itemSchemeVersionRepository;
@@ -43,78 +45,70 @@ public class ConceptSchemeLifecycleImpl implements ConceptSchemeLifecycle {
     @Autowired
     private ConceptMetamacRepository              conceptMetamacRepository;
 
-    private ItemSchemeLifecycle                   itemSchemeLifecycle = null;
-
     public ConceptSchemeLifecycleImpl() {
-        itemSchemeLifecycle = new ItemSchemeLifecycle(new ConceptSchemeLifecycleCallback());
+        this.callback = new ConceptSchemeLifecycleCallback();
     }
 
-    @Override
-    public ItemSchemeVersion sendToProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
-        return itemSchemeLifecycle.sendToProductionValidation(ctx, urn);
-    }
-
-    @Override
-    public ItemSchemeVersion sendToDiffusionValidation(ServiceContext ctx, String urn) throws MetamacException {
-        return itemSchemeLifecycle.sendToDiffusionValidation(ctx, urn);
-    }
-
-    @Override
-    public ItemSchemeVersion rejectProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
-        return itemSchemeLifecycle.rejectProductionValidation(ctx, urn);
-    }
-
-    @Override
-    public ItemSchemeVersion rejectDiffusionValidation(ServiceContext ctx, String urn) throws MetamacException {
-        return itemSchemeLifecycle.rejectDiffusionValidation(ctx, urn);
-    }
-
-    @Override
-    public ItemSchemeVersion publishInternally(ServiceContext ctx, String urn) throws MetamacException {
-        return itemSchemeLifecycle.publishInternally(ctx, urn);
-    }
-
-    @Override
-    public ItemSchemeVersion publishExternally(ServiceContext ctx, String urn) throws MetamacException {
-        return itemSchemeLifecycle.publishExternally(ctx, urn);
-    }
-
-    private class ConceptSchemeLifecycleCallback implements ItemSchemeLifecycleCallback {
+    private class ConceptSchemeLifecycleCallback implements LifecycleCallback {
 
         @Override
-        public SrmLifeCycleMetadata getSrmLifeCycleMetadata(ItemSchemeVersion itemSchemeVersion) {
-            ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptSchemeVersionMetamac(itemSchemeVersion);
-            return conceptSchemeVersion.getLifecycleMetadata();
+        public SrmLifeCycleMetadata getLifeCycleMetadata(Object srmResourceVersion) {
+            return getConceptSchemeVersionMetamac(srmResourceVersion).getLifecycleMetadata();
+        }
+        
+        @Override
+        public MaintainableArtefact getMaintainableArtefact(Object srmResourceVersion) {
+            return getConceptSchemeVersionMetamac(srmResourceVersion).getMaintainableArtefact();
         }
 
         @Override
-        public ItemSchemeVersion updateItemScheme(ItemSchemeVersion itemSchemeVersion) {
-            return itemSchemeVersionRepository.save(itemSchemeVersion);
+        public Object updateSrmResource(Object srmResourceVersion) {
+            return itemSchemeVersionRepository.save(getConceptSchemeVersionMetamac(srmResourceVersion));
         }
 
         @Override
-        public ItemSchemeVersion retrieveItemSchemeByProcStatus(String urn, ProcStatusEnum[] procStatus) throws MetamacException {
+        public Object retrieveSrmResourceByProcStatus(String urn, ProcStatusEnum[] procStatus) throws MetamacException {
             return conceptSchemeVersionMetamacRepository.retrieveConceptSchemeVersionByProcStatus(urn, procStatus);
         }
-
+        
         @Override
-        public void checkAdditionalConditionsSinceSendToProductionValidation(ItemSchemeVersion itemSchemeVersion, List<MetamacExceptionItem> exceptions) {
+        public void checkConcreteResourceInProductionValidation(Object srmResourceVersion, List<MetamacExceptionItem> exceptions) {
+         
+            ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptSchemeVersionMetamac(srmResourceVersion);
 
-            ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptSchemeVersionMetamac(itemSchemeVersion);
-
+            // Metadata required
+            ValidationUtils.checkMetadataRequired(conceptSchemeVersion.getIsPartial(), ServiceExceptionParameters.ITEM_SCHEME_IS_PARTIAL, exceptions);
+            
             // One concept at least
             if (conceptSchemeVersion.getItems().size() == 0) {
                 exceptions.add(new MetamacExceptionItem(ServiceExceptionType.CONCEPT_SCHEME_WITHOUT_CONCEPTS, conceptSchemeVersion.getMaintainableArtefact().getUrn()));
             }
         }
+        
+        @Override
+        public void checkConcreteResourceInDiffusionValidation(Object srmResourceVersion, List<MetamacExceptionItem> exceptions) {
+            // nothing
+        }
+        
+        @Override
+        public void checkConcreteResourceInRejectProductionValidation(Object srmResourceVersion, List<MetamacExceptionItem> exceptions) {
+            // nothing
+        }
+        
+        @Override
+        public void checkConcreteResourceInRejectDiffusionValidation(Object srmResourceVersion, List<MetamacExceptionItem> exceptions) {
+            // nothing
+        }
 
         @Override
-        public void checkAdditionalConditionsToPublishInternally(ItemSchemeVersion itemSchemeVersion, List<MetamacExceptionItem> exceptions) {
-
+        public void checkConcreteResourceInInternallyPublished(Object srmResourceVersion, List<MetamacExceptionItem> exceptions) {
+         
+            ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptSchemeVersionMetamac(srmResourceVersion);
+            
             // Check there is not any concept in 'extends' metadata in concepts schemes were not marked as "final" ( = publish internally)
-            ConceptMetamac conceptWithExtends = conceptMetamacRepository.findOneConceptExtendsConceptInConceptSchemeNotFinal(itemSchemeVersion.getMaintainableArtefact().getUrn());
+            ConceptMetamac conceptWithExtends = conceptMetamacRepository.findOneConceptExtendsConceptInConceptSchemeNotFinal(conceptSchemeVersion.getMaintainableArtefact().getUrn());
             if (conceptWithExtends != null) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.CONCEPT_SCHEME_WITH_RELATED_CONCEPTS_NOT_FINAL, itemSchemeVersion.getMaintainableArtefact().getUrn(), conceptWithExtends
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.CONCEPT_SCHEME_WITH_RELATED_CONCEPTS_NOT_FINAL, conceptSchemeVersion.getMaintainableArtefact().getUrn(), conceptWithExtends
                         .getConceptExtends().getNameableArtefact().getUrn()));
             }
 
@@ -122,12 +116,14 @@ public class ConceptSchemeLifecycleImpl implements ConceptSchemeLifecycle {
         }
 
         @Override
-        public void checkAdditionalConditionsToPublishExternally(ItemSchemeVersion itemSchemeVersion, List<MetamacExceptionItem> exceptions) {
-
+        public void checkConcreteResourceInExternallyPublished(Object srmResourceVersion, List<MetamacExceptionItem> exceptions) {
+         
+            ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptSchemeVersionMetamac(srmResourceVersion);
+            
             // Check there is not any concept in 'extends' metadata in concepts schemes were not marked as "valid" ( = publish externally)
-            ConceptMetamac conceptWithExtends = conceptMetamacRepository.findOneConceptExtendsConceptInConceptSchemeNotValid(itemSchemeVersion.getMaintainableArtefact().getUrn());
+            ConceptMetamac conceptWithExtends = conceptMetamacRepository.findOneConceptExtendsConceptInConceptSchemeNotValid(conceptSchemeVersion.getMaintainableArtefact().getUrn());
             if (conceptWithExtends != null) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.CONCEPT_SCHEME_WITH_RELATED_CONCEPTS_VALIDITY_NOT_STARTED, itemSchemeVersion.getMaintainableArtefact().getUrn(),
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.CONCEPT_SCHEME_WITH_RELATED_CONCEPTS_VALIDITY_NOT_STARTED, conceptSchemeVersion.getMaintainableArtefact().getUrn(),
                         conceptWithExtends.getConceptExtends().getNameableArtefact().getUrn()));
             }
 
@@ -135,35 +131,50 @@ public class ConceptSchemeLifecycleImpl implements ConceptSchemeLifecycle {
         }
 
         @Override
-        public ItemSchemeVersion markItemSchemeAsFinal(ServiceContext ctx, ItemSchemeVersion itemSchemeVersion) throws MetamacException {
-            return conceptsService.markConceptSchemeAsFinal(ctx, itemSchemeVersion.getMaintainableArtefact().getUrn());
+        public Object markSrmResourceAsFinal(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
+            return conceptsService.markConceptSchemeAsFinal(ctx, getConceptSchemeVersionMetamac(srmResourceVersion).getMaintainableArtefact().getUrn());
         }
 
         @Override
-        public ItemSchemeVersion startItemSchemeValidity(ServiceContext ctx, ItemSchemeVersion itemSchemeVersion) throws MetamacException {
-            return conceptsService.startConceptSchemeValidity(ctx, itemSchemeVersion.getMaintainableArtefact().getUrn());
+        public Object startSrmResourceValidity(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
+            return conceptsService.startConceptSchemeValidity(ctx, getConceptSchemeVersionMetamac(srmResourceVersion).getMaintainableArtefact().getUrn());
+        }
+        
+        @Override
+        public Object endSrmResourceValidity(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
+            return conceptsService.endConceptSchemeValidity(ctx, getConceptSchemeVersionMetamac(srmResourceVersion).getMaintainableArtefact().getUrn());
         }
 
         @Override
-        public List<ItemSchemeVersion> findItemSchemeVersionsOfItemSchemeInProcStatus(ServiceContext ctx, ItemScheme itemScheme, ProcStatusEnum... procStatus) {
+        public List<Object> findSrmResourceVersionsOfSrmResourceInProcStatus(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum... procStatus) {
+
+            ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptSchemeVersionMetamac(srmResourceVersion);
 
             List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).withProperty(ConceptSchemeVersionMetamacProperties.itemScheme().id())
-                    .eq(itemScheme.getId()).withProperty(ConceptSchemeVersionMetamacProperties.lifecycleMetadata().procStatus()).in((Object[]) procStatus).distinctRoot().build();
+                    .eq(conceptSchemeVersion.getItemScheme().getId()).withProperty(ConceptSchemeVersionMetamacProperties.lifecycleMetadata().procStatus()).in((Object[]) procStatus).distinctRoot()
+                    .build();
             PagingParameter pagingParameter = PagingParameter.noLimits();
             PagedResult<ConceptSchemeVersionMetamac> conceptSchemeVersionPagedResult = conceptSchemeVersionMetamacRepository.findByCondition(conditions, pagingParameter);
-            return conceptSchemeMetamacToItemScheme(conceptSchemeVersionPagedResult.getValues());
+            return conceptSchemeMetamacToObject(conceptSchemeVersionPagedResult.getValues());
         }
 
-        private ConceptSchemeVersionMetamac getConceptSchemeVersionMetamac(ItemSchemeVersion itemSchemeVersion) {
-            return (ConceptSchemeVersionMetamac) itemSchemeVersion;
+        @Override
+        public MetamacExceptionItem buildExceptionItemWrongProcStatus(Object srmResourceVersion, String[] procStatusExpecteds) {
+            ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptSchemeVersionMetamac(srmResourceVersion);
+            return MetamacExceptionItemBuilder.metamacExceptionItem().withCommonServiceExceptionType(ServiceExceptionType.CONCEPT_SCHEME_WRONG_PROC_STATUS)
+                    .withMessageParameters(conceptSchemeVersion.getMaintainableArtefact().getUrn(), procStatusExpecteds).build();
         }
 
-        private List<ItemSchemeVersion> conceptSchemeMetamacToItemScheme(List<ConceptSchemeVersionMetamac> conceptSchemeVersions) {
-            List<ItemSchemeVersion> itemSchemeVersions = new ArrayList<ItemSchemeVersion>();
+        private ConceptSchemeVersionMetamac getConceptSchemeVersionMetamac(Object srmResource) {
+            return (ConceptSchemeVersionMetamac) srmResource;
+        }
+
+        private List<Object> conceptSchemeMetamacToObject(List<ConceptSchemeVersionMetamac> conceptSchemeVersions) {
+            List<Object> objects = new ArrayList<Object>();
             for (ConceptSchemeVersionMetamac conceptSchemeVersion : conceptSchemeVersions) {
-                itemSchemeVersions.add((ItemSchemeVersion) conceptSchemeVersion);
+                objects.add((ItemSchemeVersion) conceptSchemeVersion);
             }
-            return itemSchemeVersions;
+            return objects;
         }
     }
 }
