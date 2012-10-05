@@ -29,7 +29,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.organisation.serviceapi.OrganisationsService;
 
 @Service("organisationSchemeLifecycle")
-public class OrganisationSchemeLifecycleImpl extends LifeCycleImpl {
+public class OrganisationSchemeLifeCycleImpl extends LifeCycleImpl {
 
     @Autowired
     private ItemSchemeVersionRepository           itemSchemeVersionRepository;
@@ -40,7 +40,7 @@ public class OrganisationSchemeLifecycleImpl extends LifeCycleImpl {
     @Autowired
     private OrganisationsService                       organisationsService;
 
-    public OrganisationSchemeLifecycleImpl() {
+    public OrganisationSchemeLifeCycleImpl() {
         this.callback = new OrganisationSchemeLifecycleCallback();
     }
 
