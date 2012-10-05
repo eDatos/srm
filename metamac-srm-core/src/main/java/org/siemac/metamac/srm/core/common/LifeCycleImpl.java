@@ -18,7 +18,7 @@ import org.siemac.metamac.srm.core.serviceimpl.SrmServiceUtils;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 
-public class LifecycleImpl implements Lifecycle {
+public class LifeCycleImpl implements LifeCycle {
 
     private static final ProcStatusEnum[] procStatusToSendToProductionValidation = {ProcStatusEnum.DRAFT, ProcStatusEnum.VALIDATION_REJECTED};
     private static final ProcStatusEnum[] procStatusToSendToDiffusionValidation  = {ProcStatusEnum.PRODUCTION_VALIDATION};
@@ -30,7 +30,7 @@ public class LifecycleImpl implements Lifecycle {
     // Due to java restrictions, this must be inialized out of constructor of Lifecycle
     protected LifecycleCallback           callback                               = null;
 
-    public LifecycleImpl() {
+    public LifeCycleImpl() {
     }
 
     public Object sendToProductionValidation(ServiceContext ctx, String urn) throws MetamacException {

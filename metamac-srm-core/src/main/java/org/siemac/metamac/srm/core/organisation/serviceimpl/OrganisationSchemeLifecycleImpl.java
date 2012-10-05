@@ -13,7 +13,7 @@ import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItemBuilder;
 import org.siemac.metamac.core.common.serviceimpl.utils.ValidationUtils;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
-import org.siemac.metamac.srm.core.common.LifecycleImpl;
+import org.siemac.metamac.srm.core.common.LifeCycleImpl;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
@@ -29,7 +29,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.organisation.serviceapi.OrganisationsService;
 
 @Service("organisationSchemeLifecycle")
-public class OrganisationSchemeLifecycleImpl extends LifecycleImpl {
+public class OrganisationSchemeLifecycleImpl extends LifeCycleImpl {
 
     @Autowired
     private ItemSchemeVersionRepository           itemSchemeVersionRepository;

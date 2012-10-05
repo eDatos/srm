@@ -13,7 +13,7 @@ import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItemBuilder;
 import org.siemac.metamac.core.common.serviceimpl.utils.ValidationUtils;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
-import org.siemac.metamac.srm.core.common.LifecycleImpl;
+import org.siemac.metamac.srm.core.common.LifeCycleImpl;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
@@ -31,7 +31,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.concept.serviceapi.ConceptsService;
 
 @Service("conceptSchemeLifecycle")
-public class ConceptSchemeLifecycleImpl extends LifecycleImpl {
+public class ConceptSchemeLifeCycleImpl extends LifeCycleImpl {
 
     @Autowired
     private ItemSchemeVersionRepository           itemSchemeVersionRepository;
@@ -45,7 +45,7 @@ public class ConceptSchemeLifecycleImpl extends LifecycleImpl {
     @Autowired
     private ConceptMetamacRepository              conceptMetamacRepository;
 
-    public ConceptSchemeLifecycleImpl() {
+    public ConceptSchemeLifeCycleImpl() {
         this.callback = new ConceptSchemeLifecycleCallback();
     }
 

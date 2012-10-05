@@ -11,7 +11,7 @@ import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
-import org.siemac.metamac.srm.core.common.Lifecycle;
+import org.siemac.metamac.srm.core.common.LifeCycle;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
@@ -60,7 +60,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
     @Autowired
     @Qualifier("conceptSchemeLifecycle")
-    private Lifecycle                   conceptSchemeLifecycle;
+    private LifeCycle                   conceptSchemeLifecycle;
 
     public ConceptsMetamacServiceImpl() {
     }

@@ -12,7 +12,7 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItemBuilder;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
-import org.siemac.metamac.srm.core.common.LifecycleImpl;
+import org.siemac.metamac.srm.core.common.LifeCycleImpl;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamacProperties;
@@ -26,7 +26,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersionRepository;
 import com.arte.statistic.sdmx.srm.core.structure.serviceapi.DataStructureDefinitionService;
 
 @Service("dsdLifecycle")
-public class DsdLifecycleImpl extends LifecycleImpl {
+public class DsdLifeCycleImpl extends LifeCycleImpl {
 
     @Autowired
     private StructureVersionRepository                      structureVersionRepository;
@@ -37,7 +37,7 @@ public class DsdLifecycleImpl extends LifecycleImpl {
     @Autowired
     private DataStructureDefinitionService                  dataStructureDefinitionService;
 
-    public DsdLifecycleImpl() {
+    public DsdLifeCycleImpl() {
         this.callback = new DataStructureDefinitionLifecycleCallback();
     }
 

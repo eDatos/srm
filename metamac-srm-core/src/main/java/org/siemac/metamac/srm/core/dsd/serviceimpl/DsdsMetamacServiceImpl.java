@@ -11,7 +11,7 @@ import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
-import org.siemac.metamac.srm.core.common.Lifecycle;
+import org.siemac.metamac.srm.core.common.LifeCycle;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamacProperties;
@@ -42,7 +42,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
 
     @Autowired
     @Qualifier("dsdLifecycle")
-    private Lifecycle                      dsdLifecycle;
+    private LifeCycle                      dsdLifecycle;
 
     @Autowired
     private StructureCopyCallback          structureCopyCallback;

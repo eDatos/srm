@@ -13,7 +13,7 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
-import org.siemac.metamac.srm.core.common.Lifecycle;
+import org.siemac.metamac.srm.core.common.LifeCycle;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
@@ -49,7 +49,7 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
 
     @Autowired
     @Qualifier("organisationSchemeLifecycle")
-    private Lifecycle                   organisationSchemeLifecycle;
+    private LifeCycle                   organisationSchemeLifecycle;
 
     public OrganisationsMetamacServiceImpl() {
     }

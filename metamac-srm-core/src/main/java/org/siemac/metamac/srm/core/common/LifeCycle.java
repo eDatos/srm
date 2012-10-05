@@ -3,7 +3,7 @@ package org.siemac.metamac.srm.core.common;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
 
-public interface Lifecycle {
+public interface LifeCycle {
 
     public Object sendToProductionValidation(ServiceContext ctx, String urn) throws MetamacException;
     public Object sendToDiffusionValidation(ServiceContext ctx, String urn) throws MetamacException;
