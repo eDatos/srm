@@ -126,7 +126,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
         // Find (do not call SDMX module to avoid type cast)
         if (conditions == null) {
-            conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).build();
+            conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).distinctRoot().build();
         }
         PagedResult<ConceptSchemeVersionMetamac> conceptSchemeVersionPagedResult = getConceptSchemeVersionMetamacRepository().findByCondition(conditions, pagingParameter);
         return conceptSchemeVersionPagedResult;
@@ -284,7 +284,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
         // Find (do not call sdmx module to avoid typecast)
         if (conditions == null) {
-            conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class).build();
+            conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class).distinctRoot().build();
         }
         PagedResult<ConceptMetamac> conceptPagedResult = getConceptMetamacRepository().findByCondition(conditions, pagingParameter);
         return conceptPagedResult;

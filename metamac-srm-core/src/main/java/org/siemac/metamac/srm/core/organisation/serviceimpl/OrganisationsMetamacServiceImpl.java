@@ -117,7 +117,7 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
 
         // Find (do not call SDMX module to avoid type cast)
         if (conditions == null) {
-            conditions = ConditionalCriteriaBuilder.criteriaFor(OrganisationSchemeVersionMetamac.class).build();
+            conditions = ConditionalCriteriaBuilder.criteriaFor(OrganisationSchemeVersionMetamac.class).distinctRoot().build();
         }
         PagedResult<OrganisationSchemeVersionMetamac> organisationSchemeVersionPagedResult = getOrganisationSchemeVersionMetamacRepository().findByCondition(conditions, pagingParameter);
         return organisationSchemeVersionPagedResult;
