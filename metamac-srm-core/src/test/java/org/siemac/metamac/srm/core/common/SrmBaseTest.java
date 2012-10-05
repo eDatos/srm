@@ -177,13 +177,14 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
     // --------------------------------------------------------------------------------------------------------------
 
     @Override
-    protected List<String> getTablesToRemoveContent() {
+    protected List<String> getTableNamesOrderedByFKDepedency() {
         List<String> tables = new ArrayList<String>();
+        tables.addAll(super.getTableNamesOrderedByFKDepedency());
+        tables.add("TB_M_LIS_CONCEPT_TYPES");
         tables.add("TB_M_CONCEPTS");
         tables.add("TB_M_CONCEPT_SCHEMES_VERSIONS");
-        tables.add("TB_M_LIS_CONCEPT_TYPES");
+        tables.add("TB_M_DATASTRUCTURE_VERSIONS");
         tables.add("TB_M_ORG_SCHEMES_VERSIONS");
-        tables.addAll(super.getTablesToRemoveContent());
         return tables;
     }
 
