@@ -11,13 +11,11 @@ import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersion
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 import org.siemac.metamac.srm.core.organisation.exception.OrganisationSchemeVersionMetamacNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 
 @org.springframework.stereotype.Component("organisationsDto2DoMapper")
 public class OrganisationsDto2DoMapperImpl implements OrganisationsDto2DoMapper {
 
     @Autowired
-    @Qualifier("organisationsDto2DoMapperSdmxSrm")
     private com.arte.statistic.sdmx.srm.core.organisation.mapper.OrganisationsDto2DoMapper organisationDto2DoMapperSdmxSrm;
 
     @Autowired
@@ -54,5 +52,4 @@ public class OrganisationsDto2DoMapperImpl implements OrganisationsDto2DoMapper 
 
         return target;
     }
-
 }

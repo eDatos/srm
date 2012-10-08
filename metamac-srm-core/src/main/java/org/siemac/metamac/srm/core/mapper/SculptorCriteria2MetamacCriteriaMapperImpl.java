@@ -9,8 +9,10 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
+import org.siemac.metamac.srm.core.concept.mapper.ConceptsDo2DtoMapper;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
+import org.siemac.metamac.srm.core.dsd.mapper.DataStructureDefinitionDo2DtoMapper;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 import org.siemac.metamac.srm.core.organisation.mapper.OrganisationsDo2DtoMapper;
@@ -21,10 +23,13 @@ import org.springframework.stereotype.Component;
 public class SculptorCriteria2MetamacCriteriaMapperImpl implements SculptorCriteria2MetamacCriteriaMapper {
 
     @Autowired
-    private Do2DtoMapper              do2DtoMapper;
+    private DataStructureDefinitionDo2DtoMapper dataStructureDefinitionDo2DtoMapper;
 
     @Autowired
-    private OrganisationsDo2DtoMapper organisationsDo2DtoMapper;
+    private ConceptsDo2DtoMapper                conceptsDo2DtoMapper;
+
+    @Autowired
+    private OrganisationsDo2DtoMapper           organisationsDo2DtoMapper;
 
     @Override
     public MetamacCriteriaResult<DataStructureDefinitionMetamacDto> pageResultToMetamacCriteriaResultDataStructureDefinition(PagedResult<DataStructureDefinitionVersionMetamac> source, Integer pageSize) {
@@ -33,7 +38,7 @@ public class SculptorCriteria2MetamacCriteriaMapperImpl implements SculptorCrite
         if (source.getValues() != null) {
             target.setResults(new ArrayList<DataStructureDefinitionMetamacDto>());
             for (DataStructureDefinitionVersionMetamac scheme : source.getValues()) {
-                target.getResults().add(do2DtoMapper.dataStructureDefinitionMetamacDoToDto(scheme));
+                target.getResults().add(dataStructureDefinitionDo2DtoMapper.dataStructureDefinitionMetamacDoToDto(scheme));
             }
         }
         return target;
@@ -46,7 +51,7 @@ public class SculptorCriteria2MetamacCriteriaMapperImpl implements SculptorCrite
         if (source.getValues() != null) {
             target.setResults(new ArrayList<ConceptSchemeMetamacDto>());
             for (ConceptSchemeVersionMetamac scheme : source.getValues()) {
-                target.getResults().add(do2DtoMapper.conceptSchemeMetamacDoToDto(scheme));
+                target.getResults().add(conceptsDo2DtoMapper.conceptSchemeMetamacDoToDto(scheme));
             }
         }
         return target;
@@ -59,7 +64,7 @@ public class SculptorCriteria2MetamacCriteriaMapperImpl implements SculptorCrite
         if (source.getValues() != null) {
             target.setResults(new ArrayList<ConceptMetamacDto>());
             for (ConceptMetamac scheme : source.getValues()) {
-                target.getResults().add(do2DtoMapper.conceptMetamacDoToDto(scheme));
+                target.getResults().add(conceptsDo2DtoMapper.conceptMetamacDoToDto(scheme));
             }
         }
         return target;
@@ -77,5 +82,4 @@ public class SculptorCriteria2MetamacCriteriaMapperImpl implements SculptorCrite
         }
         return target;
     }
-
 }

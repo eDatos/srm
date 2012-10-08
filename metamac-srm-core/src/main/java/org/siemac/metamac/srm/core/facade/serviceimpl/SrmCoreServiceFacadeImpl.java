@@ -34,10 +34,12 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptType;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptTypeDto;
+import org.siemac.metamac.srm.core.concept.mapper.ConceptsDo2DtoMapper;
+import org.siemac.metamac.srm.core.concept.mapper.ConceptsDto2DoMapper;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
-import org.siemac.metamac.srm.core.mapper.Do2DtoMapper;
-import org.siemac.metamac.srm.core.mapper.Dto2DoMapper;
+import org.siemac.metamac.srm.core.dsd.mapper.DataStructureDefinitionDo2DtoMapper;
+import org.siemac.metamac.srm.core.dsd.mapper.DataStructureDefinitionDto2DoMapper;
 import org.siemac.metamac.srm.core.mapper.MetamacCriteria2SculptorCriteriaMapper;
 import org.siemac.metamac.srm.core.mapper.SculptorCriteria2MetamacCriteriaMapper;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
@@ -82,19 +84,21 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Autowired
-    @Qualifier("do2DtoMapper")
-    private Do2DtoMapper                           do2DtoMapper;
+    private DataStructureDefinitionDo2DtoMapper    dataStructureDefinitionDo2DtoMapper;
 
     @Autowired
-    @Qualifier("dto2DoMapper")
-    private Dto2DoMapper                           dto2DoMapper;
+    private DataStructureDefinitionDto2DoMapper    dataStructureDefinitionDto2DoMapperDto2DoMapper;
 
     @Autowired
-    @Qualifier("organisationsDo2DtoMapper")
+    private ConceptsDo2DtoMapper                   conceptsDo2DtoMapper;
+
+    @Autowired
+    private ConceptsDto2DoMapper                   conceptsDto2DoMapper;
+
+    @Autowired
     private OrganisationsDo2DtoMapper              organisationsDo2DtoMapper;
 
     @Autowired
-    @Qualifier("organisationsDto2DoMapper")
     private OrganisationsDto2DoMapper              organisationsDto2DoMapper;
 
     @Autowired
@@ -111,12 +115,12 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         return marshallerWithValidation;
     }
 
-    protected Do2DtoMapper getDo2DtoMapper() {
-        return do2DtoMapper;
+    protected DataStructureDefinitionDo2DtoMapper getDo2DtoMapper() {
+        return dataStructureDefinitionDo2DtoMapper;
     }
 
-    protected Dto2DoMapper getDto2DoMapper() {
-        return dto2DoMapper;
+    protected DataStructureDefinitionDto2DoMapper getDto2DoMapper() {
+        return dataStructureDefinitionDto2DoMapperDto2DoMapper;
     }
 
     public MetamacCriteria2SculptorCriteriaMapper getMetamacCriteria2SculptorCriteriaMapper() {
@@ -233,7 +237,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         List<DataStructureDefinitionVersionMetamac> dataStructureDefinitionVersionMetamacs = getDsdsMetamacService().retrieveDataStructureDefinitionVersions(ctx, urn);
 
         // Transform
-        List<DataStructureDefinitionMetamacDto> dataStructureDefinitionMetamacDto = do2DtoMapper.dataStructureDefinitionMetamacDoListToDtoList(dataStructureDefinitionVersionMetamacs);
+        List<DataStructureDefinitionMetamacDto> dataStructureDefinitionMetamacDto = dataStructureDefinitionDo2DtoMapper
+                .dataStructureDefinitionMetamacDoListToDtoList(dataStructureDefinitionVersionMetamacs);
 
         return dataStructureDefinitionMetamacDto;
     }
@@ -247,7 +252,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDsdsMetamacService().sendDataStructureDefinitionToProductionValidation(ctx, urn);
 
         // Transform to Dto
-        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = do2DtoMapper.dataStructureDefinitionMetamacDoToDto(dataStructureDefinitionVersionMetamac);
+        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = dataStructureDefinitionDo2DtoMapper.dataStructureDefinitionMetamacDoToDto(dataStructureDefinitionVersionMetamac);
         return dataStructureDefinitionMetamacDto;
     }
 
@@ -260,7 +265,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDsdsMetamacService().sendDataStructureDefinitionToDiffusionValidation(ctx, urn);
 
         // Transform to Dto
-        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = do2DtoMapper.dataStructureDefinitionMetamacDoToDto(dataStructureDefinitionVersionMetamac);
+        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = dataStructureDefinitionDo2DtoMapper.dataStructureDefinitionMetamacDoToDto(dataStructureDefinitionVersionMetamac);
         return dataStructureDefinitionMetamacDto;
     }
 
@@ -273,7 +278,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDsdsMetamacService().rejectDataStructureDefinitionProductionValidation(ctx, urn);
 
         // Transform to Dto
-        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = do2DtoMapper.dataStructureDefinitionMetamacDoToDto(dataStructureDefinitionVersionMetamac);
+        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = dataStructureDefinitionDo2DtoMapper.dataStructureDefinitionMetamacDoToDto(dataStructureDefinitionVersionMetamac);
         return dataStructureDefinitionMetamacDto;
     }
 
@@ -286,7 +291,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDsdsMetamacService().rejectDataStructureDefinitionDiffusionValidation(ctx, urn);
 
         // Transform to Dto
-        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = do2DtoMapper.dataStructureDefinitionMetamacDoToDto(dataStructureDefinitionVersionMetamac);
+        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = dataStructureDefinitionDo2DtoMapper.dataStructureDefinitionMetamacDoToDto(dataStructureDefinitionVersionMetamac);
         return dataStructureDefinitionMetamacDto;
     }
 
@@ -299,7 +304,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDsdsMetamacService().publishInternallyDataStructureDefinition(ctx, urn);
 
         // Transform to Dto
-        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = do2DtoMapper.dataStructureDefinitionMetamacDoToDto(dataStructureDefinitionVersionMetamac);
+        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = dataStructureDefinitionDo2DtoMapper.dataStructureDefinitionMetamacDoToDto(dataStructureDefinitionVersionMetamac);
         return dataStructureDefinitionMetamacDto;
     }
 
@@ -312,7 +317,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDsdsMetamacService().publishExternallyDataStructureDefinition(ctx, urn);
 
         // Transform to Dto
-        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = do2DtoMapper.dataStructureDefinitionMetamacDoToDto(dataStructureDefinitionVersionMetamac);
+        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = dataStructureDefinitionDo2DtoMapper.dataStructureDefinitionMetamacDoToDto(dataStructureDefinitionVersionMetamac);
         return dataStructureDefinitionMetamacDto;
     }
 
@@ -325,7 +330,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDsdsMetamacService().versioningDataStructureDefinition(ctx, urnToCopy, versionType);
 
         // Transform to Dto
-        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = do2DtoMapper.dataStructureDefinitionMetamacDoToDto(dataStructureDefinitionVersionMetamac);
+        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = dataStructureDefinitionDo2DtoMapper.dataStructureDefinitionMetamacDoToDto(dataStructureDefinitionVersionMetamac);
         return dataStructureDefinitionMetamacDto;
     }
 
@@ -338,7 +343,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDsdsMetamacService().cancelDataStructureDefinitionValidity(ctx, urn);
 
         // Transform
-        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = do2DtoMapper.dataStructureDefinitionMetamacDoToDto(dataStructureDefinitionVersionMetamac);
+        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = dataStructureDefinitionDo2DtoMapper.dataStructureDefinitionMetamacDoToDto(dataStructureDefinitionVersionMetamac);
         return dataStructureDefinitionMetamacDto;
     }
 
@@ -768,7 +773,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptsMetamacService().retrieveConceptSchemeByUrn(ctx, urn);
 
         // Transform
-        ConceptSchemeMetamacDto conceptSchemeMetamacDto = do2DtoMapper.conceptSchemeMetamacDoToDto(conceptSchemeVersion);
+        ConceptSchemeMetamacDto conceptSchemeMetamacDto = conceptsDo2DtoMapper.conceptSchemeMetamacDoToDto(conceptSchemeVersion);
 
         return conceptSchemeMetamacDto;
     }
@@ -782,7 +787,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         List<ConceptSchemeVersionMetamac> conceptSchemeVersionMetamacs = getConceptsMetamacService().retrieveConceptSchemeVersions(ctx, urn);
 
         // Transform
-        List<ConceptSchemeMetamacDto> conceptSchemeMetamacDtos = do2DtoMapper.conceptSchemeMetamacDoListToDtoList(conceptSchemeVersionMetamacs);
+        List<ConceptSchemeMetamacDto> conceptSchemeMetamacDtos = conceptsDo2DtoMapper.conceptSchemeMetamacDoListToDtoList(conceptSchemeVersionMetamacs);
 
         return conceptSchemeMetamacDtos;
     }
@@ -790,14 +795,14 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public ConceptSchemeMetamacDto createConceptScheme(ServiceContext ctx, ConceptSchemeMetamacDto conceptSchemeDto) throws MetamacException {
         // Security and transform
-        ConceptSchemeVersionMetamac conceptSchemeVersion = dto2DoMapper.conceptSchemeDtoToDo(conceptSchemeDto);
+        ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsDto2DoMapper.conceptSchemeDtoToDo(conceptSchemeDto);
         ConceptsSecurityUtils.canCreateConceptScheme(ctx, conceptSchemeVersion);
 
         // Create
         ConceptSchemeVersionMetamac conceptSchemeVersionCreated = getConceptsMetamacService().createConceptScheme(ctx, conceptSchemeVersion);
 
         // Transform to DTO
-        conceptSchemeDto = do2DtoMapper.conceptSchemeMetamacDoToDto(conceptSchemeVersionCreated);
+        conceptSchemeDto = conceptsDo2DtoMapper.conceptSchemeMetamacDoToDto(conceptSchemeVersionCreated);
         return conceptSchemeDto;
     }
 
@@ -809,13 +814,13 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         ConceptsSecurityUtils.canUpdateConceptScheme(ctx, conceptSchemeVersionOld, conceptSchemeDto.getType(), operationNew);
 
         // Transform
-        ConceptSchemeVersionMetamac conceptSchemeVersionToUpdate = dto2DoMapper.conceptSchemeDtoToDo(conceptSchemeDto);
+        ConceptSchemeVersionMetamac conceptSchemeVersionToUpdate = conceptsDto2DoMapper.conceptSchemeDtoToDo(conceptSchemeDto);
 
         // Update
         ConceptSchemeVersionMetamac conceptSchemeVersionUpdated = getConceptsMetamacService().updateConceptScheme(ctx, conceptSchemeVersionToUpdate);
 
         // Transform to DTO
-        conceptSchemeDto = do2DtoMapper.conceptSchemeMetamacDoToDto(conceptSchemeVersionUpdated);
+        conceptSchemeDto = conceptsDo2DtoMapper.conceptSchemeMetamacDoToDto(conceptSchemeVersionUpdated);
         return conceptSchemeDto;
     }
 
@@ -857,7 +862,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         ConceptSchemeVersionMetamac conceptSchemeVersionProductionValidation = getConceptsMetamacService().sendConceptSchemeToProductionValidation(ctx, urn);
 
         // Transform to Dto
-        ConceptSchemeMetamacDto conceptSchemeDto = do2DtoMapper.conceptSchemeMetamacDoToDto(conceptSchemeVersionProductionValidation);
+        ConceptSchemeMetamacDto conceptSchemeDto = conceptsDo2DtoMapper.conceptSchemeMetamacDoToDto(conceptSchemeVersionProductionValidation);
         return conceptSchemeDto;
     }
 
@@ -871,7 +876,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         ConceptSchemeVersionMetamac conceptSchemeVersionDiffusionValidation = getConceptsMetamacService().sendConceptSchemeToDiffusionValidation(ctx, urn);
 
         // Transform to Dto
-        ConceptSchemeMetamacDto conceptSchemeDto = do2DtoMapper.conceptSchemeMetamacDoToDto(conceptSchemeVersionDiffusionValidation);
+        ConceptSchemeMetamacDto conceptSchemeDto = conceptsDo2DtoMapper.conceptSchemeMetamacDoToDto(conceptSchemeVersionDiffusionValidation);
         return conceptSchemeDto;
     }
 
@@ -885,7 +890,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         ConceptSchemeVersionMetamac conceptSchemeVersionRejected = getConceptsMetamacService().rejectConceptSchemeProductionValidation(ctx, urn);
 
         // Transform to Dto
-        ConceptSchemeMetamacDto conceptSchemeDto = do2DtoMapper.conceptSchemeMetamacDoToDto(conceptSchemeVersionRejected);
+        ConceptSchemeMetamacDto conceptSchemeDto = conceptsDo2DtoMapper.conceptSchemeMetamacDoToDto(conceptSchemeVersionRejected);
         return conceptSchemeDto;
     }
 
@@ -899,7 +904,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         ConceptSchemeVersionMetamac conceptSchemeVersionRejected = getConceptsMetamacService().rejectConceptSchemeDiffusionValidation(ctx, urn);
 
         // Transform to Dto
-        ConceptSchemeMetamacDto conceptSchemeDto = do2DtoMapper.conceptSchemeMetamacDoToDto(conceptSchemeVersionRejected);
+        ConceptSchemeMetamacDto conceptSchemeDto = conceptsDo2DtoMapper.conceptSchemeMetamacDoToDto(conceptSchemeVersionRejected);
         return conceptSchemeDto;
     }
 
@@ -913,7 +918,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         ConceptSchemeVersionMetamac conceptSchemeVersionPublished = getConceptsMetamacService().publishInternallyConceptScheme(ctx, urn);
 
         // Transform to Dto
-        ConceptSchemeMetamacDto conceptSchemeDto = do2DtoMapper.conceptSchemeMetamacDoToDto(conceptSchemeVersionPublished);
+        ConceptSchemeMetamacDto conceptSchemeDto = conceptsDo2DtoMapper.conceptSchemeMetamacDoToDto(conceptSchemeVersionPublished);
         return conceptSchemeDto;
     }
 
@@ -926,7 +931,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         ConceptSchemeVersionMetamac conceptSchemeVersionPublished = getConceptsMetamacService().publishExternallyConceptScheme(ctx, urn);
 
         // Transform to Dto
-        ConceptSchemeMetamacDto conceptSchemeDto = do2DtoMapper.conceptSchemeMetamacDoToDto(conceptSchemeVersionPublished);
+        ConceptSchemeMetamacDto conceptSchemeDto = conceptsDo2DtoMapper.conceptSchemeMetamacDoToDto(conceptSchemeVersionPublished);
         return conceptSchemeDto;
     }
 
@@ -939,7 +944,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         ConceptSchemeVersionMetamac conceptSchemeVersioned = getConceptsMetamacService().versioningConceptScheme(ctx, urnToCopy, versionType);
 
         // Transform to Dto
-        ConceptSchemeMetamacDto conceptSchemeDto = do2DtoMapper.conceptSchemeMetamacDoToDto(conceptSchemeVersioned);
+        ConceptSchemeMetamacDto conceptSchemeDto = conceptsDo2DtoMapper.conceptSchemeMetamacDoToDto(conceptSchemeVersioned);
         return conceptSchemeDto;
     }
 
@@ -952,7 +957,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         ConceptSchemeVersionMetamac conceptSchemeCanceled = getConceptsMetamacService().cancelConceptSchemeValidity(ctx, urn);
 
         // Transform
-        ConceptSchemeMetamacDto conceptSchemeDto = do2DtoMapper.conceptSchemeMetamacDoToDto(conceptSchemeCanceled);
+        ConceptSchemeMetamacDto conceptSchemeDto = conceptsDo2DtoMapper.conceptSchemeMetamacDoToDto(conceptSchemeCanceled);
 
         return conceptSchemeDto;
     }
@@ -968,13 +973,13 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         ConceptsSecurityUtils.canCreateConcept(ctx, conceptSchemeVersion);
 
         // Transform
-        ConceptMetamac conceptMetamac = dto2DoMapper.conceptDtoToDo(conceptMetamacDto);
+        ConceptMetamac conceptMetamac = conceptsDto2DoMapper.conceptDtoToDo(conceptMetamacDto);
 
         // Create
         ConceptMetamac conceMetamacCreated = getConceptsMetamacService().createConcept(ctx, conceptMetamacDto.getItemSchemeVersionUrn(), conceptMetamac);
 
         // Transform to DTO
-        conceptMetamacDto = do2DtoMapper.conceptMetamacDoToDto(conceMetamacCreated);
+        conceptMetamacDto = conceptsDo2DtoMapper.conceptMetamacDoToDto(conceMetamacCreated);
 
         return conceptMetamacDto;
     }
@@ -987,13 +992,13 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         ConceptsSecurityUtils.canUpdateConcept(ctx, conceptSchemeVersion);
 
         // Transform
-        ConceptMetamac conceptMetamac = dto2DoMapper.conceptDtoToDo(conceptDto);
+        ConceptMetamac conceptMetamac = conceptsDto2DoMapper.conceptDtoToDo(conceptDto);
 
         // Update
         ConceptMetamac conceptUpdated = getConceptsMetamacService().updateConcept(ctx, conceptMetamac);
 
         // Transform to DTO
-        conceptDto = do2DtoMapper.conceptMetamacDoToDto(conceptUpdated);
+        conceptDto = conceptsDo2DtoMapper.conceptMetamacDoToDto(conceptUpdated);
         return conceptDto;
     }
 
@@ -1007,7 +1012,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         ConceptMetamac conceptMetamac = getConceptsMetamacService().retrieveConceptByUrn(ctx, urn);
 
         // Transform
-        ConceptMetamacDto conceptMetamacDto = do2DtoMapper.conceptMetamacDoToDto(conceptMetamac);
+        ConceptMetamacDto conceptMetamacDto = conceptsDo2DtoMapper.conceptMetamacDoToDto(conceptMetamac);
 
         return conceptMetamacDto;
     }
@@ -1033,7 +1038,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         List<ConceptMetamac> concepts = getConceptsMetamacService().retrieveConceptsByConceptSchemeUrn(ctx, conceptSchemeUrn);
 
         // Transform
-        List<ItemHierarchyDto> itemsHierarchyDto = do2DtoMapper.conceptMetamacDoListToItemHierarchyDtoList(concepts);
+        List<ItemHierarchyDto> itemsHierarchyDto = conceptsDo2DtoMapper.conceptMetamacDoListToItemHierarchyDtoList(concepts);
         return itemsHierarchyDto;
     }
 
@@ -1086,7 +1091,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         List<ConceptMetamac> concepts = getConceptsMetamacService().retrieveRelatedConcepts(ctx, urn);
 
         // Transform
-        List<ConceptMetamacDto> conceptsDto = do2DtoMapper.conceptMetamacDoListToDtoList(concepts);
+        List<ConceptMetamacDto> conceptsDto = conceptsDo2DtoMapper.conceptMetamacDoListToDtoList(concepts);
         return conceptsDto;
     }
 
@@ -1114,7 +1119,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         List<ConceptMetamac> concepts = getConceptsMetamacService().retrieveRelatedConceptsRoles(ctx, urn);
 
         // Transform
-        List<ConceptMetamacDto> conceptsDto = do2DtoMapper.conceptMetamacDoListToDtoList(concepts);
+        List<ConceptMetamacDto> conceptsDto = conceptsDo2DtoMapper.conceptMetamacDoListToDtoList(concepts);
         return conceptsDto;
     }
 
@@ -1128,7 +1133,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         List<ConceptType> conceptTypes = getConceptsMetamacService().findAllConceptTypes(ctx);
 
         // Transform
-        List<ConceptTypeDto> conceptTypesDto = do2DtoMapper.conceptTypeDoListToConceptTypeDtoList(conceptTypes);
+        List<ConceptTypeDto> conceptTypesDto = conceptsDo2DtoMapper.conceptTypeDoListToConceptTypeDtoList(conceptTypes);
         return conceptTypesDto;
     }
 
@@ -1142,7 +1147,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         ConceptType conceptType = getConceptsMetamacService().retrieveConceptTypeByIdentifier(ctx, identifier);
 
         // Transform
-        ConceptTypeDto conceptTypeDto = do2DtoMapper.conceptTypeDoToDto(conceptType);
+        ConceptTypeDto conceptTypeDto = conceptsDo2DtoMapper.conceptTypeDoToDto(conceptType);
         return conceptTypeDto;
     }
 

@@ -1,4 +1,4 @@
-package org.siemac.metamac.srm.core.mapper;
+package org.siemac.metamac.srm.core.concept.mapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,88 +10,17 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptType;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptTypeDto;
-import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
-import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 
-import com.arte.statistic.sdmx.srm.core.base.domain.Component;
-import com.arte.statistic.sdmx.srm.core.base.domain.ComponentList;
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
-import com.arte.statistic.sdmx.srm.core.structure.domain.DataStructureDefinitionVersion;
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentListDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionExtendDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeDozerCopyMode;
 
-@org.springframework.stereotype.Component("do2DtoMapper")
-public class Do2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Do2DtoMapper {
-
-    // ------------------------------------------------------------
-    // DSDs
-    // ------------------------------------------------------------
+@org.springframework.stereotype.Component("conceptsDo2DtoMapper")
+public class ConceptsDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements ConceptsDo2DtoMapper {
 
     @Autowired
-    @Qualifier("do2DtoMapperSdmxSrm")
-    private com.arte.statistic.sdmx.srm.core.mapper.Do2DtoMapper do2DtoMapperSdmxSrm;
-
-    @Override
-    public <U extends ComponentDto> U componentToComponentDto(TypeDozerCopyMode typeDozerCopyMode, Component component) {
-        return (U) do2DtoMapperSdmxSrm.componentToComponentDto(typeDozerCopyMode, component);
-    }
-
-    @Override
-    public <U extends ComponentListDto> U componentListToComponentListDto(TypeDozerCopyMode typeDozerCopyMode, ComponentList componentList) {
-        return (U) do2DtoMapperSdmxSrm.componentListToComponentListDto(typeDozerCopyMode, componentList);
-    }
-
-    @Override
-    public DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDoToDto(TypeDozerCopyMode typeDozerCopyMode, DataStructureDefinitionVersionMetamac source) {
-        if (source == null) {
-            return null;
-        }
-
-        DataStructureDefinitionMetamacDto target = dataStructureDefinitionVersionMetamacDoToDto(source, typeDozerCopyMode);
-
-        return target;
-    }
-
-    @Override
-    public DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDoToDto(DataStructureDefinitionVersionMetamac source) {
-        if (source == null) {
-            return null;
-        }
-
-        DataStructureDefinitionMetamacDto target = dataStructureDefinitionVersionMetamacDoToDto(source, TypeDozerCopyMode.COPY_ALL_METADATA);
-
-        return target;
-    }
-
-    private DataStructureDefinitionMetamacDto dataStructureDefinitionVersionMetamacDoToDto(DataStructureDefinitionVersionMetamac source, TypeDozerCopyMode typeDozerCopyMode) {
-        DataStructureDefinitionMetamacDto target = new DataStructureDefinitionMetamacDto();
-        target.setLifeCycle(lifeCycleDoToDto(source.getLifecycleMetadata()));
-        do2DtoMapperSdmxSrm.dataStructureDefinitionDoToDto(typeDozerCopyMode, source, target);
-        return target;
-    }
-
-    @Override
-    public DataStructureDefinitionExtendDto dataStructureDefinitionToDataStructureDefinitionExtendDto(TypeDozerCopyMode typeDozerCopyMode, DataStructureDefinitionVersion dataStructureDefinitionVersion) {
-        return do2DtoMapperSdmxSrm.dataStructureDefinitionToDataStructureDefinitionExtendDto(typeDozerCopyMode, dataStructureDefinitionVersion);
-    }
-
-    @Override
-    public List<DataStructureDefinitionMetamacDto> dataStructureDefinitionMetamacDoListToDtoList(List<DataStructureDefinitionVersionMetamac> dataStructureDefinitionVersionMetamacs) {
-        List<DataStructureDefinitionMetamacDto> dataStructureDefinitionMetamacDtos = new ArrayList<DataStructureDefinitionMetamacDto>();
-        for (DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac : dataStructureDefinitionVersionMetamacs) {
-            dataStructureDefinitionMetamacDtos.add(dataStructureDefinitionMetamacDoToDto(dataStructureDefinitionVersionMetamac));
-        }
-        return dataStructureDefinitionMetamacDtos;
-    }
-
-    // ------------------------------------------------------------
-    // CONCEPTS
-    // ------------------------------------------------------------
+    private com.arte.statistic.sdmx.srm.core.concept.mapper.ConceptsDo2DtoMapper do2DtoMapperSdmxSrm;
 
     @Override
     public ConceptSchemeMetamacDto conceptSchemeMetamacDoToDto(ConceptSchemeVersionMetamac source) {
@@ -197,5 +126,4 @@ public class Do2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Do2DtoMapp
 
         return itemHierarchyDto;
     }
-
 }
