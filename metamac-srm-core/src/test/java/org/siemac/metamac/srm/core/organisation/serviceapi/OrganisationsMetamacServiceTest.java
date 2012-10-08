@@ -50,23 +50,26 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
     @Test
     public void testCreateOrganisationScheme() throws Exception {
         OrganisationSchemeVersionMetamac organisationSchemeVersion = OrganisationsMetamacDoMocks.mockOrganisationScheme(OrganisationSchemeTypeEnum.AGENCY_SCHEME);
-
+        ServiceContext ctx = getServiceContextAdministrador();
+        
         // Create
-        OrganisationSchemeVersionMetamac organisationSchemeVersionCreated = organisationsService.createOrganisationScheme(getServiceContextAdministrador(), organisationSchemeVersion);
+        OrganisationSchemeVersionMetamac organisationSchemeVersionCreated = organisationsService.createOrganisationScheme(ctx, organisationSchemeVersion);
         String urn = organisationSchemeVersionCreated.getMaintainableArtefact().getUrn();
-
+        assertEquals(ctx.getUserId(), organisationSchemeVersionCreated.getCreatedBy());
+        
         // Validate (only metadata in SRM Metamac; the others are checked in sdmx project)
-        OrganisationSchemeVersionMetamac organisationSchemeVersionRetrieved = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), urn);
+        OrganisationSchemeVersionMetamac organisationSchemeVersionRetrieved = organisationsService.retrieveOrganisationSchemeByUrn(ctx, urn);
         assertEquals(ProcStatusEnum.DRAFT, organisationSchemeVersionRetrieved.getLifecycleMetadata().getProcStatus());
-        assertFalse(organisationSchemeVersion.getMaintainableArtefact().getIsExternalReference());
-        assertNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate());
-        assertNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
-        assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate());
-        assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
-        assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationDate());
-        assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationUser());
-        assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationDate());
-        assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationUser());
+        assertFalse(organisationSchemeVersionRetrieved.getMaintainableArtefact().getIsExternalReference());
+        assertNull(organisationSchemeVersionRetrieved.getLifecycleMetadata().getProductionValidationDate());
+        assertNull(organisationSchemeVersionRetrieved.getLifecycleMetadata().getProductionValidationUser());
+        assertNull(organisationSchemeVersionRetrieved.getLifecycleMetadata().getDiffusionValidationDate());
+        assertNull(organisationSchemeVersionRetrieved.getLifecycleMetadata().getDiffusionValidationUser());
+        assertNull(organisationSchemeVersionRetrieved.getLifecycleMetadata().getInternalPublicationDate());
+        assertNull(organisationSchemeVersionRetrieved.getLifecycleMetadata().getInternalPublicationUser());
+        assertNull(organisationSchemeVersionRetrieved.getLifecycleMetadata().getExternalPublicationDate());
+        assertNull(organisationSchemeVersionRetrieved.getLifecycleMetadata().getExternalPublicationUser());
+        assertEquals(ctx.getUserId(), organisationSchemeVersionRetrieved.getCreatedBy());
         OrganisationsMetamacAsserts.assertEqualsOrganisationScheme(organisationSchemeVersion, organisationSchemeVersionRetrieved);
     }
 
@@ -76,9 +79,11 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         organisationSchemeVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
         organisationSchemeVersion.setIsTypeUpdated(Boolean.FALSE);
 
-        OrganisationSchemeVersion organisationSchemeVersionUpdated = organisationsService.updateOrganisationScheme(getServiceContextAdministrador(), organisationSchemeVersion);
-
+        ServiceContext ctx = getServiceContextAdministrador();
+        OrganisationSchemeVersion organisationSchemeVersionUpdated = organisationsService.updateOrganisationScheme(ctx, organisationSchemeVersion);
         assertNotNull(organisationSchemeVersionUpdated);
+        assertEquals("user1", organisationSchemeVersionUpdated.getCreatedBy());
+        assertEquals(ctx.getUserId(), organisationSchemeVersionUpdated.getLastUpdatedBy());
     }
 
     @Test

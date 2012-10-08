@@ -136,9 +136,12 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
     @Test
     public void testCreateConceptScheme() throws Exception {
         ConceptSchemeMetamacDto conceptSchemeDto = ConceptsMetamacDtoMocks.mockConceptSchemeDtoGlossaryType();
-
-        ConceptSchemeMetamacDto conceptSchemeMetamacCreated = srmCoreServiceFacade.createConceptScheme(getServiceContextAdministrador(), conceptSchemeDto);
-
+        ServiceContext ctx = getServiceContextAdministrador();
+        
+        // Create
+        ConceptSchemeMetamacDto conceptSchemeMetamacCreated = srmCoreServiceFacade.createConceptScheme(ctx, conceptSchemeDto);
+        assertEquals(ctx.getUserId(), conceptSchemeMetamacCreated.getCreatedBy());
+        
         // Identifiers
         assertNotNull(conceptSchemeMetamacCreated);
         assertEquals(conceptSchemeDto.getCode(), conceptSchemeMetamacCreated.getCode());
@@ -212,18 +215,23 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
 
     @Test
     public void testUpdateConceptScheme() throws Exception {
-        ConceptSchemeMetamacDto conceptSchemeMetamacDto = srmCoreServiceFacade.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_9_V1);
+        ServiceContext ctx = getServiceContextAdministrador();
+        
+        ConceptSchemeMetamacDto conceptSchemeMetamacDto = srmCoreServiceFacade.retrieveConceptSchemeByUrn(ctx, CONCEPT_SCHEME_9_V1);
 
         conceptSchemeMetamacDto.setName(MetamacMocks.mockInternationalString());
         conceptSchemeMetamacDto.setDescription(MetamacMocks.mockInternationalString());
         conceptSchemeMetamacDto.setIsPartial(Boolean.TRUE);
         conceptSchemeMetamacDto.setType(ConceptSchemeTypeEnum.ROLE);
 
-        ConceptSchemeMetamacDto conceptSchemeMetamacDtoUpdated = srmCoreServiceFacade.updateConceptScheme(getServiceContextAdministrador(), conceptSchemeMetamacDto);
+        ConceptSchemeMetamacDto conceptSchemeMetamacDtoUpdated = srmCoreServiceFacade.updateConceptScheme(ctx, conceptSchemeMetamacDto);
 
         assertNotNull(conceptSchemeMetamacDto);
         assertEqualsConceptSchemeMetamacDto(conceptSchemeMetamacDto, conceptSchemeMetamacDtoUpdated);
         assertTrue(conceptSchemeMetamacDtoUpdated.getVersionOptimisticLocking() > conceptSchemeMetamacDto.getVersionOptimisticLocking());
+        assertEquals("user9", conceptSchemeMetamacDtoUpdated.getCreatedBy());
+        assertEquals(ctx.getUserId(), conceptSchemeMetamacDtoUpdated.getLastUpdatedBy());
+
     }
 
     @Test

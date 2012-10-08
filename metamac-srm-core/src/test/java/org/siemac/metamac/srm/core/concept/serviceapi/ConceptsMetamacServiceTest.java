@@ -61,23 +61,27 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
     @Test
     public void testCreateConceptScheme() throws Exception {
         ConceptSchemeVersionMetamac conceptSchemeVersion = ConceptsMetamacDoMocks.mockConceptScheme();
-
+        ServiceContext ctx = getServiceContextAdministrador();
+        
         // Create
-        ConceptSchemeVersionMetamac conceptSchemeVersionCreated = conceptsService.createConceptScheme(getServiceContextAdministrador(), conceptSchemeVersion);
+        ConceptSchemeVersionMetamac conceptSchemeVersionCreated = conceptsService.createConceptScheme(ctx, conceptSchemeVersion);
         String urn = conceptSchemeVersionCreated.getMaintainableArtefact().getUrn();
-
+        assertEquals(ctx.getUserId(), conceptSchemeVersionCreated.getCreatedBy());
+        
         // Validate (only metadata in SRM Metamac; the others are checked in sdmx project)
-        ConceptSchemeVersionMetamac conceptSchemeVersionRetrieved = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), urn);
+        ConceptSchemeVersionMetamac conceptSchemeVersionRetrieved = conceptsService.retrieveConceptSchemeByUrn(ctx, urn);
         assertEquals(ProcStatusEnum.DRAFT, conceptSchemeVersionRetrieved.getLifecycleMetadata().getProcStatus());
-        assertFalse(conceptSchemeVersion.getMaintainableArtefact().getIsExternalReference());
-        assertNull(conceptSchemeVersion.getLifecycleMetadata().getProductionValidationDate());
-        assertNull(conceptSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
-        assertNull(conceptSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate());
-        assertNull(conceptSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
-        assertNull(conceptSchemeVersion.getLifecycleMetadata().getInternalPublicationDate());
-        assertNull(conceptSchemeVersion.getLifecycleMetadata().getInternalPublicationUser());
-        assertNull(conceptSchemeVersion.getLifecycleMetadata().getExternalPublicationDate());
-        assertNull(conceptSchemeVersion.getLifecycleMetadata().getExternalPublicationUser());
+        assertFalse(conceptSchemeVersionRetrieved.getMaintainableArtefact().getIsExternalReference());
+        assertNull(conceptSchemeVersionRetrieved.getLifecycleMetadata().getProductionValidationDate());
+        assertNull(conceptSchemeVersionRetrieved.getLifecycleMetadata().getProductionValidationUser());
+        assertNull(conceptSchemeVersionRetrieved.getLifecycleMetadata().getDiffusionValidationDate());
+        assertNull(conceptSchemeVersionRetrieved.getLifecycleMetadata().getDiffusionValidationUser());
+        assertNull(conceptSchemeVersionRetrieved.getLifecycleMetadata().getInternalPublicationDate());
+        assertNull(conceptSchemeVersionRetrieved.getLifecycleMetadata().getInternalPublicationUser());
+        assertNull(conceptSchemeVersionRetrieved.getLifecycleMetadata().getExternalPublicationDate());
+        assertNull(conceptSchemeVersionRetrieved.getLifecycleMetadata().getExternalPublicationUser());
+        assertEquals(ctx.getUserId(), conceptSchemeVersionRetrieved.getCreatedBy());
+        assertEquals(ctx.getUserId(), conceptSchemeVersionRetrieved.getLastUpdatedBy());
         ConceptsMetamacAsserts.assertEqualsConceptScheme(conceptSchemeVersion, conceptSchemeVersionRetrieved);
     }
 
@@ -135,12 +139,15 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
     @Test
     public void testUpdateConceptScheme() throws Exception {
-        ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_2_V1);
+        ServiceContext ctx = getServiceContextAdministrador();
+        
+        ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(ctx, CONCEPT_SCHEME_2_V1);
         conceptSchemeVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
 
-        ConceptSchemeVersion conceptSchemeVersionUpdated = conceptsService.updateConceptScheme(getServiceContextAdministrador(), conceptSchemeVersion);
-
+        ConceptSchemeVersion conceptSchemeVersionUpdated = conceptsService.updateConceptScheme(ctx, conceptSchemeVersion);
         assertNotNull(conceptSchemeVersionUpdated);
+        assertEquals("user1", conceptSchemeVersionUpdated.getCreatedBy());
+        assertEquals(ctx.getUserId(), conceptSchemeVersionUpdated.getLastUpdatedBy());
     }
 
     @Test
@@ -1376,24 +1383,28 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
     @Test
     public void testCreateConcept() throws Exception {
 
-        ConceptType conceptType = conceptsService.retrieveConceptTypeByIdentifier(getServiceContextAdministrador(), CONCEPT_TYPE_DIRECT);
+        ServiceContext ctx = getServiceContextAdministrador();
+        
+        ConceptType conceptType = conceptsService.retrieveConceptTypeByIdentifier(ctx, CONCEPT_TYPE_DIRECT);
         ConceptMetamac concept = ConceptsMetamacDoMocks.mockConcept(conceptType);
         concept.setParent(null);
-        ConceptMetamac conceptExtends = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_3_V1_CONCEPT_1);
+        ConceptMetamac conceptExtends = conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_3_V1_CONCEPT_1);
         concept.setConceptExtends(conceptExtends);
 
         String conceptSchemeUrn = CONCEPT_SCHEME_1_V2;
 
         // Create
-        ConceptMetamac conceptSchemeVersionCreated = conceptsService.createConcept(getServiceContextAdministrador(), conceptSchemeUrn, concept);
-        String urn = conceptSchemeVersionCreated.getNameableArtefact().getUrn();
-
+        ConceptMetamac conceptCreated = conceptsService.createConcept(ctx, conceptSchemeUrn, concept);
+        String urn = conceptCreated.getNameableArtefact().getUrn();
+        assertEquals(ctx.getUserId(), conceptCreated.getCreatedBy());
+        assertEquals(ctx.getUserId(), conceptCreated.getLastUpdatedBy());
+        
         // Validate (only metadata in SRM Metamac; the others are checked in sdmx project)
-        ConceptMetamac conceptRetrieved = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), urn);
+        ConceptMetamac conceptRetrieved = conceptsService.retrieveConceptByUrn(ctx, urn);
         ConceptsMetamacAsserts.assertEqualsConcept(concept, conceptRetrieved);
 
         // Validate new structure
-        ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), conceptSchemeUrn);
+        ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(ctx, conceptSchemeUrn);
         assertEquals(5, conceptSchemeVersion.getItemsFirstLevel().size());
         assertEquals(9, conceptSchemeVersion.getItems().size());
         assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_1, conceptSchemeVersion.getItemsFirstLevel().get(0).getNameableArtefact().getUrn());

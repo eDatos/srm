@@ -41,6 +41,7 @@
     <import resource="classpath:/spring/srm/include/more.xml" />
 
     <!-- srm > src/test/resources -->
+    <import resource="classpath:/spring/srm/include/interceptor-test.xml" />
     <import resource="classpath:/spring/srm/include/datasource-test.xml" />
 
     <!-- metamac-transformation -->
