@@ -1,6 +1,7 @@
 package org.siemac.metamac.srm.web.organisation.view;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
+import static org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE;
 
 import java.util.List;
 
@@ -18,6 +19,7 @@ import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.widgets.CustomListGrid;
+import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 import org.siemac.metamac.web.common.client.widgets.TitleLabel;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.InternationalMainFormLayout;
@@ -32,11 +34,18 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.organisation.OrganisationDto;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
+import com.smartgwt.client.types.Autofit;
 import com.smartgwt.client.types.Overflow;
+import com.smartgwt.client.types.Visibility;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.grid.ListGridField;
+import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
+import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
+import com.smartgwt.client.widgets.grid.events.SelectionChangedHandler;
+import com.smartgwt.client.widgets.grid.events.SelectionEvent;
+import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
@@ -58,6 +67,9 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
 
     // Contacts
     private CustomListGrid              contactListGrid;
+    private InternationalMainFormLayout contactMainFormLayout;
+    private ToolStripButton             contactDeleteButton;
+    private DeleteConfirmationWindow    contactDeleteConfirmationWindow;
 
     private OrganisationDto             organisationDto;
 
@@ -82,18 +94,92 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
 
         TitleLabel titleLabel = new TitleLabel(getConstants().organisationContacts());
 
+        // ToolStrip
+
+        ToolStrip contactsToolStrip = new ToolStrip();
+
+        ToolStripButton contactNewButton = new ToolStripButton(getConstants().actionNew(), RESOURCE.newListGrid().getURL());
+        contactNewButton.addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                contactMainFormLayout.show();
+            }
+        });
+
+        contactDeleteConfirmationWindow = new DeleteConfirmationWindow(getConstants().organisationContactDeleteConfirmationTitle(), getConstants().organisationContactDeleteConfirmation());
+        contactDeleteConfirmationWindow.setVisibility(Visibility.HIDDEN);
+        contactDeleteConfirmationWindow.getYesButton().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                // TODO
+                contactDeleteConfirmationWindow.hide();
+            }
+        });
+
+        contactDeleteButton = new ToolStripButton(getConstants().actionDelete(), RESOURCE.deleteListGrid().getURL());
+        contactDeleteButton.setVisibility(Visibility.HIDDEN);
+        contactDeleteButton.addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                contactDeleteConfirmationWindow.show();
+            }
+        });
+
+        contactsToolStrip.addButton(contactNewButton);
+        contactsToolStrip.addButton(contactDeleteButton);
+
+        // Contact list
+
         contactListGrid = new CustomListGrid();
+        contactListGrid.setAutoFitMaxRecords(20);
+        contactListGrid.setAutoFitData(Autofit.VERTICAL);
         ListGridField nameField = new ListGridField(ContactDS.NAME, getConstants().organisationContactName());
         ListGridField organisationUnitField = new ListGridField(ContactDS.ORGANISATION_UNIT, getConstants().organisationContactOrganisationUnit());
         contactListGrid.setFields(nameField, organisationUnitField);
+        contactListGrid.addSelectionChangedHandler(new SelectionChangedHandler() {
 
-        VLayout contactsLayout = new VLayout();
-        contactsLayout.setMargin(15);
-        contactsLayout.addMember(titleLabel);
-        contactsLayout.addMember(contactListGrid);
+            @Override
+            public void onSelectionChanged(SelectionEvent event) {
+                if (contactListGrid.getSelectedRecords().length > 0) {
+                    // Show delete button
+                    showContactListGridDeleteButton();
+                } else {
+                    contactDeleteButton.hide();
+                }
+            }
+        });
+        contactListGrid.addRecordClickHandler(new RecordClickHandler() {
+
+            @Override
+            public void onRecordClick(RecordClickEvent event) {
+                contactMainFormLayout.show();
+            }
+        });
+
+        // Contact form
+
+        contactMainFormLayout = new InternationalMainFormLayout();
+        contactMainFormLayout.setVisibility(Visibility.HIDDEN);
+
+        VLayout contactListGridLayout = new VLayout();
+        contactListGridLayout.setWidth("35%");
+        contactListGridLayout.addMember(contactsToolStrip);
+        contactListGridLayout.addMember(contactListGrid);
+
+        HLayout contactLayout = new HLayout();
+        contactLayout.addMember(contactListGridLayout);
+        contactLayout.addMember(contactMainFormLayout);
+
+        VLayout contactsSectionLayout = new VLayout();
+        contactsSectionLayout.setMargin(15);
+        contactsSectionLayout.addMember(titleLabel);
+        contactsSectionLayout.addMember(contactLayout);
 
         panel.addMember(mainFormLayout);
-        panel.addMember(contactsLayout);
+        panel.addMember(contactsSectionLayout);
     }
 
     private void bindMainFormLayoutEvents() {
@@ -246,6 +332,9 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
     }
 
     private void setContacts(List<ContactDto> contactDtos) {
+        // Hide previous contact form
+        contactMainFormLayout.hide();
+
         ContactRecord[] records = new ContactRecord[contactDtos.size()];
         for (int i = 0; i < records.length; i++) {
             records[i] = org.siemac.metamac.srm.web.organisation.utils.RecordUtils.getContactRecord(contactDtos.get(i));
@@ -270,6 +359,10 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
 
     private boolean validateEditionForms() {
         return identifiersEditionForm.validate(false) && contentDescriptorsEditionForm.validate(false);
+    }
+
+    private void showContactListGridDeleteButton() {
+        contactDeleteButton.show();
     }
 
 }
