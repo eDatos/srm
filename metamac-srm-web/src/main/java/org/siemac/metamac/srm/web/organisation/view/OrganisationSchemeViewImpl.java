@@ -64,6 +64,8 @@ import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
+import com.smartgwt.client.widgets.grid.events.SelectionChangedHandler;
+import com.smartgwt.client.widgets.grid.events.SelectionEvent;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
@@ -195,6 +197,30 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         ListGridField codeField = new ListGridField(OrganisationDS.CODE, getConstants().identifiableArtefactCode());
         ListGridField nameField = new ListGridField(OrganisationDS.NAME, getConstants().nameableArtefactName());
         organisationListGrid.setFields(codeField, nameField);
+        organisationListGrid.addSelectionChangedHandler(new SelectionChangedHandler() {
+
+            @Override
+            public void onSelectionChanged(SelectionEvent event) {
+                if (organisationListGrid.getSelectedRecords().length > 0) {
+                    // Show delete button
+                    showListGridDeleteButton();
+                } else {
+                    deleteButton.hide();
+                }
+            }
+        });
+
+        organisationListGrid.addRecordClickHandler(new RecordClickHandler() {
+
+            @Override
+            public void onRecordClick(RecordClickEvent event) {
+                if (event.getFieldNum() != 0) { // Clicking checkBox will be ignored
+                    String urn = ((OrganisationRecord) event.getRecord()).getAttribute(OrganisationDS.URN);
+                    OrganisationTypeEnum type = ((OrganisationRecord) event.getRecord()).getOrganisationDto().getType();
+                    getUiHandlers().goToOrganisation(urn, type);
+                }
+            }
+        });
 
         VLayout organisationsLayout = new VLayout();
         organisationsLayout.setMargin(15);
@@ -729,6 +755,16 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         toolStrip.hide();
         organisationListGrid.hide();
         // TODO Show organisations tree
+    }
+
+    private void showListGridDeleteButton() {
+        if (!ProcStatusEnum.INTERNALLY_PUBLISHED.equals(organisationSchemeDto.getLifeCycle().getProcStatus())
+                && !ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(organisationSchemeDto.getLifeCycle().getProcStatus())
+                && OrganisationsClientSecurityUtils.canDeleteOrganisation(organisationSchemeDto.getLifeCycle().getProcStatus())) {
+            deleteButton.show();
+        } else {
+            deleteButton.hide();
+        }
     }
 
 }

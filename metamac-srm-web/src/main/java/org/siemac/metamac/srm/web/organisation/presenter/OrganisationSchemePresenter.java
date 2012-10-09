@@ -45,6 +45,7 @@ import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.organisation.OrganisationDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
+import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
@@ -387,6 +388,13 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
             placeManager.revealRelativePlace(
                     new PlaceRequest(NameTokens.organisationSchemePage).with(PlaceRequestParams.organisationSchemeParamType, type.name()).with(PlaceRequestParams.organisationSchemeParamId,
                             UrnUtils.removePrefix(urn)), -1);
+        }
+    }
+
+    @Override
+    public void goToOrganisation(String urn, OrganisationTypeEnum type) {
+        if (!StringUtils.isBlank(urn)) {
+            // TODO Auto-generated method stub
         }
     }
 
