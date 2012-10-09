@@ -19,6 +19,7 @@ public class OrganisationSchemeDS extends DataSource {
     public static final String IS_EXTERNAL_REFERENCE            = "sch-ext-ref";
     public static final String FINAL                            = "sch-final";
     public static final String TYPE                             = "sch-type";
+    public static final String TYPE_VIEW                        = "sch-type-view";        // Not mapped in DTO
     // CLASS DESCRIPTORS
     public static final String MAINTAINER                       = "sch-maintainer";
     // PRODUCTION DESCRIPTORS
