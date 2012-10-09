@@ -1,6 +1,8 @@
 package org.siemac.metamac.srm.core.concept.serviceapi.utils;
 
 import org.siemac.metamac.common.test.utils.MetamacMocks;
+import org.siemac.metamac.core.common.dto.InternationalStringDto;
+import org.siemac.metamac.core.common.dto.LocalisedStringDto;
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
@@ -40,9 +42,9 @@ public class ConceptsMetamacDtoMocks {
     // CONCEPTS
     // -----------------------------------------------------------------------------------
 
-    public static ConceptMetamacDto mockConceptDto(Boolean enumerated) {
+    public static ConceptMetamacDto mockConceptDto(TypeRepresentationEnum typeRepresentationEnum) {
         ConceptMetamacDto conceptMetamacDto = new ConceptMetamacDto();
-        ConceptsDtoMocks.mockConceptDto(conceptMetamacDto, TypeRepresentationEnum.ENUMERATED);
+        ConceptsDtoMocks.mockConceptDto(conceptMetamacDto, typeRepresentationEnum);
         conceptMetamacDto.setSdmxRelatedArtefact(ConceptRoleEnum.ATTRIBUTE);
         conceptMetamacDto.setType(mockConceptTypeDto());
         return conceptMetamacDto;
@@ -51,6 +53,15 @@ public class ConceptsMetamacDtoMocks {
     public static ConceptTypeDto mockConceptTypeDto() {
         ConceptTypeDto conceptTypeDto = new ConceptTypeDto();
         conceptTypeDto.setIdentifier("DERIVED");
+        conceptTypeDto.setDescription(new InternationalStringDto());
+        LocalisedStringDto en = new LocalisedStringDto();
+        en.setLabel("Derived");
+        en.setLocale("en");
+        conceptTypeDto.getDescription().addText(en);
+        LocalisedStringDto es = new LocalisedStringDto();
+        en.setLabel("Derivado");
+        en.setLocale("es");
+        conceptTypeDto.getDescription().addText(es);
         return conceptTypeDto;
     }
 }

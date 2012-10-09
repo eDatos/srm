@@ -1,10 +1,10 @@
 package org.siemac.metamac.srm.core.concept.serviceapi.utils;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 import static org.siemac.metamac.common.test.utils.MetamacAsserts.assertEqualsExternalItemDto;
 import static org.siemac.metamac.common.test.utils.MetamacAsserts.assertEqualsInternationalStringDto;
 
+import org.siemac.metamac.srm.core.base.utils.BaseAsserts;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptType;
@@ -17,12 +17,36 @@ import com.arte.statistic.sdmx.srm.core.concept.serviceapi.utils.ConceptsAsserts
 public class ConceptsMetamacAsserts extends ConceptsAsserts {
 
     public static void assertEqualsConceptScheme(ConceptSchemeVersionMetamac expected, ConceptSchemeVersionMetamac actual) {
+
+        // Metamac
         assertEquals(expected.getType(), actual.getType());
         assertEqualsExternalItem(expected.getRelatedOperation(), actual.getRelatedOperation());
+
+        // Sdmx
         ConceptsAsserts.assertEqualsConceptScheme(expected, actual);
     }
 
+    public static void assertEqualsConceptSchemeMetamacDto(ConceptSchemeMetamacDto expected, ConceptSchemeMetamacDto actual) {
+
+        // Metamac
+        assertEquals(expected.getType(), actual.getType());
+        assertEqualsExternalItemDto(expected.getRelatedOperation(), actual.getRelatedOperation());
+
+        // Sdmx
+        ConceptsAsserts.assertEqualsConceptSchemeDto(expected, actual);
+    }
+
+    public static void assertEqualsConceptScheme(ConceptSchemeVersionMetamac expected, ConceptSchemeMetamacDto actual) {
+        assertEqualsConceptScheme(expected, actual, MapperEnum.DO2DTO);
+    }
+
+    public static void assertEqualsConceptScheme(ConceptSchemeMetamacDto expected, ConceptSchemeVersionMetamac actual) {
+        assertEqualsConceptScheme(actual, expected, MapperEnum.DTO2DO);
+    }
+
     public static void assertEqualsConcept(ConceptMetamac expected, ConceptMetamac actual) {
+
+        // Metamac
         assertEqualsInternationalString(expected.getPluralName(), actual.getPluralName());
         assertEqualsInternationalString(expected.getAcronym(), actual.getAcronym());
         assertEqualsInternationalString(expected.getDescriptionSource(), actual.getDescriptionSource());
@@ -33,16 +57,14 @@ public class ConceptsMetamacAsserts extends ConceptsAsserts {
         assertEqualsInternationalString(expected.getDerivation(), actual.getDerivation());
         assertEqualsInternationalString(expected.getLegalActs(), actual.getLegalActs());
         assertEqualsConceptExtends(expected.getConceptExtends(), actual.getConceptExtends());
+
+        // Sdmx
         ConceptsAsserts.assertEqualsConcept(expected, actual);
     }
 
-    public static void assertEqualsConceptSchemeMetamacDto(ConceptSchemeMetamacDto expected, ConceptSchemeMetamacDto actual) {
-        assertEquals(expected.getType(), actual.getType());
-        assertEqualsExternalItemDto(expected.getRelatedOperation(), actual.getRelatedOperation());
-        ConceptsAsserts.assertEqualsConceptSchemeDto(expected, actual);
-    }
-
     public static void assertEqualsConceptDto(ConceptMetamacDto expected, ConceptMetamacDto actual) {
+
+        // Metamac
         assertEqualsInternationalStringDto(expected.getPluralName(), actual.getPluralName());
         assertEqualsInternationalStringDto(expected.getAcronym(), actual.getAcronym());
         assertEqualsInternationalStringDto(expected.getDescriptionSource(), actual.getDescriptionSource());
@@ -54,36 +76,71 @@ public class ConceptsMetamacAsserts extends ConceptsAsserts {
         assertEqualsInternationalStringDto(expected.getLegalActs(), actual.getLegalActs());
         assertEquals(expected.getConceptExtendsUrn(), actual.getConceptExtendsUrn());
 
+        // Sdmx
         ConceptsAsserts.assertEqualsConceptDto(expected, actual);
     }
 
-    private static void assertEqualsConceptType(ConceptType expected, ConceptType actual) {
-        if (expected == null && actual == null) {
-            return;
-        } else if (expected != null && actual != null) {
+    public static void assertEqualsConcept(ConceptMetamac expected, ConceptMetamacDto actual) {
+
+        // Metamac
+        assertEqualsInternationalString(expected.getPluralName(), actual.getPluralName());
+        assertEqualsInternationalString(expected.getAcronym(), actual.getAcronym());
+        assertEqualsInternationalString(expected.getDescriptionSource(), actual.getDescriptionSource());
+        assertEqualsInternationalString(expected.getContext(), actual.getContext());
+        assertEqualsInternationalString(expected.getDocMethod(), actual.getDocMethod());
+        assertEquals(expected.getSdmxRelatedArtefact(), actual.getSdmxRelatedArtefact());
+        assertEquals(expected.getType().getIdentifier(), actual.getType().getIdentifier());
+        assertEqualsInternationalString(expected.getDerivation(), actual.getDerivation());
+        assertEqualsInternationalString(expected.getLegalActs(), actual.getLegalActs());
+        assertEqualsNullability(expected.getConceptExtends(), actual.getConceptExtendsUrn());
+        if (expected.getConceptExtends() != null) {
+            assertEquals(expected.getConceptExtends().getNameableArtefact().getUrn(), actual.getConceptExtendsUrn());
+        }
+
+        // Sdmx: tested in Sdmx project
+    }
+
+    public static void assertEqualsConceptType(ConceptType expected, ConceptTypeDto actual) {
+        assertEqualsNullability(expected, actual);
+        if (expected != null) {
             assertEquals(expected.getIdentifier(), actual.getIdentifier());
-        } else {
-            fail("ConceptType are different");
+            assertEqualsInternationalString(expected.getDescription(), actual.getDescription());
+        }
+    }
+
+    private static void assertEqualsConceptType(ConceptType expected, ConceptType actual) {
+        assertEqualsNullability(expected, actual);
+        if (expected != null) {
+            assertEquals(expected.getIdentifier(), actual.getIdentifier());
         }
     }
 
     private static void assertEqualsConceptType(ConceptTypeDto expected, ConceptTypeDto actual) {
-        if (expected == null && actual == null) {
-            return;
-        } else if (expected != null && actual != null) {
+        assertEqualsNullability(expected, actual);
+        if (expected != null) {
             assertEquals(expected.getIdentifier(), actual.getIdentifier());
-        } else {
-            fail("ConceptType are different");
+            assertEqualsInternationalStringDto(expected.getDescription(), actual.getDescription());
         }
     }
 
     private static void assertEqualsConceptExtends(ConceptMetamac expected, ConceptMetamac actual) {
-        if (expected == null && actual == null) {
-            return;
-        } else if (expected != null && actual != null) {
+        assertEqualsNullability(expected, actual);
+        if (expected != null) {
             assertEquals(expected.getNameableArtefact().getUrn(), actual.getNameableArtefact().getUrn());
-        } else {
-            fail("ConceptExtends are different");
         }
+    }
+
+    private static void assertEqualsConceptScheme(ConceptSchemeVersionMetamac entity, ConceptSchemeMetamacDto dto, MapperEnum mapperEnum) {
+
+        // Metamac
+        assertEquals(entity.getType(), dto.getType());
+        assertEqualsExternalItem(entity.getRelatedOperation(), dto.getRelatedOperation());
+
+        if (MapperEnum.DO2DTO.equals(mapperEnum)) {
+            // generated by service
+            BaseAsserts.assertEqualsLifeCycle(entity.getLifecycleMetadata(), dto.getLifeCycle());
+        }
+
+        // Sdmx: tested in Sdmx project
     }
 }

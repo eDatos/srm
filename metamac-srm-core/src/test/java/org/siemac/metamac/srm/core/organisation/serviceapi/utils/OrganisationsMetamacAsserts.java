@@ -24,39 +24,21 @@ public class OrganisationsMetamacAsserts extends OrganisationsAsserts {
         OrganisationsAsserts.assertEqualsOrganisationSchemeDto(expected, actual);
     }
 
-    public static void assertEqualsOrganisationScheme(OrganisationSchemeVersionMetamac entity, OrganisationSchemeMetamacDto dto) {
-        OrganisationsAsserts.assertEqualsOrganisationScheme(entity, dto);
+    public static void assertEqualsOrganisationScheme(OrganisationSchemeVersionMetamac expected, OrganisationSchemeMetamacDto actual) {
+        assertEqualsOrganisationScheme(expected, actual, MapperEnum.DO2DTO);
     }
 
-    // ORGANISATIONS
+    public static void assertEqualsOrganisationScheme(OrganisationSchemeMetamacDto expected, OrganisationSchemeVersionMetamac actual) {
+        assertEqualsOrganisationScheme(actual, expected, MapperEnum.DTO2DO);
+    }
 
-    // public static void assertEqualsOrganisation(OrganisationMetamac expected, OrganisationMetamac actual) {
-    // assertEqualsInternationalString(expected.getPluralName(), actual.getPluralName());
-    // assertEqualsInternationalString(expected.getAcronym(), actual.getAcronym());
-    // assertEqualsInternationalString(expected.getDescriptionSource(), actual.getDescriptionSource());
-    // assertEqualsInternationalString(expected.getContext(), actual.getContext());
-    // assertEqualsInternationalString(expected.getDocMethod(), actual.getDocMethod());
-    // assertEquals(expected.getSdmxRelatedArtefact(), actual.getSdmxRelatedArtefact());
-    // assertEqualsOrganisationType(expected.getType(), actual.getType());
-    // assertEqualsInternationalString(expected.getDerivation(), actual.getDerivation());
-    // assertEqualsInternationalString(expected.getLegalActs(), actual.getLegalActs());
-    // assertEqualsOrganisationExtends(expected.getOrganisationExtends(), actual.getOrganisationExtends());
-    // OrganisationsAsserts.assertEqualsOrganisation(expected, actual);
-    // }
+    private static void assertEqualsOrganisationScheme(OrganisationSchemeVersionMetamac entity, OrganisationSchemeMetamacDto dto, MapperEnum mapperEnum) {
+        // Metamac
+        // nothing
 
-    // public static void assertEqualsOrganisationDto(OrganisationMetamacDto expected, OrganisationMetamacDto actual) {
-    // assertEqualsInternationalStringDto(expected.getPluralName(), actual.getPluralName());
-    // assertEqualsInternationalStringDto(expected.getAcronym(), actual.getAcronym());
-    // assertEqualsInternationalStringDto(expected.getDescriptionSource(), actual.getDescriptionSource());
-    // assertEqualsInternationalStringDto(expected.getContext(), actual.getContext());
-    // assertEqualsInternationalStringDto(expected.getDocMethod(), actual.getDocMethod());
-    // assertEquals(expected.getSdmxRelatedArtefact(), actual.getSdmxRelatedArtefact());
-    // assertEqualsOrganisationType(expected.getType(), actual.getType());
-    // assertEqualsInternationalStringDto(expected.getDerivation(), actual.getDerivation());
-    // assertEqualsInternationalStringDto(expected.getLegalActs(), actual.getLegalActs());
-    // assertEquals(expected.getOrganisationExtendsUrn(), actual.getOrganisationExtendsUrn());
-    //
-    // OrganisationsAsserts.assertEqualsOrganisationDto(expected, actual);
-    // }
+        // Sdmx: tested in Sdmx project
+    }
+
+    // TODO ORGANISATIONS
 
 }

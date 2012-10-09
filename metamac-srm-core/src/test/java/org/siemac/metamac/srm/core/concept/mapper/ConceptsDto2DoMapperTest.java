@@ -1,0 +1,48 @@
+package org.siemac.metamac.srm.core.concept.mapper;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.srm.core.common.SrmBaseTest;
+import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
+import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
+import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
+import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
+import org.siemac.metamac.srm.core.concept.serviceapi.utils.ConceptsMetamacAsserts;
+import org.siemac.metamac.srm.core.concept.serviceapi.utils.ConceptsMetamacDtoMocks;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.transaction.TransactionConfiguration;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeRepresentationEnum;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"classpath:spring/srm/applicationContext-test.xml"})
+@TransactionConfiguration(transactionManager = "txManagerCore", defaultRollback = true)
+@Transactional
+public class ConceptsDto2DoMapperTest extends SrmBaseTest {
+
+    @Autowired
+    private org.siemac.metamac.srm.core.concept.mapper.ConceptsDto2DoMapper conceptsDto2DoMapper;
+
+    @Test
+    public void testConceptSchemeMetamacDtoToDo() throws MetamacException {
+        ConceptSchemeMetamacDto dto = ConceptsMetamacDtoMocks.mockConceptSchemeDtoOperationType();
+        ConceptSchemeVersionMetamac entity = conceptsDto2DoMapper.conceptSchemeDtoToDo(dto);
+        ConceptsMetamacAsserts.assertEqualsConceptScheme(dto, entity);
+    }
+
+    @Test
+    public void testConceptMetamacDoToDto() throws MetamacException {
+        ConceptMetamacDto dto = ConceptsMetamacDtoMocks.mockConceptDto(TypeRepresentationEnum.ENUMERATED);
+        ConceptMetamac entity = conceptsDto2DoMapper.conceptDtoToDo(dto);
+        ConceptsMetamacAsserts.assertEqualsConcept(dto, entity);
+    }
+    
+    @Override
+    protected String getDataSetFile() {
+        return "dbunit/SrmConceptsTest.xml";
+    }
+}

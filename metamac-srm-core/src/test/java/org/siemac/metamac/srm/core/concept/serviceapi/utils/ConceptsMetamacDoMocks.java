@@ -11,6 +11,7 @@ import org.siemac.metamac.srm.core.concept.enume.domain.ConceptRoleEnum;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 
 import com.arte.statistic.sdmx.srm.core.concept.serviceapi.utils.ConceptsDoMocks;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeRepresentationEnum;
 
 public class ConceptsMetamacDoMocks extends ConceptsDoMocks {
 
@@ -37,7 +38,7 @@ public class ConceptsMetamacDoMocks extends ConceptsDoMocks {
         concept.setDerivation(mockInternationalString());
         concept.setLegalActs(mockInternationalString());
 
-        mockConcept(concept, Boolean.TRUE);
+        mockConcept(concept, TypeRepresentationEnum.ENUMERATED);
         return concept;
     }
 

@@ -3,16 +3,17 @@ package org.siemac.metamac.srm.core.common;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.siemac.metamac.srm.core.base.mapper.BaseDo2DtoMapperTest;
+import org.siemac.metamac.srm.core.concept.mapper.ConceptsDo2DtoMapperTest;
+import org.siemac.metamac.srm.core.concept.mapper.ConceptsDto2DoMapperTest;
 import org.siemac.metamac.srm.core.concept.serviceapi.ConceptsMetamacServiceTest;
 import org.siemac.metamac.srm.core.dsd.serviceapi.DsdsMetamacServiceTest;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacadeConceptsSecurityTest;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacadeConceptsTest;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacadeDsdTest;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacadeOrganisationsSecurityTest;
+import org.siemac.metamac.srm.core.organisation.mapper.OrganisationsDo2DtoMapperTest;
 import org.siemac.metamac.srm.core.organisation.mapper.OrganisationsDto2DoMapperTest;
 import org.siemac.metamac.srm.core.organisation.serviceapi.OrganisationsMetamacServiceTest;
-
-import com.arte.statistic.sdmx.srm.core.organisation.mapper.OrganisationsDo2DtoMapperTest;
 
 /**
  * Spring based transactional test with DbUnit support.
@@ -20,7 +21,7 @@ import com.arte.statistic.sdmx.srm.core.organisation.mapper.OrganisationsDo2DtoM
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({SrmCoreServiceFacadeConceptsTest.class, SrmCoreServiceFacadeConceptsSecurityTest.class, SrmCoreServiceFacadeDsdTest.class, ConceptsMetamacServiceTest.class,
-        BaseDo2DtoMapperTest.class, OrganisationsDo2DtoMapperTest.class, OrganisationsDto2DoMapperTest.class, SrmCoreServiceFacadeOrganisationsSecurityTest.class,
-        OrganisationsMetamacServiceTest.class, DsdsMetamacServiceTest.class})
+        BaseDo2DtoMapperTest.class, OrganisationsDo2DtoMapperTest.class, OrganisationsDto2DoMapperTest.class, ConceptsDo2DtoMapperTest.class, ConceptsDto2DoMapperTest.class,
+        SrmCoreServiceFacadeOrganisationsSecurityTest.class, OrganisationsMetamacServiceTest.class, DsdsMetamacServiceTest.class})
 public class SrmSuite {
 }

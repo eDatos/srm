@@ -1192,7 +1192,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
 
     @Test
     public void testCreateConcept() throws Exception {
-        ConceptMetamacDto conceptMetamacDto = ConceptsMetamacDtoMocks.mockConceptDto(Boolean.TRUE);
+        ConceptMetamacDto conceptMetamacDto = ConceptsMetamacDtoMocks.mockConceptDto(TypeRepresentationEnum.ENUMERATED);
         conceptMetamacDto.setItemSchemeVersionUrn(CONCEPT_SCHEME_1_V2);
         conceptMetamacDto.setConceptExtendsUrn(CONCEPT_SCHEME_12_V1_CONCEPT_1);
 
@@ -1200,29 +1200,29 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         assertEquals(GeneratorUrnUtils.generateSdmxConceptUrn("ISTAC", "CONCEPTSCHEME01", "02.000", conceptMetamacDto.getCode()), conceptMetamacDtoCreated.getUrn());
         assertNull(conceptMetamacDtoCreated.getUri());
 
-        assertEqualsConceptDto(conceptMetamacDtoCreated, conceptMetamacDto);
+        assertEqualsConceptDto(conceptMetamacDto, conceptMetamacDtoCreated);
     }
 
     @Test
     public void testCreateConceptRepresentationNotEnumerated() throws Exception {
-        ConceptMetamacDto conceptMetamacDto = ConceptsMetamacDtoMocks.mockConceptDto(Boolean.FALSE);
+        ConceptMetamacDto conceptMetamacDto = ConceptsMetamacDtoMocks.mockConceptDto(TypeRepresentationEnum.TEXT_FORMAT);
         conceptMetamacDto.setItemSchemeVersionUrn(CONCEPT_SCHEME_1_V2);
 
         ConceptMetamacDto conceptMetamacDtoCreated = srmCoreServiceFacade.createConcept(getServiceContextAdministrador(), conceptMetamacDto);
         assertEquals(GeneratorUrnUtils.generateSdmxConceptUrn("ISTAC", "CONCEPTSCHEME01", "02.000", conceptMetamacDto.getCode()), conceptMetamacDtoCreated.getUrn());
         assertNull(conceptMetamacDtoCreated.getUri());
 
-        assertEqualsConceptDto(conceptMetamacDtoCreated, conceptMetamacDto);
+        assertEqualsConceptDto(conceptMetamacDto, conceptMetamacDtoCreated);
     }
 
     @Test
     public void testCreateConceptWithConceptParent() throws Exception {
-        ConceptMetamacDto conceptMetamacDto = ConceptsMetamacDtoMocks.mockConceptDto(Boolean.TRUE);
+        ConceptMetamacDto conceptMetamacDto = ConceptsMetamacDtoMocks.mockConceptDto(TypeRepresentationEnum.ENUMERATED);
         conceptMetamacDto.setItemParentUrn(CONCEPT_SCHEME_1_V2_CONCEPT_1);
         conceptMetamacDto.setItemSchemeVersionUrn(CONCEPT_SCHEME_1_V2);
 
         ConceptMetamacDto conceptMetamacDtoCreated = srmCoreServiceFacade.createConcept(getServiceContextAdministrador(), conceptMetamacDto);
-        assertEqualsConceptDto(conceptMetamacDtoCreated, conceptMetamacDto);
+        assertEqualsConceptDto(conceptMetamacDto, conceptMetamacDtoCreated);
     }
 
     @Test

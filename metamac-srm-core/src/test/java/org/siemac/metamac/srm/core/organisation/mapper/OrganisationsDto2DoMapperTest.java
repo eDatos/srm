@@ -8,27 +8,24 @@ import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto
 import org.siemac.metamac.srm.core.organisation.serviceapi.utils.OrganisationsMetamacAsserts;
 import org.siemac.metamac.srm.core.organisation.serviceapi.utils.OrganisationsMetamacDtoMocks;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/srm/applicationContext-test.xml"})
-@TransactionConfiguration(transactionManager = "txManagerCore", defaultRollback = true)
-@Transactional
+//@TransactionConfiguration(transactionManager = "txManagerCore", defaultRollback = true)
+//@Transactional
 public class OrganisationsDto2DoMapperTest {
 
     @Autowired
-    @Qualifier("organisationsDto2DoMapper")
     private org.siemac.metamac.srm.core.organisation.mapper.OrganisationsDto2DoMapper organisationsDto2DoMapper;
 
     @Test
     public void testOrganisationSchemeMetamacDoToDto() throws MetamacException {
         OrganisationSchemeMetamacDto dto = OrganisationsMetamacDtoMocks.mockOrganisationScheme();
         OrganisationSchemeVersionMetamac entity = organisationsDto2DoMapper.organisationSchemeMetamacDtoToDo(dto);
-        OrganisationsMetamacAsserts.assertEqualsOrganisationScheme(entity, dto);
+        OrganisationsMetamacAsserts.assertEqualsOrganisationScheme(dto, entity);
     }
 
+    // TODO Organisations
 }
