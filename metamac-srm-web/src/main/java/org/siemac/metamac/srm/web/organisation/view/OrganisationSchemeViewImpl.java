@@ -2,7 +2,9 @@ package org.siemac.metamac.srm.web.organisation.view;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
+import static org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
@@ -14,12 +16,15 @@ import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.VersionWindow;
+import org.siemac.metamac.srm.web.organisation.model.ds.OrganisationDS;
 import org.siemac.metamac.srm.web.organisation.model.ds.OrganisationSchemeDS;
+import org.siemac.metamac.srm.web.organisation.model.record.OrganisationRecord;
 import org.siemac.metamac.srm.web.organisation.model.record.OrganisationSchemeRecord;
 import org.siemac.metamac.srm.web.organisation.presenter.OrganisationSchemePresenter;
 import org.siemac.metamac.srm.web.organisation.utils.CommonUtils;
 import org.siemac.metamac.srm.web.organisation.utils.OrganisationsClientSecurityUtils;
 import org.siemac.metamac.srm.web.organisation.view.handlers.OrganisationSchemeUiHandlers;
+import org.siemac.metamac.srm.web.organisation.widgets.NewOrganisationWindow;
 import org.siemac.metamac.srm.web.organisation.widgets.OrganisationSchemeMainFormLayout;
 import org.siemac.metamac.srm.web.organisation.widgets.OrganisationSchemeVersionsSectionStack;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
@@ -27,7 +32,10 @@ import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.utils.DateUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
+import org.siemac.metamac.web.common.client.widgets.CustomListGrid;
+import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 import org.siemac.metamac.web.common.client.widgets.InformationWindow;
+import org.siemac.metamac.web.common.client.widgets.TitleLabel;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.fields.BooleanSelectItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextAreaItem;
@@ -37,17 +45,23 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.organisation.OrganisationDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
+import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
+import com.smartgwt.client.types.Autofit;
 import com.smartgwt.client.types.Overflow;
+import com.smartgwt.client.types.Visibility;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.FormItemIfFunction;
 import com.smartgwt.client.widgets.form.fields.FormItem;
+import com.smartgwt.client.widgets.grid.ListGridField;
+import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 import com.smartgwt.client.widgets.layout.VLayout;
@@ -77,8 +91,16 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
     private GroupDynamicForm                       versionResponsibilityEditionForm;
     private AnnotationsPanel                       annotationsEditionPanel;
 
+    // Versions
     private OrganisationSchemeVersionsSectionStack versionsSectionStack;
 
+    // Organisation list
+    private ToolStrip                              toolStrip;
+    private ToolStripButton                        newButton;
+    private ToolStripButton                        deleteButton;
+    private NewOrganisationWindow                  newOrganisationWindow;
+    private DeleteConfirmationWindow               deleteConfirmationWindow;
+    private CustomListGrid                         organisationListGrid;
     private OrganisationSchemeMetamacDto           organisationSchemeDto;
 
     @Inject
@@ -112,8 +134,77 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
             }
         });
 
+        //
+        // ORGANISATIONS
+        //
+
+        // ToolStrip
+
+        toolStrip = new ToolStrip();
+        toolStrip.setWidth100();
+
+        newButton = new ToolStripButton(getConstants().actionNew(), RESOURCE.newListGrid().getURL());
+        newButton.addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                newOrganisationWindow = new NewOrganisationWindow(getConstants().organisationCreate());
+                newOrganisationWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
+
+                    @Override
+                    public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
+                        if (newOrganisationWindow.validateForm()) {
+                            getUiHandlers().createOrganisation(newOrganisationWindow.getNewOrganisationDto(getOrganisationTypeEnum()));
+                            newOrganisationWindow.destroy();
+                        }
+                    }
+                });
+            }
+        });
+        // TODO newButton.setVisibility(OrganisationsClientSecurityUtils.canCreateOrganisation(schemeProcStatus) ? Visibility.VISIBLE : Visibility.HIDDEN);
+
+        deleteConfirmationWindow = new DeleteConfirmationWindow(getConstants().organisationDeleteConfirmationTitle(), getConstants().organisationDeleteConfirmation());
+        deleteConfirmationWindow.setVisibility(Visibility.HIDDEN);
+        deleteConfirmationWindow.getYesButton().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                getUiHandlers().deleteOrganisations(getSelectedOrganisationUrns());
+                deleteConfirmationWindow.hide();
+            }
+        });
+
+        deleteButton = new ToolStripButton(getConstants().actionDelete(), RESOURCE.deleteListGrid().getURL());
+        deleteButton.setVisibility(Visibility.HIDDEN);
+        deleteButton.addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                deleteConfirmationWindow.show();
+            }
+        });
+
+        toolStrip.addButton(newButton);
+        toolStrip.addButton(deleteButton);
+
+        // ListGrid
+
+        organisationListGrid = new CustomListGrid();
+        organisationListGrid.setAutoFitMaxRecords(20);
+        organisationListGrid.setAutoFitData(Autofit.VERTICAL);
+        ListGridField codeField = new ListGridField(OrganisationDS.CODE, getConstants().identifiableArtefactCode());
+        ListGridField nameField = new ListGridField(OrganisationDS.NAME, getConstants().nameableArtefactName());
+        organisationListGrid.setFields(codeField, nameField);
+
+        VLayout organisationsLayout = new VLayout();
+        organisationsLayout.setMargin(15);
+        organisationsLayout.addMember(new TitleLabel(getConstants().organisations()));
+        organisationsLayout.addMember(toolStrip);
+        organisationsLayout.addMember(organisationListGrid);
+
         panel.addMember(mainFormLayout);
         panel.addMember(versionsSectionStack);
+        panel.addMember(organisationsLayout);
     }
 
     private void bindMainFormLayoutEvents() {
@@ -450,12 +541,34 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
 
         setOrganisationSchemeViewMode(organisationSchemeMetamacDto);
         setOrganisationSchemeEditionMode(organisationSchemeMetamacDto);
+
+        // Show/hide organisation list and tree, depending on the organisation scheme type
+        if (OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME.equals(organisationSchemeDto.getType())) {
+            showOrganisationTree();
+        } else {
+            showOrganisationList();
+        }
     }
 
     @Override
     public void setOrganisationSchemeVersions(List<OrganisationSchemeMetamacDto> organisationSchemeMetamacDtos) {
         versionsSectionStack.setOrganisationSchemes(organisationSchemeMetamacDtos);
         versionsSectionStack.selectOrganisationScheme(organisationSchemeDto);
+    }
+
+    @Override
+    public void setOrganisationList(List<OrganisationDto> organisationDtos) {
+        if (OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME.equals(organisationSchemeDto.getType())) {
+            // Organisation hierarchy
+            // TODO Set values
+        } else {
+            // Organisation list
+            OrganisationRecord[] records = new OrganisationRecord[organisationDtos.size()];
+            for (int i = 0; i < organisationDtos.size(); i++) {
+                records[i] = org.siemac.metamac.srm.web.organisation.utils.RecordUtils.getOrganisationRecord(organisationDtos.get(i));
+            }
+            organisationListGrid.setData(records);
+        }
     }
 
     public void setOrganisationSchemeViewMode(OrganisationSchemeMetamacDto organisationSchemeDto) {
@@ -582,6 +695,40 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
 
     private void setEditionMode() {
         mainFormLayout.setEditionMode();
+    }
+
+    private OrganisationTypeEnum getOrganisationTypeEnum() {
+        if (OrganisationSchemeTypeEnum.AGENCY_SCHEME.equals(organisationSchemeDto.getType())) {
+            return OrganisationTypeEnum.AGENCY;
+        } else if (OrganisationSchemeTypeEnum.DATA_CONSUMER_SCHEME.equals(organisationSchemeDto.getType())) {
+            return OrganisationTypeEnum.DATA_CONSUMER;
+        } else if (OrganisationSchemeTypeEnum.DATA_PROVIDER_SCHEME.equals(organisationSchemeDto.getType())) {
+            return OrganisationTypeEnum.DATA_PROVIDER;
+        } else if (OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME.equals(organisationSchemeDto.getType())) {
+            return OrganisationTypeEnum.ORGANISATION_UNIT;
+        }
+        return null;
+    }
+
+    private List<String> getSelectedOrganisationUrns() {
+        List<String> urns = new ArrayList<String>();
+        for (ListGridRecord record : organisationListGrid.getSelectedRecords()) {
+            OrganisationRecord organisationRecord = (OrganisationRecord) record;
+            urns.add(organisationRecord.getUrn());
+        }
+        return urns;
+    }
+
+    private void showOrganisationList() {
+        toolStrip.show();
+        organisationListGrid.show();
+        // TODO Hide organisations tree
+    }
+
+    private void showOrganisationTree() {
+        toolStrip.hide();
+        organisationListGrid.hide();
+        // TODO Show organisations tree
     }
 
 }

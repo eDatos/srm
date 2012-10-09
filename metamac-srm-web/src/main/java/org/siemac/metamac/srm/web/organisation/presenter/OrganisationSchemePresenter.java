@@ -21,10 +21,16 @@ import org.siemac.metamac.srm.web.client.widgets.presenter.ToolStripPresenterWid
 import org.siemac.metamac.srm.web.organisation.view.handlers.OrganisationSchemeUiHandlers;
 import org.siemac.metamac.srm.web.shared.organisation.CancelOrganisationSchemeValidityAction;
 import org.siemac.metamac.srm.web.shared.organisation.CancelOrganisationSchemeValidityResult;
+import org.siemac.metamac.srm.web.shared.organisation.DeleteOrganisationListAction;
+import org.siemac.metamac.srm.web.shared.organisation.DeleteOrganisationListResult;
+import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationListBySchemeAction;
+import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationListBySchemeResult;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeAction;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeResult;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeVersionListAction;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeVersionListResult;
+import org.siemac.metamac.srm.web.shared.organisation.SaveOrganisationAction;
+import org.siemac.metamac.srm.web.shared.organisation.SaveOrganisationResult;
 import org.siemac.metamac.srm.web.shared.organisation.SaveOrganisationSchemeAction;
 import org.siemac.metamac.srm.web.shared.organisation.SaveOrganisationSchemeResult;
 import org.siemac.metamac.srm.web.shared.organisation.UpdateOrganisationSchemeProcStatusAction;
@@ -37,6 +43,7 @@ import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.utils.UrnUtils;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.organisation.OrganisationDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
 import com.google.gwt.event.shared.EventBus;
@@ -83,6 +90,7 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
 
         void setOrganisationScheme(OrganisationSchemeMetamacDto organisationSchemeMetamacDto);
         void setOrganisationSchemeVersions(List<OrganisationSchemeMetamacDto> organisationSchemeMetamacDtos);
+        void setOrganisationList(List<OrganisationDto> organisationDtos);
     }
 
     @ContentSlot
@@ -161,7 +169,23 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
             public void onWaitSuccess(GetOrganisationSchemeResult result) {
                 organisationSchemeMetamacDto = result.getOrganisationSchemeMetamacDto();
                 getView().setOrganisationScheme(organisationSchemeMetamacDto);
+                retrieveOrganisationListByScheme(result.getOrganisationSchemeMetamacDto().getUrn());
                 retrieveOrganisationSchemeVersions(result.getOrganisationSchemeMetamacDto().getUrn());
+            }
+        });
+    }
+
+    @Override
+    public void retrieveOrganisationListByScheme(String organisationSchemeUrn) {
+        dispatcher.execute(new GetOrganisationListBySchemeAction(organisationSchemeUrn), new WaitingAsyncCallback<GetOrganisationListBySchemeResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().organisationErrorRetrieveList()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetOrganisationListBySchemeResult result) {
+                getView().setOrganisationList(result.getOrganisationDtos());
             }
         });
     }
@@ -321,6 +345,38 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
                 ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getMessageList(getMessages().organisationSchemeVersioned()), MessageTypeEnum.SUCCESS);
                 organisationSchemeMetamacDto = result.getOrganisationSchemeMetamacDto();
                 retrieveOrganisationSchemeByUrn(organisationSchemeMetamacDto.getUrn());
+            }
+        });
+    }
+
+    @Override
+    public void createOrganisation(OrganisationDto organisationDto) {
+        dispatcher.execute(new SaveOrganisationAction(organisationDto), new WaitingAsyncCallback<SaveOrganisationResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().organisationErrorSave()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(SaveOrganisationResult result) {
+                ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getMessageList(getMessages().organisationSaved()), MessageTypeEnum.SUCCESS);
+                retrieveOrganisationListByScheme(organisationSchemeMetamacDto.getUrn());
+            }
+        });
+    }
+
+    @Override
+    public void deleteOrganisations(List<String> urns) {
+        dispatcher.execute(new DeleteOrganisationListAction(urns), new WaitingAsyncCallback<DeleteOrganisationListResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().organisationErrorDelete()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(DeleteOrganisationListResult result) {
+                ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getMessageList(getMessages().organisationDeleted()), MessageTypeEnum.SUCCESS);
+                retrieveOrganisationListByScheme(organisationSchemeMetamacDto.getUrn());
             }
         });
     }

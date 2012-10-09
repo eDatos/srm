@@ -37,9 +37,11 @@ import org.siemac.metamac.srm.web.server.handlers.dsd.UpdateDsdProcStatusActionH
 import org.siemac.metamac.srm.web.server.handlers.dsd.VersionDsdActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.CancelOrganisationSchemeValidityActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.DeleteOrganisationSchemeListActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.organisation.GetOrganisationListBySchemeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.GetOrganisationSchemeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.GetOrganisationSchemeListActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.GetOrganisationSchemeVersionListActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.organisation.SaveOrganisationActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.SaveOrganisationSchemeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.UpdateOrganisationSchemeProcStatusActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.VersionOrganisationSchemeActionHandler;
@@ -79,9 +81,11 @@ import org.siemac.metamac.srm.web.shared.dsd.UpdateDsdProcStatusAction;
 import org.siemac.metamac.srm.web.shared.dsd.VersionDsdAction;
 import org.siemac.metamac.srm.web.shared.organisation.CancelOrganisationSchemeValidityAction;
 import org.siemac.metamac.srm.web.shared.organisation.DeleteOrganisationSchemeListAction;
+import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationListBySchemeAction;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeAction;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeListAction;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeVersionListAction;
+import org.siemac.metamac.srm.web.shared.organisation.SaveOrganisationAction;
 import org.siemac.metamac.srm.web.shared.organisation.SaveOrganisationSchemeAction;
 import org.siemac.metamac.srm.web.shared.organisation.UpdateOrganisationSchemeProcStatusAction;
 import org.siemac.metamac.srm.web.shared.organisation.VersionOrganisationSchemeAction;
@@ -156,6 +160,9 @@ public class ServerModule extends HandlerModule {
         bindHandler(SaveOrganisationSchemeAction.class, SaveOrganisationSchemeActionHandler.class);
         bindHandler(CancelOrganisationSchemeValidityAction.class, CancelOrganisationSchemeValidityActionHandler.class);
         bindHandler(VersionOrganisationSchemeAction.class, VersionOrganisationSchemeActionHandler.class);
+        bindHandler(DeleteOrganisationSchemeListAction.class, DeleteOrganisationSchemeListActionHandler.class);
+        bindHandler(GetOrganisationListBySchemeAction.class, GetOrganisationListBySchemeActionHandler.class);
+        bindHandler(SaveOrganisationAction.class, SaveOrganisationActionHandler.class);
         bindHandler(DeleteOrganisationSchemeListAction.class, DeleteOrganisationSchemeListActionHandler.class);
 
         bindHandler(ValidateTicketAction.class, ValidateTicketActionHandler.class);

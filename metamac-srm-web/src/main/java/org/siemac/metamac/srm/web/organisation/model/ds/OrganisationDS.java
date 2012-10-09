@@ -17,6 +17,8 @@ public class OrganisationDS extends DataSource {
     public static final String DESCRIPTION = "org-desc";
     public static final String TYPE        = "org-type";
 
+    public static String       DTO         = "org-dto";
+
     public OrganisationDS() {
         DataSourceTextField code = new DataSourceTextField(CODE, MetamacSrmWeb.getConstants().identifiableArtefactCode());
         code.setPrimaryKey(true);
