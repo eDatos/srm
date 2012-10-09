@@ -2,18 +2,23 @@ package org.siemac.metamac.srm.web.organisation.view;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
+import java.util.List;
+
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
-import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
+import org.siemac.metamac.srm.web.organisation.model.ds.ContactDS;
 import org.siemac.metamac.srm.web.organisation.model.ds.OrganisationDS;
+import org.siemac.metamac.srm.web.organisation.model.record.ContactRecord;
 import org.siemac.metamac.srm.web.organisation.presenter.OrganisationPresenter;
 import org.siemac.metamac.srm.web.organisation.utils.CommonUtils;
 import org.siemac.metamac.srm.web.organisation.view.handlers.OrganisationUiHandlers;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
+import org.siemac.metamac.web.common.client.widgets.CustomListGrid;
+import org.siemac.metamac.web.common.client.widgets.TitleLabel;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.InternationalMainFormLayout;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextAreaItem;
@@ -22,6 +27,7 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.organisation.ContactDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.organisation.OrganisationDto;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -30,27 +36,30 @@ import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
+import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandlers> implements OrganisationPresenter.OrganisationView {
 
-    private VLayout                      panel;
-    private InternationalMainFormLayout  mainFormLayout;
+    private VLayout                     panel;
+    private InternationalMainFormLayout mainFormLayout;
 
     // View forms
-    private GroupDynamicForm             identifiersForm;
-    private GroupDynamicForm             contentDescriptorsForm;
-    private AnnotationsPanel             annotationsPanel;
+    private GroupDynamicForm            identifiersForm;
+    private GroupDynamicForm            contentDescriptorsForm;
+    private AnnotationsPanel            annotationsPanel;
 
     // Edition forms
-    private GroupDynamicForm             identifiersEditionForm;
-    private GroupDynamicForm             contentDescriptorsEditionForm;
-    private AnnotationsPanel             annotationsEditionPanel;
+    private GroupDynamicForm            identifiersEditionForm;
+    private GroupDynamicForm            contentDescriptorsEditionForm;
+    private AnnotationsPanel            annotationsEditionPanel;
 
-    private OrganisationSchemeMetamacDto organisationSchemeMetamacDto;
-    private OrganisationDto              organisationDto;
+    // Contacts
+    private CustomListGrid              contactListGrid;
+
+    private OrganisationDto             organisationDto;
 
     @Inject
     public OrganisationViewImpl() {
@@ -69,8 +78,22 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         createViewForm();
         createEditionForm();
 
-        panel.addMember(mainFormLayout);
+        // CONTACTS
 
+        TitleLabel titleLabel = new TitleLabel(getConstants().organisationContacts());
+
+        contactListGrid = new CustomListGrid();
+        ListGridField nameField = new ListGridField(ContactDS.NAME, getConstants().organisationContactName());
+        ListGridField organisationUnitField = new ListGridField(ContactDS.ORGANISATION_UNIT, getConstants().organisationContactOrganisationUnit());
+        contactListGrid.setFields(nameField, organisationUnitField);
+
+        VLayout contactsLayout = new VLayout();
+        contactsLayout.setMargin(15);
+        contactsLayout.addMember(titleLabel);
+        contactsLayout.addMember(contactListGrid);
+
+        panel.addMember(mainFormLayout);
+        panel.addMember(contactsLayout);
     }
 
     private void bindMainFormLayoutEvents() {
@@ -187,6 +210,9 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
 
         setOrganisationViewMode(organisationDto);
         setOrganisationEditionMode(organisationDto);
+
+        // Contacts
+        setContacts(organisationDto.getContacts());
     }
 
     private void setOrganisationViewMode(OrganisationDto organisationDto) {
@@ -217,6 +243,14 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
 
         // Annotations
         annotationsEditionPanel.setAnnotations(organisationDto.getAnnotations());
+    }
+
+    private void setContacts(List<ContactDto> contactDtos) {
+        ContactRecord[] records = new ContactRecord[contactDtos.size()];
+        for (int i = 0; i < records.length; i++) {
+            records[i] = org.siemac.metamac.srm.web.organisation.utils.RecordUtils.getContactRecord(contactDtos.get(i));
+        }
+        contactListGrid.setData(records);
     }
 
     private OrganisationDto getOrganisationDto() {
