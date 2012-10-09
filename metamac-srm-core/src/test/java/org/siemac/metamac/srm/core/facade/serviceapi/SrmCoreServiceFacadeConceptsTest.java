@@ -64,6 +64,8 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
     @Autowired
     protected SrmCoreServiceFacade srmCoreServiceFacade;
 
+    // IMPORTANT: Metadata transformation is tested in Do2Dto tests. In Concepts this code was done before we decided to do Do2Dto tests and we didnt want remove it
+
     // ---------------------------------------------------------------------------------------
     // CONCEPT SCHEMES
     // ---------------------------------------------------------------------------------------
@@ -72,6 +74,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
     public void testRetrieveConceptSchemeByUrn() throws Exception {
         ConceptSchemeMetamacDto conceptSchemeMetamacDto = srmCoreServiceFacade.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_1_V1);
         assertEquals(CONCEPT_SCHEME_1_V1, conceptSchemeMetamacDto.getUrn());
+
         assertEquals("CONCEPTSCHEME01", conceptSchemeMetamacDto.getCode());
         assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, conceptSchemeMetamacDto.getLifeCycle().getProcStatus());
 
@@ -137,11 +140,11 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
     public void testCreateConceptScheme() throws Exception {
         ConceptSchemeMetamacDto conceptSchemeDto = ConceptsMetamacDtoMocks.mockConceptSchemeDtoGlossaryType();
         ServiceContext ctx = getServiceContextAdministrador();
-        
+
         // Create
         ConceptSchemeMetamacDto conceptSchemeMetamacCreated = srmCoreServiceFacade.createConceptScheme(ctx, conceptSchemeDto);
         assertEquals(ctx.getUserId(), conceptSchemeMetamacCreated.getCreatedBy());
-        
+
         // Identifiers
         assertNotNull(conceptSchemeMetamacCreated);
         assertEquals(conceptSchemeDto.getCode(), conceptSchemeMetamacCreated.getCode());
@@ -216,7 +219,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
     @Test
     public void testUpdateConceptScheme() throws Exception {
         ServiceContext ctx = getServiceContextAdministrador();
-        
+
         ConceptSchemeMetamacDto conceptSchemeMetamacDto = srmCoreServiceFacade.retrieveConceptSchemeByUrn(ctx, CONCEPT_SCHEME_9_V1);
 
         conceptSchemeMetamacDto.setName(MetamacMocks.mockInternationalString());
