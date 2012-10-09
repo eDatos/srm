@@ -394,7 +394,8 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
     @Override
     public void goToOrganisation(String urn, OrganisationTypeEnum type) {
         if (!StringUtils.isBlank(urn)) {
-            // TODO Auto-generated method stub
+            String[] splitUrn = UrnUtils.splitUrnByDots(UrnUtils.removePrefix(urn));
+            placeManager.revealRelativePlace(new PlaceRequest(NameTokens.organisationPage).with(PlaceRequestParams.organisationParamId, splitUrn[splitUrn.length - 1]));
         }
     }
 
