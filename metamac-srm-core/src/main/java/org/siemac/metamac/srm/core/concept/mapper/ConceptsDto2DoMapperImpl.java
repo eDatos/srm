@@ -19,6 +19,8 @@ import org.siemac.metamac.srm.core.concept.exception.ConceptMetamacNotFoundExcep
 import org.siemac.metamac.srm.core.concept.exception.ConceptSchemeVersionMetamacNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.arte.statistic.sdmx.srm.core.concept.domain.Concept;
+
 @org.springframework.stereotype.Component("dto2DoMapper")
 public class ConceptsDto2DoMapperImpl implements ConceptsDto2DoMapper {
 
@@ -78,6 +80,15 @@ public class ConceptsDto2DoMapperImpl implements ConceptsDto2DoMapper {
         ConceptMetamac target = null;
         if (source.getId() == null) {
             target = new ConceptMetamac();
+
+            // Parent
+            if (source.getItemParentUrn() != null) {
+                Concept parentConcept = conceptMetamacRepository.findByUrn(source.getItemParentUrn());
+                if (parentConcept == null) {
+                    throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CONCEPT_NOT_FOUND).withMessageParameters(source.getItemParentUrn()).build();
+                }
+                target.setParent(parentConcept);
+            }
         } else {
             try {
                 target = conceptMetamacRepository.findById(source.getId());

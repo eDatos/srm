@@ -1225,7 +1225,25 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         conceptMetamacDto.setItemSchemeVersionUrn(CONCEPT_SCHEME_1_V2);
 
         ConceptMetamacDto conceptMetamacDtoCreated = srmCoreServiceFacade.createConcept(getServiceContextAdministrador(), conceptMetamacDto);
+        assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_1, conceptMetamacDtoCreated.getItemParentUrn());
         assertEqualsConceptDto(conceptMetamacDto, conceptMetamacDtoCreated);
+    }
+
+    @Test
+    public void testCreateConceptErrorParentNotExists() throws Exception {
+        ConceptMetamacDto conceptMetamacDto = ConceptsMetamacDtoMocks.mockConceptDto(TypeRepresentationEnum.ENUMERATED);
+        conceptMetamacDto.setItemParentUrn(NOT_EXISTS);
+        conceptMetamacDto.setItemSchemeVersionUrn(CONCEPT_SCHEME_1_V2);
+
+        try {
+            srmCoreServiceFacade.createConcept(getServiceContextAdministrador(), conceptMetamacDto);
+            fail("wrong parent");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.CONCEPT_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(NOT_EXISTS, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
     }
 
     @Test
