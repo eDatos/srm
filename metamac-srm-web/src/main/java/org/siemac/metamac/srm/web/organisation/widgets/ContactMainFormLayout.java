@@ -4,6 +4,7 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
 import org.siemac.metamac.srm.web.organisation.model.ds.ContactDS;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
+import org.siemac.metamac.web.common.client.utils.UrlUtils;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.InternationalMainFormLayout;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomTextItem;
@@ -51,7 +52,7 @@ public class ContactMainFormLayout extends InternationalMainFormLayout {
         MultiLanguageTextItem organisationUnit = new MultiLanguageTextItem(ContactDS.ORGANISATION_UNIT, getConstants().organisationContactOrganisationUnit());
         MultiLanguageTextItem responsibility = new MultiLanguageTextItem(ContactDS.RESPONSIBILITY, getConstants().organisationContactResponsibility());
         CustomTextItem url = new CustomTextItem(ContactDS.URL, getConstants().organisationContactUrl());
-        // TODO validate URL
+        url.setValidators(UrlUtils.getUrlValidator());
         editionForm.setFields(name, organisationUnit, responsibility, url);
         addEditionCanvas(editionForm);
     }
