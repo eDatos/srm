@@ -38,6 +38,7 @@ import org.siemac.metamac.srm.web.server.handlers.dsd.VersionDsdActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.CancelOrganisationSchemeValidityActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.DeleteOrganisationListActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.DeleteOrganisationSchemeListActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.organisation.GetOrganisationActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.GetOrganisationListBySchemeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.GetOrganisationSchemeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.GetOrganisationSchemeListActionHandler;
@@ -83,6 +84,7 @@ import org.siemac.metamac.srm.web.shared.dsd.VersionDsdAction;
 import org.siemac.metamac.srm.web.shared.organisation.CancelOrganisationSchemeValidityAction;
 import org.siemac.metamac.srm.web.shared.organisation.DeleteOrganisationListAction;
 import org.siemac.metamac.srm.web.shared.organisation.DeleteOrganisationSchemeListAction;
+import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationAction;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationListBySchemeAction;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeAction;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeListAction;
@@ -166,6 +168,7 @@ public class ServerModule extends HandlerModule {
         bindHandler(GetOrganisationListBySchemeAction.class, GetOrganisationListBySchemeActionHandler.class);
         bindHandler(SaveOrganisationAction.class, SaveOrganisationActionHandler.class);
         bindHandler(DeleteOrganisationListAction.class, DeleteOrganisationListActionHandler.class);
+        bindHandler(GetOrganisationAction.class, GetOrganisationActionHandler.class);
 
         bindHandler(ValidateTicketAction.class, ValidateTicketActionHandler.class);
         bindHandler(GetLoginPageUrlAction.class, GetLoginPageUrlActionHandler.class);
