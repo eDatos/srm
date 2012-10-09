@@ -15,6 +15,7 @@ import org.siemac.metamac.srm.web.organisation.model.record.ContactRecord;
 import org.siemac.metamac.srm.web.organisation.presenter.OrganisationPresenter;
 import org.siemac.metamac.srm.web.organisation.utils.CommonUtils;
 import org.siemac.metamac.srm.web.organisation.view.handlers.OrganisationUiHandlers;
+import org.siemac.metamac.srm.web.organisation.widgets.ContactMainFormLayout;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
@@ -67,7 +68,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
 
     // Contacts
     private CustomListGrid              contactListGrid;
-    private InternationalMainFormLayout contactMainFormLayout;
+    private ContactMainFormLayout       contactMainFormLayout;
     private ToolStripButton             contactDeleteButton;
     private DeleteConfirmationWindow    contactDeleteConfirmationWindow;
 
@@ -103,6 +104,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
 
             @Override
             public void onClick(ClickEvent event) {
+                contactMainFormLayout.setContact(new ContactDto());
                 contactMainFormLayout.show();
             }
         });
@@ -155,17 +157,18 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
 
             @Override
             public void onRecordClick(RecordClickEvent event) {
+                ContactRecord record = (ContactRecord) event.getRecord();
+                contactMainFormLayout.setContact(record.getContactDto());
                 contactMainFormLayout.show();
             }
         });
 
         // Contact form
 
-        contactMainFormLayout = new InternationalMainFormLayout();
+        contactMainFormLayout = new ContactMainFormLayout();
         contactMainFormLayout.setVisibility(Visibility.HIDDEN);
 
         VLayout contactListGridLayout = new VLayout();
-        contactListGridLayout.setWidth("35%");
         contactListGridLayout.addMember(contactsToolStrip);
         contactListGridLayout.addMember(contactListGrid);
 
