@@ -827,23 +827,23 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         return itemsHierarchyDto;
     }
 
-    // @Override
-    // public MetamacCriteriaResult<OrganisationMetamacDto> findOrganisationsByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
-    // TODO Security
-    // OrganisationsSecurityUtils.canFindOrganisationsByCondition(ctx);
-    //
-    // // Transform
-    // SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getOrganisationMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
-    //
-    // // Find
-    // PagedResult<OrganisationMetamac> result = getOrganisationsMetamacService().findOrganisationsByCondition(ctx, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
-    //
-    // // Transform
-    // MetamacCriteriaResult<OrganisationMetamacDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultOrganisation(result,
-    // sculptorCriteria.getPageSize());
-    //
-    // return metamacCriteriaResult;
-    // }
+    @Override
+    public MetamacCriteriaResult<OrganisationMetamacDto> findOrganisationsByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
+        // TODO Security
+        // OrganisationsSecurityUtils.canFindOrganisationsByCondition(ctx);
+
+        // Transform
+        SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getOrganisationMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
+
+        // Find
+        PagedResult<OrganisationMetamac> result = getOrganisationsMetamacService().findOrganisationsByCondition(ctx, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
+
+        // Transform
+        MetamacCriteriaResult<OrganisationMetamacDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultOrganisation(result,
+                sculptorCriteria.getPageSize());
+
+        return metamacCriteriaResult;
+    }
 
     /**************************************************************************
      * CONCEPTS

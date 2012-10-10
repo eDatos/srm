@@ -46,9 +46,6 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
     @Autowired
     private ItemSchemeVersionRepository itemSchemeVersionRepository;
 
-    // @Autowired
-    // private OrganisationRepository organisationRepository;
-
     @Autowired
     @Qualifier("organisationSchemeLifecycle")
     private LifeCycle                   organisationSchemeLifecycle;
@@ -240,19 +237,19 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
         return (OrganisationMetamac) organisationsService.retrieveOrganisationByUrn(ctx, urn);
     }
 
-    // @Override
-    // public PagedResult<OrganisationMetamac> findOrganisationsByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
-    //
-    // // Validation
-    // OrganisationsMetamacInvocationValidator.checkFindOrganisationsByCondition(conditions, pagingParameter, null);
-    //
-    // // Find (do not call sdmx module to avoid typecast)
-    // if (conditions == null) {
-    // conditions = ConditionalCriteriaBuilder.criteriaFor(OrganisationMetamac.class).build();
-    // }
-    // PagedResult<OrganisationMetamac> organisationPagedResult = getOrganisationMetamacRepository().findByCondition(conditions, pagingParameter);
-    // return organisationPagedResult;
-    // }
+    @Override
+    public PagedResult<OrganisationMetamac> findOrganisationsByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
+
+        // Validation
+        OrganisationsMetamacInvocationValidator.checkFindOrganisationsByCondition(conditions, pagingParameter, null);
+
+        // Find (do not call sdmx module to avoid typecast)
+        if (conditions == null) {
+            conditions = ConditionalCriteriaBuilder.criteriaFor(OrganisationMetamac.class).distinctRoot().build();
+        }
+        PagedResult<OrganisationMetamac> organisationPagedResult = getOrganisationMetamacRepository().findByCondition(conditions, pagingParameter);
+        return organisationPagedResult;
+    }
 
     @Override
     public void deleteOrganisation(ServiceContext ctx, String urn) throws MetamacException {

@@ -13,7 +13,9 @@ import org.siemac.metamac.srm.core.concept.mapper.ConceptsDo2DtoMapper;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.core.dsd.mapper.DataStructureDefinitionDo2DtoMapper;
+import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
+import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 import org.siemac.metamac.srm.core.organisation.mapper.OrganisationsDo2DtoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,6 +80,19 @@ public class SculptorCriteria2MetamacCriteriaMapperImpl implements SculptorCrite
             target.setResults(new ArrayList<OrganisationSchemeMetamacDto>());
             for (OrganisationSchemeVersionMetamac scheme : source.getValues()) {
                 target.getResults().add(organisationsDo2DtoMapper.organisationSchemeMetamacDoToDto(scheme));
+            }
+        }
+        return target;
+    }
+    
+    @Override
+    public MetamacCriteriaResult<OrganisationMetamacDto> pageResultToMetamacCriteriaResultOrganisation(PagedResult<OrganisationMetamac> source, Integer pageSize) {
+        MetamacCriteriaResult<OrganisationMetamacDto> target = new MetamacCriteriaResult<OrganisationMetamacDto>();
+        target.setPaginatorResult(SculptorCriteria2MetamacCriteria.sculptorResultToMetamacCriteriaResult(source, pageSize));
+        if (source.getValues() != null) {
+            target.setResults(new ArrayList<OrganisationMetamacDto>());
+            for (OrganisationMetamac scheme : source.getValues()) {
+                target.getResults().add(organisationsDo2DtoMapper.organisationMetamacDoToDto(scheme));
             }
         }
         return target;

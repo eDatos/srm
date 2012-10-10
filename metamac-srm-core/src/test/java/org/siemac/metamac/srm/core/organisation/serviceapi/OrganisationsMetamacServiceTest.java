@@ -36,6 +36,8 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
+import com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation;
+import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationProperties;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationSchemeVersion;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
@@ -179,7 +181,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         // Find all
         {
             List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(OrganisationSchemeVersionMetamac.class)
-                    .orderBy(OrganisationSchemeVersionMetamacProperties.maintainableArtefact().urn()).build();
+                    .orderBy(OrganisationSchemeVersionMetamacProperties.maintainableArtefact().code()).orderBy(OrganisationSchemeVersionMetamacProperties.maintainableArtefact().urn()).build();
             PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
             PagedResult<OrganisationSchemeVersionMetamac> organisationSchemeVersionPagedResult = organisationsService.findOrganisationSchemesByCondition(getServiceContextAdministrador(), conditions,
                     pagingParameter);
@@ -229,7 +231,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         {
             List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(OrganisationSchemeVersionMetamac.class)
                     .withProperty(OrganisationSchemeVersionMetamacProperties.maintainableArtefact().isLastVersion()).eq(Boolean.TRUE)
-                    .orderBy(OrganisationSchemeVersionMetamacProperties.maintainableArtefact().urn()).build();
+                    .orderBy(OrganisationSchemeVersionMetamacProperties.maintainableArtefact().code()).orderBy(OrganisationSchemeVersionMetamacProperties.maintainableArtefact().urn()).build();
             PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
             PagedResult<OrganisationSchemeVersionMetamac> organisationSchemeVersionPagedResult = organisationsService.findOrganisationSchemesByCondition(getServiceContextAdministrador(), conditions,
                     pagingParameter);
@@ -1434,127 +1436,113 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         }
     }
 
-    // @Test
-    // public void testFindOrganisationsByCondition() throws Exception {
-    //
-    // // Find all
-    // {
-    // List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(Organisation.class).orderBy(OrganisationProperties.itemSchemeVersion().maintainableArtefact().urn()).ascending()
-    // .orderBy(OrganisationProperties.id()).ascending().distinctRoot().build();
-    // PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
-    // PagedResult<OrganisationMetamac> organisationsPagedResult = organisationsService.findOrganisationsByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
-    //
-    // // Validate
-    // assertEquals(25, organisationsPagedResult.getTotalRows());
-    // assertEquals(25, organisationsPagedResult.getValues().size());
-    // assertTrue(organisationsPagedResult.getValues().get(0) instanceof OrganisationMetamac);
-    //
-    // int i = 0;
-    // assertEquals(ORGANISATION_SCHEME_1_V1_ORGANISATION_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_2, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_3, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_4, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_4_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_4_1_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(ORGANISATION_SCHEME_2_V1_ORGANISATION_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(ORGANISATION_SCHEME_2_V1_ORGANISATION_2, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(ORGANISATION_SCHEME_3_V1_ORGANISATION_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(ORGANISATION_SCHEME_3_V1_ORGANISATION_2, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(ORGANISATION_SCHEME_3_V1_ORGANISATION_2_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(ORGANISATION_SCHEME_3_V1_ORGANISATION_2_2, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(ORGANISATION_SCHEME_3_V1_ORGANISATION_2_1_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(ORGANISATION_SCHEME_4_V1_ORGANISATION_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(ORGANISATION_SCHEME_5_V1_ORGANISATION_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(ORGANISATION_SCHEME_6_V1_ORGANISATION_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(ORGANISATION_SCHEME_7_V2_ORGANISATION_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(ORGANISATION_SCHEME_8_V1_ORGANISATION_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(ORGANISATION_SCHEME_10_V2_ORGANISATION_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(ORGANISATION_SCHEME_10_V3_ORGANISATION_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(ORGANISATION_SCHEME_11_V1_ORGANISATION_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(ORGANISATION_SCHEME_12_V1_ORGANISATION_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(organisationsPagedResult.getValues().size(), i);
-    // }
-    //
-    // // Find by name (like), code (like) and organisation scheme urn
-    // {
-    // String name = "Nombre organisationScheme-1-v2-organisation-2-";
-    // String code = "ORGANISATION02";
-    // String organisationSchemeUrn = ORGANISATION_SCHEME_1_V2;
-    // List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(Organisation.class).withProperty(OrganisationProperties.itemSchemeVersion().maintainableArtefact().urn())
-    // .eq(organisationSchemeUrn).withProperty(OrganisationProperties.nameableArtefact().code()).like(code + "%").withProperty(OrganisationProperties.nameableArtefact().name().texts().label())
-    // .like(name + "%").orderBy(OrganisationProperties.id()).ascending().distinctRoot().build();
-    // PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
-    // PagedResult<OrganisationMetamac> organisationsPagedResult = organisationsService.findOrganisationsByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
-    //
-    // // Validate
-    // assertEquals(2, organisationsPagedResult.getTotalRows());
-    // assertEquals(2, organisationsPagedResult.getValues().size());
-    // assertTrue(organisationsPagedResult.getValues().get(0) instanceof OrganisationMetamac);
-    //
-    // int i = 0;
-    // assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(organisationsPagedResult.getValues().size(), i);
-    // }
-    //
-    // // Find by organisation scheme urn paginated
-    // {
-    // String organisationSchemeUrn = ORGANISATION_SCHEME_1_V2;
-    // List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(Organisation.class).withProperty(OrganisationProperties.itemSchemeVersion().maintainableArtefact().urn())
-    // .eq(organisationSchemeUrn).orderBy(OrganisationProperties.id()).ascending().distinctRoot().build();
-    //
-    // // First page
-    // {
-    // PagingParameter pagingParameter = PagingParameter.rowAccess(0, 3, true);
-    // PagedResult<OrganisationMetamac> organisationsPagedResult = organisationsService.findOrganisationsByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
-    //
-    // // Validate
-    // assertEquals(8, organisationsPagedResult.getTotalRows());
-    // assertEquals(3, organisationsPagedResult.getValues().size());
-    // assertTrue(organisationsPagedResult.getValues().get(0) instanceof OrganisationMetamac);
-    //
-    // int i = 0;
-    // assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_2, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_3, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(organisationsPagedResult.getValues().size(), i);
-    // }
-    // // Second page
-    // {
-    // PagingParameter pagingParameter = PagingParameter.rowAccess(3, 6, true);
-    // PagedResult<OrganisationMetamac> organisationsPagedResult = organisationsService.findOrganisationsByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
-    //
-    // // Validate
-    // assertEquals(8, organisationsPagedResult.getTotalRows());
-    // assertEquals(3, organisationsPagedResult.getValues().size());
-    // assertTrue(organisationsPagedResult.getValues().get(0) instanceof OrganisationMetamac);
-    //
-    // int i = 0;
-    // assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_4, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_4_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(organisationsPagedResult.getValues().size(), i);
-    // }
-    // // Third page
-    // {
-    // PagingParameter pagingParameter = PagingParameter.rowAccess(6, 9, true);
-    // PagedResult<OrganisationMetamac> organisationsPagedResult = organisationsService.findOrganisationsByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
-    //
-    // // Validate
-    // assertEquals(8, organisationsPagedResult.getTotalRows());
-    // assertEquals(2, organisationsPagedResult.getValues().size());
-    // assertTrue(organisationsPagedResult.getValues().get(0) instanceof OrganisationMetamac);
-    //
-    // int i = 0;
-    // assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_4_1_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(organisationsPagedResult.getValues().size(), i);
-    // }
-    // }
-    // }
+    @Test
+    public void testFindOrganisationsByCondition() throws Exception {
+
+        // Find all
+        {
+            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(Organisation.class).orderBy(OrganisationProperties.itemSchemeVersion().maintainableArtefact().code())
+                    .orderBy(OrganisationProperties.itemSchemeVersion().maintainableArtefact().urn()).ascending().orderBy(OrganisationProperties.id()).ascending().distinctRoot().build();
+            PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
+            PagedResult<OrganisationMetamac> organisationsPagedResult = organisationsService.findOrganisationsByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
+
+            // Validate
+            assertEquals(11, organisationsPagedResult.getTotalRows());
+            assertEquals(11, organisationsPagedResult.getValues().size());
+            assertTrue(organisationsPagedResult.getValues().get(0) instanceof OrganisationMetamac);
+
+            int i = 0;
+            assertEquals(ORGANISATION_SCHEME_1_V1_ORGANISATION_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_2, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_3, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_4, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_4_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_4_1_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(ORGANISATION_SCHEME_2_V1_ORGANISATION_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(ORGANISATION_SCHEME_2_V1_ORGANISATION_2, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(organisationsPagedResult.getValues().size(), i);
+        }
+
+        // Find by name (like), code (like) and organisation scheme urn
+        {
+            String name = "Nombre organisationScheme-1-v2-organisation-2-";
+            String code = "ORGANISATION02";
+            String organisationSchemeUrn = ORGANISATION_SCHEME_1_V2;
+            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(Organisation.class).withProperty(OrganisationProperties.itemSchemeVersion().maintainableArtefact().urn())
+                    .eq(organisationSchemeUrn).withProperty(OrganisationProperties.nameableArtefact().code()).like(code + "%")
+                    .withProperty(OrganisationProperties.nameableArtefact().name().texts().label()).like(name + "%").orderBy(OrganisationProperties.id()).ascending().distinctRoot().build();
+            PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
+            PagedResult<OrganisationMetamac> organisationsPagedResult = organisationsService.findOrganisationsByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
+
+            // Validate
+            assertEquals(2, organisationsPagedResult.getTotalRows());
+            assertEquals(2, organisationsPagedResult.getValues().size());
+            assertTrue(organisationsPagedResult.getValues().get(0) instanceof OrganisationMetamac);
+
+            int i = 0;
+            assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(organisationsPagedResult.getValues().size(), i);
+        }
+
+        // Find by organisation scheme urn paginated
+        {
+            String organisationSchemeUrn = ORGANISATION_SCHEME_1_V2;
+            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(Organisation.class).withProperty(OrganisationProperties.itemSchemeVersion().maintainableArtefact().urn())
+                    .eq(organisationSchemeUrn).orderBy(OrganisationProperties.id()).ascending().distinctRoot().build();
+
+            // First page
+            {
+                PagingParameter pagingParameter = PagingParameter.rowAccess(0, 3, true);
+                PagedResult<OrganisationMetamac> organisationsPagedResult = organisationsService.findOrganisationsByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
+
+                // Validate
+                assertEquals(8, organisationsPagedResult.getTotalRows());
+                assertEquals(3, organisationsPagedResult.getValues().size());
+                assertTrue(organisationsPagedResult.getValues().get(0) instanceof OrganisationMetamac);
+
+                int i = 0;
+                assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+                assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_2, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+                assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_3, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+                assertEquals(organisationsPagedResult.getValues().size(), i);
+            }
+            // Second page
+            {
+                PagingParameter pagingParameter = PagingParameter.rowAccess(3, 6, true);
+                PagedResult<OrganisationMetamac> organisationsPagedResult = organisationsService.findOrganisationsByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
+
+                // Validate
+                assertEquals(8, organisationsPagedResult.getTotalRows());
+                assertEquals(3, organisationsPagedResult.getValues().size());
+                assertTrue(organisationsPagedResult.getValues().get(0) instanceof OrganisationMetamac);
+
+                int i = 0;
+                assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_4, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+                assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+                assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_4_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+                assertEquals(organisationsPagedResult.getValues().size(), i);
+            }
+            // Third page
+            {
+                PagingParameter pagingParameter = PagingParameter.rowAccess(6, 9, true);
+                PagedResult<OrganisationMetamac> organisationsPagedResult = organisationsService.findOrganisationsByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
+
+                // Validate
+                assertEquals(8, organisationsPagedResult.getTotalRows());
+                assertEquals(2, organisationsPagedResult.getValues().size());
+                assertTrue(organisationsPagedResult.getValues().get(0) instanceof OrganisationMetamac);
+
+                int i = 0;
+                assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+                assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_4_1_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+                assertEquals(organisationsPagedResult.getValues().size(), i);
+            }
+        }
+    }
 
     @Override
     public void testRetrieveOrganisationSchemeByOrganisationUrn() throws Exception {

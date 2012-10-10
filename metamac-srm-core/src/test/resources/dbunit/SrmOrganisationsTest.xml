@@ -3,7 +3,7 @@
 <dataset>
     
     <!-- ************************************************************************************** -->
-    <!-- ORGANISATION SCHEME 1                                                                  -->
+    <!-- ORGANISATION SCHEME 1 (Organisation Unit)	                                            -->
     <!--        - Version 1: internally published                                               -->
     <!--        - Version 2: draft                                                              -->
     <!-- *************************************************************************************  -->
@@ -97,6 +97,10 @@
             <!-- -> ORGANISATION01 -->
             
             <!-- ORGANISATION01 -->
+            
+            <TB_M_ORGANISATIONS
+                TB_ORGANISATIONS="111"
+            />
             
             <TB_ORGANISATIONS
                 TB_ITEMS="111"
@@ -643,7 +647,7 @@
                     />
     
     <!-- ************************************************************************************** -->
-    <!-- ORGANISATION SCHEME 2                                                                  -->
+    <!-- ORGANISATION SCHEME 2  (Agency scheme)                                                 -->
     <!--        - Version 1: draft                                                              -->
     <!-- *************************************************************************************  -->
 
@@ -675,7 +679,7 @@
 
     <TB_ORG_SCHEMES_VERSIONS
         TB_ITEM_SCHEMES_VERSIONS="21"
-        ORGANISATION_SCHEME_TYPE="ORGANISATION_UNIT_SCHEME"
+        ORGANISATION_SCHEME_TYPE="AGENCY_SCHEME"
     />
     
     <TB_M_ORG_SCHEMES_VERSIONS
@@ -704,7 +708,7 @@
         
         CODE="ORGANISATIONSCHEME02"
         URI="[null]"
-        URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=ISTAC:ORGANISATIONSCHEME02(01.000)"
+        URN="urn:sdmx:org.sdmx.infomodel.base.AgencyScheme=ISTAC:ORGANISATIONSCHEME02(01.000)"
         REPLACED_BY="[null]"
         REPLACE_TO="[null]"
         
@@ -732,9 +736,115 @@
         LAST_UPDATED_TZ="Europe/London"
     />
     
+            <!-- ORGANISATIONS -->
+            <!-- -> ORGANISATION01 -->
+            <!-- -> ORGANISATION02 -->
+            
+            <!-- ORGANISATION01 -->
+            
+            <TB_M_ORGANISATIONS
+                TB_ORGANISATIONS="211"
+            />
+            
+            <TB_ORGANISATIONS
+                TB_ITEMS="211"
+                ORGANISATION_TYPE="AGENCY"
+            />
+        
+            <TB_ITEMS
+                ID="211"
+                PARENT_FK="[null]"
+                ITEM_SCHEME_VERSION_FK="21"
+                ITEM_SCHEME_VERSION_FIRST_FK="21"
+                NAMEABLE_ARTEFACT_FK="211"
+                      
+                UUID="organisationScheme-2-v1-org-1"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"  
+            />
+        
+            <TB_ANNOTABLE_ARTEFACTS 
+                ID="211"
+                ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+                
+                CODE="ORGANISATION01"
+                URI="[null]"
+                URN="urn:sdmx:org.sdmx.infomodel.base.Agency=ISTAC:ORGANISATIONSCHEME02(01.000).ORGANISATION01"
+                REPLACED_BY="[null]"
+                REPLACE_TO="[null]"
+                
+                NAME_FK="[null]"
+                DESCRIPTION_FK="[null]"
+                
+                UUID="annotableArtefact-211"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"
+            />     
+            
+            <!-- ORGANISATION02 -->
+
+            <TB_M_ORGANISATIONS
+                TB_ORGANISATIONS="212"
+            />
+            
+            <TB_ORGANISATIONS
+                TB_ITEMS="212"
+                ORGANISATION_TYPE="AGENCY"
+            />
+        
+            <TB_ITEMS
+                ID="212"
+                PARENT_FK="[null]"
+                ITEM_SCHEME_VERSION_FK="21"
+                ITEM_SCHEME_VERSION_FIRST_FK="21"
+                NAMEABLE_ARTEFACT_FK="212"
+                      
+                UUID="organisationScheme-2-v1-org-2"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"  
+            />
+        
+            <TB_ANNOTABLE_ARTEFACTS 
+                ID="212"
+                ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+                
+                CODE="ORGANISATION02"
+                URI="[null]"
+                URN="urn:sdmx:org.sdmx.infomodel.base.Agency=ISTAC:ORGANISATIONSCHEME02(01.000).ORGANISATION02"
+                REPLACED_BY="[null]"
+                REPLACE_TO="[null]"
+                
+                NAME_FK="[null]"
+                DESCRIPTION_FK="[null]"
+                
+                UUID="annotableArtefact-212"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"
+            />                     
+    
     <!-- ************************************************************************************** -->
-    <!-- ORGANISATION SCHEME 3                                                                  -->
-    <!--        - Version 1: internally published                                                              -->
+    <!-- ORGANISATION SCHEME 3 (Organisation Unit)	                                            -->
+    <!--        - Version 1: internally published                                               -->
     <!-- *************************************************************************************  -->
 
     <TB_ITEM_SCHEMES
@@ -823,7 +933,7 @@
     />
     
     <!-- ************************************************************************************** -->
-    <!-- ORGANISATION SCHEME 4                                                                  -->
+    <!-- ORGANISATION SCHEME 4 (Organisation Unit)	                                            -->
     <!--        - Version 1: validation rejected                                                -->
     <!-- *************************************************************************************  -->
 
@@ -914,7 +1024,7 @@
     
 
     <!-- ************************************************************************************** -->
-    <!-- ORGANISATION SCHEME 5                                                                  -->
+    <!-- ORGANISATION SCHEME 5 (Organisation Unit)	                                            -->
     <!--        - Version 1: production validation                                              -->
     <!-- *************************************************************************************  -->
 
@@ -1004,7 +1114,7 @@
     />
     
     <!-- ************************************************************************************** -->
-    <!-- ORGANISATION SCHEME 6                                                                  -->
+    <!-- ORGANISATION SCHEME 6 (Organisation Unit)	                                            -->
     <!--        - Version 1: diffusion validation                                               -->
     <!-- *************************************************************************************  -->
 
@@ -1094,7 +1204,7 @@
     />
 
     <!-- ************************************************************************************** -->
-    <!-- ORGANISATION SCHEME 7                                                                  -->
+    <!-- ORGANISATION SCHEME 7 (Organisation Unit)	                                            -->
     <!--        - Version 1: externally published                                               -->
     <!--        - Version 2: internally published                                               -->
     <!-- *************************************************************************************  -->
