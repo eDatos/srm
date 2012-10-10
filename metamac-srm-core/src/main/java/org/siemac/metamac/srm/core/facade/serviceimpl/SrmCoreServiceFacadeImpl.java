@@ -42,7 +42,9 @@ import org.siemac.metamac.srm.core.dsd.mapper.DataStructureDefinitionDo2DtoMappe
 import org.siemac.metamac.srm.core.dsd.mapper.DataStructureDefinitionDto2DoMapper;
 import org.siemac.metamac.srm.core.mapper.MetamacCriteria2SculptorCriteriaMapper;
 import org.siemac.metamac.srm.core.mapper.SculptorCriteria2MetamacCriteriaMapper;
+import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
+import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 import org.siemac.metamac.srm.core.organisation.mapper.OrganisationsDo2DtoMapper;
 import org.siemac.metamac.srm.core.organisation.mapper.OrganisationsDto2DoMapper;
@@ -743,6 +745,106 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
         return organisationSchemeDto;
     }
+
+    // ------------------------------------------------------------------------
+    // ORGANISATIONS
+    // ------------------------------------------------------------------------
+
+    // TODO revisar métodos comentados
+
+    // @Override
+    // public OrganisationMetamacDto createOrganisation(ServiceContext ctx, OrganisationMetamacDto organisationMetamacDto) throws MetamacException {
+    // Security TODO
+    // OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationsMetamacService().retrieveOrganisationSchemeByUrn(ctx, organisationMetamacDto.getItemSchemeVersionUrn());
+    // OrganisationsSecurityUtils.canCreateOrganisation(ctx, organisationSchemeVersion);
+    //
+    // // Transform
+    // OrganisationMetamac organisationMetamac = organisationsDto2DoMapper.organisationDtoToDo(organisationMetamacDto);
+    //
+    // // Create
+    // OrganisationMetamac conceMetamacCreated = getOrganisationsMetamacService().createOrganisation(ctx, organisationMetamacDto.getItemSchemeVersionUrn(), organisationMetamac);
+    //
+    // // Transform to DTO
+    // organisationMetamacDto = organisationsDo2DtoMapper.organisationMetamacDoToDto(conceMetamacCreated);
+    //
+    // return organisationMetamacDto;
+    // }
+    //
+    // @Override
+    // public OrganisationMetamacDto updateOrganisation(ServiceContext ctx, OrganisationMetamacDto organisationDto) throws MetamacException {
+    //
+    // Security TODO
+    // OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationsMetamacService().retrieveOrganisationSchemeByOrganisationUrn(ctx, organisationDto.getUrn());
+    // OrganisationsSecurityUtils.canUpdateOrganisation(ctx, organisationSchemeVersion);
+    //
+    // // Transform
+    // OrganisationMetamac organisationMetamac = organisationsDto2DoMapper.organisationDtoToDo(organisationDto);
+    //
+    // // Update
+    // OrganisationMetamac organisationUpdated = getOrganisationsMetamacService().updateOrganisation(ctx, organisationMetamac);
+    //
+    // // Transform to DTO
+    // organisationDto = organisationsDo2DtoMapper.organisationMetamacDoToDto(organisationUpdated);
+    // return organisationDto;
+    // }
+
+    @Override
+    public OrganisationMetamacDto retrieveOrganisationByUrn(ServiceContext ctx, String urn) throws MetamacException {
+
+        // Security TODO
+        // OrganisationsSecurityUtils.canRetrieveOrganisationByUrn(ctx);
+
+        // Retrieve
+        OrganisationMetamac organisationMetamac = getOrganisationsMetamacService().retrieveOrganisationByUrn(ctx, urn);
+
+        // Transform
+        OrganisationMetamacDto organisationMetamacDto = organisationsDo2DtoMapper.organisationMetamacDoToDto(organisationMetamac);
+
+        return organisationMetamacDto;
+    }
+
+    // @Override
+    // public void deleteOrganisation(ServiceContext ctx, String urn) throws MetamacException {
+    //
+    // Security TODO
+    // OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationsMetamacService().retrieveOrganisationSchemeByOrganisationUrn(ctx, urn);
+    // OrganisationsSecurityUtils.canDeleteOrganisation(ctx, organisationSchemeVersion);
+    //
+    // // Delete
+    // getOrganisationsMetamacService().deleteOrganisation(ctx, urn);
+    // }
+    //
+    // @Override
+    // public List<ItemHierarchyDto> retrieveOrganisationsByOrganisationSchemeUrn(ServiceContext ctx, String organisationSchemeUrn) throws MetamacException {
+    //
+    // Security TODO
+    // OrganisationsSecurityUtils.canRetrieveOrganisationsByOrganisationSchemeUrn(ctx);
+    //
+    // // Retrieve
+    // List<OrganisationMetamac> organisations = getOrganisationsMetamacService().retrieveOrganisationsByOrganisationSchemeUrn(ctx, organisationSchemeUrn);
+    //
+    // // Transform
+    // List<ItemHierarchyDto> itemsHierarchyDto = organisationsDo2DtoMapper.organisationMetamacDoListToItemHierarchyDtoList(organisations);
+    // return itemsHierarchyDto;
+    // }
+    //
+    // @Override
+    // public MetamacCriteriaResult<OrganisationMetamacDto> findOrganisationsByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
+    // Security TODO
+    // OrganisationsSecurityUtils.canFindOrganisationsByCondition(ctx);
+    //
+    // // Transform
+    // SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getOrganisationMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
+    //
+    // // Find
+    // PagedResult<OrganisationMetamac> result = getOrganisationsMetamacService().findOrganisationsByCondition(ctx, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
+    //
+    // // Transform
+    // MetamacCriteriaResult<OrganisationMetamacDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultOrganisation(result,
+    // sculptorCriteria.getPageSize());
+    //
+    // return metamacCriteriaResult;
+    // }
 
     /**************************************************************************
      * CONCEPTS

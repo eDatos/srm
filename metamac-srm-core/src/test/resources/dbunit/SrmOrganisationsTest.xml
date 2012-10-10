@@ -172,6 +172,426 @@
         LAST_UPDATED_TZ="Europe/London"
     />
     
+        <!-- ORGANISATIONS -->
+            <!-- -> ORGANISATION01 -->
+            <!-- -> ORGANISATION02 -->
+            <!--    -> ORGANISATION0201 -->
+            <!--       -> ORGANISATION020101 -->
+            <!-- -> ORGANISATION03 -->
+            <!-- -> ORGANISATION04 -->
+            <!--    -> ORGANISATION0401 -->
+            <!--        -> ORGANISATION040101 -->
+                        
+            <!-- ORGANISATION01 -->
+            
+            
+	        <TB_M_ORGANISATIONS
+                TB_ORGANISATIONS="121"
+            />
+            
+            <TB_ORGANISATIONS
+                TB_ITEMS="121"    
+                ORGANISATION_TYPE="ORGANISATION_UNIT"
+            />
+            
+            <TB_ITEMS
+                ID="121"
+                PARENT_FK="[null]"
+                ITEM_SCHEME_VERSION_FK="12"
+                ITEM_SCHEME_VERSION_FIRST_FK="12"
+                NAMEABLE_ARTEFACT_FK="121"
+                      
+                UUID="organisationScheme-1-v2-org-1"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"  
+            />
+        
+            <TB_ANNOTABLE_ARTEFACTS 
+                ID="121"
+                ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+                
+                CODE="ORGANISATION01"
+                URI="[null]"
+                URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME01(02.000).ORGANISATION01"
+                REPLACED_BY="[null]"
+                REPLACE_TO="[null]"
+                
+                NAME_FK="12"
+                DESCRIPTION_FK="13"
+                
+                UUID="annotableArtefact-121"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"
+            />
+            
+            <!-- ORGANISATION02 -->
+            
+            <TB_M_ORGANISATIONS
+                TB_ORGANISATIONS="122"
+            />
+            
+            <TB_ORGANISATIONS
+                TB_ITEMS="122"
+                ORGANISATION_TYPE="ORGANISATION_UNIT"
+            />
+        
+            <TB_ITEMS
+                ID="122"
+                PARENT_FK="[null]"
+                ITEM_SCHEME_VERSION_FK="12"
+                ITEM_SCHEME_VERSION_FIRST_FK="12"
+                NAMEABLE_ARTEFACT_FK="122"
+                      
+                UUID="organisationScheme-1-v2-org-2"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2012-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"  
+            />
+        
+            <TB_ANNOTABLE_ARTEFACTS 
+                ID="122"
+                ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+                
+                CODE="ORGANISATION02"
+                URI="[null]"
+                URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME01(02.000).ORGANISATION02"
+                REPLACED_BY="[null]"
+                REPLACE_TO="[null]"
+                
+                NAME_FK="14"
+                DESCRIPTION_FK="[null]"
+                
+                UUID="annotableArtefact-112"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2012-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"
+            />   
+            
+                <!-- ORGANISATION0201 -->
+
+                <TB_M_ORGANISATIONS
+                    TB_ORGANISATIONS="1221"
+                />
+                
+                <TB_ORGANISATIONS
+                    TB_ITEMS="1221"
+                    ORGANISATION_TYPE="ORGANISATION_UNIT"   
+                />
+            
+                <TB_ITEMS
+                    ID="1221"
+                    PARENT_FK="122"
+                    ITEM_SCHEME_VERSION_FK="12"
+                    ITEM_SCHEME_VERSION_FIRST_FK="[null]"
+                    NAMEABLE_ARTEFACT_FK="1221"
+                          
+                    UUID="organisationScheme-1-v2-org-2-1"
+                    VERSION="1"
+                    CREATED_BY="user1"
+                    CREATED_DATE="2011-01-01 01:02:03"
+                    CREATED_DATE_TZ="Europe/London"
+                    LAST_UPDATED_BY="user2"
+                    LAST_UPDATED="2011-01-22 01:02:03"
+                    LAST_UPDATED_TZ="Europe/London"  
+                />
+            
+                <TB_ANNOTABLE_ARTEFACTS 
+                    ID="1221"
+                    ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+                    
+                    CODE="ORGANISATION0201"
+                    URI="[null]"
+                    URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME01(02.000).ORGANISATION0201"
+                    REPLACED_BY="[null]"
+                    REPLACE_TO="[null]"
+                    
+                    NAME_FK="15"
+                    DESCRIPTION_FK="[null]"
+                    
+                    UUID="annotableArtefact-1221"
+                    VERSION="1"
+                    CREATED_BY="user1"
+                    CREATED_DATE="2012-01-01 01:02:03"
+                    CREATED_DATE_TZ="Europe/London"
+                    LAST_UPDATED_BY="user2"
+                    LAST_UPDATED="2012-01-22 01:02:03"
+                    LAST_UPDATED_TZ="Europe/London"
+                />
+                
+        
+                    <!-- ORGANISATION020101 -->
+
+                    <TB_M_ORGANISATIONS
+                        TB_ORGANISATIONS="12211"
+                    />
+                    
+                    <TB_ORGANISATIONS
+                        TB_ITEMS="12211"
+                        ORGANISATION_TYPE="ORGANISATION_UNIT"
+                    />
+                
+                    <TB_ITEMS
+                        ID="12211"
+                        PARENT_FK="1221"
+                        ITEM_SCHEME_VERSION_FK="12"
+                        ITEM_SCHEME_VERSION_FIRST_FK="[null]"
+                        NAMEABLE_ARTEFACT_FK="12211"
+                              
+                        UUID="organisationScheme-1-v2-org-2-1-1"
+                        VERSION="1"
+                        CREATED_BY="user1"
+                        CREATED_DATE="2011-01-01 01:02:03"
+                        CREATED_DATE_TZ="Europe/London"
+                        LAST_UPDATED_BY="user2"
+                        LAST_UPDATED="2011-01-22 01:02:03"
+                        LAST_UPDATED_TZ="Europe/London"  
+                    />
+                
+                    <TB_ANNOTABLE_ARTEFACTS 
+                        ID="12211"
+                        ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+                        
+                        CODE="ORGANISATION020101"
+                        URI="[null]"
+                        URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME01(02.000).ORGANISATION020101"
+                        REPLACED_BY="[null]"
+                        REPLACE_TO="[null]"
+                        
+                        NAME_FK="16"
+                        DESCRIPTION_FK="[null]"
+                        
+                        UUID="annotableArtefact-12211"
+                        VERSION="1"
+                        CREATED_BY="user1"
+                        CREATED_DATE="2011-01-01 01:02:03"
+                        CREATED_DATE_TZ="Europe/London"
+                        LAST_UPDATED_BY="user2"
+                        LAST_UPDATED="2011-01-22 01:02:03"
+                        LAST_UPDATED_TZ="Europe/London"
+                    />
+            
+            <!-- ORGANISATION03 -->
+            
+            <TB_M_ORGANISATIONS
+                TB_ORGANISATIONS="123"
+            />
+            
+            <TB_ORGANISATIONS
+                TB_ITEMS="123"
+                 ORGANISATION_TYPE="ORGANISATION_UNIT"
+            />
+            
+            <TB_ITEMS
+                ID="123"
+                PARENT_FK="[null]"
+                ITEM_SCHEME_VERSION_FK="12"
+                ITEM_SCHEME_VERSION_FIRST_FK="12"
+                NAMEABLE_ARTEFACT_FK="99123"
+                      
+                UUID="organisationScheme-1-v2-org-3"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"  
+            />
+        
+            <TB_ANNOTABLE_ARTEFACTS 
+                ID="99123"
+                ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+                
+                CODE="ORGANISATION03"
+                URI="[null]"
+                URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME01(02.000).ORGANISATION03"
+                REPLACED_BY="[null]"
+                REPLACE_TO="[null]"
+                
+                NAME_FK="[null]"
+                DESCRIPTION_FK="[null]"
+                
+                UUID="annotableArtefact-99123"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"
+            />                
+            
+            <!-- ORGANISATION04 -->
+
+            <TB_M_ORGANISATIONS
+                TB_ORGANISATIONS="124"
+            />
+            
+            <TB_ORGANISATIONS
+                TB_ITEMS="124"
+                ORGANISATION_TYPE="ORGANISATION_UNIT"
+            />
+                     
+            <TB_ITEMS
+                ID="124"
+                PARENT_FK="[null]"
+                ITEM_SCHEME_VERSION_FK="12"
+                ITEM_SCHEME_VERSION_FIRST_FK="12"
+                NAMEABLE_ARTEFACT_FK="99124"
+                      
+                UUID="organisationScheme-1-v2-org-4"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2012-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"  
+            />
+        
+            <TB_ANNOTABLE_ARTEFACTS 
+                ID="99124"
+                ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+                
+                CODE="ORGANISATION04"
+                URI="[null]"
+                URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME01(02.000).ORGANISATION04"
+                REPLACED_BY="[null]"
+                REPLACE_TO="[null]"
+                
+                NAME_FK="[null]"
+                DESCRIPTION_FK="[null]"
+                
+                UUID="annotableArtefact-99124"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2012-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"
+            />
+            
+                <!-- ORGANISATION0401 -->
+                
+                <TB_M_ORGANISATIONS
+                    TB_ORGANISATIONS="1241"
+                />
+                
+                <TB_ORGANISATIONS
+                    TB_ITEMS="1241"
+                    ORGANISATION_TYPE="ORGANISATION_UNIT"
+                />
+            
+                <TB_ITEMS
+                    ID="1241"
+                    PARENT_FK="124"
+                    ITEM_SCHEME_VERSION_FK="12"
+                    ITEM_SCHEME_VERSION_FIRST_FK="[null]"
+                    NAMEABLE_ARTEFACT_FK="991241"
+                          
+                    UUID="organisationScheme-1-v2-org-4-1"
+                    VERSION="1"
+                    CREATED_BY="user1"
+                    CREATED_DATE="2011-01-01 01:02:03"
+                    CREATED_DATE_TZ="Europe/London"
+                    LAST_UPDATED_BY="user2"
+                    LAST_UPDATED="2011-01-22 01:02:03"
+                    LAST_UPDATED_TZ="Europe/London"  
+                />
+            
+                <TB_ANNOTABLE_ARTEFACTS 
+                    ID="991241"
+                    ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+                    
+                    CODE="ORGANISATION0401"
+                    URI="[null]"
+                    URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME01(02.000).ORGANISATION0401"
+                    REPLACED_BY="[null]"
+                    REPLACE_TO="[null]"
+                    
+                    NAME_FK="[null]"
+                    DESCRIPTION_FK="[null]"
+                    
+                    UUID="annotableArtefact-991241"
+                    VERSION="1"
+                    CREATED_BY="user1"
+                    CREATED_DATE="2012-01-01 01:02:03"
+                    CREATED_DATE_TZ="Europe/London"
+                    LAST_UPDATED_BY="user2"
+                    LAST_UPDATED="2012-01-22 01:02:03"
+                    LAST_UPDATED_TZ="Europe/London"
+                />
+        
+                    <!-- ORGANISATION040101 -->
+
+                    <TB_M_ORGANISATIONS
+                        TB_ORGANISATIONS="12411"
+                    />
+                    
+                    <TB_ORGANISATIONS
+                        TB_ITEMS="12411"
+                        ORGANISATION_TYPE="ORGANISATION_UNIT"  
+                    />
+                    
+                    <TB_ITEMS
+                        ID="12411"
+                        PARENT_FK="1241"
+                        ITEM_SCHEME_VERSION_FK="12"
+                        ITEM_SCHEME_VERSION_FIRST_FK="[null]"
+                        NAMEABLE_ARTEFACT_FK="9912411"
+                              
+                        UUID="organisationScheme-1-v2-org-4-1-1"
+                        VERSION="1"
+                        CREATED_BY="user1"
+                        CREATED_DATE="2011-01-01 01:02:03"
+                        CREATED_DATE_TZ="Europe/London"
+                        LAST_UPDATED_BY="user2"
+                        LAST_UPDATED="2011-01-22 01:02:03"
+                        LAST_UPDATED_TZ="Europe/London"  
+                    />
+                
+                    <TB_ANNOTABLE_ARTEFACTS 
+                        ID="9912411"
+                        ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+                        
+                        CODE="ORGANISATION040101"
+                        URI="[null]"
+                        URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME01(02.000).ORGANISATION040101"
+                        REPLACED_BY="[null]"
+                        REPLACE_TO="[null]"
+                        
+                        NAME_FK="[null]"
+                        DESCRIPTION_FK="[null]"
+                        
+                        UUID="annotableArtefact-9912411"
+                        VERSION="1"
+                        CREATED_BY="user1"
+                        CREATED_DATE="2011-01-01 01:02:03"
+                        CREATED_DATE_TZ="Europe/London"
+                        LAST_UPDATED_BY="user2"
+                        LAST_UPDATED="2011-01-22 01:02:03"
+                        LAST_UPDATED_TZ="Europe/London"
+                    />
+    
     <!-- ************************************************************************************** -->
     <!-- ORGANISATION SCHEME 2                                                                  -->
     <!--        - Version 1: draft                                                              -->
@@ -418,7 +838,7 @@
         REPLACED_BY="[null]"
         REPLACE_TO="[null]"
         
-        NAME_FK="46"
+        NAME_FK="10"
         
         VERSION_LOGIC="01.000"
         FINAL_LOGIC="0"
@@ -509,7 +929,7 @@
         REPLACED_BY="[null]"
         REPLACE_TO="[null]"
         
-        NAME_FK="44"
+        NAME_FK="9"
         
         VERSION_LOGIC="01.000"
         FINAL_LOGIC="0"
@@ -1016,32 +1436,6 @@
     />
     
     <TB_INTERNATIONAL_STRINGS
-        ID="44"
-        VERSION="1"
-    />
-    
-    <TB_LOCALISED_STRINGS
-        ID="441"
-        LABEL="b"
-        LOCALE="es"
-        VERSION="1"
-        INTERNATIONAL_STRING_FK="44"
-    />
-    
-    <TB_INTERNATIONAL_STRINGS
-        ID="46"
-        VERSION="1"
-    />
-    
-    <TB_LOCALISED_STRINGS
-        ID="461"
-        LABEL="b"
-        LOCALE="es"
-        VERSION="1"
-        INTERNATIONAL_STRING_FK="46"
-    />
-
-    <TB_INTERNATIONAL_STRINGS
         ID="6"
         VERSION="1"
     />
@@ -1078,6 +1472,97 @@
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="8"
+    />    
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="9"
+        VERSION="1"
     />
+    
+    <TB_LOCALISED_STRINGS
+        ID="91"
+        LABEL="b"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="9"
+    />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="10"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="101"
+        LABEL="b"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="10"
+    />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="12"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="121"
+        LABEL="Nombre organisationScheme-1-v2-organisation-1"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="12"
+    />  
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="13"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="131"
+        LABEL="Descripción organisationScheme-1-v2-organisation-1"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="13"
+    />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="14"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="141"
+        LABEL="Nombre organisationScheme-1-v2-organisation-2"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="14"
+    />         
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="15"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="151"
+        LABEL="Nombre organisationScheme-1-v2-organisation-2-1"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="15"
+    />   
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="16"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="161"
+        LABEL="Nombre organisationScheme-1-v2-organisation-2-1-1"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="16"
+    />                
                         
 </dataset>

@@ -13,19 +13,26 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/srm/applicationContext-test.xml"})
-//@TransactionConfiguration(transactionManager = "txManagerCore", defaultRollback = true)
-//@Transactional
+// @TransactionConfiguration(transactionManager = "txManagerCore", defaultRollback = true)
+// @Transactional
 public class OrganisationsDto2DoMapperTest {
 
     @Autowired
     private org.siemac.metamac.srm.core.organisation.mapper.OrganisationsDto2DoMapper organisationsDto2DoMapper;
 
     @Test
-    public void testOrganisationSchemeMetamacDoToDto() throws MetamacException {
+    public void testOrganisationSchemeMetamacDtoToDo() throws MetamacException {
         OrganisationSchemeMetamacDto dto = OrganisationsMetamacDtoMocks.mockOrganisationScheme();
         OrganisationSchemeVersionMetamac entity = organisationsDto2DoMapper.organisationSchemeMetamacDtoToDo(dto);
         OrganisationsMetamacAsserts.assertEqualsOrganisationScheme(dto, entity);
     }
 
-    // TODO Organisations
+    // TODO organisation
+    // @Test
+    // public void testOrganisationMetamacDoToDto() throws MetamacException {
+    // OrganisationMetamacDto dto = OrganisationsMetamacDtoMocks.mockOrganisationDto(OrganisationTypeEnum.AGENCY);
+    // OrganisationMetamac entity = organisationsDto2DoMapper.organisationMetamacDtoToDo(dto);
+    // OrganisationsMetamacAsserts.assertEqualsOrganisation(dto, entity);
+    // }
+
 }

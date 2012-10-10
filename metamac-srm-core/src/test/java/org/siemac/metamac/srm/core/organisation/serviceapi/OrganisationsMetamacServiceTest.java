@@ -24,6 +24,7 @@ import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamacProperties;
 import org.siemac.metamac.srm.core.organisation.serviceapi.utils.OrganisationsMetamacAsserts;
@@ -51,12 +52,12 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
     public void testCreateOrganisationScheme() throws Exception {
         OrganisationSchemeVersionMetamac organisationSchemeVersion = OrganisationsMetamacDoMocks.mockOrganisationScheme(OrganisationSchemeTypeEnum.AGENCY_SCHEME);
         ServiceContext ctx = getServiceContextAdministrador();
-        
+
         // Create
         OrganisationSchemeVersionMetamac organisationSchemeVersionCreated = organisationsService.createOrganisationScheme(ctx, organisationSchemeVersion);
         String urn = organisationSchemeVersionCreated.getMaintainableArtefact().getUrn();
         assertEquals(ctx.getUserId(), organisationSchemeVersionCreated.getCreatedBy());
-        
+
         // Validate (only metadata in SRM Metamac; the others are checked in sdmx project)
         OrganisationSchemeVersionMetamac organisationSchemeVersionRetrieved = organisationsService.retrieveOrganisationSchemeByUrn(ctx, urn);
         assertEquals(ProcStatusEnum.DRAFT, organisationSchemeVersionRetrieved.getLifecycleMetadata().getProcStatus());
@@ -1272,43 +1273,35 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
     // // Validate
     // OrganisationsMetamacAsserts.assertEqualsOrganisation(organisation, organisationUpdated);
     // }
-    //
-    // @Test
-    // public void testRetrieveOrganisationByUrn() throws Exception {
-    // // Retrieve
-    // String urn = ORGANISATION_SCHEME_1_V2_ORGANISATION_1;
-    // OrganisationMetamac organisation = organisationsService.retrieveOrganisationByUrn(getServiceContextAdministrador(), urn);
-    //
-    // // Validate (only metadata in SRM Metamac; the others are checked in sdmx project)
-    // assertEquals(urn, organisation.getNameableArtefact().getUrn());
-    // OrganisationsMetamacAsserts.assertEqualsInternationalString(organisation.getPluralName(), "es", "PluralName organisationScheme-1-v2-organisation-1", null, null);
-    // OrganisationsMetamacAsserts.assertEqualsInternationalString(organisation.getAcronym(), "es", "Acronym organisationScheme-1-v2-organisation-1", null, null);
-    // OrganisationsMetamacAsserts.assertEqualsInternationalString(organisation.getDescriptionSource(), "es", "DescriptionSource organisationScheme-1-v2-organisation-1", null, null);
-    // OrganisationsMetamacAsserts.assertEqualsInternationalString(organisation.getContext(), "es", "Context organisationScheme-1-v2-organisation-1", null, null);
-    // OrganisationsMetamacAsserts.assertEqualsInternationalString(organisation.getDocMethod(), "es", "DocMethod organisationScheme-1-v2-organisation-1", null, null);
-    // OrganisationsMetamacAsserts.assertEqualsInternationalString(organisation.getDerivation(), "es", "Derivation organisationScheme-1-v2-organisation-1", null, null);
-    // OrganisationsMetamacAsserts.assertEqualsInternationalString(organisation.getLegalActs(), "es", "LegalActs organisationScheme-1-v2-organisation-1", null, null);
-    // assertEquals(OrganisationRoleEnum.ATTRIBUTE, organisation.getSdmxRelatedArtefact());
-    // assertEquals(ORGANISATION_TYPE_DIRECT, organisation.getType().getIdentifier());
-    // assertEquals(ORGANISATION_SCHEME_3_V1_ORGANISATION_1, organisation.getOrganisationExtends().getNameableArtefact().getUrn());
-    // }
-    //
-    // @Test
-    // public void testRetrieveOrganisationByUrnWithParentAndChildren() throws Exception {
-    //
-    // // Retrieve
-    // String urn = ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1;
-    // OrganisationMetamac organisation = organisationsService.retrieveOrganisationByUrn(getServiceContextAdministrador(), urn);
-    //
-    // // Validate
-    // assertEquals("organisationScheme-1-v2-organisation-2-1", organisation.getUuid());
-    // assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_2, organisation.getParent().getNameableArtefact().getUrn());
-    // assertEquals(1, organisation.getChildren().size());
-    // assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1_1, organisation.getChildren().get(0).getNameableArtefact().getUrn());
-    // assertEquals(ORGANISATION_SCHEME_1_V2, organisation.getItemSchemeVersion().getMaintainableArtefact().getUrn());
-    // assertEquals(null, organisation.getItemSchemeVersionFirstLevel());
-    // }
-    //
+
+    @Test
+    public void testRetrieveOrganisationByUrn() throws Exception {
+        // Retrieve
+        String urn = ORGANISATION_SCHEME_1_V2_ORGANISATION_1;
+        OrganisationMetamac organisation = organisationsService.retrieveOrganisationByUrn(getServiceContextAdministrador(), urn);
+        assertEquals(urn, organisation.getNameableArtefact().getUrn());
+
+        // Validate (only metadata in SRM Metamac; the others are checked in sdmx project)
+        // no metadata in Metamac
+    }
+
+    @Test
+    public void testRetrieveOrganisationByUrnWithParentAndChildren() throws Exception {
+
+        // Retrieve
+        String urn = ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1;
+        OrganisationMetamac organisation = organisationsService.retrieveOrganisationByUrn(getServiceContextAdministrador(), urn);
+
+        // Validate
+        // Parent
+        assertTrue(organisation.getParent() instanceof OrganisationMetamac);
+        assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_2, organisation.getParent().getNameableArtefact().getUrn());
+        // Children
+        assertEquals(1, organisation.getChildren().size());
+        assertTrue(organisation.getChildren().get(0) instanceof OrganisationMetamac);
+        assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1_1, organisation.getChildren().get(0).getNameableArtefact().getUrn());
+    }
+
     // @Test
     // public void testDeleteOrganisation() throws Exception {
     //

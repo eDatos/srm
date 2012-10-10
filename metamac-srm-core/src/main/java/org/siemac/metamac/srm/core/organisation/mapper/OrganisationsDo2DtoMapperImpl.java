@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.siemac.metamac.srm.core.base.mapper.BaseDo2DtoMapperImpl;
+import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
+import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -12,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class OrganisationsDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements OrganisationsDo2DtoMapper {
 
     @Autowired
-    private com.arte.statistic.sdmx.srm.core.organisation.mapper.OrganisationsDo2DtoMapper do2DtoMapper;
+    private com.arte.statistic.sdmx.srm.core.organisation.mapper.OrganisationsDo2DtoMapper do2DtoMapperSdmxSrm;
 
     @Override
     public OrganisationSchemeMetamacDto organisationSchemeMetamacDoToDto(OrganisationSchemeVersionMetamac source) {
@@ -21,7 +23,7 @@ public class OrganisationsDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implemen
         }
         OrganisationSchemeMetamacDto target = new OrganisationSchemeMetamacDto();
         target.setLifeCycle(lifeCycleDoToDto(source.getLifecycleMetadata()));
-        do2DtoMapper.organisationSchemeDoToDto(source, target);
+        do2DtoMapperSdmxSrm.organisationSchemeDoToDto(source, target);
         return target;
     }
 
@@ -33,5 +35,14 @@ public class OrganisationsDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implemen
         }
         return target;
     }
-
+    
+    @Override
+    public OrganisationMetamacDto organisationMetamacDoToDto(OrganisationMetamac source) {
+        if (source == null) {
+            return null;
+        }
+        OrganisationMetamacDto target = new OrganisationMetamacDto();
+        do2DtoMapperSdmxSrm.organisationDoToDto(source, target);
+        return target;
+    }
 }

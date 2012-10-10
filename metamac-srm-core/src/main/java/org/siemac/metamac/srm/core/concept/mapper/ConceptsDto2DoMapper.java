@@ -8,6 +8,6 @@ import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 
 public interface ConceptsDto2DoMapper {
 
-    public ConceptSchemeVersionMetamac conceptSchemeDtoToDo(ConceptSchemeMetamacDto conceptSchemeDto) throws MetamacException;
-    public ConceptMetamac conceptDtoToDo(ConceptMetamacDto conceptDto) throws MetamacException;
+    public ConceptSchemeVersionMetamac conceptSchemeDtoToDo(ConceptSchemeMetamacDto source) throws MetamacException;
+    public ConceptMetamac conceptDtoToDo(ConceptMetamacDto source) throws MetamacException;
 }

@@ -16,6 +16,7 @@ import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.common.LifeCycle;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamacProperties;
 import org.siemac.metamac.srm.core.organisation.serviceimpl.utils.DoCopyUtils;
@@ -232,12 +233,12 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
     //
     // return (OrganisationMetamac) organisationsService.updateOrganisation(ctx, organisation);
     // }
-    //
-    // @Override
-    // public OrganisationMetamac retrieveOrganisationByUrn(ServiceContext ctx, String urn) throws MetamacException {
-    // return (OrganisationMetamac) organisationsService.retrieveOrganisationByUrn(ctx, urn);
-    // }
-    //
+
+    @Override
+    public OrganisationMetamac retrieveOrganisationByUrn(ServiceContext ctx, String urn) throws MetamacException {
+        return (OrganisationMetamac) organisationsService.retrieveOrganisationByUrn(ctx, urn);
+    }
+
     // @Override
     // public PagedResult<OrganisationMetamac> findOrganisationsByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
     //

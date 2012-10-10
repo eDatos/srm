@@ -274,6 +274,18 @@ Application SrmFacadeCore {
     		"Cancels the organisation scheme validity"
     		@OrganisationSchemeMetamacDto cancelOrganisationSchemeValidity(String urn) throws MetamacException;
             
+//			"Creates organisation"
+//	   		@OrganisationMetamacDto createOrganisation(@OrganisationMetamacDto organisationMetamacDto) throws MetamacException;
+//	   		"Updates organisation"
+//            @OrganisationMetamacDto updateOrganisation(@OrganisationMetamacDto organisationDto) throws MetamacException;
+	   		"Retrieves a organisation by URN"
+            @OrganisationMetamacDto retrieveOrganisationByUrn(String urn) throws MetamacException;
+//            "Finds organisations by criteria"
+//            MetamacCriteriaResult<@OrganisationMetamacDto> findOrganisationsByCondition(MetamacCriteria criteria) throws MetamacException;
+//			"Deletes organisation"
+//            deleteOrganisation(String urn) throws MetamacException;
+//    		"Retrieves organisations by organisation scheme, in tree structure"
+//    		List<@ItemHierarchyDto> retrieveOrganisationsByOrganisationSchemeUrn(String organisationSchemeUrn) throws MetamacException;       		
        		
        		/**************************************************************************
 		     * CODELIST

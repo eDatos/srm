@@ -16,66 +16,77 @@ import com.arte.statistic.sdmx.srm.core.common.SdmxSrmBaseTest;
 public abstract class SrmBaseTest extends SdmxSrmBaseTest {
 
     // Concepts schemes
-    protected static final String CONCEPT_SCHEME_1_V1               = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:CONCEPTSCHEME01(01.000)";
-    protected static final String CONCEPT_SCHEME_1_V2               = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:CONCEPTSCHEME01(02.000)";
-    protected static final String CONCEPT_SCHEME_2_V1               = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:CONCEPTSCHEME02(01.000)";
-    protected static final String CONCEPT_SCHEME_3_V1               = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:CONCEPTSCHEME03(01.000)";
-    protected static final String CONCEPT_SCHEME_4_V1               = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:CONCEPTSCHEME04(01.000)";
-    protected static final String CONCEPT_SCHEME_5_V1               = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:CONCEPTSCHEME05(01.000)";
-    protected static final String CONCEPT_SCHEME_6_V1               = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:CONCEPTSCHEME06(01.000)";
-    protected static final String CONCEPT_SCHEME_7_V1               = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:CONCEPTSCHEME07(01.000)";
-    protected static final String CONCEPT_SCHEME_7_V2               = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:CONCEPTSCHEME07(02.000)";
-    protected static final String CONCEPT_SCHEME_8_V1               = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:CONCEPTSCHEME08(01.000)";
-    protected static final String CONCEPT_SCHEME_9_V1               = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:CONCEPTSCHEME09(01.000)";
-    protected static final String CONCEPT_SCHEME_10_V1              = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:CONCEPTSCHEME10(01.000)";
-    protected static final String CONCEPT_SCHEME_10_V2              = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:CONCEPTSCHEME10(02.000)";
-    protected static final String CONCEPT_SCHEME_10_V3              = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:CONCEPTSCHEME10(03.000)";
-    protected static final String CONCEPT_SCHEME_11_V1              = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:CONCEPTSCHEME11(01.000)";
-    protected static final String CONCEPT_SCHEME_12_V1              = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:CONCEPTSCHEME12(01.000)";
+    protected static final String CONCEPT_SCHEME_1_V1                         = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:CONCEPTSCHEME01(01.000)";
+    protected static final String CONCEPT_SCHEME_1_V2                         = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:CONCEPTSCHEME01(02.000)";
+    protected static final String CONCEPT_SCHEME_2_V1                         = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:CONCEPTSCHEME02(01.000)";
+    protected static final String CONCEPT_SCHEME_3_V1                         = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:CONCEPTSCHEME03(01.000)";
+    protected static final String CONCEPT_SCHEME_4_V1                         = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:CONCEPTSCHEME04(01.000)";
+    protected static final String CONCEPT_SCHEME_5_V1                         = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:CONCEPTSCHEME05(01.000)";
+    protected static final String CONCEPT_SCHEME_6_V1                         = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:CONCEPTSCHEME06(01.000)";
+    protected static final String CONCEPT_SCHEME_7_V1                         = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:CONCEPTSCHEME07(01.000)";
+    protected static final String CONCEPT_SCHEME_7_V2                         = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:CONCEPTSCHEME07(02.000)";
+    protected static final String CONCEPT_SCHEME_8_V1                         = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:CONCEPTSCHEME08(01.000)";
+    protected static final String CONCEPT_SCHEME_9_V1                         = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:CONCEPTSCHEME09(01.000)";
+    protected static final String CONCEPT_SCHEME_10_V1                        = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:CONCEPTSCHEME10(01.000)";
+    protected static final String CONCEPT_SCHEME_10_V2                        = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:CONCEPTSCHEME10(02.000)";
+    protected static final String CONCEPT_SCHEME_10_V3                        = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:CONCEPTSCHEME10(03.000)";
+    protected static final String CONCEPT_SCHEME_11_V1                        = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:CONCEPTSCHEME11(01.000)";
+    protected static final String CONCEPT_SCHEME_12_V1                        = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:CONCEPTSCHEME12(01.000)";
 
     // Concepts
-    protected static final String CONCEPT_SCHEME_1_V1_CONCEPT_1     = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME01(01.000).CONCEPT01";
-    protected static final String CONCEPT_SCHEME_1_V2_CONCEPT_1     = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME01(02.000).CONCEPT01";
-    protected static final String CONCEPT_SCHEME_1_V2_CONCEPT_2     = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME01(02.000).CONCEPT02";
-    protected static final String CONCEPT_SCHEME_1_V2_CONCEPT_2_1   = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME01(02.000).CONCEPT0201";
-    protected static final String CONCEPT_SCHEME_1_V2_CONCEPT_2_1_1 = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME01(02.000).CONCEPT020101";
-    protected static final String CONCEPT_SCHEME_1_V2_CONCEPT_3     = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME01(02.000).CONCEPT03";
-    protected static final String CONCEPT_SCHEME_1_V2_CONCEPT_4     = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME01(02.000).CONCEPT04";
-    protected static final String CONCEPT_SCHEME_1_V2_CONCEPT_4_1   = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME01(02.000).CONCEPT0401";
-    protected static final String CONCEPT_SCHEME_1_V2_CONCEPT_4_1_1 = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME01(02.000).CONCEPT040101";
-    protected static final String CONCEPT_SCHEME_2_V1_CONCEPT_1     = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME02(01.000).CONCEPT01";
-    protected static final String CONCEPT_SCHEME_2_V1_CONCEPT_2     = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME02(01.000).CONCEPT02";
-    protected static final String CONCEPT_SCHEME_3_V1_CONCEPT_1     = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME03(01.000).CONCEPT01";
-    protected static final String CONCEPT_SCHEME_3_V1_CONCEPT_2     = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME03(01.000).CONCEPT02";
-    protected static final String CONCEPT_SCHEME_3_V1_CONCEPT_2_1   = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME03(01.000).CONCEPT0201";
-    protected static final String CONCEPT_SCHEME_3_V1_CONCEPT_2_1_1 = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME03(01.000).CONCEPT020101";
-    protected static final String CONCEPT_SCHEME_3_V1_CONCEPT_2_2   = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME03(01.000).CONCEPT0202";
-    protected static final String CONCEPT_SCHEME_4_V1_CONCEPT_1     = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME04(01.000).CONCEPT01";
-    protected static final String CONCEPT_SCHEME_5_V1_CONCEPT_1     = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME05(01.000).CONCEPT01";
-    protected static final String CONCEPT_SCHEME_6_V1_CONCEPT_1     = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME06(01.000).CONCEPT01";
-    protected static final String CONCEPT_SCHEME_7_V2_CONCEPT_1     = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME07(02.000).CONCEPT01";
-    protected static final String CONCEPT_SCHEME_8_V1_CONCEPT_1     = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME08(01.000).CONCEPT01";
-    protected static final String CONCEPT_SCHEME_10_V2_CONCEPT_1    = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME10(02.000).CONCEPT01";
-    protected static final String CONCEPT_SCHEME_10_V3_CONCEPT_1    = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME10(03.000).CONCEPT01";
-    protected static final String CONCEPT_SCHEME_11_V1_CONCEPT_1    = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME11(01.000).CONCEPT01";
-    protected static final String CONCEPT_SCHEME_12_V1_CONCEPT_1    = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME12(01.000).CONCEPT01";
+    protected static final String CONCEPT_SCHEME_1_V1_CONCEPT_1               = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME01(01.000).CONCEPT01";
+    protected static final String CONCEPT_SCHEME_1_V2_CONCEPT_1               = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME01(02.000).CONCEPT01";
+    protected static final String CONCEPT_SCHEME_1_V2_CONCEPT_2               = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME01(02.000).CONCEPT02";
+    protected static final String CONCEPT_SCHEME_1_V2_CONCEPT_2_1             = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME01(02.000).CONCEPT0201";
+    protected static final String CONCEPT_SCHEME_1_V2_CONCEPT_2_1_1           = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME01(02.000).CONCEPT020101";
+    protected static final String CONCEPT_SCHEME_1_V2_CONCEPT_3               = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME01(02.000).CONCEPT03";
+    protected static final String CONCEPT_SCHEME_1_V2_CONCEPT_4               = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME01(02.000).CONCEPT04";
+    protected static final String CONCEPT_SCHEME_1_V2_CONCEPT_4_1             = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME01(02.000).CONCEPT0401";
+    protected static final String CONCEPT_SCHEME_1_V2_CONCEPT_4_1_1           = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME01(02.000).CONCEPT040101";
+    protected static final String CONCEPT_SCHEME_2_V1_CONCEPT_1               = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME02(01.000).CONCEPT01";
+    protected static final String CONCEPT_SCHEME_2_V1_CONCEPT_2               = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME02(01.000).CONCEPT02";
+    protected static final String CONCEPT_SCHEME_3_V1_CONCEPT_1               = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME03(01.000).CONCEPT01";
+    protected static final String CONCEPT_SCHEME_3_V1_CONCEPT_2               = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME03(01.000).CONCEPT02";
+    protected static final String CONCEPT_SCHEME_3_V1_CONCEPT_2_1             = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME03(01.000).CONCEPT0201";
+    protected static final String CONCEPT_SCHEME_3_V1_CONCEPT_2_1_1           = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME03(01.000).CONCEPT020101";
+    protected static final String CONCEPT_SCHEME_3_V1_CONCEPT_2_2             = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME03(01.000).CONCEPT0202";
+    protected static final String CONCEPT_SCHEME_4_V1_CONCEPT_1               = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME04(01.000).CONCEPT01";
+    protected static final String CONCEPT_SCHEME_5_V1_CONCEPT_1               = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME05(01.000).CONCEPT01";
+    protected static final String CONCEPT_SCHEME_6_V1_CONCEPT_1               = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME06(01.000).CONCEPT01";
+    protected static final String CONCEPT_SCHEME_7_V2_CONCEPT_1               = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME07(02.000).CONCEPT01";
+    protected static final String CONCEPT_SCHEME_8_V1_CONCEPT_1               = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME08(01.000).CONCEPT01";
+    protected static final String CONCEPT_SCHEME_10_V2_CONCEPT_1              = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME10(02.000).CONCEPT01";
+    protected static final String CONCEPT_SCHEME_10_V3_CONCEPT_1              = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME10(03.000).CONCEPT01";
+    protected static final String CONCEPT_SCHEME_11_V1_CONCEPT_1              = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME11(01.000).CONCEPT01";
+    protected static final String CONCEPT_SCHEME_12_V1_CONCEPT_1              = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME12(01.000).CONCEPT01";
 
     // Concept types
-    protected static final String CONCEPT_TYPE_DERIVED              = "DERIVED";
-    protected static final String CONCEPT_TYPE_DIRECT               = "DIRECT";
+    protected static final String CONCEPT_TYPE_DERIVED                        = "DERIVED";
+    protected static final String CONCEPT_TYPE_DIRECT                         = "DIRECT";
 
     // Organisations schemes
-    protected static final String ORGANISATION_SCHEME_1_V1          = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=ISTAC:ORGANISATIONSCHEME01(01.000)";
-    protected static final String ORGANISATION_SCHEME_1_V2          = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=ISTAC:ORGANISATIONSCHEME01(02.000)";
-    protected static final String ORGANISATION_SCHEME_2_V1          = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=ISTAC:ORGANISATIONSCHEME02(01.000)";
-    protected static final String ORGANISATION_SCHEME_3_V1          = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=ISTAC:ORGANISATIONSCHEME03(01.000)";
-    protected static final String ORGANISATION_SCHEME_4_V1          = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=ISTAC:ORGANISATIONSCHEME04(01.000)";
-    protected static final String ORGANISATION_SCHEME_5_V1          = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=ISTAC:ORGANISATIONSCHEME05(01.000)";
-    protected static final String ORGANISATION_SCHEME_6_V1          = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=ISTAC:ORGANISATIONSCHEME06(01.000)";
-    protected static final String ORGANISATION_SCHEME_7_V1          = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=ISTAC:ORGANISATIONSCHEME07(01.000)";
-    protected static final String ORGANISATION_SCHEME_7_V2          = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=ISTAC:ORGANISATIONSCHEME07(02.000)";
+    protected static final String ORGANISATION_SCHEME_1_V1                    = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=ISTAC:ORGANISATIONSCHEME01(01.000)";
+    protected static final String ORGANISATION_SCHEME_1_V2                    = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=ISTAC:ORGANISATIONSCHEME01(02.000)";
+    protected static final String ORGANISATION_SCHEME_2_V1                    = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=ISTAC:ORGANISATIONSCHEME02(01.000)";
+    protected static final String ORGANISATION_SCHEME_3_V1                    = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=ISTAC:ORGANISATIONSCHEME03(01.000)";
+    protected static final String ORGANISATION_SCHEME_4_V1                    = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=ISTAC:ORGANISATIONSCHEME04(01.000)";
+    protected static final String ORGANISATION_SCHEME_5_V1                    = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=ISTAC:ORGANISATIONSCHEME05(01.000)";
+    protected static final String ORGANISATION_SCHEME_6_V1                    = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=ISTAC:ORGANISATIONSCHEME06(01.000)";
+    protected static final String ORGANISATION_SCHEME_7_V1                    = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=ISTAC:ORGANISATIONSCHEME07(01.000)";
+    protected static final String ORGANISATION_SCHEME_7_V2                    = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=ISTAC:ORGANISATIONSCHEME07(02.000)";
+
+    // Organisations
+    protected String              ORGANISATION_SCHEME_1_V2_ORGANISATION_1     = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME01(02.000).ORGANISATION01";
+    protected String              ORGANISATION_SCHEME_1_V2_ORGANISATION_2     = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME01(02.000).ORGANISATION02";
+    protected String              ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1   = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME01(02.000).ORGANISATION0201";
+    protected String              ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1_1 = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME01(02.000).ORGANISATION020101";
+    protected String              ORGANISATION_SCHEME_1_V2_ORGANISATION_3     = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME01(02.000).ORGANISATION03";
+    protected String              ORGANISATION_SCHEME_1_V2_ORGANISATION_4     = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME01(02.000).ORGANISATION04";
+    protected String              ORGANISATION_SCHEME_1_V2_ORGANISATION_4_1   = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME01(02.000).ORGANISATION0401";
+    protected String              ORGANISATION_SCHEME_1_V2_ORGANISATION_4_1_1 = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME01(02.000).ORGANISATION040101";
+
     // Other
-    protected static final String NOT_EXISTS                        = "not-exists";
+    protected static final String NOT_EXISTS                                  = "not-exists";
 
     // --------------------------------------------------------------------------------------------------------------
     // SERVICE CONTEXT
@@ -184,6 +195,7 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
         tables.add("TB_M_CONCEPTS");
         tables.add("TB_M_CONCEPT_SCHEMES_VERSIONS");
         tables.add("TB_M_DATASTRUCTURE_VERSIONS");
+        tables.add("TB_M_ORGANISATIONS");
         tables.add("TB_M_ORG_SCHEMES_VERSIONS");
         return tables;
     }
@@ -196,6 +208,7 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
         sequences.add("SEQ_M_CONCEPTS");
         sequences.add("SEQ_M_CONCEPT_TYPES");
         sequences.add("SEQ_M_ORG_SCHEMES_VERSIONS");
+        sequences.add("SEQ_M_ORGANISATIONS");
         return sequences;
     }
 
@@ -205,6 +218,7 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
         tablePrimaryKeys.put("TB_M_CONCEPT_SCHEMES_VERSIONS", "TB_CONCEPT_SCHEMES_VERSIONS");
         tablePrimaryKeys.put("TB_M_CONCEPTS", "TB_CONCEPTS");
         tablePrimaryKeys.put("TB_M_ORG_SCHEMES_VERSIONS", "TB_ORG_SCHEMES_VERSIONS");
+        tablePrimaryKeys.put("TB_M_ORGANISATIONS", "TB_ORGANISATIONS");
         return tablePrimaryKeys;
     }
 

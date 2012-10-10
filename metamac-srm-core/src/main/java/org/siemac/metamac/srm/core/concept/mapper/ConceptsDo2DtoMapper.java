@@ -13,13 +13,16 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 
 public interface ConceptsDo2DtoMapper {
 
-    public ConceptSchemeMetamacDto conceptSchemeMetamacDoToDto(ConceptSchemeVersionMetamac conceptSchemeVersion);
-    public List<ConceptSchemeMetamacDto> conceptSchemeMetamacDoListToDtoList(List<ConceptSchemeVersionMetamac> conceptSchemeVersions);
+    // Concept schemes
+    public ConceptSchemeMetamacDto conceptSchemeMetamacDoToDto(ConceptSchemeVersionMetamac source);
+    public List<ConceptSchemeMetamacDto> conceptSchemeMetamacDoListToDtoList(List<ConceptSchemeVersionMetamac> sources);
 
-    public ConceptMetamacDto conceptMetamacDoToDto(ConceptMetamac conceptMetamac);
-    public List<ConceptMetamacDto> conceptMetamacDoListToDtoList(List<ConceptMetamac> conceptMetamacs);
-    public List<ItemHierarchyDto> conceptMetamacDoListToItemHierarchyDtoList(List<ConceptMetamac> conceptMetamacs);
+    // Concepts
+    public ConceptMetamacDto conceptMetamacDoToDto(ConceptMetamac source);
+    public List<ConceptMetamacDto> conceptMetamacDoListToDtoList(List<ConceptMetamac> sources);
+    public List<ItemHierarchyDto> conceptMetamacDoListToItemHierarchyDtoList(List<ConceptMetamac> sources);
 
-    public ConceptTypeDto conceptTypeDoToDto(ConceptType conceptType);
-    public List<ConceptTypeDto> conceptTypeDoListToConceptTypeDtoList(List<ConceptType> conceptTypes);
+    // Concept type
+    public ConceptTypeDto conceptTypeDoToDto(ConceptType source);
+    public List<ConceptTypeDto> conceptTypeDoListToConceptTypeDtoList(List<ConceptType> sources);
 }

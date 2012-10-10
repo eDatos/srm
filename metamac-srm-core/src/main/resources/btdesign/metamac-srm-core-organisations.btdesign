@@ -53,8 +53,8 @@ Application OrganisationsMetamac {
 //			@OrganisationMetamac createOrganisation(String organisationSchemeUrn, @OrganisationMetamac organisation) throws MetamacException;
 //			"Updates organisation"
 //			@OrganisationMetamac updateOrganisation(@OrganisationMetamac organisation) throws MetamacException;
-//    		"Retrieves organisation by urn"
-//    		@OrganisationMetamac retrieveOrganisationByUrn(String urn) throws MetamacException;
+    		"Retrieves organisation by urn"
+    		@OrganisationMetamac retrieveOrganisationByUrn(String urn) throws MetamacException;
 //    		"Finds organisations by criteria"
 //    		PagedResult<@OrganisationMetamac> findOrganisationsByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
 //			"Deletes organisation"
@@ -81,6 +81,19 @@ Application OrganisationsMetamac {
 				@OrganisationSchemeVersionMetamac retrieveOrganisationSchemeVersionByProcStatus(String urn, ArrayProcStatusEnum procStatus) throws MetamacException;
 				@OrganisationSchemeVersionMetamac findByOrganisation(String urn);
 			}			
+		}
+		
+		Entity OrganisationMetamac extends @Organisation {
+			databaseTable="TB_M_ORGANISATIONS"
+			hint="idSequence=M_ORGANISATIONS"
+			
+			Repository OrganisationMetamacRepository {
+				findById;
+				findByQuery;
+				findByQuery(String query, Map<String, Object> parameters, int maxResult);
+				@OrganisationMetamac findByUrn(String urn);
+				findByCondition(PagingParameter pagingParameter);
+			}
 		}
 	}
 }

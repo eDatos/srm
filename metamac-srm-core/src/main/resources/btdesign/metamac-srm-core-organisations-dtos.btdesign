@@ -12,6 +12,9 @@ Application DtosMetamacOrganisationDomain {
 			"Life cycle"
 			- @LifeCycleDto lifeCycle required;
 		}
+		
+		"Dto for OrganisationMetamac"
+		DataTransferObject OrganisationMetamacDto extends @OrganisationDto {
+		}		
 	}
-	
 }

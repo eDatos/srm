@@ -1472,7 +1472,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         concept.getNameableArtefact().setName(ConceptsDoMocks.mockInternationalString());
         concept.setConceptExtends(conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_10_V3_CONCEPT_1));
         assertTrue(concept.getCoreRepresentation() instanceof EnumeratedRepresentation);
-        concept.setCoreRepresentation(ConceptsDoMocks.mockConceptTextFormatRepresentation());
+        concept.setCoreRepresentation(ConceptsDoMocks.mockTextFormatRepresentation());
 
         // Update
         ConceptMetamac conceptUpdated = conceptsService.updateConcept(getServiceContextAdministrador(), concept);
