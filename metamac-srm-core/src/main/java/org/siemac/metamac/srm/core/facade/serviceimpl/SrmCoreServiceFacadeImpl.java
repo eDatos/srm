@@ -50,6 +50,7 @@ import org.siemac.metamac.srm.core.organisation.mapper.OrganisationsDo2DtoMapper
 import org.siemac.metamac.srm.core.organisation.mapper.OrganisationsDto2DoMapper;
 import org.siemac.metamac.srm.core.security.ConceptsSecurityUtils;
 import org.siemac.metamac.srm.core.security.DataStructureDefinitionSecurityUtils;
+import org.siemac.metamac.srm.core.security.OrganisationsSecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.oxm.XmlMappingException;
@@ -767,7 +768,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
         return organisationMetamacDto;
     }
-    
+
     // TODO revisar métodos comentados
 
     //
@@ -804,17 +805,17 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         return organisationMetamacDto;
     }
 
-    // @Override
-    // public void deleteOrganisation(ServiceContext ctx, String urn) throws MetamacException {
-    //
-    // TODO Security
-    // OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationsMetamacService().retrieveOrganisationSchemeByOrganisationUrn(ctx, urn);
-    // OrganisationsSecurityUtils.canDeleteOrganisation(ctx, organisationSchemeVersion);
-    //
-    // // Delete
-    // getOrganisationsMetamacService().deleteOrganisation(ctx, urn);
-    // }
-    //
+    @Override
+    public void deleteOrganisation(ServiceContext ctx, String urn) throws MetamacException {
+
+        // TODO Security
+//        OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationsMetamacService().retrieveOrganisationSchemeByOrganisationUrn(ctx, urn);
+//        OrganisationsSecurityUtils.canDeleteOrganisation(ctx, organisationSchemeVersion);
+
+        // Delete
+        getOrganisationsMetamacService().deleteOrganisation(ctx, urn);
+    }
+
     // @Override
     // public List<ItemHierarchyDto> retrieveOrganisationsByOrganisationSchemeUrn(ServiceContext ctx, String organisationSchemeUrn) throws MetamacException {
     //

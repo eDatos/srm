@@ -252,17 +252,14 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
     // PagedResult<OrganisationMetamac> organisationPagedResult = getOrganisationMetamacRepository().findByCondition(conditions, pagingParameter);
     // return organisationPagedResult;
     // }
-    //
-    // // TODO Pendiente de confirmación de Alberto: se está lanzando excepción si hay organisationos relacionados
-    // @Override
-    // public void deleteOrganisation(ServiceContext ctx, String urn) throws MetamacException {
-    //
-    // Organisation organisation = retrieveOrganisationByUrn(ctx, urn);
-    //
-    // // Note: OrganisationsService checks organisationScheme isn't final
-    // organisationsService.deleteOrganisation(ctx, urn);
-    // }
-    //
+    
+    @Override
+    public void deleteOrganisation(ServiceContext ctx, String urn) throws MetamacException {
+
+        // Note: OrganisationsService checks organisationScheme isn't final
+        organisationsService.deleteOrganisation(ctx, urn);
+    }
+
     // @Override
     // public List<OrganisationMetamac> retrieveOrganisationsByOrganisationSchemeUrn(ServiceContext ctx, String organisationSchemeUrn) throws MetamacException {
     //

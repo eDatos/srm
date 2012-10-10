@@ -35,6 +35,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationSchemeVersion;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
@@ -1277,152 +1278,103 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1_1, organisation.getChildren().get(0).getNameableArtefact().getUrn());
     }
 
-    // @Test
-    // public void testDeleteOrganisation() throws Exception {
-    //
-    // String urn = ORGANISATION_SCHEME_1_V2_ORGANISATION_3;
-    // String organisationSchemeUrn = ORGANISATION_SCHEME_1_V2;
-    // String organisationExtendsBeforeDeleteUrn = ORGANISATION_SCHEME_3_V1_ORGANISATION_2_1;
-    //
-    // OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), organisationSchemeUrn);
-    // assertEquals(4, organisationSchemeVersion.getItemsFirstLevel().size());
-    // assertEquals(8, organisationSchemeVersion.getItems().size());
-    //
-    // // Retrieve organisation to check extends metadata
-    // OrganisationMetamac organisationMetamac = organisationsService.retrieveOrganisationByUrn(getServiceContextAdministrador(), urn);
-    // assertEquals(organisationExtendsBeforeDeleteUrn, organisationMetamac.getOrganisationExtends().getNameableArtefact().getUrn());
-    //
-    // // Delete organisation
-    // organisationsService.deleteOrganisation(getServiceContextAdministrador(), urn);
-    //
-    // // Validation
-    // try {
-    // organisationsService.retrieveOrganisationByUrn(getServiceContextAdministrador(), urn);
-    // fail("Organisation deleted");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.ORGANISATION_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // }
-    // // Check do not delete organisation extends
-    // organisationsService.retrieveOrganisationByUrn(getServiceContextAdministrador(), organisationExtendsBeforeDeleteUrn);
-    //
-    // // Check hierarchy
-    // organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), organisationSchemeUrn);
-    // assertEquals(3, organisationSchemeVersion.getItemsFirstLevel().size());
-    // assertListItemsContainsOrganisation(organisationSchemeVersion.getItemsFirstLevel(), ORGANISATION_SCHEME_1_V2_ORGANISATION_1);
-    // assertListItemsContainsOrganisation(organisationSchemeVersion.getItemsFirstLevel(), ORGANISATION_SCHEME_1_V2_ORGANISATION_2);
-    // assertListItemsContainsOrganisation(organisationSchemeVersion.getItemsFirstLevel(), ORGANISATION_SCHEME_1_V2_ORGANISATION_4);
-    // assertEquals(7, organisationSchemeVersion.getItems().size());
-    // assertListItemsContainsOrganisation(organisationSchemeVersion.getItems(), ORGANISATION_SCHEME_1_V2_ORGANISATION_1);
-    // assertListItemsContainsOrganisation(organisationSchemeVersion.getItems(), ORGANISATION_SCHEME_1_V2_ORGANISATION_2);
-    // assertListItemsContainsOrganisation(organisationSchemeVersion.getItems(), ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1);
-    // assertListItemsContainsOrganisation(organisationSchemeVersion.getItems(), ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1_1);
-    // assertListItemsContainsOrganisation(organisationSchemeVersion.getItems(), ORGANISATION_SCHEME_1_V2_ORGANISATION_4);
-    // assertListItemsContainsOrganisation(organisationSchemeVersion.getItems(), ORGANISATION_SCHEME_1_V2_ORGANISATION_4_1);
-    // assertListItemsContainsOrganisation(organisationSchemeVersion.getItems(), ORGANISATION_SCHEME_1_V2_ORGANISATION_4_1_1);
-    // }
-    //
-    // @Test
-    // public void testDeleteOrganisationWithParentAndChildren() throws Exception {
-    //
-    // String urn = ORGANISATION_SCHEME_1_V2_ORGANISATION_4_1;
-    // String organisationSchemeUrn = ORGANISATION_SCHEME_1_V2;
-    //
-    // OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), organisationSchemeUrn);
-    // assertEquals(4, organisationSchemeVersion.getItemsFirstLevel().size());
-    // assertEquals(8, organisationSchemeVersion.getItems().size());
-    //
-    // // Delete organisation
-    // organisationsService.deleteOrganisation(getServiceContextAdministrador(), urn);
-    //
-    // // Validation
-    // try {
-    // organisationsService.retrieveOrganisationByUrn(getServiceContextAdministrador(), urn);
-    // fail("Organisation deleted");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.ORGANISATION_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // }
-    //
-    // organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), organisationSchemeUrn);
-    // assertEquals(4, organisationSchemeVersion.getItemsFirstLevel().size());
-    // assertListItemsContainsOrganisation(organisationSchemeVersion.getItemsFirstLevel(), ORGANISATION_SCHEME_1_V2_ORGANISATION_1);
-    // assertListItemsContainsOrganisation(organisationSchemeVersion.getItemsFirstLevel(), ORGANISATION_SCHEME_1_V2_ORGANISATION_2);
-    // assertListItemsContainsOrganisation(organisationSchemeVersion.getItemsFirstLevel(), ORGANISATION_SCHEME_1_V2_ORGANISATION_3);
-    // assertListItemsContainsOrganisation(organisationSchemeVersion.getItemsFirstLevel(), ORGANISATION_SCHEME_1_V2_ORGANISATION_4);
-    // assertEquals(6, organisationSchemeVersion.getItems().size());
-    // assertListItemsContainsOrganisation(organisationSchemeVersion.getItems(), ORGANISATION_SCHEME_1_V2_ORGANISATION_1);
-    // assertListItemsContainsOrganisation(organisationSchemeVersion.getItems(), ORGANISATION_SCHEME_1_V2_ORGANISATION_2);
-    // assertListItemsContainsOrganisation(organisationSchemeVersion.getItems(), ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1);
-    // assertListItemsContainsOrganisation(organisationSchemeVersion.getItems(), ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1_1);
-    // assertListItemsContainsOrganisation(organisationSchemeVersion.getItems(), ORGANISATION_SCHEME_1_V2_ORGANISATION_3);
-    // assertListItemsContainsOrganisation(organisationSchemeVersion.getItems(), ORGANISATION_SCHEME_1_V2_ORGANISATION_4);
-    // }
-    //
-    // @Test
-    // public void testDeleteOrganisationErrorOrganisationRelatedRole() throws Exception {
-    // // In SDMX module
-    // }
-    //
-    // @Test
-    // public void testDeleteOrganisationErrorChildrenWithOrganisationRelated() throws Exception {
-    //
-    // String urn = ORGANISATION_SCHEME_1_V2_ORGANISATION_2;
-    //
-    // // Validation
-    // try {
-    // organisationsService.deleteOrganisation(getServiceContextAdministrador(), urn);
-    // fail("Organisation can not be deleted");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.ORGANISATION_WITH_RELATED_ORGANISATIONS.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // assertTrue(ORGANISATION_SCHEME_1_V2_ORGANISATION_1.equals(e.getExceptionItems().get(0).getMessageParameters()[1])
-    // || ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1_1.equals(e.getExceptionItems().get(0).getMessageParameters()[1]));
-    // }
-    // }
-    //
-    // @Test
-    // public void testDeleteOrganisationErrorOrganisationRelatedAsExtends() throws Exception {
-    //
-    // String urn = ORGANISATION_SCHEME_5_V1_ORGANISATION_1;
-    //
-    // // Validation
-    // try {
-    // organisationsService.deleteOrganisation(getServiceContextAdministrador(), urn);
-    // fail("Organisation can not be deleted");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.ORGANISATION_WITH_RELATED_ORGANISATIONS.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // assertEquals(ORGANISATION_SCHEME_3_V1_ORGANISATION_1, e.getExceptionItems().get(0).getMessageParameters()[1]);
-    // }
-    // }
-    //
-    // @Test
-    // public void testDeleteOrganisationErrorOrganisationSchemePublished() throws Exception {
-    //
-    // String urn = ORGANISATION_SCHEME_12_V1_ORGANISATION_1;
-    // String organisationSchemeUrn = ORGANISATION_SCHEME_12_V1;
-    //
-    // // Validation
-    // try {
-    // organisationsService.deleteOrganisation(getServiceContextAdministrador(), urn);
-    // fail("Organisation can not be deleted");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.ORGANISATION_SCHEME_UNMODIFIABLE.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(organisationSchemeUrn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // }
-    // }
-    //
+    @Test
+    public void testDeleteOrganisation() throws Exception {
+
+        String urn = ORGANISATION_SCHEME_1_V2_ORGANISATION_3;
+        String organisationSchemeUrn = ORGANISATION_SCHEME_1_V2;
+
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), organisationSchemeUrn);
+        assertEquals(4, organisationSchemeVersion.getItemsFirstLevel().size());
+        assertEquals(8, organisationSchemeVersion.getItems().size());
+
+        // Delete organisation
+        organisationsService.deleteOrganisation(getServiceContextAdministrador(), urn);
+
+        // Validation
+        try {
+            organisationsService.retrieveOrganisationByUrn(getServiceContextAdministrador(), urn);
+            fail("Organisation deleted");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.ORGANISATION_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+
+        // Check hierarchy
+        organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), organisationSchemeUrn);
+        assertEquals(3, organisationSchemeVersion.getItemsFirstLevel().size());
+        assertListItemsContainsOrganisation(organisationSchemeVersion.getItemsFirstLevel(), ORGANISATION_SCHEME_1_V2_ORGANISATION_1);
+        assertListItemsContainsOrganisation(organisationSchemeVersion.getItemsFirstLevel(), ORGANISATION_SCHEME_1_V2_ORGANISATION_2);
+        assertListItemsContainsOrganisation(organisationSchemeVersion.getItemsFirstLevel(), ORGANISATION_SCHEME_1_V2_ORGANISATION_4);
+        assertEquals(7, organisationSchemeVersion.getItems().size());
+        assertListItemsContainsOrganisation(organisationSchemeVersion.getItems(), ORGANISATION_SCHEME_1_V2_ORGANISATION_1);
+        assertListItemsContainsOrganisation(organisationSchemeVersion.getItems(), ORGANISATION_SCHEME_1_V2_ORGANISATION_2);
+        assertListItemsContainsOrganisation(organisationSchemeVersion.getItems(), ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1);
+        assertListItemsContainsOrganisation(organisationSchemeVersion.getItems(), ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1_1);
+        assertListItemsContainsOrganisation(organisationSchemeVersion.getItems(), ORGANISATION_SCHEME_1_V2_ORGANISATION_4);
+        assertListItemsContainsOrganisation(organisationSchemeVersion.getItems(), ORGANISATION_SCHEME_1_V2_ORGANISATION_4_1);
+        assertListItemsContainsOrganisation(organisationSchemeVersion.getItems(), ORGANISATION_SCHEME_1_V2_ORGANISATION_4_1_1);
+    }
+
+    @Test
+    public void testDeleteOrganisationWithParentAndChildren() throws Exception {
+
+        String urn = ORGANISATION_SCHEME_1_V2_ORGANISATION_4_1;
+        String organisationSchemeUrn = ORGANISATION_SCHEME_1_V2;
+
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), organisationSchemeUrn);
+        assertEquals(4, organisationSchemeVersion.getItemsFirstLevel().size());
+        assertEquals(8, organisationSchemeVersion.getItems().size());
+
+        // Delete organisation
+        organisationsService.deleteOrganisation(getServiceContextAdministrador(), urn);
+
+        // Validation
+        try {
+            organisationsService.retrieveOrganisationByUrn(getServiceContextAdministrador(), urn);
+            fail("Organisation deleted");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.ORGANISATION_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+
+        organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), organisationSchemeUrn);
+        assertEquals(4, organisationSchemeVersion.getItemsFirstLevel().size());
+        assertListItemsContainsOrganisation(organisationSchemeVersion.getItemsFirstLevel(), ORGANISATION_SCHEME_1_V2_ORGANISATION_1);
+        assertListItemsContainsOrganisation(organisationSchemeVersion.getItemsFirstLevel(), ORGANISATION_SCHEME_1_V2_ORGANISATION_2);
+        assertListItemsContainsOrganisation(organisationSchemeVersion.getItemsFirstLevel(), ORGANISATION_SCHEME_1_V2_ORGANISATION_3);
+        assertListItemsContainsOrganisation(organisationSchemeVersion.getItemsFirstLevel(), ORGANISATION_SCHEME_1_V2_ORGANISATION_4);
+        assertEquals(6, organisationSchemeVersion.getItems().size());
+        assertListItemsContainsOrganisation(organisationSchemeVersion.getItems(), ORGANISATION_SCHEME_1_V2_ORGANISATION_1);
+        assertListItemsContainsOrganisation(organisationSchemeVersion.getItems(), ORGANISATION_SCHEME_1_V2_ORGANISATION_2);
+        assertListItemsContainsOrganisation(organisationSchemeVersion.getItems(), ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1);
+        assertListItemsContainsOrganisation(organisationSchemeVersion.getItems(), ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1_1);
+        assertListItemsContainsOrganisation(organisationSchemeVersion.getItems(), ORGANISATION_SCHEME_1_V2_ORGANISATION_3);
+        assertListItemsContainsOrganisation(organisationSchemeVersion.getItems(), ORGANISATION_SCHEME_1_V2_ORGANISATION_4);
+    }
+
+    @Test
+    public void testDeleteOrganisationErrorOrganisationSchemePublished() throws Exception {
+
+        String urn = ORGANISATION_SCHEME_1_V1_ORGANISATION_1;
+        String organisationSchemeUrn = ORGANISATION_SCHEME_1_V1;
+
+        // Validation
+        try {
+            organisationsService.deleteOrganisation(getServiceContextAdministrador(), urn);
+            fail("Organisation can not be deleted");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.ORGANISATION_SCHEME_UNMODIFIABLE.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(organisationSchemeUrn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
     // @Test
     // public void testRetrieveOrganisationsByOrganisationSchemeUrn() throws Exception {
     //
@@ -1630,15 +1582,15 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
     // }
     // }
     //
-    // private void assertListItemsContainsOrganisation(List<Item> items, String urn) {
-    // for (Item item : items) {
-    // if (item.getNameableArtefact().getUrn().equals(urn)) {
-    // return;
-    // }
-    // }
-    // fail("List does not contain item with urn " + urn);
-    // }
-    //
+    private void assertListItemsContainsOrganisation(List<Item> items, String urn) {
+        for (Item item : items) {
+            if (item.getNameableArtefact().getUrn().equals(urn)) {
+                return;
+            }
+        }
+        fail("List does not contain item with urn " + urn);
+    }
+
     // private void assertListOrganisationsContainsOrganisation(List<OrganisationMetamac> items, String urn) {
     // for (Item item : items) {
     // if (item.getNameableArtefact().getUrn().equals(urn)) {

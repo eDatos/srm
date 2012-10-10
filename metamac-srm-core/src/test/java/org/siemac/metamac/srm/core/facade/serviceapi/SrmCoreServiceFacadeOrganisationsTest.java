@@ -752,26 +752,26 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
     // assertTrue(organisationMetamacDtoUpdatedAgain.getVersionOptimisticLocking() > organisationMetamacDtoUpdated.getVersionOptimisticLocking());
     // }
 
-    // @Test
-    // public void testDeleteOrganisation() throws Exception {
-    //
-    // String urn = ORGANISATION_SCHEME_1_V2_ORGANISATION_3;
-    //
-    // // Delete organisation
-    // srmCoreServiceFacade.deleteOrganisation(getServiceContextAdministrador(), urn);
-    //
-    // // Validation
-    // try {
-    // srmCoreServiceFacade.retrieveOrganisationByUrn(getServiceContextAdministrador(), urn);
-    // fail("Organisation deleted");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.ORGANISATION_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // }
-    // }
-    //
+    @Test
+    public void testDeleteOrganisation() throws Exception {
+
+        String urn = ORGANISATION_SCHEME_1_V2_ORGANISATION_3;
+
+        // Delete organisation
+        srmCoreServiceFacade.deleteOrganisation(getServiceContextAdministrador(), urn);
+
+        // Validation
+        try {
+            srmCoreServiceFacade.retrieveOrganisationByUrn(getServiceContextAdministrador(), urn);
+            fail("Organisation deleted");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.ORGANISATION_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
     // @Test
     // public void testRetrieveOrganisationsByOrganisationSchemeUrn() throws Exception {
     //
@@ -835,14 +835,4 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
     protected String getDataSetFile() {
         return "dbunit/SrmOrganisationsTest.xml";
     }
-
-    // private void assertListOrganisationsContainsOrganisation(List<OrganisationMetamacDto> items, String urn) {
-    // for (OrganisationMetamacDto item : items) {
-    // if (item.getUrn().equals(urn)) {
-    // return;
-    // }
-    // }
-    // fail("List does not contain item with urn " + urn);
-    // }
-
 }

@@ -76,6 +76,7 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
     protected static final String ORGANISATION_SCHEME_7_V2                    = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=ISTAC:ORGANISATIONSCHEME07(02.000)";
 
     // Organisations
+    protected String              ORGANISATION_SCHEME_1_V1_ORGANISATION_1     = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME01(01.000).ORGANISATION01";
     protected String              ORGANISATION_SCHEME_1_V2_ORGANISATION_1     = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME01(02.000).ORGANISATION01";
     protected String              ORGANISATION_SCHEME_1_V2_ORGANISATION_2     = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME01(02.000).ORGANISATION02";
     protected String              ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1   = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME01(02.000).ORGANISATION0201";

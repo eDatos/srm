@@ -93,6 +93,56 @@
         LAST_UPDATED_TZ="Europe/London"
     />
     
+        <!-- ORGANISATIONS -->
+            <!-- -> ORGANISATION01 -->
+            
+            <!-- ORGANISATION01 -->
+            
+            <TB_ORGANISATIONS
+                TB_ITEMS="111"
+                ORGANISATION_TYPE="ORGANISATION_UNIT"
+            />
+        
+            <TB_ITEMS
+                ID="111"
+                PARENT_FK="[null]"
+                ITEM_SCHEME_VERSION_FK="11"
+                ITEM_SCHEME_VERSION_FIRST_FK="11"
+                NAMEABLE_ARTEFACT_FK="111"
+                      
+                UUID="organisationScheme-1-v1-org-1"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"  
+            />
+
+            <TB_ANNOTABLE_ARTEFACTS 
+                ID="111"
+                ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+
+                CODE="ORGANISATION01"
+                URI="[null]"
+                URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME01(01.000).ORGANISATION01"
+                REPLACED_BY="[null]"
+                REPLACE_TO="[null]"
+
+                NAME_FK="[null]"
+                DESCRIPTION_FK="[null]"
+
+                UUID="annotableArtefact-111"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"
+            />    
+    
     <!-- **************************************************************************************  -->                
     <!-- VERSION 2                                                                               -->
     <!-- **************************************************************************************  -->
