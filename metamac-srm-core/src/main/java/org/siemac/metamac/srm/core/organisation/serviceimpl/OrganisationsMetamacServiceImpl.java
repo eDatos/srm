@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemScheme;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.common.error.ServiceExceptionParameters;
@@ -260,17 +261,17 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
         organisationsService.deleteOrganisation(ctx, urn);
     }
 
-    // @Override
-    // public List<OrganisationMetamac> retrieveOrganisationsByOrganisationSchemeUrn(ServiceContext ctx, String organisationSchemeUrn) throws MetamacException {
-    //
-    // // Retrieve
-    // List<Organisation> organisations = organisationsService.retrieveOrganisationsByOrganisationSchemeUrn(ctx, organisationSchemeUrn);
-    //
-    // // Typecast
-    // List<OrganisationMetamac> organisationsMetamac = organisationsToOrganisationMetamac(organisations);
-    // return organisationsMetamac;
-    // }
-    //
+    @Override
+    public List<OrganisationMetamac> retrieveOrganisationsByOrganisationSchemeUrn(ServiceContext ctx, String organisationSchemeUrn) throws MetamacException {
+
+        // Retrieve
+        List<Organisation> organisations = organisationsService.retrieveOrganisationsByOrganisationSchemeUrn(ctx, organisationSchemeUrn);
+
+        // Typecast
+        List<OrganisationMetamac> organisationsMetamac = organisationsToOrganisationMetamac(organisations);
+        return organisationsMetamac;
+    }
+
     @Override
     public OrganisationSchemeVersionMetamac retrieveOrganisationSchemeByOrganisationUrn(ServiceContext ctx, String organisationUrn) throws MetamacException {
         // Validation
@@ -284,13 +285,13 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
         return organisationSchemeVersion;
     }
 
-    // private List<OrganisationMetamac> organisationsToOrganisationMetamac(List<Organisation> items) {
-    // List<OrganisationMetamac> organisations = new ArrayList<OrganisationMetamac>();
-    // for (Item item : items) {
-    // organisations.add((OrganisationMetamac) item);
-    // }
-    // return organisations;
-    // }
+    private List<OrganisationMetamac> organisationsToOrganisationMetamac(List<Organisation> items) {
+        List<OrganisationMetamac> organisations = new ArrayList<OrganisationMetamac>();
+        for (Item item : items) {
+            organisations.add((OrganisationMetamac) item);
+        }
+        return organisations;
+    }
 
     /**
      * Finds versions of organisation scheme in specific procStatus

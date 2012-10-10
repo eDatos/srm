@@ -59,8 +59,8 @@ Application OrganisationsMetamac {
 //    		PagedResult<@OrganisationMetamac> findOrganisationsByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
 			"Deletes organisation"
     		deleteOrganisation(String urn) throws MetamacException;
-//    		"Retrieves organisations by organisation scheme, in tree structure"
-//    		List<@OrganisationMetamac> retrieveOrganisationsByOrganisationSchemeUrn(String organisationSchemeUrn) throws MetamacException;
+    		"Retrieves organisations by organisation scheme, in tree structure"
+    		List<@OrganisationMetamac> retrieveOrganisationsByOrganisationSchemeUrn(String organisationSchemeUrn) throws MetamacException;
 		}
 		
 		// ----------------------------------------------------------------

@@ -1375,65 +1375,65 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         }
     }
 
-    // @Test
-    // public void testRetrieveOrganisationsByOrganisationSchemeUrn() throws Exception {
-    //
-    // // Retrieve
-    // String organisationSchemeUrn = ORGANISATION_SCHEME_1_V2;
-    // List<OrganisationMetamac> organisations = organisationsService.retrieveOrganisationsByOrganisationSchemeUrn(getServiceContextAdministrador(), organisationSchemeUrn);
-    //
-    // // Validate
-    // assertEquals(4, organisations.size());
-    // {
-    // // Organisation 01
-    // OrganisationMetamac organisation = organisations.get(0);
-    // assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_1, organisation.getNameableArtefact().getUrn());
-    // assertEquals(0, organisation.getChildren().size());
-    // }
-    // {
-    // // Organisation 02
-    // OrganisationMetamac organisation = organisations.get(1);
-    // assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_2, organisation.getNameableArtefact().getUrn());
-    // assertEquals(1, organisation.getChildren().size());
-    // {
-    // // Organisation 02 01
-    // OrganisationMetamac organisationChild = (OrganisationMetamac) organisation.getChildren().get(0);
-    // assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1, organisationChild.getNameableArtefact().getUrn());
-    // assertEquals(1, organisationChild.getChildren().size());
-    // {
-    // // Organisation 02 01 01
-    // OrganisationMetamac organisationChildChild = (OrganisationMetamac) organisationChild.getChildren().get(0);
-    // assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1_1, organisationChildChild.getNameableArtefact().getUrn());
-    // assertEquals(0, organisationChildChild.getChildren().size());
-    // }
-    // }
-    // }
-    // {
-    // // Organisation 03
-    // OrganisationMetamac organisation = organisations.get(2);
-    // assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_3, organisation.getNameableArtefact().getUrn());
-    // assertEquals(0, organisation.getChildren().size());
-    // }
-    // {
-    // // Organisation 04
-    // OrganisationMetamac organisation = organisations.get(3);
-    // assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_4, organisation.getNameableArtefact().getUrn());
-    // assertEquals(1, organisation.getChildren().size());
-    // {
-    // // Organisation 04 01
-    // OrganisationMetamac organisationChild = (OrganisationMetamac) organisation.getChildren().get(0);
-    // assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_4_1, organisationChild.getNameableArtefact().getUrn());
-    // assertEquals(1, organisationChild.getChildren().size());
-    // {
-    // // Organisation 04 01 01
-    // OrganisationMetamac organisationChildChild = (OrganisationMetamac) organisationChild.getChildren().get(0);
-    // assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_4_1_1, organisationChildChild.getNameableArtefact().getUrn());
-    // assertEquals(0, organisationChildChild.getChildren().size());
-    // }
-    // }
-    // }
-    // }
-    //
+    @Test
+    public void testRetrieveOrganisationsByOrganisationSchemeUrn() throws Exception {
+
+        // Retrieve
+        String organisationSchemeUrn = ORGANISATION_SCHEME_1_V2;
+        List<OrganisationMetamac> organisations = organisationsService.retrieveOrganisationsByOrganisationSchemeUrn(getServiceContextAdministrador(), organisationSchemeUrn);
+
+        // Validate
+        assertEquals(4, organisations.size());
+        {
+            // Organisation 01
+            OrganisationMetamac organisation = organisations.get(0);
+            assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_1, organisation.getNameableArtefact().getUrn());
+            assertEquals(0, organisation.getChildren().size());
+        }
+        {
+            // Organisation 02
+            OrganisationMetamac organisation = organisations.get(1);
+            assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_2, organisation.getNameableArtefact().getUrn());
+            assertEquals(1, organisation.getChildren().size());
+            {
+                // Organisation 02 01
+                OrganisationMetamac organisationChild = (OrganisationMetamac) organisation.getChildren().get(0);
+                assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1, organisationChild.getNameableArtefact().getUrn());
+                assertEquals(1, organisationChild.getChildren().size());
+                {
+                    // Organisation 02 01 01
+                    OrganisationMetamac organisationChildChild = (OrganisationMetamac) organisationChild.getChildren().get(0);
+                    assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1_1, organisationChildChild.getNameableArtefact().getUrn());
+                    assertEquals(0, organisationChildChild.getChildren().size());
+                }
+            }
+        }
+        {
+            // Organisation 03
+            OrganisationMetamac organisation = organisations.get(2);
+            assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_3, organisation.getNameableArtefact().getUrn());
+            assertEquals(0, organisation.getChildren().size());
+        }
+        {
+            // Organisation 04
+            OrganisationMetamac organisation = organisations.get(3);
+            assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_4, organisation.getNameableArtefact().getUrn());
+            assertEquals(1, organisation.getChildren().size());
+            {
+                // Organisation 04 01
+                OrganisationMetamac organisationChild = (OrganisationMetamac) organisation.getChildren().get(0);
+                assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_4_1, organisationChild.getNameableArtefact().getUrn());
+                assertEquals(1, organisationChild.getChildren().size());
+                {
+                    // Organisation 04 01 01
+                    OrganisationMetamac organisationChildChild = (OrganisationMetamac) organisationChild.getChildren().get(0);
+                    assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_4_1_1, organisationChildChild.getNameableArtefact().getUrn());
+                    assertEquals(0, organisationChildChild.getChildren().size());
+                }
+            }
+        }
+    }
+
     // @Test
     // public void testFindOrganisationsByCondition() throws Exception {
     //

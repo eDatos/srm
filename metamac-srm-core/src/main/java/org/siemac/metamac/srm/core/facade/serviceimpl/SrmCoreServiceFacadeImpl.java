@@ -50,7 +50,6 @@ import org.siemac.metamac.srm.core.organisation.mapper.OrganisationsDo2DtoMapper
 import org.siemac.metamac.srm.core.organisation.mapper.OrganisationsDto2DoMapper;
 import org.siemac.metamac.srm.core.security.ConceptsSecurityUtils;
 import org.siemac.metamac.srm.core.security.DataStructureDefinitionSecurityUtils;
-import org.siemac.metamac.srm.core.security.OrganisationsSecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.oxm.XmlMappingException;
@@ -769,8 +768,6 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         return organisationMetamacDto;
     }
 
-    // TODO revisar métodos comentados
-
     //
     // @Override
     // public OrganisationMetamacDto updateOrganisation(ServiceContext ctx, OrganisationMetamacDto organisationDto) throws MetamacException {
@@ -809,27 +806,27 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     public void deleteOrganisation(ServiceContext ctx, String urn) throws MetamacException {
 
         // TODO Security
-//        OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationsMetamacService().retrieveOrganisationSchemeByOrganisationUrn(ctx, urn);
-//        OrganisationsSecurityUtils.canDeleteOrganisation(ctx, organisationSchemeVersion);
+        // OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationsMetamacService().retrieveOrganisationSchemeByOrganisationUrn(ctx, urn);
+        // OrganisationsSecurityUtils.canDeleteOrganisation(ctx, organisationSchemeVersion);
 
         // Delete
         getOrganisationsMetamacService().deleteOrganisation(ctx, urn);
     }
 
-    // @Override
-    // public List<ItemHierarchyDto> retrieveOrganisationsByOrganisationSchemeUrn(ServiceContext ctx, String organisationSchemeUrn) throws MetamacException {
-    //
-    // TODO Security
-    // OrganisationsSecurityUtils.canRetrieveOrganisationsByOrganisationSchemeUrn(ctx);
-    //
-    // // Retrieve
-    // List<OrganisationMetamac> organisations = getOrganisationsMetamacService().retrieveOrganisationsByOrganisationSchemeUrn(ctx, organisationSchemeUrn);
-    //
-    // // Transform
-    // List<ItemHierarchyDto> itemsHierarchyDto = organisationsDo2DtoMapper.organisationMetamacDoListToItemHierarchyDtoList(organisations);
-    // return itemsHierarchyDto;
-    // }
-    //
+    @Override
+    public List<ItemHierarchyDto> retrieveOrganisationsByOrganisationSchemeUrn(ServiceContext ctx, String organisationSchemeUrn) throws MetamacException {
+
+        // TODO Security
+        // OrganisationsSecurityUtils.canRetrieveOrganisationsByOrganisationSchemeUrn(ctx);
+
+        // Retrieve
+        List<OrganisationMetamac> organisations = getOrganisationsMetamacService().retrieveOrganisationsByOrganisationSchemeUrn(ctx, organisationSchemeUrn);
+
+        // Transform
+        List<ItemHierarchyDto> itemsHierarchyDto = organisationsDo2DtoMapper.organisationMetamacDoListToItemHierarchyDtoList(organisations);
+        return itemsHierarchyDto;
+    }
+
     // @Override
     // public MetamacCriteriaResult<OrganisationMetamacDto> findOrganisationsByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
     // TODO Security

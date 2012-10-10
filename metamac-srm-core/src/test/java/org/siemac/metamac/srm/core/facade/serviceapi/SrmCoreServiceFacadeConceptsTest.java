@@ -865,7 +865,6 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
             assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
         }
     }
-
     @Test
     public void testRetrieveConceptsByConceptSchemeUrn() throws Exception {
 
@@ -878,17 +877,20 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         {
             // Concept 01
             ItemHierarchyDto concept = concepts.get(0);
+            assertTrue(concept.getItem() instanceof ConceptMetamacDto);
             assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_1, concept.getItem().getUrn());
             assertEquals(0, concept.getChildren().size());
         }
         {
             // Concept 02
             ItemHierarchyDto concept = concepts.get(1);
+            assertTrue(concept.getItem() instanceof ConceptMetamacDto);
             assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2, concept.getItem().getUrn());
             assertEquals(1, concept.getChildren().size());
             {
                 // Concept 02 01
                 ItemHierarchyDto conceptChild = (ItemHierarchyDto) concept.getChildren().get(0);
+                assertTrue(conceptChild.getItem() instanceof ConceptMetamacDto);
                 assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2_1, conceptChild.getItem().getUrn());
                 assertEquals(1, conceptChild.getChildren().size());
                 {
@@ -902,12 +904,14 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         {
             // Concept 03
             ItemHierarchyDto concept = concepts.get(2);
+            assertTrue(concept.getItem() instanceof ConceptMetamacDto);
             assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_3, concept.getItem().getUrn());
             assertEquals(0, concept.getChildren().size());
         }
         {
             // Concept 04
             ItemHierarchyDto concept = concepts.get(3);
+            assertTrue(concept.getItem() instanceof ConceptMetamacDto);
             assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_4, concept.getItem().getUrn());
             assertEquals(1, concept.getChildren().size());
             {

@@ -284,8 +284,8 @@ Application SrmFacadeCore {
 //            MetamacCriteriaResult<@OrganisationMetamacDto> findOrganisationsByCondition(MetamacCriteria criteria) throws MetamacException;
 			"Deletes organisation"
             deleteOrganisation(String urn) throws MetamacException;
-//    		"Retrieves organisations by organisation scheme, in tree structure"
-//    		List<@ItemHierarchyDto> retrieveOrganisationsByOrganisationSchemeUrn(String organisationSchemeUrn) throws MetamacException;       		
+    		"Retrieves organisations by organisation scheme, in tree structure"
+    		List<@ItemHierarchyDto> retrieveOrganisationsByOrganisationSchemeUrn(String organisationSchemeUrn) throws MetamacException;       		
        		
        		/**************************************************************************
 		     * CODELIST

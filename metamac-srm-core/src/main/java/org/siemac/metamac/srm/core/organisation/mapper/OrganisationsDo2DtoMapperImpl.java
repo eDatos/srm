@@ -10,6 +10,9 @@ import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.Item;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
+
 @org.springframework.stereotype.Component("organisationsDo2DtoMapper")
 public class OrganisationsDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements OrganisationsDo2DtoMapper {
 
@@ -44,5 +47,31 @@ public class OrganisationsDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implemen
         OrganisationMetamacDto target = new OrganisationMetamacDto();
         do2DtoMapperSdmxSrm.organisationDoToDto(source, target);
         return target;
+    }
+    
+    @Override
+    public List<ItemHierarchyDto> organisationMetamacDoListToItemHierarchyDtoList(List<OrganisationMetamac> sources) {
+        List<ItemHierarchyDto> targets = new ArrayList<ItemHierarchyDto>();
+        for (OrganisationMetamac source : sources) {
+            ItemHierarchyDto target = organisationMetamacDoToItemHierarchyDto(source);
+            targets.add(target);
+        }
+        return targets;
+    }
+    
+    private ItemHierarchyDto organisationMetamacDoToItemHierarchyDto(OrganisationMetamac organisationMetamac) {
+        ItemHierarchyDto itemHierarchyDto = new ItemHierarchyDto();
+
+        // Organisation
+        OrganisationMetamacDto organisationMetamacDto = organisationMetamacDoToDto(organisationMetamac);
+        itemHierarchyDto.setItem(organisationMetamacDto);
+
+        // Children (only will be filled for OrganisationUnit type) 
+        for (Item item : organisationMetamac.getChildren()) {
+            ItemHierarchyDto itemHierarchyChildrenDto = organisationMetamacDoToItemHierarchyDto((OrganisationMetamac) item);
+            itemHierarchyDto.addChildren(itemHierarchyChildrenDto);
+        }
+
+        return itemHierarchyDto;
     }
 }

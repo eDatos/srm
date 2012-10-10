@@ -40,6 +40,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
@@ -772,64 +773,69 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
         }
     }
 
-    // @Test
-    // public void testRetrieveOrganisationsByOrganisationSchemeUrn() throws Exception {
-    //
-    // // Retrieve
-    // String organisationSchemeUrn = ORGANISATION_SCHEME_1_V2;
-    // List<ItemHierarchyDto> organisations = srmCoreServiceFacade.retrieveOrganisationsByOrganisationSchemeUrn(getServiceContextAdministrador(), organisationSchemeUrn);
-    //
-    // // Validate
-    // assertEquals(4, organisations.size());
-    // {
-    // // Organisation 01
-    // ItemHierarchyDto organisation = organisations.get(0);
-    // assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_1, organisation.getItem().getUrn());
-    // assertEquals(0, organisation.getChildren().size());
-    // }
-    // {
-    // // Organisation 02
-    // ItemHierarchyDto organisation = organisations.get(1);
-    // assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_2, organisation.getItem().getUrn());
-    // assertEquals(1, organisation.getChildren().size());
-    // {
-    // // Organisation 02 01
-    // ItemHierarchyDto organisationChild = (ItemHierarchyDto) organisation.getChildren().get(0);
-    // assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1, organisationChild.getItem().getUrn());
-    // assertEquals(1, organisationChild.getChildren().size());
-    // {
-    // // Organisation 02 01 01
-    // ItemHierarchyDto organisationChildChild = (ItemHierarchyDto) organisationChild.getChildren().get(0);
-    // assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1_1, organisationChildChild.getItem().getUrn());
-    // assertEquals(0, organisationChildChild.getChildren().size());
-    // }
-    // }
-    // }
-    // {
-    // // Organisation 03
-    // ItemHierarchyDto organisation = organisations.get(2);
-    // assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_3, organisation.getItem().getUrn());
-    // assertEquals(0, organisation.getChildren().size());
-    // }
-    // {
-    // // Organisation 04
-    // ItemHierarchyDto organisation = organisations.get(3);
-    // assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_4, organisation.getItem().getUrn());
-    // assertEquals(1, organisation.getChildren().size());
-    // {
-    // // Organisation 04 01
-    // ItemHierarchyDto organisationChild = (ItemHierarchyDto) organisation.getChildren().get(0);
-    // assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_4_1, organisationChild.getItem().getUrn());
-    // assertEquals(1, organisationChild.getChildren().size());
-    // {
-    // // Organisation 04 01 01
-    // ItemHierarchyDto organisationChildChild = (ItemHierarchyDto) organisationChild.getChildren().get(0);
-    // assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_4_1_1, organisationChildChild.getItem().getUrn());
-    // assertEquals(0, organisationChildChild.getChildren().size());
-    // }
-    // }
-    // }
-    // }
+    @Test
+    public void testRetrieveOrganisationsByOrganisationSchemeUrn() throws Exception {
+
+        // Retrieve
+        String organisationSchemeUrn = ORGANISATION_SCHEME_1_V2;
+        List<ItemHierarchyDto> organisations = srmCoreServiceFacade.retrieveOrganisationsByOrganisationSchemeUrn(getServiceContextAdministrador(), organisationSchemeUrn);
+
+        // Validate
+        assertEquals(4, organisations.size());
+        {
+            // Organisation 01
+            ItemHierarchyDto organisation = organisations.get(0);
+            assertTrue(organisation.getItem() instanceof OrganisationMetamacDto);
+            assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_1, organisation.getItem().getUrn());
+            assertEquals(0, organisation.getChildren().size());
+        }
+        {
+            // Organisation 02
+            ItemHierarchyDto organisation = organisations.get(1);
+            assertTrue(organisation.getItem() instanceof OrganisationMetamacDto);
+            assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_2, organisation.getItem().getUrn());
+            assertEquals(1, organisation.getChildren().size());
+            {
+                // Organisation 02 01
+                ItemHierarchyDto organisationChild = (ItemHierarchyDto) organisation.getChildren().get(0);
+                assertTrue(organisationChild.getItem() instanceof OrganisationMetamacDto);
+                assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1, organisationChild.getItem().getUrn());
+                assertEquals(1, organisationChild.getChildren().size());
+                {
+                    // Organisation 02 01 01
+                    ItemHierarchyDto organisationChildChild = (ItemHierarchyDto) organisationChild.getChildren().get(0);
+                    assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1_1, organisationChildChild.getItem().getUrn());
+                    assertEquals(0, organisationChildChild.getChildren().size());
+                }
+            }
+        }
+        {
+            // Organisation 03
+            ItemHierarchyDto organisation = organisations.get(2);
+            assertTrue(organisation.getItem() instanceof OrganisationMetamacDto);
+            assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_3, organisation.getItem().getUrn());
+            assertEquals(0, organisation.getChildren().size());
+        }
+        {
+            // Organisation 04
+            ItemHierarchyDto organisation = organisations.get(3);
+            assertTrue(organisation.getItem() instanceof OrganisationMetamacDto);
+            assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_4, organisation.getItem().getUrn());
+            assertEquals(1, organisation.getChildren().size());
+            {
+                // Organisation 04 01
+                ItemHierarchyDto organisationChild = (ItemHierarchyDto) organisation.getChildren().get(0);
+                assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_4_1, organisationChild.getItem().getUrn());
+                assertEquals(1, organisationChild.getChildren().size());
+                {
+                    // Organisation 04 01 01
+                    ItemHierarchyDto organisationChildChild = (ItemHierarchyDto) organisationChild.getChildren().get(0);
+                    assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_4_1_1, organisationChildChild.getItem().getUrn());
+                    assertEquals(0, organisationChildChild.getChildren().size());
+                }
+            }
+        }
+    }
 
     @Override
     protected String getDataSetFile() {
