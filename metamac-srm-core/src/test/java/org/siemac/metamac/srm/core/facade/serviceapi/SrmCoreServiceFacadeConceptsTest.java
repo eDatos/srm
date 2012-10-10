@@ -1027,6 +1027,74 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
             assertEquals(conceptsPagedResult.getResults().size(), i);
         }
 
+        // Find only concepts in first level
+        {
+            MetamacCriteria metamacCriteria = new MetamacCriteria();
+            // Order
+            metamacCriteria.setOrdersBy(new ArrayList<MetamacCriteriaOrder>());
+
+            {
+                MetamacCriteriaOrder order = new MetamacCriteriaOrder();
+                order.setType(OrderTypeEnum.ASC);
+                order.setPropertyName(ConceptMetamacCriteriaOrderEnum.CONCEPT_SCHEME_CODE.name());
+                metamacCriteria.getOrdersBy().add(order);
+            }
+            {
+                MetamacCriteriaOrder order = new MetamacCriteriaOrder();
+                order.setType(OrderTypeEnum.ASC);
+                order.setPropertyName(ConceptMetamacCriteriaOrderEnum.CONCEPT_SCHEME_URN.name());
+                metamacCriteria.getOrdersBy().add(order);
+            }
+            {
+                MetamacCriteriaOrder order = new MetamacCriteriaOrder();
+                order.setType(OrderTypeEnum.ASC);
+                order.setPropertyName(ConceptMetamacCriteriaOrderEnum.URN.name());
+                metamacCriteria.getOrdersBy().add(order);
+            }
+
+            // Pagination
+            metamacCriteria.setPaginator(new MetamacCriteriaPaginator());
+            metamacCriteria.getPaginator().setFirstResult(0);
+            metamacCriteria.getPaginator().setMaximumResultSize(Integer.MAX_VALUE);
+            metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
+
+            // Restrictions
+            MetamacCriteriaPropertyRestriction propertyRestriction = new MetamacCriteriaPropertyRestriction();
+            propertyRestriction.setPropertyName(ConceptMetamacCriteriaPropertyEnum.CONCEPT_PARENT_URN.name());
+            propertyRestriction.setOperationType(OperationType.IS_NULL);
+            metamacCriteria.setRestriction(propertyRestriction);
+
+            // Find
+            MetamacCriteriaResult<ConceptMetamacDto> conceptsPagedResult = srmCoreServiceFacade.findConceptsByCondition(getServiceContextAdministrador(), metamacCriteria);
+
+            // Validate
+            assertEquals(18, conceptsPagedResult.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(18, conceptsPagedResult.getResults().size());
+            assertTrue(conceptsPagedResult.getResults().get(0) instanceof ConceptMetamacDto);
+            assertEquals(CONCEPT_SCHEME_1_V1, conceptsPagedResult.getResults().get(0).getItemSchemeVersionUrn());
+
+            int i = 0;
+            assertEquals(CONCEPT_SCHEME_1_V1_CONCEPT_1, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_1, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_3, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_4, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_2_V1_CONCEPT_1, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_2_V1_CONCEPT_2, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_3_V1_CONCEPT_1, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_3_V1_CONCEPT_2, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_4_V1_CONCEPT_1, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_5_V1_CONCEPT_1, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_6_V1_CONCEPT_1, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_7_V2_CONCEPT_1, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_8_V1_CONCEPT_1, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_10_V2_CONCEPT_1, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_10_V3_CONCEPT_1, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_11_V1_CONCEPT_1, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_12_V1_CONCEPT_1, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(conceptsPagedResult.getResults().size(), i);
+        }
+
         // Find by concept scheme type
         {
             MetamacCriteria metamacCriteria = new MetamacCriteria();
