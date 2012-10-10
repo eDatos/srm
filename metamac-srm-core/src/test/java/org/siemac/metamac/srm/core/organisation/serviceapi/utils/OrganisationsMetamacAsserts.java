@@ -34,8 +34,19 @@ public class OrganisationsMetamacAsserts extends OrganisationsAsserts {
         assertEqualsOrganisationScheme(actual, expected, MapperEnum.DTO2DO);
     }
 
+    // ORGANISATION
+
+    public static void assertEqualsOrganisation(OrganisationMetamac expected, OrganisationMetamac actual) {
+        OrganisationsAsserts.assertEqualsOrganisation(expected, actual);
+    }
+
     public static void assertEqualsOrganisation(OrganisationMetamac expected, OrganisationMetamacDto actual) {
         assertEqualsOrganisation(expected, actual, MapperEnum.DO2DTO);
+    }
+
+    public static void assertEqualsOrganisationMetamacDto(OrganisationMetamacDto expected, OrganisationMetamacDto actual) {
+        // note: mo metadata in SRM module
+        OrganisationsAsserts.assertEqualsOrganisationDto(expected, actual);
     }
 
     public static void assertEqualsOrganisation(OrganisationMetamacDto expected, OrganisationMetamac actual) {

@@ -11,6 +11,7 @@ import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacadeConcept
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacadeConceptsTest;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacadeDsdTest;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacadeOrganisationsSecurityTest;
+import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacadeOrganisationsTest;
 import org.siemac.metamac.srm.core.organisation.mapper.OrganisationsDo2DtoMapperTest;
 import org.siemac.metamac.srm.core.organisation.mapper.OrganisationsDto2DoMapperTest;
 import org.siemac.metamac.srm.core.organisation.serviceapi.OrganisationsMetamacServiceTest;
@@ -20,8 +21,8 @@ import org.siemac.metamac.srm.core.organisation.serviceapi.OrganisationsMetamacS
  */
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({SrmCoreServiceFacadeConceptsTest.class, SrmCoreServiceFacadeConceptsSecurityTest.class, SrmCoreServiceFacadeDsdTest.class, ConceptsMetamacServiceTest.class,
-        BaseDo2DtoMapperTest.class, OrganisationsDo2DtoMapperTest.class, OrganisationsDto2DoMapperTest.class, ConceptsDo2DtoMapperTest.class, ConceptsDto2DoMapperTest.class,
-        SrmCoreServiceFacadeOrganisationsSecurityTest.class, OrganisationsMetamacServiceTest.class, DsdsMetamacServiceTest.class})
+@Suite.SuiteClasses({SrmCoreServiceFacadeConceptsTest.class, SrmCoreServiceFacadeOrganisationsTest.class, SrmCoreServiceFacadeConceptsSecurityTest.class, SrmCoreServiceFacadeDsdTest.class,
+        ConceptsMetamacServiceTest.class, BaseDo2DtoMapperTest.class, OrganisationsDo2DtoMapperTest.class, OrganisationsDto2DoMapperTest.class, ConceptsDo2DtoMapperTest.class,
+        ConceptsDto2DoMapperTest.class, SrmCoreServiceFacadeOrganisationsSecurityTest.class, OrganisationsMetamacServiceTest.class, DsdsMetamacServiceTest.class})
 public class SrmSuite {
 }

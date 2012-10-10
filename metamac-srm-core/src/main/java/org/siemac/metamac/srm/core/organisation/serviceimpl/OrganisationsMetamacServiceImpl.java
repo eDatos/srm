@@ -209,21 +209,21 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
         return organisationSchemeVersion;
     }
 
-    // @Override
-    // public OrganisationMetamac createOrganisation(ServiceContext ctx, String organisationSchemeUrn, OrganisationMetamac organisation) throws MetamacException {
-    //
-    // // Validation
-    // OrganisationSchemeVersionMetamac organisationSchemeVersion = null;
-    // if (organisationSchemeUrn != null) {
-    // organisationSchemeVersion = retrieveOrganisationSchemeByUrn(ctx, organisationSchemeUrn);
-    // }
-    // OrganisationsMetamacInvocationValidator.checkCreateOrganisation(organisationSchemeVersion, organisation, null);
-    // // OrganisationsService checks organisationScheme isn't final
-    //
-    // // Save organisation
-    // return (OrganisationMetamac) organisationsService.createOrganisation(ctx, organisationSchemeUrn, organisation);
-    // }
-    //
+    @Override
+    public OrganisationMetamac createOrganisation(ServiceContext ctx, String organisationSchemeUrn, OrganisationMetamac organisation) throws MetamacException {
+
+        // Validation
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = null;
+        if (organisationSchemeUrn != null) {
+            organisationSchemeVersion = retrieveOrganisationSchemeByUrn(ctx, organisationSchemeUrn);
+        }
+        OrganisationsMetamacInvocationValidator.checkCreateOrganisation(organisationSchemeVersion, organisation, null);
+        // OrganisationsService checks organisationScheme isn't final
+
+        // Save organisation
+        return (OrganisationMetamac) organisationsService.createOrganisation(ctx, organisationSchemeUrn, organisation);
+    }
+
     // @Override
     // public OrganisationMetamac updateOrganisation(ServiceContext ctx, OrganisationMetamac organisation) throws MetamacException {
     //

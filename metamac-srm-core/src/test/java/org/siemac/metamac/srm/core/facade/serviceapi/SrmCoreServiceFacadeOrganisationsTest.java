@@ -1,5 +1,6 @@
 package org.siemac.metamac.srm.core.facade.serviceapi;
 
+import static com.arte.statistic.sdmx.srm.core.organisation.serviceapi.utils.OrganisationsAsserts.assertEqualsOrganisationDto;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -23,7 +24,9 @@ import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestrictio
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction.OperationType;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.core.common.util.GeneratorUrnUtils;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
+import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.criteria.OrganisationSchemeVersionMetamacCriteriaOrderEnum;
 import org.siemac.metamac.srm.core.criteria.OrganisationSchemeVersionMetamacCriteriaPropertyEnum;
@@ -37,6 +40,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
+import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -80,7 +85,7 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
     public void testCreateOrganisationScheme() throws Exception {
 
         // Create
-        OrganisationSchemeMetamacDto organisationSchemeDto = OrganisationsMetamacDtoMocks.mockOrganisationScheme();
+        OrganisationSchemeMetamacDto organisationSchemeDto = OrganisationsMetamacDtoMocks.mockOrganisationScheme(OrganisationSchemeTypeEnum.AGENCY_SCHEME);
         OrganisationSchemeMetamacDto organisationSchemeMetamacCreated = srmCoreServiceFacade.createOrganisationScheme(getServiceContextAdministrador(), organisationSchemeDto);
 
         // Validate some metadata
@@ -685,60 +690,45 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
     // }
     // }
     //
-    // @Test
-    // public void testCreateOrganisation() throws Exception {
-    // OrganisationMetamacDto organisationMetamacDto = OrganisationsMetamacDtoMocks.mockOrganisationDto(TypeRepresentationEnum.ENUMERATED);
-    // organisationMetamacDto.setItemSchemeVersionUrn(ORGANISATION_SCHEME_1_V2);
-    // organisationMetamacDto.setOrganisationExtendsUrn(ORGANISATION_SCHEME_12_V1_ORGANISATION_1);
-    //
-    // OrganisationMetamacDto organisationMetamacDtoCreated = srmCoreServiceFacade.createOrganisation(getServiceContextAdministrador(), organisationMetamacDto);
-    // assertEquals(GeneratorUrnUtils.generateSdmxOrganisationUrn("ISTAC", "ORGANISATIONSCHEME01", "02.000", organisationMetamacDto.getCode()), organisationMetamacDtoCreated.getUrn());
-    // assertNull(organisationMetamacDtoCreated.getUri());
-    //
-    // assertEqualsOrganisationDto(organisationMetamacDto, organisationMetamacDtoCreated);
-    // }
-    //
-    // @Test
-    // public void testCreateOrganisationRepresentationNotEnumerated() throws Exception {
-    // OrganisationMetamacDto organisationMetamacDto = OrganisationsMetamacDtoMocks.mockOrganisationDto(TypeRepresentationEnum.TEXT_FORMAT);
-    // organisationMetamacDto.setItemSchemeVersionUrn(ORGANISATION_SCHEME_1_V2);
-    //
-    // OrganisationMetamacDto organisationMetamacDtoCreated = srmCoreServiceFacade.createOrganisation(getServiceContextAdministrador(), organisationMetamacDto);
-    // assertEquals(GeneratorUrnUtils.generateSdmxOrganisationUrn("ISTAC", "ORGANISATIONSCHEME01", "02.000", organisationMetamacDto.getCode()), organisationMetamacDtoCreated.getUrn());
-    // assertNull(organisationMetamacDtoCreated.getUri());
-    //
-    // assertEqualsOrganisationDto(organisationMetamacDto, organisationMetamacDtoCreated);
-    // }
-    //
-    // @Test
-    // public void testCreateOrganisationWithOrganisationParent() throws Exception {
-    // OrganisationMetamacDto organisationMetamacDto = OrganisationsMetamacDtoMocks.mockOrganisationDto(TypeRepresentationEnum.ENUMERATED);
-    // organisationMetamacDto.setItemParentUrn(ORGANISATION_SCHEME_1_V2_ORGANISATION_1);
-    // organisationMetamacDto.setItemSchemeVersionUrn(ORGANISATION_SCHEME_1_V2);
-    //
-    // OrganisationMetamacDto organisationMetamacDtoCreated = srmCoreServiceFacade.createOrganisation(getServiceContextAdministrador(), organisationMetamacDto);
-    // assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_1, organisationMetamacDtoCreated.getItemParentUrn());
-    // assertEqualsOrganisationDto(organisationMetamacDto, organisationMetamacDtoCreated);
-    // }
-    //
-    // @Test
-    // public void testCreateOrganisationErrorParentNotExists() throws Exception {
-    // OrganisationMetamacDto organisationMetamacDto = OrganisationsMetamacDtoMocks.mockOrganisationDto(TypeRepresentationEnum.ENUMERATED);
-    // organisationMetamacDto.setItemParentUrn(NOT_EXISTS);
-    // organisationMetamacDto.setItemSchemeVersionUrn(ORGANISATION_SCHEME_1_V2);
-    //
-    // try {
-    // srmCoreServiceFacade.createOrganisation(getServiceContextAdministrador(), organisationMetamacDto);
-    // fail("wrong parent");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.SRM_SEARCH_BY_URN_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(ServiceExceptionParameters.ITEM, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // assertEquals(NOT_EXISTS, e.getExceptionItems().get(0).getMessageParameters()[1]);
-    // }
-    // }
-    //
+    @Test
+    public void testCreateOrganisation() throws Exception {
+        OrganisationMetamacDto organisationMetamacDto = OrganisationsMetamacDtoMocks.mockOrganisationDto(OrganisationTypeEnum.ORGANISATION_UNIT);
+        organisationMetamacDto.setItemSchemeVersionUrn(ORGANISATION_SCHEME_1_V2);
+
+        OrganisationMetamacDto organisationMetamacDtoCreated = srmCoreServiceFacade.createOrganisation(getServiceContextAdministrador(), organisationMetamacDto);
+        assertEquals(GeneratorUrnUtils.generateSdmxOrganisationUnitUrn("ISTAC", "ORGANISATIONSCHEME01", "02.000", organisationMetamacDto.getCode()), organisationMetamacDtoCreated.getUrn());
+        assertEqualsOrganisationDto(organisationMetamacDto, organisationMetamacDtoCreated);
+    }
+
+    @Test
+    public void testCreateOrganisationWithOrganisationParent() throws Exception {
+        OrganisationMetamacDto organisationMetamacDto = OrganisationsMetamacDtoMocks.mockOrganisationDto(OrganisationTypeEnum.ORGANISATION_UNIT);
+        organisationMetamacDto.setItemParentUrn(ORGANISATION_SCHEME_1_V2_ORGANISATION_1);
+        organisationMetamacDto.setItemSchemeVersionUrn(ORGANISATION_SCHEME_1_V2);
+
+        OrganisationMetamacDto organisationMetamacDtoCreated = srmCoreServiceFacade.createOrganisation(getServiceContextAdministrador(), organisationMetamacDto);
+        assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_1, organisationMetamacDtoCreated.getItemParentUrn());
+        assertEqualsOrganisationDto(organisationMetamacDto, organisationMetamacDtoCreated);
+    }
+
+    @Test
+    public void testCreateOrganisationErrorParentNotExists() throws Exception {
+        OrganisationMetamacDto organisationMetamacDto = OrganisationsMetamacDtoMocks.mockOrganisationDto(OrganisationTypeEnum.ORGANISATION_UNIT);
+        organisationMetamacDto.setItemParentUrn(NOT_EXISTS);
+        organisationMetamacDto.setItemSchemeVersionUrn(ORGANISATION_SCHEME_1_V2);
+
+        try {
+            srmCoreServiceFacade.createOrganisation(getServiceContextAdministrador(), organisationMetamacDto);
+            fail("wrong parent");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.SRM_SEARCH_BY_URN_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(ServiceExceptionParameters.ITEM, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals(NOT_EXISTS, e.getExceptionItems().get(0).getMessageParameters()[1]);
+        }
+    }
+
     // @Test
     // public void testUpdateOrganisation() throws Exception {
     // OrganisationMetamacDto organisationMetamacDto = srmCoreServiceFacade.retrieveOrganisationByUrn(getServiceContextAdministrador(), ORGANISATION_SCHEME_1_V2_ORGANISATION_1);

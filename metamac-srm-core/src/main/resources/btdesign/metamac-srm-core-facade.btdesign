@@ -274,8 +274,8 @@ Application SrmFacadeCore {
     		"Cancels the organisation scheme validity"
     		@OrganisationSchemeMetamacDto cancelOrganisationSchemeValidity(String urn) throws MetamacException;
             
-//			"Creates organisation"
-//	   		@OrganisationMetamacDto createOrganisation(@OrganisationMetamacDto organisationMetamacDto) throws MetamacException;
+			"Creates organisation"
+	   		@OrganisationMetamacDto createOrganisation(@OrganisationMetamacDto organisationMetamacDto) throws MetamacException;
 //	   		"Updates organisation"
 //            @OrganisationMetamacDto updateOrganisation(@OrganisationMetamacDto organisationDto) throws MetamacException;
 	   		"Retrieves a organisation by URN"
