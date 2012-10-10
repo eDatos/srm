@@ -259,6 +259,8 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                     return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.maintainableArtefact().code(), propertyRestriction.getStringValue());
                 case URN:
                     return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.maintainableArtefact().urn(), propertyRestriction.getStringValue());
+                case TYPE:
+                    return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.organisationSchemeType(), propertyRestriction.getEnumValue());
                 case PROC_STATUS:
                     return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.lifecycleMetadata().procStatus(), propertyRestriction.getEnumValue());
                 case NAME:
