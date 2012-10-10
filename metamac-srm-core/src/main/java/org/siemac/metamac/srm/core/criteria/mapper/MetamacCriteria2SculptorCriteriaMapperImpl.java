@@ -1,4 +1,4 @@
-package org.siemac.metamac.srm.core.mapper;
+package org.siemac.metamac.srm.core.criteria.mapper;
 
 import org.fornax.cartridges.sculptor.framework.domain.LeafProperty;
 import org.fornax.cartridges.sculptor.framework.domain.Property;

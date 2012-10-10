@@ -1,4 +1,4 @@
-package org.siemac.metamac.srm.core.mapper;
+package org.siemac.metamac.srm.core.criteria.mapper;
 
 import java.util.ArrayList;
 

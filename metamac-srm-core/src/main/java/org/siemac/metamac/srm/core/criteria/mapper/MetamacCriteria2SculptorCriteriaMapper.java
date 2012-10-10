@@ -1,4 +1,4 @@
-package org.siemac.metamac.srm.core.mapper;
+package org.siemac.metamac.srm.core.criteria.mapper;
 
 import org.siemac.metamac.core.common.criteria.mapper.MetamacCriteria2SculptorCriteria;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
