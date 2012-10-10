@@ -26,7 +26,6 @@ public class SelectDsdAndComponentsEvent extends GwtEvent<SelectDsdAndComponents
         return TYPE;
     }
 
-    // TODO HasEventBus should be used instead of HasHandlers ¿?
     public static void fire(HasHandlers source, DataStructureDefinitionMetamacDto dataStructureDefinitionDto, ComponentDto primaryMeasure, List<DimensionComponentDto> dimensionComponentDtos,
             List<DataAttributeDto> dataAttributeDtos, List<DescriptorDto> groupKeys) {
         if (TYPE != null) {

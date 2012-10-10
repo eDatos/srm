@@ -21,7 +21,6 @@ public class UpdateGroupKeysEvent extends GwtEvent<UpdateGroupKeysEvent.UpdateGr
         return TYPE;
     }
 
-    // TODO HasEventBus should be used instead of HasHandlers ¿?
     public static void fire(HasHandlers source, List<DescriptorDto> groupKeys) {
         if (TYPE != null) {
             source.fireEvent(new UpdateGroupKeysEvent(groupKeys));

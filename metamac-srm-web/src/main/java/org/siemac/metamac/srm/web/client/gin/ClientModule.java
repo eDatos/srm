@@ -60,7 +60,7 @@ public class ClientModule extends AbstractPresenterModule {
 
         // Default place
         bindConstant().annotatedWith(DefaultPlace.class).to(NameTokens.structuralResourcesPage);
-        // TODO: DEV bindConstant().annotatedWith(DefaultPlace.class).to(NameTokens.conceptSchemeListPage);
+        // DEV: bindConstant().annotatedWith(DefaultPlace.class).to(NameTokens.conceptSchemeListPage);
 
         // Security cookie to protect against XSRF attacks
         bindConstant().annotatedWith(SecurityCookie.class).to(SharedTokens.securityCookieName);

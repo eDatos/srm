@@ -19,7 +19,6 @@ public class SelectViewDsdDescriptorEvent extends GwtEvent<SelectViewDsdDescript
         return TYPE;
     }
 
-    // TODO HasEventBus should be used instead of HasHandlers ¿?
     public static void fire(HasHandlers source, TypeComponentList descriptorType) {
         if (TYPE != null) {
             source.fireEvent(new SelectViewDsdDescriptorEvent(descriptorType));

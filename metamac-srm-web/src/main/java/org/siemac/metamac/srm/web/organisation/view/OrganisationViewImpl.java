@@ -115,7 +115,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
 
             @Override
             public void onClick(ClickEvent event) {
-                // TODO
+                // TODO Delete contact from organisation
                 contactDeleteConfirmationWindow.hide();
             }
         });

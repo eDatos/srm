@@ -20,7 +20,6 @@ public class SelectDsdEvent extends GwtEvent<SelectDsdEvent.SelectDsdHandler> {
         return TYPE;
     }
 
-    // TODO HasEventBus should be used instead of HasHandlers ¿?
     public static void fire(HasHandlers source, DataStructureDefinitionMetamacDto dataStructureDefinitionDto) {
         if (TYPE != null) {
             source.fireEvent(new SelectDsdEvent(dataStructureDefinitionDto));

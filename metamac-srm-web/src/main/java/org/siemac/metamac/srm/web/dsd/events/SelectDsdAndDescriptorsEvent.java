@@ -18,7 +18,6 @@ public class SelectDsdAndDescriptorsEvent extends GwtEvent<SelectDsdAndDescripto
 
     private static Type<SelectDsdAndDescriptorsHandler> TYPE = new Type<SelectDsdAndDescriptorsHandler>();
 
-    // TODO HasEventBus should be used instead of HasHandlers ¿?
     public static void fire(HasHandlers source, DataStructureDefinitionMetamacDto dataStructureDefinitionDto, DescriptorDto primaryMeasure, DescriptorDto dimensions, DescriptorDto attributes,
             List<DescriptorDto> groupKeys) {
         if (TYPE != null) {

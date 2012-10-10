@@ -21,7 +21,6 @@ public class UpdateDimensionsEvent extends GwtEvent<UpdateDimensionsEvent.Update
         return TYPE;
     }
 
-    // TODO HasEventBus should be used instead of HasHandlers ¿?
     public static void fire(HasHandlers source, List<DimensionComponentDto> dimensionComponentDtos) {
         if (TYPE != null) {
             source.fireEvent(new UpdateDimensionsEvent(dimensionComponentDtos));
