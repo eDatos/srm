@@ -46,8 +46,8 @@ Application OrganisationsMetamac {
     		@OrganisationSchemeVersionMetamac versioningOrganisationScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
     		"Cancels the organisation scheme validity"
     		@OrganisationSchemeVersionMetamac cancelOrganisationSchemeValidity(String urn) throws MetamacException;
-//    		"Retrieves organisations scheme by organisation urn"
-//    		@OrganisationSchemeVersionMetamac retrieveOrganisationSchemeByOrganisationUrn(String organisationUrn) throws MetamacException;
+    		"Retrieves organisations scheme by organisation urn"
+    		@OrganisationSchemeVersionMetamac retrieveOrganisationSchemeByOrganisationUrn(String organisationUrn) throws MetamacException;
     		
 			"Creates organisation"
 			@OrganisationMetamac createOrganisation(String organisationSchemeUrn, @OrganisationMetamac organisation) throws MetamacException;

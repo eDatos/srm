@@ -1555,33 +1555,33 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
     // }
     // }
     // }
-    //
-    // @Override
-    // public void testRetrieveOrganisationSchemeByOrganisationUrn() throws Exception {
-    // // Retrieve
-    // String urn = ORGANISATION_SCHEME_1_V2_ORGANISATION_1;
-    // OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByOrganisationUrn(getServiceContextAdministrador(), urn);
-    //
-    // // Validate
-    // assertEquals(ORGANISATION_SCHEME_1_V2, organisationSchemeVersion.getMaintainableArtefact().getUrn());
-    // }
-    //
-    // @Test
-    // public void testRetrieveOrganisationSchemeByOrganisationUrnErrorNotExists() throws Exception {
-    //
-    // String urn = NOT_EXISTS;
-    //
-    // try {
-    // organisationsService.retrieveOrganisationSchemeByOrganisationUrn(getServiceContextAdministrador(), urn);
-    // fail("not exists");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.ORGANISATION_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // }
-    // }
-    //
+
+    @Override
+    public void testRetrieveOrganisationSchemeByOrganisationUrn() throws Exception {
+        // Retrieve
+        String urn = ORGANISATION_SCHEME_1_V2_ORGANISATION_1;
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByOrganisationUrn(getServiceContextAdministrador(), urn);
+
+        // Validate
+        assertEquals(ORGANISATION_SCHEME_1_V2, organisationSchemeVersion.getMaintainableArtefact().getUrn());
+    }
+
+    @Test
+    public void testRetrieveOrganisationSchemeByOrganisationUrnErrorNotExists() throws Exception {
+
+        String urn = NOT_EXISTS;
+
+        try {
+            organisationsService.retrieveOrganisationSchemeByOrganisationUrn(getServiceContextAdministrador(), urn);
+            fail("not exists");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.ORGANISATION_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
     private void assertListItemsContainsOrganisation(List<Item> items, String urn) {
         for (Item item : items) {
             if (item.getNameableArtefact().getUrn().equals(urn)) {

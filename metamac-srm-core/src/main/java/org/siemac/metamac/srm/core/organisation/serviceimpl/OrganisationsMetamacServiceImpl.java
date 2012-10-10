@@ -252,7 +252,7 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
     // PagedResult<OrganisationMetamac> organisationPagedResult = getOrganisationMetamacRepository().findByCondition(conditions, pagingParameter);
     // return organisationPagedResult;
     // }
-    
+
     @Override
     public void deleteOrganisation(ServiceContext ctx, String urn) throws MetamacException {
 
@@ -271,19 +271,19 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
     // return organisationsMetamac;
     // }
     //
-    // @Override
-    // public OrganisationSchemeVersionMetamac retrieveOrganisationSchemeByOrganisationUrn(ServiceContext ctx, String organisationUrn) throws MetamacException {
-    // // Validation
-    // OrganisationsMetamacInvocationValidator.checkRetrieveOrganisationSchemeByOrganisationUrn(organisationUrn, null);
-    //
-    // // Retrieve
-    // OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationSchemeVersionMetamacRepository().findByOrganisation(organisationUrn);
-    // if (organisationSchemeVersion == null) {
-    // throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.ORGANISATION_NOT_FOUND).withMessageParameters(organisationUrn).build();
-    // }
-    // return organisationSchemeVersion;
-    // }
-    //
+    @Override
+    public OrganisationSchemeVersionMetamac retrieveOrganisationSchemeByOrganisationUrn(ServiceContext ctx, String organisationUrn) throws MetamacException {
+        // Validation
+        OrganisationsMetamacInvocationValidator.checkRetrieveOrganisationSchemeByOrganisationUrn(organisationUrn, null);
+
+        // Retrieve
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationSchemeVersionMetamacRepository().findByOrganisation(organisationUrn);
+        if (organisationSchemeVersion == null) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.ORGANISATION_NOT_FOUND).withMessageParameters(organisationUrn).build();
+        }
+        return organisationSchemeVersion;
+    }
+
     // private List<OrganisationMetamac> organisationsToOrganisationMetamac(List<Organisation> items) {
     // List<OrganisationMetamac> organisations = new ArrayList<OrganisationMetamac>();
     // for (Item item : items) {

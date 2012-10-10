@@ -44,18 +44,21 @@ public class OrganisationsMetamacInvocationValidator extends OrganisationsInvoca
         ExceptionUtils.throwIfException(exceptions);
     }
 
-    private static void checkOrganisationScheme(OrganisationSchemeVersionMetamac organisationSchemeVersion, List<MetamacExceptionItem> exceptions) {
-        // SDMX metadata is checked in SDMX module
-        if (organisationSchemeVersion.getMaintainableArtefact() != null && BooleanUtils.isTrue(organisationSchemeVersion.getMaintainableArtefact().getIsExternalReference())) {
-            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.MAINTAINABLE_ARTEFACT_IS_EXTERNAL_REFERENCE));
-        }
-    }
-
     public static void checkCancelOrganisationSchemeValidity(String urn, List<MetamacExceptionItem> exceptions) throws MetamacException {
         if (exceptions == null) {
             exceptions = new ArrayList<MetamacExceptionItem>();
         }
         ValidationUtils.checkParameterRequired(urn, ServiceExceptionParameters.URN, exceptions);
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
+
+    public static void checkRetrieveOrganisationSchemeByOrganisationUrn(String organisationUrn, List<MetamacExceptionItem> exceptions) throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+
+        ValidationUtils.checkParameterRequired(organisationUrn, ServiceExceptionParameters.URN, exceptions);
 
         ExceptionUtils.throwIfException(exceptions);
     }
@@ -89,6 +92,13 @@ public class OrganisationsMetamacInvocationValidator extends OrganisationsInvoca
         }
 
         ExceptionUtils.throwIfException(exceptions);
+    }
+
+    private static void checkOrganisationScheme(OrganisationSchemeVersionMetamac organisationSchemeVersion, List<MetamacExceptionItem> exceptions) {
+        // SDMX metadata is checked in SDMX module
+        if (organisationSchemeVersion.getMaintainableArtefact() != null && BooleanUtils.isTrue(organisationSchemeVersion.getMaintainableArtefact().getIsExternalReference())) {
+            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.MAINTAINABLE_ARTEFACT_IS_EXTERNAL_REFERENCE));
+        }
     }
 
     private static void checkOrganisation(ItemSchemeVersion organisationSchemeVersion, OrganisationMetamac organisation, List<MetamacExceptionItem> exceptions) {
