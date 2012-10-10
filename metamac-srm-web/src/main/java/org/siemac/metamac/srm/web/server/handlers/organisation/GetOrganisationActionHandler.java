@@ -70,6 +70,7 @@ public class GetOrganisationActionHandler extends SecurityActionHandler<GetOrgan
                 contactDto.getTelephones().add("12345678");
                 contactDto.getFaxes().add("+00125678");
                 contactDto.getEmails().add("nombre@email.com");
+                contactDto.setUrl("http://www.url" + i + ".com");
                 organisationDto.getContacts().add(contactDto);
             }
         }

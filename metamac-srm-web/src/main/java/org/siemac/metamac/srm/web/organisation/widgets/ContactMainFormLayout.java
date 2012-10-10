@@ -3,21 +3,28 @@ package org.siemac.metamac.srm.web.organisation.widgets;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
 import org.siemac.metamac.srm.web.organisation.model.ds.ContactDS;
+import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.utils.UrlUtils;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.InternationalMainFormLayout;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextItem;
+import org.siemac.metamac.web.common.client.widgets.form.fields.MultiTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.organisation.ContactDto;
+import com.smartgwt.client.widgets.events.ClickEvent;
+import com.smartgwt.client.widgets.events.ClickHandler;
 
 public class ContactMainFormLayout extends InternationalMainFormLayout {
 
     private GroupDynamicForm form;
     private GroupDynamicForm editionForm;
+
+    // Stores TRUE when a new contact is going to be created. If cancel button is clicked, this mainFormLayout should be disappear.
+    private boolean          isNewContact;
 
     public ContactMainFormLayout() {
         super();
@@ -32,6 +39,26 @@ public class ContactMainFormLayout extends InternationalMainFormLayout {
     private void common() {
         createViewForm();
         createEditionForm();
+
+        getCancelToolStripButton().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                if (isNewContact) {
+                    hide();
+                }
+            }
+        });
+
+        getTranslateToolStripButton().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                boolean translationsShowed = getTranslateToolStripButton().isSelected();
+                form.setTranslationsShowed(translationsShowed);
+                editionForm.setTranslationsShowed(translationsShowed);
+            }
+        });
     }
 
     private void createViewForm() {
@@ -41,7 +68,10 @@ public class ContactMainFormLayout extends InternationalMainFormLayout {
         ViewMultiLanguageTextItem organisationUnit = new ViewMultiLanguageTextItem(ContactDS.ORGANISATION_UNIT, getConstants().organisationContactOrganisationUnit());
         ViewMultiLanguageTextItem responsibily = new ViewMultiLanguageTextItem(ContactDS.RESPONSIBILITY, getConstants().organisationContactResponsibility());
         ViewTextItem url = new ViewTextItem(ContactDS.URL, getConstants().organisationContactUrl());
-        form.setFields(name, organisationUnit, responsibily, url);
+        ViewTextItem telephone = new ViewTextItem(ContactDS.TELEPHONE, getConstants().organisationContactTelephone());
+        ViewTextItem email = new ViewTextItem(ContactDS.EMAIL, getConstants().organisationContactEmail());
+        ViewTextItem fax = new ViewTextItem(ContactDS.FAX, getConstants().organisationContactFax());
+        form.setFields(name, organisationUnit, responsibily, url, telephone, email, fax);
         addViewCanvas(form);
     }
 
@@ -53,11 +83,17 @@ public class ContactMainFormLayout extends InternationalMainFormLayout {
         MultiLanguageTextItem responsibility = new MultiLanguageTextItem(ContactDS.RESPONSIBILITY, getConstants().organisationContactResponsibility());
         CustomTextItem url = new CustomTextItem(ContactDS.URL, getConstants().organisationContactUrl());
         url.setValidators(UrlUtils.getUrlValidator());
-        editionForm.setFields(name, organisationUnit, responsibility, url);
+        MultiTextItem telephone = new MultiTextItem(ContactDS.TELEPHONE, getConstants().organisationContactTelephone());
+        MultiTextItem email = new MultiTextItem(ContactDS.EMAIL, getConstants().organisationContactEmail());
+        MultiTextItem fax = new MultiTextItem(ContactDS.FAX, getConstants().organisationContactFax());
+        editionForm.setFields(name, organisationUnit, responsibility, url, telephone, email, fax);
         addEditionCanvas(editionForm);
     }
 
-    public void setContact(ContactDto contactDto) {
+    public void setContact(ContactDto contactDto, boolean isNewContact) {
+        this.isNewContact = isNewContact;
+        setViewMode();
+
         setContactViewMode(contactDto);
         setContactEditionMode(contactDto);
     }
@@ -67,6 +103,9 @@ public class ContactMainFormLayout extends InternationalMainFormLayout {
         form.setValue(ContactDS.ORGANISATION_UNIT, RecordUtils.getInternationalStringRecord(contactDto.getOrganisationUnit()));
         form.setValue(ContactDS.RESPONSIBILITY, RecordUtils.getInternationalStringRecord(contactDto.getResponsibility()));
         form.setValue(ContactDS.URL, contactDto.getUrl());
+        form.setValue(ContactDS.TELEPHONE, CommonWebUtils.getStringListToString(contactDto.getTelephones()));
+        form.setValue(ContactDS.EMAIL, CommonWebUtils.getStringListToString(contactDto.getEmails()));
+        form.setValue(ContactDS.FAX, CommonWebUtils.getStringListToString(contactDto.getFaxes()));
     }
 
     private void setContactEditionMode(ContactDto contactDto) {
@@ -74,6 +113,9 @@ public class ContactMainFormLayout extends InternationalMainFormLayout {
         editionForm.setValue(ContactDS.ORGANISATION_UNIT, RecordUtils.getInternationalStringRecord(contactDto.getOrganisationUnit()));
         editionForm.setValue(ContactDS.RESPONSIBILITY, RecordUtils.getInternationalStringRecord(contactDto.getResponsibility()));
         editionForm.setValue(ContactDS.URL, contactDto.getUrl());
+        ((MultiTextItem) editionForm.getItem(ContactDS.TELEPHONE)).setValues(contactDto.getTelephones());
+        ((MultiTextItem) editionForm.getItem(ContactDS.EMAIL)).setValues(contactDto.getEmails());
+        ((MultiTextItem) editionForm.getItem(ContactDS.FAX)).setValues(contactDto.getFaxes());
     }
 
 }

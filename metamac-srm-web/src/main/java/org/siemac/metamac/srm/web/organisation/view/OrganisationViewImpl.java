@@ -104,7 +104,8 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
 
             @Override
             public void onClick(ClickEvent event) {
-                contactMainFormLayout.setContact(new ContactDto());
+                contactMainFormLayout.setContact(new ContactDto(), true);
+                contactMainFormLayout.setEditionMode();
                 contactMainFormLayout.show();
             }
         });
@@ -150,6 +151,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
                     showContactListGridDeleteButton();
                 } else {
                     contactDeleteButton.hide();
+                    contactMainFormLayout.hide();
                 }
             }
         });
@@ -157,9 +159,11 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
 
             @Override
             public void onRecordClick(RecordClickEvent event) {
-                ContactRecord record = (ContactRecord) event.getRecord();
-                contactMainFormLayout.setContact(record.getContactDto());
-                contactMainFormLayout.show();
+                if (event.getFieldNum() != 0) { // Clicking checkBox will be ignored
+                    ContactRecord record = (ContactRecord) event.getRecord();
+                    contactMainFormLayout.setContact(record.getContactDto(), false);
+                    contactMainFormLayout.show();
+                }
             }
         });
 
