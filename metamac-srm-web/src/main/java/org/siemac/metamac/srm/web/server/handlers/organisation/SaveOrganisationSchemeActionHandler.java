@@ -31,7 +31,6 @@ public class SaveOrganisationSchemeActionHandler extends SecurityActionHandler<S
             if (organisationSchemeToSave.getId() == null) {
                 // Create
                 savedOrganisationSchemeDto = srmCoreServiceFacade.createOrganisationScheme(ServiceContextHolder.getCurrentServiceContext(), organisationSchemeToSave);
-                return new SaveOrganisationSchemeResult(savedOrganisationSchemeDto);
             } else {
                 // Update
                 savedOrganisationSchemeDto = srmCoreServiceFacade.updateOrganisationScheme(ServiceContextHolder.getCurrentServiceContext(), organisationSchemeToSave);
