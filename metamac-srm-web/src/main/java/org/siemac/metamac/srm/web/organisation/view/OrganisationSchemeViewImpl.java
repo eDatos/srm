@@ -12,6 +12,7 @@ import org.siemac.metamac.core.common.util.shared.BooleanUtils;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
@@ -45,7 +46,6 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.organisation.OrganisationDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 import com.google.gwt.user.client.ui.Widget;
@@ -583,7 +583,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
     }
 
     @Override
-    public void setOrganisationList(List<OrganisationDto> organisationDtos) {
+    public void setOrganisationList(List<OrganisationMetamacDto> organisationDtos) {
         if (OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME.equals(organisationSchemeDto.getType())) {
             // Organisation hierarchy
             // TODO Set values

@@ -1,13 +1,13 @@
 package org.siemac.metamac.srm.web.organisation.model.record;
 
+import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
 import org.siemac.metamac.srm.web.organisation.model.ds.OrganisationDS;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.organisation.OrganisationDto;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 
 public class OrganisationRecord extends ListGridRecord {
 
-    public OrganisationRecord(Long id, String code, String name, String urn, OrganisationDto organisationDto) {
+    public OrganisationRecord(Long id, String code, String name, String urn, OrganisationMetamacDto organisationDto) {
         setId(id);
         setCode(code);
         setName(name);
@@ -31,7 +31,7 @@ public class OrganisationRecord extends ListGridRecord {
         setAttribute(OrganisationDS.URN, value);
     }
 
-    public void setOrganisationDto(OrganisationDto organisationDto) {
+    public void setOrganisationDto(OrganisationMetamacDto organisationDto) {
         setAttribute(OrganisationDS.DTO, organisationDto);
     }
 
@@ -51,8 +51,8 @@ public class OrganisationRecord extends ListGridRecord {
         return getAttributeAsString(OrganisationDS.URN);
     }
 
-    public OrganisationDto getOrganisationDto() {
-        return (OrganisationDto) getAttributeAsObject(OrganisationDS.DTO);
+    public OrganisationMetamacDto getOrganisationDto() {
+        return (OrganisationMetamacDto) getAttributeAsObject(OrganisationDS.DTO);
     }
 
 }

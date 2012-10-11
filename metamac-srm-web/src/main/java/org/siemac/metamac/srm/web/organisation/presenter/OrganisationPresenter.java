@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.web.organisation.presenter;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
+import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
@@ -18,7 +19,6 @@ import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.organisation.OrganisationDto;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
@@ -57,7 +57,7 @@ public class OrganisationPresenter extends Presenter<OrganisationPresenter.Organ
 
     public interface OrganisationView extends View, HasUiHandlers<OrganisationUiHandlers> {
 
-        void setOrganisation(OrganisationDto organisationDto);
+        void setOrganisation(OrganisationMetamacDto organisationDto);
     }
 
     @ContentSlot
@@ -115,7 +115,7 @@ public class OrganisationPresenter extends Presenter<OrganisationPresenter.Organ
     }
 
     @Override
-    public void saveOrganisation(OrganisationDto organisationDto) {
+    public void saveOrganisation(OrganisationMetamacDto organisationDto) {
         dispatcher.execute(new SaveOrganisationAction(organisationDto), new WaitingAsyncCallback<SaveOrganisationResult>() {
 
             @Override

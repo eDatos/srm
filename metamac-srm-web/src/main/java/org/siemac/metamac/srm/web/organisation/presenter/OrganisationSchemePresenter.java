@@ -9,6 +9,7 @@ import java.util.List;
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
@@ -43,7 +44,6 @@ import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.utils.UrnUtils;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.organisation.OrganisationDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
@@ -91,7 +91,7 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
 
         void setOrganisationScheme(OrganisationSchemeMetamacDto organisationSchemeMetamacDto);
         void setOrganisationSchemeVersions(List<OrganisationSchemeMetamacDto> organisationSchemeMetamacDtos);
-        void setOrganisationList(List<OrganisationDto> organisationDtos);
+        void setOrganisationList(List<OrganisationMetamacDto> organisationDtos);
     }
 
     @ContentSlot
@@ -351,7 +351,7 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
     }
 
     @Override
-    public void createOrganisation(OrganisationDto organisationDto) {
+    public void createOrganisation(OrganisationMetamacDto organisationDto) {
         dispatcher.execute(new SaveOrganisationAction(organisationDto), new WaitingAsyncCallback<SaveOrganisationResult>() {
 
             @Override

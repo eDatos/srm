@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
+import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.organisation.model.ds.ContactDS;
@@ -32,7 +33,6 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguag
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.organisation.ContactDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.organisation.OrganisationDto;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
@@ -74,7 +74,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
     private ToolStripButton             contactDeleteButton;
     private DeleteConfirmationWindow    contactDeleteConfirmationWindow;
 
-    private OrganisationDto             organisationDto;
+    private OrganisationMetamacDto      organisationDto;
 
     @Inject
     public OrganisationViewImpl() {
@@ -307,7 +307,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
     }
 
     @Override
-    public void setOrganisation(OrganisationDto organisationDto) {
+    public void setOrganisation(OrganisationMetamacDto organisationDto) {
         this.organisationDto = organisationDto;
 
         String defaultLocalized = InternationalStringUtils.getLocalisedString(organisationDto.getName());
@@ -323,7 +323,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         setContacts(organisationDto.getContacts());
     }
 
-    private void setOrganisationViewMode(OrganisationDto organisationDto) {
+    private void setOrganisationViewMode(OrganisationMetamacDto organisationDto) {
         // Identifiers Form
         identifiersForm.setValue(OrganisationDS.CODE, organisationDto.getCode());
         identifiersForm.setValue(OrganisationDS.NAME, RecordUtils.getInternationalStringRecord(organisationDto.getName()));
@@ -338,7 +338,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         annotationsPanel.setAnnotations(organisationDto.getAnnotations());
     }
 
-    private void setOrganisationEditionMode(OrganisationDto organisationDto) {
+    private void setOrganisationEditionMode(OrganisationMetamacDto organisationDto) {
         // Identifiers Form
         identifiersEditionForm.setValue(OrganisationDS.CODE, organisationDto.getCode());
         identifiersEditionForm.setValue(OrganisationDS.NAME, RecordUtils.getInternationalStringRecord(organisationDto.getName()));
@@ -364,7 +364,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         contactListGrid.setData(records);
     }
 
-    private OrganisationDto getOrganisationDto() {
+    private OrganisationMetamacDto getOrganisationDto() {
         // Identifiers Form
         organisationDto.setCode(identifiersEditionForm.getValueAsString(OrganisationDS.CODE));
         organisationDto.setName((InternationalStringDto) identifiersEditionForm.getValue(OrganisationDS.NAME));

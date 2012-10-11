@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.web.organisation.utils;
 
 import static org.siemac.metamac.web.common.client.utils.InternationalStringUtils.getLocalisedString;
 
+import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 import org.siemac.metamac.srm.web.organisation.model.record.ContactRecord;
 import org.siemac.metamac.srm.web.organisation.model.record.OrganisationRecord;
@@ -9,7 +10,6 @@ import org.siemac.metamac.srm.web.organisation.model.record.OrganisationSchemeRe
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.organisation.ContactDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.organisation.OrganisationDto;
 
 public class RecordUtils {
 
@@ -24,7 +24,7 @@ public class RecordUtils {
 
     // ORGANISATIONS
 
-    public static OrganisationRecord getOrganisationRecord(OrganisationDto organisationDto) {
+    public static OrganisationRecord getOrganisationRecord(OrganisationMetamacDto organisationDto) {
         OrganisationRecord record = new OrganisationRecord(organisationDto.getId(), organisationDto.getCode(), getLocalisedString(organisationDto.getName()), organisationDto.getUrn(), organisationDto);
         return record;
     }

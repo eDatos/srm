@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.web.organisation.widgets;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
+import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
 import org.siemac.metamac.srm.web.organisation.model.ds.OrganisationDS;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
@@ -11,7 +12,6 @@ import org.siemac.metamac.web.common.client.widgets.form.CustomDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomButtonItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.organisation.OrganisationDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 import com.smartgwt.client.widgets.form.fields.events.HasClickHandlers;
 
@@ -51,8 +51,8 @@ public class NewOrganisationWindow extends CustomWindow {
         return form.validate(false);
     }
 
-    public OrganisationDto getNewOrganisationDto(OrganisationTypeEnum type) {
-        OrganisationDto organisationDto = new OrganisationDto();
+    public OrganisationMetamacDto getNewOrganisationDto(OrganisationTypeEnum type) {
+        OrganisationMetamacDto organisationDto = new OrganisationMetamacDto();
         organisationDto.setType(type);
         organisationDto.setCode(form.getValueAsString(OrganisationDS.CODE));
         organisationDto.setName(InternationalStringUtils.updateInternationalString(new InternationalStringDto(), form.getValueAsString(OrganisationDS.NAME)));
