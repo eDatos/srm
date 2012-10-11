@@ -51,8 +51,8 @@ Application OrganisationsMetamac {
     		
 			"Creates organisation"
 			@OrganisationMetamac createOrganisation(String organisationSchemeUrn, @OrganisationMetamac organisation) throws MetamacException;
-//			"Updates organisation"
-//			@OrganisationMetamac updateOrganisation(@OrganisationMetamac organisation) throws MetamacException;
+			"Updates organisation"
+			@OrganisationMetamac updateOrganisation(@OrganisationMetamac organisation) throws MetamacException;
     		"Retrieves organisation by urn"
     		@OrganisationMetamac retrieveOrganisationByUrn(String urn) throws MetamacException;
     		"Finds organisations by criteria"

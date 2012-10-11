@@ -870,28 +870,17 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
         }
     }
 
-    // @Test
-    // public void testUpdateOrganisation() throws Exception {
-    // OrganisationMetamacDto organisationMetamacDto = srmCoreServiceFacade.retrieveOrganisationByUrn(getServiceContextAdministrador(), ORGANISATION_SCHEME_1_V2_ORGANISATION_1);
-    // assertNotNull(organisationMetamacDto.getOrganisationExtendsUrn());
-    // organisationMetamacDto.setName(MetamacMocks.mockInternationalString());
-    // organisationMetamacDto.setDescription(MetamacMocks.mockInternationalString());
-    // organisationMetamacDto.setOrganisationExtendsUrn(ORGANISATION_SCHEME_3_V1_ORGANISATION_2_1_1);
-    //
-    // OrganisationMetamacDto organisationMetamacDtoUpdated = srmCoreServiceFacade.updateOrganisation(getServiceContextAdministrador(), organisationMetamacDto);
-    //
-    // assertNotNull(organisationMetamacDto);
-    // assertEqualsOrganisationDto(organisationMetamacDto, organisationMetamacDtoUpdated);
-    // assertTrue(organisationMetamacDtoUpdated.getVersionOptimisticLocking() > organisationMetamacDto.getVersionOptimisticLocking());
-    //
-    // // Update again to check removing organisation extends
-    // organisationMetamacDtoUpdated.setOrganisationExtendsUrn(null);
-    // OrganisationMetamacDto organisationMetamacDtoUpdatedAgain = srmCoreServiceFacade.updateOrganisation(getServiceContextAdministrador(), organisationMetamacDtoUpdated);
-    //
-    // assertNotNull(organisationMetamacDto);
-    // assertEqualsOrganisationDto(organisationMetamacDtoUpdated, organisationMetamacDtoUpdatedAgain);
-    // assertTrue(organisationMetamacDtoUpdatedAgain.getVersionOptimisticLocking() > organisationMetamacDtoUpdated.getVersionOptimisticLocking());
-    // }
+    @Test
+    public void testUpdateOrganisation() throws Exception {
+        OrganisationMetamacDto organisationMetamacDto = srmCoreServiceFacade.retrieveOrganisationByUrn(getServiceContextAdministrador(), ORGANISATION_SCHEME_1_V2_ORGANISATION_1);
+        organisationMetamacDto.setName(MetamacMocks.mockInternationalString());
+        organisationMetamacDto.setDescription(MetamacMocks.mockInternationalString());
+
+        OrganisationMetamacDto organisationMetamacDtoUpdated = srmCoreServiceFacade.updateOrganisation(getServiceContextAdministrador(), organisationMetamacDto);
+
+        assertEqualsOrganisationDto(organisationMetamacDto, organisationMetamacDtoUpdated);
+        assertTrue(organisationMetamacDtoUpdated.getVersionOptimisticLocking() > organisationMetamacDto.getVersionOptimisticLocking());
+    }
 
     @Test
     public void testDeleteOrganisation() throws Exception {

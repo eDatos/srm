@@ -276,8 +276,8 @@ Application SrmFacadeCore {
             
 			"Creates organisation"
 	   		@OrganisationMetamacDto createOrganisation(@OrganisationMetamacDto organisationMetamacDto) throws MetamacException;
-//	   		"Updates organisation"
-//            @OrganisationMetamacDto updateOrganisation(@OrganisationMetamacDto organisationDto) throws MetamacException;
+	   		"Updates organisation"
+            @OrganisationMetamacDto updateOrganisation(@OrganisationMetamacDto organisationDto) throws MetamacException;
 	   		"Retrieves a organisation by URN"
             @OrganisationMetamacDto retrieveOrganisationByUrn(String urn) throws MetamacException;
             "Finds organisations by criteria"

@@ -222,15 +222,15 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
         return (OrganisationMetamac) organisationsService.createOrganisation(ctx, organisationSchemeUrn, organisation);
     }
 
-    // @Override
-    // public OrganisationMetamac updateOrganisation(ServiceContext ctx, OrganisationMetamac organisation) throws MetamacException {
-    //
-    // // Validation
-    // OrganisationsMetamacInvocationValidator.checkUpdateOrganisation(organisation, null);
-    // // OrganisationsService checks organisationScheme isn't final
-    //
-    // return (OrganisationMetamac) organisationsService.updateOrganisation(ctx, organisation);
-    // }
+    @Override
+    public OrganisationMetamac updateOrganisation(ServiceContext ctx, OrganisationMetamac organisation) throws MetamacException {
+
+        // Validation
+        OrganisationsMetamacInvocationValidator.checkUpdateOrganisation(organisation, null);
+        // OrganisationsService checks organisationScheme isn't final
+
+        return (OrganisationMetamac) organisationsService.updateOrganisation(ctx, organisation);
+    }
 
     @Override
     public OrganisationMetamac retrieveOrganisationByUrn(ServiceContext ctx, String urn) throws MetamacException {

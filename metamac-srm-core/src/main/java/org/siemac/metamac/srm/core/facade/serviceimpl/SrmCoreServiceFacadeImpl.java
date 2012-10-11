@@ -768,24 +768,23 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         return organisationMetamacDto;
     }
 
-    //
-    // @Override
-    // public OrganisationMetamacDto updateOrganisation(ServiceContext ctx, OrganisationMetamacDto organisationDto) throws MetamacException {
-    //
-    // TODO Security
-    // OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationsMetamacService().retrieveOrganisationSchemeByOrganisationUrn(ctx, organisationDto.getUrn());
-    // OrganisationsSecurityUtils.canUpdateOrganisation(ctx, organisationSchemeVersion);
-    //
-    // // Transform
-    // OrganisationMetamac organisationMetamac = organisationsDto2DoMapper.organisationDtoToDo(organisationDto);
-    //
-    // // Update
-    // OrganisationMetamac organisationUpdated = getOrganisationsMetamacService().updateOrganisation(ctx, organisationMetamac);
-    //
-    // // Transform to DTO
-    // organisationDto = organisationsDo2DtoMapper.organisationMetamacDoToDto(organisationUpdated);
-    // return organisationDto;
-    // }
+    @Override
+    public OrganisationMetamacDto updateOrganisation(ServiceContext ctx, OrganisationMetamacDto organisationDto) throws MetamacException {
+
+        // TODO Security
+        // OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationsMetamacService().retrieveOrganisationSchemeByOrganisationUrn(ctx, organisationDto.getUrn());
+        // OrganisationsSecurityUtils.canUpdateOrganisation(ctx, organisationSchemeVersion);
+
+        // Transform
+        OrganisationMetamac organisationMetamac = organisationsDto2DoMapper.organisationMetamacDtoToDo(organisationDto);
+
+        // Update
+        OrganisationMetamac organisationUpdated = getOrganisationsMetamacService().updateOrganisation(ctx, organisationMetamac);
+
+        // Transform to DTO
+        organisationDto = organisationsDo2DtoMapper.organisationMetamacDoToDto(organisationUpdated);
+        return organisationDto;
+    }
 
     @Override
     public OrganisationMetamacDto retrieveOrganisationByUrn(ServiceContext ctx, String urn) throws MetamacException {

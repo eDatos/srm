@@ -39,6 +39,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationProperties;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationSchemeVersion;
+import com.arte.statistic.sdmx.srm.core.organisation.serviceapi.utils.OrganisationsDoMocks;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
@@ -1228,29 +1229,19 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_4, organisationSchemeVersion.getItemsFirstLevel().get(3).getNameableArtefact().getUrn());
     }
 
-    // @Test
-    // public void testUpdateOrganisation() throws Exception {
-    //
-    // OrganisationMetamac organisation = organisationsService.retrieveOrganisationByUrn(getServiceContextAdministrador(), ORGANISATION_SCHEME_1_V2_ORGANISATION_1);
-    // organisation.getNameableArtefact().setIsCodeUpdated(Boolean.FALSE);
-    // organisation.getNameableArtefact().setName(OrganisationsDoMocks.mockInternationalString());
-    // organisation.setOrganisationExtends(organisationsService.retrieveOrganisationByUrn(getServiceContextAdministrador(), ORGANISATION_SCHEME_10_V3_ORGANISATION_1));
-    // assertTrue(organisation.getCoreRepresentation() instanceof EnumeratedRepresentation);
-    // organisation.setCoreRepresentation(OrganisationsDoMocks.mockOrganisationTextFormatRepresentation());
-    //
-    // // Update
-    // OrganisationMetamac organisationUpdated = organisationsService.updateOrganisation(getServiceContextAdministrador(), organisation);
-    //
-    // // Validate
-    // OrganisationsMetamacAsserts.assertEqualsOrganisation(organisation, organisationUpdated);
-    //
-    // // Update to remove metadata 'extends'
-    // organisationUpdated.setOrganisationExtends(null);
-    // organisationUpdated = organisationsService.updateOrganisation(getServiceContextAdministrador(), organisation);
-    //
-    // // Validate
-    // OrganisationsMetamacAsserts.assertEqualsOrganisation(organisation, organisationUpdated);
-    // }
+    @Test
+    public void testUpdateOrganisation() throws Exception {
+
+        OrganisationMetamac organisation = organisationsService.retrieveOrganisationByUrn(getServiceContextAdministrador(), ORGANISATION_SCHEME_1_V2_ORGANISATION_1);
+        organisation.getNameableArtefact().setIsCodeUpdated(Boolean.FALSE);
+        organisation.getNameableArtefact().setName(OrganisationsDoMocks.mockInternationalString());
+
+        // Update
+        OrganisationMetamac organisationUpdated = organisationsService.updateOrganisation(getServiceContextAdministrador(), organisation);
+
+        // Validate
+        OrganisationsMetamacAsserts.assertEqualsOrganisation(organisation, organisationUpdated);
+    }
 
     @Test
     public void testRetrieveOrganisationByUrn() throws Exception {
