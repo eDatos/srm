@@ -32,7 +32,7 @@ import com.arte.statistic.sdmx.srm.core.organisation.serviceapi.OrganisationsSer
 public class OrganisationSchemeLifeCycleImpl extends LifeCycleImpl {
 
     @Autowired
-    private ItemSchemeVersionRepository           itemSchemeVersionRepository;
+    private ItemSchemeVersionRepository                itemSchemeVersionRepository;
 
     @Autowired
     private OrganisationSchemeVersionMetamacRepository organisationSchemeVersionMetamacRepository;
@@ -50,7 +50,7 @@ public class OrganisationSchemeLifeCycleImpl extends LifeCycleImpl {
         public SrmLifeCycleMetadata getLifeCycleMetadata(Object srmResourceVersion) {
             return getOrganisationSchemeVersionMetamac(srmResourceVersion).getLifecycleMetadata();
         }
-        
+
         @Override
         public MaintainableArtefact getMaintainableArtefact(Object srmResourceVersion) {
             return getOrganisationSchemeVersionMetamac(srmResourceVersion).getMaintainableArtefact();
@@ -65,31 +65,31 @@ public class OrganisationSchemeLifeCycleImpl extends LifeCycleImpl {
         public Object retrieveSrmResourceByProcStatus(String urn, ProcStatusEnum[] procStatus) throws MetamacException {
             return organisationSchemeVersionMetamacRepository.retrieveOrganisationSchemeVersionByProcStatus(urn, procStatus);
         }
-        
+
         @Override
         public void checkConcreteResourceInProductionValidation(Object srmResourceVersion, List<MetamacExceptionItem> exceptions) {
-         
+
             OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationSchemeVersionMetamac(srmResourceVersion);
 
             // Metadata required
             ValidationUtils.checkMetadataRequired(organisationSchemeVersion.getIsPartial(), ServiceExceptionParameters.ITEM_SCHEME_IS_PARTIAL, exceptions);
-            
-//            // TODO One organisation at least
-//            if (organisationSchemeVersion.getItems().size() == 0) {
-//                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.ORGANISATION_SCHEME_WITHOUT_ORGANISATIONS, organisationSchemeVersion.getMaintainableArtefact().getUrn()));
-//            }
+
+            // One organisation at least
+            if (organisationSchemeVersion.getItems().size() == 0) {
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.ORGANISATION_SCHEME_WITHOUT_ORGANISATIONS, organisationSchemeVersion.getMaintainableArtefact().getUrn()));
+            }
         }
-        
+
         @Override
         public void checkConcreteResourceInDiffusionValidation(Object srmResourceVersion, List<MetamacExceptionItem> exceptions) {
             // nothing
         }
-        
+
         @Override
         public void checkConcreteResourceInRejectProductionValidation(Object srmResourceVersion, List<MetamacExceptionItem> exceptions) {
             // nothing
         }
-        
+
         @Override
         public void checkConcreteResourceInRejectDiffusionValidation(Object srmResourceVersion, List<MetamacExceptionItem> exceptions) {
             // nothing
@@ -114,7 +114,7 @@ public class OrganisationSchemeLifeCycleImpl extends LifeCycleImpl {
         public Object startSrmResourceValidity(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
             return organisationsService.startOrganisationSchemeValidity(ctx, getOrganisationSchemeVersionMetamac(srmResourceVersion).getMaintainableArtefact().getUrn());
         }
-        
+
         @Override
         public Object endSrmResourceValidity(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
             return organisationsService.endOrganisationSchemeValidity(ctx, getOrganisationSchemeVersionMetamac(srmResourceVersion).getMaintainableArtefact().getUrn());
@@ -125,9 +125,9 @@ public class OrganisationSchemeLifeCycleImpl extends LifeCycleImpl {
 
             OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationSchemeVersionMetamac(srmResourceVersion);
 
-            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(OrganisationSchemeVersionMetamac.class).withProperty(OrganisationSchemeVersionMetamacProperties.itemScheme().id())
-                    .eq(organisationSchemeVersion.getItemScheme().getId()).withProperty(OrganisationSchemeVersionMetamacProperties.lifecycleMetadata().procStatus()).in((Object[]) procStatus).distinctRoot()
-                    .build();
+            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(OrganisationSchemeVersionMetamac.class)
+                    .withProperty(OrganisationSchemeVersionMetamacProperties.itemScheme().id()).eq(organisationSchemeVersion.getItemScheme().getId())
+                    .withProperty(OrganisationSchemeVersionMetamacProperties.lifecycleMetadata().procStatus()).in((Object[]) procStatus).distinctRoot().build();
             PagingParameter pagingParameter = PagingParameter.noLimits();
             PagedResult<OrganisationSchemeVersionMetamac> organisationSchemeVersionPagedResult = organisationSchemeVersionMetamacRepository.findByCondition(conditions, pagingParameter);
             return organisationSchemeMetamacToObject(organisationSchemeVersionPagedResult.getValues());

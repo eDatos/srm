@@ -1365,6 +1365,60 @@
         LAST_UPDATED_TZ="Europe/London"
     />
     
+        <!-- ORGANISATIONS -->
+            <!-- -> ORGANISATION01 -->
+            
+            <!-- ORGANISATION01 -->
+            
+            <TB_M_ORGANISATIONS
+                TB_ORGANISATIONS="411"
+            />
+            
+            <TB_ORGANISATIONS
+                TB_ITEMS="411"
+                ORGANISATION_TYPE="ORGANISATION_UNIT"
+            />
+        
+            <TB_ITEMS
+                ID="411"
+                PARENT_FK="[null]"
+                ITEM_SCHEME_VERSION_FK="41"
+                ITEM_SCHEME_VERSION_FIRST_FK="41"
+                NAMEABLE_ARTEFACT_FK="411"
+                      
+                UUID="organisationScheme-4-v1-org-1"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"  
+            />
+
+            <TB_ANNOTABLE_ARTEFACTS 
+                ID="411"
+                ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+
+                CODE="ORGANISATION01"
+                URI="[null]"
+                URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME04(01.000).ORGANISATION01"
+                REPLACED_BY="[null]"
+                REPLACE_TO="[null]"
+
+                NAME_FK="[null]"
+                DESCRIPTION_FK="[null]"
+
+                UUID="annotableArtefact-411"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"
+            />     
+    
 
     <!-- ************************************************************************************** -->
     <!-- ORGANISATION SCHEME 5 (Organisation Unit)	                                            -->
@@ -1456,6 +1510,60 @@
         LAST_UPDATED_TZ="Europe/London"
     />
     
+            <!-- ORGANISATIONS -->
+            <!-- -> ORGANISATION01 -->
+            
+            <!-- ORGANISATION01 -->
+            
+            <TB_M_ORGANISATIONS
+                TB_ORGANISATIONS="511"
+            />
+            
+            <TB_ORGANISATIONS
+                TB_ITEMS="511"
+                ORGANISATION_TYPE="ORGANISATION_UNIT"
+            />
+        
+            <TB_ITEMS
+                ID="511"
+                PARENT_FK="[null]"
+                ITEM_SCHEME_VERSION_FK="51"
+                ITEM_SCHEME_VERSION_FIRST_FK="51"
+                NAMEABLE_ARTEFACT_FK="511"
+                      
+                UUID="organisationScheme-5-v1-org-1"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"  
+            />
+
+            <TB_ANNOTABLE_ARTEFACTS 
+                ID="511"
+                ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+
+                CODE="ORGANISATION01"
+                URI="[null]"
+                URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME05(01.000).ORGANISATION01"
+                REPLACED_BY="[null]"
+                REPLACE_TO="[null]"
+
+                NAME_FK="[null]"
+                DESCRIPTION_FK="[null]"
+
+                UUID="annotableArtefact-511"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"
+            />     
+    
     <!-- ************************************************************************************** -->
     <!-- ORGANISATION SCHEME 6 (Organisation Unit)	                                            -->
     <!--        - Version 1: diffusion validation                                               -->
@@ -1546,6 +1654,60 @@
         LAST_UPDATED_TZ="Europe/London"
     />
 
+            <!-- ORGANISATIONS -->
+            <!-- -> ORGANISATION01 -->
+            
+            <!-- ORGANISATION01 -->
+            
+            <TB_M_ORGANISATIONS
+                TB_ORGANISATIONS="611"
+            />
+            
+            <TB_ORGANISATIONS
+                TB_ITEMS="611"
+                ORGANISATION_TYPE="ORGANISATION_UNIT"
+            />
+        
+            <TB_ITEMS
+                ID="611"
+                PARENT_FK="[null]"
+                ITEM_SCHEME_VERSION_FK="61"
+                ITEM_SCHEME_VERSION_FIRST_FK="61"
+                NAMEABLE_ARTEFACT_FK="611"
+                      
+                UUID="organisationScheme-6-v1-org-1"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"  
+            />
+
+            <TB_ANNOTABLE_ARTEFACTS 
+                ID="611"
+                ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+
+                CODE="ORGANISATION01"
+                URI="[null]"
+                URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME06(01.000).ORGANISATION01"
+                REPLACED_BY="[null]"
+                REPLACE_TO="[null]"
+
+                NAME_FK="[null]"
+                DESCRIPTION_FK="[null]"
+
+                UUID="annotableArtefact-611"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"
+            />  
+            
     <!-- ************************************************************************************** -->
     <!-- ORGANISATION SCHEME 7 (Organisation Unit)	                                            -->
     <!--        - Version 1: externally published                                               -->
@@ -1716,6 +1878,59 @@
         LAST_UPDATED_TZ="Europe/London"
     />
 
+            <!-- ORGANISATIONS -->
+            <!-- -> ORGANISATION01 -->
+            
+            <!-- ORGANISATION01 -->
+            
+            <TB_M_ORGANISATIONS
+                TB_ORGANISATIONS="721"
+            />
+            
+            <TB_ORGANISATIONS
+                TB_ITEMS="721"
+                ORGANISATION_TYPE="ORGANISATION_UNIT"
+            />
+        
+            <TB_ITEMS
+                ID="721"
+                PARENT_FK="[null]"
+                ITEM_SCHEME_VERSION_FK="72"
+                ITEM_SCHEME_VERSION_FIRST_FK="72"
+                NAMEABLE_ARTEFACT_FK="721"
+                      
+                UUID="organisationScheme-7-v2-org-1"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"  
+            />
+
+            <TB_ANNOTABLE_ARTEFACTS 
+                ID="721"
+                ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+
+                CODE="ORGANISATION01"
+                URI="[null]"
+                URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME07(02.000).ORGANISATION01"
+                REPLACED_BY="[null]"
+                REPLACE_TO="[null]"
+
+                NAME_FK="[null]"
+                DESCRIPTION_FK="[null]"
+
+                UUID="annotableArtefact-721"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"
+            />  
 
     <!-- ************************************************************************************** -->
     <!-- EXTERNAL ITEMS                                                                         -->
