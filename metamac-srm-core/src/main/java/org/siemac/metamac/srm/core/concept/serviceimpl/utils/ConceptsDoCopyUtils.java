@@ -1,7 +1,7 @@
 package org.siemac.metamac.srm.core.concept.serviceimpl.utils;
 
-import static com.arte.statistic.sdmx.srm.core.common.service.utils.DoCopyUtils.copy;
-import static com.arte.statistic.sdmx.srm.core.concept.serviceimpl.utils.DoCopyUtils.copyConceptSchemeVersion;
+import static com.arte.statistic.sdmx.srm.core.common.service.utils.BaseDoCopyUtils.copy;
+import static com.arte.statistic.sdmx.srm.core.concept.serviceimpl.utils.ConceptsDoCopyUtils.copyConceptSchemeVersion;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +12,7 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.concept.domain.Concept;
 
-public class DoCopyUtils {
+public class ConceptsDoCopyUtils {
 
     /**
      * Create a new ConceptSchemeVersion copying values from a source
@@ -66,7 +66,7 @@ public class DoCopyUtils {
         ConceptMetamac target = new ConceptMetamac();
 
         // Common metadata of Concept
-        com.arte.statistic.sdmx.srm.core.concept.serviceimpl.utils.DoCopyUtils.copyConcept(source, target);
+        com.arte.statistic.sdmx.srm.core.concept.serviceimpl.utils.ConceptsDoCopyUtils.copyConcept(source, target);
 
         // Metamac metadata
         target.setPluralName(copy(source.getPluralName()));

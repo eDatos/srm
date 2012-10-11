@@ -2,7 +2,7 @@ package org.siemac.metamac.srm.core.organisation.serviceimpl.utils;
 
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
 
-public class DoCopyUtils {
+public class OrganisationsDoCopyUtils {
 
     /**
      * Create a new OrganisationSchemeVersion copying values from a source
@@ -12,7 +12,7 @@ public class DoCopyUtils {
         OrganisationSchemeVersionMetamac target = new OrganisationSchemeVersionMetamac(source.getOrganisationSchemeType());
 
         // Common metadata of OrganisationSchemeVersion
-        com.arte.statistic.sdmx.srm.core.organisation.serviceimpl.utils.DoCopyUtils.copyOrganisationSchemeVersion(source, target);
+        com.arte.statistic.sdmx.srm.core.organisation.serviceimpl.utils.OrganisationsDoCopyUtils.copyOrganisationSchemeVersion(source, target);
 
         return target;
     }

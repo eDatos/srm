@@ -20,7 +20,7 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacPro
 import org.siemac.metamac.srm.core.concept.domain.ConceptType;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.core.concept.serviceimpl.utils.ConceptsMetamacInvocationValidator;
-import org.siemac.metamac.srm.core.concept.serviceimpl.utils.DoCopyUtils;
+import org.siemac.metamac.srm.core.concept.serviceimpl.utils.ConceptsDoCopyUtils;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -205,9 +205,9 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         }
 
         // Copy values
-        ConceptSchemeVersionMetamac conceptSchemeNewVersion = DoCopyUtils.copyConceptSchemeVersionMetamac(conceptSchemeVersionToCopy);
+        ConceptSchemeVersionMetamac conceptSchemeNewVersion = ConceptsDoCopyUtils.copyConceptSchemeVersionMetamac(conceptSchemeVersionToCopy);
         conceptSchemeNewVersion.setLifecycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
-        List concepts = DoCopyUtils.copyConceptsMetamac(conceptSchemeVersionToCopy);
+        List concepts = ConceptsDoCopyUtils.copyConceptsMetamac(conceptSchemeVersionToCopy);
 
         // Versioning
         conceptSchemeNewVersion = (ConceptSchemeVersionMetamac) conceptsService

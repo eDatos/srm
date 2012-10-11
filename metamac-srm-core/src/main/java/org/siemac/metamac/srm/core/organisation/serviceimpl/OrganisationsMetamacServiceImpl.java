@@ -19,7 +19,7 @@ import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamacProperties;
-import org.siemac.metamac.srm.core.organisation.serviceimpl.utils.DoCopyUtils;
+import org.siemac.metamac.srm.core.organisation.serviceimpl.utils.OrganisationsDoCopyUtils;
 import org.siemac.metamac.srm.core.organisation.serviceimpl.utils.OrganisationsMetamacInvocationValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -179,7 +179,7 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
         }
 
         // Copy values
-        OrganisationSchemeVersionMetamac organisationSchemeNewVersion = DoCopyUtils.copyOrganisationSchemeVersionMetamac(organisationSchemeVersionToCopy);
+        OrganisationSchemeVersionMetamac organisationSchemeNewVersion = OrganisationsDoCopyUtils.copyOrganisationSchemeVersionMetamac(organisationSchemeVersionToCopy);
         organisationSchemeNewVersion.setLifecycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
         // TODO List organisations = DoCopyUtils.copyOrganisationsMetamac(organisationSchemeVersionToCopy);
         List<Organisation> organisations = new ArrayList<Organisation>(); // TODO REMOVE THIS LINE!!!!!
