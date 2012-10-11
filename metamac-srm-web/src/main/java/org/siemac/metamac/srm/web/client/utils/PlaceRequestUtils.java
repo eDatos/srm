@@ -8,6 +8,10 @@ import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 
 public class PlaceRequestUtils {
 
+    //
+    // DATA STRUCTURE DEFINITION
+    //
+
     public static String getDsdParamFromUrl(PlaceManager placeManager) {
         for (PlaceRequest request : placeManager.getCurrentPlaceHierarchy()) {
             if (NameTokens.dsdPage.equals(request.getNameToken())) {
@@ -16,6 +20,8 @@ public class PlaceRequestUtils {
         }
         return null;
     }
+
+    // CONCEPTS
 
     public static String getConceptSchemeParamFromUrl(PlaceManager placeManager) {
         for (PlaceRequest request : placeManager.getCurrentPlaceHierarchy()) {
@@ -34,6 +40,10 @@ public class PlaceRequestUtils {
         }
         return null;
     }
+
+    //
+    // ORGANISATIONS
+    //
 
     public static String getOrganisationSchemeIdParamFromUrl(PlaceManager placeManager) {
         for (PlaceRequest request : placeManager.getCurrentPlaceHierarchy()) {

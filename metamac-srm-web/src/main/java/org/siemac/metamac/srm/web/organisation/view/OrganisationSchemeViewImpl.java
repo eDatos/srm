@@ -46,6 +46,7 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 import com.google.gwt.user.client.ui.Widget;
@@ -156,7 +157,9 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
                     @Override
                     public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
                         if (newOrganisationWindow.validateForm()) {
-                            getUiHandlers().createOrganisation(newOrganisationWindow.getNewOrganisationDto(getOrganisationTypeEnum()));
+                            OrganisationMetamacDto organisationToCreate = newOrganisationWindow.getNewOrganisationDto(getOrganisationTypeEnum());
+                            organisationToCreate.setItemSchemeVersionUrn(organisationSchemeDto.getUrn());
+                            getUiHandlers().createOrganisation(organisationToCreate);
                             newOrganisationWindow.destroy();
                         }
                     }
@@ -216,8 +219,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
             public void onRecordClick(RecordClickEvent event) {
                 if (event.getFieldNum() != 0) { // Clicking checkBox will be ignored
                     String urn = ((OrganisationRecord) event.getRecord()).getAttribute(OrganisationDS.URN);
-                    OrganisationTypeEnum type = ((OrganisationRecord) event.getRecord()).getOrganisationDto().getType();
-                    getUiHandlers().goToOrganisation(urn, type);
+                    getUiHandlers().goToOrganisation(urn);
                 }
             }
         });
@@ -583,15 +585,15 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
     }
 
     @Override
-    public void setOrganisationList(List<OrganisationMetamacDto> organisationDtos) {
+    public void setOrganisationList(List<ItemHierarchyDto> organisations) {
         if (OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME.equals(organisationSchemeDto.getType())) {
             // Organisation hierarchy
             // TODO Set values
         } else {
             // Organisation list
-            OrganisationRecord[] records = new OrganisationRecord[organisationDtos.size()];
-            for (int i = 0; i < organisationDtos.size(); i++) {
-                records[i] = org.siemac.metamac.srm.web.organisation.utils.RecordUtils.getOrganisationRecord(organisationDtos.get(i));
+            OrganisationRecord[] records = new OrganisationRecord[organisations.size()];
+            for (int i = 0; i < organisations.size(); i++) {
+                records[i] = org.siemac.metamac.srm.web.organisation.utils.RecordUtils.getOrganisationRecord(organisations.get(i));
             }
             organisationListGrid.setData(records);
         }

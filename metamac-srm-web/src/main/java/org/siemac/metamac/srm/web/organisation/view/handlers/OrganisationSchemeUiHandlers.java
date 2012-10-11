@@ -7,7 +7,6 @@ import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
-import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
 import com.gwtplatform.mvp.client.UiHandlers;
 
@@ -18,7 +17,7 @@ public interface OrganisationSchemeUiHandlers extends UiHandlers {
     void saveOrganisationScheme(OrganisationSchemeMetamacDto organisationScheme);
     void cancelValidity(String urn);
     void goToOrganisationScheme(String urn, OrganisationSchemeTypeEnum type);
-    void goToOrganisation(String urn, OrganisationTypeEnum type);
+    void goToOrganisation(String urn);
     void retrieveOrganisationListByScheme(String organisationSchemeUrn);
     void createOrganisation(OrganisationMetamacDto organisationDto);
     void deleteOrganisations(List<String> urns);

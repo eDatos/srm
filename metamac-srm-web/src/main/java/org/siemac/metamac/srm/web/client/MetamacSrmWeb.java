@@ -28,14 +28,14 @@ import com.gwtplatform.mvp.client.DelayedBindRegistry;
  */
 public class MetamacSrmWeb extends MetamacEntryPoint {
 
-    private static Logger               logger    = Logger.getLogger(MetamacSrmWeb.class.getName());
+    private static Logger                      logger    = Logger.getLogger(MetamacSrmWeb.class.getName());
 
-    private static MetamacPrincipal     principal;
-    private static SrmWebConstants      constants;
-    private static SrmWebCoreMessages   coreMessages;
-    private static SrmWebMessages       messages;
+    private static MetamacPrincipal            principal;
+    private static SrmWebConstants             constants;
+    private static SrmWebCoreMessages          coreMessages;
+    private static SrmWebMessages              messages;
 
-    public final MetamacSrmWebGinjector ginjector = GWT.create(MetamacSrmWebGinjector.class);
+    public static final MetamacSrmWebGinjector ginjector = GWT.create(MetamacSrmWebGinjector.class);
 
     // TODO This method should be removed to use CAS authentication
     // Application id should be the same than the one defined in org.siemac.metamac.srm.core.common.constants.SrmConstants.SECURITY_APPLICATION_ID
@@ -214,6 +214,10 @@ public class MetamacSrmWeb extends MetamacEntryPoint {
         }
 
         return realModuleBase + url;
+    }
+
+    public static void showErrorPage() {
+        ginjector.getPlaceManager().revealErrorPlace(null);
     }
 
 }

@@ -6,7 +6,6 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
@@ -19,6 +18,7 @@ import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.client.widgets.presenter.ToolStripPresenterWidget;
+import org.siemac.metamac.srm.web.organisation.utils.CommonUtils;
 import org.siemac.metamac.srm.web.organisation.view.handlers.OrganisationSchemeUiHandlers;
 import org.siemac.metamac.srm.web.shared.organisation.CancelOrganisationSchemeValidityAction;
 import org.siemac.metamac.srm.web.shared.organisation.CancelOrganisationSchemeValidityResult;
@@ -44,8 +44,8 @@ import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.utils.UrnUtils;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
-import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
@@ -91,7 +91,7 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
 
         void setOrganisationScheme(OrganisationSchemeMetamacDto organisationSchemeMetamacDto);
         void setOrganisationSchemeVersions(List<OrganisationSchemeMetamacDto> organisationSchemeMetamacDtos);
-        void setOrganisationList(List<OrganisationMetamacDto> organisationDtos);
+        void setOrganisationList(List<ItemHierarchyDto> organisationDtos);
     }
 
     @ContentSlot
@@ -125,35 +125,39 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
         super.prepareFromRequest(request);
         String urn = PlaceRequestUtils.getOrganisationSchemeIdParamFromUrl(placeManager);
         String typeParam = PlaceRequestUtils.getOrganisationSchemeTypeParamFromUrl(placeManager);
-        OrganisationSchemeTypeEnum type = !StringUtils.isBlank(typeParam) ? OrganisationSchemeTypeEnum.valueOf(typeParam) : null;
-        if (urn != null && type != null) {
-            retrieveOrganisationScheme(urn, type);
+        try {
+            OrganisationSchemeTypeEnum type = !StringUtils.isBlank(typeParam) ? OrganisationSchemeTypeEnum.valueOf(typeParam) : null;
+            if (!StringUtils.isBlank(urn) && type != null) {
+                retrieveOrganisationScheme(urn, type);
+            } else {
+                MetamacSrmWeb.showErrorPage();
+            }
+        } catch (Exception e) {
+            MetamacSrmWeb.showErrorPage();
         }
     }
 
     @Override
     public void retrieveOrganisationScheme(String identifier, OrganisationSchemeTypeEnum type) {
-        String urn = null;
+        // Set title depending on organisation scheme
         switch (type) {
             case AGENCY_SCHEME:
-                urn = UrnUtils.generateUrn(UrnConstants.URN_SDMX_CLASS_AGENCYSCHEME_PREFIX, identifier);
                 SetTitleEvent.fire(this, getCoreMessages().organisationSchemeTypeEnumAGENCY_SCHEME());
                 break;
             case ORGANISATION_UNIT_SCHEME:
-                urn = UrnUtils.generateUrn(UrnConstants.URN_SDMX_CLASS_ORGANISATIONUNITSCHEME_PREFIX, identifier);
                 SetTitleEvent.fire(this, getCoreMessages().organisationSchemeTypeEnumORGANISATION_UNIT_SCHEME());
                 break;
             case DATA_PROVIDER_SCHEME:
-                urn = UrnUtils.generateUrn(UrnConstants.URN_SDMX_CLASS_DATAPROVIDERSCHEME_PREFIX, identifier);
                 SetTitleEvent.fire(this, getCoreMessages().organisationSchemeTypeEnumDATA_PROVIDER_SCHEME());
                 break;
             case DATA_CONSUMER_SCHEME:
-                urn = UrnUtils.generateUrn(UrnConstants.URN_SDMX_CLASS_DATACONSUMERSCHEME_PREFIX, identifier);
                 SetTitleEvent.fire(this, getCoreMessages().organisationSchemeTypeEnumDATA_CONSUMER_SCHEME());
                 break;
             default:
                 break;
         }
+        // Retrieve organisation scheme by URN
+        String urn = CommonUtils.generateOrganisationSchemeUrn(identifier, type);
         if (!StringUtils.isBlank(urn)) {
             retrieveOrganisationSchemeByUrn(urn);
         }
@@ -186,7 +190,7 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
             }
             @Override
             public void onWaitSuccess(GetOrganisationListBySchemeResult result) {
-                getView().setOrganisationList(result.getOrganisationDtos());
+                getView().setOrganisationList(result.getOrganisations());
             }
         });
     }
@@ -392,7 +396,7 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
     }
 
     @Override
-    public void goToOrganisation(String urn, OrganisationTypeEnum type) {
+    public void goToOrganisation(String urn) {
         if (!StringUtils.isBlank(urn)) {
             String[] splitUrn = UrnUtils.splitUrnByDots(UrnUtils.removePrefix(urn));
             placeManager.revealRelativePlace(new PlaceRequest(NameTokens.organisationPage).with(PlaceRequestParams.organisationParamId, splitUrn[splitUrn.length - 1]));

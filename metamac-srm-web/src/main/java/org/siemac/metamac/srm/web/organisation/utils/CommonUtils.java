@@ -4,10 +4,17 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getCoreMessages;
 
 import java.util.LinkedHashMap;
 
+import org.siemac.metamac.core.common.constants.shared.UrnConstants;
+import org.siemac.metamac.web.common.client.utils.UrnUtils;
+
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 
 public class CommonUtils {
+
+    //
+    // HASH MAPS
+    //
 
     private static LinkedHashMap<String, String> organisationSchemeTypeHashMap = null;
     private static LinkedHashMap<String, String> organisationTypeHashMap       = null;
@@ -38,6 +45,52 @@ public class CommonUtils {
 
     public static String getOrganisationTypeName(OrganisationTypeEnum type) {
         return type != null ? getCoreMessages().getString(getCoreMessages().organisationTypeEnum() + type.name()) : null;
+    }
+
+    //
+    // URNs
+    //
+
+    public static String generateOrganisationSchemeUrn(String identifier, OrganisationSchemeTypeEnum type) {
+        String urn = null;
+        switch (type) {
+            case AGENCY_SCHEME:
+                urn = UrnUtils.generateUrn(UrnConstants.URN_SDMX_CLASS_AGENCYSCHEME_PREFIX, identifier);
+                break;
+            case ORGANISATION_UNIT_SCHEME:
+                urn = UrnUtils.generateUrn(UrnConstants.URN_SDMX_CLASS_ORGANISATIONUNITSCHEME_PREFIX, identifier);
+                break;
+            case DATA_PROVIDER_SCHEME:
+                urn = UrnUtils.generateUrn(UrnConstants.URN_SDMX_CLASS_DATAPROVIDERSCHEME_PREFIX, identifier);
+                break;
+            case DATA_CONSUMER_SCHEME:
+                urn = UrnUtils.generateUrn(UrnConstants.URN_SDMX_CLASS_DATACONSUMERSCHEME_PREFIX, identifier);
+                break;
+            default:
+                break;
+        }
+        return urn;
+    }
+
+    public static String generateOrganisationUrn(String schemeIdentifier, OrganisationSchemeTypeEnum schemeType, String organisationCode) {
+        String urn = null;
+        switch (schemeType) {
+            case AGENCY_SCHEME:
+                urn = UrnUtils.generateUrn(UrnConstants.URN_SDMX_CLASS_AGENCY_PREFIX, schemeIdentifier, organisationCode);
+                break;
+            case ORGANISATION_UNIT_SCHEME:
+                urn = UrnUtils.generateUrn(UrnConstants.URN_SDMX_CLASS_ORGANISATIONUNIT_PREFIX, schemeIdentifier, organisationCode);
+                break;
+            case DATA_PROVIDER_SCHEME:
+                urn = UrnUtils.generateUrn(UrnConstants.URN_SDMX_CLASS_DATAPROVIDER_PREFIX, schemeIdentifier, organisationCode);
+                break;
+            case DATA_CONSUMER_SCHEME:
+                urn = UrnUtils.generateUrn(UrnConstants.URN_SDMX_CLASS_DATACONSUMER_PREFIX, schemeIdentifier, organisationCode);
+                break;
+            default:
+                break;
+        }
+        return urn;
     }
 
 }

@@ -3,13 +3,16 @@ package org.siemac.metamac.srm.web.organisation.presenter;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
+import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
+import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.client.widgets.presenter.ToolStripPresenterWidget;
+import org.siemac.metamac.srm.web.organisation.utils.CommonUtils;
 import org.siemac.metamac.srm.web.organisation.view.handlers.OrganisationUiHandlers;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationAction;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationResult;
@@ -19,6 +22,7 @@ import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
+import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
@@ -90,13 +94,20 @@ public class OrganisationPresenter extends Presenter<OrganisationPresenter.Organ
     @Override
     public void prepareFromRequest(PlaceRequest request) {
         super.prepareFromRequest(request);
-        // String schemeParam = PlaceRequestUtils.getOrganisationSchemeParamFromUrl(placeManager);
-        // String organisationCode = PlaceRequestUtils.getOrganisationParamFromUrl(placeManager);
-        // if (!StringUtils.isBlank(schemeParam) && !StringUtils.isBlank(organisationCode)) {
-        // this.organisationSchemeUrn = UrnUtils.generateUrn(UrnConstants.URN_SDMX_CLASS_ORGANISATIONSCHEME_PREFIX, schemeParam);
-        // String urn = UrnUtils.generateUrn(UrnConstants.URN_SDMX_CLASS_ORGANISATION_PREFIX, schemeParam, organisationCode);
-        retrieveOrganisation("TODO");
-        // }
+        String schemeParam = PlaceRequestUtils.getOrganisationSchemeIdParamFromUrl(placeManager);
+        String schemeType = PlaceRequestUtils.getOrganisationSchemeTypeParamFromUrl(placeManager);
+        String organisationCode = PlaceRequestUtils.getOrganisationParamFromUrl(placeManager);
+        try {
+            OrganisationSchemeTypeEnum type = schemeType != null ? OrganisationSchemeTypeEnum.valueOf(schemeType) : null;
+            if (!StringUtils.isBlank(schemeParam) && type != null && !StringUtils.isBlank(organisationCode)) {
+                String urn = CommonUtils.generateOrganisationUrn(schemeParam, type, organisationCode);
+                retrieveOrganisation(urn);
+            } else {
+                MetamacSrmWeb.showErrorPage();
+            }
+        } catch (Exception e) {
+            MetamacSrmWeb.showErrorPage();
+        }
     }
 
     @Override
