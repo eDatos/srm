@@ -66,6 +66,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         // Create
         ConceptSchemeVersionMetamac conceptSchemeVersionCreated = conceptsService.createConceptScheme(ctx, conceptSchemeVersion);
         String urn = conceptSchemeVersionCreated.getMaintainableArtefact().getUrn();
+        assertEquals("01.000", conceptSchemeVersionCreated.getMaintainableArtefact().getVersionLogic());
         assertEquals(ctx.getUserId(), conceptSchemeVersionCreated.getCreatedBy());
         
         // Validate (only metadata in SRM Metamac; the others are checked in sdmx project)

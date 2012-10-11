@@ -64,6 +64,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         // Create
         OrganisationSchemeVersionMetamac organisationSchemeVersionCreated = organisationsService.createOrganisationScheme(ctx, organisationSchemeVersion);
         String urn = organisationSchemeVersionCreated.getMaintainableArtefact().getUrn();
+        assertEquals("01.000", organisationSchemeVersionCreated.getMaintainableArtefact().getVersionLogic());
         assertEquals(ctx.getUserId(), organisationSchemeVersionCreated.getCreatedBy());
 
         // Validate (only metadata in SRM Metamac; the others are checked in sdmx project)
