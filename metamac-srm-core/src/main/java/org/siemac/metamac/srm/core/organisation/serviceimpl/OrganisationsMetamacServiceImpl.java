@@ -160,6 +160,7 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
         organisationsService.deleteOrganisationScheme(ctx, urn);
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public OrganisationSchemeVersionMetamac versioningOrganisationScheme(ServiceContext ctx, String urn, VersionTypeEnum versionType) throws MetamacException {
 
@@ -181,8 +182,7 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
         // Copy values
         OrganisationSchemeVersionMetamac organisationSchemeNewVersion = OrganisationsDoCopyUtils.copyOrganisationSchemeVersionMetamac(organisationSchemeVersionToCopy);
         organisationSchemeNewVersion.setLifecycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
-        // TODO List organisations = DoCopyUtils.copyOrganisationsMetamac(organisationSchemeVersionToCopy);
-        List<Organisation> organisations = new ArrayList<Organisation>(); // TODO REMOVE THIS LINE!!!!!
+        List organisations = OrganisationsDoCopyUtils.copyOrganisationsMetamac(organisationSchemeVersionToCopy);
 
         // Versioning
         organisationSchemeNewVersion = (OrganisationSchemeVersionMetamac) organisationsService.versioningOrganisationScheme(ctx, organisationSchemeVersionToCopy.getItemScheme(),

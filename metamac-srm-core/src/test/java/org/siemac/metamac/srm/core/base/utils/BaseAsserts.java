@@ -6,7 +6,7 @@ import org.siemac.metamac.core.common.util.CoreCommonUtil;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.base.dto.LifeCycleDto;
 
-public class BaseAsserts {
+public class BaseAsserts extends com.arte.statistic.sdmx.srm.core.base.serviceapi.utils.BaseAsserts{
 
     // LIFE CYCLE
 

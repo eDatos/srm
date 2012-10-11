@@ -87,6 +87,11 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
     protected String              ORGANISATION_SCHEME_1_V2_ORGANISATION_4_1_1 = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME01(02.000).ORGANISATION040101";
     protected String              ORGANISATION_SCHEME_2_V1_ORGANISATION_1     = "urn:sdmx:org.sdmx.infomodel.base.Agency=ISTAC:ORGANISATIONSCHEME02(01.000).ORGANISATION01";
     protected String              ORGANISATION_SCHEME_2_V1_ORGANISATION_2     = "urn:sdmx:org.sdmx.infomodel.base.Agency=ISTAC:ORGANISATIONSCHEME02(01.000).ORGANISATION02";
+    protected String              ORGANISATION_SCHEME_3_V1_ORGANISATION_1     = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME03(01.000).ORGANISATION01";
+    protected String              ORGANISATION_SCHEME_3_V1_ORGANISATION_2     = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME03(01.000).ORGANISATION02";
+    protected String              ORGANISATION_SCHEME_3_V1_ORGANISATION_2_1   = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME03(01.000).ORGANISATION0201";
+    protected String              ORGANISATION_SCHEME_3_V1_ORGANISATION_2_1_1 = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME03(01.000).ORGANISATION020101";
+    protected String              ORGANISATION_SCHEME_3_V1_ORGANISATION_2_2   = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME03(01.000).ORGANISATION0202";
 
     // Other
     protected static final String NOT_EXISTS                                  = "not-exists";
