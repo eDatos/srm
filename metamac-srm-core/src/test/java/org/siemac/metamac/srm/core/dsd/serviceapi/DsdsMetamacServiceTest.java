@@ -42,117 +42,117 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
         return serviceContext;
     }
     
-    // TODO Tests de mappers
+    // TODO Test dsd. Hacer tests de mappers
 
     @Test
     @Override
     public void testCreateDataStructureDefinition() throws Exception {
-        // TODO Auto-generated method stub
+        // TODO Test dsd
 
     }
 
     @Test
     @Override
     public void testUpdateDataStructureDefinition() throws Exception {
-        // TODO Auto-generated method stub
+        // TODO Test dsd
 
     }
 
     @Test
     @Override
     public void testRetrieveDataStructureDefinitionByUrn() throws Exception {
-        // TODO Auto-generated method stub
+        // TODO Test dsd
 
     }
 
     @Test
     @Override
     public void testRetrieveDataStructureDefinitionVersions() throws Exception {
-        // TODO Auto-generated method stub
+        // TODO Test dsd
 
     }
 
     @Test
     @Override
     public void testFindDataStructureDefinitionsByCondition() throws Exception {
-        // TODO Auto-generated method stub
+        // TODO Test dsd
 
     }
 
     @Test
     @Override
     public void testSaveDescriptorForDataStructureDefinition() throws Exception {
-        // TODO Auto-generated method stub
+        // TODO Test dsd
 
     }
 
     @Test
     @Override
     public void testDeleteDescriptorForDataStructureDefinition() throws Exception {
-        // TODO Auto-generated method stub
+        // TODO Test dsd
 
     }
 
     @Test
     @Override
     public void testSaveComponentForDataStructureDefinition() throws Exception {
-        // TODO Auto-generated method stub
+        // TODO Test dsd
 
     }
 
     @Test
     @Override
     public void testDeleteComponentForDataStructureDefinition() throws Exception {
-        // TODO Auto-generated method stub
+        // TODO Test dsd
 
     }
 
     @Test
     @Override
     public void testSendDataStructureDefinitionToProductionValidation() throws Exception {
-        // TODO Auto-generated method stub
+        // TODO Test dsd
 
     }
 
     @Test
     @Override
     public void testSendDataStructureDefinitionToDiffusionValidation() throws Exception {
-        // TODO Auto-generated method stub
+        // TODO Test dsd
 
     }
 
     @Test
     @Override
     public void testRejectDataStructureDefinitionProductionValidation() throws Exception {
-        // TODO Auto-generated method stub
+        // TODO Test dsd
 
     }
 
     @Test
     @Override
     public void testRejectDataStructureDefinitionDiffusionValidation() throws Exception {
-        // TODO Auto-generated method stub
+        // TODO Test dsd
 
     }
 
     @Test
     @Override
     public void testPublishInternallyDataStructureDefinition() throws Exception {
-        // TODO Auto-generated method stub
+        // TODO Test dsd
 
     }
 
     @Test
     @Override
     public void testPublishExternallyDataStructureDefinition() throws Exception {
-        // TODO Auto-generated method stub
+        // TODO Test dsd
 
     }
 
     @Test
     @Override
     public void testDeleteDataStructureDefinition() throws Exception {
-        // TODO Auto-generated method stub
+        // TODO Test dsd
 
     }
 
@@ -174,7 +174,7 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
     @Test
     @Override
     public void testCancelDataStructureDefinitionValidity() throws Exception {
-        // TODO Auto-generated method stub
+        // TODO Test dsd
 
     }
 

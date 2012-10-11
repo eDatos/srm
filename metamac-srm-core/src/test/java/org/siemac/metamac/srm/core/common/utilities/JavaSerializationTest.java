@@ -70,7 +70,7 @@ public class JavaSerializationTest {
     @Ignore
     // @Rollback(false)
     public void testSerializeDSD() throws Exception {
-        // TODO TEST serializar DSD
+        // TODO Test javaSerialization. Serializar DSD
 
         /*
          * List<DataStructureDefinitionDto> dsds = srmCoreServiceFacade.findAllDsds(getServiceContext());

@@ -487,7 +487,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public String exportSDMXStructureMsg(ServiceContext ctx, StructureMsgDto structureMsgDto) throws MetamacException {
-        // TODO añadir seguridad a exportar DSD
+        // TODO Facade. Añadir seguridad a exportar DSD
 
         OutputStream outputStream = null;
         File file = null;

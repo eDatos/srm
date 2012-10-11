@@ -221,7 +221,7 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
     @Test
     @Ignore
     public void testDeleteDsd() throws Exception {
-        // TODO TEST delete DSD en fachada
+        // TODO Test dsd. Delete DSD en fachada
         /*
          * DataStructureDefinitionDto dataStructureDefinitionDto = srmCoreServiceFacade.saveDsd(getServiceContext(), SrmDtoMocks.createDdsDTO());
          * MetamacCriteriaResult<DataStructureDefinitionDto> result = srmCoreServiceFacade.findDsdByCondition(getServiceContext(), null);
@@ -269,11 +269,11 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
         assertTrue(!descriptorDtos.isEmpty());
     }
 
-    // TODO está dando nullpointers
+    // TODO Test dsd. Está dando nullpointers
     @Test
     @Ignore
     public void testFindDescriptorForDsdThread() throws Exception {
-        // TODO quitar este test???
+        // TODO Test dsd. Quitar este test???
         /*
          * final List<DataStructureDefinitionDto> dataStructureDefinitionDtos = srmCoreServiceFacade.findAllDsds(getServiceContext());
          * class BasicThread1 extends Thread {
