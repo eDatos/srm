@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.web.organisation.widgets;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
+import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.srm.web.organisation.model.ds.ContactDS;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
@@ -25,6 +26,8 @@ public class ContactMainFormLayout extends InternationalMainFormLayout {
 
     // Stores TRUE when a new contact is going to be created. If cancel button is clicked, this mainFormLayout should be disappear.
     private boolean          isNewContact;
+
+    private ContactDto       contactDto;
 
     public ContactMainFormLayout() {
         super();
@@ -91,11 +94,34 @@ public class ContactMainFormLayout extends InternationalMainFormLayout {
     }
 
     public void setContact(ContactDto contactDto, boolean isNewContact) {
+        this.contactDto = contactDto;
         this.isNewContact = isNewContact;
+
         setViewMode();
 
         setContactViewMode(contactDto);
         setContactEditionMode(contactDto);
+    }
+
+    public ContactDto getContact() {
+        contactDto.setName((InternationalStringDto) editionForm.getValue(ContactDS.NAME));
+        contactDto.setOrganisationUnit((InternationalStringDto) editionForm.getValue(ContactDS.ORGANISATION_UNIT));
+        contactDto.setResponsibility((InternationalStringDto) editionForm.getValue(ContactDS.RESPONSIBILITY));
+        contactDto.setUrl(editionForm.getValueAsString(ContactDS.URL));
+        // Telephones
+        contactDto.getTelephones().clear();
+        contactDto.getTelephones().addAll(((MultiTextItem) editionForm.getItem(ContactDS.TELEPHONE)).getValues());
+        // Emails
+        contactDto.getEmails().clear();
+        contactDto.getEmails().addAll(((MultiTextItem) editionForm.getItem(ContactDS.EMAIL)).getValues());
+        // Faxes
+        contactDto.getFaxes().clear();
+        contactDto.getFaxes().addAll(((MultiTextItem) editionForm.getItem(ContactDS.FAX)).getValues());
+        return contactDto;
+    }
+
+    public boolean validate() {
+        return editionForm.validate();
     }
 
     private void setContactViewMode(ContactDto contactDto) {

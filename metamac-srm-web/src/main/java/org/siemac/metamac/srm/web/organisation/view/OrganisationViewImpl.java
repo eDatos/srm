@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.web.organisation.view;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 import static org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
@@ -42,6 +43,7 @@ import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.grid.ListGridField;
+import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 import com.smartgwt.client.widgets.grid.events.SelectionChangedHandler;
@@ -116,7 +118,10 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
 
             @Override
             public void onClick(ClickEvent event) {
-                // TODO Delete contact from organisation
+                List<ContactDto> contactsToDelete = getSelectedContacts();
+                removeContactsFromOrganisation(contactsToDelete);
+                getUiHandlers().saveOrganisation(organisationDto);
+
                 contactDeleteConfirmationWindow.hide();
             }
         });
@@ -171,6 +176,17 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
 
         contactMainFormLayout = new ContactMainFormLayout();
         contactMainFormLayout.setVisibility(Visibility.HIDDEN);
+        contactMainFormLayout.getSave().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                if (contactMainFormLayout.validate()) {
+                    ContactDto contactToSave = contactMainFormLayout.getContact();
+                    addContactToOrganisation(contactToSave);
+                    getUiHandlers().saveOrganisation(organisationDto);
+                }
+            }
+        });
 
         VLayout contactListGridLayout = new VLayout();
         contactListGridLayout.addMember(contactsToolStrip);
@@ -188,7 +204,6 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         panel.addMember(mainFormLayout);
         panel.addMember(contactsSectionLayout);
     }
-
     private void bindMainFormLayoutEvents() {
         mainFormLayout.getTranslateToolStripButton().addClickHandler(new ClickHandler() {
 
@@ -370,6 +385,42 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
 
     private void showContactListGridDeleteButton() {
         contactDeleteButton.show();
+    }
+
+    private void addContactToOrganisation(ContactDto contactDto) {
+        for (int i = 0; i < organisationDto.getContacts().size(); i++) {
+            // If the contact already existed, replace it
+            if (organisationDto.getContacts().get(i).getId().compareTo(contactDto.getId()) == 0) {
+                organisationDto.getContacts().set(i, contactDto);
+                return;
+            }
+        }
+        // If contact is new, add it to the organisation
+        organisationDto.getContacts().add(contactDto);
+    }
+
+    private void removeContactsFromOrganisation(List<ContactDto> contactDtos) {
+        for (ContactDto contactDto : contactDtos) {
+            removeContactFromOrganisation(contactDto);
+        }
+    }
+
+    private void removeContactFromOrganisation(ContactDto contactDto) {
+        for (int i = 0; i < organisationDto.getContacts().size(); i++) {
+            if (organisationDto.getContacts().get(i).getId().compareTo(contactDto.getId()) == 0) {
+                organisationDto.getContacts().remove(i);
+                return;
+            }
+        }
+    }
+
+    private List<ContactDto> getSelectedContacts() {
+        List<ContactDto> contacts = new ArrayList<ContactDto>();
+        for (ListGridRecord record : contactListGrid.getSelectedRecords()) {
+            ContactRecord contactRecord = (ContactRecord) record;
+            contacts.add(contactRecord.getContactDto());
+        }
+        return contacts;
     }
 
 }
