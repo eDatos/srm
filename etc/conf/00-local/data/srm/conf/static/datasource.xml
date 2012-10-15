@@ -8,8 +8,4 @@
   <entry key="metamac.srm.db.username">RELLENAR_USUARIO</entry>
   <entry key="metamac.srm.db.password">RELLENAR_PASSWORD</entry>
 
-  <entry key="metamac.srm.dsrepo.db.url">jdbc:oracle:thin:@RELLENAR_HOST:RELLENAR_PUERTO:XE</entry>
-  <entry key="metamac.srm.dsrepo.db.driverName">oracle.jdbc.OracleDriver</entry>
-  <entry key="metamac.srm.dsrepo.db.username">RELLENAR_USUARIO</entry>
-  <entry key="metamac.srm.dsrepo.db.password">RELLENAR_PASSWORD</entry>
 </properties>

@@ -17,13 +17,17 @@
             </list>
         </property>
         <!-- if no datasource is specified, use this one -->
-        <property name="defaultDataSource" ref="dataSourceCore" />
+        <!-- <property name="defaultDataSource" ref="dataSource" /> -->
+        <property name="dataSources">
+            <map>
+                <entry key="jdbc/SrmCoreDS" value-ref="dataSource"/>
+            </map>
+        </property>
     </bean>
 
     <bean id="entityManagerFactoryCore" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="persistenceUnitManager" ref="defaultPum" />
         <property name="persistenceUnitName" value="SrmCoreEntityManagerFactory" />
-        <property name="dataSource" ref="dataSourceCore" />
         <property name="jpaProperties">
             <props>
                 <!-- These properties override persistence.xml -->
@@ -40,7 +44,7 @@
 
     <bean id="txManagerCore" class="org.springframework.orm.jpa.JpaTransactionManager">
         <property name="entityManagerFactory" ref="entityManagerFactoryCore" />
-        <property name="dataSource" ref="dataSourceCore" />
+        <property name="dataSource" ref="dataSource" />
     </bean>
 
 </beans>
