@@ -29,7 +29,7 @@ public class CategoriesDto2DoMapperImpl implements CategoriesDto2DoMapper {
     // ------------------------------------------------------------
 
     @Override
-    public CategorySchemeVersionMetamac categorySchemeDtoToDo(CategorySchemeMetamacDto source) throws MetamacException {
+    public CategorySchemeVersionMetamac categorySchemeMetamacDtoToDo(CategorySchemeMetamacDto source) throws MetamacException {
         if (source == null) {
             return null;
         }

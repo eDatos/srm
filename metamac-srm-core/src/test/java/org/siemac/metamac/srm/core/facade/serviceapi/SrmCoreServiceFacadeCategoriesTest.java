@@ -1,11 +1,14 @@
 package org.siemac.metamac.srm.core.facade.serviceapi;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
+import org.siemac.metamac.srm.core.category.serviceapi.utils.CategoriesMetamacDtoMocks;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
+import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -48,21 +51,21 @@ public class SrmCoreServiceFacadeCategoriesTest extends SrmBaseTest {
     // assertEquals(CATEGORY_SCHEME_1_V1, categorySchemeMetamacDtos.get(0).getUrn());
     // assertEquals(CATEGORY_SCHEME_1_V2, categorySchemeMetamacDtos.get(1).getUrn());
     // }
-    //
-    // @Test
-    // public void testCreateCategoryScheme() throws Exception {
-    //
-    // // Create
-    // CategorySchemeMetamacDto categorySchemeDto = CategoriesMetamacDtoMocks.mockCategoryScheme(CategorySchemeTypeEnum.AGENCY_SCHEME);
-    // CategorySchemeMetamacDto categorySchemeMetamacCreated = srmCoreServiceFacade.createCategoryScheme(getServiceContextAdministrador(), categorySchemeDto);
-    //
-    // // Validate some metadata
-    // assertEquals(categorySchemeDto.getCode(), categorySchemeMetamacCreated.getCode());
-    // assertNotNull(categorySchemeMetamacCreated.getUrn());
-    // assertEquals(ProcStatusEnum.DRAFT, categorySchemeMetamacCreated.getLifeCycle().getProcStatus());
-    // assertEquals(Long.valueOf(0), categorySchemeMetamacCreated.getVersionOptimisticLocking());
-    // }
-    //
+
+    @Test
+    public void testCreateCategoryScheme() throws Exception {
+
+        // Create
+        CategorySchemeMetamacDto categorySchemeDto = CategoriesMetamacDtoMocks.mockCategorySchemeDto();
+        CategorySchemeMetamacDto categorySchemeMetamacCreated = srmCoreServiceFacade.createCategoryScheme(getServiceContextAdministrador(), categorySchemeDto);
+
+        // Validate some metadata
+        assertEquals(categorySchemeDto.getCode(), categorySchemeMetamacCreated.getCode());
+        assertNotNull(categorySchemeMetamacCreated.getUrn());
+        assertEquals(ProcStatusEnum.DRAFT, categorySchemeMetamacCreated.getLifeCycle().getProcStatus());
+        assertEquals(Long.valueOf(0), categorySchemeMetamacCreated.getVersionOptimisticLocking());
+    }
+
     // @Test
     // public void testUpdateCategoryScheme() throws Exception {
     //

@@ -6,7 +6,7 @@ import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 
 public interface CategoriesDto2DoMapper {
 
-    public CategorySchemeVersionMetamac categorySchemeDtoToDo(CategorySchemeMetamacDto source) throws MetamacException;
+    public CategorySchemeVersionMetamac categorySchemeMetamacDtoToDo(CategorySchemeMetamacDto source) throws MetamacException;
     // TODO categories
     // public CategoryMetamac categoryDtoToDo(CategoryMetamacDto source) throws MetamacException;
 }

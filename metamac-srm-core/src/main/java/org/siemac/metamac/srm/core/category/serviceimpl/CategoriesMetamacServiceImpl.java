@@ -2,10 +2,14 @@ package org.siemac.metamac.srm.core.category.serviceimpl;
 
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
+import org.siemac.metamac.srm.core.category.serviceimpl.utils.CategoriesMetamacInvocationValidator;
+import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.arte.statistic.sdmx.srm.core.base.enume.domain.VersionPatternEnum;
 import com.arte.statistic.sdmx.srm.core.category.serviceapi.CategoriesService;
 
 /**
@@ -27,20 +31,20 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
     public CategoriesMetamacServiceImpl() {
     }
 
-    // @Override
-    // public CategorySchemeVersionMetamac createCategoryScheme(ServiceContext ctx, CategorySchemeVersionMetamac categorySchemeVersion) throws MetamacException {
-    //
-    // // Validation
-    // CategoriesMetamacInvocationValidator.checkCreateCategoryScheme(categorySchemeVersion, null);
-    //
-    // // Fill metadata
-    // categorySchemeVersion.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
-    // categorySchemeVersion.getMaintainableArtefact().setIsExternalReference(Boolean.FALSE);
-    //
-    // // Save categoryScheme
-    // return (CategorySchemeVersionMetamac) categoriesService.createCategoryScheme(ctx, categorySchemeVersion, VersionPatternEnum.XX_YYY);
-    // }
-    //
+    @Override
+    public CategorySchemeVersionMetamac createCategoryScheme(ServiceContext ctx, CategorySchemeVersionMetamac categorySchemeVersion) throws MetamacException {
+
+        // Validation
+        CategoriesMetamacInvocationValidator.checkCreateCategoryScheme(categorySchemeVersion, null);
+
+        // Fill metadata
+        categorySchemeVersion.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
+        categorySchemeVersion.getMaintainableArtefact().setIsExternalReference(Boolean.FALSE);
+
+        // Save categoryScheme
+        return (CategorySchemeVersionMetamac) categoriesService.createCategoryScheme(ctx, categorySchemeVersion, VersionPatternEnum.XX_YYY);
+    }
+
     // @Override
     // public CategorySchemeVersionMetamac updateCategoryScheme(ServiceContext ctx, CategorySchemeVersionMetamac categorySchemeVersion) throws MetamacException {
     // // Validation

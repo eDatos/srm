@@ -26,7 +26,7 @@ public class CategoriesDto2DoMapperTest extends SrmBaseTest {
     @Test
     public void testCategorySchemeMetamacDtoToDo() throws MetamacException {
         CategorySchemeMetamacDto dto = CategoriesMetamacDtoMocks.mockCategorySchemeDto();
-        CategorySchemeVersionMetamac entity = categoriesDto2DoMapper.categorySchemeDtoToDo(dto);
+        CategorySchemeVersionMetamac entity = categoriesDto2DoMapper.categorySchemeMetamacDtoToDo(dto);
         CategoriesMetamacAsserts.assertEqualsCategoryScheme(dto, entity);
     }
 

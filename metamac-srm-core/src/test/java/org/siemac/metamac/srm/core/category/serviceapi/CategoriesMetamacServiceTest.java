@@ -1,13 +1,18 @@
 package org.siemac.metamac.srm.core.category.serviceapi;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 
+import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.common.test.utils.MetamacAsserts;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
+import org.siemac.metamac.srm.core.category.serviceapi.utils.CategoriesMetamacAsserts;
+import org.siemac.metamac.srm.core.category.serviceapi.utils.CategoriesMetamacDoMocks;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
+import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -23,33 +28,33 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
     @Autowired
     private CategoriesMetamacService categoriesService;
 
-    // @Test
-    // public void testCreateCategoryScheme() throws Exception {
-    // CategorySchemeVersionMetamac categorySchemeVersion = CategoriesMetamacDoMocks.mockCategoryScheme(CategorySchemeTypeEnum.AGENCY_SCHEME);
-    // ServiceContext ctx = getServiceContextAdministrador();
-    //
-    // // Create
-    // CategorySchemeVersionMetamac categorySchemeVersionCreated = categoriesService.createCategoryScheme(ctx, categorySchemeVersion);
-    // String urn = categorySchemeVersionCreated.getMaintainableArtefact().getUrn();
-    // assertEquals("01.000", categorySchemeVersionCreated.getMaintainableArtefact().getVersionLogic());
-    // assertEquals(ctx.getUserId(), categorySchemeVersionCreated.getCreatedBy());
-    //
-    // // Validate (only metadata in SRM Metamac; the others are checked in sdmx project)
-    // CategorySchemeVersionMetamac categorySchemeVersionRetrieved = categoriesService.retrieveCategorySchemeByUrn(ctx, urn);
-    // assertEquals(ProcStatusEnum.DRAFT, categorySchemeVersionRetrieved.getLifeCycleMetadata().getProcStatus());
-    // assertFalse(categorySchemeVersionRetrieved.getMaintainableArtefact().getIsExternalReference());
-    // assertNull(categorySchemeVersionRetrieved.getLifeCycleMetadata().getProductionValidationDate());
-    // assertNull(categorySchemeVersionRetrieved.getLifeCycleMetadata().getProductionValidationUser());
-    // assertNull(categorySchemeVersionRetrieved.getLifeCycleMetadata().getDiffusionValidationDate());
-    // assertNull(categorySchemeVersionRetrieved.getLifeCycleMetadata().getDiffusionValidationUser());
-    // assertNull(categorySchemeVersionRetrieved.getLifeCycleMetadata().getInternalPublicationDate());
-    // assertNull(categorySchemeVersionRetrieved.getLifeCycleMetadata().getInternalPublicationUser());
-    // assertNull(categorySchemeVersionRetrieved.getLifeCycleMetadata().getExternalPublicationDate());
-    // assertNull(categorySchemeVersionRetrieved.getLifeCycleMetadata().getExternalPublicationUser());
-    // assertEquals(ctx.getUserId(), categorySchemeVersionRetrieved.getCreatedBy());
-    // CategoriesMetamacAsserts.assertEqualsCategoryScheme(categorySchemeVersion, categorySchemeVersionRetrieved);
-    // }
-    //
+    @Test
+    public void testCreateCategoryScheme() throws Exception {
+        CategorySchemeVersionMetamac categorySchemeVersion = CategoriesMetamacDoMocks.mockCategoryScheme();
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        // Create
+        CategorySchemeVersionMetamac categorySchemeVersionCreated = categoriesService.createCategoryScheme(ctx, categorySchemeVersion);
+        String urn = categorySchemeVersionCreated.getMaintainableArtefact().getUrn();
+        assertEquals("01.000", categorySchemeVersionCreated.getMaintainableArtefact().getVersionLogic());
+        assertEquals(ctx.getUserId(), categorySchemeVersionCreated.getCreatedBy());
+
+        // Validate (only metadata in SRM Metamac; the others are checked in sdmx project)
+        CategorySchemeVersionMetamac categorySchemeVersionRetrieved = categoriesService.retrieveCategorySchemeByUrn(ctx, urn);
+        assertEquals(ProcStatusEnum.DRAFT, categorySchemeVersionRetrieved.getLifeCycleMetadata().getProcStatus());
+        assertFalse(categorySchemeVersionRetrieved.getMaintainableArtefact().getIsExternalReference());
+        assertNull(categorySchemeVersionRetrieved.getLifeCycleMetadata().getProductionValidationDate());
+        assertNull(categorySchemeVersionRetrieved.getLifeCycleMetadata().getProductionValidationUser());
+        assertNull(categorySchemeVersionRetrieved.getLifeCycleMetadata().getDiffusionValidationDate());
+        assertNull(categorySchemeVersionRetrieved.getLifeCycleMetadata().getDiffusionValidationUser());
+        assertNull(categorySchemeVersionRetrieved.getLifeCycleMetadata().getInternalPublicationDate());
+        assertNull(categorySchemeVersionRetrieved.getLifeCycleMetadata().getInternalPublicationUser());
+        assertNull(categorySchemeVersionRetrieved.getLifeCycleMetadata().getExternalPublicationDate());
+        assertNull(categorySchemeVersionRetrieved.getLifeCycleMetadata().getExternalPublicationUser());
+        assertEquals(ctx.getUserId(), categorySchemeVersionRetrieved.getCreatedBy());
+        CategoriesMetamacAsserts.assertEqualsCategoryScheme(categorySchemeVersion, categorySchemeVersionRetrieved);
+    }
+
     // @Test
     // public void testUpdateCategoryScheme() throws Exception {
     // CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), CATEGORY_SCHEME_2_V1);

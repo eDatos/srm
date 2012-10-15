@@ -29,6 +29,7 @@ import org.siemac.metamac.core.common.ws.ServicesResolver;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 import org.siemac.metamac.srm.core.category.mapper.CategoriesDo2DtoMapper;
+import org.siemac.metamac.srm.core.category.mapper.CategoriesDto2DoMapper;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
@@ -109,8 +110,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Autowired
     private CategoriesDo2DtoMapper                 categoriesDo2DtoMapper;
 
-    // @Autowired
-    // private CategoriesDto2DoMapper categoriesDto2DoMapper;
+    @Autowired
+    private CategoriesDto2DoMapper                 categoriesDto2DoMapper;
 
     @Autowired
     @Qualifier("jaxb2MarshallerWithValidation")
@@ -1264,20 +1265,20 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     // CATEGORY SCHEMES
     // ------------------------------------------------------------------------
 
-    // @Override
-    // public CategorySchemeMetamacDto createCategoryScheme(ServiceContext ctx, CategorySchemeMetamacDto categorySchemeDto) throws MetamacException {
-    // // TODO Security and transform
-    // CategorySchemeVersionMetamac categorySchemeVersion = categoriesDto2DoMapper.categorySchemeMetamacDtoToDo(categorySchemeDto);
-    // // CategoriesSecurityUtils.canCreateCategoryScheme(ctx, categorySchemeVersion);
-    //
-    // // Create
-    // CategorySchemeVersionMetamac categorySchemeVersionCreated = getCategoriesMetamacService().createCategoryScheme(ctx, categorySchemeVersion);
-    //
-    // // Transform to DTO
-    // categorySchemeDto = categoriesDo2DtoMapper.categorySchemeMetamacDoToDto(categorySchemeVersionCreated);
-    // return categorySchemeDto;
-    // }
-    //
+    @Override
+    public CategorySchemeMetamacDto createCategoryScheme(ServiceContext ctx, CategorySchemeMetamacDto categorySchemeDto) throws MetamacException {
+        // TODO Security and transform
+        CategorySchemeVersionMetamac categorySchemeVersion = categoriesDto2DoMapper.categorySchemeMetamacDtoToDo(categorySchemeDto);
+        // CategoriesSecurityUtils.canCreateCategoryScheme(ctx, categorySchemeVersion);
+
+        // Create
+        CategorySchemeVersionMetamac categorySchemeVersionCreated = getCategoriesMetamacService().createCategoryScheme(ctx, categorySchemeVersion);
+
+        // Transform to DTO
+        categorySchemeDto = categoriesDo2DtoMapper.categorySchemeMetamacDoToDto(categorySchemeVersionCreated);
+        return categorySchemeDto;
+    }
+
     // @Override
     // public CategorySchemeMetamacDto updateCategoryScheme(ServiceContext ctx, CategorySchemeMetamacDto categorySchemeDto) throws MetamacException {
     // // Security

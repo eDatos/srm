@@ -43,15 +43,6 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
         ExceptionUtils.throwIfException(exceptions);
     }
 
-    public static void checkCancelConceptSchemeValidity(String urn, List<MetamacExceptionItem> exceptions) throws MetamacException {
-        if (exceptions == null) {
-            exceptions = new ArrayList<MetamacExceptionItem>();
-        }
-        ValidationUtils.checkParameterRequired(urn, ServiceExceptionParameters.URN, exceptions);
-
-        ExceptionUtils.throwIfException(exceptions);
-    }
-
     public static void checkCreateConcept(ConceptSchemeVersionMetamac conceptSchemeVersion, ConceptMetamac concept, List<MetamacExceptionItem> exceptions) throws MetamacException {
         if (exceptions == null) {
             exceptions = new ArrayList<MetamacExceptionItem>();

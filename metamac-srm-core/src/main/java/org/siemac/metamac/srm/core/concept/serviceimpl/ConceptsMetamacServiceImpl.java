@@ -231,11 +231,12 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         return conceptSchemeNewVersion;
     }
 
+    // TODO refactor end
     @Override
     public ConceptSchemeVersionMetamac cancelConceptSchemeValidity(ServiceContext ctx, String urn) throws MetamacException {
 
         // Validation
-        ConceptsMetamacInvocationValidator.checkCancelConceptSchemeValidity(urn, null);
+        ConceptsMetamacInvocationValidator.checkEndConceptSchemeValidity(urn, null);
 
         // Retrieve version in specific procStatus
         ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptSchemeVersionMetamacRepository().retrieveConceptSchemeVersionByProcStatus(urn,
