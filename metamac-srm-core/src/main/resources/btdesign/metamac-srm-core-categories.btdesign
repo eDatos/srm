@@ -45,8 +45,8 @@ Application CategoriesMetamac {
 //    		deleteCategoryScheme(String urn) throws MetamacException;
 //    		"Creates a new version of a category scheme, copying metadata from version with provided urn"
 //    		@CategorySchemeVersionMetamac versioningCategoryScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
-//    		"Cancels the category scheme validity"
-//    		@CategorySchemeVersionMetamac cancelCategorySchemeValidity(String urn) throws MetamacException;
+//    		"Ends the category scheme validity"
+//    		@CategorySchemeVersionMetamac endCategorySchemeValidity(String urn) throws MetamacException;
 //    		"Retrieves categories scheme by category urn"
 //    		@CategorySchemeVersionMetamac retrieveCategorySchemeByCategoryUrn(String categoryUrn) throws MetamacException;
 //    		

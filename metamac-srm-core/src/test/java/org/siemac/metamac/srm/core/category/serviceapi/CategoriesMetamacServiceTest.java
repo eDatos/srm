@@ -1103,19 +1103,19 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
     // }
     //
     // @Test
-    // public void testCancelCategorySchemeValidity() throws Exception {
-    // CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.cancelCategorySchemeValidity(getServiceContextAdministrador(), CATEGORY_SCHEME_7_V1);
+    // public void testEndCategorySchemeValidity() throws Exception {
+    // CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.endCategorySchemeValidity(getServiceContextAdministrador(), CATEGORY_SCHEME_7_V1);
     //
     // assertNotNull(categorySchemeVersion);
     // assertNotNull(categorySchemeVersion.getMaintainableArtefact().getValidTo());
     // }
     //
     // @Test
-    // public void testCancelCategorySchemeValidityErrorWrongProcStatus() throws Exception {
+    // public void testEndCategorySchemeValidityErrorWrongProcStatus() throws Exception {
     // String[] urns = {CATEGORY_SCHEME_1_V1, CATEGORY_SCHEME_4_V1, CATEGORY_SCHEME_6_V1};
     // for (String urn : urns) {
     // try {
-    // categoriesService.cancelCategorySchemeValidity(getServiceContextAdministrador(), urn);
+    // categoriesService.endCategorySchemeValidity(getServiceContextAdministrador(), urn);
     // fail("wrong procStatus");
     // } catch (MetamacException e) {
     // assertEquals(1, e.getExceptionItems().size());

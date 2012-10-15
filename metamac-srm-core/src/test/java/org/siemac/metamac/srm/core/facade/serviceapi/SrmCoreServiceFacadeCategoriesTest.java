@@ -454,8 +454,8 @@ public class SrmCoreServiceFacadeCategoriesTest extends SrmBaseTest {
     // }
     //
     // @Test
-    // public void testCancelCategorySchemeValidity() throws Exception {
-    // CategorySchemeMetamacDto categorySchemeMetamacDto = srmCoreServiceFacade.cancelCategorySchemeValidity(getServiceContextAdministrador(), CATEGORY_SCHEME_7_V1);
+    // public void testEndCategorySchemeValidity() throws Exception {
+    // CategorySchemeMetamacDto categorySchemeMetamacDto = srmCoreServiceFacade.endCategorySchemeValidity(getServiceContextAdministrador(), CATEGORY_SCHEME_7_V1);
     // assertTrue(DateUtils.isSameDay(new Date(), categorySchemeMetamacDto.getValidTo()));
     // }
     // // ---------------------------------------------------------------------------------------

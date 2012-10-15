@@ -15,7 +15,6 @@ import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 
 import com.arte.statistic.sdmx.srm.core.structure.serviceimpl.utils.DataStructureInvocationValidator;
-import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
 
 public class DsdsMetamacInvocationValidator extends DataStructureInvocationValidator {
 
@@ -52,27 +51,6 @@ public class DsdsMetamacInvocationValidator extends DataStructureInvocationValid
         if (exceptions == null) {
             exceptions = new ArrayList<MetamacExceptionItem>();
         }
-
-        ExceptionUtils.throwIfException(exceptions);
-    }
-
-    public static void cancelDataStructureDefinitionVersionMetamacValidity(String urn, List<MetamacExceptionItem> exceptions) throws MetamacException {
-        if (exceptions == null) {
-            exceptions = new ArrayList<MetamacExceptionItem>();
-        }
-
-        ValidationUtils.checkParameterRequired(urn, ServiceExceptionParameters.URN, exceptions);
-
-        ExceptionUtils.throwIfException(exceptions);
-    }
-
-    public static void cancelVersioningDataStructureDefinition(String urn, VersionTypeEnum versionType, List<MetamacExceptionItem> exceptions) throws MetamacException {
-        if (exceptions == null) {
-            exceptions = new ArrayList<MetamacExceptionItem>();
-        }
-
-        ValidationUtils.checkParameterRequired(urn, ServiceExceptionParameters.URN, exceptions);
-        ValidationUtils.checkParameterRequired(versionType, ServiceExceptionParameters.VERSION_TYPE, exceptions);
 
         ExceptionUtils.throwIfException(exceptions);
     }

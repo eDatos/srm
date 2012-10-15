@@ -744,26 +744,26 @@ public class SrmCoreServiceFacadeConceptsSecurityTest extends SrmBaseTest {
     }
 
     @Test
-    public void testCancelConceptSchemeValidityJefeNormalizacion() throws Exception {
+    public void testEndConceptSchemeValidityJefeNormalizacion() throws Exception {
         String nonOperationConceptSchemeUrn = CONCEPT_SCHEME_7_V1;
         String operationConceptSchemeUrn = CONCEPT_SCHEME_12_V1;
 
         String[] urns = {nonOperationConceptSchemeUrn, operationConceptSchemeUrn};
 
         for (String urn : urns) {
-            srmCoreServiceFacade.cancelConceptSchemeValidity(getServiceContextJefeNormalizacion(), urn);
+            srmCoreServiceFacade.endConceptSchemeValidity(getServiceContextJefeNormalizacion(), urn);
         }
     }
 
     @Test
-    public void testCancelConceptSchemeValidityJefeProduccion() throws Exception {
+    public void testEndConceptSchemeValidityJefeProduccion() throws Exception {
         String operationConceptSchemeUrn = CONCEPT_SCHEME_12_V1;
 
-        srmCoreServiceFacade.cancelConceptSchemeValidity(getServiceContextJefeProduccion(), operationConceptSchemeUrn);
+        srmCoreServiceFacade.endConceptSchemeValidity(getServiceContextJefeProduccion(), operationConceptSchemeUrn);
     }
 
     @Test
-    public void testCancelConceptSchemeValidityError() throws Exception {
+    public void testEndConceptSchemeValidityError() throws Exception {
         String nonOperationConceptSchemeUrn = CONCEPT_SCHEME_1_V2;
         String operationConceptSchemeUrn = CONCEPT_SCHEME_8_V1;
         {
@@ -772,14 +772,14 @@ public class SrmCoreServiceFacadeConceptsSecurityTest extends SrmBaseTest {
 
             for (ServiceContext ctx : ctxs) {
                 try {
-                    srmCoreServiceFacade.cancelConceptSchemeValidity(ctx, nonOperationConceptSchemeUrn);
+                    srmCoreServiceFacade.endConceptSchemeValidity(ctx, nonOperationConceptSchemeUrn);
                     fail("action not allowed");
                 } catch (MetamacException e) {
                     assertEquals(1, e.getExceptionItems().size());
                     assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
                 }
                 try {
-                    srmCoreServiceFacade.cancelConceptSchemeValidity(ctx, operationConceptSchemeUrn);
+                    srmCoreServiceFacade.endConceptSchemeValidity(ctx, operationConceptSchemeUrn);
                     fail("action not allowed");
                 } catch (MetamacException e) {
                     assertEquals(1, e.getExceptionItems().size());
@@ -789,7 +789,7 @@ public class SrmCoreServiceFacadeConceptsSecurityTest extends SrmBaseTest {
         }
         {
             try {
-                srmCoreServiceFacade.cancelConceptSchemeValidity(getServiceContextJefeProduccion(), nonOperationConceptSchemeUrn);
+                srmCoreServiceFacade.endConceptSchemeValidity(getServiceContextJefeProduccion(), nonOperationConceptSchemeUrn);
                 fail("action not allowed");
             } catch (MetamacException e) {
                 assertEquals(1, e.getExceptionItems().size());

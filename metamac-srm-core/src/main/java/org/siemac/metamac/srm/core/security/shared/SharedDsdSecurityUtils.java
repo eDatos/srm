@@ -90,7 +90,7 @@ public class SharedDsdSecurityUtils extends SharedSecurityUtils {
         return isSrmRoleAllowed(metamacPrincipal, TECNICO_PRODUCCION, JEFE_PRODUCCION);
     }
 
-    public static boolean canCancelDsdValidity(MetamacPrincipal metamacPrincipal) {
+    public static boolean canEndDsdValidity(MetamacPrincipal metamacPrincipal) {
         return isSrmRoleAllowed(metamacPrincipal, JEFE_PRODUCCION);
     }
 

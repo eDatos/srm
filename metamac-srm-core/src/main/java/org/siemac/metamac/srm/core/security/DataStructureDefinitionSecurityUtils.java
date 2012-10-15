@@ -102,8 +102,8 @@ public class DataStructureDefinitionSecurityUtils {
         }
     }
 
-    public static void canCancelDataStructureDefinitionValidity(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac) throws MetamacException {
-        if (!SharedDsdSecurityUtils.canCancelDsdValidity(getMetamacPrincipal(ctx))) {
+    public static void canEndDataStructureDefinitionValidity(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac) throws MetamacException {
+        if (!SharedDsdSecurityUtils.canEndDsdValidity(getMetamacPrincipal(ctx))) {
             throw new MetamacException(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED, ctx.getUserId());
         }
     }

@@ -94,8 +94,8 @@ public class ConceptsSecurityUtils {
         }
     }
 
-    public static void canCancelConceptSchemeValidity(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeMetamac) throws MetamacException {
-        if (!SharedConceptsSecurityUtils.canCancelConceptSchemeValidity(getMetamacPrincipal(ctx), conceptSchemeMetamac.getType(), getOperationCode(conceptSchemeMetamac))) {
+    public static void canEndConceptSchemeValidity(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeMetamac) throws MetamacException {
+        if (!SharedConceptsSecurityUtils.canEndConceptSchemeValidity(getMetamacPrincipal(ctx), conceptSchemeMetamac.getType(), getOperationCode(conceptSchemeMetamac))) {
             throw new MetamacException(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED, ctx.getUserId());
         }
     }

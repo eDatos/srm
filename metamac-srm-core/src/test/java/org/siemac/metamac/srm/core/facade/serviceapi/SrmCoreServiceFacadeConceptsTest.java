@@ -839,8 +839,8 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
     }
 
     @Test
-    public void testCancelConceptSchemeValidity() throws Exception {
-        ConceptSchemeMetamacDto conceptSchemeMetamacDto = srmCoreServiceFacade.cancelConceptSchemeValidity(getServiceContextAdministrador(), CONCEPT_SCHEME_7_V1);
+    public void testEndConceptSchemeValidity() throws Exception {
+        ConceptSchemeMetamacDto conceptSchemeMetamacDto = srmCoreServiceFacade.endConceptSchemeValidity(getServiceContextAdministrador(), CONCEPT_SCHEME_7_V1);
 
         assertNotNull(conceptSchemeMetamacDto);
         assertTrue(DateUtils.isSameDay(new Date(), conceptSchemeMetamacDto.getValidTo()));

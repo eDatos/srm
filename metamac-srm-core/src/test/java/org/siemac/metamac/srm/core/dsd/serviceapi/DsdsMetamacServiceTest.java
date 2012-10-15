@@ -173,7 +173,7 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
 
     @Test
     @Override
-    public void testCancelDataStructureDefinitionValidity() throws Exception {
+    public void testEndDataStructureDefinitionValidity() throws Exception {
         // TODO Test dsd
 
     }

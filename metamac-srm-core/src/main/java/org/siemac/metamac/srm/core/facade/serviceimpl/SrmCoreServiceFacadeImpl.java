@@ -347,12 +347,12 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public DataStructureDefinitionMetamacDto cancelDataStructureDefinitionValidity(ServiceContext ctx, String urn) throws MetamacException {
+    public DataStructureDefinitionMetamacDto endDataStructureDefinitionValidity(ServiceContext ctx, String urn) throws MetamacException {
         // Security
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacOld = getDsdsMetamacService().retrieveDataStructureDefinitionByUrn(ctx, urn);
-        DataStructureDefinitionSecurityUtils.canCancelDataStructureDefinitionValidity(ctx, dataStructureDefinitionVersionMetamacOld);
+        DataStructureDefinitionSecurityUtils.canEndDataStructureDefinitionValidity(ctx, dataStructureDefinitionVersionMetamacOld);
 
-        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDsdsMetamacService().cancelDataStructureDefinitionValidity(ctx, urn);
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDsdsMetamacService().endDataStructureDefinitionValidity(ctx, urn);
 
         // Transform
         DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = dataStructureDefinitionDo2DtoMapper.dataStructureDefinitionMetamacDoToDto(dataStructureDefinitionVersionMetamac);
@@ -743,15 +743,15 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public OrganisationSchemeMetamacDto cancelOrganisationSchemeValidity(ServiceContext ctx, String urn) throws MetamacException {
+    public OrganisationSchemeMetamacDto endOrganisationSchemeValidity(ServiceContext ctx, String urn) throws MetamacException {
         // TODO Security
         // OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationsMetamacService().retrieveOrganisationSchemeByUrn(ctx, urn);
-        // OrganisationsSecurityUtils.canCancelOrganisationSchemeValidity(ctx, organisationSchemeVersion);
+        // OrganisationsSecurityUtils.canEndOrganisationSchemeValidity(ctx, organisationSchemeVersion);
 
-        OrganisationSchemeVersionMetamac organisationSchemeCanceled = getOrganisationsMetamacService().cancelOrganisationSchemeValidity(ctx, urn);
+        OrganisationSchemeVersionMetamac organisationSchemeEnded = getOrganisationsMetamacService().endOrganisationSchemeValidity(ctx, urn);
 
         // Transform to DTO
-        OrganisationSchemeMetamacDto organisationSchemeDto = organisationsDo2DtoMapper.organisationSchemeMetamacDoToDto(organisationSchemeCanceled);
+        OrganisationSchemeMetamacDto organisationSchemeDto = organisationsDo2DtoMapper.organisationSchemeMetamacDoToDto(organisationSchemeEnded);
 
         return organisationSchemeDto;
     }
@@ -1059,15 +1059,15 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public ConceptSchemeMetamacDto cancelConceptSchemeValidity(ServiceContext ctx, String urn) throws MetamacException {
+    public ConceptSchemeMetamacDto endConceptSchemeValidity(ServiceContext ctx, String urn) throws MetamacException {
         // Security
         ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptsMetamacService().retrieveConceptSchemeByUrn(ctx, urn);
-        ConceptsSecurityUtils.canCancelConceptSchemeValidity(ctx, conceptSchemeVersion);
+        ConceptsSecurityUtils.canEndConceptSchemeValidity(ctx, conceptSchemeVersion);
 
-        ConceptSchemeVersionMetamac conceptSchemeCanceled = getConceptsMetamacService().cancelConceptSchemeValidity(ctx, urn);
+        ConceptSchemeVersionMetamac conceptSchemeEnded = getConceptsMetamacService().endConceptSchemeValidity(ctx, urn);
 
         // Transform
-        ConceptSchemeMetamacDto conceptSchemeDto = conceptsDo2DtoMapper.conceptSchemeMetamacDoToDto(conceptSchemeCanceled);
+        ConceptSchemeMetamacDto conceptSchemeDto = conceptsDo2DtoMapper.conceptSchemeMetamacDoToDto(conceptSchemeEnded);
 
         return conceptSchemeDto;
     }
@@ -1449,15 +1449,15 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     // }
     //
     // @Override
-    // public CategorySchemeMetamacDto cancelCategorySchemeValidity(ServiceContext ctx, String urn) throws MetamacException {
+    // public CategorySchemeMetamacDto endCategorySchemeValidity(ServiceContext ctx, String urn) throws MetamacException {
     // // TODO Security
     // // CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByUrn(ctx, urn);
-    // // CategoriesSecurityUtils.canCancelCategorySchemeValidity(ctx, categorySchemeVersion);
+    // // CategoriesSecurityUtils.canEndCategorySchemeValidity(ctx, categorySchemeVersion);
     //
-    // CategorySchemeVersionMetamac categorySchemeCanceled = getCategoriesMetamacService().cancelCategorySchemeValidity(ctx, urn);
+    // CategorySchemeVersionMetamac categorySchemeEnded = getCategoriesMetamacService().endCategorySchemeValidity(ctx, urn);
     //
     // // Transform to DTO
-    // CategorySchemeMetamacDto categorySchemeDto = categoriesDo2DtoMapper.categorySchemeMetamacDoToDto(categorySchemeCanceled);
+    // CategorySchemeMetamacDto categorySchemeDto = categoriesDo2DtoMapper.categorySchemeMetamacDoToDto(categorySchemeEnded);
     //
     // return categorySchemeDto;
     // }

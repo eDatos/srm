@@ -170,16 +170,16 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
     // }
     //
     // @Override
-    // public CategorySchemeVersionMetamac cancelCategorySchemeValidity(ServiceContext ctx, String urn) throws MetamacException {
+    // public CategorySchemeVersionMetamac endCategorySchemeValidity(ServiceContext ctx, String urn) throws MetamacException {
     //
     // // Validation
-    // CategoriesMetamacInvocationValidator.checkCancelCategorySchemeValidity(urn, null);
+    // CategoriesMetamacInvocationValidator.checkEndCategorySchemeValidity(urn, null);
     //
     // // Retrieve version in specific procStatus
     // CategorySchemeVersionMetamac categorySchemeVersion = getCategorySchemeVersionMetamacRepository().retrieveCategorySchemeVersionByProcStatus(urn,
     // new ProcStatusEnum[]{ProcStatusEnum.EXTERNALLY_PUBLISHED});
     //
-    // // Cancel validity
+    // // End validity
     // categorySchemeVersion = (CategorySchemeVersionMetamac) categoriesService.endCategorySchemeValidity(ctx, urn);
     //
     // return categorySchemeVersion;

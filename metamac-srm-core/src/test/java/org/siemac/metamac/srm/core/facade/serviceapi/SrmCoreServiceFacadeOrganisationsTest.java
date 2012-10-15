@@ -487,8 +487,8 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
     }
 
     @Test
-    public void testCancelOrganisationSchemeValidity() throws Exception {
-        OrganisationSchemeMetamacDto organisationSchemeMetamacDto = srmCoreServiceFacade.cancelOrganisationSchemeValidity(getServiceContextAdministrador(), ORGANISATION_SCHEME_7_V1);
+    public void testEndOrganisationSchemeValidity() throws Exception {
+        OrganisationSchemeMetamacDto organisationSchemeMetamacDto = srmCoreServiceFacade.endOrganisationSchemeValidity(getServiceContextAdministrador(), ORGANISATION_SCHEME_7_V1);
         assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeMetamacDto.getValidTo()));
     }
     // ---------------------------------------------------------------------------------------

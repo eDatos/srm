@@ -192,9 +192,8 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
         return organisationSchemeNewVersion;
     }
 
-    // TODO refactor end
     @Override
-    public OrganisationSchemeVersionMetamac cancelOrganisationSchemeValidity(ServiceContext ctx, String urn) throws MetamacException {
+    public OrganisationSchemeVersionMetamac endOrganisationSchemeValidity(ServiceContext ctx, String urn) throws MetamacException {
 
         // Validation
         OrganisationsMetamacInvocationValidator.checkEndOrganisationSchemeValidity(urn, null);
@@ -203,7 +202,7 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
         OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationSchemeVersionMetamacRepository().retrieveOrganisationSchemeVersionByProcStatus(urn,
                 new ProcStatusEnum[]{ProcStatusEnum.EXTERNALLY_PUBLISHED});
 
-        // Cancel validity
+        // End validity
         organisationSchemeVersion = (OrganisationSchemeVersionMetamac) organisationsService.endOrganisationSchemeValidity(ctx, urn);
 
         return organisationSchemeVersion;

@@ -1357,19 +1357,19 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
     }
 
     @Test
-    public void testCancelConceptSchemeValidity() throws Exception {
-        ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.cancelConceptSchemeValidity(getServiceContextAdministrador(), CONCEPT_SCHEME_7_V1);
+    public void testEndConceptSchemeValidity() throws Exception {
+        ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.endConceptSchemeValidity(getServiceContextAdministrador(), CONCEPT_SCHEME_7_V1);
 
         assertNotNull(conceptSchemeVersion);
         assertNotNull(conceptSchemeVersion.getMaintainableArtefact().getValidTo());
     }
 
     @Test
-    public void testCancelConceptSchemeValidityErrorWrongProcStatus() throws Exception {
+    public void testEndConceptSchemeValidityErrorWrongProcStatus() throws Exception {
         String[] urns = {CONCEPT_SCHEME_1_V1, CONCEPT_SCHEME_4_V1, CONCEPT_SCHEME_6_V1};
         for (String urn : urns) {
             try {
-                conceptsService.cancelConceptSchemeValidity(getServiceContextAdministrador(), urn);
+                conceptsService.endConceptSchemeValidity(getServiceContextAdministrador(), urn);
                 fail("wrong procStatus");
             } catch (MetamacException e) {
                 assertEquals(1, e.getExceptionItems().size());

@@ -147,7 +147,7 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
     //
     // @DataStructureDefinitionMetamacDto versioningDataStructureDefinitionDto(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
     //
-    // @DataStructureDefinitionMetamacDto cancelDataStructureDefinitionDtoValidity(String urn) throws MetamacException;
+    // @DataStructureDefinitionMetamacDto endDataStructureDefinitionDtoValidity(String urn) throws MetamacException;
     //
     // List<@DescriptorDto> findDescriptorForDsd(String urnDsd, @TypeComponentList typeComponentList) throws MetamacException;
     //

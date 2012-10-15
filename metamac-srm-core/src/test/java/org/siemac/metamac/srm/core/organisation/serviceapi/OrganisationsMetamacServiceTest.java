@@ -1131,19 +1131,19 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
     }
 
     @Test
-    public void testCancelOrganisationSchemeValidity() throws Exception {
-        OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.cancelOrganisationSchemeValidity(getServiceContextAdministrador(), ORGANISATION_SCHEME_7_V1);
+    public void testEndOrganisationSchemeValidity() throws Exception {
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.endOrganisationSchemeValidity(getServiceContextAdministrador(), ORGANISATION_SCHEME_7_V1);
 
         assertNotNull(organisationSchemeVersion);
         assertNotNull(organisationSchemeVersion.getMaintainableArtefact().getValidTo());
     }
 
     @Test
-    public void testCancelOrganisationSchemeValidityErrorWrongProcStatus() throws Exception {
+    public void testEndOrganisationSchemeValidityErrorWrongProcStatus() throws Exception {
         String[] urns = {ORGANISATION_SCHEME_1_V1, ORGANISATION_SCHEME_4_V1, ORGANISATION_SCHEME_6_V1};
         for (String urn : urns) {
             try {
-                organisationsService.cancelOrganisationSchemeValidity(getServiceContextAdministrador(), urn);
+                organisationsService.endOrganisationSchemeValidity(getServiceContextAdministrador(), urn);
                 fail("wrong procStatus");
             } catch (MetamacException e) {
                 assertEquals(1, e.getExceptionItems().size());

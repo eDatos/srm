@@ -130,7 +130,7 @@ public class SharedConceptsSecurityUtils extends SharedSecurityUtils {
         return false;
     }
 
-    public static boolean canCancelConceptSchemeValidity(MetamacPrincipal metamacPrincipal, ConceptSchemeTypeEnum type, String operationCode) {
+    public static boolean canEndConceptSchemeValidity(MetamacPrincipal metamacPrincipal, ConceptSchemeTypeEnum type, String operationCode) {
         if (isNonOperationConceptSchemeType(type)) {
             return isSrmRoleAllowed(metamacPrincipal, JEFE_NORMALIZACION);
         } else if (isOperationConceptSchemeType(type)) {

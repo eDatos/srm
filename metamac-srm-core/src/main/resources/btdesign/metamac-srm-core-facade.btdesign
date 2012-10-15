@@ -163,13 +163,13 @@ Application SrmFacadeCore {
     		@DataStructureDefinitionMetamacDto versioningDataStructureDefinition(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
     		
     		"
-	    	 Cancels the dsd scheme validity  		
+	    	 Ends the dsd scheme validity  		
 		     @param ctx
 		     @param urn Urn of DataStructureDefinition
 		     @return
 		     @throws org.siemac.metamac.core.common.exception.MetamacException
 		    "
-    		@DataStructureDefinitionMetamacDto cancelDataStructureDefinitionValidity(String urn) throws MetamacException;
+    		@DataStructureDefinitionMetamacDto endDataStructureDefinitionValidity(String urn) throws MetamacException;
 	    	
 			"
 			 @param ctx                                                                         
@@ -275,8 +275,8 @@ Application SrmFacadeCore {
 	    	@OrganisationSchemeMetamacDto publishOrganisationSchemeExternally(String urn) throws MetamacException;
     		"Creates a new version of a organisation scheme, copying metadata from version with provided urn"
     		@OrganisationSchemeMetamacDto versioningOrganisationScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
-    		"Cancels the organisation scheme validity"
-    		@OrganisationSchemeMetamacDto cancelOrganisationSchemeValidity(String urn) throws MetamacException;
+    		"Ends the organisation scheme validity"
+    		@OrganisationSchemeMetamacDto endOrganisationSchemeValidity(String urn) throws MetamacException;
             
 			"Creates organisation"
 	   		@OrganisationMetamacDto createOrganisation(@OrganisationMetamacDto organisationMetamacDto) throws MetamacException;
@@ -344,8 +344,8 @@ Application SrmFacadeCore {
 	    	@ConceptSchemeMetamacDto publishConceptSchemeExternally(String urn) throws MetamacException;
     		"Creates a new version of a concept scheme, copying metadata from version with provided urn"
     		@ConceptSchemeMetamacDto versioningConceptScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
-    		"Cancels the concept scheme validity"
-    		@ConceptSchemeMetamacDto cancelConceptSchemeValidity(String urn) throws MetamacException;
+    		"Ends the concept scheme validity"
+    		@ConceptSchemeMetamacDto endConceptSchemeValidity(String urn) throws MetamacException;
     		
     		"Creates concept"
 	   		@ConceptMetamacDto createConcept(@ConceptMetamacDto conceptMetamacDto) throws MetamacException;
@@ -410,8 +410,8 @@ Application SrmFacadeCore {
 //	    	@CategorySchemeMetamacDto publishCategorySchemeExternally(String urn) throws MetamacException;
 //    		"Creates a new version of a category scheme, copying metadata from version with provided urn"
 //    		@CategorySchemeMetamacDto versioningCategoryScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
-//    		"Cancels the category scheme validity"
-//    		@CategorySchemeMetamacDto cancelCategorySchemeValidity(String urn) throws MetamacException;
+//    		"Ends the category scheme validity"
+//    		@CategorySchemeMetamacDto endCategorySchemeValidity(String urn) throws MetamacException;
 //            
 //			"Creates category"
 //	   		@CategoryMetamacDto createCategory(@CategoryMetamacDto categoryMetamacDto) throws MetamacException;
