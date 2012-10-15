@@ -60,8 +60,8 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     private ConceptRelationRepository   conceptRelationRepository;
 
     @Autowired
-    @Qualifier("conceptSchemeLifecycle")
-    private LifeCycle                   conceptSchemeLifecycle;
+    @Qualifier("conceptSchemeLifeCycle")
+    private LifeCycle                   conceptSchemeLifeCycle;
 
     public ConceptsMetamacServiceImpl() {
     }
@@ -73,7 +73,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         ConceptsMetamacInvocationValidator.checkCreateConceptScheme(conceptSchemeVersion, null);
 
         // Fill metadata
-        conceptSchemeVersion.setLifecycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
+        conceptSchemeVersion.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
         conceptSchemeVersion.getMaintainableArtefact().setIsExternalReference(Boolean.FALSE);
 
         // Save conceptScheme
@@ -135,34 +135,34 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
     @Override
     public ConceptSchemeVersionMetamac sendConceptSchemeToProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
-        return (ConceptSchemeVersionMetamac) conceptSchemeLifecycle.sendToProductionValidation(ctx, urn);
+        return (ConceptSchemeVersionMetamac) conceptSchemeLifeCycle.sendToProductionValidation(ctx, urn);
     }
 
     @Override
     public ConceptSchemeVersionMetamac sendConceptSchemeToDiffusionValidation(ServiceContext ctx, String urn) throws MetamacException {
-        return (ConceptSchemeVersionMetamac) conceptSchemeLifecycle.sendToDiffusionValidation(ctx, urn);
+        return (ConceptSchemeVersionMetamac) conceptSchemeLifeCycle.sendToDiffusionValidation(ctx, urn);
     }
 
     @Override
     public ConceptSchemeVersionMetamac rejectConceptSchemeProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
-        return (ConceptSchemeVersionMetamac) conceptSchemeLifecycle.rejectProductionValidation(ctx, urn);
+        return (ConceptSchemeVersionMetamac) conceptSchemeLifeCycle.rejectProductionValidation(ctx, urn);
     }
 
     @Override
     public ConceptSchemeVersionMetamac rejectConceptSchemeDiffusionValidation(ServiceContext ctx, String urn) throws MetamacException {
-        return (ConceptSchemeVersionMetamac) conceptSchemeLifecycle.rejectDiffusionValidation(ctx, urn);
+        return (ConceptSchemeVersionMetamac) conceptSchemeLifeCycle.rejectDiffusionValidation(ctx, urn);
     }
 
     // TODO Para llevar a cabo la publicación interna de un recurso será necesario que previamente exista al menos un anuncio sobre el esquema de conceptos a publicar
     @Override
     public ConceptSchemeVersionMetamac publishInternallyConceptScheme(ServiceContext ctx, String urn) throws MetamacException {
-        return (ConceptSchemeVersionMetamac) conceptSchemeLifecycle.publishInternally(ctx, urn);
+        return (ConceptSchemeVersionMetamac) conceptSchemeLifeCycle.publishInternally(ctx, urn);
     }
 
     // TODO validTo, validFrom: ¿rellenar cuando el artefacto no sea del ISTAC? Pendiente decisión del ISTAC.
     @Override
     public ConceptSchemeVersionMetamac publishExternallyConceptScheme(ServiceContext ctx, String urn) throws MetamacException {
-        return (ConceptSchemeVersionMetamac) conceptSchemeLifecycle.publishExternally(ctx, urn);
+        return (ConceptSchemeVersionMetamac) conceptSchemeLifeCycle.publishExternally(ctx, urn);
     }
 
     @Override
@@ -207,7 +207,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
         // Copy values
         ConceptSchemeVersionMetamac conceptSchemeNewVersion = ConceptsDoCopyUtils.copyConceptSchemeVersionMetamac(conceptSchemeVersionToCopy);
-        conceptSchemeNewVersion.setLifecycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
+        conceptSchemeNewVersion.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
         List concepts = ConceptsDoCopyUtils.copyConceptsMetamac(conceptSchemeVersionToCopy);
 
         // Versioning
@@ -490,7 +490,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     private List<ConceptSchemeVersionMetamac> findConceptSchemeVersionsOfConceptSchemeInProcStatus(ServiceContext ctx, ItemScheme conceptScheme, ProcStatusEnum... procStatus) throws MetamacException {
 
         List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).withProperty(ConceptSchemeVersionMetamacProperties.itemScheme().id())
-                .eq(conceptScheme.getId()).withProperty(ConceptSchemeVersionMetamacProperties.lifecycleMetadata().procStatus()).in((Object[]) procStatus).distinctRoot().build();
+                .eq(conceptScheme.getId()).withProperty(ConceptSchemeVersionMetamacProperties.lifeCycleMetadata().procStatus()).in((Object[]) procStatus).distinctRoot().build();
         PagingParameter pagingParameter = PagingParameter.noLimits();
         PagedResult<ConceptSchemeVersionMetamac> conceptSchemeVersionPagedResult = getConceptSchemeVersionMetamacRepository().findByCondition(conditions, pagingParameter);
         return conceptSchemeVersionPagedResult.getValues();

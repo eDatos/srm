@@ -74,7 +74,7 @@ public class DataStructureDefinitionDo2DtoMapperImpl extends BaseDo2DtoMapperImp
     
     private DataStructureDefinitionMetamacDto dataStructureDefinitionVersionMetamacDoToDto(DataStructureDefinitionVersionMetamac source, TypeDozerCopyMode typeDozerCopyMode) {
         DataStructureDefinitionMetamacDto target = new DataStructureDefinitionMetamacDto();
-        target.setLifeCycle(lifeCycleDoToDto(source.getLifecycleMetadata()));
+        target.setLifeCycle(lifeCycleDoToDto(source.getLifeCycleMetadata()));
         do2DtoMapperSdmxSrm.dataStructureDefinitionDoToDto(typeDozerCopyMode, source, target);
         return target;
     }

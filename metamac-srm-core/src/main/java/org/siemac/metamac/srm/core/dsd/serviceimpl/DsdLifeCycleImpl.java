@@ -25,7 +25,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersionRepository;
 import com.arte.statistic.sdmx.srm.core.structure.serviceapi.DataStructureDefinitionService;
 
-@Service("dsdLifecycle")
+@Service("dsdLifeCycle")
 public class DsdLifeCycleImpl extends LifeCycleImpl {
 
     @Autowired
@@ -38,14 +38,14 @@ public class DsdLifeCycleImpl extends LifeCycleImpl {
     private DataStructureDefinitionService                  dataStructureDefinitionService;
 
     public DsdLifeCycleImpl() {
-        this.callback = new DataStructureDefinitionLifecycleCallback();
+        this.callback = new DataStructureDefinitionLifeCycleCallback();
     }
 
-    private class DataStructureDefinitionLifecycleCallback implements LifecycleCallback {
+    private class DataStructureDefinitionLifeCycleCallback implements LifeCycleCallback {
 
         @Override
         public SrmLifeCycleMetadata getLifeCycleMetadata(Object srmResourceVersion) {
-            return getDataStructureDefinitionVersionMetamac(srmResourceVersion).getLifecycleMetadata();
+            return getDataStructureDefinitionVersionMetamac(srmResourceVersion).getLifeCycleMetadata();
         }
 
         @Override
@@ -112,7 +112,7 @@ public class DsdLifeCycleImpl extends LifeCycleImpl {
 
             List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(DataStructureDefinitionVersionMetamac.class)
                     .withProperty(DataStructureDefinitionVersionMetamacProperties.structure().id()).eq(getDataStructureDefinitionVersionMetamac(srmResourceVersion).getStructure().getId())
-                    .withProperty(DataStructureDefinitionVersionMetamacProperties.lifecycleMetadata().procStatus()).in((Object[]) procStatus).distinctRoot().build();
+                    .withProperty(DataStructureDefinitionVersionMetamacProperties.lifeCycleMetadata().procStatus()).in((Object[]) procStatus).distinctRoot().build();
             PagingParameter pagingParameter = PagingParameter.noLimits();
             PagedResult<DataStructureDefinitionVersionMetamac> dataStructureDefinitionVersionMetamac = dataStructureDefinitionVersionMetamacRepository.findByCondition(conditions, pagingParameter);
             return dataStructureDefinitionMetamacVersionsToObject(dataStructureDefinitionVersionMetamac.getValues());

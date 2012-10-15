@@ -36,7 +36,7 @@ public class OrganisationSchemeVersionMetamacRepositoryImpl extends Organisation
         Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put("urn", urn);
         parameters.put("procStatus", SrmServiceUtils.procStatusEnumToList(procStatusArray));
-        List<OrganisationSchemeVersionMetamac> result = findByQuery("from OrganisationSchemeVersionMetamac where maintainableArtefact.urn = :urn and lifecycleMetadata.procStatus in (:procStatus)",
+        List<OrganisationSchemeVersionMetamac> result = findByQuery("from OrganisationSchemeVersionMetamac where maintainableArtefact.urn = :urn and lifeCycleMetadata.procStatus in (:procStatus)",
                 parameters, 1);
         if (result == null || result.isEmpty()) {
             // check organisation scheme exists to throws specific exception

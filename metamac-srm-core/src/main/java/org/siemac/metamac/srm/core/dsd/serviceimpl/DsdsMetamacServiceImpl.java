@@ -42,8 +42,8 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
     private DataStructureDefinitionService dataStructureDefinitionService;
 
     @Autowired
-    @Qualifier("dsdLifecycle")
-    private LifeCycle                      dsdLifecycle;
+    @Qualifier("dsdLifeCycle")
+    private LifeCycle                      dsdLifeCycle;
 
     @Autowired
     private StructureCopyCallback          structureCopyCallback;
@@ -57,7 +57,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         DsdsMetamacInvocationValidator.checkCreateDataStructureDefinition(dataStructureDefinitionVersion, null);
 
         // Fill metadata
-        dataStructureDefinitionVersion.setLifecycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
+        dataStructureDefinitionVersion.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
         dataStructureDefinitionVersion.getMaintainableArtefact().setIsExternalReference(Boolean.FALSE);
 
         // Save conceptScheme
@@ -133,33 +133,33 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
 
     @Override
     public DataStructureDefinitionVersionMetamac sendDataStructureDefinitionToProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
-        return (DataStructureDefinitionVersionMetamac) dsdLifecycle.sendToProductionValidation(ctx, urn);
+        return (DataStructureDefinitionVersionMetamac) dsdLifeCycle.sendToProductionValidation(ctx, urn);
     }
 
     @Override
     public DataStructureDefinitionVersionMetamac sendDataStructureDefinitionToDiffusionValidation(ServiceContext ctx, String urn) throws MetamacException {
-        return (DataStructureDefinitionVersionMetamac) dsdLifecycle.sendToDiffusionValidation(ctx, urn);
+        return (DataStructureDefinitionVersionMetamac) dsdLifeCycle.sendToDiffusionValidation(ctx, urn);
     }
 
     @Override
     public DataStructureDefinitionVersionMetamac rejectDataStructureDefinitionProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
-        return (DataStructureDefinitionVersionMetamac) dsdLifecycle.rejectProductionValidation(ctx, urn);
+        return (DataStructureDefinitionVersionMetamac) dsdLifeCycle.rejectProductionValidation(ctx, urn);
     }
 
     @Override
     public DataStructureDefinitionVersionMetamac rejectDataStructureDefinitionDiffusionValidation(ServiceContext ctx, String urn) throws MetamacException {
-        return (DataStructureDefinitionVersionMetamac) dsdLifecycle.rejectDiffusionValidation(ctx, urn);
+        return (DataStructureDefinitionVersionMetamac) dsdLifeCycle.rejectDiffusionValidation(ctx, urn);
     }
 
     @Override
     public DataStructureDefinitionVersionMetamac publishInternallyDataStructureDefinition(ServiceContext ctx, String urn) throws MetamacException {
-        return (DataStructureDefinitionVersionMetamac) dsdLifecycle.publishInternally(ctx, urn);
+        return (DataStructureDefinitionVersionMetamac) dsdLifeCycle.publishInternally(ctx, urn);
     }
 
     // TODO validTo, validFrom: ¿rellenar cuando el artefacto no sea del ISTAC? Pendiente decisión del ISTAC.
     @Override
     public DataStructureDefinitionVersionMetamac publishExternallyDataStructureDefinition(ServiceContext ctx, String urn) throws MetamacException {
-        return (DataStructureDefinitionVersionMetamac) dsdLifecycle.publishExternally(ctx, urn);
+        return (DataStructureDefinitionVersionMetamac) dsdLifeCycle.publishExternally(ctx, urn);
     }
 
     @Override
@@ -212,7 +212,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
 
         List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(DataStructureDefinitionVersionMetamac.class)
                 .withProperty(DataStructureDefinitionVersionMetamacProperties.maintainableArtefact().urn()).eq(urn)
-                .withProperty(DataStructureDefinitionVersionMetamacProperties.lifecycleMetadata().procStatus()).in((Object[]) procStatus).distinctRoot().build();
+                .withProperty(DataStructureDefinitionVersionMetamacProperties.lifeCycleMetadata().procStatus()).in((Object[]) procStatus).distinctRoot().build();
         PagingParameter pagingParameter = PagingParameter.pageAccess(1);
         PagedResult<DataStructureDefinitionVersionMetamac> dataStructureDefinitionVersionMetamacPagedResult = getDataStructureDefinitionVersionMetamacRepository().findByCondition(conditions,
                 pagingParameter);
@@ -236,7 +236,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
 
         List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(DataStructureDefinitionVersionMetamac.class)
                 .withProperty(DataStructureDefinitionVersionMetamacProperties.structure().id()).eq(structure.getId())
-                .withProperty(DataStructureDefinitionVersionMetamacProperties.lifecycleMetadata().procStatus()).in((Object[]) procStatus).distinctRoot().build();
+                .withProperty(DataStructureDefinitionVersionMetamacProperties.lifeCycleMetadata().procStatus()).in((Object[]) procStatus).distinctRoot().build();
         PagingParameter pagingParameter = PagingParameter.noLimits();
         PagedResult<DataStructureDefinitionVersionMetamac> dataStructureDefinitionVersionPagedResult = getDataStructureDefinitionVersionMetamacRepository()
                 .findByCondition(conditions, pagingParameter);

@@ -28,7 +28,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.organisation.serviceapi.OrganisationsService;
 
-@Service("organisationSchemeLifecycle")
+@Service("organisationSchemeLifeCycle")
 public class OrganisationSchemeLifeCycleImpl extends LifeCycleImpl {
 
     @Autowired
@@ -41,14 +41,14 @@ public class OrganisationSchemeLifeCycleImpl extends LifeCycleImpl {
     private OrganisationsService                       organisationsService;
 
     public OrganisationSchemeLifeCycleImpl() {
-        this.callback = new OrganisationSchemeLifecycleCallback();
+        this.callback = new OrganisationSchemeLifeCycleCallback();
     }
 
-    private class OrganisationSchemeLifecycleCallback implements LifecycleCallback {
+    private class OrganisationSchemeLifeCycleCallback implements LifeCycleCallback {
 
         @Override
         public SrmLifeCycleMetadata getLifeCycleMetadata(Object srmResourceVersion) {
-            return getOrganisationSchemeVersionMetamac(srmResourceVersion).getLifecycleMetadata();
+            return getOrganisationSchemeVersionMetamac(srmResourceVersion).getLifeCycleMetadata();
         }
 
         @Override
@@ -127,7 +127,7 @@ public class OrganisationSchemeLifeCycleImpl extends LifeCycleImpl {
 
             List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(OrganisationSchemeVersionMetamac.class)
                     .withProperty(OrganisationSchemeVersionMetamacProperties.itemScheme().id()).eq(organisationSchemeVersion.getItemScheme().getId())
-                    .withProperty(OrganisationSchemeVersionMetamacProperties.lifecycleMetadata().procStatus()).in((Object[]) procStatus).distinctRoot().build();
+                    .withProperty(OrganisationSchemeVersionMetamacProperties.lifeCycleMetadata().procStatus()).in((Object[]) procStatus).distinctRoot().build();
             PagingParameter pagingParameter = PagingParameter.noLimits();
             PagedResult<OrganisationSchemeVersionMetamac> organisationSchemeVersionPagedResult = organisationSchemeVersionMetamacRepository.findByCondition(conditions, pagingParameter);
             return organisationSchemeMetamacToObject(organisationSchemeVersionPagedResult.getValues());

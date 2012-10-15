@@ -74,7 +74,7 @@
 
 «REM»Inclusion of a BasicType in an Entity«ENDREM»
 «AROUND templates::domain::DomainObjectReferenceAnnotation::basicTypeJpaAnnotation FOR Reference»
-	«IF name == "lifecycleMetadata"-»
+	«IF name == "lifeCycleMetadata"-»
 		@javax.persistence.Embedded
 		«REM»Nothing more due to a bug with joda time columns. AttributeOverride is not necessary because prefix column name is not specified«ENDREM»
 	«ELSE»

@@ -116,7 +116,7 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                 case URN:
                     return new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.maintainableArtefact().urn(), propertyRestriction.getStringValue());
                 case PROC_STATUS:
-                    return new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.lifecycleMetadata().procStatus(), propertyRestriction.getEnumValue());
+                    return new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.lifeCycleMetadata().procStatus(), propertyRestriction.getEnumValue());
                 case NAME:
                     return new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.maintainableArtefact().name().texts().label(), propertyRestriction.getStringValue());
                 case IS_LAST_VERSION:
@@ -135,7 +135,7 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                 case URN:
                     return DataStructureDefinitionVersionMetamacProperties.maintainableArtefact().urn();
                 case PROC_STATUS:
-                    return DataStructureDefinitionVersionMetamacProperties.lifecycleMetadata().procStatus();
+                    return DataStructureDefinitionVersionMetamacProperties.lifeCycleMetadata().procStatus();
                 case NAME:
                     return DataStructureDefinitionVersionMetamacProperties.maintainableArtefact().name().texts().label();
                 case LAST_UPDATED:
@@ -163,7 +163,7 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                 case URN:
                     return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.maintainableArtefact().urn(), propertyRestriction.getStringValue());
                 case PROC_STATUS:
-                    return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.lifecycleMetadata().procStatus(), propertyRestriction.getEnumValue());
+                    return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.lifeCycleMetadata().procStatus(), propertyRestriction.getEnumValue());
                 case NAME:
                     return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.maintainableArtefact().name().texts().label(), propertyRestriction.getStringValue());
                 case IS_LAST_VERSION:
@@ -182,7 +182,7 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                 case URN:
                     return ConceptSchemeVersionMetamacProperties.maintainableArtefact().urn();
                 case PROC_STATUS:
-                    return ConceptSchemeVersionMetamacProperties.lifecycleMetadata().procStatus();
+                    return ConceptSchemeVersionMetamacProperties.lifeCycleMetadata().procStatus();
                 case NAME:
                     return ConceptSchemeVersionMetamacProperties.maintainableArtefact().name().texts().label();
                 case LAST_UPDATED:
@@ -262,7 +262,7 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                 case TYPE:
                     return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.organisationSchemeType(), propertyRestriction.getEnumValue());
                 case PROC_STATUS:
-                    return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.lifecycleMetadata().procStatus(), propertyRestriction.getEnumValue());
+                    return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.lifeCycleMetadata().procStatus(), propertyRestriction.getEnumValue());
                 case NAME:
                     return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.maintainableArtefact().name().texts().label(), propertyRestriction.getStringValue());
                 case IS_LAST_VERSION:
@@ -281,7 +281,7 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                 case URN:
                     return OrganisationSchemeVersionMetamacProperties.maintainableArtefact().urn();
                 case PROC_STATUS:
-                    return OrganisationSchemeVersionMetamacProperties.lifecycleMetadata().procStatus();
+                    return OrganisationSchemeVersionMetamacProperties.lifeCycleMetadata().procStatus();
                 case NAME:
                     return OrganisationSchemeVersionMetamacProperties.maintainableArtefact().name().texts().label();
                 case LAST_UPDATED:

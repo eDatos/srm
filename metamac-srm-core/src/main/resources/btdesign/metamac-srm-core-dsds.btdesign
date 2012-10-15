@@ -65,8 +65,8 @@ Application DsdsMetamac {
 			hint="idSequence=M_DATASTRUCTURE_VERSIONS"
 			!auditable
 
-			"Lifecycle information"
-			- @SrmLifeCycleMetadata lifecycleMetadata databaseColumn="";
+			"Life cycle information"
+			- @SrmLifeCycleMetadata lifeCycleMetadata databaseColumn="";
 
 			Repository DataStructureDefinitionVersionMetamacRepository {
 				findById;

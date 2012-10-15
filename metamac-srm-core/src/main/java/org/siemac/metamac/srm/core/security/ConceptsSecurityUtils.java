@@ -34,7 +34,7 @@ public class ConceptsSecurityUtils {
     }
 
     public static void canUpdateConceptScheme(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeMetamacOld, ConceptSchemeTypeEnum typeNew, String operationNew) throws MetamacException {
-        if (!SharedConceptsSecurityUtils.canUpdateConceptScheme(getMetamacPrincipal(ctx), conceptSchemeMetamacOld.getLifecycleMetadata().getProcStatus(), conceptSchemeMetamacOld.getType(),
+        if (!SharedConceptsSecurityUtils.canUpdateConceptScheme(getMetamacPrincipal(ctx), conceptSchemeMetamacOld.getLifeCycleMetadata().getProcStatus(), conceptSchemeMetamacOld.getType(),
                 getOperationCode(conceptSchemeMetamacOld), typeNew, operationNew)) {
             throw new MetamacException(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED, ctx.getUserId());
         }
@@ -64,7 +64,7 @@ public class ConceptsSecurityUtils {
     }
 
     public static void canRejectConceptSchemeValidation(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeMetamac) throws MetamacException {
-        if (!SharedConceptsSecurityUtils.canRejectConceptSchemeValidation(getMetamacPrincipal(ctx), conceptSchemeMetamac.getLifecycleMetadata().getProcStatus(), conceptSchemeMetamac.getType(),
+        if (!SharedConceptsSecurityUtils.canRejectConceptSchemeValidation(getMetamacPrincipal(ctx), conceptSchemeMetamac.getLifeCycleMetadata().getProcStatus(), conceptSchemeMetamac.getType(),
                 getOperationCode(conceptSchemeMetamac))) {
             throw new MetamacException(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED, ctx.getUserId());
         }
@@ -105,14 +105,14 @@ public class ConceptsSecurityUtils {
     //
 
     public static void canCreateConcept(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeMetamac) throws MetamacException {
-        if (!SharedConceptsSecurityUtils.canCreateConcept(getMetamacPrincipal(ctx), conceptSchemeMetamac.getLifecycleMetadata().getProcStatus(), conceptSchemeMetamac.getType(),
+        if (!SharedConceptsSecurityUtils.canCreateConcept(getMetamacPrincipal(ctx), conceptSchemeMetamac.getLifeCycleMetadata().getProcStatus(), conceptSchemeMetamac.getType(),
                 getOperationCode(conceptSchemeMetamac))) {
             throw new MetamacException(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED, ctx.getUserId());
         }
     }
 
     public static void canUpdateConcept(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeMetamac) throws MetamacException {
-        if (!SharedConceptsSecurityUtils.canUpdateConcept(getMetamacPrincipal(ctx), conceptSchemeMetamac.getLifecycleMetadata().getProcStatus(), conceptSchemeMetamac.getType(),
+        if (!SharedConceptsSecurityUtils.canUpdateConcept(getMetamacPrincipal(ctx), conceptSchemeMetamac.getLifeCycleMetadata().getProcStatus(), conceptSchemeMetamac.getType(),
                 getOperationCode(conceptSchemeMetamac))) {
             throw new MetamacException(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED, ctx.getUserId());
         }
@@ -125,7 +125,7 @@ public class ConceptsSecurityUtils {
     }
 
     public static void canDeleteConcept(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeMetamac) throws MetamacException {
-        if (!SharedConceptsSecurityUtils.canDeleteConcept(getMetamacPrincipal(ctx), conceptSchemeMetamac.getLifecycleMetadata().getProcStatus(), conceptSchemeMetamac.getType(),
+        if (!SharedConceptsSecurityUtils.canDeleteConcept(getMetamacPrincipal(ctx), conceptSchemeMetamac.getLifeCycleMetadata().getProcStatus(), conceptSchemeMetamac.getType(),
                 getOperationCode(conceptSchemeMetamac))) {
             throw new MetamacException(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED, ctx.getUserId());
         }
@@ -144,14 +144,14 @@ public class ConceptsSecurityUtils {
     }
 
     public static void canAddConceptRelation(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeMetamac) throws MetamacException {
-        if (!SharedConceptsSecurityUtils.canAddConceptRelation(getMetamacPrincipal(ctx), conceptSchemeMetamac.getLifecycleMetadata().getProcStatus(), conceptSchemeMetamac.getType(),
+        if (!SharedConceptsSecurityUtils.canAddConceptRelation(getMetamacPrincipal(ctx), conceptSchemeMetamac.getLifeCycleMetadata().getProcStatus(), conceptSchemeMetamac.getType(),
                 getOperationCode(conceptSchemeMetamac))) {
             throw new MetamacException(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED, ctx.getUserId());
         }
     }
 
     public static void canDeleteConceptRelation(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeMetamac) throws MetamacException {
-        if (!SharedConceptsSecurityUtils.canDeleteConceptRelation(getMetamacPrincipal(ctx), conceptSchemeMetamac.getLifecycleMetadata().getProcStatus(), conceptSchemeMetamac.getType(),
+        if (!SharedConceptsSecurityUtils.canDeleteConceptRelation(getMetamacPrincipal(ctx), conceptSchemeMetamac.getLifeCycleMetadata().getProcStatus(), conceptSchemeMetamac.getType(),
                 getOperationCode(conceptSchemeMetamac))) {
             throw new MetamacException(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED, ctx.getUserId());
         }

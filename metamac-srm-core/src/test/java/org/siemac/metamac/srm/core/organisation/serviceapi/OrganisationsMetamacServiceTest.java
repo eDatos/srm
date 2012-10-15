@@ -69,16 +69,16 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
 
         // Validate (only metadata in SRM Metamac; the others are checked in sdmx project)
         OrganisationSchemeVersionMetamac organisationSchemeVersionRetrieved = organisationsService.retrieveOrganisationSchemeByUrn(ctx, urn);
-        assertEquals(ProcStatusEnum.DRAFT, organisationSchemeVersionRetrieved.getLifecycleMetadata().getProcStatus());
+        assertEquals(ProcStatusEnum.DRAFT, organisationSchemeVersionRetrieved.getLifeCycleMetadata().getProcStatus());
         assertFalse(organisationSchemeVersionRetrieved.getMaintainableArtefact().getIsExternalReference());
-        assertNull(organisationSchemeVersionRetrieved.getLifecycleMetadata().getProductionValidationDate());
-        assertNull(organisationSchemeVersionRetrieved.getLifecycleMetadata().getProductionValidationUser());
-        assertNull(organisationSchemeVersionRetrieved.getLifecycleMetadata().getDiffusionValidationDate());
-        assertNull(organisationSchemeVersionRetrieved.getLifecycleMetadata().getDiffusionValidationUser());
-        assertNull(organisationSchemeVersionRetrieved.getLifecycleMetadata().getInternalPublicationDate());
-        assertNull(organisationSchemeVersionRetrieved.getLifecycleMetadata().getInternalPublicationUser());
-        assertNull(organisationSchemeVersionRetrieved.getLifecycleMetadata().getExternalPublicationDate());
-        assertNull(organisationSchemeVersionRetrieved.getLifecycleMetadata().getExternalPublicationUser());
+        assertNull(organisationSchemeVersionRetrieved.getLifeCycleMetadata().getProductionValidationDate());
+        assertNull(organisationSchemeVersionRetrieved.getLifeCycleMetadata().getProductionValidationUser());
+        assertNull(organisationSchemeVersionRetrieved.getLifeCycleMetadata().getDiffusionValidationDate());
+        assertNull(organisationSchemeVersionRetrieved.getLifeCycleMetadata().getDiffusionValidationUser());
+        assertNull(organisationSchemeVersionRetrieved.getLifeCycleMetadata().getInternalPublicationDate());
+        assertNull(organisationSchemeVersionRetrieved.getLifeCycleMetadata().getInternalPublicationUser());
+        assertNull(organisationSchemeVersionRetrieved.getLifeCycleMetadata().getExternalPublicationDate());
+        assertNull(organisationSchemeVersionRetrieved.getLifeCycleMetadata().getExternalPublicationUser());
         assertEquals(ctx.getUserId(), organisationSchemeVersionRetrieved.getCreatedBy());
         OrganisationsMetamacAsserts.assertEqualsOrganisationScheme(organisationSchemeVersion, organisationSchemeVersionRetrieved);
     }
@@ -169,14 +169,14 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
 
         // Validate (only metadata in SRM Metamac; the others are checked in sdmx project)
         assertEquals(urn, organisationSchemeVersion.getMaintainableArtefact().getUrn());
-        MetamacAsserts.assertEqualsDate("2011-01-01 01:02:03", organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate());
-        assertEquals("user1", organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
-        MetamacAsserts.assertEqualsDate("2011-01-02 02:02:03", organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate());
-        assertEquals("user2", organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
-        MetamacAsserts.assertEqualsDate("2011-01-03 03:02:03", organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationDate());
-        assertEquals("user3", organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationUser());
-        assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationDate());
-        assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationUser());
+        MetamacAsserts.assertEqualsDate("2011-01-01 01:02:03", organisationSchemeVersion.getLifeCycleMetadata().getProductionValidationDate());
+        assertEquals("user1", organisationSchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
+        MetamacAsserts.assertEqualsDate("2011-01-02 02:02:03", organisationSchemeVersion.getLifeCycleMetadata().getDiffusionValidationDate());
+        assertEquals("user2", organisationSchemeVersion.getLifeCycleMetadata().getDiffusionValidationUser());
+        MetamacAsserts.assertEqualsDate("2011-01-03 03:02:03", organisationSchemeVersion.getLifeCycleMetadata().getInternalPublicationDate());
+        assertEquals("user3", organisationSchemeVersion.getLifeCycleMetadata().getInternalPublicationUser());
+        assertNull(organisationSchemeVersion.getLifeCycleMetadata().getExternalPublicationDate());
+        assertNull(organisationSchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
     }
 
     @Test
@@ -216,7 +216,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         // Find internally published
         {
             List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(OrganisationSchemeVersionMetamac.class)
-                    .withProperty(OrganisationSchemeVersionMetamacProperties.lifecycleMetadata().procStatus()).eq(ProcStatusEnum.INTERNALLY_PUBLISHED)
+                    .withProperty(OrganisationSchemeVersionMetamacProperties.lifeCycleMetadata().procStatus()).eq(ProcStatusEnum.INTERNALLY_PUBLISHED)
                     .orderBy(OrganisationSchemeVersionMetamacProperties.maintainableArtefact().urn()).build();
             PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
             PagedResult<OrganisationSchemeVersionMetamac> organisationSchemeVersionPagedResult = organisationsService.findOrganisationSchemesByCondition(getServiceContextAdministrador(), conditions,
@@ -281,9 +281,9 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
 
         {
             OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(ctx, urn);
-            assertEquals(ProcStatusEnum.DRAFT, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
+            assertEquals(ProcStatusEnum.DRAFT, organisationSchemeVersion.getLifeCycleMetadata().getProcStatus());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getProductionValidationDate());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
         }
 
         // Send to production validation
@@ -291,29 +291,29 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
 
         // Validate response
         {
-            assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
-            assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate().toDate()));
-            assertEquals(ctx.getUserId(), organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationDate());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationUser());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationDate());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationUser());
+            assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, organisationSchemeVersion.getLifeCycleMetadata().getProcStatus());
+            assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeVersion.getLifeCycleMetadata().getProductionValidationDate().toDate()));
+            assertEquals(ctx.getUserId(), organisationSchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getDiffusionValidationDate());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getDiffusionValidationUser());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getInternalPublicationDate());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getInternalPublicationUser());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getExternalPublicationDate());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
         }
         // Validate retrieving
         {
             organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(ctx, urn);
 
-            assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
-            assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate().toDate()));
-            assertEquals(ctx.getUserId(), organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationDate());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationUser());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationDate());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationUser());
+            assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, organisationSchemeVersion.getLifeCycleMetadata().getProcStatus());
+            assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeVersion.getLifeCycleMetadata().getProductionValidationDate().toDate()));
+            assertEquals(ctx.getUserId(), organisationSchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getDiffusionValidationDate());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getDiffusionValidationUser());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getInternalPublicationDate());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getInternalPublicationUser());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getExternalPublicationDate());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
         }
     }
 
@@ -325,9 +325,9 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
 
         {
             OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(ctx, urn);
-            assertEquals(ProcStatusEnum.VALIDATION_REJECTED, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
+            assertEquals(ProcStatusEnum.VALIDATION_REJECTED, organisationSchemeVersion.getLifeCycleMetadata().getProcStatus());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getProductionValidationDate());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
         }
 
         // Send to production validation
@@ -335,21 +335,21 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
 
         // Validate response
         {
-            assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
-            assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate().toDate()));
-            assertEquals(ctx.getUserId(), organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
+            assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, organisationSchemeVersion.getLifeCycleMetadata().getProcStatus());
+            assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeVersion.getLifeCycleMetadata().getProductionValidationDate().toDate()));
+            assertEquals(ctx.getUserId(), organisationSchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getDiffusionValidationDate());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getDiffusionValidationUser());
         }
         // Validate retrieving
         {
             organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(ctx, urn);
 
-            assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
-            assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate().toDate()));
-            assertEquals(ctx.getUserId(), organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
+            assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, organisationSchemeVersion.getLifeCycleMetadata().getProcStatus());
+            assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeVersion.getLifeCycleMetadata().getProductionValidationDate().toDate()));
+            assertEquals(ctx.getUserId(), organisationSchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getDiffusionValidationDate());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getDiffusionValidationUser());
         }
     }
 
@@ -375,7 +375,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
 
         {
             OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), urn);
-            assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
+            assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, organisationSchemeVersion.getLifeCycleMetadata().getProcStatus());
         }
 
         try {
@@ -424,9 +424,9 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
 
         {
             OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(ctx, urn);
-            assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
+            assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, organisationSchemeVersion.getLifeCycleMetadata().getProcStatus());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getDiffusionValidationDate());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getDiffusionValidationUser());
         }
 
         // Sends to diffusion validation
@@ -434,29 +434,29 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
 
         // Validate response
         {
-            assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
-            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate());
-            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
-            assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate().toDate()));
-            assertEquals(ctx.getUserId(), organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationDate());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationUser());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationDate());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationUser());
+            assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, organisationSchemeVersion.getLifeCycleMetadata().getProcStatus());
+            assertNotNull(organisationSchemeVersion.getLifeCycleMetadata().getProductionValidationDate());
+            assertNotNull(organisationSchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
+            assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeVersion.getLifeCycleMetadata().getDiffusionValidationDate().toDate()));
+            assertEquals(ctx.getUserId(), organisationSchemeVersion.getLifeCycleMetadata().getDiffusionValidationUser());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getInternalPublicationDate());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getInternalPublicationUser());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getExternalPublicationDate());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
         }
         // Validate retrieving
         {
             organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(ctx, urn);
 
-            assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
-            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate());
-            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
-            assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate().toDate()));
-            assertEquals(ctx.getUserId(), organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationDate());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationUser());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationDate());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationUser());
+            assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, organisationSchemeVersion.getLifeCycleMetadata().getProcStatus());
+            assertNotNull(organisationSchemeVersion.getLifeCycleMetadata().getProductionValidationDate());
+            assertNotNull(organisationSchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
+            assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeVersion.getLifeCycleMetadata().getDiffusionValidationDate().toDate()));
+            assertEquals(ctx.getUserId(), organisationSchemeVersion.getLifeCycleMetadata().getDiffusionValidationUser());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getInternalPublicationDate());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getInternalPublicationUser());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getExternalPublicationDate());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
         }
     }
 
@@ -483,9 +483,9 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
 
         {
             OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(ctx, urn);
-            assertEquals(ProcStatusEnum.DRAFT, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
+            assertEquals(ProcStatusEnum.DRAFT, organisationSchemeVersion.getLifeCycleMetadata().getProcStatus());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getDiffusionValidationDate());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getDiffusionValidationUser());
         }
 
         try {
@@ -508,9 +508,9 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
 
         {
             OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(ctx, urn);
-            assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
-            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate());
-            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
+            assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, organisationSchemeVersion.getLifeCycleMetadata().getProcStatus());
+            assertNotNull(organisationSchemeVersion.getLifeCycleMetadata().getProductionValidationDate());
+            assertNotNull(organisationSchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
         }
 
         // Reject validation
@@ -518,28 +518,28 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
 
         // Validate response
         {
-            assertEquals(ProcStatusEnum.VALIDATION_REJECTED, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationDate());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationUser());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationDate());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationUser());
+            assertEquals(ProcStatusEnum.VALIDATION_REJECTED, organisationSchemeVersion.getLifeCycleMetadata().getProcStatus());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getProductionValidationDate());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getDiffusionValidationDate());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getDiffusionValidationUser());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getInternalPublicationDate());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getInternalPublicationUser());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getExternalPublicationDate());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
         }
         // Validate restrieving
         {
             organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(ctx, urn);
 
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationDate());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationUser());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationDate());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationUser());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getProductionValidationDate());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getDiffusionValidationDate());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getDiffusionValidationUser());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getInternalPublicationDate());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getInternalPublicationUser());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getExternalPublicationDate());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
         }
     }
 
@@ -565,7 +565,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
 
         {
             OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), urn);
-            assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
+            assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, organisationSchemeVersion.getLifeCycleMetadata().getProcStatus());
         }
 
         try {
@@ -588,11 +588,11 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
 
         {
             OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(ctx, urn);
-            assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
-            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate());
-            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
-            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate());
-            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
+            assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, organisationSchemeVersion.getLifeCycleMetadata().getProcStatus());
+            assertNotNull(organisationSchemeVersion.getLifeCycleMetadata().getProductionValidationDate());
+            assertNotNull(organisationSchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
+            assertNotNull(organisationSchemeVersion.getLifeCycleMetadata().getDiffusionValidationDate());
+            assertNotNull(organisationSchemeVersion.getLifeCycleMetadata().getDiffusionValidationUser());
         }
 
         // Reject validation
@@ -600,28 +600,28 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
 
         // Validate response
         {
-            assertEquals(ProcStatusEnum.VALIDATION_REJECTED, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationDate());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationUser());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationDate());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationUser());
+            assertEquals(ProcStatusEnum.VALIDATION_REJECTED, organisationSchemeVersion.getLifeCycleMetadata().getProcStatus());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getProductionValidationDate());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getDiffusionValidationDate());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getDiffusionValidationUser());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getInternalPublicationDate());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getInternalPublicationUser());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getExternalPublicationDate());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
         }
         // Validate retrieving
         {
             organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(ctx, urn);
 
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationDate());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationUser());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationDate());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationUser());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getProductionValidationDate());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getDiffusionValidationDate());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getDiffusionValidationUser());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getInternalPublicationDate());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getInternalPublicationUser());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getExternalPublicationDate());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
         }
     }
 
@@ -647,7 +647,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
 
         {
             OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), urn);
-            assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
+            assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, organisationSchemeVersion.getLifeCycleMetadata().getProcStatus());
         }
 
         try {
@@ -670,13 +670,13 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
 
         {
             OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(ctx, urn);
-            assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
-            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate());
-            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
-            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate());
-            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationDate());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationUser());
+            assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, organisationSchemeVersion.getLifeCycleMetadata().getProcStatus());
+            assertNotNull(organisationSchemeVersion.getLifeCycleMetadata().getProductionValidationDate());
+            assertNotNull(organisationSchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
+            assertNotNull(organisationSchemeVersion.getLifeCycleMetadata().getDiffusionValidationDate());
+            assertNotNull(organisationSchemeVersion.getLifeCycleMetadata().getDiffusionValidationUser());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getInternalPublicationDate());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getInternalPublicationUser());
             assertFalse(organisationSchemeVersion.getMaintainableArtefact().getFinalLogic());
         }
 
@@ -685,30 +685,30 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
 
         // Validate response
         {
-            assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
-            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate());
-            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
-            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate());
-            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
-            assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationDate().toDate()));
-            assertEquals(ctx.getUserId(), organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationUser());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationDate());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationUser());
+            assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, organisationSchemeVersion.getLifeCycleMetadata().getProcStatus());
+            assertNotNull(organisationSchemeVersion.getLifeCycleMetadata().getProductionValidationDate());
+            assertNotNull(organisationSchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
+            assertNotNull(organisationSchemeVersion.getLifeCycleMetadata().getDiffusionValidationDate());
+            assertNotNull(organisationSchemeVersion.getLifeCycleMetadata().getDiffusionValidationUser());
+            assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeVersion.getLifeCycleMetadata().getInternalPublicationDate().toDate()));
+            assertEquals(ctx.getUserId(), organisationSchemeVersion.getLifeCycleMetadata().getInternalPublicationUser());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getExternalPublicationDate());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
             assertTrue(organisationSchemeVersion.getMaintainableArtefact().getFinalLogic());
         }
         // Validate retrieving
         {
             organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(ctx, urn);
 
-            assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
-            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate());
-            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
-            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate());
-            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
-            assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationDate().toDate()));
-            assertEquals(ctx.getUserId(), organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationUser());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationDate());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationUser());
+            assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, organisationSchemeVersion.getLifeCycleMetadata().getProcStatus());
+            assertNotNull(organisationSchemeVersion.getLifeCycleMetadata().getProductionValidationDate());
+            assertNotNull(organisationSchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
+            assertNotNull(organisationSchemeVersion.getLifeCycleMetadata().getDiffusionValidationDate());
+            assertNotNull(organisationSchemeVersion.getLifeCycleMetadata().getDiffusionValidationUser());
+            assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeVersion.getLifeCycleMetadata().getInternalPublicationDate().toDate()));
+            assertEquals(ctx.getUserId(), organisationSchemeVersion.getLifeCycleMetadata().getInternalPublicationUser());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getExternalPublicationDate());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
             assertTrue(organisationSchemeVersion.getMaintainableArtefact().getFinalLogic());
         }
     }
@@ -735,7 +735,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
 
         {
             OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), urn);
-            assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
+            assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, organisationSchemeVersion.getLifeCycleMetadata().getProcStatus());
         }
 
         try {
@@ -758,22 +758,22 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
 
         {
             OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(ctx, urn);
-            assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
-            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate());
-            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
-            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate());
-            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
-            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationDate());
-            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationUser());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationDate());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationUser());
+            assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, organisationSchemeVersion.getLifeCycleMetadata().getProcStatus());
+            assertNotNull(organisationSchemeVersion.getLifeCycleMetadata().getProductionValidationDate());
+            assertNotNull(organisationSchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
+            assertNotNull(organisationSchemeVersion.getLifeCycleMetadata().getDiffusionValidationDate());
+            assertNotNull(organisationSchemeVersion.getLifeCycleMetadata().getDiffusionValidationUser());
+            assertNotNull(organisationSchemeVersion.getLifeCycleMetadata().getInternalPublicationDate());
+            assertNotNull(organisationSchemeVersion.getLifeCycleMetadata().getInternalPublicationUser());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getExternalPublicationDate());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
             assertNull(organisationSchemeVersion.getMaintainableArtefact().getValidFrom());
             assertNull(organisationSchemeVersion.getMaintainableArtefact().getValidTo());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getIsExternalPublicationFailed());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationFailedDate());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getIsExternalPublicationFailed());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getExternalPublicationFailedDate());
 
             OrganisationSchemeVersionMetamac organisationSchemeVersionExternallyPublished = organisationsService.retrieveOrganisationSchemeByUrn(ctx, ORGANISATION_SCHEME_7_V1);
-            assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, organisationSchemeVersionExternallyPublished.getLifecycleMetadata().getProcStatus());
+            assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, organisationSchemeVersionExternallyPublished.getLifeCycleMetadata().getProcStatus());
             assertNotNull(organisationSchemeVersionExternallyPublished.getMaintainableArtefact().getValidFrom());
             assertNull(organisationSchemeVersionExternallyPublished.getMaintainableArtefact().getValidTo());
         }
@@ -783,41 +783,41 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
 
         // Validate response
         {
-            assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
-            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate());
-            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
-            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate());
-            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
-            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationDate());
-            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationUser());
-            assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationDate().toDate()));
-            assertEquals(ctx.getUserId(), organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationUser());
+            assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, organisationSchemeVersion.getLifeCycleMetadata().getProcStatus());
+            assertNotNull(organisationSchemeVersion.getLifeCycleMetadata().getProductionValidationDate());
+            assertNotNull(organisationSchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
+            assertNotNull(organisationSchemeVersion.getLifeCycleMetadata().getDiffusionValidationDate());
+            assertNotNull(organisationSchemeVersion.getLifeCycleMetadata().getDiffusionValidationUser());
+            assertNotNull(organisationSchemeVersion.getLifeCycleMetadata().getInternalPublicationDate());
+            assertNotNull(organisationSchemeVersion.getLifeCycleMetadata().getInternalPublicationUser());
+            assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeVersion.getLifeCycleMetadata().getExternalPublicationDate().toDate()));
+            assertEquals(ctx.getUserId(), organisationSchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
             assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeVersion.getMaintainableArtefact().getValidFrom().toDate()));
             assertNull(organisationSchemeVersion.getMaintainableArtefact().getValidTo());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getIsExternalPublicationFailed());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationFailedDate());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getIsExternalPublicationFailed());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getExternalPublicationFailedDate());
         }
         // Validate retrieving
         {
             organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(ctx, urn);
-            assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
-            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationDate());
-            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getProductionValidationUser());
-            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationDate());
-            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getDiffusionValidationUser());
-            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationDate());
-            assertNotNull(organisationSchemeVersion.getLifecycleMetadata().getInternalPublicationUser());
-            assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationDate().toDate()));
-            assertEquals(ctx.getUserId(), organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationUser());
+            assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, organisationSchemeVersion.getLifeCycleMetadata().getProcStatus());
+            assertNotNull(organisationSchemeVersion.getLifeCycleMetadata().getProductionValidationDate());
+            assertNotNull(organisationSchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
+            assertNotNull(organisationSchemeVersion.getLifeCycleMetadata().getDiffusionValidationDate());
+            assertNotNull(organisationSchemeVersion.getLifeCycleMetadata().getDiffusionValidationUser());
+            assertNotNull(organisationSchemeVersion.getLifeCycleMetadata().getInternalPublicationDate());
+            assertNotNull(organisationSchemeVersion.getLifeCycleMetadata().getInternalPublicationUser());
+            assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeVersion.getLifeCycleMetadata().getExternalPublicationDate().toDate()));
+            assertEquals(ctx.getUserId(), organisationSchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
             assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeVersion.getMaintainableArtefact().getValidFrom().toDate()));
             assertNull(organisationSchemeVersion.getMaintainableArtefact().getValidTo());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getIsExternalPublicationFailed());
-            assertNull(organisationSchemeVersion.getLifecycleMetadata().getExternalPublicationFailedDate());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getIsExternalPublicationFailed());
+            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getExternalPublicationFailedDate());
         }
         // Validate previous published externally versions
         {
             OrganisationSchemeVersionMetamac organisationSchemeVersionExternallyPublished = organisationsService.retrieveOrganisationSchemeByUrn(ctx, ORGANISATION_SCHEME_7_V1);
-            assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, organisationSchemeVersionExternallyPublished.getLifecycleMetadata().getProcStatus());
+            assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, organisationSchemeVersionExternallyPublished.getLifeCycleMetadata().getProcStatus());
             assertNotNull(organisationSchemeVersionExternallyPublished.getMaintainableArtefact().getValidFrom());
             assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeVersionExternallyPublished.getMaintainableArtefact().getValidTo().toDate()));
         }
@@ -845,7 +845,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
 
         {
             OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), urn);
-            assertEquals(ProcStatusEnum.DRAFT, organisationSchemeVersion.getLifecycleMetadata().getProcStatus());
+            assertEquals(ProcStatusEnum.DRAFT, organisationSchemeVersion.getLifeCycleMetadata().getProcStatus());
         }
 
         try {
@@ -887,9 +887,9 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         String urnV2 = ORGANISATION_SCHEME_1_V2;
 
         OrganisationSchemeVersionMetamac organisationSchemeVersionV1 = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), urnV1);
-        assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, organisationSchemeVersionV1.getLifecycleMetadata().getProcStatus());
+        assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, organisationSchemeVersionV1.getLifeCycleMetadata().getProcStatus());
         OrganisationSchemeVersionMetamac organisationSchemeVersionV2 = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), urnV2);
-        assertEquals(ProcStatusEnum.DRAFT, organisationSchemeVersionV2.getLifecycleMetadata().getProcStatus());
+        assertEquals(ProcStatusEnum.DRAFT, organisationSchemeVersionV2.getLifeCycleMetadata().getProcStatus());
 
         organisationsService.deleteOrganisationScheme(getServiceContextAdministrador(), urnV2);
 
@@ -942,7 +942,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
 
         // Validate response
         {
-            assertEquals(ProcStatusEnum.DRAFT, organisationSchemeVersionNewVersion.getLifecycleMetadata().getProcStatus());
+            assertEquals(ProcStatusEnum.DRAFT, organisationSchemeVersionNewVersion.getLifeCycleMetadata().getProcStatus());
             assertEquals(versionExpected, organisationSchemeVersionNewVersion.getMaintainableArtefact().getVersionLogic());
             assertEquals(urnExpected, organisationSchemeVersionNewVersion.getMaintainableArtefact().getUrn());
             OrganisationsMetamacAsserts.assertEqualsOrganisationSchemeWithoutLifeCycleMetadata(organisationSchemeVersionToCopy, organisationSchemeVersionNewVersion);
@@ -953,7 +953,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         {
             organisationSchemeVersionNewVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), organisationSchemeVersionNewVersion.getMaintainableArtefact()
                     .getUrn());
-            assertEquals(ProcStatusEnum.DRAFT, organisationSchemeVersionNewVersion.getLifecycleMetadata().getProcStatus());
+            assertEquals(ProcStatusEnum.DRAFT, organisationSchemeVersionNewVersion.getLifeCycleMetadata().getProcStatus());
             assertEquals(versionExpected, organisationSchemeVersionNewVersion.getMaintainableArtefact().getVersionLogic());
             assertEquals(urnExpected, organisationSchemeVersionNewVersion.getMaintainableArtefact().getUrn());
             assertEquals("01.000", organisationSchemeVersionNewVersion.getMaintainableArtefact().getReplaceTo());
@@ -1058,11 +1058,11 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         String urnExpected = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=ISTAC:ORGANISATIONSCHEME07(03.000)";
 
         OrganisationSchemeVersionMetamac organisationSchemeVersionToCopy = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), urnToCopy);
-        assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, organisationSchemeVersionToCopy.getLifecycleMetadata().getProcStatus());
+        assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, organisationSchemeVersionToCopy.getLifeCycleMetadata().getProcStatus());
         assertFalse(organisationSchemeVersionToCopy.getMaintainableArtefact().getIsLastVersion());
 
         OrganisationSchemeVersionMetamac organisationSchemeVersionLast = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), urnLastVersion);
-        assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, organisationSchemeVersionLast.getLifecycleMetadata().getProcStatus());
+        assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, organisationSchemeVersionLast.getLifeCycleMetadata().getProcStatus());
         assertTrue(organisationSchemeVersionLast.getMaintainableArtefact().getIsLastVersion());
 
         OrganisationSchemeVersionMetamac organisationSchemeVersionNewVersion = organisationsService.versioningOrganisationScheme(getServiceContextAdministrador(), urnToCopy, VersionTypeEnum.MAJOR);
@@ -1071,7 +1071,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         {
             assertEquals(versionExpected, organisationSchemeVersionNewVersion.getMaintainableArtefact().getVersionLogic());
             assertEquals(urnExpected, organisationSchemeVersionNewVersion.getMaintainableArtefact().getUrn());
-            assertEquals(ProcStatusEnum.DRAFT, organisationSchemeVersionNewVersion.getLifecycleMetadata().getProcStatus());
+            assertEquals(ProcStatusEnum.DRAFT, organisationSchemeVersionNewVersion.getLifeCycleMetadata().getProcStatus());
             OrganisationsMetamacAsserts.assertEqualsOrganisationSchemeWithoutLifeCycleMetadata(organisationSchemeVersionToCopy, organisationSchemeVersionNewVersion);
         }
 
@@ -1082,7 +1082,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
                     .getUrn());
             assertEquals(versionExpected, organisationSchemeVersionNewVersion.getMaintainableArtefact().getVersionLogic());
             assertEquals(urnExpected, organisationSchemeVersionNewVersion.getMaintainableArtefact().getUrn());
-            assertEquals(ProcStatusEnum.DRAFT, organisationSchemeVersionNewVersion.getLifecycleMetadata().getProcStatus());
+            assertEquals(ProcStatusEnum.DRAFT, organisationSchemeVersionNewVersion.getLifeCycleMetadata().getProcStatus());
             assertEquals("02.000", organisationSchemeVersionNewVersion.getMaintainableArtefact().getReplaceTo());
             assertEquals(null, organisationSchemeVersionNewVersion.getMaintainableArtefact().getReplacedBy());
             assertTrue(organisationSchemeVersionNewVersion.getMaintainableArtefact().getIsLastVersion());

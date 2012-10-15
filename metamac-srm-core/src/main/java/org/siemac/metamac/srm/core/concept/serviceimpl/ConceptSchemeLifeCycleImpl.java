@@ -30,7 +30,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.concept.serviceapi.ConceptsService;
 
-@Service("conceptSchemeLifecycle")
+@Service("conceptSchemeLifeCycle")
 public class ConceptSchemeLifeCycleImpl extends LifeCycleImpl {
 
     @Autowired
@@ -46,14 +46,14 @@ public class ConceptSchemeLifeCycleImpl extends LifeCycleImpl {
     private ConceptMetamacRepository              conceptMetamacRepository;
 
     public ConceptSchemeLifeCycleImpl() {
-        this.callback = new ConceptSchemeLifecycleCallback();
+        this.callback = new ConceptSchemeLifeCycleCallback();
     }
 
-    private class ConceptSchemeLifecycleCallback implements LifecycleCallback {
+    private class ConceptSchemeLifeCycleCallback implements LifeCycleCallback {
 
         @Override
         public SrmLifeCycleMetadata getLifeCycleMetadata(Object srmResourceVersion) {
-            return getConceptSchemeVersionMetamac(srmResourceVersion).getLifecycleMetadata();
+            return getConceptSchemeVersionMetamac(srmResourceVersion).getLifeCycleMetadata();
         }
         
         @Override
@@ -151,7 +151,7 @@ public class ConceptSchemeLifeCycleImpl extends LifeCycleImpl {
             ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptSchemeVersionMetamac(srmResourceVersion);
 
             List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).withProperty(ConceptSchemeVersionMetamacProperties.itemScheme().id())
-                    .eq(conceptSchemeVersion.getItemScheme().getId()).withProperty(ConceptSchemeVersionMetamacProperties.lifecycleMetadata().procStatus()).in((Object[]) procStatus).distinctRoot()
+                    .eq(conceptSchemeVersion.getItemScheme().getId()).withProperty(ConceptSchemeVersionMetamacProperties.lifeCycleMetadata().procStatus()).in((Object[]) procStatus).distinctRoot()
                     .build();
             PagingParameter pagingParameter = PagingParameter.noLimits();
             PagedResult<ConceptSchemeVersionMetamac> conceptSchemeVersionPagedResult = conceptSchemeVersionMetamacRepository.findByCondition(conditions, pagingParameter);

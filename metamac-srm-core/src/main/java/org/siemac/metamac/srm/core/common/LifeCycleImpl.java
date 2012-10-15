@@ -27,8 +27,8 @@ public class LifeCycleImpl implements LifeCycle {
     private static final ProcStatusEnum[] procStatusToPublishInternally          = {ProcStatusEnum.DIFFUSION_VALIDATION};
     private static final ProcStatusEnum[] procStatusToPublishExternally          = {ProcStatusEnum.INTERNALLY_PUBLISHED};
 
-    // Due to java restrictions, this must be inialized out of constructor of Lifecycle
-    protected LifecycleCallback           callback                               = null;
+    // Due to java restrictions, this must be inialized out of constructor of LifeCycle
+    protected LifeCycleCallback           callback                               = null;
 
     public LifeCycleImpl() {
     }
@@ -46,11 +46,11 @@ public class LifeCycleImpl implements LifeCycle {
         // Validate to send to production
         checkResourceInProductionValidation(urn, srmResourceVersion, targetStatus);
 
-        // Update lifecycle metadata
-        SrmLifeCycleMetadata lifecycle = callback.getLifeCycleMetadata(srmResourceVersion);
-        lifecycle.setProcStatus(targetStatus);
-        lifecycle.setProductionValidationDate(new DateTime());
-        lifecycle.setProductionValidationUser(ctx.getUserId());
+        // Update life cycle metadata
+        SrmLifeCycleMetadata lifeCycle = callback.getLifeCycleMetadata(srmResourceVersion);
+        lifeCycle.setProcStatus(targetStatus);
+        lifeCycle.setProductionValidationDate(new DateTime());
+        lifeCycle.setProductionValidationUser(ctx.getUserId());
         srmResourceVersion = callback.updateSrmResource(srmResourceVersion);
 
         return srmResourceVersion;
@@ -69,11 +69,11 @@ public class LifeCycleImpl implements LifeCycle {
         // Validate to send to Diffusion
         checkResourceInDiffusionValidation(urn, srmResourceVersion, targetStatus);
 
-        // Update lifecycle metadata
-        SrmLifeCycleMetadata lifecycle = callback.getLifeCycleMetadata(srmResourceVersion);
-        lifecycle.setProcStatus(targetStatus);
-        lifecycle.setDiffusionValidationDate(new DateTime());
-        lifecycle.setDiffusionValidationUser(ctx.getUserId());
+        // Update life cycle metadata
+        SrmLifeCycleMetadata lifeCycle = callback.getLifeCycleMetadata(srmResourceVersion);
+        lifeCycle.setProcStatus(targetStatus);
+        lifeCycle.setDiffusionValidationDate(new DateTime());
+        lifeCycle.setDiffusionValidationUser(ctx.getUserId());
         srmResourceVersion = callback.updateSrmResource(srmResourceVersion);
 
         return srmResourceVersion;
@@ -92,13 +92,13 @@ public class LifeCycleImpl implements LifeCycle {
         // Validate to reject
         checkResourceInRejectProductionValidation(urn, srmResourceVersion, targetStatus);
 
-        // Update lifecycle metadata
-        SrmLifeCycleMetadata lifecycle = callback.getLifeCycleMetadata(srmResourceVersion);
-        lifecycle.setProcStatus(targetStatus);
-        lifecycle.setProductionValidationDate(null);
-        lifecycle.setProductionValidationUser(null);
-        lifecycle.setDiffusionValidationDate(null);
-        lifecycle.setDiffusionValidationUser(null);
+        // Update life cycle metadata
+        SrmLifeCycleMetadata lifeCycle = callback.getLifeCycleMetadata(srmResourceVersion);
+        lifeCycle.setProcStatus(targetStatus);
+        lifeCycle.setProductionValidationDate(null);
+        lifeCycle.setProductionValidationUser(null);
+        lifeCycle.setDiffusionValidationDate(null);
+        lifeCycle.setDiffusionValidationUser(null);
         srmResourceVersion = callback.updateSrmResource(srmResourceVersion);
 
         return srmResourceVersion;
@@ -117,13 +117,13 @@ public class LifeCycleImpl implements LifeCycle {
         // Validate to reject
         checkResourceInRejectDiffusionValidation(urn, srmResourceVersion, targetStatus);
 
-        // Update lifecycle metadata
-        SrmLifeCycleMetadata lifecycle = callback.getLifeCycleMetadata(srmResourceVersion);
-        lifecycle.setProcStatus(targetStatus);
-        lifecycle.setProductionValidationDate(null);
-        lifecycle.setProductionValidationUser(null);
-        lifecycle.setDiffusionValidationDate(null);
-        lifecycle.setDiffusionValidationUser(null);
+        // Update life cycle metadata
+        SrmLifeCycleMetadata lifeCycle = callback.getLifeCycleMetadata(srmResourceVersion);
+        lifeCycle.setProcStatus(targetStatus);
+        lifeCycle.setProductionValidationDate(null);
+        lifeCycle.setProductionValidationUser(null);
+        lifeCycle.setDiffusionValidationDate(null);
+        lifeCycle.setDiffusionValidationUser(null);
         srmResourceVersion = callback.updateSrmResource(srmResourceVersion);
 
         return srmResourceVersion;
@@ -142,11 +142,11 @@ public class LifeCycleImpl implements LifeCycle {
         // Validate to publish internally
         checkResourceInInternallyPublished(urn, srmResourceVersion, targetStatus);
 
-        // Update lifecycle metadata
-        SrmLifeCycleMetadata lifecycle = callback.getLifeCycleMetadata(srmResourceVersion);
-        lifecycle.setProcStatus(targetStatus);
-        lifecycle.setInternalPublicationDate(new DateTime());
-        lifecycle.setInternalPublicationUser(ctx.getUserId());
+        // Update life cycle metadata
+        SrmLifeCycleMetadata lifeCycle = callback.getLifeCycleMetadata(srmResourceVersion);
+        lifeCycle.setProcStatus(targetStatus);
+        lifeCycle.setInternalPublicationDate(new DateTime());
+        lifeCycle.setInternalPublicationUser(ctx.getUserId());
         srmResourceVersion = callback.updateSrmResource(srmResourceVersion);
         srmResourceVersion = callback.markSrmResourceAsFinal(ctx, srmResourceVersion);
 
@@ -168,7 +168,7 @@ public class LifeCycleImpl implements LifeCycle {
 
         // Start concept scheme validity
         srmResourceVersion = callback.startSrmResourceValidity(ctx, srmResourceVersion);
-        SrmLifeCycleMetadata lifecycle = callback.getLifeCycleMetadata(srmResourceVersion);
+        SrmLifeCycleMetadata lifeCycle = callback.getLifeCycleMetadata(srmResourceVersion);
 
         // Fill validTo in previous externally published versions without end validity
         List<Object> versionsExternallyPublished = callback.findSrmResourceVersionsOfSrmResourceInProcStatus(ctx, srmResourceVersion, ProcStatusEnum.EXTERNALLY_PUBLISHED);
@@ -179,10 +179,10 @@ public class LifeCycleImpl implements LifeCycle {
             }
         }
 
-        // Update lifecycle metadata to publish externally
-        lifecycle.setProcStatus(targetStatus);
-        lifecycle.setExternalPublicationDate(new DateTime());
-        lifecycle.setExternalPublicationUser(ctx.getUserId());
+        // Update life cycle metadata to publish externally
+        lifeCycle.setProcStatus(targetStatus);
+        lifeCycle.setExternalPublicationDate(new DateTime());
+        lifeCycle.setExternalPublicationUser(ctx.getUserId());
         srmResourceVersion = callback.updateSrmResource(srmResourceVersion);
 
         return srmResourceVersion;
@@ -303,8 +303,8 @@ public class LifeCycleImpl implements LifeCycle {
      * Checks proc status resource in proc status expected and throws exceptions if it is incorrect
      */
     private void checkProcStatus(Object srmResourceVersion, ProcStatusEnum[] expecteds) throws MetamacException {
-        SrmLifeCycleMetadata lifecycle = callback.getLifeCycleMetadata(srmResourceVersion);
-        ProcStatusEnum actual = lifecycle.getProcStatus();
+        SrmLifeCycleMetadata lifeCycle = callback.getLifeCycleMetadata(srmResourceVersion);
+        ProcStatusEnum actual = lifeCycle.getProcStatus();
         if (!ArrayUtils.contains(expecteds, actual)) {
             String[] procStatusString = SrmServiceUtils.procStatusEnumToString(expecteds);
             List<MetamacExceptionItem> exceptionItems = new ArrayList<MetamacExceptionItem>();
@@ -322,7 +322,7 @@ public class LifeCycleImpl implements LifeCycle {
     /**
      * Callback to implement the specific operations in concrete class
      */
-    public interface LifecycleCallback {
+    public interface LifeCycleCallback {
 
         // Operations to retrieve, find...
         public Object retrieveSrmResourceByProcStatus(String urn, ProcStatusEnum[] procStatus) throws MetamacException;

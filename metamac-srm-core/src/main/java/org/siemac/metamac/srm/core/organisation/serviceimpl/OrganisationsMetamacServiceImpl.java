@@ -48,8 +48,8 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
     private ItemSchemeVersionRepository itemSchemeVersionRepository;
 
     @Autowired
-    @Qualifier("organisationSchemeLifecycle")
-    private LifeCycle                   organisationSchemeLifecycle;
+    @Qualifier("organisationSchemeLifeCycle")
+    private LifeCycle                   organisationSchemeLifeCycle;
 
     public OrganisationsMetamacServiceImpl() {
     }
@@ -61,7 +61,7 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
         OrganisationsMetamacInvocationValidator.checkCreateOrganisationScheme(organisationSchemeVersion, null);
 
         // Fill metadata
-        organisationSchemeVersion.setLifecycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
+        organisationSchemeVersion.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
         organisationSchemeVersion.getMaintainableArtefact().setIsExternalReference(Boolean.FALSE);
 
         // Save organisationScheme
@@ -125,34 +125,34 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
 
     @Override
     public OrganisationSchemeVersionMetamac sendOrganisationSchemeToProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
-        return (OrganisationSchemeVersionMetamac) organisationSchemeLifecycle.sendToProductionValidation(ctx, urn);
+        return (OrganisationSchemeVersionMetamac) organisationSchemeLifeCycle.sendToProductionValidation(ctx, urn);
     }
 
     @Override
     public OrganisationSchemeVersionMetamac sendOrganisationSchemeToDiffusionValidation(ServiceContext ctx, String urn) throws MetamacException {
-        return (OrganisationSchemeVersionMetamac) organisationSchemeLifecycle.sendToDiffusionValidation(ctx, urn);
+        return (OrganisationSchemeVersionMetamac) organisationSchemeLifeCycle.sendToDiffusionValidation(ctx, urn);
     }
 
     @Override
     public OrganisationSchemeVersionMetamac rejectOrganisationSchemeProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
-        return (OrganisationSchemeVersionMetamac) organisationSchemeLifecycle.rejectProductionValidation(ctx, urn);
+        return (OrganisationSchemeVersionMetamac) organisationSchemeLifeCycle.rejectProductionValidation(ctx, urn);
     }
 
     @Override
     public OrganisationSchemeVersionMetamac rejectOrganisationSchemeDiffusionValidation(ServiceContext ctx, String urn) throws MetamacException {
-        return (OrganisationSchemeVersionMetamac) organisationSchemeLifecycle.rejectDiffusionValidation(ctx, urn);
+        return (OrganisationSchemeVersionMetamac) organisationSchemeLifeCycle.rejectDiffusionValidation(ctx, urn);
     }
 
     // TODO Para llevar a cabo la publicación interna de un recurso será necesario que previamente exista al menos un anuncio sobre el esquema de organisationos a publicar
     @Override
     public OrganisationSchemeVersionMetamac publishInternallyOrganisationScheme(ServiceContext ctx, String urn) throws MetamacException {
-        return (OrganisationSchemeVersionMetamac) organisationSchemeLifecycle.publishInternally(ctx, urn);
+        return (OrganisationSchemeVersionMetamac) organisationSchemeLifeCycle.publishInternally(ctx, urn);
     }
 
     // TODO validTo, validFrom: ¿rellenar cuando el artefacto no sea del ISTAC? Pendiente decisión del ISTAC.
     @Override
     public OrganisationSchemeVersionMetamac publishExternallyOrganisationScheme(ServiceContext ctx, String urn) throws MetamacException {
-        return (OrganisationSchemeVersionMetamac) organisationSchemeLifecycle.publishExternally(ctx, urn);
+        return (OrganisationSchemeVersionMetamac) organisationSchemeLifeCycle.publishExternally(ctx, urn);
     }
 
     @Override
@@ -182,7 +182,7 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
 
         // Copy values
         OrganisationSchemeVersionMetamac organisationSchemeNewVersion = OrganisationsDoCopyUtils.copyOrganisationSchemeVersionMetamac(organisationSchemeVersionToCopy);
-        organisationSchemeNewVersion.setLifecycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
+        organisationSchemeNewVersion.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
         List organisations = OrganisationsDoCopyUtils.copyOrganisationsMetamac(organisationSchemeVersionToCopy);
 
         // Versioning
@@ -299,7 +299,7 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
 
         List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(OrganisationSchemeVersionMetamac.class)
                 .withProperty(OrganisationSchemeVersionMetamacProperties.itemScheme().id()).eq(organisationScheme.getId())
-                .withProperty(OrganisationSchemeVersionMetamacProperties.lifecycleMetadata().procStatus()).in((Object[]) procStatus).distinctRoot().build();
+                .withProperty(OrganisationSchemeVersionMetamacProperties.lifeCycleMetadata().procStatus()).in((Object[]) procStatus).distinctRoot().build();
         PagingParameter pagingParameter = PagingParameter.noLimits();
         PagedResult<OrganisationSchemeVersionMetamac> organisationSchemeVersionPagedResult = getOrganisationSchemeVersionMetamacRepository().findByCondition(conditions, pagingParameter);
         return organisationSchemeVersionPagedResult.getValues();

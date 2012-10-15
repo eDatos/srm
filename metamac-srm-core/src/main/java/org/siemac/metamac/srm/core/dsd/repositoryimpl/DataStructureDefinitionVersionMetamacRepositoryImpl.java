@@ -39,7 +39,7 @@ public class DataStructureDefinitionVersionMetamacRepositoryImpl extends DataStr
         parameters.put("urn", urn);
         parameters.put("procStatus", SrmServiceUtils.procStatusEnumToList(procStatusArray));
         List<DataStructureDefinitionVersionMetamac> result = findByQuery(
-                "from DataStructureDefinitionVersionMetamac where maintainableArtefact.urn = :urn and lifecycleMetadata.procStatus in (:procStatus)", parameters, 1);
+                "from DataStructureDefinitionVersionMetamac where maintainableArtefact.urn = :urn and lifeCycleMetadata.procStatus in (:procStatus)", parameters, 1);
         if (result == null || result.isEmpty()) {
             // check concept scheme exists to throws specific exception
             DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion = findByUrn(urn);

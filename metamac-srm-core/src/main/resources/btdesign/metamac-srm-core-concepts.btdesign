@@ -95,8 +95,8 @@ Application ConceptsMetamac {
 			"Related operation, only when type is Operation"
 			- @ExternalItem relatedOperation nullable cascade="all" databaseColumn="RELATED_OPERATION_FK";
 			
-			"Lifecycle information"
-			- @SrmLifeCycleMetadata lifecycleMetadata databaseColumn="";
+			"Life cycle information"
+			- @SrmLifeCycleMetadata lifeCycleMetadata databaseColumn="";
 			
 			Repository ConceptSchemeVersionMetamacRepository {
 				findById;

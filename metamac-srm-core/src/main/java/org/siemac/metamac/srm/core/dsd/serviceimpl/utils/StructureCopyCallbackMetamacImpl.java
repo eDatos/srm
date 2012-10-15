@@ -36,7 +36,7 @@ public class StructureCopyCallbackMetamacImpl implements StructureCopyCallback {
         DataStructureDefinitionVersionMetamac target = new DataStructureDefinitionVersionMetamac();
 
         // Metamac Metadata
-        target.setLifecycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT)); // New structure in draft version
+        target.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT)); // New structure in draft version
 
         return target;
     }
