@@ -20,7 +20,7 @@
         <!-- <property name="defaultDataSource" ref="dataSource" /> -->
         <property name="dataSources">
             <map>
-                <entry key="jdbc/SrmCoreDS" value-ref="dataSource"/>
+                <entry key="java:comp/env/jdbc/SrmCoreDS" value-ref="dataSource"/>
             </map>
         </property>
     </bean>
