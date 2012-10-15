@@ -26,6 +26,9 @@ import org.siemac.metamac.core.common.exception.ExceptionLevelEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.ws.ServicesResolver;
+import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
+import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
+import org.siemac.metamac.srm.core.category.mapper.CategoriesDo2DtoMapper;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
@@ -102,6 +105,12 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Autowired
     private OrganisationsDto2DoMapper              organisationsDto2DoMapper;
+
+    @Autowired
+    private CategoriesDo2DtoMapper                 categoriesDo2DtoMapper;
+
+    // @Autowired
+    // private CategoriesDto2DoMapper categoriesDto2DoMapper;
 
     @Autowired
     @Qualifier("jaxb2MarshallerWithValidation")
@@ -1250,6 +1259,305 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         ConceptTypeDto conceptTypeDto = conceptsDo2DtoMapper.conceptTypeDoToDto(conceptType);
         return conceptTypeDto;
     }
+
+    // ------------------------------------------------------------------------
+    // CATEGORY SCHEMES
+    // ------------------------------------------------------------------------
+
+    // @Override
+    // public CategorySchemeMetamacDto createCategoryScheme(ServiceContext ctx, CategorySchemeMetamacDto categorySchemeDto) throws MetamacException {
+    // // TODO Security and transform
+    // CategorySchemeVersionMetamac categorySchemeVersion = categoriesDto2DoMapper.categorySchemeMetamacDtoToDo(categorySchemeDto);
+    // // CategoriesSecurityUtils.canCreateCategoryScheme(ctx, categorySchemeVersion);
+    //
+    // // Create
+    // CategorySchemeVersionMetamac categorySchemeVersionCreated = getCategoriesMetamacService().createCategoryScheme(ctx, categorySchemeVersion);
+    //
+    // // Transform to DTO
+    // categorySchemeDto = categoriesDo2DtoMapper.categorySchemeMetamacDoToDto(categorySchemeVersionCreated);
+    // return categorySchemeDto;
+    // }
+    //
+    // @Override
+    // public CategorySchemeMetamacDto updateCategoryScheme(ServiceContext ctx, CategorySchemeMetamacDto categorySchemeDto) throws MetamacException {
+    // // Security
+    // // CategoriesSecurityUtils.canUpdateCategoryScheme();
+    //
+    // // Transform
+    // CategorySchemeVersionMetamac categorySchemeVersionToUpdate = categoriesDto2DoMapper.categorySchemeMetamacDtoToDo(categorySchemeDto);
+    //
+    // // Update
+    // CategorySchemeVersionMetamac categorySchemeVersionUpdated = getCategoriesMetamacService().updateCategoryScheme(ctx, categorySchemeVersionToUpdate);
+    //
+    // // Transform to DTO
+    // categorySchemeDto = categoriesDo2DtoMapper.categorySchemeMetamacDoToDto(categorySchemeVersionUpdated);
+    // return categorySchemeDto;
+    // }
+    //
+    // @Override
+    // public void deleteCategoryScheme(ServiceContext ctx, String urn) throws MetamacException {
+    // // TODO Security
+    // // CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByUrn(ctx, urn);
+    // // CategoriesSecurityUtils.canDeleteCategoryScheme(ctx, categorySchemeVersion);
+    //
+    // // Delete
+    // getCategoriesMetamacService().deleteCategoryScheme(ctx, urn);
+    // }
+    //
+    // @Override
+    // public MetamacCriteriaResult<CategorySchemeMetamacDto> findCategorySchemesByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
+    // // TODO Security
+    // // CategoriesSecurityUtils.canFindCategorySchemesByCondition(ctx);
+    //
+    // // Transform
+    // SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getCategorySchemeMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
+    //
+    // // Find
+    // PagedResult<CategorySchemeVersionMetamac> result = getCategoriesMetamacService().findCategorySchemesByCondition(ctx, sculptorCriteria.getConditions(),
+    // sculptorCriteria.getPagingParameter());
+    //
+    // // Transform
+    // MetamacCriteriaResult<CategorySchemeMetamacDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultCategorySchemeVersion(result,
+    // sculptorCriteria.getPageSize());
+    //
+    // return metamacCriteriaResult;
+    // }
+
+    @Override
+    public CategorySchemeMetamacDto retrieveCategorySchemeByUrn(ServiceContext ctx, String urn) throws MetamacException {
+        // TODO Security
+        // CategoriesSecurityUtils.canRetrieveCategorySchemeByUrn(ctx);
+
+        // Retrieve
+        CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByUrn(ctx, urn);
+
+        // Transform
+        CategorySchemeMetamacDto categorySchemeMetamacDto = categoriesDo2DtoMapper.categorySchemeMetamacDoToDto(categorySchemeVersion);
+
+        return categorySchemeMetamacDto;
+    }
+
+    // @Override
+    // public List<CategorySchemeMetamacDto> retrieveCategorySchemeVersions(ServiceContext ctx, String urn) throws MetamacException {
+    // // TODO Security
+    // // CategoriesSecurityUtils.canRetrieveCategorySchemeVersions(ctx);
+    //
+    // // Retrieve
+    // List<CategorySchemeVersionMetamac> categorySchemeVersionMetamacs = getCategoriesMetamacService().retrieveCategorySchemeVersions(ctx, urn);
+    //
+    // // Transform
+    // List<CategorySchemeMetamacDto> categorySchemeMetamacDtos = categoriesDo2DtoMapper.categorySchemeMetamacDoListToDtoList(categorySchemeVersionMetamacs);
+    //
+    // return categorySchemeMetamacDtos;
+    // }
+    //
+    // @Override
+    // public CategorySchemeMetamacDto sendCategorySchemeToProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
+    // // TODO Security
+    // // CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByUrn(ctx, urn);
+    // // CategoriesSecurityUtils.canSendCategorySchemeToProductionValidation(ctx, categorySchemeVersion);
+    //
+    // // Send
+    // CategorySchemeVersionMetamac categorySchemeVersionProductionValidation = getCategoriesMetamacService().sendCategorySchemeToProductionValidation(ctx, urn);
+    //
+    // // Transform to DTO
+    // CategorySchemeMetamacDto categorySchemeDto = categoriesDo2DtoMapper.categorySchemeMetamacDoToDto(categorySchemeVersionProductionValidation);
+    // return categorySchemeDto;
+    // }
+    //
+    // @Override
+    // public CategorySchemeMetamacDto sendCategorySchemeToDiffusionValidation(ServiceContext ctx, String urn) throws MetamacException {
+    // // TODO Security
+    // // CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByUrn(ctx, urn);
+    // // CategoriesSecurityUtils.canSendCategorySchemeToDiffusionValidation(ctx, categorySchemeVersion);
+    //
+    // // Send
+    // CategorySchemeVersionMetamac categorySchemeVersionDiffusionValidation = getCategoriesMetamacService().sendCategorySchemeToDiffusionValidation(ctx, urn);
+    //
+    // // Transform to DTO
+    // CategorySchemeMetamacDto categorySchemeDto = categoriesDo2DtoMapper.categorySchemeMetamacDoToDto(categorySchemeVersionDiffusionValidation);
+    // return categorySchemeDto;
+    // }
+    //
+    // @Override
+    // public CategorySchemeMetamacDto rejectCategorySchemeProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
+    // // TODO Security
+    // // CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByUrn(ctx, urn);
+    // // CategoriesSecurityUtils.canRejectCategorySchemeValidation(ctx, categorySchemeVersion);
+    //
+    // // Reject
+    // CategorySchemeVersionMetamac categorySchemeVersionRejected = getCategoriesMetamacService().rejectCategorySchemeProductionValidation(ctx, urn);
+    //
+    // // Transform to DTO
+    // CategorySchemeMetamacDto categorySchemeDto = categoriesDo2DtoMapper.categorySchemeMetamacDoToDto(categorySchemeVersionRejected);
+    // return categorySchemeDto;
+    // }
+    //
+    // @Override
+    // public CategorySchemeMetamacDto rejectCategorySchemeDiffusionValidation(ServiceContext ctx, String urn) throws MetamacException {
+    // // TODO Security
+    // // CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByUrn(ctx, urn);
+    // // CategoriesSecurityUtils.canRejectCategorySchemeValidation(ctx, categorySchemeVersion);
+    //
+    // // Reject
+    // CategorySchemeVersionMetamac categorySchemeVersionRejected = getCategoriesMetamacService().rejectCategorySchemeDiffusionValidation(ctx, urn);
+    //
+    // // Transform to DTO
+    // CategorySchemeMetamacDto categorySchemeDto = categoriesDo2DtoMapper.categorySchemeMetamacDoToDto(categorySchemeVersionRejected);
+    // return categorySchemeDto;
+    // }
+    //
+    // @Override
+    // public CategorySchemeMetamacDto publishCategorySchemeInternally(ServiceContext ctx, String urn) throws MetamacException {
+    // // TODO Security
+    // // CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByUrn(ctx, urn);
+    // // CategoriesSecurityUtils.canPublishCategorySchemeInternally(ctx, categorySchemeVersion);
+    //
+    // // Publish
+    // CategorySchemeVersionMetamac categorySchemeVersionPublished = getCategoriesMetamacService().publishInternallyCategoryScheme(ctx, urn);
+    //
+    // // Transform to DTO
+    // CategorySchemeMetamacDto categorySchemeDto = categoriesDo2DtoMapper.categorySchemeMetamacDoToDto(categorySchemeVersionPublished);
+    // return categorySchemeDto;
+    // }
+    //
+    // @Override
+    // public CategorySchemeMetamacDto publishCategorySchemeExternally(ServiceContext ctx, String urn) throws MetamacException {
+    // // TODO Security
+    // // CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByUrn(ctx, urn);
+    // // CategoriesSecurityUtils.canPublishCategorySchemeExternally(ctx, categorySchemeVersion);
+    //
+    // CategorySchemeVersionMetamac categorySchemeVersionPublished = getCategoriesMetamacService().publishExternallyCategoryScheme(ctx, urn);
+    //
+    // // Transform to DTO
+    // CategorySchemeMetamacDto categorySchemeDto = categoriesDo2DtoMapper.categorySchemeMetamacDoToDto(categorySchemeVersionPublished);
+    // return categorySchemeDto;
+    // }
+    //
+    // @Override
+    // public CategorySchemeMetamacDto versioningCategoryScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
+    // // TODO Security
+    // // CategorySchemeVersionMetamac categorySchemeVersionToCopy = getCategoriesMetamacService().retrieveCategorySchemeByUrn(ctx, urnToCopy);
+    // // CategoriesSecurityUtils.canVersioningCategoryScheme(ctx, categorySchemeVersionToCopy);
+    //
+    // CategorySchemeVersionMetamac categorySchemeVersioned = getCategoriesMetamacService().versioningCategoryScheme(ctx, urnToCopy, versionType);
+    //
+    // // Transform to DTO
+    // CategorySchemeMetamacDto categorySchemeDto = categoriesDo2DtoMapper.categorySchemeMetamacDoToDto(categorySchemeVersioned);
+    // return categorySchemeDto;
+    // }
+    //
+    // @Override
+    // public CategorySchemeMetamacDto cancelCategorySchemeValidity(ServiceContext ctx, String urn) throws MetamacException {
+    // // TODO Security
+    // // CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByUrn(ctx, urn);
+    // // CategoriesSecurityUtils.canCancelCategorySchemeValidity(ctx, categorySchemeVersion);
+    //
+    // CategorySchemeVersionMetamac categorySchemeCanceled = getCategoriesMetamacService().cancelCategorySchemeValidity(ctx, urn);
+    //
+    // // Transform to DTO
+    // CategorySchemeMetamacDto categorySchemeDto = categoriesDo2DtoMapper.categorySchemeMetamacDoToDto(categorySchemeCanceled);
+    //
+    // return categorySchemeDto;
+    // }
+    //
+    // // ------------------------------------------------------------------------
+    // // CATEGORIES
+    // // ------------------------------------------------------------------------
+    //
+    // @Override
+    // public CategoryMetamacDto createCategory(ServiceContext ctx, CategoryMetamacDto categoryMetamacDto) throws MetamacException {
+    // // TODO Security
+    // // CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByUrn(ctx, categoryMetamacDto.getItemSchemeVersionUrn());
+    // // CategoriesSecurityUtils.canCreateCategory(ctx, categorySchemeVersion);
+    //
+    // // Transform
+    // CategoryMetamac categoryMetamac = categoriesDto2DoMapper.categoryMetamacDtoToDo(categoryMetamacDto);
+    //
+    // // Create
+    // CategoryMetamac categoryCreated = getCategoriesMetamacService().createCategory(ctx, categoryMetamacDto.getItemSchemeVersionUrn(), categoryMetamac);
+    //
+    // // Transform to DTO
+    // categoryMetamacDto = categoriesDo2DtoMapper.categoryMetamacDoToDto(categoryCreated);
+    //
+    // return categoryMetamacDto;
+    // }
+    //
+    // @Override
+    // public CategoryMetamacDto updateCategory(ServiceContext ctx, CategoryMetamacDto categoryDto) throws MetamacException {
+    //
+    // // TODO Security
+    // // CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByCategoryUrn(ctx, categoryDto.getUrn());
+    // // CategoriesSecurityUtils.canUpdateCategory(ctx, categorySchemeVersion);
+    //
+    // // Transform
+    // CategoryMetamac categoryMetamac = categoriesDto2DoMapper.categoryMetamacDtoToDo(categoryDto);
+    //
+    // // Update
+    // CategoryMetamac categoryUpdated = getCategoriesMetamacService().updateCategory(ctx, categoryMetamac);
+    //
+    // // Transform to DTO
+    // categoryDto = categoriesDo2DtoMapper.categoryMetamacDoToDto(categoryUpdated);
+    // return categoryDto;
+    // }
+    //
+    // @Override
+    // public CategoryMetamacDto retrieveCategoryByUrn(ServiceContext ctx, String urn) throws MetamacException {
+    //
+    // // TODO Security
+    // // CategoriesSecurityUtils.canRetrieveCategoryByUrn(ctx);
+    //
+    // // Retrieve
+    // CategoryMetamac categoryMetamac = getCategoriesMetamacService().retrieveCategoryByUrn(ctx, urn);
+    //
+    // // Transform
+    // CategoryMetamacDto categoryMetamacDto = categoriesDo2DtoMapper.categoryMetamacDoToDto(categoryMetamac);
+    //
+    // return categoryMetamacDto;
+    // }
+    //
+    // @Override
+    // public void deleteCategory(ServiceContext ctx, String urn) throws MetamacException {
+    //
+    // // TODO Security
+    // // CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByCategoryUrn(ctx, urn);
+    // // CategoriesSecurityUtils.canDeleteCategory(ctx, categorySchemeVersion);
+    //
+    // // Delete
+    // getCategoriesMetamacService().deleteCategory(ctx, urn);
+    // }
+    //
+    // @Override
+    // public List<ItemHierarchyDto> retrieveCategoriesByCategorySchemeUrn(ServiceContext ctx, String categorySchemeUrn) throws MetamacException {
+    //
+    // // TODO Security
+    // // CategoriesSecurityUtils.canRetrieveCategoriesByCategorySchemeUrn(ctx);
+    //
+    // // Retrieve
+    // List<CategoryMetamac> categories = getCategoriesMetamacService().retrieveCategoriesByCategorySchemeUrn(ctx, categorySchemeUrn);
+    //
+    // // Transform
+    // List<ItemHierarchyDto> itemsHierarchyDto = categoriesDo2DtoMapper.categoryMetamacDoListToItemHierarchyDtoList(categories);
+    // return itemsHierarchyDto;
+    // }
+    //
+    // @Override
+    // public MetamacCriteriaResult<CategoryMetamacDto> findCategoriesByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
+    // // TODO Security
+    // // CategoriesSecurityUtils.canFindCategoriesByCondition(ctx);
+    //
+    // // Transform
+    // SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getCategoryMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
+    //
+    // // Find
+    // PagedResult<CategoryMetamac> result = getCategoriesMetamacService().findCategoriesByCondition(ctx, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
+    //
+    // // Transform
+    // MetamacCriteriaResult<CategoryMetamacDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultCategory(result,
+    // sculptorCriteria.getPageSize());
+    //
+    // return metamacCriteriaResult;
+    // }
 
     /**************************************************************************
      * PRIVATE METHODS

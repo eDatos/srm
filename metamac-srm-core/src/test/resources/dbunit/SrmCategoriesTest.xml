@@ -3,7 +3,7 @@
 <dataset>
     
     <!-- ************************************************************************************** -->
-    <!-- ORGANISATION SCHEME 1 (Organisation Unit)	                                            -->
+    <!-- CATEGORY SCHEME 1	                                                                -->
     <!--        - Version 1: internally published                                               -->
     <!--        - Version 2: draft                                                              -->
     <!-- *************************************************************************************  -->
@@ -33,13 +33,12 @@
         LAST_UPDATED_TZ="Europe/London"  
     />
         
-    <TB_ORG_SCHEMES_VERSIONS
+    <TB_CAT_SCHEMES_VERSIONS
         TB_ITEM_SCHEMES_VERSIONS="11"
-        ORGANISATION_SCHEME_TYPE="ORGANISATION_UNIT_SCHEME"
     />
     
-    <TB_M_ORG_SCHEMES_VERSIONS
-        TB_ORG_SCHEMES_VERSIONS="11"
+    <TB_M_CAT_SCHEMES_VERSIONS
+        TB_CAT_SCHEMES_VERSIONS="11"
         PROC_STATUS="INTERNALLY_PUBLISHED"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
@@ -62,9 +61,9 @@
         ID="11"
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
-        CODE="ORGANISATIONSCHEME01"
+        CODE="CATEGORYSCHEME01"
         URI="[null]"
-        URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=ISTAC:ORGANISATIONSCHEME01(01.000)"
+        URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=ISTAC:CATEGORYSCHEME01(01.000)"
         REPLACED_BY="02.000"
         REPLACE_TO="[null]"
         
@@ -93,18 +92,17 @@
         LAST_UPDATED_TZ="Europe/London"
     />
     
-        <!-- ORGANISATIONS -->
-            <!-- -> ORGANISATION01 -->
+        <!-- CATEGORIES -->
+            <!-- -> CATEGORY01 -->
             
-            <!-- ORGANISATION01 -->
+            <!-- CATEGORY01 -->
             
-            <TB_M_ORGANISATIONS
-                TB_ORGANISATIONS="111"
+            <TB_M_CATEGORIES
+                TB_CATEGORIES="111"
             />
             
-            <TB_ORGANISATIONS
+            <TB_CATEGORIES
                 TB_ITEMS="111"
-                ORGANISATION_TYPE="ORGANISATION_UNIT"
             />
         
             <TB_ITEMS
@@ -114,7 +112,7 @@
                 ITEM_SCHEME_VERSION_FIRST_FK="11"
                 NAMEABLE_ARTEFACT_FK="111"
                       
-                UUID="organisationScheme-1-v1-org-1"
+                UUID="categoryScheme-1-v1-cat-1"
                 VERSION="1"
                 CREATED_BY="user1"
                 CREATED_DATE="2011-01-01 01:02:03"
@@ -128,9 +126,9 @@
                 ID="111"
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
 
-                CODE="ORGANISATION01"
+                CODE="CATEGORY01"
                 URI="[null]"
-                URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME01(01.000).ORGANISATION01"
+                URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ISTAC:CATEGORYSCHEME01(01.000).CATEGORY01"
                 REPLACED_BY="[null]"
                 REPLACE_TO="[null]"
 
@@ -166,13 +164,12 @@
         LAST_UPDATED_TZ="Europe/London"  
     />
     
-    <TB_ORG_SCHEMES_VERSIONS
+    <TB_CAT_SCHEMES_VERSIONS
         TB_ITEM_SCHEMES_VERSIONS="12"
-        ORGANISATION_SCHEME_TYPE="ORGANISATION_UNIT_SCHEME"
     />    
     
-    <TB_M_ORG_SCHEMES_VERSIONS
-        TB_ORG_SCHEMES_VERSIONS="12"
+    <TB_M_CAT_SCHEMES_VERSIONS
+        TB_CAT_SCHEMES_VERSIONS="12"
         PROC_STATUS="DRAFT"
         
         PRODUCTION_VALIDATION_DATE_TZ="[null]"
@@ -195,9 +192,9 @@
         ID="12"
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
-        CODE="ORGANISATIONSCHEME01"
+        CODE="CATEGORYSCHEME01"
         URI="[null]"
-        URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=ISTAC:ORGANISATIONSCHEME01(02.000)"
+        URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=ISTAC:CATEGORYSCHEME01(02.000)"
         REPLACED_BY="[null]"
         REPLACE_TO="01.000"
         
@@ -226,26 +223,25 @@
         LAST_UPDATED_TZ="Europe/London"
     />
     
-        <!-- ORGANISATIONS -->
-            <!-- -> ORGANISATION01 -->
-            <!-- -> ORGANISATION02 -->
-            <!--    -> ORGANISATION0201 -->
-            <!--       -> ORGANISATION020101 -->
-            <!-- -> ORGANISATION03 -->
-            <!-- -> ORGANISATION04 -->
-            <!--    -> ORGANISATION0401 -->
-            <!--        -> ORGANISATION040101 -->
+        <!-- CATEGORIES -->
+            <!-- -> CATEGORY01 -->
+            <!-- -> CATEGORY02 -->
+            <!--    -> CATEGORY0201 -->
+            <!--       -> CATEGORY020101 -->
+            <!-- -> CATEGORY03 -->
+            <!-- -> CATEGORY04 -->
+            <!--    -> CATEGORY0401 -->
+            <!--        -> CATEGORY040101 -->
                         
-            <!-- ORGANISATION01 -->
+            <!-- CATEGORY01 -->
             
             
-	        <TB_M_ORGANISATIONS
-                TB_ORGANISATIONS="121"
+	        <TB_M_CATEGORIES
+                TB_CATEGORIES="121"
             />
             
-            <TB_ORGANISATIONS
+            <TB_CATEGORIES
                 TB_ITEMS="121"    
-                ORGANISATION_TYPE="ORGANISATION_UNIT"
             />
             
             <TB_ITEMS
@@ -255,7 +251,7 @@
                 ITEM_SCHEME_VERSION_FIRST_FK="12"
                 NAMEABLE_ARTEFACT_FK="121"
                       
-                UUID="organisationScheme-1-v2-org-1"
+                UUID="categoryScheme-1-v2-cat-1"
                 VERSION="1"
                 CREATED_BY="user1"
                 CREATED_DATE="2011-01-01 01:02:03"
@@ -269,9 +265,9 @@
                 ID="121"
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
-                CODE="ORGANISATION01"
+                CODE="CATEGORY01"
                 URI="[null]"
-                URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME01(02.000).ORGANISATION01"
+                URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ISTAC:CATEGORYSCHEME01(02.000).CATEGORY01"
                 REPLACED_BY="[null]"
                 REPLACE_TO="[null]"
                 
@@ -288,15 +284,14 @@
                 LAST_UPDATED_TZ="Europe/London"
             />
             
-            <!-- ORGANISATION02 -->
+            <!-- CATEGORY02 -->
             
-            <TB_M_ORGANISATIONS
-                TB_ORGANISATIONS="122"
+            <TB_M_CATEGORIES
+                TB_CATEGORIES="122"
             />
             
-            <TB_ORGANISATIONS
+            <TB_CATEGORIES
                 TB_ITEMS="122"
-                ORGANISATION_TYPE="ORGANISATION_UNIT"
             />
         
             <TB_ITEMS
@@ -306,7 +301,7 @@
                 ITEM_SCHEME_VERSION_FIRST_FK="12"
                 NAMEABLE_ARTEFACT_FK="122"
                       
-                UUID="organisationScheme-1-v2-org-2"
+                UUID="categoryScheme-1-v2-cat-2"
                 VERSION="1"
                 CREATED_BY="user1"
                 CREATED_DATE="2012-01-01 01:02:03"
@@ -320,9 +315,9 @@
                 ID="122"
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
-                CODE="ORGANISATION02"
+                CODE="CATEGORY02"
                 URI="[null]"
-                URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME01(02.000).ORGANISATION02"
+                URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ISTAC:CATEGORYSCHEME01(02.000).CATEGORY02"
                 REPLACED_BY="[null]"
                 REPLACE_TO="[null]"
                 
@@ -339,15 +334,14 @@
                 LAST_UPDATED_TZ="Europe/London"
             />   
             
-                <!-- ORGANISATION0201 -->
+                <!-- CATEGORY0201 -->
 
-                <TB_M_ORGANISATIONS
-                    TB_ORGANISATIONS="1221"
+                <TB_M_CATEGORIES
+                    TB_CATEGORIES="1221"
                 />
                 
-                <TB_ORGANISATIONS
+                <TB_CATEGORIES
                     TB_ITEMS="1221"
-                    ORGANISATION_TYPE="ORGANISATION_UNIT"   
                 />
             
                 <TB_ITEMS
@@ -357,7 +351,7 @@
                     ITEM_SCHEME_VERSION_FIRST_FK="[null]"
                     NAMEABLE_ARTEFACT_FK="1221"
                           
-                    UUID="organisationScheme-1-v2-org-2-1"
+                    UUID="categoryScheme-1-v2-cat-2-1"
                     VERSION="1"
                     CREATED_BY="user1"
                     CREATED_DATE="2011-01-01 01:02:03"
@@ -371,9 +365,9 @@
                     ID="1221"
                     ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                     
-                    CODE="ORGANISATION0201"
+                    CODE="CATEGORY0201"
                     URI="[null]"
-                    URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME01(02.000).ORGANISATION0201"
+                    URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ISTAC:CATEGORYSCHEME01(02.000).CATEGORY0201"
                     REPLACED_BY="[null]"
                     REPLACE_TO="[null]"
                     
@@ -391,15 +385,14 @@
                 />
                 
         
-                    <!-- ORGANISATION020101 -->
+                    <!-- CATEGORY020101 -->
 
-                    <TB_M_ORGANISATIONS
-                        TB_ORGANISATIONS="12211"
+                    <TB_M_CATEGORIES
+                        TB_CATEGORIES="12211"
                     />
                     
-                    <TB_ORGANISATIONS
+                    <TB_CATEGORIES
                         TB_ITEMS="12211"
-                        ORGANISATION_TYPE="ORGANISATION_UNIT"
                     />
                 
                     <TB_ITEMS
@@ -409,7 +402,7 @@
                         ITEM_SCHEME_VERSION_FIRST_FK="[null]"
                         NAMEABLE_ARTEFACT_FK="12211"
                               
-                        UUID="organisationScheme-1-v2-org-2-1-1"
+                        UUID="categoryScheme-1-v2-cat-2-1-1"
                         VERSION="1"
                         CREATED_BY="user1"
                         CREATED_DATE="2011-01-01 01:02:03"
@@ -423,9 +416,9 @@
                         ID="12211"
                         ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                         
-                        CODE="ORGANISATION020101"
+                        CODE="CATEGORY020101"
                         URI="[null]"
-                        URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME01(02.000).ORGANISATION020101"
+                        URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ISTAC:CATEGORYSCHEME01(02.000).CATEGORY020101"
                         REPLACED_BY="[null]"
                         REPLACE_TO="[null]"
                         
@@ -442,15 +435,14 @@
                         LAST_UPDATED_TZ="Europe/London"
                     />
             
-            <!-- ORGANISATION03 -->
+            <!-- CATEGORY03 -->
             
-            <TB_M_ORGANISATIONS
-                TB_ORGANISATIONS="123"
+            <TB_M_CATEGORIES
+                TB_CATEGORIES="123"
             />
             
-            <TB_ORGANISATIONS
+            <TB_CATEGORIES
                 TB_ITEMS="123"
-                 ORGANISATION_TYPE="ORGANISATION_UNIT"
             />
             
             <TB_ITEMS
@@ -460,7 +452,7 @@
                 ITEM_SCHEME_VERSION_FIRST_FK="12"
                 NAMEABLE_ARTEFACT_FK="99123"
                       
-                UUID="organisationScheme-1-v2-org-3"
+                UUID="categoryScheme-1-v2-cat-3"
                 VERSION="1"
                 CREATED_BY="user1"
                 CREATED_DATE="2011-01-01 01:02:03"
@@ -474,9 +466,9 @@
                 ID="99123"
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
-                CODE="ORGANISATION03"
+                CODE="CATEGORY03"
                 URI="[null]"
-                URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME01(02.000).ORGANISATION03"
+                URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ISTAC:CATEGORYSCHEME01(02.000).CATEGORY03"
                 REPLACED_BY="[null]"
                 REPLACE_TO="[null]"
                 
@@ -493,15 +485,14 @@
                 LAST_UPDATED_TZ="Europe/London"
             />                
             
-            <!-- ORGANISATION04 -->
+            <!-- CATEGORY04 -->
 
-            <TB_M_ORGANISATIONS
-                TB_ORGANISATIONS="124"
+            <TB_M_CATEGORIES
+                TB_CATEGORIES="124"
             />
             
-            <TB_ORGANISATIONS
+            <TB_CATEGORIES
                 TB_ITEMS="124"
-                ORGANISATION_TYPE="ORGANISATION_UNIT"
             />
                      
             <TB_ITEMS
@@ -511,7 +502,7 @@
                 ITEM_SCHEME_VERSION_FIRST_FK="12"
                 NAMEABLE_ARTEFACT_FK="99124"
                       
-                UUID="organisationScheme-1-v2-org-4"
+                UUID="categoryScheme-1-v2-cat-4"
                 VERSION="1"
                 CREATED_BY="user1"
                 CREATED_DATE="2012-01-01 01:02:03"
@@ -525,9 +516,9 @@
                 ID="99124"
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
-                CODE="ORGANISATION04"
+                CODE="CATEGORY04"
                 URI="[null]"
-                URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME01(02.000).ORGANISATION04"
+                URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ISTAC:CATEGORYSCHEME01(02.000).CATEGORY04"
                 REPLACED_BY="[null]"
                 REPLACE_TO="[null]"
                 
@@ -544,15 +535,14 @@
                 LAST_UPDATED_TZ="Europe/London"
             />
             
-                <!-- ORGANISATION0401 -->
+                <!-- CATEGORY0401 -->
                 
-                <TB_M_ORGANISATIONS
-                    TB_ORGANISATIONS="1241"
+                <TB_M_CATEGORIES
+                    TB_CATEGORIES="1241"
                 />
                 
-                <TB_ORGANISATIONS
+                <TB_CATEGORIES
                     TB_ITEMS="1241"
-                    ORGANISATION_TYPE="ORGANISATION_UNIT"
                 />
             
                 <TB_ITEMS
@@ -562,7 +552,7 @@
                     ITEM_SCHEME_VERSION_FIRST_FK="[null]"
                     NAMEABLE_ARTEFACT_FK="991241"
                           
-                    UUID="organisationScheme-1-v2-org-4-1"
+                    UUID="categoryScheme-1-v2-cat-4-1"
                     VERSION="1"
                     CREATED_BY="user1"
                     CREATED_DATE="2011-01-01 01:02:03"
@@ -576,9 +566,9 @@
                     ID="991241"
                     ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                     
-                    CODE="ORGANISATION0401"
+                    CODE="CATEGORY0401"
                     URI="[null]"
-                    URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME01(02.000).ORGANISATION0401"
+                    URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ISTAC:CATEGORYSCHEME01(02.000).CATEGORY0401"
                     REPLACED_BY="[null]"
                     REPLACE_TO="[null]"
                     
@@ -595,15 +585,14 @@
                     LAST_UPDATED_TZ="Europe/London"
                 />
         
-                    <!-- ORGANISATION040101 -->
+                    <!-- CATEGORY040101 -->
 
-                    <TB_M_ORGANISATIONS
-                        TB_ORGANISATIONS="12411"
+                    <TB_M_CATEGORIES
+                        TB_CATEGORIES="12411"
                     />
                     
-                    <TB_ORGANISATIONS
+                    <TB_CATEGORIES
                         TB_ITEMS="12411"
-                        ORGANISATION_TYPE="ORGANISATION_UNIT"  
                     />
                     
                     <TB_ITEMS
@@ -613,7 +602,7 @@
                         ITEM_SCHEME_VERSION_FIRST_FK="[null]"
                         NAMEABLE_ARTEFACT_FK="9912411"
                               
-                        UUID="organisationScheme-1-v2-org-4-1-1"
+                        UUID="categoryScheme-1-v2-cat-4-1-1"
                         VERSION="1"
                         CREATED_BY="user1"
                         CREATED_DATE="2011-01-01 01:02:03"
@@ -627,9 +616,9 @@
                         ID="9912411"
                         ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                         
-                        CODE="ORGANISATION040101"
+                        CODE="CATEGORY040101"
                         URI="[null]"
-                        URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME01(02.000).ORGANISATION040101"
+                        URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ISTAC:CATEGORYSCHEME01(02.000).CATEGORY040101"
                         REPLACED_BY="[null]"
                         REPLACE_TO="[null]"
                         
@@ -647,7 +636,7 @@
                     />
     
     <!-- ************************************************************************************** -->
-    <!-- ORGANISATION SCHEME 2  (Agency scheme)                                                 -->
+    <!-- CATEGORY SCHEME 2  (Agency scheme)                                                 -->
     <!--        - Version 1: draft                                                              -->
     <!-- *************************************************************************************  -->
 
@@ -667,7 +656,7 @@
         IS_PARTIAL="0"
         MAINTANABLE_ARTEFACT_FK="21"
         
-        UUID="organisationScheme-2-v1"
+        UUID="categoryScheme-2-v1"
         VERSION="1"
         CREATED_BY="user1"
         CREATED_DATE="2011-01-01 01:02:03"
@@ -677,13 +666,12 @@
         LAST_UPDATED_TZ="Europe/London"  
     />
 
-    <TB_ORG_SCHEMES_VERSIONS
+    <TB_CAT_SCHEMES_VERSIONS
         TB_ITEM_SCHEMES_VERSIONS="21"
-        ORGANISATION_SCHEME_TYPE="AGENCY_SCHEME"
     />
     
-    <TB_M_ORG_SCHEMES_VERSIONS
-        TB_ORG_SCHEMES_VERSIONS="21"
+    <TB_M_CAT_SCHEMES_VERSIONS
+        TB_CAT_SCHEMES_VERSIONS="21"
         PROC_STATUS="DRAFT"
         
         PRODUCTION_VALIDATION_DATE_TZ="[null]"
@@ -706,9 +694,9 @@
         ID="21"
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
-        CODE="ORGANISATIONSCHEME02"
+        CODE="CATEGORYSCHEME02"
         URI="[null]"
-        URN="urn:sdmx:org.sdmx.infomodel.base.AgencyScheme=ISTAC:ORGANISATIONSCHEME02(01.000)"
+        URN="urn:sdmx:org.sdmx.infomodel.base.AgencyScheme=ISTAC:CATEGORYSCHEME02(01.000)"
         REPLACED_BY="[null]"
         REPLACE_TO="[null]"
         
@@ -736,19 +724,18 @@
         LAST_UPDATED_TZ="Europe/London"
     />
     
-            <!-- ORGANISATIONS -->
-            <!-- -> ORGANISATION01 -->
-            <!-- -> ORGANISATION02 -->
+            <!-- CATEGORIES -->
+            <!-- -> CATEGORY01 -->
+            <!-- -> CATEGORY02 -->
             
-            <!-- ORGANISATION01 -->
+            <!-- CATEGORY01 -->
             
-            <TB_M_ORGANISATIONS
-                TB_ORGANISATIONS="211"
+            <TB_M_CATEGORIES
+                TB_CATEGORIES="211"
             />
             
-            <TB_ORGANISATIONS
+            <TB_CATEGORIES
                 TB_ITEMS="211"
-                ORGANISATION_TYPE="AGENCY"
             />
         
             <TB_ITEMS
@@ -758,7 +745,7 @@
                 ITEM_SCHEME_VERSION_FIRST_FK="21"
                 NAMEABLE_ARTEFACT_FK="211"
                       
-                UUID="organisationScheme-2-v1-org-1"
+                UUID="categoryScheme-2-v1-cat-1"
                 VERSION="1"
                 CREATED_BY="user1"
                 CREATED_DATE="2011-01-01 01:02:03"
@@ -772,9 +759,9 @@
                 ID="211"
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
-                CODE="ORGANISATION01"
+                CODE="CATEGORY01"
                 URI="[null]"
-                URN="urn:sdmx:org.sdmx.infomodel.base.Agency=ISTAC:ORGANISATIONSCHEME02(01.000).ORGANISATION01"
+                URN="urn:sdmx:org.sdmx.infomodel.base.Agency=ISTAC:CATEGORYSCHEME02(01.000).CATEGORY01"
                 REPLACED_BY="[null]"
                 REPLACE_TO="[null]"
                 
@@ -791,15 +778,14 @@
                 LAST_UPDATED_TZ="Europe/London"
             />     
             
-            <!-- ORGANISATION02 -->
+            <!-- CATEGORY02 -->
 
-            <TB_M_ORGANISATIONS
-                TB_ORGANISATIONS="212"
+            <TB_M_CATEGORIES
+                TB_CATEGORIES="212"
             />
             
-            <TB_ORGANISATIONS
+            <TB_CATEGORIES
                 TB_ITEMS="212"
-                ORGANISATION_TYPE="AGENCY"
             />
         
             <TB_ITEMS
@@ -809,7 +795,7 @@
                 ITEM_SCHEME_VERSION_FIRST_FK="21"
                 NAMEABLE_ARTEFACT_FK="212"
                       
-                UUID="organisationScheme-2-v1-org-2"
+                UUID="categoryScheme-2-v1-cat-2"
                 VERSION="1"
                 CREATED_BY="user1"
                 CREATED_DATE="2011-01-01 01:02:03"
@@ -823,9 +809,9 @@
                 ID="212"
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
-                CODE="ORGANISATION02"
+                CODE="CATEGORY02"
                 URI="[null]"
-                URN="urn:sdmx:org.sdmx.infomodel.base.Agency=ISTAC:ORGANISATIONSCHEME02(01.000).ORGANISATION02"
+                URN="urn:sdmx:org.sdmx.infomodel.base.Agency=ISTAC:CATEGORYSCHEME02(01.000).CATEGORY02"
                 REPLACED_BY="[null]"
                 REPLACE_TO="[null]"
                 
@@ -843,7 +829,7 @@
             />                     
     
     <!-- ************************************************************************************** -->
-    <!-- ORGANISATION SCHEME 3 (Organisation Unit)	                                            -->
+    <!-- CATEGORY SCHEME 3	                                            -->
     <!--        - Version 1: internally published                                               -->
     <!-- *************************************************************************************  -->
 
@@ -863,7 +849,7 @@
         IS_PARTIAL="0"
         MAINTANABLE_ARTEFACT_FK="31"
         
-        UUID="organisationScheme-3-v1"
+        UUID="categoryScheme-3-v1"
         VERSION="1"
         CREATED_BY="user1"
         CREATED_DATE="2011-01-01 01:02:03"
@@ -873,13 +859,12 @@
         LAST_UPDATED_TZ="Europe/London"  
     />
 
-    <TB_ORG_SCHEMES_VERSIONS
+    <TB_CAT_SCHEMES_VERSIONS
         TB_ITEM_SCHEMES_VERSIONS="31"
-        ORGANISATION_SCHEME_TYPE="ORGANISATION_UNIT_SCHEME"
     />
     
-    <TB_M_ORG_SCHEMES_VERSIONS
-        TB_ORG_SCHEMES_VERSIONS="31"
+    <TB_M_CAT_SCHEMES_VERSIONS
+        TB_CAT_SCHEMES_VERSIONS="31"
         PROC_STATUS="INTERNALLY_PUBLISHED"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
@@ -902,9 +887,9 @@
         ID="31"
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
-        CODE="ORGANISATIONSCHEME03"
+        CODE="CATEGORYSCHEME03"
         URI="[null]"
-        URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=ISTAC:ORGANISATIONSCHEME03(01.000)"
+        URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=ISTAC:CATEGORYSCHEME03(01.000)"
         REPLACED_BY="[null]"
         REPLACE_TO="[null]"
         
@@ -932,20 +917,19 @@
         LAST_UPDATED_TZ="Europe/London"
     />
     
-            <!-- ORGANISATIONS -->
-            <!-- -> ORGANISATION01 -->
-            <!-- -> ORGANISATION02 -->
-            <!--    -> ORGANISATION0201 -->
-            <!--        -> ORGANISATION020101 -->
-            <!--    -> ORGANISATION0202 -->
+            <!-- CATEGORIES -->
+            <!-- -> CATEGORY01 -->
+            <!-- -> CATEGORY02 -->
+            <!--    -> CATEGORY0201 -->
+            <!--        -> CATEGORY020101 -->
+            <!--    -> CATEGORY0202 -->
 
-            <TB_M_ORGANISATIONS
-                TB_ORGANISATIONS="311"
+            <TB_M_CATEGORIES
+                TB_CATEGORIES="311"
             />
 
-            <TB_ORGANISATIONS
+            <TB_CATEGORIES
                 TB_ITEMS="311"
-                ORGANISATION_TYPE="ORGANISATION_UNIT"
             />
         
             <TB_ITEMS
@@ -955,7 +939,7 @@
                 ITEM_SCHEME_VERSION_FIRST_FK="31"
                 NAMEABLE_ARTEFACT_FK="311"
                       
-                UUID="organisationScheme-3-v1-org-1"
+                UUID="categoryScheme-3-v1-cat-1"
                 VERSION="1"
                 CREATED_BY="user1"
                 CREATED_DATE="2011-01-01 01:02:03"
@@ -969,9 +953,9 @@
                 ID="311"
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
-                CODE="ORGANISATION01"
+                CODE="CATEGORY01"
                 URI="[null]"
-                URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME03(01.000).ORGANISATION01"
+                URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ISTAC:CATEGORYSCHEME03(01.000).CATEGORY01"
                 REPLACED_BY="[null]"
                 REPLACE_TO="[null]"
                 
@@ -988,99 +972,14 @@
                 LAST_UPDATED_TZ="Europe/London"
             />
                    
-                <!-- Contacts -->
-                <TB_CONTACTS
-                    ID="3111"
-                    ORGANISATION_FK="311"
-    
-                    NAME_FK="24"
-                    ORGANISATION_UNIT_FK="25"
-                    RESPONSIBILITY_FK="26"
-                    URL="http://www.contact3111.com"
-    
-                    UUID="contact-3111"
-                    CREATED_DATE_TZ="Europe/London"
-                    CREATED_DATE="2011-01-01 01:02:03"
-                    CREATED_BY="user1"
-                    LAST_UPDATED_TZ="Europe/London"
-                    LAST_UPDATED="2011-01-01 01:02:03"
-                    LAST_UPDATED_BY="user1"
-                    VERSION="1"
-                />
-    
-                <TB_CONTACT_ITEMS
-                    ID="31111"
-                    CONTACT_FK="3111"
-    
-                    ITEM_TYPE="TELEPHONE"
-                    ITEM_VALUE="+922333333"
-    
-                    UUID="contact-item-31111"
-                    VERSION="1"
-                />
-                
-                <TB_CONTACT_ITEMS
-                    ID="31112"
-                    CONTACT_FK="3111"
-    
-                    ITEM_TYPE="EMAIL"
-                    ITEM_VALUE="contact3112@email.com"
-    
-                    UUID="contact-item-31112"
-                    VERSION="1"
-                />
-    
-                <TB_CONTACT_ITEMS
-                    ID="31113"
-                    CONTACT_FK="3111"
-    
-                    ITEM_TYPE="FAX"
-                    ITEM_VALUE="111111111"
-    
-                    UUID="contact-item-31113"
-                    VERSION="1"
-                />      
-                
-                <!-- Contact 2 -->
-                <TB_CONTACTS
-                    ID="3112"
-                    ORGANISATION_FK="311"
-    
-                    NAME_FK="[null]"
-                    ORGANISATION_UNIT_FK="[null]"
-                    RESPONSIBILITY_FK="[null]"
-                    URL="http://www.contact3112.com"
-    
-                    UUID="contact-3112"
-                    CREATED_DATE_TZ="Europe/London"
-                    CREATED_DATE="2011-01-01 01:02:03"
-                    CREATED_BY="user1"
-                    LAST_UPDATED_TZ="Europe/London"
-                    LAST_UPDATED="2011-01-01 01:02:03"
-                    LAST_UPDATED_BY="user1"
-                    VERSION="1"
-                />
-    
-                <TB_CONTACT_ITEMS
-                    ID="31121"
-                    CONTACT_FK="3112"
-    
-                    ITEM_TYPE="TELEPHONE"
-                    ITEM_VALUE="11333333"
-    
-                    UUID="contact-item-31121"
-                    VERSION="1"
-                />         
-                
-            <!-- ORGANISATION02 -->
+            <!-- CATEGORY02 -->
 
-            <TB_M_ORGANISATIONS
-                TB_ORGANISATIONS="312"
+            <TB_M_CATEGORIES
+                TB_CATEGORIES="312"
             />
             
-            <TB_ORGANISATIONS
+            <TB_CATEGORIES
                 TB_ITEMS="312"
-                ORGANISATION_TYPE="ORGANISATION_UNIT"  
             />
         
             <TB_ITEMS
@@ -1090,7 +989,7 @@
                 ITEM_SCHEME_VERSION_FIRST_FK="31"
                 NAMEABLE_ARTEFACT_FK="312"
                       
-                UUID="organisationScheme-3-v1-org-2"
+                UUID="categoryScheme-3-v1-cat-2"
                 VERSION="1"
                 CREATED_BY="user1"
                 CREATED_DATE="2011-01-01 01:02:03"
@@ -1104,9 +1003,9 @@
                 ID="312"
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
-                CODE="ORGANISATION02"
+                CODE="CATEGORY02"
                 URI="[null]"
-                URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME03(01.000).ORGANISATION02"
+                URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ISTAC:CATEGORYSCHEME03(01.000).CATEGORY02"
                 REPLACED_BY="[null]"
                 REPLACE_TO="[null]"
                 
@@ -1123,15 +1022,14 @@
                 LAST_UPDATED_TZ="Europe/London"
             />
             
-            <!-- ORGANISATION0201 -->
+            <!-- CATEGORY0201 -->
             
-            <TB_M_ORGANISATIONS
-                TB_ORGANISATIONS="3121"
+            <TB_M_CATEGORIES
+                TB_CATEGORIES="3121"
             />
             
-            <TB_ORGANISATIONS
+            <TB_CATEGORIES
                 TB_ITEMS="3121"
-                ORGANISATION_TYPE="ORGANISATION_UNIT"
             />
         
             <TB_ITEMS
@@ -1141,7 +1039,7 @@
                 ITEM_SCHEME_VERSION_FIRST_FK="[null]"
                 NAMEABLE_ARTEFACT_FK="3121"
                       
-                UUID="organisationScheme-3-v1-org-2-1"
+                UUID="categoryScheme-3-v1-cat-2-1"
                 VERSION="1"
                 CREATED_BY="user1"
                 CREATED_DATE="2011-01-01 01:02:03"
@@ -1155,9 +1053,9 @@
                 ID="3121"
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
-                CODE="ORGANISATION0201"
+                CODE="CATEGORY0201"
                 URI="[null]"
-                URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME03(01.000).ORGANISATION0201"
+                URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ISTAC:CATEGORYSCHEME03(01.000).CATEGORY0201"
                 REPLACED_BY="[null]"
                 REPLACE_TO="[null]"
                 
@@ -1174,15 +1072,14 @@
                 LAST_UPDATED_TZ="Europe/London"
             />       
             
-                    <!-- ORGANISATION020101 -->
+                    <!-- CATEGORY020101 -->
                     
-                    <TB_M_ORGANISATIONS
-                        TB_ORGANISATIONS="31211"
+                    <TB_M_CATEGORIES
+                        TB_CATEGORIES="31211"
                     />
                     
-                    <TB_ORGANISATIONS
+                    <TB_CATEGORIES
                         TB_ITEMS="31211"
-                        ORGANISATION_TYPE="ORGANISATION_UNIT"
                     />
                 
                     <TB_ITEMS
@@ -1192,7 +1089,7 @@
                         ITEM_SCHEME_VERSION_FIRST_FK="[null]"
                         NAMEABLE_ARTEFACT_FK="31211"
                               
-                        UUID="organisationScheme-3-v1-org-2-1-1"
+                        UUID="categoryScheme-3-v1-cat-2-1-1"
                         VERSION="1"
                         CREATED_BY="user1"
                         CREATED_DATE="2011-01-01 01:02:03"
@@ -1206,9 +1103,9 @@
                         ID="31211"
                         ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                         
-                        CODE="ORGANISATION020101"
+                        CODE="CATEGORY020101"
                         URI="[null]"
-                        URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME03(01.000).ORGANISATION020101"
+                        URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ISTAC:CATEGORYSCHEME03(01.000).CATEGORY020101"
                         REPLACED_BY="[null]"
                         REPLACE_TO="[null]"
                         
@@ -1225,14 +1122,13 @@
                         LAST_UPDATED_TZ="Europe/London"
                     />                  
             
-            <!-- ORGANISATION0202 -->
-            <TB_M_ORGANISATIONS
-                TB_ORGANISATIONS="3122"
+            <!-- CATEGORY0202 -->
+            <TB_M_CATEGORIES
+                TB_CATEGORIES="3122"
             />
             
-            <TB_ORGANISATIONS
+            <TB_CATEGORIES
                 TB_ITEMS="3122"
-                ORGANISATION_TYPE="ORGANISATION_UNIT"
             />
         
             <TB_ITEMS
@@ -1242,7 +1138,7 @@
                 ITEM_SCHEME_VERSION_FIRST_FK="[null]"
                 NAMEABLE_ARTEFACT_FK="3122"
                       
-                UUID="organisationScheme-3-v1-org-2-2"
+                UUID="categoryScheme-3-v1-cat-2-2"
                 VERSION="1"
                 CREATED_BY="user1"
                 CREATED_DATE="2011-01-01 01:02:03"
@@ -1256,9 +1152,9 @@
                 ID="3122"
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
-                CODE="ORGANISATION0202"
+                CODE="CATEGORY0202"
                 URI="[null]"
-                URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME03(01.000).ORGANISATION0202"
+                URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ISTAC:CATEGORYSCHEME03(01.000).CATEGORY0202"
                 REPLACED_BY="[null]"
                 REPLACE_TO="[null]"
                 
@@ -1276,7 +1172,7 @@
             />                        
                 
     <!-- ************************************************************************************** -->
-    <!-- ORGANISATION SCHEME 4 (Organisation Unit)	                                            -->
+    <!-- CATEGORY SCHEME 4	                                            -->
     <!--        - Version 1: validation rejected                                                -->
     <!-- *************************************************************************************  -->
 
@@ -1296,7 +1192,7 @@
         IS_PARTIAL="0"
         MAINTANABLE_ARTEFACT_FK="41"
         
-        UUID="organisationScheme-4-v1"
+        UUID="categoryScheme-4-v1"
         VERSION="1"
         CREATED_BY="user1"
         CREATED_DATE="2011-01-01 01:02:03"
@@ -1306,13 +1202,12 @@
         LAST_UPDATED_TZ="Europe/London"  
     />
 
-    <TB_ORG_SCHEMES_VERSIONS
+    <TB_CAT_SCHEMES_VERSIONS
         TB_ITEM_SCHEMES_VERSIONS="41"
-        ORGANISATION_SCHEME_TYPE="ORGANISATION_UNIT_SCHEME"
     />
     
-    <TB_M_ORG_SCHEMES_VERSIONS
-        TB_ORG_SCHEMES_VERSIONS="41"
+    <TB_M_CAT_SCHEMES_VERSIONS
+        TB_CAT_SCHEMES_VERSIONS="41"
         PROC_STATUS="VALIDATION_REJECTED"
         
         PRODUCTION_VALIDATION_DATE_TZ="[null]"
@@ -1335,9 +1230,9 @@
         ID="41"
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
-        CODE="ORGANISATIONSCHEME04"
+        CODE="CATEGORYSCHEME04"
         URI="[null]"
-        URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=ISTAC:ORGANISATIONSCHEME04(01.000)"
+        URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=ISTAC:CATEGORYSCHEME04(01.000)"
         REPLACED_BY="[null]"
         REPLACE_TO="[null]"
         
@@ -1365,18 +1260,17 @@
         LAST_UPDATED_TZ="Europe/London"
     />
     
-        <!-- ORGANISATIONS -->
-            <!-- -> ORGANISATION01 -->
+        <!-- CATEGORIES -->
+            <!-- -> CATEGORY01 -->
             
-            <!-- ORGANISATION01 -->
+            <!-- CATEGORY01 -->
             
-            <TB_M_ORGANISATIONS
-                TB_ORGANISATIONS="411"
+            <TB_M_CATEGORIES
+                TB_CATEGORIES="411"
             />
             
-            <TB_ORGANISATIONS
+            <TB_CATEGORIES
                 TB_ITEMS="411"
-                ORGANISATION_TYPE="ORGANISATION_UNIT"
             />
         
             <TB_ITEMS
@@ -1386,7 +1280,7 @@
                 ITEM_SCHEME_VERSION_FIRST_FK="41"
                 NAMEABLE_ARTEFACT_FK="411"
                       
-                UUID="organisationScheme-4-v1-org-1"
+                UUID="categoryScheme-4-v1-cat-1"
                 VERSION="1"
                 CREATED_BY="user1"
                 CREATED_DATE="2011-01-01 01:02:03"
@@ -1400,9 +1294,9 @@
                 ID="411"
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
 
-                CODE="ORGANISATION01"
+                CODE="CATEGORY01"
                 URI="[null]"
-                URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME04(01.000).ORGANISATION01"
+                URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ISTAC:CATEGORYSCHEME04(01.000).CATEGORY01"
                 REPLACED_BY="[null]"
                 REPLACE_TO="[null]"
 
@@ -1421,7 +1315,7 @@
     
 
     <!-- ************************************************************************************** -->
-    <!-- ORGANISATION SCHEME 5 (Organisation Unit)	                                            -->
+    <!-- CATEGORY SCHEME 5	                                            -->
     <!--        - Version 1: production validation                                              -->
     <!-- *************************************************************************************  -->
 
@@ -1441,7 +1335,7 @@
         IS_PARTIAL="0"
         MAINTANABLE_ARTEFACT_FK="51"
         
-        UUID="organisationScheme-5-v1"
+        UUID="categoryScheme-5-v1"
         VERSION="1"
         CREATED_BY="user1"
         CREATED_DATE="2011-01-01 01:02:03"
@@ -1451,13 +1345,12 @@
         LAST_UPDATED_TZ="Europe/London"  
     />
 
-    <TB_ORG_SCHEMES_VERSIONS
+    <TB_CAT_SCHEMES_VERSIONS
         TB_ITEM_SCHEMES_VERSIONS="51"
-        ORGANISATION_SCHEME_TYPE="ORGANISATION_UNIT_SCHEME"
     />
     
-    <TB_M_ORG_SCHEMES_VERSIONS
-        TB_ORG_SCHEMES_VERSIONS="51"
+    <TB_M_CAT_SCHEMES_VERSIONS
+        TB_CAT_SCHEMES_VERSIONS="51"
         PROC_STATUS="PRODUCTION_VALIDATION"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
@@ -1480,9 +1373,9 @@
         ID="51"
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
-        CODE="ORGANISATIONSCHEME05"
+        CODE="CATEGORYSCHEME05"
         URI="[null]"
-        URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=ISTAC:ORGANISATIONSCHEME05(01.000)"
+        URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=ISTAC:CATEGORYSCHEME05(01.000)"
         REPLACED_BY="[null]"
         REPLACE_TO="[null]"
         
@@ -1510,18 +1403,17 @@
         LAST_UPDATED_TZ="Europe/London"
     />
     
-            <!-- ORGANISATIONS -->
-            <!-- -> ORGANISATION01 -->
+            <!-- CATEGORIES -->
+            <!-- -> CATEGORY01 -->
             
-            <!-- ORGANISATION01 -->
+            <!-- CATEGORY01 -->
             
-            <TB_M_ORGANISATIONS
-                TB_ORGANISATIONS="511"
+            <TB_M_CATEGORIES
+                TB_CATEGORIES="511"
             />
             
-            <TB_ORGANISATIONS
+            <TB_CATEGORIES
                 TB_ITEMS="511"
-                ORGANISATION_TYPE="ORGANISATION_UNIT"
             />
         
             <TB_ITEMS
@@ -1531,7 +1423,7 @@
                 ITEM_SCHEME_VERSION_FIRST_FK="51"
                 NAMEABLE_ARTEFACT_FK="511"
                       
-                UUID="organisationScheme-5-v1-org-1"
+                UUID="categoryScheme-5-v1-cat-1"
                 VERSION="1"
                 CREATED_BY="user1"
                 CREATED_DATE="2011-01-01 01:02:03"
@@ -1545,9 +1437,9 @@
                 ID="511"
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
 
-                CODE="ORGANISATION01"
+                CODE="CATEGORY01"
                 URI="[null]"
-                URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME05(01.000).ORGANISATION01"
+                URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ISTAC:CATEGORYSCHEME05(01.000).CATEGORY01"
                 REPLACED_BY="[null]"
                 REPLACE_TO="[null]"
 
@@ -1565,7 +1457,7 @@
             />     
     
     <!-- ************************************************************************************** -->
-    <!-- ORGANISATION SCHEME 6 (Organisation Unit)	                                            -->
+    <!-- CATEGORY SCHEME 6	                                            -->
     <!--        - Version 1: diffusion validation                                               -->
     <!-- *************************************************************************************  -->
 
@@ -1585,7 +1477,7 @@
         IS_PARTIAL="0"
         MAINTANABLE_ARTEFACT_FK="61"
         
-        UUID="organisationScheme-6-v1"
+        UUID="categoryScheme-6-v1"
         VERSION="1"
         CREATED_BY="user1"
         CREATED_DATE="2011-01-01 01:02:03"
@@ -1595,13 +1487,12 @@
         LAST_UPDATED_TZ="Europe/London"  
     />
 
-    <TB_ORG_SCHEMES_VERSIONS
+    <TB_CAT_SCHEMES_VERSIONS
         TB_ITEM_SCHEMES_VERSIONS="61"
-        ORGANISATION_SCHEME_TYPE="ORGANISATION_UNIT_SCHEME"
     />
     
-    <TB_M_ORG_SCHEMES_VERSIONS
-        TB_ORG_SCHEMES_VERSIONS="61"
+    <TB_M_CAT_SCHEMES_VERSIONS
+        TB_CAT_SCHEMES_VERSIONS="61"
         PROC_STATUS="DIFFUSION_VALIDATION"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
@@ -1624,9 +1515,9 @@
         ID="61"
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
-        CODE="ORGANISATIONSCHEME06"
+        CODE="CATEGORYSCHEME06"
         URI="[null]"
-        URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=ISTAC:ORGANISATIONSCHEME06(01.000)"
+        URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=ISTAC:CATEGORYSCHEME06(01.000)"
         REPLACED_BY="[null]"
         REPLACE_TO="[null]"
         
@@ -1654,18 +1545,17 @@
         LAST_UPDATED_TZ="Europe/London"
     />
 
-            <!-- ORGANISATIONS -->
-            <!-- -> ORGANISATION01 -->
+            <!-- CATEGORIES -->
+            <!-- -> CATEGORY01 -->
             
-            <!-- ORGANISATION01 -->
+            <!-- CATEGORY01 -->
             
-            <TB_M_ORGANISATIONS
-                TB_ORGANISATIONS="611"
+            <TB_M_CATEGORIES
+                TB_CATEGORIES="611"
             />
             
-            <TB_ORGANISATIONS
+            <TB_CATEGORIES
                 TB_ITEMS="611"
-                ORGANISATION_TYPE="ORGANISATION_UNIT"
             />
         
             <TB_ITEMS
@@ -1675,7 +1565,7 @@
                 ITEM_SCHEME_VERSION_FIRST_FK="61"
                 NAMEABLE_ARTEFACT_FK="611"
                       
-                UUID="organisationScheme-6-v1-org-1"
+                UUID="categoryScheme-6-v1-cat-1"
                 VERSION="1"
                 CREATED_BY="user1"
                 CREATED_DATE="2011-01-01 01:02:03"
@@ -1689,9 +1579,9 @@
                 ID="611"
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
 
-                CODE="ORGANISATION01"
+                CODE="CATEGORY01"
                 URI="[null]"
-                URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME06(01.000).ORGANISATION01"
+                URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ISTAC:CATEGORYSCHEME06(01.000).CATEGORY01"
                 REPLACED_BY="[null]"
                 REPLACE_TO="[null]"
 
@@ -1709,7 +1599,7 @@
             />  
             
     <!-- ************************************************************************************** -->
-    <!-- ORGANISATION SCHEME 7 (Organisation Unit)	                                            -->
+    <!-- CATEGORY SCHEME 7	                                                                    -->
     <!--        - Version 1: externally published                                               -->
     <!--        - Version 2: internally published                                               -->
     <!-- *************************************************************************************  -->
@@ -1730,7 +1620,7 @@
         IS_PARTIAL="0"
         MAINTANABLE_ARTEFACT_FK="71"
         
-        UUID="organisationScheme-7-v1"
+        UUID="categoryScheme-7-v1"
         VERSION="1"
         CREATED_BY="user1"
         CREATED_DATE="2011-01-01 01:02:03"
@@ -1740,13 +1630,12 @@
         LAST_UPDATED_TZ="Europe/London"  
     />
 
-    <TB_ORG_SCHEMES_VERSIONS
+    <TB_CAT_SCHEMES_VERSIONS
         TB_ITEM_SCHEMES_VERSIONS="71"
-        ORGANISATION_SCHEME_TYPE="ORGANISATION_UNIT_SCHEME"
     />
     
-    <TB_M_ORG_SCHEMES_VERSIONS
-        TB_ORG_SCHEMES_VERSIONS="71"
+    <TB_M_CAT_SCHEMES_VERSIONS
+        TB_CAT_SCHEMES_VERSIONS="71"
         PROC_STATUS="EXTERNALLY_PUBLISHED"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
@@ -1769,9 +1658,9 @@
         ID="71"
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
-        CODE="ORGANISATIONSCHEME07"
+        CODE="CATEGORYSCHEME07"
         URI="[null]"
-        URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=ISTAC:ORGANISATIONSCHEME07(01.000)"
+        URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=ISTAC:CATEGORYSCHEME07(01.000)"
         REPLACED_BY="02.000"
         REPLACE_TO="[null]"
         
@@ -1809,7 +1698,7 @@
         IS_PARTIAL="0"
         MAINTANABLE_ARTEFACT_FK="72"
         
-        UUID="organisationScheme-7-v2"
+        UUID="categoryScheme-7-v2"
         VERSION="1"
         CREATED_BY="user1"
         CREATED_DATE="2011-01-01 01:02:03"
@@ -1819,13 +1708,12 @@
         LAST_UPDATED_TZ="Europe/London"  
     />
 
-    <TB_ORG_SCHEMES_VERSIONS
+    <TB_CAT_SCHEMES_VERSIONS
         TB_ITEM_SCHEMES_VERSIONS="72"
-        ORGANISATION_SCHEME_TYPE="ORGANISATION_UNIT_SCHEME"
     />
     
-    <TB_M_ORG_SCHEMES_VERSIONS
-        TB_ORG_SCHEMES_VERSIONS="72"
+    <TB_M_CAT_SCHEMES_VERSIONS
+        TB_CAT_SCHEMES_VERSIONS="72"
         PROC_STATUS="INTERNALLY_PUBLISHED"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
@@ -1848,9 +1736,9 @@
         ID="72"
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
-        CODE="ORGANISATIONSCHEME07"
+        CODE="CATEGORYSCHEME07"
         URI="[null]"
-        URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=ISTAC:ORGANISATIONSCHEME07(02.000)"
+        URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=ISTAC:CATEGORYSCHEME07(02.000)"
         REPLACED_BY="[null]"
         REPLACE_TO="01.000"
         
@@ -1878,18 +1766,17 @@
         LAST_UPDATED_TZ="Europe/London"
     />
 
-            <!-- ORGANISATIONS -->
-            <!-- -> ORGANISATION01 -->
+            <!-- CATEGORIES -->
+            <!-- -> CATEGORY01 -->
             
-            <!-- ORGANISATION01 -->
+            <!-- CATEGORY01 -->
             
-            <TB_M_ORGANISATIONS
-                TB_ORGANISATIONS="721"
+            <TB_M_CATEGORIES
+                TB_CATEGORIES="721"
             />
             
-            <TB_ORGANISATIONS
+            <TB_CATEGORIES
                 TB_ITEMS="721"
-                ORGANISATION_TYPE="ORGANISATION_UNIT"
             />
         
             <TB_ITEMS
@@ -1899,7 +1786,7 @@
                 ITEM_SCHEME_VERSION_FIRST_FK="72"
                 NAMEABLE_ARTEFACT_FK="721"
                       
-                UUID="organisationScheme-7-v2-org-1"
+                UUID="categoryScheme-7-v2-cat-1"
                 VERSION="1"
                 CREATED_BY="user1"
                 CREATED_DATE="2011-01-01 01:02:03"
@@ -1913,9 +1800,9 @@
                 ID="721"
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
 
-                CODE="ORGANISATION01"
+                CODE="CATEGORY01"
                 URI="[null]"
-                URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME07(02.000).ORGANISATION01"
+                URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ISTAC:CATEGORYSCHEME07(02.000).CATEGORY01"
                 REPLACED_BY="[null]"
                 REPLACE_TO="[null]"
 
@@ -2045,14 +1932,14 @@
     
     <TB_LOCALISED_STRINGS
         ID="11"
-        LABEL="Nombre organisationScheme-1-v1"
+        LABEL="Nombre categoryScheme-1-v1"
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="1"
     />  
     <TB_LOCALISED_STRINGS
         ID="12"
-        LABEL="Name organisationScheme-1-v1"
+        LABEL="Name categoryScheme-1-v1"
         LOCALE="en"
         VERSION="1"
         INTERNATIONAL_STRING_FK="1"
@@ -2065,7 +1952,7 @@
     
     <TB_LOCALISED_STRINGS
         ID="21"
-        LABEL="Descripción organisationScheme-1-v1"
+        LABEL="Descripción categoryScheme-1-v1"
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="2"
@@ -2073,7 +1960,7 @@
     
     <TB_LOCALISED_STRINGS
         ID="22"
-        LABEL="Description organisationScheme-1-v1"
+        LABEL="Description categoryScheme-1-v1"
         LOCALE="en"
         VERSION="1"
         INTERNATIONAL_STRING_FK="2"
@@ -2086,14 +1973,14 @@
     
     <TB_LOCALISED_STRINGS
         ID="31"
-        LABEL="Nombre organisationScheme-1-v2"
+        LABEL="Nombre categoryScheme-1-v2"
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="3"
     />  
     <TB_LOCALISED_STRINGS
         ID="32"
-        LABEL="Name organisationScheme-1-v1"
+        LABEL="Name categoryScheme-1-v1"
         LOCALE="en"
         VERSION="1"
         INTERNATIONAL_STRING_FK="3"
@@ -2106,14 +1993,14 @@
     
     <TB_LOCALISED_STRINGS
         ID="311"
-        LABEL="Nombre organisationScheme-1-v2"
+        LABEL="Nombre categoryScheme-1-v2"
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="31"
     />  
     <TB_LOCALISED_STRINGS
         ID="312"
-        LABEL="Name organisationScheme-1-v1"
+        LABEL="Name categoryScheme-1-v1"
         LOCALE="en"
         VERSION="1"
         INTERNATIONAL_STRING_FK="31"
@@ -2126,7 +2013,7 @@
     
     <TB_LOCALISED_STRINGS
         ID="41"
-        LABEL="Descripción organisationScheme-1-v2"
+        LABEL="Descripción categoryScheme-1-v2"
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="4"
@@ -2134,7 +2021,7 @@
     
     <TB_LOCALISED_STRINGS
         ID="42"
-        LABEL="Description organisationScheme-1-v2"
+        LABEL="Description categoryScheme-1-v2"
         LOCALE="en"
         VERSION="1"
         INTERNATIONAL_STRING_FK="4"
@@ -2147,7 +2034,7 @@
     
     <TB_LOCALISED_STRINGS
         ID="51"
-        LABEL="Título organisationScheme-2-v1"
+        LABEL="Título categoryScheme-2-v1"
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="5"
@@ -2160,7 +2047,7 @@
     
     <TB_LOCALISED_STRINGS
         ID="61"
-        LABEL="Título organisationScheme-3-v1"
+        LABEL="Título categoryScheme-3-v1"
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="6"
@@ -2173,7 +2060,7 @@
     
     <TB_LOCALISED_STRINGS
         ID="71"
-        LABEL="Título organisationScheme-7-v1"
+        LABEL="Título categoryScheme-7-v1"
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="7"
@@ -2186,7 +2073,7 @@
     
     <TB_LOCALISED_STRINGS
         ID="81"
-        LABEL="Título organisationScheme-7-v2"
+        LABEL="Título categoryScheme-7-v2"
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="8"
@@ -2225,7 +2112,7 @@
     
     <TB_LOCALISED_STRINGS
         ID="121"
-        LABEL="Nombre organisationScheme-1-v2-organisation-1"
+        LABEL="Nombre categoryScheme-1-v2-category-1"
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="12"
@@ -2238,7 +2125,7 @@
     
     <TB_LOCALISED_STRINGS
         ID="131"
-        LABEL="Descripción organisationScheme-1-v2-organisation-1"
+        LABEL="Descripción categoryScheme-1-v2-category-1"
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="13"
@@ -2251,7 +2138,7 @@
     
     <TB_LOCALISED_STRINGS
         ID="141"
-        LABEL="Nombre organisationScheme-1-v2-organisation-2"
+        LABEL="Nombre categoryScheme-1-v2-category-2"
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="14"
@@ -2264,7 +2151,7 @@
     
     <TB_LOCALISED_STRINGS
         ID="151"
-        LABEL="Nombre organisationScheme-1-v2-organisation-2-1"
+        LABEL="Nombre categoryScheme-1-v2-category-2-1"
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="15"
@@ -2277,33 +2164,10 @@
     
     <TB_LOCALISED_STRINGS
         ID="161"
-        LABEL="Nombre organisationScheme-1-v2-organisation-2-1-1"
+        LABEL="Nombre categoryScheme-1-v2-category-2-1-1"
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="16"
-    />
-    
-
-    
-    <TB_INTERNATIONAL_STRINGS
-        ID="21"
-        VERSION="1"
-    />
-    
-    <TB_LOCALISED_STRINGS
-        ID="211"
-        LABEL="nombre contacto 11"
-        LOCALE="es"
-        VERSION="1"
-        INTERNATIONAL_STRING_FK="21"
-    />
-    
-    <TB_LOCALISED_STRINGS
-        ID="212"
-        LABEL="contact name 11"
-        LOCALE="en"
-        VERSION="1"
-        INTERNATIONAL_STRING_FK="21"
     />
     
     <TB_INTERNATIONAL_STRINGS
@@ -2313,7 +2177,7 @@
     
     <TB_LOCALISED_STRINGS
         ID="221"
-        LABEL="unidad organizativa 11"
+        LABEL="categoría 11"
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="22"
@@ -2321,7 +2185,7 @@
     
     <TB_LOCALISED_STRINGS
         ID="222"
-        LABEL="organisation unit 11"
+        LABEL="category unit 11"
         LOCALE="en"
         VERSION="1"
         INTERNATIONAL_STRING_FK="22"
@@ -2349,34 +2213,13 @@
     />    
     
     <TB_INTERNATIONAL_STRINGS
-        ID="24"
-        VERSION="1"
-    />
-    
-    <TB_LOCALISED_STRINGS
-        ID="241"
-        LABEL="nombre contacto 311"
-        LOCALE="es"
-        VERSION="1"
-        INTERNATIONAL_STRING_FK="24"
-    />
-    
-    <TB_LOCALISED_STRINGS
-        ID="242"
-        LABEL="contact name 311"
-        LOCALE="en"
-        VERSION="1"
-        INTERNATIONAL_STRING_FK="24"
-    />
-    
-    <TB_INTERNATIONAL_STRINGS
         ID="25"
         VERSION="1"
     />
     
     <TB_LOCALISED_STRINGS
         ID="251"
-        LABEL="unidad organizativa 311"
+        LABEL="categoría 311"
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="25"
@@ -2384,7 +2227,7 @@
     
     <TB_LOCALISED_STRINGS
         ID="252"
-        LABEL="organisation unit 311"
+        LABEL="category 311"
         LOCALE="en"
         VERSION="1"
         INTERNATIONAL_STRING_FK="25"

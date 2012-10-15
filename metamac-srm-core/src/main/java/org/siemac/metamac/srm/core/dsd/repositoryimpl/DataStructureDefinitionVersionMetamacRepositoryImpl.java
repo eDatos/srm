@@ -41,7 +41,7 @@ public class DataStructureDefinitionVersionMetamacRepositoryImpl extends DataStr
         List<DataStructureDefinitionVersionMetamac> result = findByQuery(
                 "from DataStructureDefinitionVersionMetamac where maintainableArtefact.urn = :urn and lifeCycleMetadata.procStatus in (:procStatus)", parameters, 1);
         if (result == null || result.isEmpty()) {
-            // check concept scheme exists to throws specific exception
+            // check data structure definition scheme exists to throws specific exception
             DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion = findByUrn(urn);
             if (dataStructureDefinitionVersion == null) {
                 throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.SRM_SEARCH_NOT_FOUND).withMessageParameters(urn).build();

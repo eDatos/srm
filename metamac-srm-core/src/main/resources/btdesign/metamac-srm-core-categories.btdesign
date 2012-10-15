@@ -1,0 +1,100 @@
+import "classpath:/btdesign/export/metamac-core-common-entity.btdesign"
+import "classpath:/btdesign/statistic-sdmx-core-categories.btdesign"
+import "classpath:/btdesign/metamac-srm-core-enum.btdesign"
+import "classpath:/btdesign/statistic-sdmx-v2_1-domain-enums.btdesign"
+import "classpath:/btdesign/metamac-srm-core-base.btdesign"
+
+Application CategoriesMetamac {
+	basePackage=unused
+
+	Module domain_categories_metamac {
+		basePackage=org.siemac.metamac.srm.core.category
+
+		// ----------------------------------------------------------------
+		// 							SERVICES
+		// ----------------------------------------------------------------  
+		"Provides access to Scheme Categories Artefacts"
+		Service CategoriesMetamacService {
+			
+			> @CategorySchemeVersionMetamacRepository
+//			> @CategoryMetamacRepository
+			
+//			"Creates category scheme"
+//			@CategorySchemeVersionMetamac createCategoryScheme(@CategorySchemeVersionMetamac categorySchemeVersion) throws MetamacException;
+//			"Updates category scheme"
+//			@CategorySchemeVersionMetamac updateCategoryScheme(@CategorySchemeVersionMetamac categorySchemeVersion) throws MetamacException;
+			"Retrieves category scheme by urn"
+			@CategorySchemeVersionMetamac retrieveCategorySchemeByUrn(String urn) throws MetamacException;
+//			"Retrieves all category schemes versions"
+//			List<@CategorySchemeVersionMetamac> retrieveCategorySchemeVersions(String urn) throws MetamacException;
+//			"Finds category schemes by criteria"
+//    		PagedResult<@CategorySchemeVersionMetamac> findCategorySchemesByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
+//    		"Sends category scheme to production validation"
+//    		@CategorySchemeVersionMetamac sendCategorySchemeToProductionValidation(String urn) throws MetamacException;
+//    		"Sends category scheme to diffusion validation"
+//    		@CategorySchemeVersionMetamac sendCategorySchemeToDiffusionValidation(String urn) throws MetamacException;
+//	    	"Rejects production validation of category scheme"    		
+//	    	@CategorySchemeVersionMetamac rejectCategorySchemeProductionValidation(String urn) throws MetamacException;
+//	    	"Rejects diffusion validation of category scheme"
+//	    	@CategorySchemeVersionMetamac rejectCategorySchemeDiffusionValidation(String urn) throws MetamacException;
+//	    	"Publish internally a category scheme"
+//	    	@CategorySchemeVersionMetamac publishInternallyCategoryScheme(String urn) throws MetamacException;
+//	    	"Publish externally a category scheme"
+//	    	@CategorySchemeVersionMetamac publishExternallyCategoryScheme(String urn) throws MetamacException;
+//			"Deletes category scheme version. This must be last version and no published"
+//    		deleteCategoryScheme(String urn) throws MetamacException;
+//    		"Creates a new version of a category scheme, copying metadata from version with provided urn"
+//    		@CategorySchemeVersionMetamac versioningCategoryScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
+//    		"Cancels the category scheme validity"
+//    		@CategorySchemeVersionMetamac cancelCategorySchemeValidity(String urn) throws MetamacException;
+//    		"Retrieves categories scheme by category urn"
+//    		@CategorySchemeVersionMetamac retrieveCategorySchemeByCategoryUrn(String categoryUrn) throws MetamacException;
+//    		
+//			"Creates category"
+//			@CategoryMetamac createCategory(String categorySchemeUrn, @CategoryMetamac category) throws MetamacException;
+//			"Updates category"
+//			@CategoryMetamac updateCategory(@CategoryMetamac category) throws MetamacException;
+//    		"Retrieves category by urn"
+//    		@CategoryMetamac retrieveCategoryByUrn(String urn) throws MetamacException;
+//    		"Finds categories by criteria"
+//    		PagedResult<@CategoryMetamac> findCategoriesByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
+//			"Deletes category"
+//    		deleteCategory(String urn) throws MetamacException;
+//    		"Retrieves categories by category scheme, in tree structure"
+//    		List<@CategoryMetamac> retrieveCategoriesByCategorySchemeUrn(String categorySchemeUrn) throws MetamacException;
+		}
+
+		// ----------------------------------------------------------------
+		// 							ENTITIES
+		// ----------------------------------------------------------------  
+		Entity CategorySchemeVersionMetamac extends @CategorySchemeVersion {
+			databaseTable="TB_M_CAT_SCHEMES_VERSIONS"
+			hint="idSequence=M_CAT_SCHEMES_VERSIONS"
+			
+			"Life cycle information"
+			- @SrmLifeCycleMetadata lifeCycleMetadata databaseColumn="";
+			
+			Repository CategorySchemeVersionMetamacRepository {
+				findById;
+//				findByQuery(String query, Map<String, Object> parameters, int maxResult);
+//				findByCondition(PagingParameter pagingParameter);
+//				@CategorySchemeVersionMetamac findByUrn(String urn);
+//				@CategorySchemeVersionMetamac retrieveCategorySchemeVersionByProcStatus(String urn, ArrayProcStatusEnum procStatus) throws MetamacException;
+//				@CategorySchemeVersionMetamac findByCategory(String urn);
+			}			
+		}
+		
+		Entity CategoryMetamac extends @Category {
+			databaseTable="TB_M_CATEGORIES"
+			hint="idSequence=M_CATEGORIES"
+			
+			Repository CategoryMetamacRepository {
+//				findByQuery;
+//				findByQuery(String query, Map<String, Object> parameters, int maxResult);
+				findById;
+//				@CategoryMetamac findByUrn(String urn);
+//				findByCondition(PagingParameter pagingParameter);
+			}
+		}
+	}
+}

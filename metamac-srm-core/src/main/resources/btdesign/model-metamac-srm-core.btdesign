@@ -17,10 +17,11 @@ import "classpath:/btdesign/metamac-srm-core-base.btdesign"
 import "classpath:/btdesign/metamac-srm-core-base-dtos.btdesign"
 
 import "classpath:/btdesign/metamac-srm-core-concepts.btdesign"
-import "classpath:/btdesign/metamac-srm-core-organisations.btdesign"
 import "classpath:/btdesign/metamac-srm-core-concepts-dtos.btdesign"
+import "classpath:/btdesign/metamac-srm-core-organisations.btdesign"
 import "classpath:/btdesign/metamac-srm-core-organisations-dtos.btdesign"
-
+import "classpath:/btdesign/metamac-srm-core-categories.btdesign"
+import "classpath:/btdesign/metamac-srm-core-categories-dtos.btdesign"
 import "classpath:/btdesign/metamac-srm-core-dsds.btdesign"
 import "classpath:/btdesign/metamac-srm-core-dsds-dtos.btdesign"
 

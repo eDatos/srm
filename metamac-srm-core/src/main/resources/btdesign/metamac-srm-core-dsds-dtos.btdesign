@@ -8,7 +8,7 @@ Application DtosMetamacDsdDomain {
 	Module domain_metamac_dsd_dto {
 		basePackage=org.siemac.metamac.srm.core.dsd.dto
 		
-		"Dto for ConceptSchemeMetamac"
+		"Dto for DataStructureDefinitionMetamac"
 		DataTransferObject DataStructureDefinitionMetamacDto extends @DataStructureDefinitionDto {
 
 			"Life cycle"

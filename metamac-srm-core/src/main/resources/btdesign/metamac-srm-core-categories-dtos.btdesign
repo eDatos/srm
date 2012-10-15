@@ -1,0 +1,22 @@
+import "classpath:/btdesign/metamac-core-common-dtos.btdesign"
+import "classpath:/btdesign/statistic-sdmx-v2_1-domain-dtos-categories.btdesign"
+import "classpath:/btdesign/metamac-srm-core-enum.btdesign"
+import "classpath:/btdesign/metamac-srm-core-base-dtos.btdesign"
+
+Application DtosMetamacCategoryDomain {
+	basePackage=unused
+
+	Module domain_metamac_category_dto {
+		basePackage=org.siemac.metamac.srm.core.category.dto
+		
+		"Dto for CategorySchemeMetamac"
+		DataTransferObject CategorySchemeMetamacDto extends @CategorySchemeDto {
+			"Life cycle"
+			- @LifeCycleDto lifeCycle required;
+		}
+
+		"Dto for CategoryMetamac"
+		DataTransferObject CategoryMetamacDto extends @CategoryDto {
+		}
+	}
+}

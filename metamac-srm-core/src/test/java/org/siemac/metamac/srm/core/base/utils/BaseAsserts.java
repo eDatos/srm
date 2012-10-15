@@ -1,6 +1,6 @@
 package org.siemac.metamac.srm.core.base.utils;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import org.siemac.metamac.core.common.util.CoreCommonUtil;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
@@ -11,6 +11,8 @@ public class BaseAsserts extends com.arte.statistic.sdmx.srm.core.base.serviceap
     // LIFE CYCLE
 
     public static void assertEqualsLifeCycleDto(LifeCycleDto expected, LifeCycleDto actual) {
+        assertNotNull(expected);
+        assertNotNull(actual);
         assertEquals(expected.getProcStatus(), actual.getProcStatus());
         assertEquals(expected.getProductionValidationDate(), actual.getProductionValidationDate());
         assertEquals(expected.getProductionValidationUser(), actual.getProductionValidationUser());
@@ -23,6 +25,8 @@ public class BaseAsserts extends com.arte.statistic.sdmx.srm.core.base.serviceap
     }
 
     public static void assertEqualsLifeCycle(SrmLifeCycleMetadata entity, LifeCycleDto dto) {
+        assertNotNull(entity);
+        assertNotNull(dto);
         assertEquals(entity.getProcStatus(), dto.getProcStatus());
         assertEquals(CoreCommonUtil.transformDateTimeToDate(entity.getProductionValidationDate()), dto.getProductionValidationDate());
         assertEquals(entity.getProductionValidationUser(), dto.getProductionValidationUser());

@@ -19,7 +19,7 @@ import org.siemac.metamac.srm.core.concept.exception.ConceptMetamacNotFoundExcep
 import org.siemac.metamac.srm.core.concept.exception.ConceptSchemeVersionMetamacNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@org.springframework.stereotype.Component("dto2DoMapper")
+@org.springframework.stereotype.Component("conceptsDto2DoMapper")
 public class ConceptsDto2DoMapperImpl implements ConceptsDto2DoMapper {
 
     @Autowired

@@ -20,6 +20,9 @@ import "classpath:/btdesign/metamac-srm-core-enum.btdesign"
 import "classpath:/btdesign/metamac-srm-core-dsds.btdesign"
 import "classpath:/btdesign/metamac-srm-core-dsds-dtos.btdesign"
 
+import "classpath:/btdesign/metamac-srm-core-categories.btdesign"
+import "classpath:/btdesign/metamac-srm-core-categories-dtos.btdesign"
+
 Application SrmFacadeCore {
     basePackage=unused
     
@@ -31,6 +34,7 @@ Application SrmFacadeCore {
        		> @ConceptsMetamacService
        		> @DsdsMetamacService
        		> @OrganisationsMetamacService
+       		> @CategoriesMetamacService
 
 			"          
 			 @param ctx  
@@ -373,6 +377,54 @@ Application SrmFacadeCore {
     		List<@ConceptTypeDto> findAllConceptTypes throws MetamacException;
     		"Retrieves concept type by identifier"
     		@ConceptTypeDto retrieveConceptTypeByIdentifier(String identifier) throws MetamacException;
+    		
+
+	    	/**************************************************************************
+		     * CATEGORIES
+		     **************************************************************************/
+
+//       		"Creates category scheme"
+//	   		@CategorySchemeMetamacDto createCategoryScheme(@CategorySchemeMetamacDto categorySchemeDto) throws MetamacException;
+//	   		"Updates category scheme"
+//            @CategorySchemeMetamacDto updateCategoryScheme(@CategorySchemeMetamacDto categorySchemeDto) throws MetamacException;
+//            "Deletes category scheme"
+//            deleteCategoryScheme(String urn) throws MetamacException;
+//            "Finds category schemes by criteria"
+//            MetamacCriteriaResult<@CategorySchemeMetamacDto> findCategorySchemesByCondition(MetamacCriteria criteria) throws MetamacException;
+            "Retrieves a category scheme by URN"
+            @CategorySchemeMetamacDto retrieveCategorySchemeByUrn(String urn) throws MetamacException;
+//            "Retrieves all category scheme versions"
+//            List<@CategorySchemeMetamacDto> retrieveCategorySchemeVersions(String urn) throws MetamacException;
+//            
+//            "Sends category scheme to production validation"
+//	    	@CategorySchemeMetamacDto sendCategorySchemeToProductionValidation(String urn) throws MetamacException;
+//    		"Sends to diffusion validation"
+//    		@CategorySchemeMetamacDto sendCategorySchemeToDiffusionValidation(String urn) throws MetamacException;
+//	    	"Rejects production validation of category scheme"    		
+//	    	@CategorySchemeMetamacDto rejectCategorySchemeProductionValidation(String urn) throws MetamacException;
+//	    	"Rejects diffusion validation of category scheme"
+//	    	@CategorySchemeMetamacDto rejectCategorySchemeDiffusionValidation(String urn) throws MetamacException; 
+//	    	"Publishes internally a category scheme"
+//	    	@CategorySchemeMetamacDto publishCategorySchemeInternally(String urn) throws MetamacException;
+//	    	"Publishes externally a category scheme"
+//	    	@CategorySchemeMetamacDto publishCategorySchemeExternally(String urn) throws MetamacException;
+//    		"Creates a new version of a category scheme, copying metadata from version with provided urn"
+//    		@CategorySchemeMetamacDto versioningCategoryScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
+//    		"Cancels the category scheme validity"
+//    		@CategorySchemeMetamacDto cancelCategorySchemeValidity(String urn) throws MetamacException;
+//            
+//			"Creates category"
+//	   		@CategoryMetamacDto createCategory(@CategoryMetamacDto categoryMetamacDto) throws MetamacException;
+//	   		"Updates category"
+//            @CategoryMetamacDto updateCategory(@CategoryMetamacDto categoryDto) throws MetamacException;
+//	   		"Retrieves a category by URN"
+//            @CategoryMetamacDto retrieveCategoryByUrn(String urn) throws MetamacException;
+//            "Finds categories by criteria"
+//            MetamacCriteriaResult<@CategoryMetamacDto> findCategoriesByCondition(MetamacCriteria criteria) throws MetamacException;
+//			"Deletes category"
+//            deleteCategory(String urn) throws MetamacException;
+//    		"Retrieves categories by category scheme, in tree structure"
+//    		List<@ItemHierarchyDto> retrieveCategoriesByCategorySchemeUrn(String categorySchemeUrn) throws MetamacException;       		
     	}
 /*    	
     	Service ImportServiceFacade {

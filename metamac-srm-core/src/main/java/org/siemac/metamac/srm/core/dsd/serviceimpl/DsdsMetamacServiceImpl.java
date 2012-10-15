@@ -60,7 +60,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         dataStructureDefinitionVersion.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
         dataStructureDefinitionVersion.getMaintainableArtefact().setIsExternalReference(Boolean.FALSE);
 
-        // Save conceptScheme
+        // Save
         return (DataStructureDefinitionVersionMetamac) dataStructureDefinitionService.createDataStructureDefinition(ctx, dataStructureDefinitionVersion, VersionPatternEnum.XX_YYY);
 
     }
@@ -69,9 +69,9 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
     public DataStructureDefinitionVersionMetamac updateDataStructureDefinition(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion) throws MetamacException {
         // Validation
         DsdsMetamacInvocationValidator.checkUpdateDataStructureDefinition(dataStructureDefinitionVersion, null);
-        // ConceptsService checks data structure definition isn't final (Schemes cannot be updated when procStatus is INTERNALLY_PUBLISHED or EXTERNALLY_PUBLISHED)
+        // dataStructureDefinitionService checks data structure definition isn't final (Schemes cannot be updated when procStatus is INTERNALLY_PUBLISHED or EXTERNALLY_PUBLISHED)
 
-        // Save conceptScheme
+        // Save
         return (DataStructureDefinitionVersionMetamac) dataStructureDefinitionService.updateDataStructureDefinition(ctx, dataStructureDefinitionVersion);
     }
 
