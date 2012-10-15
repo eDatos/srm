@@ -11,7 +11,6 @@ import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
-import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.common.LifeCycle;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
@@ -30,6 +29,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.ItemScheme;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.enume.domain.VersionPatternEnum;
 import com.arte.statistic.sdmx.srm.core.common.error.ServiceExceptionParameters;
+import com.arte.statistic.sdmx.srm.core.common.service.utils.shared.SdmxVersionUtil;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.organisation.serviceapi.OrganisationsService;
@@ -75,7 +75,7 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
         // OrganisationsService checks organisationScheme is not final (Schemes cannot be updated when procStatus is INTERNALLY_PUBLISHED or EXTERNALLY_PUBLISHED)
 
         // Check type modification: type can only be modified when is in initial version and when has no children (this last requisite is checked in SDMX service)
-        if (!VersionUtil.VERSION_INITIAL_VERSION.equals(organisationSchemeVersion.getMaintainableArtefact().getVersionLogic())) {
+        if (!SdmxVersionUtil.isInitialVersion(organisationSchemeVersion.getMaintainableArtefact().getVersionLogic())) {
             OrganisationSchemeVersionMetamac previousVersion = (OrganisationSchemeVersionMetamac) itemSchemeVersionRepository.findByVersion(organisationSchemeVersion.getItemScheme().getId(),
                     organisationSchemeVersion.getMaintainableArtefact().getReplaceTo());
             if (!ObjectUtils.equals(previousVersion.getOrganisationSchemeType(), organisationSchemeVersion.getOrganisationSchemeType())) {

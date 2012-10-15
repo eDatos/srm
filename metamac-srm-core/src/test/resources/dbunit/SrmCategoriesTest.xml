@@ -636,7 +636,7 @@
                     />
     
     <!-- ************************************************************************************** -->
-    <!-- CATEGORY SCHEME 2  (Agency scheme)                                                 -->
+    <!-- CATEGORY SCHEME 2                                                                      -->
     <!--        - Version 1: draft                                                              -->
     <!-- *************************************************************************************  -->
 
@@ -696,7 +696,7 @@
         
         CODE="CATEGORYSCHEME02"
         URI="[null]"
-        URN="urn:sdmx:org.sdmx.infomodel.base.AgencyScheme=ISTAC:CATEGORYSCHEME02(01.000)"
+        URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=ISTAC:CATEGORYSCHEME02(01.000)"
         REPLACED_BY="[null]"
         REPLACE_TO="[null]"
         

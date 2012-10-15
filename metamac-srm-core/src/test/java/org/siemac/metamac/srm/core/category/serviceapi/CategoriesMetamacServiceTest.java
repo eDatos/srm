@@ -2,22 +2,29 @@ package org.siemac.metamac.srm.core.category.serviceapi;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
 
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.common.test.utils.MetamacAsserts;
+import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
 import org.siemac.metamac.srm.core.category.serviceapi.utils.CategoriesMetamacAsserts;
 import org.siemac.metamac.srm.core.category.serviceapi.utils.CategoriesMetamacDoMocks;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
+import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
+import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.arte.statistic.sdmx.srm.core.category.domain.CategorySchemeVersion;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/srm/applicationContext-test.xml"})
@@ -55,82 +62,54 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
         CategoriesMetamacAsserts.assertEqualsCategoryScheme(categorySchemeVersion, categorySchemeVersionRetrieved);
     }
 
-    // @Test
-    // public void testUpdateCategoryScheme() throws Exception {
-    // CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), CATEGORY_SCHEME_2_V1);
-    // categorySchemeVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
-    // categorySchemeVersion.setIsTypeUpdated(Boolean.FALSE);
-    //
-    // ServiceContext ctx = getServiceContextAdministrador();
-    // CategorySchemeVersion categorySchemeVersionUpdated = categoriesService.updateCategoryScheme(ctx, categorySchemeVersion);
-    // assertNotNull(categorySchemeVersionUpdated);
-    // assertEquals("user1", categorySchemeVersionUpdated.getCreatedBy());
-    // assertEquals(ctx.getUserId(), categorySchemeVersionUpdated.getLastUpdatedBy());
-    // }
-    //
-    // @Test
-    // public void testUpdateCategorySchemePublished() throws Exception {
-    // String[] urns = {CATEGORY_SCHEME_1_V1};
-    // for (String urn : urns) {
-    // CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urn);
-    //
-    // try {
-    // categorySchemeVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
-    // categorySchemeVersion.setIsTypeUpdated(Boolean.FALSE);
-    // categorySchemeVersion = categoriesService.updateCategoryScheme(getServiceContextAdministrador(), categorySchemeVersion);
-    // fail("wrong proc status");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.CATEGORY_SCHEME_UNMODIFIABLE.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // }
-    // }
-    // }
-    //
-    // @Test
-    // public void testUpdateCategorySchemeErrorExternalReference() throws Exception {
-    // CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), CATEGORY_SCHEME_1_V2);
-    // categorySchemeVersion.getMaintainableArtefact().setIsExternalReference(Boolean.TRUE);
-    //
-    // try {
-    // categorySchemeVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
-    // categorySchemeVersion = categoriesService.updateCategoryScheme(getServiceContextAdministrador(), categorySchemeVersion);
-    // fail("category scheme cannot be a external reference");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.METADATA_INCORRECT.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(ServiceExceptionParameters.MAINTAINABLE_ARTEFACT_IS_EXTERNAL_REFERENCE, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // }
-    // }
-    //
-    // @Test
-    // public void testUpdateCategorySchemeChangetType() throws Exception {
-    // CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), CATEGORY_SCHEME_2_V1);
-    // categorySchemeVersion.setCategorySchemeType(CategorySchemeTypeEnum.DATA_PROVIDER_SCHEME);
-    // categorySchemeVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.TRUE);
-    // categorySchemeVersion.setIsTypeUpdated(Boolean.FALSE);
-    // categorySchemeVersion = categoriesService.updateCategoryScheme(getServiceContextAdministrador(), categorySchemeVersion);
-    //
-    // assertEquals(CategorySchemeTypeEnum.DATA_PROVIDER_SCHEME, categorySchemeVersion.getCategorySchemeType());
-    // }
-    //
-    // @Test
-    // public void testUpdateCategorySchemeErrorChangetType() throws Exception {
-    // CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), CATEGORY_SCHEME_1_V2);
-    // categorySchemeVersion.setCategorySchemeType(CategorySchemeTypeEnum.DATA_PROVIDER_SCHEME);
-    // categorySchemeVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
-    // categorySchemeVersion.setIsTypeUpdated(Boolean.FALSE);
-    // try {
-    // categorySchemeVersion = categoriesService.updateCategoryScheme(getServiceContextAdministrador(), categorySchemeVersion);
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.METADATA_UNMODIFIABLE.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(ServiceExceptionParameters.CATEGORY_SCHEME_TYPE, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // }
-    // }
+    @Test
+    public void testUpdateCategoryScheme() throws Exception {
+        CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), CATEGORY_SCHEME_2_V1);
+        categorySchemeVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
+        categorySchemeVersion.getMaintainableArtefact().setName(CategoriesMetamacDoMocks.mockInternationalString("name"));
+
+        ServiceContext ctx = getServiceContextAdministrador();
+        CategorySchemeVersion categorySchemeVersionUpdated = categoriesService.updateCategoryScheme(ctx, categorySchemeVersion);
+        assertNotNull(categorySchemeVersionUpdated);
+        assertEquals("user1", categorySchemeVersionUpdated.getCreatedBy());
+        assertEquals(ctx.getUserId(), categorySchemeVersionUpdated.getLastUpdatedBy());
+    }
+
+    @Test
+    public void testUpdateCategorySchemePublished() throws Exception {
+        String[] urns = {CATEGORY_SCHEME_1_V1};
+        for (String urn : urns) {
+            CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urn);
+
+            try {
+                categorySchemeVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
+                categorySchemeVersion = categoriesService.updateCategoryScheme(getServiceContextAdministrador(), categorySchemeVersion);
+                fail("wrong proc status");
+            } catch (MetamacException e) {
+                assertEquals(1, e.getExceptionItems().size());
+                assertEquals(ServiceExceptionType.CATEGORY_SCHEME_UNMODIFIABLE.getCode(), e.getExceptionItems().get(0).getCode());
+                assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+                assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            }
+        }
+    }
+
+    @Test
+    public void testUpdateCategorySchemeErrorExternalReference() throws Exception {
+        CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), CATEGORY_SCHEME_1_V2);
+        categorySchemeVersion.getMaintainableArtefact().setIsExternalReference(Boolean.TRUE);
+
+        try {
+            categorySchemeVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
+            categorySchemeVersion = categoriesService.updateCategoryScheme(getServiceContextAdministrador(), categorySchemeVersion);
+            fail("category scheme cannot be a external reference");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.METADATA_INCORRECT.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(ServiceExceptionParameters.MAINTAINABLE_ARTEFACT_IS_EXTERNAL_REFERENCE, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
 
     @Test
     public void testRetrieveCategorySchemeByUrn() throws Exception {

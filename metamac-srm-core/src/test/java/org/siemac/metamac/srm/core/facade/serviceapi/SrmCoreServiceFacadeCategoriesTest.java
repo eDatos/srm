@@ -2,12 +2,19 @@ package org.siemac.metamac.srm.core.facade.serviceapi;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.siemac.metamac.srm.core.category.serviceapi.utils.CategoriesMetamacAsserts.assertEqualsCategorySchemeMetamacDto;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.siemac.metamac.common.test.utils.MetamacMocks;
+import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 import org.siemac.metamac.srm.core.category.serviceapi.utils.CategoriesMetamacDtoMocks;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
+import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -66,55 +73,54 @@ public class SrmCoreServiceFacadeCategoriesTest extends SrmBaseTest {
         assertEquals(Long.valueOf(0), categorySchemeMetamacCreated.getVersionOptimisticLocking());
     }
 
-    // @Test
-    // public void testUpdateCategoryScheme() throws Exception {
-    //
-    // // Update
-    // CategorySchemeMetamacDto categorySchemeMetamacDto = srmCoreServiceFacade.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), CATEGORY_SCHEME_1_V2);
-    // categorySchemeMetamacDto.setName(MetamacMocks.mockInternationalString());
-    // CategorySchemeMetamacDto categorySchemeMetamacDtoUpdated = srmCoreServiceFacade.updateCategoryScheme(getServiceContextAdministrador(), categorySchemeMetamacDto);
-    //
-    // // Validate
-    // assertNotNull(categorySchemeMetamacDto);
-    // assertEqualsCategorySchemeMetamacDto(categorySchemeMetamacDto, categorySchemeMetamacDtoUpdated);
-    // assertTrue(categorySchemeMetamacDtoUpdated.getVersionOptimisticLocking() > categorySchemeMetamacDto.getVersionOptimisticLocking());
-    // }
-    //
-    // @Test
-    // public void testUpdateCategorySchemeErrorOptimisticLocking() throws Exception {
-    //
-    // String urn = CATEGORY_SCHEME_1_V2;
-    //
-    // CategorySchemeMetamacDto categorySchemeMetamacDtoSession1 = srmCoreServiceFacade.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urn);
-    // assertEquals(Long.valueOf(1), categorySchemeMetamacDtoSession1.getVersionOptimisticLocking());
-    // categorySchemeMetamacDtoSession1.setIsPartial(Boolean.TRUE);
-    //
-    // CategorySchemeMetamacDto categorySchemeMetamacDtoSession2 = srmCoreServiceFacade.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urn);
-    // assertEquals(Long.valueOf(1), categorySchemeMetamacDtoSession2.getVersionOptimisticLocking());
-    // categorySchemeMetamacDtoSession2.setIsPartial(Boolean.TRUE);
-    //
-    // // Update by session 1
-    // CategorySchemeMetamacDto categorySchemeMetamacDtoSession1AfterUpdate1 = srmCoreServiceFacade.updateCategoryScheme(getServiceContextAdministrador(),
-    // categorySchemeMetamacDtoSession1);
-    // assertTrue(categorySchemeMetamacDtoSession1AfterUpdate1.getVersionOptimisticLocking() > categorySchemeMetamacDtoSession1.getVersionOptimisticLocking());
-    //
-    // // Fails when is updated by session 2
-    // try {
-    // srmCoreServiceFacade.updateCategoryScheme(getServiceContextAdministrador(), categorySchemeMetamacDtoSession2);
-    // fail("Optimistic locking");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.OPTIMISTIC_LOCKING.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertNull(e.getExceptionItems().get(0).getMessageParameters());
-    // }
-    //
-    // // Session 1 can modify because has last version
-    // categorySchemeMetamacDtoSession1AfterUpdate1.setIsPartial(Boolean.FALSE);
-    // CategorySchemeMetamacDto categorySchemeMetamacDtoSession1AfterUpdate2 = srmCoreServiceFacade.updateCategoryScheme(getServiceContextAdministrador(),
-    // categorySchemeMetamacDtoSession1AfterUpdate1);
-    // assertTrue(categorySchemeMetamacDtoSession1AfterUpdate2.getVersionOptimisticLocking() > categorySchemeMetamacDtoSession1AfterUpdate1.getVersionOptimisticLocking());
-    // }
-    //
+    @Test
+    public void testUpdateCategoryScheme() throws Exception {
+
+        // Update
+        CategorySchemeMetamacDto categorySchemeMetamacDto = srmCoreServiceFacade.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), CATEGORY_SCHEME_1_V2);
+        categorySchemeMetamacDto.setName(MetamacMocks.mockInternationalString());
+        CategorySchemeMetamacDto categorySchemeMetamacDtoUpdated = srmCoreServiceFacade.updateCategoryScheme(getServiceContextAdministrador(), categorySchemeMetamacDto);
+
+        // Validate
+        assertNotNull(categorySchemeMetamacDto);
+        assertEqualsCategorySchemeMetamacDto(categorySchemeMetamacDto, categorySchemeMetamacDtoUpdated);
+        assertTrue(categorySchemeMetamacDtoUpdated.getVersionOptimisticLocking() > categorySchemeMetamacDto.getVersionOptimisticLocking());
+    }
+
+    @Test
+    public void testUpdateCategorySchemeErrorOptimisticLocking() throws Exception {
+
+        String urn = CATEGORY_SCHEME_1_V2;
+
+        CategorySchemeMetamacDto categorySchemeMetamacDtoSession1 = srmCoreServiceFacade.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urn);
+        assertEquals(Long.valueOf(1), categorySchemeMetamacDtoSession1.getVersionOptimisticLocking());
+        categorySchemeMetamacDtoSession1.setIsPartial(Boolean.TRUE);
+
+        CategorySchemeMetamacDto categorySchemeMetamacDtoSession2 = srmCoreServiceFacade.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urn);
+        assertEquals(Long.valueOf(1), categorySchemeMetamacDtoSession2.getVersionOptimisticLocking());
+        categorySchemeMetamacDtoSession2.setIsPartial(Boolean.TRUE);
+
+        // Update by session 1
+        CategorySchemeMetamacDto categorySchemeMetamacDtoSession1AfterUpdate1 = srmCoreServiceFacade.updateCategoryScheme(getServiceContextAdministrador(), categorySchemeMetamacDtoSession1);
+        assertTrue(categorySchemeMetamacDtoSession1AfterUpdate1.getVersionOptimisticLocking() > categorySchemeMetamacDtoSession1.getVersionOptimisticLocking());
+
+        // Fails when is updated by session 2
+        try {
+            srmCoreServiceFacade.updateCategoryScheme(getServiceContextAdministrador(), categorySchemeMetamacDtoSession2);
+            fail("Optimistic locking");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.OPTIMISTIC_LOCKING.getCode(), e.getExceptionItems().get(0).getCode());
+            assertNull(e.getExceptionItems().get(0).getMessageParameters());
+        }
+
+        // Session 1 can modify because has last version
+        categorySchemeMetamacDtoSession1AfterUpdate1.setIsPartial(Boolean.FALSE);
+        CategorySchemeMetamacDto categorySchemeMetamacDtoSession1AfterUpdate2 = srmCoreServiceFacade.updateCategoryScheme(getServiceContextAdministrador(),
+                categorySchemeMetamacDtoSession1AfterUpdate1);
+        assertTrue(categorySchemeMetamacDtoSession1AfterUpdate2.getVersionOptimisticLocking() > categorySchemeMetamacDtoSession1AfterUpdate1.getVersionOptimisticLocking());
+    }
+
     // @Test
     // public void testDeleteCategoryScheme() throws Exception {
     // String urn = CATEGORY_SCHEME_2_V1;

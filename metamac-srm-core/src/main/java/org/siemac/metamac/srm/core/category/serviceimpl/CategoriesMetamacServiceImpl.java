@@ -45,25 +45,15 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
         return (CategorySchemeVersionMetamac) categoriesService.createCategoryScheme(ctx, categorySchemeVersion, VersionPatternEnum.XX_YYY);
     }
 
-    // @Override
-    // public CategorySchemeVersionMetamac updateCategoryScheme(ServiceContext ctx, CategorySchemeVersionMetamac categorySchemeVersion) throws MetamacException {
-    // // Validation
-    // CategoriesMetamacInvocationValidator.checkUpdateCategoryScheme(categorySchemeVersion, null);
-    // // CategoriesService checks categoryScheme is not final (Schemes cannot be updated when procStatus is INTERNALLY_PUBLISHED or EXTERNALLY_PUBLISHED)
-    //
-    // // Check type modification: type can only be modified when is in initial version and when has no children (this last requisite is checked in SDMX service)
-    // if (!VersionUtil.VERSION_INITIAL_VERSION.equals(categorySchemeVersion.getMaintainableArtefact().getVersionLogic())) {
-    // CategorySchemeVersionMetamac previousVersion = (CategorySchemeVersionMetamac) itemSchemeVersionRepository.findByVersion(categorySchemeVersion.getItemScheme().getId(),
-    // categorySchemeVersion.getMaintainableArtefact().getReplaceTo());
-    // if (!ObjectUtils.equals(previousVersion.getCategorySchemeType(), categorySchemeVersion.getCategorySchemeType())) {
-    // throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_UNMODIFIABLE).withMessageParameters(ServiceExceptionParameters.CATEGORY_SCHEME_TYPE)
-    // .build();
-    // }
-    // }
-    //
-    // // Save categoryScheme
-    // return (CategorySchemeVersionMetamac) categoriesService.updateCategoryScheme(ctx, categorySchemeVersion);
-    // }
+    @Override
+    public CategorySchemeVersionMetamac updateCategoryScheme(ServiceContext ctx, CategorySchemeVersionMetamac categorySchemeVersion) throws MetamacException {
+        // Validation
+        CategoriesMetamacInvocationValidator.checkUpdateCategoryScheme(categorySchemeVersion, null);
+        // CategoriesService checks categoryScheme is not final (Schemes cannot be updated when procStatus is INTERNALLY_PUBLISHED or EXTERNALLY_PUBLISHED)
+
+        // Save categoryScheme
+        return (CategorySchemeVersionMetamac) categoriesService.updateCategoryScheme(ctx, categorySchemeVersion);
+    }
 
     @Override
     public CategorySchemeVersionMetamac retrieveCategorySchemeByUrn(ServiceContext ctx, String urn) throws MetamacException {

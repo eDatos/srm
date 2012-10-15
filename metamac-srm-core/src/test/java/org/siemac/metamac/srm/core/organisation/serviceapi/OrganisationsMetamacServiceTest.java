@@ -88,6 +88,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), ORGANISATION_SCHEME_2_V1);
         organisationSchemeVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
         organisationSchemeVersion.setIsTypeUpdated(Boolean.FALSE);
+        organisationSchemeVersion.getMaintainableArtefact().setName(OrganisationsMetamacDoMocks.mockInternationalString("name"));
 
         ServiceContext ctx = getServiceContextAdministrador();
         OrganisationSchemeVersion organisationSchemeVersionUpdated = organisationsService.updateOrganisationScheme(ctx, organisationSchemeVersion);
@@ -1443,7 +1444,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             assertEquals(ORGANISATION_SCHEME_5_V1_ORGANISATION_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(ORGANISATION_SCHEME_6_V1_ORGANISATION_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(ORGANISATION_SCHEME_7_V2_ORGANISATION_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-            
+
             assertEquals(organisationsPagedResult.getValues().size(), i);
         }
 

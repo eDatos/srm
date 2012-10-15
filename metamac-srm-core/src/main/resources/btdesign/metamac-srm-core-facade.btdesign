@@ -385,8 +385,8 @@ Application SrmFacadeCore {
 
        		"Creates category scheme"
 	   		@CategorySchemeMetamacDto createCategoryScheme(@CategorySchemeMetamacDto categorySchemeDto) throws MetamacException;
-//	   		"Updates category scheme"
-//            @CategorySchemeMetamacDto updateCategoryScheme(@CategorySchemeMetamacDto categorySchemeDto) throws MetamacException;
+	   		"Updates category scheme"
+            @CategorySchemeMetamacDto updateCategoryScheme(@CategorySchemeMetamacDto categorySchemeDto) throws MetamacException;
 //            "Deletes category scheme"
 //            deleteCategoryScheme(String urn) throws MetamacException;
 //            "Finds category schemes by criteria"

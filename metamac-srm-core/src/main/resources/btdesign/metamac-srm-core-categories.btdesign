@@ -21,8 +21,8 @@ Application CategoriesMetamac {
 			
 			"Creates category scheme"
 			@CategorySchemeVersionMetamac createCategoryScheme(@CategorySchemeVersionMetamac categorySchemeVersion) throws MetamacException;
-//			"Updates category scheme"
-//			@CategorySchemeVersionMetamac updateCategoryScheme(@CategorySchemeVersionMetamac categorySchemeVersion) throws MetamacException;
+			"Updates category scheme"
+			@CategorySchemeVersionMetamac updateCategoryScheme(@CategorySchemeVersionMetamac categorySchemeVersion) throws MetamacException;
 			"Retrieves category scheme by urn"
 			@CategorySchemeVersionMetamac retrieveCategorySchemeByUrn(String urn) throws MetamacException;
 //			"Retrieves all category schemes versions"

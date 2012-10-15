@@ -1279,22 +1279,22 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         return categorySchemeDto;
     }
 
-    // @Override
-    // public CategorySchemeMetamacDto updateCategoryScheme(ServiceContext ctx, CategorySchemeMetamacDto categorySchemeDto) throws MetamacException {
-    // // Security
-    // // CategoriesSecurityUtils.canUpdateCategoryScheme();
-    //
-    // // Transform
-    // CategorySchemeVersionMetamac categorySchemeVersionToUpdate = categoriesDto2DoMapper.categorySchemeMetamacDtoToDo(categorySchemeDto);
-    //
-    // // Update
-    // CategorySchemeVersionMetamac categorySchemeVersionUpdated = getCategoriesMetamacService().updateCategoryScheme(ctx, categorySchemeVersionToUpdate);
-    //
-    // // Transform to DTO
-    // categorySchemeDto = categoriesDo2DtoMapper.categorySchemeMetamacDoToDto(categorySchemeVersionUpdated);
-    // return categorySchemeDto;
-    // }
-    //
+    @Override
+    public CategorySchemeMetamacDto updateCategoryScheme(ServiceContext ctx, CategorySchemeMetamacDto categorySchemeDto) throws MetamacException {
+        // TODO Security
+        // CategoriesSecurityUtils.canUpdateCategoryScheme();
+
+        // Transform
+        CategorySchemeVersionMetamac categorySchemeVersionToUpdate = categoriesDto2DoMapper.categorySchemeMetamacDtoToDo(categorySchemeDto);
+
+        // Update
+        CategorySchemeVersionMetamac categorySchemeVersionUpdated = getCategoriesMetamacService().updateCategoryScheme(ctx, categorySchemeVersionToUpdate);
+
+        // Transform to DTO
+        categorySchemeDto = categoriesDo2DtoMapper.categorySchemeMetamacDoToDto(categorySchemeVersionUpdated);
+        return categorySchemeDto;
+    }
+
     // @Override
     // public void deleteCategoryScheme(ServiceContext ctx, String urn) throws MetamacException {
     // // TODO Security
