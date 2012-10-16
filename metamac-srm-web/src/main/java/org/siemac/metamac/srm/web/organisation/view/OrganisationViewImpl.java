@@ -75,6 +75,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
     private DeleteConfirmationWindow    contactDeleteConfirmationWindow;
 
     private OrganisationMetamacDto      organisationDto;
+    private List<ContactDto>            contactDtos;
 
     @Inject
     public OrganisationViewImpl() {
@@ -106,6 +107,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
 
             @Override
             public void onClick(ClickEvent event) {
+                contactListGrid.deselectAllRecords();
                 contactMainFormLayout.setContact(new ContactDto(), true);
                 contactMainFormLayout.setEditionMode();
                 contactMainFormLayout.show();
@@ -120,7 +122,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
             public void onClick(ClickEvent event) {
                 List<ContactDto> contactsToDelete = getSelectedContacts();
                 removeContactsFromOrganisation(contactsToDelete);
-                getUiHandlers().saveOrganisation(organisationDto);
+                getUiHandlers().updateContacts(organisationDto.getContacts());
 
                 contactDeleteConfirmationWindow.hide();
             }
@@ -154,6 +156,9 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
                 if (contactListGrid.getSelectedRecords().length > 0) {
                     // Show delete button
                     showContactListGridDeleteButton();
+                    if (contactListGrid.getSelectedRecords().length > 1) {
+                        contactMainFormLayout.hide();
+                    }
                 } else {
                     contactDeleteButton.hide();
                     contactMainFormLayout.hide();
@@ -165,8 +170,8 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
             @Override
             public void onRecordClick(RecordClickEvent event) {
                 if (event.getFieldNum() != 0) { // Clicking checkBox will be ignored
-                    ContactRecord record = (ContactRecord) event.getRecord();
-                    contactMainFormLayout.setContact(record.getContactDto(), false);
+                    ContactDto selectedContact = ((ContactRecord) event.getRecord()).getContactDto();
+                    contactMainFormLayout.setContact(selectedContact, false);
                     contactMainFormLayout.show();
                 }
             }
@@ -175,15 +180,18 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         // Contact form
 
         contactMainFormLayout = new ContactMainFormLayout();
-        contactMainFormLayout.setVisibility(Visibility.HIDDEN);
+        // contactMainFormLayout.setVisibility(Visibility.HIDDEN);
         contactMainFormLayout.getSave().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
                 if (contactMainFormLayout.validate()) {
                     ContactDto contactToSave = contactMainFormLayout.getContact();
-                    addContactToOrganisation(contactToSave);
-                    getUiHandlers().saveOrganisation(organisationDto);
+                    List<ContactDto> contactsUpdated = updateContacts(OrganisationViewImpl.this.contactDtos, contactToSave);
+                    organisationDto.getContacts().clear();
+                    organisationDto.getContacts().addAll(contactsUpdated);
+
+                    getUiHandlers().updateContacts(OrganisationViewImpl.this.organisationDto.getContacts());
                 }
             }
         });
@@ -191,10 +199,15 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         VLayout contactListGridLayout = new VLayout();
         contactListGridLayout.addMember(contactsToolStrip);
         contactListGridLayout.addMember(contactListGrid);
+        contactListGridLayout.setWidth("50%");
+
+        VLayout contactMainFormLayoutVLayout = new VLayout();
+        contactMainFormLayoutVLayout.addMember(contactMainFormLayout);
+        contactMainFormLayoutVLayout.setWidth("50%");
 
         HLayout contactLayout = new HLayout();
         contactLayout.addMember(contactListGridLayout);
-        contactLayout.addMember(contactMainFormLayout);
+        contactLayout.addMember(contactMainFormLayoutVLayout);
 
         VLayout contactsSectionLayout = new VLayout();
         contactsSectionLayout.setMargin(15);
@@ -204,6 +217,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         panel.addMember(mainFormLayout);
         panel.addMember(contactsSectionLayout);
     }
+
     private void bindMainFormLayoutEvents() {
         mainFormLayout.getTranslateToolStripButton().addClickHandler(new ClickHandler() {
 
@@ -226,7 +240,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
             @Override
             public void onClick(ClickEvent event) {
                 if (validateEditionForms()) {
-                    getUiHandlers().saveOrganisation(getOrganisationDto());
+                    getUiHandlers().updateOrganisation(getOrganisationDto());
                 }
             }
         });
@@ -309,6 +323,8 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
     @Override
     public void setOrganisation(OrganisationMetamacDto organisationDto) {
         this.organisationDto = organisationDto;
+        this.contactDtos = new ArrayList<ContactDto>();
+        this.contactDtos.addAll(organisationDto.getContacts());
 
         String defaultLocalized = InternationalStringUtils.getLocalisedString(organisationDto.getName());
         String title = defaultLocalized != null ? defaultLocalized : StringUtils.EMPTY;
@@ -387,16 +403,19 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         contactDeleteButton.show();
     }
 
-    private void addContactToOrganisation(ContactDto contactDto) {
-        for (int i = 0; i < organisationDto.getContacts().size(); i++) {
-            // If the contact already existed, replace it
-            if (organisationDto.getContacts().get(i).getId().compareTo(contactDto.getId()) == 0) {
-                organisationDto.getContacts().set(i, contactDto);
-                return;
+    private List<ContactDto> updateContacts(List<ContactDto> contactDtos, ContactDto contactDto) {
+        if (contactDto.getId() == null) {
+            // If contact is being created, add it to the organisation
+            contactDtos.add(contactDto);
+        } else {
+            // If contact is being updated, replace it in the organisation
+            for (int i = 0; i < contactDtos.size(); i++) {
+                if (contactDto.getId().equals(contactDtos.get(i).getId())) {
+                    contactDtos.set(i, contactDto);
+                }
             }
         }
-        // If contact is new, add it to the organisation
-        organisationDto.getContacts().add(contactDto);
+        return contactDtos;
     }
 
     private void removeContactsFromOrganisation(List<ContactDto> contactDtos) {

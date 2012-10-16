@@ -3,6 +3,9 @@ package org.siemac.metamac.srm.web.organisation.presenter;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
@@ -22,6 +25,7 @@ import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.organisation.ContactDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
@@ -47,6 +51,8 @@ public class OrganisationPresenter extends Presenter<OrganisationPresenter.Organ
     private final DispatchAsync      dispatcher;
     private final PlaceManager       placeManager;
     private ToolStripPresenterWidget toolStripPresenterWidget;
+
+    private OrganisationMetamacDto   organisationMetamacDto;
 
     @TitleFunction
     public static String getTranslatedTitle() {
@@ -120,21 +126,45 @@ public class OrganisationPresenter extends Presenter<OrganisationPresenter.Organ
             }
             @Override
             public void onWaitSuccess(GetOrganisationResult result) {
+                organisationMetamacDto = result.getOrganisationDto();
                 getView().setOrganisation(result.getOrganisationDto());
             }
         });
     }
 
     @Override
-    public void saveOrganisation(OrganisationMetamacDto organisationDto) {
+    public void updateOrganisation(OrganisationMetamacDto organisationDto) {
+        // If we are saving an organisation, contacts should not be updated
+        List<ContactDto> contacts = new ArrayList<ContactDto>();
+        contacts.addAll(this.organisationMetamacDto.getContacts());
+        organisationDto.getContacts().clear();
+        organisationDto.getContacts().addAll(contacts);
+
+        saveOrganisation(organisationDto);
+    }
+
+    @Override
+    public void updateContacts(List<ContactDto> contactDtos) {
+        // if we are saving the organisation contacts, organisation metadata should not be updated
+        List<ContactDto> contacts = new ArrayList<ContactDto>();
+        contacts.addAll(contactDtos);
+        this.organisationMetamacDto.getContacts().clear();
+        this.organisationMetamacDto.getContacts().addAll(contacts);
+
+        saveOrganisation(this.organisationMetamacDto);
+    }
+
+    private void saveOrganisation(OrganisationMetamacDto organisationDto) {
         dispatcher.execute(new SaveOrganisationAction(organisationDto), new WaitingAsyncCallback<SaveOrganisationResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(OrganisationPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().organisationErrorSave()), MessageTypeEnum.ERROR);
+                // TODO Reload organisation
             }
             @Override
             public void onWaitSuccess(SaveOrganisationResult result) {
+                organisationMetamacDto = result.getOrganisationSaved();
                 ShowMessageEvent.fire(OrganisationPresenter.this, ErrorUtils.getMessageList(getMessages().organisationSchemeSaved()), MessageTypeEnum.SUCCESS);
                 getView().setOrganisation(result.getOrganisationSaved());
             }
