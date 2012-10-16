@@ -8,7 +8,7 @@ import org.siemac.metamac.sso.client.MetamacPrincipal;
 import org.siemac.metamac.web.common.client.MetamacEntryPoint;
 import org.siemac.metamac.web.common.client.events.LoginAuthenticatedEvent;
 import org.siemac.metamac.web.common.client.utils.ApplicationEditionLanguages;
-import org.siemac.metamac.web.common.client.widgets.IstacNavBar;
+import org.siemac.metamac.web.common.client.widgets.MetamacNavBar;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 import org.siemac.metamac.web.common.shared.GetEditionLanguagesAction;
 import org.siemac.metamac.web.common.shared.GetEditionLanguagesResult;
@@ -49,7 +49,7 @@ public class MetamacSrmWeb extends MetamacEntryPoint {
             }
             public void onWaitSuccess(GetNavigationBarUrlResult result) {
                 // Load scripts for navigation bar
-                IstacNavBar.loadScripts(result.getNavigationBarUrl());
+                MetamacNavBar.loadScripts(result.getNavigationBarUrl());
                 loadNonSecuredApplication();
             };
         });
