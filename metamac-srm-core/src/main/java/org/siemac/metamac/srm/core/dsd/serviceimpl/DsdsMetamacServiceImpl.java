@@ -24,7 +24,6 @@ import org.springframework.stereotype.Service;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Component;
 import com.arte.statistic.sdmx.srm.core.base.domain.ComponentList;
-import com.arte.statistic.sdmx.srm.core.base.domain.Structure;
 import com.arte.statistic.sdmx.srm.core.base.enume.domain.VersionPatternEnum;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DataStructureDefinitionVersion;
 import com.arte.statistic.sdmx.srm.core.structure.serviceapi.DataStructureDefinitionService;
@@ -46,6 +45,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
     private LifeCycle                      dsdLifeCycle;
 
     @Autowired
+    @Qualifier("structureCopyCallbackMetamac")
     private StructureCopyCallback          structureCopyCallback;
 
     public DsdsMetamacServiceImpl() {
@@ -170,20 +170,10 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
     @Override
     public DataStructureDefinitionVersionMetamac versioningDataStructureDefinition(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
         // Validation
-        DsdsMetamacInvocationValidator.checkVersioningDataStructureDefinition(urnToCopy, versionType, null);
+        DsdsMetamacInvocationValidator.checkVersioningDataStructureDefinition(urnToCopy, versionType, null, null);
+        // Validations of scheme final, ... are done in sdmx module
 
-        // Initialize new version, copying values of version selected
-        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionToCopy = getDataStructureDefinitionVersionMetamacRepository().retrieveDataStructureDefinitionVersionByProcStatus(urnToCopy,
-                new ProcStatusEnum[]{ProcStatusEnum.INTERNALLY_PUBLISHED, ProcStatusEnum.EXTERNALLY_PUBLISHED});
-
-        // Check not exists version not published
-        List<DataStructureDefinitionVersionMetamac> versionsNotPublished = findDataStructureVersionsOfDataStructureInProcStatus(ctx, dataStructureDefinitionVersionToCopy.getStructure(),
-                ProcStatusEnum.DRAFT, ProcStatusEnum.PRODUCTION_VALIDATION, ProcStatusEnum.DIFFUSION_VALIDATION, ProcStatusEnum.VALIDATION_REJECTED);
-        if (versionsNotPublished.size() != 0) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.SRM_DATA_STRUCTURE_DEFINITION_VERSIONING_NOT_SUPPORTED)
-                    .withMessageParameters(versionsNotPublished.get(0).getMaintainableArtefact().getUrn()).build();
-        }
-
+        // Versioning
         return (DataStructureDefinitionVersionMetamac) dataStructureDefinitionService.versioningDataStructureDefinition(ctx, urnToCopy, versionType, structureCopyCallback);
     }
 
@@ -227,20 +217,4 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         }
         return dataStructureDefinitionVersionMetamacPagedResult.getValues().get(0);
     }
-
-    /**
-     * Finds versions of data structure definition in specific procStatus
-     */
-    private List<DataStructureDefinitionVersionMetamac> findDataStructureVersionsOfDataStructureInProcStatus(ServiceContext ctx, Structure structure, ProcStatusEnum... procStatus)
-            throws MetamacException {
-
-        List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(DataStructureDefinitionVersionMetamac.class)
-                .withProperty(DataStructureDefinitionVersionMetamacProperties.structure().id()).eq(structure.getId())
-                .withProperty(DataStructureDefinitionVersionMetamacProperties.lifeCycleMetadata().procStatus()).in((Object[]) procStatus).distinctRoot().build();
-        PagingParameter pagingParameter = PagingParameter.noLimits();
-        PagedResult<DataStructureDefinitionVersionMetamac> dataStructureDefinitionVersionPagedResult = getDataStructureDefinitionVersionMetamacRepository()
-                .findByCondition(conditions, pagingParameter);
-        return dataStructureDefinitionVersionPagedResult.getValues();
-    }
-
 }

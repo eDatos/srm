@@ -22,7 +22,7 @@ import com.arte.statistic.sdmx.srm.core.structure.domain.ReportingYearStartDay;
 import com.arte.statistic.sdmx.srm.core.structure.domain.TimeDimension;
 import com.arte.statistic.sdmx.srm.core.structure.serviceimpl.utils.StructureDoCopyUtils.StructureCopyCallback;
 
-@Component("structureCopyCallback")
+@Component("structureCopyCallbackMetamac")
 public class StructureCopyCallbackMetamacImpl implements StructureCopyCallback {
 
     /****************
@@ -31,7 +31,7 @@ public class StructureCopyCallbackMetamacImpl implements StructureCopyCallback {
 
     @Override
     public DataStructureDefinitionVersion copyDataStructureDefinitionVersion(DataStructureDefinitionVersion source) {
-        DataStructureDefinitionVersionMetamac sourceMetamac = (DataStructureDefinitionVersionMetamac) source;
+        // DataStructureDefinitionVersionMetamac sourceMetamac = (DataStructureDefinitionVersionMetamac) source;
 
         DataStructureDefinitionVersionMetamac target = new DataStructureDefinitionVersionMetamac();
 

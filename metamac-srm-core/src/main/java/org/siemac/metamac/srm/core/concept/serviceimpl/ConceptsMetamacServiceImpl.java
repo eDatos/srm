@@ -193,7 +193,8 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
         // Validation
         ConceptsMetamacInvocationValidator.checkVersioningConceptScheme(urnToCopy, versionType, null, null);
-
+        // Validations of scheme final, ... are done in sdmx module
+        
         // Versioning
         ConceptSchemeVersionMetamac conceptSchemeNewVersion = (ConceptSchemeVersionMetamac) conceptsService.versioningConceptScheme(ctx, urnToCopy, versionType, conceptCopyCallback);
 

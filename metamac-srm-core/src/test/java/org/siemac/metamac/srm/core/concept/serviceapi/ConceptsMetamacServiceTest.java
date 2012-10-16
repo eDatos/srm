@@ -1366,9 +1366,9 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             fail("ConceptScheme not published");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEquals(ServiceExceptionType.PARAMETER_INCORRECT.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(ServiceExceptionType.CONCEPT_SCHEME_VERSIONING_NOT_SUPPORTED.getCode(), e.getExceptionItems().get(0).getCode());
             assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-            assertEquals(ServiceExceptionParameters.URN, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
         }
     }
 
