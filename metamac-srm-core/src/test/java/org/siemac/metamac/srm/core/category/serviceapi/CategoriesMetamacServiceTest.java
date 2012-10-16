@@ -7,8 +7,10 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang.time.DateUtils;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
@@ -218,593 +220,592 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
     // assertEquals(CATEGORY_SCHEME_1_V1, categorySchemeVersions.get(0).getMaintainableArtefact().getUrn());
     // assertEquals(CATEGORY_SCHEME_1_V2, categorySchemeVersions.get(1).getMaintainableArtefact().getUrn());
     // }
-    //
-    // @Test
-    // public void testSendCategorySchemeToProductionValidation() throws Exception {
-    //
-    // String urn = CATEGORY_SCHEME_2_V1;
-    // ServiceContext ctx = getServiceContextAdministrador();
-    //
-    // {
-    // CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(ctx, urn);
-    // assertEquals(ProcStatusEnum.DRAFT, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationDate());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
-    // }
-    //
-    // // Send to production validation
-    // CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.sendCategorySchemeToProductionValidation(ctx, urn);
-    //
-    // // Validate response
-    // {
-    // assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
-    // assertTrue(DateUtils.isSameDay(new Date(), categorySchemeVersion.getLifeCycleMetadata().getProductionValidationDate().toDate()));
-    // assertEquals(ctx.getUserId(), categorySchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationDate());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationUser());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationDate());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationUser());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationDate());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
-    // }
-    // // Validate retrieving
-    // {
-    // categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(ctx, urn);
-    //
-    // assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
-    // assertTrue(DateUtils.isSameDay(new Date(), categorySchemeVersion.getLifeCycleMetadata().getProductionValidationDate().toDate()));
-    // assertEquals(ctx.getUserId(), categorySchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationDate());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationUser());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationDate());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationUser());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationDate());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
-    // }
-    // }
-    //
-    // @Test
-    // public void testSendCategorySchemeToProductionValidationInProcStatusRejected() throws Exception {
-    //
-    // String urn = CATEGORY_SCHEME_4_V1;
-    // ServiceContext ctx = getServiceContextAdministrador();
-    //
-    // {
-    // CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(ctx, urn);
-    // assertEquals(ProcStatusEnum.VALIDATION_REJECTED, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationDate());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
-    // }
-    //
-    // // Send to production validation
-    // CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.sendCategorySchemeToProductionValidation(ctx, urn);
-    //
-    // // Validate response
-    // {
-    // assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
-    // assertTrue(DateUtils.isSameDay(new Date(), categorySchemeVersion.getLifeCycleMetadata().getProductionValidationDate().toDate()));
-    // assertEquals(ctx.getUserId(), categorySchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationDate());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationUser());
-    // }
-    // // Validate retrieving
-    // {
-    // categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(ctx, urn);
-    //
-    // assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
-    // assertTrue(DateUtils.isSameDay(new Date(), categorySchemeVersion.getLifeCycleMetadata().getProductionValidationDate().toDate()));
-    // assertEquals(ctx.getUserId(), categorySchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationDate());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationUser());
-    // }
-    // }
-    //
-    // @Test
-    // public void testSendCategorySchemeToProductionValidationErrorNotExists() throws Exception {
-    //
-    // String urn = NOT_EXISTS;
-    // try {
-    // categoriesService.sendCategorySchemeToProductionValidation(getServiceContextAdministrador(), urn);
-    // fail("CategoryScheme not exists");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.CATEGORY_SCHEME_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // }
-    // }
-    //
-    // @Test
-    // public void testSendCategorySchemeToProductionValidationErrorWrongProcStatus() throws Exception {
-    //
-    // String urn = CATEGORY_SCHEME_1_V1;
-    //
-    // {
-    // CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urn);
-    // assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
-    // }
-    //
-    // try {
-    // categoriesService.sendCategorySchemeToProductionValidation(getServiceContextAdministrador(), urn);
-    // fail("CategoryScheme wrong proc status");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.CATEGORY_SCHEME_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // assertEquals(ServiceExceptionParameters.PROC_STATUS_DRAFT, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
-    // assertEquals(ServiceExceptionParameters.PROC_STATUS_VALIDATION_REJECTED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[1]);
-    // }
-    // }
-    //
-    // @Test
-    // public void testSendCategorySchemeToProductionValidationErrorMetadataRequired() throws Exception {
-    //
-    // String urn = CATEGORY_SCHEME_2_V1;
-    //
-    // // Update to clear metadata
-    // CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urn);
-    // categorySchemeVersion.setIsPartial(null);
-    // categorySchemeVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
-    // categorySchemeVersion.setIsTypeUpdated(Boolean.FALSE);
-    // categoriesService.updateCategoryScheme(getServiceContextAdministrador(), categorySchemeVersion);
-    //
-    // // Send to production validation
-    // try {
-    // categoriesService.sendCategorySchemeToProductionValidation(getServiceContextAdministrador(), urn);
-    // fail("CategoryScheme metadata required");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    //
-    // assertEquals(ServiceExceptionType.METADATA_REQUIRED.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(ServiceExceptionParameters.ITEM_SCHEME_IS_PARTIAL, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // }
-    // }
-    //
-    // @Test
-    // public void testSendCategorySchemeToDiffusionValidation() throws Exception {
-    //
-    // String urn = CATEGORY_SCHEME_5_V1;
-    // ServiceContext ctx = getServiceContextAdministrador();
-    //
-    // {
-    // CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(ctx, urn);
-    // assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationDate());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationUser());
-    // }
-    //
-    // // Sends to diffusion validation
-    // CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.sendCategorySchemeToDiffusionValidation(ctx, urn);
-    //
-    // // Validate response
-    // {
-    // assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
-    // assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationDate());
-    // assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
-    // assertTrue(DateUtils.isSameDay(new Date(), categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationDate().toDate()));
-    // assertEquals(ctx.getUserId(), categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationUser());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationDate());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationUser());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationDate());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
-    // }
-    // // Validate retrieving
-    // {
-    // categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(ctx, urn);
-    //
-    // assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
-    // assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationDate());
-    // assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
-    // assertTrue(DateUtils.isSameDay(new Date(), categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationDate().toDate()));
-    // assertEquals(ctx.getUserId(), categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationUser());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationDate());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationUser());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationDate());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
-    // }
-    // }
-    //
-    // @Test
-    // public void testSendCategorySchemeToDiffusionValidationErrorNotExists() throws Exception {
-    //
-    // String urn = NOT_EXISTS;
-    // try {
-    // categoriesService.sendCategorySchemeToDiffusionValidation(getServiceContextAdministrador(), urn);
-    // fail("CategoryScheme not exists");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.CATEGORY_SCHEME_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // }
-    // }
-    //
-    // @Test
-    // public void testSendCategorySchemeToDiffusionValidationErrorWrongProcStatus() throws Exception {
-    //
-    // String urn = CATEGORY_SCHEME_2_V1;
-    // ServiceContext ctx = getServiceContextAdministrador();
-    //
-    // {
-    // CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(ctx, urn);
-    // assertEquals(ProcStatusEnum.DRAFT, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationDate());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationUser());
-    // }
-    //
-    // try {
-    // categoriesService.sendCategorySchemeToDiffusionValidation(getServiceContextAdministrador(), urn);
-    // fail("CategoryScheme wrong proc status");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.CATEGORY_SCHEME_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // assertEquals(ServiceExceptionParameters.PROC_STATUS_PRODUCTION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
-    // }
-    // }
-    //
-    // @Test
-    // public void testRejectCategorySchemeProductionValidation() throws Exception {
-    //
-    // String urn = CATEGORY_SCHEME_5_V1;
-    // ServiceContext ctx = getServiceContextAdministrador();
-    //
-    // {
-    // CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(ctx, urn);
-    // assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
-    // assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationDate());
-    // assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
-    // }
-    //
-    // // Reject validation
-    // CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.rejectCategorySchemeProductionValidation(ctx, urn);
-    //
-    // // Validate response
-    // {
-    // assertEquals(ProcStatusEnum.VALIDATION_REJECTED, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationDate());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationDate());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationUser());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationDate());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationUser());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationDate());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
-    // }
-    // // Validate restrieving
-    // {
-    // categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(ctx, urn);
-    //
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationDate());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationDate());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationUser());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationDate());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationUser());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationDate());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
-    // }
-    // }
-    //
-    // @Test
-    // public void testRejectCategorySchemeProductionValidationErrorNotExists() throws Exception {
-    //
-    // String urn = NOT_EXISTS;
-    // try {
-    // categoriesService.rejectCategorySchemeProductionValidation(getServiceContextAdministrador(), urn);
-    // fail("CategoryScheme not exists");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.CATEGORY_SCHEME_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // }
-    // }
-    //
-    // @Test
-    // public void testRejectCategorySchemeProductionValidationErrorWrongProcStatus() throws Exception {
-    //
-    // String urn = CATEGORY_SCHEME_1_V1;
-    //
-    // {
-    // CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urn);
-    // assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
-    // }
-    //
-    // try {
-    // categoriesService.rejectCategorySchemeProductionValidation(getServiceContextAdministrador(), urn);
-    // fail("CategoryScheme wrong proc status");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.CATEGORY_SCHEME_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // assertEquals(ServiceExceptionParameters.PROC_STATUS_PRODUCTION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
-    // }
-    // }
-    //
-    // @Test
-    // public void testRejectCategorySchemeDiffusionValidation() throws Exception {
-    //
-    // String urn = CATEGORY_SCHEME_6_V1;
-    // ServiceContext ctx = getServiceContextAdministrador();
-    //
-    // {
-    // CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(ctx, urn);
-    // assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
-    // assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationDate());
-    // assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
-    // assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationDate());
-    // assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationUser());
-    // }
-    //
-    // // Reject validation
-    // CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.rejectCategorySchemeDiffusionValidation(ctx, urn);
-    //
-    // // Validate response
-    // {
-    // assertEquals(ProcStatusEnum.VALIDATION_REJECTED, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationDate());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationDate());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationUser());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationDate());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationUser());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationDate());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
-    // }
-    // // Validate retrieving
-    // {
-    // categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(ctx, urn);
-    //
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationDate());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationDate());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationUser());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationDate());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationUser());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationDate());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
-    // }
-    // }
-    //
-    // @Test
-    // public void testRejectCategorySchemeDiffusionValidationErrorNotExists() throws Exception {
-    //
-    // String urn = NOT_EXISTS;
-    // try {
-    // categoriesService.rejectCategorySchemeDiffusionValidation(getServiceContextAdministrador(), urn);
-    // fail("CategoryScheme not exists");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.CATEGORY_SCHEME_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // }
-    // }
-    //
-    // @Test
-    // public void testRejectCategorySchemeDiffusionValidationErrorWrongProcStatus() throws Exception {
-    //
-    // String urn = CATEGORY_SCHEME_1_V1;
-    //
-    // {
-    // CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urn);
-    // assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
-    // }
-    //
-    // try {
-    // categoriesService.rejectCategorySchemeDiffusionValidation(getServiceContextAdministrador(), urn);
-    // fail("CategoryScheme wrong proc status");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.CATEGORY_SCHEME_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // assertEquals(ServiceExceptionParameters.PROC_STATUS_DIFFUSION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
-    // }
-    // }
-    //
-    // @Test
-    // public void testPublishInternallyCategoryScheme() throws Exception {
-    //
-    // String urn = CATEGORY_SCHEME_6_V1;
-    // ServiceContext ctx = getServiceContextAdministrador();
-    //
-    // {
-    // CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(ctx, urn);
-    // assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
-    // assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationDate());
-    // assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
-    // assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationDate());
-    // assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationUser());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationDate());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationUser());
-    // assertFalse(categorySchemeVersion.getMaintainableArtefact().getFinalLogic());
-    // }
-    //
-    // // Publish internally
-    // CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.publishInternallyCategoryScheme(ctx, urn);
-    //
-    // // Validate response
-    // {
-    // assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
-    // assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationDate());
-    // assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
-    // assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationDate());
-    // assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationUser());
-    // assertTrue(DateUtils.isSameDay(new Date(), categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationDate().toDate()));
-    // assertEquals(ctx.getUserId(), categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationUser());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationDate());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
-    // assertTrue(categorySchemeVersion.getMaintainableArtefact().getFinalLogic());
-    // }
-    // // Validate retrieving
-    // {
-    // categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(ctx, urn);
-    //
-    // assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
-    // assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationDate());
-    // assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
-    // assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationDate());
-    // assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationUser());
-    // assertTrue(DateUtils.isSameDay(new Date(), categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationDate().toDate()));
-    // assertEquals(ctx.getUserId(), categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationUser());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationDate());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
-    // assertTrue(categorySchemeVersion.getMaintainableArtefact().getFinalLogic());
-    // }
-    // }
-    //
-    // @Test
-    // public void testPublishInternallyCategorySchemeErrorNotExists() throws Exception {
-    //
-    // String urn = NOT_EXISTS;
-    // try {
-    // categoriesService.publishInternallyCategoryScheme(getServiceContextAdministrador(), urn);
-    // fail("CategoryScheme not exists");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.CATEGORY_SCHEME_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // }
-    // }
-    //
-    // @Test
-    // public void testPublishInternallyCategorySchemeErrorWrongProcStatus() throws Exception {
-    //
-    // String urn = CATEGORY_SCHEME_1_V1;
-    //
-    // {
-    // CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urn);
-    // assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
-    // }
-    //
-    // try {
-    // categoriesService.publishInternallyCategoryScheme(getServiceContextAdministrador(), urn);
-    // fail("CategoryScheme wrong proc status");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.CATEGORY_SCHEME_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // assertEquals(ServiceExceptionParameters.PROC_STATUS_DIFFUSION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
-    // }
-    // }
-    //
-    // @Test
-    // public void testPublishExternallyCategoryScheme() throws Exception {
-    //
-    // String urn = CATEGORY_SCHEME_7_V2;
-    // ServiceContext ctx = getServiceContextAdministrador();
-    //
-    // {
-    // CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(ctx, urn);
-    // assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
-    // assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationDate());
-    // assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
-    // assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationDate());
-    // assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationUser());
-    // assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationDate());
-    // assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationUser());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationDate());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
-    // assertNull(categorySchemeVersion.getMaintainableArtefact().getValidFrom());
-    // assertNull(categorySchemeVersion.getMaintainableArtefact().getValidTo());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getIsExternalPublicationFailed());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationFailedDate());
-    //
-    // CategorySchemeVersionMetamac categorySchemeVersionExternallyPublished = categoriesService.retrieveCategorySchemeByUrn(ctx, CATEGORY_SCHEME_7_V1);
-    // assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, categorySchemeVersionExternallyPublished.getLifeCycleMetadata().getProcStatus());
-    // assertNotNull(categorySchemeVersionExternallyPublished.getMaintainableArtefact().getValidFrom());
-    // assertNull(categorySchemeVersionExternallyPublished.getMaintainableArtefact().getValidTo());
-    // }
-    //
-    // // Publish externally
-    // CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.publishExternallyCategoryScheme(ctx, urn);
-    //
-    // // Validate response
-    // {
-    // assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
-    // assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationDate());
-    // assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
-    // assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationDate());
-    // assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationUser());
-    // assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationDate());
-    // assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationUser());
-    // assertTrue(DateUtils.isSameDay(new Date(), categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationDate().toDate()));
-    // assertEquals(ctx.getUserId(), categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
-    // assertTrue(DateUtils.isSameDay(new Date(), categorySchemeVersion.getMaintainableArtefact().getValidFrom().toDate()));
-    // assertNull(categorySchemeVersion.getMaintainableArtefact().getValidTo());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getIsExternalPublicationFailed());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationFailedDate());
-    // }
-    // // Validate retrieving
-    // {
-    // categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(ctx, urn);
-    // assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
-    // assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationDate());
-    // assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
-    // assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationDate());
-    // assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationUser());
-    // assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationDate());
-    // assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationUser());
-    // assertTrue(DateUtils.isSameDay(new Date(), categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationDate().toDate()));
-    // assertEquals(ctx.getUserId(), categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
-    // assertTrue(DateUtils.isSameDay(new Date(), categorySchemeVersion.getMaintainableArtefact().getValidFrom().toDate()));
-    // assertNull(categorySchemeVersion.getMaintainableArtefact().getValidTo());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getIsExternalPublicationFailed());
-    // assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationFailedDate());
-    // }
-    // // Validate previous published externally versions
-    // {
-    // CategorySchemeVersionMetamac categorySchemeVersionExternallyPublished = categoriesService.retrieveCategorySchemeByUrn(ctx, CATEGORY_SCHEME_7_V1);
-    // assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, categorySchemeVersionExternallyPublished.getLifeCycleMetadata().getProcStatus());
-    // assertNotNull(categorySchemeVersionExternallyPublished.getMaintainableArtefact().getValidFrom());
-    // assertTrue(DateUtils.isSameDay(new Date(), categorySchemeVersionExternallyPublished.getMaintainableArtefact().getValidTo().toDate()));
-    // }
-    // }
-    //
-    // @Test
-    // public void testPublishExternallyCategorySchemeErrorNotExists() throws Exception {
-    //
-    // String urn = NOT_EXISTS;
-    // try {
-    // categoriesService.publishExternallyCategoryScheme(getServiceContextAdministrador(), urn);
-    // fail("CategoryScheme not exists");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.CATEGORY_SCHEME_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // }
-    // }
-    //
-    // @Test
-    // public void testPublishExternallyCategorySchemeErrorWrongProcStatus() throws Exception {
-    //
-    // String urn = CATEGORY_SCHEME_1_V2;
-    //
-    // {
-    // CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urn);
-    // assertEquals(ProcStatusEnum.DRAFT, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
-    // }
-    //
-    // try {
-    // categoriesService.publishExternallyCategoryScheme(getServiceContextAdministrador(), urn);
-    // fail("CategoryScheme wrong proc status");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.CATEGORY_SCHEME_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // assertEquals(ServiceExceptionParameters.PROC_STATUS_INTERNALLY_PUBLISHED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
-    // }
-    // }
+
+    @Test
+    public void testSendCategorySchemeToProductionValidation() throws Exception {
+
+        String urn = CATEGORY_SCHEME_2_V1;
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        {
+            CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(ctx, urn);
+            assertEquals(ProcStatusEnum.DRAFT, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationDate());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
+        }
+
+        // Send to production validation
+        CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.sendCategorySchemeToProductionValidation(ctx, urn);
+
+        // Validate response
+        {
+            assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
+            assertTrue(DateUtils.isSameDay(new Date(), categorySchemeVersion.getLifeCycleMetadata().getProductionValidationDate().toDate()));
+            assertEquals(ctx.getUserId(), categorySchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationDate());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationUser());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationDate());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationUser());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationDate());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
+        }
+        // Validate retrieving
+        {
+            categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(ctx, urn);
+
+            assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
+            assertTrue(DateUtils.isSameDay(new Date(), categorySchemeVersion.getLifeCycleMetadata().getProductionValidationDate().toDate()));
+            assertEquals(ctx.getUserId(), categorySchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationDate());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationUser());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationDate());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationUser());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationDate());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
+        }
+    }
+
+    @Test
+    public void testSendCategorySchemeToProductionValidationInProcStatusRejected() throws Exception {
+
+        String urn = CATEGORY_SCHEME_4_V1;
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        {
+            CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(ctx, urn);
+            assertEquals(ProcStatusEnum.VALIDATION_REJECTED, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationDate());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
+        }
+
+        // Send to production validation
+        CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.sendCategorySchemeToProductionValidation(ctx, urn);
+
+        // Validate response
+        {
+            assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
+            assertTrue(DateUtils.isSameDay(new Date(), categorySchemeVersion.getLifeCycleMetadata().getProductionValidationDate().toDate()));
+            assertEquals(ctx.getUserId(), categorySchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationDate());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationUser());
+        }
+        // Validate retrieving
+        {
+            categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(ctx, urn);
+
+            assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
+            assertTrue(DateUtils.isSameDay(new Date(), categorySchemeVersion.getLifeCycleMetadata().getProductionValidationDate().toDate()));
+            assertEquals(ctx.getUserId(), categorySchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationDate());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationUser());
+        }
+    }
+
+    @Test
+    public void testSendCategorySchemeToProductionValidationErrorNotExists() throws Exception {
+
+        String urn = NOT_EXISTS;
+        try {
+            categoriesService.sendCategorySchemeToProductionValidation(getServiceContextAdministrador(), urn);
+            fail("CategoryScheme not exists");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.CATEGORY_SCHEME_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
+    @Test
+    public void testSendCategorySchemeToProductionValidationErrorWrongProcStatus() throws Exception {
+
+        String urn = CATEGORY_SCHEME_1_V1;
+
+        {
+            CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urn);
+            assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
+        }
+
+        try {
+            categoriesService.sendCategorySchemeToProductionValidation(getServiceContextAdministrador(), urn);
+            fail("CategoryScheme wrong proc status");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.CATEGORY_SCHEME_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_DRAFT, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_VALIDATION_REJECTED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[1]);
+        }
+    }
+
+    @Test
+    public void testSendCategorySchemeToProductionValidationErrorMetadataRequired() throws Exception {
+
+        String urn = CATEGORY_SCHEME_2_V1;
+
+        // Update to clear required metadata to send to production
+        CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urn);
+        categorySchemeVersion.setIsPartial(null);
+        categorySchemeVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
+        categoriesService.updateCategoryScheme(getServiceContextAdministrador(), categorySchemeVersion);
+
+        // Send to production validation
+        try {
+            categoriesService.sendCategorySchemeToProductionValidation(getServiceContextAdministrador(), urn);
+            fail("CategoryScheme metadata required");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+
+            assertEquals(ServiceExceptionType.METADATA_REQUIRED.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(ServiceExceptionParameters.ITEM_SCHEME_IS_PARTIAL, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
+    @Test
+    public void testSendCategorySchemeToDiffusionValidation() throws Exception {
+
+        String urn = CATEGORY_SCHEME_5_V1;
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        {
+            CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(ctx, urn);
+            assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationDate());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationUser());
+        }
+
+        // Sends to diffusion validation
+        CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.sendCategorySchemeToDiffusionValidation(ctx, urn);
+
+        // Validate response
+        {
+            assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
+            assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationDate());
+            assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
+            assertTrue(DateUtils.isSameDay(new Date(), categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationDate().toDate()));
+            assertEquals(ctx.getUserId(), categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationUser());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationDate());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationUser());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationDate());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
+        }
+        // Validate retrieving
+        {
+            categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(ctx, urn);
+
+            assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
+            assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationDate());
+            assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
+            assertTrue(DateUtils.isSameDay(new Date(), categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationDate().toDate()));
+            assertEquals(ctx.getUserId(), categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationUser());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationDate());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationUser());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationDate());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
+        }
+    }
+
+    @Test
+    public void testSendCategorySchemeToDiffusionValidationErrorNotExists() throws Exception {
+
+        String urn = NOT_EXISTS;
+        try {
+            categoriesService.sendCategorySchemeToDiffusionValidation(getServiceContextAdministrador(), urn);
+            fail("CategoryScheme not exists");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.CATEGORY_SCHEME_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
+    @Test
+    public void testSendCategorySchemeToDiffusionValidationErrorWrongProcStatus() throws Exception {
+
+        String urn = CATEGORY_SCHEME_2_V1;
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        {
+            CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(ctx, urn);
+            assertEquals(ProcStatusEnum.DRAFT, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationDate());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationUser());
+        }
+
+        try {
+            categoriesService.sendCategorySchemeToDiffusionValidation(getServiceContextAdministrador(), urn);
+            fail("CategoryScheme wrong proc status");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.CATEGORY_SCHEME_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_PRODUCTION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
+        }
+    }
+
+    @Test
+    public void testRejectCategorySchemeProductionValidation() throws Exception {
+
+        String urn = CATEGORY_SCHEME_5_V1;
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        {
+            CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(ctx, urn);
+            assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
+            assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationDate());
+            assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
+        }
+
+        // Reject validation
+        CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.rejectCategorySchemeProductionValidation(ctx, urn);
+
+        // Validate response
+        {
+            assertEquals(ProcStatusEnum.VALIDATION_REJECTED, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationDate());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationDate());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationUser());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationDate());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationUser());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationDate());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
+        }
+        // Validate restrieving
+        {
+            categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(ctx, urn);
+
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationDate());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationDate());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationUser());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationDate());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationUser());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationDate());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
+        }
+    }
+
+    @Test
+    public void testRejectCategorySchemeProductionValidationErrorNotExists() throws Exception {
+
+        String urn = NOT_EXISTS;
+        try {
+            categoriesService.rejectCategorySchemeProductionValidation(getServiceContextAdministrador(), urn);
+            fail("CategoryScheme not exists");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.CATEGORY_SCHEME_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
+    @Test
+    public void testRejectCategorySchemeProductionValidationErrorWrongProcStatus() throws Exception {
+
+        String urn = CATEGORY_SCHEME_1_V1;
+
+        {
+            CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urn);
+            assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
+        }
+
+        try {
+            categoriesService.rejectCategorySchemeProductionValidation(getServiceContextAdministrador(), urn);
+            fail("CategoryScheme wrong proc status");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.CATEGORY_SCHEME_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_PRODUCTION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
+        }
+    }
+
+    @Test
+    public void testRejectCategorySchemeDiffusionValidation() throws Exception {
+
+        String urn = CATEGORY_SCHEME_6_V1;
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        {
+            CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(ctx, urn);
+            assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
+            assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationDate());
+            assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
+            assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationDate());
+            assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationUser());
+        }
+
+        // Reject validation
+        CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.rejectCategorySchemeDiffusionValidation(ctx, urn);
+
+        // Validate response
+        {
+            assertEquals(ProcStatusEnum.VALIDATION_REJECTED, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationDate());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationDate());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationUser());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationDate());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationUser());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationDate());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
+        }
+        // Validate retrieving
+        {
+            categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(ctx, urn);
+
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationDate());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationDate());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationUser());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationDate());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationUser());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationDate());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
+        }
+    }
+
+    @Test
+    public void testRejectCategorySchemeDiffusionValidationErrorNotExists() throws Exception {
+
+        String urn = NOT_EXISTS;
+        try {
+            categoriesService.rejectCategorySchemeDiffusionValidation(getServiceContextAdministrador(), urn);
+            fail("CategoryScheme not exists");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.CATEGORY_SCHEME_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
+    @Test
+    public void testRejectCategorySchemeDiffusionValidationErrorWrongProcStatus() throws Exception {
+
+        String urn = CATEGORY_SCHEME_1_V1;
+
+        {
+            CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urn);
+            assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
+        }
+
+        try {
+            categoriesService.rejectCategorySchemeDiffusionValidation(getServiceContextAdministrador(), urn);
+            fail("CategoryScheme wrong proc status");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.CATEGORY_SCHEME_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_DIFFUSION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
+        }
+    }
+
+    @Test
+    public void testPublishInternallyCategoryScheme() throws Exception {
+
+        String urn = CATEGORY_SCHEME_6_V1;
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        {
+            CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(ctx, urn);
+            assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
+            assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationDate());
+            assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
+            assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationDate());
+            assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationUser());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationDate());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationUser());
+            assertFalse(categorySchemeVersion.getMaintainableArtefact().getFinalLogic());
+        }
+
+        // Publish internally
+        CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.publishInternallyCategoryScheme(ctx, urn);
+
+        // Validate response
+        {
+            assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
+            assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationDate());
+            assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
+            assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationDate());
+            assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationUser());
+            assertTrue(DateUtils.isSameDay(new Date(), categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationDate().toDate()));
+            assertEquals(ctx.getUserId(), categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationUser());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationDate());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
+            assertTrue(categorySchemeVersion.getMaintainableArtefact().getFinalLogic());
+        }
+        // Validate retrieving
+        {
+            categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(ctx, urn);
+
+            assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
+            assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationDate());
+            assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
+            assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationDate());
+            assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationUser());
+            assertTrue(DateUtils.isSameDay(new Date(), categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationDate().toDate()));
+            assertEquals(ctx.getUserId(), categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationUser());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationDate());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
+            assertTrue(categorySchemeVersion.getMaintainableArtefact().getFinalLogic());
+        }
+    }
+
+    @Test
+    public void testPublishInternallyCategorySchemeErrorNotExists() throws Exception {
+
+        String urn = NOT_EXISTS;
+        try {
+            categoriesService.publishInternallyCategoryScheme(getServiceContextAdministrador(), urn);
+            fail("CategoryScheme not exists");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.CATEGORY_SCHEME_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
+    @Test
+    public void testPublishInternallyCategorySchemeErrorWrongProcStatus() throws Exception {
+
+        String urn = CATEGORY_SCHEME_1_V1;
+
+        {
+            CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urn);
+            assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
+        }
+
+        try {
+            categoriesService.publishInternallyCategoryScheme(getServiceContextAdministrador(), urn);
+            fail("CategoryScheme wrong proc status");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.CATEGORY_SCHEME_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_DIFFUSION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
+        }
+    }
+
+    @Test
+    public void testPublishExternallyCategoryScheme() throws Exception {
+
+        String urn = CATEGORY_SCHEME_7_V2;
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        {
+            CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(ctx, urn);
+            assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
+            assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationDate());
+            assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
+            assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationDate());
+            assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationUser());
+            assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationDate());
+            assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationUser());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationDate());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
+            assertNull(categorySchemeVersion.getMaintainableArtefact().getValidFrom());
+            assertNull(categorySchemeVersion.getMaintainableArtefact().getValidTo());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getIsExternalPublicationFailed());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationFailedDate());
+
+            CategorySchemeVersionMetamac categorySchemeVersionExternallyPublished = categoriesService.retrieveCategorySchemeByUrn(ctx, CATEGORY_SCHEME_7_V1);
+            assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, categorySchemeVersionExternallyPublished.getLifeCycleMetadata().getProcStatus());
+            assertNotNull(categorySchemeVersionExternallyPublished.getMaintainableArtefact().getValidFrom());
+            assertNull(categorySchemeVersionExternallyPublished.getMaintainableArtefact().getValidTo());
+        }
+
+        // Publish externally
+        CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.publishExternallyCategoryScheme(ctx, urn);
+
+        // Validate response
+        {
+            assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
+            assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationDate());
+            assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
+            assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationDate());
+            assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationUser());
+            assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationDate());
+            assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationUser());
+            assertTrue(DateUtils.isSameDay(new Date(), categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationDate().toDate()));
+            assertEquals(ctx.getUserId(), categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
+            assertTrue(DateUtils.isSameDay(new Date(), categorySchemeVersion.getMaintainableArtefact().getValidFrom().toDate()));
+            assertNull(categorySchemeVersion.getMaintainableArtefact().getValidTo());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getIsExternalPublicationFailed());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationFailedDate());
+        }
+        // Validate retrieving
+        {
+            categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(ctx, urn);
+            assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
+            assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationDate());
+            assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
+            assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationDate());
+            assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getDiffusionValidationUser());
+            assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationDate());
+            assertNotNull(categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationUser());
+            assertTrue(DateUtils.isSameDay(new Date(), categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationDate().toDate()));
+            assertEquals(ctx.getUserId(), categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
+            assertTrue(DateUtils.isSameDay(new Date(), categorySchemeVersion.getMaintainableArtefact().getValidFrom().toDate()));
+            assertNull(categorySchemeVersion.getMaintainableArtefact().getValidTo());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getIsExternalPublicationFailed());
+            assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationFailedDate());
+        }
+        // Validate previous published externally versions
+        {
+            CategorySchemeVersionMetamac categorySchemeVersionExternallyPublished = categoriesService.retrieveCategorySchemeByUrn(ctx, CATEGORY_SCHEME_7_V1);
+            assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, categorySchemeVersionExternallyPublished.getLifeCycleMetadata().getProcStatus());
+            assertNotNull(categorySchemeVersionExternallyPublished.getMaintainableArtefact().getValidFrom());
+            assertTrue(DateUtils.isSameDay(new Date(), categorySchemeVersionExternallyPublished.getMaintainableArtefact().getValidTo().toDate()));
+        }
+    }
+
+    @Test
+    public void testPublishExternallyCategorySchemeErrorNotExists() throws Exception {
+
+        String urn = NOT_EXISTS;
+        try {
+            categoriesService.publishExternallyCategoryScheme(getServiceContextAdministrador(), urn);
+            fail("CategoryScheme not exists");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.CATEGORY_SCHEME_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
+    @Test
+    public void testPublishExternallyCategorySchemeErrorWrongProcStatus() throws Exception {
+
+        String urn = CATEGORY_SCHEME_1_V2;
+
+        {
+            CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urn);
+            assertEquals(ProcStatusEnum.DRAFT, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
+        }
+
+        try {
+            categoriesService.publishExternallyCategoryScheme(getServiceContextAdministrador(), urn);
+            fail("CategoryScheme wrong proc status");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.CATEGORY_SCHEME_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_INTERNALLY_PUBLISHED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
+        }
+    }
 
     @Test
     public void testDeleteCategoryScheme() throws Exception {

@@ -1350,90 +1350,90 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     //
     // return categorySchemeMetamacDtos;
     // }
-    //
-    // @Override
-    // public CategorySchemeMetamacDto sendCategorySchemeToProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
-    // // TODO Security
-    // // CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByUrn(ctx, urn);
-    // // CategoriesSecurityUtils.canSendCategorySchemeToProductionValidation(ctx, categorySchemeVersion);
-    //
-    // // Send
-    // CategorySchemeVersionMetamac categorySchemeVersionProductionValidation = getCategoriesMetamacService().sendCategorySchemeToProductionValidation(ctx, urn);
-    //
-    // // Transform to DTO
-    // CategorySchemeMetamacDto categorySchemeDto = categoriesDo2DtoMapper.categorySchemeMetamacDoToDto(categorySchemeVersionProductionValidation);
-    // return categorySchemeDto;
-    // }
-    //
-    // @Override
-    // public CategorySchemeMetamacDto sendCategorySchemeToDiffusionValidation(ServiceContext ctx, String urn) throws MetamacException {
-    // // TODO Security
-    // // CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByUrn(ctx, urn);
-    // // CategoriesSecurityUtils.canSendCategorySchemeToDiffusionValidation(ctx, categorySchemeVersion);
-    //
-    // // Send
-    // CategorySchemeVersionMetamac categorySchemeVersionDiffusionValidation = getCategoriesMetamacService().sendCategorySchemeToDiffusionValidation(ctx, urn);
-    //
-    // // Transform to DTO
-    // CategorySchemeMetamacDto categorySchemeDto = categoriesDo2DtoMapper.categorySchemeMetamacDoToDto(categorySchemeVersionDiffusionValidation);
-    // return categorySchemeDto;
-    // }
-    //
-    // @Override
-    // public CategorySchemeMetamacDto rejectCategorySchemeProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
-    // // TODO Security
-    // // CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByUrn(ctx, urn);
-    // // CategoriesSecurityUtils.canRejectCategorySchemeValidation(ctx, categorySchemeVersion);
-    //
-    // // Reject
-    // CategorySchemeVersionMetamac categorySchemeVersionRejected = getCategoriesMetamacService().rejectCategorySchemeProductionValidation(ctx, urn);
-    //
-    // // Transform to DTO
-    // CategorySchemeMetamacDto categorySchemeDto = categoriesDo2DtoMapper.categorySchemeMetamacDoToDto(categorySchemeVersionRejected);
-    // return categorySchemeDto;
-    // }
-    //
-    // @Override
-    // public CategorySchemeMetamacDto rejectCategorySchemeDiffusionValidation(ServiceContext ctx, String urn) throws MetamacException {
-    // // TODO Security
-    // // CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByUrn(ctx, urn);
-    // // CategoriesSecurityUtils.canRejectCategorySchemeValidation(ctx, categorySchemeVersion);
-    //
-    // // Reject
-    // CategorySchemeVersionMetamac categorySchemeVersionRejected = getCategoriesMetamacService().rejectCategorySchemeDiffusionValidation(ctx, urn);
-    //
-    // // Transform to DTO
-    // CategorySchemeMetamacDto categorySchemeDto = categoriesDo2DtoMapper.categorySchemeMetamacDoToDto(categorySchemeVersionRejected);
-    // return categorySchemeDto;
-    // }
-    //
-    // @Override
-    // public CategorySchemeMetamacDto publishCategorySchemeInternally(ServiceContext ctx, String urn) throws MetamacException {
-    // // TODO Security
-    // // CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByUrn(ctx, urn);
-    // // CategoriesSecurityUtils.canPublishCategorySchemeInternally(ctx, categorySchemeVersion);
-    //
-    // // Publish
-    // CategorySchemeVersionMetamac categorySchemeVersionPublished = getCategoriesMetamacService().publishInternallyCategoryScheme(ctx, urn);
-    //
-    // // Transform to DTO
-    // CategorySchemeMetamacDto categorySchemeDto = categoriesDo2DtoMapper.categorySchemeMetamacDoToDto(categorySchemeVersionPublished);
-    // return categorySchemeDto;
-    // }
-    //
-    // @Override
-    // public CategorySchemeMetamacDto publishCategorySchemeExternally(ServiceContext ctx, String urn) throws MetamacException {
-    // // TODO Security
-    // // CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByUrn(ctx, urn);
-    // // CategoriesSecurityUtils.canPublishCategorySchemeExternally(ctx, categorySchemeVersion);
-    //
-    // CategorySchemeVersionMetamac categorySchemeVersionPublished = getCategoriesMetamacService().publishExternallyCategoryScheme(ctx, urn);
-    //
-    // // Transform to DTO
-    // CategorySchemeMetamacDto categorySchemeDto = categoriesDo2DtoMapper.categorySchemeMetamacDoToDto(categorySchemeVersionPublished);
-    // return categorySchemeDto;
-    // }
-    //
+
+    @Override
+    public CategorySchemeMetamacDto sendCategorySchemeToProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
+        // TODO Security
+        // CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByUrn(ctx, urn);
+        // CategoriesSecurityUtils.canSendCategorySchemeToProductionValidation(ctx, categorySchemeVersion);
+
+        // Send
+        CategorySchemeVersionMetamac categorySchemeVersionProductionValidation = getCategoriesMetamacService().sendCategorySchemeToProductionValidation(ctx, urn);
+
+        // Transform to DTO
+        CategorySchemeMetamacDto categorySchemeDto = categoriesDo2DtoMapper.categorySchemeMetamacDoToDto(categorySchemeVersionProductionValidation);
+        return categorySchemeDto;
+    }
+
+    @Override
+    public CategorySchemeMetamacDto sendCategorySchemeToDiffusionValidation(ServiceContext ctx, String urn) throws MetamacException {
+        // TODO Security
+        // CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByUrn(ctx, urn);
+        // CategoriesSecurityUtils.canSendCategorySchemeToDiffusionValidation(ctx, categorySchemeVersion);
+
+        // Send
+        CategorySchemeVersionMetamac categorySchemeVersionDiffusionValidation = getCategoriesMetamacService().sendCategorySchemeToDiffusionValidation(ctx, urn);
+
+        // Transform to DTO
+        CategorySchemeMetamacDto categorySchemeDto = categoriesDo2DtoMapper.categorySchemeMetamacDoToDto(categorySchemeVersionDiffusionValidation);
+        return categorySchemeDto;
+    }
+
+    @Override
+    public CategorySchemeMetamacDto rejectCategorySchemeProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
+        // TODO Security
+        // CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByUrn(ctx, urn);
+        // CategoriesSecurityUtils.canRejectCategorySchemeValidation(ctx, categorySchemeVersion);
+
+        // Reject
+        CategorySchemeVersionMetamac categorySchemeVersionRejected = getCategoriesMetamacService().rejectCategorySchemeProductionValidation(ctx, urn);
+
+        // Transform to DTO
+        CategorySchemeMetamacDto categorySchemeDto = categoriesDo2DtoMapper.categorySchemeMetamacDoToDto(categorySchemeVersionRejected);
+        return categorySchemeDto;
+    }
+
+    @Override
+    public CategorySchemeMetamacDto rejectCategorySchemeDiffusionValidation(ServiceContext ctx, String urn) throws MetamacException {
+        // TODO Security
+        // CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByUrn(ctx, urn);
+        // CategoriesSecurityUtils.canRejectCategorySchemeValidation(ctx, categorySchemeVersion);
+
+        // Reject
+        CategorySchemeVersionMetamac categorySchemeVersionRejected = getCategoriesMetamacService().rejectCategorySchemeDiffusionValidation(ctx, urn);
+
+        // Transform to DTO
+        CategorySchemeMetamacDto categorySchemeDto = categoriesDo2DtoMapper.categorySchemeMetamacDoToDto(categorySchemeVersionRejected);
+        return categorySchemeDto;
+    }
+
+    @Override
+    public CategorySchemeMetamacDto publishCategorySchemeInternally(ServiceContext ctx, String urn) throws MetamacException {
+        // TODO Security
+        // CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByUrn(ctx, urn);
+        // CategoriesSecurityUtils.canPublishCategorySchemeInternally(ctx, categorySchemeVersion);
+
+        // Publish
+        CategorySchemeVersionMetamac categorySchemeVersionPublished = getCategoriesMetamacService().publishInternallyCategoryScheme(ctx, urn);
+
+        // Transform to DTO
+        CategorySchemeMetamacDto categorySchemeDto = categoriesDo2DtoMapper.categorySchemeMetamacDoToDto(categorySchemeVersionPublished);
+        return categorySchemeDto;
+    }
+
+    @Override
+    public CategorySchemeMetamacDto publishCategorySchemeExternally(ServiceContext ctx, String urn) throws MetamacException {
+        // TODO Security
+        // CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByUrn(ctx, urn);
+        // CategoriesSecurityUtils.canPublishCategorySchemeExternally(ctx, categorySchemeVersion);
+
+        CategorySchemeVersionMetamac categorySchemeVersionPublished = getCategoriesMetamacService().publishExternallyCategoryScheme(ctx, urn);
+
+        // Transform to DTO
+        CategorySchemeMetamacDto categorySchemeDto = categoriesDo2DtoMapper.categorySchemeMetamacDoToDto(categorySchemeVersionPublished);
+        return categorySchemeDto;
+    }
+
     // @Override
     // public CategorySchemeMetamacDto versioningCategoryScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
     // // TODO Security

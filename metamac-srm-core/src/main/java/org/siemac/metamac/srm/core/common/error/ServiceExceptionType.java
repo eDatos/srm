@@ -17,6 +17,7 @@ public class ServiceExceptionType extends com.arte.statistic.sdmx.srm.core.commo
 
     // Categories
     public static final CommonServiceExceptionType CATEGORY_SCHEME_WRONG_PROC_STATUS           = create("exception.srm.categories.category_scheme.wrong_proc_status");
+    public static final CommonServiceExceptionType CATEGORY_SCHEME_WITHOUT_CATEGORIES          = create("exception.srm.categories.category_scheme.without_categories");
 
     // Data structure definition
     public static final CommonServiceExceptionType DATA_STRUCTURE_DEFINITION_WRONG_PROC_STATUS = create("exception.srm.dsds.data_structure_definition.wrong_proc_status");

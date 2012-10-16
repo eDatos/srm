@@ -384,7 +384,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
 
         String urn = ORGANISATION_SCHEME_2_V1;
 
-        // Update to clear metadata
+        // Update to clear required metadata to send to production
         OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), urn);
         organisationSchemeVersion.setIsPartial(null);
         organisationSchemeVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);

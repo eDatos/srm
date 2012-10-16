@@ -363,84 +363,84 @@ public class SrmCoreServiceFacadeCategoriesTest extends SrmBaseTest {
         }
     }
 
-    // @Test
-    // public void testSendCategorySchemeToProductionValidation() throws Exception {
-    //
-    // String urn = CATEGORY_SCHEME_2_V1;
-    //
-    // // Sends to production validation
-    // CategorySchemeMetamacDto categorySchemeDto = srmCoreServiceFacade.sendCategorySchemeToProductionValidation(getServiceContextAdministrador(), urn);
-    //
-    // // Validation
-    // categorySchemeDto = srmCoreServiceFacade.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urn);
-    // assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, categorySchemeDto.getLifeCycle().getProcStatus());
-    // }
-    //
-    // @Test
-    // public void testSendCategorySchemeToDiffusionValidation() throws Exception {
-    //
-    // String urn = CATEGORY_SCHEME_5_V1;
-    //
-    // // Sends to diffusion validation
-    // CategorySchemeMetamacDto categorySchemeDto = srmCoreServiceFacade.sendCategorySchemeToDiffusionValidation(getServiceContextAdministrador(), urn);
-    //
-    // // Validation
-    // categorySchemeDto = srmCoreServiceFacade.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urn);
-    // assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, categorySchemeDto.getLifeCycle().getProcStatus());
-    // }
-    //
-    // @Test
-    // public void testRejectCategorySchemeProductionValidation() throws Exception {
-    //
-    // String urn = CATEGORY_SCHEME_5_V1;
-    //
-    // // Reject
-    // CategorySchemeMetamacDto categorySchemeDto = srmCoreServiceFacade.rejectCategorySchemeProductionValidation(getServiceContextAdministrador(), urn);
-    //
-    // // Validation
-    // categorySchemeDto = srmCoreServiceFacade.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urn);
-    // assertEquals(ProcStatusEnum.VALIDATION_REJECTED, categorySchemeDto.getLifeCycle().getProcStatus());
-    // }
-    //
-    // @Test
-    // public void testRejectCategorySchemeDiffusionValidation() throws Exception {
-    //
-    // String urn = CATEGORY_SCHEME_6_V1;
-    //
-    // // Reject
-    // CategorySchemeMetamacDto categorySchemeDto = srmCoreServiceFacade.rejectCategorySchemeDiffusionValidation(getServiceContextAdministrador(), urn);
-    //
-    // // Validation
-    // categorySchemeDto = srmCoreServiceFacade.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urn);
-    // assertEquals(ProcStatusEnum.VALIDATION_REJECTED, categorySchemeDto.getLifeCycle().getProcStatus());
-    // }
-    //
-    // @Test
-    // public void testPublishInternallyCategoryScheme() throws Exception {
-    //
-    // String urn = CATEGORY_SCHEME_6_V1;
-    //
-    // // Publish
-    // CategorySchemeMetamacDto categorySchemeDto = srmCoreServiceFacade.publishCategorySchemeInternally(getServiceContextAdministrador(), urn);
-    //
-    // // Validation
-    // categorySchemeDto = srmCoreServiceFacade.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urn);
-    // assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, categorySchemeDto.getLifeCycle().getProcStatus());
-    // }
-    //
-    // @Test
-    // public void testPublishExternallyCategoryScheme() throws Exception {
-    //
-    // String urn = CATEGORY_SCHEME_7_V2;
-    //
-    // // Publish
-    // CategorySchemeMetamacDto categorySchemeDto = srmCoreServiceFacade.publishCategorySchemeExternally(getServiceContextAdministrador(), urn);
-    //
-    // // Validation
-    // categorySchemeDto = srmCoreServiceFacade.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urn);
-    // assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, categorySchemeDto.getLifeCycle().getProcStatus());
-    // }
-    //
+    @Test
+    public void testSendCategorySchemeToProductionValidation() throws Exception {
+
+        String urn = CATEGORY_SCHEME_2_V1;
+
+        // Sends to production validation
+        CategorySchemeMetamacDto categorySchemeDto = srmCoreServiceFacade.sendCategorySchemeToProductionValidation(getServiceContextAdministrador(), urn);
+
+        // Validation
+        categorySchemeDto = srmCoreServiceFacade.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urn);
+        assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, categorySchemeDto.getLifeCycle().getProcStatus());
+    }
+
+    @Test
+    public void testSendCategorySchemeToDiffusionValidation() throws Exception {
+
+        String urn = CATEGORY_SCHEME_5_V1;
+
+        // Sends to diffusion validation
+        CategorySchemeMetamacDto categorySchemeDto = srmCoreServiceFacade.sendCategorySchemeToDiffusionValidation(getServiceContextAdministrador(), urn);
+
+        // Validation
+        categorySchemeDto = srmCoreServiceFacade.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urn);
+        assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, categorySchemeDto.getLifeCycle().getProcStatus());
+    }
+
+    @Test
+    public void testRejectCategorySchemeProductionValidation() throws Exception {
+
+        String urn = CATEGORY_SCHEME_5_V1;
+
+        // Reject
+        CategorySchemeMetamacDto categorySchemeDto = srmCoreServiceFacade.rejectCategorySchemeProductionValidation(getServiceContextAdministrador(), urn);
+
+        // Validation
+        categorySchemeDto = srmCoreServiceFacade.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urn);
+        assertEquals(ProcStatusEnum.VALIDATION_REJECTED, categorySchemeDto.getLifeCycle().getProcStatus());
+    }
+
+    @Test
+    public void testRejectCategorySchemeDiffusionValidation() throws Exception {
+
+        String urn = CATEGORY_SCHEME_6_V1;
+
+        // Reject
+        CategorySchemeMetamacDto categorySchemeDto = srmCoreServiceFacade.rejectCategorySchemeDiffusionValidation(getServiceContextAdministrador(), urn);
+
+        // Validation
+        categorySchemeDto = srmCoreServiceFacade.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urn);
+        assertEquals(ProcStatusEnum.VALIDATION_REJECTED, categorySchemeDto.getLifeCycle().getProcStatus());
+    }
+
+    @Test
+    public void testPublishInternallyCategoryScheme() throws Exception {
+
+        String urn = CATEGORY_SCHEME_6_V1;
+
+        // Publish
+        CategorySchemeMetamacDto categorySchemeDto = srmCoreServiceFacade.publishCategorySchemeInternally(getServiceContextAdministrador(), urn);
+
+        // Validation
+        categorySchemeDto = srmCoreServiceFacade.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urn);
+        assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, categorySchemeDto.getLifeCycle().getProcStatus());
+    }
+
+    @Test
+    public void testPublishExternallyCategoryScheme() throws Exception {
+
+        String urn = CATEGORY_SCHEME_7_V2;
+
+        // Publish
+        CategorySchemeMetamacDto categorySchemeDto = srmCoreServiceFacade.publishCategorySchemeExternally(getServiceContextAdministrador(), urn);
+
+        // Validation
+        categorySchemeDto = srmCoreServiceFacade.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urn);
+        assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, categorySchemeDto.getLifeCycle().getProcStatus());
+    }
+
     // @Test
     // public void testVersioningCategoryScheme() throws Exception {
     //

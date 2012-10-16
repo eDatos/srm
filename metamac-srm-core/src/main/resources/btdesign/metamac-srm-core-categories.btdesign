@@ -29,18 +29,18 @@ Application CategoriesMetamac {
 //			List<@CategorySchemeVersionMetamac> retrieveCategorySchemeVersions(String urn) throws MetamacException;
 			"Finds category schemes by criteria"
     		PagedResult<@CategorySchemeVersionMetamac> findCategorySchemesByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
-//    		"Sends category scheme to production validation"
-//    		@CategorySchemeVersionMetamac sendCategorySchemeToProductionValidation(String urn) throws MetamacException;
-//    		"Sends category scheme to diffusion validation"
-//    		@CategorySchemeVersionMetamac sendCategorySchemeToDiffusionValidation(String urn) throws MetamacException;
-//	    	"Rejects production validation of category scheme"    		
-//	    	@CategorySchemeVersionMetamac rejectCategorySchemeProductionValidation(String urn) throws MetamacException;
-//	    	"Rejects diffusion validation of category scheme"
-//	    	@CategorySchemeVersionMetamac rejectCategorySchemeDiffusionValidation(String urn) throws MetamacException;
-//	    	"Publish internally a category scheme"
-//	    	@CategorySchemeVersionMetamac publishInternallyCategoryScheme(String urn) throws MetamacException;
-//	    	"Publish externally a category scheme"
-//	    	@CategorySchemeVersionMetamac publishExternallyCategoryScheme(String urn) throws MetamacException;
+    		"Sends category scheme to production validation"
+    		@CategorySchemeVersionMetamac sendCategorySchemeToProductionValidation(String urn) throws MetamacException;
+    		"Sends category scheme to diffusion validation"
+    		@CategorySchemeVersionMetamac sendCategorySchemeToDiffusionValidation(String urn) throws MetamacException;
+	    	"Rejects production validation of category scheme"    		
+	    	@CategorySchemeVersionMetamac rejectCategorySchemeProductionValidation(String urn) throws MetamacException;
+	    	"Rejects diffusion validation of category scheme"
+	    	@CategorySchemeVersionMetamac rejectCategorySchemeDiffusionValidation(String urn) throws MetamacException;
+	    	"Publish internally a category scheme"
+	    	@CategorySchemeVersionMetamac publishInternallyCategoryScheme(String urn) throws MetamacException;
+	    	"Publish externally a category scheme"
+	    	@CategorySchemeVersionMetamac publishExternallyCategoryScheme(String urn) throws MetamacException;
 			"Deletes category scheme version. This must be last version and no published"
     		deleteCategoryScheme(String urn) throws MetamacException;
 //    		"Creates a new version of a category scheme, copying metadata from version with provided urn"

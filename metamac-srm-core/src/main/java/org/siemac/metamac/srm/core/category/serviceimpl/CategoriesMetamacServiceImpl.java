@@ -11,8 +11,10 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
 import org.siemac.metamac.srm.core.category.serviceimpl.utils.CategoriesMetamacInvocationValidator;
+import org.siemac.metamac.srm.core.common.LifeCycle;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.arte.statistic.sdmx.srm.core.base.enume.domain.VersionPatternEnum;
@@ -30,9 +32,9 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
     // @Autowired
     // private ItemSchemeVersionRepository itemSchemeVersionRepository;
 
-    // @Autowired
-    // @Qualifier("categorySchemeLifeCycle")
-    // private LifeCycle categorySchemeLifeCycle;
+    @Autowired
+    @Qualifier("categorySchemeLifeCycle")
+    private LifeCycle         categorySchemeLifeCycle;
 
     public CategoriesMetamacServiceImpl() {
     }
@@ -95,37 +97,37 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
         return categorySchemeVersionPagedResult;
     }
 
-    // @Override
-    // public CategorySchemeVersionMetamac sendCategorySchemeToProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
-    // return (CategorySchemeVersionMetamac) categorySchemeLifeCycle.sendToProductionValidation(ctx, urn);
-    // }
-    //
-    // @Override
-    // public CategorySchemeVersionMetamac sendCategorySchemeToDiffusionValidation(ServiceContext ctx, String urn) throws MetamacException {
-    // return (CategorySchemeVersionMetamac) categorySchemeLifeCycle.sendToDiffusionValidation(ctx, urn);
-    // }
-    //
-    // @Override
-    // public CategorySchemeVersionMetamac rejectCategorySchemeProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
-    // return (CategorySchemeVersionMetamac) categorySchemeLifeCycle.rejectProductionValidation(ctx, urn);
-    // }
-    //
-    // @Override
-    // public CategorySchemeVersionMetamac rejectCategorySchemeDiffusionValidation(ServiceContext ctx, String urn) throws MetamacException {
-    // return (CategorySchemeVersionMetamac) categorySchemeLifeCycle.rejectDiffusionValidation(ctx, urn);
-    // }
-    //
-    // // TODO Para llevar a cabo la publicación interna de un recurso será necesario que previamente exista al menos un anuncio sobre el esquema de categoryos a publicar
-    // @Override
-    // public CategorySchemeVersionMetamac publishInternallyCategoryScheme(ServiceContext ctx, String urn) throws MetamacException {
-    // return (CategorySchemeVersionMetamac) categorySchemeLifeCycle.publishInternally(ctx, urn);
-    // }
-    //
-    // // TODO validTo, validFrom: ¿rellenar cuando el artefacto no sea del ISTAC? Pendiente decisión del ISTAC.
-    // @Override
-    // public CategorySchemeVersionMetamac publishExternallyCategoryScheme(ServiceContext ctx, String urn) throws MetamacException {
-    // return (CategorySchemeVersionMetamac) categorySchemeLifeCycle.publishExternally(ctx, urn);
-    // }
+    @Override
+    public CategorySchemeVersionMetamac sendCategorySchemeToProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
+        return (CategorySchemeVersionMetamac) categorySchemeLifeCycle.sendToProductionValidation(ctx, urn);
+    }
+
+    @Override
+    public CategorySchemeVersionMetamac sendCategorySchemeToDiffusionValidation(ServiceContext ctx, String urn) throws MetamacException {
+        return (CategorySchemeVersionMetamac) categorySchemeLifeCycle.sendToDiffusionValidation(ctx, urn);
+    }
+
+    @Override
+    public CategorySchemeVersionMetamac rejectCategorySchemeProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
+        return (CategorySchemeVersionMetamac) categorySchemeLifeCycle.rejectProductionValidation(ctx, urn);
+    }
+
+    @Override
+    public CategorySchemeVersionMetamac rejectCategorySchemeDiffusionValidation(ServiceContext ctx, String urn) throws MetamacException {
+        return (CategorySchemeVersionMetamac) categorySchemeLifeCycle.rejectDiffusionValidation(ctx, urn);
+    }
+
+    // TODO Para llevar a cabo la publicación interna de un recurso será necesario que previamente exista al menos un anuncio sobre el esquema de categorías a publicar
+    @Override
+    public CategorySchemeVersionMetamac publishInternallyCategoryScheme(ServiceContext ctx, String urn) throws MetamacException {
+        return (CategorySchemeVersionMetamac) categorySchemeLifeCycle.publishInternally(ctx, urn);
+    }
+
+    // TODO validTo, validFrom: ¿rellenar cuando el artefacto no sea del ISTAC? Pendiente decisión del ISTAC.
+    @Override
+    public CategorySchemeVersionMetamac publishExternallyCategoryScheme(ServiceContext ctx, String urn) throws MetamacException {
+        return (CategorySchemeVersionMetamac) categorySchemeLifeCycle.publishExternally(ctx, urn);
+    }
 
     @Override
     public void deleteCategoryScheme(ServiceContext ctx, String urn) throws MetamacException {

@@ -487,7 +487,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
         String urn = CONCEPT_SCHEME_2_V1;
 
-        // Update to clear metadata
+        // Update to clear required metadata to send to production
         ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), urn);
         conceptSchemeVersion.setIsPartial(null);
         conceptSchemeVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);

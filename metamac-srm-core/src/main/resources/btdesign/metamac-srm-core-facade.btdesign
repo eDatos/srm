@@ -396,18 +396,18 @@ Application SrmFacadeCore {
 //            "Retrieves all category scheme versions"
 //            List<@CategorySchemeMetamacDto> retrieveCategorySchemeVersions(String urn) throws MetamacException;
 //            
-//            "Sends category scheme to production validation"
-//	    	@CategorySchemeMetamacDto sendCategorySchemeToProductionValidation(String urn) throws MetamacException;
-//    		"Sends to diffusion validation"
-//    		@CategorySchemeMetamacDto sendCategorySchemeToDiffusionValidation(String urn) throws MetamacException;
-//	    	"Rejects production validation of category scheme"    		
-//	    	@CategorySchemeMetamacDto rejectCategorySchemeProductionValidation(String urn) throws MetamacException;
-//	    	"Rejects diffusion validation of category scheme"
-//	    	@CategorySchemeMetamacDto rejectCategorySchemeDiffusionValidation(String urn) throws MetamacException; 
-//	    	"Publishes internally a category scheme"
-//	    	@CategorySchemeMetamacDto publishCategorySchemeInternally(String urn) throws MetamacException;
-//	    	"Publishes externally a category scheme"
-//	    	@CategorySchemeMetamacDto publishCategorySchemeExternally(String urn) throws MetamacException;
+            "Sends category scheme to production validation"
+	    	@CategorySchemeMetamacDto sendCategorySchemeToProductionValidation(String urn) throws MetamacException;
+    		"Sends to diffusion validation"
+    		@CategorySchemeMetamacDto sendCategorySchemeToDiffusionValidation(String urn) throws MetamacException;
+	    	"Rejects production validation of category scheme"    		
+	    	@CategorySchemeMetamacDto rejectCategorySchemeProductionValidation(String urn) throws MetamacException;
+	    	"Rejects diffusion validation of category scheme"
+	    	@CategorySchemeMetamacDto rejectCategorySchemeDiffusionValidation(String urn) throws MetamacException; 
+	    	"Publishes internally a category scheme"
+	    	@CategorySchemeMetamacDto publishCategorySchemeInternally(String urn) throws MetamacException;
+	    	"Publishes externally a category scheme"
+	    	@CategorySchemeMetamacDto publishCategorySchemeExternally(String urn) throws MetamacException;
 //    		"Creates a new version of a category scheme, copying metadata from version with provided urn"
 //    		@CategorySchemeMetamacDto versioningCategoryScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
     		"Ends the category scheme validity"
