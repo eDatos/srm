@@ -1,5 +1,11 @@
 package org.siemac.metamac.srm.core.category.serviceimpl;
 
+import java.util.List;
+
+import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
+import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
+import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
+import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
@@ -74,22 +80,21 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
     //
     // return categorySchemeVersionMetamacs;
     // }
-    //
-    // @Override
-    // public PagedResult<CategorySchemeVersionMetamac> findCategorySchemesByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)
-    // throws MetamacException {
-    //
-    // // Validation
-    // CategoriesMetamacInvocationValidator.checkFindCategorySchemesByCondition(conditions, pagingParameter, null);
-    //
-    // // Find (do not call SDMX module to avoid type cast)
-    // if (conditions == null) {
-    // conditions = ConditionalCriteriaBuilder.criteriaFor(CategorySchemeVersionMetamac.class).distinctRoot().build();
-    // }
-    // PagedResult<CategorySchemeVersionMetamac> categorySchemeVersionPagedResult = getCategorySchemeVersionMetamacRepository().findByCondition(conditions, pagingParameter);
-    // return categorySchemeVersionPagedResult;
-    // }
-    //
+
+    @Override
+    public PagedResult<CategorySchemeVersionMetamac> findCategorySchemesByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
+
+        // Validation
+        CategoriesMetamacInvocationValidator.checkFindCategorySchemesByCondition(conditions, pagingParameter, null);
+
+        // Find (do not call SDMX module to avoid type cast)
+        if (conditions == null) {
+            conditions = ConditionalCriteriaBuilder.criteriaFor(CategorySchemeVersionMetamac.class).distinctRoot().build();
+        }
+        PagedResult<CategorySchemeVersionMetamac> categorySchemeVersionPagedResult = getCategorySchemeVersionMetamacRepository().findByCondition(conditions, pagingParameter);
+        return categorySchemeVersionPagedResult;
+    }
+
     // @Override
     // public CategorySchemeVersionMetamac sendCategorySchemeToProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
     // return (CategorySchemeVersionMetamac) categorySchemeLifeCycle.sendToProductionValidation(ctx, urn);

@@ -7,17 +7,27 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.siemac.metamac.srm.core.category.serviceapi.utils.CategoriesMetamacAsserts.assertEqualsCategorySchemeMetamacDto;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import org.apache.commons.lang.time.DateUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.common.test.utils.MetamacMocks;
+import org.siemac.metamac.core.common.criteria.MetamacCriteria;
+import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder;
+import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder.OrderTypeEnum;
+import org.siemac.metamac.core.common.criteria.MetamacCriteriaPaginator;
+import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction;
+import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction.OperationType;
+import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 import org.siemac.metamac.srm.core.category.serviceapi.utils.CategoriesMetamacDtoMocks;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
+import org.siemac.metamac.srm.core.criteria.CategorySchemeVersionMetamacCriteriaOrderEnum;
+import org.siemac.metamac.srm.core.criteria.CategorySchemeVersionMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -143,234 +153,216 @@ public class SrmCoreServiceFacadeCategoriesTest extends SrmBaseTest {
         }
     }
 
-    // @Test
-    // public void testFindCategorySchemesByCondition() throws Exception {
-    //
-    // MetamacCriteria metamacCriteria = new MetamacCriteria();
-    // // Order
-    // metamacCriteria.setOrdersBy(new ArrayList<MetamacCriteriaOrder>());
-    // {
-    // MetamacCriteriaOrder order = new MetamacCriteriaOrder();
-    // order.setType(OrderTypeEnum.ASC);
-    // order.setPropertyName(CategorySchemeVersionMetamacCriteriaOrderEnum.CODE.name());
-    // metamacCriteria.getOrdersBy().add(order);
-    // }
-    // {
-    // MetamacCriteriaOrder order = new MetamacCriteriaOrder();
-    // order.setType(OrderTypeEnum.ASC);
-    // order.setPropertyName(CategorySchemeVersionMetamacCriteriaOrderEnum.URN.name());
-    // metamacCriteria.getOrdersBy().add(order);
-    // }
-    // // Pagination
-    // metamacCriteria.setPaginator(new MetamacCriteriaPaginator());
-    // metamacCriteria.getPaginator().setFirstResult(0);
-    // metamacCriteria.getPaginator().setMaximumResultSize(Integer.MAX_VALUE);
-    // metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
-    //
-    // // Find all
-    // {
-    // MetamacCriteriaResult<CategorySchemeMetamacDto> result = srmCoreServiceFacade.findCategorySchemesByCondition(getServiceContextAdministrador(), metamacCriteria);
-    //
-    // assertEquals(9, result.getPaginatorResult().getTotalResults().intValue());
-    // int i = 0;
-    // {
-    // CategorySchemeMetamacDto categorySchemeMetamacDto = result.getResults().get(i++);
-    // assertEquals(CATEGORY_SCHEME_1_V1, categorySchemeMetamacDto.getUrn());
-    // assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, categorySchemeMetamacDto.getLifeCycle().getProcStatus());
-    // }
-    // {
-    // CategorySchemeMetamacDto categorySchemeMetamacDto = result.getResults().get(i++);
-    // assertEquals(CATEGORY_SCHEME_1_V2, categorySchemeMetamacDto.getUrn());
-    // assertEquals(ProcStatusEnum.DRAFT, categorySchemeMetamacDto.getLifeCycle().getProcStatus());
-    // }
-    // {
-    // CategorySchemeMetamacDto categorySchemeMetamacDto = result.getResults().get(i++);
-    // assertEquals(CATEGORY_SCHEME_2_V1, categorySchemeMetamacDto.getUrn());
-    // assertEquals(ProcStatusEnum.DRAFT, categorySchemeMetamacDto.getLifeCycle().getProcStatus());
-    // }
-    // {
-    // CategorySchemeMetamacDto categorySchemeMetamacDto = result.getResults().get(i++);
-    // assertEquals(CATEGORY_SCHEME_3_V1, categorySchemeMetamacDto.getUrn());
-    // assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, categorySchemeMetamacDto.getLifeCycle().getProcStatus());
-    // }
-    // {
-    // CategorySchemeMetamacDto categorySchemeMetamacDto = result.getResults().get(i++);
-    // assertEquals(CATEGORY_SCHEME_4_V1, categorySchemeMetamacDto.getUrn());
-    // assertEquals(ProcStatusEnum.VALIDATION_REJECTED, categorySchemeMetamacDto.getLifeCycle().getProcStatus());
-    // }
-    // {
-    // CategorySchemeMetamacDto categorySchemeMetamacDto = result.getResults().get(i++);
-    // assertEquals(CATEGORY_SCHEME_5_V1, categorySchemeMetamacDto.getUrn());
-    // assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, categorySchemeMetamacDto.getLifeCycle().getProcStatus());
-    // }
-    // {
-    // CategorySchemeMetamacDto categorySchemeMetamacDto = result.getResults().get(i++);
-    // assertEquals(CATEGORY_SCHEME_6_V1, categorySchemeMetamacDto.getUrn());
-    // assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, categorySchemeMetamacDto.getLifeCycle().getProcStatus());
-    // }
-    // {
-    // CategorySchemeMetamacDto categorySchemeMetamacDto = result.getResults().get(i++);
-    // assertEquals(CATEGORY_SCHEME_7_V1, categorySchemeMetamacDto.getUrn());
-    // assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, categorySchemeMetamacDto.getLifeCycle().getProcStatus());
-    // }
-    // {
-    // CategorySchemeMetamacDto categorySchemeMetamacDto = result.getResults().get(i++);
-    // assertEquals(CATEGORY_SCHEME_7_V2, categorySchemeMetamacDto.getUrn());
-    // assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, categorySchemeMetamacDto.getLifeCycle().getProcStatus());
-    // }
-    // assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
-    // }
-    //
-    // // Find by type
-    // {
-    // metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.TYPE.name(), CategorySchemeTypeEnum.AGENCY_SCHEME,
-    // OperationType.EQ));
-    //
-    // MetamacCriteriaResult<CategorySchemeMetamacDto> result = srmCoreServiceFacade.findCategorySchemesByCondition(getServiceContextAdministrador(), metamacCriteria);
-    //
-    // assertEquals(1, result.getPaginatorResult().getTotalResults().intValue());
-    // int i = 0;
-    // {
-    // CategorySchemeMetamacDto categorySchemeMetamacDto = result.getResults().get(i++);
-    // assertEquals(CATEGORY_SCHEME_2_V1, categorySchemeMetamacDto.getUrn());
-    // assertEquals(ProcStatusEnum.DRAFT, categorySchemeMetamacDto.getLifeCycle().getProcStatus());
-    // }
-    // assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
-    // }
-    //
-    // // Find by Name
-    // {
-    // metamacCriteria
-    // .setRestriction(new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.NAME.name(), "Nombre categoryScheme-1-v1", OperationType.EQ));
-    //
-    // MetamacCriteriaResult<CategorySchemeMetamacDto> result = srmCoreServiceFacade.findCategorySchemesByCondition(getServiceContextAdministrador(), metamacCriteria);
-    // assertEquals(1, result.getPaginatorResult().getTotalResults().intValue());
-    //
-    // metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.NAME.name(), "NOT FOUND", OperationType.EQ));
-    //
-    // result = srmCoreServiceFacade.findCategorySchemesByCondition(getServiceContextAdministrador(), metamacCriteria);
-    // assertEquals(0, result.getPaginatorResult().getTotalResults().intValue());
-    // }
-    // }
-    //
-    // @Test
-    // public void testFindCategorySchemesByProcStatus() throws Exception {
-    //
-    // MetamacCriteria metamacCriteria = new MetamacCriteria();
-    // // Order
-    // metamacCriteria.setOrdersBy(new ArrayList<MetamacCriteriaOrder>());
-    // {
-    // MetamacCriteriaOrder order = new MetamacCriteriaOrder();
-    // order.setType(OrderTypeEnum.ASC);
-    // order.setPropertyName(CategorySchemeVersionMetamacCriteriaOrderEnum.CODE.name());
-    // metamacCriteria.getOrdersBy().add(order);
-    // }
-    // {
-    // MetamacCriteriaOrder order = new MetamacCriteriaOrder();
-    // order.setType(OrderTypeEnum.ASC);
-    // order.setPropertyName(CategorySchemeVersionMetamacCriteriaOrderEnum.URN.name());
-    // metamacCriteria.getOrdersBy().add(order);
-    // }
-    //
-    // // Pagination
-    // metamacCriteria.setPaginator(new MetamacCriteriaPaginator());
-    // metamacCriteria.getPaginator().setFirstResult(0);
-    // metamacCriteria.getPaginator().setMaximumResultSize(Integer.MAX_VALUE);
-    // metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
-    //
-    // {
-    // MetamacCriteriaPropertyRestriction propertyRestriction = new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.PROC_STATUS.name(),
-    // ProcStatusEnum.DRAFT, OperationType.EQ);
-    // metamacCriteria.setRestriction(propertyRestriction);
-    //
-    // MetamacCriteriaResult<CategorySchemeMetamacDto> result = srmCoreServiceFacade.findCategorySchemesByCondition(getServiceContextAdministrador(), metamacCriteria);
-    //
-    // assertEquals(2, result.getPaginatorResult().getTotalResults().intValue());
-    // int i = 0;
-    // {
-    // CategorySchemeMetamacDto categorySchemeMetamacDto = result.getResults().get(i++);
-    // assertEquals(CATEGORY_SCHEME_1_V2, categorySchemeMetamacDto.getUrn());
-    // assertEquals(ProcStatusEnum.DRAFT, categorySchemeMetamacDto.getLifeCycle().getProcStatus());
-    // }
-    // {
-    // CategorySchemeMetamacDto categorySchemeMetamacDto = result.getResults().get(i++);
-    // assertEquals(CATEGORY_SCHEME_2_V1, categorySchemeMetamacDto.getUrn());
-    // assertEquals(ProcStatusEnum.DRAFT, categorySchemeMetamacDto.getLifeCycle().getProcStatus());
-    // }
-    // assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
-    // }
-    // {
-    // MetamacCriteriaPropertyRestriction propertyRestriction = new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.PROC_STATUS.name(),
-    // ProcStatusEnum.INTERNALLY_PUBLISHED, OperationType.EQ);
-    // metamacCriteria.setRestriction(propertyRestriction);
-    //
-    // MetamacCriteriaResult<CategorySchemeMetamacDto> result = srmCoreServiceFacade.findCategorySchemesByCondition(getServiceContextAdministrador(), metamacCriteria);
-    //
-    // assertEquals(3, result.getPaginatorResult().getTotalResults().intValue());
-    // int i = 0;
-    // {
-    // CategorySchemeMetamacDto categorySchemeMetamacDto = result.getResults().get(i++);
-    // assertEquals(CATEGORY_SCHEME_1_V1, categorySchemeMetamacDto.getUrn());
-    // assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, categorySchemeMetamacDto.getLifeCycle().getProcStatus());
-    // }
-    // {
-    // CategorySchemeMetamacDto categorySchemeMetamacDto = result.getResults().get(i++);
-    // assertEquals(CATEGORY_SCHEME_3_V1, categorySchemeMetamacDto.getUrn());
-    // assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, categorySchemeMetamacDto.getLifeCycle().getProcStatus());
-    // }
-    // {
-    // CategorySchemeMetamacDto categorySchemeMetamacDto = result.getResults().get(i++);
-    // assertEquals(CATEGORY_SCHEME_7_V2, categorySchemeMetamacDto.getUrn());
-    // assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, categorySchemeMetamacDto.getLifeCycle().getProcStatus());
-    // }
-    // assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
-    // }
-    // }
-    //
-    // @Test
-    // public void testFindCategorySchemesPaginated() throws Exception {
-    // MetamacCriteria metamacCriteria = new MetamacCriteria();
-    // // Order
-    // metamacCriteria.setOrdersBy(new ArrayList<MetamacCriteriaOrder>());
-    // {
-    // MetamacCriteriaOrder order = new MetamacCriteriaOrder();
-    // order.setType(OrderTypeEnum.ASC);
-    // order.setPropertyName(CategorySchemeVersionMetamacCriteriaOrderEnum.CODE.name());
-    // metamacCriteria.getOrdersBy().add(order);
-    // }
-    // {
-    // MetamacCriteriaOrder order = new MetamacCriteriaOrder();
-    // order.setType(OrderTypeEnum.ASC);
-    // order.setPropertyName(CategorySchemeVersionMetamacCriteriaOrderEnum.URN.name());
-    // metamacCriteria.getOrdersBy().add(order);
-    // }
-    // // Pagination
-    // int maxResultSize = 2;
-    // metamacCriteria.setPaginator(new MetamacCriteriaPaginator());
-    // metamacCriteria.getPaginator().setMaximumResultSize(maxResultSize);
-    // metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
-    //
-    // {
-    // int firstResult = 0;
-    // metamacCriteria.getPaginator().setFirstResult(firstResult);
-    //
-    // MetamacCriteriaResult<CategorySchemeMetamacDto> result = srmCoreServiceFacade.findCategorySchemesByCondition(getServiceContextAdministrador(), metamacCriteria);
-    //
-    // assertEquals(firstResult, result.getPaginatorResult().getFirstResult().intValue());
-    // assertEquals(maxResultSize, result.getPaginatorResult().getMaximumResultSize().intValue());
-    // assertEquals(CATEGORY_SCHEME_1_V1, result.getResults().get(0).getUrn());
-    // }
-    // {
-    // int firstResult = 2;
-    // metamacCriteria.getPaginator().setFirstResult(firstResult);
-    //
-    // MetamacCriteriaResult<CategorySchemeMetamacDto> result = srmCoreServiceFacade.findCategorySchemesByCondition(getServiceContextAdministrador(), metamacCriteria);
-    //
-    // assertEquals(firstResult, result.getPaginatorResult().getFirstResult().intValue());
-    // assertEquals(CATEGORY_SCHEME_2_V1, result.getResults().get(0).getUrn());
-    // }
-    // }
-    //
+    @Test
+    public void testFindCategorySchemesByCondition() throws Exception {
+
+        MetamacCriteria metamacCriteria = new MetamacCriteria();
+        // Order
+        metamacCriteria.setOrdersBy(new ArrayList<MetamacCriteriaOrder>());
+        {
+            MetamacCriteriaOrder order = new MetamacCriteriaOrder();
+            order.setType(OrderTypeEnum.ASC);
+            order.setPropertyName(CategorySchemeVersionMetamacCriteriaOrderEnum.CODE.name());
+            metamacCriteria.getOrdersBy().add(order);
+        }
+        {
+            MetamacCriteriaOrder order = new MetamacCriteriaOrder();
+            order.setType(OrderTypeEnum.ASC);
+            order.setPropertyName(CategorySchemeVersionMetamacCriteriaOrderEnum.URN.name());
+            metamacCriteria.getOrdersBy().add(order);
+        }
+        // Pagination
+        metamacCriteria.setPaginator(new MetamacCriteriaPaginator());
+        metamacCriteria.getPaginator().setFirstResult(0);
+        metamacCriteria.getPaginator().setMaximumResultSize(Integer.MAX_VALUE);
+        metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
+
+        // Find all
+        {
+            MetamacCriteriaResult<CategorySchemeMetamacDto> result = srmCoreServiceFacade.findCategorySchemesByCondition(getServiceContextAdministrador(), metamacCriteria);
+
+            assertEquals(9, result.getPaginatorResult().getTotalResults().intValue());
+            int i = 0;
+            {
+                CategorySchemeMetamacDto categorySchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CATEGORY_SCHEME_1_V1, categorySchemeMetamacDto.getUrn());
+                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, categorySchemeMetamacDto.getLifeCycle().getProcStatus());
+            }
+            {
+                CategorySchemeMetamacDto categorySchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CATEGORY_SCHEME_1_V2, categorySchemeMetamacDto.getUrn());
+                assertEquals(ProcStatusEnum.DRAFT, categorySchemeMetamacDto.getLifeCycle().getProcStatus());
+            }
+            {
+                CategorySchemeMetamacDto categorySchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CATEGORY_SCHEME_2_V1, categorySchemeMetamacDto.getUrn());
+                assertEquals(ProcStatusEnum.DRAFT, categorySchemeMetamacDto.getLifeCycle().getProcStatus());
+            }
+            {
+                CategorySchemeMetamacDto categorySchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CATEGORY_SCHEME_3_V1, categorySchemeMetamacDto.getUrn());
+                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, categorySchemeMetamacDto.getLifeCycle().getProcStatus());
+            }
+            {
+                CategorySchemeMetamacDto categorySchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CATEGORY_SCHEME_4_V1, categorySchemeMetamacDto.getUrn());
+                assertEquals(ProcStatusEnum.VALIDATION_REJECTED, categorySchemeMetamacDto.getLifeCycle().getProcStatus());
+            }
+            {
+                CategorySchemeMetamacDto categorySchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CATEGORY_SCHEME_5_V1, categorySchemeMetamacDto.getUrn());
+                assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, categorySchemeMetamacDto.getLifeCycle().getProcStatus());
+            }
+            {
+                CategorySchemeMetamacDto categorySchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CATEGORY_SCHEME_6_V1, categorySchemeMetamacDto.getUrn());
+                assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, categorySchemeMetamacDto.getLifeCycle().getProcStatus());
+            }
+            {
+                CategorySchemeMetamacDto categorySchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CATEGORY_SCHEME_7_V1, categorySchemeMetamacDto.getUrn());
+                assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, categorySchemeMetamacDto.getLifeCycle().getProcStatus());
+            }
+            {
+                CategorySchemeMetamacDto categorySchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CATEGORY_SCHEME_7_V2, categorySchemeMetamacDto.getUrn());
+                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, categorySchemeMetamacDto.getLifeCycle().getProcStatus());
+            }
+            assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
+        }
+
+        // Find by Name
+        {
+            metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.NAME.name(), "Nombre categoryScheme-1-v1", OperationType.EQ));
+
+            MetamacCriteriaResult<CategorySchemeMetamacDto> result = srmCoreServiceFacade.findCategorySchemesByCondition(getServiceContextAdministrador(), metamacCriteria);
+            assertEquals(1, result.getPaginatorResult().getTotalResults().intValue());
+
+            metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.NAME.name(), "NOT FOUND", OperationType.EQ));
+
+            result = srmCoreServiceFacade.findCategorySchemesByCondition(getServiceContextAdministrador(), metamacCriteria);
+            assertEquals(0, result.getPaginatorResult().getTotalResults().intValue());
+        }
+    }
+
+    @Test
+    public void testFindCategorySchemesByProcStatus() throws Exception {
+
+        MetamacCriteria metamacCriteria = new MetamacCriteria();
+        // Order
+        metamacCriteria.setOrdersBy(new ArrayList<MetamacCriteriaOrder>());
+        {
+            MetamacCriteriaOrder order = new MetamacCriteriaOrder();
+            order.setType(OrderTypeEnum.ASC);
+            order.setPropertyName(CategorySchemeVersionMetamacCriteriaOrderEnum.CODE.name());
+            metamacCriteria.getOrdersBy().add(order);
+        }
+        {
+            MetamacCriteriaOrder order = new MetamacCriteriaOrder();
+            order.setType(OrderTypeEnum.ASC);
+            order.setPropertyName(CategorySchemeVersionMetamacCriteriaOrderEnum.URN.name());
+            metamacCriteria.getOrdersBy().add(order);
+        }
+
+        // Pagination
+        metamacCriteria.setPaginator(new MetamacCriteriaPaginator());
+        metamacCriteria.getPaginator().setFirstResult(0);
+        metamacCriteria.getPaginator().setMaximumResultSize(Integer.MAX_VALUE);
+        metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
+
+        {
+            MetamacCriteriaPropertyRestriction propertyRestriction = new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.PROC_STATUS.name(), ProcStatusEnum.DRAFT,
+                    OperationType.EQ);
+            metamacCriteria.setRestriction(propertyRestriction);
+
+            MetamacCriteriaResult<CategorySchemeMetamacDto> result = srmCoreServiceFacade.findCategorySchemesByCondition(getServiceContextAdministrador(), metamacCriteria);
+
+            assertEquals(2, result.getPaginatorResult().getTotalResults().intValue());
+            int i = 0;
+            {
+                CategorySchemeMetamacDto categorySchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CATEGORY_SCHEME_1_V2, categorySchemeMetamacDto.getUrn());
+                assertEquals(ProcStatusEnum.DRAFT, categorySchemeMetamacDto.getLifeCycle().getProcStatus());
+            }
+            {
+                CategorySchemeMetamacDto categorySchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CATEGORY_SCHEME_2_V1, categorySchemeMetamacDto.getUrn());
+                assertEquals(ProcStatusEnum.DRAFT, categorySchemeMetamacDto.getLifeCycle().getProcStatus());
+            }
+            assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
+        }
+        {
+            MetamacCriteriaPropertyRestriction propertyRestriction = new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.PROC_STATUS.name(),
+                    ProcStatusEnum.INTERNALLY_PUBLISHED, OperationType.EQ);
+            metamacCriteria.setRestriction(propertyRestriction);
+
+            MetamacCriteriaResult<CategorySchemeMetamacDto> result = srmCoreServiceFacade.findCategorySchemesByCondition(getServiceContextAdministrador(), metamacCriteria);
+
+            assertEquals(3, result.getPaginatorResult().getTotalResults().intValue());
+            int i = 0;
+            {
+                CategorySchemeMetamacDto categorySchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CATEGORY_SCHEME_1_V1, categorySchemeMetamacDto.getUrn());
+                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, categorySchemeMetamacDto.getLifeCycle().getProcStatus());
+            }
+            {
+                CategorySchemeMetamacDto categorySchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CATEGORY_SCHEME_3_V1, categorySchemeMetamacDto.getUrn());
+                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, categorySchemeMetamacDto.getLifeCycle().getProcStatus());
+            }
+            {
+                CategorySchemeMetamacDto categorySchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CATEGORY_SCHEME_7_V2, categorySchemeMetamacDto.getUrn());
+                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, categorySchemeMetamacDto.getLifeCycle().getProcStatus());
+            }
+            assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
+        }
+    }
+
+    @Test
+    public void testFindCategorySchemesPaginated() throws Exception {
+        MetamacCriteria metamacCriteria = new MetamacCriteria();
+        // Order
+        metamacCriteria.setOrdersBy(new ArrayList<MetamacCriteriaOrder>());
+        {
+            MetamacCriteriaOrder order = new MetamacCriteriaOrder();
+            order.setType(OrderTypeEnum.ASC);
+            order.setPropertyName(CategorySchemeVersionMetamacCriteriaOrderEnum.CODE.name());
+            metamacCriteria.getOrdersBy().add(order);
+        }
+        {
+            MetamacCriteriaOrder order = new MetamacCriteriaOrder();
+            order.setType(OrderTypeEnum.ASC);
+            order.setPropertyName(CategorySchemeVersionMetamacCriteriaOrderEnum.URN.name());
+            metamacCriteria.getOrdersBy().add(order);
+        }
+        // Pagination
+        int maxResultSize = 2;
+        metamacCriteria.setPaginator(new MetamacCriteriaPaginator());
+        metamacCriteria.getPaginator().setMaximumResultSize(maxResultSize);
+        metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
+
+        {
+            int firstResult = 0;
+            metamacCriteria.getPaginator().setFirstResult(firstResult);
+
+            MetamacCriteriaResult<CategorySchemeMetamacDto> result = srmCoreServiceFacade.findCategorySchemesByCondition(getServiceContextAdministrador(), metamacCriteria);
+
+            assertEquals(firstResult, result.getPaginatorResult().getFirstResult().intValue());
+            assertEquals(maxResultSize, result.getPaginatorResult().getMaximumResultSize().intValue());
+            assertEquals(CATEGORY_SCHEME_1_V1, result.getResults().get(0).getUrn());
+        }
+        {
+            int firstResult = 2;
+            metamacCriteria.getPaginator().setFirstResult(firstResult);
+
+            MetamacCriteriaResult<CategorySchemeMetamacDto> result = srmCoreServiceFacade.findCategorySchemesByCondition(getServiceContextAdministrador(), metamacCriteria);
+
+            assertEquals(firstResult, result.getPaginatorResult().getFirstResult().intValue());
+            assertEquals(CATEGORY_SCHEME_2_V1, result.getResults().get(0).getUrn());
+        }
+    }
+
     // @Test
     // public void testSendCategorySchemeToProductionValidation() throws Exception {
     //
@@ -467,7 +459,7 @@ public class SrmCoreServiceFacadeCategoriesTest extends SrmBaseTest {
         CategorySchemeMetamacDto categorySchemeMetamacDto = srmCoreServiceFacade.endCategorySchemeValidity(getServiceContextAdministrador(), CATEGORY_SCHEME_7_V1);
         assertTrue(DateUtils.isSameDay(new Date(), categorySchemeMetamacDto.getValidTo()));
     }
-    
+
     // ---------------------------------------------------------------------------------------
     // CATEGORIES
     // ---------------------------------------------------------------------------------------

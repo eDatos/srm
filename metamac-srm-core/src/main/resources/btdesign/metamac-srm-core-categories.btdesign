@@ -27,8 +27,8 @@ Application CategoriesMetamac {
 			@CategorySchemeVersionMetamac retrieveCategorySchemeByUrn(String urn) throws MetamacException;
 //			"Retrieves all category schemes versions"
 //			List<@CategorySchemeVersionMetamac> retrieveCategorySchemeVersions(String urn) throws MetamacException;
-//			"Finds category schemes by criteria"
-//    		PagedResult<@CategorySchemeVersionMetamac> findCategorySchemesByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
+			"Finds category schemes by criteria"
+    		PagedResult<@CategorySchemeVersionMetamac> findCategorySchemesByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
 //    		"Sends category scheme to production validation"
 //    		@CategorySchemeVersionMetamac sendCategorySchemeToProductionValidation(String urn) throws MetamacException;
 //    		"Sends category scheme to diffusion validation"
@@ -77,7 +77,7 @@ Application CategoriesMetamac {
 			Repository CategorySchemeVersionMetamacRepository {
 				findById;
 				findByQuery(String query, Map<String, Object> parameters, int maxResult);
-//				findByCondition(PagingParameter pagingParameter);
+				findByCondition(PagingParameter pagingParameter);
 				@CategorySchemeVersionMetamac findByUrn(String urn);
 				@CategorySchemeVersionMetamac retrieveCategorySchemeVersionByProcStatus(String urn, ArrayProcStatusEnum procStatus) throws MetamacException;
 //				@CategorySchemeVersionMetamac findByCategory(String urn);

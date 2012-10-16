@@ -9,10 +9,14 @@ import org.siemac.metamac.core.common.criteria.SculptorPropertyCriteria;
 import org.siemac.metamac.core.common.criteria.mapper.MetamacCriteria2SculptorCriteria;
 import org.siemac.metamac.core.common.criteria.mapper.MetamacCriteria2SculptorCriteria.CriteriaCallback;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
+import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamacProperties;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacProperties;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacProperties;
+import org.siemac.metamac.srm.core.criteria.CategorySchemeVersionMetamacCriteriaOrderEnum;
+import org.siemac.metamac.srm.core.criteria.CategorySchemeVersionMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.criteria.ConceptMetamacCriteriaOrderEnum;
 import org.siemac.metamac.srm.core.criteria.ConceptMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.criteria.ConceptSchemeVersionMetamacCriteriaOrderEnum;
@@ -41,14 +45,11 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
     // private com.arte.statistic.sdmx.srm.core.mapper.metamaccriteria2sculptorcriteriamapper metamacCriteria2SculptorCriteriaMapperSdmxSrm;
 
     private MetamacCriteria2SculptorCriteria<DataStructureDefinitionVersionMetamac> dataStructureMetamacCriteriaMapper      = null;
-
     private MetamacCriteria2SculptorCriteria<ConceptSchemeVersionMetamac>           conceptSchemeMetamacCriteriaMapper      = null;
-
     private MetamacCriteria2SculptorCriteria<ConceptMetamac>                        conceptMetamacCriteriaMapper            = null;
-
     private MetamacCriteria2SculptorCriteria<OrganisationSchemeVersionMetamac>      organisationSchemeMetamacCriteriaMapper = null;
-
     private MetamacCriteria2SculptorCriteria<OrganisationMetamac>                   organisationMetamacCriteriaMapper       = null;
+    private MetamacCriteria2SculptorCriteria<CategorySchemeVersionMetamac>          categorySchemeMetamacCriteriaMapper     = null;
 
     /**************************************************************************
      * Constructor
@@ -70,6 +71,10 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
 
         organisationMetamacCriteriaMapper = new MetamacCriteria2SculptorCriteria<OrganisationMetamac>(OrganisationMetamac.class, OrganisationMetamacCriteriaOrderEnum.class,
                 OrganisationMetamacCriteriaPropertyEnum.class, new OrganisationMetamacCriteriaCallback());
+
+        categorySchemeMetamacCriteriaMapper = new MetamacCriteria2SculptorCriteria<CategorySchemeVersionMetamac>(CategorySchemeVersionMetamac.class,
+                CategorySchemeVersionMetamacCriteriaOrderEnum.class, CategorySchemeVersionMetamacCriteriaPropertyEnum.class, new CategorySchemeVersionMetamacCriteriaCallback());
+
     }
 
     /**************************************************************************
@@ -99,6 +104,11 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
     @Override
     public MetamacCriteria2SculptorCriteria<OrganisationMetamac> getOrganisationMetamacCriteriaMapper() {
         return organisationMetamacCriteriaMapper;
+    }
+
+    @Override
+    public MetamacCriteria2SculptorCriteria<CategorySchemeVersionMetamac> getCategorySchemeMetamacCriteriaMapper() {
+        return categorySchemeMetamacCriteriaMapper;
     }
 
     /**************************************************************************
@@ -348,4 +358,50 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
         }
     }
 
+    private class CategorySchemeVersionMetamacCriteriaCallback implements CriteriaCallback {
+
+        @Override
+        public SculptorPropertyCriteria retrieveProperty(MetamacCriteriaPropertyRestriction propertyRestriction) throws MetamacException {
+            CategorySchemeVersionMetamacCriteriaPropertyEnum propertyEnum = CategorySchemeVersionMetamacCriteriaPropertyEnum.fromValue(propertyRestriction.getPropertyName());
+            switch (propertyEnum) {
+                case CODE:
+                    return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.maintainableArtefact().code(), propertyRestriction.getStringValue());
+                case URN:
+                    return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.maintainableArtefact().urn(), propertyRestriction.getStringValue());
+                case PROC_STATUS:
+                    return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.lifeCycleMetadata().procStatus(), propertyRestriction.getEnumValue());
+                case NAME:
+                    return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.maintainableArtefact().name().texts().label(), propertyRestriction.getStringValue());
+                case IS_LAST_VERSION:
+                    return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.maintainableArtefact().isLastVersion(), propertyRestriction.getBooleanValue());
+                default:
+                    throw new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, propertyRestriction.getPropertyName());
+            }
+        }
+
+        @Override
+        public Property<CategorySchemeVersionMetamac> retrievePropertyOrder(MetamacCriteriaOrder order) throws MetamacException {
+            CategorySchemeVersionMetamacCriteriaOrderEnum propertyOrderEnum = CategorySchemeVersionMetamacCriteriaOrderEnum.fromValue(order.getPropertyName());
+            switch (propertyOrderEnum) {
+                case CODE:
+                    return CategorySchemeVersionMetamacProperties.maintainableArtefact().code();
+                case URN:
+                    return CategorySchemeVersionMetamacProperties.maintainableArtefact().urn();
+                case PROC_STATUS:
+                    return CategorySchemeVersionMetamacProperties.lifeCycleMetadata().procStatus();
+                case NAME:
+                    return CategorySchemeVersionMetamacProperties.maintainableArtefact().name().texts().label();
+                case LAST_UPDATED:
+                    return new LeafProperty<CategorySchemeVersionMetamac>(CategorySchemeVersionMetamacProperties.maintainableArtefact().lastUpdated().getName(),
+                            CoreCommonConstants.CRITERIA_DATETIME_COLUMN_DATETIME, true, CategorySchemeVersionMetamac.class);
+                default:
+                    throw new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, order.getPropertyName());
+            }
+        }
+
+        @Override
+        public Property<CategorySchemeVersionMetamac> retrievePropertyOrderDefault() throws MetamacException {
+            return CategorySchemeVersionMetamacProperties.id();
+        }
+    }
 }
