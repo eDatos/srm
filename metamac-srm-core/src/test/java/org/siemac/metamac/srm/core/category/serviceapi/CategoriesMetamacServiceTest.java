@@ -207,19 +207,19 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
         }
     }
 
-    // @Test
-    // @Override
-    // public void testRetrieveCategorySchemeVersions() throws Exception {
-    //
-    // // Retrieve all versions
-    // String urn = CATEGORY_SCHEME_1_V1;
-    // List<CategorySchemeVersionMetamac> categorySchemeVersions = categoriesService.retrieveCategorySchemeVersions(getServiceContextAdministrador(), urn);
-    //
-    // // Validate
-    // assertEquals(2, categorySchemeVersions.size());
-    // assertEquals(CATEGORY_SCHEME_1_V1, categorySchemeVersions.get(0).getMaintainableArtefact().getUrn());
-    // assertEquals(CATEGORY_SCHEME_1_V2, categorySchemeVersions.get(1).getMaintainableArtefact().getUrn());
-    // }
+    @Test
+    @Override
+    public void testRetrieveCategorySchemeVersions() throws Exception {
+
+        // Retrieve all versions
+        String urn = CATEGORY_SCHEME_1_V1;
+        List<CategorySchemeVersionMetamac> categorySchemeVersions = categoriesService.retrieveCategorySchemeVersions(getServiceContextAdministrador(), urn);
+
+        // Validate
+        assertEquals(2, categorySchemeVersions.size());
+        assertEquals(CATEGORY_SCHEME_1_V1, categorySchemeVersions.get(0).getMaintainableArtefact().getUrn());
+        assertEquals(CATEGORY_SCHEME_1_V2, categorySchemeVersions.get(1).getMaintainableArtefact().getUrn());
+    }
 
     @Test
     public void testSendCategorySchemeToProductionValidation() throws Exception {

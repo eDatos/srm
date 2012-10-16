@@ -393,9 +393,9 @@ Application SrmFacadeCore {
             MetamacCriteriaResult<@CategorySchemeMetamacDto> findCategorySchemesByCondition(MetamacCriteria criteria) throws MetamacException;
             "Retrieves a category scheme by URN"
             @CategorySchemeMetamacDto retrieveCategorySchemeByUrn(String urn) throws MetamacException;
-//            "Retrieves all category scheme versions"
-//            List<@CategorySchemeMetamacDto> retrieveCategorySchemeVersions(String urn) throws MetamacException;
-//            
+            "Retrieves all category scheme versions"
+            List<@CategorySchemeMetamacDto> retrieveCategorySchemeVersions(String urn) throws MetamacException;
+            
             "Sends category scheme to production validation"
 	    	@CategorySchemeMetamacDto sendCategorySchemeToProductionValidation(String urn) throws MetamacException;
     		"Sends to diffusion validation"

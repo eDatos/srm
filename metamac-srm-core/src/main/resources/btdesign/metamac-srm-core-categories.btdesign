@@ -25,8 +25,8 @@ Application CategoriesMetamac {
 			@CategorySchemeVersionMetamac updateCategoryScheme(@CategorySchemeVersionMetamac categorySchemeVersion) throws MetamacException;
 			"Retrieves category scheme by urn"
 			@CategorySchemeVersionMetamac retrieveCategorySchemeByUrn(String urn) throws MetamacException;
-//			"Retrieves all category schemes versions"
-//			List<@CategorySchemeVersionMetamac> retrieveCategorySchemeVersions(String urn) throws MetamacException;
+			"Retrieves all category schemes versions"
+			List<@CategorySchemeVersionMetamac> retrieveCategorySchemeVersions(String urn) throws MetamacException;
 			"Finds category schemes by criteria"
     		PagedResult<@CategorySchemeVersionMetamac> findCategorySchemesByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
     		"Sends category scheme to production validation"

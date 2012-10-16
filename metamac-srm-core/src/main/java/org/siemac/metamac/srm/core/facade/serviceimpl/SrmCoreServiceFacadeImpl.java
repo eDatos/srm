@@ -1337,19 +1337,19 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         return categorySchemeMetamacDto;
     }
 
-    // @Override
-    // public List<CategorySchemeMetamacDto> retrieveCategorySchemeVersions(ServiceContext ctx, String urn) throws MetamacException {
-    // // TODO Security
-    // // CategoriesSecurityUtils.canRetrieveCategorySchemeVersions(ctx);
-    //
-    // // Retrieve
-    // List<CategorySchemeVersionMetamac> categorySchemeVersionMetamacs = getCategoriesMetamacService().retrieveCategorySchemeVersions(ctx, urn);
-    //
-    // // Transform
-    // List<CategorySchemeMetamacDto> categorySchemeMetamacDtos = categoriesDo2DtoMapper.categorySchemeMetamacDoListToDtoList(categorySchemeVersionMetamacs);
-    //
-    // return categorySchemeMetamacDtos;
-    // }
+    @Override
+    public List<CategorySchemeMetamacDto> retrieveCategorySchemeVersions(ServiceContext ctx, String urn) throws MetamacException {
+        // TODO Security
+        // CategoriesSecurityUtils.canRetrieveCategorySchemeVersions(ctx);
+
+        // Retrieve
+        List<CategorySchemeVersionMetamac> categorySchemeVersionMetamacs = getCategoriesMetamacService().retrieveCategorySchemeVersions(ctx, urn);
+
+        // Transform
+        List<CategorySchemeMetamacDto> categorySchemeMetamacDtos = categoriesDo2DtoMapper.categorySchemeMetamacDoListToDtoList(categorySchemeVersionMetamacs);
+
+        return categorySchemeMetamacDtos;
+    }
 
     @Override
     public CategorySchemeMetamacDto sendCategorySchemeToProductionValidation(ServiceContext ctx, String urn) throws MetamacException {

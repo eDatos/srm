@@ -1,5 +1,6 @@
 package org.siemac.metamac.srm.core.category.serviceimpl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
@@ -18,6 +19,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.arte.statistic.sdmx.srm.core.base.enume.domain.VersionPatternEnum;
+import com.arte.statistic.sdmx.srm.core.category.domain.CategorySchemeVersion;
 import com.arte.statistic.sdmx.srm.core.category.serviceapi.CategoriesService;
 
 /**
@@ -68,20 +70,20 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
         return (CategorySchemeVersionMetamac) categoriesService.retrieveCategorySchemeByUrn(ctx, urn);
     }
 
-    // @Override
-    // public List<CategorySchemeVersionMetamac> retrieveCategorySchemeVersions(ServiceContext ctx, String urn) throws MetamacException {
-    //
-    // // Retrieve categorySchemeVersions
-    // List<CategorySchemeVersion> categorySchemeVersions = categoriesService.retrieveCategorySchemeVersions(ctx, urn);
-    //
-    // // Type cast to CategorySchemeVersionMetamac
-    // List<CategorySchemeVersionMetamac> categorySchemeVersionMetamacs = new ArrayList<CategorySchemeVersionMetamac>();
-    // for (CategorySchemeVersion categorySchemeVersion : categorySchemeVersions) {
-    // categorySchemeVersionMetamacs.add((CategorySchemeVersionMetamac) categorySchemeVersion);
-    // }
-    //
-    // return categorySchemeVersionMetamacs;
-    // }
+    @Override
+    public List<CategorySchemeVersionMetamac> retrieveCategorySchemeVersions(ServiceContext ctx, String urn) throws MetamacException {
+
+        // Retrieve categorySchemeVersions
+        List<CategorySchemeVersion> categorySchemeVersions = categoriesService.retrieveCategorySchemeVersions(ctx, urn);
+
+        // Type cast to CategorySchemeVersionMetamac
+        List<CategorySchemeVersionMetamac> categorySchemeVersionMetamacs = new ArrayList<CategorySchemeVersionMetamac>();
+        for (CategorySchemeVersion categorySchemeVersion : categorySchemeVersions) {
+            categorySchemeVersionMetamacs.add((CategorySchemeVersionMetamac) categorySchemeVersion);
+        }
+
+        return categorySchemeVersionMetamacs;
+    }
 
     @Override
     public PagedResult<CategorySchemeVersionMetamac> findCategorySchemesByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
