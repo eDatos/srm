@@ -31,7 +31,7 @@ public class CancelDsdValidityActionHandler extends SecurityActionHandler<Cancel
         List<DataStructureDefinitionMetamacDto> dataStructureDefinitionMetamacDtos = new ArrayList<DataStructureDefinitionMetamacDto>();
         for (String urn : action.getUrns()) {
             try {
-                DataStructureDefinitionMetamacDto dsd = srmCoreServiceFacade.cancelDataStructureDefinitionValidity(ServiceContextHolder.getCurrentServiceContext(), urn);
+                DataStructureDefinitionMetamacDto dsd = srmCoreServiceFacade.endDataStructureDefinitionValidity(ServiceContextHolder.getCurrentServiceContext(), urn);
                 dataStructureDefinitionMetamacDtos.add(dsd);
             } catch (MetamacException e) {
                 throw WebExceptionUtils.createMetamacWebException(e);

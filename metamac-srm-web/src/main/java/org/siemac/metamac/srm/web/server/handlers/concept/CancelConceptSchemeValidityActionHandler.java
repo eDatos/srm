@@ -31,7 +31,7 @@ public class CancelConceptSchemeValidityActionHandler extends SecurityActionHand
         List<ConceptSchemeMetamacDto> conceptSchemeMetamacDtos = new ArrayList<ConceptSchemeMetamacDto>();
         for (String urn : action.getUrns()) {
             try {
-                ConceptSchemeMetamacDto conceptSchemeMetamacDto = srmCoreServiceFacade.cancelConceptSchemeValidity(ServiceContextHolder.getCurrentServiceContext(), urn);
+                ConceptSchemeMetamacDto conceptSchemeMetamacDto = srmCoreServiceFacade.endConceptSchemeValidity(ServiceContextHolder.getCurrentServiceContext(), urn);
                 conceptSchemeMetamacDtos.add(conceptSchemeMetamacDto);
             } catch (MetamacException e) {
                 throw WebExceptionUtils.createMetamacWebException(e);

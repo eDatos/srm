@@ -31,7 +31,7 @@ public class CancelOrganisationSchemeValidityActionHandler extends SecurityActio
         List<OrganisationSchemeMetamacDto> conceptSchemeMetamacDtos = new ArrayList<OrganisationSchemeMetamacDto>();
         for (String urn : action.getUrns()) {
             try {
-                OrganisationSchemeMetamacDto conceptSchemeMetamacDto = srmCoreServiceFacade.cancelOrganisationSchemeValidity(ServiceContextHolder.getCurrentServiceContext(), urn);
+                OrganisationSchemeMetamacDto conceptSchemeMetamacDto = srmCoreServiceFacade.endOrganisationSchemeValidity(ServiceContextHolder.getCurrentServiceContext(), urn);
                 conceptSchemeMetamacDtos.add(conceptSchemeMetamacDto);
             } catch (MetamacException e) {
                 throw WebExceptionUtils.createMetamacWebException(e);
