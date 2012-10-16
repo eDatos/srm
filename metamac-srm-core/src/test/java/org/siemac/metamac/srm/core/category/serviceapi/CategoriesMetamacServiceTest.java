@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
@@ -810,72 +811,72 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
     // assertEquals(ServiceExceptionParameters.PROC_STATUS_INTERNALLY_PUBLISHED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
     // }
     // }
-    //
-    // @Test
-    // public void testDeleteCategoryScheme() throws Exception {
-    //
-    // String urn = CATEGORY_SCHEME_2_V1;
-    //
-    // // Delete category scheme only with version in draft
-    // categoriesService.deleteCategoryScheme(getServiceContextAdministrador(), urn);
-    //
-    // // Validation
-    // try {
-    // categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urn);
-    // fail("CategoryScheme deleted");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.CATEGORY_SCHEME_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // }
-    // }
-    //
-    // @Test
-    // public void testDeleteCategorySchemeWithVersionPublishedAndVersionDraft() throws Exception {
-    //
-    // String urnV1 = CATEGORY_SCHEME_1_V1;
-    // String urnV2 = CATEGORY_SCHEME_1_V2;
-    //
-    // CategorySchemeVersionMetamac categorySchemeVersionV1 = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urnV1);
-    // assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, categorySchemeVersionV1.getLifeCycleMetadata().getProcStatus());
-    // CategorySchemeVersionMetamac categorySchemeVersionV2 = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urnV2);
-    // assertEquals(ProcStatusEnum.DRAFT, categorySchemeVersionV2.getLifeCycleMetadata().getProcStatus());
-    //
-    // categoriesService.deleteCategoryScheme(getServiceContextAdministrador(), urnV2);
-    //
-    // // Validation
-    // try {
-    // categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urnV2);
-    // fail("CategoryScheme deleted");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.CATEGORY_SCHEME_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(urnV2, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // }
-    // categorySchemeVersionV1 = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urnV1);
-    // assertTrue(categorySchemeVersionV1.getMaintainableArtefact().getIsLastVersion());
-    // assertNull(categorySchemeVersionV1.getMaintainableArtefact().getReplacedBy());
-    // }
-    //
-    // @Test
-    // public void testDeleteCategorySchemeErrorPublished() throws Exception {
-    //
-    // String urn = CATEGORY_SCHEME_1_V1;
-    //
-    // // Validation
-    // try {
-    // categoriesService.deleteCategoryScheme(getServiceContextAdministrador(), urn);
-    // fail("CategoryScheme can not be deleted");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.CATEGORY_SCHEME_UNMODIFIABLE.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // }
-    // }
-    //
+
+    @Test
+    public void testDeleteCategoryScheme() throws Exception {
+
+        String urn = CATEGORY_SCHEME_2_V1;
+
+        // Delete category scheme only with version in draft
+        categoriesService.deleteCategoryScheme(getServiceContextAdministrador(), urn);
+
+        // Validation
+        try {
+            categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urn);
+            fail("CategoryScheme deleted");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.CATEGORY_SCHEME_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
+    @Test
+    public void testDeleteCategorySchemeWithVersionPublishedAndVersionDraft() throws Exception {
+
+        String urnV1 = CATEGORY_SCHEME_1_V1;
+        String urnV2 = CATEGORY_SCHEME_1_V2;
+
+        CategorySchemeVersionMetamac categorySchemeVersionV1 = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urnV1);
+        assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, categorySchemeVersionV1.getLifeCycleMetadata().getProcStatus());
+        CategorySchemeVersionMetamac categorySchemeVersionV2 = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urnV2);
+        assertEquals(ProcStatusEnum.DRAFT, categorySchemeVersionV2.getLifeCycleMetadata().getProcStatus());
+
+        categoriesService.deleteCategoryScheme(getServiceContextAdministrador(), urnV2);
+
+        // Validation
+        try {
+            categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urnV2);
+            fail("CategoryScheme deleted");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.CATEGORY_SCHEME_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urnV2, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+        categorySchemeVersionV1 = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urnV1);
+        assertTrue(categorySchemeVersionV1.getMaintainableArtefact().getIsLastVersion());
+        assertNull(categorySchemeVersionV1.getMaintainableArtefact().getReplacedBy());
+    }
+
+    @Test
+    public void testDeleteCategorySchemeErrorPublished() throws Exception {
+
+        String urn = CATEGORY_SCHEME_1_V1;
+
+        // Validation
+        try {
+            categoriesService.deleteCategoryScheme(getServiceContextAdministrador(), urn);
+            fail("CategoryScheme can not be deleted");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.CATEGORY_SCHEME_UNMODIFIABLE.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
     // @Test
     // public void testVersioningCategoryScheme() throws Exception {
     //

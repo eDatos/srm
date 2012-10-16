@@ -121,25 +121,25 @@ public class SrmCoreServiceFacadeCategoriesTest extends SrmBaseTest {
         assertTrue(categorySchemeMetamacDtoSession1AfterUpdate2.getVersionOptimisticLocking() > categorySchemeMetamacDtoSession1AfterUpdate1.getVersionOptimisticLocking());
     }
 
-    // @Test
-    // public void testDeleteCategoryScheme() throws Exception {
-    // String urn = CATEGORY_SCHEME_2_V1;
-    //
-    // // Delete category scheme only with version in draft
-    // srmCoreServiceFacade.deleteCategoryScheme(getServiceContextAdministrador(), urn);
-    //
-    // // Validation
-    // try {
-    // srmCoreServiceFacade.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urn);
-    // fail("CategoryScheme deleted");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.CATEGORY_SCHEME_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // }
-    // }
-    //
+    @Test
+    public void testDeleteCategoryScheme() throws Exception {
+        String urn = CATEGORY_SCHEME_2_V1;
+
+        // Delete category scheme only with version in draft
+        srmCoreServiceFacade.deleteCategoryScheme(getServiceContextAdministrador(), urn);
+
+        // Validation
+        try {
+            srmCoreServiceFacade.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urn);
+            fail("CategoryScheme deleted");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.CATEGORY_SCHEME_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
     // @Test
     // public void testFindCategorySchemesByCondition() throws Exception {
     //

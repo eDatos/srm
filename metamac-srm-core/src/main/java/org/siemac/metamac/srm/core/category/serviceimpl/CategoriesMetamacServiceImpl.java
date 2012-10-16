@@ -121,13 +121,13 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
     // public CategorySchemeVersionMetamac publishExternallyCategoryScheme(ServiceContext ctx, String urn) throws MetamacException {
     // return (CategorySchemeVersionMetamac) categorySchemeLifeCycle.publishExternally(ctx, urn);
     // }
-    //
-    // @Override
-    // public void deleteCategoryScheme(ServiceContext ctx, String urn) throws MetamacException {
-    // // Note: CategoriesService checks categoryScheme isn't final and other conditions
-    // categoriesService.deleteCategoryScheme(ctx, urn);
-    // }
-    //
+
+    @Override
+    public void deleteCategoryScheme(ServiceContext ctx, String urn) throws MetamacException {
+        // Note: CategoriesService checks categoryScheme isn't final and other conditions
+        categoriesService.deleteCategoryScheme(ctx, urn);
+    }
+
     // @SuppressWarnings({"rawtypes", "unchecked"})
     // @Override
     // public CategorySchemeVersionMetamac versioningCategoryScheme(ServiceContext ctx, String urn, VersionTypeEnum versionType) throws MetamacException {
