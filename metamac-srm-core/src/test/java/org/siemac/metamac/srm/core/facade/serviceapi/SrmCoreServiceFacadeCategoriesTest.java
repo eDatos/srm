@@ -7,6 +7,9 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.siemac.metamac.srm.core.category.serviceapi.utils.CategoriesMetamacAsserts.assertEqualsCategorySchemeMetamacDto;
 
+import java.util.Date;
+
+import org.apache.commons.lang.time.DateUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.common.test.utils.MetamacMocks;
@@ -458,16 +461,17 @@ public class SrmCoreServiceFacadeCategoriesTest extends SrmBaseTest {
     // assertEquals("02.000", categorySchemeDtoNewVersion.getVersionLogic());
     // assertEquals("urn:sdmx:org.sdmx.infomodel.base.CategoryUnitScheme=ISTAC:CATEGORYSCHEME03(02.000)", categorySchemeDtoNewVersion.getUrn());
     // }
-    //
-    // @Test
-    // public void testEndCategorySchemeValidity() throws Exception {
-    // CategorySchemeMetamacDto categorySchemeMetamacDto = srmCoreServiceFacade.endCategorySchemeValidity(getServiceContextAdministrador(), CATEGORY_SCHEME_7_V1);
-    // assertTrue(DateUtils.isSameDay(new Date(), categorySchemeMetamacDto.getValidTo()));
-    // }
-    // // ---------------------------------------------------------------------------------------
-    // // CATEGORYS
-    // // ---------------------------------------------------------------------------------------
-    //
+
+    @Test
+    public void testEndCategorySchemeValidity() throws Exception {
+        CategorySchemeMetamacDto categorySchemeMetamacDto = srmCoreServiceFacade.endCategorySchemeValidity(getServiceContextAdministrador(), CATEGORY_SCHEME_7_V1);
+        assertTrue(DateUtils.isSameDay(new Date(), categorySchemeMetamacDto.getValidTo()));
+    }
+    
+    // ---------------------------------------------------------------------------------------
+    // CATEGORIES
+    // ---------------------------------------------------------------------------------------
+
     // @Test
     // public void testRetrieveCategoryByUrn() throws Exception {
     // CategoryMetamacDto categoryMetamacDto = srmCoreServiceFacade.retrieveCategoryByUrn(getServiceContextAdministrador(), CATEGORY_SCHEME_1_V2_CATEGORY_1);

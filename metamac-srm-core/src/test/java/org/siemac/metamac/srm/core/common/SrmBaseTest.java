@@ -104,6 +104,9 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
     protected String              CATEGORY_SCHEME_3_V1                        = "urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=ISTAC:CATEGORYSCHEME03(01.000)";
     protected String              CATEGORY_SCHEME_4_V1                        = "urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=ISTAC:CATEGORYSCHEME04(01.000)";
     protected String              CATEGORY_SCHEME_5_V1                        = "urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=ISTAC:CATEGORYSCHEME05(01.000)";
+    protected String              CATEGORY_SCHEME_6_V1                        = "urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=ISTAC:CATEGORYSCHEME06(01.000)";
+    protected String              CATEGORY_SCHEME_7_V1                        = "urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=ISTAC:CATEGORYSCHEME07(01.000)";
+    protected String              CATEGORY_SCHEME_7_V2                        = "urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=ISTAC:CATEGORYSCHEME07(02.000)";
 
     // Categories
     protected String              CATEGORY_SCHEME_1_V1_CATEGORY_1             = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ISTAC:CATEGORYSCHEME01(01.000).CATEGORY01";

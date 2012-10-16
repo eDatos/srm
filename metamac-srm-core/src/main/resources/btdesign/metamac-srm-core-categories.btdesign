@@ -45,8 +45,8 @@ Application CategoriesMetamac {
     		deleteCategoryScheme(String urn) throws MetamacException;
 //    		"Creates a new version of a category scheme, copying metadata from version with provided urn"
 //    		@CategorySchemeVersionMetamac versioningCategoryScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
-//    		"Ends the category scheme validity"
-//    		@CategorySchemeVersionMetamac endCategorySchemeValidity(String urn) throws MetamacException;
+    		"Ends the category scheme validity"
+    		@CategorySchemeVersionMetamac endCategorySchemeValidity(String urn) throws MetamacException;
 //    		"Retrieves categories scheme by category urn"
 //    		@CategorySchemeVersionMetamac retrieveCategorySchemeByCategoryUrn(String categoryUrn) throws MetamacException;
 //    		
@@ -76,10 +76,10 @@ Application CategoriesMetamac {
 			
 			Repository CategorySchemeVersionMetamacRepository {
 				findById;
-//				findByQuery(String query, Map<String, Object> parameters, int maxResult);
+				findByQuery(String query, Map<String, Object> parameters, int maxResult);
 //				findByCondition(PagingParameter pagingParameter);
-//				@CategorySchemeVersionMetamac findByUrn(String urn);
-//				@CategorySchemeVersionMetamac retrieveCategorySchemeVersionByProcStatus(String urn, ArrayProcStatusEnum procStatus) throws MetamacException;
+				@CategorySchemeVersionMetamac findByUrn(String urn);
+				@CategorySchemeVersionMetamac retrieveCategorySchemeVersionByProcStatus(String urn, ArrayProcStatusEnum procStatus) throws MetamacException;
 //				@CategorySchemeVersionMetamac findByCategory(String urn);
 			}			
 		}

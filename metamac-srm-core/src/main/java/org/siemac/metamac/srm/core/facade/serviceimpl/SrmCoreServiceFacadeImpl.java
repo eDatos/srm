@@ -1447,25 +1447,25 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     // CategorySchemeMetamacDto categorySchemeDto = categoriesDo2DtoMapper.categorySchemeMetamacDoToDto(categorySchemeVersioned);
     // return categorySchemeDto;
     // }
-    //
-    // @Override
-    // public CategorySchemeMetamacDto endCategorySchemeValidity(ServiceContext ctx, String urn) throws MetamacException {
-    // // TODO Security
-    // // CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByUrn(ctx, urn);
-    // // CategoriesSecurityUtils.canEndCategorySchemeValidity(ctx, categorySchemeVersion);
-    //
-    // CategorySchemeVersionMetamac categorySchemeEnded = getCategoriesMetamacService().endCategorySchemeValidity(ctx, urn);
-    //
-    // // Transform to DTO
-    // CategorySchemeMetamacDto categorySchemeDto = categoriesDo2DtoMapper.categorySchemeMetamacDoToDto(categorySchemeEnded);
-    //
-    // return categorySchemeDto;
-    // }
-    //
-    // // ------------------------------------------------------------------------
-    // // CATEGORIES
-    // // ------------------------------------------------------------------------
-    //
+
+    @Override
+    public CategorySchemeMetamacDto endCategorySchemeValidity(ServiceContext ctx, String urn) throws MetamacException {
+        // TODO Security
+        // CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByUrn(ctx, urn);
+        // CategoriesSecurityUtils.canEndCategorySchemeValidity(ctx, categorySchemeVersion);
+
+        CategorySchemeVersionMetamac categorySchemeEnded = getCategoriesMetamacService().endCategorySchemeValidity(ctx, urn);
+
+        // Transform to DTO
+        CategorySchemeMetamacDto categorySchemeDto = categoriesDo2DtoMapper.categorySchemeMetamacDoToDto(categorySchemeEnded);
+
+        return categorySchemeDto;
+    }
+
+    // ------------------------------------------------------------------------
+    // CATEGORIES
+    // ------------------------------------------------------------------------
+
     // @Override
     // public CategoryMetamacDto createCategory(ServiceContext ctx, CategoryMetamacDto categoryMetamacDto) throws MetamacException {
     // // TODO Security

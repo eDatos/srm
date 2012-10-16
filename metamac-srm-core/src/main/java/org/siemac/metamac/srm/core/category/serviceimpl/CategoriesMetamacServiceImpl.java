@@ -158,23 +158,23 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
     //
     // return categorySchemeNewVersion;
     // }
-    //
-    // @Override
-    // public CategorySchemeVersionMetamac endCategorySchemeValidity(ServiceContext ctx, String urn) throws MetamacException {
-    //
-    // // Validation
-    // CategoriesMetamacInvocationValidator.checkEndCategorySchemeValidity(urn, null);
-    //
-    // // Retrieve version in specific procStatus
-    // CategorySchemeVersionMetamac categorySchemeVersion = getCategorySchemeVersionMetamacRepository().retrieveCategorySchemeVersionByProcStatus(urn,
-    // new ProcStatusEnum[]{ProcStatusEnum.EXTERNALLY_PUBLISHED});
-    //
-    // // End validity
-    // categorySchemeVersion = (CategorySchemeVersionMetamac) categoriesService.endCategorySchemeValidity(ctx, urn);
-    //
-    // return categorySchemeVersion;
-    // }
-    //
+
+    @Override
+    public CategorySchemeVersionMetamac endCategorySchemeValidity(ServiceContext ctx, String urn) throws MetamacException {
+
+        // Validation
+        CategoriesMetamacInvocationValidator.checkEndCategorySchemeValidity(urn, null);
+
+        // Retrieve version in specific procStatus
+        CategorySchemeVersionMetamac categorySchemeVersion = getCategorySchemeVersionMetamacRepository().retrieveCategorySchemeVersionByProcStatus(urn,
+                new ProcStatusEnum[]{ProcStatusEnum.EXTERNALLY_PUBLISHED});
+
+        // End validity
+        categorySchemeVersion = (CategorySchemeVersionMetamac) categoriesService.endCategorySchemeValidity(ctx, urn);
+
+        return categorySchemeVersion;
+    }
+
     // @Override
     // public CategoryMetamac createCategory(ServiceContext ctx, String categorySchemeUrn, CategoryMetamac category) throws MetamacException {
     //

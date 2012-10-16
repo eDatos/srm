@@ -1081,32 +1081,32 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
     // assertEquals(CATEGORY_SCHEME_1_V2, e.getExceptionItems().get(0).getMessageParameters()[0]);
     // }
     // }
-    //
-    // @Test
-    // public void testEndCategorySchemeValidity() throws Exception {
-    // CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.endCategorySchemeValidity(getServiceContextAdministrador(), CATEGORY_SCHEME_7_V1);
-    //
-    // assertNotNull(categorySchemeVersion);
-    // assertNotNull(categorySchemeVersion.getMaintainableArtefact().getValidTo());
-    // }
-    //
-    // @Test
-    // public void testEndCategorySchemeValidityErrorWrongProcStatus() throws Exception {
-    // String[] urns = {CATEGORY_SCHEME_1_V1, CATEGORY_SCHEME_4_V1, CATEGORY_SCHEME_6_V1};
-    // for (String urn : urns) {
-    // try {
-    // categoriesService.endCategorySchemeValidity(getServiceContextAdministrador(), urn);
-    // fail("wrong procStatus");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.CATEGORY_SCHEME_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // assertEquals(ServiceExceptionParameters.PROC_STATUS_EXTERNALLY_PUBLISHED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
-    // }
-    // }
-    // }
-    //
+
+    @Test
+    public void testEndCategorySchemeValidity() throws Exception {
+        CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.endCategorySchemeValidity(getServiceContextAdministrador(), CATEGORY_SCHEME_7_V1);
+
+        assertNotNull(categorySchemeVersion);
+        assertNotNull(categorySchemeVersion.getMaintainableArtefact().getValidTo());
+    }
+
+    @Test
+    public void testEndCategorySchemeValidityErrorWrongProcStatus() throws Exception {
+        String[] urns = {CATEGORY_SCHEME_1_V1, CATEGORY_SCHEME_4_V1, CATEGORY_SCHEME_6_V1};
+        for (String urn : urns) {
+            try {
+                categoriesService.endCategorySchemeValidity(getServiceContextAdministrador(), urn);
+                fail("wrong procStatus");
+            } catch (MetamacException e) {
+                assertEquals(1, e.getExceptionItems().size());
+                assertEquals(ServiceExceptionType.CATEGORY_SCHEME_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
+                assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
+                assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+                assertEquals(ServiceExceptionParameters.PROC_STATUS_EXTERNALLY_PUBLISHED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
+            }
+        }
+    }
+
     // @Test
     // public void testCreateCategory() throws Exception {
     //
