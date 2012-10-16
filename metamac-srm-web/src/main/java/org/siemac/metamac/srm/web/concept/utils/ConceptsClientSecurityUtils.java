@@ -52,7 +52,7 @@ public class ConceptsClientSecurityUtils {
     }
 
     public static boolean canCancelConceptSchemeValidity(ConceptSchemeTypeEnum type, String operationCode) {
-        return SharedConceptsSecurityUtils.canCancelConceptSchemeValidity(MetamacSrmWeb.getCurrentUser(), type, operationCode);
+        return SharedConceptsSecurityUtils.canEndConceptSchemeValidity(MetamacSrmWeb.getCurrentUser(), type, operationCode);
     }
 
     // Concepts

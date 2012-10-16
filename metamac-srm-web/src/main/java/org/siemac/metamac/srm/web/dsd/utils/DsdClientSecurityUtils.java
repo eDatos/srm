@@ -43,7 +43,7 @@ public class DsdClientSecurityUtils {
     }
 
     public static boolean canCancelDsdValidity() {
-        return SharedDsdSecurityUtils.canCancelDsdValidity(MetamacSrmWeb.getCurrentUser());
+        return SharedDsdSecurityUtils.canEndDsdValidity(MetamacSrmWeb.getCurrentUser());
     }
 
     public static boolean canAnnounceDsd() {
