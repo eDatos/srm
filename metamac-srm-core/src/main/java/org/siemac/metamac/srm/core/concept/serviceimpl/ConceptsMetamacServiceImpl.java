@@ -16,18 +16,15 @@ import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
-import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacProperties;
 import org.siemac.metamac.srm.core.concept.domain.ConceptType;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.core.concept.serviceimpl.utils.ConceptsMetamacInvocationValidator;
-import org.siemac.metamac.srm.core.concept.serviceimpl.utils.ConceptsDoCopyUtils;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
-import com.arte.statistic.sdmx.srm.core.base.domain.ItemScheme;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.enume.domain.VersionPatternEnum;
@@ -38,6 +35,7 @@ import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptRepository;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.concept.enume.domain.ConceptRelationTypeEnum;
 import com.arte.statistic.sdmx.srm.core.concept.serviceapi.ConceptsService;
+import com.arte.statistic.sdmx.srm.core.concept.serviceimpl.utils.ConceptsDoCopyUtils.ConceptCopyCallback;
 import com.arte.statistic.sdmx.srm.core.concept.serviceimpl.utils.ConceptsInvocationValidator;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
 
@@ -62,6 +60,10 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     @Autowired
     @Qualifier("conceptSchemeLifeCycle")
     private LifeCycle                   conceptSchemeLifeCycle;
+
+    @Autowired
+    @Qualifier("conceptCopyCallbackMetamac")
+    private ConceptCopyCallback         conceptCopyCallback;
 
     public ConceptsMetamacServiceImpl() {
     }
@@ -186,37 +188,18 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         conceptsService.deleteConceptScheme(ctx, urn);
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
-    public ConceptSchemeVersionMetamac versioningConceptScheme(ServiceContext ctx, String urn, VersionTypeEnum versionType) throws MetamacException {
+    public ConceptSchemeVersionMetamac versioningConceptScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
 
         // Validation
-        ConceptsMetamacInvocationValidator.checkVersioningConceptScheme(urn, versionType, null);
-
-        // Initialize new version, copying values of version selected
-        ConceptSchemeVersionMetamac conceptSchemeVersionToCopy = getConceptSchemeVersionMetamacRepository().retrieveConceptSchemeVersionByProcStatus(urn,
-                new ProcStatusEnum[]{ProcStatusEnum.INTERNALLY_PUBLISHED, ProcStatusEnum.EXTERNALLY_PUBLISHED});
-
-        // Check not exists version not published
-        List<ConceptSchemeVersionMetamac> versionsNotPublished = findConceptSchemeVersionsOfConceptSchemeInProcStatus(ctx, conceptSchemeVersionToCopy.getItemScheme(), ProcStatusEnum.DRAFT,
-                ProcStatusEnum.PRODUCTION_VALIDATION, ProcStatusEnum.DIFFUSION_VALIDATION, ProcStatusEnum.VALIDATION_REJECTED);
-        if (versionsNotPublished.size() != 0) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CONCEPT_SCHEME_VERSIONING_NOT_SUPPORTED)
-                    .withMessageParameters(versionsNotPublished.get(0).getMaintainableArtefact().getUrn()).build();
-        }
-
-        // Copy values
-        ConceptSchemeVersionMetamac conceptSchemeNewVersion = ConceptsDoCopyUtils.copyConceptSchemeVersionMetamac(conceptSchemeVersionToCopy);
-        conceptSchemeNewVersion.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
-        List concepts = ConceptsDoCopyUtils.copyConceptsMetamac(conceptSchemeVersionToCopy);
+        ConceptsMetamacInvocationValidator.checkVersioningConceptScheme(urnToCopy, versionType, null, null);
 
         // Versioning
-        conceptSchemeNewVersion = (ConceptSchemeVersionMetamac) conceptsService
-                .versioningConceptScheme(ctx, conceptSchemeVersionToCopy.getItemScheme(), conceptSchemeNewVersion, concepts, versionType);
+        ConceptSchemeVersionMetamac conceptSchemeNewVersion = (ConceptSchemeVersionMetamac) conceptsService.versioningConceptScheme(ctx, urnToCopy, versionType, conceptCopyCallback);
 
-        // Copy concept relations (metadata of Metamac 'relatedConcepts'. Note: metadata 'roles' is copied in SDMX module
+        // Copy concept relations (metadata of Metamac 'relatedConcepts'). Note: metadata 'roles' is copied in SDMX module
         String conceptSchemeNewVersionUrn = conceptSchemeNewVersion.getMaintainableArtefact().getUrn();
-        List<ConceptRelation> relatedConcepts = findConceptsRelationsBidirectionalByConceptSchemeVersion(urn);
+        List<ConceptRelation> relatedConcepts = findConceptsRelationsBidirectionalByConceptSchemeVersion(urnToCopy);
         for (ConceptRelation conceptRelationOldVersion : relatedConcepts) {
             String concept1CodeVersionToCopy = conceptRelationOldVersion.getConcept1().getNameableArtefact().getCode();
             String concept2CodeVersionToCopy = conceptRelationOldVersion.getConcept2().getNameableArtefact().getCode();
@@ -482,18 +465,6 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
             concepts.add((ConceptMetamac) item);
         }
         return concepts;
-    }
-
-    /**
-     * Finds versions of concept scheme in specific procStatus
-     */
-    private List<ConceptSchemeVersionMetamac> findConceptSchemeVersionsOfConceptSchemeInProcStatus(ServiceContext ctx, ItemScheme conceptScheme, ProcStatusEnum... procStatus) throws MetamacException {
-
-        List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).withProperty(ConceptSchemeVersionMetamacProperties.itemScheme().id())
-                .eq(conceptScheme.getId()).withProperty(ConceptSchemeVersionMetamacProperties.lifeCycleMetadata().procStatus()).in((Object[]) procStatus).distinctRoot().build();
-        PagingParameter pagingParameter = PagingParameter.noLimits();
-        PagedResult<ConceptSchemeVersionMetamac> conceptSchemeVersionPagedResult = getConceptSchemeVersionMetamacRepository().findByCondition(conditions, pagingParameter);
-        return conceptSchemeVersionPagedResult.getValues();
     }
 
     private void checkToDeleteConceptHierarchyWithoutRelations(Concept concept) throws MetamacException {
