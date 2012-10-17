@@ -161,7 +161,7 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
             fail("OrganisationScheme deleted");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEquals(ServiceExceptionType.ORGANISATION_SCHEME_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
             assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
             assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
         }
@@ -888,7 +888,7 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
             fail("wrong parent");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEquals(ServiceExceptionType.SRM_SEARCH_BY_URN_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(ServiceExceptionType.SEARCH_BY_URN_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
             assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
             assertEquals(ServiceExceptionParameters.ITEM, e.getExceptionItems().get(0).getMessageParameters()[0]);
             assertEquals(NOT_EXISTS, e.getExceptionItems().get(0).getMessageParameters()[1]);
@@ -921,7 +921,7 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
             fail("Organisation deleted");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEquals(ServiceExceptionType.ORGANISATION_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
             assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
             assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
         }

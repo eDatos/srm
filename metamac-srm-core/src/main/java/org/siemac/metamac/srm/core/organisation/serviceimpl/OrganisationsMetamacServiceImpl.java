@@ -263,7 +263,7 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
         // Retrieve
         OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationSchemeVersionMetamacRepository().findByOrganisation(organisationUrn);
         if (organisationSchemeVersion == null) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.ORGANISATION_NOT_FOUND).withMessageParameters(organisationUrn).build();
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(organisationUrn).build();
         }
         return organisationSchemeVersion;
     }

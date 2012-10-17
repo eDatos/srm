@@ -76,7 +76,7 @@ public class OrganisationSchemeLifeCycleImpl extends LifeCycleImpl {
 
             // One organisation at least
             if (organisationSchemeVersion.getItems().size() == 0) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.ORGANISATION_SCHEME_WITHOUT_ORGANISATIONS, organisationSchemeVersion.getMaintainableArtefact().getUrn()));
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.ITEM_SCHEME_WITHOUT_ITEMS, organisationSchemeVersion.getMaintainableArtefact().getUrn()));
             }
         }
 
@@ -136,7 +136,7 @@ public class OrganisationSchemeLifeCycleImpl extends LifeCycleImpl {
         @Override
         public MetamacExceptionItem buildExceptionItemWrongProcStatus(Object srmResourceVersion, String[] procStatusExpecteds) {
             OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationSchemeVersionMetamac(srmResourceVersion);
-            return MetamacExceptionItemBuilder.metamacExceptionItem().withCommonServiceExceptionType(ServiceExceptionType.ORGANISATION_SCHEME_WRONG_PROC_STATUS)
+            return MetamacExceptionItemBuilder.metamacExceptionItem().withCommonServiceExceptionType(ServiceExceptionType.LIFE_CYCLE_WRONG_PROC_STATUS)
                     .withMessageParameters(organisationSchemeVersion.getMaintainableArtefact().getUrn(), procStatusExpecteds).build();
         }
 

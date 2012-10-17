@@ -213,7 +213,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
 
             // if exists, throw exception about wrong proc status
             String[] procStatusString = SrmServiceUtils.procStatusEnumToString(procStatus);
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_WRONG_PROC_STATUS).withMessageParameters(urn, procStatusString).build();
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.LIFE_CYCLE_WRONG_PROC_STATUS).withMessageParameters(urn, procStatusString).build();
         }
         return dataStructureDefinitionVersionMetamacPagedResult.getValues().get(0);
     }

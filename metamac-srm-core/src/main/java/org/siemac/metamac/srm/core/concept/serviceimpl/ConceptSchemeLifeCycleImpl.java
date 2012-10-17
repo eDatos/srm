@@ -81,7 +81,7 @@ public class ConceptSchemeLifeCycleImpl extends LifeCycleImpl {
             
             // One concept at least
             if (conceptSchemeVersion.getItems().size() == 0) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.CONCEPT_SCHEME_WITHOUT_CONCEPTS, conceptSchemeVersion.getMaintainableArtefact().getUrn()));
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.ITEM_SCHEME_WITHOUT_ITEMS, conceptSchemeVersion.getMaintainableArtefact().getUrn()));
             }
         }
         
@@ -161,7 +161,7 @@ public class ConceptSchemeLifeCycleImpl extends LifeCycleImpl {
         @Override
         public MetamacExceptionItem buildExceptionItemWrongProcStatus(Object srmResourceVersion, String[] procStatusExpecteds) {
             ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptSchemeVersionMetamac(srmResourceVersion);
-            return MetamacExceptionItemBuilder.metamacExceptionItem().withCommonServiceExceptionType(ServiceExceptionType.CONCEPT_SCHEME_WRONG_PROC_STATUS)
+            return MetamacExceptionItemBuilder.metamacExceptionItem().withCommonServiceExceptionType(ServiceExceptionType.LIFE_CYCLE_WRONG_PROC_STATUS)
                     .withMessageParameters(conceptSchemeVersion.getMaintainableArtefact().getUrn(), procStatusExpecteds).build();
         }
 

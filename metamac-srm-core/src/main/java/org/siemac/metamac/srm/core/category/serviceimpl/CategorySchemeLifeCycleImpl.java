@@ -76,7 +76,7 @@ public class CategorySchemeLifeCycleImpl extends LifeCycleImpl {
 
             // One category at least
             if (categorySchemeVersion.getItems().size() == 0) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.CATEGORY_SCHEME_WITHOUT_CATEGORIES, categorySchemeVersion.getMaintainableArtefact().getUrn()));
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.ITEM_SCHEME_WITHOUT_ITEMS, categorySchemeVersion.getMaintainableArtefact().getUrn()));
             }
         }
 
@@ -136,7 +136,7 @@ public class CategorySchemeLifeCycleImpl extends LifeCycleImpl {
         @Override
         public MetamacExceptionItem buildExceptionItemWrongProcStatus(Object srmResourceVersion, String[] procStatusExpecteds) {
             CategorySchemeVersionMetamac categorySchemeVersion = getCategorySchemeVersionMetamac(srmResourceVersion);
-            return MetamacExceptionItemBuilder.metamacExceptionItem().withCommonServiceExceptionType(ServiceExceptionType.CATEGORY_SCHEME_WRONG_PROC_STATUS)
+            return MetamacExceptionItemBuilder.metamacExceptionItem().withCommonServiceExceptionType(ServiceExceptionType.LIFE_CYCLE_WRONG_PROC_STATUS)
                     .withMessageParameters(categorySchemeVersion.getMaintainableArtefact().getUrn(), procStatusExpecteds).build();
         }
 

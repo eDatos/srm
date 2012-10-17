@@ -42,7 +42,7 @@ public class CategoriesDto2DoMapperImpl implements CategoriesDto2DoMapper {
             try {
                 target = categorySchemeVersionMetamacRepository.findById(source.getId());
             } catch (CategorySchemeVersionMetamacNotFoundException e) {
-                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SRM_SEARCH_NOT_FOUND).withMessageParameters(ServiceExceptionParameters.CATEGORY_SCHEME)
+                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SEARCH_NOT_FOUND).withMessageParameters(ServiceExceptionParameters.CATEGORY_SCHEME)
                         .withLoggedLevel(ExceptionLevelEnum.ERROR).build();
             }
             OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersion());

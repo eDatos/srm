@@ -44,11 +44,11 @@ public class CategorySchemeVersionMetamacRepositoryImpl extends CategorySchemeVe
             // check scheme exists to throws specific exception
             CategorySchemeVersionMetamac categorySchemeVersionMetamac = findByUrn(urn);
             if (categorySchemeVersionMetamac == null) {
-                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CATEGORY_SCHEME_NOT_FOUND).withMessageParameters(urn).build();
+                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(urn).build();
             } else {
                 // if exists, throw exception about wrong proc status
                 String[] procStatusString = SrmServiceUtils.procStatusEnumToString(procStatusArray);
-                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CATEGORY_SCHEME_WRONG_PROC_STATUS).withMessageParameters(urn, procStatusString).build();
+                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.LIFE_CYCLE_WRONG_PROC_STATUS).withMessageParameters(urn, procStatusString).build();
 
             }
         }

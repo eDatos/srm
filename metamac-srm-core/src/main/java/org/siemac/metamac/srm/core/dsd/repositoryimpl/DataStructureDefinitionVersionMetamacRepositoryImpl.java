@@ -44,11 +44,11 @@ public class DataStructureDefinitionVersionMetamacRepositoryImpl extends DataStr
             // check data structure definition scheme exists to throws specific exception
             DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion = findByUrn(urn);
             if (dataStructureDefinitionVersion == null) {
-                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.SRM_SEARCH_NOT_FOUND).withMessageParameters(urn).build();
+                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.SEARCH_NOT_FOUND).withMessageParameters(urn).build();
             } else {
                 // if exists, throw exception about wrong proc status
                 String[] procStatusString = SrmServiceUtils.procStatusEnumToString(procStatusArray);
-                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_WRONG_PROC_STATUS).withMessageParameters(urn, procStatusString).build();
+                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.LIFE_CYCLE_WRONG_PROC_STATUS).withMessageParameters(urn, procStatusString).build();
 
             }
         }

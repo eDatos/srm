@@ -55,11 +55,11 @@ public class ConceptSchemeVersionMetamacRepositoryImpl extends ConceptSchemeVers
             // check concept scheme exists to throws specific exception
             ConceptSchemeVersionMetamac conceptSchemeVersion = findByUrn(urn);
             if (conceptSchemeVersion == null) {
-                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CONCEPT_SCHEME_NOT_FOUND).withMessageParameters(urn).build();
+                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(urn).build();
             } else {
                 // if exists, throw exception about wrong proc status
                 String[] procStatusString = SrmServiceUtils.procStatusEnumToString(procStatusArray);
-                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CONCEPT_SCHEME_WRONG_PROC_STATUS).withMessageParameters(urn, procStatusString).build();
+                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.LIFE_CYCLE_WRONG_PROC_STATUS).withMessageParameters(urn, procStatusString).build();
 
             }
         }

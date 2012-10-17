@@ -54,7 +54,7 @@ public class DataStructureDefinitionDto2DoMapperImpl implements DataStructureDef
             try {
                 target = dataStructureDefinitionVersionMetamacRepository.findById(source.getId());
             } catch (DataStructureDefinitionVersionMetamacNotFoundException e) {
-                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SRM_SEARCH_NOT_FOUND)
+                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SEARCH_NOT_FOUND)
                         .withMessageParameters(ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION).withLoggedLevel(ExceptionLevelEnum.ERROR).build();
             }
             OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersion());

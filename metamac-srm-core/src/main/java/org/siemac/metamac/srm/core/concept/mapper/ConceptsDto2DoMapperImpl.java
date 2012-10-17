@@ -52,7 +52,7 @@ public class ConceptsDto2DoMapperImpl implements ConceptsDto2DoMapper {
             try {
                 target = conceptSchemeVersionMetamacRepository.findById(source.getId());
             } catch (ConceptSchemeVersionMetamacNotFoundException e) {
-                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SRM_SEARCH_NOT_FOUND).withMessageParameters(ServiceExceptionParameters.CONCEPT_SCHEME)
+                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SEARCH_NOT_FOUND).withMessageParameters(ServiceExceptionParameters.CONCEPT_SCHEME)
                         .withLoggedLevel(ExceptionLevelEnum.ERROR).build();
             }
             OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersion());
@@ -82,7 +82,7 @@ public class ConceptsDto2DoMapperImpl implements ConceptsDto2DoMapper {
             try {
                 target = conceptMetamacRepository.findById(source.getId());
             } catch (ConceptMetamacNotFoundException e) {
-                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SRM_SEARCH_NOT_FOUND).withMessageParameters(ServiceExceptionParameters.CONCEPT)
+                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SEARCH_NOT_FOUND).withMessageParameters(ServiceExceptionParameters.CONCEPT)
                         .withLoggedLevel(ExceptionLevelEnum.ERROR).build();
             }
             OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersion());
@@ -102,7 +102,7 @@ public class ConceptsDto2DoMapperImpl implements ConceptsDto2DoMapper {
         if (source.getConceptExtendsUrn() != null) {
             ConceptMetamac conceptExtends = conceptMetamacRepository.findByUrn(source.getConceptExtendsUrn());
             if (conceptExtends == null) {
-                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CONCEPT_NOT_FOUND).withMessageParameters(source.getConceptExtendsUrn()).build();
+                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(source.getConceptExtendsUrn()).build();
             }
             target.setConceptExtends(conceptExtends);
         } else {
