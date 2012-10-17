@@ -43,8 +43,8 @@ Application CategoriesMetamac {
 	    	@CategorySchemeVersionMetamac publishExternallyCategoryScheme(String urn) throws MetamacException;
 			"Deletes category scheme version. This must be last version and no published"
     		deleteCategoryScheme(String urn) throws MetamacException;
-//    		"Creates a new version of a category scheme, copying metadata from version with provided urn"
-//    		@CategorySchemeVersionMetamac versioningCategoryScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
+    		"Creates a new version of a category scheme, copying metadata from version with provided urn"
+    		@CategorySchemeVersionMetamac versioningCategoryScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
     		"Ends the category scheme validity"
     		@CategorySchemeVersionMetamac endCategorySchemeValidity(String urn) throws MetamacException;
 //    		"Retrieves categories scheme by category urn"

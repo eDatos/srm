@@ -21,6 +21,8 @@ import org.springframework.stereotype.Service;
 import com.arte.statistic.sdmx.srm.core.base.enume.domain.VersionPatternEnum;
 import com.arte.statistic.sdmx.srm.core.category.domain.CategorySchemeVersion;
 import com.arte.statistic.sdmx.srm.core.category.serviceapi.CategoriesService;
+import com.arte.statistic.sdmx.srm.core.category.serviceimpl.utils.CategoriesDoCopyUtils.CategoryCopyCallback;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
 
 /**
  * Implementation of CategoriesMetamacService.
@@ -29,14 +31,18 @@ import com.arte.statistic.sdmx.srm.core.category.serviceapi.CategoriesService;
 public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBase {
 
     @Autowired
-    private CategoriesService categoriesService;
+    private CategoriesService    categoriesService;
 
     // @Autowired
     // private ItemSchemeVersionRepository itemSchemeVersionRepository;
 
     @Autowired
     @Qualifier("categorySchemeLifeCycle")
-    private LifeCycle         categorySchemeLifeCycle;
+    private LifeCycle            categorySchemeLifeCycle;
+
+    @Autowired
+    @Qualifier("categoryCopyCallbackMetamac")
+    private CategoryCopyCallback categoryCopyCallback;
 
     public CategoriesMetamacServiceImpl() {
     }
@@ -137,36 +143,18 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
         categoriesService.deleteCategoryScheme(ctx, urn);
     }
 
-    // @SuppressWarnings({"rawtypes", "unchecked"})
-    // @Override
-    // public CategorySchemeVersionMetamac versioningCategoryScheme(ServiceContext ctx, String urn, VersionTypeEnum versionType) throws MetamacException {
-    //
-    // // Validation
-    // CategoriesMetamacInvocationValidator.checkVersioningCategoryScheme(urn, versionType, null);
-    //
-    // // Initialize new version, copying values of version selected
-    // CategorySchemeVersionMetamac categorySchemeVersionToCopy = getCategorySchemeVersionMetamacRepository().retrieveCategorySchemeVersionByProcStatus(urn,
-    // new ProcStatusEnum[]{ProcStatusEnum.INTERNALLY_PUBLISHED, ProcStatusEnum.EXTERNALLY_PUBLISHED});
-    //
-    // // Check not exists version not published
-    // List<CategorySchemeVersionMetamac> versionsNotPublished = findCategorySchemeVersionsOfCategorySchemeInProcStatus(ctx, categorySchemeVersionToCopy.getItemScheme(),
-    // ProcStatusEnum.DRAFT, ProcStatusEnum.PRODUCTION_VALIDATION, ProcStatusEnum.DIFFUSION_VALIDATION, ProcStatusEnum.VALIDATION_REJECTED);
-    // if (versionsNotPublished.size() != 0) {
-    // throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CATEGORY_SCHEME_VERSIONING_NOT_SUPPORTED)
-    // .withMessageParameters(versionsNotPublished.get(0).getMaintainableArtefact().getUrn()).build();
-    // }
-    //
-    // // Copy values
-    // CategorySchemeVersionMetamac categorySchemeNewVersion = CategoriesDoCopyUtils.copyCategorySchemeVersionMetamac(categorySchemeVersionToCopy);
-    // categorySchemeNewVersion.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
-    // List categories = CategoriesDoCopyUtils.copyCategoriesMetamac(categorySchemeVersionToCopy);
-    //
-    // // Versioning
-    // categorySchemeNewVersion = (CategorySchemeVersionMetamac) categoriesService.versioningCategoryScheme(ctx, categorySchemeVersionToCopy.getItemScheme(),
-    // categorySchemeNewVersion, categories, versionType);
-    //
-    // return categorySchemeNewVersion;
-    // }
+    @Override
+    public CategorySchemeVersionMetamac versioningCategoryScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
+
+        // Validation
+        CategoriesMetamacInvocationValidator.checkVersioningCategoryScheme(urnToCopy, versionType, null, null);
+        // Validations of scheme final, ... are done in sdmx module
+
+        // Versioning
+        CategorySchemeVersionMetamac categorySchemeNewVersion = (CategorySchemeVersionMetamac) categoriesService.versioningCategoryScheme(ctx, urnToCopy, versionType, categoryCopyCallback);
+
+        return categorySchemeNewVersion;
+    }
 
     @Override
     public CategorySchemeVersionMetamac endCategorySchemeValidity(ServiceContext ctx, String urn) throws MetamacException {

@@ -20,6 +20,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.common.test.utils.MetamacAsserts;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamacProperties;
 import org.siemac.metamac.srm.core.category.serviceapi.utils.CategoriesMetamacAsserts;
@@ -34,7 +35,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.arte.statistic.sdmx.srm.core.category.domain.Category;
 import com.arte.statistic.sdmx.srm.core.category.domain.CategorySchemeVersion;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/srm/applicationContext-test.xml"})
@@ -872,211 +875,190 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
         }
     }
 
-    // @Test
-    // public void testVersioningCategoryScheme() throws Exception {
-    //
-    // String urn = CATEGORY_SCHEME_3_V1;
-    // String versionExpected = "02.000";
-    // String urnExpected = "urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=ISTAC:CATEGORYSCHEME03(02.000)";
-    // String urnExpectedCategory1 = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ISTAC:CATEGORYSCHEME03(02.000).CATEGORY01";
-    // String urnExpectedCategory2 = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ISTAC:CATEGORYSCHEME03(02.000).CATEGORY02";
-    // String urnExpectedCategory21 = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ISTAC:CATEGORYSCHEME03(02.000).CATEGORY0201";
-    // String urnExpectedCategory211 = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ISTAC:CATEGORYSCHEME03(02.000).CATEGORY020101";
-    // String urnExpectedCategory22 = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ISTAC:CATEGORYSCHEME03(02.000).CATEGORY0202";
-    //
-    // CategorySchemeVersionMetamac categorySchemeVersionToCopy = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urn);
-    // CategorySchemeVersionMetamac categorySchemeVersionNewVersion = categoriesService.versioningCategoryScheme(getServiceContextAdministrador(), urn, VersionTypeEnum.MAJOR);
-    //
-    // // Validate response
-    // {
-    // assertEquals(ProcStatusEnum.DRAFT, categorySchemeVersionNewVersion.getLifeCycleMetadata().getProcStatus());
-    // assertEquals(versionExpected, categorySchemeVersionNewVersion.getMaintainableArtefact().getVersionLogic());
-    // assertEquals(urnExpected, categorySchemeVersionNewVersion.getMaintainableArtefact().getUrn());
-    // CategoriesMetamacAsserts.assertEqualsCategorySchemeWithoutLifeCycleMetadata(categorySchemeVersionToCopy, categorySchemeVersionNewVersion);
-    // }
-    //
-    // // Validate retrieving
-    // // New version
-    // {
-    // categorySchemeVersionNewVersion = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), categorySchemeVersionNewVersion.getMaintainableArtefact()
-    // .getUrn());
-    // assertEquals(ProcStatusEnum.DRAFT, categorySchemeVersionNewVersion.getLifeCycleMetadata().getProcStatus());
-    // assertEquals(versionExpected, categorySchemeVersionNewVersion.getMaintainableArtefact().getVersionLogic());
-    // assertEquals(urnExpected, categorySchemeVersionNewVersion.getMaintainableArtefact().getUrn());
-    // assertEquals("01.000", categorySchemeVersionNewVersion.getMaintainableArtefact().getReplaceTo());
-    // assertEquals(null, categorySchemeVersionNewVersion.getMaintainableArtefact().getReplacedBy());
-    // assertTrue(categorySchemeVersionNewVersion.getMaintainableArtefact().getIsLastVersion());
-    // CategoriesMetamacAsserts.assertEqualsCategorySchemeWithoutLifeCycleMetadata(categorySchemeVersionToCopy, categorySchemeVersionNewVersion);
-    //
-    // // Categories
-    // assertEquals(5, categorySchemeVersionNewVersion.getItems().size());
-    // assertEquals(urnExpectedCategory1, categorySchemeVersionNewVersion.getItems().get(0).getNameableArtefact().getUrn());
-    // assertEquals(urnExpectedCategory2, categorySchemeVersionNewVersion.getItems().get(1).getNameableArtefact().getUrn());
-    // assertEquals(urnExpectedCategory21, categorySchemeVersionNewVersion.getItems().get(2).getNameableArtefact().getUrn());
-    // assertEquals(urnExpectedCategory211, categorySchemeVersionNewVersion.getItems().get(3).getNameableArtefact().getUrn());
-    // assertEquals(urnExpectedCategory22, categorySchemeVersionNewVersion.getItems().get(4).getNameableArtefact().getUrn());
-    //
-    // assertEquals(2, categorySchemeVersionNewVersion.getItemsFirstLevel().size());
-    // {
-    // CategoryMetamac category = (CategoryMetamac) categorySchemeVersionNewVersion.getItemsFirstLevel().get(0);
-    // assertEquals(urnExpectedCategory1, category.getNameableArtefact().getUrn());
-    // assertEquals(0, category.getChildren().size());
-    // // Contacts
-    // assertEquals(2, category.getContacts().size());
-    // int i = 0;
-    // {
-    // Contact contact = category.getContacts().get(i++);
-    // BaseAsserts.assertEqualsInternationalString(contact.getName(), "es", "nombre contacto 311", "en", "contact name 311");
-    // BaseAsserts.assertEqualsInternationalString(contact.getCategoryUnit(), "es", "unidad organizativa 311", "en", "category unit 311");
-    // BaseAsserts.assertEqualsInternationalString(contact.getResponsibility(), "es", "responsabilidad 311", "en", "responsibility 311");
-    // assertEquals("http://www.contact3111.com", contact.getUrl());
-    // assertEquals(3, contact.getContactItems().size());
-    // assertEquals(ContactItemTypeEnum.TELEPHONE, contact.getContactItems().get(0).getItemType());
-    // assertEquals("+922333333", contact.getContactItems().get(0).getItemValue());
-    // assertEquals(ContactItemTypeEnum.EMAIL, contact.getContactItems().get(1).getItemType());
-    // assertEquals("contact3112@email.com", contact.getContactItems().get(1).getItemValue());
-    // assertEquals(ContactItemTypeEnum.FAX, contact.getContactItems().get(2).getItemType());
-    // assertEquals("111111111", contact.getContactItems().get(2).getItemValue());
-    // }
-    // {
-    // Contact contact = category.getContacts().get(i++);
-    // assertNull(contact.getName());
-    // assertNull(contact.getCategoryUnit());
-    // assertNull(contact.getResponsibility());
-    // assertEquals("http://www.contact3112.com", contact.getUrl());
-    // assertEquals(1, contact.getContactItems().size());
-    // assertEquals(ContactItemTypeEnum.TELEPHONE, contact.getContactItems().get(0).getItemType());
-    // assertEquals("11333333", contact.getContactItems().get(0).getItemValue());
-    // }
-    // assertEquals(category.getContacts().size(), i);
-    // }
-    // {
-    // CategoryMetamac category = (CategoryMetamac) categorySchemeVersionNewVersion.getItemsFirstLevel().get(1);
-    // assertEquals(urnExpectedCategory2, category.getNameableArtefact().getUrn());
-    // assertEquals(0, category.getContacts().size());
-    // assertEquals(2, category.getChildren().size());
-    // {
-    // Category categoryChild = (Category) category.getChildren().get(0);
-    // assertEquals(urnExpectedCategory21, categoryChild.getNameableArtefact().getUrn());
-    // assertEquals(0, categoryChild.getContacts().size());
-    // assertEquals(1, categoryChild.getChildren().size());
-    // {
-    // Category categoryChildChild = (Category) categoryChild.getChildren().get(0);
-    // assertEquals(urnExpectedCategory211, categoryChildChild.getNameableArtefact().getUrn());
-    // assertEquals(0, categoryChildChild.getContacts().size());
-    // assertEquals(0, categoryChildChild.getChildren().size());
-    // }
-    // }
-    // {
-    // Category categoryChild = (Category) category.getChildren().get(1);
-    // assertEquals(urnExpectedCategory22, categoryChild.getNameableArtefact().getUrn());
-    // assertEquals(0, categoryChild.getContacts().size());
-    // assertEquals(0, categoryChild.getChildren().size());
-    // }
-    // }
-    // }
-    //
-    // // Copied version
-    // {
-    // categorySchemeVersionToCopy = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urn);
-    // assertEquals("01.000", categorySchemeVersionToCopy.getMaintainableArtefact().getVersionLogic());
-    // assertEquals(urn, categorySchemeVersionToCopy.getMaintainableArtefact().getUrn());
-    // assertEquals(null, categorySchemeVersionToCopy.getMaintainableArtefact().getReplaceTo());
-    // assertEquals(versionExpected, categorySchemeVersionToCopy.getMaintainableArtefact().getReplacedBy());
-    // assertFalse(categorySchemeVersionToCopy.getMaintainableArtefact().getIsLastVersion());
-    // }
-    // // All versions
-    // {
-    // List<CategorySchemeVersionMetamac> allVersions = categoriesService.retrieveCategorySchemeVersions(getServiceContextAdministrador(), urn);
-    // assertEquals(2, allVersions.size());
-    // assertEquals(urn, allVersions.get(0).getMaintainableArtefact().getUrn());
-    // assertEquals(urnExpected, allVersions.get(1).getMaintainableArtefact().getUrn());
-    // }
-    // }
-    //
-    // @Test
-    // public void testVersioningCategorySchemeWithTwoVersionsPublished() throws Exception {
-    //
-    // // This test checks the copy from one version but replacing to another one that is last version.
-    //
-    // String urnToCopy = CATEGORY_SCHEME_7_V1;
-    // String urnLastVersion = CATEGORY_SCHEME_7_V2;
-    // String versionExpected = "03.000";
-    // String urnExpected = "urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=ISTAC:CATEGORYSCHEME07(03.000)";
-    //
-    // CategorySchemeVersionMetamac categorySchemeVersionToCopy = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urnToCopy);
-    // assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, categorySchemeVersionToCopy.getLifeCycleMetadata().getProcStatus());
-    // assertFalse(categorySchemeVersionToCopy.getMaintainableArtefact().getIsLastVersion());
-    //
-    // CategorySchemeVersionMetamac categorySchemeVersionLast = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urnLastVersion);
-    // assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, categorySchemeVersionLast.getLifeCycleMetadata().getProcStatus());
-    // assertTrue(categorySchemeVersionLast.getMaintainableArtefact().getIsLastVersion());
-    //
-    // CategorySchemeVersionMetamac categorySchemeVersionNewVersion = categoriesService.versioningCategoryScheme(getServiceContextAdministrador(), urnToCopy, VersionTypeEnum.MAJOR);
-    //
-    // // Validate response
-    // {
-    // assertEquals(versionExpected, categorySchemeVersionNewVersion.getMaintainableArtefact().getVersionLogic());
-    // assertEquals(urnExpected, categorySchemeVersionNewVersion.getMaintainableArtefact().getUrn());
-    // assertEquals(ProcStatusEnum.DRAFT, categorySchemeVersionNewVersion.getLifeCycleMetadata().getProcStatus());
-    // CategoriesMetamacAsserts.assertEqualsCategorySchemeWithoutLifeCycleMetadata(categorySchemeVersionToCopy, categorySchemeVersionNewVersion);
-    // }
-    //
-    // // Validate retrieving
-    // {
-    // // New version
-    // categorySchemeVersionNewVersion = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), categorySchemeVersionNewVersion.getMaintainableArtefact()
-    // .getUrn());
-    // assertEquals(versionExpected, categorySchemeVersionNewVersion.getMaintainableArtefact().getVersionLogic());
-    // assertEquals(urnExpected, categorySchemeVersionNewVersion.getMaintainableArtefact().getUrn());
-    // assertEquals(ProcStatusEnum.DRAFT, categorySchemeVersionNewVersion.getLifeCycleMetadata().getProcStatus());
-    // assertEquals("02.000", categorySchemeVersionNewVersion.getMaintainableArtefact().getReplaceTo());
-    // assertEquals(null, categorySchemeVersionNewVersion.getMaintainableArtefact().getReplacedBy());
-    // assertTrue(categorySchemeVersionNewVersion.getMaintainableArtefact().getIsLastVersion());
-    // CategoriesMetamacAsserts.assertEqualsCategorySchemeWithoutLifeCycleMetadata(categorySchemeVersionToCopy, categorySchemeVersionNewVersion);
-    //
-    // // Version copied
-    // categorySchemeVersionToCopy = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urnToCopy);
-    // assertEquals("01.000", categorySchemeVersionToCopy.getMaintainableArtefact().getVersionLogic());
-    // assertEquals(urnToCopy, categorySchemeVersionToCopy.getMaintainableArtefact().getUrn());
-    // assertEquals(null, categorySchemeVersionToCopy.getMaintainableArtefact().getReplaceTo());
-    // assertEquals("02.000", categorySchemeVersionToCopy.getMaintainableArtefact().getReplacedBy());
-    // assertFalse(categorySchemeVersionToCopy.getMaintainableArtefact().getIsLastVersion());
-    //
-    // // Last version
-    // categorySchemeVersionLast = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urnLastVersion);
-    // assertEquals("02.000", categorySchemeVersionLast.getMaintainableArtefact().getVersionLogic());
-    // assertEquals(urnLastVersion, categorySchemeVersionLast.getMaintainableArtefact().getUrn());
-    // assertEquals("01.000", categorySchemeVersionLast.getMaintainableArtefact().getReplaceTo());
-    // assertEquals(versionExpected, categorySchemeVersionLast.getMaintainableArtefact().getReplacedBy());
-    // assertFalse(categorySchemeVersionLast.getMaintainableArtefact().getIsLastVersion());
-    //
-    // // All versions
-    // List<CategorySchemeVersionMetamac> allVersions = categoriesService.retrieveCategorySchemeVersions(getServiceContextAdministrador(), categorySchemeVersionNewVersion
-    // .getMaintainableArtefact().getUrn());
-    // assertEquals(3, allVersions.size());
-    // assertEquals(urnToCopy, allVersions.get(0).getMaintainableArtefact().getUrn());
-    // assertEquals(urnLastVersion, allVersions.get(1).getMaintainableArtefact().getUrn());
-    // assertEquals(urnExpected, allVersions.get(2).getMaintainableArtefact().getUrn());
-    // }
-    // }
-    //
-    // @Test
-    // public void testVersioningCategorySchemeErrorAlreadyExistsDraft() throws Exception {
-    //
-    // String urn = CATEGORY_SCHEME_1_V1;
-    //
-    // try {
-    // categoriesService.versioningCategoryScheme(getServiceContextAdministrador(), urn, VersionTypeEnum.MAJOR);
-    // fail("CategoryScheme already exists in no final");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.CATEGORY_SCHEME_VERSIONING_NOT_SUPPORTED.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(CATEGORY_SCHEME_1_V2, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // }
-    // }
+    @Test
+    public void testVersioningCategoryScheme() throws Exception {
 
+        String urn = CATEGORY_SCHEME_3_V1;
+        String versionExpected = "02.000";
+        String urnExpected = "urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=ISTAC:CATEGORYSCHEME03(02.000)";
+        String urnExpectedCategory1 = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ISTAC:CATEGORYSCHEME03(02.000).CATEGORY01";
+        String urnExpectedCategory2 = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ISTAC:CATEGORYSCHEME03(02.000).CATEGORY02";
+        String urnExpectedCategory21 = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ISTAC:CATEGORYSCHEME03(02.000).CATEGORY0201";
+        String urnExpectedCategory211 = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ISTAC:CATEGORYSCHEME03(02.000).CATEGORY020101";
+        String urnExpectedCategory22 = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ISTAC:CATEGORYSCHEME03(02.000).CATEGORY0202";
+
+        CategorySchemeVersionMetamac categorySchemeVersionToCopy = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urn);
+        CategorySchemeVersionMetamac categorySchemeVersionNewVersion = categoriesService.versioningCategoryScheme(getServiceContextAdministrador(), urn, VersionTypeEnum.MAJOR);
+
+        // Validate response
+        {
+            assertEquals(ProcStatusEnum.DRAFT, categorySchemeVersionNewVersion.getLifeCycleMetadata().getProcStatus());
+            assertEquals(versionExpected, categorySchemeVersionNewVersion.getMaintainableArtefact().getVersionLogic());
+            assertEquals(urnExpected, categorySchemeVersionNewVersion.getMaintainableArtefact().getUrn());
+            CategoriesMetamacAsserts.assertEqualsCategorySchemeWithoutLifeCycleMetadata(categorySchemeVersionToCopy, categorySchemeVersionNewVersion);
+        }
+
+        // Validate retrieving
+        // New version
+        {
+            categorySchemeVersionNewVersion = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), categorySchemeVersionNewVersion.getMaintainableArtefact()
+                    .getUrn());
+            assertEquals(ProcStatusEnum.DRAFT, categorySchemeVersionNewVersion.getLifeCycleMetadata().getProcStatus());
+            assertEquals(versionExpected, categorySchemeVersionNewVersion.getMaintainableArtefact().getVersionLogic());
+            assertEquals(urnExpected, categorySchemeVersionNewVersion.getMaintainableArtefact().getUrn());
+            assertEquals("01.000", categorySchemeVersionNewVersion.getMaintainableArtefact().getReplaceTo());
+            assertEquals(null, categorySchemeVersionNewVersion.getMaintainableArtefact().getReplacedBy());
+            assertTrue(categorySchemeVersionNewVersion.getMaintainableArtefact().getIsLastVersion());
+            CategoriesMetamacAsserts.assertEqualsCategorySchemeWithoutLifeCycleMetadata(categorySchemeVersionToCopy, categorySchemeVersionNewVersion);
+
+            // Categories
+            assertEquals(5, categorySchemeVersionNewVersion.getItems().size());
+            assertEquals(urnExpectedCategory1, categorySchemeVersionNewVersion.getItems().get(0).getNameableArtefact().getUrn());
+            assertEquals(urnExpectedCategory2, categorySchemeVersionNewVersion.getItems().get(1).getNameableArtefact().getUrn());
+            assertEquals(urnExpectedCategory21, categorySchemeVersionNewVersion.getItems().get(2).getNameableArtefact().getUrn());
+            assertEquals(urnExpectedCategory211, categorySchemeVersionNewVersion.getItems().get(3).getNameableArtefact().getUrn());
+            assertEquals(urnExpectedCategory22, categorySchemeVersionNewVersion.getItems().get(4).getNameableArtefact().getUrn());
+
+            assertEquals(2, categorySchemeVersionNewVersion.getItemsFirstLevel().size());
+            {
+                CategoryMetamac category = (CategoryMetamac) categorySchemeVersionNewVersion.getItemsFirstLevel().get(0);
+                assertEquals(urnExpectedCategory1, category.getNameableArtefact().getUrn());
+                assertEquals(0, category.getChildren().size());
+            }
+            {
+                CategoryMetamac category = (CategoryMetamac) categorySchemeVersionNewVersion.getItemsFirstLevel().get(1);
+                assertEquals(urnExpectedCategory2, category.getNameableArtefact().getUrn());
+                {
+                    Category categoryChild = (Category) category.getChildren().get(0);
+                    assertEquals(urnExpectedCategory21, categoryChild.getNameableArtefact().getUrn());
+                    {
+                        Category categoryChildChild = (Category) categoryChild.getChildren().get(0);
+                        assertEquals(urnExpectedCategory211, categoryChildChild.getNameableArtefact().getUrn());
+                    }
+                }
+                {
+                    Category categoryChild = (Category) category.getChildren().get(1);
+                    assertEquals(urnExpectedCategory22, categoryChild.getNameableArtefact().getUrn());
+                }
+            }
+        }
+
+        // Copied version
+        {
+            categorySchemeVersionToCopy = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urn);
+            assertEquals("01.000", categorySchemeVersionToCopy.getMaintainableArtefact().getVersionLogic());
+            assertEquals(urn, categorySchemeVersionToCopy.getMaintainableArtefact().getUrn());
+            assertEquals(null, categorySchemeVersionToCopy.getMaintainableArtefact().getReplaceTo());
+            assertEquals(versionExpected, categorySchemeVersionToCopy.getMaintainableArtefact().getReplacedBy());
+            assertFalse(categorySchemeVersionToCopy.getMaintainableArtefact().getIsLastVersion());
+        }
+        // All versions
+        {
+            List<CategorySchemeVersionMetamac> allVersions = categoriesService.retrieveCategorySchemeVersions(getServiceContextAdministrador(), urn);
+            assertEquals(2, allVersions.size());
+            assertEquals(urn, allVersions.get(0).getMaintainableArtefact().getUrn());
+            assertEquals(urnExpected, allVersions.get(1).getMaintainableArtefact().getUrn());
+        }
+    }
+
+    @Test
+    public void testVersioningCategorySchemeWithTwoVersionsPublished() throws Exception {
+
+        // This test checks the copy from one version but replacing to another one that is last version.
+
+        String urnToCopy = CATEGORY_SCHEME_7_V1;
+        String urnLastVersion = CATEGORY_SCHEME_7_V2;
+        String versionExpected = "03.000";
+        String urnExpected = "urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=ISTAC:CATEGORYSCHEME07(03.000)";
+
+        CategorySchemeVersionMetamac categorySchemeVersionToCopy = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urnToCopy);
+        assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, categorySchemeVersionToCopy.getLifeCycleMetadata().getProcStatus());
+        assertFalse(categorySchemeVersionToCopy.getMaintainableArtefact().getIsLastVersion());
+
+        CategorySchemeVersionMetamac categorySchemeVersionLast = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urnLastVersion);
+        assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, categorySchemeVersionLast.getLifeCycleMetadata().getProcStatus());
+        assertTrue(categorySchemeVersionLast.getMaintainableArtefact().getIsLastVersion());
+
+        CategorySchemeVersionMetamac categorySchemeVersionNewVersion = categoriesService.versioningCategoryScheme(getServiceContextAdministrador(), urnToCopy, VersionTypeEnum.MAJOR);
+
+        // Validate response
+        {
+            assertEquals(versionExpected, categorySchemeVersionNewVersion.getMaintainableArtefact().getVersionLogic());
+            assertEquals(urnExpected, categorySchemeVersionNewVersion.getMaintainableArtefact().getUrn());
+            assertEquals(ProcStatusEnum.DRAFT, categorySchemeVersionNewVersion.getLifeCycleMetadata().getProcStatus());
+            CategoriesMetamacAsserts.assertEqualsCategorySchemeWithoutLifeCycleMetadata(categorySchemeVersionToCopy, categorySchemeVersionNewVersion);
+        }
+
+        // Validate retrieving
+        {
+            // New version
+            categorySchemeVersionNewVersion = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), categorySchemeVersionNewVersion.getMaintainableArtefact()
+                    .getUrn());
+            assertEquals(versionExpected, categorySchemeVersionNewVersion.getMaintainableArtefact().getVersionLogic());
+            assertEquals(urnExpected, categorySchemeVersionNewVersion.getMaintainableArtefact().getUrn());
+            assertEquals(ProcStatusEnum.DRAFT, categorySchemeVersionNewVersion.getLifeCycleMetadata().getProcStatus());
+            assertEquals("02.000", categorySchemeVersionNewVersion.getMaintainableArtefact().getReplaceTo());
+            assertEquals(null, categorySchemeVersionNewVersion.getMaintainableArtefact().getReplacedBy());
+            assertTrue(categorySchemeVersionNewVersion.getMaintainableArtefact().getIsLastVersion());
+            CategoriesMetamacAsserts.assertEqualsCategorySchemeWithoutLifeCycleMetadata(categorySchemeVersionToCopy, categorySchemeVersionNewVersion);
+
+            // Version copied
+            categorySchemeVersionToCopy = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urnToCopy);
+            assertEquals("01.000", categorySchemeVersionToCopy.getMaintainableArtefact().getVersionLogic());
+            assertEquals(urnToCopy, categorySchemeVersionToCopy.getMaintainableArtefact().getUrn());
+            assertEquals(null, categorySchemeVersionToCopy.getMaintainableArtefact().getReplaceTo());
+            assertEquals("02.000", categorySchemeVersionToCopy.getMaintainableArtefact().getReplacedBy());
+            assertFalse(categorySchemeVersionToCopy.getMaintainableArtefact().getIsLastVersion());
+
+            // Last version
+            categorySchemeVersionLast = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urnLastVersion);
+            assertEquals("02.000", categorySchemeVersionLast.getMaintainableArtefact().getVersionLogic());
+            assertEquals(urnLastVersion, categorySchemeVersionLast.getMaintainableArtefact().getUrn());
+            assertEquals("01.000", categorySchemeVersionLast.getMaintainableArtefact().getReplaceTo());
+            assertEquals(versionExpected, categorySchemeVersionLast.getMaintainableArtefact().getReplacedBy());
+            assertFalse(categorySchemeVersionLast.getMaintainableArtefact().getIsLastVersion());
+
+            // All versions
+            List<CategorySchemeVersionMetamac> allVersions = categoriesService.retrieveCategorySchemeVersions(getServiceContextAdministrador(), categorySchemeVersionNewVersion
+                    .getMaintainableArtefact().getUrn());
+            assertEquals(3, allVersions.size());
+            assertEquals(urnToCopy, allVersions.get(0).getMaintainableArtefact().getUrn());
+            assertEquals(urnLastVersion, allVersions.get(1).getMaintainableArtefact().getUrn());
+            assertEquals(urnExpected, allVersions.get(2).getMaintainableArtefact().getUrn());
+        }
+    }
+
+    @Test
+    public void testVersioningCategorySchemeErrorAlreadyExistsDraft() throws Exception {
+
+        String urn = CATEGORY_SCHEME_1_V1;
+
+        try {
+            categoriesService.versioningCategoryScheme(getServiceContextAdministrador(), urn, VersionTypeEnum.MAJOR);
+            fail("CategoryScheme already exists in no final");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.CATEGORY_SCHEME_VERSIONING_NOT_SUPPORTED.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(CATEGORY_SCHEME_1_V2, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
+    @Test
+    public void testVersioningCategorySchemeErrorNotPublished() throws Exception {
+
+        String urn = CATEGORY_SCHEME_2_V1;
+
+        try {
+            categoriesService.versioningCategoryScheme(getServiceContextAdministrador(), urn, VersionTypeEnum.MAJOR);
+            fail("CategoryScheme not published");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.CATEGORY_SCHEME_VERSIONING_NOT_SUPPORTED.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
     @Test
     public void testEndCategorySchemeValidity() throws Exception {
         CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.endCategorySchemeValidity(getServiceContextAdministrador(), CATEGORY_SCHEME_7_V1);

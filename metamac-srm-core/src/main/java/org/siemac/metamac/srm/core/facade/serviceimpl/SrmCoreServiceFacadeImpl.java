@@ -1434,18 +1434,18 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         return categorySchemeDto;
     }
 
-    // @Override
-    // public CategorySchemeMetamacDto versioningCategoryScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
-    // // TODO Security
-    // // CategorySchemeVersionMetamac categorySchemeVersionToCopy = getCategoriesMetamacService().retrieveCategorySchemeByUrn(ctx, urnToCopy);
-    // // CategoriesSecurityUtils.canVersioningCategoryScheme(ctx, categorySchemeVersionToCopy);
-    //
-    // CategorySchemeVersionMetamac categorySchemeVersioned = getCategoriesMetamacService().versioningCategoryScheme(ctx, urnToCopy, versionType);
-    //
-    // // Transform to DTO
-    // CategorySchemeMetamacDto categorySchemeDto = categoriesDo2DtoMapper.categorySchemeMetamacDoToDto(categorySchemeVersioned);
-    // return categorySchemeDto;
-    // }
+    @Override
+    public CategorySchemeMetamacDto versioningCategoryScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
+        // TODO Security
+        // CategorySchemeVersionMetamac categorySchemeVersionToCopy = getCategoriesMetamacService().retrieveCategorySchemeByUrn(ctx, urnToCopy);
+        // CategoriesSecurityUtils.canVersioningCategoryScheme(ctx, categorySchemeVersionToCopy);
+
+        CategorySchemeVersionMetamac categorySchemeVersioned = getCategoriesMetamacService().versioningCategoryScheme(ctx, urnToCopy, versionType);
+
+        // Transform to DTO
+        CategorySchemeMetamacDto categorySchemeDto = categoriesDo2DtoMapper.categorySchemeMetamacDoToDto(categorySchemeVersioned);
+        return categorySchemeDto;
+    }
 
     @Override
     public CategorySchemeMetamacDto endCategorySchemeValidity(ServiceContext ctx, String urn) throws MetamacException {

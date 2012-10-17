@@ -9,6 +9,7 @@ import static org.siemac.metamac.srm.core.category.serviceapi.utils.CategoriesMe
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.lang.time.DateUtils;
 import org.junit.Test;
@@ -35,6 +36,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/srm/applicationContext-test.xml"})
 @TransactionConfiguration(transactionManager = "txManagerCore", defaultRollback = true)
@@ -60,17 +63,17 @@ public class SrmCoreServiceFacadeCategoriesTest extends SrmBaseTest {
         assertEquals(CATEGORY_SCHEME_1_V1, categorySchemeMetamacDto.getUrn());
     }
 
-    // @Test
-    // public void testRetrieveCategorySchemeVersions() throws Exception {
-    //
-    // // Retrieve all versions
-    // List<CategorySchemeMetamacDto> categorySchemeMetamacDtos = srmCoreServiceFacade.retrieveCategorySchemeVersions(getServiceContextAdministrador(), CATEGORY_SCHEME_1_V1);
-    //
-    // // Validate
-    // assertEquals(2, categorySchemeMetamacDtos.size());
-    // assertEquals(CATEGORY_SCHEME_1_V1, categorySchemeMetamacDtos.get(0).getUrn());
-    // assertEquals(CATEGORY_SCHEME_1_V2, categorySchemeMetamacDtos.get(1).getUrn());
-    // }
+    @Test
+    public void testRetrieveCategorySchemeVersions() throws Exception {
+
+        // Retrieve all versions
+        List<CategorySchemeMetamacDto> categorySchemeMetamacDtos = srmCoreServiceFacade.retrieveCategorySchemeVersions(getServiceContextAdministrador(), CATEGORY_SCHEME_1_V1);
+
+        // Validate
+        assertEquals(2, categorySchemeMetamacDtos.size());
+        assertEquals(CATEGORY_SCHEME_1_V1, categorySchemeMetamacDtos.get(0).getUrn());
+        assertEquals(CATEGORY_SCHEME_1_V2, categorySchemeMetamacDtos.get(1).getUrn());
+    }
 
     @Test
     public void testCreateCategoryScheme() throws Exception {
@@ -441,18 +444,18 @@ public class SrmCoreServiceFacadeCategoriesTest extends SrmBaseTest {
         assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, categorySchemeDto.getLifeCycle().getProcStatus());
     }
 
-    // @Test
-    // public void testVersioningCategoryScheme() throws Exception {
-    //
-    // // Versioning
-    // String urn = CATEGORY_SCHEME_3_V1;
-    // CategorySchemeMetamacDto categorySchemeDtoNewVersion = srmCoreServiceFacade.versioningCategoryScheme(getServiceContextAdministrador(), urn, VersionTypeEnum.MAJOR);
-    //
-    // // Validate
-    // categorySchemeDtoNewVersion = srmCoreServiceFacade.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), categorySchemeDtoNewVersion.getUrn());
-    // assertEquals("02.000", categorySchemeDtoNewVersion.getVersionLogic());
-    // assertEquals("urn:sdmx:org.sdmx.infomodel.base.CategoryUnitScheme=ISTAC:CATEGORYSCHEME03(02.000)", categorySchemeDtoNewVersion.getUrn());
-    // }
+    @Test
+    public void testVersioningCategoryScheme() throws Exception {
+
+        // Versioning
+        String urn = CATEGORY_SCHEME_3_V1;
+        CategorySchemeMetamacDto categorySchemeDtoNewVersion = srmCoreServiceFacade.versioningCategoryScheme(getServiceContextAdministrador(), urn, VersionTypeEnum.MAJOR);
+
+        // Validate
+        categorySchemeDtoNewVersion = srmCoreServiceFacade.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), categorySchemeDtoNewVersion.getUrn());
+        assertEquals("02.000", categorySchemeDtoNewVersion.getVersionLogic());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=ISTAC:CATEGORYSCHEME03(02.000)", categorySchemeDtoNewVersion.getUrn());
+    }
 
     @Test
     public void testEndCategorySchemeValidity() throws Exception {

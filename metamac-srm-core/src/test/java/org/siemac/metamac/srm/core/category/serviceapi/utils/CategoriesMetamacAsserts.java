@@ -11,7 +11,11 @@ import com.arte.statistic.sdmx.srm.core.category.serviceapi.utils.CategoriesAsse
 public class CategoriesMetamacAsserts extends CategoriesAsserts {
 
     public static void assertEqualsCategoryScheme(CategorySchemeVersionMetamac expected, CategorySchemeVersionMetamac actual) {
+        BaseAsserts.assertEqualsLifeCycle(expected.getLifeCycleMetadata(), actual.getLifeCycleMetadata());
+        assertEqualsCategorySchemeWithoutLifeCycleMetadata(expected, actual);
+    }
 
+    public static void assertEqualsCategorySchemeWithoutLifeCycleMetadata(CategorySchemeVersionMetamac expected, CategorySchemeVersionMetamac actual) {
         // Metamac
 
         // Sdmx
