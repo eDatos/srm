@@ -12,6 +12,7 @@ import org.siemac.metamac.srm.web.dsd.model.record.DimensionRecord;
 import org.siemac.metamac.srm.web.dsd.model.record.GroupKeysRecord;
 import org.siemac.metamac.srm.web.dsd.model.record.InternationalAnnotationRecord;
 import org.siemac.metamac.web.common.client.resources.GlobalResources;
+import org.siemac.metamac.web.common.client.utils.ApplicationEditionLanguages;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.AnnotationDto;
@@ -89,9 +90,9 @@ public class RecordUtils {
      * @return
      */
     public static InternationalAnnotationRecord getInternationalAnnotationRecord(AnnotationDto annotationDto) {
-        InternationalAnnotationRecord record = new InternationalAnnotationRecord(annotationDto.getId().toString(), annotationDto.getId() + InternationalStringUtils.getCurrentLocale(),
+        InternationalAnnotationRecord record = new InternationalAnnotationRecord(annotationDto.getId().toString(), annotationDto.getId() + ApplicationEditionLanguages.getCurrentLocale(),
                 annotationDto.getCode(), annotationDto.getTitle(), annotationDto.getType(), annotationDto.getUrl(), InternationalStringUtils.getLocalisedString(annotationDto.getText()),
-                InternationalStringUtils.getCurrentLocale(), ((ImageResource) GlobalResources.RESOURCE.getResource(InternationalStringUtils.getCurrentLocale())).getURL(), annotationDto);
+                ApplicationEditionLanguages.getCurrentLocale(), ((ImageResource) GlobalResources.RESOURCE.getResource(ApplicationEditionLanguages.getCurrentLocale())).getURL(), annotationDto);
         return record;
     }
 

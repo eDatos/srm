@@ -97,7 +97,7 @@ public class AnnotationsPanel extends VLayout {
         }
         selectItem.setValueMap(valueMap);
         selectItem.setValueIcons(valueIcons);
-        selectItem.setValue(InternationalStringUtils.getCurrentLocale());
+        selectItem.setValue(ApplicationEditionLanguages.getCurrentLocale());
         selectItem.setShowIfCondition(new FormItemIfFunction() {
 
             @Override
@@ -169,7 +169,7 @@ public class AnnotationsPanel extends VLayout {
                     }
                     // Text
                     if (event.getNewValues().containsKey(AnnotationDS.TEXT)) {
-                        String locale = translationsShowed ? selectItem.getValueAsString() : InternationalStringUtils.getCurrentLocale();
+                        String locale = translationsShowed ? selectItem.getValueAsString() : ApplicationEditionLanguages.getCurrentLocale();
                         String text = event.getNewValues().get(AnnotationDS.TEXT) != null ? (String) event.getNewValues().get(AnnotationDS.TEXT) : null;
                         annotationDto.setText(InternationalStringUtils.updateInternationalString(locale, annotationDto.getText(), text));
                     }
@@ -221,7 +221,7 @@ public class AnnotationsPanel extends VLayout {
         listGrid.selectAllRecords();
         listGrid.removeSelectedData();
         listGrid.deselectAllRecords();
-        String selectedLocale = InternationalStringUtils.getCurrentLocale();
+        String selectedLocale = ApplicationEditionLanguages.getCurrentLocale();
         if (selectItem.getValueAsString() != null && !selectItem.getValueAsString().isEmpty()) {
             selectedLocale = selectItem.getValueAsString();
         }
@@ -245,11 +245,11 @@ public class AnnotationsPanel extends VLayout {
         this.translationsShowed = translationsShowed;
         form.markForRedraw();
         // Show annotations in current locale
-        if (!InternationalStringUtils.getCurrentLocale().equals(selectItem.getValueAsString())) {
-            changeAnnotationsLanguage(InternationalStringUtils.getCurrentLocale());
+        if (!ApplicationEditionLanguages.getCurrentLocale().equals(selectItem.getValueAsString())) {
+            changeAnnotationsLanguage(ApplicationEditionLanguages.getCurrentLocale());
         }
         if (translationsShowed) {
-            selectItem.setValue(InternationalStringUtils.getCurrentLocale());
+            selectItem.setValue(ApplicationEditionLanguages.getCurrentLocale());
         }
     }
 

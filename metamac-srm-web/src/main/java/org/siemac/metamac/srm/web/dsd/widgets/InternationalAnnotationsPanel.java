@@ -108,8 +108,8 @@ public class InternationalAnnotationsPanel extends VLayout {
                 String id = NEW_RECORD_START_CHARACTER + String.valueOf(Math.random() * 1000);
                 InternationalAnnotationRecord record = new InternationalAnnotationRecord();
                 record.setId(id);
-                record.setLocale(InternationalStringUtils.getCurrentLocale());
-                record.setFlag(((ImageResource) org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.getResource(InternationalStringUtils.getCurrentLocale())).getURL());
+                record.setLocale(ApplicationEditionLanguages.getCurrentLocale());
+                record.setFlag(((ImageResource) org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.getResource(ApplicationEditionLanguages.getCurrentLocale())).getURL());
                 // record.setAnnotationDto(new AnnotationDto());
                 grid.startEditingNew(record); // Record is added to the grid as a Record, but should be an InternationalAnnotationRecord
             }
@@ -133,7 +133,7 @@ public class InternationalAnnotationsPanel extends VLayout {
                         // If title is not empty or null, save record
                     } else {
                         for (String locale : ApplicationEditionLanguages.getLocales()) {
-                            if (!InternationalStringUtils.getCurrentLocale().equals(locale)) {
+                            if (!ApplicationEditionLanguages.getCurrentLocale().equals(locale)) {
                                 if (event.getNewValues().containsKey(InternationalAnnotationRecord.ID)) {
                                     String id = (String) event.getNewValues().get(InternationalAnnotationRecord.ID);
                                     InternationalAnnotationRecord record = new InternationalAnnotationRecord();
@@ -300,7 +300,7 @@ public class InternationalAnnotationsPanel extends VLayout {
         if (!translationsShowed) {
             grid.clearCriteria();
             Criteria criteria = new Criteria();
-            criteria.addCriteria(InternationalAnnotationRecord.LOCALE, InternationalStringUtils.getCurrentLocale());
+            criteria.addCriteria(InternationalAnnotationRecord.LOCALE, ApplicationEditionLanguages.getCurrentLocale());
             grid.fetchData(criteria);
         }
     }
@@ -312,7 +312,7 @@ public class InternationalAnnotationsPanel extends VLayout {
             ListGridRecord[] records = grid.getRecords();
             for (int i = 0; i < records.length; i++) {
                 String recordLocale = records[i].getAttributeAsString(InternationalAnnotationRecord.LOCALE);
-                if (InternationalStringUtils.getCurrentLocale().equals(recordLocale)) {
+                if (ApplicationEditionLanguages.getCurrentLocale().equals(recordLocale)) {
                     String recordId = records[i].getAttributeAsString(InternationalAnnotationRecord.ID);
                     Set<ListGridRecord> allRecordsWithId = getRecordsById(records, recordId);
                     AnnotationDto annotationDto = records[i].getAttributeAsObject(InternationalAnnotationRecord.ANNOTATION_DTO) != null ? ((AnnotationDto) records[i]
@@ -351,7 +351,7 @@ public class InternationalAnnotationsPanel extends VLayout {
 
         translationsShowed = false;
         Criteria criteria = new Criteria();
-        criteria.addCriteria(InternationalAnnotationRecord.LOCALE, InternationalStringUtils.getCurrentLocale());
+        criteria.addCriteria(InternationalAnnotationRecord.LOCALE, ApplicationEditionLanguages.getCurrentLocale());
         grid.fetchData(criteria);
         grid.ungroup();
         grid.refreshFields(); // Refresh fields to hide record title
