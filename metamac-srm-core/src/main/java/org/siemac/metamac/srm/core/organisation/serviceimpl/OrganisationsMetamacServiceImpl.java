@@ -17,15 +17,12 @@ import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
-import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamacProperties;
-import org.siemac.metamac.srm.core.organisation.serviceimpl.utils.OrganisationsDoCopyUtils;
 import org.siemac.metamac.srm.core.organisation.serviceimpl.utils.OrganisationsMetamacInvocationValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
-import com.arte.statistic.sdmx.srm.core.base.domain.ItemScheme;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.enume.domain.VersionPatternEnum;
 import com.arte.statistic.sdmx.srm.core.common.error.ServiceExceptionParameters;
@@ -33,6 +30,7 @@ import com.arte.statistic.sdmx.srm.core.common.service.utils.shared.SdmxVersionU
 import com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.organisation.serviceapi.OrganisationsService;
+import com.arte.statistic.sdmx.srm.core.organisation.serviceimpl.utils.OrganisationsDoCopyUtils.OrganisationCopyCallback;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
 
 /**
@@ -50,6 +48,10 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
     @Autowired
     @Qualifier("organisationSchemeLifeCycle")
     private LifeCycle                   organisationSchemeLifeCycle;
+
+    @Autowired
+    @Qualifier("organisationCopyCallbackMetamac")
+    private OrganisationCopyCallback    organisationCopyCallback;
 
     public OrganisationsMetamacServiceImpl() {
     }
@@ -161,33 +163,16 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
         organisationsService.deleteOrganisationScheme(ctx, urn);
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
-    public OrganisationSchemeVersionMetamac versioningOrganisationScheme(ServiceContext ctx, String urn, VersionTypeEnum versionType) throws MetamacException {
+    public OrganisationSchemeVersionMetamac versioningOrganisationScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
 
         // Validation
-        OrganisationsMetamacInvocationValidator.checkVersioningOrganisationScheme(urn, versionType, null);
-
-        // Initialize new version, copying values of version selected
-        OrganisationSchemeVersionMetamac organisationSchemeVersionToCopy = getOrganisationSchemeVersionMetamacRepository().retrieveOrganisationSchemeVersionByProcStatus(urn,
-                new ProcStatusEnum[]{ProcStatusEnum.INTERNALLY_PUBLISHED, ProcStatusEnum.EXTERNALLY_PUBLISHED});
-
-        // Check not exists version not published
-        List<OrganisationSchemeVersionMetamac> versionsNotPublished = findOrganisationSchemeVersionsOfOrganisationSchemeInProcStatus(ctx, organisationSchemeVersionToCopy.getItemScheme(),
-                ProcStatusEnum.DRAFT, ProcStatusEnum.PRODUCTION_VALIDATION, ProcStatusEnum.DIFFUSION_VALIDATION, ProcStatusEnum.VALIDATION_REJECTED);
-        if (versionsNotPublished.size() != 0) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.ORGANISATION_SCHEME_VERSIONING_NOT_SUPPORTED)
-                    .withMessageParameters(versionsNotPublished.get(0).getMaintainableArtefact().getUrn()).build();
-        }
-
-        // Copy values
-        OrganisationSchemeVersionMetamac organisationSchemeNewVersion = OrganisationsDoCopyUtils.copyOrganisationSchemeVersionMetamac(organisationSchemeVersionToCopy);
-        organisationSchemeNewVersion.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
-        List organisations = OrganisationsDoCopyUtils.copyOrganisationsMetamac(organisationSchemeVersionToCopy);
+        OrganisationsMetamacInvocationValidator.checkVersioningOrganisationScheme(urnToCopy, versionType, null, null);
+        // Validations of scheme final, ... are done in sdmx module
 
         // Versioning
-        organisationSchemeNewVersion = (OrganisationSchemeVersionMetamac) organisationsService.versioningOrganisationScheme(ctx, organisationSchemeVersionToCopy.getItemScheme(),
-                organisationSchemeNewVersion, organisations, versionType);
+        OrganisationSchemeVersionMetamac organisationSchemeNewVersion = (OrganisationSchemeVersionMetamac) organisationsService.versioningOrganisationScheme(ctx, urnToCopy, versionType,
+                organisationCopyCallback);
 
         return organisationSchemeNewVersion;
     }
@@ -290,30 +275,4 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
         }
         return organisations;
     }
-
-    /**
-     * Finds versions of organisation scheme in specific procStatus
-     */
-    private List<OrganisationSchemeVersionMetamac> findOrganisationSchemeVersionsOfOrganisationSchemeInProcStatus(ServiceContext ctx, ItemScheme organisationScheme, ProcStatusEnum... procStatus)
-            throws MetamacException {
-
-        List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(OrganisationSchemeVersionMetamac.class)
-                .withProperty(OrganisationSchemeVersionMetamacProperties.itemScheme().id()).eq(organisationScheme.getId())
-                .withProperty(OrganisationSchemeVersionMetamacProperties.lifeCycleMetadata().procStatus()).in((Object[]) procStatus).distinctRoot().build();
-        PagingParameter pagingParameter = PagingParameter.noLimits();
-        PagedResult<OrganisationSchemeVersionMetamac> organisationSchemeVersionPagedResult = getOrganisationSchemeVersionMetamacRepository().findByCondition(conditions, pagingParameter);
-        return organisationSchemeVersionPagedResult.getValues();
-    }
-
-    // /**
-    // * Retrieves version of a organisation scheme, checking that can be modified
-    // */
-    // private OrganisationSchemeVersionMetamac retrieveOrganisationSchemeVersionCanBeModified(ServiceContext ctx, String urn) throws MetamacException {
-    // return getOrganisationSchemeVersionMetamacRepository().retrieveOrganisationSchemeVersionByProcStatus(urn,
-    // new ProcStatusEnum[]{ProcStatusEnum.DRAFT, ProcStatusEnum.VALIDATION_REJECTED, ProcStatusEnum.PRODUCTION_VALIDATION, ProcStatusEnum.DIFFUSION_VALIDATION});
-    // }
-    //
-    // private Boolean isOrganisationSchemeFirstVersion(ItemSchemeVersion itemSchemeVersion) {
-    // return itemSchemeVersion.getMaintainableArtefact().getReplaceTo() == null;
-    // }
 }

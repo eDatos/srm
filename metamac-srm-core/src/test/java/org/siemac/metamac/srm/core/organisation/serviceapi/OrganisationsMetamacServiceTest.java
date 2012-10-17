@@ -1119,6 +1119,22 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
     }
 
     @Test
+    public void testVersioningOrganisationSchemeErrorNotPublished() throws Exception {
+
+        String urn = ORGANISATION_SCHEME_2_V1;
+
+        try {
+            organisationsService.versioningOrganisationScheme(getServiceContextAdministrador(), urn, VersionTypeEnum.MAJOR);
+            fail("OrganisationScheme not published");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.ORGANISATION_SCHEME_VERSIONING_NOT_SUPPORTED.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
+    @Test
     public void testEndOrganisationSchemeValidity() throws Exception {
         OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.endOrganisationSchemeValidity(getServiceContextAdministrador(), ORGANISATION_SCHEME_7_V1);
 
