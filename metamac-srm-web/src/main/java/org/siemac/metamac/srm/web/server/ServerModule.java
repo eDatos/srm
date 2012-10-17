@@ -94,14 +94,14 @@ import org.siemac.metamac.srm.web.shared.organisation.SaveOrganisationSchemeActi
 import org.siemac.metamac.srm.web.shared.organisation.UpdateOrganisationSchemeProcStatusAction;
 import org.siemac.metamac.srm.web.shared.organisation.VersionOrganisationSchemeAction;
 import org.siemac.metamac.web.common.server.handlers.CloseSessionActionHandler;
-import org.siemac.metamac.web.common.server.handlers.GetEditionLanguagesActionHandlers;
 import org.siemac.metamac.web.common.server.handlers.GetLoginPageUrlActionHandler;
 import org.siemac.metamac.web.common.server.handlers.GetNavigationBarUrlActionHandler;
+import org.siemac.metamac.web.common.server.handlers.LoadConfigurationPropertiesActionHandler;
 import org.siemac.metamac.web.common.server.handlers.MockCASUserActionHandler;
 import org.siemac.metamac.web.common.shared.CloseSessionAction;
-import org.siemac.metamac.web.common.shared.GetEditionLanguagesAction;
 import org.siemac.metamac.web.common.shared.GetLoginPageUrlAction;
 import org.siemac.metamac.web.common.shared.GetNavigationBarUrlAction;
+import org.siemac.metamac.web.common.shared.LoadConfigurationPropertiesAction;
 import org.siemac.metamac.web.common.shared.MockCASUserAction;
 import org.siemac.metamac.web.common.shared.ValidateTicketAction;
 import org.springframework.stereotype.Component;
@@ -178,7 +178,7 @@ public class ServerModule extends HandlerModule {
         // Rest
         bindHandler(GetStatisticalOperationsPaginatedListAction.class, GetStatisticalOperationsPaginatedListActionHandler.class);
 
-        bindHandler(GetEditionLanguagesAction.class, GetEditionLanguagesActionHandlers.class);
+        bindHandler(LoadConfigurationPropertiesAction.class, LoadConfigurationPropertiesActionHandler.class);
 
         // This action should be removed to use CAS authentication
         bindHandler(MockCASUserAction.class, MockCASUserActionHandler.class);
