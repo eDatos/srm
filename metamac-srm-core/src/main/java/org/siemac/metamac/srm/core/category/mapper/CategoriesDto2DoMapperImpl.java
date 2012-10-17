@@ -4,9 +4,13 @@ import org.siemac.metamac.core.common.exception.ExceptionLevelEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.util.OptimisticLockingUtils;
+import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
+import org.siemac.metamac.srm.core.category.domain.CategoryMetamacRepository;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamacRepository;
+import org.siemac.metamac.srm.core.category.dto.CategoryMetamacDto;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
+import org.siemac.metamac.srm.core.category.exception.CategoryMetamacNotFoundException;
 import org.siemac.metamac.srm.core.category.exception.CategorySchemeVersionMetamacNotFoundException;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
@@ -21,8 +25,8 @@ public class CategoriesDto2DoMapperImpl implements CategoriesDto2DoMapper {
     @Autowired
     private CategorySchemeVersionMetamacRepository                                  categorySchemeVersionMetamacRepository;
 
-    // @Autowired
-    // private CategoryMetamacRepository categoryMetamacRepository;
+    @Autowired
+    private CategoryMetamacRepository                                               categoryMetamacRepository;
 
     // ------------------------------------------------------------
     // CATEGORIES
@@ -57,31 +61,31 @@ public class CategoriesDto2DoMapperImpl implements CategoriesDto2DoMapper {
         return target;
     }
 
-    // @Override
-    // public CategoryMetamac categoryDtoToDo(CategoryMetamacDto source) throws MetamacException {
-    // if (source == null) {
-    // return null;
-    // }
-    //
-    // // If exists, retrieves existing entity. Otherwise, creates new entity.
-    // CategoryMetamac target = null;
-    // if (source.getId() == null) {
-    // target = new CategoryMetamac();
-    // } else {
-    // try {
-    // target = categoryMetamacRepository.findById(source.getId());
-    // } catch (CategoryMetamacNotFoundException e) {
-    // throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SRM_SEARCH_NOT_FOUND).withMessageParameters(ServiceExceptionParameters.CATEGORY)
-    // .withLoggedLevel(ExceptionLevelEnum.ERROR).build();
-    // }
-    // OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersion());
-    // }
-    //
-    // // Modifiable attributes: nothing
-    //
-    // // Sdmx
-    // dto2DoMapperSdmxSrm.categoryDtoToDo(source, target);
-    //
-    // return target;
-    // }
+    @Override
+    public CategoryMetamac categoryMetamacDtoToDo(CategoryMetamacDto source) throws MetamacException {
+        if (source == null) {
+            return null;
+        }
+
+        // If exists, retrieves existing entity. Otherwise, creates new entity.
+        CategoryMetamac target = null;
+        if (source.getId() == null) {
+            target = new CategoryMetamac();
+        } else {
+            try {
+                target = categoryMetamacRepository.findById(source.getId());
+            } catch (CategoryMetamacNotFoundException e) {
+                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SEARCH_NOT_FOUND).withMessageParameters(ServiceExceptionParameters.CATEGORY)
+                        .withLoggedLevel(ExceptionLevelEnum.ERROR).build();
+            }
+            OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersion());
+        }
+
+        // Modifiable attributes: nothing
+
+        // Sdmx
+        dto2DoMapperSdmxSrm.categoryDtoToDo(source, target);
+
+        return target;
+    }
 }

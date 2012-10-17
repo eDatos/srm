@@ -173,21 +173,21 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
         return categorySchemeVersion;
     }
 
-    // @Override
-    // public CategoryMetamac createCategory(ServiceContext ctx, String categorySchemeUrn, CategoryMetamac category) throws MetamacException {
-    //
-    // // Validation
-    // CategorySchemeVersionMetamac categorySchemeVersion = null;
-    // if (categorySchemeUrn != null) {
-    // categorySchemeVersion = retrieveCategorySchemeByUrn(ctx, categorySchemeUrn);
-    // }
-    // CategoriesMetamacInvocationValidator.checkCreateCategory(categorySchemeVersion, category, null);
-    // // CategoriesService checks categoryScheme isn't final
-    //
-    // // Save category
-    // return (CategoryMetamac) categoriesService.createCategory(ctx, categorySchemeUrn, category);
-    // }
-    //
+    @Override
+    public CategoryMetamac createCategory(ServiceContext ctx, String categorySchemeUrn, CategoryMetamac category) throws MetamacException {
+
+        // Validation
+        CategorySchemeVersionMetamac categorySchemeVersion = null;
+        if (categorySchemeUrn != null) {
+            categorySchemeVersion = retrieveCategorySchemeByUrn(ctx, categorySchemeUrn);
+        }
+        CategoriesMetamacInvocationValidator.checkCreateCategory(categorySchemeVersion, category, null);
+        // CategoriesService checks categoryScheme isn't final
+
+        // Save category
+        return (CategoryMetamac) categoriesService.createCategory(ctx, categorySchemeUrn, category);
+    }
+
     // @Override
     // public CategoryMetamac updateCategory(ServiceContext ctx, CategoryMetamac category) throws MetamacException {
     //

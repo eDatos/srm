@@ -883,9 +883,9 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
         String urnExpected = "urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=ISTAC:CATEGORYSCHEME03(02.000)";
         String urnExpectedCategory1 = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ISTAC:CATEGORYSCHEME03(02.000).CATEGORY01";
         String urnExpectedCategory2 = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ISTAC:CATEGORYSCHEME03(02.000).CATEGORY02";
-        String urnExpectedCategory21 = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ISTAC:CATEGORYSCHEME03(02.000).CATEGORY0201";
-        String urnExpectedCategory211 = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ISTAC:CATEGORYSCHEME03(02.000).CATEGORY020101";
-        String urnExpectedCategory22 = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ISTAC:CATEGORYSCHEME03(02.000).CATEGORY0202";
+        String urnExpectedCategory21 = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ISTAC:CATEGORYSCHEME03(02.000).CATEGORY02.CATEGORY0201";
+        String urnExpectedCategory211 = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ISTAC:CATEGORYSCHEME03(02.000).CATEGORY02.CATEGORY0201.CATEGORY020101";
+        String urnExpectedCategory22 = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ISTAC:CATEGORYSCHEME03(02.000).CATEGORY02.CATEGORY0202";
 
         CategorySchemeVersionMetamac categorySchemeVersionToCopy = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urn);
         CategorySchemeVersionMetamac categorySchemeVersionNewVersion = categoriesService.versioningCategoryScheme(getServiceContextAdministrador(), urn, VersionTypeEnum.MAJOR);
@@ -1082,60 +1082,60 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
         }
     }
 
-    // @Test
-    // public void testCreateCategory() throws Exception {
-    //
-    // CategoryMetamac category = CategoriesMetamacDoMocks.mockCategory();
-    // category.setParent(null);
-    // String categorySchemeUrn = CATEGORY_SCHEME_1_V2;
-    //
-    // // Create
-    // CategoryMetamac categorySchemeVersionCreated = categoriesService.createCategory(getServiceContextAdministrador(), categorySchemeUrn, category);
-    // String urn = categorySchemeVersionCreated.getNameableArtefact().getUrn();
-    //
-    // // Validate (only metadata in SRM Metamac; the others are checked in sdmx project)
-    // CategoryMetamac categoryRetrieved = categoriesService.retrieveCategoryByUrn(getServiceContextAdministrador(), urn);
-    // CategoriesMetamacAsserts.assertEqualsCategory(category, categoryRetrieved);
-    //
-    // // Validate new structure
-    // CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), categorySchemeUrn);
-    // assertEquals(5, categorySchemeVersion.getItemsFirstLevel().size());
-    // assertEquals(9, categorySchemeVersion.getItems().size());
-    // assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_1, categorySchemeVersion.getItemsFirstLevel().get(0).getNameableArtefact().getUrn());
-    // assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_2, categorySchemeVersion.getItemsFirstLevel().get(1).getNameableArtefact().getUrn());
-    // assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_3, categorySchemeVersion.getItemsFirstLevel().get(2).getNameableArtefact().getUrn());
-    // assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_4, categorySchemeVersion.getItemsFirstLevel().get(3).getNameableArtefact().getUrn());
-    // assertEquals(categoryRetrieved.getNameableArtefact().getUrn(), categorySchemeVersion.getItemsFirstLevel().get(4).getNameableArtefact().getUrn());
-    // }
-    //
-    // @Test
-    // public void testCreateCategorySubcategory() throws Exception {
-    //
-    // CategoryMetamac category = CategoriesMetamacDoMocks.mockCategory();
-    // CategoryMetamac categoryParent = categoriesService.retrieveCategoryByUrn(getServiceContextAdministrador(), CATEGORY_SCHEME_1_V2_CATEGORY_1);
-    // category.setParent(categoryParent);
-    // String categorySchemeUrn = CATEGORY_SCHEME_1_V2;
-    //
-    // // Create
-    // CategoryMetamac categorySchemeVersionCreated = categoriesService.createCategory(getServiceContextAdministrador(), categorySchemeUrn, category);
-    // String urn = categorySchemeVersionCreated.getNameableArtefact().getUrn();
-    //
-    // // Validate (only metadata in SRM Metamac; the others are checked in sdmx project)
-    // CategoryMetamac categoryRetrieved = categoriesService.retrieveCategoryByUrn(getServiceContextAdministrador(), urn);
-    // CategoriesMetamacAsserts.assertEqualsCategory(category, categoryRetrieved);
-    //
-    // // Validate new structure
-    // CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), categorySchemeUrn);
-    // assertEquals(4, categorySchemeVersion.getItemsFirstLevel().size());
-    // assertEquals(9, categorySchemeVersion.getItems().size());
-    //
-    // assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_1, categorySchemeVersion.getItemsFirstLevel().get(0).getNameableArtefact().getUrn());
-    // assertEquals(categoryRetrieved.getNameableArtefact().getUrn(), categorySchemeVersion.getItemsFirstLevel().get(0).getChildren().get(0).getNameableArtefact().getUrn());
-    // assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_2, categorySchemeVersion.getItemsFirstLevel().get(1).getNameableArtefact().getUrn());
-    // assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_3, categorySchemeVersion.getItemsFirstLevel().get(2).getNameableArtefact().getUrn());
-    // assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_4, categorySchemeVersion.getItemsFirstLevel().get(3).getNameableArtefact().getUrn());
-    // }
-    //
+    @Test
+    public void testCreateCategory() throws Exception {
+
+        CategoryMetamac category = CategoriesMetamacDoMocks.mockCategory();
+        category.setParent(null);
+        String categorySchemeUrn = CATEGORY_SCHEME_1_V2;
+
+        // Create
+        CategoryMetamac categorySchemeVersionCreated = categoriesService.createCategory(getServiceContextAdministrador(), categorySchemeUrn, category);
+        String urn = categorySchemeVersionCreated.getNameableArtefact().getUrn();
+
+        // Validate (only metadata in SRM Metamac; the others are checked in sdmx project)
+        CategoryMetamac categoryRetrieved = categoriesService.retrieveCategoryByUrn(getServiceContextAdministrador(), urn);
+        CategoriesMetamacAsserts.assertEqualsCategory(category, categoryRetrieved);
+
+        // Validate new structure
+        CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), categorySchemeUrn);
+        assertEquals(5, categorySchemeVersion.getItemsFirstLevel().size());
+        assertEquals(9, categorySchemeVersion.getItems().size());
+        assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_1, categorySchemeVersion.getItemsFirstLevel().get(0).getNameableArtefact().getUrn());
+        assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_2, categorySchemeVersion.getItemsFirstLevel().get(1).getNameableArtefact().getUrn());
+        assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_3, categorySchemeVersion.getItemsFirstLevel().get(2).getNameableArtefact().getUrn());
+        assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_4, categorySchemeVersion.getItemsFirstLevel().get(3).getNameableArtefact().getUrn());
+        assertEquals(categoryRetrieved.getNameableArtefact().getUrn(), categorySchemeVersion.getItemsFirstLevel().get(4).getNameableArtefact().getUrn());
+    }
+
+    @Test
+    public void testCreateCategorySubcategory() throws Exception {
+
+        CategoryMetamac category = CategoriesMetamacDoMocks.mockCategory();
+        CategoryMetamac categoryParent = categoriesService.retrieveCategoryByUrn(getServiceContextAdministrador(), CATEGORY_SCHEME_1_V2_CATEGORY_1);
+        category.setParent(categoryParent);
+        String categorySchemeUrn = CATEGORY_SCHEME_1_V2;
+
+        // Create
+        CategoryMetamac categorySchemeVersionCreated = categoriesService.createCategory(getServiceContextAdministrador(), categorySchemeUrn, category);
+        String urn = categorySchemeVersionCreated.getNameableArtefact().getUrn();
+
+        // Validate (only metadata in SRM Metamac; the others are checked in sdmx project)
+        CategoryMetamac categoryRetrieved = categoriesService.retrieveCategoryByUrn(getServiceContextAdministrador(), urn);
+        CategoriesMetamacAsserts.assertEqualsCategory(category, categoryRetrieved);
+
+        // Validate new structure
+        CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), categorySchemeUrn);
+        assertEquals(4, categorySchemeVersion.getItemsFirstLevel().size());
+        assertEquals(9, categorySchemeVersion.getItems().size());
+
+        assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_1, categorySchemeVersion.getItemsFirstLevel().get(0).getNameableArtefact().getUrn());
+        assertEquals(categoryRetrieved.getNameableArtefact().getUrn(), categorySchemeVersion.getItemsFirstLevel().get(0).getChildren().get(0).getNameableArtefact().getUrn());
+        assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_2, categorySchemeVersion.getItemsFirstLevel().get(1).getNameableArtefact().getUrn());
+        assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_3, categorySchemeVersion.getItemsFirstLevel().get(2).getNameableArtefact().getUrn());
+        assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_4, categorySchemeVersion.getItemsFirstLevel().get(3).getNameableArtefact().getUrn());
+    }
+
     // @Test
     // public void testUpdateCategory() throws Exception {
     //

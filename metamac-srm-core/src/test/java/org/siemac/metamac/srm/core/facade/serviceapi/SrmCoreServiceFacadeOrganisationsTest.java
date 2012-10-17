@@ -25,7 +25,6 @@ import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestrictio
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction.OperationType;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.core.common.util.GeneratorUrnUtils;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
@@ -862,7 +861,7 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
         organisationMetamacDto.setItemSchemeVersionUrn(ORGANISATION_SCHEME_1_V2);
 
         OrganisationMetamacDto organisationMetamacDtoCreated = srmCoreServiceFacade.createOrganisation(getServiceContextAdministrador(), organisationMetamacDto);
-        assertEquals(GeneratorUrnUtils.generateSdmxOrganisationUnitUrn("ISTAC", "ORGANISATIONSCHEME01", "02.000", organisationMetamacDto.getCode()), organisationMetamacDtoCreated.getUrn());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME01(02.000)." + organisationMetamacDto.getCode(), organisationMetamacDtoCreated.getUrn());
         assertEqualsOrganisationDto(organisationMetamacDto, organisationMetamacDtoCreated);
     }
 

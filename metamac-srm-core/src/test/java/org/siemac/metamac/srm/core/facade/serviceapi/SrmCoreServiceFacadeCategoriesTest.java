@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.siemac.metamac.srm.core.category.serviceapi.utils.CategoriesMetamacAsserts.assertEqualsCategoryDto;
 import static org.siemac.metamac.srm.core.category.serviceapi.utils.CategoriesMetamacAsserts.assertEqualsCategorySchemeMetamacDto;
 
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ import org.siemac.metamac.srm.core.category.dto.CategoryMetamacDto;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 import org.siemac.metamac.srm.core.category.serviceapi.utils.CategoriesMetamacDtoMocks;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
+import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.criteria.CategorySchemeVersionMetamacCriteriaOrderEnum;
 import org.siemac.metamac.srm.core.criteria.CategorySchemeVersionMetamacCriteriaPropertyEnum;
@@ -828,46 +830,46 @@ public class SrmCoreServiceFacadeCategoriesTest extends SrmBaseTest {
     // }
     // }
     // }
-    //
-    // @Test
-    // public void testCreateCategory() throws Exception {
-    // CategoryMetamacDto categoryMetamacDto = CategoriesMetamacDtoMocks.mockCategoryDto();
-    // categoryMetamacDto.setItemSchemeVersionUrn(CATEGORY_SCHEME_1_V2);
-    //
-    // CategoryMetamacDto categoryMetamacDtoCreated = srmCoreServiceFacade.createCategory(getServiceContextAdministrador(), categoryMetamacDto);
-    // assertEquals(GeneratorUrnUtils.generateSdmxCategoryUnitUrn("ISTAC", "CATEGORYSCHEME01", "02.000", categoryMetamacDto.getCode()), categoryMetamacDtoCreated.getUrn());
-    // assertEqualsCategoryDto(categoryMetamacDto, categoryMetamacDtoCreated);
-    // }
-    //
-    // @Test
-    // public void testCreateCategoryWithCategoryParent() throws Exception {
-    // CategoryMetamacDto categoryMetamacDto = CategoriesMetamacDtoMocks.mockCategoryDto();
-    // categoryMetamacDto.setItemParentUrn(CATEGORY_SCHEME_1_V2_CATEGORY_1);
-    // categoryMetamacDto.setItemSchemeVersionUrn(CATEGORY_SCHEME_1_V2);
-    //
-    // CategoryMetamacDto categoryMetamacDtoCreated = srmCoreServiceFacade.createCategory(getServiceContextAdministrador(), categoryMetamacDto);
-    // assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_1, categoryMetamacDtoCreated.getItemParentUrn());
-    // assertEqualsCategoryDto(categoryMetamacDto, categoryMetamacDtoCreated);
-    // }
-    //
-    // @Test
-    // public void testCreateCategoryErrorParentNotExists() throws Exception {
-    // CategoryMetamacDto categoryMetamacDto = CategoriesMetamacDtoMocks.mockCategoryDto();
-    // categoryMetamacDto.setItemParentUrn(NOT_EXISTS);
-    // categoryMetamacDto.setItemSchemeVersionUrn(CATEGORY_SCHEME_1_V2);
-    //
-    // try {
-    // srmCoreServiceFacade.createCategory(getServiceContextAdministrador(), categoryMetamacDto);
-    // fail("wrong parent");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.SRM_SEARCH_BY_URN_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(ServiceExceptionParameters.ITEM, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // assertEquals(NOT_EXISTS, e.getExceptionItems().get(0).getMessageParameters()[1]);
-    // }
-    // }
-    //
+    
+    @Test
+    public void testCreateCategory() throws Exception {
+        CategoryMetamacDto categoryMetamacDto = CategoriesMetamacDtoMocks.mockCategoryDto();
+        categoryMetamacDto.setItemSchemeVersionUrn(CATEGORY_SCHEME_1_V2);
+
+        CategoryMetamacDto categoryMetamacDtoCreated = srmCoreServiceFacade.createCategory(getServiceContextAdministrador(), categoryMetamacDto);
+        assertEquals("urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ISTAC:CATEGORYSCHEME01(02.000)." + categoryMetamacDto.getCode(), categoryMetamacDtoCreated.getUrn());
+        assertEqualsCategoryDto(categoryMetamacDto, categoryMetamacDtoCreated);
+    }
+
+    @Test
+    public void testCreateCategoryWithCategoryParent() throws Exception {
+        CategoryMetamacDto categoryMetamacDto = CategoriesMetamacDtoMocks.mockCategoryDto();
+        categoryMetamacDto.setItemParentUrn(CATEGORY_SCHEME_1_V2_CATEGORY_1);
+        categoryMetamacDto.setItemSchemeVersionUrn(CATEGORY_SCHEME_1_V2);
+
+        CategoryMetamacDto categoryMetamacDtoCreated = srmCoreServiceFacade.createCategory(getServiceContextAdministrador(), categoryMetamacDto);
+        assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_1, categoryMetamacDtoCreated.getItemParentUrn());
+        assertEqualsCategoryDto(categoryMetamacDto, categoryMetamacDtoCreated);
+    }
+
+    @Test
+    public void testCreateCategoryErrorParentNotExists() throws Exception {
+        CategoryMetamacDto categoryMetamacDto = CategoriesMetamacDtoMocks.mockCategoryDto();
+        categoryMetamacDto.setItemParentUrn(NOT_EXISTS);
+        categoryMetamacDto.setItemSchemeVersionUrn(CATEGORY_SCHEME_1_V2);
+
+        try {
+            srmCoreServiceFacade.createCategory(getServiceContextAdministrador(), categoryMetamacDto);
+            fail("wrong parent");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.SEARCH_BY_URN_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(ServiceExceptionParameters.ITEM, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals(NOT_EXISTS, e.getExceptionItems().get(0).getMessageParameters()[1]);
+        }
+    }
+
     // @Test
     // public void testUpdateCategory() throws Exception {
     // CategoryMetamacDto categoryMetamacDto = srmCoreServiceFacade.retrieveCategoryByUrn(getServiceContextAdministrador(), CATEGORY_SCHEME_1_V2_CATEGORY_1);

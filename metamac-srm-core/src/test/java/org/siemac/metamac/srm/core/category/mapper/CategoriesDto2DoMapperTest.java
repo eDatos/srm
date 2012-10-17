@@ -3,7 +3,9 @@ package org.siemac.metamac.srm.core.category.mapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
+import org.siemac.metamac.srm.core.category.dto.CategoryMetamacDto;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 import org.siemac.metamac.srm.core.category.serviceapi.utils.CategoriesMetamacAsserts;
 import org.siemac.metamac.srm.core.category.serviceapi.utils.CategoriesMetamacDtoMocks;
@@ -30,14 +32,13 @@ public class CategoriesDto2DoMapperTest extends SrmBaseTest {
         CategoriesMetamacAsserts.assertEqualsCategoryScheme(dto, entity);
     }
 
-//  // TODO Categories
-//    @Test
-//    public void testCategoryMetamacDoToDto() throws MetamacException {
-//        CategoryMetamacDto dto = CategoriesMetamacDtoMocks.mockCategoryDto(TypeRepresentationEnum.ENUMERATED);
-//        CategoryMetamac entity = categoriesDto2DoMapper.categoryDtoToDo(dto);
-//        CategoriesMetamacAsserts.assertEqualsCategory(dto, entity);
-//    }
-    
+    @Test
+    public void testCategoryMetamacDoToDto() throws MetamacException {
+        CategoryMetamacDto dto = CategoriesMetamacDtoMocks.mockCategoryDto();
+        CategoryMetamac entity = categoriesDto2DoMapper.categoryMetamacDtoToDo(dto);
+        CategoriesMetamacAsserts.assertEqualsCategory(dto, entity);
+    }
+
     @Override
     protected String getDataSetFile() {
         return "dbunit/SrmCategoriesTest.xml";

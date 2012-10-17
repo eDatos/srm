@@ -1,6 +1,6 @@
 package org.siemac.metamac.srm.core.facade.serviceapi;
 
-import static org.junit.Assert.assertEquals; 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -30,7 +30,6 @@ import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestrictio
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.core.common.util.GeneratorUrnUtils;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
@@ -153,7 +152,8 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         assertNotNull(conceptSchemeMetamacCreated.getUrn());
         assertNotNull(conceptSchemeMetamacCreated.getVersionLogic());
         assertEqualsInternationalStringDto(conceptSchemeDto.getName(), conceptSchemeMetamacCreated.getName());
-        assertEquals(GeneratorUrnUtils.generateSdmxConceptSchemeUrn(conceptSchemeDto.getMaintainer().getCode(), conceptSchemeDto.getCode(), "01.000"), conceptSchemeMetamacCreated.getUrn());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=" + conceptSchemeDto.getMaintainer().getCode() + ":" + conceptSchemeDto.getCode() + "(01.000)",
+                conceptSchemeMetamacCreated.getUrn());
 
         // Content descriptors
         assertEqualsInternationalStringDto(conceptSchemeDto.getDescription(), conceptSchemeMetamacCreated.getDescription());
@@ -235,7 +235,6 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         assertTrue(conceptSchemeMetamacDtoUpdated.getVersionOptimisticLocking() > conceptSchemeMetamacDto.getVersionOptimisticLocking());
         assertEquals("user9", conceptSchemeMetamacDtoUpdated.getCreatedBy());
         assertEquals(ctx.getUserId(), conceptSchemeMetamacDtoUpdated.getLastUpdatedBy());
-
     }
 
     @Test
@@ -246,10 +245,9 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
 
         conceptSchemeMetamacDto = srmCoreServiceFacade.updateConceptScheme(getServiceContextAdministrador(), conceptSchemeMetamacDto);
 
-        String expextedUrn = GeneratorUrnUtils.generateSdmxConceptSchemeUrn(conceptSchemeMetamacDto.getMaintainer().getCode(), code, conceptSchemeMetamacDto.getVersionLogic());
-
+        // Validate
         assertEquals(code, conceptSchemeMetamacDto.getCode());
-        assertEquals(expextedUrn, conceptSchemeMetamacDto.getUrn());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=" + conceptSchemeMetamacDto.getMaintainer().getCode() + ":" + code + "(01.000)", conceptSchemeMetamacDto.getUrn());
     }
 
     @Test
@@ -1273,7 +1271,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         conceptMetamacDto.setConceptExtendsUrn(CONCEPT_SCHEME_12_V1_CONCEPT_1);
 
         ConceptMetamacDto conceptMetamacDtoCreated = srmCoreServiceFacade.createConcept(getServiceContextAdministrador(), conceptMetamacDto);
-        assertEquals(GeneratorUrnUtils.generateSdmxConceptUrn("ISTAC", "CONCEPTSCHEME01", "02.000", conceptMetamacDto.getCode()), conceptMetamacDtoCreated.getUrn());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME01(02.000)." + conceptMetamacDto.getCode(), conceptMetamacDtoCreated.getUrn());
         assertNull(conceptMetamacDtoCreated.getUri());
 
         assertEqualsConceptDto(conceptMetamacDto, conceptMetamacDtoCreated);
@@ -1285,7 +1283,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         conceptMetamacDto.setItemSchemeVersionUrn(CONCEPT_SCHEME_1_V2);
 
         ConceptMetamacDto conceptMetamacDtoCreated = srmCoreServiceFacade.createConcept(getServiceContextAdministrador(), conceptMetamacDto);
-        assertEquals(GeneratorUrnUtils.generateSdmxConceptUrn("ISTAC", "CONCEPTSCHEME01", "02.000", conceptMetamacDto.getCode()), conceptMetamacDtoCreated.getUrn());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME01(02.000)." + conceptMetamacDto.getCode(), conceptMetamacDtoCreated.getUrn());
         assertNull(conceptMetamacDtoCreated.getUri());
 
         assertEqualsConceptDto(conceptMetamacDto, conceptMetamacDtoCreated);

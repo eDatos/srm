@@ -1467,24 +1467,24 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     // CATEGORIES
     // ------------------------------------------------------------------------
 
-    // @Override
-    // public CategoryMetamacDto createCategory(ServiceContext ctx, CategoryMetamacDto categoryMetamacDto) throws MetamacException {
-    // // TODO Security
-    // // CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByUrn(ctx, categoryMetamacDto.getItemSchemeVersionUrn());
-    // // CategoriesSecurityUtils.canCreateCategory(ctx, categorySchemeVersion);
-    //
-    // // Transform
-    // CategoryMetamac categoryMetamac = categoriesDto2DoMapper.categoryMetamacDtoToDo(categoryMetamacDto);
-    //
-    // // Create
-    // CategoryMetamac categoryCreated = getCategoriesMetamacService().createCategory(ctx, categoryMetamacDto.getItemSchemeVersionUrn(), categoryMetamac);
-    //
-    // // Transform to DTO
-    // categoryMetamacDto = categoriesDo2DtoMapper.categoryMetamacDoToDto(categoryCreated);
-    //
-    // return categoryMetamacDto;
-    // }
-    //
+    @Override
+    public CategoryMetamacDto createCategory(ServiceContext ctx, CategoryMetamacDto categoryMetamacDto) throws MetamacException {
+        // TODO Security
+        // CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByUrn(ctx, categoryMetamacDto.getItemSchemeVersionUrn());
+        // CategoriesSecurityUtils.canCreateCategory(ctx, categorySchemeVersion);
+
+        // Transform
+        CategoryMetamac categoryMetamac = categoriesDto2DoMapper.categoryMetamacDtoToDo(categoryMetamacDto);
+
+        // Create
+        CategoryMetamac categoryCreated = getCategoriesMetamacService().createCategory(ctx, categoryMetamacDto.getItemSchemeVersionUrn(), categoryMetamac);
+
+        // Transform to DTO
+        categoryMetamacDto = categoriesDo2DtoMapper.categoryMetamacDoToDto(categoryCreated);
+
+        return categoryMetamacDto;
+    }
+
     // @Override
     // public CategoryMetamacDto updateCategory(ServiceContext ctx, CategoryMetamacDto categoryDto) throws MetamacException {
     //
