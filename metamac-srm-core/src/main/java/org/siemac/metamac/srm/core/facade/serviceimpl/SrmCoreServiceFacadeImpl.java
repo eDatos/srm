@@ -26,7 +26,9 @@ import org.siemac.metamac.core.common.exception.ExceptionLevelEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.ws.ServicesResolver;
+import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
+import org.siemac.metamac.srm.core.category.dto.CategoryMetamacDto;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 import org.siemac.metamac.srm.core.category.mapper.CategoriesDo2DtoMapper;
 import org.siemac.metamac.srm.core.category.mapper.CategoriesDto2DoMapper;
@@ -1500,22 +1502,22 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     // categoryDto = categoriesDo2DtoMapper.categoryMetamacDoToDto(categoryUpdated);
     // return categoryDto;
     // }
-    //
-    // @Override
-    // public CategoryMetamacDto retrieveCategoryByUrn(ServiceContext ctx, String urn) throws MetamacException {
-    //
-    // // TODO Security
-    // // CategoriesSecurityUtils.canRetrieveCategoryByUrn(ctx);
-    //
-    // // Retrieve
-    // CategoryMetamac categoryMetamac = getCategoriesMetamacService().retrieveCategoryByUrn(ctx, urn);
-    //
-    // // Transform
-    // CategoryMetamacDto categoryMetamacDto = categoriesDo2DtoMapper.categoryMetamacDoToDto(categoryMetamac);
-    //
-    // return categoryMetamacDto;
-    // }
-    //
+
+    @Override
+    public CategoryMetamacDto retrieveCategoryByUrn(ServiceContext ctx, String urn) throws MetamacException {
+
+        // TODO Security
+        // CategoriesSecurityUtils.canRetrieveCategoryByUrn(ctx);
+
+        // Retrieve
+        CategoryMetamac categoryMetamac = getCategoriesMetamacService().retrieveCategoryByUrn(ctx, urn);
+
+        // Transform
+        CategoryMetamacDto categoryMetamacDto = categoriesDo2DtoMapper.categoryMetamacDoToDto(categoryMetamac);
+
+        return categoryMetamacDto;
+    }
+
     // @Override
     // public void deleteCategory(ServiceContext ctx, String urn) throws MetamacException {
     //

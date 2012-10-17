@@ -10,6 +10,7 @@ import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
+import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
 import org.siemac.metamac.srm.core.category.serviceimpl.utils.CategoriesMetamacInvocationValidator;
 import org.siemac.metamac.srm.core.common.LifeCycle;
@@ -196,12 +197,12 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
     //
     // return (CategoryMetamac) categoriesService.updateCategory(ctx, category);
     // }
-    //
-    // @Override
-    // public CategoryMetamac retrieveCategoryByUrn(ServiceContext ctx, String urn) throws MetamacException {
-    // return (CategoryMetamac) categoriesService.retrieveCategoryByUrn(ctx, urn);
-    // }
-    //
+
+    @Override
+    public CategoryMetamac retrieveCategoryByUrn(ServiceContext ctx, String urn) throws MetamacException {
+        return (CategoryMetamac) categoriesService.retrieveCategoryByUrn(ctx, urn);
+    }
+
     // @Override
     // public PagedResult<CategoryMetamac> findCategoriesByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
     //

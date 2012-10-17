@@ -23,6 +23,7 @@ import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestrictio
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction.OperationType;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.srm.core.category.dto.CategoryMetamacDto;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 import org.siemac.metamac.srm.core.category.serviceapi.utils.CategoriesMetamacDtoMocks;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
@@ -467,12 +468,12 @@ public class SrmCoreServiceFacadeCategoriesTest extends SrmBaseTest {
     // CATEGORIES
     // ---------------------------------------------------------------------------------------
 
-    // @Test
-    // public void testRetrieveCategoryByUrn() throws Exception {
-    // CategoryMetamacDto categoryMetamacDto = srmCoreServiceFacade.retrieveCategoryByUrn(getServiceContextAdministrador(), CATEGORY_SCHEME_1_V2_CATEGORY_1);
-    // assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_1, categoryMetamacDto.getUrn());
-    // }
-    //
+    @Test
+    public void testRetrieveCategoryByUrn() throws Exception {
+        CategoryMetamacDto categoryMetamacDto = srmCoreServiceFacade.retrieveCategoryByUrn(getServiceContextAdministrador(), CATEGORY_SCHEME_1_V2_CATEGORY_1);
+        assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_1, categoryMetamacDto.getUrn());
+    }
+
     // @Test
     // public void testFindCategoriesByCondition() throws Exception {
     //
@@ -830,7 +831,7 @@ public class SrmCoreServiceFacadeCategoriesTest extends SrmBaseTest {
     //
     // @Test
     // public void testCreateCategory() throws Exception {
-    // CategoryMetamacDto categoryMetamacDto = CategoriesMetamacDtoMocks.mockCategoryDto(CategoryTypeEnum.CATEGORY_UNIT);
+    // CategoryMetamacDto categoryMetamacDto = CategoriesMetamacDtoMocks.mockCategoryDto();
     // categoryMetamacDto.setItemSchemeVersionUrn(CATEGORY_SCHEME_1_V2);
     //
     // CategoryMetamacDto categoryMetamacDtoCreated = srmCoreServiceFacade.createCategory(getServiceContextAdministrador(), categoryMetamacDto);
@@ -840,7 +841,7 @@ public class SrmCoreServiceFacadeCategoriesTest extends SrmBaseTest {
     //
     // @Test
     // public void testCreateCategoryWithCategoryParent() throws Exception {
-    // CategoryMetamacDto categoryMetamacDto = CategoriesMetamacDtoMocks.mockCategoryDto(CategoryTypeEnum.CATEGORY_UNIT);
+    // CategoryMetamacDto categoryMetamacDto = CategoriesMetamacDtoMocks.mockCategoryDto();
     // categoryMetamacDto.setItemParentUrn(CATEGORY_SCHEME_1_V2_CATEGORY_1);
     // categoryMetamacDto.setItemSchemeVersionUrn(CATEGORY_SCHEME_1_V2);
     //
@@ -851,7 +852,7 @@ public class SrmCoreServiceFacadeCategoriesTest extends SrmBaseTest {
     //
     // @Test
     // public void testCreateCategoryErrorParentNotExists() throws Exception {
-    // CategoryMetamacDto categoryMetamacDto = CategoriesMetamacDtoMocks.mockCategoryDto(CategoryTypeEnum.CATEGORY_UNIT);
+    // CategoryMetamacDto categoryMetamacDto = CategoriesMetamacDtoMocks.mockCategoryDto();
     // categoryMetamacDto.setItemParentUrn(NOT_EXISTS);
     // categoryMetamacDto.setItemSchemeVersionUrn(CATEGORY_SCHEME_1_V2);
     //

@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.siemac.metamac.srm.core.base.mapper.BaseDo2DtoMapperImpl;
+import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
+import org.siemac.metamac.srm.core.category.dto.CategoryMetamacDto;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -35,17 +37,17 @@ public class CategoriesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements 
         return categorySchemeMetamacDtos;
     }
 
-//    @Override
-//    public CategoryMetamacDto categoryMetamacDoToDto(CategoryMetamac source) {
-//        if (source == null) {
-//            return null;
-//        }
-//        CategoryMetamacDto target = new CategoryMetamacDto();
-//
-//        do2DtoMapperSdmxSrm.categoryDoToDto(source, target);
-//        return target;
-//    }
-//
+    @Override
+    public CategoryMetamacDto categoryMetamacDoToDto(CategoryMetamac source) {
+        if (source == null) {
+            return null;
+        }
+        CategoryMetamacDto target = new CategoryMetamacDto();
+
+        do2DtoMapperSdmxSrm.categoryDoToDto(source, target);
+        return target;
+    }
+
 //    @Override
 //    public List<CategoryMetamacDto> categoryMetamacDoListToDtoList(List<CategoryMetamac> sources) {
 //        List<CategoryMetamacDto> targets = new ArrayList<CategoryMetamacDto>();

@@ -17,7 +17,7 @@ Application CategoriesMetamac {
 		Service CategoriesMetamacService {
 			
 			> @CategorySchemeVersionMetamacRepository
-//			> @CategoryMetamacRepository
+			> @CategoryMetamacRepository
 			
 			"Creates category scheme"
 			@CategorySchemeVersionMetamac createCategoryScheme(@CategorySchemeVersionMetamac categorySchemeVersion) throws MetamacException;
@@ -49,13 +49,13 @@ Application CategoriesMetamac {
     		@CategorySchemeVersionMetamac endCategorySchemeValidity(String urn) throws MetamacException;
 //    		"Retrieves categories scheme by category urn"
 //    		@CategorySchemeVersionMetamac retrieveCategorySchemeByCategoryUrn(String categoryUrn) throws MetamacException;
-//    		
+    		
 //			"Creates category"
 //			@CategoryMetamac createCategory(String categorySchemeUrn, @CategoryMetamac category) throws MetamacException;
 //			"Updates category"
 //			@CategoryMetamac updateCategory(@CategoryMetamac category) throws MetamacException;
-//    		"Retrieves category by urn"
-//    		@CategoryMetamac retrieveCategoryByUrn(String urn) throws MetamacException;
+    		"Retrieves category by urn"
+    		@CategoryMetamac retrieveCategoryByUrn(String urn) throws MetamacException;
 //    		"Finds categories by criteria"
 //    		PagedResult<@CategoryMetamac> findCategoriesByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
 //			"Deletes category"

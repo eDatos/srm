@@ -901,8 +901,7 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
         // Validate retrieving
         // New version
         {
-            categorySchemeVersionNewVersion = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), categorySchemeVersionNewVersion.getMaintainableArtefact()
-                    .getUrn());
+            categorySchemeVersionNewVersion = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), categorySchemeVersionNewVersion.getMaintainableArtefact().getUrn());
             assertEquals(ProcStatusEnum.DRAFT, categorySchemeVersionNewVersion.getLifeCycleMetadata().getProcStatus());
             assertEquals(versionExpected, categorySchemeVersionNewVersion.getMaintainableArtefact().getVersionLogic());
             assertEquals(urnExpected, categorySchemeVersionNewVersion.getMaintainableArtefact().getUrn());
@@ -992,8 +991,7 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
         // Validate retrieving
         {
             // New version
-            categorySchemeVersionNewVersion = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), categorySchemeVersionNewVersion.getMaintainableArtefact()
-                    .getUrn());
+            categorySchemeVersionNewVersion = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), categorySchemeVersionNewVersion.getMaintainableArtefact().getUrn());
             assertEquals(versionExpected, categorySchemeVersionNewVersion.getMaintainableArtefact().getVersionLogic());
             assertEquals(urnExpected, categorySchemeVersionNewVersion.getMaintainableArtefact().getUrn());
             assertEquals(ProcStatusEnum.DRAFT, categorySchemeVersionNewVersion.getLifeCycleMetadata().getProcStatus());
@@ -1087,7 +1085,7 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
     // @Test
     // public void testCreateCategory() throws Exception {
     //
-    // CategoryMetamac category = CategoriesMetamacDoMocks.mockCategory(CategoryTypeEnum.CATEGORY_UNIT);
+    // CategoryMetamac category = CategoriesMetamacDoMocks.mockCategory();
     // category.setParent(null);
     // String categorySchemeUrn = CATEGORY_SCHEME_1_V2;
     //
@@ -1113,7 +1111,7 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
     // @Test
     // public void testCreateCategorySubcategory() throws Exception {
     //
-    // CategoryMetamac category = CategoriesMetamacDoMocks.mockCategory(CategoryTypeEnum.CATEGORY_UNIT);
+    // CategoryMetamac category = CategoriesMetamacDoMocks.mockCategory();
     // CategoryMetamac categoryParent = categoriesService.retrieveCategoryByUrn(getServiceContextAdministrador(), CATEGORY_SCHEME_1_V2_CATEGORY_1);
     // category.setParent(categoryParent);
     // String categorySchemeUrn = CATEGORY_SCHEME_1_V2;
@@ -1151,35 +1149,35 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
     // // Validate
     // CategoriesMetamacAsserts.assertEqualsCategory(category, categoryUpdated);
     // }
-    //
-    // @Test
-    // public void testRetrieveCategoryByUrn() throws Exception {
-    // // Retrieve
-    // String urn = CATEGORY_SCHEME_1_V2_CATEGORY_1;
-    // CategoryMetamac category = categoriesService.retrieveCategoryByUrn(getServiceContextAdministrador(), urn);
-    // assertEquals(urn, category.getNameableArtefact().getUrn());
-    //
-    // // Validate (only metadata in SRM Metamac; the others are checked in sdmx project)
-    // // no metadata in Metamac
-    // }
-    //
-    // @Test
-    // public void testRetrieveCategoryByUrnWithParentAndChildren() throws Exception {
-    //
-    // // Retrieve
-    // String urn = CATEGORY_SCHEME_1_V2_CATEGORY_2_1;
-    // CategoryMetamac category = categoriesService.retrieveCategoryByUrn(getServiceContextAdministrador(), urn);
-    //
-    // // Validate
-    // // Parent
-    // assertTrue(category.getParent() instanceof CategoryMetamac);
-    // assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_2, category.getParent().getNameableArtefact().getUrn());
-    // // Children
-    // assertEquals(1, category.getChildren().size());
-    // assertTrue(category.getChildren().get(0) instanceof CategoryMetamac);
-    // assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_2_1_1, category.getChildren().get(0).getNameableArtefact().getUrn());
-    // }
-    //
+
+    @Test
+    public void testRetrieveCategoryByUrn() throws Exception {
+        // Retrieve
+        String urn = CATEGORY_SCHEME_1_V2_CATEGORY_1;
+        CategoryMetamac category = categoriesService.retrieveCategoryByUrn(getServiceContextAdministrador(), urn);
+        assertEquals(urn, category.getNameableArtefact().getUrn());
+
+        // Validate (only metadata in SRM Metamac; the others are checked in sdmx project)
+        // no metadata in Metamac
+    }
+
+    @Test
+    public void testRetrieveCategoryByUrnWithParentAndChildren() throws Exception {
+
+        // Retrieve
+        String urn = CATEGORY_SCHEME_1_V2_CATEGORY_2_1;
+        CategoryMetamac category = categoriesService.retrieveCategoryByUrn(getServiceContextAdministrador(), urn);
+
+        // Validate
+        // Parent
+        assertTrue(category.getParent() instanceof CategoryMetamac);
+        assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_2, category.getParent().getNameableArtefact().getUrn());
+        // Children
+        assertEquals(1, category.getChildren().size());
+        assertTrue(category.getChildren().get(0) instanceof CategoryMetamac);
+        assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_2_1_1, category.getChildren().get(0).getNameableArtefact().getUrn());
+    }
+
     // @Test
     // public void testDeleteCategory() throws Exception {
     //
