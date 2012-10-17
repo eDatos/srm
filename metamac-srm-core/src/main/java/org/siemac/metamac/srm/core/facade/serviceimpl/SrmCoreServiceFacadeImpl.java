@@ -1485,23 +1485,23 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         return categoryMetamacDto;
     }
 
-    // @Override
-    // public CategoryMetamacDto updateCategory(ServiceContext ctx, CategoryMetamacDto categoryDto) throws MetamacException {
-    //
-    // // TODO Security
-    // // CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByCategoryUrn(ctx, categoryDto.getUrn());
-    // // CategoriesSecurityUtils.canUpdateCategory(ctx, categorySchemeVersion);
-    //
-    // // Transform
-    // CategoryMetamac categoryMetamac = categoriesDto2DoMapper.categoryMetamacDtoToDo(categoryDto);
-    //
-    // // Update
-    // CategoryMetamac categoryUpdated = getCategoriesMetamacService().updateCategory(ctx, categoryMetamac);
-    //
-    // // Transform to DTO
-    // categoryDto = categoriesDo2DtoMapper.categoryMetamacDoToDto(categoryUpdated);
-    // return categoryDto;
-    // }
+    @Override
+    public CategoryMetamacDto updateCategory(ServiceContext ctx, CategoryMetamacDto categoryDto) throws MetamacException {
+
+        // TODO Security
+        // CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByCategoryUrn(ctx, categoryDto.getUrn());
+        // CategoriesSecurityUtils.canUpdateCategory(ctx, categorySchemeVersion);
+
+        // Transform
+        CategoryMetamac categoryMetamac = categoriesDto2DoMapper.categoryMetamacDtoToDo(categoryDto);
+
+        // Update
+        CategoryMetamac categoryUpdated = getCategoriesMetamacService().updateCategory(ctx, categoryMetamac);
+
+        // Transform to DTO
+        categoryDto = categoriesDo2DtoMapper.categoryMetamacDoToDto(categoryUpdated);
+        return categoryDto;
+    }
 
     @Override
     public CategoryMetamacDto retrieveCategoryByUrn(ServiceContext ctx, String urn) throws MetamacException {

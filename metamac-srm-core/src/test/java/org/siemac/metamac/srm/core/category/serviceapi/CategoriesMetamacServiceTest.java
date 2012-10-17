@@ -37,6 +37,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.arte.statistic.sdmx.srm.core.category.domain.Category;
 import com.arte.statistic.sdmx.srm.core.category.domain.CategorySchemeVersion;
+import com.arte.statistic.sdmx.srm.core.category.serviceapi.utils.CategoriesDoMocks;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -1136,19 +1137,19 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
         assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_4, categorySchemeVersion.getItemsFirstLevel().get(3).getNameableArtefact().getUrn());
     }
 
-    // @Test
-    // public void testUpdateCategory() throws Exception {
-    //
-    // CategoryMetamac category = categoriesService.retrieveCategoryByUrn(getServiceContextAdministrador(), CATEGORY_SCHEME_1_V2_CATEGORY_1);
-    // category.getNameableArtefact().setIsCodeUpdated(Boolean.FALSE);
-    // category.getNameableArtefact().setName(CategoriesDoMocks.mockInternationalString());
-    //
-    // // Update
-    // CategoryMetamac categoryUpdated = categoriesService.updateCategory(getServiceContextAdministrador(), category);
-    //
-    // // Validate
-    // CategoriesMetamacAsserts.assertEqualsCategory(category, categoryUpdated);
-    // }
+    @Test
+    public void testUpdateCategory() throws Exception {
+
+        CategoryMetamac category = categoriesService.retrieveCategoryByUrn(getServiceContextAdministrador(), CATEGORY_SCHEME_1_V2_CATEGORY_1);
+        category.getNameableArtefact().setIsCodeUpdated(Boolean.FALSE);
+        category.getNameableArtefact().setName(CategoriesDoMocks.mockInternationalString());
+
+        // Update
+        CategoryMetamac categoryUpdated = categoriesService.updateCategory(getServiceContextAdministrador(), category);
+
+        // Validate
+        CategoriesMetamacAsserts.assertEqualsCategory(category, categoryUpdated);
+    }
 
     @Test
     public void testRetrieveCategoryByUrn() throws Exception {

@@ -415,8 +415,8 @@ Application SrmFacadeCore {
             
 			"Creates category"
 	   		@CategoryMetamacDto createCategory(@CategoryMetamacDto categoryMetamacDto) throws MetamacException;
-//	   		"Updates category"
-//            @CategoryMetamacDto updateCategory(@CategoryMetamacDto categoryDto) throws MetamacException;
+	   		"Updates category"
+            @CategoryMetamacDto updateCategory(@CategoryMetamacDto categoryDto) throws MetamacException;
 	   		"Retrieves a category by URN"
             @CategoryMetamacDto retrieveCategoryByUrn(String urn) throws MetamacException;
 //            "Finds categories by criteria"

@@ -52,8 +52,8 @@ Application CategoriesMetamac {
     		
 			"Creates category"
 			@CategoryMetamac createCategory(String categorySchemeUrn, @CategoryMetamac category) throws MetamacException;
-//			"Updates category"
-//			@CategoryMetamac updateCategory(@CategoryMetamac category) throws MetamacException;
+			"Updates category"
+			@CategoryMetamac updateCategory(@CategoryMetamac category) throws MetamacException;
     		"Retrieves category by urn"
     		@CategoryMetamac retrieveCategoryByUrn(String urn) throws MetamacException;
 //    		"Finds categories by criteria"

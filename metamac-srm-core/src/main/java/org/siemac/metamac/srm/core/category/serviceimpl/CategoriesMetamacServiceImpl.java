@@ -188,15 +188,15 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
         return (CategoryMetamac) categoriesService.createCategory(ctx, categorySchemeUrn, category);
     }
 
-    // @Override
-    // public CategoryMetamac updateCategory(ServiceContext ctx, CategoryMetamac category) throws MetamacException {
-    //
-    // // Validation
-    // CategoriesMetamacInvocationValidator.checkUpdateCategory(category, null);
-    // // CategoriesService checks categoryScheme isn't final
-    //
-    // return (CategoryMetamac) categoriesService.updateCategory(ctx, category);
-    // }
+    @Override
+    public CategoryMetamac updateCategory(ServiceContext ctx, CategoryMetamac category) throws MetamacException {
+
+        // Validation
+        CategoriesMetamacInvocationValidator.checkUpdateCategory(category, null);
+        // CategoriesService checks categoryScheme isn't final
+
+        return (CategoryMetamac) categoriesService.updateCategory(ctx, category);
+    }
 
     @Override
     public CategoryMetamac retrieveCategoryByUrn(ServiceContext ctx, String urn) throws MetamacException {

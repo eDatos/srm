@@ -830,7 +830,7 @@ public class SrmCoreServiceFacadeCategoriesTest extends SrmBaseTest {
     // }
     // }
     // }
-    
+
     @Test
     public void testCreateCategory() throws Exception {
         CategoryMetamacDto categoryMetamacDto = CategoriesMetamacDtoMocks.mockCategoryDto();
@@ -870,18 +870,18 @@ public class SrmCoreServiceFacadeCategoriesTest extends SrmBaseTest {
         }
     }
 
-    // @Test
-    // public void testUpdateCategory() throws Exception {
-    // CategoryMetamacDto categoryMetamacDto = srmCoreServiceFacade.retrieveCategoryByUrn(getServiceContextAdministrador(), CATEGORY_SCHEME_1_V2_CATEGORY_1);
-    // categoryMetamacDto.setName(MetamacMocks.mockInternationalString());
-    // categoryMetamacDto.setDescription(MetamacMocks.mockInternationalString());
-    //
-    // CategoryMetamacDto categoryMetamacDtoUpdated = srmCoreServiceFacade.updateCategory(getServiceContextAdministrador(), categoryMetamacDto);
-    //
-    // assertEqualsCategoryDto(categoryMetamacDto, categoryMetamacDtoUpdated);
-    // assertTrue(categoryMetamacDtoUpdated.getVersionOptimisticLocking() > categoryMetamacDto.getVersionOptimisticLocking());
-    // }
-    //
+    @Test
+    public void testUpdateCategory() throws Exception {
+        CategoryMetamacDto categoryMetamacDto = srmCoreServiceFacade.retrieveCategoryByUrn(getServiceContextAdministrador(), CATEGORY_SCHEME_1_V2_CATEGORY_1);
+        categoryMetamacDto.setName(MetamacMocks.mockInternationalString());
+        categoryMetamacDto.setDescription(MetamacMocks.mockInternationalString());
+
+        CategoryMetamacDto categoryMetamacDtoUpdated = srmCoreServiceFacade.updateCategory(getServiceContextAdministrador(), categoryMetamacDto);
+
+        assertEqualsCategoryDto(categoryMetamacDto, categoryMetamacDtoUpdated);
+        assertTrue(categoryMetamacDtoUpdated.getVersionOptimisticLocking() > categoryMetamacDto.getVersionOptimisticLocking());
+    }
+
     // @Test
     // public void testDeleteCategory() throws Exception {
     //
