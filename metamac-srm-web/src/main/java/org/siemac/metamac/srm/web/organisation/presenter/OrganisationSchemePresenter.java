@@ -353,6 +353,10 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
                 ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getMessageList(getMessages().organisationSchemeVersioned()), MessageTypeEnum.SUCCESS);
                 organisationSchemeMetamacDto = result.getOrganisationSchemeMetamacDto();
                 retrieveOrganisationSchemeByUrn(organisationSchemeMetamacDto.getUrn());
+
+                // Update URL
+                PlaceRequest placeRequest = PlaceRequestUtils.buildOrganisationSchemePlaceRequest(organisationSchemeMetamacDto.getUrn(), organisationSchemeMetamacDto.getType());
+                placeManager.updateHistory(placeRequest, true);
             }
         });
     }
