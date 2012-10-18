@@ -129,6 +129,8 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
             this.conceptSchemeUrn = UrnUtils.generateUrn(UrnConstants.URN_SDMX_CLASS_CONCEPTSCHEME_PREFIX, schemeParam);
             String urn = UrnUtils.generateUrn(UrnConstants.URN_SDMX_CLASS_CONCEPT_PREFIX, schemeParam, conceptCode);
             retrieveConcept(urn);
+        } else {
+            MetamacSrmWeb.showErrorPage();
         }
     }
 

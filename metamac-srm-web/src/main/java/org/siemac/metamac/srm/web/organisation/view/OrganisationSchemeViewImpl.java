@@ -162,7 +162,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
                         if (newOrganisationWindow.validateForm()) {
                             OrganisationMetamacDto organisationToCreate = newOrganisationWindow.getNewOrganisationDto(CommonUtils.getOrganisationTypeEnum(organisationSchemeDto.getType()));
                             organisationToCreate.setItemSchemeVersionUrn(organisationSchemeDto.getUrn());
-                            getUiHandlers().saveOrganisation(organisationToCreate);
+                            getUiHandlers().createOrganisation(organisationToCreate);
                             newOrganisationWindow.destroy();
                         }
                     }

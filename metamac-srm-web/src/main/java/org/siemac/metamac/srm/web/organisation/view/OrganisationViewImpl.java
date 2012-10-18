@@ -9,6 +9,7 @@ import java.util.List;
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
+import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.organisation.model.ds.ContactDS;
@@ -16,8 +17,10 @@ import org.siemac.metamac.srm.web.organisation.model.ds.OrganisationDS;
 import org.siemac.metamac.srm.web.organisation.model.record.ContactRecord;
 import org.siemac.metamac.srm.web.organisation.presenter.OrganisationPresenter;
 import org.siemac.metamac.srm.web.organisation.utils.CommonUtils;
+import org.siemac.metamac.srm.web.organisation.utils.OrganisationsClientSecurityUtils;
 import org.siemac.metamac.srm.web.organisation.view.handlers.OrganisationUiHandlers;
 import org.siemac.metamac.srm.web.organisation.widgets.ContactMainFormLayout;
+import org.siemac.metamac.srm.web.organisation.widgets.OrganisationsTreeGrid;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
@@ -33,6 +36,7 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguag
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.organisation.ContactDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
@@ -59,6 +63,8 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
     private VLayout                     panel;
     private InternationalMainFormLayout mainFormLayout;
 
+    private OrganisationsTreeGrid       organisationsTreeGrid;
+
     // View forms
     private GroupDynamicForm            identifiersForm;
     private GroupDynamicForm            contentDescriptorsForm;
@@ -84,6 +90,17 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         panel = new VLayout();
         panel.setHeight100();
         panel.setOverflow(Overflow.SCROLL);
+
+        //
+        // ORGANISATIONS HIERARCHY
+        //
+
+        organisationsTreeGrid = new OrganisationsTreeGrid();
+
+        VLayout organisationsListGridLayout = new VLayout();
+        organisationsListGridLayout.setMargin(15);
+        organisationsListGridLayout.addMember(new TitleLabel(getConstants().organisationSchemeOrganisations()));
+        organisationsListGridLayout.addMember(organisationsTreeGrid);
 
         //
         // ORGANISATION
@@ -215,6 +232,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         contactsSectionLayout.addMember(titleLabel);
         contactsSectionLayout.addMember(contactLayout);
 
+        panel.addMember(organisationsListGridLayout);
         panel.addMember(mainFormLayout);
         panel.addMember(contactsSectionLayout);
     }
@@ -327,6 +345,9 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         this.contactDtos = new ArrayList<ContactDto>();
         this.contactDtos.addAll(organisationDto.getContacts());
 
+        // TODO Only reload tree when necessary
+        getUiHandlers().retrieveOrganisationListByScheme(organisationDto.getItemSchemeVersionUrn());
+
         String defaultLocalized = InternationalStringUtils.getLocalisedString(organisationDto.getName());
         String title = defaultLocalized != null ? defaultLocalized : StringUtils.EMPTY;
         mainFormLayout.setTitleLabelContents(title);
@@ -338,6 +359,16 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
 
         // Contacts
         setContacts(organisationDto.getContacts(), contactToShowId);
+    }
+
+    @Override
+    public void setOrganisationList(OrganisationSchemeMetamacDto organisationSchemeMetamacDto, List<ItemHierarchyDto> itemHierarchyDtos) {
+        organisationsTreeGrid.setUiHandlers(getUiHandlers());
+        organisationsTreeGrid.setOrganisations(organisationSchemeMetamacDto, itemHierarchyDtos);
+        organisationsTreeGrid.selectOrganisation(organisationDto);
+
+        // Security
+        mainFormLayout.setCanEdit(OrganisationsClientSecurityUtils.canUpdateOrganisation(organisationSchemeMetamacDto.getLifeCycle().getProcStatus()));
     }
 
     private void setOrganisationViewMode(OrganisationMetamacDto organisationDto) {

@@ -102,7 +102,7 @@ public class OrganisationsTreeGrid extends TreeGrid {
                             OrganisationMetamacDto organisationMetamacDto = newOrganisationWindow.getNewOrganisationDto(CommonUtils.getOrganisationTypeEnum(organisationSchemeMetamacDto.getType()));
                             organisationMetamacDto.setItemSchemeVersionUrn(organisationSchemeMetamacDto.getUrn()); // Set organisation scheme URN
                             organisationMetamacDto.setItemParentUrn(selectedOrganisation != null ? selectedOrganisation.getUrn() : null); // Set organisation parent URN
-                            OrganisationsTreeGrid.this.uiHandlers.saveOrganisation(organisationMetamacDto);
+                            OrganisationsTreeGrid.this.uiHandlers.createOrganisation(organisationMetamacDto);
                             newOrganisationWindow.destroy();
                         }
                     }

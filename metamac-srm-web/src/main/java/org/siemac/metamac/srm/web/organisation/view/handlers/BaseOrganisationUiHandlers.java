@@ -7,7 +7,7 @@ import com.gwtplatform.mvp.client.UiHandlers;
 
 public interface BaseOrganisationUiHandlers extends UiHandlers {
 
-    void saveOrganisation(OrganisationMetamacDto organisationDto);
+    void createOrganisation(OrganisationMetamacDto organisationDto);
     void deleteOrganisation(ItemDto itemDto);
     void goToOrganisation(String urn);
 

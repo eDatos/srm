@@ -106,4 +106,17 @@ public class CommonUtils {
         return null;
     }
 
+    public static OrganisationSchemeTypeEnum getOrganisationSchemeTypeEnum(OrganisationTypeEnum organisationType) {
+        if (OrganisationTypeEnum.AGENCY.equals(organisationType)) {
+            return OrganisationSchemeTypeEnum.AGENCY_SCHEME;
+        } else if (OrganisationTypeEnum.DATA_CONSUMER.equals(organisationType)) {
+            return OrganisationSchemeTypeEnum.DATA_CONSUMER_SCHEME;
+        } else if (OrganisationTypeEnum.DATA_PROVIDER.equals(organisationType)) {
+            return OrganisationSchemeTypeEnum.DATA_PROVIDER_SCHEME;
+        } else if (OrganisationTypeEnum.ORGANISATION_UNIT.equals(organisationType)) {
+            return OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME;
+        }
+        return null;
+    }
+
 }

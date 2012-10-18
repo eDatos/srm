@@ -8,25 +8,35 @@ import java.util.List;
 
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
+import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
+import org.siemac.metamac.srm.web.client.PlaceRequestParams;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.client.widgets.presenter.ToolStripPresenterWidget;
 import org.siemac.metamac.srm.web.organisation.utils.CommonUtils;
 import org.siemac.metamac.srm.web.organisation.view.handlers.OrganisationUiHandlers;
+import org.siemac.metamac.srm.web.shared.organisation.DeleteOrganisationListAction;
+import org.siemac.metamac.srm.web.shared.organisation.DeleteOrganisationListResult;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationAction;
+import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationListBySchemeAction;
+import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationListBySchemeResult;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationResult;
+import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeAction;
+import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeResult;
 import org.siemac.metamac.srm.web.shared.organisation.SaveOrganisationAction;
 import org.siemac.metamac.srm.web.shared.organisation.SaveOrganisationResult;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
+import org.siemac.metamac.web.common.client.utils.UrnUtils;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.organisation.ContactDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
@@ -53,6 +63,7 @@ public class OrganisationPresenter extends Presenter<OrganisationPresenter.Organ
     private final PlaceManager       placeManager;
     private ToolStripPresenterWidget toolStripPresenterWidget;
 
+    private String                   organisationSchemeUrn;
     private OrganisationMetamacDto   organisationMetamacDto;
 
     @TitleFunction
@@ -69,6 +80,7 @@ public class OrganisationPresenter extends Presenter<OrganisationPresenter.Organ
     public interface OrganisationView extends View, HasUiHandlers<OrganisationUiHandlers> {
 
         void setOrganisation(OrganisationMetamacDto organisationDto, Long contactToShowId);
+        void setOrganisationList(OrganisationSchemeMetamacDto organisationSchemeMetamacDto, List<ItemHierarchyDto> itemHierarchyDtos);
     }
 
     @ContentSlot
@@ -107,6 +119,7 @@ public class OrganisationPresenter extends Presenter<OrganisationPresenter.Organ
         try {
             OrganisationSchemeTypeEnum type = schemeType != null ? OrganisationSchemeTypeEnum.valueOf(schemeType) : null;
             if (!StringUtils.isBlank(schemeParam) && type != null && !StringUtils.isBlank(organisationCode)) {
+                this.organisationSchemeUrn = CommonUtils.generateOrganisationSchemeUrn(schemeParam, type);
                 String urn = CommonUtils.generateOrganisationUrn(schemeParam, type, organisationCode);
                 retrieveOrganisation(urn);
             } else {
@@ -164,12 +177,13 @@ public class OrganisationPresenter extends Presenter<OrganisationPresenter.Organ
             }
             @Override
             public void onWaitSuccess(SaveOrganisationResult result) {
+                organisationMetamacDto = result.getOrganisationSaved();
+
                 // If the organisation code have been updated, redirect to the new URL
                 if (StringUtils.equals(organisationMetamacDto.getCode(), result.getOrganisationSaved().getCode())) {
                     // TODO
                 }
 
-                organisationMetamacDto = result.getOrganisationSaved();
                 ShowMessageEvent.fire(OrganisationPresenter.this, ErrorUtils.getMessageList(getMessages().organisationSchemeSaved()), MessageTypeEnum.SUCCESS);
                 getView().setOrganisation(result.getOrganisationSaved(), contactToUpdateId);
             }
@@ -177,20 +191,72 @@ public class OrganisationPresenter extends Presenter<OrganisationPresenter.Organ
     }
 
     @Override
-    public void saveOrganisation(OrganisationMetamacDto organisationDto) {
-        updateOrganisation(organisationDto);
+    public void createOrganisation(OrganisationMetamacDto organisationDto) {
+        saveOrganisation(organisationDto, null);
     }
 
     @Override
-    public void deleteOrganisation(ItemDto itemDto) {
-        // TODO Auto-generated method stub
+    public void deleteOrganisation(final ItemDto itemDto) {
+        List<String> urns = new ArrayList<String>();
+        urns.add(itemDto.getUrn());
+        dispatcher.execute(new DeleteOrganisationListAction(urns), new WaitingAsyncCallback<DeleteOrganisationListResult>() {
 
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(OrganisationPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().organisationErrorDelete()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(DeleteOrganisationListResult result) {
+                ShowMessageEvent.fire(OrganisationPresenter.this, ErrorUtils.getMessageList(getMessages().organisationDeleted()), MessageTypeEnum.SUCCESS);
+                // If deleted organisation had a organisation parent, go to this organisation parent. If not, go to the organisation scheme.
+                if (itemDto.getItemParentUrn() != null) {
+                    goToOrganisation(itemDto.getItemParentUrn());
+                } else {
+                    goToOrganisationScheme(itemDto.getItemSchemeVersionUrn());
+                }
+            }
+        });
+
+    }
+
+    @Override
+    public void retrieveOrganisationListByScheme(String organisationSchemeUrn) {
+        dispatcher.execute(new GetOrganisationListBySchemeAction(organisationSchemeUrn), new WaitingAsyncCallback<GetOrganisationListBySchemeResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(OrganisationPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().organisationSchemeErrorRetrievingOrganisationList()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetOrganisationListBySchemeResult result) {
+                final List<ItemHierarchyDto> itemHierarchyDtos = result.getOrganisations();
+                dispatcher.execute(new GetOrganisationSchemeAction(OrganisationPresenter.this.organisationSchemeUrn), new WaitingAsyncCallback<GetOrganisationSchemeResult>() {
+
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fire(OrganisationPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().organisationSchemeErrorRetrieve()), MessageTypeEnum.ERROR);
+                    }
+                    @Override
+                    public void onWaitSuccess(GetOrganisationSchemeResult result) {
+                        getView().setOrganisationList(result.getOrganisationSchemeMetamacDto(), itemHierarchyDtos);
+                    }
+                });
+            }
+        });
     }
 
     @Override
     public void goToOrganisation(String urn) {
-        // TODO Auto-generated method stub
+        if (!StringUtils.isBlank(urn)) {
+            String[] splitUrn = UrnUtils.splitUrnByDots(UrnUtils.removePrefix(urn));
+            placeManager.revealRelativePlace(new PlaceRequest(NameTokens.organisationPage).with(PlaceRequestParams.organisationParamId, splitUrn[splitUrn.length - 1]), -1);
+        }
+    }
 
+    private void goToOrganisationScheme(String urn) {
+        placeManager.revealRelativePlace(
+                new PlaceRequest(NameTokens.organisationSchemePage).with(PlaceRequestParams.organisationSchemeParamId, UrnUtils.removePrefix(urn)).with(PlaceRequestParams.organisationSchemeParamType,
+                        CommonUtils.getOrganisationSchemeTypeEnum(organisationMetamacDto.getType()).name()), -2);
     }
 
 }
