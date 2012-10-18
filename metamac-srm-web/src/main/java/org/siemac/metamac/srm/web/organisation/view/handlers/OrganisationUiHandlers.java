@@ -5,9 +5,8 @@ import java.util.List;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.organisation.ContactDto;
-import com.gwtplatform.mvp.client.UiHandlers;
 
-public interface OrganisationUiHandlers extends UiHandlers {
+public interface OrganisationUiHandlers extends BaseOrganisationUiHandlers {
 
     void retrieveOrganisation(String organisationUrn);
     void updateOrganisation(OrganisationMetamacDto organisationDto);

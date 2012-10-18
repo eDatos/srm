@@ -26,6 +26,7 @@ import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.organisation.ContactDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
@@ -163,11 +164,33 @@ public class OrganisationPresenter extends Presenter<OrganisationPresenter.Organ
             }
             @Override
             public void onWaitSuccess(SaveOrganisationResult result) {
+                // If the organisation code have been updated, redirect to the new URL
+                if (StringUtils.equals(organisationMetamacDto.getCode(), result.getOrganisationSaved().getCode())) {
+                    // TODO
+                }
+
                 organisationMetamacDto = result.getOrganisationSaved();
                 ShowMessageEvent.fire(OrganisationPresenter.this, ErrorUtils.getMessageList(getMessages().organisationSchemeSaved()), MessageTypeEnum.SUCCESS);
                 getView().setOrganisation(result.getOrganisationSaved(), contactToUpdateId);
             }
         });
+    }
+
+    @Override
+    public void saveOrganisation(OrganisationMetamacDto organisationDto) {
+        updateOrganisation(organisationDto);
+    }
+
+    @Override
+    public void deleteOrganisation(ItemDto itemDto) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void goToOrganisation(String urn) {
+        // TODO Auto-generated method stub
+
     }
 
 }

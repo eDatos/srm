@@ -181,7 +181,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         // Contact form
 
         contactMainFormLayout = new ContactMainFormLayout();
-        // contactMainFormLayout.setVisibility(Visibility.HIDDEN);
+        contactMainFormLayout.setVisibility(Visibility.HIDDEN);
         contactMainFormLayout.getSave().addClickHandler(new ClickHandler() {
 
             @Override

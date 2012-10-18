@@ -27,6 +27,7 @@ import org.siemac.metamac.srm.web.organisation.view.handlers.OrganisationSchemeU
 import org.siemac.metamac.srm.web.organisation.widgets.NewOrganisationWindow;
 import org.siemac.metamac.srm.web.organisation.widgets.OrganisationSchemeMainFormLayout;
 import org.siemac.metamac.srm.web.organisation.widgets.OrganisationSchemeVersionsSectionStack;
+import org.siemac.metamac.srm.web.organisation.widgets.OrganisationsTreeGrid;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.utils.DateUtils;
@@ -48,7 +49,6 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.shared.SdmxVersionUtil;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
-import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
@@ -106,6 +106,9 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
     private CustomListGrid                         organisationListGrid;
     private OrganisationSchemeMetamacDto           organisationSchemeDto;
 
+    // OrganisationTree
+    private OrganisationsTreeGrid                  organisationsTreeGrid;
+
     @Inject
     public OrganisationSchemeViewImpl() {
         super();
@@ -157,9 +160,9 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
                     @Override
                     public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
                         if (newOrganisationWindow.validateForm()) {
-                            OrganisationMetamacDto organisationToCreate = newOrganisationWindow.getNewOrganisationDto(getOrganisationTypeEnum());
+                            OrganisationMetamacDto organisationToCreate = newOrganisationWindow.getNewOrganisationDto(CommonUtils.getOrganisationTypeEnum(organisationSchemeDto.getType()));
                             organisationToCreate.setItemSchemeVersionUrn(organisationSchemeDto.getUrn());
-                            getUiHandlers().createOrganisation(organisationToCreate);
+                            getUiHandlers().saveOrganisation(organisationToCreate);
                             newOrganisationWindow.destroy();
                         }
                     }
@@ -224,11 +227,16 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
             }
         });
 
+        // TreeGrid
+
+        organisationsTreeGrid = new OrganisationsTreeGrid();
+
         VLayout organisationsLayout = new VLayout();
         organisationsLayout.setMargin(15);
         organisationsLayout.addMember(new TitleLabel(getConstants().organisations()));
         organisationsLayout.addMember(toolStrip);
         organisationsLayout.addMember(organisationListGrid);
+        organisationsLayout.addMember(organisationsTreeGrid);
 
         panel.addMember(mainFormLayout);
         panel.addMember(versionsSectionStack);
@@ -588,7 +596,8 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
     public void setOrganisationList(List<ItemHierarchyDto> organisations) {
         if (OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME.equals(organisationSchemeDto.getType())) {
             // Organisation hierarchy
-            // TODO Set values
+            organisationsTreeGrid.setUiHandlers(getUiHandlers()); // UiHandlers cannot be set in constructor because is still null
+            organisationsTreeGrid.setOrganisations(organisationSchemeDto, organisations);
         } else {
             // Organisation list
             OrganisationRecord[] records = new OrganisationRecord[organisations.size()];
@@ -725,19 +734,6 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         mainFormLayout.setEditionMode();
     }
 
-    private OrganisationTypeEnum getOrganisationTypeEnum() {
-        if (OrganisationSchemeTypeEnum.AGENCY_SCHEME.equals(organisationSchemeDto.getType())) {
-            return OrganisationTypeEnum.AGENCY;
-        } else if (OrganisationSchemeTypeEnum.DATA_CONSUMER_SCHEME.equals(organisationSchemeDto.getType())) {
-            return OrganisationTypeEnum.DATA_CONSUMER;
-        } else if (OrganisationSchemeTypeEnum.DATA_PROVIDER_SCHEME.equals(organisationSchemeDto.getType())) {
-            return OrganisationTypeEnum.DATA_PROVIDER;
-        } else if (OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME.equals(organisationSchemeDto.getType())) {
-            return OrganisationTypeEnum.ORGANISATION_UNIT;
-        }
-        return null;
-    }
-
     private List<String> getSelectedOrganisationUrns() {
         List<String> urns = new ArrayList<String>();
         for (ListGridRecord record : organisationListGrid.getSelectedRecords()) {
@@ -750,13 +746,13 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
     private void showOrganisationList() {
         toolStrip.show();
         organisationListGrid.show();
-        // TODO Hide organisations tree
+        organisationsTreeGrid.hide();
     }
 
     private void showOrganisationTree() {
         toolStrip.hide();
         organisationListGrid.hide();
-        // TODO Show organisations tree
+        organisationsTreeGrid.show();
     }
 
     private void showListGridDeleteButton() {

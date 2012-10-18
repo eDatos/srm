@@ -44,6 +44,7 @@ import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.utils.UrnUtils;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
@@ -355,7 +356,7 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
     }
 
     @Override
-    public void createOrganisation(OrganisationMetamacDto organisationDto) {
+    public void saveOrganisation(OrganisationMetamacDto organisationDto) {
         dispatcher.execute(new SaveOrganisationAction(organisationDto), new WaitingAsyncCallback<SaveOrganisationResult>() {
 
             @Override
@@ -368,6 +369,13 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
                 retrieveOrganisationListByScheme(organisationSchemeMetamacDto.getUrn());
             }
         });
+    }
+
+    @Override
+    public void deleteOrganisation(ItemDto itemDto) {
+        List<String> organisationsToDelete = new ArrayList<String>();
+        organisationsToDelete.add(itemDto.getUrn());
+        deleteOrganisations(organisationsToDelete);
     }
 
     @Override
