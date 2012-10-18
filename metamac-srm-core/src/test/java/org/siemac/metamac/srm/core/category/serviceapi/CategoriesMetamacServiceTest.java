@@ -29,6 +29,8 @@ import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
+import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamacRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -49,9 +51,14 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
     @Autowired
     private CategoriesMetamacService categoriesService;
 
+    @Autowired
+    private OrganisationMetamacRepository organisationMetamacRepository;
+    
     @Test
     public void testCreateCategoryScheme() throws Exception {
-        CategorySchemeVersionMetamac categorySchemeVersion = CategoriesMetamacDoMocks.mockCategoryScheme();
+        
+        OrganisationMetamac organisationMetamac = organisationMetamacRepository.findByUrn(AGENCY_ROOT_1_V1);
+        CategorySchemeVersionMetamac categorySchemeVersion = CategoriesMetamacDoMocks.mockCategoryScheme(organisationMetamac);
         ServiceContext ctx = getServiceContextAdministrador();
 
         // Create

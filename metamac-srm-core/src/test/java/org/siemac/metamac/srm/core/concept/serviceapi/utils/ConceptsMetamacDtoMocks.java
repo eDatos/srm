@@ -11,6 +11,7 @@ import org.siemac.metamac.srm.core.concept.enume.domain.ConceptRoleEnum;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 
 import com.arte.statistic.sdmx.srm.core.concept.serviceapi.utils.ConceptsDtoMocks;
+import com.arte.statistic.sdmx.v2_1.domain.dto.util.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeRepresentationEnum;
 
 public class ConceptsMetamacDtoMocks {
@@ -19,21 +20,22 @@ public class ConceptsMetamacDtoMocks {
     // CONCEPT SCHEMES
     // -----------------------------------------------------------------------------------
 
-    public static ConceptSchemeMetamacDto mockConceptSchemeDtoGlossaryType() {
+    public static ConceptSchemeMetamacDto mockConceptSchemeDtoGlossaryType(String codeMaintainer, String urnMaintainer) {
         ConceptSchemeMetamacDto conceptSchemeDto = new ConceptSchemeMetamacDto();
         ConceptsDtoMocks.mockConceptSchemeDto(conceptSchemeDto);
         conceptSchemeDto.setType(ConceptSchemeTypeEnum.GLOSSARY);
-        conceptSchemeDto.setMaintainer(MetamacMocks.mockExternalItemDto("urn:maintainer", TypeExternalArtefactsEnum.AGENCY));
+        
+        conceptSchemeDto.setMaintainer(new RelatedResourceDto(codeMaintainer, urnMaintainer, TypeExternalArtefactsEnum.AGENCY));
 
         return conceptSchemeDto;
     }
 
-    public static ConceptSchemeMetamacDto mockConceptSchemeDtoOperationType() {
+    public static ConceptSchemeMetamacDto mockConceptSchemeDtoOperationType(String codeMaintainer, String urnMaintainer) {
         ConceptSchemeMetamacDto conceptSchemeDto = new ConceptSchemeMetamacDto();
         ConceptsDtoMocks.mockConceptSchemeDto(conceptSchemeDto);
         conceptSchemeDto.setType(ConceptSchemeTypeEnum.OPERATION);
         conceptSchemeDto.setRelatedOperation(MetamacMocks.mockExternalItemDto("urn:operation", TypeExternalArtefactsEnum.STATISTICAL_OPERATION));
-        conceptSchemeDto.setMaintainer(MetamacMocks.mockExternalItemDto("urn:maintainer", TypeExternalArtefactsEnum.AGENCY));
+        conceptSchemeDto.setMaintainer(new RelatedResourceDto(codeMaintainer, urnMaintainer, TypeExternalArtefactsEnum.AGENCY));
 
         return conceptSchemeDto;
     }

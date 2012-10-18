@@ -1,11 +1,11 @@
 package org.siemac.metamac.srm.core.category.serviceapi.utils;
 
-import org.siemac.metamac.common.test.utils.MetamacMocks;
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.srm.core.category.dto.CategoryMetamacDto;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 
 import com.arte.statistic.sdmx.srm.core.category.serviceapi.utils.CategoriesDtoMocks;
+import com.arte.statistic.sdmx.v2_1.domain.dto.util.RelatedResourceDto;
 
 public class CategoriesMetamacDtoMocks {
 
@@ -13,10 +13,10 @@ public class CategoriesMetamacDtoMocks {
     // CATEGORY SCHEMES
     // -----------------------------------------------------------------------------------
 
-    public static CategorySchemeMetamacDto mockCategorySchemeDto() {
+    public static CategorySchemeMetamacDto mockCategorySchemeDto(String codeMaintainer, String urnMaintainer) {
         CategorySchemeMetamacDto categorySchemeDto = new CategorySchemeMetamacDto();
         CategoriesDtoMocks.mockCategorySchemeDto(categorySchemeDto);
-        categorySchemeDto.setMaintainer(MetamacMocks.mockExternalItemDto("urn:maintainer", TypeExternalArtefactsEnum.AGENCY));
+        categorySchemeDto.setMaintainer(new RelatedResourceDto(codeMaintainer, urnMaintainer, TypeExternalArtefactsEnum.AGENCY));
 
         return categorySchemeDto;
     }

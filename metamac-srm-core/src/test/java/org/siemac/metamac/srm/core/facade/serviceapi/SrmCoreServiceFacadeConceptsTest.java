@@ -89,9 +89,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         assertEquals("http://serviceUrl1", conceptSchemeMetamacDto.getServiceURL());
 
         assertEquals("ISTAC", conceptSchemeMetamacDto.getMaintainer().getCode());
-        assertEquals("http://data.siemac.org/srm/v1/agenciesSchemes/standalone/agencies/ISTAC", conceptSchemeMetamacDto.getMaintainer().getUri());
         assertEquals("urn:sdmx:org.sdmx.infomodel.base.Agency=ISTAC:STANDALONE(01.000).ISTAC", conceptSchemeMetamacDto.getMaintainer().getUrn());
-        assertEquals("http://manageISTAC", conceptSchemeMetamacDto.getMaintainer().getManagementAppUrl());
 
         assertEqualsInternationalStringDto(conceptSchemeMetamacDto.getName(), "es", "Nombre conceptScheme-1-v1", "en", "Name conceptScheme-1-v1");
         assertEqualsInternationalStringDto(conceptSchemeMetamacDto.getDescription(), "es", "Descripción conceptScheme-1-v1", "en", "Description conceptScheme-1-v1");
@@ -138,7 +136,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
 
     @Test
     public void testCreateConceptScheme() throws Exception {
-        ConceptSchemeMetamacDto conceptSchemeDto = ConceptsMetamacDtoMocks.mockConceptSchemeDtoGlossaryType();
+        ConceptSchemeMetamacDto conceptSchemeDto = ConceptsMetamacDtoMocks.mockConceptSchemeDtoGlossaryType(AGENCY_ROOT_CODE, AGENCY_ROOT_1_V1);
         ServiceContext ctx = getServiceContextAdministrador();
 
         // Create
@@ -184,7 +182,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
 
     @Test
     public void testCreateConceptSchemeOperationType() throws Exception {
-        ConceptSchemeMetamacDto conceptSchemeDto = ConceptsMetamacDtoMocks.mockConceptSchemeDtoOperationType();
+        ConceptSchemeMetamacDto conceptSchemeDto = ConceptsMetamacDtoMocks.mockConceptSchemeDtoOperationType(AGENCY_ROOT_CODE, AGENCY_ROOT_1_V1);
 
         ConceptSchemeMetamacDto conceptSchemeMetamacCreated = srmCoreServiceFacade.createConceptScheme(getServiceContextAdministrador(), conceptSchemeDto);
 

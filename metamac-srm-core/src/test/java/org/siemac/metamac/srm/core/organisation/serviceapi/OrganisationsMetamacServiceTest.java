@@ -60,7 +60,6 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
     @Autowired
     private OrganisationMetamacRepository organisationMetamacRepository;
     
-    
     @Test
     public void testCreateOrganisationScheme() throws Exception {
         

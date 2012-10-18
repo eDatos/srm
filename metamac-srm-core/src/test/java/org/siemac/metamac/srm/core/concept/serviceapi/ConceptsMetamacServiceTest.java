@@ -34,6 +34,8 @@ import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.core.concept.serviceapi.utils.ConceptsMetamacAsserts;
 import org.siemac.metamac.srm.core.concept.serviceapi.utils.ConceptsMetamacDoMocks;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
+import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamacRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -58,9 +60,14 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
     @Autowired
     private ConceptsMetamacService conceptsService;
 
+    @Autowired
+    private OrganisationMetamacRepository organisationMetamacRepository;
+    
     @Test
     public void testCreateConceptScheme() throws Exception {
-        ConceptSchemeVersionMetamac conceptSchemeVersion = ConceptsMetamacDoMocks.mockConceptScheme();
+        
+        OrganisationMetamac organisationMetamac = organisationMetamacRepository.findByUrn(AGENCY_ROOT_1_V1);
+        ConceptSchemeVersionMetamac conceptSchemeVersion = ConceptsMetamacDoMocks.mockConceptScheme(organisationMetamac);
         ServiceContext ctx = getServiceContextAdministrador();
         
         // Create
@@ -88,7 +95,8 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
     @Test
     public void testCreateConceptSchemeErrorMetadatasRequired() throws Exception {
-        ConceptSchemeVersionMetamac conceptSchemeVersion = ConceptsMetamacDoMocks.mockConceptScheme();
+        OrganisationMetamac organisationMetamac = organisationMetamacRepository.findByUrn(AGENCY_ROOT_1_V1);
+        ConceptSchemeVersionMetamac conceptSchemeVersion = ConceptsMetamacDoMocks.mockConceptScheme(organisationMetamac);
         conceptSchemeVersion.setType(null);
         conceptSchemeVersion.setRelatedOperation(null); // avoid error unexpected metadata
 
@@ -105,7 +113,8 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
     @Test
     public void testCreateConceptSchemeErrorMetadataUnexpected() throws Exception {
-        ConceptSchemeVersionMetamac conceptSchemeVersion = ConceptsMetamacDoMocks.mockConceptScheme();
+        OrganisationMetamac organisationMetamac = organisationMetamacRepository.findByUrn(AGENCY_ROOT_1_V1);
+        ConceptSchemeVersionMetamac conceptSchemeVersion = ConceptsMetamacDoMocks.mockConceptScheme(organisationMetamac);
         conceptSchemeVersion.setType(ConceptSchemeTypeEnum.GLOSSARY);
         assertNotNull(conceptSchemeVersion.getRelatedOperation());
 
@@ -122,8 +131,9 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
     @Test
     public void testCreateConceptSchemeErrorDuplicatedCode() throws Exception {
-        ConceptSchemeVersionMetamac conceptSchemeVersion1 = ConceptsMetamacDoMocks.mockConceptScheme();
-        ConceptSchemeVersionMetamac conceptSchemeVersion2 = ConceptsMetamacDoMocks.mockConceptScheme();
+        OrganisationMetamac organisationMetamac = organisationMetamacRepository.findByUrn(AGENCY_ROOT_1_V1);
+        ConceptSchemeVersionMetamac conceptSchemeVersion1 = ConceptsMetamacDoMocks.mockConceptScheme(organisationMetamac);
+        ConceptSchemeVersionMetamac conceptSchemeVersion2 = ConceptsMetamacDoMocks.mockConceptScheme(organisationMetamac);
         String code = "code-" + MetamacMocks.mockString(10);
         conceptSchemeVersion1.getMaintainableArtefact().setCode(code);
         conceptSchemeVersion2.getMaintainableArtefact().setCode(code);

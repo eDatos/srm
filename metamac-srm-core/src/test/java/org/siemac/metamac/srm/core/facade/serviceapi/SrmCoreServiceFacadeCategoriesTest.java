@@ -82,7 +82,7 @@ public class SrmCoreServiceFacadeCategoriesTest extends SrmBaseTest {
     public void testCreateCategoryScheme() throws Exception {
 
         // Create
-        CategorySchemeMetamacDto categorySchemeDto = CategoriesMetamacDtoMocks.mockCategorySchemeDto();
+        CategorySchemeMetamacDto categorySchemeDto = CategoriesMetamacDtoMocks.mockCategorySchemeDto(AGENCY_ROOT_CODE, AGENCY_ROOT_1_V1);
         CategorySchemeMetamacDto categorySchemeMetamacCreated = srmCoreServiceFacade.createCategoryScheme(getServiceContextAdministrador(), categorySchemeDto);
 
         // Validate some metadata

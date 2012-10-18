@@ -9,6 +9,8 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.dsd.serviceapi.utils.DataStructureDefinitionMetamacDoMocks;
+import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
+import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamacRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -35,6 +37,9 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
 
     @Autowired
     protected DataStructureDefinitionService dataStructureDefinitionService;
+    
+    @Autowired
+    private OrganisationMetamacRepository organisationMetamacRepository;
 
     private final ServiceContext             serviceContext = new ServiceContext("system", "123456", "junit");
 
@@ -189,8 +194,9 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
     private DataStructureDefinitionVersionMetamac createDataStructureDefinitionGraph() throws MetamacException {
 
         // Create DSD
+        OrganisationMetamac organisationMetamac = organisationMetamacRepository.findByUrn(AGENCY_ROOT_1_V1);
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = dsdsMetamacService.createDataStructureDefinition(getServiceContext(),
-                DataStructureDefinitionMetamacDoMocks.mockDataStructureDefinitionVersionMetamac());
+                DataStructureDefinitionMetamacDoMocks.mockDataStructureDefinitionVersionMetamac(organisationMetamac));
         dataStructureDefinitionVersionMetamac.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
 
         // Create Dimension Descriptor and components

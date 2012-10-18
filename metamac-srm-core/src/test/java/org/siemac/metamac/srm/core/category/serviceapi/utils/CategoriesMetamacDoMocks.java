@@ -3,16 +3,17 @@ package org.siemac.metamac.srm.core.category.serviceapi.utils;
 import org.siemac.metamac.srm.core.base.utils.BaseDoMocks;
 import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
+import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 
 import com.arte.statistic.sdmx.srm.core.category.serviceapi.utils.CategoriesDoMocks;
 
 public class CategoriesMetamacDoMocks extends CategoriesDoMocks {
 
-    public static CategorySchemeVersionMetamac mockCategoryScheme() {
+    public static CategorySchemeVersionMetamac mockCategoryScheme(OrganisationMetamac maintainer) {
 
         CategorySchemeVersionMetamac categorySchemeVersion = new CategorySchemeVersionMetamac();
 
-        mockCategoryScheme(categorySchemeVersion);
+        mockCategoryScheme(categorySchemeVersion, maintainer);
         return categorySchemeVersion;
     }
 

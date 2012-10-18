@@ -11,19 +11,20 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptType;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptRoleEnum;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
+import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 
 import com.arte.statistic.sdmx.srm.core.concept.serviceapi.utils.ConceptsDoMocks;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeRepresentationEnum;
 
 public class ConceptsMetamacDoMocks extends ConceptsDoMocks {
 
-    public static ConceptSchemeVersionMetamac mockConceptScheme() {
+    public static ConceptSchemeVersionMetamac mockConceptScheme(OrganisationMetamac maintainer) {
 
         ConceptSchemeVersionMetamac conceptSchemeVersion = new ConceptSchemeVersionMetamac();
         conceptSchemeVersion.setType(ConceptSchemeTypeEnum.OPERATION);
         conceptSchemeVersion.setRelatedOperation(mockOperationExternalItem(UUID.randomUUID().toString()));
 
-        mockConceptScheme(conceptSchemeVersion);
+        mockConceptScheme(conceptSchemeVersion, maintainer);
         return conceptSchemeVersion;
     }
     
