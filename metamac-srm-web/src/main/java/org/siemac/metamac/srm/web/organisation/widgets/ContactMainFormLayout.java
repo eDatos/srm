@@ -135,6 +135,7 @@ public class ContactMainFormLayout extends InternationalMainFormLayout {
     }
 
     private void setContactViewMode(ContactDto contactDto) {
+        // TODO Why it is necessary to destroy and rebuild the form each time?
         form.destroy();
         createViewForm();
         form.setValue(ContactDS.NAME, RecordUtils.getInternationalStringRecord(contactDto.getName()));
@@ -148,6 +149,7 @@ public class ContactMainFormLayout extends InternationalMainFormLayout {
     }
 
     private void setContactEditionMode(ContactDto contactDto) {
+        // TODO Why it is necessary to destroy and rebuild the form each time?
         editionForm.destroy();
         createEditionForm();
         editionForm.setValue(ContactDS.NAME, RecordUtils.getInternationalStringRecord(contactDto.getName()));
