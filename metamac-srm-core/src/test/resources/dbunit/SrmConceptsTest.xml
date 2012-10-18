@@ -3,6 +3,126 @@
 <dataset>
     
     <!-- ************************************************************************************** -->
+    <!-- ORGANISATION SCHEME 0 (ROOT ORGANISATION)                                              -->
+    <!--        - Version 1: final                                                              -->
+    <!-- *************************************************************************************  -->
+
+    <TB_ITEM_SCHEMES
+        ID="1000"
+        UUID="itemScheme-0"
+        VERSION="1"
+    />
+    
+    <!-- **************************************************************************************  -->                
+    <!-- VERSION 1                                                                               -->
+    <!-- **************************************************************************************  -->
+    <TB_ORG_SCHEMES_VERSIONS
+        TB_ITEM_SCHEMES_VERSIONS="1001"
+        ORGANISATION_SCHEME_TYPE="AGENCY_SCHEME"
+    />
+    
+    <TB_ITEM_SCHEMES_VERSIONS
+        ID="1001"
+        ITEM_SCHEME_FK="1000"
+        IS_PARTIAL="0"
+        MAINTANABLE_ARTEFACT_FK="[null]"
+        
+        UUID="organisationScheme-0-v1"
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user2"
+        LAST_UPDATED="2011-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"  
+    />
+    
+    <TB_ANNOTABLE_ARTEFACTS 
+        ID="1001"
+        ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
+        
+        CODE="ORGANISATIONSCHEME00"
+        URI="[null]"
+        URN="urn:sdmx:org.sdmx.infomodel.base.AgencyScheme=SDMX:ORGANISATIONSCHEME00(01.000)"
+        REPLACED_BY="[null]"
+        REPLACE_TO="[null]"
+        
+        NAME_FK="[null]"
+        DESCRIPTION_FK="[null]"
+        
+        VERSION_LOGIC="01.000"
+        FINAL_LOGIC="1"
+        VALID_FROM_TZ="Europe/London"
+        VALID_FROM="2011-01-02 02:02:04" 
+        VALID_TO_TZ="[null]"
+        VALID_TO="[null]"
+        IS_EXTERNAL_REFERENCE="0"
+        STRUCTURE_URL="[null]"
+        SERVICE_URL="[null]"
+        IS_LAST_VERSION="1"
+        MAINTAINER_FK="[null]"
+        
+        UUID="annotableArtefact-1001"
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user2"
+        LAST_UPDATED="2011-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"
+    />
+    
+        <!-- ORGANISATIONS -->
+            <!-- -> ORGANISATION00 -->
+            
+            <!-- ORGANISATION00 -->
+            
+            <TB_ORGANISATIONS
+                TB_ITEMS="10011"
+                ORGANISATION_TYPE="AGENCY"
+            />
+        
+            <TB_ITEMS
+                ID="10011"
+                PARENT_FK="[null]"
+                ITEM_SCHEME_VERSION_FK="1001"
+                ITEM_SCHEME_VERSION_FIRST_FK="1001"
+                NAMEABLE_ARTEFACT_FK="10011"
+                      
+                UUID="organisationScheme-0-v1-org-0"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"  
+            />
+
+            <TB_ANNOTABLE_ARTEFACTS 
+                ID="10011"
+                ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+                
+                CODE="ORGANISATION00"
+                URI="[null]"
+                URN="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:ORGANISATIONSCHEME00(01.000).ORGANISATION00"
+                REPLACED_BY="[null]"
+                REPLACE_TO="[null]"
+                
+                NAME_FK="[null]"
+                DESCRIPTION_FK="[null]"
+                
+                UUID="annotableArtefact-011"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"
+            />
+            
+    <!-- ************************************************************************************** -->
     <!-- CONCEPT SCHEME 1    (transversal)                                                      -->
     <!--        - Version 1: internally published                                               -->
     <!--        - Version 2: draft                                                              -->
