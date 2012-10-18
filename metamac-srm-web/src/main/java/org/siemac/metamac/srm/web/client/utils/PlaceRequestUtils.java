@@ -2,7 +2,9 @@ package org.siemac.metamac.srm.web.client.utils;
 
 import org.siemac.metamac.srm.web.client.NameTokens;
 import org.siemac.metamac.srm.web.client.PlaceRequestParams;
+import org.siemac.metamac.web.common.client.utils.UrnUtils;
 
+import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 
@@ -45,6 +47,8 @@ public class PlaceRequestUtils {
     // ORGANISATIONS
     //
 
+    // Organisation schemes
+
     public static String getOrganisationSchemeIdParamFromUrl(PlaceManager placeManager) {
         for (PlaceRequest request : placeManager.getCurrentPlaceHierarchy()) {
             if (NameTokens.organisationSchemePage.equals(request.getNameToken())) {
@@ -63,6 +67,14 @@ public class PlaceRequestUtils {
         return null;
     }
 
+    public static PlaceRequest buildOrganisationSchemePlaceRequest(String organisationSchemeUrn, OrganisationSchemeTypeEnum organisationSchemeType) {
+        PlaceRequest placeRequest = new PlaceRequest(NameTokens.organisationSchemePage).with(PlaceRequestParams.organisationSchemeParamType, organisationSchemeType.name()).with(
+                PlaceRequestParams.organisationSchemeParamId, UrnUtils.removePrefix(organisationSchemeUrn));
+        return placeRequest;
+    }
+
+    // Organisations
+
     public static String getOrganisationParamFromUrl(PlaceManager placeManager) {
         for (PlaceRequest request : placeManager.getCurrentPlaceHierarchy()) {
             if (NameTokens.organisationPage.equals(request.getNameToken())) {
@@ -70,6 +82,12 @@ public class PlaceRequestUtils {
             }
         }
         return null;
+    }
+
+    public static PlaceRequest buildOrganisationPlaceRequest(String organisationUrn) {
+        String[] splitUrn = UrnUtils.splitUrnByDots(UrnUtils.removePrefix(organisationUrn));
+        PlaceRequest placeRequest = new PlaceRequest(NameTokens.organisationPage).with(PlaceRequestParams.organisationParamId, splitUrn[splitUrn.length - 1]);
+        return placeRequest;
     }
 
 }

@@ -719,6 +719,8 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         organisationSchemeDto.setCode(identifiersEditionForm.getValueAsString(OrganisationSchemeDS.CODE));
         organisationSchemeDto.setName((InternationalStringDto) identifiersEditionForm.getValue(OrganisationSchemeDS.NAME));
         // Content descriptors
+        organisationSchemeDto.setType(contentDescriptorsEditionForm.getValueAsString(OrganisationSchemeDS.TYPE) != null ? OrganisationSchemeTypeEnum.valueOf(contentDescriptorsEditionForm
+                .getValueAsString(OrganisationSchemeDS.TYPE)) : null);
         organisationSchemeDto.setDescription((InternationalStringDto) contentDescriptorsEditionForm.getValue(OrganisationSchemeDS.DESCRIPTION));
         organisationSchemeDto.setIsPartial((contentDescriptorsEditionForm.getValue(OrganisationSchemeDS.IS_PARTIAL) != null && !StringUtils.isEmpty(contentDescriptorsEditionForm
                 .getValueAsString(OrganisationSchemeDS.IS_PARTIAL))) ? Boolean.valueOf(contentDescriptorsEditionForm.getValueAsString(OrganisationSchemeDS.IS_PARTIAL)) : false);

@@ -10,9 +10,9 @@ import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
-import org.siemac.metamac.srm.web.client.PlaceRequestParams;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
+import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.client.widgets.presenter.ToolStripPresenterWidget;
 import org.siemac.metamac.srm.web.organisation.view.handlers.OrganisationSchemeListUiHandlers;
 import org.siemac.metamac.srm.web.shared.organisation.CancelOrganisationSchemeValidityAction;
@@ -26,7 +26,6 @@ import org.siemac.metamac.srm.web.shared.organisation.SaveOrganisationSchemeResu
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
-import org.siemac.metamac.web.common.client.utils.UrnUtils;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
@@ -44,7 +43,6 @@ import com.gwtplatform.mvp.client.annotations.TitleFunction;
 import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
 import com.gwtplatform.mvp.client.proxy.Place;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
-import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
@@ -115,8 +113,7 @@ public class OrganisationSchemeListPresenter extends Presenter<OrganisationSchem
     @Override
     public void goToOrganisationScheme(String urn, OrganisationSchemeTypeEnum type) {
         if (!StringUtils.isBlank(urn)) {
-            placeManager.revealRelativePlace(new PlaceRequest(NameTokens.organisationSchemePage).with(PlaceRequestParams.organisationSchemeParamType, type.name()).with(
-                    PlaceRequestParams.organisationSchemeParamId, UrnUtils.removePrefix(urn)));
+            placeManager.revealRelativePlace(PlaceRequestUtils.buildOrganisationSchemePlaceRequest(urn, type));
         }
     }
 

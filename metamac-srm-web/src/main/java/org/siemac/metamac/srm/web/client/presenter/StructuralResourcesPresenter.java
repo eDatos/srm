@@ -12,6 +12,7 @@ import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
 import org.siemac.metamac.srm.web.client.PlaceRequestParams;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
+import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.client.view.handlers.StructuralResourcesUiHandlers;
 import org.siemac.metamac.srm.web.client.widgets.presenter.ToolStripPresenterWidget;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemePaginatedListAction;
@@ -206,12 +207,11 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
         if (urn != null) {
             PlaceRequest structuralResourcesPlace = new PlaceRequest(NameTokens.structuralResourcesPage);
             PlaceRequest schemesListPlace = new PlaceRequest(NameTokens.organisationSchemeListPage);
-            PlaceRequest organisationPlace = new PlaceRequest(NameTokens.organisationSchemePage).with(PlaceRequestParams.organisationSchemeParamType, type.name()).with(
-                    PlaceRequestParams.organisationSchemeParamId, UrnUtils.removePrefix(urn));
+            PlaceRequest organisationSchemePlace = PlaceRequestUtils.buildOrganisationSchemePlaceRequest(urn, type);
             List<PlaceRequest> placeRequests = new ArrayList<PlaceRequest>();
             placeRequests.add(structuralResourcesPlace);
             placeRequests.add(schemesListPlace);
-            placeRequests.add(organisationPlace);
+            placeRequests.add(organisationSchemePlace);
             placeManager.revealPlaceHierarchy(placeRequests);
         }
     }

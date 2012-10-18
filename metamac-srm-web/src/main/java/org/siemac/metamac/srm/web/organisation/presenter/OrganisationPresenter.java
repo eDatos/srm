@@ -12,7 +12,6 @@ import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
-import org.siemac.metamac.srm.web.client.PlaceRequestParams;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
@@ -31,7 +30,6 @@ import org.siemac.metamac.srm.web.shared.organisation.SaveOrganisationAction;
 import org.siemac.metamac.srm.web.shared.organisation.SaveOrganisationResult;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
-import org.siemac.metamac.web.common.client.utils.UrnUtils;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.organisation.ContactDto;
@@ -242,15 +240,13 @@ public class OrganisationPresenter extends Presenter<OrganisationPresenter.Organ
     @Override
     public void goToOrganisation(String urn) {
         if (!StringUtils.isBlank(urn)) {
-            String[] splitUrn = UrnUtils.splitUrnByDots(UrnUtils.removePrefix(urn));
-            placeManager.revealRelativePlace(new PlaceRequest(NameTokens.organisationPage).with(PlaceRequestParams.organisationParamId, splitUrn[splitUrn.length - 1]), -1);
+            placeManager.revealRelativePlace(PlaceRequestUtils.buildOrganisationPlaceRequest(urn), -1);
         }
     }
 
     private void goToOrganisationScheme(String urn) {
-        placeManager.revealRelativePlace(
-                new PlaceRequest(NameTokens.organisationSchemePage).with(PlaceRequestParams.organisationSchemeParamId, UrnUtils.removePrefix(urn)).with(PlaceRequestParams.organisationSchemeParamType,
-                        CommonUtils.getOrganisationSchemeTypeEnum(organisationMetamacDto.getType()).name()), -2);
+        placeManager.revealRelativePlace(PlaceRequestUtils.buildOrganisationSchemePlaceRequest(urn, CommonUtils.getOrganisationSchemeTypeEnum(organisationMetamacDto.getType())), -2);
+
     }
 
 }
