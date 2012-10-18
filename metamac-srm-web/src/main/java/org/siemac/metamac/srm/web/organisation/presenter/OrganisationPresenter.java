@@ -178,12 +178,6 @@ public class OrganisationPresenter extends Presenter<OrganisationPresenter.Organ
             @Override
             public void onWaitSuccess(SaveOrganisationResult result) {
                 organisationMetamacDto = result.getOrganisationSaved();
-
-                // If the organisation code have been updated, redirect to the new URL
-                if (StringUtils.equals(organisationMetamacDto.getCode(), result.getOrganisationSaved().getCode())) {
-                    // TODO
-                }
-
                 ShowMessageEvent.fire(OrganisationPresenter.this, ErrorUtils.getMessageList(getMessages().organisationSchemeSaved()), MessageTypeEnum.SUCCESS);
                 getView().setOrganisation(result.getOrganisationSaved(), contactToUpdateId);
             }
