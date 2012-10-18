@@ -67,7 +67,7 @@ public class OrganisationPresenter extends Presenter<OrganisationPresenter.Organ
 
     public interface OrganisationView extends View, HasUiHandlers<OrganisationUiHandlers> {
 
-        void setOrganisation(OrganisationMetamacDto organisationDto);
+        void setOrganisation(OrganisationMetamacDto organisationDto, Long contactToShowId);
     }
 
     @ContentSlot
@@ -127,7 +127,7 @@ public class OrganisationPresenter extends Presenter<OrganisationPresenter.Organ
             @Override
             public void onWaitSuccess(GetOrganisationResult result) {
                 organisationMetamacDto = result.getOrganisationDto();
-                getView().setOrganisation(result.getOrganisationDto());
+                getView().setOrganisation(result.getOrganisationDto(), null);
             }
         });
     }
@@ -140,33 +140,32 @@ public class OrganisationPresenter extends Presenter<OrganisationPresenter.Organ
         organisationDto.getContacts().clear();
         organisationDto.getContacts().addAll(contacts);
 
-        saveOrganisation(organisationDto);
+        saveOrganisation(organisationDto, null);
     }
 
     @Override
-    public void updateContacts(List<ContactDto> contactDtos) {
+    public void updateContacts(List<ContactDto> contactDtos, Long contactToUpdateId) {
         // if we are saving the organisation contacts, organisation metadata should not be updated
         List<ContactDto> contacts = new ArrayList<ContactDto>();
         contacts.addAll(contactDtos);
         this.organisationMetamacDto.getContacts().clear();
         this.organisationMetamacDto.getContacts().addAll(contacts);
 
-        saveOrganisation(this.organisationMetamacDto);
+        saveOrganisation(this.organisationMetamacDto, contactToUpdateId);
     }
 
-    private void saveOrganisation(OrganisationMetamacDto organisationDto) {
+    private void saveOrganisation(OrganisationMetamacDto organisationDto, final Long contactToUpdateId) {
         dispatcher.execute(new SaveOrganisationAction(organisationDto), new WaitingAsyncCallback<SaveOrganisationResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(OrganisationPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().organisationErrorSave()), MessageTypeEnum.ERROR);
-                // TODO Reload organisation
             }
             @Override
             public void onWaitSuccess(SaveOrganisationResult result) {
                 organisationMetamacDto = result.getOrganisationSaved();
                 ShowMessageEvent.fire(OrganisationPresenter.this, ErrorUtils.getMessageList(getMessages().organisationSchemeSaved()), MessageTypeEnum.SUCCESS);
-                getView().setOrganisation(result.getOrganisationSaved());
+                getView().setOrganisation(result.getOrganisationSaved(), contactToUpdateId);
             }
         });
     }

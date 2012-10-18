@@ -36,6 +36,7 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.organisation.ContactDto;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
+import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Autofit;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.types.Visibility;
@@ -122,7 +123,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
             public void onClick(ClickEvent event) {
                 List<ContactDto> contactsToDelete = getSelectedContacts();
                 removeContactsFromOrganisation(contactsToDelete);
-                getUiHandlers().updateContacts(organisationDto.getContacts());
+                getUiHandlers().updateContacts(organisationDto.getContacts(), null);
 
                 contactDeleteConfirmationWindow.hide();
             }
@@ -191,7 +192,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
                     organisationDto.getContacts().clear();
                     organisationDto.getContacts().addAll(contactsUpdated);
 
-                    getUiHandlers().updateContacts(OrganisationViewImpl.this.organisationDto.getContacts());
+                    getUiHandlers().updateContacts(OrganisationViewImpl.this.organisationDto.getContacts(), contactToSave.getId());
                 }
             }
         });
@@ -321,7 +322,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
     }
 
     @Override
-    public void setOrganisation(OrganisationMetamacDto organisationDto) {
+    public void setOrganisation(OrganisationMetamacDto organisationDto, Long contactToShowId) {
         this.organisationDto = organisationDto;
         this.contactDtos = new ArrayList<ContactDto>();
         this.contactDtos.addAll(organisationDto.getContacts());
@@ -336,7 +337,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         setOrganisationEditionMode(organisationDto);
 
         // Contacts
-        setContacts(organisationDto.getContacts());
+        setContacts(organisationDto.getContacts(), contactToShowId);
     }
 
     private void setOrganisationViewMode(OrganisationMetamacDto organisationDto) {
@@ -369,7 +370,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         annotationsEditionPanel.setAnnotations(organisationDto.getAnnotations());
     }
 
-    private void setContacts(List<ContactDto> contactDtos) {
+    private void setContacts(List<ContactDto> contactDtos, Long contactToShowId) {
         // Hide previous contact form
         contactMainFormLayout.hide();
 
@@ -378,6 +379,18 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
             records[i] = org.siemac.metamac.srm.web.organisation.utils.RecordUtils.getContactRecord(contactDtos.get(i));
         }
         contactListGrid.setData(records);
+
+        // Select last contact updated (if exists)
+        if (contactToShowId != null) {
+            Record record = contactListGrid.getRecordList().find(ContactDS.ID, contactToShowId);
+            if (record != null) {
+                contactListGrid.selectRecord(record);
+                if (record instanceof ContactRecord) {
+                    contactMainFormLayout.setContact(((ContactRecord) record).getContactDto(), false);
+                    contactMainFormLayout.show();
+                }
+            }
+        }
     }
 
     private OrganisationMetamacDto getOrganisationDto() {
