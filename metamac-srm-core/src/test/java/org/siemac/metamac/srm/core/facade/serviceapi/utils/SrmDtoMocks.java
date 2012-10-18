@@ -17,6 +17,7 @@ import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.dto.LocalisedStringDto;
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 
@@ -30,6 +31,7 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.RelationshipDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.RepresentationDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.util.ContentInputDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.util.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponent;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponentList;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeDataAttribute;
@@ -76,7 +78,7 @@ public class SrmDtoMocks {
         dataStructureDefinitionMetamacDto.setName(name);
 
         // Maintainer
-        dataStructureDefinitionMetamacDto.setMaintainer(MetamacMocks.mockExternalItemDto(BaseDoMocks.mockAgencyUrn(), TypeExternalArtefactsEnum.AGENCY));
+        dataStructureDefinitionMetamacDto.setMaintainer(new RelatedResourceDto(SrmBaseTest.AGENCY_ROOT_CODE, SrmBaseTest.AGENCY_ROOT_1_V1, TypeExternalArtefactsEnum.AGENCY));
 
         // Other --------
         dataStructureDefinitionMetamacDto.setServiceURL("test");
@@ -357,7 +359,7 @@ public class SrmDtoMocks {
         describedBy.setName(name);
 
         // maintainerCode
-        describedBy.setMaintainer(MetamacMocks.mockExternalItemDto(BaseDoMocks.mockAgencyUrn(), TypeExternalArtefactsEnum.AGENCY));
+        describedBy.setMaintainer(new RelatedResourceDto(SrmBaseTest.AGENCY_ROOT_CODE, SrmBaseTest.AGENCY_ROOT_1_V1, TypeExternalArtefactsEnum.AGENCY));
 
         // structure
 
