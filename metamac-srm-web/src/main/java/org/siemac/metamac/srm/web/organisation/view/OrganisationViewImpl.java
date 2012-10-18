@@ -405,8 +405,19 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
 
     private List<ContactDto> updateContacts(List<ContactDto> contactDtos, ContactDto contactDto) {
         if (contactDto.getId() == null) {
-            // If contact is being created, add it to the organisation
-            contactDtos.add(contactDto);
+            // If there is a non saved contact in the list, replace it
+            boolean contactPrevouslyAdded = false;
+            for (int i = 0; i < contactDtos.size(); i++) {
+                if (contactDtos.get(i).getId() == null) {
+                    contactPrevouslyAdded = true;
+                    contactDtos.set(i, contactDto);
+
+                }
+            }
+            // If not, add it to the organisation contact list
+            if (!contactPrevouslyAdded) {
+                contactDtos.add(contactDto);
+            }
         } else {
             // If contact is being updated, replace it in the organisation
             for (int i = 0; i < contactDtos.size(); i++) {
