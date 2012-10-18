@@ -10,7 +10,6 @@ import java.util.List;
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.util.shared.BooleanUtils;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
-import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
@@ -46,6 +45,7 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 
+import com.arte.statistic.sdmx.srm.core.common.service.utils.shared.SdmxVersionUtil;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
@@ -430,8 +430,8 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
             public boolean execute(FormItem item, Object value, DynamicForm form) {
                 // CODE cannot be modified if status is INTERNALLY_PUBLISHED or EXTERNALLY_PUBLISHED, or if version is greater than VERSION_INITIAL_VERSION (01.000)
                 return !((ProcStatusEnum.INTERNALLY_PUBLISHED.equals(organisationSchemeDto.getLifeCycle().getProcStatus()) || ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(organisationSchemeDto
-                        .getLifeCycle().getProcStatus())) || (!VersionUtil.VERSION_INITIAL_VERSION.equals(organisationSchemeDto.getVersionLogic()) && !StringUtils.isBlank(organisationSchemeDto
-                        .getVersionLogic())));
+                        .getLifeCycle().getProcStatus())) || (!SdmxVersionUtil.PATTERN_XX_YYY_INITIAL_VERSION.equals(organisationSchemeDto.getVersionLogic()) && !StringUtils
+                        .isBlank(organisationSchemeDto.getVersionLogic())));
             }
         });
         ViewTextItem staticCode = new ViewTextItem(OrganisationSchemeDS.CODE_VIEW, getConstants().identifiableArtefactCode());
@@ -460,11 +460,11 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
             public boolean execute(FormItem item, Object value, DynamicForm form) {
                 // TYPE cannot be modified if:
                 // · status is INTERNALLY_PUBLISHED or EXTERNALLY_PUBLISHED
-                // · version is greater than VERSION_INITIAL_VERSION (01.000)
+                // · version is greater than SdmxVersionUtil.PATTERN_XX_YYY_INITIAL_VERSION (01.000)
                 // · scheme has children (not validated here, it is validated in core service)
                 return !((ProcStatusEnum.INTERNALLY_PUBLISHED.equals(organisationSchemeDto.getLifeCycle().getProcStatus()) || ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(organisationSchemeDto
-                        .getLifeCycle().getProcStatus())) || (!VersionUtil.VERSION_INITIAL_VERSION.equals(organisationSchemeDto.getVersionLogic()) && !StringUtils.isBlank(organisationSchemeDto
-                        .getVersionLogic())));
+                        .getLifeCycle().getProcStatus())) || (!SdmxVersionUtil.PATTERN_XX_YYY_INITIAL_VERSION.equals(organisationSchemeDto.getVersionLogic()) && !StringUtils
+                        .isBlank(organisationSchemeDto.getVersionLogic())));
             }
         });
         ViewTextItem staticType = new ViewTextItem(OrganisationSchemeDS.TYPE_VIEW, getConstants().organisationSchemeType());
