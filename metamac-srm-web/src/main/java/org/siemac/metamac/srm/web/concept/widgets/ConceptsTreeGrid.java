@@ -187,6 +187,17 @@ public class ConceptsTreeGrid extends TreeGrid {
         getData().openAll();
     }
 
+    public void updateConceptScheme(ConceptSchemeMetamacDto conceptSchemeMetamacDto) {
+        this.conceptSchemeMetamacDto = conceptSchemeMetamacDto;
+        // Update concept scheme node
+        TreeNode node = getTree().find(SCHEME_NODE_NAME);
+        if (node != null) {
+            node.setAttribute(ConceptDS.CODE, conceptSchemeMetamacDto.getCode());
+            node.setAttribute(ConceptDS.NAME, InternationalStringUtils.getLocalisedString(conceptSchemeMetamacDto.getName()));
+            markForRedraw();
+        }
+    }
+
     public void setUiHandlers(BaseConceptUiHandlers uiHandlers) {
         this.uiHandlers = uiHandlers;
     }
