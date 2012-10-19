@@ -178,6 +178,10 @@ public class OrganisationPresenter extends Presenter<OrganisationPresenter.Organ
                 organisationMetamacDto = result.getOrganisationSaved();
                 ShowMessageEvent.fire(OrganisationPresenter.this, ErrorUtils.getMessageList(getMessages().organisationSchemeSaved()), MessageTypeEnum.SUCCESS);
                 getView().setOrganisation(result.getOrganisationSaved(), contactToUpdateId);
+
+                // Update URL
+                PlaceRequest placeRequest = PlaceRequestUtils.buildOrganisationPlaceRequest(organisationMetamacDto.getUrn());
+                placeManager.updateHistory(placeRequest, true);
             }
         });
     }
