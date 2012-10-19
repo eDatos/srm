@@ -13,7 +13,6 @@ import org.siemac.metamac.srm.core.concept.dto.ConceptTypeDto;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
-import org.siemac.metamac.srm.web.client.PlaceRequestParams;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
@@ -192,6 +191,10 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
             public void onWaitSuccess(SaveConceptResult result) {
                 ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getMessageList(getMessages().conceptSaved()), MessageTypeEnum.SUCCESS);
                 getView().setConcept(result.getConceptDto(), result.getRelatedConcepts());
+
+                // Update URL
+                PlaceRequest placeRequest = PlaceRequestUtils.buildConceptPlaceRequest(result.getConceptDto().getUrn());
+                placeManager.updateHistory(placeRequest, true);
             }
         });
     }
@@ -218,8 +221,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
 
     @Override
     public void goToConcept(String urn) {
-        String[] splitUrn = UrnUtils.splitUrnByDots(UrnUtils.removePrefix(urn));
-        placeManager.revealRelativePlace(new PlaceRequest(NameTokens.conceptPage).with(PlaceRequestParams.conceptParamId, splitUrn[splitUrn.length - 1]), -1);
+        placeManager.revealRelativePlace(PlaceRequestUtils.buildConceptPlaceRequest(urn), -1);
     }
 
     private void goToConceptScheme(String urn) {

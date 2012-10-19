@@ -30,6 +30,8 @@ public class PlaceRequestUtils {
 
     // CONCEPTS
 
+    // Concept schemes
+
     public static String getConceptSchemeParamFromUrl(PlaceManager placeManager) {
         for (PlaceRequest request : placeManager.getCurrentPlaceHierarchy()) {
             if (NameTokens.conceptSchemePage.equals(request.getNameToken())) {
@@ -38,6 +40,13 @@ public class PlaceRequestUtils {
         }
         return null;
     }
+
+    public static PlaceRequest buildConceptSchemePlaceRequest(String conceptSchemeUrn) {
+        PlaceRequest placeRequest = new PlaceRequest(NameTokens.conceptSchemePage).with(PlaceRequestParams.conceptSchemeParamId, UrnUtils.removePrefix(conceptSchemeUrn));
+        return placeRequest;
+    }
+
+    // Concepts
 
     public static String getConceptParamFromUrl(PlaceManager placeManager) {
         for (PlaceRequest request : placeManager.getCurrentPlaceHierarchy()) {
@@ -48,8 +57,9 @@ public class PlaceRequestUtils {
         return null;
     }
 
-    public static PlaceRequest buildConceptSchemePlaceRequest(String conceptSchemeUrn) {
-        PlaceRequest placeRequest = new PlaceRequest(NameTokens.conceptSchemePage).with(PlaceRequestParams.conceptSchemeParamId, UrnUtils.removePrefix(conceptSchemeUrn));
+    public static PlaceRequest buildConceptPlaceRequest(String conceptUrn) {
+        String[] splitUrn = UrnUtils.splitUrnByDots(UrnUtils.removePrefix(conceptUrn));
+        PlaceRequest placeRequest = new PlaceRequest(NameTokens.conceptPage).with(PlaceRequestParams.conceptParamId, splitUrn[splitUrn.length - 1]);
         return placeRequest;
     }
 
