@@ -584,6 +584,9 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         } else {
             showOrganisationList();
         }
+
+        // Update organisation scheme in tree grid
+        organisationsTreeGrid.updateOrganisationScheme(organisationSchemeMetamacDto);
     }
 
     @Override

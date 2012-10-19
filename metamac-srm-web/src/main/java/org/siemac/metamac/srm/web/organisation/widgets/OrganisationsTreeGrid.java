@@ -184,6 +184,17 @@ public class OrganisationsTreeGrid extends TreeGrid {
         getData().openAll();
     }
 
+    public void updateOrganisationScheme(OrganisationSchemeMetamacDto organisationSchemeMetamacDto) {
+        this.organisationSchemeMetamacDto = organisationSchemeMetamacDto;
+        // Update concept scheme node
+        TreeNode node = getTree().find(SCHEME_NODE_NAME);
+        if (node != null) {
+            node.setAttribute(OrganisationDS.CODE, organisationSchemeMetamacDto.getCode());
+            node.setAttribute(OrganisationDS.NAME, InternationalStringUtils.getLocalisedString(organisationSchemeMetamacDto.getName()));
+            markForRedraw();
+        }
+    }
+
     public void setUiHandlers(BaseOrganisationUiHandlers uiHandlers) {
         this.uiHandlers = uiHandlers;
     }
