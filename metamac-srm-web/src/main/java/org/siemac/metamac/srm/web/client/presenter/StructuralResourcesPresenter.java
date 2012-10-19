@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.siemac.metamac.core.common.util.shared.StringUtils;
+import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
@@ -14,6 +15,8 @@ import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.client.view.handlers.StructuralResourcesUiHandlers;
 import org.siemac.metamac.srm.web.client.widgets.presenter.ToolStripPresenterWidget;
+import org.siemac.metamac.srm.web.shared.category.GetCategorySchemeListAction;
+import org.siemac.metamac.srm.web.shared.category.GetCategorySchemeListResult;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemePaginatedListAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemePaginatedListResult;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdListAction;
@@ -73,6 +76,7 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
         void setDsdList(List<DataStructureDefinitionMetamacDto> dataStructureDefinitionMetamacDtos);
         void setConceptSchemeList(List<ConceptSchemeMetamacDto> conceptSchemeDtos);
         void setOrganisationSchemeList(List<OrganisationSchemeMetamacDto> organisationSchemeMetamacDtos);
+        void setCategorySchemesList(List<CategorySchemeMetamacDto> categorySchemeMetamacDtos);
 
         void resetView();
     }
@@ -99,9 +103,6 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
     protected void onReset() {
         super.onReset();
         getView().resetView();
-        retrieveDsds();
-        retrieveConceptSchemes();
-        retrieveOrganisationSchemes();
     }
 
     @Override
@@ -124,6 +125,10 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
     @Override
     public void prepareFromRequest(PlaceRequest request) {
         super.prepareFromRequest(request);
+        retrieveDsds();
+        retrieveConceptSchemes();
+        retrieveOrganisationSchemes();
+        retrieveCategorySchemes();
     }
 
     private void retrieveDsds() {
@@ -164,6 +169,20 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
             @Override
             public void onWaitSuccess(GetOrganisationSchemeListResult result) {
                 getView().setOrganisationSchemeList(result.getOrganisationSchemeMetamacDtos());
+            }
+        });
+    }
+
+    private void retrieveCategorySchemes() {
+        dispatcher.execute(new GetCategorySchemeListAction(RESOURCE_LIST_FIRST_RESULT, RESOURCE_LIST_MAX_RESULTS, null), new WaitingAsyncCallback<GetCategorySchemeListResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(StructuralResourcesPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().categorySchemeErrorRetrieveList()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetCategorySchemeListResult result) {
+                getView().setCategorySchemesList(result.getCategorySchemeList());
             }
         });
     }

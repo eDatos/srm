@@ -2,13 +2,16 @@ package org.siemac.metamac.srm.web.client.view;
 
 import java.util.List;
 
+import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
+import org.siemac.metamac.srm.web.client.category.model.record.CategorySchemeRecord;
 import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
 import org.siemac.metamac.srm.web.client.presenter.StructuralResourcesPresenter;
 import org.siemac.metamac.srm.web.client.view.handlers.StructuralResourcesUiHandlers;
+import org.siemac.metamac.srm.web.client.widgets.CategorySchemeListGrid;
 import org.siemac.metamac.srm.web.client.widgets.ConceptSchemeListGrid;
 import org.siemac.metamac.srm.web.client.widgets.DsdListGrid;
 import org.siemac.metamac.srm.web.client.widgets.OrganisationSchemeListGrid;
@@ -36,13 +39,15 @@ public class StructuralResourcesViewImpl extends ViewWithUiHandlers<StructuralRe
     private final DsdListGrid                dsdListGrid;
     private final ConceptSchemeListGrid      conceptSchemeListGrid;
     private final OrganisationSchemeListGrid organisationSchemeListGrid;
+    private final CategorySchemeListGrid     categorySchemeListGrid;
 
     private final SectionStack               lastModifiedArtifactsSectionStack;
 
     private VLayout                          panel;
 
     @Inject
-    public StructuralResourcesViewImpl(DsdListGrid dsdListGrid, ConceptSchemeListGrid conceptSchemeListGrid, OrganisationSchemeListGrid organisationSchemeListGrid) {
+    public StructuralResourcesViewImpl(DsdListGrid dsdListGrid, ConceptSchemeListGrid conceptSchemeListGrid, OrganisationSchemeListGrid organisationSchemeListGrid,
+            CategorySchemeListGrid categorySchemeListGrid) {
         super();
 
         this.dsdListGrid = dsdListGrid;
@@ -73,6 +78,16 @@ public class StructuralResourcesViewImpl extends ViewWithUiHandlers<StructuralRe
             public void onRecordClick(RecordClickEvent event) {
                 OrganisationSchemeRecord record = (OrganisationSchemeRecord) event.getRecord();
                 getUiHandlers().goToOrganisationScheme(record.getUrn(), record.getOrganisationSchemeDto().getType());
+            }
+        });
+
+        this.categorySchemeListGrid = categorySchemeListGrid;
+        this.categorySchemeListGrid.addRecordClickHandler(new RecordClickHandler() {
+
+            @Override
+            public void onRecordClick(RecordClickEvent event) {
+                CategorySchemeRecord record = (CategorySchemeRecord) event.getRecord();
+                getUiHandlers().goToCategoryScheme(record.getUrn());
             }
         });
 
@@ -109,7 +124,7 @@ public class StructuralResourcesViewImpl extends ViewWithUiHandlers<StructuralRe
         SectionStackSection lastCatSchemesModifiedSection = new SectionStackSection();
         lastCatSchemesModifiedSection.setTitle(MetamacSrmWeb.getConstants().categorySchemeLastModified());
         lastCatSchemesModifiedSection.setExpanded(false);
-        // lastCatSchemesModifiedSection.setItems();
+        lastCatSchemesModifiedSection.setItems(this.categorySchemeListGrid);
 
         SectionStackSection lastClassifModifiedSection = new SectionStackSection();
         lastClassifModifiedSection.setTitle(MetamacSrmWeb.getConstants().classificationLastModified());
@@ -171,6 +186,11 @@ public class StructuralResourcesViewImpl extends ViewWithUiHandlers<StructuralRe
     @Override
     public void setOrganisationSchemeList(List<OrganisationSchemeMetamacDto> organisationSchemeMetamacDtos) {
         organisationSchemeListGrid.setOrganisationSchemes(organisationSchemeMetamacDtos);
+    }
+
+    @Override
+    public void setCategorySchemesList(List<CategorySchemeMetamacDto> categorySchemeMetamacDtos) {
+        categorySchemeListGrid.setCategorySchemes(categorySchemeMetamacDtos);
     }
 
 }
