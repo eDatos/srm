@@ -10,7 +10,6 @@ import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
-import org.siemac.metamac.srm.web.client.PlaceRequestParams;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.client.view.handlers.StructuralResourcesUiHandlers;
@@ -23,7 +22,6 @@ import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeListA
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeListResult;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
-import org.siemac.metamac.web.common.client.utils.UrnUtils;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
@@ -193,11 +191,11 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
         if (urn != null) {
             PlaceRequest structuralResourcesPlace = new PlaceRequest(NameTokens.structuralResourcesPage);
             PlaceRequest schemesListPlace = new PlaceRequest(NameTokens.conceptSchemeListPage);
-            PlaceRequest conceptPlace = new PlaceRequest(NameTokens.conceptSchemePage).with(PlaceRequestParams.conceptSchemeParamId, UrnUtils.removePrefix(urn));
+            PlaceRequest conceptSchemePlace = PlaceRequestUtils.buildConceptSchemePlaceRequest(urn);
             List<PlaceRequest> placeRequests = new ArrayList<PlaceRequest>();
             placeRequests.add(structuralResourcesPlace);
             placeRequests.add(schemesListPlace);
-            placeRequests.add(conceptPlace);
+            placeRequests.add(conceptSchemePlace);
             placeManager.revealPlaceHierarchy(placeRequests);
         }
     }

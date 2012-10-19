@@ -223,7 +223,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     }
 
     private void goToConceptScheme(String urn) {
-        placeManager.revealRelativePlace(new PlaceRequest(NameTokens.conceptSchemePage).with(PlaceRequestParams.conceptSchemeParamId, UrnUtils.removePrefix(urn)), -2);
+        placeManager.revealRelativePlace(PlaceRequestUtils.buildConceptSchemePlaceRequest(urn), -2);
     }
 
     @Override

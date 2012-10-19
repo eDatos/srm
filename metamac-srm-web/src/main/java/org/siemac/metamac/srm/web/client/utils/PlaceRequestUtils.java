@@ -48,6 +48,11 @@ public class PlaceRequestUtils {
         return null;
     }
 
+    public static PlaceRequest buildConceptSchemePlaceRequest(String conceptSchemeUrn) {
+        PlaceRequest placeRequest = new PlaceRequest(NameTokens.conceptSchemePage).with(PlaceRequestParams.conceptSchemeParamId, UrnUtils.removePrefix(conceptSchemeUrn));
+        return placeRequest;
+    }
+
     //
     // ORGANISATIONS
     //

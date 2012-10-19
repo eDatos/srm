@@ -148,6 +148,10 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
                 ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getMessageList(getMessages().conceptSchemeSaved()), MessageTypeEnum.SUCCESS);
                 ConceptSchemePresenter.this.conceptSchemeDto = result.getSavedConceptSchemeDto();
                 setConceptScheme(result.getSavedConceptSchemeDto());
+
+                // Update URL
+                PlaceRequest placeRequest = PlaceRequestUtils.buildConceptSchemePlaceRequest(conceptSchemeDto.getUrn());
+                placeManager.updateHistory(placeRequest, true);
             }
         });
     }
@@ -273,6 +277,10 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
                 ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getMessageList(getMessages().conceptSchemeVersioned()), MessageTypeEnum.SUCCESS);
                 ConceptSchemePresenter.this.conceptSchemeDto = result.getConceptSchemeDto();
                 retrieveConceptSchemeByUrn(conceptSchemeDto.getUrn());
+
+                // Update URL
+                PlaceRequest placeRequest = PlaceRequestUtils.buildConceptSchemePlaceRequest(conceptSchemeDto.getUrn());
+                placeManager.updateHistory(placeRequest, true);
             }
         });
     }
@@ -370,7 +378,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
     @Override
     public void goToConceptScheme(String urn) {
         if (!StringUtils.isBlank(urn)) {
-            placeManager.revealRelativePlace(new PlaceRequest(NameTokens.conceptSchemePage).with(PlaceRequestParams.conceptSchemeParamId, UrnUtils.removePrefix(urn)), -1);
+            placeManager.revealRelativePlace(PlaceRequestUtils.buildConceptSchemePlaceRequest(urn), -1);
         }
     }
 
