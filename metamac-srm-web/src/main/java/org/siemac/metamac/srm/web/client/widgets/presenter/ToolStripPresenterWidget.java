@@ -24,6 +24,7 @@ public class ToolStripPresenterWidget extends PresenterWidget<ToolStripPresenter
         HasClickHandlers getDsdsButton();
         HasClickHandlers getConceptSchemesButton();
         HasClickHandlers getOrganisationSchemesButton();
+        HasClickHandlers getCategorySchemesButton();
     }
 
     @Inject
@@ -71,6 +72,18 @@ public class ToolStripPresenterWidget extends PresenterWidget<ToolStripPresenter
                 List<PlaceRequest> placeRequestHierarchy = new ArrayList<PlaceRequest>();
                 placeRequestHierarchy.add(resourcesRequest);
                 placeRequestHierarchy.add(organisationSchemeListRequest);
+                placeManager.revealPlaceHierarchy(placeRequestHierarchy);
+            }
+        }));
+        registerHandler(getView().getCategorySchemesButton().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                PlaceRequest resourcesRequest = new PlaceRequest(NameTokens.structuralResourcesPage);
+                PlaceRequest categorySchemeListRequest = new PlaceRequest(NameTokens.categorySchemeListPage);
+                List<PlaceRequest> placeRequestHierarchy = new ArrayList<PlaceRequest>();
+                placeRequestHierarchy.add(resourcesRequest);
+                placeRequestHierarchy.add(categorySchemeListRequest);
                 placeManager.revealPlaceHierarchy(placeRequestHierarchy);
             }
         }));

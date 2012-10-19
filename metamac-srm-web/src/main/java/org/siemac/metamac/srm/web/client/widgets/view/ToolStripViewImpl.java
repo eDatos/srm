@@ -85,4 +85,9 @@ public class ToolStripViewImpl implements ToolStripPresenterWidget.ToolStripView
         return organisationsButton;
     }
 
+    @Override
+    public HasClickHandlers getCategorySchemesButton() {
+        return categoriesButton;
+    }
+
 }

@@ -3,6 +3,8 @@ package org.siemac.metamac.srm.web.client.gin;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacPlaceManager;
 import org.siemac.metamac.srm.web.client.NameTokens;
+import org.siemac.metamac.srm.web.client.category.presenter.CategorySchemeListPresenter;
+import org.siemac.metamac.srm.web.client.category.view.CategorySchemeListViewImpl;
 import org.siemac.metamac.srm.web.client.presenter.ErrorPagePresenter;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.presenter.StructuralResourcesPresenter;
@@ -102,6 +104,10 @@ public class ClientModule extends AbstractPresenterModule {
         bindPresenter(OrganisationSchemePresenter.class, OrganisationSchemePresenter.OrganisationSchemeView.class, OrganisationSchemeViewImpl.class,
                 OrganisationSchemePresenter.OrganisationSchemeProxy.class);
         bindPresenter(OrganisationPresenter.class, OrganisationPresenter.OrganisationView.class, OrganisationViewImpl.class, OrganisationPresenter.OrganisationProxy.class);
+
+        // Categories
+        bindPresenter(CategorySchemeListPresenter.class, CategorySchemeListPresenter.CategorySchemeListView.class, CategorySchemeListViewImpl.class,
+                CategorySchemeListPresenter.CategorySchemeListProxy.class);
     }
 
 }

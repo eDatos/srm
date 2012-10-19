@@ -120,7 +120,6 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(ConceptSchemeListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorRetrieveList()), MessageTypeEnum.ERROR);
             }
-
             @Override
             public void onWaitSuccess(GetConceptSchemePaginatedListResult result) {
                 getView().setConceptSchemePaginatedList(result);
@@ -139,7 +138,6 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(ConceptSchemeListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorSave()), MessageTypeEnum.ERROR);
             }
-
             @Override
             public void onWaitSuccess(SaveConceptSchemeResult result) {
                 ShowMessageEvent.fire(ConceptSchemeListPresenter.this, ErrorUtils.getMessageList(getMessages().conceptSchemeSaved()), MessageTypeEnum.SUCCESS);

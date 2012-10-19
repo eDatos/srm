@@ -4,7 +4,10 @@ import org.siemac.metamac.srm.web.server.handlers.FindCodeListsActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.FindConceptSchemesActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.FindConceptsActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.ValidateTicketActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.category.CancelCategorySchemeValidityActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.category.DeleteCategorySchemeListActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.category.GetCategorySchemeListActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.category.SaveCategorySchemeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.AnnounceConceptSchemeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.CancelConceptSchemeValidityActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.DeleteConceptActionHandler;
@@ -51,7 +54,10 @@ import org.siemac.metamac.srm.web.server.handlers.organisation.VersionOrganisati
 import org.siemac.metamac.srm.web.shared.FindCodeListsAction;
 import org.siemac.metamac.srm.web.shared.FindConceptSchemesAction;
 import org.siemac.metamac.srm.web.shared.FindConceptsAction;
+import org.siemac.metamac.srm.web.shared.category.CancelCategorySchemeValidityAction;
+import org.siemac.metamac.srm.web.shared.category.DeleteCategorySchemeListAction;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemeListAction;
+import org.siemac.metamac.srm.web.shared.category.SaveCategorySchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.AnnounceConceptSchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.CancelConceptSchemeValidityAction;
 import org.siemac.metamac.srm.web.shared.concept.DeleteConceptAction;
@@ -174,6 +180,9 @@ public class ServerModule extends HandlerModule {
 
         // Categories
         bindHandler(GetCategorySchemeListAction.class, GetCategorySchemeListActionHandler.class);
+        bindHandler(SaveCategorySchemeAction.class, SaveCategorySchemeActionHandler.class);
+        bindHandler(CancelCategorySchemeValidityAction.class, CancelCategorySchemeValidityActionHandler.class);
+        bindHandler(DeleteCategorySchemeListAction.class, DeleteCategorySchemeListActionHandler.class);
 
         bindHandler(ValidateTicketAction.class, ValidateTicketActionHandler.class);
         bindHandler(GetLoginPageUrlAction.class, GetLoginPageUrlActionHandler.class);
