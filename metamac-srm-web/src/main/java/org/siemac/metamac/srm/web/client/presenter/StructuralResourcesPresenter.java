@@ -179,7 +179,7 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
         if (!StringUtils.isBlank(urn)) {
             PlaceRequest structuralResourcesPlace = new PlaceRequest(NameTokens.structuralResourcesPage);
             PlaceRequest dsdListPlace = new PlaceRequest(NameTokens.dsdListPage);
-            PlaceRequest dsdPlace = new PlaceRequest(NameTokens.dsdPage).with(PlaceRequestParams.dsdParamId, UrnUtils.removePrefix(urn));
+            PlaceRequest dsdPlace = PlaceRequestUtils.buildDsdPlaceRequest(urn);
             List<PlaceRequest> placeRequests = new ArrayList<PlaceRequest>();
             placeRequests.add(structuralResourcesPlace);
             placeRequests.add(dsdListPlace);

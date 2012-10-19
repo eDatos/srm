@@ -23,6 +23,11 @@ public class PlaceRequestUtils {
         return null;
     }
 
+    public static PlaceRequest buildDsdPlaceRequest(String dsdUrn) {
+        PlaceRequest placeRequest = new PlaceRequest(NameTokens.dsdPage).with(PlaceRequestParams.dsdParamId, UrnUtils.removePrefix(dsdUrn));
+        return placeRequest;
+    }
+
     // CONCEPTS
 
     public static String getConceptSchemeParamFromUrl(PlaceManager placeManager) {
