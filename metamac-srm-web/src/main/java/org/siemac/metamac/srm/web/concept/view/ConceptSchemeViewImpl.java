@@ -320,6 +320,9 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
 
         setConceptSchemeViewMode(conceptScheme);
         setConceptSchemeEditionMode(conceptScheme);
+
+        // Update concept scheme in tree grid
+        conceptsTreeGrid.updateConceptScheme(conceptScheme);
     }
 
     @Override
