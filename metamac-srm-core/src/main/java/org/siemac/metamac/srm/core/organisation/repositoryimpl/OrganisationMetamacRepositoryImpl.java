@@ -19,7 +19,7 @@ public class OrganisationMetamacRepositoryImpl extends OrganisationMetamacReposi
     public OrganisationMetamac findByUrn(String urn) {
         Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put("urn", urn);
-        List<OrganisationMetamac> result = findByQuery("from OrganisationMetamac where maintainableArtefact.urn = :urn", parameters, 1);
+        List<OrganisationMetamac> result = findByQuery("from OrganisationMetamac where nameableArtefact.urn = :urn", parameters, 1);
         if (result == null || result.isEmpty()) {
             return null;
         } else {
