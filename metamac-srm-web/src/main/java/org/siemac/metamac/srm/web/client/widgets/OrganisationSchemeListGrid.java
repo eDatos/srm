@@ -8,45 +8,23 @@ import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto
 import org.siemac.metamac.srm.web.organisation.model.ds.OrganisationSchemeDS;
 import org.siemac.metamac.srm.web.organisation.model.record.OrganisationSchemeRecord;
 import org.siemac.metamac.srm.web.organisation.utils.RecordUtils;
-import org.siemac.metamac.web.common.client.widgets.BaseCustomListGrid;
 
-import com.smartgwt.client.widgets.grid.HoverCustomizer;
 import com.smartgwt.client.widgets.grid.ListGridField;
-import com.smartgwt.client.widgets.grid.ListGridRecord;
 
-public class OrganisationSchemeListGrid extends BaseCustomListGrid {
+public class OrganisationSchemeListGrid extends ItemSchemeListGrid {
 
     public OrganisationSchemeListGrid() {
         super();
 
         this.setShowAllRecords(true);
 
-        ListGridField codeField = new ListGridField(OrganisationSchemeDS.CODE, getConstants().identifiableArtefactCode());
-        ListGridField nameField = new ListGridField(OrganisationSchemeDS.NAME, getConstants().nameableArtefactName());
-        ListGridField procStatusField = new ListGridField(OrganisationSchemeDS.PROC_STATUS, getConstants().lifeCycleProcStatus());
         ListGridField typeField = new ListGridField(OrganisationSchemeDS.TYPE, getConstants().organisationSchemeType());
 
-        codeField.setShowHover(true);
-        codeField.setHoverCustomizer(new HoverCustomizer() {
+        ListGridField[] fields = new ListGridField[getFields().length + 1];
+        System.arraycopy(getFields(), 0, fields, 0, getFields().length);
+        fields[fields.length - 1] = typeField;
 
-            @Override
-            public String hoverHTML(Object value, ListGridRecord record, int rowNum, int colNum) {
-                OrganisationSchemeRecord schemeRecord = (OrganisationSchemeRecord) record;
-                return schemeRecord.getCode();
-            }
-        });
-
-        nameField.setShowHover(true);
-        nameField.setHoverCustomizer(new HoverCustomizer() {
-
-            @Override
-            public String hoverHTML(Object value, ListGridRecord record, int rowNum, int colNum) {
-                OrganisationSchemeRecord schemeRecord = (OrganisationSchemeRecord) record;
-                return schemeRecord.getName();
-            }
-        });
-
-        this.setFields(codeField, nameField, procStatusField, typeField);
+        this.setFields(fields);
     }
 
     public void setOrganisationSchemes(List<OrganisationSchemeMetamacDto> organisationSchemeDtos) {
