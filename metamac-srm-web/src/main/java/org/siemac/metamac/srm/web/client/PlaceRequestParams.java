@@ -11,4 +11,7 @@ public class PlaceRequestParams {
     public static final String organisationSchemeParamType = "type";
     public static final String organisationParamId         = "id";
 
+    public static final String categorySchemeParamId       = "id";
+    public static final String categoryParamId             = "id";
+
 }

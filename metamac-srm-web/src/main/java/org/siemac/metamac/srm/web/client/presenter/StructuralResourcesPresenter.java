@@ -214,4 +214,18 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
         }
     }
 
+    @Override
+    public void goToCategoryScheme(String urn) {
+        if (urn != null) {
+            PlaceRequest structuralResourcesPlace = new PlaceRequest(NameTokens.structuralResourcesPage);
+            PlaceRequest schemesListPlace = new PlaceRequest(NameTokens.categorySchemeListPage);
+            PlaceRequest categorySchemePlace = PlaceRequestUtils.buildCategorySchemePlaceRequest(urn);
+            List<PlaceRequest> placeRequests = new ArrayList<PlaceRequest>();
+            placeRequests.add(structuralResourcesPlace);
+            placeRequests.add(schemesListPlace);
+            placeRequests.add(categorySchemePlace);
+            placeManager.revealPlaceHierarchy(placeRequests);
+        }
+    }
+
 }
