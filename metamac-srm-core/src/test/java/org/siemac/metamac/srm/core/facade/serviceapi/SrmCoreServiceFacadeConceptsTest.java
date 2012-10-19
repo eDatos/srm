@@ -88,8 +88,8 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         assertEquals("http://structureUrl1", conceptSchemeMetamacDto.getStructureURL());
         assertEquals("http://serviceUrl1", conceptSchemeMetamacDto.getServiceURL());
 
-        assertEquals("ISTAC", conceptSchemeMetamacDto.getMaintainer().getCode());
-        assertEquals("urn:sdmx:org.sdmx.infomodel.base.Agency=ISTAC:STANDALONE(01.000).ISTAC", conceptSchemeMetamacDto.getMaintainer().getUrn());
+        assertEquals(AGENCY_ROOT_CODE, conceptSchemeMetamacDto.getMaintainer().getCode());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:ORGANISATIONSCHEME100(01.000).ORGANISATION00", conceptSchemeMetamacDto.getMaintainer().getUrn());
 
         assertEqualsInternationalStringDto(conceptSchemeMetamacDto.getName(), "es", "Nombre conceptScheme-1-v1", "en", "Name conceptScheme-1-v1");
         assertEqualsInternationalStringDto(conceptSchemeMetamacDto.getDescription(), "es", "Descripción conceptScheme-1-v1", "en", "Description conceptScheme-1-v1");
@@ -795,7 +795,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
 
         String urn = CONCEPT_SCHEME_3_V1;
         String versionExpected = "02.000";
-        String urnExpected = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:CONCEPTSCHEME03(02.000)";
+        String urnExpected = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ORGANISATION00:CONCEPTSCHEME03(02.000)";
 
         ConceptSchemeMetamacDto conceptSchemeDtoToCopy = srmCoreServiceFacade.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), urn);
         ConceptSchemeMetamacDto conceptSchemeDtoNewVersion = srmCoreServiceFacade.versioningConceptScheme(getServiceContextAdministrador(), urn, VersionTypeEnum.MAJOR);
@@ -1269,7 +1269,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         conceptMetamacDto.setConceptExtendsUrn(CONCEPT_SCHEME_12_V1_CONCEPT_1);
 
         ConceptMetamacDto conceptMetamacDtoCreated = srmCoreServiceFacade.createConcept(getServiceContextAdministrador(), conceptMetamacDto);
-        assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME01(02.000)." + conceptMetamacDto.getCode(), conceptMetamacDtoCreated.getUrn());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ORGANISATION00:CONCEPTSCHEME01(02.000)." + conceptMetamacDto.getCode(), conceptMetamacDtoCreated.getUrn());
         assertNull(conceptMetamacDtoCreated.getUri());
 
         assertEqualsConceptDto(conceptMetamacDto, conceptMetamacDtoCreated);
@@ -1281,7 +1281,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         conceptMetamacDto.setItemSchemeVersionUrn(CONCEPT_SCHEME_1_V2);
 
         ConceptMetamacDto conceptMetamacDtoCreated = srmCoreServiceFacade.createConcept(getServiceContextAdministrador(), conceptMetamacDto);
-        assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME01(02.000)." + conceptMetamacDto.getCode(), conceptMetamacDtoCreated.getUrn());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ORGANISATION00:CONCEPTSCHEME01(02.000)." + conceptMetamacDto.getCode(), conceptMetamacDtoCreated.getUrn());
         assertNull(conceptMetamacDtoCreated.getUri());
 
         assertEqualsConceptDto(conceptMetamacDto, conceptMetamacDtoCreated);

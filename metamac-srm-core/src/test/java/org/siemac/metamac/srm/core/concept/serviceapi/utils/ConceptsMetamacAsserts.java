@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.core.concept.serviceapi.utils;
 import static org.junit.Assert.assertEquals;
 import static org.siemac.metamac.common.test.utils.MetamacAsserts.assertEqualsExternalItemDto;
 import static org.siemac.metamac.common.test.utils.MetamacAsserts.assertEqualsInternationalStringDto;
+import static org.siemac.metamac.common.test.utils.MetamacAsserts.assertEqualsNullability;
 
 import org.siemac.metamac.srm.core.base.utils.BaseAsserts;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;

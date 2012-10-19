@@ -194,7 +194,7 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
         {
             MetamacCriteriaResult<OrganisationSchemeMetamacDto> result = srmCoreServiceFacade.findOrganisationSchemesByCondition(getServiceContextAdministrador(), metamacCriteria);
 
-            assertEquals(9, result.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(10, result.getPaginatorResult().getTotalResults().intValue());
             int i = 0;
             {
                 OrganisationSchemeMetamacDto organisationSchemeMetamacDto = result.getResults().get(i++);
@@ -241,6 +241,11 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
                 assertEquals(ORGANISATION_SCHEME_7_V2, organisationSchemeMetamacDto.getUrn());
                 assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, organisationSchemeMetamacDto.getLifeCycle().getProcStatus());
             }
+            {
+                OrganisationSchemeMetamacDto organisationSchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(ORGANISATION_SCHEME_ROOT_1_V1, organisationSchemeMetamacDto.getUrn());
+                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, organisationSchemeMetamacDto.getLifeCycle().getProcStatus());
+            }
             assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
         }
 
@@ -251,12 +256,17 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
 
             MetamacCriteriaResult<OrganisationSchemeMetamacDto> result = srmCoreServiceFacade.findOrganisationSchemesByCondition(getServiceContextAdministrador(), metamacCriteria);
 
-            assertEquals(1, result.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(2, result.getPaginatorResult().getTotalResults().intValue());
             int i = 0;
             {
                 OrganisationSchemeMetamacDto organisationSchemeMetamacDto = result.getResults().get(i++);
                 assertEquals(ORGANISATION_SCHEME_2_V1, organisationSchemeMetamacDto.getUrn());
                 assertEquals(ProcStatusEnum.DRAFT, organisationSchemeMetamacDto.getLifeCycle().getProcStatus());
+            }
+            {
+                OrganisationSchemeMetamacDto organisationSchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(ORGANISATION_SCHEME_ROOT_1_V1, organisationSchemeMetamacDto.getUrn());
+                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, organisationSchemeMetamacDto.getLifeCycle().getProcStatus());
             }
             assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
         }
@@ -329,7 +339,7 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
 
             MetamacCriteriaResult<OrganisationSchemeMetamacDto> result = srmCoreServiceFacade.findOrganisationSchemesByCondition(getServiceContextAdministrador(), metamacCriteria);
 
-            assertEquals(3, result.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(4, result.getPaginatorResult().getTotalResults().intValue());
             int i = 0;
             {
                 OrganisationSchemeMetamacDto organisationSchemeMetamacDto = result.getResults().get(i++);
@@ -344,6 +354,11 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
             {
                 OrganisationSchemeMetamacDto organisationSchemeMetamacDto = result.getResults().get(i++);
                 assertEquals(ORGANISATION_SCHEME_7_V2, organisationSchemeMetamacDto.getUrn());
+                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, organisationSchemeMetamacDto.getLifeCycle().getProcStatus());
+            }
+            {
+                OrganisationSchemeMetamacDto organisationSchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(ORGANISATION_SCHEME_ROOT_1_V1, organisationSchemeMetamacDto.getUrn());
                 assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, organisationSchemeMetamacDto.getLifeCycle().getProcStatus());
             }
             assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
@@ -482,7 +497,7 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
         // Validate
         organisationSchemeDtoNewVersion = srmCoreServiceFacade.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), organisationSchemeDtoNewVersion.getUrn());
         assertEquals("02.000", organisationSchemeDtoNewVersion.getVersionLogic());
-        assertEquals("urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=ISTAC:ORGANISATIONSCHEME03(02.000)", organisationSchemeDtoNewVersion.getUrn());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=ORGANISATION00:ORGANISATIONSCHEME03(02.000)", organisationSchemeDtoNewVersion.getUrn());
     }
 
     @Test
@@ -538,8 +553,8 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
             MetamacCriteriaResult<OrganisationMetamacDto> organisationsPagedResult = srmCoreServiceFacade.findOrganisationsByCondition(getServiceContextAdministrador(), metamacCriteria);
 
             // Validate
-            assertEquals(20, organisationsPagedResult.getPaginatorResult().getTotalResults().intValue());
-            assertEquals(20, organisationsPagedResult.getResults().size());
+            assertEquals(22, organisationsPagedResult.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(22, organisationsPagedResult.getResults().size());
             assertTrue(organisationsPagedResult.getResults().get(0) instanceof OrganisationMetamacDto);
             assertEquals(ORGANISATION_SCHEME_1_V1, organisationsPagedResult.getResults().get(0).getItemSchemeVersionUrn());
 
@@ -564,6 +579,9 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
             assertEquals(ORGANISATION_SCHEME_5_V1_ORGANISATION_1, organisationsPagedResult.getResults().get(i++).getUrn());
             assertEquals(ORGANISATION_SCHEME_6_V1_ORGANISATION_1, organisationsPagedResult.getResults().get(i++).getUrn());
             assertEquals(ORGANISATION_SCHEME_7_V2_ORGANISATION_1, organisationsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(AGENCY_ROOT_1_V1, organisationsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(AGENCY_ROOT_2_V1, organisationsPagedResult.getResults().get(i++).getUrn());
+            
             assertEquals(organisationsPagedResult.getResults().size(), i);
         }
 
@@ -608,8 +626,8 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
             MetamacCriteriaResult<OrganisationMetamacDto> organisationsPagedResult = srmCoreServiceFacade.findOrganisationsByCondition(getServiceContextAdministrador(), metamacCriteria);
 
             // Validate
-            assertEquals(13, organisationsPagedResult.getPaginatorResult().getTotalResults().intValue());
-            assertEquals(13, organisationsPagedResult.getResults().size());
+            assertEquals(15, organisationsPagedResult.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(15, organisationsPagedResult.getResults().size());
             assertTrue(organisationsPagedResult.getResults().get(0) instanceof OrganisationMetamacDto);
             assertEquals(ORGANISATION_SCHEME_1_V1, organisationsPagedResult.getResults().get(0).getItemSchemeVersionUrn());
 
@@ -627,6 +645,8 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
             assertEquals(ORGANISATION_SCHEME_5_V1_ORGANISATION_1, organisationsPagedResult.getResults().get(i++).getUrn());
             assertEquals(ORGANISATION_SCHEME_6_V1_ORGANISATION_1, organisationsPagedResult.getResults().get(i++).getUrn());
             assertEquals(ORGANISATION_SCHEME_7_V2_ORGANISATION_1, organisationsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(AGENCY_ROOT_1_V1, organisationsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(AGENCY_ROOT_2_V1, organisationsPagedResult.getResults().get(i++).getUrn());
             
             assertEquals(organisationsPagedResult.getResults().size(), i);
         }
@@ -718,13 +738,15 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
             MetamacCriteriaResult<OrganisationMetamacDto> organisationsPagedResult = srmCoreServiceFacade.findOrganisationsByCondition(getServiceContextAdministrador(), metamacCriteria);
 
             // Validate
-            assertEquals(2, organisationsPagedResult.getPaginatorResult().getTotalResults().intValue());
-            assertEquals(2, organisationsPagedResult.getResults().size());
+            assertEquals(4, organisationsPagedResult.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(4, organisationsPagedResult.getResults().size());
             assertTrue(organisationsPagedResult.getResults().get(0) instanceof OrganisationMetamacDto);
 
             int i = 0;
             assertEquals(ORGANISATION_SCHEME_2_V1_ORGANISATION_1, organisationsPagedResult.getResults().get(i++).getUrn());
             assertEquals(ORGANISATION_SCHEME_2_V1_ORGANISATION_2, organisationsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(AGENCY_ROOT_1_V1, organisationsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(AGENCY_ROOT_2_V1, organisationsPagedResult.getResults().get(i++).getUrn());
             assertEquals(organisationsPagedResult.getResults().size(), i);
         }
 
@@ -861,7 +883,7 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
         organisationMetamacDto.setItemSchemeVersionUrn(ORGANISATION_SCHEME_1_V2);
 
         OrganisationMetamacDto organisationMetamacDtoCreated = srmCoreServiceFacade.createOrganisation(getServiceContextAdministrador(), organisationMetamacDto);
-        assertEquals("urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ISTAC:ORGANISATIONSCHEME01(02.000)." + organisationMetamacDto.getCode(), organisationMetamacDtoCreated.getUrn());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ORGANISATION00:ORGANISATIONSCHEME01(02.000)." + organisationMetamacDto.getCode(), organisationMetamacDtoCreated.getUrn());
         assertEqualsOrganisationDto(organisationMetamacDto, organisationMetamacDtoCreated);
     }
 

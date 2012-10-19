@@ -457,7 +457,7 @@ public class SrmCoreServiceFacadeCategoriesTest extends SrmBaseTest {
         // Validate
         categorySchemeDtoNewVersion = srmCoreServiceFacade.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), categorySchemeDtoNewVersion.getUrn());
         assertEquals("02.000", categorySchemeDtoNewVersion.getVersionLogic());
-        assertEquals("urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=ISTAC:CATEGORYSCHEME03(02.000)", categorySchemeDtoNewVersion.getUrn());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=ORGANISATION00:CATEGORYSCHEME03(02.000)", categorySchemeDtoNewVersion.getUrn());
     }
 
     @Test
@@ -837,7 +837,7 @@ public class SrmCoreServiceFacadeCategoriesTest extends SrmBaseTest {
         categoryMetamacDto.setItemSchemeVersionUrn(CATEGORY_SCHEME_1_V2);
 
         CategoryMetamacDto categoryMetamacDtoCreated = srmCoreServiceFacade.createCategory(getServiceContextAdministrador(), categoryMetamacDto);
-        assertEquals("urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ISTAC:CATEGORYSCHEME01(02.000)." + categoryMetamacDto.getCode(), categoryMetamacDtoCreated.getUrn());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ORGANISATION00:CATEGORYSCHEME01(02.000)." + categoryMetamacDto.getCode(), categoryMetamacDtoCreated.getUrn());
         assertEqualsCategoryDto(categoryMetamacDto, categoryMetamacDtoCreated);
     }
 

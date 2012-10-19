@@ -1091,12 +1091,12 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
         String urn = CONCEPT_SCHEME_3_V1;
         String versionExpected = "02.000";
-        String urnExpected = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:CONCEPTSCHEME03(02.000)";
-        String urnExpectedConcept1 = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME03(02.000).CONCEPT01";
-        String urnExpectedConcept2 = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME03(02.000).CONCEPT02";
-        String urnExpectedConcept21 = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME03(02.000).CONCEPT0201";
-        String urnExpectedConcept211 = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME03(02.000).CONCEPT020101";
-        String urnExpectedConcept22 = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME03(02.000).CONCEPT0202";
+        String urnExpected = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ORGANISATION00:CONCEPTSCHEME03(02.000)";
+        String urnExpectedConcept1 = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ORGANISATION00:CONCEPTSCHEME03(02.000).CONCEPT01";
+        String urnExpectedConcept2 = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ORGANISATION00:CONCEPTSCHEME03(02.000).CONCEPT02";
+        String urnExpectedConcept21 = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ORGANISATION00:CONCEPTSCHEME03(02.000).CONCEPT0201";
+        String urnExpectedConcept211 = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ORGANISATION00:CONCEPTSCHEME03(02.000).CONCEPT020101";
+        String urnExpectedConcept22 = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ORGANISATION00:CONCEPTSCHEME03(02.000).CONCEPT0202";
 
         ConceptSchemeVersionMetamac conceptSchemeVersionToCopy = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), urn);
         ConceptSchemeVersionMetamac conceptSchemeVersionNewVersion = conceptsService.versioningConceptScheme(getServiceContextAdministrador(), urn, VersionTypeEnum.MAJOR);
@@ -1239,7 +1239,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         String urnToCopy = CONCEPT_SCHEME_7_V1;
         String urnLastVersion = CONCEPT_SCHEME_7_V2;
         String versionExpected = "03.000";
-        String urnExpected = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:CONCEPTSCHEME07(03.000)";
+        String urnExpected = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ORGANISATION00:CONCEPTSCHEME07(03.000)";
 
         ConceptSchemeVersionMetamac conceptSchemeVersionToCopy = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), urnToCopy);
         assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, conceptSchemeVersionToCopy.getLifeCycleMetadata().getProcStatus());
@@ -1327,8 +1327,8 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
         // Versioning
         conceptsService.versioningConceptScheme(getServiceContextAdministrador(), CONCEPT_SCHEME_2_V1, VersionTypeEnum.MAJOR);
-        String urnExpectedConcept1 = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME02(01.000).CONCEPT01";
-        String urnExpectedConcept2 = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:CONCEPTSCHEME02(01.000).CONCEPT02";
+        String urnExpectedConcept1 = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ORGANISATION00:CONCEPTSCHEME02(01.000).CONCEPT01";
+        String urnExpectedConcept2 = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ORGANISATION00:CONCEPTSCHEME02(01.000).CONCEPT02";
 
         // Only check related roles
         {

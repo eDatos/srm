@@ -888,12 +888,12 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
 
         String urn = CATEGORY_SCHEME_3_V1;
         String versionExpected = "02.000";
-        String urnExpected = "urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=ISTAC:CATEGORYSCHEME03(02.000)";
-        String urnExpectedCategory1 = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ISTAC:CATEGORYSCHEME03(02.000).CATEGORY01";
-        String urnExpectedCategory2 = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ISTAC:CATEGORYSCHEME03(02.000).CATEGORY02";
-        String urnExpectedCategory21 = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ISTAC:CATEGORYSCHEME03(02.000).CATEGORY02.CATEGORY0201";
-        String urnExpectedCategory211 = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ISTAC:CATEGORYSCHEME03(02.000).CATEGORY02.CATEGORY0201.CATEGORY020101";
-        String urnExpectedCategory22 = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ISTAC:CATEGORYSCHEME03(02.000).CATEGORY02.CATEGORY0202";
+        String urnExpected = "urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=ORGANISATION00:CATEGORYSCHEME03(02.000)";
+        String urnExpectedCategory1 = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ORGANISATION00:CATEGORYSCHEME03(02.000).CATEGORY01";
+        String urnExpectedCategory2 = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ORGANISATION00:CATEGORYSCHEME03(02.000).CATEGORY02";
+        String urnExpectedCategory21 = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ORGANISATION00:CATEGORYSCHEME03(02.000).CATEGORY02.CATEGORY0201";
+        String urnExpectedCategory211 = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ORGANISATION00:CATEGORYSCHEME03(02.000).CATEGORY02.CATEGORY0201.CATEGORY020101";
+        String urnExpectedCategory22 = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ORGANISATION00:CATEGORYSCHEME03(02.000).CATEGORY02.CATEGORY0202";
 
         CategorySchemeVersionMetamac categorySchemeVersionToCopy = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urn);
         CategorySchemeVersionMetamac categorySchemeVersionNewVersion = categoriesService.versioningCategoryScheme(getServiceContextAdministrador(), urn, VersionTypeEnum.MAJOR);
@@ -976,7 +976,7 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
         String urnToCopy = CATEGORY_SCHEME_7_V1;
         String urnLastVersion = CATEGORY_SCHEME_7_V2;
         String versionExpected = "03.000";
-        String urnExpected = "urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=ISTAC:CATEGORYSCHEME07(03.000)";
+        String urnExpected = "urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=ORGANISATION00:CATEGORYSCHEME07(03.000)";
 
         CategorySchemeVersionMetamac categorySchemeVersionToCopy = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urnToCopy);
         assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, categorySchemeVersionToCopy.getLifeCycleMetadata().getProcStatus());
