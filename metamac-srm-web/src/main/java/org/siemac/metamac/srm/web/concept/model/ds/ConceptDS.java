@@ -1,22 +1,13 @@
 package org.siemac.metamac.srm.web.concept.model.ds;
 
-import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
+import org.siemac.metamac.srm.web.client.model.ds.ItemDS;
 
-import com.smartgwt.client.data.DataSource;
-import com.smartgwt.client.data.fields.DataSourceTextField;
-
-public class ConceptDS extends DataSource {
+public class ConceptDS extends ItemDS {
 
     // IDENTIFIERS
-    public static final String ID                    = "con-id";
-    public static final String CODE                  = "con-code";
-    public static final String URI                   = "con-uri";
-    public static final String URN                   = "con-urn";
-    public static final String NAME                  = "con-name";
     public static final String PLURAL_NAME           = "con-plu-name";
     public static final String ACRONYM               = "con-acron";
     // CONTENT DESCRIPTORS
-    public static final String DESCRIPTION           = "con-desc";
     public static final String DESCRIPTION_SOURCE    = "con-desc-source";
     public static final String CONTEXT               = "con-context";
     public static final String DOC_METHOD            = "con-doc-method";
@@ -31,13 +22,5 @@ public class ConceptDS extends DataSource {
     public static final String RELATED_CONCEPTS      = "con-related-concepts";
     // LEGAL ACTS
     public static final String LEGAL_ACTS            = "con-legal-acts";
-
-    public static String       DTO                   = "con-dto";
-
-    public ConceptDS() {
-        DataSourceTextField code = new DataSourceTextField(CODE, MetamacSrmWeb.getConstants().identifiableArtefactCode());
-        code.setPrimaryKey(true);
-        addField(code);
-    }
 
 }
