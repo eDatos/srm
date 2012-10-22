@@ -5,7 +5,6 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
@@ -28,6 +27,7 @@ import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.form.CustomDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
@@ -321,7 +321,7 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
         InternationalStringDto internationalName = InternationalStringUtils.updateInternationalString(new InternationalStringDto(), nameItem.getValueAsString());
         dsd.setName(internationalName);
         // TODO Organization (MaintainerIdLogic)
-        ExternalItemDto agency = new ExternalItemDto("agency_CODE", "uri:3421", "METAMAC_ORGANISATION", TypeExternalArtefactsEnum.AGENCY);
+        RelatedResourceDto agency = new RelatedResourceDto("agency_CODE", "uri:3421", TypeExternalArtefactsEnum.AGENCY);
         dsd.setMaintainer(agency);
         dsd.setFinalLogic(false);
         dsd.setIsExternalReference(false);

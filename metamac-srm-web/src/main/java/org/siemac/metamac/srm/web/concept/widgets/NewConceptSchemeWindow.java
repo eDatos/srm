@@ -24,6 +24,7 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredSelectIt
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.SearchExternalPaginatedItem;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.FormItemIfFunction;
@@ -129,7 +130,7 @@ public class NewConceptSchemeWindow extends CustomWindow {
         ConceptSchemeMetamacDto conceptSchemeDto = new ConceptSchemeMetamacDto();
 
         // TODO agency
-        ExternalItemDto agency = new ExternalItemDto("agency_CODE", "uri:3421", "METAMAC_ORGANISATION", TypeExternalArtefactsEnum.AGENCY);
+        RelatedResourceDto agency = new RelatedResourceDto("agency_CODE", "uri:3421", TypeExternalArtefactsEnum.AGENCY);
         conceptSchemeDto.setMaintainer(agency);
 
         conceptSchemeDto.setCode(form.getValueAsString(ConceptSchemeDS.CODE));
