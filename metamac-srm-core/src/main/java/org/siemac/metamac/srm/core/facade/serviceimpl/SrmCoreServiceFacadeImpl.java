@@ -1542,24 +1542,23 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     // List<ItemHierarchyDto> itemsHierarchyDto = categoriesDo2DtoMapper.categoryMetamacDoListToItemHierarchyDtoList(categories);
     // return itemsHierarchyDto;
     // }
-    //
-    // @Override
-    // public MetamacCriteriaResult<CategoryMetamacDto> findCategoriesByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
-    // // TODO Security
-    // // CategoriesSecurityUtils.canFindCategoriesByCondition(ctx);
-    //
-    // // Transform
-    // SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getCategoryMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
-    //
-    // // Find
-    // PagedResult<CategoryMetamac> result = getCategoriesMetamacService().findCategoriesByCondition(ctx, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
-    //
-    // // Transform
-    // MetamacCriteriaResult<CategoryMetamacDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultCategory(result,
-    // sculptorCriteria.getPageSize());
-    //
-    // return metamacCriteriaResult;
-    // }
+
+    @Override
+    public MetamacCriteriaResult<CategoryMetamacDto> findCategoriesByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
+        // TODO Security
+        // CategoriesSecurityUtils.canFindCategoriesByCondition(ctx);
+
+        // Transform
+        SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getCategoryMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
+
+        // Find
+        PagedResult<CategoryMetamac> result = getCategoriesMetamacService().findCategoriesByCondition(ctx, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
+
+        // Transform
+        MetamacCriteriaResult<CategoryMetamacDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultCategory(result, sculptorCriteria.getPageSize());
+
+        return metamacCriteriaResult;
+    }
 
     /**************************************************************************
      * PRIVATE METHODS

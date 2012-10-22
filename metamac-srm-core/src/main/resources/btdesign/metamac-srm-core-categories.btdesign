@@ -47,8 +47,8 @@ Application CategoriesMetamac {
     		@CategorySchemeVersionMetamac versioningCategoryScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
     		"Ends the category scheme validity"
     		@CategorySchemeVersionMetamac endCategorySchemeValidity(String urn) throws MetamacException;
-//    		"Retrieves categories scheme by category urn"
-//    		@CategorySchemeVersionMetamac retrieveCategorySchemeByCategoryUrn(String categoryUrn) throws MetamacException;
+    		"Retrieves categories scheme by category urn"
+    		@CategorySchemeVersionMetamac retrieveCategorySchemeByCategoryUrn(String categoryUrn) throws MetamacException;
     		
 			"Creates category"
 			@CategoryMetamac createCategory(String categorySchemeUrn, @CategoryMetamac category) throws MetamacException;
@@ -56,8 +56,8 @@ Application CategoriesMetamac {
 			@CategoryMetamac updateCategory(@CategoryMetamac category) throws MetamacException;
     		"Retrieves category by urn"
     		@CategoryMetamac retrieveCategoryByUrn(String urn) throws MetamacException;
-//    		"Finds categories by criteria"
-//    		PagedResult<@CategoryMetamac> findCategoriesByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
+    		"Finds categories by criteria"
+    		PagedResult<@CategoryMetamac> findCategoriesByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
 //			"Deletes category"
 //    		deleteCategory(String urn) throws MetamacException;
 //    		"Retrieves categories by category scheme, in tree structure"
@@ -80,7 +80,7 @@ Application CategoriesMetamac {
 				findByCondition(PagingParameter pagingParameter);
 				@CategorySchemeVersionMetamac findByUrn(String urn);
 				@CategorySchemeVersionMetamac retrieveCategorySchemeVersionByProcStatus(String urn, ArrayProcStatusEnum procStatus) throws MetamacException;
-//				@CategorySchemeVersionMetamac findByCategory(String urn);
+				@CategorySchemeVersionMetamac findByCategory(String urn);
 			}			
 		}
 		
@@ -93,7 +93,7 @@ Application CategoriesMetamac {
 //				findByQuery(String query, Map<String, Object> parameters, int maxResult);
 				findById;
 //				@CategoryMetamac findByUrn(String urn);
-//				findByCondition(PagingParameter pagingParameter);
+				findByCondition(PagingParameter pagingParameter);
 			}
 		}
 	}

@@ -38,6 +38,7 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.arte.statistic.sdmx.srm.core.category.domain.Category;
+import com.arte.statistic.sdmx.srm.core.category.domain.CategoryProperties;
 import com.arte.statistic.sdmx.srm.core.category.domain.CategorySchemeVersion;
 import com.arte.statistic.sdmx.srm.core.category.serviceapi.utils.CategoriesDoMocks;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
@@ -49,14 +50,14 @@ import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
 public class CategoriesMetamacServiceTest extends SrmBaseTest implements CategoriesMetamacServiceTestBase {
 
     @Autowired
-    private CategoriesMetamacService categoriesService;
+    private CategoriesMetamacService      categoriesService;
 
     @Autowired
     private OrganisationMetamacRepository organisationMetamacRepository;
-    
+
     @Test
     public void testCreateCategoryScheme() throws Exception {
-        
+
         OrganisationMetamac organisationMetamac = organisationMetamacRepository.findByUrn(AGENCY_ROOT_1_V1);
         CategorySchemeVersionMetamac categorySchemeVersion = CategoriesMetamacDoMocks.mockCategoryScheme(organisationMetamac);
         ServiceContext ctx = getServiceContextAdministrador();
@@ -1341,151 +1342,151 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
     // }
     // }
     // }
-    //
-    // @Test
-    // public void testFindCategoriesByCondition() throws Exception {
-    //
-    // // Find all
-    // {
-    // List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(Category.class).orderBy(CategoryProperties.itemSchemeVersion().maintainableArtefact().code())
-    // .orderBy(CategoryProperties.itemSchemeVersion().maintainableArtefact().urn()).ascending().orderBy(CategoryProperties.id()).ascending().distinctRoot().build();
-    // PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
-    // PagedResult<CategoryMetamac> categoriesPagedResult = categoriesService.findCategoriesByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
-    //
-    // // Validate
-    // assertEquals(20, categoriesPagedResult.getTotalRows());
-    // assertEquals(20, categoriesPagedResult.getValues().size());
-    // assertTrue(categoriesPagedResult.getValues().get(0) instanceof CategoryMetamac);
-    //
-    // int i = 0;
-    // assertEquals(CATEGORY_SCHEME_1_V1_CATEGORY_1, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_1, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_2, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_3, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_4, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_2_1, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_4_1, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_2_1_1, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_4_1_1, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(CATEGORY_SCHEME_2_V1_CATEGORY_1, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(CATEGORY_SCHEME_2_V1_CATEGORY_2, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(CATEGORY_SCHEME_3_V1_CATEGORY_1, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(CATEGORY_SCHEME_3_V1_CATEGORY_2, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(CATEGORY_SCHEME_3_V1_CATEGORY_2_1, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(CATEGORY_SCHEME_3_V1_CATEGORY_2_2, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(CATEGORY_SCHEME_3_V1_CATEGORY_2_1_1, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(CATEGORY_SCHEME_4_V1_CATEGORY_1, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(CATEGORY_SCHEME_5_V1_CATEGORY_1, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(CATEGORY_SCHEME_6_V1_CATEGORY_1, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(CATEGORY_SCHEME_7_V2_CATEGORY_1, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    //
-    // assertEquals(categoriesPagedResult.getValues().size(), i);
-    // }
-    //
-    // // Find by name (like), code (like) and category scheme urn
-    // {
-    // String name = "Nombre categoryScheme-1-v2-category-2-";
-    // String code = "CATEGORY02";
-    // String categorySchemeUrn = CATEGORY_SCHEME_1_V2;
-    // List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(Category.class).withProperty(CategoryProperties.itemSchemeVersion().maintainableArtefact().urn())
-    // .eq(categorySchemeUrn).withProperty(CategoryProperties.nameableArtefact().code()).like(code + "%")
-    // .withProperty(CategoryProperties.nameableArtefact().name().texts().label()).like(name + "%").orderBy(CategoryProperties.id()).ascending().distinctRoot().build();
-    // PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
-    // PagedResult<CategoryMetamac> categoriesPagedResult = categoriesService.findCategoriesByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
-    //
-    // // Validate
-    // assertEquals(2, categoriesPagedResult.getTotalRows());
-    // assertEquals(2, categoriesPagedResult.getValues().size());
-    // assertTrue(categoriesPagedResult.getValues().get(0) instanceof CategoryMetamac);
-    //
-    // int i = 0;
-    // assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_2_1, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_2_1_1, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(categoriesPagedResult.getValues().size(), i);
-    // }
-    //
-    // // Find by category scheme urn paginated
-    // {
-    // String categorySchemeUrn = CATEGORY_SCHEME_1_V2;
-    // List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(Category.class).withProperty(CategoryProperties.itemSchemeVersion().maintainableArtefact().urn())
-    // .eq(categorySchemeUrn).orderBy(CategoryProperties.id()).ascending().distinctRoot().build();
-    //
-    // // First page
-    // {
-    // PagingParameter pagingParameter = PagingParameter.rowAccess(0, 3, true);
-    // PagedResult<CategoryMetamac> categoriesPagedResult = categoriesService.findCategoriesByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
-    //
-    // // Validate
-    // assertEquals(8, categoriesPagedResult.getTotalRows());
-    // assertEquals(3, categoriesPagedResult.getValues().size());
-    // assertTrue(categoriesPagedResult.getValues().get(0) instanceof CategoryMetamac);
-    //
-    // int i = 0;
-    // assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_1, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_2, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_3, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(categoriesPagedResult.getValues().size(), i);
-    // }
-    // // Second page
-    // {
-    // PagingParameter pagingParameter = PagingParameter.rowAccess(3, 6, true);
-    // PagedResult<CategoryMetamac> categoriesPagedResult = categoriesService.findCategoriesByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
-    //
-    // // Validate
-    // assertEquals(8, categoriesPagedResult.getTotalRows());
-    // assertEquals(3, categoriesPagedResult.getValues().size());
-    // assertTrue(categoriesPagedResult.getValues().get(0) instanceof CategoryMetamac);
-    //
-    // int i = 0;
-    // assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_4, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_2_1, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_4_1, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(categoriesPagedResult.getValues().size(), i);
-    // }
-    // // Third page
-    // {
-    // PagingParameter pagingParameter = PagingParameter.rowAccess(6, 9, true);
-    // PagedResult<CategoryMetamac> categoriesPagedResult = categoriesService.findCategoriesByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
-    //
-    // // Validate
-    // assertEquals(8, categoriesPagedResult.getTotalRows());
-    // assertEquals(2, categoriesPagedResult.getValues().size());
-    // assertTrue(categoriesPagedResult.getValues().get(0) instanceof CategoryMetamac);
-    //
-    // int i = 0;
-    // assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_2_1_1, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_4_1_1, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(categoriesPagedResult.getValues().size(), i);
-    // }
-    // }
-    // }
-    //
-    // @Override
-    // public void testRetrieveCategorySchemeByCategoryUrn() throws Exception {
-    // // Retrieve
-    // String urn = CATEGORY_SCHEME_1_V2_CATEGORY_1;
-    // CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.retrieveCategorySchemeByCategoryUrn(getServiceContextAdministrador(), urn);
-    //
-    // // Validate
-    // assertEquals(CATEGORY_SCHEME_1_V2, categorySchemeVersion.getMaintainableArtefact().getUrn());
-    // }
-    //
-    // @Test
-    // public void testRetrieveCategorySchemeByCategoryUrnErrorNotExists() throws Exception {
-    //
-    // String urn = NOT_EXISTS;
-    //
-    // try {
-    // categoriesService.retrieveCategorySchemeByCategoryUrn(getServiceContextAdministrador(), urn);
-    // fail("not exists");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.CATEGORY_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // }
-    // }
-    //
+
+    @Test
+    public void testFindCategoriesByCondition() throws Exception {
+
+        // Find all
+        {
+            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(Category.class).orderBy(CategoryProperties.itemSchemeVersion().maintainableArtefact().code())
+                    .orderBy(CategoryProperties.itemSchemeVersion().maintainableArtefact().urn()).ascending().orderBy(CategoryProperties.id()).ascending().distinctRoot().build();
+            PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
+            PagedResult<CategoryMetamac> categoriesPagedResult = categoriesService.findCategoriesByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
+
+            // Validate
+            assertEquals(20, categoriesPagedResult.getTotalRows());
+            assertEquals(20, categoriesPagedResult.getValues().size());
+            assertTrue(categoriesPagedResult.getValues().get(0) instanceof CategoryMetamac);
+
+            int i = 0;
+            assertEquals(CATEGORY_SCHEME_1_V1_CATEGORY_1, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_1, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_2, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_3, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_4, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_2_1, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_4_1, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_2_1_1, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_4_1_1, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CATEGORY_SCHEME_2_V1_CATEGORY_1, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CATEGORY_SCHEME_2_V1_CATEGORY_2, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CATEGORY_SCHEME_3_V1_CATEGORY_1, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CATEGORY_SCHEME_3_V1_CATEGORY_2, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CATEGORY_SCHEME_3_V1_CATEGORY_2_1, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CATEGORY_SCHEME_3_V1_CATEGORY_2_2, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CATEGORY_SCHEME_3_V1_CATEGORY_2_1_1, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CATEGORY_SCHEME_4_V1_CATEGORY_1, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CATEGORY_SCHEME_5_V1_CATEGORY_1, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CATEGORY_SCHEME_6_V1_CATEGORY_1, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CATEGORY_SCHEME_7_V2_CATEGORY_1, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+
+            assertEquals(categoriesPagedResult.getValues().size(), i);
+        }
+
+        // Find by name (like), code (like) and category scheme urn
+        {
+            String name = "Nombre categoryScheme-1-v2-category-2-";
+            String code = "CATEGORY02";
+            String categorySchemeUrn = CATEGORY_SCHEME_1_V2;
+            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(Category.class).withProperty(CategoryProperties.itemSchemeVersion().maintainableArtefact().urn())
+                    .eq(categorySchemeUrn).withProperty(CategoryProperties.nameableArtefact().code()).like(code + "%").withProperty(CategoryProperties.nameableArtefact().name().texts().label())
+                    .like(name + "%").orderBy(CategoryProperties.id()).ascending().distinctRoot().build();
+            PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
+            PagedResult<CategoryMetamac> categoriesPagedResult = categoriesService.findCategoriesByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
+
+            // Validate
+            assertEquals(2, categoriesPagedResult.getTotalRows());
+            assertEquals(2, categoriesPagedResult.getValues().size());
+            assertTrue(categoriesPagedResult.getValues().get(0) instanceof CategoryMetamac);
+
+            int i = 0;
+            assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_2_1, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_2_1_1, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(categoriesPagedResult.getValues().size(), i);
+        }
+
+        // Find by category scheme urn paginated
+        {
+            String categorySchemeUrn = CATEGORY_SCHEME_1_V2;
+            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(Category.class).withProperty(CategoryProperties.itemSchemeVersion().maintainableArtefact().urn())
+                    .eq(categorySchemeUrn).orderBy(CategoryProperties.id()).ascending().distinctRoot().build();
+
+            // First page
+            {
+                PagingParameter pagingParameter = PagingParameter.rowAccess(0, 3, true);
+                PagedResult<CategoryMetamac> categoriesPagedResult = categoriesService.findCategoriesByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
+
+                // Validate
+                assertEquals(8, categoriesPagedResult.getTotalRows());
+                assertEquals(3, categoriesPagedResult.getValues().size());
+                assertTrue(categoriesPagedResult.getValues().get(0) instanceof CategoryMetamac);
+
+                int i = 0;
+                assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_1, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+                assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_2, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+                assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_3, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+                assertEquals(categoriesPagedResult.getValues().size(), i);
+            }
+            // Second page
+            {
+                PagingParameter pagingParameter = PagingParameter.rowAccess(3, 6, true);
+                PagedResult<CategoryMetamac> categoriesPagedResult = categoriesService.findCategoriesByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
+
+                // Validate
+                assertEquals(8, categoriesPagedResult.getTotalRows());
+                assertEquals(3, categoriesPagedResult.getValues().size());
+                assertTrue(categoriesPagedResult.getValues().get(0) instanceof CategoryMetamac);
+
+                int i = 0;
+                assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_4, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+                assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_2_1, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+                assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_4_1, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+                assertEquals(categoriesPagedResult.getValues().size(), i);
+            }
+            // Third page
+            {
+                PagingParameter pagingParameter = PagingParameter.rowAccess(6, 9, true);
+                PagedResult<CategoryMetamac> categoriesPagedResult = categoriesService.findCategoriesByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
+
+                // Validate
+                assertEquals(8, categoriesPagedResult.getTotalRows());
+                assertEquals(2, categoriesPagedResult.getValues().size());
+                assertTrue(categoriesPagedResult.getValues().get(0) instanceof CategoryMetamac);
+
+                int i = 0;
+                assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_2_1_1, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+                assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_4_1_1, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+                assertEquals(categoriesPagedResult.getValues().size(), i);
+            }
+        }
+    }
+
+    @Override
+    public void testRetrieveCategorySchemeByCategoryUrn() throws Exception {
+        // Retrieve
+        String urn = CATEGORY_SCHEME_1_V2_CATEGORY_1;
+        CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.retrieveCategorySchemeByCategoryUrn(getServiceContextAdministrador(), urn);
+
+        // Validate
+        assertEquals(CATEGORY_SCHEME_1_V2, categorySchemeVersion.getMaintainableArtefact().getUrn());
+    }
+
+    @Test
+    public void testRetrieveCategorySchemeByCategoryUrnErrorNotExists() throws Exception {
+
+        String urn = NOT_EXISTS;
+
+        try {
+            categoriesService.retrieveCategorySchemeByCategoryUrn(getServiceContextAdministrador(), urn);
+            fail("not exists");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
     // private void assertListItemsContainsCategory(List<Item> items, String urn) {
     // for (Item item : items) {
     // if (item.getNameableArtefact().getUrn().equals(urn)) {

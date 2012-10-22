@@ -131,8 +131,11 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
     protected String              CATEGORY_SCHEME_3_V1_CATEGORY_2_1           = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ORGANISATION00:CATEGORYSCHEME03(01.000).CATEGORY02.CATEGORY0201";
     protected String              CATEGORY_SCHEME_3_V1_CATEGORY_2_1_1         = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ORGANISATION00:CATEGORYSCHEME03(01.000).CATEGORY02.CATEGORY0201.CATEGORY020101";
     protected String              CATEGORY_SCHEME_3_V1_CATEGORY_2_2           = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ORGANISATION00:CATEGORYSCHEME03(01.000).CATEGORY02.CATEGORY0202";
+    protected String              CATEGORY_SCHEME_4_V1_CATEGORY_1             = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ORGANISATION00:CATEGORYSCHEME04(01.000).CATEGORY01";
     protected String              CATEGORY_SCHEME_5_V1_CATEGORY_1             = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ORGANISATION00:CATEGORYSCHEME05(01.000).CATEGORY01";
     protected String              CATEGORY_SCHEME_5_V1_CATEGORY_2             = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ORGANISATION00:CATEGORYSCHEME05(01.000).CATEGORY02";
+    protected String              CATEGORY_SCHEME_6_V1_CATEGORY_1             = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ORGANISATION00:CATEGORYSCHEME06(01.000).CATEGORY01";
+    protected String              CATEGORY_SCHEME_7_V2_CATEGORY_1             = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ORGANISATION00:CATEGORYSCHEME07(02.000).CATEGORY01";
     // Other
     protected static final String NOT_EXISTS                                  = "not-exists";
 

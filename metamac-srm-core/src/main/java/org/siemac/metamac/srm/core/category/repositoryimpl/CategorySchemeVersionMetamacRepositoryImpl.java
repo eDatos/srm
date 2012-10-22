@@ -21,6 +21,16 @@ public class CategorySchemeVersionMetamacRepositoryImpl extends CategorySchemeVe
     public CategorySchemeVersionMetamacRepositoryImpl() {
     }
 
+    public CategorySchemeVersionMetamac findByCategory(String urn) {
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        parameters.put("urn", urn);
+        List<CategorySchemeVersionMetamac> result = findByQuery("select c from CategorySchemeVersionMetamac c join c.items as i where i.nameableArtefact.urn = :urn", parameters, 1);
+        if (result.size() != 0) {
+            return result.get(0);
+        }
+        return null;
+    }
+    
     @Override
     public CategorySchemeVersionMetamac findByUrn(String urn) {
         Map<String, Object> parameters = new HashMap<String, Object>();

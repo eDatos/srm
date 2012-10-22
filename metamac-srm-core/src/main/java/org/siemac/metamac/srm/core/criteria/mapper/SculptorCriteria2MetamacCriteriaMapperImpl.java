@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
 import org.siemac.metamac.core.common.criteria.mapper.SculptorCriteria2MetamacCriteria;
+import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
+import org.siemac.metamac.srm.core.category.dto.CategoryMetamacDto;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 import org.siemac.metamac.srm.core.category.mapper.CategoriesDo2DtoMapper;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
@@ -112,6 +114,19 @@ public class SculptorCriteria2MetamacCriteriaMapperImpl implements SculptorCrite
             target.setResults(new ArrayList<CategorySchemeMetamacDto>());
             for (CategorySchemeVersionMetamac scheme : source.getValues()) {
                 target.getResults().add(categoriesDo2DtoMapper.categorySchemeMetamacDoToDto(scheme));
+            }
+        }
+        return target;
+    }
+    
+    @Override
+    public MetamacCriteriaResult<CategoryMetamacDto> pageResultToMetamacCriteriaResultCategory(PagedResult<CategoryMetamac> source, Integer pageSize) {
+        MetamacCriteriaResult<CategoryMetamacDto> target = new MetamacCriteriaResult<CategoryMetamacDto>();
+        target.setPaginatorResult(SculptorCriteria2MetamacCriteria.sculptorResultToMetamacCriteriaResult(source, pageSize));
+        if (source.getValues() != null) {
+            target.setResults(new ArrayList<CategoryMetamacDto>());
+            for (CategoryMetamac scheme : source.getValues()) {
+                target.getResults().add(categoriesDo2DtoMapper.categoryMetamacDoToDto(scheme));
             }
         }
         return target;

@@ -1078,7 +1078,7 @@
                 
                 CODE="CATEGORY01"
                 URI="[null]"
-                URN="urn:sdmx:org.sdmx.infomodel.base.Agency=ORGANISATION00:CATEGORYSCHEME02(01.000).CATEGORY01"
+                URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ORGANISATION00:CATEGORYSCHEME02(01.000).CATEGORY01"
                 REPLACED_BY="[null]"
                 REPLACE_TO="[null]"
                 
@@ -1128,7 +1128,7 @@
                 
                 CODE="CATEGORY02"
                 URI="[null]"
-                URN="urn:sdmx:org.sdmx.infomodel.base.Agency=ORGANISATION00:CATEGORYSCHEME02(01.000).CATEGORY02"
+                URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ORGANISATION00:CATEGORYSCHEME02(01.000).CATEGORY02"
                 REPLACED_BY="[null]"
                 REPLACE_TO="[null]"
                 
@@ -1422,7 +1422,7 @@
                         
                         CODE="CATEGORY020101"
                         URI="[null]"
-                        URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ORGANISATION00:CATEGORYSCHEME03(01.000).CATEGORY02.CATEGORY01.CATEGORY020101"
+                        URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ORGANISATION00:CATEGORYSCHEME03(01.000).CATEGORY02.CATEGORY0201.CATEGORY020101"
                         REPLACED_BY="[null]"
                         REPLACE_TO="[null]"
                         

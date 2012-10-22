@@ -9,11 +9,13 @@ import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
 import org.siemac.metamac.srm.core.category.serviceimpl.utils.CategoriesMetamacInvocationValidator;
 import org.siemac.metamac.srm.core.common.LifeCycle;
+import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -203,20 +205,20 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
         return (CategoryMetamac) categoriesService.retrieveCategoryByUrn(ctx, urn);
     }
 
-    // @Override
-    // public PagedResult<CategoryMetamac> findCategoriesByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
-    //
-    // // Validation
-    // CategoriesMetamacInvocationValidator.checkFindCategoriesByCondition(conditions, pagingParameter, null);
-    //
-    // // Find (do not call sdmx module to avoid typecast)
-    // if (conditions == null) {
-    // conditions = ConditionalCriteriaBuilder.criteriaFor(CategoryMetamac.class).distinctRoot().build();
-    // }
-    // PagedResult<CategoryMetamac> categoryPagedResult = getCategoryMetamacRepository().findByCondition(conditions, pagingParameter);
-    // return categoryPagedResult;
-    // }
-    //
+    @Override
+    public PagedResult<CategoryMetamac> findCategoriesByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
+
+        // Validation
+        CategoriesMetamacInvocationValidator.checkFindCategoriesByCondition(conditions, pagingParameter, null);
+
+        // Find (do not call sdmx module to avoid typecast)
+        if (conditions == null) {
+            conditions = ConditionalCriteriaBuilder.criteriaFor(CategoryMetamac.class).distinctRoot().build();
+        }
+        PagedResult<CategoryMetamac> categoryPagedResult = getCategoryMetamacRepository().findByCondition(conditions, pagingParameter);
+        return categoryPagedResult;
+    }
+
     // @Override
     // public void deleteCategory(ServiceContext ctx, String urn) throws MetamacException {
     //
@@ -234,20 +236,20 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
     // List<CategoryMetamac> categoriesMetamac = categoriesToCategoryMetamac(categories);
     // return categoriesMetamac;
     // }
-    //
-    // @Override
-    // public CategorySchemeVersionMetamac retrieveCategorySchemeByCategoryUrn(ServiceContext ctx, String categoryUrn) throws MetamacException {
-    // // Validation
-    // CategoriesMetamacInvocationValidator.checkRetrieveCategorySchemeByCategoryUrn(categoryUrn, null);
-    //
-    // // Retrieve
-    // CategorySchemeVersionMetamac categorySchemeVersion = getCategorySchemeVersionMetamacRepository().findByCategory(categoryUrn);
-    // if (categorySchemeVersion == null) {
-    // throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CATEGORY_NOT_FOUND).withMessageParameters(categoryUrn).build();
-    // }
-    // return categorySchemeVersion;
-    // }
-    //
+
+    @Override
+    public CategorySchemeVersionMetamac retrieveCategorySchemeByCategoryUrn(ServiceContext ctx, String categoryUrn) throws MetamacException {
+        // Validation
+        CategoriesMetamacInvocationValidator.checkRetrieveCategorySchemeByCategoryUrn(categoryUrn, null);
+
+        // Retrieve
+        CategorySchemeVersionMetamac categorySchemeVersion = getCategorySchemeVersionMetamacRepository().findByCategory(categoryUrn);
+        if (categorySchemeVersion == null) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(categoryUrn).build();
+        }
+        return categorySchemeVersion;
+    }
+
     // private List<CategoryMetamac> categoriesToCategoryMetamac(List<Category> items) {
     // List<CategoryMetamac> categories = new ArrayList<CategoryMetamac>();
     // for (Item item : items) {
@@ -255,7 +257,7 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
     // }
     // return categories;
     // }
-    //
+
     // /**
     // * Finds versions of category scheme in specific procStatus
     // */

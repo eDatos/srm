@@ -1,0 +1,13 @@
+package org.siemac.metamac.srm.core.criteria;
+
+public enum CategoryMetamacCriteriaPropertyEnum {
+
+    CODE, URN, NAME, CATEGORY_PARENT_URN, CATEGORY_SCHEME_URN, CATEGORY_SCHEME_IS_LAST_VERSION;
+
+    public String value() {
+        return name();
+    }
+    public static CategoryMetamacCriteriaPropertyEnum fromValue(String v) {
+        return valueOf(v);
+    }
+}
