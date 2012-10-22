@@ -322,12 +322,12 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         setConceptSchemeEditionMode(conceptScheme);
 
         // Update concept scheme in tree grid
-        conceptsTreeGrid.updateConceptScheme(conceptScheme);
+        conceptsTreeGrid.updateItemScheme(conceptScheme);
     }
 
     @Override
     public void setConceptList(List<ItemHierarchyDto> itemHierarchyDtos) {
-        conceptsTreeGrid.setConcepts(conceptSchemeDto, itemHierarchyDtos);
+        conceptsTreeGrid.setItems(conceptSchemeDto, itemHierarchyDtos);
     }
 
     @Override

@@ -130,7 +130,7 @@ public class NewConceptSchemeWindow extends CustomWindow {
         ConceptSchemeMetamacDto conceptSchemeDto = new ConceptSchemeMetamacDto();
 
         // TODO agency
-        RelatedResourceDto agency = new RelatedResourceDto("agency_CODE", "uri:3421", TypeExternalArtefactsEnum.AGENCY);
+        RelatedResourceDto agency = new RelatedResourceDto("SDMX_AGENCY", "urn:sdmx:org.sdmx.infomodel.base.AgencyScheme=SDMX:SDMX_AGENCY_SCHEME(01.000).SDMX_AGENCY", TypeExternalArtefactsEnum.AGENCY);
         conceptSchemeDto.setMaintainer(agency);
 
         conceptSchemeDto.setCode(form.getValueAsString(ConceptSchemeDS.CODE));

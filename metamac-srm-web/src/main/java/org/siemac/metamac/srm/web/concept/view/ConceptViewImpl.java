@@ -385,8 +385,8 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
     public void setConceptList(ConceptSchemeMetamacDto conceptSchemeMetamacDto, List<ItemHierarchyDto> itemHierarchyDtos) {
         this.conceptSchemeMetamacDto = conceptSchemeMetamacDto;
         this.itemHierarchyDtos = itemHierarchyDtos;
-        conceptsTreeGrid.setConcepts(conceptSchemeMetamacDto, itemHierarchyDtos);
-        conceptsTreeGrid.selectConcept(conceptDto);
+        conceptsTreeGrid.setItems(conceptSchemeMetamacDto, itemHierarchyDtos);
+        conceptsTreeGrid.selectItem(conceptDto);
 
         // Security
         mainFormLayout.setCanEdit(ConceptsClientSecurityUtils.canUpdateConcept(conceptSchemeMetamacDto.getLifeCycle().getProcStatus(), conceptSchemeMetamacDto.getType(),

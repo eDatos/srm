@@ -586,7 +586,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         }
 
         // Update organisation scheme in tree grid
-        organisationsTreeGrid.updateOrganisationScheme(organisationSchemeMetamacDto);
+        organisationsTreeGrid.updateItemScheme(organisationSchemeMetamacDto);
     }
 
     @Override
@@ -600,7 +600,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         if (OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME.equals(organisationSchemeDto.getType())) {
             // Organisation hierarchy
             organisationsTreeGrid.setUiHandlers(getUiHandlers()); // UiHandlers cannot be set in constructor because is still null
-            organisationsTreeGrid.setOrganisations(organisationSchemeDto, organisations);
+            organisationsTreeGrid.setItems(organisationSchemeDto, organisations);
         } else {
             // Organisation list
             OrganisationRecord[] records = new OrganisationRecord[organisations.size()];

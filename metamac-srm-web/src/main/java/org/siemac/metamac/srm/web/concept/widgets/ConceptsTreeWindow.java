@@ -79,7 +79,7 @@ public class ConceptsTreeWindow extends CustomWindow {
     }
 
     public void setConcepts(ConceptSchemeMetamacDto conceptSchemeMetamacDto, List<ItemHierarchyDto> itemHierarchyDtos) {
-        conceptsTreeGrid.setConcepts(conceptSchemeMetamacDto, itemHierarchyDtos);
+        conceptsTreeGrid.setItems(conceptSchemeMetamacDto, itemHierarchyDtos);
     }
 
     public HasClickHandlers getSaveClickHandlers() {

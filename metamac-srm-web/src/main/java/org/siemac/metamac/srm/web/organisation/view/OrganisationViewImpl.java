@@ -364,8 +364,8 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
     @Override
     public void setOrganisationList(OrganisationSchemeMetamacDto organisationSchemeMetamacDto, List<ItemHierarchyDto> itemHierarchyDtos) {
         organisationsTreeGrid.setUiHandlers(getUiHandlers());
-        organisationsTreeGrid.setOrganisations(organisationSchemeMetamacDto, itemHierarchyDtos);
-        organisationsTreeGrid.selectOrganisation(organisationDto);
+        organisationsTreeGrid.setItems(organisationSchemeMetamacDto, itemHierarchyDtos);
+        organisationsTreeGrid.selectItem(organisationDto);
 
         // Security
         mainFormLayout.setCanEdit(OrganisationsClientSecurityUtils.canUpdateOrganisation(organisationSchemeMetamacDto.getLifeCycle().getProcStatus()));
