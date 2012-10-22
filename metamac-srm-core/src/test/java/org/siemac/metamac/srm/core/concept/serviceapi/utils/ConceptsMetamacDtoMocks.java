@@ -11,7 +11,7 @@ import org.siemac.metamac.srm.core.concept.enume.domain.ConceptRoleEnum;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 
 import com.arte.statistic.sdmx.srm.core.concept.serviceapi.utils.ConceptsDtoMocks;
-import com.arte.statistic.sdmx.v2_1.domain.dto.util.RelatedResourceDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeRepresentationEnum;
 
 public class ConceptsMetamacDtoMocks {
@@ -24,7 +24,7 @@ public class ConceptsMetamacDtoMocks {
         ConceptSchemeMetamacDto conceptSchemeDto = new ConceptSchemeMetamacDto();
         ConceptsDtoMocks.mockConceptSchemeDto(conceptSchemeDto);
         conceptSchemeDto.setType(ConceptSchemeTypeEnum.GLOSSARY);
-        
+
         conceptSchemeDto.setMaintainer(new RelatedResourceDto(codeMaintainer, urnMaintainer, TypeExternalArtefactsEnum.AGENCY));
 
         return conceptSchemeDto;

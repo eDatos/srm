@@ -22,6 +22,7 @@ import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 
 import com.arte.statistic.sdmx.srm.core.base.serviceapi.utils.BaseDoMocks;
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataAttributeDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;
@@ -31,7 +32,6 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.RelationshipDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.RepresentationDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.util.ContentInputDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.util.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponent;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponentList;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeDataAttribute;

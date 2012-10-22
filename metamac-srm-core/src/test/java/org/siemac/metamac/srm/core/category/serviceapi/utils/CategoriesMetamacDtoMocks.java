@@ -5,7 +5,7 @@ import org.siemac.metamac.srm.core.category.dto.CategoryMetamacDto;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 
 import com.arte.statistic.sdmx.srm.core.category.serviceapi.utils.CategoriesDtoMocks;
-import com.arte.statistic.sdmx.v2_1.domain.dto.util.RelatedResourceDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 
 public class CategoriesMetamacDtoMocks {
 
