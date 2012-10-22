@@ -128,4 +128,21 @@ public class PlaceRequestUtils {
         return placeRequest;
     }
 
+    // Categories
+
+    public static String getCategoryParamFromUrl(PlaceManager placeManager) {
+        for (PlaceRequest request : placeManager.getCurrentPlaceHierarchy()) {
+            if (NameTokens.categoryPage.equals(request.getNameToken())) {
+                return request.getParameter(PlaceRequestParams.categoryParamId, null);
+            }
+        }
+        return null;
+    }
+
+    public static PlaceRequest buildCategoryPlaceRequest(String categoryUrn) {
+        String[] splitUrn = UrnUtils.splitUrnByDots(UrnUtils.removePrefix(categoryUrn));
+        PlaceRequest placeRequest = new PlaceRequest(NameTokens.categoryPage).with(PlaceRequestParams.categoryParamId, splitUrn[splitUrn.length - 1]);
+        return placeRequest;
+    }
+
 }

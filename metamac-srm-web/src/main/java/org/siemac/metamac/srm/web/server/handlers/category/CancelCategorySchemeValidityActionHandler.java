@@ -31,8 +31,8 @@ public class CancelCategorySchemeValidityActionHandler extends SecurityActionHan
         List<CategorySchemeMetamacDto> categorySchemeMetamacDtos = new ArrayList<CategorySchemeMetamacDto>();
         for (String urn : action.getUrns()) {
             try {
-                CategorySchemeMetamacDto conceptSchemeMetamacDto = srmCoreServiceFacade.endCategorySchemeValidity(ServiceContextHolder.getCurrentServiceContext(), urn);
-                categorySchemeMetamacDtos.add(conceptSchemeMetamacDto);
+                CategorySchemeMetamacDto categorySchemeMetamacDto = srmCoreServiceFacade.endCategorySchemeValidity(ServiceContextHolder.getCurrentServiceContext(), urn);
+                categorySchemeMetamacDtos.add(categorySchemeMetamacDto);
             } catch (MetamacException e) {
                 throw WebExceptionUtils.createMetamacWebException(e);
             }

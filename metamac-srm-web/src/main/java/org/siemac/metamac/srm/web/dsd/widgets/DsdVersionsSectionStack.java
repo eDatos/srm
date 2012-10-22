@@ -18,6 +18,8 @@ public class DsdVersionsSectionStack extends VersionsSectionStack {
     public DsdVersionsSectionStack(String title) {
         super(title);
 
+        // Overwrite fields (the fields defined in VersionsSectionStack class are only for ItemScheme resources)
+
         ListGridField codeField = new ListGridField(DataStructureDefinitionDS.CODE, getConstants().identifiableArtefactCode());
         codeField.setWidth("30%");
 

@@ -4,7 +4,6 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
-import org.siemac.metamac.srm.web.server.mock.MockService;
 import org.siemac.metamac.srm.web.shared.organisation.UpdateOrganisationSchemeProcStatusAction;
 import org.siemac.metamac.srm.web.shared.organisation.UpdateOrganisationSchemeProcStatusResult;
 import org.siemac.metamac.web.common.server.ServiceContextHolder;
@@ -28,7 +27,7 @@ public class UpdateOrganisationSchemeProcStatusActionHandler extends SecurityAct
     @Override
     public UpdateOrganisationSchemeProcStatusResult executeSecurityAction(UpdateOrganisationSchemeProcStatusAction action) throws ActionException {
         try {
-            OrganisationSchemeMetamacDto scheme = MockService.getOrganisationSchemeMetamacDto();
+            OrganisationSchemeMetamacDto scheme = null;
             if (ProcStatusEnum.PRODUCTION_VALIDATION.equals(action.getNextProcStatus())) {
                 scheme = srmCoreServiceFacade.sendOrganisationSchemeToProductionValidation(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
             } else if (ProcStatusEnum.DIFFUSION_VALIDATION.equals(action.getNextProcStatus())) {

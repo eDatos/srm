@@ -1,11 +1,16 @@
 package org.siemac.metamac.srm.web.client.widgets;
 
+import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
+
+import org.siemac.metamac.srm.web.client.model.ds.ItemSchemeDS;
+
 import com.smartgwt.client.types.AnimationEffect;
 import com.smartgwt.client.types.Autofit;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.types.VisibilityMode;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.grid.ListGrid;
+import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.events.HasRecordClickHandlers;
 import com.smartgwt.client.widgets.layout.SectionStack;
 import com.smartgwt.client.widgets.layout.SectionStackSection;
@@ -41,6 +46,16 @@ public class VersionsSectionStack extends SectionStack {
         listGrid.setShowSelectionCanvas(true);
         listGrid.setAnimateSelectionUnder(true);
         listGrid.setLeaveScrollbarGap(false);
+
+        ListGridField codeField = new ListGridField(ItemSchemeDS.CODE, getConstants().identifiableArtefactCode());
+        codeField.setWidth("30%");
+
+        ListGridField nameField = new ListGridField(ItemSchemeDS.NAME, getConstants().nameableArtefactName());
+
+        ListGridField versionField = new ListGridField(ItemSchemeDS.VERSION_LOGIC, getConstants().maintainableArtefactVersionLogic());
+        versionField.setWidth("15%");
+
+        listGrid.setFields(codeField, nameField, versionField);
 
         section.setItems(listGrid);
 

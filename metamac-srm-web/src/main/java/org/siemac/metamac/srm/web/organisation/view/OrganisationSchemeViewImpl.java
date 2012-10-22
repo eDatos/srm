@@ -568,8 +568,8 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
     public void setOrganisationScheme(OrganisationSchemeMetamacDto organisationSchemeMetamacDto) {
         this.organisationSchemeDto = organisationSchemeMetamacDto;
 
-        String defaultLocalized = InternationalStringUtils.getLocalisedString(organisationSchemeMetamacDto.getName());
-        String title = defaultLocalized != null ? defaultLocalized : StringUtils.EMPTY;
+        String defaultLocalisedName = InternationalStringUtils.getLocalisedString(organisationSchemeMetamacDto.getName());
+        String title = defaultLocalisedName != null ? defaultLocalisedName : StringUtils.EMPTY;
         mainFormLayout.setTitleLabelContents(title);
 
         mainFormLayout.updatePublishSection(organisationSchemeMetamacDto.getLifeCycle().getProcStatus(), organisationSchemeMetamacDto.getValidTo());

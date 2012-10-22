@@ -1,7 +1,5 @@
 package org.siemac.metamac.srm.web.concept.widgets;
 
-import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
-
 import java.util.List;
 
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
@@ -11,22 +9,11 @@ import org.siemac.metamac.srm.web.concept.utils.RecordUtils;
 
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.data.RecordList;
-import com.smartgwt.client.widgets.grid.ListGridField;
 
 public class ConceptSchemeVersionsSectionStack extends VersionsSectionStack {
 
     public ConceptSchemeVersionsSectionStack(String title) {
         super(title);
-
-        ListGridField codeField = new ListGridField(ConceptSchemeDS.CODE, getConstants().identifiableArtefactCode());
-        codeField.setWidth("30%");
-
-        ListGridField nameField = new ListGridField(ConceptSchemeDS.NAME, getConstants().nameableArtefactName());
-
-        ListGridField versionField = new ListGridField(ConceptSchemeDS.VERSION_LOGIC, getConstants().maintainableArtefactVersionLogic());
-        versionField.setWidth("15%");
-
-        listGrid.setFields(codeField, nameField, versionField);
     }
 
     public void setConceptSchemes(List<ConceptSchemeMetamacDto> conceptSchemeDtos) {
