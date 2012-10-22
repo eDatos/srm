@@ -121,18 +121,18 @@ public class StructuralResourcesViewImpl extends ViewWithUiHandlers<StructuralRe
         lastOrganisationSchemesModifiedSection.setExpanded(false);
         lastOrganisationSchemesModifiedSection.setItems(this.organisationSchemeListGrid);
 
-        SectionStackSection lastCatSchemesModifiedSection = new SectionStackSection();
-        lastCatSchemesModifiedSection.setTitle(MetamacSrmWeb.getConstants().categorySchemeLastModified());
-        lastCatSchemesModifiedSection.setExpanded(false);
-        lastCatSchemesModifiedSection.setItems(this.categorySchemeListGrid);
-
         SectionStackSection lastClassifModifiedSection = new SectionStackSection();
         lastClassifModifiedSection.setTitle(MetamacSrmWeb.getConstants().classificationLastModified());
         lastClassifModifiedSection.setExpanded(false);
         // lastClassifModifiedSection.setItems();
 
-        lastModifiedArtifactsSectionStack.setSections(lastDsdModifiedSection, lastConceptSchemesModifiedSection, lastOrganisationSchemesModifiedSection, lastCatSchemesModifiedSection,
-                lastClassifModifiedSection);
+        SectionStackSection lastCatSchemesModifiedSection = new SectionStackSection();
+        lastCatSchemesModifiedSection.setTitle(MetamacSrmWeb.getConstants().categorySchemeLastModified());
+        lastCatSchemesModifiedSection.setExpanded(false);
+        lastCatSchemesModifiedSection.setItems(this.categorySchemeListGrid);
+
+        lastModifiedArtifactsSectionStack.setSections(lastDsdModifiedSection, lastConceptSchemesModifiedSection, lastOrganisationSchemesModifiedSection, lastClassifModifiedSection,
+                lastCatSchemesModifiedSection);
 
         // Add the ToolStrip to the Operation View layout container
         panel.addMember(this.lastModifiedArtifactsSectionStack);
