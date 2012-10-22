@@ -10,6 +10,9 @@ import org.siemac.metamac.srm.core.category.dto.CategoryMetamacDto;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.Item;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
+
 @org.springframework.stereotype.Component("categoriesDo2DtoMapper")
 public class CategoriesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements CategoriesDo2DtoMapper {
 
@@ -48,38 +51,38 @@ public class CategoriesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements 
         return target;
     }
 
-//    @Override
-//    public List<CategoryMetamacDto> categoryMetamacDoListToDtoList(List<CategoryMetamac> sources) {
-//        List<CategoryMetamacDto> targets = new ArrayList<CategoryMetamacDto>();
-//        for (CategoryMetamac source : sources) {
-//            targets.add(categoryMetamacDoToDto(source));
-//        }
-//        return targets;
-//    }
-//
-//    @Override
-//    public List<ItemHierarchyDto> categoryMetamacDoListToItemHierarchyDtoList(List<CategoryMetamac> sources) {
-//        List<ItemHierarchyDto> targets = new ArrayList<ItemHierarchyDto>();
-//        for (CategoryMetamac source : sources) {
-//            ItemHierarchyDto target = categoryMetamacDoToItemHierarchyDto(source);
-//            targets.add(target);
-//        }
-//        return targets;
-//    }
-//
-//    private ItemHierarchyDto categoryMetamacDoToItemHierarchyDto(CategoryMetamac categoryMetamac) {
-//        ItemHierarchyDto itemHierarchyDto = new ItemHierarchyDto();
-//
-//        // Category
-//        CategoryMetamacDto categoryMetamacDto = categoryMetamacDoToDto(categoryMetamac);
-//        itemHierarchyDto.setItem(categoryMetamacDto);
-//
-//        // Children
-//        for (Item item : categoryMetamac.getChildren()) {
-//            ItemHierarchyDto itemHierarchyChildrenDto = categoryMetamacDoToItemHierarchyDto((CategoryMetamac) item);
-//            itemHierarchyDto.addChildren(itemHierarchyChildrenDto);
-//        }
-//
-//        return itemHierarchyDto;
-//    }
+    @Override
+    public List<CategoryMetamacDto> categoryMetamacDoListToDtoList(List<CategoryMetamac> sources) {
+        List<CategoryMetamacDto> targets = new ArrayList<CategoryMetamacDto>();
+        for (CategoryMetamac source : sources) {
+            targets.add(categoryMetamacDoToDto(source));
+        }
+        return targets;
+    }
+
+    @Override
+    public List<ItemHierarchyDto> categoryMetamacDoListToItemHierarchyDtoList(List<CategoryMetamac> sources) {
+        List<ItemHierarchyDto> targets = new ArrayList<ItemHierarchyDto>();
+        for (CategoryMetamac source : sources) {
+            ItemHierarchyDto target = categoryMetamacDoToItemHierarchyDto(source);
+            targets.add(target);
+        }
+        return targets;
+    }
+
+    private ItemHierarchyDto categoryMetamacDoToItemHierarchyDto(CategoryMetamac categoryMetamac) {
+        ItemHierarchyDto itemHierarchyDto = new ItemHierarchyDto();
+
+        // Category
+        CategoryMetamacDto categoryMetamacDto = categoryMetamacDoToDto(categoryMetamac);
+        itemHierarchyDto.setItem(categoryMetamacDto);
+
+        // Children
+        for (Item item : categoryMetamac.getChildren()) {
+            ItemHierarchyDto itemHierarchyChildrenDto = categoryMetamacDoToItemHierarchyDto((CategoryMetamac) item);
+            itemHierarchyDto.addChildren(itemHierarchyChildrenDto);
+        }
+
+        return itemHierarchyDto;
+    }
 }

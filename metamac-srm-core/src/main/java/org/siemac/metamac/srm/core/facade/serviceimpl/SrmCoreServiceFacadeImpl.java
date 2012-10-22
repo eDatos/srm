@@ -1529,19 +1529,19 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         getCategoriesMetamacService().deleteCategory(ctx, urn);
     }
 
-    // @Override
-    // public List<ItemHierarchyDto> retrieveCategoriesByCategorySchemeUrn(ServiceContext ctx, String categorySchemeUrn) throws MetamacException {
-    //
-    // // TODO Security
-    // // CategoriesSecurityUtils.canRetrieveCategoriesByCategorySchemeUrn(ctx);
-    //
-    // // Retrieve
-    // List<CategoryMetamac> categories = getCategoriesMetamacService().retrieveCategoriesByCategorySchemeUrn(ctx, categorySchemeUrn);
-    //
-    // // Transform
-    // List<ItemHierarchyDto> itemsHierarchyDto = categoriesDo2DtoMapper.categoryMetamacDoListToItemHierarchyDtoList(categories);
-    // return itemsHierarchyDto;
-    // }
+    @Override
+    public List<ItemHierarchyDto> retrieveCategoriesByCategorySchemeUrn(ServiceContext ctx, String categorySchemeUrn) throws MetamacException {
+
+        // TODO Security
+        // CategoriesSecurityUtils.canRetrieveCategoriesByCategorySchemeUrn(ctx);
+
+        // Retrieve
+        List<CategoryMetamac> categories = getCategoriesMetamacService().retrieveCategoriesByCategorySchemeUrn(ctx, categorySchemeUrn);
+
+        // Transform
+        List<ItemHierarchyDto> itemsHierarchyDto = categoriesDo2DtoMapper.categoryMetamacDoListToItemHierarchyDtoList(categories);
+        return itemsHierarchyDto;
+    }
 
     @Override
     public MetamacCriteriaResult<CategoryMetamacDto> findCategoriesByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {

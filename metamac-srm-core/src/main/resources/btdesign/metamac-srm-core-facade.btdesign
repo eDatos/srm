@@ -423,8 +423,8 @@ Application SrmFacadeCore {
             MetamacCriteriaResult<@CategoryMetamacDto> findCategoriesByCondition(MetamacCriteria criteria) throws MetamacException;
 			"Deletes category"
             deleteCategory(String urn) throws MetamacException;
-//    		"Retrieves categories by category scheme, in tree structure"
-//    		List<@ItemHierarchyDto> retrieveCategoriesByCategorySchemeUrn(String categorySchemeUrn) throws MetamacException;       		
+    		"Retrieves categories by category scheme, in tree structure"
+    		List<@ItemHierarchyDto> retrieveCategoriesByCategorySchemeUrn(String categorySchemeUrn) throws MetamacException;       		
     	}
 /*    	
     	Service ImportServiceFacade {

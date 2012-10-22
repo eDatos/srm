@@ -7,6 +7,8 @@ import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
 import org.siemac.metamac.srm.core.category.dto.CategoryMetamacDto;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
+
 public interface CategoriesDo2DtoMapper {
 
     // Category schemes
@@ -15,6 +17,6 @@ public interface CategoriesDo2DtoMapper {
 
     // Categories
     public CategoryMetamacDto categoryMetamacDoToDto(CategoryMetamac source);
-    // public List<CategoryMetamacDto> categoryMetamacDoListToDtoList(List<CategoryMetamac> sources);
-    // public List<ItemHierarchyDto> categoryMetamacDoListToItemHierarchyDtoList(List<CategoryMetamac> sources);
+    public List<CategoryMetamacDto> categoryMetamacDoListToDtoList(List<CategoryMetamac> sources);
+    public List<ItemHierarchyDto> categoryMetamacDoListToItemHierarchyDtoList(List<CategoryMetamac> sources);
 }

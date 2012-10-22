@@ -21,7 +21,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.enume.domain.VersionPatternEnum;
+import com.arte.statistic.sdmx.srm.core.category.domain.Category;
 import com.arte.statistic.sdmx.srm.core.category.domain.CategorySchemeVersion;
 import com.arte.statistic.sdmx.srm.core.category.serviceapi.CategoriesService;
 import com.arte.statistic.sdmx.srm.core.category.serviceimpl.utils.CategoriesDoCopyUtils.CategoryCopyCallback;
@@ -35,9 +37,6 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
 
     @Autowired
     private CategoriesService    categoriesService;
-
-    // @Autowired
-    // private ItemSchemeVersionRepository itemSchemeVersionRepository;
 
     @Autowired
     @Qualifier("categorySchemeLifeCycle")
@@ -226,16 +225,16 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
         categoriesService.deleteCategory(ctx, urn);
     }
 
-    // @Override
-    // public List<CategoryMetamac> retrieveCategoriesByCategorySchemeUrn(ServiceContext ctx, String categorySchemeUrn) throws MetamacException {
-    //
-    // // Retrieve
-    // List<Category> categories = categoriesService.retrieveCategoriesByCategorySchemeUrn(ctx, categorySchemeUrn);
-    //
-    // // Typecast
-    // List<CategoryMetamac> categoriesMetamac = categoriesToCategoryMetamac(categories);
-    // return categoriesMetamac;
-    // }
+    @Override
+    public List<CategoryMetamac> retrieveCategoriesByCategorySchemeUrn(ServiceContext ctx, String categorySchemeUrn) throws MetamacException {
+
+        // Retrieve
+        List<Category> categories = categoriesService.retrieveCategoriesByCategorySchemeUrn(ctx, categorySchemeUrn);
+
+        // Typecast
+        List<CategoryMetamac> categoriesMetamac = categoriesToCategoryMetamac(categories);
+        return categoriesMetamac;
+    }
 
     @Override
     public CategorySchemeVersionMetamac retrieveCategorySchemeByCategoryUrn(ServiceContext ctx, String categoryUrn) throws MetamacException {
@@ -250,25 +249,11 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
         return categorySchemeVersion;
     }
 
-    // private List<CategoryMetamac> categoriesToCategoryMetamac(List<Category> items) {
-    // List<CategoryMetamac> categories = new ArrayList<CategoryMetamac>();
-    // for (Item item : items) {
-    // categories.add((CategoryMetamac) item);
-    // }
-    // return categories;
-    // }
-
-    // /**
-    // * Finds versions of category scheme in specific procStatus
-    // */
-    // private List<CategorySchemeVersionMetamac> findCategorySchemeVersionsOfCategorySchemeInProcStatus(ServiceContext ctx, ItemScheme categoryScheme, ProcStatusEnum... procStatus)
-    // throws MetamacException {
-    //
-    // List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(CategorySchemeVersionMetamac.class)
-    // .withProperty(CategorySchemeVersionMetamacProperties.itemScheme().id()).eq(categoryScheme.getId())
-    // .withProperty(CategorySchemeVersionMetamacProperties.lifeCycleMetadata().procStatus()).in((Object[]) procStatus).distinctRoot().build();
-    // PagingParameter pagingParameter = PagingParameter.noLimits();
-    // PagedResult<CategorySchemeVersionMetamac> categorySchemeVersionPagedResult = getCategorySchemeVersionMetamacRepository().findByCondition(conditions, pagingParameter);
-    // return categorySchemeVersionPagedResult.getValues();
-    // }
+    private List<CategoryMetamac> categoriesToCategoryMetamac(List<Category> items) {
+        List<CategoryMetamac> categories = new ArrayList<CategoryMetamac>();
+        for (Item item : items) {
+            categories.add((CategoryMetamac) item);
+        }
+        return categories;
+    }
 }

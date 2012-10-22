@@ -1285,64 +1285,64 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
         }
     }
 
-    // @Test
-    // public void testRetrieveCategoriesByCategorySchemeUrn() throws Exception {
-    //
-    // // Retrieve
-    // String categorySchemeUrn = CATEGORY_SCHEME_1_V2;
-    // List<CategoryMetamac> categories = categoriesService.retrieveCategoriesByCategorySchemeUrn(getServiceContextAdministrador(), categorySchemeUrn);
-    //
-    // // Validate
-    // assertEquals(4, categories.size());
-    // {
-    // // Category 01
-    // CategoryMetamac category = categories.get(0);
-    // assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_1, category.getNameableArtefact().getUrn());
-    // assertEquals(0, category.getChildren().size());
-    // }
-    // {
-    // // Category 02
-    // CategoryMetamac category = categories.get(1);
-    // assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_2, category.getNameableArtefact().getUrn());
-    // assertEquals(1, category.getChildren().size());
-    // {
-    // // Category 02 01
-    // CategoryMetamac categoryChild = (CategoryMetamac) category.getChildren().get(0);
-    // assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_2_1, categoryChild.getNameableArtefact().getUrn());
-    // assertEquals(1, categoryChild.getChildren().size());
-    // {
-    // // Category 02 01 01
-    // CategoryMetamac categoryChildChild = (CategoryMetamac) categoryChild.getChildren().get(0);
-    // assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_2_1_1, categoryChildChild.getNameableArtefact().getUrn());
-    // assertEquals(0, categoryChildChild.getChildren().size());
-    // }
-    // }
-    // }
-    // {
-    // // Category 03
-    // CategoryMetamac category = categories.get(2);
-    // assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_3, category.getNameableArtefact().getUrn());
-    // assertEquals(0, category.getChildren().size());
-    // }
-    // {
-    // // Category 04
-    // CategoryMetamac category = categories.get(3);
-    // assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_4, category.getNameableArtefact().getUrn());
-    // assertEquals(1, category.getChildren().size());
-    // {
-    // // Category 04 01
-    // CategoryMetamac categoryChild = (CategoryMetamac) category.getChildren().get(0);
-    // assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_4_1, categoryChild.getNameableArtefact().getUrn());
-    // assertEquals(1, categoryChild.getChildren().size());
-    // {
-    // // Category 04 01 01
-    // CategoryMetamac categoryChildChild = (CategoryMetamac) categoryChild.getChildren().get(0);
-    // assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_4_1_1, categoryChildChild.getNameableArtefact().getUrn());
-    // assertEquals(0, categoryChildChild.getChildren().size());
-    // }
-    // }
-    // }
-    // }
+    @Test
+    public void testRetrieveCategoriesByCategorySchemeUrn() throws Exception {
+
+        // Retrieve
+        String categorySchemeUrn = CATEGORY_SCHEME_1_V2;
+        List<CategoryMetamac> categories = categoriesService.retrieveCategoriesByCategorySchemeUrn(getServiceContextAdministrador(), categorySchemeUrn);
+
+        // Validate
+        assertEquals(4, categories.size());
+        {
+            // Category 01
+            CategoryMetamac category = categories.get(0);
+            assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_1, category.getNameableArtefact().getUrn());
+            assertEquals(0, category.getChildren().size());
+        }
+        {
+            // Category 02
+            CategoryMetamac category = categories.get(1);
+            assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_2, category.getNameableArtefact().getUrn());
+            assertEquals(1, category.getChildren().size());
+            {
+                // Category 02 01
+                CategoryMetamac categoryChild = (CategoryMetamac) category.getChildren().get(0);
+                assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_2_1, categoryChild.getNameableArtefact().getUrn());
+                assertEquals(1, categoryChild.getChildren().size());
+                {
+                    // Category 02 01 01
+                    CategoryMetamac categoryChildChild = (CategoryMetamac) categoryChild.getChildren().get(0);
+                    assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_2_1_1, categoryChildChild.getNameableArtefact().getUrn());
+                    assertEquals(0, categoryChildChild.getChildren().size());
+                }
+            }
+        }
+        {
+            // Category 03
+            CategoryMetamac category = categories.get(2);
+            assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_3, category.getNameableArtefact().getUrn());
+            assertEquals(0, category.getChildren().size());
+        }
+        {
+            // Category 04
+            CategoryMetamac category = categories.get(3);
+            assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_4, category.getNameableArtefact().getUrn());
+            assertEquals(1, category.getChildren().size());
+            {
+                // Category 04 01
+                CategoryMetamac categoryChild = (CategoryMetamac) category.getChildren().get(0);
+                assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_4_1, categoryChild.getNameableArtefact().getUrn());
+                assertEquals(1, categoryChild.getChildren().size());
+                {
+                    // Category 04 01 01
+                    CategoryMetamac categoryChildChild = (CategoryMetamac) categoryChild.getChildren().get(0);
+                    assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_4_1_1, categoryChildChild.getNameableArtefact().getUrn());
+                    assertEquals(0, categoryChildChild.getChildren().size());
+                }
+            }
+        }
+    }
 
     @Test
     public void testFindCategoriesByCondition() throws Exception {
