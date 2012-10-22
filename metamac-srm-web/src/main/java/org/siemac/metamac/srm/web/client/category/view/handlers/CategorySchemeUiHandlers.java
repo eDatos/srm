@@ -1,7 +1,5 @@
 package org.siemac.metamac.srm.web.client.category.view.handlers;
 
-import java.util.List;
-
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 
@@ -15,7 +13,6 @@ public interface CategorySchemeUiHandlers extends BaseCategoryUiHandlers {
     void cancelValidity(String urn);
     void goToCategoryScheme(String urn);
     void retrieveCategoryListByScheme(String categorySchemeUrn);
-    void deleteCategories(List<String> urns);
 
     // Life cycle
 

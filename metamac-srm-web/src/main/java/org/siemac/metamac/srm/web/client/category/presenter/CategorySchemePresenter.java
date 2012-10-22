@@ -20,10 +20,16 @@ import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.client.widgets.presenter.ToolStripPresenterWidget;
 import org.siemac.metamac.srm.web.shared.category.CancelCategorySchemeValidityAction;
 import org.siemac.metamac.srm.web.shared.category.CancelCategorySchemeValidityResult;
+import org.siemac.metamac.srm.web.shared.category.DeleteCategoryAction;
+import org.siemac.metamac.srm.web.shared.category.DeleteCategoryResult;
+import org.siemac.metamac.srm.web.shared.category.GetCategoryListBySchemeAction;
+import org.siemac.metamac.srm.web.shared.category.GetCategoryListBySchemeResult;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemeAction;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemeResult;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemeVersionListAction;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemeVersionListResult;
+import org.siemac.metamac.srm.web.shared.category.SaveCategoryAction;
+import org.siemac.metamac.srm.web.shared.category.SaveCategoryResult;
 import org.siemac.metamac.srm.web.shared.category.SaveCategorySchemeAction;
 import org.siemac.metamac.srm.web.shared.category.SaveCategorySchemeResult;
 import org.siemac.metamac.srm.web.shared.category.UpdateCategorySchemeProcStatusAction;
@@ -148,17 +154,17 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
 
     @Override
     public void retrieveCategoryListByScheme(String categorySchemeUrn) {
-        // dispatcher.execute(new GetCategoryListBySchemeAction(categorySchemeUrn), new WaitingAsyncCallback<GetCategoryListBySchemeResult>() {
-        //
-        // @Override
-        // public void onWaitFailure(Throwable caught) {
-        // ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categoryErrorRetrieveList()), MessageTypeEnum.ERROR);
-        // }
-        // @Override
-        // public void onWaitSuccess(GetCategoryListBySchemeResult result) {
-        // getView().setCategoryList(result.getCategorys());
-        // }
-        // });
+        dispatcher.execute(new GetCategoryListBySchemeAction(categorySchemeUrn), new WaitingAsyncCallback<GetCategoryListBySchemeResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categoryErrorRetrieveList()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetCategoryListBySchemeResult result) {
+                getView().setCategoryList(result.getCategories());
+            }
+        });
     }
 
     @Override
@@ -323,41 +329,34 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
 
     @Override
     public void createCategory(CategoryMetamacDto categoryDto) {
-        // dispatcher.execute(new SaveCategoryAction(categoryDto), new WaitingAsyncCallback<SaveCategoryResult>() {
-        //
-        // @Override
-        // public void onWaitFailure(Throwable caught) {
-        // ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categoryErrorSave()), MessageTypeEnum.ERROR);
-        // }
-        // @Override
-        // public void onWaitSuccess(SaveCategoryResult result) {
-        // ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getMessageList(getMessages().categorySaved()), MessageTypeEnum.SUCCESS);
-        // retrieveCategoryListByScheme(categorySchemeMetamacDto.getUrn());
-        // }
-        // });
+        dispatcher.execute(new SaveCategoryAction(categoryDto), new WaitingAsyncCallback<SaveCategoryResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categoryErrorSave()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(SaveCategoryResult result) {
+                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getMessageList(getMessages().categorySaved()), MessageTypeEnum.SUCCESS);
+                retrieveCategoryListByScheme(categorySchemeMetamacDto.getUrn());
+            }
+        });
     }
 
     @Override
     public void deleteCategory(ItemDto itemDto) {
-        List<String> categorysToDelete = new ArrayList<String>();
-        categorysToDelete.add(itemDto.getUrn());
-        deleteCategories(categorysToDelete);
-    }
+        dispatcher.execute(new DeleteCategoryAction(itemDto.getUrn()), new WaitingAsyncCallback<DeleteCategoryResult>() {
 
-    @Override
-    public void deleteCategories(List<String> urns) {
-        // dispatcher.execute(new DeleteCategoryListAction(urns), new WaitingAsyncCallback<DeleteCategoryListResult>() {
-        //
-        // @Override
-        // public void onWaitFailure(Throwable caught) {
-        // ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categoryErrorDelete()), MessageTypeEnum.ERROR);
-        // }
-        // @Override
-        // public void onWaitSuccess(DeleteCategoryListResult result) {
-        // ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getMessageList(getMessages().categoryDeleted()), MessageTypeEnum.SUCCESS);
-        // retrieveCategoryListByScheme(categorySchemeMetamacDto.getUrn());
-        // }
-        // });
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categoryErrorDelete()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(DeleteCategoryResult result) {
+                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getMessageList(getMessages().categoryDeleted()), MessageTypeEnum.SUCCESS);
+                retrieveCategoryListByScheme(categorySchemeMetamacDto.getUrn());
+            }
+        });
     }
 
     @Override
