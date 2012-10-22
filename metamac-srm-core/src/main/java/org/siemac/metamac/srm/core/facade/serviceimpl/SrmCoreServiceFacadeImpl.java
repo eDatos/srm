@@ -1518,17 +1518,17 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         return categoryMetamacDto;
     }
 
-    // @Override
-    // public void deleteCategory(ServiceContext ctx, String urn) throws MetamacException {
-    //
-    // // TODO Security
-    // // CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByCategoryUrn(ctx, urn);
-    // // CategoriesSecurityUtils.canDeleteCategory(ctx, categorySchemeVersion);
-    //
-    // // Delete
-    // getCategoriesMetamacService().deleteCategory(ctx, urn);
-    // }
-    //
+    @Override
+    public void deleteCategory(ServiceContext ctx, String urn) throws MetamacException {
+
+        // TODO Security
+        // CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByCategoryUrn(ctx, urn);
+        // CategoriesSecurityUtils.canDeleteCategory(ctx, categorySchemeVersion);
+
+        // Delete
+        getCategoriesMetamacService().deleteCategory(ctx, urn);
+    }
+
     // @Override
     // public List<ItemHierarchyDto> retrieveCategoriesByCategorySchemeUrn(ServiceContext ctx, String categorySchemeUrn) throws MetamacException {
     //

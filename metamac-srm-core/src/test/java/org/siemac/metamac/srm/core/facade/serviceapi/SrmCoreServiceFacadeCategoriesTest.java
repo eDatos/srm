@@ -788,26 +788,26 @@ public class SrmCoreServiceFacadeCategoriesTest extends SrmBaseTest {
         assertTrue(categoryMetamacDtoUpdated.getVersionOptimisticLocking() > categoryMetamacDto.getVersionOptimisticLocking());
     }
 
-    // @Test
-    // public void testDeleteCategory() throws Exception {
-    //
-    // String urn = CATEGORY_SCHEME_1_V2_CATEGORY_3;
-    //
-    // // Delete category
-    // srmCoreServiceFacade.deleteCategory(getServiceContextAdministrador(), urn);
-    //
-    // // Validation
-    // try {
-    // srmCoreServiceFacade.retrieveCategoryByUrn(getServiceContextAdministrador(), urn);
-    // fail("Category deleted");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.CATEGORY_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // }
-    // }
-    //
+    @Test
+    public void testDeleteCategory() throws Exception {
+
+        String urn = CATEGORY_SCHEME_1_V2_CATEGORY_3;
+
+        // Delete category
+        srmCoreServiceFacade.deleteCategory(getServiceContextAdministrador(), urn);
+
+        // Validation
+        try {
+            srmCoreServiceFacade.retrieveCategoryByUrn(getServiceContextAdministrador(), urn);
+            fail("Category deleted");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
     // @Test
     // public void testRetrieveCategoriesByCategorySchemeUrn() throws Exception {
     //

@@ -219,13 +219,13 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
         return categoryPagedResult;
     }
 
-    // @Override
-    // public void deleteCategory(ServiceContext ctx, String urn) throws MetamacException {
-    //
-    // // Note: CategoriesService checks categoryScheme isn't final
-    // categoriesService.deleteCategory(ctx, urn);
-    // }
-    //
+    @Override
+    public void deleteCategory(ServiceContext ctx, String urn) throws MetamacException {
+
+        // Note: CategoriesService checks categoryScheme isn't final
+        categoriesService.deleteCategory(ctx, urn);
+    }
+
     // @Override
     // public List<CategoryMetamac> retrieveCategoriesByCategorySchemeUrn(ServiceContext ctx, String categorySchemeUrn) throws MetamacException {
     //

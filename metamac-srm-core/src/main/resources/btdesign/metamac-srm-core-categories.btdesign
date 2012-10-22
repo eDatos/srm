@@ -58,8 +58,8 @@ Application CategoriesMetamac {
     		@CategoryMetamac retrieveCategoryByUrn(String urn) throws MetamacException;
     		"Finds categories by criteria"
     		PagedResult<@CategoryMetamac> findCategoriesByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
-//			"Deletes category"
-//    		deleteCategory(String urn) throws MetamacException;
+			"Deletes category"
+    		deleteCategory(String urn) throws MetamacException;
 //    		"Retrieves categories by category scheme, in tree structure"
 //    		List<@CategoryMetamac> retrieveCategoriesByCategorySchemeUrn(String categorySchemeUrn) throws MetamacException;
 		}

@@ -37,6 +37,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.category.domain.Category;
 import com.arte.statistic.sdmx.srm.core.category.domain.CategoryProperties;
 import com.arte.statistic.sdmx.srm.core.category.domain.CategorySchemeVersion;
@@ -1187,103 +1188,103 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
         assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_2_1_1, category.getChildren().get(0).getNameableArtefact().getUrn());
     }
 
-    // @Test
-    // public void testDeleteCategory() throws Exception {
-    //
-    // String urn = CATEGORY_SCHEME_1_V2_CATEGORY_3;
-    // String categorySchemeUrn = CATEGORY_SCHEME_1_V2;
-    //
-    // CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), categorySchemeUrn);
-    // assertEquals(4, categorySchemeVersion.getItemsFirstLevel().size());
-    // assertEquals(8, categorySchemeVersion.getItems().size());
-    //
-    // // Delete category
-    // categoriesService.deleteCategory(getServiceContextAdministrador(), urn);
-    //
-    // // Validation
-    // try {
-    // categoriesService.retrieveCategoryByUrn(getServiceContextAdministrador(), urn);
-    // fail("Category deleted");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.CATEGORY_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // }
-    //
-    // // Check hierarchy
-    // categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), categorySchemeUrn);
-    // assertEquals(3, categorySchemeVersion.getItemsFirstLevel().size());
-    // assertListItemsContainsCategory(categorySchemeVersion.getItemsFirstLevel(), CATEGORY_SCHEME_1_V2_CATEGORY_1);
-    // assertListItemsContainsCategory(categorySchemeVersion.getItemsFirstLevel(), CATEGORY_SCHEME_1_V2_CATEGORY_2);
-    // assertListItemsContainsCategory(categorySchemeVersion.getItemsFirstLevel(), CATEGORY_SCHEME_1_V2_CATEGORY_4);
-    // assertEquals(7, categorySchemeVersion.getItems().size());
-    // assertListItemsContainsCategory(categorySchemeVersion.getItems(), CATEGORY_SCHEME_1_V2_CATEGORY_1);
-    // assertListItemsContainsCategory(categorySchemeVersion.getItems(), CATEGORY_SCHEME_1_V2_CATEGORY_2);
-    // assertListItemsContainsCategory(categorySchemeVersion.getItems(), CATEGORY_SCHEME_1_V2_CATEGORY_2_1);
-    // assertListItemsContainsCategory(categorySchemeVersion.getItems(), CATEGORY_SCHEME_1_V2_CATEGORY_2_1_1);
-    // assertListItemsContainsCategory(categorySchemeVersion.getItems(), CATEGORY_SCHEME_1_V2_CATEGORY_4);
-    // assertListItemsContainsCategory(categorySchemeVersion.getItems(), CATEGORY_SCHEME_1_V2_CATEGORY_4_1);
-    // assertListItemsContainsCategory(categorySchemeVersion.getItems(), CATEGORY_SCHEME_1_V2_CATEGORY_4_1_1);
-    // }
-    //
-    // @Test
-    // public void testDeleteCategoryWithParentAndChildren() throws Exception {
-    //
-    // String urn = CATEGORY_SCHEME_1_V2_CATEGORY_4_1;
-    // String categorySchemeUrn = CATEGORY_SCHEME_1_V2;
-    //
-    // CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), categorySchemeUrn);
-    // assertEquals(4, categorySchemeVersion.getItemsFirstLevel().size());
-    // assertEquals(8, categorySchemeVersion.getItems().size());
-    //
-    // // Delete category
-    // categoriesService.deleteCategory(getServiceContextAdministrador(), urn);
-    //
-    // // Validation
-    // try {
-    // categoriesService.retrieveCategoryByUrn(getServiceContextAdministrador(), urn);
-    // fail("Category deleted");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.CATEGORY_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // }
-    //
-    // categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), categorySchemeUrn);
-    // assertEquals(4, categorySchemeVersion.getItemsFirstLevel().size());
-    // assertListItemsContainsCategory(categorySchemeVersion.getItemsFirstLevel(), CATEGORY_SCHEME_1_V2_CATEGORY_1);
-    // assertListItemsContainsCategory(categorySchemeVersion.getItemsFirstLevel(), CATEGORY_SCHEME_1_V2_CATEGORY_2);
-    // assertListItemsContainsCategory(categorySchemeVersion.getItemsFirstLevel(), CATEGORY_SCHEME_1_V2_CATEGORY_3);
-    // assertListItemsContainsCategory(categorySchemeVersion.getItemsFirstLevel(), CATEGORY_SCHEME_1_V2_CATEGORY_4);
-    // assertEquals(6, categorySchemeVersion.getItems().size());
-    // assertListItemsContainsCategory(categorySchemeVersion.getItems(), CATEGORY_SCHEME_1_V2_CATEGORY_1);
-    // assertListItemsContainsCategory(categorySchemeVersion.getItems(), CATEGORY_SCHEME_1_V2_CATEGORY_2);
-    // assertListItemsContainsCategory(categorySchemeVersion.getItems(), CATEGORY_SCHEME_1_V2_CATEGORY_2_1);
-    // assertListItemsContainsCategory(categorySchemeVersion.getItems(), CATEGORY_SCHEME_1_V2_CATEGORY_2_1_1);
-    // assertListItemsContainsCategory(categorySchemeVersion.getItems(), CATEGORY_SCHEME_1_V2_CATEGORY_3);
-    // assertListItemsContainsCategory(categorySchemeVersion.getItems(), CATEGORY_SCHEME_1_V2_CATEGORY_4);
-    // }
-    //
-    // @Test
-    // public void testDeleteCategoryErrorCategorySchemePublished() throws Exception {
-    //
-    // String urn = CATEGORY_SCHEME_1_V1_CATEGORY_1;
-    // String categorySchemeUrn = CATEGORY_SCHEME_1_V1;
-    //
-    // // Validation
-    // try {
-    // categoriesService.deleteCategory(getServiceContextAdministrador(), urn);
-    // fail("Category can not be deleted");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.MAINTAINABLE_ARTEFACT_UNMODIFIABLE.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(categorySchemeUrn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // }
-    // }
-    //
+    @Test
+    public void testDeleteCategory() throws Exception {
+
+        String urn = CATEGORY_SCHEME_1_V2_CATEGORY_3;
+        String categorySchemeUrn = CATEGORY_SCHEME_1_V2;
+
+        CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), categorySchemeUrn);
+        assertEquals(4, categorySchemeVersion.getItemsFirstLevel().size());
+        assertEquals(8, categorySchemeVersion.getItems().size());
+
+        // Delete category
+        categoriesService.deleteCategory(getServiceContextAdministrador(), urn);
+
+        // Validation
+        try {
+            categoriesService.retrieveCategoryByUrn(getServiceContextAdministrador(), urn);
+            fail("Category deleted");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+
+        // Check hierarchy
+        categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), categorySchemeUrn);
+        assertEquals(3, categorySchemeVersion.getItemsFirstLevel().size());
+        assertListItemsContainsCategory(categorySchemeVersion.getItemsFirstLevel(), CATEGORY_SCHEME_1_V2_CATEGORY_1);
+        assertListItemsContainsCategory(categorySchemeVersion.getItemsFirstLevel(), CATEGORY_SCHEME_1_V2_CATEGORY_2);
+        assertListItemsContainsCategory(categorySchemeVersion.getItemsFirstLevel(), CATEGORY_SCHEME_1_V2_CATEGORY_4);
+        assertEquals(7, categorySchemeVersion.getItems().size());
+        assertListItemsContainsCategory(categorySchemeVersion.getItems(), CATEGORY_SCHEME_1_V2_CATEGORY_1);
+        assertListItemsContainsCategory(categorySchemeVersion.getItems(), CATEGORY_SCHEME_1_V2_CATEGORY_2);
+        assertListItemsContainsCategory(categorySchemeVersion.getItems(), CATEGORY_SCHEME_1_V2_CATEGORY_2_1);
+        assertListItemsContainsCategory(categorySchemeVersion.getItems(), CATEGORY_SCHEME_1_V2_CATEGORY_2_1_1);
+        assertListItemsContainsCategory(categorySchemeVersion.getItems(), CATEGORY_SCHEME_1_V2_CATEGORY_4);
+        assertListItemsContainsCategory(categorySchemeVersion.getItems(), CATEGORY_SCHEME_1_V2_CATEGORY_4_1);
+        assertListItemsContainsCategory(categorySchemeVersion.getItems(), CATEGORY_SCHEME_1_V2_CATEGORY_4_1_1);
+    }
+
+    @Test
+    public void testDeleteCategoryWithParentAndChildren() throws Exception {
+
+        String urn = CATEGORY_SCHEME_1_V2_CATEGORY_4_1;
+        String categorySchemeUrn = CATEGORY_SCHEME_1_V2;
+
+        CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), categorySchemeUrn);
+        assertEquals(4, categorySchemeVersion.getItemsFirstLevel().size());
+        assertEquals(8, categorySchemeVersion.getItems().size());
+
+        // Delete category
+        categoriesService.deleteCategory(getServiceContextAdministrador(), urn);
+
+        // Validation
+        try {
+            categoriesService.retrieveCategoryByUrn(getServiceContextAdministrador(), urn);
+            fail("Category deleted");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+
+        categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), categorySchemeUrn);
+        assertEquals(4, categorySchemeVersion.getItemsFirstLevel().size());
+        assertListItemsContainsCategory(categorySchemeVersion.getItemsFirstLevel(), CATEGORY_SCHEME_1_V2_CATEGORY_1);
+        assertListItemsContainsCategory(categorySchemeVersion.getItemsFirstLevel(), CATEGORY_SCHEME_1_V2_CATEGORY_2);
+        assertListItemsContainsCategory(categorySchemeVersion.getItemsFirstLevel(), CATEGORY_SCHEME_1_V2_CATEGORY_3);
+        assertListItemsContainsCategory(categorySchemeVersion.getItemsFirstLevel(), CATEGORY_SCHEME_1_V2_CATEGORY_4);
+        assertEquals(6, categorySchemeVersion.getItems().size());
+        assertListItemsContainsCategory(categorySchemeVersion.getItems(), CATEGORY_SCHEME_1_V2_CATEGORY_1);
+        assertListItemsContainsCategory(categorySchemeVersion.getItems(), CATEGORY_SCHEME_1_V2_CATEGORY_2);
+        assertListItemsContainsCategory(categorySchemeVersion.getItems(), CATEGORY_SCHEME_1_V2_CATEGORY_2_1);
+        assertListItemsContainsCategory(categorySchemeVersion.getItems(), CATEGORY_SCHEME_1_V2_CATEGORY_2_1_1);
+        assertListItemsContainsCategory(categorySchemeVersion.getItems(), CATEGORY_SCHEME_1_V2_CATEGORY_3);
+        assertListItemsContainsCategory(categorySchemeVersion.getItems(), CATEGORY_SCHEME_1_V2_CATEGORY_4);
+    }
+
+    @Test
+    public void testDeleteCategoryErrorCategorySchemePublished() throws Exception {
+
+        String urn = CATEGORY_SCHEME_1_V1_CATEGORY_1;
+        String categorySchemeUrn = CATEGORY_SCHEME_1_V1;
+
+        // Validation
+        try {
+            categoriesService.deleteCategory(getServiceContextAdministrador(), urn);
+            fail("Category can not be deleted");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.MAINTAINABLE_ARTEFACT_UNMODIFIABLE.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(categorySchemeUrn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
     // @Test
     // public void testRetrieveCategoriesByCategorySchemeUrn() throws Exception {
     //
@@ -1487,15 +1488,15 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
         }
     }
 
-    // private void assertListItemsContainsCategory(List<Item> items, String urn) {
-    // for (Item item : items) {
-    // if (item.getNameableArtefact().getUrn().equals(urn)) {
-    // return;
-    // }
-    // }
-    // fail("List does not contain item with urn " + urn);
-    // }
-    //
+    private void assertListItemsContainsCategory(List<Item> items, String urn) {
+        for (Item item : items) {
+            if (item.getNameableArtefact().getUrn().equals(urn)) {
+                return;
+            }
+        }
+        fail("List does not contain item with urn " + urn);
+    }
+
     // // private void assertListCategoriesContainsCategory(List<CategoryMetamac> items, String urn) {
     // // for (Item item : items) {
     // // if (item.getNameableArtefact().getUrn().equals(urn)) {
