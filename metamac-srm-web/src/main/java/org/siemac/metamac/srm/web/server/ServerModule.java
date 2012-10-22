@@ -5,10 +5,13 @@ import org.siemac.metamac.srm.web.server.handlers.FindConceptSchemesActionHandle
 import org.siemac.metamac.srm.web.server.handlers.FindConceptsActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.ValidateTicketActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.category.CancelCategorySchemeValidityActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.category.DeleteCategoryActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.category.DeleteCategorySchemeListActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.category.GetCategoryListBySchemeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.category.GetCategorySchemeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.category.GetCategorySchemeListActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.category.GetCategorySchemeVersionListActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.category.SaveCategoryActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.category.SaveCategorySchemeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.category.UpdateCategorySchemeProcStatusActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.category.VersionCategorySchemeActionHandler;
@@ -59,10 +62,13 @@ import org.siemac.metamac.srm.web.shared.FindCodeListsAction;
 import org.siemac.metamac.srm.web.shared.FindConceptSchemesAction;
 import org.siemac.metamac.srm.web.shared.FindConceptsAction;
 import org.siemac.metamac.srm.web.shared.category.CancelCategorySchemeValidityAction;
+import org.siemac.metamac.srm.web.shared.category.DeleteCategoryAction;
 import org.siemac.metamac.srm.web.shared.category.DeleteCategorySchemeListAction;
+import org.siemac.metamac.srm.web.shared.category.GetCategoryListBySchemeAction;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemeAction;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemeListAction;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemeVersionListAction;
+import org.siemac.metamac.srm.web.shared.category.SaveCategoryAction;
 import org.siemac.metamac.srm.web.shared.category.SaveCategorySchemeAction;
 import org.siemac.metamac.srm.web.shared.category.UpdateCategorySchemeProcStatusAction;
 import org.siemac.metamac.srm.web.shared.category.VersionCategorySchemeAction;
@@ -195,6 +201,9 @@ public class ServerModule extends HandlerModule {
         bindHandler(VersionCategorySchemeAction.class, VersionCategorySchemeActionHandler.class);
         bindHandler(GetCategorySchemeVersionListAction.class, GetCategorySchemeVersionListActionHandler.class);
         bindHandler(GetCategorySchemeAction.class, GetCategorySchemeActionHandler.class);
+        bindHandler(GetCategoryListBySchemeAction.class, GetCategoryListBySchemeActionHandler.class);
+        bindHandler(DeleteCategoryAction.class, DeleteCategoryActionHandler.class);
+        bindHandler(SaveCategoryAction.class, SaveCategoryActionHandler.class);
 
         bindHandler(ValidateTicketAction.class, ValidateTicketActionHandler.class);
         bindHandler(GetLoginPageUrlAction.class, GetLoginPageUrlActionHandler.class);
