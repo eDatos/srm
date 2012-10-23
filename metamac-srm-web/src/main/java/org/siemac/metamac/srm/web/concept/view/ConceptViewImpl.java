@@ -15,6 +15,7 @@ import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.model.ds.RepresentationDS;
 import org.siemac.metamac.srm.web.client.representation.widgets.StaticFacetForm;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
+import org.siemac.metamac.srm.web.client.widgets.CustomVLayout;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
 import org.siemac.metamac.srm.web.concept.presenter.ConceptPresenter;
 import org.siemac.metamac.srm.web.concept.utils.CommonUtils;
@@ -115,8 +116,7 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
 
         conceptsTreeGrid = new ConceptsTreeGrid();
 
-        VLayout conceptsListGridLayout = new VLayout();
-        conceptsListGridLayout.setMargin(15);
+        CustomVLayout conceptsListGridLayout = new CustomVLayout();
         conceptsListGridLayout.addMember(new TitleLabel(getConstants().conceptSchemeConcepts()));
         conceptsListGridLayout.addMember(conceptsTreeGrid);
 

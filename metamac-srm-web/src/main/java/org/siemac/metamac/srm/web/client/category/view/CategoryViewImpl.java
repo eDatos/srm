@@ -15,6 +15,7 @@ import org.siemac.metamac.srm.web.client.category.view.handlers.CategoryUiHandle
 import org.siemac.metamac.srm.web.client.category.widgets.CategoriesTreeGrid;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
+import org.siemac.metamac.srm.web.client.widgets.CustomVLayout;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
@@ -69,8 +70,7 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
 
         categoriesTreeGrid = new CategoriesTreeGrid();
 
-        VLayout categoriesListGridLayout = new VLayout();
-        categoriesListGridLayout.setMargin(15);
+        CustomVLayout categoriesListGridLayout = new CustomVLayout();
         categoriesListGridLayout.addMember(new TitleLabel(getConstants().categorySchemeCategories()));
         categoriesListGridLayout.addMember(categoriesTreeGrid);
 

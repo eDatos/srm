@@ -12,6 +12,7 @@ import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
+import org.siemac.metamac.srm.web.client.widgets.CustomVLayout;
 import org.siemac.metamac.srm.web.organisation.model.ds.ContactDS;
 import org.siemac.metamac.srm.web.organisation.model.ds.OrganisationDS;
 import org.siemac.metamac.srm.web.organisation.model.record.ContactRecord;
@@ -97,8 +98,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
 
         organisationsTreeGrid = new OrganisationsTreeGrid();
 
-        VLayout organisationsListGridLayout = new VLayout();
-        organisationsListGridLayout.setMargin(15);
+        CustomVLayout organisationsListGridLayout = new CustomVLayout();
         organisationsListGridLayout.addMember(new TitleLabel(getConstants().organisationSchemeOrganisations()));
         organisationsListGridLayout.addMember(organisationsTreeGrid);
 
