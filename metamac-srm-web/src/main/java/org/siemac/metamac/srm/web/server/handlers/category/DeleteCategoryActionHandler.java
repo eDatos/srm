@@ -8,9 +8,11 @@ import org.siemac.metamac.web.common.server.ServiceContextHolder;
 import org.siemac.metamac.web.common.server.handlers.SecurityActionHandler;
 import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.gwtplatform.dispatch.shared.ActionException;
 
+@Component
 public class DeleteCategoryActionHandler extends SecurityActionHandler<DeleteCategoryAction, DeleteCategoryResult> {
 
     @Autowired
