@@ -176,6 +176,12 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
         assertNotNull(dataStructureDefinitionVersionMetamacCreated);
     }
 
+    @Override
+    public void testImportDataStructureDefinition() throws Exception {
+        // TODO Auto-generated method stub
+        
+    }
+    
     @Test
     @Override
     public void testEndDataStructureDefinitionValidity() throws Exception {
