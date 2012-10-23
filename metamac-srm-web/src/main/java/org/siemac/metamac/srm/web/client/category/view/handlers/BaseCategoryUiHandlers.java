@@ -7,7 +7,7 @@ import com.gwtplatform.mvp.client.UiHandlers;
 
 public interface BaseCategoryUiHandlers extends UiHandlers {
 
-    void createCategory(CategoryMetamacDto categoryDto);
+    void saveCategory(CategoryMetamacDto categoryDto);
     void deleteCategory(ItemDto itemDto);
     void goToCategory(String urn);
 

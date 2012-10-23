@@ -243,6 +243,12 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         panel.addMember(organisationsLayout);
     }
 
+    @Override
+    public void setUiHandlers(OrganisationSchemeUiHandlers uiHandlers) {
+        super.setUiHandlers(uiHandlers);
+        organisationsTreeGrid.setUiHandlers(getUiHandlers());
+    }
+
     private void bindMainFormLayoutEvents() {
         mainFormLayout.getTranslateToolStripButton().addClickHandler(new ClickHandler() {
 
@@ -599,7 +605,6 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
     public void setOrganisationList(List<ItemHierarchyDto> organisations) {
         if (OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME.equals(organisationSchemeDto.getType())) {
             // Organisation hierarchy
-            organisationsTreeGrid.setUiHandlers(getUiHandlers()); // UiHandlers cannot be set in constructor because is still null
             organisationsTreeGrid.setItems(organisationSchemeDto, organisations);
         } else {
             // Organisation list

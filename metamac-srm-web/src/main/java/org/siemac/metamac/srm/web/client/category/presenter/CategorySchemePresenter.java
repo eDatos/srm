@@ -328,7 +328,7 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
     }
 
     @Override
-    public void createCategory(CategoryMetamacDto categoryDto) {
+    public void saveCategory(CategoryMetamacDto categoryDto) {
         dispatcher.execute(new SaveCategoryAction(categoryDto), new WaitingAsyncCallback<SaveCategoryResult>() {
 
             @Override

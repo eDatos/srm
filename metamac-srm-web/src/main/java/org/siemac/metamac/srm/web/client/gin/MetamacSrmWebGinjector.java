@@ -1,6 +1,7 @@
 package org.siemac.metamac.srm.web.client.gin;
 
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
+import org.siemac.metamac.srm.web.client.category.presenter.CategoryPresenter;
 import org.siemac.metamac.srm.web.client.category.presenter.CategorySchemeListPresenter;
 import org.siemac.metamac.srm.web.client.category.presenter.CategorySchemePresenter;
 import org.siemac.metamac.srm.web.client.presenter.ErrorPagePresenter;
@@ -67,5 +68,6 @@ public interface MetamacSrmWebGinjector extends Ginjector {
     // Categories
     AsyncProvider<CategorySchemeListPresenter> getCategorySchemeListPresenter();
     AsyncProvider<CategorySchemePresenter> getCategorySchemePresenter();
+    AsyncProvider<CategoryPresenter> getCategoryPresenter();
 
 }

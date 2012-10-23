@@ -80,7 +80,7 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
     // Versions
     private CategorySchemeVersionsSectionStack versionsSectionStack;
 
-    // OrganisationTree
+    // CategoriesTree
     private CategoriesTreeGrid                 categoriesTreeGrid;
 
     private CategorySchemeMetamacDto           categorySchemeDto;

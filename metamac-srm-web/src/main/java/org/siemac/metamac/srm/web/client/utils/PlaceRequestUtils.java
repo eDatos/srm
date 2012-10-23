@@ -130,6 +130,14 @@ public class PlaceRequestUtils {
 
     // Categories
 
+    /**
+     * Splits a category identifier (not code!) by its version.
+     * For example: the identifier SDMX_AGENCY:category_scheme_0001(1.0).category1.category2 is split in two values:
+     * · SDMX_AGENCY:category_scheme_0001
+     * · category1.category2
+     */
+    public static final String CATEGORY_IDENTIFIER_SPLITTER_BY_VERSION_REG_EXP = "\\(\\d+\\.\\d+\\)\\.";
+
     public static String getCategoryParamFromUrl(PlaceManager placeManager) {
         for (PlaceRequest request : placeManager.getCurrentPlaceHierarchy()) {
             if (NameTokens.categoryPage.equals(request.getNameToken())) {
@@ -140,8 +148,9 @@ public class PlaceRequestUtils {
     }
 
     public static PlaceRequest buildCategoryPlaceRequest(String categoryUrn) {
-        String[] splitUrn = UrnUtils.splitUrnByDots(UrnUtils.removePrefix(categoryUrn));
-        PlaceRequest placeRequest = new PlaceRequest(NameTokens.categoryPage).with(PlaceRequestParams.categoryParamId, splitUrn[splitUrn.length - 1]);
+        String identifier = UrnUtils.removePrefix(categoryUrn);
+        String[] splitIdentifier = identifier.split(CATEGORY_IDENTIFIER_SPLITTER_BY_VERSION_REG_EXP);
+        PlaceRequest placeRequest = new PlaceRequest(NameTokens.categoryPage).with(PlaceRequestParams.categoryParamId, splitIdentifier[splitIdentifier.length - 1]);
         return placeRequest;
     }
 

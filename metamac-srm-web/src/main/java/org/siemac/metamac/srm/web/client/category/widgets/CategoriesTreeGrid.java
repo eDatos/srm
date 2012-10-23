@@ -49,7 +49,7 @@ public class CategoriesTreeGrid extends ItemsTreeGrid {
                             CategoryMetamacDto categoryMetamacDto = newCategoryWindow.getNewCategoryDto();
                             categoryMetamacDto.setItemSchemeVersionUrn(categorySchemeMetamacDto.getUrn()); // Set category scheme URN
                             categoryMetamacDto.setItemParentUrn(selectedCategory != null ? selectedCategory.getUrn() : null); // Set category parent URN
-                            CategoriesTreeGrid.this.uiHandlers.createCategory(categoryMetamacDto);
+                            CategoriesTreeGrid.this.uiHandlers.saveCategory(categoryMetamacDto);
                             newCategoryWindow.destroy();
                         }
                     }

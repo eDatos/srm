@@ -237,6 +237,12 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         panel.addMember(contactsSectionLayout);
     }
 
+    @Override
+    public void setUiHandlers(OrganisationUiHandlers uiHandlers) {
+        super.setUiHandlers(uiHandlers);
+        organisationsTreeGrid.setUiHandlers(uiHandlers);
+    }
+
     private void bindMainFormLayoutEvents() {
         mainFormLayout.getTranslateToolStripButton().addClickHandler(new ClickHandler() {
 
@@ -348,8 +354,8 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         // TODO Only reload tree when necessary
         getUiHandlers().retrieveOrganisationListByScheme(organisationDto.getItemSchemeVersionUrn());
 
-        String defaultLocalized = InternationalStringUtils.getLocalisedString(organisationDto.getName());
-        String title = defaultLocalized != null ? defaultLocalized : StringUtils.EMPTY;
+        String defaultLocalisedName = InternationalStringUtils.getLocalisedString(organisationDto.getName());
+        String title = defaultLocalisedName != null ? defaultLocalisedName : StringUtils.EMPTY;
         mainFormLayout.setTitleLabelContents(title);
 
         mainFormLayout.setViewMode();
@@ -363,7 +369,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
 
     @Override
     public void setOrganisationList(OrganisationSchemeMetamacDto organisationSchemeMetamacDto, List<ItemHierarchyDto> itemHierarchyDtos) {
-        organisationsTreeGrid.setUiHandlers(getUiHandlers());
+
         organisationsTreeGrid.setItems(organisationSchemeMetamacDto, itemHierarchyDtos);
         organisationsTreeGrid.selectItem(organisationDto);
 

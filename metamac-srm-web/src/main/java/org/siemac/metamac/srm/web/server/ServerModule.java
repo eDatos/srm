@@ -7,6 +7,7 @@ import org.siemac.metamac.srm.web.server.handlers.ValidateTicketActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.category.CancelCategorySchemeValidityActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.category.DeleteCategoryActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.category.DeleteCategorySchemeListActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.category.GetCategoryActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.category.GetCategoryListBySchemeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.category.GetCategorySchemeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.category.GetCategorySchemeListActionHandler;
@@ -64,6 +65,7 @@ import org.siemac.metamac.srm.web.shared.FindConceptsAction;
 import org.siemac.metamac.srm.web.shared.category.CancelCategorySchemeValidityAction;
 import org.siemac.metamac.srm.web.shared.category.DeleteCategoryAction;
 import org.siemac.metamac.srm.web.shared.category.DeleteCategorySchemeListAction;
+import org.siemac.metamac.srm.web.shared.category.GetCategoryAction;
 import org.siemac.metamac.srm.web.shared.category.GetCategoryListBySchemeAction;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemeAction;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemeListAction;
@@ -204,6 +206,7 @@ public class ServerModule extends HandlerModule {
         bindHandler(GetCategoryListBySchemeAction.class, GetCategoryListBySchemeActionHandler.class);
         bindHandler(DeleteCategoryAction.class, DeleteCategoryActionHandler.class);
         bindHandler(SaveCategoryAction.class, SaveCategoryActionHandler.class);
+        bindHandler(GetCategoryAction.class, GetCategoryActionHandler.class);
 
         bindHandler(ValidateTicketAction.class, ValidateTicketActionHandler.class);
         bindHandler(GetLoginPageUrlAction.class, GetLoginPageUrlActionHandler.class);
