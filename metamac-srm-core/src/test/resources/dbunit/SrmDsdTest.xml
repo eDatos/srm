@@ -250,7 +250,7 @@
                 LAST_UPDATED_TZ="Europe/London"
             />        
              
-            <!-- SDMX -->
+            <!-- ISO -->
             
             <TB_M_ORGANISATIONS
                 TB_ORGANISATIONS="10014"
@@ -343,6 +343,57 @@
                 DESCRIPTION_FK="[null]"
                 
                 UUID="annotableArtefact-10015"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"
+            />
+            
+           <!-- INE -->
+            
+            <TB_M_ORGANISATIONS
+                TB_ORGANISATIONS="10016"
+            />
+            
+            <TB_ORGANISATIONS
+                TB_ITEMS="10016"
+                ORGANISATION_TYPE="AGENCY"
+            />
+        
+            <TB_ITEMS
+                ID="10016"
+                PARENT_FK="[null]"
+                ITEM_SCHEME_VERSION_FK="1001"
+                ITEM_SCHEME_VERSION_FIRST_FK="1001"
+                NAMEABLE_ARTEFACT_FK="10016"
+                      
+                UUID="organisationScheme-1001-v1-org-INE"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"  
+            />
+
+            <TB_ANNOTABLE_ARTEFACTS 
+                ID="10016"
+                ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+                
+                CODE="INE"
+                URI="[null]"
+                URN="urn:sdmx:org.sdmx.infomodel.base.Agency=INE:INE(1.0).INE"
+                REPLACED_BY="[null]"
+                REPLACE_TO="[null]"
+                
+                NAME_FK="[null]"
+                DESCRIPTION_FK="[null]"
+                
+                UUID="annotableArtefact-10016"
                 VERSION="1"
                 CREATED_BY="user1"
                 CREATED_DATE="2011-01-01 01:02:03"

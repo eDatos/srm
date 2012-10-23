@@ -188,7 +188,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         dataStructureDefinitionVersion.getMaintainableArtefact().setIsExternalReference(Boolean.FALSE);
         
         // Import
-        return (DataStructureDefinitionVersionMetamac) dataStructureDefinitionService.importDataStructureDefinition(ctx, dataStructureDefinitionVersion, VersionPatternEnum.XX_YYY, structureCopyCallback);
+        return (DataStructureDefinitionVersionMetamac) dataStructureDefinitionService.importDataStructureDefinition(ctx, dataStructureDefinitionVersion, structureCopyCallback);
     }
     
     @Override

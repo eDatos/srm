@@ -500,35 +500,63 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
     @Test
     public void testImportSDMXStructureMsg() throws Exception {
         File file = null;
+        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = null;
 
         // ECB **************************
         file = new File(SdmxResources.DSD_ECB_EXR_NG_FULL);
         srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), SrmDtoMocks.createContentInput(file));
+        dataStructureDefinitionMetamacDto = srmCoreServiceFacade.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(), SdmxResources.DSD_ECB_EXR_NG_FULL_URN);
+        assertNotNull(dataStructureDefinitionMetamacDto.getId());
+        assertEquals(SdmxResources.DSD_ECB_EXR_NG_FULL_URN, dataStructureDefinitionMetamacDto.getUrn());
+        
+        file = new File(SdmxResources.DSD_ECB_EXR_SG_FULL);
+        srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), SrmDtoMocks.createContentInput(file));
+        dataStructureDefinitionMetamacDto = srmCoreServiceFacade.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(), SdmxResources.DSD_ECB_EXR_SG_FULL_URN);
+        assertNotNull(dataStructureDefinitionMetamacDto.getId());
+        assertEquals(SdmxResources.DSD_ECB_EXR_SG_FULL_URN, dataStructureDefinitionMetamacDto.getUrn());
 
-//        file = new File(SdmxResources.DSD_ECB_EXR_SG_FULL);
-//        srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), SrmDtoMocks.createContentInput(file));
-//
-//        file = new File(SdmxResources.DSD_ECB_EXR_RG_FULL);
-//        srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), SrmDtoMocks.createContentInput(file));
-//
-//        // INE **************************
-//        file = new File(SdmxResources.DSD_INE_DPOP);
-//        srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), SrmDtoMocks.createContentInput(file));
-//
-//        file = new File(SdmxResources.DSD_INE_EPOP);
-//        srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), SrmDtoMocks.createContentInput(file));
-//
-//        file = new File(SdmxResources.DSD_INE_IDB);
-//        srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), SrmDtoMocks.createContentInput(file));
-//
-//        file = new File(SdmxResources.DSD_INE_IPC);
-//        srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), SrmDtoMocks.createContentInput(file));
-//
-//        file = new File(SdmxResources.DSD_INE_IPCA);
-//        srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), SrmDtoMocks.createContentInput(file));
-//
-//        file = new File(SdmxResources.DSD_INE_MNP);
-//        srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), SrmDtoMocks.createContentInput(file));
+        file = new File(SdmxResources.DSD_ECB_EXR_RG_FULL);
+        srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), SrmDtoMocks.createContentInput(file));
+        dataStructureDefinitionMetamacDto = srmCoreServiceFacade.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(), SdmxResources.DSD_ECB_EXR_RG_FULL_URN);
+        assertNotNull(dataStructureDefinitionMetamacDto.getId());
+        assertEquals(SdmxResources.DSD_ECB_EXR_RG_FULL_URN, dataStructureDefinitionMetamacDto.getUrn());
+
+        // INE **************************
+        file = new File(SdmxResources.DSD_INE_DPOP);
+        srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), SrmDtoMocks.createContentInput(file));
+        dataStructureDefinitionMetamacDto = srmCoreServiceFacade.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(), SdmxResources.DSD_INE_DPOP_URN);
+        assertNotNull(dataStructureDefinitionMetamacDto.getId());
+        assertEquals(SdmxResources.DSD_INE_DPOP_URN, dataStructureDefinitionMetamacDto.getUrn());
+
+        file = new File(SdmxResources.DSD_INE_EPOP);
+        srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), SrmDtoMocks.createContentInput(file));
+        dataStructureDefinitionMetamacDto = srmCoreServiceFacade.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(), SdmxResources.DSD_INE_EPOP_URN);
+        assertNotNull(dataStructureDefinitionMetamacDto.getId());
+        assertEquals(SdmxResources.DSD_INE_EPOP_URN, dataStructureDefinitionMetamacDto.getUrn());
+
+        file = new File(SdmxResources.DSD_INE_IDB);
+        srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), SrmDtoMocks.createContentInput(file));
+        dataStructureDefinitionMetamacDto = srmCoreServiceFacade.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(), SdmxResources.DSD_INE_IDB_URN);
+        assertNotNull(dataStructureDefinitionMetamacDto.getId());
+        assertEquals(SdmxResources.DSD_INE_IDB_URN, dataStructureDefinitionMetamacDto.getUrn());
+
+        file = new File(SdmxResources.DSD_INE_IPC);
+        srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), SrmDtoMocks.createContentInput(file));
+        dataStructureDefinitionMetamacDto = srmCoreServiceFacade.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(), SdmxResources.DSD_INE_IPC_URN);
+        assertNotNull(dataStructureDefinitionMetamacDto.getId());
+        assertEquals(SdmxResources.DSD_INE_IPC_URN, dataStructureDefinitionMetamacDto.getUrn());
+
+        file = new File(SdmxResources.DSD_INE_IPCA);
+        srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), SrmDtoMocks.createContentInput(file));
+        dataStructureDefinitionMetamacDto = srmCoreServiceFacade.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(), SdmxResources.DSD_INE_IPCA_URN);
+        assertNotNull(dataStructureDefinitionMetamacDto.getId());
+        assertEquals(SdmxResources.DSD_INE_IPCA_URN, dataStructureDefinitionMetamacDto.getUrn());
+
+        file = new File(SdmxResources.DSD_INE_MNP);
+        srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), SrmDtoMocks.createContentInput(file));
+        dataStructureDefinitionMetamacDto = srmCoreServiceFacade.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(), SdmxResources.DSD_INE_MNP_URN);
+        assertNotNull(dataStructureDefinitionMetamacDto.getId());
+        assertEquals(SdmxResources.DSD_INE_MNP_URN, dataStructureDefinitionMetamacDto.getUrn());
 
     }
 
