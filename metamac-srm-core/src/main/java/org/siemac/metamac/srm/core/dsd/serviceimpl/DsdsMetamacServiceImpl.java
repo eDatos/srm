@@ -179,11 +179,9 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
     @Override
     public DataStructureDefinitionVersionMetamac importDataStructureDefinition(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion) throws MetamacException {
         // Validation
-        DsdsMetamacInvocationValidator.checkCreateDataStructureDefinition(dataStructureDefinitionVersion, null); // TODO import validation
+        DsdsMetamacInvocationValidator.checkImportDataStructureDefinition(dataStructureDefinitionVersion, true, null);
 
-        // TODO ver cuando es un import para creación o para actualización.
-        
-        // Fill metadata
+        // Fill metadata. The Metamac Metadata not copied through imported versions.
         dataStructureDefinitionVersion.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
         dataStructureDefinitionVersion.getMaintainableArtefact().setIsExternalReference(Boolean.FALSE);
         
