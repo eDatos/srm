@@ -351,7 +351,6 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         this.contactDtos = new ArrayList<ContactDto>();
         this.contactDtos.addAll(organisationDto.getContacts());
 
-        // TODO Only reload tree when necessary
         getUiHandlers().retrieveOrganisationListByScheme(organisationDto.getItemSchemeVersionUrn());
 
         String defaultLocalisedName = InternationalStringUtils.getLocalisedString(organisationDto.getName());

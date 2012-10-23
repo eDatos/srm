@@ -365,7 +365,6 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
     public void setConcept(ConceptMetamacDto conceptDto, List<ConceptMetamacDto> relatedConcepts) {
         this.conceptDto = conceptDto;
 
-        // TODO Only reload tree when necessary
         uiHandlers.retrieveConceptListByScheme(conceptDto.getItemSchemeVersionUrn());
 
         // Load value lists
