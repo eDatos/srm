@@ -62,7 +62,6 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
 
         // Save
         return (DataStructureDefinitionVersionMetamac) dataStructureDefinitionService.createDataStructureDefinition(ctx, dataStructureDefinitionVersion, VersionPatternEnum.XX_YYY);
-
     }
 
     @Override
@@ -177,6 +176,21 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         return (DataStructureDefinitionVersionMetamac) dataStructureDefinitionService.versioningDataStructureDefinition(ctx, urnToCopy, versionType, structureCopyCallback);
     }
 
+    @Override
+    public DataStructureDefinitionVersionMetamac importDataStructureDefinition(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion) throws MetamacException {
+        // Validation
+        DsdsMetamacInvocationValidator.checkCreateDataStructureDefinition(dataStructureDefinitionVersion, null); // TODO import validation
+
+        // TODO ver cuando es un import para creación o para actualización.
+        
+        // Fill metadata
+        dataStructureDefinitionVersion.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
+        dataStructureDefinitionVersion.getMaintainableArtefact().setIsExternalReference(Boolean.FALSE);
+        
+        // Import
+        return (DataStructureDefinitionVersionMetamac) dataStructureDefinitionService.importDataStructureDefinition(ctx, dataStructureDefinitionVersion, VersionPatternEnum.XX_YYY, structureCopyCallback);
+    }
+    
     @Override
     public DataStructureDefinitionVersionMetamac endDataStructureDefinitionValidity(ServiceContext ctx, String urn) throws MetamacException {
 
