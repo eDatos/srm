@@ -42,6 +42,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
@@ -912,16 +913,16 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
             metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
 
             // Find
-            MetamacCriteriaResult<OrganisationMetamacDto> organisationsPagedResult = srmCoreServiceFacade.findOrganisationsAsMaintainerByCondition(getServiceContextAdministrador(), metamacCriteria);
+            MetamacCriteriaResult<RelatedResourceDto> organisationsPagedResult = srmCoreServiceFacade.findOrganisationsAsMaintainerByCondition(getServiceContextAdministrador(), metamacCriteria);
 
             // Validate
             assertEquals(2, organisationsPagedResult.getPaginatorResult().getTotalResults().intValue());
             assertEquals(2, organisationsPagedResult.getResults().size());
-            assertTrue(organisationsPagedResult.getResults().get(0) instanceof OrganisationMetamacDto);
-            assertEquals(ORGANISATION_SCHEME_100_V1, organisationsPagedResult.getResults().get(0).getItemSchemeVersionUrn());
 
             int i = 0;
+            assertEquals("ORGANISATION00", organisationsPagedResult.getResults().get(i).getCode());
             assertEquals(ORGANISATION_SCHEME_100_V1_ORGANISATION_0, organisationsPagedResult.getResults().get(i++).getUrn());
+            assertEquals("ORGANISATION01", organisationsPagedResult.getResults().get(i).getCode());
             assertEquals(ORGANISATION_SCHEME_100_V1_ORGANISATION_1, organisationsPagedResult.getResults().get(i++).getUrn());
 
             assertEquals(organisationsPagedResult.getResults().size(), i);
@@ -950,12 +951,11 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
             metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
 
             // Find
-            MetamacCriteriaResult<OrganisationMetamacDto> organisationsPagedResult = srmCoreServiceFacade.findOrganisationsAsMaintainerByCondition(getServiceContextAdministrador(), metamacCriteria);
+            MetamacCriteriaResult<RelatedResourceDto> organisationsPagedResult = srmCoreServiceFacade.findOrganisationsAsMaintainerByCondition(getServiceContextAdministrador(), metamacCriteria);
 
             // Validate
             assertEquals(1, organisationsPagedResult.getPaginatorResult().getTotalResults().intValue());
             assertEquals(1, organisationsPagedResult.getResults().size());
-            assertTrue(organisationsPagedResult.getResults().get(0) instanceof OrganisationMetamacDto);
 
             int i = 0;
             assertEquals(ORGANISATION_SCHEME_100_V1_ORGANISATION_1, organisationsPagedResult.getResults().get(i++).getUrn());

@@ -1,6 +1,7 @@
 import "classpath:/btdesign/statistic-sdmx-v2_1-domain-trans.btdesign"
 import "classpath:/btdesign/statistic-sdmx-v2_1-domain-dtos-core.btdesign"
 import "classpath:/btdesign/statistic-sdmx-v2_1-domain-dtos-util.btdesign"
+import "classpath:/btdesign/statistic-sdmx-v2_1-domain-dtos-common.btdesign"
 import "classpath:/btdesign/statistic-sdmx-v2_1-domain-enums.btdesign"
 import "classpath:/btdesign/statistic-sdmx-v2_1-domain-dtos-concepts.btdesign"
 import "classpath:/btdesign/statistic-sdmx-v2_1-domain-enums-concept.btdesign"
@@ -281,7 +282,7 @@ Application SrmFacadeCore {
             "Finds organisations by criteria"
             MetamacCriteriaResult<@OrganisationMetamacDto> findOrganisationsByCondition(MetamacCriteria criteria) throws MetamacException;
     		"Finds organisations that can be maintainer by criteria"
-    		MetamacCriteriaResult<@OrganisationMetamacDto> findOrganisationsAsMaintainerByCondition(MetamacCriteria criteria) throws MetamacException;
+    		MetamacCriteriaResult<@RelatedResourceDto> findOrganisationsAsMaintainerByCondition(MetamacCriteria criteria) throws MetamacException;
 			"Deletes organisation"
             deleteOrganisation(String urn) throws MetamacException;
     		"Retrieves organisations by organisation scheme, in tree structure"
