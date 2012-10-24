@@ -56,6 +56,7 @@ import org.siemac.metamac.srm.core.organisation.mapper.OrganisationsDo2DtoMapper
 import org.siemac.metamac.srm.core.organisation.mapper.OrganisationsDto2DoMapper;
 import org.siemac.metamac.srm.core.security.ConceptsSecurityUtils;
 import org.siemac.metamac.srm.core.security.DataStructureDefinitionSecurityUtils;
+import org.siemac.metamac.srm.core.security.ItemsSecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.oxm.XmlMappingException;
@@ -557,9 +558,9 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public OrganisationSchemeMetamacDto createOrganisationScheme(ServiceContext ctx, OrganisationSchemeMetamacDto organisationSchemeDto) throws MetamacException {
-        // TODO Security and transform
+        // Security and transform
+        ItemsSecurityUtils.canCreateItemScheme(ctx);
         OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsDto2DoMapper.organisationSchemeMetamacDtoToDo(organisationSchemeDto);
-        // OrganisationsSecurityUtils.canCreateOrganisationScheme(ctx, organisationSchemeVersion);
 
         // Create
         OrganisationSchemeVersionMetamac organisationSchemeVersionCreated = getOrganisationsMetamacService().createOrganisationScheme(ctx, organisationSchemeVersion);
@@ -572,7 +573,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public OrganisationSchemeMetamacDto updateOrganisationScheme(ServiceContext ctx, OrganisationSchemeMetamacDto organisationSchemeDto) throws MetamacException {
         // Security
-        // OrganisationsSecurityUtils.canUpdateOrganisationScheme();
+        OrganisationSchemeVersionMetamac organisationSchemeVersionOld = getOrganisationsMetamacService().retrieveOrganisationSchemeByUrn(ctx, organisationSchemeDto.getUrn());
+        ItemsSecurityUtils.canUpdateItemScheme(ctx, organisationSchemeVersionOld.getLifeCycleMetadata().getProcStatus());
 
         // Transform
         OrganisationSchemeVersionMetamac organisationSchemeVersionToUpdate = organisationsDto2DoMapper.organisationSchemeMetamacDtoToDo(organisationSchemeDto);
@@ -587,9 +589,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public void deleteOrganisationScheme(ServiceContext ctx, String urn) throws MetamacException {
-        // TODO Security
-        // OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationsMetamacService().retrieveOrganisationSchemeByUrn(ctx, urn);
-        // OrganisationsSecurityUtils.canDeleteOrganisationScheme(ctx, organisationSchemeVersion);
+        // Security
+        ItemsSecurityUtils.canDeleteItemScheme(ctx);
 
         // Delete
         getOrganisationsMetamacService().deleteOrganisationScheme(ctx, urn);
@@ -597,8 +598,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public MetamacCriteriaResult<OrganisationSchemeMetamacDto> findOrganisationSchemesByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
-        // TODO Security
-        // OrganisationsSecurityUtils.canFindOrganisationSchemesByCondition(ctx);
+        // Security
+        ItemsSecurityUtils.canFindItemSchemesByCondition(ctx);
 
         // Transform
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getOrganisationSchemeMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
@@ -616,8 +617,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public OrganisationSchemeMetamacDto retrieveOrganisationSchemeByUrn(ServiceContext ctx, String urn) throws MetamacException {
-        // TODO Security
-        // OrganisationsSecurityUtils.canRetrieveOrganisationSchemeByUrn(ctx);
+        // Security
+        ItemsSecurityUtils.canRetrieveItemSchemeByUrn(ctx);
 
         // Retrieve
         OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationsMetamacService().retrieveOrganisationSchemeByUrn(ctx, urn);
@@ -630,8 +631,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public List<OrganisationSchemeMetamacDto> retrieveOrganisationSchemeVersions(ServiceContext ctx, String urn) throws MetamacException {
-        // TODO Security
-        // OrganisationsSecurityUtils.canRetrieveOrganisationSchemeVersions(ctx);
+        // Security
+        ItemsSecurityUtils.canRetrieveItemSchemeVersions(ctx);
 
         // Retrieve
         List<OrganisationSchemeVersionMetamac> organisationSchemeVersionMetamacs = getOrganisationsMetamacService().retrieveOrganisationSchemeVersions(ctx, urn);
@@ -644,9 +645,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public OrganisationSchemeMetamacDto sendOrganisationSchemeToProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
-        // TODO Security
-        // OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationsMetamacService().retrieveOrganisationSchemeByUrn(ctx, urn);
-        // OrganisationsSecurityUtils.canSendOrganisationSchemeToProductionValidation(ctx, organisationSchemeVersion);
+        // Security
+        ItemsSecurityUtils.canSendItemSchemeToProductionValidation(ctx);
 
         // Send
         OrganisationSchemeVersionMetamac organisationSchemeVersionProductionValidation = getOrganisationsMetamacService().sendOrganisationSchemeToProductionValidation(ctx, urn);
@@ -658,9 +658,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public OrganisationSchemeMetamacDto sendOrganisationSchemeToDiffusionValidation(ServiceContext ctx, String urn) throws MetamacException {
-        // TODO Security
-        // OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationsMetamacService().retrieveOrganisationSchemeByUrn(ctx, urn);
-        // OrganisationsSecurityUtils.canSendOrganisationSchemeToDiffusionValidation(ctx, organisationSchemeVersion);
+        // Security
+        ItemsSecurityUtils.canSendItemSchemeToDiffusionValidation(ctx);
 
         // Send
         OrganisationSchemeVersionMetamac organisationSchemeVersionDiffusionValidation = getOrganisationsMetamacService().sendOrganisationSchemeToDiffusionValidation(ctx, urn);
@@ -672,9 +671,9 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public OrganisationSchemeMetamacDto rejectOrganisationSchemeProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
-        // TODO Security
-        // OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationsMetamacService().retrieveOrganisationSchemeByUrn(ctx, urn);
-        // OrganisationsSecurityUtils.canRejectOrganisationSchemeValidation(ctx, organisationSchemeVersion);
+        // Security
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationsMetamacService().retrieveOrganisationSchemeByUrn(ctx, urn);
+        ItemsSecurityUtils.canRejectItemSchemeValidation(ctx, organisationSchemeVersion.getLifeCycleMetadata().getProcStatus());
 
         // Reject
         OrganisationSchemeVersionMetamac organisationSchemeVersionRejected = getOrganisationsMetamacService().rejectOrganisationSchemeProductionValidation(ctx, urn);
@@ -686,9 +685,9 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public OrganisationSchemeMetamacDto rejectOrganisationSchemeDiffusionValidation(ServiceContext ctx, String urn) throws MetamacException {
-        // TODO Security
-        // OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationsMetamacService().retrieveOrganisationSchemeByUrn(ctx, urn);
-        // OrganisationsSecurityUtils.canRejectOrganisationSchemeValidation(ctx, organisationSchemeVersion);
+        // Security
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationsMetamacService().retrieveOrganisationSchemeByUrn(ctx, urn);
+        ItemsSecurityUtils.canRejectItemSchemeValidation(ctx, organisationSchemeVersion.getLifeCycleMetadata().getProcStatus());
 
         // Reject
         OrganisationSchemeVersionMetamac organisationSchemeVersionRejected = getOrganisationsMetamacService().rejectOrganisationSchemeDiffusionValidation(ctx, urn);
@@ -700,9 +699,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public OrganisationSchemeMetamacDto publishOrganisationSchemeInternally(ServiceContext ctx, String urn) throws MetamacException {
-        // TODO Security
-        // OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationsMetamacService().retrieveOrganisationSchemeByUrn(ctx, urn);
-        // OrganisationsSecurityUtils.canPublishOrganisationSchemeInternally(ctx, organisationSchemeVersion);
+        // Security
+        ItemsSecurityUtils.canPublishItemSchemeInternally(ctx);
 
         // Publish
         OrganisationSchemeVersionMetamac organisationSchemeVersionPublished = getOrganisationsMetamacService().publishInternallyOrganisationScheme(ctx, urn);
@@ -714,9 +712,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public OrganisationSchemeMetamacDto publishOrganisationSchemeExternally(ServiceContext ctx, String urn) throws MetamacException {
-        // TODO Security
-        // OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationsMetamacService().retrieveOrganisationSchemeByUrn(ctx, urn);
-        // OrganisationsSecurityUtils.canPublishOrganisationSchemeExternally(ctx, organisationSchemeVersion);
+        // Security
+        ItemsSecurityUtils.canPublishItemSchemeExternally(ctx);
 
         OrganisationSchemeVersionMetamac organisationSchemeVersionPublished = getOrganisationsMetamacService().publishExternallyOrganisationScheme(ctx, urn);
 
@@ -727,9 +724,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public OrganisationSchemeMetamacDto versioningOrganisationScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
-        // TODO Security
-        // OrganisationSchemeVersionMetamac organisationSchemeVersionToCopy = getOrganisationsMetamacService().retrieveOrganisationSchemeByUrn(ctx, urnToCopy);
-        // OrganisationsSecurityUtils.canVersioningOrganisationScheme(ctx, organisationSchemeVersionToCopy);
+        // Security
+        ItemsSecurityUtils.canVersioningItemScheme(ctx);
 
         OrganisationSchemeVersionMetamac organisationSchemeVersioned = getOrganisationsMetamacService().versioningOrganisationScheme(ctx, urnToCopy, versionType);
 
@@ -740,9 +736,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public OrganisationSchemeMetamacDto endOrganisationSchemeValidity(ServiceContext ctx, String urn) throws MetamacException {
-        // TODO Security
-        // OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationsMetamacService().retrieveOrganisationSchemeByUrn(ctx, urn);
-        // OrganisationsSecurityUtils.canEndOrganisationSchemeValidity(ctx, organisationSchemeVersion);
+        // Security
+        ItemsSecurityUtils.canEndItemSchemeValidity(ctx);
 
         OrganisationSchemeVersionMetamac organisationSchemeEnded = getOrganisationsMetamacService().endOrganisationSchemeValidity(ctx, urn);
 
@@ -758,9 +753,9 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public OrganisationMetamacDto createOrganisation(ServiceContext ctx, OrganisationMetamacDto organisationMetamacDto) throws MetamacException {
-        // TODO Security
-        // OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationsMetamacService().retrieveOrganisationSchemeByUrn(ctx, organisationMetamacDto.getItemSchemeVersionUrn());
-        // OrganisationsSecurityUtils.canCreateOrganisation(ctx, organisationSchemeVersion);
+        // Security
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationsMetamacService().retrieveOrganisationSchemeByUrn(ctx, organisationMetamacDto.getItemSchemeVersionUrn());
+        ItemsSecurityUtils.canCreateItem(ctx, organisationSchemeVersion.getLifeCycleMetadata().getProcStatus());
 
         // Transform
         OrganisationMetamac organisationMetamac = organisationsDto2DoMapper.organisationMetamacDtoToDo(organisationMetamacDto);
@@ -776,10 +771,9 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public OrganisationMetamacDto updateOrganisation(ServiceContext ctx, OrganisationMetamacDto organisationDto) throws MetamacException {
-
-        // TODO Security
-        // OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationsMetamacService().retrieveOrganisationSchemeByOrganisationUrn(ctx, organisationDto.getUrn());
-        // OrganisationsSecurityUtils.canUpdateOrganisation(ctx, organisationSchemeVersion);
+        // Security
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationsMetamacService().retrieveOrganisationSchemeByOrganisationUrn(ctx, organisationDto.getUrn());
+        ItemsSecurityUtils.canUpdateItem(ctx, organisationSchemeVersion.getLifeCycleMetadata().getProcStatus());
 
         // Transform
         OrganisationMetamac organisationMetamac = organisationsDto2DoMapper.organisationMetamacDtoToDo(organisationDto);
@@ -794,9 +788,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public OrganisationMetamacDto retrieveOrganisationByUrn(ServiceContext ctx, String urn) throws MetamacException {
-
-        // TODO Security
-        // OrganisationsSecurityUtils.canRetrieveOrganisationByUrn(ctx);
+        // Security
+        ItemsSecurityUtils.canRetrieveItemByUrn(ctx);
 
         // Retrieve
         OrganisationMetamac organisationMetamac = getOrganisationsMetamacService().retrieveOrganisationByUrn(ctx, urn);
@@ -809,10 +802,9 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public void deleteOrganisation(ServiceContext ctx, String urn) throws MetamacException {
-
-        // TODO Security
-        // OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationsMetamacService().retrieveOrganisationSchemeByOrganisationUrn(ctx, urn);
-        // OrganisationsSecurityUtils.canDeleteOrganisation(ctx, organisationSchemeVersion);
+        // Security
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationsMetamacService().retrieveOrganisationSchemeByOrganisationUrn(ctx, urn);
+        ItemsSecurityUtils.canDeleteItem(ctx, organisationSchemeVersion.getLifeCycleMetadata().getProcStatus());
 
         // Delete
         getOrganisationsMetamacService().deleteOrganisation(ctx, urn);
@@ -820,9 +812,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public List<ItemHierarchyDto> retrieveOrganisationsByOrganisationSchemeUrn(ServiceContext ctx, String organisationSchemeUrn) throws MetamacException {
-
-        // TODO Security
-        // OrganisationsSecurityUtils.canRetrieveOrganisationsByOrganisationSchemeUrn(ctx);
+        // Security
+        ItemsSecurityUtils.canRetrieveItemsByItemSchemeUrn(ctx);
 
         // Retrieve
         List<OrganisationMetamac> organisations = getOrganisationsMetamacService().retrieveOrganisationsByOrganisationSchemeUrn(ctx, organisationSchemeUrn);
@@ -834,8 +825,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public MetamacCriteriaResult<OrganisationMetamacDto> findOrganisationsByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
-        // TODO Security
-        // OrganisationsSecurityUtils.canFindOrganisationsByCondition(ctx);
+        // Security
+        ItemsSecurityUtils.canFindItemsByCondition(ctx);
 
         // Transform
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getOrganisationMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
@@ -849,18 +840,18 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
         return metamacCriteriaResult;
     }
-    
-    
+
     @Override
     public MetamacCriteriaResult<OrganisationMetamacDto> findOrganisationsAsMaintainerByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
-        // TODO Security
-        // OrganisationsSecurityUtils.canFindOrganisationsByCondition(ctx);
+        // Security
+        ItemsSecurityUtils.canFindItemsByCondition(ctx);
 
         // Transform
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getOrganisationMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
 
         // Find
-        PagedResult<OrganisationMetamac> result = getOrganisationsMetamacService().findOrganisationsAsMaintainerByCondition(ctx, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
+        PagedResult<OrganisationMetamac> result = getOrganisationsMetamacService().findOrganisationsAsMaintainerByCondition(ctx, sculptorCriteria.getConditions(),
+                sculptorCriteria.getPagingParameter());
 
         // Transform
         MetamacCriteriaResult<OrganisationMetamacDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultOrganisation(result,
@@ -868,7 +859,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
         return metamacCriteriaResult;
     }
-    
+
     /**************************************************************************
      * CONCEPTS
      *************************************************************************/
