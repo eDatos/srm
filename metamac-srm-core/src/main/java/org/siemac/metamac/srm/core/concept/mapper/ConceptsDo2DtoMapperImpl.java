@@ -13,6 +13,7 @@ import org.siemac.metamac.srm.core.concept.dto.ConceptTypeDto;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeDozerCopyMode;
 
@@ -72,6 +73,15 @@ public class ConceptsDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Co
         return target;
     }
 
+    @Override
+    public RelatedResourceDto conceptMetamacDoToRelatedResourceDto(ConceptMetamac source) {
+        if (source == null) {
+            return null;
+        }
+        RelatedResourceDto target = do2DtoMapperSdmxSrm.conceptDoToRelatedResourceDto(source);
+        return target;
+    }
+    
     @Override
     public List<ConceptMetamacDto> conceptMetamacDoListToDtoList(List<ConceptMetamac> sources) {
         List<ConceptMetamacDto> targets = new ArrayList<ConceptMetamacDto>();

@@ -9,6 +9,7 @@ import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptTypeDto;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 
 public interface ConceptsDo2DtoMapper {
@@ -19,6 +20,7 @@ public interface ConceptsDo2DtoMapper {
 
     // Concepts
     public ConceptMetamacDto conceptMetamacDoToDto(ConceptMetamac source);
+    public RelatedResourceDto conceptMetamacDoToRelatedResourceDto(ConceptMetamac source);
     public List<ConceptMetamacDto> conceptMetamacDoListToDtoList(List<ConceptMetamac> sources);
     public List<ItemHierarchyDto> conceptMetamacDoListToItemHierarchyDtoList(List<ConceptMetamac> sources);
 

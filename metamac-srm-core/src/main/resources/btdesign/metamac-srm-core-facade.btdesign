@@ -352,6 +352,8 @@ Application SrmFacadeCore {
             @ConceptMetamacDto retrieveConceptByUrn(String urn) throws MetamacException;
             "Finds concepts by criteria"
             MetamacCriteriaResult<@ConceptMetamacDto> findConceptsByCondition(MetamacCriteria criteria) throws MetamacException;
+            "Finds concepts that can be role by criteria"
+            MetamacCriteriaResult<@RelatedResourceDto> findConceptsAsRoleByCondition(MetamacCriteria criteria) throws MetamacException;
 			"Deletes concept"
             deleteConcept(String urn) throws MetamacException;
     		"Retrieves concepts by concept scheme, in tree structure"

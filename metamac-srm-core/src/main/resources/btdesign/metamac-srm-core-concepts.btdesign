@@ -60,6 +60,8 @@ Application ConceptsMetamac {
     		@ConceptMetamac retrieveConceptByUrn(String urn) throws MetamacException;
     		"Finds concepts by criteria"
     		PagedResult<@ConceptMetamac> findConceptsByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
+    		"Finds concepts than can be Role by criteria"
+    		PagedResult<@ConceptMetamac> findConceptsAsRoleByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
 			"Deletes concept"
     		deleteConcept(String urn) throws MetamacException;
     		"Retrieves concepts by concept scheme, in tree structure"

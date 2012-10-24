@@ -58,24 +58,24 @@ import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
 public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsMetamacServiceTestBase {
 
     @Autowired
-    private ConceptsMetamacService conceptsService;
+    private ConceptsMetamacService        conceptsService;
 
     @Autowired
     private OrganisationMetamacRepository organisationMetamacRepository;
-    
+
     @Test
     public void testCreateConceptScheme() throws Exception {
-        
+
         OrganisationMetamac organisationMetamac = organisationMetamacRepository.findByUrn(AGENCY_ROOT_1_V1);
         ConceptSchemeVersionMetamac conceptSchemeVersion = ConceptsMetamacDoMocks.mockConceptScheme(organisationMetamac);
         ServiceContext ctx = getServiceContextAdministrador();
-        
+
         // Create
         ConceptSchemeVersionMetamac conceptSchemeVersionCreated = conceptsService.createConceptScheme(ctx, conceptSchemeVersion);
         String urn = conceptSchemeVersionCreated.getMaintainableArtefact().getUrn();
         assertEquals("01.000", conceptSchemeVersionCreated.getMaintainableArtefact().getVersionLogic());
         assertEquals(ctx.getUserId(), conceptSchemeVersionCreated.getCreatedBy());
-        
+
         // Validate (only metadata in SRM Metamac; the others are checked in sdmx project)
         ConceptSchemeVersionMetamac conceptSchemeVersionRetrieved = conceptsService.retrieveConceptSchemeByUrn(ctx, urn);
         assertEquals(ProcStatusEnum.DRAFT, conceptSchemeVersionRetrieved.getLifeCycleMetadata().getProcStatus());
@@ -151,7 +151,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
     @Test
     public void testUpdateConceptScheme() throws Exception {
         ServiceContext ctx = getServiceContextAdministrador();
-        
+
         ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(ctx, CONCEPT_SCHEME_2_V1);
         conceptSchemeVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
 
@@ -1365,7 +1365,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertEquals(CONCEPT_SCHEME_1_V2, e.getExceptionItems().get(0).getMessageParameters()[0]);
         }
     }
-    
+
     @Test
     public void testVersioningConceptSchemeErrorNotPublished() throws Exception {
 
@@ -1411,7 +1411,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
     public void testCreateConcept() throws Exception {
 
         ServiceContext ctx = getServiceContextAdministrador();
-        
+
         ConceptType conceptType = conceptsService.retrieveConceptTypeByIdentifier(ctx, CONCEPT_TYPE_DIRECT);
         ConceptMetamac concept = ConceptsMetamacDoMocks.mockConcept(conceptType);
         concept.setParent(null);
@@ -1425,7 +1425,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         String urn = conceptCreated.getNameableArtefact().getUrn();
         assertEquals(ctx.getUserId(), conceptCreated.getCreatedBy());
         assertEquals(ctx.getUserId(), conceptCreated.getLastUpdatedBy());
-        
+
         // Validate (only metadata in SRM Metamac; the others are checked in sdmx project)
         ConceptMetamac conceptRetrieved = conceptsService.retrieveConceptByUrn(ctx, urn);
         ConceptsMetamacAsserts.assertEqualsConcept(concept, conceptRetrieved);
@@ -1873,6 +1873,90 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
                 int i = 0;
                 assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2_1_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
                 assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_4_1_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+                assertEquals(conceptsPagedResult.getValues().size(), i);
+            }
+        }
+    }
+
+    @Test
+    public void testFindConceptsAsRoleByCondition() throws Exception {
+
+        // Find all
+        {
+            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(Concept.class).orderBy(ConceptProperties.itemSchemeVersion().maintainableArtefact().urn()).ascending()
+                    .orderBy(ConceptProperties.id()).ascending().distinctRoot().build();
+            PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
+            PagedResult<ConceptMetamac> conceptsPagedResult = conceptsService.findConceptsAsRoleByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
+
+            // Validate
+            assertEquals(5, conceptsPagedResult.getTotalRows());
+            assertEquals(5, conceptsPagedResult.getValues().size());
+            assertTrue(conceptsPagedResult.getValues().get(0) instanceof ConceptMetamac);
+
+            int i = 0;
+            assertEquals(CONCEPT_SCHEME_3_V1_CONCEPT_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CONCEPT_SCHEME_3_V1_CONCEPT_2, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CONCEPT_SCHEME_3_V1_CONCEPT_2_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CONCEPT_SCHEME_3_V1_CONCEPT_2_2, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CONCEPT_SCHEME_3_V1_CONCEPT_2_1_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(conceptsPagedResult.getValues().size(), i);
+        }
+
+        // Find by code (like)
+        {
+            String code = "CONCEPT02";
+            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(Concept.class).withProperty(ConceptProperties.nameableArtefact().code()).like(code + "%")
+                    .orderBy(ConceptProperties.id()).ascending().distinctRoot().build();
+            PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
+            PagedResult<ConceptMetamac> conceptsPagedResult = conceptsService.findConceptsAsRoleByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
+
+            // Validate
+            assertEquals(4, conceptsPagedResult.getTotalRows());
+            assertEquals(4, conceptsPagedResult.getValues().size());
+            assertTrue(conceptsPagedResult.getValues().get(0) instanceof ConceptMetamac);
+
+            int i = 0;
+            assertEquals(CONCEPT_SCHEME_3_V1_CONCEPT_2, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CONCEPT_SCHEME_3_V1_CONCEPT_2_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CONCEPT_SCHEME_3_V1_CONCEPT_2_2, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CONCEPT_SCHEME_3_V1_CONCEPT_2_1_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(conceptsPagedResult.getValues().size(), i);
+        }
+
+        // Find by code (like) paginated
+        {
+            String code = "CONCEPT02";
+            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(Concept.class).withProperty(ConceptProperties.nameableArtefact().code()).like(code + "%")
+                    .orderBy(ConceptProperties.id()).ascending().distinctRoot().build();
+
+            // First page
+            {
+                PagingParameter pagingParameter = PagingParameter.rowAccess(0, 3, true);
+                PagedResult<ConceptMetamac> conceptsPagedResult = conceptsService.findConceptsAsRoleByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
+
+                // Validate
+                assertEquals(4, conceptsPagedResult.getTotalRows());
+                assertEquals(3, conceptsPagedResult.getValues().size());
+                assertTrue(conceptsPagedResult.getValues().get(0) instanceof ConceptMetamac);
+
+                int i = 0;
+                assertEquals(CONCEPT_SCHEME_3_V1_CONCEPT_2, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+                assertEquals(CONCEPT_SCHEME_3_V1_CONCEPT_2_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+                assertEquals(CONCEPT_SCHEME_3_V1_CONCEPT_2_2, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+                assertEquals(conceptsPagedResult.getValues().size(), i);
+            }
+            // Second page
+            {
+                PagingParameter pagingParameter = PagingParameter.rowAccess(3, 6, true);
+                PagedResult<ConceptMetamac> conceptsPagedResult = conceptsService.findConceptsAsRoleByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
+
+                // Validate
+                assertEquals(4, conceptsPagedResult.getTotalRows());
+                assertEquals(1, conceptsPagedResult.getValues().size());
+                assertTrue(conceptsPagedResult.getValues().get(0) instanceof ConceptMetamac);
+
+                int i = 0;
+                assertEquals(CONCEPT_SCHEME_3_V1_CONCEPT_2_1_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
                 assertEquals(conceptsPagedResult.getValues().size(), i);
             }
         }
