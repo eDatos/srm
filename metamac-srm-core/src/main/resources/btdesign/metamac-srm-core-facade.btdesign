@@ -242,12 +242,6 @@ Application SrmFacadeCore {
 	    	/**************************************************************************
 		     * ORGANISATIONS
 		     **************************************************************************/
-			"          
-			 @param ctx  
-			 @return     
-       		"
-       		@ExternalItemDto findOrganisation(String uriOrganisation) throws MetamacException;
-       		
        		"Creates organisation scheme"
 	   		@OrganisationSchemeMetamacDto createOrganisationScheme(@OrganisationSchemeMetamacDto organisationSchemeDto) throws MetamacException;
 	   		"Updates organisation scheme"
@@ -286,6 +280,8 @@ Application SrmFacadeCore {
             @OrganisationMetamacDto retrieveOrganisationByUrn(String urn) throws MetamacException;
             "Finds organisations by criteria"
             MetamacCriteriaResult<@OrganisationMetamacDto> findOrganisationsByCondition(MetamacCriteria criteria) throws MetamacException;
+    		"Finds organisations that can be maintainer by criteria"
+    		MetamacCriteriaResult<@OrganisationMetamacDto> findOrganisationsAsMaintainerByCondition(MetamacCriteria criteria) throws MetamacException;
 			"Deletes organisation"
             deleteOrganisation(String urn) throws MetamacException;
     		"Retrieves organisations by organisation scheme, in tree structure"

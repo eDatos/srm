@@ -225,16 +225,14 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
 
     @Override
     public PagedResult<OrganisationMetamac> findOrganisationsByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
+        PagedResult<Organisation> organisationsPagedResult = organisationsService.findOrganisationsByCondition(ctx, conditions, pagingParameter);
+        return pagedResultOrganisationToOrganisationMetamac(organisationsPagedResult);
+    }
 
-        // Validation
-        OrganisationsMetamacInvocationValidator.checkFindOrganisationsByCondition(conditions, pagingParameter, null);
-
-        // Find (do not call sdmx module to avoid typecast)
-        if (conditions == null) {
-            conditions = ConditionalCriteriaBuilder.criteriaFor(OrganisationMetamac.class).distinctRoot().build();
-        }
-        PagedResult<OrganisationMetamac> organisationPagedResult = getOrganisationMetamacRepository().findByCondition(conditions, pagingParameter);
-        return organisationPagedResult;
+    @Override
+    public PagedResult<OrganisationMetamac> findOrganisationsAsMaintainerByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
+        PagedResult<Organisation> organisationsPagedResult = organisationsService.findOrganisationsAsMaintainerByCondition(ctx, conditions, pagingParameter);
+        return pagedResultOrganisationToOrganisationMetamac(organisationsPagedResult);
     }
 
     @Override
@@ -274,5 +272,11 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
             organisations.add((OrganisationMetamac) item);
         }
         return organisations;
+    }
+
+    private PagedResult<OrganisationMetamac> pagedResultOrganisationToOrganisationMetamac(PagedResult<Organisation> organisationsPagedResult) {
+        List<OrganisationMetamac> organisationsMetamac = organisationsToOrganisationMetamac(organisationsPagedResult.getValues());
+        return new PagedResult<OrganisationMetamac>(organisationsMetamac, organisationsPagedResult.getStartRow(), organisationsPagedResult.getRowCount(), organisationsPagedResult.getPageSize(),
+                organisationsPagedResult.getTotalRows(), organisationsPagedResult.getAdditionalResultRows());
     }
 }

@@ -579,9 +579,9 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
             assertEquals(ORGANISATION_SCHEME_5_V1_ORGANISATION_1, organisationsPagedResult.getResults().get(i++).getUrn());
             assertEquals(ORGANISATION_SCHEME_6_V1_ORGANISATION_1, organisationsPagedResult.getResults().get(i++).getUrn());
             assertEquals(ORGANISATION_SCHEME_7_V2_ORGANISATION_1, organisationsPagedResult.getResults().get(i++).getUrn());
-            assertEquals(AGENCY_ROOT_1_V1, organisationsPagedResult.getResults().get(i++).getUrn());
-            assertEquals(AGENCY_ROOT_2_V1, organisationsPagedResult.getResults().get(i++).getUrn());
-            
+            assertEquals(ORGANISATION_SCHEME_100_V1_ORGANISATION_0, organisationsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(ORGANISATION_SCHEME_100_V1_ORGANISATION_1, organisationsPagedResult.getResults().get(i++).getUrn());
+
             assertEquals(organisationsPagedResult.getResults().size(), i);
         }
 
@@ -645,9 +645,9 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
             assertEquals(ORGANISATION_SCHEME_5_V1_ORGANISATION_1, organisationsPagedResult.getResults().get(i++).getUrn());
             assertEquals(ORGANISATION_SCHEME_6_V1_ORGANISATION_1, organisationsPagedResult.getResults().get(i++).getUrn());
             assertEquals(ORGANISATION_SCHEME_7_V2_ORGANISATION_1, organisationsPagedResult.getResults().get(i++).getUrn());
-            assertEquals(AGENCY_ROOT_1_V1, organisationsPagedResult.getResults().get(i++).getUrn());
-            assertEquals(AGENCY_ROOT_2_V1, organisationsPagedResult.getResults().get(i++).getUrn());
-            
+            assertEquals(ORGANISATION_SCHEME_100_V1_ORGANISATION_0, organisationsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(ORGANISATION_SCHEME_100_V1_ORGANISATION_1, organisationsPagedResult.getResults().get(i++).getUrn());
+
             assertEquals(organisationsPagedResult.getResults().size(), i);
         }
 
@@ -745,8 +745,8 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
             int i = 0;
             assertEquals(ORGANISATION_SCHEME_2_V1_ORGANISATION_1, organisationsPagedResult.getResults().get(i++).getUrn());
             assertEquals(ORGANISATION_SCHEME_2_V1_ORGANISATION_2, organisationsPagedResult.getResults().get(i++).getUrn());
-            assertEquals(AGENCY_ROOT_1_V1, organisationsPagedResult.getResults().get(i++).getUrn());
-            assertEquals(AGENCY_ROOT_2_V1, organisationsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(ORGANISATION_SCHEME_100_V1_ORGANISATION_0, organisationsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(ORGANISATION_SCHEME_100_V1_ORGANISATION_1, organisationsPagedResult.getResults().get(i++).getUrn());
             assertEquals(organisationsPagedResult.getResults().size(), i);
         }
 
@@ -874,6 +874,92 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
                 assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_4_1_1, organisationsPagedResult.getResults().get(i++).getUrn());
                 assertEquals(organisationsPagedResult.getResults().size(), i);
             }
+        }
+    }
+
+    @Test
+    public void testFindOrganisationsAsMaintainerByCondition() throws Exception {
+
+        // Find all
+        {
+            MetamacCriteria metamacCriteria = new MetamacCriteria();
+            // Order
+            metamacCriteria.setOrdersBy(new ArrayList<MetamacCriteriaOrder>());
+
+            {
+                MetamacCriteriaOrder order = new MetamacCriteriaOrder();
+                order.setType(OrderTypeEnum.ASC);
+                order.setPropertyName(OrganisationMetamacCriteriaOrderEnum.ORGANISATION_SCHEME_CODE.name());
+                metamacCriteria.getOrdersBy().add(order);
+            }
+            {
+                MetamacCriteriaOrder order = new MetamacCriteriaOrder();
+                order.setType(OrderTypeEnum.ASC);
+                order.setPropertyName(OrganisationMetamacCriteriaOrderEnum.ORGANISATION_SCHEME_URN.name());
+                metamacCriteria.getOrdersBy().add(order);
+            }
+            {
+                MetamacCriteriaOrder order = new MetamacCriteriaOrder();
+                order.setType(OrderTypeEnum.ASC);
+                order.setPropertyName(OrganisationMetamacCriteriaOrderEnum.URN.name());
+                metamacCriteria.getOrdersBy().add(order);
+            }
+
+            // Pagination
+            metamacCriteria.setPaginator(new MetamacCriteriaPaginator());
+            metamacCriteria.getPaginator().setFirstResult(0);
+            metamacCriteria.getPaginator().setMaximumResultSize(Integer.MAX_VALUE);
+            metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
+
+            // Find
+            MetamacCriteriaResult<OrganisationMetamacDto> organisationsPagedResult = srmCoreServiceFacade.findOrganisationsAsMaintainerByCondition(getServiceContextAdministrador(), metamacCriteria);
+
+            // Validate
+            assertEquals(2, organisationsPagedResult.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(2, organisationsPagedResult.getResults().size());
+            assertTrue(organisationsPagedResult.getResults().get(0) instanceof OrganisationMetamacDto);
+            assertEquals(ORGANISATION_SCHEME_100_V1, organisationsPagedResult.getResults().get(0).getItemSchemeVersionUrn());
+
+            int i = 0;
+            assertEquals(ORGANISATION_SCHEME_100_V1_ORGANISATION_0, organisationsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(ORGANISATION_SCHEME_100_V1_ORGANISATION_1, organisationsPagedResult.getResults().get(i++).getUrn());
+
+            assertEquals(organisationsPagedResult.getResults().size(), i);
+        }
+
+        // Find by code (like)
+        {
+            MetamacCriteria metamacCriteria = new MetamacCriteria();
+            // Order
+            metamacCriteria.setOrdersBy(new ArrayList<MetamacCriteriaOrder>());
+
+            MetamacCriteriaOrder orderUrn = new MetamacCriteriaOrder();
+            orderUrn.setType(OrderTypeEnum.ASC);
+            orderUrn.setPropertyName(OrganisationMetamacCriteriaOrderEnum.URN.name());
+            metamacCriteria.getOrdersBy().add(orderUrn);
+
+            // Restrictions
+            MetamacCriteriaConjunctionRestriction conjunctionRestriction = new MetamacCriteriaConjunctionRestriction();
+            conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(OrganisationMetamacCriteriaPropertyEnum.CODE.name(), "ORGANISATION01", OperationType.LIKE));
+            metamacCriteria.setRestriction(conjunctionRestriction);
+
+            // Pagination
+            metamacCriteria.setPaginator(new MetamacCriteriaPaginator());
+            metamacCriteria.getPaginator().setFirstResult(0);
+            metamacCriteria.getPaginator().setMaximumResultSize(Integer.MAX_VALUE);
+            metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
+
+            // Find
+            MetamacCriteriaResult<OrganisationMetamacDto> organisationsPagedResult = srmCoreServiceFacade.findOrganisationsAsMaintainerByCondition(getServiceContextAdministrador(), metamacCriteria);
+
+            // Validate
+            assertEquals(1, organisationsPagedResult.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(1, organisationsPagedResult.getResults().size());
+            assertTrue(organisationsPagedResult.getResults().get(0) instanceof OrganisationMetamacDto);
+
+            int i = 0;
+            assertEquals(ORGANISATION_SCHEME_100_V1_ORGANISATION_1, organisationsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(organisationsPagedResult.getResults().size(), i);
         }
     }
 

@@ -551,13 +551,6 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     /**************************************************************************
      * ORGANISATION
      **************************************************************************/
-
-    @Override
-    public ExternalItemDto findOrganisation(ServiceContext ctx, String uriOrganisation) throws MetamacException {
-        // TODO find organization
-        return ServicesResolver.resolveOrganisation(uriOrganisation);
-    }
-
     // ------------------------------------------------------------------------
     // ORGANISATION SCHEMES
     // ------------------------------------------------------------------------
@@ -856,7 +849,26 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
         return metamacCriteriaResult;
     }
+    
+    
+    @Override
+    public MetamacCriteriaResult<OrganisationMetamacDto> findOrganisationsAsMaintainerByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
+        // TODO Security
+        // OrganisationsSecurityUtils.canFindOrganisationsByCondition(ctx);
 
+        // Transform
+        SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getOrganisationMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
+
+        // Find
+        PagedResult<OrganisationMetamac> result = getOrganisationsMetamacService().findOrganisationsAsMaintainerByCondition(ctx, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
+
+        // Transform
+        MetamacCriteriaResult<OrganisationMetamacDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultOrganisation(result,
+                sculptorCriteria.getPageSize());
+
+        return metamacCriteriaResult;
+    }
+    
     /**************************************************************************
      * CONCEPTS
      *************************************************************************/
