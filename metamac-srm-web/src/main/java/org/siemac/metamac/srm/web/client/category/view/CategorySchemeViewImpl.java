@@ -96,7 +96,7 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         // CATEGORY SCHEME
         //
 
-        mainFormLayout = new CategorySchemeMainFormLayout(CategoriesClientSecurityUtils.canUpdateCategoryScheme());
+        mainFormLayout = new CategorySchemeMainFormLayout();
         bindMainFormLayoutEvents();
         createViewForm();
         createEditionForm();
@@ -436,6 +436,7 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         String title = defaultLocalisedName != null ? defaultLocalisedName : StringUtils.EMPTY;
         mainFormLayout.setTitleLabelContents(title);
 
+        mainFormLayout.setCanEdit(CategoriesClientSecurityUtils.canUpdateCategoryScheme(categorySchemeDto.getLifeCycle().getProcStatus()));
         mainFormLayout.updatePublishSection(categorySchemeDto.getLifeCycle().getProcStatus(), categorySchemeDto.getValidTo());
         mainFormLayout.setViewMode();
 

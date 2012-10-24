@@ -120,7 +120,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         // ORGANISATION SCHEME
         //
 
-        mainFormLayout = new OrganisationSchemeMainFormLayout(OrganisationsClientSecurityUtils.canUpdateOrganisationScheme());
+        mainFormLayout = new OrganisationSchemeMainFormLayout();
         bindMainFormLayoutEvents();
         createViewForm();
         createEditionForm();
@@ -169,7 +169,6 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
                 });
             }
         });
-        // TODO newButton.setVisibility(OrganisationsClientSecurityUtils.canCreateOrganisation(schemeProcStatus) ? Visibility.VISIBLE : Visibility.HIDDEN);
 
         deleteConfirmationWindow = new DeleteConfirmationWindow(getConstants().organisationDeleteConfirmationTitle(), getConstants().organisationDeleteConfirmation());
         deleteConfirmationWindow.setVisibility(Visibility.HIDDEN);
@@ -578,8 +577,13 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         String title = defaultLocalisedName != null ? defaultLocalisedName : StringUtils.EMPTY;
         mainFormLayout.setTitleLabelContents(title);
 
+        mainFormLayout.setCanEdit(OrganisationsClientSecurityUtils.canUpdateOrganisationScheme(organisationSchemeMetamacDto.getLifeCycle().getProcStatus()));
         mainFormLayout.updatePublishSection(organisationSchemeMetamacDto.getLifeCycle().getProcStatus(), organisationSchemeMetamacDto.getValidTo());
         mainFormLayout.setViewMode();
+
+        // Security to create organisations
+        newButton.setVisibility(OrganisationsClientSecurityUtils.canCreateOrganisation(organisationSchemeMetamacDto.getLifeCycle().getProcStatus()) ? Visibility.VISIBLE : Visibility.HIDDEN);
+        toolStrip.markForRedraw();
 
         setOrganisationSchemeViewMode(organisationSchemeMetamacDto);
         setOrganisationSchemeEditionMode(organisationSchemeMetamacDto);
