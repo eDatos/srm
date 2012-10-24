@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
-import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
@@ -112,27 +111,14 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         // Retrieve conceptSchemeVersions
         List<ConceptSchemeVersion> conceptSchemeVersions = conceptsService.retrieveConceptSchemeVersions(ctx, urn);
 
-        // Type cast to ConceptSchemeVersionMetamac
-        List<ConceptSchemeVersionMetamac> conceptSchemeVersionMetamacs = new ArrayList<ConceptSchemeVersionMetamac>();
-        for (ConceptSchemeVersion conceptSchemeVersion : conceptSchemeVersions) {
-            conceptSchemeVersionMetamacs.add((ConceptSchemeVersionMetamac) conceptSchemeVersion);
-        }
-
-        return conceptSchemeVersionMetamacs;
+        // Typecast to ConceptSchemeVersionMetamac
+        return conceptSchemeVersionsToConceptSchemeVersionsMetamac(conceptSchemeVersions);
     }
 
     @Override
     public PagedResult<ConceptSchemeVersionMetamac> findConceptSchemesByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
-
-        // Validation
-        ConceptsMetamacInvocationValidator.checkFindConceptSchemesByCondition(conditions, pagingParameter, null);
-
-        // Find (do not call SDMX module to avoid type cast)
-        if (conditions == null) {
-            conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).distinctRoot().build();
-        }
-        PagedResult<ConceptSchemeVersionMetamac> conceptSchemeVersionPagedResult = getConceptSchemeVersionMetamacRepository().findByCondition(conditions, pagingParameter);
-        return conceptSchemeVersionPagedResult;
+        PagedResult<ConceptSchemeVersion> conceptSchemeVersionPagedResult = conceptsService.findConceptSchemesByCondition(ctx, conditions, pagingParameter);
+        return pagedResultConceptSchemeVersionToMetamac(conceptSchemeVersionPagedResult);
     }
 
     @Override
@@ -194,7 +180,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         // Validation
         ConceptsMetamacInvocationValidator.checkVersioningConceptScheme(urnToCopy, versionType, null, null);
         // Validations of scheme final, ... are done in sdmx module
-        
+
         // Versioning
         ConceptSchemeVersionMetamac conceptSchemeNewVersion = (ConceptSchemeVersionMetamac) conceptsService.versioningConceptScheme(ctx, urnToCopy, versionType, conceptCopyCallback);
 
@@ -263,16 +249,8 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
     @Override
     public PagedResult<ConceptMetamac> findConceptsByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
-
-        // Validation
-        ConceptsMetamacInvocationValidator.checkFindConceptsByCondition(conditions, pagingParameter, null);
-
-        // Find (do not call sdmx module to avoid typecast)
-        if (conditions == null) {
-            conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class).distinctRoot().build();
-        }
-        PagedResult<ConceptMetamac> conceptPagedResult = getConceptMetamacRepository().findByCondition(conditions, pagingParameter);
-        return conceptPagedResult;
+        PagedResult<Concept> conceptsPagedResult = conceptsService.findConceptsByCondition(ctx, conditions, pagingParameter);
+        return pagedResultConceptToMetamac(conceptsPagedResult);
     }
 
     // TODO Pendiente de confirmación de Alberto: se está lanzando excepción si hay conceptos relacionados
@@ -460,14 +438,6 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         return conceptSchemeVersion;
     }
 
-    private List<ConceptMetamac> conceptsToConceptMetamac(List<Concept> items) {
-        List<ConceptMetamac> concepts = new ArrayList<ConceptMetamac>();
-        for (Item item : items) {
-            concepts.add((ConceptMetamac) item);
-        }
-        return concepts;
-    }
-
     private void checkToDeleteConceptHierarchyWithoutRelations(Concept concept) throws MetamacException {
 
         String conceptUrn = concept.getNameableArtefact().getUrn();
@@ -538,5 +508,44 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
     private Boolean isConceptSchemeFirstVersion(ItemSchemeVersion itemSchemeVersion) {
         return itemSchemeVersion.getMaintainableArtefact().getReplaceTo() == null;
+    }
+
+    /**
+     * Typecast to Metamac type
+     */
+    private List<ConceptMetamac> conceptsToConceptMetamac(List<Concept> sources) {
+        List<ConceptMetamac> targets = new ArrayList<ConceptMetamac>();
+        for (Item source : sources) {
+            targets.add((ConceptMetamac) source);
+        }
+        return targets;
+    }
+
+    /**
+     * Typecast to Metamac type
+     */
+    private List<ConceptSchemeVersionMetamac> conceptSchemeVersionsToConceptSchemeVersionsMetamac(List<ConceptSchemeVersion> sources) {
+        List<ConceptSchemeVersionMetamac> targets = new ArrayList<ConceptSchemeVersionMetamac>();
+        for (ItemSchemeVersion source : sources) {
+            targets.add((ConceptSchemeVersionMetamac) source);
+        }
+        return targets;
+    }
+
+    /**
+     * Typecast to Metamac type
+     */
+    private PagedResult<ConceptSchemeVersionMetamac> pagedResultConceptSchemeVersionToMetamac(PagedResult<ConceptSchemeVersion> source) {
+        List<ConceptSchemeVersionMetamac> conceptSchemeVersionsMetamac = conceptSchemeVersionsToConceptSchemeVersionsMetamac(source.getValues());
+        return new PagedResult<ConceptSchemeVersionMetamac>(conceptSchemeVersionsMetamac, source.getStartRow(), source.getRowCount(), source.getPageSize(), source.getTotalRows(),
+                source.getAdditionalResultRows());
+    }
+
+    /**
+     * Typecast to Metamac type
+     */
+    private PagedResult<ConceptMetamac> pagedResultConceptToMetamac(PagedResult<Concept> source) {
+        List<ConceptMetamac> conceptsMetamac = conceptsToConceptMetamac(source.getValues());
+        return new PagedResult<ConceptMetamac>(conceptsMetamac, source.getStartRow(), source.getRowCount(), source.getPageSize(), source.getTotalRows(), source.getAdditionalResultRows());
     }
 }

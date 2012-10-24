@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
-import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
@@ -22,6 +21,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.enume.domain.VersionPatternEnum;
 import com.arte.statistic.sdmx.srm.core.category.domain.Category;
 import com.arte.statistic.sdmx.srm.core.category.domain.CategorySchemeVersion;
@@ -84,27 +84,14 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
         // Retrieve categorySchemeVersions
         List<CategorySchemeVersion> categorySchemeVersions = categoriesService.retrieveCategorySchemeVersions(ctx, urn);
 
-        // Type cast to CategorySchemeVersionMetamac
-        List<CategorySchemeVersionMetamac> categorySchemeVersionMetamacs = new ArrayList<CategorySchemeVersionMetamac>();
-        for (CategorySchemeVersion categorySchemeVersion : categorySchemeVersions) {
-            categorySchemeVersionMetamacs.add((CategorySchemeVersionMetamac) categorySchemeVersion);
-        }
-
-        return categorySchemeVersionMetamacs;
+        // Typecast to CategorySchemeVersionMetamac
+        return categorySchemeVersionsToCategorySchemeVersionsMetamac(categorySchemeVersions);
     }
 
     @Override
     public PagedResult<CategorySchemeVersionMetamac> findCategorySchemesByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
-
-        // Validation
-        CategoriesMetamacInvocationValidator.checkFindCategorySchemesByCondition(conditions, pagingParameter, null);
-
-        // Find (do not call SDMX module to avoid type cast)
-        if (conditions == null) {
-            conditions = ConditionalCriteriaBuilder.criteriaFor(CategorySchemeVersionMetamac.class).distinctRoot().build();
-        }
-        PagedResult<CategorySchemeVersionMetamac> categorySchemeVersionPagedResult = getCategorySchemeVersionMetamacRepository().findByCondition(conditions, pagingParameter);
-        return categorySchemeVersionPagedResult;
+        PagedResult<CategorySchemeVersion> categorySchemeVersionPagedResult = categoriesService.findCategorySchemesByCondition(ctx, conditions, pagingParameter);
+        return pagedResultCategorySchemeVersionToMetamac(categorySchemeVersionPagedResult);
     }
 
     @Override
@@ -206,16 +193,8 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
 
     @Override
     public PagedResult<CategoryMetamac> findCategoriesByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
-
-        // Validation
-        CategoriesMetamacInvocationValidator.checkFindCategoriesByCondition(conditions, pagingParameter, null);
-
-        // Find (do not call sdmx module to avoid typecast)
-        if (conditions == null) {
-            conditions = ConditionalCriteriaBuilder.criteriaFor(CategoryMetamac.class).distinctRoot().build();
-        }
-        PagedResult<CategoryMetamac> categoryPagedResult = getCategoryMetamacRepository().findByCondition(conditions, pagingParameter);
-        return categoryPagedResult;
+        PagedResult<Category> categoriesPagedResult = categoriesService.findCategoriesByCondition(ctx, conditions, pagingParameter);
+        return pagedResultCategoryToMetamac(categoriesPagedResult);
     }
 
     @Override
@@ -249,11 +228,42 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
         return categorySchemeVersion;
     }
 
-    private List<CategoryMetamac> categoriesToCategoryMetamac(List<Category> items) {
-        List<CategoryMetamac> categories = new ArrayList<CategoryMetamac>();
-        for (Item item : items) {
-            categories.add((CategoryMetamac) item);
+    /**
+     * Typecast to Metamac type
+     */
+    private List<CategoryMetamac> categoriesToCategoryMetamac(List<Category> sources) {
+        List<CategoryMetamac> targets = new ArrayList<CategoryMetamac>();
+        for (Item source : sources) {
+            targets.add((CategoryMetamac) source);
         }
-        return categories;
+        return targets;
+    }
+
+    /**
+     * Typecast to Metamac type
+     */
+    private List<CategorySchemeVersionMetamac> categorySchemeVersionsToCategorySchemeVersionsMetamac(List<CategorySchemeVersion> sources) {
+        List<CategorySchemeVersionMetamac> targets = new ArrayList<CategorySchemeVersionMetamac>();
+        for (ItemSchemeVersion source : sources) {
+            targets.add((CategorySchemeVersionMetamac) source);
+        }
+        return targets;
+    }
+
+    /**
+     * Typecast to Metamac type
+     */
+    private PagedResult<CategorySchemeVersionMetamac> pagedResultCategorySchemeVersionToMetamac(PagedResult<CategorySchemeVersion> source) {
+        List<CategorySchemeVersionMetamac> categorySchemeVersionsMetamac = categorySchemeVersionsToCategorySchemeVersionsMetamac(source.getValues());
+        return new PagedResult<CategorySchemeVersionMetamac>(categorySchemeVersionsMetamac, source.getStartRow(), source.getRowCount(), source.getPageSize(), source.getTotalRows(),
+                source.getAdditionalResultRows());
+    }
+
+    /**
+     * Typecast to Metamac type
+     */
+    private PagedResult<CategoryMetamac> pagedResultCategoryToMetamac(PagedResult<Category> source) {
+        List<CategoryMetamac> categoriesMetamac = categoriesToCategoryMetamac(source.getValues());
+        return new PagedResult<CategoryMetamac>(categoriesMetamac, source.getStartRow(), source.getRowCount(), source.getPageSize(), source.getTotalRows(), source.getAdditionalResultRows());
     }
 }

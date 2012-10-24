@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.apache.commons.lang.ObjectUtils;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
-import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
@@ -23,6 +22,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.enume.domain.VersionPatternEnum;
 import com.arte.statistic.sdmx.srm.core.common.error.ServiceExceptionParameters;
@@ -101,28 +101,15 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
         // Retrieve organisationSchemeVersions
         List<OrganisationSchemeVersion> organisationSchemeVersions = organisationsService.retrieveOrganisationSchemeVersions(ctx, urn);
 
-        // Type cast to OrganisationSchemeVersionMetamac
-        List<OrganisationSchemeVersionMetamac> organisationSchemeVersionMetamacs = new ArrayList<OrganisationSchemeVersionMetamac>();
-        for (OrganisationSchemeVersion organisationSchemeVersion : organisationSchemeVersions) {
-            organisationSchemeVersionMetamacs.add((OrganisationSchemeVersionMetamac) organisationSchemeVersion);
-        }
-
-        return organisationSchemeVersionMetamacs;
+        // Typecast to OrganisationSchemeVersionMetamac
+        return organisationSchemeVersionsToOrganisationSchemeVersionsMetamac(organisationSchemeVersions);
     }
 
     @Override
     public PagedResult<OrganisationSchemeVersionMetamac> findOrganisationSchemesByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)
             throws MetamacException {
-
-        // Validation
-        OrganisationsMetamacInvocationValidator.checkFindOrganisationSchemesByCondition(conditions, pagingParameter, null);
-
-        // Find (do not call SDMX module to avoid type cast)
-        if (conditions == null) {
-            conditions = ConditionalCriteriaBuilder.criteriaFor(OrganisationSchemeVersionMetamac.class).distinctRoot().build();
-        }
-        PagedResult<OrganisationSchemeVersionMetamac> organisationSchemeVersionPagedResult = getOrganisationSchemeVersionMetamacRepository().findByCondition(conditions, pagingParameter);
-        return organisationSchemeVersionPagedResult;
+        PagedResult<OrganisationSchemeVersion> organisationSchemeVersionPagedResult = organisationsService.findOrganisationSchemesByCondition(ctx, conditions, pagingParameter);
+        return pagedResultOrganisationSchemeVersionToMetamac(organisationSchemeVersionPagedResult);
     }
 
     @Override
@@ -226,13 +213,13 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
     @Override
     public PagedResult<OrganisationMetamac> findOrganisationsByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
         PagedResult<Organisation> organisationsPagedResult = organisationsService.findOrganisationsByCondition(ctx, conditions, pagingParameter);
-        return pagedResultOrganisationToOrganisationMetamac(organisationsPagedResult);
+        return pagedResultOrganisationToMetamac(organisationsPagedResult);
     }
 
     @Override
     public PagedResult<OrganisationMetamac> findOrganisationsAsMaintainerByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
         PagedResult<Organisation> organisationsPagedResult = organisationsService.findOrganisationsAsMaintainerByCondition(ctx, conditions, pagingParameter);
-        return pagedResultOrganisationToOrganisationMetamac(organisationsPagedResult);
+        return pagedResultOrganisationToMetamac(organisationsPagedResult);
     }
 
     @Override
@@ -266,17 +253,42 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
         return organisationSchemeVersion;
     }
 
-    private List<OrganisationMetamac> organisationsToOrganisationMetamac(List<Organisation> items) {
-        List<OrganisationMetamac> organisations = new ArrayList<OrganisationMetamac>();
-        for (Item item : items) {
-            organisations.add((OrganisationMetamac) item);
+    /**
+     * Typecast to Metamac type
+     */
+    private List<OrganisationMetamac> organisationsToOrganisationMetamac(List<Organisation> sources) {
+        List<OrganisationMetamac> targets = new ArrayList<OrganisationMetamac>();
+        for (Item source : sources) {
+            targets.add((OrganisationMetamac) source);
         }
-        return organisations;
+        return targets;
     }
 
-    private PagedResult<OrganisationMetamac> pagedResultOrganisationToOrganisationMetamac(PagedResult<Organisation> organisationsPagedResult) {
-        List<OrganisationMetamac> organisationsMetamac = organisationsToOrganisationMetamac(organisationsPagedResult.getValues());
-        return new PagedResult<OrganisationMetamac>(organisationsMetamac, organisationsPagedResult.getStartRow(), organisationsPagedResult.getRowCount(), organisationsPagedResult.getPageSize(),
-                organisationsPagedResult.getTotalRows(), organisationsPagedResult.getAdditionalResultRows());
+    /**
+     * Typecast to Metamac type
+     */
+   private List<OrganisationSchemeVersionMetamac> organisationSchemeVersionsToOrganisationSchemeVersionsMetamac(List<OrganisationSchemeVersion> sources) {
+        List<OrganisationSchemeVersionMetamac> targets = new ArrayList<OrganisationSchemeVersionMetamac>();
+        for (ItemSchemeVersion source : sources) {
+            targets.add((OrganisationSchemeVersionMetamac) source);
+        }
+        return targets;
+    }
+
+    /**
+     * Typecast to Metamac type
+     */
+    private PagedResult<OrganisationSchemeVersionMetamac> pagedResultOrganisationSchemeVersionToMetamac(PagedResult<OrganisationSchemeVersion> source) {
+        List<OrganisationSchemeVersionMetamac> organisationSchemeVersionsMetamac = organisationSchemeVersionsToOrganisationSchemeVersionsMetamac(source.getValues());
+        return new PagedResult<OrganisationSchemeVersionMetamac>(organisationSchemeVersionsMetamac, source.getStartRow(), source.getRowCount(), source.getPageSize(), source.getTotalRows(),
+                source.getAdditionalResultRows());
+    }
+
+    /**
+     * Typecast to Metamac type
+     */
+    private PagedResult<OrganisationMetamac> pagedResultOrganisationToMetamac(PagedResult<Organisation> source) {
+        List<OrganisationMetamac> organisationsMetamac = organisationsToOrganisationMetamac(source.getValues());
+        return new PagedResult<OrganisationMetamac>(organisationsMetamac, source.getStartRow(), source.getRowCount(), source.getPageSize(), source.getTotalRows(), source.getAdditionalResultRows());
     }
 }

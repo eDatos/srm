@@ -82,30 +82,18 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
     @Override
     public List<DataStructureDefinitionVersionMetamac> retrieveDataStructureDefinitionVersions(ServiceContext ctx, String urn) throws MetamacException {
         // Retrieve dataStructureDefinitionVersions
-        List<DataStructureDefinitionVersion> dataStructureDefinitionVersionVersions = dataStructureDefinitionService.retrieveDataStructureDefinitionVersions(ctx, urn);
+        List<DataStructureDefinitionVersion> dataStructureDefinitionVersions = dataStructureDefinitionService.retrieveDataStructureDefinitionVersions(ctx, urn);
 
-        // Type cast to DataStructureDefinitionVersionMetamac
-        List<DataStructureDefinitionVersionMetamac> dataStructureVersionMetamacs = new ArrayList<DataStructureDefinitionVersionMetamac>();
-        for (DataStructureDefinitionVersion dataStructureDefinitionVersion : dataStructureDefinitionVersionVersions) {
-            dataStructureVersionMetamacs.add((DataStructureDefinitionVersionMetamac) dataStructureDefinitionVersion);
-        }
-
-        return dataStructureVersionMetamacs;
+        // Typecast to DataStructureDefinitionVersionMetamac
+        return dataStructureDefinitionVersionsToMetamac(dataStructureDefinitionVersions);
     }
 
     @Override
     public PagedResult<DataStructureDefinitionVersionMetamac> findDataStructureDefinitionsByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)
             throws MetamacException {
 
-        // Validation
-        DsdsMetamacInvocationValidator.checkFindDataStructureDefinitionsByCondition(conditions, pagingParameter, null);
-
-        // Find (do not call sdmx module to avoid typecast)
-        if (conditions == null) {
-            conditions = ConditionalCriteriaBuilder.criteriaFor(DataStructureDefinitionVersionMetamac.class).distinctRoot().build();
-        }
-        PagedResult<DataStructureDefinitionVersionMetamac> dataStructureVersionPagedResult = getDataStructureDefinitionVersionMetamacRepository().findByCondition(conditions, pagingParameter);
-        return dataStructureVersionPagedResult;
+        PagedResult<DataStructureDefinitionVersion> dataStructureDefinitionVersionPagedResult = dataStructureDefinitionService.findDataStructureDefinitionByCondition(ctx, conditions, pagingParameter);
+        return pagedResultDataStructureDefinitionVersionToMetamac(dataStructureDefinitionVersionPagedResult);
     }
 
     @Override
@@ -184,11 +172,11 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         // Fill metadata. The Metamac Metadata not copied through imported versions.
         dataStructureDefinitionVersion.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
         dataStructureDefinitionVersion.getMaintainableArtefact().setIsExternalReference(Boolean.FALSE);
-        
+
         // Import
         return (DataStructureDefinitionVersionMetamac) dataStructureDefinitionService.importDataStructureDefinition(ctx, dataStructureDefinitionVersion, structureCopyCallback);
     }
-    
+
     @Override
     public DataStructureDefinitionVersionMetamac endDataStructureDefinitionValidity(ServiceContext ctx, String urn) throws MetamacException {
 
@@ -228,5 +216,25 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.LIFE_CYCLE_WRONG_PROC_STATUS).withMessageParameters(urn, procStatusString).build();
         }
         return dataStructureDefinitionVersionMetamacPagedResult.getValues().get(0);
+    }
+
+    /**
+     * Typecast to Metamac type
+     */
+    private List<DataStructureDefinitionVersionMetamac> dataStructureDefinitionVersionsToMetamac(List<DataStructureDefinitionVersion> sources) {
+        List<DataStructureDefinitionVersionMetamac> targets = new ArrayList<DataStructureDefinitionVersionMetamac>();
+        for (DataStructureDefinitionVersion source : sources) {
+            targets.add((DataStructureDefinitionVersionMetamac) source);
+        }
+        return targets;
+    }
+
+    /**
+     * Typecast to Metamac type
+     */
+    private PagedResult<DataStructureDefinitionVersionMetamac> pagedResultDataStructureDefinitionVersionToMetamac(PagedResult<DataStructureDefinitionVersion> source) {
+        List<DataStructureDefinitionVersionMetamac> dataStructureDefinitionVersionsMetamac = dataStructureDefinitionVersionsToMetamac(source.getValues());
+        return new PagedResult<DataStructureDefinitionVersionMetamac>(dataStructureDefinitionVersionsMetamac, source.getStartRow(), source.getRowCount(), source.getPageSize(), source.getTotalRows(),
+                source.getAdditionalResultRows());
     }
 }
