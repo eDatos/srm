@@ -6,10 +6,8 @@ import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.core.security.shared.SharedConceptsSecurityUtils;
-import org.siemac.metamac.sso.client.MetamacPrincipal;
-import org.siemac.metamac.sso.client.SsoClientConstants;
 
-public class ConceptsSecurityUtils {
+public class ConceptsSecurityUtils extends BaseSecurityUtils {
 
     //
     // CONCEPT SCHEMES
@@ -179,24 +177,6 @@ public class ConceptsSecurityUtils {
             throw new MetamacException(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED, ctx.getUserId());
         }
     }
-    //
-    // OTHER
-    //
-
-    /**
-     * Retrieves MetamacPrincipal in ServiceContext
-     */
-    public static MetamacPrincipal getMetamacPrincipal(ServiceContext ctx) throws MetamacException {
-        Object principalProperty = ctx.getProperty(SsoClientConstants.PRINCIPAL_ATTRIBUTE);
-        if (principalProperty == null) {
-            throw new MetamacException(ServiceExceptionType.SECURITY_PRINCIPAL_NOT_FOUND);
-        }
-        MetamacPrincipal metamacPrincipal = (MetamacPrincipal) principalProperty;
-        if (!metamacPrincipal.getUserId().equals(ctx.getUserId())) {
-            throw new MetamacException(ServiceExceptionType.SECURITY_PRINCIPAL_NOT_FOUND);
-        }
-        return metamacPrincipal;
-    }
 
     //
     // PRIVATE METHODS
@@ -204,4 +184,5 @@ public class ConceptsSecurityUtils {
     private static String getOperationCode(ConceptSchemeVersionMetamac conceptSchemeMetamac) {
         return conceptSchemeMetamac.getRelatedOperation() != null ? conceptSchemeMetamac.getRelatedOperation().getCode() : null;
     }
+
 }

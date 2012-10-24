@@ -5,10 +5,8 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.security.shared.SharedDsdSecurityUtils;
-import org.siemac.metamac.sso.client.MetamacPrincipal;
-import org.siemac.metamac.sso.client.SsoClientConstants;
 
-public class DataStructureDefinitionSecurityUtils {
+public class DataStructureDefinitionSecurityUtils extends BaseSecurityUtils {
 
     /**
      * DSD
@@ -140,21 +138,6 @@ public class DataStructureDefinitionSecurityUtils {
         if (!SharedDsdSecurityUtils.canDeleteComponentForDataStructureDefinition(getMetamacPrincipal(ctx), dataStructureDefinitionVersionMetamac.getLifeCycleMetadata().getProcStatus())) {
             throw new MetamacException(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED, ctx.getUserId());
         }
-    }
-
-    /**
-     * Retrieves MetamacPrincipal in ServiceContext
-     */
-    public static MetamacPrincipal getMetamacPrincipal(ServiceContext ctx) throws MetamacException {
-        Object principalProperty = ctx.getProperty(SsoClientConstants.PRINCIPAL_ATTRIBUTE);
-        if (principalProperty == null) {
-            throw new MetamacException(ServiceExceptionType.SECURITY_PRINCIPAL_NOT_FOUND);
-        }
-        MetamacPrincipal metamacPrincipal = (MetamacPrincipal) principalProperty;
-        if (!metamacPrincipal.getUserId().equals(ctx.getUserId())) {
-            throw new MetamacException(ServiceExceptionType.SECURITY_PRINCIPAL_NOT_FOUND);
-        }
-        return metamacPrincipal;
     }
 
 }
