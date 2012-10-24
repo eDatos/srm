@@ -61,29 +61,31 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandlers> implements OrganisationPresenter.OrganisationView {
 
-    private VLayout                     panel;
-    private InternationalMainFormLayout mainFormLayout;
+    private VLayout                      panel;
+    private InternationalMainFormLayout  mainFormLayout;
 
-    private OrganisationsTreeGrid       organisationsTreeGrid;
+    private OrganisationsTreeGrid        organisationsTreeGrid;
 
     // View forms
-    private GroupDynamicForm            identifiersForm;
-    private GroupDynamicForm            contentDescriptorsForm;
-    private AnnotationsPanel            annotationsPanel;
+    private GroupDynamicForm             identifiersForm;
+    private GroupDynamicForm             contentDescriptorsForm;
+    private AnnotationsPanel             annotationsPanel;
 
     // Edition forms
-    private GroupDynamicForm            identifiersEditionForm;
-    private GroupDynamicForm            contentDescriptorsEditionForm;
-    private AnnotationsPanel            annotationsEditionPanel;
+    private GroupDynamicForm             identifiersEditionForm;
+    private GroupDynamicForm             contentDescriptorsEditionForm;
+    private AnnotationsPanel             annotationsEditionPanel;
 
     // Contacts
-    private CustomListGrid              contactListGrid;
-    private ContactMainFormLayout       contactMainFormLayout;
-    private ToolStripButton             contactDeleteButton;
-    private DeleteConfirmationWindow    contactDeleteConfirmationWindow;
+    private CustomListGrid               contactListGrid;
+    private ContactMainFormLayout        contactMainFormLayout;
+    private ToolStripButton              contactNewButton;
+    private ToolStripButton              contactDeleteButton;
+    private DeleteConfirmationWindow     contactDeleteConfirmationWindow;
 
-    private OrganisationMetamacDto      organisationDto;
-    private List<ContactDto>            contactDtos;
+    private OrganisationSchemeMetamacDto organisationSchemeMetamacDto;
+    private OrganisationMetamacDto       organisationDto;
+    private List<ContactDto>             contactDtos;
 
     @Inject
     public OrganisationViewImpl() {
@@ -120,7 +122,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
 
         ToolStrip contactsToolStrip = new ToolStrip();
 
-        ToolStripButton contactNewButton = new ToolStripButton(getConstants().actionNew(), RESOURCE.newListGrid().getURL());
+        contactNewButton = new ToolStripButton(getConstants().actionNew(), RESOURCE.newListGrid().getURL());
         contactNewButton.addClickHandler(new ClickHandler() {
 
             @Override
@@ -368,12 +370,15 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
 
     @Override
     public void setOrganisationList(OrganisationSchemeMetamacDto organisationSchemeMetamacDto, List<ItemHierarchyDto> itemHierarchyDtos) {
+        this.organisationSchemeMetamacDto = organisationSchemeMetamacDto;
 
         organisationsTreeGrid.setItems(organisationSchemeMetamacDto, itemHierarchyDtos);
         organisationsTreeGrid.selectItem(organisationDto);
 
         // Security
         mainFormLayout.setCanEdit(OrganisationsClientSecurityUtils.canUpdateOrganisation(organisationSchemeMetamacDto.getLifeCycle().getProcStatus()));
+        contactMainFormLayout.setCanEdit(OrganisationsClientSecurityUtils.canUpdateOrganisation(organisationSchemeMetamacDto.getLifeCycle().getProcStatus()));
+        contactNewButton.setVisibility(OrganisationsClientSecurityUtils.canUpdateOrganisation(organisationSchemeMetamacDto.getLifeCycle().getProcStatus()) ? Visibility.VISIBLE : Visibility.HIDDEN);
     }
 
     private void setOrganisationViewMode(OrganisationMetamacDto organisationDto) {
@@ -449,7 +454,9 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
     }
 
     private void showContactListGridDeleteButton() {
-        contactDeleteButton.show();
+        if (OrganisationsClientSecurityUtils.canUpdateOrganisation(this.organisationSchemeMetamacDto.getLifeCycle().getProcStatus())) {
+            contactDeleteButton.show();
+        }
     }
 
     private List<ContactDto> updateContacts(List<ContactDto> contactDtos, ContactDto contactDto) {

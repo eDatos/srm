@@ -338,7 +338,7 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
             @Override
             public void onWaitSuccess(SaveCategoryResult result) {
                 ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getMessageList(getMessages().categorySaved()), MessageTypeEnum.SUCCESS);
-                retrieveCategoryListByScheme(categorySchemeMetamacDto.getUrn());
+                retrieveCategorySchemeByUrn(categorySchemeMetamacDto.getUrn());
             }
         });
     }

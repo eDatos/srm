@@ -372,7 +372,7 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
             @Override
             public void onWaitSuccess(SaveOrganisationResult result) {
                 ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getMessageList(getMessages().organisationSaved()), MessageTypeEnum.SUCCESS);
-                retrieveOrganisationListByScheme(organisationSchemeMetamacDto.getUrn());
+                retrieveOrganisationSchemeByUrn(organisationSchemeMetamacDto.getUrn());
             }
         });
     }

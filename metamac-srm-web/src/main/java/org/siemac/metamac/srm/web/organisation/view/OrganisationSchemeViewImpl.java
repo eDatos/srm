@@ -581,10 +581,6 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         mainFormLayout.updatePublishSection(organisationSchemeMetamacDto.getLifeCycle().getProcStatus(), organisationSchemeMetamacDto.getValidTo());
         mainFormLayout.setViewMode();
 
-        // Security to create organisations
-        newButton.setVisibility(OrganisationsClientSecurityUtils.canCreateOrganisation(organisationSchemeMetamacDto.getLifeCycle().getProcStatus()) ? Visibility.VISIBLE : Visibility.HIDDEN);
-        toolStrip.markForRedraw();
-
         setOrganisationSchemeViewMode(organisationSchemeMetamacDto);
         setOrganisationSchemeEditionMode(organisationSchemeMetamacDto);
 
@@ -593,6 +589,9 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
             showOrganisationTree();
         } else {
             showOrganisationList();
+            // Security to create organisations
+            newButton.setVisibility(OrganisationsClientSecurityUtils.canCreateOrganisation(organisationSchemeMetamacDto.getLifeCycle().getProcStatus()) ? Visibility.VISIBLE : Visibility.HIDDEN);
+            toolStrip.markForRedraw();
         }
 
         // Update organisation scheme in tree grid
