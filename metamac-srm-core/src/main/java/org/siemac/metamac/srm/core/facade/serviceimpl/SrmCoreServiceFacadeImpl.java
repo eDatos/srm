@@ -712,8 +712,6 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public OrganisationSchemeMetamacDto publishOrganisationSchemeExternally(ServiceContext ctx, String urn) throws MetamacException {
-        // Security
-        ItemsSecurityUtils.canPublishItemSchemeExternally(ctx);
 
         OrganisationSchemeVersionMetamac organisationSchemeVersionPublished = getOrganisationsMetamacService().publishExternallyOrganisationScheme(ctx, urn);
 
@@ -1273,9 +1271,9 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public CategorySchemeMetamacDto createCategoryScheme(ServiceContext ctx, CategorySchemeMetamacDto categorySchemeDto) throws MetamacException {
-        // TODO Security and transform
+        // Security and transform
+        ItemsSecurityUtils.canCreateItemScheme(ctx);
         CategorySchemeVersionMetamac categorySchemeVersion = categoriesDto2DoMapper.categorySchemeMetamacDtoToDo(categorySchemeDto);
-        // CategoriesSecurityUtils.canCreateCategoryScheme(ctx, categorySchemeVersion);
 
         // Create
         CategorySchemeVersionMetamac categorySchemeVersionCreated = getCategoriesMetamacService().createCategoryScheme(ctx, categorySchemeVersion);
@@ -1287,8 +1285,9 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public CategorySchemeMetamacDto updateCategoryScheme(ServiceContext ctx, CategorySchemeMetamacDto categorySchemeDto) throws MetamacException {
-        // TODO Security
-        // CategoriesSecurityUtils.canUpdateCategoryScheme();
+        // Security
+        CategorySchemeVersionMetamac categorySchemeVersionOld = getCategoriesMetamacService().retrieveCategorySchemeByUrn(ctx, categorySchemeDto.getUrn());
+        ItemsSecurityUtils.canUpdateItemScheme(ctx, categorySchemeVersionOld.getLifeCycleMetadata().getProcStatus());
 
         // Transform
         CategorySchemeVersionMetamac categorySchemeVersionToUpdate = categoriesDto2DoMapper.categorySchemeMetamacDtoToDo(categorySchemeDto);
@@ -1303,9 +1302,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public void deleteCategoryScheme(ServiceContext ctx, String urn) throws MetamacException {
-        // TODO Security
-        // CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByUrn(ctx, urn);
-        // CategoriesSecurityUtils.canDeleteCategoryScheme(ctx, categorySchemeVersion);
+        // Security
+        ItemsSecurityUtils.canDeleteItemScheme(ctx);
 
         // Delete
         getCategoriesMetamacService().deleteCategoryScheme(ctx, urn);
@@ -1313,8 +1311,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public MetamacCriteriaResult<CategorySchemeMetamacDto> findCategorySchemesByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
-        // TODO Security
-        // CategoriesSecurityUtils.canFindCategorySchemesByCondition(ctx);
+        // Security
+        ItemsSecurityUtils.canFindItemSchemesByCondition(ctx);
 
         // Transform
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getCategorySchemeMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
@@ -1331,8 +1329,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public CategorySchemeMetamacDto retrieveCategorySchemeByUrn(ServiceContext ctx, String urn) throws MetamacException {
-        // TODO Security
-        // CategoriesSecurityUtils.canRetrieveCategorySchemeByUrn(ctx);
+        // Security
+        ItemsSecurityUtils.canRetrieveItemSchemeByUrn(ctx);
 
         // Retrieve
         CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByUrn(ctx, urn);
@@ -1345,8 +1343,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public List<CategorySchemeMetamacDto> retrieveCategorySchemeVersions(ServiceContext ctx, String urn) throws MetamacException {
-        // TODO Security
-        // CategoriesSecurityUtils.canRetrieveCategorySchemeVersions(ctx);
+        // Security
+        ItemsSecurityUtils.canRetrieveItemSchemeVersions(ctx);
 
         // Retrieve
         List<CategorySchemeVersionMetamac> categorySchemeVersionMetamacs = getCategoriesMetamacService().retrieveCategorySchemeVersions(ctx, urn);
@@ -1359,9 +1357,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public CategorySchemeMetamacDto sendCategorySchemeToProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
-        // TODO Security
-        // CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByUrn(ctx, urn);
-        // CategoriesSecurityUtils.canSendCategorySchemeToProductionValidation(ctx, categorySchemeVersion);
+        // Security
+        ItemsSecurityUtils.canSendItemSchemeToProductionValidation(ctx);
 
         // Send
         CategorySchemeVersionMetamac categorySchemeVersionProductionValidation = getCategoriesMetamacService().sendCategorySchemeToProductionValidation(ctx, urn);
@@ -1373,9 +1370,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public CategorySchemeMetamacDto sendCategorySchemeToDiffusionValidation(ServiceContext ctx, String urn) throws MetamacException {
-        // TODO Security
-        // CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByUrn(ctx, urn);
-        // CategoriesSecurityUtils.canSendCategorySchemeToDiffusionValidation(ctx, categorySchemeVersion);
+        // Security
+        ItemsSecurityUtils.canSendItemSchemeToDiffusionValidation(ctx);
 
         // Send
         CategorySchemeVersionMetamac categorySchemeVersionDiffusionValidation = getCategoriesMetamacService().sendCategorySchemeToDiffusionValidation(ctx, urn);
@@ -1387,9 +1383,9 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public CategorySchemeMetamacDto rejectCategorySchemeProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
-        // TODO Security
-        // CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByUrn(ctx, urn);
-        // CategoriesSecurityUtils.canRejectCategorySchemeValidation(ctx, categorySchemeVersion);
+        // Security
+        CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByUrn(ctx, urn);
+        ItemsSecurityUtils.canRejectItemSchemeValidation(ctx, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
 
         // Reject
         CategorySchemeVersionMetamac categorySchemeVersionRejected = getCategoriesMetamacService().rejectCategorySchemeProductionValidation(ctx, urn);
@@ -1401,9 +1397,9 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public CategorySchemeMetamacDto rejectCategorySchemeDiffusionValidation(ServiceContext ctx, String urn) throws MetamacException {
-        // TODO Security
-        // CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByUrn(ctx, urn);
-        // CategoriesSecurityUtils.canRejectCategorySchemeValidation(ctx, categorySchemeVersion);
+        // Security
+        CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByUrn(ctx, urn);
+        ItemsSecurityUtils.canRejectItemSchemeValidation(ctx, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
 
         // Reject
         CategorySchemeVersionMetamac categorySchemeVersionRejected = getCategoriesMetamacService().rejectCategorySchemeDiffusionValidation(ctx, urn);
@@ -1415,9 +1411,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public CategorySchemeMetamacDto publishCategorySchemeInternally(ServiceContext ctx, String urn) throws MetamacException {
-        // TODO Security
-        // CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByUrn(ctx, urn);
-        // CategoriesSecurityUtils.canPublishCategorySchemeInternally(ctx, categorySchemeVersion);
+        // Security
+        ItemsSecurityUtils.canPublishItemSchemeInternally(ctx);
 
         // Publish
         CategorySchemeVersionMetamac categorySchemeVersionPublished = getCategoriesMetamacService().publishInternallyCategoryScheme(ctx, urn);
@@ -1429,9 +1424,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public CategorySchemeMetamacDto publishCategorySchemeExternally(ServiceContext ctx, String urn) throws MetamacException {
-        // TODO Security
-        // CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByUrn(ctx, urn);
-        // CategoriesSecurityUtils.canPublishCategorySchemeExternally(ctx, categorySchemeVersion);
+        // Security
+        ItemsSecurityUtils.canPublishItemSchemeExternally(ctx);
 
         CategorySchemeVersionMetamac categorySchemeVersionPublished = getCategoriesMetamacService().publishExternallyCategoryScheme(ctx, urn);
 
@@ -1442,9 +1436,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public CategorySchemeMetamacDto versioningCategoryScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
-        // TODO Security
-        // CategorySchemeVersionMetamac categorySchemeVersionToCopy = getCategoriesMetamacService().retrieveCategorySchemeByUrn(ctx, urnToCopy);
-        // CategoriesSecurityUtils.canVersioningCategoryScheme(ctx, categorySchemeVersionToCopy);
+        // Security
+        ItemsSecurityUtils.canVersioningItemScheme(ctx);
 
         CategorySchemeVersionMetamac categorySchemeVersioned = getCategoriesMetamacService().versioningCategoryScheme(ctx, urnToCopy, versionType);
 
@@ -1455,9 +1448,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public CategorySchemeMetamacDto endCategorySchemeValidity(ServiceContext ctx, String urn) throws MetamacException {
-        // TODO Security
-        // CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByUrn(ctx, urn);
-        // CategoriesSecurityUtils.canEndCategorySchemeValidity(ctx, categorySchemeVersion);
+        // Security
+        ItemsSecurityUtils.canEndItemSchemeValidity(ctx);
 
         CategorySchemeVersionMetamac categorySchemeEnded = getCategoriesMetamacService().endCategorySchemeValidity(ctx, urn);
 
@@ -1473,9 +1465,9 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public CategoryMetamacDto createCategory(ServiceContext ctx, CategoryMetamacDto categoryMetamacDto) throws MetamacException {
-        // TODO Security
-        // CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByUrn(ctx, categoryMetamacDto.getItemSchemeVersionUrn());
-        // CategoriesSecurityUtils.canCreateCategory(ctx, categorySchemeVersion);
+        // Security
+        CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByUrn(ctx, categoryMetamacDto.getItemSchemeVersionUrn());
+        ItemsSecurityUtils.canCreateItem(ctx, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
 
         // Transform
         CategoryMetamac categoryMetamac = categoriesDto2DoMapper.categoryMetamacDtoToDo(categoryMetamacDto);
@@ -1491,10 +1483,9 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public CategoryMetamacDto updateCategory(ServiceContext ctx, CategoryMetamacDto categoryDto) throws MetamacException {
-
-        // TODO Security
-        // CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByCategoryUrn(ctx, categoryDto.getUrn());
-        // CategoriesSecurityUtils.canUpdateCategory(ctx, categorySchemeVersion);
+        // Security
+        CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByCategoryUrn(ctx, categoryDto.getUrn());
+        ItemsSecurityUtils.canUpdateItem(ctx, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
 
         // Transform
         CategoryMetamac categoryMetamac = categoriesDto2DoMapper.categoryMetamacDtoToDo(categoryDto);
@@ -1509,9 +1500,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public CategoryMetamacDto retrieveCategoryByUrn(ServiceContext ctx, String urn) throws MetamacException {
-
-        // TODO Security
-        // CategoriesSecurityUtils.canRetrieveCategoryByUrn(ctx);
+        // Security
+        ItemsSecurityUtils.canRetrieveItemByUrn(ctx);
 
         // Retrieve
         CategoryMetamac categoryMetamac = getCategoriesMetamacService().retrieveCategoryByUrn(ctx, urn);
@@ -1524,10 +1514,9 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public void deleteCategory(ServiceContext ctx, String urn) throws MetamacException {
-
-        // TODO Security
-        // CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByCategoryUrn(ctx, urn);
-        // CategoriesSecurityUtils.canDeleteCategory(ctx, categorySchemeVersion);
+        // Security
+        CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByCategoryUrn(ctx, urn);
+        ItemsSecurityUtils.canDeleteItem(ctx, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
 
         // Delete
         getCategoriesMetamacService().deleteCategory(ctx, urn);
@@ -1535,9 +1524,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public List<ItemHierarchyDto> retrieveCategoriesByCategorySchemeUrn(ServiceContext ctx, String categorySchemeUrn) throws MetamacException {
-
-        // TODO Security
-        // CategoriesSecurityUtils.canRetrieveCategoriesByCategorySchemeUrn(ctx);
+        // Security
+        ItemsSecurityUtils.canRetrieveItemsByItemSchemeUrn(ctx);
 
         // Retrieve
         List<CategoryMetamac> categories = getCategoriesMetamacService().retrieveCategoriesByCategorySchemeUrn(ctx, categorySchemeUrn);
@@ -1549,8 +1537,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public MetamacCriteriaResult<CategoryMetamacDto> findCategoriesByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
-        // TODO Security
-        // CategoriesSecurityUtils.canFindCategoriesByCondition(ctx);
+        // Security
+        ItemsSecurityUtils.canFindItemsByCondition(ctx);
 
         // Transform
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getCategoryMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
