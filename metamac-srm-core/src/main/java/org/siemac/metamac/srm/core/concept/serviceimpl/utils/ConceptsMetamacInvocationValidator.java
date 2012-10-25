@@ -7,7 +7,7 @@ import org.apache.commons.lang.BooleanUtils;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.core.common.exception.utils.ExceptionUtils;
-import org.siemac.metamac.core.common.serviceimpl.utils.ValidationUtils;
+import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.ValidationUtils;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
@@ -154,6 +154,13 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
                 exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.CONCEPT_EXTENDS));
             }
         }
+        ValidationUtils.checkMetadataOptionalIsValid(concept.getPluralName(), ServiceExceptionParameters.CONCEPT_PLURAL_NAME, exceptions);
+        ValidationUtils.checkMetadataOptionalIsValid(concept.getAcronym(), ServiceExceptionParameters.CONCEPT_ACRONYM, exceptions);
+        ValidationUtils.checkMetadataOptionalIsValid(concept.getDescriptionSource(), ServiceExceptionParameters.CONCEPT_DESCRIPTION_SOURCE, exceptions);
+        ValidationUtils.checkMetadataOptionalIsValid(concept.getContext(), ServiceExceptionParameters.CONCEPT_CONTEXT, exceptions);
+        ValidationUtils.checkMetadataOptionalIsValid(concept.getDocMethod(), ServiceExceptionParameters.CONCEPT_DOC_METHOD, exceptions);
+        ValidationUtils.checkMetadataOptionalIsValid(concept.getDerivation(), ServiceExceptionParameters.CONCEPT_DERIVATION, exceptions);
+        ValidationUtils.checkMetadataOptionalIsValid(concept.getLegalActs(), ServiceExceptionParameters.CONCEPT_LEGAL_ACTS, exceptions);
 
         // common metadata in sdmx are checked in Sdmx module
     }

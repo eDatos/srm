@@ -20,6 +20,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.common.test.utils.MetamacAsserts;
 import org.siemac.metamac.common.test.utils.MetamacMocks;
+import org.siemac.metamac.core.common.ent.domain.InternationalString;
+import org.siemac.metamac.core.common.ent.domain.LocalisedString;
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
@@ -94,7 +96,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
     }
 
     @Test
-    public void testCreateConceptSchemeErrorMetadatasRequired() throws Exception {
+    public void testCreateConceptSchemeErrorMetadataRequired() throws Exception {
         OrganisationMetamac organisationMetamac = organisationMetamacRepository.findByUrn(AGENCY_ROOT_1_V1);
         ConceptSchemeVersionMetamac conceptSchemeVersion = ConceptsMetamacDoMocks.mockConceptScheme(organisationMetamac);
         conceptSchemeVersion.setType(null);
@@ -1468,6 +1470,39 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2, conceptSchemeVersion.getItemsFirstLevel().get(1).getNameableArtefact().getUrn());
         assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_3, conceptSchemeVersion.getItemsFirstLevel().get(2).getNameableArtefact().getUrn());
         assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_4, conceptSchemeVersion.getItemsFirstLevel().get(3).getNameableArtefact().getUrn());
+    }
+
+    @Test
+    public void testCreateConceptErrorMetadataIncorrect() throws Exception {
+
+        ConceptType conceptType = null;
+        ConceptMetamac concept = ConceptsMetamacDoMocks.mockConcept(conceptType);
+        concept.setPluralName(new InternationalString());
+        concept.setDocMethod(new InternationalString());
+        concept.getDocMethod().addText(new LocalisedString());
+        concept.setLegalActs(new InternationalString());
+        LocalisedString lsLegalActs = new LocalisedString();
+        lsLegalActs.setLocale("es");
+        concept.getLegalActs().addText(lsLegalActs);
+
+        try {
+            conceptsService.createConcept(getServiceContextAdministrador(), CONCEPT_SCHEME_1_V2, concept);
+            fail("parameters incorrect");
+        } catch (MetamacException e) {
+            assertEquals(3, e.getExceptionItems().size());
+
+            assertEquals(ServiceExceptionType.METADATA_INCORRECT.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(ServiceExceptionParameters.CONCEPT_PLURAL_NAME, e.getExceptionItems().get(0).getMessageParameters()[0]);
+
+            assertEquals(ServiceExceptionType.METADATA_INCORRECT.getCode(), e.getExceptionItems().get(1).getCode());
+            assertEquals(1, e.getExceptionItems().get(1).getMessageParameters().length);
+            assertEquals(ServiceExceptionParameters.CONCEPT_DOC_METHOD, e.getExceptionItems().get(1).getMessageParameters()[0]);
+
+            assertEquals(ServiceExceptionType.METADATA_INCORRECT.getCode(), e.getExceptionItems().get(2).getCode());
+            assertEquals(1, e.getExceptionItems().get(2).getMessageParameters().length);
+            assertEquals(ServiceExceptionParameters.CONCEPT_LEGAL_ACTS, e.getExceptionItems().get(2).getMessageParameters()[0]);
+        }
     }
 
     @Test
