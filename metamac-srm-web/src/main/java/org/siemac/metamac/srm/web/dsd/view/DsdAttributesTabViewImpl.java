@@ -125,9 +125,6 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
     private DsdFacetForm                facetForm = null;
 
     private ToolStripButton             newToolStripButton;
-    // private ToolStripButton editToolStripButton;
-    // private ToolStripButton saveToolStripButton;
-    // private ToolStripButton cancelToolStripButton;
     private ToolStripButton             deleteToolStripButton;
 
     private DeleteConfirmationWindow    importDsdWindow;
@@ -171,7 +168,6 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         attributeGridToolStrip.setWidth100();
         attributeGridToolStrip.addButton(newToolStripButton);
         attributeGridToolStrip.addSeparator();
-        // attributeGridToolStrip.addButton(editToolStripButton);
         attributeGridToolStrip.addButton(deleteToolStripButton);
 
         // Grid
@@ -313,13 +309,6 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         mainFormLayout.addViewCanvas(staticFacetForm);
         mainFormLayout.addViewCanvas(viewAnnotationsPanel);
 
-        // VLayout viewLayout = new VLayout(15);
-        // viewLayout.setAutoHeight();
-        // viewLayout.addMember(staticForm);
-        // viewLayout.addMember(staticFacetForm);
-        // viewLayout.addMember(viewAnnotationsPanel);
-
-        // return viewLayout;
     }
 
     /**
@@ -464,21 +453,6 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
         // Annotations
         editionAnnotationsPanel = new AnnotationsPanel(false);
-
-        // VLayout formLayout = new VLayout(15);
-        // formLayout.setMargin(10);
-        // formLayout.addMember(form);
-        // formLayout.addMember(facetForm);
-        // formLayout.addMember(editionAnnotationsPanel);
-        //
-        // VLayout editionLayout = new VLayout();
-        // editionLayout.setVisibility(Visibility.HIDDEN);
-        // editionLayout.setBorder("1px solid #d9d9d9");
-        // editionLayout.setAutoHeight();
-        // editionLayout.addMember(formToolStrip);
-        // editionLayout.addMember(formLayout);
-
-        // return editionLayout;
 
         mainFormLayout.addEditionCanvas(form);
         mainFormLayout.addEditionCanvas(facetForm);
