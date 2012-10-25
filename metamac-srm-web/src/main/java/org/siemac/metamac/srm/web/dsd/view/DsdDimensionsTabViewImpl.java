@@ -169,7 +169,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         dimensionsGrid.setSelectionAppearance(SelectionAppearance.CHECKBOX);
         ListGridField idLogicField = new ListGridField(DimensionRecord.CODE, MetamacSrmWeb.getConstants().dsdDimensionsId());
         ListGridField typeField = new ListGridField(DimensionRecord.TYPE, MetamacSrmWeb.getConstants().dsdDimensionsType());
-        ListGridField conceptField = new ListGridField(DimensionRecord.CONCEPT, MetamacSrmWeb.getConstants().dsdDimensionsConcept());
+        ListGridField conceptField = new ListGridField(DimensionRecord.CONCEPT, MetamacSrmWeb.getConstants().concept());
         dimensionsGrid.setFields(idLogicField, typeField, conceptField);
         // ToolTip
         idLogicField.setShowHover(true);
@@ -280,7 +280,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         GroupDynamicForm staticForm = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdDimensionDetails());
         staticCode = new ViewTextItem(DimensionDS.CODE_VIEW, MetamacSrmWeb.getConstants().dsdDimensionsId());
         staticTypeItem = new ViewTextItem(DimensionDS.TYPE, MetamacSrmWeb.getConstants().dsdDimensionsType());
-        staticConceptItem = new ViewTextItem(DimensionDS.CONCEPT, MetamacSrmWeb.getConstants().dsdDimensionsConcept());
+        staticConceptItem = new ViewTextItem(DimensionDS.CONCEPT, MetamacSrmWeb.getConstants().concept());
         staticRoleItem = new ViewTextItem(DimensionDS.CONCEPT, MetamacSrmWeb.getConstants().dsdDimensionsRole());
         // staticPositionItem = new StaticTextItem("position-dim-view", MetamacSrmWeb.getConstants().dsdDimensionsPosition());
         staticRepresentationTypeItem = new ViewTextItem(DimensionDS.REPRESENTATION_TYPE, MetamacSrmWeb.getConstants().representation());
@@ -357,7 +357,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
         // Concept
 
-        conceptItem = new ExternalSelectItem(DimensionDS.CONCEPT, MetamacSrmWeb.getConstants().dsdDimensionsConcept());
+        conceptItem = new ExternalSelectItem(DimensionDS.CONCEPT, MetamacSrmWeb.getConstants().concept());
         conceptItem.setRequired(true);
 
         // Role

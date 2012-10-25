@@ -180,7 +180,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         attributesGrid.setSelectionAppearance(SelectionAppearance.CHECKBOX);
         ListGridField codeField = new ListGridField(AttributeRecord.CODE, MetamacSrmWeb.getConstants().dsdAttributeId());
         ListGridField assigmentField = new ListGridField(AttributeRecord.ASSIGNMENT, MetamacSrmWeb.getConstants().dsdAttributeAssignmentStatus());
-        ListGridField attributeConceptField = new ListGridField(AttributeRecord.CONCEPT, MetamacSrmWeb.getConstants().dsdAttributeConcept());
+        ListGridField attributeConceptField = new ListGridField(AttributeRecord.CONCEPT, MetamacSrmWeb.getConstants().concept());
         attributesGrid.setFields(codeField, assigmentField, attributeConceptField);
         // ToolTip
         codeField.setShowHover(true);
@@ -288,7 +288,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
     private void createViewForm() {
         GroupDynamicForm staticForm = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdAttributeDetails());
         staticCode = new ViewTextItem(DataAttributeDS.CODE, MetamacSrmWeb.getConstants().dsdAttributeId());
-        staticConceptItem = new ViewTextItem(DataAttributeDS.CONCEPT, MetamacSrmWeb.getConstants().dsdAttributeConcept());
+        staticConceptItem = new ViewTextItem(DataAttributeDS.CONCEPT, MetamacSrmWeb.getConstants().concept());
         staticRoleItem = new ViewTextItem(DataAttributeDS.ROLE, MetamacSrmWeb.getConstants().dsdAttributeRole());
         staticAssignmentStatusItem = new ViewTextItem(DataAttributeDS.ASSIGMENT_STATUS, MetamacSrmWeb.getConstants().dsdAttributeAssignmentStatus());
         staticRelationType = new ViewTextItem(DataAttributeDS.RELATED_WITH, MetamacSrmWeb.getConstants().dsdAttributeRelatedWith());
@@ -337,7 +337,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
         // Concept
 
-        conceptItem = new ExternalSelectItem(DataAttributeDS.CONCEPT, MetamacSrmWeb.getConstants().dsdAttributeConcept());
+        conceptItem = new ExternalSelectItem(DataAttributeDS.CONCEPT, MetamacSrmWeb.getConstants().concept());
         conceptItem.setRequired(true);
 
         // Role
