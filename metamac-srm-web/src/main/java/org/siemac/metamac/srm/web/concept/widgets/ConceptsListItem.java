@@ -9,52 +9,22 @@ import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptRecord;
 import org.siemac.metamac.srm.web.concept.utils.RecordUtils;
-import org.siemac.metamac.web.common.client.widgets.BaseCustomListGrid;
-import org.siemac.metamac.web.common.client.widgets.form.fields.CustomCanvasItem;
-import org.siemac.metamac.web.common.client.widgets.form.fields.SearchViewTextItem;
+import org.siemac.metamac.web.common.client.widgets.form.fields.BaseListItem;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemDto;
-import com.smartgwt.client.types.Autofit;
-import com.smartgwt.client.widgets.form.DynamicForm;
-import com.smartgwt.client.widgets.form.fields.events.HasFormItemClickHandlers;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
-import com.smartgwt.client.widgets.layout.HLayout;
 
-public class ConceptsListItem extends CustomCanvasItem {
-
-    private BaseCustomListGrid listGrid;
-
-    private SearchViewTextItem searchViewTextItem;
+public class ConceptsListItem extends BaseListItem {
 
     public ConceptsListItem(String name, String title, boolean editionMode) {
-        super(name, title);
-        setCellStyle("dragAndDropCellStyle");
+        super(name, title, editionMode);
 
         ListGridField codeField = new ListGridField(ConceptDS.CODE, getConstants().identifiableArtefactCode());
         codeField.setWidth("40%");
         ListGridField nameField = new ListGridField(ConceptDS.NAME, getConstants().nameableArtefactName());
 
-        listGrid = new BaseCustomListGrid();
-        listGrid.setAutoFitMaxRecords(6);
-        listGrid.setAutoFitData(Autofit.VERTICAL);
         listGrid.setFields(codeField, nameField);
-
-        HLayout hLayout = new HLayout();
-        hLayout.addMember(listGrid);
-
-        // In edition mode, add a search icon to edit concept list
-        if (editionMode) {
-            searchViewTextItem = new SearchViewTextItem();
-            searchViewTextItem.setShowTitle(false);
-
-            DynamicForm form = new DynamicForm();
-            form.setFields(searchViewTextItem);
-
-            hLayout.addMember(form);
-        }
-
-        setCanvas(hLayout);
     }
 
     public void setDataConcepts(List<ConceptMetamacDto> conceptMetamacDtos) {
@@ -71,10 +41,6 @@ public class ConceptsListItem extends CustomCanvasItem {
             ConceptRecord record = RecordUtils.getConceptRecord(itemDto);
             listGrid.addData(record);
         }
-    }
-
-    public HasFormItemClickHandlers getSearchIcon() {
-        return searchViewTextItem.getSearchIcon();
     }
 
     public List<String> getConceptUrns() {
