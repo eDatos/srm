@@ -217,6 +217,7 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
             public void onWaitSuccess(SaveDsdResult result) {
                 getView().closeDsdWindow();
                 retrieveDsdList(DSD_LIST_FIRST_RESULT, DSD_LIST_MAX_RESULTS, null);
+                ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdSaved()), MessageTypeEnum.SUCCESS);
             }
         });
     }

@@ -6,12 +6,14 @@ import java.util.List;
 
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
+import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.representation.widgets.StaticFacetForm;
 import org.siemac.metamac.srm.web.client.resources.GlobalResources;
 import org.siemac.metamac.srm.web.client.utils.FacetFormUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
+import org.siemac.metamac.srm.web.dsd.model.ds.DimensionDS;
 import org.siemac.metamac.srm.web.dsd.model.record.DimensionRecord;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdDimensionsTabPresenter;
 import org.siemac.metamac.srm.web.dsd.utils.CommonUtils;
@@ -88,7 +90,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
     // VIEW FORM
 
-    private ViewTextItem                staticIdLogic;
+    private ViewTextItem                staticCode;
     private ViewTextItem                staticTypeItem;
     private ViewTextItem                staticConceptItem;
     private ViewTextItem                staticRoleItem;
@@ -275,17 +277,16 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
      * @return
      */
     private void createViewForm() {
-        staticIdLogic = new ViewTextItem("id-dim-view", MetamacSrmWeb.getConstants().dsdDimensionsId());
-        staticTypeItem = new ViewTextItem("type-dim-view", MetamacSrmWeb.getConstants().dsdDimensionsType());
-        staticConceptItem = new ViewTextItem("concept-dim-view", MetamacSrmWeb.getConstants().dsdDimensionsConcept());
-        staticRoleItem = new ViewTextItem("role-dim-view", MetamacSrmWeb.getConstants().dsdDimensionsRole());
-        // staticPositionItem = new StaticTextItem("position-dim-view", MetamacSrmWeb.getConstants().dsdDimensionsPosition());
-        staticRepresentationTypeItem = new ViewTextItem("repr-dim-view", MetamacSrmWeb.getConstants().representation());
-        staticCodeListItem = new ViewTextItem("repr-enum-code-list-view", MetamacSrmWeb.getConstants().dsdCodeList());
-        staticConceptSchemeItem = new ViewTextItem("repr-enum-concept-scheme-view", MetamacSrmWeb.getConstants().dsdConceptScheme());
-
         GroupDynamicForm staticForm = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdDimensionDetails());
-        staticForm.setFields(staticIdLogic, staticTypeItem, staticConceptItem, staticRoleItem, staticRepresentationTypeItem, staticCodeListItem, staticConceptSchemeItem);
+        staticCode = new ViewTextItem(DimensionDS.CODE_VIEW, MetamacSrmWeb.getConstants().dsdDimensionsId());
+        staticTypeItem = new ViewTextItem(DimensionDS.TYPE, MetamacSrmWeb.getConstants().dsdDimensionsType());
+        staticConceptItem = new ViewTextItem(DimensionDS.CONCEPT, MetamacSrmWeb.getConstants().dsdDimensionsConcept());
+        staticRoleItem = new ViewTextItem(DimensionDS.CONCEPT, MetamacSrmWeb.getConstants().dsdDimensionsRole());
+        // staticPositionItem = new StaticTextItem("position-dim-view", MetamacSrmWeb.getConstants().dsdDimensionsPosition());
+        staticRepresentationTypeItem = new ViewTextItem(DimensionDS.REPRESENTATION_TYPE, MetamacSrmWeb.getConstants().representation());
+        staticCodeListItem = new ViewTextItem(DimensionDS.ENUMERATED_REPRESENTATION_CODE_LIST, MetamacSrmWeb.getConstants().dsdCodeList());
+        staticConceptSchemeItem = new ViewTextItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME, MetamacSrmWeb.getConstants().conceptScheme());
+        staticForm.setFields(staticCode, staticTypeItem, staticConceptItem, staticRoleItem, staticRepresentationTypeItem, staticCodeListItem, staticConceptSchemeItem);
 
         staticFacetForm = new StaticFacetForm();
 
@@ -303,13 +304,15 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
      * @return
      */
     private void createEditionForm() {
-        // Id
+        form = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdDimensionDetails());
 
-        code = new RequiredTextItem("id-dim", MetamacSrmWeb.getConstants().dsdDimensionsId());
+        // Code
+
+        code = new RequiredTextItem(DimensionDS.CODE, MetamacSrmWeb.getConstants().dsdDimensionsId());
         code.setRedrawOnChange(true);
         code.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());
 
-        staticCodeEdit = new ViewTextItem("static-id-dim-view", MetamacSrmWeb.getConstants().dsdDimensionsId());
+        staticCodeEdit = new ViewTextItem(DimensionDS.CODE_VIEW, MetamacSrmWeb.getConstants().dsdDimensionsId());
         staticCodeEdit.setRedrawOnChange(true);
         // Do not edit code if TypeDimensionComponent == TIMEDIMENSION (code will be fixed to TIME_PERIOD)
         code.setShowIfCondition(new FormItemIfFunction() {
@@ -329,12 +332,11 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
         // Type (read only)
 
-        staticTypeItemEdit = new ViewTextItem("type-dim-view-edit", MetamacSrmWeb.getConstants().dsdDimensionsType());
+        staticTypeItemEdit = new ViewTextItem(DimensionDS.TYPE_VIEW, MetamacSrmWeb.getConstants().dsdDimensionsType());
 
         // Type
 
-        typeItem = new RequiredSelectItem("type-dim", MetamacSrmWeb.getConstants().dsdDimensionsType());
-        typeItem.setType("comboBox");
+        typeItem = new RequiredSelectItem(DimensionDS.TYPE, MetamacSrmWeb.getConstants().dsdDimensionsType());
         typeItem.setValueMap(CommonUtils.getTypeDimensionComponentHashMap());
         typeItem.setRedrawOnChange(true);
         FormItemIcon infoIcon = new FormItemIcon();
@@ -355,19 +357,18 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
         // Concept
 
-        conceptItem = new ExternalSelectItem("concept-dim", MetamacSrmWeb.getConstants().dsdDimensionsConcept());
+        conceptItem = new ExternalSelectItem(DimensionDS.CONCEPT, MetamacSrmWeb.getConstants().dsdDimensionsConcept());
         conceptItem.setRequired(true);
-        conceptItem.setType("comboBox");
 
         // Role
 
-        roleItem = new RoleSelectItem("role-dim", MetamacSrmWeb.getConstants().dsdDimensionsRole());
+        roleItem = new RoleSelectItem(DimensionDS.ROLE, MetamacSrmWeb.getConstants().dsdDimensionsRole());
         // Do not show Role if TypeDimensionComponent = TIMEDIMENSION
         roleItem.setShowIfCondition(new FormItemIfFunction() {
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
-                if (typeItem.getValueAsString() != null) {
+                if (!StringUtils.isBlank(typeItem.getValueAsString())) {
                     TypeDimensionComponent typeDimensionComponent = TypeDimensionComponent.valueOf(typeItem.getValueAsString());
                     if (TypeDimensionComponent.DIMENSION.equals(typeDimensionComponent) || TypeDimensionComponent.MEASUREDIMENSION.equals(typeDimensionComponent)) {
                         return true;
@@ -379,8 +380,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
         // Representation
 
-        representationTypeItem = new CustomSelectItem("repr-dim", MetamacSrmWeb.getConstants().representation());
-        representationTypeItem.setType("comboBox");
+        representationTypeItem = new CustomSelectItem(DimensionDS.REPRESENTATION_TYPE, MetamacSrmWeb.getConstants().representation());
         representationTypeItem.setValueMap(org.siemac.metamac.srm.web.client.utils.CommonUtils.getTypeRepresentationEnumHashMap());
         representationTypeItem.setRedrawOnChange(true);
         // Show FacetForm if RepresentationTypeEnum = NON_NUMERATED
@@ -419,8 +419,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
         // Code List
 
-        codeListItem = new CustomSelectItem("repr-enum-code-list", MetamacSrmWeb.getConstants().dsdCodeList());
-        codeListItem.setType("comboBox");
+        codeListItem = new CustomSelectItem(DimensionDS.ENUMERATED_REPRESENTATION_CODE_LIST, MetamacSrmWeb.getConstants().dsdCodeList());
         // Show CodeList if RepresentationTypeEnum = ENUMERATED (except in MeasureDimension)
         codeListItem.setShowIfCondition(new FormItemIfFunction() {
 
@@ -430,9 +429,8 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
             }
         });
 
-        conceptSchemeItem = new CustomSelectItem("repr-enum-concept-scheme", MetamacSrmWeb.getConstants().dsdConceptScheme());
-        conceptSchemeItem.setType("comboBox");
-        // Show CodeList if RepresentationTypeEnum = ENUMERATED and TypeDimensionComponent == MEASUREDIMENSION
+        conceptSchemeItem = new CustomSelectItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME, MetamacSrmWeb.getConstants().dsdConceptScheme());
+        // Show ConceptScheme if RepresentationTypeEnum = ENUMERATED and TypeDimensionComponent == MEASUREDIMENSION
         conceptSchemeItem.setShowIfCondition(new FormItemIfFunction() {
 
             @Override
@@ -441,7 +439,6 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
             }
         });
 
-        form = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdDimensionDetails());
         form.setFields(code, staticCodeEdit, staticTypeItemEdit, typeItem, conceptItem, roleItem, representationTypeItem, codeListItem, conceptSchemeItem);
 
         // Facet Form
@@ -610,7 +607,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
     private void setDimensionViewMode(DimensionComponentDto dimensionComponentDto) {
         this.dimensionComponentDto = dimensionComponentDto;
         // Id
-        staticIdLogic.setValue(dimensionComponentDto.getCode());
+        staticCode.setValue(dimensionComponentDto.getCode());
         // Type
         String value = (dimensionComponentDto.getTypeDimensionComponent() == null) ? null : MetamacSrmWeb.getCoreMessages().getString(
                 MetamacSrmWeb.getCoreMessages().typeDimensionComponent() + dimensionComponentDto.getTypeDimensionComponent().toString());

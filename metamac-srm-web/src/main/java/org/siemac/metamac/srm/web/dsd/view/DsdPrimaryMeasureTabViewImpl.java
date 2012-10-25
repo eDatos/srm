@@ -8,6 +8,7 @@ import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.representation.widgets.StaticFacetForm;
 import org.siemac.metamac.srm.web.client.utils.FacetFormUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
+import org.siemac.metamac.srm.web.dsd.model.ds.PrimaryMeasureDS;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdPrimaryMeasureTabPresenter;
 import org.siemac.metamac.srm.web.dsd.utils.CommonUtils;
 import org.siemac.metamac.srm.web.dsd.utils.DsdClientSecurityUtils;
@@ -92,11 +93,10 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
      * @return
      */
     private void createViewForm() {
-        staticConceptItem = new ViewTextItem("concept-pmeas-view", MetamacSrmWeb.getConstants().concept());
-        staticRepresentationTypeItem = new ViewTextItem("repr-pmeas", MetamacSrmWeb.getConstants().representation());
-        staticCodeListItem = new ViewTextItem("repr-enum-code-list-view", MetamacSrmWeb.getConstants().dsdCodeList());
-
         GroupDynamicForm staticForm = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdPrimaryMeasureDetails());
+        staticConceptItem = new ViewTextItem(PrimaryMeasureDS.CONCEPT, MetamacSrmWeb.getConstants().concept());
+        staticRepresentationTypeItem = new ViewTextItem(PrimaryMeasureDS.REPRESENTATION_TYPE, MetamacSrmWeb.getConstants().representation());
+        staticCodeListItem = new ViewTextItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION, MetamacSrmWeb.getConstants().dsdCodeList());
         staticForm.setFields(staticConceptItem, staticRepresentationTypeItem, staticCodeListItem);
 
         staticFacetForm = new StaticFacetForm();
@@ -115,11 +115,12 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
      * @return
      */
     private void createEditionForm() {
-        conceptItem = new ExternalSelectItem("concept-pmeas", MetamacSrmWeb.getConstants().concept());
+        form = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdPrimaryMeasureDetails());
+
+        conceptItem = new ExternalSelectItem(PrimaryMeasureDS.CONCEPT, MetamacSrmWeb.getConstants().concept());
         conceptItem.setRequired(true);
 
-        representationTypeItem = new CustomSelectItem("repr-pmeas", MetamacSrmWeb.getConstants().representation());
-        representationTypeItem.setType("comboBox");
+        representationTypeItem = new CustomSelectItem(PrimaryMeasureDS.REPRESENTATION_TYPE, MetamacSrmWeb.getConstants().representation());
         representationTypeItem.setValueMap(org.siemac.metamac.srm.web.client.utils.CommonUtils.getTypeRepresentationEnumHashMap());
         representationTypeItem.setRedrawOnChange(true);
         // Show FacetForm if RepresentationTypeEnum = NON_NUMERATED
@@ -131,8 +132,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
             }
         });
 
-        codeListItem = new CustomSelectItem("repr-enum-code-list", MetamacSrmWeb.getConstants().dsdCodeList());
-        codeListItem.setType("comboBox");
+        codeListItem = new CustomSelectItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION, MetamacSrmWeb.getConstants().dsdCodeList());
         // Show CodeList if RepresentationTypeEnum = ENUMERATED
         codeListItem.setShowIfCondition(new FormItemIfFunction() {
 
@@ -142,7 +142,6 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
             }
         });
 
-        form = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdPrimaryMeasureDetails());
         form.setFields(conceptItem, representationTypeItem, codeListItem);
 
         facetForm = new DsdFacetForm();
