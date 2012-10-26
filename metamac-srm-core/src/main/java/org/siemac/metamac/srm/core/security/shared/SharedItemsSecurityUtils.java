@@ -9,16 +9,6 @@ import org.siemac.metamac.sso.client.MetamacPrincipal;
 
 public class SharedItemsSecurityUtils extends SharedSecurityUtils {
 
-    /**
-     * Determines if a retrieve or find operation can be executed (for item schemes and items)
-     * 
-     * @param metamacPrincipal
-     * @return
-     */
-    public static boolean canRetrieveOrFindResource(MetamacPrincipal metamacPrincipal) {
-        return isAnySrmRole(metamacPrincipal);
-    }
-
     //
     // ITEM SCHEMES
     //
