@@ -78,7 +78,7 @@ public class SrmDtoMocks {
         dataStructureDefinitionMetamacDto.setName(name);
 
         // Maintainer
-        dataStructureDefinitionMetamacDto.setMaintainer(new RelatedResourceDto(SrmBaseTest.AGENCY_ROOT_CODE, SrmBaseTest.AGENCY_ROOT_1_V1, TypeExternalArtefactsEnum.AGENCY));
+        dataStructureDefinitionMetamacDto.setMaintainer(new RelatedResourceDto(SrmBaseTest.AGENCY_ROOT_1_V1_CODE, SrmBaseTest.AGENCY_ROOT_1_V1, TypeExternalArtefactsEnum.AGENCY));
 
         // Other --------
         dataStructureDefinitionMetamacDto.setServiceURL("test");
@@ -359,7 +359,7 @@ public class SrmDtoMocks {
         describedBy.setName(name);
 
         // maintainerCode
-        describedBy.setMaintainer(new RelatedResourceDto(SrmBaseTest.AGENCY_ROOT_CODE, SrmBaseTest.AGENCY_ROOT_1_V1, TypeExternalArtefactsEnum.AGENCY));
+        describedBy.setMaintainer(new RelatedResourceDto(SrmBaseTest.AGENCY_ROOT_1_V1_CODE, SrmBaseTest.AGENCY_ROOT_1_V1, TypeExternalArtefactsEnum.AGENCY));
 
         // structure
 

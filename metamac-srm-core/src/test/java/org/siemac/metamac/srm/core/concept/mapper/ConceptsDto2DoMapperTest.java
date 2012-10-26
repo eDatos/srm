@@ -29,7 +29,7 @@ public class ConceptsDto2DoMapperTest extends SrmBaseTest {
 
     @Test
     public void testConceptSchemeMetamacDtoToDo() throws MetamacException {
-        ConceptSchemeMetamacDto dto = ConceptsMetamacDtoMocks.mockConceptSchemeDtoOperationType(AGENCY_ROOT_CODE, AGENCY_ROOT_1_V1);
+        ConceptSchemeMetamacDto dto = ConceptsMetamacDtoMocks.mockConceptSchemeDtoOperationType(AGENCY_ROOT_1_V1_CODE, AGENCY_ROOT_1_V1);
         ConceptSchemeVersionMetamac entity = conceptsDto2DoMapper.conceptSchemeDtoToDo(dto);
         ConceptsMetamacAsserts.assertEqualsConceptScheme(dto, entity);
     }

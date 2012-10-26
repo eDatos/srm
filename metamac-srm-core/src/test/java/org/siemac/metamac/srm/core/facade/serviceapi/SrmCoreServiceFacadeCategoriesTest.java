@@ -86,7 +86,7 @@ public class SrmCoreServiceFacadeCategoriesTest extends SrmBaseTest {
     public void testCreateCategoryScheme() throws Exception {
 
         // Create
-        CategorySchemeMetamacDto categorySchemeDto = CategoriesMetamacDtoMocks.mockCategorySchemeDto(AGENCY_ROOT_CODE, AGENCY_ROOT_1_V1);
+        CategorySchemeMetamacDto categorySchemeDto = CategoriesMetamacDtoMocks.mockCategorySchemeDto(AGENCY_ROOT_1_V1_CODE, AGENCY_ROOT_1_V1);
         CategorySchemeMetamacDto categorySchemeMetamacCreated = srmCoreServiceFacade.createCategoryScheme(getServiceContextAdministrador(), categorySchemeDto);
 
         // Validate some metadata
@@ -461,7 +461,7 @@ public class SrmCoreServiceFacadeCategoriesTest extends SrmBaseTest {
         // Validate
         categorySchemeDtoNewVersion = srmCoreServiceFacade.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), categorySchemeDtoNewVersion.getUrn());
         assertEquals("02.000", categorySchemeDtoNewVersion.getVersionLogic());
-        assertEquals("urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=ORGANISATION00:CATEGORYSCHEME03(02.000)", categorySchemeDtoNewVersion.getUrn());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=SDMX01:CATEGORYSCHEME03(02.000)", categorySchemeDtoNewVersion.getUrn());
     }
 
     @Test
@@ -744,7 +744,7 @@ public class SrmCoreServiceFacadeCategoriesTest extends SrmBaseTest {
         categoryMetamacDto.setItemSchemeVersionUrn(CATEGORY_SCHEME_1_V2);
 
         CategoryMetamacDto categoryMetamacDtoCreated = srmCoreServiceFacade.createCategory(getServiceContextAdministrador(), categoryMetamacDto);
-        assertEquals("urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=ORGANISATION00:CATEGORYSCHEME01(02.000)." + categoryMetamacDto.getCode(), categoryMetamacDtoCreated.getUrn());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME01(02.000)." + categoryMetamacDto.getCode(), categoryMetamacDtoCreated.getUrn());
         assertEqualsCategoryDto(categoryMetamacDto, categoryMetamacDtoCreated);
     }
 

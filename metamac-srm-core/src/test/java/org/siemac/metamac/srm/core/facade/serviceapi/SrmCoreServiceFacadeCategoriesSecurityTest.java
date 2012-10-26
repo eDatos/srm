@@ -97,7 +97,7 @@ public class SrmCoreServiceFacadeCategoriesSecurityTest extends SrmBaseTest {
 
     @Test
     public void testCreateCategoryScheme() throws Exception {
-        srmCoreServiceFacade.createCategoryScheme(getServiceContextJefeNormalizacion(), CategoriesMetamacDtoMocks.mockCategorySchemeDto(AGENCY_ROOT_CODE, AGENCY_ROOT_1_V1));
+        srmCoreServiceFacade.createCategoryScheme(getServiceContextJefeNormalizacion(), CategoriesMetamacDtoMocks.mockCategorySchemeDto(AGENCY_ROOT_1_V1_CODE, AGENCY_ROOT_1_V1));
     }
 
     @Test
@@ -107,7 +107,7 @@ public class SrmCoreServiceFacadeCategoriesSecurityTest extends SrmBaseTest {
 
         for (ServiceContext ctx : contexts) {
             try {
-                srmCoreServiceFacade.createCategoryScheme(ctx, CategoriesMetamacDtoMocks.mockCategorySchemeDto(AGENCY_ROOT_CODE, AGENCY_ROOT_1_V1));
+                srmCoreServiceFacade.createCategoryScheme(ctx, CategoriesMetamacDtoMocks.mockCategorySchemeDto(AGENCY_ROOT_1_V1_CODE, AGENCY_ROOT_1_V1));
                 fail("action not allowed");
             } catch (MetamacException e) {
                 assertEquals(1, e.getExceptionItems().size());

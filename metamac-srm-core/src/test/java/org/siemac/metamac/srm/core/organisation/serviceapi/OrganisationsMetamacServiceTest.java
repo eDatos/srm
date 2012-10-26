@@ -927,12 +927,12 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
 
         String urn = ORGANISATION_SCHEME_3_V1;
         String versionExpected = "02.000";
-        String urnExpected = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=ORGANISATION00:ORGANISATIONSCHEME03(02.000)";
-        String urnExpectedOrganisation1 = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ORGANISATION00:ORGANISATIONSCHEME03(02.000).ORGANISATION01";
-        String urnExpectedOrganisation2 = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ORGANISATION00:ORGANISATIONSCHEME03(02.000).ORGANISATION02";
-        String urnExpectedOrganisation21 = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ORGANISATION00:ORGANISATIONSCHEME03(02.000).ORGANISATION0201";
-        String urnExpectedOrganisation211 = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ORGANISATION00:ORGANISATIONSCHEME03(02.000).ORGANISATION020101";
-        String urnExpectedOrganisation22 = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=ORGANISATION00:ORGANISATIONSCHEME03(02.000).ORGANISATION0202";
+        String urnExpected = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=SDMX01:ORGANISATIONSCHEME03(02.000)";
+        String urnExpectedOrganisation1 = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME03(02.000).ORGANISATION01";
+        String urnExpectedOrganisation2 = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME03(02.000).ORGANISATION02";
+        String urnExpectedOrganisation21 = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME03(02.000).ORGANISATION0201";
+        String urnExpectedOrganisation211 = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME03(02.000).ORGANISATION020101";
+        String urnExpectedOrganisation22 = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME03(02.000).ORGANISATION0202";
 
         OrganisationSchemeVersionMetamac organisationSchemeVersionToCopy = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), urn);
         OrganisationSchemeVersionMetamac organisationSchemeVersionNewVersion = organisationsService.versioningOrganisationScheme(getServiceContextAdministrador(), urn, VersionTypeEnum.MAJOR);
@@ -1052,7 +1052,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         String urnToCopy = ORGANISATION_SCHEME_7_V1;
         String urnLastVersion = ORGANISATION_SCHEME_7_V2;
         String versionExpected = "03.000";
-        String urnExpected = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=ORGANISATION00:ORGANISATIONSCHEME07(03.000)";
+        String urnExpected = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=SDMX01:ORGANISATIONSCHEME07(03.000)";
 
         OrganisationSchemeVersionMetamac organisationSchemeVersionToCopy = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), urnToCopy);
         assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, organisationSchemeVersionToCopy.getLifeCycleMetadata().getProcStatus());
@@ -1456,8 +1456,8 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             assertEquals(ORGANISATION_SCHEME_5_V1_ORGANISATION_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(ORGANISATION_SCHEME_6_V1_ORGANISATION_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(ORGANISATION_SCHEME_7_V2_ORGANISATION_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-            assertEquals(ORGANISATION_SCHEME_100_V1_ORGANISATION_0, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(ORGANISATION_SCHEME_100_V1_ORGANISATION_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(ORGANISATION_SCHEME_100_V1_ORGANISATION_2, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             
             assertEquals(organisationsPagedResult.getValues().size(), i);
         }
@@ -1554,8 +1554,8 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             assertTrue(organisationsPagedResult.getValues().get(0) instanceof OrganisationMetamac);
             
             int i = 0;
-            assertEquals(ORGANISATION_SCHEME_100_V1_ORGANISATION_0, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(ORGANISATION_SCHEME_100_V1_ORGANISATION_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(ORGANISATION_SCHEME_100_V1_ORGANISATION_2, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
 
             assertEquals(organisationsPagedResult.getValues().size(), i);
         }
@@ -1575,7 +1575,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
                 assertEquals(1, organisationsPagedResult.getValues().size());
 
                 int i = 0;
-                assertEquals(ORGANISATION_SCHEME_100_V1_ORGANISATION_0, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+                assertEquals(ORGANISATION_SCHEME_100_V1_ORGANISATION_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
                 assertEquals(organisationsPagedResult.getValues().size(), i);
             }
             // Second page
@@ -1588,7 +1588,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
                 assertEquals(1, organisationsPagedResult.getValues().size());
 
                 int i = 0;
-                assertEquals(ORGANISATION_SCHEME_100_V1_ORGANISATION_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+                assertEquals(ORGANISATION_SCHEME_100_V1_ORGANISATION_2, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
                 assertEquals(organisationsPagedResult.getValues().size(), i);
             }
         }
@@ -1607,14 +1607,14 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             assertEquals(2, organisationsPagedResult.getValues().size());
 
             int i = 0;
-            assertEquals(ORGANISATION_SCHEME_100_V1_ORGANISATION_0, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(ORGANISATION_SCHEME_100_V1_ORGANISATION_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(ORGANISATION_SCHEME_100_V1_ORGANISATION_2, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(organisationsPagedResult.getValues().size(), i);
         }
 
         // Find by code (like)
         {
-            String code = "ORGANISATION01";
+            String code = "SDMX02";
             List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(Organisation.class).withProperty(OrganisationProperties.nameableArtefact().code()).like(code + "%")
                     .orderBy(OrganisationProperties.id()).ascending().distinctRoot().build();
             PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
@@ -1626,7 +1626,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             assertEquals(1, organisationsPagedResult.getValues().size());
 
             int i = 0;
-            assertEquals(ORGANISATION_SCHEME_100_V1_ORGANISATION_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(ORGANISATION_SCHEME_100_V1_ORGANISATION_2, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(organisationsPagedResult.getValues().size(), i);
         }
     }

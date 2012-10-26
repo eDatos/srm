@@ -37,7 +37,6 @@ import org.siemac.metamac.core.common.jaxb.CustomJaxb2Marshaller;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.criteria.DataStructureDefinitionVersionMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
-import org.siemac.metamac.srm.core.dsd.serviceapi.DsdsMetamacService;
 import org.siemac.metamac.srm.core.facade.serviceapi.utils.SrmDtoMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -72,8 +71,8 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
     @Autowired
     protected SrmCoreServiceFacade srmCoreServiceFacade;
 
-//    @Autowired
-//    private DsdsMetamacService     dsdsMetamacService;
+    // @Autowired
+    // private DsdsMetamacService dsdsMetamacService;
 
     @Autowired
     protected BaseService          baseService;
@@ -237,7 +236,7 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
                 SrmDtoMocks.createDataStructureDefinitionMetamacDtoMock());
 
         // Save DimensionDescriptor
-        DescriptorDto descriptorDto = srmCoreServiceFacade.saveDescriptorForDataStructureDefinition(getServiceContextAdministrador(), dataStructureDefinitionMetamacDto.getUrn(),
+        /* DescriptorDto descriptorDto = */srmCoreServiceFacade.saveDescriptorForDataStructureDefinition(getServiceContextAdministrador(), dataStructureDefinitionMetamacDto.getUrn(),
                 SrmDtoMocks.createDimensionDescriptorDto());
 
         // Find DimensionDescriptor
@@ -253,7 +252,7 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
                 SrmDtoMocks.createDataStructureDefinitionMetamacDtoMock());
 
         // Save DimensionDescriptor
-        DescriptorDto descriptorDto = srmCoreServiceFacade.saveDescriptorForDataStructureDefinition(getServiceContextAdministrador(), dataStructureDefinitionMetamacDto.getUrn(),
+        /* DescriptorDto descriptorDto = */srmCoreServiceFacade.saveDescriptorForDataStructureDefinition(getServiceContextAdministrador(), dataStructureDefinitionMetamacDto.getUrn(),
                 SrmDtoMocks.createDimensionDescriptorDto());
 
         // Find DimensionDescriptor
@@ -359,8 +358,8 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
 
         componentDto.setLocalRepresentation(representationDto);
 
-        componentDto = srmCoreServiceFacade
-                .saveComponentForDataStructureDefinition(getServiceContextAdministrador(), dataStructureDefinitionMetamacDto.getUrn(), componentDto, TypeComponentList.MEASURE_DESCRIPTOR);
+        componentDto = srmCoreServiceFacade.saveComponentForDataStructureDefinition(getServiceContextAdministrador(), dataStructureDefinitionMetamacDto.getUrn(), componentDto,
+                TypeComponentList.MEASURE_DESCRIPTOR);
 
         assertNotNull(componentDto);
 
@@ -391,8 +390,8 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
         DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = srmCoreServiceFacade.createDataStructureDefinition(getServiceContextAdministrador(),
                 SrmDtoMocks.createDataStructureDefinitionMetamacDtoMock());
 
-        ComponentDto componentDto = srmCoreServiceFacade.saveComponentForDataStructureDefinition(getServiceContextAdministrador(), dataStructureDefinitionMetamacDto.getUrn(),
-                SrmDtoMocks.createDimensionDtos(srmCoreServiceFacade).get(0), TypeComponentList.DIMENSION_DESCRIPTOR);
+        ComponentDto componentDto = srmCoreServiceFacade.saveComponentForDataStructureDefinition(getServiceContextAdministrador(), dataStructureDefinitionMetamacDto.getUrn(), SrmDtoMocks
+                .createDimensionDtos(srmCoreServiceFacade).get(0), TypeComponentList.DIMENSION_DESCRIPTOR);
 
         assertNotNull(componentDto);
 
@@ -409,8 +408,8 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
         DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = srmCoreServiceFacade.createDataStructureDefinition(getServiceContextAdministrador(),
                 SrmDtoMocks.createDataStructureDefinitionMetamacDtoMock());
 
-        ComponentDto componentDto = srmCoreServiceFacade.saveComponentForDataStructureDefinition(getServiceContextAdministrador(), dataStructureDefinitionMetamacDto.getUrn(),
-                SrmDtoMocks.createDimensionDtos(srmCoreServiceFacade).get(0), TypeComponentList.DIMENSION_DESCRIPTOR);
+        ComponentDto componentDto = srmCoreServiceFacade.saveComponentForDataStructureDefinition(getServiceContextAdministrador(), dataStructureDefinitionMetamacDto.getUrn(), SrmDtoMocks
+                .createDimensionDtos(srmCoreServiceFacade).get(0), TypeComponentList.DIMENSION_DESCRIPTOR);
 
         assertNotNull(componentDto);
 
@@ -432,8 +431,8 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
         DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = srmCoreServiceFacade.createDataStructureDefinition(getServiceContextAdministrador(),
                 SrmDtoMocks.createDataStructureDefinitionMetamacDtoMock());
 
-        ComponentDto componentDto = srmCoreServiceFacade.saveComponentForDataStructureDefinition(getServiceContextAdministrador(), dataStructureDefinitionMetamacDto.getUrn(),
-                SrmDtoMocks.createDimensionDtos(srmCoreServiceFacade).get(0), TypeComponentList.DIMENSION_DESCRIPTOR);
+        ComponentDto componentDto = srmCoreServiceFacade.saveComponentForDataStructureDefinition(getServiceContextAdministrador(), dataStructureDefinitionMetamacDto.getUrn(), SrmDtoMocks
+                .createDimensionDtos(srmCoreServiceFacade).get(0), TypeComponentList.DIMENSION_DESCRIPTOR);
 
         assertNotNull(componentDto);
 
@@ -456,8 +455,8 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
                 SrmDtoMocks.createDataStructureDefinitionMetamacDtoMock());
 
         // SAVE COMPONENT
-        ComponentDto componentDto = srmCoreServiceFacade.saveComponentForDataStructureDefinition(getServiceContextAdministrador(), dataStructureDefinitionMetamacDto.getUrn(),
-                SrmDtoMocks.createDimensionDtos(srmCoreServiceFacade).get(0), TypeComponentList.DIMENSION_DESCRIPTOR);
+        ComponentDto componentDto = srmCoreServiceFacade.saveComponentForDataStructureDefinition(getServiceContextAdministrador(), dataStructureDefinitionMetamacDto.getUrn(), SrmDtoMocks
+                .createDimensionDtos(srmCoreServiceFacade).get(0), TypeComponentList.DIMENSION_DESCRIPTOR);
 
         assertNotNull(componentDto);
 
@@ -467,9 +466,11 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
         assertTrue(!descriptorDtoList.get(0).getComponents().isEmpty());
 
         // DELETE
-        srmCoreServiceFacade.deleteComponentForDataStructureDefinition(getServiceContextAdministrador(), dataStructureDefinitionMetamacDto.getUrn(), componentDto, TypeComponentList.DIMENSION_DESCRIPTOR);
+        srmCoreServiceFacade.deleteComponentForDataStructureDefinition(getServiceContextAdministrador(), dataStructureDefinitionMetamacDto.getUrn(), componentDto,
+                TypeComponentList.DIMENSION_DESCRIPTOR);
 
-        descriptorDtoList = srmCoreServiceFacade.findDescriptorsForDataStructureDefinition(getServiceContextAdministrador(), dataStructureDefinitionMetamacDto.getUrn(), TypeComponentList.DIMENSION_DESCRIPTOR);
+        descriptorDtoList = srmCoreServiceFacade.findDescriptorsForDataStructureDefinition(getServiceContextAdministrador(), dataStructureDefinitionMetamacDto.getUrn(),
+                TypeComponentList.DIMENSION_DESCRIPTOR);
 
         assertTrue(descriptorDtoList.get(0).getComponents().isEmpty());
     }
@@ -491,8 +492,8 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
     public void testRetrieveDsd() throws Exception {
         DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = SrmCoreServiceFacadeDsdTest.saveDescriptorForDsd(getServiceContextAdministrador(), srmCoreServiceFacade);
 
-        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto2 = srmCoreServiceFacade.retrieveDataStructureDefinition(getServiceContextAdministrador(), dataStructureDefinitionMetamacDto.getUrn(),
-                TypeDozerCopyMode.COPY_TO_VERSIONING);
+        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto2 = srmCoreServiceFacade.retrieveDataStructureDefinition(getServiceContextAdministrador(),
+                dataStructureDefinitionMetamacDto.getUrn(), TypeDozerCopyMode.COPY_TO_VERSIONING);
 
         assertNotNull(dataStructureDefinitionMetamacDto2);
     }
@@ -508,7 +509,7 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
         dataStructureDefinitionMetamacDto = srmCoreServiceFacade.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(), SdmxResources.DSD_ECB_EXR_NG_FULL_URN);
         assertNotNull(dataStructureDefinitionMetamacDto.getId());
         assertEquals(SdmxResources.DSD_ECB_EXR_NG_FULL_URN, dataStructureDefinitionMetamacDto.getUrn());
-        
+
         file = new File(SdmxResources.DSD_ECB_EXR_SG_FULL);
         srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), SrmDtoMocks.createContentInput(file));
         dataStructureDefinitionMetamacDto = srmCoreServiceFacade.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(), SdmxResources.DSD_ECB_EXR_SG_FULL_URN);
@@ -583,7 +584,8 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
         disjunction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(DataStructureDefinitionCriteriaPropertyEnum.CODE.name(), code, OperationType.EQ));
         metamacCriteria.setRestriction(disjunction);
 
-        MetamacCriteriaResult<DataStructureDefinitionMetamacDto> metamacCriteriaResult = srmCoreServiceFacade.findDataStructureDefinitionsByCondition(getServiceContextAdministrador(), metamacCriteria);
+        MetamacCriteriaResult<DataStructureDefinitionMetamacDto> metamacCriteriaResult = srmCoreServiceFacade
+                .findDataStructureDefinitionsByCondition(getServiceContextAdministrador(), metamacCriteria);
 
         if (metamacCriteriaResult.getResults().isEmpty()) {
             if (code.equals("ECB_EXR_NG")) {

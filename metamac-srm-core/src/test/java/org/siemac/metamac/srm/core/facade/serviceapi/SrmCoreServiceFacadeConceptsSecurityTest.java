@@ -100,17 +100,17 @@ public class SrmCoreServiceFacadeConceptsSecurityTest extends SrmBaseTest {
 
     @Test
     public void testCreateConceptScheme() throws Exception {
-        srmCoreServiceFacade.createConceptScheme(getServiceContextJefeNormalizacion(), ConceptsMetamacDtoMocks.mockConceptSchemeDtoGlossaryType(AGENCY_ROOT_CODE, AGENCY_ROOT_1_V1));
+        srmCoreServiceFacade.createConceptScheme(getServiceContextJefeNormalizacion(), ConceptsMetamacDtoMocks.mockConceptSchemeDtoGlossaryType(AGENCY_ROOT_1_V1_CODE, AGENCY_ROOT_1_V1));
     }
 
     @Test
     public void testCreateConceptSchemeTypeOperationRoleAllOperations() throws Exception {
-        srmCoreServiceFacade.createConceptScheme(getServiceContextJefeNormalizacion(), ConceptsMetamacDtoMocks.mockConceptSchemeDtoOperationType(AGENCY_ROOT_CODE, AGENCY_ROOT_1_V1));
+        srmCoreServiceFacade.createConceptScheme(getServiceContextJefeNormalizacion(), ConceptsMetamacDtoMocks.mockConceptSchemeDtoOperationType(AGENCY_ROOT_1_V1_CODE, AGENCY_ROOT_1_V1));
     }
 
     @Test
     public void testCreateConceptSchemeTypeOperationRoleOneOperation() throws Exception {
-        ConceptSchemeMetamacDto conceptSchemeMetamacDto = ConceptsMetamacDtoMocks.mockConceptSchemeDtoOperationType(AGENCY_ROOT_CODE, AGENCY_ROOT_1_V1);
+        ConceptSchemeMetamacDto conceptSchemeMetamacDto = ConceptsMetamacDtoMocks.mockConceptSchemeDtoOperationType(AGENCY_ROOT_1_V1_CODE, AGENCY_ROOT_1_V1);
         conceptSchemeMetamacDto.getRelatedOperation().setCode("Operation1");
         srmCoreServiceFacade.createConceptScheme(getServiceContextJefeNormalizacionWithOperation1(), conceptSchemeMetamacDto);
     }
@@ -118,7 +118,7 @@ public class SrmCoreServiceFacadeConceptsSecurityTest extends SrmBaseTest {
     @Test
     public void testCreateConceptSchemeTypeOperationErrorWithoutOperation() throws Exception {
         try {
-            srmCoreServiceFacade.createConceptScheme(getServiceContextJefeNormalizacionWithOperation1(), ConceptsMetamacDtoMocks.mockConceptSchemeDtoOperationType(AGENCY_ROOT_CODE, AGENCY_ROOT_1_V1));
+            srmCoreServiceFacade.createConceptScheme(getServiceContextJefeNormalizacionWithOperation1(), ConceptsMetamacDtoMocks.mockConceptSchemeDtoOperationType(AGENCY_ROOT_1_V1_CODE, AGENCY_ROOT_1_V1));
             fail("action not allowed");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
@@ -133,7 +133,7 @@ public class SrmCoreServiceFacadeConceptsSecurityTest extends SrmBaseTest {
 
         for (ServiceContext ctx : contexts) {
             try {
-                srmCoreServiceFacade.createConceptScheme(ctx, ConceptsMetamacDtoMocks.mockConceptSchemeDtoGlossaryType(AGENCY_ROOT_CODE, AGENCY_ROOT_1_V1));
+                srmCoreServiceFacade.createConceptScheme(ctx, ConceptsMetamacDtoMocks.mockConceptSchemeDtoGlossaryType(AGENCY_ROOT_1_V1_CODE, AGENCY_ROOT_1_V1));
                 fail("action not allowed");
             } catch (MetamacException e) {
                 assertEquals(1, e.getExceptionItems().size());

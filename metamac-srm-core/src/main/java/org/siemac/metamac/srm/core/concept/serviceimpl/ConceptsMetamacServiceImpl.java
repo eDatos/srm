@@ -272,10 +272,10 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
                         new LeafProperty<ConceptMetamac>(ConceptMetamacProperties.itemSchemeVersion().getName(), ConceptSchemeVersionMetamacProperties.type().getName(), true, ConceptMetamac.class))
                 .eq(ConceptSchemeTypeEnum.ROLE).buildSingle();
         conditions.add(roleCondition);
-        // concept scheme must be final
-        ConditionalCriteria finalCondition = ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class).withProperty(ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact().finalLogic())
-                .eq(Boolean.TRUE).buildSingle();
-        conditions.add(finalCondition);
+        // concept scheme with validity started (= externally published)
+        ConditionalCriteria validityStartedCondition = ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class)
+                .withProperty(ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact().validFrom()).isNotNull().buildSingle();
+        conditions.add(validityStartedCondition);
 
         PagedResult<Concept> conceptsPagedResult = conceptsService.findConceptsByCondition(ctx, conditions, pagingParameter);
         return pagedResultConceptToMetamac(conceptsPagedResult);
