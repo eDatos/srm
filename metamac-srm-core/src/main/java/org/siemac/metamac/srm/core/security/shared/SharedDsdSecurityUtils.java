@@ -38,15 +38,15 @@ public class SharedDsdSecurityUtils extends SharedSecurityUtils {
     }
 
     public static boolean canFindDataStructureDefinitionByCondition(MetamacPrincipal metamacPrincipal) {
-        return isAnySrmRole(metamacPrincipal);
+        return canRetrieveOrFindResource(metamacPrincipal);
     }
 
     public static boolean canRetrieveDataStructureDefinitionByUrn(MetamacPrincipal metamacPrincipal) {
-        return isAnySrmRole(metamacPrincipal);
+        return canRetrieveOrFindResource(metamacPrincipal);
     }
 
     public static boolean canRetrieveDataStructureDefinitionVersions(MetamacPrincipal metamacPrincipal) {
-        return isAnySrmRole(metamacPrincipal);
+        return canRetrieveOrFindResource(metamacPrincipal);
     }
 
     public static boolean canImportDsd(MetamacPrincipal metamacPrincipal) {
@@ -143,7 +143,7 @@ public class SharedDsdSecurityUtils extends SharedSecurityUtils {
     }
 
     public static boolean canFindDescriptorsForDataStructureDefinition(MetamacPrincipal metamacPrincipal) {
-        return isAnySrmRole(metamacPrincipal);
+        return canRetrieveOrFindResource(metamacPrincipal);
     }
 
     public static boolean canSaveDescriptorForDataStructureDefinition(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus) {

@@ -18,6 +18,16 @@ import org.siemac.metamac.sso.client.MetamacPrincipalAccess;
 public class SharedSecurityUtils {
 
     /**
+     * Determines if a retrieve or find operation can be executed.
+     * 
+     * @param metamacPrincipal
+     * @return
+     */
+    public static boolean canRetrieveOrFindResource(MetamacPrincipal metamacPrincipal) {
+        return isAnySrmRole(metamacPrincipal);
+    }
+
+    /**
      * Checks if logged user has one of the allowed roles
      * 
      * @param roles
