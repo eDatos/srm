@@ -2193,7 +2193,7 @@
         CODE="ORGANISATIONSCHEME08"
         URI="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=SDMX01:ORGANISATIONSCHEME08(01.000)"
-        REPLACED_BY="02.000"
+        REPLACED_BY="[null]"
         REPLACE_TO="[null]"
         
         NAME_FK="27"
@@ -2207,7 +2207,7 @@
         IS_EXTERNAL_REFERENCE="0"
         STRUCTURE_URL="[null]"
         SERVICE_URL="[null]"
-        IS_LAST_VERSION="0"
+        IS_LAST_VERSION="1"
         MAINTAINER_FK="10011"
         
         UUID="annotableArtefact-81"
@@ -2273,6 +2273,151 @@
                 LAST_UPDATED="2011-01-22 01:02:03"
                 LAST_UPDATED_TZ="Europe/London"
             />              
+
+    <!-- ************************************************************************************** -->
+    <!-- ORGANISATION SCHEME 9 (Agency)                                                        -->
+    <!--        - Version 1: internally published                                               -->
+    <!-- *************************************************************************************  -->
+
+    <TB_ITEM_SCHEMES
+        ID="9"
+        UUID="itemScheme-9"
+        VERSION="1"
+    />
+    
+    <!-- **************************************************************************************  -->                
+    <!-- VERSION 1                                                                               -->
+    <!-- **************************************************************************************  -->
+    
+    <TB_ITEM_SCHEMES_VERSIONS
+        ID="91"
+        ITEM_SCHEME_FK="9"
+        IS_PARTIAL="0"
+        MAINTANABLE_ARTEFACT_FK="91"
+        
+        UUID="organisationScheme-9-v1"
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user7"
+        LAST_UPDATED="2011-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"  
+    />
+
+    <TB_ORG_SCHEMES_VERSIONS
+        TB_ITEM_SCHEMES_VERSIONS="91"
+        ORGANISATION_SCHEME_TYPE="AGENCY_SCHEME"
+    />
+    
+    <TB_M_ORG_SCHEMES_VERSIONS
+        TB_ORG_SCHEMES_VERSIONS="91"
+        PROC_STATUS="INTERNALLY_PUBLISHED"
+        
+        PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
+        PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
+        PRODUCTION_VALIDATION_USER="user1"
+        DIFFUSION_VALIDATION_DATE_TZ="Europe/London"
+        DIFFUSION_VALIDATION_DATE="2011-01-02 02:02:03"
+        DIFFUSION_VALIDATION_USER="user2"
+        INTERNAL_PUBLICATION_DATE_TZ="Europe/London"
+        INTERNAL_PUBLICATION_DATE="2011-01-03 03:02:03"
+        INTERNAL_PUBLICATION_USER="user3"
+        EXTERNAL_PUBLICATION_DATE_TZ="[null]"
+        EXTERNAL_PUBLICATION_DATE="[null]"
+        EXTERNAL_PUBLICATION_USER="[null]"
+        IS_EXT_PUBLICATION_FAILED="[null]"
+        EXT_PUBLICATION_FAILED_DATE="[null]"
+    />     
+    
+    <TB_ANNOTABLE_ARTEFACTS 
+        ID="91"
+        ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
+        
+        CODE="ORGANISATIONSCHEME09"
+        URI="[null]"
+        URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=SDMX01:ORGANISATIONSCHEME09(01.000)"
+        REPLACED_BY="[null]"
+        REPLACE_TO="[null]"
+        
+        NAME_FK="28"
+        
+        VERSION_LOGIC="01.000"
+        FINAL_LOGIC="1"
+        VALID_FROM_TZ="Europe/London"
+        VALID_FROM="2011-01-02 02:02:04" 
+        VALID_TO_TZ="[null]"
+        VALID_TO="[null]"
+        IS_EXTERNAL_REFERENCE="0"
+        STRUCTURE_URL="[null]"
+        SERVICE_URL="[null]"
+        IS_LAST_VERSION="1"
+        MAINTAINER_FK="10011"
+        
+        UUID="annotableArtefact-91"
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user2"
+        LAST_UPDATED="2011-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"
+    />
+
+            <!-- ORGANISATIONS -->
+            <!-- -> ORGANISATION01 -->
+            
+            <!-- ORGANISATION01 -->
+            
+            <TB_M_ORGANISATIONS
+                TB_ORGANISATIONS="911"
+            />
+            
+            <TB_ORGANISATIONS
+                TB_ITEMS="911"
+                ORGANISATION_TYPE="AGENCY"
+            />
+        
+            <TB_ITEMS
+                ID="911"
+                PARENT_FK="[null]"
+                ITEM_SCHEME_VERSION_FK="91"
+                ITEM_SCHEME_VERSION_FIRST_FK="91"
+                NAMEABLE_ARTEFACT_FK="911"
+                      
+                UUID="organisationScheme-9-v1-org-1"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"  
+            />
+
+            <TB_ANNOTABLE_ARTEFACTS 
+                ID="911"
+                ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+
+                CODE="ORGANISATION01"
+                URI="[null]"
+                URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME09(01.000).ORGANISATION01"
+                REPLACED_BY="[null]"
+                REPLACE_TO="[null]"
+
+                NAME_FK="[null]"
+                DESCRIPTION_FK="[null]"
+
+                UUID="annotableArtefact-911"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"
+            />              
+
 
     <!-- ************************************************************************************** -->
     <!-- EXTERNAL ITEMS                                                                         -->
@@ -2674,6 +2819,27 @@
         LOCALE="en"
         VERSION="1"
         INTERNATIONAL_STRING_FK="27"
+    />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="28"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="281"
+        LABEL="Descripción organisationScheme-9-v1"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="28"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="272"
+        LABEL="Description organisationScheme-9-v1"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="28"
     />
     
                         

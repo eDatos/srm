@@ -134,7 +134,9 @@ public class SrmCoreServiceFacadeOrganisationsSecurityTest extends SrmBaseTest {
     @Test
     public void testUpdatePublishedAgencyScheme() throws Exception {
         OrganisationSchemeMetamacDto externallyPublishedVersion = srmCoreServiceFacade.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), ORGANISATION_SCHEME_8_V1);
+        OrganisationSchemeMetamacDto internallyPublishedVersion = srmCoreServiceFacade.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), ORGANISATION_SCHEME_9_V1);
         srmCoreServiceFacade.updateOrganisationScheme(getServiceContextJefeNormalizacion(), externallyPublishedVersion);
+        srmCoreServiceFacade.updateOrganisationScheme(getServiceContextJefeNormalizacion(), internallyPublishedVersion);
     }
 
     @Test
@@ -142,6 +144,7 @@ public class SrmCoreServiceFacadeOrganisationsSecurityTest extends SrmBaseTest {
         OrganisationSchemeMetamacDto draftSchemeVersion = srmCoreServiceFacade.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), ORGANISATION_SCHEME_1_V2);
         OrganisationSchemeMetamacDto prodValidationSchemeVersion = srmCoreServiceFacade.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), ORGANISATION_SCHEME_5_V1);
         OrganisationSchemeMetamacDto diffValidationSchemeVersion = srmCoreServiceFacade.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), ORGANISATION_SCHEME_6_V1);
+        OrganisationSchemeMetamacDto internallyPublishedSchemeVersion = srmCoreServiceFacade.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), ORGANISATION_SCHEME_8_V1);
         {
             // TECNICO_PRODUCCION
             OrganisationSchemeMetamacDto[] organisationSchemeMetamacDtos = {draftSchemeVersion, prodValidationSchemeVersion, diffValidationSchemeVersion};
@@ -177,6 +180,20 @@ public class SrmCoreServiceFacadeOrganisationsSecurityTest extends SrmBaseTest {
         {
             // NOT_EXISTS
             OrganisationSchemeMetamacDto[] organisationSchemeMetamacDtos = {draftSchemeVersion, prodValidationSchemeVersion, diffValidationSchemeVersion};
+
+            for (OrganisationSchemeMetamacDto organisationSchemeMetamacDto : organisationSchemeMetamacDtos) {
+                try {
+                    srmCoreServiceFacade.updateOrganisationScheme(getServiceContextWithoutSrmRole(), organisationSchemeMetamacDto);
+                    fail("action not allowed");
+                } catch (MetamacException e) {
+                    assertEquals(1, e.getExceptionItems().size());
+                    assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+                }
+            }
+        }
+        {
+            // PUBLISHED
+            OrganisationSchemeMetamacDto[] organisationSchemeMetamacDtos = {internallyPublishedSchemeVersion};
 
             for (OrganisationSchemeMetamacDto organisationSchemeMetamacDto : organisationSchemeMetamacDtos) {
                 try {
@@ -597,6 +614,13 @@ public class SrmCoreServiceFacadeOrganisationsSecurityTest extends SrmBaseTest {
             }
         }
         // Note: no more tests because security is same that update organisation
+    }
+
+    @Test
+    public void testCreateAgencyInPublishedScheme() throws Exception {
+        {
+//        OrganisationSchemeMetamacDto interl
+        }
     }
 
     @Test
