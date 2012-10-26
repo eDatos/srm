@@ -54,6 +54,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
 
     // VIEW FORM
 
+    private GroupDynamicForm            form;
     private ViewTextItem                staticConceptItem;
     private ViewTextItem                staticRepresentationTypeItem;
     private ViewTextItem                staticCodeListItem;
@@ -61,7 +62,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
 
     // EDITION FORM
 
-    private GroupDynamicForm            form;
+    private GroupDynamicForm            editionForm;
     private ExternalSelectItem          conceptItem;
     private CustomSelectItem            representationTypeItem;
     private CustomSelectItem            codeListItem;
@@ -93,18 +94,20 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
      * @return
      */
     private void createViewForm() {
-        GroupDynamicForm staticForm = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdPrimaryMeasureDetails());
+        form = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdPrimaryMeasureDetails());
+
         staticConceptItem = new ViewTextItem(PrimaryMeasureDS.CONCEPT, MetamacSrmWeb.getConstants().concept());
+
         staticRepresentationTypeItem = new ViewTextItem(PrimaryMeasureDS.REPRESENTATION_TYPE, MetamacSrmWeb.getConstants().representation());
         staticCodeListItem = new ViewTextItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION, MetamacSrmWeb.getConstants().dsdCodeList());
-        staticForm.setFields(staticConceptItem, staticRepresentationTypeItem, staticCodeListItem);
+        form.setFields(staticConceptItem, staticRepresentationTypeItem, staticCodeListItem);
 
         staticFacetForm = new StaticFacetForm();
 
         // Annotations
         viewAnnotationsPanel = new AnnotationsPanel(true);
 
-        mainFormLayout.addViewCanvas(staticForm);
+        mainFormLayout.addViewCanvas(form);
         mainFormLayout.addViewCanvas(staticFacetForm);
         mainFormLayout.addViewCanvas(viewAnnotationsPanel);
     }
@@ -115,7 +118,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
      * @return
      */
     private void createEditionForm() {
-        form = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdPrimaryMeasureDetails());
+        editionForm = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdPrimaryMeasureDetails());
 
         conceptItem = new ExternalSelectItem(PrimaryMeasureDS.CONCEPT, MetamacSrmWeb.getConstants().concept());
         conceptItem.setRequired(true);
@@ -142,7 +145,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
             }
         });
 
-        form.setFields(conceptItem, representationTypeItem, codeListItem);
+        editionForm.setFields(conceptItem, representationTypeItem, codeListItem);
 
         facetForm = new DsdFacetForm();
         facetForm.setVisibility(Visibility.HIDDEN);
@@ -150,7 +153,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
         // Annotations
         editionAnnotationsPanel = new AnnotationsPanel(false);
 
-        mainFormLayout.addEditionCanvas(form);
+        mainFormLayout.addEditionCanvas(editionForm);
         mainFormLayout.addEditionCanvas(facetForm);
         mainFormLayout.addEditionCanvas(editionAnnotationsPanel);
     }
@@ -239,10 +242,10 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
             }
         }
         FacetFormUtils.setFacetFormVisibility(facetForm, representationTypeItem.getValueAsString());
-        form.redraw();
+        editionForm.redraw();
 
         // Clear errors
-        form.clearErrors(true);
+        editionForm.clearErrors(true);
         facetForm.clearErrors(true);
 
         // Annotations
@@ -287,8 +290,9 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
 
     @Override
     public boolean validate() {
-        return Visibility.HIDDEN.equals(facetForm.getVisibility()) ? form.validate(false) && conceptItem.validateItem() : (form.validate(false) && facetForm.validate(false) && conceptItem
-                .validateItem());
+        return Visibility.HIDDEN.equals(facetForm.getVisibility())
+                ? editionForm.validate(false) && conceptItem.validateItem()
+                : (editionForm.validate(false) && facetForm.validate(false) && conceptItem.validateItem());
     }
 
     @Override

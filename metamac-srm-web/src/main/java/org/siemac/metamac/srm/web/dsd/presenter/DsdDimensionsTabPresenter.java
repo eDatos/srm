@@ -25,6 +25,8 @@ import org.siemac.metamac.srm.web.shared.FindCodeListsAction;
 import org.siemac.metamac.srm.web.shared.FindCodeListsResult;
 import org.siemac.metamac.srm.web.shared.FindConceptsAction;
 import org.siemac.metamac.srm.web.shared.FindConceptsResult;
+import org.siemac.metamac.srm.web.shared.GetConceptsAsRoleAction;
+import org.siemac.metamac.srm.web.shared.GetConceptsAsRoleResult;
 import org.siemac.metamac.srm.web.shared.dsd.DeleteDimensionListForDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.DeleteDimensionListForDsdResult;
 import org.siemac.metamac.srm.web.shared.dsd.FindDescriptorForDsdAction;
@@ -42,6 +44,7 @@ import org.siemac.metamac.web.common.client.events.UpdateConceptSchemesEvent.Upd
 import org.siemac.metamac.web.common.client.utils.UrnUtils;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DescriptorDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
@@ -120,6 +123,8 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
         List<DimensionComponentDto> getSelectedDimensions();
         void onDimensionSaved(DimensionComponentDto dimensionComponentDto);
         boolean validate();
+
+        void setConceptsAsRole(List<RelatedResourceDto> roles, int firstResult, int totalResults);
 
         HasClickHandlers getSave();
         HasClickHandlers getDelete();
@@ -415,6 +420,21 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
             @Override
             public void onWaitSuccess(FindCodeListsResult result) {
                 getView().setCodeLists(result.getCodeLists());
+            }
+        });
+    }
+
+    @Override
+    public void retrieveConceptsAsRole(int firstResult, int maxResults, String criteria) {
+        dispatcher.execute(new GetConceptsAsRoleAction(firstResult, maxResults, criteria), new WaitingAsyncCallback<GetConceptsAsRoleResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().conceptErrorRetrievingConceptsAsRole()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetConceptsAsRoleResult result) {
+                getView().setConceptsAsRole(result.getConcepts(), result.getFirstResultOut(), result.getTotalResults());
             }
         });
     }

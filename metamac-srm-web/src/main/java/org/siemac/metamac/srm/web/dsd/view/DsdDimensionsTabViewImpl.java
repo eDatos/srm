@@ -13,6 +13,8 @@ import org.siemac.metamac.srm.web.client.representation.widgets.StaticFacetForm;
 import org.siemac.metamac.srm.web.client.resources.GlobalResources;
 import org.siemac.metamac.srm.web.client.utils.FacetFormUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
+import org.siemac.metamac.srm.web.client.widgets.RelatedResourceListItem;
+import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourceWindow;
 import org.siemac.metamac.srm.web.dsd.model.ds.DimensionDS;
 import org.siemac.metamac.srm.web.dsd.model.record.DimensionRecord;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdDimensionsTabPresenter;
@@ -25,6 +27,8 @@ import org.siemac.metamac.srm.web.dsd.widgets.RoleSelectItem;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.utils.ExternalItemUtils;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
+import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
+import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.InternationalMainFormLayout;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomSelectItem;
@@ -33,6 +37,7 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredSelectIt
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.FacetDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.RepresentationDto;
@@ -56,6 +61,8 @@ import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.form.fields.FormItemIcon;
 import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
+import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
+import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
 import com.smartgwt.client.widgets.form.fields.events.HasChangeHandlers;
 import com.smartgwt.client.widgets.form.validator.CustomValidator;
 import com.smartgwt.client.widgets.grid.HoverCustomizer;
@@ -73,53 +80,55 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTabUiHandlers> implements DsdDimensionsTabPresenter.DsdDimensionsTabView {
 
-    private ProcStatusEnum              procStatus;
+    private ProcStatusEnum                      procStatus;
 
-    private DimensionComponentDto       dimensionComponentDto;
-    private List<ExternalItemDto>       codeLists;
-    private List<ExternalItemDto>       conceptSchemes;
-    private List<ExternalItemDto>       concepts;
+    private DimensionComponentDto               dimensionComponentDto;
+    private List<ExternalItemDto>               codeLists;
+    private List<ExternalItemDto>               conceptSchemes;
+    private List<ExternalItemDto>               concepts;
 
-    private VLayout                     panel;
-    private VLayout                     selectedComponentLayout;
-    private ListGrid                    dimensionsGrid;
-    private InternationalMainFormLayout mainFormLayout;
+    private VLayout                             panel;
+    private VLayout                             selectedComponentLayout;
+    private ListGrid                            dimensionsGrid;
+    private InternationalMainFormLayout         mainFormLayout;
 
-    private AnnotationsPanel            viewAnnotationsPanel;
-    private AnnotationsPanel            editionAnnotationsPanel;
+    private AnnotationsPanel                    viewAnnotationsPanel;
+    private AnnotationsPanel                    editionAnnotationsPanel;
 
     // VIEW FORM
 
-    private ViewTextItem                staticCode;
-    private ViewTextItem                staticTypeItem;
-    private ViewTextItem                staticConceptItem;
-    private ViewTextItem                staticRoleItem;
+    private GroupDynamicForm                    form;
+    private ViewTextItem                        staticCode;
+    private ViewTextItem                        staticTypeItem;
+    private ViewTextItem                        staticConceptItem;
+    private ViewTextItem                        staticRoleItem;
     // private StaticTextItem staticPositionItem;
     // Representation
-    private ViewTextItem                staticRepresentationTypeItem;
-    private ViewTextItem                staticCodeListItem;
-    private ViewTextItem                staticConceptSchemeItem;
-    private StaticFacetForm             staticFacetForm;
+    private ViewTextItem                        staticRepresentationTypeItem;
+    private ViewTextItem                        staticCodeListItem;
+    private ViewTextItem                        staticConceptSchemeItem;
+    private StaticFacetForm                     staticFacetForm;
 
     // EDITION FORM
 
-    private GroupDynamicForm            form;
-    private RequiredTextItem            code;
-    private ViewTextItem                staticCodeEdit;
-    private ViewTextItem                staticTypeItemEdit;          // Type cannot be modified
-    private RequiredSelectItem          typeItem;
-    private ExternalSelectItem          conceptItem;
-    private RoleSelectItem              roleItem;
+    private GroupDynamicForm                    editionForm;
+    private RequiredTextItem                    code;
+    private ViewTextItem                        staticCodeEdit;
+    private ViewTextItem                        staticTypeItemEdit;          // Type cannot be modified
+    private RequiredSelectItem                  typeItem;
+    private ExternalSelectItem                  conceptItem;
+    private RoleSelectItem                      roleItem;
+    private SearchMultipleRelatedResourceWindow searchRolesWindow;
     // Representation
-    private CustomSelectItem            representationTypeItem;
-    private CustomSelectItem            codeListItem;
-    private CustomSelectItem            conceptSchemeItem;
-    private DsdFacetForm                facetForm;
+    private CustomSelectItem                    representationTypeItem;
+    private CustomSelectItem                    codeListItem;
+    private CustomSelectItem                    conceptSchemeItem;
+    private DsdFacetForm                        facetForm;
 
-    private ToolStripButton             newToolStripButton;
-    private ToolStripButton             deleteToolStripButton;
+    private ToolStripButton                     newToolStripButton;
+    private ToolStripButton                     deleteToolStripButton;
 
-    private DeleteConfirmationWindow    deleteConfirmationWindow;
+    private DeleteConfirmationWindow            deleteConfirmationWindow;
 
     @Inject
     public DsdDimensionsTabViewImpl() {
@@ -277,23 +286,28 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
      * @return
      */
     private void createViewForm() {
-        GroupDynamicForm staticForm = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdDimensionDetails());
+        form = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdDimensionDetails());
         staticCode = new ViewTextItem(DimensionDS.CODE_VIEW, MetamacSrmWeb.getConstants().dsdDimensionsId());
         staticTypeItem = new ViewTextItem(DimensionDS.TYPE, MetamacSrmWeb.getConstants().dsdDimensionsType());
         staticConceptItem = new ViewTextItem(DimensionDS.CONCEPT, MetamacSrmWeb.getConstants().concept());
-        staticRoleItem = new ViewTextItem(DimensionDS.CONCEPT, MetamacSrmWeb.getConstants().dsdDimensionsRole());
+
+        // TODO Role: remove this item
+        staticRoleItem = new ViewTextItem(DimensionDS.ROLE + "temp", MetamacSrmWeb.getConstants().dsdDimensionsRole());
+
+        RelatedResourceListItem conceptRoleItem = new RelatedResourceListItem(DimensionDS.ROLE, MetamacSrmWeb.getConstants().dsdDimensionsRole(), false);
+
         // staticPositionItem = new StaticTextItem("position-dim-view", MetamacSrmWeb.getConstants().dsdDimensionsPosition());
         staticRepresentationTypeItem = new ViewTextItem(DimensionDS.REPRESENTATION_TYPE, MetamacSrmWeb.getConstants().representation());
         staticCodeListItem = new ViewTextItem(DimensionDS.ENUMERATED_REPRESENTATION_CODE_LIST, MetamacSrmWeb.getConstants().dsdCodeList());
         staticConceptSchemeItem = new ViewTextItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME, MetamacSrmWeb.getConstants().conceptScheme());
-        staticForm.setFields(staticCode, staticTypeItem, staticConceptItem, staticRoleItem, staticRepresentationTypeItem, staticCodeListItem, staticConceptSchemeItem);
+        form.setFields(staticCode, staticTypeItem, staticConceptItem, staticRoleItem, conceptRoleItem, staticRepresentationTypeItem, staticCodeListItem, staticConceptSchemeItem);
 
         staticFacetForm = new StaticFacetForm();
 
         // Annotations
         viewAnnotationsPanel = new AnnotationsPanel(true);
 
-        mainFormLayout.addViewCanvas(staticForm);
+        mainFormLayout.addViewCanvas(form);
         mainFormLayout.addViewCanvas(staticFacetForm);
         mainFormLayout.addViewCanvas(viewAnnotationsPanel);
     }
@@ -304,7 +318,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
      * @return
      */
     private void createEditionForm() {
-        form = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdDimensionDetails());
+        editionForm = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdDimensionDetails());
 
         // Code
 
@@ -351,7 +365,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
             @Override
             public void onChanged(ChangedEvent event) {
                 // Redraw the form after changing dimension type
-                form.clearErrors(true);
+                editionForm.clearErrors(true);
             }
         });
 
@@ -362,7 +376,8 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
         // Role
 
-        roleItem = new RoleSelectItem(DimensionDS.ROLE, MetamacSrmWeb.getConstants().dsdDimensionsRole());
+        // TODO Remove this item
+        roleItem = new RoleSelectItem(DimensionDS.ROLE + "temp", MetamacSrmWeb.getConstants().dsdDimensionsRole());
         // Do not show Role if TypeDimensionComponent = TIMEDIMENSION
         roleItem.setShowIfCondition(new FormItemIfFunction() {
 
@@ -377,6 +392,8 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
                 return false;
             }
         });
+
+        RelatedResourceListItem conceptRoleItem = createRoleItem(DimensionDS.ROLE, MetamacSrmWeb.getConstants().dsdDimensionsRole());
 
         // Representation
 
@@ -439,7 +456,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
             }
         });
 
-        form.setFields(code, staticCodeEdit, staticTypeItemEdit, typeItem, conceptItem, roleItem, representationTypeItem, codeListItem, conceptSchemeItem);
+        editionForm.setFields(code, staticCodeEdit, staticTypeItemEdit, typeItem, conceptItem, roleItem, conceptRoleItem, representationTypeItem, codeListItem, conceptSchemeItem);
 
         // Facet Form
 
@@ -467,7 +484,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         // Annotations
         editionAnnotationsPanel = new AnnotationsPanel(false);
 
-        mainFormLayout.addEditionCanvas(form);
+        mainFormLayout.addEditionCanvas(editionForm);
         mainFormLayout.addEditionCanvas(facetForm);
         mainFormLayout.addEditionCanvas(editionAnnotationsPanel);
     }
@@ -535,6 +552,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
             List<ExternalItemDto> roleConcepts = roleItem.getSelectedConcepts();
             dimensionComponentDto.getRole().addAll(roleConcepts);
         }
+        // TODO Return roles as RelatedResourcesDto
 
         // Concept
         dimensionComponentDto.setCptIdRef(conceptItem.getSelectedExternalItem(concepts));
@@ -614,6 +632,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         staticTypeItem.setValue(value);
         // Concept
         staticConceptItem.setValue(dimensionComponentDto.getCptIdRef() == null ? null : dimensionComponentDto.getCptIdRef().getCode());
+        // TODO set concepts as RelatedResourceDto
         // Role
         staticRoleItem.hide();
         staticRoleItem.clearValue();
@@ -681,7 +700,8 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         }
 
         // Concept
-        conceptItem.clearValue(); // Clear concept value: which is the scheme of a concept?
+        conceptItem.clearValue();
+        // TODO set concepts as RelatedResourceDto
 
         // Role
         roleItem.clearValue();
@@ -715,7 +735,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
             }
         }
         FacetFormUtils.setFacetFormVisibility(facetForm, representationTypeItem.getValueAsString());
-        form.redraw();
+        editionForm.redraw();
 
         // Annotations
         editionAnnotationsPanel.setAnnotations(dimensionComponentDto.getAnnotations());
@@ -723,8 +743,9 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
     @Override
     public boolean validate() {
-        return Visibility.HIDDEN.equals(facetForm.getVisibility()) ? form.validate(false) && conceptItem.validateItem() : (form.validate(false) && facetForm.validate(false) && conceptItem
-                .validateItem());
+        return Visibility.HIDDEN.equals(facetForm.getVisibility())
+                ? editionForm.validate(false) && conceptItem.validateItem()
+                : (editionForm.validate(false) && facetForm.validate(false) && conceptItem.validateItem());
     }
 
     @Override
@@ -793,7 +814,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         }
 
         // Clear errors
-        form.clearErrors(true);
+        editionForm.clearErrors(true);
         facetForm.clearErrors(true);
 
         selectedComponentLayout.show();
@@ -816,6 +837,52 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
     private void showDeleteToolStripButton() {
         if (DsdClientSecurityUtils.canUpdateDimensions(procStatus)) {
             deleteToolStripButton.show();
+        }
+    }
+
+    private RelatedResourceListItem createRoleItem(String name, String title) {
+        RelatedResourceListItem relatedResources = new RelatedResourceListItem(name, title, true);
+        relatedResources.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
+
+            @Override
+            public void onFormItemClick(FormItemIconClickEvent event) {
+                final int ROLES_FIRST_RESULT = 0;
+                final int ROLES_MAX_RESULTS = 5;
+                searchRolesWindow = new SearchMultipleRelatedResourceWindow(MetamacSrmWeb.getConstants().dsdDimensionsRole(), ROLES_MAX_RESULTS, new PaginatedAction() {
+
+                    @Override
+                    public void retrieveResultSet(int firstResult, int maxResults) {
+                        getUiHandlers().retrieveConceptsAsRole(firstResult, maxResults, null);
+
+                    }
+                });
+                getUiHandlers().retrieveConceptsAsRole(ROLES_FIRST_RESULT, ROLES_MAX_RESULTS, null);
+                searchRolesWindow.setSearchAction(new SearchPaginatedAction() {
+
+                    @Override
+                    public void retrieveResultSet(int firstResult, int maxResults, String criteria) {
+                        getUiHandlers().retrieveConceptsAsRole(firstResult, maxResults, criteria);
+                    }
+                });
+                searchRolesWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
+
+                    @Override
+                    public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
+                        List<RelatedResourceDto> selectedRelatedResources = searchRolesWindow.getSelectedRelatedResources();
+                        ((RelatedResourceListItem) editionForm.getItem(DimensionDS.ROLE)).setRelatedResources(selectedRelatedResources);
+                        searchRolesWindow.markForDestroy();
+                    }
+                });
+            }
+        });
+        return relatedResources;
+    }
+
+    @Override
+    public void setConceptsAsRole(List<RelatedResourceDto> concepts, int firstResult, int totalResults) {
+        if (searchRolesWindow != null) {
+            searchRolesWindow.setSourceRelatedResources(concepts);
+            searchRolesWindow.refreshSourcePaginationInfo(firstResult, concepts.size(), totalResults);
         }
     }
 

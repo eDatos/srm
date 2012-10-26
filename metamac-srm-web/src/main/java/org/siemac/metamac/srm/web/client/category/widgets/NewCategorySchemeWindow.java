@@ -56,7 +56,7 @@ public class NewCategorySchemeWindow extends CustomWindow {
         CategorySchemeMetamacDto categorySchemeDto = new CategorySchemeMetamacDto();
 
         // TODO agency
-        RelatedResourceDto agency = new RelatedResourceDto("SDMX_AGENCY", "urn:sdmx:org.sdmx.infomodel.base.AgencyScheme=SDMX:SDMX_AGENCY_SCHEME(01.000).SDMX_AGENCY", TypeExternalArtefactsEnum.AGENCY);
+        RelatedResourceDto agency = new RelatedResourceDto("SDMX_AGENCY", "urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:SDMX(1.0).DREM", TypeExternalArtefactsEnum.AGENCY);
         categorySchemeDto.setMaintainer(agency);
 
         categorySchemeDto.setCode(form.getValueAsString(CategorySchemeDS.CODE));
