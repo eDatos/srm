@@ -6,6 +6,8 @@ import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.security.shared.SharedOrganisationsSecurityUtils;
 
+import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
+
 public class OrganisationsSecurityUtils extends ItemsSecurityUtils {
 
     //
@@ -30,8 +32,8 @@ public class OrganisationsSecurityUtils extends ItemsSecurityUtils {
         }
     }
 
-    public static void canUpdateOrganisationScheme(ServiceContext ctx, ProcStatusEnum procStatus) throws MetamacException {
-        if (!SharedOrganisationsSecurityUtils.canUpdateOrganisationScheme(getMetamacPrincipal(ctx), procStatus)) {
+    public static void canUpdateOrganisationScheme(ServiceContext ctx, ProcStatusEnum procStatus, OrganisationSchemeTypeEnum type) throws MetamacException {
+        if (!SharedOrganisationsSecurityUtils.canUpdateOrganisationScheme(getMetamacPrincipal(ctx), procStatus, type)) {
             throw new MetamacException(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED, ctx.getUserId());
         }
     }
@@ -99,14 +101,14 @@ public class OrganisationsSecurityUtils extends ItemsSecurityUtils {
     // ORGANISATIONS
     //
 
-    public static void canCreateOrganisation(ServiceContext ctx, ProcStatusEnum procStatus) throws MetamacException {
-        if (!SharedOrganisationsSecurityUtils.canModifiyOrganisationFromOrganisationScheme(getMetamacPrincipal(ctx), procStatus)) {
+    public static void canCreateOrganisation(ServiceContext ctx, ProcStatusEnum procStatus, OrganisationSchemeTypeEnum type) throws MetamacException {
+        if (!SharedOrganisationsSecurityUtils.canModifiyOrganisationFromOrganisationScheme(getMetamacPrincipal(ctx), procStatus, type)) {
             throw new MetamacException(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED, ctx.getUserId());
         }
     }
 
-    public static void canUpdateOrganisation(ServiceContext ctx, ProcStatusEnum procStatus) throws MetamacException {
-        if (!SharedOrganisationsSecurityUtils.canModifiyOrganisationFromOrganisationScheme(getMetamacPrincipal(ctx), procStatus)) {
+    public static void canUpdateOrganisation(ServiceContext ctx, ProcStatusEnum procStatus, OrganisationSchemeTypeEnum type) throws MetamacException {
+        if (!SharedOrganisationsSecurityUtils.canModifiyOrganisationFromOrganisationScheme(getMetamacPrincipal(ctx), procStatus, type)) {
             throw new MetamacException(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED, ctx.getUserId());
         }
     }
@@ -117,8 +119,8 @@ public class OrganisationsSecurityUtils extends ItemsSecurityUtils {
         }
     }
 
-    public static void canDeleteOrganisation(ServiceContext ctx, ProcStatusEnum procStatus) throws MetamacException {
-        if (!SharedOrganisationsSecurityUtils.canModifiyOrganisationFromOrganisationScheme(getMetamacPrincipal(ctx), procStatus)) {
+    public static void canDeleteOrganisation(ServiceContext ctx, ProcStatusEnum procStatus, OrganisationSchemeTypeEnum type) throws MetamacException {
+        if (!SharedOrganisationsSecurityUtils.canModifiyOrganisationFromOrganisationScheme(getMetamacPrincipal(ctx), procStatus, type)) {
             throw new MetamacException(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED, ctx.getUserId());
         }
     }

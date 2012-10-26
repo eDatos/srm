@@ -1,7 +1,11 @@
 package org.siemac.metamac.srm.core.security.shared;
 
+import static org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum.JEFE_NORMALIZACION;
+
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.sso.client.MetamacPrincipal;
+
+import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 
 public class SharedOrganisationsSecurityUtils extends SharedItemsSecurityUtils {
 
@@ -13,8 +17,13 @@ public class SharedOrganisationsSecurityUtils extends SharedItemsSecurityUtils {
         return canCreateItemScheme(metamacPrincipal);
     }
 
-    public static boolean canUpdateOrganisationScheme(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus) {
-        return canUpdateItemScheme(metamacPrincipal, procStatus);
+    public static boolean canUpdateOrganisationScheme(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus, OrganisationSchemeTypeEnum type) {
+        // Agency schemes can be always updated (even when they are published)
+        if (OrganisationSchemeTypeEnum.AGENCY_SCHEME.equals(type) && ProcStatusEnum.INTERNALLY_PUBLISHED.equals(procStatus) && ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(procStatus)) {
+            return isSrmRoleAllowed(metamacPrincipal, JEFE_NORMALIZACION);
+        } else {
+            return canUpdateItemScheme(metamacPrincipal, procStatus);
+        }
     }
 
     public static boolean canDeleteOrganisationScheme(MetamacPrincipal metamacPrincipal) {
@@ -60,8 +69,13 @@ public class SharedOrganisationsSecurityUtils extends SharedItemsSecurityUtils {
     /**
      * Determines if items from an organisation scheme can be created, deleted or updated
      */
-    public static boolean canModifiyOrganisationFromOrganisationScheme(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus) {
-        return canModifiyItemFromItemScheme(metamacPrincipal, procStatus);
+    public static boolean canModifiyOrganisationFromOrganisationScheme(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus, OrganisationSchemeTypeEnum type) {
+        // Agencies from agency schemes can be always modified (even when they are published)
+        if (OrganisationSchemeTypeEnum.AGENCY_SCHEME.equals(type) && ProcStatusEnum.INTERNALLY_PUBLISHED.equals(procStatus) && ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(procStatus)) {
+            return isSrmRoleAllowed(metamacPrincipal, JEFE_NORMALIZACION);
+        } else {
+            return canModifiyItemFromItemScheme(metamacPrincipal, procStatus);
+        }
     }
 
 }
