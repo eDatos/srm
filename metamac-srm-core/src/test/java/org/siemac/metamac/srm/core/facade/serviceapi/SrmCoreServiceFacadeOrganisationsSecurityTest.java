@@ -600,6 +600,31 @@ public class SrmCoreServiceFacadeOrganisationsSecurityTest extends SrmBaseTest {
     }
 
     @Test
+    public void testUpdateAgencyInPublishedScheme() throws Exception {
+        {
+            // INTERNALLY PUBLISHED SCHEME
+            OrganisationMetamacDto organisationMetamacDto = srmCoreServiceFacade.retrieveOrganisationByUrn(getServiceContextAdministrador(), ORGANISATION_SCHEME_9_V1_ORGANISATION_1);
+            srmCoreServiceFacade.updateOrganisation(getServiceContextJefeNormalizacion(), organisationMetamacDto);
+        }
+        {
+            // EXTERNALLY PUBLISHED SCHEME
+            OrganisationMetamacDto organisationMetamacDto = srmCoreServiceFacade.retrieveOrganisationByUrn(getServiceContextAdministrador(), ORGANISATION_SCHEME_8_V1_ORGANISATION_1);
+            srmCoreServiceFacade.updateOrganisation(getServiceContextJefeNormalizacion(), organisationMetamacDto);
+        }
+    }
+
+    @Test
+    public void testUpdateOrganisationInPublishedScheme() throws Exception {
+        try {
+            OrganisationMetamacDto organisationMetamacDto = srmCoreServiceFacade.retrieveOrganisationByUrn(getServiceContextAdministrador(), ORGANISATION_SCHEME_1_V1_ORGANISATION_1);
+            srmCoreServiceFacade.updateOrganisation(getServiceContextJefeNormalizacion(), organisationMetamacDto);
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+        }
+    }
+
+    @Test
     public void testCreateOrganisation() throws Exception {
 
         // JefeNormalizacion
@@ -619,7 +644,16 @@ public class SrmCoreServiceFacadeOrganisationsSecurityTest extends SrmBaseTest {
     @Test
     public void testCreateAgencyInPublishedScheme() throws Exception {
         {
-//        OrganisationSchemeMetamacDto interl
+            // INTERNALLY PUBLISHED SCHEME
+            OrganisationMetamacDto organisationMetamacDto = OrganisationsMetamacDtoMocks.mockOrganisationDto(OrganisationTypeEnum.AGENCY);
+            organisationMetamacDto.setItemSchemeVersionUrn(ORGANISATION_SCHEME_9_V1);
+            srmCoreServiceFacade.createOrganisation(getServiceContextJefeNormalizacion(), organisationMetamacDto);
+        }
+        {
+            // EXTERNALLY PUBLISHED SCHEME
+            OrganisationMetamacDto organisationMetamacDto = OrganisationsMetamacDtoMocks.mockOrganisationDto(OrganisationTypeEnum.AGENCY);
+            organisationMetamacDto.setItemSchemeVersionUrn(ORGANISATION_SCHEME_8_V1);
+            srmCoreServiceFacade.createOrganisation(getServiceContextJefeNormalizacion(), organisationMetamacDto);
         }
     }
 
@@ -628,6 +662,7 @@ public class SrmCoreServiceFacadeOrganisationsSecurityTest extends SrmBaseTest {
         OrganisationSchemeMetamacDto draftSchemeVersion = srmCoreServiceFacade.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), ORGANISATION_SCHEME_1_V2);
         OrganisationSchemeMetamacDto prodValidationSchemeVersion = srmCoreServiceFacade.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), ORGANISATION_SCHEME_5_V1);
         OrganisationSchemeMetamacDto diffValidationSchemeVersion = srmCoreServiceFacade.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), ORGANISATION_SCHEME_6_V1);
+        OrganisationSchemeMetamacDto internallyPublishedSchemeVersion = srmCoreServiceFacade.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), ORGANISATION_SCHEME_1_V1);
 
         OrganisationMetamacDto organisationMetamacDto = OrganisationsMetamacDtoMocks.mockOrganisationDto(OrganisationTypeEnum.AGENCY);
 
@@ -680,6 +715,21 @@ public class SrmCoreServiceFacadeOrganisationsSecurityTest extends SrmBaseTest {
                 }
             }
         }
+        {
+            // SCHEME PUBLISHED
+            OrganisationSchemeMetamacDto[] organisationSchemeMetamacDtos = {internallyPublishedSchemeVersion};
+
+            for (OrganisationSchemeMetamacDto organisationSchemeMetamacDto : organisationSchemeMetamacDtos) {
+                try {
+                    organisationMetamacDto.setItemSchemeVersionUrn(organisationSchemeMetamacDto.getUrn());
+                    srmCoreServiceFacade.createOrganisation(getServiceContextJefeNormalizacion(), organisationMetamacDto);
+                    fail("action not allowed");
+                } catch (MetamacException e) {
+                    assertEquals(1, e.getExceptionItems().size());
+                    assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+                }
+            }
+        }
     }
 
     @Test
@@ -715,14 +765,16 @@ public class SrmCoreServiceFacadeOrganisationsSecurityTest extends SrmBaseTest {
 
     @Test
     public void testDeleteOrganisationError() throws Exception {
-        ServiceContext[] contexts = {getServiceContextWithoutAccesses(), getServiceContextWithoutAccessToApplication(), getServiceContextWithoutSrmRole(), getServiceContextTecnicoProduccion()};
-        for (ServiceContext ctx : contexts) {
-            try {
-                srmCoreServiceFacade.deleteOrganisation(ctx, ORGANISATION_SCHEME_1_V2_ORGANISATION_1);
-                fail("action not allowed");
-            } catch (MetamacException e) {
-                assertEquals(1, e.getExceptionItems().size());
-                assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+        {
+            ServiceContext[] contexts = {getServiceContextWithoutAccesses(), getServiceContextWithoutAccessToApplication(), getServiceContextWithoutSrmRole(), getServiceContextTecnicoProduccion()};
+            for (ServiceContext ctx : contexts) {
+                try {
+                    srmCoreServiceFacade.deleteOrganisation(ctx, ORGANISATION_SCHEME_1_V2_ORGANISATION_1);
+                    fail("action not allowed");
+                } catch (MetamacException e) {
+                    assertEquals(1, e.getExceptionItems().size());
+                    assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+                }
             }
         }
         // Note: no more tests because security is same that update organisation
