@@ -282,8 +282,9 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
 
             @Override
             public void onClick(ClickEvent event) {
+                OrganisationSchemeTypeEnum type = organisationSchemeDto.getType();
                 ProcStatusEnum status = organisationSchemeDto.getLifeCycle().getProcStatus();
-                if (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(status) || ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(status)) {
+                if (!OrganisationSchemeTypeEnum.AGENCY_SCHEME.equals(type) && (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(status) || ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(status))) {
                     // Create a new version
                     final InformationWindow window = new InformationWindow(getMessages().organisationSchemeEditionInfo(), getMessages().organisationSchemeEditionInfoDetailedMessage());
                     window.show();
@@ -577,7 +578,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         String title = defaultLocalisedName != null ? defaultLocalisedName : StringUtils.EMPTY;
         mainFormLayout.setTitleLabelContents(title);
 
-        mainFormLayout.setCanEdit(OrganisationsClientSecurityUtils.canUpdateOrganisationScheme(organisationSchemeMetamacDto.getLifeCycle().getProcStatus()));
+        mainFormLayout.setCanEdit(OrganisationsClientSecurityUtils.canUpdateOrganisationScheme(organisationSchemeMetamacDto.getLifeCycle().getProcStatus(), organisationSchemeMetamacDto.getType()));
         mainFormLayout.updatePublishSection(organisationSchemeMetamacDto.getLifeCycle().getProcStatus(), organisationSchemeMetamacDto.getValidTo(), organisationSchemeMetamacDto.getType());
         mainFormLayout.setViewMode();
 
@@ -590,7 +591,9 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         } else {
             showOrganisationList();
             // Security to create organisations
-            newButton.setVisibility(OrganisationsClientSecurityUtils.canCreateOrganisation(organisationSchemeMetamacDto.getLifeCycle().getProcStatus()) ? Visibility.VISIBLE : Visibility.HIDDEN);
+            newButton.setVisibility(OrganisationsClientSecurityUtils.canCreateOrganisation(organisationSchemeMetamacDto.getLifeCycle().getProcStatus(), organisationSchemeMetamacDto.getType())
+                    ? Visibility.VISIBLE
+                    : Visibility.HIDDEN);
             toolStrip.markForRedraw();
         }
 
@@ -771,7 +774,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
     private void showListGridDeleteButton() {
         if (!ProcStatusEnum.INTERNALLY_PUBLISHED.equals(organisationSchemeDto.getLifeCycle().getProcStatus())
                 && !ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(organisationSchemeDto.getLifeCycle().getProcStatus())
-                && OrganisationsClientSecurityUtils.canDeleteOrganisation(organisationSchemeDto.getLifeCycle().getProcStatus())) {
+                && OrganisationsClientSecurityUtils.canDeleteOrganisation(organisationSchemeDto.getLifeCycle().getProcStatus(), organisationSchemeDto.getType())) {
             deleteButton.show();
         } else {
             deleteButton.hide();

@@ -376,9 +376,11 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         organisationsTreeGrid.selectItem(organisationDto);
 
         // Security
-        mainFormLayout.setCanEdit(OrganisationsClientSecurityUtils.canUpdateOrganisation(organisationSchemeMetamacDto.getLifeCycle().getProcStatus()));
-        contactMainFormLayout.setCanEdit(OrganisationsClientSecurityUtils.canUpdateOrganisation(organisationSchemeMetamacDto.getLifeCycle().getProcStatus()));
-        contactNewButton.setVisibility(OrganisationsClientSecurityUtils.canUpdateOrganisation(organisationSchemeMetamacDto.getLifeCycle().getProcStatus()) ? Visibility.VISIBLE : Visibility.HIDDEN);
+        mainFormLayout.setCanEdit(OrganisationsClientSecurityUtils.canUpdateOrganisation(organisationSchemeMetamacDto.getLifeCycle().getProcStatus(), organisationSchemeMetamacDto.getType()));
+        contactMainFormLayout.setCanEdit(OrganisationsClientSecurityUtils.canUpdateOrganisation(organisationSchemeMetamacDto.getLifeCycle().getProcStatus(), organisationSchemeMetamacDto.getType()));
+        contactNewButton.setVisibility(OrganisationsClientSecurityUtils.canUpdateOrganisation(organisationSchemeMetamacDto.getLifeCycle().getProcStatus(), organisationSchemeMetamacDto.getType())
+                ? Visibility.VISIBLE
+                : Visibility.HIDDEN);
     }
 
     private void setOrganisationViewMode(OrganisationMetamacDto organisationDto) {
@@ -454,7 +456,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
     }
 
     private void showContactListGridDeleteButton() {
-        if (OrganisationsClientSecurityUtils.canUpdateOrganisation(this.organisationSchemeMetamacDto.getLifeCycle().getProcStatus())) {
+        if (OrganisationsClientSecurityUtils.canUpdateOrganisation(this.organisationSchemeMetamacDto.getLifeCycle().getProcStatus(), this.organisationSchemeMetamacDto.getType())) {
             contactDeleteButton.show();
         }
     }

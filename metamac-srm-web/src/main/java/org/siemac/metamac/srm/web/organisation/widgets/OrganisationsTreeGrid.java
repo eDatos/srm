@@ -104,9 +104,10 @@ public class OrganisationsTreeGrid extends ItemsTreeGrid {
     @Override
     protected void onNodeContextClick(String nodeName, ItemDto organisation) {
         selectedOrganisation = organisation;
-        createOrganisationMenuItem.setEnabled(OrganisationsClientSecurityUtils.canCreateOrganisation(organisationSchemeMetamacDto.getLifeCycle().getProcStatus()));
-        deleteOrganisationMenuItem
-                .setEnabled(!SCHEME_NODE_NAME.equals(nodeName) && OrganisationsClientSecurityUtils.canDeleteOrganisation(organisationSchemeMetamacDto.getLifeCycle().getProcStatus()));
+        createOrganisationMenuItem.setEnabled(OrganisationsClientSecurityUtils.canCreateOrganisation(organisationSchemeMetamacDto.getLifeCycle().getProcStatus(),
+                organisationSchemeMetamacDto.getType()));
+        deleteOrganisationMenuItem.setEnabled(!SCHEME_NODE_NAME.equals(nodeName)
+                && OrganisationsClientSecurityUtils.canDeleteOrganisation(organisationSchemeMetamacDto.getLifeCycle().getProcStatus(), organisationSchemeMetamacDto.getType()));
         showContextMenu();
     }
 
