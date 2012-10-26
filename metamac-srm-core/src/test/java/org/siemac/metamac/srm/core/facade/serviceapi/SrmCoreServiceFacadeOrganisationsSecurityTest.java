@@ -132,6 +132,12 @@ public class SrmCoreServiceFacadeOrganisationsSecurityTest extends SrmBaseTest {
     }
 
     @Test
+    public void testUpdatePublishedAgencyScheme() throws Exception {
+        OrganisationSchemeMetamacDto externallyPublishedVersion = srmCoreServiceFacade.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), ORGANISATION_SCHEME_8_V1);
+        srmCoreServiceFacade.updateOrganisationScheme(getServiceContextJefeNormalizacion(), externallyPublishedVersion);
+    }
+
+    @Test
     public void testUpdateOrganisationSchemeError() throws Exception {
         OrganisationSchemeMetamacDto draftSchemeVersion = srmCoreServiceFacade.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), ORGANISATION_SCHEME_1_V2);
         OrganisationSchemeMetamacDto prodValidationSchemeVersion = srmCoreServiceFacade.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), ORGANISATION_SCHEME_5_V1);

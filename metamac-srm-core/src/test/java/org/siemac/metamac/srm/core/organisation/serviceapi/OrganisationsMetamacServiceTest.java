@@ -55,14 +55,14 @@ import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
 public class OrganisationsMetamacServiceTest extends SrmBaseTest implements OrganisationsMetamacServiceTestBase {
 
     @Autowired
-    private OrganisationsMetamacService organisationsService;
+    private OrganisationsMetamacService   organisationsService;
 
     @Autowired
     private OrganisationMetamacRepository organisationMetamacRepository;
-    
+
     @Test
     public void testCreateOrganisationScheme() throws Exception {
-        
+
         OrganisationMetamac organisationMetamac = organisationMetamacRepository.findByUrn(AGENCY_ROOT_1_V1);
         OrganisationSchemeVersionMetamac organisationSchemeVersion = OrganisationsMetamacDoMocks.mockOrganisationScheme(OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME, organisationMetamac);
         ServiceContext ctx = getServiceContextAdministrador();
@@ -93,7 +93,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
 
     @Test
     public void testCreateOrganisationSchemeTypeAgency() throws Exception {
-        
+
         OrganisationMetamac organisationMetamac = organisationMetamacRepository.findByUrn(AGENCY_ROOT_2_V1);
         OrganisationSchemeVersionMetamac organisationSchemeVersion = OrganisationsMetamacDoMocks.mockOrganisationScheme(OrganisationSchemeTypeEnum.AGENCY_SCHEME, organisationMetamac);
         ServiceContext ctx = getServiceContextAdministrador();
@@ -218,7 +218,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
                     pagingParameter);
 
             // Validate
-            assertEquals(10, organisationSchemeVersionPagedResult.getTotalRows());
+            assertEquals(11, organisationSchemeVersionPagedResult.getTotalRows());
             int i = 0;
             assertEquals(ORGANISATION_SCHEME_1_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(ORGANISATION_SCHEME_1_V2, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
@@ -229,6 +229,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             assertEquals(ORGANISATION_SCHEME_6_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(ORGANISATION_SCHEME_7_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(ORGANISATION_SCHEME_7_V2, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+            assertEquals(ORGANISATION_SCHEME_8_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(ORGANISATION_SCHEME_ROOT_1_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(organisationSchemeVersionPagedResult.getTotalRows(), i);
         }
@@ -243,9 +244,8 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
                     pagingParameter);
 
             // Validate
-            assertEquals(4, organisationSchemeVersionPagedResult.getTotalRows());
+            assertEquals(3, organisationSchemeVersionPagedResult.getTotalRows());
             int i = 0;
-            assertEquals(ORGANISATION_SCHEME_ROOT_1_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(ORGANISATION_SCHEME_1_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(ORGANISATION_SCHEME_3_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(ORGANISATION_SCHEME_7_V2, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
@@ -1450,8 +1450,8 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             PagedResult<OrganisationMetamac> organisationsPagedResult = organisationsService.findOrganisationsByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
 
             // Validate
-            assertEquals(22, organisationsPagedResult.getTotalRows());
-            assertEquals(22, organisationsPagedResult.getValues().size());
+            assertEquals(23, organisationsPagedResult.getTotalRows());
+            assertEquals(23, organisationsPagedResult.getValues().size());
             assertTrue(organisationsPagedResult.getValues().get(0) instanceof OrganisationMetamac);
 
             int i = 0;
@@ -1475,9 +1475,10 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             assertEquals(ORGANISATION_SCHEME_5_V1_ORGANISATION_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(ORGANISATION_SCHEME_6_V1_ORGANISATION_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(ORGANISATION_SCHEME_7_V2_ORGANISATION_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(ORGANISATION_SCHEME_8_V1_ORGANISATION_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(ORGANISATION_SCHEME_100_V1_ORGANISATION_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(ORGANISATION_SCHEME_100_V1_ORGANISATION_2, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-            
+
             assertEquals(organisationsPagedResult.getValues().size(), i);
         }
 
@@ -1558,7 +1559,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             }
         }
     }
-    
+
     @Test
     public void testFindOrganisationsAsMaintainerByCondition() throws Exception {
         // Find all
@@ -1568,11 +1569,12 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             PagedResult<OrganisationMetamac> organisationsPagedResult = organisationsService.findOrganisationsAsMaintainerByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
 
             // Validate
-            assertEquals(2, organisationsPagedResult.getTotalRows());
-            assertEquals(2, organisationsPagedResult.getValues().size());
+            assertEquals(3, organisationsPagedResult.getTotalRows());
+            assertEquals(3, organisationsPagedResult.getValues().size());
             assertTrue(organisationsPagedResult.getValues().get(0) instanceof OrganisationMetamac);
-            
+
             int i = 0;
+            assertEquals(ORGANISATION_SCHEME_8_V1_ORGANISATION_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(ORGANISATION_SCHEME_100_V1_ORGANISATION_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(ORGANISATION_SCHEME_100_V1_ORGANISATION_2, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
 
@@ -1586,24 +1588,40 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             // First page
             {
                 PagingParameter pagingParameter = PagingParameter.pageAccess(1, 1, true);
-                PagedResult<OrganisationMetamac> organisationsPagedResult = organisationsService.findOrganisationsAsMaintainerByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
+                PagedResult<OrganisationMetamac> organisationsPagedResult = organisationsService
+                        .findOrganisationsAsMaintainerByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
                 assertTrue(organisationsPagedResult.getValues().get(0) instanceof OrganisationMetamac);
-                
+
                 // Validate
-                assertEquals(2, organisationsPagedResult.getTotalRows());
+                assertEquals(3, organisationsPagedResult.getTotalRows());
+                assertEquals(1, organisationsPagedResult.getValues().size());
+
+                int i = 0;
+                assertEquals(ORGANISATION_SCHEME_8_V1_ORGANISATION_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+                assertEquals(organisationsPagedResult.getValues().size(), i);
+            }
+            // Second page
+            {
+                PagingParameter pagingParameter = PagingParameter.pageAccess(1, 2, true);
+                PagedResult<OrganisationMetamac> organisationsPagedResult = organisationsService
+                        .findOrganisationsAsMaintainerByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
+
+                // Validate
+                assertEquals(3, organisationsPagedResult.getTotalRows());
                 assertEquals(1, organisationsPagedResult.getValues().size());
 
                 int i = 0;
                 assertEquals(ORGANISATION_SCHEME_100_V1_ORGANISATION_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
                 assertEquals(organisationsPagedResult.getValues().size(), i);
             }
-            // Second page
+            // Third page
             {
-                PagingParameter pagingParameter = PagingParameter.pageAccess(1, 2, true);
-                PagedResult<OrganisationMetamac> organisationsPagedResult = organisationsService.findOrganisationsAsMaintainerByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
+                PagingParameter pagingParameter = PagingParameter.pageAccess(1, 3, true);
+                PagedResult<OrganisationMetamac> organisationsPagedResult = organisationsService
+                        .findOrganisationsAsMaintainerByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
 
                 // Validate
-                assertEquals(2, organisationsPagedResult.getTotalRows());
+                assertEquals(3, organisationsPagedResult.getTotalRows());
                 assertEquals(1, organisationsPagedResult.getValues().size());
 
                 int i = 0;
@@ -1620,7 +1638,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
             PagedResult<OrganisationMetamac> organisationsPagedResult = organisationsService.findOrganisationsAsMaintainerByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
             assertTrue(organisationsPagedResult.getValues().get(0) instanceof OrganisationMetamac);
-            
+
             // Validate
             assertEquals(2, organisationsPagedResult.getTotalRows());
             assertEquals(2, organisationsPagedResult.getValues().size());
@@ -1639,7 +1657,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
             PagedResult<OrganisationMetamac> organisationsPagedResult = organisationsService.findOrganisationsAsMaintainerByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
             assertTrue(organisationsPagedResult.getValues().get(0) instanceof OrganisationMetamac);
-            
+
             // Validate
             assertEquals(1, organisationsPagedResult.getTotalRows());
             assertEquals(1, organisationsPagedResult.getValues().size());

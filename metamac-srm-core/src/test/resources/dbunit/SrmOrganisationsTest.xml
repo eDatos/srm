@@ -2127,7 +2127,152 @@
                 LAST_UPDATED_BY="user2"
                 LAST_UPDATED="2011-01-22 01:02:03"
                 LAST_UPDATED_TZ="Europe/London"
-            />  
+            />
+            
+            
+    <!-- ************************************************************************************** -->
+    <!-- ORGANISATION SCHEME 8 (Agency)                                                        -->
+    <!--        - Version 1: externally published                                               -->
+    <!-- *************************************************************************************  -->
+
+    <TB_ITEM_SCHEMES
+        ID="8"
+        UUID="itemScheme-8"
+        VERSION="1"
+    />
+    
+    <!-- **************************************************************************************  -->                
+    <!-- VERSION 1                                                                               -->
+    <!-- **************************************************************************************  -->
+    
+    <TB_ITEM_SCHEMES_VERSIONS
+        ID="81"
+        ITEM_SCHEME_FK="8"
+        IS_PARTIAL="0"
+        MAINTANABLE_ARTEFACT_FK="81"
+        
+        UUID="organisationScheme-8-v1"
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user7"
+        LAST_UPDATED="2011-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"  
+    />
+
+    <TB_ORG_SCHEMES_VERSIONS
+        TB_ITEM_SCHEMES_VERSIONS="81"
+        ORGANISATION_SCHEME_TYPE="AGENCY_SCHEME"
+    />
+    
+    <TB_M_ORG_SCHEMES_VERSIONS
+        TB_ORG_SCHEMES_VERSIONS="81"
+        PROC_STATUS="EXTERNALLY_PUBLISHED"
+        
+        PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
+        PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
+        PRODUCTION_VALIDATION_USER="user1"
+        DIFFUSION_VALIDATION_DATE_TZ="Europe/London"
+        DIFFUSION_VALIDATION_DATE="2011-01-02 02:02:03"
+        DIFFUSION_VALIDATION_USER="user2"
+        INTERNAL_PUBLICATION_DATE_TZ="Europe/London"
+        INTERNAL_PUBLICATION_DATE="2011-01-03 03:02:03"
+        INTERNAL_PUBLICATION_USER="user3"
+        EXTERNAL_PUBLICATION_DATE_TZ="Europe/London"
+        EXTERNAL_PUBLICATION_DATE="2011-01-01 01:02:03"
+        EXTERNAL_PUBLICATION_USER="user4"
+        IS_EXT_PUBLICATION_FAILED="[null]"
+        EXT_PUBLICATION_FAILED_DATE="[null]"
+    />     
+    
+    <TB_ANNOTABLE_ARTEFACTS 
+        ID="81"
+        ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
+        
+        CODE="ORGANISATIONSCHEME08"
+        URI="[null]"
+        URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=SDMX01:ORGANISATIONSCHEME08(01.000)"
+        REPLACED_BY="02.000"
+        REPLACE_TO="[null]"
+        
+        NAME_FK="27"
+        
+        VERSION_LOGIC="01.000"
+        FINAL_LOGIC="1"
+        VALID_FROM_TZ="Europe/London"
+        VALID_FROM="2011-01-02 02:02:04" 
+        VALID_TO_TZ="[null]"
+        VALID_TO="[null]"
+        IS_EXTERNAL_REFERENCE="0"
+        STRUCTURE_URL="[null]"
+        SERVICE_URL="[null]"
+        IS_LAST_VERSION="0"
+        MAINTAINER_FK="10011"
+        
+        UUID="annotableArtefact-81"
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user2"
+        LAST_UPDATED="2011-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"
+    />
+
+            <!-- ORGANISATIONS -->
+            <!-- -> ORGANISATION01 -->
+            
+            <!-- ORGANISATION01 -->
+            
+            <TB_M_ORGANISATIONS
+                TB_ORGANISATIONS="811"
+            />
+            
+            <TB_ORGANISATIONS
+                TB_ITEMS="811"
+                ORGANISATION_TYPE="AGENCY"
+            />
+        
+            <TB_ITEMS
+                ID="811"
+                PARENT_FK="[null]"
+                ITEM_SCHEME_VERSION_FK="81"
+                ITEM_SCHEME_VERSION_FIRST_FK="81"
+                NAMEABLE_ARTEFACT_FK="811"
+                      
+                UUID="organisationScheme-8-v1-org-1"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"  
+            />
+
+            <TB_ANNOTABLE_ARTEFACTS 
+                ID="811"
+                ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+
+                CODE="ORGANISATION01"
+                URI="[null]"
+                URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME08(01.000).ORGANISATION01"
+                REPLACED_BY="[null]"
+                REPLACE_TO="[null]"
+
+                NAME_FK="[null]"
+                DESCRIPTION_FK="[null]"
+
+                UUID="annotableArtefact-811"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"
+            />              
 
     <!-- ************************************************************************************** -->
     <!-- EXTERNAL ITEMS                                                                         -->
@@ -2508,6 +2653,28 @@
         LOCALE="en"
         VERSION="1"
         INTERNATIONAL_STRING_FK="26"
-    />                                     
+    />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="27"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="271"
+        LABEL="Descripción organisationScheme-8-v1"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="27"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="272"
+        LABEL="Description organisationScheme-8-v1"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="27"
+    />
+    
                         
 </dataset>

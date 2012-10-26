@@ -195,7 +195,7 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
         {
             MetamacCriteriaResult<OrganisationSchemeMetamacDto> result = srmCoreServiceFacade.findOrganisationSchemesByCondition(getServiceContextAdministrador(), metamacCriteria);
 
-            assertEquals(10, result.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(11, result.getPaginatorResult().getTotalResults().intValue());
             int i = 0;
             {
                 OrganisationSchemeMetamacDto organisationSchemeMetamacDto = result.getResults().get(i++);
@@ -244,6 +244,11 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
             }
             {
                 OrganisationSchemeMetamacDto organisationSchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(ORGANISATION_SCHEME_8_V1, organisationSchemeMetamacDto.getUrn());
+                assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, organisationSchemeMetamacDto.getLifeCycle().getProcStatus());
+            }
+            {
+                OrganisationSchemeMetamacDto organisationSchemeMetamacDto = result.getResults().get(i++);
                 assertEquals(ORGANISATION_SCHEME_ROOT_1_V1, organisationSchemeMetamacDto.getUrn());
                 assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, organisationSchemeMetamacDto.getLifeCycle().getProcStatus());
             }
@@ -257,12 +262,17 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
 
             MetamacCriteriaResult<OrganisationSchemeMetamacDto> result = srmCoreServiceFacade.findOrganisationSchemesByCondition(getServiceContextAdministrador(), metamacCriteria);
 
-            assertEquals(2, result.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(3, result.getPaginatorResult().getTotalResults().intValue());
             int i = 0;
             {
                 OrganisationSchemeMetamacDto organisationSchemeMetamacDto = result.getResults().get(i++);
                 assertEquals(ORGANISATION_SCHEME_2_V1, organisationSchemeMetamacDto.getUrn());
                 assertEquals(ProcStatusEnum.DRAFT, organisationSchemeMetamacDto.getLifeCycle().getProcStatus());
+            }
+            {
+                OrganisationSchemeMetamacDto organisationSchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(ORGANISATION_SCHEME_8_V1, organisationSchemeMetamacDto.getUrn());
+                assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, organisationSchemeMetamacDto.getLifeCycle().getProcStatus());
             }
             {
                 OrganisationSchemeMetamacDto organisationSchemeMetamacDto = result.getResults().get(i++);
@@ -549,8 +559,8 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
             MetamacCriteriaResult<OrganisationMetamacDto> organisationsPagedResult = srmCoreServiceFacade.findOrganisationsByCondition(getServiceContextAdministrador(), metamacCriteria);
 
             // Validate
-            assertEquals(22, organisationsPagedResult.getPaginatorResult().getTotalResults().intValue());
-            assertEquals(22, organisationsPagedResult.getResults().size());
+            assertEquals(23, organisationsPagedResult.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(23, organisationsPagedResult.getResults().size());
             assertTrue(organisationsPagedResult.getResults().get(0) instanceof OrganisationMetamacDto);
             assertEquals(ORGANISATION_SCHEME_1_V1, organisationsPagedResult.getResults().get(0).getItemSchemeVersionUrn());
 
@@ -575,6 +585,7 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
             assertEquals(ORGANISATION_SCHEME_5_V1_ORGANISATION_1, organisationsPagedResult.getResults().get(i++).getUrn());
             assertEquals(ORGANISATION_SCHEME_6_V1_ORGANISATION_1, organisationsPagedResult.getResults().get(i++).getUrn());
             assertEquals(ORGANISATION_SCHEME_7_V2_ORGANISATION_1, organisationsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(ORGANISATION_SCHEME_8_V1_ORGANISATION_1, organisationsPagedResult.getResults().get(i++).getUrn());
             assertEquals(ORGANISATION_SCHEME_100_V1_ORGANISATION_1, organisationsPagedResult.getResults().get(i++).getUrn());
             assertEquals(ORGANISATION_SCHEME_100_V1_ORGANISATION_2, organisationsPagedResult.getResults().get(i++).getUrn());
 
@@ -622,8 +633,8 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
             MetamacCriteriaResult<OrganisationMetamacDto> organisationsPagedResult = srmCoreServiceFacade.findOrganisationsByCondition(getServiceContextAdministrador(), metamacCriteria);
 
             // Validate
-            assertEquals(15, organisationsPagedResult.getPaginatorResult().getTotalResults().intValue());
-            assertEquals(15, organisationsPagedResult.getResults().size());
+            assertEquals(16, organisationsPagedResult.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(16, organisationsPagedResult.getResults().size());
             assertTrue(organisationsPagedResult.getResults().get(0) instanceof OrganisationMetamacDto);
             assertEquals(ORGANISATION_SCHEME_1_V1, organisationsPagedResult.getResults().get(0).getItemSchemeVersionUrn());
 
@@ -641,6 +652,7 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
             assertEquals(ORGANISATION_SCHEME_5_V1_ORGANISATION_1, organisationsPagedResult.getResults().get(i++).getUrn());
             assertEquals(ORGANISATION_SCHEME_6_V1_ORGANISATION_1, organisationsPagedResult.getResults().get(i++).getUrn());
             assertEquals(ORGANISATION_SCHEME_7_V2_ORGANISATION_1, organisationsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(ORGANISATION_SCHEME_8_V1_ORGANISATION_1, organisationsPagedResult.getResults().get(i++).getUrn());
             assertEquals(ORGANISATION_SCHEME_100_V1_ORGANISATION_1, organisationsPagedResult.getResults().get(i++).getUrn());
             assertEquals(ORGANISATION_SCHEME_100_V1_ORGANISATION_2, organisationsPagedResult.getResults().get(i++).getUrn());
 
@@ -742,13 +754,14 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
             MetamacCriteriaResult<OrganisationMetamacDto> organisationsPagedResult = srmCoreServiceFacade.findOrganisationsByCondition(getServiceContextAdministrador(), metamacCriteria);
 
             // Validate
-            assertEquals(4, organisationsPagedResult.getPaginatorResult().getTotalResults().intValue());
-            assertEquals(4, organisationsPagedResult.getResults().size());
+            assertEquals(5, organisationsPagedResult.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(5, organisationsPagedResult.getResults().size());
             assertTrue(organisationsPagedResult.getResults().get(0) instanceof OrganisationMetamacDto);
 
             int i = 0;
             assertEquals(ORGANISATION_SCHEME_2_V1_ORGANISATION_1, organisationsPagedResult.getResults().get(i++).getUrn());
             assertEquals(ORGANISATION_SCHEME_2_V1_ORGANISATION_2, organisationsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(ORGANISATION_SCHEME_8_V1_ORGANISATION_1, organisationsPagedResult.getResults().get(i++).getUrn());
             assertEquals(ORGANISATION_SCHEME_100_V1_ORGANISATION_1, organisationsPagedResult.getResults().get(i++).getUrn());
             assertEquals(ORGANISATION_SCHEME_100_V1_ORGANISATION_2, organisationsPagedResult.getResults().get(i++).getUrn());
             assertEquals(organisationsPagedResult.getResults().size(), i);
@@ -919,10 +932,12 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
             MetamacCriteriaResult<RelatedResourceDto> organisationsPagedResult = srmCoreServiceFacade.findOrganisationsAsMaintainerByCondition(getServiceContextAdministrador(), metamacCriteria);
 
             // Validate
-            assertEquals(2, organisationsPagedResult.getPaginatorResult().getTotalResults().intValue());
-            assertEquals(2, organisationsPagedResult.getResults().size());
+            assertEquals(3, organisationsPagedResult.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(3, organisationsPagedResult.getResults().size());
 
             int i = 0;
+            assertEquals("ORGANISATION01", organisationsPagedResult.getResults().get(i).getCode());
+            assertEquals(ORGANISATION_SCHEME_8_V1_ORGANISATION_1, organisationsPagedResult.getResults().get(i++).getUrn());
             assertEquals("SDMX01", organisationsPagedResult.getResults().get(i).getCode());
             assertEquals(ORGANISATION_SCHEME_100_V1_ORGANISATION_1, organisationsPagedResult.getResults().get(i++).getUrn());
             assertEquals("SDMX02", organisationsPagedResult.getResults().get(i).getCode());
