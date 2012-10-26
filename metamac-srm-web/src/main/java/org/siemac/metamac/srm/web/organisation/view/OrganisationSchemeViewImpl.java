@@ -578,7 +578,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         mainFormLayout.setTitleLabelContents(title);
 
         mainFormLayout.setCanEdit(OrganisationsClientSecurityUtils.canUpdateOrganisationScheme(organisationSchemeMetamacDto.getLifeCycle().getProcStatus()));
-        mainFormLayout.updatePublishSection(organisationSchemeMetamacDto.getLifeCycle().getProcStatus(), organisationSchemeMetamacDto.getValidTo());
+        mainFormLayout.updatePublishSection(organisationSchemeMetamacDto.getLifeCycle().getProcStatus(), organisationSchemeMetamacDto.getValidTo(), organisationSchemeMetamacDto.getType());
         mainFormLayout.setViewMode();
 
         setOrganisationSchemeViewMode(organisationSchemeMetamacDto);
