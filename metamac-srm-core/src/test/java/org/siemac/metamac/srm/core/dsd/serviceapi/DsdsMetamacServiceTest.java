@@ -37,16 +37,16 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
 
     @Autowired
     protected DataStructureDefinitionService dataStructureDefinitionService;
-    
+
     @Autowired
-    private OrganisationMetamacRepository organisationMetamacRepository;
+    private OrganisationMetamacRepository    organisationMetamacRepository;
 
     private final ServiceContext             serviceContext = new ServiceContext("system", "123456", "junit");
 
     protected ServiceContext getServiceContext() {
         return serviceContext;
     }
-    
+
     // TODO Test dsd. Hacer tests de mappers
 
     @Test
@@ -178,10 +178,10 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
 
     @Override
     public void testImportDataStructureDefinition() throws Exception {
-        // TODO Auto-generated method stub
-        
+        // TODO Test dsd
+
     }
-    
+
     @Test
     @Override
     public void testEndDataStructureDefinitionValidity() throws Exception {
