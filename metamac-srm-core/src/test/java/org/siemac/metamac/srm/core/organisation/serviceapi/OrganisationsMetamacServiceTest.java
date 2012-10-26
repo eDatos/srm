@@ -64,7 +64,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
     public void testCreateOrganisationScheme() throws Exception {
         
         OrganisationMetamac organisationMetamac = organisationMetamacRepository.findByUrn(AGENCY_ROOT_1_V1);
-        OrganisationSchemeVersionMetamac organisationSchemeVersion = OrganisationsMetamacDoMocks.mockOrganisationScheme(OrganisationSchemeTypeEnum.AGENCY_SCHEME, organisationMetamac);
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = OrganisationsMetamacDoMocks.mockOrganisationScheme(OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME, organisationMetamac);
         ServiceContext ctx = getServiceContextAdministrador();
 
         // Create

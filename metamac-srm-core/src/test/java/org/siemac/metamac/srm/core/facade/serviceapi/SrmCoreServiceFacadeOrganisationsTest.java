@@ -89,7 +89,7 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
     public void testCreateOrganisationScheme() throws Exception {
 
         // Create
-        OrganisationSchemeMetamacDto organisationSchemeDto = OrganisationsMetamacDtoMocks.mockOrganisationScheme(OrganisationSchemeTypeEnum.AGENCY_SCHEME);
+        OrganisationSchemeMetamacDto organisationSchemeDto = OrganisationsMetamacDtoMocks.mockOrganisationScheme(OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME);
         OrganisationSchemeMetamacDto organisationSchemeMetamacCreated = srmCoreServiceFacade.createOrganisationScheme(getServiceContextAdministrador(), organisationSchemeDto);
 
         // Validate some metadata

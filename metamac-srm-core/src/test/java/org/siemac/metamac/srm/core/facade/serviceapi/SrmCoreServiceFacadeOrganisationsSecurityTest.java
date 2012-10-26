@@ -99,7 +99,7 @@ public class SrmCoreServiceFacadeOrganisationsSecurityTest extends SrmBaseTest {
 
     @Test
     public void testCreateOrganisationScheme() throws Exception {
-        srmCoreServiceFacade.createOrganisationScheme(getServiceContextJefeNormalizacion(), OrganisationsMetamacDtoMocks.mockOrganisationScheme(OrganisationSchemeTypeEnum.AGENCY_SCHEME));
+        srmCoreServiceFacade.createOrganisationScheme(getServiceContextJefeNormalizacion(), OrganisationsMetamacDtoMocks.mockOrganisationScheme(OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME));
     }
 
     @Test
