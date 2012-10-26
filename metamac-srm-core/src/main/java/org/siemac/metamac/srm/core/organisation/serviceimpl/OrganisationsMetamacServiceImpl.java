@@ -31,6 +31,7 @@ import com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.organisation.serviceapi.OrganisationsService;
 import com.arte.statistic.sdmx.srm.core.organisation.serviceimpl.utils.OrganisationsDoCopyUtils.OrganisationCopyCallback;
+import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
 
 /**
@@ -66,8 +67,13 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
         organisationSchemeVersion.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
         organisationSchemeVersion.getMaintainableArtefact().setIsExternalReference(Boolean.FALSE);
 
-        // Save organisationScheme
-        return (OrganisationSchemeVersionMetamac) organisationsService.createOrganisationScheme(ctx, organisationSchemeVersion, VersionPatternEnum.XX_YYY);
+        // Save organisationScheme. If it is an AgencyScheme, call another method to avoid being marked as final in creation
+        VersionPatternEnum versionPattern = VersionPatternEnum.XX_YYY;
+        if (OrganisationSchemeTypeEnum.AGENCY_SCHEME.equals(organisationSchemeVersion.getOrganisationSchemeType())) {
+            return (OrganisationSchemeVersionMetamac) organisationsService.createAgencySchemeNotFinal(ctx, organisationSchemeVersion, versionPattern);
+        } else {
+            return (OrganisationSchemeVersionMetamac) organisationsService.createOrganisationScheme(ctx, organisationSchemeVersion, versionPattern);
+        }
     }
 
     @Override
@@ -267,7 +273,7 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
     /**
      * Typecast to Metamac type
      */
-   private List<OrganisationSchemeVersionMetamac> organisationSchemeVersionsToOrganisationSchemeVersionsMetamac(List<OrganisationSchemeVersion> sources) {
+    private List<OrganisationSchemeVersionMetamac> organisationSchemeVersionsToOrganisationSchemeVersionsMetamac(List<OrganisationSchemeVersion> sources) {
         List<OrganisationSchemeVersionMetamac> targets = new ArrayList<OrganisationSchemeVersionMetamac>();
         for (ItemSchemeVersion source : sources) {
             targets.add((OrganisationSchemeVersionMetamac) source);

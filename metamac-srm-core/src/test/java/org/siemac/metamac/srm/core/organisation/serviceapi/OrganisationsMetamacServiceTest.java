@@ -86,7 +86,26 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         assertNull(organisationSchemeVersionRetrieved.getLifeCycleMetadata().getExternalPublicationDate());
         assertNull(organisationSchemeVersionRetrieved.getLifeCycleMetadata().getExternalPublicationUser());
         assertEquals(ctx.getUserId(), organisationSchemeVersionRetrieved.getCreatedBy());
+        assertFalse(organisationSchemeVersionRetrieved.getMaintainableArtefact().getFinalLogic());
+        assertNull(organisationSchemeVersionRetrieved.getMaintainableArtefact().getValidFrom());
         OrganisationsMetamacAsserts.assertEqualsOrganisationScheme(organisationSchemeVersion, organisationSchemeVersionRetrieved);
+    }
+
+    @Test
+    public void testCreateOrganisationSchemeTypeAgency() throws Exception {
+        
+        OrganisationMetamac organisationMetamac = organisationMetamacRepository.findByUrn(AGENCY_ROOT_2_V1);
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = OrganisationsMetamacDoMocks.mockOrganisationScheme(OrganisationSchemeTypeEnum.AGENCY_SCHEME, organisationMetamac);
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        // Create
+        OrganisationSchemeVersionMetamac organisationSchemeVersionCreated = organisationsService.createOrganisationScheme(ctx, organisationSchemeVersion);
+        String urn = organisationSchemeVersionCreated.getMaintainableArtefact().getUrn();
+
+        // Validate it is not final
+        OrganisationSchemeVersionMetamac organisationSchemeVersionRetrieved = organisationsService.retrieveOrganisationSchemeByUrn(ctx, urn);
+        assertFalse(organisationSchemeVersionRetrieved.getMaintainableArtefact().getFinalLogic());
+        assertNull(organisationSchemeVersionRetrieved.getMaintainableArtefact().getValidFrom());
     }
 
     @Test
