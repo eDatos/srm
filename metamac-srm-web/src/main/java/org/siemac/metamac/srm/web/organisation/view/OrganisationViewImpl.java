@@ -38,6 +38,7 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.organisation.ContactDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
+import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
@@ -48,6 +49,9 @@ import com.smartgwt.client.types.Visibility;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
+import com.smartgwt.client.widgets.form.DynamicForm;
+import com.smartgwt.client.widgets.form.FormItemIfFunction;
+import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
@@ -64,6 +68,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
     private VLayout                      panel;
     private InternationalMainFormLayout  mainFormLayout;
 
+    private CustomVLayout                organisationsTreeGridLayout;
     private OrganisationsTreeGrid        organisationsTreeGrid;
 
     // View forms
@@ -100,9 +105,9 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
 
         organisationsTreeGrid = new OrganisationsTreeGrid();
 
-        CustomVLayout organisationsListGridLayout = new CustomVLayout();
-        organisationsListGridLayout.addMember(new TitleLabel(getConstants().organisationSchemeOrganisations()));
-        organisationsListGridLayout.addMember(organisationsTreeGrid);
+        organisationsTreeGridLayout = new CustomVLayout();
+        organisationsTreeGridLayout.addMember(new TitleLabel(getConstants().organisationSchemeOrganisations()));
+        organisationsTreeGridLayout.addMember(organisationsTreeGrid);
 
         //
         // ORGANISATION
@@ -234,7 +239,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         contactsSectionLayout.addMember(titleLabel);
         contactsSectionLayout.addMember(contactLayout);
 
-        panel.addMember(organisationsListGridLayout);
+        panel.addMember(organisationsTreeGridLayout);
         panel.addMember(mainFormLayout);
         panel.addMember(contactsSectionLayout);
     }
@@ -299,13 +304,31 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
     private void createEditionForm() {
         // Identifiers Form
         identifiersEditionForm = new GroupDynamicForm(getConstants().organisationIdentifiers());
+
+        ViewTextItem codeView = new ViewTextItem(OrganisationDS.CODE_VIEW, getConstants().identifiableArtefactCode());
+        codeView.setShowIfCondition(new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return !org.siemac.metamac.srm.web.client.utils.CommonUtils.canCodeBeEdited(organisationSchemeMetamacDto.getLifeCycle().getProcStatus(), organisationSchemeMetamacDto.getVersionLogic());
+            }
+        });
+
         RequiredTextItem code = new RequiredTextItem(OrganisationDS.CODE, getConstants().identifiableArtefactCode());
         code.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());
+        code.setShowIfCondition(new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return org.siemac.metamac.srm.web.client.utils.CommonUtils.canCodeBeEdited(organisationSchemeMetamacDto.getLifeCycle().getProcStatus(), organisationSchemeMetamacDto.getVersionLogic());
+            }
+        });
+
         MultiLanguageTextItem name = new MultiLanguageTextItem(OrganisationDS.NAME, getConstants().nameableArtefactName());
         name.setRequired(true);
         ViewTextItem uri = new ViewTextItem(OrganisationDS.URI, getConstants().identifiableArtefactUri());
         ViewTextItem urn = new ViewTextItem(OrganisationDS.URN, getConstants().identifiableArtefactUrn());
-        identifiersEditionForm.setFields(code, name, uri, urn);
+        identifiersEditionForm.setFields(codeView, code, name, uri, urn);
 
         // Content descriptors
         contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().organisationContentDescriptors());
@@ -372,8 +395,13 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
     public void setOrganisationList(OrganisationSchemeMetamacDto organisationSchemeMetamacDto, List<ItemHierarchyDto> itemHierarchyDtos) {
         this.organisationSchemeMetamacDto = organisationSchemeMetamacDto;
 
-        organisationsTreeGrid.setItems(organisationSchemeMetamacDto, itemHierarchyDtos);
-        organisationsTreeGrid.selectItem(organisationDto);
+        if (OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME.equals(organisationSchemeMetamacDto.getType())) {
+            organisationsTreeGrid.setItems(organisationSchemeMetamacDto, itemHierarchyDtos);
+            organisationsTreeGrid.selectItem(organisationDto);
+            organisationsTreeGridLayout.show();
+        } else {
+            organisationsTreeGridLayout.hide();
+        }
 
         // Security
         mainFormLayout.setCanEdit(OrganisationsClientSecurityUtils.canUpdateOrganisation(organisationSchemeMetamacDto.getLifeCycle().getProcStatus(), organisationSchemeMetamacDto.getType()));
@@ -401,13 +429,16 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
     private void setOrganisationEditionMode(OrganisationMetamacDto organisationDto) {
         // Identifiers Form
         identifiersEditionForm.setValue(OrganisationDS.CODE, organisationDto.getCode());
+        identifiersEditionForm.setValue(OrganisationDS.CODE_VIEW, organisationDto.getCode());
         identifiersEditionForm.setValue(OrganisationDS.NAME, RecordUtils.getInternationalStringRecord(organisationDto.getName()));
         identifiersEditionForm.setValue(OrganisationDS.URI, organisationDto.getUri());
         identifiersEditionForm.setValue(OrganisationDS.URN, organisationDto.getUrn());
+        identifiersEditionForm.markForRedraw();
 
         // Content descriptors
         contentDescriptorsEditionForm.setValue(OrganisationDS.TYPE, CommonUtils.getOrganisationTypeName(organisationDto.getType()));
         contentDescriptorsEditionForm.setValue(OrganisationDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(organisationDto.getDescription()));
+        contentDescriptorsEditionForm.markForRedraw();
 
         // Annotations
         annotationsEditionPanel.setAnnotations(organisationDto.getAnnotations());

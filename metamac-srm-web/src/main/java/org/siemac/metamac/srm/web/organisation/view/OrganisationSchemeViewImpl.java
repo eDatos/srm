@@ -46,7 +46,6 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 
-import com.arte.statistic.sdmx.srm.core.common.service.utils.shared.SdmxVersionUtil;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.google.gwt.user.client.ui.Widget;
@@ -443,9 +442,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
                 // CODE cannot be modified if status is INTERNALLY_PUBLISHED or EXTERNALLY_PUBLISHED, or if version is greater than VERSION_INITIAL_VERSION (01.000)
-                return !((ProcStatusEnum.INTERNALLY_PUBLISHED.equals(organisationSchemeDto.getLifeCycle().getProcStatus()) || ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(organisationSchemeDto
-                        .getLifeCycle().getProcStatus())) || (!SdmxVersionUtil.PATTERN_XX_YYY_INITIAL_VERSION.equals(organisationSchemeDto.getVersionLogic()) && !StringUtils
-                        .isBlank(organisationSchemeDto.getVersionLogic())));
+                return org.siemac.metamac.srm.web.client.utils.CommonUtils.canCodeBeEdited(organisationSchemeDto.getLifeCycle().getProcStatus(), organisationSchemeDto.getVersionLogic());
             }
         });
         ViewTextItem staticCode = new ViewTextItem(OrganisationSchemeDS.CODE_VIEW, getConstants().identifiableArtefactCode());
@@ -453,7 +450,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
-                return !form.getItem(OrganisationSchemeDS.CODE).isVisible();
+                return !org.siemac.metamac.srm.web.client.utils.CommonUtils.canCodeBeEdited(organisationSchemeDto.getLifeCycle().getProcStatus(), organisationSchemeDto.getVersionLogic());
             }
         });
         MultiLanguageTextItem name = new MultiLanguageTextItem(OrganisationSchemeDS.NAME, getConstants().nameableArtefactName());
@@ -476,9 +473,8 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
                 // · status is INTERNALLY_PUBLISHED or EXTERNALLY_PUBLISHED
                 // · version is greater than SdmxVersionUtil.PATTERN_XX_YYY_INITIAL_VERSION (01.000)
                 // · scheme has children (not validated here, it is validated in core service)
-                return !((ProcStatusEnum.INTERNALLY_PUBLISHED.equals(organisationSchemeDto.getLifeCycle().getProcStatus()) || ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(organisationSchemeDto
-                        .getLifeCycle().getProcStatus())) || (!SdmxVersionUtil.PATTERN_XX_YYY_INITIAL_VERSION.equals(organisationSchemeDto.getVersionLogic()) && !StringUtils
-                        .isBlank(organisationSchemeDto.getVersionLogic())));
+                return !org.siemac.metamac.srm.web.client.utils.CommonUtils.isItemSchemePublished(organisationSchemeDto.getLifeCycle().getProcStatus())
+                        && org.siemac.metamac.srm.web.client.utils.CommonUtils.isInitialVersion(organisationSchemeDto.getVersionLogic());
             }
         });
         ViewTextItem staticType = new ViewTextItem(OrganisationSchemeDS.TYPE_VIEW, getConstants().organisationSchemeType());

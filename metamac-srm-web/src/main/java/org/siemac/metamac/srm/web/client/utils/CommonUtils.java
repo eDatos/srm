@@ -7,6 +7,7 @@ import java.util.LinkedHashMap;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 
+import com.arte.statistic.sdmx.srm.core.common.service.utils.shared.SdmxVersionUtil;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeRepresentationEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
 
@@ -46,4 +47,19 @@ public class CommonUtils {
     public static String getTypeRepresentationName(TypeRepresentationEnum typeRepresentationEnum) {
         return typeRepresentationEnum != null ? MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().typeRepresentationEnum() + typeRepresentationEnum.name()) : null;
     }
+
+    // VALIDATION UTILS
+
+    public static boolean isItemSchemePublished(ProcStatusEnum procStatus) {
+        return ProcStatusEnum.INTERNALLY_PUBLISHED.equals(procStatus) || ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(procStatus);
+    }
+
+    public static boolean isInitialVersion(String versionLogic) {
+        return SdmxVersionUtil.PATTERN_XX_YYY_INITIAL_VERSION.equals(versionLogic);
+    }
+
+    public static boolean canCodeBeEdited(ProcStatusEnum procStatus, String versionLogic) {
+        return !org.siemac.metamac.srm.web.client.utils.CommonUtils.isItemSchemePublished(procStatus) && org.siemac.metamac.srm.web.client.utils.CommonUtils.isInitialVersion(versionLogic);
+    }
+
 }
