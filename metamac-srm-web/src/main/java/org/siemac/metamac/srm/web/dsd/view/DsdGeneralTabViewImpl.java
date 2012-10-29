@@ -30,7 +30,6 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 
-import com.arte.statistic.sdmx.srm.core.common.service.utils.shared.SdmxVersionUtil;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
@@ -275,9 +274,8 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
                 // CODE cannot be modified if status is INTERNALLY_PUBLISHED or EXTERNALLY_PUBLISHED, or if version is greater than VERSION_INITIAL_VERSION (01.000)
-                return !((ProcStatusEnum.INTERNALLY_PUBLISHED.equals(dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus()) || ProcStatusEnum.EXTERNALLY_PUBLISHED
-                        .equals(dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus())) || (!SdmxVersionUtil.PATTERN_XX_YYY_INITIAL_VERSION.equals(dataStructureDefinitionMetamacDto
-                        .getVersionLogic()) && !StringUtils.isBlank(dataStructureDefinitionMetamacDto.getVersionLogic())));
+                return org.siemac.metamac.srm.web.client.utils.CommonUtils.canCodeBeEdited(dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus(),
+                        dataStructureDefinitionMetamacDto.getVersionLogic());
             }
         });
         ViewTextItem staticCode = new ViewTextItem(DataStructureDefinitionDS.CODE_VIEW, getConstants().identifiableArtefactCode());
@@ -285,7 +283,8 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
-                return !form.getItem(DataStructureDefinitionDS.CODE).isVisible();
+                return !org.siemac.metamac.srm.web.client.utils.CommonUtils.canCodeBeEdited(dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus(),
+                        dataStructureDefinitionMetamacDto.getVersionLogic());
             }
         });
 

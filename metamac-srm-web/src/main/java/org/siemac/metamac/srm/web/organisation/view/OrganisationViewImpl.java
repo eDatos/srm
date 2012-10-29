@@ -310,7 +310,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
-                return !org.siemac.metamac.srm.web.client.utils.CommonUtils.canCodeBeEdited(organisationSchemeMetamacDto.getLifeCycle().getProcStatus(), organisationSchemeMetamacDto.getVersionLogic());
+                return !canOrganisationCodeBeEdited();
             }
         });
 
@@ -320,7 +320,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
-                return org.siemac.metamac.srm.web.client.utils.CommonUtils.canCodeBeEdited(organisationSchemeMetamacDto.getLifeCycle().getProcStatus(), organisationSchemeMetamacDto.getVersionLogic());
+                return canOrganisationCodeBeEdited();
             }
         });
 
@@ -394,6 +394,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
     @Override
     public void setOrganisationList(OrganisationSchemeMetamacDto organisationSchemeMetamacDto, List<ItemHierarchyDto> itemHierarchyDtos) {
         this.organisationSchemeMetamacDto = organisationSchemeMetamacDto;
+        identifiersEditionForm.markForRedraw();
 
         if (OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME.equals(organisationSchemeMetamacDto.getType())) {
             organisationsTreeGrid.setItems(organisationSchemeMetamacDto, itemHierarchyDtos);
@@ -540,6 +541,15 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
             contacts.add(contactRecord.getContactDto());
         }
         return contacts;
+    }
+
+    private boolean canOrganisationCodeBeEdited() {
+        // If organisation type is AGENCY, code can only be edited when organisation is not published
+        if (OrganisationSchemeTypeEnum.AGENCY_SCHEME.equals(organisationSchemeMetamacDto.getType())) {
+            return !org.siemac.metamac.srm.web.client.utils.CommonUtils.isItemSchemePublished(organisationSchemeMetamacDto.getLifeCycle().getProcStatus());
+        } else {
+            return true;
+        }
     }
 
 }
