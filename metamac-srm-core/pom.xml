@@ -366,11 +366,13 @@
 		  <groupId>com.microsoft.sqlserver</groupId>
 		  <artifactId>sqljdbc</artifactId>
 		  <version>${mssql.version}</version>
+		  <scope>test</scope>
          </dependency>
         <dependency>
             <groupId>com.oracle</groupId>
             <artifactId>oracle</artifactId>
             <version>${oracle.version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
