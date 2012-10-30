@@ -20,9 +20,17 @@ public class ItemDS extends DataSource {
     public static String       DTO         = "item-dto";
 
     public ItemDS() {
+        DataSourceTextField urn = new DataSourceTextField(URN, MetamacSrmWeb.getConstants().identifiableArtefactUrn());
+        urn.setPrimaryKey(true);
+        addField(urn);
+
         DataSourceTextField code = new DataSourceTextField(CODE, MetamacSrmWeb.getConstants().identifiableArtefactCode());
-        code.setPrimaryKey(true);
         addField(code);
+
+        DataSourceTextField name = new DataSourceTextField(NAME, MetamacSrmWeb.getConstants().nameableArtefactName());
+        addField(name);
+
+        setClientOnly(true);
     }
 
 }

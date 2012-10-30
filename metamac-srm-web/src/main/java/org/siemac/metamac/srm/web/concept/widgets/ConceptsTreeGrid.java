@@ -2,12 +2,14 @@ package org.siemac.metamac.srm.web.concept.widgets;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
+import org.siemac.metamac.srm.web.client.model.ds.ItemDS;
 import org.siemac.metamac.srm.web.client.widgets.ItemsTreeGrid;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
 import org.siemac.metamac.srm.web.concept.utils.CommonUtils;
@@ -22,9 +24,12 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemSchemeDto;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.grid.ListGridField;
+import com.smartgwt.client.widgets.grid.events.FilterEditorSubmitEvent;
+import com.smartgwt.client.widgets.grid.events.FilterEditorSubmitHandler;
 import com.smartgwt.client.widgets.menu.MenuItem;
 import com.smartgwt.client.widgets.menu.events.ClickHandler;
 import com.smartgwt.client.widgets.menu.events.MenuItemClickEvent;
+import com.smartgwt.client.widgets.tree.Tree;
 import com.smartgwt.client.widgets.tree.TreeGridField;
 import com.smartgwt.client.widgets.tree.TreeNode;
 
@@ -42,6 +47,59 @@ public class ConceptsTreeGrid extends ItemsTreeGrid {
     private BaseConceptUiHandlers    uiHandlers;
 
     public ConceptsTreeGrid() {
+
+        // setDataSource(new ItemDS());
+        //
+        // addShowContextMenuHandler(new ShowContextMenuHandler() {
+        //
+        // @Override
+        // public void onShowContextMenu(ShowContextMenuEvent event) {
+        // event.cancel();
+        // }
+        // });
+
+        // setAutoFetchData(true);
+        setShowFilterEditor(true);
+        setFilterOnKeypress(true);
+        addFilterEditorSubmitHandler(new FilterEditorSubmitHandler() {
+
+            @Override
+            public void onFilterEditorSubmit(FilterEditorSubmitEvent event) {
+                event.cancel();
+                TreeNode[] treeNodes = getTree().getAllNodes();
+
+                String codeValue = event.getCriteria().getAttribute(ItemDS.CODE);
+                String nameValue = event.getCriteria().getAttribute(ItemDS.NAME);
+                String typeValue = event.getCriteria().getAttribute(ConceptDS.TYPE);
+                String sdmxRoleValue = event.getCriteria().getAttribute(ConceptDS.SDMX_RELATED_ARTEFACT);
+
+                if (nameValue == null) {
+                    setData(tree);
+                    return;
+                } else {
+                    List<TreeNode> matchingNodes = new ArrayList<TreeNode>();
+                    for (TreeNode treeNode : treeNodes) {
+                        String name = treeNode.getAttributeAsString(ItemDS.NAME);
+                        if (name != null && name.startsWith(nameValue)) {
+                            matchingNodes.add(treeNode);
+                        }
+                    }
+                    Tree resultTree = new Tree();
+
+                    resultTree.setData(matchingNodes.toArray(new TreeNode[0]));
+
+                    setData(resultTree);
+                }
+            }
+        });
+
+        // setAutoFetchAsFilter(true);
+        // setFilterOnKeypress(true);
+        // setLoadDataOnDemand(false);
+        // setKeepParentsOnFilter(true);
+        //
+        // getFields()[0].setCanFilter(true);
+        // getFields()[1].setCanFilter(true);
 
         // Add type and sdmxRelatedArtefact fields to ItemsTreeGrid fields
 

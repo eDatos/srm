@@ -5,7 +5,6 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 import java.util.List;
 
 import org.siemac.metamac.srm.web.client.model.ds.ItemDS;
-import org.siemac.metamac.srm.web.organisation.model.ds.OrganisationDS;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemDto;
@@ -45,6 +44,8 @@ public abstract class ItemsTreeGrid extends TreeGrid {
 
     protected ItemSchemeDto       itemSchemeDto;
 
+    protected Tree                tree;
+
     public ItemsTreeGrid() {
         setAutoFitMaxRecords(10);
         setAutoFitData(Autofit.VERTICAL);
@@ -62,9 +63,10 @@ public abstract class ItemsTreeGrid extends TreeGrid {
         setShowCellContextMenus(true);
         setLeaveScrollbarGap(Boolean.FALSE);
 
-        TreeGridField codeField = new TreeGridField(OrganisationDS.CODE, getConstants().identifiableArtefactCode());
+        TreeGridField codeField = new TreeGridField(ItemDS.CODE, getConstants().identifiableArtefactCode());
         codeField.setWidth("30%");
-        TreeGridField nameField = new TreeGridField(OrganisationDS.NAME, getConstants().nameableArtefactName());
+        codeField.setCanFilter(true);
+        TreeGridField nameField = new TreeGridField(ItemDS.NAME, getConstants().nameableArtefactName());
 
         setFields(codeField, nameField);
 
@@ -103,7 +105,6 @@ public abstract class ItemsTreeGrid extends TreeGrid {
             }
         });
     }
-
     public void removeHandlerRegistrations() {
         folderContextHandlerRegistration.removeHandler();
         leafContextHandlerRegistration.removeHandler();
@@ -122,7 +123,7 @@ public abstract class ItemsTreeGrid extends TreeGrid {
         TreeNode organisationSchemeTreeNode = createItemSchemeTreeNode(itemSchemeDto);
         organisationSchemeTreeNode.setChildren(treeNodes);
 
-        Tree tree = new Tree();
+        tree = new Tree();
         tree.setModelType(TreeModelType.CHILDREN);
         tree.setData(new TreeNode[]{organisationSchemeTreeNode});
         setData(tree);
