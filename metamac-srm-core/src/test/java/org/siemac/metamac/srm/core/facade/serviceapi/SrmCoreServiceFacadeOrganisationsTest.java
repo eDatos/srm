@@ -104,7 +104,7 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
 
         // Update
         OrganisationSchemeMetamacDto organisationSchemeMetamacDto = srmCoreServiceFacade.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), ORGANISATION_SCHEME_1_V2);
-        organisationSchemeMetamacDto.setName(MetamacMocks.mockInternationalString());
+        organisationSchemeMetamacDto.setName(MetamacMocks.mockInternationalStringDto());
         OrganisationSchemeMetamacDto organisationSchemeMetamacDtoUpdated = srmCoreServiceFacade.updateOrganisationScheme(getServiceContextAdministrador(), organisationSchemeMetamacDto);
 
         // Validate
@@ -1043,8 +1043,8 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
     @Test
     public void testUpdateOrganisation() throws Exception {
         OrganisationMetamacDto organisationMetamacDto = srmCoreServiceFacade.retrieveOrganisationByUrn(getServiceContextAdministrador(), ORGANISATION_SCHEME_1_V2_ORGANISATION_1);
-        organisationMetamacDto.setName(MetamacMocks.mockInternationalString());
-        organisationMetamacDto.setDescription(MetamacMocks.mockInternationalString());
+        organisationMetamacDto.setName(MetamacMocks.mockInternationalStringDto());
+        organisationMetamacDto.setDescription(MetamacMocks.mockInternationalStringDto());
 
         OrganisationMetamacDto organisationMetamacDtoUpdated = srmCoreServiceFacade.updateOrganisation(getServiceContextAdministrador(), organisationMetamacDto);
 

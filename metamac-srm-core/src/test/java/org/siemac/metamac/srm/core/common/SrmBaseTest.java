@@ -1,15 +1,18 @@
 package org.siemac.metamac.srm.core.common;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
+import org.siemac.metamac.common.test.MetamacBaseTests.DataBaseProvider;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum;
 import org.siemac.metamac.sso.client.MetamacPrincipal;
 import org.siemac.metamac.sso.client.MetamacPrincipalAccess;
 import org.siemac.metamac.sso.client.SsoClientConstants;
+import org.springframework.beans.factory.annotation.Value;
 
 import com.arte.statistic.sdmx.srm.core.common.SdmxSrmBaseTest;
 
@@ -149,6 +152,9 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
     // Other
     protected static final String NOT_EXISTS                                  = "not-exists";
 
+    @Value("${metamac.srm.db.provider}")
+    private String databaseProvider;
+    
     // --------------------------------------------------------------------------------------------------------------
     // SERVICE CONTEXT
     // --------------------------------------------------------------------------------------------------------------
@@ -278,19 +284,24 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
     }
 
     @Override
-    protected Map<String, String> getTablePrimaryKeys() {
-        Map<String, String> tablePrimaryKeys = super.getTablePrimaryKeys();
-        tablePrimaryKeys.put("TB_M_CONCEPT_SCHEMES_VERSIONS", "TB_CONCEPT_SCHEMES_VERSIONS");
-        tablePrimaryKeys.put("TB_M_CONCEPTS", "TB_CONCEPTS");
-        tablePrimaryKeys.put("TB_M_ORG_SCHEMES_VERSIONS", "TB_ORG_SCHEMES_VERSIONS");
-        tablePrimaryKeys.put("TB_M_ORGANISATIONS", "TB_ORGANISATIONS");
-        tablePrimaryKeys.put("TB_M_CAT_SCHEMES_VERSIONS", "TB_CAT_SCHEMES_VERSIONS");
-        tablePrimaryKeys.put("TB_M_CATEGORIES", "TB_CATEGORIES");
+    protected Map<String, List<String>> getTablePrimaryKeys() {
+        Map<String, List<String>> tablePrimaryKeys = super.getTablePrimaryKeys();
+        tablePrimaryKeys.put("TB_M_CONCEPT_SCHEMES_VERSIONS", Arrays.asList("TB_CONCEPT_SCHEMES_VERSIONS"));
+        tablePrimaryKeys.put("TB_M_CONCEPTS", Arrays.asList("TB_CONCEPTS"));
+        tablePrimaryKeys.put("TB_M_ORG_SCHEMES_VERSIONS", Arrays.asList("TB_ORG_SCHEMES_VERSIONS"));
+        tablePrimaryKeys.put("TB_M_ORGANISATIONS", Arrays.asList("TB_ORGANISATIONS"));
+        tablePrimaryKeys.put("TB_M_CAT_SCHEMES_VERSIONS", Arrays.asList("TB_CAT_SCHEMES_VERSIONS"));
+        tablePrimaryKeys.put("TB_M_CATEGORIES", Arrays.asList("TB_CATEGORIES"));
         return tablePrimaryKeys;
     }
 
     @Override
     protected ServiceContext getServiceContextWithoutPrincipal() {
         return new ServiceContext("junit", "junit", "app");
+    }
+
+    @Override
+    protected DataBaseProvider getDatabaseProvider() {
+        return DataBaseProvider.valueOf(databaseProvider);
     }
 }

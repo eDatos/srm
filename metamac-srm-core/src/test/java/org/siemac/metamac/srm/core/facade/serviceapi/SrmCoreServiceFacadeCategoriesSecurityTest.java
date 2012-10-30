@@ -541,7 +541,7 @@ public class SrmCoreServiceFacadeCategoriesSecurityTest extends SrmBaseTest {
         // 2) CATEGORY SCHEME PRODUCTION_VALIDATION
         {
             CategoryMetamacDto prodValidationCategoryMetamacDto = srmCoreServiceFacade.retrieveCategoryByUrn(getServiceContextAdministrador(), CATEGORY_SCHEME_5_V1_CATEGORY_1);
-            prodValidationCategoryMetamacDto.setName(MetamacMocks.mockInternationalString());
+            prodValidationCategoryMetamacDto.setName(MetamacMocks.mockInternationalStringDto());
 
             // Access
             {
@@ -570,7 +570,7 @@ public class SrmCoreServiceFacadeCategoriesSecurityTest extends SrmBaseTest {
         // 3) CATEGORY SCHEME DIFFUSION_VALIDATION
         {
             CategoryMetamacDto difValidationCategoryMetamacDto = srmCoreServiceFacade.retrieveCategoryByUrn(getServiceContextAdministrador(), CATEGORY_SCHEME_6_V1_CATEGORY_1);
-            difValidationCategoryMetamacDto.setName(MetamacMocks.mockInternationalString());
+            difValidationCategoryMetamacDto.setName(MetamacMocks.mockInternationalStringDto());
 
             // Access
             {

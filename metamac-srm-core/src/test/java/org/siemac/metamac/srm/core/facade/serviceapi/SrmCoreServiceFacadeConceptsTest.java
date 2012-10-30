@@ -222,8 +222,8 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
 
         ConceptSchemeMetamacDto conceptSchemeMetamacDto = srmCoreServiceFacade.retrieveConceptSchemeByUrn(ctx, CONCEPT_SCHEME_9_V1);
 
-        conceptSchemeMetamacDto.setName(MetamacMocks.mockInternationalString());
-        conceptSchemeMetamacDto.setDescription(MetamacMocks.mockInternationalString());
+        conceptSchemeMetamacDto.setName(MetamacMocks.mockInternationalStringDto());
+        conceptSchemeMetamacDto.setDescription(MetamacMocks.mockInternationalStringDto());
         conceptSchemeMetamacDto.setIsPartial(Boolean.TRUE);
         conceptSchemeMetamacDto.setType(ConceptSchemeTypeEnum.ROLE);
 
@@ -1405,8 +1405,8 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
     public void testUpdateConcept() throws Exception {
         ConceptMetamacDto conceptMetamacDto = srmCoreServiceFacade.retrieveConceptByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_1_V2_CONCEPT_1);
         assertNotNull(conceptMetamacDto.getConceptExtendsUrn());
-        conceptMetamacDto.setName(MetamacMocks.mockInternationalString());
-        conceptMetamacDto.setDescription(MetamacMocks.mockInternationalString());
+        conceptMetamacDto.setName(MetamacMocks.mockInternationalStringDto());
+        conceptMetamacDto.setDescription(MetamacMocks.mockInternationalStringDto());
         conceptMetamacDto.setConceptExtendsUrn(CONCEPT_SCHEME_3_V1_CONCEPT_2_1_1);
 
         ConceptMetamacDto conceptMetamacDtoUpdated = srmCoreServiceFacade.updateConcept(getServiceContextAdministrador(), conceptMetamacDto);

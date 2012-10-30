@@ -542,7 +542,7 @@ public class SrmCoreServiceFacadeOrganisationsSecurityTest extends SrmBaseTest {
         // 2) ORGANISATION SCHEME PRODUCTION_VALIDATION
         {
             OrganisationMetamacDto prodValidationOrganisationMetamacDto = srmCoreServiceFacade.retrieveOrganisationByUrn(getServiceContextAdministrador(), ORGANISATION_SCHEME_5_V1_ORGANISATION_1);
-            prodValidationOrganisationMetamacDto.setName(MetamacMocks.mockInternationalString());
+            prodValidationOrganisationMetamacDto.setName(MetamacMocks.mockInternationalStringDto());
 
             // Access
             {
@@ -571,7 +571,7 @@ public class SrmCoreServiceFacadeOrganisationsSecurityTest extends SrmBaseTest {
         // 3) ORGANISATION SCHEME DIFFUSION_VALIDATION
         {
             OrganisationMetamacDto difValidationOrganisationMetamacDto = srmCoreServiceFacade.retrieveOrganisationByUrn(getServiceContextAdministrador(), ORGANISATION_SCHEME_6_V1_ORGANISATION_1);
-            difValidationOrganisationMetamacDto.setName(MetamacMocks.mockInternationalString());
+            difValidationOrganisationMetamacDto.setName(MetamacMocks.mockInternationalStringDto());
 
             // Access
             {

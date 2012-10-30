@@ -118,4 +118,5 @@ public class CategoriesDo2DtoMapperTest extends SrmBaseTest {
     protected String getDataSetFile() {
         return "dbunit/SrmCategoriesTest.xml";
     }
+
 }

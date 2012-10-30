@@ -101,7 +101,7 @@ public class SrmCoreServiceFacadeCategoriesTest extends SrmBaseTest {
 
         // Update
         CategorySchemeMetamacDto categorySchemeMetamacDto = srmCoreServiceFacade.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), CATEGORY_SCHEME_1_V2);
-        categorySchemeMetamacDto.setName(MetamacMocks.mockInternationalString());
+        categorySchemeMetamacDto.setName(MetamacMocks.mockInternationalStringDto());
         CategorySchemeMetamacDto categorySchemeMetamacDtoUpdated = srmCoreServiceFacade.updateCategoryScheme(getServiceContextAdministrador(), categorySchemeMetamacDto);
 
         // Validate
@@ -780,8 +780,8 @@ public class SrmCoreServiceFacadeCategoriesTest extends SrmBaseTest {
     @Test
     public void testUpdateCategory() throws Exception {
         CategoryMetamacDto categoryMetamacDto = srmCoreServiceFacade.retrieveCategoryByUrn(getServiceContextAdministrador(), CATEGORY_SCHEME_1_V2_CATEGORY_1);
-        categoryMetamacDto.setName(MetamacMocks.mockInternationalString());
-        categoryMetamacDto.setDescription(MetamacMocks.mockInternationalString());
+        categoryMetamacDto.setName(MetamacMocks.mockInternationalStringDto());
+        categoryMetamacDto.setDescription(MetamacMocks.mockInternationalStringDto());
 
         CategoryMetamacDto categoryMetamacDtoUpdated = srmCoreServiceFacade.updateCategory(getServiceContextAdministrador(), categoryMetamacDto);
 
