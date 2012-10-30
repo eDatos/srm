@@ -207,7 +207,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
                 fail("wrong proc status");
             } catch (MetamacException e) {
                 assertEquals(1, e.getExceptionItems().size());
-                assertEquals(ServiceExceptionType.MAINTAINABLE_ARTEFACT_UNMODIFIABLE.getCode(), e.getExceptionItems().get(0).getCode());
+                assertEquals(ServiceExceptionType.MAINTAINABLE_ARTEFACT_FINAL.getCode(), e.getExceptionItems().get(0).getCode());
                 assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
                 assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
             }
@@ -1066,7 +1066,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             fail("ConceptScheme can not be deleted");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEquals(ServiceExceptionType.MAINTAINABLE_ARTEFACT_UNMODIFIABLE.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(ServiceExceptionType.MAINTAINABLE_ARTEFACT_FINAL.getCode(), e.getExceptionItems().get(0).getCode());
             assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
             assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
         }
@@ -1728,7 +1728,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             fail("Concept can not be deleted");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEquals(ServiceExceptionType.MAINTAINABLE_ARTEFACT_UNMODIFIABLE.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(ServiceExceptionType.MAINTAINABLE_ARTEFACT_FINAL.getCode(), e.getExceptionItems().get(0).getCode());
             assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
             assertEquals(conceptSchemeUrn, e.getExceptionItems().get(0).getMessageParameters()[0]);
         }
