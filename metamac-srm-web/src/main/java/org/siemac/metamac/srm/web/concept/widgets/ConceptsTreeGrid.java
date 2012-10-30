@@ -54,7 +54,7 @@ public class ConceptsTreeGrid extends ItemsTreeGrid {
             @Override
             public void onFilterEditorSubmit(FilterEditorSubmitEvent event) {
                 event.cancel();
-                TreeNode[] treeNodes = getTree().getAllNodes();
+                TreeNode[] treeNodes = tree.getAllNodes();
 
                 String codeCriteria = event.getCriteria().getAttribute(ItemDS.CODE);
                 String nameCriteria = event.getCriteria().getAttribute(ItemDS.NAME);
