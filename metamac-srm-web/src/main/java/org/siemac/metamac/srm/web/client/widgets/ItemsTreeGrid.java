@@ -2,8 +2,10 @@ package org.siemac.metamac.srm.web.client.widgets;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.web.client.model.ds.ItemDS;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 
@@ -16,6 +18,8 @@ import com.smartgwt.client.data.RecordList;
 import com.smartgwt.client.types.Autofit;
 import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.types.TreeModelType;
+import com.smartgwt.client.widgets.grid.events.FilterEditorSubmitEvent;
+import com.smartgwt.client.widgets.grid.events.FilterEditorSubmitHandler;
 import com.smartgwt.client.widgets.menu.Menu;
 import com.smartgwt.client.widgets.menu.MenuItem;
 import com.smartgwt.client.widgets.tree.Tree;
@@ -46,6 +50,8 @@ public abstract class ItemsTreeGrid extends TreeGrid {
 
     protected Tree                tree;
 
+    private HandlerRegistration   filterEditionHandler;
+
     public ItemsTreeGrid() {
         setAutoFitMaxRecords(10);
         setAutoFitData(Autofit.VERTICAL);
@@ -69,6 +75,47 @@ public abstract class ItemsTreeGrid extends TreeGrid {
         TreeGridField nameField = new TreeGridField(ItemDS.NAME, getConstants().nameableArtefactName());
 
         setFields(codeField, nameField);
+
+        setShowFilterEditor(true);
+
+        filterEditionHandler = addFilterEditorSubmitHandler(new FilterEditorSubmitHandler() {
+
+            @Override
+            public void onFilterEditorSubmit(FilterEditorSubmitEvent event) {
+                event.cancel();
+                TreeNode[] treeNodes = tree.getAllNodes();
+
+                String codeCriteria = event.getCriteria().getAttribute(ItemDS.CODE);
+                String nameCriteria = event.getCriteria().getAttribute(ItemDS.NAME);
+
+                if (StringUtils.isBlank(codeCriteria) && StringUtils.isBlank(nameCriteria)) {
+                    setData(tree);
+                    return;
+                } else {
+                    List<TreeNode> matchingNodes = new ArrayList<TreeNode>();
+                    for (TreeNode treeNode : treeNodes) {
+                        if (!SCHEME_NODE_NAME.equals(treeNode.getName())) {
+                            String code = treeNode.getAttributeAsString(ItemDS.CODE);
+                            String name = treeNode.getAttributeAsString(ItemDS.NAME);
+
+                            boolean matches = true;
+                            if (codeCriteria != null && !StringUtils.startsWithIgnoreCase(code, codeCriteria)) {
+                                matches = false;
+                            }
+                            if (nameCriteria != null && !StringUtils.startsWithIgnoreCase(name, nameCriteria)) {
+                                matches = false;
+                            }
+                            if (matches) {
+                                matchingNodes.add(treeNode);
+                            }
+                        }
+                    }
+                    Tree resultTree = new Tree();
+                    resultTree.setData(matchingNodes.toArray(new TreeNode[0]));
+                    setData(resultTree);
+                }
+            }
+        });
 
         // Context menu
 
@@ -113,6 +160,9 @@ public abstract class ItemsTreeGrid extends TreeGrid {
     }
 
     public void setItems(ItemSchemeDto itemSchemeDto, List<ItemHierarchyDto> itemHierarchyDtos) {
+        // Clear filter editor
+        setFilterEditorCriteria(null);
+
         this.itemSchemeDto = itemSchemeDto;
 
         TreeNode[] treeNodes = new TreeNode[itemHierarchyDtos.size()];
@@ -180,6 +230,10 @@ public abstract class ItemsTreeGrid extends TreeGrid {
         for (MenuItem item : menuItems) {
             contextMenu.addItem(item);
         }
+    }
+
+    protected void removeFilterEditionHandler() {
+        filterEditionHandler.removeHandler();
     }
 
     protected abstract void onNodeClick(String nodeName, String itemUrn);

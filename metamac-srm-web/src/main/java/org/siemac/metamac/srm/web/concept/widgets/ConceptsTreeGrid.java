@@ -47,8 +47,8 @@ public class ConceptsTreeGrid extends ItemsTreeGrid {
     private BaseConceptUiHandlers    uiHandlers;
 
     public ConceptsTreeGrid() {
-        setShowFilterEditor(true);
-        // setFilterOnKeypress(true);
+        // Remove the filter edition handler and add a new one (to support filter by concept type and SDMX role)
+        removeFilterEditionHandler();
         addFilterEditorSubmitHandler(new FilterEditorSubmitHandler() {
 
             @Override
@@ -156,9 +156,6 @@ public class ConceptsTreeGrid extends ItemsTreeGrid {
 
     @Override
     public void setItems(ItemSchemeDto conceptSchemeMetamacDto, List<ItemHierarchyDto> itemHierarchyDtos) {
-        // Clear filter editor
-        setFilterEditorCriteria(null);
-
         this.conceptSchemeMetamacDto = (ConceptSchemeMetamacDto) conceptSchemeMetamacDto;
         super.setItems(conceptSchemeMetamacDto, itemHierarchyDtos);
     }
