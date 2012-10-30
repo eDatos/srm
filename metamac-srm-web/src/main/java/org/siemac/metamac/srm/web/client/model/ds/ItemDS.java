@@ -25,9 +25,11 @@ public class ItemDS extends DataSource {
         addField(urn);
 
         DataSourceTextField code = new DataSourceTextField(CODE, MetamacSrmWeb.getConstants().identifiableArtefactCode());
+        code.setCanFilter(true);
         addField(code);
 
         DataSourceTextField name = new DataSourceTextField(NAME, MetamacSrmWeb.getConstants().nameableArtefactName());
+        name.setCanFilter(true);
         addField(name);
 
         setClientOnly(true);

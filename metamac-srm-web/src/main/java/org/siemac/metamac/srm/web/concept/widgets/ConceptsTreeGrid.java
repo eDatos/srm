@@ -47,20 +47,8 @@ public class ConceptsTreeGrid extends ItemsTreeGrid {
     private BaseConceptUiHandlers    uiHandlers;
 
     public ConceptsTreeGrid() {
-
-        // setDataSource(new ItemDS());
-        //
-        // addShowContextMenuHandler(new ShowContextMenuHandler() {
-        //
-        // @Override
-        // public void onShowContextMenu(ShowContextMenuEvent event) {
-        // event.cancel();
-        // }
-        // });
-
-        // setAutoFetchData(true);
         setShowFilterEditor(true);
-        setFilterOnKeypress(true);
+        // setFilterOnKeypress(true);
         addFilterEditorSubmitHandler(new FilterEditorSubmitHandler() {
 
             @Override
@@ -68,38 +56,47 @@ public class ConceptsTreeGrid extends ItemsTreeGrid {
                 event.cancel();
                 TreeNode[] treeNodes = getTree().getAllNodes();
 
-                String codeValue = event.getCriteria().getAttribute(ItemDS.CODE);
-                String nameValue = event.getCriteria().getAttribute(ItemDS.NAME);
-                String typeValue = event.getCriteria().getAttribute(ConceptDS.TYPE);
-                String sdmxRoleValue = event.getCriteria().getAttribute(ConceptDS.SDMX_RELATED_ARTEFACT);
+                String codeCriteria = event.getCriteria().getAttribute(ItemDS.CODE);
+                String nameCriteria = event.getCriteria().getAttribute(ItemDS.NAME);
+                String typeCriteria = event.getCriteria().getAttribute(ConceptDS.TYPE);
+                String sdmxRoleCriteria = event.getCriteria().getAttribute(ConceptDS.SDMX_RELATED_ARTEFACT);
 
-                if (nameValue == null) {
+                if (StringUtils.isBlank(codeCriteria) && StringUtils.isBlank(nameCriteria) && StringUtils.isBlank(typeCriteria) && StringUtils.isBlank(sdmxRoleCriteria)) {
                     setData(tree);
                     return;
                 } else {
                     List<TreeNode> matchingNodes = new ArrayList<TreeNode>();
                     for (TreeNode treeNode : treeNodes) {
-                        String name = treeNode.getAttributeAsString(ItemDS.NAME);
-                        if (name != null && name.startsWith(nameValue)) {
-                            matchingNodes.add(treeNode);
+                        if (!SCHEME_NODE_NAME.equals(treeNode.getName())) {
+                            String code = treeNode.getAttributeAsString(ItemDS.CODE);
+                            String name = treeNode.getAttributeAsString(ItemDS.NAME);
+                            String type = treeNode.getAttributeAsString(ConceptDS.TYPE);
+                            String sdmxRole = treeNode.getAttributeAsString(ConceptDS.SDMX_RELATED_ARTEFACT);
+
+                            boolean matches = true;
+                            if (codeCriteria != null && !StringUtils.startsWithIgnoreCase(code, codeCriteria)) {
+                                matches = false;
+                            }
+                            if (nameCriteria != null && !StringUtils.startsWithIgnoreCase(name, nameCriteria)) {
+                                matches = false;
+                            }
+                            if (typeCriteria != null && !StringUtils.startsWithIgnoreCase(type, typeCriteria)) {
+                                matches = false;
+                            }
+                            if (sdmxRoleCriteria != null && !StringUtils.startsWithIgnoreCase(sdmxRole, sdmxRoleCriteria)) {
+                                matches = false;
+                            }
+                            if (matches) {
+                                matchingNodes.add(treeNode);
+                            }
                         }
                     }
                     Tree resultTree = new Tree();
-
                     resultTree.setData(matchingNodes.toArray(new TreeNode[0]));
-
                     setData(resultTree);
                 }
             }
         });
-
-        // setAutoFetchAsFilter(true);
-        // setFilterOnKeypress(true);
-        // setLoadDataOnDemand(false);
-        // setKeepParentsOnFilter(true);
-        //
-        // getFields()[0].setCanFilter(true);
-        // getFields()[1].setCanFilter(true);
 
         // Add type and sdmxRelatedArtefact fields to ItemsTreeGrid fields
 
@@ -159,6 +156,9 @@ public class ConceptsTreeGrid extends ItemsTreeGrid {
 
     @Override
     public void setItems(ItemSchemeDto conceptSchemeMetamacDto, List<ItemHierarchyDto> itemHierarchyDtos) {
+        // Clear filter editor
+        setFilterEditorCriteria(null);
+
         this.conceptSchemeMetamacDto = (ConceptSchemeMetamacDto) conceptSchemeMetamacDto;
         super.setItems(conceptSchemeMetamacDto, itemHierarchyDtos);
     }
@@ -168,7 +168,6 @@ public class ConceptsTreeGrid extends ItemsTreeGrid {
         this.conceptSchemeMetamacDto = (ConceptSchemeMetamacDto) itemSchemeDto;
         super.updateItemScheme(itemSchemeDto);
     }
-
     public void setUiHandlers(BaseConceptUiHandlers uiHandlers) {
         this.uiHandlers = uiHandlers;
     }
