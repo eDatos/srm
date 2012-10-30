@@ -29,6 +29,15 @@
             </exclusions>
         </dependency>
         <dependency>
+            <groupId>org.siemac.metamac</groupId>
+            <artifactId>metamac-core-common</artifactId>
+            <version>${metamac-core-common.version}</version>
+            <classifier>resources</classifier>
+            <type>zip</type>
+            <!-- Does not include in classpath -->
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>org.siemac.metamac.metamac-sso</groupId>
             <artifactId>metamac-sso-client</artifactId>
             <version>${metamac-sso.version}</version>
@@ -406,6 +415,73 @@
         </dependency>
     </dependencies>
 
+    <profiles>
+        <profile>
+            <id>oracle</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <executions>
+                            <execution>
+                            	<id>clean-sculptor-conf</id>
+                                <phase>initialize</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <target>
+                                        <delete file="src/main/resources/generator/sculptor-generator.properties" />
+                                        <delete file="src/main/resources/generator/SpecialCases.xpt" />
+                                        <delete file="src/main/resources/templates/db/CustomDDL.xpt" />
+                                        <copy file="src/main/resources/generator/sculptor-generator.oracle.properties" tofile="src/main/resources/generator/sculptor-generator.properties" verbose="true"/>
+                                        <copy file="src/main/resources/generator/SpecialCasesOracle.xpt" tofile="src/main/resources/generator/SpecialCases.xpt" verbose="true"/>
+                                    </target>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        
+        <profile>
+            <id>mssql</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <executions>
+                            <execution>
+                            	<id>clean-sculptor-conf</id>
+                                <phase>initialize</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <target>
+                                        <delete file="src/main/resources/generator/sculptor-generator.properties" />
+                                        <delete file="src/main/resources/generator/SpecialCases.xpt" />
+                                        <delete file="src/main/resources/generator/CustomDDL.xpt" />
+                                        <copy file="src/main/resources/generator/sculptor-generator.mssql.properties" tofile="src/main/resources/generator/sculptor-generator.properties" verbose="true"/>
+                                        <copy file="src/main/resources/generator/SpecialCasesMsSql.xpt" tofile="src/main/resources/generator/SpecialCases.xpt" verbose="true"/>
+                                        <copy file="target/generated-resources/DDLMSSQL.xpt" tofile="src/main/resources/templates/db/CustomDDL.xpt" verbose="true"/>
+                                    </target>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+    
     <build>
         <finalName>${project.artifactId}</finalName>
 
@@ -431,6 +507,30 @@
                         </fileset>
                     </filesets>
                 </configuration>
+            </plugin>
+            
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.0</version>
+                <executions>
+                    <execution>
+                        <id>unpack-shared-resources</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>unpack-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/generated-resources</outputDirectory>
+                            <includeGroupIds>org.siemac.metamac</includeGroupIds>
+                            <includeArtifacIds>metamac-core-common</includeArtifacIds>
+                            <includeClassifiers>resources</includeClassifiers>
+                            <excludeTransitive>true</excludeTransitive>
+                            <includes>**/*.xpt</includes>
+                            <includeTypes>zip</includeTypes>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
 
             <plugin>
@@ -501,6 +601,7 @@
                 <version>1.6</version><!--$NO-MVN-MAN-VER$ -->
                 <executions>
                     <execution>
+                    	<id>clean-sculptor</id>
                         <phase>generate-sources</phase>
                         <goals>
                             <goal>run</goal>

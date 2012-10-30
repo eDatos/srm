@@ -51,6 +51,7 @@ NOT NULL«ENDIF»,
 «ENDAROUND»
 
 
+«REM»
 «AROUND templates::domain::DomainObjectAttributeAnnotation::idAnnotations FOR Attribute»
     «IF getDomainObject().hasHint("idSequence")»
         @javax.persistence.Id
@@ -62,7 +63,7 @@ NOT NULL«ENDIF»,
     	«targetDef.proceed()»
     «ENDIF»
 «ENDAROUND»
-
+«ENDREM»
 
 «REM»Skip unique constraint in InternationalString and LocalisedString this will be for "id", and primary key restriction already exists for this attribute «ENDREM»
 «AROUND templates::db::OracleDDL::uniqueConstraint FOR DomainObject»
