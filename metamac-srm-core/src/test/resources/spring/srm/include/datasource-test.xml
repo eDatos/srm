@@ -22,7 +22,7 @@
     <bean id="entityManagerFactoryCore" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="jpaVendorAdapter">
             <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-                <property name="databasePlatform" value="${jpaVendorAdapter.databasePlatform}" />
+                <property name="databasePlatform" value="${metamac.srm.db.dialect}" />
             </bean>
         </property>
         <property name="persistenceUnitManager" ref="persistenceUnitManager"/>
@@ -42,10 +42,11 @@
         </property>
     </bean>
 
-    <bean id="dataSource" class="oracle.jdbc.pool.OracleDataSource" destroy-method="close">
-        <property name="URL" value="${datasource.url}" />
-        <property name="user" value="${datasource.username}" />
-        <property name="password" value="${datasource.password}" />
+   <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName"    value="${metamac.srm.db.driverName}"/>
+        <property name="url"                value="${metamac.srm.db.url}"/>
+        <property name="username"           value="${metamac.srm.db.username}"/>
+        <property name="password"           value="${metamac.srm.db.password}"/>
     </bean>
 
     <bean id="txManagerCore" class="org.springframework.orm.jpa.JpaTransactionManager">
