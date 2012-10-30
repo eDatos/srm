@@ -1488,6 +1488,20 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
         }
     }
 
+    // In CategorisationMetamacServiceTest
+    @Override
+    public void testRetrieveCategorisationByUrn() throws Exception {
+    }
+    @Override
+    public void testDeleteCategorisation() throws Exception {
+    }
+    @Override
+    public void testRetrieveCategorisationsByArtefact() throws Exception {
+    }
+    @Override
+    public void testCreateCategorisation() throws Exception {
+    }
+
     private void assertListItemsContainsCategory(List<Item> items, String urn) {
         for (Item item : items) {
             if (item.getNameableArtefact().getUrn().equals(urn)) {
@@ -1496,15 +1510,6 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
         }
         fail("List does not contain item with urn " + urn);
     }
-
-    // // private void assertListCategoriesContainsCategory(List<CategoryMetamac> items, String urn) {
-    // // for (Item item : items) {
-    // // if (item.getNameableArtefact().getUrn().equals(urn)) {
-    // // return;
-    // // }
-    // // }
-    // // fail("List does not contain item with urn " + urn);
-    // // }
 
     @Override
     protected String getDataSetFile() {

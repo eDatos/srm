@@ -1,0 +1,1284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<dataset>
+
+    <!-- ************************************************************************************** -->
+    <!-- ORGANISATION SCHEME 100 (ROOT ORGANISATION - MAINTAINER)                               -->
+    <!--        - Version 1: final                                                              -->
+    <!-- *************************************************************************************  -->
+
+    <TB_ITEM_SCHEMES
+        ID="100"
+        UUID="itemScheme-100"
+        VERSION="1"
+    />
+    
+    <!-- **************************************************************************************  -->                
+    <!-- VERSION 1                                                                               -->
+    <!-- **************************************************************************************  -->
+    <TB_ORG_SCHEMES_VERSIONS
+        TB_ITEM_SCHEMES_VERSIONS="1001"
+        ORGANISATION_SCHEME_TYPE="AGENCY_SCHEME"
+    />
+    
+    <TB_M_ORG_SCHEMES_VERSIONS
+        TB_ORG_SCHEMES_VERSIONS="1001"
+        PROC_STATUS="EXTERNALLY_PUBLISHED"
+        
+        PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
+        PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
+        PRODUCTION_VALIDATION_USER="user1"
+        DIFFUSION_VALIDATION_DATE_TZ="Europe/London"
+        DIFFUSION_VALIDATION_DATE="2011-01-02 02:02:03"
+        DIFFUSION_VALIDATION_USER="user2"
+        INTERNAL_PUBLICATION_DATE_TZ="Europe/London"
+        INTERNAL_PUBLICATION_DATE="2011-01-03 03:02:03"
+        INTERNAL_PUBLICATION_USER="user3"
+        EXTERNAL_PUBLICATION_DATE_TZ="Europe/London"
+        EXTERNAL_PUBLICATION_DATE="2011-01-03 03:02:03"
+        EXTERNAL_PUBLICATION_USER="user3"
+        IS_EXT_PUBLICATION_FAILED="[null]"
+        EXT_PUBLICATION_FAILED_DATE="[null]"
+    />
+    
+    <TB_ITEM_SCHEMES_VERSIONS
+        ID="1001"
+        ITEM_SCHEME_FK="100"
+        IS_PARTIAL="0"
+        MAINTANABLE_ARTEFACT_FK="1001"
+        
+        UUID="organisationScheme-100-v1"
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user2"
+        LAST_UPDATED="2011-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"  
+    />
+    
+    <TB_ANNOTABLE_ARTEFACTS 
+        ID="1001"
+        ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
+        
+        CODE="ORGANISATIONSCHEME100"
+        URI="[null]"
+        URN="urn:sdmx:org.sdmx.infomodel.base.AgencyScheme=SDMX:ORGANISATIONSCHEME100(01.000)"
+        REPLACED_BY="[null]"
+        REPLACE_TO="[null]"
+        
+        NAME_FK="1"
+        DESCRIPTION_FK="[null]"
+        
+        VERSION_LOGIC="01.000"
+        FINAL_LOGIC="1"
+        VALID_FROM_TZ="Europe/London"
+        VALID_FROM="2011-01-02 02:02:04" 
+        VALID_TO_TZ="[null]"
+        VALID_TO="[null]"
+        IS_EXTERNAL_REFERENCE="0"
+        STRUCTURE_URL="[null]"
+        SERVICE_URL="[null]"
+        IS_LAST_VERSION="1"
+        MAINTAINER_FK="[null]"
+        
+        UUID="annotableArtefact-1001"
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user2"
+        LAST_UPDATED="2011-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"
+    />
+    
+        <!-- ORGANISATIONS -->
+            <!-- -> SDMX01 -->
+            <!-- -> SDMX02 -->
+            
+            <!-- SDMX01 -->
+            
+            <TB_M_ORGANISATIONS
+                TB_ORGANISATIONS="10011"
+            />
+            
+            <TB_ORGANISATIONS
+                TB_ITEMS="10011"
+                ORGANISATION_TYPE="AGENCY"
+            />
+        
+            <TB_ITEMS
+                ID="10011"
+                PARENT_FK="[null]"
+                ITEM_SCHEME_VERSION_FK="1001"
+                ITEM_SCHEME_VERSION_FIRST_FK="1001"
+                NAMEABLE_ARTEFACT_FK="10011"
+                      
+                UUID="organisationScheme-1001-v1-org-0"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"  
+            />
+
+            <TB_ANNOTABLE_ARTEFACTS 
+                ID="10011"
+                ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+                
+                CODE="SDMX01"
+                URI="[null]"
+                URN="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:ORGANISATIONSCHEME100(01.000).SDMX01"
+                REPLACED_BY="[null]"
+                REPLACE_TO="[null]"
+                
+                NAME_FK="2"
+                DESCRIPTION_FK="[null]"
+                
+                UUID="annotableArtefact-10011"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"
+            />
+            
+            <!-- SDMX02 -->
+            
+            <TB_M_ORGANISATIONS
+                TB_ORGANISATIONS="10012"
+            />
+            
+            <TB_ORGANISATIONS
+                TB_ITEMS="10012"
+                ORGANISATION_TYPE="AGENCY"
+            />
+        
+            <TB_ITEMS
+                ID="10012"
+                PARENT_FK="[null]"
+                ITEM_SCHEME_VERSION_FK="1001"
+                ITEM_SCHEME_VERSION_FIRST_FK="1001"
+                NAMEABLE_ARTEFACT_FK="10012"
+                      
+                UUID="organisationScheme-1001-v1-org-1"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"  
+            />
+
+            <TB_ANNOTABLE_ARTEFACTS 
+                ID="10012"
+                ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+                
+                CODE="SDMX02"
+                URI="[null]"
+                URN="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:ORGANISATIONSCHEME100(01.000).SDMX02"
+                REPLACED_BY="[null]"
+                REPLACE_TO="[null]"
+                
+                NAME_FK="10"
+                DESCRIPTION_FK="[null]"
+                
+                UUID="annotableArtefact-10012"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"
+            />            
+            
+    <!-- ************************************************************************************** -->
+    <!-- CATEGORY SCHEME 1                                                                       -->
+    <!--        - Version 1: final                                                              -->
+    <!-- *************************************************************************************  -->
+
+    <TB_ITEM_SCHEMES
+        ID="1"
+        UUID="itemScheme-1"
+        VERSION="1"
+    />
+    
+    <!-- **************************************************************************************  -->                
+    <!-- VERSION 1                                                                               -->
+    <!-- **************************************************************************************  -->
+    <TB_ITEM_SCHEMES_VERSIONS
+        ID="11"
+        ITEM_SCHEME_FK="1"
+        IS_PARTIAL="0"
+        MAINTANABLE_ARTEFACT_FK="11"
+        
+        UUID="categoryScheme-1-v1"
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user2"
+        LAST_UPDATED="2011-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"  
+    />
+        
+    <TB_CAT_SCHEMES_VERSIONS
+        TB_ITEM_SCHEMES_VERSIONS="11"
+    />
+    
+    <TB_M_CAT_SCHEMES_VERSIONS
+        TB_CAT_SCHEMES_VERSIONS="11"
+        PROC_STATUS="EXTERNALLY_PUBLISHED"
+        
+        PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
+        PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
+        PRODUCTION_VALIDATION_USER="user1"
+        DIFFUSION_VALIDATION_DATE_TZ="Europe/London"
+        DIFFUSION_VALIDATION_DATE="2011-01-02 02:02:03"
+        DIFFUSION_VALIDATION_USER="user2"
+        INTERNAL_PUBLICATION_DATE_TZ="Europe/London"
+        INTERNAL_PUBLICATION_DATE="2011-01-03 03:02:03"
+        INTERNAL_PUBLICATION_USER="user3"
+        EXTERNAL_PUBLICATION_DATE_TZ="Europe/London"
+        EXTERNAL_PUBLICATION_DATE="2011-01-03 03:02:03"
+        EXTERNAL_PUBLICATION_USER="user3"
+        IS_EXT_PUBLICATION_FAILED="[null]"
+        EXT_PUBLICATION_FAILED_DATE="[null]"
+    />
+    
+    <TB_ANNOTABLE_ARTEFACTS 
+        ID="11"
+        ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
+        
+        CODE="CATEGORYSCHEME01"
+        URI="[null]"
+        URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=SDMX01:CATEGORYSCHEME01(01.000)"
+        REPLACED_BY="[null]"
+        REPLACE_TO="[null]"
+        
+        NAME_FK="3"
+        DESCRIPTION_FK="[null]"
+        
+        VERSION_LOGIC="01.000"
+        FINAL_LOGIC="1"
+        VALID_FROM_TZ="Europe/London"
+        VALID_FROM="2011-01-02 02:02:04" 
+        VALID_TO_TZ="[null]"
+        VALID_TO="[null]"
+        IS_EXTERNAL_REFERENCE="0"
+        STRUCTURE_URL="http://structureUrl"
+        SERVICE_URL="http://serviceUrl"
+        IS_LAST_VERSION="0"
+        MAINTAINER_FK="10011"
+        
+        UUID="annotableArtefact-11"
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user2"
+        LAST_UPDATED="2011-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"
+    />
+    
+        <!-- CATEGORIES -->
+            <!-- -> CATEGORY01 -->
+            
+            <!-- CATEGORY01 -->
+            
+            <TB_M_CATEGORIES
+                TB_CATEGORIES="111"
+            />
+            
+            <TB_CATEGORIES
+                TB_ITEMS="111"
+            />
+        
+            <TB_ITEMS
+                ID="111"
+                PARENT_FK="[null]"
+                ITEM_SCHEME_VERSION_FK="11"
+                ITEM_SCHEME_VERSION_FIRST_FK="11"
+                NAMEABLE_ARTEFACT_FK="111"
+                      
+                UUID="categoryScheme-1-v1-cat-1"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"  
+            />
+
+            <TB_ANNOTABLE_ARTEFACTS 
+                ID="111"
+                ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+
+                CODE="CATEGORY01"
+                URI="[null]"
+                URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME01(01.000).CATEGORY01"
+                REPLACED_BY="[null]"
+                REPLACE_TO="[null]"
+
+                NAME_FK="4"
+                DESCRIPTION_FK="[null]"
+
+                UUID="annotableArtefact-111"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"
+            />
+            
+    <!-- ************************************************************************************** -->
+    <!-- CONCEPT SCHEME 1                                                                       -->
+    <!--        - Version 1: final                                                              -->
+    <!-- *************************************************************************************  -->
+
+    <TB_ITEM_SCHEMES
+        ID="2"
+        UUID="itemScheme-2"
+        VERSION="1"
+    />
+    
+    <!-- **************************************************************************************  -->                
+    <!-- VERSION 1                                                                               -->
+    <!-- **************************************************************************************  -->
+    <TB_ITEM_SCHEMES_VERSIONS
+        ID="21"
+        ITEM_SCHEME_FK="2"
+        IS_PARTIAL="0"
+        MAINTANABLE_ARTEFACT_FK="21"
+        
+        UUID="conceptScheme-1-v1"
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user2"
+        LAST_UPDATED="2011-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"  
+    />
+        
+    <TB_CONCEPT_SCHEMES_VERSIONS
+        TB_ITEM_SCHEMES_VERSIONS="21"
+    />
+    
+    <TB_M_CONCEPT_SCHEMES_VERSIONS
+        TB_CONCEPT_SCHEMES_VERSIONS="21"
+        CONCEPT_SCHEME_TYPE="TRANSVERSAL"          
+        RELATED_OPERATION_FK="[null]"
+        PROC_STATUS="EXTERNALLY_PUBLISHED"
+        
+        PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
+        PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
+        PRODUCTION_VALIDATION_USER="user1"
+        DIFFUSION_VALIDATION_DATE_TZ="Europe/London"
+        DIFFUSION_VALIDATION_DATE="2011-01-02 02:02:03"
+        DIFFUSION_VALIDATION_USER="user2"
+        INTERNAL_PUBLICATION_DATE_TZ="Europe/London"
+        INTERNAL_PUBLICATION_DATE="2011-01-03 03:02:03"
+        INTERNAL_PUBLICATION_USER="user3"
+        EXTERNAL_PUBLICATION_DATE_TZ="[null]"
+        EXTERNAL_PUBLICATION_DATE="[null]"
+        EXTERNAL_PUBLICATION_USER="[null]"
+        IS_EXT_PUBLICATION_FAILED="[null]"
+        EXT_PUBLICATION_FAILED_DATE="[null]"
+    />
+    
+    
+    <TB_ANNOTABLE_ARTEFACTS 
+        ID="21"
+        ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
+        
+        CODE="CONCEPTSCHEME01"
+        URI="[null]"
+        URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME01(01.000)"
+        REPLACED_BY="02.000"
+        REPLACE_TO="[null]"
+        
+        NAME_FK="5"
+        DESCRIPTION_FK="[null]"
+        
+        VERSION_LOGIC="01.000"
+        FINAL_LOGIC="1"
+        VALID_FROM_TZ="Europe/London"
+        VALID_FROM="2011-01-02 02:02:04" 
+        VALID_TO_TZ="[null]"
+        VALID_TO="[null]"
+        IS_EXTERNAL_REFERENCE="0"
+        STRUCTURE_URL="http://structureUrl"
+        SERVICE_URL="http://serviceUrl"
+        IS_LAST_VERSION="0"
+        MAINTAINER_FK="10011"
+        
+        UUID="annotableArtefact-21"
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user2"
+        LAST_UPDATED="2011-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"
+    />
+    
+        <!-- CONCEPTS -->
+            <!-- -> CONCEPT01 -->
+            
+            <!-- CONCEPT01 -->
+            <TB_CONCEPTS
+                TB_ITEMS="211"
+                CORE_REPRESENTATION_FK="[null]"    
+            />
+            
+            <TB_M_CONCEPTS
+              PLURAL_NAME_FK="[null]"
+              ACRONYM_FK="[null]"
+              DESCRIPTION_SOURCE_FK="[null]"
+              CONTEXT_FK="[null]"
+              DOC_METHOD_FK="[null]"
+              DERIVATION_FK="[null]"
+              LEGAL_ACTS_FK="[null]"
+              SDMX_RELATED_ARTEFACT="[null]"
+              CONCEPT_TYPE_FK="[null]"
+              EXTENDS_FK="[null]"
+              TB_CONCEPTS="211"
+             />            
+        
+            <TB_ITEMS
+                ID="211"
+                PARENT_FK="[null]"
+                ITEM_SCHEME_VERSION_FK="21"
+                ITEM_SCHEME_VERSION_FIRST_FK="21"
+                NAMEABLE_ARTEFACT_FK="211"
+                      
+                UUID="conceptScheme-1-v1-concept-1"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"  
+            />
+        
+            <TB_ANNOTABLE_ARTEFACTS 
+                ID="211"
+                ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+                
+                CODE="CONCEPT01"
+                URI="[null]"
+                URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME01(01.000).CONCEPT01"
+                REPLACED_BY="[null]"
+                REPLACE_TO="[null]"
+                
+                NAME_FK="6"
+                DESCRIPTION_FK="[null]"
+                
+                UUID="annotableArtefact-211"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"
+            />   
+          
+    <!-- ************************************************************************************** -->
+    <!-- CATEGORISATION 1                                                                       -->
+    <!-- *************************************************************************************  -->
+        
+    <TB_CATEGORISATIONS
+        ID="3"
+        MAINTANABLE_ARTEFACT_FK="3"
+        CATEGORY_FK="111"
+        ARTEFACT_CATEGORISED_FK="21"
+        
+        UUID="categorisation-3"
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user2"
+        LAST_UPDATED="2011-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"
+    />        
+
+    <TB_ANNOTABLE_ARTEFACTS 
+        ID="3"
+        ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
+        
+        CODE="cat1"
+        URI="[null]"
+        URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat1(01.000)"
+        REPLACED_BY="[null]"
+        REPLACE_TO="[null]"
+        
+        NAME_FK="7"
+        DESCRIPTION_FK="[null]"
+        
+        VERSION_LOGIC="01.000"
+        FINAL_LOGIC="1"
+        VALID_FROM_TZ="Europe/London"
+        VALID_FROM="2012-02-02 02:02:04" 
+        VALID_TO_TZ="[null]"
+        VALID_TO="[null]"
+        IS_EXTERNAL_REFERENCE="[null]"
+        STRUCTURE_URL="[null]"
+        SERVICE_URL="[null]"
+        IS_LAST_VERSION="1"
+        MAINTAINER_FK="10011"
+        
+        UUID="annotableArtefact-3"
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user2"
+        LAST_UPDATED="2011-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"
+    />
+          
+    <!-- ************************************************************************************** -->
+    <!-- CATEGORISATION 2                                                                       -->
+    <!-- *************************************************************************************  -->
+        
+    <TB_CATEGORISATIONS
+        ID="4"
+        MAINTANABLE_ARTEFACT_FK="4"
+        CATEGORY_FK="111"
+        ARTEFACT_CATEGORISED_FK="21"
+        
+        UUID="categorisation-4"
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user2"
+        LAST_UPDATED="2011-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"
+    />        
+
+    <TB_ANNOTABLE_ARTEFACTS 
+        ID="4"
+        ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
+        
+        CODE="cat2"
+        URI="[null]"
+        URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat2(01.000)"
+        REPLACED_BY="[null]"
+        REPLACE_TO="[null]"
+        
+        NAME_FK="8"
+        DESCRIPTION_FK="[null]"
+        
+        VERSION_LOGIC="01.000"
+        FINAL_LOGIC="0"
+        VALID_FROM_TZ="[null]"
+        VALID_FROM="[null]" 
+        VALID_TO_TZ="[null]"
+        VALID_TO="[null]"
+        IS_EXTERNAL_REFERENCE="[null]"
+        STRUCTURE_URL="[null]"
+        SERVICE_URL="[null]"
+        IS_LAST_VERSION="1"
+        MAINTAINER_FK="10011"
+        
+        UUID="annotableArtefact-4"
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user2"
+        LAST_UPDATED="2011-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"
+    />
+    
+    <!-- ************************************************************************************** -->
+    <!-- CATEGORY SCHEME 5                                                                      -->
+    <!--        - Version 1: internally published                                               -->
+    <!-- *************************************************************************************  -->
+
+    <TB_ITEM_SCHEMES
+        ID="5"
+        UUID="itemScheme-5"
+        VERSION="1"
+    />
+    
+    <!-- **************************************************************************************  -->                
+    <!-- VERSION 1                                                                               -->
+    <!-- **************************************************************************************  -->
+    <TB_ITEM_SCHEMES_VERSIONS
+        ID="51"
+        ITEM_SCHEME_FK="5"
+        IS_PARTIAL="0"
+        MAINTANABLE_ARTEFACT_FK="51"
+        
+        UUID="categoryScheme-5-v1"
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user2"
+        LAST_UPDATED="2011-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"  
+    />
+        
+    <TB_CAT_SCHEMES_VERSIONS
+        TB_ITEM_SCHEMES_VERSIONS="51"
+    />
+    
+    <TB_M_CAT_SCHEMES_VERSIONS
+        TB_CAT_SCHEMES_VERSIONS="51"
+        PROC_STATUS="INTERNALLY_PUBLISHED"
+        
+        PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
+        PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
+        PRODUCTION_VALIDATION_USER="user1"
+        DIFFUSION_VALIDATION_DATE_TZ="Europe/London"
+        DIFFUSION_VALIDATION_DATE="2011-01-02 02:02:03"
+        DIFFUSION_VALIDATION_USER="user2"
+        INTERNAL_PUBLICATION_DATE_TZ="Europe/London"
+        INTERNAL_PUBLICATION_DATE="2011-01-03 03:02:03"
+        INTERNAL_PUBLICATION_USER="user3"
+        EXTERNAL_PUBLICATION_DATE_TZ="[null]"
+        EXTERNAL_PUBLICATION_DATE="[null]"
+        EXTERNAL_PUBLICATION_USER="[null]"
+        IS_EXT_PUBLICATION_FAILED="[null]"
+        EXT_PUBLICATION_FAILED_DATE="[null]"
+    />       
+    
+    <TB_ANNOTABLE_ARTEFACTS 
+        ID="51"
+        ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
+        
+        CODE="CATEGORYSCHEME05"
+        URI="[null]"
+        URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=SDMX01:CATEGORYSCHEME05(01.000)"
+        REPLACED_BY="02.000"
+        REPLACE_TO="[null]"
+        
+        NAME_FK="9"
+        DESCRIPTION_FK="[null]"
+        
+        VERSION_LOGIC="01.000"
+        FINAL_LOGIC="1"
+        VALID_FROM_TZ="[null]"
+        VALID_FROM="[null]" 
+        VALID_TO_TZ="[null]"
+        VALID_TO="[null]"
+        IS_EXTERNAL_REFERENCE="0"
+        STRUCTURE_URL="http://structureUrl"
+        SERVICE_URL="http://serviceUrl"
+        IS_LAST_VERSION="0"
+        MAINTAINER_FK="10011"
+        
+        UUID="annotableArtefact-51"
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user2"
+        LAST_UPDATED="2011-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"
+    />
+    
+        <!-- CATEGORIES -->
+            <!-- -> CATEGORY01 -->
+            
+            <!-- CATEGORY01 -->
+            
+            <TB_M_CATEGORIES
+                TB_CATEGORIES="511"
+            />
+                        
+            <TB_CATEGORIES
+                TB_ITEMS="511"
+            />
+        
+            <TB_ITEMS
+                ID="511"
+                PARENT_FK="[null]"
+                ITEM_SCHEME_VERSION_FK="51"
+                ITEM_SCHEME_VERSION_FIRST_FK="51"
+                NAMEABLE_ARTEFACT_FK="511"
+                      
+                UUID="categoryScheme-5-v1-cat-1"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"  
+            />
+
+            <TB_ANNOTABLE_ARTEFACTS 
+                ID="511"
+                ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+
+                CODE="CATEGORY01"
+                URI="[null]"
+                URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME05(01.000).CATEGORY01"
+                REPLACED_BY="[null]"
+                REPLACE_TO="[null]"
+
+                NAME_FK="4"
+                DESCRIPTION_FK="[null]"
+
+                UUID="annotableArtefact-511"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"
+            /> 
+            
+    <!-- ************************************************************************************** -->
+    <!-- CATEGORISATION 3                                                                       -->
+    <!-- *************************************************************************************  -->
+        
+    <TB_CATEGORISATIONS
+        ID="6"
+        MAINTANABLE_ARTEFACT_FK="6"
+        CATEGORY_FK="111"
+        ARTEFACT_CATEGORISED_FK="1001"
+        
+        UUID="categorisation-6"
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:06"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user2"
+        LAST_UPDATED="2011-01-22 01:02:06"
+        LAST_UPDATED_TZ="Europe/London"
+    />        
+
+    <TB_ANNOTABLE_ARTEFACTS 
+        ID="6"
+        ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
+        
+        CODE="cat3"
+        URI="[null]"
+        URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat3(01.000)"
+        REPLACED_BY="[null]"
+        REPLACE_TO="[null]"
+        
+        NAME_FK="11"
+        DESCRIPTION_FK="[null]"
+        
+        VERSION_LOGIC="01.000"
+        FINAL_LOGIC="1"
+        VALID_FROM_TZ="Europe/London"
+        VALID_FROM="2012-02-02 02:02:04" 
+        VALID_TO_TZ="[null]"
+        VALID_TO="[null]"
+        IS_EXTERNAL_REFERENCE="[null]"
+        STRUCTURE_URL="[null]"
+        SERVICE_URL="[null]"
+        IS_LAST_VERSION="1"
+        MAINTAINER_FK="10011"
+        
+        UUID="annotableArtefact-6"
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user2"
+        LAST_UPDATED="2011-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"
+    />
+               
+            
+    <!-- ************************************************************************************** -->
+    <!-- CONCEPT SCHEME 2                                                                       -->
+    <!--        - Version 1: no final                                                           -->
+    <!-- *************************************************************************************  -->
+
+    <TB_ITEM_SCHEMES
+        ID="7"
+        UUID="itemScheme-7"
+        VERSION="1"
+    />
+    
+    <!-- **************************************************************************************  -->                
+    <!-- VERSION 1                                                                               -->
+    <!-- **************************************************************************************  -->
+    <TB_ITEM_SCHEMES_VERSIONS
+        ID="71"
+        ITEM_SCHEME_FK="7"
+        IS_PARTIAL="0"
+        MAINTANABLE_ARTEFACT_FK="71"
+        
+        UUID="conceptScheme-2-v1"
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user2"
+        LAST_UPDATED="2011-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"  
+    />
+        
+    <TB_CONCEPT_SCHEMES_VERSIONS
+        TB_ITEM_SCHEMES_VERSIONS="71"
+    />
+    
+    <TB_M_CONCEPT_SCHEMES_VERSIONS
+        TB_CONCEPT_SCHEMES_VERSIONS="71"
+        CONCEPT_SCHEME_TYPE="TRANSVERSAL"          
+        RELATED_OPERATION_FK="[null]"
+        PROC_STATUS="DIFFUSION_VALIDATION"
+        
+        PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
+        PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
+        PRODUCTION_VALIDATION_USER="user2"
+        DIFFUSION_VALIDATION_DATE_TZ="Europe/London"
+        DIFFUSION_VALIDATION_DATE="2011-01-01 01:02:03"
+        DIFFUSION_VALIDATION_USER="user3"
+        INTERNAL_PUBLICATION_DATE_TZ="[null]"
+        INTERNAL_PUBLICATION_DATE="[null]"
+        INTERNAL_PUBLICATION_USER="[null]"
+        EXTERNAL_PUBLICATION_DATE_TZ="[null]"
+        EXTERNAL_PUBLICATION_DATE="[null]"
+        EXTERNAL_PUBLICATION_USER="[null]"
+        IS_EXT_PUBLICATION_FAILED="[null]"
+        EXT_PUBLICATION_FAILED_DATE="[null]"
+    />    
+    
+    <TB_ANNOTABLE_ARTEFACTS 
+        ID="71"
+        ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
+        
+        CODE="CONCEPTSCHEME02"
+        URI="[null]"
+        URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME02(01.000)"
+        REPLACED_BY="[null]"
+        REPLACE_TO="[null]"
+        
+        NAME_FK="12"
+        DESCRIPTION_FK="[null]"
+        
+        VERSION_LOGIC="01.000"
+        FINAL_LOGIC="0"
+        VALID_FROM_TZ="[null]"
+        VALID_FROM="[null]" 
+        VALID_TO_TZ="[null]"
+        VALID_TO="[null]"
+        IS_EXTERNAL_REFERENCE="0"
+        STRUCTURE_URL="http://structureUrl"
+        SERVICE_URL="http://serviceUrl"
+        IS_LAST_VERSION="0"
+        MAINTAINER_FK="10011"
+        
+        UUID="annotableArtefact-71"
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user2"
+        LAST_UPDATED="2011-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"
+    />       
+    
+        <!-- CONCEPTS -->
+            <!-- -> CONCEPT01 -->
+            
+            <!-- CONCEPT01 -->
+            <TB_CONCEPTS
+                TB_ITEMS="711"
+                CORE_REPRESENTATION_FK="[null]"    
+            />
+            
+            <TB_M_CONCEPTS
+              PLURAL_NAME_FK="[null]"
+              ACRONYM_FK="[null]"
+              DESCRIPTION_SOURCE_FK="[null]"
+              CONTEXT_FK="[null]"
+              DOC_METHOD_FK="[null]"
+              DERIVATION_FK="[null]"
+              LEGAL_ACTS_FK="[null]"
+              SDMX_RELATED_ARTEFACT="[null]"
+              CONCEPT_TYPE_FK="[null]"
+              EXTENDS_FK="[null]"
+              TB_CONCEPTS="711"
+             />            
+        
+            <TB_ITEMS
+                ID="711"
+                PARENT_FK="[null]"
+                ITEM_SCHEME_VERSION_FK="71"
+                ITEM_SCHEME_VERSION_FIRST_FK="71"
+                NAMEABLE_ARTEFACT_FK="711"
+                      
+                UUID="conceptScheme-2-v1-concept-1"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"  
+            />
+        
+            <TB_ANNOTABLE_ARTEFACTS 
+                ID="711"
+                ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+                
+                CODE="CONCEPT01"
+                URI="[null]"
+                URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME02(01.000).CONCEPT01"
+                REPLACED_BY="[null]"
+                REPLACE_TO="[null]"
+                
+                NAME_FK="14"
+                DESCRIPTION_FK="[null]"
+                
+                UUID="annotableArtefact-711"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"
+            />       
+    
+    <!-- ************************************************************************************** -->
+    <!-- CATEGORISATION 3                                                                       -->
+    <!-- *************************************************************************************  -->
+        
+    <TB_CATEGORISATIONS
+        ID="8"
+        MAINTANABLE_ARTEFACT_FK="8"
+        CATEGORY_FK="111"
+        ARTEFACT_CATEGORISED_FK="71"
+        
+        UUID="categorisation-8"
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:06"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user2"
+        LAST_UPDATED="2011-01-22 01:02:06"
+        LAST_UPDATED_TZ="Europe/London"
+    />        
+
+    <TB_ANNOTABLE_ARTEFACTS 
+        ID="8"
+        ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
+        
+        CODE="cat4"
+        URI="[null]"
+        URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat4(01.000)"
+        REPLACED_BY="[null]"
+        REPLACE_TO="[null]"
+        
+        NAME_FK="13"
+        DESCRIPTION_FK="[null]"
+        
+        VERSION_LOGIC="01.000"
+        FINAL_LOGIC="0"
+        VALID_FROM_TZ="[null]"
+        VALID_FROM="[null]" 
+        VALID_TO_TZ="[null]"
+        VALID_TO="[null]"
+        IS_EXTERNAL_REFERENCE="[null]"
+        STRUCTURE_URL="[null]"
+        SERVICE_URL="[null]"
+        IS_LAST_VERSION="1"
+        MAINTAINER_FK="10011"
+        
+        UUID="annotableArtefact-8"
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user2"
+        LAST_UPDATED="2011-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"
+    />
+    
+    <!-- ************************************************************************************** -->
+    <!-- CATEGORISATION 4                                                                       -->
+    <!-- *************************************************************************************  -->
+        
+    <TB_CATEGORISATIONS
+        ID="9"
+        MAINTANABLE_ARTEFACT_FK="9"
+        CATEGORY_FK="111"
+        ARTEFACT_CATEGORISED_FK="71"
+        
+        UUID="categorisation-9"
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:06"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user2"
+        LAST_UPDATED="2011-01-22 01:02:06"
+        LAST_UPDATED_TZ="Europe/London"
+    />        
+
+    <TB_ANNOTABLE_ARTEFACTS 
+        ID="9"
+        ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
+        
+        CODE="cat5"
+        URI="[null]"
+        URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat5(01.000)"
+        REPLACED_BY="[null]"
+        REPLACE_TO="[null]"
+        
+        NAME_FK="15"
+        DESCRIPTION_FK="[null]"
+        
+        VERSION_LOGIC="01.000"
+        FINAL_LOGIC="0"
+        VALID_FROM_TZ="[null]"
+        VALID_FROM="[null]" 
+        VALID_TO_TZ="[null]"
+        VALID_TO="[null]"
+        IS_EXTERNAL_REFERENCE="[null]"
+        STRUCTURE_URL="[null]"
+        SERVICE_URL="[null]"
+        IS_LAST_VERSION="1"
+        MAINTAINER_FK="10011"
+        
+        UUID="annotableArtefact-9"
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user2"
+        LAST_UPDATED="2011-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"
+    />    
+                        
+    <!-- ************************************************************************************** -->
+    <!-- INTERNATIONAL STRINGS                                                                  -->
+    <!-- *************************************************************************************  -->
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="1"
+        VERSION="1"
+    />  
+    
+    <TB_LOCALISED_STRINGS
+        ID="11"
+        LABEL="Nombre"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="1"
+    />  
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="2"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="21"
+        LABEL="Nombre"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="2"
+    />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="3"
+        VERSION="1"
+    />  
+    
+    <TB_LOCALISED_STRINGS
+        ID="31"
+        LABEL="Nombre"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="3"
+    />  
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="4"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="41"
+        LABEL="Nombre"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="4"
+    />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="5"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="51"
+        LABEL="Nombre"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="5"
+    />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="6"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="61"
+        LABEL="Nombre"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="6"
+    />
+
+    <TB_INTERNATIONAL_STRINGS
+        ID="7"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="71"
+        LABEL="Categoría cat1"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="7"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="72"
+        LABEL="Category cat1"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="7"
+    />             
+
+    <TB_INTERNATIONAL_STRINGS
+        ID="8"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="81"
+        LABEL="Categoría cat2"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="8"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="82"
+        LABEL="Category cat2"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="8"
+    />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="9"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="91"
+        LABEL="Nombre"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="9"
+    />  
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="10"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="101"
+        LABEL="Nombre"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="10"
+    /> 
+    
+  <TB_INTERNATIONAL_STRINGS
+        ID="11"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="111"
+        LABEL="Nombre"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="11"
+    />      
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="12"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="121"
+        LABEL="Nombre"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="12"
+    />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="13"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="131"
+        LABEL="Nombre"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="13"
+    />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="14"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="141"
+        LABEL="Nombre"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="14"
+    />                                    
+
+    <TB_INTERNATIONAL_STRINGS
+        ID="15"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="151"
+        LABEL="Nombre"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="15"
+    />    
+</dataset>

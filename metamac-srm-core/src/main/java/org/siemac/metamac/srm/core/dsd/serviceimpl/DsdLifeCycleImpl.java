@@ -124,6 +124,11 @@ public class DsdLifeCycleImpl extends LifeCycleImpl {
                     .withMessageParameters(getDataStructureDefinitionVersionMetamac(srmResourceVersion).getMaintainableArtefact().getUrn(), procStatusExpecteds).build();
         }
 
+        @Override
+        public Boolean canHaveCategorisations() {
+            return Boolean.TRUE;
+        }
+
         /**********************************************************************
          * PRIVATES
          **********************************************************************/

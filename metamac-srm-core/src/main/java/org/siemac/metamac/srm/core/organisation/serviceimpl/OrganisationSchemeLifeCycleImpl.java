@@ -140,6 +140,11 @@ public class OrganisationSchemeLifeCycleImpl extends LifeCycleImpl {
                     .withMessageParameters(organisationSchemeVersion.getMaintainableArtefact().getUrn(), procStatusExpecteds).build();
         }
 
+        @Override
+        public Boolean canHaveCategorisations() {
+            return Boolean.TRUE;
+        }
+
         private OrganisationSchemeVersionMetamac getOrganisationSchemeVersionMetamac(Object srmResource) {
             return (OrganisationSchemeVersionMetamac) srmResource;
         }

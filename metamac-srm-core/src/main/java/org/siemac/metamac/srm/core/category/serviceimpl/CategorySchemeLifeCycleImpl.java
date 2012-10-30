@@ -139,6 +139,11 @@ public class CategorySchemeLifeCycleImpl extends LifeCycleImpl {
             return MetamacExceptionItemBuilder.metamacExceptionItem().withCommonServiceExceptionType(ServiceExceptionType.LIFE_CYCLE_WRONG_PROC_STATUS)
                     .withMessageParameters(categorySchemeVersion.getMaintainableArtefact().getUrn(), procStatusExpecteds).build();
         }
+        
+        @Override
+        public Boolean canHaveCategorisations() {
+            return Boolean.FALSE;
+        }
 
         private CategorySchemeVersionMetamac getCategorySchemeVersionMetamac(Object srmResource) {
             return (CategorySchemeVersionMetamac) srmResource;

@@ -62,6 +62,16 @@ Application CategoriesMetamac {
     		deleteCategory(String urn) throws MetamacException;
     		"Retrieves categories by category scheme, in tree structure"
     		List<@CategoryMetamac> retrieveCategoriesByCategorySchemeUrn(String categorySchemeUrn) throws MetamacException;
+    		
+    		// Categorisations
+    		"Creates categorisation"
+    		@Categorisation createCategorisation(String categoryUrn, String artefactCategorisedUrn, String maintainerUrn) throws MetamacException;
+    		"Retrieves categorisation by urn"
+    		@Categorisation retrieveCategorisationByUrn(String urn) throws MetamacException;
+    		"Deletes categorisation"
+    		deleteCategorisation(String urn) throws MetamacException;
+    		"Retrieves all categorisations by categorised artefact"
+    		List<@Categorisation> retrieveCategorisationsByArtefact(String urn) throws MetamacException;
 		}
 
 		// ----------------------------------------------------------------

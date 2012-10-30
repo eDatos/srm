@@ -14,11 +14,14 @@ import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.serviceimpl.SrmServiceUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.ValidationUtils;
+import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
+import com.arte.statistic.sdmx.srm.core.category.serviceapi.CategoriesService;
 
-public class LifeCycleImpl implements LifeCycle {
+public abstract class LifeCycleImpl implements LifeCycle {
 
     private static final ProcStatusEnum[] procStatusToSendToProductionValidation = {ProcStatusEnum.DRAFT, ProcStatusEnum.VALIDATION_REJECTED};
     private static final ProcStatusEnum[] procStatusToSendToDiffusionValidation  = {ProcStatusEnum.PRODUCTION_VALIDATION};
@@ -29,6 +32,9 @@ public class LifeCycleImpl implements LifeCycle {
 
     // Due to java restrictions, this must be inialized out of constructor of LifeCycle
     protected LifeCycleCallback           callback                               = null;
+
+    @Autowired
+    private CategoriesService             categoriesService;
 
     public LifeCycleImpl() {
     }
@@ -150,6 +156,14 @@ public class LifeCycleImpl implements LifeCycle {
         srmResourceVersion = callback.updateSrmResource(srmResourceVersion);
         srmResourceVersion = callback.markSrmResourceAsFinal(ctx, srmResourceVersion);
 
+        // Mark categorisations as final
+        if (callback.canHaveCategorisations()) {
+            List<Categorisation> categorisations = categoriesService.retrieveCategorisationsByArtefact(ctx, urn);
+            for (Categorisation categorisation : categorisations) {
+                categoriesService.markCategorisationAsFinal(ctx, categorisation.getMaintainableArtefact().getUrn());
+            }
+        }
+
         return srmResourceVersion;
     }
 
@@ -181,9 +195,17 @@ public class LifeCycleImpl implements LifeCycle {
 
         // Update life cycle metadata to publish externally
         lifeCycle.setProcStatus(targetStatus);
-        lifeCycle.setExternalPublicationDate(new DateTime());
+        lifeCycle.setExternalPublicationDate(callback.getMaintainableArtefact(srmResourceVersion).getValidFrom());
         lifeCycle.setExternalPublicationUser(ctx.getUserId());
         srmResourceVersion = callback.updateSrmResource(srmResourceVersion);
+
+        // Start validity of categorisations
+        if (callback.canHaveCategorisations()) {
+            List<Categorisation> categorisations = categoriesService.retrieveCategorisationsByArtefact(ctx, urn);
+            for (Categorisation categorisation : categorisations) {
+                categoriesService.startCategorisationValidity(ctx, categorisation.getMaintainableArtefact().getUrn());
+            }
+        }
 
         return srmResourceVersion;
     }
@@ -346,5 +368,6 @@ public class LifeCycleImpl implements LifeCycle {
 
         // Other
         public MetamacExceptionItem buildExceptionItemWrongProcStatus(Object srmResourceVersion, String[] procStatusExpecteds);
+        public Boolean canHaveCategorisations();
     }
 }

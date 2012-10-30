@@ -13,6 +13,7 @@ import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.common.LifeCycle;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
+import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
@@ -68,7 +69,7 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
         organisationSchemeVersion.getMaintainableArtefact().setIsExternalReference(Boolean.FALSE);
 
         // Save organisationScheme. If it is an AgencyScheme, call another method to avoid being marked as final in creation
-        VersionPatternEnum versionPattern = VersionPatternEnum.XX_YYY;
+        VersionPatternEnum versionPattern = SrmConstants.VERSION_PATTERN_METAMAC;
         if (OrganisationSchemeTypeEnum.AGENCY_SCHEME.equals(organisationSchemeVersion.getOrganisationSchemeType())) {
             return (OrganisationSchemeVersionMetamac) organisationsService.createAgencySchemeNotFinal(ctx, organisationSchemeVersion, versionPattern);
         } else {

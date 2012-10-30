@@ -165,6 +165,11 @@ public class ConceptSchemeLifeCycleImpl extends LifeCycleImpl {
                     .withMessageParameters(conceptSchemeVersion.getMaintainableArtefact().getUrn(), procStatusExpecteds).build();
         }
 
+        @Override
+        public Boolean canHaveCategorisations() {
+            return Boolean.TRUE;
+        }
+
         private ConceptSchemeVersionMetamac getConceptSchemeVersionMetamac(Object srmResource) {
             return (ConceptSchemeVersionMetamac) srmResource;
         }
