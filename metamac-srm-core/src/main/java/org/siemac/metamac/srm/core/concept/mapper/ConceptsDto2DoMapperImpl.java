@@ -52,8 +52,8 @@ public class ConceptsDto2DoMapperImpl implements ConceptsDto2DoMapper {
             try {
                 target = conceptSchemeVersionMetamacRepository.findById(source.getId());
             } catch (ConceptSchemeVersionMetamacNotFoundException e) {
-                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SEARCH_NOT_FOUND).withMessageParameters(ServiceExceptionParameters.CONCEPT_SCHEME)
-                        .withLoggedLevel(ExceptionLevelEnum.ERROR).build();
+                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SEARCH_BY_ID_NOT_FOUND)
+                        .withMessageParameters(ServiceExceptionParameters.CONCEPT_SCHEME, source.getId()).withLoggedLevel(ExceptionLevelEnum.ERROR).build();
             }
             OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersion());
         }
@@ -82,8 +82,8 @@ public class ConceptsDto2DoMapperImpl implements ConceptsDto2DoMapper {
             try {
                 target = conceptMetamacRepository.findById(source.getId());
             } catch (ConceptMetamacNotFoundException e) {
-                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SEARCH_NOT_FOUND).withMessageParameters(ServiceExceptionParameters.CONCEPT)
-                        .withLoggedLevel(ExceptionLevelEnum.ERROR).build();
+                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SEARCH_BY_ID_NOT_FOUND)
+                        .withMessageParameters(ServiceExceptionParameters.CONCEPT, source.getId()).withLoggedLevel(ExceptionLevelEnum.ERROR).build();
             }
             OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersion());
         }

@@ -32,11 +32,13 @@ public class DataStructureDefinitionDto2DoMapperImpl implements DataStructureDef
     // DATA STRUCTURE DEFINITIONS
     // ------------------------------------------------------------
 
+    @SuppressWarnings("unchecked")
     @Override
     public <U extends Component> U componentDtoToComponent(ComponentDto source) throws MetamacException {
         return (U) dto2DoMapperSdmxSrm.componentDtoToComponent(source);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <U extends ComponentList> U componentListDtoToComponentList(ComponentListDto componentListDto) throws MetamacException {
         return (U) dto2DoMapperSdmxSrm.componentListDtoToComponentList(componentListDto);
@@ -44,24 +46,24 @@ public class DataStructureDefinitionDto2DoMapperImpl implements DataStructureDef
 
     @Override
     public DataStructureDefinitionVersionMetamac dataStructureDefinitionDtoToDataStructureDefinition(DataStructureDefinitionMetamacDto source) throws MetamacException {
-        return dataStructureDefinitionDtoToDataStructureDefinitionPrivate((DataStructureDefinitionDto)source);
+        return dataStructureDefinitionDtoToDataStructureDefinitionPrivate((DataStructureDefinitionDto) source);
     }
-    
+
     @Override
     public DataStructureDefinitionVersionMetamac dataStructureDefinitionDtoToDataStructureDefinition(DataStructureDefinitionExtendDto source) throws MetamacException {
-        
-        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = dataStructureDefinitionDtoToDataStructureDefinitionPrivate((DataStructureDefinitionDto)source);
-        
+
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = dataStructureDefinitionDtoToDataStructureDefinitionPrivate((DataStructureDefinitionDto) source);
+
         // Add Grouping
         for (ComponentListDto componentListDto : source.getGrouping()) {
-            dataStructureDefinitionVersionMetamac.addGrouping(componentListDtoToComponentList(componentListDto)); 
+            dataStructureDefinitionVersionMetamac.addGrouping(componentListDtoToComponentList(componentListDto));
         }
-        
+
         return dataStructureDefinitionVersionMetamac;
     }
-    
+
     /**************************************************************************
-     *                  PRIVATE
+     * PRIVATE
      **************************************************************************/
 
     private DataStructureDefinitionVersionMetamac dataStructureDefinitionDtoToDataStructureDefinitionPrivate(DataStructureDefinitionDto source) throws MetamacException {
@@ -77,8 +79,8 @@ public class DataStructureDefinitionDto2DoMapperImpl implements DataStructureDef
             try {
                 target = dataStructureDefinitionVersionMetamacRepository.findById(source.getId());
             } catch (DataStructureDefinitionVersionMetamacNotFoundException e) {
-                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SEARCH_NOT_FOUND)
-                        .withMessageParameters(ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION).withLoggedLevel(ExceptionLevelEnum.ERROR).build();
+                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SEARCH_BY_ID_NOT_FOUND)
+                        .withMessageParameters(ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION, source.getId()).withLoggedLevel(ExceptionLevelEnum.ERROR).build();
             }
             OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersion());
         }

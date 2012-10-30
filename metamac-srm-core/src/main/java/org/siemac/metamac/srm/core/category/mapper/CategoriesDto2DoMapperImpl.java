@@ -46,8 +46,8 @@ public class CategoriesDto2DoMapperImpl implements CategoriesDto2DoMapper {
             try {
                 target = categorySchemeVersionMetamacRepository.findById(source.getId());
             } catch (CategorySchemeVersionMetamacNotFoundException e) {
-                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SEARCH_NOT_FOUND).withMessageParameters(ServiceExceptionParameters.CATEGORY_SCHEME)
-                        .withLoggedLevel(ExceptionLevelEnum.ERROR).build();
+                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SEARCH_BY_ID_NOT_FOUND)
+                        .withMessageParameters(ServiceExceptionParameters.CATEGORY_SCHEME, source.getId()).withLoggedLevel(ExceptionLevelEnum.ERROR).build();
             }
             OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersion());
         }
@@ -75,8 +75,8 @@ public class CategoriesDto2DoMapperImpl implements CategoriesDto2DoMapper {
             try {
                 target = categoryMetamacRepository.findById(source.getId());
             } catch (CategoryMetamacNotFoundException e) {
-                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SEARCH_NOT_FOUND).withMessageParameters(ServiceExceptionParameters.CATEGORY)
-                        .withLoggedLevel(ExceptionLevelEnum.ERROR).build();
+                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SEARCH_BY_ID_NOT_FOUND)
+                        .withMessageParameters(ServiceExceptionParameters.CATEGORY, source.getId()).withLoggedLevel(ExceptionLevelEnum.ERROR).build();
             }
             OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersion());
         }

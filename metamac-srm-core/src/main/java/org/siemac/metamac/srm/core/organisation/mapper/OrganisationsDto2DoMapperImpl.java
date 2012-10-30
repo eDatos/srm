@@ -47,8 +47,8 @@ public class OrganisationsDto2DoMapperImpl implements OrganisationsDto2DoMapper 
             try {
                 target = getOrganisationSchemeVersionMetamacRepository().findById(source.getId());
             } catch (OrganisationSchemeVersionMetamacNotFoundException e) {
-                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SEARCH_NOT_FOUND)
-                        .withMessageParameters(ServiceExceptionParameters.ORGANISATION_SCHEME).withLoggedLevel(ExceptionLevelEnum.ERROR).build();
+                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SEARCH_BY_ID_NOT_FOUND)
+                        .withMessageParameters(ServiceExceptionParameters.ORGANISATION_SCHEME, source.getId()).withLoggedLevel(ExceptionLevelEnum.ERROR).build();
             }
             OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersion());
         }
@@ -77,8 +77,8 @@ public class OrganisationsDto2DoMapperImpl implements OrganisationsDto2DoMapper 
             try {
                 target = organisationMetamacRepository.findById(source.getId());
             } catch (OrganisationMetamacNotFoundException e) {
-                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SEARCH_NOT_FOUND).withMessageParameters(ServiceExceptionParameters.ORGANISATION)
-                        .withLoggedLevel(ExceptionLevelEnum.ERROR).build();
+                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SEARCH_BY_ID_NOT_FOUND)
+                        .withMessageParameters(ServiceExceptionParameters.ORGANISATION, source.getId()).withLoggedLevel(ExceptionLevelEnum.ERROR).build();
             }
             OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersion());
         }
