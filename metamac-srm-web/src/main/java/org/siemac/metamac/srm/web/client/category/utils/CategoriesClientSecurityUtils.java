@@ -55,15 +55,15 @@ public class CategoriesClientSecurityUtils {
     // CATEGORIES
 
     public static boolean canCreateCategory(ProcStatusEnum procStatus) {
-        return SharedItemsSecurityUtils.canModifiyItemFromItemScheme(MetamacSrmWeb.getCurrentUser(), procStatus);
+        return SharedItemsSecurityUtils.canModifyItemFromItemScheme(MetamacSrmWeb.getCurrentUser(), procStatus);
     }
 
     public static boolean canUpdateCategory(ProcStatusEnum procStatus) {
-        return SharedItemsSecurityUtils.canModifiyItemFromItemScheme(MetamacSrmWeb.getCurrentUser(), procStatus);
+        return SharedItemsSecurityUtils.canModifyItemFromItemScheme(MetamacSrmWeb.getCurrentUser(), procStatus);
     }
 
     public static boolean canDeleteCategory(ProcStatusEnum procStatus) {
-        return SharedItemsSecurityUtils.canModifiyItemFromItemScheme(MetamacSrmWeb.getCurrentUser(), procStatus);
+        return SharedItemsSecurityUtils.canModifyItemFromItemScheme(MetamacSrmWeb.getCurrentUser(), procStatus);
     }
 
 }
