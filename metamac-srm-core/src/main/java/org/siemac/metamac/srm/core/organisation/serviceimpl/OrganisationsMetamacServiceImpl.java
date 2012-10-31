@@ -27,7 +27,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.enume.domain.VersionPatternEnum;
 import com.arte.statistic.sdmx.srm.core.common.error.ServiceExceptionParameters;
-import com.arte.statistic.sdmx.srm.core.common.service.utils.shared.SdmxVersionUtil;
+import com.arte.statistic.sdmx.srm.core.common.service.utils.shared.SdmxVersionUtils;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.organisation.serviceapi.OrganisationsService;
@@ -84,7 +84,7 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
         // OrganisationsService checks organisationScheme is not final (Schemes cannot be updated when procStatus is INTERNALLY_PUBLISHED or EXTERNALLY_PUBLISHED)
 
         // Check type modification: type can only be modified when is in initial version and when has no children (this last requisite is checked in SDMX service)
-        if (!SdmxVersionUtil.isInitialVersion(organisationSchemeVersion.getMaintainableArtefact().getVersionLogic())) {
+        if (!SdmxVersionUtils.isInitialVersion(organisationSchemeVersion.getMaintainableArtefact().getVersionLogic())) {
             OrganisationSchemeVersionMetamac previousVersion = (OrganisationSchemeVersionMetamac) itemSchemeVersionRepository.findByVersion(organisationSchemeVersion.getItemScheme().getId(),
                     organisationSchemeVersion.getMaintainableArtefact().getReplaceTo());
             if (!ObjectUtils.equals(previousVersion.getOrganisationSchemeType(), organisationSchemeVersion.getOrganisationSchemeType())) {

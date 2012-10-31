@@ -46,7 +46,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.arte.statistic.sdmx.srm.core.base.serviceapi.BaseService;
 import com.arte.statistic.sdmx.srm.core.criteria.DataStructureDefinitionCriteriaPropertyEnum;
 import com.arte.statistic.sdmx.srm.core.facade.serviceapi.utils.SdmxResources;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
@@ -73,9 +72,6 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
 
     // @Autowired
     // private DsdsMetamacService dsdsMetamacService;
-
-    @Autowired
-    protected BaseService          baseService;
 
     @Autowired
     @Qualifier("jaxb2MarshallerWithValidation")
