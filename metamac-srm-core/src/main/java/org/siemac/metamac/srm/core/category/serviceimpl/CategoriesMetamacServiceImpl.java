@@ -162,14 +162,14 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
     public CategorySchemeVersionMetamac endCategorySchemeValidity(ServiceContext ctx, String urn) throws MetamacException {
 
         // Validation
-        CategoriesMetamacInvocationValidator.checkEndCategorySchemeValidity(urn, null);
+        CategoriesMetamacInvocationValidator.checkEndCategorySchemeValidity(urn, null, null);
 
         // Retrieve version in specific procStatus
         CategorySchemeVersionMetamac categorySchemeVersion = getCategorySchemeVersionMetamacRepository().retrieveCategorySchemeVersionByProcStatus(urn,
                 new ProcStatusEnum[]{ProcStatusEnum.EXTERNALLY_PUBLISHED});
 
         // End validity
-        categorySchemeVersion = (CategorySchemeVersionMetamac) categoriesService.endCategorySchemeValidity(ctx, urn);
+        categorySchemeVersion = (CategorySchemeVersionMetamac) categoriesService.endCategorySchemeValidity(ctx, urn, null);
 
         return categorySchemeVersion;
     }
@@ -261,7 +261,7 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
             categorisation = categoriesService.markCategorisationAsFinal(ctx, categorisation.getMaintainableArtefact().getUrn());
         }
         if (artefact.getValidFrom() != null) {
-            categorisation = categoriesService.startCategorisationValidity(ctx, categorisation.getMaintainableArtefact().getUrn());
+            categorisation = categoriesService.startCategorisationValidity(ctx, categorisation.getMaintainableArtefact().getUrn(), null);
         }
         return categorisation;
     }

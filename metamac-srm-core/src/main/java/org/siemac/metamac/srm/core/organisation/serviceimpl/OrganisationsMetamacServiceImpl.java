@@ -175,14 +175,14 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
     public OrganisationSchemeVersionMetamac endOrganisationSchemeValidity(ServiceContext ctx, String urn) throws MetamacException {
 
         // Validation
-        OrganisationsMetamacInvocationValidator.checkEndOrganisationSchemeValidity(urn, null);
+        OrganisationsMetamacInvocationValidator.checkEndOrganisationSchemeValidity(urn, null, null);
 
         // Retrieve version in specific procStatus
         OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationSchemeVersionMetamacRepository().retrieveOrganisationSchemeVersionByProcStatus(urn,
                 new ProcStatusEnum[]{ProcStatusEnum.EXTERNALLY_PUBLISHED});
 
         // End validity
-        organisationSchemeVersion = (OrganisationSchemeVersionMetamac) organisationsService.endOrganisationSchemeValidity(ctx, urn);
+        organisationSchemeVersion = (OrganisationSchemeVersionMetamac) organisationsService.endOrganisationSchemeValidity(ctx, urn, null);
 
         return organisationSchemeVersion;
     }

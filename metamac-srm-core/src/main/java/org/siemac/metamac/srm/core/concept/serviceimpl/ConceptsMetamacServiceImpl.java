@@ -209,14 +209,14 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     public ConceptSchemeVersionMetamac endConceptSchemeValidity(ServiceContext ctx, String urn) throws MetamacException {
 
         // Validation
-        ConceptsMetamacInvocationValidator.checkEndConceptSchemeValidity(urn, null);
+        ConceptsMetamacInvocationValidator.checkEndConceptSchemeValidity(urn, null, null);
 
         // Retrieve version in specific procStatus
         ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptSchemeVersionMetamacRepository().retrieveConceptSchemeVersionByProcStatus(urn,
                 new ProcStatusEnum[]{ProcStatusEnum.EXTERNALLY_PUBLISHED});
 
         // End validity
-        conceptSchemeVersion = (ConceptSchemeVersionMetamac) conceptsService.endConceptSchemeValidity(ctx, urn);
+        conceptSchemeVersion = (ConceptSchemeVersionMetamac) conceptsService.endConceptSchemeValidity(ctx, urn, null);
 
         return conceptSchemeVersion;
     }

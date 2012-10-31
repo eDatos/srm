@@ -181,13 +181,13 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
     public DataStructureDefinitionVersionMetamac endDataStructureDefinitionValidity(ServiceContext ctx, String urn) throws MetamacException {
 
         // Validation
-        DsdsMetamacInvocationValidator.checkEndDataStructureDefinitionValidity(urn, null);
+        DsdsMetamacInvocationValidator.checkEndDataStructureDefinitionValidity(urn, null, null);
 
         // Retrieve version in specific procStatus
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = retrieveDataStructureDefinitionVersionByProcStatus(ctx, urn, ProcStatusEnum.EXTERNALLY_PUBLISHED);
 
         // End validity
-        dataStructureDefinitionVersionMetamac = (DataStructureDefinitionVersionMetamac) dataStructureDefinitionService.endDataStructureDefinitionValidity(ctx, urn);
+        dataStructureDefinitionVersionMetamac = (DataStructureDefinitionVersionMetamac) dataStructureDefinitionService.endDataStructureDefinitionValidity(ctx, urn, null);
 
         return dataStructureDefinitionVersionMetamac;
     }

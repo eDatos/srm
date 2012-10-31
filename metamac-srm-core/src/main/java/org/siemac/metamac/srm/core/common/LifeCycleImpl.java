@@ -203,7 +203,7 @@ public abstract class LifeCycleImpl implements LifeCycle {
         if (callback.canHaveCategorisations()) {
             List<Categorisation> categorisations = categoriesService.retrieveCategorisationsByArtefact(ctx, urn);
             for (Categorisation categorisation : categorisations) {
-                categoriesService.startCategorisationValidity(ctx, categorisation.getMaintainableArtefact().getUrn());
+                categoriesService.startCategorisationValidity(ctx, categorisation.getMaintainableArtefact().getUrn(), null);
             }
         }
 
