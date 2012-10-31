@@ -1395,9 +1395,8 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
             assertEquals(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
-            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
-            assertEquals(ServiceExceptionParameters.ITEM, e.getExceptionItems().get(0).getMessageParameters()[0]);
-            assertEquals(NOT_EXISTS, e.getExceptionItems().get(0).getMessageParameters()[1]);
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(NOT_EXISTS, e.getExceptionItems().get(0).getMessageParameters()[0]);
         }
     }
 
