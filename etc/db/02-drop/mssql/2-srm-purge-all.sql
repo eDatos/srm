@@ -1,39 +1,11 @@
-/********************************************************
- COPYRIGHTS http://www.ranjithk.com
-*********************************************************/  
-CREATE PROCEDURE CleanUpSchema
-(
-  @SchemaName varchar(100)
- ,@WorkTest char(1) = 'w'  -- use 'w' to work and 't' to print
-)
-AS
-/*-----------------------------------------------------------------------------------------
-  
-  Author : Ranjith Kumar S
-  Date:    31/01/10
-  
-  Description: It drop all the objects in a schema and then the schema itself
-  
-  Limitations:
-   
-    1. If a table has a PK with XML or a Spatial Index then it wont work 
-       (workaround: drop that table manually and re run it)
-    2. If the schema is referred by a XML Schema collection then it wont work
-
-If it is helpful, Please send your comments ranjith_842@hotmail.com or visit http://www.ranjithk.com
-
-USE:
-
-EXEC CleanUpSchema 'MySchema', 't'        -- debug
-GO
-EXEC CleanupSchema 'MySchema', 'w'        -- work for me
-
- 
--------------------------------------------------------------------------------------------*/
-BEGIN    
 
 declare @SQL varchar(4000)
 declare @msg varchar(500)
+
+declare @WorkTest varchar(500)
+declare @SchemaName varchar(500)
+set @WorkTest = 'w'
+set @SchemaName = 'mtm_srm_test'
  
 IF OBJECT_ID('tempdb..#dropcode') IS NOT NULL DROP TABLE #dropcode
 CREATE TABLE #dropcode
@@ -117,14 +89,6 @@ END
   
 CLOSE statement_cursor
 DEALLOCATE statement_cursor
-  
-IF @WorkTest = 't' PRINT ('DROP SCHEMA '+@SchemaName)
-ELSE
- BEGIN
-   PRINT ('DROP SCHEMA '+@SchemaName)
-   EXEC ('DROP SCHEMA '+@SchemaName)
- END  
  
-PRINT '------- ALL - DONE -------'    
-END
+PRINT '------- ALL - DONE -------'   
 
