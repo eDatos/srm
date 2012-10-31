@@ -11,6 +11,8 @@ import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
+import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
+import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 
 @org.springframework.stereotype.Component("categoriesDo2DtoMapper")
@@ -68,6 +70,16 @@ public class CategoriesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements 
             targets.add(target);
         }
         return targets;
+    }
+
+    @Override
+    public CategorisationDto categorisationDoToDto(Categorisation source) {
+        return do2DtoMapperSdmxSrm.categorisationDoToDto(source);
+    }
+
+    @Override
+    public List<CategorisationDto> categorisationDoListToDtoList(List<Categorisation> sources) {
+        return do2DtoMapperSdmxSrm.categorisationsDoToDto(sources);
     }
 
     private ItemHierarchyDto categoryMetamacDoToItemHierarchyDto(CategoryMetamac categoryMetamac) {

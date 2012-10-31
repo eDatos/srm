@@ -206,7 +206,7 @@ public class SharedConceptsSecurityUtils extends SharedItemsSecurityUtils {
 
     private static boolean canModifyConceptFromConceptScheme(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode) {
         if (isNonOperationConceptSchemeType(type)) {
-            return canModifiyItemFromItemScheme(metamacPrincipal, procStatus);
+            return canModifyItemFromItemScheme(metamacPrincipal, procStatus);
         } else if (isOperationConceptSchemeType(type)) {
             if (ProcStatusEnum.DRAFT.equals(procStatus)) {
                 return isAnySrmRole(metamacPrincipal)

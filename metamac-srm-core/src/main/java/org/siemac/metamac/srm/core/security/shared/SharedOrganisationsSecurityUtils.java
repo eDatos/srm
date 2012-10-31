@@ -74,7 +74,7 @@ public class SharedOrganisationsSecurityUtils extends SharedItemsSecurityUtils {
         if (OrganisationSchemeTypeEnum.AGENCY_SCHEME.equals(type) && (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(procStatus) || ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(procStatus))) {
             return isSrmRoleAllowed(metamacPrincipal, JEFE_NORMALIZACION);
         } else {
-            return canModifiyItemFromItemScheme(metamacPrincipal, procStatus);
+            return canModifyItemFromItemScheme(metamacPrincipal, procStatus);
         }
     }
 

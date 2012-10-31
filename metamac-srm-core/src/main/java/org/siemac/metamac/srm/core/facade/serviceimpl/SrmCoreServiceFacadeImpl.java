@@ -66,11 +66,13 @@ import org.springframework.stereotype.Service;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Component;
 import com.arte.statistic.sdmx.srm.core.base.domain.ComponentList;
+import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
 import com.arte.statistic.sdmx.srm.core.structure.domain.AttributeDescriptor;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DataStructureDefinitionVersion;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DimensionDescriptor;
 import com.arte.statistic.sdmx.srm.core.structure.domain.GroupDimensionDescriptor;
 import com.arte.statistic.sdmx.srm.core.structure.domain.MeasureDescriptor;
+import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionExtendDto;
@@ -1180,7 +1182,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public MetamacCriteriaResult<RelatedResourceDto> findConceptsAsRoleByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
         // Security
-        ItemsSecurityUtils.canFindItemsByCondition(ctx);
+        ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
 
         // Transform
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
@@ -1523,7 +1525,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public CategoryMetamacDto retrieveCategoryByUrn(ServiceContext ctx, String urn) throws MetamacException {
         // Security
-        ItemsSecurityUtils.canRetrieveItemByUrn(ctx);
+        ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
 
         // Retrieve
         CategoryMetamac categoryMetamac = getCategoriesMetamacService().retrieveCategoryByUrn(ctx, urn);
@@ -1547,7 +1549,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public List<ItemHierarchyDto> retrieveCategoriesByCategorySchemeUrn(ServiceContext ctx, String categorySchemeUrn) throws MetamacException {
         // Security
-        ItemsSecurityUtils.canRetrieveItemsByItemSchemeUrn(ctx);
+        ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
 
         // Retrieve
         List<CategoryMetamac> categories = getCategoriesMetamacService().retrieveCategoriesByCategorySchemeUrn(ctx, categorySchemeUrn);
@@ -1560,7 +1562,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public MetamacCriteriaResult<CategoryMetamacDto> findCategoriesByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
         // Security
-        ItemsSecurityUtils.canFindItemsByCondition(ctx);
+        ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
 
         // Transform
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getCategoryMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
@@ -1572,6 +1574,55 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         MetamacCriteriaResult<CategoryMetamacDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultCategory(result, sculptorCriteria.getPageSize());
 
         return metamacCriteriaResult;
+    }
+
+    @Override
+    public CategorisationDto createCategorisation(ServiceContext ctx, String categoryUrn, String artefactCategorisedUrn, String maintainerUrn) throws MetamacException {
+        // TODO security
+
+        // Create
+        Categorisation categorisation = getCategoriesMetamacService().createCategorisation(ctx, categoryUrn, artefactCategorisedUrn, maintainerUrn);
+
+        // Transform
+        CategorisationDto categorisationDto = categoriesDo2DtoMapper.categorisationDoToDto(categorisation);
+        return categorisationDto;
+    }
+
+    @Override
+    public CategorisationDto retrieveCategorisationByUrn(ServiceContext ctx, String urn) throws MetamacException {
+
+        // Security
+        ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
+
+        // Retrieve
+        Categorisation categorisation = getCategoriesMetamacService().retrieveCategorisationByUrn(ctx, urn);
+
+        // Transform
+        CategorisationDto categorisationDto = categoriesDo2DtoMapper.categorisationDoToDto(categorisation);
+        return categorisationDto;
+    }
+
+    @Override
+    public void deleteCategorisation(ServiceContext ctx, String urn) throws MetamacException {
+
+        // TODO security
+
+        // Delete
+        getCategoriesMetamacService().deleteCategorisation(ctx, urn);
+    }
+
+    @Override
+    public List<CategorisationDto> retrieveCategorisationsByArtefact(ServiceContext ctx, String urn) throws MetamacException {
+
+        // Security
+        ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
+
+        // Retrieve
+        List<Categorisation> categorisations = getCategoriesMetamacService().retrieveCategorisationsByArtefact(ctx, urn);
+
+        // Transform
+        List<CategorisationDto> categorisationsDto = categoriesDo2DtoMapper.categorisationDoListToDtoList(categorisations);
+        return categorisationsDto;
     }
 
     /**************************************************************************

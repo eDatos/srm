@@ -5,6 +5,7 @@ import "classpath:/btdesign/statistic-sdmx-v2_1-domain-dtos-common.btdesign"
 import "classpath:/btdesign/statistic-sdmx-v2_1-domain-enums.btdesign"
 import "classpath:/btdesign/statistic-sdmx-v2_1-domain-dtos-concepts.btdesign"
 import "classpath:/btdesign/statistic-sdmx-v2_1-domain-enums-concept.btdesign"
+import "classpath:/btdesign/statistic-sdmx-v2_1-domain-dtos-categories.btdesign"
 
 import "classpath:/btdesign/metamac-core-common-dtos.btdesign"
 import "classpath:/btdesign/model-statistic-sdmx-v2_1-transformation.btdesign"
@@ -423,7 +424,17 @@ Application SrmFacadeCore {
 			"Deletes category"
             deleteCategory(String urn) throws MetamacException;
     		"Retrieves categories by category scheme, in tree structure"
-    		List<@ItemHierarchyDto> retrieveCategoriesByCategorySchemeUrn(String categorySchemeUrn) throws MetamacException;       		
+    		List<@ItemHierarchyDto> retrieveCategoriesByCategorySchemeUrn(String categorySchemeUrn) throws MetamacException;
+    		
+    		// Categorisations
+    		"Creates categorisation"
+    		@CategorisationDto createCategorisation(String categoryUrn, String artefactCategorisedUrn, String maintainerUrn) throws MetamacException;
+    		"Retrieves categorisation by urn"
+    		@CategorisationDto retrieveCategorisationByUrn(String urn) throws MetamacException;
+    		"Deletes categorisation"
+    		deleteCategorisation(String urn) throws MetamacException;
+    		"Retrieves all categorisations by categorised artefact"
+    		List<@CategorisationDto> retrieveCategorisationsByArtefact(String urn) throws MetamacException;
     	}
 /*    	
     	Service ImportServiceFacade {

@@ -100,39 +100,26 @@ public class ItemsSecurityUtils extends BaseSecurityUtils {
     //
 
     public static void canCreateItem(ServiceContext ctx, ProcStatusEnum procStatus) throws MetamacException {
-        if (!SharedItemsSecurityUtils.canModifiyItemFromItemScheme(getMetamacPrincipal(ctx), procStatus)) {
+        if (!SharedItemsSecurityUtils.canModifyItemFromItemScheme(getMetamacPrincipal(ctx), procStatus)) {
             throw new MetamacException(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED, ctx.getUserId());
         }
     }
 
     public static void canUpdateItem(ServiceContext ctx, ProcStatusEnum procStatus) throws MetamacException {
-        if (!SharedItemsSecurityUtils.canModifiyItemFromItemScheme(getMetamacPrincipal(ctx), procStatus)) {
-            throw new MetamacException(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED, ctx.getUserId());
-        }
-    }
-
-    public static void canRetrieveItemByUrn(ServiceContext ctx) throws MetamacException {
-        if (!SharedItemsSecurityUtils.canRetrieveOrFindResource(getMetamacPrincipal(ctx))) {
+        if (!SharedItemsSecurityUtils.canModifyItemFromItemScheme(getMetamacPrincipal(ctx), procStatus)) {
             throw new MetamacException(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED, ctx.getUserId());
         }
     }
 
     public static void canDeleteItem(ServiceContext ctx, ProcStatusEnum procStatus) throws MetamacException {
-        if (!SharedItemsSecurityUtils.canModifiyItemFromItemScheme(getMetamacPrincipal(ctx), procStatus)) {
+        if (!SharedItemsSecurityUtils.canModifyItemFromItemScheme(getMetamacPrincipal(ctx), procStatus)) {
             throw new MetamacException(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED, ctx.getUserId());
         }
     }
 
-    public static void canRetrieveItemsByItemSchemeUrn(ServiceContext ctx) throws MetamacException {
+    public static void canRetrieveOrFindResource(ServiceContext ctx) throws MetamacException {
         if (!SharedItemsSecurityUtils.canRetrieveOrFindResource(getMetamacPrincipal(ctx))) {
             throw new MetamacException(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED, ctx.getUserId());
         }
     }
-
-    public static void canFindItemsByCondition(ServiceContext ctx) throws MetamacException {
-        if (!SharedItemsSecurityUtils.canRetrieveOrFindResource(getMetamacPrincipal(ctx))) {
-            throw new MetamacException(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED, ctx.getUserId());
-        }
-    }
-
 }
