@@ -11,6 +11,7 @@
         ID="100"
         UUID="itemScheme-100"
         VERSION="1"
+        VERSION_PATTERN="XX_YYY"
     />
     
     <!-- **************************************************************************************  -->                
@@ -446,6 +447,7 @@
         ID="1"
         UUID="structure-1"
         VERSION="1"
+        VERSION_PATTERN="XX_YYY"
     />
     
     <TB_STRUCTURES_VERSIONS
@@ -513,6 +515,7 @@
         ID="1"
         UUID="structure-2"
         VERSION="1"
+        VERSION_PATTERN="XX_YYY"
     />
     
     <TB_STRUCTURES_VERSIONS
