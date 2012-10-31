@@ -176,10 +176,19 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
         assertNotNull(dataStructureDefinitionVersionMetamacCreated);
     }
 
+    @Test
+    public void testVersioningDataStructureDefinitionErrorAlreadyExistsDraft() throws Exception {
+        // TODO Test dsd
+    }
+
+    @Test
+    public void testVersioningDataStructureDefinitionErrorNotPublished() throws Exception {
+        // TODO Test dsd
+    }
+
     @Override
     public void testImportDataStructureDefinition() throws Exception {
         // TODO Test dsd
-
     }
 
     @Test
@@ -215,8 +224,8 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
                 TypeComponentList.DIMENSION_DESCRIPTOR);
 
         Component timeDim = DataStructureDefinitionDoMocks.createTimeDimension();
-        Component timeDimCreated = dsdsMetamacService.saveComponentForDataStructureDefinition(getServiceContext(), dataStructureDefinitionVersionMetamac.getMaintainableArtefact().getUrn(), timeDim,
-                TypeComponentList.DIMENSION_DESCRIPTOR);
+        /* Component timeDimCreated = */dsdsMetamacService.saveComponentForDataStructureDefinition(getServiceContext(), dataStructureDefinitionVersionMetamac.getMaintainableArtefact().getUrn(),
+                timeDim, TypeComponentList.DIMENSION_DESCRIPTOR);
 
         // Create GroupDimension Descriptor
         ComponentList groupDescriptor = DataStructureDefinitionDoMocks.createGroupDimensionDescriptor((DimensionComponent) measureDimCreated);
@@ -225,12 +234,12 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
 
         // Create Attribute Descriptor and components
         Component dataAttribute = DataStructureDefinitionDoMocks.createDataAttribute((GroupDimensionDescriptor) groupDescriptorCreated, (DimensionComponent) dimCreated);
-        Component dataAttributeCreated = dsdsMetamacService.saveComponentForDataStructureDefinition(getServiceContext(), dataStructureDefinitionVersionMetamac.getMaintainableArtefact().getUrn(),
+        /* Component dataAttributeCreated = */dsdsMetamacService.saveComponentForDataStructureDefinition(getServiceContext(), dataStructureDefinitionVersionMetamac.getMaintainableArtefact().getUrn(),
                 dataAttribute, TypeComponentList.ATTRIBUTE_DESCRIPTOR);
 
         // Create Measure Descriptor and component
         Component primaryMeasure = DataStructureDefinitionDoMocks.createPrimaryMeasure();
-        Component componentCreated = dsdsMetamacService.saveComponentForDataStructureDefinition(getServiceContext(), dataStructureDefinitionVersionMetamac.getMaintainableArtefact().getUrn(),
+        /* Component componentCreated = */dsdsMetamacService.saveComponentForDataStructureDefinition(getServiceContext(), dataStructureDefinitionVersionMetamac.getMaintainableArtefact().getUrn(),
                 primaryMeasure, TypeComponentList.MEASURE_DESCRIPTOR);
 
         return dataStructureDefinitionVersionMetamac;

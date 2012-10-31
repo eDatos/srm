@@ -25,6 +25,8 @@ import org.springframework.stereotype.Service;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Component;
 import com.arte.statistic.sdmx.srm.core.base.domain.ComponentList;
+import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersion;
+import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersionRepository;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DataStructureDefinitionVersion;
 import com.arte.statistic.sdmx.srm.core.structure.serviceapi.DataStructureDefinitionService;
 import com.arte.statistic.sdmx.srm.core.structure.serviceimpl.utils.StructureDoCopyUtils.StructureCopyCallback;
@@ -47,6 +49,9 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
     @Autowired
     @Qualifier("structureCopyCallbackMetamac")
     private StructureCopyCallback          structureCopyCallback;
+
+    @Autowired
+    private StructureVersionRepository     structureVersionRepository;
 
     public DsdsMetamacServiceImpl() {
     }
@@ -158,7 +163,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
     public DataStructureDefinitionVersionMetamac versioningDataStructureDefinition(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
         // Validation
         DsdsMetamacInvocationValidator.checkVersioningDataStructureDefinition(urnToCopy, versionType, null, null);
-        // Validations of scheme final, ... are done in sdmx module
+        checkVersioningDataStructureDefinitionIsSupported(ctx, urnToCopy);
 
         // Versioning
         return (DataStructureDefinitionVersionMetamac) dataStructureDefinitionService.versioningDataStructureDefinition(ctx, urnToCopy, versionType, structureCopyCallback);
@@ -236,5 +241,22 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         List<DataStructureDefinitionVersionMetamac> dataStructureDefinitionVersionsMetamac = dataStructureDefinitionVersionsToMetamac(source.getValues());
         return new PagedResult<DataStructureDefinitionVersionMetamac>(dataStructureDefinitionVersionsMetamac, source.getStartRow(), source.getRowCount(), source.getPageSize(), source.getTotalRows(),
                 source.getAdditionalResultRows());
+    }
+
+    private void checkVersioningDataStructureDefinitionIsSupported(ServiceContext ctx, String urnToCopy) throws MetamacException {
+
+        // Retrieve version to copy and check it is final
+        DataStructureDefinitionVersion dataStructureDefinitionVersionToCopy = retrieveDataStructureDefinitionByUrn(ctx, urnToCopy);
+        if (!dataStructureDefinitionVersionToCopy.getMaintainableArtefact().getFinalLogic()) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.MAINTAINABLE_ARTEFACT_VERSIONING_NOT_SUPPORTED)
+                    .withMessageParameters(dataStructureDefinitionVersionToCopy.getMaintainableArtefact().getUrn()).build();
+        }
+
+        // Check does not exist any version 'no final'
+        StructureVersion dataStructureVersionNoFinal = structureVersionRepository.findStructureVersionFinal(dataStructureDefinitionVersionToCopy.getStructure().getId());
+        if (dataStructureVersionNoFinal != null) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.MAINTAINABLE_ARTEFACT_VERSIONING_NOT_SUPPORTED)
+                    .withMessageParameters(dataStructureVersionNoFinal.getMaintainableArtefact().getUrn()).build();
+        }
     }
 }

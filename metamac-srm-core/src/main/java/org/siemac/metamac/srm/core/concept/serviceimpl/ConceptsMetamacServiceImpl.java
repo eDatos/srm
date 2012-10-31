@@ -177,14 +177,14 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         // Note: ConceptsService checks conceptScheme isn't final and other conditions
         conceptsService.deleteConceptScheme(ctx, urn);
     }
-
+    
     @Override
     public ConceptSchemeVersionMetamac versioningConceptScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
 
         // Validation
         ConceptsMetamacInvocationValidator.checkVersioningConceptScheme(urnToCopy, versionType, null, null);
-        // Validations of scheme final, ... are done in sdmx module
-
+        checkVersioningConceptSchemeIsSupported(ctx, urnToCopy);
+        
         // Versioning
         ConceptSchemeVersionMetamac conceptSchemeNewVersion = (ConceptSchemeVersionMetamac) conceptsService.versioningConceptScheme(ctx, urnToCopy, versionType, conceptCopyCallback);
 
@@ -575,5 +575,21 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     private PagedResult<ConceptMetamac> pagedResultConceptToMetamac(PagedResult<Concept> source) {
         List<ConceptMetamac> conceptsMetamac = conceptsToConceptMetamac(source.getValues());
         return new PagedResult<ConceptMetamac>(conceptsMetamac, source.getStartRow(), source.getRowCount(), source.getPageSize(), source.getTotalRows(), source.getAdditionalResultRows());
+    }
+    
+    private void checkVersioningConceptSchemeIsSupported(ServiceContext ctx, String urnToCopy) throws MetamacException {
+        
+        // Retrieve version to copy and check it is final (internally published)
+        ConceptSchemeVersion conceptSchemeVersionToCopy = retrieveConceptSchemeByUrn(ctx, urnToCopy);
+        if (!conceptSchemeVersionToCopy.getMaintainableArtefact().getFinalLogic()) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.MAINTAINABLE_ARTEFACT_VERSIONING_NOT_SUPPORTED)
+                    .withMessageParameters(conceptSchemeVersionToCopy.getMaintainableArtefact().getUrn()).build();
+        }
+        // Check does not exist any version 'no final'
+        ItemSchemeVersion conceptSchemeVersionNoFinal = itemSchemeVersionRepository.findItemSchemeVersionNoFinal(conceptSchemeVersionToCopy.getItemScheme().getId());
+        if (conceptSchemeVersionNoFinal != null) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.MAINTAINABLE_ARTEFACT_VERSIONING_NOT_SUPPORTED)
+                    .withMessageParameters(conceptSchemeVersionNoFinal.getMaintainableArtefact().getUrn()).build();
+        }
     }
 }

@@ -162,7 +162,7 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
 
         // Validation
         OrganisationsMetamacInvocationValidator.checkVersioningOrganisationScheme(urnToCopy, versionType, null, null);
-        // Validations of scheme final, ... are done in sdmx module
+        checkVersioningOrganisationSchemeIsSupported(ctx, urnToCopy);
 
         // Versioning
         OrganisationSchemeVersionMetamac organisationSchemeNewVersion = (OrganisationSchemeVersionMetamac) organisationsService.versioningOrganisationScheme(ctx, urnToCopy, versionType,
@@ -297,5 +297,20 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
     private PagedResult<OrganisationMetamac> pagedResultOrganisationToMetamac(PagedResult<Organisation> source) {
         List<OrganisationMetamac> organisationsMetamac = organisationsToOrganisationMetamac(source.getValues());
         return new PagedResult<OrganisationMetamac>(organisationsMetamac, source.getStartRow(), source.getRowCount(), source.getPageSize(), source.getTotalRows(), source.getAdditionalResultRows());
+    }
+
+    private void checkVersioningOrganisationSchemeIsSupported(ServiceContext ctx, String urnToCopy) throws MetamacException {
+        // Retrieve version to copy and check it is final (internally published)
+        OrganisationSchemeVersion organisationSchemeVersionToCopy = retrieveOrganisationSchemeByUrn(ctx, urnToCopy);
+        if (!organisationSchemeVersionToCopy.getMaintainableArtefact().getFinalLogic()) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.MAINTAINABLE_ARTEFACT_VERSIONING_NOT_SUPPORTED)
+                    .withMessageParameters(organisationSchemeVersionToCopy.getMaintainableArtefact().getUrn()).build();
+        }
+        // Check does not exist any version 'no final'
+        ItemSchemeVersion organisationSchemeVersionNoFinal = itemSchemeVersionRepository.findItemSchemeVersionNoFinal(organisationSchemeVersionToCopy.getItemScheme().getId());
+        if (organisationSchemeVersionNoFinal != null) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.MAINTAINABLE_ARTEFACT_VERSIONING_NOT_SUPPORTED)
+                    .withMessageParameters(organisationSchemeVersionNoFinal.getMaintainableArtefact().getUrn()).build();
+        }
     }
 }

@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefactRepository;
 import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
@@ -58,6 +59,9 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
 
     @Autowired
     private MaintainableArtefactRepository maintainableArtefactRepository;
+    
+    @Autowired
+    private ItemSchemeVersionRepository itemSchemeVersionRepository;    
 
     public CategoriesMetamacServiceImpl() {
     }
@@ -150,8 +154,7 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
 
         // Validation
         CategoriesMetamacInvocationValidator.checkVersioningCategoryScheme(urnToCopy, versionType, null, null);
-        // Validations of scheme final, ... are done in sdmx module
-
+        checkVersioningCategorySchemeIsSupported(ctx, urnToCopy);
         // Versioning
         CategorySchemeVersionMetamac categorySchemeNewVersion = (CategorySchemeVersionMetamac) categoriesService.versioningCategoryScheme(ctx, urnToCopy, versionType, categoryCopyCallback);
 
@@ -328,5 +331,21 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
     private void checkMaintainerExternallyPublished(ServiceContext ctx, String maintainerUrn) throws MetamacException {
         OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByOrganisationUrn(ctx, maintainerUrn);
         SrmValidationUtils.checkExternallyPublished(organisationSchemeVersion.getMaintainableArtefact().getUrn(), organisationSchemeVersion.getLifeCycleMetadata());
+    }
+    
+    private void checkVersioningCategorySchemeIsSupported(ServiceContext ctx, String urnToCopy) throws MetamacException {
+        
+        // Retrieve version to copy and check it is final (internally published)
+        CategorySchemeVersion categorySchemeVersionToCopy = retrieveCategorySchemeByUrn(ctx, urnToCopy);
+        if (!categorySchemeVersionToCopy.getMaintainableArtefact().getFinalLogic()) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.MAINTAINABLE_ARTEFACT_VERSIONING_NOT_SUPPORTED)
+                    .withMessageParameters(categorySchemeVersionToCopy.getMaintainableArtefact().getUrn()).build();
+        }
+        // Check does not exist any version 'no final'
+        ItemSchemeVersion categorySchemeVersionNoFinal = itemSchemeVersionRepository.findItemSchemeVersionNoFinal(categorySchemeVersionToCopy.getItemScheme().getId());
+        if (categorySchemeVersionNoFinal != null) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.MAINTAINABLE_ARTEFACT_VERSIONING_NOT_SUPPORTED)
+                    .withMessageParameters(categorySchemeVersionNoFinal.getMaintainableArtefact().getUrn()).build();
+        }
     }
 }
