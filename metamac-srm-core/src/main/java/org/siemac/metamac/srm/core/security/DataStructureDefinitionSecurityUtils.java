@@ -139,5 +139,13 @@ public class DataStructureDefinitionSecurityUtils extends BaseSecurityUtils {
             throw new MetamacException(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED, ctx.getUserId());
         }
     }
-
+    
+    /**
+     * CATEGORISATION
+     */
+    public static void canModifyCategorisation(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac) throws MetamacException {
+        if (!SharedDsdSecurityUtils.canModifyCategorisationForDataStructureDefinition(getMetamacPrincipal(ctx), dataStructureDefinitionVersionMetamac.getLifeCycleMetadata().getProcStatus())) {
+            throw new MetamacException(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED, ctx.getUserId());
+        }
+    }
 }

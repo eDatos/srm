@@ -177,6 +177,15 @@ public class ConceptsSecurityUtils extends BaseSecurityUtils {
             throw new MetamacException(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED, ctx.getUserId());
         }
     }
+    
+    // CATEGORISATIONS
+    
+    public static void canModifyCategorisation(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeMetamac) throws MetamacException {
+        if (!SharedConceptsSecurityUtils.canModifyCategorisation(getMetamacPrincipal(ctx), conceptSchemeMetamac.getLifeCycleMetadata().getProcStatus(), conceptSchemeMetamac.getType(),
+                getOperationCode(conceptSchemeMetamac))) {
+            throw new MetamacException(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED, ctx.getUserId());
+        }
+    }
 
     //
     // PRIVATE METHODS

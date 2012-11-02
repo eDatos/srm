@@ -185,6 +185,10 @@ public class SharedDsdSecurityUtils extends SharedSecurityUtils {
         }
         return false;
     }
+    
+    public static boolean canModifyCategorisationForDataStructureDefinition(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus) {
+        return canUpdateDsd(metamacPrincipal, procStatus);
+    }
 
     /**
      * Checks if metamacPrincipal has any of the roles allowed in SRM module
@@ -195,5 +199,4 @@ public class SharedDsdSecurityUtils extends SharedSecurityUtils {
     private static boolean isAnyDsdRole(MetamacPrincipal metamacPrincipal) {
         return isAdministrador(metamacPrincipal) || isTecnicoApoyoProduccion(metamacPrincipal) || isTecnicoProduccion(metamacPrincipal) || isJefeProduccion(metamacPrincipal);
     }
-
 }

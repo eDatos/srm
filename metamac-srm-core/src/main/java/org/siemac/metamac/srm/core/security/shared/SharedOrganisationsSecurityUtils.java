@@ -69,7 +69,7 @@ public class SharedOrganisationsSecurityUtils extends SharedItemsSecurityUtils {
     /**
      * Determines if items from an organisation scheme can be created, deleted or updated
      */
-    public static boolean canModifiyOrganisationFromOrganisationScheme(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus, OrganisationSchemeTypeEnum type) {
+    public static boolean canModifyOrganisationFromOrganisationScheme(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus, OrganisationSchemeTypeEnum type) {
         // Agencies from agency schemes can be always modified (even when they are published)
         if (OrganisationSchemeTypeEnum.AGENCY_SCHEME.equals(type) && (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(procStatus) || ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(procStatus))) {
             return isSrmRoleAllowed(metamacPrincipal, JEFE_NORMALIZACION);
@@ -77,5 +77,11 @@ public class SharedOrganisationsSecurityUtils extends SharedItemsSecurityUtils {
             return canModifyItemFromItemScheme(metamacPrincipal, procStatus);
         }
     }
-
+    
+    /**
+     * Determines if categorisations from an organisation scheme can be created or deleted
+     */
+    public static boolean canModifyCategorisationFromOrganisationScheme(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus, OrganisationSchemeTypeEnum type) {
+        return canUpdateOrganisationScheme(metamacPrincipal, procStatus, type);
+    }
 }

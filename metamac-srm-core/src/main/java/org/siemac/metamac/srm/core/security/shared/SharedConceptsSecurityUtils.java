@@ -186,6 +186,12 @@ public class SharedConceptsSecurityUtils extends SharedItemsSecurityUtils {
         return canRetrieveOrFindResource(metamacPrincipal);
     }
 
+    // Categorisations
+
+    public static boolean canModifyCategorisation(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode) {
+        return canUpdateConceptScheme(metamacPrincipal, procStatus, type, operationCode);
+    }
+
     private static boolean canUpdateConceptScheme(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode) {
         if (isNonOperationConceptSchemeType(type)) {
             return canUpdateItemScheme(metamacPrincipal, procStatus);
@@ -222,5 +228,4 @@ public class SharedConceptsSecurityUtils extends SharedItemsSecurityUtils {
         }
         return false;
     }
-
 }

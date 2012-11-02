@@ -18,6 +18,7 @@ import javax.xml.transform.stream.StreamSource;
 import org.apache.commons.lang.StringUtils;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
+import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.criteria.MetamacCriteria;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
 import org.siemac.metamac.core.common.criteria.SculptorCriteria;
@@ -185,8 +186,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public void deleteDataStructureDefinition(ServiceContext ctx, String urn) throws MetamacException {
         // Security
-        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacOld = getDsdsMetamacService().retrieveDataStructureDefinitionByUrn(ctx, urn);
-        DataStructureDefinitionSecurityUtils.canDeleteDataStructureDefinition(ctx, dataStructureDefinitionVersionMetamacOld);
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDsdsMetamacService().retrieveDataStructureDefinitionByUrn(ctx, urn);
+        DataStructureDefinitionSecurityUtils.canDeleteDataStructureDefinition(ctx, dataStructureDefinitionVersionMetamac);
 
         // Delete
         getDsdsMetamacService().deleteDataStructureDefinition(ctx, urn);
@@ -759,7 +760,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     public OrganisationMetamacDto createOrganisation(ServiceContext ctx, OrganisationMetamacDto organisationMetamacDto) throws MetamacException {
         // Security
         OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationsMetamacService().retrieveOrganisationSchemeByUrn(ctx, organisationMetamacDto.getItemSchemeVersionUrn());
-        OrganisationsSecurityUtils.canCreateOrganisation(ctx, organisationSchemeVersion.getLifeCycleMetadata().getProcStatus(), organisationSchemeVersion.getOrganisationSchemeType());
+        OrganisationsSecurityUtils.canCreateOrganisation(ctx, organisationSchemeVersion);
 
         // Transform
         OrganisationMetamac organisationMetamac = organisationsDto2DoMapper.organisationMetamacDtoToDo(organisationMetamacDto);
@@ -777,7 +778,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     public OrganisationMetamacDto updateOrganisation(ServiceContext ctx, OrganisationMetamacDto organisationDto) throws MetamacException {
         // Security
         OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationsMetamacService().retrieveOrganisationSchemeByOrganisationUrn(ctx, organisationDto.getUrn());
-        OrganisationsSecurityUtils.canUpdateOrganisation(ctx, organisationSchemeVersion.getLifeCycleMetadata().getProcStatus(), organisationSchemeVersion.getOrganisationSchemeType());
+        OrganisationsSecurityUtils.canUpdateOrganisation(ctx, organisationSchemeVersion);
 
         // Transform
         OrganisationMetamac organisationMetamac = organisationsDto2DoMapper.organisationMetamacDtoToDo(organisationDto);
@@ -808,7 +809,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     public void deleteOrganisation(ServiceContext ctx, String urn) throws MetamacException {
         // Security
         OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationsMetamacService().retrieveOrganisationSchemeByOrganisationUrn(ctx, urn);
-        OrganisationsSecurityUtils.canDeleteOrganisation(ctx, organisationSchemeVersion.getLifeCycleMetadata().getProcStatus(), organisationSchemeVersion.getOrganisationSchemeType());
+        OrganisationsSecurityUtils.canDeleteOrganisation(ctx, organisationSchemeVersion);
 
         // Delete
         getOrganisationsMetamacService().deleteOrganisation(ctx, urn);
@@ -1578,7 +1579,9 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public CategorisationDto createCategorisation(ServiceContext ctx, String categoryUrn, String artefactCategorisedUrn, String maintainerUrn) throws MetamacException {
-        // TODO security
+
+        // Security
+        canModifyCategorisation(ctx, artefactCategorisedUrn);
 
         // Create
         Categorisation categorisation = getCategoriesMetamacService().createCategorisation(ctx, categoryUrn, artefactCategorisedUrn, maintainerUrn);
@@ -1605,7 +1608,9 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public void deleteCategorisation(ServiceContext ctx, String urn) throws MetamacException {
 
-        // TODO security
+        // Security
+        Categorisation categorisation = getCategoriesMetamacService().retrieveCategorisationByUrn(ctx, urn);
+        canModifyCategorisation(ctx, categorisation.getArtefactCategorised().getUrn());
 
         // Delete
         getCategoriesMetamacService().deleteCategorisation(ctx, urn);
@@ -1647,4 +1652,23 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         return descriptorDtos;
     }
 
+    // Note: only check acess to artefact. Category and maintainer must be externally published, and everyone can access to them
+    // TODO clasificaciones
+    private void canModifyCategorisation(ServiceContext ctx, String artefactCategorisedUrn) throws MetamacException {
+        if (artefactCategorisedUrn == null) {
+            throw new MetamacException(ServiceExceptionType.METADATA_REQUIRED, ServiceExceptionParameters.URN);
+        }
+        if (artefactCategorisedUrn.startsWith(UrnConstants.URN_SDMX_CLASS_CONCEPTSCHEME_PREFIX)) {
+            ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptsMetamacService().retrieveConceptSchemeByUrn(ctx, artefactCategorisedUrn);
+            ConceptsSecurityUtils.canModifyCategorisation(ctx, conceptSchemeVersion);
+        } else if (artefactCategorisedUrn.startsWith(UrnConstants.URN_SDMX_CLASS_ORGANISATIONSCHEMEMAP_PREFIX) || artefactCategorisedUrn.startsWith(UrnConstants.URN_SDMX_CLASS_AGENCYSCHEME_PREFIX)) {
+            OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationsMetamacService().retrieveOrganisationSchemeByUrn(ctx, artefactCategorisedUrn);
+            OrganisationsSecurityUtils.canModifyCategorisation(ctx, organisationSchemeVersion);
+        } else if (artefactCategorisedUrn.startsWith(UrnConstants.URN_SDMX_CLASS_DATASTRUCTURE_PREFIX)) {
+            DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion = getDsdsMetamacService().retrieveDataStructureDefinitionByUrn(ctx, artefactCategorisedUrn);
+            DataStructureDefinitionSecurityUtils.canModifyCategorisation(ctx, dataStructureDefinitionVersion);
+        } else {
+            throw new MetamacException(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED, ctx.getUserId());
+        }
+    }
 }
