@@ -49,7 +49,7 @@
 
     <servlet>
         <servlet-name>download</servlet-name>
-        <servlet-class>org.siemac.metamac.srm.web.server.servlet.FileDownloadServlet</servlet-class>
+        <servlet-class>org.siemac.metamac.web.common.server.servlet.FileDownloadServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>download</servlet-name>
