@@ -7,7 +7,7 @@ import java.util.LinkedHashMap;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 
-import com.arte.statistic.sdmx.srm.core.common.service.utils.shared.SdmxVersionUtil;
+import com.arte.statistic.sdmx.srm.core.common.service.utils.shared.SdmxVersionUtils;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeRepresentationEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
 
@@ -55,7 +55,7 @@ public class CommonUtils {
     }
 
     public static boolean isInitialVersion(String versionLogic) {
-        return SdmxVersionUtil.PATTERN_XX_YYY_INITIAL_VERSION.equals(versionLogic);
+        return SdmxVersionUtils.PATTERN_XX_YYY_INITIAL_VERSION.equals(versionLogic);
     }
 
     public static boolean canCodeBeEdited(ProcStatusEnum procStatus, String versionLogic) {
