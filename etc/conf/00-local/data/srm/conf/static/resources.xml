@@ -3,4 +3,5 @@
 <properties>
     <comment>Configurations</comment>
     <entry key="metamac.srm.clients.statistical.operations.rest.internal">${metamac.endpoints.statistical.operations.rest.internal}</entry>
+    <entry key="metamac.srm.user.guide.file.name">Gestor_recursos_estructurales-Manual_usuario.pdf</entry>
 </properties>
