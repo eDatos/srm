@@ -18,7 +18,6 @@ import javax.xml.transform.stream.StreamSource;
 import org.apache.commons.lang.StringUtils;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
-import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.criteria.MetamacCriteria;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
 import org.siemac.metamac.core.common.criteria.SculptorCriteria;
@@ -1655,20 +1654,23 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     // Note: only check acess to artefact. Category and maintainer must be externally published, and everyone can access to them
     // TODO clasificaciones
     private void canModifyCategorisation(ServiceContext ctx, String artefactCategorisedUrn) throws MetamacException {
-        if (artefactCategorisedUrn == null) {
-            throw new MetamacException(ServiceExceptionType.METADATA_REQUIRED, ServiceExceptionParameters.URN);
-        }
-        if (artefactCategorisedUrn.startsWith(UrnConstants.URN_SDMX_CLASS_CONCEPTSCHEME_PREFIX)) {
-            ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptsMetamacService().retrieveConceptSchemeByUrn(ctx, artefactCategorisedUrn);
-            ConceptsSecurityUtils.canModifyCategorisation(ctx, conceptSchemeVersion);
-        } else if (artefactCategorisedUrn.startsWith(UrnConstants.URN_SDMX_CLASS_ORGANISATIONSCHEMEMAP_PREFIX) || artefactCategorisedUrn.startsWith(UrnConstants.URN_SDMX_CLASS_AGENCYSCHEME_PREFIX)) {
-            OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationsMetamacService().retrieveOrganisationSchemeByUrn(ctx, artefactCategorisedUrn);
-            OrganisationsSecurityUtils.canModifyCategorisation(ctx, organisationSchemeVersion);
-        } else if (artefactCategorisedUrn.startsWith(UrnConstants.URN_SDMX_CLASS_DATASTRUCTURE_PREFIX)) {
-            DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion = getDsdsMetamacService().retrieveDataStructureDefinitionByUrn(ctx, artefactCategorisedUrn);
-            DataStructureDefinitionSecurityUtils.canModifyCategorisation(ctx, dataStructureDefinitionVersion);
-        } else {
-            throw new MetamacException(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED, ctx.getUserId());
-        }
+        
+        // TODO pendiente duda Alberto
+        
+//        if (artefactCategorisedUrn == null) {
+//            throw new MetamacException(ServiceExceptionType.METADATA_REQUIRED, ServiceExceptionParameters.URN);
+//        }
+//        if (artefactCategorisedUrn.startsWith(UrnConstants.URN_SDMX_CLASS_CONCEPTSCHEME_PREFIX)) {
+//            ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptsMetamacService().retrieveConceptSchemeByUrn(ctx, artefactCategorisedUrn);
+//            ConceptsSecurityUtils.canModifyCategorisation(ctx, conceptSchemeVersion);
+//        } else if (artefactCategorisedUrn.startsWith(UrnConstants.URN_SDMX_CLASS_ORGANISATIONSCHEMEMAP_PREFIX) || artefactCategorisedUrn.startsWith(UrnConstants.URN_SDMX_CLASS_AGENCYSCHEME_PREFIX)) {
+//            OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationsMetamacService().retrieveOrganisationSchemeByUrn(ctx, artefactCategorisedUrn);
+//            OrganisationsSecurityUtils.canModifyCategorisation(ctx, organisationSchemeVersion);
+//        } else if (artefactCategorisedUrn.startsWith(UrnConstants.URN_SDMX_CLASS_DATASTRUCTURE_PREFIX)) {
+//            DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion = getDsdsMetamacService().retrieveDataStructureDefinitionByUrn(ctx, artefactCategorisedUrn);
+//            DataStructureDefinitionSecurityUtils.canModifyCategorisation(ctx, dataStructureDefinitionVersion);
+//        } else {
+//            throw new MetamacException(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED, ctx.getUserId());
+//        }
     }
 }
