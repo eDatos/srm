@@ -82,6 +82,7 @@
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
         MAINTAINER_FK="[null]"
+        MAINTAINER_ID_HIERARCHY="SDMX"
         
         UUID="annotableArtefact-1001"
         VERSION="1"
@@ -278,6 +279,7 @@
         SERVICE_URL="http://serviceUrl"
         IS_LAST_VERSION="0"
         MAINTAINER_FK="10011"
+        MAINTAINER_ID_HIERARCHY="SDMX01"
         
         UUID="annotableArtefact-11"
         VERSION="1"
@@ -424,6 +426,7 @@
         SERVICE_URL="http://serviceUrl"
         IS_LAST_VERSION="0"
         MAINTAINER_FK="10011"
+        MAINTAINER_ID_HIERARCHY="SDMX01"
         
         UUID="annotableArtefact-21"
         VERSION="1"
@@ -542,6 +545,7 @@
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
         MAINTAINER_FK="10011"
+        MAINTAINER_ID_HIERARCHY="SDMX01"
         
         UUID="annotableArtefact-3"
         VERSION="1"
@@ -597,6 +601,7 @@
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
         MAINTAINER_FK="10011"
+        MAINTAINER_ID_HIERARCHY="SDMX01"
         
         UUID="annotableArtefact-4"
         VERSION="1"
@@ -687,6 +692,7 @@
         SERVICE_URL="http://serviceUrl"
         IS_LAST_VERSION="0"
         MAINTAINER_FK="10011"
+        MAINTAINER_ID_HIERARCHY="SDMX01"
         
         UUID="annotableArtefact-51"
         VERSION="1"
@@ -795,6 +801,7 @@
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
         MAINTAINER_FK="10011"
+        MAINTAINER_ID_HIERARCHY="SDMX01"
         
         UUID="annotableArtefact-6"
         VERSION="1"
@@ -888,6 +895,7 @@
         SERVICE_URL="http://serviceUrl"
         IS_LAST_VERSION="0"
         MAINTAINER_FK="10011"
+        MAINTAINER_ID_HIERARCHY="SDMX01"
         
         UUID="annotableArtefact-71"
         VERSION="1"
@@ -1006,6 +1014,7 @@
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
         MAINTAINER_FK="10011"
+        MAINTAINER_ID_HIERARCHY="SDMX01"
         
         UUID="annotableArtefact-8"
         VERSION="1"
@@ -1061,6 +1070,7 @@
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
         MAINTAINER_FK="10011"
+        MAINTAINER_ID_HIERARCHY="SDMX01"
         
         UUID="annotableArtefact-9"
         VERSION="1"

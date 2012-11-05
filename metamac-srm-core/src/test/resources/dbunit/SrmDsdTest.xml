@@ -82,6 +82,7 @@
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
         MAINTAINER_FK="[null]"
+        MAINTAINER_ID_HIERARCHY="SDMX"
         
         UUID="annotableArtefact-1001"
         VERSION="1"
@@ -432,6 +433,7 @@
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
         MAINTAINER_FK="10011"
+        MAINTAINER_ID_HIERARCHY="SDMX01"
         
         UUID="annotableArtifact-41"
         VERSION="1"
@@ -500,6 +502,7 @@
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
         MAINTAINER_FK="10011"
+        MAINTAINER_ID_HIERARCHY="SDMX01"
         
         UUID="annotableArtifact-51"
         VERSION="1"
