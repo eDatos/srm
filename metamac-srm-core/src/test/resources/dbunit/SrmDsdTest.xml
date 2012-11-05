@@ -82,7 +82,6 @@
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
         MAINTAINER_FK="[null]"
-        MAINTAINER_ID_HIERARCHY="SDMX"
         
         UUID="annotableArtefact-1001"
         VERSION="1"
@@ -108,6 +107,7 @@
             <TB_ORGANISATIONS
                 TB_ITEMS="10011"
                 ORGANISATION_TYPE="AGENCY"
+                ID_AS_MAINTAINER="SDMX01"
             />
         
             <TB_ITEMS
@@ -159,6 +159,7 @@
             <TB_ORGANISATIONS
                 TB_ITEMS="10012"
                 ORGANISATION_TYPE="AGENCY"
+                ID_AS_MAINTAINER="SDMX02"
             />
         
             <TB_ITEMS
@@ -210,6 +211,7 @@
             <TB_ORGANISATIONS
                 TB_ITEMS="10013"
                 ORGANISATION_TYPE="AGENCY"
+                ID_AS_MAINTAINER="SDMX03"
             />
         
             <TB_ITEMS
@@ -261,6 +263,7 @@
             <TB_ORGANISATIONS
                 TB_ITEMS="10014"
                 ORGANISATION_TYPE="AGENCY"
+                ID_AS_MAINTAINER="ISO"
             />
         
             <TB_ITEMS
@@ -312,6 +315,7 @@
             <TB_ORGANISATIONS
                 TB_ITEMS="10015"
                 ORGANISATION_TYPE="AGENCY"
+                ID_AS_MAINTAINER="ECB"
             />
         
             <TB_ITEMS
@@ -363,6 +367,7 @@
             <TB_ORGANISATIONS
                 TB_ITEMS="10016"
                 ORGANISATION_TYPE="AGENCY"
+                ID_AS_MAINTAINER="INE"
             />
         
             <TB_ITEMS
@@ -433,7 +438,6 @@
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
         MAINTAINER_FK="10011"
-        MAINTAINER_ID_HIERARCHY="SDMX01"
         
         UUID="annotableArtifact-41"
         VERSION="1"
@@ -502,7 +506,6 @@
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
         MAINTAINER_FK="10011"
-        MAINTAINER_ID_HIERARCHY="SDMX01"
         
         UUID="annotableArtifact-51"
         VERSION="1"

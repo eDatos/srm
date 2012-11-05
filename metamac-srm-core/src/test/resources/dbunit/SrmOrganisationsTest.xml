@@ -82,7 +82,6 @@
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
         MAINTAINER_FK="[null]"
-        MAINTAINER_ID_HIERARCHY="SDMX"
         
         UUID="annotableArtefact-1001"
         VERSION="1"
@@ -107,6 +106,7 @@
             <TB_ORGANISATIONS
                 TB_ITEMS="10011"
                 ORGANISATION_TYPE="AGENCY"
+                ID_AS_MAINTAINER="SDMX01"
             />
         
             <TB_ITEMS
@@ -158,6 +158,7 @@
             <TB_ORGANISATIONS
                 TB_ITEMS="10012"
                 ORGANISATION_TYPE="AGENCY"
+                ID_AS_MAINTAINER="SDMX02"
             />
         
             <TB_ITEMS
@@ -282,7 +283,6 @@
         SERVICE_URL="http://serviceUrl1"
         IS_LAST_VERSION="0"
         MAINTAINER_FK="10011"
-        MAINTAINER_ID_HIERARCHY="SDMX01"
         
         UUID="annotableArtefact-11"
         VERSION="1"
@@ -306,6 +306,7 @@
             <TB_ORGANISATIONS
                 TB_ITEMS="111"
                 ORGANISATION_TYPE="ORGANISATION_UNIT"
+                ID_AS_MAINTAINER="[null]"
             />
         
             <TB_ITEMS
@@ -416,7 +417,6 @@
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
         MAINTAINER_FK="10011"
-        MAINTAINER_ID_HIERARCHY="SDMX01"
         
         UUID="annotableArtefact-12"
         VERSION="1"
@@ -448,6 +448,7 @@
             <TB_ORGANISATIONS
                 TB_ITEMS="121"    
                 ORGANISATION_TYPE="ORGANISATION_UNIT"
+                ID_AS_MAINTAINER="[null]"
             />
             
             <TB_ITEMS
@@ -499,6 +500,7 @@
             <TB_ORGANISATIONS
                 TB_ITEMS="122"
                 ORGANISATION_TYPE="ORGANISATION_UNIT"
+                ID_AS_MAINTAINER="[null]"
             />
         
             <TB_ITEMS
@@ -549,7 +551,8 @@
                 
                 <TB_ORGANISATIONS
                     TB_ITEMS="1221"
-                    ORGANISATION_TYPE="ORGANISATION_UNIT"   
+                    ORGANISATION_TYPE="ORGANISATION_UNIT"
+                    ID_AS_MAINTAINER="[null]"   
                 />
             
                 <TB_ITEMS
@@ -602,6 +605,7 @@
                     <TB_ORGANISATIONS
                         TB_ITEMS="12211"
                         ORGANISATION_TYPE="ORGANISATION_UNIT"
+                        ID_AS_MAINTAINER="[null]"
                     />
                 
                     <TB_ITEMS
@@ -653,6 +657,7 @@
             <TB_ORGANISATIONS
                 TB_ITEMS="123"
                  ORGANISATION_TYPE="ORGANISATION_UNIT"
+                 ID_AS_MAINTAINER="[null]"
             />
             
             <TB_ITEMS
@@ -704,6 +709,7 @@
             <TB_ORGANISATIONS
                 TB_ITEMS="124"
                 ORGANISATION_TYPE="ORGANISATION_UNIT"
+                ID_AS_MAINTAINER="[null]"
             />
                      
             <TB_ITEMS
@@ -755,6 +761,7 @@
                 <TB_ORGANISATIONS
                     TB_ITEMS="1241"
                     ORGANISATION_TYPE="ORGANISATION_UNIT"
+                    ID_AS_MAINTAINER="[null]"
                 />
             
                 <TB_ITEMS
@@ -805,7 +812,8 @@
                     
                     <TB_ORGANISATIONS
                         TB_ITEMS="12411"
-                        ORGANISATION_TYPE="ORGANISATION_UNIT"  
+                        ORGANISATION_TYPE="ORGANISATION_UNIT"
+                        ID_AS_MAINTAINER="[null]"  
                     />
                     
                     <TB_ITEMS
@@ -928,7 +936,6 @@
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
         MAINTAINER_FK="10011"
-        MAINTAINER_ID_HIERARCHY="SDMX01"
         
         UUID="annotableArtefact-21"
         VERSION="1"
@@ -953,6 +960,7 @@
             <TB_ORGANISATIONS
                 TB_ITEMS="211"
                 ORGANISATION_TYPE="AGENCY"
+                ID_AS_MAINTAINER="SDMX01.ORGANISATION01"
             />
         
             <TB_ITEMS
@@ -1004,6 +1012,7 @@
             <TB_ORGANISATIONS
                 TB_ITEMS="212"
                 ORGANISATION_TYPE="AGENCY"
+                ID_AS_MAINTAINER="SDMX01.ORGANISATION02"
             />
         
             <TB_ITEMS
@@ -1126,7 +1135,6 @@
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
         MAINTAINER_FK="10011"
-        MAINTAINER_ID_HIERARCHY="SDMX01"
         
         UUID="annotableArtefact-31"
         VERSION="1"
@@ -1152,6 +1160,7 @@
             <TB_ORGANISATIONS
                 TB_ITEMS="311"
                 ORGANISATION_TYPE="ORGANISATION_UNIT"
+                ID_AS_MAINTAINER="[null]"
             />
         
             <TB_ITEMS
@@ -1286,7 +1295,8 @@
             
             <TB_ORGANISATIONS
                 TB_ITEMS="312"
-                ORGANISATION_TYPE="ORGANISATION_UNIT"  
+                ORGANISATION_TYPE="ORGANISATION_UNIT"
+                ID_AS_MAINTAINER="[null]"  
             />
         
             <TB_ITEMS
@@ -1338,6 +1348,7 @@
             <TB_ORGANISATIONS
                 TB_ITEMS="3121"
                 ORGANISATION_TYPE="ORGANISATION_UNIT"
+                ID_AS_MAINTAINER="[null]"
             />
         
             <TB_ITEMS
@@ -1389,6 +1400,7 @@
                     <TB_ORGANISATIONS
                         TB_ITEMS="31211"
                         ORGANISATION_TYPE="ORGANISATION_UNIT"
+                        ID_AS_MAINTAINER="[null]"
                     />
                 
                     <TB_ITEMS
@@ -1439,6 +1451,7 @@
             <TB_ORGANISATIONS
                 TB_ITEMS="3122"
                 ORGANISATION_TYPE="ORGANISATION_UNIT"
+                ID_AS_MAINTAINER="[null]"
             />
         
             <TB_ITEMS
@@ -1561,7 +1574,6 @@
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
         MAINTAINER_FK="10011"
-        MAINTAINER_ID_HIERARCHY="SDMX01"
         
         UUID="annotableArtefact-41"
         VERSION="1"
@@ -1585,6 +1597,7 @@
             <TB_ORGANISATIONS
                 TB_ITEMS="411"
                 ORGANISATION_TYPE="ORGANISATION_UNIT"
+                ID_AS_MAINTAINER="[null]"
             />
         
             <TB_ITEMS
@@ -1708,7 +1721,6 @@
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
         MAINTAINER_FK="10011"
-        MAINTAINER_ID_HIERARCHY="SDMX01"
         
         UUID="annotableArtefact-51"
         VERSION="1"
@@ -1732,6 +1744,7 @@
             <TB_ORGANISATIONS
                 TB_ITEMS="511"
                 ORGANISATION_TYPE="ORGANISATION_UNIT"
+                ID_AS_MAINTAINER="[null]"
             />
         
             <TB_ITEMS
@@ -1854,7 +1867,6 @@
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
         MAINTAINER_FK="10011"
-        MAINTAINER_ID_HIERARCHY="SDMX01"
         
         UUID="annotableArtefact-61"
         VERSION="1"
@@ -1878,6 +1890,7 @@
             <TB_ORGANISATIONS
                 TB_ITEMS="611"
                 ORGANISATION_TYPE="ORGANISATION_UNIT"
+                ID_AS_MAINTAINER="[null]"
             />
         
             <TB_ITEMS
@@ -2001,7 +2014,6 @@
         SERVICE_URL="[null]"
         IS_LAST_VERSION="0"
         MAINTAINER_FK="10011"
-        MAINTAINER_ID_HIERARCHY="SDMX01"
         
         UUID="annotableArtefact-71"
         VERSION="1"
@@ -2081,7 +2093,6 @@
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
         MAINTAINER_FK="10011"
-        MAINTAINER_ID_HIERARCHY="SDMX01"
         
         UUID="annotableArtefact-72"
         VERSION="1"
@@ -2105,6 +2116,7 @@
             <TB_ORGANISATIONS
                 TB_ITEMS="721"
                 ORGANISATION_TYPE="ORGANISATION_UNIT"
+                ID_AS_MAINTAINER="[null]"
             />
         
             <TB_ITEMS
@@ -2211,7 +2223,7 @@
         
         CODE="ORGANISATIONSCHEME08"
         URI="[null]"
-        URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=SDMX01:ORGANISATIONSCHEME08(01.000)"
+        URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=SDMX02:ORGANISATIONSCHEME08(01.000)"
         REPLACED_BY="[null]"
         REPLACE_TO="[null]"
         
@@ -2227,8 +2239,7 @@
         STRUCTURE_URL="[null]"
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
-        MAINTAINER_FK="10011"
-        MAINTAINER_ID_HIERARCHY="SDMX01"
+        MAINTAINER_FK="10012"
         
         UUID="annotableArtefact-81"
         VERSION="1"
@@ -2252,6 +2263,7 @@
             <TB_ORGANISATIONS
                 TB_ITEMS="811"
                 ORGANISATION_TYPE="AGENCY"
+                ID_AS_MAINTAINER="SDMX02.ORGANISATION01"
             />
         
             <TB_ITEMS
@@ -2277,7 +2289,7 @@
 
                 CODE="ORGANISATION01"
                 URI="[null]"
-                URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME08(01.000).ORGANISATION01"
+                URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX02:ORGANISATIONSCHEME08(01.000).ORGANISATION01"
                 REPLACED_BY="[null]"
                 REPLACE_TO="[null]"
 
@@ -2357,7 +2369,7 @@
         
         CODE="ORGANISATIONSCHEME09"
         URI="[null]"
-        URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=SDMX01:ORGANISATIONSCHEME09(01.000)"
+        URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=SDMX02.ORGANISATION01:ORGANISATIONSCHEME09(01.000)"
         REPLACED_BY="[null]"
         REPLACE_TO="[null]"
         
@@ -2373,8 +2385,7 @@
         STRUCTURE_URL="[null]"
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
-        MAINTAINER_FK="10011"
-        MAINTAINER_ID_HIERARCHY="SDMX01"
+        MAINTAINER_FK="811"
         
         UUID="annotableArtefact-91"
         VERSION="1"
@@ -2398,6 +2409,7 @@
             <TB_ORGANISATIONS
                 TB_ITEMS="911"
                 ORGANISATION_TYPE="AGENCY"
+                ID_AS_MAINTAINER="SDMX02.ORGANISATION01.ORGANISATION01"
             />
         
             <TB_ITEMS
@@ -2423,7 +2435,7 @@
 
                 CODE="ORGANISATION01"
                 URI="[null]"
-                URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME09(01.000).ORGANISATION01"
+                URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX02.ORGANISATION01:ORGANISATIONSCHEME09(01.000).ORGANISATION01"
                 REPLACED_BY="[null]"
                 REPLACE_TO="[null]"
 

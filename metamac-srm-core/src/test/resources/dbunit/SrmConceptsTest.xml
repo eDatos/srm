@@ -82,7 +82,6 @@
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
         MAINTAINER_FK="[null]"
-        MAINTAINER_ID_HIERARCHY="SDMX"
         
         UUID="annotableArtefact-1001"
         VERSION="1"
@@ -107,6 +106,7 @@
             <TB_ORGANISATIONS
                 TB_ITEMS="10011"
                 ORGANISATION_TYPE="AGENCY"
+                ID_AS_MAINTAINER="SDMX01"
             />
         
             <TB_ITEMS
@@ -158,6 +158,7 @@
             <TB_ORGANISATIONS
                 TB_ITEMS="10012"
                 ORGANISATION_TYPE="AGENCY"
+                ID_AS_MAINTAINER="SDMX02"
             />
         
             <TB_ITEMS
@@ -283,7 +284,6 @@
         SERVICE_URL="http://serviceUrl1"
         IS_LAST_VERSION="0"
         MAINTAINER_FK="10011"
-        MAINTAINER_ID_HIERARCHY="SDMX01"
         
         UUID="annotableArtefact-11"
         VERSION="1"
@@ -426,7 +426,6 @@
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
         MAINTAINER_FK="10011"
-        MAINTAINER_ID_HIERARCHY="SDMX01"
         
         UUID="annotableArtefact-12"
         VERSION="1"
@@ -1052,7 +1051,6 @@
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
         MAINTAINER_FK="10011"
-        MAINTAINER_ID_HIERARCHY="SDMX01"
         
         UUID="annotableArtefact-21"
         VERSION="1"
@@ -1289,7 +1287,6 @@
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
         MAINTAINER_FK="10011"
-        MAINTAINER_ID_HIERARCHY="SDMX01"
         
         UUID="annotableArtefact-31"
         VERSION="1"
@@ -1703,7 +1700,6 @@
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
         MAINTAINER_FK="10011"
-        MAINTAINER_ID_HIERARCHY="SDMX01"
         
         UUID="annotableArtefact-41"
         VERSION="1"
@@ -1852,7 +1848,6 @@
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
         MAINTAINER_FK="10011"
-        MAINTAINER_ID_HIERARCHY="SDMX01"
         
         UUID="annotableArtefact-51"
         VERSION="1"
@@ -2001,7 +1996,6 @@
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
         MAINTAINER_FK="10011"
-        MAINTAINER_ID_HIERARCHY="SDMX01"
         
         UUID="annotableArtefact-61"
         VERSION="1"
@@ -2153,7 +2147,6 @@
         SERVICE_URL="[null]"
         IS_LAST_VERSION="0"
         MAINTAINER_FK="10011"
-        MAINTAINER_ID_HIERARCHY="SDMX01"
         
         UUID="annotableArtefact-71"
         VERSION="1"
@@ -2232,7 +2225,6 @@
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
         MAINTAINER_FK="10011"
-        MAINTAINER_ID_HIERARCHY="SDMX01"
         
         UUID="annotableArtefact-72"
         VERSION="1"
@@ -2383,7 +2375,6 @@
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
         MAINTAINER_FK="10011"
-        MAINTAINER_ID_HIERARCHY="SDMX01"
         
         UUID="annotableArtefact-81"
         VERSION="1"
@@ -2532,7 +2523,6 @@
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
         MAINTAINER_FK="10011"
-        MAINTAINER_ID_HIERARCHY="SDMX01"
         
         UUID="annotableArtefact-91"
         VERSION="1"
@@ -2625,7 +2615,6 @@
         SERVICE_URL="[null]"
         IS_LAST_VERSION="0"
         MAINTAINER_FK="10011"
-        MAINTAINER_ID_HIERARCHY="SDMX01"
         
         UUID="annotableArtefact-101"
         VERSION="1"
@@ -2704,7 +2693,6 @@
         SERVICE_URL="[null]"
         IS_LAST_VERSION="0"
         MAINTAINER_FK="10011"
-        MAINTAINER_ID_HIERARCHY="SDMX01"
         
         UUID="annotableArtefact-102"
         VERSION="1"
@@ -2843,7 +2831,6 @@
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
         MAINTAINER_FK="10011"
-        MAINTAINER_ID_HIERARCHY="SDMX01"
         
         UUID="annotableArtefact-103"
         VERSION="1"
@@ -2994,7 +2981,6 @@
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
         MAINTAINER_FK="10011"
-        MAINTAINER_ID_HIERARCHY="SDMX01"
         
         UUID="annotableArtefact-111"
         VERSION="1"
@@ -3146,7 +3132,6 @@
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
         MAINTAINER_FK="10011"
-        MAINTAINER_ID_HIERARCHY="SDMX01"
         
         UUID="annotableArtefact-121"
         VERSION="1"
@@ -3297,7 +3282,6 @@
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
         MAINTAINER_FK="10011"
-        MAINTAINER_ID_HIERARCHY="SDMX01"
         
         UUID="annotableArtefact-131"
         VERSION="1"
