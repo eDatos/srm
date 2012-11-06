@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+    targetNamespace="http://www.siemac.org/metamac/rest/srm-internal/v1.0/domain"
+    xmlns:tns="http://www.siemac.org/metamac/rest/srm-internal/v1.0/domain"
+    xmlns:common="http://www.siemac.org/metamac/rest/common/v1.0/domain">
+
+    <xs:import namespace="http://www.siemac.org/metamac/rest/common/v1.0/domain" schemaLocation="metamac-rest-api:metamac-rest-common-domain-v1.0.xsd" />
+
+    <xs:complexType name="ConceptScheme">
+        <xs:sequence>
+            <xs:element name="id" type="xs:string" />
+            <xs:element name="urn" type="xs:string" />
+            <xs:element name="selfLink" type="xs:string" />
+            <xs:element name="parent" type="common:ResourceLink" />
+            <xs:element name="title" type="common:InternationalString" />
+            <xs:element name="children" type="common:Children" minOccurs="1" />
+        </xs:sequence>
+        <xs:attribute name="kind" type="xs:string" use="required" />
+    </xs:complexType>
+
+    <!-- Lists -->
+    <xs:complexType name="ConceptSchemes">
+        <xs:complexContent>
+            <xs:extension base="common:ListBase">
+                <xs:sequence>
+                    <xs:element name="conceptScheme" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <!-- Enums -->
+    <xs:simpleType name="ProcStatus">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="PUBLISH_INTERNALLY" />
+            <xs:enumeration value="PUBLISH_EXTERNALLY" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- Criterias -->
+    <xs:simpleType name="ConceptSchemeCriteriaPropertyRestriction">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="ID" />
+            <xs:enumeration value="URN" />
+            <xs:enumeration value="NAME" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="ConceptSchemeCriteriaPropertyOrder">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="ID" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- Elements -->
+    <xs:element name="conceptScheme" type="tns:ConceptScheme" />
+    <xs:element name="conceptSchemes" type="tns:ConceptSchemes" />
+</xs:schema>
