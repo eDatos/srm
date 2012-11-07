@@ -1,22 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    elementFormDefault="qualified"
     targetNamespace="http://www.siemac.org/metamac/rest/srm-internal/v1.0/domain"
     xmlns:tns="http://www.siemac.org/metamac/rest/srm-internal/v1.0/domain"
-    xmlns:common="http://www.siemac.org/metamac/rest/common/v1.0/domain">
+    xmlns:common="http://www.siemac.org/metamac/rest/common/v1.0/domain"
+    xmlns:sdmx="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure">
 
+    <xs:import namespace="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" schemaLocation="statistic-sdmx-v2_1-domain:SDMXStructure.xsd" />
     <xs:import namespace="http://www.siemac.org/metamac/rest/common/v1.0/domain" schemaLocation="metamac-rest-api:metamac-rest-common-domain-v1.0.xsd" />
 
     <xs:complexType name="ConceptScheme">
+        <xs:complexContent>
+            <xs:extension base="sdmx:ConceptSchemeType">
+                <xs:sequence>
+                    <xs:element name="id" type="xs:string" />
+                    <xs:element name="urn" type="xs:string" />
+                    <xs:element name="selfLink" type="xs:string" />
+                    <xs:element name="parent" type="common:ResourceLink" />
+                    <xs:element name="type" type="tns:ConceptSchemeType" />
+                    <xs:element name="relatedOperation" type="common:Resource" minOccurs="0" />
+                    <xs:element name="children" type="common:Children" minOccurs="1" />
+                </xs:sequence>
+                <xs:attribute name="kind" type="xs:string" use="required" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    
+    <xs:complexType name="Concept">
         <xs:sequence>
             <xs:element name="id" type="xs:string" />
             <xs:element name="urn" type="xs:string" />
             <xs:element name="selfLink" type="xs:string" />
             <xs:element name="parent" type="common:ResourceLink" />
-            <xs:element name="title" type="common:InternationalString" />
+            <xs:element name="pluralName" type="common:InternationalString" minOccurs="0" />
+            <xs:element name="acronym" type="common:InternationalString" minOccurs="0" />
+            <xs:element name="descriptionSource" type="common:InternationalString" minOccurs="0" />
+            <xs:element name="context" type="common:InternationalString" minOccurs="0" />
+            <xs:element name="docMethod" type="common:InternationalString" minOccurs="0" />
+            <xs:element name="sdmxRelatedArtefact" type="tns:ConceptRole" minOccurs="0" />
+            <xs:element name="type" type="common:Item" minOccurs="0" />
+            <xs:element name="derivation" type="common:InternationalString" minOccurs="0" />
+            <xs:element name="legalActs" type="common:InternationalString" minOccurs="0" />
+            <xs:element name="conceptExtends" type="common:Resource" minOccurs="0" />
             <xs:element name="children" type="common:Children" minOccurs="1" />
         </xs:sequence>
         <xs:attribute name="kind" type="xs:string" use="required" />
-    </xs:complexType>
+    </xs:complexType>    
 
     <!-- Lists -->
     <xs:complexType name="ConceptSchemes">
@@ -36,7 +65,25 @@
             <xs:enumeration value="PUBLISH_EXTERNALLY" />
         </xs:restriction>
     </xs:simpleType>
-
+    
+    <xs:simpleType name="ConceptSchemeType">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="GLOSSARY" />
+            <xs:enumeration value="TRANSVERSAL" />
+            <xs:enumeration value="OPERATION" />
+            <xs:enumeration value="ROLE" />
+        </xs:restriction>
+    </xs:simpleType>  
+    
+    <xs:simpleType name="ConceptRole">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="DIMENSION" />
+            <xs:enumeration value="ATTRIBUTE" />
+            <xs:enumeration value="OPERPRIMARY_MEASUREATION" />
+            <xs:enumeration value="ROLE" />
+        </xs:restriction>
+    </xs:simpleType>       
+    
     <!-- Criterias -->
     <xs:simpleType name="ConceptSchemeCriteriaPropertyRestriction">
         <xs:restriction base="xs:token">
@@ -54,5 +101,6 @@
 
     <!-- Elements -->
     <xs:element name="conceptScheme" type="tns:ConceptScheme" />
+    <xs:element name="concept" type="tns:Concept" />
     <xs:element name="conceptSchemes" type="tns:ConceptSchemes" />
 </xs:schema>

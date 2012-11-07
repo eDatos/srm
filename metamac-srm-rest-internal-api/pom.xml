@@ -47,6 +47,22 @@
             <artifactId>metamac-rest-common</artifactId>
             <version>${metamac-rest-common.version}</version>
         </dependency>
+        
+        <!-- SDMX -->
+        <dependency>
+            <groupId>com.arte.statistic.statistic-sdmx-v2_1</groupId>
+            <artifactId>statistic-sdmx-v2_1-domain</artifactId>
+            <version>${statistic-sdmx-v2_1.version}</version>
+        </dependency>        
+        <dependency>
+            <groupId>com.arte.statistic.statistic-sdmx-v2_1</groupId>
+            <artifactId>statistic-sdmx-v2_1-domain</artifactId>
+            <version>${statistic-sdmx-v2_1.version}</version>
+            <classifier>resources</classifier>
+            <type>zip</type>
+            <!-- Does not include in classpath -->
+            <scope>provided</scope>
+        </dependency>        
     </dependencies>
 
     <build>
@@ -98,8 +114,8 @@
                         </goals>
                         <configuration>
                             <outputDirectory>${project.build.directory}/classes/META-INF/rest/internal</outputDirectory>
-                            <includeGroupIds>org.siemac.metamac</includeGroupIds>
-                            <includeArtifacIds>metamac-rest-api</includeArtifacIds>
+                            <includeGroupIds>org.siemac.metamac,com.arte.statistic.statistic-sdmx-v2_1</includeGroupIds>
+                            <includeArtifacIds>metamac-rest-api,statistic-sdmx-v2_1-domain</includeArtifacIds>
                             <includeClassifiers>resources</includeClassifiers>
                             <excludeTransitive>true</excludeTransitive>
                             <includes>**/*.xsd,**/*.dtd</includes>
@@ -156,6 +172,10 @@
                             <token>metamac-rest-api:</token>
                             <value />
                         </replacement>
+                        <replacement>
+                            <token>statistic-sdmx-v2_1-domain:</token>
+                            <value />
+                        </replacement>
                     </replacements>
                 </configuration>
             </plugin>            
@@ -172,9 +192,9 @@
                         <configuration>
                             <extension>true</extension>
                             <schemaDirectory>${project.build.directory}/classes/META-INF/rest/internal</schemaDirectory>
-                            <schemaIncludes>
-                                <schemaInclude>*.xsd</schemaInclude>
-                            </schemaIncludes>
+<!--                             <schemaIncludes> -->
+<!--                                 <schemaInclude>metamac-srm-rest-internal-*.xsd</schemaInclude> -->
+<!--                             </schemaIncludes> -->
                             <args>
                                 <arg>-Xbg</arg>
                                 <arg>-npa</arg> <!-- no generate package-info -->
@@ -183,6 +203,10 @@
                                <episode>
                                     <groupId>org.siemac.metamac</groupId>
                                     <artifactId>metamac-rest-api</artifactId>
+                                </episode>
+                               <episode>
+                                    <groupId>com.arte.statistic.statistic-sdmx-v2_1</groupId>
+                                    <artifactId>statistic-sdmx-v2_1-domain</artifactId>
                                 </episode>
                             </episodes>
                             <bindingFiles>
