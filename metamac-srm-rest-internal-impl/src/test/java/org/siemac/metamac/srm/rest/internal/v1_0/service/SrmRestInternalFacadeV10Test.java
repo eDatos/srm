@@ -14,7 +14,6 @@ import org.junit.Test;
 import org.siemac.metamac.core.common.util.ApplicationContextProvider;
 import org.siemac.metamac.rest.common.test.MetamacRestBaseTest;
 import org.siemac.metamac.rest.common.test.ServerResource;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptScheme;
 import org.springframework.context.ApplicationContext;
 
 public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
@@ -64,19 +63,6 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
 
         // Request and validate
         testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.NOT_FOUND, new ByteArrayInputStream(new byte[0]));
-    }
-
-    @Test
-    public void testRetrieveConceptSchemeXml() throws Exception {
-
-        // Retrieve
-        ConceptScheme conceptScheme = getSrmRestInternalFacadeClientXml().retrieveConceptSchemeById(AGENCY_SMDX, CONCEPT_SCHEME_1_CODE, CONCEPT_SCHEME_1_VERSION);
-
-        // Validation
-        // TODO testear transformación en otro test
-        // TODO pendiente transformación
-        assertNotNull(conceptScheme);
-        // assertEquals(CONCEPT_SCHEME_1_URN, conceptScheme.getStructures().getConcepts().getConceptSchemes().get(0).getUrn());
     }
 
     private SrmRestInternalFacadeV10 getSrmRestInternalFacadeClientXml() {

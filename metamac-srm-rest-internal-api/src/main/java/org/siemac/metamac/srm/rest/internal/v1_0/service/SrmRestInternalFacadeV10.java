@@ -1,20 +1,48 @@
 package org.siemac.metamac.srm.rest.internal.v1_0.service;
 
-import javax.ws.rs.GET;
+import javax.ws.rs.GET; 
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptScheme;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemes;
 
 @Path("v1.0")
 public interface SrmRestInternalFacadeV10 {
-    
+
     /**
      * TODO Documentation
      */
     @GET
     @Produces("application/xml")
-    @Path("conceptscheme/{agencyID}/{resourceID}/{version}")
-    ConceptScheme retrieveConceptSchemeById(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @PathParam("version") String version);
+    @Path("conceptschemes")
+    ConceptSchemes findConceptSchemes(@QueryParam("query") String query, @QueryParam("orderBy") String orderBy, @QueryParam("limit") String limit, @QueryParam("offset") String offset);
+
+    /**
+     * TODO Documentation
+     */
+    @GET
+    @Produces("application/xml")
+    @Path("conceptschemes/{agencyID}")
+    ConceptSchemes findConceptSchemes(@PathParam("agencyID") String agencyID, @QueryParam("query") String query, @QueryParam("orderBy") String orderBy, @QueryParam("limit") String limit,
+            @QueryParam("offset") String offset);
+
+    /**
+     * TODO Documentation
+     */
+    @GET
+    @Produces("application/xml")
+    @Path("conceptschemes/{agencyID}/{resourceID}")
+    ConceptSchemes findConceptSchemes(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @QueryParam("query") String query, @QueryParam("orderBy") String orderBy,
+            @QueryParam("limit") String limit, @QueryParam("offset") String offset);
+
+    /**
+     * TODO Documentation
+     */
+    @GET
+    @Produces("application/xml")
+    @Path("conceptschemes/{agencyID}/{resourceID}/{version}")
+    ConceptSchemes findConceptSchemes(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @PathParam("version") String version, @QueryParam("query") String query,
+            @QueryParam("orderBy") String orderBy, @QueryParam("limit") String limit, @QueryParam("offset") String offset);
 }
