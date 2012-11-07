@@ -30,35 +30,32 @@ import org.springframework.stereotype.Service;
 public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
 
     @Autowired
-    private ConceptsMetamacService              conceptsService;
+    private ConceptsMetamacService   conceptsService;
 
     @Autowired
-    private ConceptsRest2DoMapper restCriteria2SculptorCriteriaMapper;
+    private ConceptsRest2DoMapper    restCriteria2SculptorCriteriaMapper;
 
     @Autowired
-    private ConceptsDo2RestMapperV10            do2RestInternalMapper;
+    private ConceptsDo2RestMapperV10 do2RestInternalMapper;
 
-    private ServiceContext                      ctx    = new ServiceContext("restInternal", "restInternal", "restInternal");
-    private Logger                              logger = LoggerFactory.getLogger(LoggingInterceptor.class);
+    private ServiceContext           ctx    = new ServiceContext("restInternal", "restInternal", "restInternal");
+    private Logger                   logger = LoggerFactory.getLogger(LoggingInterceptor.class);
 
     @Override
     public ConceptSchemes findConceptSchemes(String query, String orderBy, String limit, String offset) {
         try {
-            // Retrieve concept schemes by criteria
+            // Criteria to find concept schemes by criteria (only published)
             SculptorCriteria sculptorCriteria = restCriteria2SculptorCriteriaMapper.getConceptSchemeCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
-            // Find only internally or externally published
-
             List<ConditionalCriteria> conditionalCriteria = new ArrayList<ConditionalCriteria>();
             conditionalCriteria.addAll(sculptorCriteria.getConditions());
             conditionalCriteria.add(buildConditionalCriteriaConceptSchemeWithProcStatusToRestInternal());
 
-            // Retrieve
+            // Find
             PagedResult<ConceptSchemeVersionMetamac> conceptsSchemesEntitiesResult = conceptsService.findConceptSchemesByCondition(ctx, conditionalCriteria, sculptorCriteria.getPagingParameter());
 
             // Transform
             ConceptSchemes conceptSchemes = do2RestInternalMapper.toConceptSchemes(conceptsSchemesEntitiesResult, query, orderBy, sculptorCriteria.getLimit());
             return conceptSchemes;
-
         } catch (Exception e) {
             throw manageException(e);
         }
