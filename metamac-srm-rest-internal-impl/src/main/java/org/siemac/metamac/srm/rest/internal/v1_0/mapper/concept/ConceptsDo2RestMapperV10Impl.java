@@ -15,7 +15,9 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ConceptsDo2RestMapperV10Impl implements ConceptsDo2RestMapperV10 {
 
     @Autowired

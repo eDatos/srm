@@ -60,9 +60,8 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
     public void testWithoutMatchError404() throws Exception {
 
         String requestUri = baseApi + "/nomatch";
-        // TODO
-        // // Request and validate
-        // testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.NOT_FOUND, new ByteArrayInputStream(new byte[0]));
+        // Request and validate
+        testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.NOT_FOUND, new ByteArrayInputStream(new byte[0]));
     }
 
     private SrmRestInternalFacadeV10 getSrmRestInternalFacadeClientXml() {
