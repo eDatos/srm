@@ -15,6 +15,4 @@ public class ServiceExceptionType extends com.arte.statistic.sdmx.srm.core.commo
     // Organisations
     public static final CommonServiceExceptionType ORGANISATION_SCHEME_WRONG_TYPE = create("exception.srm.organisations.organisation_scheme.wrong_type");
 
-    // Security
-    public static final CommonServiceExceptionType SECURITY_ACTION_NOT_ALLOWED    = create("exception.srm.security.action_not_allowed");
 }

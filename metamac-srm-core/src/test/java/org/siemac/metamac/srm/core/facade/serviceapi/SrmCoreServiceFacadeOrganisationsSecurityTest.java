@@ -71,7 +71,7 @@ public class SrmCoreServiceFacadeOrganisationsSecurityTest extends SrmBaseTest {
                 fail("action not allowed");
             } catch (MetamacException e) {
                 assertEquals(1, e.getExceptionItems().size());
-                assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+                assertEquals(ServiceExceptionType.SECURITY_OPERATION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
             }
         }
     }
@@ -92,7 +92,7 @@ public class SrmCoreServiceFacadeOrganisationsSecurityTest extends SrmBaseTest {
                 fail("action not allowed");
             } catch (MetamacException e) {
                 assertEquals(1, e.getExceptionItems().size());
-                assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+                assertEquals(ServiceExceptionType.SECURITY_OPERATION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
             }
         }
     }
@@ -113,7 +113,7 @@ public class SrmCoreServiceFacadeOrganisationsSecurityTest extends SrmBaseTest {
                 fail("action not allowed");
             } catch (MetamacException e) {
                 assertEquals(1, e.getExceptionItems().size());
-                assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+                assertEquals(ServiceExceptionType.SECURITY_OPERATION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
             }
         }
     }
@@ -157,7 +157,7 @@ public class SrmCoreServiceFacadeOrganisationsSecurityTest extends SrmBaseTest {
                     fail("action not allowed");
                 } catch (MetamacException e) {
                     assertEquals(1, e.getExceptionItems().size());
-                    assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+                    assertEquals(ServiceExceptionType.SECURITY_OPERATION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
                 }
             }
         }
@@ -173,7 +173,7 @@ public class SrmCoreServiceFacadeOrganisationsSecurityTest extends SrmBaseTest {
                     fail("action not allowed");
                 } catch (MetamacException e) {
                     assertEquals(1, e.getExceptionItems().size());
-                    assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+                    assertEquals(ServiceExceptionType.SECURITY_OPERATION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
                 }
             }
         }
@@ -187,7 +187,7 @@ public class SrmCoreServiceFacadeOrganisationsSecurityTest extends SrmBaseTest {
                     fail("action not allowed");
                 } catch (MetamacException e) {
                     assertEquals(1, e.getExceptionItems().size());
-                    assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+                    assertEquals(ServiceExceptionType.SECURITY_OPERATION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
                 }
             }
         }
@@ -201,7 +201,7 @@ public class SrmCoreServiceFacadeOrganisationsSecurityTest extends SrmBaseTest {
                     fail("action not allowed");
                 } catch (MetamacException e) {
                     assertEquals(1, e.getExceptionItems().size());
-                    assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+                    assertEquals(ServiceExceptionType.SECURITY_OPERATION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
                 }
             }
         }
@@ -229,7 +229,7 @@ public class SrmCoreServiceFacadeOrganisationsSecurityTest extends SrmBaseTest {
                     fail("action not allowed");
                 } catch (MetamacException e) {
                     assertEquals(1, e.getExceptionItems().size());
-                    assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+                    assertEquals(ServiceExceptionType.SECURITY_OPERATION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
                 }
             }
         }
@@ -239,7 +239,7 @@ public class SrmCoreServiceFacadeOrganisationsSecurityTest extends SrmBaseTest {
                 fail("action not allowed");
             } catch (MetamacException e) {
                 assertEquals(1, e.getExceptionItems().size());
-                assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+                assertEquals(ServiceExceptionType.SECURITY_OPERATION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
             }
         }
     }
@@ -264,7 +264,7 @@ public class SrmCoreServiceFacadeOrganisationsSecurityTest extends SrmBaseTest {
                 fail("action not allowed");
             } catch (MetamacException e) {
                 assertEquals(1, e.getExceptionItems().size());
-                assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+                assertEquals(ServiceExceptionType.SECURITY_OPERATION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
             }
         }
     }
@@ -304,7 +304,7 @@ public class SrmCoreServiceFacadeOrganisationsSecurityTest extends SrmBaseTest {
                 fail("action not allowed");
             } catch (MetamacException e) {
                 assertEquals(1, e.getExceptionItems().size());
-                assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+                assertEquals(ServiceExceptionType.SECURITY_OPERATION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
             }
         }
     }
@@ -336,7 +336,7 @@ public class SrmCoreServiceFacadeOrganisationsSecurityTest extends SrmBaseTest {
                 fail("action not allowed");
             } catch (MetamacException e) {
                 assertEquals(1, e.getExceptionItems().size());
-                assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+                assertEquals(ServiceExceptionType.SECURITY_OPERATION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
             }
         }
     }
@@ -368,7 +368,7 @@ public class SrmCoreServiceFacadeOrganisationsSecurityTest extends SrmBaseTest {
                 fail("action not allowed");
             } catch (MetamacException e) {
                 assertEquals(1, e.getExceptionItems().size());
-                assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+                assertEquals(ServiceExceptionType.SECURITY_OPERATION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
             }
         }
     }
@@ -390,7 +390,7 @@ public class SrmCoreServiceFacadeOrganisationsSecurityTest extends SrmBaseTest {
                 fail("action not allowed");
             } catch (MetamacException e) {
                 assertEquals(1, e.getExceptionItems().size());
-                assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+                assertEquals(ServiceExceptionType.SECURITY_OPERATION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
             }
         }
     }
@@ -412,7 +412,7 @@ public class SrmCoreServiceFacadeOrganisationsSecurityTest extends SrmBaseTest {
                 fail("action not allowed");
             } catch (MetamacException e) {
                 assertEquals(1, e.getExceptionItems().size());
-                assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+                assertEquals(ServiceExceptionType.SECURITY_OPERATION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
             }
         }
     }
@@ -443,7 +443,7 @@ public class SrmCoreServiceFacadeOrganisationsSecurityTest extends SrmBaseTest {
                 fail("action not allowed");
             } catch (MetamacException e) {
                 assertEquals(1, e.getExceptionItems().size());
-                assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+                assertEquals(ServiceExceptionType.SECURITY_OPERATION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
             }
         }
     }
@@ -464,7 +464,7 @@ public class SrmCoreServiceFacadeOrganisationsSecurityTest extends SrmBaseTest {
                 fail("action not allowed");
             } catch (MetamacException e) {
                 assertEquals(1, e.getExceptionItems().size());
-                assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+                assertEquals(ServiceExceptionType.SECURITY_OPERATION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
             }
         }
     }
@@ -494,7 +494,7 @@ public class SrmCoreServiceFacadeOrganisationsSecurityTest extends SrmBaseTest {
                     fail("action not allowed");
                 } catch (MetamacException e) {
                     assertEquals(1, e.getExceptionItems().size());
-                    assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+                    assertEquals(ServiceExceptionType.SECURITY_OPERATION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
                 }
             }
         }
@@ -504,7 +504,7 @@ public class SrmCoreServiceFacadeOrganisationsSecurityTest extends SrmBaseTest {
                 fail("action not allowed");
             } catch (MetamacException e) {
                 assertEquals(1, e.getExceptionItems().size());
-                assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+                assertEquals(ServiceExceptionType.SECURITY_OPERATION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
             }
         }
     }
@@ -533,7 +533,7 @@ public class SrmCoreServiceFacadeOrganisationsSecurityTest extends SrmBaseTest {
                         fail("action not allowed");
                     } catch (MetamacException e) {
                         assertEquals(1, e.getExceptionItems().size());
-                        assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+                        assertEquals(ServiceExceptionType.SECURITY_OPERATION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
                     }
                 }
             }
@@ -562,7 +562,7 @@ public class SrmCoreServiceFacadeOrganisationsSecurityTest extends SrmBaseTest {
                         fail("action not allowed");
                     } catch (MetamacException e) {
                         assertEquals(1, e.getExceptionItems().size());
-                        assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+                        assertEquals(ServiceExceptionType.SECURITY_OPERATION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
                     }
                 }
             }
@@ -592,7 +592,7 @@ public class SrmCoreServiceFacadeOrganisationsSecurityTest extends SrmBaseTest {
                         fail("action not allowed");
                     } catch (MetamacException e) {
                         assertEquals(1, e.getExceptionItems().size());
-                        assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+                        assertEquals(ServiceExceptionType.SECURITY_OPERATION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
                     }
                 }
             }
@@ -620,7 +620,7 @@ public class SrmCoreServiceFacadeOrganisationsSecurityTest extends SrmBaseTest {
             srmCoreServiceFacade.updateOrganisation(getServiceContextJefeNormalizacion(), organisationMetamacDto);
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(ServiceExceptionType.SECURITY_OPERATION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
         }
     }
 
@@ -679,7 +679,7 @@ public class SrmCoreServiceFacadeOrganisationsSecurityTest extends SrmBaseTest {
                     fail("action not allowed");
                 } catch (MetamacException e) {
                     assertEquals(1, e.getExceptionItems().size());
-                    assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+                    assertEquals(ServiceExceptionType.SECURITY_OPERATION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
                 }
             }
         }
@@ -696,7 +696,7 @@ public class SrmCoreServiceFacadeOrganisationsSecurityTest extends SrmBaseTest {
                     fail("action not allowed");
                 } catch (MetamacException e) {
                     assertEquals(1, e.getExceptionItems().size());
-                    assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+                    assertEquals(ServiceExceptionType.SECURITY_OPERATION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
                 }
             }
         }
@@ -711,7 +711,7 @@ public class SrmCoreServiceFacadeOrganisationsSecurityTest extends SrmBaseTest {
                     fail("action not allowed");
                 } catch (MetamacException e) {
                     assertEquals(1, e.getExceptionItems().size());
-                    assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+                    assertEquals(ServiceExceptionType.SECURITY_OPERATION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
                 }
             }
         }
@@ -726,7 +726,7 @@ public class SrmCoreServiceFacadeOrganisationsSecurityTest extends SrmBaseTest {
                     fail("action not allowed");
                 } catch (MetamacException e) {
                     assertEquals(1, e.getExceptionItems().size());
-                    assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+                    assertEquals(ServiceExceptionType.SECURITY_OPERATION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
                 }
             }
         }
@@ -752,7 +752,7 @@ public class SrmCoreServiceFacadeOrganisationsSecurityTest extends SrmBaseTest {
                 fail("action not allowed");
             } catch (MetamacException e) {
                 assertEquals(1, e.getExceptionItems().size());
-                assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+                assertEquals(ServiceExceptionType.SECURITY_OPERATION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
             }
         }
     }
@@ -773,7 +773,7 @@ public class SrmCoreServiceFacadeOrganisationsSecurityTest extends SrmBaseTest {
                     fail("action not allowed");
                 } catch (MetamacException e) {
                     assertEquals(1, e.getExceptionItems().size());
-                    assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+                    assertEquals(ServiceExceptionType.SECURITY_OPERATION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
                 }
             }
         }
@@ -800,7 +800,7 @@ public class SrmCoreServiceFacadeOrganisationsSecurityTest extends SrmBaseTest {
                 fail("action not allowed");
             } catch (MetamacException e) {
                 assertEquals(1, e.getExceptionItems().size());
-                assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+                assertEquals(ServiceExceptionType.SECURITY_OPERATION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
             }
         }
     }
@@ -825,7 +825,7 @@ public class SrmCoreServiceFacadeOrganisationsSecurityTest extends SrmBaseTest {
                 fail("action not allowed");
             } catch (MetamacException e) {
                 assertEquals(1, e.getExceptionItems().size());
-                assertEquals(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+                assertEquals(ServiceExceptionType.SECURITY_OPERATION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
             }
         }
     }
