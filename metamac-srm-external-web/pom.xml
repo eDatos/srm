@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.siemac.metamac.metamac-srm</groupId>
+        <artifactId>metamac-srm-parent</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../metamac-srm-parent/pom.xml</relativePath>
+    </parent>
+
+    <groupId>org.siemac.metamac.metamac-srm</groupId>
+    <artifactId>metamac-srm-external-web</artifactId>
+    <packaging>war</packaging>
+    <name>SIEMAC :: METAMAC :: SRM :: EXTERNAL WEB</name>
+    <description>SIEMAC :: METAMAC :: SRM :: EXTERNAL WEB</description>
+
+    <properties>
+        <!-- Convenience property to set the GWT version -->
+        <webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.siemac.metamac.metamac-srm</groupId>
+            <artifactId>metamac-srm-rest-internal-impl</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.ibm.icu</groupId>
+            <artifactId>icu4j</artifactId>
+            <version>${icu4j.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+
+        </plugins>
+    </build>
+</project>
