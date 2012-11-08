@@ -30,7 +30,7 @@
 «ENDAROUND»
 
 «AROUND templates::db::CustomDDL::column(String prefix, boolean parentIsNullable) FOR Attribute-»
-  «IF type == "DateTimeTZ" || name == "lastUpdated" || name == "createdDate"»«getDatabaseName()»_TZ VARCHAR2(50)«parentIsNullable || nullable ? "" : getDatabaseTypeNullability()-»,
+  «IF type == "DateTimeTZ" || name == "lastUpdated" || name == "createdDate"»«getDatabaseName()»_TZ VARCHAR(50)«parentIsNullable || nullable ? "" : getDatabaseTypeNullability()-»,
   «ENDIF-»
   «targetDef.proceed()-»
 «ENDAROUND»
