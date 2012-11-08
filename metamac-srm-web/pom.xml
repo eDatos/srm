@@ -27,6 +27,12 @@
             <groupId>org.siemac.metamac</groupId>
             <artifactId>metamac-web-common</artifactId>
             <version>${metamac-web-common.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.siemac.metamac.metamac-sso</groupId>
+                    <artifactId>metamac-sso-client</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.siemac.metamac.metamac-srm</groupId>

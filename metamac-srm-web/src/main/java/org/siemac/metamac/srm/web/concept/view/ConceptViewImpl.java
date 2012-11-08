@@ -11,6 +11,7 @@ import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptTypeDto;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptRoleEnum;
+import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.model.ds.RepresentationDS;
 import org.siemac.metamac.srm.web.client.representation.widgets.StaticFacetForm;
@@ -241,6 +242,7 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
         // Class descriptors
         classDescriptorsForm = new GroupDynamicForm(getConstants().conceptClassDescriptors());
         ViewTextItem sdmxRelatedArtefact = new ViewTextItem(ConceptDS.SDMX_RELATED_ARTEFACT, getConstants().conceptSdmxRelatedArtefact());
+        sdmxRelatedArtefact.setShowIfCondition(getSdmxRelatedArtefactFormItemIfFunction());
         ViewTextItem type = new ViewTextItem(ConceptDS.TYPE, getConstants().conceptType());
         ViewTextItem roles = new ViewTextItem(ConceptDS.ROLES, getConstants().conceptRoles()); // TODO roles
         classDescriptorsForm.setFields(sdmxRelatedArtefact, type, roles);
@@ -328,6 +330,7 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
         classDescriptorsEditionForm = new GroupDynamicForm(getConstants().conceptClassDescriptors());
         RequiredSelectItem sdmxRelatedArtefact = new RequiredSelectItem(ConceptDS.SDMX_RELATED_ARTEFACT, getConstants().conceptSdmxRelatedArtefact());
         sdmxRelatedArtefact.setValueMap(CommonUtils.getConceptRoleHashMap());
+        sdmxRelatedArtefact.setShowIfCondition(getSdmxRelatedArtefactFormItemIfFunction());
         SelectItem type = new SelectItem(ConceptDS.TYPE, getConstants().conceptType()); // Value map set in setConceptTypes method
         // TODO Roles
         classDescriptorsEditionForm.setFields(sdmxRelatedArtefact, type);
@@ -390,6 +393,9 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
         // Security
         mainFormLayout.setCanEdit(ConceptsClientSecurityUtils.canUpdateConcept(conceptSchemeMetamacDto.getLifeCycle().getProcStatus(), conceptSchemeMetamacDto.getType(),
                 CommonUtils.getRelatedOperationCode(conceptSchemeMetamacDto)));
+
+        classDescriptorsForm.markForRedraw();
+        classDescriptorsEditionForm.markForRedraw();
     }
 
     @Override
@@ -608,6 +614,19 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
         return identifiersEditionForm.validate(false) && contentDescriptorsEditionForm.validate(false) && (facetEditionForm.isVisible() ? facetEditionForm.validate(false) : true)
                 && classDescriptorsEditionForm.validate(false) && productionDescriptorsEditionForm.validate(false) && relationBetweenConceptsEditionForm.validate(false)
                 && legalActsEditionForm.validate(false);
+    }
+
+    private FormItemIfFunction getSdmxRelatedArtefactFormItemIfFunction() {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                if (conceptSchemeMetamacDto != null) {
+                    return ConceptSchemeTypeEnum.OPERATION.equals(conceptSchemeMetamacDto.getType()) || ConceptSchemeTypeEnum.TRANSVERSAL.equals(conceptSchemeMetamacDto.getType());
+                }
+                return false;
+            }
+        };
     }
 
 }
