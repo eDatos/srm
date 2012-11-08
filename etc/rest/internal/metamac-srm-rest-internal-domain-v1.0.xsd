@@ -13,8 +13,6 @@
         <xs:complexContent>
             <xs:extension base="sdmx:ConceptSchemeType">
                 <xs:sequence>
-                    <xs:element name="id" type="xs:string" />
-                    <xs:element name="urn" type="xs:string" />
                     <xs:element name="selfLink" type="xs:string" />
                     <xs:element name="parent" type="common:ResourceLink" />
                     <xs:element name="type" type="tns:ConceptSchemeType" />
@@ -28,8 +26,6 @@
     
     <xs:complexType name="Concept">
         <xs:sequence>
-            <xs:element name="id" type="xs:string" />
-            <xs:element name="urn" type="xs:string" />
             <xs:element name="selfLink" type="xs:string" />
             <xs:element name="parent" type="common:ResourceLink" />
             <xs:element name="pluralName" type="common:InternationalString" minOccurs="0" />

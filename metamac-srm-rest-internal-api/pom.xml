@@ -118,7 +118,7 @@
                             <includeArtifacIds>metamac-rest-api,statistic-sdmx-v2_1-domain</includeArtifacIds>
                             <includeClassifiers>resources</includeClassifiers>
                             <excludeTransitive>true</excludeTransitive>
-                            <includes>**/*.xsd,**/*.dtd</includes>
+                            <includes>**/*.xsd,**/*.dtd,**/*.episode</includes>
                             <includeTypes>zip</includeTypes>
                         </configuration>
                     </execution>
@@ -179,54 +179,43 @@
                     </replacements>
                 </configuration>
             </plugin>            
+            
             <plugin>
-                <groupId>org.jvnet.jaxb2.maven2</groupId>
-                <artifactId>maven-jaxb22-plugin</artifactId>
-                <version>0.8.1</version>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>jaxb2-maven-plugin</artifactId>
+                <version>1.5</version>
                 <executions>
                     <execution>
-                        <phase>generate-sources</phase>
                         <goals>
-                            <goal>generate</goal>
+                            <goal>xjc</goal>
                         </goals>
-                        <configuration>
-                            <extension>true</extension>
-                            <schemaDirectory>${project.build.directory}/classes/META-INF/rest/internal</schemaDirectory>
-<!--                             <schemaIncludes> -->
-<!--                                 <schemaInclude>metamac-srm-rest-internal-*.xsd</schemaInclude> -->
-<!--                             </schemaIncludes> -->
-                            <args>
-                                <arg>-Xbg</arg>
-                                <arg>-npa</arg> <!-- no generate package-info -->
-                            </args>
-                            <episodes>
-                               <episode>
-                                    <groupId>org.siemac.metamac</groupId>
-                                    <artifactId>metamac-rest-api</artifactId>
-                                </episode>
-                               <episode>
-                                    <groupId>com.arte.statistic.statistic-sdmx-v2_1</groupId>
-                                    <artifactId>statistic-sdmx-v2_1-domain</artifactId>
-                                </episode>
-                            </episodes>
-                            <bindingFiles>
-                                <bindingFile>${basedir}/../etc/rest/internal/binding.xjb</bindingFile>
-                            </bindingFiles>
-                            <generateDirectory>${basedir}/src/generated/java</generateDirectory>
-                            <forceRegenerate>true</forceRegenerate>
-                        </configuration>
                     </execution>
                 </executions>
+                <configuration>
+                    <extension>true</extension>
+                    <schemaDirectory>${project.build.directory}/classes/META-INF/rest/internal</schemaDirectory>
+                    <bindingDirectory>${basedir}</bindingDirectory>
+                    <bindingFiles>../etc/rest/internal/binding.xjb,target/classes/META-INF/rest/internal/sdmx-v2_1/sun-jaxb.episode,,target/classes/META-INF/rest/internal/rest-api/sun-jaxb.episode</bindingFiles>
+                    <npa>true</npa>
+                    <detail>true</detail>
+                    <outputDirectory>${basedir}/src/generated/java</outputDirectory>
+                    <includeSchemasOutputPath>META-INF</includeSchemasOutputPath>
+                    <verbose>false</verbose>
+                </configuration>
                 <dependencies>
                     <dependency>
                         <groupId>com.sun.xml.bind</groupId>
                         <artifactId>jaxb-impl</artifactId>
                         <version>${jaxb.version}</version>
+                        <type>jar</type>
+                        <scope>compile</scope>
                     </dependency>
                     <dependency>
-                        <groupId>org.apache.cxf.xjcplugins</groupId>
-                        <artifactId>cxf-xjc-boolean</artifactId>
-                        <version>${cxf-xjc-boolean.version}</version>
+                        <groupId>com.sun.xml.bind</groupId>
+                        <artifactId>jaxb-xjc</artifactId>
+                        <version>${jaxb.version}</version>
+                        <type>jar</type>
+                        <scope>compile</scope>
                     </dependency>
                 </dependencies>
             </plugin>            
