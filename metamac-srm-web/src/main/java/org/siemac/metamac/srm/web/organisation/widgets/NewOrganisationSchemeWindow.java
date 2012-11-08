@@ -63,7 +63,7 @@ public class NewOrganisationSchemeWindow extends CustomWindow {
         OrganisationSchemeMetamacDto organisationSchemeDto = new OrganisationSchemeMetamacDto();
 
         // TODO agency
-        RelatedResourceDto agency = new RelatedResourceDto("SDMX_AGENCY", "urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:SDMX(1.0).DREM", TypeExternalArtefactsEnum.AGENCY);
+        RelatedResourceDto agency = new RelatedResourceDto("SDMX_AGENCY", "urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:SDMX(1.0).ISTAC", TypeExternalArtefactsEnum.AGENCY);
         organisationSchemeDto.setMaintainer(agency);
 
         organisationSchemeDto.setType(OrganisationSchemeTypeEnum.valueOf(form.getValueAsString(OrganisationSchemeDS.TYPE)));

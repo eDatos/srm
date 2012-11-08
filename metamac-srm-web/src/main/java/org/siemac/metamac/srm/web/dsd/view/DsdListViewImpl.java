@@ -321,7 +321,7 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
         InternationalStringDto internationalName = InternationalStringUtils.updateInternationalString(new InternationalStringDto(), nameItem.getValueAsString());
         dsd.setName(internationalName);
         // TODO Organization (MaintainerIdLogic)
-        RelatedResourceDto agency = new RelatedResourceDto("agency_CODE", "urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:SDMX(1.0).DREM", TypeExternalArtefactsEnum.AGENCY);
+        RelatedResourceDto agency = new RelatedResourceDto("agency_CODE", "urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:SDMX(1.0).ISTAC", TypeExternalArtefactsEnum.AGENCY);
         dsd.setMaintainer(agency);
         dsd.setFinalLogic(false);
         dsd.setIsExternalReference(false);
