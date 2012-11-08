@@ -177,14 +177,14 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         // Note: ConceptsService checks conceptScheme isn't final and other conditions
         conceptsService.deleteConceptScheme(ctx, urn);
     }
-    
+
     @Override
     public ConceptSchemeVersionMetamac versioningConceptScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
 
         // Validation
         ConceptsMetamacInvocationValidator.checkVersioningConceptScheme(urnToCopy, versionType, null, null);
         checkVersioningConceptSchemeIsSupported(ctx, urnToCopy);
-        
+
         // Versioning
         ConceptSchemeVersionMetamac conceptSchemeNewVersion = (ConceptSchemeVersionMetamac) conceptsService.versioningConceptScheme(ctx, urnToCopy, versionType, conceptCopyCallback);
 
@@ -239,8 +239,13 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     @Override
     public ConceptMetamac updateConcept(ServiceContext ctx, ConceptMetamac concept) throws MetamacException {
 
+        ConceptSchemeVersionMetamac conceptSchemeVersion = null;
+        if (concept != null && concept.getItemSchemeVersion() != null && concept.getItemSchemeVersion().getMaintainableArtefact() != null
+                && concept.getItemSchemeVersion().getMaintainableArtefact().getUrn() != null) {
+            conceptSchemeVersion = retrieveConceptSchemeByUrn(ctx, concept.getItemSchemeVersion().getMaintainableArtefact().getUrn());
+        }
         // Validation
-        ConceptsMetamacInvocationValidator.checkUpdateConcept(concept, null);
+        ConceptsMetamacInvocationValidator.checkUpdateConcept(conceptSchemeVersion, concept, null);
         // ConceptsService checks conceptScheme isn't final
 
         return (ConceptMetamac) conceptsService.updateConcept(ctx, concept);
@@ -576,9 +581,9 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         List<ConceptMetamac> conceptsMetamac = conceptsToConceptMetamac(source.getValues());
         return new PagedResult<ConceptMetamac>(conceptsMetamac, source.getStartRow(), source.getRowCount(), source.getPageSize(), source.getTotalRows(), source.getAdditionalResultRows());
     }
-    
+
     private void checkVersioningConceptSchemeIsSupported(ServiceContext ctx, String urnToCopy) throws MetamacException {
-        
+
         // Retrieve version to copy and check it is final (internally published)
         ConceptSchemeVersion conceptSchemeVersionToCopy = retrieveConceptSchemeByUrn(ctx, urnToCopy);
         if (!conceptSchemeVersionToCopy.getMaintainableArtefact().getFinalLogic()) {
