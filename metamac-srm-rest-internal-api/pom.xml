@@ -194,6 +194,8 @@
                 <configuration>
                     <extension>true</extension>
                     <schemaDirectory>${project.build.directory}/classes/META-INF/rest/internal</schemaDirectory>
+                    <!-- if we need xjc:treatRestrictionLikeNewType in binding file, replace schemaFiles by schemaListFileName as statistic-sdmx-v2_1-domain -->
+                    <schemaFiles>metamac-srm-rest-internal-domain-v1.0.xsd</schemaFiles>
                     <bindingDirectory>${basedir}</bindingDirectory>
                     <bindingFiles>../etc/rest/internal/binding.xjb,target/classes/META-INF/rest/internal/sdmx-v2_1/sun-jaxb.episode,,target/classes/META-INF/rest/internal/rest-api/sun-jaxb.episode</bindingFiles>
                     <npa>true</npa>
