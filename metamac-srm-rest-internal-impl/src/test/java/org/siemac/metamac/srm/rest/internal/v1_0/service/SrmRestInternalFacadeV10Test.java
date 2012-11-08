@@ -118,41 +118,49 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
         // Find concepts schemes
         ConceptSchemes conceptSchemes = getSrmRestInternalFacadeClientXml().findConceptSchemes(query, orderBy, limit, offset);
         assertNotNull(conceptSchemes);
+        
+        // Verify
         ArgumentCaptor<List> conditions = ArgumentCaptor.forClass(List.class);
         ArgumentCaptor<PagingParameter> pagingParameter = ArgumentCaptor.forClass(PagingParameter.class);
         verify(conceptsService).findConceptSchemesByCondition(any(ServiceContext.class), conditions.capture(), pagingParameter.capture());
 
         // Validate
+        List<ConditionalCriteria> expected = buildExpectedConditionalCriteria(query, orderBy);
+        MetamacRestAsserts.assertEqualsConditionalCriteria(expected, conditions.getValue());
+        MetamacRestAsserts.assertEqualsPagingParameter(buildExpectedPagingParameter(offset, limit), pagingParameter.getValue());
+    }
+
+    private List<ConditionalCriteria> buildExpectedConditionalCriteria(String query, String orderBy) {
         List<ConditionalCriteria> expected = new ArrayList<ConditionalCriteria>();
-        // Order by
-        if (orderBy == null) {
-            expected.add(ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).orderBy(ConceptSchemeVersionMetamacProperties.id()).ascending().buildSingle());
-        } else {
-            fail();
-        }
-        // Query
-        if (query != null) {
-            if (QUERY_CONCEPT_SCHEME_ID_LIKE_1.equals(query)) {
-                expected.add(ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).withProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact().code()).like("%1%")
-                        .buildSingle());
-            } else if (QUERY_CONCEPT_SCHEME_ID_LIKE_1_NAME_LIKE_2.equals(query)) {
-                expected.add(ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).withProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact().code()).like("%1%")
-                        .buildSingle());
-                expected.add(ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).withProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact().name()).like("%2%")
-                        .buildSingle());
-            } else {
-                fail();
-            }
-        }
-        // Distinct root
+        expected.addAll(buildExpectedConditionalCriteriaOrderBy(orderBy));
+        expected.addAll(buildExpectedConditionalCriteriaQuery(query));
         expected.add(ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).distinctRoot().buildSingle());
-        // Proc status
         expected.add(ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).withProperty(ConceptSchemeVersionMetamacProperties.lifeCycleMetadata().procStatus())
                 .in(ProcStatusEnum.INTERNALLY_PUBLISHED, ProcStatusEnum.EXTERNALLY_PUBLISHED).buildSingle());
+        return expected;
+    }
 
-        // Asserts
-        MetamacRestAsserts.assertEqualsConditionalCriteria(expected, conditions.getValue());
-        MetamacRestAsserts.assertEqualsPagingParameter(buildPagingParameter(offset, limit), pagingParameter.getValue());
+    private List<ConditionalCriteria> buildExpectedConditionalCriteriaOrderBy(String orderBy) {
+        if (orderBy == null) {
+            return ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).orderBy(ConceptSchemeVersionMetamacProperties.id()).ascending().build();
+        } else {
+            fail();
+            return null;
+        }
+    }
+
+    private List<ConditionalCriteria> buildExpectedConditionalCriteriaQuery(String query) {
+        if (query == null) {
+            return new ArrayList<ConditionalCriteria>();
+        }
+        if (QUERY_CONCEPT_SCHEME_ID_LIKE_1.equals(query)) {
+            return ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).withProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact().code()).like("%1%").build();
+        } else if (QUERY_CONCEPT_SCHEME_ID_LIKE_1_NAME_LIKE_2.equals(query)) {
+            return ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).withProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact().code()).like("%1%")
+                    .withProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact().name()).like("%2%").build();
+        }
+        fail();
+        return null;
     }
 
     @SuppressWarnings("unchecked")
@@ -170,7 +178,7 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
         return srmRestInternalFacadeClientXml;
     }
 
-    private PagingParameter buildPagingParameter(String offset, String limit) {
+    private PagingParameter buildExpectedPagingParameter(String offset, String limit) {
         Integer startRow = null;
         if (offset == null) {
             startRow = Integer.valueOf(0);
