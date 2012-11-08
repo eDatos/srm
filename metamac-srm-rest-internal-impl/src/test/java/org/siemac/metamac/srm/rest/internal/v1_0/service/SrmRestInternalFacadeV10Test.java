@@ -36,6 +36,7 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacProperties;
 import org.siemac.metamac.srm.core.concept.serviceapi.ConceptsMetamacService;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.springframework.context.ApplicationContext;
 
 public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
@@ -57,6 +58,7 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
     private String                          QUERY_CONCEPT_SCHEME_ID_LIKE_1_NAME_LIKE_2 = ConceptSchemeCriteriaPropertyRestriction.ID + " " + ComparisonOperator.LIKE + " \"1\"" + " "
                                                                                                + LogicalOperator.AND + " " + ConceptSchemeCriteriaPropertyRestriction.NAME + " "
                                                                                                + ComparisonOperator.LIKE + " \"2\"";
+    private String                          AGENCY_1                                   = "agency1";
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     @BeforeClass
@@ -84,59 +86,72 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
 
     @Test
     public void testWithoutMatchError404() throws Exception {
-
         String requestUri = baseApi + "/nomatch";
-        // Request and validate
         testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.NOT_FOUND, new ByteArrayInputStream(new byte[0]));
     }
 
     @Test
-    public void testFindConceptsSchemesXml() throws Exception {
+    public void testFindConceptsSchemes() throws Exception {
 
-        // without limits
-        testFindConceptsSchemesXml(null, null, null, null);
-        testFindConceptsSchemesXml("10000", null, null, null);
-        // without limits, first page
-        testFindConceptsSchemesXml(null, "0", null, null);
-        // first page with pagination
-        testFindConceptsSchemesXml("2", "0", null, null);
-        // other page with pagination
-        testFindConceptsSchemesXml("2", "2", null, null);
-        // query by id, without limits
-        testFindConceptsSchemesXml(null, null, QUERY_CONCEPT_SCHEME_ID_LIKE_1, null);
-        // query by id and name, without limits
-        testFindConceptsSchemesXml(null, null, QUERY_CONCEPT_SCHEME_ID_LIKE_1_NAME_LIKE_2, null);
-        // query by id and name, first page
-        testFindConceptsSchemesXml("1", "0", QUERY_CONCEPT_SCHEME_ID_LIKE_1_NAME_LIKE_2, null);
+        testFindConceptsSchemes(null, null, null, null); // without limits
+        testFindConceptsSchemes("10000", null, null, null); // without limits
+        testFindConceptsSchemes(null, "0", null, null); // without limits, first page
+        testFindConceptsSchemes("2", "0", null, null); // first page with pagination
+        testFindConceptsSchemes("2", "2", null, null); // other page with pagination
+        testFindConceptsSchemes(null, null, QUERY_CONCEPT_SCHEME_ID_LIKE_1, null); // query by id, without limits
+        testFindConceptsSchemes(null, null, QUERY_CONCEPT_SCHEME_ID_LIKE_1_NAME_LIKE_2, null); // query by id and name, without limits
+        testFindConceptsSchemes("1", "0", QUERY_CONCEPT_SCHEME_ID_LIKE_1_NAME_LIKE_2, null); // query by id and name, first page
+    }
+
+    @Test
+    public void testFindConceptsSchemesByAgency() throws Exception {
+        testFindConceptsSchemes(AGENCY_1, null, null, null, null);
+        testFindConceptsSchemes(RestInternalConstants.WILDCARD, null, null, null, null);
+        testFindConceptsSchemes(AGENCY_1, null, "0", null, null);
+        testFindConceptsSchemes(AGENCY_1, "2", "0", null, null);
+        testFindConceptsSchemes(AGENCY_1, "1", "0", QUERY_CONCEPT_SCHEME_ID_LIKE_1_NAME_LIKE_2, null);
+        testFindConceptsSchemes(RestInternalConstants.WILDCARD, "1", "0", QUERY_CONCEPT_SCHEME_ID_LIKE_1_NAME_LIKE_2, null);
+    }
+
+    private void testFindConceptsSchemes(String limit, String offset, String query, String orderBy) throws Exception {
+        resetMocks();
+        ConceptSchemes conceptSchemes = getSrmRestInternalFacadeClientXml().findConceptSchemes(query, orderBy, limit, offset);
+        assertFindConceptSchemes(null, limit, offset, query, orderBy, conceptSchemes);
+    }
+
+    private void testFindConceptsSchemes(String agencyID, String limit, String offset, String query, String orderBy) throws Exception {
+        resetMocks();
+        ConceptSchemes conceptSchemes = getSrmRestInternalFacadeClientXml().findConceptSchemes(agencyID, query, orderBy, limit, offset);
+        assertFindConceptSchemes(agencyID, limit, offset, query, orderBy, conceptSchemes);
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
-    private void testFindConceptsSchemesXml(String limit, String offset, String query, String orderBy) throws Exception {
+    private void assertFindConceptSchemes(String agencyID, String limit, String offset, String query, String orderBy, ConceptSchemes conceptSchemesActual) throws Exception {
 
-        resetMocks();
+        assertNotNull(conceptSchemesActual);
+        assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEMES, conceptSchemesActual.getKind());
 
-        // Find concepts schemes
-        ConceptSchemes conceptSchemes = getSrmRestInternalFacadeClientXml().findConceptSchemes(query, orderBy, limit, offset);
-        assertNotNull(conceptSchemes);
-        
         // Verify
         ArgumentCaptor<List> conditions = ArgumentCaptor.forClass(List.class);
         ArgumentCaptor<PagingParameter> pagingParameter = ArgumentCaptor.forClass(PagingParameter.class);
         verify(conceptsService).findConceptSchemesByCondition(any(ServiceContext.class), conditions.capture(), pagingParameter.capture());
 
         // Validate
-        List<ConditionalCriteria> expected = buildExpectedConditionalCriteria(query, orderBy);
-        MetamacRestAsserts.assertEqualsConditionalCriteria(expected, conditions.getValue());
+        MetamacRestAsserts.assertEqualsConditionalCriteria(buildExpectedConditionalCriteria(agencyID, query, orderBy), conditions.getValue());
         MetamacRestAsserts.assertEqualsPagingParameter(buildExpectedPagingParameter(offset, limit), pagingParameter.getValue());
     }
 
-    private List<ConditionalCriteria> buildExpectedConditionalCriteria(String query, String orderBy) {
+    private List<ConditionalCriteria> buildExpectedConditionalCriteria(String agencyID, String query, String orderBy) {
         List<ConditionalCriteria> expected = new ArrayList<ConditionalCriteria>();
         expected.addAll(buildExpectedConditionalCriteriaOrderBy(orderBy));
         expected.addAll(buildExpectedConditionalCriteriaQuery(query));
         expected.add(ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).distinctRoot().buildSingle());
         expected.add(ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).withProperty(ConceptSchemeVersionMetamacProperties.lifeCycleMetadata().procStatus())
                 .in(ProcStatusEnum.INTERNALLY_PUBLISHED, ProcStatusEnum.EXTERNALLY_PUBLISHED).buildSingle());
+        if (agencyID != null && !RestInternalConstants.WILDCARD.equals(agencyID)) {
+            expected.add(ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class)
+                    .withProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact().maintainer().idAsMaintainer()).eq(agencyID).buildSingle());
+        }
         return expected;
     }
 
@@ -157,7 +172,7 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
             return ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).withProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact().code()).like("%1%").build();
         } else if (QUERY_CONCEPT_SCHEME_ID_LIKE_1_NAME_LIKE_2.equals(query)) {
             return ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).withProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact().code()).like("%1%")
-                    .withProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact().name()).like("%2%").build();
+                    .withProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact().name().texts().label()).like("%2%").build();
         }
         fail();
         return null;

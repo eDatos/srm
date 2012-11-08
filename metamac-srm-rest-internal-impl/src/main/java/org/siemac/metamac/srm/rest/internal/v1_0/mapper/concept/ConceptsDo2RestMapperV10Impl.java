@@ -17,6 +17,8 @@ import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
+
 @Component
 public class ConceptsDo2RestMapperV10Impl implements ConceptsDo2RestMapperV10 {
 
@@ -36,13 +38,13 @@ public class ConceptsDo2RestMapperV10Impl implements ConceptsDo2RestMapperV10 {
     }
 
     @Override
-    public ConceptSchemes toConceptSchemes(PagedResult<ConceptSchemeVersionMetamac> sourcesPagedResult, String query, String orderBy, Integer limit) {
+    public ConceptSchemes toConceptSchemes(PagedResult<ConceptSchemeVersionMetamac> sourcesPagedResult, String agencyID, String resourceID, String version, String query, String orderBy, Integer limit) {
 
         ConceptSchemes targets = new ConceptSchemes();
         targets.setKind(RestInternalConstants.KIND_CONCEPT_SCHEMES);
 
         // Pagination
-        String baseLink = toConceptSchemesLink();
+        String baseLink = toConceptSchemesLink(agencyID, resourceID, version);
         SculptorCriteria2RestCriteria.toPagedResult(sourcesPagedResult, targets, query, orderBy, limit, baseLink);
 
         // Values
@@ -81,16 +83,26 @@ public class ConceptsDo2RestMapperV10Impl implements ConceptsDo2RestMapperV10 {
     }
 
     // API/conceptschemes
-    private String toConceptSchemesLink() {
-        return RestUtils.createLink(srmApiInternalEndpointV10, RestInternalConstants.LINK_SUBPATH_CONCEPT_SCHEMES);
+    // API/conceptschemes/{agencyID}
+    // API/conceptschemes/{agencyID}/{resourceID}
+    // API/conceptschemes/{agencyID}/{resourceID}/{version}
+    private String toConceptSchemesLink(String agencyID, String resourceID, String version) {
+        String link = RestUtils.createLink(srmApiInternalEndpointV10, RestInternalConstants.LINK_SUBPATH_CONCEPT_SCHEMES);
+        if (agencyID != null) {
+            link = RestUtils.createLink(link, agencyID);
+            if (resourceID != null) {
+                link = RestUtils.createLink(link, resourceID);
+                if (version != null) {
+                    link = RestUtils.createLink(link, version);
+                }
+            }
+        }
+        return link;
     }
 
     // API/conceptschemes/{agencyID}/{resourceID}/{version}
     private String toConceptSchemeLink(ConceptSchemeVersionMetamac conceptSchemeVersionMetamac) {
-        String linkConceptScheme = toConceptSchemesLink();
-        linkConceptScheme = RestUtils.createLink(linkConceptScheme, conceptSchemeVersionMetamac.getMaintainableArtefact().getMaintainer().getIdAsMaintainer());
-        linkConceptScheme = RestUtils.createLink(linkConceptScheme, conceptSchemeVersionMetamac.getMaintainableArtefact().getCode());
-        linkConceptScheme = RestUtils.createLink(linkConceptScheme, conceptSchemeVersionMetamac.getMaintainableArtefact().getVersionLogic());
-        return linkConceptScheme;
+        MaintainableArtefact maintainableArtefact = conceptSchemeVersionMetamac.getMaintainableArtefact();
+        return toConceptSchemesLink(maintainableArtefact.getMaintainer().getIdAsMaintainer(), maintainableArtefact.getCode(), maintainableArtefact.getVersionLogic());
     }
 }

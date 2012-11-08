@@ -19,6 +19,7 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacProperties;
 import org.siemac.metamac.srm.core.concept.serviceapi.ConceptsMetamacService;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.concept.ConceptsDo2RestMapperV10;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.concept.ConceptsRest2DoMapper;
 import org.slf4j.Logger;
@@ -43,28 +44,12 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
 
     @Override
     public ConceptSchemes findConceptSchemes(String query, String orderBy, String limit, String offset) {
-        try {
-            // Criteria to find concept schemes by criteria (only published)
-            SculptorCriteria sculptorCriteria = restCriteria2SculptorCriteriaMapper.getConceptSchemeCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
-            List<ConditionalCriteria> conditionalCriteria = new ArrayList<ConditionalCriteria>();
-            conditionalCriteria.addAll(sculptorCriteria.getConditions());
-            conditionalCriteria.add(buildConditionalCriteriaConceptSchemeWithProcStatusToRestInternal());
-
-            // Find
-            PagedResult<ConceptSchemeVersionMetamac> conceptsSchemesEntitiesResult = conceptsService.findConceptSchemesByCondition(ctx, conditionalCriteria, sculptorCriteria.getPagingParameter());
-
-            // Transform
-            ConceptSchemes conceptSchemes = do2RestInternalMapper.toConceptSchemes(conceptsSchemesEntitiesResult, query, orderBy, sculptorCriteria.getLimit());
-            return conceptSchemes;
-        } catch (Exception e) {
-            throw manageException(e);
-        }
+        return findConceptSchemesCommon(null, null, null, query, orderBy, limit, offset);
     }
 
     @Override
     public ConceptSchemes findConceptSchemes(String agencyID, String query, String orderBy, String limit, String offset) {
-        // TODO Auto-generated method stub
-        return null;
+        return findConceptSchemesCommon(agencyID, null, null, query, orderBy, limit, offset);
     }
 
     @Override
@@ -79,12 +64,32 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
         return null;
     }
 
-    /**
-     * Builds conditional criteria to search only internally or externally published resources
-     */
-    private ConditionalCriteria buildConditionalCriteriaConceptSchemeWithProcStatusToRestInternal() {
-        return ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).withProperty(ConceptSchemeVersionMetamacProperties.lifeCycleMetadata().procStatus())
-                .in(ProcStatusEnum.INTERNALLY_PUBLISHED, ProcStatusEnum.EXTERNALLY_PUBLISHED).buildSingle();
+    private ConceptSchemes findConceptSchemesCommon(String agencyID, String resourceID, String version, String query, String orderBy, String limit, String offset) {
+        try {
+            // Criteria to find concept schemes by criteria
+            SculptorCriteria sculptorCriteria = restCriteria2SculptorCriteriaMapper.getConceptSchemeCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
+            List<ConditionalCriteria> conditionalCriteria = new ArrayList<ConditionalCriteria>();
+            conditionalCriteria.addAll(sculptorCriteria.getConditions());
+
+            // Only published
+            conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).withProperty(ConceptSchemeVersionMetamacProperties.lifeCycleMetadata().procStatus())
+                    .in(ProcStatusEnum.INTERNALLY_PUBLISHED, ProcStatusEnum.EXTERNALLY_PUBLISHED).buildSingle());
+
+            // Agency
+            if (agencyID != null && !RestInternalConstants.WILDCARD.equals(agencyID)) {
+                conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class)
+                        .withProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact().maintainer().idAsMaintainer()).eq(agencyID).buildSingle());
+            }
+
+            // Find
+            PagedResult<ConceptSchemeVersionMetamac> conceptsSchemesEntitiesResult = conceptsService.findConceptSchemesByCondition(ctx, conditionalCriteria, sculptorCriteria.getPagingParameter());
+
+            // Transform
+            ConceptSchemes conceptSchemes = do2RestInternalMapper.toConceptSchemes(conceptsSchemesEntitiesResult, agencyID, resourceID, version, query, orderBy, sculptorCriteria.getLimit());
+            return conceptSchemes;
+        } catch (Exception e) {
+            throw manageException(e);
+        }
     }
 
     /**

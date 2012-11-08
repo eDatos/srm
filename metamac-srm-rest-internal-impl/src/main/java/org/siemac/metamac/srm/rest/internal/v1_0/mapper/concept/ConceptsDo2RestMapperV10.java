@@ -6,5 +6,5 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 
 public interface ConceptsDo2RestMapperV10 {
 
-    public ConceptSchemes toConceptSchemes(PagedResult<ConceptSchemeVersionMetamac> sources, String query, String orderBy, Integer limit);
+    public ConceptSchemes toConceptSchemes(PagedResult<ConceptSchemeVersionMetamac> sources, String agencyID, String resourceID, String version, String query, String orderBy, Integer limit);
 }

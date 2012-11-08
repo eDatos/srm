@@ -41,7 +41,7 @@ public class ConceptsRest2DoMapperImpl implements ConceptsRest2DoMapper {
                 case ID:
                     return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.maintainableArtefact().code(), propertyRestriction.getValue());
                 case NAME:
-                    return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.maintainableArtefact().name(), propertyRestriction.getValue());
+                    return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.maintainableArtefact().name().texts().label(), propertyRestriction.getValue());
                 case URN:
                     return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.maintainableArtefact().urn(), propertyRestriction.getValue());
                 default:
