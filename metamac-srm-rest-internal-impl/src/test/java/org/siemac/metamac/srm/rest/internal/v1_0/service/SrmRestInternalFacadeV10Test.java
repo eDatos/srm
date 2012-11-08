@@ -190,7 +190,7 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
 
     private List<ConditionalCriteria> buildExpectedConditionalCriteriaOrderBy(String orderBy) {
         if (orderBy == null) {
-            return ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).orderBy(ConceptSchemeVersionMetamacProperties.id()).ascending().build();
+            return ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).orderBy(ConceptSchemeVersionMetamacProperties.maintainableArtefact().code()).ascending().build();
         } else {
             fail();
             return null;
