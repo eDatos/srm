@@ -59,6 +59,7 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
                                                                                                + LogicalOperator.AND + " " + ConceptSchemeCriteriaPropertyRestriction.NAME + " "
                                                                                                + ComparisonOperator.LIKE + " \"2\"";
     private String                          AGENCY_1                                   = "agency1";
+    private String                          CONCEPT_SCHEME_1                           = "conceptScheme1";
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     @BeforeClass
@@ -113,20 +114,48 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
         testFindConceptsSchemes(RestInternalConstants.WILDCARD, "1", "0", QUERY_CONCEPT_SCHEME_ID_LIKE_1_NAME_LIKE_2, null);
     }
 
+    @Test
+    public void testFindConceptsSchemesByAgencyAndResource() throws Exception {
+        testFindConceptsSchemes(AGENCY_1, CONCEPT_SCHEME_1, null, null, null, null);
+        testFindConceptsSchemes(RestInternalConstants.WILDCARD, CONCEPT_SCHEME_1, null, null, null, null);
+        testFindConceptsSchemes(AGENCY_1, RestInternalConstants.WILDCARD, null, null, null, null);
+        testFindConceptsSchemes(RestInternalConstants.WILDCARD, RestInternalConstants.WILDCARD, null, null, null, null);
+
+        testFindConceptsSchemes(AGENCY_1, CONCEPT_SCHEME_1, "2", null, null, null);
+        testFindConceptsSchemes(RestInternalConstants.WILDCARD, CONCEPT_SCHEME_1, "2", null, null, null);
+        testFindConceptsSchemes(AGENCY_1, RestInternalConstants.WILDCARD, "2", null, null, null);
+        testFindConceptsSchemes(RestInternalConstants.WILDCARD, RestInternalConstants.WILDCARD, "2", null, null, null);
+
+        testFindConceptsSchemes(AGENCY_1, CONCEPT_SCHEME_1, null, "0", null, null);
+        testFindConceptsSchemes(RestInternalConstants.WILDCARD, CONCEPT_SCHEME_1, null, "0", null, null);
+        testFindConceptsSchemes(AGENCY_1, RestInternalConstants.WILDCARD, null, "0", null, null);
+        testFindConceptsSchemes(RestInternalConstants.WILDCARD, RestInternalConstants.WILDCARD, null, "0", null, null);
+
+        testFindConceptsSchemes(AGENCY_1, CONCEPT_SCHEME_1, "2", "0", null, null);
+        testFindConceptsSchemes(AGENCY_1, CONCEPT_SCHEME_1, "1", "0", QUERY_CONCEPT_SCHEME_ID_LIKE_1_NAME_LIKE_2, null);
+        testFindConceptsSchemes(RestInternalConstants.WILDCARD, CONCEPT_SCHEME_1, "1", "0", QUERY_CONCEPT_SCHEME_ID_LIKE_1_NAME_LIKE_2, null);
+    }
+
     private void testFindConceptsSchemes(String limit, String offset, String query, String orderBy) throws Exception {
         resetMocks();
         ConceptSchemes conceptSchemes = getSrmRestInternalFacadeClientXml().findConceptSchemes(query, orderBy, limit, offset);
-        assertFindConceptSchemes(null, limit, offset, query, orderBy, conceptSchemes);
+        assertFindConceptSchemes(null, null, limit, offset, query, orderBy, conceptSchemes);
     }
 
     private void testFindConceptsSchemes(String agencyID, String limit, String offset, String query, String orderBy) throws Exception {
         resetMocks();
         ConceptSchemes conceptSchemes = getSrmRestInternalFacadeClientXml().findConceptSchemes(agencyID, query, orderBy, limit, offset);
-        assertFindConceptSchemes(agencyID, limit, offset, query, orderBy, conceptSchemes);
+        assertFindConceptSchemes(agencyID, null, limit, offset, query, orderBy, conceptSchemes);
+    }
+
+    private void testFindConceptsSchemes(String agencyID, String resourceID, String limit, String offset, String query, String orderBy) throws Exception {
+        resetMocks();
+        ConceptSchemes conceptSchemes = getSrmRestInternalFacadeClientXml().findConceptSchemes(agencyID, resourceID, query, orderBy, limit, offset);
+        assertFindConceptSchemes(agencyID, resourceID, limit, offset, query, orderBy, conceptSchemes);
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
-    private void assertFindConceptSchemes(String agencyID, String limit, String offset, String query, String orderBy, ConceptSchemes conceptSchemesActual) throws Exception {
+    private void assertFindConceptSchemes(String agencyID, String resourceID, String limit, String offset, String query, String orderBy, ConceptSchemes conceptSchemesActual) throws Exception {
 
         assertNotNull(conceptSchemesActual);
         assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEMES, conceptSchemesActual.getKind());
@@ -137,11 +166,11 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
         verify(conceptsService).findConceptSchemesByCondition(any(ServiceContext.class), conditions.capture(), pagingParameter.capture());
 
         // Validate
-        MetamacRestAsserts.assertEqualsConditionalCriteria(buildExpectedConditionalCriteria(agencyID, query, orderBy), conditions.getValue());
+        MetamacRestAsserts.assertEqualsConditionalCriteria(buildExpectedConditionalCriteria(agencyID, resourceID, query, orderBy), conditions.getValue());
         MetamacRestAsserts.assertEqualsPagingParameter(buildExpectedPagingParameter(offset, limit), pagingParameter.getValue());
     }
 
-    private List<ConditionalCriteria> buildExpectedConditionalCriteria(String agencyID, String query, String orderBy) {
+    private List<ConditionalCriteria> buildExpectedConditionalCriteria(String agencyID, String resourceID, String query, String orderBy) {
         List<ConditionalCriteria> expected = new ArrayList<ConditionalCriteria>();
         expected.addAll(buildExpectedConditionalCriteriaOrderBy(orderBy));
         expected.addAll(buildExpectedConditionalCriteriaQuery(query));
@@ -151,6 +180,10 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
         if (agencyID != null && !RestInternalConstants.WILDCARD.equals(agencyID)) {
             expected.add(ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class)
                     .withProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact().maintainer().idAsMaintainer()).eq(agencyID).buildSingle());
+        }
+        if (resourceID != null && !RestInternalConstants.WILDCARD.equals(resourceID)) {
+            expected.add(ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).withProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact().code()).eq(resourceID)
+                    .buildSingle());
         }
         return expected;
     }

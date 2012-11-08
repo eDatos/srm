@@ -54,8 +54,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
 
     @Override
     public ConceptSchemes findConceptSchemes(String agencyID, String resourceID, String query, String orderBy, String limit, String offset) {
-        // TODO Auto-generated method stub
-        return null;
+        return findConceptSchemesCommon(agencyID, resourceID, null, query, orderBy, limit, offset);
     }
 
     @Override
@@ -79,6 +78,12 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             if (agencyID != null && !RestInternalConstants.WILDCARD.equals(agencyID)) {
                 conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class)
                         .withProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact().maintainer().idAsMaintainer()).eq(agencyID).buildSingle());
+            }
+
+            // Concept scheme
+            if (resourceID != null && !RestInternalConstants.WILDCARD.equals(resourceID)) {
+                conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).withProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact().code())
+                        .eq(resourceID).buildSingle());
             }
 
             // Find

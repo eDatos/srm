@@ -64,7 +64,7 @@ public class ConceptsRest2DoMapperImpl implements ConceptsRest2DoMapper {
         @SuppressWarnings("rawtypes")
         @Override
         public Property retrievePropertyOrderDefault() throws RestException {
-            return ConceptSchemeVersionMetamacProperties.id();
+            return ConceptSchemeVersionMetamacProperties.maintainableArtefact().code();
         }
     }
 
