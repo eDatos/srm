@@ -40,6 +40,8 @@ public class ConceptsRest2DoMapperImpl implements ConceptsRest2DoMapper {
             switch (propertyNameCriteria) {
                 case ID:
                     return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.maintainableArtefact().code(), propertyRestriction.getValue());
+                case NAME:
+                    return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.maintainableArtefact().name(), propertyRestriction.getValue());
                 case URN:
                     return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.maintainableArtefact().urn(), propertyRestriction.getValue());
                 default:
@@ -62,7 +64,7 @@ public class ConceptsRest2DoMapperImpl implements ConceptsRest2DoMapper {
         @SuppressWarnings("rawtypes")
         @Override
         public Property retrievePropertyOrderDefault() throws RestException {
-            return ConceptSchemeVersionMetamacProperties.maintainableArtefact().code();
+            return ConceptSchemeVersionMetamacProperties.id();
         }
     }
 

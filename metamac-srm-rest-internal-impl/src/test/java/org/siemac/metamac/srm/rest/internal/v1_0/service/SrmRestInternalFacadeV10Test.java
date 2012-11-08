@@ -1,7 +1,9 @@
 package org.siemac.metamac.srm.rest.internal.v1_0.service;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
@@ -12,42 +14,49 @@ import javax.ws.rs.core.Response.Status;
 import org.apache.cxf.jaxrs.client.JAXRSClientFactory;
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.apache.cxf.jaxrs.provider.JAXBElementProvider;
+import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
+import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
+import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
+import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Mock;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.util.ApplicationContextProvider;
 import org.siemac.metamac.rest.common.test.MetamacRestBaseTest;
 import org.siemac.metamac.rest.common.test.ServerResource;
+import org.siemac.metamac.rest.common.test.utils.MetamacRestAsserts;
+import org.siemac.metamac.rest.common.v1_0.domain.ComparisonOperator;
+import org.siemac.metamac.rest.common.v1_0.domain.LogicalOperator;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemeCriteriaPropertyRestriction;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemes;
+import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
+import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacProperties;
 import org.siemac.metamac.srm.core.concept.serviceapi.ConceptsMetamacService;
+import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.springframework.context.ApplicationContext;
 
 public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
 
-    private static final String             PORT                      = ServerResource.PORT;
-    private static String                   jaxrsServerAddress        = "http://localhost:" + PORT + "/apis/srm-internal";
-    private static String                   baseApi                   = jaxrsServerAddress + "/v1.0";
+    private static final String             PORT                                       = ServerResource.PORT;
+    private static String                   jaxrsServerAddress                         = "http://localhost:" + PORT + "/apis/srm-internal";
+    private static String                   baseApi                                    = jaxrsServerAddress + "/v1.0";
 
-    @Mock
-    private ConceptsMetamacService          conceptsMetamacService;
+    private ConceptsMetamacService          conceptsService;
 
     // not read property from properties file to check explicity
-    private static String                   srmApiInternalEndpointV10 = "http://data.istac.es/apis/srm-internal/v1.0";
+    // private static String srmApiInternalEndpointV10 = "http://data.istac.es/apis/srm-internal/v1.0";
 
     private static SrmRestInternalFacadeV10 srmRestInternalFacadeClientXml;
 
-    private static ApplicationContext       applicationContext        = null;
+    private static ApplicationContext       applicationContext                         = null;
 
-    private static String                   NOT_EXISTS                = "NOT_EXISTS";
-    public static String                    AGENCY_SMDX               = "SDMX";
-    public static String                    CONCEPT_SCHEME_1_CODE     = "conceptScheme01";
-    public static String                    CONCEPT_SCHEME_1_URN      = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME01(1.0)";
-    public static String                    CONCEPT_SCHEME_1_VERSION  = "1.0";
+    private String                          QUERY_CONCEPT_SCHEME_ID_LIKE_1             = ConceptSchemeCriteriaPropertyRestriction.ID + " " + ComparisonOperator.LIKE + " \"1\"";
+    private String                          QUERY_CONCEPT_SCHEME_ID_LIKE_1_NAME_LIKE_2 = ConceptSchemeCriteriaPropertyRestriction.ID + " " + ComparisonOperator.LIKE + " \"1\"" + " "
+                                                                                               + LogicalOperator.AND + " " + ConceptSchemeCriteriaPropertyRestriction.NAME + " "
+                                                                                               + ComparisonOperator.LIKE + " \"2\"";
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     @BeforeClass
@@ -66,8 +75,11 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
             providers.add(applicationContext.getBean("jaxbProvider", JAXBElementProvider.class));
             srmRestInternalFacadeClientXml = JAXRSClientFactory.create(jaxrsServerAddress, SrmRestInternalFacadeV10.class, providers, Boolean.TRUE);
         }
-        // Mockito
-        setUpMockito();
+    }
+
+    @Before
+    public void setUp() throws MetamacException {
+        resetMocks();
     }
 
     @Test
@@ -78,113 +90,103 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
         testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.NOT_FOUND, new ByteArrayInputStream(new byte[0]));
     }
 
-    @Ignore
     @Test
     public void testFindConceptsSchemesXml() throws Exception {
 
-        {
-            // without limits
-            String limit = null;
-            String offset = null;
-            String query = null;
-            String orderBy = null;
-            ConceptSchemes conceptSchemes = getSrmRestInternalFacadeClientXml().findConceptSchemes(query, orderBy, limit, offset);
-            ArgumentCaptor<List> conditions = ArgumentCaptor.forClass(List.class);
-            ArgumentCaptor<PagingParameter> pagingParameter = ArgumentCaptor.forClass(PagingParameter.class);
-            verify(conceptsMetamacService).findConceptsByCondition(any(ServiceContext.class), conditions.capture(), pagingParameter.capture());
-            assertEquals(1, conditions.getValue().size());
-        }
-        // {
-        // // without limits, first page
-        // String limit = "10000";
-        // String offset = null;
-        // String query = null;
-        // String orderBy = null;
-        // Operations operations = getStatisticalOperationsRestInternalFacadeClientXml().findOperations(query, orderBy, limit, offset);
-        // StatisticalOperationsRestAsserts.assertEqualsOperations(StatisticalOperationsRestMocks.mockOperations(statisticalOperationsApiInternalEndpointV10, limit, offset), operations);
-        // }
-        // {
-        // // without limits, first page
-        // String limit = null;
-        // String offset = "0";
-        // String query = null;
-        // String orderBy = null;
-        // Operations operations = getStatisticalOperationsRestInternalFacadeClientXml().findOperations(query, orderBy, limit, offset);
-        // StatisticalOperationsRestAsserts.assertEqualsOperations(StatisticalOperationsRestMocks.mockOperations(statisticalOperationsApiInternalEndpointV10, limit, offset), operations);
-        // }
-        // {
-        // // first page with pagination
-        // String limit = "2";
-        // String offset = "0";
-        // String query = null;
-        // String orderBy = null;
-        // Operations operations = getStatisticalOperationsRestInternalFacadeClientXml().findOperations(query, orderBy, limit, offset);
-        // StatisticalOperationsRestAsserts.assertEqualsOperations(StatisticalOperationsRestMocks.mockOperations(statisticalOperationsApiInternalEndpointV10, limit, offset), operations);
-        // }
-        // {
-        // // second page with pagination
-        // String limit = "2";
-        // String offset = "2";
-        // String query = null;
-        // String orderBy = null;
-        // Operations operations = getStatisticalOperationsRestInternalFacadeClientXml().findOperations(query, orderBy, limit, offset);
-        // StatisticalOperationsRestAsserts.assertEqualsOperations(StatisticalOperationsRestMocks.mockOperations(statisticalOperationsApiInternalEndpointV10, limit, offset), operations);
-        // }
-        // {
-        // // last page with pagination
-        // String limit = "2";
-        // String offset = "8";
-        // String query = null;
-        // String orderBy = null;
-        // Operations operations = getStatisticalOperationsRestInternalFacadeClientXml().findOperations(query, orderBy, limit, offset);
-        // StatisticalOperationsRestAsserts.assertEqualsOperations(StatisticalOperationsRestMocks.mockOperations(statisticalOperationsApiInternalEndpointV10, limit, offset), operations);
-        // }
-        // {
-        // // no results
-        // String limit = "2";
-        // String offset = "9";
-        // String query = null;
-        // String orderBy = null;
-        // Operations operations = getStatisticalOperationsRestInternalFacadeClientXml().findOperations(query, orderBy, limit, offset);
-        // StatisticalOperationsRestAsserts.assertEqualsOperations(StatisticalOperationsRestMocks.mockOperations(statisticalOperationsApiInternalEndpointV10, limit, offset), operations);
-        // }
-        //
-        // // Queries
-        // {
-        // // query by id, without limits
-        // String limit = null;
-        // String offset = null;
-        // String query = QUERY_OPERATION_ID_LIKE_1; // operation1 and operation10
-        // String orderBy = null;
-        // Operations operations = getStatisticalOperationsRestInternalFacadeClientXml().findOperations(query, orderBy, limit, offset);
-        // StatisticalOperationsRestAsserts.assertEqualsOperations(StatisticalOperationsRestMocks.mockOperations(statisticalOperationsApiInternalEndpointV10, limit, offset, query), operations);
-        // }
-        // {
-        // // query by id and indicators system, without limits
-        // String limit = null;
-        // String offset = null;
-        // String query = QUERY_OPERATION_ID_LIKE_1_AND_INDICATORS_SYSTEM; // operation1
-        // String orderBy = null;
-        // Operations operations = getStatisticalOperationsRestInternalFacadeClientXml().findOperations(query, orderBy, limit, offset);
-        // StatisticalOperationsRestAsserts.assertEqualsOperations(StatisticalOperationsRestMocks.mockOperations(statisticalOperationsApiInternalEndpointV10, limit, offset, query), operations);
-        // }
-        // {
-        // // query by id, first page
-        // String limit = "1";
-        // String offset = "0";
-        // String query = QUERY_OPERATION_ID_LIKE_1; // operation1 and operation10
-        // String orderBy = null;
-        // Operations operations = getStatisticalOperationsRestInternalFacadeClientXml().findOperations(query, orderBy, limit, offset);
-        // StatisticalOperationsRestAsserts.assertEqualsOperations(StatisticalOperationsRestMocks.mockOperations(statisticalOperationsApiInternalEndpointV10, limit, offset, query), operations);
-        // }
+        // without limits
+        testFindConceptsSchemesXml(null, null, null, null);
+        testFindConceptsSchemesXml("10000", null, null, null);
+        // without limits, first page
+        testFindConceptsSchemesXml(null, "0", null, null);
+        // first page with pagination
+        testFindConceptsSchemesXml("2", "0", null, null);
+        // other page with pagination
+        testFindConceptsSchemesXml("2", "2", null, null);
+        // query by id, without limits
+        testFindConceptsSchemesXml(null, null, QUERY_CONCEPT_SCHEME_ID_LIKE_1, null);
+        // query by id and name, without limits
+        testFindConceptsSchemesXml(null, null, QUERY_CONCEPT_SCHEME_ID_LIKE_1_NAME_LIKE_2, null);
+        // query by id and name, first page
+        testFindConceptsSchemesXml("1", "0", QUERY_CONCEPT_SCHEME_ID_LIKE_1_NAME_LIKE_2, null);
     }
-    private static void setUpMockito() throws MetamacException {
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    private void testFindConceptsSchemesXml(String limit, String offset, String query, String orderBy) throws Exception {
+
+        resetMocks();
+
+        // Find concepts schemes
+        ConceptSchemes conceptSchemes = getSrmRestInternalFacadeClientXml().findConceptSchemes(query, orderBy, limit, offset);
+        assertNotNull(conceptSchemes);
+        ArgumentCaptor<List> conditions = ArgumentCaptor.forClass(List.class);
+        ArgumentCaptor<PagingParameter> pagingParameter = ArgumentCaptor.forClass(PagingParameter.class);
+        verify(conceptsService).findConceptSchemesByCondition(any(ServiceContext.class), conditions.capture(), pagingParameter.capture());
+
+        // Validate
+        List<ConditionalCriteria> expected = new ArrayList<ConditionalCriteria>();
+        // Order by
+        if (orderBy == null) {
+            expected.add(ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).orderBy(ConceptSchemeVersionMetamacProperties.id()).ascending().buildSingle());
+        } else {
+            fail();
+        }
+        // Query
+        if (query != null) {
+            if (QUERY_CONCEPT_SCHEME_ID_LIKE_1.equals(query)) {
+                expected.add(ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).withProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact().code()).like("%1%")
+                        .buildSingle());
+            } else if (QUERY_CONCEPT_SCHEME_ID_LIKE_1_NAME_LIKE_2.equals(query)) {
+                expected.add(ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).withProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact().code()).like("%1%")
+                        .buildSingle());
+                expected.add(ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).withProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact().name()).like("%2%")
+                        .buildSingle());
+            } else {
+                fail();
+            }
+        }
+        // Distinct root
+        expected.add(ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).distinctRoot().buildSingle());
+        // Proc status
+        expected.add(ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).withProperty(ConceptSchemeVersionMetamacProperties.lifeCycleMetadata().procStatus())
+                .in(ProcStatusEnum.INTERNALLY_PUBLISHED, ProcStatusEnum.EXTERNALLY_PUBLISHED).buildSingle());
+
+        // Asserts
+        MetamacRestAsserts.assertEqualsConditionalCriteria(expected, conditions.getValue());
+        MetamacRestAsserts.assertEqualsPagingParameter(buildPagingParameter(offset, limit), pagingParameter.getValue());
+    }
+
+    @SuppressWarnings("unchecked")
+    private void resetMocks() throws MetamacException {
+        conceptsService = applicationContext.getBean(ConceptsMetamacService.class);
+        reset(conceptsService);
+
+        when(conceptsService.findConceptSchemesByCondition(any(ServiceContext.class), any(List.class), any(PagingParameter.class))).thenReturn(
+                new PagedResult<ConceptSchemeVersionMetamac>(new ArrayList<ConceptSchemeVersionMetamac>(), 0, 1, 1));
     }
 
     private SrmRestInternalFacadeV10 getSrmRestInternalFacadeClientXml() {
         WebClient.client(srmRestInternalFacadeClientXml).reset();
         WebClient.client(srmRestInternalFacadeClientXml).accept(APPLICATION_XML);
         return srmRestInternalFacadeClientXml;
+    }
+
+    private PagingParameter buildPagingParameter(String offset, String limit) {
+        Integer startRow = null;
+        if (offset == null) {
+            startRow = Integer.valueOf(0);
+        } else {
+            startRow = Integer.valueOf(offset);
+        }
+        Integer maximumResultSize = null;
+        if (limit == null) {
+            maximumResultSize = Integer.valueOf(25);
+        } else {
+            maximumResultSize = Integer.valueOf(limit);
+        }
+        if (maximumResultSize > Integer.valueOf(1000)) {
+            maximumResultSize = Integer.valueOf(1000);
+        }
+        int endRow = startRow + maximumResultSize;
+        return PagingParameter.rowAccess(startRow, endRow, false);
     }
 }
