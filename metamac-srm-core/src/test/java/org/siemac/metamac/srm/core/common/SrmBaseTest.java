@@ -269,20 +269,6 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
     }
 
     @Override
-    protected List<String> getSequencesToRestart() {
-        List<String> sequences = super.getSequencesToRestart();
-        sequences.addAll(super.getSequencesToRestart());
-        sequences.add("SEQ_M_CONCEPT_SCHEMES_VERSIONS");
-        sequences.add("SEQ_M_CONCEPTS");
-        sequences.add("SEQ_M_CONCEPT_TYPES");
-        sequences.add("SEQ_M_ORG_SCHEMES_VERSIONS");
-        sequences.add("SEQ_M_ORGANISATIONS");
-        sequences.add("SEQ_M_CAT_SCHEMES_VERSIONS");
-        sequences.add("SEQ_M_CATEGORIES");
-        return sequences;
-    }
-
-    @Override
     protected Map<String, List<String>> getTablePrimaryKeys() {
         Map<String, List<String>> tablePrimaryKeys = super.getTablePrimaryKeys();
         tablePrimaryKeys.put("TB_M_CONCEPT_SCHEMES_VERSIONS", Arrays.asList("TB_CONCEPT_SCHEMES_VERSIONS"));

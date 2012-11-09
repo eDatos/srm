@@ -372,11 +372,11 @@
             <!--scope>provided</scope -->
         </dependency>
         <dependency>
-		  <groupId>com.microsoft.sqlserver</groupId>
-		  <artifactId>sqljdbc</artifactId>
-		  <version>${mssql.version}</version>
-		  <scope>test</scope>
-         </dependency>
+            <groupId>com.microsoft.sqlserver</groupId>
+            <artifactId>sqljdbc</artifactId>
+            <version>${mssql.version}</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>com.oracle</groupId>
             <artifactId>oracle</artifactId>
@@ -427,7 +427,7 @@
                         <artifactId>maven-antrun-plugin</artifactId>
                         <executions>
                             <execution>
-                            	<id>clean-sculptor-conf</id>
+                                <id>clean-sculptor-conf</id>
                                 <phase>initialize</phase>
                                 <goals>
                                     <goal>run</goal>
@@ -435,10 +435,8 @@
                                 <configuration>
                                     <target>
                                         <delete file="src/main/resources/generator/sculptor-generator.properties" />
-                                        <delete file="src/main/resources/generator/SpecialCases.xpt" />
                                         <delete file="src/main/resources/templates/db/CustomDDL.xpt" />
-                                        <copy file="src/main/resources/generator/sculptor-generator.oracle.properties" tofile="src/main/resources/generator/sculptor-generator.properties" verbose="true"/>
-                                        <copy file="src/main/resources/generator/SpecialCasesOracle.xpt" tofile="src/main/resources/generator/SpecialCases.xpt" verbose="true"/>
+                                        <copy file="src/main/resources/generator/sculptor-generator.oracle.properties" tofile="src/main/resources/generator/sculptor-generator.properties" verbose="true" />
                                     </target>
                                 </configuration>
                             </execution>
@@ -447,7 +445,7 @@
                 </plugins>
             </build>
         </profile>
-        
+
         <profile>
             <id>mssql</id>
             <activation>
@@ -459,7 +457,7 @@
                         <artifactId>maven-antrun-plugin</artifactId>
                         <executions>
                             <execution>
-                            	<id>clean-sculptor-conf</id>
+                                <id>clean-sculptor-conf</id>
                                 <phase>initialize</phase>
                                 <goals>
                                     <goal>run</goal>
@@ -467,11 +465,9 @@
                                 <configuration>
                                     <target>
                                         <delete file="src/main/resources/generator/sculptor-generator.properties" />
-                                        <delete file="src/main/resources/generator/SpecialCases.xpt" />
                                         <delete file="src/main/resources/generator/CustomDDL.xpt" />
-                                        <copy file="src/main/resources/generator/sculptor-generator.mssql.properties" tofile="src/main/resources/generator/sculptor-generator.properties" verbose="true"/>
-                                        <copy file="src/main/resources/generator/SpecialCasesMsSql.xpt" tofile="src/main/resources/generator/SpecialCases.xpt" verbose="true"/>
-                                        <copy file="target/generated-resources/DDLMSSQL.xpt" tofile="src/main/resources/templates/db/CustomDDL.xpt" verbose="true"/>
+                                        <copy file="src/main/resources/generator/sculptor-generator.mssql.properties" tofile="src/main/resources/generator/sculptor-generator.properties" verbose="true" />
+                                        <copy file="target/generated-resources/DDLMSSQL.xpt" tofile="src/main/resources/templates/db/CustomDDL.xpt" verbose="true" />
                                     </target>
                                 </configuration>
                             </execution>
@@ -481,7 +477,7 @@
             </build>
         </profile>
     </profiles>
-    
+
     <build>
         <finalName>${project.artifactId}</finalName>
 
@@ -508,7 +504,7 @@
                     </filesets>
                 </configuration>
             </plugin>
-            
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
@@ -601,7 +597,7 @@
                 <version>1.6</version><!--$NO-MVN-MAN-VER$ -->
                 <executions>
                     <execution>
-                    	<id>clean-sculptor</id>
+                        <id>clean-sculptor</id>
                         <phase>generate-sources</phase>
                         <goals>
                             <goal>run</goal>

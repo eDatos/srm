@@ -49,19 +49,27 @@
 «ENDAROUND»
 
 
-«REM»
+
 «AROUND templates::domain::DomainObjectAttributeAnnotation::idAnnotations FOR Attribute»
     «IF getDomainObject().hasHint("idSequence")»
         @javax.persistence.Id
-        @javax.persistence.SequenceGenerator(name="«getDomainObject().getHint('idSequence')»", sequenceName="SEQ_«getDomainObject().getHint('idSequence')»", allocationSize=1)
-        @javax.persistence.GeneratedValue(strategy=javax.persistence.GenerationType.SEQUENCE,
-            generator="«getDomainObject().getHint('idSequence')»")
+        @javax.persistence.GeneratedValue(generator="«getDomainObject().getHint('idSequence')»", strategy=javax.persistence.GenerationType.TABLE)
+        @org.hibernate.annotations.GenericGenerator(
+			name = "«getDomainObject().getHint('idSequence')»",
+			strategy = "org.hibernate.id.enhanced.TableGenerator",
+			parameters = {
+				@org.hibernate.annotations.Parameter(name = "table_name", value = "TB_SEQUENCES"),
+				@org.hibernate.annotations.Parameter(name = "segment_column_name", value = "SEQUENCE_NAME"),
+				@org.hibernate.annotations.Parameter(name = "value_column_name", value = "SEQUENCE_NEXT_VALUE"),
+				@org.hibernate.annotations.Parameter(name = "optimizer", value = "pooled"),
+				@org.hibernate.annotations.Parameter(name = "increment_size", value = "50"),
+				@org.hibernate.annotations.Parameter(name = "segment_value", value = "«getDomainObject().getHint('idSequence')»")})
         @javax.persistence.Column(name="«getDatabaseName()»")
     «ELSE»
     	«targetDef.proceed()»
     «ENDIF»
 «ENDAROUND»
-«ENDREM»
+
 
 «REM»Skip unique constraint in InternationalString and LocalisedString this will be for "id", and primary key restriction already exists for this attribute «ENDREM»
 «AROUND templates::db::OracleDDL::uniqueConstraint FOR DomainObject»
