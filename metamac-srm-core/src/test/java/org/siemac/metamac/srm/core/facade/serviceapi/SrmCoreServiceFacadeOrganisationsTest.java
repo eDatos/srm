@@ -536,7 +536,7 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
     }
 
     @Test
-    public void testFindOrganisationsByCondition() throws Exception {
+    public void testFindAllOrganisations() throws Exception {
 
         // Find all
         {
@@ -607,6 +607,10 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
             assertEquals(organisationsPagedResult.getResults().size(), i);
         }
 
+    }
+
+    @Test
+    public void testFindOrganisationsInFirstLevel() throws Exception {
         // Find only organisations in first level
         {
             MetamacCriteria metamacCriteria = new MetamacCriteria();
@@ -674,7 +678,10 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
 
             assertEquals(organisationsPagedResult.getResults().size(), i);
         }
+    }
 
+    @Test
+    public void testFindOrganisationsBySchemeTypeOrganisationUnit() throws Exception {
         // Find by organisation scheme type: organisation unit
         {
             MetamacCriteria metamacCriteria = new MetamacCriteria();
@@ -731,7 +738,10 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
 
             assertEquals(organisationsPagedResult.getResults().size(), i);
         }
+    }
 
+    @Test
+    public void testFindOrganisationsBySchemeTypeAgency() throws Exception {
         // Find by organisation scheme type: agency
         {
             MetamacCriteria metamacCriteria = new MetamacCriteria();
@@ -825,6 +835,138 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
             assertEquals(organisationsPagedResult.getResults().size(), i);
         }
 
+        // Find by organisation scheme urn paginated
+        {
+
+            MetamacCriteria metamacCriteria = new MetamacCriteria();
+            // Order
+            metamacCriteria.setOrdersBy(new ArrayList<MetamacCriteriaOrder>());
+
+            MetamacCriteriaOrder orderUrn = new MetamacCriteriaOrder();
+            orderUrn.setType(OrderTypeEnum.ASC);
+            orderUrn.setPropertyName(OrganisationMetamacCriteriaOrderEnum.URN.name());
+            metamacCriteria.getOrdersBy().add(orderUrn);
+
+            // Restrictions
+            metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(OrganisationMetamacCriteriaPropertyEnum.ORGANISATION_SCHEME_URN.name(), ORGANISATION_SCHEME_1_V2, OperationType.EQ));
+
+            // First page
+            {
+                // Pagination
+                metamacCriteria.setPaginator(new MetamacCriteriaPaginator());
+                metamacCriteria.getPaginator().setFirstResult(0);
+                metamacCriteria.getPaginator().setMaximumResultSize(3);
+                metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
+
+                // Find
+                MetamacCriteriaResult<OrganisationMetamacDto> organisationsPagedResult = srmCoreServiceFacade.findOrganisationsByCondition(getServiceContextAdministrador(), metamacCriteria);
+
+                // Validate
+                assertEquals(8, organisationsPagedResult.getPaginatorResult().getTotalResults().intValue());
+                assertEquals(3, organisationsPagedResult.getResults().size());
+                assertTrue(organisationsPagedResult.getResults().get(0) instanceof OrganisationMetamacDto);
+                assertEquals(ORGANISATION_SCHEME_1_V2, organisationsPagedResult.getResults().get(0).getItemSchemeVersionUrn());
+
+                int i = 0;
+                assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_1, organisationsPagedResult.getResults().get(i++).getUrn());
+                assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_2, organisationsPagedResult.getResults().get(i++).getUrn());
+                assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1, organisationsPagedResult.getResults().get(i++).getUrn());
+                assertEquals(organisationsPagedResult.getResults().size(), i);
+            }
+            // Second page
+            {
+                // Pagination
+                metamacCriteria.setPaginator(new MetamacCriteriaPaginator());
+                metamacCriteria.getPaginator().setFirstResult(3);
+                metamacCriteria.getPaginator().setMaximumResultSize(3);
+                metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
+
+                // Find
+                MetamacCriteriaResult<OrganisationMetamacDto> organisationsPagedResult = srmCoreServiceFacade.findOrganisationsByCondition(getServiceContextAdministrador(), metamacCriteria);
+
+                // Validate
+                assertEquals(8, organisationsPagedResult.getPaginatorResult().getTotalResults().intValue());
+                assertEquals(3, organisationsPagedResult.getResults().size());
+                assertTrue(organisationsPagedResult.getResults().get(0) instanceof OrganisationMetamacDto);
+                assertEquals(ORGANISATION_SCHEME_1_V2, organisationsPagedResult.getResults().get(0).getItemSchemeVersionUrn());
+
+                int i = 0;
+                assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1_1, organisationsPagedResult.getResults().get(i++).getUrn());
+                assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_3, organisationsPagedResult.getResults().get(i++).getUrn());
+                assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_4, organisationsPagedResult.getResults().get(i++).getUrn());
+                assertEquals(organisationsPagedResult.getResults().size(), i);
+            }
+            // Third page
+            {
+                // Pagination
+                metamacCriteria.setPaginator(new MetamacCriteriaPaginator());
+                metamacCriteria.getPaginator().setFirstResult(6);
+                metamacCriteria.getPaginator().setMaximumResultSize(3);
+                metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
+
+                // Find
+                MetamacCriteriaResult<OrganisationMetamacDto> organisationsPagedResult = srmCoreServiceFacade.findOrganisationsByCondition(getServiceContextAdministrador(), metamacCriteria);
+
+                // Validate
+                assertEquals(8, organisationsPagedResult.getPaginatorResult().getTotalResults().intValue());
+                assertEquals(2, organisationsPagedResult.getResults().size());
+                assertTrue(organisationsPagedResult.getResults().get(0) instanceof OrganisationMetamacDto);
+                assertEquals(ORGANISATION_SCHEME_1_V2, organisationsPagedResult.getResults().get(0).getItemSchemeVersionUrn());
+
+                int i = 0;
+                assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_4_1, organisationsPagedResult.getResults().get(i++).getUrn());
+                assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_4_1_1, organisationsPagedResult.getResults().get(i++).getUrn());
+                assertEquals(organisationsPagedResult.getResults().size(), i);
+            }
+        }
+    }
+
+    @Test
+    public void testFindOrganisationsByNameCodeAndSchemeUrn() throws Exception {
+        // Find by name (like), code (like) and organisation scheme urn
+        {
+            MetamacCriteria metamacCriteria = new MetamacCriteria();
+            // Order
+            metamacCriteria.setOrdersBy(new ArrayList<MetamacCriteriaOrder>());
+
+            MetamacCriteriaOrder orderUrn = new MetamacCriteriaOrder();
+            orderUrn.setType(OrderTypeEnum.ASC);
+            orderUrn.setPropertyName(OrganisationMetamacCriteriaOrderEnum.URN.name());
+            metamacCriteria.getOrdersBy().add(orderUrn);
+
+            // Restrictions
+            MetamacCriteriaConjunctionRestriction conjunctionRestriction = new MetamacCriteriaConjunctionRestriction();
+            conjunctionRestriction.getRestrictions().add(
+                    new MetamacCriteriaPropertyRestriction(OrganisationMetamacCriteriaPropertyEnum.NAME.name(), "Nombre organisationScheme-1-v2-organisation-2-", OperationType.LIKE));
+            conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(OrganisationMetamacCriteriaPropertyEnum.CODE.name(), "ORGANISATION02", OperationType.LIKE));
+            conjunctionRestriction.getRestrictions().add(
+                    new MetamacCriteriaPropertyRestriction(OrganisationMetamacCriteriaPropertyEnum.ORGANISATION_SCHEME_URN.name(), ORGANISATION_SCHEME_1_V2, OperationType.EQ));
+            metamacCriteria.setRestriction(conjunctionRestriction);
+
+            // Pagination
+            metamacCriteria.setPaginator(new MetamacCriteriaPaginator());
+            metamacCriteria.getPaginator().setFirstResult(0);
+            metamacCriteria.getPaginator().setMaximumResultSize(Integer.MAX_VALUE);
+            metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
+
+            // Find
+            MetamacCriteriaResult<OrganisationMetamacDto> organisationsPagedResult = srmCoreServiceFacade.findOrganisationsByCondition(getServiceContextAdministrador(), metamacCriteria);
+
+            // Validate
+            assertEquals(2, organisationsPagedResult.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(2, organisationsPagedResult.getResults().size());
+            assertTrue(organisationsPagedResult.getResults().get(0) instanceof OrganisationMetamacDto);
+            assertEquals(ORGANISATION_SCHEME_1_V2, organisationsPagedResult.getResults().get(0).getItemSchemeVersionUrn());
+
+            int i = 0;
+            assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1, organisationsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1_1, organisationsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(organisationsPagedResult.getResults().size(), i);
+        }
+    }
+
+    @Test
+    public void testFindOrganisationsBySchemeUrnPaginated() throws Exception {
         // Find by organisation scheme urn paginated
         {
 
