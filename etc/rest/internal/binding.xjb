@@ -5,7 +5,7 @@
 
 	<jaxb:globalBindings xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb">
 		<xjc:simple />
-        <jaxb:javaType name="java.util.Date" xmlType="xs:dateTime" parseMethod="org.apache.cxf.xjc.runtime.DataTypeAdapter.parseDateTime" printMethod="org.apache.cxf.xjc.runtime.DataTypeAdapter.printDateTime" />
-        <jaxb:javaType name="java.util.Date" xmlType="xs:date" parseMethod="org.apache.cxf.xjc.runtime.DataTypeAdapter.parseDateTime" printMethod="org.apache.cxf.xjc.runtime.DataTypeAdapter.printDateTime" />
+        <xjc:javaType xmlType="xs:dateTime" adapter="org.siemac.metamac.rest.common.adapter.DateTimeAdapter" name="java.util.Date" />
+		<xjc:javaType xmlType="xs:date" adapter="org.siemac.metamac.rest.common.adapter.DateAdapter" name="java.util.Date" />
 	</jaxb:globalBindings>
 </jaxb:bindings>
