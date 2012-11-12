@@ -36,15 +36,15 @@ public class ConceptsMetamacDoMocks extends ConceptsDoMocks {
     public static ConceptMetamac mockConcept(ConceptType conceptType) {
 
         ConceptMetamac concept = new ConceptMetamac();
-        concept.setPluralName(mockInternationalString());
-        concept.setAcronym(mockInternationalString());
-        concept.setDescriptionSource(mockInternationalString());
-        concept.setContext(mockInternationalString());
-        concept.setDocMethod(mockInternationalString());
+        concept.setPluralName(mockInternationalString("pluralName"));
+        concept.setAcronym(mockInternationalString("acronym"));
+        concept.setDescriptionSource(mockInternationalString("descriptionSource"));
+        concept.setContext(mockInternationalString("context"));
+        concept.setDocMethod(mockInternationalString("docMethod"));
         concept.setSdmxRelatedArtefact(ConceptRoleEnum.ATTRIBUTE);
         concept.setType(conceptType);
-        concept.setDerivation(mockInternationalString());
-        concept.setLegalActs(mockInternationalString());
+        concept.setDerivation(mockInternationalString("derivation"));
+        concept.setLegalActs(mockInternationalString("legalActs"));
 
         mockConcept(concept, TypeRepresentationEnum.ENUMERATED);
         return concept;
