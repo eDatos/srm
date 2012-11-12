@@ -25,22 +25,23 @@
     </xs:complexType>
     
     <xs:complexType name="Concept">
-        <xs:sequence>
-            <xs:element name="selfLink" type="xs:string" />
-            <xs:element name="parent" type="common:ResourceLink" />
-            <xs:element name="pluralName" type="common:InternationalString" minOccurs="0" />
-            <xs:element name="acronym" type="common:InternationalString" minOccurs="0" />
-            <xs:element name="descriptionSource" type="common:InternationalString" minOccurs="0" />
-            <xs:element name="context" type="common:InternationalString" minOccurs="0" />
-            <xs:element name="docMethod" type="common:InternationalString" minOccurs="0" />
-            <xs:element name="sdmxRelatedArtefact" type="tns:ConceptRole" minOccurs="0" />
-            <xs:element name="type" type="common:Item" minOccurs="0" />
-            <xs:element name="derivation" type="common:InternationalString" minOccurs="0" />
-            <xs:element name="legalActs" type="common:InternationalString" minOccurs="0" />
-            <xs:element name="conceptExtends" type="common:Resource" minOccurs="0" />
-            <xs:element name="children" type="common:Children" minOccurs="1" />
-        </xs:sequence>
-        <xs:attribute name="kind" type="xs:string" use="required" />
+        <xs:complexContent>
+            <xs:extension base="sdmx:ConceptType">
+                <xs:sequence>
+                    <xs:element name="pluralName" type="common:InternationalString" minOccurs="0" />
+                    <xs:element name="acronym" type="common:InternationalString" minOccurs="0" />
+                    <xs:element name="descriptionSource" type="common:InternationalString" minOccurs="0" />
+                    <xs:element name="context" type="common:InternationalString" minOccurs="0" />
+                    <xs:element name="docMethod" type="common:InternationalString" minOccurs="0" />
+                    <xs:element name="sdmxRelatedArtefact" type="tns:ConceptRole" minOccurs="0" />
+                    <xs:element name="type" type="common:Item" minOccurs="0" />
+                    <xs:element name="derivation" type="common:InternationalString" minOccurs="0" />
+                    <xs:element name="legalActs" type="common:InternationalString" minOccurs="0" />
+                    <xs:element name="conceptExtends" type="common:Resource" minOccurs="0" />
+                </xs:sequence>
+                <xs:attribute name="kind" type="xs:string" use="required" />
+            </xs:extension>
+        </xs:complexContent>
     </xs:complexType>    
 
     <!-- Lists -->

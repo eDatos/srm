@@ -1,40 +1,59 @@
 package org.siemac.metamac.srm.rest.internal.v1_0.mapper.concept;
 
 import javax.annotation.PostConstruct;
+import javax.ws.rs.core.Response.Status;
 
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.siemac.metamac.core.common.conf.ConfigurationService;
+import org.siemac.metamac.core.common.ent.domain.ExternalItem;
+import org.siemac.metamac.rest.common.v1_0.domain.Children;
 import org.siemac.metamac.rest.common.v1_0.domain.InternationalString;
 import org.siemac.metamac.rest.common.v1_0.domain.LocalisedString;
 import org.siemac.metamac.rest.common.v1_0.domain.Resource;
+import org.siemac.metamac.rest.common.v1_0.domain.ResourceLink;
 import org.siemac.metamac.rest.constants.RestEndpointsConstants;
+import org.siemac.metamac.rest.exception.RestException;
+import org.siemac.metamac.rest.exception.utils.RestExceptionUtils;
 import org.siemac.metamac.rest.search.criteria.mapper.SculptorCriteria2RestCriteria;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptScheme;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemes;
 import org.siemac.metamac.rest.utils.RestUtils;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
+import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
+import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
+import com.arte.statistic.sdmx.srm.core.concept.mapper.ConceptsDo2JaxbCallback;
 
 @Component
 public class ConceptsDo2RestMapperV10Impl implements ConceptsDo2RestMapperV10 {
 
     @Autowired
-    private ConfigurationService configurationService;
+    private ConfigurationService                                                  configurationService;
 
-    private String               srmApiInternalEndpointV10;
+    @Autowired
+    private com.arte.statistic.sdmx.srm.core.concept.mapper.ConceptsDo2JaxbMapper conceptsDo2JaxbSdmxMapper;
+
+    @Autowired
+    @Qualifier("conceptsDo2JaxbCallbackMetamac")
+    private ConceptsDo2JaxbCallback                                               conceptsDo2JaxbCallback;
+
+    private String                                                                srmApiInternalEndpointV10;
+    private String                                                                statisticalOperationsApiInternalEndpoint;
 
     @PostConstruct
     public void init() throws Exception {
-        // Statistical operations Internal Api
-        String srmApiInternalEndpoint = configurationService.getProperty(RestEndpointsConstants.SRM_INTERNAL_API);
-        if (srmApiInternalEndpoint == null) {
-            throw new BeanCreationException("Property not found: " + RestEndpointsConstants.SRM_INTERNAL_API);
-        }
+        // Srm Internal Api V1.0
+        String srmApiInternalEndpoint = readProperty(RestEndpointsConstants.SRM_INTERNAL_API);
         srmApiInternalEndpointV10 = RestUtils.createLink(srmApiInternalEndpoint, RestInternalConstants.API_VERSION_1_0);
+
+        // Statistical operations Internal Api
+        statisticalOperationsApiInternalEndpoint = readProperty(RestEndpointsConstants.STATISTICAL_OPERATIONS_INTERNAL_API);
     }
 
     @Override
@@ -53,6 +72,78 @@ public class ConceptsDo2RestMapperV10Impl implements ConceptsDo2RestMapperV10 {
             targets.getConceptSchemes().add(target);
         }
         return targets;
+    }
+
+    // TODO completar
+    // TODO conceptos
+    @Override
+    public ConceptScheme toConceptScheme(ConceptSchemeVersionMetamac source) {
+        if (source == null) {
+            return null;
+        }
+        // SDMX metadata
+        ConceptScheme target = (ConceptScheme) conceptsDo2JaxbSdmxMapper.conceptSchemeDoToJaxb(source, conceptsDo2JaxbCallback);
+
+        // Metamac metadata
+        target.setKind(RestInternalConstants.KIND_CONCEPT_SCHEME);
+        target.setSelfLink(toConceptSchemeLink(source));
+
+        target.setType(toConceptSchemeTypeEnum(source.getType()));
+        target.setRelatedOperation(toResourceExternalItemStatisticalOperation(source.getRelatedOperation()));
+        target.setParent(toConceptSchemeParent());
+        target.setChildren(toConceptSchemeChildren(source));
+        return target;
+    }
+
+    private ResourceLink toConceptSchemeParent() {
+        ResourceLink target = new ResourceLink();
+        target.setKind(RestInternalConstants.KIND_CONCEPT_SCHEMES);
+        target.setSelfLink(toConceptSchemesLink(null, null, null));
+        return target;
+    }
+
+    private Children toConceptSchemeChildren(ConceptSchemeVersionMetamac source) {
+        // no children
+        return null;
+    }
+
+    private org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemeType toConceptSchemeTypeEnum(ConceptSchemeTypeEnum source) {
+        if (source == null) {
+            return null;
+        }
+        switch (source) {
+            case GLOSSARY:
+                return org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemeType.GLOSSARY;
+            case OPERATION:
+                return org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemeType.OPERATION;
+            case ROLE:
+                return org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemeType.ROLE;
+            case TRANSVERSAL:
+                return org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemeType.TRANSVERSAL;
+            default:
+                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.UNKNOWN);
+                throw new RestException(exception, Status.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    private Resource toResourceExternalItemStatisticalOperation(ExternalItem source) {
+        if (source == null) {
+            return null;
+        }
+        return toResourceExternalItem(source, statisticalOperationsApiInternalEndpoint);
+    }
+
+    private Resource toResourceExternalItem(ExternalItem source, String apiExternalItem) {
+        if (source == null) {
+            return null;
+        }
+        Resource target = new Resource();
+        target.setId(source.getCode());
+        target.setUrn(source.getUrn());
+        target.setKind(source.getType().name());
+        target.setSelfLink(RestUtils.createLink(apiExternalItem, source.getUri()));
+        target.setTitle(toInternationalString(source.getTitle()));
+        return target;
     }
 
     private Resource toResource(ConceptSchemeVersionMetamac source) {
@@ -104,5 +195,13 @@ public class ConceptsDo2RestMapperV10Impl implements ConceptsDo2RestMapperV10 {
     private String toConceptSchemeLink(ConceptSchemeVersionMetamac conceptSchemeVersionMetamac) {
         MaintainableArtefact maintainableArtefact = conceptSchemeVersionMetamac.getMaintainableArtefact();
         return toConceptSchemesLink(maintainableArtefact.getMaintainer().getIdAsMaintainer(), maintainableArtefact.getCode(), maintainableArtefact.getVersionLogic());
+    }
+
+    private String readProperty(String property) {
+        String propertyValue = configurationService.getProperty(property);
+        if (propertyValue == null) {
+            throw new BeanCreationException("Property not found: " + property);
+        }
+        return propertyValue;
     }
 }

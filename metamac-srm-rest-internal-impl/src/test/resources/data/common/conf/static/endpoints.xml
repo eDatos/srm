@@ -3,4 +3,5 @@
 <properties>
     <comment>Rest endpoints</comment>
     <entry key="metamac.endpoints.srm.rest.internal">http://data.istac.es/apis/srm</entry>
+    <entry key="metamac.endpoints.statistical.operations.rest.internal">http://data.istac.es/apis/operations-internal</entry>
 </properties>
