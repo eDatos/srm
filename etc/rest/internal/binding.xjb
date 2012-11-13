@@ -5,7 +5,7 @@
 
 	<jaxb:globalBindings xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb">
 		<xjc:simple />
-        <xjc:javaType xmlType="xs:dateTime" adapter="org.siemac.metamac.rest.common.adapter.DateTimeAdapter" name="java.util.Date" />
-		<xjc:javaType xmlType="xs:date" adapter="org.siemac.metamac.rest.common.adapter.DateAdapter" name="java.util.Date" />
+		<xjc:javaType xmlType="xs:dateTime" adapter="com.arte.statistic.sdmx.v2_1.domain.jaxb.adapter.DateTimeAdapter" name="java.util.Date" />
+		<xjc:javaType xmlType="xs:date" adapter="com.arte.statistic.sdmx.v2_1.domain.jaxb.adapter.DateAdapter" name="java.util.Date" />
 	</jaxb:globalBindings>
 </jaxb:bindings>
