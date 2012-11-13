@@ -57,7 +57,7 @@
 		</property>
 		<property name="schemas">
 			<list>
-				<value>classpath:sdmx21xsd/*.xsd</value>
+				<value>classpath:schema/sdmx21/*.xsd</value>
 			</list>
 		</property>
 	</bean>
