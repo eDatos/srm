@@ -19,7 +19,6 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.siemac.metamac.core.common.util.ApplicationContextProvider;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
-import org.siemac.metamac.srm.web.shared.utils.SharedTokens;
 import org.siemac.metamac.web.common.server.ServiceContextHolder;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.util.ContentInputDto;
@@ -32,22 +31,23 @@ public class FileUploadServlet extends HttpServlet {
     private static Logger logger = Logger.getLogger(FileUploadServlet.class.getName());
 
     private File          tmpDir;
-    private File          destinationDir;
+
+    // private File destinationDir;
 
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         logger.info("FileUpload Servlet");
         tmpDir = new File(((File) getServletContext().getAttribute("javax.servlet.context.tempdir")).toString());
-        if (!tmpDir.isDirectory()) {
-            throw new ServletException(tmpDir.toString() + " is not a directory");
-        }
-        logger.info("tmpDir: " + tmpDir.toString());
-        String realPath = getServletContext().getRealPath("/" + SharedTokens.FILE_UPLOAD_DIR_PATH);
-        destinationDir = new File(realPath);
-        if (!destinationDir.isDirectory()) {
-            throw new ServletException(SharedTokens.FILE_UPLOAD_DIR_PATH + " is not a directory");
-        }
-        logger.info("destinationDir: " + destinationDir.toString());
+        // if (!tmpDir.isDirectory()) {
+        // throw new ServletException(tmpDir.toString() + " is not a directory");
+        // }
+        // logger.info("tmpDir: " + tmpDir.toString());
+        // String realPath = getServletContext().getRealPath("/" + SharedTokens.FILE_UPLOAD_DIR_PATH);
+        // destinationDir = new File(realPath);
+        // if (!destinationDir.isDirectory()) {
+        // throw new ServletException(SharedTokens.FILE_UPLOAD_DIR_PATH + " is not a directory");
+        // }
+        // logger.info("destinationDir: " + destinationDir.toString());
     }
 
     @Override
