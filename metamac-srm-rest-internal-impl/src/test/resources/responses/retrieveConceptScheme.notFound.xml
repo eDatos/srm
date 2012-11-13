@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<common:exception xmlns:common="http://www.siemac.org/metamac/rest/common/v1.0/domain">
+    <common:code>exception.srm.concept_scheme.not_found</common:code>
+    <common:message>Concept scheme not found in AgencyID agency1 with ID notexists and version 01.000</common:message>
+    <common:parameters total="3">
+        <common:parameter>agency1</common:parameter>
+        <common:parameter>notexists</common:parameter>
+        <common:parameter>01.000</common:parameter>
+    </common:parameters>
+</common:exception>

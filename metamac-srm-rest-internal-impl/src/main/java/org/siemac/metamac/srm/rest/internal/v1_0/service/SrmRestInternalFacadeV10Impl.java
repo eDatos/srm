@@ -65,7 +65,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
     public ConceptScheme retrieveConceptScheme(String agencyID, String resourceID, String version) {
         try {
             // Find one
-            PagedResult<ConceptSchemeVersionMetamac> conceptsSchemesEntitiesResult = findConceptSchemes(agencyID, resourceID, version, null, PagingParameter.pageAccess(1, 1, false));
+            PagedResult<ConceptSchemeVersionMetamac> conceptsSchemesEntitiesResult = findConceptSchemesCore(agencyID, resourceID, version, null, PagingParameter.pageAccess(1, 1, false));
             if (conceptsSchemesEntitiesResult.getValues().size() != 1) {
                 org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.CONCEPT_SCHEME_NOT_FOUND, agencyID, resourceID, version);
                 throw new RestException(exception, Status.NOT_FOUND);
@@ -84,7 +84,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             SculptorCriteria sculptorCriteria = restCriteria2SculptorCriteriaMapper.getConceptSchemeCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
 
             // Find
-            PagedResult<ConceptSchemeVersionMetamac> conceptsSchemesEntitiesResult = findConceptSchemes(agencyID, resourceID, version, sculptorCriteria.getConditions(),
+            PagedResult<ConceptSchemeVersionMetamac> conceptsSchemesEntitiesResult = findConceptSchemesCore(agencyID, resourceID, version, sculptorCriteria.getConditions(),
                     sculptorCriteria.getPagingParameter());
 
             // Transform
@@ -95,7 +95,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
         }
     }
 
-    private PagedResult<ConceptSchemeVersionMetamac> findConceptSchemes(String agencyID, String resourceID, String version, List<ConditionalCriteria> conditionalCriteriaQuery,
+    private PagedResult<ConceptSchemeVersionMetamac> findConceptSchemesCore(String agencyID, String resourceID, String version, List<ConditionalCriteria> conditionalCriteriaQuery,
             PagingParameter pagingParameter) throws MetamacException {
 
         // Criteria to find concept schemes by criteria
@@ -126,7 +126,6 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
         // Find
         PagedResult<ConceptSchemeVersionMetamac> conceptsSchemesEntitiesResult = conceptsService.findConceptSchemesByCondition(ctx, conditionalCriteria, pagingParameter);
         return conceptsSchemesEntitiesResult;
-
     }
 
     /**

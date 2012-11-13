@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<srm:conceptSchemes xmlns:query="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/query" xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common" xmlns:srm="http://www.siemac.org/metamac/rest/srm-internal/v1.0/domain" xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" xmlns:ns5="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="srm#conceptschemes" total="12" limit="4" offset="4" firstLink="http://data.istac.es/apis/srm/v1.0/conceptschemes/agency1?limit=4&amp;offset=0" previousLink="http://data.istac.es/apis/srm/v1.0/conceptschemes/agency1?limit=4&amp;offset=0" nextLink="http://data.istac.es/apis/srm/v1.0/conceptschemes/agency1?limit=4&amp;offset=8" lastLink="http://data.istac.es/apis/srm/v1.0/conceptschemes/agency1?limit=4&amp;offset=8">
+    <srm:conceptScheme kind="srm#conceptscheme">
+        <ns5:id>conceptScheme1</ns5:id>
+        <ns5:urn>urn:conceptScheme1:01.000</ns5:urn>
+        <ns5:selfLink>http://data.istac.es/apis/srm/v1.0/conceptschemes/idAsMaintaineragency1/conceptScheme1/01.000</ns5:selfLink>
+        <ns5:title>
+            <ns5:text xml:lang="en">name-eLGmyPyjk7 in English</ns5:text>
+            <ns5:text xml:lang="es">name-ydzwDThNeL en Español</ns5:text>
+        </ns5:title>
+    </srm:conceptScheme>
+    <srm:conceptScheme kind="srm#conceptscheme">
+        <ns5:id>conceptScheme2</ns5:id>
+        <ns5:urn>urn:conceptScheme2:01.000</ns5:urn>
+        <ns5:selfLink>http://data.istac.es/apis/srm/v1.0/conceptschemes/idAsMaintaineragency1/conceptScheme2/01.000</ns5:selfLink>
+        <ns5:title>
+            <ns5:text xml:lang="en">name-508hlcVUU1 in English</ns5:text>
+            <ns5:text xml:lang="es">name-2IUrlVJDvA en Español</ns5:text>
+        </ns5:title>
+    </srm:conceptScheme>
+    <srm:conceptScheme kind="srm#conceptscheme">
+        <ns5:id>conceptScheme2</ns5:id>
+        <ns5:urn>urn:conceptScheme2:02.000</ns5:urn>
+        <ns5:selfLink>http://data.istac.es/apis/srm/v1.0/conceptschemes/idAsMaintaineragency1/conceptScheme2/02.000</ns5:selfLink>
+        <ns5:title>
+            <ns5:text xml:lang="en">name-wX7ZpzUoEW in English</ns5:text>
+            <ns5:text xml:lang="es">name-yOzW02IyQU en Español</ns5:text>
+        </ns5:title>
+    </srm:conceptScheme>
+    <srm:conceptScheme kind="srm#conceptscheme">
+        <ns5:id>conceptScheme3</ns5:id>
+        <ns5:urn>urn:conceptScheme3:01.000</ns5:urn>
+        <ns5:selfLink>http://data.istac.es/apis/srm/v1.0/conceptschemes/idAsMaintaineragency2/conceptScheme3/01.000</ns5:selfLink>
+        <ns5:title>
+            <ns5:text xml:lang="en">name-6076nMrwxu in English</ns5:text>
+            <ns5:text xml:lang="es">name-hHn5RfAjHl en Español</ns5:text>
+        </ns5:title>
+    </srm:conceptScheme>
+</srm:conceptSchemes>
