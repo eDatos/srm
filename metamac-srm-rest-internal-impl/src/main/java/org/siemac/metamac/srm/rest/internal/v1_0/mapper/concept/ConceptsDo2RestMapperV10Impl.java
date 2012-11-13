@@ -8,6 +8,7 @@ import org.siemac.metamac.core.common.conf.ConfigurationService;
 import org.siemac.metamac.core.common.ent.domain.ExternalItem;
 import org.siemac.metamac.rest.common.v1_0.domain.Children;
 import org.siemac.metamac.rest.common.v1_0.domain.InternationalString;
+import org.siemac.metamac.rest.common.v1_0.domain.Item;
 import org.siemac.metamac.rest.common.v1_0.domain.LocalisedString;
 import org.siemac.metamac.rest.common.v1_0.domain.Resource;
 import org.siemac.metamac.rest.common.v1_0.domain.ResourceLink;
@@ -15,10 +16,14 @@ import org.siemac.metamac.rest.constants.RestEndpointsConstants;
 import org.siemac.metamac.rest.exception.RestException;
 import org.siemac.metamac.rest.exception.utils.RestExceptionUtils;
 import org.siemac.metamac.rest.search.criteria.mapper.SculptorCriteria2RestCriteria;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.Concept;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptScheme;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemes;
 import org.siemac.metamac.rest.utils.RestUtils;
+import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
+import org.siemac.metamac.srm.core.concept.domain.ConceptType;
+import org.siemac.metamac.srm.core.concept.enume.domain.ConceptRoleEnum;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
@@ -74,25 +79,48 @@ public class ConceptsDo2RestMapperV10Impl implements ConceptsDo2RestMapperV10 {
         return targets;
     }
 
-    // TODO completar
-    // TODO conceptos
     @Override
     public ConceptScheme toConceptScheme(ConceptSchemeVersionMetamac source) {
         if (source == null) {
             return null;
         }
-        // SDMX metadata
-        ConceptScheme target = (ConceptScheme) conceptsDo2JaxbSdmxMapper.conceptSchemeDoToJaxb(source, conceptsDo2JaxbCallback);
+        return (ConceptScheme) conceptsDo2JaxbSdmxMapper.conceptSchemeDoToJaxb(source, conceptsDo2JaxbCallback);
+    }
 
-        // Metamac metadata
+    @Override
+    public void toConceptScheme(ConceptSchemeVersionMetamac source, ConceptScheme target) {
+        if (source == null) {
+            return;
+        }
         target.setKind(RestInternalConstants.KIND_CONCEPT_SCHEME);
         target.setSelfLink(toConceptSchemeLink(source));
-
+        target.setUri(target.getSelfLink());
         target.setType(toConceptSchemeTypeEnum(source.getType()));
         target.setRelatedOperation(toResourceExternalItemStatisticalOperation(source.getRelatedOperation()));
         target.setParent(toConceptSchemeParent());
         target.setChildren(toConceptSchemeChildren(source));
-        return target;
+    }
+
+    // TODO conceptExtends urn?
+    // TODO relatedConcepts
+    // TODO role SDMX
+    @Override
+    public void toConcept(ConceptMetamac source, Concept target) {
+        if (source == null) {
+            return;
+        }
+        target.setPluralName(toInternationalString(source.getPluralName()));
+        target.setAcronym(toInternationalString(source.getAcronym()));
+        target.setDescriptionSource(toInternationalString(source.getDescriptionSource()));
+        target.setContext(toInternationalString(source.getContext()));
+        target.setDocMethod(toInternationalString(source.getDocMethod()));
+        target.setSdmxRelatedArtefact(toConceptRoleEnum(source.getSdmxRelatedArtefact()));
+        target.setType(toItem(source.getType()));
+        target.setDerivation(toInternationalString(source.getDerivation()));
+        target.setLegalActs(toInternationalString(source.getLegalActs()));
+        if (source.getConceptExtends() != null) {
+            target.setConceptExtends(source.getConceptExtends().getNameableArtefact().getUrn());
+        }
     }
 
     private ResourceLink toConceptSchemeParent() {
@@ -124,6 +152,33 @@ public class ConceptsDo2RestMapperV10Impl implements ConceptsDo2RestMapperV10 {
                 org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.UNKNOWN);
                 throw new RestException(exception, Status.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    private org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptRole toConceptRoleEnum(ConceptRoleEnum source) {
+        if (source == null) {
+            return null;
+        }
+        switch (source) {
+            case ATTRIBUTE:
+                return org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptRole.ATTRIBUTE;
+            case DIMENSION:
+                return org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptRole.DIMENSION;
+            case PRIMARY_MEASURE:
+                return org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptRole.PRIMARY_MEASURE;
+            default:
+                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.UNKNOWN);
+                throw new RestException(exception, Status.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    private Item toItem(ConceptType source) {
+        if (source == null) {
+            return null;
+        }
+        Item target = new Item();
+        target.setId(source.getIdentifier());
+        target.setTitle(toInternationalString(source.getDescription()));
+        return target;
     }
 
     private Resource toResourceExternalItemStatisticalOperation(ExternalItem source) {

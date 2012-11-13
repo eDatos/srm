@@ -37,7 +37,7 @@
                     <xs:element name="type" type="common:Item" minOccurs="0" />
                     <xs:element name="derivation" type="common:InternationalString" minOccurs="0" />
                     <xs:element name="legalActs" type="common:InternationalString" minOccurs="0" />
-                    <xs:element name="conceptExtends" type="common:Resource" minOccurs="0" />
+                    <xs:element name="conceptExtends" type="xs:string" minOccurs="0" />
                 </xs:sequence>
                 <xs:attribute name="kind" type="xs:string" use="required" />
             </xs:extension>
@@ -76,8 +76,7 @@
         <xs:restriction base="xs:token">
             <xs:enumeration value="DIMENSION" />
             <xs:enumeration value="ATTRIBUTE" />
-            <xs:enumeration value="OPERPRIMARY_MEASUREATION" />
-            <xs:enumeration value="ROLE" />
+            <xs:enumeration value="PRIMARY_MEASURE" />
         </xs:restriction>
     </xs:simpleType>       
     

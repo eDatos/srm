@@ -6,6 +6,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +45,8 @@ import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmCoreMocks;
 import org.springframework.context.ApplicationContext;
+
+import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.WILDCARD;
 
 public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
 
@@ -121,33 +124,27 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
 
     @Test
     public void testFindConceptsSchemesByAgencyErrorWildcard() throws Exception {
-        // TODO
-        // testFindConceptsSchemes(RestInternalConstants.WILDCARD, null, null, null, null);
-        // testFindConceptsSchemes(RestInternalConstants.WILDCARD, "1", "0", QUERY_CONCEPT_SCHEME_ID_LIKE_1_NAME_LIKE_2, null);
+        String requestUri = baseApi + "/conceptschemes/" + WILDCARD;
+        testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.NOT_FOUND, new ByteArrayInputStream(new byte[0]));
     }
 
     @Test
     public void testFindConceptsSchemesByAgencyAndResource() throws Exception {
         testFindConceptsSchemes(AGENCY_1, CONCEPT_SCHEME_1_CODE, null, null, null, null);
-        testFindConceptsSchemes(RestInternalConstants.WILDCARD, CONCEPT_SCHEME_1_CODE, null, null, null, null);
+        testFindConceptsSchemes(WILDCARD, CONCEPT_SCHEME_1_CODE, null, null, null, null);
         testFindConceptsSchemes(AGENCY_1, CONCEPT_SCHEME_1_CODE, "2", null, null, null);
-        testFindConceptsSchemes(RestInternalConstants.WILDCARD, CONCEPT_SCHEME_1_CODE, "2", null, null, null);
+        testFindConceptsSchemes(WILDCARD, CONCEPT_SCHEME_1_CODE, "2", null, null, null);
         testFindConceptsSchemes(AGENCY_1, CONCEPT_SCHEME_1_CODE, null, "0", null, null);
-        testFindConceptsSchemes(RestInternalConstants.WILDCARD, CONCEPT_SCHEME_1_CODE, null, "0", null, null);
+        testFindConceptsSchemes(WILDCARD, CONCEPT_SCHEME_1_CODE, null, "0", null, null);
         testFindConceptsSchemes(AGENCY_1, CONCEPT_SCHEME_1_CODE, "2", "0", null, null);
         testFindConceptsSchemes(AGENCY_1, CONCEPT_SCHEME_1_CODE, "1", "0", QUERY_CONCEPT_SCHEME_ID_LIKE_1_NAME_LIKE_2, null);
-        testFindConceptsSchemes(RestInternalConstants.WILDCARD, CONCEPT_SCHEME_1_CODE, "1", "0", QUERY_CONCEPT_SCHEME_ID_LIKE_1_NAME_LIKE_2, null);
+        testFindConceptsSchemes(WILDCARD, CONCEPT_SCHEME_1_CODE, "1", "0", QUERY_CONCEPT_SCHEME_ID_LIKE_1_NAME_LIKE_2, null);
     }
 
     @Test
     public void testFindConceptsSchemesByAgencyAndResourceErrorWildcard() throws Exception {
-        // TODO
-        // testFindConceptsSchemes(AGENCY_1, RestInternalConstants.WILDCARD, null, null, null, null);
-        // testFindConceptsSchemes(RestInternalConstants.WILDCARD, RestInternalConstants.WILDCARD, null, null, null, null);
-        // testFindConceptsSchemes(AGENCY_1, RestInternalConstants.WILDCARD, "2", null, null, null);
-        // testFindConceptsSchemes(RestInternalConstants.WILDCARD, RestInternalConstants.WILDCARD, "2", null, null, null);
-        // testFindConceptsSchemes(AGENCY_1, RestInternalConstants.WILDCARD, null, "0", null, null);
-        // testFindConceptsSchemes(RestInternalConstants.WILDCARD, RestInternalConstants.WILDCARD, null, "0", null, null);
+        String requestUri = baseApi + "/conceptschemes/agency1/" + WILDCARD;
+        testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.NOT_FOUND, new ByteArrayInputStream(new byte[0]));
     }
 
     @Test
@@ -158,7 +155,7 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
         String resourceID = CONCEPT_SCHEME_1_CODE;
         String version = CONCEPT_SCHEME_1_VERSION;
         ConceptScheme conceptScheme = getSrmRestInternalFacadeClientXml().retrieveConceptScheme(agencyID, resourceID, version);
-        
+
         // Validation
         assertNotNull(conceptScheme);
         assertEquals("idAsMaintainer" + agencyID, conceptScheme.getAgencyID());
@@ -166,6 +163,36 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
         assertEquals(version, conceptScheme.getVersion());
         assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEME, conceptScheme.getKind());
         // other metadata are tested in transformation tests
+    }
+
+    @Test
+    public void testRetrieveConceptSchemeWithoutJaxbTransformation() throws Exception {
+
+        String requestUri = getUriConceptSchemes(AGENCY_1, CONCEPT_SCHEME_1_CODE, CONCEPT_SCHEME_1_VERSION);
+        InputStream responseExpected = SrmRestInternalFacadeV10Test.class.getResourceAsStream("/responses/retrieveConceptScheme.id1.xml");
+
+        // Request and validate
+        testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
+    }
+
+    @Test
+    public void testRetrieveConceptsSchemeErrorWildcard() throws Exception {
+        {
+            String requestUri = getUriConceptSchemes(WILDCARD, CONCEPT_SCHEME_1_CODE, CONCEPT_SCHEME_1_VERSION);
+            testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.NOT_FOUND, new ByteArrayInputStream(new byte[0]));
+        }
+        {
+            String requestUri = getUriConceptSchemes(AGENCY_1, WILDCARD, CONCEPT_SCHEME_1_VERSION);
+            testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.NOT_FOUND, new ByteArrayInputStream(new byte[0]));
+        }
+        {
+            String requestUri = getUriConceptSchemes(AGENCY_1, CONCEPT_SCHEME_1_CODE, WILDCARD);
+            testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.NOT_FOUND, new ByteArrayInputStream(new byte[0]));
+        }
+    }
+
+    private String getUriConceptSchemes(String agencyID, String resourceID, String version) {
+        return baseApi + "/conceptschemes/" + agencyID + "/" + resourceID + "/" + version;
     }
 
     private void testFindConceptsSchemes(String limit, String offset, String query, String orderBy) throws Exception {

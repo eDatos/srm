@@ -6,6 +6,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
+import org.siemac.metamac.core.common.constants.shared.RegularExpressionConstants;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptScheme;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemes;
 
@@ -25,16 +26,18 @@ public interface SrmRestInternalFacadeV10 {
      */
     @GET
     @Produces("application/xml")
-    @Path("conceptschemes/{agencyID: [A-z].*}")
+    @Path("conceptschemes/{agencyID: " + RegularExpressionConstants.REG_EXP_SEMANTIC_IDENTIFIER + "}")
     ConceptSchemes findConceptSchemes(@PathParam("agencyID") String agencyID, @QueryParam("query") String query, @QueryParam("orderBy") String orderBy, @QueryParam("limit") String limit,
             @QueryParam("offset") String offset);
 
     /**
      * TODO Documentation
+     * 
+     * agencyID can be ~all
      */
     @GET
     @Produces("application/xml")
-    @Path("conceptschemes/{agencyID}/{resourceID: [A-z].*}")
+    @Path("conceptschemes/{agencyID}/{resourceID: " + RegularExpressionConstants.REG_EXP_SEMANTIC_IDENTIFIER + "}")
     ConceptSchemes findConceptSchemes(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @QueryParam("query") String query, @QueryParam("orderBy") String orderBy,
             @QueryParam("limit") String limit, @QueryParam("offset") String offset);
 
@@ -44,7 +47,7 @@ public interface SrmRestInternalFacadeV10 {
      */
     @GET
     @Produces("application/xml")
-    @Path("conceptschemes/{agencyID: [A-z].*}/{resourceID: [A-z].*}/{version: \\d.*}")
+    @Path("conceptschemes/{agencyID: " + RegularExpressionConstants.REG_EXP_SEMANTIC_IDENTIFIER + "}/{resourceID: " + RegularExpressionConstants.REG_EXP_SEMANTIC_IDENTIFIER + "}/{version: \\d.*}")
     ConceptScheme retrieveConceptScheme(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @PathParam("version") String version);
 
 }
