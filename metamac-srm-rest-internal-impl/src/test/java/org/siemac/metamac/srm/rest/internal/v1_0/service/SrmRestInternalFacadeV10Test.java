@@ -157,7 +157,7 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
     @Test
     public void testFindConceptsSchemesByAgencyWithoutJaxbTransformation() throws Exception {
         String requestUri = getUriConceptSchemes(AGENCY_1, null, null, "4", "4");
-        InputStream responseExpected = SrmRestInternalFacadeV10Test.class.getResourceAsStream("/responses/findConceptsSchemes.xml");
+        InputStream responseExpected = SrmRestInternalFacadeV10Test.class.getResourceAsStream("/responses/findConceptsSchemes.byAgency.xml");
 
         // Request and validate
         testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
@@ -184,8 +184,8 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
 
     @Test
     public void testFindConceptsSchemesByAgencyAndResourceWithoutJaxbTransformation() throws Exception {
-        String requestUri = getUriConceptSchemes(AGENCY_1, null, null, "4", null);
-        InputStream responseExpected = SrmRestInternalFacadeV10Test.class.getResourceAsStream("/responses/findConceptsSchemes.xml");
+        String requestUri = getUriConceptSchemes(AGENCY_1, CONCEPT_SCHEME_1_CODE, null, "4", null);
+        InputStream responseExpected = SrmRestInternalFacadeV10Test.class.getResourceAsStream("/responses/findConceptsSchemes.byAgencyResource.xml");
 
         // Request and validate
         testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
