@@ -9,6 +9,7 @@ import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
+import org.siemac.metamac.srm.web.client.utils.MaintainerUtils;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 import org.siemac.metamac.srm.web.concept.utils.CommonUtils;
 import org.siemac.metamac.srm.web.concept.view.handlers.ConceptSchemeListUiHandlers;
@@ -130,7 +131,7 @@ public class NewConceptSchemeWindow extends CustomWindow {
         ConceptSchemeMetamacDto conceptSchemeDto = new ConceptSchemeMetamacDto();
 
         // TODO agency
-        RelatedResourceDto agency = new RelatedResourceDto("SDMX_AGENCY", "urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:SDMX(1.0).ISTAC", TypeExternalArtefactsEnum.AGENCY);
+        RelatedResourceDto agency = new RelatedResourceDto("SDMX_AGENCY", MaintainerUtils.getCurrentMaintainer(), TypeExternalArtefactsEnum.AGENCY);
         conceptSchemeDto.setMaintainer(agency);
 
         conceptSchemeDto.setCode(form.getValueAsString(ConceptSchemeDS.CODE));
