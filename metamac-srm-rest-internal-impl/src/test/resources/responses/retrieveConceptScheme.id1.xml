@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<srm:conceptScheme xmlns:query="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/query" xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common" xmlns:srm="http://www.siemac.org/metamac/rest/srm-internal/v1.0/domain" xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" xmlns:ns5="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="srm#conceptscheme" id="conceptScheme1" isPartial="false" agencyID="idAsMaintaineragency1" isFinal="true" isExternalReference="false" version="01.000" validFrom="2012-11-13T10:00:27.784Z" validTo="2012-11-13T10:00:27.784Z" urn="urn:conceptScheme1:01.000" serviceURL="serviceUrl-XfcRkPXzbb" structureURL="structureUrl-18gQwSkaog">
+<srm:conceptScheme xmlns:query="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/query" xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common" xmlns:srm="http://www.siemac.org/metamac/rest/srm-internal/v1.0/domain" xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="srm#conceptscheme" id="conceptScheme1" isPartial="false" agencyID="idAsMaintaineragency1" isFinal="true" isExternalReference="false" version="01.000" validFrom="2012-11-13T10:00:27.784Z" validTo="2012-11-13T10:00:27.784Z" urn="urn:conceptScheme1:01.000" serviceURL="serviceUrl-XfcRkPXzbb" structureURL="structureUrl-18gQwSkaog">
     <common:Annotations>
         <common:Annotation id="code2">
             <common:AnnotationTitle>title-SaxtfX3xIa</common:AnnotationTitle>
@@ -61,36 +61,36 @@
             </structure:Enumeration>
         </structure:CoreRepresentation>
         <srm:pluralName>
-            <ns5:text xml:lang="en">pluralName-concept1 in English</ns5:text>
-            <ns5:text xml:lang="es">pluralName-concept1 en Español</ns5:text>
+            <cdomain:text xml:lang="en">pluralName-concept1 in English</cdomain:text>
+            <cdomain:text xml:lang="es">pluralName-concept1 en Español</cdomain:text>
         </srm:pluralName>
         <srm:acronym>
-            <ns5:text xml:lang="es">acronym-concept1 en Español</ns5:text>
-            <ns5:text xml:lang="en">acronym-concept1 in English</ns5:text>
+            <cdomain:text xml:lang="es">acronym-concept1 en Español</cdomain:text>
+            <cdomain:text xml:lang="en">acronym-concept1 in English</cdomain:text>
         </srm:acronym>
         <srm:descriptionSource>
-            <ns5:text xml:lang="en">descriptionSource-concept1 in English</ns5:text>
-            <ns5:text xml:lang="es">descriptionSource-concept1 en Español</ns5:text>
+            <cdomain:text xml:lang="en">descriptionSource-concept1 in English</cdomain:text>
+            <cdomain:text xml:lang="es">descriptionSource-concept1 en Español</cdomain:text>
         </srm:descriptionSource>
         <srm:context>
-            <ns5:text xml:lang="en">context-concept1 in English</ns5:text>
-            <ns5:text xml:lang="es">context-concept1 en Español</ns5:text>
+            <cdomain:text xml:lang="en">context-concept1 in English</cdomain:text>
+            <cdomain:text xml:lang="es">context-concept1 en Español</cdomain:text>
         </srm:context>
         <srm:docMethod>
-            <ns5:text xml:lang="es">docMethod-concept1 en Español</ns5:text>
-            <ns5:text xml:lang="en">docMethod-concept1 in English</ns5:text>
+            <cdomain:text xml:lang="es">docMethod-concept1 en Español</cdomain:text>
+            <cdomain:text xml:lang="en">docMethod-concept1 in English</cdomain:text>
         </srm:docMethod>
         <srm:sdmxRelatedArtefact>ATTRIBUTE</srm:sdmxRelatedArtefact>
         <srm:type>
-            <ns5:id>conceptType</ns5:id>
+            <cdomain:id>conceptType</cdomain:id>
         </srm:type>
         <srm:derivation>
-            <ns5:text xml:lang="en">derivation-concept1 in English</ns5:text>
-            <ns5:text xml:lang="es">derivation-concept1 en Español</ns5:text>
+            <cdomain:text xml:lang="en">derivation-concept1 in English</cdomain:text>
+            <cdomain:text xml:lang="es">derivation-concept1 en Español</cdomain:text>
         </srm:derivation>
         <srm:legalActs>
-            <ns5:text xml:lang="en">legalActs-concept1 in English</ns5:text>
-            <ns5:text xml:lang="es">legalActs-concept1 en Español</ns5:text>
+            <cdomain:text xml:lang="en">legalActs-concept1 in English</cdomain:text>
+            <cdomain:text xml:lang="es">legalActs-concept1 en Español</cdomain:text>
         </srm:legalActs>
     </structure:Concept>
     <structure:Concept xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="srm:Concept" id="concept2" urn="urncctsjWkO2g">
@@ -127,36 +127,36 @@
             </structure:Enumeration>
         </structure:CoreRepresentation>
         <srm:pluralName>
-            <ns5:text xml:lang="en">pluralName-concept2 in English</ns5:text>
-            <ns5:text xml:lang="es">pluralName-concept2 en Español</ns5:text>
+            <cdomain:text xml:lang="en">pluralName-concept2 in English</cdomain:text>
+            <cdomain:text xml:lang="es">pluralName-concept2 en Español</cdomain:text>
         </srm:pluralName>
         <srm:acronym>
-            <ns5:text xml:lang="en">acronym-concept2 in English</ns5:text>
-            <ns5:text xml:lang="es">acronym-concept2 en Español</ns5:text>
+            <cdomain:text xml:lang="en">acronym-concept2 in English</cdomain:text>
+            <cdomain:text xml:lang="es">acronym-concept2 en Español</cdomain:text>
         </srm:acronym>
         <srm:descriptionSource>
-            <ns5:text xml:lang="en">descriptionSource-concept2 in English</ns5:text>
-            <ns5:text xml:lang="es">descriptionSource-concept2 en Español</ns5:text>
+            <cdomain:text xml:lang="en">descriptionSource-concept2 in English</cdomain:text>
+            <cdomain:text xml:lang="es">descriptionSource-concept2 en Español</cdomain:text>
         </srm:descriptionSource>
         <srm:context>
-            <ns5:text xml:lang="es">context-concept2 en Español</ns5:text>
-            <ns5:text xml:lang="en">context-concept2 in English</ns5:text>
+            <cdomain:text xml:lang="es">context-concept2 en Español</cdomain:text>
+            <cdomain:text xml:lang="en">context-concept2 in English</cdomain:text>
         </srm:context>
         <srm:docMethod>
-            <ns5:text xml:lang="es">docMethod-concept2 en Español</ns5:text>
-            <ns5:text xml:lang="en">docMethod-concept2 in English</ns5:text>
+            <cdomain:text xml:lang="es">docMethod-concept2 en Español</cdomain:text>
+            <cdomain:text xml:lang="en">docMethod-concept2 in English</cdomain:text>
         </srm:docMethod>
         <srm:sdmxRelatedArtefact>ATTRIBUTE</srm:sdmxRelatedArtefact>
         <srm:type>
-            <ns5:id>conceptType</ns5:id>
+            <cdomain:id>conceptType</cdomain:id>
         </srm:type>
         <srm:derivation>
-            <ns5:text xml:lang="en">derivation-concept2 in English</ns5:text>
-            <ns5:text xml:lang="es">derivation-concept2 en Español</ns5:text>
+            <cdomain:text xml:lang="en">derivation-concept2 in English</cdomain:text>
+            <cdomain:text xml:lang="es">derivation-concept2 en Español</cdomain:text>
         </srm:derivation>
         <srm:legalActs>
-            <ns5:text xml:lang="es">legalActs-concept2 en Español</ns5:text>
-            <ns5:text xml:lang="en">legalActs-concept2 in English</ns5:text>
+            <cdomain:text xml:lang="es">legalActs-concept2 en Español</cdomain:text>
+            <cdomain:text xml:lang="en">legalActs-concept2 in English</cdomain:text>
         </srm:legalActs>
     </structure:Concept>
     <structure:Concept xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="srm:Concept" id="concept2A" urn="urnOt2Aen64wQ">
@@ -196,36 +196,36 @@
             </structure:Enumeration>
         </structure:CoreRepresentation>
         <srm:pluralName>
-            <ns5:text xml:lang="en">pluralName-concept2A in English</ns5:text>
-            <ns5:text xml:lang="es">pluralName-concept2A en Español</ns5:text>
+            <cdomain:text xml:lang="en">pluralName-concept2A in English</cdomain:text>
+            <cdomain:text xml:lang="es">pluralName-concept2A en Español</cdomain:text>
         </srm:pluralName>
         <srm:acronym>
-            <ns5:text xml:lang="es">acronym-concept2A en Español</ns5:text>
-            <ns5:text xml:lang="en">acronym-concept2A in English</ns5:text>
+            <cdomain:text xml:lang="es">acronym-concept2A en Español</cdomain:text>
+            <cdomain:text xml:lang="en">acronym-concept2A in English</cdomain:text>
         </srm:acronym>
         <srm:descriptionSource>
-            <ns5:text xml:lang="es">descriptionSource-concept2A en Español</ns5:text>
-            <ns5:text xml:lang="en">descriptionSource-concept2A in English</ns5:text>
+            <cdomain:text xml:lang="es">descriptionSource-concept2A en Español</cdomain:text>
+            <cdomain:text xml:lang="en">descriptionSource-concept2A in English</cdomain:text>
         </srm:descriptionSource>
         <srm:context>
-            <ns5:text xml:lang="es">context-concept2A en Español</ns5:text>
-            <ns5:text xml:lang="en">context-concept2A in English</ns5:text>
+            <cdomain:text xml:lang="es">context-concept2A en Español</cdomain:text>
+            <cdomain:text xml:lang="en">context-concept2A in English</cdomain:text>
         </srm:context>
         <srm:docMethod>
-            <ns5:text xml:lang="en">docMethod-concept2A in English</ns5:text>
-            <ns5:text xml:lang="es">docMethod-concept2A en Español</ns5:text>
+            <cdomain:text xml:lang="en">docMethod-concept2A in English</cdomain:text>
+            <cdomain:text xml:lang="es">docMethod-concept2A en Español</cdomain:text>
         </srm:docMethod>
         <srm:sdmxRelatedArtefact>ATTRIBUTE</srm:sdmxRelatedArtefact>
         <srm:type>
-            <ns5:id>conceptType</ns5:id>
+            <cdomain:id>conceptType</cdomain:id>
         </srm:type>
         <srm:derivation>
-            <ns5:text xml:lang="es">derivation-concept2A en Español</ns5:text>
-            <ns5:text xml:lang="en">derivation-concept2A in English</ns5:text>
+            <cdomain:text xml:lang="es">derivation-concept2A en Español</cdomain:text>
+            <cdomain:text xml:lang="en">derivation-concept2A in English</cdomain:text>
         </srm:derivation>
         <srm:legalActs>
-            <ns5:text xml:lang="es">legalActs-concept2A en Español</ns5:text>
-            <ns5:text xml:lang="en">legalActs-concept2A in English</ns5:text>
+            <cdomain:text xml:lang="es">legalActs-concept2A en Español</cdomain:text>
+            <cdomain:text xml:lang="en">legalActs-concept2A in English</cdomain:text>
         </srm:legalActs>
         <srm:conceptExtends>urnzpEJIYzrJi</srm:conceptExtends>
     </structure:Concept>
@@ -266,50 +266,50 @@
             </structure:Enumeration>
         </structure:CoreRepresentation>
         <srm:pluralName>
-            <ns5:text xml:lang="en">pluralName-concept2B in English</ns5:text>
-            <ns5:text xml:lang="es">pluralName-concept2B en Español</ns5:text>
+            <cdomain:text xml:lang="en">pluralName-concept2B in English</cdomain:text>
+            <cdomain:text xml:lang="es">pluralName-concept2B en Español</cdomain:text>
         </srm:pluralName>
         <srm:acronym>
-            <ns5:text xml:lang="es">acronym-concept2B en Español</ns5:text>
-            <ns5:text xml:lang="en">acronym-concept2B in English</ns5:text>
+            <cdomain:text xml:lang="es">acronym-concept2B en Español</cdomain:text>
+            <cdomain:text xml:lang="en">acronym-concept2B in English</cdomain:text>
         </srm:acronym>
         <srm:descriptionSource>
-            <ns5:text xml:lang="es">descriptionSource-concept2B en Español</ns5:text>
-            <ns5:text xml:lang="en">descriptionSource-concept2B in English</ns5:text>
+            <cdomain:text xml:lang="es">descriptionSource-concept2B en Español</cdomain:text>
+            <cdomain:text xml:lang="en">descriptionSource-concept2B in English</cdomain:text>
         </srm:descriptionSource>
         <srm:context>
-            <ns5:text xml:lang="es">context-concept2B en Español</ns5:text>
-            <ns5:text xml:lang="en">context-concept2B in English</ns5:text>
+            <cdomain:text xml:lang="es">context-concept2B en Español</cdomain:text>
+            <cdomain:text xml:lang="en">context-concept2B in English</cdomain:text>
         </srm:context>
         <srm:docMethod>
-            <ns5:text xml:lang="en">docMethod-concept2B in English</ns5:text>
-            <ns5:text xml:lang="es">docMethod-concept2B en Español</ns5:text>
+            <cdomain:text xml:lang="en">docMethod-concept2B in English</cdomain:text>
+            <cdomain:text xml:lang="es">docMethod-concept2B en Español</cdomain:text>
         </srm:docMethod>
         <srm:sdmxRelatedArtefact>ATTRIBUTE</srm:sdmxRelatedArtefact>
         <srm:type>
-            <ns5:id>conceptType</ns5:id>
+            <cdomain:id>conceptType</cdomain:id>
         </srm:type>
         <srm:derivation>
-            <ns5:text xml:lang="en">derivation-concept2B in English</ns5:text>
-            <ns5:text xml:lang="es">derivation-concept2B en Español</ns5:text>
+            <cdomain:text xml:lang="en">derivation-concept2B in English</cdomain:text>
+            <cdomain:text xml:lang="es">derivation-concept2B en Español</cdomain:text>
         </srm:derivation>
         <srm:legalActs>
-            <ns5:text xml:lang="en">legalActs-concept2B in English</ns5:text>
-            <ns5:text xml:lang="es">legalActs-concept2B en Español</ns5:text>
+            <cdomain:text xml:lang="en">legalActs-concept2B in English</cdomain:text>
+            <cdomain:text xml:lang="es">legalActs-concept2B en Español</cdomain:text>
         </srm:legalActs>
     </structure:Concept>
     <srm:selfLink>http://data.istac.es/apis/srm/v1.0/conceptschemes/idAsMaintaineragency1/conceptScheme1/01.000</srm:selfLink>
     <srm:parent kind="srm#conceptschemes">
-        <ns5:selfLink>http://data.istac.es/apis/srm/v1.0/conceptschemes</ns5:selfLink>
+        <cdomain:selfLink>http://data.istac.es/apis/srm/v1.0/conceptschemes</cdomain:selfLink>
     </srm:parent>
     <srm:type>OPERATION</srm:type>
     <srm:relatedOperation kind="STATISTICAL_OPERATION">
-        <ns5:id>c0c5eb4d-8db2-4deb-9213-034cffdab226</ns5:id>
-        <ns5:urn>urn:c0c5eb4d-8db2-4deb-9213-034cffdab226</ns5:urn>
-        <ns5:selfLink>http://data.istac.es/apis/operations-internal/http://c0c5eb4d-8db2-4deb-9213-034cffdab226</ns5:selfLink>
-        <ns5:title>
-            <ns5:text xml:lang="en">title-NNgCiBLgSz in English</ns5:text>
-            <ns5:text xml:lang="es">title-QJpD9ioVgy en Español</ns5:text>
-        </ns5:title>
+        <cdomain:id>c0c5eb4d-8db2-4deb-9213-034cffdab226</cdomain:id>
+        <cdomain:urn>urn:c0c5eb4d-8db2-4deb-9213-034cffdab226</cdomain:urn>
+        <cdomain:selfLink>http://data.istac.es/apis/operations-internal/http://c0c5eb4d-8db2-4deb-9213-034cffdab226</cdomain:selfLink>
+        <cdomain:title>
+            <cdomain:text xml:lang="en">title-NNgCiBLgSz in English</cdomain:text>
+            <cdomain:text xml:lang="es">title-QJpD9ioVgy en Español</cdomain:text>
+        </cdomain:title>
     </srm:relatedOperation>
 </srm:conceptScheme>
