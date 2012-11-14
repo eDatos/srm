@@ -1245,7 +1245,6 @@
                     NAME_FK="24"
                     ORGANISATION_UNIT_FK="25"
                     RESPONSIBILITY_FK="26"
-                    URL="http://www.contact3111.com"
     
                     UUID="contact-3111"
                     CREATED_DATE_TZ="Europe/London"
@@ -1288,7 +1287,18 @@
     
                     UUID="contact-item-31113"
                     VERSION="1"
-                />      
+                />
+                
+                <TB_CONTACT_ITEMS
+                    ID="31114"
+                    CONTACT_FK="3111"
+    
+                    ITEM_TYPE="URL"
+                    ITEM_VALUE="http://www.contact3111.com"
+    
+                    UUID="contact-item-31114"
+                    VERSION="1"
+                />
                 
                 <!-- Contact 2 -->
                 <TB_CONTACTS
@@ -1298,7 +1308,6 @@
                     NAME_FK="[null]"
                     ORGANISATION_UNIT_FK="[null]"
                     RESPONSIBILITY_FK="[null]"
-                    URL="http://www.contact3112.com"
     
                     UUID="contact-3112"
                     CREATED_DATE_TZ="Europe/London"

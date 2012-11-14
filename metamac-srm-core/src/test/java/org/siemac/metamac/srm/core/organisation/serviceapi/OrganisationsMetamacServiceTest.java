@@ -1002,21 +1002,23 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
                     BaseAsserts.assertEqualsInternationalString(contact.getName(), "es", "nombre contacto 311", "en", "contact name 311");
                     BaseAsserts.assertEqualsInternationalString(contact.getOrganisationUnit(), "es", "unidad organizativa 311", "en", "organisation unit 311");
                     BaseAsserts.assertEqualsInternationalString(contact.getResponsibility(), "es", "responsabilidad 311", "en", "responsibility 311");
-                    assertEquals("http://www.contact3111.com", contact.getUrl());
-                    assertEquals(3, contact.getContactItems().size());
+                    
+                    assertEquals(4, contact.getContactItems().size());
                     assertEquals(ContactItemTypeEnum.TELEPHONE, contact.getContactItems().get(0).getItemType());
                     assertEquals("+922333333", contact.getContactItems().get(0).getItemValue());
                     assertEquals(ContactItemTypeEnum.EMAIL, contact.getContactItems().get(1).getItemType());
                     assertEquals("contact3112@email.com", contact.getContactItems().get(1).getItemValue());
                     assertEquals(ContactItemTypeEnum.FAX, contact.getContactItems().get(2).getItemType());
                     assertEquals("111111111", contact.getContactItems().get(2).getItemValue());
+                    assertEquals(ContactItemTypeEnum.URL, contact.getContactItems().get(3).getItemType());
+                    assertEquals("http://www.contact3111.com", contact.getContactItems().get(3).getItemValue());
+                    
                 }
                 {
                     Contact contact = organisation.getContacts().get(i++);
                     assertNull(contact.getName());
                     assertNull(contact.getOrganisationUnit());
                     assertNull(contact.getResponsibility());
-                    assertEquals("http://www.contact3112.com", contact.getUrl());
                     assertEquals(1, contact.getContactItems().size());
                     assertEquals(ContactItemTypeEnum.TELEPHONE, contact.getContactItems().get(0).getItemType());
                     assertEquals("11333333", contact.getContactItems().get(0).getItemValue());
