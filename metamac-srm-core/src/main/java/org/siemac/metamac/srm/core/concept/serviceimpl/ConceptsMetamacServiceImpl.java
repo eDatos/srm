@@ -293,7 +293,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         Concept concept = retrieveConceptByUrn(ctx, urn);
 
         // Check concept has not related concepts (metadatas 'relatedConcepts' and 'extends')
-        checkToDeleteConceptHierarchyWithoutRelations(concept);
+        checkToDeleteConceptHierarchyWithoutRelations(ctx, concept);
 
         // Note: ConceptsService checks conceptScheme isn't final
         conceptsService.deleteConcept(ctx, urn);
@@ -369,17 +369,8 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         ConceptsMetamacInvocationValidator.checkRetrieveRelatedConcepts(urn, null);
 
         // Retrieve
-        List<ConceptRelation> conceptsRelations = retrieveConceptsRelationsBidirectionalByConcept(urn);
-
-        List<ConceptMetamac> relatedConcepts = new ArrayList<ConceptMetamac>();
-        for (ConceptRelation conceptRelation : conceptsRelations) {
-            if (!conceptRelation.getConcept1().getNameableArtefact().getUrn().equals(urn)) {
-                relatedConcepts.add((ConceptMetamac) conceptRelation.getConcept1());
-            } else if (!conceptRelation.getConcept2().getNameableArtefact().getUrn().equals(urn)) {
-                relatedConcepts.add((ConceptMetamac) conceptRelation.getConcept2());
-            }
-        }
-        return relatedConcepts;
+        List<Concept> relatedConcepts = conceptsService.retrieveRelatedConceptsBidirectional(ctx, urn);
+        return conceptsToConceptMetamac(relatedConcepts);
     }
 
     @Override
@@ -471,7 +462,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         return conceptSchemeVersion;
     }
 
-    private void checkToDeleteConceptHierarchyWithoutRelations(Concept concept) throws MetamacException {
+    private void checkToDeleteConceptHierarchyWithoutRelations(ServiceContext ctx, Concept concept) throws MetamacException {
 
         String conceptUrn = concept.getNameableArtefact().getUrn();
 
@@ -483,20 +474,18 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         }
 
         // Check there is not any concept that relates concept to delete by 'related concepts'
-        List<ConceptRelation> conceptsRelations = retrieveConceptsRelationsBidirectionalByConcept(conceptUrn);
-        if (conceptsRelations.size() != 0) {
+        List<Concept> relatedConcepts = conceptsService.retrieveRelatedConceptsBidirectional(ctx, conceptUrn);
+        if (relatedConcepts.size() != 0) {
             // in exception, say only one relation by example
-            String conceptRelationUrn = conceptsRelations.get(0).getConcept1().getNameableArtefact().getUrn();
-            if (conceptUrn.equals(conceptRelationUrn)) {
-                conceptRelationUrn = conceptsRelations.get(0).getConcept2().getNameableArtefact().getUrn();
-            }
+            String conceptRelationUrn = relatedConcepts.get(0).getNameableArtefact().getUrn();
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CONCEPT_WITH_RELATED_CONCEPTS).withMessageParameters(conceptUrn, conceptRelationUrn).build();
         }
         for (Item item : concept.getChildren()) {
             Concept child = (Concept) item;
-            checkToDeleteConceptHierarchyWithoutRelations(child);
+            checkToDeleteConceptHierarchyWithoutRelations(ctx, child);
         }
     }
+    
     /**
      * Retrieves version of a concept scheme, checking that can be modified
      */
@@ -521,17 +510,6 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         }
 
         return null;
-    }
-
-    private List<ConceptRelation> retrieveConceptsRelationsBidirectionalByConcept(String urn) {
-
-        List<ConceptRelation> conceptsRelations1 = conceptRelationRepository.findByConcept1(urn, ConceptRelationTypeEnum.BIDIRECTIONAL);
-        List<ConceptRelation> conceptsRelations2 = conceptRelationRepository.findByConcept2(urn, ConceptRelationTypeEnum.BIDIRECTIONAL);
-
-        List<ConceptRelation> conceptsRelations = new ArrayList<ConceptRelation>();
-        conceptsRelations.addAll(conceptsRelations1);
-        conceptsRelations.addAll(conceptsRelations2);
-        return conceptsRelations;
     }
 
     private List<ConceptRelation> findConceptsRelationsBidirectionalByConceptSchemeVersion(String urn) {
