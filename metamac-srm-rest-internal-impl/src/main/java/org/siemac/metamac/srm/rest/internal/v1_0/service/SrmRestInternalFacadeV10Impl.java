@@ -118,7 +118,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
                     .eq(resourceID).buildSingle());
         }
         // Version
-        if (version != null) {
+        if (version != null && !RestInternalConstants.WILDCARD.equals(version)) {
             conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).withProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact().versionLogic())
                     .eq(version).buildSingle());
         }

@@ -28,6 +28,12 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
+            <groupId>com.arte.statistic.statistic-sdmx-srm</groupId>
+            <artifactId>statistic-sdmx-srm-rest-external-impl</artifactId>
+            <version>${statistic-sdmx-srm.version}</version>
+        </dependency>        
+        
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
             <version>${spring.version}</version>

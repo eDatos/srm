@@ -15,8 +15,8 @@
             http://www.springframework.org/schema/tx   http://www.springframework.org/schema/tx/spring-tx-3.1.xsd">
 
     <aop:config>
-        <aop:pointcut id="restService" expression="execution(public * org.siemac.metamac.srm.rest.internal..service.*.*(..))" />  
-        <aop:advisor pointcut-ref="restService" advice-ref="txAdviceCore" order="1" />
+        <aop:pointcut id="restServiceSrmInternal" expression="execution(public * org.siemac.metamac.srm.rest.internal..service.*.*(..))" />  
+        <aop:advisor pointcut-ref="restServiceSrmInternal" advice-ref="txAdviceCore" order="1" />
     </aop:config> 
 
 </beans>

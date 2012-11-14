@@ -35,6 +35,7 @@
     <!-- Core -->
     <import resource="classpath:/spring/srm/applicationContext.xml" />
     <!-- Rest -->
+    <import resource="classpath:/spring/sdmx-srm-rest-external/applicationContext.xml" />
     <import resource="classpath:/spring/srm-rest-internal/applicationContext.xml" />
     
 </beans>

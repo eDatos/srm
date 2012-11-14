@@ -53,6 +53,7 @@
             <groupId>com.arte.statistic.statistic-sdmx-v2_1</groupId>
             <artifactId>statistic-sdmx-v2_1-domain</artifactId>
             <version>${statistic-sdmx-v2_1.version}</version>
+            <classifier>client</classifier>
         </dependency>        
         <dependency>
             <groupId>com.arte.statistic.statistic-sdmx-v2_1</groupId>

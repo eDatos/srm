@@ -32,7 +32,6 @@ public interface SrmRestInternalFacadeV10 {
 
     /**
      * TODO Documentation
-     * 
      * agencyID can be ~all
      */
     @GET
@@ -49,5 +48,4 @@ public interface SrmRestInternalFacadeV10 {
     @Produces("application/xml")
     @Path("conceptschemes/{agencyID: " + RegularExpressionConstants.REG_EXP_SEMANTIC_IDENTIFIER + "}/{resourceID: " + RegularExpressionConstants.REG_EXP_SEMANTIC_IDENTIFIER + "}/{version: \\d.*}")
     ConceptScheme retrieveConceptScheme(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @PathParam("version") String version);
-
 }
