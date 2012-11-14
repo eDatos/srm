@@ -22,13 +22,13 @@ import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria.Operator;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
-import org.fornax.cartridges.sculptor.framework.domain.Property;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
+import org.siemac.metamac.common.test.utils.ConditionalCriteriaUtils;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.util.ApplicationContextProvider;
 import org.siemac.metamac.rest.common.test.MetamacRestBaseTest;
@@ -47,7 +47,6 @@ import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
 import org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmCoreMocks;
 import org.springframework.context.ApplicationContext;
-import org.springframework.web.util.UriUtils;
 
 public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
 
@@ -56,12 +55,7 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
     private static String                   baseApi                                    = jaxrsServerAddress + "/v1.0";
 
     private ConceptsMetamacService          conceptsService;
-
-    // not read property from properties file to check explicity
-    // private static String srmApiInternalEndpointV10 = "http://data.istac.es/apis/srm-internal/v1.0";
-
     private static SrmRestInternalFacadeV10 srmRestInternalFacadeClientXml;
-
     private static ApplicationContext       applicationContext                         = null;
 
     public static String                    QUERY_CONCEPT_SCHEME_ID_LIKE_1             = ConceptSchemeCriteriaPropertyRestriction.ID + " " + ComparisonOperator.LIKE + " \"1\"";
@@ -190,7 +184,7 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
         // Request and validate
         testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
     }
-    
+
     @Test
     public void testFindConceptsSchemesByAgencyAndResourceErrorWildcard() throws Exception {
         String requestUri = getUriConceptSchemes(AGENCY_1, WILDCARD, null);
@@ -334,9 +328,12 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
 
             public org.fornax.cartridges.sculptor.framework.domain.PagedResult<ConceptSchemeVersionMetamac> answer(InvocationOnMock invocation) throws Throwable {
                 List<ConditionalCriteria> conditions = (List<ConditionalCriteria>) invocation.getArguments()[1];
-                ConditionalCriteria conditionalCriteriaAgencyID = getConditionalCriteriaEq(conditions, ConceptSchemeVersionMetamacProperties.maintainableArtefact().maintainer().idAsMaintainer());
-                ConditionalCriteria conditionalCriteriaResourceID = getConditionalCriteriaEq(conditions, ConceptSchemeVersionMetamacProperties.maintainableArtefact().code());
-                ConditionalCriteria conditionalCriteriaVersion = getConditionalCriteriaEq(conditions, ConceptSchemeVersionMetamacProperties.maintainableArtefact().versionLogic());
+                ConditionalCriteria conditionalCriteriaAgencyID = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Equal, ConceptSchemeVersionMetamacProperties
+                        .maintainableArtefact().maintainer().idAsMaintainer());
+                ConditionalCriteria conditionalCriteriaResourceID = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Equal, ConceptSchemeVersionMetamacProperties
+                        .maintainableArtefact().code());
+                ConditionalCriteria conditionalCriteriaVersion = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Equal, ConceptSchemeVersionMetamacProperties
+                        .maintainableArtefact().versionLogic());
 
                 if (conditionalCriteriaAgencyID != null && conditionalCriteriaResourceID != null && conditionalCriteriaVersion != null) {
                     // Retrieve one concept scheme
@@ -368,18 +365,6 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
         });
     }
 
-    private ConditionalCriteria getConditionalCriteriaEq(List<ConditionalCriteria> conditions, Property<ConceptSchemeVersionMetamac> property) {
-        for (ConditionalCriteria conditionalCriteria : conditions) {
-            if (!Operator.Equal.equals(conditionalCriteria.getOperator())) {
-                continue;
-            }
-            if (conditionalCriteria.getPropertyName() != null && conditionalCriteria.getPropertyFullName().equals(property.getName())) {
-                return conditionalCriteria;
-            }
-        }
-        return null;
-    }
-
     private SrmRestInternalFacadeV10 getSrmRestInternalFacadeClientXml() {
         WebClient.client(srmRestInternalFacadeClientXml).reset();
         WebClient.client(srmRestInternalFacadeClientXml).accept(APPLICATION_XML);
@@ -403,17 +388,9 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
 
     private String getUriConceptSchemes(String agencyID, String resourceID, String query, String limit, String offset) throws Exception {
         String uri = getUriConceptSchemes(agencyID, resourceID, null);
-        uri = RestUtils.createLinkWithQueryParam(uri, RestConstants.PARAMETER_QUERY, encodeParameter(query));
-        uri = RestUtils.createLinkWithQueryParam(uri, RestConstants.PARAMETER_LIMIT, encodeParameter(limit));
-        uri = RestUtils.createLinkWithQueryParam(uri, RestConstants.PARAMETER_OFFSET, encodeParameter(offset));
+        uri = RestUtils.createLinkWithQueryParam(uri, RestConstants.PARAMETER_QUERY, RestUtils.encodeParameter(query));
+        uri = RestUtils.createLinkWithQueryParam(uri, RestConstants.PARAMETER_LIMIT, RestUtils.encodeParameter(limit));
+        uri = RestUtils.createLinkWithQueryParam(uri, RestConstants.PARAMETER_OFFSET, RestUtils.encodeParameter(offset));
         return uri.toString();
-    }
-
-    private String encodeParameter(String parameter) throws Exception {
-        if (parameter == null) {
-            return null;
-        }
-        parameter = UriUtils.encodePath(parameter, "UTF-8");
-        return parameter;
     }
 }
