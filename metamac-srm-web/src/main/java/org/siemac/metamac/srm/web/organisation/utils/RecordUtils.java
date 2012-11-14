@@ -40,7 +40,7 @@ public class RecordUtils {
 
     public static ContactRecord getContactRecord(ContactDto contactDto) {
         ContactRecord record = new ContactRecord(contactDto.getId(), InternationalStringUtils.getLocalisedString(contactDto.getName()), InternationalStringUtils.getLocalisedString(contactDto
-                .getOrganisationUnit()), contactDto.getUrl(), contactDto);
+                .getOrganisationUnit()), contactDto);
         return record;
     }
 

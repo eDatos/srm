@@ -7,11 +7,10 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
 
 public class ContactRecord extends ListGridRecord {
 
-    public ContactRecord(Long id, String name, String organisationUnit, String url, ContactDto contactDto) {
+    public ContactRecord(Long id, String name, String organisationUnit, ContactDto contactDto) {
         setId(id);
         setName(name);
         setOrganisationUnit(organisationUnit);
-        setUrl(url);
         setContactDto(contactDto);
     }
 
@@ -25,10 +24,6 @@ public class ContactRecord extends ListGridRecord {
 
     public void setOrganisationUnit(String value) {
         setAttribute(ContactDS.ORGANISATION_UNIT, value);
-    }
-
-    public void setUrl(String value) {
-        setAttribute(ContactDS.URL, value);
     }
 
     public void setContactDto(ContactDto contactDto) {

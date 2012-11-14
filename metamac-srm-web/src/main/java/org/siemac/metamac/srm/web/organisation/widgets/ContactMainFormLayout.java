@@ -9,7 +9,6 @@ import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.utils.UrlUtils;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.InternationalMainFormLayout;
-import org.siemac.metamac.web.common.client.widgets.form.fields.CustomTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
@@ -95,8 +94,7 @@ public class ContactMainFormLayout extends InternationalMainFormLayout {
         name.setRequired(true);
         MultiLanguageTextItem organisationUnit = new MultiLanguageTextItem(ContactDS.ORGANISATION_UNIT, getConstants().organisationContactOrganisationUnit());
         MultiLanguageTextItem responsibility = new MultiLanguageTextItem(ContactDS.RESPONSIBILITY, getConstants().organisationContactResponsibility());
-        CustomTextItem url = new CustomTextItem(ContactDS.URL, getConstants().organisationContactUrl());
-        url.setValidators(UrlUtils.getUrlValidator());
+        MultiTextItem url = new MultiTextItem(ContactDS.URL, getConstants().organisationContactUrl(), UrlUtils.getUrlValidator());
         MultiTextItem telephone = new MultiTextItem(ContactDS.TELEPHONE, getConstants().organisationContactTelephone());
         MultiTextItem email = new MultiTextItem(ContactDS.EMAIL, getConstants().organisationContactEmail());
         MultiTextItem fax = new MultiTextItem(ContactDS.FAX, getConstants().organisationContactFax());
@@ -117,7 +115,9 @@ public class ContactMainFormLayout extends InternationalMainFormLayout {
         contactDto.setName((InternationalStringDto) editionForm.getValue(ContactDS.NAME));
         contactDto.setOrganisationUnit((InternationalStringDto) editionForm.getValue(ContactDS.ORGANISATION_UNIT));
         contactDto.setResponsibility((InternationalStringDto) editionForm.getValue(ContactDS.RESPONSIBILITY));
-        contactDto.setUrl(editionForm.getValueAsString(ContactDS.URL));
+        // URLs
+        contactDto.getUrls().clear();
+        contactDto.getUrls().addAll(((MultiTextItem) editionForm.getItem(ContactDS.URL)).getValues());
         // Telephones
         contactDto.getTelephones().clear();
         contactDto.getTelephones().addAll(((MultiTextItem) editionForm.getItem(ContactDS.TELEPHONE)).getValues());
@@ -141,7 +141,7 @@ public class ContactMainFormLayout extends InternationalMainFormLayout {
         form.setValue(ContactDS.NAME, RecordUtils.getInternationalStringRecord(contactDto.getName()));
         form.setValue(ContactDS.ORGANISATION_UNIT, RecordUtils.getInternationalStringRecord(contactDto.getOrganisationUnit()));
         form.setValue(ContactDS.RESPONSIBILITY, RecordUtils.getInternationalStringRecord(contactDto.getResponsibility()));
-        form.setValue(ContactDS.URL, contactDto.getUrl());
+        form.setValue(ContactDS.URL, CommonWebUtils.getStringListToString(contactDto.getUrls()));
         form.setValue(ContactDS.TELEPHONE, CommonWebUtils.getStringListToString(contactDto.getTelephones()));
         form.setValue(ContactDS.EMAIL, CommonWebUtils.getStringListToString(contactDto.getEmails()));
         form.setValue(ContactDS.FAX, CommonWebUtils.getStringListToString(contactDto.getFaxes()));
@@ -155,7 +155,7 @@ public class ContactMainFormLayout extends InternationalMainFormLayout {
         editionForm.setValue(ContactDS.NAME, RecordUtils.getInternationalStringRecord(contactDto.getName()));
         editionForm.setValue(ContactDS.ORGANISATION_UNIT, RecordUtils.getInternationalStringRecord(contactDto.getOrganisationUnit()));
         editionForm.setValue(ContactDS.RESPONSIBILITY, RecordUtils.getInternationalStringRecord(contactDto.getResponsibility()));
-        editionForm.setValue(ContactDS.URL, contactDto.getUrl());
+        ((MultiTextItem) editionForm.getItem(ContactDS.URL)).setValues(contactDto.getUrls());
         ((MultiTextItem) editionForm.getItem(ContactDS.TELEPHONE)).setValues(contactDto.getTelephones());
         ((MultiTextItem) editionForm.getItem(ContactDS.EMAIL)).setValues(contactDto.getEmails());
         ((MultiTextItem) editionForm.getItem(ContactDS.FAX)).setValues(contactDto.getFaxes());
