@@ -1,8 +1,12 @@
 package org.siemac.metamac.srm.rest.internal.v1_0.mapper.concept;
 
+import java.math.BigInteger;
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.ws.rs.core.Response.Status;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.siemac.metamac.core.common.conf.ConfigurationService;
 import org.siemac.metamac.core.common.ent.domain.ExternalItem;
@@ -19,6 +23,7 @@ import org.siemac.metamac.rest.search.criteria.mapper.SculptorCriteria2RestCrite
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.Concept;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptScheme;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemes;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.Urns;
 import org.siemac.metamac.rest.utils.RestUtils;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
@@ -101,7 +106,6 @@ public class ConceptsDo2RestMapperV10Impl implements ConceptsDo2RestMapperV10 {
         target.setChildren(toConceptSchemeChildren(source));
     }
 
-    // TODO conceptExtends urn?
     // TODO relatedConcepts
     // TODO role SDMX
     @Override
@@ -119,10 +123,12 @@ public class ConceptsDo2RestMapperV10Impl implements ConceptsDo2RestMapperV10 {
         target.setDerivation(toInternationalString(source.getDerivation()));
         target.setLegalActs(toInternationalString(source.getLegalActs()));
         if (source.getConceptExtends() != null) {
-            target.setConceptExtends(source.getConceptExtends().getNameableArtefact().getUrn());
+            target.setExtends(source.getConceptExtends().getNameableArtefact().getUrn());
         }
+        target.setRoles(conceptsToUrns(source.getRoleConcepts()));
+        target.setRelatedConcepts(conceptsToUrns(source.getRelatedConcepts()));
     }
-
+    
     private ResourceLink toConceptSchemeParent() {
         ResourceLink target = new ResourceLink();
         target.setKind(RestInternalConstants.KIND_CONCEPT_SCHEMES);
@@ -258,5 +264,18 @@ public class ConceptsDo2RestMapperV10Impl implements ConceptsDo2RestMapperV10 {
             throw new BeanCreationException("Property not found: " + property);
         }
         return propertyValue;
+    }
+    
+    private Urns conceptsToUrns(List<ConceptMetamac> sources) {
+        if (CollectionUtils.isEmpty(sources)) {
+            return null;
+        }
+        Urns target = new Urns();
+        target.setKind("TODO"); // TODO kind
+        for (ConceptMetamac source : sources) {
+            target.getUrns().add(source.getNameableArtefact().getUrn()); // TODO urn provider?
+        }
+        target.setTotal(BigInteger.valueOf(target.getUrns().size()));
+        return target;
     }
 }
