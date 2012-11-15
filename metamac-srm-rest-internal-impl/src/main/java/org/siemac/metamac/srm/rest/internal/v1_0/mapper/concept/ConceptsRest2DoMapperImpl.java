@@ -1,8 +1,13 @@
 package org.siemac.metamac.srm.rest.internal.v1_0.mapper.concept;
 
+import java.util.Date;
+
 import javax.ws.rs.core.Response.Status;
 
+import org.fornax.cartridges.sculptor.framework.domain.LeafProperty;
 import org.fornax.cartridges.sculptor.framework.domain.Property;
+import org.siemac.metamac.core.common.constants.CoreCommonConstants;
+import org.siemac.metamac.core.common.util.CoreCommonUtil;
 import org.siemac.metamac.rest.common.query.domain.MetamacRestOrder;
 import org.siemac.metamac.rest.common.query.domain.MetamacRestQueryPropertyRestriction;
 import org.siemac.metamac.rest.common.query.domain.SculptorPropertyCriteria;
@@ -14,6 +19,7 @@ import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemeCriteriaPro
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemeCriteriaPropertyRestriction;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacProperties;
+import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
 import org.springframework.stereotype.Component;
 
@@ -40,10 +46,27 @@ public class ConceptsRest2DoMapperImpl implements ConceptsRest2DoMapper {
             switch (propertyNameCriteria) {
                 case ID:
                     return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.maintainableArtefact().code(), propertyRestriction.getValue());
-                case NAME:
-                    return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.maintainableArtefact().name().texts().label(), propertyRestriction.getValue());
                 case URN:
                     return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.maintainableArtefact().urn(), propertyRestriction.getValue());
+                case NAME:
+                    return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.maintainableArtefact().name().texts().label(), propertyRestriction.getValue());
+                case DESCRIPTION:
+                    return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.maintainableArtefact().description().texts().label(), propertyRestriction.getValue());
+                case VALID_FROM:
+                    return getSculptorPropertyCriteriaDate(propertyRestriction, ConceptSchemeVersionMetamacProperties.maintainableArtefact().validFrom());
+                case VALID_TO:
+                    return getSculptorPropertyCriteriaDate(propertyRestriction, ConceptSchemeVersionMetamacProperties.maintainableArtefact().validTo());
+                case PROC_STATUS:
+                    return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.lifeCycleMetadata().procStatus(),
+                            propertyRestrictionValueToProcStatusEnum(propertyRestriction.getValue()));
+                case INTERNAL_PUBLICATION_DATE:
+                    return getSculptorPropertyCriteriaDate(propertyRestriction, ConceptSchemeVersionMetamacProperties.lifeCycleMetadata().internalPublicationDate());
+                case INTERNAL_PUBLICATION_USER:
+                    return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.lifeCycleMetadata().internalPublicationUser(), propertyRestriction.getValue());
+                case EXTERNAL_PUBLICATION_DATE:
+                    return getSculptorPropertyCriteriaDate(propertyRestriction, ConceptSchemeVersionMetamacProperties.lifeCycleMetadata().externalPublicationDate());
+                case EXTERNAL_PUBLICATION_USER:
+                    return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.lifeCycleMetadata().externalPublicationUser(), propertyRestriction.getValue());
                 default:
                     throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
             }
@@ -71,5 +94,18 @@ public class ConceptsRest2DoMapperImpl implements ConceptsRest2DoMapper {
     private RestException toRestExceptionParameterIncorrect(String parameter) {
         org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.PARAMETER_INCORRECT, parameter);
         throw new RestException(exception, Status.INTERNAL_SERVER_ERROR);
+    }
+
+    private Date propertyRestrictionValueToDate(String value) {
+        return value != null ? CoreCommonUtil.transformISODateTimeLexicalRepresentationToDateTime(value).toDate() : null;
+    }
+
+    private ProcStatusEnum propertyRestrictionValueToProcStatusEnum(String value) {
+        return value != null ? ProcStatusEnum.valueOf(value) : null;
+    }
+
+    private SculptorPropertyCriteria getSculptorPropertyCriteriaDate(MetamacRestQueryPropertyRestriction propertyRestriction, Property<ConceptSchemeVersionMetamac> propertyEntity) {
+        return new SculptorPropertyCriteria(new LeafProperty<ConceptSchemeVersionMetamac>(propertyEntity.getName(), CoreCommonConstants.CRITERIA_DATETIME_COLUMN_DATETIME, true,
+                ConceptSchemeVersionMetamac.class), propertyRestrictionValueToDate(propertyRestriction.getValue()));
     }
 }
