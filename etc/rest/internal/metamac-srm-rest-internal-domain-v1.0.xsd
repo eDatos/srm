@@ -17,6 +17,8 @@
                     <xs:element name="parent" type="common:ResourceLink" />
                     <xs:element name="type" type="tns:ConceptSchemeType" />
                     <xs:element name="relatedOperation" type="common:Resource" minOccurs="0" />
+                    <xs:element name="replaceTo" type="xs:string" minOccurs="0" />
+                    <xs:element name="replacedBy" type="xs:string" minOccurs="0" />
                     <xs:element name="children" type="common:Children" minOccurs="1" />
                 </xs:sequence>
                 <xs:attribute name="kind" type="xs:string" use="required" />
@@ -33,7 +35,6 @@
                     <xs:element name="descriptionSource" type="common:InternationalString" minOccurs="0" />
                     <xs:element name="context" type="common:InternationalString" minOccurs="0" />
                     <xs:element name="docMethod" type="common:InternationalString" minOccurs="0" />
-                    <xs:element name="sdmxRelatedArtefact" type="tns:ConceptRole" minOccurs="0" />
                     <xs:element name="type" type="common:Item" minOccurs="0" />
                     <xs:element name="derivation" type="common:InternationalString" minOccurs="0" />
                     <xs:element name="legalActs" type="common:InternationalString" minOccurs="0" />
@@ -83,15 +84,7 @@
             <xs:enumeration value="OPERATION" />
             <xs:enumeration value="ROLE" />
         </xs:restriction>
-    </xs:simpleType>  
-    
-    <xs:simpleType name="ConceptRole">
-        <xs:restriction base="xs:token">
-            <xs:enumeration value="DIMENSION" />
-            <xs:enumeration value="ATTRIBUTE" />
-            <xs:enumeration value="PRIMARY_MEASURE" />
-        </xs:restriction>
-    </xs:simpleType>       
+    </xs:simpleType>         
     
     <!-- Criterias -->
     <xs:simpleType name="ConceptSchemeCriteriaPropertyRestriction">

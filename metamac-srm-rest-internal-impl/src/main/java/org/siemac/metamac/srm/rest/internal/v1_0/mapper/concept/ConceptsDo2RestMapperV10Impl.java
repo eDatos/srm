@@ -28,7 +28,6 @@ import org.siemac.metamac.rest.utils.RestUtils;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptType;
-import org.siemac.metamac.srm.core.concept.enume.domain.ConceptRoleEnum;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
@@ -102,12 +101,12 @@ public class ConceptsDo2RestMapperV10Impl implements ConceptsDo2RestMapperV10 {
         target.setUri(target.getSelfLink());
         target.setType(toConceptSchemeTypeEnum(source.getType()));
         target.setRelatedOperation(toResourceExternalItemStatisticalOperation(source.getRelatedOperation()));
+        target.setReplacedBy(source.getMaintainableArtefact().getReplacedBy());
+        target.setReplaceTo(source.getMaintainableArtefact().getReplaceTo());
         target.setParent(toConceptSchemeParent());
         target.setChildren(toConceptSchemeChildren(source));
     }
 
-    // TODO relatedConcepts
-    // TODO role SDMX
     @Override
     public void toConcept(ConceptMetamac source, Concept target) {
         if (source == null) {
@@ -118,7 +117,6 @@ public class ConceptsDo2RestMapperV10Impl implements ConceptsDo2RestMapperV10 {
         target.setDescriptionSource(toInternationalString(source.getDescriptionSource()));
         target.setContext(toInternationalString(source.getContext()));
         target.setDocMethod(toInternationalString(source.getDocMethod()));
-        target.setSdmxRelatedArtefact(toConceptRoleEnum(source.getSdmxRelatedArtefact()));
         target.setType(toItem(source.getType()));
         target.setDerivation(toInternationalString(source.getDerivation()));
         target.setLegalActs(toInternationalString(source.getLegalActs()));
@@ -154,23 +152,6 @@ public class ConceptsDo2RestMapperV10Impl implements ConceptsDo2RestMapperV10 {
                 return org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemeType.ROLE;
             case TRANSVERSAL:
                 return org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemeType.TRANSVERSAL;
-            default:
-                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.UNKNOWN);
-                throw new RestException(exception, Status.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    private org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptRole toConceptRoleEnum(ConceptRoleEnum source) {
-        if (source == null) {
-            return null;
-        }
-        switch (source) {
-            case ATTRIBUTE:
-                return org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptRole.ATTRIBUTE;
-            case DIMENSION:
-                return org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptRole.DIMENSION;
-            case PRIMARY_MEASURE:
-                return org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptRole.PRIMARY_MEASURE;
             default:
                 org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.UNKNOWN);
                 throw new RestException(exception, Status.INTERNAL_SERVER_ERROR);

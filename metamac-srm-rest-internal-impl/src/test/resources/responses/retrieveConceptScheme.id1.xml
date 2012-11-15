@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<srm:conceptScheme xmlns:query="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/query" xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common" xmlns:srm="http://www.siemac.org/metamac/rest/srm-internal/v1.0/domain" xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="srm#conceptscheme" id="conceptScheme1" isPartial="false" agencyID="idAsMaintaineragency1" isFinal="true" isExternalReference="false" version="01.000" validFrom="2012-11-15T14:24:45.689Z" validTo="2012-11-15T14:24:45.689Z" urn="urn:conceptScheme1:01.000" serviceURL="serviceUrl-OP6TPWaLOh" structureURL="structureUrl-X8yXOnMHm1">
+<srm:conceptScheme xmlns:query="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/query" xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common" xmlns:srm="http://www.siemac.org/metamac/rest/srm-internal/v1.0/domain" xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="srm#conceptscheme" id="conceptScheme1" isPartial="false" agencyID="idAsMaintaineragency1" isFinal="true" isExternalReference="false" version="01.000" validFrom="2012-11-15T14:45:34.398Z" validTo="2012-11-15T14:45:34.398Z" urn="urn:conceptScheme1:01.000" serviceURL="serviceUrl-JT6M8HUYQV" structureURL="structureUrl-iIOQR54ZWR">
     <common:Annotations>
-        <common:Annotation id="code3">
-            <common:AnnotationTitle>title-H3Cxanmz0j</common:AnnotationTitle>
-            <common:AnnotationType>type-k24ZTuXBTB</common:AnnotationType>
-            <common:AnnotationURL>url-h5ZDsdRxaK</common:AnnotationURL>
-            <common:AnnotationText xml:lang="es">text-ICMDekLUhq en Español</common:AnnotationText>
-            <common:AnnotationText xml:lang="en">text-J9VDLos4DW in English</common:AnnotationText>
+        <common:Annotation id="code1">
+            <common:AnnotationTitle>title-BUhTtyKnBg</common:AnnotationTitle>
+            <common:AnnotationType>type-OODzv7VA3F</common:AnnotationType>
+            <common:AnnotationURL>url-TKb28AX5rl</common:AnnotationURL>
+            <common:AnnotationText xml:lang="en">text-4a3EyDca2V in English</common:AnnotationText>
+            <common:AnnotationText xml:lang="es">text-Dw9i4YeNDO en Español</common:AnnotationText>
         </common:Annotation>
         <common:Annotation id="code2">
-            <common:AnnotationTitle>title-VJxqNfmlvA</common:AnnotationTitle>
-            <common:AnnotationType>type-k79QO8fUI6</common:AnnotationType>
-            <common:AnnotationURL>url-mwoJxmzFly</common:AnnotationURL>
-            <common:AnnotationText xml:lang="en">text-uG5VvzPgI5 in English</common:AnnotationText>
-            <common:AnnotationText xml:lang="es">text-K1yWThTLDr en Español</common:AnnotationText>
+            <common:AnnotationTitle>title-wOl4A73bNB</common:AnnotationTitle>
+            <common:AnnotationType>type-X91zlfk5sq</common:AnnotationType>
+            <common:AnnotationURL>url-JelziPpsl9</common:AnnotationURL>
+            <common:AnnotationText xml:lang="en">text-Oj61MCLrs0 in English</common:AnnotationText>
+            <common:AnnotationText xml:lang="es">text-dova7Io2UL en Español</common:AnnotationText>
         </common:Annotation>
-        <common:Annotation id="code1">
-            <common:AnnotationTitle>title-b3bMWjW5NC</common:AnnotationTitle>
-            <common:AnnotationType>type-Gj10i16e7b</common:AnnotationType>
-            <common:AnnotationURL>url-s4fHC5ryC6</common:AnnotationURL>
-            <common:AnnotationText xml:lang="es">text-McrL5vcat4 en Español</common:AnnotationText>
-            <common:AnnotationText xml:lang="en">text-NR6sdD7NfL in English</common:AnnotationText>
+        <common:Annotation id="code3">
+            <common:AnnotationTitle>title-1kooO3B8yX</common:AnnotationTitle>
+            <common:AnnotationType>type-u5rxreUrBi</common:AnnotationType>
+            <common:AnnotationURL>url-eQX3Y9Hdyp</common:AnnotationURL>
+            <common:AnnotationText xml:lang="es">text-WTgjINDXf8 en Español</common:AnnotationText>
+            <common:AnnotationText xml:lang="en">text-2TSBmiqXkD in English</common:AnnotationText>
         </common:Annotation>
     </common:Annotations>
     <common:Name xml:lang="en">name-conceptScheme1v01.000 in English</common:Name>
@@ -29,30 +29,30 @@
     <common:Description xml:lang="en">description-conceptScheme1v01.000 in English</common:Description>
     <structure:Concept xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="srm:Concept" id="concept1" urn="urn:concept1">
         <common:Annotations>
-            <common:Annotation id="code2">
-                <common:AnnotationTitle>title-3ZS811jzVE</common:AnnotationTitle>
-                <common:AnnotationType>type-d0MzRGlu22</common:AnnotationType>
-                <common:AnnotationURL>url-sZHIAHZd9v</common:AnnotationURL>
-                <common:AnnotationText xml:lang="es">text-aF8xthp6Dk en Español</common:AnnotationText>
-                <common:AnnotationText xml:lang="en">text-wBVkGzXCim in English</common:AnnotationText>
+            <common:Annotation id="code3">
+                <common:AnnotationTitle>title-zZlqNoYPd9</common:AnnotationTitle>
+                <common:AnnotationType>type-tsP6dj3gYm</common:AnnotationType>
+                <common:AnnotationURL>url-81ImhTKVtT</common:AnnotationURL>
+                <common:AnnotationText xml:lang="es">text-GIeoiPFxsZ en Español</common:AnnotationText>
+                <common:AnnotationText xml:lang="en">text-yk5gGhFDCp in English</common:AnnotationText>
             </common:Annotation>
             <common:Annotation id="code1">
-                <common:AnnotationTitle>title-2IB1ibhrtq</common:AnnotationTitle>
-                <common:AnnotationType>type-Nz6zdUZnpL</common:AnnotationType>
-                <common:AnnotationURL>url-PSUyOpX5OM</common:AnnotationURL>
-                <common:AnnotationText xml:lang="es">text-I2dDf6y9qg en Español</common:AnnotationText>
-                <common:AnnotationText xml:lang="en">text-B8SBSS8cdT in English</common:AnnotationText>
+                <common:AnnotationTitle>title-gH6FudWz2j</common:AnnotationTitle>
+                <common:AnnotationType>type-miZ37eiBpa</common:AnnotationType>
+                <common:AnnotationURL>url-WMC2qGOfNx</common:AnnotationURL>
+                <common:AnnotationText xml:lang="en">text-xCI4kfwAWc in English</common:AnnotationText>
+                <common:AnnotationText xml:lang="es">text-8kQAebDSyp en Español</common:AnnotationText>
             </common:Annotation>
-            <common:Annotation id="code3">
-                <common:AnnotationTitle>title-WtoEGCQhaU</common:AnnotationTitle>
-                <common:AnnotationType>type-UtGxeZq6E0</common:AnnotationType>
-                <common:AnnotationURL>url-DCACVkbmCK</common:AnnotationURL>
-                <common:AnnotationText xml:lang="en">text-7Znr9wlLny in English</common:AnnotationText>
-                <common:AnnotationText xml:lang="es">text-RBOfLOmn13 en Español</common:AnnotationText>
+            <common:Annotation id="code2">
+                <common:AnnotationTitle>title-mp4ZxzxnYj</common:AnnotationTitle>
+                <common:AnnotationType>type-XnyTSboV4c</common:AnnotationType>
+                <common:AnnotationURL>url-ks4ocHzlgY</common:AnnotationURL>
+                <common:AnnotationText xml:lang="es">text-kRVNTFqpAl en Español</common:AnnotationText>
+                <common:AnnotationText xml:lang="en">text-399KU9w76T in English</common:AnnotationText>
             </common:Annotation>
         </common:Annotations>
-        <common:Name xml:lang="es">name-concept1 en Español</common:Name>
         <common:Name xml:lang="en">name-concept1 in English</common:Name>
+        <common:Name xml:lang="es">name-concept1 en Español</common:Name>
         <common:Description xml:lang="es">description-concept1 en Español</common:Description>
         <common:Description xml:lang="en">description-concept1 in English</common:Description>
         <structure:CoreRepresentation>
@@ -69,24 +69,23 @@
             <cdomain:text xml:lang="es">acronym-concept1 en Español</cdomain:text>
         </srm:acronym>
         <srm:descriptionSource>
-            <cdomain:text xml:lang="en">descriptionSource-concept1 in English</cdomain:text>
             <cdomain:text xml:lang="es">descriptionSource-concept1 en Español</cdomain:text>
+            <cdomain:text xml:lang="en">descriptionSource-concept1 in English</cdomain:text>
         </srm:descriptionSource>
         <srm:context>
-            <cdomain:text xml:lang="en">context-concept1 in English</cdomain:text>
             <cdomain:text xml:lang="es">context-concept1 en Español</cdomain:text>
+            <cdomain:text xml:lang="en">context-concept1 in English</cdomain:text>
         </srm:context>
         <srm:docMethod>
-            <cdomain:text xml:lang="en">docMethod-concept1 in English</cdomain:text>
             <cdomain:text xml:lang="es">docMethod-concept1 en Español</cdomain:text>
+            <cdomain:text xml:lang="en">docMethod-concept1 in English</cdomain:text>
         </srm:docMethod>
-        <srm:sdmxRelatedArtefact>ATTRIBUTE</srm:sdmxRelatedArtefact>
         <srm:type>
             <cdomain:id>conceptType</cdomain:id>
         </srm:type>
         <srm:derivation>
-            <cdomain:text xml:lang="es">derivation-concept1 en Español</cdomain:text>
             <cdomain:text xml:lang="en">derivation-concept1 in English</cdomain:text>
+            <cdomain:text xml:lang="es">derivation-concept1 en Español</cdomain:text>
         </srm:derivation>
         <srm:legalActs>
             <cdomain:text xml:lang="es">legalActs-concept1 en Español</cdomain:text>
@@ -104,26 +103,26 @@
     </structure:Concept>
     <structure:Concept xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="srm:Concept" id="concept2" urn="urn:concept2">
         <common:Annotations>
-            <common:Annotation id="code3">
-                <common:AnnotationTitle>title-iuvHeAXU16</common:AnnotationTitle>
-                <common:AnnotationType>type-fnWUk5fQeR</common:AnnotationType>
-                <common:AnnotationURL>url-w3dHK9HUxD</common:AnnotationURL>
-                <common:AnnotationText xml:lang="en">text-aUGRPpami1 in English</common:AnnotationText>
-                <common:AnnotationText xml:lang="es">text-98kiGzS4XD en Español</common:AnnotationText>
-            </common:Annotation>
             <common:Annotation id="code2">
-                <common:AnnotationTitle>title-PPrQsNf2Hv</common:AnnotationTitle>
-                <common:AnnotationType>type-3H0Q8tSTSC</common:AnnotationType>
-                <common:AnnotationURL>url-wBGfQsRVdo</common:AnnotationURL>
-                <common:AnnotationText xml:lang="es">text-hAEnabUML2 en Español</common:AnnotationText>
-                <common:AnnotationText xml:lang="en">text-yCMwZXwPw6 in English</common:AnnotationText>
+                <common:AnnotationTitle>title-1rllHBuUru</common:AnnotationTitle>
+                <common:AnnotationType>type-jpaH0uz0P6</common:AnnotationType>
+                <common:AnnotationURL>url-LtNIX1cQSh</common:AnnotationURL>
+                <common:AnnotationText xml:lang="en">text-wIz1BhLkWL in English</common:AnnotationText>
+                <common:AnnotationText xml:lang="es">text-00hEgSfRKC en Español</common:AnnotationText>
             </common:Annotation>
             <common:Annotation id="code1">
-                <common:AnnotationTitle>title-iVXL5OOgnr</common:AnnotationTitle>
-                <common:AnnotationType>type-6RB9TFIAYH</common:AnnotationType>
-                <common:AnnotationURL>url-exjb3YdjSH</common:AnnotationURL>
-                <common:AnnotationText xml:lang="es">text-l6a38FvOi7 en Español</common:AnnotationText>
-                <common:AnnotationText xml:lang="en">text-3YBEo8VFHM in English</common:AnnotationText>
+                <common:AnnotationTitle>title-zFgRcDnji8</common:AnnotationTitle>
+                <common:AnnotationType>type-Ysamqhsppe</common:AnnotationType>
+                <common:AnnotationURL>url-ThmBjowrqA</common:AnnotationURL>
+                <common:AnnotationText xml:lang="en">text-drAsyAX4Cu in English</common:AnnotationText>
+                <common:AnnotationText xml:lang="es">text-Mp2tYoxasc en Español</common:AnnotationText>
+            </common:Annotation>
+            <common:Annotation id="code3">
+                <common:AnnotationTitle>title-WwcL7Ysqas</common:AnnotationTitle>
+                <common:AnnotationType>type-nee1TyR7Ez</common:AnnotationType>
+                <common:AnnotationURL>url-2QLn3bdOij</common:AnnotationURL>
+                <common:AnnotationText xml:lang="en">text-M8rYmGqpVa in English</common:AnnotationText>
+                <common:AnnotationText xml:lang="es">text-j9R5Gequh4 en Español</common:AnnotationText>
             </common:Annotation>
         </common:Annotations>
         <common:Name xml:lang="en">name-concept2 in English</common:Name>
@@ -140,8 +139,8 @@
             <cdomain:text xml:lang="en">pluralName-concept2 in English</cdomain:text>
         </srm:pluralName>
         <srm:acronym>
-            <cdomain:text xml:lang="es">acronym-concept2 en Español</cdomain:text>
             <cdomain:text xml:lang="en">acronym-concept2 in English</cdomain:text>
+            <cdomain:text xml:lang="es">acronym-concept2 en Español</cdomain:text>
         </srm:acronym>
         <srm:descriptionSource>
             <cdomain:text xml:lang="es">descriptionSource-concept2 en Español</cdomain:text>
@@ -155,7 +154,6 @@
             <cdomain:text xml:lang="es">docMethod-concept2 en Español</cdomain:text>
             <cdomain:text xml:lang="en">docMethod-concept2 in English</cdomain:text>
         </srm:docMethod>
-        <srm:sdmxRelatedArtefact>ATTRIBUTE</srm:sdmxRelatedArtefact>
         <srm:type>
             <cdomain:id>conceptType</cdomain:id>
         </srm:type>
@@ -164,8 +162,8 @@
             <cdomain:text xml:lang="es">derivation-concept2 en Español</cdomain:text>
         </srm:derivation>
         <srm:legalActs>
-            <cdomain:text xml:lang="en">legalActs-concept2 in English</cdomain:text>
             <cdomain:text xml:lang="es">legalActs-concept2 en Español</cdomain:text>
+            <cdomain:text xml:lang="en">legalActs-concept2 in English</cdomain:text>
         </srm:legalActs>
         <srm:relatedConcepts kind="TODO" total="1">
             <srm:urn>urn:concept1</srm:urn>
@@ -173,30 +171,30 @@
     </structure:Concept>
     <structure:Concept xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="srm:Concept" id="concept2A" urn="urn:concept2A">
         <common:Annotations>
-            <common:Annotation id="code2">
-                <common:AnnotationTitle>title-uwk4qvHr9d</common:AnnotationTitle>
-                <common:AnnotationType>type-N4zcWrt9SO</common:AnnotationType>
-                <common:AnnotationURL>url-yUlpnHHOJl</common:AnnotationURL>
-                <common:AnnotationText xml:lang="en">text-1PU9ubLy2g in English</common:AnnotationText>
-                <common:AnnotationText xml:lang="es">text-h3sfgZarOT en Español</common:AnnotationText>
-            </common:Annotation>
             <common:Annotation id="code1">
-                <common:AnnotationTitle>title-GdjsJdCa70</common:AnnotationTitle>
-                <common:AnnotationType>type-1lPriwB22W</common:AnnotationType>
-                <common:AnnotationURL>url-rKkOTTe8b6</common:AnnotationURL>
-                <common:AnnotationText xml:lang="es">text-4OIxB8yc5K en Español</common:AnnotationText>
-                <common:AnnotationText xml:lang="en">text-EEErnGP25U in English</common:AnnotationText>
+                <common:AnnotationTitle>title-UBQATtpNPp</common:AnnotationTitle>
+                <common:AnnotationType>type-nPnBoOyyBi</common:AnnotationType>
+                <common:AnnotationURL>url-oT8AToP7DR</common:AnnotationURL>
+                <common:AnnotationText xml:lang="es">text-Oo93Zy2PJJ en Español</common:AnnotationText>
+                <common:AnnotationText xml:lang="en">text-aFYupax1vT in English</common:AnnotationText>
             </common:Annotation>
             <common:Annotation id="code3">
-                <common:AnnotationTitle>title-jyhnFQu8LC</common:AnnotationTitle>
-                <common:AnnotationType>type-wf2LRx28oh</common:AnnotationType>
-                <common:AnnotationURL>url-6slT6utZxg</common:AnnotationURL>
-                <common:AnnotationText xml:lang="es">text-5SgPJ8ndvD en Español</common:AnnotationText>
-                <common:AnnotationText xml:lang="en">text-SBl0eomQ3O in English</common:AnnotationText>
+                <common:AnnotationTitle>title-STe5DRmmrj</common:AnnotationTitle>
+                <common:AnnotationType>type-BYlZGtrViG</common:AnnotationType>
+                <common:AnnotationURL>url-BqYYXQgSZk</common:AnnotationURL>
+                <common:AnnotationText xml:lang="es">text-5kvHJXkieK en Español</common:AnnotationText>
+                <common:AnnotationText xml:lang="en">text-fXPE08Xogj in English</common:AnnotationText>
+            </common:Annotation>
+            <common:Annotation id="code2">
+                <common:AnnotationTitle>title-b5ykXniZ8u</common:AnnotationTitle>
+                <common:AnnotationType>type-hOgJRzvVYR</common:AnnotationType>
+                <common:AnnotationURL>url-g04NDRbxbs</common:AnnotationURL>
+                <common:AnnotationText xml:lang="en">text-nQT62zcz6r in English</common:AnnotationText>
+                <common:AnnotationText xml:lang="es">text-Ll4ExSZSON en Español</common:AnnotationText>
             </common:Annotation>
         </common:Annotations>
-        <common:Name xml:lang="en">name-concept2A in English</common:Name>
         <common:Name xml:lang="es">name-concept2A en Español</common:Name>
+        <common:Name xml:lang="en">name-concept2A in English</common:Name>
         <common:Description xml:lang="en">description-concept2A in English</common:Description>
         <common:Description xml:lang="es">description-concept2A en Español</common:Description>
         <structure:Parent>
@@ -208,26 +206,25 @@
             </structure:Enumeration>
         </structure:CoreRepresentation>
         <srm:pluralName>
-            <cdomain:text xml:lang="es">pluralName-concept2A en Español</cdomain:text>
             <cdomain:text xml:lang="en">pluralName-concept2A in English</cdomain:text>
+            <cdomain:text xml:lang="es">pluralName-concept2A en Español</cdomain:text>
         </srm:pluralName>
         <srm:acronym>
-            <cdomain:text xml:lang="en">acronym-concept2A in English</cdomain:text>
             <cdomain:text xml:lang="es">acronym-concept2A en Español</cdomain:text>
+            <cdomain:text xml:lang="en">acronym-concept2A in English</cdomain:text>
         </srm:acronym>
         <srm:descriptionSource>
-            <cdomain:text xml:lang="es">descriptionSource-concept2A en Español</cdomain:text>
             <cdomain:text xml:lang="en">descriptionSource-concept2A in English</cdomain:text>
+            <cdomain:text xml:lang="es">descriptionSource-concept2A en Español</cdomain:text>
         </srm:descriptionSource>
         <srm:context>
-            <cdomain:text xml:lang="es">context-concept2A en Español</cdomain:text>
             <cdomain:text xml:lang="en">context-concept2A in English</cdomain:text>
+            <cdomain:text xml:lang="es">context-concept2A en Español</cdomain:text>
         </srm:context>
         <srm:docMethod>
             <cdomain:text xml:lang="en">docMethod-concept2A in English</cdomain:text>
             <cdomain:text xml:lang="es">docMethod-concept2A en Español</cdomain:text>
         </srm:docMethod>
-        <srm:sdmxRelatedArtefact>ATTRIBUTE</srm:sdmxRelatedArtefact>
         <srm:type>
             <cdomain:id>conceptType</cdomain:id>
         </srm:type>
@@ -251,32 +248,32 @@
     </structure:Concept>
     <structure:Concept xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="srm:Concept" id="concept2B" urn="urn:concept2B">
         <common:Annotations>
-            <common:Annotation id="code2">
-                <common:AnnotationTitle>title-iJtvEjAOGX</common:AnnotationTitle>
-                <common:AnnotationType>type-8Yt6YVu47z</common:AnnotationType>
-                <common:AnnotationURL>url-TZm2LYSvVP</common:AnnotationURL>
-                <common:AnnotationText xml:lang="en">text-aDpIlF6O3B in English</common:AnnotationText>
-                <common:AnnotationText xml:lang="es">text-YduECfGQzW en Español</common:AnnotationText>
-            </common:Annotation>
             <common:Annotation id="code1">
-                <common:AnnotationTitle>title-rpeVhALkJz</common:AnnotationTitle>
-                <common:AnnotationType>type-Hvlj3aypaA</common:AnnotationType>
-                <common:AnnotationURL>url-nEyvMvo77C</common:AnnotationURL>
-                <common:AnnotationText xml:lang="en">text-iSvGD5sOvs in English</common:AnnotationText>
-                <common:AnnotationText xml:lang="es">text-gmdUNt886D en Español</common:AnnotationText>
+                <common:AnnotationTitle>title-N9v35rWIxc</common:AnnotationTitle>
+                <common:AnnotationType>type-ed8rMN9p2f</common:AnnotationType>
+                <common:AnnotationURL>url-NjNXeGCiRp</common:AnnotationURL>
+                <common:AnnotationText xml:lang="en">text-EHul4tr9tp in English</common:AnnotationText>
+                <common:AnnotationText xml:lang="es">text-bZJz5I9kb7 en Español</common:AnnotationText>
+            </common:Annotation>
+            <common:Annotation id="code2">
+                <common:AnnotationTitle>title-XNCBUTX3gL</common:AnnotationTitle>
+                <common:AnnotationType>type-dYGXLFpGbJ</common:AnnotationType>
+                <common:AnnotationURL>url-VEYhEce2eH</common:AnnotationURL>
+                <common:AnnotationText xml:lang="es">text-JqfMTOrkBX en Español</common:AnnotationText>
+                <common:AnnotationText xml:lang="en">text-ezylWciTcu in English</common:AnnotationText>
             </common:Annotation>
             <common:Annotation id="code3">
-                <common:AnnotationTitle>title-dCT53kI4fa</common:AnnotationTitle>
-                <common:AnnotationType>type-sG50tNVvnj</common:AnnotationType>
-                <common:AnnotationURL>url-FIp4xIbCsb</common:AnnotationURL>
-                <common:AnnotationText xml:lang="en">text-yd9NNaOjh6 in English</common:AnnotationText>
-                <common:AnnotationText xml:lang="es">text-IjwE5WkByq en Español</common:AnnotationText>
+                <common:AnnotationTitle>title-WsKMcO9O9G</common:AnnotationTitle>
+                <common:AnnotationType>type-QDhhjoaT0D</common:AnnotationType>
+                <common:AnnotationURL>url-h7u95EfY5H</common:AnnotationURL>
+                <common:AnnotationText xml:lang="es">text-BFwdO5SUVb en Español</common:AnnotationText>
+                <common:AnnotationText xml:lang="en">text-cfrUTvV8EV in English</common:AnnotationText>
             </common:Annotation>
         </common:Annotations>
-        <common:Name xml:lang="es">name-concept2B en Español</common:Name>
         <common:Name xml:lang="en">name-concept2B in English</common:Name>
-        <common:Description xml:lang="es">description-concept2B en Español</common:Description>
+        <common:Name xml:lang="es">name-concept2B en Español</common:Name>
         <common:Description xml:lang="en">description-concept2B in English</common:Description>
+        <common:Description xml:lang="es">description-concept2B en Español</common:Description>
         <structure:Parent>
             <Ref id="concept2"/>
         </structure:Parent>
@@ -290,22 +287,21 @@
             <cdomain:text xml:lang="es">pluralName-concept2B en Español</cdomain:text>
         </srm:pluralName>
         <srm:acronym>
-            <cdomain:text xml:lang="es">acronym-concept2B en Español</cdomain:text>
             <cdomain:text xml:lang="en">acronym-concept2B in English</cdomain:text>
+            <cdomain:text xml:lang="es">acronym-concept2B en Español</cdomain:text>
         </srm:acronym>
         <srm:descriptionSource>
             <cdomain:text xml:lang="en">descriptionSource-concept2B in English</cdomain:text>
             <cdomain:text xml:lang="es">descriptionSource-concept2B en Español</cdomain:text>
         </srm:descriptionSource>
         <srm:context>
-            <cdomain:text xml:lang="es">context-concept2B en Español</cdomain:text>
             <cdomain:text xml:lang="en">context-concept2B in English</cdomain:text>
+            <cdomain:text xml:lang="es">context-concept2B en Español</cdomain:text>
         </srm:context>
         <srm:docMethod>
-            <cdomain:text xml:lang="en">docMethod-concept2B in English</cdomain:text>
             <cdomain:text xml:lang="es">docMethod-concept2B en Español</cdomain:text>
+            <cdomain:text xml:lang="en">docMethod-concept2B in English</cdomain:text>
         </srm:docMethod>
-        <srm:sdmxRelatedArtefact>ATTRIBUTE</srm:sdmxRelatedArtefact>
         <srm:type>
             <cdomain:id>conceptType</cdomain:id>
         </srm:type>
@@ -328,12 +324,14 @@
     </srm:parent>
     <srm:type>OPERATION</srm:type>
     <srm:relatedOperation kind="STATISTICAL_OPERATION">
-        <cdomain:id>12c008e0-08f8-4463-8779-f8941b0346c2</cdomain:id>
-        <cdomain:urn>urn:12c008e0-08f8-4463-8779-f8941b0346c2</cdomain:urn>
-        <cdomain:selfLink>http://data.istac.es/apis/operations-internal/http://12c008e0-08f8-4463-8779-f8941b0346c2</cdomain:selfLink>
+        <cdomain:id>0195bfea-9b45-4a31-a842-731c2911a735</cdomain:id>
+        <cdomain:urn>urn:0195bfea-9b45-4a31-a842-731c2911a735</cdomain:urn>
+        <cdomain:selfLink>http://data.istac.es/apis/operations-internal/http://0195bfea-9b45-4a31-a842-731c2911a735</cdomain:selfLink>
         <cdomain:title>
-            <cdomain:text xml:lang="es">title-XJTe9LgxPS en Español</cdomain:text>
-            <cdomain:text xml:lang="en">title-rNYNOnXeyK in English</cdomain:text>
+            <cdomain:text xml:lang="en">title-317nDZ2rkw in English</cdomain:text>
+            <cdomain:text xml:lang="es">title-jy9HnJguBA en Español</cdomain:text>
         </cdomain:title>
     </srm:relatedOperation>
+    <srm:replaceTo>replaceTo</srm:replaceTo>
+    <srm:replacedBy>replacedBy</srm:replacedBy>
 </srm:conceptScheme>
