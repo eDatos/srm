@@ -33,7 +33,7 @@ public class ConceptsDo2JaxbCallbackImpl implements ConceptsDo2JaxbCallback {
     }
 
     @Override
-    public ConceptsType createConceptDoToJaxb(List<ConceptSchemeVersion> sourceList) {
-        throw new IllegalArgumentException("createConceptDoToJaxb not supported");
+    public ConceptsType createConceptSchemesDoToJaxb(List<ConceptSchemeVersion> sourceList) {
+        throw new IllegalArgumentException("createConceptSchemesDoToJaxb not supported");
     }
 }
