@@ -30,7 +30,7 @@ public class GetConceptActionHandler extends SecurityActionHandler<GetConceptAct
         try {
             ConceptMetamacDto conceptMetamacDto = srmCoreServiceFacade.retrieveConceptByUrn(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
             List<ConceptMetamacDto> relatedConcepts = srmCoreServiceFacade.retrieveRelatedConcepts(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
-            List<ConceptMetamacDto> relatedRoleConcepts = srmCoreServiceFacade.retrieveRelatedConceptsRoles(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
+            List<ConceptMetamacDto> relatedRoleConcepts = srmCoreServiceFacade.retrieveRoleConcepts(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
             return new GetConceptResult(conceptMetamacDto, relatedConcepts, relatedRoleConcepts);
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);

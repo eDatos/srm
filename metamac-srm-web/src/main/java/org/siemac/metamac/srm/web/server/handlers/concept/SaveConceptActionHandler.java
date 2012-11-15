@@ -56,7 +56,7 @@ public class SaveConceptActionHandler extends SecurityActionHandler<SaveConceptA
                 if (oldRelatedConcepts != null && !oldRelatedConcepts.isEmpty()) {
                     // Remove all related concepts
                     for (String urn : oldConceptsUrn) {
-                        srmCoreServiceFacade.deleteConceptRelation(ServiceContextHolder.getCurrentServiceContext(), action.getConceptToSave().getUrn(), urn);
+                        srmCoreServiceFacade.deleteRelatedConcept(ServiceContextHolder.getCurrentServiceContext(), action.getConceptToSave().getUrn(), urn);
                     }
                 }
             } else {
@@ -64,13 +64,13 @@ public class SaveConceptActionHandler extends SecurityActionHandler<SaveConceptA
                 // Concepts to add
                 for (String urn : action.getRelatedConceptsToSave()) {
                     if (!oldConceptsUrn.contains(urn)) {
-                        srmCoreServiceFacade.addConceptRelation(ServiceContextHolder.getCurrentServiceContext(), action.getConceptToSave().getUrn(), urn);
+                        srmCoreServiceFacade.addRelatedConcept(ServiceContextHolder.getCurrentServiceContext(), action.getConceptToSave().getUrn(), urn);
                     }
                 }
                 // Concepts to remove
                 for (String urn : oldConceptsUrn) {
                     if (!action.getRelatedConceptsToSave().contains(urn)) {
-                        srmCoreServiceFacade.deleteConceptRelation(ServiceContextHolder.getCurrentServiceContext(), action.getConceptToSave().getUrn(), urn);
+                        srmCoreServiceFacade.deleteRelatedConcept(ServiceContextHolder.getCurrentServiceContext(), action.getConceptToSave().getUrn(), urn);
                     }
                 }
             }
