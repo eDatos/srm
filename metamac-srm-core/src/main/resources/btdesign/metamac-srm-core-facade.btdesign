@@ -360,18 +360,18 @@ Application SrmFacadeCore {
     		"Retrieves concepts by concept scheme, in tree structure"
     		List<@ItemHierarchyDto> retrieveConceptsByConceptSchemeUrn(String conceptSchemeUrn) throws MetamacException;
     		
-    		"Adds a concepts relation (metadata 'relatedConcepts')"
-    		addConceptRelation(String urn1, String urn2) throws MetamacException;
-    		"Deletes a concepts relation (metadata 'relatedConcepts')"
-    		deleteConceptRelation(String urn1, String urn2) throws MetamacException;
-    		"Retrieves all related concepts with a concept (metadata 'relatedConcepts')"
+    		"Adds a concepts relation (related concepts)"
+    		addRelatedConcept(String urn1, String urn2) throws MetamacException;
+    		"Deletes a concepts relation (related concepts)"
+    		deleteRelatedConcept(String urn1, String urn2) throws MetamacException;
+    		"Retrieves all related concepts with a concept (related concepts)"
     		List<@ConceptMetamacDto> retrieveRelatedConcepts(String urn) throws MetamacException;
-    		"Adds a concepts relation of type 'roles' (metadata 'roles')"
-    		addConceptRelationRoles(String urn, String conceptRoleUrn) throws MetamacException;
-    		"Deletes a concepts relation of type 'roles' (metadata 'roles')"
-    		deleteConceptRelationRoles(String urn, String conceptRoleUrn) throws MetamacException;
-    		"Retrieves all related concepts with a concept with relation 'roles' (metadata 'roles')"
-    		List<@ConceptMetamacDto> retrieveRelatedConceptsRoles(String urn) throws MetamacException;
+    		"Adds a concepts relation of type 'roles'"
+    		addRoleConcept(String urn, String conceptRoleUrn) throws MetamacException;
+    		"Deletes a concepts relation of type 'roles'"
+    		deleteRoleConcept(String urn, String conceptRoleUrn) throws MetamacException;
+    		"Retrieves all related concepts with a concept with relation 'roles'"
+    		List<@ConceptMetamacDto> retrieveRoleConcepts(String urn) throws MetamacException;
 
     		"Finds all concept types"
     		List<@ConceptTypeDto> findAllConceptTypes throws MetamacException;

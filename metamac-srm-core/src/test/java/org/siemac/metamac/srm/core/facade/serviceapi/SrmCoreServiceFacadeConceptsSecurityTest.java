@@ -1199,13 +1199,13 @@ public class SrmCoreServiceFacadeConceptsSecurityTest extends SrmBaseTest {
 
     @Test
     public void testAddConceptRelation() throws Exception {
-        srmCoreServiceFacade.addConceptRelation(getServiceContextJefeNormalizacion(), CONCEPT_SCHEME_1_V2_CONCEPT_1, CONCEPT_SCHEME_1_V2_CONCEPT_4_1_1);
+        srmCoreServiceFacade.addRelatedConcept(getServiceContextJefeNormalizacion(), CONCEPT_SCHEME_1_V2_CONCEPT_1, CONCEPT_SCHEME_1_V2_CONCEPT_4_1_1);
         // Note: no more tests because security is same that update concept
     }
 
     @Test
     public void testDeleteConceptRelation() throws Exception {
-        srmCoreServiceFacade.deleteConceptRelation(getServiceContextJefeNormalizacion(), CONCEPT_SCHEME_1_V2_CONCEPT_1, CONCEPT_SCHEME_1_V2_CONCEPT_2_1_1);
+        srmCoreServiceFacade.deleteRelatedConcept(getServiceContextJefeNormalizacion(), CONCEPT_SCHEME_1_V2_CONCEPT_1, CONCEPT_SCHEME_1_V2_CONCEPT_2_1_1);
         // Note: no more tests because security is same that update concept
     }
 
@@ -1240,7 +1240,7 @@ public class SrmCoreServiceFacadeConceptsSecurityTest extends SrmBaseTest {
                 getServiceContextTecnicoProduccion(), getServiceContextJefeNormalizacion(), getServiceContextJefeProduccion(), getServiceContextAdministrador()};
 
         for (ServiceContext ctx : ctxs) {
-            srmCoreServiceFacade.retrieveRelatedConceptsRoles(ctx, CONCEPT_SCHEME_1_V1_CONCEPT_1);
+            srmCoreServiceFacade.retrieveRoleConcepts(ctx, CONCEPT_SCHEME_1_V1_CONCEPT_1);
         }
     }
 
@@ -1250,7 +1250,7 @@ public class SrmCoreServiceFacadeConceptsSecurityTest extends SrmBaseTest {
 
         for (ServiceContext ctx : contexts) {
             try {
-                srmCoreServiceFacade.retrieveRelatedConceptsRoles(ctx, CONCEPT_SCHEME_1_V1_CONCEPT_1);
+                srmCoreServiceFacade.retrieveRoleConcepts(ctx, CONCEPT_SCHEME_1_V1_CONCEPT_1);
                 fail("action not allowed");
             } catch (MetamacException e) {
                 assertEquals(1, e.getExceptionItems().size());

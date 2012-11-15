@@ -68,7 +68,7 @@ public class ConceptsDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Co
         }
         do2DtoMapperSdmxSrm.conceptDoToDto(source, target);
 
-        // note: not conversion to relatedConcepts and roles. Call 'retrieveRelatedConcepts' operation of Service
+        // note: not conversion to relatedConcepts and roles. Call specific operations in Service
 
         return target;
     }

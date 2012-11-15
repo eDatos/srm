@@ -15,7 +15,6 @@ import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.common.LifeCycleImpl;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
-import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacRepository;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacProperties;
@@ -102,32 +101,14 @@ public class ConceptSchemeLifeCycleImpl extends LifeCycleImpl {
 
         @Override
         public void checkConcreteResourceInInternallyPublished(Object srmResourceVersion, List<MetamacExceptionItem> exceptions) {
-
-            ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptSchemeVersionMetamac(srmResourceVersion);
-
-            // Check there is not any concept in 'extends' metadata in concepts schemes were not marked as "final" ( = publish internally)
-            ConceptMetamac conceptWithExtends = conceptMetamacRepository.findOneConceptExtendsConceptInConceptSchemeNotFinal(conceptSchemeVersion.getMaintainableArtefact().getUrn());
-            if (conceptWithExtends != null) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.CONCEPT_SCHEME_WITH_RELATED_CONCEPTS_NOT_FINAL, conceptSchemeVersion.getMaintainableArtefact().getUrn(),
-                        conceptWithExtends.getConceptExtends().getNameableArtefact().getUrn()));
-            }
-
-            // Note: in SDMX module check related concept with 'role' belong to concepts schemes were marked as "final" ( = publish internally)
+            // nothing
+            // note: role and extends concepts are already externally published when it is added
         }
 
         @Override
         public void checkConcreteResourceInExternallyPublished(Object srmResourceVersion, List<MetamacExceptionItem> exceptions) {
-
-            ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptSchemeVersionMetamac(srmResourceVersion);
-
-            // Check there is not any concept in 'extends' metadata in concepts schemes were not marked as "valid" ( = publish externally)
-            ConceptMetamac conceptWithExtends = conceptMetamacRepository.findOneConceptExtendsConceptInConceptSchemeNotValid(conceptSchemeVersion.getMaintainableArtefact().getUrn());
-            if (conceptWithExtends != null) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.CONCEPT_SCHEME_WITH_RELATED_CONCEPTS_VALIDITY_NOT_STARTED, conceptSchemeVersion.getMaintainableArtefact().getUrn(),
-                        conceptWithExtends.getConceptExtends().getNameableArtefact().getUrn()));
-            }
-
-            // Note: in SDMX module check related concept with 'role' belong to concepts schemes with filled "validFrom" ( = publish externally)
+            // nothing
+            // note: role and extends concepts are already externally published when it is added
         }
 
         @Override

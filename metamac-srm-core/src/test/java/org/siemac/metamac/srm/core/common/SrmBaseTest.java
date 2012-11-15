@@ -70,6 +70,7 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
     protected static final String CONCEPT_SCHEME_12_V1_CONCEPT_1              = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME12(01.000).CONCEPT01";
     protected static final String CONCEPT_SCHEME_13_V1_CONCEPT_1              = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME13(01.000).CONCEPT01";
     protected static final String CONCEPT_SCHEME_13_V1_CONCEPT_2              = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME13(01.000).CONCEPT02";
+    protected static final String CONCEPT_SCHEME_13_V1_CONCEPT_3              = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME13(01.000).CONCEPT03";
 
     // Concept types
     protected static final String CONCEPT_TYPE_DERIVED                        = "DERIVED";
@@ -259,6 +260,8 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
         tables.addAll(super.getTableNamesOrderedByFKDependency());
         tables.add("TB_M_LIS_CONCEPT_TYPES");
         tables.add("TB_M_CONCEPTS");
+        tables.add("TB_M_CONCEPT_ROLES");
+        tables.add("TB_M_CONCEPT_RELATED");
         tables.add("TB_M_CONCEPT_SCHEMES_VERSIONS");
         tables.add("TB_M_DATASTRUCTURE_VERSIONS");
         tables.add("TB_M_ORGANISATIONS");
@@ -277,6 +280,8 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
         tablePrimaryKeys.put("TB_M_ORGANISATIONS", Arrays.asList("TB_ORGANISATIONS"));
         tablePrimaryKeys.put("TB_M_CAT_SCHEMES_VERSIONS", Arrays.asList("TB_CAT_SCHEMES_VERSIONS"));
         tablePrimaryKeys.put("TB_M_CATEGORIES", Arrays.asList("TB_CATEGORIES"));
+        tablePrimaryKeys.put("TB_M_CONCEPT_ROLES", Arrays.asList("CONCEPT_ROLE_FK", "CONCEPT_FK"));
+        tablePrimaryKeys.put("TB_M_CONCEPT_RELATED", Arrays.asList("CONCEPT_RELATED_FK", "CONCEPT_FK"));
         return tablePrimaryKeys;
     }
 

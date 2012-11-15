@@ -162,11 +162,11 @@ public class SharedConceptsSecurityUtils extends SharedItemsSecurityUtils {
         return canRetrieveOrFindResource(metamacPrincipal);
     }
 
-    public static boolean canAddConceptRelation(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode) {
+    public static boolean canAddRelatedConcept(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode) {
         return canModifyConceptFromConceptScheme(metamacPrincipal, procStatus, type, operationCode);
     }
 
-    public static boolean canDeleteConceptRelation(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode) {
+    public static boolean canDeleteRelatedConcept(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode) {
         return canModifyConceptFromConceptScheme(metamacPrincipal, procStatus, type, operationCode);
     }
 
@@ -174,7 +174,7 @@ public class SharedConceptsSecurityUtils extends SharedItemsSecurityUtils {
         return canRetrieveOrFindResource(metamacPrincipal);
     }
 
-    public static boolean canRetrieveRelatedConceptsRoles(MetamacPrincipal metamacPrincipal) {
+    public static boolean canRetrieveRoleConcepts(MetamacPrincipal metamacPrincipal) {
         return canRetrieveOrFindResource(metamacPrincipal);
     }
 

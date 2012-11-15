@@ -24,6 +24,7 @@ import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.core.concept.serviceimpl.utils.ConceptsMetamacInvocationValidator;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.siemac.metamac.srm.core.serviceimpl.SrmServiceUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -32,14 +33,10 @@ import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.concept.domain.Concept;
-import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptRelation;
-import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptRelationRepository;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptRepository;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptSchemeVersion;
-import com.arte.statistic.sdmx.srm.core.concept.enume.domain.ConceptRelationTypeEnum;
 import com.arte.statistic.sdmx.srm.core.concept.serviceapi.ConceptsService;
 import com.arte.statistic.sdmx.srm.core.concept.serviceimpl.utils.ConceptsDoCopyUtils.ConceptCopyCallback;
-import com.arte.statistic.sdmx.srm.core.concept.serviceimpl.utils.ConceptsInvocationValidator;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
 
 /**
@@ -56,9 +53,6 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
     @Autowired
     private ConceptRepository           conceptRepository;
-
-    @Autowired
-    private ConceptRelationRepository   conceptRelationRepository;
 
     @Autowired
     @Qualifier("conceptSchemeLifeCycle")
@@ -159,21 +153,6 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
     @Override
     public void deleteConceptScheme(ServiceContext ctx, String urn) throws MetamacException {
-
-        // Check concepts of other concept scheme dont relate concept of this scheme by 'extends' metadata
-        ConceptMetamac conceptRelationExtends = getConceptMetamacRepository().findOneConceptWithConceptExtendsOfConceptSchemeVersion(urn);
-        if (conceptRelationExtends != null) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CONCEPT_SCHEME_WITH_RELATED_CONCEPTS)
-                    .withMessageParameters(conceptRelationExtends.getItemSchemeVersion().getMaintainableArtefact().getUrn(), conceptRelationExtends.getNameableArtefact().getUrn()).build();
-        }
-
-        // Delete related concepts
-        ConceptSchemeVersion conceptSchemeVersion = retrieveConceptSchemeByUrn(ctx, urn);
-        List<ConceptRelation> relatedConceptsAllConceptSchemeVersion = findConceptsRelationsBidirectionalByConceptSchemeVersion(conceptSchemeVersion.getMaintainableArtefact().getUrn());
-        for (ConceptRelation relatedConcept : relatedConceptsAllConceptSchemeVersion) {
-            conceptRelationRepository.delete(relatedConcept);
-        }
-
         // Note: ConceptsService checks conceptScheme isn't final and other conditions
         conceptsService.deleteConceptScheme(ctx, urn);
     }
@@ -186,22 +165,13 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         checkVersioningConceptSchemeIsSupported(ctx, urnToCopy);
 
         // Versioning
+        ConceptSchemeVersionMetamac conceptSchemeVersionToCopy = retrieveConceptSchemeByUrn(ctx, urnToCopy);
         ConceptSchemeVersionMetamac conceptSchemeNewVersion = (ConceptSchemeVersionMetamac) conceptsService.versioningConceptScheme(ctx, urnToCopy, versionType, conceptCopyCallback);
 
-        // Copy concept relations (metadata of Metamac 'relatedConcepts'). Note: metadata 'roles' is copied in SDMX module
-        String conceptSchemeNewVersionUrn = conceptSchemeNewVersion.getMaintainableArtefact().getUrn();
-        List<ConceptRelation> relatedConcepts = findConceptsRelationsBidirectionalByConceptSchemeVersion(urnToCopy);
-        for (ConceptRelation conceptRelationOldVersion : relatedConcepts) {
-            String concept1CodeVersionToCopy = conceptRelationOldVersion.getConcept1().getNameableArtefact().getCode();
-            String concept2CodeVersionToCopy = conceptRelationOldVersion.getConcept2().getNameableArtefact().getCode();
-
-            Concept concept1NewVersion = conceptRepository.findByCodeInConceptSchemeVersion(concept1CodeVersionToCopy, conceptSchemeNewVersionUrn);
-            Concept concept2NewVersion = conceptRepository.findByCodeInConceptSchemeVersion(concept2CodeVersionToCopy, conceptSchemeNewVersionUrn);
-
-            ConceptRelation conceptRelation = new ConceptRelation(ConceptRelationTypeEnum.BIDIRECTIONAL, concept1NewVersion, concept2NewVersion);
-            conceptRelation = conceptRelationRepository.save(conceptRelation);
+        // Versioning related concepts (metadata of Metamac 'relatedConcepts'). Note: other relations are copied in copy callback
+        for (Item conceptToCopyRelatedConcepts : conceptSchemeVersionToCopy.getItems()) {
+            versioningRelatedConcepts((ConceptMetamac) conceptToCopyRelatedConcepts, conceptSchemeNewVersion.getMaintainableArtefact().getUrn());
         }
-
         return conceptSchemeNewVersion;
     }
 
@@ -232,6 +202,10 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         ConceptsMetamacInvocationValidator.checkCreateConcept(conceptSchemeVersion, concept, null);
         // ConceptsService checks conceptScheme isn't final
 
+        // Scheme of extends concept must be published
+        if (concept.getConceptExtends() != null) {
+            checkConceptInSchemeExternallyPublished(ctx, concept.getConceptExtends());
+        }
         // Save concept
         return (ConceptMetamac) conceptsService.createConcept(ctx, conceptSchemeUrn, concept);
     }
@@ -246,6 +220,10 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         }
         // Validation
         ConceptsMetamacInvocationValidator.checkUpdateConcept(conceptSchemeVersion, concept, null);
+        // Scheme of extends concept must be published
+        if (concept.getConceptExtends() != null) {
+            checkConceptInSchemeExternallyPublished(ctx, concept.getConceptExtends());
+        }
         // ConceptsService checks conceptScheme isn't final
 
         return (ConceptMetamac) conceptsService.updateConcept(ctx, concept);
@@ -286,14 +264,13 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         return pagedResultConceptToMetamac(conceptsPagedResult);
     }
 
-    // TODO Pendiente de confirmación de Alberto: se está lanzando excepción si hay conceptos relacionados
     @Override
     public void deleteConcept(ServiceContext ctx, String urn) throws MetamacException {
 
-        Concept concept = retrieveConceptByUrn(ctx, urn);
+        ConceptMetamac concept = retrieveConceptByUrn(ctx, urn);
 
-        // Check concept has not related concepts (metadatas 'relatedConcepts' and 'extends')
-        checkToDeleteConceptHierarchyWithoutRelations(ctx, concept);
+        // Delete bidirectional relations of concepts relate this concept and its children (will be removed in cascade)
+        removeRelatedConceptsBidirectional(concept);
 
         // Note: ConceptsService checks conceptScheme isn't final
         conceptsService.deleteConcept(ctx, urn);
@@ -311,25 +288,17 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     }
 
     @Override
-    public ConceptRelation addConceptRelation(ServiceContext ctx, String urn1, String urn2) throws MetamacException {
+    public void addRelatedConcept(ServiceContext ctx, String urn1, String urn2) throws MetamacException {
 
         // Validation
-        ConceptsMetamacInvocationValidator.checkAddConceptRelation(urn1, urn2, null);
+        ConceptsMetamacInvocationValidator.checkAddRelatedConcept(urn1, urn2, null);
 
-        // Check not exists
-        ConceptRelation conceptRelation = findConceptRelationBidirectionalByConcepts(urn1, urn2);
-        if (conceptRelation != null) {
-            return conceptRelation;
-        }
         // Not same concept
         if (urn1.equals(urn2)) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.PARAMETER_INCORRECT).withMessageParameters("Concepts must be different").build();
         }
-
-        // Create
         ConceptMetamac concept1 = retrieveConceptByUrn(ctx, urn1);
         ConceptMetamac concept2 = retrieveConceptByUrn(ctx, urn2);
-
         // Same concept scheme
         if (!concept1.getItemSchemeVersion().getMaintainableArtefact().getUrn().equals(concept2.getItemSchemeVersion().getMaintainableArtefact().getUrn())) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.PARAMETER_INCORRECT).withMessageParameters("Concept scheme must be same in two concepts").build();
@@ -337,29 +306,37 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         // Concept scheme not published
         retrieveConceptSchemeVersionCanBeModified(ctx, concept1.getItemSchemeVersion().getMaintainableArtefact().getUrn()); // note: itemScheme is the same to two concepts
 
-        conceptRelation = new ConceptRelation(ConceptRelationTypeEnum.BIDIRECTIONAL, concept1, concept2);
-        conceptRelation = conceptRelationRepository.save(conceptRelation);
+        // Not add relation if is already added
+        for (Concept conceptRelatedActual : concept1.getRelatedConcepts()) {
+            if (conceptRelatedActual.getNameableArtefact().getUrn().equals(concept2.getNameableArtefact().getUrn())) {
+                return;
+            }
+        }
 
-        return conceptRelation;
+        // Create bidirectional relation
+        concept1.addRelatedConcept(concept2);
+        getConceptMetamacRepository().save(concept1);
+        concept2.addRelatedConcept(concept1);
+        getConceptMetamacRepository().save(concept2);
     }
 
     @Override
-    public void deleteConceptRelation(ServiceContext ctx, String urn1, String urn2) throws MetamacException {
+    public void deleteRelatedConcept(ServiceContext ctx, String urn1, String urn2) throws MetamacException {
 
         // Validation
-        ConceptsMetamacInvocationValidator.checkDeleteConceptRelation(urn1, urn2, null);
-
-        // Retrieve
-        ConceptRelation conceptRelation = findConceptRelationBidirectionalByConcepts(urn1, urn2);
-        if (conceptRelation == null) {
-            return;
-        }
+        ConceptsMetamacInvocationValidator.checkDeleteRelatedConcept(urn1, urn2, null);
 
         // Concept scheme not published
-        retrieveConceptSchemeVersionCanBeModified(ctx, conceptRelation.getConcept1().getItemSchemeVersion().getMaintainableArtefact().getUrn()); // note: itemScheme is the same to two concepts
+        ConceptMetamac concept1 = retrieveConceptByUrn(ctx, urn1);
+        retrieveConceptSchemeVersionCanBeModified(ctx, concept1.getItemSchemeVersion().getMaintainableArtefact().getUrn());
+
+        ConceptMetamac concept2 = retrieveConceptByUrn(ctx, urn2);
 
         // Delete
-        conceptRelationRepository.delete(conceptRelation);
+        concept1.removeRelatedConcept(concept2);
+        getConceptMetamacRepository().save(concept1);
+        concept2.removeRelatedConcept(concept1);
+        getConceptMetamacRepository().save(concept2);
     }
 
     @Override
@@ -369,22 +346,20 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         ConceptsMetamacInvocationValidator.checkRetrieveRelatedConcepts(urn, null);
 
         // Retrieve
-        List<Concept> relatedConcepts = conceptsService.retrieveRelatedConceptsBidirectional(ctx, urn);
-        return conceptsToConceptMetamac(relatedConcepts);
+        ConceptMetamac concept = retrieveConceptByUrn(ctx, urn);
+        return concept.getRelatedConcepts();
     }
 
     @Override
-    public ConceptRelation addConceptRelationRoles(ServiceContext ctx, String urn, String conceptRoleUrn) throws MetamacException {
+    public void addRoleConcept(ServiceContext ctx, String urn, String conceptRoleUrn) throws MetamacException {
 
         // Validation
-        ConceptsInvocationValidator.checkAddConceptRelationRoles(urn, conceptRoleUrn, null);
+        ConceptsMetamacInvocationValidator.checkAddRoleConcept(urn, conceptRoleUrn, null);
 
-        Concept concept = retrieveConceptByUrn(ctx, urn);
-        Concept conceptRole = retrieveConceptByUrn(ctx, conceptRoleUrn);
-
-        // Check concept scheme of concept 'urn' is Operation or Transversal (it is retrieved by conceptsService to avoid ClassCastException)
-        ConceptSchemeVersionMetamac conceptSchemeVersionOfConcept = (ConceptSchemeVersionMetamac) conceptsService.retrieveConceptSchemeByUrn(ctx, concept.getItemSchemeVersion()
-                .getMaintainableArtefact().getUrn());
+        ConceptMetamac concept = retrieveConceptByUrn(ctx, urn);
+        ConceptMetamac conceptRole = retrieveConceptByUrn(ctx, conceptRoleUrn);
+        // Check concept scheme of concept 'urn' can be modified and it is Operation or Transversal (it is retrieved instead navigate across relation to avoid ClassCastException)
+        ConceptSchemeVersionMetamac conceptSchemeVersionOfConcept = retrieveConceptSchemeVersionCanBeModified(ctx, concept.getItemSchemeVersion().getMaintainableArtefact().getUrn());
         if (!ConceptSchemeTypeEnum.OPERATION.equals(conceptSchemeVersionOfConcept.getType()) && !ConceptSchemeTypeEnum.TRANSVERSAL.equals(conceptSchemeVersionOfConcept.getType())) {
             throw MetamacExceptionBuilder
                     .builder()
@@ -393,36 +368,50 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
                             new String[]{ServiceExceptionParameters.CONCEPT_SCHEME_TYPE_OPERATION, ServiceExceptionParameters.CONCEPT_SCHEME_TYPE_TRANSVERSAL}).build();
         }
         // Check concept scheme of concept 'conceptRoleUrn' is Role
-        ConceptSchemeVersionMetamac conceptSchemeVersionOfRole = (ConceptSchemeVersionMetamac) conceptsService.retrieveConceptSchemeByUrn(ctx, conceptRole.getItemSchemeVersion()
-                .getMaintainableArtefact().getUrn());
+        ConceptSchemeVersionMetamac conceptSchemeVersionOfRole = retrieveConceptSchemeByUrn(ctx, conceptRole.getItemSchemeVersion().getMaintainableArtefact().getUrn());
         if (!ConceptSchemeTypeEnum.ROLE.equals(conceptSchemeVersionOfRole.getType())) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CONCEPT_SCHEME_WRONG_TYPE)
                     .withMessageParameters(conceptSchemeVersionOfRole.getMaintainableArtefact().getUrn(), new String[]{ServiceExceptionParameters.CONCEPT_SCHEME_TYPE_ROLE}).build();
         }
+        // Check concept scheme of Role is externally published
+        SrmServiceUtils.checkProcStatus(conceptSchemeVersionOfRole.getLifeCycleMetadata(), conceptSchemeVersionOfRole.getMaintainableArtefact().getUrn(), ProcStatusEnum.EXTERNALLY_PUBLISHED);
+        // Not add relation if Role is already added
+        for (Concept conceptRoleActual : concept.getRoleConcepts()) {
+            if (conceptRoleActual.getNameableArtefact().getUrn().equals(conceptRole.getNameableArtefact().getUrn())) {
+                return;
+            }
+        }
 
-        return conceptsService.addConceptRelationRoles(ctx, urn, conceptRoleUrn);
+        // Add Role
+        concept.addRoleConcept(conceptRole);
+        getConceptMetamacRepository().save(concept);
     }
 
     @Override
-    public void deleteConceptRelationRoles(ServiceContext ctx, String urn, String conceptRoleUrn) throws MetamacException {
+    public void deleteRoleConcept(ServiceContext ctx, String urn, String conceptRoleUrn) throws MetamacException {
 
         // Validation
-        ConceptsInvocationValidator.checkDeleteConceptRelationRoles(urn, conceptRoleUrn, null);
+        ConceptsMetamacInvocationValidator.checkDeleteRoleConcept(urn, conceptRoleUrn, null);
 
-        conceptsService.deleteConceptRelationRoles(ctx, urn, conceptRoleUrn);
+        // Check concept scheme of concept 'urn' can be modified
+        ConceptMetamac concept = retrieveConceptByUrn(ctx, urn);
+        retrieveConceptSchemeVersionCanBeModified(ctx, concept.getItemSchemeVersion().getMaintainableArtefact().getUrn());
+
+        // Delete
+        ConceptMetamac conceptRole = retrieveConceptByUrn(ctx, conceptRoleUrn);
+        concept.removeRoleConcept(conceptRole);
+        getConceptMetamacRepository().save(concept);
     }
 
     @Override
-    public List<ConceptMetamac> retrieveRelatedConceptsRoles(ServiceContext ctx, String urn) throws MetamacException {
+    public List<ConceptMetamac> retrieveRoleConcepts(ServiceContext ctx, String urn) throws MetamacException {
 
         // Validation
-        ConceptsInvocationValidator.checkRetrieveRelatedConceptsRoles(urn, null);
+        ConceptsMetamacInvocationValidator.checkRetrieveRoleConcepts(urn, null);
 
         // Retrieve
-        List<Concept> conceptsRole = conceptsService.retrieveRelatedConceptsRoles(ctx, urn);
-        List<ConceptMetamac> conceptsRoleMetamac = conceptsToConceptMetamac(conceptsRole);
-
-        return conceptsRoleMetamac;
+        ConceptMetamac concept = retrieveConceptByUrn(ctx, urn);
+        return concept.getRoleConcepts();
     }
 
     @Override
@@ -462,59 +451,12 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         return conceptSchemeVersion;
     }
 
-    private void checkToDeleteConceptHierarchyWithoutRelations(ServiceContext ctx, Concept concept) throws MetamacException {
-
-        String conceptUrn = concept.getNameableArtefact().getUrn();
-
-        // Check there is not any concept that relates concept to delete by metadata 'extends'
-        ConceptMetamac conceptRelationExtends = getConceptMetamacRepository().findOneConceptByConceptExtends(concept.getId());
-        if (conceptRelationExtends != null) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CONCEPT_WITH_RELATED_CONCEPTS)
-                    .withMessageParameters(conceptUrn, conceptRelationExtends.getNameableArtefact().getUrn()).build();
-        }
-
-        // Check there is not any concept that relates concept to delete by 'related concepts'
-        List<Concept> relatedConcepts = conceptsService.retrieveRelatedConceptsBidirectional(ctx, conceptUrn);
-        if (relatedConcepts.size() != 0) {
-            // in exception, say only one relation by example
-            String conceptRelationUrn = relatedConcepts.get(0).getNameableArtefact().getUrn();
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CONCEPT_WITH_RELATED_CONCEPTS).withMessageParameters(conceptUrn, conceptRelationUrn).build();
-        }
-        for (Item item : concept.getChildren()) {
-            Concept child = (Concept) item;
-            checkToDeleteConceptHierarchyWithoutRelations(ctx, child);
-        }
-    }
-    
     /**
      * Retrieves version of a concept scheme, checking that can be modified
      */
     private ConceptSchemeVersionMetamac retrieveConceptSchemeVersionCanBeModified(ServiceContext ctx, String urn) throws MetamacException {
         return getConceptSchemeVersionMetamacRepository().retrieveConceptSchemeVersionByProcStatus(urn,
                 new ProcStatusEnum[]{ProcStatusEnum.DRAFT, ProcStatusEnum.VALIDATION_REJECTED, ProcStatusEnum.PRODUCTION_VALIDATION, ProcStatusEnum.DIFFUSION_VALIDATION});
-    }
-
-    private ConceptRelation findConceptRelationBidirectionalByConcepts(String urn1, String urn2) {
-        ConceptRelation conceptRelation = null;
-
-        // First possible order
-        conceptRelation = conceptRelationRepository.findConceptRelation(urn1, urn2, ConceptRelationTypeEnum.BIDIRECTIONAL);
-        if (conceptRelation != null) {
-            return conceptRelation;
-        }
-
-        // Second possible order
-        conceptRelation = conceptRelationRepository.findConceptRelation(urn2, urn1, ConceptRelationTypeEnum.BIDIRECTIONAL);
-        if (conceptRelation != null) {
-            return conceptRelation;
-        }
-
-        return null;
-    }
-
-    private List<ConceptRelation> findConceptsRelationsBidirectionalByConceptSchemeVersion(String urn) {
-        // can search by concept1 or concept2, because conceptSchemeVersion is same
-        return conceptRelationRepository.findByConceptSchemeVersionSearchingByConcept2(urn, ConceptRelationTypeEnum.BIDIRECTIONAL);
     }
 
     private Boolean isConceptSchemeFirstVersion(ItemSchemeVersion itemSchemeVersion) {
@@ -573,6 +515,36 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         if (conceptSchemeVersionNoFinal != null) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.MAINTAINABLE_ARTEFACT_VERSIONING_NOT_SUPPORTED)
                     .withMessageParameters(conceptSchemeVersionNoFinal.getMaintainableArtefact().getUrn()).build();
+        }
+    }
+
+    private void checkConceptInSchemeExternallyPublished(ServiceContext ctx, ConceptMetamac concept) throws MetamacException {
+        ConceptSchemeVersionMetamac conceptSchemeVersion = retrieveConceptSchemeByUrn(ctx, concept.getItemSchemeVersion().getMaintainableArtefact().getUrn());
+        SrmServiceUtils.checkProcStatus(conceptSchemeVersion.getLifeCycleMetadata(), conceptSchemeVersion.getMaintainableArtefact().getUrn(), ProcStatusEnum.EXTERNALLY_PUBLISHED);
+    }
+
+    private void removeRelatedConceptsBidirectional(ConceptMetamac relatedConceptToRemove) {
+        for (ConceptMetamac relatedConcept : relatedConceptToRemove.getRelatedConcepts()) {
+            relatedConcept.removeRelatedConcept(relatedConceptToRemove);
+            getConceptMetamacRepository().save(relatedConcept);
+        }
+        // Children (will be removed in cascade)
+        for (Item child : relatedConceptToRemove.getChildren()) {
+            removeRelatedConceptsBidirectional((ConceptMetamac) child);
+        }
+    }
+    
+    private void versioningRelatedConcepts(ConceptMetamac conceptToCopy, String conceptSchemeNewVersionUrn) {
+        if (conceptToCopy.getRelatedConcepts().size() == 0) {
+            return;
+        }
+
+        ConceptMetamac conceptIntNewVersion = (ConceptMetamac) conceptRepository.findByCodeInConceptSchemeVersion(conceptToCopy.getNameableArtefact().getCode(), conceptSchemeNewVersionUrn);
+        // Copy relations with concepts in new version
+        for (ConceptMetamac relatedConcept : conceptToCopy.getRelatedConcepts()) {
+            ConceptMetamac relatedConceptIntNewVersion = (ConceptMetamac) conceptRepository
+                    .findByCodeInConceptSchemeVersion(relatedConcept.getNameableArtefact().getCode(), conceptSchemeNewVersionUrn);
+            conceptIntNewVersion.addRelatedConcept(relatedConceptIntNewVersion);
         }
     }
 }

@@ -1198,25 +1198,25 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public void addConceptRelation(ServiceContext ctx, String urn1, String urn2) throws MetamacException {
+    public void addRelatedConcept(ServiceContext ctx, String urn1, String urn2) throws MetamacException {
 
         // Security
         ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptsMetamacService().retrieveConceptSchemeByConceptUrn(ctx, urn1); // concept scheme of urn1 is same that urn2
-        ConceptsSecurityUtils.canAddConceptRelation(ctx, conceptSchemeVersion);
+        ConceptsSecurityUtils.canAddRelatedConcept(ctx, conceptSchemeVersion);
 
         // Add relation
-        getConceptsMetamacService().addConceptRelation(ctx, urn1, urn2);
+        getConceptsMetamacService().addRelatedConcept(ctx, urn1, urn2);
     }
 
     @Override
-    public void deleteConceptRelation(ServiceContext ctx, String urn1, String urn2) throws MetamacException {
+    public void deleteRelatedConcept(ServiceContext ctx, String urn1, String urn2) throws MetamacException {
 
         // Security
         ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptsMetamacService().retrieveConceptSchemeByConceptUrn(ctx, urn1); // concept scheme of urn1 is same that urn2
-        ConceptsSecurityUtils.canDeleteConceptRelation(ctx, conceptSchemeVersion);
+        ConceptsSecurityUtils.canDeleteRelatedConcept(ctx, conceptSchemeVersion);
 
         // Delete concept relation
-        getConceptsMetamacService().deleteConceptRelation(ctx, urn1, urn2);
+        getConceptsMetamacService().deleteRelatedConcept(ctx, urn1, urn2);
     }
 
     @Override
@@ -1234,27 +1234,27 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public void addConceptRelationRoles(ServiceContext ctx, String urn, String conceptRoleUrn) throws MetamacException {
+    public void addRoleConcept(ServiceContext ctx, String urn, String conceptRoleUrn) throws MetamacException {
         // TODO Security ¿sobre los dos esquemas de concepto?
 
-        getConceptsMetamacService().addConceptRelationRoles(ctx, urn, conceptRoleUrn);
+        getConceptsMetamacService().addRoleConcept(ctx, urn, conceptRoleUrn);
     }
 
     @Override
-    public void deleteConceptRelationRoles(ServiceContext ctx, String urn, String conceptRoleUrn) throws MetamacException {
+    public void deleteRoleConcept(ServiceContext ctx, String urn, String conceptRoleUrn) throws MetamacException {
         // TODO Security ¿sobre los dos esquemas de concepto?
 
-        getConceptsMetamacService().deleteConceptRelationRoles(ctx, urn, conceptRoleUrn);
+        getConceptsMetamacService().deleteRoleConcept(ctx, urn, conceptRoleUrn);
     }
 
     @Override
-    public List<ConceptMetamacDto> retrieveRelatedConceptsRoles(ServiceContext ctx, String urn) throws MetamacException {
+    public List<ConceptMetamacDto> retrieveRoleConcepts(ServiceContext ctx, String urn) throws MetamacException {
 
         // Security
-        ConceptsSecurityUtils.canRetrieveRelatedConceptsRoles(ctx);
+        ConceptsSecurityUtils.canRetrieveRoleConcepts(ctx);
 
         // Retrieve
-        List<ConceptMetamac> concepts = getConceptsMetamacService().retrieveRelatedConceptsRoles(ctx, urn);
+        List<ConceptMetamac> concepts = getConceptsMetamacService().retrieveRoleConcepts(ctx, urn);
 
         // Transform
         List<ConceptMetamacDto> conceptsDto = conceptsDo2DtoMapper.conceptMetamacDoListToDtoList(concepts);

@@ -66,18 +66,18 @@ Application ConceptsMetamac {
     		deleteConcept(String urn) throws MetamacException;
     		"Retrieves concepts by concept scheme, in tree structure"
     		List<@ConceptMetamac> retrieveConceptsByConceptSchemeUrn(String conceptSchemeUrn) throws MetamacException;
-    		"Adds a concepts relation (metadata 'relatedConcepts')"
-    		@ConceptRelation addConceptRelation(String urn1, String urn2) throws MetamacException;
-    		"Deletes a concepts relation (metadata 'relatedConcepts')"
-    		deleteConceptRelation(String urn1, String urn2) throws MetamacException;
-    		"Retrieves all related concepts with a concept (metadata 'relatedConcepts')"
+    		"Adds a concepts relation"
+    		addRelatedConcept(String urn1, String urn2) throws MetamacException;
+    		"Deletes a concepts relation"
+    		deleteRelatedConcept(String urn1, String urn2) throws MetamacException;
+    		"Retrieves all related concepts with a concept"
     		List<@ConceptMetamac> retrieveRelatedConcepts(String urn) throws MetamacException;
-    		"Adds a concepts relation of type 'roles' (metadata 'roles')"
-    		@ConceptRelation addConceptRelationRoles(String urn, String conceptRoleUrn) throws MetamacException;
-    		"Deletes a concepts relation of type 'roles' (metadata 'roles')"
-    		deleteConceptRelationRoles(String urn, String conceptRoleUrn) throws MetamacException;
-    		"Retrieves all related concepts with a concept with relation 'roles' (metadata 'roles')"
-    		List<@ConceptMetamac> retrieveRelatedConceptsRoles(String urn) throws MetamacException;
+    		"Adds a concepts relation of type 'roles'"
+    		addRoleConcept(String urn, String conceptRoleUrn) throws MetamacException;
+    		"Deletes a concepts relation of type 'roles'"
+    		deleteRoleConcept(String urn, String conceptRoleUrn) throws MetamacException;
+    		"Retrieves all related concepts with a concept with relation 'roles'"
+    		List<@ConceptMetamac> retrieveRoleConcepts(String urn) throws MetamacException;
     		
     		"Finds all concept types"
     		List<@ConceptType> findAllConceptTypes throws MetamacException;
@@ -134,17 +134,18 @@ Application ConceptsMetamac {
 			- @InternationalString legalActs nullable cascade="all" databaseColumn="LEGAL_ACTS_FK";
 			"Extends concept of other concept scheme"
 			- @ConceptMetamac conceptExtends nullable cascade="none" databaseColumn="EXTENDS_FK";
+			"Roles"
+			- Bag<@ConceptMetamac> roleConcepts cascade="none" fetch="lazy" databaseJoinTable="TB_M_CONCEPT_ROLES" databaseJoinColumn="CONCEPT_FK" databaseColumn="CONCEPT_ROLE_FK" ;
+			"Related concepts in same concept scheme"
+			- Bag<@ConceptMetamac> relatedConcepts cascade="none" fetch="lazy" databaseJoinTable="TB_M_CONCEPT_RELATED" databaseJoinColumn="CONCEPT_FK" databaseColumn="CONCEPT_RELATED_FK" ;
 			
 			Repository ConceptMetamacRepository {
+				save;
 				findByQuery;
 				findByQuery(String query, Map<String, Object> parameters, int maxResult);
 				findById;
 				@ConceptMetamac findByUrn(String urn);
 				findByCondition(PagingParameter pagingParameter);
-				@ConceptMetamac findOneConceptByConceptExtends(Long idConceptExtends);
-				@ConceptMetamac findOneConceptWithConceptExtendsOfConceptSchemeVersion(String conceptSchemeUrn);
-				@ConceptMetamac findOneConceptExtendsConceptInConceptSchemeNotFinal(String conceptSchemeUrn);
-				@ConceptMetamac findOneConceptExtendsConceptInConceptSchemeNotValid(String conceptSchemeUrn);
 			}
 		}
 		

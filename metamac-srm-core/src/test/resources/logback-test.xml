@@ -9,7 +9,8 @@
 	  
   <logger name="org.siemac.metamac.sdmx" level="DEBUG"/>
   
-<!--   <logger name="org.hibernate.type" level="TRACE"/> -->
+<!--     <logger name="org.hibernate.SQL" level="INFO" /> -->
+<!--     <logger name="org.hibernate.type" level="TRACE" /> -->
     
   <root level="INFO"> 
     <appender-ref ref="STDOUT"/> 

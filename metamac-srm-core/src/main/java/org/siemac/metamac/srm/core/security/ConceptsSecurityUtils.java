@@ -141,15 +141,15 @@ public class ConceptsSecurityUtils extends SecurityUtils {
         }
     }
 
-    public static void canAddConceptRelation(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeMetamac) throws MetamacException {
-        if (!SharedConceptsSecurityUtils.canAddConceptRelation(getMetamacPrincipal(ctx), conceptSchemeMetamac.getLifeCycleMetadata().getProcStatus(), conceptSchemeMetamac.getType(),
+    public static void canAddRelatedConcept(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeMetamac) throws MetamacException {
+        if (!SharedConceptsSecurityUtils.canAddRelatedConcept(getMetamacPrincipal(ctx), conceptSchemeMetamac.getLifeCycleMetadata().getProcStatus(), conceptSchemeMetamac.getType(),
                 getOperationCode(conceptSchemeMetamac))) {
             throwExceptionIfOperationNotAllowed(ctx);
         }
     }
 
-    public static void canDeleteConceptRelation(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeMetamac) throws MetamacException {
-        if (!SharedConceptsSecurityUtils.canDeleteConceptRelation(getMetamacPrincipal(ctx), conceptSchemeMetamac.getLifeCycleMetadata().getProcStatus(), conceptSchemeMetamac.getType(),
+    public static void canDeleteRelatedConcept(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeMetamac) throws MetamacException {
+        if (!SharedConceptsSecurityUtils.canDeleteRelatedConcept(getMetamacPrincipal(ctx), conceptSchemeMetamac.getLifeCycleMetadata().getProcStatus(), conceptSchemeMetamac.getType(),
                 getOperationCode(conceptSchemeMetamac))) {
             throwExceptionIfOperationNotAllowed(ctx);
         }
@@ -161,8 +161,8 @@ public class ConceptsSecurityUtils extends SecurityUtils {
         }
     }
 
-    public static void canRetrieveRelatedConceptsRoles(ServiceContext ctx) throws MetamacException {
-        if (!SharedConceptsSecurityUtils.canRetrieveRelatedConceptsRoles(getMetamacPrincipal(ctx))) {
+    public static void canRetrieveRoleConcepts(ServiceContext ctx) throws MetamacException {
+        if (!SharedConceptsSecurityUtils.canRetrieveRoleConcepts(getMetamacPrincipal(ctx))) {
             throwExceptionIfOperationNotAllowed(ctx);
         }
     }

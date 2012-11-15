@@ -46,7 +46,13 @@ public class ConceptCopyCallbackMetamacImpl implements ConceptCopyCallback {
         target.setType(source.getType());
         target.setDerivation(BaseDoCopyUtils.copy(source.getDerivation()));
         target.setLegalActs(BaseDoCopyUtils.copy(source.getLegalActs()));
-        target.setConceptExtends(source.getConceptExtends()); // can copy reference, because it is a concept in another concept scheme
+
+        // can copy "extends" and "roles", because they are concepts in another concept scheme
+        target.setConceptExtends(source.getConceptExtends());
+        for (ConceptMetamac conceptRole : source.getRoleConcepts()) {
+            target.addRoleConcept(conceptRole);
+        }
+        // can not copy related concepts, because they belong to same concept scheme, and new concept in new version must relate to versioned related concept
         return target;
     }
 }
