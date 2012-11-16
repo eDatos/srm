@@ -116,6 +116,18 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         return (CodelistVersionMetamac) codelistLifeCycle.rejectDiffusionValidation(ctx, urn);
     }
 
+    // TODO Para llevar a cabo la publicación interna de un recurso será necesario que previamente exista al menos un anuncio sobre el esquema de conceptos a publicar
+    @Override
+    public CodelistVersionMetamac publishInternallyCodelist(ServiceContext ctx, String urn) throws MetamacException {
+        return (CodelistVersionMetamac) codelistLifeCycle.publishInternally(ctx, urn);
+    }
+
+    // TODO validTo, validFrom: ¿rellenar cuando el artefacto no sea del ISTAC? Pendiente decisión del ISTAC.
+    @Override
+    public CodelistVersionMetamac publishExternallyCodelist(ServiceContext ctx, String urn) throws MetamacException {
+        return (CodelistVersionMetamac) codelistLifeCycle.publishExternally(ctx, urn);
+    }
+
     // ------------------------------------------------------------------------------------
     // CODES
     // ------------------------------------------------------------------------------------

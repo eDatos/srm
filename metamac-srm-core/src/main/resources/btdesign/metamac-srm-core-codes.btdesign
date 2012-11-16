@@ -38,10 +38,10 @@ Application CodesMetamac {
 	    	@CodelistVersionMetamac rejectCodelistProductionValidation(String urn) throws MetamacException;
 	    	"Rejects diffusion validation of codelist"
 	    	@CodelistVersionMetamac rejectCodelistDiffusionValidation(String urn) throws MetamacException;
-//	    	"Publish internally a codelist"
-//	    	@CodelistVersionMetamac publishInternallyCodelist(String urn) throws MetamacException;
-//	    	"Publish externally a codelist"
-//	    	@CodelistVersionMetamac publishExternallyCodelist(String urn) throws MetamacException;
+	    	"Publish internally a codelist"
+	    	@CodelistVersionMetamac publishInternallyCodelist(String urn) throws MetamacException;
+	    	"Publish externally a codelist"
+	    	@CodelistVersionMetamac publishExternallyCodelist(String urn) throws MetamacException;
 //			"Deletes codelist version. This must be last version and no published"
 //    		deleteCodelist(String urn) throws MetamacException;
 //    		"Creates a new version of a codelist, copying metadata from version with provided urn"
