@@ -48,6 +48,7 @@ import org.siemac.metamac.rest.common.test.ServerResource;
 import org.siemac.metamac.rest.constants.RestConstants;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptScheme;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemes;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptTypes;
 import org.siemac.metamac.rest.utils.RestUtils;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacProperties;
@@ -290,6 +291,27 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
         assertEquals(Status.NOT_ACCEPTABLE.getStatusCode(), response.getStatus());
     }
 
+    @Test
+    public void testRetrieveConceptTypes() throws Exception {
+
+        // Retrieve
+        ConceptTypes conceptTypes = getSrmRestInternalFacadeClientXml().retrieveConceptTypes();
+
+        // Validation
+        assertEquals(RestInternalConstants.KIND_CONCEPT_TYPES, conceptTypes.getKind());
+        assertTrue(conceptTypes.getConceptTypes().size() > 0);
+    }
+
+    @Test
+    public void testRetrieveConceptTypesWithoutJaxbTransformation() throws Exception {
+
+        String requestUri = getUriConceptTypes();
+        InputStream responseExpected = SrmRestInternalFacadeV10Test.class.getResourceAsStream("/responses/retrieveConceptTypes.xml");
+
+        // Request and validate
+        testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
+    }
+
     private void testFindConceptsSchemes(String limit, String offset, String query, String orderBy) throws Exception {
         resetMocks();
         ConceptSchemes conceptSchemes = getSrmRestInternalFacadeClientXml().findConceptSchemes(query, orderBy, limit, offset);
@@ -312,6 +334,7 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
         conceptsService = applicationContext.getBean(ConceptsMetamacService.class);
         reset(conceptsService);
         mockFindConceptsByCondition();
+        mockRetrieveConceptTypes();
     }
 
     @SuppressWarnings("unchecked")
@@ -357,6 +380,10 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
         });
     }
 
+    private void mockRetrieveConceptTypes() throws MetamacException {
+        when(conceptsService.findAllConceptTypes(any(ServiceContext.class))).thenReturn(SrmCoreMocks.mockConceptTypes());
+    }
+
     private SrmRestInternalFacadeV10 getSrmRestInternalFacadeClientXml() {
         WebClient.client(srmRestInternalFacadeClientXml).reset();
         WebClient.client(srmRestInternalFacadeClientXml).accept(APPLICATION_XML);
@@ -384,5 +411,9 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
         uri = RestUtils.createLinkWithQueryParam(uri, RestConstants.PARAMETER_LIMIT, RestUtils.encodeParameter(limit));
         uri = RestUtils.createLinkWithQueryParam(uri, RestConstants.PARAMETER_OFFSET, RestUtils.encodeParameter(offset));
         return uri.toString();
+    }
+
+    private String getUriConceptTypes() {
+        return baseApi + "/conceptTypes";
     }
 }

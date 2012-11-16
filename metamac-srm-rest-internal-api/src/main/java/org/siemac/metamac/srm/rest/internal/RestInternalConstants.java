@@ -14,6 +14,7 @@ public class RestInternalConstants {
     public static String KIND_CONCEPT_SCHEME          = API_NAME + RestConstants.KIND_SEPARATOR + "conceptscheme";
     public static String KIND_CONCEPTS                = API_NAME + RestConstants.KIND_SEPARATOR + "concepts";
     public static String KIND_CONCEPT                 = API_NAME + RestConstants.KIND_SEPARATOR + "concept";
+    public static String KIND_CONCEPT_TYPES           = API_NAME + RestConstants.KIND_SEPARATOR + "conceptTypes";
 
     public static String WILDCARD                     = "~all";
     public static String LATEST                       = "~latest";

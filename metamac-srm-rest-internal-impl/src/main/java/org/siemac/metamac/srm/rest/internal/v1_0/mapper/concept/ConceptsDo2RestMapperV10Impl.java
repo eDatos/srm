@@ -23,6 +23,7 @@ import org.siemac.metamac.rest.search.criteria.mapper.SculptorCriteria2RestCrite
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.Concept;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptScheme;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemes;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptTypes;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.Urns;
 import org.siemac.metamac.rest.utils.RestUtils;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
@@ -126,6 +127,24 @@ public class ConceptsDo2RestMapperV10Impl implements ConceptsDo2RestMapperV10 {
         target.setRoles(conceptsToUrns(source.getRoleConcepts()));
         target.setRelatedConcepts(conceptsToUrns(source.getRelatedConcepts()));
     }
+    
+    @Override
+    public ConceptTypes toConceptTypes(List<ConceptType> sources) {
+        ConceptTypes targets = new ConceptTypes();
+        targets.setKind(RestInternalConstants.KIND_CONCEPT_TYPES);
+
+        if (sources == null) {
+            targets.setTotal(BigInteger.ZERO);
+        } else {
+            for (ConceptType source : sources) {
+                Item target = toItem(source);
+                targets.getConceptTypes().add(target);
+            }
+            targets.setTotal(BigInteger.valueOf(sources.size()));
+        }
+        return targets;
+    }
+
 
     private ResourceLink toConceptSchemeParent() {
         ResourceLink target = new ResourceLink();

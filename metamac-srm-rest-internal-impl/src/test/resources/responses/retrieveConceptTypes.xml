@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<srm:conceptTypes xmlns:query="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/query" xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common" xmlns:srm="http://www.siemac.org/metamac/rest/srm-internal/v1.0/domain" xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="srm#conceptTypes" total="3">
+    <srm:conceptType>
+        <cdomain:id>conceptType1</cdomain:id>
+        <cdomain:title>
+            <cdomain:text xml:lang="es">description-conceptType1 en Español</cdomain:text>
+            <cdomain:text xml:lang="en">description-conceptType1 in English</cdomain:text>
+        </cdomain:title>
+    </srm:conceptType>
+    <srm:conceptType>
+        <cdomain:id>conceptType2</cdomain:id>
+        <cdomain:title>
+            <cdomain:text xml:lang="es">description-conceptType2 en Español</cdomain:text>
+            <cdomain:text xml:lang="en">description-conceptType2 in English</cdomain:text>
+        </cdomain:title>
+    </srm:conceptType>
+    <srm:conceptType>
+        <cdomain:id>conceptType3</cdomain:id>
+        <cdomain:title>
+            <cdomain:text xml:lang="es">description-conceptType3 en Español</cdomain:text>
+            <cdomain:text xml:lang="en">description-conceptType3 in English</cdomain:text>
+        </cdomain:title>
+    </srm:conceptType>
+</srm:conceptTypes>

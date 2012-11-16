@@ -54,7 +54,7 @@ public class SrmRestAsserts extends MetamacRestAsserts {
         assertEquals("http://data.istac.es/apis/srm/v1.0/conceptschemes/" + source.getMaintainableArtefact().getMaintainer().getIdAsMaintainer() + "/" + source.getMaintainableArtefact().getCode() + "/" + source.getMaintainableArtefact().getVersionLogic(), target.getSelfLink());
         assertEqualsInternationalString(source.getMaintainableArtefact().getName(), target.getTitle());
     }
-
+    
     private static List<ConditionalCriteria> buildExpectedConditionalCriteria(String agencyID, String resourceID, String query, String orderBy) {
         List<ConditionalCriteria> expected = new ArrayList<ConditionalCriteria>();
         expected.addAll(buildExpectedConditionalCriteriaOrderBy(orderBy));

@@ -18,8 +18,10 @@ import org.siemac.metamac.rest.exception.utils.RestExceptionUtils;
 import org.siemac.metamac.rest.search.criteria.SculptorCriteria;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptScheme;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemes;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptTypes;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacProperties;
+import org.siemac.metamac.srm.core.concept.domain.ConceptType;
 import org.siemac.metamac.srm.core.concept.serviceapi.ConceptsMetamacService;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
@@ -78,6 +80,21 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             throw manageException(e);
         }
     }
+    
+    @Override
+    public ConceptTypes retrieveConceptTypes() {
+        try {
+            // Retrieve all
+            List<ConceptType> entitiesResult = conceptsService.findAllConceptTypes(ctx);
+
+            // Transform
+            ConceptTypes conceptTypes = do2RestInternalMapper.toConceptTypes(entitiesResult);
+            return conceptTypes;
+        } catch (Exception e) {
+            throw manageException(e);
+        }
+    }
+
 
     private ConceptSchemes findConceptSchemesCommon(String agencyID, String resourceID, String query, String orderBy, String limit, String offset) {
         try {

@@ -58,6 +58,16 @@
         </xs:complexContent>
     </xs:complexType>
     
+    <xs:complexType name="ConceptTypes">
+        <xs:complexContent>
+            <xs:extension base="common:ListBase">
+                <xs:sequence>
+                    <xs:element name="conceptType" type="common:Item" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>    
+    
     <xs:complexType name="Urns">
         <xs:complexContent>
             <xs:extension base="common:ListBase">
@@ -113,4 +123,5 @@
     <xs:element name="conceptScheme" type="tns:ConceptScheme" />
     <xs:element name="concept" type="tns:Concept" />
     <xs:element name="conceptSchemes" type="tns:ConceptSchemes" />
+    <xs:element name="conceptTypes" type="tns:ConceptTypes" />
 </xs:schema>
