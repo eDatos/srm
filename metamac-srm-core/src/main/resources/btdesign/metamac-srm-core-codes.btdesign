@@ -71,8 +71,8 @@ Application CodesMetamac {
 		// ----------------------------------------------------------------
 
 		Entity CodelistVersionMetamac extends @CodelistVersion {
-			databaseTable="TB_M_CODELIST_VERSIONS"
-			hint="idSequence=M_CODELIST_VERSIONS"
+			databaseTable="TB_M_CODELISTS_VERSIONS"
+			hint="idSequence=M_CODELISTS_VERSIONS"
 			
 			"Life cycle information"
 			- @SrmLifeCycleMetadata lifeCycleMetadata databaseColumn="";

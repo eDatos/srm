@@ -111,8 +111,8 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
     protected String              ORGANISATION_SCHEME_5_V1_ORGANISATION_1     = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME05(01.000).ORGANISATION01";
     protected String              ORGANISATION_SCHEME_6_V1_ORGANISATION_1     = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME06(01.000).ORGANISATION01";
     protected String              ORGANISATION_SCHEME_7_V2_ORGANISATION_1     = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME07(02.000).ORGANISATION01";
-    protected String              ORGANISATION_SCHEME_8_V1_ORGANISATION_1    = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX02:ORGANISATIONSCHEME08(01.000).ORGANISATION01";
-    protected String              ORGANISATION_SCHEME_9_V1_ORGANISATION_1    = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX02.ORGANISATION01:ORGANISATIONSCHEME09(01.000).ORGANISATION01";
+    protected String              ORGANISATION_SCHEME_8_V1_ORGANISATION_1     = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX02:ORGANISATIONSCHEME08(01.000).ORGANISATION01";
+    protected String              ORGANISATION_SCHEME_9_V1_ORGANISATION_1     = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX02.ORGANISATION01:ORGANISATIONSCHEME09(01.000).ORGANISATION01";
     protected String              ORGANISATION_SCHEME_100_V1_ORGANISATION_1   = AGENCY_ROOT_1_V1;
     protected String              ORGANISATION_SCHEME_100_V1_ORGANISATION_2   = AGENCY_ROOT_2_V1;
 
@@ -149,12 +149,62 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
     protected String              CATEGORY_SCHEME_5_V1_CATEGORY_2             = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME05(01.000).CATEGORY02";
     protected String              CATEGORY_SCHEME_6_V1_CATEGORY_1             = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME06(01.000).CATEGORY01";
     protected String              CATEGORY_SCHEME_7_V2_CATEGORY_1             = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME07(02.000).CATEGORY01";
+
+    // Codelists
+    protected static final String CODELIST_1_V1                               = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST01(01.000)";
+    protected static final String CODELIST_1_V2                               = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST01(02.000)";
+    protected static final String CODELIST_2_V1                               = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST02(01.000)";
+    protected static final String CODELIST_3_V1                               = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST03(01.000)";
+    protected static final String CODELIST_4_V1                               = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST04(01.000)";
+    protected static final String CODELIST_5_V1                               = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST05(01.000)";
+    protected static final String CODELIST_6_V1                               = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST06(01.000)";
+    protected static final String CODELIST_7_V1                               = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST07(01.000)";
+    protected static final String CODELIST_7_V2                               = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST07(02.000)";
+    protected static final String CODELIST_8_V1                               = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST08(01.000)";
+    protected static final String CODELIST_9_V1                               = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST09(01.000)";
+    protected static final String CODELIST_10_V1                              = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST10(01.000)";
+    protected static final String CODELIST_10_V2                              = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST10(02.000)";
+    protected static final String CODELIST_10_V3                              = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST10(03.000)";
+    protected static final String CODELIST_11_V1                              = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST11(01.000)";
+    protected static final String CODELIST_12_V1                              = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST12(01.000)";
+    protected static final String CODELIST_13_V1                              = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST13(01.000)";
+
+    // Codes
+    protected static final String CODELIST_1_V1_CODE_1                        = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(01.000).CODE01";
+    protected static final String CODELIST_1_V2_CODE_1                        = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(02.000).CODE01";
+    protected static final String CODELIST_1_V2_CODE_2                        = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(02.000).CODE02";
+    protected static final String CODELIST_1_V2_CODE_2_1                      = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(02.000).CODE0201";
+    protected static final String CODELIST_1_V2_CODE_2_1_1                    = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(02.000).CODE020101";
+    protected static final String CODELIST_1_V2_CODE_3                        = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(02.000).CODE03";
+    protected static final String CODELIST_1_V2_CODE_4                        = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(02.000).CODE04";
+    protected static final String CODELIST_1_V2_CODE_4_1                      = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(02.000).CODE0401";
+    protected static final String CODELIST_1_V2_CODE_4_1_1                    = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(02.000).CODE040101";
+    protected static final String CODELIST_2_V1_CODE_1                        = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST02(01.000).CODE01";
+    protected static final String CODELIST_2_V1_CODE_2                        = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST02(01.000).CODE02";
+    protected static final String CODELIST_3_V1_CODE_1                        = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST03(01.000).CODE01";
+    protected static final String CODELIST_3_V1_CODE_2                        = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST03(01.000).CODE02";
+    protected static final String CODELIST_3_V1_CODE_2_1                      = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST03(01.000).CODE0201";
+    protected static final String CODELIST_3_V1_CODE_2_1_1                    = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST03(01.000).CODE020101";
+    protected static final String CODELIST_3_V1_CODE_2_2                      = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST03(01.000).CODE0202";
+    protected static final String CODELIST_4_V1_CODE_1                        = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST04(01.000).CODE01";
+    protected static final String CODELIST_5_V1_CODE_1                        = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST05(01.000).CODE01";
+    protected static final String CODELIST_6_V1_CODE_1                        = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST06(01.000).CODE01";
+    protected static final String CODELIST_7_V2_CODE_1                        = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST07(02.000).CODE01";
+    protected static final String CODELIST_8_V1_CODE_1                        = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST08(01.000).CODE01";
+    protected static final String CODELIST_10_V2_CODE_1                       = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST10(02.000).CODE01";
+    protected static final String CODELIST_10_V3_CODE_1                       = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST10(03.000).CODE01";
+    protected static final String CODELIST_11_V1_CODE_1                       = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST11(01.000).CODE01";
+    protected static final String CODELIST_12_V1_CODE_1                       = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST12(01.000).CODE01";
+    protected static final String CODELIST_13_V1_CODE_1                       = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST13(01.000).CODE01";
+    protected static final String CODELIST_13_V1_CODE_2                       = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST13(01.000).CODE02";
+    protected static final String CODELIST_13_V1_CODE_3                       = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST13(01.000).CODE03";
+
     // Other
     protected static final String NOT_EXISTS                                  = "not-exists";
 
     @Value("${metamac.srm.db.provider}")
-    private String databaseProvider;
-    
+    private String                databaseProvider;
+
     // --------------------------------------------------------------------------------------------------------------
     // SERVICE CONTEXT
     // --------------------------------------------------------------------------------------------------------------
@@ -268,6 +318,8 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
         tables.add("TB_M_ORG_SCHEMES_VERSIONS");
         tables.add("TB_M_CATEGORIES");
         tables.add("TB_M_CAT_SCHEMES_VERSIONS");
+        tables.add("TB_M_CODES");
+        tables.add("TB_M_CODELISTS_VERSIONS");
         return tables;
     }
 
@@ -280,6 +332,8 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
         tablePrimaryKeys.put("TB_M_ORGANISATIONS", Arrays.asList("TB_ORGANISATIONS"));
         tablePrimaryKeys.put("TB_M_CAT_SCHEMES_VERSIONS", Arrays.asList("TB_CAT_SCHEMES_VERSIONS"));
         tablePrimaryKeys.put("TB_M_CATEGORIES", Arrays.asList("TB_CATEGORIES"));
+        tablePrimaryKeys.put("TB_M_CODELISTS_VERSIONS", Arrays.asList("TB_CODELISTS_VERSIONS"));
+        tablePrimaryKeys.put("TB_M_CODES", Arrays.asList("TB_CODES"));
         tablePrimaryKeys.put("TB_M_CONCEPT_ROLES", Arrays.asList("CONCEPT_ROLE_FK", "CONCEPT_FK"));
         tablePrimaryKeys.put("TB_M_CONCEPT_RELATED", Arrays.asList("CONCEPT_RELATED_FK", "CONCEPT_FK"));
         return tablePrimaryKeys;
