@@ -54,6 +54,10 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     @Autowired
     private OrganisationMetamacRepository organisationMetamacRepository;
 
+    // ------------------------------------------------------------------------------------
+    // CODELISTS
+    // ------------------------------------------------------------------------------------
+
     @Test
     public void testCreateCodelist() throws Exception {
         OrganisationMetamac organisationMetamac = organisationMetamacRepository.findByUrn(AGENCY_ROOT_1_V1);
@@ -1100,32 +1104,36 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     // assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
     // }
     // }
-    //
-    // @Test
-    // public void testEndCodelistValidity() throws Exception {
-    // CodelistVersionMetamac codelistVersion = codesService.endCodelistValidity(getServiceContextAdministrador(), CODELIST_7_V1);
-    //
-    // assertNotNull(codelistVersion);
-    // assertNotNull(codelistVersion.getMaintainableArtefact().getValidTo());
-    // }
-    //
-    // @Test
-    // public void testEndCodelistValidityErrorWrongProcStatus() throws Exception {
-    // String[] urns = {CODELIST_1_V1, CODELIST_4_V1, CODELIST_6_V1};
-    // for (String urn : urns) {
-    // try {
-    // codesService.endCodelistValidity(getServiceContextAdministrador(), urn);
-    // fail("wrong procStatus");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.LIFE_CYCLE_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // assertEquals(ServiceExceptionParameters.PROC_STATUS_EXTERNALLY_PUBLISHED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
-    // }
-    // }
-    // }
-    //
+
+    @Test
+    public void testEndCodelistValidity() throws Exception {
+        CodelistVersionMetamac codelistVersion = codesService.endCodelistValidity(getServiceContextAdministrador(), CODELIST_7_V1);
+
+        assertNotNull(codelistVersion);
+        assertNotNull(codelistVersion.getMaintainableArtefact().getValidTo());
+    }
+
+    @Test
+    public void testEndCodelistValidityErrorWrongProcStatus() throws Exception {
+        String[] urns = {CODELIST_1_V1, CODELIST_4_V1, CODELIST_6_V1};
+        for (String urn : urns) {
+            try {
+                codesService.endCodelistValidity(getServiceContextAdministrador(), urn);
+                fail("wrong procStatus");
+            } catch (MetamacException e) {
+                assertEquals(1, e.getExceptionItems().size());
+                assertEquals(ServiceExceptionType.LIFE_CYCLE_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
+                assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
+                assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+                assertEquals(ServiceExceptionParameters.PROC_STATUS_EXTERNALLY_PUBLISHED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
+            }
+        }
+    }
+
+    // ------------------------------------------------------------------------------------
+    // CODES
+    // ------------------------------------------------------------------------------------
+
     // @Test
     // public void testCreateCode() throws Exception {
     //
@@ -1612,6 +1620,10 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     // }
     // fail("List does not contain item with urn " + urn);
     // }
+
+    // ------------------------------------------------------------------------------------
+    // PRIVATE METHODS
+    // ------------------------------------------------------------------------------------
 
     @Override
     protected String getDataSetFile() {

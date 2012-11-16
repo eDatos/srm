@@ -134,6 +134,20 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         codesService.deleteCodelist(ctx, urn);
     }
 
+    @Override
+    public CodelistVersionMetamac endCodelistValidity(ServiceContext ctx, String urn) throws MetamacException {
+        // Validation
+        CodesMetamacInvocationValidator.checkEndCodelistValidity(urn, null, null);
+
+        // Retrieve version in specific procStatus
+        CodelistVersionMetamac codelistVersion = getCodelistVersionMetamacRepository().retrieveCodelistVersionByProcStatus(urn, new ProcStatusEnum[]{ProcStatusEnum.EXTERNALLY_PUBLISHED});
+
+        // End validity
+        codelistVersion = (CodelistVersionMetamac) codesService.endCodelistValidity(ctx, urn, null);
+
+        return codelistVersion;
+    }
+
     // ------------------------------------------------------------------------------------
     // CODES
     // ------------------------------------------------------------------------------------
