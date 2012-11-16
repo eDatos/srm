@@ -15,6 +15,7 @@ import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.common.LifeCycle;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
+import org.siemac.metamac.srm.core.common.service.utils.SrmValidationUtils;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacProperties;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
@@ -86,7 +87,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         // ConceptsService checks conceptScheme isn't final (Schemes cannot be updated when procStatus is INTERNALLY_PUBLISHED or EXTERNALLY_PUBLISHED)
 
         // if this version is not the first one, check not modify 'type'
-        if (!isConceptSchemeFirstVersion(conceptSchemeVersion)) {
+        if (!SrmServiceUtils.isItemSchemeFirstVersion(conceptSchemeVersion)) {
             ConceptSchemeVersionMetamac conceptSchemePreviousVersion = (ConceptSchemeVersionMetamac) itemSchemeVersionRepository.findByVersion(conceptSchemeVersion.getItemScheme().getId(),
                     conceptSchemeVersion.getMaintainableArtefact().getReplaceTo());
             if (!conceptSchemePreviousVersion.getType().equals(conceptSchemeVersion.getType())) {
@@ -374,7 +375,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
                     .withMessageParameters(conceptSchemeVersionOfRole.getMaintainableArtefact().getUrn(), new String[]{ServiceExceptionParameters.CONCEPT_SCHEME_TYPE_ROLE}).build();
         }
         // Check concept scheme of Role is externally published
-        SrmServiceUtils.checkProcStatus(conceptSchemeVersionOfRole.getLifeCycleMetadata(), conceptSchemeVersionOfRole.getMaintainableArtefact().getUrn(), ProcStatusEnum.EXTERNALLY_PUBLISHED);
+        SrmValidationUtils.checkProcStatus(conceptSchemeVersionOfRole.getLifeCycleMetadata(), conceptSchemeVersionOfRole.getMaintainableArtefact().getUrn(), ProcStatusEnum.EXTERNALLY_PUBLISHED);
         // Not add relation if Role is already added
         for (Concept conceptRoleActual : concept.getRoleConcepts()) {
             if (conceptRoleActual.getNameableArtefact().getUrn().equals(conceptRole.getNameableArtefact().getUrn())) {
@@ -459,10 +460,6 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
                 new ProcStatusEnum[]{ProcStatusEnum.DRAFT, ProcStatusEnum.VALIDATION_REJECTED, ProcStatusEnum.PRODUCTION_VALIDATION, ProcStatusEnum.DIFFUSION_VALIDATION});
     }
 
-    private Boolean isConceptSchemeFirstVersion(ItemSchemeVersion itemSchemeVersion) {
-        return itemSchemeVersion.getMaintainableArtefact().getReplaceTo() == null;
-    }
-
     /**
      * Typecast to Metamac type
      */
@@ -520,7 +517,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
     private void checkConceptInSchemeExternallyPublished(ServiceContext ctx, ConceptMetamac concept) throws MetamacException {
         ConceptSchemeVersionMetamac conceptSchemeVersion = retrieveConceptSchemeByUrn(ctx, concept.getItemSchemeVersion().getMaintainableArtefact().getUrn());
-        SrmServiceUtils.checkProcStatus(conceptSchemeVersion.getLifeCycleMetadata(), conceptSchemeVersion.getMaintainableArtefact().getUrn(), ProcStatusEnum.EXTERNALLY_PUBLISHED);
+        SrmValidationUtils.checkProcStatus(conceptSchemeVersion.getLifeCycleMetadata(), conceptSchemeVersion.getMaintainableArtefact().getUrn(), ProcStatusEnum.EXTERNALLY_PUBLISHED);
     }
 
     private void removeRelatedConceptsBidirectional(ConceptMetamac relatedConceptToRemove) {
@@ -533,7 +530,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
             removeRelatedConceptsBidirectional((ConceptMetamac) child);
         }
     }
-    
+
     private void versioningRelatedConcepts(ConceptMetamac conceptToCopy, String conceptSchemeNewVersionUrn) {
         if (conceptToCopy.getRelatedConcepts().size() == 0) {
             return;

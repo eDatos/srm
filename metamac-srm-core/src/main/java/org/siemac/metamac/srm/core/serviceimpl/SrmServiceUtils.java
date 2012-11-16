@@ -3,12 +3,9 @@ package org.siemac.metamac.srm.core.serviceimpl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.ArrayUtils;
-import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
-import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
-import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 
 public class SrmServiceUtils {
 
@@ -28,10 +25,8 @@ public class SrmServiceUtils {
         return procStatus;
     }
 
-    public static void checkProcStatus(SrmLifeCycleMetadata lifeCycle, String urn, ProcStatusEnum... procStatus) throws MetamacException {
-        if (!ArrayUtils.contains(procStatus, lifeCycle.getProcStatus())) {
-            String[] procStatusString = procStatusEnumToString(procStatus);
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.LIFE_CYCLE_WRONG_PROC_STATUS).withMessageParameters(urn, procStatusString).build();
-        }
+    public static Boolean isItemSchemeFirstVersion(ItemSchemeVersion itemSchemeVersion) {
+        return itemSchemeVersion.getMaintainableArtefact().getReplaceTo() == null;
     }
+
 }

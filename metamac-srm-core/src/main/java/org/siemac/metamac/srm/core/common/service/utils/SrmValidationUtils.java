@@ -1,5 +1,6 @@
 package org.siemac.metamac.srm.core.common.service.utils;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.siemac.metamac.core.common.ent.domain.InternationalString;
 import org.siemac.metamac.core.common.ent.domain.LocalisedString;
@@ -30,6 +31,13 @@ public class SrmValidationUtils {
     public static void checkExternallyPublished(String urn, SrmLifeCycleMetadata lifeCycle) throws MetamacException {
         if (!ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(lifeCycle.getProcStatus())) {
             String[] procStatusString = SrmServiceUtils.procStatusEnumToString(ProcStatusEnum.EXTERNALLY_PUBLISHED);
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.LIFE_CYCLE_WRONG_PROC_STATUS).withMessageParameters(urn, procStatusString).build();
+        }
+    }
+
+    public static void checkProcStatus(SrmLifeCycleMetadata lifeCycle, String urn, ProcStatusEnum... procStatus) throws MetamacException {
+        if (!ArrayUtils.contains(procStatus, lifeCycle.getProcStatus())) {
+            String[] procStatusString = SrmServiceUtils.procStatusEnumToString(procStatus);
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.LIFE_CYCLE_WRONG_PROC_STATUS).withMessageParameters(urn, procStatusString).build();
         }
     }

@@ -22,8 +22,8 @@ Application CodesMetamac {
 
 			"Creates codelist"
 			@CodelistVersionMetamac createCodelist(@CodelistVersionMetamac codelistVersion) throws MetamacException;
-//			"Updates codelist"
-//			@CodelistVersionMetamac updateCodelist(@CodelistVersionMetamac codelistVersion) throws MetamacException;
+			"Updates codelist"
+			@CodelistVersionMetamac updateCodelist(@CodelistVersionMetamac codelistVersion) throws MetamacException;
 			"Retrieves codelist by urn"
 			@CodelistVersionMetamac retrieveCodelistByUrn(String urn) throws MetamacException;
 			"Retrieves all codelists versions"

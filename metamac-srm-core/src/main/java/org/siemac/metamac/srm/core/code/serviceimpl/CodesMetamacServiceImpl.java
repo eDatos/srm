@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
 import com.arte.statistic.sdmx.srm.core.code.serviceapi.CodesService;
 
@@ -24,11 +25,11 @@ import com.arte.statistic.sdmx.srm.core.code.serviceapi.CodesService;
 public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
     @Autowired
-    private CodesService codesService;
+    private CodesService                codesService;
 
-    // @Autowired
-    // private ItemSchemeVersionRepository itemSchemeVersionRepository;
-    //
+    @Autowired
+    private ItemSchemeVersionRepository itemSchemeVersionRepository;
+
     // @Autowired
     // private CodeRepository codeRepository;
     //
@@ -58,6 +59,16 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         // Save codelist
         return (CodelistVersionMetamac) codesService.createCodelist(ctx, codelistVersion, SrmConstants.VERSION_PATTERN_METAMAC);
+    }
+
+    @Override
+    public CodelistVersionMetamac updateCodelist(ServiceContext ctx, CodelistVersionMetamac codelistVersion) throws MetamacException {
+        // Validation
+        CodesMetamacInvocationValidator.checkUpdateCodelist(codelistVersion, null);
+        // CodesService checks conceptScheme isn't final (Schemes cannot be updated when procStatus is INTERNALLY_PUBLISHED or EXTERNALLY_PUBLISHED)
+
+        // Save conceptScheme
+        return (CodelistVersionMetamac) codesService.updateCodelist(ctx, codelistVersion);
     }
 
     public CodelistVersionMetamac retrieveCodelistByUrn(ServiceContext ctx, String urn) throws MetamacException {

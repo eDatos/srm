@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.core.code.serviceapi;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
@@ -26,6 +27,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
+import com.arte.statistic.sdmx.srm.core.common.error.ServiceExceptionParameters;
 import com.arte.statistic.sdmx.srm.core.common.error.ServiceExceptionType;
 
 /**
@@ -91,102 +94,53 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         }
     }
 
-    // @Test
-    // public void testUpdateCodelist() throws Exception {
-    // ServiceContext ctx = getServiceContextAdministrador();
-    //
-    // CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(ctx, CODELIST_2_V1);
-    // codelistVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
-    //
-    // CodelistVersion codelistVersionUpdated = codesService.updateCodelist(ctx, codelistVersion);
-    // assertNotNull(codelistVersionUpdated);
-    // assertEquals("user1", codelistVersionUpdated.getCreatedBy());
-    // assertEquals(ctx.getUserId(), codelistVersionUpdated.getLastUpdatedBy());
-    // }
-    //
-    // @Test
-    // public void testUpdateCodelistFromGlossaryToOperationTypeErrorRelatedOperationRequired() throws Exception {
-    // CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_9_V1);
-    //
-    // codelistVersion.setType(CodelistTypeEnum.OPERATION);
-    //
-    // try {
-    // codelistVersion = codesService.updateCodelist(getServiceContextAdministrador(), codelistVersion);
-    // fail("empty related operation");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.METADATA_REQUIRED.getCode(), e.getExceptionItems().get(0).getCode());
-    // }
-    // }
-    //
-    // @Test
-    // public void testUpdateCodelistFromOperationToGlossaryTypeErrorRelatedOperationUnexpected() throws Exception {
-    // CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_8_V1);
-    // codelistVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
-    // codelistVersion.setType(CodelistTypeEnum.GLOSSARY);
-    //
-    // try {
-    // codelistVersion = codesService.updateCodelist(getServiceContextAdministrador(), codelistVersion);
-    // fail("unexpected related operation");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.METADATA_UNEXPECTED.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(ServiceExceptionParameters.CODELIST_RELATED_OPERATION, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // }
-    // }
-    //
-    // @Test
-    // public void testUpdateCodelistPublished() throws Exception {
-    // String[] urns = {CODELIST_7_V2, CODELIST_7_V1};
-    // for (String urn : urns) {
-    // CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), urn);
-    //
-    // try {
-    // codelistVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
-    // codelistVersion = codesService.updateCodelist(getServiceContextAdministrador(), codelistVersion);
-    // fail("wrong proc status");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.MAINTAINABLE_ARTEFACT_FINAL.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // }
-    // }
-    // }
-    //
-    // @Test
-    // public void testUpdateCodelistErrorExternalReference() throws Exception {
-    // CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_7_V2);
-    // codelistVersion.getMaintainableArtefact().setIsExternalReference(Boolean.TRUE);
-    //
-    // try {
-    // codelistVersion = codesService.updateCodelist(getServiceContextAdministrador(), codelistVersion);
-    // fail("concept scheme cannot be a external reference");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.METADATA_INCORRECT.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(ServiceExceptionParameters.MAINTAINABLE_ARTEFACT_IS_EXTERNAL_REFERENCE, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // }
-    // }
-    //
-    // @Test
-    // public void testUpdateCodelistErrorChangeTypeCodelistAlreadyPublished() throws Exception {
-    // CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_1_V2);
-    // assertEquals(CodelistTypeEnum.TRANSVERSAL, codelistVersion.getType());
-    // codelistVersion.setType(CodelistTypeEnum.GLOSSARY);
-    //
-    // try {
-    // codelistVersion = codesService.updateCodelist(getServiceContextAdministrador(), codelistVersion);
-    // fail("metadata unmodifiable");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.METADATA_UNMODIFIABLE.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(ServiceExceptionParameters.CODELIST_TYPE, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // }
-    // }
+    @Test
+    public void testUpdateCodelist() throws Exception {
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(ctx, CODELIST_2_V1);
+        codelistVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
+
+        CodelistVersion codelistVersionUpdated = codesService.updateCodelist(ctx, codelistVersion);
+        assertNotNull(codelistVersionUpdated);
+        assertEquals("user1", codelistVersionUpdated.getCreatedBy());
+        assertEquals(ctx.getUserId(), codelistVersionUpdated.getLastUpdatedBy());
+    }
+
+    @Test
+    public void testUpdateCodelistPublished() throws Exception {
+        String[] urns = {CODELIST_1_V1, CODELIST_7_V2, CODELIST_7_V1};
+        for (String urn : urns) {
+            CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), urn);
+
+            try {
+                codelistVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
+                codelistVersion = codesService.updateCodelist(getServiceContextAdministrador(), codelistVersion);
+                fail("wrong proc status");
+            } catch (MetamacException e) {
+                assertEquals(1, e.getExceptionItems().size());
+                assertEquals(ServiceExceptionType.MAINTAINABLE_ARTEFACT_FINAL.getCode(), e.getExceptionItems().get(0).getCode());
+                assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+                assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            }
+        }
+    }
+
+    @Test
+    public void testUpdateCodelistErrorExternalReference() throws Exception {
+        CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_7_V2);
+        codelistVersion.getMaintainableArtefact().setIsExternalReference(Boolean.TRUE);
+
+        try {
+            codelistVersion = codesService.updateCodelist(getServiceContextAdministrador(), codelistVersion);
+            fail("concept scheme cannot be a external reference");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.METADATA_INCORRECT.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(ServiceExceptionParameters.MAINTAINABLE_ARTEFACT_IS_EXTERNAL_REFERENCE, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
 
     @Test
     public void testRetrieveCodelistByUrn() throws Exception {
