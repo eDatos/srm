@@ -120,7 +120,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         return (CodelistVersionMetamac) codelistLifeCycle.rejectDiffusionValidation(ctx, urn);
     }
 
-    // TODO Para llevar a cabo la publicación interna de un recurso será necesario que previamente exista al menos un anuncio sobre el esquema de conceptos a publicar
+    // TODO Para llevar a cabo la publicación interna de un recurso será necesario que previamente exista al menos un anuncio sobre el codelist a publicar
     @Override
     public CodelistVersionMetamac publishInternallyCodelist(ServiceContext ctx, String urn) throws MetamacException {
         return (CodelistVersionMetamac) codelistLifeCycle.publishInternally(ctx, urn);
@@ -180,6 +180,20 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     // ------------------------------------------------------------------------------------
     // CODES
     // ------------------------------------------------------------------------------------
+
+    @Override
+    public CodeMetamac createCode(ServiceContext ctx, String codelistUrn, CodeMetamac code) throws MetamacException {
+        // Validation
+        CodelistVersionMetamac codelistVersion = null;
+        if (codelistUrn != null) {
+            codelistVersion = retrieveCodelistByUrn(ctx, codelistUrn);
+        }
+        CodesMetamacInvocationValidator.checkCreateCode(codelistVersion, code, null);
+        // CodesService checks codelist isn't final
+
+        // Save code
+        return (CodeMetamac) codesService.createCode(ctx, codelistUrn, code);
+    }
 
     @Override
     public CodeMetamac retrieveCodeByUrn(ServiceContext ctx, String urn) throws MetamacException {

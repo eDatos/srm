@@ -1136,101 +1136,83 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     // CODES
     // ------------------------------------------------------------------------------------
 
-    // @Test
-    // public void testCreateCode() throws Exception {
-    //
-    // ServiceContext ctx = getServiceContextAdministrador();
-    //
-    // CodeMetamac code = CodesMetamacDoMocks.mockCode();
-    // code.setParent(null);
-    // CodeMetamac codeExtends = codesService.retrieveCodeByUrn(ctx, CODELIST_13_V1_CODE_1);
-    // code.setCodeExtends(codeExtends);
-    //
-    // String codelistUrn = CODELIST_1_V2;
-    //
-    // // Create
-    // CodeMetamac codeCreated = codesService.createCode(ctx, codelistUrn, code);
-    // String urn = codeCreated.getNameableArtefact().getUrn();
-    // assertEquals(ctx.getUserId(), codeCreated.getCreatedBy());
-    // assertEquals(ctx.getUserId(), codeCreated.getLastUpdatedBy());
-    //
-    // // Validate (only metadata in SRM Metamac; the others are checked in sdmx project)
-    // CodeMetamac codeRetrieved = codesService.retrieveCodeByUrn(ctx, urn);
-    // CodesMetamacAsserts.assertEqualsCode(code, codeRetrieved);
-    //
-    // // Validate new structure
-    // CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(ctx, codelistUrn);
-    // assertEquals(5, codelistVersion.getItemsFirstLevel().size());
-    // assertEquals(9, codelistVersion.getItems().size());
-    // assertEquals(CODELIST_1_V2_CODE_1, codelistVersion.getItemsFirstLevel().get(0).getNameableArtefact().getUrn());
-    // assertEquals(CODELIST_1_V2_CODE_2, codelistVersion.getItemsFirstLevel().get(1).getNameableArtefact().getUrn());
-    // assertEquals(CODELIST_1_V2_CODE_3, codelistVersion.getItemsFirstLevel().get(2).getNameableArtefact().getUrn());
-    // assertEquals(CODELIST_1_V2_CODE_4, codelistVersion.getItemsFirstLevel().get(3).getNameableArtefact().getUrn());
-    // assertEquals(codeRetrieved.getNameableArtefact().getUrn(), codelistVersion.getItemsFirstLevel().get(4).getNameableArtefact().getUrn());
-    // }
-    //
-    // @Test
-    // public void testCreateCodeSubcode() throws Exception {
-    //
-    // CodeType codeType = null;
-    // CodeMetamac code = CodesMetamacDoMocks.mockCode(codeType);
-    // CodeMetamac codeParent = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_1_V2_CODE_1);
-    // code.setParent(codeParent);
-    // String codelistUrn = CODELIST_1_V2;
-    //
-    // // Create
-    // CodeMetamac codelistVersionCreated = codesService.createCode(getServiceContextAdministrador(), codelistUrn, code);
-    // String urn = codelistVersionCreated.getNameableArtefact().getUrn();
-    //
-    // // Validate (only metadata in SRM Metamac; the others are checked in sdmx project)
-    // CodeMetamac codeRetrieved = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), urn);
-    // CodesMetamacAsserts.assertEqualsCode(code, codeRetrieved);
-    //
-    // // Validate new structure
-    // CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistUrn);
-    // assertEquals(4, codelistVersion.getItemsFirstLevel().size());
-    // assertEquals(9, codelistVersion.getItems().size());
-    //
-    // assertEquals(CODELIST_1_V2_CODE_1, codelistVersion.getItemsFirstLevel().get(0).getNameableArtefact().getUrn());
-    // assertEquals(codeRetrieved.getNameableArtefact().getUrn(), codelistVersion.getItemsFirstLevel().get(0).getChildren().get(0).getNameableArtefact().getUrn());
-    // assertEquals(CODELIST_1_V2_CODE_2, codelistVersion.getItemsFirstLevel().get(1).getNameableArtefact().getUrn());
-    // assertEquals(CODELIST_1_V2_CODE_3, codelistVersion.getItemsFirstLevel().get(2).getNameableArtefact().getUrn());
-    // assertEquals(CODELIST_1_V2_CODE_4, codelistVersion.getItemsFirstLevel().get(3).getNameableArtefact().getUrn());
-    // }
-    //
-    // @Test
-    // public void testCreateCodeErrorMetadataIncorrect() throws Exception {
-    //
-    // CodeType codeType = null;
-    // CodeMetamac code = CodesMetamacDoMocks.mockCode(codeType);
-    // code.setPluralName(new InternationalString());
-    // code.setDocMethod(new InternationalString());
-    // code.getDocMethod().addText(new LocalisedString());
-    // code.setLegalActs(new InternationalString());
-    // LocalisedString lsLegalActs = new LocalisedString();
-    // lsLegalActs.setLocale("es");
-    // code.getLegalActs().addText(lsLegalActs);
-    //
-    // try {
-    // codesService.createCode(getServiceContextAdministrador(), CODELIST_1_V2, code);
-    // fail("parameters incorrect");
-    // } catch (MetamacException e) {
-    // assertEquals(3, e.getExceptionItems().size());
-    //
-    // assertEquals(ServiceExceptionType.METADATA_INCORRECT.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(ServiceExceptionParameters.CODE_PLURAL_NAME, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    //
-    // assertEquals(ServiceExceptionType.METADATA_INCORRECT.getCode(), e.getExceptionItems().get(1).getCode());
-    // assertEquals(1, e.getExceptionItems().get(1).getMessageParameters().length);
-    // assertEquals(ServiceExceptionParameters.CODE_DOC_METHOD, e.getExceptionItems().get(1).getMessageParameters()[0]);
-    //
-    // assertEquals(ServiceExceptionType.METADATA_INCORRECT.getCode(), e.getExceptionItems().get(2).getCode());
-    // assertEquals(1, e.getExceptionItems().get(2).getMessageParameters().length);
-    // assertEquals(ServiceExceptionParameters.CODE_LEGAL_ACTS, e.getExceptionItems().get(2).getMessageParameters()[0]);
-    // }
-    // }
-    //
+    @Test
+    public void testCreateCode() throws Exception {
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        CodeMetamac code = CodesMetamacDoMocks.mockCode();
+        code.setParent(null);
+
+        String codelistUrn = CODELIST_1_V2;
+
+        // Create
+        CodeMetamac codeCreated = codesService.createCode(ctx, codelistUrn, code);
+        String urn = codeCreated.getNameableArtefact().getUrn();
+        assertEquals(ctx.getUserId(), codeCreated.getCreatedBy());
+        assertEquals(ctx.getUserId(), codeCreated.getLastUpdatedBy());
+
+        // Validate (only metadata in SRM Metamac; the others are checked in sdmx project)
+        CodeMetamac codeRetrieved = codesService.retrieveCodeByUrn(ctx, urn);
+        CodesMetamacAsserts.assertEqualsCode(code, codeRetrieved);
+
+        // Validate new structure
+        CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(ctx, codelistUrn);
+        assertEquals(5, codelistVersion.getItemsFirstLevel().size());
+        assertEquals(9, codelistVersion.getItems().size());
+        assertEquals(CODELIST_1_V2_CODE_1, codelistVersion.getItemsFirstLevel().get(0).getNameableArtefact().getUrn());
+        assertEquals(CODELIST_1_V2_CODE_2, codelistVersion.getItemsFirstLevel().get(1).getNameableArtefact().getUrn());
+        assertEquals(CODELIST_1_V2_CODE_3, codelistVersion.getItemsFirstLevel().get(2).getNameableArtefact().getUrn());
+        assertEquals(CODELIST_1_V2_CODE_4, codelistVersion.getItemsFirstLevel().get(3).getNameableArtefact().getUrn());
+        assertEquals(codeRetrieved.getNameableArtefact().getUrn(), codelistVersion.getItemsFirstLevel().get(4).getNameableArtefact().getUrn());
+    }
+
+    @Test
+    public void testCreateCodeSubcode() throws Exception {
+        CodeMetamac code = CodesMetamacDoMocks.mockCode();
+        CodeMetamac codeParent = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_1_V2_CODE_1);
+        code.setParent(codeParent);
+        String codelistUrn = CODELIST_1_V2;
+
+        // Create
+        CodeMetamac codelistVersionCreated = codesService.createCode(getServiceContextAdministrador(), codelistUrn, code);
+        String urn = codelistVersionCreated.getNameableArtefact().getUrn();
+
+        // Validate (only metadata in SRM Metamac; the others are checked in sdmx project)
+        CodeMetamac codeRetrieved = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), urn);
+        CodesMetamacAsserts.assertEqualsCode(code, codeRetrieved);
+
+        // Validate new structure
+        CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistUrn);
+        assertEquals(4, codelistVersion.getItemsFirstLevel().size());
+        assertEquals(9, codelistVersion.getItems().size());
+
+        assertEquals(CODELIST_1_V2_CODE_1, codelistVersion.getItemsFirstLevel().get(0).getNameableArtefact().getUrn());
+        assertEquals(codeRetrieved.getNameableArtefact().getUrn(), codelistVersion.getItemsFirstLevel().get(0).getChildren().get(0).getNameableArtefact().getUrn());
+        assertEquals(CODELIST_1_V2_CODE_2, codelistVersion.getItemsFirstLevel().get(1).getNameableArtefact().getUrn());
+        assertEquals(CODELIST_1_V2_CODE_3, codelistVersion.getItemsFirstLevel().get(2).getNameableArtefact().getUrn());
+        assertEquals(CODELIST_1_V2_CODE_4, codelistVersion.getItemsFirstLevel().get(3).getNameableArtefact().getUrn());
+    }
+
+    @Test
+    public void testCreateCodeIncorrectCodelist() throws Exception {
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        CodeMetamac code = CodesMetamacDoMocks.mockCode();
+        code.setParent(null);
+
+        String codelistUrn = NOT_EXISTS;
+
+        try {
+            codesService.createCode(ctx, codelistUrn, code);
+            fail("Code cannot be created without a associated codelist");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(NOT_EXISTS, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
     // @Test
     // public void testUpdateCode() throws Exception {
     //

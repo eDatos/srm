@@ -51,8 +51,8 @@ Application CodesMetamac {
     		"Retrieves codelist by code urn"
     		@CodelistVersionMetamac retrieveCodelistByCodeUrn(String codeUrn) throws MetamacException;
 
-//			"Creates code"
-//			@CodeMetamac createCode(String codelistUrn, @CodeMetamac code) throws MetamacException;
+			"Creates code"
+			@CodeMetamac createCode(String codelistUrn, @CodeMetamac code) throws MetamacException;
 //			"Updates code"
 //			@CodeMetamac updateCode(@CodeMetamac code) throws MetamacException;
     		"Retrieves code by urn"
