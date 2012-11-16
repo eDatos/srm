@@ -1351,64 +1351,63 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         }
     }
 
-    // @Test
-    // public void testRetrieveCodesByCodelistUrn() throws Exception {
-    //
-    // // Retrieve
-    // String codelistUrn = CODELIST_1_V2;
-    // List<CodeMetamac> codes = codesService.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistUrn);
-    //
-    // // Validate
-    // assertEquals(4, codes.size());
-    // {
-    // // Code 01
-    // CodeMetamac code = codes.get(0);
-    // assertEquals(CODELIST_1_V2_CODE_1, code.getNameableArtefact().getUrn());
-    // assertEquals(0, code.getChildren().size());
-    // }
-    // {
-    // // Code 02
-    // CodeMetamac code = codes.get(1);
-    // assertEquals(CODELIST_1_V2_CODE_2, code.getNameableArtefact().getUrn());
-    // assertEquals(1, code.getChildren().size());
-    // {
-    // // Code 02 01
-    // CodeMetamac codeChild = (CodeMetamac) code.getChildren().get(0);
-    // assertEquals(CODELIST_1_V2_CODE_2_1, codeChild.getNameableArtefact().getUrn());
-    // assertEquals(1, codeChild.getChildren().size());
-    // {
-    // // Code 02 01 01
-    // CodeMetamac codeChildChild = (CodeMetamac) codeChild.getChildren().get(0);
-    // assertEquals(CODELIST_1_V2_CODE_2_1_1, codeChildChild.getNameableArtefact().getUrn());
-    // assertEquals(0, codeChildChild.getChildren().size());
-    // }
-    // }
-    // }
-    // {
-    // // Code 03
-    // CodeMetamac code = codes.get(2);
-    // assertEquals(CODELIST_1_V2_CODE_3, code.getNameableArtefact().getUrn());
-    // assertEquals(0, code.getChildren().size());
-    // }
-    // {
-    // // Code 04
-    // CodeMetamac code = codes.get(3);
-    // assertEquals(CODELIST_1_V2_CODE_4, code.getNameableArtefact().getUrn());
-    // assertEquals(1, code.getChildren().size());
-    // {
-    // // Code 04 01
-    // CodeMetamac codeChild = (CodeMetamac) code.getChildren().get(0);
-    // assertEquals(CODELIST_1_V2_CODE_4_1, codeChild.getNameableArtefact().getUrn());
-    // assertEquals(1, codeChild.getChildren().size());
-    // {
-    // // Code 04 01 01
-    // CodeMetamac codeChildChild = (CodeMetamac) codeChild.getChildren().get(0);
-    // assertEquals(CODELIST_1_V2_CODE_4_1_1, codeChildChild.getNameableArtefact().getUrn());
-    // assertEquals(0, codeChildChild.getChildren().size());
-    // }
-    // }
-    // }
-    // }
+    @Test
+    public void testRetrieveCodesByCodelistUrn() throws Exception {
+        // Retrieve
+        String codelistUrn = CODELIST_1_V2;
+        List<CodeMetamac> codes = codesService.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistUrn);
+
+        // Validate
+        assertEquals(4, codes.size());
+        {
+            // Code 01
+            CodeMetamac code = codes.get(0);
+            assertEquals(CODELIST_1_V2_CODE_1, code.getNameableArtefact().getUrn());
+            assertEquals(0, code.getChildren().size());
+        }
+        {
+            // Code 02
+            CodeMetamac code = codes.get(1);
+            assertEquals(CODELIST_1_V2_CODE_2, code.getNameableArtefact().getUrn());
+            assertEquals(1, code.getChildren().size());
+            {
+                // Code 02 01
+                CodeMetamac codeChild = (CodeMetamac) code.getChildren().get(0);
+                assertEquals(CODELIST_1_V2_CODE_2_1, codeChild.getNameableArtefact().getUrn());
+                assertEquals(1, codeChild.getChildren().size());
+                {
+                    // Code 02 01 01
+                    CodeMetamac codeChildChild = (CodeMetamac) codeChild.getChildren().get(0);
+                    assertEquals(CODELIST_1_V2_CODE_2_1_1, codeChildChild.getNameableArtefact().getUrn());
+                    assertEquals(0, codeChildChild.getChildren().size());
+                }
+            }
+        }
+        {
+            // Code 03
+            CodeMetamac code = codes.get(2);
+            assertEquals(CODELIST_1_V2_CODE_3, code.getNameableArtefact().getUrn());
+            assertEquals(0, code.getChildren().size());
+        }
+        {
+            // Code 04
+            CodeMetamac code = codes.get(3);
+            assertEquals(CODELIST_1_V2_CODE_4, code.getNameableArtefact().getUrn());
+            assertEquals(1, code.getChildren().size());
+            {
+                // Code 04 01
+                CodeMetamac codeChild = (CodeMetamac) code.getChildren().get(0);
+                assertEquals(CODELIST_1_V2_CODE_4_1, codeChild.getNameableArtefact().getUrn());
+                assertEquals(1, codeChild.getChildren().size());
+                {
+                    // Code 04 01 01
+                    CodeMetamac codeChildChild = (CodeMetamac) codeChild.getChildren().get(0);
+                    assertEquals(CODELIST_1_V2_CODE_4_1_1, codeChildChild.getNameableArtefact().getUrn());
+                    assertEquals(0, codeChildChild.getChildren().size());
+                }
+            }
+        }
+    }
 
     @Test
     public void testFindCodesByCondition() throws Exception {

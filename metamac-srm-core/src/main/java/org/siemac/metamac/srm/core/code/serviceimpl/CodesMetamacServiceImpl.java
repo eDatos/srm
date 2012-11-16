@@ -228,6 +228,16 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         codesService.deleteCode(ctx, urn);
     }
 
+    @Override
+    public List<CodeMetamac> retrieveCodesByCodelistUrn(ServiceContext ctx, String codelistUrn) throws MetamacException {
+        // Retrieve
+        List<Code> codes = codesService.retrieveCodesByCodelistUrn(ctx, codelistUrn);
+
+        // Typecast
+        List<CodeMetamac> conceptsMetamac = codesToCodeMetamac(codes);
+        return conceptsMetamac;
+    }
+
     // ------------------------------------------------------------------------------------
     // PRIVATE METHODS
     // ------------------------------------------------------------------------------------
