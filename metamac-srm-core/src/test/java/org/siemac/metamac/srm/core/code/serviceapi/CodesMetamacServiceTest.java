@@ -1,19 +1,32 @@
 package org.siemac.metamac.srm.core.code.serviceapi;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
 
+import java.util.List;
+
+import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.common.test.utils.MetamacAsserts;
+import org.siemac.metamac.common.test.utils.MetamacMocks;
+import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
+import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsserts;
+import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacDoMocks;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
+import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamacRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.arte.statistic.sdmx.srm.core.common.error.ServiceExceptionType;
 
 /**
  * Spring based transactional test with DbUnit support.
@@ -30,91 +43,54 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     @Autowired
     private OrganisationMetamacRepository organisationMetamacRepository;
 
-    // @Test
-    // public void testCreateCodelist() throws Exception {
-    //
-    // OrganisationMetamac organisationMetamac = organisationMetamacRepository.findByUrn(AGENCY_ROOT_1_V1);
-    // CodelistVersionMetamac codelistVersion = CodesMetamacDoMocks.mockCodelist(organisationMetamac);
-    // ServiceContext ctx = getServiceContextAdministrador();
-    //
-    // // Create
-    // CodelistVersionMetamac codelistVersionCreated = codesService.createCodelist(ctx, codelistVersion);
-    // String urn = codelistVersionCreated.getMaintainableArtefact().getUrn();
-    // assertEquals("01.000", codelistVersionCreated.getMaintainableArtefact().getVersionLogic());
-    // assertEquals(ctx.getUserId(), codelistVersionCreated.getCreatedBy());
-    //
-    // // Validate (only metadata in SRM Metamac; the others are checked in sdmx project)
-    // CodelistVersionMetamac codelistVersionRetrieved = codesService.retrieveCodelistByUrn(ctx, urn);
-    // assertEquals(ProcStatusEnum.DRAFT, codelistVersionRetrieved.getLifeCycleMetadata().getProcStatus());
-    // assertFalse(codelistVersionRetrieved.getMaintainableArtefact().getIsExternalReference());
-    // assertNull(codelistVersionRetrieved.getLifeCycleMetadata().getProductionValidationDate());
-    // assertNull(codelistVersionRetrieved.getLifeCycleMetadata().getProductionValidationUser());
-    // assertNull(codelistVersionRetrieved.getLifeCycleMetadata().getDiffusionValidationDate());
-    // assertNull(codelistVersionRetrieved.getLifeCycleMetadata().getDiffusionValidationUser());
-    // assertNull(codelistVersionRetrieved.getLifeCycleMetadata().getInternalPublicationDate());
-    // assertNull(codelistVersionRetrieved.getLifeCycleMetadata().getInternalPublicationUser());
-    // assertNull(codelistVersionRetrieved.getLifeCycleMetadata().getExternalPublicationDate());
-    // assertNull(codelistVersionRetrieved.getLifeCycleMetadata().getExternalPublicationUser());
-    // assertEquals(ctx.getUserId(), codelistVersionRetrieved.getCreatedBy());
-    // assertEquals(ctx.getUserId(), codelistVersionRetrieved.getLastUpdatedBy());
-    // CodesMetamacAsserts.assertEqualsCodelist(codelistVersion, codelistVersionRetrieved);
-    // }
-    //
-    // @Test
-    // public void testCreateCodelistErrorMetadataRequired() throws Exception {
-    // OrganisationMetamac organisationMetamac = organisationMetamacRepository.findByUrn(AGENCY_ROOT_1_V1);
-    // CodelistVersionMetamac codelistVersion = CodesMetamacDoMocks.mockCodelist(organisationMetamac);
-    // codelistVersion.setType(null);
-    // codelistVersion.setRelatedOperation(null); // avoid error unexpected metadata
-    //
-    // try {
-    // codesService.createCodelist(getServiceContextAdministrador(), codelistVersion);
-    // fail("metadata required");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.METADATA_REQUIRED.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(ServiceExceptionParameters.CODELIST_TYPE, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // }
-    // }
-    //
-    // @Test
-    // public void testCreateCodelistErrorMetadataUnexpected() throws Exception {
-    // OrganisationMetamac organisationMetamac = organisationMetamacRepository.findByUrn(AGENCY_ROOT_1_V1);
-    // CodelistVersionMetamac codelistVersion = CodesMetamacDoMocks.mockCodelist(organisationMetamac);
-    // codelistVersion.setType(CodelistTypeEnum.GLOSSARY);
-    // assertNotNull(codelistVersion.getRelatedOperation());
-    //
-    // try {
-    // codesService.createCodelist(getServiceContextAdministrador(), codelistVersion);
-    // fail("metadatas unexpected");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.METADATA_UNEXPECTED.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(ServiceExceptionParameters.CODELIST_RELATED_OPERATION, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // }
-    // }
-    //
-    // @Test
-    // public void testCreateCodelistErrorDuplicatedCode() throws Exception {
-    // OrganisationMetamac organisationMetamac = organisationMetamacRepository.findByUrn(AGENCY_ROOT_1_V1);
-    // CodelistVersionMetamac codelistVersion1 = CodesMetamacDoMocks.mockCodelist(organisationMetamac);
-    // CodelistVersionMetamac codelistVersion2 = CodesMetamacDoMocks.mockCodelist(organisationMetamac);
-    // String code = "code-" + MetamacMocks.mockString(10);
-    // codelistVersion1.getMaintainableArtefact().setCode(code);
-    // codelistVersion2.getMaintainableArtefact().setCode(code);
-    //
-    // codesService.createCodelist(getServiceContextAdministrador(), codelistVersion1);
-    // try {
-    // codesService.createCodelist(getServiceContextAdministrador(), codelistVersion2);
-    // fail("duplicated code");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_CODE_DUPLICATED.getCode(), e.getExceptionItems().get(0).getCode());
-    // }
-    // }
-    //
+    @Test
+    public void testCreateCodelist() throws Exception {
+        OrganisationMetamac organisationMetamac = organisationMetamacRepository.findByUrn(AGENCY_ROOT_1_V1);
+        CodelistVersionMetamac codelistVersion = CodesMetamacDoMocks.mockCodelist(organisationMetamac);
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        // Create
+        CodelistVersionMetamac codelistVersionCreated = codesService.createCodelist(ctx, codelistVersion);
+        String urn = codelistVersionCreated.getMaintainableArtefact().getUrn();
+        assertEquals("01.000", codelistVersionCreated.getMaintainableArtefact().getVersionLogic());
+        assertEquals(ctx.getUserId(), codelistVersionCreated.getCreatedBy());
+
+        // Validate (only metadata in SRM Metamac; the others are checked in sdmx project)
+        CodelistVersionMetamac codelistVersionRetrieved = codesService.retrieveCodelistByUrn(ctx, urn);
+        assertEquals(ProcStatusEnum.DRAFT, codelistVersionRetrieved.getLifeCycleMetadata().getProcStatus());
+        assertFalse(codelistVersionRetrieved.getMaintainableArtefact().getIsExternalReference());
+        assertNull(codelistVersionRetrieved.getLifeCycleMetadata().getProductionValidationDate());
+        assertNull(codelistVersionRetrieved.getLifeCycleMetadata().getProductionValidationUser());
+        assertNull(codelistVersionRetrieved.getLifeCycleMetadata().getDiffusionValidationDate());
+        assertNull(codelistVersionRetrieved.getLifeCycleMetadata().getDiffusionValidationUser());
+        assertNull(codelistVersionRetrieved.getLifeCycleMetadata().getInternalPublicationDate());
+        assertNull(codelistVersionRetrieved.getLifeCycleMetadata().getInternalPublicationUser());
+        assertNull(codelistVersionRetrieved.getLifeCycleMetadata().getExternalPublicationDate());
+        assertNull(codelistVersionRetrieved.getLifeCycleMetadata().getExternalPublicationUser());
+        assertEquals(ctx.getUserId(), codelistVersionRetrieved.getCreatedBy());
+        assertEquals(ctx.getUserId(), codelistVersionRetrieved.getLastUpdatedBy());
+        CodesMetamacAsserts.assertEqualsCodelist(codelistVersion, codelistVersionRetrieved);
+    }
+
+    @Test
+    public void testCreateCodelistErrorDuplicatedCode() throws Exception {
+        OrganisationMetamac organisationMetamac = organisationMetamacRepository.findByUrn(AGENCY_ROOT_1_V1);
+        CodelistVersionMetamac codelistVersion1 = CodesMetamacDoMocks.mockCodelist(organisationMetamac);
+        CodelistVersionMetamac codelistVersion2 = CodesMetamacDoMocks.mockCodelist(organisationMetamac);
+        String code = "code-" + MetamacMocks.mockString(10);
+        codelistVersion1.getMaintainableArtefact().setCode(code);
+        codelistVersion2.getMaintainableArtefact().setCode(code);
+
+        codesService.createCodelist(getServiceContextAdministrador(), codelistVersion1);
+        try {
+            codesService.createCodelist(getServiceContextAdministrador(), codelistVersion2);
+            fail("duplicated code");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_CODE_DUPLICATED.getCode(), e.getExceptionItems().get(0).getCode());
+        }
+    }
+
     // @Test
     // public void testUpdateCodelist() throws Exception {
     // ServiceContext ctx = getServiceContextAdministrador();
@@ -231,23 +207,6 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     }
 
     // @Test
-    // public void testRetrieveCodelistByUrnWithRelatedOperation() throws Exception {
-    //
-    // // Retrieve
-    // String urn = CODELIST_8_V1;
-    // CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), urn);
-    //
-    // // Validate
-    // assertEquals(urn, codelistVersion.getMaintainableArtefact().getUrn());
-    // assertEquals(CodelistTypeEnum.OPERATION, codelistVersion.getType());
-    // assertEquals("op1", codelistVersion.getRelatedOperation().getCode());
-    // assertEquals("urn:op1", codelistVersion.getRelatedOperation().getUrn());
-    // assertEquals("http://op1", codelistVersion.getRelatedOperation().getUri());
-    // assertEquals(TypeExternalArtefactsEnum.STATISTICAL_OPERATION, codelistVersion.getRelatedOperation().getType());
-    // assertEquals("http://app/operations", codelistVersion.getRelatedOperation().getManagementAppUrl());
-    // }
-    //
-    // @Test
     // @Override
     // public void testFindCodelistsByCondition() throws Exception {
     //
@@ -323,21 +282,21 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     // assertEquals(CODELIST_13_V1, codelistVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
     // }
     // }
-    //
-    // @Test
-    // @Override
-    // public void testRetrieveCodelistVersions() throws Exception {
-    //
-    // // Retrieve all versions
-    // String urn = CODELIST_1_V1;
-    // List<CodelistVersionMetamac> codelistVersions = codesService.retrieveCodelistVersions(getServiceContextAdministrador(), urn);
-    //
-    // // Validate
-    // assertEquals(2, codelistVersions.size());
-    // assertEquals(CODELIST_1_V1, codelistVersions.get(0).getMaintainableArtefact().getUrn());
-    // assertEquals(CODELIST_1_V2, codelistVersions.get(1).getMaintainableArtefact().getUrn());
-    // }
-    //
+
+    @Test
+    @Override
+    public void testRetrieveCodelistVersions() throws Exception {
+        // Retrieve all versions
+        String urn = CODELIST_10_V1;
+        List<CodelistVersionMetamac> codelistVersions = codesService.retrieveCodelistVersions(getServiceContextAdministrador(), urn);
+
+        // Validate
+        assertEquals(3, codelistVersions.size());
+        assertEquals(CODELIST_10_V1, codelistVersions.get(0).getMaintainableArtefact().getUrn());
+        assertEquals(CODELIST_10_V2, codelistVersions.get(1).getMaintainableArtefact().getUrn());
+        assertEquals(CODELIST_10_V3, codelistVersions.get(2).getMaintainableArtefact().getUrn());
+    }
+
     // @Test
     // public void testSendCodelistToProductionValidation() throws Exception {
     //
