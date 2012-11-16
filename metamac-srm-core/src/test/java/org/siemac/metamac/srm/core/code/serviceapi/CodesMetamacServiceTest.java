@@ -38,6 +38,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.arte.statistic.sdmx.srm.core.code.domain.Code;
+import com.arte.statistic.sdmx.srm.core.code.domain.CodeProperties;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
 import com.arte.statistic.sdmx.srm.core.code.serviceapi.utils.CodesDoMocks;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
@@ -1414,131 +1416,130 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     // }
     // }
     // }
-    //
-    // @Test
-    // public void testFindCodesByCondition() throws Exception {
-    //
-    // // Find all
-    // {
-    // List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(Code.class).orderBy(CodeProperties.itemSchemeVersion().maintainableArtefact().urn()).ascending()
-    // .orderBy(CodeProperties.id()).ascending().distinctRoot().build();
-    // PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
-    // PagedResult<CodeMetamac> codesPagedResult = codesService.findCodesByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
-    //
-    // // Validate
-    // assertEquals(28, codesPagedResult.getTotalRows());
-    // assertEquals(28, codesPagedResult.getValues().size());
-    // assertTrue(codesPagedResult.getValues().get(0) instanceof CodeMetamac);
-    //
-    // int i = 0;
-    // assertEquals(CODELIST_1_V1_CODE_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(CODELIST_1_V2_CODE_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(CODELIST_1_V2_CODE_2, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(CODELIST_1_V2_CODE_3, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(CODELIST_1_V2_CODE_4, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(CODELIST_1_V2_CODE_2_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(CODELIST_1_V2_CODE_4_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(CODELIST_1_V2_CODE_2_1_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(CODELIST_1_V2_CODE_4_1_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(CODELIST_2_V1_CODE_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(CODELIST_2_V1_CODE_2, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(CODELIST_3_V1_CODE_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(CODELIST_3_V1_CODE_2, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(CODELIST_3_V1_CODE_2_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(CODELIST_3_V1_CODE_2_2, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(CODELIST_3_V1_CODE_2_1_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(CODELIST_4_V1_CODE_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(CODELIST_5_V1_CODE_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(CODELIST_6_V1_CODE_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(CODELIST_7_V2_CODE_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(CODELIST_8_V1_CODE_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(CODELIST_10_V2_CODE_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(CODELIST_10_V3_CODE_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(CODELIST_11_V1_CODE_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(CODELIST_12_V1_CODE_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(CODELIST_13_V1_CODE_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(CODELIST_13_V1_CODE_2, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(CODELIST_13_V1_CODE_3, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(codesPagedResult.getValues().size(), i);
-    // }
-    //
-    // // Find by name (like), code (like) and codelist urn
-    // {
-    // String name = "Nombre codelist-1-v2-code-2-";
-    // String code = "CODE02";
-    // String codelistUrn = CODELIST_1_V2;
-    // List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(Code.class).withProperty(CodeProperties.itemSchemeVersion().maintainableArtefact().urn())
-    // .eq(codelistUrn).withProperty(CodeProperties.nameableArtefact().code()).like(code + "%").withProperty(CodeProperties.nameableArtefact().name().texts().label())
-    // .like(name + "%").orderBy(CodeProperties.id()).ascending().distinctRoot().build();
-    // PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
-    // PagedResult<CodeMetamac> codesPagedResult = codesService.findCodesByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
-    //
-    // // Validate
-    // assertEquals(2, codesPagedResult.getTotalRows());
-    // assertEquals(2, codesPagedResult.getValues().size());
-    // assertTrue(codesPagedResult.getValues().get(0) instanceof CodeMetamac);
-    //
-    // int i = 0;
-    // assertEquals(CODELIST_1_V2_CODE_2_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(CODELIST_1_V2_CODE_2_1_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(codesPagedResult.getValues().size(), i);
-    // }
-    //
-    // // Find by codelist urn paginated
-    // {
-    // String codelistUrn = CODELIST_1_V2;
-    // List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(Code.class).withProperty(CodeProperties.itemSchemeVersion().maintainableArtefact().urn())
-    // .eq(codelistUrn).orderBy(CodeProperties.id()).ascending().distinctRoot().build();
-    //
-    // // First page
-    // {
-    // PagingParameter pagingParameter = PagingParameter.rowAccess(0, 3, true);
-    // PagedResult<CodeMetamac> codesPagedResult = codesService.findCodesByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
-    //
-    // // Validate
-    // assertEquals(8, codesPagedResult.getTotalRows());
-    // assertEquals(3, codesPagedResult.getValues().size());
-    // assertTrue(codesPagedResult.getValues().get(0) instanceof CodeMetamac);
-    //
-    // int i = 0;
-    // assertEquals(CODELIST_1_V2_CODE_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(CODELIST_1_V2_CODE_2, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(CODELIST_1_V2_CODE_3, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(codesPagedResult.getValues().size(), i);
-    // }
-    // // Second page
-    // {
-    // PagingParameter pagingParameter = PagingParameter.rowAccess(3, 6, true);
-    // PagedResult<CodeMetamac> codesPagedResult = codesService.findCodesByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
-    //
-    // // Validate
-    // assertEquals(8, codesPagedResult.getTotalRows());
-    // assertEquals(3, codesPagedResult.getValues().size());
-    // assertTrue(codesPagedResult.getValues().get(0) instanceof CodeMetamac);
-    //
-    // int i = 0;
-    // assertEquals(CODELIST_1_V2_CODE_4, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(CODELIST_1_V2_CODE_2_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(CODELIST_1_V2_CODE_4_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(codesPagedResult.getValues().size(), i);
-    // }
-    // // Third page
-    // {
-    // PagingParameter pagingParameter = PagingParameter.rowAccess(6, 9, true);
-    // PagedResult<CodeMetamac> codesPagedResult = codesService.findCodesByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
-    //
-    // // Validate
-    // assertEquals(8, codesPagedResult.getTotalRows());
-    // assertEquals(2, codesPagedResult.getValues().size());
-    // assertTrue(codesPagedResult.getValues().get(0) instanceof CodeMetamac);
-    //
-    // int i = 0;
-    // assertEquals(CODELIST_1_V2_CODE_2_1_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(CODELIST_1_V2_CODE_4_1_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-    // assertEquals(codesPagedResult.getValues().size(), i);
-    // }
-    // }
-    // }
+
+    @Test
+    public void testFindCodesByCondition() throws Exception {
+        // Find all
+        {
+            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(Code.class).orderBy(CodeProperties.itemSchemeVersion().maintainableArtefact().urn()).ascending()
+                    .orderBy(CodeProperties.id()).ascending().distinctRoot().build();
+            PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
+            PagedResult<CodeMetamac> codesPagedResult = codesService.findCodesByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
+
+            // Validate
+            assertEquals(28, codesPagedResult.getTotalRows());
+            assertEquals(28, codesPagedResult.getValues().size());
+            assertTrue(codesPagedResult.getValues().get(0) instanceof CodeMetamac);
+
+            int i = 0;
+            assertEquals(CODELIST_1_V1_CODE_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CODELIST_1_V2_CODE_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CODELIST_1_V2_CODE_2, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CODELIST_1_V2_CODE_3, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CODELIST_1_V2_CODE_4, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CODELIST_1_V2_CODE_2_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CODELIST_1_V2_CODE_4_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CODELIST_1_V2_CODE_2_1_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CODELIST_1_V2_CODE_4_1_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CODELIST_2_V1_CODE_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CODELIST_2_V1_CODE_2, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CODELIST_3_V1_CODE_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CODELIST_3_V1_CODE_2, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CODELIST_3_V1_CODE_2_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CODELIST_3_V1_CODE_2_2, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CODELIST_3_V1_CODE_2_1_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CODELIST_4_V1_CODE_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CODELIST_5_V1_CODE_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CODELIST_6_V1_CODE_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CODELIST_7_V2_CODE_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CODELIST_8_V1_CODE_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CODELIST_10_V2_CODE_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CODELIST_10_V3_CODE_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CODELIST_11_V1_CODE_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CODELIST_12_V1_CODE_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CODELIST_13_V1_CODE_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CODELIST_13_V1_CODE_2, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CODELIST_13_V1_CODE_3, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(codesPagedResult.getValues().size(), i);
+        }
+
+        // Find by name (like), code (like) and codelist urn
+        {
+            String name = "Nombre codelist-1-v2-code-2-";
+            String code = "CODE02";
+            String codelistUrn = CODELIST_1_V2;
+            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(Code.class).withProperty(CodeProperties.itemSchemeVersion().maintainableArtefact().urn()).eq(codelistUrn)
+                    .withProperty(CodeProperties.nameableArtefact().code()).like(code + "%").withProperty(CodeProperties.nameableArtefact().name().texts().label()).like(name + "%")
+                    .orderBy(CodeProperties.id()).ascending().distinctRoot().build();
+            PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
+            PagedResult<CodeMetamac> codesPagedResult = codesService.findCodesByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
+
+            // Validate
+            assertEquals(2, codesPagedResult.getTotalRows());
+            assertEquals(2, codesPagedResult.getValues().size());
+            assertTrue(codesPagedResult.getValues().get(0) instanceof CodeMetamac);
+
+            int i = 0;
+            assertEquals(CODELIST_1_V2_CODE_2_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CODELIST_1_V2_CODE_2_1_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(codesPagedResult.getValues().size(), i);
+        }
+
+        // Find by codelist urn paginated
+        {
+            String codelistUrn = CODELIST_1_V2;
+            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(Code.class).withProperty(CodeProperties.itemSchemeVersion().maintainableArtefact().urn()).eq(codelistUrn)
+                    .orderBy(CodeProperties.id()).ascending().distinctRoot().build();
+
+            // First page
+            {
+                PagingParameter pagingParameter = PagingParameter.rowAccess(0, 3, true);
+                PagedResult<CodeMetamac> codesPagedResult = codesService.findCodesByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
+
+                // Validate
+                assertEquals(8, codesPagedResult.getTotalRows());
+                assertEquals(3, codesPagedResult.getValues().size());
+                assertTrue(codesPagedResult.getValues().get(0) instanceof CodeMetamac);
+
+                int i = 0;
+                assertEquals(CODELIST_1_V2_CODE_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+                assertEquals(CODELIST_1_V2_CODE_2, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+                assertEquals(CODELIST_1_V2_CODE_3, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+                assertEquals(codesPagedResult.getValues().size(), i);
+            }
+            // Second page
+            {
+                PagingParameter pagingParameter = PagingParameter.rowAccess(3, 6, true);
+                PagedResult<CodeMetamac> codesPagedResult = codesService.findCodesByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
+
+                // Validate
+                assertEquals(8, codesPagedResult.getTotalRows());
+                assertEquals(3, codesPagedResult.getValues().size());
+                assertTrue(codesPagedResult.getValues().get(0) instanceof CodeMetamac);
+
+                int i = 0;
+                assertEquals(CODELIST_1_V2_CODE_4, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+                assertEquals(CODELIST_1_V2_CODE_2_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+                assertEquals(CODELIST_1_V2_CODE_4_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+                assertEquals(codesPagedResult.getValues().size(), i);
+            }
+            // Third page
+            {
+                PagingParameter pagingParameter = PagingParameter.rowAccess(6, 9, true);
+                PagedResult<CodeMetamac> codesPagedResult = codesService.findCodesByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
+
+                // Validate
+                assertEquals(8, codesPagedResult.getTotalRows());
+                assertEquals(2, codesPagedResult.getValues().size());
+                assertTrue(codesPagedResult.getValues().get(0) instanceof CodeMetamac);
+
+                int i = 0;
+                assertEquals(CODELIST_1_V2_CODE_2_1_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+                assertEquals(CODELIST_1_V2_CODE_4_1_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+                assertEquals(codesPagedResult.getValues().size(), i);
+            }
+        }
+    }
 
     // private void assertListItemsContainsCode(List<Item> items, String urn) {
     // for (Item item : items) {

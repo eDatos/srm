@@ -21,8 +21,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
+import com.arte.statistic.sdmx.srm.core.code.domain.Code;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
 import com.arte.statistic.sdmx.srm.core.code.serviceapi.CodesService;
 import com.arte.statistic.sdmx.srm.core.code.serviceimpl.utils.CodesDoCopyUtils.CodesCopyCallback;
@@ -214,6 +216,12 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         return (CodeMetamac) codesService.retrieveCodeByUrn(ctx, urn);
     }
 
+    @Override
+    public PagedResult<CodeMetamac> findCodesByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
+        PagedResult<Code> codesPagedResult = codesService.findCodesByCondition(ctx, conditions, pagingParameter);
+        return pagedResultCodeToMetamac(codesPagedResult);
+    }
+
     // ------------------------------------------------------------------------------------
     // PRIVATE METHODS
     // ------------------------------------------------------------------------------------
@@ -253,4 +261,22 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         }
     }
 
+    /**
+     * Typecast to Metamac type
+     */
+    private PagedResult<CodeMetamac> pagedResultCodeToMetamac(PagedResult<Code> source) {
+        List<CodeMetamac> codesMetamac = codesToCodeMetamac(source.getValues());
+        return new PagedResult<CodeMetamac>(codesMetamac, source.getStartRow(), source.getRowCount(), source.getPageSize(), source.getTotalRows(), source.getAdditionalResultRows());
+    }
+
+    /**
+     * Typecast to Metamac type
+     */
+    private List<CodeMetamac> codesToCodeMetamac(List<Code> sources) {
+        List<CodeMetamac> targets = new ArrayList<CodeMetamac>();
+        for (Item source : sources) {
+            targets.add((CodeMetamac) source);
+        }
+        return targets;
+    }
 }
