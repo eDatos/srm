@@ -8,10 +8,12 @@ import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.serviceimpl.utils.CodesMetamacInvocationValidator;
 import org.siemac.metamac.srm.core.common.LifeCycle;
+import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,8 @@ import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
 import com.arte.statistic.sdmx.srm.core.code.serviceapi.CodesService;
+import com.arte.statistic.sdmx.srm.core.code.serviceimpl.utils.CodesDoCopyUtils.CodesCopyCallback;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
 
 /**
  * Implementation of CodesMetamacService.
@@ -42,10 +46,9 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     @Qualifier("codelistLifeCycle")
     private LifeCycle                   codelistLifeCycle;
 
-    //
-    // @Autowired
-    // @Qualifier("codesCopyCallbackMetamac")
-    // private CodesCopyCallback codesCopyCallback;
+    @Autowired
+    @Qualifier("codesCopyCallbackMetamac")
+    private CodesCopyCallback           codesCopyCallback;
 
     public CodesMetamacServiceImpl() {
     }
@@ -135,6 +138,18 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     @Override
+    public CodelistVersionMetamac versioningCodelist(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
+        // Validation
+        CodesMetamacInvocationValidator.checkVersioningCodelist(urnToCopy, versionType, null, null);
+        checkVersioningCodelistIsSupported(ctx, urnToCopy);
+
+        // Versioning
+        CodelistVersionMetamac conceptSchemeNewVersion = (CodelistVersionMetamac) codesService.versioningCodelist(ctx, urnToCopy, versionType, codesCopyCallback);
+
+        return conceptSchemeNewVersion;
+    }
+
+    @Override
     public CodelistVersionMetamac endCodelistValidity(ServiceContext ctx, String urn) throws MetamacException {
         // Validation
         CodesMetamacInvocationValidator.checkEndCodelistValidity(urn, null, null);
@@ -174,6 +189,21 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         List<CodelistVersionMetamac> codelistVersionsMetamac = codelistVersionsToCodelistVersionsMetamac(source.getValues());
         return new PagedResult<CodelistVersionMetamac>(codelistVersionsMetamac, source.getStartRow(), source.getRowCount(), source.getPageSize(), source.getTotalRows(),
                 source.getAdditionalResultRows());
+    }
+
+    private void checkVersioningCodelistIsSupported(ServiceContext ctx, String urnToCopy) throws MetamacException {
+        // Retrieve version to copy and check it is final (internally published)
+        CodelistVersion codelistVersionToCopy = retrieveCodelistByUrn(ctx, urnToCopy);
+        if (!codelistVersionToCopy.getMaintainableArtefact().getFinalLogic()) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.MAINTAINABLE_ARTEFACT_VERSIONING_NOT_SUPPORTED)
+                    .withMessageParameters(codelistVersionToCopy.getMaintainableArtefact().getUrn()).build();
+        }
+        // Check does not exist any version 'no final'
+        ItemSchemeVersion codelistVersionNoFinal = itemSchemeVersionRepository.findItemSchemeVersionNoFinal(codelistVersionToCopy.getItemScheme().getId());
+        if (codelistVersionNoFinal != null) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.MAINTAINABLE_ARTEFACT_VERSIONING_NOT_SUPPORTED)
+                    .withMessageParameters(codelistVersionNoFinal.getMaintainableArtefact().getUrn()).build();
+        }
     }
 
 }

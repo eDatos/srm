@@ -44,8 +44,8 @@ Application CodesMetamac {
 	    	@CodelistVersionMetamac publishExternallyCodelist(String urn) throws MetamacException;
 			"Deletes codelist version. This must be last version and no published"
     		deleteCodelist(String urn) throws MetamacException;
-//    		"Creates a new version of a codelist, copying metadata from version with provided urn"
-//    		@CodelistVersionMetamac versioningCodelist(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
+    		"Creates a new version of a codelist, copying metadata from version with provided urn"
+    		@CodelistVersionMetamac versioningCodelist(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
     		"Ends the codelist validity"
     		@CodelistVersionMetamac endCodelistValidity(String urn) throws MetamacException;
 //    		"Retrieves codelist by code urn"
