@@ -128,6 +128,12 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         return (CodelistVersionMetamac) codelistLifeCycle.publishExternally(ctx, urn);
     }
 
+    @Override
+    public void deleteCodelist(ServiceContext ctx, String urn) throws MetamacException {
+        // Note: CodesService checks codelist isn't final and other conditions
+        codesService.deleteCodelist(ctx, urn);
+    }
+
     // ------------------------------------------------------------------------------------
     // CODES
     // ------------------------------------------------------------------------------------

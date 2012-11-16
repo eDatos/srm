@@ -807,12 +807,10 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     @Test
     public void testPublishExternallyCodelistErrorWrongProcStatus() throws Exception {
         String urn = CODELIST_1_V2;
-
         {
             CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), urn);
             assertEquals(ProcStatusEnum.DRAFT, codelistVersion.getLifeCycleMetadata().getProcStatus());
         }
-
         try {
             codesService.publishExternallyCodelist(getServiceContextAdministrador(), urn);
             fail("Codelist wrong proc status");
@@ -825,71 +823,68 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         }
     }
 
-    // @Test
-    // public void testDeleteCodelist() throws Exception {
-    //
-    // String urn = CODELIST_2_V1;
-    //
-    // // Delete concept scheme only with version in draft
-    // codesService.deleteCodelist(getServiceContextAdministrador(), urn);
-    //
-    // // Validation
-    // try {
-    // codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), urn);
-    // fail("Codelist deleted");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // }
-    // }
-    //
-    // @Test
-    // public void testDeleteCodelistWithVersionPublishedAndVersionDraft() throws Exception {
-    //
-    // String urnV1 = CODELIST_1_V1;
-    // String urnV2 = CODELIST_1_V2;
-    //
-    // CodelistVersionMetamac codelistVersionV1 = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), urnV1);
-    // assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistVersionV1.getLifeCycleMetadata().getProcStatus());
-    // CodelistVersionMetamac codelistVersionV2 = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), urnV2);
-    // assertEquals(ProcStatusEnum.DRAFT, codelistVersionV2.getLifeCycleMetadata().getProcStatus());
-    //
-    // codesService.deleteCodelist(getServiceContextAdministrador(), urnV2);
-    //
-    // // Validation
-    // try {
-    // codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), urnV2);
-    // fail("Codelist deleted");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(urnV2, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // }
-    // codelistVersionV1 = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), urnV1);
-    // assertTrue(codelistVersionV1.getMaintainableArtefact().getIsLastVersion());
-    // assertNull(codelistVersionV1.getMaintainableArtefact().getReplacedBy());
-    // }
-    //
-    // @Test
-    // public void testDeleteCodelistErrorPublished() throws Exception {
-    //
-    // String urn = CODELIST_10_V2;
-    //
-    // // Validation
-    // try {
-    // codesService.deleteCodelist(getServiceContextAdministrador(), urn);
-    // fail("Codelist can not be deleted");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.MAINTAINABLE_ARTEFACT_FINAL.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // }
-    // }
-    //
+    @Test
+    public void testDeleteCodelist() throws Exception {
+        String urn = CODELIST_2_V1;
+
+        // Delete codelist only with version in draft
+        codesService.deleteCodelist(getServiceContextAdministrador(), urn);
+
+        // Validation
+        try {
+            codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), urn);
+            fail("Codelist deleted");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
+    @Test
+    public void testDeleteCodelistWithVersionPublishedAndVersionDraft() throws Exception {
+        String urnV1 = CODELIST_1_V1;
+        String urnV2 = CODELIST_1_V2;
+
+        CodelistVersionMetamac codelistVersionV1 = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), urnV1);
+        assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistVersionV1.getLifeCycleMetadata().getProcStatus());
+        CodelistVersionMetamac codelistVersionV2 = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), urnV2);
+        assertEquals(ProcStatusEnum.DRAFT, codelistVersionV2.getLifeCycleMetadata().getProcStatus());
+
+        codesService.deleteCodelist(getServiceContextAdministrador(), urnV2);
+
+        // Validation
+        try {
+            codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), urnV2);
+            fail("Codelist deleted");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urnV2, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+        codelistVersionV1 = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), urnV1);
+        assertTrue(codelistVersionV1.getMaintainableArtefact().getIsLastVersion());
+        assertNull(codelistVersionV1.getMaintainableArtefact().getReplacedBy());
+    }
+
+    @Test
+    public void testDeleteCodelistErrorPublished() throws Exception {
+        String urn = CODELIST_10_V2;
+
+        // Validation
+        try {
+            codesService.deleteCodelist(getServiceContextAdministrador(), urn);
+            fail("Codelist can not be deleted");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.MAINTAINABLE_ARTEFACT_FINAL.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
     // @Test
     // public void testVersioningCodelist() throws Exception {
     //
