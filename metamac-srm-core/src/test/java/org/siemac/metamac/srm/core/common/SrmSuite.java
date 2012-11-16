@@ -5,6 +5,9 @@ import org.junit.runners.Suite;
 import org.siemac.metamac.srm.core.base.mapper.BaseDo2DtoMapperTest;
 import org.siemac.metamac.srm.core.category.mapper.CategoriesDo2DtoMapperTest;
 import org.siemac.metamac.srm.core.category.mapper.CategoriesDto2DoMapperTest;
+import org.siemac.metamac.srm.core.code.mapper.CodesDo2DtoMapperTest;
+import org.siemac.metamac.srm.core.code.mapper.CodesDto2DoMapperTest;
+import org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacServiceTest;
 import org.siemac.metamac.srm.core.concept.mapper.ConceptsDo2DtoMapperTest;
 import org.siemac.metamac.srm.core.concept.mapper.ConceptsDto2DoMapperTest;
 import org.siemac.metamac.srm.core.concept.serviceapi.ConceptsMetamacServiceTest;
@@ -28,6 +31,6 @@ import com.arte.statistic.sdmx.srm.core.category.serviceapi.CategoriesServiceTes
 @Suite.SuiteClasses({SrmCoreServiceFacadeConceptsTest.class, SrmCoreServiceFacadeOrganisationsTest.class, SrmCoreServiceFacadeConceptsSecurityTest.class, SrmCoreServiceFacadeDsdTest.class,
         ConceptsMetamacServiceTest.class, BaseDo2DtoMapperTest.class, OrganisationsDo2DtoMapperTest.class, OrganisationsDto2DoMapperTest.class, ConceptsDo2DtoMapperTest.class,
         ConceptsDto2DoMapperTest.class, SrmCoreServiceFacadeOrganisationsSecurityTest.class, OrganisationsMetamacServiceTest.class, DsdsMetamacServiceTest.class, CategoriesServiceTest.class,
-        CategoriesDto2DoMapperTest.class, CategoriesDo2DtoMapperTest.class})
+        CategoriesDto2DoMapperTest.class, CategoriesDo2DtoMapperTest.class, CodesMetamacServiceTest.class, CodesDo2DtoMapperTest.class, CodesDto2DoMapperTest.class})
 public class SrmSuite {
 }

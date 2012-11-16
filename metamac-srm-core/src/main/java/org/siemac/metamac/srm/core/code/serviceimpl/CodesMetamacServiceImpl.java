@@ -147,9 +147,9 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         checkVersioningCodelistIsSupported(ctx, urnToCopy);
 
         // Versioning
-        CodelistVersionMetamac conceptSchemeNewVersion = (CodelistVersionMetamac) codesService.versioningCodelist(ctx, urnToCopy, versionType, codesCopyCallback);
+        CodelistVersionMetamac codelistNewVersion = (CodelistVersionMetamac) codesService.versioningCodelist(ctx, urnToCopy, versionType, codesCopyCallback);
 
-        return conceptSchemeNewVersion;
+        return codelistNewVersion;
     }
 
     @Override
@@ -224,7 +224,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
     @Override
     public void deleteCode(ServiceContext ctx, String urn) throws MetamacException {
-        // Note: ConceptsService checks conceptScheme isn't final
+        // Note: ConceptsService checks codelist isn't final
         codesService.deleteCode(ctx, urn);
     }
 
@@ -234,8 +234,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         List<Code> codes = codesService.retrieveCodesByCodelistUrn(ctx, codelistUrn);
 
         // Typecast
-        List<CodeMetamac> conceptsMetamac = codesToCodeMetamac(codes);
-        return conceptsMetamac;
+        List<CodeMetamac> codesMetamac = codesToCodeMetamac(codes);
+        return codesMetamac;
     }
 
     // ------------------------------------------------------------------------------------

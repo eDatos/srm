@@ -2291,7 +2291,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         }
     }
 
-    @Override
+    @Test
     public void testRetrieveConceptSchemeByConceptUrn() throws Exception {
         // Retrieve
         String urn = CONCEPT_SCHEME_1_V2_CONCEPT_1;

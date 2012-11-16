@@ -6,7 +6,6 @@ import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 
 import com.arte.statistic.sdmx.srm.core.code.serviceapi.utils.CodesDtoMocks;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
-import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeRepresentationEnum;
 
 public class CodesMetamacDtoMocks {
 
@@ -27,7 +26,7 @@ public class CodesMetamacDtoMocks {
     // CODES
     // -----------------------------------------------------------------------------------
 
-    public static CodeMetamacDto mockCodeDto(TypeRepresentationEnum typeRepresentationEnum) {
+    public static CodeMetamacDto mockCodeDto() {
         CodeMetamacDto codeMetamacDto = new CodeMetamacDto();
         CodesDtoMocks.mockCodeDto(codeMetamacDto);
         return codeMetamacDto;

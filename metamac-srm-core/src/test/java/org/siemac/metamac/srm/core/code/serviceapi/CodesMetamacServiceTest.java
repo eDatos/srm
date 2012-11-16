@@ -1111,7 +1111,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         }
     }
 
-    @Override
+    @Test
     public void testRetrieveCodelistByCodeUrn() throws Exception {
         // Retrieve
         String urn = CODELIST_1_V2_CODE_1;
