@@ -30,14 +30,14 @@ Application CodesMetamac {
 			List<@CodelistVersionMetamac> retrieveCodelistVersions(String urn) throws MetamacException;
 			"Finds codelists by criteria"
     		PagedResult<@CodelistVersionMetamac> findCodelistsByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
-//    		"Sends codelist to production validation"
-//    		@CodelistVersionMetamac sendCodelistToProductionValidation(String urn) throws MetamacException;
-//    		"Sends codelist to diffusion validation"
-//    		@CodelistVersionMetamac sendCodelistToDiffusionValidation(String urn) throws MetamacException;
-//	    	"Rejects production validation of codelist"    		
-//	    	@CodelistVersionMetamac rejectCodelistProductionValidation(String urn) throws MetamacException;
-//	    	"Rejects diffusion validation of codelist"
-//	    	@CodelistVersionMetamac rejectCodelistDiffusionValidation(String urn) throws MetamacException;
+    		"Sends codelist to production validation"
+    		@CodelistVersionMetamac sendCodelistToProductionValidation(String urn) throws MetamacException;
+    		"Sends codelist to diffusion validation"
+    		@CodelistVersionMetamac sendCodelistToDiffusionValidation(String urn) throws MetamacException;
+	    	"Rejects production validation of codelist"    		
+	    	@CodelistVersionMetamac rejectCodelistProductionValidation(String urn) throws MetamacException;
+	    	"Rejects diffusion validation of codelist"
+	    	@CodelistVersionMetamac rejectCodelistDiffusionValidation(String urn) throws MetamacException;
 //	    	"Publish internally a codelist"
 //	    	@CodelistVersionMetamac publishInternallyCodelist(String urn) throws MetamacException;
 //	    	"Publish externally a codelist"

@@ -4,10 +4,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang.time.DateUtils;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
@@ -23,6 +26,8 @@ import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacProperties;
 import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsserts;
 import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacDoMocks;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
+import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
+import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamacRepository;
@@ -33,8 +38,6 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
-import com.arte.statistic.sdmx.srm.core.common.error.ServiceExceptionParameters;
-import com.arte.statistic.sdmx.srm.core.common.error.ServiceExceptionType;
 
 /**
  * Spring based transactional test with DbUnit support.
@@ -255,394 +258,381 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertEquals(CODELIST_10_V3, codelistVersions.get(2).getMaintainableArtefact().getUrn());
     }
 
-    // @Test
-    // public void testSendCodelistToProductionValidation() throws Exception {
-    //
-    // String urn = CODELIST_2_V1;
-    // ServiceContext ctx = getServiceContextAdministrador();
-    //
-    // {
-    // CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(ctx, urn);
-    // assertEquals(ProcStatusEnum.DRAFT, codelistVersion.getLifeCycleMetadata().getProcStatus());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getProductionValidationDate());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getProductionValidationUser());
-    // }
-    //
-    // // Send to production validation
-    // CodelistVersionMetamac codelistVersion = codesService.sendCodelistToProductionValidation(ctx, urn);
-    //
-    // // Validate response
-    // {
-    // assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, codelistVersion.getLifeCycleMetadata().getProcStatus());
-    // assertTrue(DateUtils.isSameDay(new Date(), codelistVersion.getLifeCycleMetadata().getProductionValidationDate().toDate()));
-    // assertEquals(ctx.getUserId(), codelistVersion.getLifeCycleMetadata().getProductionValidationUser());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getDiffusionValidationDate());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getDiffusionValidationUser());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getInternalPublicationDate());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getInternalPublicationUser());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getExternalPublicationDate());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getExternalPublicationUser());
-    // }
-    // // Validate retrieving
-    // {
-    // codelistVersion = codesService.retrieveCodelistByUrn(ctx, urn);
-    //
-    // assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, codelistVersion.getLifeCycleMetadata().getProcStatus());
-    // assertTrue(DateUtils.isSameDay(new Date(), codelistVersion.getLifeCycleMetadata().getProductionValidationDate().toDate()));
-    // assertEquals(ctx.getUserId(), codelistVersion.getLifeCycleMetadata().getProductionValidationUser());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getDiffusionValidationDate());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getDiffusionValidationUser());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getInternalPublicationDate());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getInternalPublicationUser());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getExternalPublicationDate());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getExternalPublicationUser());
-    // }
-    // }
-    //
-    // @Test
-    // public void testSendCodelistToProductionValidationInProcStatusRejected() throws Exception {
-    //
-    // String urn = CODELIST_4_V1;
-    // ServiceContext ctx = getServiceContextAdministrador();
-    //
-    // {
-    // CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(ctx, urn);
-    // assertEquals(ProcStatusEnum.VALIDATION_REJECTED, codelistVersion.getLifeCycleMetadata().getProcStatus());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getProductionValidationDate());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getProductionValidationUser());
-    // }
-    //
-    // // Send to production validation
-    // CodelistVersionMetamac codelistVersion = codesService.sendCodelistToProductionValidation(ctx, urn);
-    //
-    // // Validate response
-    // {
-    // assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, codelistVersion.getLifeCycleMetadata().getProcStatus());
-    // assertTrue(DateUtils.isSameDay(new Date(), codelistVersion.getLifeCycleMetadata().getProductionValidationDate().toDate()));
-    // assertEquals(ctx.getUserId(), codelistVersion.getLifeCycleMetadata().getProductionValidationUser());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getDiffusionValidationDate());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getDiffusionValidationUser());
-    // }
-    // // Validate retrieving
-    // {
-    // codelistVersion = codesService.retrieveCodelistByUrn(ctx, urn);
-    //
-    // assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, codelistVersion.getLifeCycleMetadata().getProcStatus());
-    // assertTrue(DateUtils.isSameDay(new Date(), codelistVersion.getLifeCycleMetadata().getProductionValidationDate().toDate()));
-    // assertEquals(ctx.getUserId(), codelistVersion.getLifeCycleMetadata().getProductionValidationUser());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getDiffusionValidationDate());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getDiffusionValidationUser());
-    // }
-    // }
-    //
-    // @Test
-    // public void testSendCodelistToProductionValidationErrorNotExists() throws Exception {
-    //
-    // String urn = NOT_EXISTS;
-    // try {
-    // codesService.sendCodelistToProductionValidation(getServiceContextAdministrador(), urn);
-    // fail("Codelist not exists");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // }
-    // }
-    //
-    // @Test
-    // public void testSendCodelistToProductionValidationErrorWrongProcStatus() throws Exception {
-    //
-    // String urn = CODELIST_1_V1;
-    //
-    // {
-    // CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), urn);
-    // assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistVersion.getLifeCycleMetadata().getProcStatus());
-    // }
-    //
-    // try {
-    // codesService.sendCodelistToProductionValidation(getServiceContextAdministrador(), urn);
-    // fail("Codelist wrong proc status");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.LIFE_CYCLE_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // assertEquals(ServiceExceptionParameters.PROC_STATUS_DRAFT, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
-    // assertEquals(ServiceExceptionParameters.PROC_STATUS_VALIDATION_REJECTED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[1]);
-    // }
-    // }
-    //
-    // @Test
-    // public void testSendCodelistToProductionValidationErrorMetadataRequired() throws Exception {
-    //
-    // String urn = CODELIST_2_V1;
-    //
-    // // Update to clear required metadata to send to production
-    // CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), urn);
-    // codelistVersion.setIsPartial(null);
-    // codelistVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
-    // codesService.updateCodelist(getServiceContextAdministrador(), codelistVersion);
-    //
-    // // Send to production validation
-    // try {
-    // codesService.sendCodelistToProductionValidation(getServiceContextAdministrador(), urn);
-    // fail("Codelist metadata required");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    //
-    // assertEquals(ServiceExceptionType.METADATA_REQUIRED.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(ServiceExceptionParameters.ITEM_SCHEME_IS_PARTIAL, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // }
-    // }
-    //
-    // @Test
-    // public void testSendCodelistToDiffusionValidation() throws Exception {
-    //
-    // String urn = CODELIST_5_V1;
-    // ServiceContext ctx = getServiceContextAdministrador();
-    //
-    // {
-    // CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(ctx, urn);
-    // assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, codelistVersion.getLifeCycleMetadata().getProcStatus());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getDiffusionValidationDate());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getDiffusionValidationUser());
-    // }
-    //
-    // // Sends to diffusion validation
-    // CodelistVersionMetamac codelistVersion = codesService.sendCodelistToDiffusionValidation(ctx, urn);
-    //
-    // // Validate response
-    // {
-    // assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, codelistVersion.getLifeCycleMetadata().getProcStatus());
-    // assertNotNull(codelistVersion.getLifeCycleMetadata().getProductionValidationDate());
-    // assertNotNull(codelistVersion.getLifeCycleMetadata().getProductionValidationUser());
-    // assertTrue(DateUtils.isSameDay(new Date(), codelistVersion.getLifeCycleMetadata().getDiffusionValidationDate().toDate()));
-    // assertEquals(ctx.getUserId(), codelistVersion.getLifeCycleMetadata().getDiffusionValidationUser());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getInternalPublicationDate());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getInternalPublicationUser());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getExternalPublicationDate());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getExternalPublicationUser());
-    // }
-    // // Validate retrieving
-    // {
-    // codelistVersion = codesService.retrieveCodelistByUrn(ctx, urn);
-    //
-    // assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, codelistVersion.getLifeCycleMetadata().getProcStatus());
-    // assertNotNull(codelistVersion.getLifeCycleMetadata().getProductionValidationDate());
-    // assertNotNull(codelistVersion.getLifeCycleMetadata().getProductionValidationUser());
-    // assertTrue(DateUtils.isSameDay(new Date(), codelistVersion.getLifeCycleMetadata().getDiffusionValidationDate().toDate()));
-    // assertEquals(ctx.getUserId(), codelistVersion.getLifeCycleMetadata().getDiffusionValidationUser());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getInternalPublicationDate());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getInternalPublicationUser());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getExternalPublicationDate());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getExternalPublicationUser());
-    // }
-    // }
-    //
-    // @Test
-    // public void testSendCodelistToDiffusionValidationErrorNotExists() throws Exception {
-    //
-    // String urn = NOT_EXISTS;
-    // try {
-    // codesService.sendCodelistToDiffusionValidation(getServiceContextAdministrador(), urn);
-    // fail("Codelist not exists");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // }
-    // }
-    //
-    // @Test
-    // public void testSendCodelistToDiffusionValidationErrorWrongProcStatus() throws Exception {
-    //
-    // String urn = CODELIST_2_V1;
-    // ServiceContext ctx = getServiceContextAdministrador();
-    //
-    // {
-    // CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(ctx, urn);
-    // assertEquals(ProcStatusEnum.DRAFT, codelistVersion.getLifeCycleMetadata().getProcStatus());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getDiffusionValidationDate());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getDiffusionValidationUser());
-    // }
-    //
-    // try {
-    // codesService.sendCodelistToDiffusionValidation(getServiceContextAdministrador(), urn);
-    // fail("Codelist wrong proc status");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.LIFE_CYCLE_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // assertEquals(ServiceExceptionParameters.PROC_STATUS_PRODUCTION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
-    // }
-    // }
-    //
-    // @Test
-    // public void testRejectCodelistProductionValidation() throws Exception {
-    //
-    // String urn = CODELIST_5_V1;
-    // ServiceContext ctx = getServiceContextAdministrador();
-    //
-    // {
-    // CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(ctx, urn);
-    // assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, codelistVersion.getLifeCycleMetadata().getProcStatus());
-    // assertNotNull(codelistVersion.getLifeCycleMetadata().getProductionValidationDate());
-    // assertNotNull(codelistVersion.getLifeCycleMetadata().getProductionValidationUser());
-    // }
-    //
-    // // Reject validation
-    // CodelistVersionMetamac codelistVersion = codesService.rejectCodelistProductionValidation(ctx, urn);
-    //
-    // // Validate response
-    // {
-    // assertEquals(ProcStatusEnum.VALIDATION_REJECTED, codelistVersion.getLifeCycleMetadata().getProcStatus());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getProductionValidationDate());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getProductionValidationUser());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getDiffusionValidationDate());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getDiffusionValidationUser());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getInternalPublicationDate());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getInternalPublicationUser());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getExternalPublicationDate());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getExternalPublicationUser());
-    // }
-    // // Validate restrieving
-    // {
-    // codelistVersion = codesService.retrieveCodelistByUrn(ctx, urn);
-    //
-    // assertNull(codelistVersion.getLifeCycleMetadata().getProductionValidationDate());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getProductionValidationUser());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getDiffusionValidationDate());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getDiffusionValidationUser());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getInternalPublicationDate());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getInternalPublicationUser());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getExternalPublicationDate());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getExternalPublicationUser());
-    // }
-    // }
-    //
-    // @Test
-    // public void testRejectCodelistProductionValidationErrorNotExists() throws Exception {
-    //
-    // String urn = NOT_EXISTS;
-    // try {
-    // codesService.rejectCodelistProductionValidation(getServiceContextAdministrador(), urn);
-    // fail("Codelist not exists");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // }
-    // }
-    //
-    // @Test
-    // public void testRejectCodelistProductionValidationErrorWrongProcStatus() throws Exception {
-    //
-    // String urn = CODELIST_1_V1;
-    //
-    // {
-    // CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), urn);
-    // assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistVersion.getLifeCycleMetadata().getProcStatus());
-    // }
-    //
-    // try {
-    // codesService.rejectCodelistProductionValidation(getServiceContextAdministrador(), urn);
-    // fail("Codelist wrong proc status");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.LIFE_CYCLE_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // assertEquals(ServiceExceptionParameters.PROC_STATUS_PRODUCTION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
-    // }
-    // }
-    //
-    // @Test
-    // public void testRejectCodelistDiffusionValidation() throws Exception {
-    //
-    // String urn = CODELIST_6_V1;
-    // ServiceContext ctx = getServiceContextAdministrador();
-    //
-    // {
-    // CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(ctx, urn);
-    // assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, codelistVersion.getLifeCycleMetadata().getProcStatus());
-    // assertNotNull(codelistVersion.getLifeCycleMetadata().getProductionValidationDate());
-    // assertNotNull(codelistVersion.getLifeCycleMetadata().getProductionValidationUser());
-    // assertNotNull(codelistVersion.getLifeCycleMetadata().getDiffusionValidationDate());
-    // assertNotNull(codelistVersion.getLifeCycleMetadata().getDiffusionValidationUser());
-    // }
-    //
-    // // Reject validation
-    // CodelistVersionMetamac codelistVersion = codesService.rejectCodelistDiffusionValidation(ctx, urn);
-    //
-    // // Validate response
-    // {
-    // assertEquals(ProcStatusEnum.VALIDATION_REJECTED, codelistVersion.getLifeCycleMetadata().getProcStatus());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getProductionValidationDate());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getProductionValidationUser());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getDiffusionValidationDate());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getDiffusionValidationUser());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getInternalPublicationDate());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getInternalPublicationUser());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getExternalPublicationDate());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getExternalPublicationUser());
-    // }
-    // // Validate retrieving
-    // {
-    // codelistVersion = codesService.retrieveCodelistByUrn(ctx, urn);
-    //
-    // assertNull(codelistVersion.getLifeCycleMetadata().getProductionValidationDate());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getProductionValidationUser());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getDiffusionValidationDate());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getDiffusionValidationUser());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getInternalPublicationDate());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getInternalPublicationUser());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getExternalPublicationDate());
-    // assertNull(codelistVersion.getLifeCycleMetadata().getExternalPublicationUser());
-    // }
-    // }
-    //
-    // @Test
-    // public void testRejectCodelistDiffusionValidationErrorNotExists() throws Exception {
-    //
-    // String urn = NOT_EXISTS;
-    // try {
-    // codesService.rejectCodelistDiffusionValidation(getServiceContextAdministrador(), urn);
-    // fail("Codelist not exists");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // }
-    // }
-    //
-    // @Test
-    // public void testRejectCodelistDiffusionValidationErrorWrongProcStatus() throws Exception {
-    //
-    // String urn = CODELIST_1_V1;
-    //
-    // {
-    // CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), urn);
-    // assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistVersion.getLifeCycleMetadata().getProcStatus());
-    // }
-    //
-    // try {
-    // codesService.rejectCodelistDiffusionValidation(getServiceContextAdministrador(), urn);
-    // fail("Codelist wrong proc status");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.LIFE_CYCLE_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // assertEquals(ServiceExceptionParameters.PROC_STATUS_DIFFUSION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
-    // }
-    // }
-    //
+    @Test
+    public void testSendCodelistToProductionValidation() throws Exception {
+        String urn = CODELIST_2_V1;
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        {
+            CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(ctx, urn);
+            assertEquals(ProcStatusEnum.DRAFT, codelistVersion.getLifeCycleMetadata().getProcStatus());
+            assertNull(codelistVersion.getLifeCycleMetadata().getProductionValidationDate());
+            assertNull(codelistVersion.getLifeCycleMetadata().getProductionValidationUser());
+        }
+
+        // Send to production validation
+        CodelistVersionMetamac codelistVersion = codesService.sendCodelistToProductionValidation(ctx, urn);
+
+        // Validate response
+        {
+            assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, codelistVersion.getLifeCycleMetadata().getProcStatus());
+            assertTrue(DateUtils.isSameDay(new Date(), codelistVersion.getLifeCycleMetadata().getProductionValidationDate().toDate()));
+            assertEquals(ctx.getUserId(), codelistVersion.getLifeCycleMetadata().getProductionValidationUser());
+            assertNull(codelistVersion.getLifeCycleMetadata().getDiffusionValidationDate());
+            assertNull(codelistVersion.getLifeCycleMetadata().getDiffusionValidationUser());
+            assertNull(codelistVersion.getLifeCycleMetadata().getInternalPublicationDate());
+            assertNull(codelistVersion.getLifeCycleMetadata().getInternalPublicationUser());
+            assertNull(codelistVersion.getLifeCycleMetadata().getExternalPublicationDate());
+            assertNull(codelistVersion.getLifeCycleMetadata().getExternalPublicationUser());
+        }
+        // Validate retrieving
+        {
+            codelistVersion = codesService.retrieveCodelistByUrn(ctx, urn);
+
+            assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, codelistVersion.getLifeCycleMetadata().getProcStatus());
+            assertTrue(DateUtils.isSameDay(new Date(), codelistVersion.getLifeCycleMetadata().getProductionValidationDate().toDate()));
+            assertEquals(ctx.getUserId(), codelistVersion.getLifeCycleMetadata().getProductionValidationUser());
+            assertNull(codelistVersion.getLifeCycleMetadata().getDiffusionValidationDate());
+            assertNull(codelistVersion.getLifeCycleMetadata().getDiffusionValidationUser());
+            assertNull(codelistVersion.getLifeCycleMetadata().getInternalPublicationDate());
+            assertNull(codelistVersion.getLifeCycleMetadata().getInternalPublicationUser());
+            assertNull(codelistVersion.getLifeCycleMetadata().getExternalPublicationDate());
+            assertNull(codelistVersion.getLifeCycleMetadata().getExternalPublicationUser());
+        }
+    }
+
+    @Test
+    public void testSendCodelistToProductionValidationInProcStatusRejected() throws Exception {
+        String urn = CODELIST_4_V1;
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        {
+            CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(ctx, urn);
+            assertEquals(ProcStatusEnum.VALIDATION_REJECTED, codelistVersion.getLifeCycleMetadata().getProcStatus());
+            assertNull(codelistVersion.getLifeCycleMetadata().getProductionValidationDate());
+            assertNull(codelistVersion.getLifeCycleMetadata().getProductionValidationUser());
+        }
+
+        // Send to production validation
+        CodelistVersionMetamac codelistVersion = codesService.sendCodelistToProductionValidation(ctx, urn);
+
+        // Validate response
+        {
+            assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, codelistVersion.getLifeCycleMetadata().getProcStatus());
+            assertTrue(DateUtils.isSameDay(new Date(), codelistVersion.getLifeCycleMetadata().getProductionValidationDate().toDate()));
+            assertEquals(ctx.getUserId(), codelistVersion.getLifeCycleMetadata().getProductionValidationUser());
+            assertNull(codelistVersion.getLifeCycleMetadata().getDiffusionValidationDate());
+            assertNull(codelistVersion.getLifeCycleMetadata().getDiffusionValidationUser());
+        }
+        // Validate retrieving
+        {
+            codelistVersion = codesService.retrieveCodelistByUrn(ctx, urn);
+
+            assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, codelistVersion.getLifeCycleMetadata().getProcStatus());
+            assertTrue(DateUtils.isSameDay(new Date(), codelistVersion.getLifeCycleMetadata().getProductionValidationDate().toDate()));
+            assertEquals(ctx.getUserId(), codelistVersion.getLifeCycleMetadata().getProductionValidationUser());
+            assertNull(codelistVersion.getLifeCycleMetadata().getDiffusionValidationDate());
+            assertNull(codelistVersion.getLifeCycleMetadata().getDiffusionValidationUser());
+        }
+    }
+
+    @Test
+    public void testSendCodelistToProductionValidationErrorNotExists() throws Exception {
+
+        String urn = NOT_EXISTS;
+        try {
+            codesService.sendCodelistToProductionValidation(getServiceContextAdministrador(), urn);
+            fail("Codelist not exists");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
+    @Test
+    public void testSendCodelistToProductionValidationErrorWrongProcStatus() throws Exception {
+        String urn = CODELIST_1_V1;
+
+        {
+            CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), urn);
+            assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistVersion.getLifeCycleMetadata().getProcStatus());
+        }
+
+        try {
+            codesService.sendCodelistToProductionValidation(getServiceContextAdministrador(), urn);
+            fail("Codelist wrong proc status");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.LIFE_CYCLE_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_DRAFT, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_VALIDATION_REJECTED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[1]);
+        }
+    }
+
+    @Test
+    public void testSendCodelistToProductionValidationErrorMetadataRequired() throws Exception {
+        String urn = CODELIST_2_V1;
+
+        // Update to clear required metadata to send to production
+        CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), urn);
+        codelistVersion.setIsPartial(null);
+        codelistVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
+        codesService.updateCodelist(getServiceContextAdministrador(), codelistVersion);
+
+        // Send to production validation
+        try {
+            codesService.sendCodelistToProductionValidation(getServiceContextAdministrador(), urn);
+            fail("Codelist metadata required");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+
+            assertEquals(ServiceExceptionType.METADATA_REQUIRED.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(ServiceExceptionParameters.ITEM_SCHEME_IS_PARTIAL, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
+    @Test
+    public void testSendCodelistToDiffusionValidation() throws Exception {
+        String urn = CODELIST_5_V1;
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        {
+            CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(ctx, urn);
+            assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, codelistVersion.getLifeCycleMetadata().getProcStatus());
+            assertNull(codelistVersion.getLifeCycleMetadata().getDiffusionValidationDate());
+            assertNull(codelistVersion.getLifeCycleMetadata().getDiffusionValidationUser());
+        }
+
+        // Sends to diffusion validation
+        CodelistVersionMetamac codelistVersion = codesService.sendCodelistToDiffusionValidation(ctx, urn);
+
+        // Validate response
+        {
+            assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, codelistVersion.getLifeCycleMetadata().getProcStatus());
+            assertNotNull(codelistVersion.getLifeCycleMetadata().getProductionValidationDate());
+            assertNotNull(codelistVersion.getLifeCycleMetadata().getProductionValidationUser());
+            assertTrue(DateUtils.isSameDay(new Date(), codelistVersion.getLifeCycleMetadata().getDiffusionValidationDate().toDate()));
+            assertEquals(ctx.getUserId(), codelistVersion.getLifeCycleMetadata().getDiffusionValidationUser());
+            assertNull(codelistVersion.getLifeCycleMetadata().getInternalPublicationDate());
+            assertNull(codelistVersion.getLifeCycleMetadata().getInternalPublicationUser());
+            assertNull(codelistVersion.getLifeCycleMetadata().getExternalPublicationDate());
+            assertNull(codelistVersion.getLifeCycleMetadata().getExternalPublicationUser());
+        }
+        // Validate retrieving
+        {
+            codelistVersion = codesService.retrieveCodelistByUrn(ctx, urn);
+
+            assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, codelistVersion.getLifeCycleMetadata().getProcStatus());
+            assertNotNull(codelistVersion.getLifeCycleMetadata().getProductionValidationDate());
+            assertNotNull(codelistVersion.getLifeCycleMetadata().getProductionValidationUser());
+            assertTrue(DateUtils.isSameDay(new Date(), codelistVersion.getLifeCycleMetadata().getDiffusionValidationDate().toDate()));
+            assertEquals(ctx.getUserId(), codelistVersion.getLifeCycleMetadata().getDiffusionValidationUser());
+            assertNull(codelistVersion.getLifeCycleMetadata().getInternalPublicationDate());
+            assertNull(codelistVersion.getLifeCycleMetadata().getInternalPublicationUser());
+            assertNull(codelistVersion.getLifeCycleMetadata().getExternalPublicationDate());
+            assertNull(codelistVersion.getLifeCycleMetadata().getExternalPublicationUser());
+        }
+    }
+
+    @Test
+    public void testSendCodelistToDiffusionValidationErrorNotExists() throws Exception {
+        String urn = NOT_EXISTS;
+        try {
+            codesService.sendCodelistToDiffusionValidation(getServiceContextAdministrador(), urn);
+            fail("Codelist not exists");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
+    @Test
+    public void testSendCodelistToDiffusionValidationErrorWrongProcStatus() throws Exception {
+        String urn = CODELIST_2_V1;
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        {
+            CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(ctx, urn);
+            assertEquals(ProcStatusEnum.DRAFT, codelistVersion.getLifeCycleMetadata().getProcStatus());
+            assertNull(codelistVersion.getLifeCycleMetadata().getDiffusionValidationDate());
+            assertNull(codelistVersion.getLifeCycleMetadata().getDiffusionValidationUser());
+        }
+
+        try {
+            codesService.sendCodelistToDiffusionValidation(getServiceContextAdministrador(), urn);
+            fail("Codelist wrong proc status");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.LIFE_CYCLE_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_PRODUCTION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
+        }
+    }
+
+    @Test
+    public void testRejectCodelistProductionValidation() throws Exception {
+        String urn = CODELIST_5_V1;
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        {
+            CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(ctx, urn);
+            assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, codelistVersion.getLifeCycleMetadata().getProcStatus());
+            assertNotNull(codelistVersion.getLifeCycleMetadata().getProductionValidationDate());
+            assertNotNull(codelistVersion.getLifeCycleMetadata().getProductionValidationUser());
+        }
+
+        // Reject validation
+        CodelistVersionMetamac codelistVersion = codesService.rejectCodelistProductionValidation(ctx, urn);
+
+        // Validate response
+        {
+            assertEquals(ProcStatusEnum.VALIDATION_REJECTED, codelistVersion.getLifeCycleMetadata().getProcStatus());
+            assertNull(codelistVersion.getLifeCycleMetadata().getProductionValidationDate());
+            assertNull(codelistVersion.getLifeCycleMetadata().getProductionValidationUser());
+            assertNull(codelistVersion.getLifeCycleMetadata().getDiffusionValidationDate());
+            assertNull(codelistVersion.getLifeCycleMetadata().getDiffusionValidationUser());
+            assertNull(codelistVersion.getLifeCycleMetadata().getInternalPublicationDate());
+            assertNull(codelistVersion.getLifeCycleMetadata().getInternalPublicationUser());
+            assertNull(codelistVersion.getLifeCycleMetadata().getExternalPublicationDate());
+            assertNull(codelistVersion.getLifeCycleMetadata().getExternalPublicationUser());
+        }
+        // Validate restrieving
+        {
+            codelistVersion = codesService.retrieveCodelistByUrn(ctx, urn);
+
+            assertNull(codelistVersion.getLifeCycleMetadata().getProductionValidationDate());
+            assertNull(codelistVersion.getLifeCycleMetadata().getProductionValidationUser());
+            assertNull(codelistVersion.getLifeCycleMetadata().getDiffusionValidationDate());
+            assertNull(codelistVersion.getLifeCycleMetadata().getDiffusionValidationUser());
+            assertNull(codelistVersion.getLifeCycleMetadata().getInternalPublicationDate());
+            assertNull(codelistVersion.getLifeCycleMetadata().getInternalPublicationUser());
+            assertNull(codelistVersion.getLifeCycleMetadata().getExternalPublicationDate());
+            assertNull(codelistVersion.getLifeCycleMetadata().getExternalPublicationUser());
+        }
+    }
+
+    @Test
+    public void testRejectCodelistProductionValidationErrorNotExists() throws Exception {
+        String urn = NOT_EXISTS;
+        try {
+            codesService.rejectCodelistProductionValidation(getServiceContextAdministrador(), urn);
+            fail("Codelist not exists");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
+    @Test
+    public void testRejectCodelistProductionValidationErrorWrongProcStatus() throws Exception {
+        String urn = CODELIST_1_V1;
+
+        {
+            CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), urn);
+            assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistVersion.getLifeCycleMetadata().getProcStatus());
+        }
+
+        try {
+            codesService.rejectCodelistProductionValidation(getServiceContextAdministrador(), urn);
+            fail("Codelist wrong proc status");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.LIFE_CYCLE_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_PRODUCTION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
+        }
+    }
+
+    @Test
+    public void testRejectCodelistDiffusionValidation() throws Exception {
+        String urn = CODELIST_6_V1;
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        {
+            CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(ctx, urn);
+            assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, codelistVersion.getLifeCycleMetadata().getProcStatus());
+            assertNotNull(codelistVersion.getLifeCycleMetadata().getProductionValidationDate());
+            assertNotNull(codelistVersion.getLifeCycleMetadata().getProductionValidationUser());
+            assertNotNull(codelistVersion.getLifeCycleMetadata().getDiffusionValidationDate());
+            assertNotNull(codelistVersion.getLifeCycleMetadata().getDiffusionValidationUser());
+        }
+
+        // Reject validation
+        CodelistVersionMetamac codelistVersion = codesService.rejectCodelistDiffusionValidation(ctx, urn);
+
+        // Validate response
+        {
+            assertEquals(ProcStatusEnum.VALIDATION_REJECTED, codelistVersion.getLifeCycleMetadata().getProcStatus());
+            assertNull(codelistVersion.getLifeCycleMetadata().getProductionValidationDate());
+            assertNull(codelistVersion.getLifeCycleMetadata().getProductionValidationUser());
+            assertNull(codelistVersion.getLifeCycleMetadata().getDiffusionValidationDate());
+            assertNull(codelistVersion.getLifeCycleMetadata().getDiffusionValidationUser());
+            assertNull(codelistVersion.getLifeCycleMetadata().getInternalPublicationDate());
+            assertNull(codelistVersion.getLifeCycleMetadata().getInternalPublicationUser());
+            assertNull(codelistVersion.getLifeCycleMetadata().getExternalPublicationDate());
+            assertNull(codelistVersion.getLifeCycleMetadata().getExternalPublicationUser());
+        }
+        // Validate retrieving
+        {
+            codelistVersion = codesService.retrieveCodelistByUrn(ctx, urn);
+
+            assertNull(codelistVersion.getLifeCycleMetadata().getProductionValidationDate());
+            assertNull(codelistVersion.getLifeCycleMetadata().getProductionValidationUser());
+            assertNull(codelistVersion.getLifeCycleMetadata().getDiffusionValidationDate());
+            assertNull(codelistVersion.getLifeCycleMetadata().getDiffusionValidationUser());
+            assertNull(codelistVersion.getLifeCycleMetadata().getInternalPublicationDate());
+            assertNull(codelistVersion.getLifeCycleMetadata().getInternalPublicationUser());
+            assertNull(codelistVersion.getLifeCycleMetadata().getExternalPublicationDate());
+            assertNull(codelistVersion.getLifeCycleMetadata().getExternalPublicationUser());
+        }
+    }
+
+    @Test
+    public void testRejectCodelistDiffusionValidationErrorNotExists() throws Exception {
+        String urn = NOT_EXISTS;
+        try {
+            codesService.rejectCodelistDiffusionValidation(getServiceContextAdministrador(), urn);
+            fail("Codelist not exists");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
+    @Test
+    public void testRejectCodelistDiffusionValidationErrorWrongProcStatus() throws Exception {
+        String urn = CODELIST_1_V1;
+
+        {
+            CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), urn);
+            assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistVersion.getLifeCycleMetadata().getProcStatus());
+        }
+
+        try {
+            codesService.rejectCodelistDiffusionValidation(getServiceContextAdministrador(), urn);
+            fail("Codelist wrong proc status");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.LIFE_CYCLE_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_DIFFUSION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
+        }
+    }
+
     // @Test
     // public void testPublishInternallyCodelist() throws Exception {
     //

@@ -11,9 +11,11 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.serviceimpl.utils.CodesMetamacInvocationValidator;
+import org.siemac.metamac.srm.core.common.LifeCycle;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
@@ -36,9 +38,10 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     // @Autowired
     // private CodeRepository codeRepository;
     //
-    // @Autowired
-    // @Qualifier("codelistLifeCycle")
-    // private LifeCycle codelistLifeCycle;
+    @Autowired
+    @Qualifier("codelistLifeCycle")
+    private LifeCycle                   codelistLifeCycle;
+
     //
     // @Autowired
     // @Qualifier("codesCopyCallbackMetamac")
@@ -91,6 +94,26 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     public PagedResult<CodelistVersionMetamac> findCodelistsByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
         PagedResult<CodelistVersion> codelistVersionPagedResult = codesService.findCodelistsByCondition(ctx, conditions, pagingParameter);
         return pagedResultCodelistVersionToMetamac(codelistVersionPagedResult);
+    }
+
+    @Override
+    public CodelistVersionMetamac sendCodelistToProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
+        return (CodelistVersionMetamac) codelistLifeCycle.sendToProductionValidation(ctx, urn);
+    }
+
+    @Override
+    public CodelistVersionMetamac sendCodelistToDiffusionValidation(ServiceContext ctx, String urn) throws MetamacException {
+        return (CodelistVersionMetamac) codelistLifeCycle.sendToDiffusionValidation(ctx, urn);
+    }
+
+    @Override
+    public CodelistVersionMetamac rejectCodelistProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
+        return (CodelistVersionMetamac) codelistLifeCycle.rejectProductionValidation(ctx, urn);
+    }
+
+    @Override
+    public CodelistVersionMetamac rejectCodelistDiffusionValidation(ServiceContext ctx, String urn) throws MetamacException {
+        return (CodelistVersionMetamac) codelistLifeCycle.rejectDiffusionValidation(ctx, urn);
     }
 
     // ------------------------------------------------------------------------------------
