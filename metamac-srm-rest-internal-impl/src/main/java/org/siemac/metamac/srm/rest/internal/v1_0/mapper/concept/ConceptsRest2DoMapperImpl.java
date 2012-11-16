@@ -15,8 +15,12 @@ import org.siemac.metamac.rest.exception.RestException;
 import org.siemac.metamac.rest.exception.utils.RestExceptionUtils;
 import org.siemac.metamac.rest.search.criteria.mapper.RestCriteria2SculptorCriteria;
 import org.siemac.metamac.rest.search.criteria.mapper.RestCriteria2SculptorCriteria.CriteriaCallback;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptCriteriaPropertyOrder;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptCriteriaPropertyRestriction;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemeCriteriaPropertyOrder;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemeCriteriaPropertyRestriction;
+import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
+import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacProperties;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacProperties;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
@@ -27,15 +31,23 @@ import org.springframework.stereotype.Component;
 public class ConceptsRest2DoMapperImpl implements ConceptsRest2DoMapper {
 
     private RestCriteria2SculptorCriteria<ConceptSchemeVersionMetamac> conceptSchemeCriteriaMapper = null;
+    private RestCriteria2SculptorCriteria<ConceptMetamac>              conceptCriteriaMapper       = null;
 
     public ConceptsRest2DoMapperImpl() {
         conceptSchemeCriteriaMapper = new RestCriteria2SculptorCriteria<ConceptSchemeVersionMetamac>(ConceptSchemeVersionMetamac.class, ConceptSchemeCriteriaPropertyOrder.class,
                 ConceptSchemeCriteriaPropertyRestriction.class, new ConceptSchemeCriteriaCallback());
+        conceptCriteriaMapper = new RestCriteria2SculptorCriteria<ConceptMetamac>(ConceptMetamac.class, ConceptCriteriaPropertyOrder.class, ConceptCriteriaPropertyRestriction.class,
+                new ConceptCriteriaCallback());
     }
 
     @Override
     public RestCriteria2SculptorCriteria<ConceptSchemeVersionMetamac> getConceptSchemeCriteriaMapper() {
         return conceptSchemeCriteriaMapper;
+    }
+
+    @Override
+    public RestCriteria2SculptorCriteria<ConceptMetamac> getConceptCriteriaMapper() {
+        return conceptCriteriaMapper;
     }
 
     private class ConceptSchemeCriteriaCallback implements CriteriaCallback {
@@ -88,6 +100,52 @@ public class ConceptsRest2DoMapperImpl implements ConceptsRest2DoMapper {
         @Override
         public Property retrievePropertyOrderDefault() throws RestException {
             return ConceptSchemeVersionMetamacProperties.maintainableArtefact().code();
+        }
+    }
+
+    private class ConceptCriteriaCallback implements CriteriaCallback {
+
+        @Override
+        public SculptorPropertyCriteria retrieveProperty(MetamacRestQueryPropertyRestriction propertyRestriction) throws RestException {
+            ConceptCriteriaPropertyRestriction propertyNameCriteria = ConceptCriteriaPropertyRestriction.fromValue(propertyRestriction.getPropertyName());
+            switch (propertyNameCriteria) {
+                case ID:
+                    return new SculptorPropertyCriteria(ConceptMetamacProperties.nameableArtefact().code(), propertyRestriction.getValue());
+                case URN:
+                    return new SculptorPropertyCriteria(ConceptMetamacProperties.nameableArtefact().urn(), propertyRestriction.getValue());
+                case NAME:
+                    return new SculptorPropertyCriteria(ConceptMetamacProperties.nameableArtefact().name().texts().label(), propertyRestriction.getValue());
+                case DESCRIPTION:
+                    return new SculptorPropertyCriteria(ConceptMetamacProperties.nameableArtefact().description().texts().label(), propertyRestriction.getValue());
+                case DESCRIPTION_SOURCE:
+                    return new SculptorPropertyCriteria(ConceptMetamacProperties.descriptionSource().texts().label(), propertyRestriction.getValue());
+                case ACRONYM:
+                    return new SculptorPropertyCriteria(ConceptMetamacProperties.acronym().texts().label(), propertyRestriction.getValue());
+                case EXTENDS:
+                    return new SculptorPropertyCriteria(ConceptMetamacProperties.conceptExtends().nameableArtefact().urn(), propertyRestriction.getValue());
+                case RELATED_CONCEPT:
+                    return new SculptorPropertyCriteria(ConceptMetamacProperties.relatedConcepts().nameableArtefact().urn(), propertyRestriction.getValue());
+                default:
+                    throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
+            }
+        }
+
+        @SuppressWarnings("rawtypes")
+        @Override
+        public Property retrievePropertyOrder(MetamacRestOrder order) throws RestException {
+            ConceptCriteriaPropertyOrder propertyNameCriteria = ConceptCriteriaPropertyOrder.fromValue(order.getPropertyName());
+            switch (propertyNameCriteria) {
+                case ID:
+                    return ConceptMetamacProperties.nameableArtefact().code();
+                default:
+                    throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
+            }
+        }
+
+        @SuppressWarnings("rawtypes")
+        @Override
+        public Property retrievePropertyOrderDefault() throws RestException {
+            return ConceptMetamacProperties.nameableArtefact().code();
         }
     }
 

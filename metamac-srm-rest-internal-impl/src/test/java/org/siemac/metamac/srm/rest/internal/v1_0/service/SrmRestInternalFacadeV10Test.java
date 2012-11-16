@@ -5,8 +5,12 @@ import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
 import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.WILDCARD;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestAsserts.assertFindConceptSchemes;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestAsserts.assertFindConcepts;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.AGENCY_1;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.AGENCY_2;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.CONCEPT_1_CODE;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.CONCEPT_2_CODE;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.CONCEPT_3_CODE;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.CONCEPT_SCHEME_1_CODE;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.CONCEPT_SCHEME_1_VERSION_1;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.CONCEPT_SCHEME_2_CODE;
@@ -15,6 +19,9 @@ import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstan
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.CONCEPT_SCHEME_3_CODE;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.CONCEPT_SCHEME_3_VERSION_1;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.NOT_EXISTS;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.ORDER_BY_CONCEPT_ID_DESC;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.ORDER_BY_CONCEPT_SCHEME_ID_DESC;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.QUERY_CONCEPT_ID_LIKE_1_NAME_LIKE_2;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.QUERY_CONCEPT_SCHEME_ID_LIKE_1;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.QUERY_CONCEPT_SCHEME_ID_LIKE_1_NAME_LIKE_2;
 
@@ -49,7 +56,9 @@ import org.siemac.metamac.rest.constants.RestConstants;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptScheme;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemes;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptTypes;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.Concepts;
 import org.siemac.metamac.rest.utils.RestUtils;
+import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacProperties;
 import org.siemac.metamac.srm.core.concept.serviceapi.ConceptsMetamacService;
@@ -108,6 +117,7 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
         testFindConceptsSchemes(null, null, QUERY_CONCEPT_SCHEME_ID_LIKE_1, null); // query by id, without limits
         testFindConceptsSchemes(null, null, QUERY_CONCEPT_SCHEME_ID_LIKE_1_NAME_LIKE_2, null); // query by id and name, without limits
         testFindConceptsSchemes("1", "0", QUERY_CONCEPT_SCHEME_ID_LIKE_1_NAME_LIKE_2, null); // query by id and name, first page
+        testFindConceptsSchemes("1", "0", QUERY_CONCEPT_SCHEME_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_CONCEPT_SCHEME_ID_DESC); // query by id and name, first page
     }
 
     @Test
@@ -139,6 +149,7 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
         testFindConceptsSchemes(AGENCY_1, null, "0", null, null);
         testFindConceptsSchemes(AGENCY_1, "2", "0", null, null);
         testFindConceptsSchemes(AGENCY_1, "1", "0", QUERY_CONCEPT_SCHEME_ID_LIKE_1_NAME_LIKE_2, null);
+        testFindConceptsSchemes(AGENCY_1, "1", "0", QUERY_CONCEPT_SCHEME_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_CONCEPT_SCHEME_ID_DESC);
     }
 
     @Test
@@ -167,6 +178,7 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
         testFindConceptsSchemes(AGENCY_1, CONCEPT_SCHEME_1_CODE, "2", "0", null, null);
         testFindConceptsSchemes(AGENCY_1, CONCEPT_SCHEME_1_CODE, "1", "0", QUERY_CONCEPT_SCHEME_ID_LIKE_1_NAME_LIKE_2, null);
         testFindConceptsSchemes(WILDCARD, CONCEPT_SCHEME_1_CODE, "1", "0", QUERY_CONCEPT_SCHEME_ID_LIKE_1_NAME_LIKE_2, null);
+        testFindConceptsSchemes(WILDCARD, CONCEPT_SCHEME_1_CODE, "1", "0", QUERY_CONCEPT_SCHEME_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_CONCEPT_SCHEME_ID_DESC);
     }
 
     @Test
@@ -255,7 +267,7 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
     }
 
     @Test
-    public void testRetrieveOperationByIdErrorNotExistsWithoutJaxbTransformation() throws Exception {
+    public void testRetrieveConceptSchemeErrorNotExistsWithoutJaxbTransformation() throws Exception {
         String requestUri = getUriConceptSchemes(AGENCY_1, NOT_EXISTS, CONCEPT_SCHEME_1_VERSION_1);
         InputStream responseExpected = SrmRestInternalFacadeV10Test.class.getResourceAsStream("/responses/retrieveConceptScheme.notFound.xml");
 
@@ -280,7 +292,7 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
     }
 
     @Test
-    public void testRetrieveConceptsSchemeErrorJsonNonAcceptable() throws Exception {
+    public void testRetrieveConceptSchemeErrorJsonNonAcceptable() throws Exception {
 
         String requestUri = getUriConceptSchemes(AGENCY_1, CONCEPT_SCHEME_1_CODE, CONCEPT_SCHEME_1_VERSION_1);
 
@@ -289,6 +301,41 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
         Response response = webClient.get();
 
         assertEquals(Status.NOT_ACCEPTABLE.getStatusCode(), response.getStatus());
+    }
+
+    @Test
+    public void testFindConcepts() throws Exception {
+        // wildcard
+        testFindConcepts(WILDCARD, WILDCARD, WILDCARD, null, null, null, null); // without limits
+        testFindConcepts(WILDCARD, WILDCARD, WILDCARD, "10000", null, null, null); // without limits
+        testFindConcepts(WILDCARD, WILDCARD, WILDCARD, null, "0", null, null); // without limits, first page
+        testFindConcepts(WILDCARD, WILDCARD, WILDCARD, "2", "0", null, null); // with pagination
+        testFindConcepts(WILDCARD, WILDCARD, WILDCARD, "2", "0", QUERY_CONCEPT_ID_LIKE_1_NAME_LIKE_2, null); // query
+        testFindConcepts(WILDCARD, WILDCARD, WILDCARD, "2", "0", QUERY_CONCEPT_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_CONCEPT_ID_DESC); // query and order
+
+        // agency
+        testFindConcepts(AGENCY_1, WILDCARD, WILDCARD, null, null, null, null); // without limits
+        testFindConcepts(AGENCY_1, WILDCARD, WILDCARD, "10000", null, null, null); // without limits
+        testFindConcepts(AGENCY_1, WILDCARD, WILDCARD, null, "0", null, null); // without limits, first page
+        testFindConcepts(AGENCY_1, WILDCARD, WILDCARD, "2", "0", null, null); // with pagination
+        testFindConcepts(AGENCY_1, WILDCARD, WILDCARD, "2", "0", QUERY_CONCEPT_ID_LIKE_1_NAME_LIKE_2, null); // query
+        testFindConcepts(AGENCY_1, WILDCARD, WILDCARD, "2", "0", QUERY_CONCEPT_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_CONCEPT_ID_DESC); // query and order
+
+        // resource
+        testFindConcepts(AGENCY_1, CONCEPT_SCHEME_1_CODE, WILDCARD, null, null, null, null); // without limits
+        testFindConcepts(AGENCY_1, CONCEPT_SCHEME_1_CODE, WILDCARD, "10000", null, null, null); // without limits
+        testFindConcepts(WILDCARD, CONCEPT_SCHEME_1_CODE, WILDCARD, null, "0", null, null); // without limits, first page
+        testFindConcepts(AGENCY_1, CONCEPT_SCHEME_1_CODE, WILDCARD, "2", "0", null, null); // with pagination
+        testFindConcepts(WILDCARD, CONCEPT_SCHEME_1_CODE, WILDCARD, "2", "0", QUERY_CONCEPT_ID_LIKE_1_NAME_LIKE_2, null); // query
+        testFindConcepts(AGENCY_1, CONCEPT_SCHEME_1_CODE, WILDCARD, "2", "0", QUERY_CONCEPT_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_CONCEPT_ID_DESC); // query and order
+
+        // version
+        testFindConcepts(AGENCY_1, CONCEPT_SCHEME_1_CODE, WILDCARD, null, null, null, null); // without limits
+        testFindConcepts(AGENCY_1, CONCEPT_SCHEME_1_CODE, WILDCARD, "10000", null, null, null); // without limits
+        testFindConcepts(WILDCARD, CONCEPT_SCHEME_1_CODE, WILDCARD, null, "0", null, null); // without limits, first page
+        testFindConcepts(AGENCY_1, CONCEPT_SCHEME_1_CODE, CONCEPT_SCHEME_1_VERSION_1, "2", "0", null, null); // with pagination
+        testFindConcepts(WILDCARD, CONCEPT_SCHEME_1_CODE, WILDCARD, "2", "0", QUERY_CONCEPT_ID_LIKE_1_NAME_LIKE_2, null); // query
+        testFindConcepts(AGENCY_1, CONCEPT_SCHEME_1_CODE, CONCEPT_SCHEME_1_VERSION_1, "2", "0", QUERY_CONCEPT_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_CONCEPT_ID_DESC); // query and order
     }
 
     @Test
@@ -330,15 +377,22 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
         assertFindConceptSchemes(conceptsService, agencyID, resourceID, limit, offset, query, orderBy, conceptSchemes);
     }
 
+    private void testFindConcepts(String agencyID, String resourceID, String version, String limit, String offset, String query, String orderBy) throws Exception {
+        resetMocks();
+        Concepts concepts = getSrmRestInternalFacadeClientXml().findConcepts(agencyID, resourceID, version, query, orderBy, limit, offset);
+        assertFindConcepts(conceptsService, agencyID, resourceID, version, limit, offset, query, orderBy, concepts);
+    }
+
     private void resetMocks() throws MetamacException {
         conceptsService = applicationContext.getBean(ConceptsMetamacService.class);
         reset(conceptsService);
+        mockFindConceptSchemesByCondition();
         mockFindConceptsByCondition();
         mockRetrieveConceptTypes();
     }
 
     @SuppressWarnings("unchecked")
-    private void mockFindConceptsByCondition() throws MetamacException {
+    private void mockFindConceptSchemesByCondition() throws MetamacException {
         when(conceptsService.findConceptSchemesByCondition(any(ServiceContext.class), any(List.class), any(PagingParameter.class))).thenAnswer(new Answer<PagedResult<ConceptSchemeVersionMetamac>>() {
 
             public org.fornax.cartridges.sculptor.framework.domain.PagedResult<ConceptSchemeVersionMetamac> answer(InvocationOnMock invocation) throws Throwable {
@@ -358,7 +412,7 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
                         conceptSchemeVersion = null;
                     } else if (AGENCY_1.equals(conditionalCriteriaAgencyID.getFirstOperant()) && CONCEPT_SCHEME_1_CODE.equals(conditionalCriteriaResourceID.getFirstOperant())
                             && CONCEPT_SCHEME_1_VERSION_1.equals(conditionalCriteriaVersion.getFirstOperant())) {
-                        conceptSchemeVersion = SrmCoreMocks.mockConceptScheme(AGENCY_1, CONCEPT_SCHEME_1_CODE, CONCEPT_SCHEME_1_VERSION_1);
+                        conceptSchemeVersion = SrmCoreMocks.mockConceptSchemeWithConcepts(AGENCY_1, CONCEPT_SCHEME_1_CODE, CONCEPT_SCHEME_1_VERSION_1);
                     } else {
                         fail();
                     }
@@ -370,12 +424,59 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
                 } else {
                     // any
                     List<ConceptSchemeVersionMetamac> conceptSchemes = new ArrayList<ConceptSchemeVersionMetamac>();
-                    conceptSchemes.add(SrmCoreMocks.mockConceptScheme(AGENCY_1, CONCEPT_SCHEME_1_CODE, CONCEPT_SCHEME_1_VERSION_1));
-                    conceptSchemes.add(SrmCoreMocks.mockConceptScheme(AGENCY_1, CONCEPT_SCHEME_2_CODE, CONCEPT_SCHEME_2_VERSION_1));
-                    conceptSchemes.add(SrmCoreMocks.mockConceptScheme(AGENCY_1, CONCEPT_SCHEME_2_CODE, CONCEPT_SCHEME_2_VERSION_2));
-                    conceptSchemes.add(SrmCoreMocks.mockConceptScheme(AGENCY_2, CONCEPT_SCHEME_3_CODE, CONCEPT_SCHEME_3_VERSION_1));
-                    return new PagedResult<ConceptSchemeVersionMetamac>(conceptSchemes, conceptSchemes.size(), conceptSchemes.size(), conceptSchemes.size(), conceptSchemes.size() * 3, 0);
+                    conceptSchemes.add(SrmCoreMocks.mockConceptSchemeWithConcepts(AGENCY_1, CONCEPT_SCHEME_1_CODE, CONCEPT_SCHEME_1_VERSION_1));
+                    conceptSchemes.add(SrmCoreMocks.mockConceptSchemeWithConcepts(AGENCY_1, CONCEPT_SCHEME_2_CODE, CONCEPT_SCHEME_2_VERSION_1));
+                    conceptSchemes.add(SrmCoreMocks.mockConceptSchemeWithConcepts(AGENCY_1, CONCEPT_SCHEME_2_CODE, CONCEPT_SCHEME_2_VERSION_2));
+                    conceptSchemes.add(SrmCoreMocks.mockConceptSchemeWithConcepts(AGENCY_2, CONCEPT_SCHEME_3_CODE, CONCEPT_SCHEME_3_VERSION_1));
+                    return new PagedResult<ConceptSchemeVersionMetamac>(conceptSchemes, conceptSchemes.size(), conceptSchemes.size(), conceptSchemes.size(), conceptSchemes.size() * 10, 0);
                 }
+            };
+        });
+    }
+
+    @SuppressWarnings("unchecked")
+    private void mockFindConceptsByCondition() throws MetamacException {
+        when(conceptsService.findConceptsByCondition(any(ServiceContext.class), any(List.class), any(PagingParameter.class))).thenAnswer(new Answer<PagedResult<ConceptMetamac>>() {
+
+            public org.fornax.cartridges.sculptor.framework.domain.PagedResult<ConceptMetamac> answer(InvocationOnMock invocation) throws Throwable {
+//                List<ConditionalCriteria> conditions = (List<ConditionalCriteria>) invocation.getArguments()[1];
+                // ConditionalCriteria conditionalCriteriaAgencyID = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Equal, ConceptSchemeVersionMetamacProperties
+                // .maintainableArtefact().maintainer().idAsMaintainer());
+                // ConditionalCriteria conditionalCriteriaResourceID = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Equal, ConceptSchemeVersionMetamacProperties
+                // .maintainableArtefact().code());
+                // ConditionalCriteria conditionalCriteriaVersion = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Equal, ConceptSchemeVersionMetamacProperties
+                // .maintainableArtefact().versionLogic());
+                //
+                // if (conditionalCriteriaAgencyID != null && conditionalCriteriaResourceID != null && conditionalCriteriaVersion != null) {
+                // // Retrieve one concept scheme
+                // ConceptSchemeVersionMetamac conceptSchemeVersion = null;
+                // if (NOT_EXISTS.equals(conditionalCriteriaAgencyID.getFirstOperant()) || NOT_EXISTS.equals(conditionalCriteriaResourceID.getFirstOperant())
+                // || NOT_EXISTS.equals(conditionalCriteriaVersion.getFirstOperant())) {
+                // conceptSchemeVersion = null;
+                // } else if (AGENCY_1.equals(conditionalCriteriaAgencyID.getFirstOperant()) && CONCEPT_SCHEME_1_CODE.equals(conditionalCriteriaResourceID.getFirstOperant())
+                // && CONCEPT_SCHEME_1_VERSION_1.equals(conditionalCriteriaVersion.getFirstOperant())) {
+                // conceptSchemeVersion = SrmCoreMocks.mockConceptScheme(AGENCY_1, CONCEPT_SCHEME_1_CODE, CONCEPT_SCHEME_1_VERSION_1);
+                // } else {
+                // fail();
+                // }
+                // List<ConceptSchemeVersionMetamac> conceptSchemes = new ArrayList<ConceptSchemeVersionMetamac>();
+                // if (conceptSchemeVersion != null) {
+                // conceptSchemes.add(conceptSchemeVersion);
+                // }
+                // return new PagedResult<ConceptSchemeVersionMetamac>(conceptSchemes, 0, conceptSchemes.size(), conceptSchemes.size());
+                // } else {
+                // any
+                ConceptSchemeVersionMetamac conceptScheme1 = SrmCoreMocks.mockConceptScheme(AGENCY_1, CONCEPT_SCHEME_1_CODE, CONCEPT_SCHEME_1_VERSION_1);
+                ConceptSchemeVersionMetamac conceptScheme2 = SrmCoreMocks.mockConceptScheme(AGENCY_1, CONCEPT_SCHEME_2_CODE, CONCEPT_SCHEME_2_VERSION_1);
+
+                List<ConceptMetamac> concepts = new ArrayList<ConceptMetamac>();
+                concepts.add(SrmCoreMocks.mockConcept(CONCEPT_1_CODE, conceptScheme1, null));
+                concepts.add(SrmCoreMocks.mockConcept(CONCEPT_2_CODE, conceptScheme1, null));
+                concepts.add(SrmCoreMocks.mockConcept(CONCEPT_3_CODE, conceptScheme1, null));
+                concepts.add(SrmCoreMocks.mockConcept(CONCEPT_1_CODE, conceptScheme2, null));
+
+                return new PagedResult<ConceptMetamac>(concepts, concepts.size(), concepts.size(), concepts.size(), concepts.size() * 10, 0);
+                // }
             };
         });
     }

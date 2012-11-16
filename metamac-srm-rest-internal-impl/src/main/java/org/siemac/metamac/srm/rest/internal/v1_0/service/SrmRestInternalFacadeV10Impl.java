@@ -7,8 +7,10 @@ import javax.ws.rs.core.Response.Status;
 
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
+import org.fornax.cartridges.sculptor.framework.domain.LeafProperty;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
+import org.fornax.cartridges.sculptor.framework.domain.Property;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.aop.LoggingInterceptor;
 import org.siemac.metamac.core.common.exception.MetamacException;
@@ -19,6 +21,9 @@ import org.siemac.metamac.rest.search.criteria.SculptorCriteria;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptScheme;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemes;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptTypes;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.Concepts;
+import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
+import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacProperties;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacProperties;
 import org.siemac.metamac.srm.core.concept.domain.ConceptType;
@@ -32,6 +37,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefactProperties.MaintainableArtefactProperty;
 
 @Service("srmRestInternalFacadeV10")
 public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
@@ -80,7 +87,23 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             throw manageException(e);
         }
     }
-    
+
+    @Override
+    public Concepts findConcepts(String agencyID, String resourceID, String version, String query, String orderBy, String limit, String offset) {
+        try {
+            SculptorCriteria sculptorCriteria = restCriteria2SculptorCriteriaMapper.getConceptCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
+
+            // Find
+            PagedResult<ConceptMetamac> conceptsEntitiesResult = findConceptsCore(agencyID, resourceID, version, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
+
+            // Transform
+            Concepts concepts = do2RestInternalMapper.toConcepts(conceptsEntitiesResult, agencyID, resourceID, version, query, orderBy, sculptorCriteria.getLimit());
+            return concepts;
+        } catch (Exception e) {
+            throw manageException(e);
+        }
+    }
+
     @Override
     public ConceptTypes retrieveConceptTypes() {
         try {
@@ -94,7 +117,6 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             throw manageException(e);
         }
     }
-
 
     private ConceptSchemes findConceptSchemesCommon(String agencyID, String resourceID, String query, String orderBy, String limit, String offset) {
         try {
@@ -121,28 +143,69 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             conditionalCriteria.addAll(conditionalCriteriaQuery);
         }
 
-        // Only published
-        conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).withProperty(ConceptSchemeVersionMetamacProperties.lifeCycleMetadata().procStatus())
-                .in(ProcStatusEnum.INTERNALLY_PUBLISHED, ProcStatusEnum.EXTERNALLY_PUBLISHED).buildSingle());
+        // Only concept scheme published
+        addConditionalCriteriaPublished(conditionalCriteria, ConceptSchemeVersionMetamac.class, ConceptSchemeVersionMetamacProperties.lifeCycleMetadata().procStatus());
         // Agency
-        if (agencyID != null && !RestInternalConstants.WILDCARD.equals(agencyID)) {
-            conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class)
-                    .withProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact().maintainer().idAsMaintainer()).eq(agencyID).buildSingle());
-        }
+        addConditionalCriteriaByAgency(conditionalCriteria, agencyID, ConceptSchemeVersionMetamac.class, ConceptSchemeVersionMetamacProperties.maintainableArtefact());
         // Concept scheme
-        if (resourceID != null && !RestInternalConstants.WILDCARD.equals(resourceID)) {
-            conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).withProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact().code())
-                    .eq(resourceID).buildSingle());
-        }
+        addConditionalCriteriaByConceptScheme(conditionalCriteria, resourceID, ConceptSchemeVersionMetamac.class, ConceptSchemeVersionMetamacProperties.maintainableArtefact());
         // Version
-        if (version != null && !RestInternalConstants.WILDCARD.equals(version)) {
-            conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).withProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact().versionLogic())
-                    .eq(version).buildSingle());
-        }
+        addConditionalCriteriaByConceptSchemeVersion(conditionalCriteria, version, ConceptSchemeVersionMetamac.class, ConceptSchemeVersionMetamacProperties.maintainableArtefact());
 
         // Find
         PagedResult<ConceptSchemeVersionMetamac> conceptsSchemesEntitiesResult = conceptsService.findConceptSchemesByCondition(ctx, conditionalCriteria, pagingParameter);
         return conceptsSchemesEntitiesResult;
+    }
+
+    private PagedResult<ConceptMetamac> findConceptsCore(String agencyID, String resourceID, String version, List<ConditionalCriteria> conditionalCriteriaQuery, PagingParameter pagingParameter)
+            throws MetamacException {
+
+        // Criteria to find concepts by criteria
+        List<ConditionalCriteria> conditionalCriteria = new ArrayList<ConditionalCriteria>();
+        if (conditionalCriteriaQuery != null) {
+            conditionalCriteria.addAll(conditionalCriteriaQuery);
+        }
+
+        // Only concept scheme published
+        addConditionalCriteriaPublished(conditionalCriteria, ConceptMetamac.class, new LeafProperty<ConceptMetamac>(ConceptMetamacProperties.itemSchemeVersion().getName(),
+                ConceptSchemeVersionMetamacProperties.lifeCycleMetadata().procStatus().getName(), true, ConceptMetamac.class));
+        // Agency
+        addConditionalCriteriaByAgency(conditionalCriteria, agencyID, ConceptMetamac.class, ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact());
+        // Concept scheme
+        addConditionalCriteriaByConceptScheme(conditionalCriteria, resourceID, ConceptMetamac.class, ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact());
+        // Version
+        addConditionalCriteriaByConceptSchemeVersion(conditionalCriteria, version, ConceptMetamac.class, ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact());
+
+        // Find
+        PagedResult<ConceptMetamac> conceptsEntitiesResult = conceptsService.findConceptsByCondition(ctx, conditionalCriteria, pagingParameter);
+        return conceptsEntitiesResult;
+    }
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    private void addConditionalCriteriaPublished(List<ConditionalCriteria> conditionalCriteria, Class entity, Property procStatusProperty) {
+        conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(entity).withProperty(procStatusProperty).in(ProcStatusEnum.INTERNALLY_PUBLISHED, ProcStatusEnum.EXTERNALLY_PUBLISHED)
+                .buildSingle());
+    }
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    private void addConditionalCriteriaByAgency(List<ConditionalCriteria> conditionalCriteria, String agencyID, Class entity, MaintainableArtefactProperty maintainableArtefactProperty) {
+        if (agencyID != null && !RestInternalConstants.WILDCARD.equals(agencyID)) {
+            conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(entity).withProperty(maintainableArtefactProperty.maintainer().idAsMaintainer()).eq(agencyID).buildSingle());
+        }
+    }
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    private void addConditionalCriteriaByConceptScheme(List<ConditionalCriteria> conditionalCriteria, String code, Class entity, MaintainableArtefactProperty maintainableArtefactProperty) {
+        if (code != null && !RestInternalConstants.WILDCARD.equals(code)) {
+            conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(entity).withProperty(maintainableArtefactProperty.code()).eq(code).buildSingle());
+        }
+    }
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    private void addConditionalCriteriaByConceptSchemeVersion(List<ConditionalCriteria> conditionalCriteria, String version, Class entity, MaintainableArtefactProperty maintainableArtefactProperty) {
+        if (version != null && !RestInternalConstants.WILDCARD.equals(version)) {
+            conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(entity).withProperty(maintainableArtefactProperty.versionLogic()).eq(version).buildSingle());
+        }
     }
 
     /**

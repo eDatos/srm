@@ -24,6 +24,7 @@ import org.siemac.metamac.rest.srm_internal.v1_0.domain.Concept;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptScheme;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemes;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptTypes;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.Concepts;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.Urns;
 import org.siemac.metamac.rest.utils.RestUtils;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
@@ -37,6 +38,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.concept.mapper.ConceptsDo2JaxbCallback;
 
@@ -109,6 +111,24 @@ public class ConceptsDo2RestMapperV10Impl implements ConceptsDo2RestMapperV10 {
     }
 
     @Override
+    public Concepts toConcepts(PagedResult<ConceptMetamac> sourcesPagedResult, String agencyID, String resourceID, String version, String query, String orderBy, Integer limit) {
+
+        Concepts targets = new Concepts();
+        targets.setKind(RestInternalConstants.KIND_CONCEPTS);
+
+        // Pagination
+        String baseLink = toConceptsLink(agencyID, resourceID, null);
+        SculptorCriteria2RestCriteria.toPagedResult(sourcesPagedResult, targets, query, orderBy, limit, baseLink);
+
+        // Values
+        for (ConceptMetamac source : sourcesPagedResult.getValues()) {
+            Resource target = toResource(source);
+            targets.getConcepts().add(target);
+        }
+        return targets;
+    }
+
+    @Override
     public void toConcept(ConceptMetamac source, Concept target) {
         if (source == null) {
             return;
@@ -127,7 +147,7 @@ public class ConceptsDo2RestMapperV10Impl implements ConceptsDo2RestMapperV10 {
         target.setRoles(conceptsToUrns(source.getRoleConcepts()));
         target.setRelatedConcepts(conceptsToUrns(source.getRelatedConcepts()));
     }
-    
+
     @Override
     public ConceptTypes toConceptTypes(List<ConceptType> sources) {
         ConceptTypes targets = new ConceptTypes();
@@ -144,7 +164,6 @@ public class ConceptsDo2RestMapperV10Impl implements ConceptsDo2RestMapperV10 {
         }
         return targets;
     }
-
 
     private ResourceLink toConceptSchemeParent() {
         ResourceLink target = new ResourceLink();
@@ -228,6 +247,19 @@ public class ConceptsDo2RestMapperV10Impl implements ConceptsDo2RestMapperV10 {
         return target;
     }
 
+    private Resource toResource(ConceptMetamac source) {
+        if (source == null) {
+            return null;
+        }
+        Resource target = new Resource();
+        target.setId(source.getNameableArtefact().getCode());
+        target.setUrn(source.getNameableArtefact().getUrn());
+        target.setKind(RestInternalConstants.KIND_CONCEPT);
+        target.setSelfLink(toConceptLink(source));
+        target.setTitle(toInternationalString(source.getNameableArtefact().getName()));
+        return target;
+    }
+
     private InternationalString toInternationalString(org.siemac.metamac.core.common.ent.domain.InternationalString sources) {
         if (sources == null) {
             return null;
@@ -261,15 +293,29 @@ public class ConceptsDo2RestMapperV10Impl implements ConceptsDo2RestMapperV10 {
     }
 
     // API/conceptschemes/{agencyID}/{resourceID}/{version}
-    private String toConceptSchemeLink(ConceptSchemeVersionMetamac conceptSchemeVersionMetamac) {
+    private String toConceptSchemeLink(String agencyID, String resourceID, String version) {
+        return toConceptSchemesLink(agencyID, resourceID, version);
+    }
+    private String toConceptSchemeLink(ItemSchemeVersion conceptSchemeVersionMetamac) {
         MaintainableArtefact maintainableArtefact = conceptSchemeVersionMetamac.getMaintainableArtefact();
-        return toConceptSchemesLink(maintainableArtefact.getMaintainer().getIdAsMaintainer(), maintainableArtefact.getCode(), maintainableArtefact.getVersionLogic());
+        return toConceptSchemeLink(maintainableArtefact.getMaintainer().getIdAsMaintainer(), maintainableArtefact.getCode(), maintainableArtefact.getVersionLogic());
     }
 
     // API/conceptschemes/{agencyID}/{resourceID}/{version}/concepts
-    private String toConceptsLink(ConceptSchemeVersionMetamac conceptSchemeVersionMetamac) {
-        String link = toConceptSchemeLink(conceptSchemeVersionMetamac);
+    private String toConceptsLink(String agencyID, String resourceID, String version) {
+        String link = toConceptSchemeLink(agencyID, resourceID, version);
         link = RestUtils.createLink(link, RestInternalConstants.LINK_SUBPATH_CONCEPTS);
+        return link;
+    }
+    private String toConceptsLink(ItemSchemeVersion conceptSchemeVersionMetamac) {
+        MaintainableArtefact maintainableArtefact = conceptSchemeVersionMetamac.getMaintainableArtefact();
+        return toConceptsLink(maintainableArtefact.getMaintainer().getIdAsMaintainer(), maintainableArtefact.getCode(), maintainableArtefact.getVersionLogic());
+    }
+
+    // API/conceptschemes/{agencyID}/{resourceID}/{version}/concepts
+    private String toConceptLink(ConceptMetamac conceptMetamac) {
+        String link = toConceptsLink(conceptMetamac.getItemSchemeVersion());
+        link = RestUtils.createLink(link, conceptMetamac.getNameableArtefact().getCode());
         return link;
     }
 

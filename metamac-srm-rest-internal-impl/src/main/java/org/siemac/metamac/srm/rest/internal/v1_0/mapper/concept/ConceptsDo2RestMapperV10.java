@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptTypes;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.Concepts;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptType;
@@ -14,6 +15,9 @@ public interface ConceptsDo2RestMapperV10 {
             String orderBy, Integer limit);
     public org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptScheme toConceptScheme(ConceptSchemeVersionMetamac source);
     public void toConceptScheme(ConceptSchemeVersionMetamac source, org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptScheme target);
+
+    public Concepts toConcepts(PagedResult<ConceptMetamac> conceptsEntitiesResult, String agencyID, String resourceID, String version, String query, String orderBy, Integer limit);
     public void toConcept(ConceptMetamac source, org.siemac.metamac.rest.srm_internal.v1_0.domain.Concept target);
+
     public ConceptTypes toConceptTypes(List<ConceptType> sources);
 }

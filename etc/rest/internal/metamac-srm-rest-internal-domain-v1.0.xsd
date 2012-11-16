@@ -58,6 +58,16 @@
         </xs:complexContent>
     </xs:complexType>
     
+    <xs:complexType name="Concepts">
+        <xs:complexContent>
+            <xs:extension base="common:ListBase">
+                <xs:sequence>
+                    <xs:element name="concept" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>    
+    
     <xs:complexType name="ConceptTypes">
         <xs:complexContent>
             <xs:extension base="common:ListBase">
@@ -119,9 +129,29 @@
         </xs:restriction>
     </xs:simpleType>
 
+    <xs:simpleType name="ConceptCriteriaPropertyRestriction">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="ID" />
+            <xs:enumeration value="URN" />
+            <xs:enumeration value="NAME" />
+            <xs:enumeration value="ACRONYM" />
+            <xs:enumeration value="DESCRIPTION" />
+            <xs:enumeration value="DESCRIPTION_SOURCE" />
+            <xs:enumeration value="EXTENDS" />
+            <xs:enumeration value="RELATED_CONCEPT" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="ConceptCriteriaPropertyOrder">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="ID" />
+        </xs:restriction>
+    </xs:simpleType>
+
     <!-- Elements -->
     <xs:element name="conceptScheme" type="tns:ConceptScheme" />
     <xs:element name="concept" type="tns:Concept" />
     <xs:element name="conceptSchemes" type="tns:ConceptSchemes" />
+    <xs:element name="concepts" type="tns:Concepts" />
     <xs:element name="conceptTypes" type="tns:ConceptTypes" />
 </xs:schema>

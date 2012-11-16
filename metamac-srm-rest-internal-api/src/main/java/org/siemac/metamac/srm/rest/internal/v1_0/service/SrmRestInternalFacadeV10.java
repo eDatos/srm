@@ -10,46 +10,41 @@ import org.siemac.metamac.core.common.constants.shared.RegularExpressionConstant
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptScheme;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemes;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptTypes;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.Concepts;
 
 @Path("v1.0")
 public interface SrmRestInternalFacadeV10 {
 
-    /**
-     * TODO Documentation
-     */
+    // TODO Documentation
+
     @GET
     @Produces("application/xml")
     @Path("conceptschemes")
     ConceptSchemes findConceptSchemes(@QueryParam("query") String query, @QueryParam("orderBy") String orderBy, @QueryParam("limit") String limit, @QueryParam("offset") String offset);
 
-    /**
-     * TODO Documentation
-     */
     @GET
     @Produces("application/xml")
     @Path("conceptschemes/{agencyID: " + RegularExpressionConstants.REG_EXP_SEMANTIC_IDENTIFIER + "}")
     ConceptSchemes findConceptSchemes(@PathParam("agencyID") String agencyID, @QueryParam("query") String query, @QueryParam("orderBy") String orderBy, @QueryParam("limit") String limit,
             @QueryParam("offset") String offset);
 
-    /**
-     * TODO Documentation
-     * agencyID can be ~all
-     */
     @GET
     @Produces("application/xml")
     @Path("conceptschemes/{agencyID}/{resourceID: " + RegularExpressionConstants.REG_EXP_SEMANTIC_IDENTIFIER + "}")
     ConceptSchemes findConceptSchemes(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @QueryParam("query") String query, @QueryParam("orderBy") String orderBy,
             @QueryParam("limit") String limit, @QueryParam("offset") String offset);
 
-    /**
-     * TODO Documentation
-     * TODO latest
-     */
+    @GET
+    @Produces("application/xml")
+    @Path("conceptschemes/{agencyID}/{resourceID}/{version}/concepts")
+    Concepts findConcepts(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @PathParam("version") String version, @QueryParam("query") String query,
+            @QueryParam("orderBy") String orderBy, @QueryParam("limit") String limit, @QueryParam("offset") String offset);
+
     @GET
     @Produces("application/xml")
     @Path("conceptschemes/{agencyID: " + RegularExpressionConstants.REG_EXP_SEMANTIC_IDENTIFIER + "}/{resourceID: " + RegularExpressionConstants.REG_EXP_SEMANTIC_IDENTIFIER + "}/{version: \\d.*}")
     ConceptScheme retrieveConceptScheme(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @PathParam("version") String version);
-    
+
     /**
      * Retrieve all concept types
      * 

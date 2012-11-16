@@ -5,6 +5,9 @@ import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.WILDCAR
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestAsserts.assertEqualsResource;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.AGENCY_1;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.AGENCY_2;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.CONCEPT_1_CODE;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.CONCEPT_2_CODE;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.CONCEPT_3_CODE;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.CONCEPT_SCHEME_1_CODE;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.CONCEPT_SCHEME_1_VERSION_1;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.CONCEPT_SCHEME_2_CODE;
@@ -12,7 +15,9 @@ import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstan
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.CONCEPT_SCHEME_2_VERSION_2;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.CONCEPT_SCHEME_3_CODE;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.CONCEPT_SCHEME_3_VERSION_1;
-import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.ORDER_BY_CONCEPT_SCHEME_ID;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.ORDER_BY_CONCEPT_ID_DESC;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.ORDER_BY_CONCEPT_SCHEME_ID_DESC;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.QUERY_CONCEPT_ID_LIKE_1_NAME_LIKE_2;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.QUERY_CONCEPT_SCHEME_ID_LIKE_1_NAME_LIKE_2;
 
 import java.math.BigInteger;
@@ -25,6 +30,8 @@ import org.junit.runner.RunWith;
 import org.siemac.metamac.common.test.utils.MetamacAsserts;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptScheme;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemes;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.Concepts;
+import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.concept.ConceptsDo2RestMapperV10;
@@ -46,7 +53,7 @@ public class ConceptsDo2RestMapperTest {
         String agencyID = WILDCARD;
         String resourceID = WILDCARD;
         String query = QUERY_CONCEPT_SCHEME_ID_LIKE_1_NAME_LIKE_2;
-        String orderBy = ORDER_BY_CONCEPT_SCHEME_ID;
+        String orderBy = ORDER_BY_CONCEPT_SCHEME_ID_DESC;
         Integer limit = Integer.valueOf(4);
         Integer offset = Integer.valueOf(4);
 
@@ -65,8 +72,7 @@ public class ConceptsDo2RestMapperTest {
         // Validate
         assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEMES, target.getKind());
 
-        String parentLink = "http://data.istac.es/apis/srm/v1.0/conceptschemes";
-        String baseLink = parentLink + "/" + agencyID + "/" + resourceID + "?query=" + query + "&orderBy=" + ORDER_BY_CONCEPT_SCHEME_ID;
+        String baseLink = "http://data.istac.es/apis/srm/v1.0/conceptschemes" + "/" + agencyID + "/" + resourceID + "?query=" + query + "&orderBy=" + orderBy;
 
         assertEquals(baseLink + "&limit=" + limit + "&offset=0", target.getFirstLink());
         assertEquals(baseLink + "&limit=" + limit + "&offset=0", target.getPreviousLink());
@@ -89,7 +95,7 @@ public class ConceptsDo2RestMapperTest {
         String agencyID = "agencyID1";
         String resourceID = "resourceID1";
         String version = "01.123";
-        ConceptSchemeVersionMetamac source = SrmCoreMocks.mockConceptScheme(agencyID, resourceID, version);
+        ConceptSchemeVersionMetamac source = SrmCoreMocks.mockConceptSchemeWithConcepts(agencyID, resourceID, version);
 
         // only test metamac metadata
         ConceptScheme target = do2RestInternalMapper.toConceptScheme(source);
@@ -113,6 +119,51 @@ public class ConceptsDo2RestMapperTest {
         assertEquals(selfLink + "/concepts", target.getChildren().getChildren().get(0).getSelfLink());
 
         // TODO concepts
+    }
+    
+    @Test
+    public void testConcepts() {
+        
+        String agencyID = WILDCARD;
+        String conceptSchemeID = WILDCARD;
+        String version = WILDCARD;
+        String query = QUERY_CONCEPT_ID_LIKE_1_NAME_LIKE_2;
+        String orderBy = ORDER_BY_CONCEPT_ID_DESC;
+        Integer limit = Integer.valueOf(4);
+        Integer offset = Integer.valueOf(4);
+
+        
+        ConceptSchemeVersionMetamac conceptScheme1 = SrmCoreMocks.mockConceptScheme(AGENCY_1, CONCEPT_SCHEME_1_CODE, CONCEPT_SCHEME_1_VERSION_1);
+        ConceptSchemeVersionMetamac conceptScheme2 = SrmCoreMocks.mockConceptScheme(AGENCY_1, CONCEPT_SCHEME_2_CODE, CONCEPT_SCHEME_2_VERSION_1);
+        List<ConceptMetamac> source = new ArrayList<ConceptMetamac>();
+        source.add(SrmCoreMocks.mockConcept(CONCEPT_1_CODE, conceptScheme1, null));
+        source.add(SrmCoreMocks.mockConcept(CONCEPT_2_CODE, conceptScheme1, null));
+        source.add(SrmCoreMocks.mockConcept(CONCEPT_3_CODE, conceptScheme1, null));
+        source.add(SrmCoreMocks.mockConcept(CONCEPT_1_CODE, conceptScheme2, null));
+
+        Integer totalRows = source.size() * 5;
+        PagedResult<ConceptMetamac> sources = new PagedResult<ConceptMetamac>(source, offset, source.size(), limit, totalRows, 0);
+
+        // Transform
+        Concepts target = do2RestInternalMapper.toConcepts(sources, agencyID, conceptSchemeID, version, query, orderBy, limit);
+
+        // Validate
+        assertEquals(RestInternalConstants.KIND_CONCEPTS, target.getKind());
+
+        String baseLink = "http://data.istac.es/apis/srm/v1.0/conceptschemes" + "/" + agencyID + "/" + conceptSchemeID + "/concepts?query=" + query + "&orderBy=" + orderBy;
+        assertEquals(baseLink + "&limit=" + limit + "&offset=0", target.getFirstLink());
+        assertEquals(baseLink + "&limit=" + limit + "&offset=0", target.getPreviousLink());
+        assertEquals(baseLink + "&limit=" + limit + "&offset=8", target.getNextLink());
+        assertEquals(baseLink + "&limit=" + limit + "&offset=16", target.getLastLink());
+
+        assertEquals(limit.intValue(), target.getLimit().intValue());
+        assertEquals(offset.intValue(), target.getOffset().intValue());
+        assertEquals(totalRows.intValue(), target.getTotal().intValue());
+
+        assertEquals(source.size(), target.getConcepts().size());
+        for (int i = 0; i < source.size(); i++) {
+            assertEqualsResource(source.get(i), target.getConcepts().get(i));
+        }
     }
 
     /**
