@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.siemac.metamac.srm.core.base.utils.BaseServiceTestUtils.assertListItemsContainsItem;
 
 import java.util.Date;
 import java.util.List;
@@ -37,7 +38,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.category.domain.Category;
 import com.arte.statistic.sdmx.srm.core.category.domain.CategoryProperties;
 import com.arte.statistic.sdmx.srm.core.category.domain.CategorySchemeVersion;
@@ -1215,17 +1215,17 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
         // Check hierarchy
         categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), categorySchemeUrn);
         assertEquals(3, categorySchemeVersion.getItemsFirstLevel().size());
-        assertListItemsContainsCategory(categorySchemeVersion.getItemsFirstLevel(), CATEGORY_SCHEME_1_V2_CATEGORY_1);
-        assertListItemsContainsCategory(categorySchemeVersion.getItemsFirstLevel(), CATEGORY_SCHEME_1_V2_CATEGORY_2);
-        assertListItemsContainsCategory(categorySchemeVersion.getItemsFirstLevel(), CATEGORY_SCHEME_1_V2_CATEGORY_4);
+        assertListItemsContainsItem(categorySchemeVersion.getItemsFirstLevel(), CATEGORY_SCHEME_1_V2_CATEGORY_1);
+        assertListItemsContainsItem(categorySchemeVersion.getItemsFirstLevel(), CATEGORY_SCHEME_1_V2_CATEGORY_2);
+        assertListItemsContainsItem(categorySchemeVersion.getItemsFirstLevel(), CATEGORY_SCHEME_1_V2_CATEGORY_4);
         assertEquals(7, categorySchemeVersion.getItems().size());
-        assertListItemsContainsCategory(categorySchemeVersion.getItems(), CATEGORY_SCHEME_1_V2_CATEGORY_1);
-        assertListItemsContainsCategory(categorySchemeVersion.getItems(), CATEGORY_SCHEME_1_V2_CATEGORY_2);
-        assertListItemsContainsCategory(categorySchemeVersion.getItems(), CATEGORY_SCHEME_1_V2_CATEGORY_2_1);
-        assertListItemsContainsCategory(categorySchemeVersion.getItems(), CATEGORY_SCHEME_1_V2_CATEGORY_2_1_1);
-        assertListItemsContainsCategory(categorySchemeVersion.getItems(), CATEGORY_SCHEME_1_V2_CATEGORY_4);
-        assertListItemsContainsCategory(categorySchemeVersion.getItems(), CATEGORY_SCHEME_1_V2_CATEGORY_4_1);
-        assertListItemsContainsCategory(categorySchemeVersion.getItems(), CATEGORY_SCHEME_1_V2_CATEGORY_4_1_1);
+        assertListItemsContainsItem(categorySchemeVersion.getItems(), CATEGORY_SCHEME_1_V2_CATEGORY_1);
+        assertListItemsContainsItem(categorySchemeVersion.getItems(), CATEGORY_SCHEME_1_V2_CATEGORY_2);
+        assertListItemsContainsItem(categorySchemeVersion.getItems(), CATEGORY_SCHEME_1_V2_CATEGORY_2_1);
+        assertListItemsContainsItem(categorySchemeVersion.getItems(), CATEGORY_SCHEME_1_V2_CATEGORY_2_1_1);
+        assertListItemsContainsItem(categorySchemeVersion.getItems(), CATEGORY_SCHEME_1_V2_CATEGORY_4);
+        assertListItemsContainsItem(categorySchemeVersion.getItems(), CATEGORY_SCHEME_1_V2_CATEGORY_4_1);
+        assertListItemsContainsItem(categorySchemeVersion.getItems(), CATEGORY_SCHEME_1_V2_CATEGORY_4_1_1);
     }
 
     @Test
@@ -1254,17 +1254,17 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
 
         categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), categorySchemeUrn);
         assertEquals(4, categorySchemeVersion.getItemsFirstLevel().size());
-        assertListItemsContainsCategory(categorySchemeVersion.getItemsFirstLevel(), CATEGORY_SCHEME_1_V2_CATEGORY_1);
-        assertListItemsContainsCategory(categorySchemeVersion.getItemsFirstLevel(), CATEGORY_SCHEME_1_V2_CATEGORY_2);
-        assertListItemsContainsCategory(categorySchemeVersion.getItemsFirstLevel(), CATEGORY_SCHEME_1_V2_CATEGORY_3);
-        assertListItemsContainsCategory(categorySchemeVersion.getItemsFirstLevel(), CATEGORY_SCHEME_1_V2_CATEGORY_4);
+        assertListItemsContainsItem(categorySchemeVersion.getItemsFirstLevel(), CATEGORY_SCHEME_1_V2_CATEGORY_1);
+        assertListItemsContainsItem(categorySchemeVersion.getItemsFirstLevel(), CATEGORY_SCHEME_1_V2_CATEGORY_2);
+        assertListItemsContainsItem(categorySchemeVersion.getItemsFirstLevel(), CATEGORY_SCHEME_1_V2_CATEGORY_3);
+        assertListItemsContainsItem(categorySchemeVersion.getItemsFirstLevel(), CATEGORY_SCHEME_1_V2_CATEGORY_4);
         assertEquals(6, categorySchemeVersion.getItems().size());
-        assertListItemsContainsCategory(categorySchemeVersion.getItems(), CATEGORY_SCHEME_1_V2_CATEGORY_1);
-        assertListItemsContainsCategory(categorySchemeVersion.getItems(), CATEGORY_SCHEME_1_V2_CATEGORY_2);
-        assertListItemsContainsCategory(categorySchemeVersion.getItems(), CATEGORY_SCHEME_1_V2_CATEGORY_2_1);
-        assertListItemsContainsCategory(categorySchemeVersion.getItems(), CATEGORY_SCHEME_1_V2_CATEGORY_2_1_1);
-        assertListItemsContainsCategory(categorySchemeVersion.getItems(), CATEGORY_SCHEME_1_V2_CATEGORY_3);
-        assertListItemsContainsCategory(categorySchemeVersion.getItems(), CATEGORY_SCHEME_1_V2_CATEGORY_4);
+        assertListItemsContainsItem(categorySchemeVersion.getItems(), CATEGORY_SCHEME_1_V2_CATEGORY_1);
+        assertListItemsContainsItem(categorySchemeVersion.getItems(), CATEGORY_SCHEME_1_V2_CATEGORY_2);
+        assertListItemsContainsItem(categorySchemeVersion.getItems(), CATEGORY_SCHEME_1_V2_CATEGORY_2_1);
+        assertListItemsContainsItem(categorySchemeVersion.getItems(), CATEGORY_SCHEME_1_V2_CATEGORY_2_1_1);
+        assertListItemsContainsItem(categorySchemeVersion.getItems(), CATEGORY_SCHEME_1_V2_CATEGORY_3);
+        assertListItemsContainsItem(categorySchemeVersion.getItems(), CATEGORY_SCHEME_1_V2_CATEGORY_4);
     }
 
     @Test
@@ -1500,15 +1500,6 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
     }
     @Override
     public void testCreateCategorisation() throws Exception {
-    }
-
-    private void assertListItemsContainsCategory(List<Item> items, String urn) {
-        for (Item item : items) {
-            if (item.getNameableArtefact().getUrn().equals(urn)) {
-                return;
-            }
-        }
-        fail("List does not contain item with urn " + urn);
     }
 
     @Override
