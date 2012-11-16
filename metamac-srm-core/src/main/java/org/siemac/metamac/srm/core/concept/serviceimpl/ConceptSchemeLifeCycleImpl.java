@@ -15,7 +15,6 @@ import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.common.LifeCycleImpl;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
-import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacRepository;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacProperties;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacRepository;
@@ -40,9 +39,6 @@ public class ConceptSchemeLifeCycleImpl extends LifeCycleImpl {
 
     @Autowired
     private ConceptsService                       conceptsService;
-
-    @Autowired
-    private ConceptMetamacRepository              conceptMetamacRepository;
 
     public ConceptSchemeLifeCycleImpl() {
         this.callback = new ConceptSchemeLifeCycleCallback();
