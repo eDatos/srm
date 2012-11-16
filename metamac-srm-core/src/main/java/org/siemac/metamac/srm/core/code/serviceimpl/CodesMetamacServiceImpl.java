@@ -222,6 +222,12 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         return pagedResultCodeToMetamac(codesPagedResult);
     }
 
+    @Override
+    public void deleteCode(ServiceContext ctx, String urn) throws MetamacException {
+        // Note: ConceptsService checks conceptScheme isn't final
+        codesService.deleteCode(ctx, urn);
+    }
+
     // ------------------------------------------------------------------------------------
     // PRIVATE METHODS
     // ------------------------------------------------------------------------------------
@@ -279,4 +285,5 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         }
         return targets;
     }
+
 }

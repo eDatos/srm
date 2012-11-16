@@ -59,8 +59,8 @@ Application CodesMetamac {
     		@CodeMetamac retrieveCodeByUrn(String urn) throws MetamacException;
     		"Finds codes by criteria"
     		PagedResult<@CodeMetamac> findCodesByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
-//			"Deletes code"
-//    		deleteCode(String urn) throws MetamacException;
+			"Deletes code"
+    		deleteCode(String urn) throws MetamacException;
 //    		"Retrieves codes by codelist, in tree structure"
 //    		List<@CodeMetamac> retrieveCodesByCodelistUrn(String codelistUrn) throws MetamacException;
 
