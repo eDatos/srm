@@ -3,6 +3,9 @@ package org.siemac.metamac.srm.core.code.serviceimpl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
+import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
+import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
@@ -65,9 +68,9 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     public CodelistVersionMetamac updateCodelist(ServiceContext ctx, CodelistVersionMetamac codelistVersion) throws MetamacException {
         // Validation
         CodesMetamacInvocationValidator.checkUpdateCodelist(codelistVersion, null);
-        // CodesService checks conceptScheme isn't final (Schemes cannot be updated when procStatus is INTERNALLY_PUBLISHED or EXTERNALLY_PUBLISHED)
+        // CodesService checks codelist isn't final (Codelists cannot be updated when procStatus is INTERNALLY_PUBLISHED or EXTERNALLY_PUBLISHED)
 
-        // Save conceptScheme
+        // Save codelist
         return (CodelistVersionMetamac) codesService.updateCodelist(ctx, codelistVersion);
     }
 
@@ -77,11 +80,17 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
     @Override
     public List<CodelistVersionMetamac> retrieveCodelistVersions(ServiceContext ctx, String urn) throws MetamacException {
-        // Retrieve conceptSchemeVersions
+        // Retrieve codelistVersions
         List<CodelistVersion> codelistVersions = codesService.retrieveCodelistVersions(ctx, urn);
 
         // Typecast to CodelistVersionMetamac
         return codelistVersionsToCodelistVersionsMetamac(codelistVersions);
+    }
+
+    @Override
+    public PagedResult<CodelistVersionMetamac> findCodelistsByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
+        PagedResult<CodelistVersion> codelistVersionPagedResult = codesService.findCodelistsByCondition(ctx, conditions, pagingParameter);
+        return pagedResultCodelistVersionToMetamac(codelistVersionPagedResult);
     }
 
     // ------------------------------------------------------------------------------------
@@ -101,6 +110,15 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             targets.add((CodelistVersionMetamac) source);
         }
         return targets;
+    }
+
+    /**
+     * Typecast to Metamac type
+     */
+    private PagedResult<CodelistVersionMetamac> pagedResultCodelistVersionToMetamac(PagedResult<CodelistVersion> source) {
+        List<CodelistVersionMetamac> codelistVersionsMetamac = codelistVersionsToCodelistVersionsMetamac(source.getValues());
+        return new PagedResult<CodelistVersionMetamac>(codelistVersionsMetamac, source.getStartRow(), source.getRowCount(), source.getPageSize(), source.getTotalRows(),
+                source.getAdditionalResultRows());
     }
 
 }

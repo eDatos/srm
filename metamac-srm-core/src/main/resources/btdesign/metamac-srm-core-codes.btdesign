@@ -28,8 +28,8 @@ Application CodesMetamac {
 			@CodelistVersionMetamac retrieveCodelistByUrn(String urn) throws MetamacException;
 			"Retrieves all codelists versions"
 			List<@CodelistVersionMetamac> retrieveCodelistVersions(String urn) throws MetamacException;
-//			"Finds codelists by criteria"
-//    		PagedResult<@CodelistVersionMetamac> findCodelistsByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
+			"Finds codelists by criteria"
+    		PagedResult<@CodelistVersionMetamac> findCodelistsByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
 //    		"Sends codelist to production validation"
 //    		@CodelistVersionMetamac sendCodelistToProductionValidation(String urn) throws MetamacException;
 //    		"Sends codelist to diffusion validation"
