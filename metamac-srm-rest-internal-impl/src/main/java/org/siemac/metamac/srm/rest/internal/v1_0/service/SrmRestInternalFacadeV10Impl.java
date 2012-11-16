@@ -7,10 +7,8 @@ import javax.ws.rs.core.Response.Status;
 
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
-import org.fornax.cartridges.sculptor.framework.domain.LeafProperty;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
-import org.fornax.cartridges.sculptor.framework.domain.Property;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.aop.LoggingInterceptor;
 import org.siemac.metamac.core.common.exception.MetamacException;
@@ -28,7 +26,6 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacProperties;
 import org.siemac.metamac.srm.core.concept.domain.ConceptType;
 import org.siemac.metamac.srm.core.concept.serviceapi.ConceptsMetamacService;
-import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.concept.ConceptsDo2RestMapperV10;
@@ -143,13 +140,10 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             conditionalCriteria.addAll(conditionalCriteriaQuery);
         }
 
-        // Only concept scheme published
-        addConditionalCriteriaPublished(conditionalCriteria, ConceptSchemeVersionMetamac.class, ConceptSchemeVersionMetamacProperties.lifeCycleMetadata().procStatus());
-        // Agency
+        // Additional constraints
+        addConditionalCriteriaPublished(conditionalCriteria, ConceptSchemeVersionMetamac.class, ConceptSchemeVersionMetamacProperties.maintainableArtefact());
         addConditionalCriteriaByAgency(conditionalCriteria, agencyID, ConceptSchemeVersionMetamac.class, ConceptSchemeVersionMetamacProperties.maintainableArtefact());
-        // Concept scheme
         addConditionalCriteriaByConceptScheme(conditionalCriteria, resourceID, ConceptSchemeVersionMetamac.class, ConceptSchemeVersionMetamacProperties.maintainableArtefact());
-        // Version
         addConditionalCriteriaByConceptSchemeVersion(conditionalCriteria, version, ConceptSchemeVersionMetamac.class, ConceptSchemeVersionMetamacProperties.maintainableArtefact());
 
         // Find
@@ -166,14 +160,10 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             conditionalCriteria.addAll(conditionalCriteriaQuery);
         }
 
-        // Only concept scheme published
-        addConditionalCriteriaPublished(conditionalCriteria, ConceptMetamac.class, new LeafProperty<ConceptMetamac>(ConceptMetamacProperties.itemSchemeVersion().getName(),
-                ConceptSchemeVersionMetamacProperties.lifeCycleMetadata().procStatus().getName(), true, ConceptMetamac.class));
-        // Agency
+        // Additional constraints
+        addConditionalCriteriaPublished(conditionalCriteria, ConceptMetamac.class, ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact());
         addConditionalCriteriaByAgency(conditionalCriteria, agencyID, ConceptMetamac.class, ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact());
-        // Concept scheme
         addConditionalCriteriaByConceptScheme(conditionalCriteria, resourceID, ConceptMetamac.class, ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact());
-        // Version
         addConditionalCriteriaByConceptSchemeVersion(conditionalCriteria, version, ConceptMetamac.class, ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact());
 
         // Find
@@ -181,10 +171,12 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
         return conceptsEntitiesResult;
     }
 
+    /**
+     * Internally or externally published
+     */
     @SuppressWarnings({"unchecked", "rawtypes"})
-    private void addConditionalCriteriaPublished(List<ConditionalCriteria> conditionalCriteria, Class entity, Property procStatusProperty) {
-        conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(entity).withProperty(procStatusProperty).in(ProcStatusEnum.INTERNALLY_PUBLISHED, ProcStatusEnum.EXTERNALLY_PUBLISHED)
-                .buildSingle());
+    private void addConditionalCriteriaPublished(List<ConditionalCriteria> conditionalCriteria, Class entity, MaintainableArtefactProperty maintainableArtefactProperty) {
+        conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(entity).withProperty(maintainableArtefactProperty.finalLogic()).eq(Boolean.TRUE).buildSingle());
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})

@@ -17,7 +17,6 @@ import java.util.List;
 
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
-import org.fornax.cartridges.sculptor.framework.domain.LeafProperty;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.mockito.ArgumentCaptor;
@@ -32,7 +31,6 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacProperties;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacProperties;
 import org.siemac.metamac.srm.core.concept.serviceapi.ConceptsMetamacService;
-import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 
 public class SrmRestAsserts extends MetamacRestAsserts {
@@ -95,8 +93,8 @@ public class SrmRestAsserts extends MetamacRestAsserts {
         expected.addAll(buildFindConceptSchemesExpectedOrder(orderBy));
         expected.addAll(buildFindConceptSchemesExpectedQuery(query));
         expected.add(ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).distinctRoot().buildSingle());
-        expected.add(ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).withProperty(ConceptSchemeVersionMetamacProperties.lifeCycleMetadata().procStatus())
-                .in(ProcStatusEnum.INTERNALLY_PUBLISHED, ProcStatusEnum.EXTERNALLY_PUBLISHED).buildSingle());
+        expected.add(ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).withProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact().finalLogic()).eq(Boolean.TRUE)
+                .buildSingle());
         if (agencyID != null && !RestInternalConstants.WILDCARD.equals(agencyID)) {
             expected.add(ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class)
                     .withProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact().maintainer().idAsMaintainer()).eq(agencyID).buildSingle());
@@ -113,11 +111,8 @@ public class SrmRestAsserts extends MetamacRestAsserts {
         expected.addAll(buildFindConceptsExpectedOrderBy(orderBy));
         expected.addAll(buildFindConceptsExpectedQuery(query));
         expected.add(ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class).distinctRoot().buildSingle());
-        expected.add(ConditionalCriteriaBuilder
-                .criteriaFor(ConceptMetamac.class)
-                .withProperty(
-                        new LeafProperty<ConceptMetamac>(ConceptMetamacProperties.itemSchemeVersion().getName(), ConceptSchemeVersionMetamacProperties.lifeCycleMetadata().procStatus().getName(),
-                                true, ConceptMetamac.class)).in(ProcStatusEnum.INTERNALLY_PUBLISHED, ProcStatusEnum.EXTERNALLY_PUBLISHED).buildSingle());
+        expected.add(ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class).withProperty(ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact().finalLogic()).eq(Boolean.TRUE)
+                .buildSingle());
         if (agencyID != null && !RestInternalConstants.WILDCARD.equals(agencyID)) {
             expected.add(ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class).withProperty(ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact().maintainer().idAsMaintainer())
                     .eq(agencyID).buildSingle());
