@@ -1254,43 +1254,32 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     // // Validate
     // CodesMetamacAsserts.assertEqualsCode(code, codeUpdated);
     // }
-    //
-    // @Test
-    // public void testRetrieveCodeByUrn() throws Exception {
-    // // Retrieve
-    // String urn = CODELIST_1_V2_CODE_1;
-    // CodeMetamac code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), urn);
-    //
-    // // Validate (only metadata in SRM Metamac; the others are checked in sdmx project)
-    // assertEquals(urn, code.getNameableArtefact().getUrn());
-    // CodesMetamacAsserts.assertEqualsInternationalString(code.getPluralName(), "es", "PluralName codelist-1-v2-code-1", null, null);
-    // CodesMetamacAsserts.assertEqualsInternationalString(code.getAcronym(), "es", "Acronym codelist-1-v2-code-1", null, null);
-    // CodesMetamacAsserts.assertEqualsInternationalString(code.getDescriptionSource(), "es", "DescriptionSource codelist-1-v2-code-1", null, null);
-    // CodesMetamacAsserts.assertEqualsInternationalString(code.getContext(), "es", "Context codelist-1-v2-code-1", null, null);
-    // CodesMetamacAsserts.assertEqualsInternationalString(code.getDocMethod(), "es", "DocMethod codelist-1-v2-code-1", null, null);
-    // CodesMetamacAsserts.assertEqualsInternationalString(code.getDerivation(), "es", "Derivation codelist-1-v2-code-1", null, null);
-    // CodesMetamacAsserts.assertEqualsInternationalString(code.getLegalActs(), "es", "LegalActs codelist-1-v2-code-1", null, null);
-    // assertEquals(CodeRoleEnum.ATTRIBUTE, code.getSdmxRelatedArtefact());
-    // assertEquals(CODE_TYPE_DIRECT, code.getType().getIdentifier());
-    // assertEquals(CODELIST_12_V1_CODE_1, code.getCodeExtends().getNameableArtefact().getUrn());
-    // }
-    //
-    // @Test
-    // public void testRetrieveCodeByUrnWithParentAndChildren() throws Exception {
-    //
-    // // Retrieve
-    // String urn = CODELIST_1_V2_CODE_2_1;
-    // CodeMetamac code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), urn);
-    //
-    // // Validate
-    // assertEquals("codelist-1-v2-code-2-1", code.getUuid());
-    // assertEquals(CODELIST_1_V2_CODE_2, code.getParent().getNameableArtefact().getUrn());
-    // assertEquals(1, code.getChildren().size());
-    // assertEquals(CODELIST_1_V2_CODE_2_1_1, code.getChildren().get(0).getNameableArtefact().getUrn());
-    // assertEquals(CODELIST_1_V2, code.getItemSchemeVersion().getMaintainableArtefact().getUrn());
-    // assertEquals(null, code.getItemSchemeVersionFirstLevel());
-    // }
-    //
+
+    @Test
+    public void testRetrieveCodeByUrn() throws Exception {
+        // Retrieve
+        String urn = CODELIST_1_V2_CODE_1;
+        CodeMetamac code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), urn);
+
+        // Validate (only metadata in SRM Metamac; the others are checked in sdmx project)
+        assertEquals(urn, code.getNameableArtefact().getUrn());
+    }
+
+    @Test
+    public void testRetrieveCodeByUrnWithParentAndChildren() throws Exception {
+        // Retrieve
+        String urn = CODELIST_1_V2_CODE_2_1;
+        CodeMetamac code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), urn);
+
+        // Validate
+        assertEquals("codelist-1-v2-code-2-1", code.getUuid());
+        assertEquals(CODELIST_1_V2_CODE_2, code.getParent().getNameableArtefact().getUrn());
+        assertEquals(1, code.getChildren().size());
+        assertEquals(CODELIST_1_V2_CODE_2_1_1, code.getChildren().get(0).getNameableArtefact().getUrn());
+        assertEquals(CODELIST_1_V2, code.getItemSchemeVersion().getMaintainableArtefact().getUrn());
+        assertEquals(null, code.getItemSchemeVersionFirstLevel());
+    }
+
     // @Test
     // public void testDeleteCode() throws Exception {
     //

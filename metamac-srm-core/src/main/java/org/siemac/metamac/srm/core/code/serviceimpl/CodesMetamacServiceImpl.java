@@ -10,6 +10,7 @@ import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
+import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.serviceimpl.utils.CodesMetamacInvocationValidator;
 import org.siemac.metamac.srm.core.common.LifeCycle;
@@ -179,6 +180,11 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     // ------------------------------------------------------------------------------------
     // CODES
     // ------------------------------------------------------------------------------------
+
+    @Override
+    public CodeMetamac retrieveCodeByUrn(ServiceContext ctx, String urn) throws MetamacException {
+        return (CodeMetamac) codesService.retrieveCodeByUrn(ctx, urn);
+    }
 
     // ------------------------------------------------------------------------------------
     // PRIVATE METHODS
