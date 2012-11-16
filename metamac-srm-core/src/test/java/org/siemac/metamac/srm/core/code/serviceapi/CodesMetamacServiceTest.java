@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.siemac.metamac.srm.core.base.utils.BaseServiceTestUtils.assertListItemsContainsItem;
 
 import java.util.Date;
 import java.util.List;
@@ -1254,110 +1255,102 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertEquals(null, code.getItemSchemeVersionFirstLevel());
     }
 
-    // @Test
-    // public void testDeleteCode() throws Exception {
-    //
-    // String urn = CODELIST_1_V2_CODE_3;
-    // String codelistUrn = CODELIST_1_V2;
-    // String codeExtendsBeforeDeleteUrn = CODELIST_12_V1_CODE_1;
-    //
-    // CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistUrn);
-    // assertEquals(4, codelistVersion.getItemsFirstLevel().size());
-    // assertEquals(8, codelistVersion.getItems().size());
-    //
-    // // Retrieve code to check extends metadata
-    // CodeMetamac codeMetamac = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), urn);
-    // assertEquals(codeExtendsBeforeDeleteUrn, codeMetamac.getCodeExtends().getNameableArtefact().getUrn());
-    //
-    // // Delete code
-    // codesService.deleteCode(getServiceContextAdministrador(), urn);
-    //
-    // // Validation
-    // try {
-    // codesService.retrieveCodeByUrn(getServiceContextAdministrador(), urn);
-    // fail("Code deleted");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // }
-    // // Check do not delete code extends
-    // codesService.retrieveCodeByUrn(getServiceContextAdministrador(), codeExtendsBeforeDeleteUrn);
-    //
-    // // Check hierarchy
-    // codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistUrn);
-    // assertEquals(3, codelistVersion.getItemsFirstLevel().size());
-    // assertListItemsContainsCode(codelistVersion.getItemsFirstLevel(), CODELIST_1_V2_CODE_1);
-    // assertListItemsContainsCode(codelistVersion.getItemsFirstLevel(), CODELIST_1_V2_CODE_2);
-    // assertListItemsContainsCode(codelistVersion.getItemsFirstLevel(), CODELIST_1_V2_CODE_4);
-    // assertEquals(7, codelistVersion.getItems().size());
-    // assertListItemsContainsCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_1);
-    // assertListItemsContainsCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_2);
-    // assertListItemsContainsCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_2_1);
-    // assertListItemsContainsCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_2_1_1);
-    // assertListItemsContainsCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_4);
-    // assertListItemsContainsCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_4_1);
-    // assertListItemsContainsCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_4_1_1);
-    // }
-    //
-    // @Test
-    // public void testDeleteCodeWithParentAndChildren() throws Exception {
-    //
-    // String urn = CODELIST_1_V2_CODE_4_1;
-    // String codelistUrn = CODELIST_1_V2;
-    //
-    // CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistUrn);
-    // assertEquals(4, codelistVersion.getItemsFirstLevel().size());
-    // assertEquals(8, codelistVersion.getItems().size());
-    //
-    // // Delete code
-    // codesService.deleteCode(getServiceContextAdministrador(), urn);
-    //
-    // // Validation
-    // try {
-    // codesService.retrieveCodeByUrn(getServiceContextAdministrador(), urn);
-    // fail("Code deleted");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // }
-    //
-    // codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistUrn);
-    // assertEquals(4, codelistVersion.getItemsFirstLevel().size());
-    // assertListItemsContainsCode(codelistVersion.getItemsFirstLevel(), CODELIST_1_V2_CODE_1);
-    // assertListItemsContainsCode(codelistVersion.getItemsFirstLevel(), CODELIST_1_V2_CODE_2);
-    // assertListItemsContainsCode(codelistVersion.getItemsFirstLevel(), CODELIST_1_V2_CODE_3);
-    // assertListItemsContainsCode(codelistVersion.getItemsFirstLevel(), CODELIST_1_V2_CODE_4);
-    // assertEquals(6, codelistVersion.getItems().size());
-    // assertListItemsContainsCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_1);
-    // assertListItemsContainsCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_2);
-    // assertListItemsContainsCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_2_1);
-    // assertListItemsContainsCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_2_1_1);
-    // assertListItemsContainsCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_3);
-    // assertListItemsContainsCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_4);
-    // }
-    //
-    // @Test
-    // public void testDeleteCodeErrorCodelistPublished() throws Exception {
-    //
-    // String urn = CODELIST_12_V1_CODE_1;
-    // String codelistUrn = CODELIST_12_V1;
-    //
-    // // Validation
-    // try {
-    // codesService.deleteCode(getServiceContextAdministrador(), urn);
-    // fail("Code can not be deleted");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.MAINTAINABLE_ARTEFACT_FINAL.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(codelistUrn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // }
-    // }
-    //
+    @Test
+    public void testDeleteCode() throws Exception {
+        String urn = CODELIST_1_V2_CODE_3;
+        String codelistUrn = CODELIST_1_V2;
+
+        CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistUrn);
+        assertEquals(4, codelistVersion.getItemsFirstLevel().size());
+        assertEquals(8, codelistVersion.getItems().size());
+
+        // Delete code
+        codesService.deleteCode(getServiceContextAdministrador(), urn);
+
+        // Validation
+        try {
+            codesService.retrieveCodeByUrn(getServiceContextAdministrador(), urn);
+            fail("Code deleted");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+
+        // Check hierarchy
+        codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistUrn);
+        assertEquals(3, codelistVersion.getItemsFirstLevel().size());
+        assertListItemsContainsItem(codelistVersion.getItemsFirstLevel(), CODELIST_1_V2_CODE_1);
+        assertListItemsContainsItem(codelistVersion.getItemsFirstLevel(), CODELIST_1_V2_CODE_2);
+        assertListItemsContainsItem(codelistVersion.getItemsFirstLevel(), CODELIST_1_V2_CODE_4);
+        assertEquals(7, codelistVersion.getItems().size());
+        assertListItemsContainsItem(codelistVersion.getItems(), CODELIST_1_V2_CODE_1);
+        assertListItemsContainsItem(codelistVersion.getItems(), CODELIST_1_V2_CODE_2);
+        assertListItemsContainsItem(codelistVersion.getItems(), CODELIST_1_V2_CODE_2_1);
+        assertListItemsContainsItem(codelistVersion.getItems(), CODELIST_1_V2_CODE_2_1_1);
+        assertListItemsContainsItem(codelistVersion.getItems(), CODELIST_1_V2_CODE_4);
+        assertListItemsContainsItem(codelistVersion.getItems(), CODELIST_1_V2_CODE_4_1);
+        assertListItemsContainsItem(codelistVersion.getItems(), CODELIST_1_V2_CODE_4_1_1);
+    }
+
+    @Test
+    public void testDeleteCodeWithParentAndChildren() throws Exception {
+
+        String urn = CODELIST_1_V2_CODE_4_1;
+        String codelistUrn = CODELIST_1_V2;
+
+        CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistUrn);
+        assertEquals(4, codelistVersion.getItemsFirstLevel().size());
+        assertEquals(8, codelistVersion.getItems().size());
+
+        // Delete code
+        codesService.deleteCode(getServiceContextAdministrador(), urn);
+
+        // Validation
+        try {
+            codesService.retrieveCodeByUrn(getServiceContextAdministrador(), urn);
+            fail("Code deleted");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+
+        codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistUrn);
+        assertEquals(4, codelistVersion.getItemsFirstLevel().size());
+        assertListItemsContainsItem(codelistVersion.getItemsFirstLevel(), CODELIST_1_V2_CODE_1);
+        assertListItemsContainsItem(codelistVersion.getItemsFirstLevel(), CODELIST_1_V2_CODE_2);
+        assertListItemsContainsItem(codelistVersion.getItemsFirstLevel(), CODELIST_1_V2_CODE_3);
+        assertListItemsContainsItem(codelistVersion.getItemsFirstLevel(), CODELIST_1_V2_CODE_4);
+        assertEquals(6, codelistVersion.getItems().size());
+        assertListItemsContainsItem(codelistVersion.getItems(), CODELIST_1_V2_CODE_1);
+        assertListItemsContainsItem(codelistVersion.getItems(), CODELIST_1_V2_CODE_2);
+        assertListItemsContainsItem(codelistVersion.getItems(), CODELIST_1_V2_CODE_2_1);
+        assertListItemsContainsItem(codelistVersion.getItems(), CODELIST_1_V2_CODE_2_1_1);
+        assertListItemsContainsItem(codelistVersion.getItems(), CODELIST_1_V2_CODE_3);
+        assertListItemsContainsItem(codelistVersion.getItems(), CODELIST_1_V2_CODE_4);
+    }
+
+    @Test
+    public void testDeleteCodeErrorCodelistPublished() throws Exception {
+
+        String urn = CODELIST_12_V1_CODE_1;
+        String codelistUrn = CODELIST_12_V1;
+
+        // Validation
+        try {
+            codesService.deleteCode(getServiceContextAdministrador(), urn);
+            fail("Code can not be deleted");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.MAINTAINABLE_ARTEFACT_FINAL.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(codelistUrn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
     // @Test
     // public void testRetrieveCodesByCodelistUrn() throws Exception {
     //
@@ -1541,15 +1534,6 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         }
     }
 
-    // private void assertListItemsContainsCode(List<Item> items, String urn) {
-    // for (Item item : items) {
-    // if (item.getNameableArtefact().getUrn().equals(urn)) {
-    // return;
-    // }
-    // }
-    // fail("List does not contain item with urn " + urn);
-    // }
-    //
     // private void assertListCodesContainsCode(List<CodeMetamac> items, String urn) {
     // for (Item item : items) {
     // if (item.getNameableArtefact().getUrn().equals(urn)) {
