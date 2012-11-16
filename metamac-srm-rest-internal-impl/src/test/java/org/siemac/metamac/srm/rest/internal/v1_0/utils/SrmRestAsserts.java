@@ -2,11 +2,12 @@ package org.siemac.metamac.srm.rest.internal.v1_0.utils;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
-import static org.siemac.metamac.srm.rest.internal.v1_0.service.SrmRestInternalFacadeV10Test.QUERY_CONCEPT_SCHEME_ID_LIKE_1;
-import static org.siemac.metamac.srm.rest.internal.v1_0.service.SrmRestInternalFacadeV10Test.QUERY_CONCEPT_SCHEME_ID_LIKE_1_NAME_LIKE_2;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.QUERY_CONCEPT_SCHEME_ID_LIKE_1;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.QUERY_CONCEPT_SCHEME_ID_LIKE_1_NAME_LIKE_2;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,16 +18,21 @@ import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.mockito.ArgumentCaptor;
 import org.siemac.metamac.rest.common.test.utils.MetamacRestAsserts;
+import org.siemac.metamac.rest.common.v1_0.domain.InternationalString;
+import org.siemac.metamac.rest.common.v1_0.domain.LocalisedString;
+import org.siemac.metamac.rest.common.v1_0.domain.Resource;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemes;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacProperties;
 import org.siemac.metamac.srm.core.concept.serviceapi.ConceptsMetamacService;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
-public class SrmRestAsserts {
+
+public class SrmRestAsserts extends MetamacRestAsserts {
 
     @SuppressWarnings({"rawtypes", "unchecked"})
-    public static void assertFindConceptSchemes(ConceptsMetamacService conceptsService, String agencyID, String resourceID, String limit, String offset, String query, String orderBy, ConceptSchemes conceptSchemesActual) throws Exception {
+    public static void assertFindConceptSchemes(ConceptsMetamacService conceptsService, String agencyID, String resourceID, String limit, String offset, String query, String orderBy,
+            ConceptSchemes conceptSchemesActual) throws Exception {
 
         assertNotNull(conceptSchemesActual);
         assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEMES, conceptSchemesActual.getKind());
@@ -41,6 +47,13 @@ public class SrmRestAsserts {
         MetamacRestAsserts.assertEqualsPagingParameter(buildExpectedPagingParameter(offset, limit), pagingParameter.getValue());
     }
     
+    public static void assertEqualsResource(ConceptSchemeVersionMetamac source, Resource target) {
+        assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEME, target.getKind());
+        assertEquals(source.getMaintainableArtefact().getCode(), target.getId());
+        assertEquals(source.getMaintainableArtefact().getUrn(), target.getUrn());
+        assertEquals("http://data.istac.es/apis/srm/v1.0/conceptschemes/" + source.getMaintainableArtefact().getMaintainer().getIdAsMaintainer() + "/" + source.getMaintainableArtefact().getCode() + "/" + source.getMaintainableArtefact().getVersionLogic(), target.getSelfLink());
+        assertEqualsInternationalString(source.getMaintainableArtefact().getName(), target.getTitle());
+    }
 
     private static List<ConditionalCriteria> buildExpectedConditionalCriteria(String agencyID, String resourceID, String query, String orderBy) {
         List<ConditionalCriteria> expected = new ArrayList<ConditionalCriteria>();
@@ -101,5 +114,23 @@ public class SrmRestAsserts {
         }
         int endRow = startRow + maximumResultSize;
         return PagingParameter.rowAccess(startRow, endRow, false);
+    }
+
+    private static void assertEqualsInternationalString(org.siemac.metamac.core.common.ent.domain.InternationalString expecteds, InternationalString actuals) {
+        assertEqualsNullability(expecteds, actuals);
+        if (expecteds == null) {
+            return;
+        }
+        assertEquals(expecteds.getTexts().size(), actuals.getTexts().size());
+        for (org.siemac.metamac.core.common.ent.domain.LocalisedString expected : expecteds.getTexts()) {
+            boolean existsItem = false;
+            for (LocalisedString actual : actuals.getTexts()) {
+                if (expected.getLocale().equals(actual.getLang())) {
+                    assertEquals(expected.getLabel(), actual.getValue());
+                    existsItem = true;
+                }
+            }
+            assertTrue(existsItem);
+        }
     }
 }

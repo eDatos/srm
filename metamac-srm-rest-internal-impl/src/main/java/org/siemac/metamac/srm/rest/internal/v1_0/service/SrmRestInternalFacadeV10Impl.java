@@ -48,17 +48,17 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
 
     @Override
     public ConceptSchemes findConceptSchemes(String query, String orderBy, String limit, String offset) {
-        return findConceptSchemesCommon(null, null, null, query, orderBy, limit, offset);
+        return findConceptSchemesCommon(null, null, query, orderBy, limit, offset);
     }
 
     @Override
     public ConceptSchemes findConceptSchemes(String agencyID, String query, String orderBy, String limit, String offset) {
-        return findConceptSchemesCommon(agencyID, null, null, query, orderBy, limit, offset);
+        return findConceptSchemesCommon(agencyID, null, query, orderBy, limit, offset);
     }
 
     @Override
     public ConceptSchemes findConceptSchemes(String agencyID, String resourceID, String query, String orderBy, String limit, String offset) {
-        return findConceptSchemesCommon(agencyID, resourceID, null, query, orderBy, limit, offset);
+        return findConceptSchemesCommon(agencyID, resourceID, query, orderBy, limit, offset);
     }
 
     @Override
@@ -79,16 +79,16 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
         }
     }
 
-    private ConceptSchemes findConceptSchemesCommon(String agencyID, String resourceID, String version, String query, String orderBy, String limit, String offset) {
+    private ConceptSchemes findConceptSchemesCommon(String agencyID, String resourceID, String query, String orderBy, String limit, String offset) {
         try {
             SculptorCriteria sculptorCriteria = restCriteria2SculptorCriteriaMapper.getConceptSchemeCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
 
             // Find
-            PagedResult<ConceptSchemeVersionMetamac> conceptsSchemesEntitiesResult = findConceptSchemesCore(agencyID, resourceID, version, sculptorCriteria.getConditions(),
+            PagedResult<ConceptSchemeVersionMetamac> conceptsSchemesEntitiesResult = findConceptSchemesCore(agencyID, resourceID, null, sculptorCriteria.getConditions(),
                     sculptorCriteria.getPagingParameter());
 
             // Transform
-            ConceptSchemes conceptSchemes = do2RestInternalMapper.toConceptSchemes(conceptsSchemesEntitiesResult, agencyID, resourceID, version, query, orderBy, sculptorCriteria.getLimit());
+            ConceptSchemes conceptSchemes = do2RestInternalMapper.toConceptSchemes(conceptsSchemesEntitiesResult, agencyID, resourceID, query, orderBy, sculptorCriteria.getLimit());
             return conceptSchemes;
         } catch (Exception e) {
             throw manageException(e);

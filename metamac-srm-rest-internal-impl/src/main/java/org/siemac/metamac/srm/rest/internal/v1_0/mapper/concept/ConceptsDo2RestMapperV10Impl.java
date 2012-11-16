@@ -66,13 +66,13 @@ public class ConceptsDo2RestMapperV10Impl implements ConceptsDo2RestMapperV10 {
     }
 
     @Override
-    public ConceptSchemes toConceptSchemes(PagedResult<ConceptSchemeVersionMetamac> sourcesPagedResult, String agencyID, String resourceID, String version, String query, String orderBy, Integer limit) {
+    public ConceptSchemes toConceptSchemes(PagedResult<ConceptSchemeVersionMetamac> sourcesPagedResult, String agencyID, String resourceID, String query, String orderBy, Integer limit) {
 
         ConceptSchemes targets = new ConceptSchemes();
         targets.setKind(RestInternalConstants.KIND_CONCEPT_SCHEMES);
 
         // Pagination
-        String baseLink = toConceptSchemesLink(agencyID, resourceID, version);
+        String baseLink = toConceptSchemesLink(agencyID, resourceID, null);
         SculptorCriteria2RestCriteria.toPagedResult(sourcesPagedResult, targets, query, orderBy, limit, baseLink);
 
         // Values
@@ -126,7 +126,7 @@ public class ConceptsDo2RestMapperV10Impl implements ConceptsDo2RestMapperV10 {
         target.setRoles(conceptsToUrns(source.getRoleConcepts()));
         target.setRelatedConcepts(conceptsToUrns(source.getRelatedConcepts()));
     }
-    
+
     private ResourceLink toConceptSchemeParent() {
         ResourceLink target = new ResourceLink();
         target.setKind(RestInternalConstants.KIND_CONCEPT_SCHEMES);
@@ -135,8 +135,16 @@ public class ConceptsDo2RestMapperV10Impl implements ConceptsDo2RestMapperV10 {
     }
 
     private Children toConceptSchemeChildren(ConceptSchemeVersionMetamac source) {
-        // no children
-        return null;
+        Children targets = new Children();
+
+        // Concepts
+        ResourceLink conceptsTarget = new ResourceLink();
+        conceptsTarget.setKind(RestInternalConstants.KIND_CONCEPTS);
+        conceptsTarget.setSelfLink(toConceptsLink(source));
+        targets.getChildren().add(conceptsTarget);
+
+        targets.setTotal(BigInteger.valueOf(targets.getChildren().size()));
+        return targets;
     }
 
     private org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemeType toConceptSchemeTypeEnum(ConceptSchemeTypeEnum source) {
@@ -239,6 +247,13 @@ public class ConceptsDo2RestMapperV10Impl implements ConceptsDo2RestMapperV10 {
         return toConceptSchemesLink(maintainableArtefact.getMaintainer().getIdAsMaintainer(), maintainableArtefact.getCode(), maintainableArtefact.getVersionLogic());
     }
 
+    // API/conceptschemes/{agencyID}/{resourceID}/{version}/concepts
+    private String toConceptsLink(ConceptSchemeVersionMetamac conceptSchemeVersionMetamac) {
+        String link = toConceptSchemeLink(conceptSchemeVersionMetamac);
+        link = RestUtils.createLink(link, RestInternalConstants.LINK_SUBPATH_CONCEPTS);
+        return link;
+    }
+
     private String readProperty(String property) {
         String propertyValue = configurationService.getProperty(property);
         if (propertyValue == null) {
@@ -246,7 +261,7 @@ public class ConceptsDo2RestMapperV10Impl implements ConceptsDo2RestMapperV10 {
         }
         return propertyValue;
     }
-    
+
     private Urns conceptsToUrns(List<ConceptMetamac> sources) {
         if (CollectionUtils.isEmpty(sources)) {
             return null;

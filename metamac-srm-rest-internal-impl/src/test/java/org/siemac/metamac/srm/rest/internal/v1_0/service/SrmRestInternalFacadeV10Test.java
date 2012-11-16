@@ -5,6 +5,18 @@ import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
 import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.WILDCARD;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestAsserts.assertFindConceptSchemes;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.AGENCY_1;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.AGENCY_2;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.CONCEPT_SCHEME_1_CODE;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.CONCEPT_SCHEME_1_VERSION_1;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.CONCEPT_SCHEME_2_CODE;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.CONCEPT_SCHEME_2_VERSION_1;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.CONCEPT_SCHEME_2_VERSION_2;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.CONCEPT_SCHEME_3_CODE;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.CONCEPT_SCHEME_3_VERSION_1;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.NOT_EXISTS;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.QUERY_CONCEPT_SCHEME_ID_LIKE_1;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.QUERY_CONCEPT_SCHEME_ID_LIKE_1_NAME_LIKE_2;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -33,11 +45,8 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.util.ApplicationContextProvider;
 import org.siemac.metamac.rest.common.test.MetamacRestBaseTest;
 import org.siemac.metamac.rest.common.test.ServerResource;
-import org.siemac.metamac.rest.common.v1_0.domain.ComparisonOperator;
-import org.siemac.metamac.rest.common.v1_0.domain.LogicalOperator;
 import org.siemac.metamac.rest.constants.RestConstants;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptScheme;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemeCriteriaPropertyRestriction;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemes;
 import org.siemac.metamac.rest.utils.RestUtils;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
@@ -50,30 +59,13 @@ import org.springframework.context.ApplicationContext;
 
 public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
 
-    private static final String             PORT                                       = ServerResource.PORT;
-    private static String                   jaxrsServerAddress                         = "http://localhost:" + PORT + "/apis/srm-internal";
-    private static String                   baseApi                                    = jaxrsServerAddress + "/v1.0";
+    private static final String             PORT               = ServerResource.PORT;
+    private static String                   jaxrsServerAddress = "http://localhost:" + PORT + "/apis/srm-internal";
+    private static String                   baseApi            = jaxrsServerAddress + "/v1.0";
 
     private ConceptsMetamacService          conceptsService;
     private static SrmRestInternalFacadeV10 srmRestInternalFacadeClientXml;
-    private static ApplicationContext       applicationContext                         = null;
-
-    public static String                    QUERY_CONCEPT_SCHEME_ID_LIKE_1             = ConceptSchemeCriteriaPropertyRestriction.ID + " " + ComparisonOperator.LIKE + " \"1\"";
-    public static String                    QUERY_CONCEPT_SCHEME_ID_LIKE_1_NAME_LIKE_2 = ConceptSchemeCriteriaPropertyRestriction.ID + " " + ComparisonOperator.LIKE + " \"1\"" + " "
-                                                                                               + LogicalOperator.AND + " " + ConceptSchemeCriteriaPropertyRestriction.NAME + " "
-                                                                                               + ComparisonOperator.LIKE + " \"2\"";
-    private String                          NOT_EXISTS                                 = "notexists";
-    private String                          AGENCY_1                                   = "agency1";
-    private String                          AGENCY_2                                   = "agency2";
-
-    private String                          CONCEPT_SCHEME_1_CODE                      = "conceptScheme1";
-    private String                          CONCEPT_SCHEME_1_VERSION_1                 = "01.000";
-
-    private String                          CONCEPT_SCHEME_2_CODE                      = "conceptScheme2";
-    private String                          CONCEPT_SCHEME_2_VERSION_1                 = "01.000";
-    private String                          CONCEPT_SCHEME_2_VERSION_2                 = "02.000";
-    private String                          CONCEPT_SCHEME_3_CODE                      = "conceptScheme3";
-    private String                          CONCEPT_SCHEME_3_VERSION_1                 = "01.000";
+    private static ApplicationContext       applicationContext = null;
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     @BeforeClass
