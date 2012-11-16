@@ -39,6 +39,7 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
+import com.arte.statistic.sdmx.srm.core.code.serviceapi.utils.CodesDoMocks;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
 
 /**
@@ -1213,29 +1214,18 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         }
     }
 
-    // @Test
-    // public void testUpdateCode() throws Exception {
-    //
-    // CodeMetamac code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_1_V2_CODE_1);
-    // code.getNameableArtefact().setIsCodeUpdated(Boolean.FALSE);
-    // code.getNameableArtefact().setName(CodesDoMocks.mockInternationalString());
-    // code.setCodeExtends(codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_13_V1_CODE_2));
-    // assertTrue(code.getCoreRepresentation() instanceof EnumeratedRepresentation);
-    // code.setCoreRepresentation(CodesDoMocks.mockTextFormatRepresentation());
-    //
-    // // Update
-    // CodeMetamac codeUpdated = codesService.updateCode(getServiceContextAdministrador(), code);
-    //
-    // // Validate
-    // CodesMetamacAsserts.assertEqualsCode(code, codeUpdated);
-    //
-    // // Update to remove metadata 'extends'
-    // codeUpdated.setCodeExtends(null);
-    // codeUpdated = codesService.updateCode(getServiceContextAdministrador(), code);
-    //
-    // // Validate
-    // CodesMetamacAsserts.assertEqualsCode(code, codeUpdated);
-    // }
+    @Test
+    public void testUpdateCode() throws Exception {
+        CodeMetamac code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_1_V2_CODE_1);
+        code.getNameableArtefact().setIsCodeUpdated(Boolean.FALSE);
+        code.getNameableArtefact().setName(CodesDoMocks.mockInternationalString());
+
+        // Update
+        CodeMetamac codeUpdated = codesService.updateCode(getServiceContextAdministrador(), code);
+
+        // Validate
+        CodesMetamacAsserts.assertEqualsCode(code, codeUpdated);
+    }
 
     @Test
     public void testRetrieveCodeByUrn() throws Exception {

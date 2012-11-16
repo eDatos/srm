@@ -196,6 +196,20 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     @Override
+    public CodeMetamac updateCode(ServiceContext ctx, CodeMetamac code) throws MetamacException {
+        CodelistVersionMetamac codelistVersion = null;
+        if (code != null && code.getItemSchemeVersion() != null && code.getItemSchemeVersion().getMaintainableArtefact() != null
+                && code.getItemSchemeVersion().getMaintainableArtefact().getUrn() != null) {
+            codelistVersion = retrieveCodelistByUrn(ctx, code.getItemSchemeVersion().getMaintainableArtefact().getUrn());
+        }
+        // Validation
+        CodesMetamacInvocationValidator.checkUpdateCode(codelistVersion, code, null);
+        // CodesService checks codelist isn't final
+
+        return (CodeMetamac) codesService.updateCode(ctx, code);
+    }
+
+    @Override
     public CodeMetamac retrieveCodeByUrn(ServiceContext ctx, String urn) throws MetamacException {
         return (CodeMetamac) codesService.retrieveCodeByUrn(ctx, urn);
     }
