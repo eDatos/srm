@@ -24,6 +24,8 @@ import "classpath:/btdesign/metamac-srm-core-categories.btdesign"
 import "classpath:/btdesign/metamac-srm-core-categories-dtos.btdesign"
 import "classpath:/btdesign/metamac-srm-core-dsds.btdesign"
 import "classpath:/btdesign/metamac-srm-core-dsds-dtos.btdesign"
+import "classpath:/btdesign/metamac-srm-core-codes.btdesign"
+import "classpath:/btdesign/metamac-srm-core-codes-dtos.btdesign"
 
 Application SrmCore {
     basePackage=unused

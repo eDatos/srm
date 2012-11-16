@@ -1,0 +1,101 @@
+import "classpath:/btdesign/export/metamac-core-common-entity.btdesign"
+import "classpath:/btdesign/statistic-sdmx-core-codes.btdesign"
+import "classpath:/btdesign/metamac-srm-core-enum.btdesign"
+import "classpath:/btdesign/statistic-sdmx-v2_1-domain-enums.btdesign"
+import "classpath:/btdesign/metamac-srm-core-base.btdesign"
+
+
+Application CodesMetamac {
+	basePackage=unused
+
+	Module domain_codes_metamac {
+		basePackage=org.siemac.metamac.srm.core.code
+
+		// ----------------------------------------------------------------
+		// 							SERVICES
+		// ----------------------------------------------------------------  
+		"Provides access to Codelists Artefacts"
+		Service CodesMetamacService {
+
+			> @CodelistVersionMetamacRepository
+			> @CodeMetamacRepository
+
+//			"Creates codelist"
+//			@CodelistVersionMetamac createCodelist(@CodelistVersionMetamac codelistVersion) throws MetamacException;
+//			"Updates codelist"
+//			@CodelistVersionMetamac updateCodelist(@CodelistVersionMetamac codelistVersion) throws MetamacException;
+			"Retrieves codelist by urn"
+			@CodelistVersionMetamac retrieveCodelistByUrn(String urn) throws MetamacException;
+//			"Retrieves all codelists versions"
+//			List<@CodelistVersionMetamac> retrieveCodelistVersions(String urn) throws MetamacException;
+//			"Finds codelists by criteria"
+//    		PagedResult<@CodelistVersionMetamac> findCodelistsByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
+//    		"Sends codelist to production validation"
+//    		@CodelistVersionMetamac sendCodelistToProductionValidation(String urn) throws MetamacException;
+//    		"Sends codelist to diffusion validation"
+//    		@CodelistVersionMetamac sendCodelistToDiffusionValidation(String urn) throws MetamacException;
+//	    	"Rejects production validation of codelist"    		
+//	    	@CodelistVersionMetamac rejectCodelistProductionValidation(String urn) throws MetamacException;
+//	    	"Rejects diffusion validation of codelist"
+//	    	@CodelistVersionMetamac rejectCodelistDiffusionValidation(String urn) throws MetamacException;
+//	    	"Publish internally a codelist"
+//	    	@CodelistVersionMetamac publishInternallyCodelist(String urn) throws MetamacException;
+//	    	"Publish externally a codelist"
+//	    	@CodelistVersionMetamac publishExternallyCodelist(String urn) throws MetamacException;
+//			"Deletes codelist version. This must be last version and no published"
+//    		deleteCodelist(String urn) throws MetamacException;
+//    		"Creates a new version of a codelist, copying metadata from version with provided urn"
+//    		@CodelistVersionMetamac versioningCodelist(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
+//    		"Ends the codelist validity"
+//    		@CodelistVersionMetamac endCodelistValidity(String urn) throws MetamacException;
+//    		"Retrieves codelist by code urn"
+//    		@CodelistVersionMetamac retrieveCodelistByCodeUrn(String codeUrn) throws MetamacException;
+//
+//			"Creates code"
+//			@CodeMetamac createCode(String codelistUrn, @CodeMetamac code) throws MetamacException;
+//			"Updates code"
+//			@CodeMetamac updateCode(@CodeMetamac code) throws MetamacException;
+//    		"Retrieves code by urn"
+//    		@CodeMetamac retrieveCodeByUrn(String urn) throws MetamacException;
+//    		"Finds codes by criteria"
+//    		PagedResult<@CodeMetamac> findCodesByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
+//			"Deletes code"
+//    		deleteCode(String urn) throws MetamacException;
+//    		"Retrieves codes by codelist, in tree structure"
+//    		List<@CodeMetamac> retrieveCodesByCodelistUrn(String codelistUrn) throws MetamacException;
+
+		}
+
+		// ----------------------------------------------------------------
+		// 							ENTITIES
+		// ----------------------------------------------------------------
+
+		Entity CodelistVersionMetamac extends @CodelistVersion {
+			databaseTable="TB_M_CODELIST_VERSIONS"
+			hint="idSequence=M_CODELIST_VERSIONS"
+			
+			"Life cycle information"
+			- @SrmLifeCycleMetadata lifeCycleMetadata databaseColumn="";
+
+			Repository CodelistVersionMetamacRepository {
+				findById;
+				findByQuery(String query, Map<String, Object> parameters, int maxResult);
+				findByCondition(PagingParameter pagingParameter);
+				@CodelistVersionMetamac findByUrn(String urn);
+				@CodelistVersionMetamac retrieveCodelistVersionByProcStatus(String urn, ArrayProcStatusEnum procStatus) throws MetamacException;
+				@CodelistVersionMetamac findByCode(String urn);
+			}			
+		}
+
+		Entity CodeMetamac extends @Code {
+			databaseTable="TB_M_CODES"
+			hint="idSequence=M_CODES"
+			
+			Repository CodeMetamacRepository {
+				findById;
+				findByCondition(PagingParameter pagingParameter);
+			}
+		}
+
+	}
+}

@@ -1,0 +1,23 @@
+import "classpath:/btdesign/metamac-core-common-dtos.btdesign"
+import "classpath:/btdesign/statistic-sdmx-v2_1-domain-dtos-codes.btdesign"
+import "classpath:/btdesign/metamac-srm-core-enum.btdesign"
+import "classpath:/btdesign/metamac-srm-core-base-dtos.btdesign"
+
+Application DtosMetamacCodeDomain {
+	basePackage=unused
+
+	Module domain_metamac_code_dto {
+		basePackage=org.siemac.metamac.srm.core.code.dto
+		
+		"Dto for CodelistMetamac"
+		DataTransferObject CodelistMetamacDto extends @CodelistDto {
+			"Life cycle"
+			- @LifeCycleDto lifeCycle required;
+		}
+
+		"Dto for CodeMetamac"
+		DataTransferObject CodeMetamacDto extends @CodeDto {
+		}
+		
+	}
+}
