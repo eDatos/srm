@@ -163,6 +163,19 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         return codelistVersion;
     }
 
+    @Override
+    public CodelistVersionMetamac retrieveCodelistByCodeUrn(ServiceContext ctx, String codeUrn) throws MetamacException {
+        // Validation
+        CodesMetamacInvocationValidator.checkRetrieveCodelistByCodeUrn(codeUrn, null);
+
+        // Retrieve
+        CodelistVersionMetamac codelistVersion = getCodelistVersionMetamacRepository().findByCode(codeUrn);
+        if (codelistVersion == null) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(codeUrn).build();
+        }
+        return codelistVersion;
+    }
+
     // ------------------------------------------------------------------------------------
     // CODES
     // ------------------------------------------------------------------------------------

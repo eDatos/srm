@@ -1107,6 +1107,31 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         }
     }
 
+    @Override
+    public void testRetrieveCodelistByCodeUrn() throws Exception {
+        // Retrieve
+        String urn = CODELIST_1_V2_CODE_1;
+        CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByCodeUrn(getServiceContextAdministrador(), urn);
+
+        // Validate
+        assertEquals(CODELIST_1_V2, codelistVersion.getMaintainableArtefact().getUrn());
+    }
+
+    @Test
+    public void testRetrieveCodelistByCodeUrnErrorNotExists() throws Exception {
+        String urn = NOT_EXISTS;
+
+        try {
+            codesService.retrieveCodelistByCodeUrn(getServiceContextAdministrador(), urn);
+            fail("not exists");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
     // ------------------------------------------------------------------------------------
     // CODES
     // ------------------------------------------------------------------------------------
@@ -1553,33 +1578,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     // }
     // }
     // }
-    //
-    // @Override
-    // public void testRetrieveCodelistByCodeUrn() throws Exception {
-    // // Retrieve
-    // String urn = CODELIST_1_V2_CODE_1;
-    // CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByCodeUrn(getServiceContextAdministrador(), urn);
-    //
-    // // Validate
-    // assertEquals(CODELIST_1_V2, codelistVersion.getMaintainableArtefact().getUrn());
-    // }
-    //
-    // @Test
-    // public void testRetrieveCodelistByCodeUrnErrorNotExists() throws Exception {
-    //
-    // String urn = NOT_EXISTS;
-    //
-    // try {
-    // codesService.retrieveCodelistByCodeUrn(getServiceContextAdministrador(), urn);
-    // fail("not exists");
-    // } catch (MetamacException e) {
-    // assertEquals(1, e.getExceptionItems().size());
-    // assertEquals(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
-    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-    // assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-    // }
-    // }
-    //
+
     // private void assertListItemsContainsCode(List<Item> items, String urn) {
     // for (Item item : items) {
     // if (item.getNameableArtefact().getUrn().equals(urn)) {

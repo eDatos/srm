@@ -48,9 +48,9 @@ Application CodesMetamac {
     		@CodelistVersionMetamac versioningCodelist(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
     		"Ends the codelist validity"
     		@CodelistVersionMetamac endCodelistValidity(String urn) throws MetamacException;
-//    		"Retrieves codelist by code urn"
-//    		@CodelistVersionMetamac retrieveCodelistByCodeUrn(String codeUrn) throws MetamacException;
-//
+    		"Retrieves codelist by code urn"
+    		@CodelistVersionMetamac retrieveCodelistByCodeUrn(String codeUrn) throws MetamacException;
+
 //			"Creates code"
 //			@CodeMetamac createCode(String codelistUrn, @CodeMetamac code) throws MetamacException;
 //			"Updates code"
