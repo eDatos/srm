@@ -625,14 +625,34 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public MetamacCriteriaResult<CodelistMetamacDto> findCodelistsByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
-        // TODO Auto-generated method stub
-        return null;
+        // Security
+        ItemsSecurityUtils.canFindItemSchemesByCondition(ctx);
+
+        // Transform
+        SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getCodelistMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
+
+        // Find
+        PagedResult<CodelistVersionMetamac> result = getCodesMetamacService().findCodelistsByCondition(ctx, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
+
+        // Transform
+        MetamacCriteriaResult<CodelistMetamacDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultCodelistVersion(result,
+                sculptorCriteria.getPageSize());
+
+        return metamacCriteriaResult;
     }
 
     @Override
     public List<CodelistMetamacDto> retrieveCodelistVersions(ServiceContext ctx, String urn) throws MetamacException {
-        // TODO Auto-generated method stub
-        return null;
+        // Security
+        ItemsSecurityUtils.canRetrieveItemSchemeVersions(ctx);
+
+        // Retrieve
+        List<CodelistVersionMetamac> codelistVersionMetamacs = getCodesMetamacService().retrieveCodelistVersions(ctx, urn);
+
+        // Transform
+        List<CodelistMetamacDto> codelistMetamacDtos = codesDo2DtoMapper.codelistMetamacDoListToDtoList(codelistVersionMetamacs);
+
+        return codelistMetamacDtos;
     }
 
     // ------------------------------------------------------------------------

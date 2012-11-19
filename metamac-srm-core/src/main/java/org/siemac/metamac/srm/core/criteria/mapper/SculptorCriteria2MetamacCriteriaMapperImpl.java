@@ -11,6 +11,11 @@ import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
 import org.siemac.metamac.srm.core.category.dto.CategoryMetamacDto;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 import org.siemac.metamac.srm.core.category.mapper.CategoriesDo2DtoMapper;
+import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
+import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
+import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
+import org.siemac.metamac.srm.core.code.mapper.CodesDo2DtoMapper;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
@@ -44,6 +49,13 @@ public class SculptorCriteria2MetamacCriteriaMapperImpl implements SculptorCrite
     @Autowired
     private CategoriesDo2DtoMapper              categoriesDo2DtoMapper;
 
+    @Autowired
+    private CodesDo2DtoMapper                   codesDo2DtoMapper;
+
+    //
+    // DATA STRUCTURE DEFINITION
+    //
+
     @Override
     public MetamacCriteriaResult<DataStructureDefinitionMetamacDto> pageResultToMetamacCriteriaResultDataStructureDefinition(PagedResult<DataStructureDefinitionVersionMetamac> source, Integer pageSize) {
         MetamacCriteriaResult<DataStructureDefinitionMetamacDto> target = new MetamacCriteriaResult<DataStructureDefinitionMetamacDto>();
@@ -56,6 +68,10 @@ public class SculptorCriteria2MetamacCriteriaMapperImpl implements SculptorCrite
         }
         return target;
     }
+
+    //
+    // CONCEPTS
+    //
 
     @Override
     public MetamacCriteriaResult<ConceptSchemeMetamacDto> pageResultToMetamacCriteriaResultConceptSchemeVersion(PagedResult<ConceptSchemeVersionMetamac> source, Integer pageSize) {
@@ -76,13 +92,13 @@ public class SculptorCriteria2MetamacCriteriaMapperImpl implements SculptorCrite
         target.setPaginatorResult(SculptorCriteria2MetamacCriteria.sculptorResultToMetamacCriteriaResult(source, pageSize));
         if (source.getValues() != null) {
             target.setResults(new ArrayList<ConceptMetamacDto>());
-            for (ConceptMetamac scheme : source.getValues()) {
-                target.getResults().add(conceptsDo2DtoMapper.conceptMetamacDoToDto(scheme));
+            for (ConceptMetamac concept : source.getValues()) {
+                target.getResults().add(conceptsDo2DtoMapper.conceptMetamacDoToDto(concept));
             }
         }
         return target;
     }
-    
+
     @Override
     public MetamacCriteriaResult<RelatedResourceDto> pageResultConceptToMetamacCriteriaResultRelatedResource(PagedResult<ConceptMetamac> source, Integer pageSize) throws MetamacException {
         MetamacCriteriaResult<RelatedResourceDto> target = new MetamacCriteriaResult<RelatedResourceDto>();
@@ -96,6 +112,9 @@ public class SculptorCriteria2MetamacCriteriaMapperImpl implements SculptorCrite
         return target;
     }
 
+    //
+    // ORGANISATIONS
+    //
 
     @Override
     public MetamacCriteriaResult<OrganisationSchemeMetamacDto> pageResultToMetamacCriteriaResultOrganisationSchemeVersion(PagedResult<OrganisationSchemeVersionMetamac> source, Integer pageSize) {
@@ -116,12 +135,29 @@ public class SculptorCriteria2MetamacCriteriaMapperImpl implements SculptorCrite
         target.setPaginatorResult(SculptorCriteria2MetamacCriteria.sculptorResultToMetamacCriteriaResult(source, pageSize));
         if (source.getValues() != null) {
             target.setResults(new ArrayList<OrganisationMetamacDto>());
-            for (OrganisationMetamac scheme : source.getValues()) {
-                target.getResults().add(organisationsDo2DtoMapper.organisationMetamacDoToDto(scheme));
+            for (OrganisationMetamac organisation : source.getValues()) {
+                target.getResults().add(organisationsDo2DtoMapper.organisationMetamacDoToDto(organisation));
             }
         }
         return target;
     }
+
+    @Override
+    public MetamacCriteriaResult<RelatedResourceDto> pageResultOrganisationToMetamacCriteriaResultRelatedResource(PagedResult<OrganisationMetamac> source, Integer pageSize) throws MetamacException {
+        MetamacCriteriaResult<RelatedResourceDto> target = new MetamacCriteriaResult<RelatedResourceDto>();
+        target.setPaginatorResult(SculptorCriteria2MetamacCriteria.sculptorResultToMetamacCriteriaResult(source, pageSize));
+        if (source.getValues() != null) {
+            target.setResults(new ArrayList<RelatedResourceDto>());
+            for (OrganisationMetamac scheme : source.getValues()) {
+                target.getResults().add(organisationsDo2DtoMapper.organisationMetamacDoToRelatedResourceDto(scheme));
+            }
+        }
+        return target;
+    }
+
+    //
+    // CATEGORIES
+    //
 
     @Override
     public MetamacCriteriaResult<CategorySchemeMetamacDto> pageResultToMetamacCriteriaResultCategorySchemeVersion(PagedResult<CategorySchemeVersionMetamac> source, Integer pageSize) {
@@ -135,28 +171,45 @@ public class SculptorCriteria2MetamacCriteriaMapperImpl implements SculptorCrite
         }
         return target;
     }
-    
+
     @Override
     public MetamacCriteriaResult<CategoryMetamacDto> pageResultToMetamacCriteriaResultCategory(PagedResult<CategoryMetamac> source, Integer pageSize) {
         MetamacCriteriaResult<CategoryMetamacDto> target = new MetamacCriteriaResult<CategoryMetamacDto>();
         target.setPaginatorResult(SculptorCriteria2MetamacCriteria.sculptorResultToMetamacCriteriaResult(source, pageSize));
         if (source.getValues() != null) {
             target.setResults(new ArrayList<CategoryMetamacDto>());
-            for (CategoryMetamac scheme : source.getValues()) {
-                target.getResults().add(categoriesDo2DtoMapper.categoryMetamacDoToDto(scheme));
+            for (CategoryMetamac category : source.getValues()) {
+                target.getResults().add(categoriesDo2DtoMapper.categoryMetamacDoToDto(category));
             }
         }
         return target;
     }
-    
+
+    //
+    // CODES
+    //
+
     @Override
-    public MetamacCriteriaResult<RelatedResourceDto> pageResultOrganisationToMetamacCriteriaResultRelatedResource(PagedResult<OrganisationMetamac> source, Integer pageSize) throws MetamacException {
-        MetamacCriteriaResult<RelatedResourceDto> target = new MetamacCriteriaResult<RelatedResourceDto>();
+    public MetamacCriteriaResult<CodelistMetamacDto> pageResultToMetamacCriteriaResultCodelistVersion(PagedResult<CodelistVersionMetamac> source, Integer pageSize) {
+        MetamacCriteriaResult<CodelistMetamacDto> target = new MetamacCriteriaResult<CodelistMetamacDto>();
         target.setPaginatorResult(SculptorCriteria2MetamacCriteria.sculptorResultToMetamacCriteriaResult(source, pageSize));
         if (source.getValues() != null) {
-            target.setResults(new ArrayList<RelatedResourceDto>());
-            for (OrganisationMetamac scheme : source.getValues()) {
-                target.getResults().add(organisationsDo2DtoMapper.organisationMetamacDoToRelatedResourceDto(scheme));
+            target.setResults(new ArrayList<CodelistMetamacDto>());
+            for (CodelistVersionMetamac scheme : source.getValues()) {
+                target.getResults().add(codesDo2DtoMapper.codelistMetamacDoToDto(scheme));
+            }
+        }
+        return target;
+    }
+
+    @Override
+    public MetamacCriteriaResult<CodeMetamacDto> pageResultToMetamacCriteriaResultCode(PagedResult<CodeMetamac> source, Integer pageSize) {
+        MetamacCriteriaResult<CodeMetamacDto> target = new MetamacCriteriaResult<CodeMetamacDto>();
+        target.setPaginatorResult(SculptorCriteria2MetamacCriteria.sculptorResultToMetamacCriteriaResult(source, pageSize));
+        if (source.getValues() != null) {
+            target.setResults(new ArrayList<CodeMetamacDto>());
+            for (CodeMetamac code : source.getValues()) {
+                target.getResults().add(codesDo2DtoMapper.codeMetamacDoToDto(code));
             }
         }
         return target;
