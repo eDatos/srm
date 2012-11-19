@@ -19,6 +19,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.common.test.utils.MetamacMocks;
 import org.siemac.metamac.core.common.criteria.MetamacCriteria;
+import org.siemac.metamac.core.common.criteria.MetamacCriteriaConjunctionRestriction;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder.OrderTypeEnum;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPaginator;
@@ -32,6 +33,8 @@ import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsserts;
 import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacDtoMocks;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
+import org.siemac.metamac.srm.core.criteria.CodeMetamacCriteriaOrderEnum;
+import org.siemac.metamac.srm.core.criteria.CodeMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.criteria.CodelistVersionMetamacCriteriaOrderEnum;
 import org.siemac.metamac.srm.core.criteria.CodelistVersionMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
@@ -41,6 +44,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -748,6 +752,349 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
 
         assertEqualsInternationalStringDto(codeMetamacDto.getName(), "es", "Nombre codelist-1-v2-code-1", null, null);
         assertEqualsInternationalStringDto(codeMetamacDto.getDescription(), "es", "Descripción codelist-1-v2-code-1", null, null);
+    }
+
+    @Test
+    public void testFindCodesByCondition() throws Exception {
+        // Find all
+        {
+            MetamacCriteria metamacCriteria = new MetamacCriteria();
+            // Order
+            metamacCriteria.setOrdersBy(new ArrayList<MetamacCriteriaOrder>());
+
+            MetamacCriteriaOrder orderUrn = new MetamacCriteriaOrder();
+            orderUrn.setType(OrderTypeEnum.ASC);
+            orderUrn.setPropertyName(CodeMetamacCriteriaOrderEnum.URN.name());
+            metamacCriteria.getOrdersBy().add(orderUrn);
+
+            MetamacCriteriaOrder orderCodelistUrn = new MetamacCriteriaOrder();
+            orderCodelistUrn.setType(OrderTypeEnum.ASC);
+            orderCodelistUrn.setPropertyName(CodeMetamacCriteriaOrderEnum.CODELIST_URN.name());
+            metamacCriteria.getOrdersBy().add(orderCodelistUrn);
+
+            // Pagination
+            metamacCriteria.setPaginator(new MetamacCriteriaPaginator());
+            metamacCriteria.getPaginator().setFirstResult(0);
+            metamacCriteria.getPaginator().setMaximumResultSize(Integer.MAX_VALUE);
+            metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
+
+            // Find
+            MetamacCriteriaResult<CodeMetamacDto> codesPagedResult = srmCoreServiceFacade.findCodesByCondition(getServiceContextAdministrador(), metamacCriteria);
+
+            // Validate
+            assertEquals(28, codesPagedResult.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(28, codesPagedResult.getResults().size());
+            assertTrue(codesPagedResult.getResults().get(0) instanceof CodeMetamacDto);
+            assertEquals(CODELIST_1_V1, codesPagedResult.getResults().get(0).getItemSchemeVersionUrn());
+
+            int i = 0;
+            assertEquals(CODELIST_1_V1_CODE_1, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_1_V2_CODE_1, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_1_V2_CODE_2, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_1_V2_CODE_2_1, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_1_V2_CODE_2_1_1, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_1_V2_CODE_3, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_1_V2_CODE_4, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_1_V2_CODE_4_1, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_1_V2_CODE_4_1_1, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_2_V1_CODE_1, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_2_V1_CODE_2, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_3_V1_CODE_1, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_3_V1_CODE_2, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_3_V1_CODE_2_1, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_3_V1_CODE_2_1_1, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_3_V1_CODE_2_2, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_4_V1_CODE_1, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_5_V1_CODE_1, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_6_V1_CODE_1, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_7_V2_CODE_1, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_8_V1_CODE_1, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_10_V2_CODE_1, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_10_V3_CODE_1, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_11_V1_CODE_1, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_12_V1_CODE_1, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_13_V1_CODE_1, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_13_V1_CODE_2, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_13_V1_CODE_3, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(codesPagedResult.getResults().size(), i);
+        }
+
+        // Find only codes in first level
+        {
+            MetamacCriteria metamacCriteria = new MetamacCriteria();
+            // Order
+            metamacCriteria.setOrdersBy(new ArrayList<MetamacCriteriaOrder>());
+
+            {
+                MetamacCriteriaOrder order = new MetamacCriteriaOrder();
+                order.setType(OrderTypeEnum.ASC);
+                order.setPropertyName(CodeMetamacCriteriaOrderEnum.CODELIST_CODE.name());
+                metamacCriteria.getOrdersBy().add(order);
+            }
+            {
+                MetamacCriteriaOrder order = new MetamacCriteriaOrder();
+                order.setType(OrderTypeEnum.ASC);
+                order.setPropertyName(CodeMetamacCriteriaOrderEnum.CODELIST_URN.name());
+                metamacCriteria.getOrdersBy().add(order);
+            }
+            {
+                MetamacCriteriaOrder order = new MetamacCriteriaOrder();
+                order.setType(OrderTypeEnum.ASC);
+                order.setPropertyName(CodeMetamacCriteriaOrderEnum.URN.name());
+                metamacCriteria.getOrdersBy().add(order);
+            }
+
+            // Pagination
+            metamacCriteria.setPaginator(new MetamacCriteriaPaginator());
+            metamacCriteria.getPaginator().setFirstResult(0);
+            metamacCriteria.getPaginator().setMaximumResultSize(Integer.MAX_VALUE);
+            metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
+
+            // Restrictions
+            MetamacCriteriaPropertyRestriction propertyRestriction = new MetamacCriteriaPropertyRestriction();
+            propertyRestriction.setPropertyName(CodeMetamacCriteriaPropertyEnum.CODE_PARENT_URN.name());
+            propertyRestriction.setOperationType(OperationType.IS_NULL);
+            metamacCriteria.setRestriction(propertyRestriction);
+
+            // Find
+            MetamacCriteriaResult<CodeMetamacDto> codesPagedResult = srmCoreServiceFacade.findCodesByCondition(getServiceContextAdministrador(), metamacCriteria);
+
+            // Validate
+            assertEquals(21, codesPagedResult.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(21, codesPagedResult.getResults().size());
+            assertTrue(codesPagedResult.getResults().get(0) instanceof CodeMetamacDto);
+            assertEquals(CODELIST_1_V1, codesPagedResult.getResults().get(0).getItemSchemeVersionUrn());
+
+            int i = 0;
+            assertEquals(CODELIST_1_V1_CODE_1, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_1_V2_CODE_1, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_1_V2_CODE_2, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_1_V2_CODE_3, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_1_V2_CODE_4, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_2_V1_CODE_1, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_2_V1_CODE_2, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_3_V1_CODE_1, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_3_V1_CODE_2, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_4_V1_CODE_1, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_5_V1_CODE_1, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_6_V1_CODE_1, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_7_V2_CODE_1, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_8_V1_CODE_1, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_10_V2_CODE_1, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_10_V3_CODE_1, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_11_V1_CODE_1, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_12_V1_CODE_1, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_13_V1_CODE_1, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_13_V1_CODE_2, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_13_V1_CODE_3, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(codesPagedResult.getResults().size(), i);
+        }
+
+        // Find by name (like), code (like) and codelist urn
+        {
+            MetamacCriteria metamacCriteria = new MetamacCriteria();
+            // Order
+            metamacCriteria.setOrdersBy(new ArrayList<MetamacCriteriaOrder>());
+
+            MetamacCriteriaOrder orderUrn = new MetamacCriteriaOrder();
+            orderUrn.setType(OrderTypeEnum.ASC);
+            orderUrn.setPropertyName(CodeMetamacCriteriaOrderEnum.URN.name());
+            metamacCriteria.getOrdersBy().add(orderUrn);
+
+            // Restrictions
+            MetamacCriteriaConjunctionRestriction conjunctionRestriction = new MetamacCriteriaConjunctionRestriction();
+            conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CodeMetamacCriteriaPropertyEnum.NAME.name(), "Nombre codelist-1-v2-code-2-", OperationType.LIKE));
+            conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CodeMetamacCriteriaPropertyEnum.CODE.name(), "CODE02", OperationType.LIKE));
+            conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CodeMetamacCriteriaPropertyEnum.CODELIST_URN.name(), CODELIST_1_V2, OperationType.EQ));
+            metamacCriteria.setRestriction(conjunctionRestriction);
+
+            // Pagination
+            metamacCriteria.setPaginator(new MetamacCriteriaPaginator());
+            metamacCriteria.getPaginator().setFirstResult(0);
+            metamacCriteria.getPaginator().setMaximumResultSize(Integer.MAX_VALUE);
+            metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
+
+            // Find
+            MetamacCriteriaResult<CodeMetamacDto> codesPagedResult = srmCoreServiceFacade.findCodesByCondition(getServiceContextAdministrador(), metamacCriteria);
+
+            // Validate
+            assertEquals(2, codesPagedResult.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(2, codesPagedResult.getResults().size());
+            assertTrue(codesPagedResult.getResults().get(0) instanceof CodeMetamacDto);
+            assertEquals(CODELIST_1_V2, codesPagedResult.getResults().get(0).getItemSchemeVersionUrn());
+
+            int i = 0;
+            assertEquals(CODELIST_1_V2_CODE_2_1, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_1_V2_CODE_2_1_1, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(codesPagedResult.getResults().size(), i);
+        }
+
+        // Find by codelist urn paginated
+        {
+
+            MetamacCriteria metamacCriteria = new MetamacCriteria();
+            // Order
+            metamacCriteria.setOrdersBy(new ArrayList<MetamacCriteriaOrder>());
+
+            MetamacCriteriaOrder orderUrn = new MetamacCriteriaOrder();
+            orderUrn.setType(OrderTypeEnum.ASC);
+            orderUrn.setPropertyName(CodeMetamacCriteriaOrderEnum.URN.name());
+            metamacCriteria.getOrdersBy().add(orderUrn);
+
+            // Restrictions
+            metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(CodeMetamacCriteriaPropertyEnum.CODELIST_URN.name(), CODELIST_1_V2, OperationType.EQ));
+
+            // First page
+            {
+                // Pagination
+                metamacCriteria.setPaginator(new MetamacCriteriaPaginator());
+                metamacCriteria.getPaginator().setFirstResult(0);
+                metamacCriteria.getPaginator().setMaximumResultSize(3);
+                metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
+
+                // Find
+                MetamacCriteriaResult<CodeMetamacDto> codesPagedResult = srmCoreServiceFacade.findCodesByCondition(getServiceContextAdministrador(), metamacCriteria);
+
+                // Validate
+                assertEquals(8, codesPagedResult.getPaginatorResult().getTotalResults().intValue());
+                assertEquals(3, codesPagedResult.getResults().size());
+                assertTrue(codesPagedResult.getResults().get(0) instanceof CodeMetamacDto);
+                assertEquals(CODELIST_1_V2, codesPagedResult.getResults().get(0).getItemSchemeVersionUrn());
+
+                int i = 0;
+                assertEquals(CODELIST_1_V2_CODE_1, codesPagedResult.getResults().get(i++).getUrn());
+                assertEquals(CODELIST_1_V2_CODE_2, codesPagedResult.getResults().get(i++).getUrn());
+                assertEquals(CODELIST_1_V2_CODE_2_1, codesPagedResult.getResults().get(i++).getUrn());
+                assertEquals(codesPagedResult.getResults().size(), i);
+            }
+            // Second page
+            {
+                // Pagination
+                metamacCriteria.setPaginator(new MetamacCriteriaPaginator());
+                metamacCriteria.getPaginator().setFirstResult(3);
+                metamacCriteria.getPaginator().setMaximumResultSize(3);
+                metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
+
+                // Find
+                MetamacCriteriaResult<CodeMetamacDto> codesPagedResult = srmCoreServiceFacade.findCodesByCondition(getServiceContextAdministrador(), metamacCriteria);
+
+                // Validate
+                assertEquals(8, codesPagedResult.getPaginatorResult().getTotalResults().intValue());
+                assertEquals(3, codesPagedResult.getResults().size());
+                assertTrue(codesPagedResult.getResults().get(0) instanceof CodeMetamacDto);
+                assertEquals(CODELIST_1_V2, codesPagedResult.getResults().get(0).getItemSchemeVersionUrn());
+
+                int i = 0;
+                assertEquals(CODELIST_1_V2_CODE_2_1_1, codesPagedResult.getResults().get(i++).getUrn());
+                assertEquals(CODELIST_1_V2_CODE_3, codesPagedResult.getResults().get(i++).getUrn());
+                assertEquals(CODELIST_1_V2_CODE_4, codesPagedResult.getResults().get(i++).getUrn());
+                assertEquals(codesPagedResult.getResults().size(), i);
+            }
+            // Third page
+            {
+                // Pagination
+                metamacCriteria.setPaginator(new MetamacCriteriaPaginator());
+                metamacCriteria.getPaginator().setFirstResult(6);
+                metamacCriteria.getPaginator().setMaximumResultSize(3);
+                metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
+
+                // Find
+                MetamacCriteriaResult<CodeMetamacDto> codesPagedResult = srmCoreServiceFacade.findCodesByCondition(getServiceContextAdministrador(), metamacCriteria);
+
+                // Validate
+                assertEquals(8, codesPagedResult.getPaginatorResult().getTotalResults().intValue());
+                assertEquals(2, codesPagedResult.getResults().size());
+                assertTrue(codesPagedResult.getResults().get(0) instanceof CodeMetamacDto);
+                assertEquals(CODELIST_1_V2, codesPagedResult.getResults().get(0).getItemSchemeVersionUrn());
+
+                int i = 0;
+                assertEquals(CODELIST_1_V2_CODE_4_1, codesPagedResult.getResults().get(i++).getUrn());
+                assertEquals(CODELIST_1_V2_CODE_4_1_1, codesPagedResult.getResults().get(i++).getUrn());
+                assertEquals(codesPagedResult.getResults().size(), i);
+            }
+        }
+    }
+
+    @Test
+    public void testDeleteCode() throws Exception {
+        String urn = CODELIST_1_V2_CODE_3;
+
+        // Delete code
+        srmCoreServiceFacade.deleteCode(getServiceContextAdministrador(), urn);
+
+        // Validation
+        try {
+            srmCoreServiceFacade.retrieveCodeByUrn(getServiceContextAdministrador(), urn);
+            fail("Code deleted");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
+    @Test
+    public void testRetrieveCodesByCodelistUrn() throws Exception {
+        // Retrieve
+        String codelistUrn = CODELIST_1_V2;
+        List<ItemHierarchyDto> codes = srmCoreServiceFacade.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistUrn);
+
+        // Validate
+        assertEquals(4, codes.size());
+        {
+            // Code 01
+            ItemHierarchyDto code = codes.get(0);
+            assertTrue(code.getItem() instanceof CodeMetamacDto);
+            assertEquals(CODELIST_1_V2_CODE_1, code.getItem().getUrn());
+            assertEquals(0, code.getChildren().size());
+        }
+        {
+            // Code 02
+            ItemHierarchyDto code = codes.get(1);
+            assertTrue(code.getItem() instanceof CodeMetamacDto);
+            assertEquals(CODELIST_1_V2_CODE_2, code.getItem().getUrn());
+            assertEquals(1, code.getChildren().size());
+            {
+                // Code 02 01
+                ItemHierarchyDto codeChild = (ItemHierarchyDto) code.getChildren().get(0);
+                assertTrue(codeChild.getItem() instanceof CodeMetamacDto);
+                assertEquals(CODELIST_1_V2_CODE_2_1, codeChild.getItem().getUrn());
+                assertEquals(1, codeChild.getChildren().size());
+                {
+                    // Code 02 01 01
+                    ItemHierarchyDto codeChildChild = (ItemHierarchyDto) codeChild.getChildren().get(0);
+                    assertEquals(CODELIST_1_V2_CODE_2_1_1, codeChildChild.getItem().getUrn());
+                    assertEquals(0, codeChildChild.getChildren().size());
+                }
+            }
+        }
+        {
+            // Code 03
+            ItemHierarchyDto code = codes.get(2);
+            assertTrue(code.getItem() instanceof CodeMetamacDto);
+            assertEquals(CODELIST_1_V2_CODE_3, code.getItem().getUrn());
+            assertEquals(0, code.getChildren().size());
+        }
+        {
+            // Code 04
+            ItemHierarchyDto code = codes.get(3);
+            assertTrue(code.getItem() instanceof CodeMetamacDto);
+            assertEquals(CODELIST_1_V2_CODE_4, code.getItem().getUrn());
+            assertEquals(1, code.getChildren().size());
+            {
+                // Code 04 01
+                ItemHierarchyDto codeChild = (ItemHierarchyDto) code.getChildren().get(0);
+                assertEquals(CODELIST_1_V2_CODE_4_1, codeChild.getItem().getUrn());
+                assertEquals(1, codeChild.getChildren().size());
+                {
+                    // Code 04 01 01
+                    ItemHierarchyDto codeChildChild = (ItemHierarchyDto) codeChild.getChildren().get(0);
+                    assertEquals(CODELIST_1_V2_CODE_4_1_1, codeChildChild.getItem().getUrn());
+                    assertEquals(0, codeChildChild.getChildren().size());
+                }
+            }
+        }
     }
 
     @Override

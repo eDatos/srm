@@ -805,20 +805,42 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public MetamacCriteriaResult<CodeMetamacDto> findCodesByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
-        // TODO Auto-generated method stub
-        return null;
+        // Security
+        ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
+
+        // Transform
+        SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getCodeMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
+
+        // Find
+        PagedResult<CodeMetamac> result = getCodesMetamacService().findCodesByCondition(ctx, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
+
+        // Transform
+        MetamacCriteriaResult<CodeMetamacDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultCode(result, sculptorCriteria.getPageSize());
+
+        return metamacCriteriaResult;
     }
 
     @Override
     public void deleteCode(ServiceContext ctx, String urn) throws MetamacException {
-        // TODO Auto-generated method stub
+        // Security
+        CodelistVersionMetamac codelistVersion = getCodesMetamacService().retrieveCodelistByCodeUrn(ctx, urn);
+        ItemsSecurityUtils.canDeleteItem(ctx, codelistVersion.getLifeCycleMetadata().getProcStatus());
 
+        // Delete
+        getCodesMetamacService().deleteCode(ctx, urn);
     }
 
     @Override
     public List<ItemHierarchyDto> retrieveCodesByCodelistUrn(ServiceContext ctx, String codelistUrn) throws MetamacException {
-        // TODO Auto-generated method stub
-        return null;
+        // Security
+        ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
+
+        // Retrieve
+        List<CodeMetamac> codes = getCodesMetamacService().retrieveCodesByCodelistUrn(ctx, codelistUrn);
+
+        // Transform
+        List<ItemHierarchyDto> itemsHierarchyDto = codesDo2DtoMapper.codeMetamacDoListToItemHierarchyDtoList(codes);
+        return itemsHierarchyDto;
     }
 
     /**************************************************************************
