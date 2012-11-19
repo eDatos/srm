@@ -1,8 +1,11 @@
 package org.siemac.metamac.srm.rest.internal.v1_0.mapper;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.WILDCARD;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestAsserts.assertEqualsInternationalStringNotNull;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestAsserts.assertEqualsResource;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestAsserts.assertEqualsUrnsNotNull;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.AGENCY_1;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.AGENCY_2;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.CONCEPT_1_CODE;
@@ -28,6 +31,7 @@ import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.common.test.utils.MetamacAsserts;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.Concept;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptScheme;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemes;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.Concepts;
@@ -48,8 +52,8 @@ public class ConceptsDo2RestMapperTest {
     private ConceptsDo2RestMapperV10 do2RestInternalMapper;
 
     @Test
-    public void testConceptSchemes() {
-        
+    public void testToConceptSchemes() {
+
         String agencyID = WILDCARD;
         String resourceID = WILDCARD;
         String query = QUERY_CONCEPT_SCHEME_ID_LIKE_1_NAME_LIKE_2;
@@ -88,19 +92,18 @@ public class ConceptsDo2RestMapperTest {
             assertEqualsResource(source.get(i), target.getConceptSchemes().get(i));
         }
     }
-    
+
     @Test
-    public void testConceptScheme() {
-        
+    public void testToConceptScheme() {
+
         String agencyID = "agencyID1";
         String resourceID = "resourceID1";
         String version = "01.123";
         ConceptSchemeVersionMetamac source = SrmCoreMocks.mockConceptSchemeWithConcepts(agencyID, resourceID, version);
 
-        // only test metamac metadata
         ConceptScheme target = do2RestInternalMapper.toConceptScheme(source);
 
-        // Validate
+        // Validate (only test metamac metadata)
         assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEME, target.getKind());
         String parentLink = "http://data.istac.es/apis/srm/v1.0/conceptschemes";
         String selfLink = parentLink + "/" + source.getMaintainableArtefact().getMaintainer().getIdAsMaintainer() + "/" + resourceID + "/" + version;
@@ -118,12 +121,12 @@ public class ConceptsDo2RestMapperTest {
         assertEquals(RestInternalConstants.KIND_CONCEPTS, target.getChildren().getChildren().get(0).getKind());
         assertEquals(selfLink + "/concepts", target.getChildren().getChildren().get(0).getSelfLink());
 
-        // TODO concepts
+        // TODO concepts (tipo SDMX)
     }
-    
+
     @Test
-    public void testConcepts() {
-        
+    public void testToConcepts() {
+
         String agencyID = WILDCARD;
         String conceptSchemeID = WILDCARD;
         String version = WILDCARD;
@@ -132,7 +135,6 @@ public class ConceptsDo2RestMapperTest {
         Integer limit = Integer.valueOf(4);
         Integer offset = Integer.valueOf(4);
 
-        
         ConceptSchemeVersionMetamac conceptScheme1 = SrmCoreMocks.mockConceptScheme(AGENCY_1, CONCEPT_SCHEME_1_CODE, CONCEPT_SCHEME_1_VERSION_1);
         ConceptSchemeVersionMetamac conceptScheme2 = SrmCoreMocks.mockConceptScheme(AGENCY_1, CONCEPT_SCHEME_2_CODE, CONCEPT_SCHEME_2_VERSION_1);
         List<ConceptMetamac> source = new ArrayList<ConceptMetamac>();
@@ -166,21 +168,41 @@ public class ConceptsDo2RestMapperTest {
         }
     }
 
-    /**
-     * TODO concept
-     * <xs:sequence>
-     * <xs:element name="pluralName" type="common:InternationalString" minOccurs="0" />
-     * <xs:element name="acronym" type="common:InternationalString" minOccurs="0" />
-     * <xs:element name="descriptionSource" type="common:InternationalString" minOccurs="0" />
-     * <xs:element name="context" type="common:InternationalString" minOccurs="0" />
-     * <xs:element name="docMethod" type="common:InternationalString" minOccurs="0" />
-     * <xs:element name="type" type="common:Item" minOccurs="0" />
-     * <xs:element name="derivation" type="common:InternationalString" minOccurs="0" />
-     * <xs:element name="legalActs" type="common:InternationalString" minOccurs="0" />
-     * <xs:element name="roles" type="tns:Urns" minOccurs="0" />
-     * <xs:element name="extends" type="xs:string" minOccurs="0" />
-     * <xs:element name="relatedConcepts" type="tns:Urns" minOccurs="0" />
-     * </xs:sequence>
-     * <xs:attribute name="kind" type="xs:string" use="required" />
-     */
+    @Test
+    public void testToConcept() {
+
+        String agencyID = "agencyID1";
+        String schemeID = "resourceID1";
+        String version = "01.123";
+        ConceptSchemeVersionMetamac conceptScheme = SrmCoreMocks.mockConceptScheme(agencyID, schemeID, version);
+        ConceptMetamac parent = SrmCoreMocks.mockConcept("conceptParent1", conceptScheme, null);
+        ConceptMetamac source = SrmCoreMocks.mockConceptWithConceptRelations("concept2", conceptScheme, parent);
+
+        Concept target = do2RestInternalMapper.toConcept(source);
+
+        // Validate (only test metamac metadata)
+        assertEquals(RestInternalConstants.KIND_CONCEPT, target.getKind());
+        String parentLink = "http://data.istac.es/apis/srm/v1.0/conceptschemes" + "/" + source.getItemSchemeVersion().getMaintainableArtefact().getMaintainer().getIdAsMaintainer() + "/" + schemeID
+                + "/" + version + "/concepts";
+        String selfLink = parentLink + "/" + source.getNameableArtefact().getCode();
+        assertEquals(selfLink, target.getSelfLink());
+        assertEquals(RestInternalConstants.KIND_CONCEPTS, target.getParentResource().getKind());
+        assertEquals(parentLink, target.getParentResource().getSelfLink());
+        assertNull(target.getChildren());
+        
+        assertEqualsInternationalStringNotNull(source.getPluralName(), target.getPluralName());
+        assertEqualsInternationalStringNotNull(source.getAcronym(), target.getAcronym());
+        assertEqualsInternationalStringNotNull(source.getDescriptionSource(), target.getDescriptionSource());
+        assertEqualsInternationalStringNotNull(source.getContext(), target.getContext());
+        assertEqualsInternationalStringNotNull(source.getDocMethod(), target.getDocMethod());
+        assertEqualsInternationalStringNotNull(source.getDerivation(), target.getDerivation());
+        assertEqualsInternationalStringNotNull(source.getLegalActs(), target.getLegalActs());
+
+        assertEquals(source.getType().getIdentifier(), target.getType().getId());
+        assertEqualsInternationalStringNotNull(source.getType().getDescription(), target.getType().getTitle());
+        
+        assertEqualsUrnsNotNull(source.getRoleConcepts(), target.getRoles());
+        assertEqualsUrnsNotNull(source.getRelatedConcepts(), target.getRelatedConcepts());
+        assertEquals(source.getConceptExtends().getNameableArtefact().getUrn(), target.getExtends());
+    }
 }

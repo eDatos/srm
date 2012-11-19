@@ -30,6 +30,8 @@
         <xs:complexContent>
             <xs:extension base="sdmx:ConceptType">
                 <xs:sequence>
+                    <xs:element name="selfLink" type="xs:string" />
+                    <xs:element name="parentResource" type="common:ResourceLink" />
                     <xs:element name="pluralName" type="common:InternationalString" minOccurs="0" />
                     <xs:element name="acronym" type="common:InternationalString" minOccurs="0" />
                     <xs:element name="descriptionSource" type="common:InternationalString" minOccurs="0" />
@@ -41,6 +43,7 @@
                     <xs:element name="roles" type="tns:Urns" minOccurs="0" />
                     <xs:element name="extends" type="xs:string" minOccurs="0" />
                     <xs:element name="relatedConcepts" type="tns:Urns" minOccurs="0" />
+                    <xs:element name="children" type="common:Children" minOccurs="1" />
                 </xs:sequence>
                 <xs:attribute name="kind" type="xs:string" use="required" />
             </xs:extension>

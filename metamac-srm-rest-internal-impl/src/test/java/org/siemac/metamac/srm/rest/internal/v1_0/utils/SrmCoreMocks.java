@@ -100,6 +100,21 @@ public class SrmCoreMocks {
         return concept;
     }
 
+    public static ConceptMetamac mockConceptWithConceptRelations(String resourceID, ItemSchemeVersion itemSchemeVersion, ConceptMetamac parent) {
+
+        ConceptMetamac concept = mockConcept(resourceID, itemSchemeVersion, parent);
+
+        // relations
+        concept.setConceptExtends(mockConcept("1_conceptExtends1", null, null));
+        concept.addRoleConcept(mockConcept("1_conceptRole1", null, null));
+        concept.addRoleConcept(mockConcept("1_conceptRole2", null, null));
+        concept.addRelatedConcept(mockConcept("1_conceptRelated1", null, null));
+        concept.addRelatedConcept(mockConcept("1_conceptRelated2", null, null));
+        concept.addRelatedConcept(mockConcept("1_conceptRelated3", null, null));
+
+        return concept;
+    }
+
     public static List<ConceptType> mockConceptTypes() {
         List<ConceptType> conceptTypes = new ArrayList<ConceptType>();
         conceptTypes.add(mockConceptType("conceptType1"));

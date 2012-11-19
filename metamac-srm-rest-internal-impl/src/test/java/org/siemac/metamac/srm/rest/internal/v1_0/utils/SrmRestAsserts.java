@@ -21,11 +21,11 @@ import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.mockito.ArgumentCaptor;
 import org.siemac.metamac.rest.common.test.utils.MetamacRestAsserts;
-import org.siemac.metamac.rest.common.v1_0.domain.InternationalString;
 import org.siemac.metamac.rest.common.v1_0.domain.LocalisedString;
 import org.siemac.metamac.rest.common.v1_0.domain.Resource;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemes;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.Concepts;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.Urns;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacProperties;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
@@ -86,6 +86,38 @@ public class SrmRestAsserts extends MetamacRestAsserts {
                 + source.getItemSchemeVersion().getMaintainableArtefact().getCode() + "/" + source.getItemSchemeVersion().getMaintainableArtefact().getVersionLogic() + "/concepts/"
                 + source.getNameableArtefact().getCode(), target.getSelfLink());
         assertEqualsInternationalString(source.getNameableArtefact().getName(), target.getTitle());
+    }
+
+    public static void assertEqualsInternationalStringNotNull(org.siemac.metamac.core.common.ent.domain.InternationalString expecteds,
+            org.siemac.metamac.rest.common.v1_0.domain.InternationalString actuals) {
+        assertNotNull(expecteds);
+        assertEqualsInternationalString(expecteds, actuals);
+    }
+
+    public static void assertEqualsInternationalString(org.siemac.metamac.core.common.ent.domain.InternationalString expecteds, org.siemac.metamac.rest.common.v1_0.domain.InternationalString actuals) {
+        assertEqualsNullability(expecteds, actuals);
+        if (expecteds == null) {
+            return;
+        }
+        assertEquals(expecteds.getTexts().size(), actuals.getTexts().size());
+        for (org.siemac.metamac.core.common.ent.domain.LocalisedString expected : expecteds.getTexts()) {
+            boolean existsItem = false;
+            for (LocalisedString actual : actuals.getTexts()) {
+                if (expected.getLocale().equals(actual.getLang())) {
+                    assertEquals(expected.getLabel(), actual.getValue());
+                    existsItem = true;
+                }
+            }
+            assertTrue(existsItem);
+        }
+    }
+
+    public static void assertEqualsUrnsNotNull(List<ConceptMetamac> expecteds, Urns actuals) {
+        assertTrue(expecteds.size() > 0);
+        assertEquals(expecteds.size(), actuals.getTotal().intValue());
+        for (int i = 0; i < expecteds.size(); i++) {
+            assertEquals(expecteds.get(i).getNameableArtefact().getUrn(), actuals.getUrns().get(i));
+        }
     }
 
     private static List<ConditionalCriteria> buildFindConceptSchemesExpectedConditionalCriterias(String agencyID, String resourceID, String query, String orderBy) {
@@ -195,23 +227,5 @@ public class SrmRestAsserts extends MetamacRestAsserts {
         }
         int endRow = startRow + maximumResultSize;
         return PagingParameter.rowAccess(startRow, endRow, false);
-    }
-
-    private static void assertEqualsInternationalString(org.siemac.metamac.core.common.ent.domain.InternationalString expecteds, InternationalString actuals) {
-        assertEqualsNullability(expecteds, actuals);
-        if (expecteds == null) {
-            return;
-        }
-        assertEquals(expecteds.getTexts().size(), actuals.getTexts().size());
-        for (org.siemac.metamac.core.common.ent.domain.LocalisedString expected : expecteds.getTexts()) {
-            boolean existsItem = false;
-            for (LocalisedString actual : actuals.getTexts()) {
-                if (expected.getLocale().equals(actual.getLang())) {
-                    assertEquals(expected.getLabel(), actual.getValue());
-                    existsItem = true;
-                }
-            }
-            assertTrue(existsItem);
-        }
     }
 }

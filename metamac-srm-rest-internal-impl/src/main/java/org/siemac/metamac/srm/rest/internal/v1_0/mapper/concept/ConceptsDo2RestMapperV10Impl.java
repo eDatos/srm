@@ -106,7 +106,7 @@ public class ConceptsDo2RestMapperV10Impl implements ConceptsDo2RestMapperV10 {
         target.setRelatedOperation(toResourceExternalItemStatisticalOperation(source.getRelatedOperation()));
         target.setReplacedBy(source.getMaintainableArtefact().getReplacedBy());
         target.setReplaceTo(source.getMaintainableArtefact().getReplaceTo());
-        target.setParent(toConceptSchemeParent());
+        target.setParent(toConceptSchemeParent(source));
         target.setChildren(toConceptSchemeChildren(source));
     }
 
@@ -129,10 +129,23 @@ public class ConceptsDo2RestMapperV10Impl implements ConceptsDo2RestMapperV10 {
     }
 
     @Override
+    public Concept toConcept(ConceptMetamac source) {
+        if (source == null) {
+            return null;
+        }
+        Concept target = new Concept();
+        toConcept(source, target);
+        return target;
+    }
+    
+    @Override
     public void toConcept(ConceptMetamac source, Concept target) {
         if (source == null) {
             return;
         }
+        target.setKind(RestInternalConstants.KIND_CONCEPT);
+        target.setSelfLink(toConceptLink(source));
+        
         target.setPluralName(toInternationalString(source.getPluralName()));
         target.setAcronym(toInternationalString(source.getAcronym()));
         target.setDescriptionSource(toInternationalString(source.getDescriptionSource()));
@@ -146,6 +159,9 @@ public class ConceptsDo2RestMapperV10Impl implements ConceptsDo2RestMapperV10 {
         }
         target.setRoles(conceptsToUrns(source.getRoleConcepts()));
         target.setRelatedConcepts(conceptsToUrns(source.getRelatedConcepts()));
+        
+        target.setParentResource(toConceptParent(source));
+        target.setChildren(toConceptChildren(source));
     }
 
     @Override
@@ -165,7 +181,7 @@ public class ConceptsDo2RestMapperV10Impl implements ConceptsDo2RestMapperV10 {
         return targets;
     }
 
-    private ResourceLink toConceptSchemeParent() {
+    private ResourceLink toConceptSchemeParent(ConceptSchemeVersionMetamac source) {
         ResourceLink target = new ResourceLink();
         target.setKind(RestInternalConstants.KIND_CONCEPT_SCHEMES);
         target.setSelfLink(toConceptSchemesLink(null, null, null));
@@ -183,6 +199,18 @@ public class ConceptsDo2RestMapperV10Impl implements ConceptsDo2RestMapperV10 {
 
         targets.setTotal(BigInteger.valueOf(targets.getChildren().size()));
         return targets;
+    }
+    
+    private ResourceLink toConceptParent(ConceptMetamac source) {
+        ResourceLink target = new ResourceLink();
+        target.setKind(RestInternalConstants.KIND_CONCEPTS);
+        target.setSelfLink(toConceptsLink(source.getItemSchemeVersion()));
+        return target;
+    }
+
+    private Children toConceptChildren(ConceptMetamac source) {
+        // nothing
+        return null;
     }
 
     private org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemeType toConceptSchemeTypeEnum(ConceptSchemeTypeEnum source) {
