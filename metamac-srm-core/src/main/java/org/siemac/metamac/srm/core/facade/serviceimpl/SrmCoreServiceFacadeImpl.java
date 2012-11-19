@@ -785,8 +785,19 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public CodeMetamacDto updateCode(ServiceContext ctx, CodeMetamacDto codeDto) throws MetamacException {
-        // TODO Auto-generated method stub
-        return null;
+        // Security
+        CodelistVersionMetamac codelistVersion = getCodesMetamacService().retrieveCodelistByCodeUrn(ctx, codeDto.getUrn());
+        ItemsSecurityUtils.canUpdateItem(ctx, codelistVersion.getLifeCycleMetadata().getProcStatus());
+
+        // Transform
+        CodeMetamac codeMetamac = codesDto2DoMapper.codeDtoToDo(codeDto);
+
+        // Update
+        CodeMetamac conceptUpdated = getCodesMetamacService().updateCode(ctx, codeMetamac);
+
+        // Transform to DTO
+        codeDto = codesDo2DtoMapper.codeMetamacDoToDto(conceptUpdated);
+        return codeDto;
     }
 
     @Override

@@ -744,6 +744,19 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
     }
 
     @Test
+    public void testUpdateCode() throws Exception {
+        CodeMetamacDto codeMetamacDto = srmCoreServiceFacade.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_1_V2_CODE_1);
+        codeMetamacDto.setName(MetamacMocks.mockInternationalStringDto());
+        codeMetamacDto.setDescription(MetamacMocks.mockInternationalStringDto());
+
+        CodeMetamacDto codeMetamacDtoUpdated = srmCoreServiceFacade.updateCode(getServiceContextAdministrador(), codeMetamacDto);
+
+        assertNotNull(codeMetamacDto);
+        assertEqualsCodeDto(codeMetamacDto, codeMetamacDtoUpdated);
+        assertTrue(codeMetamacDtoUpdated.getVersionOptimisticLocking() > codeMetamacDto.getVersionOptimisticLocking());
+    }
+
+    @Test
     public void testRetrieveCodeByUrn() throws Exception {
         CodeMetamacDto codeMetamacDto = srmCoreServiceFacade.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_1_V2_CODE_1);
 
