@@ -16,6 +16,7 @@ import org.siemac.metamac.rest.exception.RestCommonServiceExceptionType;
 import org.siemac.metamac.rest.exception.RestException;
 import org.siemac.metamac.rest.exception.utils.RestExceptionUtils;
 import org.siemac.metamac.rest.search.criteria.SculptorCriteria;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.Concept;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptScheme;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemes;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptTypes;
@@ -36,6 +37,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefactProperties.MaintainableArtefactProperty;
+import com.arte.statistic.sdmx.srm.core.base.domain.NameableArtefactProperties.NameableArtefactProperty;
 
 @Service("srmRestInternalFacadeV10")
 public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
@@ -91,11 +93,29 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             SculptorCriteria sculptorCriteria = restCriteria2SculptorCriteriaMapper.getConceptCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
 
             // Find
-            PagedResult<ConceptMetamac> conceptsEntitiesResult = findConceptsCore(agencyID, resourceID, version, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
+            PagedResult<ConceptMetamac> conceptsEntitiesResult = findConceptsCore(agencyID, resourceID, version, null, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
 
             // Transform
             Concepts concepts = do2RestInternalMapper.toConcepts(conceptsEntitiesResult, agencyID, resourceID, version, query, orderBy, sculptorCriteria.getLimit());
             return concepts;
+        } catch (Exception e) {
+            throw manageException(e);
+        }
+    }
+
+    @Override
+    public Concept retrieveConcept(String agencyID, String resourceID, String version, String conceptID) {
+        try {
+            // Find one
+            PagedResult<ConceptMetamac> conceptsEntitiesResult = findConceptsCore(agencyID, resourceID, version, conceptID, null, PagingParameter.pageAccess(1, 1, false));
+            if (conceptsEntitiesResult.getValues().size() != 1) {
+                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.CONCEPT_NOT_FOUND, conceptID, agencyID, resourceID, version);
+                throw new RestException(exception, Status.NOT_FOUND);
+            }
+
+            // Transform
+            Concept concept = do2RestInternalMapper.toConcept(conceptsEntitiesResult.getValues().get(0));
+            return concept;
         } catch (Exception e) {
             throw manageException(e);
         }
@@ -151,8 +171,8 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
         return conceptsSchemesEntitiesResult;
     }
 
-    private PagedResult<ConceptMetamac> findConceptsCore(String agencyID, String resourceID, String version, List<ConditionalCriteria> conditionalCriteriaQuery, PagingParameter pagingParameter)
-            throws MetamacException {
+    private PagedResult<ConceptMetamac> findConceptsCore(String agencyID, String resourceID, String version, String conceptID, List<ConditionalCriteria> conditionalCriteriaQuery,
+            PagingParameter pagingParameter) throws MetamacException {
 
         // Criteria to find concepts by criteria
         List<ConditionalCriteria> conditionalCriteria = new ArrayList<ConditionalCriteria>();
@@ -165,6 +185,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
         addConditionalCriteriaByAgency(conditionalCriteria, agencyID, ConceptMetamac.class, ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact());
         addConditionalCriteriaByConceptScheme(conditionalCriteria, resourceID, ConceptMetamac.class, ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact());
         addConditionalCriteriaByConceptSchemeVersion(conditionalCriteria, version, ConceptMetamac.class, ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact());
+        addConditionalCriteriaByConcept(conditionalCriteria, conceptID, ConceptMetamac.class, ConceptMetamacProperties.nameableArtefact());
 
         // Find
         PagedResult<ConceptMetamac> conceptsEntitiesResult = conceptsService.findConceptsByCondition(ctx, conditionalCriteria, pagingParameter);
@@ -197,6 +218,13 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
     private void addConditionalCriteriaByConceptSchemeVersion(List<ConditionalCriteria> conditionalCriteria, String version, Class entity, MaintainableArtefactProperty maintainableArtefactProperty) {
         if (version != null && !RestInternalConstants.WILDCARD.equals(version)) {
             conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(entity).withProperty(maintainableArtefactProperty.versionLogic()).eq(version).buildSingle());
+        }
+    }
+    
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    private void addConditionalCriteriaByConcept(List<ConditionalCriteria> conditionalCriteria, String code, Class entity, NameableArtefactProperty nameableArtefactProperty) {
+        if (code != null && !RestInternalConstants.WILDCARD.equals(code)) {
+            conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(entity).withProperty(nameableArtefactProperty.code()).eq(code).buildSingle());
         }
     }
 
