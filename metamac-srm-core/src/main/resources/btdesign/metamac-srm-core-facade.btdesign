@@ -470,6 +470,19 @@ Application SrmFacadeCore {
     		@CodelistMetamacDto versioningCodelist(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
     		"Ends the Codelist validity"
     		@CodelistMetamacDto endCodelistValidity(String urn) throws MetamacException;
+    		
+    		"Creates code"
+	   		@CodeMetamacDto createCode(@CodeMetamacDto codeMetamacDto) throws MetamacException;
+	   		"Updates code"
+            @CodeMetamacDto updateCode(@CodeMetamacDto codeDto) throws MetamacException;
+	   		"Retrieves a code by URN"
+            @CodeMetamacDto retrieveCodeByUrn(String urn) throws MetamacException;
+            "Finds codes by criteria"
+            MetamacCriteriaResult<@CodeMetamacDto> findCodesByCondition(MetamacCriteria criteria) throws MetamacException;
+			"Deletes code"
+            deleteCode(String urn) throws MetamacException;
+    		"Retrieves codes by code scheme, in tree structure"
+    		List<@ItemHierarchyDto> retrieveCodesByCodelistUrn(String codelistUrn) throws MetamacException;
     	}
 /*    	
     	Service ImportServiceFacade {

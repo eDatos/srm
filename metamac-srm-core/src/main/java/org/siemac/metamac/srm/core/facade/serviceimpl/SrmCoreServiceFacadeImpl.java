@@ -32,7 +32,9 @@ import org.siemac.metamac.srm.core.category.dto.CategoryMetamacDto;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 import org.siemac.metamac.srm.core.category.mapper.CategoriesDo2DtoMapper;
 import org.siemac.metamac.srm.core.category.mapper.CategoriesDto2DoMapper;
+import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
+import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.code.mapper.CodesDo2DtoMapper;
 import org.siemac.metamac.srm.core.code.mapper.CodesDto2DoMapper;
@@ -762,6 +764,54 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     // ------------------------------------------------------------------------
     // CODES
     // ------------------------------------------------------------------------
+
+    @Override
+    public CodeMetamacDto createCode(ServiceContext ctx, CodeMetamacDto codeMetamacDto) throws MetamacException {
+        // Security
+        CodelistVersionMetamac codelistVersion = getCodesMetamacService().retrieveCodelistByUrn(ctx, codeMetamacDto.getItemSchemeVersionUrn());
+        ItemsSecurityUtils.canCreateItem(ctx, codelistVersion.getLifeCycleMetadata().getProcStatus());
+
+        // Transform
+        CodeMetamac codeMetamac = codesDto2DoMapper.codeDtoToDo(codeMetamacDto);
+
+        // Create
+        CodeMetamac codeMetamacCreated = getCodesMetamacService().createCode(ctx, codeMetamacDto.getItemSchemeVersionUrn(), codeMetamac);
+
+        // Transform to DTO
+        codeMetamacDto = codesDo2DtoMapper.codeMetamacDoToDto(codeMetamacCreated);
+
+        return codeMetamacDto;
+    }
+
+    @Override
+    public CodeMetamacDto updateCode(ServiceContext ctx, CodeMetamacDto codeDto) throws MetamacException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public CodeMetamacDto retrieveCodeByUrn(ServiceContext ctx, String urn) throws MetamacException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public MetamacCriteriaResult<CodeMetamacDto> findCodesByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public void deleteCode(ServiceContext ctx, String urn) throws MetamacException {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public List<ItemHierarchyDto> retrieveCodesByCodelistUrn(ServiceContext ctx, String codelistUrn) throws MetamacException {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
     /**************************************************************************
      * ORGANISATION

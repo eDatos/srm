@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsserts.assertEqualsCodeDto;
 import static org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsserts.assertEqualsCodelistMetamacDto;
 
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestrictio
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction.OperationType;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsserts;
 import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacDtoMocks;
@@ -695,6 +697,46 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
     // ---------------------------------------------------------------------------------------
     // CODES
     // ---------------------------------------------------------------------------------------
+
+    @Test
+    public void testCreateCode() throws Exception {
+        CodeMetamacDto codeMetamacDto = CodesMetamacDtoMocks.mockCodeDto();
+        codeMetamacDto.setItemSchemeVersionUrn(CODELIST_1_V2);
+
+        CodeMetamacDto codeMetamacDtoCreated = srmCoreServiceFacade.createCode(getServiceContextAdministrador(), codeMetamacDto);
+        assertEquals("urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(02.000)." + codeMetamacDto.getCode(), codeMetamacDtoCreated.getUrn());
+        assertNull(codeMetamacDtoCreated.getUri());
+
+        assertEqualsCodeDto(codeMetamacDto, codeMetamacDtoCreated);
+    }
+
+    @Test
+    public void testCreateCodeWithCodeParent() throws Exception {
+        CodeMetamacDto codeMetamacDto = CodesMetamacDtoMocks.mockCodeDto();
+        codeMetamacDto.setItemParentUrn(CODELIST_1_V2_CODE_1);
+        codeMetamacDto.setItemSchemeVersionUrn(CODELIST_1_V2);
+
+        CodeMetamacDto codeMetamacDtoCreated = srmCoreServiceFacade.createCode(getServiceContextAdministrador(), codeMetamacDto);
+        assertEquals(CODELIST_1_V2_CODE_1, codeMetamacDtoCreated.getItemParentUrn());
+        assertEqualsCodeDto(codeMetamacDto, codeMetamacDtoCreated);
+    }
+
+    @Test
+    public void testCreateCodeErrorParentNotExists() throws Exception {
+        CodeMetamacDto codeMetamacDto = CodesMetamacDtoMocks.mockCodeDto();
+        codeMetamacDto.setItemParentUrn(NOT_EXISTS);
+        codeMetamacDto.setItemSchemeVersionUrn(CODELIST_1_V2);
+
+        try {
+            srmCoreServiceFacade.createCode(getServiceContextAdministrador(), codeMetamacDto);
+            fail("wrong parent");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(NOT_EXISTS, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
 
     @Override
     protected String getDataSetFile() {
