@@ -1957,7 +1957,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     private void canModifyCategorisation(ServiceContext ctx, String artefactCategorisedUrn) throws MetamacException {
 
         // TODO pendiente duda Alberto
-
+        // TODO se pueden asociar a category scheme
         // if (artefactCategorisedUrn == null) {
         // throw new MetamacException(ServiceExceptionType.METADATA_REQUIRED, ServiceExceptionParameters.URN);
         // }
