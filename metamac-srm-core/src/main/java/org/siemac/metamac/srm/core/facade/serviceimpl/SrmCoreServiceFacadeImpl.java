@@ -791,8 +791,16 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public CodeMetamacDto retrieveCodeByUrn(ServiceContext ctx, String urn) throws MetamacException {
-        // TODO Auto-generated method stub
-        return null;
+        // Security
+        ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
+
+        // Retrieve
+        CodeMetamac codeMetamac = getCodesMetamacService().retrieveCodeByUrn(ctx, urn);
+
+        // Transform
+        CodeMetamacDto codeMetamacDto = codesDo2DtoMapper.codeMetamacDoToDto(codeMetamac);
+
+        return codeMetamacDto;
     }
 
     @Override
