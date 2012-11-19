@@ -1690,7 +1690,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         }
     }
 
-    @Override
+    @Test
     public void testRetrieveOrganisationSchemeByOrganisationUrn() throws Exception {
         // Retrieve
         String urn = ORGANISATION_SCHEME_1_V2_ORGANISATION_1;

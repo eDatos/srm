@@ -1462,7 +1462,7 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
         }
     }
 
-    @Override
+    @Test
     public void testRetrieveCategorySchemeByCategoryUrn() throws Exception {
         // Retrieve
         String urn = CATEGORY_SCHEME_1_V2_CATEGORY_1;
