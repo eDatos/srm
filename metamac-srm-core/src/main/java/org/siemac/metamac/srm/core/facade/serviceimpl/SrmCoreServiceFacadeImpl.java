@@ -32,6 +32,10 @@ import org.siemac.metamac.srm.core.category.dto.CategoryMetamacDto;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 import org.siemac.metamac.srm.core.category.mapper.CategoriesDo2DtoMapper;
 import org.siemac.metamac.srm.core.category.mapper.CategoriesDto2DoMapper;
+import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
+import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
+import org.siemac.metamac.srm.core.code.mapper.CodesDo2DtoMapper;
+import org.siemac.metamac.srm.core.code.mapper.CodesDto2DoMapper;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
@@ -118,6 +122,12 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Autowired
     private CategoriesDto2DoMapper                 categoriesDto2DoMapper;
+
+    @Autowired
+    private CodesDo2DtoMapper                      codesDo2DtoMapper;
+
+    @Autowired
+    private CodesDto2DoMapper                      codesDto2DoMapper;
 
     @Autowired
     @Qualifier("jaxb2MarshallerWithValidation")
@@ -552,6 +562,82 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         // TODO devolver los codelist posibles para un concepto
         return ServicesResolver.findAllCodelists();
     }
+
+    // ------------------------------------------------------------------------
+    // CODELISTS
+    // ------------------------------------------------------------------------
+
+    @Override
+    public CodelistMetamacDto retrieveCodelistByUrn(ServiceContext ctx, String urn) throws MetamacException {
+        // Security
+        ItemsSecurityUtils.canRetrieveItemSchemeByUrn(ctx);
+
+        // Retrieve
+        CodelistVersionMetamac codelistVersion = getCodesMetamacService().retrieveCodelistByUrn(ctx, urn);
+
+        // Transform
+        CodelistMetamacDto codelistMetamacDto = codesDo2DtoMapper.codelistMetamacDoToDto(codelistVersion);
+
+        return codelistMetamacDto;
+    }
+
+    @Override
+    public CodelistMetamacDto createCodelist(ServiceContext ctx, CodelistMetamacDto codelistDto) throws MetamacException {
+        // Security
+        ItemsSecurityUtils.canCreateItemScheme(ctx);
+
+        // Transform
+        CodelistVersionMetamac codelistVersion = codesDto2DoMapper.codelistDtoToDo(codelistDto);
+
+        // Create
+        CodelistVersionMetamac codelistVersionCreated = getCodesMetamacService().createCodelist(ctx, codelistVersion);
+
+        // Transform to DTO
+        codelistDto = codesDo2DtoMapper.codelistMetamacDoToDto(codelistVersionCreated);
+        return codelistDto;
+    }
+
+    @Override
+    public CodelistMetamacDto updateCodelist(ServiceContext ctx, CodelistMetamacDto codelistDto) throws MetamacException {
+        // Security and transform
+        CodelistVersionMetamac codelistVersionOld = getCodesMetamacService().retrieveCodelistByUrn(ctx, codelistDto.getUrn());
+        ItemsSecurityUtils.canUpdateItemScheme(ctx, codelistVersionOld.getLifeCycleMetadata().getProcStatus());
+
+        // Transform
+        CodelistVersionMetamac codelistVersionToUpdate = codesDto2DoMapper.codelistDtoToDo(codelistDto);
+
+        // Update
+        CodelistVersionMetamac codelistVersionUpdated = getCodesMetamacService().updateCodelist(ctx, codelistVersionToUpdate);
+
+        // Transform to DTO
+        codelistDto = codesDo2DtoMapper.codelistMetamacDoToDto(codelistVersionUpdated);
+        return codelistDto;
+    }
+
+    @Override
+    public void deleteCodelist(ServiceContext ctx, String urn) throws MetamacException {
+        // Security
+        ItemsSecurityUtils.canDeleteItemScheme(ctx);
+
+        // Delete
+        getCodesMetamacService().deleteCodelist(ctx, urn);
+    }
+
+    @Override
+    public MetamacCriteriaResult<CodelistMetamacDto> findCodelistsByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public List<CodelistMetamacDto> retrieveCodelistVersions(ServiceContext ctx, String urn) throws MetamacException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    // ------------------------------------------------------------------------
+    // CODES
+    // ------------------------------------------------------------------------
 
     /**************************************************************************
      * ORGANISATION
@@ -1654,23 +1740,24 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     // Note: only check acess to artefact. Category and maintainer must be externally published, and everyone can access to them
     // TODO clasificaciones
     private void canModifyCategorisation(ServiceContext ctx, String artefactCategorisedUrn) throws MetamacException {
-        
+
         // TODO pendiente duda Alberto
-        
-//        if (artefactCategorisedUrn == null) {
-//            throw new MetamacException(ServiceExceptionType.METADATA_REQUIRED, ServiceExceptionParameters.URN);
-//        }
-//        if (artefactCategorisedUrn.startsWith(UrnConstants.URN_SDMX_CLASS_CONCEPTSCHEME_PREFIX)) {
-//            ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptsMetamacService().retrieveConceptSchemeByUrn(ctx, artefactCategorisedUrn);
-//            ConceptsSecurityUtils.canModifyCategorisation(ctx, conceptSchemeVersion);
-//        } else if (artefactCategorisedUrn.startsWith(UrnConstants.URN_SDMX_CLASS_ORGANISATIONSCHEMEMAP_PREFIX) || artefactCategorisedUrn.startsWith(UrnConstants.URN_SDMX_CLASS_AGENCYSCHEME_PREFIX)) {
-//            OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationsMetamacService().retrieveOrganisationSchemeByUrn(ctx, artefactCategorisedUrn);
-//            OrganisationsSecurityUtils.canModifyCategorisation(ctx, organisationSchemeVersion);
-//        } else if (artefactCategorisedUrn.startsWith(UrnConstants.URN_SDMX_CLASS_DATASTRUCTURE_PREFIX)) {
-//            DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion = getDsdsMetamacService().retrieveDataStructureDefinitionByUrn(ctx, artefactCategorisedUrn);
-//            DataStructureDefinitionSecurityUtils.canModifyCategorisation(ctx, dataStructureDefinitionVersion);
-//        } else {
-//            throw new MetamacException(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED, ctx.getUserId());
-//        }
+
+        // if (artefactCategorisedUrn == null) {
+        // throw new MetamacException(ServiceExceptionType.METADATA_REQUIRED, ServiceExceptionParameters.URN);
+        // }
+        // if (artefactCategorisedUrn.startsWith(UrnConstants.URN_SDMX_CLASS_CONCEPTSCHEME_PREFIX)) {
+        // ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptsMetamacService().retrieveConceptSchemeByUrn(ctx, artefactCategorisedUrn);
+        // ConceptsSecurityUtils.canModifyCategorisation(ctx, conceptSchemeVersion);
+        // } else if (artefactCategorisedUrn.startsWith(UrnConstants.URN_SDMX_CLASS_ORGANISATIONSCHEMEMAP_PREFIX) || artefactCategorisedUrn.startsWith(UrnConstants.URN_SDMX_CLASS_AGENCYSCHEME_PREFIX))
+        // {
+        // OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationsMetamacService().retrieveOrganisationSchemeByUrn(ctx, artefactCategorisedUrn);
+        // OrganisationsSecurityUtils.canModifyCategorisation(ctx, organisationSchemeVersion);
+        // } else if (artefactCategorisedUrn.startsWith(UrnConstants.URN_SDMX_CLASS_DATASTRUCTURE_PREFIX)) {
+        // DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion = getDsdsMetamacService().retrieveDataStructureDefinitionByUrn(ctx, artefactCategorisedUrn);
+        // DataStructureDefinitionSecurityUtils.canModifyCategorisation(ctx, dataStructureDefinitionVersion);
+        // } else {
+        // throw new MetamacException(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED, ctx.getUserId());
+        // }
     }
 }

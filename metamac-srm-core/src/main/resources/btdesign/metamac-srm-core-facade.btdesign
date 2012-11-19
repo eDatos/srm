@@ -25,6 +25,9 @@ import "classpath:/btdesign/metamac-srm-core-dsds-dtos.btdesign"
 import "classpath:/btdesign/metamac-srm-core-categories.btdesign"
 import "classpath:/btdesign/metamac-srm-core-categories-dtos.btdesign"
 
+import "classpath:/btdesign/metamac-srm-core-codes.btdesign"
+import "classpath:/btdesign/metamac-srm-core-codes-dtos.btdesign"
+
 Application SrmFacadeCore {
     basePackage=unused
     
@@ -37,6 +40,7 @@ Application SrmFacadeCore {
        		> @DsdsMetamacService
        		> @OrganisationsMetamacService
        		> @CategoriesMetamacService
+       		> @CodesMetamacService
 
 			"          
 			 @param ctx  
@@ -290,17 +294,6 @@ Application SrmFacadeCore {
     		List<@ItemHierarchyDto> retrieveOrganisationsByOrganisationSchemeUrn(String organisationSchemeUrn) throws MetamacException;       		
        		
        		/**************************************************************************
-		     * CODELIST
-		     **************************************************************************/
-     
-            "
-       		 @param ctx             
-			 @param uriConcept
-			 @return 
-			"        		
-       		List<@ExternalItemDto> findCodelists(String uriConcept) throws MetamacException;
-       		
-       		/**************************************************************************
 		     * CONCEPTS
 		     *************************************************************************/
 			"          
@@ -435,6 +428,32 @@ Application SrmFacadeCore {
     		deleteCategorisation(String urn) throws MetamacException;
     		"Retrieves all categorisations by categorised artefact"
     		List<@CategorisationDto> retrieveCategorisationsByArtefact(String urn) throws MetamacException;
+    		
+	    	/**************************************************************************
+		     * CODES
+		     **************************************************************************/
+
+			"
+       		 @param ctx             
+			 @param uriConcept
+			 @return 
+			"        		
+       		List<@ExternalItemDto> findCodelists(String uriConcept) throws MetamacException;
+
+	
+
+       		"Creates codelist"
+	   		@CodelistMetamacDto createCodelist(@CodelistMetamacDto codelistDto) throws MetamacException;
+	   		"Updates codelist" 
+            @CodelistMetamacDto updateCodelist(@CodelistMetamacDto codelistDto) throws MetamacException;
+            "Deletes codelist"
+            deleteCodelist(String urn) throws MetamacException;
+            "Finds codelist by criteria"
+            MetamacCriteriaResult<@CodelistMetamacDto> findCodelistsByCondition(MetamacCriteria criteria) throws MetamacException;
+            "Retrieves a codelist by URN"
+            @CodelistMetamacDto retrieveCodelistByUrn(String urn) throws MetamacException;
+            "Retrieves all codelist versions"
+            List<@CodelistMetamacDto> retrieveCodelistVersions(String urn) throws MetamacException;
     	}
 /*    	
     	Service ImportServiceFacade {
