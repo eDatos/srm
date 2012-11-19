@@ -545,6 +545,98 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
         }
     }
 
+    @Test
+    public void testPublishInternallyCodelist() throws Exception {
+        String urn = CODELIST_6_V1;
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        {
+            CodelistMetamacDto codelistDto = srmCoreServiceFacade.retrieveCodelistByUrn(ctx, urn);
+            assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, codelistDto.getLifeCycle().getProcStatus());
+        }
+
+        // Publish internally
+        CodelistMetamacDto codelistDto = srmCoreServiceFacade.publishCodelistInternally(ctx, urn);
+
+        // Validate response
+        {
+            assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistDto.getLifeCycle().getProcStatus());
+            assertNotNull(codelistDto.getLifeCycle().getProductionValidationDate());
+            assertNotNull(codelistDto.getLifeCycle().getProductionValidationUser());
+            assertNotNull(codelistDto.getLifeCycle().getDiffusionValidationDate());
+            assertNotNull(codelistDto.getLifeCycle().getDiffusionValidationUser());
+            assertTrue(DateUtils.isSameDay(new Date(), codelistDto.getLifeCycle().getInternalPublicationDate()));
+            assertEquals(ctx.getUserId(), codelistDto.getLifeCycle().getInternalPublicationUser());
+            assertNull(codelistDto.getLifeCycle().getExternalPublicationDate());
+            assertNull(codelistDto.getLifeCycle().getExternalPublicationUser());
+            assertTrue(codelistDto.getFinalLogic());
+        }
+        // Validate retrieving
+        {
+            codelistDto = srmCoreServiceFacade.retrieveCodelistByUrn(ctx, urn);
+
+            assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistDto.getLifeCycle().getProcStatus());
+            assertNotNull(codelistDto.getLifeCycle().getProductionValidationDate());
+            assertNotNull(codelistDto.getLifeCycle().getProductionValidationUser());
+            assertNotNull(codelistDto.getLifeCycle().getDiffusionValidationDate());
+            assertNotNull(codelistDto.getLifeCycle().getDiffusionValidationUser());
+            assertTrue(DateUtils.isSameDay(new Date(), codelistDto.getLifeCycle().getInternalPublicationDate()));
+            assertEquals(ctx.getUserId(), codelistDto.getLifeCycle().getInternalPublicationUser());
+            assertNull(codelistDto.getLifeCycle().getExternalPublicationDate());
+            assertNull(codelistDto.getLifeCycle().getExternalPublicationUser());
+            assertTrue(codelistDto.getFinalLogic());
+        }
+    }
+
+    @Test
+    public void testPublishExternallyCodelist() throws Exception {
+        String urn = CODELIST_7_V2;
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        {
+            CodelistMetamacDto codelistDto = srmCoreServiceFacade.retrieveCodelistByUrn(ctx, urn);
+            assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistDto.getLifeCycle().getProcStatus());
+            assertNull(codelistDto.getValidFrom());
+            assertNull(codelistDto.getValidTo());
+        }
+
+        // Publish externally
+        CodelistMetamacDto codelistDto = srmCoreServiceFacade.publishCodelistExternally(ctx, urn);
+
+        // Validate response
+        {
+            assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, codelistDto.getLifeCycle().getProcStatus());
+            assertNotNull(codelistDto.getLifeCycle().getProductionValidationDate());
+            assertNotNull(codelistDto.getLifeCycle().getProductionValidationUser());
+            assertNotNull(codelistDto.getLifeCycle().getDiffusionValidationDate());
+            assertNotNull(codelistDto.getLifeCycle().getDiffusionValidationUser());
+            assertNotNull(codelistDto.getLifeCycle().getInternalPublicationDate());
+            assertNotNull(codelistDto.getLifeCycle().getInternalPublicationUser());
+            assertTrue(DateUtils.isSameDay(new Date(), codelistDto.getLifeCycle().getExternalPublicationDate()));
+            assertEquals(ctx.getUserId(), codelistDto.getLifeCycle().getExternalPublicationUser());
+            assertNull(codelistDto.getLifeCycle().getIsExternalPublicationFailed());
+            assertNull(codelistDto.getLifeCycle().getExternalPublicationFailedDate());
+            assertTrue(DateUtils.isSameDay(new Date(), codelistDto.getValidFrom()));
+            assertNull(codelistDto.getValidTo());
+        }
+        // Validate retrieving
+        {
+            codelistDto = srmCoreServiceFacade.retrieveCodelistByUrn(ctx, urn);
+
+            assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, codelistDto.getLifeCycle().getProcStatus());
+            assertNotNull(codelistDto.getLifeCycle().getProductionValidationDate());
+            assertNotNull(codelistDto.getLifeCycle().getProductionValidationUser());
+            assertNotNull(codelistDto.getLifeCycle().getDiffusionValidationDate());
+            assertNotNull(codelistDto.getLifeCycle().getDiffusionValidationUser());
+            assertNotNull(codelistDto.getLifeCycle().getInternalPublicationDate());
+            assertNotNull(codelistDto.getLifeCycle().getInternalPublicationUser());
+            assertTrue(DateUtils.isSameDay(new Date(), codelistDto.getLifeCycle().getExternalPublicationDate()));
+            assertEquals(ctx.getUserId(), codelistDto.getLifeCycle().getExternalPublicationUser());
+            assertTrue(DateUtils.isSameDay(new Date(), codelistDto.getValidFrom()));
+            assertNull(codelistDto.getValidTo());
+        }
+    }
+
     // ---------------------------------------------------------------------------------------
     // CODES
     // ---------------------------------------------------------------------------------------

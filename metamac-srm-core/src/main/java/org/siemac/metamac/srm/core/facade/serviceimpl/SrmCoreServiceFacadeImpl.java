@@ -711,14 +711,27 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public CodelistMetamacDto publishCodelistInternally(ServiceContext ctx, String urn) throws MetamacException {
-        // TODO Auto-generated method stub
-        return null;
+        // Security
+        ItemsSecurityUtils.canPublishItemSchemeInternally(ctx);
+
+        // Publish
+        CodelistVersionMetamac codelistVersionPublished = getCodesMetamacService().publishInternallyCodelist(ctx, urn);
+
+        // Transform to DTO
+        CodelistMetamacDto codelistDto = codesDo2DtoMapper.codelistMetamacDoToDto(codelistVersionPublished);
+        return codelistDto;
     }
 
     @Override
     public CodelistMetamacDto publishCodelistExternally(ServiceContext ctx, String urn) throws MetamacException {
-        // TODO Auto-generated method stub
-        return null;
+        // Security
+        ItemsSecurityUtils.canPublishItemSchemeExternally(ctx);
+
+        CodelistVersionMetamac codelistVersionPublished = getCodesMetamacService().publishExternallyCodelist(ctx, urn);
+
+        // Transform to DTO
+        CodelistMetamacDto codelistDto = codesDo2DtoMapper.codelistMetamacDoToDto(codelistVersionPublished);
+        return codelistDto;
     }
 
     @Override
