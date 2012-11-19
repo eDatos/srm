@@ -440,7 +440,6 @@ Application SrmFacadeCore {
 			"        		
        		List<@ExternalItemDto> findCodelists(String uriConcept) throws MetamacException;
 
-	
 
        		"Creates codelist"
 	   		@CodelistMetamacDto createCodelist(@CodelistMetamacDto codelistDto) throws MetamacException;
@@ -454,6 +453,23 @@ Application SrmFacadeCore {
             @CodelistMetamacDto retrieveCodelistByUrn(String urn) throws MetamacException;
             "Retrieves all codelist versions"
             List<@CodelistMetamacDto> retrieveCodelistVersions(String urn) throws MetamacException;
+            
+            "Sends Codelist to production validation"
+	    	@CodelistMetamacDto sendCodelistToProductionValidation(String urn) throws MetamacException;
+    		"Sends to diffusion validation"
+    		@CodelistMetamacDto sendCodelistToDiffusionValidation(String urn) throws MetamacException;
+	    	"Rejects production validation of Codelist"    		
+	    	@CodelistMetamacDto rejectCodelistProductionValidation(String urn) throws MetamacException;
+	    	"Rejects diffusion validation of Codelist"
+	    	@CodelistMetamacDto rejectCodelistDiffusionValidation(String urn) throws MetamacException; 
+	    	"Publishes internally a Codelist"
+	    	@CodelistMetamacDto publishCodelistInternally(String urn) throws MetamacException;
+	    	"Publishes externally a Codelist"
+	    	@CodelistMetamacDto publishCodelistExternally(String urn) throws MetamacException;
+    		"Creates a new version of a Codelist, copying metadata from version with provided urn"
+    		@CodelistMetamacDto versioningCodelist(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
+    		"Ends the Codelist validity"
+    		@CodelistMetamacDto endCodelistValidity(String urn) throws MetamacException;
     	}
 /*    	
     	Service ImportServiceFacade {

@@ -655,6 +655,84 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         return codelistMetamacDtos;
     }
 
+    @Override
+    public CodelistMetamacDto sendCodelistToProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
+        // Security
+        ItemsSecurityUtils.canSendItemSchemeToProductionValidation(ctx);
+
+        // Send
+        CodelistVersionMetamac codelistVersionProductionValidation = getCodesMetamacService().sendCodelistToProductionValidation(ctx, urn);
+
+        // Transform to DTO
+        CodelistMetamacDto codelistDto = codesDo2DtoMapper.codelistMetamacDoToDto(codelistVersionProductionValidation);
+        return codelistDto;
+    }
+
+    @Override
+    public CodelistMetamacDto sendCodelistToDiffusionValidation(ServiceContext ctx, String urn) throws MetamacException {
+        // Security
+        ItemsSecurityUtils.canSendItemSchemeToDiffusionValidation(ctx);
+
+        // Send
+        CodelistVersionMetamac codelistVersionDiffusionValidation = getCodesMetamacService().sendCodelistToDiffusionValidation(ctx, urn);
+
+        // Transform to DTO
+        CodelistMetamacDto codelistDto = codesDo2DtoMapper.codelistMetamacDoToDto(codelistVersionDiffusionValidation);
+        return codelistDto;
+    }
+
+    @Override
+    public CodelistMetamacDto rejectCodelistProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
+        // Security
+        CodelistVersionMetamac codelistVersion = getCodesMetamacService().retrieveCodelistByUrn(ctx, urn);
+        ItemsSecurityUtils.canRejectItemSchemeValidation(ctx, codelistVersion.getLifeCycleMetadata().getProcStatus());
+
+        // Reject
+        CodelistVersionMetamac codelistVersionRejected = getCodesMetamacService().rejectCodelistProductionValidation(ctx, urn);
+
+        // Transform to DTO
+        CodelistMetamacDto codelistDto = codesDo2DtoMapper.codelistMetamacDoToDto(codelistVersionRejected);
+        return codelistDto;
+    }
+
+    @Override
+    public CodelistMetamacDto rejectCodelistDiffusionValidation(ServiceContext ctx, String urn) throws MetamacException {
+        // Security
+        CodelistVersionMetamac codelistVersion = getCodesMetamacService().retrieveCodelistByUrn(ctx, urn);
+        ItemsSecurityUtils.canRejectItemSchemeValidation(ctx, codelistVersion.getLifeCycleMetadata().getProcStatus());
+
+        // Reject
+        CodelistVersionMetamac codelistVersionRejected = getCodesMetamacService().rejectCodelistDiffusionValidation(ctx, urn);
+
+        // Transform to DTO
+        CodelistMetamacDto codelistDto = codesDo2DtoMapper.codelistMetamacDoToDto(codelistVersionRejected);
+        return codelistDto;
+    }
+
+    @Override
+    public CodelistMetamacDto publishCodelistInternally(ServiceContext ctx, String urn) throws MetamacException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public CodelistMetamacDto publishCodelistExternally(ServiceContext ctx, String urn) throws MetamacException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public CodelistMetamacDto versioningCodelist(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public CodelistMetamacDto endCodelistValidity(ServiceContext ctx, String urn) throws MetamacException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
     // ------------------------------------------------------------------------
     // CODES
     // ------------------------------------------------------------------------
