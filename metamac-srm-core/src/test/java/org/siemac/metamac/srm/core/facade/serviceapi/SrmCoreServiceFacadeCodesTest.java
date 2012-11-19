@@ -25,6 +25,7 @@ import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestrictio
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
+import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsserts;
 import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacDtoMocks;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
@@ -36,6 +37,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/srm/applicationContext-test.xml"})
@@ -635,6 +638,58 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
             assertTrue(DateUtils.isSameDay(new Date(), codelistDto.getValidFrom()));
             assertNull(codelistDto.getValidTo());
         }
+    }
+
+    @Test
+    public void testVersioningCodelist() throws Exception {
+
+        String urn = CODELIST_3_V1;
+        String versionExpected = "02.000";
+        String urnExpected = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST03(02.000)";
+
+        CodelistMetamacDto codelistDtoToCopy = srmCoreServiceFacade.retrieveCodelistByUrn(getServiceContextAdministrador(), urn);
+        CodelistMetamacDto codelistDtoNewVersion = srmCoreServiceFacade.versioningCodelist(getServiceContextAdministrador(), urn, VersionTypeEnum.MAJOR);
+
+        // Validate response
+        {
+            assertEquals(versionExpected, codelistDtoNewVersion.getVersionLogic());
+            assertEquals(urnExpected, codelistDtoNewVersion.getUrn());
+            assertEquals(ProcStatusEnum.DRAFT, codelistDtoNewVersion.getLifeCycle().getProcStatus());
+            CodesMetamacAsserts.assertEqualsCodelistMetamacDto(codelistDtoToCopy, codelistDtoNewVersion);
+        }
+
+        // Validate retrieving
+        {
+            // New version
+            codelistDtoNewVersion = srmCoreServiceFacade.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistDtoNewVersion.getUrn());
+            assertEquals(versionExpected, codelistDtoNewVersion.getVersionLogic());
+            assertEquals(urnExpected, codelistDtoNewVersion.getUrn());
+            assertEquals(ProcStatusEnum.DRAFT, codelistDtoNewVersion.getLifeCycle().getProcStatus());
+            assertEquals("01.000", codelistDtoNewVersion.getReplaceTo());
+            assertEquals(null, codelistDtoNewVersion.getReplacedBy());
+            CodesMetamacAsserts.assertEqualsCodelistMetamacDto(codelistDtoToCopy, codelistDtoNewVersion);
+
+            // Copied version
+            codelistDtoToCopy = srmCoreServiceFacade.retrieveCodelistByUrn(getServiceContextAdministrador(), urn);
+            assertEquals("01.000", codelistDtoToCopy.getVersionLogic());
+            assertEquals(urn, codelistDtoToCopy.getUrn());
+            assertEquals(null, codelistDtoToCopy.getReplaceTo());
+            assertEquals(versionExpected, codelistDtoToCopy.getReplacedBy());
+
+            // All versions
+            List<CodelistMetamacDto> allVersions = srmCoreServiceFacade.retrieveCodelistVersions(getServiceContextAdministrador(), urn);
+            assertEquals(2, allVersions.size());
+            assertEquals(urn, allVersions.get(0).getUrn());
+            assertEquals(urnExpected, allVersions.get(1).getUrn());
+        }
+    }
+
+    @Test
+    public void testEndCodelistValidity() throws Exception {
+        CodelistMetamacDto codelistMetamacDto = srmCoreServiceFacade.endCodelistValidity(getServiceContextAdministrador(), CODELIST_7_V1);
+
+        assertNotNull(codelistMetamacDto);
+        assertTrue(DateUtils.isSameDay(new Date(), codelistMetamacDto.getValidTo()));
     }
 
     // ---------------------------------------------------------------------------------------
