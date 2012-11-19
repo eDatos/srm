@@ -53,12 +53,14 @@ import org.siemac.metamac.core.common.util.ApplicationContextProvider;
 import org.siemac.metamac.rest.common.test.MetamacRestBaseTest;
 import org.siemac.metamac.rest.common.test.ServerResource;
 import org.siemac.metamac.rest.constants.RestConstants;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.Concept;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptScheme;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemes;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptTypes;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.Concepts;
 import org.siemac.metamac.rest.utils.RestUtils;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
+import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacProperties;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacProperties;
 import org.siemac.metamac.srm.core.concept.serviceapi.ConceptsMetamacService;
@@ -102,9 +104,21 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
     }
 
     @Test
-    public void testWithoutMatchError404() throws Exception {
+    public void testErrorWithoutMatchError404() throws Exception {
         String requestUri = baseApi + "/nomatch";
         testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.NOT_FOUND, new ByteArrayInputStream(new byte[0]));
+    }
+
+    @Test
+    public void testErrorJsonNonAcceptable() throws Exception {
+
+        String requestUri = getUriConceptSchemes(AGENCY_1, CONCEPT_SCHEME_1_CODE, CONCEPT_SCHEME_1_VERSION_1);
+
+        // Request and validate
+        WebClient webClient = WebClient.create(requestUri).accept("application/json");
+        Response response = webClient.get();
+
+        assertEquals(Status.NOT_ACCEPTABLE.getStatusCode(), response.getStatus());
     }
 
     @Test
@@ -245,7 +259,7 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
     }
 
     @Test
-    public void testRetrieveConceptsSchemeErroNotExists() throws Exception {
+    public void testRetrieveConceptsSchemeErrorNotExists() throws Exception {
         String agencyID = AGENCY_1;
         String resourceID = NOT_EXISTS;
         String version = CONCEPT_SCHEME_1_VERSION_1;
@@ -292,18 +306,6 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
     }
 
     @Test
-    public void testRetrieveConceptSchemeErrorJsonNonAcceptable() throws Exception {
-
-        String requestUri = getUriConceptSchemes(AGENCY_1, CONCEPT_SCHEME_1_CODE, CONCEPT_SCHEME_1_VERSION_1);
-
-        // Request and validate
-        WebClient webClient = WebClient.create(requestUri).accept("application/json");
-        Response response = webClient.get();
-
-        assertEquals(Status.NOT_ACCEPTABLE.getStatusCode(), response.getStatus());
-    }
-
-    @Test
     public void testFindConcepts() throws Exception {
         // wildcard
         testFindConcepts(WILDCARD, WILDCARD, WILDCARD, null, null, null, null); // without limits
@@ -337,6 +339,109 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
         testFindConcepts(WILDCARD, CONCEPT_SCHEME_1_CODE, WILDCARD, "2", "0", QUERY_CONCEPT_ID_LIKE_1_NAME_LIKE_2, null); // query
         testFindConcepts(AGENCY_1, CONCEPT_SCHEME_1_CODE, CONCEPT_SCHEME_1_VERSION_1, "2", "0", QUERY_CONCEPT_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_CONCEPT_ID_DESC); // query and order
     }
+
+    @Test
+    public void testFindConceptsWithoutJaxbTransformation() throws Exception {
+        String requestUri = getUriConcepts(WILDCARD, WILDCARD, WILDCARD, QUERY_CONCEPT_ID_LIKE_1_NAME_LIKE_2, "4", "4");
+        InputStream responseExpected = SrmRestInternalFacadeV10Test.class.getResourceAsStream("/responses/findConcepts.xml");
+
+        // Request and validate
+        testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
+    }
+
+    @Test
+    public void testRetrieveConcept() throws Exception {
+        resetMocks();
+
+        String agencyID = AGENCY_1;
+        String resourceID = CONCEPT_SCHEME_1_CODE;
+        String version = CONCEPT_SCHEME_1_VERSION_1;
+        String conceptID = CONCEPT_1_CODE;
+        Concept concept = getSrmRestInternalFacadeClientXml().retrieveConcept(agencyID, resourceID, version, conceptID);
+
+        // Validation
+        assertNotNull(concept);
+        assertEquals(conceptID, concept.getId());
+        assertEquals(RestInternalConstants.KIND_CONCEPT, concept.getKind());
+        // other metadata are tested in transformation tests
+    }
+
+    @Test
+    public void testRetrieveConceptWithoutJaxbTransformation() throws Exception {
+
+        String requestUri = getUriConcept(AGENCY_1, CONCEPT_SCHEME_1_CODE, CONCEPT_SCHEME_1_VERSION_1, CONCEPT_1_CODE);
+        InputStream responseExpected = SrmRestInternalFacadeV10Test.class.getResourceAsStream("/responses/retrieveConcept.id1.xml");
+
+        // Request and validate
+        testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
+    }
+
+    // @Test
+    // public void testRetrieveConceptSchemeWithoutJaxbTransformationWithXmlSufix() throws Exception {
+    //
+    // String requestUri = getUriConceptSchemes(AGENCY_1, CONCEPT_SCHEME_1_CODE, CONCEPT_SCHEME_1_VERSION_1) + ".xml";
+    // InputStream responseExpected = SrmRestInternalFacadeV10Test.class.getResourceAsStream("/responses/retrieveConceptScheme.id1.xml");
+    //
+    // // Request and validate
+    // testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
+    // }
+    //
+    // @Test
+    // public void testRetrieveConceptSchemeWithoutJaxbTransformationWithTypeParameter() throws Exception {
+    //
+    // String requestUri = getUriConceptSchemes(AGENCY_1, CONCEPT_SCHEME_1_CODE, CONCEPT_SCHEME_1_VERSION_1) + "?_type=xml";
+    // InputStream responseExpected = SrmRestInternalFacadeV10Test.class.getResourceAsStream("/responses/retrieveConceptScheme.id1.xml");
+    //
+    // // Request and validate
+    // testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
+    // }
+    //
+    // @Test
+    // public void testRetrieveConceptsSchemeErrorNotExists() throws Exception {
+    // String agencyID = AGENCY_1;
+    // String resourceID = NOT_EXISTS;
+    // String version = CONCEPT_SCHEME_1_VERSION_1;
+    // try {
+    // getSrmRestInternalFacadeClientXml().retrieveConceptScheme(agencyID, resourceID, version);
+    // } catch (ServerWebApplicationException e) {
+    // org.siemac.metamac.rest.common.v1_0.domain.Exception exception = extractErrorFromException(getSrmRestInternalFacadeClientXml(), e);
+    //
+    // assertEquals(RestServiceExceptionType.CONCEPT_SCHEME_NOT_FOUND.getCode(), exception.getCode());
+    // assertEquals("Concept scheme not found in AgencyID " + agencyID + " with ID " + resourceID + " and version " + version, exception.getMessage());
+    // assertEquals(3, exception.getParameters().getParameters().size());
+    // assertEquals(agencyID, exception.getParameters().getParameters().get(0));
+    // assertEquals(resourceID, exception.getParameters().getParameters().get(1));
+    // assertEquals(version, exception.getParameters().getParameters().get(2));
+    // assertNull(exception.getErrors());
+    // } catch (Exception e) {
+    // fail("Incorrect exception");
+    // }
+    // }
+    //
+    // @Test
+    // public void testRetrieveConceptSchemeErrorNotExistsWithoutJaxbTransformation() throws Exception {
+    // String requestUri = getUriConceptSchemes(AGENCY_1, NOT_EXISTS, CONCEPT_SCHEME_1_VERSION_1);
+    // InputStream responseExpected = SrmRestInternalFacadeV10Test.class.getResourceAsStream("/responses/retrieveConceptScheme.notFound.xml");
+    //
+    // // Request and validate
+    // testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.NOT_FOUND, responseExpected);
+    // }
+    //
+    // @Test
+    // public void testRetrieveConceptsSchemeErrorWildcard() throws Exception {
+    // {
+    // String requestUri = getUriConceptSchemes(WILDCARD, CONCEPT_SCHEME_1_CODE, CONCEPT_SCHEME_1_VERSION_1);
+    // testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.NOT_FOUND, new ByteArrayInputStream(new byte[0]));
+    // }
+    // {
+    // String requestUri = getUriConceptSchemes(AGENCY_1, WILDCARD, CONCEPT_SCHEME_1_VERSION_1);
+    // testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.NOT_FOUND, new ByteArrayInputStream(new byte[0]));
+    // }
+    // {
+    // String requestUri = getUriConceptSchemes(AGENCY_1, CONCEPT_SCHEME_1_CODE, WILDCARD);
+    // testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.NOT_FOUND, new ByteArrayInputStream(new byte[0]));
+    // }
+    // }
 
     @Test
     public void testRetrieveConceptTypes() throws Exception {
@@ -439,44 +544,47 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
         when(conceptsService.findConceptsByCondition(any(ServiceContext.class), any(List.class), any(PagingParameter.class))).thenAnswer(new Answer<PagedResult<ConceptMetamac>>() {
 
             public org.fornax.cartridges.sculptor.framework.domain.PagedResult<ConceptMetamac> answer(InvocationOnMock invocation) throws Throwable {
-//                List<ConditionalCriteria> conditions = (List<ConditionalCriteria>) invocation.getArguments()[1];
-                // ConditionalCriteria conditionalCriteriaAgencyID = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Equal, ConceptSchemeVersionMetamacProperties
-                // .maintainableArtefact().maintainer().idAsMaintainer());
-                // ConditionalCriteria conditionalCriteriaResourceID = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Equal, ConceptSchemeVersionMetamacProperties
-                // .maintainableArtefact().code());
-                // ConditionalCriteria conditionalCriteriaVersion = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Equal, ConceptSchemeVersionMetamacProperties
-                // .maintainableArtefact().versionLogic());
-                //
-                // if (conditionalCriteriaAgencyID != null && conditionalCriteriaResourceID != null && conditionalCriteriaVersion != null) {
-                // // Retrieve one concept scheme
-                // ConceptSchemeVersionMetamac conceptSchemeVersion = null;
-                // if (NOT_EXISTS.equals(conditionalCriteriaAgencyID.getFirstOperant()) || NOT_EXISTS.equals(conditionalCriteriaResourceID.getFirstOperant())
-                // || NOT_EXISTS.equals(conditionalCriteriaVersion.getFirstOperant())) {
-                // conceptSchemeVersion = null;
-                // } else if (AGENCY_1.equals(conditionalCriteriaAgencyID.getFirstOperant()) && CONCEPT_SCHEME_1_CODE.equals(conditionalCriteriaResourceID.getFirstOperant())
-                // && CONCEPT_SCHEME_1_VERSION_1.equals(conditionalCriteriaVersion.getFirstOperant())) {
-                // conceptSchemeVersion = SrmCoreMocks.mockConceptScheme(AGENCY_1, CONCEPT_SCHEME_1_CODE, CONCEPT_SCHEME_1_VERSION_1);
-                // } else {
-                // fail();
-                // }
-                // List<ConceptSchemeVersionMetamac> conceptSchemes = new ArrayList<ConceptSchemeVersionMetamac>();
-                // if (conceptSchemeVersion != null) {
-                // conceptSchemes.add(conceptSchemeVersion);
-                // }
-                // return new PagedResult<ConceptSchemeVersionMetamac>(conceptSchemes, 0, conceptSchemes.size(), conceptSchemes.size());
-                // } else {
-                // any
-                ConceptSchemeVersionMetamac conceptScheme1 = SrmCoreMocks.mockConceptScheme(AGENCY_1, CONCEPT_SCHEME_1_CODE, CONCEPT_SCHEME_1_VERSION_1);
-                ConceptSchemeVersionMetamac conceptScheme2 = SrmCoreMocks.mockConceptScheme(AGENCY_1, CONCEPT_SCHEME_2_CODE, CONCEPT_SCHEME_2_VERSION_1);
+                List<ConditionalCriteria> conditions = (List<ConditionalCriteria>) invocation.getArguments()[1];
+                ConditionalCriteria conditionalCriteriaAgencyID = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Equal, ConceptMetamacProperties
+                        .itemSchemeVersion().maintainableArtefact().maintainer().idAsMaintainer());
+                ConditionalCriteria conditionalCriteriaResourceID = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Equal, ConceptMetamacProperties
+                        .itemSchemeVersion().maintainableArtefact().code());
+                ConditionalCriteria conditionalCriteriaVersion = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Equal, ConceptMetamacProperties.itemSchemeVersion()
+                        .maintainableArtefact().versionLogic());
+                ConditionalCriteria conditionalCriteriaConcept = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Equal, ConceptMetamacProperties.nameableArtefact()
+                        .code());
 
-                List<ConceptMetamac> concepts = new ArrayList<ConceptMetamac>();
-                concepts.add(SrmCoreMocks.mockConcept(CONCEPT_1_CODE, conceptScheme1, null));
-                concepts.add(SrmCoreMocks.mockConcept(CONCEPT_2_CODE, conceptScheme1, null));
-                concepts.add(SrmCoreMocks.mockConcept(CONCEPT_3_CODE, conceptScheme1, null));
-                concepts.add(SrmCoreMocks.mockConcept(CONCEPT_1_CODE, conceptScheme2, null));
+                if (conditionalCriteriaAgencyID != null && conditionalCriteriaResourceID != null && conditionalCriteriaVersion != null && conditionalCriteriaConcept != null) {
+                    // Retrieve one concept
+                    ConceptMetamac concept = null;
+                    if (NOT_EXISTS.equals(conditionalCriteriaAgencyID.getFirstOperant()) || NOT_EXISTS.equals(conditionalCriteriaResourceID.getFirstOperant())
+                            || NOT_EXISTS.equals(conditionalCriteriaVersion.getFirstOperant()) || NOT_EXISTS.equals(conditionalCriteriaConcept.getFirstOperant())) {
+                        concept = null;
+                    } else if (AGENCY_1.equals(conditionalCriteriaAgencyID.getFirstOperant()) && CONCEPT_SCHEME_1_CODE.equals(conditionalCriteriaResourceID.getFirstOperant())
+                            && CONCEPT_SCHEME_1_VERSION_1.equals(conditionalCriteriaVersion.getFirstOperant()) && CONCEPT_1_CODE.equals(conditionalCriteriaConcept.getFirstOperant())) {
+                        ConceptSchemeVersionMetamac conceptScheme1 = SrmCoreMocks.mockConceptScheme(AGENCY_1, CONCEPT_SCHEME_1_CODE, CONCEPT_SCHEME_1_VERSION_1);
+                        concept = SrmCoreMocks.mockConcept(CONCEPT_1_CODE, conceptScheme1, null);
+                    } else {
+                        fail();
+                    }
+                    List<ConceptMetamac> concepts = new ArrayList<ConceptMetamac>();
+                    if (concept != null) {
+                        concepts.add(concept);
+                    }
+                    return new PagedResult<ConceptMetamac>(concepts, 0, concepts.size(), concepts.size());
+                } else {
+                    // any
+                    ConceptSchemeVersionMetamac conceptScheme1 = SrmCoreMocks.mockConceptScheme(AGENCY_1, CONCEPT_SCHEME_1_CODE, CONCEPT_SCHEME_1_VERSION_1);
+                    ConceptSchemeVersionMetamac conceptScheme2 = SrmCoreMocks.mockConceptScheme(AGENCY_1, CONCEPT_SCHEME_2_CODE, CONCEPT_SCHEME_2_VERSION_1);
 
-                return new PagedResult<ConceptMetamac>(concepts, concepts.size(), concepts.size(), concepts.size(), concepts.size() * 10, 0);
-                // }
+                    List<ConceptMetamac> concepts = new ArrayList<ConceptMetamac>();
+                    concepts.add(SrmCoreMocks.mockConcept(CONCEPT_1_CODE, conceptScheme1, null));
+                    concepts.add(SrmCoreMocks.mockConcept(CONCEPT_2_CODE, conceptScheme1, null));
+                    concepts.add(SrmCoreMocks.mockConcept(CONCEPT_3_CODE, conceptScheme1, null));
+                    concepts.add(SrmCoreMocks.mockConcept(CONCEPT_1_CODE, conceptScheme2, null));
+
+                    return new PagedResult<ConceptMetamac>(concepts, concepts.size(), concepts.size(), concepts.size(), concepts.size() * 10, 0);
+                }
             };
         });
     }
@@ -512,6 +620,18 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
         uri = RestUtils.createLinkWithQueryParam(uri, RestConstants.PARAMETER_LIMIT, RestUtils.encodeParameter(limit));
         uri = RestUtils.createLinkWithQueryParam(uri, RestConstants.PARAMETER_OFFSET, RestUtils.encodeParameter(offset));
         return uri.toString();
+    }
+
+    private String getUriConcepts(String agencyID, String resourceID, String version, String query, String limit, String offset) throws Exception {
+        String uri = getUriConceptSchemes(agencyID, resourceID, version) + "/concepts";
+        uri = RestUtils.createLinkWithQueryParam(uri, RestConstants.PARAMETER_QUERY, RestUtils.encodeParameter(query));
+        uri = RestUtils.createLinkWithQueryParam(uri, RestConstants.PARAMETER_LIMIT, RestUtils.encodeParameter(limit));
+        uri = RestUtils.createLinkWithQueryParam(uri, RestConstants.PARAMETER_OFFSET, RestUtils.encodeParameter(offset));
+        return uri.toString();
+    }
+
+    private String getUriConcept(String agencyID, String resourceID, String version, String conceptID) throws Exception {
+        return getUriConcepts(agencyID, resourceID, version, null, null, null) + "/" + conceptID;
     }
 
     private String getUriConceptTypes() {

@@ -152,7 +152,7 @@ public class ConceptsDo2RestMapperTest {
         // Validate
         assertEquals(RestInternalConstants.KIND_CONCEPTS, target.getKind());
 
-        String baseLink = "http://data.istac.es/apis/srm/v1.0/conceptschemes" + "/" + agencyID + "/" + conceptSchemeID + "/concepts?query=" + query + "&orderBy=" + orderBy;
+        String baseLink = "http://data.istac.es/apis/srm/v1.0/conceptschemes" + "/" + agencyID + "/" + conceptSchemeID + "/" + version + "/concepts?query=" + query + "&orderBy=" + orderBy;
         assertEquals(baseLink + "&limit=" + limit + "&offset=0", target.getFirstLink());
         assertEquals(baseLink + "&limit=" + limit + "&offset=0", target.getPreviousLink());
         assertEquals(baseLink + "&limit=" + limit + "&offset=8", target.getNextLink());

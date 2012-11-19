@@ -91,6 +91,7 @@ public class ConceptsDo2RestMapperV10Impl implements ConceptsDo2RestMapperV10 {
         if (source == null) {
             return null;
         }
+        // following method will call toConceptScheme(ConceptSchemeVersionMetamac source, ConceptScheme target) method, thank to callback
         return (ConceptScheme) conceptsDo2JaxbSdmxMapper.conceptSchemeDoToJaxb(source, conceptsDo2JaxbCallback);
     }
 
@@ -117,7 +118,7 @@ public class ConceptsDo2RestMapperV10Impl implements ConceptsDo2RestMapperV10 {
         targets.setKind(RestInternalConstants.KIND_CONCEPTS);
 
         // Pagination
-        String baseLink = toConceptsLink(agencyID, resourceID, null);
+        String baseLink = toConceptsLink(agencyID, resourceID, version);
         SculptorCriteria2RestCriteria.toPagedResult(sourcesPagedResult, targets, query, orderBy, limit, baseLink);
 
         // Values
@@ -133,11 +134,10 @@ public class ConceptsDo2RestMapperV10Impl implements ConceptsDo2RestMapperV10 {
         if (source == null) {
             return null;
         }
-        Concept target = new Concept();
-        toConcept(source, target);
-        return target;
+        // following method will call toConcept(ConceptMetamac source, Concept target) method, thank to callback
+        return (Concept) conceptsDo2JaxbSdmxMapper.conceptDoToJaxb(source, conceptsDo2JaxbCallback);
     }
-    
+
     @Override
     public void toConcept(ConceptMetamac source, Concept target) {
         if (source == null) {
@@ -145,6 +145,7 @@ public class ConceptsDo2RestMapperV10Impl implements ConceptsDo2RestMapperV10 {
         }
         target.setKind(RestInternalConstants.KIND_CONCEPT);
         target.setSelfLink(toConceptLink(source));
+        target.setUri(target.getSelfLink());
         
         target.setPluralName(toInternationalString(source.getPluralName()));
         target.setAcronym(toInternationalString(source.getAcronym()));
@@ -159,7 +160,7 @@ public class ConceptsDo2RestMapperV10Impl implements ConceptsDo2RestMapperV10 {
         }
         target.setRoles(conceptsToUrns(source.getRoleConcepts()));
         target.setRelatedConcepts(conceptsToUrns(source.getRelatedConcepts()));
-        
+
         target.setParentResource(toConceptParent(source));
         target.setChildren(toConceptChildren(source));
     }
@@ -200,7 +201,7 @@ public class ConceptsDo2RestMapperV10Impl implements ConceptsDo2RestMapperV10 {
         targets.setTotal(BigInteger.valueOf(targets.getChildren().size()));
         return targets;
     }
-    
+
     private ResourceLink toConceptParent(ConceptMetamac source) {
         ResourceLink target = new ResourceLink();
         target.setKind(RestInternalConstants.KIND_CONCEPTS);
@@ -362,7 +363,12 @@ public class ConceptsDo2RestMapperV10Impl implements ConceptsDo2RestMapperV10 {
         Urns target = new Urns();
         target.setKind("TODO"); // TODO kind
         for (ConceptMetamac source : sources) {
-            target.getUrns().add(source.getNameableArtefact().getUrn()); // TODO urn provider?
+            // TODO utilidad para obtener urn
+            if (source.getNameableArtefact().getUrnProvider() != null) {
+                target.getUrns().add(source.getNameableArtefact().getUrnProvider());
+            } else {
+                target.getUrns().add(source.getNameableArtefact().getUrn());
+            }
         }
         target.setTotal(BigInteger.valueOf(target.getUrns().size()));
         return target;

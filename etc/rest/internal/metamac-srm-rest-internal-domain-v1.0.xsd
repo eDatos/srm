@@ -18,7 +18,6 @@
                     <xs:element name="type" type="tns:ConceptSchemeType" />
                     <xs:element name="relatedOperation" type="common:Resource" minOccurs="0" />
                     <xs:element name="replaceTo" type="xs:string" minOccurs="0" />
-                    <xs:element name="replacedBy" type="xs:string" minOccurs="0" />
                     <xs:element name="children" type="common:Children" minOccurs="1" />
                 </xs:sequence>
                 <xs:attribute name="kind" type="xs:string" use="required" />
