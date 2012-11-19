@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<cdomain:exception xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain">
+    <cdomain:code>exception.srm.concept.not_found</cdomain:code>
+    <cdomain:message>Concept not found with ID notexists in concept scheme in AgencyID agency1 with ID conceptScheme1 and version 01.000</cdomain:message>
+    <cdomain:parameters total="4">
+        <cdomain:parameter>notexists</cdomain:parameter>
+        <cdomain:parameter>agency1</cdomain:parameter>
+        <cdomain:parameter>conceptScheme1</cdomain:parameter>
+        <cdomain:parameter>01.000</cdomain:parameter>
+    </cdomain:parameters>
+</cdomain:exception>

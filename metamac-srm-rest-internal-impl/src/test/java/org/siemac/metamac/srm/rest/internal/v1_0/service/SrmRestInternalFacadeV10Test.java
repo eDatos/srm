@@ -376,72 +376,74 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
         testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
     }
 
-    // @Test
-    // public void testRetrieveConceptSchemeWithoutJaxbTransformationWithXmlSufix() throws Exception {
-    //
-    // String requestUri = getUriConceptSchemes(AGENCY_1, CONCEPT_SCHEME_1_CODE, CONCEPT_SCHEME_1_VERSION_1) + ".xml";
-    // InputStream responseExpected = SrmRestInternalFacadeV10Test.class.getResourceAsStream("/responses/retrieveConceptScheme.id1.xml");
-    //
-    // // Request and validate
-    // testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
-    // }
-    //
-    // @Test
-    // public void testRetrieveConceptSchemeWithoutJaxbTransformationWithTypeParameter() throws Exception {
-    //
-    // String requestUri = getUriConceptSchemes(AGENCY_1, CONCEPT_SCHEME_1_CODE, CONCEPT_SCHEME_1_VERSION_1) + "?_type=xml";
-    // InputStream responseExpected = SrmRestInternalFacadeV10Test.class.getResourceAsStream("/responses/retrieveConceptScheme.id1.xml");
-    //
-    // // Request and validate
-    // testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
-    // }
-    //
-    // @Test
-    // public void testRetrieveConceptsSchemeErrorNotExists() throws Exception {
-    // String agencyID = AGENCY_1;
-    // String resourceID = NOT_EXISTS;
-    // String version = CONCEPT_SCHEME_1_VERSION_1;
-    // try {
-    // getSrmRestInternalFacadeClientXml().retrieveConceptScheme(agencyID, resourceID, version);
-    // } catch (ServerWebApplicationException e) {
-    // org.siemac.metamac.rest.common.v1_0.domain.Exception exception = extractErrorFromException(getSrmRestInternalFacadeClientXml(), e);
-    //
-    // assertEquals(RestServiceExceptionType.CONCEPT_SCHEME_NOT_FOUND.getCode(), exception.getCode());
-    // assertEquals("Concept scheme not found in AgencyID " + agencyID + " with ID " + resourceID + " and version " + version, exception.getMessage());
-    // assertEquals(3, exception.getParameters().getParameters().size());
-    // assertEquals(agencyID, exception.getParameters().getParameters().get(0));
-    // assertEquals(resourceID, exception.getParameters().getParameters().get(1));
-    // assertEquals(version, exception.getParameters().getParameters().get(2));
-    // assertNull(exception.getErrors());
-    // } catch (Exception e) {
-    // fail("Incorrect exception");
-    // }
-    // }
-    //
-    // @Test
-    // public void testRetrieveConceptSchemeErrorNotExistsWithoutJaxbTransformation() throws Exception {
-    // String requestUri = getUriConceptSchemes(AGENCY_1, NOT_EXISTS, CONCEPT_SCHEME_1_VERSION_1);
-    // InputStream responseExpected = SrmRestInternalFacadeV10Test.class.getResourceAsStream("/responses/retrieveConceptScheme.notFound.xml");
-    //
-    // // Request and validate
-    // testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.NOT_FOUND, responseExpected);
-    // }
-    //
-    // @Test
-    // public void testRetrieveConceptsSchemeErrorWildcard() throws Exception {
-    // {
-    // String requestUri = getUriConceptSchemes(WILDCARD, CONCEPT_SCHEME_1_CODE, CONCEPT_SCHEME_1_VERSION_1);
-    // testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.NOT_FOUND, new ByteArrayInputStream(new byte[0]));
-    // }
-    // {
-    // String requestUri = getUriConceptSchemes(AGENCY_1, WILDCARD, CONCEPT_SCHEME_1_VERSION_1);
-    // testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.NOT_FOUND, new ByteArrayInputStream(new byte[0]));
-    // }
-    // {
-    // String requestUri = getUriConceptSchemes(AGENCY_1, CONCEPT_SCHEME_1_CODE, WILDCARD);
-    // testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.NOT_FOUND, new ByteArrayInputStream(new byte[0]));
-    // }
-    // }
+    @Test
+    public void testRetrieveConceptWithoutJaxbTransformationWithXmlSufix() throws Exception {
+
+        String requestUri = getUriConcept(AGENCY_1, CONCEPT_SCHEME_1_CODE, CONCEPT_SCHEME_1_VERSION_1, CONCEPT_1_CODE) + ".xml";
+        InputStream responseExpected = SrmRestInternalFacadeV10Test.class.getResourceAsStream("/responses/retrieveConcept.id1.xml");
+
+        // Request and validate
+        testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
+    }
+
+    @Test
+    public void testRetrieveConceptWithoutJaxbTransformationWithTypeParameter() throws Exception {
+
+        String requestUri = getUriConcept(AGENCY_1, CONCEPT_SCHEME_1_CODE, CONCEPT_SCHEME_1_VERSION_1, CONCEPT_1_CODE) + "?_type=xml";
+        InputStream responseExpected = SrmRestInternalFacadeV10Test.class.getResourceAsStream("/responses/retrieveConcept.id1.xml");
+
+        // Request and validate
+        testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
+    }
+
+    @Test
+    public void testRetrieveConceptErrorNotExists() throws Exception {
+        String agencyID = AGENCY_1;
+        String resourceID = CONCEPT_SCHEME_1_CODE;
+        String version = CONCEPT_SCHEME_1_VERSION_1;
+        String conceptID = NOT_EXISTS;
+        try {
+            getSrmRestInternalFacadeClientXml().retrieveConcept(agencyID, resourceID, version, conceptID);
+        } catch (ServerWebApplicationException e) {
+            org.siemac.metamac.rest.common.v1_0.domain.Exception exception = extractErrorFromException(getSrmRestInternalFacadeClientXml(), e);
+
+            assertEquals(RestServiceExceptionType.CONCEPT_NOT_FOUND.getCode(), exception.getCode());
+            assertEquals("Concept not found with ID " + conceptID + " in concept scheme in AgencyID " + agencyID + " with ID " + resourceID + " and version " + version, exception.getMessage());
+            assertEquals(4, exception.getParameters().getParameters().size());
+            assertEquals(conceptID, exception.getParameters().getParameters().get(0));
+            assertEquals(agencyID, exception.getParameters().getParameters().get(1));
+            assertEquals(resourceID, exception.getParameters().getParameters().get(2));
+            assertEquals(version, exception.getParameters().getParameters().get(3));
+            assertNull(exception.getErrors());
+        } catch (Exception e) {
+            fail("Incorrect exception");
+        }
+    }
+
+    @Test
+    public void testRetrieveConceptErrorNotExistsWithoutJaxbTransformation() throws Exception {
+        String requestUri = getUriConcept(AGENCY_1, CONCEPT_SCHEME_1_CODE, CONCEPT_SCHEME_1_VERSION_1, NOT_EXISTS);
+        InputStream responseExpected = SrmRestInternalFacadeV10Test.class.getResourceAsStream("/responses/retrieveConcept.notFound.xml");
+
+        // Request and validate
+        testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.NOT_FOUND, responseExpected);
+    }
+
+    @Test
+    public void testRetrieveConceptErrorWildcard() throws Exception {
+        {
+            String requestUri = getUriConcept(WILDCARD, CONCEPT_SCHEME_1_CODE, CONCEPT_SCHEME_1_VERSION_1, CONCEPT_1_CODE);
+            testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.NOT_FOUND, new ByteArrayInputStream(new byte[0]));
+        }
+        {
+            String requestUri = getUriConcept(AGENCY_1, WILDCARD, CONCEPT_SCHEME_1_VERSION_1, CONCEPT_1_CODE);
+            testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.NOT_FOUND, new ByteArrayInputStream(new byte[0]));
+        }
+        {
+            String requestUri = getUriConcept(AGENCY_1, CONCEPT_SCHEME_1_CODE, WILDCARD, CONCEPT_1_CODE);
+            testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.NOT_FOUND, new ByteArrayInputStream(new byte[0]));
+        }
+    }
 
     @Test
     public void testRetrieveConceptTypes() throws Exception {
