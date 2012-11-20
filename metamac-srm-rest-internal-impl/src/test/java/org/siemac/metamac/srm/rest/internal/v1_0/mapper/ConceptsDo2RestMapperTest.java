@@ -107,19 +107,19 @@ public class ConceptsDo2RestMapperTest {
         assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEME, target.getKind());
         String parentLink = "http://data.istac.es/apis/srm/v1.0/conceptschemes";
         String selfLink = parentLink + "/" + source.getMaintainableArtefact().getMaintainer().getIdAsMaintainer() + "/" + resourceID + "/" + version;
-        assertEquals(selfLink, target.getSelfLink());
-        assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEMES, target.getParent().getKind());
-        assertEquals(parentLink, target.getParent().getSelfLink());
+        assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEME, target.getSelfLink().getKind());
+        assertEquals(selfLink, target.getSelfLink().getHref());
+        assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEMES, target.getParentLink().getKind());
+        assertEquals(parentLink, target.getParentLink().getHref());
         assertEquals(source.getType().toString(), target.getType().toString());
         MetamacAsserts.assertEqualsNullability(source.getRelatedOperation(), target.getRelatedOperation());
         if (source.getRelatedOperation() != null) {
             assertEquals(source.getRelatedOperation().getUrn(), target.getRelatedOperation().getUrn());
         }
-        assertEquals(source.getMaintainableArtefact().getReplaceTo(), target.getReplaceTo());
-        assertEquals(source.getMaintainableArtefact().getReplacedBy(), target.getReplacedBy());
-        assertEquals(BigInteger.ONE, target.getChildren().getTotal());
-        assertEquals(RestInternalConstants.KIND_CONCEPTS, target.getChildren().getChildren().get(0).getKind());
-        assertEquals(selfLink + "/concepts", target.getChildren().getChildren().get(0).getSelfLink());
+        assertEquals(source.getMaintainableArtefact().getReplaceTo(), target.getReplaceToVersion());
+        assertEquals(BigInteger.ONE, target.getChildLinks().getTotal());
+        assertEquals(RestInternalConstants.KIND_CONCEPTS, target.getChildLinks().getChildLinks().get(0).getKind());
+        assertEquals(selfLink + "/concepts", target.getChildLinks().getChildLinks().get(0).getHref());
 
         // TODO concepts (tipo SDMX)
     }
@@ -185,10 +185,11 @@ public class ConceptsDo2RestMapperTest {
         String parentLink = "http://data.istac.es/apis/srm/v1.0/conceptschemes" + "/" + source.getItemSchemeVersion().getMaintainableArtefact().getMaintainer().getIdAsMaintainer() + "/" + schemeID
                 + "/" + version + "/concepts";
         String selfLink = parentLink + "/" + source.getNameableArtefact().getCode();
-        assertEquals(selfLink, target.getSelfLink());
-        assertEquals(RestInternalConstants.KIND_CONCEPTS, target.getParentResource().getKind());
-        assertEquals(parentLink, target.getParentResource().getSelfLink());
-        assertNull(target.getChildren());
+        assertEquals(RestInternalConstants.KIND_CONCEPT, target.getSelfLink().getKind());
+        assertEquals(selfLink, target.getSelfLink().getHref());
+        assertEquals(RestInternalConstants.KIND_CONCEPTS, target.getParentLink().getKind());
+        assertEquals(parentLink, target.getParentLink().getHref());
+        assertNull(target.getChildLinks());
         
         assertEqualsInternationalStringNotNull(source.getPluralName(), target.getPluralName());
         assertEqualsInternationalStringNotNull(source.getAcronym(), target.getAcronym());

@@ -73,8 +73,9 @@ public class SrmRestAsserts extends MetamacRestAsserts {
         assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEME, target.getKind());
         assertEquals(source.getMaintainableArtefact().getCode(), target.getId());
         assertEquals(source.getMaintainableArtefact().getUrn(), target.getUrn());
+        assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEME, target.getSelfLink().getKind());
         assertEquals("http://data.istac.es/apis/srm/v1.0/conceptschemes/" + source.getMaintainableArtefact().getMaintainer().getIdAsMaintainer() + "/" + source.getMaintainableArtefact().getCode()
-                + "/" + source.getMaintainableArtefact().getVersionLogic(), target.getSelfLink());
+                + "/" + source.getMaintainableArtefact().getVersionLogic(), target.getSelfLink().getHref());
         assertEqualsInternationalString(source.getMaintainableArtefact().getName(), target.getTitle());
     }
 
@@ -82,9 +83,10 @@ public class SrmRestAsserts extends MetamacRestAsserts {
         assertEquals(RestInternalConstants.KIND_CONCEPT, target.getKind());
         assertEquals(source.getNameableArtefact().getCode(), target.getId());
         assertEquals(source.getNameableArtefact().getUrn(), target.getUrn());
+        assertEquals(RestInternalConstants.KIND_CONCEPT, target.getSelfLink().getKind());
         assertEquals("http://data.istac.es/apis/srm/v1.0/conceptschemes/" + source.getItemSchemeVersion().getMaintainableArtefact().getMaintainer().getIdAsMaintainer() + "/"
                 + source.getItemSchemeVersion().getMaintainableArtefact().getCode() + "/" + source.getItemSchemeVersion().getMaintainableArtefact().getVersionLogic() + "/concepts/"
-                + source.getNameableArtefact().getCode(), target.getSelfLink());
+                + source.getNameableArtefact().getCode(), target.getSelfLink().getHref());
         assertEqualsInternationalString(source.getNameableArtefact().getName(), target.getTitle());
     }
 

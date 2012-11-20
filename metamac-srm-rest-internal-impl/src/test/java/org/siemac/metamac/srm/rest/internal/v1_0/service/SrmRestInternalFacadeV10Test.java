@@ -225,6 +225,8 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
         assertEquals(resourceID, conceptScheme.getId());
         assertEquals(version, conceptScheme.getVersion());
         assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEME, conceptScheme.getKind());
+        assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEME, conceptScheme.getSelfLink().getKind());
+        assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEMES, conceptScheme.getParentLink().getKind());
         // other metadata are tested in transformation tests
     }
 
@@ -363,6 +365,9 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
         assertNotNull(concept);
         assertEquals(conceptID, concept.getId());
         assertEquals(RestInternalConstants.KIND_CONCEPT, concept.getKind());
+        assertEquals(RestInternalConstants.KIND_CONCEPT, concept.getSelfLink().getKind());
+        assertEquals(RestInternalConstants.KIND_CONCEPTS, concept.getParentLink().getKind());
+
         // other metadata are tested in transformation tests
     }
 

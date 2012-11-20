@@ -10,7 +10,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.siemac.metamac.core.common.conf.ConfigurationService;
 import org.siemac.metamac.core.common.ent.domain.ExternalItem;
-import org.siemac.metamac.rest.common.v1_0.domain.Children;
+import org.siemac.metamac.rest.common.v1_0.domain.ChildLinks;
 import org.siemac.metamac.rest.common.v1_0.domain.InternationalString;
 import org.siemac.metamac.rest.common.v1_0.domain.Item;
 import org.siemac.metamac.rest.common.v1_0.domain.LocalisedString;
@@ -101,14 +101,13 @@ public class ConceptsDo2RestMapperV10Impl implements ConceptsDo2RestMapperV10 {
             return;
         }
         target.setKind(RestInternalConstants.KIND_CONCEPT_SCHEME);
-        target.setSelfLink(toConceptSchemeLink(source));
-        target.setUri(target.getSelfLink());
+        target.setSelfLink(toConceptSchemeSelfLink(source));
+        target.setUri(target.getSelfLink().getHref());
         target.setType(toConceptSchemeTypeEnum(source.getType()));
         target.setRelatedOperation(toResourceExternalItemStatisticalOperation(source.getRelatedOperation()));
-        target.setReplacedBy(source.getMaintainableArtefact().getReplacedBy());
-        target.setReplaceTo(source.getMaintainableArtefact().getReplaceTo());
-        target.setParent(toConceptSchemeParent(source));
-        target.setChildren(toConceptSchemeChildren(source));
+        target.setReplaceToVersion(source.getMaintainableArtefact().getReplaceTo());
+        target.setParentLink(toConceptSchemeParentLink(source));
+        target.setChildLinks(toConceptSchemeChildLinks(source));
     }
 
     @Override
@@ -144,9 +143,9 @@ public class ConceptsDo2RestMapperV10Impl implements ConceptsDo2RestMapperV10 {
             return;
         }
         target.setKind(RestInternalConstants.KIND_CONCEPT);
-        target.setSelfLink(toConceptLink(source));
-        target.setUri(target.getSelfLink());
-        
+        target.setSelfLink(toConceptSelfLink(source));
+        target.setUri(target.getSelfLink().getHref());
+
         target.setPluralName(toInternationalString(source.getPluralName()));
         target.setAcronym(toInternationalString(source.getAcronym()));
         target.setDescriptionSource(toInternationalString(source.getDescriptionSource()));
@@ -161,8 +160,8 @@ public class ConceptsDo2RestMapperV10Impl implements ConceptsDo2RestMapperV10 {
         target.setRoles(conceptsToUrns(source.getRoleConcepts()));
         target.setRelatedConcepts(conceptsToUrns(source.getRelatedConcepts()));
 
-        target.setParentResource(toConceptParent(source));
-        target.setChildren(toConceptChildren(source));
+        target.setParentLink(toConceptParentLink(source));
+        target.setChildLinks(toConceptChildLinks(source));
     }
 
     @Override
@@ -182,34 +181,30 @@ public class ConceptsDo2RestMapperV10Impl implements ConceptsDo2RestMapperV10 {
         return targets;
     }
 
-    private ResourceLink toConceptSchemeParent(ConceptSchemeVersionMetamac source) {
-        ResourceLink target = new ResourceLink();
-        target.setKind(RestInternalConstants.KIND_CONCEPT_SCHEMES);
-        target.setSelfLink(toConceptSchemesLink(null, null, null));
-        return target;
+    private ResourceLink toConceptSchemeSelfLink(ConceptSchemeVersionMetamac source) {
+        return toResourceLink(RestInternalConstants.KIND_CONCEPT_SCHEME, toConceptSchemeLink(source));
     }
 
-    private Children toConceptSchemeChildren(ConceptSchemeVersionMetamac source) {
-        Children targets = new Children();
+    private ResourceLink toConceptSchemeParentLink(ConceptSchemeVersionMetamac source) {
+        return toResourceLink(RestInternalConstants.KIND_CONCEPT_SCHEMES, toConceptSchemesLink(null, null, null));
+    }
 
-        // Concepts
-        ResourceLink conceptsTarget = new ResourceLink();
-        conceptsTarget.setKind(RestInternalConstants.KIND_CONCEPTS);
-        conceptsTarget.setSelfLink(toConceptsLink(source));
-        targets.getChildren().add(conceptsTarget);
-
-        targets.setTotal(BigInteger.valueOf(targets.getChildren().size()));
+    private ChildLinks toConceptSchemeChildLinks(ConceptSchemeVersionMetamac source) {
+        ChildLinks targets = new ChildLinks();
+        targets.getChildLinks().add(toResourceLink(RestInternalConstants.KIND_CONCEPTS, toConceptsLink(source)));
+        targets.setTotal(BigInteger.valueOf(targets.getChildLinks().size()));
         return targets;
     }
 
-    private ResourceLink toConceptParent(ConceptMetamac source) {
-        ResourceLink target = new ResourceLink();
-        target.setKind(RestInternalConstants.KIND_CONCEPTS);
-        target.setSelfLink(toConceptsLink(source.getItemSchemeVersion()));
-        return target;
+    private ResourceLink toConceptSelfLink(ConceptMetamac source) {
+        return toResourceLink(RestInternalConstants.KIND_CONCEPT, toConceptLink(source));
     }
 
-    private Children toConceptChildren(ConceptMetamac source) {
+    private ResourceLink toConceptParentLink(ConceptMetamac source) {
+        return toResourceLink(RestInternalConstants.KIND_CONCEPTS, toConceptsLink(source.getItemSchemeVersion()));
+    }
+
+    private ChildLinks toConceptChildLinks(ConceptMetamac source) {
         // nothing
         return null;
     }
@@ -258,7 +253,7 @@ public class ConceptsDo2RestMapperV10Impl implements ConceptsDo2RestMapperV10 {
         target.setId(source.getCode());
         target.setUrn(source.getUrn());
         target.setKind(source.getType().name());
-        target.setSelfLink(RestUtils.createLink(apiExternalItem, source.getUri()));
+        target.setSelfLink(toResourceLink(target.getKind(), RestUtils.createLink(apiExternalItem, source.getUri())));
         target.setTitle(toInternationalString(source.getTitle()));
         return target;
     }
@@ -271,7 +266,7 @@ public class ConceptsDo2RestMapperV10Impl implements ConceptsDo2RestMapperV10 {
         target.setId(source.getMaintainableArtefact().getCode());
         target.setUrn(source.getMaintainableArtefact().getUrn());
         target.setKind(RestInternalConstants.KIND_CONCEPT_SCHEME);
-        target.setSelfLink(toConceptSchemeLink(source));
+        target.setSelfLink(toConceptSchemeSelfLink(source));
         target.setTitle(toInternationalString(source.getMaintainableArtefact().getName()));
         return target;
     }
@@ -284,7 +279,7 @@ public class ConceptsDo2RestMapperV10Impl implements ConceptsDo2RestMapperV10 {
         target.setId(source.getNameableArtefact().getCode());
         target.setUrn(source.getNameableArtefact().getUrn());
         target.setKind(RestInternalConstants.KIND_CONCEPT);
-        target.setSelfLink(toConceptLink(source));
+        target.setSelfLink(toConceptSelfLink(source));
         target.setTitle(toInternationalString(source.getNameableArtefact().getName()));
         return target;
     }
@@ -371,6 +366,13 @@ public class ConceptsDo2RestMapperV10Impl implements ConceptsDo2RestMapperV10 {
             }
         }
         target.setTotal(BigInteger.valueOf(target.getUrns().size()));
+        return target;
+    }
+
+    private ResourceLink toResourceLink(String kind, String href) {
+        ResourceLink target = new ResourceLink();
+        target.setKind(kind);
+        target.setHref(href);
         return target;
     }
 }

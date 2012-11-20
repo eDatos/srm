@@ -3,7 +3,7 @@
     <srm:conceptScheme kind="srm#conceptscheme">
         <cdomain:id>conceptScheme1</cdomain:id>
         <cdomain:urn>urn:conceptScheme1:01.000</cdomain:urn>
-        <cdomain:selfLink>http://data.istac.es/apis/srm/v1.0/conceptschemes/idAsMaintaineragency1/conceptScheme1/01.000</cdomain:selfLink>
+        <cdomain:selfLink kind="srm#conceptscheme" href="http://data.istac.es/apis/srm/v1.0/conceptschemes/idAsMaintaineragency1/conceptScheme1/01.000"/>
         <cdomain:title>
             <cdomain:text xml:lang="en">name-conceptScheme1v01.000 in English</cdomain:text>
             <cdomain:text xml:lang="es">name-conceptScheme1v01.000 en Español</cdomain:text>
@@ -12,16 +12,16 @@
     <srm:conceptScheme kind="srm#conceptscheme">
         <cdomain:id>conceptScheme2</cdomain:id>
         <cdomain:urn>urn:conceptScheme2:01.000</cdomain:urn>
-        <cdomain:selfLink>http://data.istac.es/apis/srm/v1.0/conceptschemes/idAsMaintaineragency1/conceptScheme2/01.000</cdomain:selfLink>
+        <cdomain:selfLink kind="srm#conceptscheme" href="http://data.istac.es/apis/srm/v1.0/conceptschemes/idAsMaintaineragency1/conceptScheme2/01.000"/>
         <cdomain:title>
-            <cdomain:text xml:lang="en">name-conceptScheme2v01.000 in English</cdomain:text>
             <cdomain:text xml:lang="es">name-conceptScheme2v01.000 en Español</cdomain:text>
+            <cdomain:text xml:lang="en">name-conceptScheme2v01.000 in English</cdomain:text>
         </cdomain:title>
     </srm:conceptScheme>
     <srm:conceptScheme kind="srm#conceptscheme">
         <cdomain:id>conceptScheme2</cdomain:id>
         <cdomain:urn>urn:conceptScheme2:02.000</cdomain:urn>
-        <cdomain:selfLink>http://data.istac.es/apis/srm/v1.0/conceptschemes/idAsMaintaineragency1/conceptScheme2/02.000</cdomain:selfLink>
+        <cdomain:selfLink kind="srm#conceptscheme" href="http://data.istac.es/apis/srm/v1.0/conceptschemes/idAsMaintaineragency1/conceptScheme2/02.000"/>
         <cdomain:title>
             <cdomain:text xml:lang="en">name-conceptScheme2v02.000 in English</cdomain:text>
             <cdomain:text xml:lang="es">name-conceptScheme2v02.000 en Español</cdomain:text>
@@ -30,10 +30,10 @@
     <srm:conceptScheme kind="srm#conceptscheme">
         <cdomain:id>conceptScheme3</cdomain:id>
         <cdomain:urn>urn:conceptScheme3:01.000</cdomain:urn>
-        <cdomain:selfLink>http://data.istac.es/apis/srm/v1.0/conceptschemes/idAsMaintaineragency2/conceptScheme3/01.000</cdomain:selfLink>
+        <cdomain:selfLink kind="srm#conceptscheme" href="http://data.istac.es/apis/srm/v1.0/conceptschemes/idAsMaintaineragency2/conceptScheme3/01.000"/>
         <cdomain:title>
-            <cdomain:text xml:lang="es">name-conceptScheme3v01.000 en Español</cdomain:text>
             <cdomain:text xml:lang="en">name-conceptScheme3v01.000 in English</cdomain:text>
+            <cdomain:text xml:lang="es">name-conceptScheme3v01.000 en Español</cdomain:text>
         </cdomain:title>
     </srm:conceptScheme>
 </srm:conceptSchemes>
