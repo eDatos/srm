@@ -1,5 +1,6 @@
 package org.siemac.metamac.srm.core.code.serviceapi.utils;
 
+import org.siemac.metamac.common.test.utils.MetamacMocks;
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
@@ -15,6 +16,9 @@ public class CodesMetamacDtoMocks {
 
     public static CodelistMetamacDto mockCodelistDto(String codeMaintainer, String urnMaintainer) {
         CodelistMetamacDto codelistDto = new CodelistMetamacDto();
+
+        codelistDto.setShortName(MetamacMocks.mockInternationalStringDto());
+
         CodesDtoMocks.mockCodelistDto(codelistDto);
 
         codelistDto.setMaintainer(new RelatedResourceDto(codeMaintainer, urnMaintainer, TypeExternalArtefactsEnum.AGENCY));

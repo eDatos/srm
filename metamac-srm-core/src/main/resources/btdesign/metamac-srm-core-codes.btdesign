@@ -3,6 +3,8 @@ import "classpath:/btdesign/statistic-sdmx-core-codes.btdesign"
 import "classpath:/btdesign/metamac-srm-core-enum.btdesign"
 import "classpath:/btdesign/statistic-sdmx-v2_1-domain-enums.btdesign"
 import "classpath:/btdesign/metamac-srm-core-base.btdesign"
+import "classpath:/btdesign/metamac-srm-core-codes-enum.btdesign"
+
 
 
 Application CodesMetamac {
@@ -73,6 +75,13 @@ Application CodesMetamac {
 		Entity CodelistVersionMetamac extends @CodelistVersion {
 			databaseTable="TB_M_CODELISTS_VERSIONS"
 			hint="idSequence=M_CODELISTS_VERSIONS"
+			
+			"Short name"
+			- @InternationalString shortName nullable cascade="all" databaseColumn="SHORT_NAME_FK";
+			"Is recommended"
+			Boolean isRecommended nullable;
+			"Access type"
+			- @AccessTypeEnum accessType nullable;
 			
 			"Life cycle information"
 			- @SrmLifeCycleMetadata lifeCycleMetadata databaseColumn="";

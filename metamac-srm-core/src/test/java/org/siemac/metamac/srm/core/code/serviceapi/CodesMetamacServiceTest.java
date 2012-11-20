@@ -7,6 +7,8 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.siemac.metamac.srm.core.base.utils.BaseServiceTestUtils.assertListItemsContainsItem;
+import static org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsserts.assertEqualsCodelist;
+import static org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsserts.assertEqualsCodelistWithoutLifeCycleMetadata;
 
 import java.util.Date;
 import java.util.List;
@@ -41,7 +43,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.arte.statistic.sdmx.srm.core.code.domain.Code;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodeProperties;
-import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
 import com.arte.statistic.sdmx.srm.core.code.serviceapi.utils.CodesDoMocks;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
 
@@ -90,7 +91,19 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertNull(codelistVersionRetrieved.getLifeCycleMetadata().getExternalPublicationUser());
         assertEquals(ctx.getUserId(), codelistVersionRetrieved.getCreatedBy());
         assertEquals(ctx.getUserId(), codelistVersionRetrieved.getLastUpdatedBy());
-        CodesMetamacAsserts.assertEqualsCodelist(codelistVersion, codelistVersionRetrieved);
+        assertEqualsCodelist(codelistVersion, codelistVersionRetrieved);
+    }
+
+    @Test
+    public void testCreateCodelistWithAditionalMetadata() throws Exception {
+        OrganisationMetamac organisationMetamac = organisationMetamacRepository.findByUrn(AGENCY_ROOT_1_V1);
+        CodelistVersionMetamac codelistVersion = CodesMetamacDoMocks.mockCodelist(organisationMetamac);
+
+        codelistVersion.setShortName(CodesDoMocks.mockInternationalString());
+
+        // Create
+        CodelistVersionMetamac codelistVersionCreated = codesService.createCodelist(getServiceContextAdministrador(), codelistVersion);
+        assertEqualsCodelistWithoutLifeCycleMetadata(codelistVersion, codelistVersionCreated);
     }
 
     @Test
@@ -119,10 +132,22 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(ctx, CODELIST_2_V1);
         codelistVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
 
-        CodelistVersion codelistVersionUpdated = codesService.updateCodelist(ctx, codelistVersion);
+        CodelistVersionMetamac codelistVersionUpdated = codesService.updateCodelist(ctx, codelistVersion);
         assertNotNull(codelistVersionUpdated);
         assertEquals("user1", codelistVersionUpdated.getCreatedBy());
         assertEquals(ctx.getUserId(), codelistVersionUpdated.getLastUpdatedBy());
+    }
+
+    @Test
+    public void testUpdateCodelistWithAditionalMetadata() throws Exception {
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(ctx, CODELIST_1_V2);
+        codelistVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
+        codelistVersion.setShortName(com.arte.statistic.sdmx.srm.core.base.serviceapi.utils.BaseDoMocks.mockInternationalString());
+
+        CodelistVersionMetamac codelistVersionUpdated = codesService.updateCodelist(ctx, codelistVersion);
+        assertEqualsCodelistWithoutLifeCycleMetadata(codelistVersion, codelistVersionUpdated);
     }
 
     @Test

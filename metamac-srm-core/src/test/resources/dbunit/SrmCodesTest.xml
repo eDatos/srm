@@ -279,6 +279,10 @@
         TB_CODELISTS_VERSIONS="11"
         PROC_STATUS="INTERNALLY_PUBLISHED"
         
+        ACCESS_TYPE="PUBLIC"
+        IS_RECOMMENDED="0"
+        SHORT_NAME_FK="[null]"
+        
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
         PRODUCTION_VALIDATION_USER="user1"
@@ -407,6 +411,10 @@
     <TB_M_CODELISTS_VERSIONS
         TB_CODELISTS_VERSIONS="12"
         PROC_STATUS="DRAFT"
+        
+        ACCESS_TYPE="RESTRICTED"
+        IS_RECOMMENDED="0"
+        SHORT_NAME_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="[null]"
         PRODUCTION_VALIDATION_DATE="[null]"
@@ -898,6 +906,10 @@
         TB_CODELISTS_VERSIONS="21"
         PROC_STATUS="DRAFT"
         
+        ACCESS_TYPE="PUBLIC"
+        IS_RECOMMENDED="1"
+        SHORT_NAME_FK="48"
+        
         PRODUCTION_VALIDATION_DATE_TZ="[null]"
         PRODUCTION_VALIDATION_DATE="[null]"
         PRODUCTION_VALIDATION_USER="[null]"
@@ -1088,6 +1100,10 @@
     <TB_M_CODELISTS_VERSIONS
         TB_CODELISTS_VERSIONS="31"
         PROC_STATUS="INTERNALLY_PUBLISHED"
+        
+        ACCESS_TYPE="RESTRICTED"
+        IS_RECOMMENDED="1"
+        SHORT_NAME_FK="49"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
@@ -1427,6 +1443,10 @@
         TB_CODELISTS_VERSIONS="41"
         PROC_STATUS="VALIDATION_REJECTED"
         
+        ACCESS_TYPE="PUBLIC"
+        IS_RECOMMENDED="0"
+        SHORT_NAME_FK="[null]"        
+        
         PRODUCTION_VALIDATION_DATE_TZ="[null]"
         PRODUCTION_VALIDATION_DATE="[null]"
         PRODUCTION_VALIDATION_USER="[null]"
@@ -1562,6 +1582,10 @@
         TB_CODELISTS_VERSIONS="51"
         PROC_STATUS="PRODUCTION_VALIDATION"
         
+        ACCESS_TYPE="RESTRICTED"
+        IS_RECOMMENDED="1"
+        SHORT_NAME_FK="[null]"        
+        
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
         PRODUCTION_VALIDATION_USER="user2"
@@ -1696,6 +1720,10 @@
     <TB_M_CODELISTS_VERSIONS
         TB_CODELISTS_VERSIONS="61"
         PROC_STATUS="DIFFUSION_VALIDATION"
+        
+        ACCESS_TYPE="RESTRICTED"
+        IS_RECOMMENDED="0"
+        SHORT_NAME_FK="50"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
@@ -1835,6 +1863,10 @@
         TB_CODELISTS_VERSIONS="71"
         PROC_STATUS="EXTERNALLY_PUBLISHED"
         
+        ACCESS_TYPE="RESTRICTED"
+        IS_RECOMMENDED="1"
+        SHORT_NAME_FK="[null]"
+        
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
         PRODUCTION_VALIDATION_USER="user1"
@@ -1910,6 +1942,10 @@
     <TB_M_CODELISTS_VERSIONS
         TB_CODELISTS_VERSIONS="72"
         PROC_STATUS="INTERNALLY_PUBLISHED"
+        
+        ACCESS_TYPE="RESTRICTED"
+        IS_RECOMMENDED="1"
+        SHORT_NAME_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
@@ -2047,6 +2083,10 @@
     <TB_M_CODELISTS_VERSIONS
         TB_CODELISTS_VERSIONS="81"
         PROC_STATUS="DRAFT"
+
+        ACCESS_TYPE="[null]"
+        IS_RECOMMENDED="[null]"
+        SHORT_NAME_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="[null]"
         PRODUCTION_VALIDATION_DATE="[null]"
@@ -2183,6 +2223,10 @@
         TB_CODELISTS_VERSIONS="91"
         PROC_STATUS="DRAFT"
         
+        ACCESS_TYPE="[null]"
+        IS_RECOMMENDED="[null]"
+        SHORT_NAME_FK="[null]"        
+        
         PRODUCTION_VALIDATION_DATE_TZ="[null]"
         PRODUCTION_VALIDATION_DATE="[null]"
         PRODUCTION_VALIDATION_USER="[null]"
@@ -2272,6 +2316,10 @@
     <TB_M_CODELISTS_VERSIONS
         TB_CODELISTS_VERSIONS="101"
         PROC_STATUS="EXTERNALLY_PUBLISHED"
+
+        ACCESS_TYPE="PUBLIC"
+        IS_RECOMMENDED="[null]"
+        SHORT_NAME_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
@@ -2348,6 +2396,10 @@
     <TB_M_CODELISTS_VERSIONS
         TB_CODELISTS_VERSIONS="102"
         PROC_STATUS="INTERNALLY_PUBLISHED"
+        
+        ACCESS_TYPE="RESTRICTED"
+        IS_RECOMMENDED="[null]"
+        SHORT_NAME_FK="[null]"        
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
@@ -2473,6 +2525,10 @@
     <TB_M_CODELISTS_VERSIONS
         TB_CODELISTS_VERSIONS="103"
         PROC_STATUS="PRODUCTION_VALIDATION"
+        
+        ACCESS_TYPE="RESTRICTED"
+        IS_RECOMMENDED="[null]"
+        SHORT_NAME_FK="[null]"          
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
@@ -2610,6 +2666,10 @@
     <TB_M_CODELISTS_VERSIONS
         TB_CODELISTS_VERSIONS="111"
         PROC_STATUS="DIFFUSION_VALIDATION"
+        
+        ACCESS_TYPE="[null]"
+        IS_RECOMMENDED="[null]"
+        SHORT_NAME_FK="[null]"          
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
@@ -2749,6 +2809,10 @@
         TB_CODELISTS_VERSIONS="121"
         PROC_STATUS="EXTERNALLY_PUBLISHED"
         
+        ACCESS_TYPE="PUBLIC"
+        IS_RECOMMENDED="[null]"
+        SHORT_NAME_FK="[null]"  
+        
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
         PRODUCTION_VALIDATION_USER="user1"
@@ -2885,6 +2949,10 @@
     <TB_M_CODELISTS_VERSIONS
         TB_CODELISTS_VERSIONS="131"
         PROC_STATUS="EXTERNALLY_PUBLISHED"
+        
+        ACCESS_TYPE="RESTRICTED"
+        IS_RECOMMENDED="[null]"
+        SHORT_NAME_FK="[null]"  
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
@@ -3779,6 +3847,45 @@
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="47"
-    />                                         
+    />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="48"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="481"
+        LABEL="nombre corto"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="48"
+    />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="49"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="491"
+        LABEL="nombre corto"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="49"
+    />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="50"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="501"
+        LABEL="nombre corto"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="50"
+    />
                     
 </dataset>

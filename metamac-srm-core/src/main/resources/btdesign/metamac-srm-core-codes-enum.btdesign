@@ -1,0 +1,13 @@
+Application EnumsMetamacCodeDomain {
+	basePackage=unused
+
+	Module domain_metamac_code_enums {
+		basePackage=org.siemac.metamac.srm.core.code.enume
+		
+		"Codelist access type"
+    	enum AccessTypeEnum {
+    		PUBLIC,
+    		RESTRICTED
+    	}
+	}
+}

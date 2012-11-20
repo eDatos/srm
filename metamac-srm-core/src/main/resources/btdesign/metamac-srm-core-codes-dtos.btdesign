@@ -11,6 +11,10 @@ Application DtosMetamacCodeDomain {
 		
 		"Dto for CodelistMetamac"
 		DataTransferObject CodelistMetamacDto extends @CodelistDto {
+			
+			"Short name"
+			- @InternationalStringDto shortName nullable;
+			
 			"Life cycle"
 			- @LifeCycleDto lifeCycle required;
 		}

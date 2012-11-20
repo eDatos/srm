@@ -47,6 +47,8 @@ public class CodesDto2DoMapperImpl implements CodesDto2DoMapper {
             }
             OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersion());
         }
+        // Modifiable attributes
+        target.setShortName(dto2DoMapperSdmxSrm.internationalStringToEntity(source.getShortName(), target.getShortName(), ServiceExceptionParameters.CODELIST_SHORT_NAME));
 
         dto2DoMapperSdmxSrm.codelistDtoToDo(source, target);
 

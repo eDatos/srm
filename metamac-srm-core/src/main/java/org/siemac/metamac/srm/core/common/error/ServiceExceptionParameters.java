@@ -28,6 +28,9 @@ public class ServiceExceptionParameters extends com.arte.statistic.sdmx.srm.core
     public static final String CONCEPT_LEGAL_ACTS                = CONCEPT + ".legal_acts";
     public static final String CONCEPT_EXTENDS                   = CONCEPT + ".extends";
 
+    // CODELIST
+    public static final String CODELIST_SHORT_NAME               = CODELIST + ".short_name";
+
     // LIFECYCLE
     public static final String PROC_STATUS_DRAFT                 = ProcStatusEnum.DRAFT.name();
     public static final String PROC_STATUS_PRODUCTION_VALIDATION = ProcStatusEnum.PRODUCTION_VALIDATION.name();
