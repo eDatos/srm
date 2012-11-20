@@ -99,7 +99,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         OrganisationMetamac organisationMetamac = organisationMetamacRepository.findByUrn(AGENCY_ROOT_1_V1);
         CodelistVersionMetamac codelistVersion = CodesMetamacDoMocks.mockCodelist(organisationMetamac);
 
-        codelistVersion.setShortName(CodesDoMocks.mockInternationalString());
+        codelistVersion.setShortName(null);
+        codelistVersion.setIsRecommended(null);
 
         // Create
         CodelistVersionMetamac codelistVersionCreated = codesService.createCodelist(getServiceContextAdministrador(), codelistVersion);
@@ -144,7 +145,9 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
         CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(ctx, CODELIST_1_V2);
         codelistVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
+
         codelistVersion.setShortName(com.arte.statistic.sdmx.srm.core.base.serviceapi.utils.BaseDoMocks.mockInternationalString());
+        codelistVersion.setIsRecommended(Boolean.TRUE);
 
         CodelistVersionMetamac codelistVersionUpdated = codesService.updateCodelist(ctx, codelistVersion);
         assertEqualsCodelistWithoutLifeCycleMetadata(codelistVersion, codelistVersionUpdated);
@@ -939,7 +942,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals(ProcStatusEnum.DRAFT, codelistVersionNewVersion.getLifeCycleMetadata().getProcStatus());
             assertEquals(versionExpected, codelistVersionNewVersion.getMaintainableArtefact().getVersionLogic());
             assertEquals(urnExpected, codelistVersionNewVersion.getMaintainableArtefact().getUrn());
-            CodesMetamacAsserts.assertEqualsCodelistWithoutLifeCycleMetadata(codelistVersionToCopy, codelistVersionNewVersion);
+            assertEqualsCodelistWithoutLifeCycleMetadata(codelistVersionToCopy, codelistVersionNewVersion);
         }
 
         // Validate retrieving
@@ -952,7 +955,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals("01.000", codelistVersionNewVersion.getMaintainableArtefact().getReplaceToVersion());
             assertEquals(null, codelistVersionNewVersion.getMaintainableArtefact().getReplacedByVersion());
             assertTrue(codelistVersionNewVersion.getMaintainableArtefact().getIsLastVersion());
-            CodesMetamacAsserts.assertEqualsCodelistWithoutLifeCycleMetadata(codelistVersionToCopy, codelistVersionNewVersion);
+            assertEqualsCodelistWithoutLifeCycleMetadata(codelistVersionToCopy, codelistVersionNewVersion);
 
             // Codes
             assertEquals(5, codelistVersionNewVersion.getItems().size());

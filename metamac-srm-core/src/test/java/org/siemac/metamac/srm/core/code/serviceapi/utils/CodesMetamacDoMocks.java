@@ -11,8 +11,9 @@ public class CodesMetamacDoMocks extends CodesDoMocks {
 
     public static CodelistVersionMetamac mockCodelist(OrganisationMetamac maintainer) {
         CodelistVersionMetamac codelistVersion = new CodelistVersionMetamac();
-        
+
         codelistVersion.setShortName(mockInternationalString());
+        codelistVersion.setIsRecommended(Boolean.FALSE);
 
         mockCodelist(codelistVersion, maintainer);
         return codelistVersion;
