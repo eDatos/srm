@@ -2,7 +2,6 @@ package org.siemac.metamac.srm.rest.internal.v1_0.mapper.concept;
 
 import java.util.List;
 
-import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -27,8 +26,8 @@ public class ConceptsDo2JaxbCallbackImpl implements ConceptsDo2JaxbCallback {
 
     @Override
     public ConceptType createConceptDoToJaxb(com.arte.statistic.sdmx.srm.core.concept.domain.Concept source) {
-        org.siemac.metamac.rest.srm_internal.v1_0.domain.Concept target = new org.siemac.metamac.rest.srm_internal.v1_0.domain.Concept();
-        conceptsDo2RestMapperV10.toConcept((ConceptMetamac) source, target);
+        // when retrieve ConceptScheme, only return SDMX metadata
+        ConceptType target = new ConceptType();
         return target;
     }
 

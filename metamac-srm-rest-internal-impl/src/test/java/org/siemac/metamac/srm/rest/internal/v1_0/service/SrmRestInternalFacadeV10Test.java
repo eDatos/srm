@@ -69,6 +69,8 @@ import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
 import org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmCoreMocks;
 import org.springframework.context.ApplicationContext;
 
+import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.ConceptType;
+
 public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
 
     private static final String             PORT               = ServerResource.PORT;
@@ -221,13 +223,15 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
 
         // Validation
         assertNotNull(conceptScheme);
+        // other metadata are tested in transformation tests
         assertEquals("idAsMaintainer" + agencyID, conceptScheme.getAgencyID());
         assertEquals(resourceID, conceptScheme.getId());
         assertEquals(version, conceptScheme.getVersion());
         assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEME, conceptScheme.getKind());
         assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEME, conceptScheme.getSelfLink().getKind());
         assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEMES, conceptScheme.getParentLink().getKind());
-        // other metadata are tested in transformation tests
+        assertTrue(conceptScheme.getConcepts().get(0) instanceof ConceptType);
+        assertFalse(conceptScheme.getConcepts().get(0) instanceof Concept);
     }
 
     @Test
@@ -367,7 +371,8 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
         assertEquals(RestInternalConstants.KIND_CONCEPT, concept.getKind());
         assertEquals(RestInternalConstants.KIND_CONCEPT, concept.getSelfLink().getKind());
         assertEquals(RestInternalConstants.KIND_CONCEPTS, concept.getParentLink().getKind());
-
+        assertTrue(concept instanceof ConceptType);
+        assertTrue(concept instanceof Concept);
         // other metadata are tested in transformation tests
     }
 

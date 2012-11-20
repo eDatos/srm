@@ -15,6 +15,7 @@
 	<context:component-scan  base-package="org.siemac.metamac.srm.rest.internal, com.arte.statistic.sdmx.srm.core.*.mapper" >
         <context:exclude-filter type="regex" expression="com.arte.statistic.sdmx.srm.core.*.mapper.*Do2DtoMapperImpl*" />
         <context:exclude-filter type="regex" expression="com.arte.statistic.sdmx.srm.core.*.mapper.*Dto2DoMapperImpl*" />
+        <context:exclude-filter type="regex" expression="com.arte.statistic.sdmx.srm.core.*.mapper.*Jaxb2DoMapperImpl*" />
     </context:component-scan>
 
     <!-- Metamac environment configuration -->

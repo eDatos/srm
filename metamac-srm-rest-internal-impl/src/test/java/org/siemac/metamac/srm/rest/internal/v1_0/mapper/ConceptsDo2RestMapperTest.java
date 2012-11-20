@@ -1,8 +1,11 @@
 package org.siemac.metamac.srm.rest.internal.v1_0.mapper;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.WILDCARD;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestAsserts.assertEqualsConcept;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestAsserts.assertEqualsInternationalStringNotNull;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestAsserts.assertEqualsResource;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestAsserts.assertEqualsUrnsNotNull;
@@ -43,6 +46,8 @@ import org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmCoreMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.ConceptType;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/srm-rest-internal/applicationContext-test.xml"})
@@ -116,12 +121,19 @@ public class ConceptsDo2RestMapperTest {
         if (source.getRelatedOperation() != null) {
             assertEquals(source.getRelatedOperation().getUrn(), target.getRelatedOperation().getUrn());
         }
-        assertEquals(source.getMaintainableArtefact().getReplaceTo(), target.getReplaceToVersion());
+        assertEquals(source.getMaintainableArtefact().getReplaceToVersion(), target.getReplaceToVersion());
         assertEquals(BigInteger.ONE, target.getChildLinks().getTotal());
         assertEquals(RestInternalConstants.KIND_CONCEPTS, target.getChildLinks().getChildLinks().get(0).getKind());
         assertEquals(selfLink + "/concepts", target.getChildLinks().getChildLinks().get(0).getHref());
 
-        // TODO concepts (tipo SDMX)
+        // Concepts (SDMX type)
+        assertEquals(source.getItems().size(), target.getConcepts().size());
+        for (int i = 0; i < source.getItems().size(); i++) {
+            assertTrue(target.getConcepts().get(i) instanceof ConceptType);
+            assertFalse(target.getConcepts().get(i) instanceof Concept);
+
+            assertEqualsConcept((ConceptMetamac)source.getItems().get(i), target.getConcepts().get(i));
+        }
     }
 
     @Test

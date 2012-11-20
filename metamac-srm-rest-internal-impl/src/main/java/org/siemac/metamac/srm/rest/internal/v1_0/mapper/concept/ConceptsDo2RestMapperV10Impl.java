@@ -105,7 +105,7 @@ public class ConceptsDo2RestMapperV10Impl implements ConceptsDo2RestMapperV10 {
         target.setUri(target.getSelfLink().getHref());
         target.setType(toConceptSchemeTypeEnum(source.getType()));
         target.setRelatedOperation(toResourceExternalItemStatisticalOperation(source.getRelatedOperation()));
-        target.setReplaceToVersion(source.getMaintainableArtefact().getReplaceTo());
+        target.setReplaceToVersion(source.getMaintainableArtefact().getReplaceToVersion());
         target.setParentLink(toConceptSchemeParentLink(source));
         target.setChildLinks(toConceptSchemeChildLinks(source));
     }
@@ -133,15 +133,9 @@ public class ConceptsDo2RestMapperV10Impl implements ConceptsDo2RestMapperV10 {
         if (source == null) {
             return null;
         }
-        // following method will call toConcept(ConceptMetamac source, Concept target) method, thank to callback
-        return (Concept) conceptsDo2JaxbSdmxMapper.conceptDoToJaxb(source, conceptsDo2JaxbCallback);
-    }
+        Concept target = new Concept();
+        conceptsDo2JaxbSdmxMapper.conceptDoToJaxb(source, target);
 
-    @Override
-    public void toConcept(ConceptMetamac source, Concept target) {
-        if (source == null) {
-            return;
-        }
         target.setKind(RestInternalConstants.KIND_CONCEPT);
         target.setSelfLink(toConceptSelfLink(source));
         target.setUri(target.getSelfLink().getHref());
@@ -162,6 +156,8 @@ public class ConceptsDo2RestMapperV10Impl implements ConceptsDo2RestMapperV10 {
 
         target.setParentLink(toConceptParentLink(source));
         target.setChildLinks(toConceptChildLinks(source));
+
+        return target;
     }
 
     @Override

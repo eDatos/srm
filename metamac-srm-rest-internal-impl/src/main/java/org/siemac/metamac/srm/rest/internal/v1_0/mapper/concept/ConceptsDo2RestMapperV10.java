@@ -19,7 +19,6 @@ public interface ConceptsDo2RestMapperV10 {
 
     public Concepts toConcepts(PagedResult<ConceptMetamac> conceptsEntitiesResult, String agencyID, String resourceID, String version, String query, String orderBy, Integer limit);
     public Concept toConcept(ConceptMetamac source);
-    public void toConcept(ConceptMetamac source, org.siemac.metamac.rest.srm_internal.v1_0.domain.Concept target);
 
     public ConceptTypes toConceptTypes(List<ConceptType> sources);
 }

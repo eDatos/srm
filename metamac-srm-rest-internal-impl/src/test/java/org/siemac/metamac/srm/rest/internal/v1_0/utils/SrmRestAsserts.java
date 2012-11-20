@@ -33,6 +33,8 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacPro
 import org.siemac.metamac.srm.core.concept.serviceapi.ConceptsMetamacService;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 
+import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.ConceptType;
+
 public class SrmRestAsserts extends MetamacRestAsserts {
 
     @SuppressWarnings({"rawtypes", "unchecked"})
@@ -88,6 +90,12 @@ public class SrmRestAsserts extends MetamacRestAsserts {
                 + source.getItemSchemeVersion().getMaintainableArtefact().getCode() + "/" + source.getItemSchemeVersion().getMaintainableArtefact().getVersionLogic() + "/concepts/"
                 + source.getNameableArtefact().getCode(), target.getSelfLink().getHref());
         assertEqualsInternationalString(source.getNameableArtefact().getName(), target.getTitle());
+    }
+
+    public static void assertEqualsConcept(ConceptMetamac source, ConceptType target) {
+        assertEquals(source.getNameableArtefact().getCode(), target.getId());
+        assertEquals(source.getNameableArtefact().getUrn(), target.getUrn());
+        // Only test some metadata because SDMX metadata is tested in SDMX project
     }
 
     public static void assertEqualsInternationalStringNotNull(org.siemac.metamac.core.common.ent.domain.InternationalString expecteds,
