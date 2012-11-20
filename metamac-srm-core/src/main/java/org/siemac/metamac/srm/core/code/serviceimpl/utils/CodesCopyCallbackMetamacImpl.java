@@ -25,6 +25,7 @@ public class CodesCopyCallbackMetamacImpl implements CodesCopyCallback {
         CodelistVersionMetamac target = new CodelistVersionMetamac();
         target.setShortName(source.getShortName());
         target.setIsRecommended(source.getIsRecommended());
+        target.setAccessType(source.getAccessType());
         target.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
         return target;
     }

@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.core.code.serviceapi.utils;
 import org.siemac.metamac.srm.core.base.utils.BaseDoMocks;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
+import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 
 import com.arte.statistic.sdmx.srm.core.code.serviceapi.utils.CodesDoMocks;
@@ -14,6 +15,7 @@ public class CodesMetamacDoMocks extends CodesDoMocks {
 
         codelistVersion.setShortName(mockInternationalString());
         codelistVersion.setIsRecommended(Boolean.FALSE);
+        codelistVersion.setAccessType(AccessTypeEnum.RESTRICTED);
 
         mockCodelist(codelistVersion, maintainer);
         return codelistVersion;

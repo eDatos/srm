@@ -27,6 +27,7 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacProperties;
+import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsserts;
 import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacDoMocks;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
@@ -101,6 +102,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
         codelistVersion.setShortName(null);
         codelistVersion.setIsRecommended(null);
+        codelistVersion.setAccessType(null);
 
         // Create
         CodelistVersionMetamac codelistVersionCreated = codesService.createCodelist(getServiceContextAdministrador(), codelistVersion);
@@ -145,6 +147,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
         CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(ctx, CODELIST_1_V2);
         codelistVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
+        codelistVersion.setAccessType(AccessTypeEnum.PUBLIC);
 
         codelistVersion.setShortName(com.arte.statistic.sdmx.srm.core.base.serviceapi.utils.BaseDoMocks.mockInternationalString());
         codelistVersion.setIsRecommended(Boolean.TRUE);
@@ -718,6 +721,22 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertNull(codelistVersion.getLifeCycleMetadata().getExternalPublicationDate());
             assertNull(codelistVersion.getLifeCycleMetadata().getExternalPublicationUser());
             assertTrue(codelistVersion.getMaintainableArtefact().getFinalLogic());
+        }
+    }
+
+    @Test
+    public void testPublishInternallyCodelistErrorAccessType() throws Exception {
+        {
+            String urn = CODELIST_11_V1;
+            try {
+                codesService.publishInternallyCodelist(getServiceContextAdministrador(), urn);
+                fail("codelist cannot be publish without an access type defined");
+            } catch (MetamacException e) {
+                assertEquals(1, e.getExceptionItems().size());
+                assertEquals(ServiceExceptionType.METADATA_REQUIRED.getCode(), e.getExceptionItems().get(0).getCode());
+                assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+                assertEquals(ServiceExceptionParameters.CODELIST_ACCESS_TYPE, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            }
         }
     }
 

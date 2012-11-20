@@ -97,7 +97,9 @@ public class CodelistLifeCycleImpl extends LifeCycleImpl {
 
         @Override
         public void checkConcreteResourceInInternallyPublished(Object srmResourceVersion, List<MetamacExceptionItem> exceptions) {
-            // nothing
+            // Metadata required
+            CodelistVersionMetamac codelistVersion = getCodelistVersionMetamac(srmResourceVersion);
+            ValidationUtils.checkMetadataRequired(codelistVersion.getAccessType(), ServiceExceptionParameters.CODELIST_ACCESS_TYPE, exceptions);
         }
 
         @Override

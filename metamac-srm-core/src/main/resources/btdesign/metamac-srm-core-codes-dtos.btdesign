@@ -2,6 +2,7 @@ import "classpath:/btdesign/metamac-core-common-dtos.btdesign"
 import "classpath:/btdesign/statistic-sdmx-v2_1-domain-dtos-codes.btdesign"
 import "classpath:/btdesign/metamac-srm-core-enum.btdesign"
 import "classpath:/btdesign/metamac-srm-core-base-dtos.btdesign"
+import "classpath:/btdesign/metamac-srm-core-codes-enum.btdesign"
 
 Application DtosMetamacCodeDomain {
 	basePackage=unused
@@ -16,6 +17,8 @@ Application DtosMetamacCodeDomain {
 			- @InternationalStringDto shortName nullable;
 			"Is recommended"
 			Boolean isRecommended nullable;
+			"Access type"
+			- @AccessTypeEnum accessType nullable;
 			
 			"Life cycle"
 			- @LifeCycleDto lifeCycle required;
