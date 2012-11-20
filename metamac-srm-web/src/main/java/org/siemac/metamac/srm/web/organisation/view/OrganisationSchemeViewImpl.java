@@ -399,8 +399,8 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
 
         // Diffusion descriptors
         diffusionDescriptorsForm = new GroupDynamicForm(getConstants().organisationSchemeDiffusionDescriptors());
-        ViewTextItem replacedBy = new ViewTextItem(OrganisationSchemeDS.REPLACED_BY, getConstants().maintainableArtefactReplacedBy());
-        ViewTextItem replaceTo = new ViewTextItem(OrganisationSchemeDS.REPLACE_TO, getConstants().maintainableArtefactReplaceTo());
+        ViewTextItem replacedBy = new ViewTextItem(OrganisationSchemeDS.REPLACED_BY_VERSION, getConstants().maintainableArtefactReplacedByVersion());
+        ViewTextItem replaceTo = new ViewTextItem(OrganisationSchemeDS.REPLACE_TO_VERSION, getConstants().maintainableArtefactReplaceToVersion());
         ViewTextItem validFrom = new ViewTextItem(OrganisationSchemeDS.VALID_FROM, getConstants().maintainableArtefactValidFrom());
         ViewTextItem validTo = new ViewTextItem(OrganisationSchemeDS.VALID_TO, getConstants().maintainableArtefactValidTo());
         ViewTextItem externalPublicationFailed = new ViewTextItem(OrganisationSchemeDS.IS_EXTERNAL_PUBLICATION_FAILED, getConstants().lifeCycleExternalPublicationFailed());
@@ -504,8 +504,8 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
 
         // Diffusion descriptors
         diffusionDescriptorsEditionForm = new GroupDynamicForm(getConstants().organisationSchemeDiffusionDescriptors());
-        ViewTextItem replacedBy = new ViewTextItem(OrganisationSchemeDS.REPLACED_BY, getConstants().maintainableArtefactReplacedBy());
-        ViewTextItem replaceTo = new ViewTextItem(OrganisationSchemeDS.REPLACE_TO, getConstants().maintainableArtefactReplaceTo());
+        ViewTextItem replacedBy = new ViewTextItem(OrganisationSchemeDS.REPLACED_BY_VERSION, getConstants().maintainableArtefactReplacedByVersion());
+        ViewTextItem replaceTo = new ViewTextItem(OrganisationSchemeDS.REPLACE_TO_VERSION, getConstants().maintainableArtefactReplaceToVersion());
         ViewTextItem validFrom = new ViewTextItem(OrganisationSchemeDS.VALID_FROM, getConstants().maintainableArtefactValidFrom());
         ViewTextItem validTo = new ViewTextItem(OrganisationSchemeDS.VALID_TO, getConstants().maintainableArtefactValidTo());
         ViewTextItem externalPublicationFailed = new ViewTextItem(OrganisationSchemeDS.IS_EXTERNAL_PUBLICATION_FAILED, getConstants().lifeCycleExternalPublicationFailed());
@@ -647,8 +647,8 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
                 org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(organisationSchemeDto.getLifeCycle().getProcStatus()));
 
         // Diffusion descriptors
-        diffusionDescriptorsForm.setValue(OrganisationSchemeDS.REPLACED_BY, organisationSchemeDto.getReplacedBy());
-        diffusionDescriptorsForm.setValue(OrganisationSchemeDS.REPLACE_TO, organisationSchemeDto.getReplaceTo());
+        diffusionDescriptorsForm.setValue(OrganisationSchemeDS.REPLACED_BY_VERSION, organisationSchemeDto.getReplacedByVersion());
+        diffusionDescriptorsForm.setValue(OrganisationSchemeDS.REPLACE_TO_VERSION, organisationSchemeDto.getReplaceToVersion());
         diffusionDescriptorsForm.setValue(OrganisationSchemeDS.VALID_FROM, organisationSchemeDto.getValidFrom());
         diffusionDescriptorsForm.setValue(OrganisationSchemeDS.VALID_TO, organisationSchemeDto.getValidTo());
         diffusionDescriptorsForm.setValue(OrganisationSchemeDS.IS_EXTERNAL_PUBLICATION_FAILED, BooleanUtils.isTrue(organisationSchemeDto.getLifeCycle().getIsExternalPublicationFailed())
@@ -700,8 +700,8 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
                 org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(organisationSchemeDto.getLifeCycle().getProcStatus()));
 
         // Diffusion descriptors
-        diffusionDescriptorsEditionForm.setValue(OrganisationSchemeDS.REPLACED_BY, organisationSchemeDto.getReplacedBy());
-        diffusionDescriptorsEditionForm.setValue(OrganisationSchemeDS.REPLACE_TO, organisationSchemeDto.getReplaceTo());
+        diffusionDescriptorsEditionForm.setValue(OrganisationSchemeDS.REPLACED_BY_VERSION, organisationSchemeDto.getReplacedByVersion());
+        diffusionDescriptorsEditionForm.setValue(OrganisationSchemeDS.REPLACE_TO_VERSION, organisationSchemeDto.getReplaceToVersion());
         diffusionDescriptorsEditionForm.setValue(OrganisationSchemeDS.VALID_FROM, DateUtils.getFormattedDate(organisationSchemeDto.getValidFrom()));
         diffusionDescriptorsEditionForm.setValue(OrganisationSchemeDS.VALID_TO, DateUtils.getFormattedDate(organisationSchemeDto.getValidTo()));
         diffusionDescriptorsEditionForm.setValue(OrganisationSchemeDS.IS_EXTERNAL_PUBLICATION_FAILED, BooleanUtils.isTrue(organisationSchemeDto.getLifeCycle().getIsExternalPublicationFailed())

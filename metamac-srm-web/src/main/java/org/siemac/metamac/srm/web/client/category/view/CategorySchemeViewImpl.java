@@ -282,8 +282,8 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
 
         // Diffusion descriptors
         diffusionDescriptorsForm = new GroupDynamicForm(getConstants().categorySchemeDiffusionDescriptors());
-        ViewTextItem replacedBy = new ViewTextItem(CategorySchemeDS.REPLACED_BY, getConstants().maintainableArtefactReplacedBy());
-        ViewTextItem replaceTo = new ViewTextItem(CategorySchemeDS.REPLACE_TO, getConstants().maintainableArtefactReplaceTo());
+        ViewTextItem replacedBy = new ViewTextItem(CategorySchemeDS.REPLACED_BY_VERSION, getConstants().maintainableArtefactReplacedByVersion());
+        ViewTextItem replaceTo = new ViewTextItem(CategorySchemeDS.REPLACE_TO_VERSION, getConstants().maintainableArtefactReplaceToVersion());
         ViewTextItem validFrom = new ViewTextItem(CategorySchemeDS.VALID_FROM, getConstants().maintainableArtefactValidFrom());
         ViewTextItem validTo = new ViewTextItem(CategorySchemeDS.VALID_TO, getConstants().maintainableArtefactValidTo());
         ViewTextItem externalPublicationFailed = new ViewTextItem(CategorySchemeDS.IS_EXTERNAL_PUBLICATION_FAILED, getConstants().lifeCycleExternalPublicationFailed());
@@ -364,8 +364,8 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
 
         // Diffusion descriptors
         diffusionDescriptorsEditionForm = new GroupDynamicForm(getConstants().categorySchemeDiffusionDescriptors());
-        ViewTextItem replacedBy = new ViewTextItem(CategorySchemeDS.REPLACED_BY, getConstants().maintainableArtefactReplacedBy());
-        ViewTextItem replaceTo = new ViewTextItem(CategorySchemeDS.REPLACE_TO, getConstants().maintainableArtefactReplaceTo());
+        ViewTextItem replacedBy = new ViewTextItem(CategorySchemeDS.REPLACED_BY_VERSION, getConstants().maintainableArtefactReplacedByVersion());
+        ViewTextItem replaceTo = new ViewTextItem(CategorySchemeDS.REPLACE_TO_VERSION, getConstants().maintainableArtefactReplaceToVersion());
         ViewTextItem validFrom = new ViewTextItem(CategorySchemeDS.VALID_FROM, getConstants().maintainableArtefactValidFrom());
         ViewTextItem validTo = new ViewTextItem(CategorySchemeDS.VALID_TO, getConstants().maintainableArtefactValidTo());
         ViewTextItem externalPublicationFailed = new ViewTextItem(CategorySchemeDS.IS_EXTERNAL_PUBLICATION_FAILED, getConstants().lifeCycleExternalPublicationFailed());
@@ -471,8 +471,8 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         productionDescriptorsForm.setValue(CategorySchemeDS.PROC_STATUS, org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(categorySchemeDto.getLifeCycle().getProcStatus()));
 
         // Diffusion descriptors
-        diffusionDescriptorsForm.setValue(CategorySchemeDS.REPLACED_BY, categorySchemeDto.getReplacedBy());
-        diffusionDescriptorsForm.setValue(CategorySchemeDS.REPLACE_TO, categorySchemeDto.getReplaceTo());
+        diffusionDescriptorsForm.setValue(CategorySchemeDS.REPLACED_BY_VERSION, categorySchemeDto.getReplacedByVersion());
+        diffusionDescriptorsForm.setValue(CategorySchemeDS.REPLACE_TO_VERSION, categorySchemeDto.getReplaceToVersion());
         diffusionDescriptorsForm.setValue(CategorySchemeDS.VALID_FROM, categorySchemeDto.getValidFrom());
         diffusionDescriptorsForm.setValue(CategorySchemeDS.VALID_TO, categorySchemeDto.getValidTo());
         diffusionDescriptorsForm.setValue(CategorySchemeDS.IS_EXTERNAL_PUBLICATION_FAILED, BooleanUtils.isTrue(categorySchemeDto.getLifeCycle().getIsExternalPublicationFailed()) ? MetamacWebCommon
@@ -522,8 +522,8 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
                 .setValue(CategorySchemeDS.PROC_STATUS, org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(categorySchemeDto.getLifeCycle().getProcStatus()));
 
         // Diffusion descriptors
-        diffusionDescriptorsEditionForm.setValue(CategorySchemeDS.REPLACED_BY, categorySchemeDto.getReplacedBy());
-        diffusionDescriptorsEditionForm.setValue(CategorySchemeDS.REPLACE_TO, categorySchemeDto.getReplaceTo());
+        diffusionDescriptorsEditionForm.setValue(CategorySchemeDS.REPLACED_BY_VERSION, categorySchemeDto.getReplacedByVersion());
+        diffusionDescriptorsEditionForm.setValue(CategorySchemeDS.REPLACE_TO_VERSION, categorySchemeDto.getReplaceToVersion());
         diffusionDescriptorsEditionForm.setValue(CategorySchemeDS.VALID_FROM, DateUtils.getFormattedDate(categorySchemeDto.getValidFrom()));
         diffusionDescriptorsEditionForm.setValue(CategorySchemeDS.VALID_TO, DateUtils.getFormattedDate(categorySchemeDto.getValidTo()));
         diffusionDescriptorsEditionForm.setValue(CategorySchemeDS.IS_EXTERNAL_PUBLICATION_FAILED, BooleanUtils.isTrue(categorySchemeDto.getLifeCycle().getIsExternalPublicationFailed())

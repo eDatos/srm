@@ -376,8 +376,8 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
 
         // Diffusion descriptors
         diffusionDescriptorsForm = new GroupDynamicForm(getConstants().conceptSchemeDiffusionDescriptors());
-        ViewTextItem replacedBy = new ViewTextItem(ConceptSchemeDS.REPLACED_BY, getConstants().maintainableArtefactReplacedBy());
-        ViewTextItem replaceTo = new ViewTextItem(ConceptSchemeDS.REPLACE_TO, getConstants().maintainableArtefactReplaceTo());
+        ViewTextItem replacedBy = new ViewTextItem(ConceptSchemeDS.REPLACED_BY_VERSION, getConstants().maintainableArtefactReplacedByVersion());
+        ViewTextItem replaceTo = new ViewTextItem(ConceptSchemeDS.REPLACE_TO_VERSION, getConstants().maintainableArtefactReplaceToVersion());
         ViewTextItem validFrom = new ViewTextItem(ConceptSchemeDS.VALID_FROM, getConstants().maintainableArtefactValidFrom());
         ViewTextItem validTo = new ViewTextItem(ConceptSchemeDS.VALID_TO, getConstants().maintainableArtefactValidTo());
         ViewTextItem externalPublicationFailed = new ViewTextItem(ConceptSchemeDS.IS_EXTERNAL_PUBLICATION_FAILED, getConstants().lifeCycleExternalPublicationFailed());
@@ -507,8 +507,8 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
 
         // Diffusion descriptors
         diffusionDescriptorsEditionForm = new GroupDynamicForm(getConstants().conceptSchemeDiffusionDescriptors());
-        ViewTextItem replacedBy = new ViewTextItem(ConceptSchemeDS.REPLACED_BY, getConstants().maintainableArtefactReplacedBy());
-        ViewTextItem replaceTo = new ViewTextItem(ConceptSchemeDS.REPLACE_TO, getConstants().maintainableArtefactReplaceTo());
+        ViewTextItem replacedBy = new ViewTextItem(ConceptSchemeDS.REPLACED_BY_VERSION, getConstants().maintainableArtefactReplacedByVersion());
+        ViewTextItem replaceTo = new ViewTextItem(ConceptSchemeDS.REPLACE_TO_VERSION, getConstants().maintainableArtefactReplaceToVersion());
         ViewTextItem validFrom = new ViewTextItem(ConceptSchemeDS.VALID_FROM, getConstants().maintainableArtefactValidFrom());
         ViewTextItem validTo = new ViewTextItem(ConceptSchemeDS.VALID_TO, getConstants().maintainableArtefactValidTo());
         ViewTextItem externalPublicationFailed = new ViewTextItem(ConceptSchemeDS.IS_EXTERNAL_PUBLICATION_FAILED, getConstants().lifeCycleExternalPublicationFailed());
@@ -577,8 +577,8 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         productionDescriptorsForm.setValue(ConceptSchemeDS.PROC_STATUS, org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(conceptSchemeDto.getLifeCycle().getProcStatus()));
 
         // Diffusion descriptors
-        diffusionDescriptorsForm.setValue(ConceptSchemeDS.REPLACED_BY, conceptSchemeDto.getReplacedBy());
-        diffusionDescriptorsForm.setValue(ConceptSchemeDS.REPLACE_TO, conceptSchemeDto.getReplaceTo());
+        diffusionDescriptorsForm.setValue(ConceptSchemeDS.REPLACED_BY_VERSION, conceptSchemeDto.getReplacedByVersion());
+        diffusionDescriptorsForm.setValue(ConceptSchemeDS.REPLACE_TO_VERSION, conceptSchemeDto.getReplaceToVersion());
         diffusionDescriptorsForm.setValue(ConceptSchemeDS.VALID_FROM, conceptSchemeDto.getValidFrom());
         diffusionDescriptorsForm.setValue(ConceptSchemeDS.VALID_TO, conceptSchemeDto.getValidTo());
         diffusionDescriptorsForm.setValue(ConceptSchemeDS.IS_EXTERNAL_PUBLICATION_FAILED, BooleanUtils.isTrue(conceptSchemeDto.getLifeCycle().getIsExternalPublicationFailed()) ? MetamacWebCommon
@@ -630,8 +630,8 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         productionDescriptorsEditionForm.setValue(ConceptSchemeDS.PROC_STATUS, org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(conceptSchemeDto.getLifeCycle().getProcStatus()));
 
         // Diffusion descriptors
-        diffusionDescriptorsEditionForm.setValue(ConceptSchemeDS.REPLACED_BY, conceptSchemeDto.getReplacedBy());
-        diffusionDescriptorsEditionForm.setValue(ConceptSchemeDS.REPLACE_TO, conceptSchemeDto.getReplaceTo());
+        diffusionDescriptorsEditionForm.setValue(ConceptSchemeDS.REPLACED_BY_VERSION, conceptSchemeDto.getReplacedByVersion());
+        diffusionDescriptorsEditionForm.setValue(ConceptSchemeDS.REPLACE_TO_VERSION, conceptSchemeDto.getReplaceToVersion());
         diffusionDescriptorsEditionForm.setValue(ConceptSchemeDS.VALID_FROM, DateUtils.getFormattedDate(conceptSchemeDto.getValidFrom()));
         diffusionDescriptorsEditionForm.setValue(ConceptSchemeDS.VALID_TO, DateUtils.getFormattedDate(conceptSchemeDto.getValidTo()));
         diffusionDescriptorsEditionForm.setValue(ConceptSchemeDS.IS_EXTERNAL_PUBLICATION_FAILED, BooleanUtils.isTrue(conceptSchemeDto.getLifeCycle().getIsExternalPublicationFailed())

@@ -227,8 +227,8 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
 
         // Status Form
         statusForm = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdStatus());
-        ViewTextItem replacedBy = new ViewTextItem(DataStructureDefinitionDS.REPLACED_BY, getConstants().maintainableArtefactReplacedBy());
-        ViewTextItem replaceTo = new ViewTextItem(DataStructureDefinitionDS.REPLACE_TO, getConstants().maintainableArtefactReplaceTo());
+        ViewTextItem replacedBy = new ViewTextItem(DataStructureDefinitionDS.REPLACED_BY_VERSION, getConstants().maintainableArtefactReplacedByVersion());
+        ViewTextItem replaceTo = new ViewTextItem(DataStructureDefinitionDS.REPLACE_TO_VERSION, getConstants().maintainableArtefactReplaceToVersion());
         ViewTextItem validFrom = new ViewTextItem(DataStructureDefinitionDS.VALID_FROM, MetamacSrmWeb.getConstants().maintainableArtefactValidFrom());
         ViewTextItem validTo = new ViewTextItem(DataStructureDefinitionDS.VALID_TO, MetamacSrmWeb.getConstants().maintainableArtefactValidTo());
         ViewTextItem staticFinalItem = new ViewTextItem(DataStructureDefinitionDS.FINAL, MetamacSrmWeb.getConstants().maintainableArtefactFinalLogic());
@@ -303,8 +303,8 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
 
         // Status Form
         statusEditionForm = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdStatus());
-        ViewTextItem replacedBy = new ViewTextItem(DataStructureDefinitionDS.REPLACED_BY, getConstants().maintainableArtefactReplacedBy());
-        ViewTextItem replaceTo = new ViewTextItem(DataStructureDefinitionDS.REPLACE_TO, getConstants().maintainableArtefactReplaceTo());
+        ViewTextItem replacedBy = new ViewTextItem(DataStructureDefinitionDS.REPLACED_BY_VERSION, getConstants().maintainableArtefactReplacedByVersion());
+        ViewTextItem replaceTo = new ViewTextItem(DataStructureDefinitionDS.REPLACE_TO_VERSION, getConstants().maintainableArtefactReplaceToVersion());
         ViewTextItem validFrom = new ViewTextItem(DataStructureDefinitionDS.VALID_FROM, MetamacSrmWeb.getConstants().maintainableArtefactValidFrom());
         ViewTextItem validTo = new ViewTextItem(DataStructureDefinitionDS.VALID_TO, MetamacSrmWeb.getConstants().maintainableArtefactValidTo());
         ViewTextItem staticFinalItemEdit = new ViewTextItem(DataStructureDefinitionDS.FINAL, MetamacSrmWeb.getConstants().maintainableArtefactFinalLogic());
@@ -375,8 +375,8 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         generalForm.setValue(DataStructureDefinitionDS.MAINTAINER, dsd.getMaintainer() != null ? dsd.getMaintainer().getCode() : StringUtils.EMPTY); // TODO AGENCY
 
         // Status form
-        statusForm.setValue(DataStructureDefinitionDS.REPLACED_BY, dsd.getReplacedBy());
-        statusForm.setValue(DataStructureDefinitionDS.REPLACE_TO, dsd.getReplaceTo());
+        statusForm.setValue(DataStructureDefinitionDS.REPLACED_BY_VERSION, dsd.getReplacedByVersion());
+        statusForm.setValue(DataStructureDefinitionDS.REPLACE_TO_VERSION, dsd.getReplaceToVersion());
         statusForm.setValue(DataStructureDefinitionDS.VALID_FROM, dsd.getValidFrom());
         statusForm.setValue(DataStructureDefinitionDS.VALID_TO, dsd.getValidTo());
         statusForm.setValue(DataStructureDefinitionDS.FINAL, dsd.getFinalLogic() != null

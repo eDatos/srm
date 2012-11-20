@@ -25,8 +25,8 @@ public class ItemSchemeDS extends DataSource {
     public static final String PRODUCTION_VALIDATION_DATE       = "sch-prod-date";
     public static final String PRODUCTION_VALIDATION_USER       = "sch-prod-user";
     // DIFFUSION DESCRIPTORS
-    public static final String REPLACED_BY                      = "sch-replaced-by";
-    public static final String REPLACE_TO                       = "sch-replace-to";
+    public static final String REPLACED_BY_VERSION              = "sch-replaced-by";
+    public static final String REPLACE_TO_VERSION               = "sch-replace-to";
     public static final String VALID_FROM                       = "sch-valid-from";
     public static final String VALID_TO                         = "sch-valid-to";
     public static final String DIFFUSION_VALIDATION_DATE        = "sch-dif-date";
