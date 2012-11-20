@@ -820,16 +820,16 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
             assertEquals(versionExpected, conceptSchemeDtoNewVersion.getVersionLogic());
             assertEquals(urnExpected, conceptSchemeDtoNewVersion.getUrn());
             assertEquals(ProcStatusEnum.DRAFT, conceptSchemeDtoNewVersion.getLifeCycle().getProcStatus());
-            assertEquals("01.000", conceptSchemeDtoNewVersion.getReplaceTo());
-            assertEquals(null, conceptSchemeDtoNewVersion.getReplacedBy());
+            assertEquals("01.000", conceptSchemeDtoNewVersion.getReplaceToVersion());
+            assertEquals(null, conceptSchemeDtoNewVersion.getReplacedByVersion());
             ConceptsMetamacAsserts.assertEqualsConceptSchemeMetamacDto(conceptSchemeDtoToCopy, conceptSchemeDtoNewVersion);
 
             // Copied version
             conceptSchemeDtoToCopy = srmCoreServiceFacade.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), urn);
             assertEquals("01.000", conceptSchemeDtoToCopy.getVersionLogic());
             assertEquals(urn, conceptSchemeDtoToCopy.getUrn());
-            assertEquals(null, conceptSchemeDtoToCopy.getReplaceTo());
-            assertEquals(versionExpected, conceptSchemeDtoToCopy.getReplacedBy());
+            assertEquals(null, conceptSchemeDtoToCopy.getReplaceToVersion());
+            assertEquals(versionExpected, conceptSchemeDtoToCopy.getReplacedByVersion());
 
             // All versions
             List<ConceptSchemeMetamacDto> allVersions = srmCoreServiceFacade.retrieveConceptSchemeVersions(getServiceContextAdministrador(), urn);

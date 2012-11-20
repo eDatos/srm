@@ -102,8 +102,8 @@
         CODE="ORGANISATIONSCHEME100"
         URI="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.base.AgencyScheme=SDMX:ORGANISATIONSCHEME100(01.000)"
-        REPLACED_BY="[null]"
-        REPLACE_TO="[null]"
+        REPLACED_BY_VERSION="[null]"
+        REPLACE_TO_VERSION="[null]"
         
         NAME_FK="[null]"
         DESCRIPTION_FK="[null]"
@@ -170,8 +170,8 @@
                 CODE="SDMX01"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:ORGANISATIONSCHEME100(01.000).SDMX01"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
                 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"
@@ -222,8 +222,8 @@
                 CODE="SDMX02"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:ORGANISATIONSCHEME100(01.000).SDMX02"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
                 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"
@@ -304,8 +304,8 @@
         CODE="CONCEPTSCHEME01"
         URI="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME01(01.000)"
-        REPLACED_BY="02.000"
-        REPLACE_TO="[null]"
+        REPLACED_BY_VERSION="02.000"
+        REPLACE_TO_VERSION="[null]"
         
         NAME_FK="1"
         DESCRIPTION_FK="2"
@@ -378,8 +378,8 @@
                 CODE="CONCEPT01"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME01(01.000).CONCEPT01"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
                 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"
@@ -446,8 +446,8 @@
         CODE="CONCEPTSCHEME01"
         URI="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME01(02.000)"
-        REPLACED_BY="[null]"
-        REPLACE_TO="01.000"
+        REPLACED_BY_VERSION="[null]"
+        REPLACE_TO_VERSION="01.000"
         
         NAME_FK="3"
         DESCRIPTION_FK="4"
@@ -528,8 +528,8 @@
                 CODE="CONCEPT01"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME01(02.000).CONCEPT01"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
                 
                 NAME_FK="12"
                 DESCRIPTION_FK="13"
@@ -620,8 +620,8 @@
                 CODE="CONCEPT02"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME01(02.000).CONCEPT02"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
                 
                 NAME_FK="14"
                 DESCRIPTION_FK="[null]"
@@ -679,8 +679,8 @@
                 CODE="CONCEPT0201"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME01(02.000).CONCEPT0201"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
                 
                 NAME_FK="15"
                 DESCRIPTION_FK="[null]"
@@ -744,8 +744,8 @@
                 CODE="CONCEPT020101"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME01(02.000).CONCEPT020101"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
                 
                 NAME_FK="16"
                 DESCRIPTION_FK="[null]"
@@ -814,8 +814,8 @@
                 CODE="CONCEPT03"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME01(02.000).CONCEPT03"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
                 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"
@@ -883,8 +883,8 @@
                 CODE="CONCEPT04"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME01(02.000).CONCEPT04"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
                 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"
@@ -942,8 +942,8 @@
                 CODE="CONCEPT0401"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME01(02.000).CONCEPT0401"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
                 
                 NAME_FK="37"
                 DESCRIPTION_FK="[null]"
@@ -1001,8 +1001,8 @@
                 CODE="CONCEPT040101"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME01(02.000).CONCEPT040101"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
                 
                 NAME_FK="38"
                 DESCRIPTION_FK="[null]"
@@ -1079,8 +1079,8 @@
         CODE="CONCEPTSCHEME02"
         URI="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME02(01.000)"
-        REPLACED_BY="[null]"
-        REPLACE_TO="[null]"
+        REPLACED_BY_VERSION="[null]"
+        REPLACE_TO_VERSION="[null]"
         
         NAME_FK="5"
         
@@ -1154,8 +1154,8 @@
                 CODE="CONCEPT01"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME02(01.000).CONCEPT01"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
                 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"
@@ -1224,8 +1224,8 @@
                 CODE="CONCEPT02"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME02(01.000).CONCEPT02"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
                 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"
@@ -1318,8 +1318,8 @@
         CODE="CONCEPTSCHEME03"
         URI="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME03(01.000)"
-        REPLACED_BY="[null]"
-        REPLACE_TO="[null]"
+        REPLACED_BY_VERSION="[null]"
+        REPLACE_TO_VERSION="[null]"
         
         NAME_FK="6"
         
@@ -1395,8 +1395,8 @@
                 CODE="CONCEPT01"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME03(01.000).CONCEPT01"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
                 
                 NAME_FK="24"
                 DESCRIPTION_FK="[null]"
@@ -1464,8 +1464,8 @@
                 CODE="CONCEPT02"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME03(01.000).CONCEPT02"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
                 
                 NAME_FK="32"
                 DESCRIPTION_FK="[null]"
@@ -1529,8 +1529,8 @@
                 CODE="CONCEPT0201"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME03(01.000).CONCEPT0201"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
                 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"
@@ -1599,8 +1599,8 @@
                         CODE="CONCEPT020101"
                         URI="[null]"
                         URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME03(01.000).CONCEPT020101"
-                        REPLACED_BY="[null]"
-                        REPLACE_TO="[null]"
+                        REPLACED_BY_VERSION="[null]"
+                        REPLACE_TO_VERSION="[null]"
                         
                         NAME_FK="[null]"
                         DESCRIPTION_FK="[null]"
@@ -1676,8 +1676,8 @@
                 CODE="CONCEPT0202"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME03(01.000).CONCEPT0202"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
                 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"
@@ -1767,8 +1767,8 @@
         CODE="CONCEPTSCHEME04"
         URI="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME04(01.000)"
-        REPLACED_BY="[null]"
-        REPLACE_TO="[null]"
+        REPLACED_BY_VERSION="[null]"
+        REPLACE_TO_VERSION="[null]"
         
         NAME_FK="46"
         
@@ -1838,8 +1838,8 @@
                 CODE="CONCEPT01"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME04(01.000).CONCEPT01"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
                 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"
@@ -1915,8 +1915,8 @@
         CODE="CONCEPTSCHEME05"
         URI="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME05(01.000)"
-        REPLACED_BY="[null]"
-        REPLACE_TO="[null]"
+        REPLACED_BY_VERSION="[null]"
+        REPLACE_TO_VERSION="[null]"
         
         NAME_FK="44"
         
@@ -1986,8 +1986,8 @@
                 CODE="CONCEPT01"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME05(01.000).CONCEPT01"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
                 
                 NAME_FK="40"
                 DESCRIPTION_FK="[null]"
@@ -2063,8 +2063,8 @@
         CODE="CONCEPTSCHEME06"
         URI="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME06(01.000)"
-        REPLACED_BY="[null]"
-        REPLACE_TO="[null]"
+        REPLACED_BY_VERSION="[null]"
+        REPLACE_TO_VERSION="[null]"
         
         NAME_FK="6"
         
@@ -2134,8 +2134,8 @@
                 CODE="CONCEPT01"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME06(01.000).CONCEPT01"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
                 
                 NAME_FK="42"
                 DESCRIPTION_FK="[null]"
@@ -2214,8 +2214,8 @@
         CODE="CONCEPTSCHEME07"
         URI="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME07(01.000)"
-        REPLACED_BY="02.000"
-        REPLACE_TO="[null]"
+        REPLACED_BY_VERSION="02.000"
+        REPLACE_TO_VERSION="[null]"
         
         NAME_FK="7"
         
@@ -2292,8 +2292,8 @@
         CODE="CONCEPTSCHEME07"
         URI="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME07(02.000)"
-        REPLACED_BY="[null]"
-        REPLACE_TO="01.000"
+        REPLACED_BY_VERSION="[null]"
+        REPLACE_TO_VERSION="01.000"
         
         NAME_FK="8"
         
@@ -2363,8 +2363,8 @@
                 CODE="CONCEPT01"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME07(02.000).CONCEPT01"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
                 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"
@@ -2442,8 +2442,8 @@
         CODE="CONCEPTSCHEME08"
         URI="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME08(01.000)"
-        REPLACED_BY="[null]"
-        REPLACE_TO="[null]"
+        REPLACED_BY_VERSION="[null]"
+        REPLACE_TO_VERSION="[null]"
         
         NAME_FK="47"
         
@@ -2513,8 +2513,8 @@
                 CODE="CONCEPT01"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME08(01.000).CONCEPT01"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
                 
                 NAME_FK="39"
                 DESCRIPTION_FK="[null]"
@@ -2590,8 +2590,8 @@
         CODE="CONCEPTSCHEME09"
         URI="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME09(01.000)"
-        REPLACED_BY="[null]"
-        REPLACE_TO="[null]"
+        REPLACED_BY_VERSION="[null]"
+        REPLACE_TO_VERSION="[null]"
         
         NAME_FK="9"
         
@@ -2682,8 +2682,8 @@
         CODE="CONCEPTSCHEME10"
         URI="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME10(01.000)"
-        REPLACED_BY="02.000"
-        REPLACE_TO="[null]"
+        REPLACED_BY_VERSION="02.000"
+        REPLACE_TO_VERSION="[null]"
         
         NAME_FK="10"
         
@@ -2760,8 +2760,8 @@
         CODE="CONCEPTSCHEME10"
         URI="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME10(02.000)"
-        REPLACED_BY="02.000"
-        REPLACE_TO="01.000"
+        REPLACED_BY_VERSION="02.000"
+        REPLACE_TO_VERSION="01.000"
         
         NAME_FK="10"
         
@@ -2831,8 +2831,8 @@
                 CODE="CONCEPT01"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME10(02.000).CONCEPT01"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
                 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"
@@ -2898,8 +2898,8 @@
         CODE="CONCEPTSCHEME10"
         URI="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME10(03.000)"
-        REPLACED_BY="[null]"
-        REPLACE_TO="02.000"
+        REPLACED_BY_VERSION="[null]"
+        REPLACE_TO_VERSION="02.000"
         
         NAME_FK="10"
         
@@ -2969,8 +2969,8 @@
                 CODE="CONCEPT01"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME10(03.000).CONCEPT01"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
                 
                 NAME_FK="41"
                 DESCRIPTION_FK="[null]"
@@ -3048,8 +3048,8 @@
         CODE="CONCEPTSCHEME11"
         URI="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME11(01.000)"
-        REPLACED_BY="[null]"
-        REPLACE_TO="[null]"
+        REPLACED_BY_VERSION="[null]"
+        REPLACE_TO_VERSION="[null]"
         
         NAME_FK="11"
         
@@ -3119,8 +3119,8 @@
                 CODE="CONCEPT01"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME11(01.000).CONCEPT01"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
                 
                 NAME_FK="43"
                 DESCRIPTION_FK="[null]"
@@ -3199,8 +3199,8 @@
         CODE="CONCEPTSCHEME12"
         URI="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME12(01.000)"
-        REPLACED_BY="[null]"
-        REPLACE_TO="[null]"
+        REPLACED_BY_VERSION="[null]"
+        REPLACE_TO_VERSION="[null]"
         
         NAME_FK="45"
         
@@ -3270,8 +3270,8 @@
                 CODE="CONCEPT01"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME12(01.000).CONCEPT01"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
                 
                 NAME_FK="43"
                 DESCRIPTION_FK="[null]"
@@ -3349,8 +3349,8 @@
         CODE="CONCEPTSCHEME13"
         URI="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME13(01.000)"
-        REPLACED_BY="[null]"
-        REPLACE_TO="[null]"
+        REPLACED_BY_VERSION="[null]"
+        REPLACE_TO_VERSION="[null]"
         
         NAME_FK="[null]"
         
@@ -3420,8 +3420,8 @@
                 CODE="CONCEPT01"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME13(01.000).CONCEPT01"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
                 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"
@@ -3480,8 +3480,8 @@
                 CODE="CONCEPT02"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME13(01.000).CONCEPT02"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
                 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"
@@ -3540,8 +3540,8 @@
                 CODE="CONCEPT03"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME13(01.000).CONCEPT03"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
                 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"

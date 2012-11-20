@@ -672,16 +672,16 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
             assertEquals(versionExpected, codelistDtoNewVersion.getVersionLogic());
             assertEquals(urnExpected, codelistDtoNewVersion.getUrn());
             assertEquals(ProcStatusEnum.DRAFT, codelistDtoNewVersion.getLifeCycle().getProcStatus());
-            assertEquals("01.000", codelistDtoNewVersion.getReplaceTo());
-            assertEquals(null, codelistDtoNewVersion.getReplacedBy());
+            assertEquals("01.000", codelistDtoNewVersion.getReplaceToVersion());
+            assertEquals(null, codelistDtoNewVersion.getReplacedByVersion());
             CodesMetamacAsserts.assertEqualsCodelistMetamacDto(codelistDtoToCopy, codelistDtoNewVersion);
 
             // Copied version
             codelistDtoToCopy = srmCoreServiceFacade.retrieveCodelistByUrn(getServiceContextAdministrador(), urn);
             assertEquals("01.000", codelistDtoToCopy.getVersionLogic());
             assertEquals(urn, codelistDtoToCopy.getUrn());
-            assertEquals(null, codelistDtoToCopy.getReplaceTo());
-            assertEquals(versionExpected, codelistDtoToCopy.getReplacedBy());
+            assertEquals(null, codelistDtoToCopy.getReplaceToVersion());
+            assertEquals(versionExpected, codelistDtoToCopy.getReplacedByVersion());
 
             // All versions
             List<CodelistMetamacDto> allVersions = srmCoreServiceFacade.retrieveCodelistVersions(getServiceContextAdministrador(), urn);

@@ -102,8 +102,8 @@
         CODE="ORGANISATIONSCHEME100"
         URI="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.base.AgencyScheme=SDMX:ORGANISATIONSCHEME100(01.000)"
-        REPLACED_BY="[null]"
-        REPLACE_TO="[null]"
+        REPLACED_BY_VERSION="[null]"
+        REPLACE_TO_VERSION="[null]"
         
         NAME_FK="[null]"
         DESCRIPTION_FK="[null]"
@@ -170,8 +170,8 @@
                 CODE="SDMX01"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:ORGANISATIONSCHEME100(01.000).SDMX01"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
                 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"
@@ -222,8 +222,8 @@
                 CODE="SDMX02"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:ORGANISATIONSCHEME100(01.000).SDMX02"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
                 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"
@@ -302,8 +302,8 @@
         CODE="CATEGORYSCHEME01"
         URI="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=SDMX01:CATEGORYSCHEME01(01.000)"
-        REPLACED_BY="02.000"
-        REPLACE_TO="[null]"
+        REPLACED_BY_VERSION="02.000"
+        REPLACE_TO_VERSION="[null]"
         
         NAME_FK="1"
         DESCRIPTION_FK="2"
@@ -367,8 +367,8 @@
                 CODE="CATEGORY01"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME01(01.000).CATEGORY01"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"
@@ -433,8 +433,8 @@
         CODE="CATEGORYSCHEME01"
         URI="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=SDMX01:CATEGORYSCHEME01(02.000)"
-        REPLACED_BY="[null]"
-        REPLACE_TO="01.000"
+        REPLACED_BY_VERSION="[null]"
+        REPLACE_TO_VERSION="01.000"
         
         NAME_FK="3"
         DESCRIPTION_FK="4"
@@ -506,8 +506,8 @@
                 CODE="CATEGORY01"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME01(02.000).CATEGORY01"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
                 
                 NAME_FK="12"
                 DESCRIPTION_FK="13"
@@ -556,8 +556,8 @@
                 CODE="CATEGORY02"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME01(02.000).CATEGORY02"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
                 
                 NAME_FK="14"
                 DESCRIPTION_FK="[null]"
@@ -606,8 +606,8 @@
                     CODE="CATEGORY0201"
                     URI="[null]"
                     URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME01(02.000).CATEGORY02.CATEGORY0201"
-                    REPLACED_BY="[null]"
-                    REPLACE_TO="[null]"
+                    REPLACED_BY_VERSION="[null]"
+                    REPLACE_TO_VERSION="[null]"
                     
                     NAME_FK="15"
                     DESCRIPTION_FK="[null]"
@@ -657,8 +657,8 @@
                         CODE="CATEGORY020101"
                         URI="[null]"
                         URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME01(02.000).CATEGORY02.CATEGORY0201.CATEGORY020101"
-                        REPLACED_BY="[null]"
-                        REPLACE_TO="[null]"
+                        REPLACED_BY_VERSION="[null]"
+                        REPLACE_TO_VERSION="[null]"
                         
                         NAME_FK="16"
                         DESCRIPTION_FK="[null]"
@@ -707,8 +707,8 @@
                 CODE="CATEGORY03"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME01(02.000).CATEGORY03"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
                 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"
@@ -757,8 +757,8 @@
                 CODE="CATEGORY04"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME01(02.000).CATEGORY04"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
                 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"
@@ -807,8 +807,8 @@
                     CODE="CATEGORY0401"
                     URI="[null]"
                     URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME01(02.000).CATEGORY04.CATEGORY0401"
-                    REPLACED_BY="[null]"
-                    REPLACE_TO="[null]"
+                    REPLACED_BY_VERSION="[null]"
+                    REPLACE_TO_VERSION="[null]"
                     
                     NAME_FK="[null]"
                     DESCRIPTION_FK="[null]"
@@ -857,8 +857,8 @@
                         CODE="CATEGORY040101"
                         URI="[null]"
                         URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME01(02.000).CATEGORY04.CATEGORY0401.CATEGORY040101"
-                        REPLACED_BY="[null]"
-                        REPLACE_TO="[null]"
+                        REPLACED_BY_VERSION="[null]"
+                        REPLACE_TO_VERSION="[null]"
                         
                         NAME_FK="[null]"
                         DESCRIPTION_FK="[null]"
@@ -936,8 +936,8 @@
         CODE="CATEGORYSCHEME02"
         URI="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=SDMX01:CATEGORYSCHEME02(01.000)"
-        REPLACED_BY="[null]"
-        REPLACE_TO="[null]"
+        REPLACED_BY_VERSION="[null]"
+        REPLACE_TO_VERSION="[null]"
         
         NAME_FK="5"
         
@@ -1001,8 +1001,8 @@
                 CODE="CATEGORY01"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME02(01.000).CATEGORY01"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
                 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"
@@ -1051,8 +1051,8 @@
                 CODE="CATEGORY02"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME02(01.000).CATEGORY02"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
                 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"
@@ -1130,8 +1130,8 @@
         CODE="CATEGORYSCHEME03"
         URI="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=SDMX01:CATEGORYSCHEME03(01.000)"
-        REPLACED_BY="[null]"
-        REPLACE_TO="[null]"
+        REPLACED_BY_VERSION="[null]"
+        REPLACE_TO_VERSION="[null]"
         
         NAME_FK="31"
         
@@ -1196,8 +1196,8 @@
                 CODE="CATEGORY01"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME03(01.000).CATEGORY01"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
                 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"
@@ -1246,8 +1246,8 @@
                 CODE="CATEGORY02"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME03(01.000).CATEGORY02"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
                 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"
@@ -1296,8 +1296,8 @@
                 CODE="CATEGORY0201"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME03(01.000).CATEGORY02.CATEGORY0201"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
                 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"
@@ -1346,8 +1346,8 @@
                         CODE="CATEGORY020101"
                         URI="[null]"
                         URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME03(01.000).CATEGORY02.CATEGORY0201.CATEGORY020101"
-                        REPLACED_BY="[null]"
-                        REPLACE_TO="[null]"
+                        REPLACED_BY_VERSION="[null]"
+                        REPLACE_TO_VERSION="[null]"
                         
                         NAME_FK="[null]"
                         DESCRIPTION_FK="[null]"
@@ -1395,8 +1395,8 @@
                 CODE="CATEGORY0202"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME03(01.000).CATEGORY02.CATEGORY0202"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
                 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"
@@ -1474,8 +1474,8 @@
         CODE="CATEGORYSCHEME04"
         URI="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=SDMX01:CATEGORYSCHEME04(01.000)"
-        REPLACED_BY="[null]"
-        REPLACE_TO="[null]"
+        REPLACED_BY_VERSION="[null]"
+        REPLACE_TO_VERSION="[null]"
         
         NAME_FK="10"
         
@@ -1538,8 +1538,8 @@
                 CODE="CATEGORY01"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME04(01.000).CATEGORY01"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"
@@ -1618,8 +1618,8 @@
         CODE="CATEGORYSCHEME05"
         URI="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=SDMX01:CATEGORYSCHEME05(01.000)"
-        REPLACED_BY="[null]"
-        REPLACE_TO="[null]"
+        REPLACED_BY_VERSION="[null]"
+        REPLACE_TO_VERSION="[null]"
         
         NAME_FK="9"
         
@@ -1682,8 +1682,8 @@
                 CODE="CATEGORY01"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME05(01.000).CATEGORY01"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"
@@ -1761,8 +1761,8 @@
         CODE="CATEGORYSCHEME06"
         URI="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=SDMX01:CATEGORYSCHEME06(01.000)"
-        REPLACED_BY="[null]"
-        REPLACE_TO="[null]"
+        REPLACED_BY_VERSION="[null]"
+        REPLACE_TO_VERSION="[null]"
         
         NAME_FK="6"
         
@@ -1825,8 +1825,8 @@
                 CODE="CATEGORY01"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME06(01.000).CATEGORY01"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"
@@ -1905,8 +1905,8 @@
         CODE="CATEGORYSCHEME07"
         URI="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=SDMX01:CATEGORYSCHEME07(01.000)"
-        REPLACED_BY="02.000"
-        REPLACE_TO="[null]"
+        REPLACED_BY_VERSION="02.000"
+        REPLACE_TO_VERSION="[null]"
         
         NAME_FK="7"
         
@@ -1983,8 +1983,8 @@
         CODE="CATEGORYSCHEME07"
         URI="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=SDMX01:CATEGORYSCHEME07(02.000)"
-        REPLACED_BY="[null]"
-        REPLACE_TO="01.000"
+        REPLACED_BY_VERSION="[null]"
+        REPLACE_TO_VERSION="01.000"
         
         NAME_FK="8"
         
@@ -2047,8 +2047,8 @@
                 CODE="CATEGORY01"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME07(02.000).CATEGORY01"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"

@@ -901,7 +901,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         }
         codelistVersionV1 = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), urnV1);
         assertTrue(codelistVersionV1.getMaintainableArtefact().getIsLastVersion());
-        assertNull(codelistVersionV1.getMaintainableArtefact().getReplacedBy());
+        assertNull(codelistVersionV1.getMaintainableArtefact().getReplacedByVersion());
     }
 
     @Test
@@ -949,8 +949,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals(ProcStatusEnum.DRAFT, codelistVersionNewVersion.getLifeCycleMetadata().getProcStatus());
             assertEquals(versionExpected, codelistVersionNewVersion.getMaintainableArtefact().getVersionLogic());
             assertEquals(urnExpected, codelistVersionNewVersion.getMaintainableArtefact().getUrn());
-            assertEquals("01.000", codelistVersionNewVersion.getMaintainableArtefact().getReplaceTo());
-            assertEquals(null, codelistVersionNewVersion.getMaintainableArtefact().getReplacedBy());
+            assertEquals("01.000", codelistVersionNewVersion.getMaintainableArtefact().getReplaceToVersion());
+            assertEquals(null, codelistVersionNewVersion.getMaintainableArtefact().getReplacedByVersion());
             assertTrue(codelistVersionNewVersion.getMaintainableArtefact().getIsLastVersion());
             CodesMetamacAsserts.assertEqualsCodelistWithoutLifeCycleMetadata(codelistVersionToCopy, codelistVersionNewVersion);
 
@@ -1004,8 +1004,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             codelistVersionToCopy = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), urn);
             assertEquals("01.000", codelistVersionToCopy.getMaintainableArtefact().getVersionLogic());
             assertEquals(urn, codelistVersionToCopy.getMaintainableArtefact().getUrn());
-            assertEquals(null, codelistVersionToCopy.getMaintainableArtefact().getReplaceTo());
-            assertEquals(versionExpected, codelistVersionToCopy.getMaintainableArtefact().getReplacedBy());
+            assertEquals(null, codelistVersionToCopy.getMaintainableArtefact().getReplaceToVersion());
+            assertEquals(versionExpected, codelistVersionToCopy.getMaintainableArtefact().getReplacedByVersion());
             assertFalse(codelistVersionToCopy.getMaintainableArtefact().getIsLastVersion());
         }
         // All versions
@@ -1051,8 +1051,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals(versionExpected, codelistVersionNewVersion.getMaintainableArtefact().getVersionLogic());
             assertEquals(urnExpected, codelistVersionNewVersion.getMaintainableArtefact().getUrn());
             assertEquals(ProcStatusEnum.DRAFT, codelistVersionNewVersion.getLifeCycleMetadata().getProcStatus());
-            assertEquals("02.000", codelistVersionNewVersion.getMaintainableArtefact().getReplaceTo());
-            assertEquals(null, codelistVersionNewVersion.getMaintainableArtefact().getReplacedBy());
+            assertEquals("02.000", codelistVersionNewVersion.getMaintainableArtefact().getReplaceToVersion());
+            assertEquals(null, codelistVersionNewVersion.getMaintainableArtefact().getReplacedByVersion());
             assertTrue(codelistVersionNewVersion.getMaintainableArtefact().getIsLastVersion());
             CodesMetamacAsserts.assertEqualsCodelistWithoutLifeCycleMetadata(codelistVersionToCopy, codelistVersionNewVersion);
 
@@ -1060,16 +1060,16 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             codelistVersionToCopy = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), urnToCopy);
             assertEquals("01.000", codelistVersionToCopy.getMaintainableArtefact().getVersionLogic());
             assertEquals(urnToCopy, codelistVersionToCopy.getMaintainableArtefact().getUrn());
-            assertEquals(null, codelistVersionToCopy.getMaintainableArtefact().getReplaceTo());
-            assertEquals("02.000", codelistVersionToCopy.getMaintainableArtefact().getReplacedBy());
+            assertEquals(null, codelistVersionToCopy.getMaintainableArtefact().getReplaceToVersion());
+            assertEquals("02.000", codelistVersionToCopy.getMaintainableArtefact().getReplacedByVersion());
             assertFalse(codelistVersionToCopy.getMaintainableArtefact().getIsLastVersion());
 
             // Last version
             codelistVersionLast = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), urnLastVersion);
             assertEquals("02.000", codelistVersionLast.getMaintainableArtefact().getVersionLogic());
             assertEquals(urnLastVersion, codelistVersionLast.getMaintainableArtefact().getUrn());
-            assertEquals("01.000", codelistVersionLast.getMaintainableArtefact().getReplaceTo());
-            assertEquals(versionExpected, codelistVersionLast.getMaintainableArtefact().getReplacedBy());
+            assertEquals("01.000", codelistVersionLast.getMaintainableArtefact().getReplaceToVersion());
+            assertEquals(versionExpected, codelistVersionLast.getMaintainableArtefact().getReplacedByVersion());
             assertFalse(codelistVersionLast.getMaintainableArtefact().getIsLastVersion());
 
             // All versions

@@ -105,8 +105,8 @@
         CODE="ORGANISATIONSCHEME100"
         URI="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.base.AgencyScheme=SDMX:ORGANISATIONSCHEME100(01.000)"
-        REPLACED_BY="[null]"
-        REPLACE_TO="[null]"
+        REPLACED_BY_VERSION="[null]"
+        REPLACE_TO_VERSION="[null]"
         
         NAME_FK="[null]"
         DESCRIPTION_FK="[null]"
@@ -173,8 +173,8 @@
                 CODE="SDMX01"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:ORGANISATIONSCHEME100(01.000).SDMX01"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
                 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"
@@ -225,8 +225,8 @@
                 CODE="SDMX02"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:ORGANISATIONSCHEME100(01.000).SDMX02"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
                 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"
@@ -306,8 +306,8 @@
         CODE="ORGANISATIONSCHEME01"
         URI="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=SDMX01:ORGANISATIONSCHEME01(01.000)"
-        REPLACED_BY="02.000"
-        REPLACE_TO="[null]"
+        REPLACED_BY_VERSION="02.000"
+        REPLACE_TO_VERSION="[null]"
         
         NAME_FK="1"
         DESCRIPTION_FK="2"
@@ -373,8 +373,8 @@
                 CODE="ORGANISATION01"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME01(01.000).ORGANISATION01"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"
@@ -440,8 +440,8 @@
         CODE="ORGANISATIONSCHEME01"
         URI="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=SDMX01:ORGANISATIONSCHEME01(02.000)"
-        REPLACED_BY="[null]"
-        REPLACE_TO="01.000"
+        REPLACED_BY_VERSION="[null]"
+        REPLACE_TO_VERSION="01.000"
         
         NAME_FK="3"
         DESCRIPTION_FK="4"
@@ -515,8 +515,8 @@
                 CODE="ORGANISATION01"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME01(02.000).ORGANISATION01"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
                 
                 NAME_FK="12"
                 DESCRIPTION_FK="13"
@@ -567,8 +567,8 @@
                 CODE="ORGANISATION02"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME01(02.000).ORGANISATION02"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
                 
                 NAME_FK="14"
                 DESCRIPTION_FK="[null]"
@@ -619,8 +619,8 @@
                     CODE="ORGANISATION0201"
                     URI="[null]"
                     URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME01(02.000).ORGANISATION0201"
-                    REPLACED_BY="[null]"
-                    REPLACE_TO="[null]"
+                    REPLACED_BY_VERSION="[null]"
+                    REPLACE_TO_VERSION="[null]"
                     
                     NAME_FK="15"
                     DESCRIPTION_FK="[null]"
@@ -672,8 +672,8 @@
                         CODE="ORGANISATION020101"
                         URI="[null]"
                         URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME01(02.000).ORGANISATION020101"
-                        REPLACED_BY="[null]"
-                        REPLACE_TO="[null]"
+                        REPLACED_BY_VERSION="[null]"
+                        REPLACE_TO_VERSION="[null]"
                         
                         NAME_FK="16"
                         DESCRIPTION_FK="[null]"
@@ -724,8 +724,8 @@
                 CODE="ORGANISATION03"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME01(02.000).ORGANISATION03"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
                 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"
@@ -776,8 +776,8 @@
                 CODE="ORGANISATION04"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME01(02.000).ORGANISATION04"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
                 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"
@@ -828,8 +828,8 @@
                     CODE="ORGANISATION0401"
                     URI="[null]"
                     URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME01(02.000).ORGANISATION0401"
-                    REPLACED_BY="[null]"
-                    REPLACE_TO="[null]"
+                    REPLACED_BY_VERSION="[null]"
+                    REPLACE_TO_VERSION="[null]"
                     
                     NAME_FK="[null]"
                     DESCRIPTION_FK="[null]"
@@ -880,8 +880,8 @@
                         CODE="ORGANISATION040101"
                         URI="[null]"
                         URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME01(02.000).ORGANISATION040101"
-                        REPLACED_BY="[null]"
-                        REPLACE_TO="[null]"
+                        REPLACED_BY_VERSION="[null]"
+                        REPLACE_TO_VERSION="[null]"
                         
                         NAME_FK="[null]"
                         DESCRIPTION_FK="[null]"
@@ -960,8 +960,8 @@
         CODE="ORGANISATIONSCHEME02"
         URI="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.base.AgencyScheme=SDMX01:ORGANISATIONSCHEME02(01.000)"
-        REPLACED_BY="[null]"
-        REPLACE_TO="[null]"
+        REPLACED_BY_VERSION="[null]"
+        REPLACE_TO_VERSION="[null]"
         
         NAME_FK="5"
         
@@ -1027,8 +1027,8 @@
                 CODE="ORGANISATION01"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX01:ORGANISATIONSCHEME02(01.000).ORGANISATION01"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
                 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"
@@ -1079,8 +1079,8 @@
                 CODE="ORGANISATION02"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX01:ORGANISATIONSCHEME02(01.000).ORGANISATION02"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
                 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"
@@ -1159,8 +1159,8 @@
         CODE="ORGANISATIONSCHEME03"
         URI="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=SDMX01:ORGANISATIONSCHEME03(01.000)"
-        REPLACED_BY="[null]"
-        REPLACE_TO="[null]"
+        REPLACED_BY_VERSION="[null]"
+        REPLACE_TO_VERSION="[null]"
         
         NAME_FK="31"
         
@@ -1227,8 +1227,8 @@
                 CODE="ORGANISATION01"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME03(01.000).ORGANISATION01"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
                 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"
@@ -1372,8 +1372,8 @@
                 CODE="ORGANISATION02"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME03(01.000).ORGANISATION02"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
                 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"
@@ -1424,8 +1424,8 @@
                 CODE="ORGANISATION0201"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME03(01.000).ORGANISATION0201"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
                 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"
@@ -1476,8 +1476,8 @@
                         CODE="ORGANISATION020101"
                         URI="[null]"
                         URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME03(01.000).ORGANISATION020101"
-                        REPLACED_BY="[null]"
-                        REPLACE_TO="[null]"
+                        REPLACED_BY_VERSION="[null]"
+                        REPLACE_TO_VERSION="[null]"
                         
                         NAME_FK="[null]"
                         DESCRIPTION_FK="[null]"
@@ -1527,8 +1527,8 @@
                 CODE="ORGANISATION0202"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME03(01.000).ORGANISATION0202"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
                 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"
@@ -1607,8 +1607,8 @@
         CODE="ORGANISATIONSCHEME04"
         URI="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=SDMX01:ORGANISATIONSCHEME04(01.000)"
-        REPLACED_BY="[null]"
-        REPLACE_TO="[null]"
+        REPLACED_BY_VERSION="[null]"
+        REPLACE_TO_VERSION="[null]"
         
         NAME_FK="10"
         
@@ -1673,8 +1673,8 @@
                 CODE="ORGANISATION01"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME04(01.000).ORGANISATION01"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"
@@ -1754,8 +1754,8 @@
         CODE="ORGANISATIONSCHEME05"
         URI="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=SDMX01:ORGANISATIONSCHEME05(01.000)"
-        REPLACED_BY="[null]"
-        REPLACE_TO="[null]"
+        REPLACED_BY_VERSION="[null]"
+        REPLACE_TO_VERSION="[null]"
         
         NAME_FK="9"
         
@@ -1820,8 +1820,8 @@
                 CODE="ORGANISATION01"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME05(01.000).ORGANISATION01"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"
@@ -1900,8 +1900,8 @@
         CODE="ORGANISATIONSCHEME06"
         URI="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=SDMX01:ORGANISATIONSCHEME06(01.000)"
-        REPLACED_BY="[null]"
-        REPLACE_TO="[null]"
+        REPLACED_BY_VERSION="[null]"
+        REPLACE_TO_VERSION="[null]"
         
         NAME_FK="6"
         
@@ -1966,8 +1966,8 @@
                 CODE="ORGANISATION01"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME06(01.000).ORGANISATION01"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"
@@ -2047,8 +2047,8 @@
         CODE="ORGANISATIONSCHEME07"
         URI="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=SDMX01:ORGANISATIONSCHEME07(01.000)"
-        REPLACED_BY="02.000"
-        REPLACE_TO="[null]"
+        REPLACED_BY_VERSION="02.000"
+        REPLACE_TO_VERSION="[null]"
         
         NAME_FK="7"
         
@@ -2126,8 +2126,8 @@
         CODE="ORGANISATIONSCHEME07"
         URI="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=SDMX01:ORGANISATIONSCHEME07(02.000)"
-        REPLACED_BY="[null]"
-        REPLACE_TO="01.000"
+        REPLACED_BY_VERSION="[null]"
+        REPLACE_TO_VERSION="01.000"
         
         NAME_FK="8"
         
@@ -2192,8 +2192,8 @@
                 CODE="ORGANISATION01"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME07(02.000).ORGANISATION01"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"
@@ -2273,8 +2273,8 @@
         CODE="ORGANISATIONSCHEME08"
         URI="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=SDMX02:ORGANISATIONSCHEME08(01.000)"
-        REPLACED_BY="[null]"
-        REPLACE_TO="[null]"
+        REPLACED_BY_VERSION="[null]"
+        REPLACE_TO_VERSION="[null]"
         
         NAME_FK="27"
         
@@ -2339,8 +2339,8 @@
                 CODE="ORGANISATION01"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX02:ORGANISATIONSCHEME08(01.000).ORGANISATION01"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
 
                 NAME_FK="29"
                 DESCRIPTION_FK="[null]"
@@ -2419,8 +2419,8 @@
         CODE="ORGANISATIONSCHEME09"
         URI="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=SDMX02.ORGANISATION01:ORGANISATIONSCHEME09(01.000)"
-        REPLACED_BY="[null]"
-        REPLACE_TO="[null]"
+        REPLACED_BY_VERSION="[null]"
+        REPLACE_TO_VERSION="[null]"
         
         NAME_FK="28"
         
@@ -2485,8 +2485,8 @@
                 CODE="ORGANISATION01"
                 URI="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX02.ORGANISATION01:ORGANISATIONSCHEME09(01.000).ORGANISATION01"
-                REPLACED_BY="[null]"
-                REPLACE_TO="[null]"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
 
                 NAME_FK="30"
                 DESCRIPTION_FK="[null]"

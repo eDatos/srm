@@ -925,7 +925,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         }
         organisationSchemeVersionV1 = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), urnV1);
         assertTrue(organisationSchemeVersionV1.getMaintainableArtefact().getIsLastVersion());
-        assertNull(organisationSchemeVersionV1.getMaintainableArtefact().getReplacedBy());
+        assertNull(organisationSchemeVersionV1.getMaintainableArtefact().getReplacedByVersion());
     }
 
     @Test
@@ -976,8 +976,8 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             assertEquals(ProcStatusEnum.DRAFT, organisationSchemeVersionNewVersion.getLifeCycleMetadata().getProcStatus());
             assertEquals(versionExpected, organisationSchemeVersionNewVersion.getMaintainableArtefact().getVersionLogic());
             assertEquals(urnExpected, organisationSchemeVersionNewVersion.getMaintainableArtefact().getUrn());
-            assertEquals("01.000", organisationSchemeVersionNewVersion.getMaintainableArtefact().getReplaceTo());
-            assertEquals(null, organisationSchemeVersionNewVersion.getMaintainableArtefact().getReplacedBy());
+            assertEquals("01.000", organisationSchemeVersionNewVersion.getMaintainableArtefact().getReplaceToVersion());
+            assertEquals(null, organisationSchemeVersionNewVersion.getMaintainableArtefact().getReplacedByVersion());
             assertTrue(organisationSchemeVersionNewVersion.getMaintainableArtefact().getIsLastVersion());
             OrganisationsMetamacAsserts.assertEqualsOrganisationSchemeWithoutLifeCycleMetadata(organisationSchemeVersionToCopy, organisationSchemeVersionNewVersion);
 
@@ -1056,8 +1056,8 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             organisationSchemeVersionToCopy = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), urn);
             assertEquals("01.000", organisationSchemeVersionToCopy.getMaintainableArtefact().getVersionLogic());
             assertEquals(urn, organisationSchemeVersionToCopy.getMaintainableArtefact().getUrn());
-            assertEquals(null, organisationSchemeVersionToCopy.getMaintainableArtefact().getReplaceTo());
-            assertEquals(versionExpected, organisationSchemeVersionToCopy.getMaintainableArtefact().getReplacedBy());
+            assertEquals(null, organisationSchemeVersionToCopy.getMaintainableArtefact().getReplaceToVersion());
+            assertEquals(versionExpected, organisationSchemeVersionToCopy.getMaintainableArtefact().getReplacedByVersion());
             assertFalse(organisationSchemeVersionToCopy.getMaintainableArtefact().getIsLastVersion());
         }
         // All versions
@@ -1105,8 +1105,8 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             assertEquals(versionExpected, organisationSchemeVersionNewVersion.getMaintainableArtefact().getVersionLogic());
             assertEquals(urnExpected, organisationSchemeVersionNewVersion.getMaintainableArtefact().getUrn());
             assertEquals(ProcStatusEnum.DRAFT, organisationSchemeVersionNewVersion.getLifeCycleMetadata().getProcStatus());
-            assertEquals("02.000", organisationSchemeVersionNewVersion.getMaintainableArtefact().getReplaceTo());
-            assertEquals(null, organisationSchemeVersionNewVersion.getMaintainableArtefact().getReplacedBy());
+            assertEquals("02.000", organisationSchemeVersionNewVersion.getMaintainableArtefact().getReplaceToVersion());
+            assertEquals(null, organisationSchemeVersionNewVersion.getMaintainableArtefact().getReplacedByVersion());
             assertTrue(organisationSchemeVersionNewVersion.getMaintainableArtefact().getIsLastVersion());
             OrganisationsMetamacAsserts.assertEqualsOrganisationSchemeWithoutLifeCycleMetadata(organisationSchemeVersionToCopy, organisationSchemeVersionNewVersion);
 
@@ -1114,16 +1114,16 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             organisationSchemeVersionToCopy = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), urnToCopy);
             assertEquals("01.000", organisationSchemeVersionToCopy.getMaintainableArtefact().getVersionLogic());
             assertEquals(urnToCopy, organisationSchemeVersionToCopy.getMaintainableArtefact().getUrn());
-            assertEquals(null, organisationSchemeVersionToCopy.getMaintainableArtefact().getReplaceTo());
-            assertEquals("02.000", organisationSchemeVersionToCopy.getMaintainableArtefact().getReplacedBy());
+            assertEquals(null, organisationSchemeVersionToCopy.getMaintainableArtefact().getReplaceToVersion());
+            assertEquals("02.000", organisationSchemeVersionToCopy.getMaintainableArtefact().getReplacedByVersion());
             assertFalse(organisationSchemeVersionToCopy.getMaintainableArtefact().getIsLastVersion());
 
             // Last version
             organisationSchemeVersionLast = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), urnLastVersion);
             assertEquals("02.000", organisationSchemeVersionLast.getMaintainableArtefact().getVersionLogic());
             assertEquals(urnLastVersion, organisationSchemeVersionLast.getMaintainableArtefact().getUrn());
-            assertEquals("01.000", organisationSchemeVersionLast.getMaintainableArtefact().getReplaceTo());
-            assertEquals(versionExpected, organisationSchemeVersionLast.getMaintainableArtefact().getReplacedBy());
+            assertEquals("01.000", organisationSchemeVersionLast.getMaintainableArtefact().getReplaceToVersion());
+            assertEquals(versionExpected, organisationSchemeVersionLast.getMaintainableArtefact().getReplacedByVersion());
             assertFalse(organisationSchemeVersionLast.getMaintainableArtefact().getIsLastVersion());
 
             // All versions

@@ -865,7 +865,7 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
         }
         categorySchemeVersionV1 = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urnV1);
         assertTrue(categorySchemeVersionV1.getMaintainableArtefact().getIsLastVersion());
-        assertNull(categorySchemeVersionV1.getMaintainableArtefact().getReplacedBy());
+        assertNull(categorySchemeVersionV1.getMaintainableArtefact().getReplacedByVersion());
     }
 
     @Test
@@ -915,8 +915,8 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
             assertEquals(ProcStatusEnum.DRAFT, categorySchemeVersionNewVersion.getLifeCycleMetadata().getProcStatus());
             assertEquals(versionExpected, categorySchemeVersionNewVersion.getMaintainableArtefact().getVersionLogic());
             assertEquals(urnExpected, categorySchemeVersionNewVersion.getMaintainableArtefact().getUrn());
-            assertEquals("01.000", categorySchemeVersionNewVersion.getMaintainableArtefact().getReplaceTo());
-            assertEquals(null, categorySchemeVersionNewVersion.getMaintainableArtefact().getReplacedBy());
+            assertEquals("01.000", categorySchemeVersionNewVersion.getMaintainableArtefact().getReplaceToVersion());
+            assertEquals(null, categorySchemeVersionNewVersion.getMaintainableArtefact().getReplacedByVersion());
             assertTrue(categorySchemeVersionNewVersion.getMaintainableArtefact().getIsLastVersion());
             CategoriesMetamacAsserts.assertEqualsCategorySchemeWithoutLifeCycleMetadata(categorySchemeVersionToCopy, categorySchemeVersionNewVersion);
 
@@ -957,8 +957,8 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
             categorySchemeVersionToCopy = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urn);
             assertEquals("01.000", categorySchemeVersionToCopy.getMaintainableArtefact().getVersionLogic());
             assertEquals(urn, categorySchemeVersionToCopy.getMaintainableArtefact().getUrn());
-            assertEquals(null, categorySchemeVersionToCopy.getMaintainableArtefact().getReplaceTo());
-            assertEquals(versionExpected, categorySchemeVersionToCopy.getMaintainableArtefact().getReplacedBy());
+            assertEquals(null, categorySchemeVersionToCopy.getMaintainableArtefact().getReplaceToVersion());
+            assertEquals(versionExpected, categorySchemeVersionToCopy.getMaintainableArtefact().getReplacedByVersion());
             assertFalse(categorySchemeVersionToCopy.getMaintainableArtefact().getIsLastVersion());
         }
         // All versions
@@ -1005,8 +1005,8 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
             assertEquals(versionExpected, categorySchemeVersionNewVersion.getMaintainableArtefact().getVersionLogic());
             assertEquals(urnExpected, categorySchemeVersionNewVersion.getMaintainableArtefact().getUrn());
             assertEquals(ProcStatusEnum.DRAFT, categorySchemeVersionNewVersion.getLifeCycleMetadata().getProcStatus());
-            assertEquals("02.000", categorySchemeVersionNewVersion.getMaintainableArtefact().getReplaceTo());
-            assertEquals(null, categorySchemeVersionNewVersion.getMaintainableArtefact().getReplacedBy());
+            assertEquals("02.000", categorySchemeVersionNewVersion.getMaintainableArtefact().getReplaceToVersion());
+            assertEquals(null, categorySchemeVersionNewVersion.getMaintainableArtefact().getReplacedByVersion());
             assertTrue(categorySchemeVersionNewVersion.getMaintainableArtefact().getIsLastVersion());
             CategoriesMetamacAsserts.assertEqualsCategorySchemeWithoutLifeCycleMetadata(categorySchemeVersionToCopy, categorySchemeVersionNewVersion);
 
@@ -1014,16 +1014,16 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
             categorySchemeVersionToCopy = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urnToCopy);
             assertEquals("01.000", categorySchemeVersionToCopy.getMaintainableArtefact().getVersionLogic());
             assertEquals(urnToCopy, categorySchemeVersionToCopy.getMaintainableArtefact().getUrn());
-            assertEquals(null, categorySchemeVersionToCopy.getMaintainableArtefact().getReplaceTo());
-            assertEquals("02.000", categorySchemeVersionToCopy.getMaintainableArtefact().getReplacedBy());
+            assertEquals(null, categorySchemeVersionToCopy.getMaintainableArtefact().getReplaceToVersion());
+            assertEquals("02.000", categorySchemeVersionToCopy.getMaintainableArtefact().getReplacedByVersion());
             assertFalse(categorySchemeVersionToCopy.getMaintainableArtefact().getIsLastVersion());
 
             // Last version
             categorySchemeVersionLast = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urnLastVersion);
             assertEquals("02.000", categorySchemeVersionLast.getMaintainableArtefact().getVersionLogic());
             assertEquals(urnLastVersion, categorySchemeVersionLast.getMaintainableArtefact().getUrn());
-            assertEquals("01.000", categorySchemeVersionLast.getMaintainableArtefact().getReplaceTo());
-            assertEquals(versionExpected, categorySchemeVersionLast.getMaintainableArtefact().getReplacedBy());
+            assertEquals("01.000", categorySchemeVersionLast.getMaintainableArtefact().getReplaceToVersion());
+            assertEquals(versionExpected, categorySchemeVersionLast.getMaintainableArtefact().getReplacedByVersion());
             assertFalse(categorySchemeVersionLast.getMaintainableArtefact().getIsLastVersion());
 
             // All versions

@@ -26,7 +26,7 @@ public class SrmServiceUtils {
     }
 
     public static Boolean isItemSchemeFirstVersion(ItemSchemeVersion itemSchemeVersion) {
-        return itemSchemeVersion.getMaintainableArtefact().getReplaceTo() == null;
+        return itemSchemeVersion.getMaintainableArtefact().getReplaceToVersion() == null;
     }
 
 }
