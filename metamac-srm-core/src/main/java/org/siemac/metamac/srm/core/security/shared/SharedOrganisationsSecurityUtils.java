@@ -77,11 +77,15 @@ public class SharedOrganisationsSecurityUtils extends SharedItemsSecurityUtils {
             return canModifyItemFromItemScheme(metamacPrincipal, procStatus);
         }
     }
-    
+
     /**
      * Determines if categorisations from an organisation scheme can be created or deleted
      */
     public static boolean canModifyCategorisationFromOrganisationScheme(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus, OrganisationSchemeTypeEnum type) {
-        return canUpdateOrganisationScheme(metamacPrincipal, procStatus, type);
+        if (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(procStatus) || ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(procStatus)) {
+            return canPublishOrganisationSchemeExternally(metamacPrincipal);
+        } else {
+            return canUpdateOrganisationScheme(metamacPrincipal, procStatus, type);
+        }
     }
 }

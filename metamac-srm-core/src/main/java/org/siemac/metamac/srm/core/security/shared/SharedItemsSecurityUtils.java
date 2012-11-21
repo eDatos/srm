@@ -86,5 +86,14 @@ public class SharedItemsSecurityUtils extends SharedSecurityUtils {
         }
         return false;
     }
+    
+    // OTHER
 
+    public static boolean canModifyCategorisation(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus) {
+        if (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(procStatus) || ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(procStatus)) {
+            return canPublishItemSchemeExternally(metamacPrincipal);
+        } else {
+            return canUpdateItemScheme(metamacPrincipal, procStatus);
+        }
+    }
 }

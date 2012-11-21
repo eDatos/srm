@@ -189,7 +189,11 @@ public class SharedConceptsSecurityUtils extends SharedItemsSecurityUtils {
     // Categorisations
 
     public static boolean canModifyCategorisation(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode) {
-        return canUpdateConceptScheme(metamacPrincipal, procStatus, type, operationCode);
+        if (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(procStatus) || ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(procStatus)) {
+            return canPublishConceptSchemeExternally(metamacPrincipal, type, operationCode);
+        } else {
+            return canUpdateConceptScheme(metamacPrincipal, procStatus, type, operationCode);
+        }
     }
 
     private static boolean canUpdateConceptScheme(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode) {

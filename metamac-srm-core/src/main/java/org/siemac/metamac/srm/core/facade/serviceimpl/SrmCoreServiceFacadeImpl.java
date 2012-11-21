@@ -18,6 +18,7 @@ import javax.xml.transform.stream.StreamSource;
 import org.apache.commons.lang.StringUtils;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
+import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.criteria.MetamacCriteria;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
 import org.siemac.metamac.core.common.criteria.SculptorCriteria;
@@ -1953,26 +1954,39 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     // Note: only check acess to artefact. Category and maintainer must be externally published, and everyone can access to them
-    // TODO clasificaciones
     private void canModifyCategorisation(ServiceContext ctx, String artefactCategorisedUrn) throws MetamacException {
 
-        // TODO pendiente duda Alberto
-        // TODO se pueden asociar a category scheme
-        // if (artefactCategorisedUrn == null) {
-        // throw new MetamacException(ServiceExceptionType.METADATA_REQUIRED, ServiceExceptionParameters.URN);
-        // }
-        // if (artefactCategorisedUrn.startsWith(UrnConstants.URN_SDMX_CLASS_CONCEPTSCHEME_PREFIX)) {
-        // ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptsMetamacService().retrieveConceptSchemeByUrn(ctx, artefactCategorisedUrn);
-        // ConceptsSecurityUtils.canModifyCategorisation(ctx, conceptSchemeVersion);
-        // } else if (artefactCategorisedUrn.startsWith(UrnConstants.URN_SDMX_CLASS_ORGANISATIONSCHEMEMAP_PREFIX) || artefactCategorisedUrn.startsWith(UrnConstants.URN_SDMX_CLASS_AGENCYSCHEME_PREFIX))
-        // {
-        // OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationsMetamacService().retrieveOrganisationSchemeByUrn(ctx, artefactCategorisedUrn);
-        // OrganisationsSecurityUtils.canModifyCategorisation(ctx, organisationSchemeVersion);
-        // } else if (artefactCategorisedUrn.startsWith(UrnConstants.URN_SDMX_CLASS_DATASTRUCTURE_PREFIX)) {
-        // DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion = getDsdsMetamacService().retrieveDataStructureDefinitionByUrn(ctx, artefactCategorisedUrn);
-        // DataStructureDefinitionSecurityUtils.canModifyCategorisation(ctx, dataStructureDefinitionVersion);
-        // } else {
-        // throw new MetamacException(ServiceExceptionType.SECURITY_ACTION_NOT_ALLOWED, ctx.getUserId());
-        // }
+        if (artefactCategorisedUrn == null) {
+            throw new MetamacException(ServiceExceptionType.METADATA_REQUIRED, ServiceExceptionParameters.URN);
+        }
+        // Concept schemes
+        if (artefactCategorisedUrn.startsWith(UrnConstants.URN_SDMX_CLASS_CONCEPTSCHEME_PREFIX)) {
+            ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptsMetamacService().retrieveConceptSchemeByUrn(ctx, artefactCategorisedUrn);
+            ConceptsSecurityUtils.canModifyCategorisation(ctx, conceptSchemeVersion);
+
+            // Category schemes
+        } else if (artefactCategorisedUrn.startsWith(UrnConstants.URN_SDMX_CLASS_CATEGORYSCHEME_PREFIX)) {
+            CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByUrn(ctx, artefactCategorisedUrn);
+            ItemsSecurityUtils.canModifyCategorisation(ctx, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
+
+            // Organisation schemes
+        } else if (artefactCategorisedUrn.startsWith(UrnConstants.URN_SDMX_CLASS_ORGANISATIONUNITSCHEME_PREFIX)
+                || artefactCategorisedUrn.startsWith(UrnConstants.URN_SDMX_CLASS_DATAPROVIDERSCHEME_PREFIX) || artefactCategorisedUrn.startsWith(UrnConstants.URN_SDMX_CLASS_DATACONSUMERSCHEME_PREFIX)
+                || artefactCategorisedUrn.startsWith(UrnConstants.URN_SDMX_CLASS_AGENCYSCHEME_PREFIX)) {
+            OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationsMetamacService().retrieveOrganisationSchemeByUrn(ctx, artefactCategorisedUrn);
+            OrganisationsSecurityUtils.canModifyCategorisation(ctx, organisationSchemeVersion);
+
+            // Codelists
+        } else if (artefactCategorisedUrn.startsWith(UrnConstants.URN_SDMX_CLASS_CODELIST_PREFIX)) {
+            CodelistVersionMetamac codelistVersion = getCodesMetamacService().retrieveCodelistByUrn(ctx, artefactCategorisedUrn);
+            ItemsSecurityUtils.canModifyCategorisation(ctx, codelistVersion.getLifeCycleMetadata().getProcStatus());
+
+            // Dsd
+        } else if (artefactCategorisedUrn.startsWith(UrnConstants.URN_SDMX_CLASS_DATASTRUCTURE_PREFIX)) {
+            DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion = getDsdsMetamacService().retrieveDataStructureDefinitionByUrn(ctx, artefactCategorisedUrn);
+            DataStructureDefinitionSecurityUtils.canModifyCategorisation(ctx, dataStructureDefinitionVersion);
+        } else {
+            throw new MetamacException(ServiceExceptionType.SECURITY_OPERATION_NOT_ALLOWED, ctx.getUserId());
+        }
     }
 }

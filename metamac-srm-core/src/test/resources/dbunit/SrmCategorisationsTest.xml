@@ -883,7 +883,7 @@
     
     <TB_M_CONCEPT_SCHEMES_VERSIONS
         TB_CONCEPT_SCHEMES_VERSIONS="71"
-        CONCEPT_SCHEME_TYPE="TRANSVERSAL"          
+        CONCEPT_SCHEME_TYPE="OPERATION"          
         RELATED_OPERATION_FK="[null]"
         PROC_STATUS="DIFFUSION_VALIDATION"
         
@@ -1110,6 +1110,21 @@
         LAST_UPDATED="2011-01-22 01:02:03"
         LAST_UPDATED_TZ="Europe/London"
     />    
+    
+    <!-- ************************************************************************************** -->
+    <!-- EXTERNAL ITEMS                                                                         -->
+    <!-- *************************************************************************************  -->    
+          
+    <TB_EXTERNAL_ITEMS 
+        ID="82"
+        CODE="op1"
+        URI="http://op1"
+        URN="urn:op1"
+        MANAGEMENT_APP_URL="http://app/operations"
+        VERSION="1"
+        TITLE_FK="[null]"
+        TYPE="STATISTICAL_OPERATION"
+    />
                         
     <!-- ************************************************************************************** -->
     <!-- INTERNATIONAL STRINGS                                                                  -->

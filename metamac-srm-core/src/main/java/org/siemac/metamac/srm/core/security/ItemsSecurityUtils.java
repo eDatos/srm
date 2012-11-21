@@ -35,6 +35,7 @@ public class ItemsSecurityUtils extends SecurityUtils {
             throwExceptionIfOperationNotAllowed(ctx);
         }
     }
+    
     public static void canDeleteItemScheme(ServiceContext ctx) throws MetamacException {
         if (!SharedItemsSecurityUtils.canDeleteItemScheme(getMetamacPrincipal(ctx))) {
             throwExceptionIfOperationNotAllowed(ctx);
@@ -122,4 +123,12 @@ public class ItemsSecurityUtils extends SecurityUtils {
             throwExceptionIfOperationNotAllowed(ctx);
         }
     }
+    
+    // OTHER
+    public static void canModifyCategorisation(ServiceContext ctx, ProcStatusEnum procStatus) throws MetamacException {
+        if (!SharedItemsSecurityUtils.canModifyCategorisation(getMetamacPrincipal(ctx), procStatus)) {
+            throwExceptionIfOperationNotAllowed(ctx);
+        }
+    }
+
 }

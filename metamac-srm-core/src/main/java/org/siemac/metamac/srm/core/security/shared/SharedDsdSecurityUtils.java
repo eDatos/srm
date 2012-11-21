@@ -185,9 +185,13 @@ public class SharedDsdSecurityUtils extends SharedSecurityUtils {
         }
         return false;
     }
-    
+
     public static boolean canModifyCategorisationForDataStructureDefinition(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus) {
-        return canUpdateDsd(metamacPrincipal, procStatus);
+        if (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(procStatus) || ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(procStatus)) {
+            return canPublishDsdExternally(metamacPrincipal);
+        } else {
+            return canUpdateDsd(metamacPrincipal, procStatus);
+        }
     }
 
     /**
