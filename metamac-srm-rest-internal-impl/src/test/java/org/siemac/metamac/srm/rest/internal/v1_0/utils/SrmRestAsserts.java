@@ -6,11 +6,9 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
-import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.ORDER_BY_CONCEPT_ID_DESC;
-import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.ORDER_BY_CONCEPT_SCHEME_ID_DESC;
-import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.QUERY_CONCEPT_ID_LIKE_1_NAME_LIKE_2;
-import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.QUERY_CONCEPT_SCHEME_ID_LIKE_1;
-import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.QUERY_CONCEPT_SCHEME_ID_LIKE_1_NAME_LIKE_2;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.ORDER_BY_ID_DESC;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.QUERY_ID_LIKE_1;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.QUERY_ID_LIKE_1_NAME_LIKE_2;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -174,7 +172,7 @@ public class SrmRestAsserts extends MetamacRestAsserts {
         if (orderBy == null) {
             return ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).orderBy(ConceptSchemeVersionMetamacProperties.maintainableArtefact().code()).ascending().build();
         }
-        if (ORDER_BY_CONCEPT_SCHEME_ID_DESC.equals(orderBy)) {
+        if (ORDER_BY_ID_DESC.equals(orderBy)) {
             return ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).orderBy(ConceptSchemeVersionMetamacProperties.maintainableArtefact().code()).descending().build();
         }
         fail();
@@ -185,7 +183,7 @@ public class SrmRestAsserts extends MetamacRestAsserts {
         if (orderBy == null) {
             return ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class).orderBy(ConceptMetamacProperties.nameableArtefact().code()).ascending().build();
         }
-        if (ORDER_BY_CONCEPT_ID_DESC.equals(orderBy)) {
+        if (ORDER_BY_ID_DESC.equals(orderBy)) {
             return ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class).orderBy(ConceptMetamacProperties.nameableArtefact().code()).descending().build();
         }
         fail();
@@ -196,9 +194,9 @@ public class SrmRestAsserts extends MetamacRestAsserts {
         if (query == null) {
             return new ArrayList<ConditionalCriteria>();
         }
-        if (QUERY_CONCEPT_SCHEME_ID_LIKE_1.equals(query)) {
+        if (QUERY_ID_LIKE_1.equals(query)) {
             return ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).withProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact().code()).like("%1%").build();
-        } else if (QUERY_CONCEPT_SCHEME_ID_LIKE_1_NAME_LIKE_2.equals(query)) {
+        } else if (QUERY_ID_LIKE_1_NAME_LIKE_2.equals(query)) {
             return ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).withProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact().code()).like("%1%")
                     .withProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact().name().texts().label()).like("%2%").build();
         }
@@ -210,7 +208,7 @@ public class SrmRestAsserts extends MetamacRestAsserts {
         if (query == null) {
             return new ArrayList<ConditionalCriteria>();
         }
-        if (QUERY_CONCEPT_ID_LIKE_1_NAME_LIKE_2.equals(query)) {
+        if (QUERY_ID_LIKE_1_NAME_LIKE_2.equals(query)) {
             return ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class).withProperty(ConceptMetamacProperties.nameableArtefact().code()).like("%1%")
                     .withProperty(ConceptMetamacProperties.nameableArtefact().name().texts().label()).like("%2%").build();
         }

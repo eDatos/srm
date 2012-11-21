@@ -8,22 +8,20 @@ import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestAsserts.ass
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestAsserts.assertFindConcepts;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.AGENCY_1;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.AGENCY_2;
-import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.CONCEPT_1_CODE;
-import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.CONCEPT_2_CODE;
-import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.CONCEPT_3_CODE;
-import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.CONCEPT_SCHEME_1_CODE;
-import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.CONCEPT_SCHEME_1_VERSION_1;
-import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.CONCEPT_SCHEME_2_CODE;
-import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.CONCEPT_SCHEME_2_VERSION_1;
-import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.CONCEPT_SCHEME_2_VERSION_2;
-import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.CONCEPT_SCHEME_3_CODE;
-import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.CONCEPT_SCHEME_3_VERSION_1;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.ITEM_1_CODE;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.ITEM_2_CODE;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.ITEM_3_CODE;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.ITEM_SCHEME_1_CODE;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.ITEM_SCHEME_1_VERSION_1;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.ITEM_SCHEME_2_CODE;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.ITEM_SCHEME_2_VERSION_1;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.ITEM_SCHEME_2_VERSION_2;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.ITEM_SCHEME_3_CODE;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.ITEM_SCHEME_3_VERSION_1;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.NOT_EXISTS;
-import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.ORDER_BY_CONCEPT_ID_DESC;
-import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.ORDER_BY_CONCEPT_SCHEME_ID_DESC;
-import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.QUERY_CONCEPT_ID_LIKE_1_NAME_LIKE_2;
-import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.QUERY_CONCEPT_SCHEME_ID_LIKE_1;
-import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.QUERY_CONCEPT_SCHEME_ID_LIKE_1_NAME_LIKE_2;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.ORDER_BY_ID_DESC;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.QUERY_ID_LIKE_1;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.QUERY_ID_LIKE_1_NAME_LIKE_2;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -114,7 +112,7 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
     @Test
     public void testErrorJsonNonAcceptable() throws Exception {
 
-        String requestUri = getUriConceptSchemes(AGENCY_1, CONCEPT_SCHEME_1_CODE, CONCEPT_SCHEME_1_VERSION_1);
+        String requestUri = getUriConceptSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1);
 
         // Request and validate
         WebClient webClient = WebClient.create(requestUri).accept("application/json");
@@ -130,10 +128,10 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
         testFindConceptsSchemes(null, "0", null, null); // without limits, first page
         testFindConceptsSchemes("2", "0", null, null); // first page with pagination
         testFindConceptsSchemes("2", "2", null, null); // other page with pagination
-        testFindConceptsSchemes(null, null, QUERY_CONCEPT_SCHEME_ID_LIKE_1, null); // query by id, without limits
-        testFindConceptsSchemes(null, null, QUERY_CONCEPT_SCHEME_ID_LIKE_1_NAME_LIKE_2, null); // query by id and name, without limits
-        testFindConceptsSchemes("1", "0", QUERY_CONCEPT_SCHEME_ID_LIKE_1_NAME_LIKE_2, null); // query by id and name, first page
-        testFindConceptsSchemes("1", "0", QUERY_CONCEPT_SCHEME_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_CONCEPT_SCHEME_ID_DESC); // query by id and name, first page
+        testFindConceptsSchemes(null, null, QUERY_ID_LIKE_1, null); // query by id, without limits
+        testFindConceptsSchemes(null, null, QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query by id and name, without limits
+        testFindConceptsSchemes("1", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query by id and name, first page
+        testFindConceptsSchemes("1", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query by id and name, first page
     }
 
     @Test
@@ -152,7 +150,7 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
         String limit = "1";
         String offset = "0";
         String query = "METADATA_INCORRECT LIKE \"1\"";
-        String requestUri = getUriConceptSchemes(AGENCY_1, CONCEPT_SCHEME_1_CODE, query, limit, offset);
+        String requestUri = getUriConceptSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, query, limit, offset);
         InputStream responseExpected = SrmRestInternalFacadeV10Test.class.getResourceAsStream("/responses/findConceptsSchemes.parameterIncorrect.xml");
 
         // Request and validate
@@ -164,8 +162,8 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
         testFindConceptsSchemes(AGENCY_1, null, null, null, null);
         testFindConceptsSchemes(AGENCY_1, null, "0", null, null);
         testFindConceptsSchemes(AGENCY_1, "2", "0", null, null);
-        testFindConceptsSchemes(AGENCY_1, "1", "0", QUERY_CONCEPT_SCHEME_ID_LIKE_1_NAME_LIKE_2, null);
-        testFindConceptsSchemes(AGENCY_1, "1", "0", QUERY_CONCEPT_SCHEME_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_CONCEPT_SCHEME_ID_DESC);
+        testFindConceptsSchemes(AGENCY_1, "1", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null);
+        testFindConceptsSchemes(AGENCY_1, "1", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC);
     }
 
     @Test
@@ -185,21 +183,21 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
 
     @Test
     public void testFindConceptsSchemesByAgencyAndResource() throws Exception {
-        testFindConceptsSchemes(AGENCY_1, CONCEPT_SCHEME_1_CODE, null, null, null, null);
-        testFindConceptsSchemes(WILDCARD, CONCEPT_SCHEME_1_CODE, null, null, null, null);
-        testFindConceptsSchemes(AGENCY_1, CONCEPT_SCHEME_1_CODE, "2", null, null, null);
-        testFindConceptsSchemes(WILDCARD, CONCEPT_SCHEME_1_CODE, "2", null, null, null);
-        testFindConceptsSchemes(AGENCY_1, CONCEPT_SCHEME_1_CODE, null, "0", null, null);
-        testFindConceptsSchemes(WILDCARD, CONCEPT_SCHEME_1_CODE, null, "0", null, null);
-        testFindConceptsSchemes(AGENCY_1, CONCEPT_SCHEME_1_CODE, "2", "0", null, null);
-        testFindConceptsSchemes(AGENCY_1, CONCEPT_SCHEME_1_CODE, "1", "0", QUERY_CONCEPT_SCHEME_ID_LIKE_1_NAME_LIKE_2, null);
-        testFindConceptsSchemes(WILDCARD, CONCEPT_SCHEME_1_CODE, "1", "0", QUERY_CONCEPT_SCHEME_ID_LIKE_1_NAME_LIKE_2, null);
-        testFindConceptsSchemes(WILDCARD, CONCEPT_SCHEME_1_CODE, "1", "0", QUERY_CONCEPT_SCHEME_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_CONCEPT_SCHEME_ID_DESC);
+        testFindConceptsSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, null, null, null, null);
+        testFindConceptsSchemes(WILDCARD, ITEM_SCHEME_1_CODE, null, null, null, null);
+        testFindConceptsSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, "2", null, null, null);
+        testFindConceptsSchemes(WILDCARD, ITEM_SCHEME_1_CODE, "2", null, null, null);
+        testFindConceptsSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, null, "0", null, null);
+        testFindConceptsSchemes(WILDCARD, ITEM_SCHEME_1_CODE, null, "0", null, null);
+        testFindConceptsSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, "2", "0", null, null);
+        testFindConceptsSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, "1", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null);
+        testFindConceptsSchemes(WILDCARD, ITEM_SCHEME_1_CODE, "1", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null);
+        testFindConceptsSchemes(WILDCARD, ITEM_SCHEME_1_CODE, "1", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC);
     }
 
     @Test
     public void testFindConceptsSchemesByAgencyAndResourceWithoutJaxbTransformation() throws Exception {
-        String requestUri = getUriConceptSchemes(AGENCY_1, CONCEPT_SCHEME_1_CODE, null, "4", null);
+        String requestUri = getUriConceptSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, null, "4", null);
         InputStream responseExpected = SrmRestInternalFacadeV10Test.class.getResourceAsStream("/responses/findConceptsSchemes.byAgencyResource.xml");
 
         // Request and validate
@@ -217,8 +215,8 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
         resetMocks();
 
         String agencyID = AGENCY_1;
-        String resourceID = CONCEPT_SCHEME_1_CODE;
-        String version = CONCEPT_SCHEME_1_VERSION_1;
+        String resourceID = ITEM_SCHEME_1_CODE;
+        String version = ITEM_SCHEME_1_VERSION_1;
         ConceptScheme conceptScheme = getSrmRestInternalFacadeClientXml().retrieveConceptScheme(agencyID, resourceID, version);
 
         // Validation
@@ -237,7 +235,7 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
     @Test
     public void testRetrieveConceptSchemeWithoutJaxbTransformation() throws Exception {
 
-        String requestUri = getUriConceptSchemes(AGENCY_1, CONCEPT_SCHEME_1_CODE, CONCEPT_SCHEME_1_VERSION_1);
+        String requestUri = getUriConceptSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1);
         InputStream responseExpected = SrmRestInternalFacadeV10Test.class.getResourceAsStream("/responses/retrieveConceptScheme.id1.xml");
 
         // Request and validate
@@ -247,7 +245,7 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
     @Test
     public void testRetrieveConceptSchemeWithoutJaxbTransformationWithXmlSufix() throws Exception {
 
-        String requestUri = getUriConceptSchemes(AGENCY_1, CONCEPT_SCHEME_1_CODE, CONCEPT_SCHEME_1_VERSION_1) + ".xml";
+        String requestUri = getUriConceptSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1) + ".xml";
         InputStream responseExpected = SrmRestInternalFacadeV10Test.class.getResourceAsStream("/responses/retrieveConceptScheme.id1.xml");
 
         // Request and validate
@@ -257,7 +255,7 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
     @Test
     public void testRetrieveConceptSchemeWithoutJaxbTransformationWithTypeParameter() throws Exception {
 
-        String requestUri = getUriConceptSchemes(AGENCY_1, CONCEPT_SCHEME_1_CODE, CONCEPT_SCHEME_1_VERSION_1) + "?_type=xml";
+        String requestUri = getUriConceptSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1) + "?_type=xml";
         InputStream responseExpected = SrmRestInternalFacadeV10Test.class.getResourceAsStream("/responses/retrieveConceptScheme.id1.xml");
 
         // Request and validate
@@ -268,7 +266,7 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
     public void testRetrieveConceptsSchemeErrorNotExists() throws Exception {
         String agencyID = AGENCY_1;
         String resourceID = NOT_EXISTS;
-        String version = CONCEPT_SCHEME_1_VERSION_1;
+        String version = ITEM_SCHEME_1_VERSION_1;
         try {
             getSrmRestInternalFacadeClientXml().retrieveConceptScheme(agencyID, resourceID, version);
         } catch (ServerWebApplicationException e) {
@@ -288,7 +286,7 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
 
     @Test
     public void testRetrieveConceptSchemeErrorNotExistsWithoutJaxbTransformation() throws Exception {
-        String requestUri = getUriConceptSchemes(AGENCY_1, NOT_EXISTS, CONCEPT_SCHEME_1_VERSION_1);
+        String requestUri = getUriConceptSchemes(AGENCY_1, NOT_EXISTS, ITEM_SCHEME_1_VERSION_1);
         InputStream responseExpected = SrmRestInternalFacadeV10Test.class.getResourceAsStream("/responses/retrieveConceptScheme.notFound.xml");
 
         // Request and validate
@@ -298,15 +296,15 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
     @Test
     public void testRetrieveConceptsSchemeErrorWildcard() throws Exception {
         {
-            String requestUri = getUriConceptSchemes(WILDCARD, CONCEPT_SCHEME_1_CODE, CONCEPT_SCHEME_1_VERSION_1);
+            String requestUri = getUriConceptSchemes(WILDCARD, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1);
             testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.NOT_FOUND, new ByteArrayInputStream(new byte[0]));
         }
         {
-            String requestUri = getUriConceptSchemes(AGENCY_1, WILDCARD, CONCEPT_SCHEME_1_VERSION_1);
+            String requestUri = getUriConceptSchemes(AGENCY_1, WILDCARD, ITEM_SCHEME_1_VERSION_1);
             testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.NOT_FOUND, new ByteArrayInputStream(new byte[0]));
         }
         {
-            String requestUri = getUriConceptSchemes(AGENCY_1, CONCEPT_SCHEME_1_CODE, WILDCARD);
+            String requestUri = getUriConceptSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD);
             testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.NOT_FOUND, new ByteArrayInputStream(new byte[0]));
         }
     }
@@ -318,37 +316,37 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
         testFindConcepts(WILDCARD, WILDCARD, WILDCARD, "10000", null, null, null); // without limits
         testFindConcepts(WILDCARD, WILDCARD, WILDCARD, null, "0", null, null); // without limits, first page
         testFindConcepts(WILDCARD, WILDCARD, WILDCARD, "2", "0", null, null); // with pagination
-        testFindConcepts(WILDCARD, WILDCARD, WILDCARD, "2", "0", QUERY_CONCEPT_ID_LIKE_1_NAME_LIKE_2, null); // query
-        testFindConcepts(WILDCARD, WILDCARD, WILDCARD, "2", "0", QUERY_CONCEPT_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_CONCEPT_ID_DESC); // query and order
+        testFindConcepts(WILDCARD, WILDCARD, WILDCARD, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query
+        testFindConcepts(WILDCARD, WILDCARD, WILDCARD, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query and order
 
         // agency
         testFindConcepts(AGENCY_1, WILDCARD, WILDCARD, null, null, null, null); // without limits
         testFindConcepts(AGENCY_1, WILDCARD, WILDCARD, "10000", null, null, null); // without limits
         testFindConcepts(AGENCY_1, WILDCARD, WILDCARD, null, "0", null, null); // without limits, first page
         testFindConcepts(AGENCY_1, WILDCARD, WILDCARD, "2", "0", null, null); // with pagination
-        testFindConcepts(AGENCY_1, WILDCARD, WILDCARD, "2", "0", QUERY_CONCEPT_ID_LIKE_1_NAME_LIKE_2, null); // query
-        testFindConcepts(AGENCY_1, WILDCARD, WILDCARD, "2", "0", QUERY_CONCEPT_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_CONCEPT_ID_DESC); // query and order
+        testFindConcepts(AGENCY_1, WILDCARD, WILDCARD, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query
+        testFindConcepts(AGENCY_1, WILDCARD, WILDCARD, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query and order
 
         // resource
-        testFindConcepts(AGENCY_1, CONCEPT_SCHEME_1_CODE, WILDCARD, null, null, null, null); // without limits
-        testFindConcepts(AGENCY_1, CONCEPT_SCHEME_1_CODE, WILDCARD, "10000", null, null, null); // without limits
-        testFindConcepts(WILDCARD, CONCEPT_SCHEME_1_CODE, WILDCARD, null, "0", null, null); // without limits, first page
-        testFindConcepts(AGENCY_1, CONCEPT_SCHEME_1_CODE, WILDCARD, "2", "0", null, null); // with pagination
-        testFindConcepts(WILDCARD, CONCEPT_SCHEME_1_CODE, WILDCARD, "2", "0", QUERY_CONCEPT_ID_LIKE_1_NAME_LIKE_2, null); // query
-        testFindConcepts(AGENCY_1, CONCEPT_SCHEME_1_CODE, WILDCARD, "2", "0", QUERY_CONCEPT_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_CONCEPT_ID_DESC); // query and order
+        testFindConcepts(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD, null, null, null, null); // without limits
+        testFindConcepts(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD, "10000", null, null, null); // without limits
+        testFindConcepts(WILDCARD, ITEM_SCHEME_1_CODE, WILDCARD, null, "0", null, null); // without limits, first page
+        testFindConcepts(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD, "2", "0", null, null); // with pagination
+        testFindConcepts(WILDCARD, ITEM_SCHEME_1_CODE, WILDCARD, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query
+        testFindConcepts(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query and order
 
         // version
-        testFindConcepts(AGENCY_1, CONCEPT_SCHEME_1_CODE, WILDCARD, null, null, null, null); // without limits
-        testFindConcepts(AGENCY_1, CONCEPT_SCHEME_1_CODE, WILDCARD, "10000", null, null, null); // without limits
-        testFindConcepts(WILDCARD, CONCEPT_SCHEME_1_CODE, WILDCARD, null, "0", null, null); // without limits, first page
-        testFindConcepts(AGENCY_1, CONCEPT_SCHEME_1_CODE, CONCEPT_SCHEME_1_VERSION_1, "2", "0", null, null); // with pagination
-        testFindConcepts(WILDCARD, CONCEPT_SCHEME_1_CODE, WILDCARD, "2", "0", QUERY_CONCEPT_ID_LIKE_1_NAME_LIKE_2, null); // query
-        testFindConcepts(AGENCY_1, CONCEPT_SCHEME_1_CODE, CONCEPT_SCHEME_1_VERSION_1, "2", "0", QUERY_CONCEPT_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_CONCEPT_ID_DESC); // query and order
+        testFindConcepts(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD, null, null, null, null); // without limits
+        testFindConcepts(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD, "10000", null, null, null); // without limits
+        testFindConcepts(WILDCARD, ITEM_SCHEME_1_CODE, WILDCARD, null, "0", null, null); // without limits, first page
+        testFindConcepts(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1, "2", "0", null, null); // with pagination
+        testFindConcepts(WILDCARD, ITEM_SCHEME_1_CODE, WILDCARD, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query
+        testFindConcepts(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query and order
     }
 
     @Test
     public void testFindConceptsWithoutJaxbTransformation() throws Exception {
-        String requestUri = getUriConcepts(WILDCARD, WILDCARD, WILDCARD, QUERY_CONCEPT_ID_LIKE_1_NAME_LIKE_2, "4", "4");
+        String requestUri = getUriConcepts(WILDCARD, WILDCARD, WILDCARD, QUERY_ID_LIKE_1_NAME_LIKE_2, "4", "4");
         InputStream responseExpected = SrmRestInternalFacadeV10Test.class.getResourceAsStream("/responses/findConcepts.xml");
 
         // Request and validate
@@ -360,9 +358,9 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
         resetMocks();
 
         String agencyID = AGENCY_1;
-        String resourceID = CONCEPT_SCHEME_1_CODE;
-        String version = CONCEPT_SCHEME_1_VERSION_1;
-        String conceptID = CONCEPT_1_CODE;
+        String resourceID = ITEM_SCHEME_1_CODE;
+        String version = ITEM_SCHEME_1_VERSION_1;
+        String conceptID = ITEM_1_CODE;
         Concept concept = getSrmRestInternalFacadeClientXml().retrieveConcept(agencyID, resourceID, version, conceptID);
 
         // Validation
@@ -379,7 +377,7 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
     @Test
     public void testRetrieveConceptWithoutJaxbTransformation() throws Exception {
 
-        String requestUri = getUriConcept(AGENCY_1, CONCEPT_SCHEME_1_CODE, CONCEPT_SCHEME_1_VERSION_1, CONCEPT_1_CODE);
+        String requestUri = getUriConcept(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1, ITEM_1_CODE);
         InputStream responseExpected = SrmRestInternalFacadeV10Test.class.getResourceAsStream("/responses/retrieveConcept.id1.xml");
 
         // Request and validate
@@ -389,7 +387,7 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
     @Test
     public void testRetrieveConceptWithoutJaxbTransformationWithXmlSufix() throws Exception {
 
-        String requestUri = getUriConcept(AGENCY_1, CONCEPT_SCHEME_1_CODE, CONCEPT_SCHEME_1_VERSION_1, CONCEPT_1_CODE) + ".xml";
+        String requestUri = getUriConcept(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1, ITEM_1_CODE) + ".xml";
         InputStream responseExpected = SrmRestInternalFacadeV10Test.class.getResourceAsStream("/responses/retrieveConcept.id1.xml");
 
         // Request and validate
@@ -399,7 +397,7 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
     @Test
     public void testRetrieveConceptWithoutJaxbTransformationWithTypeParameter() throws Exception {
 
-        String requestUri = getUriConcept(AGENCY_1, CONCEPT_SCHEME_1_CODE, CONCEPT_SCHEME_1_VERSION_1, CONCEPT_1_CODE) + "?_type=xml";
+        String requestUri = getUriConcept(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1, ITEM_1_CODE) + "?_type=xml";
         InputStream responseExpected = SrmRestInternalFacadeV10Test.class.getResourceAsStream("/responses/retrieveConcept.id1.xml");
 
         // Request and validate
@@ -409,8 +407,8 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
     @Test
     public void testRetrieveConceptErrorNotExists() throws Exception {
         String agencyID = AGENCY_1;
-        String resourceID = CONCEPT_SCHEME_1_CODE;
-        String version = CONCEPT_SCHEME_1_VERSION_1;
+        String resourceID = ITEM_SCHEME_1_CODE;
+        String version = ITEM_SCHEME_1_VERSION_1;
         String conceptID = NOT_EXISTS;
         try {
             getSrmRestInternalFacadeClientXml().retrieveConcept(agencyID, resourceID, version, conceptID);
@@ -432,7 +430,7 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
 
     @Test
     public void testRetrieveConceptErrorNotExistsWithoutJaxbTransformation() throws Exception {
-        String requestUri = getUriConcept(AGENCY_1, CONCEPT_SCHEME_1_CODE, CONCEPT_SCHEME_1_VERSION_1, NOT_EXISTS);
+        String requestUri = getUriConcept(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1, NOT_EXISTS);
         InputStream responseExpected = SrmRestInternalFacadeV10Test.class.getResourceAsStream("/responses/retrieveConcept.notFound.xml");
 
         // Request and validate
@@ -442,15 +440,15 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
     @Test
     public void testRetrieveConceptErrorWildcard() throws Exception {
         {
-            String requestUri = getUriConcept(WILDCARD, CONCEPT_SCHEME_1_CODE, CONCEPT_SCHEME_1_VERSION_1, CONCEPT_1_CODE);
+            String requestUri = getUriConcept(WILDCARD, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1, ITEM_1_CODE);
             testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.NOT_FOUND, new ByteArrayInputStream(new byte[0]));
         }
         {
-            String requestUri = getUriConcept(AGENCY_1, WILDCARD, CONCEPT_SCHEME_1_VERSION_1, CONCEPT_1_CODE);
+            String requestUri = getUriConcept(AGENCY_1, WILDCARD, ITEM_SCHEME_1_VERSION_1, ITEM_1_CODE);
             testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.NOT_FOUND, new ByteArrayInputStream(new byte[0]));
         }
         {
-            String requestUri = getUriConcept(AGENCY_1, CONCEPT_SCHEME_1_CODE, WILDCARD, CONCEPT_1_CODE);
+            String requestUri = getUriConcept(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD, ITEM_1_CODE);
             testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.NOT_FOUND, new ByteArrayInputStream(new byte[0]));
         }
     }
@@ -527,9 +525,9 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
                     if (NOT_EXISTS.equals(conditionalCriteriaAgencyID.getFirstOperant()) || NOT_EXISTS.equals(conditionalCriteriaResourceID.getFirstOperant())
                             || NOT_EXISTS.equals(conditionalCriteriaVersion.getFirstOperant())) {
                         conceptSchemeVersion = null;
-                    } else if (AGENCY_1.equals(conditionalCriteriaAgencyID.getFirstOperant()) && CONCEPT_SCHEME_1_CODE.equals(conditionalCriteriaResourceID.getFirstOperant())
-                            && CONCEPT_SCHEME_1_VERSION_1.equals(conditionalCriteriaVersion.getFirstOperant())) {
-                        conceptSchemeVersion = SrmCoreMocks.mockConceptSchemeWithConcepts(AGENCY_1, CONCEPT_SCHEME_1_CODE, CONCEPT_SCHEME_1_VERSION_1);
+                    } else if (AGENCY_1.equals(conditionalCriteriaAgencyID.getFirstOperant()) && ITEM_SCHEME_1_CODE.equals(conditionalCriteriaResourceID.getFirstOperant())
+                            && ITEM_SCHEME_1_VERSION_1.equals(conditionalCriteriaVersion.getFirstOperant())) {
+                        conceptSchemeVersion = SrmCoreMocks.mockConceptSchemeWithConcepts(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1);
                     } else {
                         fail();
                     }
@@ -541,10 +539,10 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
                 } else {
                     // any
                     List<ConceptSchemeVersionMetamac> conceptSchemes = new ArrayList<ConceptSchemeVersionMetamac>();
-                    conceptSchemes.add(SrmCoreMocks.mockConceptSchemeWithConcepts(AGENCY_1, CONCEPT_SCHEME_1_CODE, CONCEPT_SCHEME_1_VERSION_1));
-                    conceptSchemes.add(SrmCoreMocks.mockConceptSchemeWithConcepts(AGENCY_1, CONCEPT_SCHEME_2_CODE, CONCEPT_SCHEME_2_VERSION_1));
-                    conceptSchemes.add(SrmCoreMocks.mockConceptSchemeWithConcepts(AGENCY_1, CONCEPT_SCHEME_2_CODE, CONCEPT_SCHEME_2_VERSION_2));
-                    conceptSchemes.add(SrmCoreMocks.mockConceptSchemeWithConcepts(AGENCY_2, CONCEPT_SCHEME_3_CODE, CONCEPT_SCHEME_3_VERSION_1));
+                    conceptSchemes.add(SrmCoreMocks.mockConceptSchemeWithConcepts(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1));
+                    conceptSchemes.add(SrmCoreMocks.mockConceptSchemeWithConcepts(AGENCY_1, ITEM_SCHEME_2_CODE, ITEM_SCHEME_2_VERSION_1));
+                    conceptSchemes.add(SrmCoreMocks.mockConceptSchemeWithConcepts(AGENCY_1, ITEM_SCHEME_2_CODE, ITEM_SCHEME_2_VERSION_2));
+                    conceptSchemes.add(SrmCoreMocks.mockConceptSchemeWithConcepts(AGENCY_2, ITEM_SCHEME_3_CODE, ITEM_SCHEME_3_VERSION_1));
                     return new PagedResult<ConceptSchemeVersionMetamac>(conceptSchemes, conceptSchemes.size(), conceptSchemes.size(), conceptSchemes.size(), conceptSchemes.size() * 10, 0);
                 }
             };
@@ -572,10 +570,10 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
                     if (NOT_EXISTS.equals(conditionalCriteriaAgencyID.getFirstOperant()) || NOT_EXISTS.equals(conditionalCriteriaResourceID.getFirstOperant())
                             || NOT_EXISTS.equals(conditionalCriteriaVersion.getFirstOperant()) || NOT_EXISTS.equals(conditionalCriteriaConcept.getFirstOperant())) {
                         concept = null;
-                    } else if (AGENCY_1.equals(conditionalCriteriaAgencyID.getFirstOperant()) && CONCEPT_SCHEME_1_CODE.equals(conditionalCriteriaResourceID.getFirstOperant())
-                            && CONCEPT_SCHEME_1_VERSION_1.equals(conditionalCriteriaVersion.getFirstOperant()) && CONCEPT_1_CODE.equals(conditionalCriteriaConcept.getFirstOperant())) {
-                        ConceptSchemeVersionMetamac conceptScheme1 = SrmCoreMocks.mockConceptScheme(AGENCY_1, CONCEPT_SCHEME_1_CODE, CONCEPT_SCHEME_1_VERSION_1);
-                        concept = SrmCoreMocks.mockConcept(CONCEPT_1_CODE, conceptScheme1, null);
+                    } else if (AGENCY_1.equals(conditionalCriteriaAgencyID.getFirstOperant()) && ITEM_SCHEME_1_CODE.equals(conditionalCriteriaResourceID.getFirstOperant())
+                            && ITEM_SCHEME_1_VERSION_1.equals(conditionalCriteriaVersion.getFirstOperant()) && ITEM_1_CODE.equals(conditionalCriteriaConcept.getFirstOperant())) {
+                        ConceptSchemeVersionMetamac conceptScheme1 = SrmCoreMocks.mockConceptScheme(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1);
+                        concept = SrmCoreMocks.mockConcept(ITEM_1_CODE, conceptScheme1, null);
                     } else {
                         fail();
                     }
@@ -586,14 +584,14 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
                     return new PagedResult<ConceptMetamac>(concepts, 0, concepts.size(), concepts.size());
                 } else {
                     // any
-                    ConceptSchemeVersionMetamac conceptScheme1 = SrmCoreMocks.mockConceptScheme(AGENCY_1, CONCEPT_SCHEME_1_CODE, CONCEPT_SCHEME_1_VERSION_1);
-                    ConceptSchemeVersionMetamac conceptScheme2 = SrmCoreMocks.mockConceptScheme(AGENCY_1, CONCEPT_SCHEME_2_CODE, CONCEPT_SCHEME_2_VERSION_1);
+                    ConceptSchemeVersionMetamac conceptScheme1 = SrmCoreMocks.mockConceptScheme(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1);
+                    ConceptSchemeVersionMetamac conceptScheme2 = SrmCoreMocks.mockConceptScheme(AGENCY_1, ITEM_SCHEME_2_CODE, ITEM_SCHEME_2_VERSION_1);
 
                     List<ConceptMetamac> concepts = new ArrayList<ConceptMetamac>();
-                    concepts.add(SrmCoreMocks.mockConcept(CONCEPT_1_CODE, conceptScheme1, null));
-                    concepts.add(SrmCoreMocks.mockConcept(CONCEPT_2_CODE, conceptScheme1, null));
-                    concepts.add(SrmCoreMocks.mockConcept(CONCEPT_3_CODE, conceptScheme1, null));
-                    concepts.add(SrmCoreMocks.mockConcept(CONCEPT_1_CODE, conceptScheme2, null));
+                    concepts.add(SrmCoreMocks.mockConcept(ITEM_1_CODE, conceptScheme1, null));
+                    concepts.add(SrmCoreMocks.mockConcept(ITEM_2_CODE, conceptScheme1, null));
+                    concepts.add(SrmCoreMocks.mockConcept(ITEM_3_CODE, conceptScheme1, null));
+                    concepts.add(SrmCoreMocks.mockConcept(ITEM_1_CODE, conceptScheme2, null));
 
                     return new PagedResult<ConceptMetamac>(concepts, concepts.size(), concepts.size(), concepts.size(), concepts.size() * 10, 0);
                 }

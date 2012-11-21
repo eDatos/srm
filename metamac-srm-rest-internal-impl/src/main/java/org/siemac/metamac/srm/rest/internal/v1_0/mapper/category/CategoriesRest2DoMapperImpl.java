@@ -1,0 +1,134 @@
+package org.siemac.metamac.srm.rest.internal.v1_0.mapper.category;
+
+import org.fornax.cartridges.sculptor.framework.domain.Property;
+import org.siemac.metamac.rest.common.query.domain.MetamacRestOrder;
+import org.siemac.metamac.rest.common.query.domain.MetamacRestQueryPropertyRestriction;
+import org.siemac.metamac.rest.common.query.domain.SculptorPropertyCriteria;
+import org.siemac.metamac.rest.exception.RestException;
+import org.siemac.metamac.rest.search.criteria.mapper.RestCriteria2SculptorCriteria;
+import org.siemac.metamac.rest.search.criteria.mapper.RestCriteria2SculptorCriteria.CriteriaCallback;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.CategoryCriteriaPropertyOrder;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.CategoryCriteriaPropertyRestriction;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.CategorySchemeCriteriaPropertyOrder;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.CategorySchemeCriteriaPropertyRestriction;
+import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
+import org.siemac.metamac.srm.core.category.domain.CategoryMetamacProperties;
+import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
+import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamacProperties;
+import org.siemac.metamac.srm.rest.internal.v1_0.mapper.base.BaseRest2DoMapperV10Impl;
+import org.springframework.stereotype.Component;
+
+@Component
+public class CategoriesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements CategoriesRest2DoMapper {
+
+    private RestCriteria2SculptorCriteria<CategorySchemeVersionMetamac> categorySchemeCriteriaMapper = null;
+    private RestCriteria2SculptorCriteria<CategoryMetamac>              categoryCriteriaMapper       = null;
+
+    public CategoriesRest2DoMapperImpl() {
+        categorySchemeCriteriaMapper = new RestCriteria2SculptorCriteria<CategorySchemeVersionMetamac>(CategorySchemeVersionMetamac.class, CategorySchemeCriteriaPropertyOrder.class,
+                CategorySchemeCriteriaPropertyRestriction.class, new CategorySchemeCriteriaCallback());
+        categoryCriteriaMapper = new RestCriteria2SculptorCriteria<CategoryMetamac>(CategoryMetamac.class, CategoryCriteriaPropertyOrder.class, CategoryCriteriaPropertyRestriction.class,
+                new CategoryCriteriaCallback());
+    }
+
+    @Override
+    public RestCriteria2SculptorCriteria<CategorySchemeVersionMetamac> getCategorySchemeCriteriaMapper() {
+        return categorySchemeCriteriaMapper;
+    }
+
+    @Override
+    public RestCriteria2SculptorCriteria<CategoryMetamac> getCategoryCriteriaMapper() {
+        return categoryCriteriaMapper;
+    }
+
+    private class CategorySchemeCriteriaCallback implements CriteriaCallback {
+
+        @Override
+        public SculptorPropertyCriteria retrieveProperty(MetamacRestQueryPropertyRestriction propertyRestriction) throws RestException {
+            CategorySchemeCriteriaPropertyRestriction propertyNameCriteria = CategorySchemeCriteriaPropertyRestriction.fromValue(propertyRestriction.getPropertyName());
+            switch (propertyNameCriteria) {
+                case ID:
+                    return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.maintainableArtefact().code(), propertyRestriction.getValue());
+                case URN:
+                    return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.maintainableArtefact().urn(), propertyRestriction.getValue());
+                case NAME:
+                    return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.maintainableArtefact().name().texts().label(), propertyRestriction.getValue());
+                case DESCRIPTION:
+                    return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.maintainableArtefact().description().texts().label(), propertyRestriction.getValue());
+                case VALID_FROM:
+                    return getSculptorPropertyCriteriaDate(propertyRestriction, CategorySchemeVersionMetamacProperties.maintainableArtefact().validFrom());
+                case VALID_TO:
+                    return getSculptorPropertyCriteriaDate(propertyRestriction, CategorySchemeVersionMetamacProperties.maintainableArtefact().validTo());
+                case PROC_STATUS:
+                    return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.lifeCycleMetadata().procStatus(),
+                            propertyRestrictionValueToProcStatusEnum(propertyRestriction.getValue()));
+                case INTERNAL_PUBLICATION_DATE:
+                    return getSculptorPropertyCriteriaDate(propertyRestriction, CategorySchemeVersionMetamacProperties.lifeCycleMetadata().internalPublicationDate());
+                case INTERNAL_PUBLICATION_USER:
+                    return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.lifeCycleMetadata().internalPublicationUser(), propertyRestriction.getValue());
+                case EXTERNAL_PUBLICATION_DATE:
+                    return getSculptorPropertyCriteriaDate(propertyRestriction, CategorySchemeVersionMetamacProperties.lifeCycleMetadata().externalPublicationDate());
+                case EXTERNAL_PUBLICATION_USER:
+                    return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.lifeCycleMetadata().externalPublicationUser(), propertyRestriction.getValue());
+                default:
+                    throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
+            }
+        }
+
+        @SuppressWarnings("rawtypes")
+        @Override
+        public Property retrievePropertyOrder(MetamacRestOrder order) throws RestException {
+            CategorySchemeCriteriaPropertyOrder propertyNameCriteria = CategorySchemeCriteriaPropertyOrder.fromValue(order.getPropertyName());
+            switch (propertyNameCriteria) {
+                case ID:
+                    return CategorySchemeVersionMetamacProperties.maintainableArtefact().code();
+                default:
+                    throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
+            }
+        }
+
+        @SuppressWarnings("rawtypes")
+        @Override
+        public Property retrievePropertyOrderDefault() throws RestException {
+            return CategorySchemeVersionMetamacProperties.maintainableArtefact().code();
+        }
+    }
+
+    private class CategoryCriteriaCallback implements CriteriaCallback {
+
+        @Override
+        public SculptorPropertyCriteria retrieveProperty(MetamacRestQueryPropertyRestriction propertyRestriction) throws RestException {
+            CategoryCriteriaPropertyRestriction propertyNameCriteria = CategoryCriteriaPropertyRestriction.fromValue(propertyRestriction.getPropertyName());
+            switch (propertyNameCriteria) {
+                case ID:
+                    return new SculptorPropertyCriteria(CategoryMetamacProperties.nameableArtefact().code(), propertyRestriction.getValue());
+                case URN:
+                    return new SculptorPropertyCriteria(CategoryMetamacProperties.nameableArtefact().urn(), propertyRestriction.getValue());
+                case NAME:
+                    return new SculptorPropertyCriteria(CategoryMetamacProperties.nameableArtefact().name().texts().label(), propertyRestriction.getValue());
+                case DESCRIPTION:
+                    return new SculptorPropertyCriteria(CategoryMetamacProperties.nameableArtefact().description().texts().label(), propertyRestriction.getValue());
+                default:
+                    throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
+            }
+        }
+
+        @SuppressWarnings("rawtypes")
+        @Override
+        public Property retrievePropertyOrder(MetamacRestOrder order) throws RestException {
+            CategoryCriteriaPropertyOrder propertyNameCriteria = CategoryCriteriaPropertyOrder.fromValue(order.getPropertyName());
+            switch (propertyNameCriteria) {
+                case ID:
+                    return CategoryMetamacProperties.nameableArtefact().code();
+                default:
+                    throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
+            }
+        }
+
+        @SuppressWarnings("rawtypes")
+        @Override
+        public Property retrievePropertyOrderDefault() throws RestException {
+            return CategoryMetamacProperties.nameableArtefact().code();
+        }
+    }
+}
