@@ -147,9 +147,23 @@ public class ConceptsSecurityUtils extends SecurityUtils {
             throwExceptionIfOperationNotAllowed(ctx);
         }
     }
+    
+    public static void canAddRoleConcept(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeMetamac) throws MetamacException {
+        if (!SharedConceptsSecurityUtils.canAddRoleConcept(getMetamacPrincipal(ctx), conceptSchemeMetamac.getLifeCycleMetadata().getProcStatus(), conceptSchemeMetamac.getType(),
+                getOperationCode(conceptSchemeMetamac))) {
+            throwExceptionIfOperationNotAllowed(ctx);
+        }
+    }
 
     public static void canDeleteRelatedConcept(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeMetamac) throws MetamacException {
         if (!SharedConceptsSecurityUtils.canDeleteRelatedConcept(getMetamacPrincipal(ctx), conceptSchemeMetamac.getLifeCycleMetadata().getProcStatus(), conceptSchemeMetamac.getType(),
+                getOperationCode(conceptSchemeMetamac))) {
+            throwExceptionIfOperationNotAllowed(ctx);
+        }
+    }
+    
+    public static void canDeleteRoleConcept(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeMetamac) throws MetamacException {
+        if (!SharedConceptsSecurityUtils.canDeleteRoleConcept(getMetamacPrincipal(ctx), conceptSchemeMetamac.getLifeCycleMetadata().getProcStatus(), conceptSchemeMetamac.getType(),
                 getOperationCode(conceptSchemeMetamac))) {
             throwExceptionIfOperationNotAllowed(ctx);
         }

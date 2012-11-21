@@ -1233,6 +1233,19 @@ public class SrmCoreServiceFacadeConceptsSecurityTest extends SrmBaseTest {
             }
         }
     }
+    
+    @Test
+    public void testAddConceptRole() throws Exception {
+        srmCoreServiceFacade.addRoleConcept(getServiceContextJefeNormalizacion(), CONCEPT_SCHEME_1_V2_CONCEPT_1, CONCEPT_SCHEME_13_V1_CONCEPT_2);
+        // Note: no more tests because security is same that update concept
+    }
+
+    @Test
+    public void testDeleteConceptRole() throws Exception {
+        srmCoreServiceFacade.deleteRoleConcept(getServiceContextJefeNormalizacion(), CONCEPT_SCHEME_1_V2_CONCEPT_1, CONCEPT_SCHEME_13_V1_CONCEPT_1);
+        // Note: no more tests because security is same that update concept
+    }
+
 
     @Test
     public void testRetrieveRelatedConceptsRoles() throws Exception {

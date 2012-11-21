@@ -166,7 +166,15 @@ public class SharedConceptsSecurityUtils extends SharedItemsSecurityUtils {
         return canModifyConceptFromConceptScheme(metamacPrincipal, procStatus, type, operationCode);
     }
 
+    public static boolean canAddRoleConcept(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode) {
+        return canModifyConceptFromConceptScheme(metamacPrincipal, procStatus, type, operationCode);
+    }
+
     public static boolean canDeleteRelatedConcept(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode) {
+        return canModifyConceptFromConceptScheme(metamacPrincipal, procStatus, type, operationCode);
+    }
+
+    public static boolean canDeleteRoleConcept(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode) {
         return canModifyConceptFromConceptScheme(metamacPrincipal, procStatus, type, operationCode);
     }
 

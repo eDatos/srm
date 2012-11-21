@@ -1537,15 +1537,23 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public void addRoleConcept(ServiceContext ctx, String urn, String conceptRoleUrn) throws MetamacException {
-        // TODO Security ¿sobre los dos esquemas de concepto?
 
+        // Security in concept scheme where relation will be added
+        ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptsMetamacService().retrieveConceptSchemeByConceptUrn(ctx, urn);
+        ConceptsSecurityUtils.canAddRoleConcept(ctx, conceptSchemeVersion);
+
+        // Add relation
         getConceptsMetamacService().addRoleConcept(ctx, urn, conceptRoleUrn);
     }
 
     @Override
     public void deleteRoleConcept(ServiceContext ctx, String urn, String conceptRoleUrn) throws MetamacException {
-        // TODO Security ¿sobre los dos esquemas de concepto?
 
+        // Security in concept scheme where relation will be deleted
+        ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptsMetamacService().retrieveConceptSchemeByConceptUrn(ctx, urn);
+        ConceptsSecurityUtils.canDeleteRoleConcept(ctx, conceptSchemeVersion);
+
+        // Delete relation
         getConceptsMetamacService().deleteRoleConcept(ctx, urn, conceptRoleUrn);
     }
 
