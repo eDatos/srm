@@ -1,7 +1,9 @@
 package org.siemac.metamac.srm.rest.internal.v1_0.utils;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
@@ -10,6 +12,7 @@ import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstan
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.QUERY_ID_LIKE_1;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestTestConstants.QUERY_ID_LIKE_1_NAME_LIKE_2;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,12 +21,19 @@ import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBui
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.mockito.ArgumentCaptor;
+import org.siemac.metamac.common.test.utils.MetamacAsserts;
 import org.siemac.metamac.rest.common.test.utils.MetamacRestAsserts;
 import org.siemac.metamac.rest.common.v1_0.domain.LocalisedString;
 import org.siemac.metamac.rest.common.v1_0.domain.Resource;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.Category;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.CategoryScheme;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.Concept;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptScheme;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemes;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.Concepts;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.Urns;
+import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
+import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacProperties;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
@@ -31,6 +41,10 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacPro
 import org.siemac.metamac.srm.core.concept.serviceapi.ConceptsMetamacService;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.Item;
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
+import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
+import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.CategoryType;
 import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.ConceptType;
 
 public class SrmRestAsserts extends MetamacRestAsserts {
@@ -69,31 +83,150 @@ public class SrmRestAsserts extends MetamacRestAsserts {
         MetamacRestAsserts.assertEqualsPagingParameter(buildExpectedPagingParameter(offset, limit), pagingParameter.getValue());
     }
 
-    public static void assertEqualsResource(ConceptSchemeVersionMetamac source, Resource target) {
+    public static void assertEqualsResource(ConceptSchemeVersionMetamac expected, Resource actual) {
+        MaintainableArtefact maintainableArtefact = expected.getMaintainableArtefact();
+        String expectedSelfLink = "http://data.istac.es/apis/srm/v1.0/conceptschemes/" + maintainableArtefact.getMaintainer().getIdAsMaintainer() + "/" + maintainableArtefact.getCode() + "/"
+                + maintainableArtefact.getVersionLogic();
+
+        assertEqualsResource(expected, RestInternalConstants.KIND_CONCEPT_SCHEME, expectedSelfLink, actual);
+    }
+
+    public static void assertEqualsResource(CategorySchemeVersionMetamac expected, Resource actual) {
+        MaintainableArtefact maintainableArtefact = expected.getMaintainableArtefact();
+        String expectedSelfLink = "http://data.istac.es/apis/srm/v1.0/categoryschemes/" + maintainableArtefact.getMaintainer().getIdAsMaintainer() + "/" + maintainableArtefact.getCode() + "/"
+                + maintainableArtefact.getVersionLogic();
+
+        assertEqualsResource(expected, RestInternalConstants.KIND_CATEGORY_SCHEME, expectedSelfLink, actual);
+    }
+
+    public static void assertEqualsResource(ConceptMetamac expected, Resource actual) {
+        MaintainableArtefact maintainableArtefact = expected.getItemSchemeVersion().getMaintainableArtefact();
+        String expectedSelfLink = "http://data.istac.es/apis/srm/v1.0/conceptschemes/" + maintainableArtefact.getMaintainer().getIdAsMaintainer() + "/" + maintainableArtefact.getCode() + "/"
+                + maintainableArtefact.getVersionLogic() + "/concepts/" + expected.getNameableArtefact().getCode();
+        assertEqualsResource(expected, RestInternalConstants.KIND_CONCEPT, expectedSelfLink, actual);
+    }
+
+    public static void assertEqualsResource(CategoryMetamac expected, Resource actual) {
+        MaintainableArtefact maintainableArtefact = expected.getItemSchemeVersion().getMaintainableArtefact();
+        String expectedSelfLink = "http://data.istac.es/apis/srm/v1.0/categoryschemes/" + maintainableArtefact.getMaintainer().getIdAsMaintainer() + "/" + maintainableArtefact.getCode() + "/"
+                + maintainableArtefact.getVersionLogic() + "/categories/" + expected.getNameableArtefact().getCode();
+        assertEqualsResource(expected, RestInternalConstants.KIND_CATEGORY, expectedSelfLink, actual);
+    }
+
+    public static void assertEqualsConceptScheme(ConceptSchemeVersionMetamac source, ConceptScheme target) {
         assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEME, target.getKind());
-        assertEquals(source.getMaintainableArtefact().getCode(), target.getId());
-        assertEquals(source.getMaintainableArtefact().getUrn(), target.getUrn());
+        String parentLink = "http://data.istac.es/apis/srm/v1.0/conceptschemes";
+        String selfLink = parentLink + "/" + source.getMaintainableArtefact().getMaintainer().getIdAsMaintainer() + "/" + source.getMaintainableArtefact().getCode() + "/"
+                + source.getMaintainableArtefact().getVersionLogic();
         assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEME, target.getSelfLink().getKind());
-        assertEquals("http://data.istac.es/apis/srm/v1.0/conceptschemes/" + source.getMaintainableArtefact().getMaintainer().getIdAsMaintainer() + "/" + source.getMaintainableArtefact().getCode()
-                + "/" + source.getMaintainableArtefact().getVersionLogic(), target.getSelfLink().getHref());
-        assertEqualsInternationalString(source.getMaintainableArtefact().getName(), target.getTitle());
-    }
+        assertEquals(selfLink, target.getSelfLink().getHref());
+        assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEMES, target.getParentLink().getKind());
+        assertEquals(parentLink, target.getParentLink().getHref());
+        assertEquals(source.getType().toString(), target.getType().toString());
+        MetamacAsserts.assertEqualsNullability(source.getRelatedOperation(), target.getRelatedOperation());
+        if (source.getRelatedOperation() != null) {
+            assertEquals(source.getRelatedOperation().getUrn(), target.getRelatedOperation().getUrn());
+        }
+        assertEquals(source.getMaintainableArtefact().getReplaceToVersion(), target.getReplaceToVersion());
+        assertEquals(BigInteger.ONE, target.getChildLinks().getTotal());
+        assertEquals(RestInternalConstants.KIND_CONCEPTS, target.getChildLinks().getChildLinks().get(0).getKind());
+        assertEquals(selfLink + "/concepts", target.getChildLinks().getChildLinks().get(0).getHref());
 
-    public static void assertEqualsResource(ConceptMetamac source, Resource target) {
-        assertEquals(RestInternalConstants.KIND_CONCEPT, target.getKind());
-        assertEquals(source.getNameableArtefact().getCode(), target.getId());
-        assertEquals(source.getNameableArtefact().getUrn(), target.getUrn());
-        assertEquals(RestInternalConstants.KIND_CONCEPT, target.getSelfLink().getKind());
-        assertEquals("http://data.istac.es/apis/srm/v1.0/conceptschemes/" + source.getItemSchemeVersion().getMaintainableArtefact().getMaintainer().getIdAsMaintainer() + "/"
-                + source.getItemSchemeVersion().getMaintainableArtefact().getCode() + "/" + source.getItemSchemeVersion().getMaintainableArtefact().getVersionLogic() + "/concepts/"
-                + source.getNameableArtefact().getCode(), target.getSelfLink().getHref());
-        assertEqualsInternationalString(source.getNameableArtefact().getName(), target.getTitle());
-    }
+        // Concepts (SDMX type)
+        assertEquals(source.getItems().size(), target.getConcepts().size());
+        for (int i = 0; i < source.getItems().size(); i++) {
+            assertTrue(target.getConcepts().get(i) instanceof ConceptType);
+            assertFalse(target.getConcepts().get(i) instanceof Concept);
 
-    public static void assertEqualsConcept(ConceptMetamac source, ConceptType target) {
-        assertEquals(source.getNameableArtefact().getCode(), target.getId());
-        assertEquals(source.getNameableArtefact().getUrn(), target.getUrn());
+            assertEqualsConceptSdmx((ConceptMetamac) source.getItems().get(i), target.getConcepts().get(i));
+        }
+    }
+    public static void assertEqualsConceptSdmx(ConceptMetamac source, ConceptType target) {
         // Only test some metadata because SDMX metadata is tested in SDMX project
+        // Test something...
+        assertEquals(source.getNameableArtefact().getCode(), target.getId());
+        assertEquals(source.getNameableArtefact().getUrn(), target.getUrn());
+        assertEqualsNullability(source.getParent(), target.getParent());
+        if (source.getParent() != null) {
+            assertEquals(source.getParent().getNameableArtefact().getCode(), target.getParent().getRef().getId());
+        }
+    }
+
+    public static void assertEqualsConcept(ConceptMetamac source, Concept target) {
+
+        assertEquals(RestInternalConstants.KIND_CONCEPT, target.getKind());
+        String parentLink = "http://data.istac.es/apis/srm/v1.0/conceptschemes" + "/" + source.getItemSchemeVersion().getMaintainableArtefact().getMaintainer().getIdAsMaintainer() + "/"
+                + source.getItemSchemeVersion().getMaintainableArtefact().getCode() + "/" + source.getItemSchemeVersion().getMaintainableArtefact().getVersionLogic() + "/concepts";
+        String selfLink = parentLink + "/" + source.getNameableArtefact().getCode();
+        assertEquals(RestInternalConstants.KIND_CONCEPT, target.getSelfLink().getKind());
+        assertEquals(selfLink, target.getSelfLink().getHref());
+        assertEquals(RestInternalConstants.KIND_CONCEPTS, target.getParentLink().getKind());
+        assertEquals(parentLink, target.getParentLink().getHref());
+        assertNull(target.getChildLinks());
+
+        assertEqualsInternationalStringNotNull(source.getPluralName(), target.getPluralName());
+        assertEqualsInternationalStringNotNull(source.getAcronym(), target.getAcronym());
+        assertEqualsInternationalStringNotNull(source.getDescriptionSource(), target.getDescriptionSource());
+        assertEqualsInternationalStringNotNull(source.getContext(), target.getContext());
+        assertEqualsInternationalStringNotNull(source.getDocMethod(), target.getDocMethod());
+        assertEqualsInternationalStringNotNull(source.getDerivation(), target.getDerivation());
+        assertEqualsInternationalStringNotNull(source.getLegalActs(), target.getLegalActs());
+
+        assertEquals(source.getType().getIdentifier(), target.getType().getId());
+        assertEqualsInternationalStringNotNull(source.getType().getDescription(), target.getType().getTitle());
+
+        assertEqualsUrnsNotNull(source.getRoleConcepts(), target.getRoles());
+        assertEqualsUrnsNotNull(source.getRelatedConcepts(), target.getRelatedConcepts());
+        assertEquals(source.getConceptExtends().getNameableArtefact().getUrn(), target.getExtends());
+
+        // Sdmx
+        assertEqualsConceptSdmx(source, target);
+    }
+
+    public static void assertEqualsCategoryScheme(CategorySchemeVersionMetamac source, CategoryScheme target) {
+        assertEquals(RestInternalConstants.KIND_CATEGORY_SCHEME, target.getKind());
+        String parentLink = "http://data.istac.es/apis/srm/v1.0/categoryschemes";
+        String selfLink = parentLink + "/" + source.getMaintainableArtefact().getMaintainer().getIdAsMaintainer() + "/" + source.getMaintainableArtefact().getCode() + "/"
+                + source.getMaintainableArtefact().getVersionLogic();
+        assertEquals(RestInternalConstants.KIND_CATEGORY_SCHEME, target.getSelfLink().getKind());
+        assertEquals(selfLink, target.getSelfLink().getHref());
+        assertEquals(RestInternalConstants.KIND_CATEGORY_SCHEMES, target.getParentLink().getKind());
+        assertEquals(parentLink, target.getParentLink().getHref());
+        assertEquals(source.getMaintainableArtefact().getReplaceToVersion(), target.getReplaceToVersion());
+        assertEquals(BigInteger.ONE, target.getChildLinks().getTotal());
+        assertEquals(RestInternalConstants.KIND_CATEGORIES, target.getChildLinks().getChildLinks().get(0).getKind());
+        assertEquals(selfLink + "/categories", target.getChildLinks().getChildLinks().get(0).getHref());
+
+        // Categories (SDMX type)
+        assertEqualsCategoriesSdmxHierarchy(source.getItemsFirstLevel(), target.getCategories());  // IMPORTANT! first level, because categories are printed in hierarchy
+    }
+
+    public static void assertEqualsCategorySdmx(CategoryMetamac source, CategoryType target) {
+        // Only test some metadata because SDMX metadata is tested in SDMX project
+        // Test something...
+        assertEquals(source.getNameableArtefact().getCode(), target.getId());
+        assertEquals(source.getNameableArtefact().getUrn(), target.getUrn());
+        // TODO category parent
+        // assertEqualsNullability(source.getParent(), target.getParent());
+        // if (source.getParent() != null) {
+        // assertEquals(source.getParent().getNameableArtefact().getCode(), target.getParent().getRef().getId());
+        // }
+    }
+
+    public static void assertEqualsCategory(CategoryMetamac source, Category target) {
+
+        assertEquals(RestInternalConstants.KIND_CATEGORY, target.getKind());
+        String parentLink = "http://data.istac.es/apis/srm/v1.0/categoryschemes" + "/" + source.getItemSchemeVersion().getMaintainableArtefact().getMaintainer().getIdAsMaintainer() + "/"
+                + source.getItemSchemeVersion().getMaintainableArtefact().getCode() + "/" + source.getItemSchemeVersion().getMaintainableArtefact().getVersionLogic() + "/categories";
+        String selfLink = parentLink + "/" + source.getNameableArtefact().getCode();
+        assertEquals(RestInternalConstants.KIND_CATEGORY, target.getSelfLink().getKind());
+        assertEquals(selfLink, target.getSelfLink().getHref());
+        assertEquals(RestInternalConstants.KIND_CATEGORIES, target.getParentLink().getKind());
+        assertEquals(parentLink, target.getParentLink().getHref());
+        assertNull(target.getChildLinks());
+
+        // Sdmx
+        assertEqualsCategorySdmx(source, target);
     }
 
     public static void assertEqualsInternationalStringNotNull(org.siemac.metamac.core.common.ent.domain.InternationalString expecteds,
@@ -235,5 +368,37 @@ public class SrmRestAsserts extends MetamacRestAsserts {
         }
         int endRow = startRow + maximumResultSize;
         return PagingParameter.rowAccess(startRow, endRow, false);
+    }
+
+    private static void assertEqualsResource(ItemSchemeVersion expected, String expectedKind, String expectedSelfLink, Resource actual) {
+        assertEquals(expectedKind, actual.getKind());
+        assertEquals(expected.getMaintainableArtefact().getCode(), actual.getId());
+        assertEquals(expected.getMaintainableArtefact().getUrn(), actual.getUrn());
+        assertEquals(expectedKind, actual.getSelfLink().getKind());
+        assertEquals(expectedSelfLink, actual.getSelfLink().getHref());
+        assertEqualsInternationalString(expected.getMaintainableArtefact().getName(), actual.getTitle());
+    }
+
+    private static void assertEqualsResource(Item expected, String expectedKind, String expectedSelfLink, Resource actual) {
+        assertEquals(expectedKind, actual.getKind());
+        assertEquals(expected.getNameableArtefact().getCode(), actual.getId());
+        assertEquals(expected.getNameableArtefact().getUrn(), actual.getUrn());
+        assertEquals(expectedKind, actual.getSelfLink().getKind());
+        assertEquals(expectedSelfLink, actual.getSelfLink().getHref());
+        assertEqualsInternationalString(expected.getNameableArtefact().getName(), actual.getTitle());
+    }
+    
+    @SuppressWarnings("rawtypes")
+    private static void assertEqualsCategoriesSdmxHierarchy(List expecteds, List<CategoryType> actuals) {
+        assertEquals(expecteds.size(), actuals.size());
+        for (int i = 0; i < expecteds.size(); i++) {
+            CategoryType actual = actuals.get(i);
+            assertTrue(actual instanceof CategoryType);
+            assertFalse(actual instanceof Category);
+            CategoryMetamac expected = (CategoryMetamac)expecteds.get(i);
+            
+            assertEqualsCategorySdmx(expected, actual);
+            assertEqualsCategoriesSdmxHierarchy(expected.getChildren(), actual.getCategories());
+        }
     }
 }
