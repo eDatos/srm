@@ -17,6 +17,10 @@ import com.arte.statistic.sdmx.srm.core.code.serviceimpl.utils.CodesInvocationVa
 
 public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
 
+    // ---------------------------------------------------------------------------
+    // CODELISTS
+    // ---------------------------------------------------------------------------
+
     public static void checkCreateCodelist(CodelistVersionMetamac codelistVersion, List<MetamacExceptionItem> exceptions) throws MetamacException {
         if (exceptions == null) {
             exceptions = new ArrayList<MetamacExceptionItem>();
@@ -40,6 +44,26 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
 
         ExceptionUtils.throwIfException(exceptions);
     }
+
+    public static void checkRetrieveCodelistByCodeUrn(String codeUrn, List<MetamacExceptionItem> exceptions) throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+
+        ValidationUtils.checkParameterRequired(codeUrn, ServiceExceptionParameters.URN, exceptions);
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
+
+    private static void checkCodelist(CodelistVersionMetamac codelistVersion, List<MetamacExceptionItem> exceptions) {
+        if (codelistVersion.getMaintainableArtefact() != null && BooleanUtils.isTrue(codelistVersion.getMaintainableArtefact().getIsExternalReference())) {
+            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.MAINTAINABLE_ARTEFACT_IS_EXTERNAL_REFERENCE));
+        }
+    }
+
+    // ---------------------------------------------------------------------------
+    // CODES
+    // ---------------------------------------------------------------------------
 
     public static void checkCreateCode(CodelistVersionMetamac codelistVersion, CodeMetamac code, List<MetamacExceptionItem> exceptions) throws MetamacException {
         if (exceptions == null) {
@@ -68,23 +92,22 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
         ExceptionUtils.throwIfException(exceptions);
     }
 
-    public static void checkRetrieveCodelistByCodeUrn(String codeUrn, List<MetamacExceptionItem> exceptions) throws MetamacException {
+    private static void checkCode(CodelistVersionMetamac codelistVersion, CodeMetamac code, List<MetamacExceptionItem> exceptions) {
+        // common metadata in sdmx are checked in Sdmx module
+    }
+
+    // ---------------------------------------------------------------------------
+    // CODELIST FAMILIES
+    // ---------------------------------------------------------------------------
+
+    public static void checkRetrieveCodelistFamilyByIdentifier(String identifier, List<MetamacExceptionItem> exceptions) throws MetamacException {
         if (exceptions == null) {
             exceptions = new ArrayList<MetamacExceptionItem>();
         }
 
-        ValidationUtils.checkParameterRequired(codeUrn, ServiceExceptionParameters.URN, exceptions);
+        ValidationUtils.checkParameterRequired(identifier, ServiceExceptionParameters.IDENTIFIER, exceptions);
 
         ExceptionUtils.throwIfException(exceptions);
     }
 
-    private static void checkCodelist(CodelistVersionMetamac codelistVersion, List<MetamacExceptionItem> exceptions) {
-        if (codelistVersion.getMaintainableArtefact() != null && BooleanUtils.isTrue(codelistVersion.getMaintainableArtefact().getIsExternalReference())) {
-            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.MAINTAINABLE_ARTEFACT_IS_EXTERNAL_REFERENCE));
-        }
-    }
-
-    private static void checkCode(CodelistVersionMetamac codelistVersion, CodeMetamac code, List<MetamacExceptionItem> exceptions) {
-        // common metadata in sdmx are checked in Sdmx module
-    }
 }

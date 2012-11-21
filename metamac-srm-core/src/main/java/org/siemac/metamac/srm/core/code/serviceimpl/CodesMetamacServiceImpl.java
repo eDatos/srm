@@ -11,6 +11,7 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
+import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.serviceimpl.utils.CodesMetamacInvocationValidator;
 import org.siemac.metamac.srm.core.common.LifeCycle;
@@ -239,6 +240,20 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     // ------------------------------------------------------------------------------------
+    // CODELIST FAMILIES
+    // ------------------------------------------------------------------------------------
+
+    @Override
+    public CodelistFamily retrieveCodelistFamilyByIdentifier(ServiceContext ctx, String identifier) throws MetamacException {
+        // Validation
+        CodesMetamacInvocationValidator.checkRetrieveCodelistFamilyByIdentifier(identifier, null);
+
+        // Retrieve
+        CodelistFamily codelistFamily = retrieveCodelistFamilyByCode(identifier);
+        return codelistFamily;
+    }
+
+    // ------------------------------------------------------------------------------------
     // PRIVATE METHODS
     // ------------------------------------------------------------------------------------
 
@@ -296,4 +311,11 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         return targets;
     }
 
+    private CodelistFamily retrieveCodelistFamilyByCode(String identifier) throws MetamacException {
+        CodelistFamily codelistFamily = getCodelistFamilyRepository().findByIdentifier(identifier);
+        if (codelistFamily == null) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CODELIST_FAMILY_NOT_FOUND).withMessageParameters(identifier).build();
+        }
+        return codelistFamily;
+    }
 }

@@ -1,5 +1,6 @@
 package org.siemac.metamac.srm.core.code.serviceapi;
 
+import static com.arte.statistic.sdmx.srm.core.base.serviceapi.utils.BaseAsserts.assertEqualsInternationalString;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -25,6 +26,7 @@ import org.siemac.metamac.common.test.utils.MetamacAsserts;
 import org.siemac.metamac.common.test.utils.MetamacMocks;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
+import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacProperties;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
@@ -1580,14 +1582,23 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         }
     }
 
-    // private void assertListCodesContainsCode(List<CodeMetamac> items, String urn) {
-    // for (Item item : items) {
-    // if (item.getNameableArtefact().getUrn().equals(urn)) {
-    // return;
-    // }
-    // }
-    // fail("List does not contain item with urn " + urn);
-    // }
+    // ------------------------------------------------------------------------------------
+    // CODELIST FAMILIES
+    // ------------------------------------------------------------------------------------
+
+    @Test
+    public void testRetrieveCodelistFamilyByIdentifier() throws Exception {
+        // Retrieve
+        String identifier = CODELIST_FAMILY_1;
+        CodelistFamily codelistFamily = codesService.retrieveCodelistFamilyByIdentifier(getServiceContextAdministrador(), identifier);
+
+        assertEquals(identifier, codelistFamily.getIdentifier());
+        assertEqualsInternationalString(codelistFamily.getName(), "es", "familia-de-codelists", "pt", "codelist-family");
+        assertEquals("codelist-family-1", codelistFamily.getUuid());
+        assertEquals("user1", codelistFamily.getCreatedBy());
+        assertEquals("user2", codelistFamily.getLastUpdatedBy());
+        assertEquals(Long.valueOf(1), codelistFamily.getVersion());
+    }
 
     // ------------------------------------------------------------------------------------
     // PRIVATE METHODS
@@ -1597,4 +1608,5 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     protected String getDataSetFile() {
         return "dbunit/SrmCodesTest.xml";
     }
+
 }

@@ -21,6 +21,9 @@ Application CodesMetamac {
 
 			> @CodelistVersionMetamacRepository
 			> @CodeMetamacRepository
+			> @CodelistFamilyRepository
+
+			// CODELISTS
 
 			"Creates codelist"
 			@CodelistVersionMetamac createCodelist(@CodelistVersionMetamac codelistVersion) throws MetamacException;
@@ -53,6 +56,8 @@ Application CodesMetamac {
     		"Retrieves codelist by code urn"
     		@CodelistVersionMetamac retrieveCodelistByCodeUrn(String codeUrn) throws MetamacException;
 
+			// CODES
+
 			"Creates code"
 			@CodeMetamac createCode(String codelistUrn, @CodeMetamac code) throws MetamacException;
 			"Updates code"
@@ -66,6 +71,18 @@ Application CodesMetamac {
     		"Retrieves codes by codelist, in tree structure"
     		List<@CodeMetamac> retrieveCodesByCodelistUrn(String codelistUrn) throws MetamacException;
 
+			// CODESLIST FAMILIES
+			
+//			"Creates codelist family"
+//			@CodelistFamily createCodelistFamily(@CodelistFamily codelistFamily) throws MetamacException;
+//			"Updates codelist family"
+//			@CodelistFamily updateCodelistFamily(@CodelistFamily code) throws MetamacException;
+    		"Retrieves codelist family by urn"
+    		@CodelistFamily retrieveCodelistFamilyByIdentifier(String identifier) throws MetamacException;
+//    		"Finds codelist families by criteria"
+//    		PagedResult<@CodelistFamily> findCodelistFamiliesByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
+//			"Deletes code"
+//    		deleteCodelistFamily(String urn) throws MetamacException;
 		}
 
 		// ----------------------------------------------------------------
@@ -82,6 +99,8 @@ Application CodesMetamac {
 			Boolean isRecommended nullable;
 			"Access type"
 			- @AccessTypeEnum accessType nullable;
+			"Family"
+			- @CodelistFamily family cascade="none" nullable databaseColumn="FAMILY_FK";
 			
 			"Life cycle information"
 			- @SrmLifeCycleMetadata lifeCycleMetadata databaseColumn="";
@@ -103,6 +122,23 @@ Application CodesMetamac {
 			Repository CodeMetamacRepository {
 				findById;
 				findByCondition(PagingParameter pagingParameter);
+			}
+		}
+
+		Entity CodelistFamily {
+			databaseTable="TB_M_CODELIST_FAMILIES"
+			hint="idSequence=M_CODELIST_FAMILIES"
+			
+			"Identifier"
+			String identifier nullable;
+			"Name"
+			- @InternationalString name nullable cascade="all" databaseColumn="NAME_FK";
+			
+			Repository CodelistFamilyRepository {
+				findById;
+				findByQuery(String query, Map<String, Object> parameters, int maxResult);
+				findByCondition(PagingParameter pagingParameter);
+				@CodelistFamily findByIdentifier(String code);
 			}
 		}
 
