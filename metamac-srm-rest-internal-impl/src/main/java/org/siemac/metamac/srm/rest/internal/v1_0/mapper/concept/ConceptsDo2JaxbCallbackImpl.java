@@ -18,21 +18,21 @@ public class ConceptsDo2JaxbCallbackImpl implements ConceptsDo2JaxbCallback {
     private ConceptsDo2RestMapperV10 conceptsDo2RestMapperV10;
 
     @Override
-    public ConceptSchemeType createConceptSchemeDoToJaxb(com.arte.statistic.sdmx.srm.core.concept.domain.ConceptSchemeVersion source) {
+    public ConceptSchemeType createConceptSchemeJaxb(com.arte.statistic.sdmx.srm.core.concept.domain.ConceptSchemeVersion source) {
         org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptScheme target = new org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptScheme();
         conceptsDo2RestMapperV10.toConceptScheme((ConceptSchemeVersionMetamac) source, target);
         return target;
     }
 
     @Override
-    public ConceptType createConceptDoToJaxb(com.arte.statistic.sdmx.srm.core.concept.domain.Concept source) {
+    public ConceptType createConceptJaxb(com.arte.statistic.sdmx.srm.core.concept.domain.Concept source) {
         // when retrieve ConceptScheme, only return SDMX metadata
         ConceptType target = new ConceptType();
         return target;
     }
 
     @Override
-    public ConceptsType createConceptSchemesDoToJaxb(List<ConceptSchemeVersion> sourceList) {
+    public ConceptsType createConceptSchemesJaxb(List<ConceptSchemeVersion> sourceList) {
         throw new IllegalArgumentException("createConceptSchemesDoToJaxb not supported");
     }
 }
