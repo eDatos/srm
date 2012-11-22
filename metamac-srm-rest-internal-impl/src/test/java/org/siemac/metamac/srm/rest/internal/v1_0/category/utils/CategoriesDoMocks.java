@@ -1,4 +1,4 @@
-package org.siemac.metamac.srm.rest.internal.v1_0.categories.utils;
+package org.siemac.metamac.srm.rest.internal.v1_0.category.utils;
 
 import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;

@@ -1,14 +1,14 @@
-package org.siemac.metamac.srm.rest.internal.v1_0.concepts.mapper;
+package org.siemac.metamac.srm.rest.internal.v1_0.concept.mapper;
 
 import static org.junit.Assert.assertEquals;
 import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.WILDCARD;
-import static org.siemac.metamac.srm.rest.internal.v1_0.concepts.utils.ConceptsAsserts.assertEqualsConcept;
-import static org.siemac.metamac.srm.rest.internal.v1_0.concepts.utils.ConceptsAsserts.assertEqualsConceptScheme;
-import static org.siemac.metamac.srm.rest.internal.v1_0.concepts.utils.ConceptsAsserts.assertEqualsResource;
-import static org.siemac.metamac.srm.rest.internal.v1_0.concepts.utils.ConceptsDoMocks.mockConcept;
-import static org.siemac.metamac.srm.rest.internal.v1_0.concepts.utils.ConceptsDoMocks.mockConceptScheme;
-import static org.siemac.metamac.srm.rest.internal.v1_0.concepts.utils.ConceptsDoMocks.mockConceptSchemeWithConcepts;
-import static org.siemac.metamac.srm.rest.internal.v1_0.concepts.utils.ConceptsDoMocks.mockConceptWithConceptRelations;
+import static org.siemac.metamac.srm.rest.internal.v1_0.concept.utils.ConceptsAsserts.assertEqualsConcept;
+import static org.siemac.metamac.srm.rest.internal.v1_0.concept.utils.ConceptsAsserts.assertEqualsConceptScheme;
+import static org.siemac.metamac.srm.rest.internal.v1_0.concept.utils.ConceptsAsserts.assertEqualsResource;
+import static org.siemac.metamac.srm.rest.internal.v1_0.concept.utils.ConceptsDoMocks.mockConcept;
+import static org.siemac.metamac.srm.rest.internal.v1_0.concept.utils.ConceptsDoMocks.mockConceptScheme;
+import static org.siemac.metamac.srm.rest.internal.v1_0.concept.utils.ConceptsDoMocks.mockConceptSchemeWithConcepts;
+import static org.siemac.metamac.srm.rest.internal.v1_0.concept.utils.ConceptsDoMocks.mockConceptWithConceptRelations;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.AGENCY_1;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.AGENCY_2;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_1_CODE;

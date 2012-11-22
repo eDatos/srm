@@ -4,8 +4,8 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
 import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.WILDCARD;
-import static org.siemac.metamac.srm.rest.internal.v1_0.concepts.utils.ConceptsMockitoVerify.verifyFindConceptSchemes;
-import static org.siemac.metamac.srm.rest.internal.v1_0.concepts.utils.ConceptsMockitoVerify.verifyFindConcepts;
+import static org.siemac.metamac.srm.rest.internal.v1_0.concept.utils.ConceptsMockitoVerify.verifyFindConceptSchemes;
+import static org.siemac.metamac.srm.rest.internal.v1_0.concept.utils.ConceptsMockitoVerify.verifyFindConcepts;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.AGENCY_1;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.AGENCY_2;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_1_CODE;
@@ -64,7 +64,7 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacPro
 import org.siemac.metamac.srm.core.concept.serviceapi.ConceptsMetamacService;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
-import org.siemac.metamac.srm.rest.internal.v1_0.concepts.utils.ConceptsDoMocks;
+import org.siemac.metamac.srm.rest.internal.v1_0.concept.utils.ConceptsDoMocks;
 import org.springframework.context.ApplicationContext;
 
 import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.ConceptType;

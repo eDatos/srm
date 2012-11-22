@@ -1,4 +1,4 @@
-package org.siemac.metamac.srm.rest.internal.v1_0.concepts.utils;
+package org.siemac.metamac.srm.rest.internal.v1_0.concept.utils;
 
 import java.util.ArrayList;
 import java.util.List;

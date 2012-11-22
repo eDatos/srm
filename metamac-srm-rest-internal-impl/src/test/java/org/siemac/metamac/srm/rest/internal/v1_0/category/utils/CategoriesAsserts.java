@@ -1,4 +1,4 @@
-package org.siemac.metamac.srm.rest.internal.v1_0.categories.utils;
+package org.siemac.metamac.srm.rest.internal.v1_0.category.utils;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

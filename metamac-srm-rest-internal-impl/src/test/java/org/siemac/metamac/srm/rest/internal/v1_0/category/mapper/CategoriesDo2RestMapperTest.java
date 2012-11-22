@@ -1,13 +1,13 @@
-package org.siemac.metamac.srm.rest.internal.v1_0.categories.mapper;
+package org.siemac.metamac.srm.rest.internal.v1_0.category.mapper;
 
 import static org.junit.Assert.assertEquals;
 import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.WILDCARD;
-import static org.siemac.metamac.srm.rest.internal.v1_0.categories.utils.CategoriesAsserts.assertEqualsCategory;
-import static org.siemac.metamac.srm.rest.internal.v1_0.categories.utils.CategoriesAsserts.assertEqualsCategoryScheme;
-import static org.siemac.metamac.srm.rest.internal.v1_0.categories.utils.CategoriesAsserts.assertEqualsResource;
-import static org.siemac.metamac.srm.rest.internal.v1_0.categories.utils.CategoriesDoMocks.mockCategory;
-import static org.siemac.metamac.srm.rest.internal.v1_0.categories.utils.CategoriesDoMocks.mockCategoryScheme;
-import static org.siemac.metamac.srm.rest.internal.v1_0.categories.utils.CategoriesDoMocks.mockCategorySchemeWithCategories;
+import static org.siemac.metamac.srm.rest.internal.v1_0.category.utils.CategoriesAsserts.assertEqualsCategory;
+import static org.siemac.metamac.srm.rest.internal.v1_0.category.utils.CategoriesAsserts.assertEqualsCategoryScheme;
+import static org.siemac.metamac.srm.rest.internal.v1_0.category.utils.CategoriesAsserts.assertEqualsResource;
+import static org.siemac.metamac.srm.rest.internal.v1_0.category.utils.CategoriesDoMocks.mockCategory;
+import static org.siemac.metamac.srm.rest.internal.v1_0.category.utils.CategoriesDoMocks.mockCategoryScheme;
+import static org.siemac.metamac.srm.rest.internal.v1_0.category.utils.CategoriesDoMocks.mockCategorySchemeWithCategories;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.AGENCY_1;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.AGENCY_2;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_1_CODE;
