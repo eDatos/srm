@@ -89,7 +89,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         assertEquals("http://serviceUrl1", conceptSchemeMetamacDto.getServiceURL());
 
         assertEquals(AGENCY_ROOT_1_V1_CODE, conceptSchemeMetamacDto.getMaintainer().getCode());
-        assertEquals("urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:ORGANISATIONSCHEME100(01.000).SDMX01", conceptSchemeMetamacDto.getMaintainer().getUrn());
+        assertEquals(AGENCY_ROOT_1_V1, conceptSchemeMetamacDto.getMaintainer().getUrn());
 
         assertEqualsInternationalStringDto(conceptSchemeMetamacDto.getName(), "es", "Nombre conceptScheme-1-v1", "en", "Name conceptScheme-1-v1");
         assertEqualsInternationalStringDto(conceptSchemeMetamacDto.getDescription(), "es", "Descripción conceptScheme-1-v1", "en", "Description conceptScheme-1-v1");

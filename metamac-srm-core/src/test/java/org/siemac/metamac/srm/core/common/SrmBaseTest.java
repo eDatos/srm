@@ -18,9 +18,9 @@ import com.arte.statistic.sdmx.srm.core.common.SdmxSrmBaseTest;
 public abstract class SrmBaseTest extends SdmxSrmBaseTest {
 
     // Agencies
-    protected static final String ORGANISATION_SCHEME_ROOT_1_V1               = "urn:sdmx:org.sdmx.infomodel.base.AgencyScheme=SDMX:ORGANISATIONSCHEME100(01.000)";
-    public static final String    AGENCY_ROOT_1_V1                            = "urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:ORGANISATIONSCHEME100(01.000).SDMX01";
-    public static final String    AGENCY_ROOT_2_V1                            = "urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:ORGANISATIONSCHEME100(01.000).SDMX02";
+    protected static final String ORGANISATION_SCHEME_ROOT_1_V1               = "urn:sdmx:org.sdmx.infomodel.base.AgencyScheme=SDMX:AGENCIES(01.000)";
+    public static final String    AGENCY_ROOT_1_V1                            = "urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:AGENCIES(01.000).SDMX01";
+    public static final String    AGENCY_ROOT_2_V1                            = "urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:AGENCIES(01.000).SDMX02";
     public static final String    AGENCY_ROOT_1_V1_CODE                       = "SDMX01";
 
     // Concepts schemes
@@ -79,15 +79,15 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
     // Organisations schemes
     protected static final String ORGANISATION_SCHEME_1_V1                    = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=SDMX01:ORGANISATIONSCHEME01(01.000)";
     protected static final String ORGANISATION_SCHEME_1_V2                    = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=SDMX01:ORGANISATIONSCHEME01(02.000)";
-    protected static final String ORGANISATION_SCHEME_2_V1                    = "urn:sdmx:org.sdmx.infomodel.base.AgencyScheme=SDMX01:ORGANISATIONSCHEME02(01.000)";
+    protected static final String ORGANISATION_SCHEME_2_V1                    = "urn:sdmx:org.sdmx.infomodel.base.AgencyScheme=SDMX01:AGENCIES(01.000)";
     protected static final String ORGANISATION_SCHEME_3_V1                    = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=SDMX01:ORGANISATIONSCHEME03(01.000)";
     protected static final String ORGANISATION_SCHEME_4_V1                    = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=SDMX01:ORGANISATIONSCHEME04(01.000)";
     protected static final String ORGANISATION_SCHEME_5_V1                    = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=SDMX01:ORGANISATIONSCHEME05(01.000)";
     protected static final String ORGANISATION_SCHEME_6_V1                    = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=SDMX01:ORGANISATIONSCHEME06(01.000)";
     protected static final String ORGANISATION_SCHEME_7_V1                    = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=SDMX01:ORGANISATIONSCHEME07(01.000)";
     protected static final String ORGANISATION_SCHEME_7_V2                    = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=SDMX01:ORGANISATIONSCHEME07(02.000)";
-    protected static final String ORGANISATION_SCHEME_8_V1                    = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=SDMX02:ORGANISATIONSCHEME08(01.000)";
-    protected static final String ORGANISATION_SCHEME_9_V1                    = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=SDMX02.ORGANISATION01:ORGANISATIONSCHEME09(01.000)";
+    protected static final String ORGANISATION_SCHEME_8_V1                    = "urn:sdmx:org.sdmx.infomodel.base.AgencyScheme=SDMX02:AGENCIES(01.000)";
+    protected static final String ORGANISATION_SCHEME_9_V1                    = "urn:sdmx:org.sdmx.infomodel.base.AgencyScheme=SDMX02.ORGANISATION01:AGENCIES(01.000)";
     protected static final String ORGANISATION_SCHEME_100_V1                  = ORGANISATION_SCHEME_ROOT_1_V1;
 
     // Organisations
@@ -100,8 +100,8 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
     protected String              ORGANISATION_SCHEME_1_V2_ORGANISATION_4     = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME01(02.000).ORGANISATION04";
     protected String              ORGANISATION_SCHEME_1_V2_ORGANISATION_4_1   = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME01(02.000).ORGANISATION0401";
     protected String              ORGANISATION_SCHEME_1_V2_ORGANISATION_4_1_1 = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME01(02.000).ORGANISATION040101";
-    protected String              ORGANISATION_SCHEME_2_V1_ORGANISATION_1     = "urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX01:ORGANISATIONSCHEME02(01.000).ORGANISATION01";
-    protected String              ORGANISATION_SCHEME_2_V1_ORGANISATION_2     = "urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX01:ORGANISATIONSCHEME02(01.000).ORGANISATION02";
+    protected String              ORGANISATION_SCHEME_2_V1_ORGANISATION_1     = "urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX01:AGENCIES(01.000).ORGANISATION01";
+    protected String              ORGANISATION_SCHEME_2_V1_ORGANISATION_2     = "urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX01:AGENCIES(01.000).ORGANISATION02";
     protected String              ORGANISATION_SCHEME_3_V1_ORGANISATION_1     = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME03(01.000).ORGANISATION01";
     protected String              ORGANISATION_SCHEME_3_V1_ORGANISATION_2     = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME03(01.000).ORGANISATION02";
     protected String              ORGANISATION_SCHEME_3_V1_ORGANISATION_2_1   = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME03(01.000).ORGANISATION0201";
@@ -111,8 +111,8 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
     protected String              ORGANISATION_SCHEME_5_V1_ORGANISATION_1     = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME05(01.000).ORGANISATION01";
     protected String              ORGANISATION_SCHEME_6_V1_ORGANISATION_1     = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME06(01.000).ORGANISATION01";
     protected String              ORGANISATION_SCHEME_7_V2_ORGANISATION_1     = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME07(02.000).ORGANISATION01";
-    protected String              ORGANISATION_SCHEME_8_V1_ORGANISATION_1     = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX02:ORGANISATIONSCHEME08(01.000).ORGANISATION01";
-    protected String              ORGANISATION_SCHEME_9_V1_ORGANISATION_1     = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX02.ORGANISATION01:ORGANISATIONSCHEME09(01.000).ORGANISATION01";
+    protected String              ORGANISATION_SCHEME_8_V1_ORGANISATION_1     = "urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX02:AGENCIES(01.000).ORGANISATION01";
+    protected String              ORGANISATION_SCHEME_9_V1_ORGANISATION_1     = "urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX02.ORGANISATION01:AGENCIES(01.000).ORGANISATION01";
     protected String              ORGANISATION_SCHEME_100_V1_ORGANISATION_1   = AGENCY_ROOT_1_V1;
     protected String              ORGANISATION_SCHEME_100_V1_ORGANISATION_2   = AGENCY_ROOT_2_V1;
 
