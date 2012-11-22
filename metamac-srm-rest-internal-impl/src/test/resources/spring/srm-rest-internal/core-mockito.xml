@@ -7,9 +7,15 @@
     <bean id="conceptsService" class="org.mockito.Mockito" factory-method="mock">
         <constructor-arg value="com.arte.statistic.sdmx.srm.core.concept.serviceapi.ConceptsService" />
     </bean>
-    
     <bean id="conceptsMetamacService" class="org.mockito.Mockito" factory-method="mock">
         <constructor-arg value="org.siemac.metamac.srm.core.concept.serviceapi.ConceptsMetamacService" />
+    </bean>
+
+    <bean id="categoriesService" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="com.arte.statistic.sdmx.srm.core.category.serviceapi.CategoriesService" />
+    </bean>
+    <bean id="categoriesMetamacService" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="org.siemac.metamac.srm.core.category.serviceapi.CategoriesMetamacService" />
     </bean>
     
 </beans>

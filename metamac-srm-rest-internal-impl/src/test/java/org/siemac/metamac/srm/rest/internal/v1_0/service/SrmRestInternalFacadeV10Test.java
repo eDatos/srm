@@ -416,7 +416,7 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
             org.siemac.metamac.rest.common.v1_0.domain.Exception exception = extractErrorFromException(getSrmRestInternalFacadeClientXml(), e);
 
             assertEquals(RestServiceExceptionType.CONCEPT_NOT_FOUND.getCode(), exception.getCode());
-            assertEquals("Concept not found with ID " + conceptID + " in concept scheme in AgencyID " + agencyID + " with ID " + resourceID + " and version " + version, exception.getMessage());
+            assertEquals("Concept not found with ID " + conceptID + " in Concept scheme in AgencyID " + agencyID + " with ID " + resourceID + " and version " + version, exception.getMessage());
             assertEquals(4, exception.getParameters().getParameters().size());
             assertEquals(conceptID, exception.getParameters().getParameters().get(0));
             assertEquals(agencyID, exception.getParameters().getParameters().get(1));
