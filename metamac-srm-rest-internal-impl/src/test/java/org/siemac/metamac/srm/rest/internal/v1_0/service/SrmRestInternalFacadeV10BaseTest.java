@@ -16,6 +16,8 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.util.ApplicationContextProvider;
 import org.siemac.metamac.rest.common.test.MetamacRestBaseTest;
 import org.siemac.metamac.rest.common.test.ServerResource;
+import org.siemac.metamac.rest.constants.RestConstants;
+import org.siemac.metamac.rest.utils.RestUtils;
 import org.springframework.context.ApplicationContext;
 
 public abstract class SrmRestInternalFacadeV10BaseTest extends MetamacRestBaseTest {
@@ -61,5 +63,42 @@ public abstract class SrmRestInternalFacadeV10BaseTest extends MetamacRestBaseTe
         return srmRestInternalFacadeClientXml;
     }
 
+    protected String getUriItemSchemes(String agencyID, String resourceID, String version) {
+        StringBuilder uri = new StringBuilder();
+        uri.append(baseApi + "/" + getSupathItemSchemes());
+        if (agencyID != null) {
+            uri.append("/" + agencyID);
+            if (resourceID != null) {
+                uri.append("/" + resourceID);
+                if (version != null) {
+                    uri.append("/" + version);
+                }
+            }
+        }
+        return uri.toString();
+    }
+
+    protected String getUriItemSchemes(String agencyID, String resourceID, String query, String limit, String offset) throws Exception {
+        String uri = getUriItemSchemes(agencyID, resourceID, null);
+        uri = RestUtils.createLinkWithQueryParam(uri, RestConstants.PARAMETER_QUERY, RestUtils.encodeParameter(query));
+        uri = RestUtils.createLinkWithQueryParam(uri, RestConstants.PARAMETER_LIMIT, RestUtils.encodeParameter(limit));
+        uri = RestUtils.createLinkWithQueryParam(uri, RestConstants.PARAMETER_OFFSET, RestUtils.encodeParameter(offset));
+        return uri.toString();
+    }
+
+    protected String getUriItems(String agencyID, String resourceID, String version, String query, String limit, String offset) throws Exception {
+        String uri = getUriItemSchemes(agencyID, resourceID, version) + "/" + getSupathItems();
+        uri = RestUtils.createLinkWithQueryParam(uri, RestConstants.PARAMETER_QUERY, RestUtils.encodeParameter(query));
+        uri = RestUtils.createLinkWithQueryParam(uri, RestConstants.PARAMETER_LIMIT, RestUtils.encodeParameter(limit));
+        uri = RestUtils.createLinkWithQueryParam(uri, RestConstants.PARAMETER_OFFSET, RestUtils.encodeParameter(offset));
+        return uri.toString();
+    }
+
+    protected String getUriItem(String agencyID, String resourceID, String version, String itemID) throws Exception {
+        return getUriItems(agencyID, resourceID, version, null, null, null) + "/" + itemID;
+    }
+
     protected abstract void resetMocks() throws MetamacException;
+    protected abstract String getSupathItemSchemes();
+    protected abstract String getSupathItems();
 }

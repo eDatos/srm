@@ -43,13 +43,11 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.siemac.metamac.common.test.utils.ConditionalCriteriaUtils;
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.rest.constants.RestConstants;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.Concept;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptScheme;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemes;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptTypes;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.Concepts;
-import org.siemac.metamac.rest.utils.RestUtils;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacProperties;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
@@ -63,12 +61,12 @@ import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.ConceptType;
 
 public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV10BaseTest {
 
-    private ConceptsMetamacService          conceptsService;
+    private ConceptsMetamacService conceptsService;
 
     @Test
     public void testErrorJsonNonAcceptable() throws Exception {
 
-        String requestUri = getUriConceptSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1);
+        String requestUri = getUriItemSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1);
 
         // Request and validate
         WebClient webClient = WebClient.create(requestUri).accept("application/json");
@@ -92,7 +90,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
 
     @Test
     public void testFindConceptsSchemesWithoutJaxbTransformation() throws Exception {
-        String requestUri = getUriConceptSchemes(AGENCY_1, null, null, "4", "4");
+        String requestUri = getUriItemSchemes(AGENCY_1, null, null, "4", "4");
         InputStream responseExpected = SrmRestInternalFacadeV10ConceptsTest.class.getResourceAsStream("/responses/findConceptsSchemes.xml");
 
         // Request and validate
@@ -106,7 +104,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
         String limit = "1";
         String offset = "0";
         String query = "METADATA_INCORRECT LIKE \"1\"";
-        String requestUri = getUriConceptSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, query, limit, offset);
+        String requestUri = getUriItemSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, query, limit, offset);
         InputStream responseExpected = SrmRestInternalFacadeV10ConceptsTest.class.getResourceAsStream("/responses/findConceptsSchemes.parameterIncorrect.xml");
 
         // Request and validate
@@ -124,7 +122,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
 
     @Test
     public void testFindConceptsSchemesByAgencyWithoutJaxbTransformation() throws Exception {
-        String requestUri = getUriConceptSchemes(AGENCY_1, null, null, "4", "4");
+        String requestUri = getUriItemSchemes(AGENCY_1, null, null, "4", "4");
         InputStream responseExpected = SrmRestInternalFacadeV10ConceptsTest.class.getResourceAsStream("/responses/findConceptsSchemes.byAgency.xml");
 
         // Request and validate
@@ -153,7 +151,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
 
     @Test
     public void testFindConceptsSchemesByAgencyAndResourceWithoutJaxbTransformation() throws Exception {
-        String requestUri = getUriConceptSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, null, "4", null);
+        String requestUri = getUriItemSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, null, "4", null);
         InputStream responseExpected = SrmRestInternalFacadeV10ConceptsTest.class.getResourceAsStream("/responses/findConceptsSchemes.byAgencyResource.xml");
 
         // Request and validate
@@ -162,7 +160,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
 
     @Test
     public void testFindConceptsSchemesByAgencyAndResourceErrorWildcard() throws Exception {
-        String requestUri = getUriConceptSchemes(AGENCY_1, WILDCARD, null);
+        String requestUri = getUriItemSchemes(AGENCY_1, WILDCARD, null);
         testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.NOT_FOUND, new ByteArrayInputStream(new byte[0]));
     }
 
@@ -191,7 +189,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
     @Test
     public void testRetrieveConceptSchemeWithoutJaxbTransformation() throws Exception {
 
-        String requestUri = getUriConceptSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1);
+        String requestUri = getUriItemSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1);
         InputStream responseExpected = SrmRestInternalFacadeV10ConceptsTest.class.getResourceAsStream("/responses/retrieveConceptScheme.id1.xml");
 
         // Request and validate
@@ -201,7 +199,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
     @Test
     public void testRetrieveConceptSchemeWithoutJaxbTransformationWithXmlSufix() throws Exception {
 
-        String requestUri = getUriConceptSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1) + ".xml";
+        String requestUri = getUriItemSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1) + ".xml";
         InputStream responseExpected = SrmRestInternalFacadeV10ConceptsTest.class.getResourceAsStream("/responses/retrieveConceptScheme.id1.xml");
 
         // Request and validate
@@ -211,7 +209,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
     @Test
     public void testRetrieveConceptSchemeWithoutJaxbTransformationWithTypeParameter() throws Exception {
 
-        String requestUri = getUriConceptSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1) + "?_type=xml";
+        String requestUri = getUriItemSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1) + "?_type=xml";
         InputStream responseExpected = SrmRestInternalFacadeV10ConceptsTest.class.getResourceAsStream("/responses/retrieveConceptScheme.id1.xml");
 
         // Request and validate
@@ -242,7 +240,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
 
     @Test
     public void testRetrieveConceptSchemeErrorNotExistsWithoutJaxbTransformation() throws Exception {
-        String requestUri = getUriConceptSchemes(AGENCY_1, NOT_EXISTS, ITEM_SCHEME_1_VERSION_1);
+        String requestUri = getUriItemSchemes(AGENCY_1, NOT_EXISTS, ITEM_SCHEME_1_VERSION_1);
         InputStream responseExpected = SrmRestInternalFacadeV10ConceptsTest.class.getResourceAsStream("/responses/retrieveConceptScheme.notFound.xml");
 
         // Request and validate
@@ -252,15 +250,15 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
     @Test
     public void testRetrieveConceptsSchemeErrorWildcard() throws Exception {
         {
-            String requestUri = getUriConceptSchemes(WILDCARD, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1);
+            String requestUri = getUriItemSchemes(WILDCARD, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1);
             testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.NOT_FOUND, new ByteArrayInputStream(new byte[0]));
         }
         {
-            String requestUri = getUriConceptSchemes(AGENCY_1, WILDCARD, ITEM_SCHEME_1_VERSION_1);
+            String requestUri = getUriItemSchemes(AGENCY_1, WILDCARD, ITEM_SCHEME_1_VERSION_1);
             testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.NOT_FOUND, new ByteArrayInputStream(new byte[0]));
         }
         {
-            String requestUri = getUriConceptSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD);
+            String requestUri = getUriItemSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD);
             testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.NOT_FOUND, new ByteArrayInputStream(new byte[0]));
         }
     }
@@ -302,7 +300,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
 
     @Test
     public void testFindConceptsWithoutJaxbTransformation() throws Exception {
-        String requestUri = getUriConcepts(WILDCARD, WILDCARD, WILDCARD, QUERY_ID_LIKE_1_NAME_LIKE_2, "4", "4");
+        String requestUri = getUriItems(WILDCARD, WILDCARD, WILDCARD, QUERY_ID_LIKE_1_NAME_LIKE_2, "4", "4");
         InputStream responseExpected = SrmRestInternalFacadeV10ConceptsTest.class.getResourceAsStream("/responses/findConcepts.xml");
 
         // Request and validate
@@ -333,7 +331,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
     @Test
     public void testRetrieveConceptWithoutJaxbTransformation() throws Exception {
 
-        String requestUri = getUriConcept(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1, ITEM_1_CODE);
+        String requestUri = getUriItem(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1, ITEM_1_CODE);
         InputStream responseExpected = SrmRestInternalFacadeV10ConceptsTest.class.getResourceAsStream("/responses/retrieveConcept.id1.xml");
 
         // Request and validate
@@ -343,7 +341,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
     @Test
     public void testRetrieveConceptWithoutJaxbTransformationWithXmlSufix() throws Exception {
 
-        String requestUri = getUriConcept(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1, ITEM_1_CODE) + ".xml";
+        String requestUri = getUriItem(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1, ITEM_1_CODE) + ".xml";
         InputStream responseExpected = SrmRestInternalFacadeV10ConceptsTest.class.getResourceAsStream("/responses/retrieveConcept.id1.xml");
 
         // Request and validate
@@ -353,7 +351,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
     @Test
     public void testRetrieveConceptWithoutJaxbTransformationWithTypeParameter() throws Exception {
 
-        String requestUri = getUriConcept(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1, ITEM_1_CODE) + "?_type=xml";
+        String requestUri = getUriItem(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1, ITEM_1_CODE) + "?_type=xml";
         InputStream responseExpected = SrmRestInternalFacadeV10ConceptsTest.class.getResourceAsStream("/responses/retrieveConcept.id1.xml");
 
         // Request and validate
@@ -386,7 +384,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
 
     @Test
     public void testRetrieveConceptErrorNotExistsWithoutJaxbTransformation() throws Exception {
-        String requestUri = getUriConcept(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1, NOT_EXISTS);
+        String requestUri = getUriItem(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1, NOT_EXISTS);
         InputStream responseExpected = SrmRestInternalFacadeV10ConceptsTest.class.getResourceAsStream("/responses/retrieveConcept.notFound.xml");
 
         // Request and validate
@@ -396,15 +394,15 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
     @Test
     public void testRetrieveConceptErrorWildcard() throws Exception {
         {
-            String requestUri = getUriConcept(WILDCARD, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1, ITEM_1_CODE);
+            String requestUri = getUriItem(WILDCARD, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1, ITEM_1_CODE);
             testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.NOT_FOUND, new ByteArrayInputStream(new byte[0]));
         }
         {
-            String requestUri = getUriConcept(AGENCY_1, WILDCARD, ITEM_SCHEME_1_VERSION_1, ITEM_1_CODE);
+            String requestUri = getUriItem(AGENCY_1, WILDCARD, ITEM_SCHEME_1_VERSION_1, ITEM_1_CODE);
             testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.NOT_FOUND, new ByteArrayInputStream(new byte[0]));
         }
         {
-            String requestUri = getUriConcept(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD, ITEM_1_CODE);
+            String requestUri = getUriItem(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD, ITEM_1_CODE);
             testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.NOT_FOUND, new ByteArrayInputStream(new byte[0]));
         }
     }
@@ -559,42 +557,17 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
         when(conceptsService.findAllConceptTypes(any(ServiceContext.class))).thenReturn(ConceptsDoMocks.mockConceptTypes());
     }
 
-    private String getUriConceptSchemes(String agencyID, String resourceID, String version) {
-        StringBuilder uri = new StringBuilder();
-        uri.append(baseApi + "/conceptschemes");
-        if (agencyID != null) {
-            uri.append("/" + agencyID);
-            if (resourceID != null) {
-                uri.append("/" + resourceID);
-                if (version != null) {
-                    uri.append("/" + version);
-                }
-            }
-        }
-        return uri.toString();
-    }
-
-    private String getUriConceptSchemes(String agencyID, String resourceID, String query, String limit, String offset) throws Exception {
-        String uri = getUriConceptSchemes(agencyID, resourceID, null);
-        uri = RestUtils.createLinkWithQueryParam(uri, RestConstants.PARAMETER_QUERY, RestUtils.encodeParameter(query));
-        uri = RestUtils.createLinkWithQueryParam(uri, RestConstants.PARAMETER_LIMIT, RestUtils.encodeParameter(limit));
-        uri = RestUtils.createLinkWithQueryParam(uri, RestConstants.PARAMETER_OFFSET, RestUtils.encodeParameter(offset));
-        return uri.toString();
-    }
-
-    private String getUriConcepts(String agencyID, String resourceID, String version, String query, String limit, String offset) throws Exception {
-        String uri = getUriConceptSchemes(agencyID, resourceID, version) + "/concepts";
-        uri = RestUtils.createLinkWithQueryParam(uri, RestConstants.PARAMETER_QUERY, RestUtils.encodeParameter(query));
-        uri = RestUtils.createLinkWithQueryParam(uri, RestConstants.PARAMETER_LIMIT, RestUtils.encodeParameter(limit));
-        uri = RestUtils.createLinkWithQueryParam(uri, RestConstants.PARAMETER_OFFSET, RestUtils.encodeParameter(offset));
-        return uri.toString();
-    }
-
-    private String getUriConcept(String agencyID, String resourceID, String version, String conceptID) throws Exception {
-        return getUriConcepts(agencyID, resourceID, version, null, null, null) + "/" + conceptID;
-    }
-
     private String getUriConceptTypes() {
         return baseApi + "/conceptTypes";
+    }
+
+    @Override
+    protected String getSupathItemSchemes() {
+        return "conceptschemes";
+    }
+
+    @Override
+    protected String getSupathItems() {
+        return "concepts";
     }
 }
