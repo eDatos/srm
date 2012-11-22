@@ -38,7 +38,6 @@ import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria.Op
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
-import org.junit.Before;
 import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -65,11 +64,6 @@ import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.ConceptType;
 public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV10Test {
 
     private ConceptsMetamacService          conceptsService;
-
-    @Before
-    public void setUp() throws MetamacException {
-        resetMocks();
-    }
 
     @Test
     public void testErrorJsonNonAcceptable() throws Exception {
