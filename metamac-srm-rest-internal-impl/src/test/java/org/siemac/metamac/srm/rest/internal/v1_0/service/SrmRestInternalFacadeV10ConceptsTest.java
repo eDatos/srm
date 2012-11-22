@@ -61,7 +61,7 @@ import org.siemac.metamac.srm.rest.internal.v1_0.concept.utils.ConceptsDoMocks;
 
 import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.ConceptType;
 
-public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV10Test {
+public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV10BaseTest {
 
     private ConceptsMetamacService          conceptsService;
 

@@ -18,7 +18,7 @@ import org.siemac.metamac.rest.common.test.MetamacRestBaseTest;
 import org.siemac.metamac.rest.common.test.ServerResource;
 import org.springframework.context.ApplicationContext;
 
-public abstract class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
+public abstract class SrmRestInternalFacadeV10BaseTest extends MetamacRestBaseTest {
 
     private static String                   jaxrsServerAddress = "http://localhost:" + ServerResource.PORT + "/apis/srm-internal";
     protected String                        baseApi            = jaxrsServerAddress + "/v1.0";
