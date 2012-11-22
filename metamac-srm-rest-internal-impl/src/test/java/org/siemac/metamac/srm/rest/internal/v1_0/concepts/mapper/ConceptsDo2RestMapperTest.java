@@ -1,7 +1,11 @@
-package org.siemac.metamac.srm.rest.internal.v1_0.mapper;
+package org.siemac.metamac.srm.rest.internal.v1_0.concepts.mapper;
 
 import static org.junit.Assert.assertEquals;
 import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.WILDCARD;
+import static org.siemac.metamac.srm.rest.internal.v1_0.concepts.utils.SrmDoConceptsMocks.mockConcept;
+import static org.siemac.metamac.srm.rest.internal.v1_0.concepts.utils.SrmDoConceptsMocks.mockConceptScheme;
+import static org.siemac.metamac.srm.rest.internal.v1_0.concepts.utils.SrmDoConceptsMocks.mockConceptSchemeWithConcepts;
+import static org.siemac.metamac.srm.rest.internal.v1_0.concepts.utils.SrmDoConceptsMocks.mockConceptWithConceptRelations;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestAsserts.assertEqualsConcept;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestAsserts.assertEqualsConceptScheme;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestAsserts.assertEqualsResource;
@@ -34,7 +38,6 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.concept.ConceptsDo2RestMapperV10;
-import org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmCoreMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -57,10 +60,10 @@ public class ConceptsDo2RestMapperTest {
         Integer offset = Integer.valueOf(4);
 
         List<ConceptSchemeVersionMetamac> source = new ArrayList<ConceptSchemeVersionMetamac>();
-        source.add(SrmCoreMocks.mockConceptScheme(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1));
-        source.add(SrmCoreMocks.mockConceptScheme(AGENCY_1, ITEM_SCHEME_2_CODE, ITEM_SCHEME_2_VERSION_1));
-        source.add(SrmCoreMocks.mockConceptScheme(AGENCY_1, ITEM_SCHEME_2_CODE, ITEM_SCHEME_2_VERSION_2));
-        source.add(SrmCoreMocks.mockConceptScheme(AGENCY_2, ITEM_SCHEME_3_CODE, ITEM_SCHEME_3_VERSION_1));
+        source.add(mockConceptScheme(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1));
+        source.add(mockConceptScheme(AGENCY_1, ITEM_SCHEME_2_CODE, ITEM_SCHEME_2_VERSION_1));
+        source.add(mockConceptScheme(AGENCY_1, ITEM_SCHEME_2_CODE, ITEM_SCHEME_2_VERSION_2));
+        source.add(mockConceptScheme(AGENCY_2, ITEM_SCHEME_3_CODE, ITEM_SCHEME_3_VERSION_1));
 
         Integer totalRows = source.size() * 5;
         PagedResult<ConceptSchemeVersionMetamac> sources = new PagedResult<ConceptSchemeVersionMetamac>(source, offset, source.size(), limit, totalRows, 0);
@@ -91,7 +94,7 @@ public class ConceptsDo2RestMapperTest {
     @Test
     public void testToConceptScheme() {
 
-        ConceptSchemeVersionMetamac source = SrmCoreMocks.mockConceptSchemeWithConcepts("agencyID1", "resourceID1", "01.123");
+        ConceptSchemeVersionMetamac source = mockConceptSchemeWithConcepts("agencyID1", "resourceID1", "01.123");
 
         // Transform
         ConceptScheme target = do2RestInternalMapper.toConceptScheme(source);
@@ -111,13 +114,13 @@ public class ConceptsDo2RestMapperTest {
         Integer limit = Integer.valueOf(4);
         Integer offset = Integer.valueOf(4);
 
-        ConceptSchemeVersionMetamac conceptScheme1 = SrmCoreMocks.mockConceptScheme(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1);
-        ConceptSchemeVersionMetamac conceptScheme2 = SrmCoreMocks.mockConceptScheme(AGENCY_1, ITEM_SCHEME_2_CODE, ITEM_SCHEME_2_VERSION_1);
+        ConceptSchemeVersionMetamac conceptScheme1 = mockConceptScheme(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1);
+        ConceptSchemeVersionMetamac conceptScheme2 = mockConceptScheme(AGENCY_1, ITEM_SCHEME_2_CODE, ITEM_SCHEME_2_VERSION_1);
         List<ConceptMetamac> source = new ArrayList<ConceptMetamac>();
-        source.add(SrmCoreMocks.mockConcept(ITEM_1_CODE, conceptScheme1, null));
-        source.add(SrmCoreMocks.mockConcept(ITEM_2_CODE, conceptScheme1, null));
-        source.add(SrmCoreMocks.mockConcept(ITEM_3_CODE, conceptScheme1, null));
-        source.add(SrmCoreMocks.mockConcept(ITEM_1_CODE, conceptScheme2, null));
+        source.add(mockConcept(ITEM_1_CODE, conceptScheme1, null));
+        source.add(mockConcept(ITEM_2_CODE, conceptScheme1, null));
+        source.add(mockConcept(ITEM_3_CODE, conceptScheme1, null));
+        source.add(mockConcept(ITEM_1_CODE, conceptScheme2, null));
 
         Integer totalRows = source.size() * 5;
         PagedResult<ConceptMetamac> sources = new PagedResult<ConceptMetamac>(source, offset, source.size(), limit, totalRows, 0);
@@ -146,9 +149,9 @@ public class ConceptsDo2RestMapperTest {
 
     @Test
     public void testToConcept() {
-        ConceptSchemeVersionMetamac conceptScheme = SrmCoreMocks.mockConceptScheme("agencyID1", "resourceID1", "01.123");
-        ConceptMetamac parent = SrmCoreMocks.mockConcept("conceptParent1", conceptScheme, null);
-        ConceptMetamac source = SrmCoreMocks.mockConceptWithConceptRelations("concept2", conceptScheme, parent);
+        ConceptSchemeVersionMetamac conceptScheme = mockConceptScheme("agencyID1", "resourceID1", "01.123");
+        ConceptMetamac parent = mockConcept("conceptParent1", conceptScheme, null);
+        ConceptMetamac source = mockConceptWithConceptRelations("concept2", conceptScheme, parent);
 
         // Transform
         Concept target = do2RestInternalMapper.toConcept(source);

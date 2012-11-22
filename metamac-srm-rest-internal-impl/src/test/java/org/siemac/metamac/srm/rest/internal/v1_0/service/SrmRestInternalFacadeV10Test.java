@@ -64,7 +64,7 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacPro
 import org.siemac.metamac.srm.core.concept.serviceapi.ConceptsMetamacService;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
-import org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmCoreMocks;
+import org.siemac.metamac.srm.rest.internal.v1_0.concepts.utils.SrmDoConceptsMocks;
 import org.springframework.context.ApplicationContext;
 
 import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.ConceptType;
@@ -527,7 +527,7 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
                         conceptSchemeVersion = null;
                     } else if (AGENCY_1.equals(conditionalCriteriaAgencyID.getFirstOperant()) && ITEM_SCHEME_1_CODE.equals(conditionalCriteriaResourceID.getFirstOperant())
                             && ITEM_SCHEME_1_VERSION_1.equals(conditionalCriteriaVersion.getFirstOperant())) {
-                        conceptSchemeVersion = SrmCoreMocks.mockConceptSchemeWithConcepts(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1);
+                        conceptSchemeVersion = SrmDoConceptsMocks.mockConceptSchemeWithConcepts(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1);
                     } else {
                         fail();
                     }
@@ -539,10 +539,10 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
                 } else {
                     // any
                     List<ConceptSchemeVersionMetamac> conceptSchemes = new ArrayList<ConceptSchemeVersionMetamac>();
-                    conceptSchemes.add(SrmCoreMocks.mockConceptSchemeWithConcepts(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1));
-                    conceptSchemes.add(SrmCoreMocks.mockConceptSchemeWithConcepts(AGENCY_1, ITEM_SCHEME_2_CODE, ITEM_SCHEME_2_VERSION_1));
-                    conceptSchemes.add(SrmCoreMocks.mockConceptSchemeWithConcepts(AGENCY_1, ITEM_SCHEME_2_CODE, ITEM_SCHEME_2_VERSION_2));
-                    conceptSchemes.add(SrmCoreMocks.mockConceptSchemeWithConcepts(AGENCY_2, ITEM_SCHEME_3_CODE, ITEM_SCHEME_3_VERSION_1));
+                    conceptSchemes.add(SrmDoConceptsMocks.mockConceptSchemeWithConcepts(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1));
+                    conceptSchemes.add(SrmDoConceptsMocks.mockConceptSchemeWithConcepts(AGENCY_1, ITEM_SCHEME_2_CODE, ITEM_SCHEME_2_VERSION_1));
+                    conceptSchemes.add(SrmDoConceptsMocks.mockConceptSchemeWithConcepts(AGENCY_1, ITEM_SCHEME_2_CODE, ITEM_SCHEME_2_VERSION_2));
+                    conceptSchemes.add(SrmDoConceptsMocks.mockConceptSchemeWithConcepts(AGENCY_2, ITEM_SCHEME_3_CODE, ITEM_SCHEME_3_VERSION_1));
                     return new PagedResult<ConceptSchemeVersionMetamac>(conceptSchemes, conceptSchemes.size(), conceptSchemes.size(), conceptSchemes.size(), conceptSchemes.size() * 10, 0);
                 }
             };
@@ -572,8 +572,8 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
                         concept = null;
                     } else if (AGENCY_1.equals(conditionalCriteriaAgencyID.getFirstOperant()) && ITEM_SCHEME_1_CODE.equals(conditionalCriteriaResourceID.getFirstOperant())
                             && ITEM_SCHEME_1_VERSION_1.equals(conditionalCriteriaVersion.getFirstOperant()) && ITEM_1_CODE.equals(conditionalCriteriaConcept.getFirstOperant())) {
-                        ConceptSchemeVersionMetamac conceptScheme1 = SrmCoreMocks.mockConceptScheme(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1);
-                        concept = SrmCoreMocks.mockConcept(ITEM_1_CODE, conceptScheme1, null);
+                        ConceptSchemeVersionMetamac conceptScheme1 = SrmDoConceptsMocks.mockConceptScheme(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1);
+                        concept = SrmDoConceptsMocks.mockConcept(ITEM_1_CODE, conceptScheme1, null);
                     } else {
                         fail();
                     }
@@ -584,14 +584,14 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
                     return new PagedResult<ConceptMetamac>(concepts, 0, concepts.size(), concepts.size());
                 } else {
                     // any
-                    ConceptSchemeVersionMetamac conceptScheme1 = SrmCoreMocks.mockConceptScheme(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1);
-                    ConceptSchemeVersionMetamac conceptScheme2 = SrmCoreMocks.mockConceptScheme(AGENCY_1, ITEM_SCHEME_2_CODE, ITEM_SCHEME_2_VERSION_1);
+                    ConceptSchemeVersionMetamac conceptScheme1 = SrmDoConceptsMocks.mockConceptScheme(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1);
+                    ConceptSchemeVersionMetamac conceptScheme2 = SrmDoConceptsMocks.mockConceptScheme(AGENCY_1, ITEM_SCHEME_2_CODE, ITEM_SCHEME_2_VERSION_1);
 
                     List<ConceptMetamac> concepts = new ArrayList<ConceptMetamac>();
-                    concepts.add(SrmCoreMocks.mockConcept(ITEM_1_CODE, conceptScheme1, null));
-                    concepts.add(SrmCoreMocks.mockConcept(ITEM_2_CODE, conceptScheme1, null));
-                    concepts.add(SrmCoreMocks.mockConcept(ITEM_3_CODE, conceptScheme1, null));
-                    concepts.add(SrmCoreMocks.mockConcept(ITEM_1_CODE, conceptScheme2, null));
+                    concepts.add(SrmDoConceptsMocks.mockConcept(ITEM_1_CODE, conceptScheme1, null));
+                    concepts.add(SrmDoConceptsMocks.mockConcept(ITEM_2_CODE, conceptScheme1, null));
+                    concepts.add(SrmDoConceptsMocks.mockConcept(ITEM_3_CODE, conceptScheme1, null));
+                    concepts.add(SrmDoConceptsMocks.mockConcept(ITEM_1_CODE, conceptScheme2, null));
 
                     return new PagedResult<ConceptMetamac>(concepts, concepts.size(), concepts.size(), concepts.size(), concepts.size() * 10, 0);
                 }
@@ -600,7 +600,7 @@ public class SrmRestInternalFacadeV10Test extends MetamacRestBaseTest {
     }
 
     private void mockRetrieveConceptTypes() throws MetamacException {
-        when(conceptsService.findAllConceptTypes(any(ServiceContext.class))).thenReturn(SrmCoreMocks.mockConceptTypes());
+        when(conceptsService.findAllConceptTypes(any(ServiceContext.class))).thenReturn(SrmDoConceptsMocks.mockConceptTypes());
     }
 
     private SrmRestInternalFacadeV10 getSrmRestInternalFacadeClientXml() {

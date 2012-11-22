@@ -151,6 +151,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
         }
     }
 
+    // TODO latest
     private PagedResult<ConceptSchemeVersionMetamac> findConceptSchemesCore(String agencyID, String resourceID, String version, List<ConditionalCriteria> conditionalCriteriaQuery,
             PagingParameter pagingParameter) throws MetamacException {
 
@@ -171,6 +172,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
         return conceptsSchemesEntitiesResult;
     }
 
+    // TODO latest
     private PagedResult<ConceptMetamac> findConceptsCore(String agencyID, String resourceID, String version, String conceptID, List<ConditionalCriteria> conditionalCriteriaQuery,
             PagingParameter pagingParameter) throws MetamacException {
 

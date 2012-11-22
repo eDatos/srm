@@ -1,7 +1,10 @@
-package org.siemac.metamac.srm.rest.internal.v1_0.mapper;
+package org.siemac.metamac.srm.rest.internal.v1_0.categories.mapper;
 
 import static org.junit.Assert.assertEquals;
 import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.WILDCARD;
+import static org.siemac.metamac.srm.rest.internal.v1_0.categories.utils.SrmDoCategoriesMocks.mockCategory;
+import static org.siemac.metamac.srm.rest.internal.v1_0.categories.utils.SrmDoCategoriesMocks.mockCategoryScheme;
+import static org.siemac.metamac.srm.rest.internal.v1_0.categories.utils.SrmDoCategoriesMocks.mockCategorySchemeWithCategories;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestAsserts.assertEqualsCategory;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestAsserts.assertEqualsCategoryScheme;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmRestAsserts.assertEqualsResource;
@@ -34,7 +37,6 @@ import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.category.CategoriesDo2RestMapperV10;
-import org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmCoreMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -57,10 +59,10 @@ public class CategoriesDo2RestMapperTest {
         Integer offset = Integer.valueOf(4);
 
         List<CategorySchemeVersionMetamac> source = new ArrayList<CategorySchemeVersionMetamac>();
-        source.add(SrmCoreMocks.mockCategoryScheme(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1));
-        source.add(SrmCoreMocks.mockCategoryScheme(AGENCY_1, ITEM_SCHEME_2_CODE, ITEM_SCHEME_2_VERSION_1));
-        source.add(SrmCoreMocks.mockCategoryScheme(AGENCY_1, ITEM_SCHEME_2_CODE, ITEM_SCHEME_2_VERSION_2));
-        source.add(SrmCoreMocks.mockCategoryScheme(AGENCY_2, ITEM_SCHEME_3_CODE, ITEM_SCHEME_3_VERSION_1));
+        source.add(mockCategoryScheme(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1));
+        source.add(mockCategoryScheme(AGENCY_1, ITEM_SCHEME_2_CODE, ITEM_SCHEME_2_VERSION_1));
+        source.add(mockCategoryScheme(AGENCY_1, ITEM_SCHEME_2_CODE, ITEM_SCHEME_2_VERSION_2));
+        source.add(mockCategoryScheme(AGENCY_2, ITEM_SCHEME_3_CODE, ITEM_SCHEME_3_VERSION_1));
 
         Integer totalRows = source.size() * 5;
         PagedResult<CategorySchemeVersionMetamac> sources = new PagedResult<CategorySchemeVersionMetamac>(source, offset, source.size(), limit, totalRows, 0);
@@ -91,7 +93,7 @@ public class CategoriesDo2RestMapperTest {
     @Test
     public void testToCategoryScheme() {
 
-        CategorySchemeVersionMetamac source = SrmCoreMocks.mockCategorySchemeWithCategories("agencyID1", "resourceID1", "01.123");
+        CategorySchemeVersionMetamac source = mockCategorySchemeWithCategories("agencyID1", "resourceID1", "01.123");
 
         // Transform
         CategoryScheme target = do2RestInternalMapper.toCategoryScheme(source);
@@ -111,13 +113,13 @@ public class CategoriesDo2RestMapperTest {
         Integer limit = Integer.valueOf(4);
         Integer offset = Integer.valueOf(4);
 
-        CategorySchemeVersionMetamac categoryScheme1 = SrmCoreMocks.mockCategoryScheme(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1);
-        CategorySchemeVersionMetamac categoryScheme2 = SrmCoreMocks.mockCategoryScheme(AGENCY_1, ITEM_SCHEME_2_CODE, ITEM_SCHEME_2_VERSION_1);
+        CategorySchemeVersionMetamac categoryScheme1 = mockCategoryScheme(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1);
+        CategorySchemeVersionMetamac categoryScheme2 = mockCategoryScheme(AGENCY_1, ITEM_SCHEME_2_CODE, ITEM_SCHEME_2_VERSION_1);
         List<CategoryMetamac> source = new ArrayList<CategoryMetamac>();
-        source.add(SrmCoreMocks.mockCategory(ITEM_1_CODE, categoryScheme1, null));
-        source.add(SrmCoreMocks.mockCategory(ITEM_2_CODE, categoryScheme1, null));
-        source.add(SrmCoreMocks.mockCategory(ITEM_3_CODE, categoryScheme1, null));
-        source.add(SrmCoreMocks.mockCategory(ITEM_1_CODE, categoryScheme2, null));
+        source.add(mockCategory(ITEM_1_CODE, categoryScheme1, null));
+        source.add(mockCategory(ITEM_2_CODE, categoryScheme1, null));
+        source.add(mockCategory(ITEM_3_CODE, categoryScheme1, null));
+        source.add(mockCategory(ITEM_1_CODE, categoryScheme2, null));
 
         Integer totalRows = source.size() * 5;
         PagedResult<CategoryMetamac> sources = new PagedResult<CategoryMetamac>(source, offset, source.size(), limit, totalRows, 0);
@@ -146,9 +148,9 @@ public class CategoriesDo2RestMapperTest {
 
     @Test
     public void testToCategory() {
-        CategorySchemeVersionMetamac categoryScheme = SrmCoreMocks.mockCategoryScheme("agencyID1", "resourceID1", "01.123");
-        CategoryMetamac parent = SrmCoreMocks.mockCategory("categoryParent1", categoryScheme, null);
-        CategoryMetamac source = SrmCoreMocks.mockCategory("category2", categoryScheme, parent);
+        CategorySchemeVersionMetamac categoryScheme = mockCategoryScheme("agencyID1", "resourceID1", "01.123");
+        CategoryMetamac parent = mockCategory("categoryParent1", categoryScheme, null);
+        CategoryMetamac source = mockCategory("category2", categoryScheme, parent);
 
         // Transform
         Category target = do2RestInternalMapper.toCategory(source);
