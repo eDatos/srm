@@ -4,7 +4,7 @@ import org.siemac.metamac.rest.common.v1_0.domain.ComparisonOperator;
 import org.siemac.metamac.rest.common.v1_0.domain.LogicalOperator;
 import org.siemac.metamac.rest.common.v1_0.domain.OrderOperator;
 
-public class SrmRestTestConstants {
+public class RestTestConstants {
 
     public static String NOT_EXISTS                  = "notexists";
     public static String AGENCY_1                    = "agency1";

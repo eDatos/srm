@@ -9,7 +9,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.domain.NameableArtefact;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 
-public class SrmDoMocks {
+public class DoMocks {
 
     public static InternationalString mockInternationalString(String metadata, String subCode) {
         String subTitle = subCode != null ? metadata + "-" + subCode : metadata;

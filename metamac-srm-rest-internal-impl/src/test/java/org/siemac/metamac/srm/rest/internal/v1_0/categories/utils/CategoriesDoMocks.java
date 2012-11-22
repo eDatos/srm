@@ -3,11 +3,11 @@ package org.siemac.metamac.srm.rest.internal.v1_0.categories.utils;
 import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
 import org.siemac.metamac.srm.core.category.serviceapi.utils.CategoriesMetamacDoMocks;
-import org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmDoMocks;
+import org.siemac.metamac.srm.rest.internal.v1_0.utils.DoMocks;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 
-public class SrmDoCategoriesMocks extends SrmDoMocks {
+public class CategoriesDoMocks extends DoMocks {
 
     public static CategorySchemeVersionMetamac mockCategoryScheme(String agencyID, String resourceID, String version) {
         CategorySchemeVersionMetamac target = CategoriesMetamacDoMocks.mockCategoryScheme(mockMaintainer(agencyID));

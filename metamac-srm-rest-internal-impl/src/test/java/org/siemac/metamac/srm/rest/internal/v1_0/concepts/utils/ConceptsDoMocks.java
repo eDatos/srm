@@ -7,11 +7,11 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptType;
 import org.siemac.metamac.srm.core.concept.serviceapi.utils.ConceptsMetamacDoMocks;
-import org.siemac.metamac.srm.rest.internal.v1_0.utils.SrmDoMocks;
+import org.siemac.metamac.srm.rest.internal.v1_0.utils.DoMocks;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 
-public class SrmDoConceptsMocks extends SrmDoMocks {
+public class ConceptsDoMocks extends DoMocks {
 
     public static ConceptSchemeVersionMetamac mockConceptScheme(String agencyID, String resourceID, String version) {
         ConceptSchemeVersionMetamac target = ConceptsMetamacDoMocks.mockConceptScheme(mockMaintainer(agencyID));
