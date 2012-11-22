@@ -3,7 +3,7 @@ package org.siemac.metamac.srm.rest.internal.v1_0.utils;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.siemac.metamac.rest.common.test.utils.MetamacRestAsserts;
 
-public class MockitoExpected extends MetamacRestAsserts {
+public class MockitoVerify extends MetamacRestAsserts {
 
     public static PagingParameter buildExpectedPagingParameter(String offset, String limit) {
         Integer startRow = null;

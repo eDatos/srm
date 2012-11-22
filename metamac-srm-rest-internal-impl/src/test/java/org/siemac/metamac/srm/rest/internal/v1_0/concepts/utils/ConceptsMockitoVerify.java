@@ -26,9 +26,9 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacProperties;
 import org.siemac.metamac.srm.core.concept.serviceapi.ConceptsMetamacService;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
-import org.siemac.metamac.srm.rest.internal.v1_0.utils.MockitoExpected;
+import org.siemac.metamac.srm.rest.internal.v1_0.utils.MockitoVerify;
 
-public class ConceptsMockito extends MockitoExpected {
+public class ConceptsMockitoVerify extends MockitoVerify {
 
     @SuppressWarnings({"rawtypes", "unchecked"})
     public static void verifyFindConceptSchemes(ConceptsMetamacService conceptsService, String agencyID, String resourceID, String limit, String offset, String query, String orderBy,
