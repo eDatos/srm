@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
+import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
@@ -12,6 +13,7 @@ import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
+import org.siemac.metamac.srm.core.code.domain.CodelistFamilyProperties;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.serviceimpl.utils.CodesMetamacInvocationValidator;
 import org.siemac.metamac.srm.core.common.LifeCycle;
@@ -225,7 +227,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
     @Override
     public void deleteCode(ServiceContext ctx, String urn) throws MetamacException {
-        // Note: ConceptsService checks codelist isn't final
+        // Note: CodesService checks codelist isn't final
         codesService.deleteCode(ctx, urn);
     }
 
@@ -244,13 +246,56 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     // ------------------------------------------------------------------------------------
 
     @Override
+    public CodelistFamily createCodelistFamily(ServiceContext ctx, CodelistFamily codelistFamily) throws MetamacException {
+        // Validation
+        CodesMetamacInvocationValidator.checkCreateCodelistFamily(codelistFamily, null);
+        validateCodelistFamilyIdentifierUnique(ctx, codelistFamily);
+
+        // Create
+        return getCodelistFamilyRepository().save(codelistFamily);
+    }
+
+    @Override
+    public CodelistFamily updateCodelistFamily(ServiceContext ctx, CodelistFamily codelistFamily) throws MetamacException {
+        // Validation
+        CodesMetamacInvocationValidator.checkUpdateCodelistFamily(codelistFamily, null);
+        validateCodelistFamilyIdentifierUnique(ctx, codelistFamily);
+
+        // Create
+        return getCodelistFamilyRepository().save(codelistFamily);
+    }
+
+    @Override
     public CodelistFamily retrieveCodelistFamilyByIdentifier(ServiceContext ctx, String identifier) throws MetamacException {
         // Validation
         CodesMetamacInvocationValidator.checkRetrieveCodelistFamilyByIdentifier(identifier, null);
 
         // Retrieve
-        CodelistFamily codelistFamily = retrieveCodelistFamilyByCode(identifier);
+        CodelistFamily codelistFamily = retrieveCodelistFamilyByIdentifier(identifier);
         return codelistFamily;
+    }
+
+    @Override
+    public PagedResult<CodelistFamily> findCodelistFamiliesByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
+        // Validation
+        CodesMetamacInvocationValidator.checkFindCodelistFamiliesByCondition(conditions, pagingParameter, null);
+
+        // Find
+        if (conditions == null) {
+            conditions = ConditionalCriteriaBuilder.criteriaFor(CodelistFamily.class).distinctRoot().build();
+        }
+        PagedResult<CodelistFamily> codelistFamilyPagedResult = getCodelistFamilyRepository().findByCondition(conditions, pagingParameter);
+        return codelistFamilyPagedResult;
+    }
+
+    @Override
+    public void deleteCodelistFamily(ServiceContext ctx, String identifier) throws MetamacException {
+        // Validation
+        CodesMetamacInvocationValidator.checkDeleteCodelistFamily(identifier, null);
+
+        // Delete
+        CodelistFamily codelistFamilyToDelete = retrieveCodelistFamilyByIdentifier(identifier);
+        getCodelistFamilyRepository().delete(codelistFamilyToDelete);
     }
 
     // ------------------------------------------------------------------------------------
@@ -311,11 +356,33 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         return targets;
     }
 
-    private CodelistFamily retrieveCodelistFamilyByCode(String identifier) throws MetamacException {
+    private CodelistFamily retrieveCodelistFamilyByIdentifier(String identifier) throws MetamacException {
         CodelistFamily codelistFamily = getCodelistFamilyRepository().findByIdentifier(identifier);
         if (codelistFamily == null) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CODELIST_FAMILY_NOT_FOUND).withMessageParameters(identifier).build();
         }
         return codelistFamily;
     }
+
+    /**
+     * Checks if codelist family identifier is unique
+     */
+    private void validateCodelistFamilyIdentifierUnique(ServiceContext ctx, CodelistFamily codelistFamily) throws MetamacException {
+        String familyIdentifier = codelistFamily.getIdentifier();
+        Long familyId = codelistFamily != null ? codelistFamily.getId() : null;
+
+        List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(CodelistFamily.class).withProperty(CodelistFamilyProperties.identifier()).ignoreCaseEq(familyIdentifier)
+                .distinctRoot().build();
+
+        if (familyId != null) {
+            ConditionalCriteria notOwnEntity = ConditionalCriteriaBuilder.criteriaFor(CodelistFamily.class).not().withProperty(CodelistFamilyProperties.id()).eq(familyId).buildSingle();
+            conditions.add(notOwnEntity);
+        }
+
+        PagedResult<CodelistFamily> families = getCodelistFamilyRepository().findByCondition(conditions, PagingParameter.noLimits());
+        if (families != null && families.getValues().size() != 0) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CODELIST_FAMILY_DUPLICATED_IDENTIFIER).withMessageParameters(familyIdentifier).build();
+        }
+    }
+
 }

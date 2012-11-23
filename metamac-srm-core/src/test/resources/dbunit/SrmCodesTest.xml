@@ -41,6 +41,7 @@
     <TB_SEQUENCES SEQUENCE_NAME="M_ORGANISATIONS" SEQUENCE_NEXT_VALUE="100000000" />
     <TB_SEQUENCES SEQUENCE_NAME="M_CODELIST_VERSIONS" SEQUENCE_NEXT_VALUE="100000000" />
     <TB_SEQUENCES SEQUENCE_NAME="M_CODES" SEQUENCE_NEXT_VALUE="100000000" />
+    <TB_SEQUENCES SEQUENCE_NAME="M_CODELIST_FAMILIES" SEQUENCE_NEXT_VALUE="100000000" />
     
     <!-- ************************************************************************************** -->
     <!-- ORGANISATION SCHEME 100 (ROOT ORGANISATION - MAINTAINER)                               -->
@@ -3161,8 +3162,11 @@
 
     <TB_M_CODELIST_FAMILIES 
         ID="1"
-        IDENTIFIER="codelist-family-1"
-        UUID="codelist-family-1"
+        
+        IDENTIFIER="codelist-family-01"
+        NAME_FK="51"
+        
+        UUID="codelist-family-01"
         CREATED_DATE_TZ="Europe/London"
         CREATED_DATE="2011-01-01 01:02:03"
         CREATED_BY="user1"
@@ -3170,7 +3174,22 @@
         LAST_UPDATED="2012-01-01 01:02:03"
         LAST_UPDATED_BY="user2"
         VERSION="1"
-        NAME_FK="51"
+    />
+    
+    <TB_M_CODELIST_FAMILIES 
+        ID="2"
+        
+        IDENTIFIER="codelist-family-02"
+        NAME_FK="52"
+        
+        UUID="codelist-family-02"
+        CREATED_DATE_TZ="Europe/London"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_BY="user1"
+        LAST_UPDATED_TZ="Europe/London"
+        LAST_UPDATED="2012-01-01 01:02:03"
+        LAST_UPDATED_BY="user2"
+        VERSION="1"
     />
     
     <!-- ************************************************************************************** -->
@@ -3917,7 +3936,7 @@
     
     <TB_LOCALISED_STRINGS
         ID="511"
-        LABEL="familia-de-codelists"
+        LABEL="familia-de-codelists-51"
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="51"
@@ -3929,6 +3948,19 @@
         LOCALE="pt"
         VERSION="1"
         INTERNATIONAL_STRING_FK="51"
+    />
+
+    <TB_INTERNATIONAL_STRINGS
+        ID="52"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="521"
+        LABEL="familia-de-codelists-52"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="52"
     />
 
 </dataset>

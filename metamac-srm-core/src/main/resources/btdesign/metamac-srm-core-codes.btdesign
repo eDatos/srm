@@ -73,16 +73,16 @@ Application CodesMetamac {
 
 			// CODESLIST FAMILIES
 			
-//			"Creates codelist family"
-//			@CodelistFamily createCodelistFamily(@CodelistFamily codelistFamily) throws MetamacException;
-//			"Updates codelist family"
-//			@CodelistFamily updateCodelistFamily(@CodelistFamily code) throws MetamacException;
+			"Creates codelist family"
+			@CodelistFamily createCodelistFamily(@CodelistFamily codelistFamily) throws MetamacException;
+			"Updates codelist family"
+			@CodelistFamily updateCodelistFamily(@CodelistFamily codelistFamily) throws MetamacException;
     		"Retrieves codelist family by urn"
     		@CodelistFamily retrieveCodelistFamilyByIdentifier(String identifier) throws MetamacException;
-//    		"Finds codelist families by criteria"
-//    		PagedResult<@CodelistFamily> findCodelistFamiliesByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
-//			"Deletes code"
-//    		deleteCodelistFamily(String urn) throws MetamacException;
+    		"Finds codelist families by criteria"
+    		PagedResult<@CodelistFamily> findCodelistFamiliesByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
+			"Deletes code"
+    		deleteCodelistFamily(String identifier) throws MetamacException;
 		}
 
 		// ----------------------------------------------------------------
@@ -136,9 +136,11 @@ Application CodesMetamac {
 			
 			Repository CodelistFamilyRepository {
 				findById;
+				save;
+				delete;
 				findByQuery(String query, Map<String, Object> parameters, int maxResult);
 				findByCondition(PagingParameter pagingParameter);
-				@CodelistFamily findByIdentifier(String code);
+				@CodelistFamily findByIdentifier(String identifier);
 			}
 		}
 

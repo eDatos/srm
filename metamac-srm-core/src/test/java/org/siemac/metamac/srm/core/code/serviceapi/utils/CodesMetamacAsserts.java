@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.siemac.metamac.srm.core.base.utils.BaseAsserts;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
+import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
@@ -12,9 +13,9 @@ import com.arte.statistic.sdmx.srm.core.code.serviceapi.utils.CodesAsserts;
 
 public class CodesMetamacAsserts extends CodesAsserts {
 
-    //
+    // ------------------------------------------------------------------------------------
     // CODELIST
-    //
+    // ------------------------------------------------------------------------------------
 
     public static void assertEqualsCodelist(CodelistVersionMetamac expected, CodelistVersionMetamac actual) {
         BaseAsserts.assertEqualsLifeCycle(expected.getLifeCycleMetadata(), actual.getLifeCycleMetadata());
@@ -63,9 +64,9 @@ public class CodesMetamacAsserts extends CodesAsserts {
         CodesAsserts.assertEqualsCodelist(entity, dto, mapperEnum);
     }
 
-    //
+    // ------------------------------------------------------------------------------------
     // CODE
-    //
+    // ------------------------------------------------------------------------------------
 
     public static void assertEqualsCode(CodeMetamac expected, CodeMetamac actual) {
         // Metamac
@@ -95,4 +96,14 @@ public class CodesMetamacAsserts extends CodesAsserts {
         // SDMX
         CodesAsserts.assertEqualsCode(entity, dto, mapperEnum);
     }
+
+    // ------------------------------------------------------------------------------------
+    // CODELIST FAMILIES
+    // ------------------------------------------------------------------------------------
+
+    public static void assertEqualsCodelistFamily(CodelistFamily expected, CodelistFamily actual) {
+        assertEquals(expected.getIdentifier(), actual.getIdentifier());
+        assertEqualsInternationalString(expected.getName(), actual.getName());
+    }
+
 }

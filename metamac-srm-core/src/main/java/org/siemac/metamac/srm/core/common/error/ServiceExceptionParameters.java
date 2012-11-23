@@ -32,6 +32,11 @@ public class ServiceExceptionParameters extends com.arte.statistic.sdmx.srm.core
     public static final String CODELIST_SHORT_NAME               = CODELIST + ".short_name";
     public static final String CODELIST_ACCESS_TYPE              = CODELIST + ".access_type";
 
+    // CODELIST FAMILY
+    public static final String CODELIST_FAMILY                   = "codelist_family";
+    public static final String CODELIST_FAMILY_IDENTIFIER        = CODELIST_FAMILY + ".identifier";
+    public static final String CODELIST_FAMILY_NAME              = CODELIST_FAMILY + ".name";
+
     // LIFECYCLE
     public static final String PROC_STATUS_DRAFT                 = ProcStatusEnum.DRAFT.name();
     public static final String PROC_STATUS_PRODUCTION_VALIDATION = ProcStatusEnum.PRODUCTION_VALIDATION.name();

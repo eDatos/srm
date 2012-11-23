@@ -7,8 +7,12 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.siemac.metamac.common.test.utils.MetamacAsserts.assertEqualsDate;
+import static org.siemac.metamac.common.test.utils.MetamacAsserts.assertEqualsMetamacExceptionItem;
 import static org.siemac.metamac.srm.core.base.utils.BaseServiceTestUtils.assertListItemsContainsItem;
+import static org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsserts.assertEqualsCode;
 import static org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsserts.assertEqualsCodelist;
+import static org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsserts.assertEqualsCodelistFamily;
 import static org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsserts.assertEqualsCodelistWithoutLifeCycleMetadata;
 
 import java.util.Date;
@@ -22,15 +26,14 @@ import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.siemac.metamac.common.test.utils.MetamacAsserts;
 import org.siemac.metamac.common.test.utils.MetamacMocks;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
+import org.siemac.metamac.srm.core.code.domain.CodelistFamilyProperties;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacProperties;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
-import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsserts;
 import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacDoMocks;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
@@ -44,6 +47,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.arte.statistic.sdmx.srm.core.base.serviceapi.utils.BaseDoMocks;
 import com.arte.statistic.sdmx.srm.core.code.domain.Code;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodeProperties;
 import com.arte.statistic.sdmx.srm.core.code.serviceapi.utils.CodesDoMocks;
@@ -201,11 +205,11 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
         // Validate (only metadata in SRM Metamac; the others are checked in sdmx project)
         assertEquals(urn, codelistVersion.getMaintainableArtefact().getUrn());
-        MetamacAsserts.assertEqualsDate("2011-01-01 01:02:03", codelistVersion.getLifeCycleMetadata().getProductionValidationDate());
+        assertEqualsDate("2011-01-01 01:02:03", codelistVersion.getLifeCycleMetadata().getProductionValidationDate());
         assertEquals("user1", codelistVersion.getLifeCycleMetadata().getProductionValidationUser());
-        MetamacAsserts.assertEqualsDate("2011-01-02 02:02:03", codelistVersion.getLifeCycleMetadata().getDiffusionValidationDate());
+        assertEqualsDate("2011-01-02 02:02:03", codelistVersion.getLifeCycleMetadata().getDiffusionValidationDate());
         assertEquals("user2", codelistVersion.getLifeCycleMetadata().getDiffusionValidationUser());
-        MetamacAsserts.assertEqualsDate("2011-01-03 03:02:03", codelistVersion.getLifeCycleMetadata().getInternalPublicationDate());
+        assertEqualsDate("2011-01-03 03:02:03", codelistVersion.getLifeCycleMetadata().getInternalPublicationDate());
         assertEquals("user3", codelistVersion.getLifeCycleMetadata().getInternalPublicationUser());
         assertNull(codelistVersion.getLifeCycleMetadata().getExternalPublicationDate());
         assertNull(codelistVersion.getLifeCycleMetadata().getExternalPublicationUser());
@@ -991,7 +995,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                 CodeMetamac code = (CodeMetamac) codelistVersionNewVersion.getItemsFirstLevel().get(0);
                 assertEquals(urnExpectedCode1, code.getNameableArtefact().getUrn());
 
-                CodesMetamacAsserts.assertEqualsInternationalString(code.getNameableArtefact().getName(), "es", "Nombre codelist-3-v1-code-1", null, null);
+                assertEqualsInternationalString(code.getNameableArtefact().getName(), "es", "Nombre codelist-3-v1-code-1", null, null);
 
                 assertEquals(0, code.getChildren().size());
             }
@@ -999,7 +1003,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                 CodeMetamac code = (CodeMetamac) codelistVersionNewVersion.getItemsFirstLevel().get(1);
                 assertEquals(urnExpectedCode2, code.getNameableArtefact().getUrn());
 
-                CodesMetamacAsserts.assertEqualsInternationalString(code.getNameableArtefact().getName(), "es", "Nombre codelist-3-v1-code-2", null, null);
+                assertEqualsInternationalString(code.getNameableArtefact().getName(), "es", "Nombre codelist-3-v1-code-2", null, null);
 
                 assertEquals(2, code.getChildren().size());
                 {
@@ -1065,7 +1069,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals(versionExpected, codelistVersionNewVersion.getMaintainableArtefact().getVersionLogic());
             assertEquals(urnExpected, codelistVersionNewVersion.getMaintainableArtefact().getUrn());
             assertEquals(ProcStatusEnum.DRAFT, codelistVersionNewVersion.getLifeCycleMetadata().getProcStatus());
-            CodesMetamacAsserts.assertEqualsCodelistWithoutLifeCycleMetadata(codelistVersionToCopy, codelistVersionNewVersion);
+            assertEqualsCodelistWithoutLifeCycleMetadata(codelistVersionToCopy, codelistVersionNewVersion);
         }
 
         // Validate retrieving
@@ -1078,7 +1082,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals("02.000", codelistVersionNewVersion.getMaintainableArtefact().getReplaceToVersion());
             assertEquals(null, codelistVersionNewVersion.getMaintainableArtefact().getReplacedByVersion());
             assertTrue(codelistVersionNewVersion.getMaintainableArtefact().getIsLastVersion());
-            CodesMetamacAsserts.assertEqualsCodelistWithoutLifeCycleMetadata(codelistVersionToCopy, codelistVersionNewVersion);
+            assertEqualsCodelistWithoutLifeCycleMetadata(codelistVersionToCopy, codelistVersionNewVersion);
 
             // Version copied
             codelistVersionToCopy = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), urnToCopy);
@@ -1206,7 +1210,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
         // Validate (only metadata in SRM Metamac; the others are checked in sdmx project)
         CodeMetamac codeRetrieved = codesService.retrieveCodeByUrn(ctx, urn);
-        CodesMetamacAsserts.assertEqualsCode(code, codeRetrieved);
+        assertEqualsCode(code, codeRetrieved);
 
         // Validate new structure
         CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(ctx, codelistUrn);
@@ -1232,7 +1236,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
         // Validate (only metadata in SRM Metamac; the others are checked in sdmx project)
         CodeMetamac codeRetrieved = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), urn);
-        CodesMetamacAsserts.assertEqualsCode(code, codeRetrieved);
+        assertEqualsCode(code, codeRetrieved);
 
         // Validate new structure
         CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistUrn);
@@ -1276,7 +1280,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         CodeMetamac codeUpdated = codesService.updateCode(getServiceContextAdministrador(), code);
 
         // Validate
-        CodesMetamacAsserts.assertEqualsCode(code, codeUpdated);
+        assertEqualsCode(code, codeUpdated);
     }
 
     @Test
@@ -1322,9 +1326,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             fail("Code deleted");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEquals(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
-            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND, 1, new String[]{urn}, e.getExceptionItems().get(0));
         }
 
         // Check hierarchy
@@ -1362,9 +1364,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             fail("Code deleted");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEquals(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
-            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND, 1, new String[]{urn}, e.getExceptionItems().get(0));
         }
 
         codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistUrn);
@@ -1384,19 +1384,14 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
     @Test
     public void testDeleteCodeErrorCodelistPublished() throws Exception {
-
         String urn = CODELIST_12_V1_CODE_1;
         String codelistUrn = CODELIST_12_V1;
-
-        // Validation
         try {
             codesService.deleteCode(getServiceContextAdministrador(), urn);
             fail("Code can not be deleted");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEquals(ServiceExceptionType.MAINTAINABLE_ARTEFACT_FINAL.getCode(), e.getExceptionItems().get(0).getCode());
-            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-            assertEquals(codelistUrn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.MAINTAINABLE_ARTEFACT_FINAL, 1, new String[]{codelistUrn}, e.getExceptionItems().get(0));
         }
     }
 
@@ -1588,16 +1583,194 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
     @Test
     public void testRetrieveCodelistFamilyByIdentifier() throws Exception {
-        // Retrieve
         String identifier = CODELIST_FAMILY_1;
         CodelistFamily codelistFamily = codesService.retrieveCodelistFamilyByIdentifier(getServiceContextAdministrador(), identifier);
 
         assertEquals(identifier, codelistFamily.getIdentifier());
-        assertEqualsInternationalString(codelistFamily.getName(), "es", "familia-de-codelists", "pt", "codelist-family");
-        assertEquals("codelist-family-1", codelistFamily.getUuid());
+        assertEqualsInternationalString(codelistFamily.getName(), "es", "familia-de-codelists-51", "pt", "codelist-family");
+        assertEquals("codelist-family-01", codelistFamily.getUuid());
         assertEquals("user1", codelistFamily.getCreatedBy());
         assertEquals("user2", codelistFamily.getLastUpdatedBy());
         assertEquals(Long.valueOf(1), codelistFamily.getVersion());
+    }
+
+    @Test
+    public void testRetrieveCodelistFamilyByIdentifierErrorNotFound() throws Exception {
+        String identifier = NOT_EXISTS;
+        try {
+            codesService.retrieveCodelistFamilyByIdentifier(getServiceContextAdministrador(), identifier);
+            fail("not found");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.CODELIST_FAMILY_NOT_FOUND, 1, new String[]{identifier}, e.getExceptionItems().get(0));
+        }
+    }
+
+    @Test
+    public void testRetrieveCodelistFamilyByIdentifierErrorParameterRequired() throws Exception {
+        String identifier = null;
+        try {
+            codesService.retrieveCodelistFamilyByIdentifier(getServiceContextAdministrador(), identifier);
+            fail("parameter required");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.PARAMETER_REQUIRED, 1, new String[]{ServiceExceptionParameters.IDENTIFIER}, e.getExceptionItems().get(0));
+        }
+    }
+
+    @Test
+    public void testCreateCodelistFamily() throws Exception {
+        CodelistFamily codelistFamily = CodesMetamacDoMocks.mockCodelistFamily();
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        // Create
+        CodelistFamily codelistVersionCreated = codesService.createCodelistFamily(ctx, codelistFamily);
+        assertEquals(ctx.getUserId(), codelistVersionCreated.getCreatedBy());
+        assertEquals(getServiceContextAdministrador().getUserId(), codelistVersionCreated.getCreatedBy());
+        assertTrue(DateUtils.isSameDay(new Date(), codelistVersionCreated.getCreatedDate().toDate()));
+        assertEquals(getServiceContextAdministrador().getUserId(), codelistVersionCreated.getLastUpdatedBy());
+        assertTrue(DateUtils.isSameDay(new Date(), codelistVersionCreated.getLastUpdated().toDate()));
+        assertEqualsCodelistFamily(codelistVersionCreated, codelistFamily);
+    }
+
+    @Test
+    public void testCreateCodelistFamilyErrorWrongIdentifier() throws Exception {
+        CodelistFamily codelistFamily = CodesMetamacDoMocks.mockCodelistFamily();
+        codelistFamily.setIdentifier(" 0 - invalid identifier");
+        try {
+            codesService.createCodelistFamily(getServiceContextAdministrador(), codelistFamily);
+            fail("wrong identifier");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, 1, new String[]{ServiceExceptionParameters.CODELIST_FAMILY_IDENTIFIER}, e.getExceptionItems().get(0));
+        }
+    }
+
+    @Test
+    public void testCreateCodelistFamilyErrorDuplicatedIdentifier() throws Exception {
+        CodelistFamily codelistFamily = CodesMetamacDoMocks.mockCodelistFamily();
+        codelistFamily.setIdentifier(CODELIST_FAMILY_1);
+        try {
+            codesService.createCodelistFamily(getServiceContextAdministrador(), codelistFamily);
+            fail("duplicated identifier");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.CODELIST_FAMILY_DUPLICATED_IDENTIFIER, 1, new String[]{CODELIST_FAMILY_1}, e.getExceptionItems().get(0));
+        }
+    }
+
+    @Test
+    public void testCreateCodelistFamilyErrorRequiredMetadata() throws Exception {
+        CodelistFamily codelistFamily = new CodelistFamily();
+        try {
+            codesService.createCodelistFamily(getServiceContextAdministrador(), codelistFamily);
+            fail("metadata required");
+        } catch (MetamacException e) {
+            assertEquals(2, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.CODELIST_FAMILY_IDENTIFIER}, e.getExceptionItems().get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.CODELIST_FAMILY_NAME}, e.getExceptionItems().get(1));
+        }
+    }
+
+    @Test
+    public void testUpdateCodelistFamily() throws Exception {
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        CodelistFamily codelistFamily = codesService.retrieveCodelistFamilyByIdentifier(ctx, CODELIST_FAMILY_1);
+        codelistFamily.setIdentifier(MetamacMocks.mockString(10));
+        codelistFamily.setName(BaseDoMocks.mockInternationalString());
+
+        CodelistFamily codelistFamilyUpdated = codesService.updateCodelistFamily(ctx, codelistFamily);
+
+        assertEqualsCodelistFamily(codelistFamily, codelistFamilyUpdated);
+    }
+
+    @Test
+    public void testUpdateCodelistFamilyErrorWrongIdentifier() throws Exception {
+        CodelistFamily codelistFamily = codesService.retrieveCodelistFamilyByIdentifier(getServiceContextAdministrador(), CODELIST_FAMILY_1);
+        codelistFamily.setIdentifier(" 0 - invalid identifier");
+        try {
+            codesService.updateCodelistFamily(getServiceContextAdministrador(), codelistFamily);
+            fail("wrong identifier");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, 1, new String[]{ServiceExceptionParameters.CODELIST_FAMILY_IDENTIFIER}, e.getExceptionItems().get(0));
+        }
+    }
+
+    @Test
+    public void testUpdateCodelistFamilyErrorDuplicatedIdentifier() throws Exception {
+        CodelistFamily codelistFamily = codesService.retrieveCodelistFamilyByIdentifier(getServiceContextAdministrador(), CODELIST_FAMILY_1);
+        codelistFamily.setIdentifier(CODELIST_FAMILY_2);
+        try {
+            codesService.updateCodelistFamily(getServiceContextAdministrador(), codelistFamily);
+            fail("duplicated identifier");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.CODELIST_FAMILY_DUPLICATED_IDENTIFIER, 1, new String[]{CODELIST_FAMILY_2}, e.getExceptionItems().get(0));
+        }
+    }
+
+    @Test
+    public void testUpdateCodelistFamilyErrorRequiredMetadata() throws Exception {
+        CodelistFamily codelistFamily = codesService.retrieveCodelistFamilyByIdentifier(getServiceContextAdministrador(), CODELIST_FAMILY_1);
+        codelistFamily.setIdentifier(null);
+        codelistFamily.setName(null);
+        try {
+            codesService.createCodelistFamily(getServiceContextAdministrador(), codelistFamily);
+            fail("metadata required");
+        } catch (MetamacException e) {
+            assertEquals(2, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.CODELIST_FAMILY_IDENTIFIER}, e.getExceptionItems().get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.CODELIST_FAMILY_NAME}, e.getExceptionItems().get(1));
+        }
+    }
+
+    @Test
+    public void testFindCodelistFamiliesByCondition() throws Exception {
+        // Find all
+        {
+            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(CodelistFamily.class).orderBy(CodelistFamilyProperties.identifier()).build();
+            PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
+            PagedResult<CodelistFamily> result = codesService.findCodelistFamiliesByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
+
+            assertEquals(2, result.getTotalRows());
+            int i = 0;
+            assertEquals(CODELIST_FAMILY_1, result.getValues().get(i++).getIdentifier());
+            assertEquals(CODELIST_FAMILY_2, result.getValues().get(i++).getIdentifier());
+        }
+        // Find by identifier
+        {
+            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(CodelistFamily.class).withProperty(CodelistFamilyProperties.identifier()).like(CODELIST_FAMILY_1)
+                    .orderBy(CodelistFamilyProperties.identifier()).build();
+            PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
+            PagedResult<CodelistFamily> result = codesService.findCodelistFamiliesByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
+            assertEquals(1, result.getTotalRows());
+            int i = 0;
+            assertEquals(CODELIST_FAMILY_1, result.getValues().get(i++).getIdentifier());
+
+        }
+    }
+
+    @Test
+    public void testDeleteCodelistFamily() throws Exception {
+        codesService.deleteCodelistFamily(getServiceContextAdministrador(), CODELIST_FAMILY_1);
+        // Retrieve deleted family
+        try {
+            codesService.retrieveCodelistFamilyByIdentifier(getServiceContextAdministrador(), CODELIST_FAMILY_1);
+            fail("codelist family already deleted");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.CODELIST_FAMILY_NOT_FOUND, 1, new String[]{CODELIST_FAMILY_1}, e.getExceptionItems().get(0));
+        }
+        // Try to delete again the deleted codelist family
+        try {
+            codesService.deleteCodelistFamily(getServiceContextAdministrador(), CODELIST_FAMILY_1);
+            fail("codelist already deleted");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.CODELIST_FAMILY_NOT_FOUND, 1, new String[]{CODELIST_FAMILY_1}, e.getExceptionItems().get(0));
+        }
     }
 
     // ------------------------------------------------------------------------------------

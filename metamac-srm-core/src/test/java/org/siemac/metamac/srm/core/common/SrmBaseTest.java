@@ -200,10 +200,14 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
     protected static final String CODELIST_13_V1_CODE_3                       = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST13(01.000).CODE03";
 
     // Codelist families
-    protected static final String CODELIST_FAMILY_1                           = "codelist-family-1";
+    protected static final String CODELIST_FAMILY_1                           = "codelist-family-01";
+    protected static final String CODELIST_FAMILY_2                           = "codelist-family-02";
 
     // Other
     protected static final String NOT_EXISTS                                  = "not-exists";
+
+    private ServiceContext        serviceContextWithoutPrincipal              = null;
+    private ServiceContext        serviceContextAdministrador                 = null;
 
     @Value("${metamac.srm.db.provider}")
     private String                databaseProvider;
@@ -214,9 +218,11 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
 
     @Override
     protected ServiceContext getServiceContextAdministrador() {
-        ServiceContext serviceContext = getServiceContextWithoutPrincipal();
-        putMetamacPrincipalInServiceContext(serviceContext, SrmRoleEnum.ADMINISTRADOR);
-        return serviceContext;
+        if (serviceContextAdministrador == null) {
+            serviceContextAdministrador = getServiceContextWithoutPrincipal();
+            putMetamacPrincipalInServiceContext(serviceContextAdministrador, SrmRoleEnum.ADMINISTRADOR);
+        }
+        return serviceContextAdministrador;
     }
 
     protected ServiceContext getServiceContextTecnicoApoyoNormalizacion() {
@@ -345,7 +351,10 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
 
     @Override
     protected ServiceContext getServiceContextWithoutPrincipal() {
-        return new ServiceContext("junit", "junit", "app");
+        if (serviceContextWithoutPrincipal == null) {
+            serviceContextWithoutPrincipal = new ServiceContext("junit", "junit", "app");
+        }
+        return serviceContextWithoutPrincipal;
     }
 
     @Override

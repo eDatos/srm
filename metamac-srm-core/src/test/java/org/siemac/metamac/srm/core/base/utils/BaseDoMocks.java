@@ -4,7 +4,7 @@ import org.joda.time.DateTime;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 
-public class BaseDoMocks {
+public class BaseDoMocks extends com.arte.statistic.sdmx.srm.core.base.serviceapi.utils.BaseDoMocks {
 
     public static SrmLifeCycleMetadata mockLifeCycle() {
         SrmLifeCycleMetadata lifeCycleMetadata = new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT);
