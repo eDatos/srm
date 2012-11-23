@@ -2,31 +2,34 @@
 <srm:concept xmlns:query="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/query" xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common" xmlns:srm="http://www.siemac.org/metamac/rest/srm-internal/v1.0/domain" xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="srm#concept" id="item1" urn="urn:item1" uri="http://data.istac.es/apis/srm/v1.0/conceptschemes/idAsMaintaineragency1/itemScheme1/01.000/concepts/item1">
     <common:Annotations>
         <common:Annotation id="code3">
-            <common:AnnotationTitle>title-aVlKkCoCQL</common:AnnotationTitle>
-            <common:AnnotationType>type-7BFfpwLnJ3</common:AnnotationType>
-            <common:AnnotationURL>url-GxePrLRjGh</common:AnnotationURL>
-            <common:AnnotationText xml:lang="es">text-69pNF3tMeA en Español</common:AnnotationText>
-            <common:AnnotationText xml:lang="en">text-zVCqlHSM4H in English</common:AnnotationText>
-        </common:Annotation>
-        <common:Annotation id="code1">
-            <common:AnnotationTitle>title-0z9lPLOSHn</common:AnnotationTitle>
-            <common:AnnotationType>type-bub2c3i9XV</common:AnnotationType>
-            <common:AnnotationURL>url-S1RioWzZJL</common:AnnotationURL>
-            <common:AnnotationText xml:lang="en">text-7oRFj0tNqv in English</common:AnnotationText>
-            <common:AnnotationText xml:lang="es">text-QfcgOpcnzA en Español</common:AnnotationText>
+            <common:AnnotationTitle>title-tAvhJcRNTD</common:AnnotationTitle>
+            <common:AnnotationType>type-y98bbNyCRL</common:AnnotationType>
+            <common:AnnotationURL>url-6XYjhN8SsI</common:AnnotationURL>
+            <common:AnnotationText xml:lang="en">text-k2qhFuRHTG in English</common:AnnotationText>
+            <common:AnnotationText xml:lang="es">text-7IFIkLBKrp en Español</common:AnnotationText>
         </common:Annotation>
         <common:Annotation id="code2">
-            <common:AnnotationTitle>title-jaPWwQ8DRw</common:AnnotationTitle>
-            <common:AnnotationType>type-1M7juYBwVZ</common:AnnotationType>
-            <common:AnnotationURL>url-wj8Hs1F8uL</common:AnnotationURL>
-            <common:AnnotationText xml:lang="es">text-EFUxstJiX2 en Español</common:AnnotationText>
-            <common:AnnotationText xml:lang="en">text-7DT0j8xmsf in English</common:AnnotationText>
+            <common:AnnotationTitle>title-38GEVmWHjo</common:AnnotationTitle>
+            <common:AnnotationType>type-wawQgkY4IX</common:AnnotationType>
+            <common:AnnotationURL>url-ufTz31IJjK</common:AnnotationURL>
+            <common:AnnotationText xml:lang="es">text-TP2maHeXDy en Español</common:AnnotationText>
+            <common:AnnotationText xml:lang="en">text-WFiJOstnIx in English</common:AnnotationText>
+        </common:Annotation>
+        <common:Annotation id="code1">
+            <common:AnnotationTitle>title-eSROSfeu3M</common:AnnotationTitle>
+            <common:AnnotationType>type-v04KKe7p1q</common:AnnotationType>
+            <common:AnnotationURL>url-Iatq2BfjGf</common:AnnotationURL>
+            <common:AnnotationText xml:lang="es">text-K3OYrX7YIk en Español</common:AnnotationText>
+            <common:AnnotationText xml:lang="en">text-fQPvdWLHzU in English</common:AnnotationText>
         </common:Annotation>
     </common:Annotations>
     <common:Name xml:lang="es">name-item1 en Español</common:Name>
     <common:Name xml:lang="en">name-item1 in English</common:Name>
     <common:Description xml:lang="es">description-item1 en Español</common:Description>
     <common:Description xml:lang="en">description-item1 in English</common:Description>
+    <structure:Parent>
+        <Ref id="item2"/>
+    </structure:Parent>
     <structure:CoreRepresentation>
         <structure:Enumeration>
             <URN>urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=MaintainerMock:ConceptSchemeMock(01.000)</URN>
@@ -35,8 +38,8 @@
     <srm:selfLink kind="srm#concept" href="http://data.istac.es/apis/srm/v1.0/conceptschemes/idAsMaintaineragency1/itemScheme1/01.000/concepts/item1"/>
     <srm:parentLink kind="srm#concepts" href="http://data.istac.es/apis/srm/v1.0/conceptschemes/idAsMaintaineragency1/itemScheme1/01.000/concepts"/>
     <srm:pluralName>
-        <cdomain:text xml:lang="en">pluralName-item1 in English</cdomain:text>
         <cdomain:text xml:lang="es">pluralName-item1 en Español</cdomain:text>
+        <cdomain:text xml:lang="en">pluralName-item1 in English</cdomain:text>
     </srm:pluralName>
     <srm:acronym>
         <cdomain:text xml:lang="es">acronym-item1 en Español</cdomain:text>
@@ -51,22 +54,22 @@
         <cdomain:text xml:lang="en">context-item1 in English</cdomain:text>
     </srm:context>
     <srm:docMethod>
-        <cdomain:text xml:lang="es">docMethod-item1 en Español</cdomain:text>
         <cdomain:text xml:lang="en">docMethod-item1 in English</cdomain:text>
+        <cdomain:text xml:lang="es">docMethod-item1 en Español</cdomain:text>
     </srm:docMethod>
     <srm:type>
         <cdomain:id>conceptType1</cdomain:id>
         <cdomain:title>
-            <cdomain:text xml:lang="en">description-conceptType1 in English</cdomain:text>
             <cdomain:text xml:lang="es">description-conceptType1 en Español</cdomain:text>
+            <cdomain:text xml:lang="en">description-conceptType1 in English</cdomain:text>
         </cdomain:title>
     </srm:type>
     <srm:derivation>
-        <cdomain:text xml:lang="es">derivation-item1 en Español</cdomain:text>
         <cdomain:text xml:lang="en">derivation-item1 in English</cdomain:text>
+        <cdomain:text xml:lang="es">derivation-item1 en Español</cdomain:text>
     </srm:derivation>
     <srm:legalActs>
-        <cdomain:text xml:lang="en">legalActs-item1 in English</cdomain:text>
         <cdomain:text xml:lang="es">legalActs-item1 en Español</cdomain:text>
+        <cdomain:text xml:lang="en">legalActs-item1 in English</cdomain:text>
     </srm:legalActs>
 </srm:concept>

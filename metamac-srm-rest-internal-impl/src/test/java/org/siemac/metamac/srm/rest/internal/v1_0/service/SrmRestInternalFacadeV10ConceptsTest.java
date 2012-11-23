@@ -48,6 +48,7 @@ import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptScheme;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemes;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptTypes;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.Concepts;
+import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacProperties;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
@@ -55,6 +56,7 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacPro
 import org.siemac.metamac.srm.core.concept.serviceapi.ConceptsMetamacService;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
+import org.siemac.metamac.srm.rest.internal.v1_0.category.utils.CategoriesDoMocks;
 import org.siemac.metamac.srm.rest.internal.v1_0.concept.utils.ConceptsDoMocks;
 
 import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.ConceptType;
@@ -467,7 +469,8 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
                     } else if (AGENCY_1.equals(conditionalCriteriaAgencyID.getFirstOperant()) && ITEM_SCHEME_1_CODE.equals(conditionalCriteriaResourceID.getFirstOperant())
                             && ITEM_SCHEME_1_VERSION_1.equals(conditionalCriteriaVersion.getFirstOperant()) && ITEM_1_CODE.equals(conditionalCriteriaItem.getFirstOperant())) {
                         ConceptSchemeVersionMetamac conceptScheme1 = ConceptsDoMocks.mockConceptScheme(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1);
-                        concept = ConceptsDoMocks.mockConcept(ITEM_1_CODE, conceptScheme1, null);
+                        ConceptMetamac parent = ConceptsDoMocks.mockConcept(ITEM_2_CODE, conceptScheme1, null);
+                        concept = ConceptsDoMocks.mockConcept(ITEM_1_CODE, conceptScheme1, parent);
                     } else {
                         fail();
                     }

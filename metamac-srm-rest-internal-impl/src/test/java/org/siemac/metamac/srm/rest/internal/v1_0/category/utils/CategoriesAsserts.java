@@ -77,6 +77,7 @@ public class CategoriesAsserts extends Asserts {
         assertEquals(RestInternalConstants.KIND_CATEGORIES, target.getParentLink().getKind());
         assertEquals(parentLink, target.getParentLink().getHref());
         assertNull(target.getChildLinks());
+        assertEquals(source.getParent().getNameableArtefact().getUrn(), target.getParent());
 
         // Sdmx
         assertEqualsCategorySdmx(source, target);

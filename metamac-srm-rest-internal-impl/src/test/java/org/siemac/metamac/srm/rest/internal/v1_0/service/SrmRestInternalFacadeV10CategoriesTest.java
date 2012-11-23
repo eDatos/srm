@@ -354,7 +354,7 @@ public class SrmRestInternalFacadeV10CategoriesTest extends SrmRestInternalFacad
             testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.NOT_FOUND, new ByteArrayInputStream(new byte[0]));
         }
     }
-    
+
     private void testFindCategorySchemes(String agencyID, String resourceID, String version, String limit, String offset, String query, String orderBy) throws Exception {
         resetMocks();
 
@@ -374,51 +374,53 @@ public class SrmRestInternalFacadeV10CategoriesTest extends SrmRestInternalFacad
 
     private void testFindCategories(String agencyID, String resourceID, String version, String limit, String offset, String query, String orderBy) throws Exception {
         resetMocks();
-        Categories categories= getSrmRestInternalFacadeClientXml().findCategories(agencyID, resourceID, version, query, orderBy, limit, offset);
+        Categories categories = getSrmRestInternalFacadeClientXml().findCategories(agencyID, resourceID, version, query, orderBy, limit, offset);
         verifyFindCategories(categoriesService, agencyID, resourceID, version, limit, offset, query, orderBy, categories);
     }
 
     @SuppressWarnings("unchecked")
     private void mockFindCategorySchemesByCondition() throws MetamacException {
-        when(categoriesService.findCategorySchemesByCondition(any(ServiceContext.class), any(List.class), any(PagingParameter.class))).thenAnswer(new Answer<PagedResult<CategorySchemeVersionMetamac>>() {
+        when(categoriesService.findCategorySchemesByCondition(any(ServiceContext.class), any(List.class), any(PagingParameter.class))).thenAnswer(
+                new Answer<PagedResult<CategorySchemeVersionMetamac>>() {
 
-            public org.fornax.cartridges.sculptor.framework.domain.PagedResult<CategorySchemeVersionMetamac> answer(InvocationOnMock invocation) throws Throwable {
-                List<ConditionalCriteria> conditions = (List<ConditionalCriteria>) invocation.getArguments()[1];
-                ConditionalCriteria conditionalCriteriaAgencyID = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Equal, CategorySchemeVersionMetamacProperties
-                        .maintainableArtefact().maintainer().idAsMaintainer());
-                ConditionalCriteria conditionalCriteriaResourceID = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Equal, CategorySchemeVersionMetamacProperties
-                        .maintainableArtefact().code());
-                ConditionalCriteria conditionalCriteriaVersion = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Equal, CategorySchemeVersionMetamacProperties
-                        .maintainableArtefact().versionLogic());
+                    public org.fornax.cartridges.sculptor.framework.domain.PagedResult<CategorySchemeVersionMetamac> answer(InvocationOnMock invocation) throws Throwable {
+                        List<ConditionalCriteria> conditions = (List<ConditionalCriteria>) invocation.getArguments()[1];
+                        ConditionalCriteria conditionalCriteriaAgencyID = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Equal,
+                                CategorySchemeVersionMetamacProperties.maintainableArtefact().maintainer().idAsMaintainer());
+                        ConditionalCriteria conditionalCriteriaResourceID = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Equal,
+                                CategorySchemeVersionMetamacProperties.maintainableArtefact().code());
+                        ConditionalCriteria conditionalCriteriaVersion = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Equal,
+                                CategorySchemeVersionMetamacProperties.maintainableArtefact().versionLogic());
 
-                if (conditionalCriteriaAgencyID != null && conditionalCriteriaResourceID != null && conditionalCriteriaVersion != null) {
-                    // Retrieve one scheme
-                    CategorySchemeVersionMetamac categorySchemeVersion = null;
-                    if (NOT_EXISTS.equals(conditionalCriteriaAgencyID.getFirstOperant()) || NOT_EXISTS.equals(conditionalCriteriaResourceID.getFirstOperant())
-                            || NOT_EXISTS.equals(conditionalCriteriaVersion.getFirstOperant())) {
-                        categorySchemeVersion = null;
-                    } else if (AGENCY_1.equals(conditionalCriteriaAgencyID.getFirstOperant()) && ITEM_SCHEME_1_CODE.equals(conditionalCriteriaResourceID.getFirstOperant())
-                            && ITEM_SCHEME_1_VERSION_1.equals(conditionalCriteriaVersion.getFirstOperant())) {
-                        categorySchemeVersion = CategoriesDoMocks.mockCategorySchemeWithCategories(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1);
-                    } else {
-                        fail();
-                    }
-                    List<CategorySchemeVersionMetamac> categorySchemes = new ArrayList<CategorySchemeVersionMetamac>();
-                    if (categorySchemeVersion != null) {
-                        categorySchemes.add(categorySchemeVersion);
-                    }
-                    return new PagedResult<CategorySchemeVersionMetamac>(categorySchemes, 0, categorySchemes.size(), categorySchemes.size());
-                } else {
-                    // any
-                    List<CategorySchemeVersionMetamac> categorySchemes = new ArrayList<CategorySchemeVersionMetamac>();
-                    categorySchemes.add(CategoriesDoMocks.mockCategorySchemeWithCategories(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1));
-                    categorySchemes.add(CategoriesDoMocks.mockCategorySchemeWithCategories(AGENCY_1, ITEM_SCHEME_2_CODE, ITEM_SCHEME_2_VERSION_1));
-                    categorySchemes.add(CategoriesDoMocks.mockCategorySchemeWithCategories(AGENCY_1, ITEM_SCHEME_2_CODE, ITEM_SCHEME_2_VERSION_2));
-                    categorySchemes.add(CategoriesDoMocks.mockCategorySchemeWithCategories(AGENCY_2, ITEM_SCHEME_3_CODE, ITEM_SCHEME_3_VERSION_1));
-                    return new PagedResult<CategorySchemeVersionMetamac>(categorySchemes, categorySchemes.size(), categorySchemes.size(), categorySchemes.size(), categorySchemes.size() * 10, 0);
-                }
-            };
-        });
+                        if (conditionalCriteriaAgencyID != null && conditionalCriteriaResourceID != null && conditionalCriteriaVersion != null) {
+                            // Retrieve one scheme
+                            CategorySchemeVersionMetamac categorySchemeVersion = null;
+                            if (NOT_EXISTS.equals(conditionalCriteriaAgencyID.getFirstOperant()) || NOT_EXISTS.equals(conditionalCriteriaResourceID.getFirstOperant())
+                                    || NOT_EXISTS.equals(conditionalCriteriaVersion.getFirstOperant())) {
+                                categorySchemeVersion = null;
+                            } else if (AGENCY_1.equals(conditionalCriteriaAgencyID.getFirstOperant()) && ITEM_SCHEME_1_CODE.equals(conditionalCriteriaResourceID.getFirstOperant())
+                                    && ITEM_SCHEME_1_VERSION_1.equals(conditionalCriteriaVersion.getFirstOperant())) {
+                                categorySchemeVersion = CategoriesDoMocks.mockCategorySchemeWithCategories(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1);
+                            } else {
+                                fail();
+                            }
+                            List<CategorySchemeVersionMetamac> categorySchemes = new ArrayList<CategorySchemeVersionMetamac>();
+                            if (categorySchemeVersion != null) {
+                                categorySchemes.add(categorySchemeVersion);
+                            }
+                            return new PagedResult<CategorySchemeVersionMetamac>(categorySchemes, 0, categorySchemes.size(), categorySchemes.size());
+                        } else {
+                            // any
+                            List<CategorySchemeVersionMetamac> categorySchemes = new ArrayList<CategorySchemeVersionMetamac>();
+                            categorySchemes.add(CategoriesDoMocks.mockCategorySchemeWithCategories(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1));
+                            categorySchemes.add(CategoriesDoMocks.mockCategorySchemeWithCategories(AGENCY_1, ITEM_SCHEME_2_CODE, ITEM_SCHEME_2_VERSION_1));
+                            categorySchemes.add(CategoriesDoMocks.mockCategorySchemeWithCategories(AGENCY_1, ITEM_SCHEME_2_CODE, ITEM_SCHEME_2_VERSION_2));
+                            categorySchemes.add(CategoriesDoMocks.mockCategorySchemeWithCategories(AGENCY_2, ITEM_SCHEME_3_CODE, ITEM_SCHEME_3_VERSION_1));
+                            return new PagedResult<CategorySchemeVersionMetamac>(categorySchemes, categorySchemes.size(), categorySchemes.size(), categorySchemes.size(), categorySchemes.size() * 10,
+                                    0);
+                        }
+                    };
+                });
     }
 
     @SuppressWarnings("unchecked")
@@ -431,8 +433,8 @@ public class SrmRestInternalFacadeV10CategoriesTest extends SrmRestInternalFacad
                         .itemSchemeVersion().maintainableArtefact().maintainer().idAsMaintainer());
                 ConditionalCriteria conditionalCriteriaResourceID = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Equal, CategoryMetamacProperties
                         .itemSchemeVersion().maintainableArtefact().code());
-                ConditionalCriteria conditionalCriteriaVersion = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Equal, CategoryMetamacProperties.itemSchemeVersion()
-                        .maintainableArtefact().versionLogic());
+                ConditionalCriteria conditionalCriteriaVersion = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Equal, CategoryMetamacProperties
+                        .itemSchemeVersion().maintainableArtefact().versionLogic());
                 ConditionalCriteria conditionalCriteriaItem = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Equal, CategoryMetamacProperties.nameableArtefact()
                         .code());
 
@@ -445,7 +447,8 @@ public class SrmRestInternalFacadeV10CategoriesTest extends SrmRestInternalFacad
                     } else if (AGENCY_1.equals(conditionalCriteriaAgencyID.getFirstOperant()) && ITEM_SCHEME_1_CODE.equals(conditionalCriteriaResourceID.getFirstOperant())
                             && ITEM_SCHEME_1_VERSION_1.equals(conditionalCriteriaVersion.getFirstOperant()) && ITEM_1_CODE.equals(conditionalCriteriaItem.getFirstOperant())) {
                         CategorySchemeVersionMetamac categoryScheme1 = CategoriesDoMocks.mockCategoryScheme(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1);
-                        category = CategoriesDoMocks.mockCategory(ITEM_1_CODE, categoryScheme1, null);
+                        CategoryMetamac parent = CategoriesDoMocks.mockCategory(ITEM_2_CODE, categoryScheme1, null);
+                        category = CategoriesDoMocks.mockCategory(ITEM_1_CODE, categoryScheme1, parent);
                     } else {
                         fail();
                     }

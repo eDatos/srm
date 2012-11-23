@@ -102,6 +102,7 @@ public class CategoriesDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl imp
         target.setSelfLink(toCategorySelfLink(source));
         target.setUri(target.getSelfLink().getHref());
         target.setParentLink(toCategoryParentLink(source));
+        target.setParent(source.getParent() != null ? source.getParent().getNameableArtefact().getUrn() : null);
         target.setChildLinks(toCategoryChildLinks(source));
 
         return target;
