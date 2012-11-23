@@ -76,90 +76,90 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
     }
 
     @Test
-    public void testFindConceptsSchemes() throws Exception {
-        testFindConceptsSchemes(null, null, null, null); // without limits
-        testFindConceptsSchemes("10000", null, null, null); // without limits
-        testFindConceptsSchemes(null, "0", null, null); // without limits, first page
-        testFindConceptsSchemes("2", "0", null, null); // first page with pagination
-        testFindConceptsSchemes("2", "2", null, null); // other page with pagination
-        testFindConceptsSchemes(null, null, QUERY_ID_LIKE_1, null); // query by id, without limits
-        testFindConceptsSchemes(null, null, QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query by id and name, without limits
-        testFindConceptsSchemes("1", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query by id and name, first page
-        testFindConceptsSchemes("1", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query by id and name, first page
+    public void testFindConceptSchemes() throws Exception {
+        testFindConceptSchemes(null, null, null, null, null, null, null); // without limits
+        testFindConceptSchemes(null, null, null, "10000", null, null, null); // without limits
+        testFindConceptSchemes(null, null, null, null, "0", null, null); // without limits, first page
+        testFindConceptSchemes(null, null, null, "2", "0", null, null); // first page with pagination
+        testFindConceptSchemes(null, null, null, "2", "2", null, null); // other page with pagination
+        testFindConceptSchemes(null, null, null, null, null, QUERY_ID_LIKE_1, null); // query by id, without limits
+        testFindConceptSchemes(null, null, null, null, null, QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query by id and name, without limits
+        testFindConceptSchemes(null, null, null, "1", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query by id and name, first page
+        testFindConceptSchemes(null, null, null, "1", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query by id and name, first page
     }
 
     @Test
-    public void testFindConceptsSchemesWithoutJaxbTransformation() throws Exception {
+    public void testFindConceptSchemesXml() throws Exception {
         String requestUri = getUriItemSchemes(AGENCY_1, null, null, "4", "4");
-        InputStream responseExpected = SrmRestInternalFacadeV10ConceptsTest.class.getResourceAsStream("/responses/findConceptsSchemes.xml");
+        InputStream responseExpected = SrmRestInternalFacadeV10ConceptsTest.class.getResourceAsStream("/responses/concepts/findConceptSchemes.xml");
 
         // Request and validate
         testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
     }
 
     @Test
-    public void testFindConceptsSchemesErrorParameterIncorrectWithoutJaxbTransformation() throws Exception {
+    public void testFindConceptSchemesErrorQueryIncorrectXml() throws Exception {
 
         // Metadata not supported to search
         String limit = "1";
         String offset = "0";
         String query = "METADATA_INCORRECT LIKE \"1\"";
         String requestUri = getUriItemSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, query, limit, offset);
-        InputStream responseExpected = SrmRestInternalFacadeV10ConceptsTest.class.getResourceAsStream("/responses/findConceptsSchemes.parameterIncorrect.xml");
+        InputStream responseExpected = SrmRestInternalFacadeV10ConceptsTest.class.getResourceAsStream("/responses/concepts/findConceptSchemes.parameterIncorrect.xml");
 
         // Request and validate
         testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.INTERNAL_SERVER_ERROR, responseExpected);
     }
 
     @Test
-    public void testFindConceptsSchemesByAgency() throws Exception {
-        testFindConceptsSchemes(AGENCY_1, null, null, null, null);
-        testFindConceptsSchemes(AGENCY_1, null, "0", null, null);
-        testFindConceptsSchemes(AGENCY_1, "2", "0", null, null);
-        testFindConceptsSchemes(AGENCY_1, "1", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null);
-        testFindConceptsSchemes(AGENCY_1, "1", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC);
+    public void testFindConceptSchemesByAgency() throws Exception {
+        testFindConceptSchemes(AGENCY_1, null, null, null, null, null, null);
+        testFindConceptSchemes(AGENCY_1, null, null, null, "0", null, null);
+        testFindConceptSchemes(AGENCY_1, null, null, "2", "0", null, null);
+        testFindConceptSchemes(AGENCY_1, null, null, "1", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null);
+        testFindConceptSchemes(AGENCY_1, null, null, "1", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC);
     }
 
     @Test
-    public void testFindConceptsSchemesByAgencyWithoutJaxbTransformation() throws Exception {
+    public void testFindConceptSchemesByAgencyXml() throws Exception {
         String requestUri = getUriItemSchemes(AGENCY_1, null, null, "4", "4");
-        InputStream responseExpected = SrmRestInternalFacadeV10ConceptsTest.class.getResourceAsStream("/responses/findConceptsSchemes.byAgency.xml");
+        InputStream responseExpected = SrmRestInternalFacadeV10ConceptsTest.class.getResourceAsStream("/responses/concepts/findConceptSchemes.byAgency.xml");
 
         // Request and validate
         testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
     }
 
     @Test
-    public void testFindConceptsSchemesByAgencyErrorWildcard() throws Exception {
+    public void testFindConceptSchemesByAgencyErrorWildcard() throws Exception {
         String requestUri = baseApi + "/conceptschemes/" + WILDCARD;
         testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.NOT_FOUND, new ByteArrayInputStream(new byte[0]));
     }
 
     @Test
-    public void testFindConceptsSchemesByAgencyAndResource() throws Exception {
-        testFindConceptsSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, null, null, null, null);
-        testFindConceptsSchemes(WILDCARD, ITEM_SCHEME_1_CODE, null, null, null, null);
-        testFindConceptsSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, "2", null, null, null);
-        testFindConceptsSchemes(WILDCARD, ITEM_SCHEME_1_CODE, "2", null, null, null);
-        testFindConceptsSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, null, "0", null, null);
-        testFindConceptsSchemes(WILDCARD, ITEM_SCHEME_1_CODE, null, "0", null, null);
-        testFindConceptsSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, "2", "0", null, null);
-        testFindConceptsSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, "1", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null);
-        testFindConceptsSchemes(WILDCARD, ITEM_SCHEME_1_CODE, "1", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null);
-        testFindConceptsSchemes(WILDCARD, ITEM_SCHEME_1_CODE, "1", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC);
+    public void testFindConceptSchemesByAgencyAndResource() throws Exception {
+        testFindConceptSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, null, null, null, null, null);
+        testFindConceptSchemes(WILDCARD, ITEM_SCHEME_1_CODE, null, null, null, null, null);
+        testFindConceptSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, null, "2", null, null, null);
+        testFindConceptSchemes(WILDCARD, ITEM_SCHEME_1_CODE, null, "2", null, null, null);
+        testFindConceptSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, null, null, "0", null, null);
+        testFindConceptSchemes(WILDCARD, ITEM_SCHEME_1_CODE, null, null, "0", null, null);
+        testFindConceptSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, null, "2", "0", null, null);
+        testFindConceptSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, null, "1", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null);
+        testFindConceptSchemes(WILDCARD, ITEM_SCHEME_1_CODE, null, "1", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null);
+        testFindConceptSchemes(WILDCARD, ITEM_SCHEME_1_CODE, null, "1", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC);
     }
 
     @Test
-    public void testFindConceptsSchemesByAgencyAndResourceWithoutJaxbTransformation() throws Exception {
+    public void testFindConceptSchemesByAgencyAndResourceXml() throws Exception {
         String requestUri = getUriItemSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, null, "4", null);
-        InputStream responseExpected = SrmRestInternalFacadeV10ConceptsTest.class.getResourceAsStream("/responses/findConceptsSchemes.byAgencyResource.xml");
+        InputStream responseExpected = SrmRestInternalFacadeV10ConceptsTest.class.getResourceAsStream("/responses/concepts/findConceptSchemes.byAgencyResource.xml");
 
         // Request and validate
         testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
     }
 
     @Test
-    public void testFindConceptsSchemesByAgencyAndResourceErrorWildcard() throws Exception {
+    public void testFindConceptSchemesByAgencyAndResourceErrorWildcard() throws Exception {
         String requestUri = getUriItemSchemes(AGENCY_1, WILDCARD, null);
         testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.NOT_FOUND, new ByteArrayInputStream(new byte[0]));
     }
@@ -175,7 +175,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
 
         // Validation
         assertNotNull(conceptScheme);
-        // other metadata are tested in transformation tests
+        // other metadata are tested in mapper tests
         assertEquals("idAsMaintainer" + agencyID, conceptScheme.getAgencyID());
         assertEquals(resourceID, conceptScheme.getId());
         assertEquals(version, conceptScheme.getVersion());
@@ -187,33 +187,16 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
     }
 
     @Test
-    public void testRetrieveConceptSchemeWithoutJaxbTransformation() throws Exception {
+    public void testRetrieveConceptSchemeXml() throws Exception {
 
-        String requestUri = getUriItemSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1);
-        InputStream responseExpected = SrmRestInternalFacadeV10ConceptsTest.class.getResourceAsStream("/responses/retrieveConceptScheme.id1.xml");
+        String requestBase = getUriItemSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1);
+        String[] requestUris = new String[]{requestBase, requestBase + ".xml", requestBase + "?_type=xml"};
 
-        // Request and validate
-        testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
-    }
-
-    @Test
-    public void testRetrieveConceptSchemeWithoutJaxbTransformationWithXmlSufix() throws Exception {
-
-        String requestUri = getUriItemSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1) + ".xml";
-        InputStream responseExpected = SrmRestInternalFacadeV10ConceptsTest.class.getResourceAsStream("/responses/retrieveConceptScheme.id1.xml");
-
-        // Request and validate
-        testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
-    }
-
-    @Test
-    public void testRetrieveConceptSchemeWithoutJaxbTransformationWithTypeParameter() throws Exception {
-
-        String requestUri = getUriItemSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1) + "?_type=xml";
-        InputStream responseExpected = SrmRestInternalFacadeV10ConceptsTest.class.getResourceAsStream("/responses/retrieveConceptScheme.id1.xml");
-
-        // Request and validate
-        testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
+        for (int i = 0; i < requestUris.length; i++) {
+            String requestUri = requestUris[i];
+            InputStream responseExpected = SrmRestInternalFacadeV10ConceptsTest.class.getResourceAsStream("/responses/concepts/retrieveConceptScheme.id1.xml");
+            testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
+        }
     }
 
     @Test
@@ -239,9 +222,9 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
     }
 
     @Test
-    public void testRetrieveConceptSchemeErrorNotExistsWithoutJaxbTransformation() throws Exception {
+    public void testRetrieveConceptSchemeErrorNotExistsXml() throws Exception {
         String requestUri = getUriItemSchemes(AGENCY_1, NOT_EXISTS, ITEM_SCHEME_1_VERSION_1);
-        InputStream responseExpected = SrmRestInternalFacadeV10ConceptsTest.class.getResourceAsStream("/responses/retrieveConceptScheme.notFound.xml");
+        InputStream responseExpected = SrmRestInternalFacadeV10ConceptsTest.class.getResourceAsStream("/responses/concepts/retrieveConceptScheme.notFound.xml");
 
         // Request and validate
         testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.NOT_FOUND, responseExpected);
@@ -265,7 +248,8 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
 
     @Test
     public void testFindConcepts() throws Exception {
-        // wildcard
+
+        // without parameters
         testFindConcepts(WILDCARD, WILDCARD, WILDCARD, null, null, null, null); // without limits
         testFindConcepts(WILDCARD, WILDCARD, WILDCARD, "10000", null, null, null); // without limits
         testFindConcepts(WILDCARD, WILDCARD, WILDCARD, null, "0", null, null); // without limits, first page
@@ -290,18 +274,15 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
         testFindConcepts(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query and order
 
         // version
-        testFindConcepts(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD, null, null, null, null); // without limits
-        testFindConcepts(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD, "10000", null, null, null); // without limits
-        testFindConcepts(WILDCARD, ITEM_SCHEME_1_CODE, WILDCARD, null, "0", null, null); // without limits, first page
         testFindConcepts(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1, "2", "0", null, null); // with pagination
-        testFindConcepts(WILDCARD, ITEM_SCHEME_1_CODE, WILDCARD, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query
-        testFindConcepts(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query and order
+        testFindConcepts(WILDCARD, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query
+        testFindConcepts(AGENCY_1, WILDCARD, ITEM_SCHEME_1_VERSION_1, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query and order
     }
 
     @Test
-    public void testFindConceptsWithoutJaxbTransformation() throws Exception {
-        String requestUri = getUriItems(WILDCARD, WILDCARD, WILDCARD, QUERY_ID_LIKE_1_NAME_LIKE_2, "4", "4");
-        InputStream responseExpected = SrmRestInternalFacadeV10ConceptsTest.class.getResourceAsStream("/responses/findConcepts.xml");
+    public void testFindConceptsXml() throws Exception {
+        String requestUri = getUriItems(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1, QUERY_ID_LIKE_1_NAME_LIKE_2, "4", "4");
+        InputStream responseExpected = SrmRestInternalFacadeV10ConceptsTest.class.getResourceAsStream("/responses/concepts/findConcepts.xml");
 
         // Request and validate
         testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
@@ -329,33 +310,15 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
     }
 
     @Test
-    public void testRetrieveConceptWithoutJaxbTransformation() throws Exception {
+    public void testRetrieveConceptXml() throws Exception {
 
-        String requestUri = getUriItem(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1, ITEM_1_CODE);
-        InputStream responseExpected = SrmRestInternalFacadeV10ConceptsTest.class.getResourceAsStream("/responses/retrieveConcept.id1.xml");
-
-        // Request and validate
-        testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
-    }
-
-    @Test
-    public void testRetrieveConceptWithoutJaxbTransformationWithXmlSufix() throws Exception {
-
-        String requestUri = getUriItem(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1, ITEM_1_CODE) + ".xml";
-        InputStream responseExpected = SrmRestInternalFacadeV10ConceptsTest.class.getResourceAsStream("/responses/retrieveConcept.id1.xml");
-
-        // Request and validate
-        testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
-    }
-
-    @Test
-    public void testRetrieveConceptWithoutJaxbTransformationWithTypeParameter() throws Exception {
-
-        String requestUri = getUriItem(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1, ITEM_1_CODE) + "?_type=xml";
-        InputStream responseExpected = SrmRestInternalFacadeV10ConceptsTest.class.getResourceAsStream("/responses/retrieveConcept.id1.xml");
-
-        // Request and validate
-        testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
+        String requestBase = getUriItem(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1, ITEM_1_CODE);
+        String[] requestUris = new String[]{requestBase, requestBase + ".xml", requestBase + "?_type=xml"};
+        for (int i = 0; i < requestUris.length; i++) {
+            String requestUri = requestUris[i];
+            InputStream responseExpected = SrmRestInternalFacadeV10ConceptsTest.class.getResourceAsStream("/responses/concepts/retrieveConcept.id1.xml");
+            testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
+        }
     }
 
     @Test
@@ -383,9 +346,9 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
     }
 
     @Test
-    public void testRetrieveConceptErrorNotExistsWithoutJaxbTransformation() throws Exception {
+    public void testRetrieveConceptErrorNotExistsXml() throws Exception {
         String requestUri = getUriItem(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1, NOT_EXISTS);
-        InputStream responseExpected = SrmRestInternalFacadeV10ConceptsTest.class.getResourceAsStream("/responses/retrieveConcept.notFound.xml");
+        InputStream responseExpected = SrmRestInternalFacadeV10ConceptsTest.class.getResourceAsStream("/responses/concepts/retrieveConcept.notFound.xml");
 
         // Request and validate
         testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.NOT_FOUND, responseExpected);
@@ -419,30 +382,29 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
     }
 
     @Test
-    public void testRetrieveConceptTypesWithoutJaxbTransformation() throws Exception {
+    public void testRetrieveConceptTypesXml() throws Exception {
 
         String requestUri = getUriConceptTypes();
-        InputStream responseExpected = SrmRestInternalFacadeV10ConceptsTest.class.getResourceAsStream("/responses/retrieveConceptTypes.xml");
+        InputStream responseExpected = SrmRestInternalFacadeV10ConceptsTest.class.getResourceAsStream("/responses/concepts/retrieveConceptTypes.xml");
 
         // Request and validate
         testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
     }
 
-    private void testFindConceptsSchemes(String limit, String offset, String query, String orderBy) throws Exception {
+    private void testFindConceptSchemes(String agencyID, String resourceID, String version, String limit, String offset, String query, String orderBy) throws Exception {
         resetMocks();
-        ConceptSchemes conceptSchemes = getSrmRestInternalFacadeClientXml().findConceptSchemes(query, orderBy, limit, offset);
-        verifyFindConceptSchemes(conceptsService, null, null, limit, offset, query, orderBy, conceptSchemes);
-    }
 
-    private void testFindConceptsSchemes(String agencyID, String limit, String offset, String query, String orderBy) throws Exception {
-        resetMocks();
-        ConceptSchemes conceptSchemes = getSrmRestInternalFacadeClientXml().findConceptSchemes(agencyID, query, orderBy, limit, offset);
-        verifyFindConceptSchemes(conceptsService, agencyID, null, limit, offset, query, orderBy, conceptSchemes);
-    }
+        // Find
+        ConceptSchemes conceptSchemes = null;
+        if (agencyID == null) {
+            conceptSchemes = getSrmRestInternalFacadeClientXml().findConceptSchemes(query, orderBy, limit, offset);
+        } else if (resourceID == null) {
+            conceptSchemes = getSrmRestInternalFacadeClientXml().findConceptSchemes(agencyID, query, orderBy, limit, offset);
+        } else {
+            conceptSchemes = getSrmRestInternalFacadeClientXml().findConceptSchemes(agencyID, resourceID, query, orderBy, limit, offset);
+        }
 
-    private void testFindConceptsSchemes(String agencyID, String resourceID, String limit, String offset, String query, String orderBy) throws Exception {
-        resetMocks();
-        ConceptSchemes conceptSchemes = getSrmRestInternalFacadeClientXml().findConceptSchemes(agencyID, resourceID, query, orderBy, limit, offset);
+        // Verify with Mockito
         verifyFindConceptSchemes(conceptsService, agencyID, resourceID, limit, offset, query, orderBy, conceptSchemes);
     }
 
@@ -450,14 +412,6 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
         resetMocks();
         Concepts concepts = getSrmRestInternalFacadeClientXml().findConcepts(agencyID, resourceID, version, query, orderBy, limit, offset);
         verifyFindConcepts(conceptsService, agencyID, resourceID, version, limit, offset, query, orderBy, concepts);
-    }
-    @Override
-    protected void resetMocks() throws MetamacException {
-        conceptsService = applicationContext.getBean(ConceptsMetamacService.class);
-        reset(conceptsService);
-        mockFindConceptSchemesByCondition();
-        mockFindConceptsByCondition();
-        mockRetrieveConceptTypes();
     }
 
     @SuppressWarnings("unchecked")
@@ -474,7 +428,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
                         .maintainableArtefact().versionLogic());
 
                 if (conditionalCriteriaAgencyID != null && conditionalCriteriaResourceID != null && conditionalCriteriaVersion != null) {
-                    // Retrieve one concept scheme
+                    // Retrieve one scheme
                     ConceptSchemeVersionMetamac conceptSchemeVersion = null;
                     if (NOT_EXISTS.equals(conditionalCriteriaAgencyID.getFirstOperant()) || NOT_EXISTS.equals(conditionalCriteriaResourceID.getFirstOperant())
                             || NOT_EXISTS.equals(conditionalCriteriaVersion.getFirstOperant())) {
@@ -559,6 +513,15 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
 
     private String getUriConceptTypes() {
         return baseApi + "/conceptTypes";
+    }
+
+    @Override
+    protected void resetMocks() throws MetamacException {
+        conceptsService = applicationContext.getBean(ConceptsMetamacService.class);
+        reset(conceptsService);
+        mockFindConceptSchemesByCondition();
+        mockFindConceptsByCondition();
+        mockRetrieveConceptTypes();
     }
 
     @Override
