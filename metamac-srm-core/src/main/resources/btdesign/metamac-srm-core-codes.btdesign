@@ -100,7 +100,7 @@ Application CodesMetamac {
 			"Access type"
 			- @AccessTypeEnum accessType nullable;
 			"Family"
-			- @CodelistFamily family cascade="none" nullable databaseColumn="FAMILY_FK";
+			- @CodelistFamily family cascade="none" nullable databaseColumn="CODELIST_FAMILY_FK" <-> codelists;
 			
 			"Life cycle information"
 			- @SrmLifeCycleMetadata lifeCycleMetadata databaseColumn="";
@@ -133,6 +133,8 @@ Application CodesMetamac {
 			String identifier nullable;
 			"Name"
 			- @InternationalString name nullable cascade="all" databaseColumn="NAME_FK";
+			"Codelists"
+			- Bag<@CodelistVersionMetamac> codelists cascade="none" fetch="lazy" inverse orderby="id asc" <-> family;
 			
 			Repository CodelistFamilyRepository {
 				findById;
