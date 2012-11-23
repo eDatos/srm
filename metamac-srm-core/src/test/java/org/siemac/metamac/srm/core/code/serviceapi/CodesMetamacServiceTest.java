@@ -18,6 +18,9 @@ import static org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsse
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.apache.commons.lang.time.DateUtils;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
@@ -31,6 +34,7 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamilyProperties;
+import org.siemac.metamac.srm.core.code.domain.CodelistFamilyRepository;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacProperties;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
@@ -66,6 +70,12 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     protected CodesMetamacService         codesService;
 
     @Autowired
+    protected CodelistFamilyRepository    codelistFamilyRepository;
+
+    @PersistenceContext(unitName = "SrmCoreEntityManagerFactory")
+    protected EntityManager               entityManager;
+
+    @Autowired
     private OrganisationMetamacRepository organisationMetamacRepository;
 
     // ------------------------------------------------------------------------------------
@@ -99,6 +109,28 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertEquals(ctx.getUserId(), codelistVersionRetrieved.getCreatedBy());
         assertEquals(ctx.getUserId(), codelistVersionRetrieved.getLastUpdatedBy());
         assertEqualsCodelist(codelistVersion, codelistVersionRetrieved);
+    }
+
+    @Test
+    public void testCreateCodelistWithFamily() throws Exception {
+        OrganisationMetamac organisationMetamac = organisationMetamacRepository.findByUrn(AGENCY_ROOT_1_V1);
+        CodelistVersionMetamac codelistVersion = CodesMetamacDoMocks.mockCodelist(organisationMetamac);
+
+        // Check the family has no codelists
+        CodelistFamily codelistFamily = codesService.retrieveCodelistFamilyByIdentifier(getServiceContextAdministrador(), CODELIST_FAMILY_1);
+        assertEquals(0, codelistFamily.getCodelists().size());
+
+        // Associate the codelist to the family
+        codelistVersion.setFamily(codelistFamily);
+
+        // Create codelist
+        CodelistVersionMetamac codelistVersionCreated = codesService.createCodelist(getServiceContextAdministrador(), codelistVersion);
+        assertEqualsCodelistFamily(codelistFamily, codelistVersionCreated.getFamily());
+
+        // Check family has one codelists (and it's the one we have added previously)
+        codelistFamily = codesService.retrieveCodelistFamilyByIdentifier(getServiceContextAdministrador(), CODELIST_FAMILY_1);
+        assertEquals(1, codelistFamily.getCodelists().size());
+        assertEqualsCodelist(codelistVersionCreated, codelistFamily.getCodelists().get(0));
     }
 
     @Test
@@ -145,6 +177,76 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertNotNull(codelistVersionUpdated);
         assertEquals("user1", codelistVersionUpdated.getCreatedBy());
         assertEquals(ctx.getUserId(), codelistVersionUpdated.getLastUpdatedBy());
+    }
+
+    @Test
+    public void testUpdateCodelistAddFamily() throws Exception {
+        CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_1_V2);
+
+        // Check the family has no codelists
+        CodelistFamily codelistFamily = codesService.retrieveCodelistFamilyByIdentifier(getServiceContextAdministrador(), CODELIST_FAMILY_1);
+        assertEquals(0, codelistFamily.getCodelists().size());
+
+        // Associate the codelist to the family
+        codelistVersion.setFamily(codelistFamily);
+        codelistVersion.getMaintainableArtefact().setIsCodeUpdated(false);
+        CodelistVersionMetamac codelistVersionUpdated = codesService.updateCodelist(getServiceContextAdministrador(), codelistVersion);
+        assertEqualsCodelistFamily(codelistFamily, codelistVersionUpdated.getFamily());
+
+        entityManager.clear();
+
+        // Check family has one codelists (and it's the one we have added previously)
+        codelistFamily = codelistFamilyRepository.findByIdentifier(CODELIST_FAMILY_1);
+        assertEquals(1, codelistFamily.getCodelists().size());
+    }
+
+    /**
+     * Change codelist from family CODELIST_FAMILY_2 to CODELIST_FAMILY_1
+     */
+    @Test
+    public void testUpdateCodelistChangeFamily() throws Exception {
+        CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_9_V1);
+
+        // Check family members
+        CodelistFamily family1 = codesService.retrieveCodelistFamilyByIdentifier(getServiceContextAdministrador(), CODELIST_FAMILY_1);
+        CodelistFamily family2 = codesService.retrieveCodelistFamilyByIdentifier(getServiceContextAdministrador(), CODELIST_FAMILY_2);
+        assertEquals(0, family1.getCodelists().size());
+        assertEquals(1, family2.getCodelists().size());
+
+        // Associate the codelist to the family
+        codelistVersion.setFamily(family1);
+        codelistVersion.getMaintainableArtefact().setIsCodeUpdated(false);
+        CodelistVersionMetamac codelistVersionUpdated = codesService.updateCodelist(getServiceContextAdministrador(), codelistVersion);
+        assertEqualsCodelistFamily(family1, codelistVersionUpdated.getFamily());
+
+        entityManager.clear();
+
+        // Check family after updating codelist
+        family1 = codelistFamilyRepository.findByIdentifier(CODELIST_FAMILY_1);
+        family2 = codelistFamilyRepository.findByIdentifier(CODELIST_FAMILY_2);
+        assertEquals(1, family1.getCodelists().size());
+        assertEquals(0, family2.getCodelists().size());
+    }
+
+    @Test
+    public void testUpdateCodelistRemoveFromFamily() throws Exception {
+        CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_9_V1);
+
+        // Check family members
+        CodelistFamily family = codesService.retrieveCodelistFamilyByIdentifier(getServiceContextAdministrador(), CODELIST_FAMILY_2);
+        assertEquals(1, family.getCodelists().size());
+
+        // Update codelist (remove from family)
+        codelistVersion.setFamily(null);
+        codelistVersion.getMaintainableArtefact().setIsCodeUpdated(false);
+        CodelistVersionMetamac codelistVersionUpdated = codesService.updateCodelist(getServiceContextAdministrador(), codelistVersion);
+        assertNull(codelistVersionUpdated.getFamily());
+
+        entityManager.clear();
+
+        // Check family members
+        family = codesService.retrieveCodelistFamilyByIdentifier(getServiceContextAdministrador(), CODELIST_FAMILY_2);
+        assertEquals(0, family.getCodelists().size());
     }
 
     @Test

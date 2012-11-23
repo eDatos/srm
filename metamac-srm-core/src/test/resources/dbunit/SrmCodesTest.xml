@@ -2237,7 +2237,7 @@
         ACCESS_TYPE="[null]"
         IS_RECOMMENDED="[null]"
         SHORT_NAME_FK="[null]"
-        CODELIST_FAMILY_FK="[null]"
+        CODELIST_FAMILY_FK="2"
         
         PRODUCTION_VALIDATION_DATE_TZ="[null]"
         PRODUCTION_VALIDATION_DATE="[null]"
@@ -3177,7 +3177,7 @@
     <TB_M_CODELIST_FAMILIES 
         ID="1"
         
-        IDENTIFIER="codelist-family-01"
+        IDENTIFIER="CODELIST_FAMILY_01"
         NAME_FK="51"
         
         UUID="codelist-family-01"
@@ -3193,7 +3193,7 @@
     <TB_M_CODELIST_FAMILIES 
         ID="2"
         
-        IDENTIFIER="codelist-family-02"
+        IDENTIFIER="CODELIST_FAMILY_02"
         NAME_FK="52"
         
         UUID="codelist-family-02"

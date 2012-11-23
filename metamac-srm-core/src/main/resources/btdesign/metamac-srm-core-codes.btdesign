@@ -134,7 +134,7 @@ Application CodesMetamac {
 			"Name"
 			- @InternationalString name nullable cascade="all" databaseColumn="NAME_FK";
 			"Codelists"
-			- Bag<@CodelistVersionMetamac> codelists cascade="none" fetch="lazy" inverse orderby="id asc" <-> family;
+			- Bag<@CodelistVersionMetamac> codelists cascade="none" fetch="lazy" inverse <-> family;
 			
 			Repository CodelistFamilyRepository {
 				findById;

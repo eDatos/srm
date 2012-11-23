@@ -73,7 +73,15 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         codelistVersion.getMaintainableArtefact().setIsExternalReference(Boolean.FALSE);
 
         // Save codelist
-        return (CodelistVersionMetamac) codesService.createCodelist(ctx, codelistVersion, SrmConstants.VERSION_PATTERN_METAMAC);
+        codelistVersion = (CodelistVersionMetamac) codesService.createCodelist(ctx, codelistVersion, SrmConstants.VERSION_PATTERN_METAMAC);
+
+        // Add the codelist to the family
+        CodelistFamily family = codelistVersion.getFamily();
+        if (family != null) {
+            family.addCodelist(codelistVersion);
+        }
+
+        return codelistVersion;
     }
 
     @Override

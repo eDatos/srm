@@ -52,7 +52,7 @@ public class CodesMetamacDoMocks extends CodesDoMocks {
 
     public static CodelistFamily mockCodelistFamily() {
         CodelistFamily codelistFamily = new CodelistFamily();
-        codelistFamily.setIdentifier(MetamacMocks.mockString(8));
+        codelistFamily.setIdentifier("code-" + MetamacMocks.mockString(5));
         codelistFamily.setName(BaseDoMocks.mockInternationalString());
         return codelistFamily;
     }

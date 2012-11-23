@@ -200,8 +200,8 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
     protected static final String CODELIST_13_V1_CODE_3                       = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST13(01.000).CODE03";
 
     // Codelist families
-    protected static final String CODELIST_FAMILY_1                           = "codelist-family-01";
-    protected static final String CODELIST_FAMILY_2                           = "codelist-family-02";
+    protected static final String CODELIST_FAMILY_1                           = "CODELIST_FAMILY_01";
+    protected static final String CODELIST_FAMILY_2                           = "CODELIST_FAMILY_02";
 
     // Other
     protected static final String NOT_EXISTS                                  = "not-exists";
