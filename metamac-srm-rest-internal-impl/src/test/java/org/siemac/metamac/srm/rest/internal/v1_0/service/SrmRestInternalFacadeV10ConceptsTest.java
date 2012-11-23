@@ -90,25 +90,11 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
 
     @Test
     public void testFindConceptSchemesXml() throws Exception {
-        String requestUri = getUriItemSchemes(AGENCY_1, null, null, "4", "4");
+        String requestUri = getUriItemSchemes(null, null, null, "4", "4");
         InputStream responseExpected = SrmRestInternalFacadeV10ConceptsTest.class.getResourceAsStream("/responses/concepts/findConceptSchemes.xml");
 
         // Request and validate
         testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
-    }
-
-    @Test
-    public void testFindConceptSchemesErrorQueryIncorrectXml() throws Exception {
-
-        // Metadata not supported to search
-        String limit = "1";
-        String offset = "0";
-        String query = "METADATA_INCORRECT LIKE \"1\"";
-        String requestUri = getUriItemSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, query, limit, offset);
-        InputStream responseExpected = SrmRestInternalFacadeV10ConceptsTest.class.getResourceAsStream("/responses/concepts/findConceptSchemes.parameterIncorrect.xml");
-
-        // Request and validate
-        testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.INTERNAL_SERVER_ERROR, responseExpected);
     }
 
     @Test
@@ -131,7 +117,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
 
     @Test
     public void testFindConceptSchemesByAgencyErrorWildcard() throws Exception {
-        String requestUri = baseApi + "/conceptschemes/" + WILDCARD;
+        String requestUri = getUriItemSchemes(WILDCARD, null, null);
         testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.NOT_FOUND, new ByteArrayInputStream(new byte[0]));
     }
 
@@ -231,7 +217,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
     }
 
     @Test
-    public void testRetrieveConceptsSchemeErrorWildcard() throws Exception {
+    public void testRetrieveConceptSchemeErrorWildcard() throws Exception {
         {
             String requestUri = getUriItemSchemes(WILDCARD, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1);
             testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.NOT_FOUND, new ByteArrayInputStream(new byte[0]));
@@ -428,7 +414,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
                         .maintainableArtefact().versionLogic());
 
                 if (conditionalCriteriaAgencyID != null && conditionalCriteriaResourceID != null && conditionalCriteriaVersion != null) {
-                    // Retrieve one scheme
+                    // Retrieve one
                     ConceptSchemeVersionMetamac conceptSchemeVersion = null;
                     if (NOT_EXISTS.equals(conditionalCriteriaAgencyID.getFirstOperant()) || NOT_EXISTS.equals(conditionalCriteriaResourceID.getFirstOperant())
                             || NOT_EXISTS.equals(conditionalCriteriaVersion.getFirstOperant())) {
@@ -469,17 +455,17 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
                         .itemSchemeVersion().maintainableArtefact().code());
                 ConditionalCriteria conditionalCriteriaVersion = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Equal, ConceptMetamacProperties.itemSchemeVersion()
                         .maintainableArtefact().versionLogic());
-                ConditionalCriteria conditionalCriteriaConcept = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Equal, ConceptMetamacProperties.nameableArtefact()
+                ConditionalCriteria conditionalCriteriaItem = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Equal, ConceptMetamacProperties.nameableArtefact()
                         .code());
 
-                if (conditionalCriteriaAgencyID != null && conditionalCriteriaResourceID != null && conditionalCriteriaVersion != null && conditionalCriteriaConcept != null) {
-                    // Retrieve one concept
+                if (conditionalCriteriaAgencyID != null && conditionalCriteriaResourceID != null && conditionalCriteriaVersion != null && conditionalCriteriaItem != null) {
+                    // Retrieve one
                     ConceptMetamac concept = null;
                     if (NOT_EXISTS.equals(conditionalCriteriaAgencyID.getFirstOperant()) || NOT_EXISTS.equals(conditionalCriteriaResourceID.getFirstOperant())
-                            || NOT_EXISTS.equals(conditionalCriteriaVersion.getFirstOperant()) || NOT_EXISTS.equals(conditionalCriteriaConcept.getFirstOperant())) {
+                            || NOT_EXISTS.equals(conditionalCriteriaVersion.getFirstOperant()) || NOT_EXISTS.equals(conditionalCriteriaItem.getFirstOperant())) {
                         concept = null;
                     } else if (AGENCY_1.equals(conditionalCriteriaAgencyID.getFirstOperant()) && ITEM_SCHEME_1_CODE.equals(conditionalCriteriaResourceID.getFirstOperant())
-                            && ITEM_SCHEME_1_VERSION_1.equals(conditionalCriteriaVersion.getFirstOperant()) && ITEM_1_CODE.equals(conditionalCriteriaConcept.getFirstOperant())) {
+                            && ITEM_SCHEME_1_VERSION_1.equals(conditionalCriteriaVersion.getFirstOperant()) && ITEM_1_CODE.equals(conditionalCriteriaItem.getFirstOperant())) {
                         ConceptSchemeVersionMetamac conceptScheme1 = ConceptsDoMocks.mockConceptScheme(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1);
                         concept = ConceptsDoMocks.mockConcept(ITEM_1_CODE, conceptScheme1, null);
                     } else {

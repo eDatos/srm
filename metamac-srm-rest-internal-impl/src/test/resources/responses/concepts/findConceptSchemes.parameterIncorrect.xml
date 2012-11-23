@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<cdomain:exception xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain">
-    <cdomain:code>exception.common.parameter.incorrect</cdomain:code>
-    <cdomain:message>Parameter METADATA_INCORRECT has incorrect value</cdomain:message>
-    <cdomain:parameters total="1">
-        <cdomain:parameter>METADATA_INCORRECT</cdomain:parameter>
-    </cdomain:parameters>
-</cdomain:exception>

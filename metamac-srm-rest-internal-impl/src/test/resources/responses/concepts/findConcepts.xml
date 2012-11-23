@@ -14,8 +14,8 @@
         <cdomain:urn>urn:item2</cdomain:urn>
         <cdomain:selfLink kind="srm#concept" href="http://data.istac.es/apis/srm/v1.0/conceptschemes/idAsMaintaineragency1/itemScheme1/01.000/concepts/item2"/>
         <cdomain:title>
-            <cdomain:text xml:lang="es">name-item2 en Español</cdomain:text>
             <cdomain:text xml:lang="en">name-item2 in English</cdomain:text>
+            <cdomain:text xml:lang="es">name-item2 en Español</cdomain:text>
         </cdomain:title>
     </srm:concept>
     <srm:concept kind="srm#concept">
@@ -23,8 +23,8 @@
         <cdomain:urn>urn:item3</cdomain:urn>
         <cdomain:selfLink kind="srm#concept" href="http://data.istac.es/apis/srm/v1.0/conceptschemes/idAsMaintaineragency1/itemScheme1/01.000/concepts/item3"/>
         <cdomain:title>
-            <cdomain:text xml:lang="en">name-item3 in English</cdomain:text>
             <cdomain:text xml:lang="es">name-item3 en Español</cdomain:text>
+            <cdomain:text xml:lang="en">name-item3 in English</cdomain:text>
         </cdomain:title>
     </srm:concept>
     <srm:concept kind="srm#concept">
@@ -32,8 +32,8 @@
         <cdomain:urn>urn:item1</cdomain:urn>
         <cdomain:selfLink kind="srm#concept" href="http://data.istac.es/apis/srm/v1.0/conceptschemes/idAsMaintaineragency1/itemScheme2/01.000/concepts/item1"/>
         <cdomain:title>
-            <cdomain:text xml:lang="es">name-item1 en Español</cdomain:text>
             <cdomain:text xml:lang="en">name-item1 in English</cdomain:text>
+            <cdomain:text xml:lang="es">name-item1 en Español</cdomain:text>
         </cdomain:title>
     </srm:concept>
 </srm:concepts>
