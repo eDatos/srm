@@ -48,7 +48,6 @@ import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptScheme;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemes;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptTypes;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.Concepts;
-import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacProperties;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
@@ -56,7 +55,6 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacPro
 import org.siemac.metamac.srm.core.concept.serviceapi.ConceptsMetamacService;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
-import org.siemac.metamac.srm.rest.internal.v1_0.category.utils.CategoriesDoMocks;
 import org.siemac.metamac.srm.rest.internal.v1_0.concept.utils.ConceptsDoMocks;
 
 import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.ConceptType;
@@ -92,7 +90,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
 
     @Test
     public void testFindConceptSchemesXml() throws Exception {
-        String requestUri = getUriItemSchemes(null, null, null, "4", "4");
+        String requestUri = getUriItemSchemes(null, null, null, null, "4", "4");
         InputStream responseExpected = SrmRestInternalFacadeV10ConceptsTest.class.getResourceAsStream("/responses/concepts/findConceptSchemes.xml");
 
         // Request and validate
@@ -110,7 +108,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
 
     @Test
     public void testFindConceptSchemesByAgencyXml() throws Exception {
-        String requestUri = getUriItemSchemes(AGENCY_1, null, null, "4", "4");
+        String requestUri = getUriItemSchemes(AGENCY_1, null, null, null, "4", "4");
         InputStream responseExpected = SrmRestInternalFacadeV10ConceptsTest.class.getResourceAsStream("/responses/concepts/findConceptSchemes.byAgency.xml");
 
         // Request and validate
@@ -139,7 +137,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
 
     @Test
     public void testFindConceptSchemesByAgencyAndResourceXml() throws Exception {
-        String requestUri = getUriItemSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, null, "4", null);
+        String requestUri = getUriItemSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, null, null, "4", null);
         InputStream responseExpected = SrmRestInternalFacadeV10ConceptsTest.class.getResourceAsStream("/responses/concepts/findConceptSchemes.byAgencyResource.xml");
 
         // Request and validate

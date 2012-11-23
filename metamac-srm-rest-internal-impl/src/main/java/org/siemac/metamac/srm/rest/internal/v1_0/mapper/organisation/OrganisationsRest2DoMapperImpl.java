@@ -1,0 +1,134 @@
+package org.siemac.metamac.srm.rest.internal.v1_0.mapper.organisation;
+
+import org.fornax.cartridges.sculptor.framework.domain.Property;
+import org.siemac.metamac.rest.common.query.domain.MetamacRestOrder;
+import org.siemac.metamac.rest.common.query.domain.MetamacRestQueryPropertyRestriction;
+import org.siemac.metamac.rest.common.query.domain.SculptorPropertyCriteria;
+import org.siemac.metamac.rest.exception.RestException;
+import org.siemac.metamac.rest.search.criteria.mapper.RestCriteria2SculptorCriteria;
+import org.siemac.metamac.rest.search.criteria.mapper.RestCriteria2SculptorCriteria.CriteriaCallback;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationCriteriaPropertyOrder;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationCriteriaPropertyRestriction;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationSchemeCriteriaPropertyOrder;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationSchemeCriteriaPropertyRestriction;
+import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
+import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamacProperties;
+import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
+import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamacProperties;
+import org.siemac.metamac.srm.rest.internal.v1_0.mapper.base.BaseRest2DoMapperV10Impl;
+import org.springframework.stereotype.Component;
+
+@Component
+public class OrganisationsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements OrganisationsRest2DoMapper {
+
+    private RestCriteria2SculptorCriteria<OrganisationSchemeVersionMetamac> organisationSchemeCriteriaMapper = null;
+    private RestCriteria2SculptorCriteria<OrganisationMetamac>              organisationCriteriaMapper       = null;
+
+    public OrganisationsRest2DoMapperImpl() {
+        organisationSchemeCriteriaMapper = new RestCriteria2SculptorCriteria<OrganisationSchemeVersionMetamac>(OrganisationSchemeVersionMetamac.class, OrganisationSchemeCriteriaPropertyOrder.class,
+                OrganisationSchemeCriteriaPropertyRestriction.class, new OrganisationSchemeCriteriaCallback());
+        organisationCriteriaMapper = new RestCriteria2SculptorCriteria<OrganisationMetamac>(OrganisationMetamac.class, OrganisationCriteriaPropertyOrder.class, OrganisationCriteriaPropertyRestriction.class,
+                new OrganisationCriteriaCallback());
+    }
+
+    @Override
+    public RestCriteria2SculptorCriteria<OrganisationSchemeVersionMetamac> getOrganisationSchemeCriteriaMapper() {
+        return organisationSchemeCriteriaMapper;
+    }
+
+    @Override
+    public RestCriteria2SculptorCriteria<OrganisationMetamac> getOrganisationCriteriaMapper() {
+        return organisationCriteriaMapper;
+    }
+
+    private class OrganisationSchemeCriteriaCallback implements CriteriaCallback {
+
+        @Override
+        public SculptorPropertyCriteria retrieveProperty(MetamacRestQueryPropertyRestriction propertyRestriction) throws RestException {
+            OrganisationSchemeCriteriaPropertyRestriction propertyNameCriteria = OrganisationSchemeCriteriaPropertyRestriction.fromValue(propertyRestriction.getPropertyName());
+            switch (propertyNameCriteria) {
+                case ID:
+                    return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.maintainableArtefact().code(), propertyRestriction.getValue());
+                case URN:
+                    return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.maintainableArtefact().urn(), propertyRestriction.getValue());
+                case NAME:
+                    return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.maintainableArtefact().name().texts().label(), propertyRestriction.getValue());
+                case DESCRIPTION:
+                    return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.maintainableArtefact().description().texts().label(), propertyRestriction.getValue());
+                case VALID_FROM:
+                    return getSculptorPropertyCriteriaDate(propertyRestriction, OrganisationSchemeVersionMetamacProperties.maintainableArtefact().validFrom());
+                case VALID_TO:
+                    return getSculptorPropertyCriteriaDate(propertyRestriction, OrganisationSchemeVersionMetamacProperties.maintainableArtefact().validTo());
+                case PROC_STATUS:
+                    return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.lifeCycleMetadata().procStatus(),
+                            propertyRestrictionValueToProcStatusEnum(propertyRestriction.getValue()));
+                case INTERNAL_PUBLICATION_DATE:
+                    return getSculptorPropertyCriteriaDate(propertyRestriction, OrganisationSchemeVersionMetamacProperties.lifeCycleMetadata().internalPublicationDate());
+                case INTERNAL_PUBLICATION_USER:
+                    return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.lifeCycleMetadata().internalPublicationUser(), propertyRestriction.getValue());
+                case EXTERNAL_PUBLICATION_DATE:
+                    return getSculptorPropertyCriteriaDate(propertyRestriction, OrganisationSchemeVersionMetamacProperties.lifeCycleMetadata().externalPublicationDate());
+                case EXTERNAL_PUBLICATION_USER:
+                    return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.lifeCycleMetadata().externalPublicationUser(), propertyRestriction.getValue());
+                default:
+                    throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
+            }
+        }
+
+        @SuppressWarnings("rawtypes")
+        @Override
+        public Property retrievePropertyOrder(MetamacRestOrder order) throws RestException {
+            OrganisationSchemeCriteriaPropertyOrder propertyNameCriteria = OrganisationSchemeCriteriaPropertyOrder.fromValue(order.getPropertyName());
+            switch (propertyNameCriteria) {
+                case ID:
+                    return OrganisationSchemeVersionMetamacProperties.maintainableArtefact().code();
+                default:
+                    throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
+            }
+        }
+
+        @SuppressWarnings("rawtypes")
+        @Override
+        public Property retrievePropertyOrderDefault() throws RestException {
+            return OrganisationSchemeVersionMetamacProperties.maintainableArtefact().code();
+        }
+    }
+
+    private class OrganisationCriteriaCallback implements CriteriaCallback {
+
+        @Override
+        public SculptorPropertyCriteria retrieveProperty(MetamacRestQueryPropertyRestriction propertyRestriction) throws RestException {
+            OrganisationCriteriaPropertyRestriction propertyNameCriteria = OrganisationCriteriaPropertyRestriction.fromValue(propertyRestriction.getPropertyName());
+            switch (propertyNameCriteria) {
+                case ID:
+                    return new SculptorPropertyCriteria(OrganisationMetamacProperties.nameableArtefact().code(), propertyRestriction.getValue());
+                case URN:
+                    return new SculptorPropertyCriteria(OrganisationMetamacProperties.nameableArtefact().urn(), propertyRestriction.getValue());
+                case NAME:
+                    return new SculptorPropertyCriteria(OrganisationMetamacProperties.nameableArtefact().name().texts().label(), propertyRestriction.getValue());
+                case DESCRIPTION:
+                    return new SculptorPropertyCriteria(OrganisationMetamacProperties.nameableArtefact().description().texts().label(), propertyRestriction.getValue());
+                default:
+                    throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
+            }
+        }
+
+        @SuppressWarnings("rawtypes")
+        @Override
+        public Property retrievePropertyOrder(MetamacRestOrder order) throws RestException {
+            OrganisationCriteriaPropertyOrder propertyNameCriteria = OrganisationCriteriaPropertyOrder.fromValue(order.getPropertyName());
+            switch (propertyNameCriteria) {
+                case ID:
+                    return OrganisationMetamacProperties.nameableArtefact().code();
+                default:
+                    throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
+            }
+        }
+
+        @SuppressWarnings("rawtypes")
+        @Override
+        public Property retrievePropertyOrderDefault() throws RestException {
+            return OrganisationMetamacProperties.nameableArtefact().code();
+        }
+    }
+}

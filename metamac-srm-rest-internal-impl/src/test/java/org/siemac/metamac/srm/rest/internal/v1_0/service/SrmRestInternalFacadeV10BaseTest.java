@@ -63,9 +63,9 @@ public abstract class SrmRestInternalFacadeV10BaseTest extends MetamacRestBaseTe
         return srmRestInternalFacadeClientXml;
     }
 
-    protected String getUriItemSchemes(String agencyID, String resourceID, String version) {
+    protected String getUriItemSchemes(String supathItemSchemes, String agencyID, String resourceID, String version) {
         StringBuilder uri = new StringBuilder();
-        uri.append(baseApi + "/" + getSupathItemSchemes());
+        uri.append(baseApi + "/" + supathItemSchemes);
         if (agencyID != null) {
             uri.append("/" + agencyID);
             if (resourceID != null) {
@@ -77,13 +77,18 @@ public abstract class SrmRestInternalFacadeV10BaseTest extends MetamacRestBaseTe
         }
         return uri.toString();
     }
-
-    protected String getUriItemSchemes(String agencyID, String resourceID, String query, String limit, String offset) throws Exception {
-        String uri = getUriItemSchemes(agencyID, resourceID, null);
+    protected String getUriItemSchemes(String agencyID, String resourceID, String version) {
+        return getUriItemSchemes(getSupathItemSchemes(), agencyID, resourceID, version);
+    }
+    protected String getUriItemSchemes(String supathItemSchemes, String agencyID, String resourceID, String version, String query, String limit, String offset) throws Exception {
+        String uri = getUriItemSchemes(supathItemSchemes, agencyID, resourceID, version);
         uri = RestUtils.createLinkWithQueryParam(uri, RestConstants.PARAMETER_QUERY, RestUtils.encodeParameter(query));
         uri = RestUtils.createLinkWithQueryParam(uri, RestConstants.PARAMETER_LIMIT, RestUtils.encodeParameter(limit));
         uri = RestUtils.createLinkWithQueryParam(uri, RestConstants.PARAMETER_OFFSET, RestUtils.encodeParameter(offset));
         return uri.toString();
+    }
+    protected String getUriItemSchemes(String agencyID, String resourceID, String version, String query, String limit, String offset) throws Exception {
+        return getUriItemSchemes(getSupathItemSchemes(), agencyID, resourceID, version, query, limit, offset);
     }
 
     protected String getUriItems(String agencyID, String resourceID, String version, String query, String limit, String offset) throws Exception {

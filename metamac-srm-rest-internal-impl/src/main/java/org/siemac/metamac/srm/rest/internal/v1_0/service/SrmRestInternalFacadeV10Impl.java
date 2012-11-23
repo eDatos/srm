@@ -5,6 +5,7 @@ import java.util.List;
 import javax.ws.rs.core.Response.Status;
 
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
+import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
@@ -14,6 +15,7 @@ import org.siemac.metamac.rest.exception.RestCommonServiceExceptionType;
 import org.siemac.metamac.rest.exception.RestException;
 import org.siemac.metamac.rest.exception.utils.RestExceptionUtils;
 import org.siemac.metamac.rest.search.criteria.SculptorCriteria;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.AgencySchemes;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.Categories;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.Category;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.CategoryScheme;
@@ -30,48 +32,64 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptType;
 import org.siemac.metamac.srm.core.concept.serviceapi.ConceptsMetamacService;
+import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
+import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamacProperties;
+import org.siemac.metamac.srm.core.organisation.serviceapi.OrganisationsMetamacService;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.category.CategoriesDo2RestMapperV10;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.category.CategoriesRest2DoMapper;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.concept.ConceptsDo2RestMapperV10;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.concept.ConceptsRest2DoMapper;
+import org.siemac.metamac.srm.rest.internal.v1_0.mapper.organisation.OrganisationsDo2RestMapperV10;
+import org.siemac.metamac.srm.rest.internal.v1_0.mapper.organisation.OrganisationsRest2DoMapper;
 import org.siemac.metamac.srm.rest.internal.v1_0.service.utils.SrmRestInternalUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
+
 @Service("srmRestInternalFacadeV10")
 public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
 
     @Autowired
-    private ConceptsMetamacService     conceptsService;
+    private ConceptsMetamacService        conceptsService;
 
     @Autowired
-    private CategoriesMetamacService   categoriesService;
+    private CategoriesMetamacService      categoriesService;
 
     @Autowired
-    private ConceptsRest2DoMapper      conceptsRest2DoMapper;
+    private OrganisationsMetamacService   organisationsService;
 
     @Autowired
-    private CategoriesRest2DoMapper    categoriesRest2DoMapper;
+    private ConceptsRest2DoMapper         conceptsRest2DoMapper;
 
     @Autowired
-    private ConceptsDo2RestMapperV10   conceptsDo2RestMapper;
+    private CategoriesRest2DoMapper       categoriesRest2DoMapper;
 
     @Autowired
-    private CategoriesDo2RestMapperV10 categoriesDo2RestMapper;
+    private OrganisationsRest2DoMapper    organisationsRest2DoMapper;
 
-    private ServiceContext             ctx    = new ServiceContext("restInternal", "restInternal", "restInternal");
-    private Logger                     logger = LoggerFactory.getLogger(LoggingInterceptor.class);
+    @Autowired
+    private ConceptsDo2RestMapperV10      conceptsDo2RestMapper;
 
-    // TODO latest default?
+    @Autowired
+    private CategoriesDo2RestMapperV10    categoriesDo2RestMapper;
+
+    @Autowired
+    private OrganisationsDo2RestMapperV10 organisationsDo2RestMapper;
+
+    private ServiceContext                ctx    = new ServiceContext("restInternal", "restInternal", "restInternal");
+    private Logger                        logger = LoggerFactory.getLogger(LoggingInterceptor.class);
+
+    // TODO latest default? cuando no se especifica versión
+
     @Override
     public ConceptSchemes findConceptSchemes(String query, String orderBy, String limit, String offset) {
         return findConceptSchemes(null, null, null, query, orderBy, limit, offset);
     }
 
-    // TODO latest default?
     @Override
     public ConceptSchemes findConceptSchemes(String agencyID, String query, String orderBy, String limit, String offset) {
         return findConceptSchemes(agencyID, null, null, query, orderBy, limit, offset);
@@ -148,13 +166,11 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
         }
     }
 
-    // TODO latest default?
     @Override
     public CategorySchemes findCategorySchemes(String query, String orderBy, String limit, String offset) {
         return findCategorySchemes(null, null, null, query, orderBy, limit, offset);
     }
 
-    // TODO latest default?
     @Override
     public CategorySchemes findCategorySchemes(String agencyID, String query, String orderBy, String limit, String offset) {
         return findCategorySchemes(agencyID, null, null, query, orderBy, limit, offset);
@@ -215,6 +231,21 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
         } catch (Exception e) {
             throw manageException(e);
         }
+    }
+
+    @Override
+    public AgencySchemes findAgencySchemes(String query, String orderBy, String limit, String offset) {
+        return findAgencySchemes(null, null, null, query, orderBy, limit, offset);
+    }
+
+    @Override
+    public AgencySchemes findAgencySchemes(String agencyID, String query, String orderBy, String limit, String offset) {
+        return findAgencySchemes(agencyID, null, null, query, orderBy, limit, offset);
+    }
+
+    @Override
+    public AgencySchemes findAgencySchemes(String agencyID, String resourceID, String query, String orderBy, String limit, String offset) {
+        return findAgencySchemes(agencyID, resourceID, null, query, orderBy, limit, offset);
     }
 
     private ConceptSchemes findConceptSchemes(String agencyID, String resourceID, String version, String query, String orderBy, String limit, String offset) {
@@ -292,6 +323,38 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
 
         // Find
         PagedResult<CategoryMetamac> entitiesPagedResult = categoriesService.findCategoriesByCondition(ctx, conditionalCriteria, pagingParameter);
+        return entitiesPagedResult;
+    }
+
+    private AgencySchemes findAgencySchemes(String agencyID, String resourceID, String version, String query, String orderBy, String limit, String offset) {
+        try {
+            SculptorCriteria sculptorCriteria = organisationsRest2DoMapper.getOrganisationSchemeCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
+
+            // Find
+            PagedResult<OrganisationSchemeVersionMetamac> entitiesPagedResult = findOrganisationSchemesCore(agencyID, resourceID, version, OrganisationSchemeTypeEnum.AGENCY_SCHEME,
+                    sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
+
+            // Transform
+            AgencySchemes agencySchemes = organisationsDo2RestMapper.toAgencySchemes(entitiesPagedResult, agencyID, resourceID, query, orderBy, sculptorCriteria.getLimit());
+            return agencySchemes;
+        } catch (Exception e) {
+            throw manageException(e);
+        }
+    }
+
+    private PagedResult<OrganisationSchemeVersionMetamac> findOrganisationSchemesCore(String agencyID, String resourceID, String version, OrganisationSchemeTypeEnum type,
+            List<ConditionalCriteria> conditionalCriteriaQuery, PagingParameter pagingParameter) throws MetamacException {
+
+        // Criteria to find schemes by criteria
+        List<ConditionalCriteria> conditionalCriteria = SrmRestInternalUtils.buildConditionalCriteriaItemSchemes(agencyID, resourceID, version, conditionalCriteriaQuery,
+                OrganisationSchemeVersionMetamac.class);
+        if (type != null) {
+            conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(OrganisationSchemeVersionMetamac.class).withProperty(OrganisationSchemeVersionMetamacProperties.organisationSchemeType())
+                    .eq(type).buildSingle());
+        }
+
+        // Find
+        PagedResult<OrganisationSchemeVersionMetamac> entitiesPagedResult = organisationsService.findOrganisationSchemesByCondition(ctx, conditionalCriteria, pagingParameter);
         return entitiesPagedResult;
     }
 

@@ -89,7 +89,7 @@ public class SrmRestInternalFacadeV10CategoriesTest extends SrmRestInternalFacad
 
     @Test
     public void testFindCategorySchemesXml() throws Exception {
-        String requestUri = getUriItemSchemes(null, null, null, "4", "4");
+        String requestUri = getUriItemSchemes(null, null, null, null, "4", "4");
         InputStream responseExpected = SrmRestInternalFacadeV10CategoriesTest.class.getResourceAsStream("/responses/categories/findCategorySchemes.xml");
 
         // Request and validate
@@ -107,7 +107,7 @@ public class SrmRestInternalFacadeV10CategoriesTest extends SrmRestInternalFacad
 
     @Test
     public void testFindCategorySchemesByAgencyXml() throws Exception {
-        String requestUri = getUriItemSchemes(AGENCY_1, null, null, "4", "4");
+        String requestUri = getUriItemSchemes(AGENCY_1, null, null, null, "4", "4");
         InputStream responseExpected = SrmRestInternalFacadeV10CategoriesTest.class.getResourceAsStream("/responses/categories/findCategorySchemes.byAgency.xml");
 
         // Request and validate
@@ -136,7 +136,7 @@ public class SrmRestInternalFacadeV10CategoriesTest extends SrmRestInternalFacad
 
     @Test
     public void testFindCategorySchemesByAgencyAndResourceXml() throws Exception {
-        String requestUri = getUriItemSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, null, "4", null);
+        String requestUri = getUriItemSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, null, null, "4", null);
         InputStream responseExpected = SrmRestInternalFacadeV10CategoriesTest.class.getResourceAsStream("/responses/categories/findCategorySchemes.byAgencyResource.xml");
 
         // Request and validate

@@ -128,7 +128,26 @@
         </xs:complexContent>
     </xs:complexType>    
     
+    <xs:complexType name="AgencySchemes">
+        <xs:complexContent>
+            <xs:extension base="common:ListBase">
+                <xs:sequence>
+                    <xs:element name="agencyScheme" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
     
+    <xs:complexType name="OrganisationUnitSchemes">
+        <xs:complexContent>
+            <xs:extension base="common:ListBase">
+                <xs:sequence>
+                    <xs:element name="organisationUnitScheme" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+        
     <xs:complexType name="Urns">
         <xs:complexContent>
             <xs:extension base="common:ListBase">
@@ -185,8 +204,8 @@
             <xs:enumeration value="ID" />
             <xs:enumeration value="URN" />
             <xs:enumeration value="NAME" />
-            <xs:enumeration value="ACRONYM" />
             <xs:enumeration value="DESCRIPTION" />
+            <xs:enumeration value="ACRONYM" />
             <xs:enumeration value="DESCRIPTION_SOURCE" />
             <xs:enumeration value="EXTENDS" />
             <xs:enumeration value="RELATED_CONCEPT" />
@@ -235,6 +254,43 @@
             <xs:enumeration value="ID" />
         </xs:restriction>
     </xs:simpleType>    
+    
+    <xs:simpleType name="OrganisationSchemeCriteriaPropertyRestriction">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="ID" />
+            <xs:enumeration value="URN" />
+            <xs:enumeration value="NAME" />
+            <xs:enumeration value="DESCRIPTION" />
+            <xs:enumeration value="PROC_STATUS" />
+            <xs:enumeration value="VALID_FROM" />
+            <xs:enumeration value="VALID_TO" />
+            <xs:enumeration value="INTERNAL_PUBLICATION_DATE" />
+            <xs:enumeration value="INTERNAL_PUBLICATION_USER" />
+            <xs:enumeration value="EXTERNAL_PUBLICATION_DATE" />
+            <xs:enumeration value="EXTERNAL_PUBLICATION_USER" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="OrganisationSchemeCriteriaPropertyOrder">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="ID" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="OrganisationCriteriaPropertyRestriction">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="ID" />
+            <xs:enumeration value="URN" />
+            <xs:enumeration value="NAME" />
+            <xs:enumeration value="DESCRIPTION" />
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="OrganisationCriteriaPropertyOrder">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="ID" />
+        </xs:restriction>
+    </xs:simpleType>
 
     <!-- Elements -->
     <xs:element name="conceptScheme" type="tns:ConceptScheme" />
@@ -247,4 +303,7 @@
     <xs:element name="categorySchemes" type="tns:CategorySchemes" />
     <xs:element name="category" type="tns:Category" />
     <xs:element name="categories" type="tns:Categories" />
+    
+    <xs:element name="agencySchemes" type="tns:AgencySchemes" />
+    <xs:element name="organisationUnitSchemes" type="tns:OrganisationUnitSchemes" />
 </xs:schema>
