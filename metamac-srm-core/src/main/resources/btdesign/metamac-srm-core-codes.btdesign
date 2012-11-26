@@ -137,12 +137,57 @@ Application CodesMetamac {
 			- Bag<@CodelistVersionMetamac> codelists cascade="none" fetch="lazy" inverse <-> family;
 			
 			Repository CodelistFamilyRepository {
-				findById;
 				save;
 				delete;
 				findByQuery(String query, Map<String, Object> parameters, int maxResult);
 				findByCondition(PagingParameter pagingParameter);
 				@CodelistFamily findByIdentifier(String identifier);
+			}
+		}
+		
+		Entity VariableFamily {
+			databaseTable="TB_M_VARIABLE_FAMILIES"
+			hint="idSequence=M_VARIABLE_FAMILIES"
+			
+			"Identifier"
+			String identifier nullable;
+			"Name"
+			- @InternationalString name nullable cascade="all" databaseColumn="NAME_FK";
+			"Variables"
+			- Bag<@Variable> variables cascade="none" fetch="lazy" inverse <-> family;
+			
+			Repository VariableFamilyRepository {
+				save;
+				delete;
+				findByQuery(String query, Map<String, Object> parameters, int maxResult);
+				findByCondition(PagingParameter pagingParameter);
+				@VariableFamily findByIdentifier(String identifier);
+			}
+		}
+		
+		Entity Variable {
+			databaseTable="TB_M_VARIABLES"
+			hint="idSequence=M_VARIABLES"
+			
+			"Identifier"
+			String identifier nullable;
+			"Name"
+			- @InternationalString name nullable cascade="all" databaseColumn="NAME_FK";
+			"Short name"
+			- @InternationalString shortName nullable cascade="all" databaseColumn="SHORT_NAME_FK";
+			"Date from which the version is valid"
+			DateTimeTZ validFrom nullable;
+			"Date from which version is superceded"
+			DateTimeTZ validTo nullable;
+			"Family"
+			- @VariableFamily family cascade="none" nullable databaseColumn="VARIABLE_FAMILY_FK" <-> variables;
+			
+			Repository VariableRepository {
+				save;
+				delete;
+				findByQuery(String query, Map<String, Object> parameters, int maxResult);
+				findByCondition(PagingParameter pagingParameter);
+				@Variable findByIdentifier(String identifier);
 			}
 		}
 

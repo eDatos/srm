@@ -330,6 +330,8 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
         tables.add("TB_M_CODELIST_FAMILIES");
         tables.add("TB_M_CODES");
         tables.add("TB_M_CODELISTS_VERSIONS");
+        tables.add("TB_M_VARIABLE_FAMILIES");
+        tables.add("TB_M_VARIABLES");
         return tables;
     }
 
