@@ -23,25 +23,30 @@ public class OrganisationsDoMocks extends DoMocks {
         OrganisationSchemeVersionMetamac organisationSchemeVersion = mockOrganisationScheme(agencyID, resourceID, version, type);
 
         // organisations
+        Boolean organisationsCanHaveChildren = OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME.equals(type);
         OrganisationTypeEnum organisationType = guessOrganisationTypeEnum(type);
         OrganisationMetamac organisation1 = mockOrganisation("organisation1", organisationSchemeVersion, null, organisationType);
         OrganisationMetamac organisation2 = mockOrganisation("organisation2", organisationSchemeVersion, null, organisationType);
-        OrganisationMetamac organisation2A = mockOrganisation("organisation2A", organisationSchemeVersion, organisation2, organisationType);
-        OrganisationMetamac organisation2B = mockOrganisation("organisation2B", organisationSchemeVersion, organisation2, organisationType);
 
         // organisations hierarchy
         organisationSchemeVersion.addItem(organisation1);
         organisationSchemeVersion.addItemsFirstLevel(organisation1);
         organisationSchemeVersion.addItem(organisation2);
         organisationSchemeVersion.addItemsFirstLevel(organisation2);
-        organisationSchemeVersion.addItem(organisation2A);
-        organisationSchemeVersion.addItem(organisation2B);
-        organisation2.addChildren(organisation2A);
-        organisation2.addChildren(organisation2B);
+
+        // children
+        if (organisationsCanHaveChildren) {
+            OrganisationMetamac organisation2A = mockOrganisation("organisation2A", organisationSchemeVersion, organisation2, organisationType);
+            OrganisationMetamac organisation2B = mockOrganisation("organisation2B", organisationSchemeVersion, organisation2, organisationType);
+            organisationSchemeVersion.addItem(organisation2A);
+            organisationSchemeVersion.addItem(organisation2B);
+            organisation2.addChildren(organisation2A);
+            organisation2.addChildren(organisation2B);
+        }
 
         return organisationSchemeVersion;
     }
-    
+
     public static OrganisationMetamac mockOrganisation(String resourceID, ItemSchemeVersion itemSchemeVersion, OrganisationMetamac parent, OrganisationTypeEnum type) {
 
         OrganisationMetamac organisation = OrganisationsMetamacDoMocks.mockOrganisation(type);
@@ -55,8 +60,6 @@ public class OrganisationsDoMocks extends DoMocks {
         fillNameableArtefactWithInmutableValues(resourceID, organisation.getNameableArtefact()); // immutable values to test xml streams
         return organisation;
     }
-    
-
 
     private static OrganisationTypeEnum guessOrganisationTypeEnum(OrganisationSchemeTypeEnum schemeType) {
         switch (schemeType) {

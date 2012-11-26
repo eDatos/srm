@@ -20,6 +20,10 @@ public class RestInternalConstants {
     public static String LINK_SUBPATH_ORGANISATION_SCHEMES      = "organisationschemes";
 
     public static String LINK_SUBPATH_AGENCIES                  = "agencies";
+    public static String LINK_SUBPATH_ORGANISATION_UNITS        = "organisationunits";
+    public static String LINK_SUBPATH_DATA_PROVIDERS            = "dataproviders";
+    public static String LINK_SUBPATH_DATA_CONSUMERS            = "dataconsumers";
+    public static String LINK_SUBPATH_ORGANISATIONS             = "organisations";
 
     public static String KIND_CONCEPT_SCHEMES                   = API_NAME + RestConstants.KIND_SEPARATOR + "conceptSchemes";
     public static String KIND_CONCEPT_SCHEME                    = API_NAME + RestConstants.KIND_SEPARATOR + "conceptScheme";
@@ -42,6 +46,18 @@ public class RestInternalConstants {
     public static String KIND_ORGANISATION_UNIT_SCHEME          = API_NAME + RestConstants.KIND_SEPARATOR + "organisationUnitScheme";
     public static String KIND_DATA_PROVIDER_SCHEME              = API_NAME + RestConstants.KIND_SEPARATOR + "dataProviderScheme";
     public static String KIND_DATA_CONSUMER_SCHEME              = API_NAME + RestConstants.KIND_SEPARATOR + "dataConsumerScheme";
+
+    public static String KIND_ORGANISATIONS                     = API_NAME + RestConstants.KIND_SEPARATOR + "organisations";
+    public static String KIND_AGENCIES                          = API_NAME + RestConstants.KIND_SEPARATOR + "agencies";
+    public static String KIND_ORGANISATION_UNITS                = API_NAME + RestConstants.KIND_SEPARATOR + "organisationUnits";
+    public static String KIND_DATA_PROVIDERS                    = API_NAME + RestConstants.KIND_SEPARATOR + "dataProviders";
+    public static String KIND_DATA_CONSUMERS                    = API_NAME + RestConstants.KIND_SEPARATOR + "dataConsumers";
+
+    public static String KIND_ORGANISATION                      = API_NAME + RestConstants.KIND_SEPARATOR + "organisation";
+    public static String KIND_AGENCY                            = API_NAME + RestConstants.KIND_SEPARATOR + "agency";
+    public static String KIND_ORGANISATION_UNIT                 = API_NAME + RestConstants.KIND_SEPARATOR + "organisationUnit";
+    public static String KIND_DATA_PROVIDER                     = API_NAME + RestConstants.KIND_SEPARATOR + "dataProvider";
+    public static String KIND_DATA_CONSUMER                     = API_NAME + RestConstants.KIND_SEPARATOR + "dataConsumer";
 
     public static String WILDCARD                               = "~all";
     public static String LATEST                                 = "~latest";

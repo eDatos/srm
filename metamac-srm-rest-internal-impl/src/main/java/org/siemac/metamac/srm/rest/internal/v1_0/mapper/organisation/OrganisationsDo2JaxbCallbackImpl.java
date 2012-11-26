@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.rest.internal.v1_0.mapper.organisation;
 
 import java.util.List;
 
+import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation;
@@ -24,12 +25,10 @@ public class OrganisationsDo2JaxbCallbackImpl implements OrganisationsDo2JaxbCal
     private OrganisationsDo2RestMapperV10 organisationsDo2RestMapperV10;
 
     @Override
-    public AgencySchemeType createAgencySchemeJaxb(OrganisationSchemeVersion sourceAgencyScheme) {
-        // TODO
-        // org.siemac.metamac.rest.srm_internal.v1_0.domain.AgencyScheme target = new org.siemac.metamac.rest.srm_internal.v1_0.domain.AgencyScheme();
-        // organisationsDo2RestMapperV10.toCategoryScheme((CategorySchemeVersionMetamac) source, target);
-        // return target;
-        return null;
+    public AgencySchemeType createAgencySchemeJaxb(OrganisationSchemeVersion source) {
+        org.siemac.metamac.rest.srm_internal.v1_0.domain.AgencyScheme target = new org.siemac.metamac.rest.srm_internal.v1_0.domain.AgencyScheme();
+        organisationsDo2RestMapperV10.toAgencyScheme((OrganisationSchemeVersionMetamac) source, target);
+        return target;
     }
 
     @Override

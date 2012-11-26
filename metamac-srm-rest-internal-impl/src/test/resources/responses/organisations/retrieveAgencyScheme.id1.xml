@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<srm:agencyScheme xmlns:messagefooter="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message/footer" xmlns:metadatastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/structurespecific" xmlns:datageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/generic" xmlns:query="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/query" xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common" xmlns:srm="http://www.siemac.org/metamac/rest/srm-internal/v1.0/domain" xmlns:metadatageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/generic" xmlns:datastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/structurespecific" xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" xmlns:registry="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/registry" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="srm#agencyScheme" id="itemScheme1" version="01.000" isFinal="false" isPartial="false" agencyID="idAsMaintaineragency1" isExternalReference="false" validFrom="2012-11-26T08:59:06.276Z" urn="urn:itemScheme1:01.000" serviceURL="serviceUrl-K3Tc20HAdd" structureURL="structureUrl-Zb0SAQLnmC">
+    <common:Annotations>
+        <common:Annotation id="code1">
+            <common:AnnotationTitle>title-szZ6rirhE3</common:AnnotationTitle>
+            <common:AnnotationType>type-j7AlSxcQ9N</common:AnnotationType>
+            <common:AnnotationURL>url-IEChAgcl1s</common:AnnotationURL>
+            <common:AnnotationText xml:lang="es">text-ECpIqU1n9L en Español</common:AnnotationText>
+            <common:AnnotationText xml:lang="en">text-2C4U8gs2lt in English</common:AnnotationText>
+        </common:Annotation>
+        <common:Annotation id="code3">
+            <common:AnnotationTitle>title-4VPN2mwX8V</common:AnnotationTitle>
+            <common:AnnotationType>type-fCj1LNI5lw</common:AnnotationType>
+            <common:AnnotationURL>url-D3XSRMnwas</common:AnnotationURL>
+            <common:AnnotationText xml:lang="es">text-Ttu9VGR1hj en Español</common:AnnotationText>
+            <common:AnnotationText xml:lang="en">text-4ig044wX7L in English</common:AnnotationText>
+        </common:Annotation>
+        <common:Annotation id="code2">
+            <common:AnnotationTitle>title-WQBn4mWblf</common:AnnotationTitle>
+            <common:AnnotationType>type-u9Vxyhi0vB</common:AnnotationType>
+            <common:AnnotationURL>url-Zey3fWU5fI</common:AnnotationURL>
+            <common:AnnotationText xml:lang="es">text-WBLkEnLyab en Español</common:AnnotationText>
+            <common:AnnotationText xml:lang="en">text-dDKj7RlWjg in English</common:AnnotationText>
+        </common:Annotation>
+    </common:Annotations>
+    <common:Name xml:lang="es">name-itemScheme1v01.000 en Español</common:Name>
+    <common:Name xml:lang="en">name-itemScheme1v01.000 in English</common:Name>
+    <common:Description xml:lang="en">description-itemScheme1v01.000 in English</common:Description>
+    <common:Description xml:lang="es">description-itemScheme1v01.000 en Español</common:Description>
+    <structure:Agency id="organisation1" urn="urn:organisation1">
+        <common:Annotations>
+            <common:Annotation id="code1">
+                <common:AnnotationTitle>title-aKPruGxVu9</common:AnnotationTitle>
+                <common:AnnotationType>type-sYkf5zPgTf</common:AnnotationType>
+                <common:AnnotationURL>url-A8ojfzxKYE</common:AnnotationURL>
+                <common:AnnotationText xml:lang="es">text-X7Xw7TBfct en Español</common:AnnotationText>
+                <common:AnnotationText xml:lang="en">text-uUqbkA2q03 in English</common:AnnotationText>
+            </common:Annotation>
+            <common:Annotation id="code3">
+                <common:AnnotationTitle>title-lhmxlCZQfB</common:AnnotationTitle>
+                <common:AnnotationType>type-AJHqFHBgRl</common:AnnotationType>
+                <common:AnnotationURL>url-C2j8cOjwXw</common:AnnotationURL>
+                <common:AnnotationText xml:lang="es">text-s8WRH4Weaw en Español</common:AnnotationText>
+                <common:AnnotationText xml:lang="en">text-sKnTkNX04T in English</common:AnnotationText>
+            </common:Annotation>
+            <common:Annotation id="code2">
+                <common:AnnotationTitle>title-LsQSfgTQ4N</common:AnnotationTitle>
+                <common:AnnotationType>type-FN7EFiFnkj</common:AnnotationType>
+                <common:AnnotationURL>url-caoELGlaQF</common:AnnotationURL>
+                <common:AnnotationText xml:lang="en">text-wp9MyR08fL in English</common:AnnotationText>
+                <common:AnnotationText xml:lang="es">text-1fA1pdkhQl en Español</common:AnnotationText>
+            </common:Annotation>
+        </common:Annotations>
+        <common:Name xml:lang="es">name-organisation1 en Español</common:Name>
+        <common:Name xml:lang="en">name-organisation1 in English</common:Name>
+        <common:Description xml:lang="es">description-organisation1 en Español</common:Description>
+        <common:Description xml:lang="en">description-organisation1 in English</common:Description>
+    </structure:Agency>
+    <structure:Agency id="organisation2" urn="urn:organisation2">
+        <common:Annotations>
+            <common:Annotation id="code2">
+                <common:AnnotationTitle>title-SsQJpwpxUy</common:AnnotationTitle>
+                <common:AnnotationType>type-OXLo2yOtqC</common:AnnotationType>
+                <common:AnnotationURL>url-OckdzW5Ck8</common:AnnotationURL>
+                <common:AnnotationText xml:lang="en">text-PYjJlb8fOi in English</common:AnnotationText>
+                <common:AnnotationText xml:lang="es">text-xXyPjTddSA en Español</common:AnnotationText>
+            </common:Annotation>
+            <common:Annotation id="code1">
+                <common:AnnotationTitle>title-WCcFxMZMNb</common:AnnotationTitle>
+                <common:AnnotationType>type-xJhoLbZHcB</common:AnnotationType>
+                <common:AnnotationURL>url-6nYW1XnGZO</common:AnnotationURL>
+                <common:AnnotationText xml:lang="es">text-FQgIWr244a en Español</common:AnnotationText>
+                <common:AnnotationText xml:lang="en">text-Iv1B4jYZHo in English</common:AnnotationText>
+            </common:Annotation>
+            <common:Annotation id="code3">
+                <common:AnnotationTitle>title-VZ1kD87OAH</common:AnnotationTitle>
+                <common:AnnotationType>type-uSpHLxlqaQ</common:AnnotationType>
+                <common:AnnotationURL>url-SspRYfadn1</common:AnnotationURL>
+                <common:AnnotationText xml:lang="en">text-tQdsLOmxNe in English</common:AnnotationText>
+                <common:AnnotationText xml:lang="es">text-U69pKKAIpo en Español</common:AnnotationText>
+            </common:Annotation>
+        </common:Annotations>
+        <common:Name xml:lang="en">name-organisation2 in English</common:Name>
+        <common:Name xml:lang="es">name-organisation2 en Español</common:Name>
+        <common:Description xml:lang="en">description-organisation2 in English</common:Description>
+        <common:Description xml:lang="es">description-organisation2 en Español</common:Description>
+    </structure:Agency>
+    <srm:selfLink kind="srm#agencyScheme" href="http://data.istac.es/apis/srm/v1.0/agencyschemes/idAsMaintaineragency1/itemScheme1/01.000"/>
+    <srm:parentLink kind="srm#agencySchemes" href="http://data.istac.es/apis/srm/v1.0/agencyschemes"/>
+    <srm:replaceToVersion>replaceTo</srm:replaceToVersion>
+    <srm:childLinks total="1">
+        <cdomain:childLink kind="srm#agencies" href="http://data.istac.es/apis/srm/v1.0/agencyschemes/idAsMaintaineragency1/itemScheme1/01.000/agencies"/>
+    </srm:childLinks>
+</srm:agencyScheme>

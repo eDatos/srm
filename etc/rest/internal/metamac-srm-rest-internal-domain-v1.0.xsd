@@ -147,6 +147,45 @@
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
+    
+    <xs:complexType name="AgencyScheme">
+        <xs:complexContent>
+            <xs:extension base="sdmx:AgencySchemeType">
+                <xs:sequence>
+                    <xs:element name="selfLink" type="common:ResourceLink" />
+                    <xs:element name="parentLink" type="common:ResourceLink" />
+                    <xs:element name="replaceToVersion" type="xs:string" minOccurs="0" />
+                    <xs:element name="childLinks" type="common:ChildLinks" minOccurs="1" />
+                </xs:sequence>
+                <xs:attribute name="kind" type="xs:string" use="required" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    
+    <xs:complexType name="Agencies">
+        <xs:complexContent>
+            <xs:extension base="common:ListBase">
+                <xs:sequence>
+                    <xs:element name="agency" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>    
+    
+    <xs:complexType name="Agency">
+        <xs:complexContent>
+            <xs:extension base="sdmx:AgencyType">
+                <xs:sequence>
+                    <xs:element name="selfLink" type="common:ResourceLink" />
+                    <xs:element name="parentLink" type="common:ResourceLink" />
+                    <xs:element name="parent" type="xs:string" minOccurs="0" />
+                    <xs:element name="childLinks" type="common:ChildLinks" minOccurs="1" />
+                </xs:sequence>
+                <xs:attribute name="kind" type="xs:string" use="required" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>    
+    
         
     <xs:complexType name="Urns">
         <xs:complexContent>
@@ -293,17 +332,20 @@
     </xs:simpleType>
 
     <!-- Elements -->
-    <xs:element name="conceptScheme" type="tns:ConceptScheme" />
     <xs:element name="conceptSchemes" type="tns:ConceptSchemes" />
-    <xs:element name="concept" type="tns:Concept" />
+    <xs:element name="conceptScheme" type="tns:ConceptScheme" />
     <xs:element name="concepts" type="tns:Concepts" />
+    <xs:element name="concept" type="tns:Concept" />
     <xs:element name="conceptTypes" type="tns:ConceptTypes" />
     
-    <xs:element name="categoryScheme" type="tns:CategoryScheme" />
     <xs:element name="categorySchemes" type="tns:CategorySchemes" />
-    <xs:element name="category" type="tns:Category" />
+    <xs:element name="categoryScheme" type="tns:CategoryScheme" />
     <xs:element name="categories" type="tns:Categories" />
+    <xs:element name="category" type="tns:Category" />
     
     <xs:element name="agencySchemes" type="tns:AgencySchemes" />
     <xs:element name="organisationUnitSchemes" type="tns:OrganisationUnitSchemes" />
+    <xs:element name="agencyScheme" type="tns:AgencyScheme" />
+    <xs:element name="agencies" type="tns:Agencies" />
+    <xs:element name="agency" type="tns:Agency" />
 </xs:schema>

@@ -91,16 +91,23 @@ public abstract class SrmRestInternalFacadeV10BaseTest extends MetamacRestBaseTe
         return getUriItemSchemes(getSupathItemSchemes(), agencyID, resourceID, version, query, limit, offset);
     }
 
-    protected String getUriItems(String agencyID, String resourceID, String version, String query, String limit, String offset) throws Exception {
-        String uri = getUriItemSchemes(agencyID, resourceID, version) + "/" + getSupathItems();
+    protected String getUriItems(String supathItemSchemes, String supathItems, String agencyID, String resourceID, String version, String query, String limit, String offset) throws Exception {
+        String uri = getUriItemSchemes(supathItemSchemes, agencyID, resourceID, version) + "/" + supathItems;
         uri = RestUtils.createLinkWithQueryParam(uri, RestConstants.PARAMETER_QUERY, RestUtils.encodeParameter(query));
         uri = RestUtils.createLinkWithQueryParam(uri, RestConstants.PARAMETER_LIMIT, RestUtils.encodeParameter(limit));
         uri = RestUtils.createLinkWithQueryParam(uri, RestConstants.PARAMETER_OFFSET, RestUtils.encodeParameter(offset));
         return uri.toString();
     }
 
+    protected String getUriItems(String agencyID, String resourceID, String version, String query, String limit, String offset) throws Exception {
+        return getUriItems(getSupathItemSchemes(), getSupathItems(), agencyID, resourceID, version, query, limit, offset);
+    }
+
+    protected String getUriItem(String supathItemSchemes, String supathItems, String agencyID, String resourceID, String version, String itemID) throws Exception {
+        return getUriItems(supathItemSchemes, supathItems, agencyID, resourceID, version, null, null, null) + "/" + itemID;
+    }
     protected String getUriItem(String agencyID, String resourceID, String version, String itemID) throws Exception {
-        return getUriItems(agencyID, resourceID, version, null, null, null) + "/" + itemID;
+        return getUriItem(getSupathItemSchemes(), getSupathItems(), agencyID, resourceID, version, itemID);
     }
 
     protected abstract void resetMocks() throws MetamacException;

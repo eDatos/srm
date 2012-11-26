@@ -223,25 +223,25 @@ public class ConceptsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl imple
     }
 
     private String toConceptSchemesLink(String agencyID, String resourceID, String version) {
-        return toItemSchemesLink(getItemSchemeSubpath(), agencyID, resourceID, version);
+        return toItemSchemesLink(toSubpathItemSchemes(), agencyID, resourceID, version);
     }
     private String toConceptSchemeLink(ItemSchemeVersion itemSchemeVersion) {
-        return toItemSchemeLink(getItemSchemeSubpath(), itemSchemeVersion);
+        return toItemSchemeLink(toSubpathItemSchemes(), itemSchemeVersion);
     }
     private String toConceptsLink(String agencyID, String resourceID, String version) {
-        return toItemsLink(getItemSchemeSubpath(), getItemsSubpath(), agencyID, resourceID, version);
+        return toItemsLink(toSubpathItemSchemes(), toSubpathItems(), agencyID, resourceID, version);
     }
     private String toConceptsLink(ItemSchemeVersion itemSchemeVersion) {
-        return toItemsLink(getItemSchemeSubpath(), getItemsSubpath(), itemSchemeVersion);
+        return toItemsLink(toSubpathItemSchemes(), toSubpathItems(), itemSchemeVersion);
     }
     private String toConceptLink(com.arte.statistic.sdmx.srm.core.base.domain.Item item) {
-        return toItemLink(getItemSchemeSubpath(), getItemsSubpath(), item);
+        return toItemLink(toSubpathItemSchemes(), toSubpathItems(), item);
     }
 
-    private String getItemSchemeSubpath() {
+    private String toSubpathItemSchemes() {
         return RestInternalConstants.LINK_SUBPATH_CONCEPT_SCHEMES;
     }
-    private String getItemsSubpath() {
+    private String toSubpathItems() {
         return RestInternalConstants.LINK_SUBPATH_CONCEPTS;
     }
 }

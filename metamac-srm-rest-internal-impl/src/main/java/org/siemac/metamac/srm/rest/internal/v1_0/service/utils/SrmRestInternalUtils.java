@@ -12,6 +12,8 @@ import com.arte.statistic.sdmx.srm.core.base.domain.ItemProperties;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionProperties;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefactProperties.MaintainableArtefactProperty;
 import com.arte.statistic.sdmx.srm.core.base.domain.NameableArtefactProperties.NameableArtefactProperty;
+import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
+import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 
 public class SrmRestInternalUtils {
 
@@ -48,6 +50,34 @@ public class SrmRestInternalUtils {
         addConditionalCriteriaByItem(conditionalCriteria, conceptID, entity, ItemProperties.nameableArtefact());
 
         return conditionalCriteria;
+    }
+
+    public static OrganisationSchemeTypeEnum toOrganisationSchemeType(OrganisationTypeEnum type) {
+        switch (type) {
+            case AGENCY:
+                return OrganisationSchemeTypeEnum.AGENCY_SCHEME;
+            case ORGANISATION_UNIT:
+                return OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME;
+            case DATA_CONSUMER:
+                return OrganisationSchemeTypeEnum.DATA_CONSUMER_SCHEME;
+            case DATA_PROVIDER:
+                return OrganisationSchemeTypeEnum.DATA_PROVIDER_SCHEME;
+        }
+        return null;
+    }
+
+    public static OrganisationTypeEnum toOrganisationType(OrganisationSchemeTypeEnum type) {
+        switch (type) {
+            case AGENCY_SCHEME:
+                return OrganisationTypeEnum.AGENCY;
+            case ORGANISATION_UNIT_SCHEME:
+                return OrganisationTypeEnum.ORGANISATION_UNIT;
+            case DATA_CONSUMER_SCHEME:
+                return OrganisationTypeEnum.DATA_CONSUMER;
+            case DATA_PROVIDER_SCHEME:
+                return OrganisationTypeEnum.DATA_PROVIDER;
+        }
+        return null;
     }
 
     /**
