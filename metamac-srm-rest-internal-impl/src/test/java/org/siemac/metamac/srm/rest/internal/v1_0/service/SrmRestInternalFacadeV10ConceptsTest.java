@@ -23,7 +23,6 @@ import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.QUERY_ID_LIKE_1;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.QUERY_ID_LIKE_1_NAME_LIKE_2;
 
-import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -117,8 +116,19 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
 
     @Test
     public void testFindConceptSchemesByAgencyErrorWildcard() throws Exception {
-        String requestUri = getUriItemSchemes(WILDCARD, null, null);
-        testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.NOT_FOUND, new ByteArrayInputStream(new byte[0]));
+        try {
+            getSrmRestInternalFacadeClientXml().findConceptSchemes(WILDCARD, null, null, null, null);
+        } catch (ServerWebApplicationException e) {
+            assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
+
+            org.siemac.metamac.rest.common.v1_0.domain.Exception exception = extractErrorFromException(getSrmRestInternalFacadeClientXml(), e);
+            assertEquals(RestServiceExceptionType.PARAMETER_INCORRECT.getCode(), exception.getCode());
+            assertEquals("Parameter agencyID has incorrect value", exception.getMessage());
+            assertEquals(1, exception.getParameters().getParameters().size());
+            assertEquals(RestInternalConstants.PARAMETER_AGENCY_ID, exception.getParameters().getParameters().get(0));
+        } catch (Exception e) {
+            fail("Incorrect exception");
+        }
     }
 
     @Test
@@ -146,8 +156,19 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
 
     @Test
     public void testFindConceptSchemesByAgencyAndResourceErrorWildcard() throws Exception {
-        String requestUri = getUriItemSchemes(AGENCY_1, WILDCARD, null);
-        testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.NOT_FOUND, new ByteArrayInputStream(new byte[0]));
+        try {
+            getSrmRestInternalFacadeClientXml().findConceptSchemes(AGENCY_1, WILDCARD, null, null, null, null);
+        } catch (ServerWebApplicationException e) {
+            assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
+
+            org.siemac.metamac.rest.common.v1_0.domain.Exception exception = extractErrorFromException(getSrmRestInternalFacadeClientXml(), e);
+            assertEquals(RestServiceExceptionType.PARAMETER_INCORRECT.getCode(), exception.getCode());
+            assertEquals("Parameter resourceID has incorrect value", exception.getMessage());
+            assertEquals(1, exception.getParameters().getParameters().size());
+            assertEquals(RestInternalConstants.PARAMETER_RESOURCE_ID, exception.getParameters().getParameters().get(0));
+        } catch (Exception e) {
+            fail("Incorrect exception");
+        }
     }
 
     @Test
@@ -193,8 +214,9 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
         try {
             getSrmRestInternalFacadeClientXml().retrieveConceptScheme(agencyID, resourceID, version);
         } catch (ServerWebApplicationException e) {
-            org.siemac.metamac.rest.common.v1_0.domain.Exception exception = extractErrorFromException(getSrmRestInternalFacadeClientXml(), e);
+            assertEquals(Status.NOT_FOUND.getStatusCode(), e.getStatus());
 
+            org.siemac.metamac.rest.common.v1_0.domain.Exception exception = extractErrorFromException(getSrmRestInternalFacadeClientXml(), e);
             assertEquals(RestServiceExceptionType.CONCEPT_SCHEME_NOT_FOUND.getCode(), exception.getCode());
             assertEquals("ConceptScheme not found in agencyID " + agencyID + " with ID " + resourceID + " and version " + version, exception.getMessage());
             assertEquals(3, exception.getParameters().getParameters().size());
@@ -218,17 +240,49 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
 
     @Test
     public void testRetrieveConceptSchemeErrorWildcard() throws Exception {
-        {
-            String requestUri = getUriItemSchemes(WILDCARD, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1);
-            testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.NOT_FOUND, new ByteArrayInputStream(new byte[0]));
+        // Agency
+        try {
+            getSrmRestInternalFacadeClientXml().retrieveConceptScheme(WILDCARD, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1);
+        } catch (ServerWebApplicationException e) {
+            assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
+
+            org.siemac.metamac.rest.common.v1_0.domain.Exception exception = extractErrorFromException(getSrmRestInternalFacadeClientXml(), e);
+            assertEquals(RestServiceExceptionType.PARAMETER_INCORRECT.getCode(), exception.getCode());
+            assertEquals("Parameter agencyID has incorrect value", exception.getMessage());
+            assertEquals(1, exception.getParameters().getParameters().size());
+            assertEquals(RestInternalConstants.PARAMETER_AGENCY_ID, exception.getParameters().getParameters().get(0));
+        } catch (Exception e) {
+            fail("Incorrect exception");
         }
-        {
-            String requestUri = getUriItemSchemes(AGENCY_1, WILDCARD, ITEM_SCHEME_1_VERSION_1);
-            testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.NOT_FOUND, new ByteArrayInputStream(new byte[0]));
+
+        // Resource
+        try {
+            getSrmRestInternalFacadeClientXml().retrieveConceptScheme(AGENCY_1, WILDCARD, ITEM_SCHEME_1_VERSION_1);
+        } catch (ServerWebApplicationException e) {
+            assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
+
+            org.siemac.metamac.rest.common.v1_0.domain.Exception exception = extractErrorFromException(getSrmRestInternalFacadeClientXml(), e);
+            assertEquals(RestServiceExceptionType.PARAMETER_INCORRECT.getCode(), exception.getCode());
+            assertEquals("Parameter resourceID has incorrect value", exception.getMessage());
+            assertEquals(1, exception.getParameters().getParameters().size());
+            assertEquals(RestInternalConstants.PARAMETER_RESOURCE_ID, exception.getParameters().getParameters().get(0));
+        } catch (Exception e) {
+            fail("Incorrect exception");
         }
-        {
-            String requestUri = getUriItemSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD);
-            testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.NOT_FOUND, new ByteArrayInputStream(new byte[0]));
+
+        // Version
+        try {
+            getSrmRestInternalFacadeClientXml().retrieveConceptScheme(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD);
+        } catch (ServerWebApplicationException e) {
+            assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
+
+            org.siemac.metamac.rest.common.v1_0.domain.Exception exception = extractErrorFromException(getSrmRestInternalFacadeClientXml(), e);
+            assertEquals(RestServiceExceptionType.PARAMETER_INCORRECT.getCode(), exception.getCode());
+            assertEquals("Parameter version has incorrect value", exception.getMessage());
+            assertEquals(1, exception.getParameters().getParameters().size());
+            assertEquals(RestInternalConstants.PARAMETER_VERSION, exception.getParameters().getParameters().get(0));
+        } catch (Exception e) {
+            fail("Incorrect exception");
         }
     }
 
@@ -316,8 +370,9 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
         try {
             getSrmRestInternalFacadeClientXml().retrieveConcept(agencyID, resourceID, version, conceptID);
         } catch (ServerWebApplicationException e) {
-            org.siemac.metamac.rest.common.v1_0.domain.Exception exception = extractErrorFromException(getSrmRestInternalFacadeClientXml(), e);
+            assertEquals(Status.NOT_FOUND.getStatusCode(), e.getStatus());
 
+            org.siemac.metamac.rest.common.v1_0.domain.Exception exception = extractErrorFromException(getSrmRestInternalFacadeClientXml(), e);
             assertEquals(RestServiceExceptionType.CONCEPT_NOT_FOUND.getCode(), exception.getCode());
             assertEquals("Concept not found with ID " + conceptID + " in ConceptScheme in agencyID " + agencyID + " with ID " + resourceID + " and version " + version, exception.getMessage());
             assertEquals(4, exception.getParameters().getParameters().size());
@@ -342,17 +397,64 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
 
     @Test
     public void testRetrieveConceptErrorWildcard() throws Exception {
-        {
-            String requestUri = getUriItem(WILDCARD, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1, ITEM_1_CODE);
-            testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.NOT_FOUND, new ByteArrayInputStream(new byte[0]));
+
+        // AgencyID
+        try {
+            getSrmRestInternalFacadeClientXml().retrieveConcept(WILDCARD, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1, ITEM_1_CODE);
+        } catch (ServerWebApplicationException e) {
+            assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
+
+            org.siemac.metamac.rest.common.v1_0.domain.Exception exception = extractErrorFromException(getSrmRestInternalFacadeClientXml(), e);
+            assertEquals(RestServiceExceptionType.PARAMETER_INCORRECT.getCode(), exception.getCode());
+            assertEquals("Parameter agencyID has incorrect value", exception.getMessage());
+            assertEquals(1, exception.getParameters().getParameters().size());
+            assertEquals(RestInternalConstants.PARAMETER_AGENCY_ID, exception.getParameters().getParameters().get(0));
+        } catch (Exception e) {
+            fail("Incorrect exception");
         }
-        {
-            String requestUri = getUriItem(AGENCY_1, WILDCARD, ITEM_SCHEME_1_VERSION_1, ITEM_1_CODE);
-            testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.NOT_FOUND, new ByteArrayInputStream(new byte[0]));
+        // AgencyID
+        try {
+            getSrmRestInternalFacadeClientXml().retrieveConcept(AGENCY_1, WILDCARD, ITEM_SCHEME_1_VERSION_1, ITEM_1_CODE);
+        } catch (ServerWebApplicationException e) {
+            assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
+
+            org.siemac.metamac.rest.common.v1_0.domain.Exception exception = extractErrorFromException(getSrmRestInternalFacadeClientXml(), e);
+            assertEquals(RestServiceExceptionType.PARAMETER_INCORRECT.getCode(), exception.getCode());
+            assertEquals("Parameter resourceID has incorrect value", exception.getMessage());
+            assertEquals(1, exception.getParameters().getParameters().size());
+            assertEquals(RestInternalConstants.PARAMETER_RESOURCE_ID, exception.getParameters().getParameters().get(0));
+        } catch (Exception e) {
+            fail("Incorrect exception");
         }
-        {
-            String requestUri = getUriItem(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD, ITEM_1_CODE);
-            testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.NOT_FOUND, new ByteArrayInputStream(new byte[0]));
+
+        // AgencyID
+        try {
+            getSrmRestInternalFacadeClientXml().retrieveConcept(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD, ITEM_1_CODE);
+        } catch (ServerWebApplicationException e) {
+            assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
+
+            org.siemac.metamac.rest.common.v1_0.domain.Exception exception = extractErrorFromException(getSrmRestInternalFacadeClientXml(), e);
+            assertEquals(RestServiceExceptionType.PARAMETER_INCORRECT.getCode(), exception.getCode());
+            assertEquals("Parameter version has incorrect value", exception.getMessage());
+            assertEquals(1, exception.getParameters().getParameters().size());
+            assertEquals(RestInternalConstants.PARAMETER_VERSION, exception.getParameters().getParameters().get(0));
+        } catch (Exception e) {
+            fail("Incorrect exception");
+        }
+
+        // ItemID
+        try {
+            getSrmRestInternalFacadeClientXml().retrieveConcept(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1, WILDCARD);
+        } catch (ServerWebApplicationException e) {
+            assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
+
+            org.siemac.metamac.rest.common.v1_0.domain.Exception exception = extractErrorFromException(getSrmRestInternalFacadeClientXml(), e);
+            assertEquals(RestServiceExceptionType.PARAMETER_INCORRECT.getCode(), exception.getCode());
+            assertEquals("Parameter conceptID has incorrect value", exception.getMessage());
+            assertEquals(1, exception.getParameters().getParameters().size());
+            assertEquals(RestInternalConstants.PARAMETER_CONCEPT_ID, exception.getParameters().getParameters().get(0));
+        } catch (Exception e) {
+            fail("Incorrect exception");
         }
     }
 

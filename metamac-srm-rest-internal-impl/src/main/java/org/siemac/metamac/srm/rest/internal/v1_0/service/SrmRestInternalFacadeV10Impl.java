@@ -44,6 +44,7 @@ import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamacProper
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamacProperties;
 import org.siemac.metamac.srm.core.organisation.serviceapi.OrganisationsMetamacService;
+import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.category.CategoriesDo2RestMapperV10;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.category.CategoriesRest2DoMapper;
@@ -102,17 +103,21 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
 
     @Override
     public ConceptSchemes findConceptSchemes(String agencyID, String query, String orderBy, String limit, String offset) {
+        checkParameterNotWildcardFindItemSchemes(agencyID);
         return findConceptSchemes(agencyID, null, null, query, orderBy, limit, offset);
     }
 
     @Override
     public ConceptSchemes findConceptSchemes(String agencyID, String resourceID, String query, String orderBy, String limit, String offset) {
+        checkParameterNotWildcardFindItemSchemes(agencyID, resourceID);
         return findConceptSchemes(agencyID, resourceID, null, query, orderBy, limit, offset);
     }
 
     @Override
     public ConceptScheme retrieveConceptScheme(String agencyID, String resourceID, String version) {
         try {
+            checkParameterNotWildcardRetrieveItemScheme(agencyID, resourceID, version);
+
             // Find one
             PagedResult<ConceptSchemeVersionMetamac> entitiesPagedResult = findConceptSchemesCore(agencyID, resourceID, version, null, PagingParameter.pageAccess(1, 1, false));
             if (entitiesPagedResult.getValues().size() != 1) {
@@ -131,9 +136,10 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
     @Override
     public Concepts findConcepts(String agencyID, String resourceID, String version, String query, String orderBy, String limit, String offset) {
         try {
-            SculptorCriteria sculptorCriteria = conceptsRest2DoMapper.getConceptCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
-
+            checkParameterNotWildcardFindItems(agencyID, resourceID, version);
+            
             // Find
+            SculptorCriteria sculptorCriteria = conceptsRest2DoMapper.getConceptCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
             PagedResult<ConceptMetamac> entitiesPagedResult = findConceptsCore(agencyID, resourceID, version, null, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
 
             // Transform
@@ -147,6 +153,8 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
     @Override
     public Concept retrieveConcept(String agencyID, String resourceID, String version, String conceptID) {
         try {
+            checkParameterNotWildcardRetrieveItem(agencyID, resourceID, version, conceptID, RestInternalConstants.PARAMETER_CONCEPT_ID);
+
             // Find one
             PagedResult<ConceptMetamac> entitiesPagedResult = findConceptsCore(agencyID, resourceID, version, conceptID, null, PagingParameter.pageAccess(1, 1, false));
             if (entitiesPagedResult.getValues().size() != 1) {
@@ -183,17 +191,21 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
 
     @Override
     public CategorySchemes findCategorySchemes(String agencyID, String query, String orderBy, String limit, String offset) {
+        checkParameterNotWildcardFindItemSchemes(agencyID);
         return findCategorySchemes(agencyID, null, null, query, orderBy, limit, offset);
     }
 
     @Override
     public CategorySchemes findCategorySchemes(String agencyID, String resourceID, String query, String orderBy, String limit, String offset) {
+        checkParameterNotWildcardFindItemSchemes(agencyID, resourceID);
         return findCategorySchemes(agencyID, resourceID, null, query, orderBy, limit, offset);
     }
 
     @Override
     public CategoryScheme retrieveCategoryScheme(String agencyID, String resourceID, String version) {
         try {
+            checkParameterNotWildcardRetrieveItemScheme(agencyID, resourceID, version);
+
             // Find one
             PagedResult<CategorySchemeVersionMetamac> entitiesPagedResult = findCategorySchemesCore(agencyID, resourceID, version, null, PagingParameter.pageAccess(1, 1, false));
             if (entitiesPagedResult.getValues().size() != 1) {
@@ -212,9 +224,10 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
     @Override
     public Categories findCategories(String agencyID, String resourceID, String version, String query, String orderBy, String limit, String offset) {
         try {
-            SculptorCriteria sculptorCriteria = categoriesRest2DoMapper.getCategoryCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
+            checkParameterNotWildcardFindItems(agencyID, resourceID, version);
 
             // Find
+            SculptorCriteria sculptorCriteria = categoriesRest2DoMapper.getCategoryCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
             PagedResult<CategoryMetamac> entitiesPagedResult = findCategoriesCore(agencyID, resourceID, version, null, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
 
             // Transform
@@ -226,12 +239,14 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
     }
 
     @Override
-    public Category retrieveCategory(String agencyID, String resourceID, String version, String conceptID) {
+    public Category retrieveCategory(String agencyID, String resourceID, String version, String categoryID) {
         try {
+            checkParameterNotWildcardRetrieveItem(agencyID, resourceID, version, categoryID, RestInternalConstants.PARAMETER_CATEGORY_ID);
+            
             // Find one
-            PagedResult<CategoryMetamac> entitiesPagedResult = findCategoriesCore(agencyID, resourceID, version, conceptID, null, PagingParameter.pageAccess(1, 1, false));
+            PagedResult<CategoryMetamac> entitiesPagedResult = findCategoriesCore(agencyID, resourceID, version, categoryID, null, PagingParameter.pageAccess(1, 1, false));
             if (entitiesPagedResult.getValues().size() != 1) {
-                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.CATEGORY_NOT_FOUND, conceptID, agencyID, resourceID, version);
+                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.CATEGORY_NOT_FOUND, categoryID, agencyID, resourceID, version);
                 throw new RestException(exception, Status.NOT_FOUND);
             }
 
@@ -250,17 +265,21 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
 
     @Override
     public AgencySchemes findAgencySchemes(String agencyID, String query, String orderBy, String limit, String offset) {
+        checkParameterNotWildcardFindItemSchemes(agencyID);
         return findAgencySchemes(agencyID, null, null, query, orderBy, limit, offset);
     }
 
     @Override
     public AgencySchemes findAgencySchemes(String agencyID, String resourceID, String query, String orderBy, String limit, String offset) {
+        checkParameterNotWildcardFindItemSchemes(agencyID, resourceID);
         return findAgencySchemes(agencyID, resourceID, null, query, orderBy, limit, offset);
     }
 
     @Override
     public AgencyScheme retrieveAgencyScheme(String agencyID, String resourceID, String version) {
         try {
+            checkParameterNotWildcardRetrieveItemScheme(agencyID, resourceID, version);
+
             // Find one
             PagedResult<OrganisationSchemeVersionMetamac> entitiesPagedResult = findOrganisationSchemesCore(OrganisationSchemeTypeEnum.AGENCY_SCHEME, agencyID, resourceID, version, null,
                     PagingParameter.pageAccess(1, 1, false));
@@ -280,9 +299,10 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
     @Override
     public Agencies findAgencies(String agencyID, String resourceID, String version, String query, String orderBy, String limit, String offset) {
         try {
-            SculptorCriteria sculptorCriteria = organisationsRest2DoMapper.getOrganisationCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
+            checkParameterNotWildcardFindItems(agencyID, resourceID, version);
 
             // Find
+            SculptorCriteria sculptorCriteria = organisationsRest2DoMapper.getOrganisationCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
             PagedResult<OrganisationMetamac> entitiesPagedResult = findOrganisationsCore(OrganisationTypeEnum.AGENCY, agencyID, resourceID, version, null, sculptorCriteria.getConditions(),
                     sculptorCriteria.getPagingParameter());
 
@@ -297,6 +317,8 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
     @Override
     public Agency retrieveAgency(String agencyID, String resourceID, String version, String organisationID) {
         try {
+            checkParameterNotWildcardRetrieveItem(agencyID, resourceID, version, organisationID, RestInternalConstants.PARAMETER_ORGANISATION_ID);
+            
             // Find one
             PagedResult<OrganisationMetamac> entitiesPagedResult = findOrganisationsCore(OrganisationTypeEnum.AGENCY, agencyID, resourceID, version, organisationID, null,
                     PagingParameter.pageAccess(1, 1, false));
@@ -313,7 +335,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             throw manageException(e);
         }
     }
-    
+
     @Override
     public OrganisationUnitSchemes findOrganisationUnitSchemes(String query, String orderBy, String limit, String offset) {
         return findOrganisationUnitSchemes(null, null, null, query, orderBy, limit, offset);
@@ -321,22 +343,27 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
 
     @Override
     public OrganisationUnitSchemes findOrganisationUnitSchemes(String agencyID, String query, String orderBy, String limit, String offset) {
+        checkParameterNotWildcardFindItemSchemes(agencyID);
         return findOrganisationUnitSchemes(agencyID, null, null, query, orderBy, limit, offset);
     }
 
     @Override
     public OrganisationUnitSchemes findOrganisationUnitSchemes(String agencyID, String resourceID, String query, String orderBy, String limit, String offset) {
+        checkParameterNotWildcardFindItemSchemes(agencyID, resourceID);
         return findOrganisationUnitSchemes(agencyID, resourceID, null, query, orderBy, limit, offset);
     }
 
     @Override
     public OrganisationUnitScheme retrieveOrganisationUnitScheme(String agencyID, String resourceID, String version) {
         try {
+            checkParameterNotWildcardRetrieveItemScheme(agencyID, resourceID, version);
+
             // Find one
             PagedResult<OrganisationSchemeVersionMetamac> entitiesPagedResult = findOrganisationSchemesCore(OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME, agencyID, resourceID, version, null,
                     PagingParameter.pageAccess(1, 1, false));
             if (entitiesPagedResult.getValues().size() != 1) {
-                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.ORGANISATION_UNIT_SCHEME_NOT_FOUND, agencyID, resourceID, version);
+                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.ORGANISATION_UNIT_SCHEME_NOT_FOUND, agencyID, resourceID,
+                        version);
                 throw new RestException(exception, Status.NOT_FOUND);
             }
 
@@ -351,9 +378,10 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
     @Override
     public OrganisationUnits findOrganisationUnits(String agencyID, String resourceID, String version, String query, String orderBy, String limit, String offset) {
         try {
-            SculptorCriteria sculptorCriteria = organisationsRest2DoMapper.getOrganisationCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
+            checkParameterNotWildcardFindItems(agencyID, resourceID, version);
 
             // Find
+            SculptorCriteria sculptorCriteria = organisationsRest2DoMapper.getOrganisationCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
             PagedResult<OrganisationMetamac> entitiesPagedResult = findOrganisationsCore(OrganisationTypeEnum.ORGANISATION_UNIT, agencyID, resourceID, version, null, sculptorCriteria.getConditions(),
                     sculptorCriteria.getPagingParameter());
 
@@ -368,12 +396,14 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
     @Override
     public OrganisationUnit retrieveOrganisationUnit(String agencyID, String resourceID, String version, String organisationID) {
         try {
+            checkParameterNotWildcardRetrieveItem(agencyID, resourceID, version, organisationID, RestInternalConstants.PARAMETER_ORGANISATION_ID);
+            
             // Find one
             PagedResult<OrganisationMetamac> entitiesPagedResult = findOrganisationsCore(OrganisationTypeEnum.ORGANISATION_UNIT, agencyID, resourceID, version, organisationID, null,
                     PagingParameter.pageAccess(1, 1, false));
             if (entitiesPagedResult.getValues().size() != 1) {
-                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.ORGANISATION_UNIT_NOT_FOUND, organisationID, agencyID, resourceID,
-                        version);
+                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.ORGANISATION_UNIT_NOT_FOUND, organisationID, agencyID,
+                        resourceID, version);
                 throw new RestException(exception, Status.NOT_FOUND);
             }
 
@@ -537,6 +567,41 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             // do not show information details about exception to user
             org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestCommonServiceExceptionType.UNKNOWN);
             return new RestException(exception, Status.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    private void checkParameterNotWildcardFindItemSchemes(String agencyID) {
+        checkParameterNotWildcard(RestInternalConstants.PARAMETER_AGENCY_ID, agencyID);
+    }
+
+    private void checkParameterNotWildcardFindItemSchemes(String agencyID, String resourceID) {
+        checkParameterNotWildcard(RestInternalConstants.PARAMETER_RESOURCE_ID, resourceID);
+    }
+
+    private void checkParameterNotWildcardRetrieveItemScheme(String agencyID, String resourceID, String version) {
+        checkParameterNotWildcard(RestInternalConstants.PARAMETER_AGENCY_ID, agencyID);
+        checkParameterNotWildcard(RestInternalConstants.PARAMETER_RESOURCE_ID, resourceID);
+        checkParameterNotWildcard(RestInternalConstants.PARAMETER_VERSION, version);
+    }
+
+    private void checkParameterNotWildcardFindItems(String agencyID, String resourceID, String version) {
+        // nothing
+    }
+
+    private void checkParameterNotWildcardRetrieveItem(String agencyID, String resourceID, String version, String itemID, String parameterNameItemID) {
+        checkParameterNotWildcard(RestInternalConstants.PARAMETER_AGENCY_ID, agencyID);
+        checkParameterNotWildcard(RestInternalConstants.PARAMETER_RESOURCE_ID, resourceID);
+        checkParameterNotWildcard(RestInternalConstants.PARAMETER_VERSION, version);
+        checkParameterNotWildcard(parameterNameItemID, itemID);
+    }
+
+    /**
+     * Check unsupported wildcards in some parameters
+     */
+    private void checkParameterNotWildcard(String parameterName, String parameterValue) {
+        if (RestInternalConstants.WILDCARD.equals(parameterValue) || RestInternalConstants.LATEST.equals(parameterValue)) {
+            org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.PARAMETER_INCORRECT, parameterName);
+            throw new RestException(exception, Status.BAD_REQUEST);
         }
     }
 }

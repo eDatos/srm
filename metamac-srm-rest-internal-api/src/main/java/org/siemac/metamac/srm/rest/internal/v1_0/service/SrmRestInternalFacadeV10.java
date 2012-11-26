@@ -6,7 +6,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
-import org.siemac.metamac.core.common.constants.shared.RegularExpressionConstants;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.Agencies;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.Agency;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.AgencyScheme;
@@ -28,8 +27,8 @@ import org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationUnits;
 @Path("v1.0")
 public interface SrmRestInternalFacadeV10 {
 
-    // TODO Documentation
-    // TODO indicar dónde se puede indicar wildcard, latest...
+    // TODO Documentación
+    // TODO Documentación: indicar dónde se puede indicar wildcard, latest...
 
     // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     // CONCEPTS
@@ -42,19 +41,19 @@ public interface SrmRestInternalFacadeV10 {
 
     @GET
     @Produces("application/xml")
-    @Path("conceptschemes/{agencyID: " + RegularExpressionConstants.REG_EXP_SEMANTIC_IDENTIFIER + "}")
+    @Path("conceptschemes/{agencyID}")
     ConceptSchemes findConceptSchemes(@PathParam("agencyID") String agencyID, @QueryParam("query") String query, @QueryParam("orderBy") String orderBy, @QueryParam("limit") String limit,
             @QueryParam("offset") String offset);
 
     @GET
     @Produces("application/xml")
-    @Path("conceptschemes/{agencyID}/{resourceID: " + RegularExpressionConstants.REG_EXP_SEMANTIC_IDENTIFIER + "}")
+    @Path("conceptschemes/{agencyID}/{resourceID}")
     ConceptSchemes findConceptSchemes(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @QueryParam("query") String query, @QueryParam("orderBy") String orderBy,
             @QueryParam("limit") String limit, @QueryParam("offset") String offset);
 
-    @GET 
+    @GET
     @Produces("application/xml")
-    @Path("conceptschemes/{agencyID: " + RegularExpressionConstants.REG_EXP_SEMANTIC_IDENTIFIER + "}/{resourceID: " + RegularExpressionConstants.REG_EXP_SEMANTIC_IDENTIFIER + "}/{version: \\d.*}")
+    @Path("conceptschemes/{agencyID}/{resourceID}/{version}")
     ConceptScheme retrieveConceptScheme(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @PathParam("version") String version);
 
     @GET
@@ -65,8 +64,7 @@ public interface SrmRestInternalFacadeV10 {
 
     @GET
     @Produces("application/xml")
-    @Path("conceptschemes/{agencyID: " + RegularExpressionConstants.REG_EXP_SEMANTIC_IDENTIFIER + "}/{resourceID: " + RegularExpressionConstants.REG_EXP_SEMANTIC_IDENTIFIER
-            + "}/{version: \\d.*}/concepts/{conceptID: " + RegularExpressionConstants.REG_EXP_SEMANTIC_IDENTIFIER + "}")
+    @Path("conceptschemes/{agencyID}/{resourceID}/{version}/concepts/{conceptID}")
     Concept retrieveConcept(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @PathParam("version") String version, @PathParam("conceptID") String conceptID);
 
     @GET
@@ -85,19 +83,19 @@ public interface SrmRestInternalFacadeV10 {
 
     @GET
     @Produces("application/xml")
-    @Path("categoryschemes/{agencyID: " + RegularExpressionConstants.REG_EXP_SEMANTIC_IDENTIFIER + "}")
+    @Path("categoryschemes/{agencyID}")
     CategorySchemes findCategorySchemes(@PathParam("agencyID") String agencyID, @QueryParam("query") String query, @QueryParam("orderBy") String orderBy, @QueryParam("limit") String limit,
             @QueryParam("offset") String offset);
 
     @GET
     @Produces("application/xml")
-    @Path("categoryschemes/{agencyID}/{resourceID: " + RegularExpressionConstants.REG_EXP_SEMANTIC_IDENTIFIER + "}")
+    @Path("categoryschemes/{agencyID}/{resourceID}")
     CategorySchemes findCategorySchemes(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @QueryParam("query") String query, @QueryParam("orderBy") String orderBy,
             @QueryParam("limit") String limit, @QueryParam("offset") String offset);
 
     @GET
     @Produces("application/xml")
-    @Path("categoryschemes/{agencyID: " + RegularExpressionConstants.REG_EXP_SEMANTIC_IDENTIFIER + "}/{resourceID: " + RegularExpressionConstants.REG_EXP_SEMANTIC_IDENTIFIER + "}/{version: \\d.*}")
+    @Path("categoryschemes/{agencyID}/{resourceID}/{version}")
     CategoryScheme retrieveCategoryScheme(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @PathParam("version") String version);
 
     @GET
@@ -106,40 +104,37 @@ public interface SrmRestInternalFacadeV10 {
     Categories findCategories(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @PathParam("version") String version, @QueryParam("query") String query,
             @QueryParam("orderBy") String orderBy, @QueryParam("limit") String limit, @QueryParam("offset") String offset);
 
-    
     @GET
     @Produces("application/xml")
-    @Path("categoryschemes/{agencyID: " + RegularExpressionConstants.REG_EXP_SEMANTIC_IDENTIFIER + "}/{resourceID: " + RegularExpressionConstants.REG_EXP_SEMANTIC_IDENTIFIER
-            + "}/{version: \\d.*}/categories/{categoryID: " + RegularExpressionConstants.REG_EXP_SEMANTIC_IDENTIFIER + "}")
+    @Path("categoryschemes/{agencyID}/{resourceID}/{version}/categories/{categoryID}")
     Category retrieveCategory(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @PathParam("version") String version, @PathParam("categoryID") String categoryID);
-    
+
     // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     // TODO CATEGORISATIONS
     // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-//    @GET
-//    @Produces("application/xml")
-//    @Path("categorisations")
-//    Categorisations findCategorisations(@QueryParam("query") String query, @QueryParam("orderBy") String orderBy, @QueryParam("limit") String limit, @QueryParam("offset") String offset);
-//
-//    @GET
-//    @Produces("application/xml")
-//    @Path("categorisations/{agencyID: " + RegularExpressionConstants.REG_EXP_SEMANTIC_IDENTIFIER + "}")
-//    Categorisations findCategorisations(@PathParam("agencyID") String agencyID, @QueryParam("query") String query, @QueryParam("orderBy") String orderBy, @QueryParam("limit") String limit,
-//            @QueryParam("offset") String offset);
-//
-//    @GET
-//    @Produces("application/xml")
-//    @Path("categorisations/{agencyID}/{resourceID: " + RegularExpressionConstants.REG_EXP_SEMANTIC_IDENTIFIER + "}")
-//    Categorisations findCategorisations(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @QueryParam("query") String query, @QueryParam("orderBy") String orderBy,
-//            @QueryParam("limit") String limit, @QueryParam("offset") String offset);
-//
-//    @GET
-//    @Produces("application/xml")
-//    @Path("categorisations/{agencyID}/{resourceID}/{version: \\d.*}")
-//    Categorisations findCategorisations(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @PathParam("version") String version);
-    
-    
+    // @GET
+    // @Produces("application/xml")
+    // @Path("categorisations")
+    // Categorisations findCategorisations(@QueryParam("query") String query, @QueryParam("orderBy") String orderBy, @QueryParam("limit") String limit, @QueryParam("offset") String offset);
+    //
+    // @GET
+    // @Produces("application/xml")
+    // @Path("categorisations/{agencyID}")
+    // Categorisations findCategorisations(@PathParam("agencyID") String agencyID, @QueryParam("query") String query, @QueryParam("orderBy") String orderBy, @QueryParam("limit") String limit,
+    // @QueryParam("offset") String offset);
+    //
+    // @GET
+    // @Produces("application/xml")
+    // @Path("categorisations/{agencyID}/{resourceID}")
+    // Categorisations findCategorisations(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @QueryParam("query") String query, @QueryParam("orderBy") String orderBy,
+    // @QueryParam("limit") String limit, @QueryParam("offset") String offset);
+    //
+    // @GET
+    // @Produces("application/xml")
+    // @Path("categorisations/{agencyID}/{resourceID}/{version}")
+    // Categorisations findCategorisations(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @PathParam("version") String version);
+
     // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     // ORGANISATIONS - AGENCIES
     // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -151,19 +146,19 @@ public interface SrmRestInternalFacadeV10 {
 
     @GET
     @Produces("application/xml")
-    @Path("agencyschemes/{agencyID: " + RegularExpressionConstants.REG_EXP_SEMANTIC_IDENTIFIER + "}")
+    @Path("agencyschemes/{agencyID}")
     AgencySchemes findAgencySchemes(@PathParam("agencyID") String agencyID, @QueryParam("query") String query, @QueryParam("orderBy") String orderBy, @QueryParam("limit") String limit,
             @QueryParam("offset") String offset);
 
     @GET
     @Produces("application/xml")
-    @Path("agencyschemes/{agencyID}/{resourceID: " + RegularExpressionConstants.REG_EXP_SEMANTIC_IDENTIFIER + "}")
+    @Path("agencyschemes/{agencyID}/{resourceID}")
     AgencySchemes findAgencySchemes(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @QueryParam("query") String query, @QueryParam("orderBy") String orderBy,
             @QueryParam("limit") String limit, @QueryParam("offset") String offset);
 
     @GET
     @Produces("application/xml")
-    @Path("agencyschemes/{agencyID: " + RegularExpressionConstants.REG_EXP_SEMANTIC_IDENTIFIER + "}/{resourceID: " + RegularExpressionConstants.REG_EXP_SEMANTIC_IDENTIFIER + "}/{version: \\d.*}")
+    @Path("agencyschemes/{agencyID}/{resourceID}/{version}")
     AgencyScheme retrieveAgencyScheme(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @PathParam("version") String version);
 
     @GET
@@ -172,14 +167,11 @@ public interface SrmRestInternalFacadeV10 {
     Agencies findAgencies(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @PathParam("version") String version, @QueryParam("query") String query,
             @QueryParam("orderBy") String orderBy, @QueryParam("limit") String limit, @QueryParam("offset") String offset);
 
-    
     @GET
     @Produces("application/xml")
-    @Path("agencyschemes/{agencyID: " + RegularExpressionConstants.REG_EXP_SEMANTIC_IDENTIFIER + "}/{resourceID: " + RegularExpressionConstants.REG_EXP_SEMANTIC_IDENTIFIER
-            + "}/{version: \\d.*}/agencies/{organisationID: " + RegularExpressionConstants.REG_EXP_SEMANTIC_IDENTIFIER + "}") 
+    @Path("agencyschemes/{agencyID}/{resourceID}/{version}/agencies/{organisationID}")
     Agency retrieveAgency(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @PathParam("version") String version, @PathParam("organisationID") String organisationID);
-    
-    
+
     // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     // ORGANISATIONS - ORGANISATION UNITS
     // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -191,48 +183,47 @@ public interface SrmRestInternalFacadeV10 {
 
     @GET
     @Produces("application/xml")
-    @Path("organisationunitschemes/{agencyID: " + RegularExpressionConstants.REG_EXP_SEMANTIC_IDENTIFIER + "}")
-    OrganisationUnitSchemes findOrganisationUnitSchemes(@PathParam("agencyID") String agencyID, @QueryParam("query") String query, @QueryParam("orderBy") String orderBy, @QueryParam("limit") String limit,
-            @QueryParam("offset") String offset);
-
-    @GET
-    @Produces("application/xml")
-    @Path("organisationunitschemes/{agencyID}/{resourceID: " + RegularExpressionConstants.REG_EXP_SEMANTIC_IDENTIFIER + "}")
-    OrganisationUnitSchemes findOrganisationUnitSchemes(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @QueryParam("query") String query, @QueryParam("orderBy") String orderBy,
+    @Path("organisationunitschemes/{agencyID}")
+    OrganisationUnitSchemes findOrganisationUnitSchemes(@PathParam("agencyID") String agencyID, @QueryParam("query") String query, @QueryParam("orderBy") String orderBy,
             @QueryParam("limit") String limit, @QueryParam("offset") String offset);
 
     @GET
     @Produces("application/xml")
-    @Path("organisationunitschemes/{agencyID: " + RegularExpressionConstants.REG_EXP_SEMANTIC_IDENTIFIER + "}/{resourceID: " + RegularExpressionConstants.REG_EXP_SEMANTIC_IDENTIFIER + "}/{version: \\d.*}")
+    @Path("organisationunitschemes/{agencyID}/{resourceID}")
+    OrganisationUnitSchemes findOrganisationUnitSchemes(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @QueryParam("query") String query,
+            @QueryParam("orderBy") String orderBy, @QueryParam("limit") String limit, @QueryParam("offset") String offset);
+
+    @GET
+    @Produces("application/xml")
+    @Path("organisationunitschemes/{agencyID}/{resourceID}/{version}")
     OrganisationUnitScheme retrieveOrganisationUnitScheme(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @PathParam("version") String version);
 
     @GET
     @Produces("application/xml")
     @Path("organisationunitschemes/{agencyID}/{resourceID}/{version}/organisationunits")
-    OrganisationUnits findOrganisationUnits(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @PathParam("version") String version, @QueryParam("query") String query,
-            @QueryParam("orderBy") String orderBy, @QueryParam("limit") String limit, @QueryParam("offset") String offset);
+    OrganisationUnits findOrganisationUnits(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @PathParam("version") String version,
+            @QueryParam("query") String query, @QueryParam("orderBy") String orderBy, @QueryParam("limit") String limit, @QueryParam("offset") String offset);
 
-    
     @GET
     @Produces("application/xml")
-    @Path("organisationunitschemes/{agencyID: " + RegularExpressionConstants.REG_EXP_SEMANTIC_IDENTIFIER + "}/{resourceID: " + RegularExpressionConstants.REG_EXP_SEMANTIC_IDENTIFIER
-            + "}/{version: \\d.*}/organisationunits/{organisationID: " + RegularExpressionConstants.REG_EXP_SEMANTIC_IDENTIFIER + "}") 
-    OrganisationUnit retrieveOrganisationUnit(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @PathParam("version") String version, @PathParam("organisationID") String organisationID);
-    
-//    <resource id="organisationscheme" path="organisationscheme/{agencyID}/{resourceID}/{version}" type="#MaintainableArtefact"> 
-//    <param name="agencyID" type="types:NCNameIDType" style="template" required="false" default="all"/>      
-//    <param name="resourceID" type="types:IDType" style="template" required="false" default="all"/> 
-//    <param name="version" type="types:VersionType" style="template" required="false" default="latest"/>
-//</resource>
-//<resource id="dataproviderscheme" path="dataproviderscheme/{agencyID}/{resourceID}/{version}" type="#MaintainableArtefact"> 
-//    <param name="agencyID" type="types:NCNameIDType" style="template" required="false" default="all"/>      
-//    <param name="resourceID" type="types:IDType" style="template" required="false" fixed="DATA_PROVIDERS"/> 
-//    <param name="version" type="types:VersionType" style="template" required="false" fixed="1.0"/>
-//</resource>
-//<resource id="dataconsumerscheme" path="dataconsumerscheme/{agencyID}/{resourceID}/{version}" type="#MaintainableArtefact"> 
-//    <param name="agencyID" type="types:NCNameIDType" style="template" required="false" default="all"/>      
-//    <param name="resourceID" type="types:IDType" style="template" required="false" fixed="DATA_CONSUMERS"/> 
-//    <param name="version" type="types:VersionType" style="template" required="false" fixed="1.0"/>
-//</resource>
+    @Path("organisationunitschemes/{agencyID}/{resourceID}/{version}/organisationunits/{organisationID}")
+    OrganisationUnit retrieveOrganisationUnit(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @PathParam("version") String version,
+            @PathParam("organisationID") String organisationID);
+
+    // <resource id="organisationscheme" path="organisationscheme/{agencyID}/{resourceID}/{version}" type="#MaintainableArtefact">
+    // <param name="agencyID" type="types:NCNameIDType" style="template" required="false" default="all"/>
+    // <param name="resourceID" type="types:IDType" style="template" required="false" default="all"/>
+    // <param name="version" type="types:VersionType" style="template" required="false" default="latest"/>
+    // </resource>
+    // <resource id="dataproviderscheme" path="dataproviderscheme/{agencyID}/{resourceID}/{version}" type="#MaintainableArtefact">
+    // <param name="agencyID" type="types:NCNameIDType" style="template" required="false" default="all"/>
+    // <param name="resourceID" type="types:IDType" style="template" required="false" fixed="DATA_PROVIDERS"/>
+    // <param name="version" type="types:VersionType" style="template" required="false" fixed="1.0"/>
+    // </resource>
+    // <resource id="dataconsumerscheme" path="dataconsumerscheme/{agencyID}/{resourceID}/{version}" type="#MaintainableArtefact">
+    // <param name="agencyID" type="types:NCNameIDType" style="template" required="false" default="all"/>
+    // <param name="resourceID" type="types:IDType" style="template" required="false" fixed="DATA_CONSUMERS"/>
+    // <param name="version" type="types:VersionType" style="template" required="false" fixed="1.0"/>
+    // </resource>
 
 }
