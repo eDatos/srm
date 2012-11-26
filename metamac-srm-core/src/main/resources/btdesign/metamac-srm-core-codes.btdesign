@@ -22,6 +22,7 @@ Application CodesMetamac {
 			> @CodelistVersionMetamacRepository
 			> @CodeMetamacRepository
 			> @CodelistFamilyRepository
+			> @VariableFamilyRepository
 
 			// CODELISTS
 
@@ -81,8 +82,21 @@ Application CodesMetamac {
     		@CodelistFamily retrieveCodelistFamilyByIdentifier(String identifier) throws MetamacException;
     		"Finds codelist families by criteria"
     		PagedResult<@CodelistFamily> findCodelistFamiliesByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
-			"Deletes code"
+			"Deletes codelist family"
     		deleteCodelistFamily(String identifier) throws MetamacException;
+    		
+    		// VARIABLE FAMILIES
+    		
+    		"Creates variable family"
+			@VariableFamily createVariableFamily(@VariableFamily variableFamily) throws MetamacException;
+			"Updates variable family"
+			@VariableFamily updateVariableFamily(@VariableFamily variableFamily) throws MetamacException;
+    		"Retrieves variable family by urn"
+    		@VariableFamily retrieveVariableFamilyByIdentifier(String identifier) throws MetamacException;
+    		"Finds variable families by criteria"
+    		PagedResult<@VariableFamily> findVariableFamiliesByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
+			"Deletes variable family"
+    		deleteVariableFamily(String identifier) throws MetamacException;
 		}
 
 		// ----------------------------------------------------------------
@@ -153,8 +167,6 @@ Application CodesMetamac {
 			String identifier nullable;
 			"Name"
 			- @InternationalString name nullable cascade="all" databaseColumn="NAME_FK";
-			"Variables"
-			- Bag<@Variable> variables cascade="none" fetch="lazy" inverse <-> family;
 			
 			Repository VariableFamilyRepository {
 				save;
@@ -179,8 +191,6 @@ Application CodesMetamac {
 			DateTimeTZ validFrom nullable;
 			"Date from which version is superceded"
 			DateTimeTZ validTo nullable;
-			"Family"
-			- @VariableFamily family cascade="none" nullable databaseColumn="VARIABLE_FAMILY_FK" <-> variables;
 			
 			Repository VariableRepository {
 				save;

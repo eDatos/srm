@@ -5,6 +5,7 @@ import org.siemac.metamac.srm.core.base.utils.BaseDoMocks;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
+import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 
@@ -55,5 +56,16 @@ public class CodesMetamacDoMocks extends CodesDoMocks {
         codelistFamily.setIdentifier("code-" + MetamacMocks.mockString(5));
         codelistFamily.setName(BaseDoMocks.mockInternationalString());
         return codelistFamily;
+    }
+
+    // ------------------------------------------------------------------------------------
+    // VARIABLE FAMILIES
+    // ------------------------------------------------------------------------------------
+
+    public static VariableFamily mockVariableFamily() {
+        VariableFamily variableFamily = new VariableFamily();
+        variableFamily.setIdentifier("code-" + MetamacMocks.mockString(5));
+        variableFamily.setName(BaseDoMocks.mockInternationalString());
+        return variableFamily;
     }
 }

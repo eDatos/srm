@@ -3209,6 +3209,74 @@
     />
 
     <!-- ************************************************************************************** -->
+    <!-- VARIABLE FAMILIES                                                                      -->
+    <!-- *************************************************************************************  -->
+
+    <TB_M_VARIABLE_FAMILIES 
+        ID="1"
+        
+        IDENTIFIER="VARIABLE_FAMILY_01"
+        NAME_FK="53"
+        
+        UUID="variable-family-01"
+        CREATED_DATE_TZ="Europe/London"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_BY="user1"
+        LAST_UPDATED_TZ="Europe/London"
+        LAST_UPDATED="2012-01-01 01:02:03"
+        LAST_UPDATED_BY="user2"
+        VERSION="1"
+    />
+
+    <TB_M_VARIABLE_FAMILIES 
+        ID="2"
+        
+        IDENTIFIER="VARIABLE_FAMILY_02"
+        NAME_FK="54"
+        
+        UUID="variable-family-02"
+        CREATED_DATE_TZ="Europe/London"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_BY="user1"
+        LAST_UPDATED_TZ="Europe/London"
+        LAST_UPDATED="2012-01-01 01:02:03"
+        LAST_UPDATED_BY="user2"
+        VERSION="1"
+    />
+    
+    <TB_M_VARIABLE_FAMILIES 
+        ID="3"
+        
+        IDENTIFIER="VARIABLE_FAMILY_03"
+        NAME_FK="55"
+        
+        UUID="variable-family-03"
+        CREATED_DATE_TZ="Europe/London"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_BY="user1"
+        LAST_UPDATED_TZ="Europe/London"
+        LAST_UPDATED="2012-01-01 01:02:03"
+        LAST_UPDATED_BY="user2"
+        VERSION="1"
+    />
+    
+    <TB_M_VARIABLE_FAMILIES 
+        ID="4"
+        
+        IDENTIFIER="VARIABLE_FAMILY_04"
+        NAME_FK="56"
+        
+        UUID="variable-family-04"
+        CREATED_DATE_TZ="Europe/London"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_BY="user1"
+        LAST_UPDATED_TZ="Europe/London"
+        LAST_UPDATED="2012-01-01 01:02:03"
+        LAST_UPDATED_BY="user2"
+        VERSION="1"
+    />
+
+    <!-- ************************************************************************************** -->
     <!-- EXTERNAL ITEMS                                                                         -->
     <!-- *************************************************************************************  -->    
     
@@ -3977,6 +4045,58 @@
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="52"
+    />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="53"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="531"
+        LABEL="familia-de-variables-53"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="53"
+    />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="54"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="541"
+        LABEL="familia-de-variables-54"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="54"
+    />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="55"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="551"
+        LABEL="familia-de-variables-55"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="55"
+    />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="56"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="561"
+        LABEL="familia-de-variables-56"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="56"
     />
 
 </dataset>

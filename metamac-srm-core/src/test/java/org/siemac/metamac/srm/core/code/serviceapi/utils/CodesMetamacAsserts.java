@@ -6,6 +6,7 @@ import org.siemac.metamac.srm.core.base.utils.BaseAsserts;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
+import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 
@@ -102,6 +103,15 @@ public class CodesMetamacAsserts extends CodesAsserts {
     // ------------------------------------------------------------------------------------
 
     public static void assertEqualsCodelistFamily(CodelistFamily expected, CodelistFamily actual) {
+        assertEquals(expected.getIdentifier(), actual.getIdentifier());
+        assertEqualsInternationalString(expected.getName(), actual.getName());
+    }
+
+    // ------------------------------------------------------------------------------------
+    // VARIABLE FAMILIES
+    // ------------------------------------------------------------------------------------
+
+    public static void assertEqualsVariableFamily(VariableFamily expected, VariableFamily actual) {
         assertEquals(expected.getIdentifier(), actual.getIdentifier());
         assertEqualsInternationalString(expected.getName(), actual.getName());
     }

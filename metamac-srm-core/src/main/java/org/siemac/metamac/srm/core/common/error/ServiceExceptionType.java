@@ -18,7 +18,9 @@ public class ServiceExceptionType extends com.arte.statistic.sdmx.srm.core.commo
     // Codes
     public static final CommonServiceExceptionType CODELIST_FAMILY_NOT_FOUND              = create("exception.srm.codes.codelist_family.not_found");
     public static final CommonServiceExceptionType CODELIST_FAMILY_DUPLICATED_IDENTIFIER  = create("exception.srm.codes.codelist_family.duplicated_code");
+    public static final CommonServiceExceptionType VARIABLE_FAMILY_NOT_FOUND              = create("exception.srm.codes.variable_family.not_found");
     public static final CommonServiceExceptionType VARIABLE_FAMILY_DUPLICATED_IDENTIFIER  = create("exception.srm.codes.variable_family.duplicated_code");
+    public static final CommonServiceExceptionType VARIABLE_NOT_FOUND                     = create("exception.srm.codes.variable.not_found");
     public static final CommonServiceExceptionType VARIABLE_DUPLICATED_IDENTIFIER         = create("exception.srm.codes.variable.duplicated_code");
     public static final CommonServiceExceptionType VARIABLE_ELEMENT_DUPLICATED_IDENTIFIER = create("exception.srm.codes.variable_element.duplicated_code");
 }
