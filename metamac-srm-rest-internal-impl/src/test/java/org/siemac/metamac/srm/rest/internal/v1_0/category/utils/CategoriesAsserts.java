@@ -59,11 +59,6 @@ public class CategoriesAsserts extends Asserts {
         // Test something...
         assertEquals(source.getNameableArtefact().getCode(), target.getId());
         assertEquals(source.getNameableArtefact().getUrn(), target.getUrn());
-        // TODO category parent
-        // assertEqualsNullability(source.getParent(), target.getParent());
-        // if (source.getParent() != null) {
-        // assertEquals(source.getParent().getNameableArtefact().getCode(), target.getParent().getRef().getId());
-        // }
     }
 
     public static void assertEqualsCategory(CategoryMetamac source, Category target) {
@@ -77,7 +72,10 @@ public class CategoriesAsserts extends Asserts {
         assertEquals(RestInternalConstants.KIND_CATEGORIES, target.getParentLink().getKind());
         assertEquals(parentLink, target.getParentLink().getHref());
         assertNull(target.getChildLinks());
-        assertEquals(source.getParent().getNameableArtefact().getUrn(), target.getParent());
+        assertEqualsNullability(source.getParent(), target.getParent());
+        if (source.getParent() != null) {
+            assertEquals(source.getParent().getNameableArtefact().getUrn(), target.getParent());
+        }
 
         // Sdmx
         assertEqualsCategorySdmx(source, target);
