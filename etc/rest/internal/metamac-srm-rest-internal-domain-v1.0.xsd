@@ -9,12 +9,9 @@
         <xs:complexContent>
             <xs:extension base="sdmx:ConceptSchemeType">
                 <xs:sequence>
-                    <xs:element name="selfLink" type="common:ResourceLink" />
-                    <xs:element name="parentLink" type="common:ResourceLink" />
+                    <xs:group ref="tns:ItemSchemeGroup" />
                     <xs:element name="type" type="tns:ConceptSchemeType" />
                     <xs:element name="relatedOperation" type="common:Resource" minOccurs="0" />
-                    <xs:element name="replaceToVersion" type="xs:string" minOccurs="0" />
-                    <xs:element name="childLinks" type="common:ChildLinks" minOccurs="1" />
                 </xs:sequence>
                 <xs:attribute name="kind" type="xs:string" use="required" />
             </xs:extension>
@@ -25,8 +22,7 @@
         <xs:complexContent>
             <xs:extension base="sdmx:ConceptType">
                 <xs:sequence>
-                    <xs:element name="selfLink" type="common:ResourceLink" />
-                    <xs:element name="parentLink" type="common:ResourceLink" />
+                    <xs:group ref="tns:ItemGroup" />
                     <xs:element name="pluralName" type="common:InternationalString" minOccurs="0" />
                     <xs:element name="acronym" type="common:InternationalString" minOccurs="0" />
                     <xs:element name="descriptionSource" type="common:InternationalString" minOccurs="0" />
@@ -38,7 +34,6 @@
                     <xs:element name="roles" type="tns:Urns" minOccurs="0" />
                     <xs:element name="extends" type="xs:string" minOccurs="0" />
                     <xs:element name="relatedConcepts" type="tns:Urns" minOccurs="0" />
-                    <xs:element name="childLinks" type="common:ChildLinks" minOccurs="1" />
                 </xs:sequence>
                 <xs:attribute name="kind" type="xs:string" use="required" />
             </xs:extension>
@@ -49,10 +44,7 @@
         <xs:complexContent>
             <xs:extension base="sdmx:CategorySchemeType">
                 <xs:sequence>
-                    <xs:element name="selfLink" type="common:ResourceLink" />
-                    <xs:element name="parentLink" type="common:ResourceLink" />
-                    <xs:element name="replaceToVersion" type="xs:string" minOccurs="0" />
-                    <xs:element name="childLinks" type="common:ChildLinks" minOccurs="1" />
+                    <xs:group ref="tns:ItemSchemeGroup" />
                 </xs:sequence>
                 <xs:attribute name="kind" type="xs:string" use="required" />
             </xs:extension>
@@ -63,10 +55,8 @@
         <xs:complexContent>
             <xs:extension base="sdmx:CategoryType">
                 <xs:sequence>
-                    <xs:element name="selfLink" type="common:ResourceLink" />
-                    <xs:element name="parentLink" type="common:ResourceLink" />
+                    <xs:group ref="tns:ItemGroup" />
                     <xs:element name="parent" type="xs:string" minOccurs="0" />
-                    <xs:element name="childLinks" type="common:ChildLinks" minOccurs="1" />
                 </xs:sequence>
                 <xs:attribute name="kind" type="xs:string" use="required" />
             </xs:extension>
@@ -148,10 +138,7 @@
         <xs:complexContent>
             <xs:extension base="sdmx:AgencySchemeType">
                 <xs:sequence>
-                    <xs:element name="selfLink" type="common:ResourceLink" />
-                    <xs:element name="parentLink" type="common:ResourceLink" />
-                    <xs:element name="replaceToVersion" type="xs:string" minOccurs="0" />
-                    <xs:element name="childLinks" type="common:ChildLinks" minOccurs="1" />
+                    <xs:group ref="tns:ItemSchemeGroup" />
                 </xs:sequence>
                 <xs:attribute name="kind" type="xs:string" use="required" />
             </xs:extension>
@@ -162,10 +149,7 @@
         <xs:complexContent>
             <xs:extension base="sdmx:OrganisationUnitSchemeType">
                 <xs:sequence>
-                    <xs:element name="selfLink" type="common:ResourceLink" />
-                    <xs:element name="parentLink" type="common:ResourceLink" />
-                    <xs:element name="replaceToVersion" type="xs:string" minOccurs="0" />
-                    <xs:element name="childLinks" type="common:ChildLinks" minOccurs="1" />
+                    <xs:group ref="tns:ItemSchemeGroup" />
                 </xs:sequence>
                 <xs:attribute name="kind" type="xs:string" use="required" />
             </xs:extension>
@@ -186,15 +170,13 @@
         <xs:complexContent>
             <xs:extension base="sdmx:AgencyType">
                 <xs:sequence>
-                    <xs:element name="selfLink" type="common:ResourceLink" />
-                    <xs:element name="parentLink" type="common:ResourceLink" />
-                    <xs:element name="childLinks" type="common:ChildLinks" minOccurs="1" />
+                    <xs:group ref="tns:ItemGroup" />
                 </xs:sequence>
                 <xs:attribute name="kind" type="xs:string" use="required" />
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
-    
+
     <xs:complexType name="OrganisationUnits">
         <xs:complexContent>
             <xs:extension base="common:ListBase">
@@ -209,14 +191,12 @@
         <xs:complexContent>
             <xs:extension base="sdmx:OrganisationUnitType">
                 <xs:sequence>
-                    <xs:element name="selfLink" type="common:ResourceLink" />
-                    <xs:element name="parentLink" type="common:ResourceLink" />
-                    <xs:element name="childLinks" type="common:ChildLinks" minOccurs="1" />
+                    <xs:group ref="tns:ItemGroup" />
                 </xs:sequence>
                 <xs:attribute name="kind" type="xs:string" use="required" />
             </xs:extension>
         </xs:complexContent>
-    </xs:complexType>    
+    </xs:complexType>
 
     <xs:complexType name="Urns">
         <xs:complexContent>
@@ -362,6 +342,23 @@
         </xs:restriction>
     </xs:simpleType>
 
+    <xs:group name="ItemSchemeGroup">
+        <xs:sequence>
+            <xs:element name="selfLink" type="common:ResourceLink" />
+            <xs:element name="parentLink" type="common:ResourceLink" />
+            <xs:element name="childLinks" type="common:ChildLinks" minOccurs="1" />
+            <xs:element name="replaceToVersion" type="xs:string" minOccurs="0" />
+        </xs:sequence>
+    </xs:group>
+
+    <xs:group name="ItemGroup">
+        <xs:sequence>
+            <xs:element name="selfLink" type="common:ResourceLink" />
+            <xs:element name="parentLink" type="common:ResourceLink" />
+            <xs:element name="childLinks" type="common:ChildLinks" minOccurs="1" />
+        </xs:sequence>
+    </xs:group>
+
     <!-- Elements -->
     <xs:element name="conceptSchemes" type="tns:ConceptSchemes" />
     <xs:element name="conceptScheme" type="tns:ConceptScheme" />
@@ -378,7 +375,7 @@
     <xs:element name="agencyScheme" type="tns:AgencyScheme" />
     <xs:element name="agencies" type="tns:Agencies" />
     <xs:element name="agency" type="tns:Agency" />
-    
+
     <xs:element name="organisationUnitSchemes" type="tns:OrganisationUnitSchemes" />
     <xs:element name="organisationUnitScheme" type="tns:OrganisationUnitScheme" />
     <xs:element name="organisationUnits" type="tns:OrganisationUnits" />
