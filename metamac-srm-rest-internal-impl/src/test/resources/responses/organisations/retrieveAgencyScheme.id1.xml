@@ -85,10 +85,10 @@
         <common:Description xml:lang="en">description-organisation2 in English</common:Description>
         <common:Description xml:lang="es">description-organisation2 en Español</common:Description>
     </structure:Agency>
-    <srm:selfLink kind="srm#agencyScheme" href="http://data.istac.es/apis/srm/v1.0/agencyschemes/idAsMaintaineragency1/itemScheme1/01.000"/>
-    <srm:parentLink kind="srm#agencySchemes" href="http://data.istac.es/apis/srm/v1.0/agencyschemes"/>
-    <srm:replaceToVersion>replaceTo</srm:replaceToVersion>
-    <srm:childLinks total="1">
+    <cdomain:selfLink kind="srm#agencyScheme" href="http://data.istac.es/apis/srm/v1.0/agencyschemes/idAsMaintaineragency1/itemScheme1/01.000"/>
+    <cdomain:parentLink kind="srm#agencySchemes" href="http://data.istac.es/apis/srm/v1.0/agencyschemes"/>
+    <cdomain:childLinks total="1">
         <cdomain:childLink kind="srm#agencies" href="http://data.istac.es/apis/srm/v1.0/agencyschemes/idAsMaintaineragency1/itemScheme1/01.000/agencies"/>
-    </srm:childLinks>
+    </cdomain:childLinks>
+    <srm:replaceToVersion>replaceTo</srm:replaceToVersion>
 </srm:agencyScheme>

@@ -30,6 +30,6 @@
     <structure:Parent>
         <Ref id="item2"/>
     </structure:Parent>
-    <srm:selfLink kind="srm#organisationUnit" href="http://data.istac.es/apis/srm/v1.0/organisationunitschemes/idAsMaintaineragency1/itemScheme1/01.000/organisationunits/item1"/>
-    <srm:parentLink kind="srm#organisationUnits" href="http://data.istac.es/apis/srm/v1.0/organisationunitschemes/idAsMaintaineragency1/itemScheme1/01.000/organisationunits"/>
+    <cdomain:selfLink kind="srm#organisationUnit" href="http://data.istac.es/apis/srm/v1.0/organisationunitschemes/idAsMaintaineragency1/itemScheme1/01.000/organisationunits/item1"/>
+    <cdomain:parentLink kind="srm#organisationUnits" href="http://data.istac.es/apis/srm/v1.0/organisationunitschemes/idAsMaintaineragency1/itemScheme1/01.000/organisationunits"/>
 </srm:organisationUnit>

@@ -27,6 +27,6 @@
     <common:Name xml:lang="en">name-item1 in English</common:Name>
     <common:Description xml:lang="en">description-item1 in English</common:Description>
     <common:Description xml:lang="es">description-item1 en Español</common:Description>
-    <srm:selfLink kind="srm#agency" href="http://data.istac.es/apis/srm/v1.0/agencyschemes/idAsMaintaineragency1/itemScheme1/01.000/agencies/item1"/>
-    <srm:parentLink kind="srm#agencies" href="http://data.istac.es/apis/srm/v1.0/agencyschemes/idAsMaintaineragency1/itemScheme1/01.000/agencies"/>
+    <cdomain:selfLink kind="srm#agency" href="http://data.istac.es/apis/srm/v1.0/agencyschemes/idAsMaintaineragency1/itemScheme1/01.000/agencies/item1"/>
+    <cdomain:parentLink kind="srm#agencies" href="http://data.istac.es/apis/srm/v1.0/agencyschemes/idAsMaintaineragency1/itemScheme1/01.000/agencies"/>
 </srm:agency>

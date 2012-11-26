@@ -149,10 +149,10 @@
             <Ref id="organisation2"/>
         </structure:Parent>
     </structure:OrganisationUnit>
-    <srm:selfLink kind="srm#organisationUnitScheme" href="http://data.istac.es/apis/srm/v1.0/organisationunitschemes/idAsMaintaineragency1/itemScheme1/01.000"/>
-    <srm:parentLink kind="srm#organisationUnitSchemes" href="http://data.istac.es/apis/srm/v1.0/organisationunitschemes"/>
-    <srm:replaceToVersion>replaceTo</srm:replaceToVersion>
-    <srm:childLinks total="1">
+    <cdomain:selfLink kind="srm#organisationUnitScheme" href="http://data.istac.es/apis/srm/v1.0/organisationunitschemes/idAsMaintaineragency1/itemScheme1/01.000"/>
+    <cdomain:parentLink kind="srm#organisationUnitSchemes" href="http://data.istac.es/apis/srm/v1.0/organisationunitschemes"/>
+    <cdomain:childLinks total="1">
         <cdomain:childLink kind="srm#organisationUnits" href="http://data.istac.es/apis/srm/v1.0/organisationunitschemes/idAsMaintaineragency1/itemScheme1/01.000/organisationunits"/>
-    </srm:childLinks>
+    </cdomain:childLinks>
+    <srm:replaceToVersion>replaceTo</srm:replaceToVersion>
 </srm:organisationUnitScheme>

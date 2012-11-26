@@ -169,8 +169,12 @@
             </structure:Enumeration>
         </structure:CoreRepresentation>
     </structure:Concept>
-    <srm:selfLink kind="srm#conceptScheme" href="http://data.istac.es/apis/srm/v1.0/conceptschemes/idAsMaintaineragency1/itemScheme1/01.000"/>
-    <srm:parentLink kind="srm#conceptSchemes" href="http://data.istac.es/apis/srm/v1.0/conceptschemes"/>
+    <cdomain:selfLink kind="srm#conceptScheme" href="http://data.istac.es/apis/srm/v1.0/conceptschemes/idAsMaintaineragency1/itemScheme1/01.000"/>
+    <cdomain:parentLink kind="srm#conceptSchemes" href="http://data.istac.es/apis/srm/v1.0/conceptschemes"/>
+    <cdomain:childLinks total="1">
+        <cdomain:childLink kind="srm#concepts" href="http://data.istac.es/apis/srm/v1.0/conceptschemes/idAsMaintaineragency1/itemScheme1/01.000/concepts"/>
+    </cdomain:childLinks>
+    <srm:replaceToVersion>replaceTo</srm:replaceToVersion>
     <srm:type>OPERATION</srm:type>
     <srm:relatedOperation kind="STATISTICAL_OPERATION">
         <cdomain:id>feed7398-2a62-420b-8e90-5aa09ff8f390</cdomain:id>
@@ -181,8 +185,4 @@
             <cdomain:text xml:lang="es">title-mvbB4xNTcM en Español</cdomain:text>
         </cdomain:title>
     </srm:relatedOperation>
-    <srm:replaceToVersion>replaceTo</srm:replaceToVersion>
-    <srm:childLinks total="1">
-        <cdomain:childLink kind="srm#concepts" href="http://data.istac.es/apis/srm/v1.0/conceptschemes/idAsMaintaineragency1/itemScheme1/01.000/concepts"/>
-    </srm:childLinks>
 </srm:conceptScheme>

@@ -35,8 +35,8 @@
             <URN>urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=MaintainerMock:ConceptSchemeMock(01.000)</URN>
         </structure:Enumeration>
     </structure:CoreRepresentation>
-    <srm:selfLink kind="srm#concept" href="http://data.istac.es/apis/srm/v1.0/conceptschemes/idAsMaintaineragency1/itemScheme1/01.000/concepts/item1"/>
-    <srm:parentLink kind="srm#concepts" href="http://data.istac.es/apis/srm/v1.0/conceptschemes/idAsMaintaineragency1/itemScheme1/01.000/concepts"/>
+    <cdomain:selfLink kind="srm#concept" href="http://data.istac.es/apis/srm/v1.0/conceptschemes/idAsMaintaineragency1/itemScheme1/01.000/concepts/item1"/>
+    <cdomain:parentLink kind="srm#concepts" href="http://data.istac.es/apis/srm/v1.0/conceptschemes/idAsMaintaineragency1/itemScheme1/01.000/concepts"/>
     <srm:pluralName>
         <cdomain:text xml:lang="es">pluralName-item1 en Español</cdomain:text>
         <cdomain:text xml:lang="en">pluralName-item1 in English</cdomain:text>

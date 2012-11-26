@@ -1,152 +1,152 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<srm:categoryScheme xmlns:messagefooter="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message/footer" xmlns:metadatastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/structurespecific" xmlns:datageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/generic" xmlns:query="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/query" xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common" xmlns:srm="http://www.siemac.org/metamac/rest/srm-internal/v1.0/domain" xmlns:metadatageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/generic" xmlns:datastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/structurespecific" xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" xmlns:registry="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/registry" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="srm#categoryScheme" id="itemScheme1" isPartial="false" agencyID="idAsMaintaineragency1" isFinal="true" isExternalReference="false" version="01.000" validFrom="2012-11-26T12:23:32.169Z" validTo="2012-11-26T12:23:32.169Z" urn="urn:itemScheme1:01.000" serviceURL="serviceUrl-htpdMI5iKa" structureURL="structureUrl-6rG4dKK3Xj">
+<srm:categoryScheme xmlns:messagefooter="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message/footer" xmlns:metadatastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/structurespecific" xmlns:datageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/generic" xmlns:query="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/query" xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common" xmlns:srm="http://www.siemac.org/metamac/rest/srm-internal/v1.0/domain" xmlns:metadatageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/generic" xmlns:datastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/structurespecific" xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" xmlns:registry="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/registry" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="srm#categoryScheme" id="itemScheme1" isPartial="false" agencyID="idAsMaintaineragency1" isFinal="true" isExternalReference="false" version="01.000" validFrom="2012-11-26T17:15:14.122Z" validTo="2012-11-26T17:15:14.122Z" urn="urn:itemScheme1:01.000" serviceURL="serviceUrl-tMCXOsa6Ja" structureURL="structureUrl-U0TdMmBM15">
     <common:Annotations>
-        <common:Annotation id="code3">
-            <common:AnnotationTitle>title-fp3orQUQMD</common:AnnotationTitle>
-            <common:AnnotationType>type-anb8hEcWvP</common:AnnotationType>
-            <common:AnnotationURL>url-5FYkSeTYBk</common:AnnotationURL>
-            <common:AnnotationText xml:lang="es">text-Qz8d1BUY5u en Español</common:AnnotationText>
-            <common:AnnotationText xml:lang="en">text-fGya17PR69 in English</common:AnnotationText>
-        </common:Annotation>
         <common:Annotation id="code1">
-            <common:AnnotationTitle>title-tiZS40zc76</common:AnnotationTitle>
-            <common:AnnotationType>type-8eEP1P9h1k</common:AnnotationType>
-            <common:AnnotationURL>url-8hghojk5nv</common:AnnotationURL>
-            <common:AnnotationText xml:lang="en">text-9lGLfjXJvV in English</common:AnnotationText>
-            <common:AnnotationText xml:lang="es">text-sjkGpE3aWX en Español</common:AnnotationText>
+            <common:AnnotationTitle>title-4SY7c7yCkQ</common:AnnotationTitle>
+            <common:AnnotationType>type-GQYWQvdyrZ</common:AnnotationType>
+            <common:AnnotationURL>url-Li9KvjYQMC</common:AnnotationURL>
+            <common:AnnotationText xml:lang="en">text-sgqoCm5fmk in English</common:AnnotationText>
+            <common:AnnotationText xml:lang="es">text-UXM5ee2CwC en Español</common:AnnotationText>
         </common:Annotation>
         <common:Annotation id="code2">
-            <common:AnnotationTitle>title-Eb5drEDCVJ</common:AnnotationTitle>
-            <common:AnnotationType>type-MQInakn255</common:AnnotationType>
-            <common:AnnotationURL>url-lGW3nVYfWq</common:AnnotationURL>
-            <common:AnnotationText xml:lang="en">text-PpsV3bDlG7 in English</common:AnnotationText>
-            <common:AnnotationText xml:lang="es">text-nrbLdryLyJ en Español</common:AnnotationText>
+            <common:AnnotationTitle>title-o79pv4fG4n</common:AnnotationTitle>
+            <common:AnnotationType>type-hN52H6A5m2</common:AnnotationType>
+            <common:AnnotationURL>url-v4rypsKpOQ</common:AnnotationURL>
+            <common:AnnotationText xml:lang="es">text-AXTTLG6Qsn en Español</common:AnnotationText>
+            <common:AnnotationText xml:lang="en">text-AxxMEOGc5b in English</common:AnnotationText>
+        </common:Annotation>
+        <common:Annotation id="code3">
+            <common:AnnotationTitle>title-IxJftwoNrO</common:AnnotationTitle>
+            <common:AnnotationType>type-aAuzRWfJHp</common:AnnotationType>
+            <common:AnnotationURL>url-qxSogrptPL</common:AnnotationURL>
+            <common:AnnotationText xml:lang="en">text-qNS2AD6vaI in English</common:AnnotationText>
+            <common:AnnotationText xml:lang="es">text-m43MS7A3aE en Español</common:AnnotationText>
         </common:Annotation>
     </common:Annotations>
     <common:Name xml:lang="en">name-itemScheme1v01.000 in English</common:Name>
     <common:Name xml:lang="es">name-itemScheme1v01.000 en Español</common:Name>
-    <common:Description xml:lang="en">description-itemScheme1v01.000 in English</common:Description>
     <common:Description xml:lang="es">description-itemScheme1v01.000 en Español</common:Description>
+    <common:Description xml:lang="en">description-itemScheme1v01.000 in English</common:Description>
     <structure:Category id="category1" urn="urn:category1">
         <common:Annotations>
             <common:Annotation id="code2">
-                <common:AnnotationTitle>title-2kw6a5G6tU</common:AnnotationTitle>
-                <common:AnnotationType>type-nQcS60l9ds</common:AnnotationType>
-                <common:AnnotationURL>url-DagJXFFliu</common:AnnotationURL>
-                <common:AnnotationText xml:lang="es">text-odKaM7XkQk en Español</common:AnnotationText>
-                <common:AnnotationText xml:lang="en">text-L2FMS1WFV6 in English</common:AnnotationText>
+                <common:AnnotationTitle>title-XU3sO1eerH</common:AnnotationTitle>
+                <common:AnnotationType>type-028YRRQdH3</common:AnnotationType>
+                <common:AnnotationURL>url-VZy2Gr9D95</common:AnnotationURL>
+                <common:AnnotationText xml:lang="en">text-paXy36VnNY in English</common:AnnotationText>
+                <common:AnnotationText xml:lang="es">text-t9cJRE5bXQ en Español</common:AnnotationText>
             </common:Annotation>
             <common:Annotation id="code1">
-                <common:AnnotationTitle>title-tdL7RuTu5W</common:AnnotationTitle>
-                <common:AnnotationType>type-ZjTRVncW8m</common:AnnotationType>
-                <common:AnnotationURL>url-sK1C9cvh2d</common:AnnotationURL>
-                <common:AnnotationText xml:lang="es">text-rz2HNfku9x en Español</common:AnnotationText>
-                <common:AnnotationText xml:lang="en">text-W76V14qPk6 in English</common:AnnotationText>
+                <common:AnnotationTitle>title-YcWGmUdRSc</common:AnnotationTitle>
+                <common:AnnotationType>type-SJuwhbH8ft</common:AnnotationType>
+                <common:AnnotationURL>url-6medbPtcfq</common:AnnotationURL>
+                <common:AnnotationText xml:lang="en">text-EWcPzzVC72 in English</common:AnnotationText>
+                <common:AnnotationText xml:lang="es">text-1Bfy5xPyO8 en Español</common:AnnotationText>
             </common:Annotation>
             <common:Annotation id="code3">
-                <common:AnnotationTitle>title-dLIhe26xOI</common:AnnotationTitle>
-                <common:AnnotationType>type-bCyt4CsCvJ</common:AnnotationType>
-                <common:AnnotationURL>url-0Lofy5gWMB</common:AnnotationURL>
-                <common:AnnotationText xml:lang="es">text-7tfCHPiE4a en Español</common:AnnotationText>
-                <common:AnnotationText xml:lang="en">text-qFaBEDBuaP in English</common:AnnotationText>
+                <common:AnnotationTitle>title-AevUjNK2BD</common:AnnotationTitle>
+                <common:AnnotationType>type-7cYATDbal8</common:AnnotationType>
+                <common:AnnotationURL>url-93mriWbaKP</common:AnnotationURL>
+                <common:AnnotationText xml:lang="es">text-N69dvi7AWe en Español</common:AnnotationText>
+                <common:AnnotationText xml:lang="en">text-Qqrf8NEvuA in English</common:AnnotationText>
             </common:Annotation>
         </common:Annotations>
         <common:Name xml:lang="es">name-category1 en Español</common:Name>
         <common:Name xml:lang="en">name-category1 in English</common:Name>
-        <common:Description xml:lang="en">description-category1 in English</common:Description>
         <common:Description xml:lang="es">description-category1 en Español</common:Description>
+        <common:Description xml:lang="en">description-category1 in English</common:Description>
     </structure:Category>
     <structure:Category id="category2" urn="urn:category2">
         <common:Annotations>
             <common:Annotation id="code2">
-                <common:AnnotationTitle>title-pF3ieyeBL1</common:AnnotationTitle>
-                <common:AnnotationType>type-T2vstrXWhm</common:AnnotationType>
-                <common:AnnotationURL>url-o6z8E8AQdO</common:AnnotationURL>
-                <common:AnnotationText xml:lang="en">text-5MN56Ci0eS in English</common:AnnotationText>
-                <common:AnnotationText xml:lang="es">text-vm3YahvlOJ en Español</common:AnnotationText>
-            </common:Annotation>
-            <common:Annotation id="code3">
-                <common:AnnotationTitle>title-x9UuZCSAjR</common:AnnotationTitle>
-                <common:AnnotationType>type-KtUJxXuD2k</common:AnnotationType>
-                <common:AnnotationURL>url-9hV01EVI6W</common:AnnotationURL>
-                <common:AnnotationText xml:lang="en">text-kt6NlZuXKM in English</common:AnnotationText>
-                <common:AnnotationText xml:lang="es">text-w0s3ssmElo en Español</common:AnnotationText>
+                <common:AnnotationTitle>title-WjWzGvAgVv</common:AnnotationTitle>
+                <common:AnnotationType>type-AzLxEHQODf</common:AnnotationType>
+                <common:AnnotationURL>url-PQRB5d56uF</common:AnnotationURL>
+                <common:AnnotationText xml:lang="en">text-s86Xt8czwk in English</common:AnnotationText>
+                <common:AnnotationText xml:lang="es">text-qwJJAZUSMr en Español</common:AnnotationText>
             </common:Annotation>
             <common:Annotation id="code1">
-                <common:AnnotationTitle>title-6ssh2nDsGY</common:AnnotationTitle>
-                <common:AnnotationType>type-2PlCwdT2NQ</common:AnnotationType>
-                <common:AnnotationURL>url-5EL1cBWigu</common:AnnotationURL>
-                <common:AnnotationText xml:lang="es">text-50CtssUlTf en Español</common:AnnotationText>
-                <common:AnnotationText xml:lang="en">text-y8ZDCnPIH7 in English</common:AnnotationText>
+                <common:AnnotationTitle>title-NicizGBj7F</common:AnnotationTitle>
+                <common:AnnotationType>type-QIdzSilXPa</common:AnnotationType>
+                <common:AnnotationURL>url-97TO0cl3LL</common:AnnotationURL>
+                <common:AnnotationText xml:lang="en">text-McFfssB8hz in English</common:AnnotationText>
+                <common:AnnotationText xml:lang="es">text-4XGyxG82cI en Español</common:AnnotationText>
+            </common:Annotation>
+            <common:Annotation id="code3">
+                <common:AnnotationTitle>title-HG3Ls2tubI</common:AnnotationTitle>
+                <common:AnnotationType>type-4CMjX7Q0Xp</common:AnnotationType>
+                <common:AnnotationURL>url-YjsMvsMkcZ</common:AnnotationURL>
+                <common:AnnotationText xml:lang="en">text-lMUEsi7trc in English</common:AnnotationText>
+                <common:AnnotationText xml:lang="es">text-V1MsaYIsBP en Español</common:AnnotationText>
             </common:Annotation>
         </common:Annotations>
-        <common:Name xml:lang="es">name-category2 en Español</common:Name>
         <common:Name xml:lang="en">name-category2 in English</common:Name>
+        <common:Name xml:lang="es">name-category2 en Español</common:Name>
         <common:Description xml:lang="es">description-category2 en Español</common:Description>
         <common:Description xml:lang="en">description-category2 in English</common:Description>
         <structure:Category id="category2A" urn="urn:category2A">
             <common:Annotations>
-                <common:Annotation id="code1">
-                    <common:AnnotationTitle>title-6BnTfWHsxV</common:AnnotationTitle>
-                    <common:AnnotationType>type-EitEgXG38E</common:AnnotationType>
-                    <common:AnnotationURL>url-QA72g2yLkW</common:AnnotationURL>
-                    <common:AnnotationText xml:lang="en">text-HPjHZiBXUH in English</common:AnnotationText>
-                    <common:AnnotationText xml:lang="es">text-etIbfy7Fck en Español</common:AnnotationText>
+                <common:Annotation id="code2">
+                    <common:AnnotationTitle>title-Q9DWiZ4smZ</common:AnnotationTitle>
+                    <common:AnnotationType>type-X7w8oLhtl5</common:AnnotationType>
+                    <common:AnnotationURL>url-qAJU7MTXY9</common:AnnotationURL>
+                    <common:AnnotationText xml:lang="en">text-rn3FGkEheG in English</common:AnnotationText>
+                    <common:AnnotationText xml:lang="es">text-FIjtgoFAGc en Español</common:AnnotationText>
                 </common:Annotation>
                 <common:Annotation id="code3">
-                    <common:AnnotationTitle>title-mgO2YG1Te3</common:AnnotationTitle>
-                    <common:AnnotationType>type-bwEWkIKL8X</common:AnnotationType>
-                    <common:AnnotationURL>url-22CQusXHQR</common:AnnotationURL>
-                    <common:AnnotationText xml:lang="es">text-A21h9J75am en Español</common:AnnotationText>
-                    <common:AnnotationText xml:lang="en">text-M5U3XKqocJ in English</common:AnnotationText>
+                    <common:AnnotationTitle>title-PnM3p4yRwm</common:AnnotationTitle>
+                    <common:AnnotationType>type-lvQUQa4ItT</common:AnnotationType>
+                    <common:AnnotationURL>url-34ZzT6FtBn</common:AnnotationURL>
+                    <common:AnnotationText xml:lang="en">text-3BC2olg3Ox in English</common:AnnotationText>
+                    <common:AnnotationText xml:lang="es">text-Smn0ULRnTq en Español</common:AnnotationText>
                 </common:Annotation>
-                <common:Annotation id="code2">
-                    <common:AnnotationTitle>title-9Wz8qyDnvI</common:AnnotationTitle>
-                    <common:AnnotationType>type-cetQxemiEv</common:AnnotationType>
-                    <common:AnnotationURL>url-vqjTVd7QZ5</common:AnnotationURL>
-                    <common:AnnotationText xml:lang="es">text-BJD5uUWqXq en Español</common:AnnotationText>
-                    <common:AnnotationText xml:lang="en">text-zcLw4otnr3 in English</common:AnnotationText>
+                <common:Annotation id="code1">
+                    <common:AnnotationTitle>title-ekCRxgfj8C</common:AnnotationTitle>
+                    <common:AnnotationType>type-jnSkagdeM8</common:AnnotationType>
+                    <common:AnnotationURL>url-kflBgkm36G</common:AnnotationURL>
+                    <common:AnnotationText xml:lang="es">text-xSVrXaDdD5 en Español</common:AnnotationText>
+                    <common:AnnotationText xml:lang="en">text-YYmdoxnJbh in English</common:AnnotationText>
                 </common:Annotation>
             </common:Annotations>
-            <common:Name xml:lang="es">name-category2A en Español</common:Name>
             <common:Name xml:lang="en">name-category2A in English</common:Name>
+            <common:Name xml:lang="es">name-category2A en Español</common:Name>
             <common:Description xml:lang="es">description-category2A en Español</common:Description>
             <common:Description xml:lang="en">description-category2A in English</common:Description>
         </structure:Category>
         <structure:Category id="category2B" urn="urn:category2B">
             <common:Annotations>
+                <common:Annotation id="code2">
+                    <common:AnnotationTitle>title-QSCs6xeoKl</common:AnnotationTitle>
+                    <common:AnnotationType>type-bGMdEqHdPh</common:AnnotationType>
+                    <common:AnnotationURL>url-4pnPbUDz9U</common:AnnotationURL>
+                    <common:AnnotationText xml:lang="en">text-vPXa3zlUUg in English</common:AnnotationText>
+                    <common:AnnotationText xml:lang="es">text-tJW49OcMyP en Español</common:AnnotationText>
+                </common:Annotation>
                 <common:Annotation id="code1">
-                    <common:AnnotationTitle>title-PSF7O0gfmf</common:AnnotationTitle>
-                    <common:AnnotationType>type-OcEizvAEPO</common:AnnotationType>
-                    <common:AnnotationURL>url-F45LjUlRfI</common:AnnotationURL>
-                    <common:AnnotationText xml:lang="en">text-ntfAqHh1mG in English</common:AnnotationText>
-                    <common:AnnotationText xml:lang="es">text-adViA8mO9o en Español</common:AnnotationText>
+                    <common:AnnotationTitle>title-dloNMWCNRH</common:AnnotationTitle>
+                    <common:AnnotationType>type-hge3pbmR5H</common:AnnotationType>
+                    <common:AnnotationURL>url-6v4K41ClV8</common:AnnotationURL>
+                    <common:AnnotationText xml:lang="es">text-kNwGSIKRI7 en Español</common:AnnotationText>
+                    <common:AnnotationText xml:lang="en">text-nkT8DpxHN8 in English</common:AnnotationText>
                 </common:Annotation>
                 <common:Annotation id="code3">
-                    <common:AnnotationTitle>title-rn0awkbUIO</common:AnnotationTitle>
-                    <common:AnnotationType>type-H4QFYIx29s</common:AnnotationType>
-                    <common:AnnotationURL>url-YNDQUwepLO</common:AnnotationURL>
-                    <common:AnnotationText xml:lang="en">text-7ORT3s8ulA in English</common:AnnotationText>
-                    <common:AnnotationText xml:lang="es">text-UkT16591ao en Español</common:AnnotationText>
-                </common:Annotation>
-                <common:Annotation id="code2">
-                    <common:AnnotationTitle>title-vWF3KWWBeQ</common:AnnotationTitle>
-                    <common:AnnotationType>type-WHwZlISfxp</common:AnnotationType>
-                    <common:AnnotationURL>url-IT5bsX1ySX</common:AnnotationURL>
-                    <common:AnnotationText xml:lang="en">text-zTRwrFSnvr in English</common:AnnotationText>
-                    <common:AnnotationText xml:lang="es">text-uOIzzqA0rf en Español</common:AnnotationText>
+                    <common:AnnotationTitle>title-SljKXerCqc</common:AnnotationTitle>
+                    <common:AnnotationType>type-GPwTjm0WqR</common:AnnotationType>
+                    <common:AnnotationURL>url-sYxP3JD3YX</common:AnnotationURL>
+                    <common:AnnotationText xml:lang="es">text-zaqah8CZOe en Español</common:AnnotationText>
+                    <common:AnnotationText xml:lang="en">text-wR5jrCMGRw in English</common:AnnotationText>
                 </common:Annotation>
             </common:Annotations>
-            <common:Name xml:lang="es">name-category2B en Español</common:Name>
             <common:Name xml:lang="en">name-category2B in English</common:Name>
-            <common:Description xml:lang="es">description-category2B en Español</common:Description>
+            <common:Name xml:lang="es">name-category2B en Español</common:Name>
             <common:Description xml:lang="en">description-category2B in English</common:Description>
+            <common:Description xml:lang="es">description-category2B en Español</common:Description>
         </structure:Category>
     </structure:Category>
-    <srm:selfLink kind="srm#categoryScheme" href="http://data.istac.es/apis/srm/v1.0/categoryschemes/idAsMaintaineragency1/itemScheme1/01.000"/>
-    <srm:parentLink kind="srm#categorySchemes" href="http://data.istac.es/apis/srm/v1.0/categoryschemes"/>
-    <srm:replaceToVersion>replaceTo</srm:replaceToVersion>
-    <srm:childLinks total="1">
+    <cdomain:selfLink kind="srm#categoryScheme" href="http://data.istac.es/apis/srm/v1.0/categoryschemes/idAsMaintaineragency1/itemScheme1/01.000"/>
+    <cdomain:parentLink kind="srm#categorySchemes" href="http://data.istac.es/apis/srm/v1.0/categoryschemes"/>
+    <cdomain:childLinks total="1">
         <cdomain:childLink kind="srm#categories" href="http://data.istac.es/apis/srm/v1.0/categoryschemes/idAsMaintaineragency1/itemScheme1/01.000/categories"/>
-    </srm:childLinks>
+    </cdomain:childLinks>
+    <srm:replaceToVersion>replaceTo</srm:replaceToVersion>
 </srm:categoryScheme>
