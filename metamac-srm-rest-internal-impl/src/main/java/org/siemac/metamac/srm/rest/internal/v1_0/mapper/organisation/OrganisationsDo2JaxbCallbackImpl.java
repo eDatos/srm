@@ -32,40 +32,41 @@ public class OrganisationsDo2JaxbCallbackImpl implements OrganisationsDo2JaxbCal
     }
 
     @Override
-    public DataConsumerSchemeType createDataConsumerSchemeJaxb(OrganisationSchemeVersion sourceDataConsumerScheme) {
+    public DataConsumerSchemeType createDataConsumerSchemeJaxb(OrganisationSchemeVersion source) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public DataProviderSchemeType createDataProviderSchemeJaxb(OrganisationSchemeVersion sourceDataProviderScheme) {
+    public DataProviderSchemeType createDataProviderSchemeJaxb(OrganisationSchemeVersion source) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public OrganisationUnitSchemeType createOrganisationUnitSchemeJaxb(OrganisationSchemeVersion sourceDataProviderScheme) {
-        // TODO Auto-generated method stub
-        return null;
+    public OrganisationUnitSchemeType createOrganisationUnitSchemeJaxb(OrganisationSchemeVersion source) {
+        org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationUnitScheme target = new org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationUnitScheme();
+        organisationsDo2RestMapperV10.toOrganisationUnitScheme((OrganisationSchemeVersionMetamac) source, target);
+        return target;
     }
 
     @Override
-    public AgencyType createAgencyJaxb(Organisation sourceAgency) {
+    public AgencyType createAgencyJaxb(Organisation source) {
         return new AgencyType();
     }
 
     @Override
-    public DataConsumerType createDataConsumerJaxb(Organisation sourceDataConsumer) {
+    public DataConsumerType createDataConsumerJaxb(Organisation source) {
         return new DataConsumerType();
     }
 
     @Override
-    public DataProviderType createDataProviderJaxb(Organisation sourceDataProvider) {
+    public DataProviderType createDataProviderJaxb(Organisation source) {
         return new DataProviderType();
     }
 
     @Override
-    public OrganisationUnitType createOrganisationUnitJaxb(Organisation sourceOrganisationUnit) {
+    public OrganisationUnitType createOrganisationUnitJaxb(Organisation source) {
         return new OrganisationUnitType();
     }
 

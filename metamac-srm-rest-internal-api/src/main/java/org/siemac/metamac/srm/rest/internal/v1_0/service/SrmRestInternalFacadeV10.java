@@ -20,11 +20,16 @@ import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptScheme;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemes;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptTypes;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.Concepts;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationUnit;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationUnitScheme;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationUnitSchemes;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationUnits;
 
 @Path("v1.0")
 public interface SrmRestInternalFacadeV10 {
 
     // TODO Documentation
+    // TODO indicar dónde se puede indicar wildcard, latest...
 
     // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     // CONCEPTS
@@ -136,7 +141,7 @@ public interface SrmRestInternalFacadeV10 {
     
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    // ORGANISATIONS
+    // ORGANISATIONS - AGENCIES
     // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     @GET
@@ -174,6 +179,46 @@ public interface SrmRestInternalFacadeV10 {
             + "}/{version: \\d.*}/agencies/{organisationID: " + RegularExpressionConstants.REG_EXP_SEMANTIC_IDENTIFIER + "}") 
     Agency retrieveAgency(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @PathParam("version") String version, @PathParam("organisationID") String organisationID);
     
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    // ORGANISATIONS - ORGANISATION UNITS
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    @GET
+    @Produces("application/xml")
+    @Path("organisationunitschemes")
+    OrganisationUnitSchemes findOrganisationUnitSchemes(@QueryParam("query") String query, @QueryParam("orderBy") String orderBy, @QueryParam("limit") String limit, @QueryParam("offset") String offset);
+
+    @GET
+    @Produces("application/xml")
+    @Path("organisationunitschemes/{agencyID: " + RegularExpressionConstants.REG_EXP_SEMANTIC_IDENTIFIER + "}")
+    OrganisationUnitSchemes findOrganisationUnitSchemes(@PathParam("agencyID") String agencyID, @QueryParam("query") String query, @QueryParam("orderBy") String orderBy, @QueryParam("limit") String limit,
+            @QueryParam("offset") String offset);
+
+    @GET
+    @Produces("application/xml")
+    @Path("organisationunitschemes/{agencyID}/{resourceID: " + RegularExpressionConstants.REG_EXP_SEMANTIC_IDENTIFIER + "}")
+    OrganisationUnitSchemes findOrganisationUnitSchemes(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @QueryParam("query") String query, @QueryParam("orderBy") String orderBy,
+            @QueryParam("limit") String limit, @QueryParam("offset") String offset);
+
+    @GET
+    @Produces("application/xml")
+    @Path("organisationunitschemes/{agencyID: " + RegularExpressionConstants.REG_EXP_SEMANTIC_IDENTIFIER + "}/{resourceID: " + RegularExpressionConstants.REG_EXP_SEMANTIC_IDENTIFIER + "}/{version: \\d.*}")
+    OrganisationUnitScheme retrieveOrganisationUnitScheme(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @PathParam("version") String version);
+
+    @GET
+    @Produces("application/xml")
+    @Path("organisationunitschemes/{agencyID}/{resourceID}/{version}/organisationunits")
+    OrganisationUnits findOrganisationUnits(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @PathParam("version") String version, @QueryParam("query") String query,
+            @QueryParam("orderBy") String orderBy, @QueryParam("limit") String limit, @QueryParam("offset") String offset);
+
+    
+    @GET
+    @Produces("application/xml")
+    @Path("organisationunitschemes/{agencyID: " + RegularExpressionConstants.REG_EXP_SEMANTIC_IDENTIFIER + "}/{resourceID: " + RegularExpressionConstants.REG_EXP_SEMANTIC_IDENTIFIER
+            + "}/{version: \\d.*}/organisationunits/{organisationID: " + RegularExpressionConstants.REG_EXP_SEMANTIC_IDENTIFIER + "}") 
+    OrganisationUnit retrieveOrganisationUnit(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @PathParam("version") String version, @PathParam("organisationID") String organisationID);
+    
 //    <resource id="organisationscheme" path="organisationscheme/{agencyID}/{resourceID}/{version}" type="#MaintainableArtefact"> 
 //    <param name="agencyID" type="types:NCNameIDType" style="template" required="false" default="all"/>      
 //    <param name="resourceID" type="types:IDType" style="template" required="false" default="all"/> 
@@ -188,11 +233,6 @@ public interface SrmRestInternalFacadeV10 {
 //    <param name="agencyID" type="types:NCNameIDType" style="template" required="false" default="all"/>      
 //    <param name="resourceID" type="types:IDType" style="template" required="false" fixed="DATA_CONSUMERS"/> 
 //    <param name="version" type="types:VersionType" style="template" required="false" fixed="1.0"/>
-//</resource>
-//<resource id="organisationunitscheme" path="organisationunitscheme/{agencyID}/{resourceID}/{version}" type="#MaintainableArtefact"> 
-//    <param name="agencyID" type="types:NCNameIDType" style="template" required="false" default="all"/>      
-//    <param name="resourceID" type="types:IDType" style="template" required="false" default="all"/> 
-//    <param name="version" type="types:VersionType" style="template" required="false" default="latest"/>
 //</resource>
 
 }

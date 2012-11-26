@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    elementFormDefault="qualified"
-    targetNamespace="http://www.siemac.org/metamac/rest/srm-internal/v1.0/domain"
-    xmlns:tns="http://www.siemac.org/metamac/rest/srm-internal/v1.0/domain"
-    xmlns:common="http://www.siemac.org/metamac/rest/common/v1.0/domain"
-    xmlns:sdmx="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure">
+<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://www.siemac.org/metamac/rest/srm-internal/v1.0/domain" xmlns:tns="http://www.siemac.org/metamac/rest/srm-internal/v1.0/domain"
+    xmlns:common="http://www.siemac.org/metamac/rest/common/v1.0/domain" xmlns:sdmx="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure">
 
     <xs:import namespace="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" schemaLocation="statistic-sdmx-v2_1-domain:SDMXStructure.xsd" />
     <xs:import namespace="http://www.siemac.org/metamac/rest/common/v1.0/domain" schemaLocation="metamac-rest-api:metamac-rest-common-domain-v1.0.xsd" />
@@ -24,7 +20,7 @@
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
-    
+
     <xs:complexType name="Concept">
         <xs:complexContent>
             <xs:extension base="sdmx:ConceptType">
@@ -47,7 +43,7 @@
                 <xs:attribute name="kind" type="xs:string" use="required" />
             </xs:extension>
         </xs:complexContent>
-    </xs:complexType>    
+    </xs:complexType>
 
     <xs:complexType name="CategoryScheme">
         <xs:complexContent>
@@ -62,7 +58,7 @@
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
-    
+
     <xs:complexType name="Category">
         <xs:complexContent>
             <xs:extension base="sdmx:CategoryType">
@@ -75,7 +71,7 @@
                 <xs:attribute name="kind" type="xs:string" use="required" />
             </xs:extension>
         </xs:complexContent>
-    </xs:complexType>    
+    </xs:complexType>
 
     <!-- Lists -->
     <xs:complexType name="ConceptSchemes">
@@ -87,7 +83,7 @@
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
-    
+
     <xs:complexType name="Concepts">
         <xs:complexContent>
             <xs:extension base="common:ListBase">
@@ -96,8 +92,8 @@
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
-    </xs:complexType>    
-    
+    </xs:complexType>
+
     <xs:complexType name="ConceptTypes">
         <xs:complexContent>
             <xs:extension base="common:ListBase">
@@ -106,8 +102,8 @@
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
-    </xs:complexType>    
-    
+    </xs:complexType>
+
     <xs:complexType name="CategorySchemes">
         <xs:complexContent>
             <xs:extension base="common:ListBase">
@@ -117,7 +113,7 @@
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
-    
+
     <xs:complexType name="Categories">
         <xs:complexContent>
             <xs:extension base="common:ListBase">
@@ -126,8 +122,8 @@
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
-    </xs:complexType>    
-    
+    </xs:complexType>
+
     <xs:complexType name="AgencySchemes">
         <xs:complexContent>
             <xs:extension base="common:ListBase">
@@ -137,7 +133,7 @@
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
-    
+
     <xs:complexType name="OrganisationUnitSchemes">
         <xs:complexContent>
             <xs:extension base="common:ListBase">
@@ -147,7 +143,7 @@
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
-    
+
     <xs:complexType name="AgencyScheme">
         <xs:complexContent>
             <xs:extension base="sdmx:AgencySchemeType">
@@ -161,7 +157,21 @@
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
-    
+
+    <xs:complexType name="OrganisationUnitScheme">
+        <xs:complexContent>
+            <xs:extension base="sdmx:OrganisationUnitSchemeType">
+                <xs:sequence>
+                    <xs:element name="selfLink" type="common:ResourceLink" />
+                    <xs:element name="parentLink" type="common:ResourceLink" />
+                    <xs:element name="replaceToVersion" type="xs:string" minOccurs="0" />
+                    <xs:element name="childLinks" type="common:ChildLinks" minOccurs="1" />
+                </xs:sequence>
+                <xs:attribute name="kind" type="xs:string" use="required" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
     <xs:complexType name="Agencies">
         <xs:complexContent>
             <xs:extension base="common:ListBase">
@@ -170,23 +180,44 @@
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
-    </xs:complexType>    
-    
+    </xs:complexType>
+
     <xs:complexType name="Agency">
         <xs:complexContent>
             <xs:extension base="sdmx:AgencyType">
                 <xs:sequence>
                     <xs:element name="selfLink" type="common:ResourceLink" />
                     <xs:element name="parentLink" type="common:ResourceLink" />
-                    <xs:element name="parent" type="xs:string" minOccurs="0" />
+                    <xs:element name="childLinks" type="common:ChildLinks" minOccurs="1" />
+                </xs:sequence>
+                <xs:attribute name="kind" type="xs:string" use="required" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    
+    <xs:complexType name="OrganisationUnits">
+        <xs:complexContent>
+            <xs:extension base="common:ListBase">
+                <xs:sequence>
+                    <xs:element name="organisationUnit" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="OrganisationUnit">
+        <xs:complexContent>
+            <xs:extension base="sdmx:OrganisationUnitType">
+                <xs:sequence>
+                    <xs:element name="selfLink" type="common:ResourceLink" />
+                    <xs:element name="parentLink" type="common:ResourceLink" />
                     <xs:element name="childLinks" type="common:ChildLinks" minOccurs="1" />
                 </xs:sequence>
                 <xs:attribute name="kind" type="xs:string" use="required" />
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>    
-    
-        
+
     <xs:complexType name="Urns">
         <xs:complexContent>
             <xs:extension base="common:ListBase">
@@ -205,7 +236,7 @@
             <xs:enumeration value="PUBLISH_EXTERNALLY" />
         </xs:restriction>
     </xs:simpleType>
-    
+
     <xs:simpleType name="ConceptSchemeType">
         <xs:restriction base="xs:token">
             <xs:enumeration value="GLOSSARY" />
@@ -213,8 +244,8 @@
             <xs:enumeration value="OPERATION" />
             <xs:enumeration value="ROLE" />
         </xs:restriction>
-    </xs:simpleType>         
-    
+    </xs:simpleType>
+
     <!-- Criterias -->
     <xs:simpleType name="ConceptSchemeCriteriaPropertyRestriction">
         <xs:restriction base="xs:token">
@@ -256,7 +287,7 @@
             <xs:enumeration value="ID" />
         </xs:restriction>
     </xs:simpleType>
-    
+
     <xs:simpleType name="CategorySchemeCriteriaPropertyRestriction">
         <xs:restriction base="xs:token">
             <xs:enumeration value="ID" />
@@ -284,7 +315,7 @@
             <xs:enumeration value="ID" />
             <xs:enumeration value="URN" />
             <xs:enumeration value="NAME" />
-            <xs:enumeration value="DESCRIPTION" />            
+            <xs:enumeration value="DESCRIPTION" />
         </xs:restriction>
     </xs:simpleType>
 
@@ -292,8 +323,8 @@
         <xs:restriction base="xs:token">
             <xs:enumeration value="ID" />
         </xs:restriction>
-    </xs:simpleType>    
-    
+    </xs:simpleType>
+
     <xs:simpleType name="OrganisationSchemeCriteriaPropertyRestriction">
         <xs:restriction base="xs:token">
             <xs:enumeration value="ID" />
@@ -324,7 +355,7 @@
             <xs:enumeration value="DESCRIPTION" />
         </xs:restriction>
     </xs:simpleType>
-    
+
     <xs:simpleType name="OrganisationCriteriaPropertyOrder">
         <xs:restriction base="xs:token">
             <xs:enumeration value="ID" />
@@ -337,15 +368,19 @@
     <xs:element name="concepts" type="tns:Concepts" />
     <xs:element name="concept" type="tns:Concept" />
     <xs:element name="conceptTypes" type="tns:ConceptTypes" />
-    
+
     <xs:element name="categorySchemes" type="tns:CategorySchemes" />
     <xs:element name="categoryScheme" type="tns:CategoryScheme" />
     <xs:element name="categories" type="tns:Categories" />
     <xs:element name="category" type="tns:Category" />
-    
+
     <xs:element name="agencySchemes" type="tns:AgencySchemes" />
-    <xs:element name="organisationUnitSchemes" type="tns:OrganisationUnitSchemes" />
     <xs:element name="agencyScheme" type="tns:AgencyScheme" />
     <xs:element name="agencies" type="tns:Agencies" />
     <xs:element name="agency" type="tns:Agency" />
+    
+    <xs:element name="organisationUnitSchemes" type="tns:OrganisationUnitSchemes" />
+    <xs:element name="organisationUnitScheme" type="tns:OrganisationUnitScheme" />
+    <xs:element name="organisationUnits" type="tns:OrganisationUnits" />
+    <xs:element name="organisationUnit" type="tns:OrganisationUnit" />
 </xs:schema>

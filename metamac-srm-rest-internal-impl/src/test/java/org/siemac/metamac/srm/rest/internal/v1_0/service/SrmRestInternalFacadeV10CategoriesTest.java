@@ -195,7 +195,7 @@ public class SrmRestInternalFacadeV10CategoriesTest extends SrmRestInternalFacad
             org.siemac.metamac.rest.common.v1_0.domain.Exception exception = extractErrorFromException(getSrmRestInternalFacadeClientXml(), e);
 
             assertEquals(RestServiceExceptionType.CATEGORY_SCHEME_NOT_FOUND.getCode(), exception.getCode());
-            assertEquals("Category scheme not found in AgencyID " + agencyID + " with ID " + resourceID + " and version " + version, exception.getMessage());
+            assertEquals("CategoryScheme not found in agencyID " + agencyID + " with ID " + resourceID + " and version " + version, exception.getMessage());
             assertEquals(3, exception.getParameters().getParameters().size());
             assertEquals(agencyID, exception.getParameters().getParameters().get(0));
             assertEquals(resourceID, exception.getParameters().getParameters().get(1));
@@ -318,7 +318,7 @@ public class SrmRestInternalFacadeV10CategoriesTest extends SrmRestInternalFacad
             org.siemac.metamac.rest.common.v1_0.domain.Exception exception = extractErrorFromException(getSrmRestInternalFacadeClientXml(), e);
 
             assertEquals(RestServiceExceptionType.CATEGORY_NOT_FOUND.getCode(), exception.getCode());
-            assertEquals("Category not found with ID " + categoryID + " in Category scheme in AgencyID " + agencyID + " with ID " + resourceID + " and version " + version, exception.getMessage());
+            assertEquals("Category not found with ID " + categoryID + " in CategoryScheme in agencyID " + agencyID + " with ID " + resourceID + " and version " + version, exception.getMessage());
             assertEquals(4, exception.getParameters().getParameters().size());
             assertEquals(categoryID, exception.getParameters().getParameters().get(0));
             assertEquals(agencyID, exception.getParameters().getParameters().get(1));

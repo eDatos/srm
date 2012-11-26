@@ -6,3 +6,8 @@ Cuando se cree la RELEASE, añadir estos pasos al manual de instalación:
 	- null
 
 99. Reiniciar Tomcat
+
+
+
+
+xx insert en correspondencia con agencia en fichero de configuración

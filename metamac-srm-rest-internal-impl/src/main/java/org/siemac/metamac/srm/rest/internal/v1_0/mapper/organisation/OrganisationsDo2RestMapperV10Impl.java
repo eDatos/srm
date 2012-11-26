@@ -11,6 +11,10 @@ import org.siemac.metamac.rest.srm_internal.v1_0.domain.Agencies;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.Agency;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.AgencyScheme;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.AgencySchemes;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationUnit;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationUnitScheme;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationUnitSchemes;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationUnits;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
@@ -54,6 +58,26 @@ public class OrganisationsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl 
         }
         return targets;
     }
+    
+    @Override
+    public OrganisationUnitSchemes toOrganisationUnitSchemes(PagedResult<OrganisationSchemeVersionMetamac> sourcesPagedResult, String agencyID, String resourceID, String query, String orderBy, Integer limit) {
+
+        OrganisationSchemeTypeEnum type = OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME;
+
+        OrganisationUnitSchemes targets = new OrganisationUnitSchemes();
+        targets.setKind(toKindItemSchemes(type));
+
+        // Pagination
+        String baseLink = toOrganisationSchemesLink(agencyID, resourceID, null, type);
+        SculptorCriteria2RestCriteria.toPagedResult(sourcesPagedResult, targets, query, orderBy, limit, baseLink);
+
+        // Values
+        for (OrganisationSchemeVersionMetamac source : sourcesPagedResult.getValues()) {
+            Resource target = toResource(source);
+            targets.getOrganisationUnitSchemes().add(target);
+        }
+        return targets;
+    }
 
     @Override
     public AgencyScheme toAgencyScheme(OrganisationSchemeVersionMetamac source) {
@@ -63,9 +87,31 @@ public class OrganisationsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl 
         // following method will call toAgencyScheme(OrganisationSchemeVersionMetamac source, AgencyScheme target) method, thank to callback
         return (AgencyScheme) organisationsDo2JaxbSdmxMapper.agencySchemeDoToJaxb(source, organisationsDo2JaxbCallback);
     }
+    
+    @Override
+    public OrganisationUnitScheme toOrganisationUnitScheme(OrganisationSchemeVersionMetamac source) {
+        if (source == null) {
+            return null;
+        }
+        // following method will call toAgencyScheme(OrganisationSchemeVersionMetamac source, AgencyScheme target) method, thank to callback
+        return (OrganisationUnitScheme) organisationsDo2JaxbSdmxMapper.organisationUnitSchemeDoToJaxb(source, organisationsDo2JaxbCallback);
+    }
 
     @Override
     public void toAgencyScheme(OrganisationSchemeVersionMetamac source, AgencyScheme target) {
+        if (source == null) {
+            return;
+        }
+        target.setKind(toKindItemScheme(source.getOrganisationSchemeType()));
+        target.setSelfLink(toOrganisationSchemeSelfLink(source));
+        target.setUri(target.getSelfLink().getHref());
+        target.setReplaceToVersion(source.getMaintainableArtefact().getReplaceToVersion());
+        target.setParentLink(toOrganisationSchemeParentLink(source));
+        target.setChildLinks(toOrganisationSchemeChildLinks(source));
+    }
+    
+    @Override
+    public void toOrganisationUnitScheme(OrganisationSchemeVersionMetamac source, OrganisationUnitScheme target) {
         if (source == null) {
             return;
         }
@@ -94,6 +140,24 @@ public class OrganisationsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl 
         }
         return targets;
     }
+    
+    @Override
+    public OrganisationUnits toOrganisationUnits(PagedResult<OrganisationMetamac> sourcesPagedResult, String agencyID, String resourceID, String version, String query, String orderBy, Integer limit) {
+
+        OrganisationUnits targets = new OrganisationUnits();
+        targets.setKind(toKindItems(OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME));
+
+        // Pagination
+        String baseLink = toOrganisationsLink(agencyID, resourceID, version, OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME);
+        SculptorCriteria2RestCriteria.toPagedResult(sourcesPagedResult, targets, query, orderBy, limit, baseLink);
+
+        // Values
+        for (OrganisationMetamac source : sourcesPagedResult.getValues()) {
+            Resource target = toResource(source);
+            targets.getOrganisationUnits().add(target);
+        }
+        return targets;
+    }
 
     @Override
     public Agency toAgency(OrganisationMetamac source) {
@@ -107,11 +171,28 @@ public class OrganisationsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl 
         target.setSelfLink(toOrganisationSelfLink(source));
         target.setUri(target.getSelfLink().getHref());
         target.setParentLink(toOrganisationParentLink(source));
-        target.setParent(source.getParent() != null ? source.getParent().getNameableArtefact().getUrn() : null);
         target.setChildLinks(toOrganisationChildLinks(source));
 
         return target;
     }
+    
+    @Override
+    public OrganisationUnit toOrganisationUnit(OrganisationMetamac source) {
+        if (source == null) {
+            return null;
+        }
+        OrganisationUnit target = new OrganisationUnit();
+        organisationsDo2JaxbSdmxMapper.organisationUnitDoToJaxb(source, target);
+
+        target.setKind(toKindItem(source.getOrganisationType()));
+        target.setSelfLink(toOrganisationSelfLink(source));
+        target.setUri(target.getSelfLink().getHref());
+        target.setParentLink(toOrganisationParentLink(source));
+        target.setChildLinks(toOrganisationChildLinks(source));
+
+        return target;
+    }
+    
     private ResourceLink toOrganisationSchemeSelfLink(OrganisationSchemeVersion source) {
         return toResourceLink(toKindItemScheme(source.getOrganisationSchemeType()), toOrganisationSchemeLink(source));
     }
