@@ -28,6 +28,14 @@ import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptScheme;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemes;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptTypes;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.Concepts;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.DataConsumer;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.DataConsumerScheme;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.DataConsumerSchemes;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.DataConsumers;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.DataProvider;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.DataProviderScheme;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.DataProviderSchemes;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.DataProviders;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.Organisation;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationScheme;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationSchemes;
@@ -495,6 +503,165 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             throw manageException(e);
         }
     }
+    
+    @Override
+    public DataProviderSchemes findDataProviderSchemes(String query, String orderBy, String limit, String offset) {
+        return findDataProviderSchemes(null, null, null, query, orderBy, limit, offset);
+    }
+
+    @Override
+    public DataProviderSchemes findDataProviderSchemes(String agencyID, String query, String orderBy, String limit, String offset) {
+        checkParameterNotWildcardFindItemSchemes(agencyID);
+        return findDataProviderSchemes(agencyID, null, null, query, orderBy, limit, offset);
+    }
+
+    @Override
+    public DataProviderSchemes findDataProviderSchemes(String agencyID, String resourceID, String query, String orderBy, String limit, String offset) {
+        checkParameterNotWildcardFindItemSchemes(agencyID, resourceID);
+        return findDataProviderSchemes(agencyID, resourceID, null, query, orderBy, limit, offset);
+    }
+
+    @Override
+    public DataProviderScheme retrieveDataProviderScheme(String agencyID, String resourceID, String version) {
+        try {
+            checkParameterNotWildcardRetrieveItemScheme(agencyID, resourceID, version);
+
+            // Find one
+            PagedResult<OrganisationSchemeVersionMetamac> entitiesPagedResult = findOrganisationSchemesCore(OrganisationSchemeTypeEnum.DATA_PROVIDER_SCHEME, agencyID, resourceID, version, null,
+                    PagingParameter.pageAccess(1, 1, false));
+            if (entitiesPagedResult.getValues().size() != 1) {
+                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.DATA_PROVIDER_SCHEME_NOT_FOUND, agencyID, resourceID,
+                        version);
+                throw new RestException(exception, Status.NOT_FOUND);
+            }
+
+            // Transform
+            DataProviderScheme itemScheme = organisationsDo2RestMapper.toDataProviderScheme(entitiesPagedResult.getValues().get(0));
+            return itemScheme;
+        } catch (Exception e) {
+            throw manageException(e);
+        }
+    }
+
+    @Override
+    public DataProviders findDataProviders(String agencyID, String resourceID, String version, String query, String orderBy, String limit, String offset) {
+        try {
+            checkParameterNotWildcardFindItems(agencyID, resourceID, version);
+
+            // Find
+            SculptorCriteria sculptorCriteria = organisationsRest2DoMapper.getOrganisationCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
+            PagedResult<OrganisationMetamac> entitiesPagedResult = findOrganisationsCore(OrganisationTypeEnum.DATA_PROVIDER, agencyID, resourceID, version, null, sculptorCriteria.getConditions(),
+                    sculptorCriteria.getPagingParameter());
+
+            // Transform
+            DataProviders items = organisationsDo2RestMapper.toDataProviders(entitiesPagedResult, agencyID, resourceID, version, query, orderBy, sculptorCriteria.getLimit());
+            return items;
+        } catch (Exception e) {
+            throw manageException(e);
+        }
+    }
+
+    @Override
+    public DataProvider retrieveDataProvider(String agencyID, String resourceID, String version, String organisationID) {
+        try {
+            checkParameterNotWildcardRetrieveItem(agencyID, resourceID, version, organisationID, RestInternalConstants.PARAMETER_ORGANISATION_ID);
+
+            // Find one
+            PagedResult<OrganisationMetamac> entitiesPagedResult = findOrganisationsCore(OrganisationTypeEnum.DATA_PROVIDER, agencyID, resourceID, version, organisationID, null,
+                    PagingParameter.pageAccess(1, 1, false));
+            if (entitiesPagedResult.getValues().size() != 1) {
+                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.DATA_PROVIDER_NOT_FOUND, organisationID, agencyID,
+                        resourceID, version);
+                throw new RestException(exception, Status.NOT_FOUND);
+            }
+
+            // Transform
+            DataProvider item = organisationsDo2RestMapper.toDataProvider(entitiesPagedResult.getValues().get(0));
+            return item;
+        } catch (Exception e) {
+            throw manageException(e);
+        }
+    }
+
+
+    @Override
+    public DataConsumerSchemes findDataConsumerSchemes(String query, String orderBy, String limit, String offset) {
+        return findDataConsumerSchemes(null, null, null, query, orderBy, limit, offset);
+    }
+
+    @Override
+    public DataConsumerSchemes findDataConsumerSchemes(String agencyID, String query, String orderBy, String limit, String offset) {
+        checkParameterNotWildcardFindItemSchemes(agencyID);
+        return findDataConsumerSchemes(agencyID, null, null, query, orderBy, limit, offset);
+    }
+
+    @Override
+    public DataConsumerSchemes findDataConsumerSchemes(String agencyID, String resourceID, String query, String orderBy, String limit, String offset) {
+        checkParameterNotWildcardFindItemSchemes(agencyID, resourceID);
+        return findDataConsumerSchemes(agencyID, resourceID, null, query, orderBy, limit, offset);
+    }
+
+    @Override
+    public DataConsumerScheme retrieveDataConsumerScheme(String agencyID, String resourceID, String version) {
+        try {
+            checkParameterNotWildcardRetrieveItemScheme(agencyID, resourceID, version);
+
+            // Find one
+            PagedResult<OrganisationSchemeVersionMetamac> entitiesPagedResult = findOrganisationSchemesCore(OrganisationSchemeTypeEnum.DATA_CONSUMER_SCHEME, agencyID, resourceID, version, null,
+                    PagingParameter.pageAccess(1, 1, false));
+            if (entitiesPagedResult.getValues().size() != 1) {
+                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.DATA_CONSUMER_SCHEME_NOT_FOUND, agencyID, resourceID,
+                        version);
+                throw new RestException(exception, Status.NOT_FOUND);
+            }
+
+            // Transform
+            DataConsumerScheme itemScheme = organisationsDo2RestMapper.toDataConsumerScheme(entitiesPagedResult.getValues().get(0));
+            return itemScheme;
+        } catch (Exception e) {
+            throw manageException(e);
+        }
+    }
+
+    @Override
+    public DataConsumers findDataConsumers(String agencyID, String resourceID, String version, String query, String orderBy, String limit, String offset) {
+        try {
+            checkParameterNotWildcardFindItems(agencyID, resourceID, version);
+
+            // Find
+            SculptorCriteria sculptorCriteria = organisationsRest2DoMapper.getOrganisationCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
+            PagedResult<OrganisationMetamac> entitiesPagedResult = findOrganisationsCore(OrganisationTypeEnum.DATA_CONSUMER, agencyID, resourceID, version, null, sculptorCriteria.getConditions(),
+                    sculptorCriteria.getPagingParameter());
+
+            // Transform
+            DataConsumers items = organisationsDo2RestMapper.toDataConsumers(entitiesPagedResult, agencyID, resourceID, version, query, orderBy, sculptorCriteria.getLimit());
+            return items;
+        } catch (Exception e) {
+            throw manageException(e);
+        }
+    }
+
+    @Override
+    public DataConsumer retrieveDataConsumer(String agencyID, String resourceID, String version, String organisationID) {
+        try {
+            checkParameterNotWildcardRetrieveItem(agencyID, resourceID, version, organisationID, RestInternalConstants.PARAMETER_ORGANISATION_ID);
+
+            // Find one
+            PagedResult<OrganisationMetamac> entitiesPagedResult = findOrganisationsCore(OrganisationTypeEnum.DATA_CONSUMER, agencyID, resourceID, version, organisationID, null,
+                    PagingParameter.pageAccess(1, 1, false));
+            if (entitiesPagedResult.getValues().size() != 1) {
+                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.DATA_CONSUMER_NOT_FOUND, organisationID, agencyID,
+                        resourceID, version);
+                throw new RestException(exception, Status.NOT_FOUND);
+            }
+
+            // Transform
+            DataConsumer item = organisationsDo2RestMapper.toDataConsumer(entitiesPagedResult.getValues().get(0));
+            return item;
+        } catch (Exception e) {
+            throw manageException(e);
+        }
+    }
 
     private ConceptSchemes findConceptSchemes(String agencyID, String resourceID, String version, String query, String orderBy, String limit, String offset) {
         try {
@@ -589,6 +756,22 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             throw manageException(e);
         }
     }
+    
+    private PagedResult<OrganisationSchemeVersionMetamac> findOrganisationSchemesCore(OrganisationSchemeTypeEnum type, String agencyID, String resourceID, String version,
+            List<ConditionalCriteria> conditionalCriteriaQuery, PagingParameter pagingParameter) throws MetamacException {
+
+        // Criteria to find item schemes by criteria
+        List<ConditionalCriteria> conditionalCriteria = SrmRestInternalUtils.buildConditionalCriteriaItemSchemes(agencyID, resourceID, version, conditionalCriteriaQuery,
+                OrganisationSchemeVersionMetamac.class);
+        if (type != null) {
+            conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(OrganisationSchemeVersionMetamac.class).withProperty(OrganisationSchemeVersionMetamacProperties.organisationSchemeType())
+                    .eq(type).buildSingle());
+        }
+
+        // Find
+        PagedResult<OrganisationSchemeVersionMetamac> entitiesPagedResult = organisationsService.findOrganisationSchemesByCondition(ctx, conditionalCriteria, pagingParameter);
+        return entitiesPagedResult;
+    }
 
     private AgencySchemes findAgencySchemes(String agencyID, String resourceID, String version, String query, String orderBy, String limit, String offset) {
         try {
@@ -600,6 +783,38 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
 
             // Transform
             AgencySchemes itemSchemes = organisationsDo2RestMapper.toAgencySchemes(entitiesPagedResult, agencyID, resourceID, query, orderBy, sculptorCriteria.getLimit());
+            return itemSchemes;
+        } catch (Exception e) {
+            throw manageException(e);
+        }
+    }
+
+    private DataProviderSchemes findDataProviderSchemes(String agencyID, String resourceID, String version, String query, String orderBy, String limit, String offset) {
+        try {
+            SculptorCriteria sculptorCriteria = organisationsRest2DoMapper.getOrganisationSchemeCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
+
+            // Find
+            PagedResult<OrganisationSchemeVersionMetamac> entitiesPagedResult = findOrganisationSchemesCore(OrganisationSchemeTypeEnum.DATA_PROVIDER_SCHEME, agencyID, resourceID, version,
+                    sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
+
+            // Transform
+            DataProviderSchemes itemSchemes = organisationsDo2RestMapper.toDataProviderSchemes(entitiesPagedResult, agencyID, resourceID, query, orderBy, sculptorCriteria.getLimit());
+            return itemSchemes;
+        } catch (Exception e) {
+            throw manageException(e);
+        }
+    }
+
+    private DataConsumerSchemes findDataConsumerSchemes(String agencyID, String resourceID, String version, String query, String orderBy, String limit, String offset) {
+        try {
+            SculptorCriteria sculptorCriteria = organisationsRest2DoMapper.getOrganisationSchemeCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
+
+            // Find
+            PagedResult<OrganisationSchemeVersionMetamac> entitiesPagedResult = findOrganisationSchemesCore(OrganisationSchemeTypeEnum.DATA_CONSUMER_SCHEME, agencyID, resourceID, version,
+                    sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
+
+            // Transform
+            DataConsumerSchemes itemSchemes = organisationsDo2RestMapper.toDataConsumerSchemes(entitiesPagedResult, agencyID, resourceID, query, orderBy, sculptorCriteria.getLimit());
             return itemSchemes;
         } catch (Exception e) {
             throw manageException(e);
@@ -620,22 +835,6 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
         } catch (Exception e) {
             throw manageException(e);
         }
-    }
-
-    private PagedResult<OrganisationSchemeVersionMetamac> findOrganisationSchemesCore(OrganisationSchemeTypeEnum type, String agencyID, String resourceID, String version,
-            List<ConditionalCriteria> conditionalCriteriaQuery, PagingParameter pagingParameter) throws MetamacException {
-
-        // Criteria to find item schemes by criteria
-        List<ConditionalCriteria> conditionalCriteria = SrmRestInternalUtils.buildConditionalCriteriaItemSchemes(agencyID, resourceID, version, conditionalCriteriaQuery,
-                OrganisationSchemeVersionMetamac.class);
-        if (type != null) {
-            conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(OrganisationSchemeVersionMetamac.class).withProperty(OrganisationSchemeVersionMetamacProperties.organisationSchemeType())
-                    .eq(type).buildSingle());
-        }
-
-        // Find
-        PagedResult<OrganisationSchemeVersionMetamac> entitiesPagedResult = organisationsService.findOrganisationSchemesByCondition(ctx, conditionalCriteria, pagingParameter);
-        return entitiesPagedResult;
     }
 
     private PagedResult<OrganisationMetamac> findOrganisationsCore(OrganisationTypeEnum type, String agencyID, String resourceID, String version, String organisationID,

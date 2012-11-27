@@ -52,7 +52,7 @@ public class OrganisationsDoMocks extends DoMocks {
 
         Boolean organisationsCanHaveChildren = OrganisationTypeEnum.ORGANISATION_UNIT.equals(type);
         if (!organisationsCanHaveChildren && parent != null) {
-            fail("parent can not be null");
+            fail("parent must be null because this organisation type can not have children");
         }
         
         OrganisationMetamac organisation = OrganisationsMetamacDoMocks.mockOrganisation(type);

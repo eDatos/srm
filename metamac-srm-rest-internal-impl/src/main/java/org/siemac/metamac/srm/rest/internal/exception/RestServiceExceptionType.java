@@ -19,4 +19,10 @@ public class RestServiceExceptionType extends RestCommonServiceExceptionType {
     public static final RestCommonServiceExceptionType ORGANISATION_UNIT_SCHEME_NOT_FOUND = create("exception.srm.organisation_unit_scheme.not_found");
     public static final RestCommonServiceExceptionType ORGANISATION_UNIT_NOT_FOUND        = create("exception.srm.organisation_unit.not_found");
 
+    public static final RestCommonServiceExceptionType DATA_PROVIDER_SCHEME_NOT_FOUND     = create("exception.srm.data_provider_scheme.not_found");
+    public static final RestCommonServiceExceptionType DATA_PROVIDER_NOT_FOUND            = create("exception.srm.data_provider.not_found");
+
+    public static final RestCommonServiceExceptionType DATA_CONSUMER_SCHEME_NOT_FOUND     = create("exception.srm.data_consumer_scheme.not_found");
+    public static final RestCommonServiceExceptionType DATA_CONSUMER_NOT_FOUND            = create("exception.srm.data_consumer.not_found");
+
 }

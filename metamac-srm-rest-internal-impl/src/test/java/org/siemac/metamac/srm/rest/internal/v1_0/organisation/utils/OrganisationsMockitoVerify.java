@@ -16,6 +16,10 @@ import org.siemac.metamac.rest.common.test.utils.MetamacRestAsserts;
 import org.siemac.metamac.rest.common.v1_0.domain.ListBase;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.Agencies;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.AgencySchemes;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.DataConsumerSchemes;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.DataConsumers;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.DataProviderSchemes;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.DataProviders;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationSchemes;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationUnitSchemes;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationUnits;
@@ -50,11 +54,23 @@ public class OrganisationsMockitoVerify extends MockitoVerify {
                 OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME, actual);
     }
 
+    public static void verifyFindDataProviderSchemes(OrganisationsMetamacService organisationsService, String agencyID, String resourceID, String limit, String offset, String query, String orderBy,
+            DataProviderSchemes actual) throws Exception {
+        verifyFindOrganisationSchemes(organisationsService, agencyID, resourceID, limit, offset, query, orderBy, RestInternalConstants.KIND_DATA_PROVIDER_SCHEMES,
+                OrganisationSchemeTypeEnum.DATA_PROVIDER_SCHEME, actual);
+    }
+
+    public static void verifyFindDataConsumerSchemes(OrganisationsMetamacService organisationsService, String agencyID, String resourceID, String limit, String offset, String query, String orderBy,
+            DataConsumerSchemes actual) throws Exception {
+        verifyFindOrganisationSchemes(organisationsService, agencyID, resourceID, limit, offset, query, orderBy, RestInternalConstants.KIND_DATA_CONSUMER_SCHEMES,
+                OrganisationSchemeTypeEnum.DATA_CONSUMER_SCHEME, actual);
+    }
+
     public static void verifyFindOrganisationsNoType(OrganisationsMetamacService organisationsService, String agencyID, String resourceID, String version, String limit, String offset, String query,
             String orderBy, Organisations actual) throws Exception {
         verifyFindOrganisations(organisationsService, agencyID, resourceID, version, limit, offset, query, orderBy, RestInternalConstants.KIND_ORGANISATIONS, null, actual);
     }
-    
+
     public static void verifyFindAgencies(OrganisationsMetamacService organisationsService, String agencyID, String resourceID, String version, String limit, String offset, String query,
             String orderBy, Agencies actual) throws Exception {
         verifyFindOrganisations(organisationsService, agencyID, resourceID, version, limit, offset, query, orderBy, RestInternalConstants.KIND_AGENCIES, OrganisationTypeEnum.AGENCY, actual);
@@ -64,6 +80,18 @@ public class OrganisationsMockitoVerify extends MockitoVerify {
             String orderBy, OrganisationUnits actual) throws Exception {
         verifyFindOrganisations(organisationsService, agencyID, resourceID, version, limit, offset, query, orderBy, RestInternalConstants.KIND_ORGANISATION_UNITS,
                 OrganisationTypeEnum.ORGANISATION_UNIT, actual);
+    }
+
+    public static void verifyFindDataProviders(OrganisationsMetamacService organisationsService, String agencyID, String resourceID, String version, String limit, String offset, String query,
+            String orderBy, DataProviders actual) throws Exception {
+        verifyFindOrganisations(organisationsService, agencyID, resourceID, version, limit, offset, query, orderBy, RestInternalConstants.KIND_DATA_PROVIDERS, OrganisationTypeEnum.DATA_PROVIDER,
+                actual);
+    }
+
+    public static void verifyFindDataConsumers(OrganisationsMetamacService organisationsService, String agencyID, String resourceID, String version, String limit, String offset, String query,
+            String orderBy, DataConsumers actual) throws Exception {
+        verifyFindOrganisations(organisationsService, agencyID, resourceID, version, limit, offset, query, orderBy, RestInternalConstants.KIND_DATA_CONSUMERS, OrganisationTypeEnum.DATA_CONSUMER,
+                actual);
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})

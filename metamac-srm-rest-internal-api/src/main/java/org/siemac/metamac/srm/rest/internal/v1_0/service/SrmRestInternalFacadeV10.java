@@ -19,6 +19,14 @@ import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptScheme;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemes;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptTypes;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.Concepts;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.DataConsumer;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.DataConsumerScheme;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.DataConsumerSchemes;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.DataConsumers;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.DataProvider;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.DataProviderScheme;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.DataProviderSchemes;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.DataProviders;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.Organisation;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationScheme;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationSchemes;
@@ -252,15 +260,82 @@ public interface SrmRestInternalFacadeV10 {
     OrganisationUnit retrieveOrganisationUnit(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @PathParam("version") String version,
             @PathParam("organisationID") String organisationID);
 
-    // <resource id="dataproviderscheme" path="dataproviderscheme/{agencyID}/{resourceID}/{version}" type="#MaintainableArtefact">
-    // <param name="agencyID" type="types:NCNameIDType" style="template" required="false" default="all"/>
-    // <param name="resourceID" type="types:IDType" style="template" required="false" fixed="DATA_PROVIDERS"/>
-    // <param name="version" type="types:VersionType" style="template" required="false" fixed="1.0"/>
-    // </resource>
-    // <resource id="dataconsumerscheme" path="dataconsumerscheme/{agencyID}/{resourceID}/{version}" type="#MaintainableArtefact">
-    // <param name="agencyID" type="types:NCNameIDType" style="template" required="false" default="all"/>
-    // <param name="resourceID" type="types:IDType" style="template" required="false" fixed="DATA_CONSUMERS"/>
-    // <param name="version" type="types:VersionType" style="template" required="false" fixed="1.0"/>
-    // </resource>
+
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    // ORGANISATIONS - DATA PROVIDERS
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    @GET
+    @Produces("application/xml")
+    @Path("dataproviderschemes")
+    DataProviderSchemes findDataProviderSchemes(@QueryParam("query") String query, @QueryParam("orderBy") String orderBy, @QueryParam("limit") String limit, @QueryParam("offset") String offset);
+
+    @GET
+    @Produces("application/xml")
+    @Path("dataproviderschemes/{agencyID}")
+    DataProviderSchemes findDataProviderSchemes(@PathParam("agencyID") String agencyID, @QueryParam("query") String query, @QueryParam("orderBy") String orderBy,
+            @QueryParam("limit") String limit, @QueryParam("offset") String offset);
+
+    @GET
+    @Produces("application/xml")
+    @Path("dataproviderschemes/{agencyID}/{resourceID}")
+    DataProviderSchemes findDataProviderSchemes(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @QueryParam("query") String query,
+            @QueryParam("orderBy") String orderBy, @QueryParam("limit") String limit, @QueryParam("offset") String offset);
+
+    @GET
+    @Produces("application/xml")
+    @Path("dataproviderschemes/{agencyID}/{resourceID}/{version}")
+    DataProviderScheme retrieveDataProviderScheme(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @PathParam("version") String version);
+
+    @GET
+    @Produces("application/xml")
+    @Path("dataproviderschemes/{agencyID}/{resourceID}/{version}/dataproviders")
+    DataProviders findDataProviders(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @PathParam("version") String version,
+            @QueryParam("query") String query, @QueryParam("orderBy") String orderBy, @QueryParam("limit") String limit, @QueryParam("offset") String offset);
+
+    @GET
+    @Produces("application/xml")
+    @Path("dataproviderschemes/{agencyID}/{resourceID}/{version}/dataproviders/{organisationID}")
+    DataProvider retrieveDataProvider(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @PathParam("version") String version,
+            @PathParam("organisationID") String organisationID);
+
+
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    // ORGANISATIONS - DATA CONSUMERS
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    @GET
+    @Produces("application/xml")
+    @Path("dataconsumerschemes")
+    DataConsumerSchemes findDataConsumerSchemes(@QueryParam("query") String query, @QueryParam("orderBy") String orderBy, @QueryParam("limit") String limit, @QueryParam("offset") String offset);
+
+    @GET
+    @Produces("application/xml")
+    @Path("dataconsumerschemes/{agencyID}")
+    DataConsumerSchemes findDataConsumerSchemes(@PathParam("agencyID") String agencyID, @QueryParam("query") String query, @QueryParam("orderBy") String orderBy,
+            @QueryParam("limit") String limit, @QueryParam("offset") String offset);
+
+    @GET
+    @Produces("application/xml")
+    @Path("dataconsumerschemes/{agencyID}/{resourceID}")
+    DataConsumerSchemes findDataConsumerSchemes(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @QueryParam("query") String query,
+            @QueryParam("orderBy") String orderBy, @QueryParam("limit") String limit, @QueryParam("offset") String offset);
+
+    @GET
+    @Produces("application/xml")
+    @Path("dataconsumerschemes/{agencyID}/{resourceID}/{version}")
+    DataConsumerScheme retrieveDataConsumerScheme(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @PathParam("version") String version);
+
+    @GET
+    @Produces("application/xml")
+    @Path("dataconsumerschemes/{agencyID}/{resourceID}/{version}/dataconsumers")
+    DataConsumers findDataConsumers(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @PathParam("version") String version,
+            @QueryParam("query") String query, @QueryParam("orderBy") String orderBy, @QueryParam("limit") String limit, @QueryParam("offset") String offset);
+
+    @GET
+    @Produces("application/xml")
+    @Path("dataconsumerschemes/{agencyID}/{resourceID}/{version}/dataconsumers/{organisationID}")
+    DataConsumer retrieveDataConsumer(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @PathParam("version") String version,
+            @PathParam("organisationID") String organisationID);
 
 }

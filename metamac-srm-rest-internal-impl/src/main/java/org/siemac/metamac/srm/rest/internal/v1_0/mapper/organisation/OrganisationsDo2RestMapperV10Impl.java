@@ -11,6 +11,14 @@ import org.siemac.metamac.rest.srm_internal.v1_0.domain.Agencies;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.Agency;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.AgencyScheme;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.AgencySchemes;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.DataConsumer;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.DataConsumerScheme;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.DataConsumerSchemes;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.DataConsumers;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.DataProvider;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.DataProviderScheme;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.DataProviderSchemes;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.DataProviders;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.Organisation;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationScheme;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationSchemes;
@@ -105,6 +113,46 @@ public class OrganisationsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl 
     }
 
     @Override
+    public DataProviderSchemes toDataProviderSchemes(PagedResult<OrganisationSchemeVersionMetamac> sourcesPagedResult, String agencyID, String resourceID, String query, String orderBy, Integer limit) {
+
+        OrganisationSchemeTypeEnum type = OrganisationSchemeTypeEnum.DATA_PROVIDER_SCHEME;
+
+        DataProviderSchemes targets = new DataProviderSchemes();
+        targets.setKind(toKindItemSchemes(type));
+
+        // Pagination
+        String baseLink = toOrganisationSchemesLink(agencyID, resourceID, null, type);
+        SculptorCriteria2RestCriteria.toPagedResult(sourcesPagedResult, targets, query, orderBy, limit, baseLink);
+
+        // Values
+        for (OrganisationSchemeVersionMetamac source : sourcesPagedResult.getValues()) {
+            Resource target = toResource(source);
+            targets.getDataProviderSchemes().add(target);
+        }
+        return targets;
+    }
+
+    @Override
+    public DataConsumerSchemes toDataConsumerSchemes(PagedResult<OrganisationSchemeVersionMetamac> sourcesPagedResult, String agencyID, String resourceID, String query, String orderBy, Integer limit) {
+
+        OrganisationSchemeTypeEnum type = OrganisationSchemeTypeEnum.DATA_CONSUMER_SCHEME;
+
+        DataConsumerSchemes targets = new DataConsumerSchemes();
+        targets.setKind(toKindItemSchemes(type));
+
+        // Pagination
+        String baseLink = toOrganisationSchemesLink(agencyID, resourceID, null, type);
+        SculptorCriteria2RestCriteria.toPagedResult(sourcesPagedResult, targets, query, orderBy, limit, baseLink);
+
+        // Values
+        for (OrganisationSchemeVersionMetamac source : sourcesPagedResult.getValues()) {
+            Resource target = toResource(source);
+            targets.getDataConsumerSchemes().add(target);
+        }
+        return targets;
+    }
+
+    @Override
     public OrganisationScheme toOrganisationScheme(OrganisationSchemeVersionMetamac source) {
         if (source == null) {
             return null;
@@ -126,10 +174,10 @@ public class OrganisationsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl 
                 target.setOrganisationUnitScheme(toOrganisationUnitScheme(source));
                 break;
             case DATA_CONSUMER_SCHEME:
-                // TODO DATA_CONSUMER_SCHEME 
+                target.setDataConsumerScheme(toDataConsumerScheme(source));
                 break;
             case DATA_PROVIDER_SCHEME:
-                // TODO DATA_PROVIDER_SCHEME
+                target.setDataProviderScheme(toDataProviderScheme(source));
                 break;
             default:
                 throw new IllegalArgumentException("OrganisationSchemeTypeEnum unsuported: " + source.getOrganisationSchemeType());
@@ -150,8 +198,26 @@ public class OrganisationsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl 
         if (source == null) {
             return null;
         }
-        // following method will call toAgencyScheme(OrganisationSchemeVersionMetamac source, AgencyScheme target) method, thank to callback
+        // following method will call toAgencyScheme(OrganisationSchemeVersionMetamac source, OrganisationUnitScheme target) method, thank to callback
         return (OrganisationUnitScheme) organisationsDo2JaxbSdmxMapper.organisationUnitSchemeDoToJaxb(source, organisationsDo2JaxbCallback);
+    }
+
+    @Override
+    public DataProviderScheme toDataProviderScheme(OrganisationSchemeVersionMetamac source) {
+        if (source == null) {
+            return null;
+        }
+        // following method will call toDataProviderScheme(OrganisationSchemeVersionMetamac source, DataProviderScheme target) method, thank to callback
+        return (DataProviderScheme) organisationsDo2JaxbSdmxMapper.dataProviderSchemeDoToJaxb(source, organisationsDo2JaxbCallback);
+    }
+
+    @Override
+    public DataConsumerScheme toDataConsumerScheme(OrganisationSchemeVersionMetamac source) {
+        if (source == null) {
+            return null;
+        }
+        // following method will call toDataConsumerScheme(OrganisationSchemeVersionMetamac source, DataConsumerScheme target) method, thank to callback
+        return (DataConsumerScheme) organisationsDo2JaxbSdmxMapper.dataConsumerSchemeDoToJaxb(source, organisationsDo2JaxbCallback);
     }
 
     @Override
@@ -169,6 +235,32 @@ public class OrganisationsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl 
 
     @Override
     public void toOrganisationUnitScheme(OrganisationSchemeVersionMetamac source, OrganisationUnitScheme target) {
+        if (source == null) {
+            return;
+        }
+        target.setKind(toKindItemScheme(source.getOrganisationSchemeType()));
+        target.setSelfLink(toOrganisationSchemeSelfLink(source));
+        target.setUri(target.getSelfLink().getHref());
+        target.setReplaceToVersion(source.getMaintainableArtefact().getReplaceToVersion());
+        target.setParentLink(toOrganisationSchemeParentLink(source));
+        target.setChildLinks(toOrganisationSchemeChildLinks(source));
+    }
+
+    @Override
+    public void toDataProviderScheme(OrganisationSchemeVersionMetamac source, DataProviderScheme target) {
+        if (source == null) {
+            return;
+        }
+        target.setKind(toKindItemScheme(source.getOrganisationSchemeType()));
+        target.setSelfLink(toOrganisationSchemeSelfLink(source));
+        target.setUri(target.getSelfLink().getHref());
+        target.setReplaceToVersion(source.getMaintainableArtefact().getReplaceToVersion());
+        target.setParentLink(toOrganisationSchemeParentLink(source));
+        target.setChildLinks(toOrganisationSchemeChildLinks(source));
+    }
+
+    @Override
+    public void toDataConsumerScheme(OrganisationSchemeVersionMetamac source, DataConsumerScheme target) {
         if (source == null) {
             return;
         }
@@ -235,6 +327,42 @@ public class OrganisationsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl 
     }
 
     @Override
+    public DataProviders toDataProviders(PagedResult<OrganisationMetamac> sourcesPagedResult, String agencyID, String resourceID, String version, String query, String orderBy, Integer limit) {
+
+        DataProviders targets = new DataProviders();
+        targets.setKind(toKindItems(OrganisationSchemeTypeEnum.DATA_PROVIDER_SCHEME));
+
+        // Pagination
+        String baseLink = toOrganisationsLink(agencyID, resourceID, version, OrganisationSchemeTypeEnum.DATA_PROVIDER_SCHEME);
+        SculptorCriteria2RestCriteria.toPagedResult(sourcesPagedResult, targets, query, orderBy, limit, baseLink);
+
+        // Values
+        for (OrganisationMetamac source : sourcesPagedResult.getValues()) {
+            Resource target = toResource(source);
+            targets.getDataProviders().add(target);
+        }
+        return targets;
+    }
+
+    @Override
+    public DataConsumers toDataConsumers(PagedResult<OrganisationMetamac> sourcesPagedResult, String agencyID, String resourceID, String version, String query, String orderBy, Integer limit) {
+
+        DataConsumers targets = new DataConsumers();
+        targets.setKind(toKindItems(OrganisationSchemeTypeEnum.DATA_CONSUMER_SCHEME));
+
+        // Pagination
+        String baseLink = toOrganisationsLink(agencyID, resourceID, version, OrganisationSchemeTypeEnum.DATA_CONSUMER_SCHEME);
+        SculptorCriteria2RestCriteria.toPagedResult(sourcesPagedResult, targets, query, orderBy, limit, baseLink);
+
+        // Values
+        for (OrganisationMetamac source : sourcesPagedResult.getValues()) {
+            Resource target = toResource(source);
+            targets.getDataConsumers().add(target);
+        }
+        return targets;
+    }
+
+    @Override
     public Organisation toOrganisation(OrganisationMetamac source) {
         if (source == null) {
             return null;
@@ -250,10 +378,10 @@ public class OrganisationsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl 
                 target.setOrganisationUnit(toOrganisationUnit(source));
                 break;
             case DATA_CONSUMER:
-                // TODO
+                target.setDataConsumer(toDataConsumer(source));
                 break;
             case DATA_PROVIDER:
-                // TODO
+                target.setDataProvider(toDataProvider(source));
                 break;
             default:
                 throw new IllegalArgumentException("OrganisationTypeEnum unsuported: " + source.getOrganisationType());
@@ -285,6 +413,40 @@ public class OrganisationsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl 
         }
         OrganisationUnit target = new OrganisationUnit();
         organisationsDo2JaxbSdmxMapper.organisationUnitDoToJaxb(source, target);
+
+        target.setKind(toKindItem(source.getOrganisationType()));
+        target.setSelfLink(toOrganisationSelfLink(source));
+        target.setUri(target.getSelfLink().getHref());
+        target.setParentLink(toOrganisationParentLink(source));
+        target.setChildLinks(toOrganisationChildLinks(source));
+
+        return target;
+    }
+
+    @Override
+    public DataProvider toDataProvider(OrganisationMetamac source) {
+        if (source == null) {
+            return null;
+        }
+        DataProvider target = new DataProvider();
+        organisationsDo2JaxbSdmxMapper.dataProviderDoToJaxb(source, target);
+
+        target.setKind(toKindItem(source.getOrganisationType()));
+        target.setSelfLink(toOrganisationSelfLink(source));
+        target.setUri(target.getSelfLink().getHref());
+        target.setParentLink(toOrganisationParentLink(source));
+        target.setChildLinks(toOrganisationChildLinks(source));
+
+        return target;
+    }
+
+    @Override
+    public DataConsumer toDataConsumer(OrganisationMetamac source) {
+        if (source == null) {
+            return null;
+        }
+        DataConsumer target = new DataConsumer();
+        organisationsDo2JaxbSdmxMapper.dataConsumerDoToJaxb(source, target);
 
         target.setKind(toKindItem(source.getOrganisationType()));
         target.setSelfLink(toOrganisationSelfLink(source));

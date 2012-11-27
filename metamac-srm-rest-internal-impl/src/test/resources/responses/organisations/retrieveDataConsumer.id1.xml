@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<srm:dataConsumer xmlns:messagefooter="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message/footer" xmlns:metadatastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/structurespecific" xmlns:datageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/generic" xmlns:query="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/query" xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common" xmlns:srm="http://www.siemac.org/metamac/rest/srm-internal/v1.0/domain" xmlns:metadatageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/generic" xmlns:datastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/structurespecific" xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" xmlns:registry="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/registry" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="srm#dataConsumer" id="item1" urn="urn:item1" uri="http://data.istac.es/apis/srm/v1.0/dataconsumerschemes/idAsMaintaineragency1/itemScheme1/01.000/dataconsumers/item1">
+    <common:Annotations>
+        <common:Annotation id="code3">
+            <common:AnnotationTitle>title-eglAarPIuN</common:AnnotationTitle>
+            <common:AnnotationType>type-CQ6NsKIytD</common:AnnotationType>
+            <common:AnnotationURL>url-L6gh5yGAr9</common:AnnotationURL>
+            <common:AnnotationText xml:lang="es">text-19TIbNKavF en Español</common:AnnotationText>
+            <common:AnnotationText xml:lang="en">text-1iygEjSbqP in English</common:AnnotationText>
+        </common:Annotation>
+        <common:Annotation id="code1">
+            <common:AnnotationTitle>title-g3PeeCpbpw</common:AnnotationTitle>
+            <common:AnnotationType>type-ktlQ6RjdVn</common:AnnotationType>
+            <common:AnnotationURL>url-nficW6ckNH</common:AnnotationURL>
+            <common:AnnotationText xml:lang="en">text-zgzFoiZBJQ in English</common:AnnotationText>
+            <common:AnnotationText xml:lang="es">text-4DO5dfgsiw en Español</common:AnnotationText>
+        </common:Annotation>
+        <common:Annotation id="code2">
+            <common:AnnotationTitle>title-Zn5sNoLOMk</common:AnnotationTitle>
+            <common:AnnotationType>type-jXThYhfrh1</common:AnnotationType>
+            <common:AnnotationURL>url-MozKqxwBtv</common:AnnotationURL>
+            <common:AnnotationText xml:lang="en">text-JtPzfXiBXO in English</common:AnnotationText>
+            <common:AnnotationText xml:lang="es">text-EiMFYj9oxN en Español</common:AnnotationText>
+        </common:Annotation>
+    </common:Annotations>
+    <common:Name xml:lang="en">name-item1 in English</common:Name>
+    <common:Name xml:lang="es">name-item1 en Español</common:Name>
+    <common:Description xml:lang="es">description-item1 en Español</common:Description>
+    <common:Description xml:lang="en">description-item1 in English</common:Description>
+    <cdomain:selfLink kind="srm#dataConsumer" href="http://data.istac.es/apis/srm/v1.0/dataconsumerschemes/idAsMaintaineragency1/itemScheme1/01.000/dataconsumers/item1"/>
+    <cdomain:parentLink kind="srm#dataConsumers" href="http://data.istac.es/apis/srm/v1.0/dataconsumerschemes/idAsMaintaineragency1/itemScheme1/01.000/dataconsumers"/>
+</srm:dataConsumer>

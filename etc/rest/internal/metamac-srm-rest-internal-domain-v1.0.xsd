@@ -168,8 +168,8 @@
         <xs:choice>
             <xs:element name="agencyScheme" type="tns:AgencyScheme" />
             <xs:element name="organisationUnitScheme" type="tns:OrganisationUnitScheme" />
-            <xs:element name="dataProviderScheme" type="xs:string" />
-            <xs:element name="dataConsumerScheme" type="xs:string" />
+            <xs:element name="dataProviderScheme" type="tns:DataProviderScheme" />
+            <xs:element name="dataConsumerScheme" type="tns:DataConsumerScheme" />
         </xs:choice>
         <xs:attribute name="kind" type="xs:string" use="required" />
     </xs:complexType>
@@ -272,8 +272,8 @@
         <xs:choice>
             <xs:element name="agency" type="tns:Agency" />
             <xs:element name="organisationUnit" type="tns:OrganisationUnit" />
-            <xs:element name="dataProvider" type="xs:string" />
-            <xs:element name="dataConsumer" type="xs:string" />
+            <xs:element name="dataProvider" type="tns:DataProvider" />
+            <xs:element name="dataConsumer" type="tns:DataConsumer" />
         </xs:choice>
         <xs:attribute name="kind" type="xs:string" use="required" />
     </xs:complexType>

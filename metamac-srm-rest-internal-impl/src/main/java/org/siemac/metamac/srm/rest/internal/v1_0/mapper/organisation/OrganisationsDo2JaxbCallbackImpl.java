@@ -33,14 +33,16 @@ public class OrganisationsDo2JaxbCallbackImpl implements OrganisationsDo2JaxbCal
 
     @Override
     public DataConsumerSchemeType createDataConsumerSchemeJaxb(OrganisationSchemeVersion source) {
-        // TODO Auto-generated method stub
-        return null;
+        org.siemac.metamac.rest.srm_internal.v1_0.domain.DataConsumerScheme target = new org.siemac.metamac.rest.srm_internal.v1_0.domain.DataConsumerScheme();
+        organisationsDo2RestMapperV10.toDataConsumerScheme((OrganisationSchemeVersionMetamac) source, target);
+        return target;
     }
 
     @Override
     public DataProviderSchemeType createDataProviderSchemeJaxb(OrganisationSchemeVersion source) {
-        // TODO Auto-generated method stub
-        return null;
+        org.siemac.metamac.rest.srm_internal.v1_0.domain.DataProviderScheme target = new org.siemac.metamac.rest.srm_internal.v1_0.domain.DataProviderScheme();
+        organisationsDo2RestMapperV10.toDataProviderScheme((OrganisationSchemeVersionMetamac) source, target);
+        return target;
     }
 
     @Override
