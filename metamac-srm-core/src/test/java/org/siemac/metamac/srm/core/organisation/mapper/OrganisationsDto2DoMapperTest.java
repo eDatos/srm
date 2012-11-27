@@ -10,6 +10,8 @@ import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto
 import org.siemac.metamac.srm.core.organisation.serviceapi.utils.OrganisationsMetamacAsserts;
 import org.siemac.metamac.srm.core.organisation.serviceapi.utils.OrganisationsMetamacDtoMocks;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -20,6 +22,7 @@ import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.Organisatio
 @ContextConfiguration(locations = {"classpath:spring/srm/applicationContext-test.xml"})
 // @TransactionConfiguration(transactionManager = "txManagerCore", defaultRollback = true)
 // @Transactional
+//@DirtiesContext(classMode = ClassMode.AFTER_CLASS)
 public class OrganisationsDto2DoMapperTest {
 
     @Autowired

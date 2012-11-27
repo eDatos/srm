@@ -63,6 +63,27 @@
 									id="CONCEPT_01" />
 							</p:ConceptRole>
 						</p:Dimension>
+						<p:Dimension position="0" type="Dimension"
+							uri="http://tempuri.org" urn="http://tempuri.org">
+							<common:Annotations>
+								<common:Annotation id="ANO_03">
+									<common:AnnotationTitle>common:AnnotationTitle</common:AnnotationTitle>
+									<common:AnnotationType>common:AnnotationType</common:AnnotationType>
+									<common:AnnotationURL>http://tempuri.org</common:AnnotationURL>
+									<common:AnnotationText xml:lang="en">common:AnnotationText</common:AnnotationText>
+								</common:Annotation>
+							</common:Annotations>
+							<p:ConceptIdentity>
+								<Ref agencyID="Metamac" maintainableParentID="MetamacConceptScheme"
+									id="CONCEPT_01" />
+							</p:ConceptIdentity>
+							<p:LocalRepresentation xsi:type="p:SimpleDataStructureRepresentationType">
+								<p:TextFormat decimals="1" endValue="0.0" interval="0.0"
+									isSequence="true" maxLength="1" maxValue="0.0" minLength="1"
+									minValue="0.0" startValue="0.0" textType="String" 
+									xsi:type="p:SimpleComponentTextFormatType" />
+							</p:LocalRepresentation>
+						</p:Dimension>
 					</p:DimensionList>
 					<p:Group id="GROUP_01" uri="http://tempuri.org" urn="http://tempuri.org">
 						<common:Annotations>
