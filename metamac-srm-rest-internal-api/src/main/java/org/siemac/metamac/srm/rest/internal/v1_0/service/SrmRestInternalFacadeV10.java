@@ -19,10 +19,14 @@ import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptScheme;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemes;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptTypes;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.Concepts;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.Organisation;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationScheme;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationSchemes;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationUnit;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationUnitScheme;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationUnitSchemes;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationUnits;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.Organisations;
 
 @Path("v1.0")
 public interface SrmRestInternalFacadeV10 {
@@ -136,6 +140,44 @@ public interface SrmRestInternalFacadeV10 {
     // Categorisations findCategorisations(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @PathParam("version") String version);
 
     // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    // ORGANISATIONS - ALL ORGANISATIONS
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    @GET
+    @Produces("application/xml")
+    @Path("organisationschemes")
+    OrganisationSchemes findOrganisationSchemes(@QueryParam("query") String query, @QueryParam("orderBy") String orderBy, @QueryParam("limit") String limit, @QueryParam("offset") String offset);
+
+    @GET
+    @Produces("application/xml")
+    @Path("organisationschemes/{agencyID}")
+    OrganisationSchemes findOrganisationSchemes(@PathParam("agencyID") String agencyID, @QueryParam("query") String query, @QueryParam("orderBy") String orderBy,
+            @QueryParam("limit") String limit, @QueryParam("offset") String offset);
+
+    @GET
+    @Produces("application/xml")
+    @Path("organisationschemes/{agencyID}/{resourceID}")
+    OrganisationSchemes findOrganisationSchemes(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @QueryParam("query") String query,
+            @QueryParam("orderBy") String orderBy, @QueryParam("limit") String limit, @QueryParam("offset") String offset);
+
+    @GET
+    @Produces("application/xml")
+    @Path("organisationschemes/{agencyID}/{resourceID}/{version}")
+    OrganisationScheme retrieveOrganisationScheme(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @PathParam("version") String version);
+
+    @GET
+    @Produces("application/xml")
+    @Path("organisationschemes/{agencyID}/{resourceID}/{version}/organisations")
+    Organisations findOrganisations(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @PathParam("version") String version,
+            @QueryParam("query") String query, @QueryParam("orderBy") String orderBy, @QueryParam("limit") String limit, @QueryParam("offset") String offset);
+
+    @GET
+    @Produces("application/xml")
+    @Path("organisationschemes/{agencyID}/{resourceID}/{version}/organisations/{organisationID}")
+    Organisation retrieveOrganisation(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @PathParam("version") String version,
+            @PathParam("organisationID") String organisationID);
+
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     // ORGANISATIONS - AGENCIES
     // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -210,11 +252,6 @@ public interface SrmRestInternalFacadeV10 {
     OrganisationUnit retrieveOrganisationUnit(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @PathParam("version") String version,
             @PathParam("organisationID") String organisationID);
 
-    // <resource id="organisationscheme" path="organisationscheme/{agencyID}/{resourceID}/{version}" type="#MaintainableArtefact">
-    // <param name="agencyID" type="types:NCNameIDType" style="template" required="false" default="all"/>
-    // <param name="resourceID" type="types:IDType" style="template" required="false" default="all"/>
-    // <param name="version" type="types:VersionType" style="template" required="false" default="latest"/>
-    // </resource>
     // <resource id="dataproviderscheme" path="dataproviderscheme/{agencyID}/{resourceID}/{version}" type="#MaintainableArtefact">
     // <param name="agencyID" type="types:NCNameIDType" style="template" required="false" default="all"/>
     // <param name="resourceID" type="types:IDType" style="template" required="false" fixed="DATA_PROVIDERS"/>

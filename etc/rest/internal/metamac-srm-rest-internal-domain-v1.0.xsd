@@ -114,6 +114,16 @@
         </xs:complexContent>
     </xs:complexType>
 
+    <xs:complexType name="OrganisationSchemes">
+        <xs:complexContent>
+            <xs:extension base="common:ListBase">
+                <xs:sequence>
+                    <xs:element name="organisationScheme" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
     <xs:complexType name="AgencySchemes">
         <xs:complexContent>
             <xs:extension base="common:ListBase">
@@ -133,6 +143,16 @@
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
+    
+    <xs:complexType name="OrganisationScheme">
+        <xs:choice>
+            <xs:element name="agencyScheme" type="tns:AgencyScheme" />
+            <xs:element name="organisationUnitScheme" type="tns:OrganisationUnitScheme" />
+            <xs:element name="dataProducerScheme" type="xs:string" />
+            <xs:element name="dataConsumerScheme" type="xs:string" />
+        </xs:choice>
+        <xs:attribute name="kind" type="xs:string" use="required" />
+    </xs:complexType>    
 
     <xs:complexType name="AgencyScheme">
         <xs:complexContent>
@@ -156,6 +176,16 @@
         </xs:complexContent>
     </xs:complexType>
 
+    <xs:complexType name="Organisations">
+        <xs:complexContent>
+            <xs:extension base="common:ListBase">
+                <xs:sequence>
+                    <xs:element name="organisation" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
     <xs:complexType name="Agencies">
         <xs:complexContent>
             <xs:extension base="common:ListBase">
@@ -166,6 +196,26 @@
         </xs:complexContent>
     </xs:complexType>
 
+    <xs:complexType name="OrganisationUnits">
+        <xs:complexContent>
+            <xs:extension base="common:ListBase">
+                <xs:sequence>
+                    <xs:element name="organisationUnit" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="Organisation">
+        <xs:choice>
+            <xs:element name="agency" type="tns:Agency" />
+            <xs:element name="organisationUnit" type="tns:OrganisationUnit" />
+            <xs:element name="dataProducer" type="xs:string" />
+            <xs:element name="dataConsumer" type="xs:string" />
+        </xs:choice>
+        <xs:attribute name="kind" type="xs:string" use="required" />
+    </xs:complexType> 
+    
     <xs:complexType name="Agency">
         <xs:complexContent>
             <xs:extension base="sdmx:AgencyType">
@@ -173,16 +223,6 @@
                     <xs:group ref="tns:ItemGroup" />
                 </xs:sequence>
                 <xs:attribute name="kind" type="xs:string" use="required" />
-            </xs:extension>
-        </xs:complexContent>
-    </xs:complexType>
-
-    <xs:complexType name="OrganisationUnits">
-        <xs:complexContent>
-            <xs:extension base="common:ListBase">
-                <xs:sequence>
-                    <xs:element name="organisationUnit" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
-                </xs:sequence>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
@@ -207,7 +247,6 @@
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
-
 
     <!-- Enums -->
     <xs:simpleType name="ProcStatus">
@@ -367,6 +406,11 @@
     <xs:element name="categories" type="tns:Categories" />
     <xs:element name="category" type="tns:Category" />
 
+    <xs:element name="organisationSchemes" type="tns:OrganisationSchemes" />
+    <xs:element name="organisationScheme" type="tns:OrganisationScheme" />
+    <xs:element name="organisations" type="tns:Organisations" />
+    <xs:element name="organisation" type="tns:Organisation" />
+
     <xs:element name="agencySchemes" type="tns:AgencySchemes" />
     <xs:element name="agencyScheme" type="tns:AgencyScheme" />
     <xs:element name="agencies" type="tns:Agencies" />
@@ -376,4 +420,5 @@
     <xs:element name="organisationUnitScheme" type="tns:OrganisationUnitScheme" />
     <xs:element name="organisationUnits" type="tns:OrganisationUnits" />
     <xs:element name="organisationUnit" type="tns:OrganisationUnit" />
+
 </xs:schema>

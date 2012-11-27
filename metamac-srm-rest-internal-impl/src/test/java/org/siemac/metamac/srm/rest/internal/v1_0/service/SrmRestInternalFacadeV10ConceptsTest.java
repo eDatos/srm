@@ -173,8 +173,6 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
 
     @Test
     public void testRetrieveConceptScheme() throws Exception {
-        resetMocks();
-
         String agencyID = AGENCY_1;
         String resourceID = ITEM_SCHEME_1_CODE;
         String version = ITEM_SCHEME_1_VERSION_1;
@@ -330,8 +328,6 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
 
     @Test
     public void testRetrieveConcept() throws Exception {
-        resetMocks();
-
         String agencyID = AGENCY_1;
         String resourceID = ITEM_SCHEME_1_CODE;
         String version = ITEM_SCHEME_1_VERSION_1;

@@ -142,8 +142,6 @@ public class SrmRestInternalFacadeV10OrganisationsTypeOrganisationUnitsTest exte
     }
     @Test
     public void testRetrieveOrganisationUnitScheme() throws Exception {
-        resetMocks();
-
         String agencyID = AGENCY_1;
         String resourceID = ITEM_SCHEME_1_CODE;
         String version = ITEM_SCHEME_1_VERSION_1;
@@ -298,8 +296,6 @@ public class SrmRestInternalFacadeV10OrganisationsTypeOrganisationUnitsTest exte
 
     @Test
     public void testRetrieveOrganisationUnit() throws Exception {
-        resetMocks();
-
         String agencyID = AGENCY_1;
         String resourceID = ITEM_SCHEME_1_CODE;
         String version = ITEM_SCHEME_1_VERSION_1;

@@ -16,8 +16,10 @@ import org.siemac.metamac.rest.common.test.utils.MetamacRestAsserts;
 import org.siemac.metamac.rest.common.v1_0.domain.ListBase;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.Agencies;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.AgencySchemes;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationSchemes;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationUnitSchemes;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationUnits;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.Organisations;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamacProperties;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
@@ -31,6 +33,11 @@ import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.Organisatio
 
 public class OrganisationsMockitoVerify extends MockitoVerify {
 
+    public static void verifyFindOrganisationSchemesNoType(OrganisationsMetamacService organisationsService, String agencyID, String resourceID, String limit, String offset, String query,
+            String orderBy, OrganisationSchemes actual) throws Exception {
+        verifyFindOrganisationSchemes(organisationsService, agencyID, resourceID, limit, offset, query, orderBy, RestInternalConstants.KIND_ORGANISATION_SCHEMES, null, actual);
+    }
+
     public static void verifyFindAgencySchemes(OrganisationsMetamacService organisationsService, String agencyID, String resourceID, String limit, String offset, String query, String orderBy,
             AgencySchemes actual) throws Exception {
         verifyFindOrganisationSchemes(organisationsService, agencyID, resourceID, limit, offset, query, orderBy, RestInternalConstants.KIND_AGENCY_SCHEMES, OrganisationSchemeTypeEnum.AGENCY_SCHEME,
@@ -43,6 +50,11 @@ public class OrganisationsMockitoVerify extends MockitoVerify {
                 OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME, actual);
     }
 
+    public static void verifyFindOrganisationsNoType(OrganisationsMetamacService organisationsService, String agencyID, String resourceID, String version, String limit, String offset, String query,
+            String orderBy, Organisations actual) throws Exception {
+        verifyFindOrganisations(organisationsService, agencyID, resourceID, version, limit, offset, query, orderBy, RestInternalConstants.KIND_ORGANISATIONS, null, actual);
+    }
+    
     public static void verifyFindAgencies(OrganisationsMetamacService organisationsService, String agencyID, String resourceID, String version, String limit, String offset, String query,
             String orderBy, Agencies actual) throws Exception {
         verifyFindOrganisations(organisationsService, agencyID, resourceID, version, limit, offset, query, orderBy, RestInternalConstants.KIND_AGENCIES, OrganisationTypeEnum.AGENCY, actual);

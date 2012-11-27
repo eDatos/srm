@@ -53,6 +53,9 @@ public class SrmRestInternalUtils {
     }
 
     public static OrganisationSchemeTypeEnum toOrganisationSchemeType(OrganisationTypeEnum type) {
+        if (type == null) {
+            return null;
+        }
         switch (type) {
             case AGENCY:
                 return OrganisationSchemeTypeEnum.AGENCY_SCHEME;
@@ -62,11 +65,15 @@ public class SrmRestInternalUtils {
                 return OrganisationSchemeTypeEnum.DATA_CONSUMER_SCHEME;
             case DATA_PROVIDER:
                 return OrganisationSchemeTypeEnum.DATA_PROVIDER_SCHEME;
+            default:
+                throw new IllegalArgumentException("OrganisationTypeEnum unsuported: " + type);
         }
-        return null;
     }
 
     public static OrganisationTypeEnum toOrganisationType(OrganisationSchemeTypeEnum type) {
+        if (type == null) {
+            return null;
+        }
         switch (type) {
             case AGENCY_SCHEME:
                 return OrganisationTypeEnum.AGENCY;
@@ -76,8 +83,9 @@ public class SrmRestInternalUtils {
                 return OrganisationTypeEnum.DATA_CONSUMER;
             case DATA_PROVIDER_SCHEME:
                 return OrganisationTypeEnum.DATA_PROVIDER;
+            default:
+                throw new IllegalArgumentException("OrganisationSchemeTypeEnum unsuported: " + type);
         }
-        return null;
     }
 
     /**

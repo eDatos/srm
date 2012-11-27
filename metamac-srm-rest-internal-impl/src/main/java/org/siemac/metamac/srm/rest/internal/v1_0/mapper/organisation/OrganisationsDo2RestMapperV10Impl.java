@@ -11,10 +11,14 @@ import org.siemac.metamac.rest.srm_internal.v1_0.domain.Agencies;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.Agency;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.AgencyScheme;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.AgencySchemes;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.Organisation;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationScheme;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationSchemes;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationUnit;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationUnitScheme;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationUnitSchemes;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationUnits;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.Organisations;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
@@ -40,6 +44,26 @@ public class OrganisationsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl 
     private OrganisationsDo2JaxbCallback                                                    organisationsDo2JaxbCallback;
 
     @Override
+    public OrganisationSchemes toOrganisationSchemes(PagedResult<OrganisationSchemeVersionMetamac> sourcesPagedResult, String agencyID, String resourceID, String query, String orderBy, Integer limit) {
+
+        OrganisationSchemeTypeEnum type = null;
+
+        OrganisationSchemes targets = new OrganisationSchemes();
+        targets.setKind(toKindItemSchemes(type)); // generic
+
+        // Pagination
+        String baseLink = toOrganisationSchemesLink(agencyID, resourceID, null, type);
+        SculptorCriteria2RestCriteria.toPagedResult(sourcesPagedResult, targets, query, orderBy, limit, baseLink);
+
+        // Values
+        for (OrganisationSchemeVersionMetamac source : sourcesPagedResult.getValues()) {
+            Resource target = toResource(source);
+            targets.getOrganisationSchemes().add(target);
+        }
+        return targets;
+    }
+
+    @Override
     public AgencySchemes toAgencySchemes(PagedResult<OrganisationSchemeVersionMetamac> sourcesPagedResult, String agencyID, String resourceID, String query, String orderBy, Integer limit) {
 
         OrganisationSchemeTypeEnum type = OrganisationSchemeTypeEnum.AGENCY_SCHEME;
@@ -58,9 +82,10 @@ public class OrganisationsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl 
         }
         return targets;
     }
-    
+
     @Override
-    public OrganisationUnitSchemes toOrganisationUnitSchemes(PagedResult<OrganisationSchemeVersionMetamac> sourcesPagedResult, String agencyID, String resourceID, String query, String orderBy, Integer limit) {
+    public OrganisationUnitSchemes toOrganisationUnitSchemes(PagedResult<OrganisationSchemeVersionMetamac> sourcesPagedResult, String agencyID, String resourceID, String query, String orderBy,
+            Integer limit) {
 
         OrganisationSchemeTypeEnum type = OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME;
 
@@ -80,6 +105,38 @@ public class OrganisationsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl 
     }
 
     @Override
+    public OrganisationScheme toOrganisationScheme(OrganisationSchemeVersionMetamac source) {
+        if (source == null) {
+            return null;
+        }
+
+        OrganisationScheme target = new OrganisationScheme();
+        toOrganisationScheme(source, target);
+        return target;
+    }
+
+    @Override
+    public void toOrganisationScheme(OrganisationSchemeVersionMetamac source, OrganisationScheme target) {
+        target.setKind(toKindItemScheme(null)); // generic
+        switch (source.getOrganisationSchemeType()) {
+            case AGENCY_SCHEME:
+                target.setAgencyScheme(toAgencyScheme(source));
+                break;
+            case ORGANISATION_UNIT_SCHEME:
+                target.setOrganisationUnitScheme(toOrganisationUnitScheme(source));
+                break;
+            case DATA_CONSUMER_SCHEME:
+                // TODO DATA_CONSUMER_SCHEME 
+                break;
+            case DATA_PROVIDER_SCHEME:
+                // TODO DATA_PROVIDER_SCHEME
+                break;
+            default:
+                throw new IllegalArgumentException("OrganisationSchemeTypeEnum unsuported: " + source.getOrganisationSchemeType());
+        }
+    }
+
+    @Override
     public AgencyScheme toAgencyScheme(OrganisationSchemeVersionMetamac source) {
         if (source == null) {
             return null;
@@ -87,7 +144,7 @@ public class OrganisationsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl 
         // following method will call toAgencyScheme(OrganisationSchemeVersionMetamac source, AgencyScheme target) method, thank to callback
         return (AgencyScheme) organisationsDo2JaxbSdmxMapper.agencySchemeDoToJaxb(source, organisationsDo2JaxbCallback);
     }
-    
+
     @Override
     public OrganisationUnitScheme toOrganisationUnitScheme(OrganisationSchemeVersionMetamac source) {
         if (source == null) {
@@ -109,7 +166,7 @@ public class OrganisationsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl 
         target.setParentLink(toOrganisationSchemeParentLink(source));
         target.setChildLinks(toOrganisationSchemeChildLinks(source));
     }
-    
+
     @Override
     public void toOrganisationUnitScheme(OrganisationSchemeVersionMetamac source, OrganisationUnitScheme target) {
         if (source == null) {
@@ -121,6 +178,24 @@ public class OrganisationsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl 
         target.setReplaceToVersion(source.getMaintainableArtefact().getReplaceToVersion());
         target.setParentLink(toOrganisationSchemeParentLink(source));
         target.setChildLinks(toOrganisationSchemeChildLinks(source));
+    }
+
+    @Override
+    public Organisations toOrganisations(PagedResult<OrganisationMetamac> sourcesPagedResult, String agencyID, String resourceID, String version, String query, String orderBy, Integer limit) {
+
+        Organisations targets = new Organisations();
+        targets.setKind(toKindItemsFromOrganisationType(null)); // generic
+
+        // Pagination
+        String baseLink = toOrganisationsLink(agencyID, resourceID, version, null);
+        SculptorCriteria2RestCriteria.toPagedResult(sourcesPagedResult, targets, query, orderBy, limit, baseLink);
+
+        // Values
+        for (OrganisationMetamac source : sourcesPagedResult.getValues()) {
+            Resource target = toResource(source);
+            targets.getOrganisations().add(target);
+        }
+        return targets;
     }
 
     @Override
@@ -140,7 +215,7 @@ public class OrganisationsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl 
         }
         return targets;
     }
-    
+
     @Override
     public OrganisationUnits toOrganisationUnits(PagedResult<OrganisationMetamac> sourcesPagedResult, String agencyID, String resourceID, String version, String query, String orderBy, Integer limit) {
 
@@ -160,6 +235,33 @@ public class OrganisationsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl 
     }
 
     @Override
+    public Organisation toOrganisation(OrganisationMetamac source) {
+        if (source == null) {
+            return null;
+        }
+        Organisation target = new Organisation();
+        target.setKind(toKindItem(null)); // generic
+
+        switch (source.getOrganisationType()) {
+            case AGENCY:
+                target.setAgency(toAgency(source));
+                break;
+            case ORGANISATION_UNIT:
+                target.setOrganisationUnit(toOrganisationUnit(source));
+                break;
+            case DATA_CONSUMER:
+                // TODO
+                break;
+            case DATA_PROVIDER:
+                // TODO
+                break;
+            default:
+                throw new IllegalArgumentException("OrganisationTypeEnum unsuported: " + source.getOrganisationType());
+        }
+        return target;
+    }
+
+    @Override
     public Agency toAgency(OrganisationMetamac source) {
         if (source == null) {
             return null;
@@ -175,7 +277,7 @@ public class OrganisationsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl 
 
         return target;
     }
-    
+
     @Override
     public OrganisationUnit toOrganisationUnit(OrganisationMetamac source) {
         if (source == null) {
@@ -192,7 +294,7 @@ public class OrganisationsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl 
 
         return target;
     }
-    
+
     private ResourceLink toOrganisationSchemeSelfLink(OrganisationSchemeVersion source) {
         return toResourceLink(toKindItemScheme(source.getOrganisationSchemeType()), toOrganisationSchemeLink(source));
     }
@@ -213,7 +315,7 @@ public class OrganisationsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl 
     }
 
     private ResourceLink toOrganisationParentLink(OrganisationMetamac source) {
-        return toResourceLink(toKindItems(source.getOrganisationType()), toOrganisationsLink(source));
+        return toResourceLink(toKindItemsFromOrganisationType(source.getOrganisationType()), toOrganisationsLink(source));
     }
 
     private ChildLinks toOrganisationChildLinks(OrganisationMetamac source) {
@@ -255,6 +357,9 @@ public class OrganisationsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl 
     }
 
     private String toSupathItemSchemes(OrganisationSchemeTypeEnum type) {
+        if (type == null) {
+            return RestInternalConstants.LINK_SUBPATH_ORGANISATION_SCHEMES;
+        }
         switch (type) {
             case AGENCY_SCHEME:
                 return RestInternalConstants.LINK_SUBPATH_AGENCY_SCHEMES;
@@ -265,7 +370,7 @@ public class OrganisationsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl 
             case DATA_PROVIDER_SCHEME:
                 return RestInternalConstants.LINK_SUBPATH_DATA_PROVIDER_SCHEMES;
             default:
-                return RestInternalConstants.LINK_SUBPATH_ORGANISATION_SCHEMES;
+                throw new IllegalArgumentException("OrganisationSchemeTypeEnum unsuported: " + type);
         }
     }
 
@@ -274,6 +379,9 @@ public class OrganisationsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl 
     }
 
     private String toSubpathItems(OrganisationSchemeTypeEnum type) {
+        if (type == null) {
+            return RestInternalConstants.LINK_SUBPATH_ORGANISATIONS;
+        }
         switch (type) {
             case AGENCY_SCHEME:
                 return RestInternalConstants.LINK_SUBPATH_AGENCIES;
@@ -284,7 +392,7 @@ public class OrganisationsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl 
             case DATA_PROVIDER_SCHEME:
                 return RestInternalConstants.LINK_SUBPATH_DATA_PROVIDERS;
             default:
-                return RestInternalConstants.LINK_SUBPATH_ORGANISATIONS;
+                throw new IllegalArgumentException("OrganisationSchemeTypeEnum unsuported: " + type);
         }
     }
 
@@ -293,6 +401,9 @@ public class OrganisationsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl 
     }
 
     private String toKindItemSchemes(OrganisationSchemeTypeEnum type) {
+        if (type == null) {
+            return RestInternalConstants.KIND_ORGANISATION_SCHEMES;
+        }
         switch (type) {
             case AGENCY_SCHEME:
                 return RestInternalConstants.KIND_AGENCY_SCHEMES;
@@ -303,12 +414,14 @@ public class OrganisationsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl 
             case DATA_PROVIDER_SCHEME:
                 return RestInternalConstants.KIND_DATA_PROVIDER_SCHEMES;
             default:
-                // generic list of organisation schemes are supported
-                return RestInternalConstants.KIND_ORGANISATION_SCHEMES;
+                throw new IllegalArgumentException("OrganisationSchemeTypeEnum unsuported: " + type);
         }
     }
 
     private String toKindItems(OrganisationSchemeTypeEnum type) {
+        if (type == null) {
+            return RestInternalConstants.KIND_ORGANISATIONS;
+        }
         switch (type) {
             case AGENCY_SCHEME:
                 return RestInternalConstants.KIND_AGENCIES;
@@ -319,16 +432,18 @@ public class OrganisationsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl 
             case DATA_PROVIDER_SCHEME:
                 return RestInternalConstants.KIND_DATA_PROVIDERS;
             default:
-                // generic list of organisation schemes are supported
-                return RestInternalConstants.KIND_ORGANISATIONS;
+                throw new IllegalArgumentException("OrganisationSchemeTypeEnum unsuported: " + type);
         }
     }
 
-    private String toKindItems(OrganisationTypeEnum type) {
+    private String toKindItemsFromOrganisationType(OrganisationTypeEnum type) {
         return toKindItems(SrmRestInternalUtils.toOrganisationSchemeType(type));
     }
 
     private String toKindItemScheme(OrganisationSchemeTypeEnum type) {
+        if (type == null) {
+            return RestInternalConstants.KIND_ORGANISATION_SCHEME;
+        }
         switch (type) {
             case AGENCY_SCHEME:
                 return RestInternalConstants.KIND_AGENCY_SCHEME;
@@ -344,6 +459,9 @@ public class OrganisationsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl 
     }
 
     private String toKindItem(OrganisationTypeEnum type) {
+        if (type == null) {
+            return RestInternalConstants.KIND_ORGANISATION;
+        }
         switch (type) {
             case AGENCY:
                 return RestInternalConstants.KIND_AGENCY;
