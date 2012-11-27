@@ -16,7 +16,7 @@
 
     <!-- Configure externalized logging configuration file -->
     <bean id="loggingSetup" class="org.siemac.metamac.core.common.logging.LoggingSetup">
-        <property name="logConfigurationFile" value="${environment.metamac.data}/srm/conf/dynamic/logback-srm-external-web.xml" />
+        <property name="logConfigurationFile" value="${environment.metamac.data}/srm/srm-external-web/conf/dynamic/logback-srm-external-web.xml" />
     </bean>
 
     <!-- METAMAC environment configuration -->
