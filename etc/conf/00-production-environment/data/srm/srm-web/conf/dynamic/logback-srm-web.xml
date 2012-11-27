@@ -7,7 +7,7 @@
     </encoder> 
   </appender>  
   <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <file>${environment.metamac.data}/srm/logs/srm-web.log</file>
+    <file>${environment.metamac.data}/srm/srm-web/logs/srm-web.log</file>
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
       <!-- daily rollover -->
       <fileNamePattern>srm-web-%d{yyyy-MM-dd}.log</fileNamePattern>
