@@ -1,6 +1,6 @@
 package org.siemac.metamac.srm.core.constants;
 
-import com.arte.statistic.sdmx.srm.core.base.enume.domain.VersionPatternEnum;
+import org.siemac.metamac.core.common.enume.domain.VersionPatternEnum;
 
 public class SrmConstants {
 

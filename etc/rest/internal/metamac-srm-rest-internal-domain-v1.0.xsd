@@ -144,15 +144,35 @@
         </xs:complexContent>
     </xs:complexType>
     
+    <xs:complexType name="DataProviderSchemes">
+        <xs:complexContent>
+            <xs:extension base="common:ListBase">
+                <xs:sequence>
+                    <xs:element name="dataProviderScheme" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+        
+    <xs:complexType name="DataConsumerSchemes">
+        <xs:complexContent>
+            <xs:extension base="common:ListBase">
+                <xs:sequence>
+                    <xs:element name="dataConsumerScheme" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>        
+
     <xs:complexType name="OrganisationScheme">
         <xs:choice>
             <xs:element name="agencyScheme" type="tns:AgencyScheme" />
             <xs:element name="organisationUnitScheme" type="tns:OrganisationUnitScheme" />
-            <xs:element name="dataProducerScheme" type="xs:string" />
+            <xs:element name="dataProviderScheme" type="xs:string" />
             <xs:element name="dataConsumerScheme" type="xs:string" />
         </xs:choice>
         <xs:attribute name="kind" type="xs:string" use="required" />
-    </xs:complexType>    
+    </xs:complexType>
 
     <xs:complexType name="AgencyScheme">
         <xs:complexContent>
@@ -168,6 +188,28 @@
     <xs:complexType name="OrganisationUnitScheme">
         <xs:complexContent>
             <xs:extension base="sdmx:OrganisationUnitSchemeType">
+                <xs:sequence>
+                    <xs:group ref="tns:ItemSchemeGroup" />
+                </xs:sequence>
+                <xs:attribute name="kind" type="xs:string" use="required" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="DataProviderScheme">
+        <xs:complexContent>
+            <xs:extension base="sdmx:DataProviderSchemeType">
+                <xs:sequence>
+                    <xs:group ref="tns:ItemSchemeGroup" />
+                </xs:sequence>
+                <xs:attribute name="kind" type="xs:string" use="required" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="DataConsumerScheme">
+        <xs:complexContent>
+            <xs:extension base="sdmx:DataConsumerSchemeType">
                 <xs:sequence>
                     <xs:group ref="tns:ItemSchemeGroup" />
                 </xs:sequence>
@@ -206,16 +248,36 @@
         </xs:complexContent>
     </xs:complexType>
 
+    <xs:complexType name="DataProviders">
+        <xs:complexContent>
+            <xs:extension base="common:ListBase">
+                <xs:sequence>
+                    <xs:element name="dataProvider" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="DataConsumers">
+        <xs:complexContent>
+            <xs:extension base="common:ListBase">
+                <xs:sequence>
+                    <xs:element name="dataConsumer" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
     <xs:complexType name="Organisation">
         <xs:choice>
             <xs:element name="agency" type="tns:Agency" />
             <xs:element name="organisationUnit" type="tns:OrganisationUnit" />
-            <xs:element name="dataProducer" type="xs:string" />
+            <xs:element name="dataProvider" type="xs:string" />
             <xs:element name="dataConsumer" type="xs:string" />
         </xs:choice>
         <xs:attribute name="kind" type="xs:string" use="required" />
-    </xs:complexType> 
-    
+    </xs:complexType>
+
     <xs:complexType name="Agency">
         <xs:complexContent>
             <xs:extension base="sdmx:AgencyType">
@@ -237,6 +299,28 @@
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
+    
+    <xs:complexType name="DataProvider">
+        <xs:complexContent>
+            <xs:extension base="sdmx:DataProviderType">
+                <xs:sequence>
+                    <xs:group ref="tns:ItemGroup" />
+                </xs:sequence>
+                <xs:attribute name="kind" type="xs:string" use="required" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    
+    <xs:complexType name="DataConsumer">
+        <xs:complexContent>
+            <xs:extension base="sdmx:DataConsumerType">
+                <xs:sequence>
+                    <xs:group ref="tns:ItemGroup" />
+                </xs:sequence>
+                <xs:attribute name="kind" type="xs:string" use="required" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>        
 
     <xs:complexType name="Urns">
         <xs:complexContent>
@@ -420,5 +504,15 @@
     <xs:element name="organisationUnitScheme" type="tns:OrganisationUnitScheme" />
     <xs:element name="organisationUnits" type="tns:OrganisationUnits" />
     <xs:element name="organisationUnit" type="tns:OrganisationUnit" />
+
+    <xs:element name="dataProviderSchemes" type="tns:DataProviderSchemes" />
+    <xs:element name="dataProviderScheme" type="tns:DataProviderScheme" />
+    <xs:element name="dataProviders" type="tns:DataProviders" />
+    <xs:element name="dataProvider" type="tns:DataProvider" />
+
+    <xs:element name="dataConsumerSchemes" type="tns:DataConsumerSchemes" />
+    <xs:element name="dataConsumerScheme" type="tns:DataConsumerScheme" />
+    <xs:element name="dataConsumers" type="tns:DataConsumers" />
+    <xs:element name="dataConsumer" type="tns:DataConsumer" />
 
 </xs:schema>

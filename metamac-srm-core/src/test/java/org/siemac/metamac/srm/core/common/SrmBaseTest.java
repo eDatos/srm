@@ -212,11 +212,10 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
     // Other
     protected static final String NOT_EXISTS                                  = "not-exists";
 
-    private ServiceContext        serviceContextWithoutPrincipal              = null;
-    private ServiceContext        serviceContextAdministrador                 = null;
-
     @Value("${metamac.srm.db.provider}")
     private String                databaseProvider;
+
+    // Note: can not use global attributes to ServiceContexts because they can be modified in some tests
 
     // --------------------------------------------------------------------------------------------------------------
     // SERVICE CONTEXT
@@ -224,11 +223,9 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
 
     @Override
     protected ServiceContext getServiceContextAdministrador() {
-        if (serviceContextAdministrador == null) {
-            serviceContextAdministrador = getServiceContextWithoutPrincipal();
-            putMetamacPrincipalInServiceContext(serviceContextAdministrador, SrmRoleEnum.ADMINISTRADOR);
-        }
-        return serviceContextAdministrador;
+        ServiceContext serviceContext = getServiceContextWithoutPrincipal();
+        putMetamacPrincipalInServiceContext(serviceContext, SrmRoleEnum.ADMINISTRADOR);
+        return serviceContext;
     }
 
     protected ServiceContext getServiceContextTecnicoApoyoNormalizacion() {
@@ -359,10 +356,7 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
 
     @Override
     protected ServiceContext getServiceContextWithoutPrincipal() {
-        if (serviceContextWithoutPrincipal == null) {
-            serviceContextWithoutPrincipal = new ServiceContext("junit", "junit", "app");
-        }
-        return serviceContextWithoutPrincipal;
+        return new ServiceContext("junit", "junit", "app");
     }
 
     @Override

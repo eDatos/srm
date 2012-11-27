@@ -23,6 +23,7 @@ import org.siemac.metamac.core.common.criteria.MetamacCriteria;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
 import org.siemac.metamac.core.common.criteria.SculptorCriteria;
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
+import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.ExceptionLevelEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
@@ -89,7 +90,6 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.trans.StructureMsgDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.util.ContentInputDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponentList;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeDozerCopyMode;
-import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.jaxb.message.Structure;
 import com.arte.statistic.sdmx.v2_1.transformation.error.MetamacTransExceptionType;
 
