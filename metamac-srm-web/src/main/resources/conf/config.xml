@@ -8,7 +8,7 @@
         <system />
         <properties fileName="${environment.metamac.data}/common/conf/dynamic/security.xml" basePath="" config-optional="false" />
         <properties fileName="${environment.metamac.data}/common/conf/static/resources.xml" basePath="" config-optional="false" />
-        <properties fileName="${environment.metamac.data}/common/conf/static/endpoints.xml" basePath="" config-optional="false" />
+        <properties fileName="${environment.metamac.data}/common/conf/static/internal-endpoints.xml" basePath="" config-optional="false" />
         <properties fileName="${environment.metamac.data}/srm/srm-web/conf/static/resources.xml" basePath="" config-optional="false" />
         <properties fileName="${environment.metamac.data}/srm/srm-web/conf/static/datasource.xml" basePath="" config-optional="false" />
     </override>
