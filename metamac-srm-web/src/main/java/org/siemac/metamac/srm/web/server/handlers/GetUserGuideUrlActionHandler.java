@@ -26,7 +26,7 @@ public class GetUserGuideUrlActionHandler extends SecurityActionHandler<GetUserG
     public GetUserGuideUrlResult executeSecurityAction(GetUserGuideUrlAction action) throws ActionException {
         String dataUrl = configurationService.getConfig().getString(PROP_DATA_URL);
         String userGuideFileName = configurationService.getConfig().getString(PROP_USER_GUIDE_FILE_NAME);
-        return new GetUserGuideUrlResult(dataUrl + "/srm/docs/" + userGuideFileName);
+        return new GetUserGuideUrlResult(dataUrl + "/srm/srm-web/docs/" + userGuideFileName);
     }
 
 }
