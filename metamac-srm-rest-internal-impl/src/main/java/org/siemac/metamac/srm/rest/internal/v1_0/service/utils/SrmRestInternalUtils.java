@@ -12,6 +12,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.ItemProperties;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionProperties;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefactProperties.MaintainableArtefactProperty;
 import com.arte.statistic.sdmx.srm.core.base.domain.NameableArtefactProperties.NameableArtefactProperty;
+import com.arte.statistic.sdmx.srm.core.common.constants.SdmxSrmConstants;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 
@@ -98,7 +99,9 @@ public class SrmRestInternalUtils {
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     private static void addConditionalCriteriaByAgency(List<ConditionalCriteria> conditionalCriteria, String agencyID, Class entity, MaintainableArtefactProperty maintainableArtefactProperty) {
-        if (agencyID != null && !RestInternalConstants.WILDCARD.equals(agencyID)) {
+        if (SdmxSrmConstants.SDMX_MAINTAINER.equals(agencyID)) {
+            conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(entity).withProperty(maintainableArtefactProperty.maintainer()).isNull().buildSingle());
+        } else if (agencyID != null && !RestInternalConstants.WILDCARD.equals(agencyID)) {
             conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(entity).withProperty(maintainableArtefactProperty.maintainer().idAsMaintainer()).eq(agencyID).buildSingle());
         }
     }

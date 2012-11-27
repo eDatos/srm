@@ -159,7 +159,7 @@ public class SrmRestInternalFacadeV10OrganisationsNoTypeTest extends SrmRestInte
         assertNotNull(organisationScheme.getAgencyScheme());
         assertNull(organisationScheme.getOrganisationUnitScheme());
         assertNull(organisationScheme.getDataConsumerScheme());
-        assertNull(organisationScheme.getDataProducerScheme());
+        assertNull(organisationScheme.getDataProviderScheme());
 
         AgencyScheme itemScheme = organisationScheme.getAgencyScheme();
         // other metadata are tested in mapper tests
@@ -184,7 +184,7 @@ public class SrmRestInternalFacadeV10OrganisationsNoTypeTest extends SrmRestInte
         assertNotNull(organisationScheme.getOrganisationUnitScheme());
         assertNull(organisationScheme.getAgencyScheme());
         assertNull(organisationScheme.getDataConsumerScheme());
-        assertNull(organisationScheme.getDataProducerScheme());
+        assertNull(organisationScheme.getDataProviderScheme());
 
         OrganisationUnitScheme itemScheme = organisationScheme.getOrganisationUnitScheme();
         // other metadata are tested in mapper tests
@@ -358,7 +358,7 @@ public class SrmRestInternalFacadeV10OrganisationsNoTypeTest extends SrmRestInte
         assertNotNull(organisation.getAgency());
         assertNull(organisation.getOrganisationUnit());
         assertNull(organisation.getDataConsumer());
-        assertNull(organisation.getDataProducer());
+        assertNull(organisation.getDataProvider());
         
         Agency item = organisation.getAgency();
         assertEquals(organsationID, item.getId());
@@ -384,7 +384,7 @@ public class SrmRestInternalFacadeV10OrganisationsNoTypeTest extends SrmRestInte
         assertNotNull(organisation.getOrganisationUnit());
         assertNull(organisation.getAgency());
         assertNull(organisation.getDataConsumer());
-        assertNull(organisation.getDataProducer());
+        assertNull(organisation.getDataProvider());
         
         OrganisationUnit item = organisation.getOrganisationUnit();
         assertEquals(organsationID, item.getId());

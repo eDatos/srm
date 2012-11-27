@@ -24,6 +24,8 @@ import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.domain.NameableArtefact;
+import com.arte.statistic.sdmx.srm.core.common.constants.SdmxSrmConstants;
+import com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation;
 
 @Component
 public class BaseDo2RestMapperV10Impl implements BaseDo2RestMapperV10 {
@@ -145,7 +147,7 @@ public class BaseDo2RestMapperV10Impl implements BaseDo2RestMapperV10 {
     }
     protected String toItemSchemeLink(String schemesSubPath, ItemSchemeVersion itemSchemeVersion) {
         MaintainableArtefact maintainableArtefact = itemSchemeVersion.getMaintainableArtefact();
-        return toItemSchemesLink(schemesSubPath, maintainableArtefact.getMaintainer().getIdAsMaintainer(), maintainableArtefact.getCode(), maintainableArtefact.getVersionLogic());
+        return toItemSchemesLink(schemesSubPath, getIdAsMaintainer(maintainableArtefact.getMaintainer()), maintainableArtefact.getCode(), maintainableArtefact.getVersionLogic());
     }
 
     // API/[SCHEMES]/{agencyID}/{resourceID}/{version}/[ITEMS]
@@ -156,7 +158,7 @@ public class BaseDo2RestMapperV10Impl implements BaseDo2RestMapperV10 {
     }
     protected String toItemsLink(String schemesSubPath, String itemsSubPath, ItemSchemeVersion itemSchemeVersion) {
         MaintainableArtefact maintainableArtefact = itemSchemeVersion.getMaintainableArtefact();
-        return toItemsLink(schemesSubPath, itemsSubPath, maintainableArtefact.getMaintainer().getIdAsMaintainer(), maintainableArtefact.getCode(), maintainableArtefact.getVersionLogic());
+        return toItemsLink(schemesSubPath, itemsSubPath, getIdAsMaintainer(maintainableArtefact.getMaintainer()), maintainableArtefact.getCode(), maintainableArtefact.getVersionLogic());
     }
 
     // API/[SCHEMES]/{agencyID}/{resourceID}/{version}/[ITEMS]/{itemID}
@@ -172,5 +174,14 @@ public class BaseDo2RestMapperV10Impl implements BaseDo2RestMapperV10 {
             throw new BeanCreationException("Property not found: " + property);
         }
         return propertyValue;
+    }
+
+    private String getIdAsMaintainer(Organisation mantainer) {
+        if (mantainer != null) {
+            return mantainer.getIdAsMaintainer();
+        } else {
+            // default SDMX
+            return SdmxSrmConstants.SDMX_MAINTAINER;
+        }
     }
 }
