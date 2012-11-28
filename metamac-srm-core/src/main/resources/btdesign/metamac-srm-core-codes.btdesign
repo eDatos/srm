@@ -24,6 +24,7 @@ Application CodesMetamac {
 			> @CodeMetamacRepository
 			> @CodelistFamilyRepository
 			> @VariableFamilyRepository
+			> @VariableRepository
 
 			// CODELISTS
 
@@ -98,6 +99,19 @@ Application CodesMetamac {
     		PagedResult<@VariableFamily> findVariableFamiliesByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
 			"Deletes variable family"
     		deleteVariableFamily(String identifier) throws MetamacException;
+    		
+    		// VARIABLES
+    		
+    		"Creates variable"
+			@Variable createVariable(@Variable variable) throws MetamacException;
+			"Updates variable"
+			@Variable updateVariable(@Variable variable) throws MetamacException;
+    		"Retrieves variable by urn"
+    		@Variable retrieveVariableByIdentifier(String identifier) throws MetamacException;
+    		"Finds variables by criteria"
+    		PagedResult<@Variable> findVariablesByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
+			"Deletes variable"
+    		deleteVariable(String identifier) throws MetamacException;
 		}
 
 		// ----------------------------------------------------------------

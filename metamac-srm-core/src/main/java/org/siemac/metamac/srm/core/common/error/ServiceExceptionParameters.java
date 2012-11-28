@@ -46,6 +46,9 @@ public class ServiceExceptionParameters extends com.arte.statistic.sdmx.srm.core
     public static final String VARIABLE                          = "variable";
     public static final String VARIABLE_IDENTIFIER               = VARIABLE + ".identifier";
     public static final String VARIABLE_NAME                     = VARIABLE + ".name";
+    public static final String VARIABLE_SHORT_NAME               = VARIABLE + ".short_name";
+    public static final String VARIABLE_VALID_FROM               = VARIABLE + ".valid_from";
+    public static final String VARIABLE_VALID_TO                 = VARIABLE + ".valid_to";
 
     // LIFECYCLE
     public static final String PROC_STATUS_DRAFT                 = ProcStatusEnum.DRAFT.name();

@@ -3275,6 +3275,142 @@
         LAST_UPDATED_BY="user2"
         VERSION="1"
     />
+    
+    <!-- ************************************************************************************** -->
+    <!-- VARIABLES                                                                      -->
+    <!-- *************************************************************************************  -->
+    
+    <TB_M_VARIABLES
+        ID="1"
+        
+        IDENTIFIER="VARIABLE_01"
+        NAME_FK="57"
+        SHORT_NAME_FK="63"
+        
+        VALID_FROM_TZ="Europe/London"
+        VALID_FROM="2011-01-02 02:02:04" 
+        VALID_TO_TZ="Europe/London"
+        VALID_TO="2012-01-02 02:02:04"
+        
+        UUID="variable-01"
+        CREATED_DATE_TZ="Europe/London"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_BY="user1"
+        LAST_UPDATED_TZ="Europe/London"
+        LAST_UPDATED="2012-01-01 01:02:03"
+        LAST_UPDATED_BY="user2"
+        VERSION="1"
+    />
+    
+    <TB_M_VARIABLES
+        ID="2"
+        
+        IDENTIFIER="VARIABLE_02"
+        NAME_FK="58"
+        SHORT_NAME_FK="64"
+        
+        VALID_FROM_TZ="Europe/London"
+        VALID_FROM="2011-01-02 02:02:04" 
+        VALID_TO_TZ="Europe/London"
+        VALID_TO="2012-01-02 02:02:04"
+        
+        UUID="variable-02"
+        CREATED_DATE_TZ="Europe/London"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_BY="user1"
+        LAST_UPDATED_TZ="Europe/London"
+        LAST_UPDATED="2012-01-01 01:02:03"
+        LAST_UPDATED_BY="user2"
+        VERSION="1"
+    />
+    
+    <TB_M_VARIABLES
+        ID="3"
+        
+        IDENTIFIER="VARIABLE_03"
+        NAME_FK="59"
+        SHORT_NAME_FK="65"
+        
+        VALID_FROM_TZ="Europe/London"
+        VALID_FROM="2011-01-02 02:02:04" 
+        VALID_TO_TZ="Europe/London"
+        VALID_TO="2012-01-02 02:02:04"
+        
+        UUID="variable-03"
+        CREATED_DATE_TZ="Europe/London"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_BY="user1"
+        LAST_UPDATED_TZ="Europe/London"
+        LAST_UPDATED="2012-01-01 01:02:03"
+        LAST_UPDATED_BY="user2"
+        VERSION="1"
+    />
+    
+    <TB_M_VARIABLES
+        ID="4"
+        
+        IDENTIFIER="VARIABLE_04"
+        NAME_FK="60"
+        SHORT_NAME_FK="66"
+        
+        VALID_FROM_TZ="[null]"
+        VALID_FROM="[null]" 
+        VALID_TO_TZ="[null]"
+        VALID_TO="[null]"
+        
+        UUID="variable-04"
+        CREATED_DATE_TZ="Europe/London"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_BY="user1"
+        LAST_UPDATED_TZ="Europe/London"
+        LAST_UPDATED="2012-01-01 01:02:03"
+        LAST_UPDATED_BY="user2"
+        VERSION="1"
+    />
+    
+    <TB_M_VARIABLES
+        ID="5"
+        
+        IDENTIFIER="VARIABLE_05"
+        NAME_FK="61"
+        SHORT_NAME_FK="67"
+        
+        VALID_FROM_TZ="[null]"
+        VALID_FROM="[null]" 
+        VALID_TO_TZ="[null]"
+        VALID_TO="[null]"
+        
+        UUID="variable-05"
+        CREATED_DATE_TZ="Europe/London"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_BY="user1"
+        LAST_UPDATED_TZ="Europe/London"
+        LAST_UPDATED="2012-01-01 01:02:03"
+        LAST_UPDATED_BY="user2"
+        VERSION="1"
+    />
+    
+    <TB_M_VARIABLES
+        ID="6"
+        
+        IDENTIFIER="VARIABLE_06"
+        NAME_FK="62"
+        SHORT_NAME_FK="68"
+        
+        VALID_FROM_TZ="[null]"
+        VALID_FROM="[null]" 
+        VALID_TO_TZ="[null]"
+        VALID_TO="[null]"
+        
+        UUID="variable-06"
+        CREATED_DATE_TZ="Europe/London"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_BY="user1"
+        LAST_UPDATED_TZ="Europe/London"
+        LAST_UPDATED="2012-01-01 01:02:03"
+        LAST_UPDATED_BY="user2"
+        VERSION="1"
+    />
 
     <!-- ************************************************************************************** -->
     <!-- EXTERNAL ITEMS                                                                         -->
@@ -4097,6 +4233,162 @@
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="56"
+    />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="57"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="571"
+        LABEL="variable-57"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="57"
+    />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="58"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="581"
+        LABEL="variable--58"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="58"
+    />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="59"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="591"
+        LABEL="variable--59"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="59"
+    />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="60"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="601"
+        LABEL="variable-60"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="60"
+    />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="61"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="611"
+        LABEL="variable-61"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="61"
+    />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="62"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="621"
+        LABEL="variable-62"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="62"
+    />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="63"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="631"
+        LABEL="variable-63"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="63"
+    />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="64"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="641"
+        LABEL="variable-64"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="64"
+    />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="65"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="651"
+        LABEL="variable-65"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="65"
+    />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="66"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="661"
+        LABEL="variable-66"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="66"
+    />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="67"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="671"
+        LABEL="variable-67"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="67"
+    />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="68"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="681"
+        LABEL="variable-68"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="68"
     />
 
 </dataset>

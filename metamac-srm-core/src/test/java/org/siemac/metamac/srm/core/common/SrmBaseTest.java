@@ -209,6 +209,14 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
     protected static final String VARIABLE_FAMILY_3                           = "VARIABLE_FAMILY_03";
     protected static final String VARIABLE_FAMILY_4                           = "VARIABLE_FAMILY_04";
 
+    // Variables
+    protected static final String VARIABLE_1                                  = "VARIABLE_01";
+    protected static final String VARIABLE_2                                  = "VARIABLE_02";
+    protected static final String VARIABLE_3                                  = "VARIABLE_03";
+    protected static final String VARIABLE_4                                  = "VARIABLE_04";
+    protected static final String VARIABLE_5                                  = "VARIABLE_05";
+    protected static final String VARIABLE_6                                  = "VARIABLE_06";
+
     // Other
     protected static final String NOT_EXISTS                                  = "not-exists";
 

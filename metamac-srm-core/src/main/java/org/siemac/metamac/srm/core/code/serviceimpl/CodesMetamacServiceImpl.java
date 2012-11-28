@@ -16,8 +16,10 @@ import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamilyProperties;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
+import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.domain.VariableFamilyProperties;
+import org.siemac.metamac.srm.core.code.domain.VariableProperties;
 import org.siemac.metamac.srm.core.code.serviceimpl.utils.CodesMetamacInvocationValidator;
 import org.siemac.metamac.srm.core.common.LifeCycle;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
@@ -368,10 +370,71 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         // Find
         if (conditions == null) {
-            conditions = ConditionalCriteriaBuilder.criteriaFor(CodelistFamily.class).distinctRoot().build();
+            conditions = ConditionalCriteriaBuilder.criteriaFor(VariableFamily.class).distinctRoot().build();
         }
         PagedResult<VariableFamily> variableFamilyPagedResult = getVariableFamilyRepository().findByCondition(conditions, pagingParameter);
         return variableFamilyPagedResult;
+    }
+
+    // ------------------------------------------------------------------------------------
+    // VARIABLES
+    // ------------------------------------------------------------------------------------
+
+    @Override
+    public Variable createVariable(ServiceContext ctx, Variable variable) throws MetamacException {
+        // Validation
+        CodesMetamacInvocationValidator.checkCreateVariable(variable, null);
+        validateVariableIdentifierUnique(ctx, variable);
+
+        // Create
+        return getVariableRepository().save(variable);
+    }
+
+    @Override
+    public Variable updateVariable(ServiceContext ctx, Variable variable) throws MetamacException {
+        // Validation
+        CodesMetamacInvocationValidator.checkUpdateVariable(variable, null);
+        validateVariableIdentifierUnique(ctx, variable);
+
+        // Create
+        return getVariableRepository().save(variable);
+    }
+
+    @Override
+    public Variable retrieveVariableByIdentifier(ServiceContext ctx, String identifier) throws MetamacException {
+        // Validation
+        CodesMetamacInvocationValidator.checkRetrieveVariableByIdentifier(identifier, null);
+
+        // Retrieve
+        Variable variable = retrieveVariableByIdentifier(identifier);
+        return variable;
+    }
+
+    @Override
+    public PagedResult<Variable> findVariablesByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
+        // Validation
+        CodesMetamacInvocationValidator.checkFindVariablesByCondition(conditions, pagingParameter, null);
+
+        // Find
+        if (conditions == null) {
+            conditions = ConditionalCriteriaBuilder.criteriaFor(Variable.class).distinctRoot().build();
+        }
+        PagedResult<Variable> variablePagedResult = getVariableRepository().findByCondition(conditions, pagingParameter);
+        return variablePagedResult;
+    }
+
+    @Override
+    public void deleteVariable(ServiceContext ctx, String identifier) throws MetamacException {
+        // Validation
+        CodesMetamacInvocationValidator.checkDeleteVariable(identifier, null);
+
+        Variable variableToDelete = retrieveVariableByIdentifier(identifier);
+
+        // Delete associations with variable families
+        // TODO
+
+        // Delete
+        getVariableRepository().delete(variableToDelete);
     }
 
     // ------------------------------------------------------------------------------------
@@ -448,6 +511,14 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         return variableFamily;
     }
 
+    private Variable retrieveVariableByIdentifier(String identifier) throws MetamacException {
+        Variable variable = getVariableRepository().findByIdentifier(identifier);
+        if (variable == null) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_NOT_FOUND).withMessageParameters(identifier).build();
+        }
+        return variable;
+    }
+
     /**
      * Checks if codelist family identifier is unique
      */
@@ -487,6 +558,27 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         PagedResult<VariableFamily> families = getVariableFamilyRepository().findByCondition(conditions, PagingParameter.noLimits());
         if (families != null && families.getValues().size() != 0) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_FAMILY_DUPLICATED_IDENTIFIER).withMessageParameters(familyIdentifier).build();
+        }
+    }
+
+    /**
+     * Checks if variable identifier is unique
+     */
+    private void validateVariableIdentifierUnique(ServiceContext ctx, Variable variable) throws MetamacException {
+        String variableIdentifier = variable.getIdentifier();
+        Long variableId = variable != null ? variable.getId() : null;
+
+        List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(Variable.class).withProperty(VariableProperties.identifier()).ignoreCaseEq(variableIdentifier).distinctRoot()
+                .build();
+
+        if (variableId != null) {
+            ConditionalCriteria notOwnEntity = ConditionalCriteriaBuilder.criteriaFor(Variable.class).not().withProperty(VariableProperties.id()).eq(variableId).buildSingle();
+            conditions.add(notOwnEntity);
+        }
+
+        PagedResult<Variable> variables = getVariableRepository().findByCondition(conditions, PagingParameter.noLimits());
+        if (variables != null && variables.getValues().size() != 0) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_DUPLICATED_IDENTIFIER).withMessageParameters(variableIdentifier).build();
         }
     }
 

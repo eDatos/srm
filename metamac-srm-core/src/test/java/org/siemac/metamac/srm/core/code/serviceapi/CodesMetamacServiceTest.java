@@ -14,6 +14,7 @@ import static org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsse
 import static org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsserts.assertEqualsCodelist;
 import static org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsserts.assertEqualsCodelistFamily;
 import static org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsserts.assertEqualsCodelistWithoutLifeCycleMetadata;
+import static org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsserts.assertEqualsVariable;
 import static org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsserts.assertEqualsVariableFamily;
 
 import java.util.Date;
@@ -28,6 +29,8 @@ import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBui
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
+import org.joda.time.DateTime;
+import org.joda.time.tz.DateTimeZoneBuilder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.common.test.utils.MetamacMocks;
@@ -39,8 +42,10 @@ import org.siemac.metamac.srm.core.code.domain.CodelistFamilyProperties;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamilyRepository;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacProperties;
+import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.domain.VariableFamilyProperties;
+import org.siemac.metamac.srm.core.code.domain.VariableProperties;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacDoMocks;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
@@ -324,7 +329,6 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     }
 
     @Test
-    @Override
     public void testFindCodelistsByCondition() throws Exception {
         // Find all
         {
@@ -400,7 +404,6 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     }
 
     @Test
-    @Override
     public void testRetrieveCodelistVersions() throws Exception {
         // Retrieve all versions
         String urn = CODELIST_10_V1;
@@ -2091,6 +2094,220 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             int i = 0;
             assertEquals(VARIABLE_FAMILY_1, result.getValues().get(i++).getIdentifier());
 
+        }
+    }
+
+    // ------------------------------------------------------------------------------------
+    // VARIABLES
+    // ------------------------------------------------------------------------------------
+
+    @Test
+    public void testCreateVariable() throws Exception {
+        Variable variable = CodesMetamacDoMocks.mockVariable();
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        // Create
+        Variable variableCreated = codesService.createVariable(ctx, variable);
+
+        assertEquals(ctx.getUserId(), variableCreated.getCreatedBy());
+        assertEquals(getServiceContextAdministrador().getUserId(), variableCreated.getCreatedBy());
+        assertTrue(DateUtils.isSameDay(new Date(), variableCreated.getCreatedDate().toDate()));
+        assertEquals(getServiceContextAdministrador().getUserId(), variableCreated.getLastUpdatedBy());
+        assertTrue(DateUtils.isSameDay(new Date(), variableCreated.getLastUpdated().toDate()));
+        assertEqualsVariable(variableCreated, variable);
+    }
+
+    @Test
+    public void testCreateVariableErrorWrongIdentifier() throws Exception {
+        Variable variable = CodesMetamacDoMocks.mockVariable();
+        variable.setIdentifier(" 0 - invalid identifier");
+        try {
+            codesService.createVariable(getServiceContextAdministrador(), variable);
+            fail("wrong identifier");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, 1, new String[]{ServiceExceptionParameters.VARIABLE_IDENTIFIER}, e.getExceptionItems().get(0));
+        }
+    }
+
+    @Test
+    public void testCreateVariableErrorDuplicatedIdentifier() throws Exception {
+        Variable variable = CodesMetamacDoMocks.mockVariable();
+        variable.setIdentifier(VARIABLE_1);
+        try {
+            codesService.createVariable(getServiceContextAdministrador(), variable);
+            fail("duplicated identifier");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.VARIABLE_DUPLICATED_IDENTIFIER, 1, new String[]{VARIABLE_1}, e.getExceptionItems().get(0));
+        }
+    }
+
+    @Test
+    public void testCreateVariableErrorIncorrectMetadata() throws Exception {
+        Variable variable = new Variable();
+        variable.setValidFrom(null);
+        variable.setValidTo(new DateTime());
+        try {
+            codesService.createVariable(getServiceContextAdministrador(), variable);
+            fail("metadata required");
+        } catch (MetamacException e) {
+            assertEquals(4, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.VARIABLE_IDENTIFIER}, e.getExceptionItems().get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.VARIABLE_NAME}, e.getExceptionItems().get(1));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.VARIABLE_SHORT_NAME}, e.getExceptionItems().get(2));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, 1, new String[]{ServiceExceptionParameters.VARIABLE_VALID_TO}, e.getExceptionItems().get(3));
+        }
+    }
+
+    @Test
+    public void testUpdateVariable() throws Exception {
+        Variable variable = codesService.retrieveVariableByIdentifier(getServiceContextAdministrador(), VARIABLE_1);
+        variable.setIdentifier("code-" + MetamacMocks.mockString(10));
+        variable.setName(BaseDoMocks.mockInternationalString());
+        variable.setShortName(BaseDoMocks.mockInternationalString());
+        variable.setValidFrom(MetamacMocks.mockDateTime());
+        variable.setValidTo(null);
+
+        Variable variableUpdated = codesService.updateVariable(getServiceContextAdministrador(), variable);
+
+        assertEqualsVariable(variable, variableUpdated);
+    }
+
+    @Test
+    public void testUpdateVariableErrorWrongIdentifier() throws Exception {
+        Variable variable = codesService.retrieveVariableByIdentifier(getServiceContextAdministrador(), VARIABLE_1);
+        variable.setIdentifier(" 0 - invalid identifier");
+        try {
+            codesService.updateVariable(getServiceContextAdministrador(), variable);
+            fail("wrong identifier");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, 1, new String[]{ServiceExceptionParameters.VARIABLE_IDENTIFIER}, e.getExceptionItems().get(0));
+        }
+    }
+
+    @Test
+    public void testUpdateVariableErrorDuplicatedIdentifier() throws Exception {
+        Variable variable = codesService.retrieveVariableByIdentifier(getServiceContextAdministrador(), VARIABLE_1);
+        variable.setIdentifier(VARIABLE_2);
+        try {
+            codesService.updateVariable(getServiceContextAdministrador(), variable);
+            fail("duplicated identifier");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.VARIABLE_DUPLICATED_IDENTIFIER, 1, new String[]{VARIABLE_2}, e.getExceptionItems().get(0));
+        }
+    }
+
+    @Test
+    public void testUpdateVariableErrorIncorrectMetadata() throws Exception {
+        Variable variable = codesService.retrieveVariableByIdentifier(getServiceContextAdministrador(), VARIABLE_1);
+        variable.setIdentifier(null);
+        variable.setName(null);
+        variable.setShortName(null);
+        variable.setValidFrom(null);
+        variable.setValidTo(new DateTime());
+        try {
+            codesService.createVariable(getServiceContextAdministrador(), variable);
+            fail("metadata required");
+        } catch (MetamacException e) {
+            assertEquals(4, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.VARIABLE_IDENTIFIER}, e.getExceptionItems().get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.VARIABLE_NAME}, e.getExceptionItems().get(1));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.VARIABLE_SHORT_NAME}, e.getExceptionItems().get(2));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, 1, new String[]{ServiceExceptionParameters.VARIABLE_VALID_TO}, e.getExceptionItems().get(3));
+        }
+    }
+
+    @Test
+    public void testRetrieveVariableByIdentifier() throws Exception {
+        String identifier = VARIABLE_1;
+        Variable variable = codesService.retrieveVariableByIdentifier(getServiceContextAdministrador(), identifier);
+
+        assertEquals(identifier, variable.getIdentifier());
+        assertEqualsInternationalString(variable.getName(), "es", "variable-57", null, null);
+        assertEqualsInternationalString(variable.getShortName(), "es", "variable-63", null, null);
+        assertEqualsDate(new DateTime(2011, 01, 02, 02, 02, 04, 0, new DateTimeZoneBuilder().toDateTimeZone("Europe/London", false)), variable.getValidFrom());
+        assertEqualsDate(new DateTime(2012, 01, 02, 02, 02, 04, 0, new DateTimeZoneBuilder().toDateTimeZone("Europe/London", false)), variable.getValidTo());
+
+        assertEquals("variable-01", variable.getUuid());
+        assertEquals("user1", variable.getCreatedBy());
+        assertEquals("user2", variable.getLastUpdatedBy());
+        assertEquals(Long.valueOf(1), variable.getVersion());
+    }
+
+    @Test
+    public void testRetrieveVariableByIdentifierErrorNotFound() throws Exception {
+        String identifier = NOT_EXISTS;
+        try {
+            codesService.retrieveVariableByIdentifier(getServiceContextAdministrador(), identifier);
+            fail("not found");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.VARIABLE_NOT_FOUND, 1, new String[]{identifier}, e.getExceptionItems().get(0));
+        }
+    }
+
+    @Test
+    public void testRetrieveVariableByIdentifierErrorParameterRequired() throws Exception {
+        String identifier = null;
+        try {
+            codesService.retrieveVariableByIdentifier(getServiceContextAdministrador(), identifier);
+            fail("parameter required");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.PARAMETER_REQUIRED, 1, new String[]{ServiceExceptionParameters.VARIABLE_IDENTIFIER}, e.getExceptionItems().get(0));
+        }
+    }
+
+    @Test
+    public void testFindVariablesByCondition() throws Exception {
+        // Find all
+        {
+            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(Variable.class).orderBy(VariableProperties.identifier()).build();
+            PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
+            PagedResult<Variable> result = codesService.findVariablesByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
+
+            assertEquals(6, result.getTotalRows());
+            int i = 0;
+            assertEquals(VARIABLE_1, result.getValues().get(i++).getIdentifier());
+            assertEquals(VARIABLE_2, result.getValues().get(i++).getIdentifier());
+            assertEquals(VARIABLE_3, result.getValues().get(i++).getIdentifier());
+            assertEquals(VARIABLE_4, result.getValues().get(i++).getIdentifier());
+            assertEquals(VARIABLE_5, result.getValues().get(i++).getIdentifier());
+            assertEquals(VARIABLE_6, result.getValues().get(i++).getIdentifier());
+        }
+        // Find by identifier
+        {
+            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(Variable.class).withProperty(VariableProperties.identifier()).like(VARIABLE_1)
+                    .orderBy(VariableProperties.identifier()).build();
+            PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
+            PagedResult<Variable> result = codesService.findVariablesByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
+            assertEquals(1, result.getTotalRows());
+            int i = 0;
+            assertEquals(VARIABLE_1, result.getValues().get(i++).getIdentifier());
+        }
+    }
+
+    @Test
+    public void testDeleteVariable() throws Exception {
+        codesService.deleteVariable(getServiceContextAdministrador(), VARIABLE_1);
+        // Retrieve deleted variable
+        try {
+            codesService.retrieveVariableByIdentifier(getServiceContextAdministrador(), VARIABLE_1);
+            fail("variable already deleted");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.VARIABLE_NOT_FOUND, 1, new String[]{VARIABLE_1}, e.getExceptionItems().get(0));
+        }
+        // Try to delete again the deleted variable
+        try {
+            codesService.deleteVariable(getServiceContextAdministrador(), VARIABLE_1);
+            fail("variable already deleted");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.VARIABLE_NOT_FOUND, 1, new String[]{VARIABLE_1}, e.getExceptionItems().get(0));
         }
     }
 

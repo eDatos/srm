@@ -1,10 +1,12 @@
 package org.siemac.metamac.srm.core.code.serviceapi.utils;
 
+import org.joda.time.DateTime;
 import org.siemac.metamac.common.test.utils.MetamacMocks;
 import org.siemac.metamac.srm.core.base.utils.BaseDoMocks;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
+import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
@@ -67,5 +69,19 @@ public class CodesMetamacDoMocks extends CodesDoMocks {
         variableFamily.setIdentifier("code-" + MetamacMocks.mockString(5));
         variableFamily.setName(BaseDoMocks.mockInternationalString());
         return variableFamily;
+    }
+
+    // ------------------------------------------------------------------------------------
+    // VARIABLES
+    // ------------------------------------------------------------------------------------
+
+    public static Variable mockVariable() {
+        Variable variable = new Variable();
+        variable.setIdentifier("code-" + MetamacMocks.mockString(5));
+        variable.setName(BaseDoMocks.mockInternationalString());
+        variable.setShortName(BaseDoMocks.mockInternationalString());
+        variable.setValidFrom(new DateTime());
+        variable.setValidTo(new DateTime());
+        return variable;
     }
 }
