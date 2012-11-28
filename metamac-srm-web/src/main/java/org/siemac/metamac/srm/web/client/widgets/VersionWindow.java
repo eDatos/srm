@@ -1,5 +1,6 @@
 package org.siemac.metamac.srm.web.client.widgets;
 
+import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
@@ -7,7 +8,6 @@ import org.siemac.metamac.web.common.client.widgets.CustomWindow;
 import org.siemac.metamac.web.common.client.widgets.form.CustomDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomButtonItem;
 
-import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.events.HasClickHandlers;
 

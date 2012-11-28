@@ -1,8 +1,8 @@
 package org.siemac.metamac.srm.web.shared.category;
 
+import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 
-import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
 import com.gwtplatform.dispatch.annotation.GenDispatch;
 import com.gwtplatform.dispatch.annotation.In;
 import com.gwtplatform.dispatch.annotation.Out;

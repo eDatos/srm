@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
+import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
@@ -37,7 +38,6 @@ import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.utils.UrnUtils;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
-import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
 import com.google.gwt.event.shared.EventBus;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.shared.DispatchAsync;

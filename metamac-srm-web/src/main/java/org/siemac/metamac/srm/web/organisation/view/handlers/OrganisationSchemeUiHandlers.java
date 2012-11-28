@@ -2,11 +2,11 @@ package org.siemac.metamac.srm.web.organisation.view.handlers;
 
 import java.util.List;
 
+import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
-import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
 
 public interface OrganisationSchemeUiHandlers extends BaseOrganisationUiHandlers {
 

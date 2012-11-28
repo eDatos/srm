@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
+import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.category.dto.CategoryMetamacDto;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
@@ -43,7 +44,6 @@ import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
-import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;

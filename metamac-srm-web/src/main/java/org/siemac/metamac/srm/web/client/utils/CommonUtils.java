@@ -4,12 +4,12 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getCoreMessages;
 
 import java.util.LinkedHashMap;
 
+import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 
 import com.arte.statistic.sdmx.srm.core.common.service.utils.shared.SdmxVersionUtils;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeRepresentationEnum;
-import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.VersionTypeEnum;
 
 public class CommonUtils {
 
