@@ -279,6 +279,28 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
         ExceptionUtils.throwIfException(exceptions);
     }
 
+    public static void checkAddVariableToFamily(String variableIdentifier, String familyIdentifier, List<MetamacExceptionItem> exceptions) throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+
+        ValidationUtils.checkParameterRequired(variableIdentifier, ServiceExceptionParameters.VARIABLE_IDENTIFIER, exceptions);
+        ValidationUtils.checkParameterRequired(familyIdentifier, ServiceExceptionParameters.VARIABLE_FAMILY_IDENTIFIER, exceptions);
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
+
+    public static void checkRemoveVariableFromFamily(String variableIdentifier, String familyIdentifier, List<MetamacExceptionItem> exceptions) throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+
+        ValidationUtils.checkParameterRequired(variableIdentifier, ServiceExceptionParameters.VARIABLE_IDENTIFIER, exceptions);
+        ValidationUtils.checkParameterRequired(familyIdentifier, ServiceExceptionParameters.VARIABLE_FAMILY_IDENTIFIER, exceptions);
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
+
     private static void checkVariable(Variable variable, List<MetamacExceptionItem> exceptions) {
         ValidationUtils.checkParameterRequired(variable, ServiceExceptionParameters.VARIABLE, exceptions);
         if (variable == null) {
@@ -296,5 +318,4 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
         // Check dates: validFrom value must be lower than validTo value
         ValidationUtils.checkDateTimeBeforeDateTime(variable.getValidFrom(), variable.getValidTo(), ServiceExceptionParameters.VARIABLE_VALID_TO, exceptions);
     }
-
 }

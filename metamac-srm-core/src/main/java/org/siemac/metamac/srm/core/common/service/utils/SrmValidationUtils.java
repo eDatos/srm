@@ -1,5 +1,7 @@
 package org.siemac.metamac.srm.core.common.service.utils;
 
+import java.util.List;
+
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.siemac.metamac.core.common.ent.domain.InternationalString;
@@ -7,6 +9,8 @@ import org.siemac.metamac.core.common.ent.domain.LocalisedString;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
+import org.siemac.metamac.srm.core.code.domain.Variable;
+import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.serviceimpl.SrmServiceUtils;
@@ -40,5 +44,23 @@ public class SrmValidationUtils {
             String[] procStatusString = SrmServiceUtils.procStatusEnumToString(procStatus);
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.LIFE_CYCLE_WRONG_PROC_STATUS).withMessageParameters(urn, procStatusString).build();
         }
+    }
+
+    public static boolean isVariableInList(String variableIdentifier, List<Variable> variables) {
+        for (Variable variable : variables) {
+            if (StringUtils.equals(variableIdentifier, variable.getIdentifier())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean isFamilyInList(String familyIdentifier, List<VariableFamily> families) {
+        for (VariableFamily family : families) {
+            if (StringUtils.equals(familyIdentifier, family.getIdentifier())) {
+                return true;
+            }
+        }
+        return false;
     }
 }

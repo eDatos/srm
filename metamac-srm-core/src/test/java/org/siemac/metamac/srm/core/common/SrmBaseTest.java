@@ -343,6 +343,7 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
         tables.add("TB_M_CODELISTS_VERSIONS");
         tables.add("TB_M_VARIABLE_FAMILIES");
         tables.add("TB_M_VARIABLES");
+        tables.add("TB_M_VAR_FAMILIES_VARIABLES");
         return tables;
     }
 
@@ -359,6 +360,7 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
         tablePrimaryKeys.put("TB_M_CODES", Arrays.asList("TB_CODES"));
         tablePrimaryKeys.put("TB_M_CONCEPT_ROLES", Arrays.asList("CONCEPT_ROLE_FK", "CONCEPT_FK"));
         tablePrimaryKeys.put("TB_M_CONCEPT_RELATED", Arrays.asList("CONCEPT_RELATED_FK", "CONCEPT_FK"));
+        tablePrimaryKeys.put("TB_M_VAR_FAMILIES_VARIABLES", Arrays.asList("VARIABLE_FAMILY_FK", "VARIABLE_FK"));
         return tablePrimaryKeys;
     }
 

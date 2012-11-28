@@ -23,6 +23,7 @@ import org.siemac.metamac.srm.core.code.domain.VariableProperties;
 import org.siemac.metamac.srm.core.code.serviceimpl.utils.CodesMetamacInvocationValidator;
 import org.siemac.metamac.srm.core.common.LifeCycle;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
+import org.siemac.metamac.srm.core.common.service.utils.SrmValidationUtils;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -435,6 +436,42 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         // Delete
         getVariableRepository().delete(variableToDelete);
+    }
+
+    @Override
+    public void addVariableToFamily(ServiceContext ctx, String variableIdentifier, String familyIdentifier) throws MetamacException {
+        // Validation
+        CodesMetamacInvocationValidator.checkAddVariableToFamily(variableIdentifier, familyIdentifier, null);
+
+        VariableFamily family = retrieveVariableFamilyByIdentifier(familyIdentifier);
+        Variable variable = retrieveVariableByIdentifier(variableIdentifier);
+
+        // Do not add the variable if it has been associated with the family previously
+        if (SrmValidationUtils.isVariableInList(variable.getIdentifier(), family.getVariables())) {
+            return;
+        }
+
+        // Add variable to family
+        family.addVariable(variable);
+        getVariableFamilyRepository().save(family);
+    }
+
+    @Override
+    public void removeVariableFromFamily(ServiceContext ctx, String variableIdentifier, String familyIdentifier) throws MetamacException {
+        // Validation
+        CodesMetamacInvocationValidator.checkRemoveVariableFromFamily(variableIdentifier, familyIdentifier, null);
+
+        VariableFamily family = retrieveVariableFamilyByIdentifier(familyIdentifier);
+        Variable variable = retrieveVariableByIdentifier(variableIdentifier);
+
+        // Do not remove the variable if it has not been associated with the family previously
+        if (!SrmValidationUtils.isVariableInList(variable.getIdentifier(), family.getVariables())) {
+            return;
+        }
+
+        // Remove variable from family
+        family.removeVariable(variable);
+        getVariableFamilyRepository().save(family);
     }
 
     // ------------------------------------------------------------------------------------

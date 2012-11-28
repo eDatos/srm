@@ -51,6 +51,7 @@ import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacDoMocks;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
+import org.siemac.metamac.srm.core.common.service.utils.SrmValidationUtils;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamacRepository;
@@ -2311,9 +2312,48 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         }
     }
 
+    @Test
+    public void testAddVariableToFamily() throws Exception {
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        VariableFamily family = codesService.retrieveVariableFamilyByIdentifier(ctx, VARIABLE_FAMILY_1);
+        Variable variable = codesService.retrieveVariableByIdentifier(ctx, VARIABLE_1);
+        assertFalse(SrmValidationUtils.isVariableInList(VARIABLE_1, family.getVariables()));
+        assertFalse(SrmValidationUtils.isFamilyInList(VARIABLE_FAMILY_1, variable.getFamilies()));
+
+        codesService.addVariableToFamily(ctx, VARIABLE_1, VARIABLE_FAMILY_1);
+
+        family = codesService.retrieveVariableFamilyByIdentifier(ctx, VARIABLE_FAMILY_1);
+        variable = codesService.retrieveVariableByIdentifier(ctx, VARIABLE_1);
+        assertTrue(SrmValidationUtils.isVariableInList(VARIABLE_1, family.getVariables()));
+        assertTrue(SrmValidationUtils.isFamilyInList(VARIABLE_FAMILY_1, variable.getFamilies()));
+
+        // Adding the variable to the family again has no consequences
+        codesService.addVariableToFamily(ctx, VARIABLE_1, VARIABLE_FAMILY_1);
+    }
+
+    @Test
+    public void testRemoveVariableFromFamily() throws Exception {
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        VariableFamily family = codesService.retrieveVariableFamilyByIdentifier(ctx, VARIABLE_FAMILY_3);
+        Variable variable = codesService.retrieveVariableByIdentifier(ctx, VARIABLE_3);
+        assertTrue(SrmValidationUtils.isVariableInList(VARIABLE_3, family.getVariables()));
+        assertTrue(SrmValidationUtils.isFamilyInList(VARIABLE_FAMILY_3, variable.getFamilies()));
+
+        codesService.removeVariableFromFamily(ctx, VARIABLE_3, VARIABLE_FAMILY_3);
+
+        family = codesService.retrieveVariableFamilyByIdentifier(ctx, VARIABLE_FAMILY_3);
+        variable = codesService.retrieveVariableByIdentifier(ctx, VARIABLE_3);
+        assertFalse(SrmValidationUtils.isVariableInList(VARIABLE_3, family.getVariables()));
+        assertFalse(SrmValidationUtils.isFamilyInList(VARIABLE_FAMILY_3, variable.getFamilies()));
+
+        // Removing the variable from the family again has no consequences
+        codesService.removeVariableFromFamily(ctx, VARIABLE_3, VARIABLE_FAMILY_3);
+    }
+
     @Override
     protected String getDataSetFile() {
         return "dbunit/SrmCodesTest.xml";
     }
-
 }

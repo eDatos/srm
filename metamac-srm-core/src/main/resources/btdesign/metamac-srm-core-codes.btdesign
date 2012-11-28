@@ -112,6 +112,11 @@ Application CodesMetamac {
     		PagedResult<@Variable> findVariablesByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
 			"Deletes variable"
     		deleteVariable(String identifier) throws MetamacException;
+    		
+    		"Adds a variable to a family"
+    		addVariableToFamily(String variableIdentifier, String familyIdentifier) throws MetamacException;
+    		"Removes a variable from a family"
+    		removeVariableFromFamily(String variableIdentifier, String familyIdentifier) throws MetamacException;
 		}
 
 		// ----------------------------------------------------------------
@@ -182,6 +187,8 @@ Application CodesMetamac {
 			String identifier nullable;
 			"Name"
 			- @InternationalString name nullable cascade="all" databaseColumn="NAME_FK";
+			"Variables"
+			- Bag<@Variable> variables cascade="none" fetch="lazy" databaseColumn="VARIABLE_FK" <-> families;
 			
 			Repository VariableFamilyRepository {
 				save;
@@ -206,6 +213,8 @@ Application CodesMetamac {
 			DateTimeTZ validFrom nullable;
 			"Date from which version is superceded"
 			DateTimeTZ validTo nullable;
+			"Variables"
+			- Bag<@VariableFamily> families cascade="none" fetch="lazy" databaseColumn="VARIABLE_FAMILY_FK" databaseJoinTable="TB_M_VAR_FAMILIES_VARIABLES" <-> variables;
 			
 			Repository VariableRepository {
 				save;
