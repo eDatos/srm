@@ -2067,7 +2067,36 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
     @Test
     public void testDeleteVariableFamilyWithVariables() throws Exception {
-        // TODO Implementar cuando estén las variables
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        VariableFamily family = codesService.retrieveVariableFamilyByIdentifier(ctx, VARIABLE_FAMILY_3);
+        assertEquals(2, family.getVariables().size());
+        assertTrue(SrmValidationUtils.isVariableInList(VARIABLE_3, family.getVariables()));
+        assertTrue(SrmValidationUtils.isVariableInList(VARIABLE_4, family.getVariables()));
+
+        codesService.deleteVariableFamily(ctx, VARIABLE_FAMILY_3);
+
+        // Check that the variable family has been deleted
+        try {
+            codesService.retrieveVariableFamilyByIdentifier(getServiceContextAdministrador(), VARIABLE_FAMILY_3);
+            fail("variable family already deleted");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.VARIABLE_FAMILY_NOT_FOUND, 1, new String[]{VARIABLE_FAMILY_3}, e.getExceptionItems().get(0));
+        }
+        try {
+            codesService.deleteVariableFamily(getServiceContextAdministrador(), VARIABLE_FAMILY_3);
+            fail("variable already deleted");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.VARIABLE_FAMILY_NOT_FOUND, 1, new String[]{VARIABLE_FAMILY_3}, e.getExceptionItems().get(0));
+        }
+
+        // Check that the associated variables has not been deleted
+        Variable variable3 = codesService.retrieveVariableByIdentifier(ctx, VARIABLE_3);
+        Variable variable4 = codesService.retrieveVariableByIdentifier(ctx, VARIABLE_4);
+        assertFalse(SrmValidationUtils.isFamilyInList(VARIABLE_FAMILY_3, variable3.getFamilies()));
+        assertFalse(SrmValidationUtils.isFamilyInList(VARIABLE_FAMILY_3, variable4.getFamilies()));
     }
 
     @Test
@@ -2310,6 +2339,42 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals(1, e.getExceptionItems().size());
             assertEqualsMetamacExceptionItem(ServiceExceptionType.VARIABLE_NOT_FOUND, 1, new String[]{VARIABLE_1}, e.getExceptionItems().get(0));
         }
+    }
+
+    @Test
+    public void testDeleteVariableWithFamilies() throws Exception {
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        Variable variable = codesService.retrieveVariableByIdentifier(ctx, VARIABLE_4);
+        assertEquals(2, variable.getFamilies().size());
+        assertTrue(SrmValidationUtils.isFamilyInList(VARIABLE_FAMILY_3, variable.getFamilies()));
+        assertTrue(SrmValidationUtils.isFamilyInList(VARIABLE_FAMILY_4, variable.getFamilies()));
+
+        // Delete variable
+        codesService.deleteVariable(ctx, VARIABLE_4);
+
+        // Check that the variable has beed deleted
+        try {
+            codesService.retrieveVariableByIdentifier(getServiceContextAdministrador(), VARIABLE_4);
+            fail("variable already deleted");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.VARIABLE_NOT_FOUND, 1, new String[]{VARIABLE_4}, e.getExceptionItems().get(0));
+        }
+        // Try to delete again the deleted variable
+        try {
+            codesService.deleteVariable(getServiceContextAdministrador(), VARIABLE_4);
+            fail("variable already deleted");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.VARIABLE_NOT_FOUND, 1, new String[]{VARIABLE_4}, e.getExceptionItems().get(0));
+        }
+
+        // Check that the families has not been deleted
+        VariableFamily family3 = codesService.retrieveVariableFamilyByIdentifier(ctx, VARIABLE_FAMILY_3);
+        VariableFamily family4 = codesService.retrieveVariableFamilyByIdentifier(ctx, VARIABLE_FAMILY_4);
+        assertFalse(SrmValidationUtils.isVariableInList(VARIABLE_4, family3.getVariables()));
+        assertFalse(SrmValidationUtils.isVariableInList(VARIABLE_4, family4.getVariables()));
     }
 
     @Test

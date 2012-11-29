@@ -358,7 +358,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         VariableFamily variableFamilyToDelete = retrieveVariableFamilyByIdentifier(identifier);
 
         // Delete associations with variables
-        // TODO
+        variableFamilyToDelete.removeAllVariables();
+        getVariableFamilyRepository().save(variableFamilyToDelete);
 
         // Delete
         getVariableFamilyRepository().delete(variableFamilyToDelete);
@@ -432,7 +433,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         Variable variableToDelete = retrieveVariableByIdentifier(identifier);
 
         // Delete associations with variable families
-        // TODO
+        variableToDelete.removeAllFamilies();
+        getVariableRepository().save(variableToDelete);
 
         // Delete
         getVariableRepository().delete(variableToDelete);
