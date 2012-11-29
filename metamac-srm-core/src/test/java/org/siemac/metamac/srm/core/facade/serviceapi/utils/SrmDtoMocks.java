@@ -304,6 +304,7 @@ public class SrmDtoMocks {
         DescriptorDto descriptorDto = new DescriptorDto();
 
         // Required
+        descriptorDto.setCode("groupDimensionDescriptor-" + RandomStringUtils.random(10, true, true));
         descriptorDto.setUri(RandomStringUtils.random(50, true, true));
         descriptorDto.setTypeComponentList(TypeComponentList.GROUP_DIMENSION_DESCRIPTOR);
 
