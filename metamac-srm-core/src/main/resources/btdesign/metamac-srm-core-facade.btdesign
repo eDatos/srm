@@ -220,7 +220,7 @@ Application SrmFacadeCore {
 			 @return                                                                            
 			 @throws org.siemac.metamac.core.common.exception.MetamacException
 	   		"
-	   		@ComponentDto saveComponentForDataStructureDefinition(String urnDsd, @ComponentDto componentDto, @TypeComponentList typeComponentList) throws MetamacException;
+	   		@ComponentDto saveComponentForDataStructureDefinition(String urnDsd, @ComponentDto componentDto) throws MetamacException;
 	   		
 	   		"                                                                                    
 			 @param ctx                                                                          
@@ -229,7 +229,7 @@ Application SrmFacadeCore {
 			 @param typeComponentList                                                            
 			 @throws org.siemac.metamac.core.common.exception.MetamacException
 			" 
-	   		deleteComponentForDataStructureDefinition(String urnDsd, @ComponentDto componentDto, @TypeComponentList typeComponentList) throws MetamacException;
+	   		deleteComponentForDataStructureDefinition(String urnDsd, @ComponentDto componentDto) throws MetamacException;
 	   		
 	   		"
 	    	 @param ctx                                                                          

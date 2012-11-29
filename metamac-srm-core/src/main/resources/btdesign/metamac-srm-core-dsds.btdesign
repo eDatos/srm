@@ -33,8 +33,8 @@ Application DsdsMetamac {
           	@ComponentList saveDescriptorForDataStructureDefinition(String dataStructureDefinitionVersionUrn, @ComponentList componentList) throws MetamacException;
 	   		deleteDescriptorForDataStructureDefinition(String dataStructureDefinitionVersionUrn, @ComponentList componentList) throws MetamacException;
 	   
-	   		@Component saveComponentForDataStructureDefinition(String dataStructureDefinitionVersionUrn, @Component component, @TypeComponentList typeComponentList) throws MetamacException;	   
-	    	deleteComponentForDataStructureDefinition(String dataStructureDefinitionVersionUrn, @Component component, @TypeComponentList typeComponentList) throws MetamacException;
+	   		@Component saveComponentForDataStructureDefinition(String dataStructureDefinitionVersionUrn, @Component component) throws MetamacException;	   
+	    	deleteComponentForDataStructureDefinition(String dataStructureDefinitionVersionUrn, @Component component) throws MetamacException;
           	
           	
 			"Sends data structure definition to production validation"
