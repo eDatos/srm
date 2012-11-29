@@ -103,7 +103,7 @@ Application CodesMetamac {
     		// VARIABLES
     		
     		"Creates variable"
-			@Variable createVariable(@Variable variable) throws MetamacException;
+			@Variable createVariable(List<String> familyIdentifiers, @Variable variable) throws MetamacException;
 			"Updates variable"
 			@Variable updateVariable(@Variable variable) throws MetamacException;
     		"Retrieves variable by urn"

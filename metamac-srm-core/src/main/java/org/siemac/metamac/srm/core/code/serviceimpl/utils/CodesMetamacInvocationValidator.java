@@ -241,11 +241,12 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
         ExceptionUtils.throwIfException(exceptions);
     }
 
-    public static void checkCreateVariable(Variable variable, List<MetamacExceptionItem> exceptions) throws MetamacException {
+    public static void checkCreateVariable(List<String> familyIdentifiers, Variable variable, List<MetamacExceptionItem> exceptions) throws MetamacException {
         if (exceptions == null) {
             exceptions = new ArrayList<MetamacExceptionItem>();
         }
 
+        ValidationUtils.checkParameterRequired(familyIdentifiers, ServiceExceptionParameters.VARIABLE_FAMILY_IDENTIFIER, exceptions);
         checkVariable(variable, exceptions);
 
         ExceptionUtils.throwIfException(exceptions);

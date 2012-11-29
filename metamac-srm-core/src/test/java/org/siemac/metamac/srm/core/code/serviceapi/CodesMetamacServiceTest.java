@@ -17,6 +17,8 @@ import static org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsse
 import static org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsserts.assertEqualsVariable;
 import static org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsserts.assertEqualsVariableFamily;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -2137,13 +2139,23 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         ServiceContext ctx = getServiceContextAdministrador();
 
         // Create
-        Variable variableCreated = codesService.createVariable(ctx, variable);
+        List<String> familyIdentifiers = Arrays.asList(VARIABLE_FAMILY_1, VARIABLE_FAMILY_2);
+        Variable variableCreated = codesService.createVariable(ctx, familyIdentifiers, variable);
 
         assertEquals(ctx.getUserId(), variableCreated.getCreatedBy());
         assertEquals(getServiceContextAdministrador().getUserId(), variableCreated.getCreatedBy());
         assertTrue(DateUtils.isSameDay(new Date(), variableCreated.getCreatedDate().toDate()));
         assertEquals(getServiceContextAdministrador().getUserId(), variableCreated.getLastUpdatedBy());
         assertTrue(DateUtils.isSameDay(new Date(), variableCreated.getLastUpdated().toDate()));
+
+        // Check that the variable was created in both families
+        assertTrue(SrmValidationUtils.isFamilyInList(VARIABLE_FAMILY_1, variableCreated.getFamilies()));
+        assertTrue(SrmValidationUtils.isFamilyInList(VARIABLE_FAMILY_2, variableCreated.getFamilies()));
+        VariableFamily family1 = codesService.retrieveVariableFamilyByIdentifier(ctx, VARIABLE_FAMILY_1);
+        VariableFamily family2 = codesService.retrieveVariableFamilyByIdentifier(ctx, VARIABLE_FAMILY_2);
+        assertTrue(SrmValidationUtils.isVariableInList(variableCreated.getIdentifier(), family1.getVariables()));
+        assertTrue(SrmValidationUtils.isVariableInList(variableCreated.getIdentifier(), family2.getVariables()));
+
         assertEqualsVariable(variableCreated, variable);
     }
 
@@ -2152,7 +2164,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         Variable variable = CodesMetamacDoMocks.mockVariable();
         variable.setIdentifier(" 0 - invalid identifier");
         try {
-            codesService.createVariable(getServiceContextAdministrador(), variable);
+            codesService.createVariable(getServiceContextAdministrador(), Arrays.asList(VARIABLE_FAMILY_1), variable);
             fail("wrong identifier");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
@@ -2165,7 +2177,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         Variable variable = CodesMetamacDoMocks.mockVariable();
         variable.setIdentifier(VARIABLE_1);
         try {
-            codesService.createVariable(getServiceContextAdministrador(), variable);
+            codesService.createVariable(getServiceContextAdministrador(), Arrays.asList(VARIABLE_FAMILY_1), variable);
             fail("duplicated identifier");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
@@ -2179,7 +2191,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         variable.setValidFrom(null);
         variable.setValidTo(new DateTime());
         try {
-            codesService.createVariable(getServiceContextAdministrador(), variable);
+            codesService.createVariable(getServiceContextAdministrador(), Arrays.asList(VARIABLE_FAMILY_1), variable);
             fail("metadata required");
         } catch (MetamacException e) {
             assertEquals(4, e.getExceptionItems().size());
@@ -2187,6 +2199,40 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.VARIABLE_NAME}, e.getExceptionItems().get(1));
             assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.VARIABLE_SHORT_NAME}, e.getExceptionItems().get(2));
             assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, 1, new String[]{ServiceExceptionParameters.VARIABLE_VALID_TO}, e.getExceptionItems().get(3));
+        }
+    }
+
+    @Test
+    public void testCreateVariableErrorIncorrectFamily() throws Exception {
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        Variable variable = CodesMetamacDoMocks.mockVariable();
+
+        // Null family
+        try {
+            codesService.createVariable(ctx, null, variable);
+            fail("required family to create a variable");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.PARAMETER_REQUIRED, 1, new String[]{ServiceExceptionParameters.VARIABLE_FAMILY_IDENTIFIER}, e.getExceptionItems().get(0));
+        }
+
+        // Empty family list
+        try {
+            codesService.createVariable(ctx, new ArrayList<String>(), variable);
+            fail("required family to create a variable");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.PARAMETER_REQUIRED, 1, new String[]{ServiceExceptionParameters.VARIABLE_FAMILY_IDENTIFIER}, e.getExceptionItems().get(0));
+        }
+
+        // Non-existent family
+        try {
+            codesService.createVariable(ctx, Arrays.asList(NOT_EXISTS), variable);
+            fail("required family to create a variable");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.VARIABLE_FAMILY_NOT_FOUND, 1, new String[]{NOT_EXISTS}, e.getExceptionItems().get(0));
         }
     }
 
@@ -2239,7 +2285,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         variable.setValidFrom(null);
         variable.setValidTo(new DateTime());
         try {
-            codesService.createVariable(getServiceContextAdministrador(), variable);
+            codesService.updateVariable(getServiceContextAdministrador(), variable);
             fail("metadata required");
         } catch (MetamacException e) {
             assertEquals(4, e.getExceptionItems().size());

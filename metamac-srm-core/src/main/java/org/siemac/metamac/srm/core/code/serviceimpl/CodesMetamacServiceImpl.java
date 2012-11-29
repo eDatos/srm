@@ -383,10 +383,16 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     // ------------------------------------------------------------------------------------
 
     @Override
-    public Variable createVariable(ServiceContext ctx, Variable variable) throws MetamacException {
+    public Variable createVariable(ServiceContext ctx, List<String> familyIdentifiers, Variable variable) throws MetamacException {
         // Validation
-        CodesMetamacInvocationValidator.checkCreateVariable(variable, null);
+        CodesMetamacInvocationValidator.checkCreateVariable(familyIdentifiers, variable, null);
         validateVariableIdentifierUnique(ctx, variable);
+
+        // Add variable to the families
+        for (String familyIdentifier : familyIdentifiers) {
+            VariableFamily family = retrieveVariableFamilyByIdentifier(familyIdentifier);
+            variable.addFamily(family);
+        }
 
         // Create
         return getVariableRepository().save(variable);
