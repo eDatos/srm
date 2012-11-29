@@ -286,6 +286,7 @@
         IS_RECOMMENDED="0"
         SHORT_NAME_FK="[null]"
         CODELIST_FAMILY_FK="[null]"
+        VARIABLE_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
@@ -420,6 +421,7 @@
         IS_RECOMMENDED="0"
         SHORT_NAME_FK="[null]"
         CODELIST_FAMILY_FK="[null]"
+        VARIABLE_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="[null]"
         PRODUCTION_VALIDATION_DATE="[null]"
@@ -915,6 +917,7 @@
         IS_RECOMMENDED="1"
         SHORT_NAME_FK="48"
         CODELIST_FAMILY_FK="[null]"
+        VARIABLE_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="[null]"
         PRODUCTION_VALIDATION_DATE="[null]"
@@ -1111,6 +1114,7 @@
         IS_RECOMMENDED="1"
         SHORT_NAME_FK="49"
         CODELIST_FAMILY_FK="[null]"
+        VARIABLE_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
@@ -1454,6 +1458,7 @@
         IS_RECOMMENDED="0"
         SHORT_NAME_FK="[null]"
         CODELIST_FAMILY_FK="[null]"
+        VARIABLE_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="[null]"
         PRODUCTION_VALIDATION_DATE="[null]"
@@ -1594,6 +1599,7 @@
         IS_RECOMMENDED="1"
         SHORT_NAME_FK="[null]"
         CODELIST_FAMILY_FK="[null]"
+        VARIABLE_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
@@ -1734,6 +1740,7 @@
         IS_RECOMMENDED="0"
         SHORT_NAME_FK="50"
         CODELIST_FAMILY_FK="[null]"
+        VARIABLE_FK="6"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
@@ -1761,7 +1768,7 @@
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
         
-        NAME_FK="6"
+        NAME_FK="69"
         
         VERSION_LOGIC="01.000"
         FINAL_LOGIC="0"
@@ -1877,6 +1884,7 @@
         IS_RECOMMENDED="1"
         SHORT_NAME_FK="[null]"
         CODELIST_FAMILY_FK="[null]"
+        VARIABLE_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
@@ -1958,6 +1966,7 @@
         IS_RECOMMENDED="1"
         SHORT_NAME_FK="[null]"
         CODELIST_FAMILY_FK="[null]"
+        VARIABLE_FK="5"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
@@ -2100,6 +2109,7 @@
         IS_RECOMMENDED="[null]"
         SHORT_NAME_FK="[null]"
         CODELIST_FAMILY_FK="[null]"
+        VARIABLE_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="[null]"
         PRODUCTION_VALIDATION_DATE="[null]"
@@ -2240,6 +2250,7 @@
         IS_RECOMMENDED="[null]"
         SHORT_NAME_FK="[null]"
         CODELIST_FAMILY_FK="2"
+        VARIABLE_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="[null]"
         PRODUCTION_VALIDATION_DATE="[null]"
@@ -2335,6 +2346,7 @@
         IS_RECOMMENDED="[null]"
         SHORT_NAME_FK="[null]"
         CODELIST_FAMILY_FK="[null]"
+        VARIABLE_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
@@ -2416,6 +2428,7 @@
         IS_RECOMMENDED="[null]"
         SHORT_NAME_FK="[null]"
         CODELIST_FAMILY_FK="[null]"
+        VARIABLE_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
@@ -2546,6 +2559,7 @@
         IS_RECOMMENDED="[null]"
         SHORT_NAME_FK="[null]"
         CODELIST_FAMILY_FK="[null]"
+        VARIABLE_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
@@ -2688,6 +2702,7 @@
         IS_RECOMMENDED="[null]"
         SHORT_NAME_FK="[null]"
         CODELIST_FAMILY_FK="[null]"
+        VARIABLE_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
@@ -2831,6 +2846,7 @@
         IS_RECOMMENDED="[null]"
         SHORT_NAME_FK="[null]"
         CODELIST_FAMILY_FK="[null]"
+        VARIABLE_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
@@ -2973,6 +2989,7 @@
         IS_RECOMMENDED="[null]"
         SHORT_NAME_FK="[null]"
         CODELIST_FAMILY_FK="[null]"
+        VARIABLE_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
@@ -3430,6 +3447,11 @@
         VARIABLE_FAMILY_FK="4"
         VARIABLE_FK="4"
     />
+    
+    <TB_M_VAR_FAMILIES_VARIABLES
+        VARIABLE_FAMILY_FK="4"
+        VARIABLE_FK="5"
+    />
 
     <!-- ************************************************************************************** -->
     <!-- EXTERNAL ITEMS                                                                         -->
@@ -3578,7 +3600,7 @@
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="6"
-    />    
+    />
     
   <TB_INTERNATIONAL_STRINGS
         ID="7"
@@ -4408,6 +4430,19 @@
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="68"
+    />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="69"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="691"
+        LABEL="nombre del codelist 6 v1"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="69"
     />
 
 </dataset>

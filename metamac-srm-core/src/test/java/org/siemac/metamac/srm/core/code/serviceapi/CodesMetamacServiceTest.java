@@ -845,18 +845,15 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     }
 
     @Test
-    public void testPublishInternallyCodelistErrorAccessType() throws Exception {
-        {
-            String urn = CODELIST_11_V1;
-            try {
-                codesService.publishInternallyCodelist(getServiceContextAdministrador(), urn);
-                fail("codelist cannot be publish without an access type defined");
-            } catch (MetamacException e) {
-                assertEquals(1, e.getExceptionItems().size());
-                assertEquals(ServiceExceptionType.METADATA_REQUIRED.getCode(), e.getExceptionItems().get(0).getCode());
-                assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-                assertEquals(ServiceExceptionParameters.CODELIST_ACCESS_TYPE, e.getExceptionItems().get(0).getMessageParameters()[0]);
-            }
+    public void testPublishInternallyCodelistErrorRequiredMetadata() throws Exception {
+        String urn = CODELIST_11_V1;
+        try {
+            codesService.publishInternallyCodelist(getServiceContextAdministrador(), urn);
+            fail("codelist cannot be publish without an access type defined and with an associated variable");
+        } catch (MetamacException e) {
+            assertEquals(2, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.CODELIST_ACCESS_TYPE}, e.getExceptionItems().get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.VARIABLE}, e.getExceptionItems().get(1));
         }
     }
 
@@ -868,9 +865,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             fail("Codelist not exists");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEquals(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
-            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND, 1, new String[]{urn}, e.getExceptionItems().get(0));
         }
     }
 
@@ -878,10 +873,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     public void testPublishInternallyCodelistErrorWrongProcStatus() throws Exception {
         String urn = CODELIST_1_V1;
 
-        {
-            CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), urn);
-            assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistVersion.getLifeCycleMetadata().getProcStatus());
-        }
+        CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), urn);
+        assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistVersion.getLifeCycleMetadata().getProcStatus());
 
         try {
             codesService.publishInternallyCodelist(getServiceContextAdministrador(), urn);
@@ -1037,9 +1030,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             fail("Codelist deleted");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEquals(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
-            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-            assertEquals(urnV2, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND, 1, new String[]{urnV2}, e.getExceptionItems().get(0));
         }
         codelistVersionV1 = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), urnV1);
         assertTrue(codelistVersionV1.getMaintainableArtefact().getIsLastVersion());
@@ -1056,10 +1047,31 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             fail("Codelist can not be deleted");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEquals(ServiceExceptionType.MAINTAINABLE_ARTEFACT_FINAL.getCode(), e.getExceptionItems().get(0).getCode());
-            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.MAINTAINABLE_ARTEFACT_FINAL, 1, new String[]{urn}, e.getExceptionItems().get(0));
         }
+    }
+
+    @Test
+    public void testDeleteCodelistsWithVariable() throws Exception {
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        CodelistVersionMetamac codelist6v1 = codesService.retrieveCodelistByUrn(ctx, CODELIST_6_V1);
+        assertEquals(VARIABLE_6, codelist6v1.getVariable().getIdentifier());
+
+        codesService.deleteCodelist(ctx, CODELIST_6_V1);
+
+        // Check that the codelist has been deleted deleted
+        try {
+            codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_6_V1);
+            fail("Codelist deleted");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND, 1, new String[]{CODELIST_6_V1}, e.getExceptionItems().get(0));
+        }
+
+        // Check that the variable has not been deleted
+        Variable variable = codesService.retrieveVariableByIdentifier(ctx, VARIABLE_6);
+        assertFalse(SrmValidationUtils.isCodelistInList(CODELIST_6_V1, variable.getCodelists()));
     }
 
     @Test
@@ -2407,20 +2419,63 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals(1, e.getExceptionItems().size());
             assertEqualsMetamacExceptionItem(ServiceExceptionType.VARIABLE_NOT_FOUND, 1, new String[]{VARIABLE_4}, e.getExceptionItems().get(0));
         }
-        // Try to delete again the deleted variable
-        try {
-            codesService.deleteVariable(getServiceContextAdministrador(), VARIABLE_4);
-            fail("variable already deleted");
-        } catch (MetamacException e) {
-            assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.VARIABLE_NOT_FOUND, 1, new String[]{VARIABLE_4}, e.getExceptionItems().get(0));
-        }
 
         // Check that the families has not been deleted
         VariableFamily family3 = codesService.retrieveVariableFamilyByIdentifier(ctx, VARIABLE_FAMILY_3);
         VariableFamily family4 = codesService.retrieveVariableFamilyByIdentifier(ctx, VARIABLE_FAMILY_4);
         assertFalse(SrmValidationUtils.isVariableInList(VARIABLE_4, family3.getVariables()));
         assertFalse(SrmValidationUtils.isVariableInList(VARIABLE_4, family4.getVariables()));
+    }
+
+    @Test
+    public void testDeleteVariableWithCodelists() throws Exception {
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        Variable variable = codesService.retrieveVariableByIdentifier(ctx, VARIABLE_6);
+        assertEquals(1, variable.getCodelists().size());
+        assertTrue(SrmValidationUtils.isCodelistInList(CODELIST_6_V1, variable.getCodelists()));
+
+        // Delete variable
+        codesService.deleteVariable(ctx, VARIABLE_6);
+
+        // Check that the variable has been deleted
+        try {
+            codesService.retrieveVariableByIdentifier(getServiceContextAdministrador(), VARIABLE_6);
+            fail("variable already deleted");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.VARIABLE_NOT_FOUND, 1, new String[]{VARIABLE_6}, e.getExceptionItems().get(0));
+        }
+
+        // Chech that the codelists has not been deleted
+        CodelistVersionMetamac codelist6v1 = codesService.retrieveCodelistByUrn(ctx, CODELIST_6_V1);
+        assertNull(codelist6v1.getVariable());
+    }
+
+    @Test
+    // TODO A variable can be deleted if its associated with a published codelist?
+    public void testDeleteVariableWithPublishedCodelists() throws Exception {
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        Variable variable = codesService.retrieveVariableByIdentifier(ctx, VARIABLE_5);
+        assertEquals(1, variable.getCodelists().size());
+        assertTrue(SrmValidationUtils.isCodelistInList(CODELIST_7_V2, variable.getCodelists()));
+
+        // Delete variable
+        codesService.deleteVariable(ctx, VARIABLE_5);
+
+        // Check that the variable has been deleted
+        try {
+            codesService.retrieveVariableByIdentifier(getServiceContextAdministrador(), VARIABLE_5);
+            fail("variable already deleted");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.VARIABLE_NOT_FOUND, 1, new String[]{VARIABLE_5}, e.getExceptionItems().get(0));
+        }
+
+        // Chech that the codelists has not been deleted
+        CodelistVersionMetamac codelist7v2 = codesService.retrieveCodelistByUrn(ctx, CODELIST_7_V2);
+        assertNull(codelist7v2.getVariable());
     }
 
     @Test

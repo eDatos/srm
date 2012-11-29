@@ -50,9 +50,6 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     @Autowired
     private ItemSchemeVersionRepository itemSchemeVersionRepository;
 
-    // @Autowired
-    // private CodeRepository codeRepository;
-    //
     @Autowired
     @Qualifier("codelistLifeCycle")
     private LifeCycle                   codelistLifeCycle;
@@ -310,6 +307,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         CodelistFamily codelistFamilyToDelete = retrieveCodelistFamilyByIdentifier(identifier);
 
         // Delete association with codelists
+        // TODO Is necessary to check the codelist status?
         codelistFamilyToDelete.removeAllCodelists();
         getCodelistFamilyRepository().save(codelistFamilyToDelete);
 
@@ -440,6 +438,11 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         // Delete associations with variable families
         variableToDelete.removeAllFamilies();
+
+        // Delete associations with codelists
+        // TODO Check that the associated codelists are no published
+        variableToDelete.removeAllCodelists();
+
         getVariableRepository().save(variableToDelete);
 
         // Delete

@@ -100,6 +100,7 @@ public class CodelistLifeCycleImpl extends LifeCycleImpl {
             // Metadata required
             CodelistVersionMetamac codelistVersion = getCodelistVersionMetamac(srmResourceVersion);
             ValidationUtils.checkMetadataRequired(codelistVersion.getAccessType(), ServiceExceptionParameters.CODELIST_ACCESS_TYPE, exceptions);
+            ValidationUtils.checkMetadataRequired(codelistVersion.getVariable(), ServiceExceptionParameters.VARIABLE, exceptions);
         }
 
         @Override

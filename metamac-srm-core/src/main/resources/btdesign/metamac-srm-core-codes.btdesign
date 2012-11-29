@@ -135,6 +135,8 @@ Application CodesMetamac {
 			- @AccessTypeEnum accessType nullable;
 			"Family"
 			- @CodelistFamily family cascade="none" nullable databaseColumn="CODELIST_FAMILY_FK" <-> codelists;
+			"Variable"
+			- @Variable variable cascade="none" nullable databaseColumn="VARIABLE_FK" <-> codelists;
 			
 			"Life cycle information"
 			- @SrmLifeCycleMetadata lifeCycleMetadata databaseColumn="";
@@ -215,6 +217,8 @@ Application CodesMetamac {
 			DateTimeTZ validTo nullable;
 			"Variables"
 			- Bag<@VariableFamily> families cascade="none" fetch="lazy" databaseColumn="VARIABLE_FAMILY_FK" databaseJoinTable="TB_M_VAR_FAMILIES_VARIABLES" <-> variables;
+			"Codelists"
+			- Bag<@CodelistVersionMetamac> codelists cascade="none" fetch="lazy" inverse <-> variable;
 			
 			Repository VariableRepository {
 				save;

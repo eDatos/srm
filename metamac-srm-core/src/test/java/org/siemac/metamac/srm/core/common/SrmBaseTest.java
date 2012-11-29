@@ -328,21 +328,21 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
     protected List<String> getTableNamesOrderedByFKDependency() {
         List<String> tables = new ArrayList<String>();
         tables.addAll(super.getTableNamesOrderedByFKDependency());
+        tables.add("TB_M_CATEGORIES");
+        tables.add("TB_M_CAT_SCHEMES_VERSIONS");
+        tables.add("TB_M_CODELIST_FAMILIES");
+        tables.add("TB_M_VARIABLES");
+        tables.add("TB_M_CODELISTS_VERSIONS");
+        tables.add("TB_M_CODES");
+        tables.add("TB_M_CONCEPT_RELATED");
+        tables.add("TB_M_CONCEPT_ROLES");
         tables.add("TB_M_LIS_CONCEPT_TYPES");
         tables.add("TB_M_CONCEPTS");
-        tables.add("TB_M_CONCEPT_ROLES");
-        tables.add("TB_M_CONCEPT_RELATED");
         tables.add("TB_M_CONCEPT_SCHEMES_VERSIONS");
         tables.add("TB_M_DATASTRUCTURE_VERSIONS");
         tables.add("TB_M_ORGANISATIONS");
         tables.add("TB_M_ORG_SCHEMES_VERSIONS");
-        tables.add("TB_M_CATEGORIES");
-        tables.add("TB_M_CAT_SCHEMES_VERSIONS");
-        tables.add("TB_M_CODELIST_FAMILIES");
-        tables.add("TB_M_CODES");
-        tables.add("TB_M_CODELISTS_VERSIONS");
         tables.add("TB_M_VARIABLE_FAMILIES");
-        tables.add("TB_M_VARIABLES");
         tables.add("TB_M_VAR_FAMILIES_VARIABLES");
         return tables;
     }

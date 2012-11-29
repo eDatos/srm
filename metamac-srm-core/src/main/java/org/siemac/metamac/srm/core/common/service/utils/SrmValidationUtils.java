@@ -9,6 +9,7 @@ import org.siemac.metamac.core.common.ent.domain.LocalisedString;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
+import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
@@ -46,6 +47,13 @@ public class SrmValidationUtils {
         }
     }
 
+    /**
+     * Returns TRUE if the variable with the identifier variableIdentifier is in the variable list
+     * 
+     * @param variableIdentifier
+     * @param variables
+     * @return
+     */
     public static boolean isVariableInList(String variableIdentifier, List<Variable> variables) {
         for (Variable variable : variables) {
             if (StringUtils.equals(variableIdentifier, variable.getIdentifier())) {
@@ -55,9 +63,32 @@ public class SrmValidationUtils {
         return false;
     }
 
+    /**
+     * Returns TRUE if the family with the identifier familyIdentifier is in the famkily list
+     * 
+     * @param familyIdentifier
+     * @param families
+     * @return
+     */
     public static boolean isFamilyInList(String familyIdentifier, List<VariableFamily> families) {
         for (VariableFamily family : families) {
             if (StringUtils.equals(familyIdentifier, family.getIdentifier())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns TRUE if the codelist with the URN codelistUrn is in the codelist list
+     * 
+     * @param codelistUrn
+     * @param codelists
+     * @return
+     */
+    public static boolean isCodelistInList(String codelistUrn, List<CodelistVersionMetamac> codelists) {
+        for (CodelistVersionMetamac codelist : codelists) {
+            if (StringUtils.equals(codelistUrn, codelist.getMaintainableArtefact().getUrn())) {
                 return true;
             }
         }
