@@ -26,6 +26,7 @@
         <metamac-rest-common.version>1.1.1-SNAPSHOT</metamac-rest-common.version>
         <metamac-rest-common-test.version>1.1.1-SNAPSHOT</metamac-rest-common-test.version>
         <statistic-sdmx-srm.version>1.0.0-SNAPSHOT</statistic-sdmx-srm.version>
+        <statistic-sdmx-v2_1.version>1.0.0-SNAPSHOT</statistic-sdmx-v2_1.version>
     </properties>
 
     <repositories>
