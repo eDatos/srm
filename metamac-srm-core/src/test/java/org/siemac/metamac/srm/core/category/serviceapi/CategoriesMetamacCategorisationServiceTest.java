@@ -182,7 +182,6 @@ public class CategoriesMetamacCategorisationServiceTest extends SrmBaseTest {
             }
             assertEquals(categorisations.size(), i);
         }
-
     }
 
     // In SDMX module
@@ -191,6 +190,8 @@ public class CategoriesMetamacCategorisationServiceTest extends SrmBaseTest {
     public void testDeleteCategorisation() throws Exception {
     }
     public void testRetrieveCategorisationsByArtefact() throws Exception {
+    }
+    public void testFindCategorisationsByCondition() throws Exception {
     }
 
     @Override

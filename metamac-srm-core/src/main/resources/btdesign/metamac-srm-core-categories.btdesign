@@ -73,6 +73,8 @@ Application CategoriesMetamac {
     		deleteCategorisation(String urn) throws MetamacException;
     		"Retrieves all categorisations by categorised artefact"
     		List<@Categorisation> retrieveCategorisationsByArtefact(String urn) throws MetamacException;
+			"Finds categorisations by criteria"
+    		PagedResult<@Categorisation> findCategorisationsByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
 		}
 
 		// ----------------------------------------------------------------

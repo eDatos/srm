@@ -1504,6 +1504,9 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
     @Override
     public void testCreateCategorisation() throws Exception {
     }
+    @Override
+    public void testFindCategorisationsByCondition() throws Exception {
+    }
 
     @Override
     protected String getDataSetFile() {

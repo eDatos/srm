@@ -283,6 +283,12 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
     public List<Categorisation> retrieveCategorisationsByArtefact(ServiceContext ctx, String urn) throws MetamacException {
         return categoriesService.retrieveCategorisationsByArtefact(ctx, urn);
     }
+    
+    @Override
+    public PagedResult<Categorisation> findCategorisationsByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
+        PagedResult<Categorisation> pagedResults = categoriesService.findCategorisationsByCondition(ctx, conditions, pagingParameter);
+        return pagedResults;
+    }
 
     /**
      * Typecast to Metamac type
