@@ -99,7 +99,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeOrganisationUnitsTest exte
             fail("Incorrect exception");
         }
     }
-    
+
     @Test
     public void testFindOrganisationUnitSchemesByAgencyAndResource() throws Exception {
         testFindOrganisationUnitSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, null, null, null, null, null);
@@ -118,7 +118,8 @@ public class SrmRestInternalFacadeV10OrganisationsTypeOrganisationUnitsTest exte
     @Test
     public void testFindOrganisationUnitSchemesByAgencyAndResourceXml() throws Exception {
         String requestUri = getUriItemSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, null, null, "4", null);
-        InputStream responseExpected = SrmRestInternalFacadeV10OrganisationsTypeOrganisationUnitsTest.class.getResourceAsStream("/responses/organisations/findOrganisationUnitSchemes.byAgencyResource.xml");
+        InputStream responseExpected = SrmRestInternalFacadeV10OrganisationsTypeOrganisationUnitsTest.class
+                .getResourceAsStream("/responses/organisations/findOrganisationUnitSchemes.byAgencyResource.xml");
 
         // Request and validate
         testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
@@ -182,7 +183,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeOrganisationUnitsTest exte
             getSrmRestInternalFacadeClientXml().retrieveOrganisationUnitScheme(agencyID, resourceID, version);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.NOT_FOUND.getStatusCode(), e.getStatus());
-            
+
             org.siemac.metamac.rest.common.v1_0.domain.Exception exception = extractErrorFromException(getSrmRestInternalFacadeClientXml(), e);
             assertEquals(RestServiceExceptionType.ORGANISATION_UNIT_SCHEME_NOT_FOUND.getCode(), exception.getCode());
             assertEquals("OrganisationUnitScheme not found in agencyID " + agencyID + " with ID " + resourceID + " and version " + version, exception.getMessage());
@@ -335,7 +336,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeOrganisationUnitsTest exte
             getSrmRestInternalFacadeClientXml().retrieveOrganisationUnit(agencyID, resourceID, version, organisationID);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.NOT_FOUND.getStatusCode(), e.getStatus());
-            
+
             org.siemac.metamac.rest.common.v1_0.domain.Exception exception = extractErrorFromException(getSrmRestInternalFacadeClientXml(), e);
             assertEquals(RestServiceExceptionType.ORGANISATION_UNIT_NOT_FOUND.getCode(), exception.getCode());
             assertEquals("OrganisationUnit not found with ID " + organisationID + " in OrganisationUnitScheme in agencyID " + agencyID + " with ID " + resourceID + " and version " + version,
@@ -363,7 +364,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeOrganisationUnitsTest exte
     @Test
     public void testRetrieveOrganisationUnitErrorWildcard() throws Exception {
 
-     // AgencyID
+        // AgencyID
         try {
             getSrmRestInternalFacadeClientXml().retrieveOrganisationUnit(WILDCARD, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1, ITEM_1_CODE);
         } catch (ServerWebApplicationException e) {
@@ -437,7 +438,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeOrganisationUnitsTest exte
         }
 
         // Verify with Mockito
-        verifyFindOrganisationUnitSchemes(organisationsService, agencyID, resourceID, limit, offset, query, orderBy, itemSchemes);
+        verifyFindOrganisationUnitSchemes(organisationsService, agencyID, resourceID, version, limit, offset, query, orderBy, itemSchemes);
     }
 
     private void testFindOrganisationUnits(String agencyID, String resourceID, String version, String limit, String offset, String query, String orderBy) throws Exception {

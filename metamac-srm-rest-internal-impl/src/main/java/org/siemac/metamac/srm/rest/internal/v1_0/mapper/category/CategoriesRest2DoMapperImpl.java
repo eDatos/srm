@@ -7,6 +7,8 @@ import org.siemac.metamac.rest.common.query.domain.SculptorPropertyCriteria;
 import org.siemac.metamac.rest.exception.RestException;
 import org.siemac.metamac.rest.search.criteria.mapper.RestCriteria2SculptorCriteria;
 import org.siemac.metamac.rest.search.criteria.mapper.RestCriteria2SculptorCriteria.CriteriaCallback;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.CategorisationCriteriaPropertyOrder;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.CategorisationCriteriaPropertyRestriction;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.CategoryCriteriaPropertyOrder;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.CategoryCriteriaPropertyRestriction;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.CategorySchemeCriteriaPropertyOrder;
@@ -18,17 +20,23 @@ import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamacP
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.base.BaseRest2DoMapperV10Impl;
 import org.springframework.stereotype.Component;
 
+import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
+import com.arte.statistic.sdmx.srm.core.category.domain.CategorisationProperties;
+
 @Component
 public class CategoriesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements CategoriesRest2DoMapper {
 
     private RestCriteria2SculptorCriteria<CategorySchemeVersionMetamac> categorySchemeCriteriaMapper = null;
     private RestCriteria2SculptorCriteria<CategoryMetamac>              categoryCriteriaMapper       = null;
+    private RestCriteria2SculptorCriteria<Categorisation>               categorisationCriteriaMapper = null;
 
     public CategoriesRest2DoMapperImpl() {
         categorySchemeCriteriaMapper = new RestCriteria2SculptorCriteria<CategorySchemeVersionMetamac>(CategorySchemeVersionMetamac.class, CategorySchemeCriteriaPropertyOrder.class,
                 CategorySchemeCriteriaPropertyRestriction.class, new CategorySchemeCriteriaCallback());
         categoryCriteriaMapper = new RestCriteria2SculptorCriteria<CategoryMetamac>(CategoryMetamac.class, CategoryCriteriaPropertyOrder.class, CategoryCriteriaPropertyRestriction.class,
                 new CategoryCriteriaCallback());
+        categorisationCriteriaMapper = new RestCriteria2SculptorCriteria<Categorisation>(Categorisation.class, CategorisationCriteriaPropertyOrder.class,
+                CategorisationCriteriaPropertyRestriction.class, new CategorisationCriteriaCallback());
     }
 
     @Override
@@ -39,6 +47,11 @@ public class CategoriesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implem
     @Override
     public RestCriteria2SculptorCriteria<CategoryMetamac> getCategoryCriteriaMapper() {
         return categoryCriteriaMapper;
+    }
+
+    @Override
+    public RestCriteria2SculptorCriteria<Categorisation> getCategorisationCriteriaMapper() {
+        return categorisationCriteriaMapper;
     }
 
     private class CategorySchemeCriteriaCallback implements CriteriaCallback {
@@ -129,6 +142,46 @@ public class CategoriesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implem
         @Override
         public Property retrievePropertyOrderDefault() throws RestException {
             return CategoryMetamacProperties.nameableArtefact().code();
+        }
+    }
+
+    private class CategorisationCriteriaCallback implements CriteriaCallback {
+
+        @Override
+        public SculptorPropertyCriteria retrieveProperty(MetamacRestQueryPropertyRestriction propertyRestriction) throws RestException {
+            CategorisationCriteriaPropertyRestriction propertyNameCriteria = CategorisationCriteriaPropertyRestriction.fromValue(propertyRestriction.getPropertyName());
+            switch (propertyNameCriteria) {
+                case ID:
+                    return new SculptorPropertyCriteria(CategorisationProperties.maintainableArtefact().code(), propertyRestriction.getValue());
+                case URN:
+                    return new SculptorPropertyCriteria(CategorisationProperties.maintainableArtefact().urn(), propertyRestriction.getValue());
+                case NAME:
+                    return new SculptorPropertyCriteria(CategorisationProperties.maintainableArtefact().name().texts().label(), propertyRestriction.getValue());
+                case ARTEFACT:
+                    return new SculptorPropertyCriteria(CategorisationProperties.artefactCategorised().urn(), propertyRestriction.getValue());
+                case CATEGORY:
+                    return new SculptorPropertyCriteria(CategorisationProperties.category().nameableArtefact().urn(), propertyRestriction.getValue());
+                default:
+                    throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
+            }
+        }
+
+        @SuppressWarnings("rawtypes")
+        @Override
+        public Property retrievePropertyOrder(MetamacRestOrder order) throws RestException {
+            CategorisationCriteriaPropertyOrder propertyNameCriteria = CategorisationCriteriaPropertyOrder.fromValue(order.getPropertyName());
+            switch (propertyNameCriteria) {
+                case ID:
+                    return CategorisationProperties.maintainableArtefact().code();
+                default:
+                    throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
+            }
+        }
+
+        @SuppressWarnings("rawtypes")
+        @Override
+        public Property retrievePropertyOrderDefault() throws RestException {
+            return CategorisationProperties.maintainableArtefact().code();
         }
     }
 }

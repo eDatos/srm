@@ -17,6 +17,7 @@ import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.v1_0.utils.Asserts;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
+import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
 import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.CategoryType;
 
 public class CategoriesAsserts extends Asserts {
@@ -34,6 +35,19 @@ public class CategoriesAsserts extends Asserts {
         String expectedSelfLink = "http://data.istac.es/apis/srm/v1.0/categoryschemes/" + maintainableArtefact.getMaintainer().getIdAsMaintainer() + "/" + maintainableArtefact.getCode() + "/"
                 + maintainableArtefact.getVersionLogic() + "/categories/" + expected.getNameableArtefact().getCode();
         assertEqualsResource(expected, RestInternalConstants.KIND_CATEGORY, expectedSelfLink, actual);
+    }
+
+    public static void assertEqualsResource(Categorisation expected, Resource actual) {
+        MaintainableArtefact maintainableArtefact = expected.getMaintainableArtefact();
+        String expectedSelfLink = "http://data.istac.es/apis/srm/v1.0/categorisations/" + maintainableArtefact.getMaintainer().getIdAsMaintainer() + "/" + maintainableArtefact.getCode() + "/"
+                + maintainableArtefact.getVersionLogic();
+
+        assertEquals(RestInternalConstants.KIND_CATEGORISATION, actual.getKind());
+        assertEquals(expected.getMaintainableArtefact().getCode(), actual.getId());
+        assertEquals(expected.getMaintainableArtefact().getUrn(), actual.getUrn());
+        assertEquals(RestInternalConstants.KIND_CATEGORISATION, actual.getSelfLink().getKind());
+        assertEquals(expectedSelfLink, actual.getSelfLink().getHref());
+        assertEqualsInternationalString(expected.getMaintainableArtefact().getName(), actual.getTitle());
     }
 
     public static void assertEqualsCategoryScheme(CategorySchemeVersionMetamac source, CategoryScheme target) {
@@ -79,6 +93,19 @@ public class CategoriesAsserts extends Asserts {
 
         // Sdmx
         assertEqualsCategorySdmx(source, target);
+    }
+
+    public static void assertEqualsCategorisation(Categorisation source, org.siemac.metamac.rest.srm_internal.v1_0.domain.Categorisation target) {
+        assertEquals(RestInternalConstants.KIND_CATEGORISATION, target.getKind());
+        String parentLink = "http://data.istac.es/apis/srm/v1.0/categorisations";
+        String selfLink = parentLink + "/" + source.getMaintainableArtefact().getMaintainer().getIdAsMaintainer() + "/" + source.getMaintainableArtefact().getCode() + "/"
+                + source.getMaintainableArtefact().getVersionLogic();
+        assertEquals(RestInternalConstants.KIND_CATEGORISATION, target.getSelfLink().getKind());
+        assertEquals(selfLink, target.getSelfLink().getHref());
+        assertEquals(RestInternalConstants.KIND_CATEGORISATIONS, target.getParentLink().getKind());
+        assertEquals(parentLink, target.getParentLink().getHref());
+        assertEquals(source.getMaintainableArtefact().getReplaceToVersion(), target.getReplaceToVersion());
+        assertNull(target.getChildLinks());
     }
 
     @SuppressWarnings("rawtypes")

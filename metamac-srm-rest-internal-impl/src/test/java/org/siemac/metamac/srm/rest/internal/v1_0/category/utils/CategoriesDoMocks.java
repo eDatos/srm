@@ -6,6 +6,8 @@ import org.siemac.metamac.srm.core.category.serviceapi.utils.CategoriesMetamacDo
 import org.siemac.metamac.srm.rest.internal.v1_0.utils.DoMocks;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
+import com.arte.statistic.sdmx.srm.core.base.serviceapi.utils.BaseDoMocks;
+import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
 
 public class CategoriesDoMocks extends DoMocks {
 
@@ -52,4 +54,16 @@ public class CategoriesDoMocks extends DoMocks {
         fillNameableArtefactWithInmutableValues(resourceID, category.getNameableArtefact()); // immutable values to test xml streams
         return category;
     }
+
+    public static Categorisation mockCategorisation(String agencyID, String resourceID, String version) {
+        Categorisation target = new Categorisation();
+        target.setMaintainableArtefact(BaseDoMocks.mockMaintainableArtefact(resourceID, null, mockMaintainer(agencyID)));
+        fillMaintainableArtefactWithInmutableValues(agencyID, resourceID, version, target.getMaintainableArtefact());
+
+        CategorySchemeVersionMetamac categorySchemeVersionMetamac = mockCategoryScheme(agencyID, "categoryScheme-" + resourceID, version);
+        target.setArtefactCategorised(categorySchemeVersionMetamac.getMaintainableArtefact());
+        target.setCategory(mockCategory("category-" + resourceID, categorySchemeVersionMetamac, null));
+        return target;
+    }
+
 }

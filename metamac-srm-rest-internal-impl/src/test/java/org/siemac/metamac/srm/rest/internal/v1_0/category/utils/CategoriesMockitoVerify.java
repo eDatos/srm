@@ -13,6 +13,7 @@ import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.mockito.ArgumentCaptor;
 import org.siemac.metamac.rest.common.test.utils.MetamacRestAsserts;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.Categories;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.Categorisations;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.CategorySchemes;
 import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
@@ -20,10 +21,14 @@ import org.siemac.metamac.srm.core.category.serviceapi.CategoriesMetamacService;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.v1_0.utils.MockitoVerify;
 
+import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
+
 public class CategoriesMockitoVerify extends MockitoVerify {
 
+    // TODO verify retrieve!!!
+    
     @SuppressWarnings({"rawtypes", "unchecked"})
-    public static void verifyFindCategorySchemes(CategoriesMetamacService categoriesService, String agencyID, String resourceID, String limit, String offset, String query, String orderBy,
+    public static void verifyFindCategorySchemes(CategoriesMetamacService categoriesService, String agencyID, String resourceID, String version, String limit, String offset, String query, String orderBy,
             CategorySchemes categorySchemesActual) throws Exception {
 
         assertNotNull(categorySchemesActual);
@@ -35,7 +40,7 @@ public class CategoriesMockitoVerify extends MockitoVerify {
         verify(categoriesService).findCategorySchemesByCondition(any(ServiceContext.class), conditions.capture(), pagingParameter.capture());
 
         // Validate
-        List<ConditionalCriteria> conditionalCriteriaExpected = buildExpectedConditionalCriteriaToFindItemSchemes(agencyID, resourceID, query, orderBy, CategorySchemeVersionMetamac.class);
+        List<ConditionalCriteria> conditionalCriteriaExpected = buildExpectedConditionalCriteriaToFindItemSchemes(agencyID, resourceID, version, query, orderBy, CategorySchemeVersionMetamac.class);
         MetamacRestAsserts.assertEqualsConditionalCriteria(conditionalCriteriaExpected, conditions.getValue());
 
         PagingParameter pagingParameterExpected = buildExpectedPagingParameter(offset, limit);
@@ -56,6 +61,27 @@ public class CategoriesMockitoVerify extends MockitoVerify {
 
         // Validate
         List<ConditionalCriteria> conditionalCriteriaExpected = buildExpectedConditionalCriteriaToFindItems(agencyID, resourceID, version, query, orderBy, CategoryMetamac.class);
+        MetamacRestAsserts.assertEqualsConditionalCriteria(conditionalCriteriaExpected, conditions.getValue());
+
+        PagingParameter pagingParameterExpected = buildExpectedPagingParameter(offset, limit);
+        MetamacRestAsserts.assertEqualsPagingParameter(pagingParameterExpected, pagingParameter.getValue());
+    }
+    
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    public static void verifyFindCategorisations(CategoriesMetamacService categoriesService, String agencyID, String resourceID, String version, String limit, String offset, String query, String orderBy,
+            Categorisations categorisationsActual) throws Exception {
+
+        assertNotNull(categorisationsActual);
+        assertEquals(RestInternalConstants.KIND_CATEGORISATIONS, categorisationsActual.getKind());
+
+        // Verify
+        ArgumentCaptor<List> conditions = ArgumentCaptor.forClass(List.class);
+        ArgumentCaptor<PagingParameter> pagingParameter = ArgumentCaptor.forClass(PagingParameter.class);
+        verify(categoriesService).findCategorisationsByCondition(any(ServiceContext.class), conditions.capture(), pagingParameter.capture());
+
+        // Validate
+        List<ConditionalCriteria> conditionalCriteriaExpected = buildExpectedConditionalCriteriaToFindItemSchemes(agencyID, resourceID, version, query, orderBy, Categorisation.class);
         MetamacRestAsserts.assertEqualsConditionalCriteria(conditionalCriteriaExpected, conditions.getValue());
 
         PagingParameter pagingParameterExpected = buildExpectedPagingParameter(offset, limit);

@@ -154,7 +154,7 @@ public class SrmRestInternalFacadeV10CategoriesTest extends SrmRestInternalFacad
     }
 
     @Test
-    public void testFindCatengorySchemesByAgencyAndResourceErrorWildcard() throws Exception {
+    public void testFindCategorySchemesByAgencyAndResourceErrorWildcard() throws Exception {
         try {
             getSrmRestInternalFacadeClientXml().findCategorySchemes(AGENCY_1, WILDCARD, null, null, null, null);
         } catch (ServerWebApplicationException e) {
@@ -466,7 +466,7 @@ public class SrmRestInternalFacadeV10CategoriesTest extends SrmRestInternalFacad
         }
 
         // Verify with Mockito
-        verifyFindCategorySchemes(categoriesService, agencyID, resourceID, limit, offset, query, orderBy, categorySchemes);
+        verifyFindCategorySchemes(categoriesService, agencyID, resourceID, null, limit, offset, query, orderBy, categorySchemes);
     }
 
     private void testFindCategories(String agencyID, String resourceID, String version, String limit, String offset, String query, String orderBy) throws Exception {

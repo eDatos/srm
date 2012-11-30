@@ -532,7 +532,7 @@ public class SrmRestInternalFacadeV10OrganisationsNoTypeTest extends SrmRestInte
         }
 
         // Verify with Mockito
-        verifyFindOrganisationSchemesNoType(organisationsService, agencyID, resourceID, limit, offset, query, orderBy, itemSchemes);
+        verifyFindOrganisationSchemesNoType(organisationsService, agencyID, resourceID, version, limit, offset, query, orderBy, itemSchemes);
     }
 
     private void testFindOrganisations(String agencyID, String resourceID, String version, String limit, String offset, String query, String orderBy) throws Exception {

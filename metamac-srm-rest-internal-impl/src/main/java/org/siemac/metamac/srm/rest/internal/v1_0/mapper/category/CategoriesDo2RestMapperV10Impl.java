@@ -8,6 +8,7 @@ import org.siemac.metamac.rest.common.v1_0.domain.Resource;
 import org.siemac.metamac.rest.common.v1_0.domain.ResourceLink;
 import org.siemac.metamac.rest.search.criteria.mapper.SculptorCriteria2RestCriteria;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.Categories;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.Categorisations;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.Category;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.CategoryScheme;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.CategorySchemes;
@@ -20,6 +21,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
+import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
 import com.arte.statistic.sdmx.srm.core.category.mapper.CategoriesDo2JaxbCallback;
 
 @Component
@@ -30,7 +32,7 @@ public class CategoriesDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl imp
 
     @Autowired
     @Qualifier("categoriesDo2JaxbCallbackMetamac")
-    private CategoriesDo2JaxbCallback                                               categoriesDo2JaxbCallback;
+    private CategoriesDo2JaxbCallback                                                categoriesDo2JaxbCallback;
 
     @Override
     public CategorySchemes toCategorySchemes(PagedResult<CategorySchemeVersionMetamac> sourcesPagedResult, String agencyID, String resourceID, String query, String orderBy, Integer limit) {
@@ -108,6 +110,46 @@ public class CategoriesDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl imp
         return target;
     }
 
+    @Override
+    public Categorisations toCategorisations(PagedResult<Categorisation> sourcesPagedResult, String agencyID, String resourceID, String query, String orderBy, Integer limit) {
+
+        Categorisations targets = new Categorisations();
+        targets.setKind(RestInternalConstants.KIND_CATEGORISATIONS);
+
+        // Pagination
+        String baseLink = toCategorisationsLink(agencyID, resourceID, null);
+        SculptorCriteria2RestCriteria.toPagedResult(sourcesPagedResult, targets, query, orderBy, limit, baseLink);
+
+        // Values
+        for (Categorisation source : sourcesPagedResult.getValues()) {
+            Resource target = toResource(source);
+            targets.getCategorisations().add(target);
+        }
+        return targets;
+    }
+
+    @Override
+    public org.siemac.metamac.rest.srm_internal.v1_0.domain.Categorisation toCategorisation(Categorisation source) {
+        if (source == null) {
+            return null;
+        }
+        // following method will call toCategorisation(Categorisation source, Categorisation target) method, thank to callback
+        return (org.siemac.metamac.rest.srm_internal.v1_0.domain.Categorisation) categoriesDo2JaxbSdmxMapper.categorisationDoToJaxb(source, categoriesDo2JaxbCallback);
+    }
+
+    @Override
+    public void toCategorisation(Categorisation source, org.siemac.metamac.rest.srm_internal.v1_0.domain.Categorisation target) {
+        if (source == null) {
+            return;
+        }
+        target.setKind(RestInternalConstants.KIND_CATEGORISATION);
+        target.setSelfLink(toCategorisationSelfLink(source));
+        target.setUri(target.getSelfLink().getHref());
+        target.setReplaceToVersion(source.getMaintainableArtefact().getReplaceToVersion());
+        target.setParentLink(toCategorisationParentLink(source));
+        target.setChildLinks(toCategorisationChildLinks(source));
+    }
+
     private ResourceLink toCategorySchemeSelfLink(CategorySchemeVersionMetamac source) {
         return toResourceLink(RestInternalConstants.KIND_CATEGORY_SCHEME, toCategorySchemeLink(source));
     }
@@ -136,6 +178,18 @@ public class CategoriesDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl imp
         return null;
     }
 
+    private ResourceLink toCategorisationSelfLink(Categorisation source) {
+        return toResourceLink(RestInternalConstants.KIND_CATEGORISATION, toCategorisationLink(source));
+    }
+    private ResourceLink toCategorisationParentLink(Categorisation source) {
+        return toResourceLink(RestInternalConstants.KIND_CATEGORISATIONS, toCategorisationsLink(null, null, null));
+    }
+
+    private ChildLinks toCategorisationChildLinks(Categorisation source) {
+        // nothing
+        return null;
+    }
+
     private Resource toResource(CategorySchemeVersionMetamac source) {
         if (source == null) {
             return null;
@@ -148,6 +202,13 @@ public class CategoriesDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl imp
             return null;
         }
         return toResource(source.getNameableArtefact(), RestInternalConstants.KIND_CATEGORY, toCategorySelfLink(source));
+    }
+
+    private Resource toResource(Categorisation source) {
+        if (source == null) {
+            return null;
+        }
+        return toResource(source.getMaintainableArtefact(), RestInternalConstants.KIND_CATEGORISATION, toCategorisationSelfLink(source));
     }
 
     private String toCategorySchemesLink(String agencyID, String resourceID, String version) {
@@ -165,11 +226,20 @@ public class CategoriesDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl imp
     private String toCategoryLink(com.arte.statistic.sdmx.srm.core.base.domain.Item item) {
         return toItemLink(toSubpathItemSchemes(), toSubpathItems(), item);
     }
+    private String toCategorisationsLink(String agencyID, String resourceID, String version) {
+        return toItemSchemesLink(toSubpathCategorisations(), agencyID, resourceID, version);
+    }
+    private String toCategorisationLink(Categorisation categorisation) {
+        return toItemSchemeLink(toSubpathCategorisations(), categorisation.getMaintainableArtefact());
+    }
 
     private String toSubpathItemSchemes() {
         return RestInternalConstants.LINK_SUBPATH_CATEGORY_SCHEMES;
     }
     private String toSubpathItems() {
         return RestInternalConstants.LINK_SUBPATH_CATEGORIES;
+    }
+    private String toSubpathCategorisations() {
+        return RestInternalConstants.LINK_SUBPATH_CATEGORISATIONS;
     }
 }

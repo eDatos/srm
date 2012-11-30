@@ -147,6 +147,9 @@ public class BaseDo2RestMapperV10Impl implements BaseDo2RestMapperV10 {
     }
     protected String toItemSchemeLink(String schemesSubPath, ItemSchemeVersion itemSchemeVersion) {
         MaintainableArtefact maintainableArtefact = itemSchemeVersion.getMaintainableArtefact();
+        return toItemSchemeLink(schemesSubPath, maintainableArtefact);
+    }
+    protected String toItemSchemeLink(String schemesSubPath, MaintainableArtefact maintainableArtefact) {
         return toItemSchemesLink(schemesSubPath, getIdAsMaintainer(maintainableArtefact.getMaintainer()), maintainableArtefact.getCode(), maintainableArtefact.getVersionLogic());
     }
 

@@ -437,7 +437,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeAgenciesTest extends SrmRe
         }
 
         // Verify with Mockito
-        verifyFindAgencySchemes(organisationsService, agencyID, resourceID, limit, offset, query, orderBy, itemSchemes);
+        verifyFindAgencySchemes(organisationsService, agencyID, resourceID, version, limit, offset, query, orderBy, itemSchemes);
     }
 
     private void testFindAgencies(String agencyID, String resourceID, String version, String limit, String offset, String query, String orderBy) throws Exception {

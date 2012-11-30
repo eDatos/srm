@@ -4,8 +4,11 @@ import org.siemac.metamac.rest.search.criteria.mapper.RestCriteria2SculptorCrite
 import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
 
+import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
+
 public interface CategoriesRest2DoMapper {
 
     public RestCriteria2SculptorCriteria<CategorySchemeVersionMetamac> getCategorySchemeCriteriaMapper();
     public RestCriteria2SculptorCriteria<CategoryMetamac> getCategoryCriteriaMapper();
+    public RestCriteria2SculptorCriteria<Categorisation> getCategorisationCriteriaMapper();
 }

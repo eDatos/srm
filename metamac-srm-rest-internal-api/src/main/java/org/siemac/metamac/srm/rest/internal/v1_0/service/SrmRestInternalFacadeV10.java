@@ -11,6 +11,8 @@ import org.siemac.metamac.rest.srm_internal.v1_0.domain.Agency;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.AgencyScheme;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.AgencySchemes;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.Categories;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.Categorisation;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.Categorisations;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.Category;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.CategoryScheme;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.CategorySchemes;
@@ -122,30 +124,30 @@ public interface SrmRestInternalFacadeV10 {
     Category retrieveCategory(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @PathParam("version") String version, @PathParam("categoryID") String categoryID);
 
     // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    // TODO CATEGORISATIONS
+    // CATEGORISATIONS
     // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    // @GET
-    // @Produces("application/xml")
-    // @Path("categorisations")
-    // Categorisations findCategorisations(@QueryParam("query") String query, @QueryParam("orderBy") String orderBy, @QueryParam("limit") String limit, @QueryParam("offset") String offset);
-    //
-    // @GET
-    // @Produces("application/xml")
-    // @Path("categorisations/{agencyID}")
-    // Categorisations findCategorisations(@PathParam("agencyID") String agencyID, @QueryParam("query") String query, @QueryParam("orderBy") String orderBy, @QueryParam("limit") String limit,
-    // @QueryParam("offset") String offset);
-    //
-    // @GET
-    // @Produces("application/xml")
-    // @Path("categorisations/{agencyID}/{resourceID}")
-    // Categorisations findCategorisations(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @QueryParam("query") String query, @QueryParam("orderBy") String orderBy,
-    // @QueryParam("limit") String limit, @QueryParam("offset") String offset);
-    //
-    // @GET
-    // @Produces("application/xml")
-    // @Path("categorisations/{agencyID}/{resourceID}/{version}")
-    // Categorisations findCategorisations(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @PathParam("version") String version);
+    @GET
+    @Produces("application/xml")
+    @Path("categorisations")
+    Categorisations findCategorisations(@QueryParam("query") String query, @QueryParam("orderBy") String orderBy, @QueryParam("limit") String limit, @QueryParam("offset") String offset);
+
+    @GET
+    @Produces("application/xml")
+    @Path("categorisations/{agencyID}")
+    Categorisations findCategorisations(@PathParam("agencyID") String agencyID, @QueryParam("query") String query, @QueryParam("orderBy") String orderBy, @QueryParam("limit") String limit,
+            @QueryParam("offset") String offset);
+
+    @GET
+    @Produces("application/xml")
+    @Path("categorisations/{agencyID}/{resourceID}")
+    Categorisations findCategorisations(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @QueryParam("query") String query, @QueryParam("orderBy") String orderBy,
+            @QueryParam("limit") String limit, @QueryParam("offset") String offset);
+
+    @GET
+    @Produces("application/xml")
+    @Path("categorisations/{agencyID}/{resourceID}/{version}")
+    Categorisation retrieveCategorisation(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @PathParam("version") String version);
 
     // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     // ORGANISATIONS - ALL ORGANISATIONS
@@ -159,8 +161,8 @@ public interface SrmRestInternalFacadeV10 {
     @GET
     @Produces("application/xml")
     @Path("organisationschemes/{agencyID}")
-    OrganisationSchemes findOrganisationSchemes(@PathParam("agencyID") String agencyID, @QueryParam("query") String query, @QueryParam("orderBy") String orderBy,
-            @QueryParam("limit") String limit, @QueryParam("offset") String offset);
+    OrganisationSchemes findOrganisationSchemes(@PathParam("agencyID") String agencyID, @QueryParam("query") String query, @QueryParam("orderBy") String orderBy, @QueryParam("limit") String limit,
+            @QueryParam("offset") String offset);
 
     @GET
     @Produces("application/xml")
@@ -176,8 +178,8 @@ public interface SrmRestInternalFacadeV10 {
     @GET
     @Produces("application/xml")
     @Path("organisationschemes/{agencyID}/{resourceID}/{version}/organisations")
-    Organisations findOrganisations(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @PathParam("version") String version,
-            @QueryParam("query") String query, @QueryParam("orderBy") String orderBy, @QueryParam("limit") String limit, @QueryParam("offset") String offset);
+    Organisations findOrganisations(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @PathParam("version") String version, @QueryParam("query") String query,
+            @QueryParam("orderBy") String orderBy, @QueryParam("limit") String limit, @QueryParam("offset") String offset);
 
     @GET
     @Produces("application/xml")
@@ -260,7 +262,6 @@ public interface SrmRestInternalFacadeV10 {
     OrganisationUnit retrieveOrganisationUnit(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @PathParam("version") String version,
             @PathParam("organisationID") String organisationID);
 
-
     // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     // ORGANISATIONS - DATA PROVIDERS
     // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -273,8 +274,8 @@ public interface SrmRestInternalFacadeV10 {
     @GET
     @Produces("application/xml")
     @Path("dataproviderschemes/{agencyID}")
-    DataProviderSchemes findDataProviderSchemes(@PathParam("agencyID") String agencyID, @QueryParam("query") String query, @QueryParam("orderBy") String orderBy,
-            @QueryParam("limit") String limit, @QueryParam("offset") String offset);
+    DataProviderSchemes findDataProviderSchemes(@PathParam("agencyID") String agencyID, @QueryParam("query") String query, @QueryParam("orderBy") String orderBy, @QueryParam("limit") String limit,
+            @QueryParam("offset") String offset);
 
     @GET
     @Produces("application/xml")
@@ -290,15 +291,14 @@ public interface SrmRestInternalFacadeV10 {
     @GET
     @Produces("application/xml")
     @Path("dataproviderschemes/{agencyID}/{resourceID}/{version}/dataproviders")
-    DataProviders findDataProviders(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @PathParam("version") String version,
-            @QueryParam("query") String query, @QueryParam("orderBy") String orderBy, @QueryParam("limit") String limit, @QueryParam("offset") String offset);
+    DataProviders findDataProviders(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @PathParam("version") String version, @QueryParam("query") String query,
+            @QueryParam("orderBy") String orderBy, @QueryParam("limit") String limit, @QueryParam("offset") String offset);
 
     @GET
     @Produces("application/xml")
     @Path("dataproviderschemes/{agencyID}/{resourceID}/{version}/dataproviders/{organisationID}")
     DataProvider retrieveDataProvider(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @PathParam("version") String version,
             @PathParam("organisationID") String organisationID);
-
 
     // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     // ORGANISATIONS - DATA CONSUMERS
@@ -312,8 +312,8 @@ public interface SrmRestInternalFacadeV10 {
     @GET
     @Produces("application/xml")
     @Path("dataconsumerschemes/{agencyID}")
-    DataConsumerSchemes findDataConsumerSchemes(@PathParam("agencyID") String agencyID, @QueryParam("query") String query, @QueryParam("orderBy") String orderBy,
-            @QueryParam("limit") String limit, @QueryParam("offset") String offset);
+    DataConsumerSchemes findDataConsumerSchemes(@PathParam("agencyID") String agencyID, @QueryParam("query") String query, @QueryParam("orderBy") String orderBy, @QueryParam("limit") String limit,
+            @QueryParam("offset") String offset);
 
     @GET
     @Produces("application/xml")
@@ -329,8 +329,8 @@ public interface SrmRestInternalFacadeV10 {
     @GET
     @Produces("application/xml")
     @Path("dataconsumerschemes/{agencyID}/{resourceID}/{version}/dataconsumers")
-    DataConsumers findDataConsumers(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @PathParam("version") String version,
-            @QueryParam("query") String query, @QueryParam("orderBy") String orderBy, @QueryParam("limit") String limit, @QueryParam("offset") String offset);
+    DataConsumers findDataConsumers(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @PathParam("version") String version, @QueryParam("query") String query,
+            @QueryParam("orderBy") String orderBy, @QueryParam("limit") String limit, @QueryParam("offset") String offset);
 
     @GET
     @Produces("application/xml")

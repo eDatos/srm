@@ -37,32 +37,32 @@ import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.Organisatio
 
 public class OrganisationsMockitoVerify extends MockitoVerify {
 
-    public static void verifyFindOrganisationSchemesNoType(OrganisationsMetamacService organisationsService, String agencyID, String resourceID, String limit, String offset, String query,
-            String orderBy, OrganisationSchemes actual) throws Exception {
-        verifyFindOrganisationSchemes(organisationsService, agencyID, resourceID, limit, offset, query, orderBy, RestInternalConstants.KIND_ORGANISATION_SCHEMES, null, actual);
+    public static void verifyFindOrganisationSchemesNoType(OrganisationsMetamacService organisationsService, String agencyID, String resourceID, String version, String limit, String offset,
+            String query, String orderBy, OrganisationSchemes actual) throws Exception {
+        verifyFindOrganisationSchemes(organisationsService, agencyID, resourceID, version, limit, offset, query, orderBy, RestInternalConstants.KIND_ORGANISATION_SCHEMES, null, actual);
     }
 
-    public static void verifyFindAgencySchemes(OrganisationsMetamacService organisationsService, String agencyID, String resourceID, String limit, String offset, String query, String orderBy,
-            AgencySchemes actual) throws Exception {
-        verifyFindOrganisationSchemes(organisationsService, agencyID, resourceID, limit, offset, query, orderBy, RestInternalConstants.KIND_AGENCY_SCHEMES, OrganisationSchemeTypeEnum.AGENCY_SCHEME,
-                actual);
+    public static void verifyFindAgencySchemes(OrganisationsMetamacService organisationsService, String agencyID, String resourceID, String version, String limit, String offset, String query,
+            String orderBy, AgencySchemes actual) throws Exception {
+        verifyFindOrganisationSchemes(organisationsService, agencyID, resourceID, version, limit, offset, query, orderBy, RestInternalConstants.KIND_AGENCY_SCHEMES,
+                OrganisationSchemeTypeEnum.AGENCY_SCHEME, actual);
     }
 
-    public static void verifyFindOrganisationUnitSchemes(OrganisationsMetamacService organisationsService, String agencyID, String resourceID, String limit, String offset, String query,
-            String orderBy, OrganisationUnitSchemes actual) throws Exception {
-        verifyFindOrganisationSchemes(organisationsService, agencyID, resourceID, limit, offset, query, orderBy, RestInternalConstants.KIND_ORGANISATION_UNIT_SCHEMES,
+    public static void verifyFindOrganisationUnitSchemes(OrganisationsMetamacService organisationsService, String agencyID, String resourceID, String version, String limit, String offset,
+            String query, String orderBy, OrganisationUnitSchemes actual) throws Exception {
+        verifyFindOrganisationSchemes(organisationsService, agencyID, resourceID, version, limit, offset, query, orderBy, RestInternalConstants.KIND_ORGANISATION_UNIT_SCHEMES,
                 OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME, actual);
     }
 
-    public static void verifyFindDataProviderSchemes(OrganisationsMetamacService organisationsService, String agencyID, String resourceID, String limit, String offset, String query, String orderBy,
-            DataProviderSchemes actual) throws Exception {
-        verifyFindOrganisationSchemes(organisationsService, agencyID, resourceID, limit, offset, query, orderBy, RestInternalConstants.KIND_DATA_PROVIDER_SCHEMES,
+    public static void verifyFindDataProviderSchemes(OrganisationsMetamacService organisationsService, String agencyID, String resourceID, String version, String limit, String offset, String query,
+            String orderBy, DataProviderSchemes actual) throws Exception {
+        verifyFindOrganisationSchemes(organisationsService, agencyID, resourceID, version, limit, offset, query, orderBy, RestInternalConstants.KIND_DATA_PROVIDER_SCHEMES,
                 OrganisationSchemeTypeEnum.DATA_PROVIDER_SCHEME, actual);
     }
 
-    public static void verifyFindDataConsumerSchemes(OrganisationsMetamacService organisationsService, String agencyID, String resourceID, String limit, String offset, String query, String orderBy,
-            DataConsumerSchemes actual) throws Exception {
-        verifyFindOrganisationSchemes(organisationsService, agencyID, resourceID, limit, offset, query, orderBy, RestInternalConstants.KIND_DATA_CONSUMER_SCHEMES,
+    public static void verifyFindDataConsumerSchemes(OrganisationsMetamacService organisationsService, String agencyID, String resourceID, String version, String limit, String offset, String query,
+            String orderBy, DataConsumerSchemes actual) throws Exception {
+        verifyFindOrganisationSchemes(organisationsService, agencyID, resourceID, version, limit, offset, query, orderBy, RestInternalConstants.KIND_DATA_CONSUMER_SCHEMES,
                 OrganisationSchemeTypeEnum.DATA_CONSUMER_SCHEME, actual);
     }
 
@@ -115,8 +115,8 @@ public class OrganisationsMockitoVerify extends MockitoVerify {
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
-    private static void verifyFindOrganisationSchemes(OrganisationsMetamacService organisationsService, String agencyID, String resourceID, String limit, String offset, String query, String orderBy,
-            String kindExpected, OrganisationSchemeTypeEnum type, ListBase actual) throws Exception {
+    private static void verifyFindOrganisationSchemes(OrganisationsMetamacService organisationsService, String agencyID, String resourceID, String version, String limit, String offset, String query,
+            String orderBy, String kindExpected, OrganisationSchemeTypeEnum type, ListBase actual) throws Exception {
 
         assertNotNull(actual);
         assertEquals(kindExpected, actual.getKind());
@@ -127,15 +127,16 @@ public class OrganisationsMockitoVerify extends MockitoVerify {
         verify(organisationsService).findOrganisationSchemesByCondition(any(ServiceContext.class), conditions.capture(), pagingParameter.capture());
 
         // Validate
-        List<ConditionalCriteria> conditionalCriteriaExpected = buildExpectedConditionalCriteriaToFindOrganisationSchemes(agencyID, resourceID, query, orderBy, type);
+        List<ConditionalCriteria> conditionalCriteriaExpected = buildExpectedConditionalCriteriaToFindOrganisationSchemes(agencyID, resourceID, version, query, orderBy, type);
         MetamacRestAsserts.assertEqualsConditionalCriteria(conditionalCriteriaExpected, conditions.getValue());
 
         PagingParameter pagingParameterExpected = buildExpectedPagingParameter(offset, limit);
         MetamacRestAsserts.assertEqualsPagingParameter(pagingParameterExpected, pagingParameter.getValue());
     }
 
-    private static List<ConditionalCriteria> buildExpectedConditionalCriteriaToFindOrganisationSchemes(String agencyID, String resourceID, String query, String orderBy, OrganisationSchemeTypeEnum type) {
-        List<ConditionalCriteria> expected = buildExpectedConditionalCriteriaToFindItemSchemes(agencyID, resourceID, query, orderBy, OrganisationSchemeVersionMetamac.class);
+    private static List<ConditionalCriteria> buildExpectedConditionalCriteriaToFindOrganisationSchemes(String agencyID, String resourceID, String version, String query, String orderBy,
+            OrganisationSchemeTypeEnum type) {
+        List<ConditionalCriteria> expected = buildExpectedConditionalCriteriaToFindItemSchemes(agencyID, resourceID, version, query, orderBy, OrganisationSchemeVersionMetamac.class);
         if (type != null) {
             expected.add(ConditionalCriteriaBuilder.criteriaFor(OrganisationSchemeVersionMetamac.class).withProperty(OrganisationSchemeVersionMetamacProperties.organisationSchemeType()).eq(type)
                     .buildSingle());

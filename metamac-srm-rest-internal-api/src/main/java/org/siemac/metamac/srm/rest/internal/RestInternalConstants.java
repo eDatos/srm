@@ -19,6 +19,7 @@ public class RestInternalConstants {
 
     public static String LINK_SUBPATH_CATEGORY_SCHEMES          = "categoryschemes";
     public static String LINK_SUBPATH_CATEGORIES                = "categories";
+    public static String LINK_SUBPATH_CATEGORISATIONS           = "categorisations";
 
     public static String LINK_SUBPATH_AGENCY_SCHEMES            = "agencyschemes";
     public static String LINK_SUBPATH_ORGANISATION_UNIT_SCHEMES = "organisationunitschemes";
@@ -42,6 +43,8 @@ public class RestInternalConstants {
     public static String KIND_CATEGORY_SCHEME                   = API_NAME + RestConstants.KIND_SEPARATOR + "categoryScheme";
     public static String KIND_CATEGORIES                        = API_NAME + RestConstants.KIND_SEPARATOR + "categories";
     public static String KIND_CATEGORY                          = API_NAME + RestConstants.KIND_SEPARATOR + "category";
+    public static String KIND_CATEGORISATIONS                   = API_NAME + RestConstants.KIND_SEPARATOR + "categorisations";
+    public static String KIND_CATEGORISATION                    = API_NAME + RestConstants.KIND_SEPARATOR + "categorisation";
 
     public static String KIND_ORGANISATION_SCHEMES              = API_NAME + RestConstants.KIND_SEPARATOR + "organisationSchemes";
     public static String KIND_AGENCY_SCHEMES                    = API_NAME + RestConstants.KIND_SEPARATOR + "agencySchemes";

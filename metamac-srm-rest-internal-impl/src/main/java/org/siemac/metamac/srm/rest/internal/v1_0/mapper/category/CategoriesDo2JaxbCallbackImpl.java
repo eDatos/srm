@@ -47,7 +47,8 @@ public class CategoriesDo2JaxbCallbackImpl implements CategoriesDo2JaxbCallback 
 
     @Override
     public CategorisationType createCategorisationJaxb(Categorisation source) {
-        // TODO categorizaciones
-        return null;
+        org.siemac.metamac.rest.srm_internal.v1_0.domain.Categorisation target = new org.siemac.metamac.rest.srm_internal.v1_0.domain.Categorisation();
+        categoriesDo2RestMapperV10.toCategorisation(source, target);
+        return target;
     }
 }

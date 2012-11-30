@@ -437,7 +437,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends 
         }
 
         // Verify with Mockito
-        verifyFindDataConsumerSchemes(organisationsService, agencyID, resourceID, limit, offset, query, orderBy, itemSchemes);
+        verifyFindDataConsumerSchemes(organisationsService, agencyID, resourceID, version, limit, offset, query, orderBy, itemSchemes);
     }
 
     private void testFindDataConsumers(String agencyID, String resourceID, String version, String limit, String offset, String query, String orderBy) throws Exception {

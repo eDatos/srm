@@ -62,6 +62,17 @@
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
+    
+    <xs:complexType name="Categorisation">
+        <xs:complexContent>
+            <xs:extension base="sdmx:CategorisationType">
+                <xs:sequence>
+                    <xs:group ref="tns:ItemSchemeGroup" />
+                </xs:sequence>
+                <xs:attribute name="kind" type="xs:string" use="required" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>    
 
     <!-- Lists -->
     <xs:complexType name="ConceptSchemes">
@@ -114,6 +125,16 @@
         </xs:complexContent>
     </xs:complexType>
 
+    <xs:complexType name="Categorisations">
+        <xs:complexContent>
+            <xs:extension base="common:ListBase">
+                <xs:sequence>
+                    <xs:element name="categorisation" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    
     <xs:complexType name="OrganisationSchemes">
         <xs:complexContent>
             <xs:extension base="common:ListBase">
@@ -427,6 +448,22 @@
             <xs:enumeration value="ID" />
         </xs:restriction>
     </xs:simpleType>
+    
+    <xs:simpleType name="CategorisationCriteriaPropertyRestriction">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="ID" />
+            <xs:enumeration value="URN" />
+            <xs:enumeration value="NAME" />
+            <xs:enumeration value="CATEGORY" />
+            <xs:enumeration value="ARTEFACT" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="CategorisationCriteriaPropertyOrder">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="ID" />
+        </xs:restriction>
+    </xs:simpleType>
 
     <xs:simpleType name="OrganisationSchemeCriteriaPropertyRestriction">
         <xs:restriction base="xs:token">
@@ -489,6 +526,8 @@
     <xs:element name="categoryScheme" type="tns:CategoryScheme" />
     <xs:element name="categories" type="tns:Categories" />
     <xs:element name="category" type="tns:Category" />
+    <xs:element name="categorisations" type="tns:Categorisations" />
+    <xs:element name="categorisation" type="tns:Categorisation" />
 
     <xs:element name="organisationSchemes" type="tns:OrganisationSchemes" />
     <xs:element name="organisationScheme" type="tns:OrganisationScheme" />

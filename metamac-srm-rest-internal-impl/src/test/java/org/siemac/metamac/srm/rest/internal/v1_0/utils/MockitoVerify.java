@@ -40,7 +40,7 @@ public class MockitoVerify extends MetamacRestAsserts {
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
-    public static List<ConditionalCriteria> buildExpectedConditionalCriteriaToFindItemSchemes(String agencyID, String resourceID, String query, String orderBy, Class entityClass) {
+    public static List<ConditionalCriteria> buildExpectedConditionalCriteriaToFindItemSchemes(String agencyID, String resourceID, String version, String query, String orderBy, Class entityClass) {
         List<ConditionalCriteria> expected = new ArrayList<ConditionalCriteria>();
         expected.addAll(buildFindItemSchemesExpectedOrder(orderBy, entityClass));
         expected.addAll(buildFindItemSchemesExpectedQuery(query, entityClass));
@@ -51,6 +51,9 @@ public class MockitoVerify extends MetamacRestAsserts {
         }
         if (resourceID != null && !RestInternalConstants.WILDCARD.equals(resourceID)) {
             expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(ItemSchemeVersionProperties.maintainableArtefact().code()).eq(resourceID).buildSingle());
+        }
+        if (version != null && !RestInternalConstants.WILDCARD.equals(version)) {
+            expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(ItemSchemeVersionProperties.maintainableArtefact().versionLogic()).eq(version).buildSingle());
         }
         return expected;
     }

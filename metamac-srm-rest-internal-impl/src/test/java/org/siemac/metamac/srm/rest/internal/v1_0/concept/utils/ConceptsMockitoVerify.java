@@ -23,7 +23,7 @@ import org.siemac.metamac.srm.rest.internal.v1_0.utils.MockitoVerify;
 public class ConceptsMockitoVerify extends MockitoVerify {
 
     @SuppressWarnings({"rawtypes", "unchecked"})
-    public static void verifyFindConceptSchemes(ConceptsMetamacService conceptsService, String agencyID, String resourceID, String limit, String offset, String query, String orderBy,
+    public static void verifyFindConceptSchemes(ConceptsMetamacService conceptsService, String agencyID, String resourceID, String version, String limit, String offset, String query, String orderBy,
             ConceptSchemes conceptSchemesActual) throws Exception {
 
         assertNotNull(conceptSchemesActual);
@@ -35,7 +35,7 @@ public class ConceptsMockitoVerify extends MockitoVerify {
         verify(conceptsService).findConceptSchemesByCondition(any(ServiceContext.class), conditions.capture(), pagingParameter.capture());
 
         // Validate
-        List<ConditionalCriteria> conditionalCriteriaExpected = buildExpectedConditionalCriteriaToFindItemSchemes(agencyID, resourceID, query, orderBy, ConceptSchemeVersionMetamac.class);
+        List<ConditionalCriteria> conditionalCriteriaExpected = buildExpectedConditionalCriteriaToFindItemSchemes(agencyID, resourceID, version, query, orderBy, ConceptSchemeVersionMetamac.class);
         MetamacRestAsserts.assertEqualsConditionalCriteria(conditionalCriteriaExpected, conditions.getValue());
 
         PagingParameter pagingParameterExpected = buildExpectedPagingParameter(offset, limit);

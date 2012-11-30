@@ -489,7 +489,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
         }
 
         // Verify with Mockito
-        verifyFindConceptSchemes(conceptsService, agencyID, resourceID, limit, offset, query, orderBy, conceptSchemes);
+        verifyFindConceptSchemes(conceptsService, agencyID, resourceID, version, limit, offset, query, orderBy, conceptSchemes);
     }
 
     private void testFindConcepts(String agencyID, String resourceID, String version, String limit, String offset, String query, String orderBy) throws Exception {
