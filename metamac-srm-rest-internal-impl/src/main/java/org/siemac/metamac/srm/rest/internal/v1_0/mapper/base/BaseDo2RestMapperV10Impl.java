@@ -150,7 +150,7 @@ public class BaseDo2RestMapperV10Impl implements BaseDo2RestMapperV10 {
         return toItemSchemeLink(schemesSubPath, maintainableArtefact);
     }
     protected String toItemSchemeLink(String schemesSubPath, MaintainableArtefact maintainableArtefact) {
-        return toItemSchemesLink(schemesSubPath, getIdAsMaintainer(maintainableArtefact.getMaintainer()), maintainableArtefact.getCode(), maintainableArtefact.getVersionLogic());
+        return toItemSchemesLink(schemesSubPath, getIdAsMaintainer(maintainableArtefact.getMaintainer()), getCode(maintainableArtefact), maintainableArtefact.getVersionLogic());
     }
 
     // API/[SCHEMES]/{agencyID}/{resourceID}/{version}/[ITEMS]
@@ -161,13 +161,13 @@ public class BaseDo2RestMapperV10Impl implements BaseDo2RestMapperV10 {
     }
     protected String toItemsLink(String schemesSubPath, String itemsSubPath, ItemSchemeVersion itemSchemeVersion) {
         MaintainableArtefact maintainableArtefact = itemSchemeVersion.getMaintainableArtefact();
-        return toItemsLink(schemesSubPath, itemsSubPath, getIdAsMaintainer(maintainableArtefact.getMaintainer()), maintainableArtefact.getCode(), maintainableArtefact.getVersionLogic());
+        return toItemsLink(schemesSubPath, itemsSubPath, getIdAsMaintainer(maintainableArtefact.getMaintainer()), getCode(maintainableArtefact), maintainableArtefact.getVersionLogic());
     }
 
     // API/[SCHEMES]/{agencyID}/{resourceID}/{version}/[ITEMS]/{itemID}
     protected String toItemLink(String schemesSubPath, String itemsSubPath, Item item) {
         String link = toItemsLink(schemesSubPath, itemsSubPath, item.getItemSchemeVersion());
-        link = RestUtils.createLink(link, item.getNameableArtefact().getCode());
+        link = RestUtils.createLink(link, getCode(item.getNameableArtefact()));
         return link;
     }
 
@@ -185,6 +185,14 @@ public class BaseDo2RestMapperV10Impl implements BaseDo2RestMapperV10 {
         } else {
             // default SDMX
             return SdmxSrmConstants.SDMX_MAINTAINER;
+        }
+    }
+    
+    private String getCode(NameableArtefact nameableArtefact) {
+        if (nameableArtefact.getCodeFull() != null) {
+            return nameableArtefact.getCodeFull();
+        } else {
+            return nameableArtefact.getCode();
         }
     }
 }
