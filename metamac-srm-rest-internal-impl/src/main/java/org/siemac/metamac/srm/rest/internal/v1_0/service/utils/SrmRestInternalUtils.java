@@ -29,15 +29,15 @@ public class SrmRestInternalUtils {
         }
         addConditionalCriteriaItemSchemePublished(conditionalCriteria, entity, ItemSchemeVersionProperties.maintainableArtefact());
         addConditionalCriteriaByAgency(conditionalCriteria, agencyID, entity, ItemSchemeVersionProperties.maintainableArtefact());
-        addConditionalCriteriaByItemSchemeCode(conditionalCriteria, resourceID, entity, ItemSchemeVersionProperties.maintainableArtefact());
-        addConditionalCriteriaByItemSchemeVersion(conditionalCriteria, version, entity, ItemSchemeVersionProperties.maintainableArtefact());
+        addConditionalCriteriaByItemCodeSchemeCode(conditionalCriteria, resourceID, entity, ItemSchemeVersionProperties.maintainableArtefact());
+        addConditionalCriteriaByItemCodeSchemeVersion(conditionalCriteria, version, entity, ItemSchemeVersionProperties.maintainableArtefact());
 
         return conditionalCriteria;
     }
 
     // TODO latest
     @SuppressWarnings("rawtypes")
-    public static List<ConditionalCriteria> buildConditionalCriteriaItems(String agencyID, String resourceID, String version, String conceptID, List<ConditionalCriteria> conditionalCriteriaQuery,
+    public static List<ConditionalCriteria> buildConditionalCriteriaItems(String agencyID, String resourceID, String version, String itemID, List<ConditionalCriteria> conditionalCriteriaQuery,
             Class entity) throws MetamacException {
 
         List<ConditionalCriteria> conditionalCriteria = new ArrayList<ConditionalCriteria>();
@@ -46,9 +46,9 @@ public class SrmRestInternalUtils {
         }
         addConditionalCriteriaItemSchemePublished(conditionalCriteria, entity, ItemProperties.itemSchemeVersion().maintainableArtefact());
         addConditionalCriteriaByAgency(conditionalCriteria, agencyID, entity, ItemProperties.itemSchemeVersion().maintainableArtefact());
-        addConditionalCriteriaByItemSchemeCode(conditionalCriteria, resourceID, entity, ItemProperties.itemSchemeVersion().maintainableArtefact());
-        addConditionalCriteriaByItemSchemeVersion(conditionalCriteria, version, entity, ItemProperties.itemSchemeVersion().maintainableArtefact());
-        addConditionalCriteriaByItem(conditionalCriteria, conceptID, entity, ItemProperties.nameableArtefact());
+        addConditionalCriteriaByItemCodeSchemeCode(conditionalCriteria, resourceID, entity, ItemProperties.itemSchemeVersion().maintainableArtefact());
+        addConditionalCriteriaByItemCodeSchemeVersion(conditionalCriteria, version, entity, ItemProperties.itemSchemeVersion().maintainableArtefact());
+        addConditionalCriteriaByItemCode(conditionalCriteria, itemID, entity, ItemProperties.nameableArtefact());
 
         return conditionalCriteria;
     }
@@ -107,21 +107,21 @@ public class SrmRestInternalUtils {
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    private static void addConditionalCriteriaByItemSchemeCode(List<ConditionalCriteria> conditionalCriteria, String code, Class entity, MaintainableArtefactProperty maintainableArtefactProperty) {
+    private static void addConditionalCriteriaByItemCodeSchemeCode(List<ConditionalCriteria> conditionalCriteria, String code, Class entity, MaintainableArtefactProperty maintainableArtefactProperty) {
         if (code != null && !RestInternalConstants.WILDCARD.equals(code)) {
             conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(entity).withProperty(maintainableArtefactProperty.code()).eq(code).buildSingle());
         }
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    private static void addConditionalCriteriaByItemSchemeVersion(List<ConditionalCriteria> conditionalCriteria, String version, Class entity, MaintainableArtefactProperty maintainableArtefactProperty) {
+    private static void addConditionalCriteriaByItemCodeSchemeVersion(List<ConditionalCriteria> conditionalCriteria, String version, Class entity, MaintainableArtefactProperty maintainableArtefactProperty) {
         if (version != null && !RestInternalConstants.WILDCARD.equals(version)) {
             conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(entity).withProperty(maintainableArtefactProperty.versionLogic()).eq(version).buildSingle());
         }
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    private static void addConditionalCriteriaByItem(List<ConditionalCriteria> conditionalCriteria, String code, Class entity, NameableArtefactProperty nameableArtefactProperty) {
+    private static void addConditionalCriteriaByItemCode(List<ConditionalCriteria> conditionalCriteria, String code, Class entity, NameableArtefactProperty nameableArtefactProperty) {
         if (code != null && !RestInternalConstants.WILDCARD.equals(code)) {
             conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(entity).withProperty(nameableArtefactProperty.code()).eq(code).buildSingle());
         }
