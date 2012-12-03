@@ -100,6 +100,7 @@
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
         CODE="AGENCIES"
+        CODE_FULL="[null]"
         URI="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.base.AgencyScheme=SDMX:AGENCIES(01.000)"
         REPLACED_BY_VERSION="[null]"
