@@ -65,33 +65,24 @@ public abstract class SrmRestInternalFacadeV10OrganisationsTest extends SrmRestI
 
                     public org.fornax.cartridges.sculptor.framework.domain.PagedResult<OrganisationSchemeVersionMetamac> answer(InvocationOnMock invocation) throws Throwable {
                         List<ConditionalCriteria> conditions = (List<ConditionalCriteria>) invocation.getArguments()[1];
-                        ConditionalCriteria conditionalCriteriaAgencyID = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Equal,
-                                OrganisationSchemeVersionMetamacProperties.maintainableArtefact().maintainer().idAsMaintainer());
-                        ConditionalCriteria conditionalCriteriaResourceID = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Equal,
-                                OrganisationSchemeVersionMetamacProperties.maintainableArtefact().code());
-                        ConditionalCriteria conditionalCriteriaVersion = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Equal,
-                                OrganisationSchemeVersionMetamacProperties.maintainableArtefact().versionLogic());
+                        String agencyID = getAgencyIdFromConditionalCriteria(conditions, OrganisationSchemeVersionMetamacProperties.maintainableArtefact());
+                        String resourceID = getItemSchemeIdFromConditionalCriteria(conditions, OrganisationSchemeVersionMetamacProperties.maintainableArtefact());
+                        String version = getVersionFromConditionalCriteria(conditions, OrganisationSchemeVersionMetamacProperties.maintainableArtefact());
                         ConditionalCriteria conditionalCriteriaType = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Equal,
                                 OrganisationSchemeVersionMetamacProperties.organisationSchemeType());
 
                         OrganisationSchemeTypeEnum organisationSchemeTypeEnum = conditionalCriteriaType != null ? (OrganisationSchemeTypeEnum) conditionalCriteriaType.getFirstOperant() : null;
-                        if (conditionalCriteriaAgencyID != null && conditionalCriteriaResourceID != null && conditionalCriteriaVersion != null) {
+                        if (agencyID != null && resourceID != null && version != null) {
                             // Retrieve one
                             OrganisationSchemeVersionMetamac itemSchemeVersion = null;
-                            if (NOT_EXISTS.equals(conditionalCriteriaAgencyID.getFirstOperant()) || NOT_EXISTS.equals(conditionalCriteriaResourceID.getFirstOperant())
-                                    || NOT_EXISTS.equals(conditionalCriteriaVersion.getFirstOperant())) {
+                            if (NOT_EXISTS.equals(agencyID) || NOT_EXISTS.equals(resourceID) || NOT_EXISTS.equals(version)) {
                                 itemSchemeVersion = null;
-                            } else if (AGENCY_1.equals(conditionalCriteriaAgencyID.getFirstOperant()) && ITEM_SCHEME_1_CODE.equals(conditionalCriteriaResourceID.getFirstOperant())
-                                    && ITEM_SCHEME_1_VERSION_1.equals(conditionalCriteriaVersion.getFirstOperant())) {
+                            } else if (AGENCY_1.equals(agencyID) && ITEM_SCHEME_1_CODE.equals(resourceID) && ITEM_SCHEME_1_VERSION_1.equals(version)) {
                                 itemSchemeVersion = OrganisationsDoMocks.mockOrganisationSchemeWithOrganisations(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1, organisationSchemeTypeEnum);
-                            } else if (AGENCY_1.equals(conditionalCriteriaAgencyID.getFirstOperant())
-                                    && ITEM_SCHEME_ORGANISATION_TYPE_AGENCY_1_CODE.equals(conditionalCriteriaResourceID.getFirstOperant())
-                                    && ITEM_SCHEME_1_VERSION_1.equals(conditionalCriteriaVersion.getFirstOperant())) {
+                            } else if (AGENCY_1.equals(agencyID) && ITEM_SCHEME_ORGANISATION_TYPE_AGENCY_1_CODE.equals(resourceID) && ITEM_SCHEME_1_VERSION_1.equals(version)) {
                                 itemSchemeVersion = OrganisationsDoMocks.mockOrganisationSchemeWithOrganisations(AGENCY_1, ITEM_SCHEME_ORGANISATION_TYPE_AGENCY_1_CODE, ITEM_SCHEME_1_VERSION_1,
                                         OrganisationSchemeTypeEnum.AGENCY_SCHEME);
-                            } else if (AGENCY_1.equals(conditionalCriteriaAgencyID.getFirstOperant())
-                                    && ITEM_SCHEME_ORGANISATION_TYPE_ORGANISATION_UNIT_1_CODE.equals(conditionalCriteriaResourceID.getFirstOperant())
-                                    && ITEM_SCHEME_1_VERSION_1.equals(conditionalCriteriaVersion.getFirstOperant())) {
+                            } else if (AGENCY_1.equals(agencyID) && ITEM_SCHEME_ORGANISATION_TYPE_ORGANISATION_UNIT_1_CODE.equals(resourceID) && ITEM_SCHEME_1_VERSION_1.equals(version)) {
                                 itemSchemeVersion = OrganisationsDoMocks.mockOrganisationSchemeWithOrganisations(AGENCY_1, ITEM_SCHEME_ORGANISATION_TYPE_ORGANISATION_UNIT_1_CODE,
                                         ITEM_SCHEME_1_VERSION_1, OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME);
                             } else {
@@ -133,27 +124,22 @@ public abstract class SrmRestInternalFacadeV10OrganisationsTest extends SrmRestI
 
             public org.fornax.cartridges.sculptor.framework.domain.PagedResult<OrganisationMetamac> answer(InvocationOnMock invocation) throws Throwable {
                 List<ConditionalCriteria> conditions = (List<ConditionalCriteria>) invocation.getArguments()[1];
-                ConditionalCriteria conditionalCriteriaAgencyID = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Equal, OrganisationMetamacProperties
-                        .itemSchemeVersion().maintainableArtefact().maintainer().idAsMaintainer());
-                ConditionalCriteria conditionalCriteriaResourceID = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Equal, OrganisationMetamacProperties
-                        .itemSchemeVersion().maintainableArtefact().code());
-                ConditionalCriteria conditionalCriteriaVersion = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Equal, OrganisationMetamacProperties
-                        .itemSchemeVersion().maintainableArtefact().versionLogic());
-                ConditionalCriteria conditionalCriteriaItem = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Equal, OrganisationMetamacProperties
-                        .nameableArtefact().code());
+
+                String agencyID = getAgencyIdFromConditionalCriteria(conditions, OrganisationMetamacProperties.itemSchemeVersion().maintainableArtefact());
+                String resourceID = getItemSchemeIdFromConditionalCriteria(conditions, OrganisationMetamacProperties.itemSchemeVersion().maintainableArtefact());
+                String version = getVersionFromConditionalCriteria(conditions, OrganisationMetamacProperties.itemSchemeVersion().maintainableArtefact());
+                String itemID = getItemIdFromConditionalCriteria(conditions, OrganisationMetamacProperties.nameableArtefact());
                 ConditionalCriteria conditionalCriteriaType = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Equal,
                         OrganisationMetamacProperties.organisationType());
 
                 OrganisationTypeEnum organisationTypeEnum = conditionalCriteriaType != null ? (OrganisationTypeEnum) conditionalCriteriaType.getFirstOperant() : null;
 
-                if (conditionalCriteriaAgencyID != null && conditionalCriteriaResourceID != null && conditionalCriteriaVersion != null && conditionalCriteriaItem != null) {
+                if (agencyID != null && resourceID != null && version != null && itemID != null) {
                     // Retrieve one
                     OrganisationMetamac item = null;
-                    if (NOT_EXISTS.equals(conditionalCriteriaAgencyID.getFirstOperant()) || NOT_EXISTS.equals(conditionalCriteriaResourceID.getFirstOperant())
-                            || NOT_EXISTS.equals(conditionalCriteriaVersion.getFirstOperant()) || NOT_EXISTS.equals(conditionalCriteriaItem.getFirstOperant())) {
+                    if (NOT_EXISTS.equals(agencyID) || NOT_EXISTS.equals(resourceID) || NOT_EXISTS.equals(version) || NOT_EXISTS.equals(itemID)) {
                         item = null;
-                    } else if (AGENCY_1.equals(conditionalCriteriaAgencyID.getFirstOperant()) && ITEM_SCHEME_1_CODE.equals(conditionalCriteriaResourceID.getFirstOperant())
-                            && ITEM_SCHEME_1_VERSION_1.equals(conditionalCriteriaVersion.getFirstOperant()) && ITEM_1_CODE.equals(conditionalCriteriaItem.getFirstOperant())) {
+                    } else if (AGENCY_1.equals(agencyID) && ITEM_SCHEME_1_CODE.equals(resourceID) && ITEM_SCHEME_1_VERSION_1.equals(version) && ITEM_1_CODE.equals(itemID)) {
                         OrganisationSchemeVersionMetamac itemScheme1 = OrganisationsDoMocks.mockOrganisationScheme(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1,
                                 SrmRestInternalUtils.toOrganisationSchemeType(organisationTypeEnum));
                         OrganisationMetamac parent = null;
@@ -161,14 +147,12 @@ public abstract class SrmRestInternalFacadeV10OrganisationsTest extends SrmRestI
                             parent = OrganisationsDoMocks.mockOrganisation(ITEM_2_CODE, itemScheme1, null, organisationTypeEnum);;
                         }
                         item = OrganisationsDoMocks.mockOrganisation(ITEM_1_CODE, itemScheme1, parent, organisationTypeEnum);
-                    } else if (AGENCY_1.equals(conditionalCriteriaAgencyID.getFirstOperant()) && ITEM_SCHEME_1_CODE.equals(conditionalCriteriaResourceID.getFirstOperant())
-                            && ITEM_SCHEME_1_VERSION_1.equals(conditionalCriteriaVersion.getFirstOperant()) && ITEM_ORGANISATION_TYPE_AGENCY_1_CODE.equals(conditionalCriteriaItem.getFirstOperant())) {
+                    } else if (AGENCY_1.equals(agencyID) && ITEM_SCHEME_1_CODE.equals(resourceID) && ITEM_SCHEME_1_VERSION_1.equals(version) && ITEM_ORGANISATION_TYPE_AGENCY_1_CODE.equals(itemID)) {
                         OrganisationSchemeVersionMetamac itemScheme1 = OrganisationsDoMocks.mockOrganisationScheme(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1,
                                 OrganisationSchemeTypeEnum.AGENCY_SCHEME);
                         item = OrganisationsDoMocks.mockOrganisation(ITEM_ORGANISATION_TYPE_AGENCY_1_CODE, itemScheme1, null, OrganisationTypeEnum.AGENCY);
-                    } else if (AGENCY_1.equals(conditionalCriteriaAgencyID.getFirstOperant()) && ITEM_SCHEME_1_CODE.equals(conditionalCriteriaResourceID.getFirstOperant())
-                            && ITEM_SCHEME_1_VERSION_1.equals(conditionalCriteriaVersion.getFirstOperant())
-                            && ITEM_ORGANISATION_TYPE_ORGANISATION_UNIT_1_CODE.equals(conditionalCriteriaItem.getFirstOperant())) {
+                    } else if (AGENCY_1.equals(agencyID) && ITEM_SCHEME_1_CODE.equals(resourceID) && ITEM_SCHEME_1_VERSION_1.equals(version)
+                            && ITEM_ORGANISATION_TYPE_ORGANISATION_UNIT_1_CODE.equals(itemID)) {
                         OrganisationSchemeVersionMetamac itemScheme1 = OrganisationsDoMocks.mockOrganisationScheme(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1,
                                 OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME);
                         OrganisationMetamac parent = OrganisationsDoMocks.mockOrganisation(ITEM_2_CODE, itemScheme1, null, organisationTypeEnum);;

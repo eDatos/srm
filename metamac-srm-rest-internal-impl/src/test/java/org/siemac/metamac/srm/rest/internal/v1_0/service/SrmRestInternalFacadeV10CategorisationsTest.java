@@ -22,14 +22,12 @@ import javax.ws.rs.core.Response.Status;
 import org.apache.cxf.jaxrs.client.ServerWebApplicationException;
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
-import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria.Operator;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
-import org.siemac.metamac.common.test.utils.ConditionalCriteriaUtils;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.Categorisation;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.Categorisations;
@@ -296,21 +294,16 @@ public class SrmRestInternalFacadeV10CategorisationsTest extends SrmRestInternal
                     public org.fornax.cartridges.sculptor.framework.domain.PagedResult<com.arte.statistic.sdmx.srm.core.category.domain.Categorisation> answer(InvocationOnMock invocation)
                             throws Throwable {
                         List<ConditionalCriteria> conditions = (List<ConditionalCriteria>) invocation.getArguments()[1];
-                        ConditionalCriteria conditionalCriteriaAgencyID = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Equal, CategorisationProperties
-                                .maintainableArtefact().maintainer().idAsMaintainer());
-                        ConditionalCriteria conditionalCriteriaResourceID = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Equal, CategorisationProperties
-                                .maintainableArtefact().code());
-                        ConditionalCriteria conditionalCriteriaVersion = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Equal, CategorisationProperties
-                                .maintainableArtefact().versionLogic());
+                        String agencyID = getAgencyIdFromConditionalCriteria(conditions, CategorisationProperties.maintainableArtefact());
+                        String resourceID = getItemSchemeIdFromConditionalCriteria(conditions, CategorisationProperties.maintainableArtefact());
+                        String version = getVersionFromConditionalCriteria(conditions, CategorisationProperties.maintainableArtefact());
 
-                        if (conditionalCriteriaAgencyID != null && conditionalCriteriaResourceID != null && conditionalCriteriaVersion != null) {
+                        if (agencyID != null && resourceID != null && version != null) {
                             // Retrieve one
                             com.arte.statistic.sdmx.srm.core.category.domain.Categorisation categorisation = null;
-                            if (NOT_EXISTS.equals(conditionalCriteriaAgencyID.getFirstOperant()) || NOT_EXISTS.equals(conditionalCriteriaResourceID.getFirstOperant())
-                                    || NOT_EXISTS.equals(conditionalCriteriaVersion.getFirstOperant())) {
+                            if (NOT_EXISTS.equals(agencyID) || NOT_EXISTS.equals(resourceID) || NOT_EXISTS.equals(version)) {
                                 categorisation = null;
-                            } else if (AGENCY_1.equals(conditionalCriteriaAgencyID.getFirstOperant()) && CATEGORISATION_1_CODE.equals(conditionalCriteriaResourceID.getFirstOperant())
-                                    && CATEGORISATION_1_VERSION_1.equals(conditionalCriteriaVersion.getFirstOperant())) {
+                            } else if (AGENCY_1.equals(agencyID) && CATEGORISATION_1_CODE.equals(resourceID) && CATEGORISATION_1_VERSION_1.equals(version)) {
                                 categorisation = CategoriesDoMocks.mockCategorisation(AGENCY_1, CATEGORISATION_1_CODE, CATEGORISATION_1_VERSION_1);
                             } else {
                                 fail();

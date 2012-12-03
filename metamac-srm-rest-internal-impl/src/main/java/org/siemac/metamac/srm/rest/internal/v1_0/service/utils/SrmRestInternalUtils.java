@@ -109,12 +109,14 @@ public class SrmRestInternalUtils {
     @SuppressWarnings({"unchecked", "rawtypes"})
     private static void addConditionalCriteriaByItemCodeSchemeCode(List<ConditionalCriteria> conditionalCriteria, String code, Class entity, MaintainableArtefactProperty maintainableArtefactProperty) {
         if (code != null && !RestInternalConstants.WILDCARD.equals(code)) {
-            conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(entity).withProperty(maintainableArtefactProperty.code()).eq(code).buildSingle());
+            conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(entity).lbrace().withProperty(maintainableArtefactProperty.code()).eq(code).or()
+                    .withProperty(maintainableArtefactProperty.codeFull()).eq(code).rbrace().buildSingle());
         }
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    private static void addConditionalCriteriaByItemCodeSchemeVersion(List<ConditionalCriteria> conditionalCriteria, String version, Class entity, MaintainableArtefactProperty maintainableArtefactProperty) {
+    private static void addConditionalCriteriaByItemCodeSchemeVersion(List<ConditionalCriteria> conditionalCriteria, String version, Class entity,
+            MaintainableArtefactProperty maintainableArtefactProperty) {
         if (version != null && !RestInternalConstants.WILDCARD.equals(version)) {
             conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(entity).withProperty(maintainableArtefactProperty.versionLogic()).eq(version).buildSingle());
         }
@@ -123,7 +125,8 @@ public class SrmRestInternalUtils {
     @SuppressWarnings({"unchecked", "rawtypes"})
     private static void addConditionalCriteriaByItemCode(List<ConditionalCriteria> conditionalCriteria, String code, Class entity, NameableArtefactProperty nameableArtefactProperty) {
         if (code != null && !RestInternalConstants.WILDCARD.equals(code)) {
-            conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(entity).withProperty(nameableArtefactProperty.code()).eq(code).buildSingle());
+            conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(entity).lbrace().withProperty(nameableArtefactProperty.code()).eq(code).or()
+                    .withProperty(nameableArtefactProperty.codeFull()).eq(code).rbrace().buildSingle());
         }
     }
 }

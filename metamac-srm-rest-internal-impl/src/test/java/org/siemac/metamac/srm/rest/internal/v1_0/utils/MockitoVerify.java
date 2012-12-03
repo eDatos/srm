@@ -50,7 +50,8 @@ public class MockitoVerify extends MetamacRestAsserts {
             expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(ItemSchemeVersionProperties.maintainableArtefact().maintainer().idAsMaintainer()).eq(agencyID).buildSingle());
         }
         if (resourceID != null && !RestInternalConstants.WILDCARD.equals(resourceID)) {
-            expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(ItemSchemeVersionProperties.maintainableArtefact().code()).eq(resourceID).buildSingle());
+            expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).lbrace().withProperty(ItemSchemeVersionProperties.maintainableArtefact().code()).eq(resourceID).or()
+                    .withProperty(ItemSchemeVersionProperties.maintainableArtefact().codeFull()).eq(resourceID).rbrace().buildSingle());
         }
         if (version != null && !RestInternalConstants.WILDCARD.equals(version)) {
             expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(ItemSchemeVersionProperties.maintainableArtefact().versionLogic()).eq(version).buildSingle());
@@ -66,11 +67,12 @@ public class MockitoVerify extends MetamacRestAsserts {
         expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).distinctRoot().buildSingle());
         expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(ItemProperties.itemSchemeVersion().maintainableArtefact().finalLogic()).eq(Boolean.TRUE).buildSingle());
         if (agencyID != null && !RestInternalConstants.WILDCARD.equals(agencyID)) {
-            expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(ItemProperties.itemSchemeVersion().maintainableArtefact().maintainer().idAsMaintainer())
-                    .eq(agencyID).buildSingle());
+            expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(ItemProperties.itemSchemeVersion().maintainableArtefact().maintainer().idAsMaintainer()).eq(agencyID)
+                    .buildSingle());
         }
         if (resourceID != null && !RestInternalConstants.WILDCARD.equals(resourceID)) {
-            expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(ItemProperties.itemSchemeVersion().maintainableArtefact().code()).eq(resourceID).buildSingle());
+            expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).lbrace().withProperty(ItemProperties.itemSchemeVersion().maintainableArtefact().code()).eq(resourceID).or()
+                    .withProperty(ItemProperties.itemSchemeVersion().maintainableArtefact().codeFull()).eq(resourceID).rbrace().buildSingle());
         }
         if (version != null && !RestInternalConstants.WILDCARD.equals(version)) {
             expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(ItemProperties.itemSchemeVersion().maintainableArtefact().versionLogic()).eq(version).buildSingle());

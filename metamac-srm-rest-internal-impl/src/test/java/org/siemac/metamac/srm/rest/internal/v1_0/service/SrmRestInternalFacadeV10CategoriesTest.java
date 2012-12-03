@@ -33,14 +33,12 @@ import javax.ws.rs.core.Response.Status;
 import org.apache.cxf.jaxrs.client.ServerWebApplicationException;
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
-import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria.Operator;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
-import org.siemac.metamac.common.test.utils.ConditionalCriteriaUtils;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.Categories;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.Category;
@@ -212,7 +210,7 @@ public class SrmRestInternalFacadeV10CategoriesTest extends SrmRestInternalFacad
             getSrmRestInternalFacadeClientXml().retrieveCategoryScheme(agencyID, resourceID, version);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.NOT_FOUND.getStatusCode(), e.getStatus());
-            
+
             org.siemac.metamac.rest.common.v1_0.domain.Exception exception = extractErrorFromException(getSrmRestInternalFacadeClientXml(), e);
             assertEquals(RestServiceExceptionType.CATEGORY_SCHEME_NOT_FOUND.getCode(), exception.getCode());
             assertEquals("CategoryScheme not found in agencyID " + agencyID + " with ID " + resourceID + " and version " + version, exception.getMessage());
@@ -365,7 +363,7 @@ public class SrmRestInternalFacadeV10CategoriesTest extends SrmRestInternalFacad
             getSrmRestInternalFacadeClientXml().retrieveCategory(agencyID, resourceID, version, categoryID);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.NOT_FOUND.getStatusCode(), e.getStatus());
-            
+
             org.siemac.metamac.rest.common.v1_0.domain.Exception exception = extractErrorFromException(getSrmRestInternalFacadeClientXml(), e);
             assertEquals(RestServiceExceptionType.CATEGORY_NOT_FOUND.getCode(), exception.getCode());
             assertEquals("Category not found with ID " + categoryID + " in CategoryScheme in agencyID " + agencyID + " with ID " + resourceID + " and version " + version, exception.getMessage());
@@ -482,21 +480,16 @@ public class SrmRestInternalFacadeV10CategoriesTest extends SrmRestInternalFacad
 
                     public org.fornax.cartridges.sculptor.framework.domain.PagedResult<CategorySchemeVersionMetamac> answer(InvocationOnMock invocation) throws Throwable {
                         List<ConditionalCriteria> conditions = (List<ConditionalCriteria>) invocation.getArguments()[1];
-                        ConditionalCriteria conditionalCriteriaAgencyID = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Equal,
-                                CategorySchemeVersionMetamacProperties.maintainableArtefact().maintainer().idAsMaintainer());
-                        ConditionalCriteria conditionalCriteriaResourceID = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Equal,
-                                CategorySchemeVersionMetamacProperties.maintainableArtefact().code());
-                        ConditionalCriteria conditionalCriteriaVersion = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Equal,
-                                CategorySchemeVersionMetamacProperties.maintainableArtefact().versionLogic());
+                        String agencyID = getAgencyIdFromConditionalCriteria(conditions, CategorySchemeVersionMetamacProperties.maintainableArtefact());
+                        String resourceID = getItemSchemeIdFromConditionalCriteria(conditions, CategorySchemeVersionMetamacProperties.maintainableArtefact());
+                        String version = getVersionFromConditionalCriteria(conditions, CategorySchemeVersionMetamacProperties.maintainableArtefact());
 
-                        if (conditionalCriteriaAgencyID != null && conditionalCriteriaResourceID != null && conditionalCriteriaVersion != null) {
+                        if (agencyID != null && resourceID != null && version != null) {
                             // Retrieve one scheme
                             CategorySchemeVersionMetamac categorySchemeVersion = null;
-                            if (NOT_EXISTS.equals(conditionalCriteriaAgencyID.getFirstOperant()) || NOT_EXISTS.equals(conditionalCriteriaResourceID.getFirstOperant())
-                                    || NOT_EXISTS.equals(conditionalCriteriaVersion.getFirstOperant())) {
+                            if (NOT_EXISTS.equals(agencyID) || NOT_EXISTS.equals(resourceID) || NOT_EXISTS.equals(version)) {
                                 categorySchemeVersion = null;
-                            } else if (AGENCY_1.equals(conditionalCriteriaAgencyID.getFirstOperant()) && ITEM_SCHEME_1_CODE.equals(conditionalCriteriaResourceID.getFirstOperant())
-                                    && ITEM_SCHEME_1_VERSION_1.equals(conditionalCriteriaVersion.getFirstOperant())) {
+                            } else if (AGENCY_1.equals(agencyID) && ITEM_SCHEME_1_CODE.equals(resourceID) && ITEM_SCHEME_1_VERSION_1.equals(version)) {
                                 categorySchemeVersion = CategoriesDoMocks.mockCategorySchemeWithCategories(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1);
                             } else {
                                 fail();
@@ -526,23 +519,18 @@ public class SrmRestInternalFacadeV10CategoriesTest extends SrmRestInternalFacad
 
             public org.fornax.cartridges.sculptor.framework.domain.PagedResult<CategoryMetamac> answer(InvocationOnMock invocation) throws Throwable {
                 List<ConditionalCriteria> conditions = (List<ConditionalCriteria>) invocation.getArguments()[1];
-                ConditionalCriteria conditionalCriteriaAgencyID = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Equal, CategoryMetamacProperties
-                        .itemSchemeVersion().maintainableArtefact().maintainer().idAsMaintainer());
-                ConditionalCriteria conditionalCriteriaResourceID = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Equal, CategoryMetamacProperties
-                        .itemSchemeVersion().maintainableArtefact().code());
-                ConditionalCriteria conditionalCriteriaVersion = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Equal, CategoryMetamacProperties
-                        .itemSchemeVersion().maintainableArtefact().versionLogic());
-                ConditionalCriteria conditionalCriteriaItem = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Equal, CategoryMetamacProperties.nameableArtefact()
-                        .code());
 
-                if (conditionalCriteriaAgencyID != null && conditionalCriteriaResourceID != null && conditionalCriteriaVersion != null && conditionalCriteriaItem != null) {
+                String agencyID = getAgencyIdFromConditionalCriteria(conditions, CategoryMetamacProperties.itemSchemeVersion().maintainableArtefact());
+                String resourceID = getItemSchemeIdFromConditionalCriteria(conditions, CategoryMetamacProperties.itemSchemeVersion().maintainableArtefact());
+                String version = getVersionFromConditionalCriteria(conditions, CategoryMetamacProperties.itemSchemeVersion().maintainableArtefact());
+                String itemID = getItemIdFromConditionalCriteria(conditions, CategoryMetamacProperties.nameableArtefact());
+
+                if (agencyID != null && resourceID != null && version != null && itemID != null) {
                     // Retrieve one
                     CategoryMetamac category = null;
-                    if (NOT_EXISTS.equals(conditionalCriteriaAgencyID.getFirstOperant()) || NOT_EXISTS.equals(conditionalCriteriaResourceID.getFirstOperant())
-                            || NOT_EXISTS.equals(conditionalCriteriaVersion.getFirstOperant()) || NOT_EXISTS.equals(conditionalCriteriaItem.getFirstOperant())) {
+                    if (NOT_EXISTS.equals(agencyID) || NOT_EXISTS.equals(resourceID) || NOT_EXISTS.equals(version) || NOT_EXISTS.equals(itemID)) {
                         category = null;
-                    } else if (AGENCY_1.equals(conditionalCriteriaAgencyID.getFirstOperant()) && ITEM_SCHEME_1_CODE.equals(conditionalCriteriaResourceID.getFirstOperant())
-                            && ITEM_SCHEME_1_VERSION_1.equals(conditionalCriteriaVersion.getFirstOperant()) && ITEM_1_CODE.equals(conditionalCriteriaItem.getFirstOperant())) {
+                    } else if (AGENCY_1.equals(agencyID) && ITEM_SCHEME_1_CODE.equals(resourceID) && ITEM_SCHEME_1_VERSION_1.equals(version) && ITEM_1_CODE.equals(itemID)) {
                         CategorySchemeVersionMetamac categoryScheme1 = CategoriesDoMocks.mockCategoryScheme(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1);
                         CategoryMetamac parent = CategoriesDoMocks.mockCategory(ITEM_2_CODE, categoryScheme1, null);
                         category = CategoriesDoMocks.mockCategory(ITEM_1_CODE, categoryScheme1, parent);
