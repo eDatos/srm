@@ -425,7 +425,7 @@ public class SrmCoreServiceFacadeCodesSecurityTest extends SrmBaseTest {
         srmCoreServiceFacade.publishCodelistExternally(getServiceContextJefeNormalizacion(), codelistUrn);
     }
 
-    @Ignore
+    @Ignore // TODO pendiente error
     @Test
     public void testPublishExternallyCodelistJefeProduccion() throws Exception {
         String codelistUrn = CODELIST_3_V1;
