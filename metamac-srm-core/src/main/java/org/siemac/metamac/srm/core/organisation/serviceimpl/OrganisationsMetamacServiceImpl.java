@@ -175,7 +175,7 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
     public OrganisationSchemeVersionMetamac endOrganisationSchemeValidity(ServiceContext ctx, String urn) throws MetamacException {
 
         // Validation
-        OrganisationsMetamacInvocationValidator.checkEndOrganisationSchemeValidity(urn, null, null);
+        OrganisationsMetamacInvocationValidator.checkEndValidity(urn, null);
 
         // Retrieve version in specific procStatus
         OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationSchemeVersionMetamacRepository().retrieveOrganisationSchemeVersionByProcStatus(urn,

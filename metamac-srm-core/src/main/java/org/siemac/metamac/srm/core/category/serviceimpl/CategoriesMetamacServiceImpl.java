@@ -165,7 +165,7 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
     public CategorySchemeVersionMetamac endCategorySchemeValidity(ServiceContext ctx, String urn) throws MetamacException {
 
         // Validation
-        CategoriesMetamacInvocationValidator.checkEndCategorySchemeValidity(urn, null, null);
+        CategoriesMetamacInvocationValidator.checkEndValidity(urn, null);
 
         // Retrieve version in specific procStatus
         CategorySchemeVersionMetamac categorySchemeVersion = getCategorySchemeVersionMetamacRepository().retrieveCategorySchemeVersionByProcStatus(urn,

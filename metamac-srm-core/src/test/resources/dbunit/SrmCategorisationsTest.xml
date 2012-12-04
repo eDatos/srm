@@ -114,6 +114,7 @@
         
         VERSION_LOGIC="01.000"
         FINAL_LOGIC="1"
+        LATEST_FINAL="1"
         VALID_FROM_TZ="Europe/London"
         VALID_FROM="2011-01-02 02:02:04" 
         VALID_TO_TZ="[null]"
@@ -312,6 +313,7 @@
         
         VERSION_LOGIC="01.000"
         FINAL_LOGIC="1"
+        LATEST_FINAL="1"
         VALID_FROM_TZ="Europe/London"
         VALID_FROM="2011-01-02 02:02:04" 
         VALID_TO_TZ="[null]"
@@ -458,6 +460,7 @@
         
         VERSION_LOGIC="01.000"
         FINAL_LOGIC="1"
+        LATEST_FINAL="1"
         VALID_FROM_TZ="Europe/London"
         VALID_FROM="2011-01-02 02:02:04" 
         VALID_TO_TZ="[null]"
@@ -576,6 +579,7 @@
         
         VERSION_LOGIC="01.000"
         FINAL_LOGIC="1"
+        LATEST_FINAL="1"
         VALID_FROM_TZ="Europe/London"
         VALID_FROM="2012-02-02 02:02:04" 
         VALID_TO_TZ="[null]"
@@ -631,6 +635,7 @@
         
         VERSION_LOGIC="01.000"
         FINAL_LOGIC="0"
+        LATEST_FINAL="0"
         VALID_FROM_TZ="[null]"
         VALID_FROM="[null]" 
         VALID_TO_TZ="[null]"
@@ -721,6 +726,7 @@
         
         VERSION_LOGIC="01.000"
         FINAL_LOGIC="1"
+        LATEST_FINAL="1"
         VALID_FROM_TZ="[null]"
         VALID_FROM="[null]" 
         VALID_TO_TZ="[null]"
@@ -829,6 +835,7 @@
         
         VERSION_LOGIC="01.000"
         FINAL_LOGIC="1"
+        LATEST_FINAL="1"
         VALID_FROM_TZ="Europe/London"
         VALID_FROM="2012-02-02 02:02:04" 
         VALID_TO_TZ="[null]"
@@ -922,6 +929,7 @@
         
         VERSION_LOGIC="01.000"
         FINAL_LOGIC="0"
+        LATEST_FINAL="0"
         VALID_FROM_TZ="[null]"
         VALID_FROM="[null]" 
         VALID_TO_TZ="[null]"
@@ -1040,6 +1048,7 @@
         
         VERSION_LOGIC="01.000"
         FINAL_LOGIC="0"
+        LATEST_FINAL="0"
         VALID_FROM_TZ="[null]"
         VALID_FROM="[null]" 
         VALID_TO_TZ="[null]"
@@ -1095,6 +1104,7 @@
         
         VERSION_LOGIC="01.000"
         FINAL_LOGIC="0"
+        LATEST_FINAL="0"
         VALID_FROM_TZ="[null]"
         VALID_FROM="[null]" 
         VALID_TO_TZ="[null]"

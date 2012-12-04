@@ -168,7 +168,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     @Override
     public CodelistVersionMetamac endCodelistValidity(ServiceContext ctx, String urn) throws MetamacException {
         // Validation
-        CodesMetamacInvocationValidator.checkEndCodelistValidity(urn, null, null);
+        CodesMetamacInvocationValidator.checkEndValidity(urn, null);
 
         // Retrieve version in specific procStatus
         CodelistVersionMetamac codelistVersion = getCodelistVersionMetamacRepository().retrieveCodelistVersionByProcStatus(urn, new ProcStatusEnum[]{ProcStatusEnum.EXTERNALLY_PUBLISHED});

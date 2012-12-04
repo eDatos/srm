@@ -31,7 +31,6 @@ import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersionRepository;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DataStructureDefinitionVersion;
 import com.arte.statistic.sdmx.srm.core.structure.serviceapi.DataStructureDefinitionService;
 import com.arte.statistic.sdmx.srm.core.structure.serviceimpl.utils.StructureDoCopyUtils.StructureCopyCallback;
-import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponentList;
 
 /**
  * Implementation of DsdsMetamacService.
@@ -186,7 +185,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
     public DataStructureDefinitionVersionMetamac endDataStructureDefinitionValidity(ServiceContext ctx, String urn) throws MetamacException {
 
         // Validation
-        DsdsMetamacInvocationValidator.checkEndDataStructureDefinitionValidity(urn, null, null);
+        DsdsMetamacInvocationValidator.checkEndValidity(urn, null);
 
         // Retrieve version in specific procStatus
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = retrieveDataStructureDefinitionVersionByProcStatus(ctx, urn, ProcStatusEnum.EXTERNALLY_PUBLISHED);

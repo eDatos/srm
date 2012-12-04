@@ -786,6 +786,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertNull(conceptSchemeVersion.getLifeCycleMetadata().getInternalPublicationDate());
             assertNull(conceptSchemeVersion.getLifeCycleMetadata().getInternalPublicationUser());
             assertFalse(conceptSchemeVersion.getMaintainableArtefact().getFinalLogic());
+            assertFalse(conceptSchemeVersion.getMaintainableArtefact().getLatestFinal());
         }
 
         // Publish internally
@@ -803,6 +804,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertNull(conceptSchemeVersion.getLifeCycleMetadata().getExternalPublicationDate());
             assertNull(conceptSchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
             assertTrue(conceptSchemeVersion.getMaintainableArtefact().getFinalLogic());
+            assertTrue(conceptSchemeVersion.getMaintainableArtefact().getLatestFinal());
         }
         // Validate retrieving
         {
@@ -818,6 +820,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertNull(conceptSchemeVersion.getLifeCycleMetadata().getExternalPublicationDate());
             assertNull(conceptSchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
             assertTrue(conceptSchemeVersion.getMaintainableArtefact().getFinalLogic());
+            assertTrue(conceptSchemeVersion.getMaintainableArtefact().getLatestFinal());
         }
     }
 

@@ -180,7 +180,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     public ConceptSchemeVersionMetamac endConceptSchemeValidity(ServiceContext ctx, String urn) throws MetamacException {
 
         // Validation
-        ConceptsMetamacInvocationValidator.checkEndConceptSchemeValidity(urn, null, null);
+        ConceptsMetamacInvocationValidator.checkEndValidity(urn, null);
 
         // Retrieve version in specific procStatus
         ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptSchemeVersionMetamacRepository().retrieveConceptSchemeVersionByProcStatus(urn,
