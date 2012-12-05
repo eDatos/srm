@@ -111,6 +111,11 @@ public class CategorySchemeLifeCycleImpl extends LifeCycleImpl {
         }
 
         @Override
+        public Object markSrmResourceAsPublic(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
+            return categoriesService.markCategorySchemeAsPublic(ctx, getCategorySchemeVersionMetamac(srmResourceVersion).getMaintainableArtefact().getUrn());
+        }
+
+        @Override
         public Object startSrmResourceValidity(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
             return categoriesService.startCategorySchemeValidity(ctx, getCategorySchemeVersionMetamac(srmResourceVersion).getMaintainableArtefact().getUrn(), null);
         }

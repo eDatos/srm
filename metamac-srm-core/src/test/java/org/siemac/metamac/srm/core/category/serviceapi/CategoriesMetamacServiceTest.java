@@ -660,6 +660,8 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
             assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
             assertTrue(categorySchemeVersion.getMaintainableArtefact().getFinalLogic());
             assertTrue(categorySchemeVersion.getMaintainableArtefact().getLatestFinal());
+            assertFalse(categorySchemeVersion.getMaintainableArtefact().getPublicLogic());
+            assertFalse(categorySchemeVersion.getMaintainableArtefact().getLatestPublic());
         }
         // Validate retrieving
         {
@@ -762,6 +764,8 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
             assertNull(categorySchemeVersion.getMaintainableArtefact().getValidTo());
             assertNull(categorySchemeVersion.getLifeCycleMetadata().getIsExternalPublicationFailed());
             assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationFailedDate());
+            assertTrue(categorySchemeVersion.getMaintainableArtefact().getPublicLogic());
+            assertTrue(categorySchemeVersion.getMaintainableArtefact().getLatestPublic());
         }
         // Validate retrieving
         {

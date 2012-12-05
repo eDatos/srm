@@ -114,6 +114,11 @@ public class CodelistLifeCycleImpl extends LifeCycleImpl {
         }
 
         @Override
+        public Object markSrmResourceAsPublic(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
+            return codesService.markCodelistAsPublic(ctx, getCodelistVersionMetamac(srmResourceVersion).getMaintainableArtefact().getUrn());
+        }
+
+        @Override
         public Object startSrmResourceValidity(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
             return codesService.startCodelistValidity(ctx, getCodelistVersionMetamac(srmResourceVersion).getMaintainableArtefact().getUrn(), null);
         }

@@ -180,8 +180,9 @@ public abstract class LifeCycleImpl implements LifeCycle {
         // Validate to publish externally
         checkResourceInExternallyPublished(urn, srmResourceVersion, targetStatus);
 
-        // Start concept scheme validity
+        // Start concept scheme validity and mark as public
         srmResourceVersion = callback.startSrmResourceValidity(ctx, srmResourceVersion);
+        srmResourceVersion = callback.markSrmResourceAsPublic(ctx, srmResourceVersion);
         SrmLifeCycleMetadata lifeCycle = callback.getLifeCycleMetadata(srmResourceVersion);
 
         // Fill validTo in previous externally published versions without end validity
@@ -199,11 +200,12 @@ public abstract class LifeCycleImpl implements LifeCycle {
         lifeCycle.setExternalPublicationUser(ctx.getUserId());
         srmResourceVersion = callback.updateSrmResource(srmResourceVersion);
 
-        // Start validity of categorisations
+        // Start validity of categorisations and mark as public
         if (callback.canHaveCategorisations()) {
             List<Categorisation> categorisations = categoriesService.retrieveCategorisationsByArtefact(ctx, urn);
             for (Categorisation categorisation : categorisations) {
                 categoriesService.startCategorisationValidity(ctx, categorisation.getMaintainableArtefact().getUrn(), null);
+                categoriesService.markCategorisationAsPublic(ctx, categorisation.getMaintainableArtefact().getUrn());
             }
         }
 
@@ -361,8 +363,9 @@ public abstract class LifeCycleImpl implements LifeCycle {
         public void checkConcreteResourceInInternallyPublished(Object srmResourceVersion, List<MetamacExceptionItem> exceptions);
         public void checkConcreteResourceInExternallyPublished(Object srmResourceVersion, List<MetamacExceptionItem> exceptions);
 
-        // Validity, final
+        // Validity, final, public
         public Object markSrmResourceAsFinal(ServiceContext ctx, Object srmResourceVersion) throws MetamacException;
+        public Object markSrmResourceAsPublic(ServiceContext ctx, Object srmResourceVersion) throws MetamacException;
         public Object startSrmResourceValidity(ServiceContext ctx, Object srmResourceVersion) throws MetamacException;
         public Object endSrmResourceValidity(ServiceContext ctx, Object srmResourceVersion) throws MetamacException;
 

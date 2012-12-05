@@ -263,6 +263,9 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
         if (artefact.getFinalLogic()) {
             categorisation = categoriesService.markCategorisationAsFinal(ctx, categorisation.getMaintainableArtefact().getUrn());
         }
+        if (artefact.getPublicLogic()) {
+            categorisation = categoriesService.markCategorisationAsPublic(ctx, categorisation.getMaintainableArtefact().getUrn());
+        }
         if (artefact.getValidFrom() != null) {
             categorisation = categoriesService.startCategorisationValidity(ctx, categorisation.getMaintainableArtefact().getUrn(), null);
         }

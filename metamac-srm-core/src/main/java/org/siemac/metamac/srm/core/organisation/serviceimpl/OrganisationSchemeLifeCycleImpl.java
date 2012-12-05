@@ -111,6 +111,11 @@ public class OrganisationSchemeLifeCycleImpl extends LifeCycleImpl {
         }
 
         @Override
+        public Object markSrmResourceAsPublic(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
+            return organisationsService.markOrganisationSchemeAsPublic(ctx, getOrganisationSchemeVersionMetamac(srmResourceVersion).getMaintainableArtefact().getUrn());
+        }
+
+        @Override
         public Object startSrmResourceValidity(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
             return organisationsService.startOrganisationSchemeValidity(ctx, getOrganisationSchemeVersionMetamac(srmResourceVersion).getMaintainableArtefact().getUrn(), null);
         }

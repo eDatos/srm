@@ -828,6 +828,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertNull(codelistVersion.getLifeCycleMetadata().getExternalPublicationUser());
             assertTrue(codelistVersion.getMaintainableArtefact().getFinalLogic());
             assertTrue(codelistVersion.getMaintainableArtefact().getLatestFinal());
+            assertFalse(codelistVersion.getMaintainableArtefact().getPublicLogic());
+            assertFalse(codelistVersion.getMaintainableArtefact().getLatestPublic());
         }
         // Validate retrieving
         {
@@ -936,6 +938,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertNull(codelistVersion.getMaintainableArtefact().getValidTo());
             assertNull(codelistVersion.getLifeCycleMetadata().getIsExternalPublicationFailed());
             assertNull(codelistVersion.getLifeCycleMetadata().getExternalPublicationFailedDate());
+            assertTrue(codelistVersion.getMaintainableArtefact().getPublicLogic());
+            assertTrue(codelistVersion.getMaintainableArtefact().getLatestPublic());
         }
         // Validate retrieving
         {

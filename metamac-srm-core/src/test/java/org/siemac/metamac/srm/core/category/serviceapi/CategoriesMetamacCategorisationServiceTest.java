@@ -64,6 +64,9 @@ public class CategoriesMetamacCategorisationServiceTest extends SrmBaseTest {
         assertTrue(DateUtils.isSameDay(new Date(), categorisationRetrieved.getMaintainableArtefact().getValidFrom().toDate()));
         assertNull(categorisationRetrieved.getMaintainableArtefact().getValidTo());
         assertTrue(categorisationRetrieved.getMaintainableArtefact().getFinalLogic());
+        assertTrue(categorisationRetrieved.getMaintainableArtefact().getLatestFinal());
+        assertTrue(categorisationRetrieved.getMaintainableArtefact().getPublicLogic());
+        assertTrue(categorisationRetrieved.getMaintainableArtefact().getLatestPublic());
     }
 
     @Test
@@ -85,6 +88,9 @@ public class CategoriesMetamacCategorisationServiceTest extends SrmBaseTest {
         assertNull(categorisationRetrieved.getMaintainableArtefact().getValidFrom());
         assertNull(categorisationRetrieved.getMaintainableArtefact().getValidTo());
         assertFalse(categorisationRetrieved.getMaintainableArtefact().getFinalLogic());
+        assertFalse(categorisationRetrieved.getMaintainableArtefact().getLatestFinal());
+        assertFalse(categorisationRetrieved.getMaintainableArtefact().getPublicLogic());
+        assertFalse(categorisationRetrieved.getMaintainableArtefact().getLatestPublic());
     }
 
     @Test
@@ -120,6 +126,9 @@ public class CategoriesMetamacCategorisationServiceTest extends SrmBaseTest {
                 Categorisation categorisation = categorisations.get(i);
                 assertEquals(CATEGORISATION_4, categorisation.getMaintainableArtefact().getUrn());
                 assertFalse(categorisation.getMaintainableArtefact().getFinalLogic());
+                assertFalse(categorisation.getMaintainableArtefact().getLatestFinal());
+                assertFalse(categorisation.getMaintainableArtefact().getPublicLogic());
+                assertFalse(categorisation.getMaintainableArtefact().getLatestPublic());
                 assertNull(categorisation.getMaintainableArtefact().getValidFrom());
                 i++;
             }
@@ -127,6 +136,9 @@ public class CategoriesMetamacCategorisationServiceTest extends SrmBaseTest {
                 Categorisation categorisation = categorisations.get(i);
                 assertEquals(CATEGORISATION_5, categorisation.getMaintainableArtefact().getUrn());
                 assertFalse(categorisation.getMaintainableArtefact().getFinalLogic());
+                assertFalse(categorisation.getMaintainableArtefact().getLatestFinal());
+                assertFalse(categorisation.getMaintainableArtefact().getPublicLogic());
+                assertFalse(categorisation.getMaintainableArtefact().getLatestPublic());
                 assertNull(categorisation.getMaintainableArtefact().getValidFrom());
                 i++;
             }
@@ -145,20 +157,26 @@ public class CategoriesMetamacCategorisationServiceTest extends SrmBaseTest {
                 Categorisation categorisation = categorisations.get(i);
                 assertEquals(CATEGORISATION_4, categorisation.getMaintainableArtefact().getUrn());
                 assertTrue(categorisation.getMaintainableArtefact().getFinalLogic());
+                assertTrue(categorisation.getMaintainableArtefact().getLatestFinal());
                 assertNull(categorisation.getMaintainableArtefact().getValidFrom());
+                assertFalse(categorisation.getMaintainableArtefact().getPublicLogic());
+                assertFalse(categorisation.getMaintainableArtefact().getLatestPublic());
                 i++;
             }
             {
                 Categorisation categorisation = categorisations.get(i);
                 assertEquals(CATEGORISATION_5, categorisation.getMaintainableArtefact().getUrn());
                 assertTrue(categorisation.getMaintainableArtefact().getFinalLogic());
+                assertTrue(categorisation.getMaintainableArtefact().getLatestFinal());
                 assertNull(categorisation.getMaintainableArtefact().getValidFrom());
+                assertFalse(categorisation.getMaintainableArtefact().getPublicLogic());
+                assertFalse(categorisation.getMaintainableArtefact().getLatestPublic());
                 i++;
             }
             assertEquals(categorisations.size(), i);
         }
 
-        // PUBLISH EXTERNALLY artefact to check categorisations are "valid" now
+        // PUBLISH EXTERNALLY artefact to check categorisations are "valid" now and make public
         conceptsService.publishExternallyConceptScheme(getServiceContextAdministrador(), urn);
 
         // Check categorisations are published
@@ -170,14 +188,20 @@ public class CategoriesMetamacCategorisationServiceTest extends SrmBaseTest {
                 Categorisation categorisation = categorisations.get(i);
                 assertEquals(CATEGORISATION_4, categorisation.getMaintainableArtefact().getUrn());
                 assertTrue(categorisation.getMaintainableArtefact().getFinalLogic());
+                assertTrue(categorisation.getMaintainableArtefact().getLatestFinal());
                 assertTrue(DateUtils.isSameDay(new Date(), categorisation.getMaintainableArtefact().getValidFrom().toDate()));
+                assertTrue(categorisation.getMaintainableArtefact().getPublicLogic());
+                assertTrue(categorisation.getMaintainableArtefact().getLatestPublic());
                 i++;
             }
             {
                 Categorisation categorisation = categorisations.get(i);
                 assertEquals(CATEGORISATION_5, categorisation.getMaintainableArtefact().getUrn());
                 assertTrue(categorisation.getMaintainableArtefact().getFinalLogic());
+                assertTrue(categorisation.getMaintainableArtefact().getLatestFinal());
                 assertTrue(DateUtils.isSameDay(new Date(), categorisation.getMaintainableArtefact().getValidFrom().toDate()));
+                assertTrue(categorisation.getMaintainableArtefact().getPublicLogic());
+                assertTrue(categorisation.getMaintainableArtefact().getLatestPublic());
                 i++;
             }
             assertEquals(categorisations.size(), i);

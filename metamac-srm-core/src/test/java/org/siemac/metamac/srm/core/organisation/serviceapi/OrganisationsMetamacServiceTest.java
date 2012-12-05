@@ -693,6 +693,8 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             assertNull(organisationSchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
             assertTrue(organisationSchemeVersion.getMaintainableArtefact().getFinalLogic());
             assertTrue(organisationSchemeVersion.getMaintainableArtefact().getLatestFinal());
+            assertFalse(organisationSchemeVersion.getMaintainableArtefact().getPublicLogic());
+            assertFalse(organisationSchemeVersion.getMaintainableArtefact().getLatestPublic());
         }
         // Validate retrieving
         {
@@ -795,6 +797,8 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             assertNull(organisationSchemeVersion.getMaintainableArtefact().getValidTo());
             assertNull(organisationSchemeVersion.getLifeCycleMetadata().getIsExternalPublicationFailed());
             assertNull(organisationSchemeVersion.getLifeCycleMetadata().getExternalPublicationFailedDate());
+            assertTrue(organisationSchemeVersion.getMaintainableArtefact().getPublicLogic());
+            assertTrue(organisationSchemeVersion.getMaintainableArtefact().getLatestPublic());
         }
         // Validate retrieving
         {
