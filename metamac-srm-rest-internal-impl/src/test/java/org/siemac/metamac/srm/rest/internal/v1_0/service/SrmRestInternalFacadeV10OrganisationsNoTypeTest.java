@@ -1,8 +1,11 @@
 package org.siemac.metamac.srm.rest.internal.v1_0.service;
 
+import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.LATEST;
 import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.WILDCARD;
-import static org.siemac.metamac.srm.rest.internal.v1_0.organisation.utils.OrganisationsMockitoVerify.verifyFindOrganisationSchemesNoType;
-import static org.siemac.metamac.srm.rest.internal.v1_0.organisation.utils.OrganisationsMockitoVerify.verifyFindOrganisationsNoType;
+import static org.siemac.metamac.srm.rest.internal.v1_0.organisation.utils.OrganisationsMockitoVerify.verifyFindOrganisationSchemes;
+import static org.siemac.metamac.srm.rest.internal.v1_0.organisation.utils.OrganisationsMockitoVerify.verifyFindOrganisations;
+import static org.siemac.metamac.srm.rest.internal.v1_0.organisation.utils.OrganisationsMockitoVerify.verifyRetrieveOrganisation;
+import static org.siemac.metamac.srm.rest.internal.v1_0.organisation.utils.OrganisationsMockitoVerify.verifyRetrieveOrganisationScheme;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.AGENCY_1;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_1_CODE;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_1_CODE;
@@ -169,6 +172,22 @@ public class SrmRestInternalFacadeV10OrganisationsNoTypeTest extends SrmRestInte
         assertEquals(RestInternalConstants.KIND_AGENCY_SCHEME, itemScheme.getKind());
         assertEquals(RestInternalConstants.KIND_AGENCY_SCHEME, itemScheme.getSelfLink().getKind());
         assertEquals(RestInternalConstants.KIND_AGENCY_SCHEMES, itemScheme.getParentLink().getKind());
+
+        // Verify with Mockito
+        verifyRetrieveOrganisationScheme(organisationsService, agencyID, resourceID, version, null);
+    }
+
+    @Test
+    public void testRetrieveOrganisationSchemeTypeAgencyVersionLatest() throws Exception {
+        String agencyID = AGENCY_1;
+        String resourceID = ITEM_SCHEME_ORGANISATION_TYPE_AGENCY_1_CODE;
+        String version = LATEST;
+        OrganisationScheme organisationScheme = getSrmRestInternalFacadeClientXml().retrieveOrganisationScheme(agencyID, resourceID, version);
+
+        // Validation
+        assertNotNull(organisationScheme);
+        // Verify with Mockito
+        verifyRetrieveOrganisationScheme(organisationsService, agencyID, resourceID, version, null);
     }
 
     @Test
@@ -359,7 +378,7 @@ public class SrmRestInternalFacadeV10OrganisationsNoTypeTest extends SrmRestInte
         assertNull(organisation.getOrganisationUnit());
         assertNull(organisation.getDataConsumer());
         assertNull(organisation.getDataProvider());
-        
+
         Agency item = organisation.getAgency();
         assertEquals(organsationID, item.getId());
         assertEquals(RestInternalConstants.KIND_AGENCY, item.getKind());
@@ -368,6 +387,9 @@ public class SrmRestInternalFacadeV10OrganisationsNoTypeTest extends SrmRestInte
         assertTrue(item instanceof AgencyType);
         assertTrue(item instanceof Agency);
         // other metadata are tested in transformation tests
+
+        // Verify with Mockito
+        verifyRetrieveOrganisation(organisationsService, agencyID, resourceID, version, organsationID, null);
     }
 
     @Test
@@ -385,7 +407,7 @@ public class SrmRestInternalFacadeV10OrganisationsNoTypeTest extends SrmRestInte
         assertNull(organisation.getAgency());
         assertNull(organisation.getDataConsumer());
         assertNull(organisation.getDataProvider());
-        
+
         OrganisationUnit item = organisation.getOrganisationUnit();
         assertEquals(organsationID, item.getId());
         assertEquals(RestInternalConstants.KIND_ORGANISATION_UNIT, item.getKind());
@@ -394,8 +416,11 @@ public class SrmRestInternalFacadeV10OrganisationsNoTypeTest extends SrmRestInte
         assertTrue(item instanceof OrganisationUnitType);
         assertTrue(item instanceof OrganisationUnit);
         // other metadata are tested in transformation tests
+
+        // Verify with Mockito
+        verifyRetrieveOrganisation(organisationsService, agencyID, resourceID, version, organsationID, null);
     }
-    
+
     @Test
     public void testRetrieveOrganisationTypeAgencyXml() throws Exception {
 
@@ -531,15 +556,22 @@ public class SrmRestInternalFacadeV10OrganisationsNoTypeTest extends SrmRestInte
             itemSchemes = getSrmRestInternalFacadeClientXml().findOrganisationSchemes(agencyID, resourceID, query, orderBy, limit, offset);
         }
 
+        assertNotNull(itemSchemes);
+        assertEquals(RestInternalConstants.KIND_ORGANISATION_SCHEMES, itemSchemes.getKind());
+
         // Verify with Mockito
-        verifyFindOrganisationSchemesNoType(organisationsService, agencyID, resourceID, version, limit, offset, query, orderBy, itemSchemes);
+        verifyFindOrganisationSchemes(organisationsService, agencyID, resourceID, version, limit, offset, query, orderBy, null);
     }
 
     private void testFindOrganisations(String agencyID, String resourceID, String version, String limit, String offset, String query, String orderBy) throws Exception {
         resetMocks();
         Organisations items = getSrmRestInternalFacadeClientXml().findOrganisations(agencyID, resourceID, version, query, orderBy, limit, offset);
+
+        assertNotNull(items);
+        assertEquals(RestInternalConstants.KIND_ORGANISATIONS, items.getKind());
+
         // Verify with Mockito
-        verifyFindOrganisationsNoType(organisationsService, agencyID, resourceID, version, limit, offset, query, orderBy, items);
+        verifyFindOrganisations(organisationsService, agencyID, resourceID, version, limit, offset, query, orderBy, null);
     }
 
     @Override

@@ -1,8 +1,11 @@
 package org.siemac.metamac.srm.rest.internal.v1_0.service;
 
+import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.LATEST;
 import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.WILDCARD;
-import static org.siemac.metamac.srm.rest.internal.v1_0.organisation.utils.OrganisationsMockitoVerify.verifyFindOrganisationUnitSchemes;
-import static org.siemac.metamac.srm.rest.internal.v1_0.organisation.utils.OrganisationsMockitoVerify.verifyFindOrganisationUnits;
+import static org.siemac.metamac.srm.rest.internal.v1_0.organisation.utils.OrganisationsMockitoVerify.verifyFindOrganisationSchemes;
+import static org.siemac.metamac.srm.rest.internal.v1_0.organisation.utils.OrganisationsMockitoVerify.verifyFindOrganisations;
+import static org.siemac.metamac.srm.rest.internal.v1_0.organisation.utils.OrganisationsMockitoVerify.verifyRetrieveOrganisation;
+import static org.siemac.metamac.srm.rest.internal.v1_0.organisation.utils.OrganisationsMockitoVerify.verifyRetrieveOrganisationScheme;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.AGENCY_1;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_1_CODE;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_1_CODE;
@@ -27,6 +30,8 @@ import org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationUnits;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
 
+import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
+import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.OrganisationUnitType;
 
 public class SrmRestInternalFacadeV10OrganisationsTypeOrganisationUnitsTest extends SrmRestInternalFacadeV10OrganisationsTest {
@@ -99,7 +104,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeOrganisationUnitsTest exte
             fail("Incorrect exception");
         }
     }
-
+    
     @Test
     public void testFindOrganisationUnitSchemesByAgencyAndResource() throws Exception {
         testFindOrganisationUnitSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, null, null, null, null, null);
@@ -118,8 +123,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeOrganisationUnitsTest exte
     @Test
     public void testFindOrganisationUnitSchemesByAgencyAndResourceXml() throws Exception {
         String requestUri = getUriItemSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, null, null, "4", null);
-        InputStream responseExpected = SrmRestInternalFacadeV10OrganisationsTypeOrganisationUnitsTest.class
-                .getResourceAsStream("/responses/organisations/findOrganisationUnitSchemes.byAgencyResource.xml");
+        InputStream responseExpected = SrmRestInternalFacadeV10OrganisationsTypeOrganisationUnitsTest.class.getResourceAsStream("/responses/organisations/findOrganisationUnitSchemes.byAgencyResource.xml");
 
         // Request and validate
         testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
@@ -146,19 +150,35 @@ public class SrmRestInternalFacadeV10OrganisationsTypeOrganisationUnitsTest exte
         String agencyID = AGENCY_1;
         String resourceID = ITEM_SCHEME_1_CODE;
         String version = ITEM_SCHEME_1_VERSION_1;
-        OrganisationUnitScheme organisationUnitScheme = getSrmRestInternalFacadeClientXml().retrieveOrganisationUnitScheme(agencyID, resourceID, version);
+        OrganisationUnitScheme OrganisationUnitScheme = getSrmRestInternalFacadeClientXml().retrieveOrganisationUnitScheme(agencyID, resourceID, version);
 
         // Validation
-        assertNotNull(organisationUnitScheme);
+        assertNotNull(OrganisationUnitScheme);
         // other metadata are tested in mapper tests
-        assertEquals("idAsMaintainer" + agencyID, organisationUnitScheme.getAgencyID());
-        assertEquals(resourceID, organisationUnitScheme.getId());
-        assertEquals(version, organisationUnitScheme.getVersion());
-        assertEquals(RestInternalConstants.KIND_ORGANISATION_UNIT_SCHEME, organisationUnitScheme.getKind());
-        assertEquals(RestInternalConstants.KIND_ORGANISATION_UNIT_SCHEME, organisationUnitScheme.getSelfLink().getKind());
-        assertEquals(RestInternalConstants.KIND_ORGANISATION_UNIT_SCHEMES, organisationUnitScheme.getParentLink().getKind());
-        assertTrue(organisationUnitScheme.getOrganisationUnits().get(0) instanceof OrganisationUnitType);
-        assertFalse(organisationUnitScheme.getOrganisationUnits().get(0) instanceof OrganisationUnit);
+        assertEquals("idAsMaintainer" + agencyID, OrganisationUnitScheme.getAgencyID());
+        assertEquals(resourceID, OrganisationUnitScheme.getId());
+        assertEquals(version, OrganisationUnitScheme.getVersion());
+        assertEquals(RestInternalConstants.KIND_ORGANISATION_UNIT_SCHEME, OrganisationUnitScheme.getKind());
+        assertEquals(RestInternalConstants.KIND_ORGANISATION_UNIT_SCHEME, OrganisationUnitScheme.getSelfLink().getKind());
+        assertEquals(RestInternalConstants.KIND_ORGANISATION_UNIT_SCHEMES, OrganisationUnitScheme.getParentLink().getKind());
+        assertTrue(OrganisationUnitScheme.getOrganisationUnits().get(0) instanceof OrganisationUnitType);
+        assertFalse(OrganisationUnitScheme.getOrganisationUnits().get(0) instanceof OrganisationUnit);
+        
+        // Verify with Mockito
+        verifyRetrieveOrganisationScheme(organisationsService, agencyID, resourceID, version, OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME);
+    }
+    
+    @Test
+    public void testRetrieveOrganisationUnitSchemeVersionLatest() throws Exception {
+        String agencyID = AGENCY_1;
+        String resourceID = ITEM_SCHEME_1_CODE;
+        String version = LATEST;
+        OrganisationUnitScheme OrganisationUnitScheme = getSrmRestInternalFacadeClientXml().retrieveOrganisationUnitScheme(agencyID, resourceID, version);
+
+        // Validation
+        assertNotNull(OrganisationUnitScheme);
+        // Verify with Mockito
+        verifyRetrieveOrganisationScheme(organisationsService, agencyID, resourceID, version, OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME);
     }
 
     @Test
@@ -183,7 +203,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeOrganisationUnitsTest exte
             getSrmRestInternalFacadeClientXml().retrieveOrganisationUnitScheme(agencyID, resourceID, version);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.NOT_FOUND.getStatusCode(), e.getStatus());
-
+            
             org.siemac.metamac.rest.common.v1_0.domain.Exception exception = extractErrorFromException(getSrmRestInternalFacadeClientXml(), e);
             assertEquals(RestServiceExceptionType.ORGANISATION_UNIT_SCHEME_NOT_FOUND.getCode(), exception.getCode());
             assertEquals("OrganisationUnitScheme not found in agencyID " + agencyID + " with ID " + resourceID + " and version " + version, exception.getMessage());
@@ -301,17 +321,20 @@ public class SrmRestInternalFacadeV10OrganisationsTypeOrganisationUnitsTest exte
         String resourceID = ITEM_SCHEME_1_CODE;
         String version = ITEM_SCHEME_1_VERSION_1;
         String organsationID = ITEM_1_CODE;
-        OrganisationUnit organisationUnit = getSrmRestInternalFacadeClientXml().retrieveOrganisationUnit(agencyID, resourceID, version, organsationID);
+        OrganisationUnit OrganisationUnit = getSrmRestInternalFacadeClientXml().retrieveOrganisationUnit(agencyID, resourceID, version, organsationID);
 
         // Validation
-        assertNotNull(organisationUnit);
-        assertEquals(organsationID, organisationUnit.getId());
-        assertEquals(RestInternalConstants.KIND_ORGANISATION_UNIT, organisationUnit.getKind());
-        assertEquals(RestInternalConstants.KIND_ORGANISATION_UNIT, organisationUnit.getSelfLink().getKind());
-        assertEquals(RestInternalConstants.KIND_ORGANISATION_UNITS, organisationUnit.getParentLink().getKind());
-        assertTrue(organisationUnit instanceof OrganisationUnitType);
-        assertTrue(organisationUnit instanceof OrganisationUnit);
+        assertNotNull(OrganisationUnit);
+        assertEquals(organsationID, OrganisationUnit.getId());
+        assertEquals(RestInternalConstants.KIND_ORGANISATION_UNIT, OrganisationUnit.getKind());
+        assertEquals(RestInternalConstants.KIND_ORGANISATION_UNIT, OrganisationUnit.getSelfLink().getKind());
+        assertEquals(RestInternalConstants.KIND_ORGANISATION_UNITS, OrganisationUnit.getParentLink().getKind());
+        assertTrue(OrganisationUnit instanceof OrganisationUnitType);
+        assertTrue(OrganisationUnit instanceof OrganisationUnit);
         // other metadata are tested in transformation tests
+        
+        // Verify with Mockito
+        verifyRetrieveOrganisation(organisationsService, agencyID, resourceID, version, organsationID, OrganisationTypeEnum.ORGANISATION_UNIT);
     }
 
     @Test
@@ -336,7 +359,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeOrganisationUnitsTest exte
             getSrmRestInternalFacadeClientXml().retrieveOrganisationUnit(agencyID, resourceID, version, organisationID);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.NOT_FOUND.getStatusCode(), e.getStatus());
-
+            
             org.siemac.metamac.rest.common.v1_0.domain.Exception exception = extractErrorFromException(getSrmRestInternalFacadeClientXml(), e);
             assertEquals(RestServiceExceptionType.ORGANISATION_UNIT_NOT_FOUND.getCode(), exception.getCode());
             assertEquals("OrganisationUnit not found with ID " + organisationID + " in OrganisationUnitScheme in agencyID " + agencyID + " with ID " + resourceID + " and version " + version,
@@ -364,7 +387,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeOrganisationUnitsTest exte
     @Test
     public void testRetrieveOrganisationUnitErrorWildcard() throws Exception {
 
-        // AgencyID
+     // AgencyID
         try {
             getSrmRestInternalFacadeClientXml().retrieveOrganisationUnit(WILDCARD, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1, ITEM_1_CODE);
         } catch (ServerWebApplicationException e) {
@@ -437,14 +460,22 @@ public class SrmRestInternalFacadeV10OrganisationsTypeOrganisationUnitsTest exte
             itemSchemes = getSrmRestInternalFacadeClientXml().findOrganisationUnitSchemes(agencyID, resourceID, query, orderBy, limit, offset);
         }
 
+        assertNotNull(itemSchemes);
+        assertEquals(RestInternalConstants.KIND_ORGANISATION_UNIT_SCHEMES, itemSchemes.getKind());
+
         // Verify with Mockito
-        verifyFindOrganisationUnitSchemes(organisationsService, agencyID, resourceID, version, limit, offset, query, orderBy, itemSchemes);
+        verifyFindOrganisationSchemes(organisationsService, agencyID, resourceID, version, limit, offset, query, orderBy, OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME);
     }
 
     private void testFindOrganisationUnits(String agencyID, String resourceID, String version, String limit, String offset, String query, String orderBy) throws Exception {
         resetMocks();
         OrganisationUnits items = getSrmRestInternalFacadeClientXml().findOrganisationUnits(agencyID, resourceID, version, query, orderBy, limit, offset);
-        verifyFindOrganisationUnits(organisationsService, agencyID, resourceID, version, limit, offset, query, orderBy, items);
+        
+        assertNotNull(items);
+        assertEquals(RestInternalConstants.KIND_ORGANISATION_UNITS, items.getKind());
+        
+        // Verify with Mockito
+        verifyFindOrganisations(organisationsService, agencyID, resourceID, version, limit, offset, query, orderBy, OrganisationTypeEnum.ORGANISATION_UNIT);
     }
 
     @Override

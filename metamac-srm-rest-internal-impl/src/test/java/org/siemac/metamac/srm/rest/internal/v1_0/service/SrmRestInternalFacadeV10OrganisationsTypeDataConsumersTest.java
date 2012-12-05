@@ -1,8 +1,11 @@
 package org.siemac.metamac.srm.rest.internal.v1_0.service;
 
+import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.LATEST;
 import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.WILDCARD;
-import static org.siemac.metamac.srm.rest.internal.v1_0.organisation.utils.OrganisationsMockitoVerify.verifyFindDataConsumerSchemes;
-import static org.siemac.metamac.srm.rest.internal.v1_0.organisation.utils.OrganisationsMockitoVerify.verifyFindDataConsumers;
+import static org.siemac.metamac.srm.rest.internal.v1_0.organisation.utils.OrganisationsMockitoVerify.verifyFindOrganisationSchemes;
+import static org.siemac.metamac.srm.rest.internal.v1_0.organisation.utils.OrganisationsMockitoVerify.verifyFindOrganisations;
+import static org.siemac.metamac.srm.rest.internal.v1_0.organisation.utils.OrganisationsMockitoVerify.verifyRetrieveOrganisation;
+import static org.siemac.metamac.srm.rest.internal.v1_0.organisation.utils.OrganisationsMockitoVerify.verifyRetrieveOrganisationScheme;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.AGENCY_1;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_1_CODE;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_1_CODE;
@@ -27,6 +30,8 @@ import org.siemac.metamac.rest.srm_internal.v1_0.domain.DataConsumers;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
 
+import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
+import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.DataConsumerType;
 
 public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends SrmRestInternalFacadeV10OrganisationsTest {
@@ -158,6 +163,22 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends 
         assertEquals(RestInternalConstants.KIND_DATA_CONSUMER_SCHEMES, dataConsumerScheme.getParentLink().getKind());
         assertTrue(dataConsumerScheme.getDataConsumers().get(0) instanceof DataConsumerType);
         assertFalse(dataConsumerScheme.getDataConsumers().get(0) instanceof DataConsumer);
+        
+        // Verify with Mockito
+        verifyRetrieveOrganisationScheme(organisationsService, agencyID, resourceID, version, OrganisationSchemeTypeEnum.DATA_CONSUMER_SCHEME);
+    }
+    
+    @Test
+    public void testRetrieveDataConsumerSchemeVersionLatest() throws Exception {
+        String agencyID = AGENCY_1;
+        String resourceID = ITEM_SCHEME_1_CODE;
+        String version = LATEST;
+        DataConsumerScheme dataConsumerScheme = getSrmRestInternalFacadeClientXml().retrieveDataConsumerScheme(agencyID, resourceID, version);
+
+        // Validation
+        assertNotNull(dataConsumerScheme);
+        // Verify with Mockito
+        verifyRetrieveOrganisationScheme(organisationsService, agencyID, resourceID, version, OrganisationSchemeTypeEnum.DATA_CONSUMER_SCHEME);
     }
 
     @Test
@@ -311,6 +332,9 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends 
         assertTrue(dataConsumer instanceof DataConsumerType);
         assertTrue(dataConsumer instanceof DataConsumer);
         // other metadata are tested in transformation tests
+        
+        // Verify with Mockito
+        verifyRetrieveOrganisation(organisationsService, agencyID, resourceID, version, organsationID, OrganisationTypeEnum.DATA_CONSUMER);
     }
 
     @Test
@@ -436,14 +460,22 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends 
             itemSchemes = getSrmRestInternalFacadeClientXml().findDataConsumerSchemes(agencyID, resourceID, query, orderBy, limit, offset);
         }
 
+        assertNotNull(itemSchemes);
+        assertEquals(RestInternalConstants.KIND_DATA_CONSUMER_SCHEMES, itemSchemes.getKind());
+
         // Verify with Mockito
-        verifyFindDataConsumerSchemes(organisationsService, agencyID, resourceID, version, limit, offset, query, orderBy, itemSchemes);
+        verifyFindOrganisationSchemes(organisationsService, agencyID, resourceID, version, limit, offset, query, orderBy, OrganisationSchemeTypeEnum.DATA_CONSUMER_SCHEME);
     }
 
     private void testFindDataConsumers(String agencyID, String resourceID, String version, String limit, String offset, String query, String orderBy) throws Exception {
         resetMocks();
         DataConsumers items = getSrmRestInternalFacadeClientXml().findDataConsumers(agencyID, resourceID, version, query, orderBy, limit, offset);
-        verifyFindDataConsumers(organisationsService, agencyID, resourceID, version, limit, offset, query, orderBy, items);
+        
+        assertNotNull(items);
+        assertEquals(RestInternalConstants.KIND_DATA_CONSUMERS, items.getKind());
+        
+        // Verify with Mockito
+        verifyFindOrganisations(organisationsService, agencyID, resourceID, version, limit, offset, query, orderBy, OrganisationTypeEnum.DATA_CONSUMER);
     }
 
     @Override

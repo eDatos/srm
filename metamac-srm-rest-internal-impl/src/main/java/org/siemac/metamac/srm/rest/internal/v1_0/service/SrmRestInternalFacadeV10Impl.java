@@ -108,8 +108,6 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
     private ServiceContext                ctx    = new ServiceContext("restInternal", "restInternal", "restInternal");
     private Logger                        logger = LoggerFactory.getLogger(LoggingInterceptor.class);
 
-    // TODO latest default? cuando no se especifica versión
-
     @Override
     public ConceptSchemes findConceptSchemes(String query, String orderBy, String limit, String offset) {
         return findConceptSchemes(null, null, null, query, orderBy, limit, offset);
@@ -932,17 +930,17 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
     }
 
     private void checkParameterNotWildcardFindItemSchemes(String agencyID) {
-        checkParameterNotWildcard(RestInternalConstants.PARAMETER_AGENCY_ID, agencyID);
+        checkParameterNotWildcardAll(RestInternalConstants.PARAMETER_AGENCY_ID, agencyID);
     }
 
     private void checkParameterNotWildcardFindItemSchemes(String agencyID, String resourceID) {
-        checkParameterNotWildcard(RestInternalConstants.PARAMETER_RESOURCE_ID, resourceID);
+        checkParameterNotWildcardAll(RestInternalConstants.PARAMETER_RESOURCE_ID, resourceID);
     }
 
     private void checkParameterNotWildcardRetrieveItemScheme(String agencyID, String resourceID, String version) {
-        checkParameterNotWildcard(RestInternalConstants.PARAMETER_AGENCY_ID, agencyID);
-        checkParameterNotWildcard(RestInternalConstants.PARAMETER_RESOURCE_ID, resourceID);
-        checkParameterNotWildcard(RestInternalConstants.PARAMETER_VERSION, version);
+        checkParameterNotWildcardAll(RestInternalConstants.PARAMETER_AGENCY_ID, agencyID);
+        checkParameterNotWildcardAll(RestInternalConstants.PARAMETER_RESOURCE_ID, resourceID);
+        checkParameterNotWildcardAll(RestInternalConstants.PARAMETER_VERSION, version);
     }
 
     private void checkParameterNotWildcardFindItems(String agencyID, String resourceID, String version) {
@@ -950,17 +948,17 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
     }
 
     private void checkParameterNotWildcardRetrieveItem(String agencyID, String resourceID, String version, String itemID, String parameterNameItemID) {
-        checkParameterNotWildcard(RestInternalConstants.PARAMETER_AGENCY_ID, agencyID);
-        checkParameterNotWildcard(RestInternalConstants.PARAMETER_RESOURCE_ID, resourceID);
-        checkParameterNotWildcard(RestInternalConstants.PARAMETER_VERSION, version);
-        checkParameterNotWildcard(parameterNameItemID, itemID);
+        checkParameterNotWildcardAll(RestInternalConstants.PARAMETER_AGENCY_ID, agencyID);
+        checkParameterNotWildcardAll(RestInternalConstants.PARAMETER_RESOURCE_ID, resourceID);
+        checkParameterNotWildcardAll(RestInternalConstants.PARAMETER_VERSION, version);
+        checkParameterNotWildcardAll(parameterNameItemID, itemID);
     }
 
     /**
      * Check unsupported wildcards in some parameters
      */
-    private void checkParameterNotWildcard(String parameterName, String parameterValue) {
-        if (RestInternalConstants.WILDCARD.equals(parameterValue) || RestInternalConstants.LATEST.equals(parameterValue)) {
+    private void checkParameterNotWildcardAll(String parameterName, String parameterValue) {
+        if (RestInternalConstants.WILDCARD.equals(parameterValue)) {
             org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.PARAMETER_INCORRECT, parameterName);
             throw new RestException(exception, Status.BAD_REQUEST);
         }

@@ -53,14 +53,17 @@ public class MockitoVerify extends MetamacRestAsserts {
             expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).lbrace().withProperty(ItemSchemeVersionProperties.maintainableArtefact().code()).eq(resourceID).or()
                     .withProperty(ItemSchemeVersionProperties.maintainableArtefact().codeFull()).eq(resourceID).rbrace().buildSingle());
         }
-        if (version != null && !RestInternalConstants.WILDCARD.equals(version)) {
+        if (RestInternalConstants.LATEST.equals(version)) {
+            expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(ItemSchemeVersionProperties.maintainableArtefact().latestFinal()).eq(Boolean.TRUE).buildSingle());
+        } else if (version != null && !RestInternalConstants.WILDCARD.equals(version)) {
             expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(ItemSchemeVersionProperties.maintainableArtefact().versionLogic()).eq(version).buildSingle());
         }
         return expected;
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
-    public static List<ConditionalCriteria> buildExpectedConditionalCriteriaToFindItems(String agencyID, String resourceID, String version, String query, String orderBy, Class entityClass) {
+    public static List<ConditionalCriteria> buildExpectedConditionalCriteriaToFindItems(String agencyID, String resourceID, String version, String itemID, String query, String orderBy,
+            Class entityClass) {
         List<ConditionalCriteria> expected = new ArrayList<ConditionalCriteria>();
         expected.addAll(buildFindItemsExpectedOrderBy(orderBy, entityClass));
         expected.addAll(buildFindItemsExpectedQuery(query, entityClass));
@@ -76,6 +79,10 @@ public class MockitoVerify extends MetamacRestAsserts {
         }
         if (version != null && !RestInternalConstants.WILDCARD.equals(version)) {
             expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(ItemProperties.itemSchemeVersion().maintainableArtefact().versionLogic()).eq(version).buildSingle());
+        }
+        if (itemID != null) {
+            expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).lbrace().withProperty(ItemProperties.nameableArtefact().code()).eq(itemID).or()
+                    .withProperty(ItemProperties.nameableArtefact().codeFull()).eq(itemID).rbrace().buildSingle());
         }
         return expected;
     }

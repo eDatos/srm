@@ -3,9 +3,12 @@ package org.siemac.metamac.srm.rest.internal.v1_0.service;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
+import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.LATEST;
 import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.WILDCARD;
 import static org.siemac.metamac.srm.rest.internal.v1_0.concept.utils.ConceptsMockitoVerify.verifyFindConceptSchemes;
 import static org.siemac.metamac.srm.rest.internal.v1_0.concept.utils.ConceptsMockitoVerify.verifyFindConcepts;
+import static org.siemac.metamac.srm.rest.internal.v1_0.concept.utils.ConceptsMockitoVerify.verifyRetrieveConcept;
+import static org.siemac.metamac.srm.rest.internal.v1_0.concept.utils.ConceptsMockitoVerify.verifyRetrieveConceptScheme;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.AGENCY_1;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.AGENCY_2;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_1_CODE;
@@ -187,6 +190,32 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
         assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEMES, conceptScheme.getParentLink().getKind());
         assertTrue(conceptScheme.getConcepts().get(0) instanceof ConceptType);
         assertFalse(conceptScheme.getConcepts().get(0) instanceof Concept);
+        
+        // Verify with Mockito
+        verifyRetrieveConceptScheme(conceptsService, agencyID, resourceID, version);
+    }
+
+    @Test
+    public void testRetrieveConceptSchemeVersionLatest() throws Exception {
+        String agencyID = AGENCY_1;
+        String resourceID = ITEM_SCHEME_1_CODE;
+        String version = LATEST;
+        ConceptScheme conceptScheme = getSrmRestInternalFacadeClientXml().retrieveConceptScheme(agencyID, resourceID, version);
+
+        // Validation
+        assertNotNull(conceptScheme);
+        // other metadata are tested in mapper tests
+        assertEquals("idAsMaintainer" + agencyID, conceptScheme.getAgencyID());
+        assertEquals(resourceID, conceptScheme.getId());
+        assertEquals(ITEM_SCHEME_1_VERSION_1, conceptScheme.getVersion());
+        assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEME, conceptScheme.getKind());
+        assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEME, conceptScheme.getSelfLink().getKind());
+        assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEMES, conceptScheme.getParentLink().getKind());
+        assertTrue(conceptScheme.getConcepts().get(0) instanceof ConceptType);
+        assertFalse(conceptScheme.getConcepts().get(0) instanceof Concept);
+
+        // Verify with Mockito
+        verifyRetrieveConceptScheme(conceptsService, agencyID, resourceID, version);
     }
 
     @Test
@@ -341,6 +370,9 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
         assertTrue(concept instanceof ConceptType);
         assertTrue(concept instanceof Concept);
         // other metadata are tested in transformation tests
+        
+        // Verify with Mockito
+        verifyRetrieveConcept(conceptsService, agencyID, resourceID, version, conceptID);
     }
 
     @Test
@@ -486,14 +518,22 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
             conceptSchemes = getSrmRestInternalFacadeClientXml().findConceptSchemes(agencyID, resourceID, query, orderBy, limit, offset);
         }
 
+        assertNotNull(conceptSchemes);
+        assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEMES, conceptSchemes.getKind());
+
         // Verify with Mockito
-        verifyFindConceptSchemes(conceptsService, agencyID, resourceID, version, limit, offset, query, orderBy, conceptSchemes);
+        verifyFindConceptSchemes(conceptsService, agencyID, resourceID, version, limit, offset, query, orderBy);
     }
 
     private void testFindConcepts(String agencyID, String resourceID, String version, String limit, String offset, String query, String orderBy) throws Exception {
         resetMocks();
         Concepts concepts = getSrmRestInternalFacadeClientXml().findConcepts(agencyID, resourceID, version, query, orderBy, limit, offset);
-        verifyFindConcepts(conceptsService, agencyID, resourceID, version, limit, offset, query, orderBy, concepts);
+        
+        assertNotNull(concepts);
+        assertEquals(RestInternalConstants.KIND_CONCEPTS, concepts.getKind());
+
+        // Verify with mockito
+        verifyFindConcepts(conceptsService, agencyID, resourceID, version, limit, offset, query, orderBy);
     }
 
     @SuppressWarnings("unchecked")
@@ -506,12 +546,13 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
                 String agencyID = getAgencyIdFromConditionalCriteria(conditions, ConceptSchemeVersionMetamacProperties.maintainableArtefact());
                 String resourceID = getItemSchemeIdFromConditionalCriteria(conditions, ConceptSchemeVersionMetamacProperties.maintainableArtefact());
                 String version = getVersionFromConditionalCriteria(conditions, ConceptSchemeVersionMetamacProperties.maintainableArtefact());
-                if (agencyID != null && resourceID != null && version != null) {
+                Boolean latest = getVersionLatestFromConditionalCriteria(conditions, ConceptSchemeVersionMetamacProperties.maintainableArtefact());
+                if (agencyID != null && resourceID != null && (version != null || Boolean.TRUE.equals(latest))) {
                     // Retrieve one
                     ConceptSchemeVersionMetamac conceptSchemeVersion = null;
                     if (NOT_EXISTS.equals(agencyID) || NOT_EXISTS.equals(resourceID) || NOT_EXISTS.equals(version)) {
                         conceptSchemeVersion = null;
-                    } else if (AGENCY_1.equals(agencyID) && ITEM_SCHEME_1_CODE.equals(resourceID) && ITEM_SCHEME_1_VERSION_1.equals(version)) {
+                    } else if (AGENCY_1.equals(agencyID) && ITEM_SCHEME_1_CODE.equals(resourceID) && (ITEM_SCHEME_1_VERSION_1.equals(version) || Boolean.TRUE.equals(latest))) {
                         conceptSchemeVersion = ConceptsDoMocks.mockConceptSchemeWithConcepts(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1);
                     } else {
                         fail();

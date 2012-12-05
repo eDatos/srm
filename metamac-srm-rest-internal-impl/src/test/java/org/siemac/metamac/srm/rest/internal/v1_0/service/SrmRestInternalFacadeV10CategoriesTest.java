@@ -3,9 +3,12 @@ package org.siemac.metamac.srm.rest.internal.v1_0.service;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
+import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.LATEST;
 import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.WILDCARD;
 import static org.siemac.metamac.srm.rest.internal.v1_0.category.utils.CategoriesMockitoVerify.verifyFindCategories;
 import static org.siemac.metamac.srm.rest.internal.v1_0.category.utils.CategoriesMockitoVerify.verifyFindCategorySchemes;
+import static org.siemac.metamac.srm.rest.internal.v1_0.category.utils.CategoriesMockitoVerify.verifyRetrieveCategory;
+import static org.siemac.metamac.srm.rest.internal.v1_0.category.utils.CategoriesMockitoVerify.verifyRetrieveCategoryScheme;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.AGENCY_1;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.AGENCY_2;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_1_CODE;
@@ -186,6 +189,32 @@ public class SrmRestInternalFacadeV10CategoriesTest extends SrmRestInternalFacad
         assertEquals(RestInternalConstants.KIND_CATEGORY_SCHEMES, categoryScheme.getParentLink().getKind());
         assertTrue(categoryScheme.getCategories().get(0) instanceof CategoryType);
         assertFalse(categoryScheme.getCategories().get(0) instanceof Category);
+        
+        // Verify with Mockito
+        verifyRetrieveCategoryScheme(categoriesService, agencyID, resourceID, version);
+    }
+
+    @Test
+    public void testRetrieveCategorySchemeVersionLatest() throws Exception {
+        String agencyID = AGENCY_1;
+        String resourceID = ITEM_SCHEME_1_CODE;
+        String version = LATEST;
+        CategoryScheme categoryScheme = getSrmRestInternalFacadeClientXml().retrieveCategoryScheme(agencyID, resourceID, version);
+
+        // Validation
+        assertNotNull(categoryScheme);
+        // other metadata are tested in mapper tests
+        assertEquals("idAsMaintainer" + agencyID, categoryScheme.getAgencyID());
+        assertEquals(resourceID, categoryScheme.getId());
+        assertEquals(ITEM_SCHEME_1_VERSION_1, categoryScheme.getVersion());
+        assertEquals(RestInternalConstants.KIND_CATEGORY_SCHEME, categoryScheme.getKind());
+        assertEquals(RestInternalConstants.KIND_CATEGORY_SCHEME, categoryScheme.getSelfLink().getKind());
+        assertEquals(RestInternalConstants.KIND_CATEGORY_SCHEMES, categoryScheme.getParentLink().getKind());
+        assertTrue(categoryScheme.getCategories().get(0) instanceof CategoryType);
+        assertFalse(categoryScheme.getCategories().get(0) instanceof Category);
+
+        // Verify with Mockito
+        verifyRetrieveCategoryScheme(categoriesService, agencyID, resourceID, version);
     }
 
     @Test
@@ -339,6 +368,9 @@ public class SrmRestInternalFacadeV10CategoriesTest extends SrmRestInternalFacad
         assertTrue(category instanceof CategoryType);
         assertTrue(category instanceof Category);
         // other metadata are tested in transformation tests
+        
+        // Verify with Mockito
+        verifyRetrieveCategory(categoriesService, agencyID, resourceID, version, categoryID);
     }
 
     @Test
@@ -463,14 +495,22 @@ public class SrmRestInternalFacadeV10CategoriesTest extends SrmRestInternalFacad
             categorySchemes = getSrmRestInternalFacadeClientXml().findCategorySchemes(agencyID, resourceID, query, orderBy, limit, offset);
         }
 
+        assertNotNull(categorySchemes);
+        assertEquals(RestInternalConstants.KIND_CATEGORY_SCHEMES, categorySchemes.getKind());
+
         // Verify with Mockito
-        verifyFindCategorySchemes(categoriesService, agencyID, resourceID, null, limit, offset, query, orderBy, categorySchemes);
+        verifyFindCategorySchemes(categoriesService, agencyID, resourceID, null, limit, offset, query, orderBy);
     }
 
     private void testFindCategories(String agencyID, String resourceID, String version, String limit, String offset, String query, String orderBy) throws Exception {
         resetMocks();
         Categories categories = getSrmRestInternalFacadeClientXml().findCategories(agencyID, resourceID, version, query, orderBy, limit, offset);
-        verifyFindCategories(categoriesService, agencyID, resourceID, version, limit, offset, query, orderBy, categories);
+        
+        assertNotNull(categories);
+        assertEquals(RestInternalConstants.KIND_CATEGORIES, categories.getKind());
+        
+        // Verify with Mockito
+        verifyFindCategories(categoriesService, agencyID, resourceID, version, limit, offset, query, orderBy);
     }
 
     @SuppressWarnings("unchecked")
@@ -483,13 +523,13 @@ public class SrmRestInternalFacadeV10CategoriesTest extends SrmRestInternalFacad
                         String agencyID = getAgencyIdFromConditionalCriteria(conditions, CategorySchemeVersionMetamacProperties.maintainableArtefact());
                         String resourceID = getItemSchemeIdFromConditionalCriteria(conditions, CategorySchemeVersionMetamacProperties.maintainableArtefact());
                         String version = getVersionFromConditionalCriteria(conditions, CategorySchemeVersionMetamacProperties.maintainableArtefact());
-
-                        if (agencyID != null && resourceID != null && version != null) {
-                            // Retrieve one scheme
+                        Boolean latest = getVersionLatestFromConditionalCriteria(conditions, CategorySchemeVersionMetamacProperties.maintainableArtefact());
+                        if (agencyID != null && resourceID != null && (version != null || Boolean.TRUE.equals(latest))) {
+                            // Retrieve one
                             CategorySchemeVersionMetamac categorySchemeVersion = null;
                             if (NOT_EXISTS.equals(agencyID) || NOT_EXISTS.equals(resourceID) || NOT_EXISTS.equals(version)) {
                                 categorySchemeVersion = null;
-                            } else if (AGENCY_1.equals(agencyID) && ITEM_SCHEME_1_CODE.equals(resourceID) && ITEM_SCHEME_1_VERSION_1.equals(version)) {
+                            } else if (AGENCY_1.equals(agencyID) && ITEM_SCHEME_1_CODE.equals(resourceID) && (ITEM_SCHEME_1_VERSION_1.equals(version) || Boolean.TRUE.equals(latest))) {
                                 categorySchemeVersion = CategoriesDoMocks.mockCategorySchemeWithCategories(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1);
                             } else {
                                 fail();

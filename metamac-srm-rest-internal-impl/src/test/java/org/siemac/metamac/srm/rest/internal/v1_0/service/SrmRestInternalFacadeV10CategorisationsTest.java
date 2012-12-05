@@ -3,8 +3,10 @@ package org.siemac.metamac.srm.rest.internal.v1_0.service;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
+import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.LATEST;
 import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.WILDCARD;
 import static org.siemac.metamac.srm.rest.internal.v1_0.category.utils.CategoriesMockitoVerify.verifyFindCategorisations;
+import static org.siemac.metamac.srm.rest.internal.v1_0.category.utils.CategoriesMockitoVerify.verifyRetrieveCategorisation;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.AGENCY_1;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.AGENCY_2;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.NOT_EXISTS;
@@ -174,6 +176,30 @@ public class SrmRestInternalFacadeV10CategorisationsTest extends SrmRestInternal
         assertEquals(RestInternalConstants.KIND_CATEGORISATION, categorisation.getKind());
         assertEquals(RestInternalConstants.KIND_CATEGORISATION, categorisation.getSelfLink().getKind());
         assertEquals(RestInternalConstants.KIND_CATEGORISATIONS, categorisation.getParentLink().getKind());
+        
+        // Verify with Mockito
+        verifyRetrieveCategorisation(categoriesService, agencyID, resourceID, version);
+    }
+
+    @Test
+    public void testRetrieveCategorisationVersionLatest() throws Exception {
+        String agencyID = AGENCY_1;
+        String resourceID = CATEGORISATION_1_CODE;
+        String version = LATEST;
+        Categorisation categorisation = getSrmRestInternalFacadeClientXml().retrieveCategorisation(agencyID, resourceID, version);
+
+        // Validation
+        assertNotNull(categorisation);
+        // other metadata are tested in mapper tests
+        assertEquals("idAsMaintainer" + agencyID, categorisation.getAgencyID());
+        assertEquals(resourceID, categorisation.getId());
+        assertEquals(CATEGORISATION_1_VERSION_1, categorisation.getVersion());
+        assertEquals(RestInternalConstants.KIND_CATEGORISATION, categorisation.getKind());
+        assertEquals(RestInternalConstants.KIND_CATEGORISATION, categorisation.getSelfLink().getKind());
+        assertEquals(RestInternalConstants.KIND_CATEGORISATIONS, categorisation.getParentLink().getKind());
+
+        // Verify with Mockito
+        verifyRetrieveCategorisation(categoriesService, agencyID, resourceID, version);
     }
 
     @Test
@@ -282,8 +308,11 @@ public class SrmRestInternalFacadeV10CategorisationsTest extends SrmRestInternal
             categorisations = getSrmRestInternalFacadeClientXml().findCategorisations(agencyID, resourceID, query, orderBy, limit, offset);
         }
 
+        assertNotNull(categorisations);
+        assertEquals(RestInternalConstants.KIND_CATEGORISATIONS, categorisations.getKind());
+
         // Verify with Mockito
-        verifyFindCategorisations(categoriesService, agencyID, resourceID, null, limit, offset, query, orderBy, categorisations);
+        verifyFindCategorisations(categoriesService, agencyID, resourceID, null, limit, offset, query, orderBy);
     }
 
     @SuppressWarnings("unchecked")
@@ -297,13 +326,13 @@ public class SrmRestInternalFacadeV10CategorisationsTest extends SrmRestInternal
                         String agencyID = getAgencyIdFromConditionalCriteria(conditions, CategorisationProperties.maintainableArtefact());
                         String resourceID = getItemSchemeIdFromConditionalCriteria(conditions, CategorisationProperties.maintainableArtefact());
                         String version = getVersionFromConditionalCriteria(conditions, CategorisationProperties.maintainableArtefact());
-
-                        if (agencyID != null && resourceID != null && version != null) {
+                        Boolean latest = getVersionLatestFromConditionalCriteria(conditions, CategorisationProperties.maintainableArtefact());
+                        if (agencyID != null && resourceID != null && (version != null || Boolean.TRUE.equals(latest))) {
                             // Retrieve one
                             com.arte.statistic.sdmx.srm.core.category.domain.Categorisation categorisation = null;
                             if (NOT_EXISTS.equals(agencyID) || NOT_EXISTS.equals(resourceID) || NOT_EXISTS.equals(version)) {
                                 categorisation = null;
-                            } else if (AGENCY_1.equals(agencyID) && CATEGORISATION_1_CODE.equals(resourceID) && CATEGORISATION_1_VERSION_1.equals(version)) {
+                            } else if (AGENCY_1.equals(agencyID) && CATEGORISATION_1_CODE.equals(resourceID) && (CATEGORISATION_1_VERSION_1.equals(version) || Boolean.TRUE.equals(latest))) {
                                 categorisation = CategoriesDoMocks.mockCategorisation(AGENCY_1, CATEGORISATION_1_CODE, CATEGORISATION_1_VERSION_1);
                             } else {
                                 fail();

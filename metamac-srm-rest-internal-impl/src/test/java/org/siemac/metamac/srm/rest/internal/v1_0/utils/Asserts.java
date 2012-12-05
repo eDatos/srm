@@ -46,7 +46,7 @@ public class Asserts extends MetamacRestAsserts {
         assertTrue(expecteds.size() > 0);
         assertEquals(expecteds.size(), actuals.getTotal().intValue());
         for (int i = 0; i < expecteds.size(); i++) {
-            assertEquals(expecteds.get(i).getNameableArtefact().getUrn(), actuals.getUrns().get(i));
+            assertEquals(expecteds.get(i).getNameableArtefact().getUrnProvider(), actuals.getUrns().get(i)); // TODO urn provider?
         }
     }
 

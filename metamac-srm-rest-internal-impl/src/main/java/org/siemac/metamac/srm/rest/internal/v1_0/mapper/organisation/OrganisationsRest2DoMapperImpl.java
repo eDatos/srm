@@ -27,8 +27,8 @@ public class OrganisationsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl imp
     public OrganisationsRest2DoMapperImpl() {
         organisationSchemeCriteriaMapper = new RestCriteria2SculptorCriteria<OrganisationSchemeVersionMetamac>(OrganisationSchemeVersionMetamac.class, OrganisationSchemeCriteriaPropertyOrder.class,
                 OrganisationSchemeCriteriaPropertyRestriction.class, new OrganisationSchemeCriteriaCallback());
-        organisationCriteriaMapper = new RestCriteria2SculptorCriteria<OrganisationMetamac>(OrganisationMetamac.class, OrganisationCriteriaPropertyOrder.class, OrganisationCriteriaPropertyRestriction.class,
-                new OrganisationCriteriaCallback());
+        organisationCriteriaMapper = new RestCriteria2SculptorCriteria<OrganisationMetamac>(OrganisationMetamac.class, OrganisationCriteriaPropertyOrder.class,
+                OrganisationCriteriaPropertyRestriction.class, new OrganisationCriteriaCallback());
     }
 
     @Override
@@ -70,6 +70,8 @@ public class OrganisationsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl imp
                     return getSculptorPropertyCriteriaDate(propertyRestriction, OrganisationSchemeVersionMetamacProperties.lifeCycleMetadata().externalPublicationDate());
                 case EXTERNAL_PUBLICATION_USER:
                     return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.lifeCycleMetadata().externalPublicationUser(), propertyRestriction.getValue());
+                case LATEST:
+                    return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.maintainableArtefact().latestFinal(), Boolean.valueOf(propertyRestriction.getValue()));
                 default:
                     throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
             }

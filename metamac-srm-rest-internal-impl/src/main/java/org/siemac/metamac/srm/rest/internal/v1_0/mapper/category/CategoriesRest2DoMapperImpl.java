@@ -83,6 +83,8 @@ public class CategoriesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implem
                     return getSculptorPropertyCriteriaDate(propertyRestriction, CategorySchemeVersionMetamacProperties.lifeCycleMetadata().externalPublicationDate());
                 case EXTERNAL_PUBLICATION_USER:
                     return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.lifeCycleMetadata().externalPublicationUser(), propertyRestriction.getValue());
+                case LATEST:
+                    return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.maintainableArtefact().latestFinal(), Boolean.valueOf(propertyRestriction.getValue()));
                 default:
                     throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
             }

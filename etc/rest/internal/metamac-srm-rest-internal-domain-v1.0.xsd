@@ -384,6 +384,7 @@
             <xs:enumeration value="INTERNAL_PUBLICATION_USER" />
             <xs:enumeration value="EXTERNAL_PUBLICATION_DATE" />
             <xs:enumeration value="EXTERNAL_PUBLICATION_USER" />
+            <xs:enumeration value="LATEST" />
         </xs:restriction>
     </xs:simpleType>
 
@@ -425,6 +426,7 @@
             <xs:enumeration value="INTERNAL_PUBLICATION_USER" />
             <xs:enumeration value="EXTERNAL_PUBLICATION_DATE" />
             <xs:enumeration value="EXTERNAL_PUBLICATION_USER" />
+            <xs:enumeration value="LATEST" />
         </xs:restriction>
     </xs:simpleType>
 
@@ -478,6 +480,7 @@
             <xs:enumeration value="INTERNAL_PUBLICATION_USER" />
             <xs:enumeration value="EXTERNAL_PUBLICATION_DATE" />
             <xs:enumeration value="EXTERNAL_PUBLICATION_USER" />
+            <xs:enumeration value="LATEST" />
         </xs:restriction>
     </xs:simpleType>
 

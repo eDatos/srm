@@ -120,6 +120,12 @@ public abstract class SrmRestInternalFacadeV10BaseTest extends MetamacRestBaseTe
         ConditionalCriteria conditionalCriteria = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Equal, maintainableArtefactProperty.versionLogic());
         return conditionalCriteria != null ? (String) conditionalCriteria.getFirstOperant() : null;
     }
+    
+    @SuppressWarnings("rawtypes")
+    protected Boolean getVersionLatestFromConditionalCriteria(List<ConditionalCriteria> conditions, MaintainableArtefactProperty maintainableArtefactProperty) {
+        ConditionalCriteria conditionalCriteria = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Equal, maintainableArtefactProperty.latestFinal());
+        return conditionalCriteria != null ? (Boolean) conditionalCriteria.getFirstOperant() : null;
+    }
 
     @SuppressWarnings("rawtypes")
     protected String getItemIdFromConditionalCriteria(List<ConditionalCriteria> conditions, NameableArtefactProperty nameableArtefactProperty) {

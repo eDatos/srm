@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.rest.internal.v1_0.service.utils;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
 import org.siemac.metamac.core.common.exception.MetamacException;
@@ -18,14 +19,16 @@ import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.Organisatio
 
 public class SrmRestInternalUtils {
 
-    // TODO latest
-    @SuppressWarnings("rawtypes")
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public static List<ConditionalCriteria> buildConditionalCriteriaItemSchemes(String agencyID, String resourceID, String version, List<ConditionalCriteria> conditionalCriteriaQuery, Class entity)
             throws MetamacException {
 
         List<ConditionalCriteria> conditionalCriteria = new ArrayList<ConditionalCriteria>();
-        if (conditionalCriteriaQuery != null) {
-            conditionalCriteria.addAll(conditionalCriteriaQuery);
+        if (CollectionUtils.isNotEmpty(conditionalCriteriaQuery)) {
+            conditionalCriteria.addAll(conditionalCriteriaQuery); // adds distinct root and order
+        } else {
+            // init
+            conditionalCriteria.addAll(ConditionalCriteriaBuilder.criteriaFor(entity).orderBy(ItemSchemeVersionProperties.maintainableArtefact().code()).ascending().distinctRoot().build());
         }
         addConditionalCriteriaItemSchemePublished(conditionalCriteria, entity, ItemSchemeVersionProperties.maintainableArtefact());
         addConditionalCriteriaByAgency(conditionalCriteria, agencyID, entity, ItemSchemeVersionProperties.maintainableArtefact());
@@ -35,14 +38,16 @@ public class SrmRestInternalUtils {
         return conditionalCriteria;
     }
 
-    // TODO latest
-    @SuppressWarnings("rawtypes")
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public static List<ConditionalCriteria> buildConditionalCriteriaItems(String agencyID, String resourceID, String version, String itemID, List<ConditionalCriteria> conditionalCriteriaQuery,
             Class entity) throws MetamacException {
 
         List<ConditionalCriteria> conditionalCriteria = new ArrayList<ConditionalCriteria>();
-        if (conditionalCriteriaQuery != null) {
-            conditionalCriteria.addAll(conditionalCriteriaQuery);
+        if (CollectionUtils.isNotEmpty(conditionalCriteriaQuery)) {
+            conditionalCriteria.addAll(conditionalCriteriaQuery); // adds distinct root and order
+        } else {
+            // init
+            conditionalCriteria.addAll(ConditionalCriteriaBuilder.criteriaFor(entity).orderBy(ItemProperties.nameableArtefact().code()).ascending().distinctRoot().build());
         }
         addConditionalCriteriaItemSchemePublished(conditionalCriteria, entity, ItemProperties.itemSchemeVersion().maintainableArtefact());
         addConditionalCriteriaByAgency(conditionalCriteria, agencyID, entity, ItemProperties.itemSchemeVersion().maintainableArtefact());
@@ -117,7 +122,9 @@ public class SrmRestInternalUtils {
     @SuppressWarnings({"unchecked", "rawtypes"})
     private static void addConditionalCriteriaByItemCodeSchemeVersion(List<ConditionalCriteria> conditionalCriteria, String version, Class entity,
             MaintainableArtefactProperty maintainableArtefactProperty) {
-        if (version != null && !RestInternalConstants.WILDCARD.equals(version)) {
+        if (RestInternalConstants.LATEST.equals(version)) {
+            conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(entity).withProperty(maintainableArtefactProperty.latestFinal()).eq(Boolean.TRUE).buildSingle());
+        } else if (version != null && !RestInternalConstants.WILDCARD.equals(version)) {
             conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(entity).withProperty(maintainableArtefactProperty.versionLogic()).eq(version).buildSingle());
         }
     }

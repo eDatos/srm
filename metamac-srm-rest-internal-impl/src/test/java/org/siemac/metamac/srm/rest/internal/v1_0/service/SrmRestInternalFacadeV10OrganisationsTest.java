@@ -70,19 +70,22 @@ public abstract class SrmRestInternalFacadeV10OrganisationsTest extends SrmRestI
                         String version = getVersionFromConditionalCriteria(conditions, OrganisationSchemeVersionMetamacProperties.maintainableArtefact());
                         ConditionalCriteria conditionalCriteriaType = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Equal,
                                 OrganisationSchemeVersionMetamacProperties.organisationSchemeType());
+                        Boolean latest = getVersionLatestFromConditionalCriteria(conditions, OrganisationSchemeVersionMetamacProperties.maintainableArtefact());
 
                         OrganisationSchemeTypeEnum organisationSchemeTypeEnum = conditionalCriteriaType != null ? (OrganisationSchemeTypeEnum) conditionalCriteriaType.getFirstOperant() : null;
-                        if (agencyID != null && resourceID != null && version != null) {
+                        if (agencyID != null && resourceID != null && (version != null || Boolean.TRUE.equals(latest))) {
                             // Retrieve one
                             OrganisationSchemeVersionMetamac itemSchemeVersion = null;
                             if (NOT_EXISTS.equals(agencyID) || NOT_EXISTS.equals(resourceID) || NOT_EXISTS.equals(version)) {
                                 itemSchemeVersion = null;
-                            } else if (AGENCY_1.equals(agencyID) && ITEM_SCHEME_1_CODE.equals(resourceID) && ITEM_SCHEME_1_VERSION_1.equals(version)) {
+                            } else if (AGENCY_1.equals(agencyID) && ITEM_SCHEME_1_CODE.equals(resourceID) && (ITEM_SCHEME_1_VERSION_1.equals(version) || Boolean.TRUE.equals(latest))) {
                                 itemSchemeVersion = OrganisationsDoMocks.mockOrganisationSchemeWithOrganisations(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1, organisationSchemeTypeEnum);
-                            } else if (AGENCY_1.equals(agencyID) && ITEM_SCHEME_ORGANISATION_TYPE_AGENCY_1_CODE.equals(resourceID) && ITEM_SCHEME_1_VERSION_1.equals(version)) {
+                            } else if (AGENCY_1.equals(agencyID) && ITEM_SCHEME_ORGANISATION_TYPE_AGENCY_1_CODE.equals(resourceID)
+                                    && (ITEM_SCHEME_1_VERSION_1.equals(version) || Boolean.TRUE.equals(latest))) {
                                 itemSchemeVersion = OrganisationsDoMocks.mockOrganisationSchemeWithOrganisations(AGENCY_1, ITEM_SCHEME_ORGANISATION_TYPE_AGENCY_1_CODE, ITEM_SCHEME_1_VERSION_1,
                                         OrganisationSchemeTypeEnum.AGENCY_SCHEME);
-                            } else if (AGENCY_1.equals(agencyID) && ITEM_SCHEME_ORGANISATION_TYPE_ORGANISATION_UNIT_1_CODE.equals(resourceID) && ITEM_SCHEME_1_VERSION_1.equals(version)) {
+                            } else if (AGENCY_1.equals(agencyID) && ITEM_SCHEME_ORGANISATION_TYPE_ORGANISATION_UNIT_1_CODE.equals(resourceID)
+                                    && (ITEM_SCHEME_1_VERSION_1.equals(version) || Boolean.TRUE.equals(latest))) {
                                 itemSchemeVersion = OrganisationsDoMocks.mockOrganisationSchemeWithOrganisations(AGENCY_1, ITEM_SCHEME_ORGANISATION_TYPE_ORGANISATION_UNIT_1_CODE,
                                         ITEM_SCHEME_1_VERSION_1, OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME);
                             } else {
