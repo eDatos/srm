@@ -163,6 +163,8 @@ public class CategoriesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implem
                     return new SculptorPropertyCriteria(CategorisationProperties.artefactCategorised().urn(), propertyRestriction.getValue());
                 case CATEGORY:
                     return new SculptorPropertyCriteria(CategorisationProperties.category().nameableArtefact().urn(), propertyRestriction.getValue());
+                case LATEST:
+                    return new SculptorPropertyCriteria(CategorisationProperties.maintainableArtefact().latestFinal(), Boolean.valueOf(propertyRestriction.getValue()));
                 default:
                     throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
             }

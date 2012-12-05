@@ -458,6 +458,7 @@
             <xs:enumeration value="NAME" />
             <xs:enumeration value="CATEGORY" />
             <xs:enumeration value="ARTEFACT" />
+            <xs:enumeration value="LATEST" />
         </xs:restriction>
     </xs:simpleType>
 
