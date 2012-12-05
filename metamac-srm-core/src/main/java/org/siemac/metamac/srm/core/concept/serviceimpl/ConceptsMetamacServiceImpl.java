@@ -361,12 +361,15 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         ConceptMetamac conceptRole = retrieveConceptByUrn(ctx, conceptRoleUrn);
         // Check concept scheme of concept 'urn' can be modified and it is Operation or Transversal (it is retrieved instead navigate across relation to avoid ClassCastException)
         ConceptSchemeVersionMetamac conceptSchemeVersionOfConcept = retrieveConceptSchemeVersionCanBeModified(ctx, concept.getItemSchemeVersion().getMaintainableArtefact().getUrn());
-        if (!ConceptSchemeTypeEnum.OPERATION.equals(conceptSchemeVersionOfConcept.getType()) && !ConceptSchemeTypeEnum.TRANSVERSAL.equals(conceptSchemeVersionOfConcept.getType())) {
+        if (!ConceptSchemeTypeEnum.OPERATION.equals(conceptSchemeVersionOfConcept.getType()) && !ConceptSchemeTypeEnum.TRANSVERSAL.equals(conceptSchemeVersionOfConcept.getType())
+                && !ConceptSchemeTypeEnum.MEASURE.equals(conceptSchemeVersionOfConcept.getType())) {
             throw MetamacExceptionBuilder
                     .builder()
                     .withExceptionItems(ServiceExceptionType.CONCEPT_SCHEME_WRONG_TYPE)
-                    .withMessageParameters(conceptSchemeVersionOfConcept.getMaintainableArtefact().getUrn(),
-                            new String[]{ServiceExceptionParameters.CONCEPT_SCHEME_TYPE_OPERATION, ServiceExceptionParameters.CONCEPT_SCHEME_TYPE_TRANSVERSAL}).build();
+                    .withMessageParameters(
+                            conceptSchemeVersionOfConcept.getMaintainableArtefact().getUrn(),
+                            new String[]{ServiceExceptionParameters.CONCEPT_SCHEME_TYPE_OPERATION, ServiceExceptionParameters.CONCEPT_SCHEME_TYPE_TRANSVERSAL,
+                                    ServiceExceptionParameters.CONCEPT_SCHEME_TYPE_MEASURE}).build();
         }
         // Check concept scheme of concept 'conceptRoleUrn' is Role
         ConceptSchemeVersionMetamac conceptSchemeVersionOfRole = retrieveConceptSchemeByUrn(ctx, conceptRole.getItemSchemeVersion().getMaintainableArtefact().getUrn());

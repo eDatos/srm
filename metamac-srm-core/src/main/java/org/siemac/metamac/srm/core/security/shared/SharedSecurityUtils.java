@@ -160,7 +160,7 @@ public class SharedSecurityUtils {
     }
 
     protected static boolean isNonOperationConceptSchemeType(ConceptSchemeTypeEnum type) {
-        return ConceptSchemeTypeEnum.GLOSSARY.equals(type) || ConceptSchemeTypeEnum.ROLE.equals(type) || ConceptSchemeTypeEnum.TRANSVERSAL.equals(type);
+        return !isOperationConceptSchemeType(type);
     }
-
+    
 }

@@ -9,7 +9,8 @@ Application EnumsMetamacConceptDomain {
     		GLOSSARY,
     		TRANSVERSAL,
     		OPERATION,
-    		ROLE
+    		ROLE,
+    		MEASURE
     	}
     	
     	"Concept role"

@@ -192,6 +192,8 @@ public class ConceptsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl imple
                 return org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemeType.ROLE;
             case TRANSVERSAL:
                 return org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemeType.TRANSVERSAL;
+            case MEASURE:
+                return org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemeType.MEASURE;
             default:
                 org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.UNKNOWN);
                 throw new RestException(exception, Status.INTERNAL_SERVER_ERROR);

@@ -367,6 +367,7 @@
             <xs:enumeration value="TRANSVERSAL" />
             <xs:enumeration value="OPERATION" />
             <xs:enumeration value="ROLE" />
+            <xs:enumeration value="MEASURE" />
         </xs:restriction>
     </xs:simpleType>
 

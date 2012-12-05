@@ -161,6 +161,8 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
         ValidationUtils.checkMetadataRequired(conceptSchemeVersion.getType(), ServiceExceptionParameters.CONCEPT_SCHEME_TYPE, exceptions);
         if (ConceptSchemeTypeEnum.OPERATION.equals(conceptSchemeVersion.getType())) {
             ValidationUtils.checkMetadataRequired(conceptSchemeVersion.getRelatedOperation(), ServiceExceptionParameters.CONCEPT_SCHEME_RELATED_OPERATION, exceptions);
+        } else if (ConceptSchemeTypeEnum.MEASURE.equals(conceptSchemeVersion.getType())) {
+            // relatedOperation is optional
         } else {
             ValidationUtils.checkMetadataEmpty(conceptSchemeVersion.getRelatedOperation(), ServiceExceptionParameters.CONCEPT_SCHEME_RELATED_OPERATION, exceptions);
         }
@@ -186,7 +188,8 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
         ValidationUtils.checkMetadataOptionalIsValid(concept.getLegalActs(), ServiceExceptionParameters.CONCEPT_LEGAL_ACTS, exceptions);
 
         if (conceptSchemeVersion != null) {
-            if (ConceptSchemeTypeEnum.OPERATION.equals(conceptSchemeVersion.getType()) || ConceptSchemeTypeEnum.TRANSVERSAL.equals(conceptSchemeVersion.getType())) {
+            if (ConceptSchemeTypeEnum.OPERATION.equals(conceptSchemeVersion.getType()) || ConceptSchemeTypeEnum.TRANSVERSAL.equals(conceptSchemeVersion.getType())
+                    || ConceptSchemeTypeEnum.MEASURE.equals(conceptSchemeVersion.getType())) {
                 ValidationUtils.checkMetadataRequired(concept.getSdmxRelatedArtefact(), ServiceExceptionParameters.CONCEPT_SDMX_RELATED_ARTEFACT, exceptions);
             } else {
                 ValidationUtils.checkMetadataEmpty(concept.getSdmxRelatedArtefact(), ServiceExceptionParameters.CONCEPT_SDMX_RELATED_ARTEFACT, exceptions);
