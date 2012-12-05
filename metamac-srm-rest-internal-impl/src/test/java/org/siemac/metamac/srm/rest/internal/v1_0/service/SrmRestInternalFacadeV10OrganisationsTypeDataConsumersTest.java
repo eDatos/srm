@@ -14,6 +14,7 @@ import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ORDER_BY_ID_DESC;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.QUERY_ID_LIKE_1;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.QUERY_ID_LIKE_1_NAME_LIKE_2;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.QUERY_LATEST;
 
 import java.io.InputStream;
 
@@ -57,6 +58,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends 
         testFindDataConsumerSchemes(null, null, null, "2", "2", null, null); // other page with pagination
         testFindDataConsumerSchemes(null, null, null, null, null, QUERY_ID_LIKE_1, null); // query by id, without limits
         testFindDataConsumerSchemes(null, null, null, null, null, QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query by id and name, without limits
+        testFindDataConsumerSchemes(null, null, null, null, null, QUERY_LATEST, null); // latest
         testFindDataConsumerSchemes(null, null, null, "1", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query by id and name, first page
         testFindDataConsumerSchemes(null, null, null, "1", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query by id and name, first page
     }

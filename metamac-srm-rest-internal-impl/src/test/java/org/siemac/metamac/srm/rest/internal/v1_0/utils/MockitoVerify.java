@@ -4,6 +4,7 @@ import static org.junit.Assert.fail;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ORDER_BY_ID_DESC;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.QUERY_ID_LIKE_1;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.QUERY_ID_LIKE_1_NAME_LIKE_2;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.QUERY_LATEST;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -121,6 +122,8 @@ public class MockitoVerify extends MetamacRestAsserts {
         } else if (QUERY_ID_LIKE_1_NAME_LIKE_2.equals(query)) {
             return ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(ItemSchemeVersionProperties.maintainableArtefact().code()).like("%1%")
                     .withProperty(ItemSchemeVersionProperties.maintainableArtefact().name().texts().label()).like("%2%").build();
+        } else if (QUERY_LATEST.equals(query)) {
+            return ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(ItemSchemeVersionProperties.maintainableArtefact().latestFinal()).eq(Boolean.TRUE).build();
         }
         fail();
         return null;

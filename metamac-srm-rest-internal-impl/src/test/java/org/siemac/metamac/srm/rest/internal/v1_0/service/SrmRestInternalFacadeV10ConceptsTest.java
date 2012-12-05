@@ -25,6 +25,7 @@ import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ORDER_BY_ID_DESC;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.QUERY_ID_LIKE_1;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.QUERY_ID_LIKE_1_NAME_LIKE_2;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.QUERY_LATEST;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -84,6 +85,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
         testFindConceptSchemes(null, null, null, "2", "2", null, null); // other page with pagination
         testFindConceptSchemes(null, null, null, null, null, QUERY_ID_LIKE_1, null); // query by id, without limits
         testFindConceptSchemes(null, null, null, null, null, QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query by id and name, without limits
+        testFindConceptSchemes(null, null, null, null, null, QUERY_LATEST, null); // latest
         testFindConceptSchemes(null, null, null, "1", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query by id and name, first page
         testFindConceptSchemes(null, null, null, "1", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query by id and name, first page
     }
