@@ -176,7 +176,7 @@
     </cdomain:childLinks>
     <srm:replaceToVersion>replaceTo</srm:replaceToVersion>
     <srm:type>OPERATION</srm:type>
-    <srm:relatedOperation kind="STATISTICAL_OPERATION">
+    <srm:statisticalOperation kind="STATISTICAL_OPERATION">
         <cdomain:id>feed7398-2a62-420b-8e90-5aa09ff8f390</cdomain:id>
         <cdomain:urn>urn:feed7398-2a62-420b-8e90-5aa09ff8f390</cdomain:urn>
         <cdomain:selfLink kind="STATISTICAL_OPERATION" href="http://data.istac.es/apis/operations-internal/http://feed7398-2a62-420b-8e90-5aa09ff8f390"/>
@@ -184,5 +184,5 @@
             <cdomain:text xml:lang="en">title-SHBU7HveoK in English</cdomain:text>
             <cdomain:text xml:lang="es">title-mvbB4xNTcM en Español</cdomain:text>
         </cdomain:title>
-    </srm:relatedOperation>
+    </srm:statisticalOperation>
 </srm:conceptScheme>

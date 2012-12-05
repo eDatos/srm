@@ -78,7 +78,7 @@ public class ConceptsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl imple
         target.setSelfLink(toConceptSchemeSelfLink(source));
         target.setUri(target.getSelfLink().getHref());
         target.setType(toConceptSchemeTypeEnum(source.getType()));
-        target.setRelatedOperation(toResourceExternalItemStatisticalOperation(source.getRelatedOperation()));
+        target.setStatisticalOperation(toResourceExternalItemStatisticalOperation(source.getRelatedOperation()));
         target.setReplaceToVersion(source.getMaintainableArtefact().getReplaceToVersion());
         target.setParentLink(toConceptSchemeParentLink(source));
         target.setChildLinks(toConceptSchemeChildLinks(source));

@@ -11,7 +11,7 @@
                 <xs:sequence>
                     <xs:group ref="tns:ItemSchemeGroup" />
                     <xs:element name="type" type="tns:ConceptSchemeType" />
-                    <xs:element name="relatedOperation" type="common:Resource" minOccurs="0" />
+                    <xs:element name="statisticalOperation" type="common:Resource" minOccurs="0" />
                 </xs:sequence>
                 <xs:attribute name="kind" type="xs:string" use="required" />
             </xs:extension>

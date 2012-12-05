@@ -1,6 +1,6 @@
 package org.siemac.metamac.srm.rest.internal.v1_0.concept.utils;
 
-import static org.junit.Assert.assertEquals; 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -32,9 +32,9 @@ public class ConceptsAsserts extends Asserts {
         assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEMES, target.getParentLink().getKind());
         assertEquals(parentLink, target.getParentLink().getHref());
         assertEquals(source.getType().toString(), target.getType().toString());
-        MetamacAsserts.assertEqualsNullability(source.getRelatedOperation(), target.getRelatedOperation());
+        MetamacAsserts.assertEqualsNullability(source.getRelatedOperation(), target.getStatisticalOperation());
         if (source.getRelatedOperation() != null) {
-            assertEquals(source.getRelatedOperation().getUrn(), target.getRelatedOperation().getUrn());
+            assertEquals(source.getRelatedOperation().getUrn(), target.getStatisticalOperation().getUrn());
         }
         assertEquals(source.getMaintainableArtefact().getReplaceToVersion(), target.getReplaceToVersion());
         assertEquals(BigInteger.ONE, target.getChildLinks().getTotal());
