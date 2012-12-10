@@ -104,7 +104,7 @@
         
         CODE="AGENCIES"
         CODE_FULL="[null]"
-        URI="[null]"
+        URI_PROVIDER="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.base.AgencyScheme=SDMX:AGENCIES(01.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
@@ -175,7 +175,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="SDMX01"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:AGENCIES(01.000).SDMX01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -227,7 +227,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="SDMX02"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:AGENCIES(01.000).SDMX02"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -309,7 +309,7 @@
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
         CODE="CONCEPTSCHEME01"
-        URI="[null]"
+        URI_PROVIDER="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME01(01.000)"
         REPLACED_BY_VERSION="02.000"
         REPLACE_TO_VERSION="[null]"
@@ -386,7 +386,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="CONCEPT01"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME01(01.000).CONCEPT01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -454,7 +454,7 @@
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
         CODE="CONCEPTSCHEME01"
-        URI="[null]"
+        URI_PROVIDER="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME01(02.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="01.000"
@@ -539,7 +539,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="CONCEPT01"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME01(02.000).CONCEPT01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -631,7 +631,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="CONCEPT02"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME01(02.000).CONCEPT02"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -690,7 +690,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="CONCEPT0201"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME01(02.000).CONCEPT0201"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -755,7 +755,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="CONCEPT020101"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME01(02.000).CONCEPT020101"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -825,7 +825,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="CONCEPT03"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME01(02.000).CONCEPT03"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -894,7 +894,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="CONCEPT04"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME01(02.000).CONCEPT04"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -953,7 +953,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="CONCEPT0401"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME01(02.000).CONCEPT0401"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -1012,7 +1012,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="CONCEPT040101"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME01(02.000).CONCEPT040101"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -1090,7 +1090,7 @@
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
         CODE="CONCEPTSCHEME02"
-        URI="[null]"
+        URI_PROVIDER="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME02(01.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
@@ -1168,7 +1168,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="CONCEPT01"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME02(01.000).CONCEPT01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -1238,7 +1238,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="CONCEPT02"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME02(01.000).CONCEPT02"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -1332,7 +1332,7 @@
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
         CODE="CONCEPTSCHEME03"
-        URI="[null]"
+        URI_PROVIDER="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME03(01.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
@@ -1412,7 +1412,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="CONCEPT01"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME03(01.000).CONCEPT01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -1481,7 +1481,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="CONCEPT02"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME03(01.000).CONCEPT02"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -1546,7 +1546,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="CONCEPT0201"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME03(01.000).CONCEPT0201"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -1616,7 +1616,7 @@
                         ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                         
                         CODE="CONCEPT020101"
-                        URI="[null]"
+                        URI_PROVIDER="[null]"
                         URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME03(01.000).CONCEPT020101"
                         REPLACED_BY_VERSION="[null]"
                         REPLACE_TO_VERSION="[null]"
@@ -1693,7 +1693,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="CONCEPT0202"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME03(01.000).CONCEPT0202"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -1784,7 +1784,7 @@
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
         CODE="CONCEPTSCHEME04"
-        URI="[null]"
+        URI_PROVIDER="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME04(01.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
@@ -1858,7 +1858,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="CONCEPT01"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME04(01.000).CONCEPT01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -1935,7 +1935,7 @@
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
         CODE="CONCEPTSCHEME05"
-        URI="[null]"
+        URI_PROVIDER="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME05(01.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
@@ -2009,7 +2009,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="CONCEPT01"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME05(01.000).CONCEPT01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -2086,7 +2086,7 @@
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
         CODE="CONCEPTSCHEME06"
-        URI="[null]"
+        URI_PROVIDER="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME06(01.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
@@ -2160,7 +2160,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="CONCEPT01"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME06(01.000).CONCEPT01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -2240,7 +2240,7 @@
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
         CODE="CONCEPTSCHEME07"
-        URI="[null]"
+        URI_PROVIDER="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME07(01.000)"
         REPLACED_BY_VERSION="02.000"
         REPLACE_TO_VERSION="[null]"
@@ -2314,7 +2314,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="CONCEPT01"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME07(01.000).CONCEPT01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -2381,7 +2381,7 @@
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
         CODE="CONCEPTSCHEME07"
-        URI="[null]"
+        URI_PROVIDER="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME07(02.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="01.000"
@@ -2455,7 +2455,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="CONCEPT01"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME07(02.000).CONCEPT01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -2534,7 +2534,7 @@
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
         CODE="CONCEPTSCHEME08"
-        URI="[null]"
+        URI_PROVIDER="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME08(01.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
@@ -2608,7 +2608,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="CONCEPT01"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME08(01.000).CONCEPT01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -2685,7 +2685,7 @@
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
         CODE="CONCEPTSCHEME09"
-        URI="[null]"
+        URI_PROVIDER="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME09(01.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
@@ -2780,7 +2780,7 @@
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
         CODE="CONCEPTSCHEME10"
-        URI="[null]"
+        URI_PROVIDER="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME10(01.000)"
         REPLACED_BY_VERSION="02.000"
         REPLACE_TO_VERSION="[null]"
@@ -2861,7 +2861,7 @@
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
         CODE="CONCEPTSCHEME10"
-        URI="[null]"
+        URI_PROVIDER="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME10(02.000)"
         REPLACED_BY_VERSION="02.000"
         REPLACE_TO_VERSION="01.000"
@@ -2935,7 +2935,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="CONCEPT01"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME10(02.000).CONCEPT01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -3002,7 +3002,7 @@
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
         CODE="CONCEPTSCHEME10"
-        URI="[null]"
+        URI_PROVIDER="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME10(03.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="02.000"
@@ -3076,7 +3076,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="CONCEPT01"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME10(03.000).CONCEPT01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -3155,7 +3155,7 @@
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
         CODE="CONCEPTSCHEME11"
-        URI="[null]"
+        URI_PROVIDER="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME11(01.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
@@ -3229,7 +3229,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="CONCEPT01"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME11(01.000).CONCEPT01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -3309,7 +3309,7 @@
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
         CODE="CONCEPTSCHEME12"
-        URI="[null]"
+        URI_PROVIDER="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME12(01.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
@@ -3383,7 +3383,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="CONCEPT01"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME12(01.000).CONCEPT01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -3462,7 +3462,7 @@
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
         CODE="CONCEPTSCHEME13"
-        URI="[null]"
+        URI_PROVIDER="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME13(01.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
@@ -3536,7 +3536,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="CONCEPT01"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME13(01.000).CONCEPT01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -3596,7 +3596,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="CONCEPT02"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME13(01.000).CONCEPT02"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -3656,7 +3656,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="CONCEPT03"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME13(01.000).CONCEPT03"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"

@@ -104,7 +104,7 @@
         
         CODE="AGENCIES"
         CODE_FULL="[null]"
-        URI="[null]"
+        URI_PROVIDER="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.base.AgencyScheme=SDMX:AGENCIES(01.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
@@ -175,7 +175,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="SDMX01"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:AGENCIES(01.000).SDMX01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -227,7 +227,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="SDMX02"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:AGENCIES(01.000).SDMX02"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -308,7 +308,7 @@
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
         CODE="ORGANISATIONSCHEME01"
-        URI="[null]"
+        URI_PROVIDER="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=SDMX01:ORGANISATIONSCHEME01(01.000)"
         REPLACED_BY_VERSION="02.000"
         REPLACE_TO_VERSION="[null]"
@@ -378,7 +378,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
 
                 CODE="ORGANISATION01"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME01(01.000).ORGANISATION01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -445,7 +445,7 @@
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
         CODE="ORGANISATIONSCHEME01"
-        URI="[null]"
+        URI_PROVIDER="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=SDMX01:ORGANISATIONSCHEME01(02.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="01.000"
@@ -523,7 +523,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="ORGANISATION01"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME01(02.000).ORGANISATION01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -575,7 +575,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="ORGANISATION02"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME01(02.000).ORGANISATION02"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -627,7 +627,7 @@
                     ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                     
                     CODE="ORGANISATION0201"
-                    URI="[null]"
+                    URI_PROVIDER="[null]"
                     URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME01(02.000).ORGANISATION0201"
                     REPLACED_BY_VERSION="[null]"
                     REPLACE_TO_VERSION="[null]"
@@ -680,7 +680,7 @@
                         ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                         
                         CODE="ORGANISATION020101"
-                        URI="[null]"
+                        URI_PROVIDER="[null]"
                         URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME01(02.000).ORGANISATION020101"
                         REPLACED_BY_VERSION="[null]"
                         REPLACE_TO_VERSION="[null]"
@@ -732,7 +732,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="ORGANISATION03"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME01(02.000).ORGANISATION03"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -784,7 +784,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="ORGANISATION04"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME01(02.000).ORGANISATION04"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -836,7 +836,7 @@
                     ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                     
                     CODE="ORGANISATION0401"
-                    URI="[null]"
+                    URI_PROVIDER="[null]"
                     URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME01(02.000).ORGANISATION0401"
                     REPLACED_BY_VERSION="[null]"
                     REPLACE_TO_VERSION="[null]"
@@ -888,7 +888,7 @@
                         ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                         
                         CODE="ORGANISATION040101"
-                        URI="[null]"
+                        URI_PROVIDER="[null]"
                         URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME01(02.000).ORGANISATION040101"
                         REPLACED_BY_VERSION="[null]"
                         REPLACE_TO_VERSION="[null]"
@@ -968,7 +968,7 @@
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
         CODE="AGENCIES"
-        URI="[null]"
+        URI_PROVIDER="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.base.AgencyScheme=SDMX01:AGENCIES(01.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
@@ -1038,7 +1038,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="ORGANISATION01"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX01:AGENCIES(01.000).ORGANISATION01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -1090,7 +1090,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="ORGANISATION02"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX01:AGENCIES(01.000).ORGANISATION02"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -1170,7 +1170,7 @@
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
         CODE="ORGANISATIONSCHEME03"
-        URI="[null]"
+        URI_PROVIDER="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=SDMX01:ORGANISATIONSCHEME03(01.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
@@ -1241,7 +1241,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="ORGANISATION01"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME03(01.000).ORGANISATION01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -1386,7 +1386,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="ORGANISATION02"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME03(01.000).ORGANISATION02"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -1438,7 +1438,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="ORGANISATION0201"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME03(01.000).ORGANISATION0201"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -1490,7 +1490,7 @@
                         ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                         
                         CODE="ORGANISATION020101"
-                        URI="[null]"
+                        URI_PROVIDER="[null]"
                         URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME03(01.000).ORGANISATION020101"
                         REPLACED_BY_VERSION="[null]"
                         REPLACE_TO_VERSION="[null]"
@@ -1541,7 +1541,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="ORGANISATION0202"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME03(01.000).ORGANISATION0202"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -1621,7 +1621,7 @@
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
         CODE="ORGANISATIONSCHEME04"
-        URI="[null]"
+        URI_PROVIDER="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=SDMX01:ORGANISATIONSCHEME04(01.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
@@ -1690,7 +1690,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
 
                 CODE="ORGANISATION01"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME04(01.000).ORGANISATION01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -1771,7 +1771,7 @@
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
         CODE="ORGANISATIONSCHEME05"
-        URI="[null]"
+        URI_PROVIDER="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=SDMX01:ORGANISATIONSCHEME05(01.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
@@ -1840,7 +1840,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
 
                 CODE="ORGANISATION01"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME05(01.000).ORGANISATION01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -1920,7 +1920,7 @@
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
         CODE="ORGANISATIONSCHEME06"
-        URI="[null]"
+        URI_PROVIDER="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=SDMX01:ORGANISATIONSCHEME06(01.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
@@ -1989,7 +1989,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
 
                 CODE="ORGANISATION01"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME06(01.000).ORGANISATION01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -2070,7 +2070,7 @@
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
         CODE="ORGANISATIONSCHEME07"
-        URI="[null]"
+        URI_PROVIDER="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=SDMX01:ORGANISATIONSCHEME07(01.000)"
         REPLACED_BY_VERSION="02.000"
         REPLACE_TO_VERSION="[null]"
@@ -2152,7 +2152,7 @@
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
         CODE="ORGANISATIONSCHEME07"
-        URI="[null]"
+        URI_PROVIDER="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=SDMX01:ORGANISATIONSCHEME07(02.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="01.000"
@@ -2221,7 +2221,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
 
                 CODE="ORGANISATION01"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME07(02.000).ORGANISATION01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -2302,7 +2302,7 @@
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
         CODE="AGENCIES"
-        URI="[null]"
+        URI_PROVIDER="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.base.AgencyScheme=SDMX02:AGENCIES(01.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
@@ -2371,7 +2371,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
 
                 CODE="ORGANISATION01"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX02:AGENCIES(01.000).ORGANISATION01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -2451,7 +2451,7 @@
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
         CODE="AGENCIES"
-        URI="[null]"
+        URI_PROVIDER="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.base.AgencyScheme=SDMX02.ORGANISATION01:AGENCIES(01.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
@@ -2520,7 +2520,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
 
                 CODE="ORGANISATION01"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX02.ORGANISATION01:AGENCIES(01.000).ORGANISATION01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"

@@ -101,7 +101,7 @@
         
         CODE="AGENCIES"
         CODE_FULL="[null]"
-        URI="[null]"
+        URI_PROVIDER="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.base.AgencyScheme=SDMX:AGENCIES(01.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
@@ -173,7 +173,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="SDMX01"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:AGENCIES(01.000).SDMX01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -225,7 +225,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="SDMX02"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:AGENCIES(01.000).SDMX02"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -277,7 +277,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="SDMX"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:AGENCIES(01.000).SDMX"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -329,7 +329,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="ISO"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:AGENCIES(01.000).ISO"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -381,7 +381,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="ECB"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.base.Agency=ECB:ECB(1.0).ECB"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -433,7 +433,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="INE"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.base.Agency=INE:INE(1.0).INE"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -461,7 +461,7 @@
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
         CODE="DATASTRUCTUREDEFINITION01"
-        URI="[null]"
+        URI_PROVIDER="[null]"
         URN="uurn:sdmx:org.sdmx.infomodel.datastructure.datastructure=agencymock:datastructuredefinition01(01.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
@@ -532,7 +532,7 @@
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
         CODE="DATASTRUCTUREDEFINITION02"
-        URI="[null]"
+        URI_PROVIDER="[null]"
         URN="uurn:sdmx:org.sdmx.infomodel.datastructure.datastructure=agencymock:datastructuredefinition02(01.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"

@@ -104,7 +104,7 @@
         
         CODE="AGENCIES"
         CODE_FULL="[null]"
-        URI="[null]"
+        URI_PROVIDER="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.base.AgencyScheme=SDMX:AGENCIES(01.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
@@ -175,7 +175,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="SDMX01"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:AGENCIES(01.000).SDMX01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -227,7 +227,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="SDMX02"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:AGENCIES(01.000).SDMX02"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -313,7 +313,7 @@
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
         CODE="CODELIST01"
-        URI="[null]"
+        URI_PROVIDER="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST01(01.000)"
         REPLACED_BY_VERSION="02.000"
         REPLACE_TO_VERSION="[null]"
@@ -379,7 +379,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="CODE01"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(01.000).CODE01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -451,7 +451,7 @@
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
         CODE="CODELIST01"
-        URI="[null]"
+        URI_PROVIDER="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST01(02.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="01.000"
@@ -525,7 +525,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="CODE01"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(02.000).CODE01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -574,7 +574,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="CODE02"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(02.000).CODE02"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -623,7 +623,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="CODE0201"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(02.000).CODE0201"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -672,7 +672,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="CODE020101"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(02.000).CODE020101"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -721,7 +721,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="CODE03"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(02.000).CODE03"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -770,7 +770,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="CODE04"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(02.000).CODE04"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -819,7 +819,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="CODE0401"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(02.000).CODE0401"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -868,7 +868,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="CODE040101"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(02.000).CODE040101"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -950,7 +950,7 @@
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
         CODE="CODELIST02"
-        URI="[null]"
+        URI_PROVIDER="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST02(01.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
@@ -1017,7 +1017,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="CODE01"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST02(01.000).CODE01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -1066,7 +1066,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="CODE02"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST02(01.000).CODE02"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -1150,7 +1150,7 @@
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
         CODE="CODELIST03"
-        URI="[null]"
+        URI_PROVIDER="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST03(01.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
@@ -1219,7 +1219,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="CODE01"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST03(01.000).CODE01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -1268,7 +1268,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="CODE02"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST03(01.000).CODE02"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -1317,7 +1317,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="CODE0201"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST03(01.000).CODE0201"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -1366,7 +1366,7 @@
                         ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                         
                         CODE="CODE020101"
-                        URI="[null]"
+                        URI_PROVIDER="[null]"
                         URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST03(01.000).CODE020101"
                         REPLACED_BY_VERSION="[null]"
                         REPLACE_TO_VERSION="[null]"
@@ -1415,7 +1415,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="CODE0202"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST03(01.000).CODE0202"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -1497,7 +1497,7 @@
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
         CODE="CODELIST04"
-        URI="[null]"
+        URI_PROVIDER="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST04(01.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
@@ -1560,7 +1560,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="CODE01"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST04(01.000).CODE01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -1641,7 +1641,7 @@
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
         CODE="CODELIST05"
-        URI="[null]"
+        URI_PROVIDER="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST05(01.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
@@ -1704,7 +1704,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="CODE01"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST05(01.000).CODE01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -1785,7 +1785,7 @@
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
         CODE="CODELIST06"
-        URI="[null]"
+        URI_PROVIDER="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST06(01.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
@@ -1848,7 +1848,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="CODE01"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST06(01.000).CODE01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -1932,7 +1932,7 @@
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
         CODE="CODELIST07"
-        URI="[null]"
+        URI_PROVIDER="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST07(01.000)"
         REPLACED_BY_VERSION="02.000"
         REPLACE_TO_VERSION="[null]"
@@ -2017,7 +2017,7 @@
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
         CODE="CODELIST07"
-        URI="[null]"
+        URI_PROVIDER="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST07(02.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="01.000"
@@ -2080,7 +2080,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="CODE01"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST07(02.000).CODE01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -2163,7 +2163,7 @@
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
         CODE="CODELIST08"
-        URI="[null]"
+        URI_PROVIDER="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST08(01.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
@@ -2226,7 +2226,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="CODE01"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST08(01.000).CODE01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -2307,7 +2307,7 @@
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
         CODE="CODELIST09"
-        URI="[null]"
+        URI_PROVIDER="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST09(01.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
@@ -2406,7 +2406,7 @@
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
         CODE="CODELIST10"
-        URI="[null]"
+        URI_PROVIDER="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST10(01.000)"
         REPLACED_BY_VERSION="02.000"
         REPLACE_TO_VERSION="[null]"
@@ -2491,7 +2491,7 @@
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
         CODE="CODELIST10"
-        URI="[null]"
+        URI_PROVIDER="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST10(02.000)"
         REPLACED_BY_VERSION="02.000"
         REPLACE_TO_VERSION="01.000"
@@ -2554,7 +2554,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="CODE01"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST10(02.000).CODE01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -2625,7 +2625,7 @@
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
         CODE="CODELIST10"
-        URI="[null]"
+        URI_PROVIDER="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST10(03.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="02.000"
@@ -2688,7 +2688,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="CODE01"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST10(03.000).CODE01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -2771,7 +2771,7 @@
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
         CODE="CODELIST11"
-        URI="[null]"
+        URI_PROVIDER="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST11(01.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
@@ -2834,7 +2834,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="CODE01"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST11(01.000).CODE01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -2918,7 +2918,7 @@
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
         CODE="CODELIST12"
-        URI="[null]"
+        URI_PROVIDER="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST12(01.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
@@ -2981,7 +2981,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="CODE01"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST12(01.000).CODE01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -3064,7 +3064,7 @@
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
         CODE="CODELIST13"
-        URI="[null]"
+        URI_PROVIDER="[null]"
         URN="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST13(01.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
@@ -3127,7 +3127,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="CODE01"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST13(01.000).CODE01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -3176,7 +3176,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="CODE02"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST13(01.000).CODE02"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -3225,7 +3225,7 @@
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
                 CODE="CODE03"
-                URI="[null]"
+                URI_PROVIDER="[null]"
                 URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST13(01.000).CODE03"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
