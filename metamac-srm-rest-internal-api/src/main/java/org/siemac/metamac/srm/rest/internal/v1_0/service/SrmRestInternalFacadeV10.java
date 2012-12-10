@@ -16,6 +16,10 @@ import org.siemac.metamac.rest.srm_internal.v1_0.domain.Categorisations;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.Category;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.CategoryScheme;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.CategorySchemes;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.Code;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.Codelist;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.Codelists;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.Codes;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.Concept;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptScheme;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemes;
@@ -337,5 +341,41 @@ public interface SrmRestInternalFacadeV10 {
     @Path("dataconsumerschemes/{agencyID}/{resourceID}/{version}/dataconsumers/{organisationID}")
     DataConsumer retrieveDataConsumer(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @PathParam("version") String version,
             @PathParam("organisationID") String organisationID);
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    // CODELISTS
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+    @GET
+    @Produces("application/xml")
+    @Path("codelists")
+    Codelists findCodelists(@QueryParam("query") String query, @QueryParam("orderBy") String orderBy, @QueryParam("limit") String limit, @QueryParam("offset") String offset);
+
+    @GET
+    @Produces("application/xml")
+    @Path("codelists/{agencyID}")
+    Codelists findCodelists(@PathParam("agencyID") String agencyID, @QueryParam("query") String query, @QueryParam("orderBy") String orderBy, @QueryParam("limit") String limit,
+            @QueryParam("offset") String offset);
+
+    @GET
+    @Produces("application/xml")
+    @Path("codelists/{agencyID}/{resourceID}")
+    Codelists findCodelists(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @QueryParam("query") String query, @QueryParam("orderBy") String orderBy,
+            @QueryParam("limit") String limit, @QueryParam("offset") String offset);
+
+    @GET
+    @Produces("application/xml")
+    @Path("codelists/{agencyID}/{resourceID}/{version}")
+    Codelist retrieveCodelist(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @PathParam("version") String version);
+
+    @GET
+    @Produces("application/xml")
+    @Path("codelists/{agencyID}/{resourceID}/{version}/codes")
+    Codes findCodes(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @PathParam("version") String version, @QueryParam("query") String query,
+            @QueryParam("orderBy") String orderBy, @QueryParam("limit") String limit, @QueryParam("offset") String offset);
+
+    @GET
+    @Produces("application/xml")
+    @Path("codelists/{agencyID}/{resourceID}/{version}/codes/{codeID}")
+    Code retrieveCode(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @PathParam("version") String version, @PathParam("codeID") String codeID);
 }

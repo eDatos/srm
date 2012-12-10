@@ -7,12 +7,16 @@ public class RestInternalConstants {
     public static String API_NAME                               = "srm";
     public static String API_VERSION_1_0                        = "v1.0";
 
+    public static String WILDCARD                               = "~all";
+    public static String LATEST                                 = "~latest";
+
     public static String PARAMETER_AGENCY_ID                    = "agencyID";
     public static String PARAMETER_RESOURCE_ID                  = "resourceID";
     public static String PARAMETER_VERSION                      = "version";
     public static String PARAMETER_CONCEPT_ID                   = "conceptID";
     public static String PARAMETER_CATEGORY_ID                  = "categoryID";
     public static String PARAMETER_ORGANISATION_ID              = "organisationID";
+    public static String PARAMETER_CODE_ID                      = "codeID";
 
     public static String LINK_SUBPATH_CONCEPT_SCHEMES           = "conceptschemes";
     public static String LINK_SUBPATH_CONCEPTS                  = "concepts";
@@ -32,6 +36,9 @@ public class RestInternalConstants {
     public static String LINK_SUBPATH_DATA_PROVIDERS            = "dataproviders";
     public static String LINK_SUBPATH_DATA_CONSUMERS            = "dataconsumers";
     public static String LINK_SUBPATH_ORGANISATIONS             = "organisations";
+
+    public static String LINK_SUBPATH_CODELISTS                 = "codelists";
+    public static String LINK_SUBPATH_CODES                     = "codes";
 
     public static String KIND_CONCEPT_SCHEMES                   = API_NAME + RestConstants.KIND_SEPARATOR + "conceptSchemes";
     public static String KIND_CONCEPT_SCHEME                    = API_NAME + RestConstants.KIND_SEPARATOR + "conceptScheme";
@@ -70,6 +77,8 @@ public class RestInternalConstants {
     public static String KIND_DATA_PROVIDER                     = API_NAME + RestConstants.KIND_SEPARATOR + "dataProvider";
     public static String KIND_DATA_CONSUMER                     = API_NAME + RestConstants.KIND_SEPARATOR + "dataConsumer";
 
-    public static String WILDCARD                               = "~all";
-    public static String LATEST                                 = "~latest";
+    public static String KIND_CODELISTS                         = API_NAME + RestConstants.KIND_SEPARATOR + "codelists";
+    public static String KIND_CODELIST                          = API_NAME + RestConstants.KIND_SEPARATOR + "codelist";
+    public static String KIND_CODES                             = API_NAME + RestConstants.KIND_SEPARATOR + "codes";
+    public static String KIND_CODE                              = API_NAME + RestConstants.KIND_SEPARATOR + "code";
 }
