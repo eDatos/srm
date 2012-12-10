@@ -713,7 +713,7 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
 
         CodeMetamacDto codeMetamacDtoCreated = srmCoreServiceFacade.createCode(getServiceContextAdministrador(), codeMetamacDto);
         assertEquals("urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(02.000)." + codeMetamacDto.getCode(), codeMetamacDtoCreated.getUrn());
-        assertNull(codeMetamacDtoCreated.getUri());
+        assertNull(codeMetamacDtoCreated.getUriProvider());
 
         assertEqualsCodeDto(codeMetamacDto, codeMetamacDtoCreated);
     }

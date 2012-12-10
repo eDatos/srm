@@ -124,7 +124,7 @@ public class SrmDtoMocks {
 
         DimensionComponentDto dimensionComponentDto1 = new DimensionComponentDto();
         // Required
-        dimensionComponentDto1.setUri(RandomStringUtils.random(50, true, true));
+        dimensionComponentDto1.setUriProvider(RandomStringUtils.random(50, true, true));
         dimensionComponentDto1.setTypeDimensionComponent(TypeDimensionComponent.DIMENSION);
         dimensionComponentDto1.setTypeComponent(TypeComponent.DIMENSION_COMPONENT);
         dimensionComponentDto1.setOrderLogic(1);
@@ -138,7 +138,7 @@ public class SrmDtoMocks {
 
         DimensionComponentDto dimensionComponentDto2 = new DimensionComponentDto();
         // Required
-        dimensionComponentDto2.setUri(RandomStringUtils.random(50, true, true));
+        dimensionComponentDto2.setUriProvider(RandomStringUtils.random(50, true, true));
         dimensionComponentDto2.setTypeDimensionComponent(TypeDimensionComponent.MEASUREDIMENSION);
         dimensionComponentDto2.setTypeComponent(TypeComponent.DIMENSION_COMPONENT);
         dimensionComponentDto2.setOrderLogic(2);
@@ -198,7 +198,7 @@ public class SrmDtoMocks {
         dataAttributeDto1.setUsageStatus(UsageStatus.CONDITIONAL);
 
         // Other
-        dataAttributeDto1.setUri(RandomStringUtils.random(50, true, true));
+        dataAttributeDto1.setUriProvider(RandomStringUtils.random(50, true, true));
 
         DataAttributeDto dataAttributeDto2 = new DataAttributeDto();
         // Required
@@ -209,7 +209,7 @@ public class SrmDtoMocks {
         dataAttributeDto2.setUsageStatus(UsageStatus.CONDITIONAL);
 
         // Other
-        dataAttributeDto2.setUri(RandomStringUtils.random(50, true, true));
+        dataAttributeDto2.setUriProvider(RandomStringUtils.random(50, true, true));
 
         DataAttributeDto dataAttributeDto3 = new DataAttributeDto();
         // Required
@@ -220,7 +220,7 @@ public class SrmDtoMocks {
         dataAttributeDto3.setUsageStatus(UsageStatus.CONDITIONAL);
 
         // Other
-        dataAttributeDto3.setUri(RandomStringUtils.random(50, true, true));
+        dataAttributeDto3.setUriProvider(RandomStringUtils.random(50, true, true));
 
         List<DataAttributeDto> dataAttributeDtos = new ArrayList<DataAttributeDto>();
         dataAttributeDtos.add(dataAttributeDto1);
@@ -242,7 +242,7 @@ public class SrmDtoMocks {
         primaryMeasure.setCptIdRef(MetamacMocks.mockExternalItemDto(BaseDoMocks.mockConceptUrn(), TypeExternalArtefactsEnum.CONCEPT));
 
         // Other
-        primaryMeasure.setUri(RandomStringUtils.random(50, true, true));
+        primaryMeasure.setUriProvider(RandomStringUtils.random(50, true, true));
 
         return primaryMeasure;
     }
@@ -256,7 +256,7 @@ public class SrmDtoMocks {
         DescriptorDto descriptorDto = new DescriptorDto();
 
         // Required
-        descriptorDto.setUri(RandomStringUtils.random(50, true, true));
+        descriptorDto.setUriProvider(RandomStringUtils.random(50, true, true));
         descriptorDto.setTypeComponentList(TypeComponentList.DIMENSION_DESCRIPTOR);
 
         return descriptorDto;
@@ -272,7 +272,7 @@ public class SrmDtoMocks {
         DescriptorDto descriptorDto = new DescriptorDto();
 
         // Required
-        descriptorDto.setUri(RandomStringUtils.random(50, true, true));
+        descriptorDto.setUriProvider(RandomStringUtils.random(50, true, true));
         descriptorDto.setTypeComponentList(TypeComponentList.ATTRIBUTE_DESCRIPTOR);
 
         return descriptorDto;
@@ -288,7 +288,7 @@ public class SrmDtoMocks {
         DescriptorDto descriptorDto = new DescriptorDto();
 
         // Required
-        descriptorDto.setUri(RandomStringUtils.random(50, true, true));
+        descriptorDto.setUriProvider(RandomStringUtils.random(50, true, true));
         descriptorDto.setTypeComponentList(TypeComponentList.MEASURE_DESCRIPTOR);
 
         return descriptorDto;
@@ -305,7 +305,7 @@ public class SrmDtoMocks {
 
         // Required
         descriptorDto.setCode("groupDimensionDescriptor-" + RandomStringUtils.random(10, true, true));
-        descriptorDto.setUri(RandomStringUtils.random(50, true, true));
+        descriptorDto.setUriProvider(RandomStringUtils.random(50, true, true));
         descriptorDto.setTypeComponentList(TypeComponentList.GROUP_DIMENSION_DESCRIPTOR);
 
         return descriptorDto;
@@ -320,7 +320,7 @@ public class SrmDtoMocks {
     // ConceptDto conceptDto = new ConceptDto();
     //
     // // Required
-    // conceptDto.setUri(RandomStringUtils.random(50, true, true));
+    // conceptDto.setUriProvider(RandomStringUtils.random(50, true, true));
     //
     // // Required: Name
     // InternationalStringDto name = new InternationalStringDto();

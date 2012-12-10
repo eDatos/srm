@@ -149,7 +149,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         // Identifiers
         assertNotNull(conceptSchemeMetamacCreated);
         assertEquals(conceptSchemeDto.getCode(), conceptSchemeMetamacCreated.getCode());
-        assertNull(conceptSchemeMetamacCreated.getUri());
+        assertNull(conceptSchemeMetamacCreated.getUriProvider());
         assertNotNull(conceptSchemeMetamacCreated.getUrn());
         assertNotNull(conceptSchemeMetamacCreated.getVersionLogic());
         assertEqualsInternationalStringDto(conceptSchemeDto.getName(), conceptSchemeMetamacCreated.getName());
@@ -193,7 +193,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
 
         // Identifiers
         assertNotNull(conceptSchemeMetamacCreated);
-        assertNull(conceptSchemeMetamacCreated.getUri());
+        assertNull(conceptSchemeMetamacCreated.getUriProvider());
         assertNotNull(conceptSchemeMetamacCreated.getUrn());
         assertNotNull(conceptSchemeMetamacCreated.getVersionLogic());
 
@@ -1363,7 +1363,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
 
         ConceptMetamacDto conceptMetamacDtoCreated = srmCoreServiceFacade.createConcept(getServiceContextAdministrador(), conceptMetamacDto);
         assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME01(02.000)." + conceptMetamacDto.getCode(), conceptMetamacDtoCreated.getUrn());
-        assertNull(conceptMetamacDtoCreated.getUri());
+        assertNull(conceptMetamacDtoCreated.getUriProvider());
 
         assertEqualsConceptDto(conceptMetamacDto, conceptMetamacDtoCreated);
     }
@@ -1375,7 +1375,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
 
         ConceptMetamacDto conceptMetamacDtoCreated = srmCoreServiceFacade.createConcept(getServiceContextAdministrador(), conceptMetamacDto);
         assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME01(02.000)." + conceptMetamacDto.getCode(), conceptMetamacDtoCreated.getUrn());
-        assertNull(conceptMetamacDtoCreated.getUri());
+        assertNull(conceptMetamacDtoCreated.getUriProvider());
 
         assertEqualsConceptDto(conceptMetamacDto, conceptMetamacDtoCreated);
     }
