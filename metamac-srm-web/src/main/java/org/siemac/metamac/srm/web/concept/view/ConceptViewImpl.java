@@ -416,7 +416,7 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
         identifiersForm.setValue(ConceptDS.NAME, RecordUtils.getInternationalStringRecord(conceptDto.getName()));
         identifiersForm.setValue(ConceptDS.PLURAL_NAME, RecordUtils.getInternationalStringRecord(conceptDto.getPluralName()));
         identifiersForm.setValue(ConceptDS.ACRONYM, RecordUtils.getInternationalStringRecord(conceptDto.getAcronym()));
-        identifiersForm.setValue(ConceptDS.URI, conceptDto.getUri());
+        identifiersForm.setValue(ConceptDS.URI, conceptDto.getUriProvider());
         identifiersForm.setValue(ConceptDS.URN, conceptDto.getUrn());
 
         // Content descriptors
@@ -467,7 +467,7 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
         identifiersEditionForm.setValue(ConceptDS.NAME, RecordUtils.getInternationalStringRecord(conceptDto.getName()));
         identifiersEditionForm.setValue(ConceptDS.PLURAL_NAME, RecordUtils.getInternationalStringRecord(conceptDto.getPluralName()));
         identifiersEditionForm.setValue(ConceptDS.ACRONYM, RecordUtils.getInternationalStringRecord(conceptDto.getAcronym()));
-        identifiersEditionForm.setValue(ConceptDS.URI, conceptDto.getUri());
+        identifiersEditionForm.setValue(ConceptDS.URI, conceptDto.getUriProvider());
         identifiersEditionForm.setValue(ConceptDS.URN, conceptDto.getUrn());
 
         // Content descriptors

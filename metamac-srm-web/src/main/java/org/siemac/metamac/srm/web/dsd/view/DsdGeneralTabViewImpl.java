@@ -365,7 +365,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
     private void setDsdViewMode(DataStructureDefinitionMetamacDto dsd) {
         // Identifiers form
         identifiersForm.setValue(DataStructureDefinitionDS.CODE, dsd.getCode());
-        identifiersForm.setValue(DataStructureDefinitionDS.URI, dsd.getUri());
+        identifiersForm.setValue(DataStructureDefinitionDS.URI, dsd.getUriProvider());
         identifiersForm.setValue(DataStructureDefinitionDS.URN, dsd.getUrn());
         identifiersForm.setValue(DataStructureDefinitionDS.VERSION_LOGIC, dsd.getVersionLogic());
 
@@ -404,7 +404,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         // Identifiers form
         identifiersEditionForm.setValue(DataStructureDefinitionDS.CODE, dsd.getCode());
         identifiersEditionForm.setValue(DataStructureDefinitionDS.CODE_VIEW, dsd.getCode());
-        identifiersEditionForm.setValue(DataStructureDefinitionDS.URI, dsd.getUri());
+        identifiersEditionForm.setValue(DataStructureDefinitionDS.URI, dsd.getUriProvider());
         identifiersEditionForm.setValue(DataStructureDefinitionDS.URN, dsd.getUrn());
         identifiersEditionForm.setValue(DataStructureDefinitionDS.VERSION_LOGIC, dsd.getVersionLogic());
 

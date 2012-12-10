@@ -448,7 +448,7 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
     public void setCategorySchemeViewMode(CategorySchemeMetamacDto categorySchemeDto) {
         // Identifiers
         identifiersForm.setValue(CategorySchemeDS.CODE, categorySchemeDto.getCode());
-        identifiersForm.setValue(CategorySchemeDS.URI, categorySchemeDto.getUri());
+        identifiersForm.setValue(CategorySchemeDS.URI, categorySchemeDto.getUriProvider());
         identifiersForm.setValue(CategorySchemeDS.URN, categorySchemeDto.getUrn());
         identifiersForm.setValue(CategorySchemeDS.VERSION_LOGIC, categorySchemeDto.getVersionLogic());
         identifiersForm.setValue(CategorySchemeDS.NAME, RecordUtils.getInternationalStringRecord(categorySchemeDto.getName()));
@@ -497,7 +497,7 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         // Identifiers
         identifiersEditionForm.setValue(CategorySchemeDS.CODE, categorySchemeDto.getCode());
         identifiersEditionForm.setValue(CategorySchemeDS.CODE_VIEW, categorySchemeDto.getCode());
-        identifiersEditionForm.setValue(CategorySchemeDS.URI, categorySchemeDto.getUri());
+        identifiersEditionForm.setValue(CategorySchemeDS.URI, categorySchemeDto.getUriProvider());
         identifiersEditionForm.setValue(CategorySchemeDS.URN, categorySchemeDto.getUrn());
         identifiersEditionForm.setValue(CategorySchemeDS.VERSION_LOGIC, categorySchemeDto.getVersionLogic());
         identifiersEditionForm.setValue(CategorySchemeDS.NAME, RecordUtils.getInternationalStringRecord(categorySchemeDto.getName()));

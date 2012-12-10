@@ -416,7 +416,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         // Identifiers Form
         identifiersForm.setValue(OrganisationDS.CODE, organisationDto.getCode());
         identifiersForm.setValue(OrganisationDS.NAME, RecordUtils.getInternationalStringRecord(organisationDto.getName()));
-        identifiersForm.setValue(OrganisationDS.URI, organisationDto.getUri());
+        identifiersForm.setValue(OrganisationDS.URI, organisationDto.getUriProvider());
         identifiersForm.setValue(OrganisationDS.URN, organisationDto.getUrn());
 
         // Content descriptors
@@ -432,7 +432,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         identifiersEditionForm.setValue(OrganisationDS.CODE, organisationDto.getCode());
         identifiersEditionForm.setValue(OrganisationDS.CODE_VIEW, organisationDto.getCode());
         identifiersEditionForm.setValue(OrganisationDS.NAME, RecordUtils.getInternationalStringRecord(organisationDto.getName()));
-        identifiersEditionForm.setValue(OrganisationDS.URI, organisationDto.getUri());
+        identifiersEditionForm.setValue(OrganisationDS.URI, organisationDto.getUriProvider());
         identifiersEditionForm.setValue(OrganisationDS.URN, organisationDto.getUrn());
         identifiersEditionForm.markForRedraw();
 

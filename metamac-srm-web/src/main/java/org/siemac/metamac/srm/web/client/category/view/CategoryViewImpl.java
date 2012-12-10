@@ -196,7 +196,7 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
         // Identifiers Form
         identifiersForm.setValue(CategoryDS.CODE, categoryDto.getCode());
         identifiersForm.setValue(CategoryDS.NAME, RecordUtils.getInternationalStringRecord(categoryDto.getName()));
-        identifiersForm.setValue(CategoryDS.URI, categoryDto.getUri());
+        identifiersForm.setValue(CategoryDS.URI, categoryDto.getUriProvider());
         identifiersForm.setValue(CategoryDS.URN, categoryDto.getUrn());
 
         // Content descriptors
@@ -210,7 +210,7 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
         // Identifiers Form
         identifiersEditionForm.setValue(CategoryDS.CODE, categoryDto.getCode());
         identifiersEditionForm.setValue(CategoryDS.NAME, RecordUtils.getInternationalStringRecord(categoryDto.getName()));
-        identifiersEditionForm.setValue(CategoryDS.URI, categoryDto.getUri());
+        identifiersEditionForm.setValue(CategoryDS.URI, categoryDto.getUriProvider());
         identifiersEditionForm.setValue(CategoryDS.URN, categoryDto.getUrn());
 
         // Content descriptors

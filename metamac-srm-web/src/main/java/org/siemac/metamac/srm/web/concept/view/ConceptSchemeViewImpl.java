@@ -547,7 +547,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
     public void setConceptSchemeViewMode(ConceptSchemeMetamacDto conceptSchemeDto) {
         // Identifiers
         identifiersForm.setValue(ConceptSchemeDS.CODE, conceptSchemeDto.getCode());
-        identifiersForm.setValue(ConceptSchemeDS.URI, conceptSchemeDto.getUri());
+        identifiersForm.setValue(ConceptSchemeDS.URI, conceptSchemeDto.getUriProvider());
         identifiersForm.setValue(ConceptSchemeDS.URN, conceptSchemeDto.getUrn());
         identifiersForm.setValue(ConceptSchemeDS.VERSION_LOGIC, conceptSchemeDto.getVersionLogic());
         identifiersForm.setValue(ConceptSchemeDS.NAME, RecordUtils.getInternationalStringRecord(conceptSchemeDto.getName()));
@@ -603,7 +603,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         // Identifiers
         identifiersEditionForm.setValue(ConceptSchemeDS.CODE, conceptSchemeDto.getCode());
         identifiersEditionForm.setValue(ConceptSchemeDS.CODE_VIEW, conceptSchemeDto.getCode());
-        identifiersEditionForm.setValue(ConceptSchemeDS.URI, conceptSchemeDto.getUri());
+        identifiersEditionForm.setValue(ConceptSchemeDS.URI, conceptSchemeDto.getUriProvider());
         identifiersEditionForm.setValue(ConceptSchemeDS.URN, conceptSchemeDto.getUrn());
         identifiersEditionForm.setValue(ConceptSchemeDS.VERSION_LOGIC, conceptSchemeDto.getVersionLogic());
         identifiersEditionForm.setValue(ConceptSchemeDS.NAME, RecordUtils.getInternationalStringRecord(conceptSchemeDto.getName()));

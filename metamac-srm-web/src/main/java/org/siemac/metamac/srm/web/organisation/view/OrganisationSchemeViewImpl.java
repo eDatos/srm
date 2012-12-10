@@ -621,7 +621,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
     public void setOrganisationSchemeViewMode(OrganisationSchemeMetamacDto organisationSchemeDto) {
         // Identifiers
         identifiersForm.setValue(OrganisationSchemeDS.CODE, organisationSchemeDto.getCode());
-        identifiersForm.setValue(OrganisationSchemeDS.URI, organisationSchemeDto.getUri());
+        identifiersForm.setValue(OrganisationSchemeDS.URI, organisationSchemeDto.getUriProvider());
         identifiersForm.setValue(OrganisationSchemeDS.URN, organisationSchemeDto.getUrn());
         identifiersForm.setValue(OrganisationSchemeDS.VERSION_LOGIC, organisationSchemeDto.getVersionLogic());
         identifiersForm.setValue(OrganisationSchemeDS.NAME, RecordUtils.getInternationalStringRecord(organisationSchemeDto.getName()));
@@ -674,7 +674,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         // Identifiers
         identifiersEditionForm.setValue(OrganisationSchemeDS.CODE, organisationSchemeDto.getCode());
         identifiersEditionForm.setValue(OrganisationSchemeDS.CODE_VIEW, organisationSchemeDto.getCode());
-        identifiersEditionForm.setValue(OrganisationSchemeDS.URI, organisationSchemeDto.getUri());
+        identifiersEditionForm.setValue(OrganisationSchemeDS.URI, organisationSchemeDto.getUriProvider());
         identifiersEditionForm.setValue(OrganisationSchemeDS.URN, organisationSchemeDto.getUrn());
         identifiersEditionForm.setValue(OrganisationSchemeDS.VERSION_LOGIC, organisationSchemeDto.getVersionLogic());
         identifiersEditionForm.setValue(OrganisationSchemeDS.NAME, RecordUtils.getInternationalStringRecord(organisationSchemeDto.getName()));
