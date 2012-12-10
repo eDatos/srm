@@ -201,12 +201,9 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
             conceptSchemeVersion = retrieveConceptSchemeByUrn(ctx, conceptSchemeUrn);
         }
         ConceptsMetamacInvocationValidator.checkCreateConcept(conceptSchemeVersion, concept, null);
+        checkConceptToCreateOrUpdate(ctx, concept, conceptSchemeUrn);
         // ConceptsService checks conceptScheme isn't final
 
-        // Scheme of extends concept must be published
-        if (concept.getConceptExtends() != null) {
-            checkConceptInSchemeExternallyPublished(ctx, concept.getConceptExtends());
-        }
         // Save concept
         return (ConceptMetamac) conceptsService.createConcept(ctx, conceptSchemeUrn, concept);
     }
@@ -221,10 +218,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         }
         // Validation
         ConceptsMetamacInvocationValidator.checkUpdateConcept(conceptSchemeVersion, concept, null);
-        // Scheme of extends concept must be published
-        if (concept.getConceptExtends() != null) {
-            checkConceptInSchemeExternallyPublished(ctx, concept.getConceptExtends());
-        }
+        checkConceptToCreateOrUpdate(ctx, concept, concept.getItemSchemeVersion().getMaintainableArtefact().getUrn());
         // ConceptsService checks conceptScheme isn't final
 
         return (ConceptMetamac) conceptsService.updateConcept(ctx, concept);
@@ -359,7 +353,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
         ConceptMetamac concept = retrieveConceptByUrn(ctx, urn);
         ConceptMetamac conceptRole = retrieveConceptByUrn(ctx, conceptRoleUrn);
-        // Check concept scheme of concept 'urn' can be modified and it is Operation or Transversal (it is retrieved instead navigate across relation to avoid ClassCastException)
+        // Check concept scheme of concept 'urn' can be modified and it is Operation, Transversal or Measure (it is retrieved instead navigate across relation to avoid ClassCastException)
         ConceptSchemeVersionMetamac conceptSchemeVersionOfConcept = retrieveConceptSchemeVersionCanBeModified(ctx, concept.getItemSchemeVersion().getMaintainableArtefact().getUrn());
         if (!ConceptSchemeTypeEnum.OPERATION.equals(conceptSchemeVersionOfConcept.getType()) && !ConceptSchemeTypeEnum.TRANSVERSAL.equals(conceptSchemeVersionOfConcept.getType())
                 && !ConceptSchemeTypeEnum.MEASURE.equals(conceptSchemeVersionOfConcept.getType())) {
@@ -518,11 +512,6 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         }
     }
 
-    private void checkConceptInSchemeExternallyPublished(ServiceContext ctx, ConceptMetamac concept) throws MetamacException {
-        ConceptSchemeVersionMetamac conceptSchemeVersion = retrieveConceptSchemeByUrn(ctx, concept.getItemSchemeVersion().getMaintainableArtefact().getUrn());
-        SrmValidationUtils.checkProcStatus(conceptSchemeVersion.getLifeCycleMetadata(), conceptSchemeVersion.getMaintainableArtefact().getUrn(), ProcStatusEnum.EXTERNALLY_PUBLISHED);
-    }
-
     private void removeRelatedConceptsBidirectional(ConceptMetamac relatedConceptToRemove) {
         for (ConceptMetamac relatedConcept : relatedConceptToRemove.getRelatedConcepts()) {
             relatedConcept.removeRelatedConcept(relatedConceptToRemove);
@@ -545,6 +534,39 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
             ConceptMetamac relatedConceptIntNewVersion = (ConceptMetamac) conceptRepository
                     .findByCodeInConceptSchemeVersion(relatedConcept.getNameableArtefact().getCode(), conceptSchemeNewVersionUrn);
             conceptIntNewVersion.addRelatedConcept(relatedConceptIntNewVersion);
+        }
+    }
+
+    private void checkConceptToCreateOrUpdate(ServiceContext ctx, ConceptMetamac concept, String conceptSchemeUrn) throws MetamacException {
+        checkConceptMetadataExtends(ctx, concept, conceptSchemeUrn);
+    }
+
+    // TODO confirmar que estas restricciones son correctas
+    private void checkConceptMetadataExtends(ServiceContext ctx, ConceptMetamac concept, String conceptSchemeUrn) throws MetamacException {
+        if (concept.getConceptExtends() == null) {
+            return;
+        }
+
+        // Check concept scheme source: type
+        ConceptSchemeVersionMetamac conceptSchemeVersionSource = retrieveConceptSchemeByUrn(ctx, conceptSchemeUrn);
+        if (!ConceptSchemeTypeEnum.GLOSSARY.equals(conceptSchemeVersionSource.getType()) && !ConceptSchemeTypeEnum.OPERATION.equals(conceptSchemeVersionSource.getType())
+                && !ConceptSchemeTypeEnum.TRANSVERSAL.equals(conceptSchemeVersionSource.getType()) && !ConceptSchemeTypeEnum.MEASURE.equals(conceptSchemeVersionSource.getType())) {
+            throw MetamacExceptionBuilder
+                    .builder()
+                    .withExceptionItems(ServiceExceptionType.CONCEPT_SCHEME_WRONG_TYPE)
+                    .withMessageParameters(
+                            conceptSchemeUrn,
+                            new String[]{ServiceExceptionParameters.CONCEPT_SCHEME_TYPE_GLOSSARY, ServiceExceptionParameters.CONCEPT_SCHEME_TYPE_OPERATION,
+                                    ServiceExceptionParameters.CONCEPT_SCHEME_TYPE_TRANSVERSAL, ServiceExceptionParameters.CONCEPT_SCHEME_TYPE_MEASURE}).build();
+
+        }
+
+        // Check concept scheme target (of extends concept): procStatus and type
+        ConceptSchemeVersionMetamac conceptSchemeVersionTarget = retrieveConceptSchemeByUrn(ctx, concept.getConceptExtends().getItemSchemeVersion().getMaintainableArtefact().getUrn());
+        SrmValidationUtils.checkProcStatus(conceptSchemeVersionTarget.getLifeCycleMetadata(), conceptSchemeVersionTarget.getMaintainableArtefact().getUrn(), ProcStatusEnum.EXTERNALLY_PUBLISHED);
+        if (!ConceptSchemeTypeEnum.GLOSSARY.equals(conceptSchemeVersionTarget.getType())) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CONCEPT_SCHEME_WRONG_TYPE)
+                    .withMessageParameters(conceptSchemeVersionTarget.getMaintainableArtefact().getUrn(), new String[]{ServiceExceptionParameters.CONCEPT_SCHEME_TYPE_GLOSSARY}).build();
         }
     }
 }
