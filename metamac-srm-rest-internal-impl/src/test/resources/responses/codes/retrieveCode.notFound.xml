@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<cdomain:exception xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain">
+    <cdomain:code>exception.srm.code.not_found</cdomain:code>
+    <cdomain:message>Code not found with ID notexists in Codelist in agencyID agency1 with ID itemScheme1 and version 01.000</cdomain:message>
+    <cdomain:parameters total="4">
+        <cdomain:parameter>notexists</cdomain:parameter>
+        <cdomain:parameter>agency1</cdomain:parameter>
+        <cdomain:parameter>itemScheme1</cdomain:parameter>
+        <cdomain:parameter>01.000</cdomain:parameter>
+    </cdomain:parameters>
+</cdomain:exception>

@@ -25,6 +25,10 @@ import org.siemac.metamac.rest.srm_internal.v1_0.domain.Categorisations;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.Category;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.CategoryScheme;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.CategorySchemes;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.Code;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.Codelist;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.Codelists;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.Codes;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.Concept;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptScheme;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemes;
@@ -49,6 +53,9 @@ import org.siemac.metamac.rest.srm_internal.v1_0.domain.Organisations;
 import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
 import org.siemac.metamac.srm.core.category.serviceapi.CategoriesMetamacService;
+import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
+import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
+import org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacService;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptType;
@@ -62,6 +69,8 @@ import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.category.CategoriesDo2RestMapperV10;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.category.CategoriesRest2DoMapper;
+import org.siemac.metamac.srm.rest.internal.v1_0.mapper.code.CodesDo2RestMapperV10;
+import org.siemac.metamac.srm.rest.internal.v1_0.mapper.code.CodesRest2DoMapper;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.concept.ConceptsDo2RestMapperV10;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.concept.ConceptsRest2DoMapper;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.organisation.OrganisationsDo2RestMapperV10;
@@ -88,6 +97,9 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
     private OrganisationsMetamacService   organisationsService;
 
     @Autowired
+    private CodesMetamacService           codesService;
+
+    @Autowired
     private ConceptsRest2DoMapper         conceptsRest2DoMapper;
 
     @Autowired
@@ -97,6 +109,9 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
     private OrganisationsRest2DoMapper    organisationsRest2DoMapper;
 
     @Autowired
+    private CodesRest2DoMapper            codesRest2DoMapper;
+
+    @Autowired
     private ConceptsDo2RestMapperV10      conceptsDo2RestMapper;
 
     @Autowired
@@ -104,6 +119,9 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
 
     @Autowired
     private OrganisationsDo2RestMapperV10 organisationsDo2RestMapper;
+
+    @Autowired
+    private CodesDo2RestMapperV10         codesDo2RestMapper;
 
     private ServiceContext                ctx    = new ServiceContext("restInternal", "restInternal", "restInternal");
     private Logger                        logger = LoggerFactory.getLogger(LoggingInterceptor.class);
@@ -294,7 +312,8 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             checkParameterNotWildcardRetrieveItemScheme(agencyID, resourceID, version);
 
             // Find one
-            PagedResult<com.arte.statistic.sdmx.srm.core.category.domain.Categorisation> entitiesPagedResult = findCategorisationsCore(agencyID, resourceID, version, null, PagingParameter.pageAccess(1, 1, false));
+            PagedResult<com.arte.statistic.sdmx.srm.core.category.domain.Categorisation> entitiesPagedResult = findCategorisationsCore(agencyID, resourceID, version, null,
+                    PagingParameter.pageAccess(1, 1, false));
             if (entitiesPagedResult.getValues().size() != 1) {
                 org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.CATEGORISATION_NOT_FOUND, agencyID, resourceID, version);
                 throw new RestException(exception, Status.NOT_FOUND);
@@ -699,6 +718,80 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
         }
     }
 
+    @Override
+    public Codelists findCodelists(String query, String orderBy, String limit, String offset) {
+        return findCodelists(null, null, null, query, orderBy, limit, offset);
+    }
+
+    @Override
+    public Codelists findCodelists(String agencyID, String query, String orderBy, String limit, String offset) {
+        checkParameterNotWildcardFindItemSchemes(agencyID);
+        return findCodelists(agencyID, null, null, query, orderBy, limit, offset);
+    }
+
+    @Override
+    public Codelists findCodelists(String agencyID, String resourceID, String query, String orderBy, String limit, String offset) {
+        checkParameterNotWildcardFindItemSchemes(agencyID, resourceID);
+        return findCodelists(agencyID, resourceID, null, query, orderBy, limit, offset);
+    }
+
+    @Override
+    public Codelist retrieveCodelist(String agencyID, String resourceID, String version) {
+        try {
+            checkParameterNotWildcardRetrieveItemScheme(agencyID, resourceID, version);
+
+            // Find one
+            PagedResult<CodelistVersionMetamac> entitiesPagedResult = findCodelistsCore(agencyID, resourceID, version, null, PagingParameter.pageAccess(1, 1, false));
+            if (entitiesPagedResult.getValues().size() != 1) {
+                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.CODELIST_NOT_FOUND, agencyID, resourceID, version);
+                throw new RestException(exception, Status.NOT_FOUND);
+            }
+
+            // Transform
+            Codelist codelist = codesDo2RestMapper.toCodelist(entitiesPagedResult.getValues().get(0));
+            return codelist;
+        } catch (Exception e) {
+            throw manageException(e);
+        }
+    }
+
+    @Override
+    public Codes findCodes(String agencyID, String resourceID, String version, String query, String orderBy, String limit, String offset) {
+        try {
+            checkParameterNotWildcardFindItems(agencyID, resourceID, version);
+
+            // Find
+            SculptorCriteria sculptorCriteria = codesRest2DoMapper.getCodeCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
+            PagedResult<CodeMetamac> entitiesPagedResult = findCodesCore(agencyID, resourceID, version, null, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
+
+            // Transform
+            Codes codes = codesDo2RestMapper.toCodes(entitiesPagedResult, agencyID, resourceID, version, query, orderBy, sculptorCriteria.getLimit());
+            return codes;
+        } catch (Exception e) {
+            throw manageException(e);
+        }
+    }
+
+    @Override
+    public Code retrieveCode(String agencyID, String resourceID, String version, String codeID) {
+        try {
+            checkParameterNotWildcardRetrieveItem(agencyID, resourceID, version, codeID, RestInternalConstants.PARAMETER_CODE_ID);
+
+            // Find one
+            PagedResult<CodeMetamac> entitiesPagedResult = findCodesCore(agencyID, resourceID, version, codeID, null, PagingParameter.pageAccess(1, 1, false));
+            if (entitiesPagedResult.getValues().size() != 1) {
+                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.CODE_NOT_FOUND, codeID, agencyID, resourceID, version);
+                throw new RestException(exception, Status.NOT_FOUND);
+            }
+
+            // Transform
+            Code code = codesDo2RestMapper.toCode(entitiesPagedResult.getValues().get(0));
+            return code;
+        } catch (Exception e) {
+            throw manageException(e);
+        }
+    }
+
     private ConceptSchemes findConceptSchemes(String agencyID, String resourceID, String version, String query, String orderBy, String limit, String offset) {
         try {
             SculptorCriteria sculptorCriteria = conceptsRest2DoMapper.getConceptSchemeCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
@@ -759,7 +852,8 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             SculptorCriteria sculptorCriteria = categoriesRest2DoMapper.getCategorisationCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
 
             // Find
-            PagedResult<com.arte.statistic.sdmx.srm.core.category.domain.Categorisation> entitiesPagedResult = findCategorisationsCore(agencyID, resourceID, version, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
+            PagedResult<com.arte.statistic.sdmx.srm.core.category.domain.Categorisation> entitiesPagedResult = findCategorisationsCore(agencyID, resourceID, version, sculptorCriteria.getConditions(),
+                    sculptorCriteria.getPagingParameter());
 
             // Transform
             Categorisations categorisations = categoriesDo2RestMapper.toCategorisations(entitiesPagedResult, agencyID, resourceID, query, orderBy, sculptorCriteria.getLimit());
@@ -791,11 +885,11 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
         PagedResult<CategoryMetamac> entitiesPagedResult = categoriesService.findCategoriesByCondition(ctx, conditionalCriteria, pagingParameter);
         return entitiesPagedResult;
     }
-    
-    private PagedResult<com.arte.statistic.sdmx.srm.core.category.domain.Categorisation> findCategorisationsCore(String agencyID, String resourceID, String version, List<ConditionalCriteria> conditionalCriteriaQuery,
-            PagingParameter pagingParameter) throws MetamacException {
 
-        // Criteria to find by criteria TODO build criteria
+    private PagedResult<com.arte.statistic.sdmx.srm.core.category.domain.Categorisation> findCategorisationsCore(String agencyID, String resourceID, String version,
+            List<ConditionalCriteria> conditionalCriteriaQuery, PagingParameter pagingParameter) throws MetamacException {
+
+        // Criteria to find by criteria
         List<ConditionalCriteria> conditionalCriteria = SrmRestInternalUtils.buildConditionalCriteriaItemSchemes(agencyID, resourceID, version, conditionalCriteriaQuery,
                 CategorySchemeVersionMetamac.class);
 
@@ -900,6 +994,32 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
         }
     }
 
+    private Codelists findCodelists(String agencyID, String resourceID, String version, String query, String orderBy, String limit, String offset) {
+        try {
+            SculptorCriteria sculptorCriteria = codesRest2DoMapper.getCodelistCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
+
+            // Find
+            PagedResult<CodelistVersionMetamac> entitiesPagedResult = findCodelistsCore(agencyID, resourceID, version, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
+
+            // Transform
+            Codelists codelists = codesDo2RestMapper.toCodelists(entitiesPagedResult, agencyID, resourceID, query, orderBy, sculptorCriteria.getLimit());
+            return codelists;
+        } catch (Exception e) {
+            throw manageException(e);
+        }
+    }
+
+    private PagedResult<CodelistVersionMetamac> findCodelistsCore(String agencyID, String resourceID, String version, List<ConditionalCriteria> conditionalCriteriaQuery,
+            PagingParameter pagingParameter) throws MetamacException {
+
+        // Criteria to find item schemes by criteria
+        List<ConditionalCriteria> conditionalCriteria = SrmRestInternalUtils.buildConditionalCriteriaItemSchemes(agencyID, resourceID, version, conditionalCriteriaQuery, CodelistVersionMetamac.class);
+
+        // Find
+        PagedResult<CodelistVersionMetamac> entitiesPagedResult = codesService.findCodelistsByCondition(ctx, conditionalCriteria, pagingParameter);
+        return entitiesPagedResult;
+    }
+
     private PagedResult<OrganisationMetamac> findOrganisationsCore(OrganisationTypeEnum type, String agencyID, String resourceID, String version, String organisationID,
             List<ConditionalCriteria> conditionalCriteriaQuery, PagingParameter pagingParameter) throws MetamacException {
 
@@ -912,6 +1032,17 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
 
         // Find
         PagedResult<OrganisationMetamac> entitiesPagedResult = organisationsService.findOrganisationsByCondition(ctx, conditionalCriteria, pagingParameter);
+        return entitiesPagedResult;
+    }
+
+    private PagedResult<CodeMetamac> findCodesCore(String agencyID, String resourceID, String version, String codeID, List<ConditionalCriteria> conditionalCriteriaQuery,
+            PagingParameter pagingParameter) throws MetamacException {
+
+        // Criteria to find items by criteria
+        List<ConditionalCriteria> conditionalCriteria = SrmRestInternalUtils.buildConditionalCriteriaItems(agencyID, resourceID, version, codeID, conditionalCriteriaQuery, CodeMetamac.class);
+
+        // Find
+        PagedResult<CodeMetamac> entitiesPagedResult = codesService.findCodesByCondition(ctx, conditionalCriteria, pagingParameter);
         return entitiesPagedResult;
     }
 

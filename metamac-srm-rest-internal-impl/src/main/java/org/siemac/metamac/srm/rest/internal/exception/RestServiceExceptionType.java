@@ -26,4 +26,6 @@ public class RestServiceExceptionType extends RestCommonServiceExceptionType {
     public static final RestCommonServiceExceptionType DATA_CONSUMER_SCHEME_NOT_FOUND     = create("exception.srm.data_consumer_scheme.not_found");
     public static final RestCommonServiceExceptionType DATA_CONSUMER_NOT_FOUND            = create("exception.srm.data_consumer.not_found");
 
+    public static final RestCommonServiceExceptionType CODELIST_NOT_FOUND                 = create("exception.srm.codelist.not_found");
+    public static final RestCommonServiceExceptionType CODE_NOT_FOUND                     = create("exception.srm.code.not_found");
 }

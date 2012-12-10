@@ -24,5 +24,12 @@
     <bean id="organisationsMetamacService" class="org.mockito.Mockito" factory-method="mock">
         <constructor-arg value="org.siemac.metamac.srm.core.organisation.serviceapi.OrganisationsMetamacService" />
     </bean>
+
+    <bean id="codesService" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="com.arte.statistic.sdmx.srm.core.code.serviceapi.CodesService" />
+    </bean>
+    <bean id="codesMetamacService" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacService" />
+    </bean>
     
 </beans>
