@@ -28,7 +28,7 @@ public class AnnounceConceptSchemeActionHandler extends SecurityActionHandler<An
         conceptSchemeDto.setId(Long.valueOf(3 * 1));
         conceptSchemeDto.setUuid(UUID.randomUUID().toString());
         conceptSchemeDto.setUrn("prefix=" + UUID.randomUUID().toString());
-        conceptSchemeDto.setUri(UUID.randomUUID().toString());
+        conceptSchemeDto.setUriProvider(UUID.randomUUID().toString());
         conceptSchemeDto.setVersionLogic("01.000");
         conceptSchemeDto.setLifeCycle(new LifeCycleDto(ProcStatusEnum.DRAFT));
         DecimalFormat nformat = new DecimalFormat("0000");
