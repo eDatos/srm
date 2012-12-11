@@ -49,7 +49,7 @@ public class CodesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements 
                 case ID:
                     return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.maintainableArtefact().code(), propertyRestriction.getValue());
                 case URN:
-                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.maintainableArtefact().urn(), propertyRestriction.getValue());
+                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.maintainableArtefact().urnProvider(), propertyRestriction.getValue());
                 case NAME:
                     return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.maintainableArtefact().name().texts().label(), propertyRestriction.getValue());
                 case DESCRIPTION:
@@ -103,7 +103,7 @@ public class CodesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements 
                 case ID:
                     return new SculptorPropertyCriteria(CodeMetamacProperties.nameableArtefact().code(), propertyRestriction.getValue());
                 case URN:
-                    return new SculptorPropertyCriteria(CodeMetamacProperties.nameableArtefact().urn(), propertyRestriction.getValue());
+                    return new SculptorPropertyCriteria(CodeMetamacProperties.nameableArtefact().urnProvider(), propertyRestriction.getValue());
                 case NAME:
                     return new SculptorPropertyCriteria(CodeMetamacProperties.nameableArtefact().name().texts().label(), propertyRestriction.getValue());
                 case DESCRIPTION:

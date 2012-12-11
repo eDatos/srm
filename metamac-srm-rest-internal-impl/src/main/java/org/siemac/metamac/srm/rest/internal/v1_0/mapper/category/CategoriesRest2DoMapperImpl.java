@@ -63,7 +63,7 @@ public class CategoriesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implem
                 case ID:
                     return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.maintainableArtefact().code(), propertyRestriction.getValue());
                 case URN:
-                    return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.maintainableArtefact().urn(), propertyRestriction.getValue());
+                    return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.maintainableArtefact().urnProvider(), propertyRestriction.getValue());
                 case NAME:
                     return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.maintainableArtefact().name().texts().label(), propertyRestriction.getValue());
                 case DESCRIPTION:
@@ -116,9 +116,9 @@ public class CategoriesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implem
             CategoryCriteriaPropertyRestriction propertyNameCriteria = CategoryCriteriaPropertyRestriction.fromValue(propertyRestriction.getPropertyName());
             switch (propertyNameCriteria) {
                 case ID:
-                    return new SculptorPropertyCriteria(CategoryMetamacProperties.nameableArtefact().code(), propertyRestriction.getValue());
+                    return new SculptorPropertyCriteria(CategoryMetamacProperties.nameableArtefact().codeFull(), propertyRestriction.getValue());
                 case URN:
-                    return new SculptorPropertyCriteria(CategoryMetamacProperties.nameableArtefact().urn(), propertyRestriction.getValue());
+                    return new SculptorPropertyCriteria(CategoryMetamacProperties.nameableArtefact().urnProvider(), propertyRestriction.getValue());
                 case NAME:
                     return new SculptorPropertyCriteria(CategoryMetamacProperties.nameableArtefact().name().texts().label(), propertyRestriction.getValue());
                 case DESCRIPTION:
@@ -156,13 +156,13 @@ public class CategoriesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implem
                 case ID:
                     return new SculptorPropertyCriteria(CategorisationProperties.maintainableArtefact().code(), propertyRestriction.getValue());
                 case URN:
-                    return new SculptorPropertyCriteria(CategorisationProperties.maintainableArtefact().urn(), propertyRestriction.getValue());
+                    return new SculptorPropertyCriteria(CategorisationProperties.maintainableArtefact().urnProvider(), propertyRestriction.getValue());
                 case NAME:
                     return new SculptorPropertyCriteria(CategorisationProperties.maintainableArtefact().name().texts().label(), propertyRestriction.getValue());
                 case ARTEFACT:
-                    return new SculptorPropertyCriteria(CategorisationProperties.artefactCategorised().urn(), propertyRestriction.getValue());
+                    return new SculptorPropertyCriteria(CategorisationProperties.artefactCategorised().urnProvider(), propertyRestriction.getValue());
                 case CATEGORY:
-                    return new SculptorPropertyCriteria(CategorisationProperties.category().nameableArtefact().urn(), propertyRestriction.getValue());
+                    return new SculptorPropertyCriteria(CategorisationProperties.category().nameableArtefact().urnProvider(), propertyRestriction.getValue());
                 case LATEST:
                     return new SculptorPropertyCriteria(CategorisationProperties.maintainableArtefact().latestFinal(), Boolean.valueOf(propertyRestriction.getValue()));
                 default:
