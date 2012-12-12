@@ -26,6 +26,7 @@ public class DoMocks {
     public static void fillMaintainableArtefactWithInmutableValues(String agencyID, String resourceID, String version, MaintainableArtefact maintainableArtefact) {
         maintainableArtefact.setCode(resourceID);
         maintainableArtefact.setUrn("urn:" + resourceID + ":" + version);
+        maintainableArtefact.setUrnProvider(maintainableArtefact.getUrn());
         maintainableArtefact.setName(mockInternationalString("name", resourceID + "v" + version));
         maintainableArtefact.setDescription(mockInternationalString("description", resourceID + "v" + version));
         maintainableArtefact.setVersionLogic(version);
@@ -33,6 +34,7 @@ public class DoMocks {
 
     public static void fillNameableArtefactWithInmutableValues(String resourceID, NameableArtefact nameableArtefact) {
         nameableArtefact.setUrn("urn:" + resourceID);
+        nameableArtefact.setUrnProvider(nameableArtefact.getUrn());
         nameableArtefact.setCode(resourceID);
         nameableArtefact.setName(mockInternationalString("name", resourceID));
         nameableArtefact.setDescription(mockInternationalString("description", resourceID));
