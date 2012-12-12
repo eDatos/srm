@@ -35,7 +35,9 @@ public class ConceptsMetamacDtoMocks {
         ConceptsDtoMocks.mockConceptSchemeDto(conceptSchemeDto);
         conceptSchemeDto.setType(ConceptSchemeTypeEnum.OPERATION);
         conceptSchemeDto.setRelatedOperation(MetamacMocks.mockExternalItemDto("urn:operation", TypeExternalArtefactsEnum.STATISTICAL_OPERATION));
-        conceptSchemeDto.setMaintainer(new RelatedResourceDto(codeMaintainer, urnMaintainer, TypeExternalArtefactsEnum.AGENCY));
+        RelatedResourceDto maintainerDto = new RelatedResourceDto(codeMaintainer, urnMaintainer, TypeExternalArtefactsEnum.AGENCY);
+        maintainerDto.setUrnProvider(urnMaintainer);
+        conceptSchemeDto.setMaintainer(maintainerDto);
 
         return conceptSchemeDto;
     }

@@ -105,6 +105,7 @@
         CODE="AGENCIES"
         CODE_FULL="[null]"
         URI_PROVIDER="[null]"
+        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.base.AgencyScheme=SDMX:AGENCIES(01.000)"
         URN="urn:sdmx:org.sdmx.infomodel.base.AgencyScheme=SDMX:AGENCIES(01.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
@@ -177,6 +178,7 @@
                 
                 CODE="SDMX01"
                 URI_PROVIDER="[null]"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:AGENCIES(01.000).SDMX01"
                 URN="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:AGENCIES(01.000).SDMX01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -229,6 +231,7 @@
                 
                 CODE="SDMX02"
                 URI_PROVIDER="[null]"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:AGENCIES(01.000).SDMX02"
                 URN="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:AGENCIES(01.000).SDMX02"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -315,6 +318,7 @@
         
         CODE="CODELIST01"
         URI_PROVIDER="[null]"
+        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST01(01.000)"
         URN="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST01(01.000)"
         REPLACED_BY_VERSION="02.000"
         REPLACE_TO_VERSION="[null]"
@@ -382,6 +386,7 @@
                 
                 CODE="CODE01"
                 URI_PROVIDER="[null]"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(01.000).CODE01"
                 URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(01.000).CODE01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -454,6 +459,7 @@
         
         CODE="CODELIST01"
         URI_PROVIDER="[null]"
+        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST01(02.000)"
         URN="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST01(02.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="01.000"
@@ -529,6 +535,7 @@
                 
                 CODE="CODE01"
                 URI_PROVIDER="[null]"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(02.000).CODE01"
                 URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(02.000).CODE01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -578,6 +585,7 @@
                 
                 CODE="CODE02"
                 URI_PROVIDER="[null]"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(02.000).CODE02"
                 URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(02.000).CODE02"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -627,6 +635,7 @@
                 
                 CODE="CODE0201"
                 URI_PROVIDER="[null]"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(02.000).CODE0201"
                 URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(02.000).CODE0201"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -676,6 +685,7 @@
                 
                 CODE="CODE020101"
                 URI_PROVIDER="[null]"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(02.000).CODE020101"
                 URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(02.000).CODE020101"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -725,6 +735,7 @@
                 
                 CODE="CODE03"
                 URI_PROVIDER="[null]"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(02.000).CODE03"
                 URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(02.000).CODE03"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -774,6 +785,7 @@
                 
                 CODE="CODE04"
                 URI_PROVIDER="[null]"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(02.000).CODE04"
                 URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(02.000).CODE04"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -823,6 +835,7 @@
                 
                 CODE="CODE0401"
                 URI_PROVIDER="[null]"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(02.000).CODE0401"
                 URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(02.000).CODE0401"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -872,6 +885,7 @@
                 
                 CODE="CODE040101"
                 URI_PROVIDER="[null]"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(02.000).CODE040101"
                 URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(02.000).CODE040101"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -954,6 +968,7 @@
         
         CODE="CODELIST02"
         URI_PROVIDER="[null]"
+        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST02(01.000)"
         URN="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST02(01.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
@@ -1022,6 +1037,7 @@
                 
                 CODE="CODE01"
                 URI_PROVIDER="[null]"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST02(01.000).CODE01"
                 URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST02(01.000).CODE01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -1071,6 +1087,7 @@
                 
                 CODE="CODE02"
                 URI_PROVIDER="[null]"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST02(01.000).CODE02"
                 URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST02(01.000).CODE02"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -1155,6 +1172,7 @@
         
         CODE="CODELIST03"
         URI_PROVIDER="[null]"
+        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST03(01.000)"
         URN="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST03(01.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
@@ -1225,6 +1243,7 @@
                 
                 CODE="CODE01"
                 URI_PROVIDER="[null]"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST03(01.000).CODE01"
                 URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST03(01.000).CODE01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -1274,6 +1293,7 @@
                 
                 CODE="CODE02"
                 URI_PROVIDER="[null]"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST03(01.000).CODE02"
                 URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST03(01.000).CODE02"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -1323,6 +1343,7 @@
                 
                 CODE="CODE0201"
                 URI_PROVIDER="[null]"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST03(01.000).CODE0201"
                 URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST03(01.000).CODE0201"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -1372,6 +1393,7 @@
                         
                         CODE="CODE020101"
                         URI_PROVIDER="[null]"
+                        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST03(01.000).CODE020101"
                         URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST03(01.000).CODE020101"
                         REPLACED_BY_VERSION="[null]"
                         REPLACE_TO_VERSION="[null]"
@@ -1421,6 +1443,7 @@
                 
                 CODE="CODE0202"
                 URI_PROVIDER="[null]"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST03(01.000).CODE0202"
                 URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST03(01.000).CODE0202"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -1503,6 +1526,7 @@
         
         CODE="CODELIST04"
         URI_PROVIDER="[null]"
+        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST04(01.000)"
         URN="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST04(01.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
@@ -1567,6 +1591,7 @@
                 
                 CODE="CODE01"
                 URI_PROVIDER="[null]"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST04(01.000).CODE01"
                 URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST04(01.000).CODE01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -1648,6 +1673,7 @@
         
         CODE="CODELIST05"
         URI_PROVIDER="[null]"
+        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST05(01.000)"
         URN="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST05(01.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
@@ -1712,6 +1738,7 @@
                 
                 CODE="CODE01"
                 URI_PROVIDER="[null]"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST05(01.000).CODE01"
                 URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST05(01.000).CODE01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -1793,6 +1820,7 @@
         
         CODE="CODELIST06"
         URI_PROVIDER="[null]"
+        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST06(01.000)"
         URN="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST06(01.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
@@ -1857,6 +1885,7 @@
                 
                 CODE="CODE01"
                 URI_PROVIDER="[null]"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST06(01.000).CODE01"
                 URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST06(01.000).CODE01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -1941,6 +1970,7 @@
         
         CODE="CODELIST07"
         URI_PROVIDER="[null]"
+        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST07(01.000)"
         URN="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST07(01.000)"
         REPLACED_BY_VERSION="02.000"
         REPLACE_TO_VERSION="[null]"
@@ -2027,6 +2057,7 @@
         
         CODE="CODELIST07"
         URI_PROVIDER="[null]"
+        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST07(02.000)"
         URN="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST07(02.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="01.000"
@@ -2091,6 +2122,7 @@
                 
                 CODE="CODE01"
                 URI_PROVIDER="[null]"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST07(02.000).CODE01"
                 URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST07(02.000).CODE01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -2174,6 +2206,7 @@
         
         CODE="CODELIST08"
         URI_PROVIDER="[null]"
+        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST08(01.000)"
         URN="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST08(01.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
@@ -2238,6 +2271,7 @@
                 
                 CODE="CODE01"
                 URI_PROVIDER="[null]"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST08(01.000).CODE01"
                 URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST08(01.000).CODE01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -2319,6 +2353,7 @@
         
         CODE="CODELIST09"
         URI_PROVIDER="[null]"
+        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST09(01.000)"
         URN="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST09(01.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
@@ -2419,6 +2454,7 @@
         
         CODE="CODELIST10"
         URI_PROVIDER="[null]"
+        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST10(01.000)"
         URN="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST10(01.000)"
         REPLACED_BY_VERSION="02.000"
         REPLACE_TO_VERSION="[null]"
@@ -2505,6 +2541,7 @@
         
         CODE="CODELIST10"
         URI_PROVIDER="[null]"
+        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST10(02.000)"
         URN="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST10(02.000)"
         REPLACED_BY_VERSION="02.000"
         REPLACE_TO_VERSION="01.000"
@@ -2569,6 +2606,7 @@
                 
                 CODE="CODE01"
                 URI_PROVIDER="[null]"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST10(02.000).CODE01"
                 URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST10(02.000).CODE01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -2640,6 +2678,7 @@
         
         CODE="CODELIST10"
         URI_PROVIDER="[null]"
+        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST10(03.000)"
         URN="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST10(03.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="02.000"
@@ -2704,6 +2743,7 @@
                 
                 CODE="CODE01"
                 URI_PROVIDER="[null]"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST10(03.000).CODE01"
                 URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST10(03.000).CODE01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -2787,6 +2827,7 @@
         
         CODE="CODELIST11"
         URI_PROVIDER="[null]"
+        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST11(01.000)"
         URN="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST11(01.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
@@ -2851,6 +2892,7 @@
                 
                 CODE="CODE01"
                 URI_PROVIDER="[null]"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST11(01.000).CODE01"
                 URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST11(01.000).CODE01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -2935,6 +2977,7 @@
         
         CODE="CODELIST12"
         URI_PROVIDER="[null]"
+        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST12(01.000)"
         URN="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST12(01.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
@@ -2999,6 +3042,7 @@
                 
                 CODE="CODE01"
                 URI_PROVIDER="[null]"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST12(01.000).CODE01"
                 URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST12(01.000).CODE01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -3082,6 +3126,7 @@
         
         CODE="CODELIST13"
         URI_PROVIDER="[null]"
+        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST13(01.000)"
         URN="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST13(01.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
@@ -3146,6 +3191,7 @@
                 
                 CODE="CODE01"
                 URI_PROVIDER="[null]"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST13(01.000).CODE01"
                 URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST13(01.000).CODE01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -3195,6 +3241,7 @@
                 
                 CODE="CODE02"
                 URI_PROVIDER="[null]"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST13(01.000).CODE02"
                 URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST13(01.000).CODE02"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
@@ -3244,6 +3291,7 @@
                 
                 CODE="CODE03"
                 URI_PROVIDER="[null]"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST13(01.000).CODE03"
                 URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST13(01.000).CODE03"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
