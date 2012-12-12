@@ -102,6 +102,17 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
     }
 
     @Test
+    public void testUpdateCategorySchemeChangingCode() throws Exception {
+        CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), CATEGORY_SCHEME_2_V1);
+
+        // Change code
+        categorySchemeVersion.getMaintainableArtefact().setCode("codeNew");
+        categorySchemeVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.TRUE);
+        CategorySchemeVersion categorySchemeVersionUpdated = categoriesService.updateCategoryScheme(getServiceContextAdministrador(), categorySchemeVersion);
+        assertEquals("urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=SDMX01:codeNew(01.000)", categorySchemeVersionUpdated.getMaintainableArtefact().getUrn());
+    }
+
+    @Test
     public void testUpdateCategorySchemePublished() throws Exception {
         String[] urns = {CATEGORY_SCHEME_1_V1};
         for (String urn : urns) {
@@ -134,6 +145,23 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
             assertEquals(ServiceExceptionType.METADATA_INCORRECT.getCode(), e.getExceptionItems().get(0).getCode());
             assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
             assertEquals(ServiceExceptionParameters.MAINTAINABLE_ARTEFACT_IS_EXTERNAL_REFERENCE, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
+    @Test
+    public void testUpdateCategorySchemeErrorChangeCodeInCategorySchemeWithVersionAlreadyPublished() throws Exception {
+        CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), CATEGORY_SCHEME_1_V2);
+        categorySchemeVersion.getMaintainableArtefact().setCode("newCode");
+        categorySchemeVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.TRUE);
+
+        try {
+            categorySchemeVersion = categoriesService.updateCategoryScheme(getServiceContextAdministrador(), categorySchemeVersion);
+            fail("code can not be changed");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.METADATA_UNMODIFIABLE.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_CODE, e.getExceptionItems().get(0).getMessageParameters()[0]);
         }
     }
 

@@ -90,6 +90,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     public CodelistVersionMetamac updateCodelist(ServiceContext ctx, CodelistVersionMetamac codelistVersion) throws MetamacException {
         // Validation
         CodesMetamacInvocationValidator.checkUpdateCodelist(codelistVersion, null);
+        SrmValidationUtils.checkMaintainableArtefactCanChangeCodeIfChanged(codelistVersion.getMaintainableArtefact());
         // CodesService checks codelist isn't final (Codelists cannot be updated when procStatus is INTERNALLY_PUBLISHED or EXTERNALLY_PUBLISHED)
 
         // Save codelist

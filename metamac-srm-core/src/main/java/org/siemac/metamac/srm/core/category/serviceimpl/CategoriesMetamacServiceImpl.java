@@ -84,6 +84,7 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
     public CategorySchemeVersionMetamac updateCategoryScheme(ServiceContext ctx, CategorySchemeVersionMetamac categorySchemeVersion) throws MetamacException {
         // Validation
         CategoriesMetamacInvocationValidator.checkUpdateCategoryScheme(categorySchemeVersion, null);
+        SrmValidationUtils.checkMaintainableArtefactCanChangeCodeIfChanged(categorySchemeVersion.getMaintainableArtefact());
         // CategoriesService checks categoryScheme is not final (Schemes cannot be updated when procStatus is INTERNALLY_PUBLISHED or EXTERNALLY_PUBLISHED)
 
         // Save categoryScheme

@@ -68,6 +68,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.arte.statistic.sdmx.srm.core.base.serviceapi.utils.BaseDoMocks;
 import com.arte.statistic.sdmx.srm.core.code.domain.Code;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodeProperties;
+import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
 import com.arte.statistic.sdmx.srm.core.code.serviceapi.utils.CodesDoMocks;
 
 /**
@@ -172,6 +173,17 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertNotNull(codelistVersionUpdated);
         assertEquals("user1", codelistVersionUpdated.getCreatedBy());
         assertEquals(ctx.getUserId(), codelistVersionUpdated.getLastUpdatedBy());
+    }
+
+    @Test
+    public void testUpdateCodelistChangingCode() throws Exception {
+        CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_2_V1);
+
+        // Change code
+        codelistVersion.getMaintainableArtefact().setCode("codeNew");
+        codelistVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.TRUE);
+        CodelistVersion codelistVersionUpdated = codesService.updateCodelist(getServiceContextAdministrador(), codelistVersion);
+        assertEquals("urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:codeNew(01.000)", codelistVersionUpdated.getMaintainableArtefact().getUrn());
     }
 
     @Test
@@ -1797,6 +1809,23 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         CodelistFamily codelistFamilyUpdated = codesService.updateCodelistFamily(ctx, codelistFamily);
 
         assertEqualsCodelistFamily(codelistFamily, codelistFamilyUpdated);
+    }
+
+    @Test
+    public void testUpdateCodelistErrorChangeCodeInCodelistWithVersionAlreadyPublished() throws Exception {
+        CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_1_V2);
+        codelistVersion.getMaintainableArtefact().setCode("newCode");
+        codelistVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.TRUE);
+
+        try {
+            codelistVersion = codesService.updateCodelist(getServiceContextAdministrador(), codelistVersion);
+            fail("code can not be changed");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.METADATA_UNMODIFIABLE.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_CODE, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
     }
 
     @Test

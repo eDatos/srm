@@ -12,9 +12,13 @@ import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
+import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.serviceimpl.SrmServiceUtils;
+
+import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
+import com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmValidationUtils;
 
 public class SrmValidationUtils {
 
@@ -44,6 +48,18 @@ public class SrmValidationUtils {
         if (!ArrayUtils.contains(procStatus, lifeCycle.getProcStatus())) {
             String[] procStatusString = SrmServiceUtils.procStatusEnumToString(procStatus);
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.LIFE_CYCLE_WRONG_PROC_STATUS).withMessageParameters(urn, procStatusString).build();
+        }
+    }
+
+    /**
+     * An artefact can not change if 1) it is imported 2) it is created, but it is final or it is not first version
+     */
+    public static void checkMaintainableArtefactCanChangeCodeIfChanged(MaintainableArtefact maintainableArtefact) throws MetamacException {
+        if (Boolean.TRUE.equals(maintainableArtefact.getIsCodeUpdated())) {
+            if (Boolean.TRUE.equals(maintainableArtefact.getIsImported()) || !SdmxSrmValidationUtils.isMaintainableArtefactNotFinalAndFirstVersion(maintainableArtefact)) {
+                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_UNMODIFIABLE).withMessageParameters(ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_CODE)
+                        .build();
+            }
         }
     }
 

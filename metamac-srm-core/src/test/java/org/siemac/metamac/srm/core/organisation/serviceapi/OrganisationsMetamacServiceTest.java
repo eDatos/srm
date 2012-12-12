@@ -163,6 +163,23 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
     }
 
     @Test
+    public void testUpdateOrganisationSchemeErrorChangeCodeInOrganisationSchemeWithVersionAlreadyPublished() throws Exception {
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), ORGANISATION_SCHEME_1_V2);
+        organisationSchemeVersion.getMaintainableArtefact().setCode("newCode");
+        organisationSchemeVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.TRUE);
+
+        try {
+            organisationSchemeVersion = organisationsService.updateOrganisationScheme(getServiceContextAdministrador(), organisationSchemeVersion);
+            fail("code can not be changed");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.METADATA_UNMODIFIABLE.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_CODE, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
+    @Test
     public void testRetrieveOrganisationSchemeByUrn() throws Exception {
 
         // Retrieve

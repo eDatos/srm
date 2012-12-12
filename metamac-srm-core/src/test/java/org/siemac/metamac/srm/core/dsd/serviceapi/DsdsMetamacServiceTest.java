@@ -63,6 +63,7 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
     @Override
     public void testUpdateDataStructureDefinition() throws Exception {
         // TODO Test dsd
+        // TODO hacer 2 tests para la modificación del code: 1) permitir modificar si es primera versión y es final. 2) dar error si no es primera versión
 
     }
 
