@@ -125,6 +125,7 @@
         STRUCTURE_URL="[null]"
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
+        IS_IMPORTED="0"
         MAINTAINER_FK="[null]"
         
         UUID="annotableArtefact-1001"
@@ -326,6 +327,7 @@
         STRUCTURE_URL="http://structureUrl"
         SERVICE_URL="http://serviceUrl"
         IS_LAST_VERSION="0"
+        IS_IMPORTED="0"
         MAINTAINER_FK="10011"
         
         UUID="annotableArtefact-11"
@@ -475,6 +477,7 @@
         STRUCTURE_URL="http://structureUrl"
         SERVICE_URL="http://serviceUrl"
         IS_LAST_VERSION="0"
+        IS_IMPORTED="0"
         MAINTAINER_FK="10011"
         
         UUID="annotableArtefact-21"
@@ -596,6 +599,7 @@
         STRUCTURE_URL="[null]"
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
+        IS_IMPORTED="0"
         MAINTAINER_FK="10011"
         
         UUID="annotableArtefact-3"
@@ -654,6 +658,7 @@
         STRUCTURE_URL="[null]"
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
+        IS_IMPORTED="0"
         MAINTAINER_FK="10011"
         
         UUID="annotableArtefact-4"
@@ -747,6 +752,7 @@
         STRUCTURE_URL="http://structureUrl"
         SERVICE_URL="http://serviceUrl"
         IS_LAST_VERSION="0"
+        IS_IMPORTED="0"
         MAINTAINER_FK="10011"
         
         UUID="annotableArtefact-51"
@@ -858,6 +864,7 @@
         STRUCTURE_URL="[null]"
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
+        IS_IMPORTED="0"
         MAINTAINER_FK="10011"
         
         UUID="annotableArtefact-6"
@@ -954,6 +961,7 @@
         STRUCTURE_URL="http://structureUrl"
         SERVICE_URL="http://serviceUrl"
         IS_LAST_VERSION="0"
+        IS_IMPORTED="0"
         MAINTAINER_FK="10011"
         
         UUID="annotableArtefact-71"
@@ -1075,6 +1083,7 @@
         STRUCTURE_URL="[null]"
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
+        IS_IMPORTED="0"
         MAINTAINER_FK="10011"
         
         UUID="annotableArtefact-8"
@@ -1133,6 +1142,7 @@
         STRUCTURE_URL="[null]"
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
+        IS_IMPORTED="0"
         MAINTAINER_FK="10011"
         
         UUID="annotableArtefact-9"

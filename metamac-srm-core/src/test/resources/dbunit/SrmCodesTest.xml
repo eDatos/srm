@@ -125,6 +125,7 @@
         STRUCTURE_URL="[null]"
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
+        IS_IMPORTED="0"
         MAINTAINER_FK="[null]"
         
         UUID="annotableArtefact-1001"
@@ -334,6 +335,7 @@
         STRUCTURE_URL="http://structureUrl1"
         SERVICE_URL="http://serviceUrl1"
         IS_LAST_VERSION="0"
+        IS_IMPORTED="0"
         MAINTAINER_FK="10011"
         
         UUID="annotableArtefact-11"
@@ -472,6 +474,7 @@
         STRUCTURE_URL="[null]"
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
+        IS_IMPORTED="0"
         MAINTAINER_FK="10011"
         
         UUID="annotableArtefact-12"
@@ -970,6 +973,7 @@
         STRUCTURE_URL="[null]"
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
+        IS_IMPORTED="0"
         MAINTAINER_FK="10011"
         
         UUID="annotableArtefact-21"
@@ -1170,6 +1174,7 @@
         STRUCTURE_URL="[null]"
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
+        IS_IMPORTED="0"
         MAINTAINER_FK="10011"
         
         UUID="annotableArtefact-31"
@@ -1517,6 +1522,7 @@
         STRUCTURE_URL="[null]"
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
+        IS_IMPORTED="0"
         MAINTAINER_FK="10011"
         
         UUID="annotableArtefact-41"
@@ -1661,6 +1667,7 @@
         STRUCTURE_URL="[null]"
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
+        IS_IMPORTED="0"
         MAINTAINER_FK="10011"
         
         UUID="annotableArtefact-51"
@@ -1805,6 +1812,7 @@
         STRUCTURE_URL="[null]"
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
+        IS_IMPORTED="0"
         MAINTAINER_FK="10011"
         
         UUID="annotableArtefact-61"
@@ -1952,6 +1960,7 @@
         STRUCTURE_URL="[null]"
         SERVICE_URL="[null]"
         IS_LAST_VERSION="0"
+        IS_IMPORTED="0"
         MAINTAINER_FK="10011"
         
         UUID="annotableArtefact-71"
@@ -2037,6 +2046,7 @@
         STRUCTURE_URL="[null]"
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
+        IS_IMPORTED="0"
         MAINTAINER_FK="10011"
         
         UUID="annotableArtefact-72"
@@ -2183,6 +2193,7 @@
         STRUCTURE_URL="[null]"
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
+        IS_IMPORTED="0"
         MAINTAINER_FK="10011"
         
         UUID="annotableArtefact-81"
@@ -2327,6 +2338,7 @@
         STRUCTURE_URL="[null]"
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
+        IS_IMPORTED="0"
         MAINTAINER_FK="10011"
         
         UUID="annotableArtefact-91"
@@ -2426,6 +2438,7 @@
         STRUCTURE_URL="[null]"
         SERVICE_URL="[null]"
         IS_LAST_VERSION="0"
+        IS_IMPORTED="0"
         MAINTAINER_FK="10011"
         
         UUID="annotableArtefact-101"
@@ -2511,6 +2524,7 @@
         STRUCTURE_URL="[null]"
         SERVICE_URL="[null]"
         IS_LAST_VERSION="0"
+        IS_IMPORTED="0"
         MAINTAINER_FK="10011"
         
         UUID="annotableArtefact-102"
@@ -2645,6 +2659,7 @@
         STRUCTURE_URL="[null]"
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
+        IS_IMPORTED="0"
         MAINTAINER_FK="10011"
         
         UUID="annotableArtefact-103"
@@ -2791,6 +2806,7 @@
         STRUCTURE_URL="[null]"
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
+        IS_IMPORTED="0"
         MAINTAINER_FK="10011"
         
         UUID="annotableArtefact-111"
@@ -2938,6 +2954,7 @@
         STRUCTURE_URL="[null]"
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
+        IS_IMPORTED="0"
         MAINTAINER_FK="10011"
         
         UUID="annotableArtefact-121"
@@ -3084,6 +3101,7 @@
         STRUCTURE_URL="[null]"
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
+        IS_IMPORTED="0"
         MAINTAINER_FK="10011"
         
         UUID="annotableArtefact-131"

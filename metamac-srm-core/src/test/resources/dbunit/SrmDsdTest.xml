@@ -122,6 +122,7 @@
         STRUCTURE_URL="[null]"
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
+        IS_IMPORTED="0"
         MAINTAINER_FK="[null]"
         
         UUID="annotableArtefact-1001"
@@ -481,6 +482,7 @@
         STRUCTURE_URL="[null]"
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
+        IS_IMPORTED="0"
         MAINTAINER_FK="10011"
         
         UUID="annotableArtifact-41"
@@ -552,6 +554,7 @@
         STRUCTURE_URL="[null]"
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
+        IS_IMPORTED="0"
         MAINTAINER_FK="10011"
         
         UUID="annotableArtifact-51"
