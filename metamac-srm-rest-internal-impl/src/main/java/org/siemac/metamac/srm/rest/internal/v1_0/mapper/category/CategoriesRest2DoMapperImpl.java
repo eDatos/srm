@@ -134,7 +134,7 @@ public class CategoriesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implem
             CategoryCriteriaPropertyOrder propertyNameCriteria = CategoryCriteriaPropertyOrder.fromValue(order.getPropertyName());
             switch (propertyNameCriteria) {
                 case ID:
-                    return CategoryMetamacProperties.nameableArtefact().code();
+                    return CategoryMetamacProperties.nameableArtefact().codeFull();
                 default:
                     throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
             }
@@ -143,7 +143,7 @@ public class CategoriesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implem
         @SuppressWarnings("rawtypes")
         @Override
         public Property retrievePropertyOrderDefault() throws RestException {
-            return CategoryMetamacProperties.nameableArtefact().code();
+            return CategoryMetamacProperties.nameableArtefact().codeFull();
         }
     }
 

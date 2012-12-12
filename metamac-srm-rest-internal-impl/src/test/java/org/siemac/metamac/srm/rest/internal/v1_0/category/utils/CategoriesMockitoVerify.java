@@ -20,35 +20,35 @@ import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
 public class CategoriesMockitoVerify extends MockitoVerify {
 
     public static void verifyRetrieveCategoryScheme(CategoriesMetamacService categoriesService, String agencyID, String resourceID, String version) throws Exception {
-        verifyFindCategorySchemes(categoriesService, agencyID, resourceID, version, null, null, PagingParameter.pageAccess(1, 1));
+        verifyFindCategorySchemes(categoriesService, agencyID, resourceID, version, null, null, buildExpectedPagingParameterRetrieveOne(), RestOperationEnum.RETRIEVE);
     }
 
     public static void verifyFindCategorySchemes(CategoriesMetamacService categoriesService, String agencyID, String resourceID, String version, String limit, String offset, String query,
             String orderBy) throws Exception {
-        verifyFindCategorySchemes(categoriesService, agencyID, resourceID, version, query, orderBy, buildExpectedPagingParameter(offset, limit));
+        verifyFindCategorySchemes(categoriesService, agencyID, resourceID, version, query, orderBy, buildExpectedPagingParameter(offset, limit), RestOperationEnum.FIND);
     }
 
     public static void verifyRetrieveCategory(CategoriesMetamacService categoriesService, String agencyID, String resourceID, String version, String itemID) throws Exception {
-        verifyFindCategories(categoriesService, agencyID, resourceID, version, itemID, null, null, PagingParameter.pageAccess(1, 1));
+        verifyFindCategories(categoriesService, agencyID, resourceID, version, itemID, null, null, buildExpectedPagingParameterRetrieveOne(), RestOperationEnum.RETRIEVE);
     }
 
     public static void verifyFindCategories(CategoriesMetamacService categoriesService, String agencyID, String resourceID, String version, String limit, String offset, String query, String orderBy)
             throws Exception {
-        verifyFindCategories(categoriesService, agencyID, resourceID, version, null, query, orderBy, buildExpectedPagingParameter(offset, limit));
+        verifyFindCategories(categoriesService, agencyID, resourceID, version, null, query, orderBy, buildExpectedPagingParameter(offset, limit), RestOperationEnum.FIND);
     }
 
     public static void verifyRetrieveCategorisation(CategoriesMetamacService categoriesService, String agencyID, String resourceID, String version) throws Exception {
-        verifyFindCategorisations(categoriesService, agencyID, resourceID, version, null, null, PagingParameter.pageAccess(1, 1));
+        verifyFindCategorisations(categoriesService, agencyID, resourceID, version, null, null, buildExpectedPagingParameterRetrieveOne(), RestOperationEnum.RETRIEVE);
     }
 
     public static void verifyFindCategorisations(CategoriesMetamacService categoriesService, String agencyID, String resourceID, String version, String limit, String offset, String query,
             String orderBy) throws Exception {
-        verifyFindCategorisations(categoriesService, agencyID, resourceID, version, query, orderBy, buildExpectedPagingParameter(offset, limit));
+        verifyFindCategorisations(categoriesService, agencyID, resourceID, version, query, orderBy, buildExpectedPagingParameter(offset, limit), RestOperationEnum.FIND);
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
     private static void verifyFindCategorySchemes(CategoriesMetamacService categoriesService, String agencyID, String resourceID, String version, String query, String orderBy,
-            PagingParameter pagingParameterExpected) throws Exception {
+            PagingParameter pagingParameterExpected, RestOperationEnum restOperation) throws Exception {
 
         // Verify
         ArgumentCaptor<List> conditions = ArgumentCaptor.forClass(List.class);
@@ -56,7 +56,8 @@ public class CategoriesMockitoVerify extends MockitoVerify {
         verify(categoriesService).findCategorySchemesByCondition(any(ServiceContext.class), conditions.capture(), pagingParameter.capture());
 
         // Validate
-        List<ConditionalCriteria> conditionalCriteriaExpected = buildExpectedConditionalCriteriaToFindItemSchemes(agencyID, resourceID, version, query, orderBy, CategorySchemeVersionMetamac.class);
+        List<ConditionalCriteria> conditionalCriteriaExpected = buildExpectedConditionalCriteriaToFindItemSchemes(agencyID, resourceID, version, query, orderBy, CategorySchemeVersionMetamac.class,
+                restOperation);
         MetamacRestAsserts.assertEqualsConditionalCriteria(conditionalCriteriaExpected, conditions.getValue());
 
         MetamacRestAsserts.assertEqualsPagingParameter(pagingParameterExpected, pagingParameter.getValue());
@@ -64,7 +65,7 @@ public class CategoriesMockitoVerify extends MockitoVerify {
 
     @SuppressWarnings({"rawtypes", "unchecked"})
     private static void verifyFindCategories(CategoriesMetamacService categoriesService, String agencyID, String resourceID, String version, String itemID, String query, String orderBy,
-            PagingParameter pagingParameterExpected) throws Exception {
+            PagingParameter pagingParameterExpected, RestOperationEnum restOperation) throws Exception {
 
         // Verify
         ArgumentCaptor<List> conditions = ArgumentCaptor.forClass(List.class);
@@ -72,7 +73,7 @@ public class CategoriesMockitoVerify extends MockitoVerify {
         verify(categoriesService).findCategoriesByCondition(any(ServiceContext.class), conditions.capture(), pagingParameter.capture());
 
         // Validate
-        List<ConditionalCriteria> conditionalCriteriaExpected = buildExpectedConditionalCriteriaToFindItems(agencyID, resourceID, version, itemID, query, orderBy, CategoryMetamac.class);
+        List<ConditionalCriteria> conditionalCriteriaExpected = buildExpectedConditionalCriteriaToFindItems(agencyID, resourceID, version, itemID, query, orderBy, CategoryMetamac.class, restOperation);
         MetamacRestAsserts.assertEqualsConditionalCriteria(conditionalCriteriaExpected, conditions.getValue());
 
         MetamacRestAsserts.assertEqualsPagingParameter(pagingParameterExpected, pagingParameter.getValue());
@@ -80,7 +81,7 @@ public class CategoriesMockitoVerify extends MockitoVerify {
 
     @SuppressWarnings({"rawtypes", "unchecked"})
     private static void verifyFindCategorisations(CategoriesMetamacService categoriesService, String agencyID, String resourceID, String version, String query, String orderBy,
-            PagingParameter pagingParameterExpected) throws Exception {
+            PagingParameter pagingParameterExpected, RestOperationEnum restOperation) throws Exception {
 
         // Verify
         ArgumentCaptor<List> conditions = ArgumentCaptor.forClass(List.class);
@@ -88,7 +89,7 @@ public class CategoriesMockitoVerify extends MockitoVerify {
         verify(categoriesService).findCategorisationsByCondition(any(ServiceContext.class), conditions.capture(), pagingParameter.capture());
 
         // Validate
-        List<ConditionalCriteria> conditionalCriteriaExpected = buildExpectedConditionalCriteriaToFindItemSchemes(agencyID, resourceID, version, query, orderBy, Categorisation.class);
+        List<ConditionalCriteria> conditionalCriteriaExpected = buildExpectedConditionalCriteriaToFindItemSchemes(agencyID, resourceID, version, query, orderBy, Categorisation.class, restOperation);
         MetamacRestAsserts.assertEqualsConditionalCriteria(conditionalCriteriaExpected, conditions.getValue());
 
         MetamacRestAsserts.assertEqualsPagingParameter(pagingParameterExpected, pagingParameter.getValue());

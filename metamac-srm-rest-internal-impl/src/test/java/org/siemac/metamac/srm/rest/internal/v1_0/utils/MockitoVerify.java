@@ -12,13 +12,17 @@ import java.util.List;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
-import org.siemac.metamac.rest.common.test.utils.MetamacRestAsserts;
+import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemProperties;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionProperties;
 
-public class MockitoVerify extends MetamacRestAsserts {
+public class MockitoVerify {
+
+    public static enum RestOperationEnum {
+        RETRIEVE, FIND
+    }
 
     public static PagingParameter buildExpectedPagingParameter(String offset, String limit) {
         Integer startRow = null;
@@ -40,11 +44,18 @@ public class MockitoVerify extends MetamacRestAsserts {
         return PagingParameter.rowAccess(startRow, endRow, false);
     }
 
+    public static PagingParameter buildExpectedPagingParameterRetrieveOne() {
+        return PagingParameter.pageAccess(1, 1);
+    }
+
     @SuppressWarnings({"rawtypes", "unchecked"})
-    public static List<ConditionalCriteria> buildExpectedConditionalCriteriaToFindItemSchemes(String agencyID, String resourceID, String version, String query, String orderBy, Class entityClass) {
+    public static List<ConditionalCriteria> buildExpectedConditionalCriteriaToFindItemSchemes(String agencyID, String resourceID, String version, String query, String orderBy, Class entityClass,
+            RestOperationEnum restOperation) {
         List<ConditionalCriteria> expected = new ArrayList<ConditionalCriteria>();
-        expected.addAll(buildFindItemSchemesExpectedOrder(orderBy, entityClass));
-        expected.addAll(buildFindItemSchemesExpectedQuery(query, entityClass));
+        if (RestOperationEnum.FIND.equals(restOperation)) {
+            expected.addAll(buildFindItemSchemesExpectedOrder(orderBy, entityClass));
+            expected.addAll(buildFindItemSchemesExpectedQuery(query, entityClass));
+        }
         expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).distinctRoot().buildSingle());
         expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(ItemSchemeVersionProperties.maintainableArtefact().finalLogic()).eq(Boolean.TRUE).buildSingle());
         if (agencyID != null && !RestInternalConstants.WILDCARD.equals(agencyID)) {
@@ -64,10 +75,12 @@ public class MockitoVerify extends MetamacRestAsserts {
 
     @SuppressWarnings({"rawtypes", "unchecked"})
     public static List<ConditionalCriteria> buildExpectedConditionalCriteriaToFindItems(String agencyID, String resourceID, String version, String itemID, String query, String orderBy,
-            Class entityClass) {
+            Class entityClass, RestOperationEnum restOperation) {
         List<ConditionalCriteria> expected = new ArrayList<ConditionalCriteria>();
-        expected.addAll(buildFindItemsExpectedOrderBy(orderBy, entityClass));
-        expected.addAll(buildFindItemsExpectedQuery(query, entityClass));
+        if (RestOperationEnum.FIND.equals(restOperation)) {
+            expected.addAll(buildFindItemsExpectedOrderBy(orderBy, entityClass));
+            expected.addAll(buildFindItemsExpectedQuery(query, entityClass));
+        }
         expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).distinctRoot().buildSingle());
         expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(ItemProperties.itemSchemeVersion().maintainableArtefact().finalLogic()).eq(Boolean.TRUE).buildSingle());
         if (agencyID != null && !RestInternalConstants.WILDCARD.equals(agencyID)) {
@@ -103,10 +116,18 @@ public class MockitoVerify extends MetamacRestAsserts {
     @SuppressWarnings({"rawtypes", "unchecked"})
     private static List<ConditionalCriteria> buildFindItemsExpectedOrderBy(String orderBy, Class entityClass) {
         if (orderBy == null) {
-            return ConditionalCriteriaBuilder.criteriaFor(entityClass).orderBy(ItemProperties.nameableArtefact().code()).ascending().build();
+            if (entityClass.equals(CategoryMetamac.class)) {
+                return ConditionalCriteriaBuilder.criteriaFor(entityClass).orderBy(ItemProperties.nameableArtefact().codeFull()).ascending().build();
+            } else {
+                return ConditionalCriteriaBuilder.criteriaFor(entityClass).orderBy(ItemProperties.nameableArtefact().code()).ascending().build();
+            }
         }
         if (ORDER_BY_ID_DESC.equals(orderBy)) {
-            return ConditionalCriteriaBuilder.criteriaFor(entityClass).orderBy(ItemProperties.nameableArtefact().code()).descending().build();
+            if (entityClass.equals(CategoryMetamac.class)) {
+                return ConditionalCriteriaBuilder.criteriaFor(entityClass).orderBy(ItemProperties.nameableArtefact().codeFull()).descending().build();
+            } else {
+                return ConditionalCriteriaBuilder.criteriaFor(entityClass).orderBy(ItemProperties.nameableArtefact().code()).descending().build();
+            }
         }
         fail();
         return null;
@@ -135,8 +156,13 @@ public class MockitoVerify extends MetamacRestAsserts {
             return new ArrayList<ConditionalCriteria>();
         }
         if (QUERY_ID_LIKE_1_NAME_LIKE_2.equals(query)) {
-            return ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(ItemProperties.nameableArtefact().code()).like("%1%")
-                    .withProperty(ItemProperties.nameableArtefact().name().texts().label()).like("%2%").build();
+            if (entityClass.equals(CategoryMetamac.class)) {
+                return ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(ItemProperties.nameableArtefact().codeFull()).like("%1%")
+                        .withProperty(ItemProperties.nameableArtefact().name().texts().label()).like("%2%").build();
+            } else {
+                return ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(ItemProperties.nameableArtefact().code()).like("%1%")
+                        .withProperty(ItemProperties.nameableArtefact().name().texts().label()).like("%2%").build();
+            }
         }
         fail();
         return null;

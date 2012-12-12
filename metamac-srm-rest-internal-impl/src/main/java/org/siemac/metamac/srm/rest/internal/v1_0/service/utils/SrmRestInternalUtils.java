@@ -28,7 +28,7 @@ public class SrmRestInternalUtils {
             conditionalCriteria.addAll(conditionalCriteriaQuery); // adds distinct root and order
         } else {
             // init
-            conditionalCriteria.addAll(ConditionalCriteriaBuilder.criteriaFor(entity).orderBy(ItemSchemeVersionProperties.maintainableArtefact().code()).ascending().distinctRoot().build());
+            conditionalCriteria.addAll(ConditionalCriteriaBuilder.criteriaFor(entity).distinctRoot().build());
         }
         addConditionalCriteriaItemSchemePublished(conditionalCriteria, entity, ItemSchemeVersionProperties.maintainableArtefact());
         addConditionalCriteriaByAgency(conditionalCriteria, agencyID, entity, ItemSchemeVersionProperties.maintainableArtefact());
@@ -47,7 +47,7 @@ public class SrmRestInternalUtils {
             conditionalCriteria.addAll(conditionalCriteriaQuery); // adds distinct root and order
         } else {
             // init
-            conditionalCriteria.addAll(ConditionalCriteriaBuilder.criteriaFor(entity).orderBy(ItemProperties.nameableArtefact().code()).ascending().distinctRoot().build());
+            conditionalCriteria.addAll(ConditionalCriteriaBuilder.criteriaFor(entity).distinctRoot().build());
         }
         addConditionalCriteriaItemSchemePublished(conditionalCriteria, entity, ItemProperties.itemSchemeVersion().maintainableArtefact());
         addConditionalCriteriaByAgency(conditionalCriteria, agencyID, entity, ItemProperties.itemSchemeVersion().maintainableArtefact());

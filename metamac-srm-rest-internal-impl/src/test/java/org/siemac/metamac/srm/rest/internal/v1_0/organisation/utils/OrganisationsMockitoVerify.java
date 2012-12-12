@@ -25,27 +25,27 @@ public class OrganisationsMockitoVerify extends MockitoVerify {
 
     public static void verifyFindOrganisationSchemes(OrganisationsMetamacService organisationsService, String agencyID, String resourceID, String version, String limit, String offset, String query,
             String orderBy, OrganisationSchemeTypeEnum type) throws Exception {
-        verifyFindOrganisationSchemes(organisationsService, agencyID, resourceID, version, query, orderBy, buildExpectedPagingParameter(offset, limit), type);
+        verifyFindOrganisationSchemes(organisationsService, agencyID, resourceID, version, query, orderBy, buildExpectedPagingParameter(offset, limit), type, RestOperationEnum.FIND);
     }
 
     public static void verifyRetrieveOrganisationScheme(OrganisationsMetamacService organisationsService, String agencyID, String resourceID, String version, OrganisationSchemeTypeEnum type)
             throws Exception {
-        verifyFindOrganisationSchemes(organisationsService, agencyID, resourceID, version, null, null, PagingParameter.pageAccess(1, 1), type);
+        verifyFindOrganisationSchemes(organisationsService, agencyID, resourceID, version, null, null, buildExpectedPagingParameterRetrieveOne(), type, RestOperationEnum.RETRIEVE);
     }
 
     public static void verifyFindOrganisations(OrganisationsMetamacService organisationsService, String agencyID, String resourceID, String version, String limit, String offset, String query,
             String orderBy, OrganisationTypeEnum type) throws Exception {
-        verifyFindOrganisations(organisationsService, agencyID, resourceID, version, null, query, orderBy, buildExpectedPagingParameter(offset, limit), type);
+        verifyFindOrganisations(organisationsService, agencyID, resourceID, version, null, query, orderBy, buildExpectedPagingParameter(offset, limit), type, RestOperationEnum.FIND);
     }
 
     public static void verifyRetrieveOrganisation(OrganisationsMetamacService organisationsService, String agencyID, String resourceID, String version, String itemID, OrganisationTypeEnum type)
             throws Exception {
-        verifyFindOrganisations(organisationsService, agencyID, resourceID, version, itemID, null, null, PagingParameter.pageAccess(1, 1), type);
+        verifyFindOrganisations(organisationsService, agencyID, resourceID, version, itemID, null, null, buildExpectedPagingParameterRetrieveOne(), type, RestOperationEnum.RETRIEVE);
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
     private static void verifyFindOrganisations(OrganisationsMetamacService organisationsService, String agencyID, String resourceID, String version, String itemID, String query, String orderBy,
-            PagingParameter pagingParameterExpected, OrganisationTypeEnum type) throws Exception {
+            PagingParameter pagingParameterExpected, OrganisationTypeEnum type, RestOperationEnum restOperation) throws Exception {
 
         // Verify
         ArgumentCaptor<List> conditions = ArgumentCaptor.forClass(List.class);
@@ -53,7 +53,7 @@ public class OrganisationsMockitoVerify extends MockitoVerify {
         verify(organisationsService).findOrganisationsByCondition(any(ServiceContext.class), conditions.capture(), pagingParameter.capture());
 
         // Validate
-        List<ConditionalCriteria> conditionalCriteriaExpected = buildExpectedConditionalCriteriaToFindOrganisations(agencyID, resourceID, version, itemID, query, orderBy, type);
+        List<ConditionalCriteria> conditionalCriteriaExpected = buildExpectedConditionalCriteriaToFindOrganisations(agencyID, resourceID, version, itemID, query, orderBy, type, restOperation);
         MetamacRestAsserts.assertEqualsConditionalCriteria(conditionalCriteriaExpected, conditions.getValue());
 
         MetamacRestAsserts.assertEqualsPagingParameter(pagingParameterExpected, pagingParameter.getValue());
@@ -61,7 +61,7 @@ public class OrganisationsMockitoVerify extends MockitoVerify {
 
     @SuppressWarnings({"rawtypes", "unchecked"})
     private static void verifyFindOrganisationSchemes(OrganisationsMetamacService organisationsService, String agencyID, String resourceID, String version, String query, String orderBy,
-            PagingParameter pagingParameterExpected, OrganisationSchemeTypeEnum type) throws Exception {
+            PagingParameter pagingParameterExpected, OrganisationSchemeTypeEnum type, RestOperationEnum restOperation) throws Exception {
 
         // Verify
         ArgumentCaptor<List> conditions = ArgumentCaptor.forClass(List.class);
@@ -69,15 +69,15 @@ public class OrganisationsMockitoVerify extends MockitoVerify {
         verify(organisationsService).findOrganisationSchemesByCondition(any(ServiceContext.class), conditions.capture(), pagingParameter.capture());
 
         // Validate
-        List<ConditionalCriteria> conditionalCriteriaExpected = buildExpectedConditionalCriteriaToFindOrganisationSchemes(agencyID, resourceID, version, query, orderBy, type);
+        List<ConditionalCriteria> conditionalCriteriaExpected = buildExpectedConditionalCriteriaToFindOrganisationSchemes(agencyID, resourceID, version, query, orderBy, type, restOperation);
         MetamacRestAsserts.assertEqualsConditionalCriteria(conditionalCriteriaExpected, conditions.getValue());
 
         MetamacRestAsserts.assertEqualsPagingParameter(pagingParameterExpected, pagingParameter.getValue());
     }
 
     private static List<ConditionalCriteria> buildExpectedConditionalCriteriaToFindOrganisationSchemes(String agencyID, String resourceID, String version, String query, String orderBy,
-            OrganisationSchemeTypeEnum type) {
-        List<ConditionalCriteria> expected = buildExpectedConditionalCriteriaToFindItemSchemes(agencyID, resourceID, version, query, orderBy, OrganisationSchemeVersionMetamac.class);
+            OrganisationSchemeTypeEnum type, RestOperationEnum restOperation) {
+        List<ConditionalCriteria> expected = buildExpectedConditionalCriteriaToFindItemSchemes(agencyID, resourceID, version, query, orderBy, OrganisationSchemeVersionMetamac.class, restOperation);
         if (type != null) {
             expected.add(ConditionalCriteriaBuilder.criteriaFor(OrganisationSchemeVersionMetamac.class).withProperty(OrganisationSchemeVersionMetamacProperties.organisationSchemeType()).eq(type)
                     .buildSingle());
@@ -86,8 +86,8 @@ public class OrganisationsMockitoVerify extends MockitoVerify {
     }
 
     private static List<ConditionalCriteria> buildExpectedConditionalCriteriaToFindOrganisations(String agencyID, String resourceID, String version, String itemID, String query, String orderBy,
-            OrganisationTypeEnum type) {
-        List<ConditionalCriteria> expected = buildExpectedConditionalCriteriaToFindItems(agencyID, resourceID, version, itemID, query, orderBy, OrganisationMetamac.class);
+            OrganisationTypeEnum type, RestOperationEnum restOperation) {
+        List<ConditionalCriteria> expected = buildExpectedConditionalCriteriaToFindItems(agencyID, resourceID, version, itemID, query, orderBy, OrganisationMetamac.class, restOperation);
         if (type != null) {
             expected.add(ConditionalCriteriaBuilder.criteriaFor(OrganisationMetamac.class).withProperty(OrganisationMetamacProperties.organisationType()).eq(type).buildSingle());
         }
