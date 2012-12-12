@@ -162,25 +162,6 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     }
 
     @Test
-    public void testCreateCodelistErrorDuplicatedCode() throws Exception {
-        OrganisationMetamac organisationMetamac = organisationMetamacRepository.findByUrn(AGENCY_ROOT_1_V1);
-        CodelistVersionMetamac codelistVersion1 = CodesMetamacDoMocks.mockCodelist(organisationMetamac);
-        CodelistVersionMetamac codelistVersion2 = CodesMetamacDoMocks.mockCodelist(organisationMetamac);
-        String code = "code-" + MetamacMocks.mockString(10);
-        codelistVersion1.getMaintainableArtefact().setCode(code);
-        codelistVersion2.getMaintainableArtefact().setCode(code);
-
-        codesService.createCodelist(getServiceContextAdministrador(), codelistVersion1);
-        try {
-            codesService.createCodelist(getServiceContextAdministrador(), codelistVersion2);
-            fail("duplicated code");
-        } catch (MetamacException e) {
-            assertEquals(1, e.getExceptionItems().size());
-            assertEquals(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_CODE_DUPLICATED.getCode(), e.getExceptionItems().get(0).getCode());
-        }
-    }
-
-    @Test
     public void testUpdateCodelist() throws Exception {
         ServiceContext ctx = getServiceContextAdministrador();
 
