@@ -259,8 +259,9 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         ViewMultiLanguageTextItem name = new ViewMultiLanguageTextItem(CategorySchemeDS.NAME, getConstants().nameableArtefactName());
         ViewTextItem uri = new ViewTextItem(CategorySchemeDS.URI, getConstants().identifiableArtefactUri());
         ViewTextItem urn = new ViewTextItem(CategorySchemeDS.URN, getConstants().identifiableArtefactUrn());
+        ViewTextItem urnProvider = new ViewTextItem(CategorySchemeDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
         ViewTextItem version = new ViewTextItem(CategorySchemeDS.VERSION_LOGIC, getConstants().maintainableArtefactVersionLogic());
-        identifiersForm.setFields(code, name, uri, urn, version);
+        identifiersForm.setFields(code, name, uri, urn, urnProvider, version);
 
         // Content descriptors
         contentDescriptorsForm = new GroupDynamicForm(getConstants().categorySchemeContentDescriptors());
@@ -340,8 +341,9 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         name.setRequired(true);
         ViewTextItem uri = new ViewTextItem(CategorySchemeDS.URI, getConstants().identifiableArtefactUri());
         ViewTextItem urn = new ViewTextItem(CategorySchemeDS.URN, getConstants().identifiableArtefactUrn());
+        ViewTextItem urnProvider = new ViewTextItem(CategorySchemeDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
         ViewTextItem version = new ViewTextItem(CategorySchemeDS.VERSION_LOGIC, getConstants().maintainableArtefactVersionLogic());
-        identifiersEditionForm.setFields(code, staticCode, name, uri, urn, version);
+        identifiersEditionForm.setFields(code, staticCode, name, uri, urn, urnProvider, version);
 
         // Content descriptors
         contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().categorySchemeContentDescriptors());
@@ -450,6 +452,7 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         identifiersForm.setValue(CategorySchemeDS.CODE, categorySchemeDto.getCode());
         identifiersForm.setValue(CategorySchemeDS.URI, categorySchemeDto.getUriProvider());
         identifiersForm.setValue(CategorySchemeDS.URN, categorySchemeDto.getUrn());
+        identifiersForm.setValue(CategorySchemeDS.URN_PROVIDER, categorySchemeDto.getUrnProvider());
         identifiersForm.setValue(CategorySchemeDS.VERSION_LOGIC, categorySchemeDto.getVersionLogic());
         identifiersForm.setValue(CategorySchemeDS.NAME, RecordUtils.getInternationalStringRecord(categorySchemeDto.getName()));
 
@@ -499,6 +502,7 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         identifiersEditionForm.setValue(CategorySchemeDS.CODE_VIEW, categorySchemeDto.getCode());
         identifiersEditionForm.setValue(CategorySchemeDS.URI, categorySchemeDto.getUriProvider());
         identifiersEditionForm.setValue(CategorySchemeDS.URN, categorySchemeDto.getUrn());
+        identifiersEditionForm.setValue(CategorySchemeDS.URN_PROVIDER, categorySchemeDto.getUrnProvider());
         identifiersEditionForm.setValue(CategorySchemeDS.VERSION_LOGIC, categorySchemeDto.getVersionLogic());
         identifiersEditionForm.setValue(CategorySchemeDS.NAME, RecordUtils.getInternationalStringRecord(categorySchemeDto.getName()));
         identifiersEditionForm.markForRedraw();

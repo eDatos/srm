@@ -153,7 +153,8 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
         ViewMultiLanguageTextItem name = new ViewMultiLanguageTextItem(CategoryDS.NAME, getConstants().nameableArtefactName());
         ViewTextItem uri = new ViewTextItem(CategoryDS.URI, getConstants().identifiableArtefactUri());
         ViewTextItem urn = new ViewTextItem(CategoryDS.URN, getConstants().identifiableArtefactUrn());
-        identifiersForm.setFields(code, name, uri, urn);
+        ViewTextItem urnProvider = new ViewTextItem(CategoryDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
+        identifiersForm.setFields(code, name, uri, urn, urnProvider);
 
         // Content descriptors
         contentDescriptorsForm = new GroupDynamicForm(getConstants().categoryContentDescriptors());
@@ -177,7 +178,8 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
         name.setRequired(true);
         ViewTextItem uri = new ViewTextItem(CategoryDS.URI, getConstants().identifiableArtefactUri());
         ViewTextItem urn = new ViewTextItem(CategoryDS.URN, getConstants().identifiableArtefactUrn());
-        identifiersEditionForm.setFields(code, name, uri, urn);
+        ViewTextItem urnProvider = new ViewTextItem(CategoryDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
+        identifiersEditionForm.setFields(code, name, uri, urn, urnProvider);
 
         // Content descriptors
         contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().categoryContentDescriptors());
@@ -198,6 +200,7 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
         identifiersForm.setValue(CategoryDS.NAME, RecordUtils.getInternationalStringRecord(categoryDto.getName()));
         identifiersForm.setValue(CategoryDS.URI, categoryDto.getUriProvider());
         identifiersForm.setValue(CategoryDS.URN, categoryDto.getUrn());
+        identifiersForm.setValue(CategoryDS.URN_PROVIDER, categoryDto.getUrnProvider());
 
         // Content descriptors
         contentDescriptorsForm.setValue(CategoryDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(categoryDto.getDescription()));
@@ -212,6 +215,7 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
         identifiersEditionForm.setValue(CategoryDS.NAME, RecordUtils.getInternationalStringRecord(categoryDto.getName()));
         identifiersEditionForm.setValue(CategoryDS.URI, categoryDto.getUriProvider());
         identifiersEditionForm.setValue(CategoryDS.URN, categoryDto.getUrn());
+        identifiersEditionForm.setValue(CategoryDS.URN_PROVIDER, categoryDto.getUrnProvider());
 
         // Content descriptors
         contentDescriptorsEditionForm.setValue(CategoryDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(categoryDto.getDescription()));
