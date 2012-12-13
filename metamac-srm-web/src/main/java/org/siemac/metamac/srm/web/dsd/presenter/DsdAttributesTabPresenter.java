@@ -360,20 +360,19 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
 
     @Override
     public void deleteAttributes(List<DataAttributeDto> attributesToDelete) {
-        dispatcher.execute(new DeleteAttributeListForDsdAction(dataStructureDefinitionDto.getUrn(), attributesToDelete, TypeComponentList.ATTRIBUTE_DESCRIPTOR),
-                new WaitingAsyncCallback<DeleteAttributeListForDsdResult>() {
+        dispatcher.execute(new DeleteAttributeListForDsdAction(dataStructureDefinitionDto.getUrn(), attributesToDelete), new WaitingAsyncCallback<DeleteAttributeListForDsdResult>() {
 
-                    @Override
-                    public void onWaitFailure(Throwable caught) {
-                        updateAttributeList(true);
-                        ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdAttributeErrorDelete()), MessageTypeEnum.ERROR);
-                    }
-                    @Override
-                    public void onWaitSuccess(DeleteAttributeListForDsdResult result) {
-                        updateAttributeList(true);
-                        ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdAttributeDeleted()), MessageTypeEnum.SUCCESS);
-                    }
-                });
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                updateAttributeList(true);
+                ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdAttributeErrorDelete()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(DeleteAttributeListForDsdResult result) {
+                updateAttributeList(true);
+                ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdAttributeDeleted()), MessageTypeEnum.SUCCESS);
+            }
+        });
     }
 
     @Override
