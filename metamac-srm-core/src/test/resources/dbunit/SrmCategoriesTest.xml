@@ -112,6 +112,7 @@
         
         NAME_FK="[null]"
         DESCRIPTION_FK="[null]"
+        COMMENT_FK="[null]"
         
         VERSION_LOGIC="01.000"
         FINAL_LOGIC="1"
@@ -185,6 +186,7 @@
                 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"
+                COMMENT_FK="[null]"
                 
                 UUID="annotableArtefact-10011"
                 VERSION="1"
@@ -238,6 +240,7 @@
                 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"
+                COMMENT_FK="[null]"
                 
                 UUID="annotableArtefact-10012"
                 VERSION="1"
@@ -319,6 +322,7 @@
         
         NAME_FK="1"
         DESCRIPTION_FK="2"
+        COMMENT_FK="[null]"
         
         VERSION_LOGIC="01.000"
         FINAL_LOGIC="1"
@@ -390,6 +394,7 @@
 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"
+                COMMENT_FK="[null]"
 
                 UUID="annotableArtefact-111"
                 VERSION="1"
@@ -457,6 +462,7 @@
         
         NAME_FK="3"
         DESCRIPTION_FK="4"
+        COMMENT_FK="[null]"
         
         VERSION_LOGIC="02.000"
         FINAL_LOGIC="0"
@@ -536,6 +542,7 @@
                 
                 NAME_FK="12"
                 DESCRIPTION_FK="13"
+                COMMENT_FK="[null]"
                 
                 UUID="annotableArtefact-121"
                 VERSION="1"
@@ -588,6 +595,7 @@
                 
                 NAME_FK="14"
                 DESCRIPTION_FK="[null]"
+                COMMENT_FK="[null]"
                 
                 UUID="annotableArtefact-112"
                 VERSION="1"
@@ -640,6 +648,7 @@
                     
                     NAME_FK="15"
                     DESCRIPTION_FK="[null]"
+                    COMMENT_FK="[null]"
                     
                     UUID="annotableArtefact-1221"
                     VERSION="1"
@@ -693,6 +702,7 @@
                         
                         NAME_FK="16"
                         DESCRIPTION_FK="[null]"
+                        COMMENT_FK="[null]"
                         
                         UUID="annotableArtefact-12211"
                         VERSION="1"
@@ -745,6 +755,7 @@
                 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"
+                COMMENT_FK="[null]"
                 
                 UUID="annotableArtefact-99123"
                 VERSION="1"
@@ -797,6 +808,7 @@
                 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"
+                COMMENT_FK="[null]"
                 
                 UUID="annotableArtefact-99124"
                 VERSION="1"
@@ -849,6 +861,7 @@
                     
                     NAME_FK="[null]"
                     DESCRIPTION_FK="[null]"
+                    COMMENT_FK="[null]"
                     
                     UUID="annotableArtefact-991241"
                     VERSION="1"
@@ -901,6 +914,7 @@
                         
                         NAME_FK="[null]"
                         DESCRIPTION_FK="[null]"
+                        COMMENT_FK="[null]"
                         
                         UUID="annotableArtefact-9912411"
                         VERSION="1"
@@ -1052,6 +1066,7 @@
                 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"
+                COMMENT_FK="[null]"
                 
                 UUID="annotableArtefact-211"
                 VERSION="1"
@@ -1104,6 +1119,7 @@
                 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"
+                COMMENT_FK="[null]"
                 
                 UUID="annotableArtefact-212"
                 VERSION="1"
@@ -1256,6 +1272,7 @@
                 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"
+                COMMENT_FK="[null]"
                 
                 UUID="annotableArtefact-311"
                 VERSION="1"
@@ -1308,6 +1325,7 @@
                 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"
+                COMMENT_FK="[null]"
                 
                 UUID="annotableArtefact-312"
                 VERSION="1"
@@ -1360,6 +1378,7 @@
                 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"
+                COMMENT_FK="[null]"
                 
                 UUID="annotableArtefact-3121"
                 VERSION="1"
@@ -1412,6 +1431,7 @@
                         
                         NAME_FK="[null]"
                         DESCRIPTION_FK="[null]"
+                        COMMENT_FK="[null]"
                         
                         UUID="annotableArtefact-31211"
                         VERSION="1"
@@ -1463,6 +1483,7 @@
                 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"
+                COMMENT_FK="[null]"
                 
                 UUID="annotableArtefact-3122"
                 VERSION="1"
@@ -1613,6 +1634,7 @@
 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"
+                COMMENT_FK="[null]"
 
                 UUID="annotableArtefact-411"
                 VERSION="1"
@@ -1764,6 +1786,7 @@
 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"
+                COMMENT_FK="[null]"
 
                 UUID="annotableArtefact-511"
                 VERSION="1"
@@ -1914,6 +1937,7 @@
 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"
+                COMMENT_FK="[null]"
 
                 UUID="annotableArtefact-611"
                 VERSION="1"
@@ -2148,6 +2172,7 @@
 
                 NAME_FK="[null]"
                 DESCRIPTION_FK="[null]"
+                COMMENT_FK="[null]"
 
                 UUID="annotableArtefact-721"
                 VERSION="1"
