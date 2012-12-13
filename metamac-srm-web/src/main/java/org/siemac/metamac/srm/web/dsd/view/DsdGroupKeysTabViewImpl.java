@@ -1,5 +1,7 @@
 package org.siemac.metamac.srm.web.dsd.view;
 
+import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -64,12 +66,13 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
 
     // VIEW FORM
 
+    private GroupDynamicForm            staticForm;
     private ViewTextItem                staticCode;
     private ViewTextItem                staticDimensionsItem;
 
     // EDITION FORM
 
-    private GroupDynamicForm            form;
+    private GroupDynamicForm            editionForm;
     private RequiredTextItem            code;
     private CustomSelectItem            dimensionsItem;
 
@@ -211,10 +214,12 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
      * @return
      */
     private void createViewForm() {
-        GroupDynamicForm staticForm = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdGroupKeysDetails());
+        staticForm = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdGroupKeysDetails());
         staticCode = new ViewTextItem(GroupKeysDS.CODE, MetamacSrmWeb.getConstants().dsdGroupKeysId());
+        ViewTextItem urn = new ViewTextItem(GroupKeysDS.URN, getConstants().identifiableArtefactUrn());
+        ViewTextItem urnProvider = new ViewTextItem(GroupKeysDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
         staticDimensionsItem = new ViewTextItem(GroupKeysDS.DIMENSIONS, MetamacSrmWeb.getConstants().dsdDimensions());
-        staticForm.setFields(staticCode, staticDimensionsItem);
+        staticForm.setFields(staticCode, urn, urnProvider, staticDimensionsItem);
 
         // Annotations
         viewAnnotationsPanel = new AnnotationsPanel(true);
@@ -229,23 +234,26 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
      * @return
      */
     private void createEditionForm() {
-        form = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdDimensionDetails());
+        editionForm = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdDimensionDetails());
 
         // Id
         code = new RequiredTextItem(GroupKeysDS.CODE, MetamacSrmWeb.getConstants().dsdGroupKeysId());
         code.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());
+
+        ViewTextItem urn = new ViewTextItem(GroupKeysDS.URN, getConstants().identifiableArtefactUrn());
+        ViewTextItem urnProvider = new ViewTextItem(GroupKeysDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
 
         // Dimensions
         dimensionsItem = new CustomSelectItem(GroupKeysDS.DIMENSIONS, MetamacSrmWeb.getConstants().dsdDimensions());
         dimensionsItem.setMultiple(true);
         dimensionsItem.setPickListWidth(350);
 
-        form.setFields(code, dimensionsItem);
+        editionForm.setFields(code, urn, urnProvider, dimensionsItem);
 
         // Annotations
         editionAnnotationsPanel = new AnnotationsPanel(false);
 
-        mainFormLayout.addEditionCanvas(form);
+        mainFormLayout.addEditionCanvas(editionForm);
         mainFormLayout.addEditionCanvas(editionAnnotationsPanel);
     }
 
@@ -327,7 +335,7 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
 
     @Override
     public boolean validate() {
-        return form.validate();
+        return editionForm.validate();
     }
 
     @Override
@@ -344,6 +352,9 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
         this.descriptorDto = descriptorDto;
 
         staticCode.setValue(descriptorDto.getCode());
+
+        staticForm.setValue(GroupKeysDS.URN, descriptorDto.getUrn());
+        staticForm.setValue(GroupKeysDS.URN_PROVIDER, descriptorDto.getUrnProvider());
 
         staticDimensionsItem.clearValue();
         List<ComponentDto> dimensionComponentDtos = new ArrayList<ComponentDto>(descriptorDto.getComponents());
@@ -363,6 +374,9 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
         this.descriptorDto = descriptorDto;
 
         code.setValue(descriptorDto.getCode());
+
+        editionForm.setValue(GroupKeysDS.URN, descriptorDto.getUrn());
+        editionForm.setValue(GroupKeysDS.URN_PROVIDER, descriptorDto.getUrnProvider());
 
         dimensionsItem.clearValue();
         Set<ComponentDto> dimensionComponentDtos = descriptorDto.getComponents();
@@ -397,7 +411,7 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
         }
 
         // Clear errors
-        form.clearErrors(true);
+        editionForm.clearErrors(true);
 
         selectedDescriptorLayout.show();
         selectedDescriptorLayout.redraw();
