@@ -285,7 +285,8 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         ViewMultiLanguageTextItem name = new ViewMultiLanguageTextItem(OrganisationDS.NAME, getConstants().nameableArtefactName());
         ViewTextItem uri = new ViewTextItem(OrganisationDS.URI, getConstants().identifiableArtefactUri());
         ViewTextItem urn = new ViewTextItem(OrganisationDS.URN, getConstants().identifiableArtefactUrn());
-        identifiersForm.setFields(code, name, uri, urn);
+        ViewTextItem urnProvider = new ViewTextItem(OrganisationDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
+        identifiersForm.setFields(code, name, uri, urn, urnProvider);
 
         // Content descriptors
         contentDescriptorsForm = new GroupDynamicForm(getConstants().organisationContentDescriptors());
@@ -328,7 +329,8 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         name.setRequired(true);
         ViewTextItem uri = new ViewTextItem(OrganisationDS.URI, getConstants().identifiableArtefactUri());
         ViewTextItem urn = new ViewTextItem(OrganisationDS.URN, getConstants().identifiableArtefactUrn());
-        identifiersEditionForm.setFields(codeView, code, name, uri, urn);
+        ViewTextItem urnProvider = new ViewTextItem(OrganisationDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
+        identifiersEditionForm.setFields(codeView, code, name, uri, urn, urnProvider);
 
         // Content descriptors
         contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().organisationContentDescriptors());
@@ -418,6 +420,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         identifiersForm.setValue(OrganisationDS.NAME, RecordUtils.getInternationalStringRecord(organisationDto.getName()));
         identifiersForm.setValue(OrganisationDS.URI, organisationDto.getUriProvider());
         identifiersForm.setValue(OrganisationDS.URN, organisationDto.getUrn());
+        identifiersForm.setValue(OrganisationDS.URN_PROVIDER, organisationDto.getUrnProvider());
 
         // Content descriptors
         contentDescriptorsForm.setValue(OrganisationDS.TYPE, CommonUtils.getOrganisationTypeName(organisationDto.getType()));
@@ -434,6 +437,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         identifiersEditionForm.setValue(OrganisationDS.NAME, RecordUtils.getInternationalStringRecord(organisationDto.getName()));
         identifiersEditionForm.setValue(OrganisationDS.URI, organisationDto.getUriProvider());
         identifiersEditionForm.setValue(OrganisationDS.URN, organisationDto.getUrn());
+        identifiersEditionForm.setValue(OrganisationDS.URN_PROVIDER, organisationDto.getUrnProvider());
         identifiersEditionForm.markForRedraw();
 
         // Content descriptors
