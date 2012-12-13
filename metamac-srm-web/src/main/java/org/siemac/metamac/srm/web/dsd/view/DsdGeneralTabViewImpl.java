@@ -215,8 +215,9 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         ViewTextItem staticIdLogic = new ViewTextItem(DataStructureDefinitionDS.CODE, MetamacSrmWeb.getConstants().dsdIdentifier());
         ViewTextItem staticUriItem = new ViewTextItem(DataStructureDefinitionDS.URI, MetamacSrmWeb.getConstants().identifiableArtefactUri());
         ViewTextItem staticUrnItem = new ViewTextItem(DataStructureDefinitionDS.URN, MetamacSrmWeb.getConstants().identifiableArtefactUrn());
+        ViewTextItem staticUrnProviderItem = new ViewTextItem(DataStructureDefinitionDS.URN_PROVIDER, MetamacSrmWeb.getConstants().identifiableArtefactUrnProvider());
         ViewTextItem staticVersion = new ViewTextItem(DataStructureDefinitionDS.VERSION_LOGIC, MetamacSrmWeb.getConstants().maintainableArtefactVersionLogic());
-        identifiersForm.setFields(staticIdLogic, staticUriItem, staticUrnItem, staticVersion);
+        identifiersForm.setFields(staticIdLogic, staticUriItem, staticUrnItem, staticUrnProviderItem, staticVersion);
 
         // General Form
         generalForm = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdDetails());
@@ -290,8 +291,9 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
 
         ViewTextItem staticUriItemEdit = new ViewTextItem(DataStructureDefinitionDS.URI, MetamacSrmWeb.getConstants().identifiableArtefactUri());
         ViewTextItem staticUrnItemEdit = new ViewTextItem(DataStructureDefinitionDS.URN, MetamacSrmWeb.getConstants().identifiableArtefactUrn());
+        ViewTextItem staticUrnProviderEditItem = new ViewTextItem(DataStructureDefinitionDS.URN_PROVIDER, MetamacSrmWeb.getConstants().identifiableArtefactUrnProvider());
         ViewTextItem staticVersionEdit = new ViewTextItem(DataStructureDefinitionDS.VERSION_LOGIC, MetamacSrmWeb.getConstants().maintainableArtefactVersionLogic());
-        identifiersEditionForm.setFields(code, staticCode, staticUriItemEdit, staticUrnItemEdit, staticVersionEdit);
+        identifiersEditionForm.setFields(code, staticCode, staticUriItemEdit, staticUrnItemEdit, staticUrnProviderEditItem, staticVersionEdit);
 
         // General Form
         generalEditionForm = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdDetails());
@@ -367,6 +369,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         identifiersForm.setValue(DataStructureDefinitionDS.CODE, dsd.getCode());
         identifiersForm.setValue(DataStructureDefinitionDS.URI, dsd.getUriProvider());
         identifiersForm.setValue(DataStructureDefinitionDS.URN, dsd.getUrn());
+        identifiersForm.setValue(DataStructureDefinitionDS.URN_PROVIDER, dsd.getUrnProvider());
         identifiersForm.setValue(DataStructureDefinitionDS.VERSION_LOGIC, dsd.getVersionLogic());
 
         // General form
@@ -406,6 +409,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         identifiersEditionForm.setValue(DataStructureDefinitionDS.CODE_VIEW, dsd.getCode());
         identifiersEditionForm.setValue(DataStructureDefinitionDS.URI, dsd.getUriProvider());
         identifiersEditionForm.setValue(DataStructureDefinitionDS.URN, dsd.getUrn());
+        identifiersEditionForm.setValue(DataStructureDefinitionDS.URN_PROVIDER, dsd.getUrnProvider());
         identifiersEditionForm.setValue(DataStructureDefinitionDS.VERSION_LOGIC, dsd.getVersionLogic());
 
         // General form

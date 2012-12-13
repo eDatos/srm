@@ -8,6 +8,7 @@ public class DataStructureDefinitionDS {
     public static final String CODE_VIEW                        = "dsd-code-view";        // Not mapped in DTO
     public static final String URI                              = "dsd-uri";
     public static final String URN                              = "dsd-urn";
+    public static final String URN_PROVIDER                     = "dsd-urn-provider";
     public static final String VERSION_LOGIC                    = "dsd-version";
     public static final String NAME                             = "dsd-name";
     public static final String DESCRIPTION                      = "dsd-desc";

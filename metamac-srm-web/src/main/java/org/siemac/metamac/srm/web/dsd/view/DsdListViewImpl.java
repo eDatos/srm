@@ -445,5 +445,4 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
             cancelValidityButton.hide();
         }
     }
-
 }

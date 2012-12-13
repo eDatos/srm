@@ -11,6 +11,7 @@ public class ItemSchemeDS extends DataSource {
     public static final String CODE_VIEW                        = "sch-code-view";        // Not mapped in DTO
     public static final String URI                              = "sch-uri";
     public static final String URN                              = "sch-urn";
+    public static final String URN_PROVIDER                     = "sch-urn-provider";
     public static final String VERSION_LOGIC                    = "sch-version";
     public static final String NAME                             = "sch-name";
     // CONTENT DESCRIPTORS
