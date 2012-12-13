@@ -1,5 +1,7 @@
 package org.siemac.metamac.srm.web.dsd.view;
 
+import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -94,6 +96,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
     // VIEW FORM
 
+    private GroupDynamicForm            staticForm;
     private ViewTextItem                staticCode;
     private ViewTextItem                staticConceptItem;
     private ViewTextItem                staticRoleItem;
@@ -110,7 +113,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
     // EDITION FORM
 
-    private GroupDynamicForm            form;
+    private GroupDynamicForm            editionForm;
     private RequiredTextItem            code;
     private ExternalSelectItem          conceptItem;
     private RoleSelectItem              roleItem;
@@ -286,8 +289,10 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
      * @return
      */
     private void createViewForm() {
-        GroupDynamicForm staticForm = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdAttributeDetails());
+        staticForm = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdAttributeDetails());
         staticCode = new ViewTextItem(DataAttributeDS.CODE, MetamacSrmWeb.getConstants().dsdAttributeId());
+        ViewTextItem urn = new ViewTextItem(DataAttributeDS.URN, getConstants().identifiableArtefactUrn());
+        ViewTextItem urnProvider = new ViewTextItem(DataAttributeDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
         staticConceptItem = new ViewTextItem(DataAttributeDS.CONCEPT, MetamacSrmWeb.getConstants().concept());
         staticRoleItem = new ViewTextItem(DataAttributeDS.ROLE, MetamacSrmWeb.getConstants().dsdAttributeRole());
         staticAssignmentStatusItem = new ViewTextItem(DataAttributeDS.ASSIGMENT_STATUS, MetamacSrmWeb.getConstants().dsdAttributeAssignmentStatus());
@@ -299,7 +304,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         staticGroupKeyFormForGroupRelationship = new ViewTextItem(DataAttributeDS.GROUP_KEY_FOR_GROUP_RELATIONSHIP, MetamacSrmWeb.getConstants().dsdAttributeGroupKeyFormGroupRelationship());
         staticRepresentationTypeItem = new ViewTextItem(DataAttributeDS.REPRESENTATION_TYPE, MetamacSrmWeb.getConstants().representation());
         staticCodeListItem = new ViewTextItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODE_LIST, MetamacSrmWeb.getConstants().dsdCodeList());
-        staticForm.setFields(staticCode, staticAssignmentStatusItem, staticConceptItem, staticRoleItem, staticRelationType, staticGroupKeysForDimensionRelationshipItem,
+        staticForm.setFields(staticCode, urn, urnProvider, staticAssignmentStatusItem, staticConceptItem, staticRoleItem, staticRelationType, staticGroupKeysForDimensionRelationshipItem,
                 staticDimensionsForDimensionRelationshipItem, staticGroupKeyFormForGroupRelationship, staticRepresentationTypeItem, staticCodeListItem);
 
         staticFacetForm = new StaticFacetForm();
@@ -323,12 +328,15 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         // ····
         // Form
         // ····
-        form = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdAttributeDetails());
+        editionForm = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdAttributeDetails());
 
         // Id
 
         code = new RequiredTextItem(DataAttributeDS.CODE, MetamacSrmWeb.getConstants().dsdAttributeId());
         code.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());
+
+        ViewTextItem urn = new ViewTextItem(DataAttributeDS.URN, getConstants().identifiableArtefactUrn());
+        ViewTextItem urnProvider = new ViewTextItem(DataAttributeDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
 
         // Assignment Status
 
@@ -444,7 +452,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
             }
         });
 
-        form.setFields(code, assignmentStatusItem, conceptItem, roleItem, relationType, groupKeysForDimensionRelationshipItem, dimensionsForDimensionRelationshipItem,
+        editionForm.setFields(code, urn, urnProvider, assignmentStatusItem, conceptItem, roleItem, relationType, groupKeysForDimensionRelationshipItem, dimensionsForDimensionRelationshipItem,
                 groupKeyFormForGroupRelationship, representationTypeItem, codeListItem);
 
         // Facet Form
@@ -455,7 +463,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         // Annotations
         editionAnnotationsPanel = new AnnotationsPanel(false);
 
-        mainFormLayout.addEditionCanvas(form);
+        mainFormLayout.addEditionCanvas(editionForm);
         mainFormLayout.addEditionCanvas(facetForm);
         mainFormLayout.addEditionCanvas(editionAnnotationsPanel);
     }
@@ -532,6 +540,10 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
         // Id
         staticCode.setValue(dataAttributeDto.getCode());
+
+        // URNs
+        staticForm.setValue(DataAttributeDS.URN, dataAttributeDto.getUrn());
+        staticForm.setValue(DataAttributeDS.URN_PROVIDER, dataAttributeDto.getUrnProvider());
 
         // Concept
         staticConceptItem.setValue(dataAttributeDto.getCptIdRef() == null ? null : dataAttributeDto.getCptIdRef().getCode());
@@ -622,6 +634,10 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         // Id
         code.setValue(dataAttributeDto.getCode());
 
+        // URNs
+        editionForm.setValue(DataAttributeDS.URN, dataAttributeDto.getUrn());
+        editionForm.setValue(DataAttributeDS.URN_PROVIDER, dataAttributeDto.getUrnProvider());
+
         // Concept
         conceptItem.clearValue(); // Clear concept value: which is the scheme of a concept?
 
@@ -682,7 +698,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
             }
         }
         FacetFormUtils.setFacetFormVisibility(facetForm, representationTypeItem.getValueAsString());
-        form.redraw();
+        editionForm.redraw();
 
         // Annotations
         editionAnnotationsPanel.setAnnotations(dataAttributeDto.getAnnotations());
@@ -783,8 +799,9 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
     @Override
     public boolean validate() {
-        return Visibility.HIDDEN.equals(facetForm.getVisibility()) ? form.validate(false) && conceptItem.validateItem() : (form.validate(false) && facetForm.validate(false) && conceptItem
-                .validateItem());
+        return Visibility.HIDDEN.equals(facetForm.getVisibility())
+                ? editionForm.validate(false) && conceptItem.validateItem()
+                : (editionForm.validate(false) && facetForm.validate(false) && conceptItem.validateItem());
     }
 
     @Override
@@ -848,7 +865,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         }
 
         // Clear errors
-        form.clearErrors(true);
+        editionForm.clearErrors(true);
         facetForm.clearErrors(true);
 
         selectedComponentLayout.show();
