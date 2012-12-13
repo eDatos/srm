@@ -215,7 +215,8 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
         ViewMultiLanguageTextItem acronym = new ViewMultiLanguageTextItem(ConceptDS.ACRONYM, getConstants().conceptAcronym());
         ViewTextItem uri = new ViewTextItem(ConceptDS.URI, getConstants().identifiableArtefactUri());
         ViewTextItem urn = new ViewTextItem(ConceptDS.URN, getConstants().identifiableArtefactUrn());
-        identifiersForm.setFields(code, name, pluralName, acronym, uri, urn);
+        ViewTextItem urnProvider = new ViewTextItem(ConceptDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
+        identifiersForm.setFields(code, name, pluralName, acronym, uri, urn, urnProvider);
 
         // Content descriptors
         contentDescriptorsForm = new GroupDynamicForm(getConstants().conceptContentDescriptors());
@@ -287,7 +288,8 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
         MultiLanguageTextItem acronym = new MultiLanguageTextItem(ConceptDS.ACRONYM, getConstants().conceptAcronym());
         ViewTextItem uri = new ViewTextItem(ConceptDS.URI, getConstants().identifiableArtefactUri());
         ViewTextItem urn = new ViewTextItem(ConceptDS.URN, getConstants().identifiableArtefactUrn());
-        identifiersEditionForm.setFields(code, name, pluralName, acronym, uri, urn);
+        ViewTextItem urnProvider = new ViewTextItem(ConceptDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
+        identifiersEditionForm.setFields(code, name, pluralName, acronym, uri, urn, urnProvider);
 
         // Content descriptors
         contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().conceptContentDescriptors());
@@ -418,6 +420,7 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
         identifiersForm.setValue(ConceptDS.ACRONYM, RecordUtils.getInternationalStringRecord(conceptDto.getAcronym()));
         identifiersForm.setValue(ConceptDS.URI, conceptDto.getUriProvider());
         identifiersForm.setValue(ConceptDS.URN, conceptDto.getUrn());
+        identifiersForm.setValue(ConceptDS.URN_PROVIDER, conceptDto.getUrnProvider());
 
         // Content descriptors
         contentDescriptorsForm.setValue(ConceptDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(conceptDto.getDescription()));
@@ -469,6 +472,7 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
         identifiersEditionForm.setValue(ConceptDS.ACRONYM, RecordUtils.getInternationalStringRecord(conceptDto.getAcronym()));
         identifiersEditionForm.setValue(ConceptDS.URI, conceptDto.getUriProvider());
         identifiersEditionForm.setValue(ConceptDS.URN, conceptDto.getUrn());
+        identifiersEditionForm.setValue(ConceptDS.URN_PROVIDER, conceptDto.getUrnProvider());
 
         // Content descriptors
         contentDescriptorsEditionForm.setValue(ConceptDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(conceptDto.getDescription()));

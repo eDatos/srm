@@ -342,8 +342,9 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         ViewMultiLanguageTextItem name = new ViewMultiLanguageTextItem(ConceptSchemeDS.NAME, getConstants().nameableArtefactName());
         ViewTextItem uri = new ViewTextItem(ConceptSchemeDS.URI, getConstants().identifiableArtefactUri());
         ViewTextItem urn = new ViewTextItem(ConceptSchemeDS.URN, getConstants().identifiableArtefactUrn());
+        ViewTextItem urnProvider = new ViewTextItem(ConceptSchemeDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
         ViewTextItem version = new ViewTextItem(ConceptSchemeDS.VERSION_LOGIC, getConstants().maintainableArtefactVersionLogic());
-        identifiersForm.setFields(code, name, uri, urn, version);
+        identifiersForm.setFields(code, name, uri, urn, urnProvider, version);
 
         // Content descriptors
         contentDescriptorsForm = new GroupDynamicForm(getConstants().conceptSchemeContentDescriptors());
@@ -434,8 +435,9 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         name.setRequired(true);
         ViewTextItem uri = new ViewTextItem(ConceptSchemeDS.URI, getConstants().identifiableArtefactUri());
         ViewTextItem urn = new ViewTextItem(ConceptSchemeDS.URN, getConstants().identifiableArtefactUrn());
+        ViewTextItem urnProvider = new ViewTextItem(ConceptSchemeDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
         ViewTextItem version = new ViewTextItem(ConceptSchemeDS.VERSION_LOGIC, getConstants().maintainableArtefactVersionLogic());
-        identifiersEditionForm.setFields(code, staticCode, name, uri, urn, version);
+        identifiersEditionForm.setFields(code, staticCode, name, uri, urn, urnProvider, version);
 
         // Content descriptors
         contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().conceptSchemeContentDescriptors());
@@ -549,6 +551,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         identifiersForm.setValue(ConceptSchemeDS.CODE, conceptSchemeDto.getCode());
         identifiersForm.setValue(ConceptSchemeDS.URI, conceptSchemeDto.getUriProvider());
         identifiersForm.setValue(ConceptSchemeDS.URN, conceptSchemeDto.getUrn());
+        identifiersForm.setValue(ConceptSchemeDS.URN_PROVIDER, conceptSchemeDto.getUrnProvider());
         identifiersForm.setValue(ConceptSchemeDS.VERSION_LOGIC, conceptSchemeDto.getVersionLogic());
         identifiersForm.setValue(ConceptSchemeDS.NAME, RecordUtils.getInternationalStringRecord(conceptSchemeDto.getName()));
 
@@ -605,6 +608,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         identifiersEditionForm.setValue(ConceptSchemeDS.CODE_VIEW, conceptSchemeDto.getCode());
         identifiersEditionForm.setValue(ConceptSchemeDS.URI, conceptSchemeDto.getUriProvider());
         identifiersEditionForm.setValue(ConceptSchemeDS.URN, conceptSchemeDto.getUrn());
+        identifiersEditionForm.setValue(ConceptSchemeDS.URN_PROVIDER, conceptSchemeDto.getUrnProvider());
         identifiersEditionForm.setValue(ConceptSchemeDS.VERSION_LOGIC, conceptSchemeDto.getVersionLogic());
         identifiersEditionForm.setValue(ConceptSchemeDS.NAME, RecordUtils.getInternationalStringRecord(conceptSchemeDto.getName()));
         identifiersEditionForm.markForRedraw();
