@@ -24,7 +24,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.domain.NameableArtefact;
-import com.arte.statistic.sdmx.srm.core.common.constants.SdmxSrmConstants;
+import com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxAlias;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation;
 
 @Component
@@ -184,10 +184,10 @@ public class BaseDo2RestMapperV10Impl implements BaseDo2RestMapperV10 {
             return mantainer.getIdAsMaintainer();
         } else {
             // default SDMX
-            return SdmxSrmConstants.SDMX_MAINTAINER;
+            return SdmxAlias.SDMX_MAINTAINER;
         }
     }
-    
+
     private String getCode(NameableArtefact nameableArtefact) {
         if (nameableArtefact.getCodeFull() != null) {
             return nameableArtefact.getCodeFull();
