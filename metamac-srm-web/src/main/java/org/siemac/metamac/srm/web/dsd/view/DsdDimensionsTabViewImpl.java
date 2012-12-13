@@ -1,5 +1,7 @@
 package org.siemac.metamac.srm.web.dsd.view;
 
+import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -288,6 +290,8 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
     private void createViewForm() {
         form = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdDimensionDetails());
         staticCode = new ViewTextItem(DimensionDS.CODE_VIEW, MetamacSrmWeb.getConstants().dsdDimensionsId());
+        ViewTextItem urn = new ViewTextItem(DimensionDS.URN, getConstants().identifiableArtefactUrn());
+        ViewTextItem urnProvider = new ViewTextItem(DimensionDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
         staticTypeItem = new ViewTextItem(DimensionDS.TYPE, MetamacSrmWeb.getConstants().dsdDimensionsType());
         staticConceptItem = new ViewTextItem(DimensionDS.CONCEPT, MetamacSrmWeb.getConstants().concept());
 
@@ -300,7 +304,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         staticRepresentationTypeItem = new ViewTextItem(DimensionDS.REPRESENTATION_TYPE, MetamacSrmWeb.getConstants().representation());
         staticCodeListItem = new ViewTextItem(DimensionDS.ENUMERATED_REPRESENTATION_CODE_LIST, MetamacSrmWeb.getConstants().dsdCodeList());
         staticConceptSchemeItem = new ViewTextItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME, MetamacSrmWeb.getConstants().conceptScheme());
-        form.setFields(staticCode, staticTypeItem, staticConceptItem, staticRoleItem, conceptRoleItem, staticRepresentationTypeItem, staticCodeListItem, staticConceptSchemeItem);
+        form.setFields(staticCode, urn, urnProvider, staticTypeItem, staticConceptItem, staticRoleItem, conceptRoleItem, staticRepresentationTypeItem, staticCodeListItem, staticConceptSchemeItem);
 
         staticFacetForm = new StaticFacetForm();
 
@@ -343,6 +347,9 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
                 return TypeDimensionComponent.TIMEDIMENSION.toString().equals(typeItem.getValueAsString());
             }
         });
+
+        ViewTextItem urn = new ViewTextItem(DimensionDS.URN, getConstants().identifiableArtefactUrn());
+        ViewTextItem urnProvider = new ViewTextItem(DimensionDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
 
         // Type (read only)
 
@@ -456,7 +463,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
             }
         });
 
-        editionForm.setFields(code, staticCodeEdit, staticTypeItemEdit, typeItem, conceptItem, roleItem, conceptRoleItem, representationTypeItem, codeListItem, conceptSchemeItem);
+        editionForm.setFields(code, staticCodeEdit, urn, urnProvider, staticTypeItemEdit, typeItem, conceptItem, roleItem, conceptRoleItem, representationTypeItem, codeListItem, conceptSchemeItem);
 
         // Facet Form
 
@@ -626,6 +633,9 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         this.dimensionComponentDto = dimensionComponentDto;
         // Id
         staticCode.setValue(dimensionComponentDto.getCode());
+        // URNs
+        form.setValue(DimensionDS.URN, dimensionComponentDto.getUrn());
+        form.setValue(DimensionDS.URN_PROVIDER, dimensionComponentDto.getUrnProvider());
         // Type
         String value = (dimensionComponentDto.getTypeDimensionComponent() == null) ? null : MetamacSrmWeb.getCoreMessages().getString(
                 MetamacSrmWeb.getCoreMessages().typeDimensionComponent() + dimensionComponentDto.getTypeDimensionComponent().toString());
@@ -686,6 +696,9 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         // Id
         code.setValue(dimensionComponentDto.getCode());
         staticCodeEdit.setValue(dimensionComponentDto.getCode());
+        // URNs
+        editionForm.setValue(DimensionDS.URN, dimensionComponentDto.getUrn());
+        editionForm.setValue(DimensionDS.URN_PROVIDER, dimensionComponentDto.getUrnProvider());
         // Type
         typeItem.setValue((dimensionComponentDto.getTypeDimensionComponent() == null) ? null : dimensionComponentDto.getTypeDimensionComponent().toString());
         String value = (dimensionComponentDto.getTypeDimensionComponent() == null) ? null : MetamacSrmWeb.getCoreMessages().getString(
