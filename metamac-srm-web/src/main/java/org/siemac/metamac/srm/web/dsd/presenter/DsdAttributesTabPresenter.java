@@ -337,26 +337,25 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
 
     @Override
     public void saveAttribute(DataAttributeDto attribute) {
-        dispatcher.execute(new SaveComponentForDsdAction(dataStructureDefinitionDto.getUrn(), attribute, TypeComponentList.ATTRIBUTE_DESCRIPTOR),
-                new WaitingAsyncCallback<SaveComponentForDsdResult>() {
+        dispatcher.execute(new SaveComponentForDsdAction(dataStructureDefinitionDto.getUrn(), attribute), new WaitingAsyncCallback<SaveComponentForDsdResult>() {
 
-                    @Override
-                    public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdAttributeErrorSave()), MessageTypeEnum.ERROR);
-                    }
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdAttributeErrorSave()), MessageTypeEnum.ERROR);
+            }
 
-                    @Override
-                    public void onWaitSuccess(SaveComponentForDsdResult result) {
-                        ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdAttributeSaved()), MessageTypeEnum.SUCCESS);
-                        updateAttributeList(false);
-                        getView().onAttributeSaved((DataAttributeDto) result.getComponentDtoSaved());
-                        if (isNewDescriptor) {
-                            // The first time a descriptor is saved, the DSD version changes.
-                            isNewDescriptor = false;
-                            updateDsd();
-                        }
-                    }
-                });
+            @Override
+            public void onWaitSuccess(SaveComponentForDsdResult result) {
+                ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdAttributeSaved()), MessageTypeEnum.SUCCESS);
+                updateAttributeList(false);
+                getView().onAttributeSaved((DataAttributeDto) result.getComponentDtoSaved());
+                if (isNewDescriptor) {
+                    // The first time a descriptor is saved, the DSD version changes.
+                    isNewDescriptor = false;
+                    updateDsd();
+                }
+            }
+        });
     }
 
     @Override

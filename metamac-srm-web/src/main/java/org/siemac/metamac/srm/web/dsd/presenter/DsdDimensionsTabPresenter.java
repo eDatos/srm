@@ -273,44 +273,42 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
         // }
         // }
 
-        dispatcher.execute(new SaveComponentForDsdAction(dataStructureDefinitionDto.getUrn(), dimensionToSave, TypeComponentList.DIMENSION_DESCRIPTOR),
-                new WaitingAsyncCallback<SaveComponentForDsdResult>() {
+        dispatcher.execute(new SaveComponentForDsdAction(dataStructureDefinitionDto.getUrn(), dimensionToSave), new WaitingAsyncCallback<SaveComponentForDsdResult>() {
 
-                    @Override
-                    public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdDimensionErrorSave()), MessageTypeEnum.ERROR);
-                    }
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdDimensionErrorSave()), MessageTypeEnum.ERROR);
+            }
 
-                    @Override
-                    public void onWaitSuccess(SaveComponentForDsdResult result) {
-                        ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdDimensionSaved()), MessageTypeEnum.SUCCESS);
-                        updateDimensionList(false); // Do no update the view!! The method onDimensionSaved updates the dimension list in the view
-                        getView().onDimensionSaved((DimensionComponentDto) result.getComponentDtoSaved());
-                        if (isNewDescriptor) {
-                            // The first time a descriptor is saved, the DSD version changes.
-                            isNewDescriptor = false;
-                            updateDsd();
-                        }
-                    }
-                });
+            @Override
+            public void onWaitSuccess(SaveComponentForDsdResult result) {
+                ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdDimensionSaved()), MessageTypeEnum.SUCCESS);
+                updateDimensionList(false); // Do no update the view!! The method onDimensionSaved updates the dimension list in the view
+                getView().onDimensionSaved((DimensionComponentDto) result.getComponentDtoSaved());
+                if (isNewDescriptor) {
+                    // The first time a descriptor is saved, the DSD version changes.
+                    isNewDescriptor = false;
+                    updateDsd();
+                }
+            }
+        });
     }
 
     @Override
     public void deleteDimensions(List<DimensionComponentDto> dimensionsToDelete) {
-        dispatcher.execute(new DeleteDimensionListForDsdAction(dataStructureDefinitionDto.getUrn(), dimensionsToDelete, TypeComponentList.DIMENSION_DESCRIPTOR),
-                new WaitingAsyncCallback<DeleteDimensionListForDsdResult>() {
+        dispatcher.execute(new DeleteDimensionListForDsdAction(dataStructureDefinitionDto.getUrn(), dimensionsToDelete), new WaitingAsyncCallback<DeleteDimensionListForDsdResult>() {
 
-                    @Override
-                    public void onWaitFailure(Throwable caught) {
-                        updateDimensionList(true);
-                        ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdDimensionErrorDeleteDetails()), MessageTypeEnum.ERROR);
-                    }
-                    @Override
-                    public void onWaitSuccess(DeleteDimensionListForDsdResult result) {
-                        updateDimensionList(true);
-                        ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdDimensionDeleted()), MessageTypeEnum.SUCCESS);
-                    }
-                });
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                updateDimensionList(true);
+                ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdDimensionErrorDeleteDetails()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(DeleteDimensionListForDsdResult result) {
+                updateDimensionList(true);
+                ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdDimensionDeleted()), MessageTypeEnum.SUCCESS);
+            }
+        });
     }
 
     @Override
