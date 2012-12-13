@@ -28,17 +28,15 @@ public class DeleteAttributeListForDsdActionHandler extends SecurityActionHandle
 
     @Override
     public DeleteAttributeListForDsdResult executeSecurityAction(DeleteAttributeListForDsdAction action) throws ActionException {
-        // TODO pendiente error compilación jenkins
-//        List<DataAttributeDto> dataAttributeDtos = action.getDataAttributeDtos();
-//        for (DataAttributeDto a : dataAttributeDtos) {
-//            try {
-//                srmCoreServiceFacade.deleteComponentForDataStructureDefinition(ServiceContextHolder.getCurrentServiceContext(), action.getDsdUrn(), a, action.getTypeComponentList());
-//            } catch (MetamacException e) {
-//                throw WebExceptionUtils.createMetamacWebException(e);
-//            }
-//        }
-//        return new DeleteAttributeListForDsdResult();
-        return null;
+        List<DataAttributeDto> dataAttributeDtos = action.getDataAttributeDtos();
+        for (DataAttributeDto a : dataAttributeDtos) {
+            try {
+                srmCoreServiceFacade.deleteComponentForDataStructureDefinition(ServiceContextHolder.getCurrentServiceContext(), action.getDsdUrn(), a);
+            } catch (MetamacException e) {
+                throw WebExceptionUtils.createMetamacWebException(e);
+            }
+        }
+        return new DeleteAttributeListForDsdResult();
     }
 
     @Override
