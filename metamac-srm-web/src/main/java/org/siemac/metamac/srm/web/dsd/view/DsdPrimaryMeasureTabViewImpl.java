@@ -1,5 +1,7 @@
 package org.siemac.metamac.srm.web.dsd.view;
 
+import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
+
 import java.util.List;
 
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
@@ -96,11 +98,13 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
     private void createViewForm() {
         form = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdPrimaryMeasureDetails());
 
+        ViewTextItem code = new ViewTextItem(PrimaryMeasureDS.CODE, getConstants().identifiableArtefactCode());
+        ViewTextItem urn = new ViewTextItem(PrimaryMeasureDS.URN, getConstants().identifiableArtefactUrn());
+        ViewTextItem urnProvider = new ViewTextItem(PrimaryMeasureDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
         staticConceptItem = new ViewTextItem(PrimaryMeasureDS.CONCEPT, MetamacSrmWeb.getConstants().concept());
-
         staticRepresentationTypeItem = new ViewTextItem(PrimaryMeasureDS.REPRESENTATION_TYPE, MetamacSrmWeb.getConstants().representation());
         staticCodeListItem = new ViewTextItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION, MetamacSrmWeb.getConstants().dsdCodeList());
-        form.setFields(staticConceptItem, staticRepresentationTypeItem, staticCodeListItem);
+        form.setFields(code, urn, urnProvider, staticConceptItem, staticRepresentationTypeItem, staticCodeListItem);
 
         staticFacetForm = new StaticFacetForm();
 
@@ -120,9 +124,11 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
     private void createEditionForm() {
         editionForm = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdPrimaryMeasureDetails());
 
+        ViewTextItem code = new ViewTextItem(PrimaryMeasureDS.CODE, getConstants().identifiableArtefactCode());
+        ViewTextItem urn = new ViewTextItem(PrimaryMeasureDS.URN, getConstants().identifiableArtefactUrn());
+        ViewTextItem urnProvider = new ViewTextItem(PrimaryMeasureDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
         conceptItem = new ExternalSelectItem(PrimaryMeasureDS.CONCEPT, MetamacSrmWeb.getConstants().concept());
         conceptItem.setRequired(true);
-
         representationTypeItem = new CustomSelectItem(PrimaryMeasureDS.REPRESENTATION_TYPE, MetamacSrmWeb.getConstants().representation());
         representationTypeItem.setValueMap(org.siemac.metamac.srm.web.client.utils.CommonUtils.getTypeRepresentationEnumHashMap());
         representationTypeItem.setRedrawOnChange(true);
@@ -145,7 +151,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
             }
         });
 
-        editionForm.setFields(conceptItem, representationTypeItem, codeListItem);
+        editionForm.setFields(code, urn, urnProvider, conceptItem, representationTypeItem, codeListItem);
 
         facetForm = new DsdFacetForm();
         facetForm.setVisibility(Visibility.HIDDEN);
@@ -192,6 +198,10 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
     }
 
     private void setPrimaryMeasureViewMode(ComponentDto componentDto) {
+        form.setValue(PrimaryMeasureDS.CODE, componentDto.getCode());
+        form.setValue(PrimaryMeasureDS.URN, componentDto.getUrn());
+        form.setValue(PrimaryMeasureDS.URN_PROVIDER, componentDto.getUrnProvider());
+
         // Concept
         staticConceptItem.setValue(componentDto.getCptIdRef() == null ? null : componentDto.getCptIdRef().getCode());
 
@@ -220,6 +230,10 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
     }
 
     private void setPrimaryMeasureEditionMode(ComponentDto componentDto) {
+        editionForm.setValue(PrimaryMeasureDS.CODE, componentDto.getCode());
+        editionForm.setValue(PrimaryMeasureDS.URN, componentDto.getUrn());
+        editionForm.setValue(PrimaryMeasureDS.URN_PROVIDER, componentDto.getUrnProvider());
+
         // Concept
         conceptItem.clearValue(); // Clear concept value: which is the scheme of a concept?
 
