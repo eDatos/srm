@@ -217,7 +217,7 @@ public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTa
 
     @Override
     public void savePrimaryMeasure(ComponentDto component) {
-        dispatcher.execute(new SaveComponentForDsdAction(dataStructureDefinitionDto.getUrn(), component), new WaitingAsyncCallback<SaveComponentForDsdResult>() {
+        dispatcher.execute(new SaveComponentForDsdAction(dataStructureDefinitionDto.getUrn(), component, TypeComponentList.MEASURE_DESCRIPTOR), new WaitingAsyncCallback<SaveComponentForDsdResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
