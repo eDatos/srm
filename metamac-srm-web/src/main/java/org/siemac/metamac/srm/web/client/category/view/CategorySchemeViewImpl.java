@@ -65,6 +65,7 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
     private GroupDynamicForm                   productionDescriptorsForm;
     private GroupDynamicForm                   diffusionDescriptorsForm;
     private GroupDynamicForm                   versionResponsibilityForm;
+    private GroupDynamicForm                   commentsForm;
     private AnnotationsPanel                   annotationsPanel;
 
     // Edition forms
@@ -74,6 +75,7 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
     private GroupDynamicForm                   productionDescriptorsEditionForm;
     private GroupDynamicForm                   diffusionDescriptorsEditionForm;
     private GroupDynamicForm                   versionResponsibilityEditionForm;
+    private GroupDynamicForm                   commentsEditionForm;
     private AnnotationsPanel                   annotationsEditionPanel;
 
     // Versions
@@ -151,6 +153,9 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
 
                 versionResponsibilityForm.setTranslationsShowed(translationsShowed);
                 versionResponsibilityEditionForm.setTranslationsShowed(translationsShowed);
+
+                commentsForm.setTranslationsShowed(translationsShowed);
+                commentsEditionForm.setTranslationsShowed(translationsShowed);
 
                 annotationsPanel.setTranslationsShowed(translationsShowed);
                 annotationsEditionPanel.setTranslationsShowed(translationsShowed);
@@ -304,6 +309,11 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         versionResponsibilityForm.setFields(productionValidationUser, productionValidationDate, diffusionValidationUser, diffusionValidationDate, internalPublicationUser, internalPublicationDate,
                 externalPublicationUser, externalPublicationDate);
 
+        // Comments
+        commentsForm = new GroupDynamicForm(getConstants().nameableArtefactComments());
+        ViewMultiLanguageTextItem comments = new ViewMultiLanguageTextItem(CategorySchemeDS.COMMENTS, getConstants().nameableArtefactComments());
+        commentsForm.setFields(comments);
+
         // Annotations
         annotationsPanel = new AnnotationsPanel(true);
 
@@ -313,6 +323,7 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         mainFormLayout.addViewCanvas(productionDescriptorsForm);
         mainFormLayout.addViewCanvas(diffusionDescriptorsForm);
         mainFormLayout.addViewCanvas(versionResponsibilityForm);
+        mainFormLayout.addViewCanvas(commentsForm);
         mainFormLayout.addViewCanvas(annotationsPanel);
     }
 
@@ -387,6 +398,11 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         versionResponsibilityEditionForm.setFields(productionValidationUser, productionValidationDate, diffusionValidationUser, diffusionValidationDate, internalPublicationUser,
                 internalPublicationDate, externalPublicationUser, externalPublicationDate);
 
+        // Comments
+        commentsEditionForm = new GroupDynamicForm(getConstants().nameableArtefactComments());
+        MultiLanguageTextAreaItem comments = new MultiLanguageTextAreaItem(CategorySchemeDS.COMMENTS, getConstants().nameableArtefactComments());
+        commentsEditionForm.setFields(comments);
+
         // Annotations
         annotationsEditionPanel = new AnnotationsPanel(false);
 
@@ -396,6 +412,7 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         mainFormLayout.addEditionCanvas(productionDescriptorsEditionForm);
         mainFormLayout.addEditionCanvas(diffusionDescriptorsEditionForm);
         mainFormLayout.addEditionCanvas(versionResponsibilityEditionForm);
+        mainFormLayout.addEditionCanvas(commentsEditionForm);
         mainFormLayout.addEditionCanvas(annotationsEditionPanel);
     }
 
@@ -492,6 +509,9 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         versionResponsibilityForm.setValue(CategorySchemeDS.EXTERNAL_PUBLICATION_USER, categorySchemeDto.getLifeCycle().getExternalPublicationUser());
         versionResponsibilityForm.setValue(CategorySchemeDS.EXTERNAL_PUBLICATION_DATE, categorySchemeDto.getLifeCycle().getExternalPublicationDate());
 
+        // Comments
+        commentsForm.setValue(CategorySchemeDS.COMMENTS, RecordUtils.getInternationalStringRecord(categorySchemeDto.getComment()));
+
         // Annotations
         annotationsPanel.setAnnotations(categorySchemeDto.getAnnotations());
     }
@@ -545,6 +565,9 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         versionResponsibilityEditionForm.setValue(CategorySchemeDS.EXTERNAL_PUBLICATION_USER, categorySchemeDto.getLifeCycle().getExternalPublicationUser());
         versionResponsibilityEditionForm.setValue(CategorySchemeDS.EXTERNAL_PUBLICATION_DATE, categorySchemeDto.getLifeCycle().getExternalPublicationDate());
 
+        // Comments
+        commentsEditionForm.setValue(CategorySchemeDS.COMMENTS, RecordUtils.getInternationalStringRecord(categorySchemeDto.getComment()));
+
         // Annotations
         annotationsEditionPanel.setAnnotations(categorySchemeDto.getAnnotations());
     }
@@ -570,6 +593,9 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         categorySchemeDto.setDescription((InternationalStringDto) contentDescriptorsEditionForm.getValue(CategorySchemeDS.DESCRIPTION));
         categorySchemeDto.setIsPartial((contentDescriptorsEditionForm.getValue(CategorySchemeDS.IS_PARTIAL) != null && !StringUtils.isEmpty(contentDescriptorsEditionForm
                 .getValueAsString(CategorySchemeDS.IS_PARTIAL))) ? Boolean.valueOf(contentDescriptorsEditionForm.getValueAsString(CategorySchemeDS.IS_PARTIAL)) : false);
+
+        // Comments
+        categorySchemeDto.setComment((InternationalStringDto) commentsEditionForm.getValue(CategorySchemeDS.COMMENTS));
 
         // Annotations
         categorySchemeDto.getAnnotations().clear();

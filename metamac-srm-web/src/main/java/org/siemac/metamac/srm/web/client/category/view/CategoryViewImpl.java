@@ -49,11 +49,13 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
     // View forms
     private GroupDynamicForm            identifiersForm;
     private GroupDynamicForm            contentDescriptorsForm;
+    private GroupDynamicForm            commentsForm;
     private AnnotationsPanel            annotationsPanel;
 
     // Edition forms
     private GroupDynamicForm            identifiersEditionForm;
     private GroupDynamicForm            contentDescriptorsEditionForm;
+    private GroupDynamicForm            commentsEditionForm;
     private AnnotationsPanel            annotationsEditionPanel;
 
     private CategoryMetamacDto          categoryDto;
@@ -161,11 +163,17 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
         ViewMultiLanguageTextItem description = new ViewMultiLanguageTextItem(CategoryDS.DESCRIPTION, getConstants().nameableArtefactDescription());
         contentDescriptorsForm.setFields(description);
 
+        // Comments
+        commentsForm = new GroupDynamicForm(getConstants().nameableArtefactComments());
+        ViewMultiLanguageTextItem comments = new ViewMultiLanguageTextItem(CategoryDS.COMMENTS, getConstants().nameableArtefactComments());
+        commentsForm.setFields(comments);
+
         // Annotations
         annotationsPanel = new AnnotationsPanel(true);
 
         mainFormLayout.addViewCanvas(identifiersForm);
         mainFormLayout.addViewCanvas(contentDescriptorsForm);
+        mainFormLayout.addViewCanvas(commentsForm);
         mainFormLayout.addViewCanvas(annotationsPanel);
     }
 
@@ -186,11 +194,17 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
         MultiLanguageTextAreaItem description = new MultiLanguageTextAreaItem(CategoryDS.DESCRIPTION, getConstants().nameableArtefactDescription());
         contentDescriptorsEditionForm.setFields(description);
 
+        // Comments
+        commentsEditionForm = new GroupDynamicForm(getConstants().nameableArtefactComments());
+        MultiLanguageTextAreaItem comments = new MultiLanguageTextAreaItem(CategoryDS.COMMENTS, getConstants().nameableArtefactComments());
+        commentsEditionForm.setFields(comments);
+
         // Annotations
         annotationsEditionPanel = new AnnotationsPanel(false);
 
         mainFormLayout.addEditionCanvas(identifiersEditionForm);
         mainFormLayout.addEditionCanvas(contentDescriptorsEditionForm);
+        mainFormLayout.addEditionCanvas(commentsEditionForm);
         mainFormLayout.addEditionCanvas(annotationsEditionPanel);
     }
 
@@ -204,6 +218,9 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
 
         // Content descriptors
         contentDescriptorsForm.setValue(CategoryDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(categoryDto.getDescription()));
+
+        // Comments
+        commentsForm.setValue(CategoryDS.COMMENTS, RecordUtils.getInternationalStringRecord(categoryDto.getComment()));
 
         // Annotations
         annotationsPanel.setAnnotations(categoryDto.getAnnotations());
@@ -220,6 +237,9 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
         // Content descriptors
         contentDescriptorsEditionForm.setValue(CategoryDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(categoryDto.getDescription()));
 
+        // Comments
+        commentsEditionForm.setValue(CategoryDS.COMMENTS, RecordUtils.getInternationalStringRecord(categoryDto.getComment()));
+
         // Annotations
         annotationsEditionPanel.setAnnotations(categoryDto.getAnnotations());
     }
@@ -235,6 +255,9 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
 
                 contentDescriptorsForm.setTranslationsShowed(translationsShowed);
                 contentDescriptorsEditionForm.setTranslationsShowed(translationsShowed);
+
+                commentsForm.setTranslationsShowed(translationsShowed);
+                commentsEditionForm.setTranslationsShowed(translationsShowed);
 
                 annotationsPanel.setTranslationsShowed(translationsShowed);
                 annotationsEditionPanel.setTranslationsShowed(translationsShowed);
@@ -264,11 +287,13 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
         // Content descriptors
         categoryDto.setDescription((InternationalStringDto) contentDescriptorsEditionForm.getValue(CategoryDS.DESCRIPTION));
 
+        // Comments
+        categoryDto.setComment((InternationalStringDto) commentsEditionForm.getValue(CategoryDS.COMMENTS));
+
         // Annotations
         categoryDto.getAnnotations().clear();
         categoryDto.getAnnotations().addAll(annotationsEditionPanel.getAnnotations());
 
         return categoryDto;
     }
-
 }
