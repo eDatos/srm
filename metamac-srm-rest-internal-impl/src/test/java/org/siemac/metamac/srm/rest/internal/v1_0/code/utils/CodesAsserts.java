@@ -27,6 +27,11 @@ public class CodesAsserts extends Asserts {
                 + source.getMaintainableArtefact().getVersionLogic();
         assertEquals(RestInternalConstants.KIND_CODELIST, target.getSelfLink().getKind());
         assertEquals(selfLink, target.getSelfLink().getHref());
+        if (source.getMaintainableArtefact().getIsImported()) {
+            assertEquals(source.getMaintainableArtefact().getUriProvider(), target.getUri());
+        } else {
+            assertEquals(target.getSelfLink().getHref(), target.getUri());
+        }
         assertEquals(RestInternalConstants.KIND_CODELISTS, target.getParentLink().getKind());
         assertEquals(parentLink, target.getParentLink().getHref());
         assertEquals(source.getMaintainableArtefact().getReplaceToVersion(), target.getReplaceToVersion());
@@ -47,11 +52,12 @@ public class CodesAsserts extends Asserts {
         // Only test some metadata because SDMX metadata is tested in SDMX project
         // Test something...
         assertEquals(source.getNameableArtefact().getCode(), target.getId());
-        assertEquals(source.getNameableArtefact().getUrn(), target.getUrn());
+        assertEquals(source.getNameableArtefact().getUrnProvider(), target.getUrn());
         assertEqualsNullability(source.getParent(), target.getParent());
         if (source.getParent() != null) {
             assertEquals(source.getParent().getNameableArtefact().getCode(), target.getParent().getRef().getId());
         }
+        assertUriProviderExpected(source.getItemSchemeVersion().getMaintainableArtefact(), target.getUri());
     }
 
     public static void assertEqualsCode(CodeMetamac source, Code target) {
@@ -62,6 +68,11 @@ public class CodesAsserts extends Asserts {
         String selfLink = parentLink + "/" + source.getNameableArtefact().getCode();
         assertEquals(RestInternalConstants.KIND_CODE, target.getSelfLink().getKind());
         assertEquals(selfLink, target.getSelfLink().getHref());
+        if (source.getItemSchemeVersion().getMaintainableArtefact().getIsImported()) {
+            assertEquals(source.getNameableArtefact().getUriProvider(), target.getUri());
+        } else {
+            assertEquals(target.getSelfLink().getHref(), target.getUri());
+        }
         assertEquals(RestInternalConstants.KIND_CODES, target.getParentLink().getKind());
         assertEquals(parentLink, target.getParentLink().getHref());
         assertNull(target.getChildLinks());
@@ -77,7 +88,7 @@ public class CodesAsserts extends Asserts {
 
         assertEqualsResource(expected, RestInternalConstants.KIND_CODELIST, expectedSelfLink, actual);
     }
-    
+
     public static void assertEqualsResource(CodeMetamac expected, Resource actual) {
         MaintainableArtefact maintainableArtefact = expected.getItemSchemeVersion().getMaintainableArtefact();
         String expectedSelfLink = "http://data.istac.es/apis/srm/v1.0/codelists/" + maintainableArtefact.getMaintainer().getIdAsMaintainer() + "/" + maintainableArtefact.getCode() + "/"

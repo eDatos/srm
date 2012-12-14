@@ -44,7 +44,7 @@ public class CategoriesAsserts extends Asserts {
 
         assertEquals(RestInternalConstants.KIND_CATEGORISATION, actual.getKind());
         assertEquals(expected.getMaintainableArtefact().getCode(), actual.getId());
-        assertEquals(expected.getMaintainableArtefact().getUrn(), actual.getUrn());
+        assertEquals(expected.getMaintainableArtefact().getUrnProvider(), actual.getUrn());
         assertEquals(RestInternalConstants.KIND_CATEGORISATION, actual.getSelfLink().getKind());
         assertEquals(expectedSelfLink, actual.getSelfLink().getHref());
         assertEqualsInternationalString(expected.getMaintainableArtefact().getName(), actual.getTitle());
@@ -57,6 +57,11 @@ public class CategoriesAsserts extends Asserts {
                 + source.getMaintainableArtefact().getVersionLogic();
         assertEquals(RestInternalConstants.KIND_CATEGORY_SCHEME, target.getSelfLink().getKind());
         assertEquals(selfLink, target.getSelfLink().getHref());
+        if (source.getMaintainableArtefact().getIsImported()) {
+            assertEquals(source.getMaintainableArtefact().getUriProvider(), target.getUri());
+        } else {
+            assertEquals(target.getSelfLink().getHref(), target.getUri());
+        }
         assertEquals(RestInternalConstants.KIND_CATEGORY_SCHEMES, target.getParentLink().getKind());
         assertEquals(parentLink, target.getParentLink().getHref());
         assertEquals(source.getMaintainableArtefact().getReplaceToVersion(), target.getReplaceToVersion());
@@ -72,7 +77,8 @@ public class CategoriesAsserts extends Asserts {
         // Only test some metadata because SDMX metadata is tested in SDMX project
         // Test something...
         assertEquals(source.getNameableArtefact().getCode(), target.getId());
-        assertEquals(source.getNameableArtefact().getUrn(), target.getUrn());
+        assertEquals(source.getNameableArtefact().getUrnProvider(), target.getUrn());
+        assertUriProviderExpected(source.getItemSchemeVersion().getMaintainableArtefact(), target.getUri());
     }
 
     public static void assertEqualsCategory(CategoryMetamac source, Category target) {
@@ -83,12 +89,17 @@ public class CategoriesAsserts extends Asserts {
         String selfLink = parentLink + "/" + source.getNameableArtefact().getCode();
         assertEquals(RestInternalConstants.KIND_CATEGORY, target.getSelfLink().getKind());
         assertEquals(selfLink, target.getSelfLink().getHref());
+        if (source.getItemSchemeVersion().getMaintainableArtefact().getIsImported()) {
+            assertEquals(source.getNameableArtefact().getUriProvider(), target.getUri());
+        } else {
+            assertEquals(target.getSelfLink().getHref(), target.getUri());
+        }
         assertEquals(RestInternalConstants.KIND_CATEGORIES, target.getParentLink().getKind());
         assertEquals(parentLink, target.getParentLink().getHref());
         assertNull(target.getChildLinks());
         assertEqualsNullability(source.getParent(), target.getParent());
         if (source.getParent() != null) {
-            assertEquals(source.getParent().getNameableArtefact().getUrn(), target.getParent());
+            assertEquals(source.getParent().getNameableArtefact().getUrnProvider(), target.getParent());
         }
 
         // Sdmx

@@ -16,6 +16,7 @@ import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.base.BaseDo2RestMapperV10Impl;
+import org.siemac.metamac.srm.rest.internal.v1_0.service.utils.SrmRestInternalUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Component;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
 import com.arte.statistic.sdmx.srm.core.category.mapper.CategoriesDo2JaxbCallback;
+import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.CategoryType;
 
 @Component
 public class CategoriesDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl implements CategoriesDo2RestMapperV10 {
@@ -68,7 +70,9 @@ public class CategoriesDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl imp
         }
         target.setKind(RestInternalConstants.KIND_CATEGORY_SCHEME);
         target.setSelfLink(toCategorySchemeSelfLink(source));
-        target.setUri(target.getSelfLink().getHref());
+        if (SrmRestInternalUtils.uriMustBeSelfLink(source.getMaintainableArtefact())) {
+            target.setUri(target.getSelfLink().getHref());
+        }
         target.setReplaceToVersion(source.getMaintainableArtefact().getReplaceToVersion());
         target.setParentLink(toCategorySchemeParentLink(source));
         target.setChildLinks(toCategorySchemeChildLinks(source));
@@ -102,12 +106,23 @@ public class CategoriesDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl imp
 
         target.setKind(RestInternalConstants.KIND_CATEGORY);
         target.setSelfLink(toCategorySelfLink(source));
-        target.setUri(target.getSelfLink().getHref());
+        if (SrmRestInternalUtils.uriMustBeSelfLink(source.getItemSchemeVersion().getMaintainableArtefact())) {
+            target.setUri(target.getSelfLink().getHref());
+        }
         target.setParentLink(toCategoryParentLink(source));
         target.setParent(source.getParent() != null ? source.getParent().getNameableArtefact().getUrn() : null);
         target.setChildLinks(toCategoryChildLinks(source));
-
         return target;
+    }
+
+    @Override
+    public void toCategory(com.arte.statistic.sdmx.srm.core.category.domain.Category source, CategoryType target) {
+        if (source == null) {
+            return;
+        }
+        if (SrmRestInternalUtils.uriMustBeSelfLink(source.getItemSchemeVersion().getMaintainableArtefact())) {
+            target.setUri(toCategorySelfLink(source).getHref());
+        }
     }
 
     @Override
@@ -144,10 +159,12 @@ public class CategoriesDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl imp
         }
         target.setKind(RestInternalConstants.KIND_CATEGORISATION);
         target.setSelfLink(toCategorisationSelfLink(source));
-        target.setUri(target.getSelfLink().getHref());
         target.setReplaceToVersion(source.getMaintainableArtefact().getReplaceToVersion());
         target.setParentLink(toCategorisationParentLink(source));
         target.setChildLinks(toCategorisationChildLinks(source));
+        if (SrmRestInternalUtils.uriMustBeSelfLink(source.getMaintainableArtefact())) {
+            target.setUri(target.getSelfLink().getHref());
+        }
     }
 
     private ResourceLink toCategorySchemeSelfLink(CategorySchemeVersionMetamac source) {
@@ -165,11 +182,11 @@ public class CategoriesDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl imp
         return targets;
     }
 
-    private ResourceLink toCategorySelfLink(CategoryMetamac source) {
+    private ResourceLink toCategorySelfLink(com.arte.statistic.sdmx.srm.core.category.domain.Category source) {
         return toResourceLink(RestInternalConstants.KIND_CATEGORY, toCategoryLink(source));
     }
 
-    private ResourceLink toCategoryParentLink(CategoryMetamac source) {
+    private ResourceLink toCategoryParentLink(com.arte.statistic.sdmx.srm.core.category.domain.Category source) {
         return toResourceLink(RestInternalConstants.KIND_CATEGORIES, toCategoriesLink(source.getItemSchemeVersion()));
     }
 

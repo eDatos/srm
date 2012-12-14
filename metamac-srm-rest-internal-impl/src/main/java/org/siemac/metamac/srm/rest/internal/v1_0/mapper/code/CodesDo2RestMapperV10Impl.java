@@ -15,12 +15,14 @@ import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.base.BaseDo2RestMapperV10Impl;
+import org.siemac.metamac.srm.rest.internal.v1_0.service.utils.SrmRestInternalUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.code.mapper.CodesDo2JaxbCallback;
+import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.CodeType;
 
 @Component
 public class CodesDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl implements CodesDo2RestMapperV10 {
@@ -66,7 +68,9 @@ public class CodesDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl implemen
         }
         target.setKind(RestInternalConstants.KIND_CODELIST);
         target.setSelfLink(toCodelistSelfLink(source));
-        target.setUri(target.getSelfLink().getHref());
+        if (SrmRestInternalUtils.uriMustBeSelfLink(source.getMaintainableArtefact())) {
+            target.setUri(target.getSelfLink().getHref());
+        }
         target.setReplaceToVersion(source.getMaintainableArtefact().getReplaceToVersion());
         target.setParentLink(toCodelistParentLink(source));
         target.setChildLinks(toCodelistChildLinks(source));
@@ -100,11 +104,22 @@ public class CodesDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl implemen
 
         target.setKind(RestInternalConstants.KIND_CODE);
         target.setSelfLink(toCodeSelfLink(source));
-        target.setUri(target.getSelfLink().getHref());
+        if (SrmRestInternalUtils.uriMustBeSelfLink(source.getItemSchemeVersion().getMaintainableArtefact())) {
+            target.setUri(target.getSelfLink().getHref());
+        }
         target.setParentLink(toCodeParentLink(source));
         target.setChildLinks(toCodeChildLinks(source));
-
         return target;
+    }
+
+    @Override
+    public void toCode(com.arte.statistic.sdmx.srm.core.code.domain.Code source, CodeType target) {
+        if (source == null) {
+            return;
+        }
+        if (SrmRestInternalUtils.uriMustBeSelfLink(source.getItemSchemeVersion().getMaintainableArtefact())) {
+            target.setUri(toCodeSelfLink(source).getHref());
+        }
     }
 
     private ResourceLink toCodelistSelfLink(CodelistVersionMetamac source) {
@@ -122,15 +137,15 @@ public class CodesDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl implemen
         return targets;
     }
 
-    private ResourceLink toCodeSelfLink(CodeMetamac source) {
+    private ResourceLink toCodeSelfLink(com.arte.statistic.sdmx.srm.core.code.domain.Code source) {
         return toResourceLink(RestInternalConstants.KIND_CODE, toCodeLink(source));
     }
 
-    private ResourceLink toCodeParentLink(CodeMetamac source) {
+    private ResourceLink toCodeParentLink(com.arte.statistic.sdmx.srm.core.code.domain.Code source) {
         return toResourceLink(RestInternalConstants.KIND_CODES, toCodesLink(source.getItemSchemeVersion()));
     }
 
-    private ChildLinks toCodeChildLinks(CodeMetamac source) {
+    private ChildLinks toCodeChildLinks(com.arte.statistic.sdmx.srm.core.code.domain.Code source) {
         // nothing
         return null;
     }

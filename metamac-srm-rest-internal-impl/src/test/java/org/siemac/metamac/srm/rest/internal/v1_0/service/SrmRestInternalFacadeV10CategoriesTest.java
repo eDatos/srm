@@ -9,7 +9,6 @@ import static org.siemac.metamac.srm.rest.internal.v1_0.category.utils.Categorie
 import static org.siemac.metamac.srm.rest.internal.v1_0.category.utils.CategoriesMockitoVerify.verifyFindCategorySchemes;
 import static org.siemac.metamac.srm.rest.internal.v1_0.category.utils.CategoriesMockitoVerify.verifyRetrieveCategory;
 import static org.siemac.metamac.srm.rest.internal.v1_0.category.utils.CategoriesMockitoVerify.verifyRetrieveCategoryScheme;
-import static org.siemac.metamac.srm.rest.internal.v1_0.utils.Asserts.assertUriProviderExpected;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.AGENCY_1;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.AGENCY_2;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_1_CODE;
@@ -190,7 +189,7 @@ public class SrmRestInternalFacadeV10CategoriesTest extends SrmRestInternalFacad
         assertEquals(RestInternalConstants.KIND_CATEGORY_SCHEMES, categoryScheme.getParentLink().getKind());
         assertTrue(categoryScheme.getCategories().get(0) instanceof CategoryType);
         assertFalse(categoryScheme.getCategories().get(0) instanceof Category);
-        
+
         // Verify with Mockito
         verifyRetrieveCategoryScheme(categoriesService, agencyID, resourceID, version);
     }
@@ -363,7 +362,6 @@ public class SrmRestInternalFacadeV10CategoriesTest extends SrmRestInternalFacad
         // Validation
         assertNotNull(category);
         assertEquals(categoryID, category.getId());
-        assertUriProviderExpected(false, category.getUri());
         assertEquals(RestInternalConstants.KIND_CATEGORY, category.getKind());
         assertEquals(RestInternalConstants.KIND_CATEGORY, category.getSelfLink().getKind());
         assertEquals(RestInternalConstants.KIND_CATEGORIES, category.getParentLink().getKind());
@@ -533,8 +531,6 @@ public class SrmRestInternalFacadeV10CategoriesTest extends SrmRestInternalFacad
                                 categorySchemeVersion = null;
                             } else if (AGENCY_1.equals(agencyID) && ITEM_SCHEME_1_CODE.equals(resourceID) && (ITEM_SCHEME_VERSION_1.equals(version) || Boolean.TRUE.equals(latest))) {
                                 categorySchemeVersion = CategoriesDoMocks.mockCategorySchemeWithCategories(agencyID, resourceID, ITEM_SCHEME_VERSION_1);
-                            } else if (AGENCY_1.equals(agencyID) && ITEM_SCHEME_2_CODE.equals(resourceID) && (ITEM_SCHEME_VERSION_1.equals(version) || Boolean.TRUE.equals(latest))) {
-                                categorySchemeVersion = CategoriesDoMocks.mockCategorySchemeWithCategories(agencyID, resourceID, ITEM_SCHEME_VERSION_1);
                             } else {
                                 fail();
                             }
@@ -575,10 +571,6 @@ public class SrmRestInternalFacadeV10CategoriesTest extends SrmRestInternalFacad
                     if (NOT_EXISTS.equals(agencyID) || NOT_EXISTS.equals(resourceID) || NOT_EXISTS.equals(version) || NOT_EXISTS.equals(itemID)) {
                         category = null;
                     } else if (AGENCY_1.equals(agencyID) && ITEM_SCHEME_1_CODE.equals(resourceID) && ITEM_SCHEME_VERSION_1.equals(version) && ITEM_1_CODE.equals(itemID)) {
-                        CategorySchemeVersionMetamac categoryScheme1 = CategoriesDoMocks.mockCategoryScheme(AGENCY_1, resourceID, version);
-                        CategoryMetamac parent = CategoriesDoMocks.mockCategory(ITEM_2_CODE, categoryScheme1, null);
-                        category = CategoriesDoMocks.mockCategory(ITEM_1_CODE, categoryScheme1, parent);
-                    } else if (AGENCY_1.equals(agencyID) && ITEM_SCHEME_2_CODE.equals(resourceID) && ITEM_SCHEME_VERSION_1.equals(version) && ITEM_1_CODE.equals(itemID)) {
                         CategorySchemeVersionMetamac categoryScheme1 = CategoriesDoMocks.mockCategoryScheme(AGENCY_1, resourceID, version);
                         CategoryMetamac parent = CategoriesDoMocks.mockCategory(ITEM_2_CODE, categoryScheme1, null);
                         category = CategoriesDoMocks.mockCategory(ITEM_1_CODE, categoryScheme1, parent);

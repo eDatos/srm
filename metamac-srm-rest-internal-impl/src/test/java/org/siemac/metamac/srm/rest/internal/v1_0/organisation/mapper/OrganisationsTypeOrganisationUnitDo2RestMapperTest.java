@@ -101,7 +101,18 @@ public class OrganisationsTypeOrganisationUnitDo2RestMapperTest {
 
         // Transform
         OrganisationUnitScheme target = do2RestInternalMapper.toOrganisationUnitScheme(source);
+        // Validate
+        assertEqualsOrganisationUnitScheme(source, target);
+    }
 
+    @Test
+    public void testToOrganisationUnitSchemeImported() {
+
+        OrganisationSchemeVersionMetamac source = mockOrganisationSchemeWithOrganisations("agencyID1", "resourceID1", "01.123", OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME);
+        source.getMaintainableArtefact().setIsImported(Boolean.TRUE);
+
+        // Transform
+        OrganisationUnitScheme target = do2RestInternalMapper.toOrganisationUnitScheme(source);
         // Validate
         assertEqualsOrganisationUnitScheme(source, target);
     }
@@ -161,6 +172,24 @@ public class OrganisationsTypeOrganisationUnitDo2RestMapperTest {
         OrganisationTypeEnum organisationTypeEnum = OrganisationTypeEnum.ORGANISATION_UNIT;
 
         OrganisationSchemeVersionMetamac organisationScheme = mockOrganisationScheme("agencyID1", "resourceID1", "01.123", organisationSchemeTypeEnum);
+        OrganisationMetamac parent = mockOrganisation("organisationParent1", organisationScheme, null, organisationTypeEnum);
+        OrganisationMetamac source = mockOrganisation("organisation2", organisationScheme, parent, organisationTypeEnum);
+
+        // Transform
+        OrganisationUnit target = do2RestInternalMapper.toOrganisationUnit(source);
+
+        // Validate
+        assertEqualsOrganisationUnit(source, target);
+    }
+
+    @Test
+    public void testToOrganisationUnitImported() {
+
+        OrganisationSchemeTypeEnum organisationSchemeTypeEnum = OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME;
+        OrganisationTypeEnum organisationTypeEnum = OrganisationTypeEnum.ORGANISATION_UNIT;
+
+        OrganisationSchemeVersionMetamac organisationScheme = mockOrganisationScheme("agencyID1", "resourceID1", "01.123", organisationSchemeTypeEnum);
+        organisationScheme.getMaintainableArtefact().setIsImported(Boolean.TRUE);
         OrganisationMetamac parent = mockOrganisation("organisationParent1", organisationScheme, null, organisationTypeEnum);
         OrganisationMetamac source = mockOrganisation("organisation2", organisationScheme, parent, organisationTypeEnum);
 

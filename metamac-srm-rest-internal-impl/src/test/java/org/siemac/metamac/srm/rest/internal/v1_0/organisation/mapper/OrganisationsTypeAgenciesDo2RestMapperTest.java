@@ -99,7 +99,18 @@ public class OrganisationsTypeAgenciesDo2RestMapperTest {
 
         // Transform
         AgencyScheme target = do2RestInternalMapper.toAgencyScheme(source);
+        // Validate
+        assertEqualsAgencyScheme(source, target);
+    }
 
+    @Test
+    public void testToAgencySchemeImported() {
+
+        OrganisationSchemeVersionMetamac source = mockOrganisationSchemeWithOrganisations("agencyID1", "resourceID1", "01.123", OrganisationSchemeTypeEnum.AGENCY_SCHEME);
+        source.getMaintainableArtefact().setIsImported(Boolean.TRUE);
+
+        // Transform
+        AgencyScheme target = do2RestInternalMapper.toAgencyScheme(source);
         // Validate
         assertEqualsAgencyScheme(source, target);
     }
@@ -158,6 +169,23 @@ public class OrganisationsTypeAgenciesDo2RestMapperTest {
         OrganisationTypeEnum organisationTypeEnum = OrganisationTypeEnum.AGENCY;
 
         OrganisationSchemeVersionMetamac organisationScheme = mockOrganisationScheme("agencyID1", "resourceID1", "01.123", organisationSchemeTypeEnum);
+        OrganisationMetamac source = mockOrganisation("organisation2", organisationScheme, null, organisationTypeEnum);
+
+        // Transform
+        Agency target = do2RestInternalMapper.toAgency(source);
+
+        // Validate
+        assertEqualsAgency(source, target);
+    }
+
+    @Test
+    public void testToAgencyImported() {
+
+        OrganisationSchemeTypeEnum organisationSchemeTypeEnum = OrganisationSchemeTypeEnum.AGENCY_SCHEME;
+        OrganisationTypeEnum organisationTypeEnum = OrganisationTypeEnum.AGENCY;
+
+        OrganisationSchemeVersionMetamac organisationScheme = mockOrganisationScheme("agencyID1", "resourceID1", "01.123", organisationSchemeTypeEnum);
+        organisationScheme.getMaintainableArtefact().setIsImported(Boolean.TRUE);
         OrganisationMetamac source = mockOrganisation("organisation2", organisationScheme, null, organisationTypeEnum);
 
         // Transform

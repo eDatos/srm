@@ -11,9 +11,10 @@ import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemProperties;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionProperties;
+import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefactProperties.MaintainableArtefactProperty;
 import com.arte.statistic.sdmx.srm.core.base.domain.NameableArtefactProperties.NameableArtefactProperty;
-import com.arte.statistic.sdmx.srm.core.common.constants.SdmxSrmConstants;
+import com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxAlias;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 
@@ -94,6 +95,10 @@ public class SrmRestInternalUtils {
         }
     }
 
+    public static Boolean uriMustBeSelfLink(MaintainableArtefact maintainableArtefact) {
+        return !maintainableArtefact.getIsImported();
+    }
+
     /**
      * Internally or externally published
      */
@@ -104,7 +109,7 @@ public class SrmRestInternalUtils {
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     private static void addConditionalCriteriaByAgency(List<ConditionalCriteria> conditionalCriteria, String agencyID, Class entity, MaintainableArtefactProperty maintainableArtefactProperty) {
-        if (SdmxSrmConstants.SDMX_MAINTAINER.equals(agencyID)) {
+        if (SdmxAlias.SDMX_MAINTAINER.equals(agencyID)) {
             conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(entity).withProperty(maintainableArtefactProperty.maintainer()).isNull().buildSingle());
         } else if (agencyID != null && !RestInternalConstants.WILDCARD.equals(agencyID)) {
             conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(entity).withProperty(maintainableArtefactProperty.maintainer().idAsMaintainer()).eq(agencyID).buildSingle());

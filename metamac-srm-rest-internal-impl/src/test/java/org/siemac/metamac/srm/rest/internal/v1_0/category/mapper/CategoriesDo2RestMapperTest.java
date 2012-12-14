@@ -99,7 +99,18 @@ public class CategoriesDo2RestMapperTest {
 
         // Transform
         CategoryScheme target = do2RestInternalMapper.toCategoryScheme(source);
+        // Validate
+        assertEqualsCategoryScheme(source, target);
+    }
 
+    @Test
+    public void testToCategorySchemeImported() {
+
+        CategorySchemeVersionMetamac source = mockCategorySchemeWithCategories("agencyID1", "resourceID1", "01.123");
+        source.getMaintainableArtefact().setIsImported(Boolean.TRUE);
+
+        // Transform
+        CategoryScheme target = do2RestInternalMapper.toCategoryScheme(source);
         // Validate
         assertEqualsCategoryScheme(source, target);
     }
@@ -156,7 +167,18 @@ public class CategoriesDo2RestMapperTest {
 
         // Transform
         Category target = do2RestInternalMapper.toCategory(source);
+        // Validate
+        assertEqualsCategory(source, target);
+    }
 
+    @Test
+    public void testToCategoryImported() {
+        CategorySchemeVersionMetamac categoryScheme = mockCategoryScheme("agencyID1", "resourceID1", "01.123");
+        categoryScheme.getMaintainableArtefact().setIsImported(Boolean.TRUE);
+        CategoryMetamac source = mockCategory("category2", categoryScheme, null);
+
+        // Transform
+        Category target = do2RestInternalMapper.toCategory(source);
         // Validate
         assertEqualsCategory(source, target);
     }

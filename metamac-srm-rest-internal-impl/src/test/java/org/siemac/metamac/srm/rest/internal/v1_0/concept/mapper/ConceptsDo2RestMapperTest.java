@@ -96,7 +96,18 @@ public class ConceptsDo2RestMapperTest {
 
         // Transform
         ConceptScheme target = do2RestInternalMapper.toConceptScheme(source);
+        // Validate
+        assertEqualsConceptScheme(source, target);
+    }
 
+    @Test
+    public void testToConceptSchemeImported() {
+
+        ConceptSchemeVersionMetamac source = mockConceptSchemeWithConcepts("agencyID1", "resourceID1", "01.123");
+        source.getMaintainableArtefact().setIsImported(Boolean.TRUE);
+
+        // Transform
+        ConceptScheme target = do2RestInternalMapper.toConceptScheme(source);
         // Validate
         assertEqualsConceptScheme(source, target);
     }
@@ -148,6 +159,20 @@ public class ConceptsDo2RestMapperTest {
     @Test
     public void testToConcept() {
         ConceptSchemeVersionMetamac conceptScheme = mockConceptScheme("agencyID1", "resourceID1", "01.123");
+        ConceptMetamac parent = mockConcept("conceptParent1", conceptScheme, null);
+        ConceptMetamac source = mockConceptWithConceptRelations("concept2", conceptScheme, parent);
+
+        // Transform
+        Concept target = do2RestInternalMapper.toConcept(source);
+
+        // Validate
+        assertEqualsConcept(source, target);
+    }
+
+    @Test
+    public void testToConceptImported() {
+        ConceptSchemeVersionMetamac conceptScheme = mockConceptScheme("agencyID1", "resourceID1", "01.123");
+        conceptScheme.getMaintainableArtefact().setIsImported(Boolean.TRUE);
         ConceptMetamac parent = mockConcept("conceptParent1", conceptScheme, null);
         ConceptMetamac source = mockConceptWithConceptRelations("concept2", conceptScheme, parent);
 

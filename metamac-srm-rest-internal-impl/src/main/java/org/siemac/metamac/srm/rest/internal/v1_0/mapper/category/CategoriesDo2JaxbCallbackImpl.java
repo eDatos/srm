@@ -6,6 +6,7 @@ import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
+import com.arte.statistic.sdmx.srm.core.category.domain.Category;
 import com.arte.statistic.sdmx.srm.core.category.domain.CategorySchemeVersion;
 import com.arte.statistic.sdmx.srm.core.category.mapper.CategoriesDo2JaxbCallback;
 import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.CategorisationType;
@@ -22,18 +23,25 @@ public class CategoriesDo2JaxbCallbackImpl implements CategoriesDo2JaxbCallback 
 
     @Override
     public CategorySchemeType createCategorySchemeJaxb(com.arte.statistic.sdmx.srm.core.category.domain.CategorySchemeVersion source) {
-        org.siemac.metamac.rest.srm_internal.v1_0.domain.CategoryScheme target = new org.siemac.metamac.rest.srm_internal.v1_0.domain.CategoryScheme();
-        categoriesDo2RestMapperV10.toCategoryScheme((CategorySchemeVersionMetamac) source, target);
-        return target;
+        return new org.siemac.metamac.rest.srm_internal.v1_0.domain.CategoryScheme();
+    }
+
+    @Override
+    public void fillCategorySchemeJaxb(CategorySchemeVersion source, CategorySchemeType target) {
+        categoriesDo2RestMapperV10.toCategoryScheme((CategorySchemeVersionMetamac) source, (org.siemac.metamac.rest.srm_internal.v1_0.domain.CategoryScheme) target);
     }
 
     @Override
     public CategoryType createCategoryJaxb(com.arte.statistic.sdmx.srm.core.category.domain.Category source) {
-        // when retrieve CategoryScheme, only return SDMX metadata
-        CategoryType target = new CategoryType();
-        return target;
+        // do not return Metamac type because when ItemScheme is retrieved, the items must be SDMX type
+        return new CategoryType();
     }
-    
+
+    @Override
+    public void fillCategoryJaxb(Category source, CategoryType target) {
+        // do not fill Metamac type because when ItemScheme is retrieved, the items must be SDMX type
+        categoriesDo2RestMapperV10.toCategory(source, target);
+    }
 
     @Override
     public CategorySchemesType createCategorySchemeJaxb(List<CategorySchemeVersion> sourceList) {
@@ -47,8 +55,11 @@ public class CategoriesDo2JaxbCallbackImpl implements CategoriesDo2JaxbCallback 
 
     @Override
     public CategorisationType createCategorisationJaxb(Categorisation source) {
-        org.siemac.metamac.rest.srm_internal.v1_0.domain.Categorisation target = new org.siemac.metamac.rest.srm_internal.v1_0.domain.Categorisation();
-        categoriesDo2RestMapperV10.toCategorisation(source, target);
-        return target;
+        return new org.siemac.metamac.rest.srm_internal.v1_0.domain.Categorisation();
+    }
+
+    @Override
+    public void fillCategorisationJaxb(Categorisation source, CategorisationType target) {
+        categoriesDo2RestMapperV10.toCategorisation(source, (org.siemac.metamac.rest.srm_internal.v1_0.domain.Categorisation) target);
     }
 }

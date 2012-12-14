@@ -14,9 +14,9 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
+import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 
 public class Asserts extends MetamacRestAsserts {
-
 
     public static void assertEqualsInternationalStringNotNull(org.siemac.metamac.core.common.ent.domain.InternationalString expecteds,
             org.siemac.metamac.rest.common.v1_0.domain.InternationalString actuals) {
@@ -66,5 +66,13 @@ public class Asserts extends MetamacRestAsserts {
         assertEquals(expectedKind, actual.getSelfLink().getKind());
         assertEquals(expectedSelfLink, actual.getSelfLink().getHref());
         assertEqualsInternationalString(expected.getNameableArtefact().getName(), actual.getTitle());
+    }
+
+    public static void assertUriProviderExpected(MaintainableArtefact maintainableArtefact, String uriActual) {
+        if (maintainableArtefact.getIsImported()) {
+            assertTrue(uriActual.startsWith(RestTestConstants.URI_MARK_TO_RECOGNISE_IS_IN_DATABASE));
+        } else {
+            assertTrue(uriActual.startsWith("http:"));
+        }
     }
 }

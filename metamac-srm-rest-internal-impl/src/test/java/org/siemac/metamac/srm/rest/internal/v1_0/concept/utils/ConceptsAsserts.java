@@ -20,7 +20,6 @@ import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.ConceptType;
 
 public class ConceptsAsserts extends Asserts {
-    
 
     public static void assertEqualsConceptScheme(ConceptSchemeVersionMetamac source, ConceptScheme target) {
         assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEME, target.getKind());
@@ -29,6 +28,11 @@ public class ConceptsAsserts extends Asserts {
                 + source.getMaintainableArtefact().getVersionLogic();
         assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEME, target.getSelfLink().getKind());
         assertEquals(selfLink, target.getSelfLink().getHref());
+        if (source.getMaintainableArtefact().getIsImported()) {
+            assertEquals(source.getMaintainableArtefact().getUriProvider(), target.getUri());
+        } else {
+            assertEquals(target.getSelfLink().getHref(), target.getUri());
+        }
         assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEMES, target.getParentLink().getKind());
         assertEquals(parentLink, target.getParentLink().getHref());
         assertEquals(source.getType().toString(), target.getType().toString());
@@ -54,11 +58,12 @@ public class ConceptsAsserts extends Asserts {
         // Only test some metadata because SDMX metadata is tested in SDMX project
         // Test something...
         assertEquals(source.getNameableArtefact().getCode(), target.getId());
-        assertEquals(source.getNameableArtefact().getUrn(), target.getUrn());
+        assertEquals(source.getNameableArtefact().getUrnProvider(), target.getUrn());
         assertEqualsNullability(source.getParent(), target.getParent());
         if (source.getParent() != null) {
             assertEquals(source.getParent().getNameableArtefact().getCode(), target.getParent().getRef().getId());
         }
+        assertUriProviderExpected(source.getItemSchemeVersion().getMaintainableArtefact(), target.getUri());
     }
 
     public static void assertEqualsConcept(ConceptMetamac source, Concept target) {
@@ -69,6 +74,11 @@ public class ConceptsAsserts extends Asserts {
         String selfLink = parentLink + "/" + source.getNameableArtefact().getCode();
         assertEquals(RestInternalConstants.KIND_CONCEPT, target.getSelfLink().getKind());
         assertEquals(selfLink, target.getSelfLink().getHref());
+        if (source.getItemSchemeVersion().getMaintainableArtefact().getIsImported()) {
+            assertEquals(source.getNameableArtefact().getUriProvider(), target.getUri());
+        } else {
+            assertEquals(target.getSelfLink().getHref(), target.getUri());
+        }
         assertEquals(RestInternalConstants.KIND_CONCEPTS, target.getParentLink().getKind());
         assertEquals(parentLink, target.getParentLink().getHref());
         assertNull(target.getChildLinks());
@@ -86,7 +96,7 @@ public class ConceptsAsserts extends Asserts {
 
         assertEqualsUrnsNotNull(source.getRoleConcepts(), target.getRoles());
         assertEqualsUrnsNotNull(source.getRelatedConcepts(), target.getRelatedConcepts());
-        assertEquals(source.getConceptExtends().getNameableArtefact().getUrn(), target.getExtends());
+        assertEquals(source.getConceptExtends().getNameableArtefact().getUrnProvider(), target.getExtends());
 
         // Sdmx
         assertEqualsConceptSdmx(source, target);
@@ -99,7 +109,7 @@ public class ConceptsAsserts extends Asserts {
 
         assertEqualsResource(expected, RestInternalConstants.KIND_CONCEPT_SCHEME, expectedSelfLink, actual);
     }
-    
+
     public static void assertEqualsResource(ConceptMetamac expected, Resource actual) {
         MaintainableArtefact maintainableArtefact = expected.getItemSchemeVersion().getMaintainableArtefact();
         String expectedSelfLink = "http://data.istac.es/apis/srm/v1.0/conceptschemes/" + maintainableArtefact.getMaintainer().getIdAsMaintainer() + "/" + maintainableArtefact.getCode() + "/"

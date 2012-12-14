@@ -19,6 +19,7 @@ public interface ConceptsDo2RestMapperV10 {
 
     public Concepts toConcepts(PagedResult<ConceptMetamac> sourcesPagedResult, String agencyID, String resourceID, String version, String query, String orderBy, Integer limit);
     public Concept toConcept(ConceptMetamac source);
+    public void toConcept(com.arte.statistic.sdmx.srm.core.concept.domain.Concept source, com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.ConceptType target);
 
     public ConceptTypes toConceptTypes(List<ConceptType> sources);
 }

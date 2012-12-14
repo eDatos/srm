@@ -26,30 +26,43 @@ public class OrganisationsDo2JaxbCallbackImpl implements OrganisationsDo2JaxbCal
 
     @Override
     public AgencySchemeType createAgencySchemeJaxb(OrganisationSchemeVersion source) {
-        org.siemac.metamac.rest.srm_internal.v1_0.domain.AgencyScheme target = new org.siemac.metamac.rest.srm_internal.v1_0.domain.AgencyScheme();
-        organisationsDo2RestMapperV10.toAgencyScheme((OrganisationSchemeVersionMetamac) source, target);
-        return target;
+        return new org.siemac.metamac.rest.srm_internal.v1_0.domain.AgencyScheme();
+    }
+
+    @Override
+    public void fillAgencySchemeJaxb(OrganisationSchemeVersion source, AgencySchemeType target) {
+        organisationsDo2RestMapperV10.toAgencyScheme((OrganisationSchemeVersionMetamac) source, (org.siemac.metamac.rest.srm_internal.v1_0.domain.AgencyScheme) target);
     }
 
     @Override
     public DataConsumerSchemeType createDataConsumerSchemeJaxb(OrganisationSchemeVersion source) {
-        org.siemac.metamac.rest.srm_internal.v1_0.domain.DataConsumerScheme target = new org.siemac.metamac.rest.srm_internal.v1_0.domain.DataConsumerScheme();
-        organisationsDo2RestMapperV10.toDataConsumerScheme((OrganisationSchemeVersionMetamac) source, target);
-        return target;
+        return new org.siemac.metamac.rest.srm_internal.v1_0.domain.DataConsumerScheme();
+    }
+
+    @Override
+    public void fillDataConsumerSchemeJaxb(OrganisationSchemeVersion source, DataConsumerSchemeType target) {
+        organisationsDo2RestMapperV10.toDataConsumerScheme((OrganisationSchemeVersionMetamac) source, (org.siemac.metamac.rest.srm_internal.v1_0.domain.DataConsumerScheme) target);
     }
 
     @Override
     public DataProviderSchemeType createDataProviderSchemeJaxb(OrganisationSchemeVersion source) {
-        org.siemac.metamac.rest.srm_internal.v1_0.domain.DataProviderScheme target = new org.siemac.metamac.rest.srm_internal.v1_0.domain.DataProviderScheme();
-        organisationsDo2RestMapperV10.toDataProviderScheme((OrganisationSchemeVersionMetamac) source, target);
-        return target;
+        return new org.siemac.metamac.rest.srm_internal.v1_0.domain.DataProviderScheme();
+    }
+
+    @Override
+    public void fillDataProviderSchemeJaxb(OrganisationSchemeVersion source, DataProviderSchemeType target) {
+        organisationsDo2RestMapperV10.toDataProviderScheme((OrganisationSchemeVersionMetamac) source, (org.siemac.metamac.rest.srm_internal.v1_0.domain.DataProviderScheme) target);
+
     }
 
     @Override
     public OrganisationUnitSchemeType createOrganisationUnitSchemeJaxb(OrganisationSchemeVersion source) {
-        org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationUnitScheme target = new org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationUnitScheme();
-        organisationsDo2RestMapperV10.toOrganisationUnitScheme((OrganisationSchemeVersionMetamac) source, target);
-        return target;
+        return new org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationUnitScheme();
+    }
+
+    @Override
+    public void fillOrganisationUnitSchemeJaxb(OrganisationSchemeVersion source, OrganisationUnitSchemeType target) {
+        organisationsDo2RestMapperV10.toOrganisationUnitScheme((OrganisationSchemeVersionMetamac) source, (org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationUnitScheme) target);
     }
 
     @Override
@@ -58,8 +71,18 @@ public class OrganisationsDo2JaxbCallbackImpl implements OrganisationsDo2JaxbCal
     }
 
     @Override
+    public void fillAgencyJaxb(Organisation source, AgencyType target) {
+        organisationsDo2RestMapperV10.toAgency(source, target);
+    }
+
+    @Override
     public DataConsumerType createDataConsumerJaxb(Organisation source) {
         return new DataConsumerType();
+    }
+
+    @Override
+    public void fillDataConsumerJaxb(Organisation source, DataConsumerType target) {
+        organisationsDo2RestMapperV10.toDataConsumer(source, target);
     }
 
     @Override
@@ -68,8 +91,18 @@ public class OrganisationsDo2JaxbCallbackImpl implements OrganisationsDo2JaxbCal
     }
 
     @Override
+    public void fillDataProviderJaxb(Organisation source, DataProviderType target) {
+        organisationsDo2RestMapperV10.toDataProvider(source, target);
+    }
+
+    @Override
     public OrganisationUnitType createOrganisationUnitJaxb(Organisation source) {
         return new OrganisationUnitType();
+    }
+
+    @Override
+    public void fillOrganisationUnitJaxb(Organisation source, OrganisationUnitType target) {
+        organisationsDo2RestMapperV10.toOrganisationUnit(source, target);
     }
 
     @Override

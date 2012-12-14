@@ -14,6 +14,11 @@ import org.siemac.metamac.rest.srm_internal.v1_0.domain.Organisations;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
 
+import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.AgencyType;
+import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.DataConsumerType;
+import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.DataProviderType;
+import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.OrganisationUnitType;
+
 public interface OrganisationsDo2RestMapperV10 {
 
     // Organisations (Global search)
@@ -33,6 +38,7 @@ public interface OrganisationsDo2RestMapperV10 {
 
     public Agencies toAgencies(PagedResult<OrganisationMetamac> sourcesPagedResult, String agencyID, String resourceID, String version, String query, String orderBy, Integer limit);
     public Agency toAgency(OrganisationMetamac source);
+    public void toAgency(com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation source, AgencyType target);
 
     // Organisation Units
     public org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationUnitSchemes toOrganisationUnitSchemes(PagedResult<OrganisationSchemeVersionMetamac> sources, String agencyID,
@@ -42,6 +48,7 @@ public interface OrganisationsDo2RestMapperV10 {
 
     public OrganisationUnits toOrganisationUnits(PagedResult<OrganisationMetamac> sourcesPagedResult, String agencyID, String resourceID, String version, String query, String orderBy, Integer limit);
     public OrganisationUnit toOrganisationUnit(OrganisationMetamac source);
+    public void toOrganisationUnit(com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation source, OrganisationUnitType target);
 
     // Data providers
     public org.siemac.metamac.rest.srm_internal.v1_0.domain.DataProviderSchemes toDataProviderSchemes(PagedResult<OrganisationSchemeVersionMetamac> sources, String agencyID, String resourceID,
@@ -51,6 +58,7 @@ public interface OrganisationsDo2RestMapperV10 {
 
     public DataProviders toDataProviders(PagedResult<OrganisationMetamac> sourcesPagedResult, String agencyID, String resourceID, String version, String query, String orderBy, Integer limit);
     public DataProvider toDataProvider(OrganisationMetamac source);
+    public void toDataProvider(com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation source, DataProviderType target);
 
     // Data consumers
     public org.siemac.metamac.rest.srm_internal.v1_0.domain.DataConsumerSchemes toDataConsumerSchemes(PagedResult<OrganisationSchemeVersionMetamac> sources, String agencyID, String resourceID,
@@ -60,4 +68,5 @@ public interface OrganisationsDo2RestMapperV10 {
 
     public DataConsumers toDataConsumers(PagedResult<OrganisationMetamac> sourcesPagedResult, String agencyID, String resourceID, String version, String query, String orderBy, Integer limit);
     public DataConsumer toDataConsumer(OrganisationMetamac source);
+    public void toDataConsumer(com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation source, DataConsumerType target);
 }

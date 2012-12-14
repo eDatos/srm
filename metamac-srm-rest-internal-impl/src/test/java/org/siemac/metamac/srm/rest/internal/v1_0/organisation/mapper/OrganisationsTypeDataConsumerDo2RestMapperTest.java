@@ -100,7 +100,18 @@ public class OrganisationsTypeDataConsumerDo2RestMapperTest {
 
         // Transform
         DataConsumerScheme target = do2RestInternalMapper.toDataConsumerScheme(source);
+        // Validate
+        assertEqualsDataConsumerScheme(source, target);
+    }
 
+    @Test
+    public void testToDataConsumerSchemeImported() {
+
+        OrganisationSchemeVersionMetamac source = mockOrganisationSchemeWithOrganisations("agencyID1", "resourceID1", "01.123", OrganisationSchemeTypeEnum.DATA_CONSUMER_SCHEME);
+        source.getMaintainableArtefact().setIsImported(Boolean.TRUE);
+
+        // Transform
+        DataConsumerScheme target = do2RestInternalMapper.toDataConsumerScheme(source);
         // Validate
         assertEqualsDataConsumerScheme(source, target);
     }
@@ -160,6 +171,23 @@ public class OrganisationsTypeDataConsumerDo2RestMapperTest {
         OrganisationTypeEnum organisationTypeEnum = OrganisationTypeEnum.DATA_CONSUMER;
 
         OrganisationSchemeVersionMetamac organisationScheme = mockOrganisationScheme("agencyID1", "resourceID1", "01.123", organisationSchemeTypeEnum);
+        OrganisationMetamac source = mockOrganisation("organisation2", organisationScheme, null, organisationTypeEnum);
+
+        // Transform
+        DataConsumer target = do2RestInternalMapper.toDataConsumer(source);
+
+        // Validate
+        assertEqualsDataConsumer(source, target);
+    }
+
+    @Test
+    public void testToDataConsumerImported() {
+
+        OrganisationSchemeTypeEnum organisationSchemeTypeEnum = OrganisationSchemeTypeEnum.DATA_CONSUMER_SCHEME;
+        OrganisationTypeEnum organisationTypeEnum = OrganisationTypeEnum.DATA_CONSUMER;
+
+        OrganisationSchemeVersionMetamac organisationScheme = mockOrganisationScheme("agencyID1", "resourceID1", "01.123", organisationSchemeTypeEnum);
+        organisationScheme.getMaintainableArtefact().setIsImported(Boolean.TRUE);
         OrganisationMetamac source = mockOrganisation("organisation2", organisationScheme, null, organisationTypeEnum);
 
         // Transform

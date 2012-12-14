@@ -27,14 +27,17 @@ public class DoMocks {
         maintainableArtefact.setCode(resourceID);
         maintainableArtefact.setUrn("urn:" + resourceID + ":" + version);
         maintainableArtefact.setUrnProvider(maintainableArtefact.getUrn());
+        maintainableArtefact.setUriProvider(RestTestConstants.URI_MARK_TO_RECOGNISE_IS_IN_DATABASE + "uri:" + resourceID + ":" + version);
         maintainableArtefact.setName(mockInternationalString("name", resourceID + "v" + version));
         maintainableArtefact.setDescription(mockInternationalString("description", resourceID + "v" + version));
         maintainableArtefact.setVersionLogic(version);
+        maintainableArtefact.setIsImported(Boolean.FALSE);
     }
 
     public static void fillNameableArtefactWithInmutableValues(String resourceID, NameableArtefact nameableArtefact) {
         nameableArtefact.setUrn("urn:" + resourceID);
         nameableArtefact.setUrnProvider(nameableArtefact.getUrn());
+        nameableArtefact.setUriProvider(RestTestConstants.URI_MARK_TO_RECOGNISE_IS_IN_DATABASE + "uri:" + resourceID);
         nameableArtefact.setCode(resourceID);
         nameableArtefact.setName(mockInternationalString("name", resourceID));
         nameableArtefact.setDescription(mockInternationalString("description", resourceID));

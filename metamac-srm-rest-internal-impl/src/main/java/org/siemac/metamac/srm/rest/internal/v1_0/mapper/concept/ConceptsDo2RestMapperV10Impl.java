@@ -25,6 +25,7 @@ import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.base.BaseDo2RestMapperV10Impl;
+import org.siemac.metamac.srm.rest.internal.v1_0.service.utils.SrmRestInternalUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -76,7 +77,9 @@ public class ConceptsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl imple
         }
         target.setKind(RestInternalConstants.KIND_CONCEPT_SCHEME);
         target.setSelfLink(toConceptSchemeSelfLink(source));
-        target.setUri(target.getSelfLink().getHref());
+        if (SrmRestInternalUtils.uriMustBeSelfLink(source.getMaintainableArtefact())) {
+            target.setUri(target.getSelfLink().getHref());
+        }
         target.setType(toConceptSchemeTypeEnum(source.getType()));
         target.setStatisticalOperation(toResourceExternalItemStatisticalOperation(source.getRelatedOperation()));
         target.setReplaceToVersion(source.getMaintainableArtefact().getReplaceToVersion());
@@ -112,8 +115,9 @@ public class ConceptsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl imple
 
         target.setKind(RestInternalConstants.KIND_CONCEPT);
         target.setSelfLink(toConceptSelfLink(source));
-        target.setUri(target.getSelfLink().getHref());
-
+        if (SrmRestInternalUtils.uriMustBeSelfLink(source.getItemSchemeVersion().getMaintainableArtefact())) {
+            target.setUri(target.getSelfLink().getHref());
+        }
         target.setPluralName(toInternationalString(source.getPluralName()));
         target.setAcronym(toInternationalString(source.getAcronym()));
         target.setDescriptionSource(toInternationalString(source.getDescriptionSource()));
@@ -132,6 +136,16 @@ public class ConceptsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl imple
         target.setChildLinks(toConceptChildLinks(source));
 
         return target;
+    }
+
+    @Override
+    public void toConcept(com.arte.statistic.sdmx.srm.core.concept.domain.Concept source, com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.ConceptType target) {
+        if (source == null) {
+            return;
+        }
+        if (SrmRestInternalUtils.uriMustBeSelfLink(source.getItemSchemeVersion().getMaintainableArtefact())) {
+            target.setUri(toConceptSelfLink(source).getHref());
+        }
     }
 
     @Override
@@ -166,15 +180,15 @@ public class ConceptsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl imple
         return targets;
     }
 
-    private ResourceLink toConceptSelfLink(ConceptMetamac source) {
+    private ResourceLink toConceptSelfLink(com.arte.statistic.sdmx.srm.core.concept.domain.Concept source) {
         return toResourceLink(RestInternalConstants.KIND_CONCEPT, toConceptLink(source));
     }
 
-    private ResourceLink toConceptParentLink(ConceptMetamac source) {
+    private ResourceLink toConceptParentLink(com.arte.statistic.sdmx.srm.core.concept.domain.Concept source) {
         return toResourceLink(RestInternalConstants.KIND_CONCEPTS, toConceptsLink(source.getItemSchemeVersion()));
     }
 
-    private ChildLinks toConceptChildLinks(ConceptMetamac source) {
+    private ChildLinks toConceptChildLinks(com.arte.statistic.sdmx.srm.core.concept.domain.Concept source) {
         // nothing
         return null;
     }

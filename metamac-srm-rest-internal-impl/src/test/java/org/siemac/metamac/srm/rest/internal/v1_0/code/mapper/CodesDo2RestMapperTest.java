@@ -95,7 +95,18 @@ public class CodesDo2RestMapperTest {
 
         // Transform
         Codelist target = do2RestInternalMapper.toCodelist(source);
+        // Validate
+        assertEqualsCodelist(source, target);
+    }
 
+    @Test
+    public void testToCodelistImported() {
+
+        CodelistVersionMetamac source = mockCodelistWithCodes("agencyID1", "resourceID1", "01.123");
+        source.getMaintainableArtefact().setIsImported(Boolean.TRUE);
+
+        // Transform
+        Codelist target = do2RestInternalMapper.toCodelist(source);
         // Validate
         assertEqualsCodelist(source, target);
     }
@@ -147,6 +158,21 @@ public class CodesDo2RestMapperTest {
     @Test
     public void testToCode() {
         CodelistVersionMetamac codelist = mockCodelist("agencyID1", "resourceID1", "01.123");
+        CodeMetamac parent = mockCode("codeParent1", codelist, null);
+        CodeMetamac source = mockCode("code2", codelist, parent);
+
+        // Transform
+        Code target = do2RestInternalMapper.toCode(source);
+
+        // Validate
+        assertEqualsCode(source, target);
+    }
+
+    @Test
+    public void testToCodeImported() {
+        CodelistVersionMetamac codelist = mockCodelist("agencyID1", "resourceID1", "01.123");
+        codelist.getMaintainableArtefact().setIsImported(Boolean.TRUE);
+
         CodeMetamac parent = mockCode("codeParent1", codelist, null);
         CodeMetamac source = mockCode("code2", codelist, parent);
 

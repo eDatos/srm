@@ -40,6 +40,10 @@ import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationSchemeVe
 import com.arte.statistic.sdmx.srm.core.organisation.mapper.OrganisationsDo2JaxbCallback;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
+import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.AgencyType;
+import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.DataConsumerType;
+import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.DataProviderType;
+import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.OrganisationUnitType;
 
 @Component
 public class OrganisationsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl implements OrganisationsDo2RestMapperV10 {
@@ -227,7 +231,9 @@ public class OrganisationsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl 
         }
         target.setKind(toKindItemScheme(source.getOrganisationSchemeType()));
         target.setSelfLink(toOrganisationSchemeSelfLink(source));
-        target.setUri(target.getSelfLink().getHref());
+        if (SrmRestInternalUtils.uriMustBeSelfLink(source.getMaintainableArtefact())) {
+            target.setUri(target.getSelfLink().getHref());
+        }
         target.setReplaceToVersion(source.getMaintainableArtefact().getReplaceToVersion());
         target.setParentLink(toOrganisationSchemeParentLink(source));
         target.setChildLinks(toOrganisationSchemeChildLinks(source));
@@ -240,7 +246,9 @@ public class OrganisationsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl 
         }
         target.setKind(toKindItemScheme(source.getOrganisationSchemeType()));
         target.setSelfLink(toOrganisationSchemeSelfLink(source));
-        target.setUri(target.getSelfLink().getHref());
+        if (SrmRestInternalUtils.uriMustBeSelfLink(source.getMaintainableArtefact())) {
+            target.setUri(target.getSelfLink().getHref());
+        }
         target.setReplaceToVersion(source.getMaintainableArtefact().getReplaceToVersion());
         target.setParentLink(toOrganisationSchemeParentLink(source));
         target.setChildLinks(toOrganisationSchemeChildLinks(source));
@@ -253,7 +261,9 @@ public class OrganisationsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl 
         }
         target.setKind(toKindItemScheme(source.getOrganisationSchemeType()));
         target.setSelfLink(toOrganisationSchemeSelfLink(source));
-        target.setUri(target.getSelfLink().getHref());
+        if (SrmRestInternalUtils.uriMustBeSelfLink(source.getMaintainableArtefact())) {
+            target.setUri(target.getSelfLink().getHref());
+        }
         target.setReplaceToVersion(source.getMaintainableArtefact().getReplaceToVersion());
         target.setParentLink(toOrganisationSchemeParentLink(source));
         target.setChildLinks(toOrganisationSchemeChildLinks(source));
@@ -266,7 +276,9 @@ public class OrganisationsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl 
         }
         target.setKind(toKindItemScheme(source.getOrganisationSchemeType()));
         target.setSelfLink(toOrganisationSchemeSelfLink(source));
-        target.setUri(target.getSelfLink().getHref());
+        if (SrmRestInternalUtils.uriMustBeSelfLink(source.getMaintainableArtefact())) {
+            target.setUri(target.getSelfLink().getHref());
+        }
         target.setReplaceToVersion(source.getMaintainableArtefact().getReplaceToVersion());
         target.setParentLink(toOrganisationSchemeParentLink(source));
         target.setChildLinks(toOrganisationSchemeChildLinks(source));
@@ -399,11 +411,23 @@ public class OrganisationsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl 
 
         target.setKind(toKindItem(source.getOrganisationType()));
         target.setSelfLink(toOrganisationSelfLink(source));
-        target.setUri(target.getSelfLink().getHref());
+        if (SrmRestInternalUtils.uriMustBeSelfLink(source.getItemSchemeVersion().getMaintainableArtefact())) {
+            target.setUri(target.getSelfLink().getHref());
+        }
         target.setParentLink(toOrganisationParentLink(source));
         target.setChildLinks(toOrganisationChildLinks(source));
 
         return target;
+    }
+
+    @Override
+    public void toAgency(com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation source, AgencyType target) {
+        if (source == null) {
+            return;
+        }
+        if (SrmRestInternalUtils.uriMustBeSelfLink(source.getItemSchemeVersion().getMaintainableArtefact())) {
+            target.setUri(toOrganisationSelfLink(source).getHref());
+        }
     }
 
     @Override
@@ -416,11 +440,23 @@ public class OrganisationsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl 
 
         target.setKind(toKindItem(source.getOrganisationType()));
         target.setSelfLink(toOrganisationSelfLink(source));
-        target.setUri(target.getSelfLink().getHref());
+        if (SrmRestInternalUtils.uriMustBeSelfLink(source.getItemSchemeVersion().getMaintainableArtefact())) {
+            target.setUri(target.getSelfLink().getHref());
+        }
         target.setParentLink(toOrganisationParentLink(source));
         target.setChildLinks(toOrganisationChildLinks(source));
 
         return target;
+    }
+
+    @Override
+    public void toOrganisationUnit(com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation source, OrganisationUnitType target) {
+        if (source == null) {
+            return;
+        }
+        if (SrmRestInternalUtils.uriMustBeSelfLink(source.getItemSchemeVersion().getMaintainableArtefact())) {
+            target.setUri(toOrganisationSelfLink(source).getHref());
+        }
     }
 
     @Override
@@ -433,11 +469,23 @@ public class OrganisationsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl 
 
         target.setKind(toKindItem(source.getOrganisationType()));
         target.setSelfLink(toOrganisationSelfLink(source));
-        target.setUri(target.getSelfLink().getHref());
+        if (SrmRestInternalUtils.uriMustBeSelfLink(source.getItemSchemeVersion().getMaintainableArtefact())) {
+            target.setUri(target.getSelfLink().getHref());
+        }
         target.setParentLink(toOrganisationParentLink(source));
         target.setChildLinks(toOrganisationChildLinks(source));
 
         return target;
+    }
+
+    @Override
+    public void toDataProvider(com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation source, DataProviderType target) {
+        if (source == null) {
+            return;
+        }
+        if (SrmRestInternalUtils.uriMustBeSelfLink(source.getItemSchemeVersion().getMaintainableArtefact())) {
+            target.setUri(toOrganisationSelfLink(source).getHref());
+        }
     }
 
     @Override
@@ -450,11 +498,23 @@ public class OrganisationsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl 
 
         target.setKind(toKindItem(source.getOrganisationType()));
         target.setSelfLink(toOrganisationSelfLink(source));
-        target.setUri(target.getSelfLink().getHref());
+        if (SrmRestInternalUtils.uriMustBeSelfLink(source.getItemSchemeVersion().getMaintainableArtefact())) {
+            target.setUri(target.getSelfLink().getHref());
+        }
         target.setParentLink(toOrganisationParentLink(source));
         target.setChildLinks(toOrganisationChildLinks(source));
 
         return target;
+    }
+
+    @Override
+    public void toDataConsumer(com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation source, DataConsumerType target) {
+        if (source == null) {
+            return;
+        }
+        if (SrmRestInternalUtils.uriMustBeSelfLink(source.getItemSchemeVersion().getMaintainableArtefact())) {
+            target.setUri(toOrganisationSelfLink(source).getHref());
+        }
     }
 
     private ResourceLink toOrganisationSchemeSelfLink(OrganisationSchemeVersion source) {
@@ -472,7 +532,7 @@ public class OrganisationsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl 
         return targets;
     }
 
-    private ResourceLink toOrganisationSelfLink(OrganisationMetamac source) {
+    private ResourceLink toOrganisationSelfLink(com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation source) {
         return toResourceLink(toKindItem(source.getOrganisationType()), toOrganisationLink(source));
     }
 
@@ -492,7 +552,7 @@ public class OrganisationsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl 
         return toResource(source.getMaintainableArtefact(), toKindItemScheme(source.getOrganisationSchemeType()), toOrganisationSchemeSelfLink(source));
     }
 
-    private Resource toResource(OrganisationMetamac source) {
+    private Resource toResource(com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation source) {
         if (source == null) {
             return null;
         }
@@ -508,13 +568,13 @@ public class OrganisationsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl 
     private String toOrganisationsLink(String agencyID, String resourceID, String version, OrganisationSchemeTypeEnum type) {
         return toItemsLink(toSupathItemSchemes(type), toSubpathItems(type), agencyID, resourceID, version);
     }
-    private String toOrganisationsLink(OrganisationSchemeVersionMetamac itemSchemeVersion) {
+    private String toOrganisationsLink(OrganisationSchemeVersion itemSchemeVersion) {
         return toItemsLink(toSupathItemSchemes(itemSchemeVersion.getOrganisationSchemeType()), toSubpathItems(itemSchemeVersion.getOrganisationSchemeType()), itemSchemeVersion);
     }
-    private String toOrganisationsLink(OrganisationMetamac item) {
+    private String toOrganisationsLink(com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation item) {
         return toItemsLink(toSupathItemSchemes(item.getOrganisationType()), toSubpathItems(item.getOrganisationType()), item.getItemSchemeVersion());
     }
-    private String toOrganisationLink(OrganisationMetamac item) {
+    private String toOrganisationLink(com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation item) {
         return toItemLink(toSupathItemSchemes(item.getOrganisationType()), toSubpathItems(item.getOrganisationType()), item);
     }
 

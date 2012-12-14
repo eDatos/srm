@@ -51,6 +51,11 @@ public class OrganisationsAsserts extends Asserts {
                 + source.getMaintainableArtefact().getVersionLogic();
         assertEquals(RestInternalConstants.KIND_AGENCY_SCHEME, target.getSelfLink().getKind());
         assertEquals(selfLink, target.getSelfLink().getHref());
+        if (source.getMaintainableArtefact().getIsImported()) {
+            assertEquals(source.getMaintainableArtefact().getUriProvider(), target.getUri());
+        } else {
+            assertEquals(target.getSelfLink().getHref(), target.getUri());
+        }
         assertEquals(RestInternalConstants.KIND_AGENCY_SCHEMES, target.getParentLink().getKind());
         assertEquals(parentLink, target.getParentLink().getHref());
         assertEquals(source.getMaintainableArtefact().getReplaceToVersion(), target.getReplaceToVersion());
@@ -75,6 +80,11 @@ public class OrganisationsAsserts extends Asserts {
                 + source.getMaintainableArtefact().getVersionLogic();
         assertEquals(RestInternalConstants.KIND_ORGANISATION_UNIT_SCHEME, target.getSelfLink().getKind());
         assertEquals(selfLink, target.getSelfLink().getHref());
+        if (source.getMaintainableArtefact().getIsImported()) {
+            assertEquals(source.getMaintainableArtefact().getUriProvider(), target.getUri());
+        } else {
+            assertEquals(target.getSelfLink().getHref(), target.getUri());
+        }
         assertEquals(RestInternalConstants.KIND_ORGANISATION_UNIT_SCHEMES, target.getParentLink().getKind());
         assertEquals(parentLink, target.getParentLink().getHref());
         assertEquals(source.getMaintainableArtefact().getReplaceToVersion(), target.getReplaceToVersion());
@@ -99,6 +109,11 @@ public class OrganisationsAsserts extends Asserts {
                 + source.getMaintainableArtefact().getVersionLogic();
         assertEquals(RestInternalConstants.KIND_DATA_PROVIDER_SCHEME, target.getSelfLink().getKind());
         assertEquals(selfLink, target.getSelfLink().getHref());
+        if (source.getMaintainableArtefact().getIsImported()) {
+            assertEquals(source.getMaintainableArtefact().getUriProvider(), target.getUri());
+        } else {
+            assertEquals(target.getSelfLink().getHref(), target.getUri());
+        }
         assertEquals(RestInternalConstants.KIND_DATA_PROVIDER_SCHEMES, target.getParentLink().getKind());
         assertEquals(parentLink, target.getParentLink().getHref());
         assertEquals(source.getMaintainableArtefact().getReplaceToVersion(), target.getReplaceToVersion());
@@ -123,6 +138,11 @@ public class OrganisationsAsserts extends Asserts {
                 + source.getMaintainableArtefact().getVersionLogic();
         assertEquals(RestInternalConstants.KIND_DATA_CONSUMER_SCHEME, target.getSelfLink().getKind());
         assertEquals(selfLink, target.getSelfLink().getHref());
+        if (source.getMaintainableArtefact().getIsImported()) {
+            assertEquals(source.getMaintainableArtefact().getUriProvider(), target.getUri());
+        } else {
+            assertEquals(target.getSelfLink().getHref(), target.getUri());
+        }
         assertEquals(RestInternalConstants.KIND_DATA_CONSUMER_SCHEMES, target.getParentLink().getKind());
         assertEquals(parentLink, target.getParentLink().getHref());
         assertEquals(source.getMaintainableArtefact().getReplaceToVersion(), target.getReplaceToVersion());
@@ -147,6 +167,11 @@ public class OrganisationsAsserts extends Asserts {
         String selfLink = parentLink + "/" + source.getNameableArtefact().getCode();
         assertEquals(RestInternalConstants.KIND_AGENCY, target.getSelfLink().getKind());
         assertEquals(selfLink, target.getSelfLink().getHref());
+        if (source.getItemSchemeVersion().getMaintainableArtefact().getIsImported()) {
+            assertEquals(source.getNameableArtefact().getUriProvider(), target.getUri());
+        } else {
+            assertEquals(target.getSelfLink().getHref(), target.getUri());
+        }
         assertEquals(RestInternalConstants.KIND_AGENCIES, target.getParentLink().getKind());
         assertEquals(parentLink, target.getParentLink().getHref());
         assertNull(target.getChildLinks());
@@ -162,6 +187,11 @@ public class OrganisationsAsserts extends Asserts {
         String selfLink = parentLink + "/" + source.getNameableArtefact().getCode();
         assertEquals(RestInternalConstants.KIND_ORGANISATION_UNIT, target.getSelfLink().getKind());
         assertEquals(selfLink, target.getSelfLink().getHref());
+        if (source.getItemSchemeVersion().getMaintainableArtefact().getIsImported()) {
+            assertEquals(source.getNameableArtefact().getUriProvider(), target.getUri());
+        } else {
+            assertEquals(target.getSelfLink().getHref(), target.getUri());
+        }
         assertEquals(RestInternalConstants.KIND_ORGANISATION_UNITS, target.getParentLink().getKind());
         assertEquals(parentLink, target.getParentLink().getHref());
         assertNull(target.getChildLinks());
@@ -177,6 +207,11 @@ public class OrganisationsAsserts extends Asserts {
         String selfLink = parentLink + "/" + source.getNameableArtefact().getCode();
         assertEquals(RestInternalConstants.KIND_DATA_PROVIDER, target.getSelfLink().getKind());
         assertEquals(selfLink, target.getSelfLink().getHref());
+        if (source.getItemSchemeVersion().getMaintainableArtefact().getIsImported()) {
+            assertEquals(source.getNameableArtefact().getUriProvider(), target.getUri());
+        } else {
+            assertEquals(target.getSelfLink().getHref(), target.getUri());
+        }
         assertEquals(RestInternalConstants.KIND_DATA_PROVIDERS, target.getParentLink().getKind());
         assertEquals(parentLink, target.getParentLink().getHref());
         assertNull(target.getChildLinks());
@@ -184,7 +219,7 @@ public class OrganisationsAsserts extends Asserts {
         // Sdmx
         assertEqualsDataProviderSdmx(source, target);
     }
-    
+
     public static void assertEqualsDataConsumer(OrganisationMetamac source, DataConsumer target) {
         assertEquals(RestInternalConstants.KIND_DATA_CONSUMER, target.getKind());
         String parentLink = "http://data.istac.es/apis/srm/v1.0/dataconsumerschemes" + "/" + source.getItemSchemeVersion().getMaintainableArtefact().getMaintainer().getIdAsMaintainer() + "/"
@@ -192,6 +227,11 @@ public class OrganisationsAsserts extends Asserts {
         String selfLink = parentLink + "/" + source.getNameableArtefact().getCode();
         assertEquals(RestInternalConstants.KIND_DATA_CONSUMER, target.getSelfLink().getKind());
         assertEquals(selfLink, target.getSelfLink().getHref());
+        if (source.getItemSchemeVersion().getMaintainableArtefact().getIsImported()) {
+            assertEquals(source.getNameableArtefact().getUriProvider(), target.getUri());
+        } else {
+            assertEquals(target.getSelfLink().getHref(), target.getUri());
+        }
         assertEquals(RestInternalConstants.KIND_DATA_CONSUMERS, target.getParentLink().getKind());
         assertEquals(parentLink, target.getParentLink().getHref());
         assertNull(target.getChildLinks());
@@ -204,19 +244,22 @@ public class OrganisationsAsserts extends Asserts {
     // Test something...
     public static void assertEqualsAgencySdmx(OrganisationMetamac source, AgencyType target) {
         assertEquals(source.getNameableArtefact().getCode(), target.getId());
-        assertEquals(source.getNameableArtefact().getUrn(), target.getUrn());
+        assertEquals(source.getNameableArtefact().getUrnProvider(), target.getUrn());
+        assertUriProviderExpected(source.getItemSchemeVersion().getMaintainableArtefact(), target.getUri());
     }
     public static void assertEqualsOrganisationUnitSdmx(OrganisationMetamac source, OrganisationUnitType target) {
         assertEquals(source.getNameableArtefact().getCode(), target.getId());
-        assertEquals(source.getNameableArtefact().getUrn(), target.getUrn());
+        assertEquals(source.getNameableArtefact().getUrnProvider(), target.getUrn());
+        assertUriProviderExpected(source.getItemSchemeVersion().getMaintainableArtefact(), target.getUri());
     }
     public static void assertEqualsDataProviderSdmx(OrganisationMetamac source, DataProviderType target) {
         assertEquals(source.getNameableArtefact().getCode(), target.getId());
-        assertEquals(source.getNameableArtefact().getUrn(), target.getUrn());
+        assertEquals(source.getNameableArtefact().getUrnProvider(), target.getUrn());
+        assertUriProviderExpected(source.getItemSchemeVersion().getMaintainableArtefact(), target.getUri());
     }
     public static void assertEqualsDataConsumerSdmx(OrganisationMetamac source, DataConsumerType target) {
         assertEquals(source.getNameableArtefact().getCode(), target.getId());
-        assertEquals(source.getNameableArtefact().getUrn(), target.getUrn());
+        assertEquals(source.getNameableArtefact().getUrnProvider(), target.getUrn());
+        assertUriProviderExpected(source.getItemSchemeVersion().getMaintainableArtefact(), target.getUri());
     }
-
 }
