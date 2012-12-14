@@ -1,5 +1,6 @@
 package org.siemac.metamac.srm.web.dsd.presenter;
 
+import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
 import java.util.List;
@@ -30,6 +31,7 @@ import org.siemac.metamac.srm.web.shared.dsd.SaveDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.SaveDsdResult;
 import org.siemac.metamac.srm.web.shared.utils.SharedTokens;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
+import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
@@ -170,6 +172,7 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
     @Override
     protected void onReset() {
         super.onReset();
+        SetTitleEvent.fire(this, getConstants().dsds());
     }
 
     @Override
