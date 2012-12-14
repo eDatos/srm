@@ -59,6 +59,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
     private GroupDynamicForm                  generalForm;
     private GroupDynamicForm                  statusForm;
     private GroupDynamicForm                  versionResponsibilityForm;
+    private GroupDynamicForm                  commentsForm;
     private AnnotationsPanel                  annotationsPanel;
 
     // EDITION FORM
@@ -67,6 +68,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
     private GroupDynamicForm                  generalEditionForm;
     private GroupDynamicForm                  statusEditionForm;
     private GroupDynamicForm                  versionResponsibilityEditionForm;
+    private GroupDynamicForm                  commentsEditionForm;
     private AnnotationsPanel                  annotationsEditionPanel;
 
     private DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto;
@@ -108,6 +110,9 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
 
                 generalForm.setTranslationsShowed(translationsShowed);
                 generalEditionForm.setTranslationsShowed(translationsShowed);
+
+                commentsForm.setTranslationsShowed(translationsShowed);
+                commentsEditionForm.setTranslationsShowed(translationsShowed);
 
                 annotationsPanel.setTranslationsShowed(translationsShowed);
                 annotationsEditionPanel.setTranslationsShowed(translationsShowed);
@@ -249,6 +254,11 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         versionResponsibilityForm.setFields(productionValidationUser, productionValidationDate, diffusionValidationUser, diffusionValidationDate, internalPublicationUser, internalPublicationDate,
                 externalPublicationUser, externalPublicationDate);
 
+        // Comments
+        commentsForm = new GroupDynamicForm(getConstants().nameableArtefactComments());
+        ViewMultiLanguageTextItem comments = new ViewMultiLanguageTextItem(DataStructureDefinitionDS.COMMENTS, getConstants().nameableArtefactComments());
+        commentsForm.setFields(comments);
+
         // Annotations
         annotationsPanel = new AnnotationsPanel(true);
 
@@ -256,6 +266,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         mainFormLayout.addViewCanvas(generalForm);
         mainFormLayout.addViewCanvas(statusForm);
         mainFormLayout.addViewCanvas(versionResponsibilityForm);
+        mainFormLayout.addViewCanvas(commentsForm);
         mainFormLayout.addViewCanvas(annotationsPanel);
     }
 
@@ -326,6 +337,11 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         versionResponsibilityEditionForm.setFields(productionValidationUser, productionValidationDate, diffusionValidationUser, diffusionValidationDate, internalPublicationUser,
                 internalPublicationDate, externalPublicationUser, externalPublicationDate);
 
+        // Comments
+        commentsEditionForm = new GroupDynamicForm(getConstants().nameableArtefactComments());
+        MultiLanguageTextAreaItem comments = new MultiLanguageTextAreaItem(DataStructureDefinitionDS.COMMENTS, getConstants().nameableArtefactComments());
+        commentsEditionForm.setFields(comments);
+
         // Annotations
         annotationsEditionPanel = new AnnotationsPanel(false);
 
@@ -333,6 +349,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         mainFormLayout.addEditionCanvas(generalEditionForm);
         mainFormLayout.addEditionCanvas(statusEditionForm);
         mainFormLayout.addEditionCanvas(versionResponsibilityEditionForm);
+        mainFormLayout.addEditionCanvas(commentsEditionForm);
         mainFormLayout.addEditionCanvas(annotationsEditionPanel);
     }
 
@@ -399,6 +416,9 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         versionResponsibilityForm.setValue(DataStructureDefinitionDS.EXTERNAL_PUBLICATION_USER, dsd.getLifeCycle().getExternalPublicationUser());
         versionResponsibilityForm.setValue(DataStructureDefinitionDS.EXTERNAL_PUBLICATION_DATE, dsd.getLifeCycle().getExternalPublicationDate());
 
+        // Comments
+        commentsForm.setValue(DataStructureDefinitionDS.COMMENTS, RecordUtils.getInternationalStringRecord(dsd.getComment()));
+
         // Annotations
         annotationsPanel.setAnnotations(dsd.getAnnotations());
     }
@@ -437,6 +457,9 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         versionResponsibilityEditionForm.setValue(DataStructureDefinitionDS.EXTERNAL_PUBLICATION_USER, dsd.getLifeCycle().getExternalPublicationUser());
         versionResponsibilityEditionForm.setValue(DataStructureDefinitionDS.EXTERNAL_PUBLICATION_DATE, dsd.getLifeCycle().getExternalPublicationDate());
 
+        // Comments
+        commentsEditionForm.setValue(DataStructureDefinitionDS.COMMENTS, RecordUtils.getInternationalStringRecord(dsd.getComment()));
+
         // Annotations
         annotationsEditionPanel.setAnnotations(dsd.getAnnotations());
     }
@@ -454,6 +477,9 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         // General form
         dataStructureDefinitionMetamacDto.setName((InternationalStringDto) generalEditionForm.getValue(DataStructureDefinitionDS.NAME));
         dataStructureDefinitionMetamacDto.setDescription((InternationalStringDto) generalEditionForm.getValue(DataStructureDefinitionDS.DESCRIPTION));
+
+        // Comments
+        dataStructureDefinitionMetamacDto.setComment((InternationalStringDto) commentsEditionForm.getValue(DataStructureDefinitionDS.COMMENTS));
 
         // Annotations
         dataStructureDefinitionMetamacDto.getAnnotations().clear();
