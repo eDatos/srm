@@ -18,6 +18,11 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
+import com.smartgwt.client.widgets.form.DynamicForm;
+import com.smartgwt.client.widgets.form.FormItemIfFunction;
+import com.smartgwt.client.widgets.form.fields.FormItem;
+import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
+import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.form.fields.events.HasClickHandlers;
 
 public class NewOrganisationSchemeWindow extends CustomWindow {
@@ -34,10 +39,18 @@ public class NewOrganisationSchemeWindow extends CustomWindow {
         RequiredSelectItem typeItem = new RequiredSelectItem(OrganisationSchemeDS.TYPE, getConstants().organisationSchemeType());
         typeItem.setValueMap(CommonUtils.getOrganisationSchemeTypeHashMap());
         typeItem.setWidth(FORM_ITEM_CUSTOM_WIDTH);
+        typeItem.addChangedHandler(new ChangedHandler() {
+
+            @Override
+            public void onChanged(ChangedEvent event) {
+                form.markForRedraw();
+            }
+        });
 
         RequiredTextItem codeItem = new RequiredTextItem(OrganisationSchemeDS.CODE, getConstants().identifiableArtefactCode());
         codeItem.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());
         codeItem.setWidth(FORM_ITEM_CUSTOM_WIDTH);
+        codeItem.setShowIfCondition(getCodeShowIfFunction());
 
         RequiredTextItem nameItem = new RequiredTextItem(OrganisationSchemeDS.NAME, getConstants().nameableArtefactName());
         nameItem.setWidth(FORM_ITEM_CUSTOM_WIDTH);
@@ -68,9 +81,25 @@ public class NewOrganisationSchemeWindow extends CustomWindow {
         organisationSchemeDto.setMaintainer(agency);
 
         organisationSchemeDto.setType(OrganisationSchemeTypeEnum.valueOf(form.getValueAsString(OrganisationSchemeDS.TYPE)));
-        organisationSchemeDto.setCode(form.getValueAsString(OrganisationSchemeDS.CODE));
+        organisationSchemeDto.setCode(form.getItem(OrganisationSchemeDS.CODE).isVisible() ? form.getValueAsString(OrganisationSchemeDS.CODE) : null);
         organisationSchemeDto.setName(InternationalStringUtils.updateInternationalString(new InternationalStringDto(), form.getValueAsString(OrganisationSchemeDS.NAME)));
         return organisationSchemeDto;
     }
 
+    private FormItemIfFunction getCodeShowIfFunction() {
+        FormItemIfFunction function = new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                // The code of AgencySchemes, DataConsumerSchemes and DataProviderSchemes is fixed
+                String type = form.getValueAsString(OrganisationSchemeDS.TYPE);
+                if (OrganisationSchemeTypeEnum.AGENCY_SCHEME.getName().equals(type) || OrganisationSchemeTypeEnum.DATA_CONSUMER_SCHEME.getName().equals(type)
+                        || OrganisationSchemeTypeEnum.DATA_PROVIDER_SCHEME.getName().equals(type)) {
+                    return false;
+                }
+                return true;
+            }
+        };
+        return function;
+    }
 }
