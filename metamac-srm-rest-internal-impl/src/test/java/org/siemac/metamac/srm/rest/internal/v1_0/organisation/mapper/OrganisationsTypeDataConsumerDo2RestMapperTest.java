@@ -14,12 +14,10 @@ import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_2_CODE;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_3_CODE;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_1_CODE;
-import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_1_VERSION_1;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_2_CODE;
-import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_2_VERSION_1;
-import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_2_VERSION_2;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_3_CODE;
-import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_3_VERSION_1;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_VERSION_1;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_VERSION_2;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ORDER_BY_ID_DESC;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.QUERY_ID_LIKE_1_NAME_LIKE_2;
 
@@ -63,10 +61,10 @@ public class OrganisationsTypeDataConsumerDo2RestMapperTest {
         OrganisationSchemeTypeEnum type = OrganisationSchemeTypeEnum.DATA_CONSUMER_SCHEME;
 
         List<OrganisationSchemeVersionMetamac> source = new ArrayList<OrganisationSchemeVersionMetamac>();
-        source.add(mockOrganisationScheme(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1, type));
-        source.add(mockOrganisationScheme(AGENCY_1, ITEM_SCHEME_2_CODE, ITEM_SCHEME_2_VERSION_1, type));
-        source.add(mockOrganisationScheme(AGENCY_1, ITEM_SCHEME_2_CODE, ITEM_SCHEME_2_VERSION_2, type));
-        source.add(mockOrganisationScheme(AGENCY_2, ITEM_SCHEME_3_CODE, ITEM_SCHEME_3_VERSION_1, type));
+        source.add(mockOrganisationScheme(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1, type));
+        source.add(mockOrganisationScheme(AGENCY_1, ITEM_SCHEME_2_CODE, ITEM_SCHEME_VERSION_1, type));
+        source.add(mockOrganisationScheme(AGENCY_1, ITEM_SCHEME_2_CODE, ITEM_SCHEME_VERSION_2, type));
+        source.add(mockOrganisationScheme(AGENCY_2, ITEM_SCHEME_3_CODE, ITEM_SCHEME_VERSION_1, type));
 
         Integer totalRows = source.size() * 5;
         PagedResult<OrganisationSchemeVersionMetamac> sources = new PagedResult<OrganisationSchemeVersionMetamac>(source, offset, source.size(), limit, totalRows, 0);
@@ -77,7 +75,8 @@ public class OrganisationsTypeDataConsumerDo2RestMapperTest {
         // Validate
         assertEquals(RestInternalConstants.KIND_DATA_CONSUMER_SCHEMES, target.getKind());
 
-        String baseLink = "http://data.istac.es/apis/srm/v1.0/" + RestInternalConstants.LINK_SUBPATH_DATA_CONSUMER_SCHEMES + "/" + agencyID + "/" + resourceID + "?query=" + query + "&orderBy=" + orderBy;
+        String baseLink = "http://data.istac.es/apis/srm/v1.0/" + RestInternalConstants.LINK_SUBPATH_DATA_CONSUMER_SCHEMES + "/" + agencyID + "/" + resourceID + "?query=" + query + "&orderBy="
+                + orderBy;
 
         assertEquals(baseLink + "&limit=" + limit + "&offset=0", target.getFirstLink());
         assertEquals(baseLink + "&limit=" + limit + "&offset=0", target.getPreviousLink());
@@ -119,8 +118,8 @@ public class OrganisationsTypeDataConsumerDo2RestMapperTest {
 
         OrganisationSchemeTypeEnum organisationSchemeTypeEnum = OrganisationSchemeTypeEnum.DATA_CONSUMER_SCHEME;
         OrganisationTypeEnum organisationTypeEnum = OrganisationTypeEnum.DATA_CONSUMER;
-        OrganisationSchemeVersionMetamac organisationScheme1 = mockOrganisationScheme(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1, organisationSchemeTypeEnum);
-        OrganisationSchemeVersionMetamac organisationScheme2 = mockOrganisationScheme(AGENCY_1, ITEM_SCHEME_2_CODE, ITEM_SCHEME_2_VERSION_1, organisationSchemeTypeEnum);
+        OrganisationSchemeVersionMetamac organisationScheme1 = mockOrganisationScheme(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1, organisationSchemeTypeEnum);
+        OrganisationSchemeVersionMetamac organisationScheme2 = mockOrganisationScheme(AGENCY_1, ITEM_SCHEME_2_CODE, ITEM_SCHEME_VERSION_1, organisationSchemeTypeEnum);
         List<OrganisationMetamac> source = new ArrayList<OrganisationMetamac>();
         source.add(mockOrganisation(ITEM_1_CODE, organisationScheme1, null, organisationTypeEnum));
         source.add(mockOrganisation(ITEM_2_CODE, organisationScheme1, null, organisationTypeEnum));
@@ -136,7 +135,8 @@ public class OrganisationsTypeDataConsumerDo2RestMapperTest {
         // Validate
         assertEquals(RestInternalConstants.KIND_DATA_CONSUMERS, target.getKind());
 
-        String baseLink = "http://data.istac.es/apis/srm/v1.0/dataconsumerschemes" + "/" + agencyID + "/" + organisationSchemeID + "/" + version + "/dataconsumers?query=" + query + "&orderBy=" + orderBy;
+        String baseLink = "http://data.istac.es/apis/srm/v1.0/dataconsumerschemes" + "/" + agencyID + "/" + organisationSchemeID + "/" + version + "/dataconsumers?query=" + query + "&orderBy="
+                + orderBy;
         assertEquals(baseLink + "&limit=" + limit + "&offset=0", target.getFirstLink());
         assertEquals(baseLink + "&limit=" + limit + "&offset=0", target.getPreviousLink());
         assertEquals(baseLink + "&limit=" + limit + "&offset=8", target.getNextLink());
@@ -148,14 +148,14 @@ public class OrganisationsTypeDataConsumerDo2RestMapperTest {
 
         assertEquals(source.size(), target.getDataConsumers().size());
         for (int i = 0; i < source.size(); i++) {
-            assertEqualsResource(source.get(i), RestInternalConstants.KIND_DATA_CONSUMER, RestInternalConstants.LINK_SUBPATH_DATA_CONSUMER_SCHEMES, RestInternalConstants.LINK_SUBPATH_DATA_CONSUMERS, target
-                    .getDataConsumers().get(i));
+            assertEqualsResource(source.get(i), RestInternalConstants.KIND_DATA_CONSUMER, RestInternalConstants.LINK_SUBPATH_DATA_CONSUMER_SCHEMES, RestInternalConstants.LINK_SUBPATH_DATA_CONSUMERS,
+                    target.getDataConsumers().get(i));
         }
     }
 
     @Test
     public void testToDataConsumer() {
-        
+
         OrganisationSchemeTypeEnum organisationSchemeTypeEnum = OrganisationSchemeTypeEnum.DATA_CONSUMER_SCHEME;
         OrganisationTypeEnum organisationTypeEnum = OrganisationTypeEnum.DATA_CONSUMER;
 

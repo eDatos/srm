@@ -15,12 +15,10 @@ import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_2_CODE;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_3_CODE;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_1_CODE;
-import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_1_VERSION_1;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_2_CODE;
-import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_2_VERSION_1;
-import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_2_VERSION_2;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_3_CODE;
-import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_3_VERSION_1;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_VERSION_1;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_VERSION_2;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.NOT_EXISTS;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ORDER_BY_ID_DESC;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.QUERY_ID_LIKE_1;
@@ -66,7 +64,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
     @Test
     public void testErrorJsonNonAcceptable() throws Exception {
 
-        String requestUri = getUriItemSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1);
+        String requestUri = getUriItemSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1);
 
         // Request and validate
         WebClient webClient = WebClient.create(requestUri).accept("application/json");
@@ -177,7 +175,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
     public void testRetrieveCodelist() throws Exception {
         String agencyID = AGENCY_1;
         String resourceID = ITEM_SCHEME_1_CODE;
-        String version = ITEM_SCHEME_1_VERSION_1;
+        String version = ITEM_SCHEME_VERSION_1;
         Codelist codelist = getSrmRestInternalFacadeClientXml().retrieveCodelist(agencyID, resourceID, version);
 
         // Validation
@@ -191,7 +189,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
         assertEquals(RestInternalConstants.KIND_CODELISTS, codelist.getParentLink().getKind());
         assertTrue(codelist.getCodes().get(0) instanceof CodeType);
         assertFalse(codelist.getCodes().get(0) instanceof Code);
-        
+
         // Verify with Mockito
         verifyRetrieveCodelist(codesService, agencyID, resourceID, version);
     }
@@ -208,7 +206,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
         // other metadata are tested in mapper tests
         assertEquals("idAsMaintainer" + agencyID, codelist.getAgencyID());
         assertEquals(resourceID, codelist.getId());
-        assertEquals(ITEM_SCHEME_1_VERSION_1, codelist.getVersion());
+        assertEquals(ITEM_SCHEME_VERSION_1, codelist.getVersion());
         assertEquals(RestInternalConstants.KIND_CODELIST, codelist.getKind());
         assertEquals(RestInternalConstants.KIND_CODELIST, codelist.getSelfLink().getKind());
         assertEquals(RestInternalConstants.KIND_CODELISTS, codelist.getParentLink().getKind());
@@ -222,7 +220,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
     @Test
     public void testRetrieveCodelistXml() throws Exception {
 
-        String requestBase = getUriItemSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1);
+        String requestBase = getUriItemSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1);
         String[] requestUris = new String[]{requestBase, requestBase + ".xml", requestBase + "?_type=xml"};
 
         for (int i = 0; i < requestUris.length; i++) {
@@ -236,7 +234,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
     public void testRetrieveCodesSchemeErrorNotExists() throws Exception {
         String agencyID = AGENCY_1;
         String resourceID = NOT_EXISTS;
-        String version = ITEM_SCHEME_1_VERSION_1;
+        String version = ITEM_SCHEME_VERSION_1;
         try {
             getSrmRestInternalFacadeClientXml().retrieveCodelist(agencyID, resourceID, version);
         } catch (ServerWebApplicationException e) {
@@ -257,7 +255,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
 
     @Test
     public void testRetrieveCodelistErrorNotExistsXml() throws Exception {
-        String requestUri = getUriItemSchemes(AGENCY_1, NOT_EXISTS, ITEM_SCHEME_1_VERSION_1);
+        String requestUri = getUriItemSchemes(AGENCY_1, NOT_EXISTS, ITEM_SCHEME_VERSION_1);
         InputStream responseExpected = SrmRestInternalFacadeV10CodesTest.class.getResourceAsStream("/responses/codes/retrieveCodelist.notFound.xml");
 
         // Request and validate
@@ -268,7 +266,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
     public void testRetrieveCodelistErrorWildcard() throws Exception {
         // Agency
         try {
-            getSrmRestInternalFacadeClientXml().retrieveCodelist(WILDCARD, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1);
+            getSrmRestInternalFacadeClientXml().retrieveCodelist(WILDCARD, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -283,7 +281,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
 
         // Resource
         try {
-            getSrmRestInternalFacadeClientXml().retrieveCodelist(AGENCY_1, WILDCARD, ITEM_SCHEME_1_VERSION_1);
+            getSrmRestInternalFacadeClientXml().retrieveCodelist(AGENCY_1, WILDCARD, ITEM_SCHEME_VERSION_1);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -340,14 +338,14 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
         testFindCodes(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query and order
 
         // version
-        testFindCodes(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1, "2", "0", null, null); // with pagination
-        testFindCodes(WILDCARD, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query
-        testFindCodes(AGENCY_1, WILDCARD, ITEM_SCHEME_1_VERSION_1, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query and order
+        testFindCodes(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1, "2", "0", null, null); // with pagination
+        testFindCodes(WILDCARD, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query
+        testFindCodes(AGENCY_1, WILDCARD, ITEM_SCHEME_VERSION_1, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query and order
     }
 
     @Test
     public void testFindCodesXml() throws Exception {
-        String requestUri = getUriItems(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1, QUERY_ID_LIKE_1_NAME_LIKE_2, "4", "4");
+        String requestUri = getUriItems(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1, QUERY_ID_LIKE_1_NAME_LIKE_2, "4", "4");
         InputStream responseExpected = SrmRestInternalFacadeV10CodesTest.class.getResourceAsStream("/responses/codes/findCodes.xml");
 
         // Request and validate
@@ -358,7 +356,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
     public void testRetrieveCode() throws Exception {
         String agencyID = AGENCY_1;
         String resourceID = ITEM_SCHEME_1_CODE;
-        String version = ITEM_SCHEME_1_VERSION_1;
+        String version = ITEM_SCHEME_VERSION_1;
         String codeID = ITEM_1_CODE;
         Code code = getSrmRestInternalFacadeClientXml().retrieveCode(agencyID, resourceID, version, codeID);
 
@@ -371,7 +369,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
         assertTrue(code instanceof CodeType);
         assertTrue(code instanceof Code);
         // other metadata are tested in transformation tests
-        
+
         // Verify with Mockito
         verifyRetrieveCode(codesService, agencyID, resourceID, version, codeID);
     }
@@ -379,7 +377,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
     @Test
     public void testRetrieveCodeXml() throws Exception {
 
-        String requestBase = getUriItem(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1, ITEM_1_CODE);
+        String requestBase = getUriItem(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1, ITEM_1_CODE);
         String[] requestUris = new String[]{requestBase, requestBase + ".xml", requestBase + "?_type=xml"};
         for (int i = 0; i < requestUris.length; i++) {
             String requestUri = requestUris[i];
@@ -392,7 +390,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
     public void testRetrieveCodeErrorNotExists() throws Exception {
         String agencyID = AGENCY_1;
         String resourceID = ITEM_SCHEME_1_CODE;
-        String version = ITEM_SCHEME_1_VERSION_1;
+        String version = ITEM_SCHEME_VERSION_1;
         String codeID = NOT_EXISTS;
         try {
             getSrmRestInternalFacadeClientXml().retrieveCode(agencyID, resourceID, version, codeID);
@@ -415,7 +413,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
 
     @Test
     public void testRetrieveCodeErrorNotExistsXml() throws Exception {
-        String requestUri = getUriItem(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1, NOT_EXISTS);
+        String requestUri = getUriItem(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1, NOT_EXISTS);
         InputStream responseExpected = SrmRestInternalFacadeV10CodesTest.class.getResourceAsStream("/responses/codes/retrieveCode.notFound.xml");
 
         // Request and validate
@@ -427,7 +425,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
 
         // AgencyID
         try {
-            getSrmRestInternalFacadeClientXml().retrieveCode(WILDCARD, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1, ITEM_1_CODE);
+            getSrmRestInternalFacadeClientXml().retrieveCode(WILDCARD, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1, ITEM_1_CODE);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -441,7 +439,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
         }
         // AgencyID
         try {
-            getSrmRestInternalFacadeClientXml().retrieveCode(AGENCY_1, WILDCARD, ITEM_SCHEME_1_VERSION_1, ITEM_1_CODE);
+            getSrmRestInternalFacadeClientXml().retrieveCode(AGENCY_1, WILDCARD, ITEM_SCHEME_VERSION_1, ITEM_1_CODE);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -471,7 +469,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
 
         // ItemID
         try {
-            getSrmRestInternalFacadeClientXml().retrieveCode(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1, WILDCARD);
+            getSrmRestInternalFacadeClientXml().retrieveCode(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1, WILDCARD);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -508,7 +506,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
     private void testFindCodes(String agencyID, String resourceID, String version, String limit, String offset, String query, String orderBy) throws Exception {
         resetMocks();
         Codes codes = getSrmRestInternalFacadeClientXml().findCodes(agencyID, resourceID, version, query, orderBy, limit, offset);
-        
+
         assertNotNull(codes);
         assertEquals(RestInternalConstants.KIND_CODES, codes.getKind());
 
@@ -532,8 +530,8 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
                     CodelistVersionMetamac codelistVersion = null;
                     if (NOT_EXISTS.equals(agencyID) || NOT_EXISTS.equals(resourceID) || NOT_EXISTS.equals(version)) {
                         codelistVersion = null;
-                    } else if (AGENCY_1.equals(agencyID) && ITEM_SCHEME_1_CODE.equals(resourceID) && (ITEM_SCHEME_1_VERSION_1.equals(version) || Boolean.TRUE.equals(latest))) {
-                        codelistVersion = CodesDoMocks.mockCodelistWithCodes(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1);
+                    } else if (AGENCY_1.equals(agencyID) && ITEM_SCHEME_1_CODE.equals(resourceID) && (ITEM_SCHEME_VERSION_1.equals(version) || Boolean.TRUE.equals(latest))) {
+                        codelistVersion = CodesDoMocks.mockCodelistWithCodes(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1);
                     } else {
                         fail();
                     }
@@ -545,10 +543,10 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
                 } else {
                     // any
                     List<CodelistVersionMetamac> codelists = new ArrayList<CodelistVersionMetamac>();
-                    codelists.add(CodesDoMocks.mockCodelistWithCodes(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1));
-                    codelists.add(CodesDoMocks.mockCodelistWithCodes(AGENCY_1, ITEM_SCHEME_2_CODE, ITEM_SCHEME_2_VERSION_1));
-                    codelists.add(CodesDoMocks.mockCodelistWithCodes(AGENCY_1, ITEM_SCHEME_2_CODE, ITEM_SCHEME_2_VERSION_2));
-                    codelists.add(CodesDoMocks.mockCodelistWithCodes(AGENCY_2, ITEM_SCHEME_3_CODE, ITEM_SCHEME_3_VERSION_1));
+                    codelists.add(CodesDoMocks.mockCodelistWithCodes(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1));
+                    codelists.add(CodesDoMocks.mockCodelistWithCodes(AGENCY_1, ITEM_SCHEME_2_CODE, ITEM_SCHEME_VERSION_1));
+                    codelists.add(CodesDoMocks.mockCodelistWithCodes(AGENCY_1, ITEM_SCHEME_2_CODE, ITEM_SCHEME_VERSION_2));
+                    codelists.add(CodesDoMocks.mockCodelistWithCodes(AGENCY_2, ITEM_SCHEME_3_CODE, ITEM_SCHEME_VERSION_1));
                     return new PagedResult<CodelistVersionMetamac>(codelists, codelists.size(), codelists.size(), codelists.size(), codelists.size() * 10, 0);
                 }
             };
@@ -572,8 +570,8 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
                     CodeMetamac code = null;
                     if (NOT_EXISTS.equals(agencyID) || NOT_EXISTS.equals(resourceID) || NOT_EXISTS.equals(version) || NOT_EXISTS.equals(itemID)) {
                         code = null;
-                    } else if (AGENCY_1.equals(agencyID) && ITEM_SCHEME_1_CODE.equals(resourceID) && ITEM_SCHEME_1_VERSION_1.equals(version) && ITEM_1_CODE.equals(itemID)) {
-                        CodelistVersionMetamac codelist1 = CodesDoMocks.mockCodelist(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1);
+                    } else if (AGENCY_1.equals(agencyID) && ITEM_SCHEME_1_CODE.equals(resourceID) && ITEM_SCHEME_VERSION_1.equals(version) && ITEM_1_CODE.equals(itemID)) {
+                        CodelistVersionMetamac codelist1 = CodesDoMocks.mockCodelist(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1);
                         CodeMetamac parent = CodesDoMocks.mockCode(ITEM_2_CODE, codelist1, null);
                         code = CodesDoMocks.mockCode(ITEM_1_CODE, codelist1, parent);
                     } else {
@@ -586,8 +584,8 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
                     return new PagedResult<CodeMetamac>(codes, 0, codes.size(), codes.size());
                 } else {
                     // any
-                    CodelistVersionMetamac codelist1 = CodesDoMocks.mockCodelist(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1);
-                    CodelistVersionMetamac codelist2 = CodesDoMocks.mockCodelist(AGENCY_1, ITEM_SCHEME_2_CODE, ITEM_SCHEME_2_VERSION_1);
+                    CodelistVersionMetamac codelist1 = CodesDoMocks.mockCodelist(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1);
+                    CodelistVersionMetamac codelist2 = CodesDoMocks.mockCodelist(AGENCY_1, ITEM_SCHEME_2_CODE, ITEM_SCHEME_VERSION_1);
 
                     List<CodeMetamac> codes = new ArrayList<CodeMetamac>();
                     codes.add(CodesDoMocks.mockCode(ITEM_1_CODE, codelist1, null));

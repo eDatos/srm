@@ -9,7 +9,7 @@ import static org.siemac.metamac.srm.rest.internal.v1_0.organisation.utils.Organ
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.AGENCY_1;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_1_CODE;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_1_CODE;
-import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_1_VERSION_1;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_VERSION_1;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.NOT_EXISTS;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ORDER_BY_ID_DESC;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.QUERY_ID_LIKE_1;
@@ -106,7 +106,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataProvidersTest extends 
             fail("Incorrect exception");
         }
     }
-    
+
     @Test
     public void testFindDataProviderSchemesByAgencyAndResource() throws Exception {
         testFindDataProviderSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, null, null, null, null, null);
@@ -151,7 +151,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataProvidersTest extends 
     public void testRetrieveDataProviderScheme() throws Exception {
         String agencyID = AGENCY_1;
         String resourceID = ITEM_SCHEME_1_CODE;
-        String version = ITEM_SCHEME_1_VERSION_1;
+        String version = ITEM_SCHEME_VERSION_1;
         DataProviderScheme dataProviderScheme = getSrmRestInternalFacadeClientXml().retrieveDataProviderScheme(agencyID, resourceID, version);
 
         // Validation
@@ -165,11 +165,11 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataProvidersTest extends 
         assertEquals(RestInternalConstants.KIND_DATA_PROVIDER_SCHEMES, dataProviderScheme.getParentLink().getKind());
         assertTrue(dataProviderScheme.getDataProviders().get(0) instanceof DataProviderType);
         assertFalse(dataProviderScheme.getDataProviders().get(0) instanceof DataProvider);
-        
+
         // Verify with Mockito
         verifyRetrieveOrganisationScheme(organisationsService, agencyID, resourceID, version, OrganisationSchemeTypeEnum.DATA_PROVIDER_SCHEME);
     }
-    
+
     @Test
     public void testRetrieveDataProviderSchemeVersionLatest() throws Exception {
         String agencyID = AGENCY_1;
@@ -186,7 +186,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataProvidersTest extends 
     @Test
     public void testRetrieveDataProviderSchemeXml() throws Exception {
 
-        String requestBase = getUriItemSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1, null, null, null);
+        String requestBase = getUriItemSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1, null, null, null);
         String[] requestUris = new String[]{requestBase, requestBase + ".xml", requestBase + "?_type=xml"};
 
         for (int i = 0; i < requestUris.length; i++) {
@@ -200,12 +200,12 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataProvidersTest extends 
     public void testRetrieveDataProviderSchemeErrorNotExists() throws Exception {
         String agencyID = AGENCY_1;
         String resourceID = NOT_EXISTS;
-        String version = ITEM_SCHEME_1_VERSION_1;
+        String version = ITEM_SCHEME_VERSION_1;
         try {
             getSrmRestInternalFacadeClientXml().retrieveDataProviderScheme(agencyID, resourceID, version);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.NOT_FOUND.getStatusCode(), e.getStatus());
-            
+
             org.siemac.metamac.rest.common.v1_0.domain.Exception exception = extractErrorFromException(getSrmRestInternalFacadeClientXml(), e);
             assertEquals(RestServiceExceptionType.DATA_PROVIDER_SCHEME_NOT_FOUND.getCode(), exception.getCode());
             assertEquals("DataProviderScheme not found in agencyID " + agencyID + " with ID " + resourceID + " and version " + version, exception.getMessage());
@@ -221,7 +221,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataProvidersTest extends 
 
     @Test
     public void testRetrieveDataProviderSchemeErrorNotExistsXml() throws Exception {
-        String requestUri = getUriItemSchemes(AGENCY_1, NOT_EXISTS, ITEM_SCHEME_1_VERSION_1, null, null, null);
+        String requestUri = getUriItemSchemes(AGENCY_1, NOT_EXISTS, ITEM_SCHEME_VERSION_1, null, null, null);
         InputStream responseExpected = SrmRestInternalFacadeV10OrganisationsTypeDataProvidersTest.class.getResourceAsStream("/responses/organisations/retrieveDataProviderScheme.notFound.xml");
 
         // Request and validate
@@ -232,7 +232,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataProvidersTest extends 
     public void testRetrieveDataProviderSchemeErrorWildcard() throws Exception {
         // Agency
         try {
-            getSrmRestInternalFacadeClientXml().retrieveDataProviderScheme(WILDCARD, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1);
+            getSrmRestInternalFacadeClientXml().retrieveDataProviderScheme(WILDCARD, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -247,7 +247,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataProvidersTest extends 
 
         // Resource
         try {
-            getSrmRestInternalFacadeClientXml().retrieveDataProviderScheme(AGENCY_1, WILDCARD, ITEM_SCHEME_1_VERSION_1);
+            getSrmRestInternalFacadeClientXml().retrieveDataProviderScheme(AGENCY_1, WILDCARD, ITEM_SCHEME_VERSION_1);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -303,14 +303,14 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataProvidersTest extends 
         testFindDataProviders(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query and order
 
         // version
-        testFindDataProviders(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1, "2", "0", null, null); // with pagination
-        testFindDataProviders(WILDCARD, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query
-        testFindDataProviders(AGENCY_1, WILDCARD, ITEM_SCHEME_1_VERSION_1, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query and order
+        testFindDataProviders(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1, "2", "0", null, null); // with pagination
+        testFindDataProviders(WILDCARD, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query
+        testFindDataProviders(AGENCY_1, WILDCARD, ITEM_SCHEME_VERSION_1, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query and order
     }
 
     @Test
     public void testFindDataProvidersXml() throws Exception {
-        String requestUri = getUriItems(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1, QUERY_ID_LIKE_1_NAME_LIKE_2, "4", "4");
+        String requestUri = getUriItems(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1, QUERY_ID_LIKE_1_NAME_LIKE_2, "4", "4");
         InputStream responseExpected = SrmRestInternalFacadeV10OrganisationsTypeDataProvidersTest.class.getResourceAsStream("/responses/organisations/findDataProviders.xml");
 
         // Request and validate
@@ -321,7 +321,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataProvidersTest extends 
     public void testRetrieveDataProvider() throws Exception {
         String agencyID = AGENCY_1;
         String resourceID = ITEM_SCHEME_1_CODE;
-        String version = ITEM_SCHEME_1_VERSION_1;
+        String version = ITEM_SCHEME_VERSION_1;
         String organsationID = ITEM_1_CODE;
         DataProvider dataProvider = getSrmRestInternalFacadeClientXml().retrieveDataProvider(agencyID, resourceID, version, organsationID);
 
@@ -334,7 +334,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataProvidersTest extends 
         assertTrue(dataProvider instanceof DataProviderType);
         assertTrue(dataProvider instanceof DataProvider);
         // other metadata are tested in transformation tests
-        
+
         // Verify with Mockito
         verifyRetrieveOrganisation(organisationsService, agencyID, resourceID, version, organsationID, OrganisationTypeEnum.DATA_PROVIDER);
     }
@@ -342,7 +342,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataProvidersTest extends 
     @Test
     public void testRetrieveDataProviderXml() throws Exception {
 
-        String requestBase = getUriItem(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1, ITEM_1_CODE);
+        String requestBase = getUriItem(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1, ITEM_1_CODE);
         String[] requestUris = new String[]{requestBase, requestBase + ".xml", requestBase + "?_type=xml"};
         for (int i = 0; i < requestUris.length; i++) {
             String requestUri = requestUris[i];
@@ -355,13 +355,13 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataProvidersTest extends 
     public void testRetrieveDataProviderErrorNotExists() throws Exception {
         String agencyID = AGENCY_1;
         String resourceID = ITEM_SCHEME_1_CODE;
-        String version = ITEM_SCHEME_1_VERSION_1;
+        String version = ITEM_SCHEME_VERSION_1;
         String organisationID = NOT_EXISTS;
         try {
             getSrmRestInternalFacadeClientXml().retrieveDataProvider(agencyID, resourceID, version, organisationID);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.NOT_FOUND.getStatusCode(), e.getStatus());
-            
+
             org.siemac.metamac.rest.common.v1_0.domain.Exception exception = extractErrorFromException(getSrmRestInternalFacadeClientXml(), e);
             assertEquals(RestServiceExceptionType.DATA_PROVIDER_NOT_FOUND.getCode(), exception.getCode());
             assertEquals("DataProvider not found with ID " + organisationID + " in DataProviderScheme in agencyID " + agencyID + " with ID " + resourceID + " and version " + version,
@@ -379,7 +379,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataProvidersTest extends 
 
     @Test
     public void testRetrieveDataProviderErrorNotExistsXml() throws Exception {
-        String requestUri = getUriItem(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1, NOT_EXISTS);
+        String requestUri = getUriItem(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1, NOT_EXISTS);
         InputStream responseExpected = SrmRestInternalFacadeV10OrganisationsTypeDataProvidersTest.class.getResourceAsStream("/responses/organisations/retrieveDataProvider.notFound.xml");
 
         // Request and validate
@@ -389,9 +389,9 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataProvidersTest extends 
     @Test
     public void testRetrieveDataProviderErrorWildcard() throws Exception {
 
-     // AgencyID
+        // AgencyID
         try {
-            getSrmRestInternalFacadeClientXml().retrieveDataProvider(WILDCARD, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1, ITEM_1_CODE);
+            getSrmRestInternalFacadeClientXml().retrieveDataProvider(WILDCARD, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1, ITEM_1_CODE);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -405,7 +405,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataProvidersTest extends 
         }
         // AgencyID
         try {
-            getSrmRestInternalFacadeClientXml().retrieveDataProvider(AGENCY_1, WILDCARD, ITEM_SCHEME_1_VERSION_1, ITEM_1_CODE);
+            getSrmRestInternalFacadeClientXml().retrieveDataProvider(AGENCY_1, WILDCARD, ITEM_SCHEME_VERSION_1, ITEM_1_CODE);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -435,7 +435,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataProvidersTest extends 
 
         // ItemID
         try {
-            getSrmRestInternalFacadeClientXml().retrieveDataProvider(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_1_VERSION_1, WILDCARD);
+            getSrmRestInternalFacadeClientXml().retrieveDataProvider(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1, WILDCARD);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -472,10 +472,10 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataProvidersTest extends 
     private void testFindDataProviders(String agencyID, String resourceID, String version, String limit, String offset, String query, String orderBy) throws Exception {
         resetMocks();
         DataProviders items = getSrmRestInternalFacadeClientXml().findDataProviders(agencyID, resourceID, version, query, orderBy, limit, offset);
-        
+
         assertNotNull(items);
         assertEquals(RestInternalConstants.KIND_DATA_PROVIDERS, items.getKind());
-        
+
         // Verify with Mockito
         verifyFindOrganisations(organisationsService, agencyID, resourceID, version, limit, offset, query, orderBy, OrganisationTypeEnum.DATA_PROVIDER);
     }
