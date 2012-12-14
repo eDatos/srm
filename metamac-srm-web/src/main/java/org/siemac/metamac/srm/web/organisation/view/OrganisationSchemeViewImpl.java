@@ -82,6 +82,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
     private GroupDynamicForm                       productionDescriptorsForm;
     private GroupDynamicForm                       diffusionDescriptorsForm;
     private GroupDynamicForm                       versionResponsibilityForm;
+    private GroupDynamicForm                       commentsForm;
     private AnnotationsPanel                       annotationsPanel;
 
     // Edition forms
@@ -91,6 +92,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
     private GroupDynamicForm                       productionDescriptorsEditionForm;
     private GroupDynamicForm                       diffusionDescriptorsEditionForm;
     private GroupDynamicForm                       versionResponsibilityEditionForm;
+    private GroupDynamicForm                       commentsEditionForm;
     private AnnotationsPanel                       annotationsEditionPanel;
 
     // Versions
@@ -271,6 +273,9 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
                 versionResponsibilityForm.setTranslationsShowed(translationsShowed);
                 versionResponsibilityEditionForm.setTranslationsShowed(translationsShowed);
 
+                commentsForm.setTranslationsShowed(translationsShowed);
+                commentsEditionForm.setTranslationsShowed(translationsShowed);
+
                 annotationsPanel.setTranslationsShowed(translationsShowed);
                 annotationsEditionPanel.setTranslationsShowed(translationsShowed);
             }
@@ -421,6 +426,11 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         versionResponsibilityForm.setFields(productionValidationUser, productionValidationDate, diffusionValidationUser, diffusionValidationDate, internalPublicationUser, internalPublicationDate,
                 externalPublicationUser, externalPublicationDate);
 
+        // Comments
+        commentsForm = new GroupDynamicForm(getConstants().nameableArtefactComments());
+        ViewMultiLanguageTextItem comments = new ViewMultiLanguageTextItem(OrganisationSchemeDS.COMMENTS, getConstants().nameableArtefactComments());
+        commentsForm.setFields(comments);
+
         // Annotations
         annotationsPanel = new AnnotationsPanel(true);
 
@@ -430,6 +440,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         mainFormLayout.addViewCanvas(productionDescriptorsForm);
         mainFormLayout.addViewCanvas(diffusionDescriptorsForm);
         mainFormLayout.addViewCanvas(versionResponsibilityForm);
+        mainFormLayout.addViewCanvas(commentsForm);
         mainFormLayout.addViewCanvas(annotationsPanel);
     }
 
@@ -527,6 +538,11 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         versionResponsibilityEditionForm.setFields(productionValidationUser, productionValidationDate, diffusionValidationUser, diffusionValidationDate, internalPublicationUser,
                 internalPublicationDate, externalPublicationUser, externalPublicationDate);
 
+        // Comments
+        commentsEditionForm = new GroupDynamicForm(getConstants().nameableArtefactComments());
+        MultiLanguageTextAreaItem comments = new MultiLanguageTextAreaItem(OrganisationSchemeDS.COMMENTS, getConstants().nameableArtefactComments());
+        commentsEditionForm.setFields(comments);
+
         // Annotations
         annotationsEditionPanel = new AnnotationsPanel(false);
 
@@ -536,6 +552,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         mainFormLayout.addEditionCanvas(productionDescriptorsEditionForm);
         mainFormLayout.addEditionCanvas(diffusionDescriptorsEditionForm);
         mainFormLayout.addEditionCanvas(versionResponsibilityEditionForm);
+        mainFormLayout.addEditionCanvas(commentsEditionForm);
         mainFormLayout.addEditionCanvas(annotationsEditionPanel);
     }
 
@@ -669,6 +686,9 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         versionResponsibilityForm.setValue(OrganisationSchemeDS.EXTERNAL_PUBLICATION_USER, organisationSchemeDto.getLifeCycle().getExternalPublicationUser());
         versionResponsibilityForm.setValue(OrganisationSchemeDS.EXTERNAL_PUBLICATION_DATE, organisationSchemeDto.getLifeCycle().getExternalPublicationDate());
 
+        // Comments
+        commentsForm.setValue(OrganisationSchemeDS.COMMENTS, RecordUtils.getInternationalStringRecord(organisationSchemeDto.getComment()));
+
         // Annotations
         annotationsPanel.setAnnotations(organisationSchemeDto.getAnnotations());
     }
@@ -724,6 +744,9 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         versionResponsibilityEditionForm.setValue(OrganisationSchemeDS.EXTERNAL_PUBLICATION_USER, organisationSchemeDto.getLifeCycle().getExternalPublicationUser());
         versionResponsibilityEditionForm.setValue(OrganisationSchemeDS.EXTERNAL_PUBLICATION_DATE, organisationSchemeDto.getLifeCycle().getExternalPublicationDate());
 
+        // Comments
+        commentsEditionForm.setValue(OrganisationSchemeDS.COMMENTS, RecordUtils.getInternationalStringRecord(organisationSchemeDto.getComment()));
+
         // Annotations
         annotationsEditionPanel.setAnnotations(organisationSchemeDto.getAnnotations());
     }
@@ -738,6 +761,9 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         organisationSchemeDto.setDescription((InternationalStringDto) contentDescriptorsEditionForm.getValue(OrganisationSchemeDS.DESCRIPTION));
         organisationSchemeDto.setIsPartial((contentDescriptorsEditionForm.getValue(OrganisationSchemeDS.IS_PARTIAL) != null && !StringUtils.isEmpty(contentDescriptorsEditionForm
                 .getValueAsString(OrganisationSchemeDS.IS_PARTIAL))) ? Boolean.valueOf(contentDescriptorsEditionForm.getValueAsString(OrganisationSchemeDS.IS_PARTIAL)) : false);
+
+        // Comments
+        organisationSchemeDto.setComment((InternationalStringDto) commentsEditionForm.getValue(OrganisationSchemeDS.COMMENTS));
 
         // Annotations
         organisationSchemeDto.getAnnotations().clear();

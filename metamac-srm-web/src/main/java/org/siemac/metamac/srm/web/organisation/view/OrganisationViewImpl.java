@@ -74,11 +74,13 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
     // View forms
     private GroupDynamicForm             identifiersForm;
     private GroupDynamicForm             contentDescriptorsForm;
+    private GroupDynamicForm             commentsForm;
     private AnnotationsPanel             annotationsPanel;
 
     // Edition forms
     private GroupDynamicForm             identifiersEditionForm;
     private GroupDynamicForm             contentDescriptorsEditionForm;
+    private GroupDynamicForm             commentsEditionForm;
     private AnnotationsPanel             annotationsEditionPanel;
 
     // Contacts
@@ -262,6 +264,9 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
                 contentDescriptorsForm.setTranslationsShowed(translationsShowed);
                 contentDescriptorsEditionForm.setTranslationsShowed(translationsShowed);
 
+                commentsForm.setTranslationsShowed(translationsShowed);
+                commentsEditionForm.setTranslationsShowed(translationsShowed);
+
                 annotationsPanel.setTranslationsShowed(translationsShowed);
                 annotationsEditionPanel.setTranslationsShowed(translationsShowed);
             }
@@ -294,11 +299,17 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         ViewMultiLanguageTextItem description = new ViewMultiLanguageTextItem(OrganisationDS.DESCRIPTION, getConstants().nameableArtefactDescription());
         contentDescriptorsForm.setFields(type, description);
 
+        // Comments
+        commentsForm = new GroupDynamicForm(getConstants().nameableArtefactComments());
+        ViewMultiLanguageTextItem comments = new ViewMultiLanguageTextItem(OrganisationDS.COMMENTS, getConstants().nameableArtefactComments());
+        commentsForm.setFields(comments);
+
         // Annotations
         annotationsPanel = new AnnotationsPanel(true);
 
         mainFormLayout.addViewCanvas(identifiersForm);
         mainFormLayout.addViewCanvas(contentDescriptorsForm);
+        mainFormLayout.addViewCanvas(commentsForm);
         mainFormLayout.addViewCanvas(annotationsPanel);
     }
 
@@ -338,11 +349,17 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         MultiLanguageTextAreaItem description = new MultiLanguageTextAreaItem(OrganisationDS.DESCRIPTION, getConstants().nameableArtefactDescription());
         contentDescriptorsEditionForm.setFields(type, description);
 
+        // Comments
+        commentsEditionForm = new GroupDynamicForm(getConstants().nameableArtefactComments());
+        MultiLanguageTextAreaItem comments = new MultiLanguageTextAreaItem(OrganisationDS.COMMENTS, getConstants().nameableArtefactComments());
+        commentsEditionForm.setFields(comments);
+
         // Annotations
         annotationsEditionPanel = new AnnotationsPanel(false);
 
         mainFormLayout.addEditionCanvas(identifiersEditionForm);
         mainFormLayout.addEditionCanvas(contentDescriptorsEditionForm);
+        mainFormLayout.addEditionCanvas(commentsEditionForm);
         mainFormLayout.addEditionCanvas(annotationsEditionPanel);
     }
 
@@ -426,6 +443,9 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         contentDescriptorsForm.setValue(OrganisationDS.TYPE, CommonUtils.getOrganisationTypeName(organisationDto.getType()));
         contentDescriptorsForm.setValue(OrganisationDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(organisationDto.getDescription()));
 
+        // Comments
+        commentsForm.setValue(OrganisationDS.COMMENTS, RecordUtils.getInternationalStringRecord(organisationDto.getComment()));
+
         // Annotations
         annotationsPanel.setAnnotations(organisationDto.getAnnotations());
     }
@@ -444,6 +464,9 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         contentDescriptorsEditionForm.setValue(OrganisationDS.TYPE, CommonUtils.getOrganisationTypeName(organisationDto.getType()));
         contentDescriptorsEditionForm.setValue(OrganisationDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(organisationDto.getDescription()));
         contentDescriptorsEditionForm.markForRedraw();
+
+        // Comments
+        commentsEditionForm.setValue(OrganisationDS.COMMENTS, RecordUtils.getInternationalStringRecord(organisationDto.getComment()));
 
         // Annotations
         annotationsEditionPanel.setAnnotations(organisationDto.getAnnotations());
@@ -479,6 +502,9 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
 
         // Content descriptors
         organisationDto.setDescription((InternationalStringDto) contentDescriptorsEditionForm.getValue(OrganisationDS.DESCRIPTION));
+
+        // Comments
+        organisationDto.setComment((InternationalStringDto) commentsEditionForm.getValue(OrganisationDS.COMMENTS));
 
         // Annotations
         organisationDto.getAnnotations().clear();
