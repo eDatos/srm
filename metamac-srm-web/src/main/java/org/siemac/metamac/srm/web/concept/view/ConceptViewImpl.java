@@ -85,6 +85,7 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
     private GroupDynamicForm            productionDescriptorsForm;
     private GroupDynamicForm            relationBetweenConceptsForm;
     private GroupDynamicForm            legalActsForm;
+    private GroupDynamicForm            commentsForm;
     private AnnotationsPanel            annotationsPanel;
 
     // Edition forms
@@ -95,6 +96,7 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
     private GroupDynamicForm            productionDescriptorsEditionForm;
     private GroupDynamicForm            relationBetweenConceptsEditionForm;
     private GroupDynamicForm            legalActsEditionForm;
+    private GroupDynamicForm            commentsEditionForm;
     private AnnotationsPanel            annotationsEditionPanel;
 
     private List<ConceptTypeDto>        conceptTypeDtos;
@@ -150,6 +152,9 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
 
                 legalActsForm.setTranslationsShowed(translationsShowed);
                 legalActsEditionForm.setTranslationsShowed(translationsShowed);
+
+                commentsForm.setTranslationsShowed(translationsShowed);
+                commentsEditionForm.setTranslationsShowed(translationsShowed);
 
                 annotationsPanel.setTranslationsShowed(translationsShowed);
                 annotationsEditionPanel.setTranslationsShowed(translationsShowed);
@@ -264,6 +269,11 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
         ViewMultiLanguageTextItem legalActs = new ViewMultiLanguageTextItem(ConceptDS.LEGAL_ACTS, getConstants().conceptLegalActs());
         legalActsForm.setFields(legalActs);
 
+        // Comments
+        commentsForm = new GroupDynamicForm(getConstants().nameableArtefactComments());
+        ViewMultiLanguageTextItem comments = new ViewMultiLanguageTextItem(ConceptDS.COMMENTS, getConstants().nameableArtefactComments());
+        commentsForm.setFields(comments);
+
         // Annotations
         annotationsPanel = new AnnotationsPanel(true);
 
@@ -274,6 +284,7 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
         mainFormLayout.addViewCanvas(productionDescriptorsForm);
         mainFormLayout.addViewCanvas(relationBetweenConceptsForm);
         mainFormLayout.addViewCanvas(legalActsForm);
+        mainFormLayout.addViewCanvas(commentsForm);
         mainFormLayout.addViewCanvas(annotationsPanel);
     }
 
@@ -353,6 +364,11 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
         MultilanguageRichTextEditorItem legalActs = new MultilanguageRichTextEditorItem(ConceptDS.LEGAL_ACTS, getConstants().conceptLegalActs());
         legalActsEditionForm.setFields(legalActs);
 
+        // Comments
+        commentsEditionForm = new GroupDynamicForm(getConstants().nameableArtefactComments());
+        MultiLanguageTextAreaItem comments = new MultiLanguageTextAreaItem(ConceptDS.COMMENTS, getConstants().nameableArtefactComments());
+        commentsEditionForm.setFields(comments);
+
         // Annotations
         annotationsEditionPanel = new AnnotationsPanel(false);
 
@@ -363,6 +379,7 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
         mainFormLayout.addEditionCanvas(productionDescriptorsEditionForm);
         mainFormLayout.addEditionCanvas(relationBetweenConceptsEditionForm);
         mainFormLayout.addEditionCanvas(legalActsEditionForm);
+        mainFormLayout.addEditionCanvas(commentsEditionForm);
         mainFormLayout.addEditionCanvas(annotationsEditionPanel);
     }
 
@@ -460,6 +477,9 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
         // Legal acts
         legalActsForm.setValue(ConceptDS.LEGAL_ACTS, RecordUtils.getInternationalStringRecord(conceptDto.getLegalActs()));
 
+        // Comments
+        commentsForm.setValue(ConceptDS.COMMENTS, RecordUtils.getInternationalStringRecord(conceptDto.getComment()));
+
         // Annotations
         annotationsPanel.setAnnotations(conceptDto.getAnnotations());
     }
@@ -506,6 +526,9 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
         // Legal acts
         legalActsEditionForm.setValue(ConceptDS.LEGAL_ACTS, RecordUtils.getInternationalStringRecord(conceptDto.getLegalActs()));
 
+        // Comments
+        commentsEditionForm.setValue(ConceptDS.COMMENTS, RecordUtils.getInternationalStringRecord(conceptDto.getComment()));
+
         // Annotations
         annotationsEditionPanel.setAnnotations(conceptDto.getAnnotations());
     }
@@ -541,7 +564,8 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
         }
 
         // Class descriptors
-        conceptDto.setSdmxRelatedArtefact(ConceptRoleEnum.valueOf(classDescriptorsEditionForm.getValueAsString(ConceptDS.SDMX_RELATED_ARTEFACT)));
+        conceptDto.setSdmxRelatedArtefact(!StringUtils.isBlank(classDescriptorsEditionForm.getValueAsString(ConceptDS.SDMX_RELATED_ARTEFACT)) ? ConceptRoleEnum.valueOf(classDescriptorsEditionForm
+                .getValueAsString(ConceptDS.SDMX_RELATED_ARTEFACT)) : null);
         conceptDto.setType(classDescriptorsEditionForm.getValue(ConceptDS.TYPE) != null ? getConceptTypeDto(classDescriptorsEditionForm.getValueAsString(ConceptDS.TYPE)) : null);
         // TODO roles
 
@@ -554,6 +578,9 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
 
         // Legal acts
         conceptDto.setLegalActs((InternationalStringDto) legalActsEditionForm.getValue(ConceptDS.LEGAL_ACTS));
+
+        // Comments
+        conceptDto.setComment((InternationalStringDto) commentsEditionForm.getValue(ConceptDS.COMMENTS));
 
         // Annotations
         conceptDto.getAnnotations().clear();

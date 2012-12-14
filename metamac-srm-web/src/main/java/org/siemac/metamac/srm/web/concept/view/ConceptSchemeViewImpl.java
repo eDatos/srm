@@ -84,6 +84,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
     private GroupDynamicForm                  productionDescriptorsForm;
     private GroupDynamicForm                  diffusionDescriptorsForm;
     private GroupDynamicForm                  versionResponsibilityForm;
+    private GroupDynamicForm                  commentsForm;
     private AnnotationsPanel                  annotationsPanel;
 
     // Edition forms
@@ -93,6 +94,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
     private GroupDynamicForm                  productionDescriptorsEditionForm;
     private GroupDynamicForm                  diffusionDescriptorsEditionForm;
     private GroupDynamicForm                  versionResponsibilityEditionForm;
+    private GroupDynamicForm                  commentsEditionForm;
     private AnnotationsPanel                  annotationsEditionPanel;
 
     private ConceptsTreeGrid                  conceptsTreeGrid;
@@ -173,6 +175,9 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
 
                 versionResponsibilityForm.setTranslationsShowed(translationsShowed);
                 versionResponsibilityEditionForm.setTranslationsShowed(translationsShowed);
+
+                commentsForm.setTranslationsShowed(translationsShowed);
+                commentsEditionForm.setTranslationsShowed(translationsShowed);
 
                 annotationsPanel.setTranslationsShowed(translationsShowed);
                 annotationsEditionPanel.setTranslationsShowed(translationsShowed);
@@ -398,6 +403,11 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         versionResponsibilityForm.setFields(productionValidationUser, productionValidationDate, diffusionValidationUser, diffusionValidationDate, internalPublicationUser, internalPublicationDate,
                 externalPublicationUser, externalPublicationDate);
 
+        // Comments
+        commentsForm = new GroupDynamicForm(getConstants().nameableArtefactComments());
+        ViewMultiLanguageTextItem comments = new ViewMultiLanguageTextItem(ConceptSchemeDS.COMMENTS, getConstants().nameableArtefactComments());
+        commentsForm.setFields(comments);
+
         // Annotations
         annotationsPanel = new AnnotationsPanel(true);
 
@@ -407,6 +417,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         mainFormLayout.addViewCanvas(productionDescriptorsForm);
         mainFormLayout.addViewCanvas(diffusionDescriptorsForm);
         mainFormLayout.addViewCanvas(versionResponsibilityForm);
+        mainFormLayout.addViewCanvas(commentsForm);
         mainFormLayout.addViewCanvas(annotationsPanel);
     }
 
@@ -530,6 +541,11 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         versionResponsibilityEditionForm.setFields(productionValidationUser, productionValidationDate, diffusionValidationUser, diffusionValidationDate, internalPublicationUser,
                 internalPublicationDate, externalPublicationUser, externalPublicationDate);
 
+        // Comments
+        commentsEditionForm = new GroupDynamicForm(getConstants().nameableArtefactComments());
+        MultiLanguageTextAreaItem comments = new MultiLanguageTextAreaItem(ConceptSchemeDS.COMMENTS, getConstants().nameableArtefactComments());
+        commentsEditionForm.setFields(comments);
+
         // Annotations
         annotationsEditionPanel = new AnnotationsPanel(false);
 
@@ -539,6 +555,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         mainFormLayout.addEditionCanvas(productionDescriptorsEditionForm);
         mainFormLayout.addEditionCanvas(diffusionDescriptorsEditionForm);
         mainFormLayout.addEditionCanvas(versionResponsibilityEditionForm);
+        mainFormLayout.addEditionCanvas(commentsEditionForm);
         mainFormLayout.addEditionCanvas(annotationsEditionPanel);
     }
 
@@ -598,6 +615,9 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         versionResponsibilityForm.setValue(ConceptSchemeDS.EXTERNAL_PUBLICATION_USER, conceptSchemeDto.getLifeCycle().getExternalPublicationUser());
         versionResponsibilityForm.setValue(ConceptSchemeDS.EXTERNAL_PUBLICATION_DATE, conceptSchemeDto.getLifeCycle().getExternalPublicationDate());
 
+        // Comments
+        commentsForm.setValue(ConceptSchemeDS.COMMENTS, RecordUtils.getInternationalStringRecord(conceptSchemeDto.getComment()));
+
         // Annotations
         annotationsPanel.setAnnotations(conceptSchemeDto.getAnnotations());
     }
@@ -653,6 +673,9 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         versionResponsibilityEditionForm.setValue(ConceptSchemeDS.EXTERNAL_PUBLICATION_USER, conceptSchemeDto.getLifeCycle().getExternalPublicationUser());
         versionResponsibilityEditionForm.setValue(ConceptSchemeDS.EXTERNAL_PUBLICATION_DATE, conceptSchemeDto.getLifeCycle().getExternalPublicationDate());
 
+        // Comments
+        commentsEditionForm.setValue(ConceptSchemeDS.COMMENTS, RecordUtils.getInternationalStringRecord(conceptSchemeDto.getComment()));
+
         // Annotations
         annotationsEditionPanel.setAnnotations(conceptSchemeDto.getAnnotations());
     }
@@ -668,6 +691,9 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         // Class descriptors
         conceptSchemeDto.setType(ConceptSchemeTypeEnum.valueOf(classDescriptorsEditionForm.getValueAsString(ConceptSchemeDS.TYPE)));
         conceptSchemeDto.setRelatedOperation(ExternalItemUtils.removeTitle(relatedOperation));
+
+        // Comments
+        conceptSchemeDto.setComment((InternationalStringDto) commentsEditionForm.getValue(ConceptSchemeDS.COMMENTS));
 
         // Annotations
         conceptSchemeDto.getAnnotations().clear();

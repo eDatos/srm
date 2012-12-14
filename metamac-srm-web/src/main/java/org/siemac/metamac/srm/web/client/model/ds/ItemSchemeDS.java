@@ -38,6 +38,8 @@ public class ItemSchemeDS extends DataSource {
     public static final String EXTERNAL_PUBLICATION_USER        = "sch-ext-pub-user";
     public static final String IS_EXTERNAL_PUBLICATION_FAILED   = "sch-ext-pub-fail";
     public static final String EXTERNAL_PUBLICATION_FAILED_DATE = "sch-ext-pub-fail-date";
+    // COMMENTS
+    public static final String COMMENTS                         = "sch-comments";
 
     public static String       DTO                              = "sch-dto";
 

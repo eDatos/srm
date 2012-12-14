@@ -17,6 +17,8 @@ public class ItemDS extends DataSource {
     public static final String NAME         = "item-name";
     // CONTENT DESCRIPTORS
     public static final String DESCRIPTION  = "item-desc";
+    // COMMENTS
+    public static final String COMMENTS     = "item-comments";
 
     public static String       DTO          = "item-dto";
 
