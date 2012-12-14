@@ -40,7 +40,7 @@ public class NewConceptWindow extends CustomWindow {
         RequiredSelectItem sdmxRelatedArtefact = new RequiredSelectItem(ConceptDS.SDMX_RELATED_ARTEFACT, getConstants().conceptSdmxRelatedArtefact());
         sdmxRelatedArtefact.setValueMap(CommonUtils.getConceptRoleHashMap());
         sdmxRelatedArtefact.setWidth(FORM_ITEM_CUSTOM_WIDTH);
-        sdmxRelatedArtefact.setVisible(ConceptSchemeTypeEnum.OPERATION.equals(type) || ConceptSchemeTypeEnum.TRANSVERSAL.equals(type));
+        sdmxRelatedArtefact.setVisible(CommonUtils.isMetadataSdmxRelatedArtefactVisible(type));
 
         CustomButtonItem saveItem = new CustomButtonItem(FIELD_SAVE, getConstants().conceptCreate());
 

@@ -11,7 +11,6 @@ import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptTypeDto;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptRoleEnum;
-import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.model.ds.RepresentationDS;
 import org.siemac.metamac.srm.web.client.representation.widgets.StaticFacetForm;
@@ -653,11 +652,10 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
                 if (conceptSchemeMetamacDto != null) {
-                    return ConceptSchemeTypeEnum.OPERATION.equals(conceptSchemeMetamacDto.getType()) || ConceptSchemeTypeEnum.TRANSVERSAL.equals(conceptSchemeMetamacDto.getType());
+                    return CommonUtils.isMetadataSdmxRelatedArtefactVisible(conceptSchemeMetamacDto.getType());
                 }
                 return false;
             }
         };
     }
-
 }

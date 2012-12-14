@@ -76,4 +76,7 @@ public class CommonUtils {
         return conceptSchemeMetamacDto.getRelatedOperation() != null ? conceptSchemeMetamacDto.getRelatedOperation().getCode() : null;
     }
 
+    public static boolean isMetadataSdmxRelatedArtefactVisible(ConceptSchemeTypeEnum type) {
+        return ConceptSchemeTypeEnum.OPERATION.equals(type) || ConceptSchemeTypeEnum.TRANSVERSAL.equals(type) || ConceptSchemeTypeEnum.MEASURE.equals(type);
+    }
 }
