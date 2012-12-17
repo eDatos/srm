@@ -28,25 +28,26 @@ public class ToolStripViewImpl implements ToolStripPresenterWidget.ToolStripView
         toolStrip.setWidth100();
         toolStrip.setAlign(Alignment.LEFT);
 
-        dsdListButton = new CustomToolStripButton(MetamacSrmWeb.getConstants().dsds());
-        dsdListButton.setID(ToolStripButtonEnum.DSD_LIST.getValue());
-
-        conceptsButton = new CustomToolStripButton(MetamacSrmWeb.getConstants().conceptSchemes());
+        conceptsButton = new CustomToolStripButton(MetamacSrmWeb.getConstants().concepts());
         conceptsButton.setID(ToolStripButtonEnum.CONCEPTS.getValue());
-
-        organisationsButton = new CustomToolStripButton(MetamacSrmWeb.getConstants().organisationSchemes());
-        organisationsButton.setID(ToolStripButtonEnum.ORGANISATIONS.getValue());
 
         classificationsButton = new CustomToolStripButton(MetamacSrmWeb.getConstants().classifications());
         classificationsButton.setID(ToolStripButtonEnum.CLASSIFICATIONS.getValue());
 
-        categoriesButton = new CustomToolStripButton(MetamacSrmWeb.getConstants().categorySchemes());
+        dsdListButton = new CustomToolStripButton(MetamacSrmWeb.getConstants().dsds());
+        dsdListButton.setID(ToolStripButtonEnum.DSD_LIST.getValue());
+
+        organisationsButton = new CustomToolStripButton(MetamacSrmWeb.getConstants().organisations());
+        organisationsButton.setID(ToolStripButtonEnum.ORGANISATIONS.getValue());
+
+        categoriesButton = new CustomToolStripButton(MetamacSrmWeb.getConstants().categories());
         categoriesButton.setID(ToolStripButtonEnum.CATEGORIES.getValue());
 
-        toolStrip.addButton(dsdListButton);
         toolStrip.addButton(conceptsButton);
-        toolStrip.addButton(organisationsButton);
         toolStrip.addButton(classificationsButton);
+        toolStrip.addButton(dsdListButton);
+        toolStrip.addSeparator();
+        toolStrip.addButton(organisationsButton);
         toolStrip.addButton(categoriesButton);
     }
 
