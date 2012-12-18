@@ -31,6 +31,13 @@
         </property>
     </bean>
 
+    <!-- Metamac environment configuration -->
+    <bean id="configurationService" class="org.siemac.metamac.core.common.conf.ConfigurationServiceImpl">
+        <property name="systemConfigurationFile">
+            <value>classpath:metamac/environment-test.xml</value>
+        </property>
+    </bean>
+    
     <!-- metamac-core-common -->
     <import resource="classpath:/spring/logging-beans-advice.xml" />
     <import resource="classpath:/spring/general-beans-advice.xml" />
@@ -43,4 +50,7 @@
     <!-- srm > src/test/resources -->
     <import resource="classpath:/spring/srm/include/interceptor-test.xml" />
     <import resource="classpath:/spring/srm/include/datasource-test.xml" />
+
+    <!-- metamac-transformation -->
+    <import resource="classpath:/spring/transformation/applicationContext.xml" />
 </beans>

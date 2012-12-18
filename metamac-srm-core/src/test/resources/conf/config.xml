@@ -14,7 +14,7 @@
 		<!-- 	<properties fileName="${url.url}/conf/static/name3.properties" config-name="name3" /> -->
 		<!-- 	<properties fileName="${url.url}/conf/static/name4.properties" config-name="name4"  /> -->
 
-  	<properties fileName="${environment.metamac.data}/conf/static/resources.xml" config-optional="false" />
+  	<properties fileName="${environment.metamac.data}/common/conf/static/resources.xml" basePath="" config-optional="false" />
 
 
 
