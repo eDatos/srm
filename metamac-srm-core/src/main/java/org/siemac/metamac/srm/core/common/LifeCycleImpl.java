@@ -199,7 +199,11 @@ public abstract class LifeCycleImpl implements LifeCycle {
 
         // Update life cycle metadata to publish externally
         lifeCycle.setProcStatus(targetStatus);
-        lifeCycle.setExternalPublicationDate(callback.getMaintainableArtefact(srmResourceVersion).getValidFrom());
+        DateTime externalPublicationDate = callback.getMaintainableArtefact(srmResourceVersion).getValidFrom();
+        if (externalPublicationDate == null) {
+            externalPublicationDate = new DateTime();
+        }
+        lifeCycle.setExternalPublicationDate(externalPublicationDate);
         lifeCycle.setExternalPublicationUser(ctx.getUserId());
         srmResourceVersion = callback.updateSrmResource(srmResourceVersion);
 

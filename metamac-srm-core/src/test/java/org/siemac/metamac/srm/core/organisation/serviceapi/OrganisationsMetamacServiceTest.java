@@ -812,6 +812,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         {
             OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(ctx, urn);
             assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, organisationSchemeVersion.getLifeCycleMetadata().getProcStatus());
+            assertEquals(OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME, organisationSchemeVersion.getOrganisationSchemeType());
             assertNotNull(organisationSchemeVersion.getLifeCycleMetadata().getProductionValidationDate());
             assertNotNull(organisationSchemeVersion.getLifeCycleMetadata().getProductionValidationUser());
             assertNotNull(organisationSchemeVersion.getLifeCycleMetadata().getDiffusionValidationDate());
@@ -878,6 +879,35 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         }
     }
 
+    @Test
+    public void testPublishExternallyOrganisationSchemeAgencyScheme() throws Exception {
+
+        String urn = ORGANISATION_SCHEME_9_V1;
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        {
+            OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(ctx, urn);
+            assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, organisationSchemeVersion.getLifeCycleMetadata().getProcStatus());
+            assertEquals(OrganisationSchemeTypeEnum.AGENCY_SCHEME, organisationSchemeVersion.getOrganisationSchemeType());
+            assertNull(organisationSchemeVersion.getMaintainableArtefact().getValidFrom());
+            assertNull(organisationSchemeVersion.getMaintainableArtefact().getValidTo());
+        }
+
+        // Publish externally
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.publishExternallyOrganisationScheme(ctx, urn);
+
+        // Validate response. validFrom is not filled
+        {
+            assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, organisationSchemeVersion.getLifeCycleMetadata().getProcStatus());
+            assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeVersion.getLifeCycleMetadata().getExternalPublicationDate().toDate()));
+            assertEquals(ctx.getUserId(), organisationSchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
+            assertNull(organisationSchemeVersion.getMaintainableArtefact().getValidFrom());
+            assertNull(organisationSchemeVersion.getMaintainableArtefact().getValidTo());
+            assertTrue(organisationSchemeVersion.getMaintainableArtefact().getPublicLogic());
+            assertTrue(organisationSchemeVersion.getMaintainableArtefact().getLatestPublic());
+        }
+
+    }
     @Test
     public void testPublishExternallyOrganisationSchemeErrorNotExists() throws Exception {
 

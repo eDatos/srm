@@ -1542,7 +1542,7 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
         }
     }
 
-    // In CategorisationMetamacServiceTest
+    // In CategoriesMetamacCategorisationServiceTest.java
     @Override
     public void testRetrieveCategorisationByUrn() throws Exception {
     }

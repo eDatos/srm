@@ -110,7 +110,7 @@ public class OrganisationSchemeLifeCycleImpl extends LifeCycleImpl {
         public Object markSrmResourceAsFinal(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
             OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationSchemeVersionMetamac(srmResourceVersion);
             // Mark as final
-            if (!SdmxSrmValidationUtils.isOrganisationSchemeNeverCanBeFinal(organisationSchemeVersion)) {
+            if (!SdmxSrmValidationUtils.isOrganisationSchemeWithSpecialTreatment(organisationSchemeVersion)) {
                 return organisationsService.markOrganisationSchemeAsFinal(ctx, organisationSchemeVersion.getMaintainableArtefact().getUrn());
             }
             return srmResourceVersion;
@@ -123,12 +123,18 @@ public class OrganisationSchemeLifeCycleImpl extends LifeCycleImpl {
 
         @Override
         public Object startSrmResourceValidity(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
-            return organisationsService.startOrganisationSchemeValidity(ctx, getOrganisationSchemeVersionMetamac(srmResourceVersion).getMaintainableArtefact().getUrn(), null);
+            if (!SdmxSrmValidationUtils.isOrganisationSchemeWithSpecialTreatment(getOrganisationSchemeVersionMetamac(srmResourceVersion))) {
+                return organisationsService.startOrganisationSchemeValidity(ctx, getOrganisationSchemeVersionMetamac(srmResourceVersion).getMaintainableArtefact().getUrn(), null);
+            }
+            return srmResourceVersion;
         }
 
         @Override
         public Object endSrmResourceValidity(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
-            return organisationsService.endOrganisationSchemeValidity(ctx, getOrganisationSchemeVersionMetamac(srmResourceVersion).getMaintainableArtefact().getUrn(), null);
+            if (!SdmxSrmValidationUtils.isOrganisationSchemeWithSpecialTreatment(getOrganisationSchemeVersionMetamac(srmResourceVersion))) {
+                return organisationsService.endOrganisationSchemeValidity(ctx, getOrganisationSchemeVersionMetamac(srmResourceVersion).getMaintainableArtefact().getUrn(), null);
+            }
+            return srmResourceVersion;
         }
 
         @Override

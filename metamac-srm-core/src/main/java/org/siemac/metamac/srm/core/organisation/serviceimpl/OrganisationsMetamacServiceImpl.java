@@ -364,7 +364,7 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
     }
 
     private void checkOrganisationSchemeCanBeModified(OrganisationSchemeVersionMetamac organisationSchemeVersion) throws MetamacException {
-        if (!SdmxSrmValidationUtils.isOrganisationSchemeNeverCanBeFinal(organisationSchemeVersion)) {
+        if (!SdmxSrmValidationUtils.isOrganisationSchemeWithSpecialTreatment(organisationSchemeVersion)) {
             SrmValidationUtils.checkArtefactCanBeModified(organisationSchemeVersion.getLifeCycleMetadata(), organisationSchemeVersion.getMaintainableArtefact().getUrn());
         }
     }
