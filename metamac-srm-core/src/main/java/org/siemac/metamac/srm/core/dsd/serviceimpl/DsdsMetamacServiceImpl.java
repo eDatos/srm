@@ -20,6 +20,8 @@ import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMeta
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamacProperties;
 import org.siemac.metamac.srm.core.dsd.serviceimpl.utils.DsdsMetamacInvocationValidator;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
+import org.siemac.metamac.srm.core.organisation.serviceapi.OrganisationsMetamacService;
 import org.siemac.metamac.srm.core.serviceimpl.SrmServiceUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -43,6 +45,9 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
     private DataStructureDefinitionService dataStructureDefinitionService;
 
     @Autowired
+    private OrganisationsMetamacService    organisationsService;
+
+    @Autowired
     @Qualifier("dsdLifeCycle")
     private LifeCycle                      dsdLifeCycle;
 
@@ -60,6 +65,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
     public DataStructureDefinitionVersionMetamac createDataStructureDefinition(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion) throws MetamacException {
         // Validation
         DsdsMetamacInvocationValidator.checkCreateDataStructureDefinition(dataStructureDefinitionVersion, null);
+        checkDataStructureDefinitionToCreateOrUpdate(ctx, dataStructureDefinitionVersion);
 
         // Fill metadata
         dataStructureDefinitionVersion.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
@@ -74,8 +80,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
     public DataStructureDefinitionVersionMetamac updateDataStructureDefinition(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion) throws MetamacException {
         // Validation
         DsdsMetamacInvocationValidator.checkUpdateDataStructureDefinition(dataStructureDefinitionVersion, null);
-        SrmValidationUtils.checkMaintainableArtefactCanChangeCodeIfChanged(dataStructureDefinitionVersion.getMaintainableArtefact());
-        checkDataStructureDefinitionCanBeModified(dataStructureDefinitionVersion);
+        checkDataStructureDefinitionToCreateOrUpdate(ctx, dataStructureDefinitionVersion);
 
         // Save
         return (DataStructureDefinitionVersionMetamac) dataStructureDefinitionService.updateDataStructureDefinition(ctx, dataStructureDefinitionVersion);
@@ -148,7 +153,6 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         return (DataStructureDefinitionVersionMetamac) dsdLifeCycle.publishInternally(ctx, urn);
     }
 
-    // TODO validTo, validFrom: ¿rellenar cuando el artefacto no sea del ISTAC? Pendiente decisión del ISTAC.
     @Override
     public DataStructureDefinitionVersionMetamac publishExternallyDataStructureDefinition(ServiceContext ctx, String urn) throws MetamacException {
         return (DataStructureDefinitionVersionMetamac) dsdLifeCycle.publishExternally(ctx, urn);
@@ -168,7 +172,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
     public DataStructureDefinitionVersionMetamac versioningDataStructureDefinition(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
         // Validation
         DsdsMetamacInvocationValidator.checkVersioningDataStructureDefinition(urnToCopy, versionType, null, null);
-        checkVersioningDataStructureDefinitionIsSupported(ctx, urnToCopy);
+        checkDataStructureDefinitionVersioning(ctx, urnToCopy);
 
         // Versioning
         return (DataStructureDefinitionVersionMetamac) dataStructureDefinitionService.versioningDataStructureDefinition(ctx, urnToCopy, versionType, structureCopyCallback);
@@ -248,7 +252,27 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
                 source.getAdditionalResultRows());
     }
 
-    private void checkVersioningDataStructureDefinitionIsSupported(ServiceContext ctx, String urnToCopy) throws MetamacException {
+    /**
+     * Common validations to create or update a category scheme
+     */
+    private void checkDataStructureDefinitionToCreateOrUpdate(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion) throws MetamacException {
+
+        // Proc status
+        if (dataStructureDefinitionVersion.getId() != null) {
+            checkDataStructureDefinitionCanBeModified(dataStructureDefinitionVersion);
+        }
+
+        // Maintainer internally or externally published
+        String maintainerUrn = dataStructureDefinitionVersion.getMaintainableArtefact().getMaintainer().getNameableArtefact().getUrn();
+        OrganisationSchemeVersionMetamac maintainerOrganisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByOrganisationUrn(ctx, maintainerUrn);
+        SrmValidationUtils.checkArtefactInternallyOrExternallyPublished(maintainerOrganisationSchemeVersion.getMaintainableArtefact().getUrn(),
+                maintainerOrganisationSchemeVersion.getLifeCycleMetadata());
+
+        // Code
+        SrmValidationUtils.checkMaintainableArtefactCanChangeCodeIfChanged(dataStructureDefinitionVersion.getMaintainableArtefact());
+    }
+
+    private void checkDataStructureDefinitionVersioning(ServiceContext ctx, String urnToCopy) throws MetamacException {
 
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionToCopy = retrieveDataStructureDefinitionByUrn(ctx, urnToCopy);
         // Check version to copy is published

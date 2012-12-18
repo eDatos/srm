@@ -37,22 +37,23 @@ public class SrmValidationUtils {
         return false;
     }
 
-    public static void checkExternallyPublished(String urn, SrmLifeCycleMetadata lifeCycle) throws MetamacException {
-        if (!ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(lifeCycle.getProcStatus())) {
-            String[] procStatusString = SrmServiceUtils.procStatusEnumToString(ProcStatusEnum.EXTERNALLY_PUBLISHED);
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.LIFE_CYCLE_WRONG_PROC_STATUS).withMessageParameters(urn, procStatusString).build();
-        }
+    public static void checkArtefactInternallyOrExternallyPublished(String urn, SrmLifeCycleMetadata lifeCycle) throws MetamacException {
+        checkArtefactProcStatus(lifeCycle, urn, ProcStatusEnum.INTERNALLY_PUBLISHED, ProcStatusEnum.EXTERNALLY_PUBLISHED);
+    }
+
+    public static void checkArtefactExternallyPublished(String urn, SrmLifeCycleMetadata lifeCycle) throws MetamacException {
+        checkArtefactProcStatus(lifeCycle, urn, ProcStatusEnum.EXTERNALLY_PUBLISHED);
     }
 
     public static void checkArtefactCanBeModified(SrmLifeCycleMetadata lifeCycle, String urn) throws MetamacException {
-        checkProcStatus(lifeCycle, urn, ProcStatusEnum.DRAFT, ProcStatusEnum.PRODUCTION_VALIDATION, ProcStatusEnum.DIFFUSION_VALIDATION, ProcStatusEnum.VALIDATION_REJECTED);
+        checkArtefactProcStatus(lifeCycle, urn, ProcStatusEnum.DRAFT, ProcStatusEnum.PRODUCTION_VALIDATION, ProcStatusEnum.DIFFUSION_VALIDATION, ProcStatusEnum.VALIDATION_REJECTED);
     }
 
     public static void checkArtefactCanBeVersioned(SrmLifeCycleMetadata lifeCycle, String urn) throws MetamacException {
-        checkProcStatus(lifeCycle, urn, ProcStatusEnum.INTERNALLY_PUBLISHED, ProcStatusEnum.EXTERNALLY_PUBLISHED);
+        checkArtefactProcStatus(lifeCycle, urn, ProcStatusEnum.INTERNALLY_PUBLISHED, ProcStatusEnum.EXTERNALLY_PUBLISHED);
     }
 
-    public static void checkProcStatus(SrmLifeCycleMetadata lifeCycle, String urn, ProcStatusEnum... procStatus) throws MetamacException {
+    public static void checkArtefactProcStatus(SrmLifeCycleMetadata lifeCycle, String urn, ProcStatusEnum... procStatus) throws MetamacException {
         if (!ArrayUtils.contains(procStatus, lifeCycle.getProcStatus())) {
             String[] procStatusString = SrmServiceUtils.procStatusEnumToString(procStatus);
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.LIFE_CYCLE_WRONG_PROC_STATUS).withMessageParameters(urn, procStatusString).build();

@@ -319,7 +319,7 @@ public abstract class LifeCycleImpl implements LifeCycle {
             checkProcStatus(srmResourceVersion, procStatusToPublishExternally);
         }
 
-        // Note: sdmx module checks maintainer has validity started
+        // Note: sdmx module checks maintainer has validity started (externally published)
 
         // Check other conditions
         checkResourceInInternallyPublished(urn, srmResourceVersion, targetStatus);

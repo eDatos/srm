@@ -26,6 +26,8 @@ import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.common.service.utils.SrmValidationUtils;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
+import org.siemac.metamac.srm.core.organisation.serviceapi.OrganisationsMetamacService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -48,6 +50,9 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     private CodesService                codesService;
 
     @Autowired
+    private OrganisationsMetamacService organisationsService;
+
+    @Autowired
     private ItemSchemeVersionRepository itemSchemeVersionRepository;
 
     @Autowired
@@ -67,8 +72,10 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
     @Override
     public CodelistVersionMetamac createCodelist(ServiceContext ctx, CodelistVersionMetamac codelistVersion) throws MetamacException {
+
         // Validation
         CodesMetamacInvocationValidator.checkCreateCodelist(codelistVersion, null);
+        checkCodelistToCreateOrUpdate(ctx, codelistVersion);
 
         // Fill metadata
         codelistVersion.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
@@ -91,8 +98,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     public CodelistVersionMetamac updateCodelist(ServiceContext ctx, CodelistVersionMetamac codelistVersion) throws MetamacException {
         // Validation
         CodesMetamacInvocationValidator.checkUpdateCodelist(codelistVersion, null);
-        SrmValidationUtils.checkMaintainableArtefactCanChangeCodeIfChanged(codelistVersion.getMaintainableArtefact());
-        checkCodelistCanBeModified(codelistVersion);
+        checkCodelistToCreateOrUpdate(ctx, codelistVersion);
 
         // Save codelist
         return (CodelistVersionMetamac) codesService.updateCodelist(ctx, codelistVersion);
@@ -137,13 +143,11 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         return (CodelistVersionMetamac) codelistLifeCycle.rejectDiffusionValidation(ctx, urn);
     }
 
-    // TODO Para llevar a cabo la publicación interna de un recurso será necesario que previamente exista al menos un anuncio sobre el codelist a publicar
     @Override
     public CodelistVersionMetamac publishInternallyCodelist(ServiceContext ctx, String urn) throws MetamacException {
         return (CodelistVersionMetamac) codelistLifeCycle.publishInternally(ctx, urn);
     }
 
-    // TODO validTo, validFrom: ¿rellenar cuando el artefacto no sea del ISTAC? Pendiente decisión del ISTAC.
     @Override
     public CodelistVersionMetamac publishExternallyCodelist(ServiceContext ctx, String urn) throws MetamacException {
         return (CodelistVersionMetamac) codelistLifeCycle.publishExternally(ctx, urn);
@@ -164,7 +168,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     public CodelistVersionMetamac versioningCodelist(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
         // Validation
         CodesMetamacInvocationValidator.checkVersioningCodelist(urnToCopy, versionType, null, null);
-        checkVersioningCodelistIsSupported(ctx, urnToCopy);
+        checkCodelistToVersioning(ctx, urnToCopy);
 
         // Versioning
         CodelistVersionMetamac codelistNewVersion = (CodelistVersionMetamac) codesService.versioningCodelist(ctx, urnToCopy, versionType, codesCopyCallback);
@@ -205,13 +209,11 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
     @Override
     public CodeMetamac createCode(ServiceContext ctx, String codelistUrn, CodeMetamac code) throws MetamacException {
+        CodelistVersionMetamac codelistVersion = retrieveCodelistByUrn(ctx, codelistUrn);
+
         // Validation
-        CodelistVersionMetamac codelistVersion = null;
-        if (codelistUrn != null) {
-            codelistVersion = retrieveCodelistByUrn(ctx, codelistUrn);
-        }
         CodesMetamacInvocationValidator.checkCreateCode(codelistVersion, code, null);
-        checkCodelistCanBeModified(codelistVersion);
+        checkCodeToCreateOrUpdate(ctx, codelistVersion, code);
 
         // Save code
         return (CodeMetamac) codesService.createCode(ctx, codelistUrn, code);
@@ -219,14 +221,11 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
     @Override
     public CodeMetamac updateCode(ServiceContext ctx, CodeMetamac code) throws MetamacException {
-        CodelistVersionMetamac codelistVersion = null;
-        if (code != null && code.getItemSchemeVersion() != null && code.getItemSchemeVersion().getMaintainableArtefact() != null
-                && code.getItemSchemeVersion().getMaintainableArtefact().getUrn() != null) {
-            codelistVersion = retrieveCodelistByUrn(ctx, code.getItemSchemeVersion().getMaintainableArtefact().getUrn());
-        }
+        CodelistVersionMetamac codelistVersion = retrieveCodelistByCodeUrn(ctx, code.getNameableArtefact().getUrn());
+
         // Validation
         CodesMetamacInvocationValidator.checkUpdateCode(codelistVersion, code, null);
-        checkCodelistCanBeModified(codelistVersion);
+        checkCodeToCreateOrUpdate(ctx, codelistVersion, code);
 
         return (CodeMetamac) codesService.updateCode(ctx, code);
     }
@@ -520,7 +519,27 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
                 source.getAdditionalResultRows());
     }
 
-    private void checkVersioningCodelistIsSupported(ServiceContext ctx, String urnToCopy) throws MetamacException {
+    /**
+     * Common validations to create or update a codelist
+     */
+    private void checkCodelistToCreateOrUpdate(ServiceContext ctx, CodelistVersionMetamac codelist) throws MetamacException {
+
+        // Proc status
+        if (codelist.getId() != null) {
+            checkCodelistCanBeModified(codelist);
+        }
+
+        // Maintainer internally or externally published
+        String maintainerUrn = codelist.getMaintainableArtefact().getMaintainer().getNameableArtefact().getUrn();
+        OrganisationSchemeVersionMetamac maintainerOrganisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByOrganisationUrn(ctx, maintainerUrn);
+        SrmValidationUtils.checkArtefactInternallyOrExternallyPublished(maintainerOrganisationSchemeVersion.getMaintainableArtefact().getUrn(),
+                maintainerOrganisationSchemeVersion.getLifeCycleMetadata());
+
+        // Code
+        SrmValidationUtils.checkMaintainableArtefactCanChangeCodeIfChanged(codelist.getMaintainableArtefact());
+    }
+
+    private void checkCodelistToVersioning(ServiceContext ctx, String urnToCopy) throws MetamacException {
         CodelistVersionMetamac codelistVersionToCopy = retrieveCodelistByUrn(ctx, urnToCopy);
         // Check version to copy is published
         SrmValidationUtils.checkArtefactCanBeVersioned(codelistVersionToCopy.getLifeCycleMetadata(), urnToCopy);
@@ -530,6 +549,13 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.MAINTAINABLE_ARTEFACT_VERSIONING_NOT_SUPPORTED)
                     .withMessageParameters(codelistVersionNoFinal.getMaintainableArtefact().getUrn()).build();
         }
+    }
+
+    /**
+     * Common validations to create or update a code
+     */
+    private void checkCodeToCreateOrUpdate(ServiceContext ctx, CodelistVersionMetamac codelistVersion, Code code) throws MetamacException {
+        checkCodelistCanBeModified(codelistVersion);
     }
 
     /**

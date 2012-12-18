@@ -76,6 +76,7 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
 
         // Validation
         CategoriesMetamacInvocationValidator.checkCreateCategoryScheme(categorySchemeVersion, null);
+        checkCategorySchemeToCreateOrUpdate(ctx, categorySchemeVersion);
 
         // Fill metadata
         categorySchemeVersion.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
@@ -88,10 +89,10 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
 
     @Override
     public CategorySchemeVersionMetamac updateCategoryScheme(ServiceContext ctx, CategorySchemeVersionMetamac categorySchemeVersion) throws MetamacException {
+
         // Validation
         CategoriesMetamacInvocationValidator.checkUpdateCategoryScheme(categorySchemeVersion, null);
-        SrmValidationUtils.checkMaintainableArtefactCanChangeCodeIfChanged(categorySchemeVersion.getMaintainableArtefact());
-        checkCategorySchemeCanBeModified(categorySchemeVersion);
+        checkCategorySchemeToCreateOrUpdate(ctx, categorySchemeVersion);
 
         // Save categoryScheme
         return (CategorySchemeVersionMetamac) categoriesService.updateCategoryScheme(ctx, categorySchemeVersion);
@@ -138,13 +139,11 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
         return (CategorySchemeVersionMetamac) categorySchemeLifeCycle.rejectDiffusionValidation(ctx, urn);
     }
 
-    // TODO Para llevar a cabo la publicación interna de un recurso será necesario que previamente exista al menos un anuncio sobre el esquema de categorías a publicar
     @Override
     public CategorySchemeVersionMetamac publishInternallyCategoryScheme(ServiceContext ctx, String urn) throws MetamacException {
         return (CategorySchemeVersionMetamac) categorySchemeLifeCycle.publishInternally(ctx, urn);
     }
 
-    // TODO validTo, validFrom: ¿rellenar cuando el artefacto no sea del ISTAC? Pendiente decisión del ISTAC.
     @Override
     public CategorySchemeVersionMetamac publishExternallyCategoryScheme(ServiceContext ctx, String urn) throws MetamacException {
         return (CategorySchemeVersionMetamac) categorySchemeLifeCycle.publishExternally(ctx, urn);
@@ -166,7 +165,7 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
 
         // Validation
         CategoriesMetamacInvocationValidator.checkVersioningCategoryScheme(urnToCopy, versionType, null, null);
-        checkVersioningCategorySchemeIsSupported(ctx, urnToCopy);
+        checkCategorySchemeToVersioning(ctx, urnToCopy);
         // Versioning
         CategorySchemeVersionMetamac categorySchemeNewVersion = (CategorySchemeVersionMetamac) categoriesService.versioningCategoryScheme(ctx, urnToCopy, versionType, categoryCopyCallback);
 
@@ -192,13 +191,11 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
     @Override
     public CategoryMetamac createCategory(ServiceContext ctx, String categorySchemeUrn, CategoryMetamac category) throws MetamacException {
 
+        CategorySchemeVersionMetamac categorySchemeVersion = retrieveCategorySchemeByUrn(ctx, categorySchemeUrn);
+
         // Validation
-        CategorySchemeVersionMetamac categorySchemeVersion = null;
-        if (categorySchemeUrn != null) {
-            categorySchemeVersion = retrieveCategorySchemeByUrn(ctx, categorySchemeUrn);
-        }
         CategoriesMetamacInvocationValidator.checkCreateCategory(categorySchemeVersion, category, null);
-        checkCategorySchemeCanBeModified(categorySchemeVersion);
+        checkCategoryToCreateOrUpdate(ctx, categorySchemeVersion, category);
 
         // Save category
         return (CategoryMetamac) categoriesService.createCategory(ctx, categorySchemeUrn, category);
@@ -210,7 +207,7 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
         // Validation
         CategoriesMetamacInvocationValidator.checkUpdateCategory(category, null);
         CategorySchemeVersionMetamac categorySchemeVersion = retrieveCategorySchemeByCategoryUrn(ctx, category.getNameableArtefact().getUrn());
-        checkCategorySchemeCanBeModified(categorySchemeVersion);
+        checkCategoryToCreateOrUpdate(ctx, categorySchemeVersion, category);
 
         return (CategoryMetamac) categoriesService.updateCategory(ctx, category);
     }
@@ -376,15 +373,42 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
 
     private void checkCategoryExternallyPublished(ServiceContext ctx, String categoryUrn) throws MetamacException {
         CategorySchemeVersionMetamac categorySchemeVersion = retrieveCategorySchemeByCategoryUrn(ctx, categoryUrn);
-        SrmValidationUtils.checkExternallyPublished(categorySchemeVersion.getMaintainableArtefact().getUrn(), categorySchemeVersion.getLifeCycleMetadata());
+        SrmValidationUtils.checkArtefactExternallyPublished(categorySchemeVersion.getMaintainableArtefact().getUrn(), categorySchemeVersion.getLifeCycleMetadata());
     }
 
     private void checkMaintainerExternallyPublished(ServiceContext ctx, String maintainerUrn) throws MetamacException {
         OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByOrganisationUrn(ctx, maintainerUrn);
-        SrmValidationUtils.checkExternallyPublished(organisationSchemeVersion.getMaintainableArtefact().getUrn(), organisationSchemeVersion.getLifeCycleMetadata());
+        SrmValidationUtils.checkArtefactExternallyPublished(organisationSchemeVersion.getMaintainableArtefact().getUrn(), organisationSchemeVersion.getLifeCycleMetadata());
     }
 
-    private void checkVersioningCategorySchemeIsSupported(ServiceContext ctx, String urnToCopy) throws MetamacException {
+    /**
+     * Common validations to create or update a category scheme
+     */
+    private void checkCategorySchemeToCreateOrUpdate(ServiceContext ctx, CategorySchemeVersionMetamac categorySchemeVersion) throws MetamacException {
+
+        // Proc status
+        if (categorySchemeVersion.getId() != null) {
+            checkCategorySchemeCanBeModified(categorySchemeVersion);
+        }
+
+        // Maintainer internally or externally published
+        String maintainerUrn = categorySchemeVersion.getMaintainableArtefact().getMaintainer().getNameableArtefact().getUrn();
+        OrganisationSchemeVersionMetamac maintainerOrganisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByOrganisationUrn(ctx, maintainerUrn);
+        SrmValidationUtils.checkArtefactInternallyOrExternallyPublished(maintainerOrganisationSchemeVersion.getMaintainableArtefact().getUrn(),
+                maintainerOrganisationSchemeVersion.getLifeCycleMetadata());
+
+        // Code
+        SrmValidationUtils.checkMaintainableArtefactCanChangeCodeIfChanged(categorySchemeVersion.getMaintainableArtefact());
+    }
+
+    /**
+     * Common validations to create or update a category
+     */
+    private void checkCategoryToCreateOrUpdate(ServiceContext ctx, CategorySchemeVersionMetamac categorySchemeVersion, CategoryMetamac category) throws MetamacException {
+        checkCategorySchemeCanBeModified(categorySchemeVersion);
+    }
+
+    private void checkCategorySchemeToVersioning(ServiceContext ctx, String urnToCopy) throws MetamacException {
 
         CategorySchemeVersionMetamac categorySchemeVersionToCopy = retrieveCategorySchemeByUrn(ctx, urnToCopy);
         // Check version to copy is published
