@@ -44,6 +44,14 @@ public class SrmValidationUtils {
         }
     }
 
+    public static void checkArtefactCanBeModified(SrmLifeCycleMetadata lifeCycle, String urn) throws MetamacException {
+        checkProcStatus(lifeCycle, urn, ProcStatusEnum.DRAFT, ProcStatusEnum.PRODUCTION_VALIDATION, ProcStatusEnum.DIFFUSION_VALIDATION, ProcStatusEnum.VALIDATION_REJECTED);
+    }
+
+    public static void checkArtefactCanBeVersioned(SrmLifeCycleMetadata lifeCycle, String urn) throws MetamacException {
+        checkProcStatus(lifeCycle, urn, ProcStatusEnum.INTERNALLY_PUBLISHED, ProcStatusEnum.EXTERNALLY_PUBLISHED);
+    }
+
     public static void checkProcStatus(SrmLifeCycleMetadata lifeCycle, String urn, ProcStatusEnum... procStatus) throws MetamacException {
         if (!ArrayUtils.contains(procStatus, lifeCycle.getProcStatus())) {
             String[] procStatusString = SrmServiceUtils.procStatusEnumToString(procStatus);

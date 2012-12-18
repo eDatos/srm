@@ -18,25 +18,29 @@ import com.arte.statistic.sdmx.srm.core.concept.serviceimpl.utils.ConceptsDoCopy
 public class ConceptCopyCallbackMetamacImpl implements ConceptCopyCallback {
 
     @Override
-    public ConceptSchemeVersion copyConceptSchemeVersion(ConceptSchemeVersion source) {
-        return copyConceptSchemeVersion((ConceptSchemeVersionMetamac) source);
-    }
-
-    private ConceptSchemeVersionMetamac copyConceptSchemeVersion(ConceptSchemeVersionMetamac source) {
-        ConceptSchemeVersionMetamac target = new ConceptSchemeVersionMetamac();
-        target.setType(source.getType());
-        target.setRelatedOperation(BaseDoCopyUtils.copy(source.getRelatedOperation()));
-        target.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
-        return target;
+    public ConceptSchemeVersion createConceptSchemeVersion() {
+        return new ConceptSchemeVersionMetamac();
     }
 
     @Override
-    public Concept copyConcept(Concept source) {
-        return copyConcept((ConceptMetamac) source);
+    public void copyConceptSchemeVersion(ConceptSchemeVersion sourceSdmx, ConceptSchemeVersion targetSdmx) {
+        ConceptSchemeVersionMetamac source = (ConceptSchemeVersionMetamac) sourceSdmx;
+        ConceptSchemeVersionMetamac target = (ConceptSchemeVersionMetamac) targetSdmx;
+        target.setType(source.getType());
+        target.setRelatedOperation(BaseDoCopyUtils.copy(source.getRelatedOperation()));
+        target.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
+        target.getMaintainableArtefact().setFinalLogicClient(Boolean.FALSE);
     }
 
-    private ConceptMetamac copyConcept(ConceptMetamac source) {
-        ConceptMetamac target = new ConceptMetamac();
+    @Override
+    public Concept createConcept() {
+        return new ConceptMetamac();
+    }
+
+    @Override
+    public void copyConcept(Concept sourceSdmx, Concept targetSdmx) {
+        ConceptMetamac source = (ConceptMetamac) sourceSdmx;
+        ConceptMetamac target = (ConceptMetamac) targetSdmx;
         target.setPluralName(BaseDoCopyUtils.copy(source.getPluralName()));
         target.setAcronym(BaseDoCopyUtils.copy(source.getAcronym()));
         target.setDescriptionSource(BaseDoCopyUtils.copy(source.getDescriptionSource()));
@@ -53,6 +57,5 @@ public class ConceptCopyCallbackMetamacImpl implements ConceptCopyCallback {
             target.addRoleConcept(conceptRole);
         }
         // can not copy related concepts, because they belong to same concept scheme, and new concept in new version must relate to versioned related concept
-        return target;
     }
 }

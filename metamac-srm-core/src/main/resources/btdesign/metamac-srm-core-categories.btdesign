@@ -71,6 +71,14 @@ Application CategoriesMetamac {
     		@Categorisation retrieveCategorisationByUrn(String urn) throws MetamacException;
     		"Deletes categorisation"
     		deleteCategorisation(String urn) throws MetamacException;
+    		"Marks a categorisation as final"
+    		@Categorisation markCategorisationAsFinal(String urn) throws MetamacException;
+    		"Marks a categorisation as public"
+    		@Categorisation markCategorisationAsPublic(String urn) throws MetamacException;
+    		"Starts the validity of a categorisation. ValidFrom date is optional"
+    		@Categorisation startCategorisationValidity(String urn, DateTimeTZ validFrom) throws MetamacException;
+    		"Ends the validity of a categorisation. ValidTo date is optional"
+    		@Categorisation endCategorisationValidity(String urn, DateTimeTZ validTo) throws MetamacException;
     		"Retrieves all categorisations by categorised artefact"
     		List<@Categorisation> retrieveCategorisationsByArtefact(String urn) throws MetamacException;
 			"Finds categorisations by criteria"

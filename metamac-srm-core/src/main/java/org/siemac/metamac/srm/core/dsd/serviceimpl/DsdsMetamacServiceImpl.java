@@ -64,6 +64,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         // Fill metadata
         dataStructureDefinitionVersion.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
         dataStructureDefinitionVersion.getMaintainableArtefact().setIsExternalReference(Boolean.FALSE);
+        dataStructureDefinitionVersion.getMaintainableArtefact().setFinalLogicClient(Boolean.FALSE);
 
         // Save
         return (DataStructureDefinitionVersionMetamac) dataStructureDefinitionService.createDataStructureDefinition(ctx, dataStructureDefinitionVersion, SrmConstants.VERSION_PATTERN_METAMAC);
@@ -74,7 +75,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         // Validation
         DsdsMetamacInvocationValidator.checkUpdateDataStructureDefinition(dataStructureDefinitionVersion, null);
         SrmValidationUtils.checkMaintainableArtefactCanChangeCodeIfChanged(dataStructureDefinitionVersion.getMaintainableArtefact());
-        // dataStructureDefinitionService checks data structure definition isn't final (Schemes cannot be updated when procStatus is INTERNALLY_PUBLISHED or EXTERNALLY_PUBLISHED)
+        checkDataStructureDefinitionCanBeModified(dataStructureDefinitionVersion);
 
         // Save
         return (DataStructureDefinitionVersionMetamac) dataStructureDefinitionService.updateDataStructureDefinition(ctx, dataStructureDefinitionVersion);
@@ -113,14 +114,12 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
     }
 
     @Override
-    public Component saveComponentForDataStructureDefinition(ServiceContext ctx, String dataStructureDefinitionVersionUrn, Component component)
-            throws MetamacException {
+    public Component saveComponentForDataStructureDefinition(ServiceContext ctx, String dataStructureDefinitionVersionUrn, Component component) throws MetamacException {
         return dataStructureDefinitionService.saveComponentForDataStructureDefinition(ctx, dataStructureDefinitionVersionUrn, component);
     }
 
     @Override
-    public void deleteComponentForDataStructureDefinition(ServiceContext ctx, String dataStructureDefinitionVersionUrn, Component component)
-            throws MetamacException {
+    public void deleteComponentForDataStructureDefinition(ServiceContext ctx, String dataStructureDefinitionVersionUrn, Component component) throws MetamacException {
         dataStructureDefinitionService.deleteComponentForDataStructureDefinition(ctx, dataStructureDefinitionVersionUrn, component);
     }
 
@@ -157,6 +156,11 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
 
     @Override
     public void deleteDataStructureDefinition(ServiceContext ctx, String urn) throws MetamacException {
+        // Validation
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion = retrieveDataStructureDefinitionByUrn(ctx, urn);
+        checkDataStructureDefinitionCanBeModified(dataStructureDefinitionVersion);
+
+        // Delete
         dataStructureDefinitionService.deleteDataStructureDefinition(ctx, urn);
     }
 
@@ -246,12 +250,9 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
 
     private void checkVersioningDataStructureDefinitionIsSupported(ServiceContext ctx, String urnToCopy) throws MetamacException {
 
-        // Retrieve version to copy and check it is final
-        DataStructureDefinitionVersion dataStructureDefinitionVersionToCopy = retrieveDataStructureDefinitionByUrn(ctx, urnToCopy);
-        if (!dataStructureDefinitionVersionToCopy.getMaintainableArtefact().getFinalLogic()) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.MAINTAINABLE_ARTEFACT_VERSIONING_NOT_SUPPORTED)
-                    .withMessageParameters(dataStructureDefinitionVersionToCopy.getMaintainableArtefact().getUrn()).build();
-        }
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionToCopy = retrieveDataStructureDefinitionByUrn(ctx, urnToCopy);
+        // Check version to copy is published
+        SrmValidationUtils.checkArtefactCanBeVersioned(dataStructureDefinitionVersionToCopy.getLifeCycleMetadata(), urnToCopy);
 
         // Check does not exist any version 'no final'
         StructureVersion dataStructureVersionNoFinal = structureVersionRepository.findStructureVersionFinal(dataStructureDefinitionVersionToCopy.getStructure().getId());
@@ -259,5 +260,9 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.MAINTAINABLE_ARTEFACT_VERSIONING_NOT_SUPPORTED)
                     .withMessageParameters(dataStructureVersionNoFinal.getMaintainableArtefact().getUrn()).build();
         }
+    }
+
+    private void checkDataStructureDefinitionCanBeModified(DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion) throws MetamacException {
+        SrmValidationUtils.checkArtefactCanBeModified(dataStructureDefinitionVersion.getLifeCycleMetadata(), dataStructureDefinitionVersion.getMaintainableArtefact().getUrn());
     }
 }

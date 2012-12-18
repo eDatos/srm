@@ -44,7 +44,7 @@
     
     <!-- ************************************************************************************** -->
     <!-- ORGANISATION SCHEME 100 (ROOT ORGANISATION - MAINTAINER)                               -->
-    <!--        - Version 1: final                                                              -->
+    <!--        - Version 1: no final (can not be final)                                        -->
     <!-- *************************************************************************************  -->
 
     <TB_ITEM_SCHEMES
@@ -115,8 +115,9 @@
         COMMENT_FK="[null]"
         
         VERSION_LOGIC="01.000"
-        FINAL_LOGIC="1"
-        LATEST_FINAL="1"
+        FINAL_LOGIC="0"
+        FINAL_LOGIC_CLIENT="1"
+        LATEST_FINAL="0"
         PUBLIC_LOGIC="1"
         LATEST_PUBLIC="1"
         VALID_FROM_TZ="Europe/London"
@@ -332,6 +333,7 @@
         
         VERSION_LOGIC="01.000"
         FINAL_LOGIC="1"
+        FINAL_LOGIC_CLIENT="1"
         LATEST_FINAL="1"
         PUBLIC_LOGIC="0"
         LATEST_PUBLIC="0"
@@ -475,6 +477,7 @@
         
         VERSION_LOGIC="02.000"
         FINAL_LOGIC="0"
+        FINAL_LOGIC_CLIENT="0"
         LATEST_FINAL="0"
         PUBLIC_LOGIC="0"
         LATEST_PUBLIC="0"
@@ -991,6 +994,7 @@
         
         VERSION_LOGIC="01.000"
         FINAL_LOGIC="0"
+        FINAL_LOGIC_CLIENT="0"
         LATEST_FINAL="0"
         PUBLIC_LOGIC="0"
         LATEST_PUBLIC="0"
@@ -1197,6 +1201,7 @@
         
         VERSION_LOGIC="01.000"
         FINAL_LOGIC="1"
+        FINAL_LOGIC_CLIENT="1"
         LATEST_FINAL="1"
         PUBLIC_LOGIC="0"
         LATEST_PUBLIC="0"
@@ -1556,6 +1561,7 @@
         
         VERSION_LOGIC="01.000"
         FINAL_LOGIC="0"
+        FINAL_LOGIC_CLIENT="0"
         LATEST_FINAL="0"
         PUBLIC_LOGIC="0"
         LATEST_PUBLIC="0"
@@ -1704,6 +1710,7 @@
         
         VERSION_LOGIC="01.000"
         FINAL_LOGIC="0"
+        FINAL_LOGIC_CLIENT="0"
         LATEST_FINAL="0"
         PUBLIC_LOGIC="0"
         LATEST_PUBLIC="0"
@@ -1852,6 +1859,7 @@
         
         VERSION_LOGIC="01.000"
         FINAL_LOGIC="0"
+        FINAL_LOGIC_CLIENT="0"
         LATEST_FINAL="0"
         PUBLIC_LOGIC="0"
         LATEST_PUBLIC="0"
@@ -2003,6 +2011,7 @@
         
         VERSION_LOGIC="01.000"
         FINAL_LOGIC="1"
+        FINAL_LOGIC_CLIENT="1"
         LATEST_FINAL="0"
         PUBLIC_LOGIC="1"
         LATEST_PUBLIC="1"
@@ -2090,6 +2099,7 @@
         
         VERSION_LOGIC="02.000"
         FINAL_LOGIC="1"
+        FINAL_LOGIC_CLIENT="1"
         LATEST_FINAL="1"
         PUBLIC_LOGIC="0"
         LATEST_PUBLIC="0"
@@ -2240,6 +2250,7 @@
         
         VERSION_LOGIC="01.000"
         FINAL_LOGIC="0"
+        FINAL_LOGIC_CLIENT="0"
         LATEST_FINAL="0"
         PUBLIC_LOGIC="0"
         LATEST_PUBLIC="0"
@@ -2388,6 +2399,7 @@
         
         VERSION_LOGIC="01.000"
         FINAL_LOGIC="0"
+        FINAL_LOGIC_CLIENT="0"
         LATEST_FINAL="0"
         PUBLIC_LOGIC="0"
         LATEST_PUBLIC="0"
@@ -2489,6 +2501,7 @@
         
         VERSION_LOGIC="01.000"
         FINAL_LOGIC="1"
+        FINAL_LOGIC_CLIENT="1"
         LATEST_FINAL="0"
         PUBLIC_LOGIC="1"
         LATEST_PUBLIC="1"
@@ -2576,6 +2589,7 @@
         
         VERSION_LOGIC="02.000"
         FINAL_LOGIC="1"
+        FINAL_LOGIC_CLIENT="1"
         LATEST_FINAL="1"
         PUBLIC_LOGIC="0"
         LATEST_PUBLIC="0"
@@ -2714,6 +2728,7 @@
         
         VERSION_LOGIC="03.000"
         FINAL_LOGIC="0"
+        FINAL_LOGIC_CLIENT="0"
         LATEST_FINAL="0"
         PUBLIC_LOGIC="0"
         LATEST_PUBLIC="0"
@@ -2864,6 +2879,7 @@
         
         VERSION_LOGIC="01.000"
         FINAL_LOGIC="0"
+        FINAL_LOGIC_CLIENT="0"
         LATEST_FINAL="0"
         PUBLIC_LOGIC="0"
         LATEST_PUBLIC="0"
@@ -3015,6 +3031,7 @@
         
         VERSION_LOGIC="01.000"
         FINAL_LOGIC="1"
+        FINAL_LOGIC_CLIENT="1"
         LATEST_FINAL="1"
         PUBLIC_LOGIC="1"
         LATEST_PUBLIC="1"
@@ -3165,6 +3182,7 @@
         
         VERSION_LOGIC="01.000"
         FINAL_LOGIC="1"
+        FINAL_LOGIC_CLIENT="1"
         LATEST_FINAL="1"
         PUBLIC_LOGIC="1"
         LATEST_PUBLIC="1"

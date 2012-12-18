@@ -93,6 +93,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         assertNull(conceptSchemeVersionRetrieved.getLifeCycleMetadata().getInternalPublicationUser());
         assertNull(conceptSchemeVersionRetrieved.getLifeCycleMetadata().getExternalPublicationDate());
         assertNull(conceptSchemeVersionRetrieved.getLifeCycleMetadata().getExternalPublicationUser());
+        assertFalse(conceptSchemeVersionRetrieved.getMaintainableArtefact().getFinalLogicClient());
         assertEquals(ctx.getUserId(), conceptSchemeVersionRetrieved.getCreatedBy());
         assertEquals(ctx.getUserId(), conceptSchemeVersionRetrieved.getLastUpdatedBy());
         ConceptsMetamacAsserts.assertEqualsConceptScheme(conceptSchemeVersion, conceptSchemeVersionRetrieved);
@@ -202,9 +203,13 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
                 fail("wrong proc status");
             } catch (MetamacException e) {
                 assertEquals(1, e.getExceptionItems().size());
-                assertEquals(ServiceExceptionType.MAINTAINABLE_ARTEFACT_FINAL.getCode(), e.getExceptionItems().get(0).getCode());
-                assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+                assertEquals(ServiceExceptionType.LIFE_CYCLE_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
+                assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
                 assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+                assertEquals(ServiceExceptionParameters.PROC_STATUS_DRAFT, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
+                assertEquals(ServiceExceptionParameters.PROC_STATUS_PRODUCTION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[1]);
+                assertEquals(ServiceExceptionParameters.PROC_STATUS_DIFFUSION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[2]);
+                assertEquals(ServiceExceptionParameters.PROC_STATUS_VALIDATION_REJECTED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[3]);
             }
         }
     }
@@ -811,6 +816,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertEquals(ctx.getUserId(), conceptSchemeVersion.getLifeCycleMetadata().getInternalPublicationUser());
             assertNull(conceptSchemeVersion.getLifeCycleMetadata().getExternalPublicationDate());
             assertNull(conceptSchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
+            assertTrue(conceptSchemeVersion.getMaintainableArtefact().getFinalLogicClient());
             assertTrue(conceptSchemeVersion.getMaintainableArtefact().getFinalLogic());
             assertTrue(conceptSchemeVersion.getMaintainableArtefact().getLatestFinal());
             assertFalse(conceptSchemeVersion.getMaintainableArtefact().getPublicLogic());
@@ -1042,9 +1048,13 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             fail("ConceptScheme can not be deleted");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEquals(ServiceExceptionType.MAINTAINABLE_ARTEFACT_FINAL.getCode(), e.getExceptionItems().get(0).getCode());
-            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(ServiceExceptionType.LIFE_CYCLE_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
             assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_DRAFT, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_PRODUCTION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[1]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_DIFFUSION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[2]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_VALIDATION_REJECTED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[3]);
         }
     }
 
@@ -1345,9 +1355,11 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             fail("ConceptScheme not published");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEquals(ServiceExceptionType.MAINTAINABLE_ARTEFACT_VERSIONING_NOT_SUPPORTED.getCode(), e.getExceptionItems().get(0).getCode());
-            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(ServiceExceptionType.LIFE_CYCLE_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
             assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_INTERNALLY_PUBLISHED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_EXTERNALLY_PUBLISHED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[1]);
         }
     }
 
@@ -1485,7 +1497,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             fail("not published");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            
+
             assertEquals(ServiceExceptionType.CONCEPT_SCHEME_WRONG_TYPE.getCode(), e.getExceptionItems().get(0).getCode());
             assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
             assertEquals(conceptSchemeUrn, e.getExceptionItems().get(0).getMessageParameters()[0]);
@@ -1495,7 +1507,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertEquals(ServiceExceptionParameters.CONCEPT_SCHEME_TYPE_MEASURE, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[3]);
         }
     }
-    
+
     @Test
     public void testCreateConceptErrorMetadataIncorrect() throws Exception {
 
@@ -1803,9 +1815,13 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             fail("Concept can not be deleted");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEquals(ServiceExceptionType.MAINTAINABLE_ARTEFACT_FINAL.getCode(), e.getExceptionItems().get(0).getCode());
-            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(ServiceExceptionType.LIFE_CYCLE_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
             assertEquals(conceptSchemeUrn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_DRAFT, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_PRODUCTION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[1]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_DIFFUSION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[2]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_VALIDATION_REJECTED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[3]);
         }
     }
 

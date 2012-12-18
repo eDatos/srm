@@ -67,6 +67,7 @@ public class CategoriesMetamacCategorisationServiceTest extends SrmBaseTest {
         assertTrue(categorisationRetrieved.getMaintainableArtefact().getLatestFinal());
         assertTrue(categorisationRetrieved.getMaintainableArtefact().getPublicLogic());
         assertTrue(categorisationRetrieved.getMaintainableArtefact().getLatestPublic());
+        assertTrue(categorisationRetrieved.getMaintainableArtefact().getFinalLogicClient());
     }
 
     @Test
@@ -91,6 +92,7 @@ public class CategoriesMetamacCategorisationServiceTest extends SrmBaseTest {
         assertFalse(categorisationRetrieved.getMaintainableArtefact().getLatestFinal());
         assertFalse(categorisationRetrieved.getMaintainableArtefact().getPublicLogic());
         assertFalse(categorisationRetrieved.getMaintainableArtefact().getLatestPublic());
+        assertFalse(categorisationRetrieved.getMaintainableArtefact().getFinalLogicClient());
     }
 
     @Test
@@ -158,6 +160,7 @@ public class CategoriesMetamacCategorisationServiceTest extends SrmBaseTest {
                 assertEquals(CATEGORISATION_4, categorisation.getMaintainableArtefact().getUrn());
                 assertTrue(categorisation.getMaintainableArtefact().getFinalLogic());
                 assertTrue(categorisation.getMaintainableArtefact().getLatestFinal());
+                assertTrue(categorisation.getMaintainableArtefact().getFinalLogicClient());
                 assertNull(categorisation.getMaintainableArtefact().getValidFrom());
                 assertFalse(categorisation.getMaintainableArtefact().getPublicLogic());
                 assertFalse(categorisation.getMaintainableArtefact().getLatestPublic());
@@ -168,6 +171,7 @@ public class CategoriesMetamacCategorisationServiceTest extends SrmBaseTest {
                 assertEquals(CATEGORISATION_5, categorisation.getMaintainableArtefact().getUrn());
                 assertTrue(categorisation.getMaintainableArtefact().getFinalLogic());
                 assertTrue(categorisation.getMaintainableArtefact().getLatestFinal());
+                assertTrue(categorisation.getMaintainableArtefact().getFinalLogicClient());
                 assertNull(categorisation.getMaintainableArtefact().getValidFrom());
                 assertFalse(categorisation.getMaintainableArtefact().getPublicLogic());
                 assertFalse(categorisation.getMaintainableArtefact().getLatestPublic());
@@ -189,6 +193,7 @@ public class CategoriesMetamacCategorisationServiceTest extends SrmBaseTest {
                 assertEquals(CATEGORISATION_4, categorisation.getMaintainableArtefact().getUrn());
                 assertTrue(categorisation.getMaintainableArtefact().getFinalLogic());
                 assertTrue(categorisation.getMaintainableArtefact().getLatestFinal());
+                assertTrue(categorisation.getMaintainableArtefact().getFinalLogicClient());
                 assertTrue(DateUtils.isSameDay(new Date(), categorisation.getMaintainableArtefact().getValidFrom().toDate()));
                 assertTrue(categorisation.getMaintainableArtefact().getPublicLogic());
                 assertTrue(categorisation.getMaintainableArtefact().getLatestPublic());
@@ -199,6 +204,7 @@ public class CategoriesMetamacCategorisationServiceTest extends SrmBaseTest {
                 assertEquals(CATEGORISATION_5, categorisation.getMaintainableArtefact().getUrn());
                 assertTrue(categorisation.getMaintainableArtefact().getFinalLogic());
                 assertTrue(categorisation.getMaintainableArtefact().getLatestFinal());
+                assertTrue(categorisation.getMaintainableArtefact().getFinalLogicClient());
                 assertTrue(DateUtils.isSameDay(new Date(), categorisation.getMaintainableArtefact().getValidFrom().toDate()));
                 assertTrue(categorisation.getMaintainableArtefact().getPublicLogic());
                 assertTrue(categorisation.getMaintainableArtefact().getLatestPublic());

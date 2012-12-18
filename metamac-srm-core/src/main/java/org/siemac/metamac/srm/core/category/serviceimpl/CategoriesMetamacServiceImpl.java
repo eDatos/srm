@@ -7,6 +7,7 @@ import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
+import org.joda.time.DateTime;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
@@ -31,6 +32,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefactRepository;
 import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
+import com.arte.statistic.sdmx.srm.core.category.domain.CategorisationRepository;
 import com.arte.statistic.sdmx.srm.core.category.domain.Category;
 import com.arte.statistic.sdmx.srm.core.category.domain.CategorySchemeVersion;
 import com.arte.statistic.sdmx.srm.core.category.serviceapi.CategoriesService;
@@ -59,9 +61,12 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
 
     @Autowired
     private MaintainableArtefactRepository maintainableArtefactRepository;
-    
+
     @Autowired
-    private ItemSchemeVersionRepository itemSchemeVersionRepository;    
+    private ItemSchemeVersionRepository    itemSchemeVersionRepository;
+
+    @Autowired
+    private CategorisationRepository       categorisationRepository;
 
     public CategoriesMetamacServiceImpl() {
     }
@@ -75,6 +80,7 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
         // Fill metadata
         categorySchemeVersion.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
         categorySchemeVersion.getMaintainableArtefact().setIsExternalReference(Boolean.FALSE);
+        categorySchemeVersion.getMaintainableArtefact().setFinalLogicClient(Boolean.FALSE);
 
         // Save categoryScheme
         return (CategorySchemeVersionMetamac) categoriesService.createCategoryScheme(ctx, categorySchemeVersion, SrmConstants.VERSION_PATTERN_METAMAC);
@@ -85,7 +91,7 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
         // Validation
         CategoriesMetamacInvocationValidator.checkUpdateCategoryScheme(categorySchemeVersion, null);
         SrmValidationUtils.checkMaintainableArtefactCanChangeCodeIfChanged(categorySchemeVersion.getMaintainableArtefact());
-        // CategoriesService checks categoryScheme is not final (Schemes cannot be updated when procStatus is INTERNALLY_PUBLISHED or EXTERNALLY_PUBLISHED)
+        checkCategorySchemeCanBeModified(categorySchemeVersion);
 
         // Save categoryScheme
         return (CategorySchemeVersionMetamac) categoriesService.updateCategoryScheme(ctx, categorySchemeVersion);
@@ -146,7 +152,12 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
 
     @Override
     public void deleteCategoryScheme(ServiceContext ctx, String urn) throws MetamacException {
-        // Note: CategoriesService checks categoryScheme isn't final and other conditions
+
+        // Validation
+        CategorySchemeVersionMetamac categorySchemeVersion = retrieveCategorySchemeByUrn(ctx, urn);
+        checkCategorySchemeCanBeModified(categorySchemeVersion);
+
+        // Delete
         categoriesService.deleteCategoryScheme(ctx, urn);
     }
 
@@ -187,7 +198,7 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
             categorySchemeVersion = retrieveCategorySchemeByUrn(ctx, categorySchemeUrn);
         }
         CategoriesMetamacInvocationValidator.checkCreateCategory(categorySchemeVersion, category, null);
-        // CategoriesService checks categoryScheme isn't final
+        checkCategorySchemeCanBeModified(categorySchemeVersion);
 
         // Save category
         return (CategoryMetamac) categoriesService.createCategory(ctx, categorySchemeUrn, category);
@@ -198,7 +209,8 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
 
         // Validation
         CategoriesMetamacInvocationValidator.checkUpdateCategory(category, null);
-        // CategoriesService checks categoryScheme isn't final
+        CategorySchemeVersionMetamac categorySchemeVersion = retrieveCategorySchemeByCategoryUrn(ctx, category.getNameableArtefact().getUrn());
+        checkCategorySchemeCanBeModified(categorySchemeVersion);
 
         return (CategoryMetamac) categoriesService.updateCategory(ctx, category);
     }
@@ -217,7 +229,11 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
     @Override
     public void deleteCategory(ServiceContext ctx, String urn) throws MetamacException {
 
-        // Note: CategoriesService checks categoryScheme isn't final
+        // Validation
+        CategorySchemeVersionMetamac categorySchemeVersion = retrieveCategorySchemeByCategoryUrn(ctx, urn);
+        checkCategorySchemeCanBeModified(categorySchemeVersion);
+
+        // Delete
         categoriesService.deleteCategory(ctx, urn);
     }
 
@@ -257,18 +273,21 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
 
         // Create
         Categorisation categorisation = categoriesService.createCategorisation(ctx, categoryUrn, artefactCategorisedUrn, maintainerUrn, SrmConstants.VERSION_PATTERN_METAMAC);
-
         // Automatically publication
         // Note: we can find artefact as maintainable instead of identifiable because in Metamac all artefacts with categorisation inherit to maintainable
         MaintainableArtefact artefact = maintainableArtefactRepository.findByUrn(artefactCategorisedUrn);
-        if (artefact.getFinalLogic()) {
-            categorisation = categoriesService.markCategorisationAsFinal(ctx, categorisation.getMaintainableArtefact().getUrn());
+
+        if (artefact.getFinalLogicClient()) {
+            categorisation = markCategorisationAsFinal(ctx, categorisation.getMaintainableArtefact().getUrn());
+        } else {
+            categorisation.getMaintainableArtefact().setFinalLogicClient(Boolean.FALSE);
+            categorisationRepository.save(categorisation);
         }
         if (artefact.getPublicLogic()) {
-            categorisation = categoriesService.markCategorisationAsPublic(ctx, categorisation.getMaintainableArtefact().getUrn());
+            categorisation = markCategorisationAsPublic(ctx, categorisation.getMaintainableArtefact().getUrn());
         }
         if (artefact.getValidFrom() != null) {
-            categorisation = categoriesService.startCategorisationValidity(ctx, categorisation.getMaintainableArtefact().getUrn(), null);
+            categorisation = startCategorisationValidity(ctx, categorisation.getMaintainableArtefact().getUrn(), null);
         }
         return categorisation;
     }
@@ -276,6 +295,28 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
     @Override
     public void deleteCategorisation(ServiceContext ctx, String urn) throws MetamacException {
         categoriesService.deleteCategorisation(ctx, urn);
+    }
+
+    @Override
+    public Categorisation markCategorisationAsFinal(ServiceContext ctx, String urn) throws MetamacException {
+        Categorisation categorisation = retrieveCategorisationByUrn(ctx, urn);
+        categorisation.getMaintainableArtefact().setFinalLogicClient(Boolean.TRUE);
+        return categoriesService.markCategorisationAsFinal(ctx, urn);
+    }
+
+    @Override
+    public Categorisation markCategorisationAsPublic(ServiceContext ctx, String urn) throws MetamacException {
+        return categoriesService.markCategorisationAsPublic(ctx, urn);
+    }
+
+    @Override
+    public Categorisation startCategorisationValidity(ServiceContext ctx, String urn, DateTime validFrom) throws MetamacException {
+        return categoriesService.startCategorisationValidity(ctx, urn, validFrom);
+    }
+
+    @Override
+    public Categorisation endCategorisationValidity(ServiceContext ctx, String urn, DateTime validTo) throws MetamacException {
+        return categoriesService.endCategorisationValidity(ctx, urn, validTo);
     }
 
     @Override
@@ -287,7 +328,7 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
     public List<Categorisation> retrieveCategorisationsByArtefact(ServiceContext ctx, String urn) throws MetamacException {
         return categoriesService.retrieveCategorisationsByArtefact(ctx, urn);
     }
-    
+
     @Override
     public PagedResult<Categorisation> findCategorisationsByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
         PagedResult<Categorisation> pagedResults = categoriesService.findCategorisationsByCondition(ctx, conditions, pagingParameter);
@@ -342,20 +383,21 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
         OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByOrganisationUrn(ctx, maintainerUrn);
         SrmValidationUtils.checkExternallyPublished(organisationSchemeVersion.getMaintainableArtefact().getUrn(), organisationSchemeVersion.getLifeCycleMetadata());
     }
-    
+
     private void checkVersioningCategorySchemeIsSupported(ServiceContext ctx, String urnToCopy) throws MetamacException {
-        
-        // Retrieve version to copy and check it is final (internally published)
-        CategorySchemeVersion categorySchemeVersionToCopy = retrieveCategorySchemeByUrn(ctx, urnToCopy);
-        if (!categorySchemeVersionToCopy.getMaintainableArtefact().getFinalLogic()) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.MAINTAINABLE_ARTEFACT_VERSIONING_NOT_SUPPORTED)
-                    .withMessageParameters(categorySchemeVersionToCopy.getMaintainableArtefact().getUrn()).build();
-        }
+
+        CategorySchemeVersionMetamac categorySchemeVersionToCopy = retrieveCategorySchemeByUrn(ctx, urnToCopy);
+        // Check version to copy is published
+        SrmValidationUtils.checkArtefactCanBeVersioned(categorySchemeVersionToCopy.getLifeCycleMetadata(), urnToCopy);
         // Check does not exist any version 'no final'
         ItemSchemeVersion categorySchemeVersionNoFinal = itemSchemeVersionRepository.findItemSchemeVersionNoFinal(categorySchemeVersionToCopy.getItemScheme().getId());
         if (categorySchemeVersionNoFinal != null) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.MAINTAINABLE_ARTEFACT_VERSIONING_NOT_SUPPORTED)
                     .withMessageParameters(categorySchemeVersionNoFinal.getMaintainableArtefact().getUrn()).build();
         }
+    }
+
+    private void checkCategorySchemeCanBeModified(CategorySchemeVersionMetamac categorySchemeVersion) throws MetamacException {
+        SrmValidationUtils.checkArtefactCanBeModified(categorySchemeVersion.getLifeCycleMetadata(), categorySchemeVersion.getMaintainableArtefact().getUrn());
     }
 }

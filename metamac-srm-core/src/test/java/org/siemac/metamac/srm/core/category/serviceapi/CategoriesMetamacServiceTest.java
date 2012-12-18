@@ -84,6 +84,7 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
         assertNull(categorySchemeVersionRetrieved.getLifeCycleMetadata().getInternalPublicationUser());
         assertNull(categorySchemeVersionRetrieved.getLifeCycleMetadata().getExternalPublicationDate());
         assertNull(categorySchemeVersionRetrieved.getLifeCycleMetadata().getExternalPublicationUser());
+        assertFalse(categorySchemeVersionRetrieved.getMaintainableArtefact().getFinalLogicClient());
         assertEquals(ctx.getUserId(), categorySchemeVersionRetrieved.getCreatedBy());
         CategoriesMetamacAsserts.assertEqualsCategoryScheme(categorySchemeVersion, categorySchemeVersionRetrieved);
     }
@@ -124,9 +125,13 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
                 fail("wrong proc status");
             } catch (MetamacException e) {
                 assertEquals(1, e.getExceptionItems().size());
-                assertEquals(ServiceExceptionType.MAINTAINABLE_ARTEFACT_FINAL.getCode(), e.getExceptionItems().get(0).getCode());
-                assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+                assertEquals(ServiceExceptionType.LIFE_CYCLE_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
+                assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
                 assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+                assertEquals(ServiceExceptionParameters.PROC_STATUS_DRAFT, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
+                assertEquals(ServiceExceptionParameters.PROC_STATUS_PRODUCTION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[1]);
+                assertEquals(ServiceExceptionParameters.PROC_STATUS_DIFFUSION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[2]);
+                assertEquals(ServiceExceptionParameters.PROC_STATUS_VALIDATION_REJECTED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[3]);
             }
         }
     }
@@ -686,6 +691,7 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
             assertEquals(ctx.getUserId(), categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationUser());
             assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationDate());
             assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
+            assertTrue(categorySchemeVersion.getMaintainableArtefact().getFinalLogicClient());
             assertTrue(categorySchemeVersion.getMaintainableArtefact().getFinalLogic());
             assertTrue(categorySchemeVersion.getMaintainableArtefact().getLatestFinal());
             assertFalse(categorySchemeVersion.getMaintainableArtefact().getPublicLogic());
@@ -917,9 +923,13 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
             fail("CategoryScheme can not be deleted");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEquals(ServiceExceptionType.MAINTAINABLE_ARTEFACT_FINAL.getCode(), e.getExceptionItems().get(0).getCode());
-            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(ServiceExceptionType.LIFE_CYCLE_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
             assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_DRAFT, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_PRODUCTION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[1]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_DIFFUSION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[2]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_VALIDATION_REJECTED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[3]);
         }
     }
 
@@ -1100,9 +1110,11 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
             fail("CategoryScheme not published");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEquals(ServiceExceptionType.MAINTAINABLE_ARTEFACT_VERSIONING_NOT_SUPPORTED.getCode(), e.getExceptionItems().get(0).getCode());
-            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(ServiceExceptionType.LIFE_CYCLE_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
             assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_INTERNALLY_PUBLISHED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_EXTERNALLY_PUBLISHED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[1]);
         }
     }
     @Test
@@ -1317,9 +1329,13 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
             fail("Category can not be deleted");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEquals(ServiceExceptionType.MAINTAINABLE_ARTEFACT_FINAL.getCode(), e.getExceptionItems().get(0).getCode());
-            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(ServiceExceptionType.LIFE_CYCLE_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
             assertEquals(categorySchemeUrn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_DRAFT, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_PRODUCTION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[1]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_DIFFUSION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[2]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_VALIDATION_REJECTED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[3]);
         }
     }
 
@@ -1541,6 +1557,18 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
     }
     @Override
     public void testFindCategorisationsByCondition() throws Exception {
+    }
+    @Override
+    public void testMarkCategorisationAsFinal() throws Exception {
+    }
+    @Override
+    public void testMarkCategorisationAsPublic() throws Exception {
+    }
+    @Override
+    public void testStartCategorisationValidity() throws Exception {
+    }
+    @Override
+    public void testEndCategorisationValidity() throws Exception {
     }
 
     @Override

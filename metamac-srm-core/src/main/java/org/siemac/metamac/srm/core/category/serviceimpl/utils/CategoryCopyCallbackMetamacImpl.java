@@ -17,23 +17,25 @@ import com.arte.statistic.sdmx.srm.core.category.serviceimpl.utils.CategoriesDoC
 public class CategoryCopyCallbackMetamacImpl implements CategoryCopyCallback {
 
     @Override
-    public CategorySchemeVersion copyCategorySchemeVersion(CategorySchemeVersion source) {
-        return copyCategorySchemeVersion((CategorySchemeVersionMetamac) source);
-    }
-
-    private CategorySchemeVersionMetamac copyCategorySchemeVersion(CategorySchemeVersionMetamac source) {
-        CategorySchemeVersionMetamac target = new CategorySchemeVersionMetamac();
-        target.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
-        return target;
+    public CategorySchemeVersion createCategorySchemeVersion() {
+        return new CategorySchemeVersionMetamac();
     }
 
     @Override
-    public Category copyCategory(Category source) {
-        return copyCategory((CategoryMetamac) source);
+    public void copyCategorySchemeVersion(CategorySchemeVersion source, CategorySchemeVersion targetSdmx) {
+        CategorySchemeVersionMetamac target = (CategorySchemeVersionMetamac) targetSdmx;
+        target.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
+        target.getMaintainableArtefact().setFinalLogicClient(Boolean.FALSE);
     }
 
-    private CategoryMetamac copyCategory(CategoryMetamac source) {
-        CategoryMetamac target = new CategoryMetamac();
-        return target;
+    @Override
+    public Category createCategory() {
+        return new CategoryMetamac();
+    }
+
+    @Override
+    public void copyCategory(Category source, Category target) {
+        // nothing more
+
     }
 }

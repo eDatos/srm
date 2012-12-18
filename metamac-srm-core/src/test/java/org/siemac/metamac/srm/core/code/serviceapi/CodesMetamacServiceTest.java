@@ -121,6 +121,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertNull(codelistVersionRetrieved.getLifeCycleMetadata().getInternalPublicationUser());
         assertNull(codelistVersionRetrieved.getLifeCycleMetadata().getExternalPublicationDate());
         assertNull(codelistVersionRetrieved.getLifeCycleMetadata().getExternalPublicationUser());
+        assertFalse(codelistVersionRetrieved.getMaintainableArtefact().getFinalLogicClient());
         assertEquals(ctx.getUserId(), codelistVersionRetrieved.getCreatedBy());
         assertEquals(ctx.getUserId(), codelistVersionRetrieved.getLastUpdatedBy());
         assertEqualsCodelist(codelistVersion, codelistVersionRetrieved);
@@ -283,9 +284,13 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                 fail("wrong proc status");
             } catch (MetamacException e) {
                 assertEquals(1, e.getExceptionItems().size());
-                assertEquals(ServiceExceptionType.MAINTAINABLE_ARTEFACT_FINAL.getCode(), e.getExceptionItems().get(0).getCode());
-                assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+                assertEquals(ServiceExceptionType.LIFE_CYCLE_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
+                assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
                 assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+                assertEquals(ServiceExceptionParameters.PROC_STATUS_DRAFT, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
+                assertEquals(ServiceExceptionParameters.PROC_STATUS_PRODUCTION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[1]);
+                assertEquals(ServiceExceptionParameters.PROC_STATUS_DIFFUSION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[2]);
+                assertEquals(ServiceExceptionParameters.PROC_STATUS_VALIDATION_REJECTED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[3]);
             }
         }
     }
@@ -819,6 +824,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals(ctx.getUserId(), codelistVersion.getLifeCycleMetadata().getInternalPublicationUser());
             assertNull(codelistVersion.getLifeCycleMetadata().getExternalPublicationDate());
             assertNull(codelistVersion.getLifeCycleMetadata().getExternalPublicationUser());
+            assertTrue(codelistVersion.getMaintainableArtefact().getFinalLogicClient());
             assertTrue(codelistVersion.getMaintainableArtefact().getFinalLogic());
             assertTrue(codelistVersion.getMaintainableArtefact().getLatestFinal());
             assertFalse(codelistVersion.getMaintainableArtefact().getPublicLogic());
@@ -1047,7 +1053,13 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             fail("Codelist can not be deleted");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.MAINTAINABLE_ARTEFACT_FINAL, 1, new String[]{urn}, e.getExceptionItems().get(0));
+            assertEquals(ServiceExceptionType.LIFE_CYCLE_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_DRAFT, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_PRODUCTION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[1]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_DIFFUSION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[2]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_VALIDATION_REJECTED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[3]);
         }
     }
 
@@ -1259,9 +1271,11 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             fail("Codelist not published");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEquals(ServiceExceptionType.MAINTAINABLE_ARTEFACT_VERSIONING_NOT_SUPPORTED.getCode(), e.getExceptionItems().get(0).getCode());
-            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(ServiceExceptionType.LIFE_CYCLE_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
             assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_INTERNALLY_PUBLISHED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_EXTERNALLY_PUBLISHED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[1]);
         }
     }
 
@@ -1517,7 +1531,13 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             fail("Code can not be deleted");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.MAINTAINABLE_ARTEFACT_FINAL, 1, new String[]{codelistUrn}, e.getExceptionItems().get(0));
+            assertEquals(ServiceExceptionType.LIFE_CYCLE_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(codelistUrn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_DRAFT, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_PRODUCTION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[1]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_DIFFUSION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[2]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_VALIDATION_REJECTED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[3]);
         }
     }
 

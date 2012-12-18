@@ -17,26 +17,28 @@ import com.arte.statistic.sdmx.srm.core.code.serviceimpl.utils.CodesDoCopyUtils.
 public class CodesCopyCallbackMetamacImpl implements CodesCopyCallback {
 
     @Override
-    public CodelistVersion copyCodelistVersion(CodelistVersion source) {
-        return copyCodelistVersion((CodelistVersionMetamac) source);
+    public CodelistVersion createCodelistVersion() {
+        return new CodelistVersionMetamac();
     }
 
-    private CodelistVersionMetamac copyCodelistVersion(CodelistVersionMetamac source) {
-        CodelistVersionMetamac target = new CodelistVersionMetamac();
+    @Override
+    public void copyCodelistVersion(CodelistVersion sourceSdmx, CodelistVersion targetSdmx) {
+        CodelistVersionMetamac source = (CodelistVersionMetamac) sourceSdmx;
+        CodelistVersionMetamac target = (CodelistVersionMetamac) targetSdmx;
         target.setShortName(source.getShortName());
         target.setIsRecommended(source.getIsRecommended());
         target.setAccessType(source.getAccessType());
         target.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
-        return target;
+        target.getMaintainableArtefact().setFinalLogicClient(Boolean.FALSE);
     }
 
     @Override
-    public Code copyCode(Code source) {
-        return copyCode((CodeMetamac) source);
+    public Code createCode() {
+        return new CodeMetamac();
     }
 
-    private CodeMetamac copyCode(CodeMetamac source) {
-        CodeMetamac target = new CodeMetamac();
-        return target;
+    @Override
+    public void copyCode(Code source, Code target) {
+        // nothing more
     }
 }

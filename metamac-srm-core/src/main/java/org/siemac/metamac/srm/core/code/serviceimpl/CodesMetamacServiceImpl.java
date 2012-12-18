@@ -73,6 +73,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         // Fill metadata
         codelistVersion.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
         codelistVersion.getMaintainableArtefact().setIsExternalReference(Boolean.FALSE);
+        codelistVersion.getMaintainableArtefact().setFinalLogicClient(Boolean.FALSE);
 
         // Save codelist
         codelistVersion = (CodelistVersionMetamac) codesService.createCodelist(ctx, codelistVersion, SrmConstants.VERSION_PATTERN_METAMAC);
@@ -91,7 +92,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         // Validation
         CodesMetamacInvocationValidator.checkUpdateCodelist(codelistVersion, null);
         SrmValidationUtils.checkMaintainableArtefactCanChangeCodeIfChanged(codelistVersion.getMaintainableArtefact());
-        // CodesService checks codelist isn't final (Codelists cannot be updated when procStatus is INTERNALLY_PUBLISHED or EXTERNALLY_PUBLISHED)
+        checkCodelistCanBeModified(codelistVersion);
 
         // Save codelist
         return (CodelistVersionMetamac) codesService.updateCodelist(ctx, codelistVersion);
@@ -150,7 +151,12 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
     @Override
     public void deleteCodelist(ServiceContext ctx, String urn) throws MetamacException {
-        // Note: CodesService checks codelist isn't final and other conditions
+
+        // Validation
+        CodelistVersionMetamac codelistVersionMetamac = retrieveCodelistByUrn(ctx, urn);
+        checkCodelistCanBeModified(codelistVersionMetamac);
+
+        // Delete
         codesService.deleteCodelist(ctx, urn);
     }
 
@@ -205,7 +211,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             codelistVersion = retrieveCodelistByUrn(ctx, codelistUrn);
         }
         CodesMetamacInvocationValidator.checkCreateCode(codelistVersion, code, null);
-        // CodesService checks codelist isn't final
+        checkCodelistCanBeModified(codelistVersion);
 
         // Save code
         return (CodeMetamac) codesService.createCode(ctx, codelistUrn, code);
@@ -220,7 +226,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         }
         // Validation
         CodesMetamacInvocationValidator.checkUpdateCode(codelistVersion, code, null);
-        // CodesService checks codelist isn't final
+        checkCodelistCanBeModified(codelistVersion);
 
         return (CodeMetamac) codesService.updateCode(ctx, code);
     }
@@ -238,7 +244,11 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
     @Override
     public void deleteCode(ServiceContext ctx, String urn) throws MetamacException {
-        // Note: CodesService checks codelist isn't final
+        // Validation
+        CodelistVersionMetamac codelistVersion = retrieveCodelistByCodeUrn(ctx, urn);
+        checkCodelistCanBeModified(codelistVersion);
+
+        // Delete
         codesService.deleteCode(ctx, urn);
     }
 
@@ -511,12 +521,9 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     private void checkVersioningCodelistIsSupported(ServiceContext ctx, String urnToCopy) throws MetamacException {
-        // Retrieve version to copy and check it is final (internally published)
-        CodelistVersion codelistVersionToCopy = retrieveCodelistByUrn(ctx, urnToCopy);
-        if (!codelistVersionToCopy.getMaintainableArtefact().getFinalLogic()) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.MAINTAINABLE_ARTEFACT_VERSIONING_NOT_SUPPORTED)
-                    .withMessageParameters(codelistVersionToCopy.getMaintainableArtefact().getUrn()).build();
-        }
+        CodelistVersionMetamac codelistVersionToCopy = retrieveCodelistByUrn(ctx, urnToCopy);
+        // Check version to copy is published
+        SrmValidationUtils.checkArtefactCanBeVersioned(codelistVersionToCopy.getLifeCycleMetadata(), urnToCopy);
         // Check does not exist any version 'no final'
         ItemSchemeVersion codelistVersionNoFinal = itemSchemeVersionRepository.findItemSchemeVersionNoFinal(codelistVersionToCopy.getItemScheme().getId());
         if (codelistVersionNoFinal != null) {
@@ -631,4 +638,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         }
     }
 
+    private void checkCodelistCanBeModified(CodelistVersionMetamac codelistVersion) throws MetamacException {
+        SrmValidationUtils.checkArtefactCanBeModified(codelistVersion.getLifeCycleMetadata(), codelistVersion.getMaintainableArtefact().getUrn());
+    }
 }

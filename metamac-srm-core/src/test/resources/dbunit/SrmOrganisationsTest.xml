@@ -44,7 +44,7 @@
     
     <!-- ************************************************************************************** -->
     <!-- ORGANISATION SCHEME 100 (ROOT ORGANISATION - MAINTAINER)                               -->
-    <!--        - Version 1: final                                                              -->
+    <!--        - Version 1: no final (can not be final)                                        -->
     <!-- *************************************************************************************  -->
 
     <TB_ITEM_SCHEMES
@@ -115,8 +115,9 @@
         COMMENT_FK="[null]"
         
         VERSION_LOGIC="01.000"
-        FINAL_LOGIC="1"
-        LATEST_FINAL="1"
+        FINAL_LOGIC="0"
+        FINAL_LOGIC_CLIENT="1"
+        LATEST_FINAL="0"
         PUBLIC_LOGIC="1"
         LATEST_PUBLIC="1"
         VALID_FROM_TZ="Europe/London"
@@ -327,6 +328,7 @@
         
         VERSION_LOGIC="01.000"
         FINAL_LOGIC="1"
+        FINAL_LOGIC_CLIENT="1"
         LATEST_FINAL="1"
         PUBLIC_LOGIC="0"
         LATEST_PUBLIC="0"
@@ -469,6 +471,7 @@
         
         VERSION_LOGIC="02.000"
         FINAL_LOGIC="0"
+        FINAL_LOGIC_CLIENT="0"
         LATEST_FINAL="0"
         PUBLIC_LOGIC="0"
         LATEST_PUBLIC="0"
@@ -1009,6 +1012,7 @@
         
         VERSION_LOGIC="01.000"
         FINAL_LOGIC="0"
+        FINAL_LOGIC_CLIENT="0"
         LATEST_FINAL="0"
         PUBLIC_LOGIC="0"
         LATEST_PUBLIC="0"
@@ -1217,6 +1221,7 @@
         
         VERSION_LOGIC="01.000"
         FINAL_LOGIC="1"
+        FINAL_LOGIC_CLIENT="1"
         LATEST_FINAL="1"
         PUBLIC_LOGIC="0"
         LATEST_PUBLIC="0"
@@ -1680,6 +1685,7 @@
         
         VERSION_LOGIC="01.000"
         FINAL_LOGIC="0"
+        FINAL_LOGIC_CLIENT="0"
         LATEST_FINAL="0"
         PUBLIC_LOGIC="0"
         LATEST_PUBLIC="0"
@@ -1834,6 +1840,7 @@
         
         VERSION_LOGIC="01.000"
         FINAL_LOGIC="0"
+        FINAL_LOGIC_CLIENT="0"
         LATEST_FINAL="0"
         PUBLIC_LOGIC="0"
         LATEST_PUBLIC="0"
@@ -1987,6 +1994,7 @@
         
         VERSION_LOGIC="01.000"
         FINAL_LOGIC="0"
+        FINAL_LOGIC_CLIENT="0"
         LATEST_FINAL="0"
         PUBLIC_LOGIC="0"
         LATEST_PUBLIC="0"
@@ -2141,6 +2149,7 @@
         
         VERSION_LOGIC="01.000"
         FINAL_LOGIC="1"
+        FINAL_LOGIC_CLIENT="1"
         LATEST_FINAL="0"
         PUBLIC_LOGIC="1"
         LATEST_PUBLIC="1"
@@ -2225,6 +2234,7 @@
         
         VERSION_LOGIC="02.000"
         FINAL_LOGIC="1"
+        FINAL_LOGIC_CLIENT="1"
         LATEST_FINAL="1"
         PUBLIC_LOGIC="0"
         LATEST_PUBLIC="0"
@@ -2378,8 +2388,9 @@
         NAME_FK="27"
         
         VERSION_LOGIC="01.000"
-        FINAL_LOGIC="1"
-        LATEST_FINAL="1"
+        FINAL_LOGIC="0"
+        FINAL_LOGIC_CLIENT="1"
+        LATEST_FINAL="0"
         PUBLIC_LOGIC="1"
         LATEST_PUBLIC="1"
         VALID_FROM_TZ="Europe/London"
@@ -2531,8 +2542,9 @@
         NAME_FK="28"
         
         VERSION_LOGIC="01.000"
-        FINAL_LOGIC="1"
-        LATEST_FINAL="1"
+        FINAL_LOGIC="0"
+        FINAL_LOGIC_CLIENT="1"
+        LATEST_FINAL="0"
         PUBLIC_LOGIC="0"
         LATEST_PUBLIC="0"
         VALID_FROM_TZ="Europe/London"
@@ -2558,6 +2570,7 @@
 
             <!-- ORGANISATIONS -->
             <!-- -> ORGANISATION01 -->
+            <!-- -> ORGANISATION02 -->
             
             <!-- ORGANISATION01 -->
             
@@ -2613,7 +2626,215 @@
                 LAST_UPDATED_TZ="Europe/London"
             />              
 
+            <!-- ORGANISATION01 -->
+            
+            <TB_M_ORGANISATIONS
+                TB_ORGANISATIONS="912"
+            />
+            
+            <TB_ORGANISATIONS
+                TB_ITEMS="912"
+                ORGANISATION_TYPE="AGENCY"
+                ID_AS_MAINTAINER="SDMX02.ORGANISATION01.ORGANISATION02"
+            />
+        
+            <TB_ITEMS
+                ID="912"
+                PARENT_FK="[null]"
+                ITEM_SCHEME_VERSION_FK="91"
+                ITEM_SCHEME_VERSION_FIRST_FK="91"
+                NAMEABLE_ARTEFACT_FK="912"
+                      
+                UUID="organisationScheme-9-v1-org-2"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"  
+            />
 
+            <TB_ANNOTABLE_ARTEFACTS 
+                ID="912"
+                ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+
+                CODE="ORGANISATION02"
+                URI_PROVIDER="[null]"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX02.ORGANISATION01:AGENCIES(01.000).ORGANISATION02"
+                URN="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX02.ORGANISATION01:AGENCIES(01.000).ORGANISATION02"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
+
+                NAME_FK="[null]"
+                DESCRIPTION_FK="[null]"
+                COMMENT_FK="[null]"
+
+                UUID="annotableArtefact-912"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"
+            />              
+
+
+    <!-- ************************************************************************************** -->
+    <!-- ORGANISATION SCHEME 10 (AgencyScheme)                                                  -->
+    <!--        - Version 1: diffusion validation                                               -->
+    <!-- *************************************************************************************  -->
+
+    <TB_ITEM_SCHEMES
+        ID="10"
+        UUID="itemScheme-10"
+        VERSION="1"
+        VERSION_PATTERN="XX_YYY"
+    />
+    
+    <!-- **************************************************************************************  -->                
+    <!-- VERSION 1                                                                               -->
+    <!-- **************************************************************************************  -->
+    
+    <TB_ITEM_SCHEMES_VERSIONS
+        ID="101"
+        ITEM_SCHEME_FK="10"
+        IS_PARTIAL="0"
+        MAINTANABLE_ARTEFACT_FK="101"
+        
+        UUID="organisationScheme-10-v1"
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user10"
+        LAST_UPDATED="2011-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"  
+    />
+
+    <TB_ORG_SCHEMES_VERSIONS
+        TB_ITEM_SCHEMES_VERSIONS="101"
+        ORGANISATION_SCHEME_TYPE="AGENCY_SCHEME"
+    />
+    
+    <TB_M_ORG_SCHEMES_VERSIONS
+        TB_ORG_SCHEMES_VERSIONS="101"
+        PROC_STATUS="DIFFUSION_VALIDATION"
+        
+        PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
+        PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
+        PRODUCTION_VALIDATION_USER="user2"
+        DIFFUSION_VALIDATION_DATE_TZ="Europe/London"
+        DIFFUSION_VALIDATION_DATE="2011-01-01 01:02:03"
+        DIFFUSION_VALIDATION_USER="user3"
+        INTERNAL_PUBLICATION_DATE_TZ="[null]"
+        INTERNAL_PUBLICATION_DATE="[null]"
+        INTERNAL_PUBLICATION_USER="[null]"
+        EXTERNAL_PUBLICATION_DATE_TZ="[null]"
+        EXTERNAL_PUBLICATION_DATE="[null]"
+        EXTERNAL_PUBLICATION_USER="[null]"
+        IS_EXT_PUBLICATION_FAILED="[null]"
+        EXT_PUBLICATION_FAILED_DATE="[null]"
+    />     
+    
+    <TB_ANNOTABLE_ARTEFACTS 
+        ID="101"
+        ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
+        
+        CODE="AGENCIES"
+        URI_PROVIDER="[null]"
+        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.base.AgencyScheme=SDMX02.ORGANISATION01.ORGANISATION02:AGENCIES(01.000)"
+        URN="urn:sdmx:org.sdmx.infomodel.base.AgencyScheme=SDMX02.ORGANISATION01.ORGANISATION02:AGENCIES(01.000)"
+        REPLACED_BY_VERSION="[null]"
+        REPLACE_TO_VERSION="[null]"
+        
+        NAME_FK="[null]"
+        
+        VERSION_LOGIC="01.000"
+        FINAL_LOGIC="0"
+        FINAL_LOGIC_CLIENT="0"
+        LATEST_FINAL="0"
+        PUBLIC_LOGIC="0"
+        LATEST_PUBLIC="0"
+        VALID_FROM_TZ="[null]"
+        VALID_FROM="[null]" 
+        VALID_TO_TZ="[null]"
+        VALID_TO="[null]"
+        IS_EXTERNAL_REFERENCE="0"
+        STRUCTURE_URL="[null]"
+        SERVICE_URL="[null]"
+        IS_LAST_VERSION="1"
+        IS_IMPORTED="0"
+        MAINTAINER_FK="912"
+        
+        UUID="annotableArtefact-101"
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user2"
+        LAST_UPDATED="2011-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"
+    />
+
+            <!-- ORGANISATIONS -->
+            <!-- -> ORGANISATION01 -->
+            
+            <!-- ORGANISATION01 -->
+            
+            <TB_M_ORGANISATIONS
+                TB_ORGANISATIONS="1011"
+            />
+            
+            <TB_ORGANISATIONS
+                TB_ITEMS="1011"
+                ORGANISATION_TYPE="AGENCY"
+                ID_AS_MAINTAINER="[null]"
+            />
+        
+            <TB_ITEMS
+                ID="1011"
+                PARENT_FK="[null]"
+                ITEM_SCHEME_VERSION_FK="101"
+                ITEM_SCHEME_VERSION_FIRST_FK="101"
+                NAMEABLE_ARTEFACT_FK="1011"
+                      
+                UUID="organisationScheme-10-v1-org-1"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"  
+            />
+
+            <TB_ANNOTABLE_ARTEFACTS 
+                ID="1011"
+                ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+
+                CODE="ORGANISATION01"
+                URI_PROVIDER="[null]"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX02.ORGANISATION01.ORGANISATION02:AGENCIES(01.000).ORGANISATION01"
+                URN="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX02.ORGANISATION01.ORGANISATION02:AGENCIES(01.000).ORGANISATION01"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
+
+                NAME_FK="[null]"
+                DESCRIPTION_FK="[null]"
+                COMMENT_FK="[null]"
+
+                UUID="annotableArtefact-1011"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"
+            />  
+            
     <!-- ************************************************************************************** -->
     <!-- EXTERNAL ITEMS                                                                         -->
     <!-- *************************************************************************************  -->    

@@ -75,6 +75,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         // Fill metadata
         conceptSchemeVersion.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
         conceptSchemeVersion.getMaintainableArtefact().setIsExternalReference(Boolean.FALSE);
+        conceptSchemeVersion.getMaintainableArtefact().setFinalLogicClient(Boolean.FALSE);
 
         // Save conceptScheme
         return (ConceptSchemeVersionMetamac) conceptsService.createConceptScheme(ctx, conceptSchemeVersion, SrmConstants.VERSION_PATTERN_METAMAC);
@@ -85,7 +86,8 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         // Validation
         ConceptsMetamacInvocationValidator.checkUpdateConceptScheme(conceptSchemeVersion, null);
         SrmValidationUtils.checkMaintainableArtefactCanChangeCodeIfChanged(conceptSchemeVersion.getMaintainableArtefact());
-        // ConceptsService checks conceptScheme isn't final (Schemes cannot be updated when procStatus is INTERNALLY_PUBLISHED or EXTERNALLY_PUBLISHED)
+        checkConceptSchemeCanBeModified(conceptSchemeVersion);
+
         // if this version is not the first one, check not modify 'type'
         if (!SrmServiceUtils.isItemSchemeFirstVersion(conceptSchemeVersion)) {
             ConceptSchemeVersionMetamac conceptSchemePreviousVersion = (ConceptSchemeVersionMetamac) itemSchemeVersionRepository.findByVersion(conceptSchemeVersion.getItemScheme().getId(),
@@ -153,7 +155,11 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
     @Override
     public void deleteConceptScheme(ServiceContext ctx, String urn) throws MetamacException {
-        // Note: ConceptsService checks conceptScheme isn't final and other conditions
+        // Validation
+        ConceptSchemeVersionMetamac conceptSchemeVersion = retrieveConceptSchemeByUrn(ctx, urn);
+        checkConceptSchemeCanBeModified(conceptSchemeVersion);
+
+        // Delete
         conceptsService.deleteConceptScheme(ctx, urn);
     }
 
@@ -201,7 +207,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         }
         ConceptsMetamacInvocationValidator.checkCreateConcept(conceptSchemeVersion, concept, null);
         checkConceptToCreateOrUpdate(ctx, concept, conceptSchemeUrn);
-        // ConceptsService checks conceptScheme isn't final
+        checkConceptSchemeCanBeModified(conceptSchemeVersion);
 
         // Save concept
         return (ConceptMetamac) conceptsService.createConcept(ctx, conceptSchemeUrn, concept);
@@ -218,7 +224,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         // Validation
         ConceptsMetamacInvocationValidator.checkUpdateConcept(conceptSchemeVersion, concept, null);
         checkConceptToCreateOrUpdate(ctx, concept, concept.getItemSchemeVersion().getMaintainableArtefact().getUrn());
-        // ConceptsService checks conceptScheme isn't final
+        checkConceptSchemeCanBeModified(conceptSchemeVersion);
 
         return (ConceptMetamac) conceptsService.updateConcept(ctx, concept);
     }
@@ -249,9 +255,9 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
                         new LeafProperty<ConceptMetamac>(ConceptMetamacProperties.itemSchemeVersion().getName(), ConceptSchemeVersionMetamacProperties.type().getName(), true, ConceptMetamac.class))
                 .eq(ConceptSchemeTypeEnum.ROLE).buildSingle();
         conditions.add(roleCondition);
-        // concept scheme with validity started (= externally published)
+        // concept scheme externally published
         ConditionalCriteria validityStartedCondition = ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class)
-                .withProperty(ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact().validFrom()).isNotNull().buildSingle();
+                .withProperty(ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact().publicLogic()).eq(Boolean.TRUE).buildSingle();
         conditions.add(validityStartedCondition);
 
         PagedResult<Concept> conceptsPagedResult = conceptsService.findConceptsByCondition(ctx, conditions, pagingParameter);
@@ -262,11 +268,12 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     public void deleteConcept(ServiceContext ctx, String urn) throws MetamacException {
 
         ConceptMetamac concept = retrieveConceptByUrn(ctx, urn);
+        ConceptSchemeVersionMetamac conceptSchemeVersion = retrieveConceptSchemeByConceptUrn(ctx, urn);
+        checkConceptSchemeCanBeModified(conceptSchemeVersion);
 
         // Delete bidirectional relations of concepts relate this concept and its children (will be removed in cascade)
         removeRelatedConceptsBidirectional(concept);
 
-        // Note: ConceptsService checks conceptScheme isn't final
         conceptsService.deleteConcept(ctx, urn);
     }
 
@@ -497,12 +504,9 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
     private void checkVersioningConceptSchemeIsSupported(ServiceContext ctx, String urnToCopy) throws MetamacException {
 
-        // Retrieve version to copy and check it is final (internally published)
-        ConceptSchemeVersion conceptSchemeVersionToCopy = retrieveConceptSchemeByUrn(ctx, urnToCopy);
-        if (!conceptSchemeVersionToCopy.getMaintainableArtefact().getFinalLogic()) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.MAINTAINABLE_ARTEFACT_VERSIONING_NOT_SUPPORTED)
-                    .withMessageParameters(conceptSchemeVersionToCopy.getMaintainableArtefact().getUrn()).build();
-        }
+        ConceptSchemeVersionMetamac conceptSchemeVersionToCopy = retrieveConceptSchemeByUrn(ctx, urnToCopy);
+        // Check version to copy is published
+        SrmValidationUtils.checkArtefactCanBeVersioned(conceptSchemeVersionToCopy.getLifeCycleMetadata(), urnToCopy);
         // Check does not exist any version 'no final'
         ItemSchemeVersion conceptSchemeVersionNoFinal = itemSchemeVersionRepository.findItemSchemeVersionNoFinal(conceptSchemeVersionToCopy.getItemScheme().getId());
         if (conceptSchemeVersionNoFinal != null) {
@@ -540,7 +544,6 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         checkConceptMetadataExtends(ctx, concept, conceptSchemeUrn);
     }
 
-    // TODO confirmar que estas restricciones son correctas
     private void checkConceptMetadataExtends(ServiceContext ctx, ConceptMetamac concept, String conceptSchemeUrn) throws MetamacException {
         if (concept.getConceptExtends() == null) {
             return;
@@ -567,5 +570,9 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CONCEPT_SCHEME_WRONG_TYPE)
                     .withMessageParameters(conceptSchemeVersionTarget.getMaintainableArtefact().getUrn(), new String[]{ServiceExceptionParameters.CONCEPT_SCHEME_TYPE_GLOSSARY}).build();
         }
+    }
+
+    private void checkConceptSchemeCanBeModified(ConceptSchemeVersionMetamac conceptSchemeVersion) throws MetamacException {
+        SrmValidationUtils.checkArtefactCanBeModified(conceptSchemeVersion.getLifeCycleMetadata(), conceptSchemeVersion.getMaintainableArtefact().getUrn());
     }
 }

@@ -188,7 +188,7 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                     return DataStructureDefinitionVersionMetamacProperties.maintainableArtefact().name().texts().label();
                 case LAST_UPDATED:
                     return new LeafProperty<DataStructureDefinitionVersionMetamac>(DataStructureDefinitionVersionMetamacProperties.maintainableArtefact().lastUpdated().getName(),
-                            CoreCommonConstants.CRITERIA_DATETIME_COLUMN_DATETIME, true, DataStructureDefinitionVersionMetamac.class);
+                            CoreCommonConstants.CRITERIA_DATETIME_COLUMN_DATETIME, false, DataStructureDefinitionVersionMetamac.class);
                 default:
                     throw new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, order.getPropertyName());
             }
@@ -239,7 +239,7 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                     return ConceptSchemeVersionMetamacProperties.maintainableArtefact().name().texts().label();
                 case LAST_UPDATED:
                     return new LeafProperty<ConceptSchemeVersionMetamac>(ConceptSchemeVersionMetamacProperties.maintainableArtefact().lastUpdated().getName(),
-                            CoreCommonConstants.CRITERIA_DATETIME_COLUMN_DATETIME, true, ConceptSchemeVersionMetamac.class);
+                            CoreCommonConstants.CRITERIA_DATETIME_COLUMN_DATETIME, false, ConceptSchemeVersionMetamac.class);
                 default:
                     throw new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, order.getPropertyName());
             }
@@ -269,7 +269,7 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                     return new SculptorPropertyCriteria(ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact().urn(), propertyRestriction.getStringValue());
                 case CONCEPT_SCHEME_TYPE:
                     return new SculptorPropertyCriteria(new LeafProperty<ConceptMetamac>(ConceptMetamacProperties.itemSchemeVersion().getName(),
-                            ConceptSchemeVersionMetamacProperties.type().getName(), true, ConceptMetamac.class), propertyRestriction.getEnumValue());
+                            ConceptSchemeVersionMetamacProperties.type().getName(), false, ConceptMetamac.class), propertyRestriction.getEnumValue());
                 case CONCEPT_SCHEME_IS_LAST_VERSION:
                     return new SculptorPropertyCriteria(ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact().isLastVersion(), propertyRestriction.getBooleanValue());
                 default:
@@ -342,7 +342,7 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                     return OrganisationSchemeVersionMetamacProperties.maintainableArtefact().name().texts().label();
                 case LAST_UPDATED:
                     return new LeafProperty<OrganisationSchemeVersionMetamac>(OrganisationSchemeVersionMetamacProperties.maintainableArtefact().lastUpdated().getName(),
-                            CoreCommonConstants.CRITERIA_DATETIME_COLUMN_DATETIME, true, OrganisationSchemeVersionMetamac.class);
+                            CoreCommonConstants.CRITERIA_DATETIME_COLUMN_DATETIME, false, OrganisationSchemeVersionMetamac.class);
                 default:
                     throw new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, order.getPropertyName());
             }
@@ -372,7 +372,7 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                     return new SculptorPropertyCriteria(OrganisationMetamacProperties.itemSchemeVersion().maintainableArtefact().urn(), propertyRestriction.getStringValue());
                 case ORGANISATION_SCHEME_TYPE:
                     return new SculptorPropertyCriteria(new LeafProperty<OrganisationMetamac>(OrganisationMetamacProperties.itemSchemeVersion().getName(), OrganisationSchemeVersionMetamacProperties
-                            .organisationSchemeType().getName(), true, OrganisationMetamac.class), propertyRestriction.getEnumValue());
+                            .organisationSchemeType().getName(), false, OrganisationMetamac.class), propertyRestriction.getEnumValue());
                 case ORGANISATION_SCHEME_IS_LAST_VERSION:
                     return new SculptorPropertyCriteria(OrganisationMetamacProperties.itemSchemeVersion().maintainableArtefact().isLastVersion(), propertyRestriction.getBooleanValue());
                 default:
@@ -443,7 +443,7 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                     return CategorySchemeVersionMetamacProperties.maintainableArtefact().name().texts().label();
                 case LAST_UPDATED:
                     return new LeafProperty<CategorySchemeVersionMetamac>(CategorySchemeVersionMetamacProperties.maintainableArtefact().lastUpdated().getName(),
-                            CoreCommonConstants.CRITERIA_DATETIME_COLUMN_DATETIME, true, CategorySchemeVersionMetamac.class);
+                            CoreCommonConstants.CRITERIA_DATETIME_COLUMN_DATETIME, false, CategorySchemeVersionMetamac.class);
                 default:
                     throw new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, order.getPropertyName());
             }
@@ -541,7 +541,7 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                     return CodelistVersionMetamacProperties.maintainableArtefact().name().texts().label();
                 case LAST_UPDATED:
                     return new LeafProperty<CodelistVersionMetamac>(CodelistVersionMetamacProperties.maintainableArtefact().lastUpdated().getName(),
-                            CoreCommonConstants.CRITERIA_DATETIME_COLUMN_DATETIME, true, CodelistVersionMetamac.class);
+                            CoreCommonConstants.CRITERIA_DATETIME_COLUMN_DATETIME, false, CodelistVersionMetamac.class);
                 default:
                     throw new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, order.getPropertyName());
             }

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.commons.lang.ObjectUtils;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
+import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
@@ -19,6 +20,7 @@ import org.siemac.metamac.srm.core.common.service.utils.SrmValidationUtils;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
+import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamacProperties;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.organisation.serviceimpl.utils.OrganisationsMetamacInvocationValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +31,14 @@ import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.common.error.ServiceExceptionParameters;
+import com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmValidationUtils;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.shared.SdmxVersionUtils;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.organisation.serviceapi.OrganisationsService;
 import com.arte.statistic.sdmx.srm.core.organisation.serviceimpl.utils.OrganisationsDoCopyUtils.OrganisationCopyCallback;
-import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
+import com.arte.statistic.sdmx.srm.core.organisation.serviceimpl.utils.OrganisationsInvocationValidator;
+import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 
 /**
  * Implementation of OrganisationsMetamacService.
@@ -68,22 +72,19 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
         // Fill metadata
         organisationSchemeVersion.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
         organisationSchemeVersion.getMaintainableArtefact().setIsExternalReference(Boolean.FALSE);
+        organisationSchemeVersion.getMaintainableArtefact().setFinalLogicClient(Boolean.FALSE);
 
-        // Save organisationScheme. If it is an AgencyScheme, call another method to avoid being marked as final in creation
+        // Save organisationScheme
         VersionPatternEnum versionPattern = SrmConstants.VERSION_PATTERN_METAMAC;
-        if (OrganisationSchemeTypeEnum.AGENCY_SCHEME.equals(organisationSchemeVersion.getOrganisationSchemeType())) {
-            return (OrganisationSchemeVersionMetamac) organisationsService.createAgencySchemeNotFinal(ctx, organisationSchemeVersion, versionPattern);
-        } else {
-            return (OrganisationSchemeVersionMetamac) organisationsService.createOrganisationScheme(ctx, organisationSchemeVersion, versionPattern);
-        }
+        return (OrganisationSchemeVersionMetamac) organisationsService.createOrganisationScheme(ctx, organisationSchemeVersion, versionPattern);
     }
 
     @Override
     public OrganisationSchemeVersionMetamac updateOrganisationScheme(ServiceContext ctx, OrganisationSchemeVersionMetamac organisationSchemeVersion) throws MetamacException {
         // Validation
         OrganisationsMetamacInvocationValidator.checkUpdateOrganisationScheme(organisationSchemeVersion, null);
+        checkOrganisationSchemeCanBeModified(organisationSchemeVersion);
         SrmValidationUtils.checkMaintainableArtefactCanChangeCodeIfChanged(organisationSchemeVersion.getMaintainableArtefact());
-        // OrganisationsService checks organisationScheme is not final (Schemes cannot be updated when procStatus is INTERNALLY_PUBLISHED or EXTERNALLY_PUBLISHED)
 
         // Check type modification: type can only be modified when is in initial version and when has no children (this last requisite is checked in SDMX service)
         if (!SdmxVersionUtils.isInitialVersion(organisationSchemeVersion.getMaintainableArtefact().getVersionLogic())) {
@@ -155,7 +156,11 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
 
     @Override
     public void deleteOrganisationScheme(ServiceContext ctx, String urn) throws MetamacException {
-        // Note: OrganisationsService checks organisationScheme isn't final and other conditions
+        // Validation
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = retrieveOrganisationSchemeByUrn(ctx, urn);
+        checkOrganisationSchemeCanBeModified(organisationSchemeVersion);
+
+        // Delete
         organisationsService.deleteOrganisationScheme(ctx, urn);
     }
 
@@ -198,7 +203,7 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
             organisationSchemeVersion = retrieveOrganisationSchemeByUrn(ctx, organisationSchemeUrn);
         }
         OrganisationsMetamacInvocationValidator.checkCreateOrganisation(organisationSchemeVersion, organisation, null);
-        // OrganisationsService checks organisationScheme isn't final
+        checkOrganisationSchemeCanBeModified(organisationSchemeVersion);
 
         // Save organisation
         return (OrganisationMetamac) organisationsService.createOrganisation(ctx, organisationSchemeUrn, organisation);
@@ -209,8 +214,10 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
 
         // Validation
         OrganisationsMetamacInvocationValidator.checkUpdateOrganisation(organisation, null);
-        // OrganisationsService checks organisationScheme isn't final
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = retrieveOrganisationSchemeByOrganisationUrn(ctx, organisation.getNameableArtefact().getUrn());
+        checkOrganisationSchemeCanBeModified(organisationSchemeVersion);
 
+        // Update
         return (OrganisationMetamac) organisationsService.updateOrganisation(ctx, organisation);
     }
 
@@ -227,14 +234,35 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
 
     @Override
     public PagedResult<OrganisationMetamac> findOrganisationsAsMaintainerByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
-        PagedResult<Organisation> organisationsPagedResult = organisationsService.findOrganisationsAsMaintainerByCondition(ctx, conditions, pagingParameter);
-        return pagedResultOrganisationToMetamac(organisationsPagedResult);
-    }
 
+        // Validation
+        OrganisationsInvocationValidator.checkFindByCondition(conditions, pagingParameter);
+
+        // Find
+        if (conditions == null) {
+            conditions = ConditionalCriteriaBuilder.criteriaFor(OrganisationMetamac.class).distinctRoot().build();
+        }
+        // Add restrictions to be maintainer
+        // organisation must be agency
+        ConditionalCriteria typeAgencyCondition = ConditionalCriteriaBuilder.criteriaFor(OrganisationMetamac.class).withProperty(OrganisationMetamacProperties.organisationType())
+                .eq(OrganisationTypeEnum.AGENCY).buildSingle();
+        conditions.add(typeAgencyCondition);
+        // organisation scheme internally published
+        ConditionalCriteria internallyPublishedCondition = ConditionalCriteriaBuilder.criteriaFor(OrganisationMetamac.class)
+                .withProperty(OrganisationMetamacProperties.itemSchemeVersion().maintainableArtefact().finalLogicClient()).eq(Boolean.TRUE).buildSingle();
+        conditions.add(internallyPublishedCondition);
+
+        PagedResult<OrganisationMetamac> organisationsPagedResult = getOrganisationMetamacRepository().findByCondition(conditions, pagingParameter);
+        return organisationsPagedResult;
+    }
     @Override
     public void deleteOrganisation(ServiceContext ctx, String urn) throws MetamacException {
 
-        // Note: OrganisationsService checks organisationScheme isn't final
+        // Validation
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = retrieveOrganisationSchemeByOrganisationUrn(ctx, urn);
+        checkOrganisationSchemeCanBeModified(organisationSchemeVersion);
+
+        // Delete
         organisationsService.deleteOrganisation(ctx, urn);
     }
 
@@ -302,17 +330,20 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
     }
 
     private void checkVersioningOrganisationSchemeIsSupported(ServiceContext ctx, String urnToCopy) throws MetamacException {
-        // Retrieve version to copy and check it is final (internally published)
-        OrganisationSchemeVersion organisationSchemeVersionToCopy = retrieveOrganisationSchemeByUrn(ctx, urnToCopy);
-        if (!organisationSchemeVersionToCopy.getMaintainableArtefact().getFinalLogic()) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.MAINTAINABLE_ARTEFACT_VERSIONING_NOT_SUPPORTED)
-                    .withMessageParameters(organisationSchemeVersionToCopy.getMaintainableArtefact().getUrn()).build();
-        }
+        OrganisationSchemeVersionMetamac organisationSchemeVersionToCopy = retrieveOrganisationSchemeByUrn(ctx, urnToCopy);
+        // Check version to copy is published
+        SrmValidationUtils.checkArtefactCanBeVersioned(organisationSchemeVersionToCopy.getLifeCycleMetadata(), urnToCopy);
         // Check does not exist any version 'no final'
         ItemSchemeVersion organisationSchemeVersionNoFinal = itemSchemeVersionRepository.findItemSchemeVersionNoFinal(organisationSchemeVersionToCopy.getItemScheme().getId());
         if (organisationSchemeVersionNoFinal != null) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.MAINTAINABLE_ARTEFACT_VERSIONING_NOT_SUPPORTED)
                     .withMessageParameters(organisationSchemeVersionNoFinal.getMaintainableArtefact().getUrn()).build();
+        }
+    }
+
+    private void checkOrganisationSchemeCanBeModified(OrganisationSchemeVersionMetamac organisationSchemeVersion) throws MetamacException {
+        if (!SdmxSrmValidationUtils.isOrganisationSchemeNeverCanBeFinal(organisationSchemeVersion)) {
+            SrmValidationUtils.checkArtefactCanBeModified(organisationSchemeVersion.getLifeCycleMetadata(), organisationSchemeVersion.getMaintainableArtefact().getUrn());
         }
     }
 }

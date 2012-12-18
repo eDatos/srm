@@ -7,7 +7,6 @@ import "classpath:/btdesign/statistic-sdmx-v2_1-domain-enums-concept.btdesign"
 
 import "classpath:/btdesign/metamac-core-common-dtos.btdesign"
 import "classpath:/btdesign/metamac-core-common-enum.btdesign"
-import "classpath:/btdesign/model-statistic-sdmx-v2_1-transformation.btdesign"
 
 import "classpath:/btdesign/statistic-sdmx-core-structure.btdesign"
 import "classpath:/btdesign/statistic-sdmx-core-concepts.btdesign"

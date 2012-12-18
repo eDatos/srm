@@ -17,23 +17,24 @@ import com.arte.statistic.sdmx.srm.core.organisation.serviceimpl.utils.Organisat
 public class OrganisationCopyCallbackMetamacImpl implements OrganisationCopyCallback {
 
     @Override
-    public OrganisationSchemeVersion copyOrganisationSchemeVersion(OrganisationSchemeVersion source) {
-        return copyOrganisationSchemeVersion((OrganisationSchemeVersionMetamac) source);
-    }
-
-    private OrganisationSchemeVersionMetamac copyOrganisationSchemeVersion(OrganisationSchemeVersionMetamac source) {
-        OrganisationSchemeVersionMetamac target = new OrganisationSchemeVersionMetamac(source.getOrganisationSchemeType());
-        target.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
-        return target;
+    public OrganisationSchemeVersion createOrganisationSchemeVersion() {
+        return new OrganisationSchemeVersionMetamac();
     }
 
     @Override
-    public Organisation copyOrganisation(Organisation source) {
-        return copyOrganisation((OrganisationMetamac) source);
+    public void copyOrganisationSchemeVersion(OrganisationSchemeVersion source, OrganisationSchemeVersion targetSdmx) {
+        OrganisationSchemeVersionMetamac target = (OrganisationSchemeVersionMetamac) targetSdmx;
+        target.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
+        target.getMaintainableArtefact().setFinalLogicClient(Boolean.FALSE);
     }
 
-    private OrganisationMetamac copyOrganisation(OrganisationMetamac source) {
-        OrganisationMetamac target = new OrganisationMetamac(source.getOrganisationType());
-        return target;
+    @Override
+    public Organisation createOrganisation() {
+        return new OrganisationMetamac();
+    }
+
+    @Override
+    public void copyOrganisation(Organisation source, Organisation target) {
+        // nothing more
     }
 }

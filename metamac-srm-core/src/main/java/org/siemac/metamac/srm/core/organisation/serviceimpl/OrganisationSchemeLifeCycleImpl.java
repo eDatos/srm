@@ -26,6 +26,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.ValidationUtils;
+import com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmValidationUtils;
 import com.arte.statistic.sdmx.srm.core.organisation.serviceapi.OrganisationsService;
 
 @Service("organisationSchemeLifeCycle")
@@ -107,7 +108,12 @@ public class OrganisationSchemeLifeCycleImpl extends LifeCycleImpl {
 
         @Override
         public Object markSrmResourceAsFinal(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
-            return organisationsService.markOrganisationSchemeAsFinal(ctx, getOrganisationSchemeVersionMetamac(srmResourceVersion).getMaintainableArtefact().getUrn());
+            OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationSchemeVersionMetamac(srmResourceVersion);
+            // Mark as final
+            if (!SdmxSrmValidationUtils.isOrganisationSchemeNeverCanBeFinal(organisationSchemeVersion)) {
+                return organisationsService.markOrganisationSchemeAsFinal(ctx, organisationSchemeVersion.getMaintainableArtefact().getUrn());
+            }
+            return srmResourceVersion;
         }
 
         @Override

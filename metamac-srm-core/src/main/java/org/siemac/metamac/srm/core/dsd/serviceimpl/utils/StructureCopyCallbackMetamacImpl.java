@@ -30,15 +30,18 @@ public class StructureCopyCallbackMetamacImpl implements StructureCopyCallback {
      ****************/
 
     @Override
-    public DataStructureDefinitionVersion copyDataStructureDefinitionVersion(DataStructureDefinitionVersion source) {
-        // DataStructureDefinitionVersionMetamac sourceMetamac = (DataStructureDefinitionVersionMetamac) source;
+    public DataStructureDefinitionVersion createDataStructureDefinitionVersion() {
+        return new DataStructureDefinitionVersionMetamac();
+    }
 
-        DataStructureDefinitionVersionMetamac target = new DataStructureDefinitionVersionMetamac();
+    @Override
+    public void copyDataStructureDefinitionVersion(DataStructureDefinitionVersion sourceSdmx, DataStructureDefinitionVersion targetSdmx) {
+
+        DataStructureDefinitionVersionMetamac target = (DataStructureDefinitionVersionMetamac) targetSdmx;
 
         // Metamac Metadata
         target.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT)); // New structure in draft version
-
-        return target;
+        target.getMaintainableArtefact().setFinalLogicClient(Boolean.FALSE);
     }
 
     /***************

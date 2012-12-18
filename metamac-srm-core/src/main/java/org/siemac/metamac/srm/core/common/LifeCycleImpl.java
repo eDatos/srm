@@ -11,6 +11,7 @@ import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.core.common.exception.utils.ExceptionUtils;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
+import org.siemac.metamac.srm.core.category.serviceapi.CategoriesMetamacService;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.serviceimpl.SrmServiceUtils;
@@ -19,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.ValidationUtils;
 import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
-import com.arte.statistic.sdmx.srm.core.category.serviceapi.CategoriesService;
 
 public abstract class LifeCycleImpl implements LifeCycle {
 
@@ -34,7 +34,7 @@ public abstract class LifeCycleImpl implements LifeCycle {
     protected LifeCycleCallback           callback                               = null;
 
     @Autowired
-    private CategoriesService             categoriesService;
+    private CategoriesMetamacService      categoriesService;
 
     public LifeCycleImpl() {
     }
@@ -153,7 +153,10 @@ public abstract class LifeCycleImpl implements LifeCycle {
         lifeCycle.setProcStatus(targetStatus);
         lifeCycle.setInternalPublicationDate(new DateTime());
         lifeCycle.setInternalPublicationUser(ctx.getUserId());
+        MaintainableArtefact maintainableArtefact = callback.getMaintainableArtefact(srmResourceVersion);
+        maintainableArtefact.setFinalLogicClient(Boolean.TRUE);
         srmResourceVersion = callback.updateSrmResource(srmResourceVersion);
+
         srmResourceVersion = callback.markSrmResourceAsFinal(ctx, srmResourceVersion);
 
         // Mark categorisations as final
@@ -315,6 +318,8 @@ public abstract class LifeCycleImpl implements LifeCycle {
         if (ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(targetStatus)) {
             checkProcStatus(srmResourceVersion, procStatusToPublishExternally);
         }
+
+        // Note: sdmx module checks maintainer has validity started
 
         // Check other conditions
         checkResourceInInternallyPublished(urn, srmResourceVersion, targetStatus);

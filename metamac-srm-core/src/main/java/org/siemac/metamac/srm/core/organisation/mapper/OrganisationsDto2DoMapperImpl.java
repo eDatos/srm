@@ -42,7 +42,7 @@ public class OrganisationsDto2DoMapperImpl implements OrganisationsDto2DoMapper 
         // If exists, retrieves existing entity. Otherwise, creates new entity.
         OrganisationSchemeVersionMetamac target = null;
         if (source.getId() == null) {
-            target = new OrganisationSchemeVersionMetamac(source.getType());
+            target = new OrganisationSchemeVersionMetamac();
         } else {
             try {
                 target = getOrganisationSchemeVersionMetamacRepository().findById(source.getId());
@@ -72,7 +72,7 @@ public class OrganisationsDto2DoMapperImpl implements OrganisationsDto2DoMapper 
         // If exists, retrieves existing entity. Otherwise, creates new entity.
         OrganisationMetamac target = null;
         if (source.getId() == null) {
-            target = new OrganisationMetamac(source.getType());
+            target = new OrganisationMetamac();
         } else {
             try {
                 target = organisationMetamacRepository.findById(source.getId());
