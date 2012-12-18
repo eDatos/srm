@@ -890,8 +890,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             List<ConditionalCriteria> conditionalCriteriaQuery, PagingParameter pagingParameter) throws MetamacException {
 
         // Criteria to find by criteria
-        List<ConditionalCriteria> conditionalCriteria = SrmRestInternalUtils.buildConditionalCriteriaItemSchemes(agencyID, resourceID, version, conditionalCriteriaQuery,
-                CategorySchemeVersionMetamac.class);
+        List<ConditionalCriteria> conditionalCriteria = SrmRestInternalUtils.buildConditionalCriteriaItemSchemes(agencyID, resourceID, version, conditionalCriteriaQuery, Categorisation.class);
 
         // Find
         PagedResult<com.arte.statistic.sdmx.srm.core.category.domain.Categorisation> entitiesPagedResult = categoriesService.findCategorisationsByCondition(ctx, conditionalCriteria, pagingParameter);
@@ -1025,7 +1024,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
 
         // Criteria to find items by criteria
         List<ConditionalCriteria> conditionalCriteria = SrmRestInternalUtils.buildConditionalCriteriaItems(agencyID, resourceID, version, organisationID, conditionalCriteriaQuery,
-                ConceptMetamac.class);
+                OrganisationMetamac.class);
         if (type != null) {
             conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(OrganisationMetamac.class).withProperty(OrganisationMetamacProperties.organisationType()).eq(type).buildSingle());
         }

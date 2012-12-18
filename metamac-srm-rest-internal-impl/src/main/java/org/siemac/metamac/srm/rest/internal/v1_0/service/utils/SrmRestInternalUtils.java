@@ -7,6 +7,8 @@ import org.apache.commons.collections.CollectionUtils;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
+import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemProperties;
@@ -15,6 +17,8 @@ import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefactProperties.MaintainableArtefactProperty;
 import com.arte.statistic.sdmx.srm.core.base.domain.NameableArtefactProperties.NameableArtefactProperty;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxAlias;
+import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationProperties;
+import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationSchemeVersionProperties;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 
@@ -104,7 +108,7 @@ public class SrmRestInternalUtils {
      */
     @SuppressWarnings({"unchecked", "rawtypes"})
     private static void addConditionalCriteriaItemSchemePublished(List<ConditionalCriteria> conditionalCriteria, Class entity, MaintainableArtefactProperty maintainableArtefactProperty) {
-        conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(entity).withProperty(maintainableArtefactProperty.finalLogic()).eq(Boolean.TRUE).buildSingle());
+        conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(entity).withProperty(maintainableArtefactProperty.finalLogicClient()).eq(Boolean.TRUE).buildSingle());
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
@@ -128,12 +132,23 @@ public class SrmRestInternalUtils {
     private static void addConditionalCriteriaByItemCodeSchemeVersion(List<ConditionalCriteria> conditionalCriteria, String version, Class entity,
             MaintainableArtefactProperty maintainableArtefactProperty) {
         if (RestInternalConstants.LATEST.equals(version)) {
-            conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(entity).withProperty(maintainableArtefactProperty.latestFinal()).eq(Boolean.TRUE).buildSingle());
+
+            // AgencyScheme, DataProviderScheme and DataConsumerScheme never are versioned, so they are always with same version
+            if (OrganisationSchemeVersionMetamac.class.equals(entity)) {
+                conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(entity).lbrace().withProperty(OrganisationSchemeVersionProperties.organisationSchemeType())
+                        .in(OrganisationSchemeTypeEnum.AGENCY_SCHEME, OrganisationSchemeTypeEnum.DATA_CONSUMER_SCHEME, OrganisationSchemeTypeEnum.DATA_PROVIDER_SCHEME).or()
+                        .withProperty(maintainableArtefactProperty.latestFinal()).eq(Boolean.TRUE).rbrace().buildSingle());
+            } else if (OrganisationMetamac.class.equals(entity)) {
+                conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(entity).lbrace().withProperty(OrganisationProperties.organisationType())
+                        .in(OrganisationTypeEnum.AGENCY, OrganisationTypeEnum.DATA_CONSUMER, OrganisationTypeEnum.DATA_PROVIDER).or().withProperty(maintainableArtefactProperty.latestFinal())
+                        .eq(Boolean.TRUE).rbrace().buildSingle());
+            } else {
+                conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(entity).withProperty(maintainableArtefactProperty.latestFinal()).eq(Boolean.TRUE).buildSingle());
+            }
         } else if (version != null && !RestInternalConstants.WILDCARD.equals(version)) {
             conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(entity).withProperty(maintainableArtefactProperty.versionLogic()).eq(version).buildSingle());
         }
     }
-
     @SuppressWarnings({"unchecked", "rawtypes"})
     private static void addConditionalCriteriaByItemCode(List<ConditionalCriteria> conditionalCriteria, String code, Class entity, NameableArtefactProperty nameableArtefactProperty) {
         if (code != null && !RestInternalConstants.WILDCARD.equals(code)) {
