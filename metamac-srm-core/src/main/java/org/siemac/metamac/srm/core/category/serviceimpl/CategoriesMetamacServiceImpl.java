@@ -386,9 +386,12 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
      */
     private void checkCategorySchemeToCreateOrUpdate(ServiceContext ctx, CategorySchemeVersionMetamac categorySchemeVersion) throws MetamacException {
 
-        // Proc status
         if (categorySchemeVersion.getId() != null) {
+            // Proc status
             checkCategorySchemeCanBeModified(categorySchemeVersion);
+
+            // Code
+            SrmValidationUtils.checkMaintainableArtefactCanChangeCodeIfChanged(categorySchemeVersion.getMaintainableArtefact());
         }
 
         // Maintainer internally or externally published
@@ -397,8 +400,6 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
         SrmValidationUtils.checkArtefactInternallyOrExternallyPublished(maintainerOrganisationSchemeVersion.getMaintainableArtefact().getUrn(),
                 maintainerOrganisationSchemeVersion.getLifeCycleMetadata());
 
-        // Code
-        SrmValidationUtils.checkMaintainableArtefactCanChangeCodeIfChanged(categorySchemeVersion.getMaintainableArtefact());
     }
 
     /**

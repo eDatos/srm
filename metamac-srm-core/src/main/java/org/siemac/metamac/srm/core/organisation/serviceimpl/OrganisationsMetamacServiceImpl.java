@@ -320,9 +320,11 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
      */
     private void checkOrganisationSchemeToCreateOrUpdate(ServiceContext ctx, OrganisationSchemeVersionMetamac organisationSchemeVersion) throws MetamacException {
 
-        // Proc status
         if (organisationSchemeVersion.getId() != null) {
+            // Proc status
             checkOrganisationSchemeCanBeModified(organisationSchemeVersion);
+            // Code
+            SrmValidationUtils.checkMaintainableArtefactCanChangeCodeIfChanged(organisationSchemeVersion.getMaintainableArtefact());
         }
 
         // Maintainer internally or externally published
@@ -330,9 +332,6 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
         OrganisationSchemeVersionMetamac maintainerOrganisationSchemeVersion = retrieveOrganisationSchemeByOrganisationUrn(ctx, maintainerUrn);
         SrmValidationUtils.checkArtefactInternallyOrExternallyPublished(maintainerOrganisationSchemeVersion.getMaintainableArtefact().getUrn(),
                 maintainerOrganisationSchemeVersion.getLifeCycleMetadata());
-
-        // Code
-        SrmValidationUtils.checkMaintainableArtefactCanChangeCodeIfChanged(organisationSchemeVersion.getMaintainableArtefact());
 
         // Check type modification: type can only be modified when is in initial version and when has no children (this last requisite is checked in SDMX service)
         if (!SrmServiceUtils.isItemSchemeFirstVersion(organisationSchemeVersion)) {

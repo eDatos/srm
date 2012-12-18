@@ -534,9 +534,12 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
      */
     private void checkConceptSchemeToCreateOrUpdate(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeVersion) throws MetamacException {
 
-        // Proc status
         if (conceptSchemeVersion.getId() != null) {
+            // Proc status
             checkConceptSchemeCanBeModified(conceptSchemeVersion);
+
+            // Code
+            SrmValidationUtils.checkMaintainableArtefactCanChangeCodeIfChanged(conceptSchemeVersion.getMaintainableArtefact());
         }
 
         // Maintainer internally or externally published
@@ -544,9 +547,6 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         OrganisationSchemeVersionMetamac maintainerOrganisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByOrganisationUrn(ctx, maintainerUrn);
         SrmValidationUtils.checkArtefactInternallyOrExternallyPublished(maintainerOrganisationSchemeVersion.getMaintainableArtefact().getUrn(),
                 maintainerOrganisationSchemeVersion.getLifeCycleMetadata());
-
-        // Code
-        SrmValidationUtils.checkMaintainableArtefactCanChangeCodeIfChanged(conceptSchemeVersion.getMaintainableArtefact());
 
         // if this version is not the first one, check not modify 'type'
         if (!SrmServiceUtils.isItemSchemeFirstVersion(conceptSchemeVersion)) {

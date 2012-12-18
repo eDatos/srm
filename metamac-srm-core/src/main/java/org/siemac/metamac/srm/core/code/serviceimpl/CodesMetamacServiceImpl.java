@@ -524,9 +524,12 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
      */
     private void checkCodelistToCreateOrUpdate(ServiceContext ctx, CodelistVersionMetamac codelist) throws MetamacException {
 
-        // Proc status
         if (codelist.getId() != null) {
+            // Proc status
             checkCodelistCanBeModified(codelist);
+
+            // Code
+            SrmValidationUtils.checkMaintainableArtefactCanChangeCodeIfChanged(codelist.getMaintainableArtefact());
         }
 
         // Maintainer internally or externally published
@@ -534,9 +537,6 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         OrganisationSchemeVersionMetamac maintainerOrganisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByOrganisationUrn(ctx, maintainerUrn);
         SrmValidationUtils.checkArtefactInternallyOrExternallyPublished(maintainerOrganisationSchemeVersion.getMaintainableArtefact().getUrn(),
                 maintainerOrganisationSchemeVersion.getLifeCycleMetadata());
-
-        // Code
-        SrmValidationUtils.checkMaintainableArtefactCanChangeCodeIfChanged(codelist.getMaintainableArtefact());
     }
 
     private void checkCodelistToVersioning(ServiceContext ctx, String urnToCopy) throws MetamacException {

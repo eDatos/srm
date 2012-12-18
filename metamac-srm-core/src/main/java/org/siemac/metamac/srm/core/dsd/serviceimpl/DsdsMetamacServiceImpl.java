@@ -257,9 +257,12 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
      */
     private void checkDataStructureDefinitionToCreateOrUpdate(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion) throws MetamacException {
 
-        // Proc status
         if (dataStructureDefinitionVersion.getId() != null) {
+            // Proc status
             checkDataStructureDefinitionCanBeModified(dataStructureDefinitionVersion);
+
+            // Code
+            SrmValidationUtils.checkMaintainableArtefactCanChangeCodeIfChanged(dataStructureDefinitionVersion.getMaintainableArtefact());
         }
 
         // Maintainer internally or externally published
@@ -267,9 +270,6 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         OrganisationSchemeVersionMetamac maintainerOrganisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByOrganisationUrn(ctx, maintainerUrn);
         SrmValidationUtils.checkArtefactInternallyOrExternallyPublished(maintainerOrganisationSchemeVersion.getMaintainableArtefact().getUrn(),
                 maintainerOrganisationSchemeVersion.getLifeCycleMetadata());
-
-        // Code
-        SrmValidationUtils.checkMaintainableArtefactCanChangeCodeIfChanged(dataStructureDefinitionVersion.getMaintainableArtefact());
     }
 
     private void checkDataStructureDefinitionVersioning(ServiceContext ctx, String urnToCopy) throws MetamacException {
