@@ -15,7 +15,7 @@ import com.arte.statistic.sdmx.srm.core.importation.ImportationCallback;
 public abstract class ImportationMetamacCallbackImplBase implements ImportationCallback {
 
     @Autowired
-    private ConfigurationService configurationService = null;
+    private final ConfigurationService configurationService = null;
 
     public void validateRestrictionsGeneral(Object source) throws MetamacException {
 
@@ -32,7 +32,7 @@ public abstract class ImportationMetamacCallbackImplBase implements ImportationC
         // Check: Unable to import artifacts with the same value of the Agency maintainer.
         String dataOrganisationUrn = configurationService.getConfig().getString(SrmConstants.METAMAC_ORGANISATION_URN);
         if (StringUtils.isNotEmpty(dataOrganisationUrn) && !dataOrganisationUrn.equals(source.getMaintainer().getNameableArtefact().getUrn())) {
-
+            // TODO lanzar excepcion
         }
 
         // Check: Unable to import artifacts with value of TRUE in the field isExternalReference.
