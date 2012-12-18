@@ -127,7 +127,23 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
     }
 
     @Test
-    public void testUpdateOrganisationSchemePublished() throws Exception {
+    public void testUpdateOrganisationSchemePublishedAgencyScheme() throws Exception {
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), ORGANISATION_SCHEME_9_V1);
+        assertEquals(OrganisationSchemeTypeEnum.AGENCY_SCHEME, organisationSchemeVersion.getOrganisationSchemeType());
+        assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, organisationSchemeVersion.getLifeCycleMetadata().getProcStatus());
+        organisationSchemeVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
+        organisationSchemeVersion.setIsTypeUpdated(Boolean.FALSE);
+        organisationSchemeVersion.getMaintainableArtefact().setName(OrganisationsMetamacDoMocks.mockInternationalString("name"));
+
+        ServiceContext ctx = getServiceContextAdministrador();
+        OrganisationSchemeVersion organisationSchemeVersionUpdated = organisationsService.updateOrganisationScheme(ctx, organisationSchemeVersion);
+        assertNotNull(organisationSchemeVersionUpdated);
+        assertEquals("user1", organisationSchemeVersionUpdated.getCreatedBy());
+        assertEquals(ctx.getUserId(), organisationSchemeVersionUpdated.getLastUpdatedBy());
+    }
+
+    @Test
+    public void testUpdateOrganisationSchemeErrorPublished() throws Exception {
         String[] urns = {ORGANISATION_SCHEME_1_V1};
         for (String urn : urns) {
             OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), urn);
@@ -1316,6 +1332,24 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_2, organisationSchemeVersion.getItemsFirstLevel().get(1).getNameableArtefact().getUrn());
         assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_3, organisationSchemeVersion.getItemsFirstLevel().get(2).getNameableArtefact().getUrn());
         assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_4, organisationSchemeVersion.getItemsFirstLevel().get(3).getNameableArtefact().getUrn());
+    }
+
+    @Test
+    public void testCreateOrganisationInAgencySchemePublished() throws Exception {
+
+        OrganisationMetamac organisation = OrganisationsMetamacDoMocks.mockOrganisation(OrganisationTypeEnum.AGENCY);
+        organisation.setParent(null);
+        String organisationSchemeUrn = ORGANISATION_SCHEME_9_V1;
+
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), organisationSchemeUrn);
+        assertEquals(OrganisationSchemeTypeEnum.AGENCY_SCHEME, organisationSchemeVersion.getOrganisationSchemeType());
+        assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, organisationSchemeVersion.getLifeCycleMetadata().getProcStatus());
+
+        // Create
+        OrganisationMetamac organisationSchemeVersionCreated = organisationsService.createOrganisation(getServiceContextAdministrador(), organisationSchemeUrn, organisation);
+        String urn = organisationSchemeVersionCreated.getNameableArtefact().getUrn();
+        OrganisationMetamac organisationRetrieved = organisationsService.retrieveOrganisationByUrn(getServiceContextAdministrador(), urn);
+        OrganisationsMetamacAsserts.assertEqualsOrganisation(organisation, organisationRetrieved);
     }
 
     @Test
