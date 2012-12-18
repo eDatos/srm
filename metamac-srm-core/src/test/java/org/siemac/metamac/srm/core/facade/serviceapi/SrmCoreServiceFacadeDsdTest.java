@@ -370,6 +370,7 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
     // }
 
     @Test
+    // TODO tests export: pendiente reestructuración del servicio de exportación
     @Ignore
     public void testExportSDMXStructureMsg() throws Exception {
 

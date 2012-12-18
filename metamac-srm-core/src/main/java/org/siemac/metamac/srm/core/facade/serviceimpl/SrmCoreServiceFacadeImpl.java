@@ -1,8 +1,11 @@
 package org.siemac.metamac.srm.core.facade.serviceimpl;
 
+import java.io.File;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
@@ -474,75 +477,69 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
      **************************************************************************/
     @Override
     public void importSDMXStructureMsg(ServiceContext ctx, ContentInputDto contentDto) throws MetamacException {
-        // TODO importSDMXStructureMsg
-        // // Security
-        // DataStructureDefinitionSecurityUtils.canImportDataStructureDefinition(ctx);
-        //
-        // // StructureMessage
-        // // CodeList -> Metamac not imported CodeList, only process
-        // // Concepts -> Metamac not imported Concepts, only process
-        // // DataStructures -> Import
-        //
-        // // 1. Extract Structure
-        // StructureMsgDto structureMsgDto = null;
-        // try {
-        // Structure structure = (Structure) getMarshallerWithValidation().unmarshal(new StreamSource(contentDto.getInput()));
-        // structureMsgDto = getTransformationServiceFacade().transformStructureMessage(ctx, structure);
-        // } catch (XmlMappingException e) {
-        // throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(MetamacTransExceptionType.MATAMAC_TRANS_JAXB_ERROR).withLoggedLevel(ExceptionLevelEnum.ERROR)
-        // .withMessageParameters(e.getMessage()).build();
-        // }
-        //
-        // // Import DataStructures
-        // for (DataStructureDefinitionExtendDto dsdExtDto : structureMsgDto.getDataStructureDefinitionDtos()) {
-        // // Save (create or update) DSD
-        // DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDto2DoMapper().dataStructureDefinitionDtoToDataStructureDefinition(dsdExtDto);
-        // dataStructureDefinitionVersionMetamac = getDsdsMetamacService().importDataStructureDefinition(ctx, dataStructureDefinitionVersionMetamac);
-        // }
+        // Security
+        DataStructureDefinitionSecurityUtils.canImportDataStructureDefinition(ctx);
+
+        // StructureMessage
+        // CodeList -> Metamac not imported CodeList, only process
+        // Concepts -> Metamac not imported Concepts, only process
+        // DataStructures -> Import
+
+        /*
+         * // 1. Extract Structure
+         * StructureMsgDto structureMsgDto = null;
+         * try {
+         * Structure structure = (Structure) getMarshallerWithValidation().unmarshal(new StreamSource(contentDto.getInput()));
+         * structureMsgDto = getTransformationServiceFacade().transformStructureMessage(ctx, structure);
+         * } catch (XmlMappingException e) {
+         * throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(MetamacTransExceptionType.MATAMAC_TRANS_JAXB_ERROR).withLoggedLevel(ExceptionLevelEnum.ERROR)
+         * .withMessageParameters(e.getMessage()).build();
+         * }
+         * // Import DataStructures
+         * for (DataStructureDefinitionExtendDto dsdExtDto : structureMsgDto.getDataStructureDefinitionDtos()) {
+         * // Save (create or update) DSD
+         * DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDto2DoMapper().dataStructureDefinitionDtoToDataStructureDefinition(dsdExtDto);
+         * dataStructureDefinitionVersionMetamac = getDsdsMetamacService().importDataStructureDefinition(ctx, dataStructureDefinitionVersionMetamac);
+         * }
+         */
     }
 
     @Override
     public String exportSDMXStructureMsg(ServiceContext ctx, StructureMsgDto structureMsgDto) throws MetamacException {
-        // TODO Facade. Añadir seguridad a exportar DSD
-        // TODO exportación
-        //
-        // OutputStream outputStream = null;
-        // File file = null;
-        //
-        // try {
-        // file = File.createTempFile("mt_dsd_", ".xml");
-        // outputStream = new FileOutputStream(file);
-        //
-        // // StreamResult resultWriter = new StreamResult(outputStream);
-        //
-        // // Output with writer to avoid bad indent in xml ouput
-        // OutputStreamWriter writer = new OutputStreamWriter(outputStream);
-        // StreamResult result = new StreamResult(writer);
-        //
-        // // Marshall properties
-        // Map<String, Object> marshallProperties = new HashMap<String, Object>();
-        // marshallProperties.put(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE); // Formatted output
-        // getMarshallerWithValidation().setMarshallerProperties(marshallProperties);
-        //
-        // // Transform Metamac Business Objects to JAXB Objects
-        // Structure structure = getTransformationServiceFacade().transformStructureMessage(ctx, structureMsgDto);
-        //
-        // getMarshallerWithValidation().marshal(structure, result);
-        //
-        // } catch (XmlMappingException e) {
-        // throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(MetamacTransExceptionType.MATAMAC_TRANS_JAXB_ERROR).withLoggedLevel(ExceptionLevelEnum.ERROR)
-        // .withMessageParameters((e.getRootCause() != null) ? e.getRootCause().getMessage() : e.getMessage()).build();
-        // } catch (FileNotFoundException e) {
-        // throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.UNKNOWN).withLoggedLevel(ExceptionLevelEnum.ERROR)
-        // .withMessageParameters(FileNotFoundException.class.getName()).build();
-        // } catch (IOException e) {
-        // throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.UNKNOWN).withLoggedLevel(ExceptionLevelEnum.ERROR)
-        // .withMessageParameters(IOException.class.getName()).build();
-        // }
-        //
-        // return (file == null) ? StringUtils.EMPTY : file.getAbsolutePath();
+        // TODO cambiar la interfaz de este método para que sean los que sean los elementos que se le pasan, sean URNs en vez de objetos
+        // posiblemente se tenga que cambiar el structuremsgdto para que almacene conjuntos de urn agrupasad por tipo, es decir, urn de dsd, urn de codelist... y así
 
-        return null;
+        // TODO Facade. Añadir seguridad a exportar DSD
+
+        OutputStream outputStream = null;
+        File file = null;
+        /*
+         * try {
+         * file = File.createTempFile("mt_dsd_", ".xml");
+         * outputStream = new FileOutputStream(file);
+         * // StreamResult resultWriter = new StreamResult(outputStream);
+         * // Output with writer to avoid bad indent in xml ouput
+         * OutputStreamWriter writer = new OutputStreamWriter(outputStream);
+         * StreamResult result = new StreamResult(writer);
+         * // Marshall properties
+         * Map<String, Object> marshallProperties = new HashMap<String, Object>();
+         * marshallProperties.put(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE); // Formatted output
+         * getMarshallerWithValidation().setMarshallerProperties(marshallProperties);
+         * // Transform Metamac Business Objects to JAXB Objects
+         * Structure structure = getTransformationServiceFacade().transformStructureMessage(ctx, structureMsgDto);
+         * getMarshallerWithValidation().marshal(structure, result);
+         * } catch (XmlMappingException e) {
+         * throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(MetamacTransExceptionType.MATAMAC_TRANS_JAXB_ERROR).withLoggedLevel(ExceptionLevelEnum.ERROR)
+         * .withMessageParameters((e.getRootCause() != null) ? e.getRootCause().getMessage() : e.getMessage()).build();
+         * } catch (FileNotFoundException e) {
+         * throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.UNKNOWN).withLoggedLevel(ExceptionLevelEnum.ERROR)
+         * .withMessageParameters(FileNotFoundException.class.getName()).build();
+         * } catch (IOException e) {
+         * throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.UNKNOWN).withLoggedLevel(ExceptionLevelEnum.ERROR)
+         * .withMessageParameters(IOException.class.getName()).build();
+         * }
+         */
+        return (file == null) ? StringUtils.EMPTY : file.getAbsolutePath();
     }
 
     /**************************************************************************

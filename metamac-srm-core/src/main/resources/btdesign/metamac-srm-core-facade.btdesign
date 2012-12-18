@@ -35,7 +35,6 @@ Application SrmFacadeCore {
     	basePackage=org.siemac.metamac.srm.core.facade
     	
 		Service SrmCoreServiceFacade {
-       		> @TransformationServiceFacade
        		> @ConceptsMetamacService
        		> @DsdsMetamacService
        		> @OrganisationsMetamacService
@@ -229,21 +228,6 @@ Application SrmFacadeCore {
 			 @throws org.siemac.metamac.core.common.exception.MetamacException
 			" 
 	   		deleteComponentForDataStructureDefinition(String urnDsd, @ComponentDto componentDto) throws MetamacException;
-	   		
-	   		"
-	    	 @param ctx                                                                          
-			 @param contentDto                                                                           
-			 @throws org.siemac.metamac.core.common.exception.MetamacException
-	    	"
-	    	importSDMXStructureMsg(@ContentInputDto contentDto) throws MetamacException;
-	   		
-	    	"
-	    	 @param ctx                                                                         
-			 @param structureMsgDto                                                             
-			 @return                                                                            
-			 @throws org.siemac.metamac.core.common.exception.MetamacException
-			"
-	    	String exportSDMXStructureMsg(@StructureMsgDto structureMsgDto) throws MetamacException;
 
 	    	/**************************************************************************
 		     * ORGANISATIONS
@@ -483,48 +467,17 @@ Application SrmFacadeCore {
             deleteCode(String urn) throws MetamacException;
     		"Retrieves codes by code scheme, in tree structure"
     		List<@ItemHierarchyDto> retrieveCodesByCodelistUrn(String codelistUrn) throws MetamacException;
-    	}
-/*    	
-    	Service ImportServiceFacade {
-	    	> @SDMXStructureServiceFacade
-	    	> @TransformationServiceFacade
-	    	> @BaseService
-	    	
-	    	"
+    		
+    		/**************************************************************************
+		     * COMMON
+		     **************************************************************************/
+    		"
 	    	 @param ctx                                                                          
 			 @param contentDto                                                                           
 			 @throws org.siemac.metamac.core.common.exception.MetamacException
 	    	"
 	    	importSDMXStructureMsg(@ContentInputDto contentDto) throws MetamacException;
-	    	
-	    	"
-	    	 @param ctx                                                                         
-			 @param contentDto                                                                          
-			 @param dsdId                                                  
-			 @throws org.siemac.metamac.core.common.exception.MetamacException
-			" 
-	    	importSDMXData(@ContentInputDto contentDto, Long dsdId) throws MetamacException;
-	    	
-	    	"
-	    	 Retrieve a list of import data jobs that are currently running or have failed                                       
-			 @throws org.siemac.metamac.core.common.exception.MetamacException
-			" 
-	    	List<@JobDetailsDto> retrieveImportDataCurrentJobs throws MetamacException;
-	    	
-	    	"
-	    	 Deleting a Job that has failed and unscheduling all of its triggers                           
-			 @throws org.siemac.metamac.core.common.exception.MetamacException
-	    	"
-	    	deleteFailedImportDataJob(String jobName) throws MetamacException;
-	    	
-    	}
-    	
-    	Service ExportServiceFacade {
-	    	> @SDMXStructureServiceFacade
-	    	> @TransformationServiceFacade
-	    	> @BaseService
-	    	> @DataServiceFacade
-	    	
+	   		
 	    	"
 	    	 @param ctx                                                                         
 			 @param structureMsgDto                                                             
@@ -532,19 +485,8 @@ Application SrmFacadeCore {
 			 @throws org.siemac.metamac.core.common.exception.MetamacException
 			"
 	    	String exportSDMXStructureMsg(@StructureMsgDto structureMsgDto) throws MetamacException;
-	    	
-	    	"
-	    	 @param ctx                                                                         
-			 @param dataStructureDefinitionDto                                                  
-			 @param datasetId                                                                   
-			 @param typeSDMXMessage                                                             
-			 @return                                                                            
-			 @throws org.siemac.metamac.core.common.exception.MetamacException
-	    	"
-	    	String exportSDMXDataMsg(@DataStructureDefinitionDto dataStructureDefinitionDto, String datasetId, @TypeSDMXMessage typeSDMXMessage) throws MetamacException;
-	    	
     	}
-*/    	
+
     }
 
 }
