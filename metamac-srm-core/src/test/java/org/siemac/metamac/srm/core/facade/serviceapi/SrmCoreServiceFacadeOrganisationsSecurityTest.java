@@ -137,9 +137,7 @@ public class SrmCoreServiceFacadeOrganisationsSecurityTest extends SrmBaseTest {
     @Test
     public void testUpdatePublishedAgencyScheme() throws Exception {
         OrganisationSchemeMetamacDto externallyPublishedVersion = srmCoreServiceFacade.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), ORGANISATION_SCHEME_8_V1);
-        OrganisationSchemeMetamacDto internallyPublishedVersion = srmCoreServiceFacade.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), ORGANISATION_SCHEME_9_V1);
         srmCoreServiceFacade.updateOrganisationScheme(getServiceContextJefeNormalizacion(), externallyPublishedVersion);
-        srmCoreServiceFacade.updateOrganisationScheme(getServiceContextJefeNormalizacion(), internallyPublishedVersion);
     }
 
     @Test
@@ -604,16 +602,9 @@ public class SrmCoreServiceFacadeOrganisationsSecurityTest extends SrmBaseTest {
 
     @Test
     public void testUpdateAgencyInPublishedScheme() throws Exception {
-        {
-            // INTERNALLY PUBLISHED SCHEME
-            OrganisationMetamacDto organisationMetamacDto = srmCoreServiceFacade.retrieveOrganisationByUrn(getServiceContextAdministrador(), ORGANISATION_SCHEME_9_V1_ORGANISATION_1);
-            srmCoreServiceFacade.updateOrganisation(getServiceContextJefeNormalizacion(), organisationMetamacDto);
-        }
-        {
-            // EXTERNALLY PUBLISHED SCHEME
-            OrganisationMetamacDto organisationMetamacDto = srmCoreServiceFacade.retrieveOrganisationByUrn(getServiceContextAdministrador(), ORGANISATION_SCHEME_8_V1_ORGANISATION_1);
-            srmCoreServiceFacade.updateOrganisation(getServiceContextJefeNormalizacion(), organisationMetamacDto);
-        }
+        // EXTERNALLY PUBLISHED SCHEME
+        OrganisationMetamacDto organisationMetamacDto = srmCoreServiceFacade.retrieveOrganisationByUrn(getServiceContextAdministrador(), ORGANISATION_SCHEME_8_V1_ORGANISATION_1);
+        srmCoreServiceFacade.updateOrganisation(getServiceContextJefeNormalizacion(), organisationMetamacDto);
     }
 
     @Test
@@ -646,18 +637,10 @@ public class SrmCoreServiceFacadeOrganisationsSecurityTest extends SrmBaseTest {
 
     @Test
     public void testCreateAgencyInPublishedScheme() throws Exception {
-        {
-            // INTERNALLY PUBLISHED SCHEME
-            OrganisationMetamacDto organisationMetamacDto = OrganisationsMetamacDtoMocks.mockOrganisationDto(OrganisationTypeEnum.AGENCY);
-            organisationMetamacDto.setItemSchemeVersionUrn(ORGANISATION_SCHEME_9_V1);
-            srmCoreServiceFacade.createOrganisation(getServiceContextJefeNormalizacion(), organisationMetamacDto);
-        }
-        {
-            // EXTERNALLY PUBLISHED SCHEME
-            OrganisationMetamacDto organisationMetamacDto = OrganisationsMetamacDtoMocks.mockOrganisationDto(OrganisationTypeEnum.AGENCY);
-            organisationMetamacDto.setItemSchemeVersionUrn(ORGANISATION_SCHEME_8_V1);
-            srmCoreServiceFacade.createOrganisation(getServiceContextJefeNormalizacion(), organisationMetamacDto);
-        }
+        // EXTERNALLY PUBLISHED SCHEME
+        OrganisationMetamacDto organisationMetamacDto = OrganisationsMetamacDtoMocks.mockOrganisationDto(OrganisationTypeEnum.AGENCY);
+        organisationMetamacDto.setItemSchemeVersionUrn(ORGANISATION_SCHEME_8_V1);
+        srmCoreServiceFacade.createOrganisation(getServiceContextJefeNormalizacion(), organisationMetamacDto);
     }
 
     @Test

@@ -13,6 +13,7 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.common.LifeCycle;
+import org.siemac.metamac.srm.core.common.SrmValidation;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.common.service.utils.SrmValidationUtils;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
@@ -20,8 +21,6 @@ import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMeta
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamacProperties;
 import org.siemac.metamac.srm.core.dsd.serviceimpl.utils.DsdsMetamacInvocationValidator;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
-import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
-import org.siemac.metamac.srm.core.organisation.serviceapi.OrganisationsMetamacService;
 import org.siemac.metamac.srm.core.serviceimpl.SrmServiceUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -45,11 +44,11 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
     private DataStructureDefinitionService dataStructureDefinitionService;
 
     @Autowired
-    private OrganisationsMetamacService    organisationsService;
-
-    @Autowired
     @Qualifier("dsdLifeCycle")
     private LifeCycle                      dsdLifeCycle;
+
+    @Autowired
+    private SrmValidation                  srmValidation;
 
     @Autowired
     @Qualifier("structureCopyCallbackMetamac")
@@ -265,11 +264,8 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
             SrmValidationUtils.checkMaintainableArtefactCanChangeCodeIfChanged(dataStructureDefinitionVersion.getMaintainableArtefact());
         }
 
-        // Maintainer internally or externally published
-        String maintainerUrn = dataStructureDefinitionVersion.getMaintainableArtefact().getMaintainer().getNameableArtefact().getUrn();
-        OrganisationSchemeVersionMetamac maintainerOrganisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByOrganisationUrn(ctx, maintainerUrn);
-        SrmValidationUtils.checkArtefactInternallyOrExternallyPublished(maintainerOrganisationSchemeVersion.getMaintainableArtefact().getUrn(),
-                maintainerOrganisationSchemeVersion.getLifeCycleMetadata());
+        // Maintainer
+        srmValidation.checkMaintainer(ctx, dataStructureDefinitionVersion.getMaintainableArtefact(), dataStructureDefinitionVersion.getMaintainableArtefact().getIsImported());
     }
 
     private void checkDataStructureDefinitionVersioning(ServiceContext ctx, String urnToCopy) throws MetamacException {

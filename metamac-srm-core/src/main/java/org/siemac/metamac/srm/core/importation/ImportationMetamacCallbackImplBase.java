@@ -1,10 +1,9 @@
 package org.siemac.metamac.srm.core.importation;
 
 import org.apache.commons.lang.StringUtils;
-import org.siemac.metamac.core.common.conf.ConfigurationService;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
-import org.siemac.metamac.srm.core.constants.SrmConstants;
+import org.siemac.metamac.srm.core.conf.SrmConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
@@ -15,22 +14,25 @@ import com.arte.statistic.sdmx.srm.core.importation.ImportationCallback;
 public abstract class ImportationMetamacCallbackImplBase implements ImportationCallback {
 
     @Autowired
-    private final ConfigurationService configurationService = null;
+    private SrmConfiguration srmConfiguration;
 
     public void validateRestrictionsGeneral(Object source) throws MetamacException {
-
+        // TODO validaciones generales
     }
 
     public <T extends MaintainableArtefact> void validateRestrictionsMaintainebleArtefact(T source) throws MetamacException {
+
+        // TODO invocar a srmValidation para validaciones comunes? ej: maintainer
 
         // Check: All artifacts imported in Metamac must be FINAL unless AgencySchemes.
         if (!source.getFinalLogic()) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_INCORRECT).withMessageParameters(ServiceExceptionParameters.MAINTAINABLE_ARTEFACT_FINAL_LOGIC)
                     .build();
         }
+        // TODO AgencyScheme, DataProvider.... no final
 
         // Check: Unable to import artifacts with the same value of the Agency maintainer.
-        String dataOrganisationUrn = configurationService.getConfig().getString(SrmConstants.METAMAC_ORGANISATION_URN);
+        String dataOrganisationUrn = srmConfiguration.retrieveMaintainerUrnDefault();
         if (StringUtils.isNotEmpty(dataOrganisationUrn) && !dataOrganisationUrn.equals(source.getMaintainer().getNameableArtefact().getUrn())) {
             // TODO lanzar excepcion
         }

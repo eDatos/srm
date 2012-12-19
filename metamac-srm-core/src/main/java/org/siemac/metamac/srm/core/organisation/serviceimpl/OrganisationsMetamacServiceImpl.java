@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.apache.commons.lang.ObjectUtils;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
-import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
@@ -15,13 +14,14 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.common.LifeCycle;
+import org.siemac.metamac.srm.core.common.SrmValidation;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.common.service.utils.SrmValidationUtils;
+import org.siemac.metamac.srm.core.conf.SrmConfiguration;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
-import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamacProperties;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.organisation.serviceimpl.utils.OrganisationsMetamacInvocationValidator;
 import org.siemac.metamac.srm.core.serviceimpl.SrmServiceUtils;
@@ -37,8 +37,6 @@ import com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.organisation.serviceapi.OrganisationsService;
 import com.arte.statistic.sdmx.srm.core.organisation.serviceimpl.utils.OrganisationsDoCopyUtils.OrganisationCopyCallback;
-import com.arte.statistic.sdmx.srm.core.organisation.serviceimpl.utils.OrganisationsInvocationValidator;
-import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 
 /**
  * Implementation of OrganisationsMetamacService.
@@ -55,6 +53,12 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
     @Autowired
     @Qualifier("organisationSchemeLifeCycle")
     private LifeCycle                   organisationSchemeLifeCycle;
+
+    @Autowired
+    private SrmValidation               srmValidation;
+
+    @Autowired
+    private SrmConfiguration            srmConfiguration;
 
     @Autowired
     @Qualifier("organisationCopyCallbackMetamac")
@@ -219,28 +223,11 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
     }
 
     @Override
-    public PagedResult<OrganisationMetamac> findOrganisationsAsMaintainerByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
-
-        // Validation
-        OrganisationsInvocationValidator.checkFindByCondition(conditions, pagingParameter);
-
-        // Find
-        if (conditions == null) {
-            conditions = ConditionalCriteriaBuilder.criteriaFor(OrganisationMetamac.class).distinctRoot().build();
-        }
-        // Add restrictions to be maintainer
-        // organisation must be agency
-        ConditionalCriteria typeAgencyCondition = ConditionalCriteriaBuilder.criteriaFor(OrganisationMetamac.class).withProperty(OrganisationMetamacProperties.organisationType())
-                .eq(OrganisationTypeEnum.AGENCY).buildSingle();
-        conditions.add(typeAgencyCondition);
-        // organisation scheme internally published
-        ConditionalCriteria internallyPublishedCondition = ConditionalCriteriaBuilder.criteriaFor(OrganisationMetamac.class)
-                .withProperty(OrganisationMetamacProperties.itemSchemeVersion().maintainableArtefact().finalLogicClient()).eq(Boolean.TRUE).buildSingle();
-        conditions.add(internallyPublishedCondition);
-
-        PagedResult<OrganisationMetamac> organisationsPagedResult = getOrganisationMetamacRepository().findByCondition(conditions, pagingParameter);
-        return organisationsPagedResult;
+    public OrganisationMetamac retrieveMaintainerDefault(ServiceContext ctx) throws MetamacException {
+        String maintainerUrn = srmConfiguration.retrieveMaintainerUrnDefault();
+        return retrieveOrganisationByUrn(ctx, maintainerUrn);
     }
+
     @Override
     public void deleteOrganisation(ServiceContext ctx, String urn) throws MetamacException {
 
@@ -327,11 +314,8 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
             SrmValidationUtils.checkMaintainableArtefactCanChangeCodeIfChanged(organisationSchemeVersion.getMaintainableArtefact());
         }
 
-        // Maintainer internally or externally published
-        String maintainerUrn = organisationSchemeVersion.getMaintainableArtefact().getMaintainer().getNameableArtefact().getUrn();
-        OrganisationSchemeVersionMetamac maintainerOrganisationSchemeVersion = retrieveOrganisationSchemeByOrganisationUrn(ctx, maintainerUrn);
-        SrmValidationUtils.checkArtefactInternallyOrExternallyPublished(maintainerOrganisationSchemeVersion.getMaintainableArtefact().getUrn(),
-                maintainerOrganisationSchemeVersion.getLifeCycleMetadata());
+        // Maintainer
+        srmValidation.checkMaintainer(ctx, organisationSchemeVersion.getMaintainableArtefact(), organisationSchemeVersion.getMaintainableArtefact().getIsImported());
 
         // Check type modification: type can only be modified when is in initial version and when has no children (this last requisite is checked in SDMX service)
         if (!SrmServiceUtils.isItemSchemeFirstVersion(organisationSchemeVersion)) {

@@ -22,12 +22,11 @@ import org.siemac.metamac.srm.core.code.domain.VariableFamilyProperties;
 import org.siemac.metamac.srm.core.code.domain.VariableProperties;
 import org.siemac.metamac.srm.core.code.serviceimpl.utils.CodesMetamacInvocationValidator;
 import org.siemac.metamac.srm.core.common.LifeCycle;
+import org.siemac.metamac.srm.core.common.SrmValidation;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.common.service.utils.SrmValidationUtils;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
-import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
-import org.siemac.metamac.srm.core.organisation.serviceapi.OrganisationsMetamacService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -50,14 +49,14 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     private CodesService                codesService;
 
     @Autowired
-    private OrganisationsMetamacService organisationsService;
-
-    @Autowired
     private ItemSchemeVersionRepository itemSchemeVersionRepository;
 
     @Autowired
     @Qualifier("codelistLifeCycle")
     private LifeCycle                   codelistLifeCycle;
+
+    @Autowired
+    private SrmValidation               srmValidation;
 
     @Autowired
     @Qualifier("codesCopyCallbackMetamac")
@@ -532,11 +531,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             SrmValidationUtils.checkMaintainableArtefactCanChangeCodeIfChanged(codelist.getMaintainableArtefact());
         }
 
-        // Maintainer internally or externally published
-        String maintainerUrn = codelist.getMaintainableArtefact().getMaintainer().getNameableArtefact().getUrn();
-        OrganisationSchemeVersionMetamac maintainerOrganisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByOrganisationUrn(ctx, maintainerUrn);
-        SrmValidationUtils.checkArtefactInternallyOrExternallyPublished(maintainerOrganisationSchemeVersion.getMaintainableArtefact().getUrn(),
-                maintainerOrganisationSchemeVersion.getLifeCycleMetadata());
+        // Maintainer
+        srmValidation.checkMaintainer(ctx, codelist.getMaintainableArtefact(), codelist.getMaintainableArtefact().getIsImported());
     }
 
     private void checkCodelistToVersioning(ServiceContext ctx, String urnToCopy) throws MetamacException {

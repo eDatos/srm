@@ -14,6 +14,7 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.common.LifeCycle;
+import org.siemac.metamac.srm.core.common.SrmValidation;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.common.service.utils.SrmValidationUtils;
@@ -26,8 +27,6 @@ import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.core.concept.serviceimpl.utils.ConceptsMetamacInvocationValidator;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
-import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
-import org.siemac.metamac.srm.core.organisation.serviceapi.OrganisationsMetamacService;
 import org.siemac.metamac.srm.core.serviceimpl.SrmServiceUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -52,9 +51,6 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     private ConceptsService             conceptsService;
 
     @Autowired
-    private OrganisationsMetamacService organisationsService;
-
-    @Autowired
     private ItemSchemeVersionRepository itemSchemeVersionRepository;
 
     @Autowired
@@ -63,6 +59,9 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     @Autowired
     @Qualifier("conceptSchemeLifeCycle")
     private LifeCycle                   conceptSchemeLifeCycle;
+
+    @Autowired
+    private SrmValidation               srmValidation;
 
     @Autowired
     @Qualifier("conceptCopyCallbackMetamac")
@@ -542,11 +541,8 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
             SrmValidationUtils.checkMaintainableArtefactCanChangeCodeIfChanged(conceptSchemeVersion.getMaintainableArtefact());
         }
 
-        // Maintainer internally or externally published
-        String maintainerUrn = conceptSchemeVersion.getMaintainableArtefact().getMaintainer().getNameableArtefact().getUrn();
-        OrganisationSchemeVersionMetamac maintainerOrganisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByOrganisationUrn(ctx, maintainerUrn);
-        SrmValidationUtils.checkArtefactInternallyOrExternallyPublished(maintainerOrganisationSchemeVersion.getMaintainableArtefact().getUrn(),
-                maintainerOrganisationSchemeVersion.getLifeCycleMetadata());
+        // Maintainer
+        srmValidation.checkMaintainer(ctx, conceptSchemeVersion.getMaintainableArtefact(), conceptSchemeVersion.getMaintainableArtefact().getIsImported());
 
         // if this version is not the first one, check not modify 'type'
         if (!SrmServiceUtils.isItemSchemeFirstVersion(conceptSchemeVersion)) {

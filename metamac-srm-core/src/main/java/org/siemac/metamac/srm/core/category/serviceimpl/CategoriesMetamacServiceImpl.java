@@ -16,6 +16,7 @@ import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
 import org.siemac.metamac.srm.core.category.serviceimpl.utils.CategoriesMetamacInvocationValidator;
 import org.siemac.metamac.srm.core.common.LifeCycle;
+import org.siemac.metamac.srm.core.common.SrmValidation;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.common.service.utils.SrmValidationUtils;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
@@ -54,6 +55,9 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
     @Autowired
     @Qualifier("categorySchemeLifeCycle")
     private LifeCycle                      categorySchemeLifeCycle;
+
+    @Autowired
+    private SrmValidation                  srmValidation;
 
     @Autowired
     @Qualifier("categoryCopyCallbackMetamac")
@@ -394,12 +398,8 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
             SrmValidationUtils.checkMaintainableArtefactCanChangeCodeIfChanged(categorySchemeVersion.getMaintainableArtefact());
         }
 
-        // Maintainer internally or externally published
-        String maintainerUrn = categorySchemeVersion.getMaintainableArtefact().getMaintainer().getNameableArtefact().getUrn();
-        OrganisationSchemeVersionMetamac maintainerOrganisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByOrganisationUrn(ctx, maintainerUrn);
-        SrmValidationUtils.checkArtefactInternallyOrExternallyPublished(maintainerOrganisationSchemeVersion.getMaintainableArtefact().getUrn(),
-                maintainerOrganisationSchemeVersion.getLifeCycleMetadata());
-
+        // Maintainer
+        srmValidation.checkMaintainer(ctx, categorySchemeVersion.getMaintainableArtefact(), categorySchemeVersion.getMaintainableArtefact().getIsImported());
     }
 
     /**

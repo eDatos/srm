@@ -1,7 +1,6 @@
 package org.siemac.metamac.srm.core.facade.serviceimpl;
 
 import java.io.File;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -511,7 +510,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
         // TODO Facade. Añadir seguridad a exportar DSD
 
-        OutputStream outputStream = null;
+        // OutputStream outputStream = null;
         File file = null;
         /*
          * try {
@@ -1133,22 +1132,17 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public MetamacCriteriaResult<RelatedResourceDto> findOrganisationsAsMaintainerByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
+    public OrganisationMetamacDto retrieveMaintainerDefault(ServiceContext ctx) throws MetamacException {
         // Security
-        OrganisationsSecurityUtils.canFindOrganisationsByCondition(ctx);
+        OrganisationsSecurityUtils.canRetrieveOrganisationByUrn(ctx);
+
+        // Retrieve
+        OrganisationMetamac organisationMetamac = getOrganisationsMetamacService().retrieveMaintainerDefault(ctx);
 
         // Transform
-        SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getOrganisationMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
+        OrganisationMetamacDto organisationMetamacDto = organisationsDo2DtoMapper.organisationMetamacDoToDto(organisationMetamac);
 
-        // Find
-        PagedResult<OrganisationMetamac> result = getOrganisationsMetamacService().findOrganisationsAsMaintainerByCondition(ctx, sculptorCriteria.getConditions(),
-                sculptorCriteria.getPagingParameter());
-
-        // Transform
-        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultOrganisationToMetamacCriteriaResultRelatedResource(result,
-                sculptorCriteria.getPageSize());
-
-        return metamacCriteriaResult;
+        return organisationMetamacDto;
     }
 
     /**************************************************************************

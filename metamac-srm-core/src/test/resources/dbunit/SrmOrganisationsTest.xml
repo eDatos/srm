@@ -941,7 +941,7 @@
                     />
     
     <!-- ************************************************************************************** -->
-    <!-- ORGANISATION SCHEME 2  (Agency scheme)                                                 -->
+    <!-- ORGANISATION SCHEME 2                                                                  -->
     <!--        - Version 1: draft                                                              -->
     <!-- *************************************************************************************  -->
 
@@ -974,7 +974,7 @@
 
     <TB_ORG_SCHEMES_VERSIONS
         TB_ITEM_SCHEMES_VERSIONS="21"
-        ORGANISATION_SCHEME_TYPE="AGENCY_SCHEME"
+        ORGANISATION_SCHEME_TYPE="DATA_CONSUMER_SCHEME"
     />
     
     <TB_M_ORG_SCHEMES_VERSIONS
@@ -1001,10 +1001,10 @@
         ID="21"
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
-        CODE="AGENCIES"
+        CODE="DATA_CONSUMERS"
         URI_PROVIDER="[null]"
-        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.base.AgencyScheme=SDMX01:AGENCIES(01.000)"
-        URN="urn:sdmx:org.sdmx.infomodel.base.AgencyScheme=SDMX01:AGENCIES(01.000)"
+        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.base.DataConsumerScheme=SDMX01:DATA_CONSUMERS(01.000)"
+        URN="urn:sdmx:org.sdmx.infomodel.base.DataConsumerScheme=SDMX01:DATA_CONSUMERS(01.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
         
@@ -1049,8 +1049,8 @@
             
             <TB_ORGANISATIONS
                 TB_ITEMS="211"
-                ORGANISATION_TYPE="AGENCY"
-                ID_AS_MAINTAINER="SDMX01.ORGANISATION01"
+                ORGANISATION_TYPE="DATA_CONSUMER"
+                ID_AS_MAINTAINER="[null]"
             />
         
             <TB_ITEMS
@@ -1076,8 +1076,8 @@
                 
                 CODE="ORGANISATION01"
                 URI_PROVIDER="[null]"
-                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX01:AGENCIES(01.000).ORGANISATION01"
-                URN="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX01:AGENCIES(01.000).ORGANISATION01"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.base.DataConsumer=SDMX01:DATA_CONSUMERS(01.000).ORGANISATION01"
+                URN="urn:sdmx:org.sdmx.infomodel.base.DataConsumer=SDMX01:DATA_CONSUMERS(01.000).ORGANISATION01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
                 
@@ -1103,8 +1103,8 @@
             
             <TB_ORGANISATIONS
                 TB_ITEMS="212"
-                ORGANISATION_TYPE="AGENCY"
-                ID_AS_MAINTAINER="SDMX01.ORGANISATION02"
+                ORGANISATION_TYPE="DATA_CONSUMER"
+                ID_AS_MAINTAINER="[null]"
             />
         
             <TB_ITEMS
@@ -1130,8 +1130,8 @@
                 
                 CODE="ORGANISATION02"
                 URI_PROVIDER="[null]"
-                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX01:AGENCIES(01.000).ORGANISATION02"
-                URN="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX01:AGENCIES(01.000).ORGANISATION02"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.base.DataConsumer=SDMX01:DATA_CONSUMERS(01.000).ORGANISATION02"
+                URN="urn:sdmx:org.sdmx.infomodel.base.DataConsumer=SDMX01:DATA_CONSUMERS(01.000).ORGANISATION02"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
                 
@@ -2401,7 +2401,7 @@
         STRUCTURE_URL="[null]"
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
-        IS_IMPORTED="0"
+        IS_IMPORTED="1"
         MAINTAINER_FK="10012"
         
         UUID="annotableArtefact-81"
@@ -2472,7 +2472,7 @@
             />              
 
     <!-- ************************************************************************************** -->
-    <!-- ORGANISATION SCHEME 9 (Agency)                                                        -->
+    <!-- ORGANISATION SCHEME 9 (DataProvider)                                                   -->
     <!--        - Version 1: internally published                                               -->
     <!-- *************************************************************************************  -->
 
@@ -2505,7 +2505,7 @@
 
     <TB_ORG_SCHEMES_VERSIONS
         TB_ITEM_SCHEMES_VERSIONS="91"
-        ORGANISATION_SCHEME_TYPE="AGENCY_SCHEME"
+        ORGANISATION_SCHEME_TYPE="DATA_PROVIDER_SCHEME"
     />
     
     <TB_M_ORG_SCHEMES_VERSIONS
@@ -2532,10 +2532,10 @@
         ID="91"
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
-        CODE="AGENCIES"
+        CODE="DATA_PROVIDERS"
         URI_PROVIDER="[null]"
-        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.base.AgencyScheme=SDMX02.ORGANISATION01:AGENCIES(01.000)"
-        URN="urn:sdmx:org.sdmx.infomodel.base.AgencyScheme=SDMX02.ORGANISATION01:AGENCIES(01.000)"
+        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.base.DataProviderScheme=SDMX01:DATA_PROVIDERS(01.000)"
+        URN="urn:sdmx:org.sdmx.infomodel.base.DataProviderScheme=SDMX01:DATA_PROVIDERS(01.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
         
@@ -2556,7 +2556,7 @@
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
         IS_IMPORTED="0"
-        MAINTAINER_FK="811"
+        MAINTAINER_FK="10011"
         
         UUID="annotableArtefact-91"
         VERSION="1"
@@ -2580,8 +2580,8 @@
             
             <TB_ORGANISATIONS
                 TB_ITEMS="911"
-                ORGANISATION_TYPE="AGENCY"
-                ID_AS_MAINTAINER="SDMX02.ORGANISATION01.ORGANISATION01"
+                ORGANISATION_TYPE="DATA_PROVIDER"
+                ID_AS_MAINTAINER="[null]"
             />
         
             <TB_ITEMS
@@ -2607,8 +2607,8 @@
 
                 CODE="ORGANISATION01"
                 URI_PROVIDER="[null]"
-                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX02.ORGANISATION01:AGENCIES(01.000).ORGANISATION01"
-                URN="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX02.ORGANISATION01:AGENCIES(01.000).ORGANISATION01"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.base.DataProvider=SDMX01:DATA_PROVIDERS(01.000).ORGANISATION01"
+                URN="urn:sdmx:org.sdmx.infomodel.base.DataProvider=SDMX01:DATA_PROVIDERS(01.000).ORGANISATION01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
 
@@ -2626,7 +2626,7 @@
                 LAST_UPDATED_TZ="Europe/London"
             />              
 
-            <!-- ORGANISATION01 -->
+            <!-- ORGANISATION02 -->
             
             <TB_M_ORGANISATIONS
                 TB_ORGANISATIONS="912"
@@ -2634,8 +2634,8 @@
             
             <TB_ORGANISATIONS
                 TB_ITEMS="912"
-                ORGANISATION_TYPE="AGENCY"
-                ID_AS_MAINTAINER="SDMX02.ORGANISATION01.ORGANISATION02"
+                ORGANISATION_TYPE="DATA_PROVIDER"
+                ID_AS_MAINTAINER="[null]"
             />
         
             <TB_ITEMS
@@ -2661,8 +2661,8 @@
 
                 CODE="ORGANISATION02"
                 URI_PROVIDER="[null]"
-                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX02.ORGANISATION01:AGENCIES(01.000).ORGANISATION02"
-                URN="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX02.ORGANISATION01:AGENCIES(01.000).ORGANISATION02"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.base.DataProvider=SDMX01:DATA_PROVIDERS(01.000).ORGANISATION02"
+                URN="urn:sdmx:org.sdmx.infomodel.base.DataProvider=SDMX01:DATA_PROVIDERS(01.000).ORGANISATION02"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
 
@@ -2765,7 +2765,7 @@
         STRUCTURE_URL="[null]"
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
-        IS_IMPORTED="0"
+        IS_IMPORTED="1"
         MAINTAINER_FK="912"
         
         UUID="annotableArtefact-101"

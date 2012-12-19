@@ -98,7 +98,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
     @Test
     public void testCreateOrganisationSchemeTypeAgency() throws Exception {
 
-        OrganisationMetamac organisationMetamac = organisationMetamacRepository.findByUrn(ORGANISATION_SCHEME_9_V1_ORGANISATION_1);
+        OrganisationMetamac organisationMetamac = organisationMetamacRepository.findByUrn(AGENCY_ROOT_1_V1);
         OrganisationSchemeVersionMetamac organisationSchemeVersion = OrganisationsMetamacDoMocks.mockOrganisationScheme(OrganisationSchemeTypeEnum.AGENCY_SCHEME, organisationMetamac);
         ServiceContext ctx = getServiceContextAdministrador();
 
@@ -127,9 +127,9 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
     }
 
     @Test
-    public void testUpdateOrganisationSchemePublishedAgencyScheme() throws Exception {
+    public void testUpdateOrganisationSchemePublishedDataConsumer() throws Exception {
         OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), ORGANISATION_SCHEME_9_V1);
-        assertEquals(OrganisationSchemeTypeEnum.AGENCY_SCHEME, organisationSchemeVersion.getOrganisationSchemeType());
+        assertEquals(OrganisationSchemeTypeEnum.DATA_PROVIDER_SCHEME, organisationSchemeVersion.getOrganisationSchemeType());
         assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, organisationSchemeVersion.getLifeCycleMetadata().getProcStatus());
         organisationSchemeVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
         organisationSchemeVersion.setIsTypeUpdated(Boolean.FALSE);
@@ -896,7 +896,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
     }
 
     @Test
-    public void testPublishExternallyOrganisationSchemeAgencyScheme() throws Exception {
+    public void testPublishExternallyOrganisationSchemeDataProviderScheme() throws Exception {
 
         String urn = ORGANISATION_SCHEME_9_V1;
         ServiceContext ctx = getServiceContextAdministrador();
@@ -904,7 +904,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         {
             OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(ctx, urn);
             assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, organisationSchemeVersion.getLifeCycleMetadata().getProcStatus());
-            assertEquals(OrganisationSchemeTypeEnum.AGENCY_SCHEME, organisationSchemeVersion.getOrganisationSchemeType());
+            assertEquals(OrganisationSchemeTypeEnum.DATA_PROVIDER_SCHEME, organisationSchemeVersion.getOrganisationSchemeType());
             assertNull(organisationSchemeVersion.getMaintainableArtefact().getValidFrom());
             assertNull(organisationSchemeVersion.getMaintainableArtefact().getValidTo());
         }
@@ -1335,14 +1335,14 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
     }
 
     @Test
-    public void testCreateOrganisationInAgencySchemePublished() throws Exception {
+    public void testCreateOrganisationInDataProviderSchemePublished() throws Exception {
 
-        OrganisationMetamac organisation = OrganisationsMetamacDoMocks.mockOrganisation(OrganisationTypeEnum.AGENCY);
+        OrganisationMetamac organisation = OrganisationsMetamacDoMocks.mockOrganisation(OrganisationTypeEnum.DATA_PROVIDER);
         organisation.setParent(null);
         String organisationSchemeUrn = ORGANISATION_SCHEME_9_V1;
 
         OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), organisationSchemeUrn);
-        assertEquals(OrganisationSchemeTypeEnum.AGENCY_SCHEME, organisationSchemeVersion.getOrganisationSchemeType());
+        assertEquals(OrganisationSchemeTypeEnum.DATA_PROVIDER_SCHEME, organisationSchemeVersion.getOrganisationSchemeType());
         assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, organisationSchemeVersion.getLifeCycleMetadata().getProcStatus());
 
         // Create
@@ -1679,102 +1679,9 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
     }
 
     @Test
-    public void testFindOrganisationsAsMaintainerByCondition() throws Exception {
-        // Find all
-        {
-            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(Organisation.class).orderBy(OrganisationProperties.id()).ascending().distinctRoot().build();
-            PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
-            PagedResult<OrganisationMetamac> organisationsPagedResult = organisationsService.findOrganisationsAsMaintainerByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
-
-            // Validate
-            assertEquals(5, organisationsPagedResult.getTotalRows());
-            assertEquals(5, organisationsPagedResult.getValues().size());
-            assertTrue(organisationsPagedResult.getValues().get(0) instanceof OrganisationMetamac);
-
-            int i = 0;
-            assertEquals(ORGANISATION_SCHEME_8_V1_ORGANISATION_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-            assertEquals(ORGANISATION_SCHEME_9_V1_ORGANISATION_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-            assertEquals(ORGANISATION_SCHEME_9_V1_ORGANISATION_2, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-            assertEquals(ORGANISATION_SCHEME_100_V1_ORGANISATION_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-            assertEquals(ORGANISATION_SCHEME_100_V1_ORGANISATION_2, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-
-            assertEquals(organisationsPagedResult.getValues().size(), i);
-        }
-
-        // Find all paginated (size 3)
-        {
-            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(Organisation.class).orderBy(OrganisationProperties.id()).ascending().distinctRoot().build();
-
-            // First page
-            {
-                PagingParameter pagingParameter = PagingParameter.pageAccess(3, 1, true);
-                PagedResult<OrganisationMetamac> organisationsPagedResult = organisationsService
-                        .findOrganisationsAsMaintainerByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
-                assertTrue(organisationsPagedResult.getValues().get(0) instanceof OrganisationMetamac);
-
-                // Validate
-                assertEquals(5, organisationsPagedResult.getTotalRows());
-                assertEquals(3, organisationsPagedResult.getValues().size());
-
-                int i = 0;
-                assertEquals(ORGANISATION_SCHEME_8_V1_ORGANISATION_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-                assertEquals(ORGANISATION_SCHEME_9_V1_ORGANISATION_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-                assertEquals(ORGANISATION_SCHEME_9_V1_ORGANISATION_2, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-                assertEquals(organisationsPagedResult.getValues().size(), i);
-            }
-            // Second page
-            {
-                PagingParameter pagingParameter = PagingParameter.pageAccess(3, 2, true);
-                PagedResult<OrganisationMetamac> organisationsPagedResult = organisationsService
-                        .findOrganisationsAsMaintainerByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
-
-                // Validate
-                assertEquals(5, organisationsPagedResult.getTotalRows());
-                assertEquals(2, organisationsPagedResult.getValues().size());
-
-                int i = 0;
-                assertEquals(ORGANISATION_SCHEME_100_V1_ORGANISATION_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-                assertEquals(ORGANISATION_SCHEME_100_V1_ORGANISATION_2, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-                assertEquals(organisationsPagedResult.getValues().size(), i);
-            }
-        }
-
-        // Find by organisation scheme urn
-        {
-            String organisationSchemeUrn = ORGANISATION_SCHEME_100_V1;
-            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(Organisation.class).withProperty(OrganisationProperties.itemSchemeVersion().maintainableArtefact().urn())
-                    .eq(organisationSchemeUrn).orderBy(OrganisationProperties.id()).ascending().distinctRoot().build();
-            PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
-            PagedResult<OrganisationMetamac> organisationsPagedResult = organisationsService.findOrganisationsAsMaintainerByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
-            assertTrue(organisationsPagedResult.getValues().get(0) instanceof OrganisationMetamac);
-
-            // Validate
-            assertEquals(2, organisationsPagedResult.getTotalRows());
-            assertEquals(2, organisationsPagedResult.getValues().size());
-
-            int i = 0;
-            assertEquals(ORGANISATION_SCHEME_100_V1_ORGANISATION_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-            assertEquals(ORGANISATION_SCHEME_100_V1_ORGANISATION_2, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-            assertEquals(organisationsPagedResult.getValues().size(), i);
-        }
-
-        // Find by code (like)
-        {
-            String code = "SDMX02";
-            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(Organisation.class).withProperty(OrganisationProperties.nameableArtefact().code()).like(code + "%")
-                    .orderBy(OrganisationProperties.id()).ascending().distinctRoot().build();
-            PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
-            PagedResult<OrganisationMetamac> organisationsPagedResult = organisationsService.findOrganisationsAsMaintainerByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
-            assertTrue(organisationsPagedResult.getValues().get(0) instanceof OrganisationMetamac);
-
-            // Validate
-            assertEquals(1, organisationsPagedResult.getTotalRows());
-            assertEquals(1, organisationsPagedResult.getValues().size());
-
-            int i = 0;
-            assertEquals(ORGANISATION_SCHEME_100_V1_ORGANISATION_2, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-            assertEquals(organisationsPagedResult.getValues().size(), i);
-        }
+    public void testRetrieveMaintainerDefault() throws Exception {
+        OrganisationMetamac organisation = organisationsService.retrieveMaintainerDefault(getServiceContextAdministrador());
+        assertEquals(AGENCY_ROOT_1_V1, organisation.getNameableArtefact().getUrn());
     }
 
     @Test
