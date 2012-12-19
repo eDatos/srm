@@ -1,10 +1,12 @@
 package org.siemac.metamac.srm.web.client.utils;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.web.common.client.utils.CommonErrorUtils;
+import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.shared.constants.CommonSharedConstants;
 import org.siemac.metamac.web.common.shared.exception.MetamacWebException;
 import org.siemac.metamac.web.common.shared.exception.MetamacWebExceptionItem;
@@ -52,22 +54,34 @@ public class ErrorUtils extends CommonErrorUtils {
         throw new MetamacWebException("NULL_MESSAGE", "Message with null code");
     }
 
-    private static String[] getTranslatedParameters(String[] messageParameters) {
+    private static String[] getTranslatedParameters(Serializable[] messageParameters) {
         if (messageParameters != null) {
             String[] translatedParameters = new String[messageParameters.length];
             for (int i = 0; i < messageParameters.length; i++) {
-                // if (messageParameters[i] instanceof String) {
-                String code = transformMessageCode(String.valueOf(messageParameters[i]));
-                try {
-                    // If parameter is translated, return the translation
-                    translatedParameters[i] = MetamacSrmWeb.getCoreMessages().getString(code) + " (" + String.valueOf(messageParameters[i]) + ")";
-                } catch (Exception e) {
-                    translatedParameters[i] = String.valueOf(messageParameters[i]);
+                String translatedParameter = null;
+                if (messageParameters[i] instanceof String) {
+                    translatedParameter = getTranslatedParameter(String.valueOf(messageParameters[i]));
+                } else if (messageParameters[i] instanceof String[]) {
+                    List<String> params = new ArrayList<String>();
+                    for (String param : (String[]) messageParameters[i]) {
+                        params.add(getTranslatedParameter(param));
+                    }
+                    translatedParameter = CommonWebUtils.getStringListToString(params);
                 }
+                translatedParameters[i] = translatedParameter;
             }
             return translatedParameters;
         }
         return null;
     }
 
+    private static String getTranslatedParameter(String parameter) {
+        String code = transformMessageCode(String.valueOf(parameter));
+        try {
+            // If parameter is translated, return the translation
+            return MetamacSrmWeb.getCoreMessages().getString(code) + " (" + String.valueOf(parameter) + ")";
+        } catch (Exception e) {
+            return String.valueOf(parameter);
+        }
+    }
 }
