@@ -16,6 +16,7 @@ public interface ConceptsDo2DtoMapper {
 
     // Concept schemes
     public ConceptSchemeMetamacDto conceptSchemeMetamacDoToDto(ConceptSchemeVersionMetamac source);
+    public RelatedResourceDto conceptSchemeMetamacDoToRelatedResourceDto(ConceptSchemeVersionMetamac source);
     public List<ConceptSchemeMetamacDto> conceptSchemeMetamacDoListToDtoList(List<ConceptSchemeVersionMetamac> sources);
 
     // Concepts

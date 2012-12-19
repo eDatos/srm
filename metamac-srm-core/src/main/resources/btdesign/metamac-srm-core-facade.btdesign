@@ -302,9 +302,9 @@ Application SrmFacadeCore {
             "Finds concepts schemes by criteria"
             MetamacCriteriaResult<@ConceptSchemeMetamacDto> findConceptSchemesByCondition(MetamacCriteria criteria) throws MetamacException;
             "Finds concepts schemes by criteria with concepts that can be role"
-            MetamacCriteriaResult<@ConceptSchemeMetamacDto> findConceptSchemesByConditionWithConceptsCanBeRole(MetamacCriteria criteria) throws MetamacException;
+            MetamacCriteriaResult<@RelatedResourceDto> findConceptSchemesByConditionWithConceptsCanBeRole(MetamacCriteria criteria) throws MetamacException;
             "Finds concepts schemes by criteria with concepts that can be extended"
-            MetamacCriteriaResult<@ConceptSchemeMetamacDto> findConceptSchemesByConditionWithConceptsCanBeExtended(MetamacCriteria criteria) throws MetamacException;
+            MetamacCriteriaResult<@RelatedResourceDto> findConceptSchemesByConditionWithConceptsCanBeExtended(MetamacCriteria criteria) throws MetamacException;
             "Retrieves a concept scheme by URN"
             @ConceptSchemeMetamacDto retrieveConceptSchemeByUrn(String urn) throws MetamacException;
             "Retrieves all concept scheme versions"

@@ -39,6 +39,15 @@ public class ConceptsDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Co
     }
 
     @Override
+    public RelatedResourceDto conceptSchemeMetamacDoToRelatedResourceDto(ConceptSchemeVersionMetamac source) {
+        if (source == null) {
+            return null;
+        }
+        RelatedResourceDto target = do2DtoMapperSdmxSrm.conceptSchemeDoToRelatedResourceDto(source);
+        return target;
+    }
+
+    @Override
     public List<ConceptSchemeMetamacDto> conceptSchemeMetamacDoListToDtoList(List<ConceptSchemeVersionMetamac> conceptSchemeVersions) {
         List<ConceptSchemeMetamacDto> conceptSchemeMetamacDtos = new ArrayList<ConceptSchemeMetamacDto>();
         for (ConceptSchemeVersionMetamac conceptSchemeVersion : conceptSchemeVersions) {
@@ -81,7 +90,7 @@ public class ConceptsDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Co
         RelatedResourceDto target = do2DtoMapperSdmxSrm.conceptDoToRelatedResourceDto(source);
         return target;
     }
-    
+
     @Override
     public List<ConceptMetamacDto> conceptMetamacDoListToDtoList(List<ConceptMetamac> sources) {
         List<ConceptMetamacDto> targets = new ArrayList<ConceptMetamacDto>();

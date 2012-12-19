@@ -1254,7 +1254,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public MetamacCriteriaResult<ConceptSchemeMetamacDto> findConceptSchemesByConditionWithConceptsCanBeRole(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
+    public MetamacCriteriaResult<RelatedResourceDto> findConceptSchemesByConditionWithConceptsCanBeRole(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
         // Security
         ConceptsSecurityUtils.canFindConceptSchemesByCondition(ctx);
 
@@ -1266,14 +1266,14 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
                 sculptorCriteria.getPagingParameter());
 
         // Transform
-        MetamacCriteriaResult<ConceptSchemeMetamacDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultConceptSchemeVersion(result,
+        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptSchemeToMetamacCriteriaResultRelatedResource(result,
                 sculptorCriteria.getPageSize());
 
         return metamacCriteriaResult;
     }
 
     @Override
-    public MetamacCriteriaResult<ConceptSchemeMetamacDto> findConceptSchemesByConditionWithConceptsCanBeExtended(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
+    public MetamacCriteriaResult<RelatedResourceDto> findConceptSchemesByConditionWithConceptsCanBeExtended(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
         // Security
         ConceptsSecurityUtils.canFindConceptSchemesByCondition(ctx);
 
@@ -1285,7 +1285,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
                 sculptorCriteria.getPagingParameter());
 
         // Transform
-        MetamacCriteriaResult<ConceptSchemeMetamacDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultConceptSchemeVersion(result,
+        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptSchemeToMetamacCriteriaResultRelatedResource(result,
                 sculptorCriteria.getPageSize());
 
         return metamacCriteriaResult;

@@ -87,6 +87,19 @@ public class SculptorCriteria2MetamacCriteriaMapperImpl implements SculptorCrite
     }
 
     @Override
+    public MetamacCriteriaResult<RelatedResourceDto> pageResultConceptSchemeToMetamacCriteriaResultRelatedResource(PagedResult<ConceptSchemeVersionMetamac> source, Integer pageSize) {
+        MetamacCriteriaResult<RelatedResourceDto> target = new MetamacCriteriaResult<RelatedResourceDto>();
+        target.setPaginatorResult(SculptorCriteria2MetamacCriteria.sculptorResultToMetamacCriteriaResult(source, pageSize));
+        if (source.getValues() != null) {
+            target.setResults(new ArrayList<RelatedResourceDto>());
+            for (ConceptSchemeVersionMetamac scheme : source.getValues()) {
+                target.getResults().add(conceptsDo2DtoMapper.conceptSchemeMetamacDoToRelatedResourceDto(scheme));
+            }
+        }
+        return target;
+    }
+
+    @Override
     public MetamacCriteriaResult<ConceptMetamacDto> pageResultToMetamacCriteriaResultConcept(PagedResult<ConceptMetamac> source, Integer pageSize) {
         MetamacCriteriaResult<ConceptMetamacDto> target = new MetamacCriteriaResult<ConceptMetamacDto>();
         target.setPaginatorResult(SculptorCriteria2MetamacCriteria.sculptorResultToMetamacCriteriaResult(source, pageSize));
