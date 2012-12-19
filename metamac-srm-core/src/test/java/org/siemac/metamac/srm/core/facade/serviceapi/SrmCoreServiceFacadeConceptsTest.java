@@ -426,6 +426,62 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
     }
 
     @Test
+    public void testFindConceptSchemesByConditionWithConceptsCanBeRole() throws Exception {
+
+        MetamacCriteria metamacCriteria = new MetamacCriteria();
+        // Order
+        MetamacCriteriaOrder order = new MetamacCriteriaOrder();
+        order.setType(OrderTypeEnum.ASC);
+        order.setPropertyName(ConceptSchemeVersionMetamacCriteriaOrderEnum.URN.name());
+        metamacCriteria.setOrdersBy(new ArrayList<MetamacCriteriaOrder>());
+        metamacCriteria.getOrdersBy().add(order);
+
+        // Pagination
+        metamacCriteria.setPaginator(new MetamacCriteriaPaginator());
+        metamacCriteria.getPaginator().setFirstResult(0);
+        metamacCriteria.getPaginator().setMaximumResultSize(Integer.MAX_VALUE);
+        metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
+
+        MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findConceptSchemesByConditionWithConceptsCanBeRole(getServiceContextAdministrador(), metamacCriteria);
+
+        assertEquals(1, result.getPaginatorResult().getTotalResults().intValue());
+        int i = 0;
+        {
+            RelatedResourceDto conceptSchemeMetamacDto = result.getResults().get(i++);
+            assertEquals(CONCEPT_SCHEME_13_V1, conceptSchemeMetamacDto.getUrn());
+        }
+        assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
+    }
+
+    @Test
+    public void testFindConceptSchemesByConditionWithConceptsCanBeExtended() throws Exception {
+
+        MetamacCriteria metamacCriteria = new MetamacCriteria();
+        // Order
+        MetamacCriteriaOrder order = new MetamacCriteriaOrder();
+        order.setType(OrderTypeEnum.ASC);
+        order.setPropertyName(ConceptSchemeVersionMetamacCriteriaOrderEnum.URN.name());
+        metamacCriteria.setOrdersBy(new ArrayList<MetamacCriteriaOrder>());
+        metamacCriteria.getOrdersBy().add(order);
+
+        // Pagination
+        metamacCriteria.setPaginator(new MetamacCriteriaPaginator());
+        metamacCriteria.getPaginator().setFirstResult(0);
+        metamacCriteria.getPaginator().setMaximumResultSize(Integer.MAX_VALUE);
+        metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
+
+        MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findConceptSchemesByConditionWithConceptsCanBeExtended(getServiceContextAdministrador(), metamacCriteria);
+
+        assertEquals(1, result.getPaginatorResult().getTotalResults().intValue());
+        int i = 0;
+        {
+            RelatedResourceDto conceptSchemeMetamacDto = result.getResults().get(i++);
+            assertEquals(CONCEPT_SCHEME_7_V1, conceptSchemeMetamacDto.getUrn());
+        }
+        assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
+    }
+
+    @Test
     public void testFindConceptSchemesByProcStatus() throws Exception {
 
         MetamacCriteria metamacCriteria = new MetamacCriteria();
@@ -1282,7 +1338,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
     }
 
     @Test
-    public void testFindConceptsAsRoleByCondition() throws Exception {
+    public void testFindConceptsCanBeRoleByCondition() throws Exception {
 
         // Find all
         {
@@ -1351,6 +1407,44 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
 
             int i = 0;
             assertEquals(CONCEPT_SCHEME_13_V1_CONCEPT_2, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(conceptsPagedResult.getResults().size(), i);
+        }
+    }
+
+    @Test
+    public void testFindConceptsCanBeExtendedByCondition() throws Exception {
+
+        // Find all
+        {
+            MetamacCriteria metamacCriteria = new MetamacCriteria();
+            // Order
+            metamacCriteria.setOrdersBy(new ArrayList<MetamacCriteriaOrder>());
+
+            MetamacCriteriaOrder orderUrn = new MetamacCriteriaOrder();
+            orderUrn.setType(OrderTypeEnum.ASC);
+            orderUrn.setPropertyName(ConceptMetamacCriteriaOrderEnum.URN.name());
+            metamacCriteria.getOrdersBy().add(orderUrn);
+
+            MetamacCriteriaOrder orderConceptSchemeUrn = new MetamacCriteriaOrder();
+            orderConceptSchemeUrn.setType(OrderTypeEnum.ASC);
+            orderConceptSchemeUrn.setPropertyName(ConceptMetamacCriteriaOrderEnum.CONCEPT_SCHEME_URN.name());
+            metamacCriteria.getOrdersBy().add(orderConceptSchemeUrn);
+
+            // Pagination
+            metamacCriteria.setPaginator(new MetamacCriteriaPaginator());
+            metamacCriteria.getPaginator().setFirstResult(0);
+            metamacCriteria.getPaginator().setMaximumResultSize(Integer.MAX_VALUE);
+            metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
+
+            // Find
+            MetamacCriteriaResult<RelatedResourceDto> conceptsPagedResult = srmCoreServiceFacade.findConceptsCanBeExtendedByCondition(getServiceContextAdministrador(), metamacCriteria);
+
+            // Validate
+            assertEquals(1, conceptsPagedResult.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(1, conceptsPagedResult.getResults().size());
+
+            int i = 0;
+            assertEquals(CONCEPT_SCHEME_7_V1_CONCEPT_1, conceptsPagedResult.getResults().get(i++).getUrn());
             assertEquals(conceptsPagedResult.getResults().size(), i);
         }
     }
