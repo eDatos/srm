@@ -106,32 +106,32 @@ public class StructuralResourcesViewImpl extends ViewWithUiHandlers<StructuralRe
         lastModifiedArtifactsSectionStack.setAnimateSections(true);
         lastModifiedArtifactsSectionStack.setOverflow(Overflow.HIDDEN);
 
-        SectionStackSection lastDsdModifiedSection = new SectionStackSection();
-        lastDsdModifiedSection.setTitle(MetamacSrmWeb.getConstants().dsdLastModified());
-        lastDsdModifiedSection.setExpanded(false);
-        lastDsdModifiedSection.setItems(this.dsdListGrid);
-
         SectionStackSection lastConceptSchemesModifiedSection = new SectionStackSection();
         lastConceptSchemesModifiedSection.setTitle(MetamacSrmWeb.getConstants().conceptSchemeLastModified());
         lastConceptSchemesModifiedSection.setExpanded(false);
         lastConceptSchemesModifiedSection.setItems(this.conceptSchemeListGrid);
-
-        SectionStackSection lastOrganisationSchemesModifiedSection = new SectionStackSection();
-        lastOrganisationSchemesModifiedSection.setTitle(MetamacSrmWeb.getConstants().organisationSchemeLastModified());
-        lastOrganisationSchemesModifiedSection.setExpanded(false);
-        lastOrganisationSchemesModifiedSection.setItems(this.organisationSchemeListGrid);
 
         SectionStackSection lastClassifModifiedSection = new SectionStackSection();
         lastClassifModifiedSection.setTitle(MetamacSrmWeb.getConstants().classificationLastModified());
         lastClassifModifiedSection.setExpanded(false);
         // lastClassifModifiedSection.setItems();
 
+        SectionStackSection lastDsdModifiedSection = new SectionStackSection();
+        lastDsdModifiedSection.setTitle(MetamacSrmWeb.getConstants().dsdLastModified());
+        lastDsdModifiedSection.setExpanded(false);
+        lastDsdModifiedSection.setItems(this.dsdListGrid);
+
+        SectionStackSection lastOrganisationSchemesModifiedSection = new SectionStackSection();
+        lastOrganisationSchemesModifiedSection.setTitle(MetamacSrmWeb.getConstants().organisationSchemeLastModified());
+        lastOrganisationSchemesModifiedSection.setExpanded(false);
+        lastOrganisationSchemesModifiedSection.setItems(this.organisationSchemeListGrid);
+
         SectionStackSection lastCatSchemesModifiedSection = new SectionStackSection();
         lastCatSchemesModifiedSection.setTitle(MetamacSrmWeb.getConstants().categorySchemeLastModified());
         lastCatSchemesModifiedSection.setExpanded(false);
         lastCatSchemesModifiedSection.setItems(this.categorySchemeListGrid);
 
-        lastModifiedArtifactsSectionStack.setSections(lastDsdModifiedSection, lastConceptSchemesModifiedSection, lastOrganisationSchemesModifiedSection, lastClassifModifiedSection,
+        lastModifiedArtifactsSectionStack.setSections(lastConceptSchemesModifiedSection, lastClassifModifiedSection, lastDsdModifiedSection, lastOrganisationSchemesModifiedSection,
                 lastCatSchemesModifiedSection);
 
         // Add the ToolStrip to the Operation View layout container
