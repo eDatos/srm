@@ -35,6 +35,7 @@ import org.siemac.metamac.srm.core.organisation.serviceapi.OrganisationsMetamacS
 import org.siemac.metamac.srm.rest.internal.v1_0.organisation.utils.OrganisationsDoMocks;
 import org.siemac.metamac.srm.rest.internal.v1_0.service.utils.SrmRestInternalUtils;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefactProperties.MaintainableArtefactProperty;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 
@@ -56,6 +57,13 @@ public abstract class SrmRestInternalFacadeV10OrganisationsTest extends SrmRestI
         mockFindOrganisationsByCondition();
     }
 
+    @SuppressWarnings("rawtypes")
+    @Override
+    protected Boolean getVersionLatestFromConditionalCriteria(List<ConditionalCriteria> conditions, MaintainableArtefactProperty maintainableArtefactProperty) {
+        ConditionalCriteria conditionalCriteria = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Or, maintainableArtefactProperty.latestFinal());
+        return conditionalCriteria != null ? (Boolean) conditionalCriteria.getFirstOperant() : null;
+    }
+
     @SuppressWarnings("unchecked")
     private void mockFindOrganisationSchemesByCondition() throws MetamacException {
         when(organisationsService.findOrganisationSchemesByCondition(any(ServiceContext.class), any(List.class), any(PagingParameter.class))).thenAnswer(
@@ -71,6 +79,13 @@ public abstract class SrmRestInternalFacadeV10OrganisationsTest extends SrmRestI
                         Boolean latest = getVersionLatestFromConditionalCriteria(conditions, OrganisationSchemeVersionMetamacProperties.maintainableArtefact());
 
                         OrganisationSchemeTypeEnum organisationSchemeTypeEnum = conditionalCriteriaType != null ? (OrganisationSchemeTypeEnum) conditionalCriteriaType.getFirstOperant() : null;
+                        if (version == null && latest == null) {
+                            // check special schemes
+                            if (OrganisationSchemeTypeEnum.AGENCY_SCHEME.equals(organisationSchemeTypeEnum) || OrganisationSchemeTypeEnum.DATA_CONSUMER_SCHEME.equals(organisationSchemeTypeEnum)
+                                    || OrganisationSchemeTypeEnum.DATA_PROVIDER_SCHEME.equals(organisationSchemeTypeEnum)) {
+                                latest = Boolean.TRUE; // always in version 01.000
+                            }
+                        }
                         if (agencyID != null && resourceID != null && (version != null || Boolean.TRUE.equals(latest))) {
                             // Retrieve one
                             OrganisationSchemeVersionMetamac itemSchemeVersion = null;

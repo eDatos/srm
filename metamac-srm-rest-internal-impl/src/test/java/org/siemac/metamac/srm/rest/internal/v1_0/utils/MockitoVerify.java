@@ -13,10 +13,16 @@ import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
+import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
+import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemProperties;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionProperties;
+import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationProperties;
+import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationSchemeVersionProperties;
+import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
+import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 
 public class MockitoVerify {
 
@@ -57,7 +63,7 @@ public class MockitoVerify {
             expected.addAll(buildFindItemSchemesExpectedQuery(query, entityClass));
         }
         expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).distinctRoot().buildSingle());
-        expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(ItemSchemeVersionProperties.maintainableArtefact().finalLogic()).eq(Boolean.TRUE).buildSingle());
+        expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(ItemSchemeVersionProperties.maintainableArtefact().finalLogicClient()).eq(Boolean.TRUE).buildSingle());
         if (agencyID != null && !RestInternalConstants.WILDCARD.equals(agencyID)) {
             expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(ItemSchemeVersionProperties.maintainableArtefact().maintainer().idAsMaintainer()).eq(agencyID).buildSingle());
         }
@@ -66,7 +72,14 @@ public class MockitoVerify {
                     .withProperty(ItemSchemeVersionProperties.maintainableArtefact().codeFull()).eq(resourceID).rbrace().buildSingle());
         }
         if (RestInternalConstants.LATEST.equals(version)) {
-            expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(ItemSchemeVersionProperties.maintainableArtefact().latestFinal()).eq(Boolean.TRUE).buildSingle());
+            // AgencyScheme, DataProviderScheme and DataConsumerScheme never are versioned, so they are always with same version
+            if (OrganisationSchemeVersionMetamac.class.equals(entityClass)) {
+                expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).lbrace().withProperty(OrganisationSchemeVersionProperties.organisationSchemeType())
+                        .in(OrganisationSchemeTypeEnum.AGENCY_SCHEME, OrganisationSchemeTypeEnum.DATA_CONSUMER_SCHEME, OrganisationSchemeTypeEnum.DATA_PROVIDER_SCHEME).or()
+                        .withProperty(ItemSchemeVersionProperties.maintainableArtefact().latestFinal()).eq(Boolean.TRUE).rbrace().buildSingle());
+            } else {
+                expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(ItemSchemeVersionProperties.maintainableArtefact().latestFinal()).eq(Boolean.TRUE).buildSingle());
+            }
         } else if (version != null && !RestInternalConstants.WILDCARD.equals(version)) {
             expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(ItemSchemeVersionProperties.maintainableArtefact().versionLogic()).eq(version).buildSingle());
         }
@@ -82,7 +95,7 @@ public class MockitoVerify {
             expected.addAll(buildFindItemsExpectedQuery(query, entityClass));
         }
         expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).distinctRoot().buildSingle());
-        expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(ItemProperties.itemSchemeVersion().maintainableArtefact().finalLogic()).eq(Boolean.TRUE).buildSingle());
+        expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(ItemProperties.itemSchemeVersion().maintainableArtefact().finalLogicClient()).eq(Boolean.TRUE).buildSingle());
         if (agencyID != null && !RestInternalConstants.WILDCARD.equals(agencyID)) {
             expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(ItemProperties.itemSchemeVersion().maintainableArtefact().maintainer().idAsMaintainer()).eq(agencyID)
                     .buildSingle());
@@ -91,7 +104,15 @@ public class MockitoVerify {
             expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).lbrace().withProperty(ItemProperties.itemSchemeVersion().maintainableArtefact().code()).eq(resourceID).or()
                     .withProperty(ItemProperties.itemSchemeVersion().maintainableArtefact().codeFull()).eq(resourceID).rbrace().buildSingle());
         }
-        if (version != null && !RestInternalConstants.WILDCARD.equals(version)) {
+        if (RestInternalConstants.LATEST.equals(version)) {
+            if (OrganisationMetamac.class.equals(entityClass)) {
+                expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).lbrace().withProperty(OrganisationProperties.organisationType())
+                        .in(OrganisationTypeEnum.AGENCY, OrganisationTypeEnum.DATA_CONSUMER, OrganisationTypeEnum.DATA_PROVIDER).or()
+                        .withProperty(ItemSchemeVersionProperties.maintainableArtefact().latestFinal()).eq(Boolean.TRUE).rbrace().buildSingle());
+            } else {
+                expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(ItemProperties.itemSchemeVersion().maintainableArtefact().latestFinal()).eq(Boolean.TRUE).buildSingle());
+            }
+        } else if (version != null && !RestInternalConstants.WILDCARD.equals(version)) {
             expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(ItemProperties.itemSchemeVersion().maintainableArtefact().versionLogic()).eq(version).buildSingle());
         }
         if (itemID != null) {
