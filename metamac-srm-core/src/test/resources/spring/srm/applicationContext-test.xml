@@ -50,7 +50,4 @@
     <!-- srm > src/test/resources -->
     <import resource="classpath:/spring/srm/include/interceptor-test.xml" />
     <import resource="classpath:/spring/srm/include/datasource-test.xml" />
-
-    <!-- metamac-transformation -->
-    <import resource="classpath:/spring/transformation/applicationContext.xml" />
 </beans>
