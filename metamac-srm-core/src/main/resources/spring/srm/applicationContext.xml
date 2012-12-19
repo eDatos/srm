@@ -17,6 +17,13 @@
         <context:exclude-filter type="regex" expression=".*web.*" />
     </context:component-scan>
 
+    <!-- Metamac environment configuration -->
+    <bean id="configurationService" class="org.siemac.metamac.core.common.conf.ConfigurationServiceImpl">
+        <property name="systemConfigurationFile">
+            <value>classpath:metamac/environment.xml</value>
+        </property>
+    </bean>
+    
     <!-- METAMAC-CORE-COMMON -->
     <import resource="classpath:/spring/logging-beans-advice.xml" />
     <import resource="classpath:/spring/general-beans-advice.xml" />
