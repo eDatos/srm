@@ -301,6 +301,10 @@ Application SrmFacadeCore {
             deleteConceptScheme(String urn) throws MetamacException;
             "Finds concepts schemes by criteria"
             MetamacCriteriaResult<@ConceptSchemeMetamacDto> findConceptSchemesByCondition(MetamacCriteria criteria) throws MetamacException;
+            "Finds concepts schemes by criteria with concepts that can be role"
+            MetamacCriteriaResult<@ConceptSchemeMetamacDto> findConceptSchemesByConditionWithConceptsCanBeRole(MetamacCriteria criteria) throws MetamacException;
+            "Finds concepts schemes by criteria with concepts that can be extended"
+            MetamacCriteriaResult<@ConceptSchemeMetamacDto> findConceptSchemesByConditionWithConceptsCanBeExtended(MetamacCriteria criteria) throws MetamacException;
             "Retrieves a concept scheme by URN"
             @ConceptSchemeMetamacDto retrieveConceptSchemeByUrn(String urn) throws MetamacException;
             "Retrieves all concept scheme versions"
@@ -331,7 +335,9 @@ Application SrmFacadeCore {
             "Finds concepts by criteria"
             MetamacCriteriaResult<@ConceptMetamacDto> findConceptsByCondition(MetamacCriteria criteria) throws MetamacException;
             "Finds concepts that can be role by criteria"
-            MetamacCriteriaResult<@RelatedResourceDto> findConceptsAsRoleByCondition(MetamacCriteria criteria) throws MetamacException;
+            MetamacCriteriaResult<@RelatedResourceDto> findConceptsCanBeRoleByCondition(MetamacCriteria criteria) throws MetamacException;
+            "Finds concepts that can be extended by criteria"
+            MetamacCriteriaResult<@RelatedResourceDto> findConceptsCanBeExtendedByCondition(MetamacCriteria criteria) throws MetamacException;
 			"Deletes concept"
             deleteConcept(String urn) throws MetamacException;
     		"Retrieves concepts by concept scheme, in tree structure"

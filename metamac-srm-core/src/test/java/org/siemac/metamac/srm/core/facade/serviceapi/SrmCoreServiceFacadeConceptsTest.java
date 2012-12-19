@@ -893,13 +893,13 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
             assertEquals(1, concept.getChildren().size());
             {
                 // Concept 02 01
-                ItemHierarchyDto conceptChild = (ItemHierarchyDto) concept.getChildren().get(0);
+                ItemHierarchyDto conceptChild = concept.getChildren().get(0);
                 assertTrue(conceptChild.getItem() instanceof ConceptMetamacDto);
                 assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2_1, conceptChild.getItem().getUrn());
                 assertEquals(1, conceptChild.getChildren().size());
                 {
                     // Concept 02 01 01
-                    ItemHierarchyDto conceptChildChild = (ItemHierarchyDto) conceptChild.getChildren().get(0);
+                    ItemHierarchyDto conceptChildChild = conceptChild.getChildren().get(0);
                     assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2_1_1, conceptChildChild.getItem().getUrn());
                     assertEquals(0, conceptChildChild.getChildren().size());
                 }
@@ -920,12 +920,12 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
             assertEquals(1, concept.getChildren().size());
             {
                 // Concept 04 01
-                ItemHierarchyDto conceptChild = (ItemHierarchyDto) concept.getChildren().get(0);
+                ItemHierarchyDto conceptChild = concept.getChildren().get(0);
                 assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_4_1, conceptChild.getItem().getUrn());
                 assertEquals(1, conceptChild.getChildren().size());
                 {
                     // Concept 04 01 01
-                    ItemHierarchyDto conceptChildChild = (ItemHierarchyDto) conceptChild.getChildren().get(0);
+                    ItemHierarchyDto conceptChildChild = conceptChild.getChildren().get(0);
                     assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_4_1_1, conceptChildChild.getItem().getUrn());
                     assertEquals(0, conceptChildChild.getChildren().size());
                 }
@@ -1307,7 +1307,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
             metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
 
             // Find
-            MetamacCriteriaResult<RelatedResourceDto> conceptsPagedResult = srmCoreServiceFacade.findConceptsAsRoleByCondition(getServiceContextAdministrador(), metamacCriteria);
+            MetamacCriteriaResult<RelatedResourceDto> conceptsPagedResult = srmCoreServiceFacade.findConceptsCanBeRoleByCondition(getServiceContextAdministrador(), metamacCriteria);
 
             // Validate
             assertEquals(3, conceptsPagedResult.getPaginatorResult().getTotalResults().intValue());
@@ -1343,7 +1343,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
             metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
 
             // Find
-            MetamacCriteriaResult<RelatedResourceDto> conceptsPagedResult = srmCoreServiceFacade.findConceptsAsRoleByCondition(getServiceContextAdministrador(), metamacCriteria);
+            MetamacCriteriaResult<RelatedResourceDto> conceptsPagedResult = srmCoreServiceFacade.findConceptsCanBeRoleByCondition(getServiceContextAdministrador(), metamacCriteria);
 
             // Validate
             assertEquals(1, conceptsPagedResult.getPaginatorResult().getTotalResults().intValue());

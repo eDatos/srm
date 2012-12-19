@@ -119,6 +119,48 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     }
 
     @Override
+    public PagedResult<ConceptSchemeVersionMetamac> findConceptSchemesByConditionWithConceptsCanBeRole(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)
+            throws MetamacException {
+        // Find
+        if (conditions == null) {
+            conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).distinctRoot().build();
+        }
+        // Add restrictions to be extended
+        // concept scheme must be Glossary
+        ConditionalCriteria roleCondition = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).withProperty(ConceptSchemeVersionMetamacProperties.type())
+                .eq(ConceptSchemeTypeEnum.ROLE).buildSingle();
+        conditions.add(roleCondition);
+        // concept scheme externally published
+        ConditionalCriteria validityStartedCondition = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class)
+                .withProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact().publicLogic()).eq(Boolean.TRUE).buildSingle();
+        conditions.add(validityStartedCondition);
+
+        PagedResult<ConceptSchemeVersion> conceptsPagedResult = conceptsService.findConceptSchemesByCondition(ctx, conditions, pagingParameter);
+        return pagedResultConceptSchemeVersionToMetamac(conceptsPagedResult);
+    }
+
+    @Override
+    public PagedResult<ConceptSchemeVersionMetamac> findConceptSchemesByConditionWithConceptsCanBeExtended(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)
+            throws MetamacException {
+        // Find
+        if (conditions == null) {
+            conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).distinctRoot().build();
+        }
+        // Add restrictions to be extended
+        // concept scheme must be Glossary
+        ConditionalCriteria roleCondition = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).withProperty(ConceptSchemeVersionMetamacProperties.type())
+                .eq(ConceptSchemeTypeEnum.GLOSSARY).buildSingle();
+        conditions.add(roleCondition);
+        // concept scheme externally published
+        ConditionalCriteria validityStartedCondition = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class)
+                .withProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact().publicLogic()).eq(Boolean.TRUE).buildSingle();
+        conditions.add(validityStartedCondition);
+
+        PagedResult<ConceptSchemeVersion> conceptsPagedResult = conceptsService.findConceptSchemesByCondition(ctx, conditions, pagingParameter);
+        return pagedResultConceptSchemeVersionToMetamac(conceptsPagedResult);
+    }
+
+    @Override
     public ConceptSchemeVersionMetamac sendConceptSchemeToProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
         return (ConceptSchemeVersionMetamac) conceptSchemeLifeCycle.sendToProductionValidation(ctx, urn);
     }
@@ -228,7 +270,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     }
 
     @Override
-    public PagedResult<ConceptMetamac> findConceptsAsRoleByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
+    public PagedResult<ConceptMetamac> findConceptsCanBeRoleByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
 
         // Find
         if (conditions == null) {
@@ -241,6 +283,30 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
                 .withProperty(
                         new LeafProperty<ConceptMetamac>(ConceptMetamacProperties.itemSchemeVersion().getName(), ConceptSchemeVersionMetamacProperties.type().getName(), true, ConceptMetamac.class))
                 .eq(ConceptSchemeTypeEnum.ROLE).buildSingle();
+        conditions.add(roleCondition);
+        // concept scheme externally published
+        ConditionalCriteria validityStartedCondition = ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class)
+                .withProperty(ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact().publicLogic()).eq(Boolean.TRUE).buildSingle();
+        conditions.add(validityStartedCondition);
+
+        PagedResult<Concept> conceptsPagedResult = conceptsService.findConceptsByCondition(ctx, conditions, pagingParameter);
+        return pagedResultConceptToMetamac(conceptsPagedResult);
+    }
+
+    @Override
+    public PagedResult<ConceptMetamac> findConceptsCanBeExtendedByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
+
+        // Find
+        if (conditions == null) {
+            conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class).distinctRoot().build();
+        }
+        // Add restrictions to be extended
+        // concept scheme must be Glossary
+        ConditionalCriteria roleCondition = ConditionalCriteriaBuilder
+                .criteriaFor(ConceptMetamac.class)
+                .withProperty(
+                        new LeafProperty<ConceptMetamac>(ConceptMetamacProperties.itemSchemeVersion().getName(), ConceptSchemeVersionMetamacProperties.type().getName(), true, ConceptMetamac.class))
+                .eq(ConceptSchemeTypeEnum.GLOSSARY).buildSingle();
         conditions.add(roleCondition);
         // concept scheme externally published
         ConditionalCriteria validityStartedCondition = ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class)

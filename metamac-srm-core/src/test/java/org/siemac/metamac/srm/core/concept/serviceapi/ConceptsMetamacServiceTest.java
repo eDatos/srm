@@ -68,6 +68,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
     @Autowired
     private OrganisationMetamacRepository organisationMetamacRepository;
 
+    @Override
     @Test
     public void testCreateConceptScheme() throws Exception {
 
@@ -152,6 +153,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         }
     }
 
+    @Override
     @Test
     public void testUpdateConceptScheme() throws Exception {
         ServiceContext ctx = getServiceContextAdministrador();
@@ -281,6 +283,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         }
     }
 
+    @Override
     @Test
     public void testRetrieveConceptSchemeByUrn() throws Exception {
 
@@ -400,6 +403,36 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
     @Test
     @Override
+    public void testFindConceptSchemesByConditionWithConceptsCanBeRole() throws Exception {
+        List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).orderBy(ConceptSchemeVersionMetamacProperties.maintainableArtefact().urn())
+                .build();
+        PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
+        PagedResult<ConceptSchemeVersionMetamac> conceptSchemeVersionPagedResult = conceptsService.findConceptSchemesByConditionWithConceptsCanBeRole(getServiceContextAdministrador(), conditions,
+                pagingParameter);
+
+        // Validate
+        assertEquals(1, conceptSchemeVersionPagedResult.getTotalRows());
+        int i = 0;
+        assertEquals(CONCEPT_SCHEME_13_V1, conceptSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+    }
+
+    @Test
+    @Override
+    public void testFindConceptSchemesByConditionWithConceptsCanBeExtended() throws Exception {
+        List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).orderBy(ConceptSchemeVersionMetamacProperties.maintainableArtefact().urn())
+                .build();
+        PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
+        PagedResult<ConceptSchemeVersionMetamac> conceptSchemeVersionPagedResult = conceptsService.findConceptSchemesByConditionWithConceptsCanBeExtended(getServiceContextAdministrador(), conditions,
+                pagingParameter);
+
+        // Validate
+        assertEquals(1, conceptSchemeVersionPagedResult.getTotalRows());
+        int i = 0;
+        assertEquals(CONCEPT_SCHEME_7_V1, conceptSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+    }
+
+    @Test
+    @Override
     public void testRetrieveConceptSchemeVersions() throws Exception {
 
         // Retrieve all versions
@@ -412,6 +445,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         assertEquals(CONCEPT_SCHEME_1_V2, conceptSchemeVersions.get(1).getMaintainableArtefact().getUrn());
     }
 
+    @Override
     @Test
     public void testSendConceptSchemeToProductionValidation() throws Exception {
 
@@ -554,6 +588,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         }
     }
 
+    @Override
     @Test
     public void testSendConceptSchemeToDiffusionValidation() throws Exception {
 
@@ -638,6 +673,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         }
     }
 
+    @Override
     @Test
     public void testRejectConceptSchemeProductionValidation() throws Exception {
 
@@ -718,6 +754,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         }
     }
 
+    @Override
     @Test
     public void testRejectConceptSchemeDiffusionValidation() throws Exception {
 
@@ -800,6 +837,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         }
     }
 
+    @Override
     @Test
     public void testPublishInternallyConceptScheme() throws Exception {
 
@@ -894,6 +932,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         }
     }
 
+    @Override
     @Test
     public void testPublishExternallyConceptScheme() throws Exception {
 
@@ -1006,6 +1045,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         }
     }
 
+    @Override
     @Test
     public void testDeleteConceptScheme() throws Exception {
 
@@ -1075,6 +1115,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         }
     }
 
+    @Override
     @Test
     public void testVersioningConceptScheme() throws Exception {
 
@@ -1380,6 +1421,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         }
     }
 
+    @Override
     @Test
     public void testEndConceptSchemeValidity() throws Exception {
         ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.endConceptSchemeValidity(getServiceContextAdministrador(), CONCEPT_SCHEME_7_V1);
@@ -1405,6 +1447,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         }
     }
 
+    @Override
     @Test
     public void testCreateConcept() throws Exception {
 
@@ -1579,6 +1622,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         }
     }
 
+    @Override
     @Test
     public void testUpdateConcept() throws Exception {
 
@@ -1624,6 +1668,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         }
     }
 
+    @Override
     @Test
     public void testRetrieveConceptByUrn() throws Exception {
         // Retrieve
@@ -1660,6 +1705,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         assertEquals(null, concept.getItemSchemeVersionFirstLevel());
     }
 
+    @Override
     @Test
     public void testDeleteConcept() throws Exception {
 
@@ -1842,6 +1888,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         }
     }
 
+    @Override
     @Test
     public void testRetrieveConceptsByConceptSchemeUrn() throws Exception {
 
@@ -1901,6 +1948,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         }
     }
 
+    @Override
     @Test
     public void testFindConceptsByCondition() throws Exception {
 
@@ -2027,15 +2075,16 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         }
     }
 
+    @Override
     @Test
-    public void testFindConceptsAsRoleByCondition() throws Exception {
+    public void testFindConceptsCanBeRoleByCondition() throws Exception {
 
         // Find all
         {
             List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(Concept.class).orderBy(ConceptProperties.itemSchemeVersion().maintainableArtefact().urn()).ascending()
                     .orderBy(ConceptProperties.id()).ascending().distinctRoot().build();
             PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
-            PagedResult<ConceptMetamac> conceptsPagedResult = conceptsService.findConceptsAsRoleByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
+            PagedResult<ConceptMetamac> conceptsPagedResult = conceptsService.findConceptsCanBeRoleByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
 
             // Validate
             assertEquals(3, conceptsPagedResult.getTotalRows());
@@ -2055,7 +2104,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(Concept.class).withProperty(ConceptProperties.nameableArtefact().code()).like(code + "%")
                     .orderBy(ConceptProperties.id()).ascending().distinctRoot().build();
             PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
-            PagedResult<ConceptMetamac> conceptsPagedResult = conceptsService.findConceptsAsRoleByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
+            PagedResult<ConceptMetamac> conceptsPagedResult = conceptsService.findConceptsCanBeRoleByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
 
             // Validate
             assertEquals(1, conceptsPagedResult.getTotalRows());
@@ -2076,7 +2125,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             // First page
             {
                 PagingParameter pagingParameter = PagingParameter.pageAccess(2, 1, true);
-                PagedResult<ConceptMetamac> conceptsPagedResult = conceptsService.findConceptsAsRoleByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
+                PagedResult<ConceptMetamac> conceptsPagedResult = conceptsService.findConceptsCanBeRoleByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
 
                 // Validate
                 assertEquals(3, conceptsPagedResult.getTotalRows());
@@ -2091,7 +2140,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             // Second page
             {
                 PagingParameter pagingParameter = PagingParameter.pageAccess(2, 2, true);
-                PagedResult<ConceptMetamac> conceptsPagedResult = conceptsService.findConceptsAsRoleByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
+                PagedResult<ConceptMetamac> conceptsPagedResult = conceptsService.findConceptsCanBeRoleByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
 
                 // Validate
                 assertEquals(3, conceptsPagedResult.getTotalRows());
@@ -2105,6 +2154,25 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         }
     }
 
+    @Test
+    @Override
+    public void testFindConceptsCanBeExtendedByCondition() throws Exception {
+        List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(Concept.class).orderBy(ConceptProperties.itemSchemeVersion().maintainableArtefact().urn()).ascending()
+                .orderBy(ConceptProperties.id()).ascending().distinctRoot().build();
+        PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
+        PagedResult<ConceptMetamac> conceptsPagedResult = conceptsService.findConceptsCanBeExtendedByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
+
+        // Validate
+        assertEquals(1, conceptsPagedResult.getTotalRows());
+        assertEquals(1, conceptsPagedResult.getValues().size());
+        assertTrue(conceptsPagedResult.getValues().get(0) instanceof ConceptMetamac);
+
+        int i = 0;
+        assertEquals(CONCEPT_SCHEME_7_V1_CONCEPT_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+        assertEquals(conceptsPagedResult.getValues().size(), i);
+    }
+
+    @Override
     @Test
     public void testFindAllConceptTypes() throws Exception {
 
@@ -2127,6 +2195,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         assertEquals(conceptTypes.size(), i);
     }
 
+    @Override
     @Test
     public void testRetrieveConceptTypeByIdentifier() throws Exception {
 
@@ -2140,6 +2209,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         ConceptsAsserts.assertEqualsInternationalString(conceptType.getDescription(), "en", "Derived", "es", "Derivado");
     }
 
+    @Override
     @Test
     public void testAddRelatedConcept() throws Exception {
 
@@ -2179,6 +2249,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         }
     }
 
+    @Override
     @Test
     public void testDeleteRelatedConcept() throws Exception {
 
@@ -2214,6 +2285,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         }
     }
 
+    @Override
     @Test
     public void testRetrieveRelatedConcepts() throws Exception {
 
@@ -2246,6 +2318,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         }
     }
 
+    @Override
     @Test
     public void testAddRoleConcept() throws Exception {
 
@@ -2321,6 +2394,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         }
     }
 
+    @Override
     @Test
     public void testDeleteRoleConcept() throws Exception {
 
@@ -2344,6 +2418,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), urnRoleRelationToRemove);
     }
 
+    @Override
     @Test
     public void testRetrieveRoleConcepts() throws Exception {
 
@@ -2375,6 +2450,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         }
     }
 
+    @Override
     @Test
     public void testRetrieveConceptSchemeByConceptUrn() throws Exception {
         // Retrieve
