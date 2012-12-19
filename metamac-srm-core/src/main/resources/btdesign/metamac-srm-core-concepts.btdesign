@@ -66,9 +66,7 @@ Application ConceptsMetamac {
     		"Finds concepts by criteria"
     		PagedResult<@ConceptMetamac> findConceptsByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
     		"Finds concepts than can be Role by criteria"
-    		PagedResult<@ConceptMetamac> findConceptsCanBeRoleByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
-			"Finds concepts than can be extended by criteria"
-    		PagedResult<@ConceptMetamac> findConceptsCanBeExtendedByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
+    		PagedResult<@ConceptMetamac> findConceptsAsRoleByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
 			"Deletes concept"
     		deleteConcept(String urn) throws MetamacException;
     		"Retrieves concepts by concept scheme, in tree structure"
@@ -108,7 +106,6 @@ Application ConceptsMetamac {
 			- @SrmLifeCycleMetadata lifeCycleMetadata databaseColumn="";
 			
 			Repository ConceptSchemeVersionMetamacRepository {
-				findById;
 				findByQuery(String query, Map<String, Object> parameters, int maxResult);
 				findByCondition(PagingParameter pagingParameter);
 				@ConceptSchemeVersionMetamac findByUrn(String urn);
@@ -150,7 +147,6 @@ Application ConceptsMetamac {
 				save;
 				findByQuery;
 				findByQuery(String query, Map<String, Object> parameters, int maxResult);
-				findById;
 				@ConceptMetamac findByUrn(String urn);
 				findByCondition(PagingParameter pagingParameter);
 			}

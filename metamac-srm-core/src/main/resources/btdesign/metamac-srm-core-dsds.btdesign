@@ -72,7 +72,6 @@ Application DsdsMetamac {
 			- @SrmLifeCycleMetadata lifeCycleMetadata databaseColumn="";
 
 			Repository DataStructureDefinitionVersionMetamacRepository {
-				findById;
 				findByQuery(String query, Map<String, Object> parameters, int maxResult);
 				findByCondition(PagingParameter pagingParameter);
 				@DataStructureDefinitionVersionMetamac findByUrn(String urn);

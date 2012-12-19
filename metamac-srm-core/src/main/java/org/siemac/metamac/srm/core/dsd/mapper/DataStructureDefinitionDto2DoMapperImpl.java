@@ -4,12 +4,10 @@ import org.siemac.metamac.core.common.exception.ExceptionLevelEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.util.OptimisticLockingUtils;
-import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamacRepository;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
-import org.siemac.metamac.srm.core.dsd.exception.DataStructureDefinitionVersionMetamacNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Component;
@@ -73,14 +71,13 @@ public class DataStructureDefinitionDto2DoMapperImpl implements DataStructureDef
 
         // If exists, retrieves existing entity. Otherwise, creates new entity.
         DataStructureDefinitionVersionMetamac target = null;
-        if (source.getId() == null) {
+        if (source.getUrn() == null) {
             target = new DataStructureDefinitionVersionMetamac();
         } else {
-            try {
-                target = dataStructureDefinitionVersionMetamacRepository.findById(source.getId());
-            } catch (DataStructureDefinitionVersionMetamacNotFoundException e) {
-                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SEARCH_BY_ID_NOT_FOUND)
-                        .withMessageParameters(ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION, source.getId()).withLoggedLevel(ExceptionLevelEnum.ERROR).build();
+            target = dataStructureDefinitionVersionMetamacRepository.findByUrn(source.getUrn());
+            if (target == null) {
+                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(source.getUrn())
+                        .withLoggedLevel(ExceptionLevelEnum.ERROR).build();
             }
             OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersion());
         }

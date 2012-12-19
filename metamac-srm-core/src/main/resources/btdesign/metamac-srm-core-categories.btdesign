@@ -96,7 +96,6 @@ Application CategoriesMetamac {
 			- @SrmLifeCycleMetadata lifeCycleMetadata databaseColumn="";
 			
 			Repository CategorySchemeVersionMetamacRepository {
-				findById;
 				findByQuery(String query, Map<String, Object> parameters, int maxResult);
 				findByCondition(PagingParameter pagingParameter);
 				@CategorySchemeVersionMetamac findByUrn(String urn);
@@ -110,10 +109,9 @@ Application CategoriesMetamac {
 			hint="idSequence=M_CATEGORIES"
 			
 			Repository CategoryMetamacRepository {
-//				findByQuery;
-//				findByQuery(String query, Map<String, Object> parameters, int maxResult);
-				findById;
-//				@CategoryMetamac findByUrn(String urn);
+				findByQuery;
+				findByQuery(String query, Map<String, Object> parameters, int maxResult);
+				@CategoryMetamac findByUrn(String urn);
 				findByCondition(PagingParameter pagingParameter);
 			}
 		}

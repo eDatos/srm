@@ -10,8 +10,6 @@ import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacRepository;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
-import org.siemac.metamac.srm.core.code.exception.CodeMetamacNotFoundException;
-import org.siemac.metamac.srm.core.code.exception.CodelistVersionMetamacNotFoundException;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,14 +34,13 @@ public class CodesDto2DoMapperImpl implements CodesDto2DoMapper {
 
         // If exists, retrieves existing entity. Otherwise, creates new entity.
         CodelistVersionMetamac target = null;
-        if (source.getId() == null) {
+        if (source.getUrn() == null) {
             target = new CodelistVersionMetamac();
         } else {
-            try {
-                target = codelistVersionMetamacRepository.findById(source.getId());
-            } catch (CodelistVersionMetamacNotFoundException e) {
-                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SEARCH_BY_ID_NOT_FOUND)
-                        .withMessageParameters(ServiceExceptionParameters.CODELIST, source.getId()).withLoggedLevel(ExceptionLevelEnum.ERROR).build();
+            target = codelistVersionMetamacRepository.findByUrn(source.getUrn());
+            if (target == null) {
+                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(source.getUrn())
+                        .withLoggedLevel(ExceptionLevelEnum.ERROR).build();
             }
             OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersion());
         }
@@ -65,14 +62,13 @@ public class CodesDto2DoMapperImpl implements CodesDto2DoMapper {
 
         // If exists, retrieves existing entity. Otherwise, creates new entity.
         CodeMetamac target = null;
-        if (source.getId() == null) {
+        if (source.getUrn() == null) {
             target = new CodeMetamac();
         } else {
-            try {
-                target = codeMetamacRepository.findById(source.getId());
-            } catch (CodeMetamacNotFoundException e) {
-                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SEARCH_BY_ID_NOT_FOUND)
-                        .withMessageParameters(ServiceExceptionParameters.CODE, source.getId()).withLoggedLevel(ExceptionLevelEnum.ERROR).build();
+            target = codeMetamacRepository.findByUrn(source.getUrn());
+            if (target == null) {
+                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(source.getUrn())
+                        .withLoggedLevel(ExceptionLevelEnum.ERROR).build();
             }
             OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersion());
         }

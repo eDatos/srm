@@ -15,8 +15,6 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptTypeRepository;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptTypeDto;
-import org.siemac.metamac.srm.core.concept.exception.ConceptMetamacNotFoundException;
-import org.siemac.metamac.srm.core.concept.exception.ConceptSchemeVersionMetamacNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @org.springframework.stereotype.Component("conceptsDto2DoMapper")
@@ -46,14 +44,13 @@ public class ConceptsDto2DoMapperImpl implements ConceptsDto2DoMapper {
 
         // If exists, retrieves existing entity. Otherwise, creates new entity.
         ConceptSchemeVersionMetamac target = null;
-        if (source.getId() == null) {
+        if (source.getUrn() == null) {
             target = new ConceptSchemeVersionMetamac();
         } else {
-            try {
-                target = conceptSchemeVersionMetamacRepository.findById(source.getId());
-            } catch (ConceptSchemeVersionMetamacNotFoundException e) {
-                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SEARCH_BY_ID_NOT_FOUND)
-                        .withMessageParameters(ServiceExceptionParameters.CONCEPT_SCHEME, source.getId()).withLoggedLevel(ExceptionLevelEnum.ERROR).build();
+            target = conceptSchemeVersionMetamacRepository.findByUrn(source.getUrn());
+            if (target == null) {
+                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(source.getUrn())
+                        .withLoggedLevel(ExceptionLevelEnum.ERROR).build();
             }
             OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersion());
         }
@@ -76,14 +73,13 @@ public class ConceptsDto2DoMapperImpl implements ConceptsDto2DoMapper {
 
         // If exists, retrieves existing entity. Otherwise, creates new entity.
         ConceptMetamac target = null;
-        if (source.getId() == null) {
+        if (source.getUrn() == null) {
             target = new ConceptMetamac();
         } else {
-            try {
-                target = conceptMetamacRepository.findById(source.getId());
-            } catch (ConceptMetamacNotFoundException e) {
-                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SEARCH_BY_ID_NOT_FOUND)
-                        .withMessageParameters(ServiceExceptionParameters.CONCEPT, source.getId()).withLoggedLevel(ExceptionLevelEnum.ERROR).build();
+            target = conceptMetamacRepository.findByUrn(source.getUrn());
+            if (target == null) {
+                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(source.getUrn())
+                        .withLoggedLevel(ExceptionLevelEnum.ERROR).build();
             }
             OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersion());
         }

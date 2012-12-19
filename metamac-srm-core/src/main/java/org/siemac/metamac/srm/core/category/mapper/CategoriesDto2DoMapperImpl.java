@@ -10,9 +10,6 @@ import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamacRepository;
 import org.siemac.metamac.srm.core.category.dto.CategoryMetamacDto;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
-import org.siemac.metamac.srm.core.category.exception.CategoryMetamacNotFoundException;
-import org.siemac.metamac.srm.core.category.exception.CategorySchemeVersionMetamacNotFoundException;
-import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -40,14 +37,13 @@ public class CategoriesDto2DoMapperImpl implements CategoriesDto2DoMapper {
 
         // If exists, retrieves existing entity. Otherwise, creates new entity.
         CategorySchemeVersionMetamac target = null;
-        if (source.getId() == null) {
+        if (source.getUrn() == null) {
             target = new CategorySchemeVersionMetamac();
         } else {
-            try {
-                target = categorySchemeVersionMetamacRepository.findById(source.getId());
-            } catch (CategorySchemeVersionMetamacNotFoundException e) {
-                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SEARCH_BY_ID_NOT_FOUND)
-                        .withMessageParameters(ServiceExceptionParameters.CATEGORY_SCHEME, source.getId()).withLoggedLevel(ExceptionLevelEnum.ERROR).build();
+            target = categorySchemeVersionMetamacRepository.findByUrn(source.getUrn());
+            if (target == null) {
+                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(source.getUrn())
+                        .withLoggedLevel(ExceptionLevelEnum.ERROR).build();
             }
             OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersion());
         }
@@ -69,14 +65,13 @@ public class CategoriesDto2DoMapperImpl implements CategoriesDto2DoMapper {
 
         // If exists, retrieves existing entity. Otherwise, creates new entity.
         CategoryMetamac target = null;
-        if (source.getId() == null) {
+        if (source.getUrn() == null) {
             target = new CategoryMetamac();
         } else {
-            try {
-                target = categoryMetamacRepository.findById(source.getId());
-            } catch (CategoryMetamacNotFoundException e) {
-                throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.SEARCH_BY_ID_NOT_FOUND)
-                        .withMessageParameters(ServiceExceptionParameters.CATEGORY, source.getId()).withLoggedLevel(ExceptionLevelEnum.ERROR).build();
+            target = categoryMetamacRepository.findByUrn(source.getUrn());
+            if (target == null) {
+                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(source.getUrn())
+                        .withLoggedLevel(ExceptionLevelEnum.ERROR).build();
             }
             OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersion());
         }

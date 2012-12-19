@@ -77,7 +77,6 @@ Application OrganisationsMetamac {
 			- @SrmLifeCycleMetadata lifeCycleMetadata databaseColumn="";
 			
 			Repository OrganisationSchemeVersionMetamacRepository {
-				findById;
 				findByQuery(String query, Map<String, Object> parameters, int maxResult);
 				findByCondition(PagingParameter pagingParameter);
 				@OrganisationSchemeVersionMetamac findByUrn(String urn);
@@ -91,7 +90,6 @@ Application OrganisationsMetamac {
 			hint="idSequence=M_ORGANISATIONS"
 			
 			Repository OrganisationMetamacRepository {
-				findById;
 				findByQuery;
 				findByQuery(String query, Map<String, Object> parameters, int maxResult);
 				@OrganisationMetamac findByUrn(String urn);

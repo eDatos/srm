@@ -142,7 +142,6 @@ Application CodesMetamac {
 			- @SrmLifeCycleMetadata lifeCycleMetadata databaseColumn="";
 
 			Repository CodelistVersionMetamacRepository {
-				findById;
 				findByQuery(String query, Map<String, Object> parameters, int maxResult);
 				findByCondition(PagingParameter pagingParameter);
 				@CodelistVersionMetamac findByUrn(String urn);
@@ -156,7 +155,8 @@ Application CodesMetamac {
 			hint="idSequence=M_CODES"
 			
 			Repository CodeMetamacRepository {
-				findById;
+				findByQuery(String query, Map<String, Object> parameters, int maxResult);
+				@CodeMetamac findByUrn(String urn);
 				findByCondition(PagingParameter pagingParameter);
 			}
 		}
