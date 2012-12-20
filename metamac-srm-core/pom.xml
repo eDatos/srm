@@ -38,15 +38,21 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.siemac.metamac.metamac-sso</groupId>
-            <artifactId>metamac-sso-client</artifactId>
-            <version>${metamac-sso.version}</version>
-        </dependency>
-        <dependency>
             <groupId>com.arte.statistic.statistic-sdmx-srm</groupId>
             <artifactId>statistic-sdmx-srm-core</artifactId>
             <version>${statistic-sdmx-srm.version}</version>
             <classifier>client</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.siemac.metamac.metamac-sso</groupId>
+            <artifactId>metamac-sso-client</artifactId>
+            <version>${metamac-sso.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>metamac-core-common</artifactId>
+                    <groupId>org.siemac.metamac</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.arte.statistic.statistic-sdmx-srm</groupId>
