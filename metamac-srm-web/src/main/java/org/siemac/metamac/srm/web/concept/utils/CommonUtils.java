@@ -76,7 +76,19 @@ public class CommonUtils {
         return conceptSchemeMetamacDto.getRelatedOperation() != null ? conceptSchemeMetamacDto.getRelatedOperation().getCode() : null;
     }
 
+    /**
+     * METADATA VISIBILITY
+     */
+
     public static boolean isMetadataSdmxRelatedArtefactVisible(ConceptSchemeTypeEnum type) {
         return ConceptSchemeTypeEnum.OPERATION.equals(type) || ConceptSchemeTypeEnum.TRANSVERSAL.equals(type) || ConceptSchemeTypeEnum.MEASURE.equals(type);
+    }
+
+    public static boolean isMetadataRolesVisible(ConceptSchemeTypeEnum type) {
+        return ConceptSchemeTypeEnum.OPERATION.equals(type) || ConceptSchemeTypeEnum.TRANSVERSAL.equals(type) || ConceptSchemeTypeEnum.MEASURE.equals(type);
+    }
+
+    public static boolean isMetadataExtendsVisible(ConceptSchemeTypeEnum type) {
+        return !ConceptSchemeTypeEnum.ROLE.equals(type);
     }
 }

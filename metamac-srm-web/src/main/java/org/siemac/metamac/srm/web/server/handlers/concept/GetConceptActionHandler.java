@@ -7,12 +7,14 @@ import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptResult;
+import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.server.ServiceContextHolder;
 import org.siemac.metamac.web.common.server.handlers.SecurityActionHandler;
 import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 @Component
@@ -28,13 +30,19 @@ public class GetConceptActionHandler extends SecurityActionHandler<GetConceptAct
     @Override
     public GetConceptResult executeSecurityAction(GetConceptAction action) throws ActionException {
         try {
+            // Retrieve concept
             ConceptMetamacDto conceptMetamacDto = srmCoreServiceFacade.retrieveConceptByUrn(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
+
+            // Retrieve related concepts
             List<ConceptMetamacDto> relatedConcepts = srmCoreServiceFacade.retrieveRelatedConcepts(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
-            List<ConceptMetamacDto> relatedRoleConcepts = srmCoreServiceFacade.retrieveRoleConcepts(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
-            return new GetConceptResult(conceptMetamacDto, relatedConcepts, relatedRoleConcepts);
+
+            // Retrieve roles
+            List<RelatedResourceDto> roles = RelatedResourceUtils.getRelatedResourceDtosFromConceptMetamacDtos(srmCoreServiceFacade.retrieveRoleConcepts(
+                    ServiceContextHolder.getCurrentServiceContext(), action.getUrn()));
+
+            return new GetConceptResult(conceptMetamacDto, roles, relatedConcepts);
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);
         }
     }
-
 }

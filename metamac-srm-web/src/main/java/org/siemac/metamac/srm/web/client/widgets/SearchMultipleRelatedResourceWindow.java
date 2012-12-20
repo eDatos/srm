@@ -34,6 +34,10 @@ public class SearchMultipleRelatedResourceWindow extends BaseSearchWindow {
         relatedResourcesDragAndDropItem.setSourceRelatedResources(relatedResources);
     }
 
+    public void setTargetRelatedResources(List<RelatedResourceDto> relatedResources) {
+        relatedResourcesDragAndDropItem.setTargetRelatedResources(relatedResources);
+    }
+
     public void setSelectedRelatedResources(List<RelatedResourceDto> relatedResources) {
         relatedResourcesDragAndDropItem.setTargetRelatedResources(relatedResources);
     }
@@ -49,5 +53,4 @@ public class SearchMultipleRelatedResourceWindow extends BaseSearchWindow {
     public void setSearchAction(SearchPaginatedAction action) {
         relatedResourcesDragAndDropItem.setSearchAction(action);
     }
-
 }

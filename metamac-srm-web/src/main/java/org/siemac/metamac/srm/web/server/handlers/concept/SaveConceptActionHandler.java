@@ -9,12 +9,14 @@ import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.web.shared.concept.SaveConceptAction;
 import org.siemac.metamac.srm.web.shared.concept.SaveConceptResult;
+import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.server.ServiceContextHolder;
 import org.siemac.metamac.web.common.server.handlers.SecurityActionHandler;
 import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 @Component
@@ -46,6 +48,39 @@ public class SaveConceptActionHandler extends SecurityActionHandler<SaveConceptA
             }
 
             //
+            // Save roles
+            //
+
+            List<ConceptMetamacDto> oldRoles = srmCoreServiceFacade.retrieveRoleConcepts(ServiceContextHolder.getCurrentServiceContext(), savedConcept.getUrn());
+            Set<String> oldRolesUrn = getConceptUrnsSet(oldRoles);
+
+            if (action.getRolesToSave() == null || action.getRolesToSave().isEmpty()) {
+                if (oldRoles != null && !oldRoles.isEmpty()) {
+                    // Remove all roles
+                    for (String urn : oldRolesUrn) {
+                        srmCoreServiceFacade.deleteRoleConcept(ServiceContextHolder.getCurrentServiceContext(), action.getConceptToSave().getUrn(), urn);
+                    }
+                }
+            } else {
+
+                // Concepts to add
+                for (String urn : action.getRolesToSave()) {
+                    if (!oldRolesUrn.contains(urn)) {
+                        srmCoreServiceFacade.addRoleConcept(ServiceContextHolder.getCurrentServiceContext(), action.getConceptToSave().getUrn(), urn);
+                    }
+                }
+                // Concepts to remove
+                for (String urn : oldRolesUrn) {
+                    if (!action.getRolesToSave().contains(urn)) {
+                        srmCoreServiceFacade.deleteRoleConcept(ServiceContextHolder.getCurrentServiceContext(), action.getConceptToSave().getUrn(), urn);
+                    }
+                }
+
+            }
+            List<ConceptMetamacDto> roles = srmCoreServiceFacade.retrieveRoleConcepts(ServiceContextHolder.getCurrentServiceContext(), savedConcept.getUrn());
+            List<RelatedResourceDto> relatedResourceRoles = RelatedResourceUtils.getRelatedResourceDtosFromConceptMetamacDtos(roles);
+
+            //
             // Save related concepts
             //
 
@@ -73,10 +108,14 @@ public class SaveConceptActionHandler extends SecurityActionHandler<SaveConceptA
                         srmCoreServiceFacade.deleteRelatedConcept(ServiceContextHolder.getCurrentServiceContext(), action.getConceptToSave().getUrn(), urn);
                     }
                 }
-            }
 
+            }
             List<ConceptMetamacDto> relatedConcepts = srmCoreServiceFacade.retrieveRelatedConcepts(ServiceContextHolder.getCurrentServiceContext(), savedConcept.getUrn());
-            return new SaveConceptResult(savedConcept, relatedConcepts);
+
+            // Reload the saved concept
+            savedConcept = srmCoreServiceFacade.retrieveConceptByUrn(ServiceContextHolder.getCurrentServiceContext(), savedConcept.getUrn());
+
+            return new SaveConceptResult(savedConcept, relatedResourceRoles, relatedConcepts);
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);
         }
@@ -93,5 +132,4 @@ public class SaveConceptActionHandler extends SecurityActionHandler<SaveConceptA
             return new HashSet<String>();
         }
     }
-
 }

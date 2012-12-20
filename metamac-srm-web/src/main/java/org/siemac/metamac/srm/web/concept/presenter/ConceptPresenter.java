@@ -20,6 +20,8 @@ import org.siemac.metamac.srm.web.client.widgets.presenter.ToolStripPresenterWid
 import org.siemac.metamac.srm.web.concept.view.handlers.ConceptUiHandlers;
 import org.siemac.metamac.srm.web.shared.FindCodeListsAction;
 import org.siemac.metamac.srm.web.shared.FindCodeListsResult;
+import org.siemac.metamac.srm.web.shared.GetConceptsCanBeRoleAction;
+import org.siemac.metamac.srm.web.shared.GetConceptsCanBeRoleResult;
 import org.siemac.metamac.srm.web.shared.concept.DeleteConceptAction;
 import org.siemac.metamac.srm.web.shared.concept.DeleteConceptResult;
 import org.siemac.metamac.srm.web.shared.concept.FindAllConceptTypesAction;
@@ -30,6 +32,8 @@ import org.siemac.metamac.srm.web.shared.concept.GetConceptListBySchemeResult;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptResult;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeResult;
+import org.siemac.metamac.srm.web.shared.concept.GetConceptsCanBeExtendedAction;
+import org.siemac.metamac.srm.web.shared.concept.GetConceptsCanBeExtendedResult;
 import org.siemac.metamac.srm.web.shared.concept.SaveConceptAction;
 import org.siemac.metamac.srm.web.shared.concept.SaveConceptResult;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
@@ -37,6 +41,7 @@ import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.utils.UrnUtils;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.google.gwt.event.shared.EventBus;
@@ -81,11 +86,15 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
 
     public interface ConceptView extends View, HasUiHandlers<ConceptUiHandlers> {
 
-        void setConcept(ConceptMetamacDto conceptDto, List<ConceptMetamacDto> relatedConcepts);
+        void setConcept(ConceptMetamacDto conceptDto, List<RelatedResourceDto> roles, List<ConceptMetamacDto> relatedConcepts);
+        void setConceptExtended(ConceptMetamacDto conceptDto);
         void setConceptList(ConceptSchemeMetamacDto conceptSchemeMetamacDto, List<ItemHierarchyDto> itemHierarchyDtos);
 
         void setConceptTypes(List<ConceptTypeDto> conceptTypeDtos);
         void setCodeLists(List<ExternalItemDto> codeLists);
+
+        void setConceptThatCanBeRoles(List<RelatedResourceDto> conceptDtos, int firstResult, int totalResults);
+        void setConceptThatCanBeExtended(List<RelatedResourceDto> conceptDtos, int firstResult, int totalResults);
     }
 
     @ContentSlot
@@ -143,13 +152,28 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
             }
             @Override
             public void onWaitSuccess(GetConceptResult result) {
-                getView().setConcept(result.getConceptDto(), result.getRelatedConcepts());
+                getView().setConcept(result.getConceptDto(), result.getRoles(), result.getRelatedConcepts());
             }
         });
     }
 
     @Override
-    public void retrieveConceptListByScheme(String conceptSchemeUrn) {
+    public void retrieveConceptExtended(String conceptUrn) {
+        dispatcher.execute(new GetConceptAction(conceptUrn), new WaitingAsyncCallback<GetConceptResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptErrorRetrievingData()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetConceptResult result) {
+                getView().setConceptExtended(result.getConceptDto());
+            }
+        });
+    }
+
+    @Override
+    public void retrieveConceptsByScheme(String conceptSchemeUrn) {
         dispatcher.execute(new GetConceptListBySchemeAction(conceptSchemeUrn), new WaitingAsyncCallback<GetConceptListBySchemeResult>() {
 
             @Override
@@ -174,14 +198,18 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
         });
     }
 
+    /**
+     * Only call this method to create concepts, not to update them!
+     */
     @Override
     public void saveConcept(ConceptMetamacDto conceptDto) {
-        saveConcept(conceptDto, null);
+        // Create concept
+        saveConcept(conceptDto, null, null);
     }
 
     @Override
-    public void saveConcept(ConceptMetamacDto conceptDto, List<String> relatedConcepts) {
-        dispatcher.execute(new SaveConceptAction(conceptDto, relatedConcepts), new WaitingAsyncCallback<SaveConceptResult>() {
+    public void saveConcept(ConceptMetamacDto conceptDto, List<String> roles, List<String> relatedConcepts) {
+        dispatcher.execute(new SaveConceptAction(conceptDto, roles, relatedConcepts), new WaitingAsyncCallback<SaveConceptResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -190,7 +218,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
             @Override
             public void onWaitSuccess(SaveConceptResult result) {
                 ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getMessageList(getMessages().conceptSaved()), MessageTypeEnum.SUCCESS);
-                getView().setConcept(result.getConceptDto(), result.getRelatedConcepts());
+                getView().setConcept(result.getConceptDto(), result.getRoles(), result.getRelatedConcepts());
 
                 // Update URL
                 PlaceRequest placeRequest = PlaceRequestUtils.buildConceptPlaceRequest(result.getConceptDto().getUrn());
@@ -263,4 +291,33 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
         });
     }
 
+    @Override
+    public void retrieveConceptsThatCanBeRole(int firstResult, int maxResults, String concept) {
+        dispatcher.execute(new GetConceptsCanBeRoleAction(firstResult, maxResults, concept), new WaitingAsyncCallback<GetConceptsCanBeRoleResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().conceptErrorRetrieveList()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetConceptsCanBeRoleResult result) {
+                getView().setConceptThatCanBeRoles(result.getConcepts(), result.getFirstResultOut(), result.getTotalResults());
+            }
+        });
+    }
+
+    @Override
+    public void retrieveConceptsThatCanBeExtended(int firstResult, int maxResults, String concept) {
+        dispatcher.execute(new GetConceptsCanBeExtendedAction(firstResult, maxResults, concept), new WaitingAsyncCallback<GetConceptsCanBeExtendedResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().conceptErrorRetrieveList()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetConceptsCanBeExtendedResult result) {
+                getView().setConceptThatCanBeExtended(result.getConceptList(), result.getFirstResultOut(), result.getTotalResults());
+            }
+        });
+    }
 }

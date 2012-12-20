@@ -13,18 +13,18 @@ import com.smartgwt.client.widgets.form.fields.events.HasClickHandlers;
 
 public class SearchConceptsWindow extends BaseSearchWindow {
 
-    private SearchConceptsPaginatedItem conceptsListGridItem;
+    private SearchConceptsPaginatedItem conceptsPaginatedItem;
 
     public SearchConceptsWindow(String title, int maxResults, PaginatedAction action) {
         super(title, maxResults);
 
-        conceptsListGridItem = new SearchConceptsPaginatedItem("list", "title", FORM_ITEM_CUSTOM_WIDTH, maxResults, action);
-        conceptsListGridItem.setWidth(FORM_ITEM_CUSTOM_WIDTH);
-        conceptsListGridItem.setShowTitle(false);
+        conceptsPaginatedItem = new SearchConceptsPaginatedItem("list", "title", FORM_ITEM_CUSTOM_WIDTH, maxResults, action);
+        conceptsPaginatedItem.setWidth(FORM_ITEM_CUSTOM_WIDTH);
+        conceptsPaginatedItem.setShowTitle(false);
 
         CustomButtonItem saveItem = new CustomButtonItem(FIELD_SAVE, MetamacWebCommon.getConstants().actionSave());
 
-        form.setFields(conceptsListGridItem, saveItem);
+        form.setFields(conceptsPaginatedItem, saveItem);
     }
 
     public HasClickHandlers getSave() {
@@ -32,23 +32,22 @@ public class SearchConceptsWindow extends BaseSearchWindow {
     }
 
     public void setConcepts(List<ConceptMetamacDto> conceptMetamacDtos) {
-        conceptsListGridItem.setConcepts(conceptMetamacDtos);
+        conceptsPaginatedItem.setConcepts(conceptMetamacDtos);
     }
 
-    public ConceptMetamacDto getSelectedConcept() {
-        return conceptsListGridItem.getSelectedConcept();
+    public List<ConceptMetamacDto> getSelectedConcepts() {
+        return conceptsPaginatedItem.getSelectedConcepts();
     }
 
     public void refreshSourcePaginationInfo(int firstResult, int elementsInPage, int totalResults) {
-        conceptsListGridItem.refreshPaginationInfo(firstResult, elementsInPage, totalResults);
+        conceptsPaginatedItem.refreshPaginationInfo(firstResult, elementsInPage, totalResults);
     }
 
     public SearchConceptsPaginatedItem getConceptsListGridItem() {
-        return conceptsListGridItem;
+        return conceptsPaginatedItem;
     }
 
     public BaseCustomListGrid getListGrid() {
-        return conceptsListGridItem.getListGrid();
+        return conceptsPaginatedItem.getListGrid();
     }
-
 }

@@ -1,5 +1,6 @@
 package org.siemac.metamac.srm.web.concept.widgets;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
@@ -75,12 +76,15 @@ public class SearchConceptsPaginatedItem extends BaseSearchPaginatedItem {
         paginatedCheckListGrid.getListGrid().setData(records);
     }
 
-    public ConceptMetamacDto getSelectedConcept() {
-        ListGridRecord selectedRecord = paginatedCheckListGrid.getListGrid().getSelectedRecord();
-        if (selectedRecord != null) {
-            return ((ConceptRecord) selectedRecord).getConceptDto();
+    public List<ConceptMetamacDto> getSelectedConcepts() {
+        ListGridRecord[] selectedRecords = paginatedCheckListGrid.getListGrid().getSelectedRecords();
+        if (selectedRecords != null) {
+            List<ConceptMetamacDto> selectedConcepts = new ArrayList<ConceptMetamacDto>();
+            for (ListGridRecord record : selectedRecords) {
+                selectedConcepts.add(((ConceptRecord) record).getConceptDto());
+            }
+            return selectedConcepts;
         }
         return null;
     }
-
 }

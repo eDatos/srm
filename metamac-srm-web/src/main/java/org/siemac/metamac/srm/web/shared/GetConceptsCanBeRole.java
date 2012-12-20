@@ -8,7 +8,7 @@ import com.gwtplatform.dispatch.annotation.In;
 import com.gwtplatform.dispatch.annotation.Out;
 
 @GenDispatch(isSecure = false)
-public class GetConceptsAsRole {
+public class GetConceptsCanBeRole {
 
     @In(1)
     int                      firstResult;

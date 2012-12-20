@@ -1,4 +1,4 @@
-package org.siemac.metamac.srm.web.server.handlers;
+package org.siemac.metamac.srm.web.server.handlers.concept;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,8 +17,8 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.criteria.ConceptMetamacCriteriaOrderEnum;
 import org.siemac.metamac.srm.core.criteria.ConceptMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
-import org.siemac.metamac.srm.web.shared.GetConceptsAsRoleAction;
-import org.siemac.metamac.srm.web.shared.GetConceptsAsRoleResult;
+import org.siemac.metamac.srm.web.shared.concept.GetConceptsCanBeExtendedAction;
+import org.siemac.metamac.srm.web.shared.concept.GetConceptsCanBeExtendedResult;
 import org.siemac.metamac.web.common.server.ServiceContextHolder;
 import org.siemac.metamac.web.common.server.handlers.SecurityActionHandler;
 import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
@@ -29,17 +29,17 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 @Component
-public class GetConceptsAsRoleActionHandler extends SecurityActionHandler<GetConceptsAsRoleAction, GetConceptsAsRoleResult> {
+public class GetConceptsCanBeExtendedActionHandler extends SecurityActionHandler<GetConceptsCanBeExtendedAction, GetConceptsCanBeExtendedResult> {
 
     @Autowired
     private SrmCoreServiceFacade srmCoreServiceFacade;
 
-    public GetConceptsAsRoleActionHandler() {
-        super(GetConceptsAsRoleAction.class);
+    public GetConceptsCanBeExtendedActionHandler() {
+        super(GetConceptsCanBeExtendedAction.class);
     }
 
     @Override
-    public GetConceptsAsRoleResult executeSecurityAction(GetConceptsAsRoleAction action) throws ActionException {
+    public GetConceptsCanBeExtendedResult executeSecurityAction(GetConceptsCanBeExtendedAction action) throws ActionException {
         MetamacCriteria criteria = new MetamacCriteria();
 
         // Order
@@ -50,17 +50,15 @@ public class GetConceptsAsRoleActionHandler extends SecurityActionHandler<GetCon
         criteriaOrders.add(order);
         criteria.setOrdersBy(criteriaOrders);
 
+        // Criteria
         MetamacCriteriaConjunctionRestriction restriction = new MetamacCriteriaConjunctionRestriction();
-
-        // Concept criteria
-        MetamacCriteriaDisjunctionRestriction conceptCriteriaDisjuction = new MetamacCriteriaDisjunctionRestriction();
-        if (!StringUtils.isBlank(action.getCriteria())) {
-            conceptCriteriaDisjuction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(ConceptMetamacCriteriaPropertyEnum.CODE.name(), action.getCriteria(), OperationType.ILIKE));
-            conceptCriteriaDisjuction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(ConceptMetamacCriteriaPropertyEnum.NAME.name(), action.getCriteria(), OperationType.ILIKE));
-            conceptCriteriaDisjuction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(ConceptMetamacCriteriaPropertyEnum.URN.name(), action.getCriteria(), OperationType.ILIKE));
+        if (!StringUtils.isBlank(action.getConcept())) {
+            MetamacCriteriaDisjunctionRestriction conceptCriteriaDisjuction = new MetamacCriteriaDisjunctionRestriction();
+            conceptCriteriaDisjuction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(ConceptMetamacCriteriaPropertyEnum.CODE.name(), action.getConcept(), OperationType.ILIKE));
+            conceptCriteriaDisjuction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(ConceptMetamacCriteriaPropertyEnum.NAME.name(), action.getConcept(), OperationType.ILIKE));
+            conceptCriteriaDisjuction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(ConceptMetamacCriteriaPropertyEnum.URN.name(), action.getConcept(), OperationType.ILIKE));
             restriction.getRestrictions().add(conceptCriteriaDisjuction);
         }
-
         criteria.setRestriction(restriction);
 
         // Pagination
@@ -70,11 +68,10 @@ public class GetConceptsAsRoleActionHandler extends SecurityActionHandler<GetCon
         criteria.getPaginator().setCountTotalResults(true);
 
         try {
-            MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findConceptsAsRoleByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria);
-            return new GetConceptsAsRoleResult(result.getResults(), result.getPaginatorResult().getFirstResult(), result.getPaginatorResult().getTotalResults());
+            MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findConceptsCanBeExtendedByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria);
+            return new GetConceptsCanBeExtendedResult(result.getResults(), result.getPaginatorResult().getFirstResult(), result.getPaginatorResult().getTotalResults());
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);
         }
     }
-
 }

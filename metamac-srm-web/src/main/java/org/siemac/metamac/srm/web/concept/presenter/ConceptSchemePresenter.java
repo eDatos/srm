@@ -286,12 +286,13 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
 
     @Override
     public void saveConcept(ConceptMetamacDto conceptDto) {
-        saveConcept(conceptDto, null);
+        // Create concept
+        saveConcept(conceptDto, null, null);
     }
 
     @Override
-    public void saveConcept(ConceptMetamacDto conceptDto, List<String> relatedConcepts) {
-        dispatcher.execute(new SaveConceptAction(conceptDto, relatedConcepts), new WaitingAsyncCallback<SaveConceptResult>() {
+    public void saveConcept(ConceptMetamacDto conceptDto, List<String> roles, List<String> relatedConcepts) {
+        dispatcher.execute(new SaveConceptAction(conceptDto, roles, relatedConcepts), new WaitingAsyncCallback<SaveConceptResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {

@@ -54,5 +54,4 @@ public class ConceptsListItem extends BaseListItem {
         }
         return urns;
     }
-
 }

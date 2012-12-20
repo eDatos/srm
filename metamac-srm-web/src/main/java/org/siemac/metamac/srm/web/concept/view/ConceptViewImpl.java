@@ -16,6 +16,9 @@ import org.siemac.metamac.srm.web.client.model.ds.RepresentationDS;
 import org.siemac.metamac.srm.web.client.representation.widgets.StaticFacetForm;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.CustomVLayout;
+import org.siemac.metamac.srm.web.client.widgets.RelatedResourceListItem;
+import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourceWindow;
+import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourceWindow;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
 import org.siemac.metamac.srm.web.concept.presenter.ConceptPresenter;
 import org.siemac.metamac.srm.web.concept.utils.CommonUtils;
@@ -31,6 +34,8 @@ import org.siemac.metamac.web.common.client.utils.FormItemUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.widgets.TitleLabel;
+import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
+import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.InternationalMainFormLayout;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomSelectItem;
@@ -39,19 +44,22 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTex
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultilanguageRichTextEditorItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredSelectItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
+import org.siemac.metamac.web.common.client.widgets.form.fields.SearchViewTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.RepresentationDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeRepresentationEnum;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-import com.gwtplatform.mvp.client.ViewImpl;
+import com.gwtplatform.mvp.client.ViewWithUiHandlers;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.data.RecordList;
 import com.smartgwt.client.types.Overflow;
+import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
@@ -67,43 +75,44 @@ import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
-public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.ConceptView {
+public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> implements ConceptPresenter.ConceptView {
 
-    private ConceptUiHandlers           uiHandlers;
+    private VLayout                             panel;
+    private InternationalMainFormLayout         mainFormLayout;
 
-    private VLayout                     panel;
-    private InternationalMainFormLayout mainFormLayout;
-
-    private ConceptsTreeGrid            conceptsTreeGrid;
+    private ConceptsTreeGrid                    conceptsTreeGrid;
 
     // View forms
-    private GroupDynamicForm            identifiersForm;
-    private GroupDynamicForm            contentDescriptorsForm;
-    private StaticFacetForm             facetForm;
-    private GroupDynamicForm            classDescriptorsForm;
-    private GroupDynamicForm            productionDescriptorsForm;
-    private GroupDynamicForm            relationBetweenConceptsForm;
-    private GroupDynamicForm            legalActsForm;
-    private GroupDynamicForm            commentsForm;
-    private AnnotationsPanel            annotationsPanel;
+    private GroupDynamicForm                    identifiersForm;
+    private GroupDynamicForm                    contentDescriptorsForm;
+    private StaticFacetForm                     facetForm;
+    private GroupDynamicForm                    classDescriptorsForm;
+    private GroupDynamicForm                    productionDescriptorsForm;
+    private GroupDynamicForm                    relationBetweenConceptsForm;
+    private GroupDynamicForm                    legalActsForm;
+    private GroupDynamicForm                    commentsForm;
+    private AnnotationsPanel                    annotationsPanel;
 
     // Edition forms
-    private GroupDynamicForm            identifiersEditionForm;
-    private GroupDynamicForm            contentDescriptorsEditionForm;
-    private ConceptFacetForm            facetEditionForm;
-    private GroupDynamicForm            classDescriptorsEditionForm;
-    private GroupDynamicForm            productionDescriptorsEditionForm;
-    private GroupDynamicForm            relationBetweenConceptsEditionForm;
-    private GroupDynamicForm            legalActsEditionForm;
-    private GroupDynamicForm            commentsEditionForm;
-    private AnnotationsPanel            annotationsEditionPanel;
+    private GroupDynamicForm                    identifiersEditionForm;
+    private GroupDynamicForm                    contentDescriptorsEditionForm;
+    private ConceptFacetForm                    facetEditionForm;
+    private GroupDynamicForm                    classDescriptorsEditionForm;
+    private GroupDynamicForm                    productionDescriptorsEditionForm;
+    private GroupDynamicForm                    relationBetweenConceptsEditionForm;
+    private GroupDynamicForm                    legalActsEditionForm;
+    private GroupDynamicForm                    commentsEditionForm;
+    private AnnotationsPanel                    annotationsEditionPanel;
 
-    private List<ConceptTypeDto>        conceptTypeDtos;
-    private List<ExternalItemDto>       codeLists;
+    private List<ConceptTypeDto>                conceptTypeDtos;
+    private List<ExternalItemDto>               codeLists;
 
-    private ConceptSchemeMetamacDto     conceptSchemeMetamacDto;
-    private List<ItemHierarchyDto>      itemHierarchyDtos;
-    private ConceptMetamacDto           conceptDto;
+    private ConceptSchemeMetamacDto             conceptSchemeMetamacDto;
+    private List<ItemHierarchyDto>              itemHierarchyDtos;
+    private ConceptMetamacDto                   conceptDto;
+
+    private SearchMultipleRelatedResourceWindow searchRolesWindow;
+    private SearchRelatedResourceWindow         searchExtendsWindow;
 
     @Inject
     public ConceptViewImpl() {
@@ -166,7 +175,7 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
             @Override
             public void onClick(ClickEvent event) {
                 if (validateEditionForms()) {
-                    uiHandlers.saveConcept(getConceptDto(), getRelatedConcepts());
+                    getUiHandlers().saveConcept(getConceptDto(), getRoles(), getRelatedConcepts());
                 }
             }
         });
@@ -185,7 +194,7 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
 
     @Override
     public void setUiHandlers(ConceptUiHandlers uiHandlers) {
-        this.uiHandlers = uiHandlers;
+        super.setUiHandlers(uiHandlers);
         conceptsTreeGrid.setUiHandlers(uiHandlers);
     }
 
@@ -249,7 +258,8 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
         ViewTextItem sdmxRelatedArtefact = new ViewTextItem(ConceptDS.SDMX_RELATED_ARTEFACT, getConstants().conceptSdmxRelatedArtefact());
         sdmxRelatedArtefact.setShowIfCondition(getSdmxRelatedArtefactFormItemIfFunction());
         ViewTextItem type = new ViewTextItem(ConceptDS.TYPE, getConstants().conceptType());
-        ViewTextItem roles = new ViewTextItem(ConceptDS.ROLES, getConstants().conceptRoles()); // TODO roles
+        RelatedResourceListItem roles = new RelatedResourceListItem(ConceptDS.ROLES, getConstants().conceptRoles(), false);
+        roles.setShowIfCondition(getRolesFormItemIfFunction());
         classDescriptorsForm.setFields(sdmxRelatedArtefact, type, roles);
 
         // Production descriptors
@@ -259,7 +269,7 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
 
         // Relation between concepts
         relationBetweenConceptsForm = new GroupDynamicForm(getConstants().conceptRelationBetweenConcepts());
-        ViewTextItem extendsConcept = new ViewTextItem(ConceptDS.EXTENDS, getConstants().conceptExtends()); // TODO extends
+        ViewTextItem extendsConcept = new ViewTextItem(ConceptDS.EXTENDS_VIEW, getConstants().conceptExtends());
         ConceptsListItem relatedConcepts = new ConceptsListItem(ConceptDS.RELATED_CONCEPTS, getConstants().conceptRelatedConcepts(), false);
         relationBetweenConceptsForm.setFields(extendsConcept, relatedConcepts);
 
@@ -328,7 +338,7 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
             public boolean execute(FormItem item, Object value, DynamicForm form) {
                 boolean isRepresentationEnumerated = TypeRepresentationEnum.ENUMERATED.name().equals(form.getValueAsString(RepresentationDS.TYPE));
                 if (isRepresentationEnumerated) {
-                    uiHandlers.retrieveCodeLists(conceptDto.getUrn());
+                    getUiHandlers().retrieveCodeLists(conceptDto.getUrn());
                 }
                 return isRepresentationEnumerated;
             }
@@ -344,8 +354,9 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
         sdmxRelatedArtefact.setValueMap(CommonUtils.getConceptRoleHashMap());
         sdmxRelatedArtefact.setShowIfCondition(getSdmxRelatedArtefactFormItemIfFunction());
         SelectItem type = new SelectItem(ConceptDS.TYPE, getConstants().conceptType()); // Value map set in setConceptTypes method
-        // TODO Roles
-        classDescriptorsEditionForm.setFields(sdmxRelatedArtefact, type);
+        RelatedResourceListItem roles = createRolesItem(ConceptDS.ROLES, getConstants().conceptRoles());
+        roles.setShowIfCondition(getRolesFormItemIfFunction());
+        classDescriptorsEditionForm.setFields(sdmxRelatedArtefact, type, roles);
 
         // Production descriptors
         productionDescriptorsEditionForm = new GroupDynamicForm(getConstants().conceptProductionDescriptors());
@@ -354,9 +365,11 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
 
         // Relation between concepts
         relationBetweenConceptsEditionForm = new GroupDynamicForm(getConstants().conceptRelationBetweenConcepts());
-        ViewTextItem extendsConcept = new ViewTextItem(ConceptDS.EXTENDS, getConstants().conceptExtends()); // TODO extends
+        ViewTextItem extendsConcept = new ViewTextItem(ConceptDS.EXTENDS, getConstants().conceptExtends());
+        extendsConcept.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
+        SearchViewTextItem extendsConceptView = createExtendsItem(ConceptDS.EXTENDS_VIEW, getConstants().conceptExtends());
         ConceptsListItem relatedConcepts = createRelatedConceptsItem(ConceptDS.RELATED_CONCEPTS, getConstants().conceptRelatedConcepts());
-        relationBetweenConceptsEditionForm.setFields(extendsConcept, relatedConcepts);
+        relationBetweenConceptsEditionForm.setFields(extendsConcept, extendsConceptView, relatedConcepts);
 
         // Legal acts
         legalActsEditionForm = new GroupDynamicForm(getConstants().conceptLegalActs());
@@ -381,24 +394,29 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
         mainFormLayout.addEditionCanvas(commentsEditionForm);
         mainFormLayout.addEditionCanvas(annotationsEditionPanel);
     }
-
     @Override
-    public void setConcept(ConceptMetamacDto conceptDto, List<ConceptMetamacDto> relatedConcepts) {
+    public void setConcept(ConceptMetamacDto conceptDto, List<RelatedResourceDto> roles, List<ConceptMetamacDto> relatedConcepts) {
         this.conceptDto = conceptDto;
 
-        uiHandlers.retrieveConceptListByScheme(conceptDto.getItemSchemeVersionUrn());
+        getUiHandlers().retrieveConceptsByScheme(conceptDto.getItemSchemeVersionUrn());
 
         // Load value lists
-        uiHandlers.retrieveConceptTypes();
+        getUiHandlers().retrieveConceptTypes();
 
+        // Load concept extended (if exists)
+        if (conceptDto.getConceptExtendsUrn() != null) {
+            getUiHandlers().retrieveConceptExtended(conceptDto.getConceptExtendsUrn());
+        }
+
+        // Set title
         String defaultLocalized = InternationalStringUtils.getLocalisedString(conceptDto.getName());
         String title = defaultLocalized != null ? defaultLocalized : StringUtils.EMPTY;
         mainFormLayout.setTitleLabelContents(title);
 
         mainFormLayout.setViewMode();
 
-        setConceptViewMode(conceptDto, relatedConcepts);
-        setConceptEditionMode(conceptDto, relatedConcepts);
+        setConceptViewMode(conceptDto, roles, relatedConcepts);
+        setConceptEditionMode(conceptDto, roles, relatedConcepts);
     }
 
     @Override
@@ -428,7 +446,7 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
         contentDescriptorsEditionForm.getItem(RepresentationDS.ENUMERATED).setValueMap(ExternalItemUtils.getExternalItemsHashMap(codeLists));
     }
 
-    private void setConceptViewMode(ConceptMetamacDto conceptDto, List<ConceptMetamacDto> relatedConcepts) {
+    private void setConceptViewMode(ConceptMetamacDto conceptDto, List<RelatedResourceDto> roles, List<ConceptMetamacDto> relatedConcepts) {
         // Identifiers Form
         identifiersForm.setValue(ConceptDS.CODE, conceptDto.getCode());
         identifiersForm.setValue(ConceptDS.NAME, RecordUtils.getInternationalStringRecord(conceptDto.getName()));
@@ -464,13 +482,13 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
         // Class descriptors
         classDescriptorsForm.setValue(ConceptDS.SDMX_RELATED_ARTEFACT, CommonUtils.getConceptRoleName(conceptDto.getSdmxRelatedArtefact()));
         classDescriptorsForm.setValue(ConceptDS.TYPE, conceptDto.getType() != null ? CommonWebUtils.getElementName(conceptDto.getType().getIdentifier(), conceptDto.getType().getDescription()) : null);
-        // TODO roles
+        ((RelatedResourceListItem) classDescriptorsForm.getItem(ConceptDS.ROLES)).setRelatedResources(roles);
 
         // Production descriptors
         productionDescriptorsForm.setValue(ConceptDS.DERIVATION, RecordUtils.getInternationalStringRecord(conceptDto.getDerivation()));
 
         // Relation between concepts
-        // TODO Extends
+        relationBetweenConceptsForm.setValue(ConceptDS.EXTENDS_VIEW, StringUtils.EMPTY); // extends value set in setExtendsConcept method
         ((ConceptsListItem) relationBetweenConceptsForm.getItem(ConceptDS.RELATED_CONCEPTS)).setDataConcepts(relatedConcepts);
 
         // Legal acts
@@ -483,7 +501,7 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
         annotationsPanel.setAnnotations(conceptDto.getAnnotations());
     }
 
-    private void setConceptEditionMode(ConceptMetamacDto conceptDto, List<ConceptMetamacDto> relatedConcepts) {
+    private void setConceptEditionMode(ConceptMetamacDto conceptDto, List<RelatedResourceDto> roles, List<ConceptMetamacDto> relatedConcepts) {
         // Identifiers Form
         identifiersEditionForm.setValue(ConceptDS.CODE, conceptDto.getCode());
         identifiersEditionForm.setValue(ConceptDS.NAME, RecordUtils.getInternationalStringRecord(conceptDto.getName()));
@@ -513,13 +531,14 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
         // Class descriptors
         classDescriptorsEditionForm.setValue(ConceptDS.SDMX_RELATED_ARTEFACT, conceptDto.getSdmxRelatedArtefact() != null ? conceptDto.getSdmxRelatedArtefact().name() : StringUtils.EMPTY);
         classDescriptorsEditionForm.setValue(ConceptDS.TYPE, conceptDto.getType() != null ? conceptDto.getType().getIdentifier() : null);
-        // TODO roles
+        ((RelatedResourceListItem) classDescriptorsEditionForm.getItem(ConceptDS.ROLES)).setRelatedResources(roles);
 
         // Production descriptors
         productionDescriptorsEditionForm.setValue(ConceptDS.DERIVATION, RecordUtils.getInternationalStringRecord(conceptDto.getDerivation()));
 
         // Relation between concepts
-        // TODO Extends
+        relationBetweenConceptsEditionForm.setValue(ConceptDS.EXTENDS, StringUtils.EMPTY); // extends value set in setExtendsConcept method
+        relationBetweenConceptsEditionForm.setValue(ConceptDS.EXTENDS_VIEW, StringUtils.EMPTY); // extends value set in setExtendsConcept method
         ((ConceptsListItem) relationBetweenConceptsEditionForm.getItem(ConceptDS.RELATED_CONCEPTS)).setDataConcepts(relatedConcepts);
 
         // Legal acts
@@ -566,13 +585,14 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
         conceptDto.setSdmxRelatedArtefact(!StringUtils.isBlank(classDescriptorsEditionForm.getValueAsString(ConceptDS.SDMX_RELATED_ARTEFACT)) ? ConceptRoleEnum.valueOf(classDescriptorsEditionForm
                 .getValueAsString(ConceptDS.SDMX_RELATED_ARTEFACT)) : null);
         conceptDto.setType(classDescriptorsEditionForm.getValue(ConceptDS.TYPE) != null ? getConceptTypeDto(classDescriptorsEditionForm.getValueAsString(ConceptDS.TYPE)) : null);
-        // TODO roles
+        // Roles get in getRoles method
 
         // Production descriptors
         conceptDto.setDerivation((InternationalStringDto) productionDescriptorsEditionForm.getValue(ConceptDS.DERIVATION));
 
         // Relation between concepts
-        // TODO Extends
+        conceptDto.setConceptExtendsUrn(StringUtils.isBlank(relationBetweenConceptsEditionForm.getValueAsString(ConceptDS.EXTENDS)) ? null : relationBetweenConceptsEditionForm
+                .getValueAsString(ConceptDS.EXTENDS));
         // Related concepts get in getRelatedConcepts method
 
         // Legal acts
@@ -588,17 +608,121 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
         return conceptDto;
     }
 
-    public List<String> getRelatedConcepts() {
+    @Override
+    public void setConceptThatCanBeRoles(List<RelatedResourceDto> conceptDtos, int firstResult, int totalResults) {
+        if (searchRolesWindow != null) {
+            searchRolesWindow.setSourceRelatedResources(conceptDtos);
+            searchRolesWindow.refreshSourcePaginationInfo(firstResult, conceptDtos.size(), totalResults);
+        }
+    }
+
+    @Override
+    public void setConceptThatCanBeExtended(List<RelatedResourceDto> conceptDtos, int firstResult, int totalResults) {
+        if (searchExtendsWindow != null) {
+            searchExtendsWindow.setRelatedResources(conceptDtos);
+            searchExtendsWindow.refreshSourcePaginationInfo(firstResult, conceptDtos.size(), totalResults);
+        }
+    }
+
+    @Override
+    public void setConceptExtended(ConceptMetamacDto conceptDto) {
+        relationBetweenConceptsForm.setValue(ConceptDS.EXTENDS_VIEW, CommonWebUtils.getElementName(conceptDto.getCode(), conceptDto.getName()));
+        relationBetweenConceptsEditionForm.setValue(ConceptDS.EXTENDS_VIEW, CommonWebUtils.getElementName(conceptDto.getCode(), conceptDto.getName()));
+        relationBetweenConceptsEditionForm.setValue(ConceptDS.EXTENDS, conceptDto.getUrn());
+    }
+
+    private List<String> getRelatedConcepts() {
         return ((ConceptsListItem) relationBetweenConceptsEditionForm.getItem(ConceptDS.RELATED_CONCEPTS)).getConceptUrns();
     }
 
-    private ConceptTypeDto getConceptTypeDto(String identifier) {
-        for (ConceptTypeDto conceptTypeDto : conceptTypeDtos) {
-            if (StringUtils.equals(identifier, conceptTypeDto.getIdentifier())) {
-                return conceptTypeDto;
+    private List<String> getRoles() {
+        return ((RelatedResourceListItem) classDescriptorsEditionForm.getItem(ConceptDS.ROLES)).getRelatedResourceUrns();
+    }
+
+    private RelatedResourceListItem createRolesItem(String name, String title) {
+        final int FIRST_RESULST = 0;
+        final int MAX_RESULTS = 8;
+
+        RelatedResourceListItem rolesItem = new RelatedResourceListItem(name, title, true);
+        rolesItem.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
+
+            @Override
+            public void onFormItemClick(FormItemIconClickEvent arg0) {
+                searchRolesWindow = new SearchMultipleRelatedResourceWindow(getConstants().conceptSelection(), MAX_RESULTS, new PaginatedAction() {
+
+                    @Override
+                    public void retrieveResultSet(int firstResult, int maxResults) {
+                        getUiHandlers().retrieveConceptsThatCanBeRole(firstResult, maxResults, null);
+                    }
+                });
+
+                // Load the list of concepts
+                getUiHandlers().retrieveConceptsThatCanBeRole(FIRST_RESULST, MAX_RESULTS, null);
+                // Set the selected concepts
+                List<RelatedResourceDto> selectedRoles = ((RelatedResourceListItem) classDescriptorsEditionForm.getItem(ConceptDS.ROLES)).getRelatedResourceDtos();
+                searchRolesWindow.setTargetRelatedResources(selectedRoles);
+
+                searchRolesWindow.setSearchAction(new SearchPaginatedAction() {
+
+                    @Override
+                    public void retrieveResultSet(int firstResult, int maxResults, String concept) {
+                        getUiHandlers().retrieveConceptsThatCanBeRole(firstResult, maxResults, concept);
+                    }
+                });
+                searchRolesWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
+
+                    @Override
+                    public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent arg0) {
+                        List<RelatedResourceDto> conceptDtos = searchRolesWindow.getSelectedRelatedResources();
+                        searchRolesWindow.markForDestroy();
+                        // Set selected concepts in form
+                        ((RelatedResourceListItem) classDescriptorsEditionForm.getItem(ConceptDS.ROLES)).setRelatedResources(conceptDtos);
+                    }
+                });
             }
-        }
-        return null;
+        });
+        return rolesItem;
+    }
+
+    private SearchViewTextItem createExtendsItem(String name, String title) {
+        final int FIRST_RESULST = 0;
+        final int MAX_RESULTS = 8;
+        SearchViewTextItem extendsItem = new SearchViewTextItem(name, title);
+        extendsItem.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
+
+            @Override
+            public void onFormItemClick(FormItemIconClickEvent event) {
+                searchExtendsWindow = new SearchRelatedResourceWindow(getConstants().conceptSelection(), MAX_RESULTS, new PaginatedAction() {
+
+                    @Override
+                    public void retrieveResultSet(int firstResult, int maxResults) {
+                        getUiHandlers().retrieveConceptsThatCanBeExtended(firstResult, maxResults, null);
+                    }
+                });
+                getUiHandlers().retrieveConceptsThatCanBeExtended(FIRST_RESULST, MAX_RESULTS, null);
+                searchExtendsWindow.getListGridItem().getListGrid().setSelectionType(SelectionStyle.SINGLE);
+                searchExtendsWindow.getListGridItem().setSearchAction(new SearchPaginatedAction() {
+
+                    @Override
+                    public void retrieveResultSet(int firstResult, int maxResults, String concept) {
+                        getUiHandlers().retrieveConceptsThatCanBeExtended(firstResult, maxResults, concept);
+                    }
+                });
+                searchExtendsWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
+
+                    @Override
+                    public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent arg0) {
+                        RelatedResourceDto selectedConcept = searchExtendsWindow.getSelectedRelatedResource();
+                        searchExtendsWindow.markForDestroy();
+                        // Set selected concepts in form
+                        relationBetweenConceptsEditionForm.setValue(ConceptDS.EXTENDS, selectedConcept != null ? selectedConcept.getUrn() : null);
+                        relationBetweenConceptsEditionForm.setValue(ConceptDS.EXTENDS_VIEW,
+                                selectedConcept != null ? CommonWebUtils.getElementName(selectedConcept.getCode(), selectedConcept.getTitle()) : null);
+                    }
+                });
+            }
+        });
+        return extendsItem;
     }
 
     private ConceptsListItem createRelatedConceptsItem(String name, String title) {
@@ -657,5 +781,27 @@ public class ConceptViewImpl extends ViewImpl implements ConceptPresenter.Concep
                 return false;
             }
         };
+    }
+
+    private FormItemIfFunction getRolesFormItemIfFunction() {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem arg0, Object arg1, DynamicForm arg2) {
+                if (conceptSchemeMetamacDto != null) {
+                    return CommonUtils.isMetadataRolesVisible(conceptSchemeMetamacDto.getType());
+                }
+                return false;
+            }
+        };
+    }
+
+    private ConceptTypeDto getConceptTypeDto(String identifier) {
+        for (ConceptTypeDto conceptTypeDto : conceptTypeDtos) {
+            if (StringUtils.equals(identifier, conceptTypeDto.getIdentifier())) {
+                return conceptTypeDto;
+            }
+        }
+        return null;
     }
 }
