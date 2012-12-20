@@ -14,56 +14,52 @@ import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestrictio
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction.OperationType;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.srm.core.criteria.ConceptMetamacCriteriaOrderEnum;
-import org.siemac.metamac.srm.core.criteria.ConceptMetamacCriteriaPropertyEnum;
+import org.siemac.metamac.srm.core.criteria.ConceptSchemeVersionMetamacCriteriaOrderEnum;
+import org.siemac.metamac.srm.core.criteria.ConceptSchemeVersionMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
-import org.siemac.metamac.srm.web.shared.concept.GetConceptsCanBeExtendedAction;
-import org.siemac.metamac.srm.web.shared.concept.GetConceptsCanBeExtendedResult;
+import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesWithConceptsCanBeExtendedAction;
+import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesWithConceptsCanBeExtendedResult;
 import org.siemac.metamac.web.common.server.ServiceContextHolder;
 import org.siemac.metamac.web.common.server.handlers.SecurityActionHandler;
 import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.gwtplatform.dispatch.shared.ActionException;
 
-@Component
-public class GetConceptsCanBeExtendedActionHandler extends SecurityActionHandler<GetConceptsCanBeExtendedAction, GetConceptsCanBeExtendedResult> {
+public class GetConceptSchemesWithConceptsCanBeExtendedActionHandler extends SecurityActionHandler<GetConceptSchemesWithConceptsCanBeExtendedAction, GetConceptSchemesWithConceptsCanBeExtendedResult> {
 
     @Autowired
     private SrmCoreServiceFacade srmCoreServiceFacade;
 
-    public GetConceptsCanBeExtendedActionHandler() {
-        super(GetConceptsCanBeExtendedAction.class);
+    public GetConceptSchemesWithConceptsCanBeExtendedActionHandler() {
+        super(GetConceptSchemesWithConceptsCanBeExtendedAction.class);
     }
 
     @Override
-    public GetConceptsCanBeExtendedResult executeSecurityAction(GetConceptsCanBeExtendedAction action) throws ActionException {
+    public GetConceptSchemesWithConceptsCanBeExtendedResult executeSecurityAction(GetConceptSchemesWithConceptsCanBeExtendedAction action) throws ActionException {
         MetamacCriteria criteria = new MetamacCriteria();
 
         // Order
         MetamacCriteriaOrder order = new MetamacCriteriaOrder();
         order.setType(OrderTypeEnum.DESC);
-        order.setPropertyName(ConceptMetamacCriteriaOrderEnum.URN.name());
+        order.setPropertyName(ConceptSchemeVersionMetamacCriteriaOrderEnum.URN.name());
         List<MetamacCriteriaOrder> criteriaOrders = new ArrayList<MetamacCriteriaOrder>();
         criteriaOrders.add(order);
         criteria.setOrdersBy(criteriaOrders);
 
         // Criteria
         MetamacCriteriaConjunctionRestriction restriction = new MetamacCriteriaConjunctionRestriction();
-        if (StringUtils.isNotBlank(action.getCriteria())) {
-            MetamacCriteriaDisjunctionRestriction conceptCriteriaDisjuction = new MetamacCriteriaDisjunctionRestriction();
-            conceptCriteriaDisjuction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(ConceptMetamacCriteriaPropertyEnum.CODE.name(), action.getCriteria(), OperationType.ILIKE));
-            conceptCriteriaDisjuction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(ConceptMetamacCriteriaPropertyEnum.NAME.name(), action.getCriteria(), OperationType.ILIKE));
-            conceptCriteriaDisjuction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(ConceptMetamacCriteriaPropertyEnum.URN.name(), action.getCriteria(), OperationType.ILIKE));
-            restriction.getRestrictions().add(conceptCriteriaDisjuction);
+        if (!StringUtils.isBlank(action.getConceptScheme())) {
+            MetamacCriteriaDisjunctionRestriction conceptSchemeCriteriaDisjuction = new MetamacCriteriaDisjunctionRestriction();
+            conceptSchemeCriteriaDisjuction.getRestrictions().add(
+                    new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.CODE.name(), action.getConceptScheme(), OperationType.ILIKE));
+            conceptSchemeCriteriaDisjuction.getRestrictions().add(
+                    new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.NAME.name(), action.getConceptScheme(), OperationType.ILIKE));
+            conceptSchemeCriteriaDisjuction.getRestrictions().add(
+                    new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.URN.name(), action.getConceptScheme(), OperationType.ILIKE));
+            restriction.getRestrictions().add(conceptSchemeCriteriaDisjuction);
         }
-        // Specify the scheme URN
-        if (StringUtils.isNotBlank(action.getConceptSchemeUrn())) {
-            restriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(ConceptMetamacCriteriaPropertyEnum.CONCEPT_SCHEME_URN.name(), action.getConceptSchemeUrn(), OperationType.EQ));
-        }
-
         criteria.setRestriction(restriction);
 
         // Pagination
@@ -73,8 +69,8 @@ public class GetConceptsCanBeExtendedActionHandler extends SecurityActionHandler
         criteria.getPaginator().setCountTotalResults(true);
 
         try {
-            MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findConceptsCanBeExtendedByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria);
-            return new GetConceptsCanBeExtendedResult(result.getResults(), result.getPaginatorResult().getFirstResult(), result.getPaginatorResult().getTotalResults());
+            MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findConceptSchemesByConditionWithConceptsCanBeExtended(ServiceContextHolder.getCurrentServiceContext(), criteria);
+            return new GetConceptSchemesWithConceptsCanBeExtendedResult(result.getResults(), result.getPaginatorResult().getFirstResult(), result.getPaginatorResult().getTotalResults());
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);
         }

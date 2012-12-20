@@ -1,4 +1,4 @@
-package org.siemac.metamac.srm.web.shared;
+package org.siemac.metamac.srm.web.shared.concept;
 
 import java.util.List;
 
@@ -18,6 +18,9 @@ public class GetConceptsCanBeRole {
 
     @In(3)
     String                   criteria;
+
+    @In(4)
+    String                   conceptSchemeUrn;
 
     @Out(1)
     List<RelatedResourceDto> concepts;

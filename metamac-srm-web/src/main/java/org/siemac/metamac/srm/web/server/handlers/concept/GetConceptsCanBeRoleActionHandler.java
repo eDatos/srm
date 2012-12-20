@@ -17,8 +17,8 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.criteria.ConceptMetamacCriteriaOrderEnum;
 import org.siemac.metamac.srm.core.criteria.ConceptMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
-import org.siemac.metamac.srm.web.shared.concept.GetConceptsCanBeExtendedAction;
-import org.siemac.metamac.srm.web.shared.concept.GetConceptsCanBeExtendedResult;
+import org.siemac.metamac.srm.web.shared.concept.GetConceptsCanBeRoleAction;
+import org.siemac.metamac.srm.web.shared.concept.GetConceptsCanBeRoleResult;
 import org.siemac.metamac.web.common.server.ServiceContextHolder;
 import org.siemac.metamac.web.common.server.handlers.SecurityActionHandler;
 import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
@@ -29,17 +29,17 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 @Component
-public class GetConceptsCanBeExtendedActionHandler extends SecurityActionHandler<GetConceptsCanBeExtendedAction, GetConceptsCanBeExtendedResult> {
+public class GetConceptsCanBeRoleActionHandler extends SecurityActionHandler<GetConceptsCanBeRoleAction, GetConceptsCanBeRoleResult> {
 
     @Autowired
     private SrmCoreServiceFacade srmCoreServiceFacade;
 
-    public GetConceptsCanBeExtendedActionHandler() {
-        super(GetConceptsCanBeExtendedAction.class);
+    public GetConceptsCanBeRoleActionHandler() {
+        super(GetConceptsCanBeRoleAction.class);
     }
 
     @Override
-    public GetConceptsCanBeExtendedResult executeSecurityAction(GetConceptsCanBeExtendedAction action) throws ActionException {
+    public GetConceptsCanBeRoleResult executeSecurityAction(GetConceptsCanBeRoleAction action) throws ActionException {
         MetamacCriteria criteria = new MetamacCriteria();
 
         // Order
@@ -50,10 +50,11 @@ public class GetConceptsCanBeExtendedActionHandler extends SecurityActionHandler
         criteriaOrders.add(order);
         criteria.setOrdersBy(criteriaOrders);
 
-        // Criteria
         MetamacCriteriaConjunctionRestriction restriction = new MetamacCriteriaConjunctionRestriction();
+
+        // Concept criteria
+        MetamacCriteriaDisjunctionRestriction conceptCriteriaDisjuction = new MetamacCriteriaDisjunctionRestriction();
         if (StringUtils.isNotBlank(action.getCriteria())) {
-            MetamacCriteriaDisjunctionRestriction conceptCriteriaDisjuction = new MetamacCriteriaDisjunctionRestriction();
             conceptCriteriaDisjuction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(ConceptMetamacCriteriaPropertyEnum.CODE.name(), action.getCriteria(), OperationType.ILIKE));
             conceptCriteriaDisjuction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(ConceptMetamacCriteriaPropertyEnum.NAME.name(), action.getCriteria(), OperationType.ILIKE));
             conceptCriteriaDisjuction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(ConceptMetamacCriteriaPropertyEnum.URN.name(), action.getCriteria(), OperationType.ILIKE));
@@ -73,8 +74,8 @@ public class GetConceptsCanBeExtendedActionHandler extends SecurityActionHandler
         criteria.getPaginator().setCountTotalResults(true);
 
         try {
-            MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findConceptsCanBeExtendedByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria);
-            return new GetConceptsCanBeExtendedResult(result.getResults(), result.getPaginatorResult().getFirstResult(), result.getPaginatorResult().getTotalResults());
+            MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findConceptsCanBeRoleByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria);
+            return new GetConceptsCanBeRoleResult(result.getResults(), result.getPaginatorResult().getFirstResult(), result.getPaginatorResult().getTotalResults());
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);
         }

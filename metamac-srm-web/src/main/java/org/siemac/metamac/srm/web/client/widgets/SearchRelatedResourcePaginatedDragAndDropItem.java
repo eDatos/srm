@@ -109,11 +109,16 @@ public class SearchRelatedResourcePaginatedDragAndDropItem extends BaseSearchPag
         return selectedRelatedResources;
     }
 
+    @Override
     protected void addNonDuplicatedRecordToTarget(Record record) {
         String urn = record.getAttribute(RelatedResourceDS.URN);
         if (targetList.getRecordList().find(RelatedResourceDS.URN, urn) == null) {
             targetList.addData(record);
         }
+    }
+
+    public String getRelatedResourceCriteria() {
+        return searchItem.getValueAsString();
     }
 
     private boolean isRecordInTargetList(RelatedResourceRecord record) {

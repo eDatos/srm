@@ -71,4 +71,8 @@ public class SearchRelatedResourcePaginatedItem extends BaseSearchPaginatedItem 
         }
         return null;
     }
+
+    public String getRelatedResourceCriteria() {
+        return searchItem.getValueAsString();
+    }
 }

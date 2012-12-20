@@ -652,12 +652,12 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults) {
-                        getUiHandlers().retrieveConceptsThatCanBeRole(firstResult, maxResults, null);
+                        getUiHandlers().retrieveConceptsThatCanBeRole(firstResult, maxResults, searchRolesWindow.getRelatedResourceCriteria(), null); // TODO
                     }
                 });
 
                 // Load the list of concepts
-                getUiHandlers().retrieveConceptsThatCanBeRole(FIRST_RESULST, MAX_RESULTS, null);
+                getUiHandlers().retrieveConceptsThatCanBeRole(FIRST_RESULST, MAX_RESULTS, null, null);
                 // Set the selected concepts
                 List<RelatedResourceDto> selectedRoles = ((RelatedResourceListItem) classDescriptorsEditionForm.getItem(ConceptDS.ROLES)).getRelatedResourceDtos();
                 searchRolesWindow.setTargetRelatedResources(selectedRoles);
@@ -666,7 +666,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults, String concept) {
-                        getUiHandlers().retrieveConceptsThatCanBeRole(firstResult, maxResults, concept);
+                        getUiHandlers().retrieveConceptsThatCanBeRole(firstResult, maxResults, concept, null); // TODO Specify scheme URN
                     }
                 });
                 searchRolesWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
@@ -696,16 +696,16 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults) {
-                        getUiHandlers().retrieveConceptsThatCanBeExtended(firstResult, maxResults, null);
+                        getUiHandlers().retrieveConceptsThatCanBeExtended(firstResult, maxResults, searchExtendsWindow.getRelatedResourceCriteria(), null); // TODO
                     }
                 });
-                getUiHandlers().retrieveConceptsThatCanBeExtended(FIRST_RESULST, MAX_RESULTS, null);
+                getUiHandlers().retrieveConceptsThatCanBeExtended(FIRST_RESULST, MAX_RESULTS, null, null);
                 searchExtendsWindow.getListGridItem().getListGrid().setSelectionType(SelectionStyle.SINGLE);
                 searchExtendsWindow.getListGridItem().setSearchAction(new SearchPaginatedAction() {
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults, String concept) {
-                        getUiHandlers().retrieveConceptsThatCanBeExtended(firstResult, maxResults, concept);
+                        getUiHandlers().retrieveConceptsThatCanBeExtended(firstResult, maxResults, concept, null); // TODO specify scheme URN
                     }
                 });
                 searchExtendsWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {

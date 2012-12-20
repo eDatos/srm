@@ -25,8 +25,8 @@ import org.siemac.metamac.srm.web.shared.FindCodeListsAction;
 import org.siemac.metamac.srm.web.shared.FindCodeListsResult;
 import org.siemac.metamac.srm.web.shared.FindConceptsAction;
 import org.siemac.metamac.srm.web.shared.FindConceptsResult;
-import org.siemac.metamac.srm.web.shared.GetConceptsCanBeRoleAction;
-import org.siemac.metamac.srm.web.shared.GetConceptsCanBeRoleResult;
+import org.siemac.metamac.srm.web.shared.concept.GetConceptsCanBeRoleAction;
+import org.siemac.metamac.srm.web.shared.concept.GetConceptsCanBeRoleResult;
 import org.siemac.metamac.srm.web.shared.dsd.DeleteDimensionListForDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.DeleteDimensionListForDsdResult;
 import org.siemac.metamac.srm.web.shared.dsd.FindDescriptorForDsdAction;
@@ -425,7 +425,9 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
 
     @Override
     public void retrieveConceptsAsRole(int firstResult, int maxResults, String criteria) {
-        dispatcher.execute(new GetConceptsCanBeRoleAction(firstResult, maxResults, criteria), new WaitingAsyncCallback<GetConceptsCanBeRoleResult>() {
+        // TODO Specify the concept scheme URN
+        String conceptSchemeUrn = null;
+        dispatcher.execute(new GetConceptsCanBeRoleAction(firstResult, maxResults, criteria, conceptSchemeUrn), new WaitingAsyncCallback<GetConceptsCanBeRoleResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {

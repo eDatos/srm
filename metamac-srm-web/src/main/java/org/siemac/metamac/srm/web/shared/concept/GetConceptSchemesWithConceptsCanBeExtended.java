@@ -8,7 +8,7 @@ import com.gwtplatform.dispatch.annotation.In;
 import com.gwtplatform.dispatch.annotation.Out;
 
 @GenDispatch(isSecure = false)
-public class GetConceptsCanBeExtended {
+public class GetConceptSchemesWithConceptsCanBeExtended {
 
     @In(1)
     int                      firstResult;
@@ -17,13 +17,10 @@ public class GetConceptsCanBeExtended {
     int                      maxResults;
 
     @In(3)
-    String                   criteria;
-
-    @In(4)
-    String                   conceptSchemeUrn;
+    String                   conceptScheme;
 
     @Out(1)
-    List<RelatedResourceDto> conceptList;
+    List<RelatedResourceDto> conceptSchemes;
 
     @Out(2)
     Integer                  firstResultOut;

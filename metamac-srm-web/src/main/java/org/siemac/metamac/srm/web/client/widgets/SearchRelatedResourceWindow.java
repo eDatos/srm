@@ -58,4 +58,8 @@ public class SearchRelatedResourceWindow extends BaseSearchWindow {
     public BaseCustomListGrid getListGrid() {
         return listGridItem.getListGrid();
     }
+
+    public String getRelatedResourceCriteria() {
+        return listGridItem.getRelatedResourceCriteria();
+    }
 }

@@ -20,8 +20,6 @@ import org.siemac.metamac.srm.web.client.widgets.presenter.ToolStripPresenterWid
 import org.siemac.metamac.srm.web.concept.view.handlers.ConceptUiHandlers;
 import org.siemac.metamac.srm.web.shared.FindCodeListsAction;
 import org.siemac.metamac.srm.web.shared.FindCodeListsResult;
-import org.siemac.metamac.srm.web.shared.GetConceptsCanBeRoleAction;
-import org.siemac.metamac.srm.web.shared.GetConceptsCanBeRoleResult;
 import org.siemac.metamac.srm.web.shared.concept.DeleteConceptAction;
 import org.siemac.metamac.srm.web.shared.concept.DeleteConceptResult;
 import org.siemac.metamac.srm.web.shared.concept.FindAllConceptTypesAction;
@@ -34,6 +32,8 @@ import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeResult;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptsCanBeExtendedAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptsCanBeExtendedResult;
+import org.siemac.metamac.srm.web.shared.concept.GetConceptsCanBeRoleAction;
+import org.siemac.metamac.srm.web.shared.concept.GetConceptsCanBeRoleResult;
 import org.siemac.metamac.srm.web.shared.concept.SaveConceptAction;
 import org.siemac.metamac.srm.web.shared.concept.SaveConceptResult;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
@@ -292,8 +292,8 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     }
 
     @Override
-    public void retrieveConceptsThatCanBeRole(int firstResult, int maxResults, String concept) {
-        dispatcher.execute(new GetConceptsCanBeRoleAction(firstResult, maxResults, concept), new WaitingAsyncCallback<GetConceptsCanBeRoleResult>() {
+    public void retrieveConceptsThatCanBeRole(int firstResult, int maxResults, String concept, String conceptSchemeUrn) {
+        dispatcher.execute(new GetConceptsCanBeRoleAction(firstResult, maxResults, concept, conceptSchemeUrn), new WaitingAsyncCallback<GetConceptsCanBeRoleResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -307,8 +307,8 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     }
 
     @Override
-    public void retrieveConceptsThatCanBeExtended(int firstResult, int maxResults, String concept) {
-        dispatcher.execute(new GetConceptsCanBeExtendedAction(firstResult, maxResults, concept), new WaitingAsyncCallback<GetConceptsCanBeExtendedResult>() {
+    public void retrieveConceptsThatCanBeExtended(int firstResult, int maxResults, String concept, String conceptSchemeUrn) {
+        dispatcher.execute(new GetConceptsCanBeExtendedAction(firstResult, maxResults, concept, conceptSchemeUrn), new WaitingAsyncCallback<GetConceptsCanBeExtendedResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {

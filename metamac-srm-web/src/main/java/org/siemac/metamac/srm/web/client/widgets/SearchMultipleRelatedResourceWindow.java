@@ -53,4 +53,8 @@ public class SearchMultipleRelatedResourceWindow extends BaseSearchWindow {
     public void setSearchAction(SearchPaginatedAction action) {
         relatedResourcesDragAndDropItem.setSearchAction(action);
     }
+
+    public String getRelatedResourceCriteria() {
+        return relatedResourcesDragAndDropItem.getRelatedResourceCriteria();
+    }
 }
