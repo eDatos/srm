@@ -11,6 +11,7 @@ import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptTypeDto;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptRoleEnum;
+import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.model.ds.RepresentationDS;
 import org.siemac.metamac.srm.web.client.representation.widgets.StaticFacetForm;
@@ -20,6 +21,7 @@ import org.siemac.metamac.srm.web.client.widgets.RelatedResourceListItem;
 import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourceWindow;
 import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourceWindow;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
+import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 import org.siemac.metamac.srm.web.concept.presenter.ConceptPresenter;
 import org.siemac.metamac.srm.web.concept.utils.CommonUtils;
 import org.siemac.metamac.srm.web.concept.utils.ConceptsClientSecurityUtils;
@@ -625,6 +627,19 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
     }
 
     @Override
+    public void setConceptSchemesWithConceptsThatCanBeRole(List<RelatedResourceDto> conceptSchemes) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void setConceptSchemesWithConceptsThatCanBeExtended(List<RelatedResourceDto> conceptSchemes) {
+        if (searchExtendsWindow != null) {
+            searchExtendsWindow.getInitialSelectionItem().setValueMap(org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceHashMap(conceptSchemes));
+        }
+    }
+
+    @Override
     public void setConceptExtended(ConceptMetamacDto conceptDto) {
         relationBetweenConceptsForm.setValue(ConceptDS.EXTENDS_VIEW, CommonWebUtils.getElementName(conceptDto.getCode(), conceptDto.getName()));
         relationBetweenConceptsEditionForm.setValue(ConceptDS.EXTENDS_VIEW, CommonWebUtils.getElementName(conceptDto.getCode(), conceptDto.getName()));
@@ -692,20 +707,35 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
 
             @Override
             public void onFormItemClick(FormItemIconClickEvent event) {
-                searchExtendsWindow = new SearchRelatedResourceWindow(getConstants().conceptSelection(), MAX_RESULTS, new PaginatedAction() {
+
+                searchExtendsWindow = new SearchRelatedResourceWindow(getConstants().conceptSelection(), MAX_RESULTS, new SelectItem(ConceptSchemeDS.URN, getConstants().conceptScheme()),
+                        new PaginatedAction() {
+
+                            @Override
+                            public void retrieveResultSet(int firstResult, int maxResults) {
+                                getUiHandlers().retrieveConceptsThatCanBeExtended(firstResult, maxResults, searchExtendsWindow.getRelatedResourceCriteria(),
+                                        searchExtendsWindow.getIntialSelectionValue());
+                            }
+                        });
+
+                // Load concepts and concept scheme that can be extended (to populate the selection window)
+                getUiHandlers().retrieveConceptsThatCanBeExtended(FIRST_RESULST, MAX_RESULTS, null, null);
+                getUiHandlers().retrieveConceptSchemesWithConceptsThatCanBeExtended(FIRST_RESULST, SrmWebConstants.NO_LIMIT_IN_PAGINATION);
+
+                searchExtendsWindow.getInitialSelectionItem().addChangedHandler(new ChangedHandler() {
 
                     @Override
-                    public void retrieveResultSet(int firstResult, int maxResults) {
-                        getUiHandlers().retrieveConceptsThatCanBeExtended(firstResult, maxResults, searchExtendsWindow.getRelatedResourceCriteria(), null); // TODO
+                    public void onChanged(ChangedEvent event) {
+                        getUiHandlers().retrieveConceptsThatCanBeExtended(FIRST_RESULST, MAX_RESULTS, searchExtendsWindow.getRelatedResourceCriteria(), searchExtendsWindow.getIntialSelectionValue());
                     }
                 });
-                getUiHandlers().retrieveConceptsThatCanBeExtended(FIRST_RESULST, MAX_RESULTS, null, null);
+
                 searchExtendsWindow.getListGridItem().getListGrid().setSelectionType(SelectionStyle.SINGLE);
                 searchExtendsWindow.getListGridItem().setSearchAction(new SearchPaginatedAction() {
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults, String concept) {
-                        getUiHandlers().retrieveConceptsThatCanBeExtended(firstResult, maxResults, concept, null); // TODO specify scheme URN
+                        getUiHandlers().retrieveConceptsThatCanBeExtended(firstResult, maxResults, concept, searchExtendsWindow.getIntialSelectionValue());
                     }
                 });
                 searchExtendsWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
@@ -717,7 +747,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
                         // Set selected concepts in form
                         relationBetweenConceptsEditionForm.setValue(ConceptDS.EXTENDS, selectedConcept != null ? selectedConcept.getUrn() : null);
                         relationBetweenConceptsEditionForm.setValue(ConceptDS.EXTENDS_VIEW,
-                                selectedConcept != null ? CommonWebUtils.getElementName(selectedConcept.getCode(), selectedConcept.getTitle()) : null);
+                                selectedConcept != null ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(selectedConcept) : null);
                     }
                 });
             }

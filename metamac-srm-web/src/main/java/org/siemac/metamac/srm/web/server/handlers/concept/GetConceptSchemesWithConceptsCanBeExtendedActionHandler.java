@@ -23,10 +23,12 @@ import org.siemac.metamac.web.common.server.ServiceContextHolder;
 import org.siemac.metamac.web.common.server.handlers.SecurityActionHandler;
 import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.gwtplatform.dispatch.shared.ActionException;
 
+@Component
 public class GetConceptSchemesWithConceptsCanBeExtendedActionHandler extends SecurityActionHandler<GetConceptSchemesWithConceptsCanBeExtendedAction, GetConceptSchemesWithConceptsCanBeExtendedResult> {
 
     @Autowired

@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.web.client.widgets;
 
 import java.util.List;
 
+import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.model.ds.RelatedResourceDS;
 import org.siemac.metamac.srm.web.client.model.record.RelatedResourceRecord;
@@ -38,7 +39,7 @@ public class SearchRelatedResourcePaginatedItem extends BaseSearchPaginatedItem 
             @Override
             public String hoverHTML(Object value, ListGridRecord record, int rowNum, int colNum) {
                 RelatedResourceRecord relatedResourceRecord = (RelatedResourceRecord) record;
-                return relatedResourceRecord.getUrn();
+                return relatedResourceRecord.getCode();
             }
         });
 
@@ -49,11 +50,22 @@ public class SearchRelatedResourcePaginatedItem extends BaseSearchPaginatedItem 
             @Override
             public String hoverHTML(Object value, ListGridRecord record, int rowNum, int colNum) {
                 RelatedResourceRecord relatedResourceRecord = (RelatedResourceRecord) record;
-                return relatedResourceRecord != null ? relatedResourceRecord.getTitle() : new String();
+                return relatedResourceRecord != null ? relatedResourceRecord.getTitle() : StringUtils.EMPTY;
             }
         });
 
-        paginatedCheckListGrid.getListGrid().setFields(codeField, titleField);
+        ListGridField urnField = new ListGridField(RelatedResourceDS.URN, MetamacSrmWeb.getConstants().identifiableArtefactUrn());
+        urnField.setShowHover(true);
+        urnField.setHoverCustomizer(new HoverCustomizer() {
+
+            @Override
+            public String hoverHTML(Object value, ListGridRecord record, int rowNum, int colNum) {
+                RelatedResourceRecord relatedResourceRecord = (RelatedResourceRecord) record;
+                return relatedResourceRecord.getUrn();
+            }
+        });
+
+        paginatedCheckListGrid.getListGrid().setFields(codeField, titleField, urnField);
     }
 
     public void setRelatedResources(List<RelatedResourceDto> relatedResources) {

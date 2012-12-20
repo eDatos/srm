@@ -30,6 +30,10 @@ import org.siemac.metamac.srm.web.shared.concept.GetConceptListBySchemeResult;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptResult;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeResult;
+import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesWithConceptsCanBeExtendedAction;
+import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesWithConceptsCanBeExtendedResult;
+import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesWithConceptsCanBeRoleAction;
+import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesWithConceptsCanBeRoleResult;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptsCanBeExtendedAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptsCanBeExtendedResult;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptsCanBeRoleAction;
@@ -93,6 +97,8 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
         void setConceptTypes(List<ConceptTypeDto> conceptTypeDtos);
         void setCodeLists(List<ExternalItemDto> codeLists);
 
+        void setConceptSchemesWithConceptsThatCanBeRole(List<RelatedResourceDto> conceptSchemes);
+        void setConceptSchemesWithConceptsThatCanBeExtended(List<RelatedResourceDto> conceptSchemes);
         void setConceptThatCanBeRoles(List<RelatedResourceDto> conceptDtos, int firstResult, int totalResults);
         void setConceptThatCanBeExtended(List<RelatedResourceDto> conceptDtos, int firstResult, int totalResults);
     }
@@ -317,6 +323,36 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
             @Override
             public void onWaitSuccess(GetConceptsCanBeExtendedResult result) {
                 getView().setConceptThatCanBeExtended(result.getConceptList(), result.getFirstResultOut(), result.getTotalResults());
+            }
+        });
+    }
+
+    @Override
+    public void retrieveConceptSchemesWithConceptsThatCanBeRole(int firstResult, int maxResults) {
+        dispatcher.execute(new GetConceptSchemesWithConceptsCanBeRoleAction(firstResult, maxResults, null), new WaitingAsyncCallback<GetConceptSchemesWithConceptsCanBeRoleResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().conceptSchemeErrorRetrieveList()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetConceptSchemesWithConceptsCanBeRoleResult result) {
+                getView().setConceptSchemesWithConceptsThatCanBeRole(result.getConceptSchemes());
+            }
+        });
+    }
+
+    @Override
+    public void retrieveConceptSchemesWithConceptsThatCanBeExtended(int firstResult, int maxResults) {
+        dispatcher.execute(new GetConceptSchemesWithConceptsCanBeExtendedAction(firstResult, maxResults, null), new WaitingAsyncCallback<GetConceptSchemesWithConceptsCanBeExtendedResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().conceptSchemeErrorRetrieveList()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetConceptSchemesWithConceptsCanBeExtendedResult result) {
+                getView().setConceptSchemesWithConceptsThatCanBeExtended(result.getConceptSchemes());
             }
         });
     }
