@@ -17,6 +17,13 @@ import org.siemac.metamac.srm.web.server.handlers.category.SaveCategoryActionHan
 import org.siemac.metamac.srm.web.server.handlers.category.SaveCategorySchemeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.category.UpdateCategorySchemeProcStatusActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.category.VersionCategorySchemeActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.code.DeleteCodelistListActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.code.GetCodelistActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.code.GetCodelistListActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.code.GetCodelistVersionsActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.code.SaveCodelistActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.code.UpdateCodelistProcStatusActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.code.VersionCodelistActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.AnnounceConceptSchemeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.CancelConceptSchemeValidityActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.DeleteConceptActionHandler;
@@ -80,6 +87,13 @@ import org.siemac.metamac.srm.web.shared.category.SaveCategoryAction;
 import org.siemac.metamac.srm.web.shared.category.SaveCategorySchemeAction;
 import org.siemac.metamac.srm.web.shared.category.UpdateCategorySchemeProcStatusAction;
 import org.siemac.metamac.srm.web.shared.category.VersionCategorySchemeAction;
+import org.siemac.metamac.srm.web.shared.code.DeleteCodelistListAction;
+import org.siemac.metamac.srm.web.shared.code.GetCodelistAction;
+import org.siemac.metamac.srm.web.shared.code.GetCodelistListAction;
+import org.siemac.metamac.srm.web.shared.code.GetCodelistVersionsAction;
+import org.siemac.metamac.srm.web.shared.code.SaveCodelistAction;
+import org.siemac.metamac.srm.web.shared.code.UpdateCodelistProcStatusAction;
+import org.siemac.metamac.srm.web.shared.code.VersionCodelistAction;
 import org.siemac.metamac.srm.web.shared.concept.AnnounceConceptSchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.CancelConceptSchemeValidityAction;
 import org.siemac.metamac.srm.web.shared.concept.DeleteConceptAction;
@@ -222,6 +236,15 @@ public class ServerModule extends HandlerModule {
         bindHandler(DeleteCategoryAction.class, DeleteCategoryActionHandler.class);
         bindHandler(SaveCategoryAction.class, SaveCategoryActionHandler.class);
         bindHandler(GetCategoryAction.class, GetCategoryActionHandler.class);
+
+        // Codes
+        bindHandler(DeleteCodelistListAction.class, DeleteCodelistListActionHandler.class);
+        bindHandler(GetCodelistAction.class, GetCodelistActionHandler.class);
+        bindHandler(GetCodelistListAction.class, GetCodelistListActionHandler.class);
+        bindHandler(GetCodelistVersionsAction.class, GetCodelistVersionsActionHandler.class);
+        bindHandler(SaveCodelistAction.class, SaveCodelistActionHandler.class);
+        bindHandler(UpdateCodelistProcStatusAction.class, UpdateCodelistProcStatusActionHandler.class);
+        bindHandler(VersionCodelistAction.class, VersionCodelistActionHandler.class);
 
         // Common
         bindHandler(GetUserGuideUrlAction.class, GetUserGuideUrlActionHandler.class);
