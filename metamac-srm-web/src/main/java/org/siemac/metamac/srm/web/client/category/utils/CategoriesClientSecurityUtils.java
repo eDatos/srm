@@ -65,5 +65,4 @@ public class CategoriesClientSecurityUtils {
     public static boolean canDeleteCategory(ProcStatusEnum procStatus) {
         return SharedItemsSecurityUtils.canModifyItemFromItemScheme(MetamacSrmWeb.getCurrentUser(), procStatus);
     }
-
 }
