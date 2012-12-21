@@ -9,7 +9,6 @@ import org.siemac.metamac.srm.web.client.category.utils.RecordUtils;
 public class CategorySchemeListGrid extends ItemSchemeListGrid {
 
     public CategorySchemeListGrid() {
-
     }
 
     public void setCategorySchemes(List<CategorySchemeMetamacDto> categorySchemeDtos) {
@@ -22,5 +21,4 @@ public class CategorySchemeListGrid extends ItemSchemeListGrid {
             this.setData(schemeRecords);
         }
     }
-
 }
