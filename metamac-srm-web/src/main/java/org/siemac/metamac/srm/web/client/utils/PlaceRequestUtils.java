@@ -28,7 +28,9 @@ public class PlaceRequestUtils {
         return placeRequest;
     }
 
+    //
     // CONCEPTS
+    //
 
     // Concept schemes
 
@@ -110,7 +112,9 @@ public class PlaceRequestUtils {
         return placeRequest;
     }
 
+    //
     // CATEGORIES
+    //
 
     // Category schemes
 
@@ -154,4 +158,23 @@ public class PlaceRequestUtils {
         return placeRequest;
     }
 
+    //
+    // CODES
+    //
+
+    // Codelists
+
+    public static String getCodelistParamFromUrl(PlaceManager placeManager) {
+        for (PlaceRequest request : placeManager.getCurrentPlaceHierarchy()) {
+            if (NameTokens.codelistPage.equals(request.getNameToken())) {
+                return request.getParameter(PlaceRequestParams.codelistParamId, null);
+            }
+        }
+        return null;
+    }
+
+    public static PlaceRequest buildCodelistPlaceRequest(String codelistUrn) {
+        PlaceRequest placeRequest = new PlaceRequest(NameTokens.codelistPage).with(PlaceRequestParams.codelistParamId, UrnUtils.removePrefix(codelistUrn));
+        return placeRequest;
+    }
 }

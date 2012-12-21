@@ -25,6 +25,7 @@ public class ToolStripPresenterWidget extends PresenterWidget<ToolStripPresenter
         HasClickHandlers getConceptSchemesButton();
         HasClickHandlers getOrganisationSchemesButton();
         HasClickHandlers getCategorySchemesButton();
+        HasClickHandlers getCodelistButton();
     }
 
     @Inject
@@ -75,6 +76,7 @@ public class ToolStripPresenterWidget extends PresenterWidget<ToolStripPresenter
                 placeManager.revealPlaceHierarchy(placeRequestHierarchy);
             }
         }));
+
         registerHandler(getView().getCategorySchemesButton().addClickHandler(new ClickHandler() {
 
             @Override
@@ -87,26 +89,17 @@ public class ToolStripPresenterWidget extends PresenterWidget<ToolStripPresenter
                 placeManager.revealPlaceHierarchy(placeRequestHierarchy);
             }
         }));
-    }
+        registerHandler(getView().getCodelistButton().addClickHandler(new ClickHandler() {
 
-    @Override
-    protected void onReveal() {
-        super.onReveal();
+            @Override
+            public void onClick(ClickEvent event) {
+                PlaceRequest resourcesRequest = new PlaceRequest(NameTokens.structuralResourcesPage);
+                PlaceRequest codelistListRequest = new PlaceRequest(NameTokens.codelistListPage);
+                List<PlaceRequest> placeRequestHierarchy = new ArrayList<PlaceRequest>();
+                placeRequestHierarchy.add(resourcesRequest);
+                placeRequestHierarchy.add(codelistListRequest);
+                placeManager.revealPlaceHierarchy(placeRequestHierarchy);
+            }
+        }));
     }
-
-    @Override
-    protected void onHide() {
-        super.onHide();
-    }
-
-    @Override
-    protected void onUnbind() {
-        super.onUnbind();
-    }
-
-    @Override
-    protected void onReset() {
-        super.onReset();
-    }
-
 }

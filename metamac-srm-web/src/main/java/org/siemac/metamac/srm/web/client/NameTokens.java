@@ -33,4 +33,9 @@ public class NameTokens {
     public static final String categorySchemePage         = "categoryScheme";
     public static final String categoryPage               = "category";
 
+    // Codes
+    public static final String codelistListPage           = "codelists";
+    public static final String codelistPage               = "codelist";
+    public static final String codePage                   = "code";
+
 }

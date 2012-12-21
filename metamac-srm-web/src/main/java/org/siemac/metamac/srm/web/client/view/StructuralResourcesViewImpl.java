@@ -3,15 +3,18 @@ package org.siemac.metamac.srm.web.client.view;
 import java.util.List;
 
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.category.model.record.CategorySchemeRecord;
+import org.siemac.metamac.srm.web.client.code.model.record.CodelistRecord;
 import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
 import org.siemac.metamac.srm.web.client.presenter.StructuralResourcesPresenter;
 import org.siemac.metamac.srm.web.client.view.handlers.StructuralResourcesUiHandlers;
 import org.siemac.metamac.srm.web.client.widgets.CategorySchemeListGrid;
+import org.siemac.metamac.srm.web.client.widgets.CodelistListGrid;
 import org.siemac.metamac.srm.web.client.widgets.ConceptSchemeListGrid;
 import org.siemac.metamac.srm.web.client.widgets.DsdListGrid;
 import org.siemac.metamac.srm.web.client.widgets.OrganisationSchemeListGrid;
@@ -40,6 +43,7 @@ public class StructuralResourcesViewImpl extends ViewWithUiHandlers<StructuralRe
     private final ConceptSchemeListGrid      conceptSchemeListGrid;
     private final OrganisationSchemeListGrid organisationSchemeListGrid;
     private final CategorySchemeListGrid     categorySchemeListGrid;
+    private final CodelistListGrid           codelistListGrid;
 
     private final SectionStack               lastModifiedArtifactsSectionStack;
 
@@ -47,7 +51,7 @@ public class StructuralResourcesViewImpl extends ViewWithUiHandlers<StructuralRe
 
     @Inject
     public StructuralResourcesViewImpl(DsdListGrid dsdListGrid, ConceptSchemeListGrid conceptSchemeListGrid, OrganisationSchemeListGrid organisationSchemeListGrid,
-            CategorySchemeListGrid categorySchemeListGrid) {
+            CategorySchemeListGrid categorySchemeListGrid, CodelistListGrid codelistListGrid) {
         super();
 
         this.dsdListGrid = dsdListGrid;
@@ -91,6 +95,16 @@ public class StructuralResourcesViewImpl extends ViewWithUiHandlers<StructuralRe
             }
         });
 
+        this.codelistListGrid = codelistListGrid;
+        this.codelistListGrid.addRecordClickHandler(new RecordClickHandler() {
+
+            @Override
+            public void onRecordClick(RecordClickEvent event) {
+                CodelistRecord record = (CodelistRecord) event.getRecord();
+                getUiHandlers().goToCodelist(record.getUrn());
+            }
+        });
+
         panel = new VLayout();
         panel.setHeight100();
         panel.setOverflow(Overflow.SCROLL);
@@ -111,10 +125,10 @@ public class StructuralResourcesViewImpl extends ViewWithUiHandlers<StructuralRe
         lastConceptSchemesModifiedSection.setExpanded(false);
         lastConceptSchemesModifiedSection.setItems(this.conceptSchemeListGrid);
 
-        SectionStackSection lastClassifModifiedSection = new SectionStackSection();
-        lastClassifModifiedSection.setTitle(MetamacSrmWeb.getConstants().classificationLastModified());
-        lastClassifModifiedSection.setExpanded(false);
-        // lastClassifModifiedSection.setItems();
+        SectionStackSection lastCodelistModifiedSection = new SectionStackSection();
+        lastCodelistModifiedSection.setTitle(MetamacSrmWeb.getConstants().codelistLastModified());
+        lastCodelistModifiedSection.setExpanded(false);
+        lastCodelistModifiedSection.setItems(this.codelistListGrid);
 
         SectionStackSection lastDsdModifiedSection = new SectionStackSection();
         lastDsdModifiedSection.setTitle(MetamacSrmWeb.getConstants().dsdLastModified());
@@ -131,12 +145,11 @@ public class StructuralResourcesViewImpl extends ViewWithUiHandlers<StructuralRe
         lastCatSchemesModifiedSection.setExpanded(false);
         lastCatSchemesModifiedSection.setItems(this.categorySchemeListGrid);
 
-        lastModifiedArtifactsSectionStack.setSections(lastConceptSchemesModifiedSection, lastClassifModifiedSection, lastDsdModifiedSection, lastOrganisationSchemesModifiedSection,
+        lastModifiedArtifactsSectionStack.setSections(lastConceptSchemesModifiedSection, lastCodelistModifiedSection, lastDsdModifiedSection, lastOrganisationSchemesModifiedSection,
                 lastCatSchemesModifiedSection);
 
         // Add the ToolStrip to the Operation View layout container
         panel.addMember(this.lastModifiedArtifactsSectionStack);
-
     }
 
     @Override
@@ -193,4 +206,8 @@ public class StructuralResourcesViewImpl extends ViewWithUiHandlers<StructuralRe
         categorySchemeListGrid.setCategorySchemes(categorySchemeMetamacDtos);
     }
 
+    @Override
+    public void setCodelistList(List<CodelistMetamacDto> codelistMetamacDtos) {
+        codelistListGrid.setCodelist(codelistMetamacDtos);
+    }
 }

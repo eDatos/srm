@@ -20,6 +20,7 @@ public class ToolStripViewImpl implements ToolStripPresenterWidget.ToolStripView
     private CustomToolStripButton organisationsButton;
     private CustomToolStripButton classificationsButton;
     private CustomToolStripButton categoriesButton;
+    private CustomToolStripButton codelistsButton;
 
     @Inject
     public ToolStripViewImpl() {
@@ -31,8 +32,8 @@ public class ToolStripViewImpl implements ToolStripPresenterWidget.ToolStripView
         conceptsButton = new CustomToolStripButton(MetamacSrmWeb.getConstants().concepts());
         conceptsButton.setID(ToolStripButtonEnum.CONCEPTS.getValue());
 
-        classificationsButton = new CustomToolStripButton(MetamacSrmWeb.getConstants().classifications());
-        classificationsButton.setID(ToolStripButtonEnum.CLASSIFICATIONS.getValue());
+        classificationsButton = new CustomToolStripButton(MetamacSrmWeb.getConstants().codelists());
+        classificationsButton.setID(ToolStripButtonEnum.CODELISTS.getValue());
 
         dsdListButton = new CustomToolStripButton(MetamacSrmWeb.getConstants().dsds());
         dsdListButton.setID(ToolStripButtonEnum.DSD_LIST.getValue());
@@ -43,6 +44,9 @@ public class ToolStripViewImpl implements ToolStripPresenterWidget.ToolStripView
         categoriesButton = new CustomToolStripButton(MetamacSrmWeb.getConstants().categories());
         categoriesButton.setID(ToolStripButtonEnum.CATEGORIES.getValue());
 
+        codelistsButton = new CustomToolStripButton(MetamacSrmWeb.getConstants().codelists());
+        codelistsButton.setID(ToolStripButtonEnum.CODELISTS.getValue());
+
         toolStrip.addButton(conceptsButton);
         toolStrip.addButton(classificationsButton);
         toolStrip.addButton(dsdListButton);
@@ -52,23 +56,20 @@ public class ToolStripViewImpl implements ToolStripPresenterWidget.ToolStripView
     }
 
     @Override
-    public void addToSlot(Object slot, Widget content) {
-        System.out.println();
-    }
-
-    @Override
     public Widget asWidget() {
         return toolStrip;
     }
 
     @Override
-    public void removeFromSlot(Object slot, Widget content) {
+    public void addToSlot(Object slot, Widget content) {
+    }
 
+    @Override
+    public void removeFromSlot(Object slot, Widget content) {
     }
 
     @Override
     public void setInSlot(Object slot, Widget content) {
-        System.out.println();
     }
 
     @Override
@@ -91,4 +92,8 @@ public class ToolStripViewImpl implements ToolStripPresenterWidget.ToolStripView
         return categoriesButton;
     }
 
+    @Override
+    public HasClickHandlers getCodelistButton() {
+        return codelistsButton;
+    }
 }

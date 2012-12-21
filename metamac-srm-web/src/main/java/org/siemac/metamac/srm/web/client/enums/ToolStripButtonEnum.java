@@ -4,7 +4,7 @@ import com.smartgwt.client.types.ValueEnum;
 
 public enum ToolStripButtonEnum implements ValueEnum {
 
-    DSD_LIST("dsd_list_button"), CONCEPTS("concepts_button"), ORGANISATIONS("org_button"), CLASSIFICATIONS("classif_button"), CATEGORIES("categ_button");
+    DSD_LIST("dsd_list_button"), CONCEPTS("concepts_button"), ORGANISATIONS("org_button"), CODELISTS("codelist_button"), CATEGORIES("categ_button");
 
     private String value;
 
@@ -16,5 +16,4 @@ public enum ToolStripButtonEnum implements ValueEnum {
     public String getValue() {
         return this.value;
     }
-
 }

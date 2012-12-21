@@ -9,5 +9,6 @@ public interface StructuralResourcesUiHandlers extends UiHandlers {
     void goToConceptScheme(String urn);
     void goToOrganisationScheme(String urn, OrganisationSchemeTypeEnum type);
     void goToCategoryScheme(String urn);
+    void goToCodelist(String urn);
 
 }
