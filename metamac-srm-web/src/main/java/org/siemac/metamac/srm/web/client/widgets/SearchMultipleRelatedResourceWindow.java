@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.web.client.widgets;
 
 import java.util.List;
 
+import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.widgets.BaseSearchWindow;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
@@ -9,21 +10,39 @@ import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedActio
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomButtonItem;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
+import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.form.fields.events.HasClickHandlers;
 
 public class SearchMultipleRelatedResourceWindow extends BaseSearchWindow {
 
     private SearchRelatedResourcePaginatedDragAndDropItem relatedResourcesDragAndDropItem;
 
+    private FormItem                                      initialSelectionItem;
+
     public SearchMultipleRelatedResourceWindow(String title, int maxResults, PaginatedAction action) {
         super(title, maxResults);
+        common(title, maxResults, null, action);
+    }
 
+    public SearchMultipleRelatedResourceWindow(String title, int maxResults, FormItem initialSelectionItem, PaginatedAction action) {
+        super(title, maxResults);
+        this.initialSelectionItem = initialSelectionItem;
+        this.initialSelectionItem.setWidth(290);
+        common(title, maxResults, initialSelectionItem, action);
+    }
+
+    private void common(String title, int maxResults, FormItem initialSelectionItem, PaginatedAction action) {
         relatedResourcesDragAndDropItem = new SearchRelatedResourcePaginatedDragAndDropItem("list", "title", maxResults, FORM_ITEM_CUSTOM_WIDTH, action);
         relatedResourcesDragAndDropItem.setShowTitle(false);
 
         CustomButtonItem saveItem = new CustomButtonItem(FIELD_SAVE, MetamacWebCommon.getConstants().actionSave());
 
-        form.setFields(relatedResourcesDragAndDropItem, saveItem);
+        if (initialSelectionItem == null) {
+            form.setFields(relatedResourcesDragAndDropItem, saveItem);
+        } else {
+            relatedResourcesDragAndDropItem.setColSpan(2);
+            form.setFields(initialSelectionItem, relatedResourcesDragAndDropItem, saveItem);
+        }
     }
 
     public HasClickHandlers getSave() {
@@ -56,5 +75,13 @@ public class SearchMultipleRelatedResourceWindow extends BaseSearchWindow {
 
     public String getRelatedResourceCriteria() {
         return relatedResourcesDragAndDropItem.getRelatedResourceCriteria();
+    }
+
+    public FormItem getInitialSelectionItem() {
+        return initialSelectionItem;
+    }
+
+    public String getIntialSelectionValue() {
+        return initialSelectionItem.getValue() != null && StringUtils.isNotEmpty(String.valueOf(initialSelectionItem.getValue())) ? String.valueOf(initialSelectionItem.getValue()) : null;
     }
 }

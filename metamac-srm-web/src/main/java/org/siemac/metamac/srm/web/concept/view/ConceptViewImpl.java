@@ -628,8 +628,9 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
 
     @Override
     public void setConceptSchemesWithConceptsThatCanBeRole(List<RelatedResourceDto> conceptSchemes) {
-        // TODO Auto-generated method stub
-
+        if (searchRolesWindow != null) {
+            searchRolesWindow.getInitialSelectionItem().setValueMap(org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceHashMap(conceptSchemes));
+        }
     }
 
     @Override
@@ -663,16 +664,27 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
 
             @Override
             public void onFormItemClick(FormItemIconClickEvent arg0) {
-                searchRolesWindow = new SearchMultipleRelatedResourceWindow(getConstants().conceptSelection(), MAX_RESULTS, new PaginatedAction() {
+                searchRolesWindow = new SearchMultipleRelatedResourceWindow(getConstants().conceptSelection(), MAX_RESULTS, new SelectItem(ConceptSchemeDS.URN, getConstants().conceptScheme()),
+                        new PaginatedAction() {
+
+                            @Override
+                            public void retrieveResultSet(int firstResult, int maxResults) {
+                                getUiHandlers().retrieveConceptsThatCanBeRole(firstResult, maxResults, searchRolesWindow.getRelatedResourceCriteria(), searchRolesWindow.getIntialSelectionValue());
+                            }
+                        });
+
+                // Load the list of concepts and concept schemes that can be roles
+                getUiHandlers().retrieveConceptsThatCanBeRole(FIRST_RESULST, MAX_RESULTS, null, null);
+                getUiHandlers().retrieveConceptSchemesWithConceptsThatCanBeRole(FIRST_RESULST, SrmWebConstants.NO_LIMIT_IN_PAGINATION);
+
+                searchRolesWindow.getInitialSelectionItem().addChangedHandler(new ChangedHandler() {
 
                     @Override
-                    public void retrieveResultSet(int firstResult, int maxResults) {
-                        getUiHandlers().retrieveConceptsThatCanBeRole(firstResult, maxResults, searchRolesWindow.getRelatedResourceCriteria(), null); // TODO
+                    public void onChanged(ChangedEvent event) {
+                        getUiHandlers().retrieveConceptsThatCanBeRole(FIRST_RESULST, MAX_RESULTS, searchRolesWindow.getRelatedResourceCriteria(), searchRolesWindow.getIntialSelectionValue());
                     }
                 });
 
-                // Load the list of concepts
-                getUiHandlers().retrieveConceptsThatCanBeRole(FIRST_RESULST, MAX_RESULTS, null, null);
                 // Set the selected concepts
                 List<RelatedResourceDto> selectedRoles = ((RelatedResourceListItem) classDescriptorsEditionForm.getItem(ConceptDS.ROLES)).getRelatedResourceDtos();
                 searchRolesWindow.setTargetRelatedResources(selectedRoles);
@@ -681,7 +693,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults, String concept) {
-                        getUiHandlers().retrieveConceptsThatCanBeRole(firstResult, maxResults, concept, null); // TODO Specify scheme URN
+                        getUiHandlers().retrieveConceptsThatCanBeRole(firstResult, maxResults, concept, searchRolesWindow.getIntialSelectionValue());
                     }
                 });
                 searchRolesWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
