@@ -11,6 +11,7 @@
     <source path='concept/enume/domain' />
     <source path='organisation/dto' />
     <source path='category/dto' />
+    <source path='code/dto' />
     <source path='enume/domain' />
     <source path='security/shared' />
 </module>
