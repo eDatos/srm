@@ -64,5 +64,4 @@ public class NewCategorySchemeWindow extends CustomWindow {
         categorySchemeDto.setName(InternationalStringUtils.updateInternationalString(new InternationalStringDto(), form.getValueAsString(CategorySchemeDS.NAME)));
         return categorySchemeDto;
     }
-
 }
