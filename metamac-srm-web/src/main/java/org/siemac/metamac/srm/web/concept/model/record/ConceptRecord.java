@@ -63,5 +63,4 @@ public class ConceptRecord extends ListGridRecord {
     public ConceptMetamacDto getConceptDto() {
         return (ConceptMetamacDto) getAttributeAsObject(ConceptDS.DTO);
     }
-
 }

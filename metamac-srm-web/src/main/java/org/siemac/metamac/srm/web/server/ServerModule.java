@@ -262,5 +262,4 @@ public class ServerModule extends HandlerModule {
         // This action should be removed to use CAS authentication
         bindHandler(MockCASUserAction.class, MockCASUserActionHandler.class);
     }
-
 }
