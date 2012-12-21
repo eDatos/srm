@@ -31,5 +31,4 @@ public class ConceptSchemeVersionsSectionStack extends VersionsSectionStack {
             listGrid.selectRecord(record);
         }
     }
-
 }

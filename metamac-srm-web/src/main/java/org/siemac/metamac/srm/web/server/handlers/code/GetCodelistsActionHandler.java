@@ -18,8 +18,8 @@ import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.criteria.CodelistVersionMetamacCriteriaOrderEnum;
 import org.siemac.metamac.srm.core.criteria.CodelistVersionMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
-import org.siemac.metamac.srm.web.shared.code.GetCodelistListAction;
-import org.siemac.metamac.srm.web.shared.code.GetCodelistListResult;
+import org.siemac.metamac.srm.web.shared.code.GetCodelistsAction;
+import org.siemac.metamac.srm.web.shared.code.GetCodelistsResult;
 import org.siemac.metamac.web.common.server.ServiceContextHolder;
 import org.siemac.metamac.web.common.server.handlers.SecurityActionHandler;
 import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
@@ -29,17 +29,17 @@ import org.springframework.stereotype.Component;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 @Component
-public class GetCodelistListActionHandler extends SecurityActionHandler<GetCodelistListAction, GetCodelistListResult> {
+public class GetCodelistsActionHandler extends SecurityActionHandler<GetCodelistsAction, GetCodelistsResult> {
 
     @Autowired
     private SrmCoreServiceFacade srmCoreServiceFacade;
 
-    public GetCodelistListActionHandler() {
-        super(GetCodelistListAction.class);
+    public GetCodelistsActionHandler() {
+        super(GetCodelistsAction.class);
     }
 
     @Override
-    public GetCodelistListResult executeSecurityAction(GetCodelistListAction action) throws ActionException {
+    public GetCodelistsResult executeSecurityAction(GetCodelistsAction action) throws ActionException {
         MetamacCriteria criteria = new MetamacCriteria();
 
         // Order
@@ -75,7 +75,7 @@ public class GetCodelistListActionHandler extends SecurityActionHandler<GetCodel
 
         try {
             MetamacCriteriaResult<CodelistMetamacDto> result = srmCoreServiceFacade.findCodelistsByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria);
-            return new GetCodelistListResult(result.getResults(), result.getPaginatorResult().getFirstResult(), result.getPaginatorResult().getTotalResults());
+            return new GetCodelistsResult(result.getResults(), result.getPaginatorResult().getFirstResult(), result.getPaginatorResult().getTotalResults());
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);
         }

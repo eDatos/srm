@@ -215,7 +215,7 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
             }
             @Override
             public void onWaitSuccess(CancelCategorySchemeValidityResult result) {
-                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getMessageList(getMessages().categorySchemeDeleted()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getMessageList(getMessages().categorySchemeCanceledValidity()), MessageTypeEnum.SUCCESS);
                 retrieveCategorySchemeByUrn(urn);
             }
         });
@@ -372,5 +372,4 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
             placeManager.revealRelativePlace(PlaceRequestUtils.buildCategoryPlaceRequest(urn));
         }
     }
-
 }

@@ -363,7 +363,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
             }
             @Override
             public void onWaitSuccess(CancelConceptSchemeValidityResult result) {
-                ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getMessageList(getMessages().conceptSchemeDeleted()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getMessageList(getMessages().conceptSchemeCanceledValidity()), MessageTypeEnum.SUCCESS);
                 retrieveConceptSchemeByUrn(urn);
             }
         });

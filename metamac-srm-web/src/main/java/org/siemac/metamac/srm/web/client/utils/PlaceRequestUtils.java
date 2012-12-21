@@ -177,4 +177,21 @@ public class PlaceRequestUtils {
         PlaceRequest placeRequest = new PlaceRequest(NameTokens.codelistPage).with(PlaceRequestParams.codelistParamId, UrnUtils.removePrefix(codelistUrn));
         return placeRequest;
     }
+
+    // Codes
+
+    public static String getCodeParamFromUrl(PlaceManager placeManager) {
+        for (PlaceRequest request : placeManager.getCurrentPlaceHierarchy()) {
+            if (NameTokens.codePage.equals(request.getNameToken())) {
+                return request.getParameter(PlaceRequestParams.codeParamId, null);
+            }
+        }
+        return null;
+    }
+
+    public static PlaceRequest buildCodePlaceRequest(String codeUrn) {
+        String[] splitUrn = UrnUtils.splitUrnByDots(UrnUtils.removePrefix(codeUrn));
+        PlaceRequest placeRequest = new PlaceRequest(NameTokens.codePage).with(PlaceRequestParams.codeParamId, splitUrn[splitUrn.length - 1]);
+        return placeRequest;
+    }
 }

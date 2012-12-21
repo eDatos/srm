@@ -9,7 +9,7 @@ import com.gwtplatform.dispatch.annotation.In;
 import com.gwtplatform.dispatch.annotation.Out;
 
 @GenDispatch(isSecure = false)
-public class GetCodelistList {
+public class GetCodelists {
 
     @In(1)
     int                      firstResult;

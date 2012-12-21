@@ -18,10 +18,14 @@ import org.siemac.metamac.srm.web.server.handlers.category.SaveCategorySchemeAct
 import org.siemac.metamac.srm.web.server.handlers.category.UpdateCategorySchemeProcStatusActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.category.VersionCategorySchemeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.CancelCodelistValidityActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.code.DeleteCodeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.DeleteCodelistListActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.code.GetCodeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.GetCodelistActionHandler;
-import org.siemac.metamac.srm.web.server.handlers.code.GetCodelistListActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.GetCodelistVersionsActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.code.GetCodelistsActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.code.GetCodesByCodelistActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.code.SaveCodeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.SaveCodelistActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.UpdateCodelistProcStatusActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.VersionCodelistActionHandler;
@@ -89,10 +93,14 @@ import org.siemac.metamac.srm.web.shared.category.SaveCategorySchemeAction;
 import org.siemac.metamac.srm.web.shared.category.UpdateCategorySchemeProcStatusAction;
 import org.siemac.metamac.srm.web.shared.category.VersionCategorySchemeAction;
 import org.siemac.metamac.srm.web.shared.code.CancelCodelistValidityAction;
+import org.siemac.metamac.srm.web.shared.code.DeleteCodeAction;
 import org.siemac.metamac.srm.web.shared.code.DeleteCodelistListAction;
+import org.siemac.metamac.srm.web.shared.code.GetCodeAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistAction;
-import org.siemac.metamac.srm.web.shared.code.GetCodelistListAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistVersionsAction;
+import org.siemac.metamac.srm.web.shared.code.GetCodelistsAction;
+import org.siemac.metamac.srm.web.shared.code.GetCodesByCodelistAction;
+import org.siemac.metamac.srm.web.shared.code.SaveCodeAction;
 import org.siemac.metamac.srm.web.shared.code.SaveCodelistAction;
 import org.siemac.metamac.srm.web.shared.code.UpdateCodelistProcStatusAction;
 import org.siemac.metamac.srm.web.shared.code.VersionCodelistAction;
@@ -242,12 +250,16 @@ public class ServerModule extends HandlerModule {
         // Codes
         bindHandler(DeleteCodelistListAction.class, DeleteCodelistListActionHandler.class);
         bindHandler(GetCodelistAction.class, GetCodelistActionHandler.class);
-        bindHandler(GetCodelistListAction.class, GetCodelistListActionHandler.class);
+        bindHandler(GetCodelistsAction.class, GetCodelistsActionHandler.class);
         bindHandler(GetCodelistVersionsAction.class, GetCodelistVersionsActionHandler.class);
         bindHandler(SaveCodelistAction.class, SaveCodelistActionHandler.class);
         bindHandler(UpdateCodelistProcStatusAction.class, UpdateCodelistProcStatusActionHandler.class);
         bindHandler(VersionCodelistAction.class, VersionCodelistActionHandler.class);
         bindHandler(CancelCodelistValidityAction.class, CancelCodelistValidityActionHandler.class);
+        bindHandler(DeleteCodeAction.class, DeleteCodeActionHandler.class);
+        bindHandler(GetCodeAction.class, GetCodeActionHandler.class);
+        bindHandler(SaveCodeAction.class, SaveCodeActionHandler.class);
+        bindHandler(GetCodesByCodelistAction.class, GetCodesByCodelistActionHandler.class);
 
         // Common
         bindHandler(GetUserGuideUrlAction.class, GetUserGuideUrlActionHandler.class);

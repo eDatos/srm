@@ -242,7 +242,7 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
             }
             @Override
             public void onWaitSuccess(CancelOrganisationSchemeValidityResult result) {
-                ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getMessageList(getMessages().organisationSchemeDeleted()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getMessageList(getMessages().organisationSchemeCanceledValidity()), MessageTypeEnum.SUCCESS);
                 retrieveOrganisationSchemeByUrn(urn);
             }
         });

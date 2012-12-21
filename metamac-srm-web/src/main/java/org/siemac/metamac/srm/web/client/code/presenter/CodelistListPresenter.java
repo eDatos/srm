@@ -19,8 +19,8 @@ import org.siemac.metamac.srm.web.shared.code.CancelCodelistValidityAction;
 import org.siemac.metamac.srm.web.shared.code.CancelCodelistValidityResult;
 import org.siemac.metamac.srm.web.shared.code.DeleteCodelistListAction;
 import org.siemac.metamac.srm.web.shared.code.DeleteCodelistListResult;
-import org.siemac.metamac.srm.web.shared.code.GetCodelistListAction;
-import org.siemac.metamac.srm.web.shared.code.GetCodelistListResult;
+import org.siemac.metamac.srm.web.shared.code.GetCodelistsAction;
+import org.siemac.metamac.srm.web.shared.code.GetCodelistsResult;
 import org.siemac.metamac.srm.web.shared.code.SaveCodelistAction;
 import org.siemac.metamac.srm.web.shared.code.SaveCodelistResult;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
@@ -74,7 +74,7 @@ public class CodelistListPresenter extends Presenter<CodelistListPresenter.Codel
 
     public interface CodelistListView extends View, HasUiHandlers<CodelistListUiHandlers> {
 
-        void setCodelistPaginatedList(GetCodelistListResult codelistsPaginatedList);
+        void setCodelistPaginatedList(GetCodelistsResult codelistsPaginatedList);
         void goToCodelistListLastPageAfterCreate();
         void clearSearchSection();
     }
@@ -150,14 +150,14 @@ public class CodelistListPresenter extends Presenter<CodelistListPresenter.Codel
 
     @Override
     public void retrieveCodelists(int firstResult, int maxResults, final String criteria) {
-        dispatcher.execute(new GetCodelistListAction(firstResult, maxResults, criteria), new WaitingAsyncCallback<GetCodelistListResult>() {
+        dispatcher.execute(new GetCodelistsAction(firstResult, maxResults, criteria), new WaitingAsyncCallback<GetCodelistsResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(CodelistListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistErrorRetrieveList()), MessageTypeEnum.ERROR);
             }
             @Override
-            public void onWaitSuccess(GetCodelistListResult result) {
+            public void onWaitSuccess(GetCodelistsResult result) {
                 getView().setCodelistPaginatedList(result);
                 if (StringUtils.isBlank(criteria)) {
                     getView().clearSearchSection();

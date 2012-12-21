@@ -15,7 +15,7 @@ import org.siemac.metamac.srm.web.client.code.utils.CodesClientSecurityUtils;
 import org.siemac.metamac.srm.web.client.code.view.handlers.CodelistListUiHandlers;
 import org.siemac.metamac.srm.web.client.code.widgets.NewCodelistWindow;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
-import org.siemac.metamac.srm.web.shared.code.GetCodelistListResult;
+import org.siemac.metamac.srm.web.shared.code.GetCodelistsResult;
 import org.siemac.metamac.web.common.client.resources.GlobalResources;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 import org.siemac.metamac.web.common.client.widgets.PaginatedCheckListGrid;
@@ -215,7 +215,7 @@ public class CodelistListViewImpl extends ViewWithUiHandlers<CodelistListUiHandl
     }
 
     @Override
-    public void setCodelistPaginatedList(GetCodelistListResult codelistsPaginatedList) {
+    public void setCodelistPaginatedList(GetCodelistsResult codelistsPaginatedList) {
         setCodelistList(codelistsPaginatedList.getCodelists());
         codelistsList.refreshPaginationInfo(codelistsPaginatedList.getPageNumber(), codelistsPaginatedList.getCodelists().size(), codelistsPaginatedList.getTotalResults());
     }

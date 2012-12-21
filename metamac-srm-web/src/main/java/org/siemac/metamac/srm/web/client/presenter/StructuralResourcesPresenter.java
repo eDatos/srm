@@ -18,8 +18,8 @@ import org.siemac.metamac.srm.web.client.view.handlers.StructuralResourcesUiHand
 import org.siemac.metamac.srm.web.client.widgets.presenter.ToolStripPresenterWidget;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemeListAction;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemeListResult;
-import org.siemac.metamac.srm.web.shared.code.GetCodelistListAction;
-import org.siemac.metamac.srm.web.shared.code.GetCodelistListResult;
+import org.siemac.metamac.srm.web.shared.code.GetCodelistsAction;
+import org.siemac.metamac.srm.web.shared.code.GetCodelistsResult;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemePaginatedListAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemePaginatedListResult;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdListAction;
@@ -193,14 +193,14 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
     }
 
     private void retrieveCodelists() {
-        dispatcher.execute(new GetCodelistListAction(RESOURCE_LIST_FIRST_RESULT, RESOURCE_LIST_MAX_RESULTS, null), new WaitingAsyncCallback<GetCodelistListResult>() {
+        dispatcher.execute(new GetCodelistsAction(RESOURCE_LIST_FIRST_RESULT, RESOURCE_LIST_MAX_RESULTS, null), new WaitingAsyncCallback<GetCodelistsResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(StructuralResourcesPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().codelistErrorRetrieveList()), MessageTypeEnum.ERROR);
             }
             @Override
-            public void onWaitSuccess(GetCodelistListResult result) {
+            public void onWaitSuccess(GetCodelistsResult result) {
                 getView().setCodelistList(result.getCodelists());
             }
         });
