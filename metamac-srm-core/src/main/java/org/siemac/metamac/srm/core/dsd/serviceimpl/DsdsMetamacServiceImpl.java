@@ -186,8 +186,9 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         dataStructureDefinitionVersion.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
         dataStructureDefinitionVersion.getMaintainableArtefact().setIsExternalReference(Boolean.FALSE);
 
-        // Import
-        return (DataStructureDefinitionVersionMetamac) dataStructureDefinitionService.importDataStructureDefinition(ctx, dataStructureDefinitionVersion, structureCopyCallback);
+        // Import // TODO importDataStructureDefinition
+        // return (DataStructureDefinitionVersionMetamac) dataStructureDefinitionService.importDataStructureDefinition(ctx, dataStructureDefinitionVersion, structureCopyCallback);
+        return null;
     }
 
     @Override
