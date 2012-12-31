@@ -166,9 +166,9 @@ Application CodesMetamac {
 			hint="idSequence=M_CODELIST_FAMILIES"
 			
 			"Identifier"
-			String identifier nullable;
+			String identifier not nullable;
 			"Name"
-			- @InternationalString name nullable cascade="all" databaseColumn="NAME_FK";
+			- @InternationalString name not nullable cascade="all" databaseColumn="NAME_FK";
 			"Codelists"
 			- Bag<@CodelistVersionMetamac> codelists cascade="none" fetch="lazy" inverse <-> family;
 			
@@ -186,9 +186,9 @@ Application CodesMetamac {
 			hint="idSequence=M_VARIABLE_FAMILIES"
 			
 			"Identifier"
-			String identifier nullable;
+			String identifier not nullable;
 			"Name"
-			- @InternationalString name nullable cascade="all" databaseColumn="NAME_FK";
+			- @InternationalString name not nullable cascade="all" databaseColumn="NAME_FK";
 			"Variables"
 			- Bag<@Variable> variables cascade="none" fetch="lazy" databaseColumn="VARIABLE_FK" <-> families;
 			
@@ -206,11 +206,11 @@ Application CodesMetamac {
 			hint="idSequence=M_VARIABLES"
 			
 			"Identifier"
-			String identifier nullable;
+			String identifier not nullable;
 			"Name"
-			- @InternationalString name nullable cascade="all" databaseColumn="NAME_FK";
+			- @InternationalString name not nullable cascade="all" databaseColumn="NAME_FK";
 			"Short name"
-			- @InternationalString shortName nullable cascade="all" databaseColumn="SHORT_NAME_FK";
+			- @InternationalString shortName not nullable cascade="all" databaseColumn="SHORT_NAME_FK";
 			"Date from which the version is valid"
 			DateTimeTZ validFrom nullable;
 			"Date from which version is superceded"
