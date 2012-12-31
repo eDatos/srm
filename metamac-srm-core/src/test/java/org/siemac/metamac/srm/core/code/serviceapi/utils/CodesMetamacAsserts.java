@@ -29,6 +29,15 @@ public class CodesMetamacAsserts extends CodesAsserts {
         assertEqualsInternationalString(expected.getShortName(), actual.getShortName());
         assertEquals(expected.getIsRecommended(), actual.getIsRecommended());
         assertEquals(expected.getAccessType(), actual.getAccessType());
+        assertEqualsNullability(expected.getReplacedByCodelist(), actual.getReplacedByCodelist());
+        if (expected.getReplacedByCodelist() != null) {
+            assertEquals(expected.getReplacedByCodelist().getMaintainableArtefact().getUrn(), actual.getReplacedByCodelist().getMaintainableArtefact().getUrn());
+        }
+        // cannot check here due to flush restrictions in create method
+        // assertEquals(expected.getReplaceToCodelists().size(), actual.getReplaceToCodelists().size());
+        // for (int i = 0; i < expected.getReplaceToCodelists().size(); i++) {
+        // assertEquals(expected.getReplaceToCodelists().get(i).getMaintainableArtefact().getUrn(), actual.getReplaceToCodelists().get(i).getMaintainableArtefact().getUrn());
+        // }
 
         // Sdmx
         CodesAsserts.assertEqualsCodelist(expected, actual);
@@ -39,7 +48,11 @@ public class CodesMetamacAsserts extends CodesAsserts {
         assertEqualsInternationalStringDto(expected.getShortName(), actual.getShortName());
         assertEquals(expected.getIsRecommended(), actual.getIsRecommended());
         assertEquals(expected.getAccessType(), actual.getAccessType());
-
+        assertEquals(expected.getReplacedByCodelistUrn(), actual.getReplacedByCodelistUrn());
+        assertEquals(expected.getReplaceToCodelistsUrn().size(), actual.getReplaceToCodelistsUrn().size());
+        for (int i = 0; i < expected.getReplaceToCodelistsUrn().size(); i++) {
+            assertEquals(expected.getReplaceToCodelistsUrn().get(i), actual.getReplaceToCodelistsUrn().get(i));
+        }
         // SDMX
         CodesAsserts.assertEqualsCodelistDto(expected, actual);
     }
@@ -61,6 +74,14 @@ public class CodesMetamacAsserts extends CodesAsserts {
         assertEqualsInternationalString(entity.getShortName(), dto.getShortName());
         assertEquals(entity.getIsRecommended(), dto.getIsRecommended());
         assertEquals(entity.getAccessType(), dto.getAccessType());
+        assertEqualsNullability(entity.getReplacedByCodelist(), dto.getReplacedByCodelistUrn());
+        if (entity.getReplacedByCodelist() != null) {
+            assertEquals(entity.getReplacedByCodelist().getMaintainableArtefact().getUrn(), dto.getReplacedByCodelistUrn());
+        }
+        assertEquals(entity.getReplaceToCodelists().size(), dto.getReplaceToCodelistsUrn().size());
+        for (int i = 0; i < entity.getReplaceToCodelists().size(); i++) {
+            assertEquals(entity.getReplaceToCodelists().get(i).getMaintainableArtefact().getUrn(), dto.getReplaceToCodelistsUrn().get(i));
+        }
 
         // SDMX
         CodesAsserts.assertEqualsCodelist(entity, dto, mapperEnum);

@@ -33,7 +33,7 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
         if (source.getReplacedByCodelist() != null) {
             target.setReplacedByCodelistUrn(source.getReplacedByCodelist().getMaintainableArtefact().getUrn());
         }
-        for (CodelistVersionMetamac replaceTo : source.getReplacedToCodelists()) {
+        for (CodelistVersionMetamac replaceTo : source.getReplaceToCodelists()) {
             target.getReplaceToCodelistsUrn().add(replaceTo.getMaintainableArtefact().getUrn());
         }
         target.setLifeCycle(lifeCycleDoToDto(source.getLifeCycleMetadata()));

@@ -106,8 +106,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         // Replace to
         CodelistVersionMetamac codelistReplaced1 = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_1_V1);
         CodelistVersionMetamac codelistReplaced2 = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_2_V1);
-        codelistVersion.addReplacedToCodelist(codelistReplaced1);
-        codelistVersion.addReplacedToCodelist(codelistReplaced2);
+        codelistVersion.addReplaceToCodelist(codelistReplaced1);
+        codelistVersion.addReplaceToCodelist(codelistReplaced2);
 
         // Create
         CodelistVersionMetamac codelistVersionCreated = codesService.createCodelist(ctx, codelistVersion);
@@ -131,6 +131,11 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertEquals(ctx.getUserId(), codelistVersionRetrieved.getCreatedBy());
         assertEquals(ctx.getUserId(), codelistVersionRetrieved.getLastUpdatedBy());
         assertEqualsCodelist(codelistVersion, codelistVersionRetrieved);
+
+        // Check replace metadata
+        assertEquals(2, codelistVersionRetrieved.getReplaceToCodelists().size());
+        assertEquals(CODELIST_1_V1, codelistVersionRetrieved.getReplaceToCodelists().get(0).getMaintainableArtefact().getUrn());
+        assertEquals(CODELIST_2_V1, codelistVersionRetrieved.getReplaceToCodelists().get(1).getMaintainableArtefact().getUrn());
 
         // Check replaced by metadata
         codelistReplaced1 = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_1_V1);
@@ -222,14 +227,14 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         String urn = CODELIST_2_V1;
         CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(ctx, urn);
         assertEquals(null, codelistVersion.getReplacedByCodelist());
-        assertEquals(1, codelistVersion.getReplacedToCodelists().size());
-        assertEquals(CODELIST_1_V1, codelistVersion.getReplacedToCodelists().get(0).getMaintainableArtefact().getUrn());
+        assertEquals(1, codelistVersion.getReplaceToCodelists().size());
+        assertEquals(CODELIST_1_V1, codelistVersion.getReplaceToCodelists().get(0).getMaintainableArtefact().getUrn());
 
         codelistVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
         // Replace to
-        codelistVersion.removeAllReplacedToCodelists();
-        codelistVersion.addReplacedToCodelist(codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_3_V1));
-        codelistVersion.addReplacedToCodelist(codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_11_V1));
+        codelistVersion.removeAllReplaceToCodelists();
+        codelistVersion.addReplaceToCodelist(codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_3_V1));
+        codelistVersion.addReplaceToCodelist(codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_11_V1));
         codesService.updateCodelist(ctx, codelistVersion);
 
         // Check replaced by metadata
@@ -273,7 +278,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         CodelistFamily family1 = codesService.retrieveCodelistFamilyByIdentifier(getServiceContextAdministrador(), CODELIST_FAMILY_1);
         CodelistFamily family2 = codesService.retrieveCodelistFamilyByIdentifier(getServiceContextAdministrador(), CODELIST_FAMILY_2);
         assertEquals(0, family1.getCodelists().size());
-        assertEquals(1, family2.getCodelists().size());
+        assertEquals(2, family2.getCodelists().size());
 
         // Associate the codelist to the family
         codelistVersion.setFamily(family1);
@@ -287,7 +292,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         family1 = codelistFamilyRepository.findByIdentifier(CODELIST_FAMILY_1);
         family2 = codelistFamilyRepository.findByIdentifier(CODELIST_FAMILY_2);
         assertEquals(1, family1.getCodelists().size());
-        assertEquals(0, family2.getCodelists().size());
+        assertEquals(1, family2.getCodelists().size());
     }
 
     @Test
@@ -296,7 +301,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
         // Check family members
         CodelistFamily family = codesService.retrieveCodelistFamilyByIdentifier(getServiceContextAdministrador(), CODELIST_FAMILY_2);
-        assertEquals(1, family.getCodelists().size());
+        assertEquals(2, family.getCodelists().size());
 
         // Update codelist (remove from family)
         codelistVersion.setFamily(null);
@@ -308,7 +313,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
         // Check family members
         family = codesService.retrieveCodelistFamilyByIdentifier(getServiceContextAdministrador(), CODELIST_FAMILY_2);
-        assertEquals(0, family.getCodelists().size());
+        assertEquals(1, family.getCodelists().size());
     }
 
     @Test
@@ -375,8 +380,14 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertEquals(urn, codelistVersion.getMaintainableArtefact().getUrn());
         assertEquals(AccessTypeEnum.PUBLIC, codelistVersion.getAccessType());
         assertEquals(Boolean.FALSE, codelistVersion.getIsRecommended());
+        assertEqualsInternationalString(codelistVersion.getShortName(), "es", "Nombre corto 1-1", "en", "Short name 1-1");
+        assertEquals(CODELIST_FAMILY_2, codelistVersion.getFamily().getIdentifier());
+        assertEquals(VARIABLE_6, codelistVersion.getVariable().getIdentifier());
+
         assertEquals(CODELIST_2_V1, codelistVersion.getReplacedByCodelist().getMaintainableArtefact().getUrn());
-        assertEquals(0, codelistVersion.getReplacedToCodelists().size());
+        assertEquals(0, codelistVersion.getReplaceToCodelists().size());
+
+        assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistVersion.getLifeCycleMetadata().getProcStatus());
         assertEqualsDate("2011-01-01 01:02:03", codelistVersion.getLifeCycleMetadata().getProductionValidationDate());
         assertEquals("user1", codelistVersion.getLifeCycleMetadata().getProductionValidationUser());
         assertEqualsDate("2011-01-02 02:02:03", codelistVersion.getLifeCycleMetadata().getDiffusionValidationDate());
@@ -1062,7 +1073,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         String urn = CODELIST_2_V1;
 
         CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), urn);
-        String urnReplaceTo = codelistVersion.getReplacedToCodelists().get(0).getMaintainableArtefact().getUrn();
+        String urnReplaceTo = codelistVersion.getReplaceToCodelists().get(0).getMaintainableArtefact().getUrn();
 
         // Delete codelist only with version in draft
         codesService.deleteCodelist(getServiceContextAdministrador(), urn);
@@ -2534,7 +2545,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         ServiceContext ctx = getServiceContextAdministrador();
 
         Variable variable = codesService.retrieveVariableByIdentifier(ctx, VARIABLE_6);
-        assertEquals(1, variable.getCodelists().size());
+        assertEquals(2, variable.getCodelists().size());
         assertTrue(SrmValidationUtils.isCodelistInList(CODELIST_6_V1, variable.getCodelists()));
 
         // Delete variable
@@ -2549,9 +2560,11 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEqualsMetamacExceptionItem(ServiceExceptionType.VARIABLE_NOT_FOUND, 1, new String[]{VARIABLE_6}, e.getExceptionItems().get(0));
         }
 
-        // Chech that the codelists has not been deleted
+        // Chech that the codelists have not been deleted
         CodelistVersionMetamac codelist6v1 = codesService.retrieveCodelistByUrn(ctx, CODELIST_6_V1);
         assertNull(codelist6v1.getVariable());
+        CodelistVersionMetamac codelist1v1 = codesService.retrieveCodelistByUrn(ctx, CODELIST_1_V1);
+        assertNull(codelist1v1.getVariable());
     }
 
     @Test

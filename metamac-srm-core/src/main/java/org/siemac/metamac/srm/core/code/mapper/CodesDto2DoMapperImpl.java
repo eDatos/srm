@@ -45,9 +45,9 @@ public class CodesDto2DoMapperImpl implements CodesDto2DoMapper {
         target.setIsRecommended(source.getIsRecommended());
         target.setAccessType(source.getAccessType());
 
-        target.removeAllReplacedToCodelists();
+        target.removeAllReplaceToCodelists();
         for (String replaceToCodelistUrn : source.getReplaceToCodelistsUrn()) {
-            target.addReplacedToCodelist(retrieveCodelist(replaceToCodelistUrn));
+            target.addReplaceToCodelist(retrieveCodelist(replaceToCodelistUrn));
         }
         // note: replacedBy metadata is ignored, because it is updated by replaceTo metadata
 

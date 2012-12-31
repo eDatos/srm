@@ -296,9 +296,9 @@
         
         ACCESS_TYPE="PUBLIC"
         IS_RECOMMENDED="0"
-        SHORT_NAME_FK="[null]"
-        CODELIST_FAMILY_FK="[null]"
-        VARIABLE_FK="[null]"
+        SHORT_NAME_FK="70"
+        CODELIST_FAMILY_FK="2"
+        VARIABLE_FK="6"
         REPLACED_BY_CODELIST_FK="21"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
@@ -4633,5 +4633,26 @@
         VERSION="1"
         INTERNATIONAL_STRING_FK="69"
     />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="70"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="701"
+        LABEL="Nombre corto 1-1"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="70"
+    />    
+
+    <TB_LOCALISED_STRINGS
+        ID="702"
+        LABEL="Short name 1-1"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="70"
+    />      
 
 </dataset>
