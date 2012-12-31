@@ -183,17 +183,21 @@ public abstract class LifeCycleImpl implements LifeCycle {
         // Validate to publish externally
         checkResourceInExternallyPublished(urn, srmResourceVersion, targetStatus);
 
-        // Start concept scheme validity and mark as public
-        srmResourceVersion = callback.startSrmResourceValidity(ctx, srmResourceVersion);
+        // Start validity and mark as public. Note: is imported, validFrom can not be override
+        if (!callback.getMaintainableArtefact(srmResourceVersion).getIsImported()) {
+            srmResourceVersion = callback.startSrmResourceValidity(ctx, srmResourceVersion);
+        }
         srmResourceVersion = callback.markSrmResourceAsPublic(ctx, srmResourceVersion);
         SrmLifeCycleMetadata lifeCycle = callback.getLifeCycleMetadata(srmResourceVersion);
 
-        // Fill validTo in previous externally published versions without end validity
-        List<Object> versionsExternallyPublished = callback.findSrmResourceVersionsOfSrmResourceInProcStatus(ctx, srmResourceVersion, ProcStatusEnum.EXTERNALLY_PUBLISHED);
-        for (Object versionExternallyPublished : versionsExternallyPublished) {
-            MaintainableArtefact maintainableArtefact = callback.getMaintainableArtefact(versionExternallyPublished);
-            if (maintainableArtefact.getValidTo() == null) {
-                callback.endSrmResourceValidity(ctx, versionExternallyPublished);
+        // Fill validTo in previous externally published versions without end validity. Note: is imported, validTo can not be override
+        if (!callback.getMaintainableArtefact(srmResourceVersion).getIsImported()) {
+            List<Object> versionsExternallyPublished = callback.findSrmResourceVersionsOfSrmResourceInProcStatus(ctx, srmResourceVersion, ProcStatusEnum.EXTERNALLY_PUBLISHED);
+            for (Object versionExternallyPublished : versionsExternallyPublished) {
+                MaintainableArtefact maintainableArtefact = callback.getMaintainableArtefact(versionExternallyPublished);
+                if (maintainableArtefact.getValidTo() == null) {
+                    callback.endSrmResourceValidity(ctx, versionExternallyPublished);
+                }
             }
         }
 
