@@ -622,7 +622,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
         // if this version is not the first one, check not modify 'type'
         if (!SrmServiceUtils.isItemSchemeFirstVersion(conceptSchemeVersion)) {
-            ConceptSchemeVersionMetamac conceptSchemePreviousVersion = (ConceptSchemeVersionMetamac) itemSchemeVersionRepository.findByVersion(conceptSchemeVersion.getItemScheme().getId(),
+            ConceptSchemeVersionMetamac conceptSchemePreviousVersion = (ConceptSchemeVersionMetamac) itemSchemeVersionRepository.retrieveByVersion(conceptSchemeVersion.getItemScheme().getId(),
                     conceptSchemeVersion.getMaintainableArtefact().getReplaceToVersion());
             if (!conceptSchemePreviousVersion.getType().equals(conceptSchemeVersion.getType())) {
                 throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_UNMODIFIABLE).withMessageParameters(ServiceExceptionParameters.CONCEPT_SCHEME_TYPE).build();

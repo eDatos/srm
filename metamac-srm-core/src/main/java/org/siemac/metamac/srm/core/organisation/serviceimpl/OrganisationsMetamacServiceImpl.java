@@ -319,7 +319,7 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
 
         // Check type modification: type can only be modified when is in initial version and when has no children (this last requisite is checked in SDMX service)
         if (!SrmServiceUtils.isItemSchemeFirstVersion(organisationSchemeVersion)) {
-            OrganisationSchemeVersionMetamac previousVersion = (OrganisationSchemeVersionMetamac) itemSchemeVersionRepository.findByVersion(organisationSchemeVersion.getItemScheme().getId(),
+            OrganisationSchemeVersionMetamac previousVersion = (OrganisationSchemeVersionMetamac) itemSchemeVersionRepository.retrieveByVersion(organisationSchemeVersion.getItemScheme().getId(),
                     organisationSchemeVersion.getMaintainableArtefact().getReplaceToVersion());
             if (!ObjectUtils.equals(previousVersion.getOrganisationSchemeType(), organisationSchemeVersion.getOrganisationSchemeType())) {
                 throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_UNMODIFIABLE).withMessageParameters(ServiceExceptionParameters.ORGANISATION_SCHEME_TYPE)
