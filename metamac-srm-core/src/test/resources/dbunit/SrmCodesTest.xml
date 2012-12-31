@@ -299,6 +299,7 @@
         SHORT_NAME_FK="[null]"
         CODELIST_FAMILY_FK="[null]"
         VARIABLE_FK="[null]"
+        REPLACED_BY_CODELIST_FK="21"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
@@ -443,6 +444,7 @@
         SHORT_NAME_FK="[null]"
         CODELIST_FAMILY_FK="[null]"
         VARIABLE_FK="[null]"
+        REPLACED_BY_CODELIST_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="[null]"
         PRODUCTION_VALIDATION_DATE="[null]"
@@ -962,6 +964,7 @@
         SHORT_NAME_FK="48"
         CODELIST_FAMILY_FK="[null]"
         VARIABLE_FK="[null]"
+        REPLACED_BY_CODELIST_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="[null]"
         PRODUCTION_VALIDATION_DATE="[null]"
@@ -1169,6 +1172,7 @@
         SHORT_NAME_FK="49"
         CODELIST_FAMILY_FK="[null]"
         VARIABLE_FK="[null]"
+        REPLACED_BY_CODELIST_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
@@ -1529,6 +1533,7 @@
         SHORT_NAME_FK="[null]"
         CODELIST_FAMILY_FK="[null]"
         VARIABLE_FK="[null]"
+        REPLACED_BY_CODELIST_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="[null]"
         PRODUCTION_VALIDATION_DATE="[null]"
@@ -1678,6 +1683,7 @@
         SHORT_NAME_FK="[null]"
         CODELIST_FAMILY_FK="[null]"
         VARIABLE_FK="[null]"
+        REPLACED_BY_CODELIST_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
@@ -1827,6 +1833,7 @@
         SHORT_NAME_FK="50"
         CODELIST_FAMILY_FK="[null]"
         VARIABLE_FK="6"
+        REPLACED_BY_CODELIST_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
@@ -1979,6 +1986,7 @@
         SHORT_NAME_FK="[null]"
         CODELIST_FAMILY_FK="[null]"
         VARIABLE_FK="[null]"
+        REPLACED_BY_CODELIST_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
@@ -2067,6 +2075,7 @@
         SHORT_NAME_FK="[null]"
         CODELIST_FAMILY_FK="[null]"
         VARIABLE_FK="5"
+        REPLACED_BY_CODELIST_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
@@ -2218,6 +2227,7 @@
         SHORT_NAME_FK="[null]"
         CODELIST_FAMILY_FK="[null]"
         VARIABLE_FK="[null]"
+        REPLACED_BY_CODELIST_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="[null]"
         PRODUCTION_VALIDATION_DATE="[null]"
@@ -2367,6 +2377,7 @@
         SHORT_NAME_FK="[null]"
         CODELIST_FAMILY_FK="2"
         VARIABLE_FK="[null]"
+        REPLACED_BY_CODELIST_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="[null]"
         PRODUCTION_VALIDATION_DATE="[null]"
@@ -2469,6 +2480,7 @@
         SHORT_NAME_FK="[null]"
         CODELIST_FAMILY_FK="[null]"
         VARIABLE_FK="[null]"
+        REPLACED_BY_CODELIST_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
@@ -2557,6 +2569,7 @@
         SHORT_NAME_FK="[null]"
         CODELIST_FAMILY_FK="[null]"
         VARIABLE_FK="[null]"
+        REPLACED_BY_CODELIST_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
@@ -2696,6 +2709,7 @@
         SHORT_NAME_FK="[null]"
         CODELIST_FAMILY_FK="[null]"
         VARIABLE_FK="[null]"
+        REPLACED_BY_CODELIST_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
@@ -2847,6 +2861,7 @@
         SHORT_NAME_FK="[null]"
         CODELIST_FAMILY_FK="[null]"
         VARIABLE_FK="[null]"
+        REPLACED_BY_CODELIST_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
@@ -2999,6 +3014,7 @@
         SHORT_NAME_FK="[null]"
         CODELIST_FAMILY_FK="[null]"
         VARIABLE_FK="[null]"
+        REPLACED_BY_CODELIST_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
@@ -3150,6 +3166,7 @@
         SHORT_NAME_FK="[null]"
         CODELIST_FAMILY_FK="[null]"
         VARIABLE_FK="[null]"
+        REPLACED_BY_CODELIST_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"

@@ -78,26 +78,44 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
     public void testCreateCodelist() throws Exception {
         // Create
         CodelistMetamacDto codelistDto = CodesMetamacDtoMocks.mockCodelistDto(AGENCY_ROOT_1_V1_CODE, AGENCY_ROOT_1_V1);
+        codelistDto.getReplaceToCodelistsUrn().add(CODELIST_1_V1);
+        codelistDto.getReplaceToCodelistsUrn().add(CODELIST_10_V1);
         CodelistMetamacDto codelistMetamacCreated = srmCoreServiceFacade.createCodelist(getServiceContextAdministrador(), codelistDto);
 
         // Validate some metadata
         assertEquals(codelistDto.getCode(), codelistMetamacCreated.getCode());
         assertNotNull(codelistMetamacCreated.getUrn());
         assertEquals(ProcStatusEnum.DRAFT, codelistMetamacCreated.getLifeCycle().getProcStatus());
-        assertEquals(Long.valueOf(0), codelistMetamacCreated.getVersionOptimisticLocking());
+        assertEquals(2, codelistMetamacCreated.getReplaceToCodelistsUrn().size());
+        assertEquals(CODELIST_1_V1, codelistMetamacCreated.getReplaceToCodelistsUrn().get(0));
+        assertEquals(CODELIST_10_V1, codelistMetamacCreated.getReplaceToCodelistsUrn().get(1));
     }
 
     @Test
     public void testUpdateCodelist() throws Exception {
         // Update
-        CodelistMetamacDto codelistMetamacDto = srmCoreServiceFacade.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_1_V2);
+        CodelistMetamacDto codelistMetamacDto = srmCoreServiceFacade.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_2_V1);
+        assertEquals(1, codelistMetamacDto.getReplaceToCodelistsUrn().size());
+        assertEquals(CODELIST_1_V1, codelistMetamacDto.getReplaceToCodelistsUrn().get(0));
+
         codelistMetamacDto.setName(MetamacMocks.mockInternationalStringDto());
+        // add two replace to
+        codelistMetamacDto.getReplaceToCodelistsUrn().add(CODELIST_3_V1);
+        codelistMetamacDto.getReplaceToCodelistsUrn().add(CODELIST_10_V1);
         CodelistMetamacDto codelistMetamacDtoUpdated = srmCoreServiceFacade.updateCodelist(getServiceContextAdministrador(), codelistMetamacDto);
 
         // Validate
         assertNotNull(codelistMetamacDto);
         assertEqualsCodelistMetamacDto(codelistMetamacDto, codelistMetamacDtoUpdated);
         assertTrue(codelistMetamacDtoUpdated.getVersionOptimisticLocking() > codelistMetamacDto.getVersionOptimisticLocking());
+        assertEquals(3, codelistMetamacDtoUpdated.getReplaceToCodelistsUrn().size());
+        assertEquals(CODELIST_1_V1, codelistMetamacDtoUpdated.getReplaceToCodelistsUrn().get(0));
+        assertEquals(CODELIST_3_V1, codelistMetamacDtoUpdated.getReplaceToCodelistsUrn().get(1));
+        assertEquals(CODELIST_10_V1, codelistMetamacDtoUpdated.getReplaceToCodelistsUrn().get(2));
+
+        // Validate replaced by
+        assertEquals(CODELIST_2_V1, srmCoreServiceFacade.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_3_V1).getReplacedByCodelistUrn());
+        assertEquals(CODELIST_2_V1, srmCoreServiceFacade.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_10_V1).getReplacedByCodelistUrn());
     }
 
     @Test

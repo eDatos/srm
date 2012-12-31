@@ -103,6 +103,12 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         CodelistVersionMetamac codelistVersion = CodesMetamacDoMocks.mockCodelist(organisationMetamac);
         ServiceContext ctx = getServiceContextAdministrador();
 
+        // Replace to
+        CodelistVersionMetamac codelistReplaced1 = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_1_V1);
+        CodelistVersionMetamac codelistReplaced2 = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_2_V1);
+        codelistVersion.addReplacedToCodelist(codelistReplaced1);
+        codelistVersion.addReplacedToCodelist(codelistReplaced2);
+
         // Create
         CodelistVersionMetamac codelistVersionCreated = codesService.createCodelist(ctx, codelistVersion);
         String urn = codelistVersionCreated.getMaintainableArtefact().getUrn();
@@ -125,6 +131,12 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertEquals(ctx.getUserId(), codelistVersionRetrieved.getCreatedBy());
         assertEquals(ctx.getUserId(), codelistVersionRetrieved.getLastUpdatedBy());
         assertEqualsCodelist(codelistVersion, codelistVersionRetrieved);
+
+        // Check replaced by metadata
+        codelistReplaced1 = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_1_V1);
+        assertEquals(urn, codelistReplaced1.getReplacedByCodelist().getMaintainableArtefact().getUrn());
+        codelistReplaced2 = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_2_V1);
+        assertEquals(urn, codelistReplaced2.getReplacedByCodelist().getMaintainableArtefact().getUrn());
     }
 
     @Test
@@ -202,6 +214,31 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         codelistVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.TRUE);
         CodelistVersion codelistVersionUpdated = codesService.updateCodelist(getServiceContextAdministrador(), codelistVersion);
         assertEquals("urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:codeNew(01.000)", codelistVersionUpdated.getMaintainableArtefact().getUrn());
+    }
+
+    @Test
+    public void testUpdateCodelistChangingReplaceTo() throws Exception {
+        ServiceContext ctx = getServiceContextAdministrador();
+        String urn = CODELIST_2_V1;
+        CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(ctx, urn);
+        assertEquals(null, codelistVersion.getReplacedByCodelist());
+        assertEquals(1, codelistVersion.getReplacedToCodelists().size());
+        assertEquals(CODELIST_1_V1, codelistVersion.getReplacedToCodelists().get(0).getMaintainableArtefact().getUrn());
+
+        codelistVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
+        // Replace to
+        codelistVersion.removeAllReplacedToCodelists();
+        codelistVersion.addReplacedToCodelist(codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_3_V1));
+        codelistVersion.addReplacedToCodelist(codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_11_V1));
+        codesService.updateCodelist(ctx, codelistVersion);
+
+        // Check replaced by metadata
+        CodelistVersionMetamac codelistReplaced1 = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_3_V1);
+        assertEquals(urn, codelistReplaced1.getReplacedByCodelist().getMaintainableArtefact().getUrn());
+        CodelistVersionMetamac codelistReplaced2 = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_11_V1);
+        assertEquals(urn, codelistReplaced2.getReplacedByCodelist().getMaintainableArtefact().getUrn());
+        CodelistVersionMetamac codelistNotReplaced3 = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_1_V1);
+        assertEquals(null, codelistNotReplaced3.getReplacedByCodelist());
     }
 
     @Test
@@ -336,6 +373,10 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
         // Validate (only metadata in SRM Metamac; the others are checked in sdmx project)
         assertEquals(urn, codelistVersion.getMaintainableArtefact().getUrn());
+        assertEquals(AccessTypeEnum.PUBLIC, codelistVersion.getAccessType());
+        assertEquals(Boolean.FALSE, codelistVersion.getIsRecommended());
+        assertEquals(CODELIST_2_V1, codelistVersion.getReplacedByCodelist().getMaintainableArtefact().getUrn());
+        assertEquals(0, codelistVersion.getReplacedToCodelists().size());
         assertEqualsDate("2011-01-01 01:02:03", codelistVersion.getLifeCycleMetadata().getProductionValidationDate());
         assertEquals("user1", codelistVersion.getLifeCycleMetadata().getProductionValidationUser());
         assertEqualsDate("2011-01-02 02:02:03", codelistVersion.getLifeCycleMetadata().getDiffusionValidationDate());
@@ -1020,6 +1061,9 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     public void testDeleteCodelist() throws Exception {
         String urn = CODELIST_2_V1;
 
+        CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), urn);
+        String urnReplaceTo = codelistVersion.getReplacedToCodelists().get(0).getMaintainableArtefact().getUrn();
+
         // Delete codelist only with version in draft
         codesService.deleteCodelist(getServiceContextAdministrador(), urn);
 
@@ -1033,6 +1077,10 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
             assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
         }
+
+        // Check replace to is not delete
+        CodelistVersionMetamac codelistVersionReplaceTo = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), urnReplaceTo);
+        assertNull(codelistVersionReplaceTo.getReplacedByCodelist());
     }
 
     @Test

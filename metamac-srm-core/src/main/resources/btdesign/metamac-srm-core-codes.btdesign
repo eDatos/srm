@@ -141,7 +141,13 @@ Application CodesMetamac {
 			"Life cycle information"
 			- @SrmLifeCycleMetadata lifeCycleMetadata databaseColumn="";
 
+			"Codelist that replaces this. Update in this metadata is ignored. Must be updated by replacedToCodelists metadata"
+			- @CodelistVersionMetamac replacedByCodelist nullable cascade="none" databaseColumn="REPLACED_BY_CODELIST_FK"  <-> replacedToCodelists;
+			"Codelists are replaced by this"
+			- Bag<@CodelistVersionMetamac> replacedToCodelists cascade="none" fetch="lazy" <-> replacedByCodelist;
+			
 			Repository CodelistVersionMetamacRepository {
+				save;
 				findByQuery(String query, Map<String, Object> parameters, int maxResult);
 				findByCondition(PagingParameter pagingParameter);
 				@CodelistVersionMetamac findByUrn(String urn);

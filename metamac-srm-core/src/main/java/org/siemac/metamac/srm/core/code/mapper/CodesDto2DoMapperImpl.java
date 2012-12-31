@@ -37,17 +37,19 @@ public class CodesDto2DoMapperImpl implements CodesDto2DoMapper {
         if (source.getUrn() == null) {
             target = new CodelistVersionMetamac();
         } else {
-            target = codelistVersionMetamacRepository.findByUrn(source.getUrn());
-            if (target == null) {
-                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(source.getUrn())
-                        .withLoggedLevel(ExceptionLevelEnum.ERROR).build();
-            }
+            target = retrieveCodelist(source.getUrn());
             OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersion());
         }
         // Modifiable attributes
         target.setShortName(dto2DoMapperSdmxSrm.internationalStringToEntity(source.getShortName(), target.getShortName(), ServiceExceptionParameters.CODELIST_SHORT_NAME));
         target.setIsRecommended(source.getIsRecommended());
         target.setAccessType(source.getAccessType());
+
+        target.removeAllReplacedToCodelists();
+        for (String replaceToCodelistUrn : source.getReplaceToCodelistsUrn()) {
+            target.addReplacedToCodelist(retrieveCodelist(replaceToCodelistUrn));
+        }
+        // note: replacedBy metadata is ignored, because it is updated by replaceTo metadata
 
         dto2DoMapperSdmxSrm.codelistDtoToDo(source, target);
 
@@ -75,6 +77,15 @@ public class CodesDto2DoMapperImpl implements CodesDto2DoMapper {
 
         dto2DoMapperSdmxSrm.codeDtoToDo(source, target);
 
+        return target;
+    }
+
+    private CodelistVersionMetamac retrieveCodelist(String urn) throws MetamacException {
+        CodelistVersionMetamac target = codelistVersionMetamacRepository.findByUrn(urn);
+        if (target == null) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(urn).withLoggedLevel(ExceptionLevelEnum.ERROR)
+                    .build();
+        }
         return target;
     }
 }

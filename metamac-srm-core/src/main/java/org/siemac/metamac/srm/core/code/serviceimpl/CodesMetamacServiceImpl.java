@@ -72,6 +72,10 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     @Override
     public CodelistVersionMetamac createCodelist(ServiceContext ctx, CodelistVersionMetamac codelistVersion) throws MetamacException {
 
+        // We must copy replaceTo metadata to set after save codelist, due to flushing
+        List<CodelistVersionMetamac> replaceTo = new ArrayList<CodelistVersionMetamac>(codelistVersion.getReplacedToCodelists());
+        codelistVersion.removeAllReplacedToCodelists();
+
         // Validation
         CodesMetamacInvocationValidator.checkCreateCodelist(codelistVersion, null);
         checkCodelistToCreateOrUpdate(ctx, codelistVersion);
@@ -83,6 +87,12 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         // Save codelist
         codelistVersion = (CodelistVersionMetamac) codesService.createCodelist(ctx, codelistVersion, SrmConstants.VERSION_PATTERN_METAMAC);
+
+        // Fill replaceTo metadata after save entity
+        for (CodelistVersionMetamac codelistReplaceTo : replaceTo) {
+            codelistVersion.addReplacedToCodelist(codelistReplaceTo);
+        }
+        getCodelistVersionMetamacRepository().save(codelistVersion);
 
         // Add the codelist to the family
         CodelistFamily family = codelistVersion.getFamily();
@@ -158,6 +168,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         // Validation
         CodelistVersionMetamac codelistVersionMetamac = retrieveCodelistByUrn(ctx, urn);
         checkCodelistCanBeModified(codelistVersionMetamac);
+        codelistVersionMetamac.removeAllReplacedToCodelists();
 
         // Delete
         codesService.deleteCodelist(ctx, urn);

@@ -19,7 +19,10 @@ Application DtosMetamacCodeDomain {
 			Boolean isRecommended nullable;
 			"Access type"
 			- @AccessTypeEnum accessType nullable;
-			
+			"Codelist that replaces this. Update in this metadata is ignored. Must be updated by replacedToCodelists metadata"
+			String replacedByCodelistUrn nullable;
+			"Codelists are replaced by this"
+			List<String> replaceToCodelistsUrn nullable;
 			"Life cycle"
 			- @LifeCycleDto lifeCycle required;
 		}

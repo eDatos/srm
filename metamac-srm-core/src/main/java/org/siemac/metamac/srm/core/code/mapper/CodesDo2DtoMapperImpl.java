@@ -30,7 +30,12 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
         target.setShortName(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getShortName()));
         target.setIsRecommended(source.getIsRecommended());
         target.setAccessType(source.getAccessType());
-
+        if (source.getReplacedByCodelist() != null) {
+            target.setReplacedByCodelistUrn(source.getReplacedByCodelist().getMaintainableArtefact().getUrn());
+        }
+        for (CodelistVersionMetamac replaceTo : source.getReplacedToCodelists()) {
+            target.getReplaceToCodelistsUrn().add(replaceTo.getMaintainableArtefact().getUrn());
+        }
         target.setLifeCycle(lifeCycleDoToDto(source.getLifeCycleMetadata()));
 
         do2DtoMapperSdmxSrm.codelistDoToDto(source, target);
