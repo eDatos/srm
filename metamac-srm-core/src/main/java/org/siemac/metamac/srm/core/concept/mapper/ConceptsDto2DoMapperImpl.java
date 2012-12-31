@@ -1,5 +1,6 @@
 package org.siemac.metamac.srm.core.concept.mapper;
 
+import org.apache.commons.lang.ObjectUtils;
 import org.siemac.metamac.core.common.exception.ExceptionLevelEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
@@ -56,6 +57,7 @@ public class ConceptsDto2DoMapperImpl implements ConceptsDto2DoMapper {
         }
 
         // Modifiable attributes
+        target.setIsTypeUpdated(!ObjectUtils.equals(source.getType(), target.getType()));
         target.setType(source.getType());
         target.setRelatedOperation(dto2DoMapperSdmxSrm.externalItemDtoToExternalItem(source.getRelatedOperation(), target.getRelatedOperation(),
                 ServiceExceptionParameters.CONCEPT_SCHEME_RELATED_OPERATION));

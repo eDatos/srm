@@ -101,6 +101,8 @@ Application ConceptsMetamac {
 			
 			"Type"
 			- @ConceptSchemeTypeEnum type databaseColumn="CONCEPT_SCHEME_TYPE";
+			"True if type has been updated"
+			Boolean isTypeUpdated nullable transient;
 			"Related operation, only when type is Operation"
 			- @ExternalItem relatedOperation nullable cascade="all" databaseColumn="RELATED_OPERATION_FK";
 			

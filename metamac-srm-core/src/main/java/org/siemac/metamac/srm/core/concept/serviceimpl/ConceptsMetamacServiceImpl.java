@@ -610,6 +610,16 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         // Maintainer
         srmValidation.checkMaintainer(ctx, conceptSchemeVersion.getMaintainableArtefact(), conceptSchemeVersion.getMaintainableArtefact().getIsImported());
 
+        // If the scheme has items (concepts), type cannot be modified
+        if (conceptSchemeVersion.getId() != null) {
+            if (conceptSchemeVersion.getItems() != null && !conceptSchemeVersion.getItems().isEmpty()) {
+                if (conceptSchemeVersion.getIsTypeUpdated()) {
+                    throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_UNMODIFIABLE).withMessageParameters(ServiceExceptionParameters.CONCEPT_SCHEME_TYPE)
+                            .build();
+                }
+            }
+        }
+
         // if this version is not the first one, check not modify 'type'
         if (!SrmServiceUtils.isItemSchemeFirstVersion(conceptSchemeVersion)) {
             ConceptSchemeVersionMetamac conceptSchemePreviousVersion = (ConceptSchemeVersionMetamac) itemSchemeVersionRepository.findByVersion(conceptSchemeVersion.getItemScheme().getId(),

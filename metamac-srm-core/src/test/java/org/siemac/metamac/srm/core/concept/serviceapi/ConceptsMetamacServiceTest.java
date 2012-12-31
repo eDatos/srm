@@ -160,6 +160,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
         ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(ctx, CONCEPT_SCHEME_2_V1);
         conceptSchemeVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
+        conceptSchemeVersion.setIsTypeUpdated(Boolean.FALSE);
 
         ConceptSchemeVersion conceptSchemeVersionUpdated = conceptsService.updateConceptScheme(ctx, conceptSchemeVersion);
         assertNotNull(conceptSchemeVersionUpdated);
@@ -174,6 +175,8 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         // Change code
         conceptSchemeVersion.getMaintainableArtefact().setCode("codeNew");
         conceptSchemeVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.TRUE);
+        conceptSchemeVersion.setIsTypeUpdated(Boolean.FALSE);
+
         ConceptSchemeVersion conceptSchemeVersionUpdated = conceptsService.updateConceptScheme(getServiceContextAdministrador(), conceptSchemeVersion);
         assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:codeNew(01.000)", conceptSchemeVersionUpdated.getMaintainableArtefact().getUrn());
     }
@@ -183,6 +186,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_9_V1);
 
         conceptSchemeVersion.setType(ConceptSchemeTypeEnum.OPERATION);
+        conceptSchemeVersion.setIsTypeUpdated(Boolean.TRUE);
 
         try {
             conceptSchemeVersion = conceptsService.updateConceptScheme(getServiceContextAdministrador(), conceptSchemeVersion);
@@ -198,6 +202,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_8_V1);
         conceptSchemeVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
         conceptSchemeVersion.setType(ConceptSchemeTypeEnum.GLOSSARY);
+        conceptSchemeVersion.setIsTypeUpdated(Boolean.TRUE);
 
         try {
             conceptSchemeVersion = conceptsService.updateConceptScheme(getServiceContextAdministrador(), conceptSchemeVersion);
@@ -215,6 +220,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         String[] urns = {CONCEPT_SCHEME_7_V2, CONCEPT_SCHEME_7_V1};
         for (String urn : urns) {
             ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), urn);
+            conceptSchemeVersion.setIsTypeUpdated(Boolean.FALSE);
 
             try {
                 conceptSchemeVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
@@ -237,6 +243,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
     public void testUpdateConceptSchemeErrorExternalReference() throws Exception {
         ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_7_V2);
         conceptSchemeVersion.getMaintainableArtefact().setIsExternalReference(Boolean.TRUE);
+        conceptSchemeVersion.setIsTypeUpdated(Boolean.FALSE);
 
         try {
             conceptSchemeVersion = conceptsService.updateConceptScheme(getServiceContextAdministrador(), conceptSchemeVersion);
@@ -250,10 +257,27 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
     }
 
     @Test
+    public void testUpdateConceptSchemeErrorChangeTypeHasChildren() throws Exception {
+        ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_2_V1);
+        conceptSchemeVersion.setType(ConceptSchemeTypeEnum.GLOSSARY);
+        conceptSchemeVersion.setIsTypeUpdated(Boolean.TRUE);
+        try {
+            conceptSchemeVersion = conceptsService.updateConceptScheme(getServiceContextAdministrador(), conceptSchemeVersion);
+            fail("type can not be modified because the concept scheme has children");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.METADATA_UNMODIFIABLE.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(ServiceExceptionParameters.CONCEPT_SCHEME_TYPE, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
+    @Test
     public void testUpdateConceptSchemeErrorChangeTypeConceptSchemeAlreadyPublished() throws Exception {
         ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_1_V2);
         assertEquals(ConceptSchemeTypeEnum.TRANSVERSAL, conceptSchemeVersion.getType());
         conceptSchemeVersion.setType(ConceptSchemeTypeEnum.GLOSSARY);
+        conceptSchemeVersion.setIsTypeUpdated(Boolean.TRUE);
 
         try {
             conceptSchemeVersion = conceptsService.updateConceptScheme(getServiceContextAdministrador(), conceptSchemeVersion);
@@ -271,6 +295,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_1_V2);
         conceptSchemeVersion.getMaintainableArtefact().setCode("newCode");
         conceptSchemeVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.TRUE);
+        conceptSchemeVersion.setIsTypeUpdated(Boolean.FALSE);
 
         try {
             conceptSchemeVersion = conceptsService.updateConceptScheme(getServiceContextAdministrador(), conceptSchemeVersion);
@@ -573,6 +598,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), urn);
         conceptSchemeVersion.setIsPartial(null);
         conceptSchemeVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
+        conceptSchemeVersion.setIsTypeUpdated(Boolean.FALSE);
         conceptsService.updateConceptScheme(getServiceContextAdministrador(), conceptSchemeVersion);
 
         // Send to production validation

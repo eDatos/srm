@@ -166,6 +166,10 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
         } else {
             ValidationUtils.checkMetadataEmpty(conceptSchemeVersion.getRelatedOperation(), ServiceExceptionParameters.CONCEPT_SCHEME_RELATED_OPERATION, exceptions);
         }
+        if (conceptSchemeVersion.getId() != null) {
+            ValidationUtils.checkMetadataRequired(conceptSchemeVersion.getIsTypeUpdated(), ServiceExceptionParameters.CONCEPT_SCHEME_IS_TYPE_UPDATED, exceptions);
+        }
+
         if (conceptSchemeVersion.getMaintainableArtefact() != null && BooleanUtils.isTrue(conceptSchemeVersion.getMaintainableArtefact().getIsExternalReference())) {
             exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.MAINTAINABLE_ARTEFACT_IS_EXTERNAL_REFERENCE));
         }
