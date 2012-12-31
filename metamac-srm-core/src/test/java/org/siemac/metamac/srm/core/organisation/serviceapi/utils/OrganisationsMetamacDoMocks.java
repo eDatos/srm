@@ -36,6 +36,11 @@ public class OrganisationsMetamacDoMocks extends OrganisationsDoMocks {
     }
 
     public static ExternalItem mockOperationExternalItem(String code) {
-        return new ExternalItem(code, "http://" + code, "urn:" + code, TypeExternalArtefactsEnum.STATISTICAL_OPERATION);
+        ExternalItem externalItem = new ExternalItem();
+        externalItem.setCode(code);
+        externalItem.setUri("http://" + code);
+        externalItem.setUrn("urn:" + code);
+        externalItem.setType(TypeExternalArtefactsEnum.STATISTICAL_OPERATION);
+        return externalItem;
     }
 }
