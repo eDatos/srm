@@ -55,9 +55,7 @@ Application DsdsMetamac {
     		@DataStructureDefinitionVersionMetamac versioningDataStructureDefinition(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
     		"Ends the data structure definition validity"
     		@DataStructureDefinitionVersionMetamac endDataStructureDefinitionValidity(String urn) throws MetamacException;
-    		
-    		@DataStructureDefinitionVersionMetamac importDataStructureDefinition(@DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion) throws MetamacException
-    		
+   		
 		}
 
 		// ----------------------------------------------------------------
