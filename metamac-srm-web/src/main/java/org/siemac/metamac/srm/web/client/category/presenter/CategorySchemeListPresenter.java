@@ -11,10 +11,11 @@ import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
 import org.siemac.metamac.srm.web.client.category.view.handlers.CategorySchemeListUiHandlers;
+import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
+import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
-import org.siemac.metamac.srm.web.client.widgets.presenter.ToolStripPresenterWidget;
 import org.siemac.metamac.srm.web.shared.category.CancelCategorySchemeValidityAction;
 import org.siemac.metamac.srm.web.shared.category.CancelCategorySchemeValidityResult;
 import org.siemac.metamac.srm.web.shared.category.DeleteCategorySchemeListAction;
@@ -50,18 +51,14 @@ public class CategorySchemeListPresenter extends Presenter<CategorySchemeListPre
         implements
             CategorySchemeListUiHandlers {
 
-    public final static int                           SCHEME_LIST_FIRST_RESULT                            = 0;
-    public final static int                           SCHEME_LIST_MAX_RESULTS                             = 30;
+    public final static int                           SCHEME_LIST_FIRST_RESULT           = 0;
+    public final static int                           SCHEME_LIST_MAX_RESULTS            = 30;
 
     private final DispatchAsync                       dispatcher;
     private final PlaceManager                        placeManager;
 
-    private ToolStripPresenterWidget                  toolStripPresenterWidget;
-
     @ContentSlot
-    public static final Type<RevealContentHandler<?>> TYPE_SetStructuralResourcesToolBar                  = new Type<RevealContentHandler<?>>();
-
-    public static final Object                        TYPE_SetContextAreaContentCategorySchemeListToolBar = new Object();
+    public static final Type<RevealContentHandler<?>> TYPE_SetStructuralResourcesToolBar = new Type<RevealContentHandler<?>>();
 
     @ProxyCodeSplit
     @NameToken(NameTokens.categorySchemeListPage)
@@ -83,10 +80,9 @@ public class CategorySchemeListPresenter extends Presenter<CategorySchemeListPre
 
     @Inject
     public CategorySchemeListPresenter(EventBus eventBus, CategorySchemeListView categorySchemeListView, CategorySchemeListProxy categorySchemeListProxy, DispatchAsync dispatcher,
-            PlaceManager placeManager, ToolStripPresenterWidget toolStripPresenterWidget) {
+            PlaceManager placeManager) {
         super(eventBus, categorySchemeListView, categorySchemeListProxy);
         this.placeManager = placeManager;
-        this.toolStripPresenterWidget = toolStripPresenterWidget;
         this.dispatcher = dispatcher;
         getView().setUiHandlers(this);
     }
@@ -99,15 +95,14 @@ public class CategorySchemeListPresenter extends Presenter<CategorySchemeListPre
     @Override
     protected void onReset() {
         super.onReset();
-        SetTitleEvent.fire(this, getConstants().categorySchemes());
-
         retrieveCategorySchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, null);
     }
 
     @Override
     protected void onReveal() {
         super.onReveal();
-        setInSlot(TYPE_SetContextAreaContentCategorySchemeListToolBar, toolStripPresenterWidget);
+        SetTitleEvent.fire(this, getConstants().categorySchemes());
+        SelectMenuButtonEvent.fire(this, ToolStripButtonEnum.CATEGORIES);
     }
 
     @Override

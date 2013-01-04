@@ -1,5 +1,6 @@
 package org.siemac.metamac.srm.web.organisation.presenter;
 
+import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getCoreMessages;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
@@ -14,10 +15,11 @@ import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
+import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
+import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
-import org.siemac.metamac.srm.web.client.widgets.presenter.ToolStripPresenterWidget;
 import org.siemac.metamac.srm.web.organisation.utils.CommonUtils;
 import org.siemac.metamac.srm.web.organisation.view.handlers.OrganisationSchemeUiHandlers;
 import org.siemac.metamac.srm.web.shared.organisation.CancelOrganisationSchemeValidityAction;
@@ -71,7 +73,6 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
 
     private final DispatchAsync          dispatcher;
     private final PlaceManager           placeManager;
-    private ToolStripPresenterWidget     toolStripPresenterWidget;
 
     private OrganisationSchemeMetamacDto organisationSchemeMetamacDto;
 
@@ -94,24 +95,21 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
     }
 
     @ContentSlot
-    public static final Type<RevealContentHandler<?>> TYPE_SetContextAreaContentOrganisationScheme        = new Type<RevealContentHandler<?>>();
-
-    public static final Object                        TYPE_SetContextAreaContentOrganisationSchemeToolBar = new Object();
+    public static final Type<RevealContentHandler<?>> TYPE_SetContextAreaContentOrganisationScheme = new Type<RevealContentHandler<?>>();
 
     @Inject
-    public OrganisationSchemePresenter(EventBus eventBus, OrganisationSchemeView view, OrganisationSchemeProxy proxy, DispatchAsync dispatcher, PlaceManager placeManager,
-            ToolStripPresenterWidget toolStripPresenterWidget) {
+    public OrganisationSchemePresenter(EventBus eventBus, OrganisationSchemeView view, OrganisationSchemeProxy proxy, DispatchAsync dispatcher, PlaceManager placeManager) {
         super(eventBus, view, proxy);
         this.placeManager = placeManager;
         this.dispatcher = dispatcher;
-        this.toolStripPresenterWidget = toolStripPresenterWidget;
         getView().setUiHandlers(this);
     }
 
     @Override
     protected void onReveal() {
         super.onReveal();
-        setInSlot(TYPE_SetContextAreaContentOrganisationSchemeToolBar, toolStripPresenterWidget);
+        SetTitleEvent.fire(this, getConstants().organisationScheme());
+        SelectMenuButtonEvent.fire(this, ToolStripButtonEnum.ORGANISATIONS);
     }
 
     @Override

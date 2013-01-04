@@ -1,5 +1,6 @@
 package org.siemac.metamac.srm.web.client.code.presenter;
 
+import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
 import java.util.ArrayList;
@@ -15,10 +16,11 @@ import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
 import org.siemac.metamac.srm.web.client.code.view.handlers.CodelistUiHandlers;
+import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
+import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
-import org.siemac.metamac.srm.web.client.widgets.presenter.ToolStripPresenterWidget;
 import org.siemac.metamac.srm.web.shared.code.CancelCodelistValidityAction;
 import org.siemac.metamac.srm.web.shared.code.CancelCodelistValidityResult;
 import org.siemac.metamac.srm.web.shared.code.DeleteCodeAction;
@@ -38,6 +40,7 @@ import org.siemac.metamac.srm.web.shared.code.UpdateCodelistProcStatusResult;
 import org.siemac.metamac.srm.web.shared.code.VersionCodelistAction;
 import org.siemac.metamac.srm.web.shared.code.VersionCodelistResult;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
+import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.utils.UrnUtils;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
@@ -65,11 +68,10 @@ import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 
 public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView, CodelistPresenter.CodelistProxy> implements CodelistUiHandlers {
 
-    private final DispatchAsync      dispatcher;
-    private final PlaceManager       placeManager;
-    private ToolStripPresenterWidget toolStripPresenterWidget;
+    private final DispatchAsync dispatcher;
+    private final PlaceManager  placeManager;
 
-    private CodelistMetamacDto       codelistMetamacDto;
+    private CodelistMetamacDto  codelistMetamacDto;
 
     @TitleFunction
     public static String getTranslatedTitle() {
@@ -90,23 +92,21 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
     }
 
     @ContentSlot
-    public static final Type<RevealContentHandler<?>> TYPE_SetContextAreaContentCodelist        = new Type<RevealContentHandler<?>>();
-
-    public static final Object                        TYPE_SetContextAreaContentCodelistToolBar = new Object();
+    public static final Type<RevealContentHandler<?>> TYPE_SetContextAreaContentCodelist = new Type<RevealContentHandler<?>>();
 
     @Inject
-    public CodelistPresenter(EventBus eventBus, CodelistView view, CodelistProxy proxy, DispatchAsync dispatcher, PlaceManager placeManager, ToolStripPresenterWidget toolStripPresenterWidget) {
+    public CodelistPresenter(EventBus eventBus, CodelistView view, CodelistProxy proxy, DispatchAsync dispatcher, PlaceManager placeManager) {
         super(eventBus, view, proxy);
         this.placeManager = placeManager;
         this.dispatcher = dispatcher;
-        this.toolStripPresenterWidget = toolStripPresenterWidget;
         getView().setUiHandlers(this);
     }
 
     @Override
     protected void onReveal() {
         super.onReveal();
-        setInSlot(TYPE_SetContextAreaContentCodelistToolBar, toolStripPresenterWidget);
+        SetTitleEvent.fire(this, getConstants().codelist());
+        SelectMenuButtonEvent.fire(this, ToolStripButtonEnum.CODELISTS);
     }
 
     @Override

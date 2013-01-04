@@ -4,9 +4,10 @@ import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
+import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
+import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
-import org.siemac.metamac.srm.web.client.widgets.presenter.ToolStripPresenterWidget;
 import org.siemac.metamac.srm.web.dsd.events.SelectDsdAndDescriptorsEvent;
 import org.siemac.metamac.srm.web.dsd.events.SelectDsdAndDescriptorsEvent.SelectDsdAndDescriptorsHandler;
 import org.siemac.metamac.srm.web.dsd.events.SelectViewDsdDescriptorEvent;
@@ -53,15 +54,11 @@ public class DsdPresenter extends Presenter<DsdPresenter.DsdView, DsdPresenter.D
 
     private DataStructureDefinitionMetamacDto         dsd;
 
-    private ToolStripPresenterWidget                  toolStripPresenterWidget;
-
     /**
      * Use this in leaf presenters, inside their {@link #revealInParent} method.
      */
     @ContentSlot
-    public static final Type<RevealContentHandler<?>> TYPE_SetContextAreaContentDsd        = new Type<RevealContentHandler<?>>();
-
-    public static final Object                        TYPE_SetContextAreaContentDsdToolBar = new Object();
+    public static final Type<RevealContentHandler<?>> TYPE_SetContextAreaContentDsd = new Type<RevealContentHandler<?>>();
 
     @ProxyCodeSplit
     @NameToken(NameTokens.dsdPage)
@@ -87,10 +84,9 @@ public class DsdPresenter extends Presenter<DsdPresenter.DsdView, DsdPresenter.D
     }
 
     @Inject
-    public DsdPresenter(EventBus eventBus, DsdView dsdView, DsdProxy dsdProxy, DispatchAsync dispatcher, PlaceManager placeManager, ToolStripPresenterWidget toolStripPresenterWidget) {
+    public DsdPresenter(EventBus eventBus, DsdView dsdView, DsdProxy dsdProxy, DispatchAsync dispatcher, PlaceManager placeManager) {
         super(eventBus, dsdView, dsdProxy);
         this.placeManager = placeManager;
-        this.toolStripPresenterWidget = toolStripPresenterWidget;
         this.dispatcher = dispatcher;
         getView().setUiHandlers(this);
     }
@@ -173,15 +169,10 @@ public class DsdPresenter extends Presenter<DsdPresenter.DsdView, DsdPresenter.D
     }
 
     @Override
-    protected void onReset() {
-        super.onReset();
-    }
-
-    @Override
     protected void onReveal() {
         super.onReveal();
-        setInSlot(TYPE_SetContextAreaContentDsdToolBar, toolStripPresenterWidget);
         MainPagePresenter.getMasterHead().setTitleLabel(MetamacSrmWeb.getConstants().dsd());
+        SelectMenuButtonEvent.fire(DsdPresenter.this, ToolStripButtonEnum.DSD_LIST);
     }
 
     @Override

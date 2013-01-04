@@ -12,10 +12,10 @@ import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
+import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.client.view.handlers.StructuralResourcesUiHandlers;
-import org.siemac.metamac.srm.web.client.widgets.presenter.ToolStripPresenterWidget;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemeListAction;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemeListResult;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistsAction;
@@ -27,6 +27,7 @@ import org.siemac.metamac.srm.web.shared.dsd.GetDsdListResult;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeListAction;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeListResult;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
+import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
@@ -54,13 +55,11 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
         implements
             StructuralResourcesUiHandlers {
 
-    public final static int          RESOURCE_LIST_FIRST_RESULT = 0;
-    public final static int          RESOURCE_LIST_MAX_RESULTS  = 10;
+    public final static int     RESOURCE_LIST_FIRST_RESULT = 0;
+    public final static int     RESOURCE_LIST_MAX_RESULTS  = 10;
 
-    private final DispatchAsync      dispatcher;
-    private final PlaceManager       placeManager;
-
-    private ToolStripPresenterWidget toolStripPresenterWidget;
+    private final DispatchAsync dispatcher;
+    private final PlaceManager  placeManager;
 
     @ProxyCodeSplit
     @NameToken(NameTokens.structuralResourcesPage)
@@ -89,17 +88,14 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
      * Use this in leaf presenters, inside their {@link #revealInParent} method.
      */
     @ContentSlot
-    public static final Type<RevealContentHandler<?>> TYPE_SetContextAreaContent        = new Type<RevealContentHandler<?>>();
-
-    public static final Object                        TYPE_SetContextAreaContentToolBar = new Object();
+    public static final Type<RevealContentHandler<?>> TYPE_SetContextAreaContent = new Type<RevealContentHandler<?>>();
 
     @Inject
     public StructuralResourcesPresenter(EventBus eventBus, StructuralResourcesView structuralResourcesView, StructuralResourcesProxy structuralResourcesProxy, DispatchAsync dispatcher,
-            PlaceManager placeManager, ToolStripPresenterWidget toolStripPresenterWidget) {
+            PlaceManager placeManager) {
         super(eventBus, structuralResourcesView, structuralResourcesProxy);
         this.placeManager = placeManager;
         this.dispatcher = dispatcher;
-        this.toolStripPresenterWidget = toolStripPresenterWidget;
         getView().setUiHandlers(this);
     }
 
@@ -112,8 +108,8 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
     @Override
     protected void onReveal() {
         super.onReveal();
-        setInSlot(TYPE_SetContextAreaContentToolBar, toolStripPresenterWidget);
-        MainPagePresenter.getMasterHead().setTitleLabel(MetamacSrmWeb.getConstants().structuralResourcesDahsboard());
+        SetTitleEvent.fire(this, MetamacSrmWeb.getConstants().structuralResourcesDahsboard());
+        SelectMenuButtonEvent.fire(StructuralResourcesPresenter.this, null);
     }
 
     @Override

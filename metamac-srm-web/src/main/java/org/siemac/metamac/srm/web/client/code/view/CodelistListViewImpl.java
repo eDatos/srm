@@ -14,7 +14,6 @@ import org.siemac.metamac.srm.web.client.code.presenter.CodelistListPresenter;
 import org.siemac.metamac.srm.web.client.code.utils.CodesClientSecurityUtils;
 import org.siemac.metamac.srm.web.client.code.view.handlers.CodelistListUiHandlers;
 import org.siemac.metamac.srm.web.client.code.widgets.NewCodelistWindow;
-import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistsResult;
 import org.siemac.metamac.web.common.client.resources.GlobalResources;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
@@ -29,7 +28,6 @@ import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.Autofit;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.types.Visibility;
-import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
@@ -191,27 +189,6 @@ public class CodelistListViewImpl extends ViewWithUiHandlers<CodelistListUiHandl
     @Override
     public Widget asWidget() {
         return panel;
-    }
-
-    @Override
-    public void setInSlot(Object slot, Widget content) {
-        if (slot == CodelistListPresenter.TYPE_SetContextAreaContentCodelistListToolBar) {
-            if (content != null) {
-                Canvas[] canvas = ((ToolStrip) content).getMembers();
-                for (int i = 0; i < canvas.length; i++) {
-                    if (canvas[i] instanceof ToolStripButton) {
-                        if (ToolStripButtonEnum.CODELISTS.getValue().equals(((ToolStripButton) canvas[i]).getID())) {
-                            ((ToolStripButton) canvas[i]).select();
-                        }
-                    }
-                }
-                panel.addMember(content, 0);
-            }
-        } else {
-            // To support inheritance in your views it is good practice to call super.setInSlot when you can't handle the call.
-            // Who knows, maybe the parent class knows what to do with this slot.
-            super.setInSlot(slot, content);
-        }
     }
 
     @Override

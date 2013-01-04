@@ -10,11 +10,12 @@ import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
+import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
+import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
-import org.siemac.metamac.srm.web.client.widgets.presenter.ToolStripPresenterWidget;
 import org.siemac.metamac.srm.web.dsd.events.SelectDsdAndDescriptorsEvent;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdListUiHandlers;
 import org.siemac.metamac.srm.web.shared.dsd.CancelDsdValidityAction;
@@ -64,21 +65,17 @@ import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 
 public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, DsdListPresenter.DsdListProxy> implements DsdListUiHandlers {
 
-    public final static int                           DSD_LIST_FIRST_RESULT                    = 0;
-    public final static int                           DSD_LIST_MAX_RESULTS                     = 30;
+    public final static int                           DSD_LIST_FIRST_RESULT             = 0;
+    public final static int                           DSD_LIST_MAX_RESULTS              = 30;
 
     private final DispatchAsync                       dispatcher;
     private final PlaceManager                        placeManager;
-
-    private ToolStripPresenterWidget                  toolStripPresenterWidget;
 
     /**
      * Use this in leaf presenters, inside their {@link #revealInParent} method.
      */
     @ContentSlot
-    public static final Type<RevealContentHandler<?>> TYPE_SetContextAreaContentDsdList        = new Type<RevealContentHandler<?>>();
-
-    public static final Object                        TYPE_SetContextAreaContentDsdListToolBar = new Object();
+    public static final Type<RevealContentHandler<?>> TYPE_SetContextAreaContentDsdList = new Type<RevealContentHandler<?>>();
 
     @ProxyCodeSplit
     @NameToken(NameTokens.dsdListPage)
@@ -109,12 +106,10 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
     }
 
     @Inject
-    public DsdListPresenter(EventBus eventBus, DsdListView dsdListView, DsdListProxy dsdListProxy, DispatchAsync dispatcher, PlaceManager placeManager,
-            ToolStripPresenterWidget toolStripPresenterWidget) {
+    public DsdListPresenter(EventBus eventBus, DsdListView dsdListView, DsdListProxy dsdListProxy, DispatchAsync dispatcher, PlaceManager placeManager) {
         super(eventBus, dsdListView, dsdListProxy);
         this.dispatcher = dispatcher;
         this.placeManager = placeManager;
-        this.toolStripPresenterWidget = toolStripPresenterWidget;
         getView().setUiHandlers(this);
     }
 
@@ -170,15 +165,10 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
     }
 
     @Override
-    protected void onReset() {
-        super.onReset();
-        SetTitleEvent.fire(this, getConstants().dsds());
-    }
-
-    @Override
     protected void onReveal() {
         super.onReveal();
-        setInSlot(TYPE_SetContextAreaContentDsdListToolBar, toolStripPresenterWidget);
+        SetTitleEvent.fire(this, getConstants().dsds());
+        SelectMenuButtonEvent.fire(DsdListPresenter.this, ToolStripButtonEnum.DSD_LIST);
     }
 
     @Override

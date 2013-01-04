@@ -12,10 +12,11 @@ import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
 import org.siemac.metamac.srm.web.client.code.view.handlers.CodeUiHandlers;
+import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
+import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
-import org.siemac.metamac.srm.web.client.widgets.presenter.ToolStripPresenterWidget;
 import org.siemac.metamac.srm.web.shared.code.DeleteCodeAction;
 import org.siemac.metamac.srm.web.shared.code.DeleteCodeResult;
 import org.siemac.metamac.srm.web.shared.code.GetCodeAction;
@@ -27,6 +28,7 @@ import org.siemac.metamac.srm.web.shared.code.GetCodesByCodelistResult;
 import org.siemac.metamac.srm.web.shared.code.SaveCodeAction;
 import org.siemac.metamac.srm.web.shared.code.SaveCodeResult;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
+import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.utils.UrnUtils;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
@@ -54,11 +56,10 @@ import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 
 public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresenter.CodeProxy> implements CodeUiHandlers {
 
-    private final DispatchAsync      dispatcher;
-    private final PlaceManager       placeManager;
-    private ToolStripPresenterWidget toolStripPresenterWidget;
+    private final DispatchAsync dispatcher;
+    private final PlaceManager  placeManager;
 
-    private String                   codelistUrn;
+    private String              codelistUrn;
 
     @TitleFunction
     public static String getTranslatedTitle() {
@@ -78,16 +79,13 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
     }
 
     @ContentSlot
-    public static final Type<RevealContentHandler<?>> TYPE_SetContextAreaContentCode        = new Type<RevealContentHandler<?>>();
-
-    public static final Object                        TYPE_SetContextAreaContentCodeToolBar = new Object();
+    public static final Type<RevealContentHandler<?>> TYPE_SetContextAreaContentCode = new Type<RevealContentHandler<?>>();
 
     @Inject
-    public CodePresenter(EventBus eventBus, CodeView view, CodeProxy proxy, DispatchAsync dispatcher, PlaceManager placeManager, ToolStripPresenterWidget toolStripPresenterWidget) {
+    public CodePresenter(EventBus eventBus, CodeView view, CodeProxy proxy, DispatchAsync dispatcher, PlaceManager placeManager) {
         super(eventBus, view, proxy);
         this.dispatcher = dispatcher;
         this.placeManager = placeManager;
-        this.toolStripPresenterWidget = toolStripPresenterWidget;
         getView().setUiHandlers(this);
     }
 
@@ -99,8 +97,8 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
     @Override
     protected void onReveal() {
         super.onReveal();
-        setInSlot(TYPE_SetContextAreaContentCodeToolBar, toolStripPresenterWidget);
-        MainPagePresenter.getMasterHead().setTitleLabel(MetamacSrmWeb.getConstants().code());
+        SetTitleEvent.fire(this, MetamacSrmWeb.getConstants().code());
+        SelectMenuButtonEvent.fire(this, ToolStripButtonEnum.CODELISTS);
     }
 
     @Override

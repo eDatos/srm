@@ -12,10 +12,11 @@ import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
+import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
+import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
-import org.siemac.metamac.srm.web.client.widgets.presenter.ToolStripPresenterWidget;
 import org.siemac.metamac.srm.web.organisation.utils.CommonUtils;
 import org.siemac.metamac.srm.web.organisation.view.handlers.OrganisationUiHandlers;
 import org.siemac.metamac.srm.web.shared.organisation.DeleteOrganisationListAction;
@@ -29,6 +30,7 @@ import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeResul
 import org.siemac.metamac.srm.web.shared.organisation.SaveOrganisationAction;
 import org.siemac.metamac.srm.web.shared.organisation.SaveOrganisationResult;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
+import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
@@ -57,12 +59,11 @@ import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 
 public class OrganisationPresenter extends Presenter<OrganisationPresenter.OrganisationView, OrganisationPresenter.OrganisationProxy> implements OrganisationUiHandlers {
 
-    private final DispatchAsync      dispatcher;
-    private final PlaceManager       placeManager;
-    private ToolStripPresenterWidget toolStripPresenterWidget;
+    private final DispatchAsync    dispatcher;
+    private final PlaceManager     placeManager;
 
-    private String                   organisationSchemeUrn;
-    private OrganisationMetamacDto   organisationMetamacDto;
+    private String                 organisationSchemeUrn;
+    private OrganisationMetamacDto organisationMetamacDto;
 
     @TitleFunction
     public static String getTranslatedTitle() {
@@ -82,17 +83,13 @@ public class OrganisationPresenter extends Presenter<OrganisationPresenter.Organ
     }
 
     @ContentSlot
-    public static final Type<RevealContentHandler<?>> TYPE_SetContextAreaContentOrganisation        = new Type<RevealContentHandler<?>>();
-
-    public static final Object                        TYPE_SetContextAreaContentOrganisationToolBar = new Object();
+    public static final Type<RevealContentHandler<?>> TYPE_SetContextAreaContentOrganisation = new Type<RevealContentHandler<?>>();
 
     @Inject
-    public OrganisationPresenter(EventBus eventBus, OrganisationView view, OrganisationProxy proxy, DispatchAsync dispatcher, PlaceManager placeManager,
-            ToolStripPresenterWidget toolStripPresenterWidget) {
+    public OrganisationPresenter(EventBus eventBus, OrganisationView view, OrganisationProxy proxy, DispatchAsync dispatcher, PlaceManager placeManager) {
         super(eventBus, view, proxy);
         this.placeManager = placeManager;
         this.dispatcher = dispatcher;
-        this.toolStripPresenterWidget = toolStripPresenterWidget;
         getView().setUiHandlers(this);
     }
 
@@ -104,8 +101,8 @@ public class OrganisationPresenter extends Presenter<OrganisationPresenter.Organ
     @Override
     protected void onReveal() {
         super.onReveal();
-        setInSlot(TYPE_SetContextAreaContentOrganisationToolBar, toolStripPresenterWidget);
-        MainPagePresenter.getMasterHead().setTitleLabel(getConstants().organisation());
+        SetTitleEvent.fire(this, getConstants().organisation());
+        SelectMenuButtonEvent.fire(this, ToolStripButtonEnum.ORGANISATIONS);
     }
 
     @Override

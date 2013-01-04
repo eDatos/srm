@@ -244,11 +244,6 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
         SelectViewDsdDescriptorEvent.fire(this, TypeComponentList.DIMENSION_DESCRIPTOR);
     }
 
-    @Override
-    protected void onReset() {
-        super.onReset();
-    }
-
     @ProxyEvent
     @Override
     public void onSelectDsdAndDescriptors(SelectDsdAndDescriptorsEvent event) {

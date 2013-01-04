@@ -32,5 +32,4 @@ public class BreadCrumbsPanel extends FlowPanel {
             hyperlink.setHTML(title);
         }
     }
-
 }

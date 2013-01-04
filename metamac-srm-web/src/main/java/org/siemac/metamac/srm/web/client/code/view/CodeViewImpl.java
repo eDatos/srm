@@ -13,7 +13,6 @@ import org.siemac.metamac.srm.web.client.code.presenter.CodePresenter;
 import org.siemac.metamac.srm.web.client.code.utils.CodesClientSecurityUtils;
 import org.siemac.metamac.srm.web.client.code.view.handlers.CodeUiHandlers;
 import org.siemac.metamac.srm.web.client.code.widgets.CodesTreeGrid;
-import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.CustomVLayout;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
@@ -33,12 +32,9 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
 import com.smartgwt.client.types.Overflow;
-import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.layout.VLayout;
-import com.smartgwt.client.widgets.toolbar.ToolStrip;
-import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements CodePresenter.CodeView {
 
@@ -131,27 +127,6 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
     public void setUiHandlers(CodeUiHandlers uiHandlers) {
         super.setUiHandlers(uiHandlers);
         codesTreeGrid.setUiHandlers(uiHandlers);
-    }
-
-    @Override
-    public void setInSlot(Object slot, Widget content) {
-        if (slot == CodePresenter.TYPE_SetContextAreaContentCodeToolBar) {
-            if (content != null) {
-                Canvas[] canvas = ((ToolStrip) content).getMembers();
-                for (int i = 0; i < canvas.length; i++) {
-                    if (canvas[i] instanceof ToolStripButton) {
-                        if (ToolStripButtonEnum.CODELISTS.getValue().equals(((ToolStripButton) canvas[i]).getID())) {
-                            ((ToolStripButton) canvas[i]).select();
-                        }
-                    }
-                }
-                panel.addMember(content, 0);
-            }
-        } else {
-            // To support inheritance in your views it is good practice to call super.setInSlot when you can't handle the call.
-            // Who knows, maybe the parent class knows what to do with this slot.
-            super.setInSlot(slot, content);
-        }
     }
 
     private void createViewForm() {

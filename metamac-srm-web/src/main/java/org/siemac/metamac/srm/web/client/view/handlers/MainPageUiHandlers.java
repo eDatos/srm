@@ -9,4 +9,10 @@ public interface MainPageUiHandlers extends UiHandlers {
 
     void onNavigationPaneSectionHeaderClicked(String name);
     void onNavigationPaneSectionClicked(String name);
+
+    void goToConcepts();
+    void goToCodelists();
+    void goToDsds();
+    void goToOrganisations();
+    void goToCategories();
 }

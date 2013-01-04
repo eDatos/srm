@@ -11,10 +11,11 @@ import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
 import org.siemac.metamac.srm.web.client.code.view.handlers.CodelistListUiHandlers;
+import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
+import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
-import org.siemac.metamac.srm.web.client.widgets.presenter.ToolStripPresenterWidget;
 import org.siemac.metamac.srm.web.shared.code.CancelCodelistValidityAction;
 import org.siemac.metamac.srm.web.shared.code.CancelCodelistValidityResult;
 import org.siemac.metamac.srm.web.shared.code.DeleteCodelistListAction;
@@ -48,18 +49,14 @@ import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 
 public class CodelistListPresenter extends Presenter<CodelistListPresenter.CodelistListView, CodelistListPresenter.CodelistListProxy> implements CodelistListUiHandlers {
 
-    public final static int                           SCHEME_LIST_FIRST_RESULT                      = 0;
-    public final static int                           SCHEME_LIST_MAX_RESULTS                       = 30;
+    public final static int                           SCHEME_LIST_FIRST_RESULT           = 0;
+    public final static int                           SCHEME_LIST_MAX_RESULTS            = 30;
 
     private final DispatchAsync                       dispatcher;
     private final PlaceManager                        placeManager;
 
-    private ToolStripPresenterWidget                  toolStripPresenterWidget;
-
     @ContentSlot
-    public static final Type<RevealContentHandler<?>> TYPE_SetStructuralResourcesToolBar            = new Type<RevealContentHandler<?>>();
-
-    public static final Object                        TYPE_SetContextAreaContentCodelistListToolBar = new Object();
+    public static final Type<RevealContentHandler<?>> TYPE_SetStructuralResourcesToolBar = new Type<RevealContentHandler<?>>();
 
     @ProxyCodeSplit
     @NameToken(NameTokens.codelistListPage)
@@ -80,11 +77,9 @@ public class CodelistListPresenter extends Presenter<CodelistListPresenter.Codel
     }
 
     @Inject
-    public CodelistListPresenter(EventBus eventBus, CodelistListView codelistListView, CodelistListProxy codelistListProxy, DispatchAsync dispatcher, PlaceManager placeManager,
-            ToolStripPresenterWidget toolStripPresenterWidget) {
+    public CodelistListPresenter(EventBus eventBus, CodelistListView codelistListView, CodelistListProxy codelistListProxy, DispatchAsync dispatcher, PlaceManager placeManager) {
         super(eventBus, codelistListView, codelistListProxy);
         this.placeManager = placeManager;
-        this.toolStripPresenterWidget = toolStripPresenterWidget;
         this.dispatcher = dispatcher;
         getView().setUiHandlers(this);
     }
@@ -105,7 +100,8 @@ public class CodelistListPresenter extends Presenter<CodelistListPresenter.Codel
     @Override
     protected void onReveal() {
         super.onReveal();
-        setInSlot(TYPE_SetContextAreaContentCodelistListToolBar, toolStripPresenterWidget);
+        SetTitleEvent.fire(this, getConstants().codelists());
+        SelectMenuButtonEvent.fire(this, ToolStripButtonEnum.CODELISTS);
     }
 
     @Override

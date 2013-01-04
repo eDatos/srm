@@ -14,7 +14,6 @@ import org.siemac.metamac.srm.web.client.category.presenter.CategorySchemeListPr
 import org.siemac.metamac.srm.web.client.category.utils.CategoriesClientSecurityUtils;
 import org.siemac.metamac.srm.web.client.category.view.handlers.CategorySchemeListUiHandlers;
 import org.siemac.metamac.srm.web.client.category.widgets.NewCategorySchemeWindow;
-import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemeListResult;
 import org.siemac.metamac.web.common.client.resources.GlobalResources;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
@@ -29,7 +28,6 @@ import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.Autofit;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.types.Visibility;
-import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
@@ -192,27 +190,6 @@ public class CategorySchemeListViewImpl extends ViewWithUiHandlers<CategorySchem
     @Override
     public Widget asWidget() {
         return panel;
-    }
-
-    @Override
-    public void setInSlot(Object slot, Widget content) {
-        if (slot == CategorySchemeListPresenter.TYPE_SetContextAreaContentCategorySchemeListToolBar) {
-            if (content != null) {
-                Canvas[] canvas = ((ToolStrip) content).getMembers();
-                for (int i = 0; i < canvas.length; i++) {
-                    if (canvas[i] instanceof ToolStripButton) {
-                        if (ToolStripButtonEnum.CATEGORIES.getValue().equals(((ToolStripButton) canvas[i]).getID())) {
-                            ((ToolStripButton) canvas[i]).select();
-                        }
-                    }
-                }
-                panel.addMember(content, 0);
-            }
-        } else {
-            // To support inheritance in your views it is good practice to call super.setInSlot when you can't handle the call.
-            // Who knows, maybe the parent class knows what to do with this slot.
-            super.setInSlot(slot, content);
-        }
     }
 
     @Override

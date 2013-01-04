@@ -12,10 +12,11 @@ import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
 import org.siemac.metamac.srm.web.client.category.view.handlers.CategoryUiHandlers;
+import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
+import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
-import org.siemac.metamac.srm.web.client.widgets.presenter.ToolStripPresenterWidget;
 import org.siemac.metamac.srm.web.shared.category.DeleteCategoryAction;
 import org.siemac.metamac.srm.web.shared.category.DeleteCategoryResult;
 import org.siemac.metamac.srm.web.shared.category.GetCategoryAction;
@@ -27,6 +28,7 @@ import org.siemac.metamac.srm.web.shared.category.GetCategorySchemeResult;
 import org.siemac.metamac.srm.web.shared.category.SaveCategoryAction;
 import org.siemac.metamac.srm.web.shared.category.SaveCategoryResult;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
+import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.utils.UrnUtils;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
@@ -54,12 +56,11 @@ import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 
 public class CategoryPresenter extends Presenter<CategoryPresenter.CategoryView, CategoryPresenter.CategoryProxy> implements CategoryUiHandlers {
 
-    private final DispatchAsync      dispatcher;
-    private final PlaceManager       placeManager;
-    private ToolStripPresenterWidget toolStripPresenterWidget;
+    private final DispatchAsync dispatcher;
+    private final PlaceManager  placeManager;
 
-    private String                   categorySchemeUrn;
-    private CategoryMetamacDto       categoryMetamacDto;
+    private String              categorySchemeUrn;
+    private CategoryMetamacDto  categoryMetamacDto;
 
     @TitleFunction
     public static String getTranslatedTitle() {
@@ -76,20 +77,16 @@ public class CategoryPresenter extends Presenter<CategoryPresenter.CategoryView,
 
         void setCategory(CategoryMetamacDto categoryDto);
         void setCategoryList(CategorySchemeMetamacDto categorySchemeMetamacDto, List<ItemHierarchyDto> itemHierarchyDtos);
-
     }
 
     @ContentSlot
-    public static final Type<RevealContentHandler<?>> TYPE_SetContextAreaContentcategory        = new Type<RevealContentHandler<?>>();
-
-    public static final Object                        TYPE_SetContextAreaContentCategoryToolBar = new Object();
+    public static final Type<RevealContentHandler<?>> TYPE_SetContextAreaContentcategory = new Type<RevealContentHandler<?>>();
 
     @Inject
-    public CategoryPresenter(EventBus eventBus, CategoryView view, CategoryProxy proxy, DispatchAsync dispatcher, PlaceManager placeManager, ToolStripPresenterWidget toolStripPresenterWidget) {
+    public CategoryPresenter(EventBus eventBus, CategoryView view, CategoryProxy proxy, DispatchAsync dispatcher, PlaceManager placeManager) {
         super(eventBus, view, proxy);
         this.dispatcher = dispatcher;
         this.placeManager = placeManager;
-        this.toolStripPresenterWidget = toolStripPresenterWidget;
         getView().setUiHandlers(this);
     }
 
@@ -101,8 +98,8 @@ public class CategoryPresenter extends Presenter<CategoryPresenter.CategoryView,
     @Override
     protected void onReveal() {
         super.onReveal();
-        setInSlot(TYPE_SetContextAreaContentCategoryToolBar, toolStripPresenterWidget);
-        MainPagePresenter.getMasterHead().setTitleLabel(MetamacSrmWeb.getConstants().category());
+        SetTitleEvent.fire(this, MetamacSrmWeb.getConstants().category());
+        SelectMenuButtonEvent.fire(this, ToolStripButtonEnum.CATEGORIES);
     }
 
     @Override
