@@ -4,6 +4,7 @@ import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.category.presenter.CategoryPresenter;
 import org.siemac.metamac.srm.web.client.category.presenter.CategorySchemeListPresenter;
 import org.siemac.metamac.srm.web.client.category.presenter.CategorySchemePresenter;
+import org.siemac.metamac.srm.web.client.code.presenter.CodePresenter;
 import org.siemac.metamac.srm.web.client.code.presenter.CodelistListPresenter;
 import org.siemac.metamac.srm.web.client.code.presenter.CodelistPresenter;
 import org.siemac.metamac.srm.web.client.presenter.ErrorPagePresenter;
@@ -75,4 +76,5 @@ public interface MetamacSrmWebGinjector extends Ginjector {
     // Codes
     AsyncProvider<CodelistListPresenter> getCodelistListPresenter();
     AsyncProvider<CodelistPresenter> getCodelistPresenter();
+    AsyncProvider<CodePresenter> getCodePresenter();
 }
