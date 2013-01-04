@@ -361,7 +361,6 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
 
         // Class descriptors
         classDescriptorsForm = new GroupDynamicForm(getConstants().conceptSchemeClassDescriptors());
-        ViewTextItem agency = new ViewTextItem(ConceptSchemeDS.MAINTAINER, getConstants().maintainableArtefactMaintainer());
         ViewTextItem type = new ViewTextItem(ConceptSchemeDS.TYPE, getConstants().conceptSchemeType());
         ViewTextItem typeView = new ViewTextItem(ConceptSchemeDS.TYPE_VIEW, getConstants().conceptSchemeType());
         typeView.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
@@ -373,12 +372,13 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
                 return ConceptSchemeTypeEnum.OPERATION.name().equals(form.getValueAsString(ConceptSchemeDS.TYPE_VIEW));
             }
         });
-        classDescriptorsForm.setFields(type, typeView, operation, agency);
+        classDescriptorsForm.setFields(type, typeView, operation);
 
         // Production descriptors
         productionDescriptorsForm = new GroupDynamicForm(getConstants().conceptSchemeProductionDescriptors());
+        ViewTextItem agency = new ViewTextItem(ConceptSchemeDS.MAINTAINER, getConstants().maintainableArtefactMaintainer());
         ViewTextItem procStatus = new ViewTextItem(ConceptSchemeDS.PROC_STATUS, getConstants().lifeCycleProcStatus());
-        productionDescriptorsForm.setFields(procStatus);
+        productionDescriptorsForm.setFields(agency, procStatus);
 
         // Diffusion descriptors
         diffusionDescriptorsForm = new GroupDynamicForm(getConstants().conceptSchemeDiffusionDescriptors());
@@ -510,13 +510,14 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
             }
         };
         operation.setValidators(customValidator);
-        ViewTextItem agency = new ViewTextItem(ConceptSchemeDS.MAINTAINER, getConstants().maintainableArtefactMaintainer());
-        classDescriptorsEditionForm.setFields(type, typeView, operation, agency);
+
+        classDescriptorsEditionForm.setFields(type, typeView, operation);
 
         // Production descriptors
         productionDescriptorsEditionForm = new GroupDynamicForm(getConstants().conceptSchemeProductionDescriptors());
+        ViewTextItem agency = new ViewTextItem(ConceptSchemeDS.MAINTAINER, getConstants().maintainableArtefactMaintainer());
         ViewTextItem procStatus = new ViewTextItem(ConceptSchemeDS.PROC_STATUS, getConstants().lifeCycleProcStatus());
-        productionDescriptorsEditionForm.setFields(procStatus);
+        productionDescriptorsEditionForm.setFields(agency, procStatus);
 
         // Diffusion descriptors
         diffusionDescriptorsEditionForm = new GroupDynamicForm(getConstants().conceptSchemeDiffusionDescriptors());
@@ -591,9 +592,9 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
             classDescriptorsForm.getItem(ConceptSchemeDS.RELATED_OPERATION).hide();
         }
         classDescriptorsForm.setValue(ConceptSchemeDS.RELATED_OPERATION, ExternalItemUtils.getExternalItemName(conceptSchemeDto.getRelatedOperation()));
-        classDescriptorsForm.setValue(ConceptSchemeDS.MAINTAINER, conceptSchemeDto.getMaintainer() != null ? conceptSchemeDto.getMaintainer().getCode() : StringUtils.EMPTY);
 
         // Production descriptors
+        productionDescriptorsForm.setValue(ConceptSchemeDS.MAINTAINER, conceptSchemeDto.getMaintainer() != null ? conceptSchemeDto.getMaintainer().getCode() : StringUtils.EMPTY);
         productionDescriptorsForm.setValue(ConceptSchemeDS.PROC_STATUS, org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(conceptSchemeDto.getLifeCycle().getProcStatus()));
 
         // Diffusion descriptors
@@ -647,10 +648,10 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         classDescriptorsEditionForm.setValue(ConceptSchemeDS.TYPE_VIEW,
                 MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().conceptSchemeTypeEnum() + conceptSchemeDto.getType().name()));
         classDescriptorsEditionForm.setValue(ConceptSchemeDS.RELATED_OPERATION, ExternalItemUtils.getExternalItemName(conceptSchemeDto.getRelatedOperation()));
-        classDescriptorsEditionForm.setValue(ConceptSchemeDS.MAINTAINER, conceptSchemeDto.getMaintainer() != null ? conceptSchemeDto.getMaintainer().getCode() : StringUtils.EMPTY);
         classDescriptorsEditionForm.markForRedraw();
 
         // Production descriptors
+        productionDescriptorsEditionForm.setValue(ConceptSchemeDS.MAINTAINER, conceptSchemeDto.getMaintainer() != null ? conceptSchemeDto.getMaintainer().getCode() : StringUtils.EMPTY);
         productionDescriptorsEditionForm.setValue(ConceptSchemeDS.PROC_STATUS, org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(conceptSchemeDto.getLifeCycle().getProcStatus()));
 
         // Diffusion descriptors

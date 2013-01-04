@@ -78,7 +78,6 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
     // View forms
     private GroupDynamicForm                       identifiersForm;
     private GroupDynamicForm                       contentDescriptorsForm;
-    private GroupDynamicForm                       classDescriptorsForm;
     private GroupDynamicForm                       productionDescriptorsForm;
     private GroupDynamicForm                       diffusionDescriptorsForm;
     private GroupDynamicForm                       versionResponsibilityForm;
@@ -88,7 +87,6 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
     // Edition forms
     private GroupDynamicForm                       identifiersEditionForm;
     private GroupDynamicForm                       contentDescriptorsEditionForm;
-    private GroupDynamicForm                       classDescriptorsEditionForm;
     private GroupDynamicForm                       productionDescriptorsEditionForm;
     private GroupDynamicForm                       diffusionDescriptorsEditionForm;
     private GroupDynamicForm                       versionResponsibilityEditionForm;
@@ -261,9 +259,6 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
                 contentDescriptorsForm.setTranslationsShowed(translationsShowed);
                 contentDescriptorsEditionForm.setTranslationsShowed(translationsShowed);
 
-                classDescriptorsForm.setTranslationsShowed(translationsShowed);
-                classDescriptorsEditionForm.setTranslationsShowed(translationsShowed);
-
                 productionDescriptorsForm.setTranslationsShowed(translationsShowed);
                 productionDescriptorsEditionForm.setTranslationsShowed(translationsShowed);
 
@@ -304,8 +299,8 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
 
             @Override
             public void onClick(ClickEvent event) {
-                if (identifiersEditionForm.validate(false) && contentDescriptorsEditionForm.validate(false) && classDescriptorsEditionForm.validate(false)
-                        && productionDescriptorsEditionForm.validate(false) && diffusionDescriptorsEditionForm.validate(false)) {
+                if (identifiersEditionForm.validate(false) && contentDescriptorsEditionForm.validate(false) && productionDescriptorsEditionForm.validate(false)
+                        && diffusionDescriptorsEditionForm.validate(false)) {
                     getUiHandlers().saveOrganisationScheme(getOrganisationSchemeDto());
                 }
             }
@@ -393,15 +388,11 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         ViewTextItem isFinal = new ViewTextItem(OrganisationSchemeDS.FINAL, getConstants().maintainableArtefactFinalLogic());
         contentDescriptorsForm.setFields(type, description, partial, isExternalReference, isFinal);
 
-        // Class descriptors
-        classDescriptorsForm = new GroupDynamicForm(getConstants().organisationSchemeClassDescriptors());
-        ViewTextItem agency = new ViewTextItem(OrganisationSchemeDS.MAINTAINER, getConstants().maintainableArtefactMaintainer());
-        classDescriptorsForm.setFields(agency);
-
         // Production descriptors
         productionDescriptorsForm = new GroupDynamicForm(getConstants().organisationSchemeProductionDescriptors());
+        ViewTextItem agency = new ViewTextItem(OrganisationSchemeDS.MAINTAINER, getConstants().maintainableArtefactMaintainer());
         ViewTextItem procStatus = new ViewTextItem(OrganisationSchemeDS.PROC_STATUS, getConstants().lifeCycleProcStatus());
-        productionDescriptorsForm.setFields(procStatus);
+        productionDescriptorsForm.setFields(agency, procStatus);
 
         // Diffusion descriptors
         diffusionDescriptorsForm = new GroupDynamicForm(getConstants().organisationSchemeDiffusionDescriptors());
@@ -436,7 +427,6 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
 
         mainFormLayout.addViewCanvas(identifiersForm);
         mainFormLayout.addViewCanvas(contentDescriptorsForm);
-        mainFormLayout.addViewCanvas(classDescriptorsForm);
         mainFormLayout.addViewCanvas(productionDescriptorsForm);
         mainFormLayout.addViewCanvas(diffusionDescriptorsForm);
         mainFormLayout.addViewCanvas(versionResponsibilityForm);
@@ -505,15 +495,11 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         ViewTextItem isFinal = new ViewTextItem(OrganisationSchemeDS.FINAL, getConstants().maintainableArtefactFinalLogic());
         contentDescriptorsEditionForm.setFields(type, staticType, description, partial, isExternalReference, isFinal);
 
-        // Class descriptors
-        classDescriptorsEditionForm = new GroupDynamicForm(getConstants().organisationSchemeClassDescriptors());
-        ViewTextItem agency = new ViewTextItem(OrganisationSchemeDS.MAINTAINER, getConstants().maintainableArtefactMaintainer());
-        classDescriptorsEditionForm.setFields(agency);
-
         // Production descriptors
         productionDescriptorsEditionForm = new GroupDynamicForm(getConstants().organisationSchemeProductionDescriptors());
+        ViewTextItem agency = new ViewTextItem(OrganisationSchemeDS.MAINTAINER, getConstants().maintainableArtefactMaintainer());
         ViewTextItem procStatus = new ViewTextItem(OrganisationSchemeDS.PROC_STATUS, getConstants().lifeCycleProcStatus());
-        productionDescriptorsEditionForm.setFields(procStatus);
+        productionDescriptorsEditionForm.setFields(agency, procStatus);
 
         // Diffusion descriptors
         diffusionDescriptorsEditionForm = new GroupDynamicForm(getConstants().organisationSchemeDiffusionDescriptors());
@@ -548,7 +534,6 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
 
         mainFormLayout.addEditionCanvas(identifiersEditionForm);
         mainFormLayout.addEditionCanvas(contentDescriptorsEditionForm);
-        mainFormLayout.addEditionCanvas(classDescriptorsEditionForm);
         mainFormLayout.addEditionCanvas(productionDescriptorsEditionForm);
         mainFormLayout.addEditionCanvas(diffusionDescriptorsEditionForm);
         mainFormLayout.addEditionCanvas(versionResponsibilityEditionForm);
@@ -659,10 +644,8 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
                 ? MetamacWebCommon.getConstants().yes()
                 : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
 
-        // Class descriptors
-        classDescriptorsForm.setValue(OrganisationSchemeDS.MAINTAINER, organisationSchemeDto.getMaintainer() != null ? organisationSchemeDto.getMaintainer().getCode() : StringUtils.EMPTY);
-
         // Production descriptors
+        productionDescriptorsForm.setValue(OrganisationSchemeDS.MAINTAINER, organisationSchemeDto.getMaintainer() != null ? organisationSchemeDto.getMaintainer().getCode() : StringUtils.EMPTY);
         productionDescriptorsForm.setValue(OrganisationSchemeDS.PROC_STATUS,
                 org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(organisationSchemeDto.getLifeCycle().getProcStatus()));
 
@@ -716,10 +699,8 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
                 .yes() : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
         contentDescriptorsEditionForm.markForRedraw();
 
-        // Class descriptors
-        classDescriptorsEditionForm.setValue(OrganisationSchemeDS.MAINTAINER, organisationSchemeDto.getMaintainer() != null ? organisationSchemeDto.getMaintainer().getCode() : StringUtils.EMPTY);
-
         // Production descriptors
+        productionDescriptorsEditionForm.setValue(OrganisationSchemeDS.MAINTAINER, organisationSchemeDto.getMaintainer() != null ? organisationSchemeDto.getMaintainer().getCode() : StringUtils.EMPTY);
         productionDescriptorsEditionForm.setValue(OrganisationSchemeDS.PROC_STATUS,
                 org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(organisationSchemeDto.getLifeCycle().getProcStatus()));
 

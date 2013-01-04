@@ -61,7 +61,6 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
     // View forms
     private GroupDynamicForm                   identifiersForm;
     private GroupDynamicForm                   contentDescriptorsForm;
-    private GroupDynamicForm                   classDescriptorsForm;
     private GroupDynamicForm                   productionDescriptorsForm;
     private GroupDynamicForm                   diffusionDescriptorsForm;
     private GroupDynamicForm                   versionResponsibilityForm;
@@ -71,7 +70,6 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
     // Edition forms
     private GroupDynamicForm                   identifiersEditionForm;
     private GroupDynamicForm                   contentDescriptorsEditionForm;
-    private GroupDynamicForm                   classDescriptorsEditionForm;
     private GroupDynamicForm                   productionDescriptorsEditionForm;
     private GroupDynamicForm                   diffusionDescriptorsEditionForm;
     private GroupDynamicForm                   versionResponsibilityEditionForm;
@@ -142,9 +140,6 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
                 contentDescriptorsForm.setTranslationsShowed(translationsShowed);
                 contentDescriptorsEditionForm.setTranslationsShowed(translationsShowed);
 
-                classDescriptorsForm.setTranslationsShowed(translationsShowed);
-                classDescriptorsEditionForm.setTranslationsShowed(translationsShowed);
-
                 productionDescriptorsForm.setTranslationsShowed(translationsShowed);
                 productionDescriptorsEditionForm.setTranslationsShowed(translationsShowed);
 
@@ -184,8 +179,8 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
 
             @Override
             public void onClick(ClickEvent event) {
-                if (identifiersEditionForm.validate(false) && contentDescriptorsEditionForm.validate(false) && classDescriptorsEditionForm.validate(false)
-                        && productionDescriptorsEditionForm.validate(false) && diffusionDescriptorsEditionForm.validate(false)) {
+                if (identifiersEditionForm.validate(false) && contentDescriptorsEditionForm.validate(false) && productionDescriptorsEditionForm.validate(false)
+                        && diffusionDescriptorsEditionForm.validate(false)) {
                     getUiHandlers().saveCategoryScheme(getCategorySchemeDto());
                 }
             }
@@ -276,15 +271,11 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         ViewTextItem isFinal = new ViewTextItem(CategorySchemeDS.FINAL, getConstants().maintainableArtefactFinalLogic());
         contentDescriptorsForm.setFields(description, partial, isExternalReference, isFinal);
 
-        // Class descriptors
-        classDescriptorsForm = new GroupDynamicForm(getConstants().categorySchemeClassDescriptors());
-        ViewTextItem agency = new ViewTextItem(CategorySchemeDS.MAINTAINER, getConstants().maintainableArtefactMaintainer());
-        classDescriptorsForm.setFields(agency);
-
         // Production descriptors
         productionDescriptorsForm = new GroupDynamicForm(getConstants().categorySchemeProductionDescriptors());
+        ViewTextItem agency = new ViewTextItem(CategorySchemeDS.MAINTAINER, getConstants().maintainableArtefactMaintainer());
         ViewTextItem procStatus = new ViewTextItem(CategorySchemeDS.PROC_STATUS, getConstants().lifeCycleProcStatus());
-        productionDescriptorsForm.setFields(procStatus);
+        productionDescriptorsForm.setFields(agency, procStatus);
 
         // Diffusion descriptors
         diffusionDescriptorsForm = new GroupDynamicForm(getConstants().categorySchemeDiffusionDescriptors());
@@ -319,7 +310,6 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
 
         mainFormLayout.addViewCanvas(identifiersForm);
         mainFormLayout.addViewCanvas(contentDescriptorsForm);
-        mainFormLayout.addViewCanvas(classDescriptorsForm);
         mainFormLayout.addViewCanvas(productionDescriptorsForm);
         mainFormLayout.addViewCanvas(diffusionDescriptorsForm);
         mainFormLayout.addViewCanvas(versionResponsibilityForm);
@@ -365,15 +355,11 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         ViewTextItem isFinal = new ViewTextItem(CategorySchemeDS.FINAL, getConstants().maintainableArtefactFinalLogic());
         contentDescriptorsEditionForm.setFields(description, partial, isExternalReference, isFinal);
 
-        // Class descriptors
-        classDescriptorsEditionForm = new GroupDynamicForm(getConstants().categorySchemeClassDescriptors());
-        ViewTextItem agency = new ViewTextItem(CategorySchemeDS.MAINTAINER, getConstants().maintainableArtefactMaintainer());
-        classDescriptorsEditionForm.setFields(agency);
-
         // Production descriptors
         productionDescriptorsEditionForm = new GroupDynamicForm(getConstants().categorySchemeProductionDescriptors());
+        ViewTextItem agency = new ViewTextItem(CategorySchemeDS.MAINTAINER, getConstants().maintainableArtefactMaintainer());
         ViewTextItem procStatus = new ViewTextItem(CategorySchemeDS.PROC_STATUS, getConstants().lifeCycleProcStatus());
-        productionDescriptorsEditionForm.setFields(procStatus);
+        productionDescriptorsEditionForm.setFields(agency, procStatus);
 
         // Diffusion descriptors
         diffusionDescriptorsEditionForm = new GroupDynamicForm(getConstants().categorySchemeDiffusionDescriptors());
@@ -408,7 +394,6 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
 
         mainFormLayout.addEditionCanvas(identifiersEditionForm);
         mainFormLayout.addEditionCanvas(contentDescriptorsEditionForm);
-        mainFormLayout.addEditionCanvas(classDescriptorsEditionForm);
         mainFormLayout.addEditionCanvas(productionDescriptorsEditionForm);
         mainFormLayout.addEditionCanvas(diffusionDescriptorsEditionForm);
         mainFormLayout.addEditionCanvas(versionResponsibilityEditionForm);
@@ -484,10 +469,8 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
                 ? MetamacWebCommon.getConstants().yes()
                 : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
 
-        // Class descriptors
-        classDescriptorsForm.setValue(CategorySchemeDS.MAINTAINER, categorySchemeDto.getMaintainer() != null ? categorySchemeDto.getMaintainer().getCode() : StringUtils.EMPTY);
-
         // Production descriptors
+        productionDescriptorsForm.setValue(CategorySchemeDS.MAINTAINER, categorySchemeDto.getMaintainer() != null ? categorySchemeDto.getMaintainer().getCode() : StringUtils.EMPTY);
         productionDescriptorsForm.setValue(CategorySchemeDS.PROC_STATUS, org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(categorySchemeDto.getLifeCycle().getProcStatus()));
 
         // Diffusion descriptors
@@ -538,10 +521,8 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
                 : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
         contentDescriptorsEditionForm.markForRedraw();
 
-        // Class descriptors
-        classDescriptorsEditionForm.setValue(CategorySchemeDS.MAINTAINER, categorySchemeDto.getMaintainer() != null ? categorySchemeDto.getMaintainer().getCode() : StringUtils.EMPTY);
-
         // Production descriptors
+        productionDescriptorsEditionForm.setValue(CategorySchemeDS.MAINTAINER, categorySchemeDto.getMaintainer() != null ? categorySchemeDto.getMaintainer().getCode() : StringUtils.EMPTY);
         productionDescriptorsEditionForm
                 .setValue(CategorySchemeDS.PROC_STATUS, org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(categorySchemeDto.getLifeCycle().getProcStatus()));
 
