@@ -423,14 +423,6 @@ Application SrmFacadeCore {
 		     * CODES
 		     **************************************************************************/
 
-			"
-       		 @param ctx             
-			 @param uriConcept
-			 @return 
-			"        		
-       		List<@ExternalItemDto> findCodelists(String uriConcept) throws MetamacException;
-
-
        		"Creates codelist"
 	   		@CodelistMetamacDto createCodelist(@CodelistMetamacDto codelistDto) throws MetamacException;
 	   		"Updates codelist" 
