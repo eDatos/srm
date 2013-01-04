@@ -63,6 +63,8 @@ import org.springframework.stereotype.Service;
 import com.arte.statistic.sdmx.srm.core.base.domain.Component;
 import com.arte.statistic.sdmx.srm.core.base.domain.ComponentList;
 import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
+import com.arte.statistic.sdmx.srm.core.importation.ImportationJaxb2DoCallback;
+import com.arte.statistic.sdmx.srm.core.importation.ImportationService;
 import com.arte.statistic.sdmx.srm.core.structure.domain.AttributeDescriptor;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DataStructureDefinitionVersion;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DimensionDescriptor;
@@ -127,6 +129,13 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Autowired
     private SculptorCriteria2MetamacCriteriaMapper sculptorCriteria2MetamacCriteriaMapper;
+
+    @Autowired
+    private ImportationService                     importationService;
+
+    @Autowired
+    @Qualifier("importationMetamacJaxb2DoCallback")
+    private ImportationJaxb2DoCallback             importationJaxb2DoCallback;
 
     public Jaxb2Marshaller getMarshallerWithValidation() {
         return marshallerWithValidation;
@@ -479,28 +488,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         // Security
         DataStructureDefinitionSecurityUtils.canImportDataStructureDefinition(ctx);
 
-        // StructureMessage
-        // CodeList -> Metamac not imported CodeList, only process
-        // Concepts -> Metamac not imported Concepts, only process
-        // DataStructures -> Import
-
-        /*
-         * // 1. Extract Structure
-         * StructureMsgDto structureMsgDto = null;
-         * try {
-         * Structure structure = (Structure) getMarshallerWithValidation().unmarshal(new StreamSource(contentDto.getInput()));
-         * structureMsgDto = getTransformationServiceFacade().transformStructureMessage(ctx, structure);
-         * } catch (XmlMappingException e) {
-         * throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(MetamacTransExceptionType.MATAMAC_TRANS_JAXB_ERROR).withLoggedLevel(ExceptionLevelEnum.ERROR)
-         * .withMessageParameters(e.getMessage()).build();
-         * }
-         * // Import DataStructures
-         * for (DataStructureDefinitionExtendDto dsdExtDto : structureMsgDto.getDataStructureDefinitionDtos()) {
-         * // Save (create or update) DSD
-         * DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDto2DoMapper().dataStructureDefinitionDtoToDataStructureDefinition(dsdExtDto);
-         * dataStructureDefinitionVersionMetamac = getDsdsMetamacService().importDataStructureDefinition(ctx, dataStructureDefinitionVersionMetamac);
-         * }
-         */
+        // Import
+        importationService.importSDMXStructure(ctx, contentDto.getInput(), importationJaxb2DoCallback);
     }
 
     @Override
@@ -539,15 +528,6 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
          * }
          */
         return (file == null) ? StringUtils.EMPTY : file.getAbsolutePath();
-    }
-
-    /**************************************************************************
-     * CODELIST
-     **************************************************************************/
-    @Override
-    public List<ExternalItemDto> findCodelists(ServiceContext ctx, String uriConcept) throws MetamacException {
-        // TODO devolver los codelist posibles para un concepto
-        return ServicesResolver.findAllCodelists();
     }
 
     // ------------------------------------------------------------------------
