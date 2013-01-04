@@ -260,7 +260,7 @@
             <TB_ORGANISATIONS
                 TB_ITEMS="10013"
                 ORGANISATION_TYPE="AGENCY"
-                ID_AS_MAINTAINER="SDMX03"
+                ID_AS_MAINTAINER="SDMX"
             />
         
             <TB_ITEMS
