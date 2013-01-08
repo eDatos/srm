@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.core.category.mapper;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
@@ -82,13 +83,13 @@ public class CategoriesJaxb2DoCallbackImpl extends ImportationMetamacCommonValid
      * VALIDATE
      **************************************************************************/
     @Override
-    public void validateRestrictions(CategorySchemeVersion source) throws MetamacException {
-        validateRestrictionsGeneral(source);
+    public void validateRestrictions(ServiceContext ctx, CategorySchemeVersion source) throws MetamacException {
+        validateRestrictionsGeneral(ctx, source);
     }
 
     @Override
-    public void validateRestrictions(Categorisation source) throws MetamacException {
-        validateRestrictionsGeneral(source);
+    public void validateRestrictions(ServiceContext ctx, Categorisation source) throws MetamacException {
+        validateRestrictionsGeneral(ctx, source);
     }
 
 }

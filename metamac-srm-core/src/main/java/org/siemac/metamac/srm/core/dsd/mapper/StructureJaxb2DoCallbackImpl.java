@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.core.dsd.mapper;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.importation.ImportationMetamacCommonValidations;
@@ -186,8 +187,8 @@ public class StructureJaxb2DoCallbackImpl extends ImportationMetamacCommonValida
      * VALIDATE
      **************************************************************************/
     @Override
-    public void validateRestrictions(DataStructureDefinitionVersion source) throws MetamacException {
-        validateRestrictionsGeneral(source);
+    public void validateRestrictions(ServiceContext ctx, DataStructureDefinitionVersion source) throws MetamacException {
+        validateRestrictionsGeneral(ctx, source);
     }
 
 }

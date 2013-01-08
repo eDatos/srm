@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.core.concept.mapper;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
@@ -64,9 +65,9 @@ public class ConceptsJaxb2DoCallbackImpl extends ImportationMetamacCommonValidat
      * VALIDATE
      **************************************************************************/
     @Override
-    public void validateRestrictions(ConceptSchemeVersion source) throws MetamacException {
-        validateRestrictionsGeneral(source);
-        validateRestrictionsMaintainableArtefact(source.getMaintainableArtefact(), false);
+    public void validateRestrictions(ServiceContext ctx, ConceptSchemeVersion source) throws MetamacException {
+        validateRestrictionsGeneral(ctx, source);
+        validateRestrictionsMaintainableArtefact(ctx, source.getMaintainableArtefact(), false);
     }
 
 }

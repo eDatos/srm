@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.core.organisation.mapper;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
@@ -52,64 +53,72 @@ public class OrganisationsJaxb2DoCallbackImpl extends ImportationMetamacCommonVa
     public void agencySchemeJaxbToDoExtension(AgencySchemeType source, OrganisationSchemeVersion target) {
         OrganisationSchemeVersionMetamac targetMetamac = (OrganisationSchemeVersionMetamac) target;
 
-        // Fill metadata
+        // Meta-data in previous version -> Nothing to extends
+
+        // Fill meta-data
         targetMetamac.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
     }
 
     @Override
     public void agencyJaxbToDoExtension(AgencyType source, Organisation target) {
-        // TODO metamac agencyJaxbToDoExtension
+        // Meta-data in previous version -> Nothing to extends
     }
 
     @Override
     public void dataConsumerSchemeJaxbToDoExtension(DataConsumerSchemeType source, OrganisationSchemeVersion target) {
         OrganisationSchemeVersionMetamac targetMetamac = (OrganisationSchemeVersionMetamac) target;
 
-        // Fill metadata
+        // Meta-data in previous version -> Nothing to extends
+
+        // Fill meta-data
         targetMetamac.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
     }
 
     @Override
     public void dataConsumerJaxbToDoExtension(DataConsumerType source, Organisation target) {
-        // TODO metamac dataConsumerJaxbToDoExtension
+        // Meta-data in previous version -> Nothing to extends
     }
 
     @Override
     public void dataProviderSchemeJaxbToDoExtension(DataProviderSchemeType source, OrganisationSchemeVersion target) {
         OrganisationSchemeVersionMetamac targetMetamac = (OrganisationSchemeVersionMetamac) target;
 
-        // Fill metadata
+        // Meta-data in previous version -> Nothing to extends
+
+        // Fill meta-data
         targetMetamac.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
     }
 
     @Override
     public void dataProviderJaxbToDoExtension(DataProviderType source, Organisation target) {
-        // TODO metamac dataProviderJaxbToDoExtension
+        // Meta-data in previous version -> Nothing to extends
     }
 
     @Override
     public void organisationUnitSchemeJaxbToDoExtension(OrganisationUnitSchemeType source, OrganisationSchemeVersion target) {
         OrganisationSchemeVersionMetamac targetMetamac = (OrganisationSchemeVersionMetamac) target;
 
-        // Fill metadata
+        // Meta-data in previous version -> Nothing to extends
+
+        // Fill meta-data
         targetMetamac.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
     }
 
     @Override
     public void organisationUnitJaxbToDoExtension(OrganisationUnitType source, Organisation target) {
-        // TODO metamac organisationUnitJaxbToDoExtension
+        // Meta-data in previous version -> Nothing to extends
     }
 
     /**************************************************************************
      * VALIDATE
      **************************************************************************/
     @Override
-    public void validateRestrictions(OrganisationSchemeVersion source) throws MetamacException {
-        validateRestrictionsGeneral(source);
+    public void validateRestrictions(ServiceContext ctx, OrganisationSchemeVersion source) throws MetamacException {
+        validateRestrictionsGeneral(ctx, source);
         if (OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME.equals(source.getOrganisationSchemeType())) {
-            validateRestrictionsMaintainableArtefact(source.getMaintainableArtefact(), false);
+            validateRestrictionsMaintainableArtefact(ctx, source.getMaintainableArtefact(), false);
         } else {
-            validateRestrictionsMaintainableArtefact(source.getMaintainableArtefact(), true);
+            validateRestrictionsMaintainableArtefact(ctx, source.getMaintainableArtefact(), true);
         }
 
     }
