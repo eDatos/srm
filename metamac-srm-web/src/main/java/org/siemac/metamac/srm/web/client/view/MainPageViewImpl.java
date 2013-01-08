@@ -61,6 +61,7 @@ public class MainPageViewImpl extends ViewWithUiHandlers<MainPageUiHandlers> imp
         Window.enableScrolling(false);
         Window.setMargin(DEFAULT_MARGIN);
 
+        // Add handlers to the resources menu
         registerStructuralResourcesMenuHandlers();
 
         // Initialize the main layout container
@@ -74,11 +75,15 @@ public class MainPageViewImpl extends ViewWithUiHandlers<MainPageUiHandlers> imp
         northLayout = new HLayout();
         northLayout.setHeight(NORTH_HEIGHT);
 
+        VLayout breadCrumbLayout = new VLayout();
+        breadCrumbLayout.addMember(this.breadCrumbsPanel);
+        breadCrumbLayout.setMargin(10);
+
         // Nested layout container
         VLayout vLayout = new VLayout();
         vLayout.addMember(this.masterHead);
         vLayout.addMember(this.structuralResourcesMenu);
-        vLayout.addMember(this.breadCrumbsPanel);
+        vLayout.addMember(breadCrumbLayout);
 
         // Nested layout container to the North layout container
         northLayout.addMember(vLayout);
