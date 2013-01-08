@@ -147,10 +147,11 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
         identifiersForm = new GroupDynamicForm(getConstants().codeIdentifiers());
         ViewTextItem code = new ViewTextItem(CodeDS.CODE, getConstants().identifiableArtefactCode());
         ViewMultiLanguageTextItem name = new ViewMultiLanguageTextItem(CodeDS.NAME, getConstants().nameableArtefactName());
+        ViewMultiLanguageTextItem shortName = new ViewMultiLanguageTextItem(CodeDS.SHORT_NAME, getConstants().codeShortName());
         ViewTextItem uri = new ViewTextItem(CodeDS.URI, getConstants().identifiableArtefactUri());
         ViewTextItem urn = new ViewTextItem(CodeDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(CodeDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
-        identifiersForm.setFields(code, name, uri, urn, urnProvider);
+        identifiersForm.setFields(code, name, shortName, uri, urn, urnProvider);
 
         // Content descriptors
         contentDescriptorsForm = new GroupDynamicForm(getConstants().codeContentDescriptors());
@@ -178,10 +179,11 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
         code.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());
         MultiLanguageTextItem name = new MultiLanguageTextItem(CodeDS.NAME, getConstants().nameableArtefactName());
         name.setRequired(true);
+        MultiLanguageTextItem shortName = new MultiLanguageTextItem(CodeDS.SHORT_NAME, getConstants().codeShortName());
         ViewTextItem uri = new ViewTextItem(CodeDS.URI, getConstants().identifiableArtefactUri());
         ViewTextItem urn = new ViewTextItem(CodeDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(CodeDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
-        identifiersEditionForm.setFields(code, name, uri, urn, urnProvider);
+        identifiersEditionForm.setFields(code, name, shortName, uri, urn, urnProvider);
 
         // Content descriptors
         contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().codeContentDescriptors());
@@ -232,6 +234,7 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
         // Identifiers Form
         identifiersForm.setValue(CodeDS.CODE, codeDto.getCode());
         identifiersForm.setValue(CodeDS.NAME, RecordUtils.getInternationalStringRecord(codeDto.getName()));
+        identifiersForm.setValue(CodeDS.SHORT_NAME, RecordUtils.getInternationalStringRecord(codeDto.getShortName()));
         identifiersForm.setValue(CodeDS.URI, codeDto.getUriProvider());
         identifiersForm.setValue(CodeDS.URN, codeDto.getUrn());
         identifiersForm.setValue(CodeDS.URN_PROVIDER, codeDto.getUrnProvider());
@@ -251,6 +254,7 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
         // Identifiers Form
         identifiersEditionForm.setValue(CodeDS.CODE, codeDto.getCode());
         identifiersEditionForm.setValue(CodeDS.NAME, RecordUtils.getInternationalStringRecord(codeDto.getName()));
+        identifiersEditionForm.setValue(CodeDS.SHORT_NAME, RecordUtils.getInternationalStringRecord(codeDto.getShortName()));
         identifiersEditionForm.setValue(CodeDS.URI, codeDto.getUriProvider());
         identifiersEditionForm.setValue(CodeDS.URN, codeDto.getUrn());
         identifiersEditionForm.setValue(CodeDS.URN_PROVIDER, codeDto.getUrnProvider());
@@ -269,6 +273,7 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
         // Identifiers Form
         codeDto.setCode(identifiersEditionForm.getValueAsString(CodeDS.CODE));
         codeDto.setName((InternationalStringDto) identifiersEditionForm.getValue(CodeDS.NAME));
+        codeDto.setShortName((InternationalStringDto) identifiersEditionForm.getValue(CodeDS.SHORT_NAME));
 
         // Content descriptors
         codeDto.setDescription((InternationalStringDto) contentDescriptorsEditionForm.getValue(CodeDS.DESCRIPTION));

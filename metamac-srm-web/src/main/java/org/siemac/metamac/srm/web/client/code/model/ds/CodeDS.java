@@ -4,4 +4,6 @@ import org.siemac.metamac.srm.web.client.model.ds.ItemDS;
 
 public class CodeDS extends ItemDS {
 
+    public static final String SHORT_NAME = "code-short-name";
+
 }
