@@ -1,5 +1,6 @@
 import "classpath:/btdesign/metamac-core-common-dtos.btdesign"
 import "classpath:/btdesign/statistic-sdmx-v2_1-domain-dtos-codes.btdesign"
+import "classpath:/btdesign/statistic-sdmx-v2_1-domain-dtos-core.btdesign"
 import "classpath:/btdesign/metamac-srm-core-enum.btdesign"
 import "classpath:/btdesign/metamac-srm-core-base-dtos.btdesign"
 import "classpath:/btdesign/metamac-srm-core-codes-enum.btdesign"
@@ -34,5 +35,25 @@ Application DtosMetamacCodeDomain {
 			- @InternationalStringDto shortName nullable;
 		}
 		
+		"Dto for CodelistFamilyDto"		
+		DataTransferObject CodelistFamilyDto extends @IdentifiableArtefactDto {
+			
+			"Name"
+			- @InternationalStringDto name nullable;
+		}
+		
+		"Dto for VariableFamilyDto"		
+		DataTransferObject VariableFamilyDto extends @IdentifiableArtefactDto {
+			
+			"Name"
+			- @InternationalStringDto name nullable;
+		}
+		
+		"Dto for VariableDto"		
+		DataTransferObject VariableDto extends @IdentifiableArtefactDto {
+			
+			"Name"
+			- @InternationalStringDto name nullable;
+		}
 	}
 }
