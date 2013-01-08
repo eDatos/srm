@@ -109,7 +109,7 @@ public class OrganisationSchemeListPresenter extends Presenter<OrganisationSchem
     @Override
     public void goToOrganisationScheme(String urn, OrganisationSchemeTypeEnum type) {
         if (!StringUtils.isBlank(urn)) {
-            placeManager.revealRelativePlace(PlaceRequestUtils.buildOrganisationSchemePlaceRequest(urn, type));
+            placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeOrganisationSchemePlaceRequest(urn, type));
         }
     }
 

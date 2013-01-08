@@ -222,7 +222,7 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
                 getView().setOrganisationScheme(organisationSchemeMetamacDto);
 
                 // Update URL
-                PlaceRequest placeRequest = PlaceRequestUtils.buildOrganisationSchemePlaceRequest(organisationSchemeMetamacDto.getUrn(), organisationSchemeMetamacDto.getType());
+                PlaceRequest placeRequest = PlaceRequestUtils.buildRelativeOrganisationSchemePlaceRequest(organisationSchemeMetamacDto.getUrn(), organisationSchemeMetamacDto.getType());
                 placeManager.updateHistory(placeRequest, true);
             }
         });
@@ -353,7 +353,7 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
                 retrieveOrganisationSchemeByUrn(organisationSchemeMetamacDto.getUrn());
 
                 // Update URL
-                PlaceRequest placeRequest = PlaceRequestUtils.buildOrganisationSchemePlaceRequest(organisationSchemeMetamacDto.getUrn(), organisationSchemeMetamacDto.getType());
+                PlaceRequest placeRequest = PlaceRequestUtils.buildRelativeOrganisationSchemePlaceRequest(organisationSchemeMetamacDto.getUrn(), organisationSchemeMetamacDto.getType());
                 placeManager.updateHistory(placeRequest, true);
             }
         });
@@ -401,14 +401,14 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
     @Override
     public void goToOrganisationScheme(String urn, OrganisationSchemeTypeEnum type) {
         if (!StringUtils.isBlank(urn)) {
-            placeManager.revealRelativePlace(PlaceRequestUtils.buildOrganisationSchemePlaceRequest(urn, type), -1);
+            placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeOrganisationSchemePlaceRequest(urn, type), -1);
         }
     }
 
     @Override
     public void goToOrganisation(String urn) {
         if (!StringUtils.isBlank(urn)) {
-            placeManager.revealRelativePlace(PlaceRequestUtils.buildOrganisationPlaceRequest(urn));
+            placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeOrganisationPlaceRequest(urn));
         }
     }
 

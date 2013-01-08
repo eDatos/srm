@@ -177,7 +177,7 @@ public class OrganisationPresenter extends Presenter<OrganisationPresenter.Organ
                 getView().setOrganisation(result.getOrganisationSaved(), contactToUpdateId);
 
                 // Update URL
-                PlaceRequest placeRequest = PlaceRequestUtils.buildOrganisationPlaceRequest(organisationMetamacDto.getUrn());
+                PlaceRequest placeRequest = PlaceRequestUtils.buildRelativeOrganisationPlaceRequest(organisationMetamacDto.getUrn());
                 placeManager.updateHistory(placeRequest, true);
             }
         });
@@ -241,12 +241,12 @@ public class OrganisationPresenter extends Presenter<OrganisationPresenter.Organ
     @Override
     public void goToOrganisation(String urn) {
         if (!StringUtils.isBlank(urn)) {
-            placeManager.revealRelativePlace(PlaceRequestUtils.buildOrganisationPlaceRequest(urn), -1);
+            placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeOrganisationPlaceRequest(urn), -1);
         }
     }
 
     private void goToOrganisationScheme(String urn) {
-        placeManager.revealRelativePlace(PlaceRequestUtils.buildOrganisationSchemePlaceRequest(urn, CommonUtils.getOrganisationSchemeTypeEnum(organisationMetamacDto.getType())), -2);
+        placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeOrganisationSchemePlaceRequest(urn, CommonUtils.getOrganisationSchemeTypeEnum(organisationMetamacDto.getType())), -2);
 
     }
 

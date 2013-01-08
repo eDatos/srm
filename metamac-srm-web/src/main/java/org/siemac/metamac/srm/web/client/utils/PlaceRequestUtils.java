@@ -1,5 +1,8 @@
 package org.siemac.metamac.srm.web.client.utils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.siemac.metamac.srm.web.client.NameTokens;
 import org.siemac.metamac.srm.web.client.PlaceRequestParams;
 import org.siemac.metamac.web.common.client.utils.UrnUtils;
@@ -23,9 +26,23 @@ public class PlaceRequestUtils {
         return null;
     }
 
-    public static PlaceRequest buildDsdPlaceRequest(String dsdUrn) {
+    public static PlaceRequest buildRelativeDsdPlaceRequest(String dsdUrn) {
         PlaceRequest placeRequest = new PlaceRequest(NameTokens.dsdPage).with(PlaceRequestParams.dsdParamId, UrnUtils.removePrefix(dsdUrn));
         return placeRequest;
+    }
+
+    public static List<PlaceRequest> buildAbsoluteDsdListPlaceRequest() {
+        List<PlaceRequest> placeRequestHierarchy = new ArrayList<PlaceRequest>();
+        placeRequestHierarchy.add(new PlaceRequest(NameTokens.structuralResourcesPage));
+        placeRequestHierarchy.add(new PlaceRequest(NameTokens.dsdListPage));
+        return placeRequestHierarchy;
+    }
+
+    public static List<PlaceRequest> buildAbsoluteDsdPlaceRequest(String urn) {
+        List<PlaceRequest> placeRequests = buildAbsoluteDsdListPlaceRequest();
+        PlaceRequest dsdPlace = PlaceRequestUtils.buildRelativeDsdPlaceRequest(urn);
+        placeRequests.add(dsdPlace);
+        return placeRequests;
     }
 
     //
@@ -43,9 +60,23 @@ public class PlaceRequestUtils {
         return null;
     }
 
-    public static PlaceRequest buildConceptSchemePlaceRequest(String conceptSchemeUrn) {
+    public static PlaceRequest buildRelativeConceptSchemePlaceRequest(String conceptSchemeUrn) {
         PlaceRequest placeRequest = new PlaceRequest(NameTokens.conceptSchemePage).with(PlaceRequestParams.conceptSchemeParamId, UrnUtils.removePrefix(conceptSchemeUrn));
         return placeRequest;
+    }
+
+    public static List<PlaceRequest> buildAbsoluteConceptSchemeListPlaceRequest() {
+        List<PlaceRequest> placeRequestHierarchy = new ArrayList<PlaceRequest>();
+        placeRequestHierarchy.add(new PlaceRequest(NameTokens.structuralResourcesPage));
+        placeRequestHierarchy.add(new PlaceRequest(NameTokens.conceptSchemeListPage));
+        return placeRequestHierarchy;
+    }
+
+    public static List<PlaceRequest> buildAbsoluteConceptSchemePlaceRequest(String urn) {
+        List<PlaceRequest> placeRequests = buildAbsoluteConceptSchemeListPlaceRequest();
+        PlaceRequest conceptSchemePlace = PlaceRequestUtils.buildRelativeConceptSchemePlaceRequest(urn);
+        placeRequests.add(conceptSchemePlace);
+        return placeRequests;
     }
 
     // Concepts
@@ -59,7 +90,7 @@ public class PlaceRequestUtils {
         return null;
     }
 
-    public static PlaceRequest buildConceptPlaceRequest(String conceptUrn) {
+    public static PlaceRequest buildRelativeConceptPlaceRequest(String conceptUrn) {
         String[] splitUrn = UrnUtils.splitUrnByDots(UrnUtils.removePrefix(conceptUrn));
         PlaceRequest placeRequest = new PlaceRequest(NameTokens.conceptPage).with(PlaceRequestParams.conceptParamId, splitUrn[splitUrn.length - 1]);
         return placeRequest;
@@ -89,10 +120,24 @@ public class PlaceRequestUtils {
         return null;
     }
 
-    public static PlaceRequest buildOrganisationSchemePlaceRequest(String organisationSchemeUrn, OrganisationSchemeTypeEnum organisationSchemeType) {
+    public static PlaceRequest buildRelativeOrganisationSchemePlaceRequest(String organisationSchemeUrn, OrganisationSchemeTypeEnum organisationSchemeType) {
         PlaceRequest placeRequest = new PlaceRequest(NameTokens.organisationSchemePage).with(PlaceRequestParams.organisationSchemeParamType, organisationSchemeType.name()).with(
                 PlaceRequestParams.organisationSchemeParamId, UrnUtils.removePrefix(organisationSchemeUrn));
         return placeRequest;
+    }
+
+    public static List<PlaceRequest> buildAbsoluteOrganisationSchemeListPlaceRequest() {
+        List<PlaceRequest> placeRequestHierarchy = new ArrayList<PlaceRequest>();
+        placeRequestHierarchy.add(new PlaceRequest(NameTokens.structuralResourcesPage));
+        placeRequestHierarchy.add(new PlaceRequest(NameTokens.organisationSchemeListPage));
+        return placeRequestHierarchy;
+    }
+
+    public static List<PlaceRequest> buildAbsoluteOrganisationSchemePlaceRequest(String urn, OrganisationSchemeTypeEnum type) {
+        List<PlaceRequest> placeRequests = buildAbsoluteOrganisationSchemeListPlaceRequest();
+        PlaceRequest organisationSchemePlace = PlaceRequestUtils.buildRelativeOrganisationSchemePlaceRequest(urn, type);
+        placeRequests.add(organisationSchemePlace);
+        return placeRequests;
     }
 
     // Organisations
@@ -106,7 +151,7 @@ public class PlaceRequestUtils {
         return null;
     }
 
-    public static PlaceRequest buildOrganisationPlaceRequest(String organisationUrn) {
+    public static PlaceRequest buildRelativeOrganisationPlaceRequest(String organisationUrn) {
         String[] splitUrn = UrnUtils.splitUrnByDots(UrnUtils.removePrefix(organisationUrn));
         PlaceRequest placeRequest = new PlaceRequest(NameTokens.organisationPage).with(PlaceRequestParams.organisationParamId, splitUrn[splitUrn.length - 1]);
         return placeRequest;
@@ -127,9 +172,23 @@ public class PlaceRequestUtils {
         return null;
     }
 
-    public static PlaceRequest buildCategorySchemePlaceRequest(String categorySchemeUrn) {
+    public static PlaceRequest buildRelativeCategorySchemePlaceRequest(String categorySchemeUrn) {
         PlaceRequest placeRequest = new PlaceRequest(NameTokens.categorySchemePage).with(PlaceRequestParams.categorySchemeParamId, UrnUtils.removePrefix(categorySchemeUrn));
         return placeRequest;
+    }
+
+    public static List<PlaceRequest> buildAbsoluteCategorySchemeListPlaceRequest() {
+        List<PlaceRequest> placeRequestHierarchy = new ArrayList<PlaceRequest>();
+        placeRequestHierarchy.add(new PlaceRequest(NameTokens.structuralResourcesPage));
+        placeRequestHierarchy.add(new PlaceRequest(NameTokens.categorySchemeListPage));
+        return placeRequestHierarchy;
+    }
+
+    public static List<PlaceRequest> buildAbsoluteCategorySchemePlaceRequest(String urn) {
+        List<PlaceRequest> placeRequests = buildAbsoluteCategorySchemeListPlaceRequest();
+        PlaceRequest categorySchemePlace = PlaceRequestUtils.buildRelativeCategorySchemePlaceRequest(urn);
+        placeRequests.add(categorySchemePlace);
+        return placeRequests;
     }
 
     // Categories
@@ -151,7 +210,7 @@ public class PlaceRequestUtils {
         return null;
     }
 
-    public static PlaceRequest buildCategoryPlaceRequest(String categoryUrn) {
+    public static PlaceRequest buildRelativeCategoryPlaceRequest(String categoryUrn) {
         String identifier = UrnUtils.removePrefix(categoryUrn);
         String[] splitIdentifier = identifier.split(CATEGORY_IDENTIFIER_SPLITTER_BY_VERSION_REG_EXP);
         PlaceRequest placeRequest = new PlaceRequest(NameTokens.categoryPage).with(PlaceRequestParams.categoryParamId, splitIdentifier[splitIdentifier.length - 1]);
@@ -173,9 +232,23 @@ public class PlaceRequestUtils {
         return null;
     }
 
-    public static PlaceRequest buildCodelistPlaceRequest(String codelistUrn) {
+    public static PlaceRequest buildRelativeCodelistPlaceRequest(String codelistUrn) {
         PlaceRequest placeRequest = new PlaceRequest(NameTokens.codelistPage).with(PlaceRequestParams.codelistParamId, UrnUtils.removePrefix(codelistUrn));
         return placeRequest;
+    }
+
+    public static List<PlaceRequest> buildAbsoluteCodelistListPlaceRequest() {
+        List<PlaceRequest> placeRequestHierarchy = new ArrayList<PlaceRequest>();
+        placeRequestHierarchy.add(new PlaceRequest(NameTokens.structuralResourcesPage));
+        placeRequestHierarchy.add(new PlaceRequest(NameTokens.codelistListPage));
+        return placeRequestHierarchy;
+    }
+
+    public static List<PlaceRequest> buildAbsoluteCodelistPlaceRequest(String urn) {
+        List<PlaceRequest> placeRequests = buildAbsoluteCodelistListPlaceRequest();
+        PlaceRequest codelistPlace = PlaceRequestUtils.buildRelativeCodelistPlaceRequest(urn);
+        placeRequests.add(codelistPlace);
+        return placeRequests;
     }
 
     // Codes
@@ -189,7 +262,7 @@ public class PlaceRequestUtils {
         return null;
     }
 
-    public static PlaceRequest buildCodePlaceRequest(String codeUrn) {
+    public static PlaceRequest buildRelativeCodePlaceRequest(String codeUrn) {
         String[] splitUrn = UrnUtils.splitUrnByDots(UrnUtils.removePrefix(codeUrn));
         PlaceRequest placeRequest = new PlaceRequest(NameTokens.codePage).with(PlaceRequestParams.codeParamId, splitUrn[splitUrn.length - 1]);
         return placeRequest;

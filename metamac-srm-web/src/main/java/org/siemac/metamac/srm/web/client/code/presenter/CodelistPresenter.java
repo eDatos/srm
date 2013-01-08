@@ -16,6 +16,7 @@ import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
 import org.siemac.metamac.srm.web.client.code.view.handlers.CodelistUiHandlers;
+import org.siemac.metamac.srm.web.client.code.widgets.CodesToolStripPresenterWidget;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
@@ -68,10 +69,12 @@ import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 
 public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView, CodelistPresenter.CodelistProxy> implements CodelistUiHandlers {
 
-    private final DispatchAsync dispatcher;
-    private final PlaceManager  placeManager;
+    private final DispatchAsync           dispatcher;
+    private final PlaceManager            placeManager;
 
-    private CodelistMetamacDto  codelistMetamacDto;
+    private CodelistMetamacDto            codelistMetamacDto;
+
+    private CodesToolStripPresenterWidget codesToolStripPresenterWidget;
 
     @TitleFunction
     public static String getTranslatedTitle() {
@@ -92,19 +95,25 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
     }
 
     @ContentSlot
-    public static final Type<RevealContentHandler<?>> TYPE_SetContextAreaContentCodelist = new Type<RevealContentHandler<?>>();
+    public static final Type<RevealContentHandler<?>> TYPE_SetContextAreaContentCodelist     = new Type<RevealContentHandler<?>>();
+
+    public static final Object                        TYPE_SetContextAreaContentCodesToolBar = new Object();
 
     @Inject
-    public CodelistPresenter(EventBus eventBus, CodelistView view, CodelistProxy proxy, DispatchAsync dispatcher, PlaceManager placeManager) {
+    public CodelistPresenter(EventBus eventBus, CodelistView view, CodelistProxy proxy, DispatchAsync dispatcher, PlaceManager placeManager, CodesToolStripPresenterWidget codesToolStripPresenterWidget) {
         super(eventBus, view, proxy);
         this.placeManager = placeManager;
         this.dispatcher = dispatcher;
+        this.codesToolStripPresenterWidget = codesToolStripPresenterWidget;
         getView().setUiHandlers(this);
     }
 
     @Override
     protected void onReveal() {
         super.onReveal();
+
+        setInSlot(TYPE_SetContextAreaContentCodesToolBar, codesToolStripPresenterWidget);
+
         SetTitleEvent.fire(this, getConstants().codelist());
         SelectMenuButtonEvent.fire(this, ToolStripButtonEnum.CODELISTS);
     }
@@ -154,13 +163,13 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
     @Override
     public void goToCodelist(String urn) {
         if (!StringUtils.isBlank(urn)) {
-            placeManager.revealRelativePlace(PlaceRequestUtils.buildCodelistPlaceRequest(urn), -1);
+            placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeCodelistPlaceRequest(urn), -1);
         }
     }
 
     @Override
     public void goToCode(String urn) {
-        placeManager.revealRelativePlace(PlaceRequestUtils.buildCodePlaceRequest(urn));
+        placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeCodePlaceRequest(urn));
     }
 
     @Override
@@ -224,7 +233,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
                 getView().setCodelist(codelistMetamacDto);
 
                 // Update URL
-                PlaceRequest placeRequest = PlaceRequestUtils.buildCodelistPlaceRequest(codelistMetamacDto.getUrn());
+                PlaceRequest placeRequest = PlaceRequestUtils.buildRelativeCodelistPlaceRequest(codelistMetamacDto.getUrn());
                 placeManager.updateHistory(placeRequest, true);
             }
         });
@@ -363,7 +372,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
                 retrieveCodelistByUrn(codelistMetamacDto.getUrn());
 
                 // Update URL
-                PlaceRequest placeRequest = PlaceRequestUtils.buildCodelistPlaceRequest(codelistMetamacDto.getUrn());
+                PlaceRequest placeRequest = PlaceRequestUtils.buildRelativeCodelistPlaceRequest(codelistMetamacDto.getUrn());
                 placeManager.updateHistory(placeRequest, true);
             }
         });

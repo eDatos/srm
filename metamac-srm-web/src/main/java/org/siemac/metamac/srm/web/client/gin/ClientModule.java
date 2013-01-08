@@ -15,6 +15,8 @@ import org.siemac.metamac.srm.web.client.code.presenter.CodelistPresenter;
 import org.siemac.metamac.srm.web.client.code.view.CodeViewImpl;
 import org.siemac.metamac.srm.web.client.code.view.CodelistListViewImpl;
 import org.siemac.metamac.srm.web.client.code.view.CodelistViewImpl;
+import org.siemac.metamac.srm.web.client.code.widgets.CodesToolStripPresenterWidget;
+import org.siemac.metamac.srm.web.client.code.widgets.CodesToolStripViewImpl;
 import org.siemac.metamac.srm.web.client.presenter.ErrorPagePresenter;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.presenter.StructuralResourcesPresenter;
@@ -23,8 +25,6 @@ import org.siemac.metamac.srm.web.client.view.ErrorPageViewImpl;
 import org.siemac.metamac.srm.web.client.view.MainPageViewImpl;
 import org.siemac.metamac.srm.web.client.view.StructuralResourcesViewImpl;
 import org.siemac.metamac.srm.web.client.view.UnauthorizedPageViewImpl;
-import org.siemac.metamac.srm.web.client.widgets.presenter.ToolStripPresenterWidget;
-import org.siemac.metamac.srm.web.client.widgets.view.ToolStripViewImpl;
 import org.siemac.metamac.srm.web.concept.presenter.ConceptPresenter;
 import org.siemac.metamac.srm.web.concept.presenter.ConceptSchemeListPresenter;
 import org.siemac.metamac.srm.web.concept.presenter.ConceptSchemePresenter;
@@ -72,13 +72,12 @@ public class ClientModule extends AbstractPresenterModule {
 
         // Default place
         bindConstant().annotatedWith(DefaultPlace.class).to(NameTokens.structuralResourcesPage);
-        // DEV: bindConstant().annotatedWith(DefaultPlace.class).to(NameTokens.conceptSchemeListPage);
 
         // Security cookie to protect against XSRF attacks
         bindConstant().annotatedWith(SecurityCookie.class).to(SharedTokens.securityCookieName);
 
         // PresenterWidgets
-        bindSingletonPresenterWidget(ToolStripPresenterWidget.class, ToolStripPresenterWidget.ToolStripView.class, ToolStripViewImpl.class);
+        bindSingletonPresenterWidget(CodesToolStripPresenterWidget.class, CodesToolStripPresenterWidget.CodesToolStripView.class, CodesToolStripViewImpl.class);
 
         // Gate keeper
         bind(LoggedInGatekeeper.class).in(Singleton.class);

@@ -146,7 +146,7 @@ public class CategoryPresenter extends Presenter<CategoryPresenter.CategoryView,
                 getView().setCategory(result.getCategorySaved());
 
                 // Update URL
-                PlaceRequest placeRequest = PlaceRequestUtils.buildCategoryPlaceRequest(categoryMetamacDto.getUrn());
+                PlaceRequest placeRequest = PlaceRequestUtils.buildRelativeCategoryPlaceRequest(categoryMetamacDto.getUrn());
                 placeManager.updateHistory(placeRequest, true);
             }
         });
@@ -201,11 +201,11 @@ public class CategoryPresenter extends Presenter<CategoryPresenter.CategoryView,
 
     @Override
     public void goToCategory(String urn) {
-        placeManager.revealRelativePlace(PlaceRequestUtils.buildCategoryPlaceRequest(urn), -1);
+        placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeCategoryPlaceRequest(urn), -1);
     }
 
     private void goToCategoryScheme(String urn) {
-        placeManager.revealRelativePlace(PlaceRequestUtils.buildCategorySchemePlaceRequest(urn), -2);
+        placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeCategorySchemePlaceRequest(urn), -2);
     }
 
 }

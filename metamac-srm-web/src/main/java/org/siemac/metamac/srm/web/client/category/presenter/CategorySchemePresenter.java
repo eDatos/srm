@@ -196,7 +196,7 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
                 getView().setCategoryScheme(categorySchemeMetamacDto);
 
                 // Update URL
-                PlaceRequest placeRequest = PlaceRequestUtils.buildCategorySchemePlaceRequest(categorySchemeMetamacDto.getUrn());
+                PlaceRequest placeRequest = PlaceRequestUtils.buildRelativeCategorySchemePlaceRequest(categorySchemeMetamacDto.getUrn());
                 placeManager.updateHistory(placeRequest, true);
             }
         });
@@ -320,7 +320,7 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
                 retrieveCategorySchemeByUrn(categorySchemeMetamacDto.getUrn());
 
                 // Update URL
-                PlaceRequest placeRequest = PlaceRequestUtils.buildCategorySchemePlaceRequest(categorySchemeMetamacDto.getUrn());
+                PlaceRequest placeRequest = PlaceRequestUtils.buildRelativeCategorySchemePlaceRequest(categorySchemeMetamacDto.getUrn());
                 placeManager.updateHistory(placeRequest, true);
             }
         });
@@ -361,14 +361,14 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
     @Override
     public void goToCategoryScheme(String urn) {
         if (!StringUtils.isBlank(urn)) {
-            placeManager.revealRelativePlace(PlaceRequestUtils.buildCategorySchemePlaceRequest(urn), -1);
+            placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeCategorySchemePlaceRequest(urn), -1);
         }
     }
 
     @Override
     public void goToCategory(String urn) {
         if (!StringUtils.isBlank(urn)) {
-            placeManager.revealRelativePlace(PlaceRequestUtils.buildCategoryPlaceRequest(urn));
+            placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeCategoryPlaceRequest(urn));
         }
     }
 }

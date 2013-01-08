@@ -176,7 +176,7 @@ public class CategorySchemeListPresenter extends Presenter<CategorySchemeListPre
     @Override
     public void goToCategoryScheme(String urn) {
         if (!StringUtils.isBlank(urn)) {
-            placeManager.revealRelativePlace(PlaceRequestUtils.buildCategorySchemePlaceRequest(urn));
+            placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeCategorySchemePlaceRequest(urn));
         }
     }
 

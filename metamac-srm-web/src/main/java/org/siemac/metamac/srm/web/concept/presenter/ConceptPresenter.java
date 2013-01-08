@@ -225,7 +225,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
                 getView().setConcept(result.getConceptDto(), result.getRoles(), result.getRelatedConcepts());
 
                 // Update URL
-                PlaceRequest placeRequest = PlaceRequestUtils.buildConceptPlaceRequest(result.getConceptDto().getUrn());
+                PlaceRequest placeRequest = PlaceRequestUtils.buildRelativeConceptPlaceRequest(result.getConceptDto().getUrn());
                 placeManager.updateHistory(placeRequest, true);
             }
         });
@@ -253,11 +253,11 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
 
     @Override
     public void goToConcept(String urn) {
-        placeManager.revealRelativePlace(PlaceRequestUtils.buildConceptPlaceRequest(urn), -1);
+        placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeConceptPlaceRequest(urn), -1);
     }
 
     private void goToConceptScheme(String urn) {
-        placeManager.revealRelativePlace(PlaceRequestUtils.buildConceptSchemePlaceRequest(urn), -2);
+        placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeConceptSchemePlaceRequest(urn), -2);
     }
 
     @Override

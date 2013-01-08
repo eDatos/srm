@@ -1,6 +1,5 @@
 package org.siemac.metamac.srm.web.client.presenter;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -10,6 +9,7 @@ import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent.SelectMenuButtonHandler;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
+import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.client.view.handlers.MainPageUiHandlers;
 import org.siemac.metamac.srm.web.client.widgets.BreadCrumbsPanel;
 import org.siemac.metamac.srm.web.shared.GetUserGuideUrlAction;
@@ -219,51 +219,26 @@ public class MainPagePresenter extends Presenter<MainPagePresenter.MainPageView,
 
     @Override
     public void goToConcepts() {
-        PlaceRequest resourcesRequest = new PlaceRequest(NameTokens.structuralResourcesPage);
-        PlaceRequest conceptSchemeListRequest = new PlaceRequest(NameTokens.conceptSchemeListPage);
-        List<PlaceRequest> placeRequestHierarchy = new ArrayList<PlaceRequest>();
-        placeRequestHierarchy.add(resourcesRequest);
-        placeRequestHierarchy.add(conceptSchemeListRequest);
-        placeManager.revealPlaceHierarchy(placeRequestHierarchy);
+        placeManager.revealPlaceHierarchy(PlaceRequestUtils.buildAbsoluteConceptSchemeListPlaceRequest());
     }
 
     @Override
     public void goToCodelists() {
-        PlaceRequest resourcesRequest = new PlaceRequest(NameTokens.structuralResourcesPage);
-        PlaceRequest codelistListRequest = new PlaceRequest(NameTokens.codelistListPage);
-        List<PlaceRequest> placeRequestHierarchy = new ArrayList<PlaceRequest>();
-        placeRequestHierarchy.add(resourcesRequest);
-        placeRequestHierarchy.add(codelistListRequest);
-        placeManager.revealPlaceHierarchy(placeRequestHierarchy);
+        placeManager.revealPlaceHierarchy(PlaceRequestUtils.buildAbsoluteCodelistListPlaceRequest());
     }
 
     @Override
     public void goToDsds() {
-        PlaceRequest resourcesRequest = new PlaceRequest(NameTokens.structuralResourcesPage);
-        PlaceRequest dsdListRequest = new PlaceRequest(NameTokens.dsdListPage);
-        List<PlaceRequest> placeRequestHierarchy = new ArrayList<PlaceRequest>();
-        placeRequestHierarchy.add(resourcesRequest);
-        placeRequestHierarchy.add(dsdListRequest);
-        placeManager.revealPlaceHierarchy(placeRequestHierarchy);
+        placeManager.revealPlaceHierarchy(PlaceRequestUtils.buildAbsoluteDsdListPlaceRequest());
     }
 
     @Override
     public void goToOrganisations() {
-        PlaceRequest resourcesRequest = new PlaceRequest(NameTokens.structuralResourcesPage);
-        PlaceRequest organisationSchemeListRequest = new PlaceRequest(NameTokens.organisationSchemeListPage);
-        List<PlaceRequest> placeRequestHierarchy = new ArrayList<PlaceRequest>();
-        placeRequestHierarchy.add(resourcesRequest);
-        placeRequestHierarchy.add(organisationSchemeListRequest);
-        placeManager.revealPlaceHierarchy(placeRequestHierarchy);
+        placeManager.revealPlaceHierarchy(PlaceRequestUtils.buildAbsoluteOrganisationSchemeListPlaceRequest());
     }
 
     @Override
     public void goToCategories() {
-        PlaceRequest resourcesRequest = new PlaceRequest(NameTokens.structuralResourcesPage);
-        PlaceRequest categorySchemeListRequest = new PlaceRequest(NameTokens.categorySchemeListPage);
-        List<PlaceRequest> placeRequestHierarchy = new ArrayList<PlaceRequest>();
-        placeRequestHierarchy.add(resourcesRequest);
-        placeRequestHierarchy.add(categorySchemeListRequest);
-        placeManager.revealPlaceHierarchy(placeRequestHierarchy);
+        placeManager.revealPlaceHierarchy(PlaceRequestUtils.buildAbsoluteCategorySchemeListPlaceRequest());
     }
 }

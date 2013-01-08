@@ -12,6 +12,7 @@ import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
 import org.siemac.metamac.srm.web.client.code.view.handlers.CodeUiHandlers;
+import org.siemac.metamac.srm.web.client.code.widgets.CodesToolStripPresenterWidget;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
@@ -56,10 +57,12 @@ import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 
 public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresenter.CodeProxy> implements CodeUiHandlers {
 
-    private final DispatchAsync dispatcher;
-    private final PlaceManager  placeManager;
+    private final DispatchAsync           dispatcher;
+    private final PlaceManager            placeManager;
 
-    private String              codelistUrn;
+    private String                        codelistUrn;
+
+    private CodesToolStripPresenterWidget codesToolStripPresenterWidget;
 
     @TitleFunction
     public static String getTranslatedTitle() {
@@ -79,13 +82,16 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
     }
 
     @ContentSlot
-    public static final Type<RevealContentHandler<?>> TYPE_SetContextAreaContentCode = new Type<RevealContentHandler<?>>();
+    public static final Type<RevealContentHandler<?>> TYPE_SetContextAreaContentCode         = new Type<RevealContentHandler<?>>();
+
+    public static final Object                        TYPE_SetContextAreaContentCodesToolBar = new Object();
 
     @Inject
-    public CodePresenter(EventBus eventBus, CodeView view, CodeProxy proxy, DispatchAsync dispatcher, PlaceManager placeManager) {
+    public CodePresenter(EventBus eventBus, CodeView view, CodeProxy proxy, DispatchAsync dispatcher, PlaceManager placeManager, CodesToolStripPresenterWidget codesToolStripPresenterWidget) {
         super(eventBus, view, proxy);
         this.dispatcher = dispatcher;
         this.placeManager = placeManager;
+        this.codesToolStripPresenterWidget = codesToolStripPresenterWidget;
         getView().setUiHandlers(this);
     }
 
@@ -97,6 +103,9 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
     @Override
     protected void onReveal() {
         super.onReveal();
+
+        setInSlot(TYPE_SetContextAreaContentCodesToolBar, codesToolStripPresenterWidget);
+
         SetTitleEvent.fire(this, MetamacSrmWeb.getConstants().code());
         SelectMenuButtonEvent.fire(this, ToolStripButtonEnum.CODELISTS);
     }
@@ -170,7 +179,7 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
                 getView().setCode(result.getCodeDto());
 
                 // Update URL
-                PlaceRequest placeRequest = PlaceRequestUtils.buildCodePlaceRequest(result.getCodeDto().getUrn());
+                PlaceRequest placeRequest = PlaceRequestUtils.buildRelativeCodePlaceRequest(result.getCodeDto().getUrn());
                 placeManager.updateHistory(placeRequest, true);
             }
         });
@@ -198,10 +207,10 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
 
     @Override
     public void goToCode(String urn) {
-        placeManager.revealRelativePlace(PlaceRequestUtils.buildCodePlaceRequest(urn), -1);
+        placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeCodePlaceRequest(urn), -1);
     }
 
     private void goToCodelist(String urn) {
-        placeManager.revealRelativePlace(PlaceRequestUtils.buildCodelistPlaceRequest(urn), -2);
+        placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeCodelistPlaceRequest(urn), -2);
     }
 }

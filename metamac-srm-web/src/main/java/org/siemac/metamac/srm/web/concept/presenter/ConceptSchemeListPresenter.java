@@ -177,7 +177,7 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
     @Override
     public void goToConceptScheme(String urn) {
         if (!StringUtils.isBlank(urn)) {
-            placeManager.revealRelativePlace(PlaceRequestUtils.buildConceptSchemePlaceRequest(urn));
+            placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeConceptSchemePlaceRequest(urn));
         }
     }
 

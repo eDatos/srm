@@ -249,6 +249,19 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
     }
 
     @Override
+    public void setInSlot(Object slot, Widget content) {
+        if (slot == CodelistPresenter.TYPE_SetContextAreaContentCodesToolBar) {
+            if (content != null) {
+                panel.addMember(content, 0);
+            }
+        } else {
+            // To support inheritance in your views it is good practice to call super.setInSlot when you can't handle the call.
+            // Who knows, maybe the parent class knows what to do with this slot.
+            super.setInSlot(slot, content);
+        }
+    }
+
+    @Override
     public void setUiHandlers(CodelistUiHandlers uiHandlers) {
         super.setUiHandlers(uiHandlers);
         this.codesTreeGrid.setUiHandlers(uiHandlers);

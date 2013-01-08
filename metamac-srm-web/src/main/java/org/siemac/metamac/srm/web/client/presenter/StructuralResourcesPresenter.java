@@ -1,6 +1,5 @@
 package org.siemac.metamac.srm.web.client.presenter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.siemac.metamac.core.common.util.shared.StringUtils;
@@ -209,70 +208,35 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
     @Override
     public void goToDsd(String urn) {
         if (!StringUtils.isBlank(urn)) {
-            PlaceRequest structuralResourcesPlace = new PlaceRequest(NameTokens.structuralResourcesPage);
-            PlaceRequest dsdListPlace = new PlaceRequest(NameTokens.dsdListPage);
-            PlaceRequest dsdPlace = PlaceRequestUtils.buildDsdPlaceRequest(urn);
-            List<PlaceRequest> placeRequests = new ArrayList<PlaceRequest>();
-            placeRequests.add(structuralResourcesPlace);
-            placeRequests.add(dsdListPlace);
-            placeRequests.add(dsdPlace);
-            placeManager.revealPlaceHierarchy(placeRequests);
+            placeManager.revealPlaceHierarchy(PlaceRequestUtils.buildAbsoluteDsdPlaceRequest(urn));
         }
     }
 
     @Override
     public void goToConceptScheme(String urn) {
         if (urn != null) {
-            PlaceRequest structuralResourcesPlace = new PlaceRequest(NameTokens.structuralResourcesPage);
-            PlaceRequest schemesListPlace = new PlaceRequest(NameTokens.conceptSchemeListPage);
-            PlaceRequest conceptSchemePlace = PlaceRequestUtils.buildConceptSchemePlaceRequest(urn);
-            List<PlaceRequest> placeRequests = new ArrayList<PlaceRequest>();
-            placeRequests.add(structuralResourcesPlace);
-            placeRequests.add(schemesListPlace);
-            placeRequests.add(conceptSchemePlace);
-            placeManager.revealPlaceHierarchy(placeRequests);
+            placeManager.revealPlaceHierarchy(PlaceRequestUtils.buildAbsoluteConceptSchemePlaceRequest(urn));
         }
     }
 
     @Override
     public void goToOrganisationScheme(String urn, OrganisationSchemeTypeEnum type) {
         if (urn != null) {
-            PlaceRequest structuralResourcesPlace = new PlaceRequest(NameTokens.structuralResourcesPage);
-            PlaceRequest schemesListPlace = new PlaceRequest(NameTokens.organisationSchemeListPage);
-            PlaceRequest organisationSchemePlace = PlaceRequestUtils.buildOrganisationSchemePlaceRequest(urn, type);
-            List<PlaceRequest> placeRequests = new ArrayList<PlaceRequest>();
-            placeRequests.add(structuralResourcesPlace);
-            placeRequests.add(schemesListPlace);
-            placeRequests.add(organisationSchemePlace);
-            placeManager.revealPlaceHierarchy(placeRequests);
+            placeManager.revealPlaceHierarchy(PlaceRequestUtils.buildAbsoluteOrganisationSchemePlaceRequest(urn, type));
         }
     }
 
     @Override
     public void goToCategoryScheme(String urn) {
         if (urn != null) {
-            PlaceRequest structuralResourcesPlace = new PlaceRequest(NameTokens.structuralResourcesPage);
-            PlaceRequest schemesListPlace = new PlaceRequest(NameTokens.categorySchemeListPage);
-            PlaceRequest categorySchemePlace = PlaceRequestUtils.buildCategorySchemePlaceRequest(urn);
-            List<PlaceRequest> placeRequests = new ArrayList<PlaceRequest>();
-            placeRequests.add(structuralResourcesPlace);
-            placeRequests.add(schemesListPlace);
-            placeRequests.add(categorySchemePlace);
-            placeManager.revealPlaceHierarchy(placeRequests);
+            placeManager.revealPlaceHierarchy(PlaceRequestUtils.buildAbsoluteCategorySchemePlaceRequest(urn));
         }
     }
 
     @Override
     public void goToCodelist(String urn) {
         if (urn != null) {
-            PlaceRequest structuralResourcesPlace = new PlaceRequest(NameTokens.structuralResourcesPage);
-            PlaceRequest codelistListPlace = new PlaceRequest(NameTokens.codelistListPage);
-            PlaceRequest codelistPlace = PlaceRequestUtils.buildCodelistPlaceRequest(urn);
-            List<PlaceRequest> placeRequests = new ArrayList<PlaceRequest>();
-            placeRequests.add(structuralResourcesPlace);
-            placeRequests.add(codelistListPlace);
-            placeRequests.add(codelistPlace);
-            placeManager.revealPlaceHierarchy(placeRequests);
+            placeManager.revealPlaceHierarchy(PlaceRequestUtils.buildAbsoluteCodelistPlaceRequest(urn));
         }
     }
 }
