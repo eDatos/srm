@@ -314,7 +314,8 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         ViewTextItem partial = new ViewTextItem(CodelistDS.IS_PARTIAL, getConstants().itemSchemeIsPartial());
         ViewTextItem isExternalReference = new ViewTextItem(CodelistDS.IS_EXTERNAL_REFERENCE, getConstants().maintainableArtefactIsExternalReference());
         ViewTextItem isFinal = new ViewTextItem(CodelistDS.FINAL, getConstants().maintainableArtefactFinalLogic());
-        contentDescriptorsForm.setFields(description, partial, isExternalReference, isFinal);
+        ViewTextItem isRecommended = new ViewTextItem(CodelistDS.IS_RECOMMENDED, getConstants().codelistIsRecommended());
+        contentDescriptorsForm.setFields(description, partial, isExternalReference, isFinal, isRecommended);
 
         // Production descriptors
         productionDescriptorsForm = new GroupDynamicForm(getConstants().codelistProductionDescriptors());
@@ -398,7 +399,8 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         BooleanSelectItem partial = new BooleanSelectItem(CodelistDS.IS_PARTIAL, getConstants().itemSchemeIsPartial());
         ViewTextItem isExternalReference = new ViewTextItem(CodelistDS.IS_EXTERNAL_REFERENCE, getConstants().maintainableArtefactIsExternalReference());
         ViewTextItem isFinal = new ViewTextItem(CodelistDS.FINAL, getConstants().maintainableArtefactFinalLogic());
-        contentDescriptorsEditionForm.setFields(description, partial, isExternalReference, isFinal);
+        BooleanSelectItem isRecommended = new BooleanSelectItem(CodelistDS.IS_RECOMMENDED, getConstants().codelistIsRecommended());
+        contentDescriptorsEditionForm.setFields(description, partial, isExternalReference, isFinal, isRecommended);
 
         // Production descriptors
         productionDescriptorsEditionForm = new GroupDynamicForm(getConstants().codelistProductionDescriptors());
@@ -469,6 +471,8 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
                 : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
         contentDescriptorsForm.setValue(CodelistDS.FINAL, codelistDto.getFinalLogic() != null ? (codelistDto.getFinalLogic() ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon.getConstants()
                 .no()) : StringUtils.EMPTY);
+        contentDescriptorsForm.setValue(CodelistDS.IS_RECOMMENDED, codelistDto.getIsRecommended() != null ? (codelistDto.getIsRecommended() ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon
+                .getConstants().no()) : StringUtils.EMPTY);
 
         // Production descriptors
         productionDescriptorsForm.setValue(CodelistDS.MAINTAINER, codelistDto.getMaintainer() != null ? codelistDto.getMaintainer().getCode() : StringUtils.EMPTY);
@@ -519,6 +523,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
                 .yes() : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
         contentDescriptorsEditionForm.setValue(CodelistDS.FINAL, codelistDto.getFinalLogic() != null ? (codelistDto.getFinalLogic() ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon
                 .getConstants().no()) : StringUtils.EMPTY);
+        contentDescriptorsEditionForm.setValue(CodelistDS.IS_RECOMMENDED, codelistDto.getIsRecommended() != null ? codelistDto.getIsRecommended() : false);
 
         // Production descriptors
         productionDescriptorsEditionForm.setValue(CodelistDS.MAINTAINER, codelistDto.getMaintainer() != null ? codelistDto.getMaintainer().getCode() : StringUtils.EMPTY);
@@ -561,6 +566,8 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         codelistDto.setIsPartial((contentDescriptorsEditionForm.getValue(CodelistDS.IS_PARTIAL) != null && !StringUtils.isEmpty(contentDescriptorsEditionForm.getValueAsString(CodelistDS.IS_PARTIAL)))
                 ? Boolean.valueOf(contentDescriptorsEditionForm.getValueAsString(CodelistDS.IS_PARTIAL))
                 : false);
+        codelistDto.setIsRecommended((contentDescriptorsEditionForm.getValue(CodelistDS.IS_RECOMMENDED) != null && !StringUtils.isEmpty(contentDescriptorsEditionForm
+                .getValueAsString(CodelistDS.IS_RECOMMENDED))) ? Boolean.valueOf(contentDescriptorsEditionForm.getValueAsString(CodelistDS.IS_RECOMMENDED)) : false);
         // Class descriptors
 
         // Comments
