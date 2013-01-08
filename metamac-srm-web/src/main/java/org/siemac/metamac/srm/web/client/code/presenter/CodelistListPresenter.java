@@ -99,8 +99,6 @@ public class CodelistListPresenter extends Presenter<CodelistListPresenter.Codel
     @Override
     protected void onReset() {
         super.onReset();
-        SetTitleEvent.fire(this, getConstants().codelists());
-
         retrieveCodelists(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, null);
     }
 

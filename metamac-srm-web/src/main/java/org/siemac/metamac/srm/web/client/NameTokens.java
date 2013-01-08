@@ -23,7 +23,7 @@ public class NameTokens {
     public static final String conceptSchemePage          = "conceptScheme";
     public static final String conceptPage                = "concept";
 
-    // Organizations
+    // Organisations
     public static final String organisationSchemeListPage = "organisationSchemes";
     public static final String organisationSchemePage     = "organisationScheme";
     public static final String organisationPage           = "organisation";
@@ -39,5 +39,9 @@ public class NameTokens {
     public static final String codePage                   = "code";
     public static final String codelistFamilyListPage     = "codelistFamilies";
     public static final String codelistFamilyPage         = "codelistFamily";
+    public static final String variableFamilyListPage     = "variableFamilies";
+    public static final String variableFamilyPage         = "variableFamily";
+    public static final String variableListPage           = "variables";
+    public static final String variablePage               = "variable";
 
 }

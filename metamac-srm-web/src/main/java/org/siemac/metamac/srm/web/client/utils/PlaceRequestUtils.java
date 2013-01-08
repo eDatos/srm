@@ -267,4 +267,31 @@ public class PlaceRequestUtils {
         PlaceRequest placeRequest = new PlaceRequest(NameTokens.codePage).with(PlaceRequestParams.codeParamId, splitUrn[splitUrn.length - 1]);
         return placeRequest;
     }
+
+    // Codelist families
+
+    public static List<PlaceRequest> buildAbsoluteCodelistFamilyListPlaceRequest() {
+        List<PlaceRequest> placeRequestHierarchy = new ArrayList<PlaceRequest>();
+        placeRequestHierarchy.add(new PlaceRequest(NameTokens.structuralResourcesPage));
+        placeRequestHierarchy.add(new PlaceRequest(NameTokens.codelistFamilyListPage));
+        return placeRequestHierarchy;
+    }
+
+    // Variable families
+
+    public static List<PlaceRequest> buildAbsoluteVariableFamilyListPlaceRequest() {
+        List<PlaceRequest> placeRequestHierarchy = new ArrayList<PlaceRequest>();
+        placeRequestHierarchy.add(new PlaceRequest(NameTokens.structuralResourcesPage));
+        placeRequestHierarchy.add(new PlaceRequest(NameTokens.variableFamilyListPage));
+        return placeRequestHierarchy;
+    }
+
+    // Variables
+
+    public static List<PlaceRequest> buildAbsoluteVariableListPlaceRequest() {
+        List<PlaceRequest> placeRequestHierarchy = new ArrayList<PlaceRequest>();
+        placeRequestHierarchy.add(new PlaceRequest(NameTokens.structuralResourcesPage));
+        placeRequestHierarchy.add(new PlaceRequest(NameTokens.variableListPage));
+        return placeRequestHierarchy;
+    }
 }
