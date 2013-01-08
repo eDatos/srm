@@ -648,147 +648,147 @@
 						the data values are measured.</common:Description>
 				</structure:Concept>
 			</structure:ConceptScheme>
-<!-- 			<structure:ConceptScheme id="DEMO_CONCEPTS" isFinal="true" -->
-<!-- 				agencyID="SDMX01" version="1.0"> -->
-<!-- 				<common:Name xml:lang="en">Demography domain concept scheme -->
-<!-- 				</common:Name> -->
-<!-- 				<structure:Concept id="COUNTRY"> -->
-<!-- 					<common:Name xml:lang="en">Reporting Country</common:Name> -->
-<!-- 				</structure:Concept> -->
-<!-- 				<structure:Concept id="SEX"> -->
-<!-- 					<common:Name xml:lang="en">Sex</common:Name> -->
-<!-- 				</structure:Concept> -->
-<!-- 				<structure:Concept id="DEMO"> -->
-<!-- 					<common:Name xml:lang="en">Demography</common:Name> -->
-<!-- 				</structure:Concept> -->
-<!-- 			</structure:ConceptScheme> -->
-<!-- 			<structure:ConceptScheme id="DEMO_CONCEPTS" isFinal="true" -->
-<!-- 				agencyID="SDMX01" version="2.0"> -->
-<!-- 				<common:Name xml:lang="en">Demography domain concept scheme -->
-<!-- 				</common:Name> -->
-<!-- 				<structure:Concept id="COUNTRY"> -->
-<!-- 					<common:Name xml:lang="en">Reporting Country</common:Name> -->
-<!-- 				</structure:Concept> -->
-<!-- 				<structure:Concept id="SEX"> -->
-<!-- 					<common:Name xml:lang="en">Sex</common:Name> -->
-<!-- 				</structure:Concept> -->
-<!-- 				<structure:Concept id="DEMO"> -->
-<!-- 					<common:Name xml:lang="en">Demography</common:Name> -->
-<!-- 				</structure:Concept> -->
-<!-- 				<structure:Concept id="AGE"> -->
-<!-- 					<common:Name xml:lang="en">Age</common:Name> -->
-<!-- 				</structure:Concept> -->
-<!-- 			</structure:ConceptScheme> -->
-<!-- 			<structure:ConceptScheme id="DEMO_MEASURES" isFinal="true -->
-<!-- 				agencyID="SDMX01" version="1.0"> -->
-<!-- 				<common:Name xml:lang="en">Demography measures concept scheme -->
-<!-- 				</common:Name> -->
-<!-- 				<structure:Concept id="PJANT"> -->
-<!-- 					<common:Name xml:lang="en">Population on 1 January of Year X -->
-<!-- 					</common:Name> -->
-<!-- 					<structure:CoreRepresentation> -->
-<!-- 						<structure:TextFormat textType="Integer" -->
-<!-- 							minValue="0" /> -->
-<!-- 					</structure:CoreRepresentation> -->
-<!-- 				</structure:Concept> -->
-<!-- 				<structure:Concept id="LBIRTHST"> -->
-<!-- 					<common:Name xml:lang="en">Births in Year X</common:Name> -->
-<!-- 					<structure:CoreRepresentation> -->
-<!-- 						<structure:TextFormat textType="Integer" -->
-<!-- 							minValue="0" /> -->
-<!-- 					</structure:CoreRepresentation> -->
-<!-- 				</structure:Concept> -->
-<!-- 				<structure:Concept id="DEATHST"> -->
-<!-- 					<common:Name xml:lang="en">Deaths in Year X</common:Name> -->
-<!-- 					<structure:CoreRepresentation> -->
-<!-- 						<structure:TextFormat textType="Integer" -->
-<!-- 							minValue="0" /> -->
-<!-- 					</structure:CoreRepresentation> -->
-<!-- 				</structure:Concept> -->
-<!-- 				<structure:Concept id="ADJT"> -->
-<!-- 					<common:Name xml:lang="en">Statistical adjustment in Year X -->
-<!-- 					</common:Name> -->
-<!-- 					<structure:CoreRepresentation> -->
-<!-- 						<structure:TextFormat textType="Integer" /> -->
-<!-- 					</structure:CoreRepresentation> -->
-<!-- 				</structure:Concept> -->
-<!-- 				<structure:Concept id="PJAN1T"> -->
-<!-- 					<common:Name xml:lang="en">Population on 1 January Year X+1 -->
-<!-- 					</common:Name> -->
-<!-- 					<structure:CoreRepresentation> -->
-<!-- 						<structure:TextFormat textType="Integer" -->
-<!-- 							minValue="0" /> -->
-<!-- 					</structure:CoreRepresentation> -->
-<!-- 				</structure:Concept> -->
-<!-- 				<structure:Concept id="LBIRTHOUT"> -->
-<!-- 					<common:Name xml:lang="en">Births outside marriage in Year X -->
-<!-- 					</common:Name> -->
-<!-- 					<structure:CoreRepresentation> -->
-<!-- 						<structure:TextFormat textType="Integer" -->
-<!-- 							minValue="0" /> -->
-<!-- 					</structure:CoreRepresentation> -->
-<!-- 				</structure:Concept> -->
-<!-- 				<structure:Concept id="DEATHUN1"> -->
-<!-- 					<common:Name xml:lang="en">Deaths under 1 year in Year X -->
-<!-- 					</common:Name> -->
-<!-- 					<structure:CoreRepresentation> -->
-<!-- 						<structure:TextFormat textType="Integer" -->
-<!-- 							minValue="0" /> -->
-<!-- 					</structure:CoreRepresentation> -->
-<!-- 				</structure:Concept> -->
-<!-- 				<structure:Concept id="MAR"> -->
-<!-- 					<common:Name xml:lang="en">Marriages in Year X</common:Name> -->
-<!-- 					<structure:CoreRepresentation> -->
-<!-- 						<structure:TextFormat textType="Integer" -->
-<!-- 							minValue="0" /> -->
-<!-- 					</structure:CoreRepresentation> -->
-<!-- 				</structure:Concept> -->
-<!-- 				<structure:Concept id="DIV"> -->
-<!-- 					<common:Name xml:lang="en">Divorces in Year X</common:Name> -->
-<!-- 					<structure:CoreRepresentation> -->
-<!-- 						<structure:TextFormat textType="Integer" -->
-<!-- 							minValue="0" /> -->
-<!-- 					</structure:CoreRepresentation> -->
-<!-- 				</structure:Concept> -->
-<!-- 				<structure:Concept id="IMMIT"> -->
-<!-- 					<common:Name xml:lang="en">Immigrants in Year X -->
-<!-- 					</common:Name> -->
-<!-- 					<structure:CoreRepresentation> -->
-<!-- 						<structure:TextFormat textType="Integer" -->
-<!-- 							minValue="0" /> -->
-<!-- 					</structure:CoreRepresentation> -->
-<!-- 				</structure:Concept> -->
-<!-- 				<structure:Concept id="EMIGT"> -->
-<!-- 					<common:Name xml:lang="en">Emigrants in Year X</common:Name> -->
-<!-- 					<structure:CoreRepresentation> -->
-<!-- 						<structure:TextFormat textType="Integer" -->
-<!-- 							minValue="0" /> -->
-<!-- 					</structure:CoreRepresentation> -->
-<!-- 				</structure:Concept> -->
-<!-- 				<structure:Concept id="NETMT"> -->
-<!-- 					<common:Name xml:lang="en">Net migration in Year X -->
-<!-- 					</common:Name> -->
-<!-- 					<structure:CoreRepresentation> -->
-<!-- 						<structure:TextFormat textType="Integer" /> -->
-<!-- 					</structure:CoreRepresentation> -->
-<!-- 				</structure:Concept> -->
-<!-- 				<structure:Concept id="TFRNSI"> -->
-<!-- 					<common:Name xml:lang="en">Total fertility rate in Year X -->
-<!-- 					</common:Name> -->
-<!-- 					<structure:CoreRepresentation> -->
-<!-- 						<structure:TextFormat textType="Decimal" -->
-<!-- 							decimals="2" /> -->
-<!-- 					</structure:CoreRepresentation> -->
-<!-- 				</structure:Concept> -->
-<!-- 				<structure:Concept id="LEXPNSIT"> -->
-<!-- 					<common:Name xml:lang="en">Life expectancy at birth in Year -->
-<!-- 						X</common:Name> -->
-<!-- 					<structure:CoreRepresentation> -->
-<!-- 						<structure:TextFormat textType="Decimal" -->
-<!-- 							decimals="1" /> -->
-<!-- 					</structure:CoreRepresentation> -->
-<!-- 				</structure:Concept> -->
-<!-- 			</structure:ConceptScheme> -->
+			<structure:ConceptScheme id="DEMO_CONCEPTS" isFinal="true"
+				agencyID="SDMX01" version="1.0">
+				<common:Name xml:lang="en">Demography domain concept scheme
+				</common:Name>
+				<structure:Concept id="COUNTRY">
+					<common:Name xml:lang="en">Reporting Country</common:Name>
+				</structure:Concept>
+				<structure:Concept id="SEX">
+					<common:Name xml:lang="en">Sex</common:Name>
+				</structure:Concept>
+				<structure:Concept id="DEMO">
+					<common:Name xml:lang="en">Demography</common:Name>
+				</structure:Concept>
+			</structure:ConceptScheme>
+			<structure:ConceptScheme id="DEMO_CONCEPTS" isFinal="true"
+				agencyID="SDMX01" version="2.0">
+				<common:Name xml:lang="en">Demography domain concept scheme
+				</common:Name>
+				<structure:Concept id="COUNTRY">
+					<common:Name xml:lang="en">Reporting Country</common:Name>
+				</structure:Concept>
+				<structure:Concept id="SEX">
+					<common:Name xml:lang="en">Sex</common:Name>
+				</structure:Concept>
+				<structure:Concept id="DEMO">
+					<common:Name xml:lang="en">Demography</common:Name>
+				</structure:Concept>
+				<structure:Concept id="AGE">
+					<common:Name xml:lang="en">Age</common:Name>
+				</structure:Concept>
+			</structure:ConceptScheme>
+			<structure:ConceptScheme id="DEMO_MEASURES" isFinal="true"
+ 				agencyID="SDMX01" version="1.0">
+				<common:Name xml:lang="en">Demography measures concept scheme
+				</common:Name>
+				<structure:Concept id="PJANT">
+					<common:Name xml:lang="en">Population on 1 January of Year X
+					</common:Name>
+					<structure:CoreRepresentation>
+						<structure:TextFormat textType="Integer"
+							minValue="0" />
+					</structure:CoreRepresentation>
+				</structure:Concept>
+				<structure:Concept id="LBIRTHST">
+					<common:Name xml:lang="en">Births in Year X</common:Name>
+					<structure:CoreRepresentation>
+						<structure:TextFormat textType="Integer"
+							minValue="0" />
+					</structure:CoreRepresentation>
+				</structure:Concept>
+				<structure:Concept id="DEATHST">
+					<common:Name xml:lang="en">Deaths in Year X</common:Name>
+					<structure:CoreRepresentation>
+						<structure:TextFormat textType="Integer"
+							minValue="0" />
+					</structure:CoreRepresentation>
+				</structure:Concept>
+				<structure:Concept id="ADJT">
+					<common:Name xml:lang="en">Statistical adjustment in Year X
+					</common:Name>
+					<structure:CoreRepresentation>
+						<structure:TextFormat textType="Integer" />
+					</structure:CoreRepresentation>
+				</structure:Concept>
+				<structure:Concept id="PJAN1T">
+					<common:Name xml:lang="en">Population on 1 January Year X+1
+					</common:Name>
+					<structure:CoreRepresentation>
+						<structure:TextFormat textType="Integer"
+							minValue="0" />
+					</structure:CoreRepresentation>
+				</structure:Concept>
+				<structure:Concept id="LBIRTHOUT">
+					<common:Name xml:lang="en">Births outside marriage in Year X
+					</common:Name>
+					<structure:CoreRepresentation>
+						<structure:TextFormat textType="Integer"
+							minValue="0" />
+					</structure:CoreRepresentation>
+				</structure:Concept>
+				<structure:Concept id="DEATHUN1">
+					<common:Name xml:lang="en">Deaths under 1 year in Year X
+					</common:Name>
+					<structure:CoreRepresentation>
+						<structure:TextFormat textType="Integer"
+							minValue="0" />
+					</structure:CoreRepresentation>
+				</structure:Concept>
+				<structure:Concept id="MAR">
+					<common:Name xml:lang="en">Marriages in Year X</common:Name>
+					<structure:CoreRepresentation>
+						<structure:TextFormat textType="Integer"
+							minValue="0" />
+					</structure:CoreRepresentation>
+				</structure:Concept>
+				<structure:Concept id="DIV">
+					<common:Name xml:lang="en">Divorces in Year X</common:Name>
+					<structure:CoreRepresentation>
+						<structure:TextFormat textType="Integer"
+							minValue="0" />
+					</structure:CoreRepresentation>
+				</structure:Concept>
+				<structure:Concept id="IMMIT">
+					<common:Name xml:lang="en">Immigrants in Year X
+					</common:Name>
+					<structure:CoreRepresentation>
+						<structure:TextFormat textType="Integer"
+							minValue="0" />
+					</structure:CoreRepresentation>
+				</structure:Concept>
+				<structure:Concept id="EMIGT">
+					<common:Name xml:lang="en">Emigrants in Year X</common:Name>
+					<structure:CoreRepresentation>
+						<structure:TextFormat textType="Integer"
+							minValue="0" />
+					</structure:CoreRepresentation>
+				</structure:Concept>
+				<structure:Concept id="NETMT">
+					<common:Name xml:lang="en">Net migration in Year X
+					</common:Name>
+					<structure:CoreRepresentation>
+						<structure:TextFormat textType="Integer" />
+					</structure:CoreRepresentation>
+				</structure:Concept>
+				<structure:Concept id="TFRNSI">
+					<common:Name xml:lang="en">Total fertility rate in Year X
+					</common:Name>
+					<structure:CoreRepresentation>
+						<structure:TextFormat textType="Decimal"
+							decimals="2" />
+					</structure:CoreRepresentation>
+				</structure:Concept>
+				<structure:Concept id="LEXPNSIT">
+					<common:Name xml:lang="en">Life expectancy at birth in Year
+						X</common:Name>
+					<structure:CoreRepresentation>
+						<structure:TextFormat textType="Decimal"
+							decimals="1" />
+					</structure:CoreRepresentation>
+				</structure:Concept>
+			</structure:ConceptScheme>
 		</structure:Concepts>
 	</message:Structures>
 </message:Structure>
