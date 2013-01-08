@@ -149,6 +149,7 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
         // TODO testear las condiciones de importacion de METAMAC, así como la herencia en el versionado
     }
 
+    // TODO se ignora hasta que se arregle la incidencia del tipo de esquema de concepto
     @Test
     @Ignore
     public void testImport_DEMOGRAPHY_CONCEPTS() throws Exception {
@@ -181,7 +182,7 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
     }
 
     @Ignore
-    // TODO tests import: pendiente reestructuración del servicio de importación
+    // TODO se ignora hasta que se arregle la incidencia del tipo de esquema de concepto
     @Test
     public void testImport_DSD_ECB_EXR_NG_FULL() throws Exception {
         File file = null;
@@ -195,7 +196,7 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
     }
 
     @Ignore
-    // TODO tests import: pendiente reestructuración del servicio de importación
+    // TODO se ignora hasta que se arregle la incidencia del tipo de esquema de concepto
     @Test
     public void testImport_DSD_ECB_EXR_SG_FULL() throws Exception {
         File file = null;
@@ -209,7 +210,7 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
     }
 
     @Ignore
-    // TODO tests import: pendiente reestructuración del servicio de importación
+    // TODO se ignora hasta que se arregle la incidencia del tipo de esquema de concepto
     @Test
     public void testImport_DSD_ECB_EXR_RG_FULL() throws Exception {
         File file = null;
@@ -223,7 +224,7 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
     }
 
     @Ignore
-    // TODO tests import: pendiente reestructuración del servicio de importación
+    // TODO se ignora hasta que se arregle la incidencia del tipo de esquema de concepto
     @Test
     public void testImport_DSD_INE_DPOP() throws Exception {
         File file = null;
@@ -237,7 +238,7 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
     }
 
     @Ignore
-    // TODO tests import: pendiente reestructuración del servicio de importación
+    // TODO se ignora hasta que se arregle la incidencia del tipo de esquema de concepto
     @Test
     public void testImport_DSD_INE_EPOP() throws Exception {
         File file = null;
@@ -251,7 +252,7 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
     }
 
     @Ignore
-    // TODO tests import: pendiente reestructuración del servicio de importación
+    // TODO se ignora hasta que se arregle la incidencia del tipo de esquema de concepto
     @Test
     public void testImport_DSD_INE_IDB() throws Exception {
         File file = null;
@@ -265,7 +266,7 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
     }
 
     @Ignore
-    // TODO tests import: pendiente reestructuración del servicio de importación
+    // TODO se ignora hasta que se arregle la incidencia del tipo de esquema de concepto
     @Test
     public void testImport_DSD_INE_IPC() throws Exception {
         File file = null;
@@ -279,7 +280,7 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
     }
 
     @Ignore
-    // TODO tests import: pendiente reestructuración del servicio de importación
+    // TODO se ignora hasta que se arregle la incidencia del tipo de esquema de concepto
     @Test
     public void testImport_DSD_INE_IPCA() throws Exception {
         File file = null;
@@ -293,7 +294,7 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
     }
 
     @Ignore
-    // TODO tests import: pendiente reestructuración del servicio de importación
+    // TODO se ignora hasta que se arregle la incidencia del tipo de esquema de concepto
     @Test
     public void testImport_DSD_INE_MNP() throws Exception {
         File file = null;
