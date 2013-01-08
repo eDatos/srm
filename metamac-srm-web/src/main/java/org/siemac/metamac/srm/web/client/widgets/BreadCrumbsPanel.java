@@ -9,8 +9,7 @@ public class BreadCrumbsPanel extends FlowPanel {
 
     public BreadCrumbsPanel() {
         super();
-        setHeight("20px");
-        setStyleName("breadCrumbPanel");
+        setHeight("18px");
     }
 
     public void clearBreadCrumbs(int breadcrumbSize, PlaceManager placeManager) {
