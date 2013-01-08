@@ -29,6 +29,9 @@ Application DtosMetamacCodeDomain {
 
 		"Dto for CodeMetamac"
 		DataTransferObject CodeMetamacDto extends @CodeDto {
+			
+			"Short name"
+			- @InternationalStringDto shortName nullable;
 		}
 		
 	}
