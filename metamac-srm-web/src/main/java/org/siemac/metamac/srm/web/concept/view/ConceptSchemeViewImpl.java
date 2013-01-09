@@ -12,7 +12,6 @@ import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
-import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.VersionWindow;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
@@ -557,7 +556,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
 
         // Class descriptors
         classDescriptorsForm.setValue(ConceptSchemeDS.TYPE_VIEW, conceptSchemeDto.getType() != null ? conceptSchemeDto.getType().name() : null);
-        classDescriptorsForm.setValue(ConceptSchemeDS.TYPE, MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().conceptSchemeTypeEnum() + conceptSchemeDto.getType().name()));
+        classDescriptorsForm.setValue(ConceptSchemeDS.TYPE, CommonUtils.getConceptSchemeTypeName(conceptSchemeDto.getType()));
         if (ConceptSchemeTypeEnum.OPERATION.equals(conceptSchemeDto.getType())) {
             classDescriptorsForm.getItem(ConceptSchemeDS.RELATED_OPERATION).show();
         } else {
@@ -617,8 +616,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
 
         // Class descriptors
         classDescriptorsEditionForm.setValue(ConceptSchemeDS.TYPE, conceptSchemeDto.getType().name());
-        classDescriptorsEditionForm.setValue(ConceptSchemeDS.TYPE_VIEW,
-                MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().conceptSchemeTypeEnum() + conceptSchemeDto.getType().name()));
+        classDescriptorsEditionForm.setValue(ConceptSchemeDS.TYPE_VIEW, CommonUtils.getConceptSchemeTypeName(conceptSchemeDto.getType()));
         classDescriptorsEditionForm.setValue(ConceptSchemeDS.RELATED_OPERATION, ExternalItemUtils.getExternalItemName(conceptSchemeDto.getRelatedOperation()));
         classDescriptorsEditionForm.markForRedraw();
 
