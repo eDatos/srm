@@ -27,6 +27,8 @@ import org.siemac.metamac.srm.web.shared.code.CancelCodelistValidityResult;
 import org.siemac.metamac.srm.web.shared.code.DeleteCodeAction;
 import org.siemac.metamac.srm.web.shared.code.DeleteCodeResult;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistAction;
+import org.siemac.metamac.srm.web.shared.code.GetCodelistFamiliesAction;
+import org.siemac.metamac.srm.web.shared.code.GetCodelistFamiliesResult;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistResult;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistVersionsAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistVersionsResult;
@@ -40,12 +42,14 @@ import org.siemac.metamac.srm.web.shared.code.UpdateCodelistProcStatusAction;
 import org.siemac.metamac.srm.web.shared.code.UpdateCodelistProcStatusResult;
 import org.siemac.metamac.srm.web.shared.code.VersionCodelistAction;
 import org.siemac.metamac.srm.web.shared.code.VersionCodelistResult;
+import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.utils.UrnUtils;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.google.gwt.event.shared.EventBus;
@@ -92,6 +96,8 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
         void setCodelist(CodelistMetamacDto codelistMetamacDto);
         void setCodelistVersions(List<CodelistMetamacDto> codelistMetamacDtos);
         void setCodes(List<ItemHierarchyDto> codeDtos);
+
+        void setFamilies(List<RelatedResourceDto> families, int firstResult, int totalResults);
     }
 
     @ContentSlot
@@ -374,6 +380,22 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
                 // Update URL
                 PlaceRequest placeRequest = PlaceRequestUtils.buildRelativeCodelistPlaceRequest(codelistMetamacDto.getUrn());
                 placeManager.updateHistory(placeRequest, true);
+            }
+        });
+    }
+
+    @Override
+    public void retrieveFamilies(int firstResult, int maxResults, String criteria) {
+        dispatcher.execute(new GetCodelistFamiliesAction(firstResult, maxResults, criteria), new WaitingAsyncCallback<GetCodelistFamiliesResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistFamilyErrorRetrieveList()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetCodelistFamiliesResult result) {
+                List<RelatedResourceDto> families = RelatedResourceUtils.getRelatedResourceDtosFromCodelistFamilyDtos(result.getFamilies());
+                getView().setFamilies(families, result.getFirstResultOut(), result.getTotalResults());
             }
         });
     }

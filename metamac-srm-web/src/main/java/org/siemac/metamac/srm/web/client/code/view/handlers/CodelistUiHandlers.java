@@ -13,6 +13,8 @@ public interface CodelistUiHandlers extends BaseCodeUiHandlers {
     void goToCodelist(String urn);
     void retrieveCodesByCodelist(String codelistUrn);
 
+    void retrieveFamilies(int firstResult, int maxResults, String criteria);
+
     // Life cycle
 
     void sendToProductionValidation(String urn, ProcStatusEnum currentProcStatus);

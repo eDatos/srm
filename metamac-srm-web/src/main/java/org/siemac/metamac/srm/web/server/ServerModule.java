@@ -22,6 +22,7 @@ import org.siemac.metamac.srm.web.server.handlers.code.DeleteCodeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.DeleteCodelistListActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.GetCodeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.GetCodelistActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.code.GetCodelistFamiliesActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.GetCodelistVersionsActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.GetCodelistsActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.GetCodesByCodelistActionHandler;
@@ -97,6 +98,7 @@ import org.siemac.metamac.srm.web.shared.code.DeleteCodeAction;
 import org.siemac.metamac.srm.web.shared.code.DeleteCodelistListAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodeAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistAction;
+import org.siemac.metamac.srm.web.shared.code.GetCodelistFamiliesAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistVersionsAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistsAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodesByCodelistAction;
@@ -260,6 +262,7 @@ public class ServerModule extends HandlerModule {
         bindHandler(GetCodeAction.class, GetCodeActionHandler.class);
         bindHandler(SaveCodeAction.class, SaveCodeActionHandler.class);
         bindHandler(GetCodesByCodelistAction.class, GetCodesByCodelistActionHandler.class);
+        bindHandler(GetCodelistFamiliesAction.class, GetCodelistFamiliesActionHandler.class);
 
         // Common
         bindHandler(GetUserGuideUrlAction.class, GetUserGuideUrlActionHandler.class);

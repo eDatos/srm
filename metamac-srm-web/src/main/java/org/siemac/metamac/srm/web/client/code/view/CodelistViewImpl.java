@@ -20,33 +20,43 @@ import org.siemac.metamac.srm.web.client.code.widgets.CodelistMainFormLayout;
 import org.siemac.metamac.srm.web.client.code.widgets.CodelistVersionsSectionStack;
 import org.siemac.metamac.srm.web.client.code.widgets.CodesTreeGrid;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
+import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourceWindow;
 import org.siemac.metamac.srm.web.client.widgets.VersionWindow;
+import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.utils.DateUtils;
+import org.siemac.metamac.web.common.client.utils.FormItemUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.widgets.InformationWindow;
 import org.siemac.metamac.web.common.client.widgets.TitleLabel;
+import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
+import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.fields.BooleanSelectItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomSelectItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextAreaItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
+import org.siemac.metamac.web.common.client.widgets.form.fields.SearchViewTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
 import com.smartgwt.client.types.Overflow;
+import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.FormItemIfFunction;
 import com.smartgwt.client.widgets.form.fields.FormItem;
+import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
+import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 import com.smartgwt.client.widgets.layout.VLayout;
@@ -77,6 +87,8 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
     private CodesTreeGrid                codesTreeGrid;
 
     private CodelistVersionsSectionStack versionsSectionStack;
+
+    private SearchRelatedResourceWindow  searchFamilyWindow;
 
     private CodelistMetamacDto           codelistDto;
 
@@ -299,6 +311,14 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         versionsSectionStack.selectCodelist(codelistDto);
     }
 
+    @Override
+    public void setFamilies(List<RelatedResourceDto> families, int firstResult, int totalResults) {
+        if (searchFamilyWindow != null) {
+            searchFamilyWindow.setRelatedResources(families);
+            searchFamilyWindow.refreshSourcePaginationInfo(firstResult, families.size(), totalResults);
+        }
+    }
+
     private void createViewForm() {
         // Identifiers Form
         identifiersForm = new GroupDynamicForm(getConstants().codelistIdentifiers());
@@ -318,7 +338,8 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         ViewTextItem isExternalReference = new ViewTextItem(CodelistDS.IS_EXTERNAL_REFERENCE, getConstants().maintainableArtefactIsExternalReference());
         ViewTextItem isFinal = new ViewTextItem(CodelistDS.FINAL, getConstants().maintainableArtefactFinalLogic());
         ViewTextItem isRecommended = new ViewTextItem(CodelistDS.IS_RECOMMENDED, getConstants().codelistIsRecommended());
-        contentDescriptorsForm.setFields(description, partial, isExternalReference, isFinal, isRecommended);
+        ViewTextItem family = new ViewTextItem(CodelistDS.FAMILY_VIEW, getConstants().codelistFamily());
+        contentDescriptorsForm.setFields(description, partial, isExternalReference, isFinal, isRecommended, family);
 
         // Production descriptors
         productionDescriptorsForm = new GroupDynamicForm(getConstants().codelistProductionDescriptors());
@@ -404,7 +425,10 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         ViewTextItem isExternalReference = new ViewTextItem(CodelistDS.IS_EXTERNAL_REFERENCE, getConstants().maintainableArtefactIsExternalReference());
         ViewTextItem isFinal = new ViewTextItem(CodelistDS.FINAL, getConstants().maintainableArtefactFinalLogic());
         BooleanSelectItem isRecommended = new BooleanSelectItem(CodelistDS.IS_RECOMMENDED, getConstants().codelistIsRecommended());
-        contentDescriptorsEditionForm.setFields(description, partial, isExternalReference, isFinal, isRecommended);
+        ViewTextItem family = new ViewTextItem(CodelistDS.FAMILY, getConstants().codelistFamily());
+        family.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
+        SearchViewTextItem familyView = createFamilyItem(CodelistDS.FAMILY_VIEW, getConstants().codelistFamily());
+        contentDescriptorsEditionForm.setFields(description, partial, isExternalReference, isFinal, isRecommended, family, familyView);
 
         // Production descriptors
         productionDescriptorsEditionForm = new GroupDynamicForm(getConstants().codelistProductionDescriptors());
@@ -479,6 +503,9 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
                 .no()) : StringUtils.EMPTY);
         contentDescriptorsForm.setValue(CodelistDS.IS_RECOMMENDED, codelistDto.getIsRecommended() != null ? (codelistDto.getIsRecommended() ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon
                 .getConstants().no()) : StringUtils.EMPTY);
+        contentDescriptorsForm.setValue(CodelistDS.FAMILY_VIEW, codelistDto.getFamily() != null
+                ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(codelistDto.getFamily())
+                : StringUtils.EMPTY);
 
         // Production descriptors
         productionDescriptorsForm.setValue(CodelistDS.MAINTAINER, codelistDto.getMaintainer() != null ? codelistDto.getMaintainer().getCode() : StringUtils.EMPTY);
@@ -531,6 +558,9 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         contentDescriptorsEditionForm.setValue(CodelistDS.FINAL, codelistDto.getFinalLogic() != null ? (codelistDto.getFinalLogic() ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon
                 .getConstants().no()) : StringUtils.EMPTY);
         contentDescriptorsEditionForm.setValue(CodelistDS.IS_RECOMMENDED, codelistDto.getIsRecommended() != null ? codelistDto.getIsRecommended() : false);
+        contentDescriptorsEditionForm.setValue(CodelistDS.FAMILY_VIEW,
+                codelistDto.getFamily() != null ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(codelistDto.getFamily()) : StringUtils.EMPTY);
+        contentDescriptorsEditionForm.setValue(CodelistDS.FAMILY, codelistDto.getFamily() != null ? codelistDto.getFamily().getUrn() : StringUtils.EMPTY);
 
         // Production descriptors
         productionDescriptorsEditionForm.setValue(CodelistDS.MAINTAINER, codelistDto.getMaintainer() != null ? codelistDto.getMaintainer().getCode() : StringUtils.EMPTY);
@@ -577,6 +607,8 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
                 : false);
         codelistDto.setIsRecommended((contentDescriptorsEditionForm.getValue(CodelistDS.IS_RECOMMENDED) != null && !StringUtils.isEmpty(contentDescriptorsEditionForm
                 .getValueAsString(CodelistDS.IS_RECOMMENDED))) ? Boolean.valueOf(contentDescriptorsEditionForm.getValueAsString(CodelistDS.IS_RECOMMENDED)) : false);
+        codelistDto.setFamily(!StringUtils.isBlank(contentDescriptorsEditionForm.getValueAsString(CodelistDS.FAMILY)) ? RelatedResourceUtils.createRelatedResourceDto(contentDescriptorsEditionForm
+                .getValueAsString(CodelistDS.FAMILY)) : null);
 
         // Diffusion descriptors
         codelistDto.setAccessType(!StringUtils.isBlank(diffusionDescriptorsEditionForm.getValueAsString(CodelistDS.ACCESS_TYPE)) ? AccessTypeEnum.valueOf(diffusionDescriptorsEditionForm
@@ -590,5 +622,50 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         codelistDto.getAnnotations().addAll(annotationsEditionPanel.getAnnotations());
 
         return codelistDto;
+    }
+
+    private SearchViewTextItem createFamilyItem(String name, String title) {
+        final int FIRST_RESULST = 0;
+        final int MAX_RESULTS = 8;
+        SearchViewTextItem extendsItem = new SearchViewTextItem(name, title);
+        extendsItem.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
+
+            @Override
+            public void onFormItemClick(FormItemIconClickEvent event) {
+
+                searchFamilyWindow = new SearchRelatedResourceWindow(getConstants().codelistSelection(), MAX_RESULTS, new PaginatedAction() {
+
+                    @Override
+                    public void retrieveResultSet(int firstResult, int maxResults) {
+                        getUiHandlers().retrieveFamilies(firstResult, maxResults, searchFamilyWindow.getRelatedResourceCriteria());
+                    }
+                });
+
+                // Load families (to populate the selection window)
+                getUiHandlers().retrieveFamilies(FIRST_RESULST, MAX_RESULTS, null);
+
+                searchFamilyWindow.getListGridItem().getListGrid().setSelectionType(SelectionStyle.SINGLE);
+                searchFamilyWindow.getListGridItem().setSearchAction(new SearchPaginatedAction() {
+
+                    @Override
+                    public void retrieveResultSet(int firstResult, int maxResults, String criteria) {
+                        getUiHandlers().retrieveFamilies(firstResult, maxResults, criteria);
+                    }
+                });
+                searchFamilyWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
+
+                    @Override
+                    public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent arg0) {
+                        RelatedResourceDto selectedFamily = searchFamilyWindow.getSelectedRelatedResource();
+                        searchFamilyWindow.markForDestroy();
+                        // Set selected family in form
+                        contentDescriptorsEditionForm.setValue(CodelistDS.FAMILY, selectedFamily != null ? selectedFamily.getUrn() : null);
+                        contentDescriptorsEditionForm.setValue(CodelistDS.FAMILY_VIEW,
+                                selectedFamily != null ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(selectedFamily) : null);
+                    }
+                });
+            }
+        });
+        return extendsItem;
     }
 }
