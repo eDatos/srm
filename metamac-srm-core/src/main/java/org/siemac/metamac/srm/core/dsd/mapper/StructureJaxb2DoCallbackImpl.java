@@ -5,7 +5,9 @@ import java.util.List;
 
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
+import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.importation.ImportationMetamacCommonValidations;
 import org.springframework.stereotype.Component;
 
@@ -129,58 +131,62 @@ public class StructureJaxb2DoCallbackImpl extends ImportationMetamacCommonValida
      **************************************************************************/
     @Override
     public void dataStructureDefinitionJaxbToDoExtension(DataStructureType source, DataStructureDefinitionVersion target) {
-        // TODO Completar METAMAC dataStructureDefinitionJaxbToDoExtension
-        int a = 23;
+        DataStructureDefinitionVersionMetamac targetMetamac = (DataStructureDefinitionVersionMetamac) target;
+
+        // Fill Meta-data
+        targetMetamac.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
+
+        // TODO Completar con herencia en metadatos de visualización
     }
 
     @Override
     public void dimensionDescriptorJaxbToDoExtension(DimensionListType source, DimensionDescriptor target) {
-        // TODO Completar METAMAC dimensionDescriptorJaxbToDoExtension
+        // Meta-data in previous version -> Nothing to extends
     }
 
     @Override
     public void measureDescriptorJaxbToDoExtension(MeasureListType source, MeasureDescriptor target) {
-        // TODO Completar METAMAC measureDescriptorJaxbToDoExtension
+        // Meta-data in previous version -> Nothing to extends
     }
 
     @Override
     public void groupDimensionDescriptorJaxbToDoExtension(GroupType source, GroupDimensionDescriptor target) {
-        // TODO Completar METAMAC groupDimensionDescriptorJaxbToDoExtension
+        // Meta-data in previous version -> Nothing to extends
     }
 
     @Override
     public void attributeDescriptorJaxb2DoExtension(AttributeListType source, AttributeDescriptor target) {
-        // TODO Completar METAMAC attributeDescriptorJaxb2DoExtension
+        // Meta-data in previous version -> Nothing to extends
     }
 
     @Override
     public void dimensionJaxbToDoExtension(DimensionType source, Dimension target) {
-        // TODO Completar METAMAC dimensionJaxbToDoExtension
+        // Meta-data in previous version -> Nothing to extends
     }
 
     @Override
     public void measureDimensionJaxbToDoExtension(MeasureDimensionType source, MeasureDimension target) {
-        // TODO Completar METAMAC measureDimensionJaxbToDoExtension
+        // Meta-data in previous version -> Nothing to extends
     }
 
     @Override
     public void timeDimensionJaxbToDoExtension(TimeDimensionType source, TimeDimension target) {
-        // TODO Completar METAMAC timeDimensionJaxbToDoExtension
+        // Meta-data in previous version -> Nothing to extends
     }
 
     @Override
     public void primaryMeasureJaxbToDoExtension(PrimaryMeasureType source, PrimaryMeasure target) {
-        // TODO Completar METAMAC primaryMeasureJaxbToDoExtension
+        // Meta-data in previous version -> Nothing to extends
     }
 
     @Override
     public void dataAttributeJaxbToDoExtension(AttributeType source, DataAttribute target) {
-        // TODO Completar METAMAC dataAttributeJaxbToDoExtension
+        // Meta-data in previous version -> Nothing to extends
     }
 
     @Override
     public void reportingYearStartDayJaxbToDoExtension(ReportingYearStartDayType source, ReportingYearStartDay target) {
-        // TODO Completar METAMAC reportingYearStartDayJaxbToDoExtension
+        // Meta-data in previous version -> Nothing to extends
     }
 
     /**************************************************************************
