@@ -65,6 +65,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.NameableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.serviceapi.utils.BaseDoMocks;
 import com.arte.statistic.sdmx.srm.core.code.domain.Code;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodeProperties;
@@ -151,7 +152,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         CodelistVersionMetamac codelistVersion = CodesMetamacDoMocks.mockCodelist(organisationMetamac);
 
         // Check the family has no codelists
-        CodelistFamily codelistFamily = codesService.retrieveCodelistFamilyByIdentifier(getServiceContextAdministrador(), CODELIST_FAMILY_1);
+        CodelistFamily codelistFamily = codesService.retrieveCodelistFamilyByUrn(getServiceContextAdministrador(), CODELIST_FAMILY_1);
         assertEquals(0, codelistFamily.getCodelists().size());
 
         // Associate the codelist to the family
@@ -162,7 +163,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertEqualsCodelistFamily(codelistFamily, codelistVersionCreated.getFamily());
 
         // Check family has one codelists (and it's the one we have added previously)
-        codelistFamily = codesService.retrieveCodelistFamilyByIdentifier(getServiceContextAdministrador(), CODELIST_FAMILY_1);
+        codelistFamily = codesService.retrieveCodelistFamilyByUrn(getServiceContextAdministrador(), CODELIST_FAMILY_1);
         assertEquals(1, codelistFamily.getCodelists().size());
         assertEqualsCodelist(codelistVersionCreated, codelistFamily.getCodelists().get(0));
     }
@@ -253,7 +254,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_1_V2);
 
         // Check the family has no codelists
-        CodelistFamily codelistFamily = codesService.retrieveCodelistFamilyByIdentifier(getServiceContextAdministrador(), CODELIST_FAMILY_1);
+        CodelistFamily codelistFamily = codesService.retrieveCodelistFamilyByUrn(getServiceContextAdministrador(), CODELIST_FAMILY_1);
         assertEquals(0, codelistFamily.getCodelists().size());
 
         // Associate the codelist to the family
@@ -265,7 +266,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         entityManager.clear(); // Clear hibernate cache to check that the family has been updated
 
         // Check family has one codelists (and it's the one we have added previously)
-        codelistFamily = codelistFamilyRepository.findByIdentifier(CODELIST_FAMILY_1);
+        codelistFamily = codelistFamilyRepository.findByUrn(CODELIST_FAMILY_1);
         assertEquals(1, codelistFamily.getCodelists().size());
     }
 
@@ -277,8 +278,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_9_V1);
 
         // Check family members
-        CodelistFamily family1 = codesService.retrieveCodelistFamilyByIdentifier(getServiceContextAdministrador(), CODELIST_FAMILY_1);
-        CodelistFamily family2 = codesService.retrieveCodelistFamilyByIdentifier(getServiceContextAdministrador(), CODELIST_FAMILY_2);
+        CodelistFamily family1 = codesService.retrieveCodelistFamilyByUrn(getServiceContextAdministrador(), CODELIST_FAMILY_1);
+        CodelistFamily family2 = codesService.retrieveCodelistFamilyByUrn(getServiceContextAdministrador(), CODELIST_FAMILY_2);
         assertEquals(0, family1.getCodelists().size());
         assertEquals(2, family2.getCodelists().size());
 
@@ -291,8 +292,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         entityManager.clear(); // Clear hibernate cache to check that the family has been updated
 
         // Check family after updating codelist
-        family1 = codelistFamilyRepository.findByIdentifier(CODELIST_FAMILY_1);
-        family2 = codelistFamilyRepository.findByIdentifier(CODELIST_FAMILY_2);
+        family1 = codelistFamilyRepository.findByUrn(CODELIST_FAMILY_1);
+        family2 = codelistFamilyRepository.findByUrn(CODELIST_FAMILY_2);
         assertEquals(1, family1.getCodelists().size());
         assertEquals(1, family2.getCodelists().size());
     }
@@ -302,7 +303,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_9_V1);
 
         // Check family members
-        CodelistFamily family = codesService.retrieveCodelistFamilyByIdentifier(getServiceContextAdministrador(), CODELIST_FAMILY_2);
+        CodelistFamily family = codesService.retrieveCodelistFamilyByUrn(getServiceContextAdministrador(), CODELIST_FAMILY_2);
         assertEquals(2, family.getCodelists().size());
 
         // Update codelist (remove from family)
@@ -314,7 +315,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         entityManager.clear(); // Clear hibernate cache to check that the family has been updated
 
         // Check family members
-        family = codesService.retrieveCodelistFamilyByIdentifier(getServiceContextAdministrador(), CODELIST_FAMILY_2);
+        family = codesService.retrieveCodelistFamilyByUrn(getServiceContextAdministrador(), CODELIST_FAMILY_2);
         assertEquals(1, family.getCodelists().size());
     }
 
@@ -357,6 +358,23 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     }
 
     @Test
+    public void testUpdateCodelistErrorChangeCodeInCodelistWithVersionAlreadyPublished() throws Exception {
+        CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_1_V2);
+        codelistVersion.getMaintainableArtefact().setCode("newCode");
+        codelistVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.TRUE);
+
+        try {
+            codelistVersion = codesService.updateCodelist(getServiceContextAdministrador(), codelistVersion);
+            fail("code can not be changed");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.METADATA_UNMODIFIABLE.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_CODE, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
+    @Test
     public void testUpdateCodelistErrorExternalReference() throws Exception {
         CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_7_V2);
         codelistVersion.getMaintainableArtefact().setIsExternalReference(Boolean.TRUE);
@@ -384,8 +402,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertEquals(AccessTypeEnum.PUBLIC, codelistVersion.getAccessType());
         assertEquals(Boolean.FALSE, codelistVersion.getIsRecommended());
         assertEqualsInternationalString(codelistVersion.getShortName(), "es", "Nombre corto 1-1", "en", "Short name 1-1");
-        assertEquals(CODELIST_FAMILY_2, codelistVersion.getFamily().getIdentifier());
-        assertEquals(VARIABLE_6, codelistVersion.getVariable().getIdentifier());
+        assertEquals(CODELIST_FAMILY_2, codelistVersion.getFamily().getNameableArtefact().getUrn());
+        assertEquals(VARIABLE_6, codelistVersion.getVariable().getNameableArtefact().getUrn());
 
         assertEquals(CODELIST_2_V1, codelistVersion.getReplacedByCodelist().getMaintainableArtefact().getUrn());
         assertEquals(0, codelistVersion.getReplaceToCodelists().size());
@@ -1156,7 +1174,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         ServiceContext ctx = getServiceContextAdministrador();
 
         CodelistVersionMetamac codelist6v1 = codesService.retrieveCodelistByUrn(ctx, CODELIST_6_V1);
-        assertEquals(VARIABLE_6, codelist6v1.getVariable().getIdentifier());
+        assertEquals(VARIABLE_6, codelist6v1.getVariable().getNameableArtefact().getUrn());
 
         codesService.deleteCodelist(ctx, CODELIST_6_V1);
 
@@ -1170,7 +1188,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         }
 
         // Check that the variable has not been deleted
-        Variable variable = codesService.retrieveVariableByIdentifier(ctx, VARIABLE_6);
+        Variable variable = codesService.retrieveVariableByUrn(ctx, VARIABLE_6);
         assertFalse(SrmValidationUtils.isCodelistInList(CODELIST_6_V1, variable.getCodelists()));
     }
 
@@ -1826,12 +1844,13 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
     @Override
     @Test
-    public void testRetrieveCodelistFamilyByIdentifier() throws Exception {
-        String identifier = CODELIST_FAMILY_1;
-        CodelistFamily codelistFamily = codesService.retrieveCodelistFamilyByIdentifier(getServiceContextAdministrador(), identifier);
+    public void testRetrieveCodelistFamilyByUrn() throws Exception {
+        String urn = CODELIST_FAMILY_1;
+        CodelistFamily codelistFamily = codesService.retrieveCodelistFamilyByUrn(getServiceContextAdministrador(), urn);
 
-        assertEquals(identifier, codelistFamily.getIdentifier());
-        assertEqualsInternationalString(codelistFamily.getName(), "es", "familia-de-codelists-51", "pt", "codelist-family");
+        assertEquals(urn, codelistFamily.getNameableArtefact().getUrn());
+        assertEquals("CODELIST_FAMILY_01", codelistFamily.getNameableArtefact().getCode());
+        assertEqualsInternationalString(codelistFamily.getNameableArtefact().getName(), "es", "familia-de-codelists-51", "pt", "codelist-family");
         assertEquals("codelist-family-01", codelistFamily.getUuid());
         assertEquals("user1", codelistFamily.getCreatedBy());
         assertEquals("user2", codelistFamily.getLastUpdatedBy());
@@ -1839,26 +1858,26 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     }
 
     @Test
-    public void testRetrieveCodelistFamilyByIdentifierErrorNotFound() throws Exception {
-        String identifier = NOT_EXISTS;
+    public void testRetrieveCodelistFamilyByUrnErrorNotFound() throws Exception {
+        String urn = NOT_EXISTS;
         try {
-            codesService.retrieveCodelistFamilyByIdentifier(getServiceContextAdministrador(), identifier);
+            codesService.retrieveCodelistFamilyByUrn(getServiceContextAdministrador(), urn);
             fail("not found");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.CODELIST_FAMILY_NOT_FOUND, 1, new String[]{identifier}, e.getExceptionItems().get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND, 1, new String[]{urn}, e.getExceptionItems().get(0));
         }
     }
 
     @Test
-    public void testRetrieveCodelistFamilyByIdentifierErrorParameterRequired() throws Exception {
-        String identifier = null;
+    public void testRetrieveCodelistFamilyByUrnErrorParameterRequired() throws Exception {
+        String urn = null;
         try {
-            codesService.retrieveCodelistFamilyByIdentifier(getServiceContextAdministrador(), identifier);
+            codesService.retrieveCodelistFamilyByUrn(getServiceContextAdministrador(), urn);
             fail("parameter required");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.PARAMETER_REQUIRED, 1, new String[]{ServiceExceptionParameters.CODELIST_FAMILY_IDENTIFIER}, e.getExceptionItems().get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.PARAMETER_REQUIRED, 1, new String[]{ServiceExceptionParameters.URN}, e.getExceptionItems().get(0));
         }
     }
 
@@ -1879,41 +1898,42 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     }
 
     @Test
-    public void testCreateCodelistFamilyErrorWrongIdentifier() throws Exception {
+    public void testCreateCodelistFamilyErrorWrongCode() throws Exception {
         CodelistFamily codelistFamily = CodesMetamacDoMocks.mockCodelistFamily();
-        codelistFamily.setIdentifier(" 0 - invalid identifier");
+        codelistFamily.getNameableArtefact().setCode(" 0 - invalid identifier");
         try {
             codesService.createCodelistFamily(getServiceContextAdministrador(), codelistFamily);
-            fail("wrong identifier");
+            fail("wrong code");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, 1, new String[]{ServiceExceptionParameters.CODELIST_FAMILY_IDENTIFIER}, e.getExceptionItems().get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, 1, new String[]{ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_CODE}, e.getExceptionItems().get(0));
         }
     }
 
     @Test
-    public void testCreateCodelistFamilyErrorDuplicatedIdentifier() throws Exception {
+    public void testCreateCodelistFamilyErrorDuplicatedCode() throws Exception {
         CodelistFamily codelistFamily = CodesMetamacDoMocks.mockCodelistFamily();
-        codelistFamily.setIdentifier(CODELIST_FAMILY_1);
+        codelistFamily.getNameableArtefact().setCode("CODELIST_FAMILY_01");
         try {
             codesService.createCodelistFamily(getServiceContextAdministrador(), codelistFamily);
-            fail("duplicated identifier");
+            fail("duplicated code");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.CODELIST_FAMILY_DUPLICATED_IDENTIFIER, 1, new String[]{CODELIST_FAMILY_1}, e.getExceptionItems().get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_URN_DUPLICATED, 1, new String[]{CODELIST_FAMILY_1}, e.getExceptionItems().get(0));
         }
     }
 
     @Test
     public void testCreateCodelistFamilyErrorRequiredMetadata() throws Exception {
         CodelistFamily codelistFamily = new CodelistFamily();
+        codelistFamily.setNameableArtefact(new NameableArtefact());
         try {
             codesService.createCodelistFamily(getServiceContextAdministrador(), codelistFamily);
             fail("metadata required");
         } catch (MetamacException e) {
             assertEquals(2, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.CODELIST_FAMILY_IDENTIFIER}, e.getExceptionItems().get(0));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.CODELIST_FAMILY_NAME}, e.getExceptionItems().get(1));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME}, e.getExceptionItems().get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_CODE}, e.getExceptionItems().get(1));
         }
     }
 
@@ -1922,9 +1942,10 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     public void testUpdateCodelistFamily() throws Exception {
         ServiceContext ctx = getServiceContextAdministrador();
 
-        CodelistFamily codelistFamily = codesService.retrieveCodelistFamilyByIdentifier(ctx, CODELIST_FAMILY_1);
-        codelistFamily.setIdentifier("code-" + MetamacMocks.mockString(10));
-        codelistFamily.setName(BaseDoMocks.mockInternationalString());
+        CodelistFamily codelistFamily = codesService.retrieveCodelistFamilyByUrn(ctx, CODELIST_FAMILY_1);
+        codelistFamily.getNameableArtefact().setCode("code-" + MetamacMocks.mockString(10));
+        codelistFamily.getNameableArtefact().setIsCodeUpdated(Boolean.TRUE);
+        codelistFamily.getNameableArtefact().setName(BaseDoMocks.mockInternationalString());
 
         CodelistFamily codelistFamilyUpdated = codesService.updateCodelistFamily(ctx, codelistFamily);
 
@@ -1932,60 +1953,46 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     }
 
     @Test
-    public void testUpdateCodelistErrorChangeCodeInCodelistWithVersionAlreadyPublished() throws Exception {
-        CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_1_V2);
-        codelistVersion.getMaintainableArtefact().setCode("newCode");
-        codelistVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.TRUE);
-
+    public void testUpdateCodelistFamilyErrorWrongCode() throws Exception {
+        CodelistFamily codelistFamily = codesService.retrieveCodelistFamilyByUrn(getServiceContextAdministrador(), CODELIST_FAMILY_1);
+        codelistFamily.getNameableArtefact().setCode(" 0 - invalid identifier");
+        codelistFamily.getNameableArtefact().setIsCodeUpdated(Boolean.TRUE);
         try {
-            codelistVersion = codesService.updateCodelist(getServiceContextAdministrador(), codelistVersion);
-            fail("code can not be changed");
+            codesService.updateCodelistFamily(getServiceContextAdministrador(), codelistFamily);
+            fail("wrong code");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEquals(ServiceExceptionType.METADATA_UNMODIFIABLE.getCode(), e.getExceptionItems().get(0).getCode());
-            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-            assertEquals(ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_CODE, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, 1, new String[]{ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_CODE}, e.getExceptionItems().get(0));
         }
     }
 
     @Test
-    public void testUpdateCodelistFamilyErrorWrongIdentifier() throws Exception {
-        CodelistFamily codelistFamily = codesService.retrieveCodelistFamilyByIdentifier(getServiceContextAdministrador(), CODELIST_FAMILY_1);
-        codelistFamily.setIdentifier(" 0 - invalid identifier");
+    public void testUpdateCodelistFamilyErrorDuplicatedCode() throws Exception {
+        CodelistFamily codelistFamily = codesService.retrieveCodelistFamilyByUrn(getServiceContextAdministrador(), CODELIST_FAMILY_1);
+        codelistFamily.getNameableArtefact().setCode("CODELIST_FAMILY_02");
+        codelistFamily.getNameableArtefact().setIsCodeUpdated(Boolean.TRUE);
         try {
             codesService.updateCodelistFamily(getServiceContextAdministrador(), codelistFamily);
-            fail("wrong identifier");
+            fail("duplicated code");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, 1, new String[]{ServiceExceptionParameters.CODELIST_FAMILY_IDENTIFIER}, e.getExceptionItems().get(0));
-        }
-    }
-
-    @Test
-    public void testUpdateCodelistFamilyErrorDuplicatedIdentifier() throws Exception {
-        CodelistFamily codelistFamily = codesService.retrieveCodelistFamilyByIdentifier(getServiceContextAdministrador(), CODELIST_FAMILY_1);
-        codelistFamily.setIdentifier(CODELIST_FAMILY_2);
-        try {
-            codesService.updateCodelistFamily(getServiceContextAdministrador(), codelistFamily);
-            fail("duplicated identifier");
-        } catch (MetamacException e) {
-            assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.CODELIST_FAMILY_DUPLICATED_IDENTIFIER, 1, new String[]{CODELIST_FAMILY_2}, e.getExceptionItems().get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_URN_DUPLICATED, 1, new String[]{CODELIST_FAMILY_2}, e.getExceptionItems().get(0));
         }
     }
 
     @Test
     public void testUpdateCodelistFamilyErrorRequiredMetadata() throws Exception {
-        CodelistFamily codelistFamily = codesService.retrieveCodelistFamilyByIdentifier(getServiceContextAdministrador(), CODELIST_FAMILY_1);
-        codelistFamily.setIdentifier(null);
-        codelistFamily.setName(null);
+        CodelistFamily codelistFamily = codesService.retrieveCodelistFamilyByUrn(getServiceContextAdministrador(), CODELIST_FAMILY_1);
+        codelistFamily.getNameableArtefact().setCode(null);
+        codelistFamily.getNameableArtefact().setName(null);
         try {
             codesService.createCodelistFamily(getServiceContextAdministrador(), codelistFamily);
             fail("metadata required");
         } catch (MetamacException e) {
-            assertEquals(2, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.CODELIST_FAMILY_IDENTIFIER}, e.getExceptionItems().get(0));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.CODELIST_FAMILY_NAME}, e.getExceptionItems().get(1));
+            assertEquals(3, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME}, e.getExceptionItems().get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_IS_CODE_UPDATED}, e.getExceptionItems().get(1));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_CODE}, e.getExceptionItems().get(2));
         }
     }
 
@@ -1994,24 +2001,24 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     public void testFindCodelistFamiliesByCondition() throws Exception {
         // Find all
         {
-            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(CodelistFamily.class).orderBy(CodelistFamilyProperties.identifier()).build();
+            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(CodelistFamily.class).orderBy(CodelistFamilyProperties.nameableArtefact().code()).build();
             PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
             PagedResult<CodelistFamily> result = codesService.findCodelistFamiliesByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
 
             assertEquals(2, result.getTotalRows());
             int i = 0;
-            assertEquals(CODELIST_FAMILY_1, result.getValues().get(i++).getIdentifier());
-            assertEquals(CODELIST_FAMILY_2, result.getValues().get(i++).getIdentifier());
+            assertEquals(CODELIST_FAMILY_1, result.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CODELIST_FAMILY_2, result.getValues().get(i++).getNameableArtefact().getUrn());
         }
-        // Find by identifier
+        // Find by urn
         {
-            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(CodelistFamily.class).withProperty(CodelistFamilyProperties.identifier()).like(CODELIST_FAMILY_1)
-                    .orderBy(CodelistFamilyProperties.identifier()).build();
+            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(CodelistFamily.class).withProperty(CodelistFamilyProperties.nameableArtefact().urn()).like(CODELIST_FAMILY_1)
+                    .orderBy(CodelistFamilyProperties.nameableArtefact().urn()).build();
             PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
             PagedResult<CodelistFamily> result = codesService.findCodelistFamiliesByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
             assertEquals(1, result.getTotalRows());
             int i = 0;
-            assertEquals(CODELIST_FAMILY_1, result.getValues().get(i++).getIdentifier());
+            assertEquals(CODELIST_FAMILY_1, result.getValues().get(i++).getNameableArtefact().getUrn());
 
         }
     }
@@ -2022,11 +2029,11 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         codesService.deleteCodelistFamily(getServiceContextAdministrador(), CODELIST_FAMILY_1);
         // Retrieve deleted family
         try {
-            codesService.retrieveCodelistFamilyByIdentifier(getServiceContextAdministrador(), CODELIST_FAMILY_1);
+            codesService.retrieveCodelistFamilyByUrn(getServiceContextAdministrador(), CODELIST_FAMILY_1);
             fail("codelist family already deleted");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.CODELIST_FAMILY_NOT_FOUND, 1, new String[]{CODELIST_FAMILY_1}, e.getExceptionItems().get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND, 1, new String[]{CODELIST_FAMILY_1}, e.getExceptionItems().get(0));
         }
         // Try to delete again the deleted codelist family
         try {
@@ -2034,7 +2041,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             fail("codelist already deleted");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.CODELIST_FAMILY_NOT_FOUND, 1, new String[]{CODELIST_FAMILY_1}, e.getExceptionItems().get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND, 1, new String[]{CODELIST_FAMILY_1}, e.getExceptionItems().get(0));
         }
     }
 
@@ -2053,12 +2060,13 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
     @Override
     @Test
-    public void testRetrieveVariableFamilyByIdentifier() throws Exception {
-        String identifier = VARIABLE_FAMILY_1;
-        VariableFamily variableFamily = codesService.retrieveVariableFamilyByIdentifier(getServiceContextAdministrador(), identifier);
+    public void testRetrieveVariableFamilyByUrn() throws Exception {
+        String urn = VARIABLE_FAMILY_1;
+        VariableFamily variableFamily = codesService.retrieveVariableFamilyByUrn(getServiceContextAdministrador(), urn);
 
-        assertEquals(identifier, variableFamily.getIdentifier());
-        assertEqualsInternationalString(variableFamily.getName(), "es", "familia-de-variables-53", null, null);
+        assertEquals(urn, variableFamily.getNameableArtefact().getUrn());
+        assertEquals("VARIABLE_FAMILY_01", variableFamily.getNameableArtefact().getCode());
+        assertEqualsInternationalString(variableFamily.getNameableArtefact().getName(), "es", "familia-de-variables-53", null, null);
         assertEquals("variable-family-01", variableFamily.getUuid());
         assertEquals("user1", variableFamily.getCreatedBy());
         assertEquals("user2", variableFamily.getLastUpdatedBy());
@@ -2066,26 +2074,26 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     }
 
     @Test
-    public void testRetrieveVariableFamilyByIdentifierErrorNotFound() throws Exception {
-        String identifier = NOT_EXISTS;
+    public void testRetrieveVariableFamilyByUrnErrorNotFound() throws Exception {
+        String urn = NOT_EXISTS;
         try {
-            codesService.retrieveVariableFamilyByIdentifier(getServiceContextAdministrador(), identifier);
+            codesService.retrieveVariableFamilyByUrn(getServiceContextAdministrador(), urn);
             fail("not found");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.VARIABLE_FAMILY_NOT_FOUND, 1, new String[]{identifier}, e.getExceptionItems().get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND, 1, new String[]{urn}, e.getExceptionItems().get(0));
         }
     }
 
     @Test
-    public void testRetrieveVariableFamilyByIdentifierErrorParameterRequired() throws Exception {
-        String identifier = null;
+    public void testRetrieveVariableFamilyByUrnErrorParameterRequired() throws Exception {
+        String urn = null;
         try {
-            codesService.retrieveVariableFamilyByIdentifier(getServiceContextAdministrador(), identifier);
+            codesService.retrieveVariableFamilyByUrn(getServiceContextAdministrador(), urn);
             fail("parameter required");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.PARAMETER_REQUIRED, 1, new String[]{ServiceExceptionParameters.VARIABLE_FAMILY_IDENTIFIER}, e.getExceptionItems().get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.PARAMETER_REQUIRED, 1, new String[]{ServiceExceptionParameters.URN}, e.getExceptionItems().get(0));
         }
     }
 
@@ -2107,41 +2115,42 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     }
 
     @Test
-    public void testCreateVariableFamilyErrorWrongIdentifier() throws Exception {
+    public void testCreateVariableFamilyErrorWrongCode() throws Exception {
         VariableFamily variableFamily = CodesMetamacDoMocks.mockVariableFamily();
-        variableFamily.setIdentifier(" 0 - invalid identifier");
+        variableFamily.getNameableArtefact().setCode(" 0 - invalid identifier");
         try {
             codesService.createVariableFamily(getServiceContextAdministrador(), variableFamily);
-            fail("wrong identifier");
+            fail("wrong code");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, 1, new String[]{ServiceExceptionParameters.VARIABLE_FAMILY_IDENTIFIER}, e.getExceptionItems().get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, 1, new String[]{ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_CODE}, e.getExceptionItems().get(0));
         }
     }
 
     @Test
-    public void testCreateVariableFamilyErrorDuplicatedIdentifier() throws Exception {
+    public void testCreateVariableFamilyErrorDuplicatedCode() throws Exception {
         VariableFamily variableFamily = CodesMetamacDoMocks.mockVariableFamily();
-        variableFamily.setIdentifier(VARIABLE_FAMILY_1);
+        variableFamily.getNameableArtefact().setCode("VARIABLE_FAMILY_01");
         try {
             codesService.createVariableFamily(getServiceContextAdministrador(), variableFamily);
-            fail("duplicated identifier");
+            fail("duplicated code");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.VARIABLE_FAMILY_DUPLICATED_IDENTIFIER, 1, new String[]{VARIABLE_FAMILY_1}, e.getExceptionItems().get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_URN_DUPLICATED, 1, new String[]{VARIABLE_FAMILY_1}, e.getExceptionItems().get(0));
         }
     }
 
     @Test
     public void testCreateVariableFamilyErrorRequiredMetadata() throws Exception {
         VariableFamily variableFamily = new VariableFamily();
+        variableFamily.setNameableArtefact(new NameableArtefact());
         try {
             codesService.createVariableFamily(getServiceContextAdministrador(), variableFamily);
             fail("metadata required");
         } catch (MetamacException e) {
             assertEquals(2, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.VARIABLE_FAMILY_IDENTIFIER}, e.getExceptionItems().get(0));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.VARIABLE_FAMILY_NAME}, e.getExceptionItems().get(1));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME}, e.getExceptionItems().get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_CODE}, e.getExceptionItems().get(1));
         }
     }
 
@@ -2150,9 +2159,10 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     public void testUpdateVariableFamily() throws Exception {
         ServiceContext ctx = getServiceContextAdministrador();
 
-        VariableFamily variableFamily = codesService.retrieveVariableFamilyByIdentifier(ctx, VARIABLE_FAMILY_1);
-        variableFamily.setIdentifier("code-" + MetamacMocks.mockString(10));
-        variableFamily.setName(BaseDoMocks.mockInternationalString());
+        VariableFamily variableFamily = codesService.retrieveVariableFamilyByUrn(ctx, VARIABLE_FAMILY_1);
+        variableFamily.getNameableArtefact().setCode("code-" + MetamacMocks.mockString(10));
+        variableFamily.getNameableArtefact().setIsCodeUpdated(Boolean.TRUE);
+        variableFamily.getNameableArtefact().setName(BaseDoMocks.mockInternationalString());
 
         VariableFamily variableFamilyUpdated = codesService.updateVariableFamily(ctx, variableFamily);
 
@@ -2160,43 +2170,47 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     }
 
     @Test
-    public void testUpdateVariableFamilyErrorWrongIdentifier() throws Exception {
-        VariableFamily variableFamily = codesService.retrieveVariableFamilyByIdentifier(getServiceContextAdministrador(), VARIABLE_FAMILY_1);
-        variableFamily.setIdentifier(" 0 - invalid identifier");
+    public void testUpdateVariableFamilyErrorWrongCode() throws Exception {
+        VariableFamily variableFamily = codesService.retrieveVariableFamilyByUrn(getServiceContextAdministrador(), VARIABLE_FAMILY_1);
+        variableFamily.getNameableArtefact().setCode(" 0 - invalid identifier");
+        variableFamily.getNameableArtefact().setIsCodeUpdated(Boolean.TRUE);
         try {
             codesService.updateVariableFamily(getServiceContextAdministrador(), variableFamily);
-            fail("wrong identifier");
+            fail("wrong code");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, 1, new String[]{ServiceExceptionParameters.VARIABLE_FAMILY_IDENTIFIER}, e.getExceptionItems().get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, 1, new String[]{ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_CODE}, e.getExceptionItems().get(0));
         }
     }
 
     @Test
-    public void testUpdateVariableFamilyErrorDuplicatedIdentifier() throws Exception {
-        VariableFamily variableFamily = codesService.retrieveVariableFamilyByIdentifier(getServiceContextAdministrador(), VARIABLE_FAMILY_1);
-        variableFamily.setIdentifier(VARIABLE_FAMILY_2);
+    public void testUpdateVariableFamilyErrorDuplicatedCode() throws Exception {
+        VariableFamily variableFamily = codesService.retrieveVariableFamilyByUrn(getServiceContextAdministrador(), VARIABLE_FAMILY_1);
+        variableFamily.getNameableArtefact().setCode("VARIABLE_FAMILY_02");
+        variableFamily.getNameableArtefact().setIsCodeUpdated(Boolean.TRUE);
         try {
             codesService.updateVariableFamily(getServiceContextAdministrador(), variableFamily);
-            fail("duplicated identifier");
+            fail("duplicated code");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.VARIABLE_FAMILY_DUPLICATED_IDENTIFIER, 1, new String[]{VARIABLE_FAMILY_2}, e.getExceptionItems().get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_URN_DUPLICATED, 1, new String[]{VARIABLE_FAMILY_2}, e.getExceptionItems().get(0));
         }
     }
 
     @Test
     public void testUpdateVariableFamilyErrorRequiredMetadata() throws Exception {
-        VariableFamily variableFamily = codesService.retrieveVariableFamilyByIdentifier(getServiceContextAdministrador(), VARIABLE_FAMILY_1);
-        variableFamily.setIdentifier(null);
-        variableFamily.setName(null);
+        VariableFamily variableFamily = codesService.retrieveVariableFamilyByUrn(getServiceContextAdministrador(), VARIABLE_FAMILY_1);
+        variableFamily.getNameableArtefact().setCode(null);
+        variableFamily.getNameableArtefact().setIsCodeUpdated(null);
+        variableFamily.getNameableArtefact().setName(null);
         try {
             codesService.createVariableFamily(getServiceContextAdministrador(), variableFamily);
             fail("metadata required");
         } catch (MetamacException e) {
-            assertEquals(2, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.VARIABLE_FAMILY_IDENTIFIER}, e.getExceptionItems().get(0));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.VARIABLE_FAMILY_NAME}, e.getExceptionItems().get(1));
+            assertEquals(3, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME}, e.getExceptionItems().get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_IS_CODE_UPDATED}, e.getExceptionItems().get(1));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_CODE}, e.getExceptionItems().get(2));
         }
     }
 
@@ -2206,11 +2220,11 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         codesService.deleteVariableFamily(getServiceContextAdministrador(), VARIABLE_FAMILY_1);
         // Retrieve deleted family
         try {
-            codesService.retrieveVariableFamilyByIdentifier(getServiceContextAdministrador(), VARIABLE_FAMILY_1);
+            codesService.retrieveVariableFamilyByUrn(getServiceContextAdministrador(), VARIABLE_FAMILY_1);
             fail("variable family already deleted");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.VARIABLE_FAMILY_NOT_FOUND, 1, new String[]{VARIABLE_FAMILY_1}, e.getExceptionItems().get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND, 1, new String[]{VARIABLE_FAMILY_1}, e.getExceptionItems().get(0));
         }
         // Try to delete again the deleted variable family
         try {
@@ -2218,7 +2232,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             fail("variable already deleted");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.VARIABLE_FAMILY_NOT_FOUND, 1, new String[]{VARIABLE_FAMILY_1}, e.getExceptionItems().get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND, 1, new String[]{VARIABLE_FAMILY_1}, e.getExceptionItems().get(0));
         }
     }
 
@@ -2226,7 +2240,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     public void testDeleteVariableFamilyWithVariables() throws Exception {
         ServiceContext ctx = getServiceContextAdministrador();
 
-        VariableFamily family = codesService.retrieveVariableFamilyByIdentifier(ctx, VARIABLE_FAMILY_3);
+        VariableFamily family = codesService.retrieveVariableFamilyByUrn(ctx, VARIABLE_FAMILY_3);
         assertEquals(2, family.getVariables().size());
         assertTrue(SrmValidationUtils.isVariableInList(VARIABLE_3, family.getVariables()));
         assertTrue(SrmValidationUtils.isVariableInList(VARIABLE_4, family.getVariables()));
@@ -2235,23 +2249,23 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
         // Check that the variable family has been deleted
         try {
-            codesService.retrieveVariableFamilyByIdentifier(getServiceContextAdministrador(), VARIABLE_FAMILY_3);
+            codesService.retrieveVariableFamilyByUrn(getServiceContextAdministrador(), VARIABLE_FAMILY_3);
             fail("variable family already deleted");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.VARIABLE_FAMILY_NOT_FOUND, 1, new String[]{VARIABLE_FAMILY_3}, e.getExceptionItems().get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND, 1, new String[]{VARIABLE_FAMILY_3}, e.getExceptionItems().get(0));
         }
         try {
             codesService.deleteVariableFamily(getServiceContextAdministrador(), VARIABLE_FAMILY_3);
             fail("variable already deleted");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.VARIABLE_FAMILY_NOT_FOUND, 1, new String[]{VARIABLE_FAMILY_3}, e.getExceptionItems().get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND, 1, new String[]{VARIABLE_FAMILY_3}, e.getExceptionItems().get(0));
         }
 
         // Check that the associated variables has not been deleted
-        Variable variable3 = codesService.retrieveVariableByIdentifier(ctx, VARIABLE_3);
-        Variable variable4 = codesService.retrieveVariableByIdentifier(ctx, VARIABLE_4);
+        Variable variable3 = codesService.retrieveVariableByUrn(ctx, VARIABLE_3);
+        Variable variable4 = codesService.retrieveVariableByUrn(ctx, VARIABLE_4);
         assertFalse(SrmValidationUtils.isFamilyInList(VARIABLE_FAMILY_3, variable3.getFamilies()));
         assertFalse(SrmValidationUtils.isFamilyInList(VARIABLE_FAMILY_3, variable4.getFamilies()));
     }
@@ -2261,26 +2275,26 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     public void testFindVariableFamiliesByCondition() throws Exception {
         // Find all
         {
-            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(VariableFamily.class).orderBy(VariableFamilyProperties.identifier()).build();
+            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(VariableFamily.class).orderBy(VariableFamilyProperties.nameableArtefact().code()).build();
             PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
             PagedResult<VariableFamily> result = codesService.findVariableFamiliesByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
 
             assertEquals(4, result.getTotalRows());
             int i = 0;
-            assertEquals(VARIABLE_FAMILY_1, result.getValues().get(i++).getIdentifier());
-            assertEquals(VARIABLE_FAMILY_2, result.getValues().get(i++).getIdentifier());
-            assertEquals(VARIABLE_FAMILY_3, result.getValues().get(i++).getIdentifier());
-            assertEquals(VARIABLE_FAMILY_4, result.getValues().get(i++).getIdentifier());
+            assertEquals(VARIABLE_FAMILY_1, result.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(VARIABLE_FAMILY_2, result.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(VARIABLE_FAMILY_3, result.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(VARIABLE_FAMILY_4, result.getValues().get(i++).getNameableArtefact().getUrn());
         }
-        // Find by identifier
+        // Find by code
         {
-            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(VariableFamily.class).withProperty(VariableFamilyProperties.identifier()).like(VARIABLE_FAMILY_1)
-                    .orderBy(VariableFamilyProperties.identifier()).build();
+            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(VariableFamily.class).withProperty(VariableFamilyProperties.nameableArtefact().urn()).like(VARIABLE_FAMILY_1)
+                    .orderBy(VariableFamilyProperties.nameableArtefact().urn()).build();
             PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
             PagedResult<VariableFamily> result = codesService.findVariableFamiliesByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
             assertEquals(1, result.getTotalRows());
             int i = 0;
-            assertEquals(VARIABLE_FAMILY_1, result.getValues().get(i++).getIdentifier());
+            assertEquals(VARIABLE_FAMILY_1, result.getValues().get(i++).getNameableArtefact().getUrn());
 
         }
     }
@@ -2296,8 +2310,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         ServiceContext ctx = getServiceContextAdministrador();
 
         // Create
-        List<String> familyIdentifiers = Arrays.asList(VARIABLE_FAMILY_1, VARIABLE_FAMILY_2);
-        Variable variableCreated = codesService.createVariable(ctx, familyIdentifiers, variable);
+        List<String> familyUrns = Arrays.asList(VARIABLE_FAMILY_1, VARIABLE_FAMILY_2);
+        Variable variableCreated = codesService.createVariable(ctx, familyUrns, variable);
 
         assertEquals(ctx.getUserId(), variableCreated.getCreatedBy());
         assertEquals(getServiceContextAdministrador().getUserId(), variableCreated.getCreatedBy());
@@ -2308,43 +2322,44 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         // Check that the variable was created in both families
         assertTrue(SrmValidationUtils.isFamilyInList(VARIABLE_FAMILY_1, variableCreated.getFamilies()));
         assertTrue(SrmValidationUtils.isFamilyInList(VARIABLE_FAMILY_2, variableCreated.getFamilies()));
-        VariableFamily family1 = codesService.retrieveVariableFamilyByIdentifier(ctx, VARIABLE_FAMILY_1);
-        VariableFamily family2 = codesService.retrieveVariableFamilyByIdentifier(ctx, VARIABLE_FAMILY_2);
-        assertTrue(SrmValidationUtils.isVariableInList(variableCreated.getIdentifier(), family1.getVariables()));
-        assertTrue(SrmValidationUtils.isVariableInList(variableCreated.getIdentifier(), family2.getVariables()));
+        VariableFamily family1 = codesService.retrieveVariableFamilyByUrn(ctx, VARIABLE_FAMILY_1);
+        VariableFamily family2 = codesService.retrieveVariableFamilyByUrn(ctx, VARIABLE_FAMILY_2);
+        assertTrue(SrmValidationUtils.isVariableInList(variableCreated.getNameableArtefact().getUrn(), family1.getVariables()));
+        assertTrue(SrmValidationUtils.isVariableInList(variableCreated.getNameableArtefact().getUrn(), family2.getVariables()));
 
         assertEqualsVariable(variableCreated, variable);
     }
 
     @Test
-    public void testCreateVariableErrorWrongIdentifier() throws Exception {
+    public void testCreateVariableErrorWrongCode() throws Exception {
         Variable variable = CodesMetamacDoMocks.mockVariable();
-        variable.setIdentifier(" 0 - invalid identifier");
+        variable.getNameableArtefact().setCode(" 0 - invalid identifier");
         try {
             codesService.createVariable(getServiceContextAdministrador(), Arrays.asList(VARIABLE_FAMILY_1), variable);
-            fail("wrong identifier");
+            fail("wrong code");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, 1, new String[]{ServiceExceptionParameters.VARIABLE_IDENTIFIER}, e.getExceptionItems().get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, 1, new String[]{ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_CODE}, e.getExceptionItems().get(0));
         }
     }
 
     @Test
-    public void testCreateVariableErrorDuplicatedIdentifier() throws Exception {
+    public void testCreateVariableErrorDuplicatedCode() throws Exception {
         Variable variable = CodesMetamacDoMocks.mockVariable();
-        variable.setIdentifier(VARIABLE_1);
+        variable.getNameableArtefact().setCode("VARIABLE_01");
         try {
             codesService.createVariable(getServiceContextAdministrador(), Arrays.asList(VARIABLE_FAMILY_1), variable);
-            fail("duplicated identifier");
+            fail("duplicated code");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.VARIABLE_DUPLICATED_IDENTIFIER, 1, new String[]{VARIABLE_1}, e.getExceptionItems().get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_URN_DUPLICATED, 1, new String[]{VARIABLE_1}, e.getExceptionItems().get(0));
         }
     }
 
     @Test
     public void testCreateVariableErrorIncorrectMetadata() throws Exception {
         Variable variable = new Variable();
+        variable.setNameableArtefact(new NameableArtefact());
         variable.setValidFrom(null);
         variable.setValidTo(new DateTime());
         try {
@@ -2352,8 +2367,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             fail("metadata required");
         } catch (MetamacException e) {
             assertEquals(4, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.VARIABLE_IDENTIFIER}, e.getExceptionItems().get(0));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.VARIABLE_NAME}, e.getExceptionItems().get(1));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME}, e.getExceptionItems().get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_CODE}, e.getExceptionItems().get(1));
             assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.VARIABLE_SHORT_NAME}, e.getExceptionItems().get(2));
             assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, 1, new String[]{ServiceExceptionParameters.VARIABLE_VALID_TO}, e.getExceptionItems().get(3));
         }
@@ -2371,7 +2386,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             fail("required family to create a variable");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.PARAMETER_REQUIRED, 1, new String[]{ServiceExceptionParameters.VARIABLE_FAMILY_IDENTIFIER}, e.getExceptionItems().get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.PARAMETER_REQUIRED, 1, new String[]{ServiceExceptionParameters.URN}, e.getExceptionItems().get(0));
         }
 
         // Empty family list
@@ -2380,7 +2395,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             fail("required family to create a variable");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.PARAMETER_REQUIRED, 1, new String[]{ServiceExceptionParameters.VARIABLE_FAMILY_IDENTIFIER}, e.getExceptionItems().get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.PARAMETER_REQUIRED, 1, new String[]{ServiceExceptionParameters.URN}, e.getExceptionItems().get(0));
         }
 
         // Non-existent family
@@ -2389,16 +2404,17 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             fail("required family to create a variable");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.VARIABLE_FAMILY_NOT_FOUND, 1, new String[]{NOT_EXISTS}, e.getExceptionItems().get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND, 1, new String[]{NOT_EXISTS}, e.getExceptionItems().get(0));
         }
     }
 
     @Override
     @Test
     public void testUpdateVariable() throws Exception {
-        Variable variable = codesService.retrieveVariableByIdentifier(getServiceContextAdministrador(), VARIABLE_1);
-        variable.setIdentifier("code-" + MetamacMocks.mockString(10));
-        variable.setName(BaseDoMocks.mockInternationalString());
+        Variable variable = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_1);
+        variable.getNameableArtefact().setCode("code-" + MetamacMocks.mockString(10));
+        variable.getNameableArtefact().setIsCodeUpdated(Boolean.TRUE);
+        variable.getNameableArtefact().setName(BaseDoMocks.mockInternationalString());
         variable.setShortName(BaseDoMocks.mockInternationalString());
         variable.setValidFrom(MetamacMocks.mockDateTime());
         variable.setValidTo(null);
@@ -2409,36 +2425,39 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     }
 
     @Test
-    public void testUpdateVariableErrorWrongIdentifier() throws Exception {
-        Variable variable = codesService.retrieveVariableByIdentifier(getServiceContextAdministrador(), VARIABLE_1);
-        variable.setIdentifier(" 0 - invalid identifier");
+    public void testUpdateVariableErrorWrongCode() throws Exception {
+        Variable variable = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_1);
+        variable.getNameableArtefact().setCode(" 0 - invalid identifier");
+        variable.getNameableArtefact().setIsCodeUpdated(Boolean.TRUE);
         try {
             codesService.updateVariable(getServiceContextAdministrador(), variable);
-            fail("wrong identifier");
+            fail("wrong code");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, 1, new String[]{ServiceExceptionParameters.VARIABLE_IDENTIFIER}, e.getExceptionItems().get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, 1, new String[]{ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_CODE}, e.getExceptionItems().get(0));
         }
     }
 
     @Test
-    public void testUpdateVariableErrorDuplicatedIdentifier() throws Exception {
-        Variable variable = codesService.retrieveVariableByIdentifier(getServiceContextAdministrador(), VARIABLE_1);
-        variable.setIdentifier(VARIABLE_2);
+    public void testUpdateVariableErrorDuplicatedCode() throws Exception {
+        Variable variable = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_1);
+        variable.getNameableArtefact().setCode("VARIABLE_02");
+        variable.getNameableArtefact().setIsCodeUpdated(Boolean.TRUE);
         try {
             codesService.updateVariable(getServiceContextAdministrador(), variable);
-            fail("duplicated identifier");
+            fail("duplicated code");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.VARIABLE_DUPLICATED_IDENTIFIER, 1, new String[]{VARIABLE_2}, e.getExceptionItems().get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_URN_DUPLICATED, 1, new String[]{VARIABLE_2}, e.getExceptionItems().get(0));
         }
     }
 
     @Test
     public void testUpdateVariableErrorIncorrectMetadata() throws Exception {
-        Variable variable = codesService.retrieveVariableByIdentifier(getServiceContextAdministrador(), VARIABLE_1);
-        variable.setIdentifier(null);
-        variable.setName(null);
+        Variable variable = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_1);
+        variable.getNameableArtefact().setCode(null);
+        variable.getNameableArtefact().setIsCodeUpdated(null);
+        variable.getNameableArtefact().setName(null);
         variable.setShortName(null);
         variable.setValidFrom(null);
         variable.setValidTo(new DateTime());
@@ -2446,22 +2465,24 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             codesService.updateVariable(getServiceContextAdministrador(), variable);
             fail("metadata required");
         } catch (MetamacException e) {
-            assertEquals(4, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.VARIABLE_IDENTIFIER}, e.getExceptionItems().get(0));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.VARIABLE_NAME}, e.getExceptionItems().get(1));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.VARIABLE_SHORT_NAME}, e.getExceptionItems().get(2));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, 1, new String[]{ServiceExceptionParameters.VARIABLE_VALID_TO}, e.getExceptionItems().get(3));
+            assertEquals(5, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME}, e.getExceptionItems().get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_IS_CODE_UPDATED}, e.getExceptionItems().get(1));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_CODE}, e.getExceptionItems().get(2));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.VARIABLE_SHORT_NAME}, e.getExceptionItems().get(3));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, 1, new String[]{ServiceExceptionParameters.VARIABLE_VALID_TO}, e.getExceptionItems().get(4));
         }
     }
 
     @Override
     @Test
-    public void testRetrieveVariableByIdentifier() throws Exception {
-        String identifier = VARIABLE_1;
-        Variable variable = codesService.retrieveVariableByIdentifier(getServiceContextAdministrador(), identifier);
+    public void testRetrieveVariableByUrn() throws Exception {
+        String urn = VARIABLE_1;
+        Variable variable = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), urn);
 
-        assertEquals(identifier, variable.getIdentifier());
-        assertEqualsInternationalString(variable.getName(), "es", "variable-57", null, null);
+        assertEquals(urn, variable.getNameableArtefact().getUrn());
+        assertEquals("VARIABLE_01", variable.getNameableArtefact().getCode());
+        assertEqualsInternationalString(variable.getNameableArtefact().getName(), "es", "variable-57", null, null);
         assertEqualsInternationalString(variable.getShortName(), "es", "variable-63", null, null);
         assertEqualsDate(new DateTime(2011, 01, 02, 02, 02, 04, 0, new DateTimeZoneBuilder().toDateTimeZone("Europe/London", false)), variable.getValidFrom());
         assertEqualsDate(new DateTime(2012, 01, 02, 02, 02, 04, 0, new DateTimeZoneBuilder().toDateTimeZone("Europe/London", false)), variable.getValidTo());
@@ -2473,26 +2494,26 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     }
 
     @Test
-    public void testRetrieveVariableByIdentifierErrorNotFound() throws Exception {
-        String identifier = NOT_EXISTS;
+    public void testRetrieveVariableByUrnErrorNotFound() throws Exception {
+        String urn = NOT_EXISTS;
         try {
-            codesService.retrieveVariableByIdentifier(getServiceContextAdministrador(), identifier);
+            codesService.retrieveVariableByUrn(getServiceContextAdministrador(), urn);
             fail("not found");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.VARIABLE_NOT_FOUND, 1, new String[]{identifier}, e.getExceptionItems().get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND, 1, new String[]{urn}, e.getExceptionItems().get(0));
         }
     }
 
     @Test
-    public void testRetrieveVariableByIdentifierErrorParameterRequired() throws Exception {
-        String identifier = null;
+    public void testRetrieveVariableByUrnErrorParameterRequired() throws Exception {
+        String urn = null;
         try {
-            codesService.retrieveVariableByIdentifier(getServiceContextAdministrador(), identifier);
+            codesService.retrieveVariableByUrn(getServiceContextAdministrador(), urn);
             fail("parameter required");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.PARAMETER_REQUIRED, 1, new String[]{ServiceExceptionParameters.VARIABLE_IDENTIFIER}, e.getExceptionItems().get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.PARAMETER_REQUIRED, 1, new String[]{ServiceExceptionParameters.URN}, e.getExceptionItems().get(0));
         }
     }
 
@@ -2501,28 +2522,28 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     public void testFindVariablesByCondition() throws Exception {
         // Find all
         {
-            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(Variable.class).orderBy(VariableProperties.identifier()).build();
+            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(Variable.class).orderBy(VariableProperties.nameableArtefact().urn()).build();
             PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
             PagedResult<Variable> result = codesService.findVariablesByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
 
             assertEquals(6, result.getTotalRows());
             int i = 0;
-            assertEquals(VARIABLE_1, result.getValues().get(i++).getIdentifier());
-            assertEquals(VARIABLE_2, result.getValues().get(i++).getIdentifier());
-            assertEquals(VARIABLE_3, result.getValues().get(i++).getIdentifier());
-            assertEquals(VARIABLE_4, result.getValues().get(i++).getIdentifier());
-            assertEquals(VARIABLE_5, result.getValues().get(i++).getIdentifier());
-            assertEquals(VARIABLE_6, result.getValues().get(i++).getIdentifier());
+            assertEquals(VARIABLE_1, result.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(VARIABLE_2, result.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(VARIABLE_3, result.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(VARIABLE_4, result.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(VARIABLE_5, result.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(VARIABLE_6, result.getValues().get(i++).getNameableArtefact().getUrn());
         }
-        // Find by identifier
+        // Find by urn
         {
-            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(Variable.class).withProperty(VariableProperties.identifier()).like(VARIABLE_1)
-                    .orderBy(VariableProperties.identifier()).build();
+            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(Variable.class).withProperty(VariableProperties.nameableArtefact().urn()).like(VARIABLE_1)
+                    .orderBy(VariableProperties.nameableArtefact().urn()).build();
             PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
             PagedResult<Variable> result = codesService.findVariablesByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
             assertEquals(1, result.getTotalRows());
             int i = 0;
-            assertEquals(VARIABLE_1, result.getValues().get(i++).getIdentifier());
+            assertEquals(VARIABLE_1, result.getValues().get(i++).getNameableArtefact().getUrn());
         }
     }
 
@@ -2532,11 +2553,11 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         codesService.deleteVariable(getServiceContextAdministrador(), VARIABLE_1);
         // Retrieve deleted variable
         try {
-            codesService.retrieveVariableByIdentifier(getServiceContextAdministrador(), VARIABLE_1);
+            codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_1);
             fail("variable already deleted");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.VARIABLE_NOT_FOUND, 1, new String[]{VARIABLE_1}, e.getExceptionItems().get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND, 1, new String[]{VARIABLE_1}, e.getExceptionItems().get(0));
         }
         // Try to delete again the deleted variable
         try {
@@ -2544,7 +2565,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             fail("variable already deleted");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.VARIABLE_NOT_FOUND, 1, new String[]{VARIABLE_1}, e.getExceptionItems().get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND, 1, new String[]{VARIABLE_1}, e.getExceptionItems().get(0));
         }
     }
 
@@ -2552,7 +2573,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     public void testDeleteVariableWithFamilies() throws Exception {
         ServiceContext ctx = getServiceContextAdministrador();
 
-        Variable variable = codesService.retrieveVariableByIdentifier(ctx, VARIABLE_4);
+        Variable variable = codesService.retrieveVariableByUrn(ctx, VARIABLE_4);
         assertEquals(2, variable.getFamilies().size());
         assertTrue(SrmValidationUtils.isFamilyInList(VARIABLE_FAMILY_3, variable.getFamilies()));
         assertTrue(SrmValidationUtils.isFamilyInList(VARIABLE_FAMILY_4, variable.getFamilies()));
@@ -2562,16 +2583,16 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
         // Check that the variable has beed deleted
         try {
-            codesService.retrieveVariableByIdentifier(getServiceContextAdministrador(), VARIABLE_4);
+            codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_4);
             fail("variable already deleted");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.VARIABLE_NOT_FOUND, 1, new String[]{VARIABLE_4}, e.getExceptionItems().get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND, 1, new String[]{VARIABLE_4}, e.getExceptionItems().get(0));
         }
 
         // Check that the families has not been deleted
-        VariableFamily family3 = codesService.retrieveVariableFamilyByIdentifier(ctx, VARIABLE_FAMILY_3);
-        VariableFamily family4 = codesService.retrieveVariableFamilyByIdentifier(ctx, VARIABLE_FAMILY_4);
+        VariableFamily family3 = codesService.retrieveVariableFamilyByUrn(ctx, VARIABLE_FAMILY_3);
+        VariableFamily family4 = codesService.retrieveVariableFamilyByUrn(ctx, VARIABLE_FAMILY_4);
         assertFalse(SrmValidationUtils.isVariableInList(VARIABLE_4, family3.getVariables()));
         assertFalse(SrmValidationUtils.isVariableInList(VARIABLE_4, family4.getVariables()));
     }
@@ -2580,7 +2601,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     public void testDeleteVariableWithCodelists() throws Exception {
         ServiceContext ctx = getServiceContextAdministrador();
 
-        Variable variable = codesService.retrieveVariableByIdentifier(ctx, VARIABLE_6);
+        Variable variable = codesService.retrieveVariableByUrn(ctx, VARIABLE_6);
         assertEquals(2, variable.getCodelists().size());
         assertTrue(SrmValidationUtils.isCodelistInList(CODELIST_6_V1, variable.getCodelists()));
 
@@ -2589,11 +2610,11 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
         // Check that the variable has been deleted
         try {
-            codesService.retrieveVariableByIdentifier(getServiceContextAdministrador(), VARIABLE_6);
+            codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_6);
             fail("variable already deleted");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.VARIABLE_NOT_FOUND, 1, new String[]{VARIABLE_6}, e.getExceptionItems().get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND, 1, new String[]{VARIABLE_6}, e.getExceptionItems().get(0));
         }
 
         // Chech that the codelists have not been deleted
@@ -2608,7 +2629,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     public void testDeleteVariableWithPublishedCodelists() throws Exception {
         ServiceContext ctx = getServiceContextAdministrador();
 
-        Variable variable = codesService.retrieveVariableByIdentifier(ctx, VARIABLE_5);
+        Variable variable = codesService.retrieveVariableByUrn(ctx, VARIABLE_5);
         assertEquals(1, variable.getCodelists().size());
         assertTrue(SrmValidationUtils.isCodelistInList(CODELIST_7_V2, variable.getCodelists()));
 
@@ -2617,11 +2638,11 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
         // Check that the variable has been deleted
         try {
-            codesService.retrieveVariableByIdentifier(getServiceContextAdministrador(), VARIABLE_5);
+            codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_5);
             fail("variable already deleted");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.VARIABLE_NOT_FOUND, 1, new String[]{VARIABLE_5}, e.getExceptionItems().get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND, 1, new String[]{VARIABLE_5}, e.getExceptionItems().get(0));
         }
 
         // Chech that the codelists has not been deleted
@@ -2634,15 +2655,15 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     public void testAddVariableToFamily() throws Exception {
         ServiceContext ctx = getServiceContextAdministrador();
 
-        VariableFamily family = codesService.retrieveVariableFamilyByIdentifier(ctx, VARIABLE_FAMILY_1);
-        Variable variable = codesService.retrieveVariableByIdentifier(ctx, VARIABLE_1);
+        VariableFamily family = codesService.retrieveVariableFamilyByUrn(ctx, VARIABLE_FAMILY_1);
+        Variable variable = codesService.retrieveVariableByUrn(ctx, VARIABLE_1);
         assertFalse(SrmValidationUtils.isVariableInList(VARIABLE_1, family.getVariables()));
         assertFalse(SrmValidationUtils.isFamilyInList(VARIABLE_FAMILY_1, variable.getFamilies()));
 
         codesService.addVariableToFamily(ctx, VARIABLE_1, VARIABLE_FAMILY_1);
 
-        family = codesService.retrieveVariableFamilyByIdentifier(ctx, VARIABLE_FAMILY_1);
-        variable = codesService.retrieveVariableByIdentifier(ctx, VARIABLE_1);
+        family = codesService.retrieveVariableFamilyByUrn(ctx, VARIABLE_FAMILY_1);
+        variable = codesService.retrieveVariableByUrn(ctx, VARIABLE_1);
         assertTrue(SrmValidationUtils.isVariableInList(VARIABLE_1, family.getVariables()));
         assertTrue(SrmValidationUtils.isFamilyInList(VARIABLE_FAMILY_1, variable.getFamilies()));
 
@@ -2655,15 +2676,15 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     public void testRemoveVariableFromFamily() throws Exception {
         ServiceContext ctx = getServiceContextAdministrador();
 
-        VariableFamily family = codesService.retrieveVariableFamilyByIdentifier(ctx, VARIABLE_FAMILY_3);
-        Variable variable = codesService.retrieveVariableByIdentifier(ctx, VARIABLE_3);
+        VariableFamily family = codesService.retrieveVariableFamilyByUrn(ctx, VARIABLE_FAMILY_3);
+        Variable variable = codesService.retrieveVariableByUrn(ctx, VARIABLE_3);
         assertTrue(SrmValidationUtils.isVariableInList(VARIABLE_3, family.getVariables()));
         assertTrue(SrmValidationUtils.isFamilyInList(VARIABLE_FAMILY_3, variable.getFamilies()));
 
         codesService.removeVariableFromFamily(ctx, VARIABLE_3, VARIABLE_FAMILY_3);
 
-        family = codesService.retrieveVariableFamilyByIdentifier(ctx, VARIABLE_FAMILY_3);
-        variable = codesService.retrieveVariableByIdentifier(ctx, VARIABLE_3);
+        family = codesService.retrieveVariableFamilyByUrn(ctx, VARIABLE_FAMILY_3);
+        variable = codesService.retrieveVariableByUrn(ctx, VARIABLE_3);
         assertFalse(SrmValidationUtils.isVariableInList(VARIABLE_3, family.getVariables()));
         assertFalse(SrmValidationUtils.isFamilyInList(VARIABLE_FAMILY_3, variable.getFamilies()));
 

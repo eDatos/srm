@@ -1,6 +1,7 @@
 import "classpath:/btdesign/export/metamac-core-common-entity.btdesign"
 import "classpath:/btdesign/metamac-core-common-enum.btdesign"
 import "classpath:/btdesign/statistic-sdmx-core-codes.btdesign"
+import "classpath:/btdesign/statistic-sdmx-core-base.btdesign"
 import "classpath:/btdesign/metamac-srm-core-enum.btdesign"
 import "classpath:/btdesign/statistic-sdmx-v2_1-domain-enums.btdesign"
 import "classpath:/btdesign/metamac-srm-core-base.btdesign"
@@ -81,11 +82,11 @@ Application CodesMetamac {
 			"Updates codelist family"
 			@CodelistFamily updateCodelistFamily(@CodelistFamily codelistFamily) throws MetamacException;
     		"Retrieves codelist family by urn"
-    		@CodelistFamily retrieveCodelistFamilyByIdentifier(String identifier) throws MetamacException;
+    		@CodelistFamily retrieveCodelistFamilyByUrn(String urn) throws MetamacException;
     		"Finds codelist families by criteria"
     		PagedResult<@CodelistFamily> findCodelistFamiliesByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
 			"Deletes codelist family"
-    		deleteCodelistFamily(String identifier) throws MetamacException;
+    		deleteCodelistFamily(String urn) throws MetamacException;
     		
     		// VARIABLE FAMILIES
     		
@@ -94,29 +95,29 @@ Application CodesMetamac {
 			"Updates variable family"
 			@VariableFamily updateVariableFamily(@VariableFamily variableFamily) throws MetamacException;
     		"Retrieves variable family by urn"
-    		@VariableFamily retrieveVariableFamilyByIdentifier(String identifier) throws MetamacException;
+    		@VariableFamily retrieveVariableFamilyByUrn(String urn) throws MetamacException;
     		"Finds variable families by criteria"
     		PagedResult<@VariableFamily> findVariableFamiliesByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
 			"Deletes variable family"
-    		deleteVariableFamily(String identifier) throws MetamacException;
+    		deleteVariableFamily(String urn) throws MetamacException;
     		
     		// VARIABLES
     		
     		"Creates variable"
-			@Variable createVariable(List<String> familyIdentifiers, @Variable variable) throws MetamacException;
+			@Variable createVariable(List<String> familyUrns, @Variable variable) throws MetamacException;
 			"Updates variable"
 			@Variable updateVariable(@Variable variable) throws MetamacException;
     		"Retrieves variable by urn"
-    		@Variable retrieveVariableByIdentifier(String identifier) throws MetamacException;
+    		@Variable retrieveVariableByUrn(String urn) throws MetamacException;
     		"Finds variables by criteria"
     		PagedResult<@Variable> findVariablesByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
 			"Deletes variable"
-    		deleteVariable(String identifier) throws MetamacException;
+    		deleteVariable(String urn) throws MetamacException;
     		
     		"Adds a variable to a family"
-    		addVariableToFamily(String variableIdentifier, String familyIdentifier) throws MetamacException;
+    		addVariableToFamily(String variableUrn, String familyUrn) throws MetamacException;
     		"Removes a variable from a family"
-    		removeVariableFromFamily(String variableIdentifier, String familyIdentifier) throws MetamacException;
+    		removeVariableFromFamily(String variableUrn, String familyUrn) throws MetamacException;
 		}
 
 		// ----------------------------------------------------------------
@@ -170,11 +171,9 @@ Application CodesMetamac {
 		Entity CodelistFamily {
 			databaseTable="TB_M_CODELIST_FAMILIES"
 			hint="idSequence=M_CODELIST_FAMILIES"
-			
-			"Identifier"
-			String identifier not nullable;
-			"Name"
-			- @InternationalString name not nullable cascade="all" databaseColumn="NAME_FK";
+
+			"Nameable artefact"
+			- @NameableArtefact nameableArtefact databaseColumn="NAMEABLE_ARTEFACT_FK" not nullable cascade="all";
 			"Codelists"
 			- Bag<@CodelistVersionMetamac> codelists cascade="none" fetch="lazy" inverse <-> family;
 			
@@ -183,18 +182,16 @@ Application CodesMetamac {
 				delete;
 				findByQuery(String query, Map<String, Object> parameters, int maxResult);
 				findByCondition(PagingParameter pagingParameter);
-				@CodelistFamily findByIdentifier(String identifier);
+				@CodelistFamily findByUrn(String urn);
 			}
 		}
 		
 		Entity VariableFamily {
 			databaseTable="TB_M_VARIABLE_FAMILIES"
 			hint="idSequence=M_VARIABLE_FAMILIES"
-			
-			"Identifier"
-			String identifier not nullable;
-			"Name"
-			- @InternationalString name not nullable cascade="all" databaseColumn="NAME_FK";
+
+			"Nameable artefact"
+			- @NameableArtefact nameableArtefact databaseColumn="NAMEABLE_ARTEFACT_FK" not nullable cascade="all";
 			"Variables"
 			- Bag<@Variable> variables cascade="none" fetch="lazy" databaseColumn="VARIABLE_FK" <-> families;
 			
@@ -203,7 +200,7 @@ Application CodesMetamac {
 				delete;
 				findByQuery(String query, Map<String, Object> parameters, int maxResult);
 				findByCondition(PagingParameter pagingParameter);
-				@VariableFamily findByIdentifier(String identifier);
+				@VariableFamily findByUrn(String urn);
 			}
 		}
 		
@@ -211,10 +208,8 @@ Application CodesMetamac {
 			databaseTable="TB_M_VARIABLES"
 			hint="idSequence=M_VARIABLES"
 			
-			"Identifier"
-			String identifier not nullable;
-			"Name"
-			- @InternationalString name not nullable cascade="all" databaseColumn="NAME_FK";
+			"Nameable artefact"
+			- @NameableArtefact nameableArtefact databaseColumn="NAMEABLE_ARTEFACT_FK" not nullable cascade="all";
 			"Short name"
 			- @InternationalString shortName not nullable cascade="all" databaseColumn="SHORT_NAME_FK";
 			"Date from which the version is valid"
@@ -231,7 +226,7 @@ Application CodesMetamac {
 				delete;
 				findByQuery(String query, Map<String, Object> parameters, int maxResult);
 				findByCondition(PagingParameter pagingParameter);
-				@Variable findByIdentifier(String identifier);
+				@Variable findByUrn(String urn);
 			}
 		}
 

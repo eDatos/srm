@@ -16,10 +16,11 @@ public class VariableFamilyRepositoryImpl extends VariableFamilyRepositoryBase {
     public VariableFamilyRepositoryImpl() {
     }
 
-    public VariableFamily findByIdentifier(String identifier) {
+    @Override
+    public VariableFamily findByUrn(String urn) {
         Map<String, Object> parameters = new HashMap<String, Object>();
-        parameters.put("identifier", identifier);
-        List<VariableFamily> result = findByQuery("from VariableFamily where identifier = :identifier", parameters, 1);
+        parameters.put("urn", urn);
+        List<VariableFamily> result = findByQuery("from VariableFamily where nameableArtefact.urn = :urn", parameters, 1);
         if (result == null || result.isEmpty()) {
             return null;
         } else {

@@ -55,30 +55,25 @@ public class CodesMetamacDoMocks extends CodesDoMocks {
 
     public static CodelistFamily mockCodelistFamily() {
         CodelistFamily codelistFamily = new CodelistFamily();
-        codelistFamily.setIdentifier("code-" + MetamacMocks.mockString(5));
-        codelistFamily.setName(BaseDoMocks.mockInternationalString());
+        codelistFamily.setNameableArtefact(mockNameableArtefact("code-" + MetamacMocks.mockString(5)));
         return codelistFamily;
     }
-
     // ------------------------------------------------------------------------------------
     // VARIABLE FAMILIES
     // ------------------------------------------------------------------------------------
 
     public static VariableFamily mockVariableFamily() {
         VariableFamily variableFamily = new VariableFamily();
-        variableFamily.setIdentifier("code-" + MetamacMocks.mockString(5));
-        variableFamily.setName(BaseDoMocks.mockInternationalString());
+        variableFamily.setNameableArtefact(mockNameableArtefact("code-" + MetamacMocks.mockString(5)));
         return variableFamily;
     }
-
     // ------------------------------------------------------------------------------------
     // VARIABLES
     // ------------------------------------------------------------------------------------
 
     public static Variable mockVariable() {
         Variable variable = new Variable();
-        variable.setIdentifier("code-" + MetamacMocks.mockString(5));
-        variable.setName(BaseDoMocks.mockInternationalString());
+        variable.setNameableArtefact(mockNameableArtefact("code-" + MetamacMocks.mockString(5)));
         variable.setShortName(BaseDoMocks.mockInternationalString());
         variable.setValidFrom(new DateTime());
         variable.setValidTo(new DateTime());

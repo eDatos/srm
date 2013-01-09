@@ -125,8 +125,8 @@ public class CodesMetamacAsserts extends CodesAsserts {
     // ------------------------------------------------------------------------------------
 
     public static void assertEqualsCodelistFamily(CodelistFamily expected, CodelistFamily actual) {
-        assertEquals(expected.getIdentifier(), actual.getIdentifier());
-        assertEqualsInternationalString(expected.getName(), actual.getName());
+        // other artefacts
+        assertEqualsNameableArtefact(expected.getNameableArtefact(), actual.getNameableArtefact());
     }
 
     // ------------------------------------------------------------------------------------
@@ -134,8 +134,8 @@ public class CodesMetamacAsserts extends CodesAsserts {
     // ------------------------------------------------------------------------------------
 
     public static void assertEqualsVariableFamily(VariableFamily expected, VariableFamily actual) {
-        assertEquals(expected.getIdentifier(), actual.getIdentifier());
-        assertEqualsInternationalString(expected.getName(), actual.getName());
+        // other artefacts
+        assertEqualsNameableArtefact(expected.getNameableArtefact(), actual.getNameableArtefact());
     }
 
     // ------------------------------------------------------------------------------------
@@ -143,11 +143,12 @@ public class CodesMetamacAsserts extends CodesAsserts {
     // ------------------------------------------------------------------------------------
 
     public static void assertEqualsVariable(Variable expected, Variable actual) {
-        assertEquals(expected.getIdentifier(), actual.getIdentifier());
-        assertEqualsInternationalString(expected.getName(), actual.getName());
         assertEqualsInternationalString(expected.getShortName(), actual.getShortName());
         assertEqualsDate(expected.getValidFrom(), actual.getValidFrom());
         assertEqualsDate(expected.getValidTo(), actual.getValidTo());
+
+        // other artefacts
+        assertEqualsNameableArtefact(expected.getNameableArtefact(), actual.getNameableArtefact());
     }
 
 }

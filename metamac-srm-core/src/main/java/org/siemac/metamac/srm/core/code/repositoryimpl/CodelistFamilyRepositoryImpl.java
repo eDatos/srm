@@ -17,10 +17,10 @@ public class CodelistFamilyRepositoryImpl extends CodelistFamilyRepositoryBase {
     }
 
     @Override
-    public CodelistFamily findByIdentifier(String identifier) {
+    public CodelistFamily findByUrn(String urn) {
         Map<String, Object> parameters = new HashMap<String, Object>();
-        parameters.put("identifier", identifier);
-        List<CodelistFamily> result = findByQuery("from CodelistFamily where identifier = :identifier", parameters, 1);
+        parameters.put("urn", urn);
+        List<CodelistFamily> result = findByQuery("from CodelistFamily where nameableArtefact.urn = :urn", parameters, 1);
         if (result == null || result.isEmpty()) {
             return null;
         } else {

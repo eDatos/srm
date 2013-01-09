@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.BooleanUtils;
-import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
-import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.core.common.exception.utils.ExceptionUtils;
@@ -46,16 +44,6 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
         if (codelistVersion != null) {
             checkCodelist(codelistVersion, exceptions);
         }
-
-        ExceptionUtils.throwIfException(exceptions);
-    }
-
-    public static void checkRetrieveCodelistByCodeUrn(String codeUrn, List<MetamacExceptionItem> exceptions) throws MetamacException {
-        if (exceptions == null) {
-            exceptions = new ArrayList<MetamacExceptionItem>();
-        }
-
-        ValidationUtils.checkParameterRequired(codeUrn, ServiceExceptionParameters.URN, exceptions);
 
         ExceptionUtils.throwIfException(exceptions);
     }
@@ -105,16 +93,6 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
     // CODELIST FAMILIES
     // ---------------------------------------------------------------------------
 
-    public static void checkRetrieveCodelistFamilyByIdentifier(String identifier, List<MetamacExceptionItem> exceptions) throws MetamacException {
-        if (exceptions == null) {
-            exceptions = new ArrayList<MetamacExceptionItem>();
-        }
-
-        ValidationUtils.checkParameterRequired(identifier, ServiceExceptionParameters.CODELIST_FAMILY_IDENTIFIER, exceptions);
-
-        ExceptionUtils.throwIfException(exceptions);
-    }
-
     public static void checkCreateCodelistFamily(CodelistFamily codelistFamily, List<MetamacExceptionItem> exceptions) throws MetamacException {
         if (exceptions == null) {
             exceptions = new ArrayList<MetamacExceptionItem>();
@@ -135,48 +113,17 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
         ExceptionUtils.throwIfException(exceptions);
     }
 
-    public static void checkDeleteCodelistFamily(String identifier, List<MetamacExceptionItem> exceptions) throws MetamacException {
-        if (exceptions == null) {
-            exceptions = new ArrayList<MetamacExceptionItem>();
-        }
-
-        ValidationUtils.checkParameterRequired(identifier, ServiceExceptionParameters.CODELIST_FAMILY_IDENTIFIER, exceptions);
-
-        ExceptionUtils.throwIfException(exceptions);
-    }
-
-    public static void checkFindCodelistFamiliesByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, List<MetamacExceptionItem> exceptions) throws MetamacException {
-        if (exceptions == null) {
-            exceptions = new ArrayList<MetamacExceptionItem>();
-        }
-
-        ExceptionUtils.throwIfException(exceptions);
-    }
-
     private static void checkCodelistFamily(CodelistFamily codelistFamily, List<MetamacExceptionItem> exceptions) {
         ValidationUtils.checkParameterRequired(codelistFamily, ServiceExceptionParameters.CODELIST_FAMILY, exceptions);
         if (codelistFamily == null) {
             return;
         }
-
-        ValidationUtils.checkMetadataRequired(codelistFamily.getIdentifier(), ServiceExceptionParameters.CODELIST_FAMILY_IDENTIFIER, exceptions);
-        ValidationUtils.checkSemanticIdentifier(codelistFamily.getIdentifier(), ServiceExceptionParameters.CODELIST_FAMILY_IDENTIFIER, exceptions);
-        ValidationUtils.checkMetadataRequired(codelistFamily.getName(), ServiceExceptionParameters.CODELIST_FAMILY_NAME, exceptions);
+        checkNameableArtefact(codelistFamily.getNameableArtefact(), exceptions);
     }
 
     // ---------------------------------------------------------------------------
     // VARIABLE FAMILIES
     // ---------------------------------------------------------------------------
-
-    public static void checkRetrieveVariableFamilyByIdentifier(String identifier, List<MetamacExceptionItem> exceptions) throws MetamacException {
-        if (exceptions == null) {
-            exceptions = new ArrayList<MetamacExceptionItem>();
-        }
-
-        ValidationUtils.checkParameterRequired(identifier, ServiceExceptionParameters.VARIABLE_FAMILY_IDENTIFIER, exceptions);
-
-        ExceptionUtils.throwIfException(exceptions);
-    }
 
     public static void checkCreateVariableFamily(VariableFamily variableFamily, List<MetamacExceptionItem> exceptions) throws MetamacException {
         if (exceptions == null) {
@@ -198,55 +145,24 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
         ExceptionUtils.throwIfException(exceptions);
     }
 
-    public static void checkDeleteVariableFamily(String identifier, List<MetamacExceptionItem> exceptions) throws MetamacException {
-        if (exceptions == null) {
-            exceptions = new ArrayList<MetamacExceptionItem>();
-        }
-
-        ValidationUtils.checkParameterRequired(identifier, ServiceExceptionParameters.VARIABLE_FAMILY_IDENTIFIER, exceptions);
-
-        ExceptionUtils.throwIfException(exceptions);
-    }
-
-    public static void checkFindVariableFamiliesByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, List<MetamacExceptionItem> exceptions) throws MetamacException {
-        if (exceptions == null) {
-            exceptions = new ArrayList<MetamacExceptionItem>();
-        }
-
-        ExceptionUtils.throwIfException(exceptions);
-    }
-
     private static void checkVariableFamily(VariableFamily variableFamily, List<MetamacExceptionItem> exceptions) {
         ValidationUtils.checkParameterRequired(variableFamily, ServiceExceptionParameters.VARIABLE_FAMILY, exceptions);
         if (variableFamily == null) {
             return;
         }
-
-        ValidationUtils.checkMetadataRequired(variableFamily.getIdentifier(), ServiceExceptionParameters.VARIABLE_FAMILY_IDENTIFIER, exceptions);
-        ValidationUtils.checkSemanticIdentifier(variableFamily.getIdentifier(), ServiceExceptionParameters.VARIABLE_FAMILY_IDENTIFIER, exceptions);
-        ValidationUtils.checkMetadataRequired(variableFamily.getName(), ServiceExceptionParameters.VARIABLE_FAMILY_NAME, exceptions);
+        checkNameableArtefact(variableFamily.getNameableArtefact(), exceptions);
     }
 
     // ---------------------------------------------------------------------------
     // VARIABLES
     // ---------------------------------------------------------------------------
 
-    public static void checkRetrieveVariableByIdentifier(String identifier, List<MetamacExceptionItem> exceptions) throws MetamacException {
+    public static void checkCreateVariable(List<String> familyUrns, Variable variable, List<MetamacExceptionItem> exceptions) throws MetamacException {
         if (exceptions == null) {
             exceptions = new ArrayList<MetamacExceptionItem>();
         }
 
-        ValidationUtils.checkParameterRequired(identifier, ServiceExceptionParameters.VARIABLE_IDENTIFIER, exceptions);
-
-        ExceptionUtils.throwIfException(exceptions);
-    }
-
-    public static void checkCreateVariable(List<String> familyIdentifiers, Variable variable, List<MetamacExceptionItem> exceptions) throws MetamacException {
-        if (exceptions == null) {
-            exceptions = new ArrayList<MetamacExceptionItem>();
-        }
-
-        ValidationUtils.checkParameterRequired(familyIdentifiers, ServiceExceptionParameters.VARIABLE_FAMILY_IDENTIFIER, exceptions);
+        ValidationUtils.checkParameterRequired(familyUrns, ServiceExceptionParameters.URN, exceptions);
         checkVariable(variable, exceptions);
 
         ExceptionUtils.throwIfException(exceptions);
@@ -262,42 +178,24 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
         ExceptionUtils.throwIfException(exceptions);
     }
 
-    public static void checkDeleteVariable(String identifier, List<MetamacExceptionItem> exceptions) throws MetamacException {
+    public static void checkAddVariableToFamily(String variableUrn, String familyUrn, List<MetamacExceptionItem> exceptions) throws MetamacException {
         if (exceptions == null) {
             exceptions = new ArrayList<MetamacExceptionItem>();
         }
 
-        ValidationUtils.checkParameterRequired(identifier, ServiceExceptionParameters.VARIABLE_IDENTIFIER, exceptions);
+        ValidationUtils.checkParameterRequired(variableUrn, ServiceExceptionParameters.URN, exceptions);
+        ValidationUtils.checkParameterRequired(familyUrn, ServiceExceptionParameters.URN, exceptions);
 
         ExceptionUtils.throwIfException(exceptions);
     }
 
-    public static void checkFindVariablesByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, List<MetamacExceptionItem> exceptions) throws MetamacException {
+    public static void checkRemoveVariableFromFamily(String variableUrn, String familyUrn, List<MetamacExceptionItem> exceptions) throws MetamacException {
         if (exceptions == null) {
             exceptions = new ArrayList<MetamacExceptionItem>();
         }
 
-        ExceptionUtils.throwIfException(exceptions);
-    }
-
-    public static void checkAddVariableToFamily(String variableIdentifier, String familyIdentifier, List<MetamacExceptionItem> exceptions) throws MetamacException {
-        if (exceptions == null) {
-            exceptions = new ArrayList<MetamacExceptionItem>();
-        }
-
-        ValidationUtils.checkParameterRequired(variableIdentifier, ServiceExceptionParameters.VARIABLE_IDENTIFIER, exceptions);
-        ValidationUtils.checkParameterRequired(familyIdentifier, ServiceExceptionParameters.VARIABLE_FAMILY_IDENTIFIER, exceptions);
-
-        ExceptionUtils.throwIfException(exceptions);
-    }
-
-    public static void checkRemoveVariableFromFamily(String variableIdentifier, String familyIdentifier, List<MetamacExceptionItem> exceptions) throws MetamacException {
-        if (exceptions == null) {
-            exceptions = new ArrayList<MetamacExceptionItem>();
-        }
-
-        ValidationUtils.checkParameterRequired(variableIdentifier, ServiceExceptionParameters.VARIABLE_IDENTIFIER, exceptions);
-        ValidationUtils.checkParameterRequired(familyIdentifier, ServiceExceptionParameters.VARIABLE_FAMILY_IDENTIFIER, exceptions);
+        ValidationUtils.checkParameterRequired(variableUrn, ServiceExceptionParameters.URN, exceptions);
+        ValidationUtils.checkParameterRequired(familyUrn, ServiceExceptionParameters.URN, exceptions);
 
         ExceptionUtils.throwIfException(exceptions);
     }
@@ -309,12 +207,8 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
         }
 
         // Check required metadata
-        ValidationUtils.checkMetadataRequired(variable.getIdentifier(), ServiceExceptionParameters.VARIABLE_IDENTIFIER, exceptions);
-        ValidationUtils.checkMetadataRequired(variable.getName(), ServiceExceptionParameters.VARIABLE_NAME, exceptions);
+        checkNameableArtefact(variable.getNameableArtefact(), exceptions);
         ValidationUtils.checkMetadataRequired(variable.getShortName(), ServiceExceptionParameters.VARIABLE_SHORT_NAME, exceptions);
-
-        // Check identifier format
-        ValidationUtils.checkSemanticIdentifier(variable.getIdentifier(), ServiceExceptionParameters.VARIABLE_IDENTIFIER, exceptions);
 
         // Check dates: validFrom value must be lower than validTo value
         ValidationUtils.checkDateTimeBeforeDateTime(variable.getValidFrom(), variable.getValidTo(), ServiceExceptionParameters.VARIABLE_VALID_TO, exceptions);

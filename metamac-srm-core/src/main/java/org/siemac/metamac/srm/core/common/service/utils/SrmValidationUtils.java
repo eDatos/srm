@@ -73,15 +73,11 @@ public class SrmValidationUtils {
     }
 
     /**
-     * Returns TRUE if the variable with the identifier variableIdentifier is in the variable list
-     * 
-     * @param variableIdentifier
-     * @param variables
-     * @return
+     * Returns TRUE if the variable with the urn variableUrn is in the variable list
      */
-    public static boolean isVariableInList(String variableIdentifier, List<Variable> variables) {
+    public static boolean isVariableInList(String variableUrn, List<Variable> variables) {
         for (Variable variable : variables) {
-            if (StringUtils.equals(variableIdentifier, variable.getIdentifier())) {
+            if (StringUtils.equals(variableUrn, variable.getNameableArtefact().getUrn())) {
                 return true;
             }
         }
@@ -89,15 +85,11 @@ public class SrmValidationUtils {
     }
 
     /**
-     * Returns TRUE if the family with the identifier familyIdentifier is in the famkily list
-     * 
-     * @param familyIdentifier
-     * @param families
-     * @return
+     * Returns TRUE if the family with the urn familyUrn is in the family list
      */
-    public static boolean isFamilyInList(String familyIdentifier, List<VariableFamily> families) {
+    public static boolean isFamilyInList(String familyUrn, List<VariableFamily> families) {
         for (VariableFamily family : families) {
-            if (StringUtils.equals(familyIdentifier, family.getIdentifier())) {
+            if (StringUtils.equals(familyUrn, family.getNameableArtefact().getUrn())) {
                 return true;
             }
         }

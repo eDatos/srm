@@ -14,16 +14,14 @@ import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
-import org.siemac.metamac.srm.core.code.domain.CodelistFamilyProperties;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
-import org.siemac.metamac.srm.core.code.domain.VariableFamilyProperties;
-import org.siemac.metamac.srm.core.code.domain.VariableProperties;
 import org.siemac.metamac.srm.core.code.serviceimpl.utils.CodesMetamacInvocationValidator;
 import org.siemac.metamac.srm.core.common.LifeCycle;
 import org.siemac.metamac.srm.core.common.SrmValidation;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
+import org.siemac.metamac.srm.core.common.service.utils.GeneratorUrnUtils;
 import org.siemac.metamac.srm.core.common.service.utils.SrmValidationUtils;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
@@ -31,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.IdentifiableArtefactRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
@@ -46,21 +45,24 @@ import com.arte.statistic.sdmx.srm.core.code.serviceimpl.utils.CodesDoCopyUtils.
 public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
     @Autowired
-    private CodesService                codesService;
+    private CodesService                   codesService;
 
     @Autowired
-    private ItemSchemeVersionRepository itemSchemeVersionRepository;
+    private ItemSchemeVersionRepository    itemSchemeVersionRepository;
+
+    @Autowired
+    private IdentifiableArtefactRepository identifiableArtefactRepository;
 
     @Autowired
     @Qualifier("codelistLifeCycle")
-    private LifeCycle                   codelistLifeCycle;
+    private LifeCycle                      codelistLifeCycle;
 
     @Autowired
-    private SrmValidation               srmValidation;
+    private SrmValidation                  srmValidation;
 
     @Autowired
     @Qualifier("codesCopyCallbackMetamac")
-    private CodesCopyCallback           codesCopyCallback;
+    private CodesCopyCallback              codesCopyCallback;
 
     public CodesMetamacServiceImpl() {
     }
@@ -203,7 +205,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     @Override
     public CodelistVersionMetamac retrieveCodelistByCodeUrn(ServiceContext ctx, String codeUrn) throws MetamacException {
         // Validation
-        CodesMetamacInvocationValidator.checkRetrieveCodelistByCodeUrn(codeUrn, null);
+        CodesMetamacInvocationValidator.checkRetrieveByUrn(codeUrn);
 
         // Retrieve
         CodelistVersionMetamac codelistVersion = getCodelistVersionMetamacRepository().findByCode(codeUrn);
@@ -279,9 +281,9 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     public CodelistFamily createCodelistFamily(ServiceContext ctx, CodelistFamily codelistFamily) throws MetamacException {
         // Validation
         CodesMetamacInvocationValidator.checkCreateCodelistFamily(codelistFamily, null);
-        validateCodelistFamilyIdentifierUnique(ctx, codelistFamily);
 
         // Create
+        setCodelistFamilyUrnUnique(codelistFamily);
         return getCodelistFamilyRepository().save(codelistFamily);
     }
 
@@ -289,26 +291,30 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     public CodelistFamily updateCodelistFamily(ServiceContext ctx, CodelistFamily codelistFamily) throws MetamacException {
         // Validation
         CodesMetamacInvocationValidator.checkUpdateCodelistFamily(codelistFamily, null);
-        validateCodelistFamilyIdentifierUnique(ctx, codelistFamily);
 
-        // Create
+        // If code has been changed, update URN
+        if (codelistFamily.getNameableArtefact().getIsCodeUpdated()) {
+            setCodelistFamilyUrnUnique(codelistFamily);
+        }
+
+        // Update
         return getCodelistFamilyRepository().save(codelistFamily);
     }
 
     @Override
-    public CodelistFamily retrieveCodelistFamilyByIdentifier(ServiceContext ctx, String identifier) throws MetamacException {
+    public CodelistFamily retrieveCodelistFamilyByUrn(ServiceContext ctx, String urn) throws MetamacException {
         // Validation
-        CodesMetamacInvocationValidator.checkRetrieveCodelistFamilyByIdentifier(identifier, null);
+        CodesMetamacInvocationValidator.checkRetrieveByUrn(urn);
 
         // Retrieve
-        CodelistFamily codelistFamily = retrieveCodelistFamilyByIdentifier(identifier);
+        CodelistFamily codelistFamily = retrieveCodelistFamilyByUrn(urn);
         return codelistFamily;
     }
 
     @Override
     public PagedResult<CodelistFamily> findCodelistFamiliesByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
         // Validation
-        CodesMetamacInvocationValidator.checkFindCodelistFamiliesByCondition(conditions, pagingParameter, null);
+        CodesMetamacInvocationValidator.checkFindByCondition(conditions, pagingParameter);
 
         // Find
         if (conditions == null) {
@@ -319,12 +325,12 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     @Override
-    public void deleteCodelistFamily(ServiceContext ctx, String identifier) throws MetamacException {
+    public void deleteCodelistFamily(ServiceContext ctx, String urn) throws MetamacException {
         // Validation
-        CodesMetamacInvocationValidator.checkDeleteCodelistFamily(identifier, null);
+        CodesMetamacInvocationValidator.checkDeleteArtefact(urn);
 
         // Delete
-        CodelistFamily codelistFamilyToDelete = retrieveCodelistFamilyByIdentifier(identifier);
+        CodelistFamily codelistFamilyToDelete = retrieveCodelistFamilyByUrn(urn);
 
         // Delete association with codelists
         // TODO Is necessary to check the codelist status?
@@ -342,7 +348,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     public VariableFamily createVariableFamily(ServiceContext ctx, VariableFamily variableFamily) throws MetamacException {
         // Validation
         CodesMetamacInvocationValidator.checkCreateVariableFamily(variableFamily, null);
-        validateVariableFamilyIdentifierUnique(ctx, variableFamily);
+        setVariableFamilyUrnUnique(variableFamily);
 
         // Create
         return getVariableFamilyRepository().save(variableFamily);
@@ -352,28 +358,31 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     public VariableFamily updateVariableFamily(ServiceContext ctx, VariableFamily variableFamily) throws MetamacException {
         // Validation
         CodesMetamacInvocationValidator.checkUpdateVariableFamily(variableFamily, null);
-        validateVariableFamilyIdentifierUnique(ctx, variableFamily);
 
-        // Create
+        // If code has been changed, update URN
+        if (variableFamily.getNameableArtefact().getIsCodeUpdated()) {
+            setVariableFamilyUrnUnique(variableFamily);
+        }
+
+        // Update
         return getVariableFamilyRepository().save(variableFamily);
     }
-
     @Override
-    public VariableFamily retrieveVariableFamilyByIdentifier(ServiceContext ctx, String identifier) throws MetamacException {
+    public VariableFamily retrieveVariableFamilyByUrn(ServiceContext ctx, String urn) throws MetamacException {
         // Validation
-        CodesMetamacInvocationValidator.checkRetrieveVariableFamilyByIdentifier(identifier, null);
+        CodesMetamacInvocationValidator.checkRetrieveByUrn(urn);
 
         // Retrieve
-        VariableFamily variableFamily = retrieveVariableFamilyByIdentifier(identifier);
+        VariableFamily variableFamily = retrieveVariableFamilyByUrn(urn);
         return variableFamily;
     }
 
     @Override
-    public void deleteVariableFamily(ServiceContext ctx, String identifier) throws MetamacException {
+    public void deleteVariableFamily(ServiceContext ctx, String urn) throws MetamacException {
         // Validation
-        CodesMetamacInvocationValidator.checkDeleteVariableFamily(identifier, null);
+        CodesMetamacInvocationValidator.checkDeleteArtefact(urn);
 
-        VariableFamily variableFamilyToDelete = retrieveVariableFamilyByIdentifier(identifier);
+        VariableFamily variableFamilyToDelete = retrieveVariableFamilyByUrn(urn);
 
         // Delete associations with variables
         variableFamilyToDelete.removeAllVariables();
@@ -386,7 +395,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     @Override
     public PagedResult<VariableFamily> findVariableFamiliesByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
         // Validation
-        CodesMetamacInvocationValidator.checkFindVariableFamiliesByCondition(conditions, pagingParameter, null);
+        CodesMetamacInvocationValidator.checkFindByCondition(conditions, pagingParameter);
 
         // Find
         if (conditions == null) {
@@ -401,14 +410,14 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     // ------------------------------------------------------------------------------------
 
     @Override
-    public Variable createVariable(ServiceContext ctx, List<String> familyIdentifiers, Variable variable) throws MetamacException {
+    public Variable createVariable(ServiceContext ctx, List<String> familyUrns, Variable variable) throws MetamacException {
         // Validation
-        CodesMetamacInvocationValidator.checkCreateVariable(familyIdentifiers, variable, null);
-        validateVariableIdentifierUnique(ctx, variable);
+        CodesMetamacInvocationValidator.checkCreateVariable(familyUrns, variable, null);
+        setVariableUrnUnique(variable);
 
         // Add variable to the families
-        for (String familyIdentifier : familyIdentifiers) {
-            VariableFamily family = retrieveVariableFamilyByIdentifier(familyIdentifier);
+        for (String familyUrn : familyUrns) {
+            VariableFamily family = retrieveVariableFamilyByUrn(familyUrn);
             variable.addFamily(family);
         }
 
@@ -420,26 +429,30 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     public Variable updateVariable(ServiceContext ctx, Variable variable) throws MetamacException {
         // Validation
         CodesMetamacInvocationValidator.checkUpdateVariable(variable, null);
-        validateVariableIdentifierUnique(ctx, variable);
 
-        // Create
+        // If code has been changed, update URN
+        if (variable.getNameableArtefact().getIsCodeUpdated()) {
+            setVariableUrnUnique(variable);
+        }
+
+        // Update
         return getVariableRepository().save(variable);
     }
 
     @Override
-    public Variable retrieveVariableByIdentifier(ServiceContext ctx, String identifier) throws MetamacException {
+    public Variable retrieveVariableByUrn(ServiceContext ctx, String urn) throws MetamacException {
         // Validation
-        CodesMetamacInvocationValidator.checkRetrieveVariableByIdentifier(identifier, null);
+        CodesMetamacInvocationValidator.checkRetrieveByUrn(urn);
 
         // Retrieve
-        Variable variable = retrieveVariableByIdentifier(identifier);
+        Variable variable = retrieveVariableByUrn(urn);
         return variable;
     }
 
     @Override
     public PagedResult<Variable> findVariablesByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
         // Validation
-        CodesMetamacInvocationValidator.checkFindVariablesByCondition(conditions, pagingParameter, null);
+        CodesMetamacInvocationValidator.checkFindByCondition(conditions, pagingParameter);
 
         // Find
         if (conditions == null) {
@@ -450,11 +463,11 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     @Override
-    public void deleteVariable(ServiceContext ctx, String identifier) throws MetamacException {
+    public void deleteVariable(ServiceContext ctx, String urn) throws MetamacException {
         // Validation
-        CodesMetamacInvocationValidator.checkDeleteVariable(identifier, null);
+        CodesMetamacInvocationValidator.checkDeleteArtefact(urn);
 
-        Variable variableToDelete = retrieveVariableByIdentifier(identifier);
+        Variable variableToDelete = retrieveVariableByUrn(urn);
 
         // Delete associations with variable families
         variableToDelete.removeAllFamilies();
@@ -470,15 +483,15 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     @Override
-    public void addVariableToFamily(ServiceContext ctx, String variableIdentifier, String familyIdentifier) throws MetamacException {
+    public void addVariableToFamily(ServiceContext ctx, String variableUrn, String familyUrn) throws MetamacException {
         // Validation
-        CodesMetamacInvocationValidator.checkAddVariableToFamily(variableIdentifier, familyIdentifier, null);
+        CodesMetamacInvocationValidator.checkAddVariableToFamily(variableUrn, familyUrn, null);
 
-        VariableFamily family = retrieveVariableFamilyByIdentifier(familyIdentifier);
-        Variable variable = retrieveVariableByIdentifier(variableIdentifier);
+        VariableFamily family = retrieveVariableFamilyByUrn(familyUrn);
+        Variable variable = retrieveVariableByUrn(variableUrn);
 
         // Do not add the variable if it has been associated with the family previously
-        if (SrmValidationUtils.isVariableInList(variable.getIdentifier(), family.getVariables())) {
+        if (SrmValidationUtils.isVariableInList(variable.getNameableArtefact().getUrn(), family.getVariables())) {
             return;
         }
 
@@ -488,15 +501,15 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     @Override
-    public void removeVariableFromFamily(ServiceContext ctx, String variableIdentifier, String familyIdentifier) throws MetamacException {
+    public void removeVariableFromFamily(ServiceContext ctx, String variableUrn, String familyUrn) throws MetamacException {
         // Validation
-        CodesMetamacInvocationValidator.checkRemoveVariableFromFamily(variableIdentifier, familyIdentifier, null);
+        CodesMetamacInvocationValidator.checkRemoveVariableFromFamily(variableUrn, familyUrn, null);
 
-        VariableFamily family = retrieveVariableFamilyByIdentifier(familyIdentifier);
-        Variable variable = retrieveVariableByIdentifier(variableIdentifier);
+        VariableFamily family = retrieveVariableFamilyByUrn(familyUrn);
+        Variable variable = retrieveVariableByUrn(variableUrn);
 
         // Do not remove the variable if it has not been associated with the family previously
-        if (!SrmValidationUtils.isVariableInList(variable.getIdentifier(), family.getVariables())) {
+        if (!SrmValidationUtils.isVariableInList(variable.getNameableArtefact().getUrn(), family.getVariables())) {
             return;
         }
 
@@ -584,94 +597,65 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         return targets;
     }
 
-    private CodelistFamily retrieveCodelistFamilyByIdentifier(String identifier) throws MetamacException {
-        CodelistFamily codelistFamily = getCodelistFamilyRepository().findByIdentifier(identifier);
+    private CodelistFamily retrieveCodelistFamilyByUrn(String urn) throws MetamacException {
+        CodelistFamily codelistFamily = getCodelistFamilyRepository().findByUrn(urn);
         if (codelistFamily == null) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CODELIST_FAMILY_NOT_FOUND).withMessageParameters(identifier).build();
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(urn).build(); // TODO quitar lo de "IDENTIFICABLE" y
+                                                                                                                                                                 // dejar sólo artefact?
         }
         return codelistFamily;
     }
 
-    private VariableFamily retrieveVariableFamilyByIdentifier(String identifier) throws MetamacException {
-        VariableFamily variableFamily = getVariableFamilyRepository().findByIdentifier(identifier);
+    private VariableFamily retrieveVariableFamilyByUrn(String urn) throws MetamacException {
+        VariableFamily variableFamily = getVariableFamilyRepository().findByUrn(urn);
         if (variableFamily == null) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_FAMILY_NOT_FOUND).withMessageParameters(identifier).build();
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(urn).build();
         }
         return variableFamily;
     }
 
-    private Variable retrieveVariableByIdentifier(String identifier) throws MetamacException {
-        Variable variable = getVariableRepository().findByIdentifier(identifier);
+    private Variable retrieveVariableByUrn(String urn) throws MetamacException {
+        Variable variable = getVariableRepository().findByUrn(urn);
         if (variable == null) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_NOT_FOUND).withMessageParameters(identifier).build();
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(urn).build();
         }
         return variable;
     }
 
-    /**
-     * Checks if codelist family identifier is unique
-     */
-    private void validateCodelistFamilyIdentifierUnique(ServiceContext ctx, CodelistFamily codelistFamily) throws MetamacException {
-        String familyIdentifier = codelistFamily.getIdentifier();
-        Long familyId = codelistFamily != null ? codelistFamily.getId() : null;
-
-        List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(CodelistFamily.class).withProperty(CodelistFamilyProperties.identifier()).ignoreCaseEq(familyIdentifier)
-                .distinctRoot().build();
-
-        if (familyId != null) {
-            ConditionalCriteria notOwnEntity = ConditionalCriteriaBuilder.criteriaFor(CodelistFamily.class).not().withProperty(CodelistFamilyProperties.id()).eq(familyId).buildSingle();
-            conditions.add(notOwnEntity);
-        }
-
-        PagedResult<CodelistFamily> families = getCodelistFamilyRepository().findByCondition(conditions, PagingParameter.noLimits());
-        if (families != null && families.getValues().size() != 0) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CODELIST_FAMILY_DUPLICATED_IDENTIFIER).withMessageParameters(familyIdentifier).build();
-        }
-    }
-
-    /**
-     * Checks if variable family identifier is unique
-     */
-    private void validateVariableFamilyIdentifierUnique(ServiceContext ctx, VariableFamily variableFamily) throws MetamacException {
-        String familyIdentifier = variableFamily.getIdentifier();
-        Long familyId = variableFamily != null ? variableFamily.getId() : null;
-
-        List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(VariableFamily.class).withProperty(VariableFamilyProperties.identifier()).ignoreCaseEq(familyIdentifier)
-                .distinctRoot().build();
-
-        if (familyId != null) {
-            ConditionalCriteria notOwnEntity = ConditionalCriteriaBuilder.criteriaFor(VariableFamily.class).not().withProperty(VariableFamilyProperties.id()).eq(familyId).buildSingle();
-            conditions.add(notOwnEntity);
-        }
-
-        PagedResult<VariableFamily> families = getVariableFamilyRepository().findByCondition(conditions, PagingParameter.noLimits());
-        if (families != null && families.getValues().size() != 0) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_FAMILY_DUPLICATED_IDENTIFIER).withMessageParameters(familyIdentifier).build();
-        }
-    }
-
-    /**
-     * Checks if variable identifier is unique
-     */
-    private void validateVariableIdentifierUnique(ServiceContext ctx, Variable variable) throws MetamacException {
-        String variableIdentifier = variable.getIdentifier();
-        Long variableId = variable != null ? variable.getId() : null;
-
-        List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(Variable.class).withProperty(VariableProperties.identifier()).ignoreCaseEq(variableIdentifier).distinctRoot()
-                .build();
-
-        if (variableId != null) {
-            ConditionalCriteria notOwnEntity = ConditionalCriteriaBuilder.criteriaFor(Variable.class).not().withProperty(VariableProperties.id()).eq(variableId).buildSingle();
-            conditions.add(notOwnEntity);
-        }
-
-        PagedResult<Variable> variables = getVariableRepository().findByCondition(conditions, PagingParameter.noLimits());
-        if (variables != null && variables.getValues().size() != 0) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_DUPLICATED_IDENTIFIER).withMessageParameters(variableIdentifier).build();
-        }
-    }
-
     private void checkCodelistCanBeModified(CodelistVersionMetamac codelistVersion) throws MetamacException {
         SrmValidationUtils.checkArtefactCanBeModified(codelistVersion.getLifeCycleMetadata(), codelistVersion.getMaintainableArtefact().getUrn());
+    }
+
+    /**
+     * Generate urn, check it is unique and set to codelist family. Set also urnProvider
+     */
+    private void setCodelistFamilyUrnUnique(CodelistFamily codelistFamily) throws MetamacException {
+        String urn = GeneratorUrnUtils.generateCodelistFamilyUrn(codelistFamily);
+        identifiableArtefactRepository.checkUrnUnique(urn, codelistFamily.getNameableArtefact().getId());
+
+        codelistFamily.getNameableArtefact().setUrn(urn);
+        codelistFamily.getNameableArtefact().setUrnProvider(urn);
+    }
+
+    /**
+     * Generate urn, check it is unique and set to variable family. Set also urnProvider
+     */
+    private void setVariableFamilyUrnUnique(VariableFamily variableFamily) throws MetamacException {
+        String urn = GeneratorUrnUtils.generateVariableFamilyUrn(variableFamily);
+        identifiableArtefactRepository.checkUrnUnique(urn, variableFamily.getNameableArtefact().getId());
+
+        variableFamily.getNameableArtefact().setUrn(urn);
+        variableFamily.getNameableArtefact().setUrnProvider(urn);
+    }
+
+    /**
+     * Generate urn, check it is unique and set to variable. Set also urnProvider
+     */
+    private void setVariableUrnUnique(Variable variable) throws MetamacException {
+        String urn = GeneratorUrnUtils.generateVariableUrn(variable);
+        identifiableArtefactRepository.checkUrnUnique(urn, variable.getNameableArtefact().getId());
+
+        variable.getNameableArtefact().setUrn(urn);
+        variable.getNameableArtefact().setUrnProvider(urn);
     }
 }

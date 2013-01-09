@@ -3384,9 +3384,7 @@
 
     <TB_M_CODELIST_FAMILIES 
         ID="1"
-        
-        IDENTIFIER="CODELIST_FAMILY_01"
-        NAME_FK="51"
+        NAMEABLE_ARTEFACT_FK="999911"
         
         UUID="codelist-family-01"
         CREATED_DATE_TZ="Europe/London"
@@ -3397,12 +3395,33 @@
         LAST_UPDATED_BY="user2"
         VERSION="1"
     />
+    
+        <TB_ANNOTABLE_ARTEFACTS 
+            ID="999911"
+            ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+            
+            CODE="CODELIST_FAMILY_01"
+            CODE_FULL="[null]"
+            URI_PROVIDER="[null]"
+            URN_PROVIDER="urn:CODELIST_FAMILY_01"
+            URN="urn:CODELIST_FAMILY_01"
+            
+            NAME_FK="51"
+            DESCRIPTION_FK="[null]"
+            
+            UUID="annotableArtefact-999911"
+            VERSION="1"
+            CREATED_BY="user1"
+            CREATED_DATE="2011-01-01 01:02:03"
+            CREATED_DATE_TZ="Europe/London"
+            LAST_UPDATED_BY="user2"
+            LAST_UPDATED="2011-01-22 01:02:03"
+            LAST_UPDATED_TZ="Europe/London"
+        />
 
     <TB_M_CODELIST_FAMILIES 
         ID="2"
-        
-        IDENTIFIER="CODELIST_FAMILY_02"
-        NAME_FK="52"
+        NAMEABLE_ARTEFACT_FK="999912"
         
         UUID="codelist-family-02"
         CREATED_DATE_TZ="Europe/London"
@@ -3413,6 +3432,29 @@
         LAST_UPDATED_BY="user2"
         VERSION="1"
     />
+    
+         <TB_ANNOTABLE_ARTEFACTS 
+            ID="999912"
+            ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+            
+            CODE="CODELIST_FAMILY_02"
+            CODE_FULL="[null]"
+            URI_PROVIDER="[null]"
+            URN_PROVIDER="urn:CODELIST_FAMILY_02"
+            URN="urn:CODELIST_FAMILY_02"
+            
+            NAME_FK="52"
+            DESCRIPTION_FK="[null]"
+            
+            UUID="annotableArtefact-999912"
+            VERSION="1"
+            CREATED_BY="user1"
+            CREATED_DATE="2011-01-01 01:02:03"
+            CREATED_DATE_TZ="Europe/London"
+            LAST_UPDATED_BY="user2"
+            LAST_UPDATED="2011-01-22 01:02:03"
+            LAST_UPDATED_TZ="Europe/London"
+        />
 
     <!-- ************************************************************************************** -->
     <!-- VARIABLE FAMILIES                                                                      -->
@@ -3420,9 +3462,7 @@
 
     <TB_M_VARIABLE_FAMILIES 
         ID="1"
-        
-        IDENTIFIER="VARIABLE_FAMILY_01"
-        NAME_FK="53"
+        NAMEABLE_ARTEFACT_FK="999921"
         
         UUID="variable-family-01"
         CREATED_DATE_TZ="Europe/London"
@@ -3433,12 +3473,33 @@
         LAST_UPDATED_BY="user2"
         VERSION="1"
     />
+    
+         <TB_ANNOTABLE_ARTEFACTS 
+            ID="999921"
+            ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+            
+            CODE="VARIABLE_FAMILY_01"
+            CODE_FULL="[null]"
+            URI_PROVIDER="[null]"
+            URN_PROVIDER="urn:VARIABLE_FAMILY_01"
+            URN="urn:VARIABLE_FAMILY_01"
+            
+            NAME_FK="53"
+            DESCRIPTION_FK="[null]"
+            
+            UUID="annotableArtefact-999921"
+            VERSION="1"
+            CREATED_BY="user1"
+            CREATED_DATE="2011-01-01 01:02:03"
+            CREATED_DATE_TZ="Europe/London"
+            LAST_UPDATED_BY="user2"
+            LAST_UPDATED="2011-01-22 01:02:03"
+            LAST_UPDATED_TZ="Europe/London"
+        />
 
     <TB_M_VARIABLE_FAMILIES 
         ID="2"
-        
-        IDENTIFIER="VARIABLE_FAMILY_02"
-        NAME_FK="54"
+        NAMEABLE_ARTEFACT_FK="999922"
         
         UUID="variable-family-02"
         CREATED_DATE_TZ="Europe/London"
@@ -3450,11 +3511,32 @@
         VERSION="1"
     />
     
+        <TB_ANNOTABLE_ARTEFACTS 
+            ID="999922"
+            ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+            
+            CODE="VARIABLE_FAMILY_02"
+            CODE_FULL="[null]"
+            URI_PROVIDER="[null]"
+            URN_PROVIDER="urn:VARIABLE_FAMILY_02"
+            URN="urn:VARIABLE_FAMILY_02"
+            
+            NAME_FK="54"
+            DESCRIPTION_FK="[null]"
+            
+            UUID="annotableArtefact-999922"
+            VERSION="1"
+            CREATED_BY="user1"
+            CREATED_DATE="2011-01-01 01:02:03"
+            CREATED_DATE_TZ="Europe/London"
+            LAST_UPDATED_BY="user2"
+            LAST_UPDATED="2011-01-22 01:02:03"
+            LAST_UPDATED_TZ="Europe/London"
+        />
+    
     <TB_M_VARIABLE_FAMILIES 
         ID="3"
-        
-        IDENTIFIER="VARIABLE_FAMILY_03"
-        NAME_FK="55"
+        NAMEABLE_ARTEFACT_FK="999923"
         
         UUID="variable-family-03"
         CREATED_DATE_TZ="Europe/London"
@@ -3466,11 +3548,32 @@
         VERSION="1"
     />
     
+        <TB_ANNOTABLE_ARTEFACTS 
+            ID="999923"
+            ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+            
+            CODE="VARIABLE_FAMILY_03"
+            CODE_FULL="[null]"
+            URI_PROVIDER="[null]"
+            URN_PROVIDER="urn:VARIABLE_FAMILY_03"
+            URN="urn:VARIABLE_FAMILY_03"
+            
+            NAME_FK="55"
+            DESCRIPTION_FK="[null]"
+            
+            UUID="annotableArtefact-999923"
+            VERSION="1"
+            CREATED_BY="user1"
+            CREATED_DATE="2011-01-01 01:02:03"
+            CREATED_DATE_TZ="Europe/London"
+            LAST_UPDATED_BY="user2"
+            LAST_UPDATED="2011-01-22 01:02:03"
+            LAST_UPDATED_TZ="Europe/London"
+        />
+    
     <TB_M_VARIABLE_FAMILIES 
         ID="4"
-        
-        IDENTIFIER="VARIABLE_FAMILY_04"
-        NAME_FK="56"
+        NAMEABLE_ARTEFACT_FK="999924"
         
         UUID="variable-family-04"
         CREATED_DATE_TZ="Europe/London"
@@ -3482,17 +3585,38 @@
         VERSION="1"
     />
     
+        <TB_ANNOTABLE_ARTEFACTS 
+            ID="999924"
+            ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+            
+            CODE="VARIABLE_FAMILY_04"
+            CODE_FULL="[null]"
+            URI_PROVIDER="[null]"
+            URN_PROVIDER="urn:VARIABLE_FAMILY_04"
+            URN="urn:VARIABLE_FAMILY_04"
+            
+            NAME_FK="56"
+            DESCRIPTION_FK="[null]"
+            
+            UUID="annotableArtefact-999924"
+            VERSION="1"
+            CREATED_BY="user1"
+            CREATED_DATE="2011-01-01 01:02:03"
+            CREATED_DATE_TZ="Europe/London"
+            LAST_UPDATED_BY="user2"
+            LAST_UPDATED="2011-01-22 01:02:03"
+            LAST_UPDATED_TZ="Europe/London"
+        />
+    
     <!-- ************************************************************************************** -->
     <!-- VARIABLES                                                                      -->
     <!-- *************************************************************************************  -->
     
     <TB_M_VARIABLES
         ID="1"
+        NAMEABLE_ARTEFACT_FK="999931"
         
-        IDENTIFIER="VARIABLE_01"
-        NAME_FK="57"
         SHORT_NAME_FK="63"
-        
         VALID_FROM_TZ="Europe/London"
         VALID_FROM="2011-01-02 02:02:04" 
         VALID_TO_TZ="Europe/London"
@@ -3508,11 +3632,34 @@
         VERSION="1"
     />
     
+       <TB_ANNOTABLE_ARTEFACTS 
+            ID="999931"
+            ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+            
+            CODE="VARIABLE_01"
+            CODE_FULL="[null]"
+            URI_PROVIDER="[null]"
+            URN_PROVIDER="urn:VARIABLE_01"
+            URN="urn:VARIABLE_01"
+            
+            NAME_FK="57"
+            DESCRIPTION_FK="[null]"
+            
+            UUID="annotableArtefact-999931"
+            VERSION="1"
+            CREATED_BY="user1"
+            CREATED_DATE="2011-01-01 01:02:03"
+            CREATED_DATE_TZ="Europe/London"
+            LAST_UPDATED_BY="user2"
+            LAST_UPDATED="2011-01-22 01:02:03"
+            LAST_UPDATED_TZ="Europe/London"
+        />
+    
+    
     <TB_M_VARIABLES
         ID="2"
+        NAMEABLE_ARTEFACT_FK="999932"
         
-        IDENTIFIER="VARIABLE_02"
-        NAME_FK="58"
         SHORT_NAME_FK="64"
         
         VALID_FROM_TZ="Europe/London"
@@ -3530,11 +3677,33 @@
         VERSION="1"
     />
     
+       <TB_ANNOTABLE_ARTEFACTS 
+            ID="999932"
+            ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+            
+            CODE="VARIABLE_02"
+            CODE_FULL="[null]"
+            URI_PROVIDER="[null]"
+            URN_PROVIDER="urn:VARIABLE_02"
+            URN="urn:VARIABLE_02"
+            
+            NAME_FK="58"
+            DESCRIPTION_FK="[null]"
+            
+            UUID="annotableArtefact-999932"
+            VERSION="1"
+            CREATED_BY="user1"
+            CREATED_DATE="2011-01-01 01:02:03"
+            CREATED_DATE_TZ="Europe/London"
+            LAST_UPDATED_BY="user2"
+            LAST_UPDATED="2011-01-22 01:02:03"
+            LAST_UPDATED_TZ="Europe/London"
+        />
+    
     <TB_M_VARIABLES
         ID="3"
+        NAMEABLE_ARTEFACT_FK="999933"
         
-        IDENTIFIER="VARIABLE_03"
-        NAME_FK="59"
         SHORT_NAME_FK="65"
         
         VALID_FROM_TZ="Europe/London"
@@ -3552,11 +3721,33 @@
         VERSION="1"
     />
     
+       <TB_ANNOTABLE_ARTEFACTS 
+            ID="999933"
+            ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+            
+            CODE="VARIABLE_03"
+            CODE_FULL="[null]"
+            URI_PROVIDER="[null]"
+            URN_PROVIDER="urn:VARIABLE_03"
+            URN="urn:VARIABLE_03"
+            
+            NAME_FK="59"
+            DESCRIPTION_FK="[null]"
+            
+            UUID="annotableArtefact-999933"
+            VERSION="1"
+            CREATED_BY="user1"
+            CREATED_DATE="2011-01-01 01:02:03"
+            CREATED_DATE_TZ="Europe/London"
+            LAST_UPDATED_BY="user2"
+            LAST_UPDATED="2011-01-22 01:02:03"
+            LAST_UPDATED_TZ="Europe/London"
+        />
+            
     <TB_M_VARIABLES
         ID="4"
+        NAMEABLE_ARTEFACT_FK="999934"
         
-        IDENTIFIER="VARIABLE_04"
-        NAME_FK="60"
         SHORT_NAME_FK="66"
         
         VALID_FROM_TZ="[null]"
@@ -3574,11 +3765,33 @@
         VERSION="1"
     />
     
+       <TB_ANNOTABLE_ARTEFACTS 
+            ID="999934"
+            ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+            
+            CODE="VARIABLE_04"
+            CODE_FULL="[null]"
+            URI_PROVIDER="[null]"
+            URN_PROVIDER="urn:VARIABLE_04"
+            URN="urn:VARIABLE_04"
+            
+            NAME_FK="60"
+            DESCRIPTION_FK="[null]"
+            
+            UUID="annotableArtefact-999934"
+            VERSION="1"
+            CREATED_BY="user1"
+            CREATED_DATE="2011-01-01 01:02:03"
+            CREATED_DATE_TZ="Europe/London"
+            LAST_UPDATED_BY="user2"
+            LAST_UPDATED="2011-01-22 01:02:03"
+            LAST_UPDATED_TZ="Europe/London"
+        />
+            
     <TB_M_VARIABLES
         ID="5"
+        NAMEABLE_ARTEFACT_FK="999935"
         
-        IDENTIFIER="VARIABLE_05"
-        NAME_FK="61"
         SHORT_NAME_FK="67"
         
         VALID_FROM_TZ="[null]"
@@ -3596,11 +3809,33 @@
         VERSION="1"
     />
     
+       <TB_ANNOTABLE_ARTEFACTS 
+            ID="999935"
+            ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+            
+            CODE="VARIABLE_05"
+            CODE_FULL="[null]"
+            URI_PROVIDER="[null]"
+            URN_PROVIDER="urn:VARIABLE_05"
+            URN="urn:VARIABLE_05"
+            
+            NAME_FK="61"
+            DESCRIPTION_FK="[null]"
+            
+            UUID="annotableArtefact-999935"
+            VERSION="1"
+            CREATED_BY="user1"
+            CREATED_DATE="2011-01-01 01:02:03"
+            CREATED_DATE_TZ="Europe/London"
+            LAST_UPDATED_BY="user2"
+            LAST_UPDATED="2011-01-22 01:02:03"
+            LAST_UPDATED_TZ="Europe/London"
+        />
+            
     <TB_M_VARIABLES
         ID="6"
+        NAMEABLE_ARTEFACT_FK="999936"
         
-        IDENTIFIER="VARIABLE_06"
-        NAME_FK="62"
         SHORT_NAME_FK="68"
         
         VALID_FROM_TZ="[null]"
@@ -3617,6 +3852,29 @@
         LAST_UPDATED_BY="user2"
         VERSION="1"
     />
+    
+       <TB_ANNOTABLE_ARTEFACTS 
+            ID="999936"
+            ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+            
+            CODE="VARIABLE_06"
+            CODE_FULL="[null]"
+            URI_PROVIDER="[null]"
+            URN_PROVIDER="urn:VARIABLE_06"
+            URN="urn:VARIABLE_06"
+            
+            NAME_FK="62"
+            DESCRIPTION_FK="[null]"
+            
+            UUID="annotableArtefact-999936"
+            VERSION="1"
+            CREATED_BY="user1"
+            CREATED_DATE="2011-01-01 01:02:03"
+            CREATED_DATE_TZ="Europe/London"
+            LAST_UPDATED_BY="user2"
+            LAST_UPDATED="2011-01-22 01:02:03"
+            LAST_UPDATED_TZ="Europe/London"
+        />    
     
     <!-- ************************************************************************************** -->
     <!-- FAMILIES - VARIABLES                                                                         -->

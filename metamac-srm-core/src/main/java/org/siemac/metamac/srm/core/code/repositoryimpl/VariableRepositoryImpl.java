@@ -16,10 +16,11 @@ public class VariableRepositoryImpl extends VariableRepositoryBase {
     public VariableRepositoryImpl() {
     }
 
-    public Variable findByIdentifier(String identifier) {
+    @Override
+    public Variable findByUrn(String urn) {
         Map<String, Object> parameters = new HashMap<String, Object>();
-        parameters.put("identifier", identifier);
-        List<Variable> result = findByQuery("from Variable where identifier = :identifier", parameters, 1);
+        parameters.put("urn", urn);
+        List<Variable> result = findByQuery("from Variable where nameableArtefact.urn = :urn", parameters, 1);
         if (result == null || result.isEmpty()) {
             return null;
         } else {
