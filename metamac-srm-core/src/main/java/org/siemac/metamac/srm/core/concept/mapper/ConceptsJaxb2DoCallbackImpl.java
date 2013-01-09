@@ -8,6 +8,7 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
+import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.importation.ImportationMetamacCommonValidations;
 
@@ -54,6 +55,10 @@ public class ConceptsJaxb2DoCallbackImpl extends ImportationMetamacCommonValidat
 
         // Fill metadata
         targetMetamac.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
+
+        // TODO decidir que hacer ccon el tipo por defecto en la importacion
+        targetMetamac.setType(ConceptSchemeTypeEnum.TRANSVERSAL);
+        targetMetamac.setIsTypeUpdated(Boolean.TRUE);
     }
 
     @Override
