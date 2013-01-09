@@ -11,6 +11,7 @@ import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeDozerCopyMode;
 
@@ -31,17 +32,16 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
         target.setIsRecommended(source.getIsRecommended());
         target.setAccessType(source.getAccessType());
         if (source.getReplacedByCodelist() != null) {
-            target.setReplacedByCodelistUrn(source.getReplacedByCodelist().getMaintainableArtefact().getUrn());
+            target.setReplacedByCodelist(codelistToRelatedResourceDto(source.getReplacedByCodelist()));
         }
         for (CodelistVersionMetamac replaceTo : source.getReplaceToCodelists()) {
-            target.getReplaceToCodelistsUrn().add(replaceTo.getMaintainableArtefact().getUrn());
+            target.getReplaceToCodelists().add(codelistToRelatedResourceDto(replaceTo));
         }
         target.setLifeCycle(lifeCycleDoToDto(source.getLifeCycleMetadata()));
 
         do2DtoMapperSdmxSrm.codelistDoToDto(source, target);
         return target;
     }
-
     @Override
     public List<CodelistMetamacDto> codelistMetamacDoListToDtoList(List<CodelistVersionMetamac> codelistVersions) {
         List<CodelistMetamacDto> codelistMetamacDtos = new ArrayList<CodelistMetamacDto>();
@@ -95,5 +95,15 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
         }
 
         return itemHierarchyDto;
+    }
+
+    private RelatedResourceDto codelistToRelatedResourceDto(CodelistVersionMetamac source) {
+        if (source == null) {
+            return null;
+        }
+        RelatedResourceDto target = new RelatedResourceDto();
+        do2DtoMapperSdmxSrm.nameableArtefactDoToRelatedResourceDto(source.getMaintainableArtefact(), target);
+        target.setType(null);
+        return target;
     }
 }

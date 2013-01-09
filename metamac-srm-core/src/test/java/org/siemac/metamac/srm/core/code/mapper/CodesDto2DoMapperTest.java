@@ -31,8 +31,8 @@ public class CodesDto2DoMapperTest extends SrmBaseTest {
     @Test
     public void testCodelistMetamacDtoToDo() throws MetamacException {
         CodelistMetamacDto dto = CodesMetamacDtoMocks.mockCodelistDto(AGENCY_ROOT_1_V1_CODE, AGENCY_ROOT_1_V1);
-        dto.getReplaceToCodelistsUrn().add(CODELIST_10_V1);
-        dto.getReplaceToCodelistsUrn().add(CODELIST_11_V1);
+        dto.getReplaceToCodelists().add(CodesMetamacDtoMocks.mockCodelistRelatedResourceDto("CODELIST10", CODELIST_10_V1));
+        dto.getReplaceToCodelists().add(CodesMetamacDtoMocks.mockCodelistRelatedResourceDto("CODELIST11", CODELIST_11_V1));
 
         CodelistVersionMetamac entity = codesDto2DoMapper.codelistDtoToDo(dto);
         CodesMetamacAsserts.assertEqualsCodelist(dto, entity);

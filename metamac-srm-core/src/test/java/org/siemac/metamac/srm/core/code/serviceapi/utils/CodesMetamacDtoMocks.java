@@ -26,6 +26,14 @@ public class CodesMetamacDtoMocks {
         return codelistDto;
     }
 
+    public static RelatedResourceDto mockCodelistRelatedResourceDto(String code, String urn) {
+        RelatedResourceDto relatedResourceDto = new RelatedResourceDto();
+        relatedResourceDto.setCode(code);
+        relatedResourceDto.setUrn(urn);
+        relatedResourceDto.setUrnProvider(urn);
+        return relatedResourceDto;
+    }
+
     // -----------------------------------------------------------------------------------
     // CODES
     // -----------------------------------------------------------------------------------

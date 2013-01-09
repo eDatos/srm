@@ -14,6 +14,8 @@ import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
+
 @org.springframework.stereotype.Component("codesDto2DoMapper")
 public class CodesDto2DoMapperImpl implements CodesDto2DoMapper {
 
@@ -46,8 +48,8 @@ public class CodesDto2DoMapperImpl implements CodesDto2DoMapper {
         target.setAccessType(source.getAccessType());
 
         target.removeAllReplaceToCodelists();
-        for (String replaceToCodelistUrn : source.getReplaceToCodelistsUrn()) {
-            target.addReplaceToCodelist(retrieveCodelist(replaceToCodelistUrn));
+        for (RelatedResourceDto replaceToCodelist : source.getReplaceToCodelists()) {
+            target.addReplaceToCodelist(retrieveCodelist(replaceToCodelist.getUrn()));
         }
         // note: replacedBy metadata is ignored, because it is updated by replaceTo metadata
 

@@ -12,6 +12,7 @@ import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 
 import com.arte.statistic.sdmx.srm.core.code.serviceapi.utils.CodesAsserts;
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 
 public class CodesMetamacAsserts extends CodesAsserts {
 
@@ -48,21 +49,30 @@ public class CodesMetamacAsserts extends CodesAsserts {
         assertEqualsInternationalStringDto(expected.getShortName(), actual.getShortName());
         assertEquals(expected.getIsRecommended(), actual.getIsRecommended());
         assertEquals(expected.getAccessType(), actual.getAccessType());
-        assertEquals(expected.getReplacedByCodelistUrn(), actual.getReplacedByCodelistUrn());
-        assertEquals(expected.getReplaceToCodelistsUrn().size(), actual.getReplaceToCodelistsUrn().size());
-        for (int i = 0; i < expected.getReplaceToCodelistsUrn().size(); i++) {
-            assertEquals(expected.getReplaceToCodelistsUrn().get(i), actual.getReplaceToCodelistsUrn().get(i));
+        assertEqualsCodelistRelatedResourceDto(expected.getReplacedByCodelist(), actual.getReplacedByCodelist());
+        assertEquals(expected.getReplaceToCodelists().size(), actual.getReplaceToCodelists().size());
+        for (int i = 0; i < expected.getReplaceToCodelists().size(); i++) {
+            assertEqualsCodelistRelatedResourceDto(expected.getReplaceToCodelists().get(i), actual.getReplaceToCodelists().get(i));
         }
         // SDMX
         CodesAsserts.assertEqualsCodelistDto(expected, actual);
     }
-
     public static void assertEqualsCodelist(CodelistVersionMetamac expected, CodelistMetamacDto actual) {
         assertEqualsCodelist(expected, actual, MapperEnum.DO2DTO);
     }
 
     public static void assertEqualsCodelist(CodelistMetamacDto expected, CodelistVersionMetamac actual) {
         assertEqualsCodelist(actual, expected, MapperEnum.DTO2DO);
+    }
+
+    public static void assertEqualsCodelistRelatedResourceDto(RelatedResourceDto expected, RelatedResourceDto actual) {
+        assertEqualsNullability(expected, actual);
+        if (expected == null) {
+            return;
+        }
+        assertEquals(expected.getCode(), actual.getCode());
+        assertEquals(expected.getUrn(), actual.getUrn());
+        assertEquals(expected.getUrnProvider(), actual.getUrnProvider());
     }
 
     private static void assertEqualsCodelist(CodelistVersionMetamac entity, CodelistMetamacDto dto, MapperEnum mapperEnum) {
@@ -74,13 +84,13 @@ public class CodesMetamacAsserts extends CodesAsserts {
         assertEqualsInternationalString(entity.getShortName(), dto.getShortName());
         assertEquals(entity.getIsRecommended(), dto.getIsRecommended());
         assertEquals(entity.getAccessType(), dto.getAccessType());
-        assertEqualsNullability(entity.getReplacedByCodelist(), dto.getReplacedByCodelistUrn());
+        assertEqualsNullability(entity.getReplacedByCodelist(), dto.getReplacedByCodelist());
         if (entity.getReplacedByCodelist() != null) {
-            assertEquals(entity.getReplacedByCodelist().getMaintainableArtefact().getUrn(), dto.getReplacedByCodelistUrn());
+            assertEquals(entity.getReplacedByCodelist().getMaintainableArtefact().getUrn(), dto.getReplacedByCodelist().getUrn());
         }
-        assertEquals(entity.getReplaceToCodelists().size(), dto.getReplaceToCodelistsUrn().size());
+        assertEquals(entity.getReplaceToCodelists().size(), dto.getReplaceToCodelists().size());
         for (int i = 0; i < entity.getReplaceToCodelists().size(); i++) {
-            assertEquals(entity.getReplaceToCodelists().get(i).getMaintainableArtefact().getUrn(), dto.getReplaceToCodelistsUrn().get(i));
+            assertEquals(entity.getReplaceToCodelists().get(i).getMaintainableArtefact().getUrn(), dto.getReplaceToCodelists().get(i).getUrn());
         }
 
         // SDMX

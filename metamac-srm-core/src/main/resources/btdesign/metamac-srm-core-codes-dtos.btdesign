@@ -21,9 +21,11 @@ Application DtosMetamacCodeDomain {
 			"Access type"
 			- @AccessTypeEnum accessType nullable;
 			"Codelist that replaces this. Update in this metadata is ignored. Must be updated by replacedToCodelists metadata"
-			String replacedByCodelistUrn nullable;
+			RelatedResourceDto replacedByCodelist nullable;
 			"Codelists are replaced by this"
-			List<String> replaceToCodelistsUrn nullable;
+			List<RelatedResourceDto> replaceToCodelists nullable;
+			"Family"
+			RelatedResourceDto family nullable;
 			"Life cycle"
 			- @LifeCycleDto lifeCycle required;
 		}
@@ -36,24 +38,15 @@ Application DtosMetamacCodeDomain {
 		}
 		
 		"Dto for CodelistFamilyDto"		
-		DataTransferObject CodelistFamilyDto extends @IdentifiableArtefactDto {
-			
-			"Name"
-			- @InternationalStringDto name nullable;
+		DataTransferObject CodelistFamilyDto extends @NameableArtefactDto {
 		}
 		
 		"Dto for VariableFamilyDto"		
-		DataTransferObject VariableFamilyDto extends @IdentifiableArtefactDto {
-			
-			"Name"
-			- @InternationalStringDto name nullable;
+		DataTransferObject VariableFamilyDto extends @NameableArtefactDto {
 		}
 		
 		"Dto for VariableDto"		
-		DataTransferObject VariableDto extends @IdentifiableArtefactDto {
-			
-			"Name"
-			- @InternationalStringDto name nullable;
+		DataTransferObject VariableDto extends @NameableArtefactDto {
 		}
 	}
 }
