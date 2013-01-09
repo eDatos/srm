@@ -15,6 +15,8 @@ import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamacProperties;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacProperties;
+import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
+import org.siemac.metamac.srm.core.code.domain.CodelistFamilyProperties;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacProperties;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
@@ -27,6 +29,8 @@ import org.siemac.metamac.srm.core.criteria.CategorySchemeVersionMetamacCriteria
 import org.siemac.metamac.srm.core.criteria.CategorySchemeVersionMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.criteria.CodeMetamacCriteriaOrderEnum;
 import org.siemac.metamac.srm.core.criteria.CodeMetamacCriteriaPropertyEnum;
+import org.siemac.metamac.srm.core.criteria.CodelistFamilyCriteriaOrderEnum;
+import org.siemac.metamac.srm.core.criteria.CodelistFamilyCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.criteria.CodelistVersionMetamacCriteriaOrderEnum;
 import org.siemac.metamac.srm.core.criteria.CodelistVersionMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.criteria.ConceptMetamacCriteriaOrderEnum;
@@ -48,6 +52,7 @@ import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersion
 import org.springframework.stereotype.Component;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefactProperties.MaintainableArtefactProperty;
+import com.arte.statistic.sdmx.srm.core.base.domain.NameableArtefactProperties.NameableArtefactProperty;
 import com.arte.statistic.sdmx.srm.core.common.error.ServiceExceptionType;
 
 @Component("metamacCriteria2SculptorCriteriaMapperSrm")
@@ -62,6 +67,7 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
     private MetamacCriteria2SculptorCriteria<CategoryMetamac>                       categoryMetamacCriteriaMapper           = null;
     private MetamacCriteria2SculptorCriteria<CodelistVersionMetamac>                codelistMetamacCriteriaMapper           = null;
     private MetamacCriteria2SculptorCriteria<CodeMetamac>                           codeMetamacCriteriaMapper               = null;
+    private MetamacCriteria2SculptorCriteria<CodelistFamily>                        codelistFamilyCriteriaMapper            = null;
 
     /**************************************************************************
      * Constructor
@@ -95,6 +101,9 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
 
         codeMetamacCriteriaMapper = new MetamacCriteria2SculptorCriteria<CodeMetamac>(CodeMetamac.class, CodeMetamacCriteriaOrderEnum.class, CodeMetamacCriteriaPropertyEnum.class,
                 new CodeMetamacCriteriaCallback());
+
+        codelistFamilyCriteriaMapper = new MetamacCriteria2SculptorCriteria<CodelistFamily>(CodelistFamily.class, CodelistFamilyCriteriaOrderEnum.class, CodelistFamilyCriteriaPropertyEnum.class,
+                new CodelistFamilyCriteriaCallback());
     }
 
     /**************************************************************************
@@ -144,6 +153,11 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
     @Override
     public MetamacCriteria2SculptorCriteria<CodeMetamac> getCodeMetamacCriteriaMapper() {
         return codeMetamacCriteriaMapper;
+    }
+
+    @Override
+    public MetamacCriteria2SculptorCriteria<CodelistFamily> getCodelistFamilyCriteriaMapper() {
+        return codelistFamilyCriteriaMapper;
     }
 
     /**************************************************************************
@@ -601,8 +615,52 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
         }
     }
 
+    private class CodelistFamilyCriteriaCallback implements CriteriaCallback {
+
+        @Override
+        public SculptorPropertyCriteria retrieveProperty(MetamacCriteriaPropertyRestriction propertyRestriction) throws MetamacException {
+            CodelistFamilyCriteriaPropertyEnum propertyEnum = CodelistFamilyCriteriaPropertyEnum.fromValue(propertyRestriction.getPropertyName());
+            switch (propertyEnum) {
+                case CODE:
+                    return new SculptorPropertyCriteria(CodelistFamilyProperties.nameableArtefact().code(), propertyRestriction.getStringValue());
+                case NAME:
+                    return new SculptorPropertyCriteria(CodelistFamilyProperties.nameableArtefact().name().texts().label(), propertyRestriction.getStringValue());
+                default:
+                    throw new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, propertyRestriction.getPropertyName());
+            }
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public Property<CodelistFamily> retrievePropertyOrder(MetamacCriteriaOrder order) throws MetamacException {
+            CodelistFamilyCriteriaOrderEnum propertyOrderEnum = CodelistFamilyCriteriaOrderEnum.fromValue(order.getPropertyName());
+            switch (propertyOrderEnum) {
+                case CODE:
+                    return CodelistFamilyProperties.nameableArtefact().code();
+                case URN:
+                    return CodelistFamilyProperties.nameableArtefact().urn();
+                case NAME:
+                    return CodelistFamilyProperties.nameableArtefact().name().texts().label();
+                case LAST_UPDATED:
+                    return getLastUpdatedLeafProperty(CodelistFamilyProperties.nameableArtefact(), CodelistFamily.class);
+                default:
+                    throw new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, order.getPropertyName());
+            }
+        }
+
+        @Override
+        public Property<CodelistFamily> retrievePropertyOrderDefault() throws MetamacException {
+            return CodelistFamilyProperties.id();
+        }
+    }
+
     @SuppressWarnings({"unchecked", "rawtypes"})
     private LeafProperty getLastUpdatedLeafProperty(MaintainableArtefactProperty maintainableArtefactProperty, Class entityClass) {
         return new LeafProperty(maintainableArtefactProperty.lastUpdated().getName(), CoreCommonConstants.CRITERIA_DATETIME_COLUMN_DATETIME, true, entityClass);
+    }
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    private LeafProperty getLastUpdatedLeafProperty(NameableArtefactProperty nameableArtefactProperty, Class entityClass) {
+        return new LeafProperty(nameableArtefactProperty.lastUpdated().getName(), CoreCommonConstants.CRITERIA_DATETIME_COLUMN_DATETIME, true, entityClass);
     }
 }

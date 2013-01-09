@@ -2054,6 +2054,47 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertNull(codelist.getFamily());
     }
 
+    @Override
+    @Test
+    public void testAddCodelistsToCodelistFamily() throws Exception {
+
+        String codelistFamilyUrn = CODELIST_FAMILY_1;
+        List<String> codelistUrns = new ArrayList<String>();
+        {
+            String codelistUrn = CODELIST_9_V1; // change family
+            codelistUrns.add(codelistUrn);
+            CodelistVersionMetamac codelist = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistUrn);
+            assertEquals(CODELIST_FAMILY_2, codelist.getFamily().getNameableArtefact().getUrn());
+        }
+        {
+            String codelistUrn = CODELIST_1_V2; // add family
+            codelistUrns.add(codelistUrn);
+            CodelistVersionMetamac codelist = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistUrn);
+            assertNull(codelist.getFamily());
+        }
+        {
+            String codelistUrn = CODELIST_2_V1; // add family
+            codelistUrns.add(codelistUrn);
+            CodelistVersionMetamac codelist = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistUrn);
+            assertNull(codelist.getFamily());
+        }
+        codesService.addCodelistsToCodelistFamily(getServiceContextAdministrador(), codelistUrns, codelistFamilyUrn);
+
+        // Validation
+        {
+            CodelistVersionMetamac codelist = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_9_V1);
+            assertEquals(codelistFamilyUrn, codelist.getFamily().getNameableArtefact().getUrn());
+        }
+        {
+            CodelistVersionMetamac codelist = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_1_V2);
+            assertEquals(codelistFamilyUrn, codelist.getFamily().getNameableArtefact().getUrn());
+        }
+        {
+            CodelistVersionMetamac codelist = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_2_V1);
+            assertEquals(codelistFamilyUrn, codelist.getFamily().getNameableArtefact().getUrn());
+        }
+    }
+
     // ------------------------------------------------------------------------------------
     // VARIABLE FAMILIES
     // ------------------------------------------------------------------------------------

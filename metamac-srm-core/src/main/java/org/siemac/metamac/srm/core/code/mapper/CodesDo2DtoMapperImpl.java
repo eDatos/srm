@@ -3,10 +3,14 @@ package org.siemac.metamac.srm.core.code.mapper;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
+import org.siemac.metamac.core.common.util.CoreCommonUtil;
 import org.siemac.metamac.srm.core.base.mapper.BaseDo2DtoMapperImpl;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
+import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -37,11 +41,13 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
         for (CodelistVersionMetamac replaceTo : source.getReplaceToCodelists()) {
             target.getReplaceToCodelists().add(codelistToRelatedResourceDto(replaceTo));
         }
+        target.setFamily(codelistFamilyToRelatedResourceDto(source.getFamily()));
         target.setLifeCycle(lifeCycleDoToDto(source.getLifeCycleMetadata()));
 
         do2DtoMapperSdmxSrm.codelistDoToDto(source, target);
         return target;
     }
+
     @Override
     public List<CodelistMetamacDto> codelistMetamacDoListToDtoList(List<CodelistVersionMetamac> codelistVersions) {
         List<CodelistMetamacDto> codelistMetamacDtos = new ArrayList<CodelistMetamacDto>();
@@ -81,6 +87,27 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
         return targets;
     }
 
+    @Override
+    public CodelistFamilyDto codelistFamilyDoToDto(CodelistFamily source) {
+        if (source == null) {
+            return null;
+        }
+        CodelistFamilyDto target = new CodelistFamilyDto();
+        do2DtoMapperSdmxSrm.nameableArtefactToDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getNameableArtefact(), target);
+
+        // Overwrite these values in the final DTO (if not, these values are taken from the AnnotableArtefact entity)
+        target.setId(source.getId());
+        target.setUuid(source.getUuid());
+        target.setVersion(source.getVersion());
+        target.setCreatedDate(CoreCommonUtil.transformDateTimeToDate(source.getCreatedDate()));
+        target.setCreatedBy(source.getCreatedBy());
+        target.setLastUpdated(CoreCommonUtil.transformDateTimeToDate(source.getLastUpdated()));
+        target.setLastUpdatedBy(source.getLastUpdatedBy());
+        target.setVersionOptimisticLocking(source.getVersion());
+
+        return target;
+    }
+
     private ItemHierarchyDto codeMetamacDoToItemHierarchyDto(CodeMetamac codeMetamac) {
         ItemHierarchyDto itemHierarchyDto = new ItemHierarchyDto();
 
@@ -103,6 +130,16 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
         }
         RelatedResourceDto target = new RelatedResourceDto();
         do2DtoMapperSdmxSrm.nameableArtefactDoToRelatedResourceDto(source.getMaintainableArtefact(), target);
+        target.setType(TypeExternalArtefactsEnum.CODELIST);
+        return target;
+    }
+
+    private RelatedResourceDto codelistFamilyToRelatedResourceDto(CodelistFamily source) {
+        if (source == null) {
+            return null;
+        }
+        RelatedResourceDto target = new RelatedResourceDto();
+        do2DtoMapperSdmxSrm.nameableArtefactDoToRelatedResourceDto(source.getNameableArtefact(), target);
         target.setType(null);
         return target;
     }

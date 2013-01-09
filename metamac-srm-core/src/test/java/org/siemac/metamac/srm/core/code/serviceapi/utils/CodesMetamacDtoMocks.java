@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.core.code.serviceapi.utils;
 import org.siemac.metamac.common.test.utils.MetamacMocks;
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 
 import com.arte.statistic.sdmx.srm.core.code.serviceapi.utils.CodesDtoMocks;
@@ -31,6 +32,7 @@ public class CodesMetamacDtoMocks {
         relatedResourceDto.setCode(code);
         relatedResourceDto.setUrn(urn);
         relatedResourceDto.setUrnProvider(urn);
+        relatedResourceDto.setType(TypeExternalArtefactsEnum.CODELIST);
         return relatedResourceDto;
     }
 
@@ -42,5 +44,15 @@ public class CodesMetamacDtoMocks {
         CodeMetamacDto codeMetamacDto = new CodeMetamacDto();
         CodesDtoMocks.mockCodeDto(codeMetamacDto);
         return codeMetamacDto;
+    }
+
+    // -----------------------------------------------------------------------------------
+    // CODELISTS RELATIONS
+    // -----------------------------------------------------------------------------------
+    public static CodelistFamilyDto mockCodelistFamilyDto() {
+        CodelistFamilyDto codelistFamilyDto = new CodelistFamilyDto();
+        codelistFamilyDto.setCode("code-" + MetamacMocks.mockString(10));
+        codelistFamilyDto.setName(MetamacMocks.mockInternationalStringDto());
+        return codelistFamilyDto;
     }
 }

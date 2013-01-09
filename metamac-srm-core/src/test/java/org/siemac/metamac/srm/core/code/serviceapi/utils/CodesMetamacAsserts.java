@@ -1,7 +1,10 @@
 package org.siemac.metamac.srm.core.code.serviceapi.utils;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
+import org.apache.commons.lang.time.DateUtils;
 import org.siemac.metamac.srm.core.base.utils.BaseAsserts;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
@@ -9,6 +12,7 @@ import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 
 import com.arte.statistic.sdmx.srm.core.code.serviceapi.utils.CodesAsserts;
@@ -73,6 +77,7 @@ public class CodesMetamacAsserts extends CodesAsserts {
         assertEquals(expected.getCode(), actual.getCode());
         assertEquals(expected.getUrn(), actual.getUrn());
         assertEquals(expected.getUrnProvider(), actual.getUrnProvider());
+        assertEquals(expected.getType(), actual.getType());
     }
 
     private static void assertEqualsCodelist(CodelistVersionMetamac entity, CodelistMetamacDto dto, MapperEnum mapperEnum) {
@@ -92,11 +97,12 @@ public class CodesMetamacAsserts extends CodesAsserts {
         for (int i = 0; i < entity.getReplaceToCodelists().size(); i++) {
             assertEquals(entity.getReplaceToCodelists().get(i).getMaintainableArtefact().getUrn(), dto.getReplaceToCodelists().get(i).getUrn());
         }
+        assertEqualsCodelistFamilyRelatedResource(entity.getFamily(), dto.getFamily(), mapperEnum);
+        // TODO variable
 
         // SDMX
         CodesAsserts.assertEqualsCodelist(entity, dto, mapperEnum);
     }
-
     // ------------------------------------------------------------------------------------
     // CODE
     // ------------------------------------------------------------------------------------
@@ -125,6 +131,7 @@ public class CodesMetamacAsserts extends CodesAsserts {
 
     private static void assertEqualsCode(CodeMetamac entity, CodeMetamacDto dto, MapperEnum mapperEnum) {
         // Metamac
+        // TODO elemento variable
 
         // SDMX
         CodesAsserts.assertEqualsCode(entity, dto, mapperEnum);
@@ -137,6 +144,56 @@ public class CodesMetamacAsserts extends CodesAsserts {
     public static void assertEqualsCodelistFamily(CodelistFamily expected, CodelistFamily actual) {
         // other artefacts
         assertEqualsNameableArtefact(expected.getNameableArtefact(), actual.getNameableArtefact());
+    }
+
+    public static void assertEqualsCodelistFamilyDto(CodelistFamilyDto expected, CodelistFamilyDto actual) {
+        CodesAsserts.assertEqualsNameableArtefactDto(expected, actual);
+    }
+
+    public static void assertEqualsCodelistFamily(CodelistFamily expected, CodelistFamilyDto actual) {
+        assertEqualsCodelistFamily(expected, actual, MapperEnum.DO2DTO);
+    }
+
+    public static void assertEqualsCodelistFamily(CodelistFamilyDto actual, CodelistFamily expected) {
+        assertEqualsCodelistFamily(expected, actual, MapperEnum.DTO2DO);
+    }
+
+    private static void assertEqualsCodelistFamily(CodelistFamily entity, CodelistFamilyDto dto, MapperEnum mapperEnum) {
+        if (MapperEnum.DO2DTO.equals(mapperEnum)) {
+            assertEquals(entity.getId(), dto.getId());
+
+            assertNotNull(entity.getUuid());
+            assertEquals(entity.getUuid(), dto.getUuid());
+
+            assertNotNull(entity.getCreatedBy());
+            assertEquals(entity.getCreatedBy(), dto.getCreatedBy());
+
+            assertNotNull(entity.getCreatedDate());
+            assertTrue(DateUtils.isSameInstant(entity.getCreatedDate().toDate(), dto.getCreatedDate()));
+
+            assertNotNull(entity.getLastUpdatedBy());
+            assertEquals(entity.getLastUpdatedBy(), dto.getLastUpdatedBy());
+
+            assertNotNull(entity.getLastUpdated());
+            assertTrue(DateUtils.isSameInstant(entity.getLastUpdated().toDate(), dto.getLastUpdated()));
+
+            assertNotNull(entity.getVersion());
+            assertEquals(entity.getVersion(), dto.getVersion());
+            assertEquals(entity.getVersion(), dto.getVersionOptimisticLocking());
+        }
+
+        // other artefacts
+        assertEqualsNameableArtefact(entity.getNameableArtefact(), dto, mapperEnum);
+    }
+
+    private static void assertEqualsCodelistFamilyRelatedResource(CodelistFamily entity, RelatedResourceDto dto, MapperEnum mapperEnum) {
+        assertEqualsNullability(entity, dto);
+        if (entity == null) {
+            return;
+        }
+        assertEquals(entity.getNameableArtefact().getCode(), dto.getCode());
+        assertEquals(entity.getNameableArtefact().getUrn(), dto.getUrn());
+        assertEquals(entity.getNameableArtefact().getUrnProvider(), dto.getUrnProvider());
     }
 
     // ------------------------------------------------------------------------------------

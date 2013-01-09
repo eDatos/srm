@@ -24,8 +24,10 @@ import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 import org.siemac.metamac.srm.core.category.mapper.CategoriesDo2DtoMapper;
 import org.siemac.metamac.srm.core.category.mapper.CategoriesDto2DoMapper;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
+import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.code.mapper.CodesDo2DtoMapper;
 import org.siemac.metamac.srm.core.code.mapper.CodesDto2DoMapper;
@@ -51,6 +53,7 @@ import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 import org.siemac.metamac.srm.core.organisation.mapper.OrganisationsDo2DtoMapper;
 import org.siemac.metamac.srm.core.organisation.mapper.OrganisationsDto2DoMapper;
+import org.siemac.metamac.srm.core.security.CodesSecurityUtils;
 import org.siemac.metamac.srm.core.security.ConceptsSecurityUtils;
 import org.siemac.metamac.srm.core.security.DataStructureDefinitionSecurityUtils;
 import org.siemac.metamac.srm.core.security.ItemsSecurityUtils;
@@ -817,6 +820,89 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         // Transform
         List<ItemHierarchyDto> itemsHierarchyDto = codesDo2DtoMapper.codeMetamacDoListToItemHierarchyDtoList(codes);
         return itemsHierarchyDto;
+    }
+
+    // ------------------------------------------------------------------------
+    // CODELISTS
+    // ------------------------------------------------------------------------
+
+    @Override
+    public CodelistFamilyDto retrieveCodelistFamilyByUrn(ServiceContext ctx, String urn) throws MetamacException {
+        // Security
+        CodesSecurityUtils.canRetrieveCodelistFamilyUrn(ctx);
+
+        // Retrieve
+        CodelistFamily codelistFamily = getCodesMetamacService().retrieveCodelistFamilyByUrn(ctx, urn);
+
+        // Transform
+        CodelistFamilyDto codelistFamilyDto = codesDo2DtoMapper.codelistFamilyDoToDto(codelistFamily);
+        return codelistFamilyDto;
+    }
+
+    @Override
+    public CodelistFamilyDto createCodelistFamily(ServiceContext ctx, CodelistFamilyDto codelistFamilyDto) throws MetamacException {
+        // Security
+        CodesSecurityUtils.canCrudCodelistFamilyUrn(ctx);
+
+        // Transform
+        CodelistFamily codelistFamily = codesDto2DoMapper.codelistFamilyDtoToDo(codelistFamilyDto);
+
+        // Create
+        CodelistFamily codelistFamilyCreated = getCodesMetamacService().createCodelistFamily(ctx, codelistFamily);
+
+        // Transform to DTO
+        codelistFamilyDto = codesDo2DtoMapper.codelistFamilyDoToDto(codelistFamilyCreated);
+        return codelistFamilyDto;
+    }
+
+    @Override
+    public CodelistFamilyDto updateCodelistFamily(ServiceContext ctx, CodelistFamilyDto codelistFamilyDto) throws MetamacException {
+        // Security
+        CodesSecurityUtils.canCrudCodelistFamilyUrn(ctx);
+
+        // Transform
+        CodelistFamily codelistFamilyToUpdate = codesDto2DoMapper.codelistFamilyDtoToDo(codelistFamilyDto);
+
+        // Update
+        CodelistFamily codelistFamilyUpdated = getCodesMetamacService().updateCodelistFamily(ctx, codelistFamilyToUpdate);
+
+        // Transform to DTO
+        codelistFamilyDto = codesDo2DtoMapper.codelistFamilyDoToDto(codelistFamilyUpdated);
+        return codelistFamilyDto;
+    }
+
+    @Override
+    public void deleteCodelistFamily(ServiceContext ctx, String urn) throws MetamacException {
+        // Security
+        CodesSecurityUtils.canCrudCodelistFamilyUrn(ctx); // TODO security CodelistFamily
+
+        // Delete
+        getCodesMetamacService().deleteCodelistFamily(ctx, urn);
+    }
+
+    @Override
+    public void addCodelistsToCodelistFamily(ServiceContext ctx, List<String> codelistUrns, String codelistFamilyUrn) throws MetamacException {
+        // Security // TODO security CodelistFamily
+
+        // Delete
+        getCodesMetamacService().addCodelistsToCodelistFamily(ctx, codelistUrns, codelistFamilyUrn);
+    }
+
+    @Override
+    public MetamacCriteriaResult<CodelistFamilyDto> findCodelistFamiliesByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
+        // Security
+        CodesSecurityUtils.canRetrieveCodelistFamilyUrn(ctx);
+
+        // Transform
+        SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getCodelistFamilyCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
+
+        // Find
+        PagedResult<CodelistFamily> result = getCodesMetamacService().findCodelistFamiliesByCondition(ctx, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
+
+        // Transform
+        MetamacCriteriaResult<CodelistFamilyDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultCodelistFamily(result, sculptorCriteria.getPageSize());
+
+        return metamacCriteriaResult;
     }
 
     /**************************************************************************

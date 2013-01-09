@@ -425,7 +425,8 @@ public class SrmCoreServiceFacadeCodesSecurityTest extends SrmBaseTest {
         srmCoreServiceFacade.publishCodelistExternally(getServiceContextJefeNormalizacion(), codelistUrn);
     }
 
-    @Ignore // TODO pendiente error
+    @Ignore
+    // TODO pendiente error
     @Test
     public void testPublishExternallyCodelistJefeProduccion() throws Exception {
         String codelistUrn = CODELIST_3_V1;
@@ -780,6 +781,55 @@ public class SrmCoreServiceFacadeCodesSecurityTest extends SrmBaseTest {
         for (ServiceContext ctx : contexts) {
             try {
                 srmCoreServiceFacade.findCodesByCondition(ctx, getMetamacCriteria());
+                fail("action not allowed");
+            } catch (MetamacException e) {
+                assertEquals(1, e.getExceptionItems().size());
+                assertEquals(ServiceExceptionType.SECURITY_OPERATION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+            }
+        }
+    }
+
+    @Test
+    public void testRetrieveCodelistFamilyByUrn() throws Exception {
+        ServiceContext[] ctxs = {getServiceContextTecnicoApoyoNormalizacion(), getServiceContextTecnicoNormalizacion(), getServiceContextJefeNormalizacion(), getServiceContextAdministrador()};
+
+        for (ServiceContext ctx : ctxs) {
+            srmCoreServiceFacade.retrieveCodelistFamilyByUrn(ctx, CODELIST_FAMILY_1);
+        }
+    }
+
+    @Test
+    public void testRetrieveCodelistFamilyByUrnError() throws Exception {
+        ServiceContext[] contexts = {getServiceContextWithoutAccesses(), getServiceContextWithoutAccessToApplication(), getServiceContextWithoutSrmRole()};
+
+        for (ServiceContext ctx : contexts) {
+            try {
+                srmCoreServiceFacade.retrieveCodelistByUrn(ctx, CODELIST_FAMILY_1);
+                fail("action not allowed");
+            } catch (MetamacException e) {
+                assertEquals(1, e.getExceptionItems().size());
+                assertEquals(ServiceExceptionType.SECURITY_OPERATION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+            }
+        }
+    }
+
+    @Test
+    public void testFindCodelistFamiliesByCondition() throws Exception {
+        ServiceContext[] ctxs = {getServiceContextTecnicoApoyoNormalizacion(), getServiceContextTecnicoApoyoProduccion(), getServiceContextTecnicoNormalizacion(),
+                getServiceContextTecnicoProduccion(), getServiceContextJefeNormalizacion(), getServiceContextJefeProduccion(), getServiceContextAdministrador()};
+
+        for (ServiceContext ctx : ctxs) {
+            srmCoreServiceFacade.findCodelistFamiliesByCondition(ctx, getMetamacCriteria());
+        }
+    }
+
+    @Test
+    public void testFindCodelistFamiliesByConditionError() throws Exception {
+        ServiceContext[] contexts = {getServiceContextWithoutAccesses(), getServiceContextWithoutAccessToApplication(), getServiceContextWithoutSrmRole()};
+
+        for (ServiceContext ctx : contexts) {
+            try {
+                srmCoreServiceFacade.findCodelistFamiliesByCondition(ctx, getMetamacCriteria());
                 fail("action not allowed");
             } catch (MetamacException e) {
                 assertEquals(1, e.getExceptionItems().size());

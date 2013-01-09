@@ -466,6 +466,19 @@ Application SrmFacadeCore {
     		"Retrieves codes by code scheme, in tree structure"
     		List<@ItemHierarchyDto> retrieveCodesByCodelistUrn(String codelistUrn) throws MetamacException;
     		
+			"Creates codelist family"
+			@CodelistFamilyDto createCodelistFamily(@CodelistFamilyDto codelistFamilyDto) throws MetamacException;
+			"Updates codelist family"
+			@CodelistFamilyDto updateCodelistFamily(@CodelistFamilyDto codelistFamilyDto) throws MetamacException;
+    		"Retrieves codelist family by urn"
+    		@CodelistFamilyDto retrieveCodelistFamilyByUrn(String urn) throws MetamacException;
+    		"Finds codelist families by criteria"
+    		MetamacCriteriaResult<@CodelistFamilyDto> findCodelistFamiliesByCondition(MetamacCriteria criteria) throws MetamacException;
+			"Deletes codelist family"
+    		deleteCodelistFamily(String urn) throws MetamacException;
+			"Creates codelist family"
+			addCodelistsToCodelistFamily(List<String> codelistUrns, String codelistFamilyUrn) throws MetamacException;
+    		
     		/**************************************************************************
 		     * COMMON
 		     **************************************************************************/

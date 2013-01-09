@@ -87,6 +87,8 @@ Application CodesMetamac {
     		PagedResult<@CodelistFamily> findCodelistFamiliesByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
 			"Deletes codelist family"
     		deleteCodelistFamily(String urn) throws MetamacException;
+			"Creates codelist family"
+			addCodelistsToCodelistFamily(List<String> codelistUrns, String codelistFamilyUrn) throws MetamacException;
     		
     		// VARIABLE FAMILIES
     		
@@ -176,6 +178,8 @@ Application CodesMetamac {
 			- @NameableArtefact nameableArtefact databaseColumn="NAMEABLE_ARTEFACT_FK" not nullable cascade="all";
 			"Codelists"
 			- Bag<@CodelistVersionMetamac> codelists cascade="none" fetch="lazy" inverse <-> family;
+			"Last update to optimistic locking"
+			DateTimeTZ updateDate nullable;
 			
 			Repository CodelistFamilyRepository {
 				save;
@@ -194,6 +198,8 @@ Application CodesMetamac {
 			- @NameableArtefact nameableArtefact databaseColumn="NAMEABLE_ARTEFACT_FK" not nullable cascade="all";
 			"Variables"
 			- Bag<@Variable> variables cascade="none" fetch="lazy" databaseColumn="VARIABLE_FK" <-> families;
+			"Last update to optimistic locking"
+			DateTimeTZ updateDate nullable;
 			
 			Repository VariableFamilyRepository {
 				save;
@@ -220,6 +226,8 @@ Application CodesMetamac {
 			- Bag<@VariableFamily> families cascade="none" fetch="lazy" databaseColumn="VARIABLE_FAMILY_FK" databaseJoinTable="TB_M_VAR_FAMILIES_VARIABLES" <-> variables;
 			"Codelists"
 			- Bag<@CodelistVersionMetamac> codelists cascade="none" fetch="lazy" inverse <-> variable;
+			"Last update to optimistic locking"
+			DateTimeTZ updateDate nullable;
 			
 			Repository VariableRepository {
 				save;

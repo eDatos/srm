@@ -4,8 +4,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
+import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsserts;
 import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacDtoMocks;
@@ -43,6 +45,14 @@ public class CodesDto2DoMapperTest extends SrmBaseTest {
         CodeMetamacDto dto = CodesMetamacDtoMocks.mockCodeDto();
         CodeMetamac entity = codesDto2DoMapper.codeDtoToDo(dto);
         CodesMetamacAsserts.assertEqualsCode(dto, entity);
+    }
+
+    @Test
+    public void testCodelistFamilyDtoToDo() throws MetamacException {
+        CodelistFamilyDto dto = CodesMetamacDtoMocks.mockCodelistFamilyDto();
+
+        CodelistFamily entity = codesDto2DoMapper.codelistFamilyDtoToDo(dto);
+        CodesMetamacAsserts.assertEqualsCodelistFamily(dto, entity);
     }
 
     @Override

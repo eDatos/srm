@@ -340,6 +340,26 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         getCodelistFamilyRepository().delete(codelistFamilyToDelete);
     }
 
+    @Override
+    public void addCodelistsToCodelistFamily(ServiceContext ctx, List<String> codelistUrns, String codelistFamilyUrn) throws MetamacException {
+
+        // Validation
+        CodesMetamacInvocationValidator.checkAddCodelistsToCodelistFamily(codelistUrns, codelistFamilyUrn, null);
+        // TODO Is necessary to check the codelist status?
+
+        CodelistFamily codelistFamily = retrieveCodelistFamilyByUrn(codelistFamilyUrn);
+
+        // Update codelists
+        for (String codelistUrn : codelistUrns) {
+            CodelistVersionMetamac codelistVersion = retrieveCodelistByUrn(ctx, codelistUrn);
+            if (codelistVersion.getFamily() != null) {
+                codelistVersion.getFamily().removeCodelist(codelistVersion);
+            }
+            codelistFamily.addCodelist(codelistVersion);
+            getCodelistVersionMetamacRepository().save(codelistVersion);
+        }
+    }
+
     // ------------------------------------------------------------------------------------
     // VARIABLE FAMILIES
     // ------------------------------------------------------------------------------------

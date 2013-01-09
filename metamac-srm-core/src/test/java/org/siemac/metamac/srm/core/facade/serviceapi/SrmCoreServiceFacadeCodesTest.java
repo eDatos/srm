@@ -29,6 +29,7 @@ import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsserts;
 import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacDtoMocks;
@@ -81,6 +82,7 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
         CodelistMetamacDto codelistDto = CodesMetamacDtoMocks.mockCodelistDto(AGENCY_ROOT_1_V1_CODE, AGENCY_ROOT_1_V1);
         codelistDto.getReplaceToCodelists().add(new RelatedResourceDto("CODELIST01", CODELIST_1_V1, null));
         codelistDto.getReplaceToCodelists().add(new RelatedResourceDto("CODELIST10", CODELIST_10_V1, null));
+        codelistDto.setFamily(new RelatedResourceDto("CODELIST_FAMILY_01", CODELIST_FAMILY_1, null));
         CodelistMetamacDto codelistMetamacCreated = srmCoreServiceFacade.createCodelist(getServiceContextAdministrador(), codelistDto);
 
         // Validate some metadata
@@ -90,6 +92,7 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
         assertEquals(2, codelistMetamacCreated.getReplaceToCodelists().size());
         assertEquals(CODELIST_1_V1, codelistMetamacCreated.getReplaceToCodelists().get(0).getUrn());
         assertEquals(CODELIST_10_V1, codelistMetamacCreated.getReplaceToCodelists().get(1).getUrn());
+        assertEquals(CODELIST_FAMILY_1, codelistMetamacCreated.getFamily().getUrn());
     }
 
     @Test
@@ -106,7 +109,7 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
         CodelistMetamacDto codelistMetamacDtoUpdated = srmCoreServiceFacade.updateCodelist(getServiceContextAdministrador(), codelistMetamacDto);
 
         // Validate
-        assertNotNull(codelistMetamacDto);
+        assertNotNull(codelistMetamacDtoUpdated);
         assertEqualsCodelistMetamacDto(codelistMetamacDto, codelistMetamacDtoUpdated);
         assertTrue(codelistMetamacDtoUpdated.getVersionOptimisticLocking() > codelistMetamacDto.getVersionOptimisticLocking());
         assertEquals(3, codelistMetamacDtoUpdated.getReplaceToCodelists().size());
@@ -773,7 +776,7 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
 
         CodeMetamacDto codeMetamacDtoUpdated = srmCoreServiceFacade.updateCode(getServiceContextAdministrador(), codeMetamacDto);
 
-        assertNotNull(codeMetamacDto);
+        assertNotNull(codeMetamacDtoUpdated);
         assertEqualsCodeDto(codeMetamacDto, codeMetamacDtoUpdated);
         assertTrue(codeMetamacDtoUpdated.getVersionOptimisticLocking() > codeMetamacDto.getVersionOptimisticLocking());
     }
@@ -1129,6 +1132,225 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
                     assertEquals(0, codeChildChild.getChildren().size());
                 }
             }
+        }
+    }
+
+    // ---------------------------------------------------------------------------------------
+    // CODELIST FAMILIES
+    // ---------------------------------------------------------------------------------------
+
+    @Test
+    public void testRetrieveCodelistFamilyByUrn() throws Exception {
+        // Retrieve
+        CodelistFamilyDto codelistFamilyDto = srmCoreServiceFacade.retrieveCodelistFamilyByUrn(getServiceContextAdministrador(), CODELIST_FAMILY_1);
+
+        // Validate
+        assertEquals(CODELIST_FAMILY_1, codelistFamilyDto.getUrn());
+    }
+
+    @Test
+    public void testCreateCodelistFamily() throws Exception {
+        // Create
+        CodelistFamilyDto codelistFamilyDto = CodesMetamacDtoMocks.mockCodelistFamilyDto();
+        CodelistFamilyDto codelistFamilyCreated = srmCoreServiceFacade.createCodelistFamily(getServiceContextAdministrador(), codelistFamilyDto);
+
+        // Validate some metadata
+        assertEquals(codelistFamilyDto.getCode(), codelistFamilyCreated.getCode());
+        assertNotNull(codelistFamilyCreated.getUrn());
+    }
+
+    @Test
+    public void testUpdateCodelistFamily() throws Exception {
+        // Update
+        CodelistFamilyDto codelistFamilyDto = srmCoreServiceFacade.retrieveCodelistFamilyByUrn(getServiceContextAdministrador(), CODELIST_FAMILY_2);
+        codelistFamilyDto.setName(MetamacMocks.mockInternationalStringDto());
+        CodelistFamilyDto codelistFamilyDtoUpdated = srmCoreServiceFacade.updateCodelistFamily(getServiceContextAdministrador(), codelistFamilyDto);
+
+        // Validate
+        assertNotNull(codelistFamilyDtoUpdated);
+        CodesMetamacAsserts.assertEqualsCodelistFamilyDto(codelistFamilyDto, codelistFamilyDtoUpdated);
+        assertTrue(codelistFamilyDtoUpdated.getVersionOptimisticLocking() > codelistFamilyDto.getVersionOptimisticLocking());
+    }
+
+    @Test
+    public void testUpdateCodelistFamilyErrorOptimisticLocking() throws Exception {
+        String urn = CODELIST_FAMILY_1;
+
+        CodelistFamilyDto codelistFamilyDtoSession1 = srmCoreServiceFacade.retrieveCodelistFamilyByUrn(getServiceContextAdministrador(), urn);
+        assertEquals(Long.valueOf(1), codelistFamilyDtoSession1.getVersionOptimisticLocking());
+        codelistFamilyDtoSession1.setName(MetamacMocks.mockInternationalStringDto());
+
+        CodelistFamilyDto codelistFamilyDtoSession2 = srmCoreServiceFacade.retrieveCodelistFamilyByUrn(getServiceContextAdministrador(), urn);
+        assertEquals(Long.valueOf(1), codelistFamilyDtoSession2.getVersionOptimisticLocking());
+        codelistFamilyDtoSession2.setName(MetamacMocks.mockInternationalStringDto());
+
+        // Update by session 1
+        CodelistFamilyDto codelistFamilyDtoSession1AfterUpdate1 = srmCoreServiceFacade.updateCodelistFamily(getServiceContextAdministrador(), codelistFamilyDtoSession1);
+        assertTrue(codelistFamilyDtoSession1AfterUpdate1.getVersionOptimisticLocking() > codelistFamilyDtoSession1.getVersionOptimisticLocking());
+
+        // Fails when is updated by session 2
+        try {
+            srmCoreServiceFacade.updateCodelistFamily(getServiceContextAdministrador(), codelistFamilyDtoSession2);
+            fail("Optimistic locking");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.OPTIMISTIC_LOCKING.getCode(), e.getExceptionItems().get(0).getCode());
+            assertNull(e.getExceptionItems().get(0).getMessageParameters());
+        }
+
+        // Session 1 can modify because has last version
+        codelistFamilyDtoSession1AfterUpdate1.setName(MetamacMocks.mockInternationalStringDto());
+        CodelistFamilyDto codelistFamilyDtoSession1AfterUpdate2 = srmCoreServiceFacade.updateCodelistFamily(getServiceContextAdministrador(), codelistFamilyDtoSession1AfterUpdate1);
+        assertTrue(codelistFamilyDtoSession1AfterUpdate2.getVersionOptimisticLocking() > codelistFamilyDtoSession1AfterUpdate1.getVersionOptimisticLocking());
+    }
+
+    @Test
+    public void testDeleteCodelistFamily() throws Exception {
+        String urn = CODELIST_FAMILY_2;
+
+        // Delete codelist
+        srmCoreServiceFacade.deleteCodelistFamily(getServiceContextAdministrador(), urn);
+
+        // Validation
+        try {
+            srmCoreServiceFacade.retrieveCodelistFamilyByUrn(getServiceContextAdministrador(), urn);
+            fail("CodelistFamily deleted");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
+    @Test
+    public void testFindCodelistFamiliesByCondition() throws Exception {
+        MetamacCriteria metamacCriteria = new MetamacCriteria();
+        // Order
+        MetamacCriteriaOrder order = new MetamacCriteriaOrder();
+        order.setType(OrderTypeEnum.ASC);
+        order.setPropertyName(CodelistVersionMetamacCriteriaOrderEnum.URN.name());
+        metamacCriteria.setOrdersBy(new ArrayList<MetamacCriteriaOrder>());
+        metamacCriteria.getOrdersBy().add(order);
+
+        // Pagination
+        metamacCriteria.setPaginator(new MetamacCriteriaPaginator());
+        metamacCriteria.getPaginator().setFirstResult(0);
+        metamacCriteria.getPaginator().setMaximumResultSize(Integer.MAX_VALUE);
+        metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
+
+        // Find all
+        {
+            MetamacCriteriaResult<CodelistFamilyDto> result = srmCoreServiceFacade.findCodelistFamiliesByCondition(getServiceContextAdministrador(), metamacCriteria);
+
+            assertEquals(2, result.getPaginatorResult().getTotalResults().intValue());
+            int i = 0;
+            {
+                CodelistFamilyDto codelistFamilyDto = result.getResults().get(i++);
+                assertEquals(CODELIST_FAMILY_1, codelistFamilyDto.getUrn());
+            }
+            {
+                CodelistFamilyDto codelistFamilyDto = result.getResults().get(i++);
+                assertEquals(CODELIST_FAMILY_2, codelistFamilyDto.getUrn());
+            }
+            assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
+        }
+        // Find by Name
+        {
+            metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.NAME.name(), "familia-de-codelists-51", OperationType.EQ));
+
+            MetamacCriteriaResult<CodelistFamilyDto> result = srmCoreServiceFacade.findCodelistFamiliesByCondition(getServiceContextAdministrador(), metamacCriteria);
+            assertEquals(1, result.getPaginatorResult().getTotalResults().intValue());
+            int i = 0;
+            {
+                CodelistFamilyDto codelistFamilyDto = result.getResults().get(i++);
+                assertEquals(CODELIST_FAMILY_1, codelistFamilyDto.getUrn());
+            }
+            assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
+
+            metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.NAME.name(), "NOT FOUND", OperationType.EQ));
+
+            result = srmCoreServiceFacade.findCodelistFamiliesByCondition(getServiceContextAdministrador(), metamacCriteria);
+            assertEquals(0, result.getPaginatorResult().getTotalResults().intValue());
+        }
+    }
+
+    @Test
+    public void testFindCodelistFamiliesPaginated() throws Exception {
+        MetamacCriteria metamacCriteria = new MetamacCriteria();
+        // Order
+        MetamacCriteriaOrder order = new MetamacCriteriaOrder();
+        order.setType(OrderTypeEnum.ASC);
+        order.setPropertyName(CodelistVersionMetamacCriteriaOrderEnum.URN.name());
+        metamacCriteria.setOrdersBy(new ArrayList<MetamacCriteriaOrder>());
+        metamacCriteria.getOrdersBy().add(order);
+        // Pagination
+        int maxResultSize = 1;
+        metamacCriteria.setPaginator(new MetamacCriteriaPaginator());
+        metamacCriteria.getPaginator().setMaximumResultSize(maxResultSize);
+        metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
+        {
+            int firstResult = 0;
+            metamacCriteria.getPaginator().setFirstResult(firstResult);
+
+            MetamacCriteriaResult<CodelistFamilyDto> result = srmCoreServiceFacade.findCodelistFamiliesByCondition(getServiceContextAdministrador(), metamacCriteria);
+
+            assertEquals(1, result.getResults().size());
+            assertEquals(2, result.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(firstResult, result.getPaginatorResult().getFirstResult().intValue());
+            assertEquals(maxResultSize, result.getPaginatorResult().getMaximumResultSize().intValue());
+            assertEquals(CODELIST_FAMILY_1, result.getResults().get(0).getUrn());
+        }
+        {
+            int firstResult = 1;
+            metamacCriteria.getPaginator().setFirstResult(firstResult);
+
+            MetamacCriteriaResult<CodelistFamilyDto> result = srmCoreServiceFacade.findCodelistFamiliesByCondition(getServiceContextAdministrador(), metamacCriteria);
+
+            assertEquals(1, result.getResults().size());
+            assertEquals(2, result.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(firstResult, result.getPaginatorResult().getFirstResult().intValue());
+            assertEquals(CODELIST_FAMILY_2, result.getResults().get(0).getUrn());
+        }
+    }
+
+    @Test
+    public void testAddCodelistsToCodelistFamily() throws Exception {
+
+        String codelistFamilyUrn = CODELIST_FAMILY_1;
+        List<String> codelistUrns = new ArrayList<String>();
+        {
+            String codelistUrn = CODELIST_9_V1; // change family
+            codelistUrns.add(codelistUrn);
+            CodelistMetamacDto codelist = srmCoreServiceFacade.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistUrn);
+            assertEquals(CODELIST_FAMILY_2, codelist.getFamily().getUrn());
+        }
+        {
+            String codelistUrn = CODELIST_1_V2; // add family
+            codelistUrns.add(codelistUrn);
+            CodelistMetamacDto codelist = srmCoreServiceFacade.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistUrn);
+            assertNull(codelist.getFamily());
+        }
+        {
+            String codelistUrn = CODELIST_2_V1; // add family
+            codelistUrns.add(codelistUrn);
+            CodelistMetamacDto codelist = srmCoreServiceFacade.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistUrn);
+            assertNull(codelist.getFamily());
+        }
+        srmCoreServiceFacade.addCodelistsToCodelistFamily(getServiceContextAdministrador(), codelistUrns, codelistFamilyUrn);
+
+        // Validation
+        {
+            CodelistMetamacDto codelist = srmCoreServiceFacade.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_9_V1);
+            assertEquals(codelistFamilyUrn, codelist.getFamily().getUrn());
+        }
+        {
+            CodelistMetamacDto codelist = srmCoreServiceFacade.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_1_V2);
+            assertEquals(codelistFamilyUrn, codelist.getFamily().getUrn());
+        }
+        {
+            CodelistMetamacDto codelist = srmCoreServiceFacade.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_2_V1);
+            assertEquals(codelistFamilyUrn, codelist.getFamily().getUrn());
         }
     }
 
