@@ -73,6 +73,14 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     @Override
     public ConceptSchemeVersionMetamac createConceptScheme(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeVersion) throws MetamacException {
 
+        prePersistConceptScheme(ctx, conceptSchemeVersion);
+
+        // Save conceptScheme
+        return (ConceptSchemeVersionMetamac) conceptsService.createConceptScheme(ctx, conceptSchemeVersion, SrmConstants.VERSION_PATTERN_METAMAC);
+    }
+
+    @Override
+    public ConceptSchemeVersionMetamac prePersistConceptScheme(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeVersion) throws MetamacException {
         // Validation
         ConceptsMetamacInvocationValidator.checkCreateConceptScheme(conceptSchemeVersion, null);
         checkConceptSchemeToCreateOrUpdate(ctx, conceptSchemeVersion);
@@ -82,8 +90,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         conceptSchemeVersion.getMaintainableArtefact().setIsExternalReference(Boolean.FALSE);
         conceptSchemeVersion.getMaintainableArtefact().setFinalLogicClient(Boolean.FALSE);
 
-        // Save conceptScheme
-        return (ConceptSchemeVersionMetamac) conceptsService.createConceptScheme(ctx, conceptSchemeVersion, SrmConstants.VERSION_PATTERN_METAMAC);
+        return conceptSchemeVersion;
     }
 
     @Override
@@ -236,14 +243,21 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
     @Override
     public ConceptMetamac createConcept(ServiceContext ctx, String conceptSchemeUrn, ConceptMetamac concept) throws MetamacException {
+        prePersistConcept(ctx, conceptSchemeUrn, concept);
+
+        // Save concept
+        return (ConceptMetamac) conceptsService.createConcept(ctx, conceptSchemeUrn, concept);
+    }
+
+    @Override
+    public ConceptMetamac prePersistConcept(ServiceContext ctx, String conceptSchemeUrn, ConceptMetamac concept) throws MetamacException {
         ConceptSchemeVersionMetamac conceptSchemeVersion = retrieveConceptSchemeByUrn(ctx, conceptSchemeUrn);
 
         // Validation
         ConceptsMetamacInvocationValidator.checkCreateConcept(conceptSchemeVersion, concept, null);
         checkConceptToCreateOrUpdate(ctx, conceptSchemeVersion, concept);
 
-        // Save concept
-        return (ConceptMetamac) conceptsService.createConcept(ctx, conceptSchemeUrn, concept);
+        return concept;
     }
 
     @Override
@@ -599,6 +613,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
      */
     private void checkConceptSchemeToCreateOrUpdate(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeVersion) throws MetamacException {
 
+        // When updating
         if (conceptSchemeVersion.getId() != null) {
             // Proc status
             checkConceptSchemeCanBeModified(conceptSchemeVersion);
@@ -610,6 +625,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         // Maintainer
         srmValidation.checkMaintainer(ctx, conceptSchemeVersion.getMaintainableArtefact(), conceptSchemeVersion.getMaintainableArtefact().getIsImported());
 
+        // When updating
         // If the scheme has items (concepts), type cannot be modified
         if (conceptSchemeVersion.getId() != null) {
             if (conceptSchemeVersion.getItems() != null && !conceptSchemeVersion.getItems().isEmpty()) {
@@ -620,6 +636,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
             }
         }
 
+        // When updating
         // if this version is not the first one, check not modify 'type'
         if (!SrmServiceUtils.isItemSchemeFirstVersion(conceptSchemeVersion)) {
             ConceptSchemeVersionMetamac conceptSchemePreviousVersion = (ConceptSchemeVersionMetamac) itemSchemeVersionRepository.retrieveByVersion(conceptSchemeVersion.getItemScheme().getId(),

@@ -2516,4 +2516,16 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
     protected String getDataSetFile() {
         return "dbunit/SrmConceptsTest.xml";
     }
+
+    @Override
+    public void testPrePersistConceptScheme() throws Exception {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void testPrePersistConcept() throws Exception {
+        // TODO Auto-generated method stub
+
+    }
 }

@@ -59,6 +59,7 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
     @Autowired
     private OrganisationMetamacRepository organisationMetamacRepository;
 
+    @Override
     @Test
     public void testCreateCategoryScheme() throws Exception {
 
@@ -106,6 +107,7 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
         }
     }
 
+    @Override
     @Test
     public void testUpdateCategoryScheme() throws Exception {
         CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), CATEGORY_SCHEME_2_V1);
@@ -187,6 +189,7 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
         }
     }
 
+    @Override
     @Test
     public void testRetrieveCategorySchemeByUrn() throws Exception {
 
@@ -287,6 +290,7 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
         assertEquals(CATEGORY_SCHEME_1_V2, categorySchemeVersions.get(1).getMaintainableArtefact().getUrn());
     }
 
+    @Override
     @Test
     public void testSendCategorySchemeToProductionValidation() throws Exception {
 
@@ -429,6 +433,7 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
         }
     }
 
+    @Override
     @Test
     public void testSendCategorySchemeToDiffusionValidation() throws Exception {
 
@@ -513,6 +518,7 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
         }
     }
 
+    @Override
     @Test
     public void testRejectCategorySchemeProductionValidation() throws Exception {
 
@@ -593,6 +599,7 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
         }
     }
 
+    @Override
     @Test
     public void testRejectCategorySchemeDiffusionValidation() throws Exception {
 
@@ -675,6 +682,7 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
         }
     }
 
+    @Override
     @Test
     public void testPublishInternallyCategoryScheme() throws Exception {
 
@@ -769,6 +777,7 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
         }
     }
 
+    @Override
     @Test
     public void testPublishExternallyCategoryScheme() throws Exception {
 
@@ -881,6 +890,7 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
         }
     }
 
+    @Override
     @Test
     public void testDeleteCategoryScheme() throws Exception {
 
@@ -950,6 +960,7 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
         }
     }
 
+    @Override
     @Test
     public void testVersioningCategoryScheme() throws Exception {
 
@@ -1134,6 +1145,7 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
             assertEquals(ServiceExceptionParameters.PROC_STATUS_EXTERNALLY_PUBLISHED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[1]);
         }
     }
+    @Override
     @Test
     public void testEndCategorySchemeValidity() throws Exception {
         CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.endCategorySchemeValidity(getServiceContextAdministrador(), CATEGORY_SCHEME_7_V1);
@@ -1159,6 +1171,7 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
         }
     }
 
+    @Override
     @Test
     public void testCreateCategory() throws Exception {
 
@@ -1213,6 +1226,7 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
         assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_4, categorySchemeVersion.getItemsFirstLevel().get(3).getNameableArtefact().getUrn());
     }
 
+    @Override
     @Test
     public void testUpdateCategory() throws Exception {
 
@@ -1227,6 +1241,7 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
         CategoriesMetamacAsserts.assertEqualsCategory(category, categoryUpdated);
     }
 
+    @Override
     @Test
     public void testRetrieveCategoryByUrn() throws Exception {
         // Retrieve
@@ -1255,6 +1270,7 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
         assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_2_1_1, category.getChildren().get(0).getNameableArtefact().getUrn());
     }
 
+    @Override
     @Test
     public void testDeleteCategory() throws Exception {
 
@@ -1356,6 +1372,7 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
         }
     }
 
+    @Override
     @Test
     public void testRetrieveCategoriesByCategorySchemeUrn() throws Exception {
 
@@ -1415,6 +1432,7 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
         }
     }
 
+    @Override
     @Test
     public void testFindCategoriesByCondition() throws Exception {
 
@@ -1533,6 +1551,7 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
         }
     }
 
+    @Override
     @Test
     public void testRetrieveCategorySchemeByCategoryUrn() throws Exception {
         // Retrieve
@@ -1591,5 +1610,17 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
     @Override
     protected String getDataSetFile() {
         return "dbunit/SrmCategoriesTest.xml";
+    }
+
+    @Override
+    public void testPrePersistCategoryScheme() throws Exception {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void testPrePersistCategory() throws Exception {
+        // TODO Auto-generated method stub
+
     }
 }

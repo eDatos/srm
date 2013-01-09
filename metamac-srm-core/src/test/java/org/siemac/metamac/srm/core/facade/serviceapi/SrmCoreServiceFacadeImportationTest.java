@@ -84,6 +84,7 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
     }
 
     @Test
+    @Ignore
     public void testImport_EXAMPLE_ORGANISATIONS() throws Exception {
         File file = new File(SdmxResources.EXAMPLE_ORGANISATIONS);
 
@@ -116,6 +117,7 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
     }
 
     @Test
+    @Ignore
     public void testImport_DEMOGRAPHY_CODELIST() throws Exception {
         File file = new File(SdmxResources.DEMOGRAPHY_CODELIST);
 
@@ -149,7 +151,6 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
         // TODO testear las condiciones de importacion de METAMAC, así como la herencia en el versionado
     }
 
-    // TODO se ignora hasta que se arregle la incidencia del tipo de esquema de concepto
     @Test
     @Ignore
     public void testImport_DEMOGRAPHY_CONCEPTS() throws Exception {
@@ -181,9 +182,8 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
 
     }
 
-    @Ignore
-    // TODO se ignora hasta que se arregle la incidencia del tipo de esquema de concepto
     @Test
+    @Ignore
     public void testImport_DSD_ECB_EXR_NG_FULL() throws Exception {
         File file = null;
         DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = null;
@@ -195,9 +195,8 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
         assertEquals(SdmxResources.DSD_ECB_EXR_NG_FULL_URN, dataStructureDefinitionMetamacDto.getUrn());
     }
 
-    @Ignore
-    // TODO se ignora hasta que se arregle la incidencia del tipo de esquema de concepto
     @Test
+    @Ignore
     public void testImport_DSD_ECB_EXR_SG_FULL() throws Exception {
         File file = null;
         DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = null;
@@ -209,9 +208,8 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
         assertEquals(SdmxResources.DSD_ECB_EXR_SG_FULL_URN, dataStructureDefinitionMetamacDto.getUrn());
     }
 
-    @Ignore
-    // TODO se ignora hasta que se arregle la incidencia del tipo de esquema de concepto
     @Test
+    @Ignore
     public void testImport_DSD_ECB_EXR_RG_FULL() throws Exception {
         File file = null;
         DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = null;
@@ -223,9 +221,8 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
         assertEquals(SdmxResources.DSD_ECB_EXR_RG_FULL_URN, dataStructureDefinitionMetamacDto.getUrn());
     }
 
-    @Ignore
-    // TODO se ignora hasta que se arregle la incidencia del tipo de esquema de concepto
     @Test
+    @Ignore
     public void testImport_DSD_INE_DPOP() throws Exception {
         File file = null;
         DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = null;

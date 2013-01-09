@@ -63,6 +63,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
     @Autowired
     private OrganisationMetamacRepository organisationMetamacRepository;
 
+    @Override
     @Test
     public void testCreateOrganisationScheme() throws Exception {
 
@@ -112,6 +113,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         assertNull(organisationSchemeVersionRetrieved.getMaintainableArtefact().getValidFrom());
     }
 
+    @Override
     @Test
     public void testUpdateOrganisationScheme() throws Exception {
         OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), ORGANISATION_SCHEME_2_V1);
@@ -200,6 +202,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         }
     }
 
+    @Override
     @Test
     public void testRetrieveOrganisationSchemeByUrn() throws Exception {
 
@@ -309,6 +312,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         assertEquals(ORGANISATION_SCHEME_1_V2, organisationSchemeVersions.get(1).getMaintainableArtefact().getUrn());
     }
 
+    @Override
     @Test
     public void testSendOrganisationSchemeToProductionValidation() throws Exception {
 
@@ -452,6 +456,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         }
     }
 
+    @Override
     @Test
     public void testSendOrganisationSchemeToDiffusionValidation() throws Exception {
 
@@ -536,6 +541,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         }
     }
 
+    @Override
     @Test
     public void testRejectOrganisationSchemeProductionValidation() throws Exception {
 
@@ -616,6 +622,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         }
     }
 
+    @Override
     @Test
     public void testRejectOrganisationSchemeDiffusionValidation() throws Exception {
 
@@ -698,6 +705,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         }
     }
 
+    @Override
     @Test
     public void testPublishInternallyOrganisationScheme() throws Exception {
 
@@ -819,6 +827,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         }
     }
 
+    @Override
     @Test
     public void testPublishExternallyOrganisationScheme() throws Exception {
 
@@ -961,6 +970,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         }
     }
 
+    @Override
     @Test
     public void testDeleteOrganisationScheme() throws Exception {
 
@@ -1030,6 +1040,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         }
     }
 
+    @Override
     @Test
     public void testVersioningOrganisationScheme() throws Exception {
 
@@ -1255,6 +1266,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         }
     }
 
+    @Override
     @Test
     public void testEndOrganisationSchemeValidity() throws Exception {
         OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.endOrganisationSchemeValidity(getServiceContextAdministrador(), ORGANISATION_SCHEME_7_V1);
@@ -1280,6 +1292,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         }
     }
 
+    @Override
     @Test
     public void testCreateOrganisation() throws Exception {
 
@@ -1352,6 +1365,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         OrganisationsMetamacAsserts.assertEqualsOrganisation(organisation, organisationRetrieved);
     }
 
+    @Override
     @Test
     public void testUpdateOrganisation() throws Exception {
 
@@ -1366,6 +1380,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         OrganisationsMetamacAsserts.assertEqualsOrganisation(organisation, organisationUpdated);
     }
 
+    @Override
     @Test
     public void testRetrieveOrganisationByUrn() throws Exception {
         // Retrieve
@@ -1394,6 +1409,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1_1, organisation.getChildren().get(0).getNameableArtefact().getUrn());
     }
 
+    @Override
     @Test
     public void testDeleteOrganisation() throws Exception {
 
@@ -1495,6 +1511,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         }
     }
 
+    @Override
     @Test
     public void testRetrieveOrganisationsByOrganisationSchemeUrn() throws Exception {
 
@@ -1554,6 +1571,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         }
     }
 
+    @Override
     @Test
     public void testFindOrganisationsByCondition() throws Exception {
 
@@ -1678,12 +1696,14 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         }
     }
 
+    @Override
     @Test
     public void testRetrieveMaintainerDefault() throws Exception {
         OrganisationMetamac organisation = organisationsService.retrieveMaintainerDefault(getServiceContextAdministrador());
         assertEquals(AGENCY_ROOT_1_V1, organisation.getNameableArtefact().getUrn());
     }
 
+    @Override
     @Test
     public void testRetrieveOrganisationSchemeByOrganisationUrn() throws Exception {
         // Retrieve
@@ -1722,5 +1742,17 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
     @Override
     protected String getDataSetFile() {
         return "dbunit/SrmOrganisationsTest.xml";
+    }
+
+    @Override
+    public void testPrePersistOrganisationScheme() throws Exception {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void testPrePersistOrganisation() throws Exception {
+        // TODO Auto-generated method stub
+
     }
 }

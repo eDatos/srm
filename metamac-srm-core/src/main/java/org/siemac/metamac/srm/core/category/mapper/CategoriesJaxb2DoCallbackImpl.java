@@ -7,7 +7,9 @@ import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
+import org.siemac.metamac.srm.core.category.serviceapi.CategoriesMetamacService;
 import org.siemac.metamac.srm.core.importation.ImportationMetamacCommonValidations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
@@ -22,6 +24,9 @@ import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.CategoryType;
 
 @Component("categoriesMetamacJaxb2DoCallback")
 public class CategoriesJaxb2DoCallbackImpl extends ImportationMetamacCommonValidations implements CategoriesJaxb2DoCallback {
+
+    @Autowired
+    private CategoriesMetamacService categoriesMetamacService;
 
     /**************************************************************************
      * CREATES
@@ -65,17 +70,23 @@ public class CategoriesJaxb2DoCallbackImpl extends ImportationMetamacCommonValid
      * EXTENSIONS
      **************************************************************************/
     @Override
-    public void categorySchemeJaxbToDoExtension(CategorySchemeType source, CategorySchemeVersion target) {
-        // nothing to extend in the default implementation
+    public void categorySchemeJaxbToDoExtension(ServiceContext ctx, CategorySchemeType source, CategorySchemeVersion target) throws MetamacException {
+        CategorySchemeVersionMetamac targetMetamac = (CategorySchemeVersionMetamac) target;
+
+        // Fill Metadata
+        categoriesMetamacService.prePersistCategoryScheme(ctx, targetMetamac);
     }
 
     @Override
-    public void categoryJaxbToDoExtension(CategoryType source, Category target) {
-        // nothing to extend in the default implementation
+    public void categoryJaxbToDoExtension(ServiceContext ctx, CategoryType source, CategorySchemeVersion categorySchemeVersion, Category target) throws MetamacException {
+        CategoryMetamac targetMetamac = (CategoryMetamac) target;
+
+        // Fill Metadata
+        categoriesMetamacService.prePersistCategory(ctx, categorySchemeVersion.getMaintainableArtefact().getUrn(), targetMetamac);
     }
 
     @Override
-    public void categorisationJaxToDoExtension(CategorisationType source, Categorisation target) {
+    public void categorisationJaxToDoExtension(ServiceContext ctx, CategorisationType source, Categorisation target) throws MetamacException {
         // nothing to extend in the default implementation
     }
 

@@ -24,6 +24,8 @@ Application ConceptsMetamac {
 			
 			"Creates concept scheme"
 			@ConceptSchemeVersionMetamac createConceptScheme(@ConceptSchemeVersionMetamac conceptSchemeVersion) throws MetamacException;
+			"Creates concept scheme"
+			@ConceptSchemeVersionMetamac prePersistConceptScheme(@ConceptSchemeVersionMetamac conceptSchemeVersion) throws MetamacException;
 			"Updates concept scheme"
 			@ConceptSchemeVersionMetamac updateConceptScheme(@ConceptSchemeVersionMetamac conceptSchemeVersion) throws MetamacException;
 			"Retrieves concept scheme by urn"
@@ -59,6 +61,8 @@ Application ConceptsMetamac {
     		
 			"Creates concept"
 			@ConceptMetamac createConcept(String conceptSchemeUrn, @ConceptMetamac concept) throws MetamacException;
+			"Per-persist concept"
+			@ConceptMetamac prePersistConcept(String conceptSchemeUrn, @ConceptMetamac concept) throws MetamacException;
 			"Updates concept"
 			@ConceptMetamac updateConcept(@ConceptMetamac concept) throws MetamacException;
     		"Retrieves concept by urn"

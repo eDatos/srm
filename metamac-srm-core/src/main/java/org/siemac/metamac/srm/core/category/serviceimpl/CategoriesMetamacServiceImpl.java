@@ -78,6 +78,14 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
     @Override
     public CategorySchemeVersionMetamac createCategoryScheme(ServiceContext ctx, CategorySchemeVersionMetamac categorySchemeVersion) throws MetamacException {
 
+        prePersistCategoryScheme(ctx, categorySchemeVersion);
+
+        // Save categoryScheme
+        return (CategorySchemeVersionMetamac) categoriesService.createCategoryScheme(ctx, categorySchemeVersion, SrmConstants.VERSION_PATTERN_METAMAC);
+    }
+
+    @Override
+    public CategorySchemeVersionMetamac prePersistCategoryScheme(ServiceContext ctx, CategorySchemeVersionMetamac categorySchemeVersion) throws MetamacException {
         // Validation
         CategoriesMetamacInvocationValidator.checkCreateCategoryScheme(categorySchemeVersion, null);
         checkCategorySchemeToCreateOrUpdate(ctx, categorySchemeVersion);
@@ -87,8 +95,7 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
         categorySchemeVersion.getMaintainableArtefact().setIsExternalReference(Boolean.FALSE);
         categorySchemeVersion.getMaintainableArtefact().setFinalLogicClient(Boolean.FALSE);
 
-        // Save categoryScheme
-        return (CategorySchemeVersionMetamac) categoriesService.createCategoryScheme(ctx, categorySchemeVersion, SrmConstants.VERSION_PATTERN_METAMAC);
+        return categorySchemeVersion;
     }
 
     @Override
@@ -195,14 +202,21 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
     @Override
     public CategoryMetamac createCategory(ServiceContext ctx, String categorySchemeUrn, CategoryMetamac category) throws MetamacException {
 
+        prePersistCategory(ctx, categorySchemeUrn, category);
+
+        // Save category
+        return (CategoryMetamac) categoriesService.createCategory(ctx, categorySchemeUrn, category);
+    }
+
+    @Override
+    public CategoryMetamac prePersistCategory(ServiceContext ctx, String categorySchemeUrn, CategoryMetamac category) throws MetamacException {
         CategorySchemeVersionMetamac categorySchemeVersion = retrieveCategorySchemeByUrn(ctx, categorySchemeUrn);
 
         // Validation
         CategoriesMetamacInvocationValidator.checkCreateCategory(categorySchemeVersion, category, null);
         checkCategoryToCreateOrUpdate(ctx, categorySchemeVersion, category);
 
-        // Save category
-        return (CategoryMetamac) categoriesService.createCategory(ctx, categorySchemeUrn, category);
+        return category;
     }
 
     @Override
