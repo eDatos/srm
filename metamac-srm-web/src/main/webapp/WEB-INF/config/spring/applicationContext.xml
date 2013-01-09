@@ -54,6 +54,8 @@
 
     <!-- Metamac Business Spring Configuration -->
     <import resource="classpath:/spring/srm/applicationContext.xml" />
+    <!-- Rest -->
+    <import resource="classpath:/spring/srm-rest-internal/applicationContext.xml" />
 
 </beans>
 
