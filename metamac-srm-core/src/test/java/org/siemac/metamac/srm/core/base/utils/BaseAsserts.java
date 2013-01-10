@@ -1,12 +1,15 @@
 package org.siemac.metamac.srm.core.base.utils;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import org.siemac.metamac.core.common.util.CoreCommonUtil;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.base.dto.LifeCycleDto;
 
-public class BaseAsserts extends com.arte.statistic.sdmx.srm.core.base.serviceapi.utils.BaseAsserts{
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
+
+public class BaseAsserts extends com.arte.statistic.sdmx.srm.core.base.serviceapi.utils.BaseAsserts {
 
     // LIFE CYCLE
 
@@ -50,4 +53,11 @@ public class BaseAsserts extends com.arte.statistic.sdmx.srm.core.base.serviceap
         assertEquals(expected.getExternalPublicationUser(), actual.getExternalPublicationUser());
     }
 
+    public static void assertEqualsRelatedResourceDto(RelatedResourceDto expected, RelatedResourceDto actual) {
+        assertEqualsNullability(expected, actual);
+        if (expected == null) {
+            return;
+        }
+        assertEquals(expected.getUrn(), actual.getUrn());
+    }
 }

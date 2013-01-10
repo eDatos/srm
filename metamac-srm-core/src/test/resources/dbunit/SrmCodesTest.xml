@@ -443,7 +443,7 @@
         IS_RECOMMENDED="0"
         SHORT_NAME_FK="[null]"
         CODELIST_FAMILY_FK="[null]"
-        VARIABLE_FK="[null]"
+        VARIABLE_FK="2"
         REPLACED_BY_CODELIST_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="[null]"
@@ -2376,7 +2376,7 @@
         IS_RECOMMENDED="[null]"
         SHORT_NAME_FK="[null]"
         CODELIST_FAMILY_FK="2"
-        VARIABLE_FK="[null]"
+        VARIABLE_FK="2"
         REPLACED_BY_CODELIST_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="[null]"

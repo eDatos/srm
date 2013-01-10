@@ -34,6 +34,9 @@ public class CodesMetamacAsserts extends CodesAsserts {
         assertEqualsInternationalString(expected.getShortName(), actual.getShortName());
         assertEquals(expected.getIsRecommended(), actual.getIsRecommended());
         assertEquals(expected.getAccessType(), actual.getAccessType());
+        assertEqualsCodelistFamily(expected.getFamily(), actual.getFamily());
+        assertEqualsVariable(expected.getVariable(), actual.getVariable());
+
         assertEqualsNullability(expected.getReplacedByCodelist(), actual.getReplacedByCodelist());
         if (expected.getReplacedByCodelist() != null) {
             assertEquals(expected.getReplacedByCodelist().getMaintainableArtefact().getUrn(), actual.getReplacedByCodelist().getMaintainableArtefact().getUrn());
@@ -53,11 +56,13 @@ public class CodesMetamacAsserts extends CodesAsserts {
         assertEqualsInternationalStringDto(expected.getShortName(), actual.getShortName());
         assertEquals(expected.getIsRecommended(), actual.getIsRecommended());
         assertEquals(expected.getAccessType(), actual.getAccessType());
-        assertEqualsCodelistRelatedResourceDto(expected.getReplacedByCodelist(), actual.getReplacedByCodelist());
+        BaseAsserts.assertEqualsRelatedResourceDto(expected.getReplacedByCodelist(), actual.getReplacedByCodelist());
         assertEquals(expected.getReplaceToCodelists().size(), actual.getReplaceToCodelists().size());
         for (int i = 0; i < expected.getReplaceToCodelists().size(); i++) {
-            assertEqualsCodelistRelatedResourceDto(expected.getReplaceToCodelists().get(i), actual.getReplaceToCodelists().get(i));
+            BaseAsserts.assertEqualsRelatedResourceDto(expected.getReplaceToCodelists().get(i), actual.getReplaceToCodelists().get(i));
         }
+        BaseAsserts.assertEqualsRelatedResourceDto(expected.getFamily(), actual.getFamily());
+        BaseAsserts.assertEqualsRelatedResourceDto(expected.getVariable(), actual.getVariable());
         // SDMX
         CodesAsserts.assertEqualsCodelistDto(expected, actual);
     }
@@ -67,17 +72,6 @@ public class CodesMetamacAsserts extends CodesAsserts {
 
     public static void assertEqualsCodelist(CodelistMetamacDto expected, CodelistVersionMetamac actual) {
         assertEqualsCodelist(actual, expected, MapperEnum.DTO2DO);
-    }
-
-    public static void assertEqualsCodelistRelatedResourceDto(RelatedResourceDto expected, RelatedResourceDto actual) {
-        assertEqualsNullability(expected, actual);
-        if (expected == null) {
-            return;
-        }
-        assertEquals(expected.getCode(), actual.getCode());
-        assertEquals(expected.getUrn(), actual.getUrn());
-        assertEquals(expected.getUrnProvider(), actual.getUrnProvider());
-        assertEquals(expected.getType(), actual.getType());
     }
 
     private static void assertEqualsCodelist(CodelistVersionMetamac entity, CodelistMetamacDto dto, MapperEnum mapperEnum) {
@@ -97,8 +91,8 @@ public class CodesMetamacAsserts extends CodesAsserts {
         for (int i = 0; i < entity.getReplaceToCodelists().size(); i++) {
             assertEquals(entity.getReplaceToCodelists().get(i).getMaintainableArtefact().getUrn(), dto.getReplaceToCodelists().get(i).getUrn());
         }
-        assertEqualsCodelistFamilyRelatedResource(entity.getFamily(), dto.getFamily(), mapperEnum);
-        // TODO variable
+        assertEqualsCodelistFamilyRelatedResourceDto(entity.getFamily(), dto.getFamily(), mapperEnum);
+        assertEqualsVariableRelatedResourceDto(entity.getVariable(), dto.getVariable(), mapperEnum);
 
         // SDMX
         CodesAsserts.assertEqualsCodelist(entity, dto, mapperEnum);
@@ -142,6 +136,10 @@ public class CodesMetamacAsserts extends CodesAsserts {
     // ------------------------------------------------------------------------------------
 
     public static void assertEqualsCodelistFamily(CodelistFamily expected, CodelistFamily actual) {
+        assertEqualsNullability(expected, actual);
+        if (expected == null) {
+            return;
+        }
         // other artefacts
         assertEqualsNameableArtefact(expected.getNameableArtefact(), actual.getNameableArtefact());
     }
@@ -186,7 +184,7 @@ public class CodesMetamacAsserts extends CodesAsserts {
         assertEqualsNameableArtefact(entity.getNameableArtefact(), dto, mapperEnum);
     }
 
-    private static void assertEqualsCodelistFamilyRelatedResource(CodelistFamily entity, RelatedResourceDto dto, MapperEnum mapperEnum) {
+    private static void assertEqualsCodelistFamilyRelatedResourceDto(CodelistFamily entity, RelatedResourceDto dto, MapperEnum mapperEnum) {
         assertEqualsNullability(entity, dto);
         if (entity == null) {
             return;
@@ -222,15 +220,7 @@ public class CodesMetamacAsserts extends CodesAsserts {
         assertEqualsNameableArtefact(expected.getNameableArtefact(), actual.getNameableArtefact());
     }
 
-    public static void assertEqualsVariableRelatedResourceDto(RelatedResourceDto expected, RelatedResourceDto actual) {
-        assertEqualsNullability(expected, actual);
-        if (expected == null) {
-            return;
-        }
-        assertEquals(expected.getUrn(), actual.getUrn());
-    }
-
-    public static void assertEqualsVariable(Variable entity, RelatedResourceDto dto, MapperEnum mapperEnum) {
+    public static void assertEqualsVariableRelatedResourceDto(Variable entity, RelatedResourceDto dto, MapperEnum mapperEnum) {
         assertEqualsNullability(entity, dto);
         if (entity == null) {
             return;

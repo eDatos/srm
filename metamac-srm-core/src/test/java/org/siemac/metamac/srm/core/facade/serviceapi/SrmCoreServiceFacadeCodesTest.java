@@ -83,6 +83,7 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
         codelistDto.getReplaceToCodelists().add(new RelatedResourceDto("CODELIST01", CODELIST_1_V1, null));
         codelistDto.getReplaceToCodelists().add(new RelatedResourceDto("CODELIST10", CODELIST_10_V1, null));
         codelistDto.setFamily(new RelatedResourceDto("CODELIST_FAMILY_01", CODELIST_FAMILY_1, null));
+        codelistDto.setVariable(new RelatedResourceDto("VARIABLE_01", VARIABLE_1, null));
         CodelistMetamacDto codelistMetamacCreated = srmCoreServiceFacade.createCodelist(getServiceContextAdministrador(), codelistDto);
 
         // Validate some metadata
@@ -93,6 +94,7 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
         assertEquals(CODELIST_1_V1, codelistMetamacCreated.getReplaceToCodelists().get(0).getUrn());
         assertEquals(CODELIST_10_V1, codelistMetamacCreated.getReplaceToCodelists().get(1).getUrn());
         assertEquals(CODELIST_FAMILY_1, codelistMetamacCreated.getFamily().getUrn());
+        assertEquals(VARIABLE_1, codelistMetamacCreated.getVariable().getUrn());
     }
 
     @Test

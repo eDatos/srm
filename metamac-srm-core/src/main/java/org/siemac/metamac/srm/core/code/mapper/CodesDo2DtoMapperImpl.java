@@ -43,6 +43,7 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
             target.getReplaceToCodelists().add(codelistToRelatedResourceDto(replaceTo));
         }
         target.setFamily(codelistFamilyToRelatedResourceDto(source.getFamily()));
+        target.setVariable(variableToRelatedResourceDto(source.getVariable()));
         target.setLifeCycle(lifeCycleDoToDto(source.getLifeCycleMetadata()));
 
         do2DtoMapperSdmxSrm.codelistDoToDto(source, target);
@@ -147,6 +148,16 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
     }
 
     private RelatedResourceDto codelistFamilyToRelatedResourceDto(CodelistFamily source) {
+        if (source == null) {
+            return null;
+        }
+        RelatedResourceDto target = new RelatedResourceDto();
+        do2DtoMapperSdmxSrm.nameableArtefactDoToRelatedResourceDto(source.getNameableArtefact(), target);
+        target.setType(null);
+        return target;
+    }
+
+    private RelatedResourceDto variableToRelatedResourceDto(Variable source) {
         if (source == null) {
             return null;
         }

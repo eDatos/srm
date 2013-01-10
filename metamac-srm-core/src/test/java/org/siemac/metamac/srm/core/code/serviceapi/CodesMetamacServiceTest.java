@@ -41,7 +41,6 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamilyProperties;
-import org.siemac.metamac.srm.core.code.domain.CodelistFamilyRepository;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacProperties;
 import org.siemac.metamac.srm.core.code.domain.Variable;
@@ -85,9 +84,6 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     @Autowired
     protected CodesMetamacService         codesService;
 
-    @Autowired
-    protected CodelistFamilyRepository    codelistFamilyRepository;
-
     @PersistenceContext(unitName = "SrmCoreEntityManagerFactory")
     protected EntityManager               entityManager;
 
@@ -103,6 +99,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     public void testCreateCodelist() throws Exception {
         OrganisationMetamac organisationMetamac = organisationMetamacRepository.findByUrn(AGENCY_ROOT_1_V1);
         CodelistVersionMetamac codelistVersion = CodesMetamacDoMocks.mockCodelist(organisationMetamac);
+        codelistVersion.setVariable(codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_1));
         ServiceContext ctx = getServiceContextAdministrador();
 
         // Replace to
@@ -266,15 +263,38 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         entityManager.clear(); // Clear hibernate cache to check that the family has been updated
 
         // Check family has one codelists (and it's the one we have added previously)
-        codelistFamily = codelistFamilyRepository.findByUrn(CODELIST_FAMILY_1);
+        codelistFamily = codesService.retrieveCodelistFamilyByUrn(getServiceContextAdministrador(), CODELIST_FAMILY_1);
         assertEquals(1, codelistFamily.getCodelists().size());
+        assertEquals(codelistVersion.getMaintainableArtefact().getUrn(), codelistFamily.getCodelists().get(0).getMaintainableArtefact().getUrn());
+    }
+
+    @Test
+    public void testUpdateCodelistChangingVariable() throws Exception {
+        CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_1_V2);
+
+        // Check the variable has no codelists
+        Variable variable = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_1);
+        assertEquals(0, variable.getCodelists().size());
+
+        // Associate the codelist to the variable
+        codelistVersion.setVariable(variable);
+        codelistVersion.getMaintainableArtefact().setIsCodeUpdated(false);
+        CodelistVersionMetamac codelistVersionUpdated = codesService.updateCodelist(getServiceContextAdministrador(), codelistVersion);
+        assertEqualsVariable(variable, codelistVersionUpdated.getVariable());
+
+        entityManager.clear(); // Clear hibernate cache to check that the variable has been updated
+
+        // Check variable has one codelists (and it's the one we have added previously)
+        variable = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), variable.getNameableArtefact().getUrn());
+        assertEquals(1, variable.getCodelists().size());
+        assertEquals(codelistVersion.getMaintainableArtefact().getUrn(), variable.getCodelists().get(0).getMaintainableArtefact().getUrn());
     }
 
     /**
      * Change codelist from family CODELIST_FAMILY_2 to CODELIST_FAMILY_1
      */
     @Test
-    public void testUpdateCodelistChangeFamily() throws Exception {
+    public void testUpdateCodelistChangingFamily() throws Exception {
         CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_9_V1);
 
         // Check family members
@@ -292,8 +312,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         entityManager.clear(); // Clear hibernate cache to check that the family has been updated
 
         // Check family after updating codelist
-        family1 = codelistFamilyRepository.findByUrn(CODELIST_FAMILY_1);
-        family2 = codelistFamilyRepository.findByUrn(CODELIST_FAMILY_2);
+        family1 = codesService.retrieveCodelistFamilyByUrn(getServiceContextAdministrador(), CODELIST_FAMILY_1);
+        family2 = codesService.retrieveCodelistFamilyByUrn(getServiceContextAdministrador(), CODELIST_FAMILY_2);
         assertEquals(1, family1.getCodelists().size());
         assertEquals(1, family2.getCodelists().size());
     }
@@ -317,6 +337,27 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         // Check family members
         family = codesService.retrieveCodelistFamilyByUrn(getServiceContextAdministrador(), CODELIST_FAMILY_2);
         assertEquals(1, family.getCodelists().size());
+    }
+
+    @Test
+    public void testUpdateCodelistRemoveFromVariable() throws Exception {
+        CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_9_V1);
+
+        // Check variable members
+        Variable variable = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), codelistVersion.getVariable().getNameableArtefact().getUrn());
+        assertEquals(2, variable.getCodelists().size());
+
+        // Update codelist (remove from variable)
+        codelistVersion.setVariable(null);
+        codelistVersion.getMaintainableArtefact().setIsCodeUpdated(false);
+        CodelistVersionMetamac codelistVersionUpdated = codesService.updateCodelist(getServiceContextAdministrador(), codelistVersion);
+        assertNull(codelistVersionUpdated.getVariable());
+
+        entityManager.clear(); // Clear hibernate cache to check that the family has been updated
+
+        // Check variable members
+        variable = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), variable.getNameableArtefact().getUrn());
+        assertEquals(1, variable.getCodelists().size());
     }
 
     @Test

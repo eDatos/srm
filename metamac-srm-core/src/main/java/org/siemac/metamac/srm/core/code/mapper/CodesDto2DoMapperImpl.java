@@ -11,6 +11,8 @@ import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamilyRepository;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacRepository;
+import org.siemac.metamac.srm.core.code.domain.Variable;
+import org.siemac.metamac.srm.core.code.domain.VariableRepository;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
@@ -35,6 +37,9 @@ public class CodesDto2DoMapperImpl implements CodesDto2DoMapper {
 
     @Autowired
     private CodelistFamilyRepository                                       codelistFamilyRepository;
+
+    @Autowired
+    private VariableRepository                                             variableRepository;
 
     @Override
     public CodelistVersionMetamac codelistDtoToDo(CodelistMetamacDto source) throws MetamacException {
@@ -65,6 +70,11 @@ public class CodesDto2DoMapperImpl implements CodesDto2DoMapper {
             target.setFamily(retrieveCodelistFamily(source.getFamily().getUrn()));
         } else {
             target.setFamily(null);
+        }
+        if (source.getVariable() != null) {
+            target.setVariable(retrieveVariable(source.getVariable().getUrn()));
+        } else {
+            target.setVariable(null);
         }
 
         dto2DoMapperSdmxSrm.codelistDtoToDo(source, target);
@@ -138,6 +148,15 @@ public class CodesDto2DoMapperImpl implements CodesDto2DoMapper {
 
     private CodelistFamily retrieveCodelistFamily(String urn) throws MetamacException {
         CodelistFamily target = codelistFamilyRepository.findByUrn(urn);
+        if (target == null) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(urn).withLoggedLevel(ExceptionLevelEnum.ERROR)
+                    .build();
+        }
+        return target;
+    }
+
+    private Variable retrieveVariable(String urn) throws MetamacException {
+        Variable target = variableRepository.findByUrn(urn);
         if (target == null) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(urn).withLoggedLevel(ExceptionLevelEnum.ERROR)
                     .build();

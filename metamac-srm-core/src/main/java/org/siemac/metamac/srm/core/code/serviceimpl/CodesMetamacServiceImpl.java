@@ -97,10 +97,12 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         }
         codelistVersion = getCodelistVersionMetamacRepository().save(codelistVersion);
 
-        // Add the codelist to the family
-        CodelistFamily family = codelistVersion.getFamily();
-        if (family != null) {
-            family.addCodelist(codelistVersion);
+        // Add the codelist to the family and variable
+        if (codelistVersion.getFamily() != null) {
+            codelistVersion.getFamily().addCodelist(codelistVersion);
+        }
+        if (codelistVersion.getVariable() != null) {
+            codelistVersion.getVariable().addCodelist(codelistVersion);
         }
 
         return codelistVersion;
