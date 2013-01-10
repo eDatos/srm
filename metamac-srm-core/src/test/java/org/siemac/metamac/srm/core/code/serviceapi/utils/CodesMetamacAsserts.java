@@ -222,7 +222,7 @@ public class CodesMetamacAsserts extends CodesAsserts {
         assertEqualsNameableArtefact(expected.getNameableArtefact(), actual.getNameableArtefact());
     }
 
-    public static void assertEqualsVariable(RelatedResourceDto expected, RelatedResourceDto actual) {
+    public static void assertEqualsVariableRelatedResourceDto(RelatedResourceDto expected, RelatedResourceDto actual) {
         assertEqualsNullability(expected, actual);
         if (expected == null) {
             return;

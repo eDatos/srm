@@ -54,6 +54,19 @@ public class ConceptsMetamacDtoMocks {
         return conceptMetamacDto;
     }
 
+    public static RelatedResourceDto mockConceptRelatedResourceDto(String code, String urn) {
+        RelatedResourceDto relatedResourceDto = new RelatedResourceDto();
+        relatedResourceDto.setCode(code);
+        relatedResourceDto.setUrn(urn);
+        relatedResourceDto.setUrnProvider(urn);
+        relatedResourceDto.setType(TypeExternalArtefactsEnum.CONCEPT);
+        return relatedResourceDto;
+    }
+
+    // -----------------------------------------------------------------------------------
+    // CONCEPT TYPES
+    // -----------------------------------------------------------------------------------
+
     public static ConceptTypeDto mockConceptTypeDto() {
         ConceptTypeDto conceptTypeDto = new ConceptTypeDto();
         conceptTypeDto.setIdentifier("DERIVED");

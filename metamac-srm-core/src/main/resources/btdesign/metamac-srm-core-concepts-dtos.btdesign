@@ -32,7 +32,7 @@ Application DtosMetamacConceptDomain {
 			- @ConceptTypeDto type nullable;			
 			- @InternationalStringDto derivation nullable;
 			- @InternationalStringDto legalActs nullable;
-			String conceptExtendsUrn nullable;
+			- @RelatedResourceDto conceptExtends nullable;
 			- @RelatedResourceDto variable nullable;
 		}
 		

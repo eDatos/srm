@@ -1013,7 +1013,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         assertEquals("DIRECT", conceptMetamacDto.getType().getIdentifier());
         assertEqualsInternationalStringDto(conceptMetamacDto.getDerivation(), "es", "Derivation conceptScheme-1-v2-concept-1", null, null);
         assertEqualsInternationalStringDto(conceptMetamacDto.getLegalActs(), "es", "LegalActs conceptScheme-1-v2-concept-1", null, null);
-        assertEquals(CONCEPT_SCHEME_7_V1_CONCEPT_1, conceptMetamacDto.getConceptExtendsUrn());
+        assertEquals(CONCEPT_SCHEME_7_V1_CONCEPT_1, conceptMetamacDto.getConceptExtends().getUrn());
         assertEquals(VARIABLE_1, conceptMetamacDto.getVariable().getUrn());
 
         // Core representation
@@ -1455,7 +1455,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
     public void testCreateConcept() throws Exception {
         ConceptMetamacDto conceptMetamacDto = ConceptsMetamacDtoMocks.mockConceptDto(TypeRepresentationEnum.ENUMERATED);
         conceptMetamacDto.setItemSchemeVersionUrn(CONCEPT_SCHEME_1_V2);
-        conceptMetamacDto.setConceptExtendsUrn(CONCEPT_SCHEME_7_V1_CONCEPT_1);
+        conceptMetamacDto.setConceptExtends(ConceptsMetamacDtoMocks.mockConceptRelatedResourceDto("CONCEPT01", CONCEPT_SCHEME_7_V1_CONCEPT_1));
         conceptMetamacDto.setVariable(CodesMetamacDtoMocks.mockVariableRelatedResourceDto("VARIABLE_01", VARIABLE_1));
 
         ConceptMetamacDto conceptMetamacDtoCreated = srmCoreServiceFacade.createConcept(getServiceContextAdministrador(), conceptMetamacDto);
@@ -1508,10 +1508,10 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
     @Test
     public void testUpdateConcept() throws Exception {
         ConceptMetamacDto conceptMetamacDto = srmCoreServiceFacade.retrieveConceptByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_1_V2_CONCEPT_1);
-        assertNotNull(conceptMetamacDto.getConceptExtendsUrn());
+        assertNotNull(conceptMetamacDto.getConceptExtends());
         conceptMetamacDto.setName(MetamacMocks.mockInternationalStringDto());
         conceptMetamacDto.setDescription(MetamacMocks.mockInternationalStringDto());
-        conceptMetamacDto.setConceptExtendsUrn(CONCEPT_SCHEME_7_V1_CONCEPT_1);
+        conceptMetamacDto.getConceptExtends().setUrn(CONCEPT_SCHEME_7_V1_CONCEPT_1);
 
         ConceptMetamacDto conceptMetamacDtoUpdated = srmCoreServiceFacade.updateConcept(getServiceContextAdministrador(), conceptMetamacDto);
 
@@ -1520,7 +1520,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         assertTrue(conceptMetamacDtoUpdated.getVersionOptimisticLocking() > conceptMetamacDto.getVersionOptimisticLocking());
 
         // Update again to check removing concept extends
-        conceptMetamacDtoUpdated.setConceptExtendsUrn(null);
+        conceptMetamacDtoUpdated.setConceptExtends(null);
         ConceptMetamacDto conceptMetamacDtoUpdatedAgain = srmCoreServiceFacade.updateConcept(getServiceContextAdministrador(), conceptMetamacDtoUpdated);
 
         assertNotNull(conceptMetamacDto);

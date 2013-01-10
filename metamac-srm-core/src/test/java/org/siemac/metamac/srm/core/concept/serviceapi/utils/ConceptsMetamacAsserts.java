@@ -12,6 +12,7 @@ import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptTypeDto;
 
 import com.arte.statistic.sdmx.srm.core.concept.serviceapi.utils.ConceptsAsserts;
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 
 public class ConceptsMetamacAsserts extends ConceptsAsserts {
 
@@ -74,8 +75,8 @@ public class ConceptsMetamacAsserts extends ConceptsAsserts {
         assertEqualsConceptType(expected.getType(), actual.getType());
         assertEqualsInternationalStringDto(expected.getDerivation(), actual.getDerivation());
         assertEqualsInternationalStringDto(expected.getLegalActs(), actual.getLegalActs());
-        assertEquals(expected.getConceptExtendsUrn(), actual.getConceptExtendsUrn());
-        CodesMetamacAsserts.assertEqualsVariable(expected.getVariable(), actual.getVariable());
+        assertEqualsConceptRelatedResourceDto(expected.getConceptExtends(), actual.getConceptExtends());
+        CodesMetamacAsserts.assertEqualsVariableRelatedResourceDto(expected.getVariable(), actual.getVariable());
 
         // Sdmx
         ConceptsAsserts.assertEqualsConceptDto(expected, actual);
@@ -87,6 +88,14 @@ public class ConceptsMetamacAsserts extends ConceptsAsserts {
 
     public static void assertEqualsConcept(ConceptMetamacDto expected, ConceptMetamac actual) {
         assertEqualsConcept(actual, expected, MapperEnum.DTO2DO);
+    }
+
+    public static void assertEqualsConceptRelatedResourceDto(RelatedResourceDto expected, RelatedResourceDto actual) {
+        assertEqualsNullability(expected, actual);
+        if (expected == null) {
+            return;
+        }
+        assertEquals(expected.getUrn(), actual.getUrn());
     }
 
     public static void assertEqualsConceptType(ConceptType expected, ConceptTypeDto actual) {
@@ -146,9 +155,9 @@ public class ConceptsMetamacAsserts extends ConceptsAsserts {
         assertEquals(entity.getType().getIdentifier(), dto.getType().getIdentifier());
         assertEqualsInternationalString(entity.getDerivation(), dto.getDerivation());
         assertEqualsInternationalString(entity.getLegalActs(), dto.getLegalActs());
-        assertEqualsNullability(entity.getConceptExtends(), dto.getConceptExtendsUrn());
+        assertEqualsNullability(entity.getConceptExtends(), dto.getConceptExtends());
         if (entity.getConceptExtends() != null) {
-            assertEquals(entity.getConceptExtends().getNameableArtefact().getUrn(), dto.getConceptExtendsUrn());
+            assertEquals(entity.getConceptExtends().getNameableArtefact().getUrn(), dto.getConceptExtends().getUrn());
         }
         CodesMetamacAsserts.assertEqualsVariable(entity.getVariable(), dto.getVariable(), mapperEnum);
 

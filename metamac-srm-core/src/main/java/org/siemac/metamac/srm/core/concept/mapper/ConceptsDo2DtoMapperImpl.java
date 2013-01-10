@@ -76,12 +76,8 @@ public class ConceptsDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Co
         target.setType(conceptTypeDoToDto(source.getType()));
         target.setDerivation(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getDerivation()));
         target.setLegalActs(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getLegalActs()));
-        if (source.getConceptExtends() != null) {
-            target.setConceptExtendsUrn(source.getConceptExtends().getNameableArtefact().getUrn());
-        }
-        if (source.getVariable() != null) {
-            target.setVariable(codesDo2DtoMapper.variableDoToRelatedResourceDto(source.getVariable()));
-        }
+        target.setConceptExtends(conceptMetamacDoToRelatedResourceDto(source.getConceptExtends()));
+        target.setVariable(codesDo2DtoMapper.variableDoToRelatedResourceDto(source.getVariable()));
         do2DtoMapperSdmxSrm.conceptDoToDto(source, target);
 
         // note: not conversion to relatedConcepts and roles. Call specific operations in Service
