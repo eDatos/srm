@@ -142,7 +142,7 @@ public class CodelistListViewImpl extends ViewWithUiHandlers<CodelistListUiHandl
                     // Show delete button
                     showListGridDeleteButton(codelistsList.getListGrid().getSelectedRecords());
                     // Show cancel validity button
-                    showListGridCancelValidityDeleteButton(codelistsList.getListGrid().getSelectedRecords());
+                    showListGridCancelValidityButton(codelistsList.getListGrid().getSelectedRecords());
                 } else {
                     deleteCodelistButton.hide();
                     cancelCodelistValidityButton.hide();
@@ -220,11 +220,6 @@ public class CodelistListViewImpl extends ViewWithUiHandlers<CodelistListUiHandl
     }
 
     @Override
-    public void goToCodelistListLastPageAfterCreate() {
-        codelistsList.goToLastPageAfterCreate();
-    }
-
-    @Override
     public void clearSearchSection() {
         searchSectionStack.reset();
     }
@@ -255,7 +250,7 @@ public class CodelistListViewImpl extends ViewWithUiHandlers<CodelistListUiHandl
         }
     }
 
-    private void showListGridCancelValidityDeleteButton(ListGridRecord[] records) {
+    private void showListGridCancelValidityButton(ListGridRecord[] records) {
         boolean allSelectedCodelistValidityCanBeCanceled = true;
         for (ListGridRecord record : records) {
             CodelistMetamacDto codelistMetamacDto = ((CodelistRecord) record).getCodelistMetamacDto();

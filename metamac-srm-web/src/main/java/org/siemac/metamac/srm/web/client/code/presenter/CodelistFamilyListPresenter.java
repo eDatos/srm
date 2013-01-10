@@ -1,7 +1,12 @@
 package org.siemac.metamac.srm.web.client.code.presenter;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
+import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
+import java.util.List;
+
+import org.siemac.metamac.core.common.util.shared.StringUtils;
+import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
@@ -10,7 +15,18 @@ import org.siemac.metamac.srm.web.client.code.widgets.CodesToolStripPresenterWid
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
+import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
+import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
+import org.siemac.metamac.srm.web.shared.code.DeleteCodelistFamiliesAction;
+import org.siemac.metamac.srm.web.shared.code.DeleteCodelistFamiliesResult;
+import org.siemac.metamac.srm.web.shared.code.GetCodelistFamiliesAction;
+import org.siemac.metamac.srm.web.shared.code.GetCodelistFamiliesResult;
+import org.siemac.metamac.srm.web.shared.code.SaveCodelistFamilyAction;
+import org.siemac.metamac.srm.web.shared.code.SaveCodelistFamilyResult;
+import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
+import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
+import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
@@ -60,6 +76,8 @@ public class CodelistFamilyListPresenter extends Presenter<CodelistFamilyListPre
 
     public interface CodelistFamilyListView extends View, HasUiHandlers<CodelistFamilyListUiHandlers> {
 
+        void setCodelistFamilyPaginatedList(GetCodelistFamiliesResult codelistFamiliesPaginatedList);
+        void clearSearchSection();
     }
 
     @Inject
@@ -93,7 +111,61 @@ public class CodelistFamilyListPresenter extends Presenter<CodelistFamilyListPre
         SelectMenuButtonEvent.fire(this, ToolStripButtonEnum.CODELISTS);
     }
 
-    private void retrieveCodelistFamilies(int firstResult, int maxResults, final String criteria) {
-        // TODO
+    @Override
+    public void retrieveCodelistFamilies(int firstResult, int maxResults, final String criteria) {
+        dispatcher.execute(new GetCodelistFamiliesAction(firstResult, maxResults, criteria), new WaitingAsyncCallback<GetCodelistFamiliesResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(CodelistFamilyListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistFamilyErrorRetrieveList()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetCodelistFamiliesResult result) {
+                getView().setCodelistFamilyPaginatedList(result);
+                if (StringUtils.isBlank(criteria)) {
+                    getView().clearSearchSection();
+                }
+            }
+        });
+    }
+
+    @Override
+    public void createCodelistFamily(CodelistFamilyDto codelistFamilyDto) {
+        dispatcher.execute(new SaveCodelistFamilyAction(codelistFamilyDto), new WaitingAsyncCallback<SaveCodelistFamilyResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(CodelistFamilyListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistFamilyErrorSave()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(SaveCodelistFamilyResult result) {
+                ShowMessageEvent.fire(CodelistFamilyListPresenter.this, ErrorUtils.getMessageList(getMessages().codelistFamilySaved()), MessageTypeEnum.SUCCESS);
+                retrieveCodelistFamilies(FAMILY_LIST_FIRST_RESULT, FAMILY_LIST_MAX_RESULTS, null);
+            }
+        });
+    }
+
+    @Override
+    public void deleteCodelistFamilies(List<String> urns) {
+        dispatcher.execute(new DeleteCodelistFamiliesAction(urns), new WaitingAsyncCallback<DeleteCodelistFamiliesResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(CodelistFamilyListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistFamilyErrorDelete()), MessageTypeEnum.ERROR);
+                retrieveCodelistFamilies(FAMILY_LIST_FIRST_RESULT, FAMILY_LIST_MAX_RESULTS, null);
+            }
+            @Override
+            public void onWaitSuccess(DeleteCodelistFamiliesResult result) {
+                ShowMessageEvent.fire(CodelistFamilyListPresenter.this, ErrorUtils.getMessageList(getMessages().codelistFamilyDeleted()), MessageTypeEnum.SUCCESS);
+                retrieveCodelistFamilies(FAMILY_LIST_FIRST_RESULT, FAMILY_LIST_MAX_RESULTS, null);
+            }
+        });
+    }
+
+    @Override
+    public void goToCodelistFamily(String code) {
+        if (!StringUtils.isBlank(code)) {
+            placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeCodelistFamilyPlaceRequest(code));
+        }
     }
 }

@@ -277,6 +277,11 @@ public class PlaceRequestUtils {
         return placeRequestHierarchy;
     }
 
+    public static PlaceRequest buildRelativeCodelistFamilyPlaceRequest(String familyCode) {
+        PlaceRequest placeRequest = new PlaceRequest(NameTokens.codelistFamilyPage).with(PlaceRequestParams.codelistFamilyParamId, familyCode);
+        return placeRequest;
+    }
+
     // Variable families
 
     public static List<PlaceRequest> buildAbsoluteVariableFamilyListPlaceRequest() {

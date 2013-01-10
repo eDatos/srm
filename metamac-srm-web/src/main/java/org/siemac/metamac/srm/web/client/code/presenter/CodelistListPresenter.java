@@ -77,7 +77,6 @@ public class CodelistListPresenter extends Presenter<CodelistListPresenter.Codel
     public interface CodelistListView extends View, HasUiHandlers<CodelistListUiHandlers> {
 
         void setCodelistPaginatedList(GetCodelistsResult codelistsPaginatedList);
-        void goToCodelistListLastPageAfterCreate();
         void clearSearchSection();
     }
 
