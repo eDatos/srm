@@ -23,6 +23,8 @@ import org.siemac.metamac.srm.web.shared.code.GetCodelistFamilyAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistFamilyResult;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistsAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistsResult;
+import org.siemac.metamac.srm.web.shared.code.RemoveCodelistsFromCodelistFamilyAction;
+import org.siemac.metamac.srm.web.shared.code.RemoveCodelistsFromCodelistFamilyResult;
 import org.siemac.metamac.srm.web.shared.code.SaveCodelistFamilyAction;
 import org.siemac.metamac.srm.web.shared.code.SaveCodelistFamilyResult;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
@@ -210,8 +212,18 @@ public class CodelistFamilyPresenter extends Presenter<CodelistFamilyPresenter.C
     }
 
     @Override
-    public void removeCodelistsFromFamily(List<String> codelistUrns, String familyUrn) {
-        // TODO Auto-generated method stub
+    public void removeCodelistsFromFamily(List<String> codelistUrns, final String familyUrn) {
+        dispatcher.execute(new RemoveCodelistsFromCodelistFamilyAction(codelistUrns, familyUrn), new WaitingAsyncCallback<RemoveCodelistsFromCodelistFamilyResult>() {
 
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(CodelistFamilyPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistErrorRemovingFromFamily()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(RemoveCodelistsFromCodelistFamilyResult result) {
+                ShowMessageEvent.fire(CodelistFamilyPresenter.this, ErrorUtils.getMessageList(getMessages().codelistsRemovedFromFamily()), MessageTypeEnum.SUCCESS);
+                retrieveCodelistsByFamily(CODELIST_LIST_FIRST_RESULT, CODELIST_LIST_MAX_RESULTS, null, familyUrn);
+            }
+        });
     }
 }

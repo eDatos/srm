@@ -29,6 +29,7 @@ import org.siemac.metamac.srm.web.server.handlers.code.GetCodelistFamilyActionHa
 import org.siemac.metamac.srm.web.server.handlers.code.GetCodelistVersionsActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.GetCodelistsActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.GetCodesByCodelistActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.code.RemoveCodelistsFromCodelistFamilyActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.SaveCodeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.SaveCodelistActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.SaveCodelistFamilyActionHandler;
@@ -109,6 +110,7 @@ import org.siemac.metamac.srm.web.shared.code.GetCodelistFamilyAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistVersionsAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistsAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodesByCodelistAction;
+import org.siemac.metamac.srm.web.shared.code.RemoveCodelistsFromCodelistFamilyAction;
 import org.siemac.metamac.srm.web.shared.code.SaveCodeAction;
 import org.siemac.metamac.srm.web.shared.code.SaveCodelistAction;
 import org.siemac.metamac.srm.web.shared.code.SaveCodelistFamilyAction;
@@ -275,6 +277,7 @@ public class ServerModule extends HandlerModule {
         bindHandler(DeleteCodelistFamiliesAction.class, DeleteCodelistFamiliesActionHandler.class);
         bindHandler(GetCodelistFamilyAction.class, GetCodelistFamilyActionHandler.class);
         bindHandler(AddCodelistsToCodelistFamilyAction.class, AddCodelistsToCodelistFamilyActionHandler.class);
+        bindHandler(RemoveCodelistsFromCodelistFamilyAction.class, RemoveCodelistsFromCodelistFamilyActionHandler.class);
 
         // Common
         bindHandler(GetUserGuideUrlAction.class, GetUserGuideUrlActionHandler.class);
