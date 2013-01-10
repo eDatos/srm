@@ -2503,6 +2503,20 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         }
     }
 
+    @Test
+    @Override
+    public void testPreCreateConceptScheme() throws Exception {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Test
+    @Override
+    public void testPreCreateConcept() throws Exception {
+        // TODO Auto-generated method stub
+
+    }
+
     private void assertListConceptsContainsConcept(List<ConceptMetamac> items, String urn) {
         for (Item item : items) {
             if (item.getNameableArtefact().getUrn().equals(urn)) {
@@ -2517,15 +2531,4 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         return "dbunit/SrmConceptsTest.xml";
     }
 
-    @Override
-    public void testPrePersistConceptScheme() throws Exception {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void testPrePersistConcept() throws Exception {
-        // TODO Auto-generated method stub
-
-    }
 }

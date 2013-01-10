@@ -74,7 +74,7 @@ public class CategoriesJaxb2DoCallbackImpl extends ImportationMetamacCommonValid
         CategorySchemeVersionMetamac targetMetamac = (CategorySchemeVersionMetamac) target;
 
         // Fill Metadata
-        categoriesMetamacService.prePersistCategoryScheme(ctx, targetMetamac);
+        categoriesMetamacService.preCreateCategoryScheme(ctx, targetMetamac);
     }
 
     @Override
@@ -82,7 +82,7 @@ public class CategoriesJaxb2DoCallbackImpl extends ImportationMetamacCommonValid
         CategoryMetamac targetMetamac = (CategoryMetamac) target;
 
         // Fill Metadata
-        categoriesMetamacService.prePersistCategory(ctx, categorySchemeVersion.getMaintainableArtefact().getUrn(), targetMetamac);
+        categoriesMetamacService.preCreateCategory(ctx, categorySchemeVersion.getMaintainableArtefact().getUrn(), targetMetamac);
     }
 
     @Override

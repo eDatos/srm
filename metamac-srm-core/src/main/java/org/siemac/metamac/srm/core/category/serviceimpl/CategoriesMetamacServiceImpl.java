@@ -78,14 +78,14 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
     @Override
     public CategorySchemeVersionMetamac createCategoryScheme(ServiceContext ctx, CategorySchemeVersionMetamac categorySchemeVersion) throws MetamacException {
 
-        prePersistCategoryScheme(ctx, categorySchemeVersion);
+        preCreateCategoryScheme(ctx, categorySchemeVersion);
 
         // Save categoryScheme
         return (CategorySchemeVersionMetamac) categoriesService.createCategoryScheme(ctx, categorySchemeVersion, SrmConstants.VERSION_PATTERN_METAMAC);
     }
 
     @Override
-    public CategorySchemeVersionMetamac prePersistCategoryScheme(ServiceContext ctx, CategorySchemeVersionMetamac categorySchemeVersion) throws MetamacException {
+    public CategorySchemeVersionMetamac preCreateCategoryScheme(ServiceContext ctx, CategorySchemeVersionMetamac categorySchemeVersion) throws MetamacException {
         // Validation
         CategoriesMetamacInvocationValidator.checkCreateCategoryScheme(categorySchemeVersion, null);
         checkCategorySchemeToCreateOrUpdate(ctx, categorySchemeVersion);
@@ -202,14 +202,14 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
     @Override
     public CategoryMetamac createCategory(ServiceContext ctx, String categorySchemeUrn, CategoryMetamac category) throws MetamacException {
 
-        prePersistCategory(ctx, categorySchemeUrn, category);
+        preCreateCategory(ctx, categorySchemeUrn, category);
 
         // Save category
         return (CategoryMetamac) categoriesService.createCategory(ctx, categorySchemeUrn, category);
     }
 
     @Override
-    public CategoryMetamac prePersistCategory(ServiceContext ctx, String categorySchemeUrn, CategoryMetamac category) throws MetamacException {
+    public CategoryMetamac preCreateCategory(ServiceContext ctx, String categorySchemeUrn, CategoryMetamac category) throws MetamacException {
         CategorySchemeVersionMetamac categorySchemeVersion = retrieveCategorySchemeByUrn(ctx, categorySchemeUrn);
 
         // Validation

@@ -63,7 +63,7 @@ public class OrganisationsJaxb2DoCallbackImpl extends ImportationMetamacCommonVa
         // Meta-data in previous version -> Nothing to extends
 
         // Fill pre-persist meta-data
-        organisationsMetamacService.prePersistOrganisationScheme(ctx, targetMetamac);
+        organisationsMetamacService.preCreateOrganisationScheme(ctx, targetMetamac);
     }
 
     @Override
@@ -73,7 +73,7 @@ public class OrganisationsJaxb2DoCallbackImpl extends ImportationMetamacCommonVa
         // Meta-data in previous version -> Nothing to extends
 
         // Fill pre-persist meta-data
-        organisationsMetamacService.prePersistOrganisation(ctx, organisationSchemeVersion.getMaintainableArtefact().getUrn(), organisationMetamac);
+        organisationsMetamacService.preCreateOrganisation(ctx, organisationSchemeVersion.getMaintainableArtefact().getUrn(), organisationMetamac);
     }
 
     @Override
@@ -83,7 +83,7 @@ public class OrganisationsJaxb2DoCallbackImpl extends ImportationMetamacCommonVa
         // Meta-data in previous version -> Nothing to extends
 
         // Fill pre-persist meta-data
-        organisationsMetamacService.prePersistOrganisationScheme(ctx, targetMetamac);
+        organisationsMetamacService.preCreateOrganisationScheme(ctx, targetMetamac);
     }
 
     @Override
@@ -93,7 +93,7 @@ public class OrganisationsJaxb2DoCallbackImpl extends ImportationMetamacCommonVa
         // Meta-data in previous version -> Nothing to extends
 
         // Fill pre-persist meta-data
-        organisationsMetamacService.prePersistOrganisation(ctx, organisationSchemeVersion.getMaintainableArtefact().getUrn(), organisationMetamac);
+        organisationsMetamacService.preCreateOrganisation(ctx, organisationSchemeVersion.getMaintainableArtefact().getUrn(), organisationMetamac);
     }
 
     @Override
@@ -103,7 +103,7 @@ public class OrganisationsJaxb2DoCallbackImpl extends ImportationMetamacCommonVa
         // Meta-data in previous version -> Nothing to extends
 
         // Fill pre-persist meta-data
-        organisationsMetamacService.prePersistOrganisationScheme(ctx, targetMetamac);
+        organisationsMetamacService.preCreateOrganisationScheme(ctx, targetMetamac);
     }
 
     @Override
@@ -113,7 +113,7 @@ public class OrganisationsJaxb2DoCallbackImpl extends ImportationMetamacCommonVa
         // Meta-data in previous version -> Nothing to extends
 
         // Fill pre-persist meta-data
-        organisationsMetamacService.prePersistOrganisation(ctx, organisationSchemeVersion.getMaintainableArtefact().getUrn(), organisationMetamac);
+        organisationsMetamacService.preCreateOrganisation(ctx, organisationSchemeVersion.getMaintainableArtefact().getUrn(), organisationMetamac);
     }
 
     @Override
@@ -133,7 +133,7 @@ public class OrganisationsJaxb2DoCallbackImpl extends ImportationMetamacCommonVa
         // Meta-data in previous version -> Nothing to extends
 
         // Fill pre-persist meta-data
-        organisationsMetamacService.prePersistOrganisation(ctx, organisationSchemeVersion.getMaintainableArtefact().getUrn(), organisationMetamac);
+        organisationsMetamacService.preCreateOrganisation(ctx, organisationSchemeVersion.getMaintainableArtefact().getUrn(), organisationMetamac);
     }
 
     /**************************************************************************

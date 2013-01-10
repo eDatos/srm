@@ -1730,6 +1730,20 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         }
     }
 
+    @Test
+    @Override
+    public void testPreCreateOrganisationScheme() throws Exception {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Test
+    @Override
+    public void testPreCreateOrganisation() throws Exception {
+        // TODO Auto-generated method stub
+
+    }
+
     // private void assertListOrganisationsContainsOrganisation(List<OrganisationMetamac> items, String urn) {
     // for (Item item : items) {
     // if (item.getNameableArtefact().getUrn().equals(urn)) {
@@ -1744,15 +1758,4 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         return "dbunit/SrmOrganisationsTest.xml";
     }
 
-    @Override
-    public void testPrePersistOrganisationScheme() throws Exception {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void testPrePersistOrganisation() throws Exception {
-        // TODO Auto-generated method stub
-
-    }
 }

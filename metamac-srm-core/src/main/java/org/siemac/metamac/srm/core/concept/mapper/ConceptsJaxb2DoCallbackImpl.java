@@ -57,7 +57,7 @@ public class ConceptsJaxb2DoCallbackImpl extends ImportationMetamacCommonValidat
         ConceptSchemeVersionMetamac targetMetamac = (ConceptSchemeVersionMetamac) target;
 
         // Fill metadata
-        conceptsMetamacService.prePersistConceptScheme(ctx, targetMetamac);
+        conceptsMetamacService.preCreateConceptScheme(ctx, targetMetamac);
 
         // TODO decidir que hacer ccon el tipo por defecto en la importacion
         targetMetamac.setType(ConceptSchemeTypeEnum.TRANSVERSAL);
@@ -69,7 +69,7 @@ public class ConceptsJaxb2DoCallbackImpl extends ImportationMetamacCommonValidat
         ConceptMetamac targetMetamac = (ConceptMetamac) target;
 
         // Fill metadata
-        conceptsMetamacService.prePersistConcept(ctx, conceptSchemeVersion.getMaintainableArtefact().getUrn(), targetMetamac);
+        conceptsMetamacService.preCreateConcept(ctx, conceptSchemeVersion.getMaintainableArtefact().getUrn(), targetMetamac);
 
         // TODO metamac conceptsJaxb2DoExtension
     }

@@ -1578,6 +1578,20 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
         }
     }
 
+    @Test
+    @Override
+    public void testPreCreateCategoryScheme() throws Exception {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Test
+    @Override
+    public void testPreCreateCategory() throws Exception {
+        // TODO Auto-generated method stub
+
+    }
+
     // In CategoriesMetamacCategorisationServiceTest.java
     @Override
     public void testRetrieveCategorisationByUrn() throws Exception {
@@ -1612,15 +1626,4 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
         return "dbunit/SrmCategoriesTest.xml";
     }
 
-    @Override
-    public void testPrePersistCategoryScheme() throws Exception {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void testPrePersistCategory() throws Exception {
-        // TODO Auto-generated method stub
-
-    }
 }

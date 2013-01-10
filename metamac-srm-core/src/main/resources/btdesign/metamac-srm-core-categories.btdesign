@@ -22,8 +22,8 @@ Application CategoriesMetamac {
 			
 			"Creates category scheme"
 			@CategorySchemeVersionMetamac createCategoryScheme(@CategorySchemeVersionMetamac categorySchemeVersion) throws MetamacException;
-			"Pre-persist category scheme"
-			@CategorySchemeVersionMetamac prePersistCategoryScheme(@CategorySchemeVersionMetamac categorySchemeVersion) throws MetamacException
+			"Pre-Create category scheme"
+			@CategorySchemeVersionMetamac preCreateCategoryScheme(@CategorySchemeVersionMetamac categorySchemeVersion) throws MetamacException
 			"Updates category scheme"
 			@CategorySchemeVersionMetamac updateCategoryScheme(@CategorySchemeVersionMetamac categorySchemeVersion) throws MetamacException;
 			"Retrieves category scheme by urn"
@@ -55,8 +55,8 @@ Application CategoriesMetamac {
     		
 			"Creates category"
 			@CategoryMetamac createCategory(String categorySchemeUrn, @CategoryMetamac category) throws MetamacException;
-			"Pre persist"
-			@CategoryMetamac prePersistCategory(String categorySchemeUrn, @CategoryMetamac category) throws MetamacException;
+			"Pre Create"
+			@CategoryMetamac preCreateCategory(String categorySchemeUrn, @CategoryMetamac category) throws MetamacException;
 			"Updates category"
 			@CategoryMetamac updateCategory(@CategoryMetamac category) throws MetamacException;
     		"Retrieves category by urn"

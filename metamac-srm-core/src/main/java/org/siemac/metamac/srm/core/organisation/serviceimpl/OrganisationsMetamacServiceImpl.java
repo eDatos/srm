@@ -70,7 +70,7 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
     @Override
     public OrganisationSchemeVersionMetamac createOrganisationScheme(ServiceContext ctx, OrganisationSchemeVersionMetamac organisationSchemeVersion) throws MetamacException {
         // Fill and validate OrganisationScheme
-        prePersistOrganisationScheme(ctx, organisationSchemeVersion);
+        preCreateOrganisationScheme(ctx, organisationSchemeVersion);
 
         // Save organisationScheme
         VersionPatternEnum versionPattern = SrmConstants.VERSION_PATTERN_METAMAC;
@@ -79,7 +79,7 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
     }
 
     @Override
-    public OrganisationSchemeVersionMetamac prePersistOrganisationScheme(ServiceContext ctx, OrganisationSchemeVersionMetamac organisationSchemeVersion) throws MetamacException {
+    public OrganisationSchemeVersionMetamac preCreateOrganisationScheme(ServiceContext ctx, OrganisationSchemeVersionMetamac organisationSchemeVersion) throws MetamacException {
         // Validation
         OrganisationsMetamacInvocationValidator.checkCreateOrganisationScheme(organisationSchemeVersion, null);
         checkOrganisationSchemeToCreateOrUpdate(ctx, organisationSchemeVersion);
@@ -197,14 +197,14 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
     @Override
     public OrganisationMetamac createOrganisation(ServiceContext ctx, String organisationSchemeUrn, OrganisationMetamac organisation) throws MetamacException {
 
-        prePersistOrganisation(ctx, organisationSchemeUrn, organisation);
+        preCreateOrganisation(ctx, organisationSchemeUrn, organisation);
 
         // Save organisation
         return (OrganisationMetamac) organisationsService.createOrganisation(ctx, organisationSchemeUrn, organisation);
     }
 
     @Override
-    public OrganisationMetamac prePersistOrganisation(ServiceContext ctx, String organisationSchemeUrn, OrganisationMetamac organisation) throws MetamacException {
+    public OrganisationMetamac preCreateOrganisation(ServiceContext ctx, String organisationSchemeUrn, OrganisationMetamac organisation) throws MetamacException {
         OrganisationSchemeVersionMetamac organisationSchemeVersion = retrieveOrganisationSchemeByUrn(ctx, organisationSchemeUrn);
 
         // Validation

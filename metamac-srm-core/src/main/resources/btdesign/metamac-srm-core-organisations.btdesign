@@ -21,8 +21,8 @@ Application OrganisationsMetamac {
 			
 			"Creates organisation scheme"
 			@OrganisationSchemeVersionMetamac createOrganisationScheme(@OrganisationSchemeVersionMetamac organisationSchemeVersion) throws MetamacException;
-			"Pre-persist organisation scheme"
-			@OrganisationSchemeVersionMetamac prePersistOrganisationScheme(@OrganisationSchemeVersionMetamac organisationSchemeVersion) throws MetamacException;
+			"Pre-Create organisation scheme"
+			@OrganisationSchemeVersionMetamac preCreateOrganisationScheme(@OrganisationSchemeVersionMetamac organisationSchemeVersion) throws MetamacException;
 			"Updates organisation scheme"
 			@OrganisationSchemeVersionMetamac updateOrganisationScheme(@OrganisationSchemeVersionMetamac organisationSchemeVersion) throws MetamacException;
 			"Retrieves organisation scheme by urn"
@@ -54,8 +54,8 @@ Application OrganisationsMetamac {
     		
 			"Creates organisation"
 			@OrganisationMetamac createOrganisation(String organisationSchemeUrn, @OrganisationMetamac organisation) throws MetamacException;
-			"Pre-persist organisation"
-			@OrganisationMetamac prePersistOrganisation(String organisationSchemeUrn, @OrganisationMetamac organisation) throws MetamacException;
+			"Pre-Create organisation"
+			@OrganisationMetamac preCreateOrganisation(String organisationSchemeUrn, @OrganisationMetamac organisation) throws MetamacException;
 			"Updates organisation"
 			@OrganisationMetamac updateOrganisation(@OrganisationMetamac organisation) throws MetamacException;
     		"Retrieves organisation by urn"
