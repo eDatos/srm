@@ -442,7 +442,7 @@
         ACCESS_TYPE="RESTRICTED"
         IS_RECOMMENDED="0"
         SHORT_NAME_FK="[null]"
-        CODELIST_FAMILY_FK="[null]"
+        CODELIST_FAMILY_FK="2"
         VARIABLE_FK="2"
         REPLACED_BY_CODELIST_FK="[null]"
         

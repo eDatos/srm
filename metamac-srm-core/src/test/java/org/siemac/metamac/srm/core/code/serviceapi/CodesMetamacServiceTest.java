@@ -301,7 +301,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         CodelistFamily family1 = codesService.retrieveCodelistFamilyByUrn(getServiceContextAdministrador(), CODELIST_FAMILY_1);
         CodelistFamily family2 = codesService.retrieveCodelistFamilyByUrn(getServiceContextAdministrador(), CODELIST_FAMILY_2);
         assertEquals(0, family1.getCodelists().size());
-        assertEquals(2, family2.getCodelists().size());
+        assertEquals(3, family2.getCodelists().size());
+        assertTrue(SrmValidationUtils.isCodelistInList(CODELIST_9_V1, family2.getCodelists()));
 
         // Associate the codelist to the family
         codelistVersion.setFamily(family1);
@@ -315,7 +316,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         family1 = codesService.retrieveCodelistFamilyByUrn(getServiceContextAdministrador(), CODELIST_FAMILY_1);
         family2 = codesService.retrieveCodelistFamilyByUrn(getServiceContextAdministrador(), CODELIST_FAMILY_2);
         assertEquals(1, family1.getCodelists().size());
-        assertEquals(1, family2.getCodelists().size());
+        assertEquals(2, family2.getCodelists().size());
+        assertFalse(SrmValidationUtils.isCodelistInList(CODELIST_9_V1, family2.getCodelists()));
     }
 
     @Test
@@ -324,7 +326,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
         // Check family members
         CodelistFamily family = codesService.retrieveCodelistFamilyByUrn(getServiceContextAdministrador(), CODELIST_FAMILY_2);
-        assertEquals(2, family.getCodelists().size());
+        assertEquals(3, family.getCodelists().size());
+        assertTrue(SrmValidationUtils.isCodelistInList(CODELIST_9_V1, family.getCodelists()));
 
         // Update codelist (remove from family)
         codelistVersion.setFamily(null);
@@ -336,7 +339,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
         // Check family members
         family = codesService.retrieveCodelistFamilyByUrn(getServiceContextAdministrador(), CODELIST_FAMILY_2);
-        assertEquals(1, family.getCodelists().size());
+        assertEquals(2, family.getCodelists().size());
+        assertFalse(SrmValidationUtils.isCodelistInList(CODELIST_9_V1, family.getCodelists()));
     }
 
     @Test
@@ -2108,12 +2112,6 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals(CODELIST_FAMILY_2, codelist.getFamily().getNameableArtefact().getUrn());
         }
         {
-            String codelistUrn = CODELIST_1_V2; // add family
-            codelistUrns.add(codelistUrn);
-            CodelistVersionMetamac codelist = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistUrn);
-            assertNull(codelist.getFamily());
-        }
-        {
             String codelistUrn = CODELIST_2_V1; // add family
             codelistUrns.add(codelistUrn);
             CodelistVersionMetamac codelist = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistUrn);
@@ -2127,13 +2125,33 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals(codelistFamilyUrn, codelist.getFamily().getNameableArtefact().getUrn());
         }
         {
-            CodelistVersionMetamac codelist = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_1_V2);
-            assertEquals(codelistFamilyUrn, codelist.getFamily().getNameableArtefact().getUrn());
-        }
-        {
             CodelistVersionMetamac codelist = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_2_V1);
             assertEquals(codelistFamilyUrn, codelist.getFamily().getNameableArtefact().getUrn());
         }
+    }
+
+    @Override
+    @Test
+    public void testRemoveCodelistFromCodelistFamily() throws Exception {
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        String codelistFamily = CODELIST_FAMILY_2;
+        String codelist = CODELIST_1_V2;
+
+        CodelistFamily family = codesService.retrieveCodelistFamilyByUrn(ctx, codelistFamily);
+        CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(ctx, codelist);
+        assertEquals(family.getNameableArtefact().getUrn(), codelistVersion.getFamily().getNameableArtefact().getUrn());
+        assertTrue(SrmValidationUtils.isCodelistInList(codelist, family.getCodelists()));
+
+        codesService.removeCodelistFromCodelistFamily(ctx, codelist, codelistFamily);
+
+        family = codesService.retrieveCodelistFamilyByUrn(ctx, codelistFamily);
+        codelistVersion = codesService.retrieveCodelistByUrn(ctx, codelist);
+        assertNull(codelistVersion.getFamily());
+        assertFalse(SrmValidationUtils.isCodelistInList(codelist, family.getCodelists()));
+
+        // Removing the codelist from the family again has no consequences
+        codesService.removeCodelistFromCodelistFamily(ctx, codelist, codelistFamily);
     }
 
     // ------------------------------------------------------------------------------------
@@ -2725,23 +2743,27 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
     @Override
     @Test
-    public void testAddVariableToFamily() throws Exception {
+    public void testAddVariablesToFamily() throws Exception {
         ServiceContext ctx = getServiceContextAdministrador();
 
-        VariableFamily family = codesService.retrieveVariableFamilyByUrn(ctx, VARIABLE_FAMILY_1);
-        Variable variable = codesService.retrieveVariableByUrn(ctx, VARIABLE_1);
-        assertFalse(SrmValidationUtils.isVariableInList(VARIABLE_1, family.getVariables()));
-        assertFalse(SrmValidationUtils.isFamilyInList(VARIABLE_FAMILY_1, variable.getFamilies()));
+        String variableUrn = VARIABLE_1;
+        String variableFamilyUrn = VARIABLE_FAMILY_1;
 
-        codesService.addVariableToFamily(ctx, VARIABLE_1, VARIABLE_FAMILY_1);
+        VariableFamily family = codesService.retrieveVariableFamilyByUrn(ctx, variableFamilyUrn);
+        Variable variable = codesService.retrieveVariableByUrn(ctx, variableUrn);
+        assertFalse(SrmValidationUtils.isVariableInList(variableUrn, family.getVariables()));
+        assertFalse(SrmValidationUtils.isFamilyInList(variableFamilyUrn, variable.getFamilies()));
 
-        family = codesService.retrieveVariableFamilyByUrn(ctx, VARIABLE_FAMILY_1);
-        variable = codesService.retrieveVariableByUrn(ctx, VARIABLE_1);
-        assertTrue(SrmValidationUtils.isVariableInList(VARIABLE_1, family.getVariables()));
-        assertTrue(SrmValidationUtils.isFamilyInList(VARIABLE_FAMILY_1, variable.getFamilies()));
+        List<String> variablesUrn = Arrays.asList(variableUrn);
+        codesService.addVariablesToFamily(ctx, variablesUrn, variableFamilyUrn);
+
+        family = codesService.retrieveVariableFamilyByUrn(ctx, variableFamilyUrn);
+        variable = codesService.retrieveVariableByUrn(ctx, variableUrn);
+        assertTrue(SrmValidationUtils.isVariableInList(variableUrn, family.getVariables()));
+        assertTrue(SrmValidationUtils.isFamilyInList(variableFamilyUrn, variable.getFamilies()));
 
         // Adding the variable to the family again has no consequences
-        codesService.addVariableToFamily(ctx, VARIABLE_1, VARIABLE_FAMILY_1);
+        codesService.addVariablesToFamily(ctx, variablesUrn, variableFamilyUrn);
     }
 
     @Override

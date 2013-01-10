@@ -87,8 +87,10 @@ Application CodesMetamac {
     		PagedResult<@CodelistFamily> findCodelistFamiliesByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
 			"Deletes codelist family"
     		deleteCodelistFamily(String urn) throws MetamacException;
-			"Creates codelist family"
+			"Adds codelists to family"
 			addCodelistsToCodelistFamily(List<String> codelistUrns, String codelistFamilyUrn) throws MetamacException;
+			"Removes codelist from family"
+			removeCodelistFromCodelistFamily(String codelistUrn, String codelistFamilyUrn) throws MetamacException;
     		
     		// VARIABLE FAMILIES
     		
@@ -116,8 +118,8 @@ Application CodesMetamac {
 			"Deletes variable"
     		deleteVariable(String urn) throws MetamacException;
     		
-    		"Adds a variable to a family"
-    		addVariableToFamily(String variableUrn, String familyUrn) throws MetamacException;
+    		"Adds variables to a family"
+    		addVariablesToFamily(List<String> variableUrn, String familyUrn) throws MetamacException;
     		"Removes a variable from a family"
     		removeVariableFromFamily(String variableUrn, String familyUrn) throws MetamacException;
 		}

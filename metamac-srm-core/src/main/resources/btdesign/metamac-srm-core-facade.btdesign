@@ -478,6 +478,8 @@ Application SrmFacadeCore {
     		deleteCodelistFamily(String urn) throws MetamacException;
 			"Creates codelist family"
 			addCodelistsToCodelistFamily(List<String> codelistUrns, String codelistFamilyUrn) throws MetamacException;
+			"Removes codelist from family"
+			removeCodelistFromCodelistFamily(String codelistUrn, String codelistFamilyUrn) throws MetamacException;
     		
     		/**************************************************************************
 		     * COMMON

@@ -1328,12 +1328,6 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
             assertEquals(CODELIST_FAMILY_2, codelist.getFamily().getUrn());
         }
         {
-            String codelistUrn = CODELIST_1_V2; // add family
-            codelistUrns.add(codelistUrn);
-            CodelistMetamacDto codelist = srmCoreServiceFacade.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistUrn);
-            assertNull(codelist.getFamily());
-        }
-        {
             String codelistUrn = CODELIST_2_V1; // add family
             codelistUrns.add(codelistUrn);
             CodelistMetamacDto codelist = srmCoreServiceFacade.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistUrn);
@@ -1347,13 +1341,27 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
             assertEquals(codelistFamilyUrn, codelist.getFamily().getUrn());
         }
         {
-            CodelistMetamacDto codelist = srmCoreServiceFacade.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_1_V2);
-            assertEquals(codelistFamilyUrn, codelist.getFamily().getUrn());
-        }
-        {
             CodelistMetamacDto codelist = srmCoreServiceFacade.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_2_V1);
             assertEquals(codelistFamilyUrn, codelist.getFamily().getUrn());
         }
+    }
+
+    @Test
+    public void testRemoveCodelistFromCodelistFamily() throws Exception {
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        String codelistFamily = CODELIST_FAMILY_2;
+        String codelist = CODELIST_1_V2;
+
+        CodelistFamilyDto family = srmCoreServiceFacade.retrieveCodelistFamilyByUrn(ctx, codelistFamily);
+        CodelistMetamacDto codelistVersion = srmCoreServiceFacade.retrieveCodelistByUrn(ctx, codelist);
+        assertEquals(family.getUrn(), codelistVersion.getFamily().getUrn());
+
+        srmCoreServiceFacade.removeCodelistFromCodelistFamily(ctx, codelist, codelistFamily);
+
+        family = srmCoreServiceFacade.retrieveCodelistFamilyByUrn(ctx, codelistFamily);
+        codelistVersion = srmCoreServiceFacade.retrieveCodelistByUrn(ctx, codelist);
+        assertNull(codelistVersion.getFamily());
     }
 
     @Override

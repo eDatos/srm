@@ -363,6 +363,25 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         }
     }
 
+    @Override
+    public void removeCodelistFromCodelistFamily(ServiceContext ctx, String codelistUrn, String codelistFamilyUrn) throws MetamacException {
+        // Validation
+        CodesMetamacInvocationValidator.checkRemoveCodelistFromCodelistFamily(codelistUrn, codelistFamilyUrn, null);
+        // TODO Is necessary to check the codelist status?
+
+        CodelistFamily codelistFamily = retrieveCodelistFamilyByUrn(codelistFamilyUrn);
+        CodelistVersionMetamac codelistVersion = retrieveCodelistByUrn(ctx, codelistUrn);
+
+        // Do not remove the codelist if it has not been associated with the family previously
+        if (!SrmValidationUtils.isCodelistInList(codelistVersion.getMaintainableArtefact().getUrn(), codelistFamily.getCodelists())) {
+            return;
+        }
+
+        // Remove codelist from family
+        codelistFamily.removeCodelist(codelistVersion);
+        getCodelistFamilyRepository().save(codelistFamily);
+    }
+
     // ------------------------------------------------------------------------------------
     // VARIABLE FAMILIES
     // ------------------------------------------------------------------------------------
@@ -511,20 +530,21 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     @Override
-    public void addVariableToFamily(ServiceContext ctx, String variableUrn, String familyUrn) throws MetamacException {
+    public void addVariablesToFamily(ServiceContext ctx, List<String> variablesUrn, String familyUrn) throws MetamacException {
         // Validation
-        CodesMetamacInvocationValidator.checkAddVariableToFamily(variableUrn, familyUrn, null);
+        CodesMetamacInvocationValidator.checkAddVariablesToFamily(variablesUrn, familyUrn, null);
 
         VariableFamily family = retrieveVariableFamilyByUrn(familyUrn);
-        Variable variable = retrieveVariableByUrn(variableUrn);
+        for (String variableUrn : variablesUrn) {
+            Variable variable = retrieveVariableByUrn(variableUrn);
 
-        // Do not add the variable if it has been associated with the family previously
-        if (SrmValidationUtils.isVariableInList(variable.getNameableArtefact().getUrn(), family.getVariables())) {
-            return;
+            // Do not add the variable if it has been associated with the family previously
+            if (SrmValidationUtils.isVariableInList(variable.getNameableArtefact().getUrn(), family.getVariables())) {
+                continue;
+            }
+            // Add variable to family
+            family.addVariable(variable);
         }
-
-        // Add variable to family
-        family.addVariable(variable);
         getVariableFamilyRepository().save(family);
     }
 
