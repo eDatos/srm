@@ -47,12 +47,24 @@ public class CodesMetamacDtoMocks {
     }
 
     // -----------------------------------------------------------------------------------
-    // CODELISTS RELATIONS
+    // CODELIST FAMILIES
     // -----------------------------------------------------------------------------------
     public static CodelistFamilyDto mockCodelistFamilyDto() {
         CodelistFamilyDto codelistFamilyDto = new CodelistFamilyDto();
         codelistFamilyDto.setCode("code-" + MetamacMocks.mockString(10));
         codelistFamilyDto.setName(MetamacMocks.mockInternationalStringDto());
         return codelistFamilyDto;
+    }
+
+    // -----------------------------------------------------------------------------------
+    // VARIABLES
+    // -----------------------------------------------------------------------------------
+    public static RelatedResourceDto mockVariableRelatedResourceDto(String code, String urn) {
+        RelatedResourceDto relatedResourceDto = new RelatedResourceDto();
+        relatedResourceDto.setCode(code);
+        relatedResourceDto.setUrn(urn);
+        relatedResourceDto.setUrnProvider(urn);
+        relatedResourceDto.setType(null);
+        return relatedResourceDto;
     }
 }

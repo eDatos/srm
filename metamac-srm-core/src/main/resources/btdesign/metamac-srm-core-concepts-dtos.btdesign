@@ -1,4 +1,5 @@
 import "classpath:/btdesign/metamac-core-common-dtos.btdesign"
+import "classpath:/btdesign/statistic-sdmx-v2_1-domain-dtos-common.btdesign"
 import "classpath:/btdesign/statistic-sdmx-v2_1-domain-dtos-concepts.btdesign"
 import "classpath:/btdesign/metamac-srm-core-enum.btdesign"
 import "classpath:/btdesign/metamac-srm-core-concepts-enum.btdesign"
@@ -32,6 +33,7 @@ Application DtosMetamacConceptDomain {
 			- @InternationalStringDto derivation nullable;
 			- @InternationalStringDto legalActs nullable;
 			String conceptExtendsUrn nullable;
+			- @RelatedResourceDto variable nullable;
 		}
 		
         "Dto for ConceptType"

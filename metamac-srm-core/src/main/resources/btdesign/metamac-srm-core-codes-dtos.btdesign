@@ -1,4 +1,5 @@
 import "classpath:/btdesign/metamac-core-common-dtos.btdesign"
+import "classpath:/btdesign/statistic-sdmx-v2_1-domain-dtos-common.btdesign"
 import "classpath:/btdesign/statistic-sdmx-v2_1-domain-dtos-codes.btdesign"
 import "classpath:/btdesign/statistic-sdmx-v2_1-domain-dtos-core.btdesign"
 import "classpath:/btdesign/metamac-srm-core-enum.btdesign"
@@ -20,12 +21,14 @@ Application DtosMetamacCodeDomain {
 			Boolean isRecommended nullable;
 			"Access type"
 			- @AccessTypeEnum accessType nullable;
-			"Codelist that replaces this. Update in this metadata is ignored. Must be updated by replacedToCodelists metadata"
-			RelatedResourceDto replacedByCodelist nullable;
-			"Codelists are replaced by this"
+			"Codelist that replaces this one. Update in this metadata is ignored. Must be updated by replaceToCodelists metadata"
+			- @RelatedResourceDto replacedByCodelist nullable;
+			"Codelists that are replaced by this one"
 			List<RelatedResourceDto> replaceToCodelists nullable;
 			"Family"
-			RelatedResourceDto family nullable;
+			- @RelatedResourceDto family nullable;
+			"Variable"
+			- @RelatedResourceDto variable nullable;
 			"Life cycle"
 			- @LifeCycleDto lifeCycle required;
 		}

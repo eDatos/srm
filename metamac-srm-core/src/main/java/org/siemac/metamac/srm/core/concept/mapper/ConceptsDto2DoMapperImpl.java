@@ -5,6 +5,8 @@ import org.siemac.metamac.core.common.exception.ExceptionLevelEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.util.OptimisticLockingUtils;
+import org.siemac.metamac.srm.core.code.domain.Variable;
+import org.siemac.metamac.srm.core.code.domain.VariableRepository;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
@@ -33,6 +35,9 @@ public class ConceptsDto2DoMapperImpl implements ConceptsDto2DoMapper {
     @Autowired
     private ConceptTypeRepository                                                conceptTypeRepository;
 
+    @Autowired
+    private VariableRepository                                                   variableRepository;
+
     // ------------------------------------------------------------
     // CONCEPTS
     // ------------------------------------------------------------
@@ -48,11 +53,7 @@ public class ConceptsDto2DoMapperImpl implements ConceptsDto2DoMapper {
         if (source.getUrn() == null) {
             target = new ConceptSchemeVersionMetamac();
         } else {
-            target = conceptSchemeVersionMetamacRepository.findByUrn(source.getUrn());
-            if (target == null) {
-                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(source.getUrn())
-                        .withLoggedLevel(ExceptionLevelEnum.ERROR).build();
-            }
+            target = retrieveConceptScheme(source.getUrn());
             OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersion());
         }
 
@@ -78,11 +79,7 @@ public class ConceptsDto2DoMapperImpl implements ConceptsDto2DoMapper {
         if (source.getUrn() == null) {
             target = new ConceptMetamac();
         } else {
-            target = conceptMetamacRepository.findByUrn(source.getUrn());
-            if (target == null) {
-                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(source.getUrn())
-                        .withLoggedLevel(ExceptionLevelEnum.ERROR).build();
-            }
+            target = retrieveConcept(source.getUrn());
             OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersion());
         }
 
@@ -98,16 +95,19 @@ public class ConceptsDto2DoMapperImpl implements ConceptsDto2DoMapper {
         target.setLegalActs(dto2DoMapperSdmxSrm.internationalStringToEntity(source.getLegalActs(), target.getLegalActs(), ServiceExceptionParameters.CONCEPT_LEGAL_ACTS));
 
         if (source.getConceptExtendsUrn() != null) {
-            ConceptMetamac conceptExtends = conceptMetamacRepository.findByUrn(source.getConceptExtendsUrn());
-            if (conceptExtends == null) {
-                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(source.getConceptExtendsUrn()).build();
-            }
+            ConceptMetamac conceptExtends = retrieveConcept(source.getConceptExtendsUrn());
             target.setConceptExtends(conceptExtends);
         } else {
             target.setConceptExtends(null);
         }
-
         // note: not conversion to relatedConcepts, roles... Call 'add/delete RelatedConcepts' operation of Service
+
+        if (source.getVariable() != null) {
+            Variable variable = retrieveVariable(source.getVariable().getUrn());
+            target.setVariable(variable);
+        } else {
+            target.setVariable(null);
+        }
 
         dto2DoMapperSdmxSrm.conceptDtoToDo(source, target);
 
@@ -124,5 +124,32 @@ public class ConceptsDto2DoMapperImpl implements ConceptsDto2DoMapper {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CONCEPT_TYPE_NOT_FOUND).withMessageParameters(source.getIdentifier()).build();
         }
         return conceptType;
+    }
+
+    private ConceptSchemeVersionMetamac retrieveConceptScheme(String urn) throws MetamacException {
+        ConceptSchemeVersionMetamac target = conceptSchemeVersionMetamacRepository.findByUrn(urn);
+        if (target == null) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(urn).withLoggedLevel(ExceptionLevelEnum.ERROR)
+                    .build();
+        }
+        return target;
+    }
+
+    private ConceptMetamac retrieveConcept(String urn) throws MetamacException {
+        ConceptMetamac target = conceptMetamacRepository.findByUrn(urn);
+        if (target == null) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(urn).withLoggedLevel(ExceptionLevelEnum.ERROR)
+                    .build();
+        }
+        return target;
+    }
+
+    private Variable retrieveVariable(String urn) throws MetamacException {
+        Variable target = variableRepository.findByUrn(urn);
+        if (target == null) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(urn).withLoggedLevel(ExceptionLevelEnum.ERROR)
+                    .build();
+        }
+        return target;
     }
 }

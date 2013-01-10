@@ -210,6 +210,10 @@ public class CodesMetamacAsserts extends CodesAsserts {
     // ------------------------------------------------------------------------------------
 
     public static void assertEqualsVariable(Variable expected, Variable actual) {
+        assertEqualsNullability(expected, actual);
+        if (expected == null) {
+            return;
+        }
         assertEqualsInternationalString(expected.getShortName(), actual.getShortName());
         assertEqualsDate(expected.getValidFrom(), actual.getValidFrom());
         assertEqualsDate(expected.getValidTo(), actual.getValidTo());
@@ -218,4 +222,19 @@ public class CodesMetamacAsserts extends CodesAsserts {
         assertEqualsNameableArtefact(expected.getNameableArtefact(), actual.getNameableArtefact());
     }
 
+    public static void assertEqualsVariable(RelatedResourceDto expected, RelatedResourceDto actual) {
+        assertEqualsNullability(expected, actual);
+        if (expected == null) {
+            return;
+        }
+        assertEquals(expected.getUrn(), actual.getUrn());
+    }
+
+    public static void assertEqualsVariable(Variable entity, RelatedResourceDto dto, MapperEnum mapperEnum) {
+        assertEqualsNullability(entity, dto);
+        if (entity == null) {
+            return;
+        }
+        assertEquals(entity.getNameableArtefact().getUrn(), dto.getUrn());
+    }
 }

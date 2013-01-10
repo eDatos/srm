@@ -31,6 +31,7 @@ import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacDtoMocks;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
@@ -1013,6 +1014,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         assertEqualsInternationalStringDto(conceptMetamacDto.getDerivation(), "es", "Derivation conceptScheme-1-v2-concept-1", null, null);
         assertEqualsInternationalStringDto(conceptMetamacDto.getLegalActs(), "es", "LegalActs conceptScheme-1-v2-concept-1", null, null);
         assertEquals(CONCEPT_SCHEME_7_V1_CONCEPT_1, conceptMetamacDto.getConceptExtendsUrn());
+        assertEquals(VARIABLE_1, conceptMetamacDto.getVariable().getUrn());
 
         // Core representation
         assertEquals(TypeRepresentationEnum.ENUMERATED, conceptMetamacDto.getCoreRepresentation().getTypeRepresentationEnum());
@@ -1454,6 +1456,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         ConceptMetamacDto conceptMetamacDto = ConceptsMetamacDtoMocks.mockConceptDto(TypeRepresentationEnum.ENUMERATED);
         conceptMetamacDto.setItemSchemeVersionUrn(CONCEPT_SCHEME_1_V2);
         conceptMetamacDto.setConceptExtendsUrn(CONCEPT_SCHEME_7_V1_CONCEPT_1);
+        conceptMetamacDto.setVariable(CodesMetamacDtoMocks.mockVariableRelatedResourceDto("VARIABLE_01", VARIABLE_1));
 
         ConceptMetamacDto conceptMetamacDtoCreated = srmCoreServiceFacade.createConcept(getServiceContextAdministrador(), conceptMetamacDto);
         assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME01(02.000)." + conceptMetamacDto.getCode(), conceptMetamacDtoCreated.getUrn());

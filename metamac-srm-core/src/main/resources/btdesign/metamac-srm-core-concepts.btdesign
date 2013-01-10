@@ -5,6 +5,7 @@ import "classpath:/btdesign/metamac-srm-core-enum.btdesign"
 import "classpath:/btdesign/metamac-srm-core-concepts-enum.btdesign"
 import "classpath:/btdesign/statistic-sdmx-v2_1-domain-enums.btdesign"
 import "classpath:/btdesign/metamac-srm-core-base.btdesign"
+import "classpath:/btdesign/metamac-srm-core-codes.btdesign"
 
 Application ConceptsMetamac {
 	basePackage=unused
@@ -61,7 +62,7 @@ Application ConceptsMetamac {
     		
 			"Creates concept"
 			@ConceptMetamac createConcept(String conceptSchemeUrn, @ConceptMetamac concept) throws MetamacException;
-			"Per-Create concept"
+			"Pre-Create concept"
 			@ConceptMetamac preCreateConcept(String conceptSchemeUrn, @ConceptMetamac concept) throws MetamacException;
 			"Updates concept"
 			@ConceptMetamac updateConcept(@ConceptMetamac concept) throws MetamacException;
@@ -150,6 +151,8 @@ Application ConceptsMetamac {
 			- Bag<@ConceptMetamac> roleConcepts cascade="none" fetch="lazy" databaseJoinTable="TB_M_CONCEPT_ROLES" databaseJoinColumn="CONCEPT_FK" databaseColumn="CONCEPT_ROLE_FK" ;
 			"Related concepts in same concept scheme"
 			- Bag<@ConceptMetamac> relatedConcepts cascade="none" fetch="lazy" databaseJoinTable="TB_M_CONCEPT_RELATED" databaseJoinColumn="CONCEPT_FK" databaseColumn="CONCEPT_RELATED_FK" ;
+			"Variable"
+			- @Variable variable nullable cascade="none" databaseColumn="VARIABLE_FK" <-> concepts;
 			
 			Repository ConceptMetamacRepository {
 				save;

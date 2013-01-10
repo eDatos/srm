@@ -16,4 +16,8 @@ public class ServiceExceptionType extends com.arte.statistic.sdmx.srm.core.commo
     // Organisations
     public static final CommonServiceExceptionType ORGANISATION_SCHEME_WRONG_TYPE   = create("exception.srm.organisations.organisation_scheme.wrong_type");
     public static final CommonServiceExceptionType MAINTAINER_MUST_BE_DEFAULT       = create("exception.srm.organisations.maintainer.not_default");
+
+    // Codelists
+    public static final CommonServiceExceptionType VARIABLE_WITH_CODELISTS          = create("exception.srm.codelists.variable.with_codelists");
+    public static final CommonServiceExceptionType VARIABLE_WITH_CONCEPTS           = create("exception.srm.codelists.variable.with_concepts");
 }

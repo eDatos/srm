@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.core.code.serviceimpl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
@@ -489,13 +490,18 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         Variable variableToDelete = retrieveVariableByUrn(urn);
 
+        // Check variable has not concepts neither codelists
+        if (CollectionUtils.isNotEmpty(variableToDelete.getCodelists())) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_WITH_CODELISTS)
+                    .withMessageParameters(variableToDelete.getNameableArtefact().getUrn(), variableToDelete.getCodelists().get(0).getMaintainableArtefact().getUrn()).build(); // say only one codelist
+        }
+        if (CollectionUtils.isNotEmpty(variableToDelete.getConcepts())) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_WITH_CONCEPTS)
+                    .withMessageParameters(variableToDelete.getNameableArtefact().getUrn(), variableToDelete.getConcepts().get(0).getNameableArtefact().getUrn()).build(); // say only one concept
+        }
+
         // Delete associations with variable families
         variableToDelete.removeAllFamilies();
-
-        // Delete associations with codelists
-        // TODO Check that the associated codelists are no published
-        variableToDelete.removeAllCodelists();
-
         getVariableRepository().save(variableToDelete);
 
         // Delete

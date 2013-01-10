@@ -525,6 +525,7 @@
               SDMX_RELATED_ARTEFACT="[null]"
               CONCEPT_TYPE_FK="[null]"
               EXTENDS_FK="[null]"
+              VARIABLE_FK="[null]"
               TB_CONCEPTS="211"
              />            
         
@@ -1025,6 +1026,7 @@
               SDMX_RELATED_ARTEFACT="[null]"
               CONCEPT_TYPE_FK="[null]"
               EXTENDS_FK="[null]"
+              VARIABLE_FK="[null]"
               TB_CONCEPTS="711"
              />            
         

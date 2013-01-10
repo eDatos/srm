@@ -2639,56 +2639,47 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     }
 
     @Test
-    public void testDeleteVariableWithCodelists() throws Exception {
+    public void testDeleteVariableErrorWithCodelists() throws Exception {
         ServiceContext ctx = getServiceContextAdministrador();
 
+        String variableUrn = VARIABLE_6;
         Variable variable = codesService.retrieveVariableByUrn(ctx, VARIABLE_6);
         assertEquals(2, variable.getCodelists().size());
         assertTrue(SrmValidationUtils.isCodelistInList(CODELIST_6_V1, variable.getCodelists()));
+        assertTrue(SrmValidationUtils.isCodelistInList(CODELIST_1_V1, variable.getCodelists()));
 
         // Delete variable
-        codesService.deleteVariable(ctx, VARIABLE_6);
-
-        // Check that the variable has been deleted
         try {
-            codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_6);
-            fail("variable already deleted");
+            codesService.deleteVariable(ctx, variableUrn);
+            fail("variable can not be deleted");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND, 1, new String[]{VARIABLE_6}, e.getExceptionItems().get(0));
+            assertEquals(ServiceExceptionType.VARIABLE_WITH_CODELISTS.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(variableUrn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertTrue(CODELIST_6_V1.equals(e.getExceptionItems().get(0).getMessageParameters()[1]) || CODELIST_1_V1.equals(e.getExceptionItems().get(0).getMessageParameters()[1]));
         }
 
-        // Chech that the codelists have not been deleted
-        CodelistVersionMetamac codelist6v1 = codesService.retrieveCodelistByUrn(ctx, CODELIST_6_V1);
-        assertNull(codelist6v1.getVariable());
-        CodelistVersionMetamac codelist1v1 = codesService.retrieveCodelistByUrn(ctx, CODELIST_1_V1);
-        assertNull(codelist1v1.getVariable());
+        // Check that the codelists have not been deleted
+        codesService.retrieveCodelistByUrn(ctx, CODELIST_6_V1);
     }
 
     @Test
-    // TODO A variable can be deleted if its associated with a published codelist?
-    public void testDeleteVariableWithPublishedCodelists() throws Exception {
+    public void testDeleteVariableErrorWithConcepts() throws Exception {
         ServiceContext ctx = getServiceContextAdministrador();
 
-        Variable variable = codesService.retrieveVariableByUrn(ctx, VARIABLE_5);
-        assertEquals(1, variable.getCodelists().size());
-        assertTrue(SrmValidationUtils.isCodelistInList(CODELIST_7_V2, variable.getCodelists()));
+        String variableUrn = VARIABLE_3;
+        Variable variable = codesService.retrieveVariableByUrn(ctx, variableUrn);
+        assertEquals(1, variable.getConcepts().size());
 
         // Delete variable
-        codesService.deleteVariable(ctx, VARIABLE_5);
-
-        // Check that the variable has been deleted
         try {
-            codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_5);
-            fail("variable already deleted");
+            codesService.deleteVariable(ctx, variableUrn);
+            fail("variable can not be deleted");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND, 1, new String[]{VARIABLE_5}, e.getExceptionItems().get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.VARIABLE_WITH_CONCEPTS, 2, new String[]{variableUrn, CONCEPT_SCHEME_1_V1_CONCEPT_1}, e.getExceptionItems().get(0));
         }
-
-        // Chech that the codelists has not been deleted
-        CodelistVersionMetamac codelist7v2 = codesService.retrieveCodelistByUrn(ctx, CODELIST_7_V2);
-        assertNull(codelist7v2.getVariable());
     }
 
     @Override

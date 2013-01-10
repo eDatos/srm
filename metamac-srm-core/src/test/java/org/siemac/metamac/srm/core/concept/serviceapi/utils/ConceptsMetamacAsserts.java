@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.core.concept.serviceapi.utils;
 import static org.junit.Assert.assertEquals;
 
 import org.siemac.metamac.srm.core.base.utils.BaseAsserts;
+import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsserts;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptType;
@@ -55,6 +56,7 @@ public class ConceptsMetamacAsserts extends ConceptsAsserts {
         assertEqualsInternationalString(expected.getDerivation(), actual.getDerivation());
         assertEqualsInternationalString(expected.getLegalActs(), actual.getLegalActs());
         assertEqualsConceptExtends(expected.getConceptExtends(), actual.getConceptExtends());
+        CodesMetamacAsserts.assertEqualsVariable(expected.getVariable(), actual.getVariable());
 
         // Sdmx
         ConceptsAsserts.assertEqualsConcept(expected, actual);
@@ -73,6 +75,7 @@ public class ConceptsMetamacAsserts extends ConceptsAsserts {
         assertEqualsInternationalStringDto(expected.getDerivation(), actual.getDerivation());
         assertEqualsInternationalStringDto(expected.getLegalActs(), actual.getLegalActs());
         assertEquals(expected.getConceptExtendsUrn(), actual.getConceptExtendsUrn());
+        CodesMetamacAsserts.assertEqualsVariable(expected.getVariable(), actual.getVariable());
 
         // Sdmx
         ConceptsAsserts.assertEqualsConceptDto(expected, actual);
@@ -81,7 +84,7 @@ public class ConceptsMetamacAsserts extends ConceptsAsserts {
     public static void assertEqualsConcept(ConceptMetamac expected, ConceptMetamacDto actual) {
         assertEqualsConcept(expected, actual, MapperEnum.DO2DTO);
     }
-    
+
     public static void assertEqualsConcept(ConceptMetamacDto expected, ConceptMetamac actual) {
         assertEqualsConcept(actual, expected, MapperEnum.DTO2DO);
     }
@@ -130,9 +133,7 @@ public class ConceptsMetamacAsserts extends ConceptsAsserts {
         // Sdmx
         ConceptsAsserts.assertEqualsConceptScheme(entity, dto, mapperEnum);
     }
-    
 
-    
     private static void assertEqualsConcept(ConceptMetamac entity, ConceptMetamacDto dto, MapperEnum mapperEnum) {
 
         // Metamac
@@ -149,7 +150,8 @@ public class ConceptsMetamacAsserts extends ConceptsAsserts {
         if (entity.getConceptExtends() != null) {
             assertEquals(entity.getConceptExtends().getNameableArtefact().getUrn(), dto.getConceptExtendsUrn());
         }
-        
+        CodesMetamacAsserts.assertEqualsVariable(entity.getVariable(), dto.getVariable(), mapperEnum);
+
         // Sdmx
         ConceptsAsserts.assertEqualsConcept(entity, dto, mapperEnum);
     }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.siemac.metamac.srm.core.base.mapper.BaseDo2DtoMapperImpl;
+import org.siemac.metamac.srm.core.code.mapper.CodesDo2DtoMapper;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptType;
@@ -22,6 +23,9 @@ public class ConceptsDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Co
 
     @Autowired
     private com.arte.statistic.sdmx.srm.core.concept.mapper.ConceptsDo2DtoMapper do2DtoMapperSdmxSrm;
+
+    @Autowired
+    private CodesDo2DtoMapper                                                    codesDo2DtoMapper;
 
     @Override
     public ConceptSchemeMetamacDto conceptSchemeMetamacDoToDto(ConceptSchemeVersionMetamac source) {
@@ -75,13 +79,15 @@ public class ConceptsDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Co
         if (source.getConceptExtends() != null) {
             target.setConceptExtendsUrn(source.getConceptExtends().getNameableArtefact().getUrn());
         }
+        if (source.getVariable() != null) {
+            target.setVariable(codesDo2DtoMapper.variableDoToRelatedResourceDto(source.getVariable()));
+        }
         do2DtoMapperSdmxSrm.conceptDoToDto(source, target);
 
         // note: not conversion to relatedConcepts and roles. Call specific operations in Service
 
         return target;
     }
-
     @Override
     public RelatedResourceDto conceptMetamacDoToRelatedResourceDto(ConceptMetamac source) {
         if (source == null) {

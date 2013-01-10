@@ -373,6 +373,7 @@
               SDMX_RELATED_ARTEFACT="[null]"
               CONCEPT_TYPE_FK="[null]"
               EXTENDS_FK="711"
+              VARIABLE_FK="[null]"
               TB_CONCEPTS="111"
              />
             
@@ -532,6 +533,7 @@
               SDMX_RELATED_ARTEFACT="ATTRIBUTE"
               CONCEPT_TYPE_FK="1"
               EXTENDS_FK="711"
+              VARIABLE_FK="1"
               TB_CONCEPTS="121"
              />
             
@@ -626,6 +628,7 @@
               LEGAL_ACTS_FK="[null]"
               SDMX_RELATED_ARTEFACT="[null]"
               EXTENDS_FK="[null]"
+              VARIABLE_FK="[null]"
               TB_CONCEPTS="122"
              />
                      
@@ -687,6 +690,7 @@
               LEGAL_ACTS_FK="[null]"
               SDMX_RELATED_ARTEFACT="[null]"
               EXTENDS_FK="[null]"
+              VARIABLE_FK="[null]"
               TB_CONCEPTS="1221"
              />
         
@@ -754,6 +758,7 @@
               LEGAL_ACTS_FK="[null]"
               SDMX_RELATED_ARTEFACT="[null]"
               EXTENDS_FK="[null]"
+              VARIABLE_FK="[null]"
               TB_CONCEPTS="12211"
              />
         
@@ -826,6 +831,7 @@
               SDMX_RELATED_ARTEFACT="ATTRIBUTE"
               CONCEPT_TYPE_FK="1"
               EXTENDS_FK="711"
+              VARIABLE_FK="[null]"
               TB_CONCEPTS="123"
              />
             
@@ -897,6 +903,7 @@
               LEGAL_ACTS_FK="[null]"
               SDMX_RELATED_ARTEFACT="[null]"
               EXTENDS_FK="[null]"
+              VARIABLE_FK="[null]"
               TB_CONCEPTS="124"
              />
                      
@@ -958,6 +965,7 @@
               LEGAL_ACTS_FK="[null]"
               SDMX_RELATED_ARTEFACT="[null]"
               EXTENDS_FK="[null]"
+              VARIABLE_FK="[null]"
               TB_CONCEPTS="1241"
              />
         
@@ -1019,6 +1027,7 @@
               LEGAL_ACTS_FK="[null]"
               SDMX_RELATED_ARTEFACT="[null]"
               EXTENDS_FK="[null]"
+              VARIABLE_FK="[null]"
               TB_CONCEPTS="12411"
              />
         
@@ -1179,7 +1188,8 @@
               LEGAL_ACTS_FK="[null]"
               SDMX_RELATED_ARTEFACT="ATTRIBUTE"
               CONCEPT_TYPE_FK="2"
-              EXTENDS_FK="[null]"              
+              EXTENDS_FK="[null]"
+              VARIABLE_FK="[null]"              
               TB_CONCEPTS="211"
              />            
         
@@ -1251,7 +1261,8 @@
               LEGAL_ACTS_FK="[null]"
               SDMX_RELATED_ARTEFACT="ATTRIBUTE"
               CONCEPT_TYPE_FK="2"
-              EXTENDS_FK="[null]"              
+              EXTENDS_FK="[null]"
+              VARIABLE_FK="[null]"              
               TB_CONCEPTS="212"
              />        
                      
@@ -1430,7 +1441,8 @@
               LEGAL_ACTS_FK="31"
               SDMX_RELATED_ARTEFACT="ATTRIBUTE"
               CONCEPT_TYPE_FK="2"
-              EXTENDS_FK="711"              
+              EXTENDS_FK="711"
+              VARIABLE_FK="1"              
               TB_CONCEPTS="311"
              />
             
@@ -1502,6 +1514,7 @@
               LEGAL_ACTS_FK="[null]"
               SDMX_RELATED_ARTEFACT="[null]"
               EXTENDS_FK="[null]"
+              VARIABLE_FK="2"
               TB_CONCEPTS="312"
              />            
         
@@ -1569,6 +1582,7 @@
               LEGAL_ACTS_FK="[null]"
               SDMX_RELATED_ARTEFACT="[null]"
               EXTENDS_FK="[null]"
+              VARIABLE_FK="[null]"
               TB_CONCEPTS="3121"
              />            
         
@@ -1641,6 +1655,7 @@
                       LEGAL_ACTS_FK="[null]"
                       SDMX_RELATED_ARTEFACT="[null]"
                       EXTENDS_FK="1312"
+                      VARIABLE_FK="[null]"
                       TB_CONCEPTS="31211"
                      />                    
                 
@@ -1720,6 +1735,7 @@
               LEGAL_ACTS_FK="[null]"
               SDMX_RELATED_ARTEFACT="[null]"
               EXTENDS_FK="[null]"
+              VARIABLE_FK="[null]"
               TB_CONCEPTS="3122"
              />
                      
@@ -1890,6 +1906,7 @@
               SDMX_RELATED_ARTEFACT="[null]"
               CONCEPT_TYPE_FK="[null]"
               EXTENDS_FK="[null]"
+              VARIABLE_FK="[null]"
               TB_CONCEPTS="411"
              />
             
@@ -2046,6 +2063,7 @@
               SDMX_RELATED_ARTEFACT="[null]"
               CONCEPT_TYPE_FK="[null]"
               EXTENDS_FK="[null]"
+              VARIABLE_FK="[null]"
               TB_CONCEPTS="511"
              />
             
@@ -2202,6 +2220,7 @@
               SDMX_RELATED_ARTEFACT="[null]"
               CONCEPT_TYPE_FK="[null]"
               EXTENDS_FK="[null]"
+              VARIABLE_FK="[null]"
               TB_CONCEPTS="611"
              />
             
@@ -2361,6 +2380,7 @@
               SDMX_RELATED_ARTEFACT="[null]"
               CONCEPT_TYPE_FK="[null]"
               EXTENDS_FK="[null]"
+              VARIABLE_FK="[null]"
               TB_CONCEPTS="711"
              />
             
@@ -2507,6 +2527,7 @@
               SDMX_RELATED_ARTEFACT="[null]"
               CONCEPT_TYPE_FK="[null]"
               EXTENDS_FK="[null]"
+              VARIABLE_FK="[null]"
               TB_CONCEPTS="721"
              />
             
@@ -2664,7 +2685,8 @@
               LEGAL_ACTS_FK="[null]"
               SDMX_RELATED_ARTEFACT="ATTRIBUTE"
               CONCEPT_TYPE_FK="2"
-              EXTENDS_FK="[null]"              
+              EXTENDS_FK="[null]"
+              VARIABLE_FK="[null]"              
               TB_CONCEPTS="811"
              />            
         
@@ -3002,7 +3024,8 @@
               LEGAL_ACTS_FK="[null]"
               SDMX_RELATED_ARTEFACT="ATTRIBUTE"
               CONCEPT_TYPE_FK="2"
-              EXTENDS_FK="[null]"              
+              EXTENDS_FK="[null]"
+              VARIABLE_FK="[null]"              
               TB_CONCEPTS="1021"
              />            
         
@@ -3148,7 +3171,8 @@
               LEGAL_ACTS_FK="[null]"
               SDMX_RELATED_ARTEFACT="ATTRIBUTE"
               CONCEPT_TYPE_FK="2"
-              EXTENDS_FK="[null]"              
+              EXTENDS_FK="[null]"
+              VARIABLE_FK="[null]"              
               TB_CONCEPTS="1031"
              />            
         
@@ -3306,7 +3330,8 @@
               LEGAL_ACTS_FK="[null]"
               SDMX_RELATED_ARTEFACT="ATTRIBUTE"
               CONCEPT_TYPE_FK="2"
-              EXTENDS_FK="[null]"              
+              EXTENDS_FK="[null]"
+              VARIABLE_FK="[null]"              
               TB_CONCEPTS="1111"
              />            
         
@@ -3465,7 +3490,8 @@
               LEGAL_ACTS_FK="[null]"
               SDMX_RELATED_ARTEFACT="ATTRIBUTE"
               CONCEPT_TYPE_FK="2"
-              EXTENDS_FK="[null]"              
+              EXTENDS_FK="[null]"
+              VARIABLE_FK="[null]"              
               TB_CONCEPTS="1211"
              />            
         
@@ -3623,7 +3649,8 @@
               LEGAL_ACTS_FK="[null]"
               SDMX_RELATED_ARTEFACT="ATTRIBUTE"
               CONCEPT_TYPE_FK="2"
-              EXTENDS_FK="[null]"              
+              EXTENDS_FK="[null]"
+              VARIABLE_FK="[null]"              
               TB_CONCEPTS="1311"
              />            
         
@@ -3685,7 +3712,8 @@
               LEGAL_ACTS_FK="[null]"
               SDMX_RELATED_ARTEFACT="ATTRIBUTE"
               CONCEPT_TYPE_FK="2"
-              EXTENDS_FK="[null]"              
+              EXTENDS_FK="[null]"
+              VARIABLE_FK="[null]"              
               TB_CONCEPTS="1312"
              />            
         
@@ -3747,7 +3775,8 @@
               LEGAL_ACTS_FK="[null]"
               SDMX_RELATED_ARTEFACT="ATTRIBUTE"
               CONCEPT_TYPE_FK="2"
-              EXTENDS_FK="[null]"              
+              EXTENDS_FK="[null]"
+              VARIABLE_FK="[null]"              
               TB_CONCEPTS="1313"
              />            
         
@@ -3844,6 +3873,97 @@
         IDENTIFIER="DERIVED"
         DESCRIPTION_FK="35"
     />  
+    
+    <!-- ************************************************************************************** -->
+    <!-- VARIABLES                                                                      -->
+    <!-- *************************************************************************************  -->
+    
+    <TB_M_VARIABLES
+        ID="1"
+        NAMEABLE_ARTEFACT_FK="999931"
+        
+        SHORT_NAME_FK="48"
+        VALID_FROM_TZ="Europe/London"
+        VALID_FROM="2011-01-02 02:02:04" 
+        VALID_TO_TZ="Europe/London"
+        VALID_TO="2012-01-02 02:02:04"
+        
+        UUID="variable-01"
+        CREATED_DATE_TZ="Europe/London"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_BY="user1"
+        LAST_UPDATED_TZ="Europe/London"
+        LAST_UPDATED="2012-01-01 01:02:03"
+        LAST_UPDATED_BY="user2"
+        VERSION="1"
+    />
+    
+       <TB_ANNOTABLE_ARTEFACTS 
+            ID="999931"
+            ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+            
+            CODE="VARIABLE_01"
+            CODE_FULL="[null]"
+            URI_PROVIDER="[null]"
+            URN_PROVIDER="urn:VARIABLE_01"
+            URN="urn:VARIABLE_01"
+            
+            NAME_FK="49"
+            DESCRIPTION_FK="[null]"
+            
+            UUID="annotableArtefact-999931"
+            VERSION="1"
+            CREATED_BY="user1"
+            CREATED_DATE="2011-01-01 01:02:03"
+            CREATED_DATE_TZ="Europe/London"
+            LAST_UPDATED_BY="user2"
+            LAST_UPDATED="2011-01-22 01:02:03"
+            LAST_UPDATED_TZ="Europe/London"
+        />
+        
+    <TB_M_VARIABLES
+        ID="2"
+        NAMEABLE_ARTEFACT_FK="999932"
+        
+        SHORT_NAME_FK="50"
+        VALID_FROM_TZ="Europe/London"
+        VALID_FROM="2011-01-02 02:02:04" 
+        VALID_TO_TZ="Europe/London"
+        VALID_TO="2012-01-02 02:02:04"
+        
+        UUID="variable-02"
+        CREATED_DATE_TZ="Europe/London"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_BY="user1"
+        LAST_UPDATED_TZ="Europe/London"
+        LAST_UPDATED="2012-01-01 01:02:03"
+        LAST_UPDATED_BY="user2"
+        VERSION="1"
+    />
+    
+       <TB_ANNOTABLE_ARTEFACTS 
+            ID="999932"
+            ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+            
+            CODE="VARIABLE_02"
+            CODE_FULL="[null]"
+            URI_PROVIDER="[null]"
+            URN_PROVIDER="urn:VARIABLE_02"
+            URN="urn:VARIABLE_02"
+            
+            NAME_FK="51"
+            DESCRIPTION_FK="[null]"
+            
+            UUID="annotableArtefact-999932"
+            VERSION="1"
+            CREATED_BY="user1"
+            CREATED_DATE="2011-01-01 01:02:03"
+            CREATED_DATE_TZ="Europe/London"
+            LAST_UPDATED_BY="user2"
+            LAST_UPDATED="2011-01-22 01:02:03"
+            LAST_UPDATED_TZ="Europe/London"
+        />        
+        
            
     <!-- ************************************************************************************** -->
     <!-- INTERNATIONAL STRINGS                                                                  -->
@@ -4504,6 +4624,59 @@
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="47"
-    />                                         
+    />    
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="48"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="481"
+        LABEL="nombre"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="48"
+    />    
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="49"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="491"
+        LABEL="nombre"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="49"
+    />       
+    
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="50"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="501"
+        LABEL="nombre"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="50"
+    />    
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="51"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="511"
+        LABEL="nombre"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="51"
+    />                                              
                     
 </dataset>

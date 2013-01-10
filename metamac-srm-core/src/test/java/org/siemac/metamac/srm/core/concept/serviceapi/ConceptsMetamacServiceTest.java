@@ -25,6 +25,7 @@ import org.siemac.metamac.core.common.ent.domain.LocalisedString;
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacService;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
@@ -64,6 +65,9 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
     @Autowired
     private ConceptsMetamacService        conceptsService;
+
+    @Autowired
+    private CodesMetamacService           codesService;
 
     @Autowired
     private OrganisationMetamacRepository organisationMetamacRepository;
@@ -1201,6 +1205,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
                 assertEquals(ConceptRoleEnum.ATTRIBUTE, concept.getSdmxRelatedArtefact());
                 assertEquals(CONCEPT_TYPE_DERIVED, concept.getType().getIdentifier());
                 assertEquals(CONCEPT_SCHEME_7_V1_CONCEPT_1, concept.getConceptExtends().getNameableArtefact().getUrn());
+                assertEquals(VARIABLE_1, concept.getVariable().getNameableArtefact().getUrn());
 
                 assertEquals(0, concept.getChildren().size());
             }
@@ -1219,11 +1224,13 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
                 assertNull(concept.getSdmxRelatedArtefact());
                 assertNull(concept.getType());
                 assertNull(concept.getConceptExtends());
+                assertEquals(VARIABLE_2, concept.getVariable().getNameableArtefact().getUrn());
 
                 assertEquals(2, concept.getChildren().size());
                 {
                     ConceptMetamac conceptChild = (ConceptMetamac) concept.getChildren().get(0);
                     assertEquals(urnExpectedConcept21, conceptChild.getNameableArtefact().getUrn());
+                    assertNull(conceptChild.getVariable());
 
                     assertEquals(1, conceptChild.getChildren().size());
                     {
@@ -1482,8 +1489,8 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         ConceptType conceptType = conceptsService.retrieveConceptTypeByIdentifier(ctx, CONCEPT_TYPE_DIRECT);
         ConceptMetamac concept = ConceptsMetamacDoMocks.mockConcept(conceptType);
         concept.setParent(null);
-        ConceptMetamac conceptExtends = conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_7_V1_CONCEPT_1);
-        concept.setConceptExtends(conceptExtends);
+        concept.setConceptExtends(conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_7_V1_CONCEPT_1));
+        concept.setVariable(codesService.retrieveVariableByUrn(ctx, VARIABLE_1));
 
         String conceptSchemeUrn = CONCEPT_SCHEME_1_V2;
 
@@ -1713,6 +1720,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         assertEquals(ConceptRoleEnum.ATTRIBUTE, concept.getSdmxRelatedArtefact());
         assertEquals(CONCEPT_TYPE_DIRECT, concept.getType().getIdentifier());
         assertEquals(CONCEPT_SCHEME_7_V1_CONCEPT_1, concept.getConceptExtends().getNameableArtefact().getUrn());
+        assertEquals(VARIABLE_1, concept.getVariable().getNameableArtefact().getUrn());
     }
 
     @Test

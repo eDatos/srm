@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.core.concept.mapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacDtoMocks;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
@@ -40,10 +41,12 @@ public class ConceptsDto2DoMapperTest extends SrmBaseTest {
     @Test
     public void testConceptMetamacDoToDto() throws MetamacException {
         ConceptMetamacDto dto = ConceptsMetamacDtoMocks.mockConceptDto(TypeRepresentationEnum.ENUMERATED);
+        dto.setVariable(CodesMetamacDtoMocks.mockVariableRelatedResourceDto("VARIABLE01", VARIABLE_1));
+
         ConceptMetamac entity = conceptsDto2DoMapper.conceptDtoToDo(dto);
         ConceptsMetamacAsserts.assertEqualsConcept(dto, entity);
     }
-    
+
     @Override
     protected String getDataSetFile() {
         return "dbunit/SrmConceptsTest.xml";

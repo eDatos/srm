@@ -6,7 +6,7 @@ import "classpath:/btdesign/metamac-srm-core-enum.btdesign"
 import "classpath:/btdesign/statistic-sdmx-v2_1-domain-enums.btdesign"
 import "classpath:/btdesign/metamac-srm-core-base.btdesign"
 import "classpath:/btdesign/metamac-srm-core-codes-enum.btdesign"
-
+import "classpath:/btdesign/metamac-srm-core-concepts.btdesign"
 
 
 Application CodesMetamac {
@@ -144,9 +144,9 @@ Application CodesMetamac {
 			"Life cycle information"
 			- @SrmLifeCycleMetadata lifeCycleMetadata databaseColumn="";
 
-			"Codelist that replaces this. Update in this metadata is ignored. Must be updated by replacedToCodelists metadata"
+			"Codelist that replaces this one. Update in this metadata is ignored. Must be updated by replacedToCodelists metadata"
 			- @CodelistVersionMetamac replacedByCodelist nullable cascade="none" databaseColumn="REPLACED_BY_CODELIST_FK"  <-> replaceToCodelists;
-			"Codelists are replaced by this"
+			"Codelists that are replaced by this one"
 			- Bag<@CodelistVersionMetamac> replaceToCodelists cascade="none" fetch="lazy" <-> replacedByCodelist;
 			
 			Repository CodelistVersionMetamacRepository {
@@ -222,10 +222,12 @@ Application CodesMetamac {
 			DateTimeTZ validFrom nullable;
 			"Date from which version is superceded"
 			DateTimeTZ validTo nullable;
-			"Variables"
+			"Variable families"
 			- Bag<@VariableFamily> families cascade="none" fetch="lazy" databaseColumn="VARIABLE_FAMILY_FK" databaseJoinTable="TB_M_VAR_FAMILIES_VARIABLES" <-> variables;
 			"Codelists"
 			- Bag<@CodelistVersionMetamac> codelists cascade="none" fetch="lazy" inverse <-> variable;
+			"Concepts"
+			- Bag<@ConceptMetamac> concepts cascade="none" fetch="lazy" <-> variable;
 			"Last update to optimistic locking"
 			DateTimeTZ updateDate nullable;
 			
