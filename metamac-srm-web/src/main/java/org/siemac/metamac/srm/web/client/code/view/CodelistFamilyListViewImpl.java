@@ -139,8 +139,8 @@ public class CodelistFamilyListViewImpl extends ViewWithUiHandlers<CodelistFamil
             @Override
             public void onRecordClick(RecordClickEvent event) {
                 if (event.getFieldNum() != 0) { // Clicking checkBox will be ignored
-                    String urn = ((CodelistFamilyRecord) event.getRecord()).getAttribute(CodelistFamilyDS.URN);
-                    getUiHandlers().goToCodelistFamily(urn);
+                    String code = ((CodelistFamilyRecord) event.getRecord()).getAttribute(CodelistFamilyDS.CODE);
+                    getUiHandlers().goToCodelistFamily(code);
                 }
             }
         });

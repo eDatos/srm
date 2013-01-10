@@ -58,16 +58,26 @@ public class GetCodelistsActionHandler extends SecurityActionHandler<GetCodelist
         restriction.getRestrictions().add(lastVersionRestriction);
 
         // Codelist Criteria
-        MetamacCriteriaDisjunctionRestriction codelistCriteriaDisjuction = new MetamacCriteriaDisjunctionRestriction();
-        if (!StringUtils.isBlank(action.getCriteria())) {
+        if (StringUtils.isNotBlank(action.getCriteria())) {
+            MetamacCriteriaDisjunctionRestriction codelistCriteriaDisjuction = new MetamacCriteriaDisjunctionRestriction();
             codelistCriteriaDisjuction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.CODE.name(), action.getCriteria(), OperationType.ILIKE));
             codelistCriteriaDisjuction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.NAME.name(), action.getCriteria(), OperationType.ILIKE));
+            restriction.getRestrictions().add(codelistCriteriaDisjuction);
         }
+
+        // Proc status restriction
         if (action.getProcStatus() != null) {
-            codelistCriteriaDisjuction.getRestrictions().add(
-                    new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.PROC_STATUS.name(), action.getProcStatus(), OperationType.EQ));
+            MetamacCriteriaPropertyRestriction procStatusRestriction = new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.PROC_STATUS.name(), action.getProcStatus(),
+                    OperationType.EQ);
+            restriction.getRestrictions().add(procStatusRestriction);
         }
-        restriction.getRestrictions().add(codelistCriteriaDisjuction);
+
+        // Codelist family restriction
+        if (StringUtils.isNotBlank(action.getCodelistFamilyUrn())) {
+            MetamacCriteriaPropertyRestriction familyRestriction = new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.CODELIST_FAMILY_URN.name(),
+                    action.getProcStatus(), OperationType.EQ);
+            restriction.getRestrictions().add(familyRestriction);
+        }
 
         criteria.setRestriction(restriction);
 

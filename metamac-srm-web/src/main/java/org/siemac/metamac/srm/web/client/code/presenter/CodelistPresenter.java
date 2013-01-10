@@ -135,9 +135,9 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
     @Override
     public void prepareFromRequest(PlaceRequest request) {
         super.prepareFromRequest(request);
-        String urn = PlaceRequestUtils.getCodelistParamFromUrl(placeManager);
-        if (!StringUtils.isBlank(urn)) {
-            retrieveCodelist(urn);
+        String identifier = PlaceRequestUtils.getCodelistParamFromUrl(placeManager);
+        if (!StringUtils.isBlank(identifier)) {
+            retrieveCodelist(identifier);
         } else {
             MetamacSrmWeb.showErrorPage();
         }
@@ -406,7 +406,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
     @Override
     public void retrieveCodelistsThatCanBeReplaced(int firstResult, int maxResults, String criteria) {
         // The codelists that can be replaced should be externally published
-        dispatcher.execute(new GetCodelistsAction(firstResult, maxResults, criteria, ProcStatusEnum.EXTERNALLY_PUBLISHED), new WaitingAsyncCallback<GetCodelistsResult>() {
+        dispatcher.execute(new GetCodelistsAction(firstResult, maxResults, criteria, ProcStatusEnum.EXTERNALLY_PUBLISHED, null), new WaitingAsyncCallback<GetCodelistsResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {

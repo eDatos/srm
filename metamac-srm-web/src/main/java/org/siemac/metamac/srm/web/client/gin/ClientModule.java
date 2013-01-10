@@ -11,12 +11,14 @@ import org.siemac.metamac.srm.web.client.category.view.CategorySchemeViewImpl;
 import org.siemac.metamac.srm.web.client.category.view.CategoryViewImpl;
 import org.siemac.metamac.srm.web.client.code.presenter.CodePresenter;
 import org.siemac.metamac.srm.web.client.code.presenter.CodelistFamilyListPresenter;
+import org.siemac.metamac.srm.web.client.code.presenter.CodelistFamilyPresenter;
 import org.siemac.metamac.srm.web.client.code.presenter.CodelistListPresenter;
 import org.siemac.metamac.srm.web.client.code.presenter.CodelistPresenter;
 import org.siemac.metamac.srm.web.client.code.presenter.VariableFamilyListPresenter;
 import org.siemac.metamac.srm.web.client.code.presenter.VariableListPresenter;
 import org.siemac.metamac.srm.web.client.code.view.CodeViewImpl;
 import org.siemac.metamac.srm.web.client.code.view.CodelistFamilyListViewImpl;
+import org.siemac.metamac.srm.web.client.code.view.CodelistFamilyViewImpl;
 import org.siemac.metamac.srm.web.client.code.view.CodelistListViewImpl;
 import org.siemac.metamac.srm.web.client.code.view.CodelistViewImpl;
 import org.siemac.metamac.srm.web.client.code.view.VariableFamilyListViewImpl;
@@ -132,6 +134,7 @@ public class ClientModule extends AbstractPresenterModule {
         bindPresenter(CodePresenter.class, CodePresenter.CodeView.class, CodeViewImpl.class, CodePresenter.CodeProxy.class);
         bindPresenter(CodelistFamilyListPresenter.class, CodelistFamilyListPresenter.CodelistFamilyListView.class, CodelistFamilyListViewImpl.class,
                 CodelistFamilyListPresenter.CodelistFamilyListProxy.class);
+        bindPresenter(CodelistFamilyPresenter.class, CodelistFamilyPresenter.CodelistFamilyView.class, CodelistFamilyViewImpl.class, CodelistFamilyPresenter.CodelistFamilyProxy.class);
         bindPresenter(VariableFamilyListPresenter.class, VariableFamilyListPresenter.VariableFamilyListView.class, VariableFamilyListViewImpl.class,
                 VariableFamilyListPresenter.VariableFamilyListProxy.class);
         bindPresenter(VariableListPresenter.class, VariableListPresenter.VariableListView.class, VariableListViewImpl.class, VariableListPresenter.VariableListProxy.class);

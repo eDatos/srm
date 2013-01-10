@@ -24,6 +24,9 @@ public class GetCodelists {
     @In(4)
     ProcStatusEnum           procStatus;
 
+    @In(5)
+    String                   codelistFamilyUrn;
+
     @Out(1)
     List<CodelistMetamacDto> codelists;
 
