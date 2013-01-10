@@ -537,6 +537,8 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                     return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.maintainableArtefact().name().texts().label(), propertyRestriction.getStringValue());
                 case IS_LAST_VERSION:
                     return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.maintainableArtefact().isLastVersion(), propertyRestriction.getBooleanValue());
+                case CODELIST_FAMILY_URN:
+                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.family().nameableArtefact().urn(), propertyRestriction.getStringValue());
                 default:
                     throw new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, propertyRestriction.getPropertyName());
             }
@@ -557,6 +559,8 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                     return CodelistVersionMetamacProperties.maintainableArtefact().name().texts().label();
                 case LAST_UPDATED:
                     return getLastUpdatedLeafProperty(CodelistVersionMetamacProperties.maintainableArtefact(), CodelistVersionMetamac.class);
+                case CODELIST_FAMILY_URN:
+                    return CodelistVersionMetamacProperties.family().nameableArtefact().urn();
                 default:
                     throw new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, order.getPropertyName());
             }
