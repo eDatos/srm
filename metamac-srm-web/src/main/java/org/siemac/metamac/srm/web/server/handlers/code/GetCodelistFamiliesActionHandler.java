@@ -12,15 +12,17 @@ import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder.OrderTypeEnu
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPaginator;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction.OperationType;
-import org.siemac.metamac.core.common.dto.InternationalStringDto;
-import org.siemac.metamac.core.common.dto.LocalisedStringDto;
+import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
+import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.criteria.CodelistFamilyCriteriaOrderEnum;
 import org.siemac.metamac.srm.core.criteria.CodelistFamilyCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistFamiliesAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistFamiliesResult;
+import org.siemac.metamac.web.common.server.ServiceContextHolder;
 import org.siemac.metamac.web.common.server.handlers.SecurityActionHandler;
+import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -66,39 +68,11 @@ public class GetCodelistFamiliesActionHandler extends SecurityActionHandler<GetC
         criteria.getPaginator().setMaximumResultSize(action.getMaxResults());
         criteria.getPaginator().setCountTotalResults(true);
 
-        // TODO
-        // try {
-        // MetamacCriteriaResult<CodelistMetamacDto> result = srmCoreServiceFacade.findCodelistsByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria);
-        // return new GetCodelistFamiliesResult(result.getResults(), result.getPaginatorResult().getFirstResult(), result.getPaginatorResult().getTotalResults());
-        // } catch (MetamacException e) {
-        // throw WebExceptionUtils.createMetamacWebException(e);
-        // }
-
-        List<CodelistFamilyDto> families = new ArrayList<CodelistFamilyDto>();
-        families.add(createFamily("codelist-family-0001"));
-        families.add(createFamily("codelist-family-0002"));
-        families.add(createFamily("codelist-family-0003"));
-        families.add(createFamily("codelist-family-0004"));
-        families.add(createFamily("codelist-family-0005"));
-        return new GetCodelistFamiliesResult(families, 1, 5);
-    }
-
-    private CodelistFamilyDto createFamily(String code) {
-        CodelistFamilyDto family = new CodelistFamilyDto();
-        family.setCode(code);
-        family.setUrn("urn:" + code);
-
-        InternationalStringDto name = new InternationalStringDto();
-        LocalisedStringDto es = new LocalisedStringDto();
-        es.setLocale("es");
-        es.setLabel(code);
-        LocalisedStringDto pt = new LocalisedStringDto();
-        pt.setLocale("pt");
-        pt.setLabel(code);
-        name.addText(es);
-        name.addText(pt);
-        family.setName(name);
-
-        return family;
+        try {
+            MetamacCriteriaResult<CodelistFamilyDto> result = srmCoreServiceFacade.findCodelistFamiliesByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria);
+            return new GetCodelistFamiliesResult(result.getResults(), result.getPaginatorResult().getFirstResult(), result.getPaginatorResult().getTotalResults());
+        } catch (MetamacException e) {
+            throw WebExceptionUtils.createMetamacWebException(e);
+        }
     }
 }
