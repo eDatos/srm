@@ -207,7 +207,7 @@ public class CodelistListViewImpl extends ViewWithUiHandlers<CodelistListUiHandl
     @Override
     public void setCodelistPaginatedList(GetCodelistsResult codelistsPaginatedList) {
         setCodelistList(codelistsPaginatedList.getCodelists());
-        codelistsList.refreshPaginationInfo(codelistsPaginatedList.getPageNumber(), codelistsPaginatedList.getCodelists().size(), codelistsPaginatedList.getTotalResults());
+        codelistsList.refreshPaginationInfo(codelistsPaginatedList.getFirstResultOut(), codelistsPaginatedList.getCodelists().size(), codelistsPaginatedList.getTotalResults());
     }
 
     private void setCodelistList(List<CodelistMetamacDto> codelistDtos) {

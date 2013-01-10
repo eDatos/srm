@@ -78,6 +78,10 @@ public class CommonUtils {
     }
 
     public static String getRelatedResourceName(RelatedResourceDto relatedResourceDto) {
-        return CommonWebUtils.getElementName(relatedResourceDto.getCode(), relatedResourceDto.getTitle());
+        if (relatedResourceDto != null) {
+            return CommonWebUtils.getElementName(relatedResourceDto.getCode(), relatedResourceDto.getTitle());
+        } else {
+            return StringUtils.EMPTY;
+        }
     }
 }

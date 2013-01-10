@@ -154,7 +154,7 @@ public class CodelistListPresenter extends Presenter<CodelistListPresenter.Codel
 
     @Override
     public void retrieveCodelists(int firstResult, int maxResults, final String criteria) {
-        dispatcher.execute(new GetCodelistsAction(firstResult, maxResults, criteria), new WaitingAsyncCallback<GetCodelistsResult>() {
+        dispatcher.execute(new GetCodelistsAction(firstResult, maxResults, criteria, null), new WaitingAsyncCallback<GetCodelistsResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {

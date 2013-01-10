@@ -628,7 +628,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
     }
 
     private List<String> getRoles() {
-        return ((RelatedResourceListItem) classDescriptorsEditionForm.getItem(ConceptDS.ROLES)).getRelatedResourceUrns();
+        return ((RelatedResourceListItem) classDescriptorsEditionForm.getItem(ConceptDS.ROLES)).getSelectedRelatedResourceUrns();
     }
 
     private RelatedResourceListItem createRolesItem(String name, String title) {

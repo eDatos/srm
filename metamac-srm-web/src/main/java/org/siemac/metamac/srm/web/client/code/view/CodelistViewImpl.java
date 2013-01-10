@@ -20,6 +20,8 @@ import org.siemac.metamac.srm.web.client.code.widgets.CodelistMainFormLayout;
 import org.siemac.metamac.srm.web.client.code.widgets.CodelistVersionsSectionStack;
 import org.siemac.metamac.srm.web.client.code.widgets.CodesTreeGrid;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
+import org.siemac.metamac.srm.web.client.widgets.RelatedResourceListItem;
+import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourceWindow;
 import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourceWindow;
 import org.siemac.metamac.srm.web.client.widgets.VersionWindow;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
@@ -63,34 +65,35 @@ import com.smartgwt.client.widgets.layout.VLayout;
 
 public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> implements CodelistPresenter.CodelistView {
 
-    private VLayout                      panel;
-    private CodelistMainFormLayout       mainFormLayout;
+    private VLayout                             panel;
+    private CodelistMainFormLayout              mainFormLayout;
 
     // View forms
-    private GroupDynamicForm             identifiersForm;
-    private GroupDynamicForm             contentDescriptorsForm;
-    private GroupDynamicForm             productionDescriptorsForm;
-    private GroupDynamicForm             diffusionDescriptorsForm;
-    private GroupDynamicForm             versionResponsibilityForm;
-    private GroupDynamicForm             commentsForm;
-    private AnnotationsPanel             annotationsPanel;
+    private GroupDynamicForm                    identifiersForm;
+    private GroupDynamicForm                    contentDescriptorsForm;
+    private GroupDynamicForm                    productionDescriptorsForm;
+    private GroupDynamicForm                    diffusionDescriptorsForm;
+    private GroupDynamicForm                    versionResponsibilityForm;
+    private GroupDynamicForm                    commentsForm;
+    private AnnotationsPanel                    annotationsPanel;
 
     // Edition forms
-    private GroupDynamicForm             identifiersEditionForm;
-    private GroupDynamicForm             contentDescriptorsEditionForm;
-    private GroupDynamicForm             productionDescriptorsEditionForm;
-    private GroupDynamicForm             diffusionDescriptorsEditionForm;
-    private GroupDynamicForm             versionResponsibilityEditionForm;
-    private GroupDynamicForm             commentsEditionForm;
-    private AnnotationsPanel             annotationsEditionPanel;
+    private GroupDynamicForm                    identifiersEditionForm;
+    private GroupDynamicForm                    contentDescriptorsEditionForm;
+    private GroupDynamicForm                    productionDescriptorsEditionForm;
+    private GroupDynamicForm                    diffusionDescriptorsEditionForm;
+    private GroupDynamicForm                    versionResponsibilityEditionForm;
+    private GroupDynamicForm                    commentsEditionForm;
+    private AnnotationsPanel                    annotationsEditionPanel;
 
-    private CodesTreeGrid                codesTreeGrid;
+    private CodesTreeGrid                       codesTreeGrid;
 
-    private CodelistVersionsSectionStack versionsSectionStack;
+    private CodelistVersionsSectionStack        versionsSectionStack;
 
-    private SearchRelatedResourceWindow  searchFamilyWindow;
+    private SearchRelatedResourceWindow         searchFamilyWindow;
+    private SearchMultipleRelatedResourceWindow searchReplaceToCodelistsWindow;
 
-    private CodelistMetamacDto           codelistDto;
+    private CodelistMetamacDto                  codelistDto;
 
     @Inject
     public CodelistViewImpl() {
@@ -123,7 +126,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         });
 
         //
-        // CONCEPTS
+        // CODES
         //
 
         codesTreeGrid = new CodesTreeGrid();
@@ -319,6 +322,14 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         }
     }
 
+    @Override
+    public void setCodelistsToReplace(List<RelatedResourceDto> codelists, int firstResult, int totalResults) {
+        if (searchReplaceToCodelistsWindow != null) {
+            searchReplaceToCodelistsWindow.setSourceRelatedResources(codelists);
+            searchReplaceToCodelistsWindow.refreshSourcePaginationInfo(firstResult, codelists.size(), totalResults);
+        }
+    }
+
     private void createViewForm() {
         // Identifiers Form
         identifiersForm = new GroupDynamicForm(getConstants().codelistIdentifiers());
@@ -349,14 +360,17 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
 
         // Diffusion descriptors
         diffusionDescriptorsForm = new GroupDynamicForm(getConstants().codelistDiffusionDescriptors());
+        RelatedResourceListItem replaceToCodelists = new RelatedResourceListItem(CodelistDS.REPLACE_TO_CODELISTS, getConstants().codelistReplaceToCodelists(), false);
+        ViewTextItem replacedByCodelist = new ViewTextItem(CodelistDS.REPLACED_BY_CODELIST, getConstants().codelistReplacedByCodelist());
         ViewTextItem accessType = new ViewTextItem(CodelistDS.ACCESS_TYPE, getConstants().codelistAccessType());
-        ViewTextItem replacedBy = new ViewTextItem(CodelistDS.REPLACED_BY_VERSION, getConstants().maintainableArtefactReplacedByVersion());
+        ViewTextItem replacedByVersion = new ViewTextItem(CodelistDS.REPLACED_BY_VERSION, getConstants().maintainableArtefactReplacedByVersion());
         ViewTextItem replaceTo = new ViewTextItem(CodelistDS.REPLACE_TO_VERSION, getConstants().maintainableArtefactReplaceToVersion());
         ViewTextItem validFrom = new ViewTextItem(CodelistDS.VALID_FROM, getConstants().maintainableArtefactValidFrom());
         ViewTextItem validTo = new ViewTextItem(CodelistDS.VALID_TO, getConstants().maintainableArtefactValidTo());
         ViewTextItem externalPublicationFailed = new ViewTextItem(CodelistDS.IS_EXTERNAL_PUBLICATION_FAILED, getConstants().lifeCycleExternalPublicationFailed());
         ViewTextItem externalPublicationFailedDate = new ViewTextItem(CodelistDS.EXTERNAL_PUBLICATION_FAILED_DATE, getConstants().lifeCycleExternalPublicationFailedDate());
-        diffusionDescriptorsForm.setFields(accessType, replacedBy, replaceTo, validFrom, validTo, externalPublicationFailed, externalPublicationFailedDate);
+        diffusionDescriptorsForm.setFields(replaceToCodelists, replacedByCodelist, accessType, replacedByVersion, replaceTo, validFrom, validTo, externalPublicationFailed,
+                externalPublicationFailedDate);
 
         // Version responsibility
         versionResponsibilityForm = new GroupDynamicForm(getConstants().lifeCycleVersionResponsibility());
@@ -438,15 +452,18 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
 
         // Diffusion descriptors
         diffusionDescriptorsEditionForm = new GroupDynamicForm(getConstants().codelistDiffusionDescriptors());
+        RelatedResourceListItem replaceToCodelists = createReplaceToCodelistsItem(CodelistDS.REPLACE_TO_CODELISTS, getConstants().codelistReplaceToCodelists());
+        ViewTextItem replacedByCodelist = new ViewTextItem(CodelistDS.REPLACED_BY_CODELIST, getConstants().codelistReplacedByCodelist());
         CustomSelectItem accessType = new CustomSelectItem(CodelistDS.ACCESS_TYPE, getConstants().codelistAccessType());
         accessType.setValueMap(CommonUtils.getAccessTypeHashMap());
-        ViewTextItem replacedBy = new ViewTextItem(CodelistDS.REPLACED_BY_VERSION, getConstants().maintainableArtefactReplacedByVersion());
+        ViewTextItem replacedByVersion = new ViewTextItem(CodelistDS.REPLACED_BY_VERSION, getConstants().maintainableArtefactReplacedByVersion());
         ViewTextItem replaceTo = new ViewTextItem(CodelistDS.REPLACE_TO_VERSION, getConstants().maintainableArtefactReplaceToVersion());
         ViewTextItem validFrom = new ViewTextItem(CodelistDS.VALID_FROM, getConstants().maintainableArtefactValidFrom());
         ViewTextItem validTo = new ViewTextItem(CodelistDS.VALID_TO, getConstants().maintainableArtefactValidTo());
         ViewTextItem externalPublicationFailed = new ViewTextItem(CodelistDS.IS_EXTERNAL_PUBLICATION_FAILED, getConstants().lifeCycleExternalPublicationFailed());
         ViewTextItem externalPublicationFailedDate = new ViewTextItem(CodelistDS.EXTERNAL_PUBLICATION_FAILED_DATE, getConstants().lifeCycleExternalPublicationFailedDate());
-        diffusionDescriptorsEditionForm.setFields(accessType, replacedBy, replaceTo, validFrom, validTo, externalPublicationFailed, externalPublicationFailedDate);
+        diffusionDescriptorsEditionForm.setFields(replaceToCodelists, replacedByCodelist, accessType, replacedByVersion, replaceTo, validFrom, validTo, externalPublicationFailed,
+                externalPublicationFailedDate);
 
         // Version responsibility
         versionResponsibilityEditionForm = new GroupDynamicForm(getConstants().lifeCycleVersionResponsibility());
@@ -512,6 +529,8 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         productionDescriptorsForm.setValue(CodelistDS.PROC_STATUS, org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(codelistDto.getLifeCycle().getProcStatus()));
 
         // Diffusion descriptors
+        diffusionDescriptorsForm.setValue(CodelistDS.REPLACED_BY_CODELIST, org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(codelistDto.getReplacedByCodelist()));
+        ((RelatedResourceListItem) diffusionDescriptorsForm.getItem(CodelistDS.REPLACE_TO_CODELISTS)).setRelatedResources(codelistDto.getReplaceToCodelists());
         diffusionDescriptorsForm.setValue(CodelistDS.ACCESS_TYPE, CommonUtils.getAccessTypeName(codelistDto.getAccessType()));
         diffusionDescriptorsForm.setValue(CodelistDS.REPLACED_BY_VERSION, codelistDto.getReplacedByVersion());
         diffusionDescriptorsForm.setValue(CodelistDS.REPLACE_TO_VERSION, codelistDto.getReplaceToVersion());
@@ -568,6 +587,8 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         productionDescriptorsEditionForm.markForRedraw();
 
         // Diffusion descriptors
+        diffusionDescriptorsEditionForm.setValue(CodelistDS.REPLACED_BY_CODELIST, org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(codelistDto.getReplacedByCodelist()));
+        ((RelatedResourceListItem) diffusionDescriptorsEditionForm.getItem(CodelistDS.REPLACE_TO_CODELISTS)).setRelatedResources(codelistDto.getReplaceToCodelists());
         diffusionDescriptorsEditionForm.setValue(CodelistDS.ACCESS_TYPE, codelistDto.getAccessType() != null ? codelistDto.getAccessType().name() : StringUtils.EMPTY);
         diffusionDescriptorsEditionForm.setValue(CodelistDS.REPLACED_BY_VERSION, codelistDto.getReplacedByVersion());
         diffusionDescriptorsEditionForm.setValue(CodelistDS.REPLACE_TO_VERSION, codelistDto.getReplaceToVersion());
@@ -611,6 +632,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
                 .getValueAsString(CodelistDS.FAMILY)) : null);
 
         // Diffusion descriptors
+        codelistDto.setReplaceToCodelists(((RelatedResourceListItem) diffusionDescriptorsEditionForm.getItem(CodelistDS.REPLACE_TO_CODELISTS)).getSelectedRelatedResources());
         codelistDto.setAccessType(!StringUtils.isBlank(diffusionDescriptorsEditionForm.getValueAsString(CodelistDS.ACCESS_TYPE)) ? AccessTypeEnum.valueOf(diffusionDescriptorsEditionForm
                 .getValueAsString(CodelistDS.ACCESS_TYPE)) : null);
 
@@ -627,13 +649,13 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
     private SearchViewTextItem createFamilyItem(String name, String title) {
         final int FIRST_RESULST = 0;
         final int MAX_RESULTS = 8;
-        SearchViewTextItem extendsItem = new SearchViewTextItem(name, title);
-        extendsItem.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
+        SearchViewTextItem familyItem = new SearchViewTextItem(name, title);
+        familyItem.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
 
             @Override
             public void onFormItemClick(FormItemIconClickEvent event) {
 
-                searchFamilyWindow = new SearchRelatedResourceWindow(getConstants().codelistSelection(), MAX_RESULTS, new PaginatedAction() {
+                searchFamilyWindow = new SearchRelatedResourceWindow(getConstants().codelistFamilySelection(), MAX_RESULTS, new PaginatedAction() {
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults) {
@@ -666,6 +688,52 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
                 });
             }
         });
-        return extendsItem;
+        return familyItem;
+    }
+
+    private RelatedResourceListItem createReplaceToCodelistsItem(String name, String title) {
+        final int FIRST_RESULST = 0;
+        final int MAX_RESULTS = 8;
+
+        RelatedResourceListItem replaceToItem = new RelatedResourceListItem(name, title, true);
+        replaceToItem.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
+
+            @Override
+            public void onFormItemClick(FormItemIconClickEvent arg0) {
+                searchReplaceToCodelistsWindow = new SearchMultipleRelatedResourceWindow(getConstants().codelistsSelection(), MAX_RESULTS, new PaginatedAction() {
+
+                    @Override
+                    public void retrieveResultSet(int firstResult, int maxResults) {
+                        getUiHandlers().retrieveCodelistsThatCanBeReplaced(firstResult, maxResults, searchReplaceToCodelistsWindow.getRelatedResourceCriteria());
+                    }
+                });
+
+                // Load the list codelists that can be replaced
+                getUiHandlers().retrieveCodelistsThatCanBeReplaced(FIRST_RESULST, MAX_RESULTS, null);
+
+                // Set the selected codelists
+                List<RelatedResourceDto> selectedCodelists = ((RelatedResourceListItem) diffusionDescriptorsEditionForm.getItem(CodelistDS.REPLACE_TO_CODELISTS)).getRelatedResourceDtos();
+                searchReplaceToCodelistsWindow.setTargetRelatedResources(selectedCodelists);
+
+                searchReplaceToCodelistsWindow.setSearchAction(new SearchPaginatedAction() {
+
+                    @Override
+                    public void retrieveResultSet(int firstResult, int maxResults, String criteria) {
+                        getUiHandlers().retrieveCodelistsThatCanBeReplaced(firstResult, maxResults, criteria);
+                    }
+                });
+                searchReplaceToCodelistsWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
+
+                    @Override
+                    public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent arg0) {
+                        List<RelatedResourceDto> selectedCodelists = searchReplaceToCodelistsWindow.getSelectedRelatedResources();
+                        searchReplaceToCodelistsWindow.markForDestroy();
+                        // Set selected codelists in form
+                        ((RelatedResourceListItem) diffusionDescriptorsEditionForm.getItem(CodelistDS.REPLACE_TO_CODELISTS)).setRelatedResources(selectedCodelists);
+                    }
+                });
+            }
+        });
+        return replaceToItem;
     }
 }

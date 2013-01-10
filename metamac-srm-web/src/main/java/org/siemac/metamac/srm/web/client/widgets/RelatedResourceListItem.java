@@ -73,7 +73,7 @@ public class RelatedResourceListItem extends BaseListItem {
         return selectedRelatedResourceDtos;
     }
 
-    public List<String> getRelatedResourceUrns() {
+    public List<String> getSelectedRelatedResourceUrns() {
         List<String> urns = new ArrayList<String>();
         ListGridRecord[] records = listGrid.getRecords();
         if (records != null) {
@@ -83,5 +83,17 @@ public class RelatedResourceListItem extends BaseListItem {
             }
         }
         return urns;
+    }
+
+    public List<RelatedResourceDto> getSelectedRelatedResources() {
+        List<RelatedResourceDto> relatedResources = new ArrayList<RelatedResourceDto>();
+        ListGridRecord[] records = listGrid.getRecords();
+        if (records != null) {
+            for (ListGridRecord record : records) {
+                RelatedResourceRecord relatedResourceRecord = (RelatedResourceRecord) record;
+                relatedResources.add(relatedResourceRecord.getRelatedResourceDto());
+            }
+        }
+        return relatedResources;
     }
 }

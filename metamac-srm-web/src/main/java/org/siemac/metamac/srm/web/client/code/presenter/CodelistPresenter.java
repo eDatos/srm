@@ -32,6 +32,8 @@ import org.siemac.metamac.srm.web.shared.code.GetCodelistFamiliesResult;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistResult;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistVersionsAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistVersionsResult;
+import org.siemac.metamac.srm.web.shared.code.GetCodelistsAction;
+import org.siemac.metamac.srm.web.shared.code.GetCodelistsResult;
 import org.siemac.metamac.srm.web.shared.code.GetCodesByCodelistAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodesByCodelistResult;
 import org.siemac.metamac.srm.web.shared.code.SaveCodeAction;
@@ -98,6 +100,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
         void setCodes(List<ItemHierarchyDto> codeDtos);
 
         void setFamilies(List<RelatedResourceDto> families, int firstResult, int totalResults);
+        void setCodelistsToReplace(List<RelatedResourceDto> codelists, int firstResult, int totalResults);
     }
 
     @ContentSlot
@@ -396,6 +399,23 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
             public void onWaitSuccess(GetCodelistFamiliesResult result) {
                 List<RelatedResourceDto> families = RelatedResourceUtils.getRelatedResourceDtosFromCodelistFamilyDtos(result.getFamilies());
                 getView().setFamilies(families, result.getFirstResultOut(), result.getTotalResults());
+            }
+        });
+    }
+
+    @Override
+    public void retrieveCodelistsThatCanBeReplaced(int firstResult, int maxResults, String criteria) {
+        // The codelists that can be replaced should be externally published
+        dispatcher.execute(new GetCodelistsAction(firstResult, maxResults, criteria, ProcStatusEnum.EXTERNALLY_PUBLISHED), new WaitingAsyncCallback<GetCodelistsResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistErrorRetrieveList()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetCodelistsResult result) {
+                List<RelatedResourceDto> codelists = RelatedResourceUtils.getRelatedResourceDtosFromCodelistDtos(result.getCodelists());
+                getView().setCodelistsToReplace(codelists, result.getFirstResultOut(), result.getTotalResults());
             }
         });
     }
