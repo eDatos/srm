@@ -632,7 +632,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
     }
 
     private RelatedResourceListItem createRolesItem(String name, String title) {
-        final int FIRST_RESULST = 0;
+        final int FIRST_RESULT = 0;
         final int MAX_RESULTS = 8;
 
         RelatedResourceListItem rolesItem = new RelatedResourceListItem(name, title, true);
@@ -650,14 +650,14 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
                         });
 
                 // Load the list of concepts and concept schemes that can be roles
-                getUiHandlers().retrieveConceptsThatCanBeRole(FIRST_RESULST, MAX_RESULTS, null, null);
-                getUiHandlers().retrieveConceptSchemesWithConceptsThatCanBeRole(FIRST_RESULST, SrmWebConstants.NO_LIMIT_IN_PAGINATION);
+                getUiHandlers().retrieveConceptsThatCanBeRole(FIRST_RESULT, MAX_RESULTS, null, null);
+                getUiHandlers().retrieveConceptSchemesWithConceptsThatCanBeRole(FIRST_RESULT, SrmWebConstants.NO_LIMIT_IN_PAGINATION);
 
                 searchRolesWindow.getInitialSelectionItem().addChangedHandler(new ChangedHandler() {
 
                     @Override
                     public void onChanged(ChangedEvent event) {
-                        getUiHandlers().retrieveConceptsThatCanBeRole(FIRST_RESULST, MAX_RESULTS, searchRolesWindow.getRelatedResourceCriteria(), searchRolesWindow.getIntialSelectionValue());
+                        getUiHandlers().retrieveConceptsThatCanBeRole(FIRST_RESULT, MAX_RESULTS, searchRolesWindow.getRelatedResourceCriteria(), searchRolesWindow.getIntialSelectionValue());
                     }
                 });
 

@@ -85,4 +85,12 @@ public class RelatedResourceUtils {
         relatedResourceDto.setUrn(urn);
         return relatedResourceDto;
     }
+
+    public static List<String> getUrnsFromRelatedResourceDtos(List<RelatedResourceDto> relatedResourceDtos) {
+        List<String> urns = new ArrayList<String>();
+        for (RelatedResourceDto relatedResourceDto : relatedResourceDtos) {
+            urns.add(relatedResourceDto.getUrn());
+        }
+        return urns;
+    }
 }

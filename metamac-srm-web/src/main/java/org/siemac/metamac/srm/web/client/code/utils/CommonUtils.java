@@ -1,10 +1,15 @@
 package org.siemac.metamac.srm.web.client.code.utils;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
+import org.siemac.metamac.srm.web.client.code.model.record.CodelistRecord;
+
+import com.smartgwt.client.widgets.grid.ListGridRecord;
 
 public class CommonUtils {
 
@@ -24,5 +29,14 @@ public class CommonUtils {
 
     public static String getAccessTypeName(AccessTypeEnum accessTypeEnum) {
         return accessTypeEnum != null ? MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().accessTypeEnum() + accessTypeEnum.name()) : null;
+    }
+
+    public static List<String> getUrnsFromSelectedCodelists(ListGridRecord[] records) {
+        List<String> urns = new ArrayList<String>();
+        for (ListGridRecord record : records) {
+            CodelistRecord codelistRecord = (CodelistRecord) record;
+            urns.add(codelistRecord.getUrn());
+        }
+        return urns;
     }
 }

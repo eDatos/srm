@@ -75,7 +75,7 @@ public class GetCodelistsActionHandler extends SecurityActionHandler<GetCodelist
         // Codelist family restriction
         if (StringUtils.isNotBlank(action.getCodelistFamilyUrn())) {
             MetamacCriteriaPropertyRestriction familyRestriction = new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.CODELIST_FAMILY_URN.name(),
-                    action.getProcStatus(), OperationType.EQ);
+                    action.getCodelistFamilyUrn(), OperationType.EQ);
             restriction.getRestrictions().add(familyRestriction);
         }
 

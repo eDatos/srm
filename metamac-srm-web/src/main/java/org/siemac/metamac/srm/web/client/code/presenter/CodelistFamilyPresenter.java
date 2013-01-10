@@ -3,6 +3,8 @@ package org.siemac.metamac.srm.web.client.code.presenter;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
+import java.util.List;
+
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
@@ -15,6 +17,8 @@ import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
+import org.siemac.metamac.srm.web.shared.code.AddCodelistsToCodelistFamilyAction;
+import org.siemac.metamac.srm.web.shared.code.AddCodelistsToCodelistFamilyResult;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistFamilyAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistFamilyResult;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistsAction;
@@ -53,8 +57,6 @@ public class CodelistFamilyPresenter extends Presenter<CodelistFamilyPresenter.C
     private final DispatchAsync           dispatcher;
     private final PlaceManager            placeManager;
 
-    private CodelistFamilyDto             codelistFamilyDto;
-
     private CodesToolStripPresenterWidget codesToolStripPresenterWidget;
 
     @TitleFunction
@@ -72,6 +74,7 @@ public class CodelistFamilyPresenter extends Presenter<CodelistFamilyPresenter.C
 
         void setCodelistFamily(CodelistFamilyDto codelistFamilyDto);
         void setCodelists(GetCodelistsResult result);
+        void setCodelistsOfFamily(GetCodelistsResult result);
     }
 
     @ContentSlot
@@ -119,6 +122,7 @@ public class CodelistFamilyPresenter extends Presenter<CodelistFamilyPresenter.C
         // TODO Family URN
         String urn = "urn:" + identifier;
         retrieveCodelistFamilyByUrn(urn);
+        retrieveCodelistsByFamily(CODELIST_LIST_FIRST_RESULT, CODELIST_LIST_MAX_RESULTS, null, urn);
     }
 
     @Override
@@ -131,8 +135,22 @@ public class CodelistFamilyPresenter extends Presenter<CodelistFamilyPresenter.C
             }
             @Override
             public void onWaitSuccess(GetCodelistFamilyResult result) {
-                codelistFamilyDto = result.getCodelistFamilyDto();
-                getView().setCodelistFamily(codelistFamilyDto);
+                getView().setCodelistFamily(result.getCodelistFamilyDto());
+            }
+        });
+    }
+
+    @Override
+    public void retrieveCodelists(int firstResult, int maxResults, String criteria) {
+        dispatcher.execute(new GetCodelistsAction(firstResult, maxResults, criteria, null, null), new WaitingAsyncCallback<GetCodelistsResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(CodelistFamilyPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistErrorRetrieveList()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetCodelistsResult result) {
+                getView().setCodelists(result);
             }
         });
     }
@@ -143,11 +161,11 @@ public class CodelistFamilyPresenter extends Presenter<CodelistFamilyPresenter.C
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CodelistFamilyPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistFamilyErrorRetrieveList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fire(CodelistFamilyPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistErrorRetrieveList()), MessageTypeEnum.ERROR);
             }
             @Override
             public void onWaitSuccess(GetCodelistsResult result) {
-                getView().setCodelists(result);
+                getView().setCodelistsOfFamily(result);
             }
         });
     }
@@ -167,11 +185,33 @@ public class CodelistFamilyPresenter extends Presenter<CodelistFamilyPresenter.C
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(CodelistFamilyPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistFamilyErrorSave()), MessageTypeEnum.ERROR);
             }
-
             @Override
             public void onWaitSuccess(SaveCodelistFamilyResult result) {
+                ShowMessageEvent.fire(CodelistFamilyPresenter.this, ErrorUtils.getMessageList(getMessages().codelistFamilySaved()), MessageTypeEnum.SUCCESS);
                 getView().setCodelistFamily(result.getSavedCodelistFamilyDto());
             }
         });
+    }
+
+    @Override
+    public void addCodelistsToFamily(List<String> codelistUrns, final String familyUrn) {
+        dispatcher.execute(new AddCodelistsToCodelistFamilyAction(codelistUrns, familyUrn), new WaitingAsyncCallback<AddCodelistsToCodelistFamilyResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(CodelistFamilyPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistErrorAddingToFamily()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(AddCodelistsToCodelistFamilyResult result) {
+                ShowMessageEvent.fire(CodelistFamilyPresenter.this, ErrorUtils.getMessageList(getMessages().codelistsAddedToFamily()), MessageTypeEnum.SUCCESS);
+                retrieveCodelistsByFamily(CODELIST_LIST_FIRST_RESULT, CODELIST_LIST_MAX_RESULTS, null, familyUrn);
+            }
+        });
+    }
+
+    @Override
+    public void removeCodelistsFromFamily(List<String> codelistUrns, String familyUrn) {
+        // TODO Auto-generated method stub
+
     }
 }

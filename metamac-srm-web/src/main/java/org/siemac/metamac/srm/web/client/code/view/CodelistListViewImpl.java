@@ -3,7 +3,6 @@ package org.siemac.metamac.srm.web.client.code.view;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 import static org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
@@ -12,6 +11,7 @@ import org.siemac.metamac.srm.web.client.code.model.ds.CodelistDS;
 import org.siemac.metamac.srm.web.client.code.model.record.CodelistRecord;
 import org.siemac.metamac.srm.web.client.code.presenter.CodelistListPresenter;
 import org.siemac.metamac.srm.web.client.code.utils.CodesClientSecurityUtils;
+import org.siemac.metamac.srm.web.client.code.utils.CommonUtils;
 import org.siemac.metamac.srm.web.client.code.view.handlers.CodelistListUiHandlers;
 import org.siemac.metamac.srm.web.client.code.widgets.NewCodelistWindow;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistsResult;
@@ -102,7 +102,7 @@ public class CodelistListViewImpl extends ViewWithUiHandlers<CodelistListUiHandl
 
             @Override
             public void onClick(ClickEvent event) {
-                getUiHandlers().cancelValidity(getUrnsFromSelectedCodelists());
+                getUiHandlers().cancelValidity(CommonUtils.getUrnsFromSelectedCodelists(codelistsList.getListGrid().getSelectedRecords()));
             }
         });
 
@@ -180,7 +180,7 @@ public class CodelistListViewImpl extends ViewWithUiHandlers<CodelistListUiHandl
 
             @Override
             public void onClick(ClickEvent event) {
-                getUiHandlers().deleteCodelists(getUrnsFromSelectedCodelists());
+                getUiHandlers().deleteCodelists(CommonUtils.getUrnsFromSelectedCodelists(codelistsList.getListGrid().getSelectedRecords()));
                 deleteConfirmationWindow.hide();
             }
         });
@@ -222,15 +222,6 @@ public class CodelistListViewImpl extends ViewWithUiHandlers<CodelistListUiHandl
     @Override
     public void clearSearchSection() {
         searchSectionStack.reset();
-    }
-
-    private List<String> getUrnsFromSelectedCodelists() {
-        List<String> urns = new ArrayList<String>();
-        for (ListGridRecord record : codelistsList.getListGrid().getSelectedRecords()) {
-            CodelistRecord schemeRecord = (CodelistRecord) record;
-            urns.add(schemeRecord.getUrn());
-        }
-        return urns;
     }
 
     private void showListGridDeleteButton(ListGridRecord[] records) {
