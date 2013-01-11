@@ -26,6 +26,7 @@ Application CodesMetamac {
 			> @CodelistFamilyRepository
 			> @VariableFamilyRepository
 			> @VariableRepository
+			> @VariableElementRepository
 
 			// CODELISTS
 
@@ -121,6 +122,21 @@ Application CodesMetamac {
     		addVariablesToVariableFamily(List<String> variableUrn, String familyUrn) throws MetamacException;
     		"Removes a variable from a family"
     		removeVariableFromVariableFamily(String variableUrn, String familyUrn) throws MetamacException;
+
+    		// VARIABLE ELEMENTS
+    		
+    		"Creates variable element"
+			@VariableElement createVariableElement(@VariableElement variableElement) throws MetamacException;
+			"Updates variable element"
+			@VariableElement updateVariableElement(@VariableElement variableElement) throws MetamacException;
+    		"Retrieves variable element by urn"
+    		@VariableElement retrieveVariableElementByUrn(String urn) throws MetamacException;
+    		"Finds variable elements by criteria"
+    		PagedResult<@VariableElement> findVariableElementsByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
+			"Deletes variable element"
+    		deleteVariableElement(String urn) throws MetamacException;
+    		"Adds variable element to a variable"
+    		addVariableElementsToVariable(List<String> variableElementUrn, String variableUrn) throws MetamacException;
 		}
 
 		// ----------------------------------------------------------------
@@ -163,6 +179,9 @@ Application CodesMetamac {
 		Entity CodeMetamac extends @Code {
 			databaseTable="TB_M_CODES"
 			hint="idSequence=M_CODES"
+			
+			"Variable element"
+			- @VariableElement variableElement nullable cascade="none" databaseColumn="VARIABLE_ELEMENT_FK"  <-> codes;
 			
 			Repository CodeMetamacRepository {
 				findByQuery(String query, Map<String, Object> parameters, int maxResult);
@@ -234,6 +253,8 @@ Application CodesMetamac {
 			- Bag<@CodelistVersionMetamac> codelists cascade="none" fetch="lazy" inverse <-> variable;
 			"Concepts"
 			- Bag<@ConceptMetamac> concepts cascade="none" fetch="lazy" <-> variable;
+			"Elements"
+			- Bag<@VariableElement> variableElements cascade="none" fetch="lazy" <-> variable;
 			"Last update to optimistic locking"
 			DateTimeTZ updateDate nullable;
 			
@@ -243,6 +264,35 @@ Application CodesMetamac {
 				findByQuery(String query, Map<String, Object> parameters, int maxResult);
 				findByCondition(PagingParameter pagingParameter);
 				@Variable findByUrn(String urn);
+			}
+		}
+		
+		Entity VariableElement {
+			databaseTable="TB_M_VARIABLE_ELEMENTS"
+			hint="idSequence=M_VARIABLE_ELEMENTS"
+			
+			"Nameable artefact"
+			- @NameableArtefact nameableArtefact databaseColumn="NAMEABLE_ARTEFACT_FK" not nullable cascade="all";
+			"Short name"
+			- @InternationalString shortName not nullable cascade="all" databaseColumn="SHORT_NAME_FK";
+			"Date from which the variable element is valid"
+			DateTimeTZ validFrom nullable;
+			"Date from which variable element is superceded"
+			DateTimeTZ validTo nullable;
+			
+			"Variable"
+			- @Variable variable not nullable cascade="none" databaseColumn="VARIABLE_FK"  <-> variableElements;
+			"Concepts"
+			- Bag<@CodeMetamac> codes cascade="none" fetch="lazy" <-> variableElement;
+			"Last update to optimistic locking"
+			DateTimeTZ updateDate nullable;
+			
+			Repository VariableElementRepository {
+				save;
+				delete;
+				findByQuery(String query, Map<String, Object> parameters, int maxResult);
+				findByCondition(PagingParameter pagingParameter);
+				@VariableElement findByUrn(String urn);
 			}
 		}
 

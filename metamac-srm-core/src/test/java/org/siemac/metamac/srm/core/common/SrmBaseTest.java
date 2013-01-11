@@ -221,6 +221,11 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
     protected static final String VARIABLE_5                                  = "urn:VARIABLE_05";
     protected static final String VARIABLE_6                                  = "urn:VARIABLE_06";
 
+    // Variable elements
+    protected static final String VARIABLE_2_VARIABLE_ELEMENT_1               = "urn:VARIABLE_02_VARIABLE_ELEMENT_01";
+    protected static final String VARIABLE_2_VARIABLE_ELEMENT_2               = "urn:VARIABLE_02_VARIABLE_ELEMENT_02";
+    protected static final String VARIABLE_5_VARIABLE_ELEMENT_1               = "urn:VARIABLE_05_VARIABLE_ELEMENT_01";
+
     // Other
     protected static final String NOT_EXISTS                                  = "not-exists";
 
@@ -337,6 +342,7 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
         tables.add("TB_M_CODELIST_FAMILIES");
         tables.add("TB_M_VARIABLES");
         tables.add("TB_M_CODELISTS_VERSIONS");
+        tables.add("TB_M_VARIABLE_ELEMENTS");
         tables.add("TB_M_CODES");
         tables.add("TB_M_CONCEPT_RELATED");
         tables.add("TB_M_CONCEPT_ROLES");

@@ -15,6 +15,7 @@ import static org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsse
 import static org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsserts.assertEqualsCodelistFamily;
 import static org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsserts.assertEqualsCodelistWithoutLifeCycleMetadata;
 import static org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsserts.assertEqualsVariable;
+import static org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsserts.assertEqualsVariableElement;
 import static org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsserts.assertEqualsVariableFamily;
 
 import java.util.ArrayList;
@@ -44,6 +45,8 @@ import org.siemac.metamac.srm.core.code.domain.CodelistFamilyProperties;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacProperties;
 import org.siemac.metamac.srm.core.code.domain.Variable;
+import org.siemac.metamac.srm.core.code.domain.VariableElement;
+import org.siemac.metamac.srm.core.code.domain.VariableElementProperties;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.domain.VariableFamilyProperties;
 import org.siemac.metamac.srm.core.code.domain.VariableProperties;
@@ -2730,7 +2733,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             fail("variable can not be deleted");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEquals(ServiceExceptionType.VARIABLE_WITH_CODELISTS.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(ServiceExceptionType.VARIABLE_WITH_RELATIONS.getCode(), e.getExceptionItems().get(0).getCode());
             assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
             assertEquals(variableUrn, e.getExceptionItems().get(0).getMessageParameters()[0]);
             assertTrue(CODELIST_6_V1.equals(e.getExceptionItems().get(0).getMessageParameters()[1]) || CODELIST_1_V1.equals(e.getExceptionItems().get(0).getMessageParameters()[1]));
@@ -2754,7 +2757,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             fail("variable can not be deleted");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.VARIABLE_WITH_CONCEPTS, 2, new String[]{variableUrn, CONCEPT_SCHEME_1_V1_CONCEPT_1}, e.getExceptionItems().get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.VARIABLE_WITH_RELATIONS, 2, new String[]{variableUrn, CONCEPT_SCHEME_1_V1_CONCEPT_1}, e.getExceptionItems().get(0));
         }
     }
 
@@ -2805,6 +2808,320 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
         // Removing the variable from the family again has no consequences
         codesService.removeVariableFromVariableFamily(ctx, variableUrn, variableFamilyUrn);
+    }
+
+    // ------------------------------------------------------------------------------------
+    // VARIABLE ELEMENTS
+    // ------------------------------------------------------------------------------------
+
+    @Override
+    @Test
+    public void testCreateVariableElement() throws Exception {
+
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        Variable variable = codesService.retrieveVariableByUrn(ctx, VARIABLE_1);
+        VariableElement variableElement = CodesMetamacDoMocks.mockVariableElement(variable);
+
+        // Create
+        VariableElement variableElementCreated = codesService.createVariableElement(ctx, variableElement);
+        String urn = variableElementCreated.getNameableArtefact().getUrn();
+
+        // Validate
+        VariableElement variableElementRetrieved = codesService.retrieveVariableElementByUrn(ctx, urn);
+
+        assertEquals(ctx.getUserId(), variableElementRetrieved.getCreatedBy());
+        assertEquals(getServiceContextAdministrador().getUserId(), variableElementRetrieved.getCreatedBy());
+        assertTrue(DateUtils.isSameDay(new Date(), variableElementRetrieved.getCreatedDate().toDate()));
+        assertEquals(getServiceContextAdministrador().getUserId(), variableElementRetrieved.getLastUpdatedBy());
+        assertTrue(DateUtils.isSameDay(new Date(), variableElementRetrieved.getLastUpdated().toDate()));
+
+        // Check that the variableElement was added to variable
+        variable = codesService.retrieveVariableByUrn(ctx, VARIABLE_1);
+        assertTrue(SrmServiceUtils.isVariableElementInList(urn, variable.getVariableElements()));
+
+        assertEqualsVariableElement(variableElement, variableElementRetrieved);
+    }
+
+    @Test
+    public void testCreateVariableElementErrorWrongCode() throws Exception {
+        Variable variable = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_1);
+        VariableElement variableElement = CodesMetamacDoMocks.mockVariableElement(variable);
+        variableElement.getNameableArtefact().setCode(" 0 - invalid identifier");
+        try {
+            codesService.createVariableElement(getServiceContextAdministrador(), variableElement);
+            fail("wrong code");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, 1, new String[]{ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_CODE}, e.getExceptionItems().get(0));
+        }
+    }
+
+    @Test
+    public void testCreateVariableElementErrorDuplicatedCode() throws Exception {
+        Variable variable = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_2);
+        VariableElement variableElement = CodesMetamacDoMocks.mockVariableElement(variable);
+        variableElement.getNameableArtefact().setCode("VARIABLE_02_VARIABLE_ELEMENT_01");
+        try {
+            codesService.createVariableElement(getServiceContextAdministrador(), variableElement);
+            fail("duplicated code");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_URN_DUPLICATED, 1, new String[]{VARIABLE_2_VARIABLE_ELEMENT_1}, e.getExceptionItems().get(0));
+        }
+    }
+
+    @Test
+    public void testCreateVariableElementErrorIncorrectMetadata() throws Exception {
+        VariableElement variableElement = new VariableElement();
+        variableElement.setVariable(null);
+        variableElement.setNameableArtefact(new NameableArtefact());
+        variableElement.setValidFrom(null);
+        variableElement.setValidTo(new DateTime());
+        try {
+            codesService.createVariableElement(getServiceContextAdministrador(), variableElement);
+            fail("metadata required");
+        } catch (MetamacException e) {
+            assertEquals(5, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.VARIABLE_ELEMENT_VARIABLE}, e.getExceptionItems().get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME}, e.getExceptionItems().get(1));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_CODE}, e.getExceptionItems().get(2));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.VARIABLE_ELEMENT_SHORT_NAME}, e.getExceptionItems().get(3));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, 1, new String[]{ServiceExceptionParameters.VARIABLE_ELEMENT_VALID_TO}, e.getExceptionItems().get(4));
+        }
+    }
+
+    @Override
+    @Test
+    public void testUpdateVariableElement() throws Exception {
+        VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_2_VARIABLE_ELEMENT_1);
+        variableElement.getNameableArtefact().setCode("code-" + MetamacMocks.mockString(10));
+        variableElement.getNameableArtefact().setIsCodeUpdated(Boolean.TRUE);
+        variableElement.getNameableArtefact().setName(BaseDoMocks.mockInternationalString());
+        variableElement.setShortName(BaseDoMocks.mockInternationalString());
+        variableElement.setValidFrom(MetamacMocks.mockDateTime());
+        variableElement.setValidTo(null);
+        assertEquals(VARIABLE_2, variableElement.getVariable().getNameableArtefact().getUrn());
+        variableElement.setVariable(codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_1));
+
+        VariableElement variableElementUpdated = codesService.updateVariableElement(getServiceContextAdministrador(), variableElement);
+
+        assertEqualsVariableElement(variableElement, variableElementUpdated);
+    }
+
+    @Test
+    public void testUpdateVariableElementErrorWrongCode() throws Exception {
+        VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_2_VARIABLE_ELEMENT_1);
+        variableElement.getNameableArtefact().setCode(" 0 - invalid identifier");
+        variableElement.getNameableArtefact().setIsCodeUpdated(Boolean.TRUE);
+        try {
+            codesService.updateVariableElement(getServiceContextAdministrador(), variableElement);
+            fail("wrong code");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, 1, new String[]{ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_CODE}, e.getExceptionItems().get(0));
+        }
+    }
+
+    @Test
+    public void testUpdateVariableElementErrorDuplicatedCode() throws Exception {
+        VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_2_VARIABLE_ELEMENT_1);
+        variableElement.getNameableArtefact().setCode("VARIABLE_02_VARIABLE_ELEMENT_02");
+        variableElement.getNameableArtefact().setIsCodeUpdated(Boolean.TRUE);
+        try {
+            codesService.updateVariableElement(getServiceContextAdministrador(), variableElement);
+            fail("duplicated code");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_URN_DUPLICATED, 1, new String[]{VARIABLE_2_VARIABLE_ELEMENT_2}, e.getExceptionItems().get(0));
+        }
+    }
+
+    @Test
+    public void testUpdateVariableElementErrorIncorrectMetadata() throws Exception {
+        VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_2_VARIABLE_ELEMENT_1);
+        variableElement.setVariable(null);
+        variableElement.getNameableArtefact().setCode(null);
+        variableElement.getNameableArtefact().setIsCodeUpdated(null);
+        variableElement.getNameableArtefact().setName(null);
+        variableElement.setShortName(null);
+        variableElement.setValidFrom(null);
+        variableElement.setValidTo(new DateTime());
+        try {
+            codesService.updateVariableElement(getServiceContextAdministrador(), variableElement);
+            fail("metadata required");
+        } catch (MetamacException e) {
+            assertEquals(6, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.VARIABLE_ELEMENT_VARIABLE}, e.getExceptionItems().get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME}, e.getExceptionItems().get(1));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_IS_CODE_UPDATED}, e.getExceptionItems().get(2));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_CODE}, e.getExceptionItems().get(3));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.VARIABLE_ELEMENT_SHORT_NAME}, e.getExceptionItems().get(4));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, 1, new String[]{ServiceExceptionParameters.VARIABLE_ELEMENT_VALID_TO}, e.getExceptionItems().get(5));
+        }
+    }
+
+    @Override
+    @Test
+    public void testRetrieveVariableElementByUrn() throws Exception {
+        String urn = VARIABLE_2_VARIABLE_ELEMENT_1;
+        VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), urn);
+
+        assertEquals(urn, variableElement.getNameableArtefact().getUrn());
+        assertEquals("VARIABLE_02_VARIABLE_ELEMENT_01", variableElement.getNameableArtefact().getCode());
+        assertEqualsInternationalString(variableElement.getNameableArtefact().getName(), "es", "Nombre 2-1", "en", "Name 2-1");
+        assertEqualsInternationalString(variableElement.getShortName(), "es", "Nombre corto 2-1", "en", "Short name 2-1");
+        assertEqualsDate(new DateTime(2011, 01, 02, 02, 02, 04, 0, new DateTimeZoneBuilder().toDateTimeZone("Europe/London", false)), variableElement.getValidFrom());
+        assertEqualsDate(new DateTime(2012, 01, 02, 02, 02, 04, 0, new DateTimeZoneBuilder().toDateTimeZone("Europe/London", false)), variableElement.getValidTo());
+        assertEquals(VARIABLE_2, variableElement.getVariable().getNameableArtefact().getUrn());
+
+        // TODO replaceTo, replacedBy
+
+        assertEquals("variable-element-21", variableElement.getUuid());
+        assertEquals("user1", variableElement.getCreatedBy());
+        assertEquals("user2", variableElement.getLastUpdatedBy());
+        assertEquals(Long.valueOf(1), variableElement.getVersion());
+    }
+
+    @Test
+    public void testRetrieveVariableElementByUrnErrorNotFound() throws Exception {
+        String urn = NOT_EXISTS;
+        try {
+            codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), urn);
+            fail("not found");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND, 1, new String[]{urn}, e.getExceptionItems().get(0));
+        }
+    }
+
+    @Test
+    public void testRetrieveVariableElementByUrnErrorParameterRequired() throws Exception {
+        String urn = null;
+        try {
+            codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), urn);
+            fail("parameter required");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.PARAMETER_REQUIRED, 1, new String[]{ServiceExceptionParameters.URN}, e.getExceptionItems().get(0));
+        }
+    }
+
+    @Override
+    @Test
+    public void testFindVariableElementsByCondition() throws Exception {
+        // Find all
+        {
+            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(VariableElement.class).orderBy(VariableElementProperties.nameableArtefact().urn()).build();
+            PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
+            PagedResult<VariableElement> result = codesService.findVariableElementsByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
+
+            assertEquals(3, result.getTotalRows());
+            int i = 0;
+            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_1, result.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_2, result.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(VARIABLE_5_VARIABLE_ELEMENT_1, result.getValues().get(i++).getNameableArtefact().getUrn());
+        }
+        // Find by urn
+        {
+            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(VariableElement.class).withProperty(VariableElementProperties.nameableArtefact().urn())
+                    .like(VARIABLE_2_VARIABLE_ELEMENT_1).orderBy(VariableElementProperties.nameableArtefact().urn()).build();
+            PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
+            PagedResult<VariableElement> result = codesService.findVariableElementsByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
+            assertEquals(1, result.getTotalRows());
+            int i = 0;
+            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_1, result.getValues().get(i++).getNameableArtefact().getUrn());
+        }
+    }
+
+    @Override
+    @Test
+    public void testDeleteVariableElement() throws Exception {
+
+        String variableElementUrn = VARIABLE_2_VARIABLE_ELEMENT_1;
+        VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), variableElementUrn);
+        String variableUrn = variableElement.getVariable().getNameableArtefact().getUrn();
+
+        codesService.deleteVariableElement(getServiceContextAdministrador(), variableElementUrn);
+
+        // Retrieve deleted variableElement
+        try {
+            codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), variableElementUrn);
+            fail("variableElement already deleted");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND, 1, new String[]{variableElementUrn}, e.getExceptionItems().get(0));
+        }
+        // Try to delete again the deleted variableElement
+        try {
+            codesService.deleteVariableElement(getServiceContextAdministrador(), variableElementUrn);
+            fail("variableElement already deleted");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND, 1, new String[]{variableElementUrn}, e.getExceptionItems().get(0));
+        }
+
+        // Check that the variable has not been deleted
+        codesService.retrieveVariableByUrn(getServiceContextAdministrador(), variableUrn);
+    }
+
+    @Test
+    public void testDeleteVariableElementErrorWithCodes() throws Exception {
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        String variableElementUrn = VARIABLE_2_VARIABLE_ELEMENT_2;
+        String codeUrn = CODELIST_1_V1_CODE_1;
+        VariableElement variableElement = codesService.retrieveVariableElementByUrn(ctx, variableElementUrn);
+        assertEquals(1, variableElement.getCodes().size());
+        assertEquals(codeUrn, variableElement.getCodes().get(0).getNameableArtefact().getUrn());
+
+        // Delete variableElement
+        try {
+            codesService.deleteVariableElement(ctx, variableElementUrn);
+            fail("variableElement can not be deleted");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.VARIABLE_ELEMENT_WITH_RELATIONS.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(variableElementUrn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals(codeUrn, e.getExceptionItems().get(0).getMessageParameters()[1]);
+        }
+
+        // Check that the code has not been deleted
+        codesService.retrieveCodeByUrn(ctx, codeUrn);
+    }
+
+    @Override
+    @Test
+    public void testAddVariableElementsToVariable() throws Exception {
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        String variable2variableElement2Urn = VARIABLE_2_VARIABLE_ELEMENT_2;
+        String variable5variableElement1Urn = VARIABLE_5_VARIABLE_ELEMENT_1;
+        String variableUrn = VARIABLE_1;
+
+        Variable variable = codesService.retrieveVariableByUrn(ctx, variableUrn);
+        assertFalse(SrmServiceUtils.isVariableElementInList(variable2variableElement2Urn, variable.getVariableElements()));
+        assertFalse(SrmServiceUtils.isVariableElementInList(variable5variableElement1Urn, variable.getVariableElements()));
+
+        VariableElement variable2variableElement2 = codesService.retrieveVariableElementByUrn(ctx, variable2variableElement2Urn);
+        assertEquals(VARIABLE_2, variable2variableElement2.getVariable().getNameableArtefact().getUrn());
+        VariableElement variable5variableElement1 = codesService.retrieveVariableElementByUrn(ctx, variable5variableElement1Urn);
+        assertEquals(VARIABLE_5, variable5variableElement1.getVariable().getNameableArtefact().getUrn());
+
+        // Update variable of variable elements
+        List<String> variableElementsUrn = Arrays.asList(variable2variableElement2Urn, variable5variableElement1Urn);
+        codesService.addVariableElementsToVariable(ctx, variableElementsUrn, variableUrn);
+
+        // Validate
+        variable = codesService.retrieveVariableByUrn(ctx, variableUrn);
+        assertTrue(SrmServiceUtils.isVariableElementInList(variable2variableElement2Urn, variable.getVariableElements()));
+        assertTrue(SrmServiceUtils.isVariableElementInList(variable5variableElement1Urn, variable.getVariableElements()));
+
+        variable2variableElement2 = codesService.retrieveVariableElementByUrn(ctx, variable2variableElement2Urn);
+        assertEquals(variableUrn, variable2variableElement2.getVariable().getNameableArtefact().getUrn());
+        variable5variableElement1 = codesService.retrieveVariableElementByUrn(ctx, variable5variableElement1Urn);
+        assertEquals(variableUrn, variable5variableElement1.getVariable().getNameableArtefact().getUrn());
     }
 
     @Override

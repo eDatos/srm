@@ -17,6 +17,7 @@ import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.Variable;
+import org.siemac.metamac.srm.core.code.domain.VariableElement;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.serviceimpl.utils.CodesMetamacInvocationValidator;
 import org.siemac.metamac.srm.core.common.LifeCycle;
@@ -525,14 +526,18 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         Variable variableToDelete = retrieveVariableByUrn(urn);
 
-        // Check variable has not concepts neither codelists
+        // Check variable has not concepts, variable elements neither codelists (in exception, say only one)
         if (CollectionUtils.isNotEmpty(variableToDelete.getCodelists())) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_WITH_CODELISTS)
-                    .withMessageParameters(variableToDelete.getNameableArtefact().getUrn(), variableToDelete.getCodelists().get(0).getMaintainableArtefact().getUrn()).build(); // say only one codelist
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_WITH_RELATIONS)
+                    .withMessageParameters(variableToDelete.getNameableArtefact().getUrn(), variableToDelete.getCodelists().get(0).getMaintainableArtefact().getUrn()).build();
         }
         if (CollectionUtils.isNotEmpty(variableToDelete.getConcepts())) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_WITH_CONCEPTS)
-                    .withMessageParameters(variableToDelete.getNameableArtefact().getUrn(), variableToDelete.getConcepts().get(0).getNameableArtefact().getUrn()).build(); // say only one concept
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_WITH_RELATIONS)
+                    .withMessageParameters(variableToDelete.getNameableArtefact().getUrn(), variableToDelete.getConcepts().get(0).getNameableArtefact().getUrn()).build();
+        }
+        if (CollectionUtils.isNotEmpty(variableToDelete.getVariableElements())) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_WITH_RELATIONS)
+                    .withMessageParameters(variableToDelete.getNameableArtefact().getUrn(), variableToDelete.getVariableElements().get(0).getNameableArtefact().getUrn()).build();
         }
         // TODO ¿Se puede eliminar una variable que reemplazó o fue reemplazada por otra?
 
@@ -579,6 +584,96 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         // Remove variable from family
         family.removeVariable(variable);
         getVariableFamilyRepository().save(family);
+    }
+
+    // ------------------------------------------------------------------------------------
+    // VARIABLE ELEMENTS
+    // ------------------------------------------------------------------------------------
+
+    @Override
+    public VariableElement createVariableElement(ServiceContext ctx, VariableElement variableElement) throws MetamacException {
+
+        // Validation
+        CodesMetamacInvocationValidator.checkCreateVariableElement(variableElement, null);
+        setVariableElementUrnUnique(variableElement);
+
+        // Create
+        variableElement = getVariableElementRepository().save(variableElement);
+        return variableElement;
+    }
+
+    @Override
+    public VariableElement updateVariableElement(ServiceContext ctx, VariableElement variableElement) throws MetamacException {
+        // Validation
+        CodesMetamacInvocationValidator.checkUpdateVariableElement(variableElement, null);
+
+        // If code has been changed, update URN
+        if (variableElement.getNameableArtefact().getIsCodeUpdated()) {
+            setVariableElementUrnUnique(variableElement);
+        }
+
+        // Update
+        return getVariableElementRepository().save(variableElement);
+    }
+
+    @Override
+    public VariableElement retrieveVariableElementByUrn(ServiceContext ctx, String urn) throws MetamacException {
+        // Validation
+        CodesMetamacInvocationValidator.checkRetrieveByUrn(urn);
+
+        // Retrieve
+        VariableElement variableElement = retrieveVariableElementByUrn(urn);
+        return variableElement;
+    }
+
+    @Override
+    public PagedResult<VariableElement> findVariableElementsByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
+        // Validation
+        CodesMetamacInvocationValidator.checkFindByCondition(conditions, pagingParameter);
+
+        // Find
+        if (conditions == null) {
+            conditions = ConditionalCriteriaBuilder.criteriaFor(VariableElement.class).distinctRoot().build();
+        }
+        PagedResult<VariableElement> variableElementPagedResult = getVariableElementRepository().findByCondition(conditions, pagingParameter);
+        return variableElementPagedResult;
+    }
+
+    @Override
+    public void deleteVariableElement(ServiceContext ctx, String urn) throws MetamacException {
+        // Validation
+        CodesMetamacInvocationValidator.checkDeleteArtefact(urn);
+
+        VariableElement variableElementToDelete = retrieveVariableElementByUrn(urn);
+
+        // Check variableElement has not codes
+        if (CollectionUtils.isNotEmpty(variableElementToDelete.getCodes())) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_ELEMENT_WITH_RELATIONS)
+                    .withMessageParameters(variableElementToDelete.getNameableArtefact().getUrn(), variableElementToDelete.getCodes().get(0).getNameableArtefact().getUrn()).build(); // say one
+        }
+        // TODO Un elemento de variable puede eliminarse si no tiene operaciones de segregación o fusión
+        // TODO ¿Se puede eliminar una variableElement que reemplazó o fue reemplazada por otra?
+
+        // Delete
+        getVariableElementRepository().delete(variableElementToDelete);
+    }
+    @Override
+    public void addVariableElementsToVariable(ServiceContext ctx, List<String> variableElementsUrn, String variableUrn) throws MetamacException {
+        // Validation
+        CodesMetamacInvocationValidator.checkAddVariableElementsToVariable(variableElementsUrn, variableUrn, null);
+
+        Variable variable = retrieveVariableByUrn(variableUrn);
+        for (String variableElementUrn : variableElementsUrn) {
+            VariableElement variableElement = retrieveVariableElementByUrn(variableElementUrn);
+
+            // Do not add the variableElement if it has been associated with the variable previously
+            if (SrmServiceUtils.isVariableElementInList(variableElement.getNameableArtefact().getUrn(), variable.getVariableElements())) {
+                continue;
+            }
+            // Add variableElement to variable
+            variable.addVariableElement(variableElement);
+        }
+        getVariableRepository().save(variable);
     }
 
     // ------------------------------------------------------------------------------------
@@ -685,6 +780,14 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         return variable;
     }
 
+    private VariableElement retrieveVariableElementByUrn(String urn) throws MetamacException {
+        VariableElement variableElement = getVariableElementRepository().findByUrn(urn);
+        if (variableElement == null) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(urn).build();
+        }
+        return variableElement;
+    }
+
     private void checkCodelistCanBeModified(CodelistVersionMetamac codelistVersion) throws MetamacException {
         SrmValidationUtils.checkArtefactCanBeModified(codelistVersion.getLifeCycleMetadata(), codelistVersion.getMaintainableArtefact().getUrn());
     }
@@ -720,5 +823,16 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         variable.getNameableArtefact().setUrn(urn);
         variable.getNameableArtefact().setUrnProvider(urn);
+    }
+
+    /**
+     * Generate urn, check it is unique and set to variable element. Set also urnProvider
+     */
+    private void setVariableElementUrnUnique(VariableElement variableElement) throws MetamacException {
+        String urn = GeneratorUrnUtils.generateVariableElementUrn(variableElement);
+        identifiableArtefactRepository.checkUrnUnique(urn, variableElement.getNameableArtefact().getId());
+
+        variableElement.getNameableArtefact().setUrn(urn);
+        variableElement.getNameableArtefact().setUrnProvider(urn);
     }
 }

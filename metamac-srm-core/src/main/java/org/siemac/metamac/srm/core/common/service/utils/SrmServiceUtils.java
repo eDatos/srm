@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.Variable;
+import org.siemac.metamac.srm.core.code.domain.VariableElement;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 
@@ -73,6 +74,18 @@ public class SrmServiceUtils {
     public static boolean isCodelistInList(String codelistUrn, List<CodelistVersionMetamac> codelists) {
         for (CodelistVersionMetamac codelist : codelists) {
             if (StringUtils.equals(codelistUrn, codelist.getMaintainableArtefact().getUrn())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns TRUE if the variable element with the URN variableElementUrn is in the variable elements list
+     */
+    public static boolean isVariableElementInList(String variableElementUrn, List<VariableElement> variableElements) {
+        for (VariableElement variableElement : variableElements) {
+            if (StringUtils.equals(variableElementUrn, variableElement.getNameableArtefact().getUrn())) {
                 return true;
             }
         }

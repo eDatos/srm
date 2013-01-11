@@ -11,6 +11,7 @@ import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.Variable;
+import org.siemac.metamac.srm.core.code.domain.VariableElement;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
@@ -108,8 +109,10 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
             exceptions = new ArrayList<MetamacExceptionItem>();
         }
 
+        if (codelistFamily != null) {
+            ValidationUtils.checkMetadataRequired(codelistFamily.getNameableArtefact().getUrn(), ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_URN, exceptions);
+        }
         checkCodelistFamily(codelistFamily, exceptions);
-
         ExceptionUtils.throwIfException(exceptions);
     }
 
@@ -162,6 +165,9 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
             exceptions = new ArrayList<MetamacExceptionItem>();
         }
 
+        if (variableFamily != null) {
+            ValidationUtils.checkMetadataRequired(variableFamily.getNameableArtefact().getUrn(), ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_URN, exceptions);
+        }
         checkVariableFamily(variableFamily, exceptions);
 
         ExceptionUtils.throwIfException(exceptions);
@@ -193,7 +199,9 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
         if (exceptions == null) {
             exceptions = new ArrayList<MetamacExceptionItem>();
         }
-
+        if (variable != null) {
+            ValidationUtils.checkMetadataRequired(variable.getNameableArtefact().getUrn(), ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_URN, exceptions);
+        }
         checkVariable(variable, exceptions);
 
         ExceptionUtils.throwIfException(exceptions);
@@ -234,5 +242,68 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
 
         // Check dates: validFrom value must be lower than validTo value
         ValidationUtils.checkDateTimeBeforeDateTime(variable.getValidFrom(), variable.getValidTo(), ServiceExceptionParameters.VARIABLE_VALID_TO, exceptions);
+    }
+
+    // ---------------------------------------------------------------------------
+    // VARIABLE ELEMENTS
+    // ---------------------------------------------------------------------------
+
+    public static void checkCreateVariableElement(VariableElement variableElement, List<MetamacExceptionItem> exceptions) throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+
+        checkVariableElement(variableElement, exceptions);
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
+
+    public static void checkUpdateVariableElement(VariableElement variableElement, List<MetamacExceptionItem> exceptions) throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+        if (variableElement != null) {
+            ValidationUtils.checkMetadataRequired(variableElement.getNameableArtefact().getUrn(), ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_URN, exceptions);
+        }
+        checkVariableElement(variableElement, exceptions);
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
+
+    public static void checkAddVariableElementsToVariable(List<String> variableElementsUrn, String variableUrn, List<MetamacExceptionItem> exceptions) throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+
+        ValidationUtils.checkParameterRequired(variableElementsUrn, ServiceExceptionParameters.URN, exceptions);
+        ValidationUtils.checkParameterRequired(variableUrn, ServiceExceptionParameters.URN, exceptions);
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
+
+    public static void checkRemoveVariableElementFromVariable(String variableElementUrn, String variableUrn, List<MetamacExceptionItem> exceptions) throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+
+        ValidationUtils.checkParameterRequired(variableElementUrn, ServiceExceptionParameters.URN, exceptions);
+        ValidationUtils.checkParameterRequired(variableUrn, ServiceExceptionParameters.URN, exceptions);
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
+
+    private static void checkVariableElement(VariableElement variableElement, List<MetamacExceptionItem> exceptions) {
+        ValidationUtils.checkParameterRequired(variableElement, ServiceExceptionParameters.VARIABLE_ELEMENT, exceptions);
+        if (variableElement == null) {
+            return;
+        }
+
+        // Check required metadata
+        ValidationUtils.checkMetadataRequired(variableElement.getVariable(), ServiceExceptionParameters.VARIABLE_ELEMENT_VARIABLE, exceptions);
+        checkNameableArtefact(variableElement.getNameableArtefact(), exceptions);
+        ValidationUtils.checkMetadataRequired(variableElement.getShortName(), ServiceExceptionParameters.VARIABLE_ELEMENT_SHORT_NAME, exceptions);
+
+        // Check dates: validFrom value must be lower than validTo value
+        ValidationUtils.checkDateTimeBeforeDateTime(variableElement.getValidFrom(), variableElement.getValidTo(), ServiceExceptionParameters.VARIABLE_ELEMENT_VALID_TO, exceptions);
     }
 }

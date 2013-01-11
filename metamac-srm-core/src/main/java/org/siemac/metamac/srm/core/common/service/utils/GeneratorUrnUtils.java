@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.core.common.service.utils;
 
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
 import org.siemac.metamac.srm.core.code.domain.Variable;
+import org.siemac.metamac.srm.core.code.domain.VariableElement;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 
 public class GeneratorUrnUtils {
@@ -27,4 +28,10 @@ public class GeneratorUrnUtils {
         return "urn:" + variable.getNameableArtefact().getCode();
     }
 
+    /**
+     * TODO Generate variable element urn
+     */
+    public static String generateVariableElementUrn(VariableElement variableElement) {
+        return "urn:" + variableElement.getNameableArtefact().getCode();
+    }
 }
