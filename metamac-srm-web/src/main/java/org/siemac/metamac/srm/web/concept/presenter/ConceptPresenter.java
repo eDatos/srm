@@ -92,7 +92,6 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     public interface ConceptView extends View, HasUiHandlers<ConceptUiHandlers> {
 
         void setConcept(ConceptMetamacDto conceptDto, List<RelatedResourceDto> roles, List<ConceptMetamacDto> relatedConcepts);
-        void setConceptExtended(ConceptMetamacDto conceptDto);
         void setConceptList(ConceptSchemeMetamacDto conceptSchemeMetamacDto, List<ItemHierarchyDto> itemHierarchyDtos);
 
         void setConceptTypes(List<ConceptTypeDto> conceptTypeDtos);
@@ -157,21 +156,6 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
             @Override
             public void onWaitSuccess(GetConceptResult result) {
                 getView().setConcept(result.getConceptDto(), result.getRoles(), result.getRelatedConcepts());
-            }
-        });
-    }
-
-    @Override
-    public void retrieveConceptExtended(String conceptUrn) {
-        dispatcher.execute(new GetConceptAction(conceptUrn), new WaitingAsyncCallback<GetConceptResult>() {
-
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptErrorRetrievingData()), MessageTypeEnum.ERROR);
-            }
-            @Override
-            public void onWaitSuccess(GetConceptResult result) {
-                getView().setConceptExtended(result.getConceptDto());
             }
         });
     }

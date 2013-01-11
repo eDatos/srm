@@ -29,6 +29,7 @@ import org.siemac.metamac.srm.web.concept.widgets.ConceptFacetForm;
 import org.siemac.metamac.srm.web.concept.widgets.ConceptsListItem;
 import org.siemac.metamac.srm.web.concept.widgets.ConceptsTreeGrid;
 import org.siemac.metamac.srm.web.concept.widgets.ConceptsTreeWindow;
+import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.utils.ExternalItemUtils;
 import org.siemac.metamac.web.common.client.utils.FormItemUtils;
@@ -381,11 +382,6 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         // Load value lists
         getUiHandlers().retrieveConceptTypes();
 
-        // Load concept extended (if exists)
-        if (conceptDto.getConceptExtendsUrn() != null) {
-            getUiHandlers().retrieveConceptExtended(conceptDto.getConceptExtendsUrn());
-        }
-
         // Set title
         String defaultLocalized = InternationalStringUtils.getLocalisedString(conceptDto.getName());
         String title = defaultLocalized != null ? defaultLocalized : StringUtils.EMPTY;
@@ -466,7 +462,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         productionDescriptorsForm.setValue(ConceptDS.DERIVATION, RecordUtils.getInternationalStringRecord(conceptDto.getDerivation()));
 
         // Relation between concepts
-        relationBetweenConceptsForm.setValue(ConceptDS.EXTENDS_VIEW, StringUtils.EMPTY); // extends value set in setExtendsConcept method
+        relationBetweenConceptsForm.setValue(ConceptDS.EXTENDS_VIEW, org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(conceptDto.getConceptExtends()));
         ((ConceptsListItem) relationBetweenConceptsForm.getItem(ConceptDS.RELATED_CONCEPTS)).setDataConcepts(relatedConcepts);
 
         // Legal acts
@@ -515,8 +511,9 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         productionDescriptorsEditionForm.setValue(ConceptDS.DERIVATION, RecordUtils.getInternationalStringRecord(conceptDto.getDerivation()));
 
         // Relation between concepts
-        relationBetweenConceptsEditionForm.setValue(ConceptDS.EXTENDS, StringUtils.EMPTY); // extends value set in setExtendsConcept method
-        relationBetweenConceptsEditionForm.setValue(ConceptDS.EXTENDS_VIEW, StringUtils.EMPTY); // extends value set in setExtendsConcept method
+        relationBetweenConceptsEditionForm.setValue(ConceptDS.EXTENDS_VIEW, org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(conceptDto.getConceptExtends()));
+        relationBetweenConceptsEditionForm.setValue(ConceptDS.EXTENDS, conceptDto.getConceptExtends() != null ? conceptDto.getConceptExtends().getUrn() : StringUtils.EMPTY);
+
         ((ConceptsListItem) relationBetweenConceptsEditionForm.getItem(ConceptDS.RELATED_CONCEPTS)).setDataConcepts(relatedConcepts);
 
         // Legal acts
@@ -569,8 +566,8 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         conceptDto.setDerivation((InternationalStringDto) productionDescriptorsEditionForm.getValue(ConceptDS.DERIVATION));
 
         // Relation between concepts
-        conceptDto.setConceptExtendsUrn(StringUtils.isBlank(relationBetweenConceptsEditionForm.getValueAsString(ConceptDS.EXTENDS)) ? null : relationBetweenConceptsEditionForm
-                .getValueAsString(ConceptDS.EXTENDS));
+        conceptDto.setConceptExtends(StringUtils.isBlank(relationBetweenConceptsEditionForm.getValueAsString(ConceptDS.EXTENDS)) ? null : RelatedResourceUtils
+                .createRelatedResourceDto(relationBetweenConceptsEditionForm.getValueAsString(ConceptDS.EXTENDS)));
         // Related concepts get in getRelatedConcepts method
 
         // Legal acts
@@ -614,13 +611,6 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         if (searchExtendsWindow != null) {
             searchExtendsWindow.getInitialSelectionItem().setValueMap(org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceHashMap(conceptSchemes));
         }
-    }
-
-    @Override
-    public void setConceptExtended(ConceptMetamacDto conceptDto) {
-        relationBetweenConceptsForm.setValue(ConceptDS.EXTENDS_VIEW, CommonWebUtils.getElementName(conceptDto.getCode(), conceptDto.getName()));
-        relationBetweenConceptsEditionForm.setValue(ConceptDS.EXTENDS_VIEW, CommonWebUtils.getElementName(conceptDto.getCode(), conceptDto.getName()));
-        relationBetweenConceptsEditionForm.setValue(ConceptDS.EXTENDS, conceptDto.getUrn());
     }
 
     private List<String> getRelatedConcepts() {
