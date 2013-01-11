@@ -19,15 +19,19 @@ import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.shared.code.DeleteVariablesAction;
 import org.siemac.metamac.srm.web.shared.code.DeleteVariablesResult;
+import org.siemac.metamac.srm.web.shared.code.GetVariableFamiliesAction;
+import org.siemac.metamac.srm.web.shared.code.GetVariableFamiliesResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesAction;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
 import org.siemac.metamac.srm.web.shared.code.SaveVariableAction;
 import org.siemac.metamac.srm.web.shared.code.SaveVariableResult;
+import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
@@ -50,6 +54,9 @@ public class VariableListPresenter extends Presenter<VariableListPresenter.Varia
 
     public final static int                           VARIABLE_LIST_FIRST_RESULT             = 0;
     public final static int                           VARIABLE_LIST_MAX_RESULTS              = 30;
+
+    public final static int                           FAMILY_LIST_FIRST_RESULT               = 0;
+    public final static int                           FAMILY_LIST_MAX_RESULTS                = 6;
 
     private final DispatchAsync                       dispatcher;
     private final PlaceManager                        placeManager;
@@ -76,6 +83,8 @@ public class VariableListPresenter extends Presenter<VariableListPresenter.Varia
 
         void setVariablePaginatedList(GetVariablesResult variablesPaginatedList);
         void clearSearchSection();
+
+        void setVariableFamilies(List<RelatedResourceDto> families, int firstResult, int totalResults);
     }
 
     @Inject
@@ -163,6 +172,21 @@ public class VariableListPresenter extends Presenter<VariableListPresenter.Varia
                 if (StringUtils.isBlank(criteria)) {
                     getView().clearSearchSection();
                 }
+            }
+        });
+    }
+
+    @Override
+    public void retrieveVariableFamilies(int firstResult, int maxResults, String criteria) {
+        dispatcher.execute(new GetVariableFamiliesAction(firstResult, maxResults, criteria), new WaitingAsyncCallback<GetVariableFamiliesResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(VariableListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().variableFamilyErrorRetrieveList()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetVariableFamiliesResult result) {
+                getView().setVariableFamilies(RelatedResourceUtils.getRelatedResourceDtosFromVariableFamilyDtos(result.getFamilies()), result.getFirstResultOut(), result.getTotalResults());
             }
         });
     }

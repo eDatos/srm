@@ -18,6 +18,7 @@ import org.siemac.metamac.web.common.client.widgets.PaginatedCheckListGrid;
 import org.siemac.metamac.web.common.client.widgets.SearchSectionStack;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
@@ -67,7 +68,9 @@ public class VariableListViewImpl extends ViewWithUiHandlers<VariableListUiHandl
 
             @Override
             public void onClick(ClickEvent event) {
-                newVariableWindow = new NewVariableWindow(getConstants().variableCreate());
+                newVariableWindow = new NewVariableWindow(getConstants().variableCreate(), getUiHandlers());
+                // Load families
+                getUiHandlers().retrieveVariableFamilies(VariableListPresenter.FAMILY_LIST_FIRST_RESULT, VariableListPresenter.FAMILY_LIST_MAX_RESULTS, null);
                 newVariableWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
 
                     @Override
@@ -198,6 +201,13 @@ public class VariableListViewImpl extends ViewWithUiHandlers<VariableListUiHandl
             records[index++] = org.siemac.metamac.srm.web.client.code.utils.RecordUtils.getVariableRecord(scheme);
         }
         variablesList.getListGrid().setData(records);
+    }
+
+    @Override
+    public void setVariableFamilies(List<RelatedResourceDto> families, int firstResult, int totalResults) {
+        if (newVariableWindow != null) {
+            newVariableWindow.setVariableFamilies(families, firstResult, totalResults);
+        }
     }
 
     @Override

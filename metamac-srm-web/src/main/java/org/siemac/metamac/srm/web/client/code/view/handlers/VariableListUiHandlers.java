@@ -12,4 +12,6 @@ public interface VariableListUiHandlers extends UiHandlers {
     void createVariable(VariableDto variableDto);
     void deleteVariables(List<String> urns);
     void retrieveVariables(int firstResult, int maxResults, String criteria);
+
+    void retrieveVariableFamilies(int firstResult, int maxResults, String criteria);
 }
