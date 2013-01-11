@@ -8,6 +8,7 @@ import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
+import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
 
 import com.arte.statistic.sdmx.srm.core.code.serviceapi.utils.CodesDtoMocks;
@@ -100,4 +101,27 @@ public class CodesMetamacDtoMocks {
         relatedResourceDto.setType(null);
         return relatedResourceDto;
     }
+
+    // -----------------------------------------------------------------------------------
+    // VARIABLE ELEMENTS
+    // -----------------------------------------------------------------------------------
+    public static VariableElementDto mockVariableElementDto() {
+        VariableElementDto variableElementDto = new VariableElementDto();
+        variableElementDto.setCode("code-" + MetamacMocks.mockString(10));
+        variableElementDto.setName(MetamacMocks.mockInternationalStringDto());
+        variableElementDto.setShortName(MetamacMocks.mockInternationalStringDto("es", "shortName" + MetamacMocks.mockString(10)));
+        variableElementDto.setValidFrom(new Date());
+        variableElementDto.setValidTo(new Date());
+        return variableElementDto;
+    }
+
+    public static RelatedResourceDto mockVariableElementRelatedResourceDto(String code, String urn) {
+        RelatedResourceDto relatedResourceDto = new RelatedResourceDto();
+        relatedResourceDto.setCode(code);
+        relatedResourceDto.setUrn(urn);
+        relatedResourceDto.setUrnProvider(urn);
+        relatedResourceDto.setType(null);
+        return relatedResourceDto;
+    }
+
 }

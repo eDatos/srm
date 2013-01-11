@@ -13,6 +13,8 @@ import org.siemac.metamac.srm.core.code.domain.CodelistFamilyRepository;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacRepository;
 import org.siemac.metamac.srm.core.code.domain.Variable;
+import org.siemac.metamac.srm.core.code.domain.VariableElement;
+import org.siemac.metamac.srm.core.code.domain.VariableElementRepository;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.domain.VariableFamilyRepository;
 import org.siemac.metamac.srm.core.code.domain.VariableRepository;
@@ -20,6 +22,7 @@ import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
+import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
@@ -48,6 +51,9 @@ public class CodesDto2DoMapperImpl implements CodesDto2DoMapper {
 
     @Autowired
     private VariableRepository                                             variableRepository;
+
+    @Autowired
+    private VariableElementRepository                                      variableElementRepository;
 
     @Override
     public CodelistVersionMetamac codelistDtoToDo(CodelistMetamacDto source) throws MetamacException {
@@ -202,6 +208,42 @@ public class CodesDto2DoMapperImpl implements CodesDto2DoMapper {
 
         return target;
     }
+
+    @Override
+    public VariableElement variableElementDtoToDo(VariableElementDto source) throws MetamacException {
+        if (source == null) {
+            return null;
+        }
+
+        // If exists, retrieves existing entity. Otherwise, creates new entity.
+        VariableElement target = null;
+        if (source.getUrn() == null) {
+            target = new VariableElement();
+        } else {
+            target = retrieveVariableElement(source.getUrn());
+            OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersionOptimisticLocking());
+        }
+
+        if (target.getId() == null) {
+            target.setNameableArtefact(new NameableArtefact());
+        }
+
+        target.setShortName(dto2DoMapperSdmxSrm.internationalStringToEntity(source.getShortName(), target.getShortName(), ServiceExceptionParameters.VARIABLE_SHORT_NAME));
+        target.setValidFrom(CoreCommonUtil.transformDateToDateTime(source.getValidFrom()));
+        target.setValidTo(CoreCommonUtil.transformDateToDateTime(source.getValidTo()));
+        if (source.getVariable() != null) {
+            target.setVariable(retrieveVariable(source.getVariable().getUrn()));
+        }
+        // TODO replaceTo, replacedBy
+
+        target.setNameableArtefact(dto2DoMapperSdmxSrm.nameableArtefactToEntity(source, target.getNameableArtefact()));
+
+        // Optimistic locking: Update "update date" attribute to force update to root entity, to increment "version" attribute
+        target.setUpdateDate(new DateTime());
+
+        return target;
+    }
+
     private CodelistVersionMetamac retrieveCodelist(String urn) throws MetamacException {
         CodelistVersionMetamac target = codelistVersionMetamacRepository.findByUrn(urn);
         if (target == null) {
@@ -240,6 +282,15 @@ public class CodesDto2DoMapperImpl implements CodesDto2DoMapper {
 
     private Variable retrieveVariable(String urn) throws MetamacException {
         Variable target = variableRepository.findByUrn(urn);
+        if (target == null) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(urn).withLoggedLevel(ExceptionLevelEnum.ERROR)
+                    .build();
+        }
+        return target;
+    }
+
+    private VariableElement retrieveVariableElement(String urn) throws MetamacException {
+        VariableElement target = variableElementRepository.findByUrn(urn);
         if (target == null) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(urn).withLoggedLevel(ExceptionLevelEnum.ERROR)
                     .build();

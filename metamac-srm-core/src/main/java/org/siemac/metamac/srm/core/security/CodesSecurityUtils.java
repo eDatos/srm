@@ -11,38 +11,50 @@ public class CodesSecurityUtils extends SecurityUtils {
     // NOTE: Only to related entities. Security about codelists and codes is in ItemSecurityUtils
     //
 
-    public static void canRetrieveOrFindCodelistFamilyUrn(ServiceContext ctx) throws MetamacException {
-        if (!SharedCodesSecurityUtils.canRetrieveOrFindCodelistFamilyByUrn(getMetamacPrincipal(ctx))) {
+    public static void canRetrieveOrFindCodelistFamily(ServiceContext ctx) throws MetamacException {
+        if (!SharedCodesSecurityUtils.canRetrieveOrFindCodelistFamily(getMetamacPrincipal(ctx))) {
             throwExceptionIfOperationNotAllowed(ctx);
         }
     }
 
-    public static void canCrudCodelistFamilyUrn(ServiceContext ctx) throws MetamacException {
+    public static void canCrudCodelistFamily(ServiceContext ctx) throws MetamacException {
         if (!SharedCodesSecurityUtils.canCrudCodelistFamily(getMetamacPrincipal(ctx))) {
             throwExceptionIfOperationNotAllowed(ctx);
         }
     }
 
-    public static void canRetrieveOrFindVariableFamilyUrn(ServiceContext ctx) throws MetamacException {
-        if (!SharedCodesSecurityUtils.canRetrieveOrFindVariableFamilyByUrn(getMetamacPrincipal(ctx))) {
+    public static void canRetrieveOrFindVariableFamily(ServiceContext ctx) throws MetamacException {
+        if (!SharedCodesSecurityUtils.canRetrieveOrFindVariableFamily(getMetamacPrincipal(ctx))) {
             throwExceptionIfOperationNotAllowed(ctx);
         }
     }
 
-    public static void canCrudVariableFamilyUrn(ServiceContext ctx) throws MetamacException {
+    public static void canCrudVariableFamily(ServiceContext ctx) throws MetamacException {
         if (!SharedCodesSecurityUtils.canCrudVariableFamily(getMetamacPrincipal(ctx))) {
             throwExceptionIfOperationNotAllowed(ctx);
         }
     }
 
-    public static void canRetrieveOrFindVariableUrn(ServiceContext ctx) throws MetamacException {
-        if (!SharedCodesSecurityUtils.canRetrieveOrFindVariableByUrn(getMetamacPrincipal(ctx))) {
+    public static void canRetrieveOrFindVariable(ServiceContext ctx) throws MetamacException {
+        if (!SharedCodesSecurityUtils.canRetrieveOrFindVariable(getMetamacPrincipal(ctx))) {
             throwExceptionIfOperationNotAllowed(ctx);
         }
     }
 
-    public static void canCrudVariableUrn(ServiceContext ctx) throws MetamacException {
+    public static void canCrudVariable(ServiceContext ctx) throws MetamacException {
         if (!SharedCodesSecurityUtils.canCrudVariable(getMetamacPrincipal(ctx))) {
+            throwExceptionIfOperationNotAllowed(ctx);
+        }
+    }
+
+    public static void canRetrieveOrFindVariableElement(ServiceContext ctx) throws MetamacException {
+        if (!SharedCodesSecurityUtils.canRetrieveOrFindVariableElement(getMetamacPrincipal(ctx))) {
+            throwExceptionIfOperationNotAllowed(ctx);
+        }
+    }
+
+    public static void canCrudVariableElement(ServiceContext ctx) throws MetamacException {
+        if (!SharedCodesSecurityUtils.canCrudVariableElement(getMetamacPrincipal(ctx))) {
             throwExceptionIfOperationNotAllowed(ctx);
         }
     }

@@ -27,11 +27,13 @@ import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.Variable;
+import org.siemac.metamac.srm.core.code.domain.VariableElement;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
+import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
 import org.siemac.metamac.srm.core.code.mapper.CodesDo2DtoMapper;
 import org.siemac.metamac.srm.core.code.mapper.CodesDto2DoMapper;
@@ -833,7 +835,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public CodelistFamilyDto retrieveCodelistFamilyByUrn(ServiceContext ctx, String urn) throws MetamacException {
         // Security
-        CodesSecurityUtils.canRetrieveOrFindCodelistFamilyUrn(ctx);
+        CodesSecurityUtils.canRetrieveOrFindCodelistFamily(ctx);
 
         // Retrieve
         CodelistFamily codelistFamily = getCodesMetamacService().retrieveCodelistFamilyByUrn(ctx, urn);
@@ -846,7 +848,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public CodelistFamilyDto createCodelistFamily(ServiceContext ctx, CodelistFamilyDto codelistFamilyDto) throws MetamacException {
         // Security
-        CodesSecurityUtils.canCrudCodelistFamilyUrn(ctx);
+        CodesSecurityUtils.canCrudCodelistFamily(ctx);
 
         // Transform
         CodelistFamily codelistFamily = codesDto2DoMapper.codelistFamilyDtoToDo(codelistFamilyDto);
@@ -862,7 +864,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public CodelistFamilyDto updateCodelistFamily(ServiceContext ctx, CodelistFamilyDto codelistFamilyDto) throws MetamacException {
         // Security
-        CodesSecurityUtils.canCrudCodelistFamilyUrn(ctx);
+        CodesSecurityUtils.canCrudCodelistFamily(ctx);
 
         // Transform
         CodelistFamily codelistFamilyToUpdate = codesDto2DoMapper.codelistFamilyDtoToDo(codelistFamilyDto);
@@ -878,7 +880,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public void deleteCodelistFamily(ServiceContext ctx, String urn) throws MetamacException {
         // Security
-        CodesSecurityUtils.canCrudCodelistFamilyUrn(ctx); // TODO security CodelistFamily
+        CodesSecurityUtils.canCrudCodelistFamily(ctx); // TODO security CodelistFamily
 
         // Delete
         getCodesMetamacService().deleteCodelistFamily(ctx, urn);
@@ -903,7 +905,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public MetamacCriteriaResult<CodelistFamilyDto> findCodelistFamiliesByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
         // Security
-        CodesSecurityUtils.canRetrieveOrFindCodelistFamilyUrn(ctx);
+        CodesSecurityUtils.canRetrieveOrFindCodelistFamily(ctx);
 
         // Transform
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getCodelistFamilyCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
@@ -924,7 +926,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public VariableFamilyDto retrieveVariableFamilyByUrn(ServiceContext ctx, String urn) throws MetamacException {
         // Security
-        CodesSecurityUtils.canRetrieveOrFindVariableFamilyUrn(ctx);
+        CodesSecurityUtils.canRetrieveOrFindVariableFamily(ctx);
 
         // Retrieve
         VariableFamily variableFamily = getCodesMetamacService().retrieveVariableFamilyByUrn(ctx, urn);
@@ -937,7 +939,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public VariableFamilyDto createVariableFamily(ServiceContext ctx, VariableFamilyDto variableFamilyDto) throws MetamacException {
         // Security
-        CodesSecurityUtils.canCrudVariableFamilyUrn(ctx);
+        CodesSecurityUtils.canCrudVariableFamily(ctx);
 
         // Transform
         VariableFamily variableFamily = codesDto2DoMapper.variableFamilyDtoToDo(variableFamilyDto);
@@ -953,7 +955,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public VariableFamilyDto updateVariableFamily(ServiceContext ctx, VariableFamilyDto variableFamilyDto) throws MetamacException {
         // Security
-        CodesSecurityUtils.canCrudVariableFamilyUrn(ctx);
+        CodesSecurityUtils.canCrudVariableFamily(ctx);
 
         // Transform
         VariableFamily variableFamilyToUpdate = codesDto2DoMapper.variableFamilyDtoToDo(variableFamilyDto);
@@ -969,7 +971,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public void deleteVariableFamily(ServiceContext ctx, String urn) throws MetamacException {
         // Security
-        CodesSecurityUtils.canCrudVariableFamilyUrn(ctx);
+        CodesSecurityUtils.canCrudVariableFamily(ctx);
 
         // Delete
         getCodesMetamacService().deleteVariableFamily(ctx, urn);
@@ -978,7 +980,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public MetamacCriteriaResult<VariableFamilyDto> findVariableFamiliesByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
         // Security
-        CodesSecurityUtils.canRetrieveOrFindVariableFamilyUrn(ctx);
+        CodesSecurityUtils.canRetrieveOrFindVariableFamily(ctx);
 
         // Transform
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getVariableFamilyCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
@@ -999,7 +1001,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public VariableDto retrieveVariableByUrn(ServiceContext ctx, String urn) throws MetamacException {
         // Security
-        CodesSecurityUtils.canRetrieveOrFindVariableUrn(ctx);
+        CodesSecurityUtils.canRetrieveOrFindVariable(ctx);
 
         // Retrieve
         Variable variable = getCodesMetamacService().retrieveVariableByUrn(ctx, urn);
@@ -1012,7 +1014,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public VariableDto createVariable(ServiceContext ctx, VariableDto variableDto) throws MetamacException {
         // Security
-        CodesSecurityUtils.canCrudVariableUrn(ctx);
+        CodesSecurityUtils.canCrudVariable(ctx);
 
         // Transform
         Variable variable = codesDto2DoMapper.variableDtoToDo(variableDto);
@@ -1028,7 +1030,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public VariableDto updateVariable(ServiceContext ctx, VariableDto variableDto) throws MetamacException {
         // Security
-        CodesSecurityUtils.canCrudVariableUrn(ctx);
+        CodesSecurityUtils.canCrudVariable(ctx);
 
         // Transform
         Variable variableToUpdate = codesDto2DoMapper.variableDtoToDo(variableDto);
@@ -1044,7 +1046,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public void deleteVariable(ServiceContext ctx, String urn) throws MetamacException {
         // Security
-        CodesSecurityUtils.canCrudVariableUrn(ctx);
+        CodesSecurityUtils.canCrudVariable(ctx);
 
         // Delete
         getCodesMetamacService().deleteVariable(ctx, urn);
@@ -1053,7 +1055,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public MetamacCriteriaResult<VariableDto> findVariablesByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
         // Security
-        CodesSecurityUtils.canRetrieveOrFindVariableUrn(ctx);
+        CodesSecurityUtils.canRetrieveOrFindVariable(ctx);
 
         // Transform
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getVariableCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
@@ -1070,8 +1072,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public void addVariablesToVariableFamily(ServiceContext ctx, List<String> variableUrns, String variableFamilyUrn) throws MetamacException {
         // Security
-        CodesSecurityUtils.canCrudVariableFamilyUrn(ctx);
-        CodesSecurityUtils.canCrudVariableUrn(ctx);
+        CodesSecurityUtils.canCrudVariableFamily(ctx);
+        CodesSecurityUtils.canCrudVariable(ctx);
 
         // Add
         getCodesMetamacService().addVariablesToVariableFamily(ctx, variableUrns, variableFamilyUrn);
@@ -1080,11 +1082,97 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public void removeVariableFromVariableFamily(ServiceContext ctx, String variableUrn, String variableFamilyUrn) throws MetamacException {
         // Security
-        CodesSecurityUtils.canCrudVariableFamilyUrn(ctx);
-        CodesSecurityUtils.canCrudVariableUrn(ctx);
+        CodesSecurityUtils.canCrudVariableFamily(ctx);
+        CodesSecurityUtils.canCrudVariable(ctx);
 
         // Delete
         getCodesMetamacService().removeVariableFromVariableFamily(ctx, variableUrn, variableFamilyUrn);
+    }
+
+    // ------------------------------------------------------------------------
+    // VARIABLE ELEMENTS
+    // ------------------------------------------------------------------------
+
+    @Override
+    public VariableElementDto retrieveVariableElementByUrn(ServiceContext ctx, String urn) throws MetamacException {
+        // Security
+        CodesSecurityUtils.canRetrieveOrFindVariableElement(ctx);
+
+        // Retrieve
+        VariableElement variableElement = getCodesMetamacService().retrieveVariableElementByUrn(ctx, urn);
+
+        // Transform
+        VariableElementDto variableElementDto = codesDo2DtoMapper.variableElementDoToDto(variableElement);
+        return variableElementDto;
+    }
+
+    @Override
+    public VariableElementDto createVariableElement(ServiceContext ctx, VariableElementDto variableElementDto) throws MetamacException {
+        // Security
+        CodesSecurityUtils.canCrudVariableElement(ctx);
+
+        // Transform
+        VariableElement variableElement = codesDto2DoMapper.variableElementDtoToDo(variableElementDto);
+
+        // Create
+        VariableElement variableElementCreated = getCodesMetamacService().createVariableElement(ctx, variableElement);
+
+        // Transform to DTO
+        variableElementDto = codesDo2DtoMapper.variableElementDoToDto(variableElementCreated);
+        return variableElementDto;
+    }
+
+    @Override
+    public VariableElementDto updateVariableElement(ServiceContext ctx, VariableElementDto variableElementDto) throws MetamacException {
+        // Security
+        CodesSecurityUtils.canCrudVariableElement(ctx);
+
+        // Transform
+        VariableElement variableElementToUpdate = codesDto2DoMapper.variableElementDtoToDo(variableElementDto);
+
+        // Update
+        VariableElement variableElementUpdated = getCodesMetamacService().updateVariableElement(ctx, variableElementToUpdate);
+
+        // Transform to DTO
+        variableElementDto = codesDo2DtoMapper.variableElementDoToDto(variableElementUpdated);
+        return variableElementDto;
+    }
+
+    @Override
+    public void deleteVariableElement(ServiceContext ctx, String urn) throws MetamacException {
+        // Security
+        CodesSecurityUtils.canCrudVariableElement(ctx);
+
+        // Delete
+        getCodesMetamacService().deleteVariableElement(ctx, urn);
+    }
+
+    @Override
+    public MetamacCriteriaResult<VariableElementDto> findVariableElementsByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
+        // Security
+        CodesSecurityUtils.canRetrieveOrFindVariableElement(ctx);
+
+        // Transform
+        SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getVariableElementCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
+
+        // Find
+        PagedResult<VariableElement> result = getCodesMetamacService().findVariableElementsByCondition(ctx, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
+
+        // Transform
+        MetamacCriteriaResult<VariableElementDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultVariableElement(result,
+                sculptorCriteria.getPageSize());
+
+        return metamacCriteriaResult;
+    }
+
+    @Override
+    public void addVariableElementsToVariable(ServiceContext ctx, List<String> variableElementUrns, String variableUrn) throws MetamacException {
+        // Security
+        CodesSecurityUtils.canCrudVariable(ctx);
+        CodesSecurityUtils.canCrudVariableElement(ctx);
+
+        // Add
+        getCodesMetamacService().addVariableElementsToVariable(ctx, variableElementUrns, variableUrn);
     }
 
     /**************************************************************************

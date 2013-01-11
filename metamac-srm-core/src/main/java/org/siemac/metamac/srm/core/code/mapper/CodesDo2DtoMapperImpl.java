@@ -10,11 +10,13 @@ import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.Variable;
+import org.siemac.metamac.srm.core.code.domain.VariableElement;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
+import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -165,6 +167,43 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
 
     @Override
     public RelatedResourceDto variableDoToRelatedResourceDto(Variable source) {
+        if (source == null) {
+            return null;
+        }
+        RelatedResourceDto target = new RelatedResourceDto();
+        do2DtoMapperSdmxSrm.nameableArtefactDoToRelatedResourceDto(source.getNameableArtefact(), target);
+        target.setType(null);
+        return target;
+    }
+
+    @Override
+    public VariableElementDto variableElementDoToDto(VariableElement source) {
+        if (source == null) {
+            return null;
+        }
+        VariableElementDto target = new VariableElementDto();
+        target.setShortName(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getShortName()));
+        target.setValidFrom(CoreCommonUtil.transformDateTimeToDate(source.getValidFrom()));
+        target.setValidTo(CoreCommonUtil.transformDateTimeToDate(source.getValidTo()));
+        do2DtoMapperSdmxSrm.nameableArtefactToDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getNameableArtefact(), target);
+        target.setVariable(variableDoToRelatedResourceDto(source.getVariable()));
+        // TODO replaceTo, replacedBy
+
+        // Overwrite these values in the final DTO (if not, these values are taken from the AnnotableArtefact entity)
+        target.setId(source.getId());
+        target.setUuid(source.getUuid());
+        target.setVersion(source.getVersion());
+        target.setCreatedDate(CoreCommonUtil.transformDateTimeToDate(source.getCreatedDate()));
+        target.setCreatedBy(source.getCreatedBy());
+        target.setLastUpdated(CoreCommonUtil.transformDateTimeToDate(source.getLastUpdated()));
+        target.setLastUpdatedBy(source.getLastUpdatedBy());
+        target.setVersionOptimisticLocking(source.getVersion());
+
+        return target;
+    }
+
+    @Override
+    public RelatedResourceDto variableElementDoToRelatedResourceDto(VariableElement source) {
         if (source == null) {
             return null;
         }

@@ -505,7 +505,22 @@ Application SrmFacadeCore {
     		"Adds variables to a family"
     		addVariablesToVariableFamily(List<String> variableUrn, String familyUrn) throws MetamacException;
     		"Removes a variable from a family"
-    		removeVariableFromVariableFamily(String variableUrn, String familyUrn) throws MetamacException;    		
+    		removeVariableFromVariableFamily(String variableUrn, String familyUrn) throws MetamacException;
+    		
+    		
+    		"Creates variable element"
+			@VariableElementDto createVariableElement(@VariableElementDto variableElement) throws MetamacException;
+			"Updates variable element"
+			@VariableElementDto updateVariableElement(@VariableElementDto variableElement) throws MetamacException;
+    		"Retrieves variable element by urn"
+    		@VariableElementDto retrieveVariableElementByUrn(String urn) throws MetamacException;
+    		"Finds variable elements by criteria"
+    		MetamacCriteriaResult<@VariableElementDto> findVariableElementsByCondition(MetamacCriteria criteria) throws MetamacException;
+			"Deletes variable element"
+    		deleteVariableElement(String urn) throws MetamacException;
+    		"Adds variable elements to a variable"
+    		addVariableElementsToVariable(List<String> variableElementUrn, String variableUrn) throws MetamacException;
+    		    		
     		/**************************************************************************
 		     * COMMON
 		     **************************************************************************/

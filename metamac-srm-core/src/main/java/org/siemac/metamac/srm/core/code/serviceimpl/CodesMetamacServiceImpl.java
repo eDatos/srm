@@ -9,6 +9,7 @@ import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBui
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
+import org.joda.time.DateTime;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
@@ -301,6 +302,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         if (codelistFamily.getNameableArtefact().getIsCodeUpdated()) {
             setCodelistFamilyUrnUnique(codelistFamily);
         }
+        codelistFamily.setUpdateDate(new DateTime()); // Optimistic locking: Update "update date" attribute to force update to root entity, to increase attribute "version"
 
         // Update
         return getCodelistFamilyRepository().save(codelistFamily);
@@ -407,6 +409,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         if (variableFamily.getNameableArtefact().getIsCodeUpdated()) {
             setVariableFamilyUrnUnique(variableFamily);
         }
+        variableFamily.setUpdateDate(new DateTime()); // Optimistic locking: Update "update date" attribute to force update to root entity, to increase attribute "version"
 
         // Update
         return getVariableFamilyRepository().save(variableFamily);
@@ -427,11 +430,10 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         CodesMetamacInvocationValidator.checkDeleteArtefact(urn);
 
         VariableFamily variableFamilyToDelete = retrieveVariableFamilyByUrn(urn);
-        // Check variables of family to delete has more families, because family of variable is required
+        // Check variables of family to delete has more families, because family of variable is required (in exception, say only one variable)
         for (Variable variable : variableFamilyToDelete.getVariables()) {
             if (variable.getFamilies().size() == 1) {
-                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_FAMILY_DELETE_NOT_SUPPORTED_VARIABLE_WITHOUT_FAMILY)
-                        .withMessageParameters(urn, variable.getNameableArtefact().getUrn()).build(); // say only one variable
+                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_ONLY_IN_ONE_FAMILY).withMessageParameters(variable.getNameableArtefact().getUrn(), urn).build();
             }
         }
 
@@ -491,6 +493,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         if (variable.getNameableArtefact().getIsCodeUpdated()) {
             setVariableUrnUnique(variable);
         }
+        variable.setUpdateDate(new DateTime()); // Optimistic locking: Update "update date" attribute to force update to root entity, to increase attribute "version"
 
         // Update
         return getVariableRepository().save(variable);
@@ -576,6 +579,11 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         VariableFamily family = retrieveVariableFamilyByUrn(familyUrn);
         Variable variable = retrieveVariableByUrn(variableUrn);
 
+        // Check variable has more families
+        if (variable.getFamilies().size() == 1) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_ONLY_IN_ONE_FAMILY).withMessageParameters(variableUrn, familyUrn).build();
+        }
+
         // Do not remove the variable if it has not been associated with the family previously
         if (!SrmServiceUtils.isVariableInList(variable.getNameableArtefact().getUrn(), family.getVariables())) {
             return;
@@ -611,6 +619,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         if (variableElement.getNameableArtefact().getIsCodeUpdated()) {
             setVariableElementUrnUnique(variableElement);
         }
+        variableElement.setUpdateDate(new DateTime()); // Optimistic locking: Update "update date" attribute to force update to root entity, to increase attribute "version"
 
         // Update
         return getVariableElementRepository().save(variableElement);
