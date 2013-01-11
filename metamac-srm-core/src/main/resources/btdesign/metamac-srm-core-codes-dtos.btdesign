@@ -24,7 +24,7 @@ Application DtosMetamacCodeDomain {
 			"Codelist that replaces this one. Update in this metadata is ignored. Must be updated by replaceToCodelists metadata"
 			- @RelatedResourceDto replacedByCodelist nullable;
 			"Codelists that are replaced by this one"
-			List<RelatedResourceDto> replaceToCodelists nullable;
+			- List<@RelatedResourceDto> replaceToCodelists nullable;
 			"Family"
 			- @RelatedResourceDto family nullable;
 			"Variable"
@@ -48,10 +48,22 @@ Application DtosMetamacCodeDomain {
 		
 		"Dto for VariableFamilyDto"		
 		DataTransferObject VariableFamilyDto extends @NameableArtefactDto {
+			"Version to optimistic locking"
+			Long versionOptimisticLocking;
 		}
 		
 		"Dto for VariableDto"		
 		DataTransferObject VariableDto extends @NameableArtefactDto {
+			"Short name"
+			- @InternationalStringDto shortName nullable;
+            "Date from which the variable is valid"
+            JAVADATE validFrom nullable;
+            "Date from which variable is superceded"
+            JAVADATE validTo nullable;
+			"Families"
+			- List<@RelatedResourceDto> families not nullable;
+			"Version to optimistic locking"
+			Long versionOptimisticLocking;
 		}
 	}
 }

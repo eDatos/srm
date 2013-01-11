@@ -14,6 +14,8 @@ import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
+import org.siemac.metamac.srm.core.code.dto.VariableDto;
+import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
 
 import com.arte.statistic.sdmx.srm.core.code.serviceapi.utils.CodesAsserts;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
@@ -57,10 +59,7 @@ public class CodesMetamacAsserts extends CodesAsserts {
         assertEquals(expected.getIsRecommended(), actual.getIsRecommended());
         assertEquals(expected.getAccessType(), actual.getAccessType());
         BaseAsserts.assertEqualsRelatedResourceDto(expected.getReplacedByCodelist(), actual.getReplacedByCodelist());
-        assertEquals(expected.getReplaceToCodelists().size(), actual.getReplaceToCodelists().size());
-        for (int i = 0; i < expected.getReplaceToCodelists().size(); i++) {
-            BaseAsserts.assertEqualsRelatedResourceDto(expected.getReplaceToCodelists().get(i), actual.getReplaceToCodelists().get(i));
-        }
+        BaseAsserts.assertEqualsRelatedResourcesDto(expected.getReplaceToCodelists(), actual.getReplaceToCodelists());
         BaseAsserts.assertEqualsRelatedResourceDto(expected.getFamily(), actual.getFamily());
         BaseAsserts.assertEqualsRelatedResourceDto(expected.getVariable(), actual.getVariable());
         // SDMX
@@ -125,6 +124,7 @@ public class CodesMetamacAsserts extends CodesAsserts {
 
     private static void assertEqualsCode(CodeMetamac entity, CodeMetamacDto dto, MapperEnum mapperEnum) {
         // Metamac
+        // TODO shortname assertEqualsInternationalString(entity.getShortName(), dto.getShortName());
         // TODO elemento variable
 
         // SDMX
@@ -203,6 +203,46 @@ public class CodesMetamacAsserts extends CodesAsserts {
         assertEqualsNameableArtefact(expected.getNameableArtefact(), actual.getNameableArtefact());
     }
 
+    public static void assertEqualsVariableFamilyDto(VariableFamilyDto expected, VariableFamilyDto actual) {
+        CodesAsserts.assertEqualsNameableArtefactDto(expected, actual);
+    }
+
+    public static void assertEqualsVariableFamily(VariableFamily expected, VariableFamilyDto actual) {
+        assertEqualsVariableFamily(expected, actual, MapperEnum.DO2DTO);
+    }
+
+    public static void assertEqualsVariableFamily(VariableFamilyDto actual, VariableFamily expected) {
+        assertEqualsVariableFamily(expected, actual, MapperEnum.DTO2DO);
+    }
+
+    private static void assertEqualsVariableFamily(VariableFamily entity, VariableFamilyDto dto, MapperEnum mapperEnum) {
+        if (MapperEnum.DO2DTO.equals(mapperEnum)) {
+            assertEquals(entity.getId(), dto.getId());
+
+            assertNotNull(entity.getUuid());
+            assertEquals(entity.getUuid(), dto.getUuid());
+
+            assertNotNull(entity.getCreatedBy());
+            assertEquals(entity.getCreatedBy(), dto.getCreatedBy());
+
+            assertNotNull(entity.getCreatedDate());
+            assertTrue(DateUtils.isSameInstant(entity.getCreatedDate().toDate(), dto.getCreatedDate()));
+
+            assertNotNull(entity.getLastUpdatedBy());
+            assertEquals(entity.getLastUpdatedBy(), dto.getLastUpdatedBy());
+
+            assertNotNull(entity.getLastUpdated());
+            assertTrue(DateUtils.isSameInstant(entity.getLastUpdated().toDate(), dto.getLastUpdated()));
+
+            assertNotNull(entity.getVersion());
+            assertEquals(entity.getVersion(), dto.getVersion());
+            assertEquals(entity.getVersion(), dto.getVersionOptimisticLocking());
+        }
+
+        // other artefacts
+        assertEqualsNameableArtefact(entity.getNameableArtefact(), dto, mapperEnum);
+    }
+
     // ------------------------------------------------------------------------------------
     // VARIABLES
     // ------------------------------------------------------------------------------------
@@ -215,9 +255,67 @@ public class CodesMetamacAsserts extends CodesAsserts {
         assertEqualsInternationalString(expected.getShortName(), actual.getShortName());
         assertEqualsDate(expected.getValidFrom(), actual.getValidFrom());
         assertEqualsDate(expected.getValidTo(), actual.getValidTo());
+        assertEquals(expected.getFamilies().size(), actual.getFamilies().size());
+        for (int i = 0; i < expected.getFamilies().size(); i++) {
+            assertEquals(expected.getFamilies().get(i).getNameableArtefact().getUrn(), actual.getFamilies().get(i).getNameableArtefact().getUrn());
+        }
 
         // other artefacts
         assertEqualsNameableArtefact(expected.getNameableArtefact(), actual.getNameableArtefact());
+    }
+
+    public static void assertEqualsVariableDto(VariableDto expected, VariableDto actual) {
+        assertEqualsInternationalStringDto(expected.getShortName(), actual.getShortName());
+        assertEquals(expected.getValidFrom(), actual.getValidFrom());
+        assertEquals(expected.getValidTo(), actual.getValidTo());
+        BaseAsserts.assertEqualsRelatedResourcesDto(expected.getFamilies(), actual.getFamilies());
+
+        // other artefacts
+        CodesAsserts.assertEqualsNameableArtefactDto(expected, actual);
+    }
+
+    public static void assertEqualsVariable(Variable expected, VariableDto actual) {
+        assertEqualsVariable(expected, actual, MapperEnum.DO2DTO);
+    }
+
+    public static void assertEqualsVariable(VariableDto actual, Variable expected) {
+        assertEqualsVariable(expected, actual, MapperEnum.DTO2DO);
+    }
+
+    private static void assertEqualsVariable(Variable entity, VariableDto dto, MapperEnum mapperEnum) {
+        if (MapperEnum.DO2DTO.equals(mapperEnum)) {
+            assertEquals(entity.getId(), dto.getId());
+
+            assertNotNull(entity.getUuid());
+            assertEquals(entity.getUuid(), dto.getUuid());
+
+            assertNotNull(entity.getCreatedBy());
+            assertEquals(entity.getCreatedBy(), dto.getCreatedBy());
+
+            assertNotNull(entity.getCreatedDate());
+            assertTrue(DateUtils.isSameInstant(entity.getCreatedDate().toDate(), dto.getCreatedDate()));
+
+            assertNotNull(entity.getLastUpdatedBy());
+            assertEquals(entity.getLastUpdatedBy(), dto.getLastUpdatedBy());
+
+            assertNotNull(entity.getLastUpdated());
+            assertTrue(DateUtils.isSameInstant(entity.getLastUpdated().toDate(), dto.getLastUpdated()));
+
+            assertNotNull(entity.getVersion());
+            assertEquals(entity.getVersion(), dto.getVersion());
+            assertEquals(entity.getVersion(), dto.getVersionOptimisticLocking());
+        }
+
+        assertEqualsInternationalString(entity.getShortName(), dto.getShortName());
+        assertEqualsDate(entity.getValidFrom(), dto.getValidFrom());
+        assertEqualsDate(entity.getValidTo(), dto.getValidTo());
+        assertEquals(entity.getFamilies().size(), dto.getFamilies().size());
+        for (int i = 0; i < entity.getFamilies().size(); i++) {
+            assertEquals(entity.getFamilies().get(i).getNameableArtefact().getUrn(), dto.getFamilies().get(i).getUrn());
+        }
+
+        // other artefacts
+        assertEqualsNameableArtefact(entity.getNameableArtefact(), dto, mapperEnum);
     }
 
     public static void assertEqualsVariableRelatedResourceDto(Variable entity, RelatedResourceDto dto, MapperEnum mapperEnum) {

@@ -6,6 +6,8 @@ import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
+import org.siemac.metamac.srm.core.code.domain.Variable;
+import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
@@ -28,4 +30,6 @@ public interface MetamacCriteria2SculptorCriteriaMapper {
     public MetamacCriteria2SculptorCriteria<CodelistVersionMetamac> getCodelistMetamacCriteriaMapper();
     public MetamacCriteria2SculptorCriteria<CodeMetamac> getCodeMetamacCriteriaMapper();
     public MetamacCriteria2SculptorCriteria<CodelistFamily> getCodelistFamilyCriteriaMapper();
+    public MetamacCriteria2SculptorCriteria<VariableFamily> getVariableFamilyCriteriaMapper();
+    public MetamacCriteria2SculptorCriteria<Variable> getVariableCriteriaMapper();
 }

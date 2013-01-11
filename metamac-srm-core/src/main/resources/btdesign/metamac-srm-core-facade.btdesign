@@ -481,6 +481,31 @@ Application SrmFacadeCore {
 			"Removes codelist from family"
 			removeCodelistFromCodelistFamily(String codelistUrn, String codelistFamilyUrn) throws MetamacException;
     		
+    		"Creates variable family"
+			@VariableFamilyDto createVariableFamily(@VariableFamilyDto variableFamily) throws MetamacException;
+			"Updates variable family"
+			@VariableFamilyDto updateVariableFamily(@VariableFamilyDto variableFamily) throws MetamacException;
+    		"Retrieves variable family by urn"
+    		@VariableFamilyDto retrieveVariableFamilyByUrn(String urn) throws MetamacException;
+    		"Finds variable families by criteria"
+    		MetamacCriteriaResult<@VariableFamilyDto> findVariableFamiliesByCondition(MetamacCriteria criteria) throws MetamacException;
+			"Deletes variable family"
+    		deleteVariableFamily(String urn) throws MetamacException;
+    		
+    		"Creates variable"
+			@VariableDto createVariable(@VariableDto variable) throws MetamacException;
+			"Updates variable"
+			@VariableDto updateVariable(@VariableDto variable) throws MetamacException;
+    		"Retrieves variable by urn"
+    		@VariableDto retrieveVariableByUrn(String urn) throws MetamacException;
+    		"Finds variables by criteria"
+    		MetamacCriteriaResult<@VariableDto> findVariablesByCondition(MetamacCriteria criteria) throws MetamacException;
+			"Deletes variable"
+    		deleteVariable(String urn) throws MetamacException;
+    		"Adds variables to a family"
+    		addVariablesToVariableFamily(List<String> variableUrn, String familyUrn) throws MetamacException;
+    		"Removes a variable from a family"
+    		removeVariableFromVariableFamily(String variableUrn, String familyUrn) throws MetamacException;    		
     		/**************************************************************************
 		     * COMMON
 		     **************************************************************************/

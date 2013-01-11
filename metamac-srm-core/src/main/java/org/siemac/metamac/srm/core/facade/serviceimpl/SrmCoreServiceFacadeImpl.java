@@ -26,9 +26,13 @@ import org.siemac.metamac.srm.core.category.mapper.CategoriesDto2DoMapper;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
+import org.siemac.metamac.srm.core.code.domain.Variable;
+import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
+import org.siemac.metamac.srm.core.code.dto.VariableDto;
+import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
 import org.siemac.metamac.srm.core.code.mapper.CodesDo2DtoMapper;
 import org.siemac.metamac.srm.core.code.mapper.CodesDto2DoMapper;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
@@ -823,13 +827,13 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     // ------------------------------------------------------------------------
-    // CODELISTS
+    // CODELIST FAMILIES
     // ------------------------------------------------------------------------
 
     @Override
     public CodelistFamilyDto retrieveCodelistFamilyByUrn(ServiceContext ctx, String urn) throws MetamacException {
         // Security
-        CodesSecurityUtils.canRetrieveCodelistFamilyUrn(ctx);
+        CodesSecurityUtils.canRetrieveOrFindCodelistFamilyUrn(ctx);
 
         // Retrieve
         CodelistFamily codelistFamily = getCodesMetamacService().retrieveCodelistFamilyByUrn(ctx, urn);
@@ -899,7 +903,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public MetamacCriteriaResult<CodelistFamilyDto> findCodelistFamiliesByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
         // Security
-        CodesSecurityUtils.canRetrieveCodelistFamilyUrn(ctx);
+        CodesSecurityUtils.canRetrieveOrFindCodelistFamilyUrn(ctx);
 
         // Transform
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getCodelistFamilyCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
@@ -911,6 +915,176 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         MetamacCriteriaResult<CodelistFamilyDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultCodelistFamily(result, sculptorCriteria.getPageSize());
 
         return metamacCriteriaResult;
+    }
+
+    // ------------------------------------------------------------------------
+    // VARIABLE FAMILIES
+    // ------------------------------------------------------------------------
+
+    @Override
+    public VariableFamilyDto retrieveVariableFamilyByUrn(ServiceContext ctx, String urn) throws MetamacException {
+        // Security
+        CodesSecurityUtils.canRetrieveOrFindVariableFamilyUrn(ctx);
+
+        // Retrieve
+        VariableFamily variableFamily = getCodesMetamacService().retrieveVariableFamilyByUrn(ctx, urn);
+
+        // Transform
+        VariableFamilyDto variableFamilyDto = codesDo2DtoMapper.variableFamilyDoToDto(variableFamily);
+        return variableFamilyDto;
+    }
+
+    @Override
+    public VariableFamilyDto createVariableFamily(ServiceContext ctx, VariableFamilyDto variableFamilyDto) throws MetamacException {
+        // Security
+        CodesSecurityUtils.canCrudVariableFamilyUrn(ctx);
+
+        // Transform
+        VariableFamily variableFamily = codesDto2DoMapper.variableFamilyDtoToDo(variableFamilyDto);
+
+        // Create
+        VariableFamily variableFamilyCreated = getCodesMetamacService().createVariableFamily(ctx, variableFamily);
+
+        // Transform to DTO
+        variableFamilyDto = codesDo2DtoMapper.variableFamilyDoToDto(variableFamilyCreated);
+        return variableFamilyDto;
+    }
+
+    @Override
+    public VariableFamilyDto updateVariableFamily(ServiceContext ctx, VariableFamilyDto variableFamilyDto) throws MetamacException {
+        // Security
+        CodesSecurityUtils.canCrudVariableFamilyUrn(ctx);
+
+        // Transform
+        VariableFamily variableFamilyToUpdate = codesDto2DoMapper.variableFamilyDtoToDo(variableFamilyDto);
+
+        // Update
+        VariableFamily variableFamilyUpdated = getCodesMetamacService().updateVariableFamily(ctx, variableFamilyToUpdate);
+
+        // Transform to DTO
+        variableFamilyDto = codesDo2DtoMapper.variableFamilyDoToDto(variableFamilyUpdated);
+        return variableFamilyDto;
+    }
+
+    @Override
+    public void deleteVariableFamily(ServiceContext ctx, String urn) throws MetamacException {
+        // Security
+        CodesSecurityUtils.canCrudVariableFamilyUrn(ctx);
+
+        // Delete
+        getCodesMetamacService().deleteVariableFamily(ctx, urn);
+    }
+
+    @Override
+    public MetamacCriteriaResult<VariableFamilyDto> findVariableFamiliesByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
+        // Security
+        CodesSecurityUtils.canRetrieveOrFindVariableFamilyUrn(ctx);
+
+        // Transform
+        SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getVariableFamilyCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
+
+        // Find
+        PagedResult<VariableFamily> result = getCodesMetamacService().findVariableFamiliesByCondition(ctx, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
+
+        // Transform
+        MetamacCriteriaResult<VariableFamilyDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultVariableFamily(result, sculptorCriteria.getPageSize());
+
+        return metamacCriteriaResult;
+    }
+
+    // ------------------------------------------------------------------------
+    // VARIABLES
+    // ------------------------------------------------------------------------
+
+    @Override
+    public VariableDto retrieveVariableByUrn(ServiceContext ctx, String urn) throws MetamacException {
+        // Security
+        CodesSecurityUtils.canRetrieveOrFindVariableUrn(ctx);
+
+        // Retrieve
+        Variable variable = getCodesMetamacService().retrieveVariableByUrn(ctx, urn);
+
+        // Transform
+        VariableDto variableDto = codesDo2DtoMapper.variableDoToDto(variable);
+        return variableDto;
+    }
+
+    @Override
+    public VariableDto createVariable(ServiceContext ctx, VariableDto variableDto) throws MetamacException {
+        // Security
+        CodesSecurityUtils.canCrudVariableUrn(ctx);
+
+        // Transform
+        Variable variable = codesDto2DoMapper.variableDtoToDo(variableDto);
+
+        // Create
+        Variable variableCreated = getCodesMetamacService().createVariable(ctx, variable);
+
+        // Transform to DTO
+        variableDto = codesDo2DtoMapper.variableDoToDto(variableCreated);
+        return variableDto;
+    }
+
+    @Override
+    public VariableDto updateVariable(ServiceContext ctx, VariableDto variableDto) throws MetamacException {
+        // Security
+        CodesSecurityUtils.canCrudVariableUrn(ctx);
+
+        // Transform
+        Variable variableToUpdate = codesDto2DoMapper.variableDtoToDo(variableDto);
+
+        // Update
+        Variable variableUpdated = getCodesMetamacService().updateVariable(ctx, variableToUpdate);
+
+        // Transform to DTO
+        variableDto = codesDo2DtoMapper.variableDoToDto(variableUpdated);
+        return variableDto;
+    }
+
+    @Override
+    public void deleteVariable(ServiceContext ctx, String urn) throws MetamacException {
+        // Security
+        CodesSecurityUtils.canCrudVariableUrn(ctx);
+
+        // Delete
+        getCodesMetamacService().deleteVariable(ctx, urn);
+    }
+
+    @Override
+    public MetamacCriteriaResult<VariableDto> findVariablesByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
+        // Security
+        CodesSecurityUtils.canRetrieveOrFindVariableUrn(ctx);
+
+        // Transform
+        SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getVariableCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
+
+        // Find
+        PagedResult<Variable> result = getCodesMetamacService().findVariablesByCondition(ctx, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
+
+        // Transform
+        MetamacCriteriaResult<VariableDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultVariable(result, sculptorCriteria.getPageSize());
+
+        return metamacCriteriaResult;
+    }
+
+    @Override
+    public void addVariablesToVariableFamily(ServiceContext ctx, List<String> variableUrns, String variableFamilyUrn) throws MetamacException {
+        // Security
+        CodesSecurityUtils.canCrudVariableFamilyUrn(ctx);
+        CodesSecurityUtils.canCrudVariableUrn(ctx);
+
+        // Add
+        getCodesMetamacService().addVariablesToVariableFamily(ctx, variableUrns, variableFamilyUrn);
+    }
+
+    @Override
+    public void removeVariableFromVariableFamily(ServiceContext ctx, String variableUrn, String variableFamilyUrn) throws MetamacException {
+        // Security
+        CodesSecurityUtils.canCrudVariableFamilyUrn(ctx);
+        CodesSecurityUtils.canCrudVariableUrn(ctx);
+
+        // Delete
+        getCodesMetamacService().removeVariableFromVariableFamily(ctx, variableUrn, variableFamilyUrn);
     }
 
     /**************************************************************************

@@ -4,13 +4,19 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
+import org.siemac.metamac.srm.core.code.domain.Variable;
+import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
+import org.siemac.metamac.srm.core.code.dto.VariableDto;
+import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
 
 public interface CodesDto2DoMapper {
 
     public CodelistVersionMetamac codelistDtoToDo(CodelistMetamacDto source) throws MetamacException;
     public CodeMetamac codeDtoToDo(CodeMetamacDto source) throws MetamacException;
     public CodelistFamily codelistFamilyDtoToDo(CodelistFamilyDto source) throws MetamacException;
+    public VariableFamily variableFamilyDtoToDo(VariableFamilyDto source) throws MetamacException;
+    public Variable variableDtoToDo(VariableDto source) throws MetamacException;
 }

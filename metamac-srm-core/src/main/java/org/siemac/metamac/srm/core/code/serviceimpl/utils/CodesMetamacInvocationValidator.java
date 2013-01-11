@@ -179,12 +179,11 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
     // VARIABLES
     // ---------------------------------------------------------------------------
 
-    public static void checkCreateVariable(List<String> familyUrns, Variable variable, List<MetamacExceptionItem> exceptions) throws MetamacException {
+    public static void checkCreateVariable(Variable variable, List<MetamacExceptionItem> exceptions) throws MetamacException {
         if (exceptions == null) {
             exceptions = new ArrayList<MetamacExceptionItem>();
         }
 
-        ValidationUtils.checkParameterRequired(familyUrns, ServiceExceptionParameters.URN, exceptions);
         checkVariable(variable, exceptions);
 
         ExceptionUtils.throwIfException(exceptions);
@@ -229,6 +228,7 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
         }
 
         // Check required metadata
+        ValidationUtils.checkMetadataRequired(variable.getFamilies(), ServiceExceptionParameters.VARIABLE_FAMILY, exceptions);
         checkNameableArtefact(variable.getNameableArtefact(), exceptions);
         ValidationUtils.checkMetadataRequired(variable.getShortName(), ServiceExceptionParameters.VARIABLE_SHORT_NAME, exceptions);
 

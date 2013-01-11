@@ -10,6 +10,7 @@ import static org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsse
 import static org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsserts.assertEqualsCodelistMetamacDto;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -31,10 +32,13 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
+import org.siemac.metamac.srm.core.code.dto.VariableDto;
+import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
 import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsserts;
 import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacDtoMocks;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
+import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
 import org.siemac.metamac.srm.core.criteria.CodeMetamacCriteriaOrderEnum;
 import org.siemac.metamac.srm.core.criteria.CodeMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.criteria.CodelistVersionMetamacCriteriaOrderEnum;
@@ -1362,6 +1366,440 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
         family = srmCoreServiceFacade.retrieveCodelistFamilyByUrn(ctx, codelistFamily);
         codelistVersion = srmCoreServiceFacade.retrieveCodelistByUrn(ctx, codelist);
         assertNull(codelistVersion.getFamily());
+    }
+
+    // ---------------------------------------------------------------------------------------
+    // VARIABLE FAMILIES
+    // ---------------------------------------------------------------------------------------
+
+    @Test
+    public void testRetrieveVariableFamilyByUrn() throws Exception {
+        // Retrieve
+        VariableFamilyDto variableFamilyDto = srmCoreServiceFacade.retrieveVariableFamilyByUrn(getServiceContextAdministrador(), VARIABLE_FAMILY_1);
+
+        // Validate
+        assertEquals(VARIABLE_FAMILY_1, variableFamilyDto.getUrn());
+    }
+    //
+    @Test
+    public void testCreateVariableFamily() throws Exception {
+        // Create
+        VariableFamilyDto variableFamilyDto = CodesMetamacDtoMocks.mockVariableFamilyDto();
+        VariableFamilyDto variableFamilyCreated = srmCoreServiceFacade.createVariableFamily(getServiceContextAdministrador(), variableFamilyDto);
+
+        // Validate some metadata
+        assertEquals(variableFamilyDto.getCode(), variableFamilyCreated.getCode());
+        assertNotNull(variableFamilyCreated.getUrn());
+    }
+
+    @Test
+    public void testUpdateVariableFamily() throws Exception {
+        // Update
+        VariableFamilyDto variableFamilyDto = srmCoreServiceFacade.retrieveVariableFamilyByUrn(getServiceContextAdministrador(), VARIABLE_FAMILY_2);
+        variableFamilyDto.setName(MetamacMocks.mockInternationalStringDto());
+        VariableFamilyDto variableFamilyDtoUpdated = srmCoreServiceFacade.updateVariableFamily(getServiceContextAdministrador(), variableFamilyDto);
+
+        // Validate
+        assertNotNull(variableFamilyDtoUpdated);
+        CodesMetamacAsserts.assertEqualsVariableFamilyDto(variableFamilyDto, variableFamilyDtoUpdated);
+        assertTrue(variableFamilyDtoUpdated.getVersionOptimisticLocking() > variableFamilyDto.getVersionOptimisticLocking());
+    }
+
+    @Test
+    public void testUpdateVariableFamilyErrorOptimisticLocking() throws Exception {
+        String urn = VARIABLE_FAMILY_1;
+
+        VariableFamilyDto variableFamilyDtoSession1 = srmCoreServiceFacade.retrieveVariableFamilyByUrn(getServiceContextAdministrador(), urn);
+        assertEquals(Long.valueOf(1), variableFamilyDtoSession1.getVersionOptimisticLocking());
+        variableFamilyDtoSession1.setName(MetamacMocks.mockInternationalStringDto());
+
+        VariableFamilyDto variableFamilyDtoSession2 = srmCoreServiceFacade.retrieveVariableFamilyByUrn(getServiceContextAdministrador(), urn);
+        assertEquals(Long.valueOf(1), variableFamilyDtoSession2.getVersionOptimisticLocking());
+        variableFamilyDtoSession2.setName(MetamacMocks.mockInternationalStringDto());
+
+        // Update by session 1
+        VariableFamilyDto variableFamilyDtoSession1AfterUpdate1 = srmCoreServiceFacade.updateVariableFamily(getServiceContextAdministrador(), variableFamilyDtoSession1);
+        assertTrue(variableFamilyDtoSession1AfterUpdate1.getVersionOptimisticLocking() > variableFamilyDtoSession1.getVersionOptimisticLocking());
+
+        // Fails when is updated by session 2
+        try {
+            srmCoreServiceFacade.updateVariableFamily(getServiceContextAdministrador(), variableFamilyDtoSession2);
+            fail("Optimistic locking");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.OPTIMISTIC_LOCKING.getCode(), e.getExceptionItems().get(0).getCode());
+            assertNull(e.getExceptionItems().get(0).getMessageParameters());
+        }
+
+        // Session 1 can modify because has last version
+        variableFamilyDtoSession1AfterUpdate1.setName(MetamacMocks.mockInternationalStringDto());
+        VariableFamilyDto variableFamilyDtoSession1AfterUpdate2 = srmCoreServiceFacade.updateVariableFamily(getServiceContextAdministrador(), variableFamilyDtoSession1AfterUpdate1);
+        assertTrue(variableFamilyDtoSession1AfterUpdate2.getVersionOptimisticLocking() > variableFamilyDtoSession1AfterUpdate1.getVersionOptimisticLocking());
+    }
+
+    @Test
+    public void testDeleteVariableFamily() throws Exception {
+        String urn = VARIABLE_FAMILY_2;
+
+        // Delete codelist
+        srmCoreServiceFacade.deleteVariableFamily(getServiceContextAdministrador(), urn);
+
+        // Validation
+        try {
+            srmCoreServiceFacade.retrieveVariableFamilyByUrn(getServiceContextAdministrador(), urn);
+            fail("VariableFamily deleted");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
+    @Test
+    public void testFindVariableFamiliesByCondition() throws Exception {
+        MetamacCriteria metamacCriteria = new MetamacCriteria();
+        // Order
+        MetamacCriteriaOrder order = new MetamacCriteriaOrder();
+        order.setType(OrderTypeEnum.ASC);
+        order.setPropertyName(CodelistVersionMetamacCriteriaOrderEnum.URN.name());
+        metamacCriteria.setOrdersBy(new ArrayList<MetamacCriteriaOrder>());
+        metamacCriteria.getOrdersBy().add(order);
+
+        // Pagination
+        metamacCriteria.setPaginator(new MetamacCriteriaPaginator());
+        metamacCriteria.getPaginator().setFirstResult(0);
+        metamacCriteria.getPaginator().setMaximumResultSize(Integer.MAX_VALUE);
+        metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
+
+        // Find all
+        {
+            MetamacCriteriaResult<VariableFamilyDto> result = srmCoreServiceFacade.findVariableFamiliesByCondition(getServiceContextAdministrador(), metamacCriteria);
+
+            assertEquals(4, result.getPaginatorResult().getTotalResults().intValue());
+            int i = 0;
+            {
+                VariableFamilyDto variableFamilyDto = result.getResults().get(i++);
+                assertEquals(VARIABLE_FAMILY_1, variableFamilyDto.getUrn());
+            }
+            {
+                VariableFamilyDto variableFamilyDto = result.getResults().get(i++);
+                assertEquals(VARIABLE_FAMILY_2, variableFamilyDto.getUrn());
+            }
+            {
+                VariableFamilyDto variableFamilyDto = result.getResults().get(i++);
+                assertEquals(VARIABLE_FAMILY_3, variableFamilyDto.getUrn());
+            }
+            {
+                VariableFamilyDto variableFamilyDto = result.getResults().get(i++);
+                assertEquals(VARIABLE_FAMILY_4, variableFamilyDto.getUrn());
+            }
+            assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
+        }
+        // Find by Name
+        {
+            metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.NAME.name(), "familia-de-variables-53", OperationType.EQ));
+
+            MetamacCriteriaResult<VariableFamilyDto> result = srmCoreServiceFacade.findVariableFamiliesByCondition(getServiceContextAdministrador(), metamacCriteria);
+            assertEquals(1, result.getPaginatorResult().getTotalResults().intValue());
+            int i = 0;
+            {
+                VariableFamilyDto variableFamilyDto = result.getResults().get(i++);
+                assertEquals(VARIABLE_FAMILY_1, variableFamilyDto.getUrn());
+            }
+            assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
+
+            metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.NAME.name(), "NOT FOUND", OperationType.EQ));
+
+            result = srmCoreServiceFacade.findVariableFamiliesByCondition(getServiceContextAdministrador(), metamacCriteria);
+            assertEquals(0, result.getPaginatorResult().getTotalResults().intValue());
+        }
+    }
+
+    @Test
+    public void testFindVariableFamiliesPaginated() throws Exception {
+        MetamacCriteria metamacCriteria = new MetamacCriteria();
+        // Order
+        MetamacCriteriaOrder order = new MetamacCriteriaOrder();
+        order.setType(OrderTypeEnum.ASC);
+        order.setPropertyName(CodelistVersionMetamacCriteriaOrderEnum.URN.name());
+        metamacCriteria.setOrdersBy(new ArrayList<MetamacCriteriaOrder>());
+        metamacCriteria.getOrdersBy().add(order);
+        // Pagination
+        int maxResultSize = 2;
+        metamacCriteria.setPaginator(new MetamacCriteriaPaginator());
+        metamacCriteria.getPaginator().setMaximumResultSize(maxResultSize);
+        metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
+        {
+            int firstResult = 0;
+            metamacCriteria.getPaginator().setFirstResult(firstResult);
+
+            MetamacCriteriaResult<VariableFamilyDto> result = srmCoreServiceFacade.findVariableFamiliesByCondition(getServiceContextAdministrador(), metamacCriteria);
+
+            assertEquals(2, result.getResults().size());
+            assertEquals(4, result.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(firstResult, result.getPaginatorResult().getFirstResult().intValue());
+            assertEquals(maxResultSize, result.getPaginatorResult().getMaximumResultSize().intValue());
+            assertEquals(VARIABLE_FAMILY_1, result.getResults().get(0).getUrn());
+            assertEquals(VARIABLE_FAMILY_2, result.getResults().get(1).getUrn());
+        }
+        {
+            int firstResult = 2;
+            metamacCriteria.getPaginator().setFirstResult(firstResult);
+
+            MetamacCriteriaResult<VariableFamilyDto> result = srmCoreServiceFacade.findVariableFamiliesByCondition(getServiceContextAdministrador(), metamacCriteria);
+
+            assertEquals(2, result.getResults().size());
+            assertEquals(4, result.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(firstResult, result.getPaginatorResult().getFirstResult().intValue());
+            assertEquals(VARIABLE_FAMILY_3, result.getResults().get(0).getUrn());
+            assertEquals(VARIABLE_FAMILY_4, result.getResults().get(1).getUrn());
+        }
+    }
+
+    // ---------------------------------------------------------------------------------------
+    // VARIABLES
+    // ---------------------------------------------------------------------------------------
+
+    @Test
+    public void testRetrieveVariableByUrn() throws Exception {
+        // Retrieve
+        VariableDto variableDto = srmCoreServiceFacade.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_1);
+
+        // Validate
+        assertEquals(VARIABLE_1, variableDto.getUrn());
+    }
+
+    @Test
+    public void testCreateVariable() throws Exception {
+        // Create
+        VariableDto variableDto = CodesMetamacDtoMocks.mockVariableDto();
+        variableDto.addFamily(CodesMetamacDtoMocks.mockVariableFamilyRelatedResourceDto("VARIABLE_FAMILY_01", VARIABLE_FAMILY_1));
+        variableDto.addFamily(CodesMetamacDtoMocks.mockVariableFamilyRelatedResourceDto("VARIABLE_FAMILY_02", VARIABLE_FAMILY_2));
+
+        VariableDto variableCreated = srmCoreServiceFacade.createVariable(getServiceContextAdministrador(), variableDto);
+
+        // Validate some metadata
+        assertEquals(variableDto.getCode(), variableCreated.getCode());
+        assertNotNull(variableCreated.getUrn());
+        assertEquals(2, variableCreated.getFamilies().size());
+    }
+
+    @Test
+    public void testUpdateVariable() throws Exception {
+        VariableDto variableDto = srmCoreServiceFacade.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_2);
+        assertEquals(2, variableDto.getFamilies().size());
+        RelatedResourceDto family3 = SrmServiceUtils.getRelatedResource(VARIABLE_FAMILY_3, variableDto.getFamilies());
+        assertNotNull(family3);
+        RelatedResourceDto family4 = SrmServiceUtils.getRelatedResource(VARIABLE_FAMILY_4, variableDto.getFamilies());
+        assertNotNull(family4);
+
+        // Update
+        variableDto.setName(MetamacMocks.mockInternationalStringDto());
+        variableDto.setShortName(MetamacMocks.mockInternationalStringDto());
+        variableDto.setValidTo(new Date());
+        variableDto.removeFamily(family4);
+        variableDto.addFamily(CodesMetamacDtoMocks.mockVariableFamilyRelatedResourceDto("VARIABLE_FAMILY_01", VARIABLE_FAMILY_1));
+        VariableDto variableDtoUpdated = srmCoreServiceFacade.updateVariable(getServiceContextAdministrador(), variableDto);
+
+        // Validate
+        assertNotNull(variableDtoUpdated);
+        CodesMetamacAsserts.assertEqualsVariableDto(variableDto, variableDtoUpdated);
+        assertTrue(variableDtoUpdated.getVersionOptimisticLocking() > variableDto.getVersionOptimisticLocking());
+    }
+
+    @Test
+    public void testUpdateVariableErrorOptimisticLocking() throws Exception {
+        String urn = VARIABLE_1;
+
+        VariableDto variableDtoSession1 = srmCoreServiceFacade.retrieveVariableByUrn(getServiceContextAdministrador(), urn);
+        assertEquals(Long.valueOf(1), variableDtoSession1.getVersionOptimisticLocking());
+        variableDtoSession1.setName(MetamacMocks.mockInternationalStringDto());
+
+        VariableDto variableDtoSession2 = srmCoreServiceFacade.retrieveVariableByUrn(getServiceContextAdministrador(), urn);
+        assertEquals(Long.valueOf(1), variableDtoSession2.getVersionOptimisticLocking());
+        variableDtoSession2.setName(MetamacMocks.mockInternationalStringDto());
+
+        // Update by session 1
+        VariableDto variableDtoSession1AfterUpdate1 = srmCoreServiceFacade.updateVariable(getServiceContextAdministrador(), variableDtoSession1);
+        assertTrue(variableDtoSession1AfterUpdate1.getVersionOptimisticLocking() > variableDtoSession1.getVersionOptimisticLocking());
+
+        // Fails when is updated by session 2
+        try {
+            srmCoreServiceFacade.updateVariable(getServiceContextAdministrador(), variableDtoSession2);
+            fail("Optimistic locking");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.OPTIMISTIC_LOCKING.getCode(), e.getExceptionItems().get(0).getCode());
+            assertNull(e.getExceptionItems().get(0).getMessageParameters());
+        }
+
+        // Session 1 can modify because has last version
+        variableDtoSession1AfterUpdate1.setName(MetamacMocks.mockInternationalStringDto());
+        VariableDto variableDtoSession1AfterUpdate2 = srmCoreServiceFacade.updateVariable(getServiceContextAdministrador(), variableDtoSession1AfterUpdate1);
+        assertTrue(variableDtoSession1AfterUpdate2.getVersionOptimisticLocking() > variableDtoSession1AfterUpdate1.getVersionOptimisticLocking());
+    }
+
+    @Test
+    public void testDeleteVariable() throws Exception {
+        String urn = VARIABLE_1;
+
+        // Delete codelist
+        srmCoreServiceFacade.deleteVariable(getServiceContextAdministrador(), urn);
+
+        // Validation
+        try {
+            srmCoreServiceFacade.retrieveVariableByUrn(getServiceContextAdministrador(), urn);
+            fail("Variable deleted");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
+    @Test
+    public void testFindVariablesByCondition() throws Exception {
+        MetamacCriteria metamacCriteria = new MetamacCriteria();
+        // Order
+        MetamacCriteriaOrder order = new MetamacCriteriaOrder();
+        order.setType(OrderTypeEnum.ASC);
+        order.setPropertyName(CodelistVersionMetamacCriteriaOrderEnum.URN.name());
+        metamacCriteria.setOrdersBy(new ArrayList<MetamacCriteriaOrder>());
+        metamacCriteria.getOrdersBy().add(order);
+
+        // Pagination
+        metamacCriteria.setPaginator(new MetamacCriteriaPaginator());
+        metamacCriteria.getPaginator().setFirstResult(0);
+        metamacCriteria.getPaginator().setMaximumResultSize(Integer.MAX_VALUE);
+        metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
+
+        // Find all
+        {
+            MetamacCriteriaResult<VariableDto> result = srmCoreServiceFacade.findVariablesByCondition(getServiceContextAdministrador(), metamacCriteria);
+
+            assertEquals(6, result.getPaginatorResult().getTotalResults().intValue());
+            int i = 0;
+            {
+                VariableDto variableDto = result.getResults().get(i++);
+                assertEquals(VARIABLE_1, variableDto.getUrn());
+            }
+            {
+                VariableDto variableDto = result.getResults().get(i++);
+                assertEquals(VARIABLE_2, variableDto.getUrn());
+            }
+            {
+                VariableDto variableDto = result.getResults().get(i++);
+                assertEquals(VARIABLE_3, variableDto.getUrn());
+            }
+            {
+                VariableDto variableDto = result.getResults().get(i++);
+                assertEquals(VARIABLE_4, variableDto.getUrn());
+            }
+            {
+                VariableDto variableDto = result.getResults().get(i++);
+                assertEquals(VARIABLE_5, variableDto.getUrn());
+            }
+            {
+                VariableDto variableDto = result.getResults().get(i++);
+                assertEquals(VARIABLE_6, variableDto.getUrn());
+            }
+            assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
+        }
+        // Find by Name
+        {
+            metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.NAME.name(), "variable--59", OperationType.EQ));
+
+            MetamacCriteriaResult<VariableDto> result = srmCoreServiceFacade.findVariablesByCondition(getServiceContextAdministrador(), metamacCriteria);
+            assertEquals(1, result.getPaginatorResult().getTotalResults().intValue());
+            int i = 0;
+            {
+                VariableDto variableDto = result.getResults().get(i++);
+                assertEquals(VARIABLE_3, variableDto.getUrn());
+            }
+            assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
+
+            metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.NAME.name(), "NOT FOUND", OperationType.EQ));
+
+            result = srmCoreServiceFacade.findVariablesByCondition(getServiceContextAdministrador(), metamacCriteria);
+            assertEquals(0, result.getPaginatorResult().getTotalResults().intValue());
+        }
+    }
+
+    @Test
+    public void testFindVariablesPaginated() throws Exception {
+        MetamacCriteria metamacCriteria = new MetamacCriteria();
+        // Order
+        MetamacCriteriaOrder order = new MetamacCriteriaOrder();
+        order.setType(OrderTypeEnum.ASC);
+        order.setPropertyName(CodelistVersionMetamacCriteriaOrderEnum.URN.name());
+        metamacCriteria.setOrdersBy(new ArrayList<MetamacCriteriaOrder>());
+        metamacCriteria.getOrdersBy().add(order);
+        // Pagination
+        int maxResultSize = 4;
+        metamacCriteria.setPaginator(new MetamacCriteriaPaginator());
+        metamacCriteria.getPaginator().setMaximumResultSize(maxResultSize);
+        metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
+        {
+            int firstResult = 0;
+            metamacCriteria.getPaginator().setFirstResult(firstResult);
+
+            MetamacCriteriaResult<VariableDto> result = srmCoreServiceFacade.findVariablesByCondition(getServiceContextAdministrador(), metamacCriteria);
+
+            assertEquals(4, result.getResults().size());
+            assertEquals(6, result.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(firstResult, result.getPaginatorResult().getFirstResult().intValue());
+            assertEquals(maxResultSize, result.getPaginatorResult().getMaximumResultSize().intValue());
+            assertEquals(VARIABLE_1, result.getResults().get(0).getUrn());
+            assertEquals(VARIABLE_2, result.getResults().get(1).getUrn());
+            assertEquals(VARIABLE_3, result.getResults().get(2).getUrn());
+            assertEquals(VARIABLE_4, result.getResults().get(3).getUrn());
+        }
+        {
+            int firstResult = 4;
+            metamacCriteria.getPaginator().setFirstResult(firstResult);
+
+            MetamacCriteriaResult<VariableDto> result = srmCoreServiceFacade.findVariablesByCondition(getServiceContextAdministrador(), metamacCriteria);
+
+            assertEquals(2, result.getResults().size());
+            assertEquals(6, result.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(firstResult, result.getPaginatorResult().getFirstResult().intValue());
+            assertEquals(VARIABLE_5, result.getResults().get(0).getUrn());
+            assertEquals(VARIABLE_6, result.getResults().get(1).getUrn());
+        }
+    }
+
+    @Test
+    public void testAddVariablesToVariableFamily() throws Exception {
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        String variableUrn = VARIABLE_1;
+        String variableFamilyUrn = VARIABLE_FAMILY_1;
+
+        VariableDto variable = srmCoreServiceFacade.retrieveVariableByUrn(ctx, variableUrn);
+        assertNull(SrmServiceUtils.getRelatedResource(variableFamilyUrn, variable.getFamilies()));
+
+        List<String> variablesUrn = Arrays.asList(variableUrn);
+        srmCoreServiceFacade.addVariablesToVariableFamily(ctx, variablesUrn, variableFamilyUrn);
+
+        variable = srmCoreServiceFacade.retrieveVariableByUrn(ctx, variableUrn);
+        assertNotNull(SrmServiceUtils.getRelatedResource(variableFamilyUrn, variable.getFamilies()));
+    }
+
+    @Test
+    public void testRemoveVariableFromVariableFamily() throws Exception {
+        ServiceContext ctx = getServiceContextAdministrador();
+        String variableUrn = VARIABLE_3;
+        String variableFamilyUrn = VARIABLE_FAMILY_3;
+
+        VariableDto variable = srmCoreServiceFacade.retrieveVariableByUrn(ctx, variableUrn);
+        assertNotNull(SrmServiceUtils.getRelatedResource(variableFamilyUrn, variable.getFamilies()));
+
+        srmCoreServiceFacade.removeVariableFromVariableFamily(ctx, variableUrn, variableFamilyUrn);
+
+        variable = srmCoreServiceFacade.retrieveVariableByUrn(ctx, variableUrn);
+        assertNull(SrmServiceUtils.getRelatedResource(variableFamilyUrn, variable.getFamilies()));
     }
 
     @Override

@@ -10,9 +10,12 @@ import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.Variable;
+import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
+import org.siemac.metamac.srm.core.code.dto.VariableDto;
+import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
@@ -37,13 +40,13 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
         target.setIsRecommended(source.getIsRecommended());
         target.setAccessType(source.getAccessType());
         if (source.getReplacedByCodelist() != null) {
-            target.setReplacedByCodelist(codelistToRelatedResourceDto(source.getReplacedByCodelist()));
+            target.setReplacedByCodelist(codelistDoToRelatedResourceDto(source.getReplacedByCodelist()));
         }
         for (CodelistVersionMetamac replaceTo : source.getReplaceToCodelists()) {
-            target.getReplaceToCodelists().add(codelistToRelatedResourceDto(replaceTo));
+            target.getReplaceToCodelists().add(codelistDoToRelatedResourceDto(replaceTo));
         }
-        target.setFamily(codelistFamilyToRelatedResourceDto(source.getFamily()));
-        target.setVariable(variableToRelatedResourceDto(source.getVariable()));
+        target.setFamily(codelistFamilyDoToRelatedResourceDto(source.getFamily()));
+        target.setVariable(variableDoToRelatedResourceDto(source.getVariable()));
         target.setLifeCycle(lifeCycleDoToDto(source.getLifeCycleMetadata()));
 
         do2DtoMapperSdmxSrm.codelistDoToDto(source, target);
@@ -111,6 +114,54 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
     }
 
     @Override
+    public VariableFamilyDto variableFamilyDoToDto(VariableFamily source) {
+        if (source == null) {
+            return null;
+        }
+        VariableFamilyDto target = new VariableFamilyDto();
+        do2DtoMapperSdmxSrm.nameableArtefactToDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getNameableArtefact(), target);
+
+        // Overwrite these values in the final DTO (if not, these values are taken from the AnnotableArtefact entity)
+        target.setId(source.getId());
+        target.setUuid(source.getUuid());
+        target.setVersion(source.getVersion());
+        target.setCreatedDate(CoreCommonUtil.transformDateTimeToDate(source.getCreatedDate()));
+        target.setCreatedBy(source.getCreatedBy());
+        target.setLastUpdated(CoreCommonUtil.transformDateTimeToDate(source.getLastUpdated()));
+        target.setLastUpdatedBy(source.getLastUpdatedBy());
+        target.setVersionOptimisticLocking(source.getVersion());
+
+        return target;
+    }
+
+    @Override
+    public VariableDto variableDoToDto(Variable source) {
+        if (source == null) {
+            return null;
+        }
+        VariableDto target = new VariableDto();
+        target.setShortName(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getShortName()));
+        target.setValidFrom(CoreCommonUtil.transformDateTimeToDate(source.getValidFrom()));
+        target.setValidTo(CoreCommonUtil.transformDateTimeToDate(source.getValidTo()));
+        do2DtoMapperSdmxSrm.nameableArtefactToDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getNameableArtefact(), target);
+        for (VariableFamily variableFamily : source.getFamilies()) {
+            target.addFamily(variableFamilyDoToRelatedResourceDto(variableFamily));
+        }
+
+        // Overwrite these values in the final DTO (if not, these values are taken from the AnnotableArtefact entity)
+        target.setId(source.getId());
+        target.setUuid(source.getUuid());
+        target.setVersion(source.getVersion());
+        target.setCreatedDate(CoreCommonUtil.transformDateTimeToDate(source.getCreatedDate()));
+        target.setCreatedBy(source.getCreatedBy());
+        target.setLastUpdated(CoreCommonUtil.transformDateTimeToDate(source.getLastUpdated()));
+        target.setLastUpdatedBy(source.getLastUpdatedBy());
+        target.setVersionOptimisticLocking(source.getVersion());
+
+        return target;
+    }
+
+    @Override
     public RelatedResourceDto variableDoToRelatedResourceDto(Variable source) {
         if (source == null) {
             return null;
@@ -137,7 +188,7 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
         return itemHierarchyDto;
     }
 
-    private RelatedResourceDto codelistToRelatedResourceDto(CodelistVersionMetamac source) {
+    private RelatedResourceDto codelistDoToRelatedResourceDto(CodelistVersionMetamac source) {
         if (source == null) {
             return null;
         }
@@ -147,7 +198,7 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
         return target;
     }
 
-    private RelatedResourceDto codelistFamilyToRelatedResourceDto(CodelistFamily source) {
+    private RelatedResourceDto codelistFamilyDoToRelatedResourceDto(CodelistFamily source) {
         if (source == null) {
             return null;
         }
@@ -157,7 +208,7 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
         return target;
     }
 
-    private RelatedResourceDto variableToRelatedResourceDto(Variable source) {
+    private RelatedResourceDto variableFamilyDoToRelatedResourceDto(VariableFamily source) {
         if (source == null) {
             return null;
         }

@@ -108,7 +108,7 @@ Application CodesMetamac {
     		// VARIABLES
     		
     		"Creates variable"
-			@Variable createVariable(List<String> familyUrns, @Variable variable) throws MetamacException;
+			@Variable createVariable(@Variable variable) throws MetamacException;
 			"Updates variable"
 			@Variable updateVariable(@Variable variable) throws MetamacException;
     		"Retrieves variable by urn"
@@ -117,11 +117,10 @@ Application CodesMetamac {
     		PagedResult<@Variable> findVariablesByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
 			"Deletes variable"
     		deleteVariable(String urn) throws MetamacException;
-    		
     		"Adds variables to a family"
-    		addVariablesToFamily(List<String> variableUrn, String familyUrn) throws MetamacException;
+    		addVariablesToVariableFamily(List<String> variableUrn, String familyUrn) throws MetamacException;
     		"Removes a variable from a family"
-    		removeVariableFromFamily(String variableUrn, String familyUrn) throws MetamacException;
+    		removeVariableFromVariableFamily(String variableUrn, String familyUrn) throws MetamacException;
 		}
 
 		// ----------------------------------------------------------------
@@ -220,9 +219,9 @@ Application CodesMetamac {
 			- @NameableArtefact nameableArtefact databaseColumn="NAMEABLE_ARTEFACT_FK" not nullable cascade="all";
 			"Short name"
 			- @InternationalString shortName not nullable cascade="all" databaseColumn="SHORT_NAME_FK";
-			"Date from which the version is valid"
+			"Date from which the variable is valid"
 			DateTimeTZ validFrom nullable;
-			"Date from which version is superceded"
+			"Date from which variable is superceded"
 			DateTimeTZ validTo nullable;
 			"Variable families"
 			- Bag<@VariableFamily> families cascade="none" fetch="lazy" databaseColumn="VARIABLE_FAMILY_FK" databaseJoinTable="TB_M_VAR_FAMILIES_VARIABLES" <-> variables;

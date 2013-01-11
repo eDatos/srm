@@ -19,6 +19,10 @@ import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamilyProperties;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacProperties;
+import org.siemac.metamac.srm.core.code.domain.Variable;
+import org.siemac.metamac.srm.core.code.domain.VariableFamily;
+import org.siemac.metamac.srm.core.code.domain.VariableFamilyProperties;
+import org.siemac.metamac.srm.core.code.domain.VariableProperties;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacProperties;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
@@ -43,6 +47,10 @@ import org.siemac.metamac.srm.core.criteria.OrganisationMetamacCriteriaOrderEnum
 import org.siemac.metamac.srm.core.criteria.OrganisationMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.criteria.OrganisationSchemeVersionMetamacCriteriaOrderEnum;
 import org.siemac.metamac.srm.core.criteria.OrganisationSchemeVersionMetamacCriteriaPropertyEnum;
+import org.siemac.metamac.srm.core.criteria.VariableCriteriaOrderEnum;
+import org.siemac.metamac.srm.core.criteria.VariableCriteriaPropertyEnum;
+import org.siemac.metamac.srm.core.criteria.VariableFamilyCriteriaOrderEnum;
+import org.siemac.metamac.srm.core.criteria.VariableFamilyCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamacProperties;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
@@ -68,6 +76,8 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
     private MetamacCriteria2SculptorCriteria<CodelistVersionMetamac>                codelistMetamacCriteriaMapper           = null;
     private MetamacCriteria2SculptorCriteria<CodeMetamac>                           codeMetamacCriteriaMapper               = null;
     private MetamacCriteria2SculptorCriteria<CodelistFamily>                        codelistFamilyCriteriaMapper            = null;
+    private MetamacCriteria2SculptorCriteria<VariableFamily>                        variableFamilyCriteriaMapper            = null;
+    private MetamacCriteria2SculptorCriteria<Variable>                              variableCriteriaMapper                  = null;
 
     /**************************************************************************
      * Constructor
@@ -104,6 +114,12 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
 
         codelistFamilyCriteriaMapper = new MetamacCriteria2SculptorCriteria<CodelistFamily>(CodelistFamily.class, CodelistFamilyCriteriaOrderEnum.class, CodelistFamilyCriteriaPropertyEnum.class,
                 new CodelistFamilyCriteriaCallback());
+
+        variableFamilyCriteriaMapper = new MetamacCriteria2SculptorCriteria<VariableFamily>(VariableFamily.class, VariableFamilyCriteriaOrderEnum.class, VariableFamilyCriteriaPropertyEnum.class,
+                new VariableFamilyCriteriaCallback());
+
+        variableCriteriaMapper = new MetamacCriteria2SculptorCriteria<Variable>(Variable.class, VariableCriteriaOrderEnum.class, VariableCriteriaPropertyEnum.class, new VariableCriteriaCallback());
+
     }
 
     /**************************************************************************
@@ -158,6 +174,14 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
     @Override
     public MetamacCriteria2SculptorCriteria<CodelistFamily> getCodelistFamilyCriteriaMapper() {
         return codelistFamilyCriteriaMapper;
+    }
+
+    public MetamacCriteria2SculptorCriteria<VariableFamily> getVariableFamilyCriteriaMapper() {
+        return variableFamilyCriteriaMapper;
+    }
+
+    public MetamacCriteria2SculptorCriteria<Variable> getVariableCriteriaMapper() {
+        return variableCriteriaMapper;
     }
 
     /**************************************************************************
@@ -655,6 +679,88 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
         @Override
         public Property<CodelistFamily> retrievePropertyOrderDefault() throws MetamacException {
             return CodelistFamilyProperties.id();
+        }
+    }
+
+    private class VariableFamilyCriteriaCallback implements CriteriaCallback {
+
+        @Override
+        public SculptorPropertyCriteria retrieveProperty(MetamacCriteriaPropertyRestriction propertyRestriction) throws MetamacException {
+            VariableFamilyCriteriaPropertyEnum propertyEnum = VariableFamilyCriteriaPropertyEnum.fromValue(propertyRestriction.getPropertyName());
+            switch (propertyEnum) {
+                case CODE:
+                    return new SculptorPropertyCriteria(VariableFamilyProperties.nameableArtefact().code(), propertyRestriction.getStringValue());
+                case NAME:
+                    return new SculptorPropertyCriteria(VariableFamilyProperties.nameableArtefact().name().texts().label(), propertyRestriction.getStringValue());
+                default:
+                    throw new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, propertyRestriction.getPropertyName());
+            }
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public Property<VariableFamily> retrievePropertyOrder(MetamacCriteriaOrder order) throws MetamacException {
+            VariableFamilyCriteriaOrderEnum propertyOrderEnum = VariableFamilyCriteriaOrderEnum.fromValue(order.getPropertyName());
+            switch (propertyOrderEnum) {
+                case CODE:
+                    return VariableFamilyProperties.nameableArtefact().code();
+                case URN:
+                    return VariableFamilyProperties.nameableArtefact().urn();
+                case NAME:
+                    return VariableFamilyProperties.nameableArtefact().name().texts().label();
+                case LAST_UPDATED:
+                    return getLastUpdatedLeafProperty(VariableFamilyProperties.nameableArtefact(), VariableFamily.class);
+                default:
+                    throw new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, order.getPropertyName());
+            }
+        }
+
+        @Override
+        public Property<VariableFamily> retrievePropertyOrderDefault() throws MetamacException {
+            return VariableFamilyProperties.id();
+        }
+    }
+
+    private class VariableCriteriaCallback implements CriteriaCallback {
+
+        @Override
+        public SculptorPropertyCriteria retrieveProperty(MetamacCriteriaPropertyRestriction propertyRestriction) throws MetamacException {
+            VariableCriteriaPropertyEnum propertyEnum = VariableCriteriaPropertyEnum.fromValue(propertyRestriction.getPropertyName());
+            switch (propertyEnum) {
+                case CODE:
+                    return new SculptorPropertyCriteria(VariableProperties.nameableArtefact().code(), propertyRestriction.getStringValue());
+                case NAME:
+                    return new SculptorPropertyCriteria(VariableProperties.nameableArtefact().name().texts().label(), propertyRestriction.getStringValue());
+                case VARIABLE_FAMILY_URN:
+                    return new SculptorPropertyCriteria(VariableProperties.families().nameableArtefact().urn(), propertyRestriction.getStringValue());
+                default:
+                    throw new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, propertyRestriction.getPropertyName());
+            }
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public Property<Variable> retrievePropertyOrder(MetamacCriteriaOrder order) throws MetamacException {
+            VariableCriteriaOrderEnum propertyOrderEnum = VariableCriteriaOrderEnum.fromValue(order.getPropertyName());
+            switch (propertyOrderEnum) {
+                case CODE:
+                    return VariableProperties.nameableArtefact().code();
+                case URN:
+                    return VariableProperties.nameableArtefact().urn();
+                case NAME:
+                    return VariableProperties.nameableArtefact().name().texts().label();
+                case LAST_UPDATED:
+                    return getLastUpdatedLeafProperty(VariableProperties.nameableArtefact(), Variable.class);
+                case VARIABLE_FAMILY_URN:
+                    return VariableProperties.families().nameableArtefact().urn();
+                default:
+                    throw new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, order.getPropertyName());
+            }
+        }
+
+        @Override
+        public Property<Variable> retrievePropertyOrderDefault() throws MetamacException {
+            return VariableProperties.id();
         }
     }
 

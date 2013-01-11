@@ -23,6 +23,7 @@ import org.siemac.metamac.srm.core.common.LifeCycle;
 import org.siemac.metamac.srm.core.common.SrmValidation;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.common.service.utils.GeneratorUrnUtils;
+import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
 import org.siemac.metamac.srm.core.common.service.utils.SrmValidationUtils;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
@@ -373,7 +374,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         CodelistVersionMetamac codelistVersion = retrieveCodelistByUrn(ctx, codelistUrn);
 
         // Do not remove the codelist if it has not been associated with the family previously
-        if (!SrmValidationUtils.isCodelistInList(codelistVersion.getMaintainableArtefact().getUrn(), codelistFamily.getCodelists())) {
+        if (!SrmServiceUtils.isCodelistInList(codelistVersion.getMaintainableArtefact().getUrn(), codelistFamily.getCodelists())) {
             return;
         }
 
@@ -425,6 +426,13 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         CodesMetamacInvocationValidator.checkDeleteArtefact(urn);
 
         VariableFamily variableFamilyToDelete = retrieveVariableFamilyByUrn(urn);
+        // Check variables of family to delete has more families, because family of variable is required
+        for (Variable variable : variableFamilyToDelete.getVariables()) {
+            if (variable.getFamilies().size() == 1) {
+                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_FAMILY_DELETE_NOT_SUPPORTED_VARIABLE_WITHOUT_FAMILY)
+                        .withMessageParameters(urn, variable.getNameableArtefact().getUrn()).build(); // say only one variable
+            }
+        }
 
         // Delete associations with variables
         variableFamilyToDelete.removeAllVariables();
@@ -452,16 +460,10 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     // ------------------------------------------------------------------------------------
 
     @Override
-    public Variable createVariable(ServiceContext ctx, List<String> familyUrns, Variable variable) throws MetamacException {
+    public Variable createVariable(ServiceContext ctx, Variable variable) throws MetamacException {
         // Validation
-        CodesMetamacInvocationValidator.checkCreateVariable(familyUrns, variable, null);
+        CodesMetamacInvocationValidator.checkCreateVariable(variable, null);
         setVariableUrnUnique(variable);
-
-        // Add variable to the families
-        for (String familyUrn : familyUrns) {
-            VariableFamily family = retrieveVariableFamilyByUrn(familyUrn);
-            variable.addFamily(family);
-        }
 
         // Create
         return getVariableRepository().save(variable);
@@ -530,7 +532,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     @Override
-    public void addVariablesToFamily(ServiceContext ctx, List<String> variablesUrn, String familyUrn) throws MetamacException {
+    public void addVariablesToVariableFamily(ServiceContext ctx, List<String> variablesUrn, String familyUrn) throws MetamacException {
         // Validation
         CodesMetamacInvocationValidator.checkAddVariablesToFamily(variablesUrn, familyUrn, null);
 
@@ -539,7 +541,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             Variable variable = retrieveVariableByUrn(variableUrn);
 
             // Do not add the variable if it has been associated with the family previously
-            if (SrmValidationUtils.isVariableInList(variable.getNameableArtefact().getUrn(), family.getVariables())) {
+            if (SrmServiceUtils.isVariableInList(variable.getNameableArtefact().getUrn(), family.getVariables())) {
                 continue;
             }
             // Add variable to family
@@ -549,7 +551,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     @Override
-    public void removeVariableFromFamily(ServiceContext ctx, String variableUrn, String familyUrn) throws MetamacException {
+    public void removeVariableFromVariableFamily(ServiceContext ctx, String variableUrn, String familyUrn) throws MetamacException {
         // Validation
         CodesMetamacInvocationValidator.checkRemoveVariableFromFamily(variableUrn, familyUrn, null);
 
@@ -557,7 +559,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         Variable variable = retrieveVariableByUrn(variableUrn);
 
         // Do not remove the variable if it has not been associated with the family previously
-        if (!SrmValidationUtils.isVariableInList(variable.getNameableArtefact().getUrn(), family.getVariables())) {
+        if (!SrmServiceUtils.isVariableInList(variable.getNameableArtefact().getUrn(), family.getVariables())) {
             return;
         }
 

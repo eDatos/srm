@@ -6,9 +6,12 @@ import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.Variable;
+import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
+import org.siemac.metamac.srm.core.code.dto.VariableDto;
+import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
@@ -27,6 +30,10 @@ public interface CodesDo2DtoMapper {
     // Codelist family
     public CodelistFamilyDto codelistFamilyDoToDto(CodelistFamily source);
 
+    // Variable family
+    public VariableFamilyDto variableFamilyDoToDto(VariableFamily source);
+
     // Variable
+    public VariableDto variableDoToDto(Variable source);
     public RelatedResourceDto variableDoToRelatedResourceDto(Variable source);
 }

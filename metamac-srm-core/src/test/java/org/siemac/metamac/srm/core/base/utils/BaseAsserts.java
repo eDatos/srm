@@ -3,6 +3,8 @@ package org.siemac.metamac.srm.core.base.utils;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.util.List;
+
 import org.siemac.metamac.core.common.util.CoreCommonUtil;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.base.dto.LifeCycleDto;
@@ -59,5 +61,12 @@ public class BaseAsserts extends com.arte.statistic.sdmx.srm.core.base.serviceap
             return;
         }
         assertEquals(expected.getUrn(), actual.getUrn());
+    }
+
+    public static void assertEqualsRelatedResourcesDto(List<RelatedResourceDto> expecteds, List<RelatedResourceDto> actuals) {
+        assertEquals(expecteds.size(), actuals.size());
+        for (int i = 0; i < expecteds.size(); i++) {
+            assertEqualsRelatedResourceDto(expecteds.get(i), actuals.get(i));
+        }
     }
 }

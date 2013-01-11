@@ -52,7 +52,7 @@ import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacDoMocks;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
-import org.siemac.metamac.srm.core.common.service.utils.SrmValidationUtils;
+import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamacRepository;
@@ -302,7 +302,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         CodelistFamily family2 = codesService.retrieveCodelistFamilyByUrn(getServiceContextAdministrador(), CODELIST_FAMILY_2);
         assertEquals(0, family1.getCodelists().size());
         assertEquals(3, family2.getCodelists().size());
-        assertTrue(SrmValidationUtils.isCodelistInList(CODELIST_9_V1, family2.getCodelists()));
+        assertTrue(SrmServiceUtils.isCodelistInList(CODELIST_9_V1, family2.getCodelists()));
 
         // Associate the codelist to the family
         codelistVersion.setFamily(family1);
@@ -317,7 +317,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         family2 = codesService.retrieveCodelistFamilyByUrn(getServiceContextAdministrador(), CODELIST_FAMILY_2);
         assertEquals(1, family1.getCodelists().size());
         assertEquals(2, family2.getCodelists().size());
-        assertFalse(SrmValidationUtils.isCodelistInList(CODELIST_9_V1, family2.getCodelists()));
+        assertFalse(SrmServiceUtils.isCodelistInList(CODELIST_9_V1, family2.getCodelists()));
     }
 
     @Test
@@ -327,7 +327,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         // Check family members
         CodelistFamily family = codesService.retrieveCodelistFamilyByUrn(getServiceContextAdministrador(), CODELIST_FAMILY_2);
         assertEquals(3, family.getCodelists().size());
-        assertTrue(SrmValidationUtils.isCodelistInList(CODELIST_9_V1, family.getCodelists()));
+        assertTrue(SrmServiceUtils.isCodelistInList(CODELIST_9_V1, family.getCodelists()));
 
         // Update codelist (remove from family)
         codelistVersion.setFamily(null);
@@ -340,7 +340,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         // Check family members
         family = codesService.retrieveCodelistFamilyByUrn(getServiceContextAdministrador(), CODELIST_FAMILY_2);
         assertEquals(2, family.getCodelists().size());
-        assertFalse(SrmValidationUtils.isCodelistInList(CODELIST_9_V1, family.getCodelists()));
+        assertFalse(SrmServiceUtils.isCodelistInList(CODELIST_9_V1, family.getCodelists()));
     }
 
     @Test
@@ -1234,7 +1234,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
         // Check that the variable has not been deleted
         Variable variable = codesService.retrieveVariableByUrn(ctx, VARIABLE_6);
-        assertFalse(SrmValidationUtils.isCodelistInList(CODELIST_6_V1, variable.getCodelists()));
+        assertFalse(SrmServiceUtils.isCodelistInList(CODELIST_6_V1, variable.getCodelists()));
     }
 
     @Override
@@ -2141,14 +2141,14 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         CodelistFamily family = codesService.retrieveCodelistFamilyByUrn(ctx, codelistFamily);
         CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(ctx, codelist);
         assertEquals(family.getNameableArtefact().getUrn(), codelistVersion.getFamily().getNameableArtefact().getUrn());
-        assertTrue(SrmValidationUtils.isCodelistInList(codelist, family.getCodelists()));
+        assertTrue(SrmServiceUtils.isCodelistInList(codelist, family.getCodelists()));
 
         codesService.removeCodelistFromCodelistFamily(ctx, codelist, codelistFamily);
 
         family = codesService.retrieveCodelistFamilyByUrn(ctx, codelistFamily);
         codelistVersion = codesService.retrieveCodelistByUrn(ctx, codelist);
         assertNull(codelistVersion.getFamily());
-        assertFalse(SrmValidationUtils.isCodelistInList(codelist, family.getCodelists()));
+        assertFalse(SrmServiceUtils.isCodelistInList(codelist, family.getCodelists()));
 
         // Removing the codelist from the family again has no consequences
         codesService.removeCodelistFromCodelistFamily(ctx, codelist, codelistFamily);
@@ -2340,34 +2340,42 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     public void testDeleteVariableFamilyWithVariables() throws Exception {
         ServiceContext ctx = getServiceContextAdministrador();
 
-        VariableFamily family = codesService.retrieveVariableFamilyByUrn(ctx, VARIABLE_FAMILY_3);
-        assertEquals(2, family.getVariables().size());
-        assertTrue(SrmValidationUtils.isVariableInList(VARIABLE_3, family.getVariables()));
-        assertTrue(SrmValidationUtils.isVariableInList(VARIABLE_4, family.getVariables()));
+        String variableFamilyUrn = VARIABLE_FAMILY_3;
 
-        codesService.deleteVariableFamily(ctx, VARIABLE_FAMILY_3);
+        VariableFamily family = codesService.retrieveVariableFamilyByUrn(ctx, variableFamilyUrn);
+        assertEquals(4, family.getVariables().size());
+        assertTrue(SrmServiceUtils.isVariableInList(VARIABLE_1, family.getVariables()));
+        assertTrue(SrmServiceUtils.isVariableInList(VARIABLE_2, family.getVariables()));
+        assertTrue(SrmServiceUtils.isVariableInList(VARIABLE_3, family.getVariables()));
+        assertTrue(SrmServiceUtils.isVariableInList(VARIABLE_4, family.getVariables()));
+
+        codesService.deleteVariableFamily(ctx, variableFamilyUrn);
 
         // Check that the variable family has been deleted
         try {
-            codesService.retrieveVariableFamilyByUrn(getServiceContextAdministrador(), VARIABLE_FAMILY_3);
+            codesService.retrieveVariableFamilyByUrn(getServiceContextAdministrador(), variableFamilyUrn);
             fail("variable family already deleted");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND, 1, new String[]{VARIABLE_FAMILY_3}, e.getExceptionItems().get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND, 1, new String[]{variableFamilyUrn}, e.getExceptionItems().get(0));
         }
         try {
-            codesService.deleteVariableFamily(getServiceContextAdministrador(), VARIABLE_FAMILY_3);
+            codesService.deleteVariableFamily(getServiceContextAdministrador(), variableFamilyUrn);
             fail("variable already deleted");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND, 1, new String[]{VARIABLE_FAMILY_3}, e.getExceptionItems().get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND, 1, new String[]{variableFamilyUrn}, e.getExceptionItems().get(0));
         }
 
         // Check that the associated variables has not been deleted
+        Variable variable1 = codesService.retrieveVariableByUrn(ctx, VARIABLE_1);
+        Variable variable2 = codesService.retrieveVariableByUrn(ctx, VARIABLE_2);
         Variable variable3 = codesService.retrieveVariableByUrn(ctx, VARIABLE_3);
         Variable variable4 = codesService.retrieveVariableByUrn(ctx, VARIABLE_4);
-        assertFalse(SrmValidationUtils.isFamilyInList(VARIABLE_FAMILY_3, variable3.getFamilies()));
-        assertFalse(SrmValidationUtils.isFamilyInList(VARIABLE_FAMILY_3, variable4.getFamilies()));
+        assertFalse(SrmServiceUtils.isFamilyInList(variableFamilyUrn, variable1.getFamilies()));
+        assertFalse(SrmServiceUtils.isFamilyInList(variableFamilyUrn, variable2.getFamilies()));
+        assertFalse(SrmServiceUtils.isFamilyInList(variableFamilyUrn, variable3.getFamilies()));
+        assertFalse(SrmServiceUtils.isFamilyInList(variableFamilyUrn, variable4.getFamilies()));
     }
 
     @Override
@@ -2406,12 +2414,15 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     @Override
     @Test
     public void testCreateVariable() throws Exception {
-        Variable variable = CodesMetamacDoMocks.mockVariable();
+
         ServiceContext ctx = getServiceContextAdministrador();
 
+        Variable variable = CodesMetamacDoMocks.mockVariable();
+        variable.addFamily(codesService.retrieveVariableFamilyByUrn(ctx, VARIABLE_FAMILY_1));
+        variable.addFamily(codesService.retrieveVariableFamilyByUrn(ctx, VARIABLE_FAMILY_2));
+
         // Create
-        List<String> familyUrns = Arrays.asList(VARIABLE_FAMILY_1, VARIABLE_FAMILY_2);
-        Variable variableCreated = codesService.createVariable(ctx, familyUrns, variable);
+        Variable variableCreated = codesService.createVariable(ctx, variable);
 
         assertEquals(ctx.getUserId(), variableCreated.getCreatedBy());
         assertEquals(getServiceContextAdministrador().getUserId(), variableCreated.getCreatedBy());
@@ -2420,12 +2431,12 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertTrue(DateUtils.isSameDay(new Date(), variableCreated.getLastUpdated().toDate()));
 
         // Check that the variable was created in both families
-        assertTrue(SrmValidationUtils.isFamilyInList(VARIABLE_FAMILY_1, variableCreated.getFamilies()));
-        assertTrue(SrmValidationUtils.isFamilyInList(VARIABLE_FAMILY_2, variableCreated.getFamilies()));
+        assertTrue(SrmServiceUtils.isFamilyInList(VARIABLE_FAMILY_1, variableCreated.getFamilies()));
+        assertTrue(SrmServiceUtils.isFamilyInList(VARIABLE_FAMILY_2, variableCreated.getFamilies()));
         VariableFamily family1 = codesService.retrieveVariableFamilyByUrn(ctx, VARIABLE_FAMILY_1);
         VariableFamily family2 = codesService.retrieveVariableFamilyByUrn(ctx, VARIABLE_FAMILY_2);
-        assertTrue(SrmValidationUtils.isVariableInList(variableCreated.getNameableArtefact().getUrn(), family1.getVariables()));
-        assertTrue(SrmValidationUtils.isVariableInList(variableCreated.getNameableArtefact().getUrn(), family2.getVariables()));
+        assertTrue(SrmServiceUtils.isVariableInList(variableCreated.getNameableArtefact().getUrn(), family1.getVariables()));
+        assertTrue(SrmServiceUtils.isVariableInList(variableCreated.getNameableArtefact().getUrn(), family2.getVariables()));
 
         assertEqualsVariable(variableCreated, variable);
     }
@@ -2433,9 +2444,10 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     @Test
     public void testCreateVariableErrorWrongCode() throws Exception {
         Variable variable = CodesMetamacDoMocks.mockVariable();
+        variable.addFamily(codesService.retrieveVariableFamilyByUrn(getServiceContextAdministrador(), VARIABLE_FAMILY_1));
         variable.getNameableArtefact().setCode(" 0 - invalid identifier");
         try {
-            codesService.createVariable(getServiceContextAdministrador(), Arrays.asList(VARIABLE_FAMILY_1), variable);
+            codesService.createVariable(getServiceContextAdministrador(), variable);
             fail("wrong code");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
@@ -2446,9 +2458,10 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     @Test
     public void testCreateVariableErrorDuplicatedCode() throws Exception {
         Variable variable = CodesMetamacDoMocks.mockVariable();
+        variable.addFamily(codesService.retrieveVariableFamilyByUrn(getServiceContextAdministrador(), VARIABLE_FAMILY_1));
         variable.getNameableArtefact().setCode("VARIABLE_01");
         try {
-            codesService.createVariable(getServiceContextAdministrador(), Arrays.asList(VARIABLE_FAMILY_1), variable);
+            codesService.createVariable(getServiceContextAdministrador(), variable);
             fail("duplicated code");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
@@ -2459,11 +2472,12 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     @Test
     public void testCreateVariableErrorIncorrectMetadata() throws Exception {
         Variable variable = new Variable();
+        variable.addFamily(codesService.retrieveVariableFamilyByUrn(getServiceContextAdministrador(), VARIABLE_FAMILY_1));
         variable.setNameableArtefact(new NameableArtefact());
         variable.setValidFrom(null);
         variable.setValidTo(new DateTime());
         try {
-            codesService.createVariable(getServiceContextAdministrador(), Arrays.asList(VARIABLE_FAMILY_1), variable);
+            codesService.createVariable(getServiceContextAdministrador(), variable);
             fail("metadata required");
         } catch (MetamacException e) {
             assertEquals(4, e.getExceptionItems().size());
@@ -2471,40 +2485,6 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_CODE}, e.getExceptionItems().get(1));
             assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.VARIABLE_SHORT_NAME}, e.getExceptionItems().get(2));
             assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, 1, new String[]{ServiceExceptionParameters.VARIABLE_VALID_TO}, e.getExceptionItems().get(3));
-        }
-    }
-
-    @Test
-    public void testCreateVariableErrorIncorrectFamily() throws Exception {
-        ServiceContext ctx = getServiceContextAdministrador();
-
-        Variable variable = CodesMetamacDoMocks.mockVariable();
-
-        // Null family
-        try {
-            codesService.createVariable(ctx, null, variable);
-            fail("required family to create a variable");
-        } catch (MetamacException e) {
-            assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.PARAMETER_REQUIRED, 1, new String[]{ServiceExceptionParameters.URN}, e.getExceptionItems().get(0));
-        }
-
-        // Empty family list
-        try {
-            codesService.createVariable(ctx, new ArrayList<String>(), variable);
-            fail("required family to create a variable");
-        } catch (MetamacException e) {
-            assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.PARAMETER_REQUIRED, 1, new String[]{ServiceExceptionParameters.URN}, e.getExceptionItems().get(0));
-        }
-
-        // Non-existent family
-        try {
-            codesService.createVariable(ctx, Arrays.asList(NOT_EXISTS), variable);
-            fail("required family to create a variable");
-        } catch (MetamacException e) {
-            assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND, 1, new String[]{NOT_EXISTS}, e.getExceptionItems().get(0));
         }
     }
 
@@ -2555,6 +2535,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     @Test
     public void testUpdateVariableErrorIncorrectMetadata() throws Exception {
         Variable variable = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_1);
+        variable.removeAllFamilies();
         variable.getNameableArtefact().setCode(null);
         variable.getNameableArtefact().setIsCodeUpdated(null);
         variable.getNameableArtefact().setName(null);
@@ -2565,12 +2546,13 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             codesService.updateVariable(getServiceContextAdministrador(), variable);
             fail("metadata required");
         } catch (MetamacException e) {
-            assertEquals(5, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME}, e.getExceptionItems().get(0));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_IS_CODE_UPDATED}, e.getExceptionItems().get(1));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_CODE}, e.getExceptionItems().get(2));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.VARIABLE_SHORT_NAME}, e.getExceptionItems().get(3));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, 1, new String[]{ServiceExceptionParameters.VARIABLE_VALID_TO}, e.getExceptionItems().get(4));
+            assertEquals(6, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.VARIABLE_FAMILY}, e.getExceptionItems().get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME}, e.getExceptionItems().get(1));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_IS_CODE_UPDATED}, e.getExceptionItems().get(2));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_CODE}, e.getExceptionItems().get(3));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.VARIABLE_SHORT_NAME}, e.getExceptionItems().get(4));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, 1, new String[]{ServiceExceptionParameters.VARIABLE_VALID_TO}, e.getExceptionItems().get(5));
         }
     }
 
@@ -2675,8 +2657,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
         Variable variable = codesService.retrieveVariableByUrn(ctx, VARIABLE_4);
         assertEquals(2, variable.getFamilies().size());
-        assertTrue(SrmValidationUtils.isFamilyInList(VARIABLE_FAMILY_3, variable.getFamilies()));
-        assertTrue(SrmValidationUtils.isFamilyInList(VARIABLE_FAMILY_4, variable.getFamilies()));
+        assertTrue(SrmServiceUtils.isFamilyInList(VARIABLE_FAMILY_3, variable.getFamilies()));
+        assertTrue(SrmServiceUtils.isFamilyInList(VARIABLE_FAMILY_4, variable.getFamilies()));
 
         // Delete variable
         codesService.deleteVariable(ctx, VARIABLE_4);
@@ -2693,8 +2675,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         // Check that the families has not been deleted
         VariableFamily family3 = codesService.retrieveVariableFamilyByUrn(ctx, VARIABLE_FAMILY_3);
         VariableFamily family4 = codesService.retrieveVariableFamilyByUrn(ctx, VARIABLE_FAMILY_4);
-        assertFalse(SrmValidationUtils.isVariableInList(VARIABLE_4, family3.getVariables()));
-        assertFalse(SrmValidationUtils.isVariableInList(VARIABLE_4, family4.getVariables()));
+        assertFalse(SrmServiceUtils.isVariableInList(VARIABLE_4, family3.getVariables()));
+        assertFalse(SrmServiceUtils.isVariableInList(VARIABLE_4, family4.getVariables()));
     }
 
     @Test
@@ -2704,8 +2686,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         String variableUrn = VARIABLE_6;
         Variable variable = codesService.retrieveVariableByUrn(ctx, VARIABLE_6);
         assertEquals(2, variable.getCodelists().size());
-        assertTrue(SrmValidationUtils.isCodelistInList(CODELIST_6_V1, variable.getCodelists()));
-        assertTrue(SrmValidationUtils.isCodelistInList(CODELIST_1_V1, variable.getCodelists()));
+        assertTrue(SrmServiceUtils.isCodelistInList(CODELIST_6_V1, variable.getCodelists()));
+        assertTrue(SrmServiceUtils.isCodelistInList(CODELIST_1_V1, variable.getCodelists()));
 
         // Delete variable
         try {
@@ -2743,7 +2725,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
     @Override
     @Test
-    public void testAddVariablesToFamily() throws Exception {
+    public void testAddVariablesToVariableFamily() throws Exception {
         ServiceContext ctx = getServiceContextAdministrador();
 
         String variableUrn = VARIABLE_1;
@@ -2751,40 +2733,43 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
         VariableFamily family = codesService.retrieveVariableFamilyByUrn(ctx, variableFamilyUrn);
         Variable variable = codesService.retrieveVariableByUrn(ctx, variableUrn);
-        assertFalse(SrmValidationUtils.isVariableInList(variableUrn, family.getVariables()));
-        assertFalse(SrmValidationUtils.isFamilyInList(variableFamilyUrn, variable.getFamilies()));
+        assertFalse(SrmServiceUtils.isVariableInList(variableUrn, family.getVariables()));
+        assertFalse(SrmServiceUtils.isFamilyInList(variableFamilyUrn, variable.getFamilies()));
 
         List<String> variablesUrn = Arrays.asList(variableUrn);
-        codesService.addVariablesToFamily(ctx, variablesUrn, variableFamilyUrn);
+        codesService.addVariablesToVariableFamily(ctx, variablesUrn, variableFamilyUrn);
 
         family = codesService.retrieveVariableFamilyByUrn(ctx, variableFamilyUrn);
         variable = codesService.retrieveVariableByUrn(ctx, variableUrn);
-        assertTrue(SrmValidationUtils.isVariableInList(variableUrn, family.getVariables()));
-        assertTrue(SrmValidationUtils.isFamilyInList(variableFamilyUrn, variable.getFamilies()));
+        assertTrue(SrmServiceUtils.isVariableInList(variableUrn, family.getVariables()));
+        assertTrue(SrmServiceUtils.isFamilyInList(variableFamilyUrn, variable.getFamilies()));
 
         // Adding the variable to the family again has no consequences
-        codesService.addVariablesToFamily(ctx, variablesUrn, variableFamilyUrn);
+        codesService.addVariablesToVariableFamily(ctx, variablesUrn, variableFamilyUrn);
     }
 
     @Override
     @Test
-    public void testRemoveVariableFromFamily() throws Exception {
+    public void testRemoveVariableFromVariableFamily() throws Exception {
         ServiceContext ctx = getServiceContextAdministrador();
 
-        VariableFamily family = codesService.retrieveVariableFamilyByUrn(ctx, VARIABLE_FAMILY_3);
-        Variable variable = codesService.retrieveVariableByUrn(ctx, VARIABLE_3);
-        assertTrue(SrmValidationUtils.isVariableInList(VARIABLE_3, family.getVariables()));
-        assertTrue(SrmValidationUtils.isFamilyInList(VARIABLE_FAMILY_3, variable.getFamilies()));
+        String variableUrn = VARIABLE_3;
+        String variableFamilyUrn = VARIABLE_FAMILY_3;
 
-        codesService.removeVariableFromFamily(ctx, VARIABLE_3, VARIABLE_FAMILY_3);
+        VariableFamily family = codesService.retrieveVariableFamilyByUrn(ctx, variableFamilyUrn);
+        Variable variable = codesService.retrieveVariableByUrn(ctx, variableUrn);
+        assertTrue(SrmServiceUtils.isVariableInList(variableUrn, family.getVariables()));
+        assertTrue(SrmServiceUtils.isFamilyInList(variableFamilyUrn, variable.getFamilies()));
 
-        family = codesService.retrieveVariableFamilyByUrn(ctx, VARIABLE_FAMILY_3);
-        variable = codesService.retrieveVariableByUrn(ctx, VARIABLE_3);
-        assertFalse(SrmValidationUtils.isVariableInList(VARIABLE_3, family.getVariables()));
-        assertFalse(SrmValidationUtils.isFamilyInList(VARIABLE_FAMILY_3, variable.getFamilies()));
+        codesService.removeVariableFromVariableFamily(ctx, variableUrn, variableFamilyUrn);
+
+        family = codesService.retrieveVariableFamilyByUrn(ctx, variableFamilyUrn);
+        variable = codesService.retrieveVariableByUrn(ctx, variableUrn);
+        assertFalse(SrmServiceUtils.isVariableInList(variableUrn, family.getVariables()));
+        assertFalse(SrmServiceUtils.isFamilyInList(variableFamilyUrn, variable.getFamilies()));
 
         // Removing the variable from the family again has no consequences
-        codesService.removeVariableFromFamily(ctx, VARIABLE_3, VARIABLE_FAMILY_3);
+        codesService.removeVariableFromVariableFamily(ctx, variableUrn, variableFamilyUrn);
     }
 
     @Override

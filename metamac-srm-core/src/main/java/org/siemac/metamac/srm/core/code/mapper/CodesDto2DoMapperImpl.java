@@ -4,6 +4,7 @@ import org.joda.time.DateTime;
 import org.siemac.metamac.core.common.exception.ExceptionLevelEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
+import org.siemac.metamac.core.common.util.CoreCommonUtil;
 import org.siemac.metamac.core.common.util.OptimisticLockingUtils;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacRepository;
@@ -12,10 +13,14 @@ import org.siemac.metamac.srm.core.code.domain.CodelistFamilyRepository;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacRepository;
 import org.siemac.metamac.srm.core.code.domain.Variable;
+import org.siemac.metamac.srm.core.code.domain.VariableFamily;
+import org.siemac.metamac.srm.core.code.domain.VariableFamilyRepository;
 import org.siemac.metamac.srm.core.code.domain.VariableRepository;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
+import org.siemac.metamac.srm.core.code.dto.VariableDto;
+import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +42,9 @@ public class CodesDto2DoMapperImpl implements CodesDto2DoMapper {
 
     @Autowired
     private CodelistFamilyRepository                                       codelistFamilyRepository;
+
+    @Autowired
+    private VariableFamilyRepository                                       variableFamilyRepository;
 
     @Autowired
     private VariableRepository                                             variableRepository;
@@ -128,6 +136,66 @@ public class CodesDto2DoMapperImpl implements CodesDto2DoMapper {
         return target;
     }
 
+    @Override
+    public VariableFamily variableFamilyDtoToDo(VariableFamilyDto source) throws MetamacException {
+        if (source == null) {
+            return null;
+        }
+
+        // If exists, retrieves existing entity. Otherwise, creates new entity.
+        VariableFamily target = null;
+        if (source.getUrn() == null) {
+            target = new VariableFamily();
+        } else {
+            target = retrieveVariableFamily(source.getUrn());
+            OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersion());
+        }
+
+        if (target.getId() == null) {
+            target.setNameableArtefact(new NameableArtefact());
+        }
+
+        target.setNameableArtefact(dto2DoMapperSdmxSrm.nameableArtefactToEntity(source, target.getNameableArtefact()));
+
+        // Optimistic locking: Update "update date" attribute to force update to root entity, to increment "version" attribute
+        target.setUpdateDate(new DateTime());
+
+        return target;
+    }
+
+    @Override
+    public Variable variableDtoToDo(VariableDto source) throws MetamacException {
+        if (source == null) {
+            return null;
+        }
+
+        // If exists, retrieves existing entity. Otherwise, creates new entity.
+        Variable target = null;
+        if (source.getUrn() == null) {
+            target = new Variable();
+        } else {
+            target = retrieveVariable(source.getUrn());
+            OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersion());
+        }
+
+        if (target.getId() == null) {
+            target.setNameableArtefact(new NameableArtefact());
+        }
+
+        target.setShortName(dto2DoMapperSdmxSrm.internationalStringToEntity(source.getShortName(), target.getShortName(), ServiceExceptionParameters.VARIABLE_SHORT_NAME));
+        target.setValidFrom(CoreCommonUtil.transformDateToDateTime(source.getValidFrom()));
+        target.setValidTo(CoreCommonUtil.transformDateToDateTime(source.getValidTo()));
+        target.removeAllFamilies();
+        for (RelatedResourceDto variableFamilyDto : source.getFamilies()) {
+            target.addFamily(retrieveVariableFamily(variableFamilyDto.getUrn()));
+        }
+        target.setNameableArtefact(dto2DoMapperSdmxSrm.nameableArtefactToEntity(source, target.getNameableArtefact()));
+
+        // Optimistic locking: Update "update date" attribute to force update to root entity, to increment "version" attribute
+        target.setUpdateDate(new DateTime());
+
+        return target;
+    }
     private CodelistVersionMetamac retrieveCodelist(String urn) throws MetamacException {
         CodelistVersionMetamac target = codelistVersionMetamacRepository.findByUrn(urn);
         if (target == null) {
@@ -148,6 +216,15 @@ public class CodesDto2DoMapperImpl implements CodesDto2DoMapper {
 
     private CodelistFamily retrieveCodelistFamily(String urn) throws MetamacException {
         CodelistFamily target = codelistFamilyRepository.findByUrn(urn);
+        if (target == null) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(urn).withLoggedLevel(ExceptionLevelEnum.ERROR)
+                    .build();
+        }
+        return target;
+    }
+
+    private VariableFamily retrieveVariableFamily(String urn) throws MetamacException {
+        VariableFamily target = variableFamilyRepository.findByUrn(urn);
         if (target == null) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(urn).withLoggedLevel(ExceptionLevelEnum.ERROR)
                     .build();
