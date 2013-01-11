@@ -1,16 +1,20 @@
 package org.siemac.metamac.srm.core.dsd.serviceapi;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
 
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
+import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.dsd.serviceapi.utils.DataStructureDefinitionMetamacDoMocks;
+import org.siemac.metamac.srm.core.dsd.serviceapi.utils.DataStructureDefinitionsMetamacAsserts;
+import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamacRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +29,6 @@ import com.arte.statistic.sdmx.srm.core.base.domain.Component;
 import com.arte.statistic.sdmx.srm.core.base.domain.ComponentList;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DimensionComponent;
 import com.arte.statistic.sdmx.srm.core.structure.domain.GroupDimensionDescriptor;
-import com.arte.statistic.sdmx.srm.core.structure.serviceapi.DataStructureDefinitionService;
 import com.arte.statistic.sdmx.srm.core.structure.serviceapi.utils.DataStructureDefinitionDoMocks;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -36,15 +39,12 @@ import com.arte.statistic.sdmx.srm.core.structure.serviceapi.utils.DataStructure
 public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacServiceTestBase {
 
     @Autowired
-    protected DsdsMetamacService             dsdsMetamacService;
+    protected DsdsMetamacService          dsdsMetamacService;
 
     @Autowired
-    protected DataStructureDefinitionService dataStructureDefinitionService;
+    private OrganisationMetamacRepository organisationMetamacRepository;
 
-    @Autowired
-    private OrganisationMetamacRepository    organisationMetamacRepository;
-
-    private final ServiceContext             serviceContext = new ServiceContext("system", "123456", "junit");
+    private final ServiceContext          serviceContext = new ServiceContext("system", "123456", "junit");
 
     protected ServiceContext getServiceContext() {
         return serviceContext;
@@ -55,7 +55,56 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
     @Test
     @Override
     public void testCreateDataStructureDefinition() throws Exception {
-        // TODO Test dsd
+
+        OrganisationMetamac organisationMetamac = organisationMetamacRepository.findByUrn(AGENCY_ROOT_1_V1);
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = DataStructureDefinitionMetamacDoMocks.mockDataStructureDefinitionVersionMetamac(organisationMetamac);
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        // Create
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacCreated = dsdsMetamacService.createDataStructureDefinition(ctx, dataStructureDefinitionVersionMetamac);
+        String urn = dataStructureDefinitionVersionMetamacCreated.getMaintainableArtefact().getUrn();
+        assertEquals("01.000", dataStructureDefinitionVersionMetamacCreated.getMaintainableArtefact().getVersionLogic());
+        assertEquals(ctx.getUserId(), dataStructureDefinitionVersionMetamacCreated.getCreatedBy());
+
+        // Validate (only metadata in SRM Metamac; the others are checked in sdmx project)
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacRetrieved = dsdsMetamacService.retrieveDataStructureDefinitionByUrn(ctx, urn);
+        assertEquals(ProcStatusEnum.DRAFT, dataStructureDefinitionVersionMetamacRetrieved.getLifeCycleMetadata().getProcStatus());
+        assertFalse(dataStructureDefinitionVersionMetamacRetrieved.getMaintainableArtefact().getIsExternalReference());
+        assertNull(dataStructureDefinitionVersionMetamacRetrieved.getLifeCycleMetadata().getProductionValidationDate());
+        assertNull(dataStructureDefinitionVersionMetamacRetrieved.getLifeCycleMetadata().getProductionValidationUser());
+        assertNull(dataStructureDefinitionVersionMetamacRetrieved.getLifeCycleMetadata().getDiffusionValidationDate());
+        assertNull(dataStructureDefinitionVersionMetamacRetrieved.getLifeCycleMetadata().getDiffusionValidationUser());
+        assertNull(dataStructureDefinitionVersionMetamacRetrieved.getLifeCycleMetadata().getInternalPublicationDate());
+        assertNull(dataStructureDefinitionVersionMetamacRetrieved.getLifeCycleMetadata().getInternalPublicationUser());
+        assertNull(dataStructureDefinitionVersionMetamacRetrieved.getLifeCycleMetadata().getExternalPublicationDate());
+        assertNull(dataStructureDefinitionVersionMetamacRetrieved.getLifeCycleMetadata().getExternalPublicationUser());
+        assertFalse(dataStructureDefinitionVersionMetamacRetrieved.getMaintainableArtefact().getFinalLogicClient());
+        assertEquals(ctx.getUserId(), dataStructureDefinitionVersionMetamacRetrieved.getCreatedBy());
+        assertEquals(ctx.getUserId(), dataStructureDefinitionVersionMetamacRetrieved.getLastUpdatedBy());
+        DataStructureDefinitionsMetamacAsserts.assertEqualsDataStructureDefinition(dataStructureDefinitionVersionMetamac, dataStructureDefinitionVersionMetamacRetrieved);
+    }
+
+    @Test
+    public void testCreateDataStructureDefinitionErrorNotDefault() throws Exception {
+        OrganisationMetamac organisationMetamac = organisationMetamacRepository.findByUrn(AGENCY_ROOT_2_V1);
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = DataStructureDefinitionMetamacDoMocks.mockDataStructureDefinitionVersionMetamac(organisationMetamac);
+
+        try {
+            dsdsMetamacService.createDataStructureDefinition(getServiceContextAdministrador(), dataStructureDefinitionVersionMetamac);
+            fail("maintainer not default");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.MAINTAINER_MUST_BE_DEFAULT.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(AGENCY_ROOT_2_V1, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals(AGENCY_ROOT_1_V1, e.getExceptionItems().get(0).getMessageParameters()[1]);
+        }
+    }
+
+    @Test
+    @Override
+    public void testPreCreateDataStructureDefinition() throws Exception {
+        // TODO Auto-generated method stub
 
     }
 
@@ -166,21 +215,11 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
 
     }
 
-    @Ignore
-    // TODO fallando
     @Test
     @Override
     public void testVersioningDataStructureDefinition() throws Exception {
-        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacToCopy = createDataStructureDefinitionGraph();
+        // TODO Test dsd
 
-        dsdsMetamacService.sendDataStructureDefinitionToProductionValidation(getServiceContextAdministrador(), dataStructureDefinitionVersionMetamacToCopy.getMaintainableArtefact().getUrn());
-        dsdsMetamacService.sendDataStructureDefinitionToDiffusionValidation(getServiceContextAdministrador(), dataStructureDefinitionVersionMetamacToCopy.getMaintainableArtefact().getUrn());
-        dsdsMetamacService.publishInternallyDataStructureDefinition(getServiceContextAdministrador(), dataStructureDefinitionVersionMetamacToCopy.getMaintainableArtefact().getUrn());
-
-        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacCreated = dsdsMetamacService.versioningDataStructureDefinition(getServiceContextAdministrador(),
-                dataStructureDefinitionVersionMetamacToCopy.getMaintainableArtefact().getUrn(), VersionTypeEnum.MAJOR);
-
-        assertNotNull(dataStructureDefinitionVersionMetamacCreated);
     }
 
     @Test

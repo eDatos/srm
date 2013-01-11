@@ -84,7 +84,6 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
     }
 
     @Test
-    @Ignore
     public void testImport_EXAMPLE_ORGANISATIONS() throws Exception {
         File file = new File(SdmxResources.EXAMPLE_ORGANISATIONS);
 
@@ -117,7 +116,6 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
     }
 
     @Test
-    @Ignore
     public void testImport_DEMOGRAPHY_CODELIST() throws Exception {
         File file = new File(SdmxResources.DEMOGRAPHY_CODELIST);
 
@@ -152,7 +150,6 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
     }
 
     @Test
-    @Ignore
     public void testImport_DEMOGRAPHY_CONCEPTS() throws Exception {
 
         File file = new File(SdmxResources.DEMOGRAPHY_CONCEPTS);
@@ -183,7 +180,6 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
     }
 
     @Test
-    @Ignore
     public void testImport_DSD_ECB_EXR_NG_FULL() throws Exception {
         File file = null;
         DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = null;
@@ -196,7 +192,6 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
     }
 
     @Test
-    @Ignore
     public void testImport_DSD_ECB_EXR_SG_FULL() throws Exception {
         File file = null;
         DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = null;
@@ -209,7 +204,6 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
     }
 
     @Test
-    @Ignore
     public void testImport_DSD_ECB_EXR_RG_FULL() throws Exception {
         File file = null;
         DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = null;
@@ -222,7 +216,6 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
     }
 
     @Test
-    @Ignore
     public void testImport_DSD_INE_DPOP() throws Exception {
         File file = null;
         DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = null;

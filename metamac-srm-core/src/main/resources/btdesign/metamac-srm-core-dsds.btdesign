@@ -21,6 +21,8 @@ Application DsdsMetamac {
     		
     		"Creates DataStructureDefinition"
 			@DataStructureDefinitionVersionMetamac createDataStructureDefinition(@DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion) throws MetamacException;
+			"Pre-Create DataStructureDefinition"
+			@DataStructureDefinitionVersionMetamac preCreateDataStructureDefinition(@DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion) throws MetamacException;
 			"Updates DataStructureDefinition"
 			@DataStructureDefinitionVersionMetamac updateDataStructureDefinition(@DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion) throws MetamacException;
     		"Retrieves data structure definition by urn"

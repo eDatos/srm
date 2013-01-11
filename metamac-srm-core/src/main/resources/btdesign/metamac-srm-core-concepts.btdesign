@@ -25,7 +25,7 @@ Application ConceptsMetamac {
 			
 			"Creates concept scheme"
 			@ConceptSchemeVersionMetamac createConceptScheme(@ConceptSchemeVersionMetamac conceptSchemeVersion) throws MetamacException;
-			"Creates concept scheme"
+			"Pre-Create concept scheme"
 			@ConceptSchemeVersionMetamac preCreateConceptScheme(@ConceptSchemeVersionMetamac conceptSchemeVersion) throws MetamacException;
 			"Updates concept scheme"
 			@ConceptSchemeVersionMetamac updateConceptScheme(@ConceptSchemeVersionMetamac conceptSchemeVersion) throws MetamacException;
