@@ -1,7 +1,12 @@
 package org.siemac.metamac.srm.web.client.code.presenter;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
+import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
+import java.util.List;
+
+import org.siemac.metamac.core.common.util.shared.StringUtils;
+import org.siemac.metamac.srm.core.code.dto.VariableDto;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
@@ -10,7 +15,18 @@ import org.siemac.metamac.srm.web.client.code.widgets.CodesToolStripPresenterWid
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
+import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
+import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
+import org.siemac.metamac.srm.web.shared.code.DeleteVariablesAction;
+import org.siemac.metamac.srm.web.shared.code.DeleteVariablesResult;
+import org.siemac.metamac.srm.web.shared.code.GetVariablesAction;
+import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
+import org.siemac.metamac.srm.web.shared.code.SaveVariableAction;
+import org.siemac.metamac.srm.web.shared.code.SaveVariableResult;
+import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
+import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
+import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
@@ -58,6 +74,8 @@ public class VariableListPresenter extends Presenter<VariableListPresenter.Varia
 
     public interface VariableListView extends View, HasUiHandlers<VariableListUiHandlers> {
 
+        void setVariablePaginatedList(GetVariablesResult variablesPaginatedList);
+        void clearSearchSection();
     }
 
     @Inject
@@ -91,7 +109,61 @@ public class VariableListPresenter extends Presenter<VariableListPresenter.Varia
         SelectMenuButtonEvent.fire(this, ToolStripButtonEnum.CODELISTS);
     }
 
-    private void retrieveVariables(int firstResult, int maxResults, final String criteria) {
-        // TODO
+    @Override
+    public void goToVariable(String urn) {
+        if (!StringUtils.isBlank(urn)) {
+            placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeVariablePlaceRequest(urn));
+        }
+    }
+
+    @Override
+    public void createVariable(VariableDto variableDto) {
+        dispatcher.execute(new SaveVariableAction(variableDto), new WaitingAsyncCallback<SaveVariableResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(VariableListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().variableErrorSave()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(SaveVariableResult result) {
+                ShowMessageEvent.fire(VariableListPresenter.this, ErrorUtils.getMessageList(getMessages().variableSaved()), MessageTypeEnum.SUCCESS);
+                retrieveVariables(VARIABLE_LIST_FIRST_RESULT, VARIABLE_LIST_MAX_RESULTS, null);
+            }
+        });
+    }
+
+    @Override
+    public void deleteVariables(List<String> urns) {
+        dispatcher.execute(new DeleteVariablesAction(urns), new WaitingAsyncCallback<DeleteVariablesResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(VariableListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().variableErrorDelete()), MessageTypeEnum.ERROR);
+                retrieveVariables(VARIABLE_LIST_FIRST_RESULT, VARIABLE_LIST_MAX_RESULTS, null);
+            }
+            @Override
+            public void onWaitSuccess(DeleteVariablesResult result) {
+                ShowMessageEvent.fire(VariableListPresenter.this, ErrorUtils.getMessageList(getMessages().variableDeleted()), MessageTypeEnum.SUCCESS);
+                retrieveVariables(VARIABLE_LIST_FIRST_RESULT, VARIABLE_LIST_MAX_RESULTS, null);
+            }
+        });
+    }
+
+    @Override
+    public void retrieveVariables(int firstResult, int maxResults, final String criteria) {
+        dispatcher.execute(new GetVariablesAction(firstResult, maxResults, criteria, null), new WaitingAsyncCallback<GetVariablesResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(VariableListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().variableErrorRetrieveList()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetVariablesResult result) {
+                getView().setVariablePaginatedList(result);
+                if (StringUtils.isBlank(criteria)) {
+                    getView().clearSearchSection();
+                }
+            }
+        });
     }
 }

@@ -158,7 +158,7 @@ public class CodelistFamilyListViewImpl extends ViewWithUiHandlers<CodelistFamil
         panel.addMember(searchSectionStack);
         panel.addMember(codelistFamilyList);
 
-        deleteConfirmationWindow = new DeleteConfirmationWindow(getConstants().codelistDeleteConfirmationTitle(), getConstants().codelistFamilyDeleteConfirmation());
+        deleteConfirmationWindow = new DeleteConfirmationWindow(getConstants().codelistFamilyDeleteConfirmationTitle(), getConstants().codelistFamilyDeleteConfirmation());
         deleteConfirmationWindow.setVisibility(Visibility.HIDDEN);
         deleteConfirmationWindow.getYesButton().addClickHandler(new ClickHandler() {
 

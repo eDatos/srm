@@ -242,6 +242,11 @@ public class PlaceRequestUtils {
         return getParamFromUrl(placeManager, NameTokens.variableFamilyPage, PlaceRequestParams.variableFamilyParamId);
     }
 
+    public static PlaceRequest buildRelativeVariableFamilyPlaceRequest(String familyCode) {
+        PlaceRequest placeRequest = new PlaceRequest(NameTokens.variableFamilyPage).with(PlaceRequestParams.variableFamilyParamId, familyCode);
+        return placeRequest;
+    }
+
     public static List<PlaceRequest> buildAbsoluteVariableFamilyListPlaceRequest() {
         List<PlaceRequest> placeRequestHierarchy = new ArrayList<PlaceRequest>();
         placeRequestHierarchy.add(new PlaceRequest(NameTokens.structuralResourcesPage));

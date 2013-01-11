@@ -6,6 +6,8 @@ import java.util.List;
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
+import org.siemac.metamac.srm.core.code.dto.VariableDto;
+import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
@@ -72,6 +74,42 @@ public class RelatedResourceUtils {
         List<RelatedResourceDto> relatedResourceDtos = new ArrayList<RelatedResourceDto>();
         for (CodelistFamilyDto family : codelistFamilyDtos) {
             relatedResourceDtos.add(getRelatedResourceDtoFromCodelistFamilyDto(family));
+        }
+        return relatedResourceDtos;
+    }
+
+    // Variables
+
+    public static RelatedResourceDto getRelatedResourceDtoFromVariableDto(VariableDto codelist) {
+        RelatedResourceDto relatedResourceDto = new RelatedResourceDto();
+        relatedResourceDto.setCode(codelist.getCode());
+        relatedResourceDto.setTitle(codelist.getName());
+        relatedResourceDto.setUrn(codelist.getUrn());
+        return relatedResourceDto;
+    }
+
+    public static List<RelatedResourceDto> getRelatedResourceDtosFromVariableDtos(List<VariableDto> variableDtos) {
+        List<RelatedResourceDto> relatedResourceDtos = new ArrayList<RelatedResourceDto>();
+        for (VariableDto codelist : variableDtos) {
+            relatedResourceDtos.add(getRelatedResourceDtoFromVariableDto(codelist));
+        }
+        return relatedResourceDtos;
+    }
+
+    // Variable families
+
+    public static RelatedResourceDto getRelatedResourceDtoFromVariableFamilyDto(VariableFamilyDto variableFamily) {
+        RelatedResourceDto relatedResourceDto = new RelatedResourceDto();
+        relatedResourceDto.setCode(variableFamily.getCode());
+        relatedResourceDto.setTitle(variableFamily.getName());
+        relatedResourceDto.setUrn(variableFamily.getUrn());
+        return relatedResourceDto;
+    }
+
+    public static List<RelatedResourceDto> getRelatedResourceDtosFromVariableFamilyDtos(List<VariableFamilyDto> variableFamilyDtos) {
+        List<RelatedResourceDto> relatedResourceDtos = new ArrayList<RelatedResourceDto>();
+        for (VariableFamilyDto family : variableFamilyDtos) {
+            relatedResourceDtos.add(getRelatedResourceDtoFromVariableFamilyDto(family));
         }
         return relatedResourceDtos;
     }

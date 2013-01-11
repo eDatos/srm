@@ -1,7 +1,12 @@
 package org.siemac.metamac.srm.web.client.code.presenter;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
+import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
+import java.util.List;
+
+import org.siemac.metamac.core.common.util.shared.StringUtils;
+import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
@@ -10,7 +15,18 @@ import org.siemac.metamac.srm.web.client.code.widgets.CodesToolStripPresenterWid
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
+import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
+import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
+import org.siemac.metamac.srm.web.shared.code.DeleteVariableFamiliesAction;
+import org.siemac.metamac.srm.web.shared.code.DeleteVariableFamiliesResult;
+import org.siemac.metamac.srm.web.shared.code.GetVariableFamiliesAction;
+import org.siemac.metamac.srm.web.shared.code.GetVariableFamiliesResult;
+import org.siemac.metamac.srm.web.shared.code.SaveVariableFamilyAction;
+import org.siemac.metamac.srm.web.shared.code.SaveVariableFamilyResult;
+import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
+import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
+import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
@@ -60,6 +76,8 @@ public class VariableFamilyListPresenter extends Presenter<VariableFamilyListPre
 
     public interface VariableFamilyListView extends View, HasUiHandlers<VariableFamilyListUiHandlers> {
 
+        void setVariableFamilyPaginatedList(GetVariableFamiliesResult variableFamiliesPaginatedList);
+        void clearSearchSection();
     }
 
     @Inject
@@ -93,7 +111,61 @@ public class VariableFamilyListPresenter extends Presenter<VariableFamilyListPre
         SelectMenuButtonEvent.fire(this, ToolStripButtonEnum.CODELISTS);
     }
 
-    private void retrieveVariableFamilies(int firstResult, int maxResults, final String criteria) {
-        // TODO
+    @Override
+    public void retrieveVariableFamilies(int firstResult, int maxResults, final String criteria) {
+        dispatcher.execute(new GetVariableFamiliesAction(firstResult, maxResults, criteria), new WaitingAsyncCallback<GetVariableFamiliesResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(VariableFamilyListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().variableFamilyErrorRetrieveList()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetVariableFamiliesResult result) {
+                getView().setVariableFamilyPaginatedList(result);
+                if (StringUtils.isBlank(criteria)) {
+                    getView().clearSearchSection();
+                }
+            }
+        });
+    }
+
+    @Override
+    public void createVariableFamily(VariableFamilyDto variableFamilyDto) {
+        dispatcher.execute(new SaveVariableFamilyAction(variableFamilyDto), new WaitingAsyncCallback<SaveVariableFamilyResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(VariableFamilyListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().variableFamilyErrorSave()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(SaveVariableFamilyResult result) {
+                ShowMessageEvent.fire(VariableFamilyListPresenter.this, ErrorUtils.getMessageList(getMessages().variableFamilySaved()), MessageTypeEnum.SUCCESS);
+                retrieveVariableFamilies(FAMILY_LIST_FIRST_RESULT, FAMILY_LIST_MAX_RESULTS, null);
+            }
+        });
+    }
+
+    @Override
+    public void deleteVariableFamilies(List<String> urns) {
+        dispatcher.execute(new DeleteVariableFamiliesAction(urns), new WaitingAsyncCallback<DeleteVariableFamiliesResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(VariableFamilyListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().variableFamilyErrorDelete()), MessageTypeEnum.ERROR);
+                retrieveVariableFamilies(FAMILY_LIST_FIRST_RESULT, FAMILY_LIST_MAX_RESULTS, null);
+            }
+            @Override
+            public void onWaitSuccess(DeleteVariableFamiliesResult result) {
+                ShowMessageEvent.fire(VariableFamilyListPresenter.this, ErrorUtils.getMessageList(getMessages().variableFamilyDeleted()), MessageTypeEnum.SUCCESS);
+                retrieveVariableFamilies(FAMILY_LIST_FIRST_RESULT, FAMILY_LIST_MAX_RESULTS, null);
+            }
+        });
+    }
+
+    @Override
+    public void goToVariableFamily(String code) {
+        if (!StringUtils.isBlank(code)) {
+            placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeVariableFamilyPlaceRequest(code));
+        }
     }
 }
