@@ -7,11 +7,13 @@ import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.Variable;
+import org.siemac.metamac.srm.core.code.domain.VariableElement;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
+import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
 import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsserts;
 import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacDtoMocks;
@@ -77,6 +79,16 @@ public class CodesDto2DoMapperTest extends SrmBaseTest {
 
         Variable entity = codesDto2DoMapper.variableDtoToDo(dto);
         CodesMetamacAsserts.assertEqualsVariable(dto, entity);
+    }
+
+    @Test
+    public void testVariableElementDtoToDo() throws MetamacException {
+        VariableElementDto dto = CodesMetamacDtoMocks.mockVariableElementDto();
+        dto.setVariable(CodesMetamacDtoMocks.mockVariableRelatedResourceDto("VARIABLE_01", VARIABLE_1));
+        // TODO replaceTo, replacedBy
+
+        VariableElement entity = codesDto2DoMapper.variableElementDtoToDo(dto);
+        CodesMetamacAsserts.assertEqualsVariableElement(dto, entity);
     }
 
     @Override
