@@ -79,7 +79,7 @@ public class DataStructureDefinitionDto2DoMapperImpl implements DataStructureDef
                 throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(source.getUrn())
                         .withLoggedLevel(ExceptionLevelEnum.ERROR).build();
             }
-            OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersion());
+            OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersionOptimisticLocking());
         }
 
         // Modifiable attributes

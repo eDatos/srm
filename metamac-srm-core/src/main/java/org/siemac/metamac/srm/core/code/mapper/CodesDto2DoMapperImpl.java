@@ -61,7 +61,7 @@ public class CodesDto2DoMapperImpl implements CodesDto2DoMapper {
             target = new CodelistVersionMetamac();
         } else {
             target = retrieveCodelist(source.getUrn());
-            OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersion());
+            OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersionOptimisticLocking());
         }
         // Modifiable attributes
         target.setShortName(dto2DoMapperSdmxSrm.internationalStringToEntity(source.getShortName(), target.getShortName(), ServiceExceptionParameters.CODELIST_SHORT_NAME));
@@ -101,7 +101,7 @@ public class CodesDto2DoMapperImpl implements CodesDto2DoMapper {
             target = new CodeMetamac();
         } else {
             target = retrieveCode(source.getUrn());
-            OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersion());
+            OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersionOptimisticLocking());
         }
 
         dto2DoMapperSdmxSrm.codeDtoToDo(source, target);
@@ -121,7 +121,7 @@ public class CodesDto2DoMapperImpl implements CodesDto2DoMapper {
             target = new CodelistFamily();
         } else {
             target = retrieveCodelistFamily(source.getUrn());
-            OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersion());
+            OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersionOptimisticLocking());
         }
 
         if (target.getId() == null) {
@@ -148,7 +148,7 @@ public class CodesDto2DoMapperImpl implements CodesDto2DoMapper {
             target = new VariableFamily();
         } else {
             target = retrieveVariableFamily(source.getUrn());
-            OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersion());
+            OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersionOptimisticLocking());
         }
 
         if (target.getId() == null) {
@@ -175,7 +175,7 @@ public class CodesDto2DoMapperImpl implements CodesDto2DoMapper {
             target = new Variable();
         } else {
             target = retrieveVariable(source.getUrn());
-            OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersion());
+            OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersionOptimisticLocking());
         }
 
         if (target.getId() == null) {

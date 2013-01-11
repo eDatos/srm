@@ -54,7 +54,7 @@ public class ConceptsDto2DoMapperImpl implements ConceptsDto2DoMapper {
             target = new ConceptSchemeVersionMetamac();
         } else {
             target = retrieveConceptScheme(source.getUrn());
-            OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersion());
+            OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersionOptimisticLocking());
         }
 
         // Modifiable attributes
@@ -80,7 +80,7 @@ public class ConceptsDto2DoMapperImpl implements ConceptsDto2DoMapper {
             target = new ConceptMetamac();
         } else {
             target = retrieveConcept(source.getUrn());
-            OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersion());
+            OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersionOptimisticLocking());
         }
 
         // Modifiable attributes

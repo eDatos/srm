@@ -42,7 +42,7 @@ public class OrganisationsDto2DoMapperImpl implements OrganisationsDto2DoMapper 
                 throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(source.getUrn())
                         .withLoggedLevel(ExceptionLevelEnum.ERROR).build();
             }
-            OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersion());
+            OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersionOptimisticLocking());
         }
 
         // Modifiable attributes
@@ -71,7 +71,7 @@ public class OrganisationsDto2DoMapperImpl implements OrganisationsDto2DoMapper 
                 throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(source.getUrn())
                         .withLoggedLevel(ExceptionLevelEnum.ERROR).build();
             }
-            OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersion());
+            OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersionOptimisticLocking());
         }
 
         // Modifiable attributes
