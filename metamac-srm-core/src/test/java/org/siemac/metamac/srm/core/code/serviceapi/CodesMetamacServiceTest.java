@@ -1939,7 +1939,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertTrue(DateUtils.isSameDay(new Date(), codelistVersionCreated.getCreatedDate().toDate()));
         assertEquals(getServiceContextAdministrador().getUserId(), codelistVersionCreated.getLastUpdatedBy());
         assertTrue(DateUtils.isSameDay(new Date(), codelistVersionCreated.getLastUpdated().toDate()));
-        assertEqualsCodelistFamily(codelistVersionCreated, codelistFamily);
+        assertEqualsCodelistFamily(codelistFamily, codelistVersionCreated);
     }
 
     @Test
@@ -2211,7 +2211,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertTrue(DateUtils.isSameDay(new Date(), variableVersionCreated.getCreatedDate().toDate()));
         assertEquals(getServiceContextAdministrador().getUserId(), variableVersionCreated.getLastUpdatedBy());
         assertTrue(DateUtils.isSameDay(new Date(), variableVersionCreated.getLastUpdated().toDate()));
-        assertEqualsVariableFamily(variableVersionCreated, variableFamily);
+        assertEqualsVariableFamily(variableFamily, variableVersionCreated);
     }
 
     @Test
@@ -2420,25 +2420,45 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         Variable variable = CodesMetamacDoMocks.mockVariable();
         variable.addFamily(codesService.retrieveVariableFamilyByUrn(ctx, VARIABLE_FAMILY_1));
         variable.addFamily(codesService.retrieveVariableFamilyByUrn(ctx, VARIABLE_FAMILY_2));
+        // Replace to
+        Variable variableReplaced1 = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_1);
+        Variable variableReplaced2 = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_3);
+        variable.addReplaceToVariable(variableReplaced1);
+        variable.addReplaceToVariable(variableReplaced2);
 
         // Create
         Variable variableCreated = codesService.createVariable(ctx, variable);
+        String urn = variableCreated.getNameableArtefact().getUrn();
 
-        assertEquals(ctx.getUserId(), variableCreated.getCreatedBy());
-        assertEquals(getServiceContextAdministrador().getUserId(), variableCreated.getCreatedBy());
-        assertTrue(DateUtils.isSameDay(new Date(), variableCreated.getCreatedDate().toDate()));
-        assertEquals(getServiceContextAdministrador().getUserId(), variableCreated.getLastUpdatedBy());
-        assertTrue(DateUtils.isSameDay(new Date(), variableCreated.getLastUpdated().toDate()));
+        // Validate
+        Variable variableRetrieved = codesService.retrieveVariableByUrn(ctx, urn);
+
+        assertEquals(ctx.getUserId(), variableRetrieved.getCreatedBy());
+        assertEquals(getServiceContextAdministrador().getUserId(), variableRetrieved.getCreatedBy());
+        assertTrue(DateUtils.isSameDay(new Date(), variableRetrieved.getCreatedDate().toDate()));
+        assertEquals(getServiceContextAdministrador().getUserId(), variableRetrieved.getLastUpdatedBy());
+        assertTrue(DateUtils.isSameDay(new Date(), variableRetrieved.getLastUpdated().toDate()));
 
         // Check that the variable was created in both families
-        assertTrue(SrmServiceUtils.isFamilyInList(VARIABLE_FAMILY_1, variableCreated.getFamilies()));
-        assertTrue(SrmServiceUtils.isFamilyInList(VARIABLE_FAMILY_2, variableCreated.getFamilies()));
+        assertTrue(SrmServiceUtils.isFamilyInList(VARIABLE_FAMILY_1, variableRetrieved.getFamilies()));
+        assertTrue(SrmServiceUtils.isFamilyInList(VARIABLE_FAMILY_2, variableRetrieved.getFamilies()));
         VariableFamily family1 = codesService.retrieveVariableFamilyByUrn(ctx, VARIABLE_FAMILY_1);
         VariableFamily family2 = codesService.retrieveVariableFamilyByUrn(ctx, VARIABLE_FAMILY_2);
-        assertTrue(SrmServiceUtils.isVariableInList(variableCreated.getNameableArtefact().getUrn(), family1.getVariables()));
-        assertTrue(SrmServiceUtils.isVariableInList(variableCreated.getNameableArtefact().getUrn(), family2.getVariables()));
+        assertTrue(SrmServiceUtils.isVariableInList(variableRetrieved.getNameableArtefact().getUrn(), family1.getVariables()));
+        assertTrue(SrmServiceUtils.isVariableInList(variableRetrieved.getNameableArtefact().getUrn(), family2.getVariables()));
 
-        assertEqualsVariable(variableCreated, variable);
+        assertEqualsVariable(variable, variableRetrieved);
+
+        // Check replace metadata
+        assertEquals(2, variableRetrieved.getReplaceToVariables().size());
+        assertEquals(VARIABLE_1, variableRetrieved.getReplaceToVariables().get(0).getNameableArtefact().getUrn());
+        assertEquals(VARIABLE_3, variableRetrieved.getReplaceToVariables().get(1).getNameableArtefact().getUrn());
+
+        // Check replaced by metadata
+        variableReplaced1 = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_1);
+        assertEquals(urn, variableReplaced1.getReplacedByVariable().getNameableArtefact().getUrn());
+        variableReplaced2 = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_3);
+        assertEquals(urn, variableReplaced2.getReplacedByVariable().getNameableArtefact().getUrn());
     }
 
     @Test
@@ -2505,6 +2525,30 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     }
 
     @Test
+    public void testUpdateVariableChangingReplaceTo() throws Exception {
+        ServiceContext ctx = getServiceContextAdministrador();
+        String urn = VARIABLE_3;
+        Variable variable = codesService.retrieveVariableByUrn(ctx, urn);
+        assertEquals(2, variable.getReplaceToVariables().size());
+        assertEquals(VARIABLE_1, variable.getReplaceToVariables().get(0).getNameableArtefact().getUrn());
+        assertEquals(VARIABLE_2, variable.getReplaceToVariables().get(1).getNameableArtefact().getUrn());
+
+        // Replace to
+        variable.removeAllReplaceToVariables();
+        variable.addReplaceToVariable(codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_1));
+        variable.addReplaceToVariable(codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_4));
+        variable.getNameableArtefact().setIsCodeUpdated(Boolean.FALSE);
+        codesService.updateVariable(ctx, variable);
+
+        // Check replaced by metadata
+        Variable variableReplaced1 = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_1);
+        assertEquals(urn, variableReplaced1.getReplacedByVariable().getNameableArtefact().getUrn());
+        Variable variableReplaced2 = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_4);
+        assertEquals(urn, variableReplaced2.getReplacedByVariable().getNameableArtefact().getUrn());
+        Variable variableNotReplaced3 = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_2);
+        assertEquals(null, variableNotReplaced3.getReplacedByVariable());
+    }
+    @Test
     public void testUpdateVariableErrorWrongCode() throws Exception {
         Variable variable = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_1);
         variable.getNameableArtefact().setCode(" 0 - invalid identifier");
@@ -2559,22 +2603,26 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     @Override
     @Test
     public void testRetrieveVariableByUrn() throws Exception {
-        String urn = VARIABLE_1;
+        String urn = VARIABLE_3;
         Variable variable = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), urn);
 
         assertEquals(urn, variable.getNameableArtefact().getUrn());
-        assertEquals("VARIABLE_01", variable.getNameableArtefact().getCode());
-        assertEqualsInternationalString(variable.getNameableArtefact().getName(), "es", "variable-57", null, null);
-        assertEqualsInternationalString(variable.getShortName(), "es", "variable-63", null, null);
+        assertEquals("VARIABLE_03", variable.getNameableArtefact().getCode());
+        assertEqualsInternationalString(variable.getNameableArtefact().getName(), "es", "variable--59", null, null);
+        assertEqualsInternationalString(variable.getShortName(), "es", "variable-65", null, null);
         assertEqualsDate(new DateTime(2011, 01, 02, 02, 02, 04, 0, new DateTimeZoneBuilder().toDateTimeZone("Europe/London", false)), variable.getValidFrom());
         assertEqualsDate(new DateTime(2012, 01, 02, 02, 02, 04, 0, new DateTimeZoneBuilder().toDateTimeZone("Europe/London", false)), variable.getValidTo());
 
-        assertEquals("variable-01", variable.getUuid());
+        assertEquals(VARIABLE_4, variable.getReplacedByVariable().getNameableArtefact().getUrn());
+        assertEquals(2, variable.getReplaceToVariables().size());
+        assertTrue(SrmServiceUtils.isVariableInList(VARIABLE_1, variable.getReplaceToVariables()));
+        assertTrue(SrmServiceUtils.isVariableInList(VARIABLE_2, variable.getReplaceToVariables()));
+
+        assertEquals("variable-03", variable.getUuid());
         assertEquals("user1", variable.getCreatedBy());
         assertEquals("user2", variable.getLastUpdatedBy());
         assertEquals(Long.valueOf(1), variable.getVersion());
     }
-
     @Test
     public void testRetrieveVariableByUrnErrorNotFound() throws Exception {
         String urn = NOT_EXISTS;
@@ -2632,51 +2680,38 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     @Override
     @Test
     public void testDeleteVariable() throws Exception {
-        codesService.deleteVariable(getServiceContextAdministrador(), VARIABLE_1);
+
+        String variableUrn = VARIABLE_1;
+        Variable variable = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), variableUrn);
+
+        assertEquals(2, variable.getFamilies().size());
+        assertTrue(SrmServiceUtils.isFamilyInList(VARIABLE_FAMILY_2, variable.getFamilies()));
+        assertTrue(SrmServiceUtils.isFamilyInList(VARIABLE_FAMILY_3, variable.getFamilies()));
+
+        codesService.deleteVariable(getServiceContextAdministrador(), variableUrn);
+
         // Retrieve deleted variable
         try {
-            codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_1);
+            codesService.retrieveVariableByUrn(getServiceContextAdministrador(), variableUrn);
             fail("variable already deleted");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND, 1, new String[]{VARIABLE_1}, e.getExceptionItems().get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND, 1, new String[]{variableUrn}, e.getExceptionItems().get(0));
         }
         // Try to delete again the deleted variable
         try {
-            codesService.deleteVariable(getServiceContextAdministrador(), VARIABLE_1);
+            codesService.deleteVariable(getServiceContextAdministrador(), variableUrn);
             fail("variable already deleted");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND, 1, new String[]{VARIABLE_1}, e.getExceptionItems().get(0));
-        }
-    }
-
-    @Test
-    public void testDeleteVariableWithFamilies() throws Exception {
-        ServiceContext ctx = getServiceContextAdministrador();
-
-        Variable variable = codesService.retrieveVariableByUrn(ctx, VARIABLE_4);
-        assertEquals(2, variable.getFamilies().size());
-        assertTrue(SrmServiceUtils.isFamilyInList(VARIABLE_FAMILY_3, variable.getFamilies()));
-        assertTrue(SrmServiceUtils.isFamilyInList(VARIABLE_FAMILY_4, variable.getFamilies()));
-
-        // Delete variable
-        codesService.deleteVariable(ctx, VARIABLE_4);
-
-        // Check that the variable has beed deleted
-        try {
-            codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_4);
-            fail("variable already deleted");
-        } catch (MetamacException e) {
-            assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND, 1, new String[]{VARIABLE_4}, e.getExceptionItems().get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND, 1, new String[]{variableUrn}, e.getExceptionItems().get(0));
         }
 
         // Check that the families has not been deleted
-        VariableFamily family3 = codesService.retrieveVariableFamilyByUrn(ctx, VARIABLE_FAMILY_3);
-        VariableFamily family4 = codesService.retrieveVariableFamilyByUrn(ctx, VARIABLE_FAMILY_4);
-        assertFalse(SrmServiceUtils.isVariableInList(VARIABLE_4, family3.getVariables()));
-        assertFalse(SrmServiceUtils.isVariableInList(VARIABLE_4, family4.getVariables()));
+        VariableFamily family1 = codesService.retrieveVariableFamilyByUrn(getServiceContextAdministrador(), VARIABLE_FAMILY_2);
+        assertFalse(SrmServiceUtils.isVariableInList(variableUrn, family1.getVariables()));
+        VariableFamily family2 = codesService.retrieveVariableFamilyByUrn(getServiceContextAdministrador(), VARIABLE_FAMILY_3);
+        assertFalse(SrmServiceUtils.isVariableInList(variableUrn, family2.getVariables()));
     }
 
     @Test

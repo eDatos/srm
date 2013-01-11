@@ -60,6 +60,10 @@ Application DtosMetamacCodeDomain {
             JAVADATE validFrom nullable;
             "Date from which variable is superceded"
             JAVADATE validTo nullable;
+			"Variable that replaces this one. Update in this metadata is ignored. Must be updated by replaceToVariables metadata"
+			- @RelatedResourceDto replacedByVariable nullable;
+			"Variables that are replaced by this one"
+			- List<@RelatedResourceDto> replaceToVariables nullable;
 			"Families"
 			- List<@RelatedResourceDto> families not nullable;
 			"Version to optimistic locking"

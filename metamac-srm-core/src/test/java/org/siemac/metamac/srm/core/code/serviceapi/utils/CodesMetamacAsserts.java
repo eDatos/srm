@@ -43,7 +43,7 @@ public class CodesMetamacAsserts extends CodesAsserts {
         if (expected.getReplacedByCodelist() != null) {
             assertEquals(expected.getReplacedByCodelist().getMaintainableArtefact().getUrn(), actual.getReplacedByCodelist().getMaintainableArtefact().getUrn());
         }
-        // cannot check here due to flush restrictions in create method
+        // cannot check here due to flush restrictions in create method. we must remove relations before save
         // assertEquals(expected.getReplaceToCodelists().size(), actual.getReplaceToCodelists().size());
         // for (int i = 0; i < expected.getReplaceToCodelists().size(); i++) {
         // assertEquals(expected.getReplaceToCodelists().get(i).getMaintainableArtefact().getUrn(), actual.getReplaceToCodelists().get(i).getMaintainableArtefact().getUrn());
@@ -259,6 +259,15 @@ public class CodesMetamacAsserts extends CodesAsserts {
         for (int i = 0; i < expected.getFamilies().size(); i++) {
             assertEquals(expected.getFamilies().get(i).getNameableArtefact().getUrn(), actual.getFamilies().get(i).getNameableArtefact().getUrn());
         }
+        assertEqualsNullability(expected.getReplacedByVariable(), actual.getReplacedByVariable());
+        if (expected.getReplacedByVariable() != null) {
+            assertEquals(expected.getReplacedByVariable().getNameableArtefact().getUrn(), actual.getReplacedByVariable().getNameableArtefact().getUrn());
+        }
+        // cannot check here due to flush restrictions in create method. we must remove relations before save
+        // assertEquals(expected.getReplaceToVariables().size(), actual.getReplaceToVariables().size());
+        // for (int i = 0; i < expected.getReplaceToVariables().size(); i++) {
+        // assertEquals(expected.getReplaceToVariables().get(i).getNameableArtefact().getUrn(), actual.getReplaceToVariables().get(i).getNameableArtefact().getUrn());
+        // }
 
         // other artefacts
         assertEqualsNameableArtefact(expected.getNameableArtefact(), actual.getNameableArtefact());
@@ -269,6 +278,8 @@ public class CodesMetamacAsserts extends CodesAsserts {
         assertEquals(expected.getValidFrom(), actual.getValidFrom());
         assertEquals(expected.getValidTo(), actual.getValidTo());
         BaseAsserts.assertEqualsRelatedResourcesDto(expected.getFamilies(), actual.getFamilies());
+        BaseAsserts.assertEqualsRelatedResourceDto(expected.getReplacedByVariable(), actual.getReplacedByVariable());
+        BaseAsserts.assertEqualsRelatedResourcesDto(expected.getReplaceToVariables(), actual.getReplaceToVariables());
 
         // other artefacts
         CodesAsserts.assertEqualsNameableArtefactDto(expected, actual);
@@ -312,6 +323,14 @@ public class CodesMetamacAsserts extends CodesAsserts {
         assertEquals(entity.getFamilies().size(), dto.getFamilies().size());
         for (int i = 0; i < entity.getFamilies().size(); i++) {
             assertEquals(entity.getFamilies().get(i).getNameableArtefact().getUrn(), dto.getFamilies().get(i).getUrn());
+        }
+        assertEqualsNullability(entity.getReplacedByVariable(), dto.getReplacedByVariable());
+        if (entity.getReplacedByVariable() != null) {
+            assertEquals(entity.getReplacedByVariable().getNameableArtefact().getUrn(), dto.getReplacedByVariable().getUrn());
+        }
+        assertEquals(entity.getReplaceToVariables().size(), dto.getReplaceToVariables().size());
+        for (int i = 0; i < entity.getReplaceToVariables().size(); i++) {
+            assertEquals(entity.getReplaceToVariables().get(i).getNameableArtefact().getUrn(), dto.getReplaceToVariables().get(i).getUrn());
         }
 
         // other artefacts

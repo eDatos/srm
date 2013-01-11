@@ -189,6 +189,12 @@ public class CodesDto2DoMapperImpl implements CodesDto2DoMapper {
         for (RelatedResourceDto variableFamilyDto : source.getFamilies()) {
             target.addFamily(retrieveVariableFamily(variableFamilyDto.getUrn()));
         }
+        target.removeAllReplaceToVariables();
+        for (RelatedResourceDto replaceToCodelist : source.getReplaceToVariables()) {
+            target.addReplaceToVariable(retrieveVariable(replaceToCodelist.getUrn()));
+        }
+        // note: replacedBy metadata is ignored, because it is updated by replaceTo metadata
+
         target.setNameableArtefact(dto2DoMapperSdmxSrm.nameableArtefactToEntity(source, target.getNameableArtefact()));
 
         // Optimistic locking: Update "update date" attribute to force update to root entity, to increment "version" attribute

@@ -461,12 +461,24 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
     @Override
     public Variable createVariable(ServiceContext ctx, Variable variable) throws MetamacException {
+
+        // We must copy replaceTo metadata to set after save variable, due to flushing
+        List<Variable> replaceTo = new ArrayList<Variable>(variable.getReplaceToVariables());
+        variable.removeAllReplaceToVariables();
+
         // Validation
         CodesMetamacInvocationValidator.checkCreateVariable(variable, null);
         setVariableUrnUnique(variable);
 
         // Create
-        return getVariableRepository().save(variable);
+        variable = getVariableRepository().save(variable);
+
+        // Fill replaceTo metadata after save entity
+        for (Variable variableReplaceTo : replaceTo) {
+            variable.addReplaceToVariable(variableReplaceTo);
+        }
+        variable = getVariableRepository().save(variable);
+        return variable;
     }
 
     @Override
@@ -522,6 +534,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_WITH_CONCEPTS)
                     .withMessageParameters(variableToDelete.getNameableArtefact().getUrn(), variableToDelete.getConcepts().get(0).getNameableArtefact().getUrn()).build(); // say only one concept
         }
+        // TODO ¿Se puede eliminar una variable que reemplazó o fue reemplazada por otra?
 
         // Delete associations with variable families
         variableToDelete.removeAllFamilies();

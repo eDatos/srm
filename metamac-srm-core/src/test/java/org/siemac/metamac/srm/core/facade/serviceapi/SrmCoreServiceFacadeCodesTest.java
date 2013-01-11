@@ -1576,6 +1576,8 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
         VariableDto variableDto = CodesMetamacDtoMocks.mockVariableDto();
         variableDto.addFamily(CodesMetamacDtoMocks.mockVariableFamilyRelatedResourceDto("VARIABLE_FAMILY_01", VARIABLE_FAMILY_1));
         variableDto.addFamily(CodesMetamacDtoMocks.mockVariableFamilyRelatedResourceDto("VARIABLE_FAMILY_02", VARIABLE_FAMILY_2));
+        variableDto.getReplaceToVariables().add(new RelatedResourceDto("VARIABLE_01", VARIABLE_1, null));
+        variableDto.getReplaceToVariables().add(new RelatedResourceDto("VARIABLE_03", VARIABLE_3, null));
 
         VariableDto variableCreated = srmCoreServiceFacade.createVariable(getServiceContextAdministrador(), variableDto);
 
@@ -1583,29 +1585,53 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
         assertEquals(variableDto.getCode(), variableCreated.getCode());
         assertNotNull(variableCreated.getUrn());
         assertEquals(2, variableCreated.getFamilies().size());
+        assertEquals(2, variableCreated.getReplaceToVariables().size());
+        assertEquals(VARIABLE_1, variableCreated.getReplaceToVariables().get(0).getUrn());
+        assertEquals(VARIABLE_3, variableCreated.getReplaceToVariables().get(1).getUrn());
+
+        // Retrieve variable to check replacedBy
+        VariableDto variableReplaced = srmCoreServiceFacade.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_1);
+        assertEquals(variableCreated.getUrn(), variableReplaced.getReplacedByVariable().getUrn());
     }
 
     @Test
     public void testUpdateVariable() throws Exception {
-        VariableDto variableDto = srmCoreServiceFacade.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_2);
+        VariableDto variableDto = srmCoreServiceFacade.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_3);
+        // families
         assertEquals(2, variableDto.getFamilies().size());
+        RelatedResourceDto family2 = SrmServiceUtils.getRelatedResource(VARIABLE_FAMILY_2, variableDto.getFamilies());
+        assertNotNull(family2);
         RelatedResourceDto family3 = SrmServiceUtils.getRelatedResource(VARIABLE_FAMILY_3, variableDto.getFamilies());
         assertNotNull(family3);
-        RelatedResourceDto family4 = SrmServiceUtils.getRelatedResource(VARIABLE_FAMILY_4, variableDto.getFamilies());
-        assertNotNull(family4);
+        // replace to
+        assertEquals(2, variableDto.getReplaceToVariables().size());
+        RelatedResourceDto variable1 = SrmServiceUtils.getRelatedResource(VARIABLE_1, variableDto.getReplaceToVariables());
+        assertNotNull(variable1);
+        RelatedResourceDto variable2 = SrmServiceUtils.getRelatedResource(VARIABLE_2, variableDto.getReplaceToVariables());
+        assertNotNull(variable2);
 
         // Update
         variableDto.setName(MetamacMocks.mockInternationalStringDto());
         variableDto.setShortName(MetamacMocks.mockInternationalStringDto());
         variableDto.setValidTo(new Date());
-        variableDto.removeFamily(family4);
+        // change families
+        variableDto.removeFamily(family2);
         variableDto.addFamily(CodesMetamacDtoMocks.mockVariableFamilyRelatedResourceDto("VARIABLE_FAMILY_01", VARIABLE_FAMILY_1));
+        // change replace to
+        variableDto.removeReplaceToVariable(variable2);
+        variableDto.addReplaceToVariable(CodesMetamacDtoMocks.mockVariableRelatedResourceDto("VARIABLE_04", VARIABLE_4));
+
         VariableDto variableDtoUpdated = srmCoreServiceFacade.updateVariable(getServiceContextAdministrador(), variableDto);
 
         // Validate
         assertNotNull(variableDtoUpdated);
         CodesMetamacAsserts.assertEqualsVariableDto(variableDto, variableDtoUpdated);
         assertTrue(variableDtoUpdated.getVersionOptimisticLocking() > variableDto.getVersionOptimisticLocking());
+
+        // Validate replaced by
+        assertNull(srmCoreServiceFacade.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_2).getReplacedByVariable());
+        assertEquals(VARIABLE_3, srmCoreServiceFacade.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_1).getReplacedByVariable().getUrn());
+        assertEquals(VARIABLE_3, srmCoreServiceFacade.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_4).getReplacedByVariable().getUrn());
     }
 
     @Test

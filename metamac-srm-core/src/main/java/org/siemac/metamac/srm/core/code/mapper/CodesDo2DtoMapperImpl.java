@@ -39,11 +39,9 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
         target.setShortName(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getShortName()));
         target.setIsRecommended(source.getIsRecommended());
         target.setAccessType(source.getAccessType());
-        if (source.getReplacedByCodelist() != null) {
-            target.setReplacedByCodelist(codelistDoToRelatedResourceDto(source.getReplacedByCodelist()));
-        }
+        target.setReplacedByCodelist(codelistDoToRelatedResourceDto(source.getReplacedByCodelist()));
         for (CodelistVersionMetamac replaceTo : source.getReplaceToCodelists()) {
-            target.getReplaceToCodelists().add(codelistDoToRelatedResourceDto(replaceTo));
+            target.addReplaceToCodelist(codelistDoToRelatedResourceDto(replaceTo));
         }
         target.setFamily(codelistFamilyDoToRelatedResourceDto(source.getFamily()));
         target.setVariable(variableDoToRelatedResourceDto(source.getVariable()));
@@ -146,6 +144,10 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
         do2DtoMapperSdmxSrm.nameableArtefactToDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getNameableArtefact(), target);
         for (VariableFamily variableFamily : source.getFamilies()) {
             target.addFamily(variableFamilyDoToRelatedResourceDto(variableFamily));
+        }
+        target.setReplacedByVariable(variableDoToRelatedResourceDto(source.getReplacedByVariable()));
+        for (Variable replaceTo : source.getReplaceToVariables()) {
+            target.addReplaceToVariable(variableDoToRelatedResourceDto(replaceTo));
         }
 
         // Overwrite these values in the final DTO (if not, these values are taken from the AnnotableArtefact entity)

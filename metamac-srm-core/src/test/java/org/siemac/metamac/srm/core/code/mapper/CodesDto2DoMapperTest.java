@@ -37,8 +37,8 @@ public class CodesDto2DoMapperTest extends SrmBaseTest {
     @Test
     public void testCodelistMetamacDtoToDo() throws MetamacException {
         CodelistMetamacDto dto = CodesMetamacDtoMocks.mockCodelistDto(AGENCY_ROOT_1_V1_CODE, AGENCY_ROOT_1_V1);
-        dto.getReplaceToCodelists().add(CodesMetamacDtoMocks.mockCodelistRelatedResourceDto("CODELIST10", CODELIST_10_V1));
-        dto.getReplaceToCodelists().add(CodesMetamacDtoMocks.mockCodelistRelatedResourceDto("CODELIST11", CODELIST_11_V1));
+        dto.addReplaceToCodelist(CodesMetamacDtoMocks.mockCodelistRelatedResourceDto("CODELIST10", CODELIST_10_V1));
+        dto.addReplaceToCodelist(CodesMetamacDtoMocks.mockCodelistRelatedResourceDto("CODELIST11", CODELIST_11_V1));
 
         CodelistVersionMetamac entity = codesDto2DoMapper.codelistDtoToDo(dto);
         CodesMetamacAsserts.assertEqualsCodelist(dto, entity);
@@ -72,6 +72,8 @@ public class CodesDto2DoMapperTest extends SrmBaseTest {
         VariableDto dto = CodesMetamacDtoMocks.mockVariableDto();
         dto.addFamily(CodesMetamacDtoMocks.mockVariableRelatedResourceDto("VARIABLE_FAMILY_01", VARIABLE_FAMILY_1));
         dto.addFamily(CodesMetamacDtoMocks.mockVariableRelatedResourceDto("VARIABLE_FAMILY_02", VARIABLE_FAMILY_2));
+        dto.addReplaceToVariable(CodesMetamacDtoMocks.mockVariableRelatedResourceDto("VARIABLE_01", VARIABLE_1));
+        dto.addReplaceToVariable(CodesMetamacDtoMocks.mockVariableRelatedResourceDto("VARIABLE_02", VARIABLE_2));
 
         Variable entity = codesDto2DoMapper.variableDtoToDo(dto);
         CodesMetamacAsserts.assertEqualsVariable(dto, entity);

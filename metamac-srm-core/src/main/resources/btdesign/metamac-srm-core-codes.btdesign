@@ -223,6 +223,11 @@ Application CodesMetamac {
 			DateTimeTZ validFrom nullable;
 			"Date from which variable is superceded"
 			DateTimeTZ validTo nullable;
+			"Variable that replaces this one. Update in this metadata is ignored. Must be updated by replacedToVariables metadata"
+			- @Variable replacedByVariable nullable cascade="none" databaseColumn="REPLACED_BY_VARIABLE_FK"  <-> replaceToVariables;
+			"Variables that are replaced by this one"
+			- Bag<@Variable> replaceToVariables cascade="none" fetch="lazy" <-> replacedByVariable;
+			
 			"Variable families"
 			- Bag<@VariableFamily> families cascade="none" fetch="lazy" databaseColumn="VARIABLE_FAMILY_FK" databaseJoinTable="TB_M_VAR_FAMILIES_VARIABLES" <-> variables;
 			"Codelists"
