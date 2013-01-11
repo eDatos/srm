@@ -218,6 +218,7 @@ public class CodelistFamilyPresenter extends Presenter<CodelistFamilyPresenter.C
             @Override
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(CodelistFamilyPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistErrorRemovingFromFamily()), MessageTypeEnum.ERROR);
+                retrieveCodelistsByFamily(CODELIST_LIST_FIRST_RESULT, CODELIST_LIST_MAX_RESULTS, null, familyUrn);
             }
             @Override
             public void onWaitSuccess(RemoveCodelistsFromCodelistFamilyResult result) {

@@ -31,7 +31,6 @@ public class SaveCodelistActionHandler extends SecurityActionHandler<SaveCodelis
             if (codelistToSave.getId() == null) {
                 // Create
                 savedCodelistDto = srmCoreServiceFacade.createCodelist(ServiceContextHolder.getCurrentServiceContext(), codelistToSave);
-                return new SaveCodelistResult(savedCodelistDto);
             } else {
                 // Update
                 savedCodelistDto = srmCoreServiceFacade.updateCodelist(ServiceContextHolder.getCurrentServiceContext(), codelistToSave);

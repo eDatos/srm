@@ -17,5 +17,7 @@ public class PlaceRequestParams {
     public static final String codelistParamId             = "id";
     public static final String codeParamId                 = "id";
     public static final String codelistFamilyParamId       = "id";
+    public static final String variableFamilyParamId       = "id";
+    public static final String variableParamId             = "id";
 
 }
