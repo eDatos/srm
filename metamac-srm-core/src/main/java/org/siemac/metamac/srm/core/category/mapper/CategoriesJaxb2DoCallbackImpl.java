@@ -75,6 +75,7 @@ public class CategoriesJaxb2DoCallbackImpl extends ImportationMetamacCommonValid
 
         // Fill Metadata
         categoriesMetamacService.preCreateCategoryScheme(ctx, targetMetamac);
+        targetMetamac.getMaintainableArtefact().setFinalLogic(Boolean.FALSE); // In Metamac, all artifacts imported are marked as final false
     }
 
     @Override
@@ -87,7 +88,10 @@ public class CategoriesJaxb2DoCallbackImpl extends ImportationMetamacCommonValid
 
     @Override
     public void categorisationJaxToDoExtension(ServiceContext ctx, CategorisationType source, Categorisation target) throws MetamacException {
-        // nothing to extend in the default implementation
+
+        // Fill Metadata
+        // TODO call preCreateCategorisation
+        target.getMaintainableArtefact().setFinalLogic(Boolean.FALSE); // In Metamac, all artifacts imported are marked as final false
     }
 
     /**************************************************************************

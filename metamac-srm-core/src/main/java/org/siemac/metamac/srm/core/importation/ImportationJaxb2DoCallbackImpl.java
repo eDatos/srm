@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import com.arte.statistic.sdmx.srm.core.category.mapper.CategoriesJaxb2DoCallback;
 import com.arte.statistic.sdmx.srm.core.code.mapper.CodesJaxb2DoCallback;
 import com.arte.statistic.sdmx.srm.core.concept.mapper.ConceptsJaxb2DoCallback;
-import com.arte.statistic.sdmx.srm.core.importation.ImportationJaxb2DoCallback;
+import com.arte.statistic.sdmx.srm.core.importation.serviceimpl.utils.ImportationJaxb2DoCallback;
 import com.arte.statistic.sdmx.srm.core.organisation.mapper.OrganisationsJaxb2DoCallback;
 import com.arte.statistic.sdmx.srm.core.structure.mapper.StructureJaxb2DoCallback;
 

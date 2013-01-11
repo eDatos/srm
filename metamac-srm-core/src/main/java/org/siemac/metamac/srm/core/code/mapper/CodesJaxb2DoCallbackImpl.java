@@ -53,8 +53,8 @@ public class CodesJaxb2DoCallbackImpl extends ImportationMetamacCommonValidation
         CodelistVersionMetamac targetMetamac = (CodelistVersionMetamac) target;
 
         // Fill metadata
-        targetMetamac.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
-
+        targetMetamac.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT)); // TODO call preCreateCategorisation
+        targetMetamac.getMaintainableArtefact().setFinalLogic(Boolean.FALSE); // In Metamac, all artifacts imported are marked as final false
     }
 
     @Override

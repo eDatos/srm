@@ -62,6 +62,15 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
 
     @Override
     public DataStructureDefinitionVersionMetamac createDataStructureDefinition(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion) throws MetamacException {
+        // Fill and validate Data Structure Definition
+        preCreateDataStructureDefinition(ctx, dataStructureDefinitionVersion);
+
+        // Save
+        return (DataStructureDefinitionVersionMetamac) dataStructureDefinitionService.createDataStructureDefinition(ctx, dataStructureDefinitionVersion, SrmConstants.VERSION_PATTERN_METAMAC);
+    }
+
+    @Override
+    public DataStructureDefinitionVersionMetamac preCreateDataStructureDefinition(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion) throws MetamacException {
         // Validation
         DsdsMetamacInvocationValidator.checkCreateDataStructureDefinition(dataStructureDefinitionVersion, null);
         checkDataStructureDefinitionToCreateOrUpdate(ctx, dataStructureDefinitionVersion);
@@ -71,8 +80,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         dataStructureDefinitionVersion.getMaintainableArtefact().setIsExternalReference(Boolean.FALSE);
         dataStructureDefinitionVersion.getMaintainableArtefact().setFinalLogicClient(Boolean.FALSE);
 
-        // Save
-        return (DataStructureDefinitionVersionMetamac) dataStructureDefinitionService.createDataStructureDefinition(ctx, dataStructureDefinitionVersion, SrmConstants.VERSION_PATTERN_METAMAC);
+        return dataStructureDefinitionVersion;
     }
 
     @Override
@@ -109,22 +117,67 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
 
     @Override
     public ComponentList saveDescriptorForDataStructureDefinition(ServiceContext ctx, String dataStructureDefinitionVersionUrn, ComponentList componentList) throws MetamacException {
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = (DataStructureDefinitionVersionMetamac) dataStructureDefinitionService.retrieveDataStructureDefinitionByUrn(ctx,
+                dataStructureDefinitionVersionUrn);
+
+        // Validation
+        DsdsMetamacInvocationValidator.checkDescriptorToCreateOrUpdate(componentList, null);
+        checkDescriptorToCreateOrUpdate(ctx, dataStructureDefinitionVersionMetamac, componentList);
+
         return dataStructureDefinitionService.saveDescriptorForDataStructureDefinition(ctx, dataStructureDefinitionVersionUrn, componentList);
     }
 
     @Override
     public void deleteDescriptorForDataStructureDefinition(ServiceContext ctx, String dataStructureDefinitionVersionUrn, ComponentList componentList) throws MetamacException {
+
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = (DataStructureDefinitionVersionMetamac) dataStructureDefinitionService.retrieveDataStructureDefinitionByUrn(ctx,
+                dataStructureDefinitionVersionUrn);
+
+        checkDataStructureDefinitionCanBeModified(dataStructureDefinitionVersionMetamac);
+
         dataStructureDefinitionService.deleteDescriptorForDataStructureDefinition(ctx, dataStructureDefinitionVersionUrn, componentList);
     }
 
     @Override
     public Component saveComponentForDataStructureDefinition(ServiceContext ctx, String dataStructureDefinitionVersionUrn, Component component) throws MetamacException {
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = (DataStructureDefinitionVersionMetamac) dataStructureDefinitionService.retrieveDataStructureDefinitionByUrn(ctx,
+                dataStructureDefinitionVersionUrn);
+
+        // Validation
+        DsdsMetamacInvocationValidator.checkDescriptorToCreateOrUpdate(component, null);
+        checkComponentToCreateOrUpdate(ctx, dataStructureDefinitionVersionMetamac, component);
+
         return dataStructureDefinitionService.saveComponentForDataStructureDefinition(ctx, dataStructureDefinitionVersionUrn, component);
     }
 
     @Override
     public void deleteComponentForDataStructureDefinition(ServiceContext ctx, String dataStructureDefinitionVersionUrn, Component component) throws MetamacException {
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = (DataStructureDefinitionVersionMetamac) dataStructureDefinitionService.retrieveDataStructureDefinitionByUrn(ctx,
+                dataStructureDefinitionVersionUrn);
+
+        checkDataStructureDefinitionCanBeModified(dataStructureDefinitionVersionMetamac);
+
         dataStructureDefinitionService.deleteComponentForDataStructureDefinition(ctx, dataStructureDefinitionVersionUrn, component);
+    }
+
+    @Override
+    public void deleteDataStructureDefinition(ServiceContext ctx, String urn) throws MetamacException {
+        // Validation
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion = retrieveDataStructureDefinitionByUrn(ctx, urn);
+        checkDataStructureDefinitionCanBeModified(dataStructureDefinitionVersion);
+
+        // Delete
+        dataStructureDefinitionService.deleteDataStructureDefinition(ctx, urn);
+    }
+
+    @Override
+    public DataStructureDefinitionVersionMetamac versioningDataStructureDefinition(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
+        // Validation
+        DsdsMetamacInvocationValidator.checkVersioningDataStructureDefinition(urnToCopy, versionType, null, null);
+        checkDataStructureDefinitionVersioning(ctx, urnToCopy);
+
+        // Versioning
+        return (DataStructureDefinitionVersionMetamac) dataStructureDefinitionService.versioningDataStructureDefinition(ctx, urnToCopy, versionType, structureCopyCallback);
     }
 
     @Override
@@ -155,26 +208,6 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
     @Override
     public DataStructureDefinitionVersionMetamac publishExternallyDataStructureDefinition(ServiceContext ctx, String urn) throws MetamacException {
         return (DataStructureDefinitionVersionMetamac) dsdLifeCycle.publishExternally(ctx, urn);
-    }
-
-    @Override
-    public void deleteDataStructureDefinition(ServiceContext ctx, String urn) throws MetamacException {
-        // Validation
-        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion = retrieveDataStructureDefinitionByUrn(ctx, urn);
-        checkDataStructureDefinitionCanBeModified(dataStructureDefinitionVersion);
-
-        // Delete
-        dataStructureDefinitionService.deleteDataStructureDefinition(ctx, urn);
-    }
-
-    @Override
-    public DataStructureDefinitionVersionMetamac versioningDataStructureDefinition(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
-        // Validation
-        DsdsMetamacInvocationValidator.checkVersioningDataStructureDefinition(urnToCopy, versionType, null, null);
-        checkDataStructureDefinitionVersioning(ctx, urnToCopy);
-
-        // Versioning
-        return (DataStructureDefinitionVersionMetamac) dataStructureDefinitionService.versioningDataStructureDefinition(ctx, urnToCopy, versionType, structureCopyCallback);
     }
 
     @Override
@@ -243,6 +276,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
      */
     private void checkDataStructureDefinitionToCreateOrUpdate(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion) throws MetamacException {
 
+        // When updating
         if (dataStructureDefinitionVersion.getId() != null) {
             // Proc status
             checkDataStructureDefinitionCanBeModified(dataStructureDefinitionVersion);
@@ -253,6 +287,20 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
 
         // Maintainer
         srmValidation.checkMaintainer(ctx, dataStructureDefinitionVersion.getMaintainableArtefact(), dataStructureDefinitionVersion.getMaintainableArtefact().getIsImported());
+    }
+
+    /**
+     * Common validations to create or update a componentList
+     */
+    private void checkDescriptorToCreateOrUpdate(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion, ComponentList componentList) throws MetamacException {
+        checkDataStructureDefinitionCanBeModified(dataStructureDefinitionVersion);
+    }
+
+    /**
+     * Common validations to create or update a componentList
+     */
+    private void checkComponentToCreateOrUpdate(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion, Component component) throws MetamacException {
+        checkDataStructureDefinitionCanBeModified(dataStructureDefinitionVersion);
     }
 
     private void checkDataStructureDefinitionVersioning(ServiceContext ctx, String urnToCopy) throws MetamacException {

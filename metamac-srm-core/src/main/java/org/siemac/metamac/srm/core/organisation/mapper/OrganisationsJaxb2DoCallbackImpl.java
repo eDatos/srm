@@ -5,8 +5,6 @@ import java.util.List;
 
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
-import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.importation.ImportationMetamacCommonValidations;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
@@ -64,16 +62,17 @@ public class OrganisationsJaxb2DoCallbackImpl extends ImportationMetamacCommonVa
 
         // Fill pre-persist meta-data
         organisationsMetamacService.preCreateOrganisationScheme(ctx, targetMetamac);
+        targetMetamac.getMaintainableArtefact().setFinalLogic(Boolean.FALSE); // In Metamac, all artifacts imported are marked as final false
     }
 
     @Override
     public void agencyJaxbToDoExtension(ServiceContext ctx, AgencyType source, OrganisationSchemeVersion organisationSchemeVersion, Organisation target) throws MetamacException {
-        OrganisationMetamac organisationMetamac = (OrganisationMetamac) target;
+        OrganisationMetamac targetMetamac = (OrganisationMetamac) target;
 
         // Meta-data in previous version -> Nothing to extends
 
         // Fill pre-persist meta-data
-        organisationsMetamacService.preCreateOrganisation(ctx, organisationSchemeVersion.getMaintainableArtefact().getUrn(), organisationMetamac);
+        organisationsMetamacService.preCreateOrganisation(ctx, organisationSchemeVersion.getMaintainableArtefact().getUrn(), targetMetamac);
     }
 
     @Override
@@ -84,16 +83,17 @@ public class OrganisationsJaxb2DoCallbackImpl extends ImportationMetamacCommonVa
 
         // Fill pre-persist meta-data
         organisationsMetamacService.preCreateOrganisationScheme(ctx, targetMetamac);
+        targetMetamac.getMaintainableArtefact().setFinalLogic(Boolean.FALSE); // In Metamac, all artifacts imported are marked as final false
     }
 
     @Override
     public void dataConsumerJaxbToDoExtension(ServiceContext ctx, DataConsumerType source, OrganisationSchemeVersion organisationSchemeVersion, Organisation target) throws MetamacException {
-        OrganisationMetamac organisationMetamac = (OrganisationMetamac) target;
+        OrganisationMetamac targetMetamac = (OrganisationMetamac) target;
 
         // Meta-data in previous version -> Nothing to extends
 
         // Fill pre-persist meta-data
-        organisationsMetamacService.preCreateOrganisation(ctx, organisationSchemeVersion.getMaintainableArtefact().getUrn(), organisationMetamac);
+        organisationsMetamacService.preCreateOrganisation(ctx, organisationSchemeVersion.getMaintainableArtefact().getUrn(), targetMetamac);
     }
 
     @Override
@@ -104,16 +104,17 @@ public class OrganisationsJaxb2DoCallbackImpl extends ImportationMetamacCommonVa
 
         // Fill pre-persist meta-data
         organisationsMetamacService.preCreateOrganisationScheme(ctx, targetMetamac);
+        targetMetamac.getMaintainableArtefact().setFinalLogic(Boolean.FALSE); // In Metamac, all artifacts imported are marked as final false
     }
 
     @Override
     public void dataProviderJaxbToDoExtension(ServiceContext ctx, DataProviderType source, OrganisationSchemeVersion organisationSchemeVersion, Organisation target) throws MetamacException {
-        OrganisationMetamac organisationMetamac = (OrganisationMetamac) target;
+        OrganisationMetamac targetMetamac = (OrganisationMetamac) target;
 
         // Meta-data in previous version -> Nothing to extends
 
         // Fill pre-persist meta-data
-        organisationsMetamacService.preCreateOrganisation(ctx, organisationSchemeVersion.getMaintainableArtefact().getUrn(), organisationMetamac);
+        organisationsMetamacService.preCreateOrganisation(ctx, organisationSchemeVersion.getMaintainableArtefact().getUrn(), targetMetamac);
     }
 
     @Override
@@ -123,17 +124,18 @@ public class OrganisationsJaxb2DoCallbackImpl extends ImportationMetamacCommonVa
         // Meta-data in previous version -> Nothing to extends
 
         // Fill meta-data
-        targetMetamac.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
+        organisationsMetamacService.preCreateOrganisationScheme(ctx, targetMetamac);
+        targetMetamac.getMaintainableArtefact().setFinalLogic(Boolean.FALSE); // In Metamac, all artifacts imported are marked as final false
     }
 
     @Override
     public void organisationUnitJaxbToDoExtension(ServiceContext ctx, OrganisationUnitType source, OrganisationSchemeVersion organisationSchemeVersion, Organisation target) throws MetamacException {
-        OrganisationMetamac organisationMetamac = (OrganisationMetamac) target;
+        OrganisationMetamac targetMetamac = (OrganisationMetamac) target;
 
         // Meta-data in previous version -> Nothing to extends
 
         // Fill pre-persist meta-data
-        organisationsMetamacService.preCreateOrganisation(ctx, organisationSchemeVersion.getMaintainableArtefact().getUrn(), organisationMetamac);
+        organisationsMetamacService.preCreateOrganisation(ctx, organisationSchemeVersion.getMaintainableArtefact().getUrn(), targetMetamac);
     }
 
     /**************************************************************************

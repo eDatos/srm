@@ -5,10 +5,10 @@ import java.util.List;
 
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
-import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.siemac.metamac.srm.core.dsd.serviceapi.DsdsMetamacService;
 import org.siemac.metamac.srm.core.importation.ImportationMetamacCommonValidations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.arte.statistic.sdmx.srm.core.structure.domain.AttributeDescriptor;
@@ -38,6 +38,9 @@ import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.TimeDimensionType;
 
 @Component("structureMetamacJaxb2DoCallback")
 public class StructureJaxb2DoCallbackImpl extends ImportationMetamacCommonValidations implements StructureJaxb2DoCallback {
+
+    @Autowired
+    private DsdsMetamacService dsdsMetamacService;
 
     /**************************************************************************
      * CREATES
@@ -130,62 +133,63 @@ public class StructureJaxb2DoCallbackImpl extends ImportationMetamacCommonValida
      * FILLS
      **************************************************************************/
     @Override
-    public void dataStructureDefinitionJaxbToDoExtension(DataStructureType source, DataStructureDefinitionVersion target) {
+    public void dataStructureDefinitionJaxbToDoExtension(ServiceContext ctx, DataStructureType source, DataStructureDefinitionVersion target) throws MetamacException {
         DataStructureDefinitionVersionMetamac targetMetamac = (DataStructureDefinitionVersionMetamac) target;
 
         // Fill Meta-data
-        targetMetamac.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
+        dsdsMetamacService.preCreateDataStructureDefinition(ctx, targetMetamac);
+        targetMetamac.getMaintainableArtefact().setFinalLogic(Boolean.FALSE); // In Metamac, all artifacts imported are marked as final false
 
         // TODO Completar con herencia en metadatos de visualización
     }
 
     @Override
-    public void dimensionDescriptorJaxbToDoExtension(DimensionListType source, DimensionDescriptor target) {
+    public void dimensionDescriptorJaxbToDoExtension(ServiceContext ctx, DimensionListType source, DimensionDescriptor target) throws MetamacException {
         // Meta-data in previous version -> Nothing to extends
     }
 
     @Override
-    public void measureDescriptorJaxbToDoExtension(MeasureListType source, MeasureDescriptor target) {
+    public void measureDescriptorJaxbToDoExtension(ServiceContext ctx, MeasureListType source, MeasureDescriptor target) throws MetamacException {
         // Meta-data in previous version -> Nothing to extends
     }
 
     @Override
-    public void groupDimensionDescriptorJaxbToDoExtension(GroupType source, GroupDimensionDescriptor target) {
+    public void groupDimensionDescriptorJaxbToDoExtension(ServiceContext ctx, GroupType source, GroupDimensionDescriptor target) throws MetamacException {
         // Meta-data in previous version -> Nothing to extends
     }
 
     @Override
-    public void attributeDescriptorJaxb2DoExtension(AttributeListType source, AttributeDescriptor target) {
+    public void attributeDescriptorJaxb2DoExtension(ServiceContext ctx, AttributeListType source, AttributeDescriptor target) throws MetamacException {
         // Meta-data in previous version -> Nothing to extends
     }
 
     @Override
-    public void dimensionJaxbToDoExtension(DimensionType source, Dimension target) {
+    public void dimensionJaxbToDoExtension(ServiceContext ctx, DimensionType source, Dimension target) throws MetamacException {
         // Meta-data in previous version -> Nothing to extends
     }
 
     @Override
-    public void measureDimensionJaxbToDoExtension(MeasureDimensionType source, MeasureDimension target) {
+    public void measureDimensionJaxbToDoExtension(ServiceContext ctx, MeasureDimensionType source, MeasureDimension target) throws MetamacException {
         // Meta-data in previous version -> Nothing to extends
     }
 
     @Override
-    public void timeDimensionJaxbToDoExtension(TimeDimensionType source, TimeDimension target) {
+    public void timeDimensionJaxbToDoExtension(ServiceContext ctx, TimeDimensionType source, TimeDimension target) throws MetamacException {
         // Meta-data in previous version -> Nothing to extends
     }
 
     @Override
-    public void primaryMeasureJaxbToDoExtension(PrimaryMeasureType source, PrimaryMeasure target) {
+    public void primaryMeasureJaxbToDoExtension(ServiceContext ctx, PrimaryMeasureType source, PrimaryMeasure target) throws MetamacException {
         // Meta-data in previous version -> Nothing to extends
     }
 
     @Override
-    public void dataAttributeJaxbToDoExtension(AttributeType source, DataAttribute target) {
+    public void dataAttributeJaxbToDoExtension(ServiceContext ctx, AttributeType source, DataAttribute target) throws MetamacException {
         // Meta-data in previous version -> Nothing to extends
     }
 
     @Override
-    public void reportingYearStartDayJaxbToDoExtension(ReportingYearStartDayType source, ReportingYearStartDay target) {
+    public void reportingYearStartDayJaxbToDoExtension(ServiceContext ctx, ReportingYearStartDayType source, ReportingYearStartDay target) throws MetamacException {
         // Meta-data in previous version -> Nothing to extends
     }
 

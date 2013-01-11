@@ -7,6 +7,7 @@ import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
+import org.siemac.metamac.srm.core.concept.enume.domain.ConceptRoleEnum;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.core.concept.serviceapi.ConceptsMetamacService;
 import org.siemac.metamac.srm.core.importation.ImportationMetamacCommonValidations;
@@ -56,17 +57,20 @@ public class ConceptsJaxb2DoCallbackImpl extends ImportationMetamacCommonValidat
     public void conceptSchemeJaxbToDoExtension(ServiceContext ctx, ConceptSchemeType source, ConceptSchemeVersion target) throws MetamacException {
         ConceptSchemeVersionMetamac targetMetamac = (ConceptSchemeVersionMetamac) target;
 
+        // TODO decidir que hacer con el tipo por defecto en la importacion
+        targetMetamac.setType(ConceptSchemeTypeEnum.MEASURE);
+
         // Fill metadata
         conceptsMetamacService.preCreateConceptScheme(ctx, targetMetamac);
-
-        // TODO decidir que hacer ccon el tipo por defecto en la importacion
-        targetMetamac.setType(ConceptSchemeTypeEnum.TRANSVERSAL);
-        targetMetamac.setIsTypeUpdated(Boolean.TRUE);
+        targetMetamac.getMaintainableArtefact().setFinalLogic(Boolean.FALSE); // In Metamac, all artifacts imported are marked as final false
     }
 
     @Override
     public void conceptsJaxb2DoExtension(ServiceContext ctx, ConceptType source, ConceptSchemeVersion conceptSchemeVersion, Concept target) throws MetamacException {
         ConceptMetamac targetMetamac = (ConceptMetamac) target;
+
+        // TODO decidir que hacer con el tipo por defecto en la importacion
+        targetMetamac.setSdmxRelatedArtefact(ConceptRoleEnum.ATTRIBUTE);
 
         // Fill metadata
         conceptsMetamacService.preCreateConcept(ctx, conceptSchemeVersion.getMaintainableArtefact().getUrn(), targetMetamac);

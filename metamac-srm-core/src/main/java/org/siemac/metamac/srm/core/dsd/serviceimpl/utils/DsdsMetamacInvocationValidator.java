@@ -9,11 +9,13 @@ import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.core.common.exception.utils.ExceptionUtils;
-import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.ValidationUtils;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.Component;
+import com.arte.statistic.sdmx.srm.core.base.domain.ComponentList;
+import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.ValidationUtils;
 import com.arte.statistic.sdmx.srm.core.structure.serviceimpl.utils.DataStructureInvocationValidator;
 
 public class DsdsMetamacInvocationValidator extends DataStructureInvocationValidator {
@@ -51,6 +53,26 @@ public class DsdsMetamacInvocationValidator extends DataStructureInvocationValid
         if (exceptions == null) {
             exceptions = new ArrayList<MetamacExceptionItem>();
         }
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
+
+    public static void checkDescriptorToCreateOrUpdate(ComponentList descriptor, List<MetamacExceptionItem> exceptions) throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+
+        ValidationUtils.checkParameterRequired(descriptor, ServiceExceptionParameters.COMPONENT_LIST, exceptions);
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
+
+    public static void checkDescriptorToCreateOrUpdate(Component component, List<MetamacExceptionItem> exceptions) throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+
+        ValidationUtils.checkParameterRequired(component, ServiceExceptionParameters.COMPONENT, exceptions);
 
         ExceptionUtils.throwIfException(exceptions);
     }
