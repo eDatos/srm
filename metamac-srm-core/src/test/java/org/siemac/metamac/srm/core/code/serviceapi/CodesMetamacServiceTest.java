@@ -1253,7 +1253,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         String urnExpectedCode22 = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST03(02.000).CODE0202";
 
         CodelistVersionMetamac codelistVersionToCopy = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), urn);
-        CodelistVersionMetamac codelistVersionNewVersion = codesService.versioningCodelist(getServiceContextAdministrador(), urn, VersionTypeEnum.MAJOR);
+        CodelistVersionMetamac codelistVersionNewVersion = codesService.versioningCodelist(getServiceContextAdministrador(), urn, Boolean.TRUE, VersionTypeEnum.MAJOR);
 
         // Validate response
         {
@@ -1355,7 +1355,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistVersionLast.getLifeCycleMetadata().getProcStatus());
         assertTrue(codelistVersionLast.getMaintainableArtefact().getIsLastVersion());
 
-        CodelistVersionMetamac codelistVersionNewVersion = codesService.versioningCodelist(getServiceContextAdministrador(), urnToCopy, VersionTypeEnum.MAJOR);
+        CodelistVersionMetamac codelistVersionNewVersion = codesService.versioningCodelist(getServiceContextAdministrador(), urnToCopy, Boolean.TRUE, VersionTypeEnum.MAJOR);
 
         // Validate response
         {
@@ -1403,11 +1403,38 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     }
 
     @Test
+    public void testVersioningCodelistNotCopyCodes() throws Exception {
+        String urn = CODELIST_3_V1;
+
+        CodelistVersionMetamac codelistVersionToCopy = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), urn);
+        CodelistVersionMetamac codelistVersionNewVersion = codesService.versioningCodelist(getServiceContextAdministrador(), urn, Boolean.FALSE, VersionTypeEnum.MAJOR);
+
+        // Validate
+        // New version
+        {
+            codelistVersionNewVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistVersionNewVersion.getMaintainableArtefact().getUrn());
+            assertEquals(ProcStatusEnum.DRAFT, codelistVersionNewVersion.getLifeCycleMetadata().getProcStatus());
+            assertEqualsCodelistWithoutLifeCycleMetadata(codelistVersionToCopy, codelistVersionNewVersion);
+
+            // Codes
+            assertEquals(0, codelistVersionNewVersion.getItems().size());
+            assertEquals(0, codelistVersionNewVersion.getItemsFirstLevel().size());
+        }
+
+        // Copied version
+        {
+            codelistVersionToCopy = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), urn);
+            assertEquals("01.000", codelistVersionToCopy.getMaintainableArtefact().getVersionLogic());
+            assertEquals(5, codelistVersionToCopy.getItems().size());
+        }
+    }
+
+    @Test
     public void testVersioningCodelistErrorAlreadyExistsDraft() throws Exception {
         String urn = CODELIST_1_V1;
 
         try {
-            codesService.versioningCodelist(getServiceContextAdministrador(), urn, VersionTypeEnum.MAJOR);
+            codesService.versioningCodelist(getServiceContextAdministrador(), urn, Boolean.TRUE, VersionTypeEnum.MAJOR);
             fail("Codelist already exists in no final");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
@@ -1422,7 +1449,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         String urn = CODELIST_2_V1;
 
         try {
-            codesService.versioningCodelist(getServiceContextAdministrador(), urn, VersionTypeEnum.MAJOR);
+            codesService.versioningCodelist(getServiceContextAdministrador(), urn, Boolean.TRUE, VersionTypeEnum.MAJOR);
             fail("Codelist not published");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());

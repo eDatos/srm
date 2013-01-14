@@ -454,7 +454,7 @@ public class SrmCoreServiceFacadeCodesSecurityTest extends SrmBaseTest {
 
     @Test
     public void testVersioningCodelist() throws Exception {
-        srmCoreServiceFacade.versioningCodelist(getServiceContextJefeNormalizacion(), CODELIST_7_V1, VersionTypeEnum.MAJOR);
+        srmCoreServiceFacade.versioningCodelist(getServiceContextJefeNormalizacion(), CODELIST_7_V1, null, VersionTypeEnum.MAJOR);
     }
 
     @Test
@@ -464,7 +464,7 @@ public class SrmCoreServiceFacadeCodesSecurityTest extends SrmBaseTest {
 
         for (ServiceContext ctx : contexts) {
             try {
-                srmCoreServiceFacade.versioningCodelist(ctx, CODELIST_7_V1, VersionTypeEnum.MAJOR);
+                srmCoreServiceFacade.versioningCodelist(ctx, CODELIST_7_V1, null, VersionTypeEnum.MAJOR);
                 fail("action not allowed");
             } catch (MetamacException e) {
                 assertEquals(1, e.getExceptionItems().size());

@@ -66,7 +66,11 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
     @Autowired
     @Qualifier("codesCopyCallbackMetamac")
-    private CodesCopyCallback              codesCopyCallback;
+    private CodesCopyCallback              codesCopyWithCodesCallback;
+
+    @Autowired
+    @Qualifier("codesCopyWithoutCodesCallbackMetamac")
+    private CodesCopyCallback              codesCopyWithoutCodesCallback;
 
     public CodesMetamacServiceImpl() {
     }
@@ -184,14 +188,14 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     @Override
-    public CodelistVersionMetamac versioningCodelist(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
+    public CodelistVersionMetamac versioningCodelist(ServiceContext ctx, String urnToCopy, Boolean versioningCodes, VersionTypeEnum versionType) throws MetamacException {
         // Validation
         CodesMetamacInvocationValidator.checkVersioningCodelist(urnToCopy, versionType, null, null);
         checkCodelistToVersioning(ctx, urnToCopy);
 
         // Versioning
-        CodelistVersionMetamac codelistNewVersion = (CodelistVersionMetamac) codesService.versioningCodelist(ctx, urnToCopy, versionType, codesCopyCallback);
-
+        CodesCopyCallback callback = versioningCodes == null || versioningCodes ? codesCopyWithCodesCallback : codesCopyWithoutCodesCallback;
+        CodelistVersionMetamac codelistNewVersion = (CodelistVersionMetamac) codesService.versioningCodelist(ctx, urnToCopy, versionType, callback);
         return codelistNewVersion;
     }
 

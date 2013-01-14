@@ -449,7 +449,7 @@ Application SrmFacadeCore {
 	    	"Publishes externally a Codelist"
 	    	@CodelistMetamacDto publishCodelistExternally(String urn) throws MetamacException;
     		"Creates a new version of a Codelist, copying metadata from version with provided urn"
-    		@CodelistMetamacDto versioningCodelist(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
+    		@CodelistMetamacDto versioningCodelist(String urnToCopy, Boolean versioningCodes, @VersionTypeEnum versionType) throws MetamacException;
     		"Ends the Codelist validity"
     		@CodelistMetamacDto endCodelistValidity(String urn) throws MetamacException;
     		

@@ -691,7 +691,7 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
         String urnExpected = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST03(02.000)";
 
         CodelistMetamacDto codelistDtoToCopy = srmCoreServiceFacade.retrieveCodelistByUrn(getServiceContextAdministrador(), urn);
-        CodelistMetamacDto codelistDtoNewVersion = srmCoreServiceFacade.versioningCodelist(getServiceContextAdministrador(), urn, VersionTypeEnum.MAJOR);
+        CodelistMetamacDto codelistDtoNewVersion = srmCoreServiceFacade.versioningCodelist(getServiceContextAdministrador(), urn, null, VersionTypeEnum.MAJOR);
 
         // Validate response
         {

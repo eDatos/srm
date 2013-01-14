@@ -35,6 +35,11 @@ public class CodesCopyCallbackMetamacImpl implements CodesCopyCallback {
     }
 
     @Override
+    public Boolean mustCopyCodes() {
+        return Boolean.TRUE;
+    }
+
+    @Override
     public Code createCode() {
         return new CodeMetamac();
     }

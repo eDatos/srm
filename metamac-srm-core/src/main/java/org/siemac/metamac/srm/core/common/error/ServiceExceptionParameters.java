@@ -51,7 +51,7 @@ public class ServiceExceptionParameters extends com.arte.statistic.sdmx.srm.core
     public static final String VARIABLE_VALID_TO                 = VARIABLE + ".valid_to";
 
     // VARIABLE ELEMENT
-    public static final String VARIABLE_ELEMENT                  = "variable";
+    public static final String VARIABLE_ELEMENT                  = "variable_element";
     public static final String VARIABLE_ELEMENT_SHORT_NAME       = VARIABLE_ELEMENT + ".short_name";
     public static final String VARIABLE_ELEMENT_VALID_FROM       = VARIABLE_ELEMENT + ".valid_from";
     public static final String VARIABLE_ELEMENT_VALID_TO         = VARIABLE_ELEMENT + ".valid_to";

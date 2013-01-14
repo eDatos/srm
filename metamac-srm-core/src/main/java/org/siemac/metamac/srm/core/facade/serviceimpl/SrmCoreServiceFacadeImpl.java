@@ -711,11 +711,11 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public CodelistMetamacDto versioningCodelist(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
+    public CodelistMetamacDto versioningCodelist(ServiceContext ctx, String urnToCopy, Boolean versioningCodes, VersionTypeEnum versionType) throws MetamacException {
         // Security
         ItemsSecurityUtils.canVersioningItemScheme(ctx);
 
-        CodelistVersionMetamac codelistVersioned = getCodesMetamacService().versioningCodelist(ctx, urnToCopy, versionType);
+        CodelistVersionMetamac codelistVersioned = getCodesMetamacService().versioningCodelist(ctx, urnToCopy, versioningCodes, versionType);
 
         // Transform to DTO
         CodelistMetamacDto codelistDto = codesDo2DtoMapper.codelistMetamacDoToDto(codelistVersioned);
